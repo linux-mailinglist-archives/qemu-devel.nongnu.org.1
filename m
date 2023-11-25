@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C207A7F8B2E
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Nov 2023 15:03:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CAC7F8B99
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Nov 2023 15:21:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6tEC-0004JC-1V; Sat, 25 Nov 2023 09:01:48 -0500
+	id 1r6tVR-000202-LD; Sat, 25 Nov 2023 09:19:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r6tE7-0004Ia-QE; Sat, 25 Nov 2023 09:01:43 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1r6tVN-0001zn-FL; Sat, 25 Nov 2023 09:19:33 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r6tE6-00081y-2K; Sat, 25 Nov 2023 09:01:43 -0500
+ id 1r6tVL-00044Y-LS; Sat, 25 Nov 2023 09:19:33 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id BACAB75A4C4;
- Sat, 25 Nov 2023 15:01:35 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id B859775A4C3;
+ Sat, 25 Nov 2023 15:19:26 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id AF6A075A4C3; Sat, 25 Nov 2023 15:01:35 +0100 (CET)
+ id ABE8175A4C0; Sat, 25 Nov 2023 15:19:26 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH for-8.2] ide/via: Fix BAR4 value in legacy mode
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH for 8.2] ppc/amigaone: Allow running without firmware image
 To: qemu-devel@nongnu.org,
-    qemu-block@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- philmd@linaro.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20231125140135.AF6A075A4C3@zero.eik.bme.hu>
-Date: Sat, 25 Nov 2023 15:01:35 +0100 (CET)
+    qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
+ philmd@linaro.org
+Message-Id: <20231125141926.ABE8175A4C0@zero.eik.bme.hu>
+Date: Sat, 25 Nov 2023 15:19:26 +0100 (CET)
 X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -55,48 +53,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Return default value in legacy mode for BAR4 when unset. This can't be
-set in reset method because BARs are cleared on reset so we return it
-instead when BARs are read in legacy mode.
+The machine uses a modified U-Boot under GPL license but the sources
+of it are lost with only a binary available so it cannot be included
+in QEMU. Allow running without the firmware image by specifying -bios
+none which can be used when calling a boot loader directly which does
+not need the firmware and thus simplifying booting guests.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
-This fixes UDMA on amigaone with AmigaOS and I'd like to include for
-8.2 release.
+Please merge for 8.2 as ir allows booting AmigaOS simpler without
+having to download separate firmware.
 
- hw/ide/via.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ hw/ppc/amigaone.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index 2d3124ebd7..3f3c484253 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -163,14 +163,19 @@ static uint32_t via_ide_cfg_read(PCIDevice *pd, uint32_t addr, int len)
-     uint32_t val = pci_default_read_config(pd, addr, len);
-     uint8_t mode = pd->config[PCI_CLASS_PROG];
- 
--    if ((mode & 0xf) == 0xa && ranges_overlap(addr, len,
--                                              PCI_BASE_ADDRESS_0, 16)) {
--        /* BARs always read back zero in legacy mode */
--        for (int i = addr; i < addr + len; i++) {
--            if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 16) {
--                val &= ~(0xffULL << ((i - addr) << 3));
-+    if ((mode & 0xf) == 0xa) {
-+        if (ranges_overlap(addr, len, PCI_BASE_ADDRESS_0, 16)) {
-+            /* BARs 0-3 always read back zero in legacy mode */
-+            for (int i = addr; i < addr + len; i++) {
-+                if (i >= PCI_BASE_ADDRESS_0 && i < PCI_BASE_ADDRESS_0 + 16) {
-+                    val &= ~(0xffULL << ((i - addr) << 3));
-+                }
-             }
+diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+index 992a55e632..f3d702814a 100644
+--- a/hw/ppc/amigaone.c
++++ b/hw/ppc/amigaone.c
+@@ -105,7 +105,7 @@ static void amigaone_init(MachineState *machine)
+             exit(1);
          }
-+        if (addr == PCI_BASE_ADDRESS_4 && val == PCI_BASE_ADDRESS_SPACE_IO) {
-+            /* BAR4 default value if unset */
-+            val = 0xcc00 | PCI_BASE_ADDRESS_SPACE_IO;
-+        }
+         g_free(filename);
+-    } else if (!qtest_enabled()) {
++    } else if (!qtest_enabled() && strcmp(fwname, "none") != 0) {
+         error_report("Could not find firmware '%s'", fwname);
+         exit(1);
      }
- 
-     return val;
 -- 
 2.30.9
 
