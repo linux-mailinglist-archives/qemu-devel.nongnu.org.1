@@ -2,56 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6F17F88F4
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 Nov 2023 08:56:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3327F8AB7
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 Nov 2023 13:24:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r6nV7-0007uR-Er; Sat, 25 Nov 2023 02:54:53 -0500
+	id 1r6rhA-0001Yi-3T; Sat, 25 Nov 2023 07:23:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <a_lijiejun@163.com>)
- id 1r6nV5-0007sZ-6f
- for qemu-devel@nongnu.org; Sat, 25 Nov 2023 02:54:51 -0500
-Received: from m15.mail.163.com ([45.254.50.220])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <a_lijiejun@163.com>) id 1r6nV1-0006JO-11
- for qemu-devel@nongnu.org; Sat, 25 Nov 2023 02:54:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=3KVcC
- uKLNr4yHlpvsJxpOlYlNbuqpUeQ+xgB15DEgUg=; b=Jl7YT2Z64aMz3SHv7KMNE
- qCjoYZUuhN9gCTfqqRK4l3DySlWWDVmp9aPzAJh2QqDACD8UlSETleD9ak5HOwHT
- BIIxDw1JMU+HqdwkImLj4iqidVPBmzIBqEQ9DYyn4BnV4R0sfhjaattBu3X7edcZ
- iC62TOAzC55ki1JJMCdscE=
-Received: from test123.sz.office (unknown [121.12.80.215])
- by zwqz-smtp-mta-g2-0 (Coremail) with SMTP id _____wBnT04iqGFlpWS+Dw--.14146S2;
- Sat, 25 Nov 2023 15:54:24 +0800 (CST)
-From: lijiejun <a_lijiejun@163.com>
-To: kraxel@redhat.com
-Cc: qemu-devel@nongnu.org,
-	lijiejun <a_lijiejun@163.com>
-Subject: [PATCH] ui: Optimization dirty rect empty check logic
-Date: Sat, 25 Nov 2023 15:54:08 +0800
-Message-Id: <20231125075408.131075-1-a_lijiejun@163.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
+ id 1r6rh8-0001Xr-6r
+ for qemu-devel@nongnu.org; Sat, 25 Nov 2023 07:23:34 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
+ id 1r6rh6-0005LD-Lg
+ for qemu-devel@nongnu.org; Sat, 25 Nov 2023 07:23:33 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3316d09c645so1694853f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 25 Nov 2023 04:23:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1700915010; x=1701519810; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:content-language:subject:from
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ChyqQYn+oAPMzVi6ESY7j+fJ4LKMR9FYB0TtcRj6s/c=;
+ b=nhlAKi+31Rg5L8Q8ycyzciOdEj81+Gjw1FctyKd+4Apw5HnCtzvtM/KoNnEvGmh5Lk
+ 1vvP96/2xGNTk/AigFZfoVJsPA7r1P7lnVaFdb4sKL4DjcoxU7sgLTCvwXiFOPXFmhKH
+ 1rGM+vMBItEmiKSscR9S14QF9KuFiJU1fMpDCQUzOCy2S2r4ZjqpgxMzQRzpXMHat035
+ t7XtzVLfCp9T98DgZ65qAtPrrCHoPaSKZDmiSN557+JvBmzOR8+LGMmpUjG085tdVQ+r
+ Zif2ONuEXNOxRmVxcLaVTi3rOVRnhxO1EQzBtx8HqIg781Ye7p4Y8ewnABneSSsfoVmS
+ Miwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700915010; x=1701519810;
+ h=content-transfer-encoding:cc:to:content-language:subject:from
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ChyqQYn+oAPMzVi6ESY7j+fJ4LKMR9FYB0TtcRj6s/c=;
+ b=Pj2C12N0WdYBgUwv6ui5fqyJgB9vLMoyejati5AtM9/z8omK1HVsB9o7flQhtnwqwB
+ MKt9A0xwcSDfH7/G+8n8bczReakgDgWI8gzPxv4Nrhs3defTHK8KaeDG0F9FcwxGCKY1
+ McEdGO9gw/Xeg9/bVKQzWb/2ej5Can9B4Bc9dWbS9yPS8U38YimTIoe/V7spPsWDJuzM
+ 0Pv4iVhfu0PyA4o5W4aw1A3tMObZHUD86tUk7IqZTPCLQG70AwZMFhLq+IZtZfFcC68m
+ A+4BMs1Z1cGVL4j8XlQax49DgpG1QB8hhbMJq0e+IcNPzXUJzaDNFBgw6DF+1SpeELCM
+ nDLA==
+X-Gm-Message-State: AOJu0YxsU7wS1cN0eWKaiGKpgt8IWs1q8rXHgb3KPw5C8JLa0i5U3w70
+ 9FQpkWavB5xINE5vT+Cqq2POEdxAIEo=
+X-Google-Smtp-Source: AGHT+IGx271HdARwHj2gVUQjLIiEXC2QF30wIqhpRph/HQ5fplou3rexQoOsTCqPgKA0vLhR+xLXXg==
+X-Received: by 2002:a5d:6152:0:b0:332:e75e:f39a with SMTP id
+ y18-20020a5d6152000000b00332e75ef39amr4128418wrt.35.1700915010264; 
+ Sat, 25 Nov 2023 04:23:30 -0800 (PST)
+Received: from ?IPV6:2001:1ae9:1e8:b200:ae52:b385:81fe:eeab?
+ (2001-1ae9-1e8-b200-ae52-b385-81fe-eeab.ip6.tmcz.cz.
+ [2001:1ae9:1e8:b200:ae52:b385:81fe:eeab])
+ by smtp.gmail.com with ESMTPSA id
+ c13-20020adfe70d000000b003316aeb280esm6492357wrm.104.2023.11.25.04.23.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 25 Nov 2023 04:23:29 -0800 (PST)
+Message-ID: <6826113a-d428-401e-b5a3-56ad5d8fbaa4@gmail.com>
+Date: Sat, 25 Nov 2023 13:23:22 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wBnT04iqGFlpWS+Dw--.14146S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKF1UZw15ur4rJFWxJw1fWFg_yoWkCwb_G3
- yxZrs3AFy3t3Z3Xas8KFyakryrXFZxCFs3u3yDtFWrGr1SvF45tF9aqr4xJr9xCFZ8tFyr
- urn8CF93AF4fKjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRCksD5UUUUU==
-X-Originating-IP: [121.12.80.215]
-X-CM-SenderInfo: pdboxyplhm30i6rwjhhfrp/1tbiSBQzFF+FinzESAAAsb
-Received-SPF: pass client-ip=45.254.50.220; envelope-from=a_lijiejun@163.com;
- helo=m15.mail.163.com
+User-Agent: Mozilla Thunderbird
+From: Petr Cvek <petrcvekcz@gmail.com>
+Subject: [PATCH] qemu/timer: Don't use RDTSC on i486
+Content-Language: en-US, cs
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, marcel.apfelbaum@gmail.com, mst@redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=petrcvekcz@gmail.com; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,42 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reduce unnecessary code execution in function qemu_spice_create_update,
-such as "int blocks = DIV_ROUND_UP(surface_width(ssd->ds), blksize);"
-and "int bpp = surface_bytes_per_pixel(ssd->ds);".
+GCC defines __i386__ for i386 and i486, which both lack RDTSC instruction.
+The i386 seems to be impossible to distinguish, but i486 can be identified
+by checking for undefined __i486__.
 
-Signed-off-by: lijiejun <a_lijiejun@163.com>
+Signed-off-by: Petr Cvek <petrcvekcz@gmail.com>
 ---
- ui/spice-display.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ include/qemu/timer.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 6eb98a5a5c..508e35ed0f 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -194,10 +194,6 @@ static void qemu_spice_create_update(SimpleSpiceDisplay *ssd)
-     int bpp = surface_bytes_per_pixel(ssd->ds);
-     uint8_t *guest, *mirror;
+diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+index 9a366e551f..7baa5d1d41 100644
+--- a/include/qemu/timer.h
++++ b/include/qemu/timer.h
+@@ -872,7 +872,7 @@ static inline int64_t cpu_get_host_ticks(void)
+     return retval;
+ }
  
--    if (qemu_spice_rect_is_empty(&ssd->dirty)) {
--        return;
--    };
--
-     dirty_top = g_new(int, blocks);
-     for (blk = 0; blk < blocks; blk++) {
-         dirty_top[blk] = -1;
-@@ -488,7 +484,9 @@ void qemu_spice_display_refresh(SimpleSpiceDisplay *ssd)
+-#elif defined(__i386__)
++#elif defined(__i386__) && !defined(__i486__)
  
-     WITH_QEMU_LOCK_GUARD(&ssd->lock) {
-         if (QTAILQ_EMPTY(&ssd->updates) && ssd->ds) {
--            qemu_spice_create_update(ssd);
-+            if (!qemu_spice_rect_is_empty(&ssd->dirty)) {
-+                qemu_spice_create_update(ssd);
-+            }
-             ssd->notify++;
-         }
-     }
+ static inline int64_t cpu_get_host_ticks(void)
+ {
 -- 
-2.25.1
+2.43.0
 
 
