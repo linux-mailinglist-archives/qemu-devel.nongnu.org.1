@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875597F95EC
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 23:51:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 139C37F95EE
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 23:52:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7Nwl-0002i1-Kx; Sun, 26 Nov 2023 17:49:51 -0500
+	id 1r7NzK-0006CK-53; Sun, 26 Nov 2023 17:52:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r7Nwf-0002gF-JG
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:49:45 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1r7NzC-00068j-VJ
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:52:25 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r7Nwe-0002Qd-7U
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:49:45 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40839652b97so24596165e9.3
- for <qemu-devel@nongnu.org>; Sun, 26 Nov 2023 14:49:43 -0800 (PST)
+ id 1r7NzB-0002ri-DY
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:52:22 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40b472f98b1so1049045e9.3
+ for <qemu-devel@nongnu.org>; Sun, 26 Nov 2023 14:52:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701038982; x=1701643782; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=gmail.com; s=20230601; t=1701039138; x=1701643938; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=gidROEQg6roQhbvPcrsWjtNGEGxoxRyhv8t3KmEDtTg=;
- b=NLwbCEey3/B2lAL6XyzxYz6FFtKMj/oxDNffsUJnWI9Re0upg0BXrw2QIVLV93ADVq
- eJzprW7eKS2H0WVceoTpwxfk+p/oGsD0RNxtmxo1x2Xiu2i6OFB9YXxnhBpk+IzaHwYu
- JgE9iBhueQylwWGTUBW0/idvQkM4nfre1slil+FCOuxzLnoWLD5mHX5KcXbDQ8Tip2GI
- hSCZbL+ghQirJKwzvKzp/UVnKfhwiODhMYi+Ijb/XUHlqQhCs4DzRYElD9Rj3htPqEQi
- d2OmHUVq+hzPewIQ/0ybfjS6/pqV0FgbV0N3yspq9cMrvnh9LhLIh/njEJ09CKkIGHUa
- apfw==
+ bh=jPNTT6Oy5GZ3Bdh+yH5tUPI/xHbaz9jn+4YGerUhI2c=;
+ b=RbMPuUFkk9FJeQIesdHqs0E7W8rFL5z+fMtyTXN6wTvH0dQs3kamHjj+iAZFo0W1Yi
+ YFq9qTdmhooMQ/9SjR1RKbfSn82QhRGS7S38Hhz6p3Vk2P0rzK/m1XVfDfDjsuauhsdX
+ iTBnmlGGhuw8YicSQxaf1uTrZHRitNjQQo+mUM1rL3dGdzRJ5onKXPGM1BUzvkGHvNJc
+ piQYTwDtOb3pPOH/y9sCZg/LEJbiszSgSv3CixbIyKHUhu1vam27BnvrIDvSdLOHQikB
+ O4V7ScYY0jBV49XBy5LjE5O1SXZoiq6paZhFAsoJDWrkBrM/hp2xyA52pB3pHVMbSEbO
+ 39uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701038982; x=1701643782;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1701039138; x=1701643938;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gidROEQg6roQhbvPcrsWjtNGEGxoxRyhv8t3KmEDtTg=;
- b=g8tNMY+07hdQoPG5Nl+82jFtkeaa8mU+V6vdAX6WIguCG160ekT41jt6TZfQ5lVU2I
- spJthamFirrqWHocOrUN8BAoSThwyWYaxyw0ZbDfxnUC7v4cxrCuzEEdiYMinFp7o6Kq
- PbQG3CC6diqZkReFQKOmfiNccrN1FwjaWrltoE7L7pnv3np/dHSw1o401cWHuVYPbTF9
- 1oOgSe98AB0P7WY6gs3yXqVXKqw9rt/vgxgmbQXy/fXJs6yKsq/XQSXtKBx3jVqyeSRQ
- DHIC7A0a/51OQ7Gof8ynHNiwjHdtT1GTWRoLBIZeeJmVHvJ/770zjBU6yG1+nQ2DWXtq
- fd5g==
-X-Gm-Message-State: AOJu0YxSOEKRZOkkEoXbPk5raoFKCjXJQErLoYRns6oipfKodswJSBPA
- SxWIOSU4QeCd8rzCTJqI+BY=
-X-Google-Smtp-Source: AGHT+IGYZb7FgPazoOkfEPG84jJ449G9oGIiX+L79PbC7wXPgXn1Fhk4KxpL0ARjN9/3oOOiB0t7YQ==
-X-Received: by 2002:a05:600c:3b16:b0:407:8e85:89ad with SMTP id
- m22-20020a05600c3b1600b004078e8589admr6659720wms.14.1701038981794; 
- Sun, 26 Nov 2023 14:49:41 -0800 (PST)
+ bh=jPNTT6Oy5GZ3Bdh+yH5tUPI/xHbaz9jn+4YGerUhI2c=;
+ b=LtB0DzBLoED/dKbYzn3Aj+7FPiAW/otMP74ntAM0HaTp6/9SAKasRsVQglsibHK7Ih
+ 8XaQVvzCEgTyjbn97v5D4cxlC03jI6g1e7iGWSctKOwpWBZs0YMUy76nbMKdy8LK7HfX
+ No7bVIj5eTVT+ulgY4L7affdvHz5/oNkzD8nNx+/FA7P+2qHX1hzFdNCaK4RezF0ymet
+ NAPQJ5OIb8C90y5kRsSgFPey18GGw3D0wWrc0L6re/bELroilGD6LpiNBYQthujDOTAX
+ df7EjQhRnKIx6MvvO2q0a7YNTBCXnmaxoDrk28AE5RWdNBtWpyrLMjHqpOR+1uVmuppG
+ h9BA==
+X-Gm-Message-State: AOJu0Yywax5x0rEglbtJESiZ83LGxEj4ugbsLQMaA01CCoNlB04OwJH/
+ DsG8I7+8NKlTYOqI/Tp5khrGz3NBGXk=
+X-Google-Smtp-Source: AGHT+IH1zoottKL2tsILoUuQUw6q3xcr9/DScytw+hI4ilPVsWtOhPCGnWFlAJbMBswHZJA39wdOeg==
+X-Received: by 2002:a05:600c:524c:b0:40b:3df2:c5e5 with SMTP id
+ fc12-20020a05600c524c00b0040b3df2c5e5mr4590101wmb.40.1701039137608; 
+ Sun, 26 Nov 2023 14:52:17 -0800 (PST)
 Received: from ?IPV6:2001:1ae9:1e8:b200:ae52:b385:81fe:eeab?
  (2001-1ae9-1e8-b200-ae52-b385-81fe-eeab.ip6.tmcz.cz.
  [2001:1ae9:1e8:b200:ae52:b385:81fe:eeab])
  by smtp.gmail.com with ESMTPSA id
- d5-20020a05600c34c500b0040b349c91acsm12342903wmq.16.2023.11.26.14.49.41
+ v21-20020a05600c471500b0040a4751efaasm11599922wmo.17.2023.11.26.14.52.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 26 Nov 2023 14:49:41 -0800 (PST)
-Message-ID: <82b2394a-a110-4741-b5ec-f4df40e2e827@gmail.com>
-Date: Sun, 26 Nov 2023 23:49:33 +0100
+ Sun, 26 Nov 2023 14:52:17 -0800 (PST)
+Message-ID: <ce5c9d80-28b9-43ff-8315-996929faaa60@gmail.com>
+Date: Sun, 26 Nov 2023 23:52:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] qemu/timer: Don't use RDTSC on i486
-To: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
-Cc: pbonzini@redhat.com, marcel.apfelbaum@gmail.com, mst@redhat.com,
- qemu-devel@nongnu.org
-References: <6826113a-d428-401e-b5a3-56ad5d8fbaa4@gmail.com>
- <87msv065vx.fsf@telecom-paris.fr>
- <3380b626-0d94-489f-bf98-6146c1420a51@gmail.com>
- <87il5o64yf.fsf@telecom-paris.fr>
 Content-Language: en-US, cs
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "S. Tsirkin, Michael" <mst@redhat.com>
+References: <6826113a-d428-401e-b5a3-56ad5d8fbaa4@gmail.com>
+ <CABgObfabW_WKdfGFgao0BJ0wHYHRx6KzMsLzvqUvzu3ZMx5Bdw@mail.gmail.com>
 From: Petr Cvek <petrcvekcz@gmail.com>
-In-Reply-To: <87il5o64yf.fsf@telecom-paris.fr>
+In-Reply-To: <CABgObfabW_WKdfGFgao0BJ0wHYHRx6KzMsLzvqUvzu3ZMx5Bdw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=petrcvekcz@gmail.com; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=petrcvekcz@gmail.com; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,21 +98,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dne 26. 11. 23 v 14:03 Samuel Tardieu napsal(a):
+Dne 26. 11. 23 v 16:56 Paolo Bonzini napsal(a):
 > 
-> Petr Cvek <petrcvekcz@gmail.com> writes:
 > 
->> Actually I was thinking about mentioning it in the commit message also, but I wasn't able
->> to find any specification for that (if all compilers use it).
+> Il sab 25 nov 2023, 13:23 Petr Cvek <petrcvekcz@gmail.com <mailto:petrcvekcz@gmail.com>> ha scritto:
 > 
-> Note that this change would be safe: at worst, some compilers don't use __tune_i386__ and the situation would be the same as today without the patch.
+>     GCC defines __i386__ for i386 and i486, which both lack RDTSC instruction.
+>     The i386 seems to be impossible to distinguish, but i486 can be identified
+>     by checking for undefined __i486__.
+> 
+> 
+> As far as I know QEMU cannot be run on i486 anyway since TCG assumes the presence of CPUID. Have you actually tried?
+> 
 
-Good remark. You're right.
+Yes I tried running x86_64 mesa3d glxgears on amd 5x86. It worked with about 5 fps :). Latest 486 CPUs supports CPUID btw.
 
+> Paolo
 > 
->> Other problem is the __tune_i386__ is also set when -mtune=i386 (but with -march=i686).
 > 
-> Indeed, this is the case for GCC (not clang).
+>     Signed-off-by: Petr Cvek <petrcvekcz@gmail.com <mailto:petrcvekcz@gmail.com>>
+>     ---
+>      include/qemu/timer.h | 2 +-
+>      1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->  Sam
+>     diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+>     index 9a366e551f..7baa5d1d41 100644
+>     --- a/include/qemu/timer.h
+>     +++ b/include/qemu/timer.h
+>     @@ -872,7 +872,7 @@ static inline int64_t cpu_get_host_ticks(void)
+>          return retval;
+>      }
+> 
+>     -#elif defined(__i386__)
+>     +#elif defined(__i386__) && !defined(__i486__)
+> 
+>      static inline int64_t cpu_get_host_ticks(void)
+>      {
+>     -- 
+>     2.43.0
+> 
 
