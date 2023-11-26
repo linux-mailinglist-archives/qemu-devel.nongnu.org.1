@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628FB7F95E9
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0867F95E8
 	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 23:51:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7Nwg-0002h5-GK; Sun, 26 Nov 2023 17:49:46 -0500
+	id 1r7Nwc-0002fg-EN; Sun, 26 Nov 2023 17:49:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r7NwY-0002f9-AR
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:49:38 -0500
+ id 1r7NwX-0002eq-Gs
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:49:37 -0500
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r7NwV-0002Pb-0q
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:49:38 -0500
+ id 1r7NwV-0002Pl-0C
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:49:36 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id ED58875A4C0;
- Sun, 26 Nov 2023 23:49:30 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 02C1075A4C4;
+ Sun, 26 Nov 2023 23:49:32 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id E08E775A4BF; Sun, 26 Nov 2023 23:49:30 +0100 (CET)
-Message-Id: <ed5cdeaba7cf01eebdaa35f84c63427f4d8876b1.1701035944.git.balaton@eik.bme.hu>
+ id EB10475A4BF; Sun, 26 Nov 2023 23:49:31 +0100 (CET)
+Message-Id: <8c4513d8b78fac40e6d4e65a0a4b3a7f2f278a4b.1701035944.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1701035944.git.balaton@eik.bme.hu>
 References: <cover.1701035944.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 2/4] hw/usb/vt82c686-uhci-pci: Use ISA instead of PCI
- interrupts
+Subject: [PATCH v3 3/4] hw/isa/vt82c686: Route PIRQ inputs using
+ via_isa_set_irq()
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Bernhard Beschow <shentey@gmail.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, vr_qemu@t-online.de
-Date: Sun, 26 Nov 2023 23:49:30 +0100 (CET)
+Date: Sun, 26 Nov 2023 23:49:31 +0100 (CET)
 X-Virus-Scanned: ClamAV using ClamSMTP
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
@@ -57,45 +57,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This device is part of a superio/ISA bridge chip and IRQs from it are
-routed to an ISA interrupt. Use via_isa_set_irq() function to implement
-this in a vt82c686-uhci-pci specific irq handler.
+The chip has 4 pins (called PIRQA-D in VT82C686B and PINTA-D in
+VT8231) that are meant to be connected to PCI IRQ lines and allow
+routing PCI interrupts to the ISA PIC. Route these in
+via_isa_set_irq() to make it possible to share them with internal
+functions that can also be routed to the same ISA IRQs.
 
-This reverts commit 422a6e8075752bc5342afd3eace23a4990dd7d98.
-
+Fixes: 2fdadd02e675caca4aba4ae26317701fe2c4c901
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- hw/usb/vt82c686-uhci-pci.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/isa/vt82c686.c | 65 +++++++++++++++++------------------------------
+ 1 file changed, 24 insertions(+), 41 deletions(-)
 
-diff --git a/hw/usb/vt82c686-uhci-pci.c b/hw/usb/vt82c686-uhci-pci.c
-index b4884c9011..6162806172 100644
---- a/hw/usb/vt82c686-uhci-pci.c
-+++ b/hw/usb/vt82c686-uhci-pci.c
-@@ -1,7 +1,14 @@
- #include "qemu/osdep.h"
-+#include "hw/irq.h"
- #include "hw/isa/vt82c686.h"
- #include "hcd-uhci.h"
+diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+index 6fad8293e6..a3eb6769fc 100644
+--- a/hw/isa/vt82c686.c
++++ b/hw/isa/vt82c686.c
+@@ -593,6 +593,21 @@ static const TypeInfo via_isa_info = {
+     },
+ };
  
-+static void uhci_isa_set_irq(void *opaque, int irq_num, int level)
++static int via_isa_get_pci_irq(const ViaISAState *s, int pin)
 +{
-+    UHCIState *s = opaque;
-+    via_isa_set_irq(&s->dev, 0, level);
++    switch (pin) {
++    case 0:
++        return s->dev.config[0x55] >> 4;
++    case 1:
++        return s->dev.config[0x56] & 0xf;
++    case 2:
++        return s->dev.config[0x56] >> 4;
++    case 3:
++        return s->dev.config[0x57] >> 4;
++    }
++    return 0;
 +}
 +
- static void usb_uhci_vt82c686b_realize(PCIDevice *dev, Error **errp)
+ void via_isa_set_irq(PCIDevice *d, int pin, int level)
  {
-     UHCIState *s = UHCI(dev);
-@@ -15,6 +22,8 @@ static void usb_uhci_vt82c686b_realize(PCIDevice *dev, Error **errp)
-     pci_set_long(pci_conf + 0xc0, 0x00002000);
+     ViaISAState *s = VIA_ISA(pci_get_function_0(d));
+@@ -601,6 +616,10 @@ void via_isa_set_irq(PCIDevice *d, int pin, int level)
+     uint16_t mask = BIT(f);
  
-     usb_uhci_common_realize(dev, errp);
-+    object_unref(s->irq);
-+    s->irq = qemu_allocate_irq(uhci_isa_set_irq, s, 0);
+     switch (f) {
++    case 0: /* PIRQ/PINT inputs */
++        irq = via_isa_get_pci_irq(s, pin);
++        f = 8 + pin; /* Use function 8-11 for PCI interrupt inputs */
++        break;
+     case 2: /* USB ports 0-1 */
+     case 3: /* USB ports 2-3 */
+         max_irq = 14;
+@@ -633,50 +652,15 @@ void via_isa_set_irq(PCIDevice *d, int pin, int level)
+     qemu_set_irq(s->isa_irqs_in[irq], !!s->irq_state[irq]);
  }
  
- static UHCIInfo uhci_info[] = {
+-static void via_isa_request_i8259_irq(void *opaque, int irq, int level)
+-{
+-    ViaISAState *s = opaque;
+-    qemu_set_irq(s->cpu_intr, level);
+-}
+-
+-static int via_isa_get_pci_irq(const ViaISAState *s, int irq_num)
++static void via_isa_pirq(void *opaque, int pin, int level)
+ {
+-    switch (irq_num) {
+-    case 0:
+-        return s->dev.config[0x55] >> 4;
+-    case 1:
+-        return s->dev.config[0x56] & 0xf;
+-    case 2:
+-        return s->dev.config[0x56] >> 4;
+-    case 3:
+-        return s->dev.config[0x57] >> 4;
+-    }
+-    return 0;
++    via_isa_set_irq(opaque, pin, level);
+ }
+ 
+-static void via_isa_set_pci_irq(void *opaque, int irq_num, int level)
++static void via_isa_request_i8259_irq(void *opaque, int irq, int level)
+ {
+     ViaISAState *s = opaque;
+-    PCIBus *bus = pci_get_bus(&s->dev);
+-    int i, pic_level, pic_irq = via_isa_get_pci_irq(s, irq_num);
+-
+-    /* IRQ 0: disabled, IRQ 2,8,13: reserved */
+-    if (!pic_irq) {
+-        return;
+-    }
+-    if (unlikely(pic_irq == 2 || pic_irq == 8 || pic_irq == 13)) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "Invalid ISA IRQ routing");
+-    }
+-
+-    /* The pic level is the logical OR of all the PCI irqs mapped to it. */
+-    pic_level = 0;
+-    for (i = 0; i < PCI_NUM_PINS; i++) {
+-        if (pic_irq == via_isa_get_pci_irq(s, i)) {
+-            pic_level |= pci_bus_get_irq_level(bus, i);
+-        }
+-    }
+-    /* Now we change the pic irq level according to the via irq mappings. */
+-    qemu_set_irq(s->isa_irqs_in[pic_irq], pic_level);
++    qemu_set_irq(s->cpu_intr, level);
+ }
+ 
+ static void via_isa_realize(PCIDevice *d, Error **errp)
+@@ -689,6 +673,7 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+     int i;
+ 
+     qdev_init_gpio_out(dev, &s->cpu_intr, 1);
++    qdev_init_gpio_in_named(dev, via_isa_pirq, "pirq", PCI_NUM_PINS);
+     isa_irq = qemu_allocate_irqs(via_isa_request_i8259_irq, s, 1);
+     isa_bus = isa_bus_new(dev, pci_address_space(d), pci_address_space_io(d),
+                           errp);
+@@ -702,8 +687,6 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+     i8254_pit_init(isa_bus, 0x40, 0, NULL);
+     i8257_dma_init(isa_bus, 0);
+ 
+-    qdev_init_gpio_in_named(dev, via_isa_set_pci_irq, "pirq", PCI_NUM_PINS);
+-
+     /* RTC */
+     qdev_prop_set_int32(DEVICE(&s->rtc), "base_year", 2000);
+     if (!qdev_realize(DEVICE(&s->rtc), BUS(isa_bus), errp)) {
 -- 
 2.30.9
 
