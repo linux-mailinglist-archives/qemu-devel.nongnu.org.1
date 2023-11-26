@@ -2,86 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139C37F95EE
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 23:52:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 326FA7F9652
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 00:14:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7NzK-0006CK-53; Sun, 26 Nov 2023 17:52:30 -0500
+	id 1r7OIk-0001SY-El; Sun, 26 Nov 2023 18:12:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r7NzC-00068j-VJ
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:52:25 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r7NzB-0002ri-DY
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 17:52:22 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40b472f98b1so1049045e9.3
- for <qemu-devel@nongnu.org>; Sun, 26 Nov 2023 14:52:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701039138; x=1701643938; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jPNTT6Oy5GZ3Bdh+yH5tUPI/xHbaz9jn+4YGerUhI2c=;
- b=RbMPuUFkk9FJeQIesdHqs0E7W8rFL5z+fMtyTXN6wTvH0dQs3kamHjj+iAZFo0W1Yi
- YFq9qTdmhooMQ/9SjR1RKbfSn82QhRGS7S38Hhz6p3Vk2P0rzK/m1XVfDfDjsuauhsdX
- iTBnmlGGhuw8YicSQxaf1uTrZHRitNjQQo+mUM1rL3dGdzRJ5onKXPGM1BUzvkGHvNJc
- piQYTwDtOb3pPOH/y9sCZg/LEJbiszSgSv3CixbIyKHUhu1vam27BnvrIDvSdLOHQikB
- O4V7ScYY0jBV49XBy5LjE5O1SXZoiq6paZhFAsoJDWrkBrM/hp2xyA52pB3pHVMbSEbO
- 39uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701039138; x=1701643938;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jPNTT6Oy5GZ3Bdh+yH5tUPI/xHbaz9jn+4YGerUhI2c=;
- b=LtB0DzBLoED/dKbYzn3Aj+7FPiAW/otMP74ntAM0HaTp6/9SAKasRsVQglsibHK7Ih
- 8XaQVvzCEgTyjbn97v5D4cxlC03jI6g1e7iGWSctKOwpWBZs0YMUy76nbMKdy8LK7HfX
- No7bVIj5eTVT+ulgY4L7affdvHz5/oNkzD8nNx+/FA7P+2qHX1hzFdNCaK4RezF0ymet
- NAPQJ5OIb8C90y5kRsSgFPey18GGw3D0wWrc0L6re/bELroilGD6LpiNBYQthujDOTAX
- df7EjQhRnKIx6MvvO2q0a7YNTBCXnmaxoDrk28AE5RWdNBtWpyrLMjHqpOR+1uVmuppG
- h9BA==
-X-Gm-Message-State: AOJu0Yywax5x0rEglbtJESiZ83LGxEj4ugbsLQMaA01CCoNlB04OwJH/
- DsG8I7+8NKlTYOqI/Tp5khrGz3NBGXk=
-X-Google-Smtp-Source: AGHT+IH1zoottKL2tsILoUuQUw6q3xcr9/DScytw+hI4ilPVsWtOhPCGnWFlAJbMBswHZJA39wdOeg==
-X-Received: by 2002:a05:600c:524c:b0:40b:3df2:c5e5 with SMTP id
- fc12-20020a05600c524c00b0040b3df2c5e5mr4590101wmb.40.1701039137608; 
- Sun, 26 Nov 2023 14:52:17 -0800 (PST)
-Received: from ?IPV6:2001:1ae9:1e8:b200:ae52:b385:81fe:eeab?
- (2001-1ae9-1e8-b200-ae52-b385-81fe-eeab.ip6.tmcz.cz.
- [2001:1ae9:1e8:b200:ae52:b385:81fe:eeab])
- by smtp.gmail.com with ESMTPSA id
- v21-20020a05600c471500b0040a4751efaasm11599922wmo.17.2023.11.26.14.52.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 26 Nov 2023 14:52:17 -0800 (PST)
-Message-ID: <ce5c9d80-28b9-43ff-8315-996929faaa60@gmail.com>
-Date: Sun, 26 Nov 2023 23:52:09 +0100
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r7OIi-0001S0-07
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 18:12:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r7OIg-0005yj-5t
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 18:12:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701040349;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:mime-version: content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=fkwaEM58UHLuhpJyBeL28b0kI59lMSIVxOuuRaVK8LQ=;
+ b=G4RkQWak6ui3M8UxRJP9b2qeA7zn6/qaOWK4Ob4ftICgSeycc7KnsQm1bzUA9dEMcbVa+l
+ 9YnIeZ1A2Mc1MtDlRzytRZ1syzdzRX0HFaLsZes2hIxCe2qi4v9eTli+Aak8vo/zZ6NWsi
+ fReZX5G6TNxBKKt3hKmiFI051/JvIpM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-tj7e-V6JODGPzbzB3Utbdw-1; Sun, 26 Nov 2023 18:12:25 -0500
+X-MC-Unique: tj7e-V6JODGPzbzB3Utbdw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 46823811E7B;
+ Sun, 26 Nov 2023 23:12:24 +0000 (UTC)
+Received: from gshan.redhat.com (unknown [10.64.136.61])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6307E492BE9;
+ Sun, 26 Nov 2023 23:12:15 +0000 (UTC)
+From: Gavin Shan <gshan@redhat.com>
+To: qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, richard.henderson@linaro.org,
+ quic_llindhol@quicinc.com, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ shan.gavin@gmail.com
+Subject: [PATCH v7 0/8] Unified CPU type check
+Date: Mon, 27 Nov 2023 09:12:02 +1000
+Message-ID: <20231126231210.112820-1-gshan@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qemu/timer: Don't use RDTSC on i486
-Content-Language: en-US, cs
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "S. Tsirkin, Michael" <mst@redhat.com>
-References: <6826113a-d428-401e-b5a3-56ad5d8fbaa4@gmail.com>
- <CABgObfabW_WKdfGFgao0BJ0wHYHRx6KzMsLzvqUvzu3ZMx5Bdw@mail.gmail.com>
-From: Petr Cvek <petrcvekcz@gmail.com>
-In-Reply-To: <CABgObfabW_WKdfGFgao0BJ0wHYHRx6KzMsLzvqUvzu3ZMx5Bdw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=petrcvekcz@gmail.com; helo=mail-wm1-x32e.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,43 +85,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dne 26. 11. 23 v 16:56 Paolo Bonzini napsal(a):
-> 
-> 
-> Il sab 25 nov 2023, 13:23 Petr Cvek <petrcvekcz@gmail.com <mailto:petrcvekcz@gmail.com>> ha scritto:
-> 
->     GCC defines __i386__ for i386 and i486, which both lack RDTSC instruction.
->     The i386 seems to be impossible to distinguish, but i486 can be identified
->     by checking for undefined __i486__.
-> 
-> 
-> As far as I know QEMU cannot be run on i486 anyway since TCG assumes the presence of CPUID. Have you actually tried?
-> 
+This series bases on Phil's repository because the prepatory commits
+have been queued to the branch.
 
-Yes I tried running x86_64 mesa3d glxgears on amd 5x86. It worked with about 5 fps :). Latest 486 CPUs supports CPUID btw.
+  https://gitlab.com/philmd/qemu.git (branch: cpus-next)
 
-> Paolo
-> 
-> 
->     Signed-off-by: Petr Cvek <petrcvekcz@gmail.com <mailto:petrcvekcz@gmail.com>>
->     ---
->      include/qemu/timer.h | 2 +-
->      1 file changed, 1 insertion(+), 1 deletion(-)
-> 
->     diff --git a/include/qemu/timer.h b/include/qemu/timer.h
->     index 9a366e551f..7baa5d1d41 100644
->     --- a/include/qemu/timer.h
->     +++ b/include/qemu/timer.h
->     @@ -872,7 +872,7 @@ static inline int64_t cpu_get_host_ticks(void)
->          return retval;
->      }
-> 
->     -#elif defined(__i386__)
->     +#elif defined(__i386__) && !defined(__i486__)
-> 
->      static inline int64_t cpu_get_host_ticks(void)
->      {
->     -- 
->     2.43.0
-> 
+There are two places where the user specified CPU type is checked to see
+if it's supported or allowed by the board: machine_run_board_init() and
+mc->init(). We don't have to maintain two duplicate sets of logic. This
+series intends to move the check to machine_run_board_init() so that we
+have unified CPU type check.
+
+PATCH[1-3] refactors the logic to validate CPU type in machine_run_board_init()
+PATCH[4-8] validates the CPU type in machine_run_board_init() for the
+           individual boards
+
+v1: https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00302.html
+v2: https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00528.html
+v3: https://lists.nongnu.org/archive/html/qemu-arm/2023-09/msg00157.html
+v4: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00005.html
+v5: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00611.html
+v6: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00768.html
+
+Testing
+=======
+
+Before the series is applied:
+
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
+  qemu-system-aarch64: mach-virt: CPU type cortex-a8-arm-cpu not supported
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
+  qemu-system-aarch64: sbsa-ref: CPU type cortex-a53-arm-cpu not supported
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+  qemu-system-aarch64: sbsa-ref: CPU type sa1100-arm-cpu not supported
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
+  qemu-system-aarch64: unable to find CPU model 'host'
+
+After the series is applied:
+
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
+  qemu-system-aarch64: Invalid CPU type: cortex-a8
+  The valid types are: cortex-a7, cortex-a15, cortex-a35, cortex-a55,     \
+                       cortex-a72, cortex-a76, cortex-a710, a64fx,        \
+                       neoverse-n1, neoverse-v1, neoverse-n2, cortex-a53, \
+                       cortex-a57, max
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
+  qemu-system-aarch64: Invalid CPU type: cortex-a53
+  The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1,  \
+                       neoverse-n2, max
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+  qemu-system-aarch64: Invalid CPU type: sa1100
+  The valid types are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1,  \
+                       neoverse-n2, max
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
+  qemu-system-aarch64: unable to find CPU model 'host'
+
+Changelog
+=========
+v7:
+  * Add 'return' after error_propagate() in machine_run_board_init()
+    to avoid calling mc->init() in the failing case              (Marcin)
+v6:
+  * Drop PATCH[v5 01-23], queued by Phil                         (Phil)
+  * Clearer hint if only one CPU type is supported and have
+    'const MachineState *' in is_cpu_type_supported()            (Phil)
+  * Move valid_cpu_types[] to board's class_init() function      (Phil)
+v5:
+  * PATCH[v5 01] to remove CPU class 'ev67' for alpha            (Ricard/Igor)
+  * PATCH[v5 02] to remove object_class_is_abstract() for hppa   (Gavin)
+  * Don't move cpu_class_by_name()                               (Richard)
+  * PATCH[v5 04] to remove 'oc == NULL' since the check has
+    been covered in object_class_dynamic_cast()                  (Igor)
+  * Introduce generic cpu_list(), shared by most of the targets  (Richard)
+  * Use g_str_has_suffix and g_auto_free                         (Richard)
+  * Collect r-bs from Igor and Richard                           (Gavin)
+v4:
+  * Integrate Philippe's patches where cpu_class_by_name()
+    is consolidated and my duplicate code is dropped            (Philippe)
+  * Simplified changelog and improvements                       (Thomas)
+  * g_assert() on the return value from cpu_model_from_type()
+    in is_cpu_type_supported()                                  (Philippe)
+  * Collected r-bs from Philippe Mathieu-Daudé, Leif Lindholm,
+    Bastian Koppelmann, Daniel Henrique Barboza, Cédric Le Goater,
+    Gavin Shan                                                  (Gavin)
+v3:
+  * Generic helper cpu_model_from_type()                        (Igor)
+  * Apply cpu_model_from_type() to the individual targets       (Igor)
+  * Implement cpu_list() for the missed targets                 (Gavin)
+  * Remove mc->valid_cpu_models                                 (Richard)
+  * Separate patch to constify mc->validate_cpu_types           (Gavin)
+v2:
+  * Constify mc->valid_cpu_types                                (Richard)
+  * Print the supported CPU models, instead of typenames        (Peter)
+  * Misc improvements for the hleper to do the check            (Igor)
+  * More patches to move the check                              (Marcin)
+
+Gavin Shan (8):
+  machine: Use error handling when CPU type is checked
+  machine: Introduce helper is_cpu_type_supported()
+  machine: Print CPU model name instead of CPU type
+  hw/arm/virt: Hide host CPU model for tcg
+  hw/arm/virt: Check CPU type in machine_run_board_init()
+  hw/arm/sbsa-ref: Check CPU type in machine_run_board_init()
+  hw/arm: Check CPU type in machine_run_board_init()
+  hw/riscv/shakti_c: Check CPU type in machine_run_board_init()
+
+ hw/arm/bananapi_m2u.c   | 12 ++---
+ hw/arm/cubieboard.c     | 12 ++---
+ hw/arm/mps2-tz.c        | 26 ++++++++---
+ hw/arm/mps2.c           | 26 ++++++++---
+ hw/arm/msf2-som.c       | 12 ++---
+ hw/arm/musca.c          | 12 +++--
+ hw/arm/npcm7xx_boards.c | 12 +++--
+ hw/arm/orangepi.c       | 12 ++---
+ hw/arm/sbsa-ref.c       | 36 +++++----------
+ hw/arm/virt.c           | 60 ++++++++++---------------
+ hw/core/machine.c       | 98 +++++++++++++++++++++++++----------------
+ hw/riscv/shakti_c.c     | 13 +++---
+ 12 files changed, 174 insertions(+), 157 deletions(-)
+
+-- 
+2.42.0
+
 
