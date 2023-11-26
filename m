@@ -2,106 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C6E7F91FE
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 10:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B38F17F9213
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 11:03:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7BSd-0004cV-IH; Sun, 26 Nov 2023 04:29:55 -0500
+	id 1r7Bxf-0002J9-58; Sun, 26 Nov 2023 05:01:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1r7BSS-0004bz-Tm; Sun, 26 Nov 2023 04:29:45 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1r7BSQ-0001tb-Qb; Sun, 26 Nov 2023 04:29:44 -0500
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AQ9FcUD018066; Sun, 26 Nov 2023 09:29:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=vMdq+ZJs9JVmPNMuPk7zyri/v/83ao7aenSOcghEaZc=;
- b=fG+MACizTp6JUUS4GCKG9vxW9At6VR26e7bZ9dSN74swE8S1RJA5opLnC8BAzia2NUmj
- vPyi815D+l6xfZMRaIIJDFor+7hezhVZZ57pe85pk7oGaHj5fL6jJFMIsKdP3N8fmbXP
- UjARi5SMjWnkhKHGxW1KlEwjhBbt0W/J11H8jmmJ1wioyrLmO7BWoYqtGgrYE0qCVEEz
- CKn4PamfAPmmmfwRBZKN6IngM2FZzrR5KbJXPltL3wTEWbTm7k0wvG+ME0x/kU38cWa9
- eJ8JyXvslnGm2ljHsVZKjtk4k+RLbSxVnZnlGwdvTw6IIGWvv7ewNWaW7D+9Ja9ZDHQc AA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ukrjdhvef-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 26 Nov 2023 09:29:32 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AQ9TVBB017234;
- Sun, 26 Nov 2023 09:29:31 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ukrjdhveb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 26 Nov 2023 09:29:31 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AQ8l5pl030007; Sun, 26 Nov 2023 09:29:30 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukumy2312-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 26 Nov 2023 09:29:30 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3AQ9TS5Q43254152
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 26 Nov 2023 09:29:28 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B5B820043;
- Sun, 26 Nov 2023 09:29:28 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73DB320040;
- Sun, 26 Nov 2023 09:29:26 +0000 (GMT)
-Received: from [9.43.10.100] (unknown [9.43.10.100])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Sun, 26 Nov 2023 09:29:26 +0000 (GMT)
-Message-ID: <887ebbb1-7de9-4d39-b820-2adcc6639961@linux.ibm.com>
-Date: Sun, 26 Nov 2023 14:59:24 +0530
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1r7Bxc-0002Gu-0W
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 05:01:57 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1r7BxZ-0007dq-Uz
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 05:01:55 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-332eeb16e39so876079f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 26 Nov 2023 02:01:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1700992911; x=1701597711; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=sWamtikRUf1sDqGW+Z56O+5DFooywPqde+YI6Lz5I54=;
+ b=mlCZHMLtWQPizcgbR/lkP2xA1aLQ8oDKrid5ihLej5tSntaqN3z0hsim+LvqbJ51oK
+ hetTCV/lvDfSCPEVl/8SculEGG//2b+mDAibPd03YFwVdJv9S85sTiobquf5jC3BOj6u
+ y1pZWe6ei8avv5IQKJnkGFH0ewa5dPqSS4AV5+sIqF7HqePvgUC7/UXrUw0fKQFWfoBj
+ nlFCYAPWbTVCyIfMHcgIhwBDMq/Htj92AZIMB6jxrAS2P+st6MOaIAHPu0WwdkdDGDPq
+ 4nlmup19Qalg4a8VL+al8ErU7udaxqMy3hBSjY/U6j7yDTi2ab0nGkhcdLXHBvUOiTWj
+ q3yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1700992911; x=1701597711;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sWamtikRUf1sDqGW+Z56O+5DFooywPqde+YI6Lz5I54=;
+ b=iuzOCqQgq/CIGCTngLaBdgY0YoCzqawYkhiB6mrAlpJ6sa4OpwHD7BmEGTOtgM0KWo
+ zVD6YHmadLcLhw9eKkuRtUoZ8A3YDlnPE9vF+XiQKWGsiJEj2CiERWYZ8m++C/N5R6C6
+ JeroPrE9q3ysuPugwpW9OzeN8XVNTcBIW0w+8fjxkL8EtIlr0KlHY4bhPQKByLVhdjV4
+ nFpNPGMygbR685gmMg3MtRB3zJNehPTluF+zeOlfhkIbXAwoub72+9xycIe6ek4RDP4x
+ 4q4+1YyWM54H/vm4u+5+eTsFGDBZD+FLFwdxdM5PH8/zCwSHcOrrVvmdzko4hGlhaO/H
+ QEbg==
+X-Gm-Message-State: AOJu0Yxqv/pivzPWrVbQxz1PmxaA9Yiyu0qvp7mSjDWUsb/uprUPA8Fb
+ 1O/KgK/IiNtBlz11VGzVNbEmNQ==
+X-Google-Smtp-Source: AGHT+IHZzkyWKfg8Pd3elx0pBvu0sF7/fkjTjGCJMQ69hkt9KVgXj9clvKEGu8ueKatkB3RrvnJzKw==
+X-Received: by 2002:adf:f5c1:0:b0:332:f895:f599 with SMTP id
+ k1-20020adff5c1000000b00332f895f599mr1734940wrp.29.1700992911365; 
+ Sun, 26 Nov 2023 02:01:51 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ 2-20020a5d47a2000000b00332ff137c29sm606226wrb.79.2023.11.26.02.01.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 26 Nov 2023 02:01:50 -0800 (PST)
+Date: Sun, 26 Nov 2023 11:01:50 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Christoph =?utf-8?Q?M=C3=BCllner?= <christoph.muellner@vrull.eu>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: Re: [PATCH v2] linux-user/riscv: Add Zicboz extensions to hwprobe
+Message-ID: <20231126-fbb9c420dec7ea31141cb367@orel>
+References: <20231123181300.2140622-1-christoph.muellner@vrull.eu>
+ <20231124-b892dc7ca5a5f9ff4cceda6e@orel>
+ <CAEg0e7hy2Z+X7TR8iaQckCHZ2NGyPJV8dioco-FB2aPErMpnOQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] hw/ppc: Add nest1 chiplet model
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, calebs@us.ibm.com,
- chalapathi.v@ibm.com, saif.abrar@linux.vnet.ibm.com
-References: <20231124101534.19454-1-chalapathi.v@linux.ibm.com>
- <20231124101534.19454-3-chalapathi.v@linux.ibm.com>
- <CX707LTEH9J0.3UF28GS7L10P7@wheely>
- <236fe044-7adb-43c2-8887-0303ee33d6c6@kaod.org>
- <CX728N8AEA4N.1WTXYOBNMBOF3@wheely>
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
-In-Reply-To: <CX728N8AEA4N.1WTXYOBNMBOF3@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Knq26ucfId7fZ1oiBIBX3TP7366wG7Jl
-X-Proofpoint-ORIG-GUID: 5F44skGli-Ea1Qv2uGNkey7x4NCqW1q1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-26_08,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- priorityscore=1501 lowpriorityscore=0 impostorscore=0 clxscore=1015
- mlxlogscore=999 spamscore=0 bulkscore=0 mlxscore=0 phishscore=0
- adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311260067
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+In-Reply-To: <CAEg0e7hy2Z+X7TR8iaQckCHZ2NGyPJV8dioco-FB2aPErMpnOQ@mail.gmail.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,110 +99,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Nov 24, 2023 at 06:41:25PM +0100, Christoph Müllner wrote:
+> On Fri, Nov 24, 2023 at 5:59 PM Andrew Jones <ajones@ventanamicro.com> wrote:
+> >
+> > On Thu, Nov 23, 2023 at 07:12:59PM +0100, Christoph Muellner wrote:
+> > > From: Christoph Müllner <christoph.muellner@vrull.eu>
+> > >
+> > > Upstream Linux recently added RISC-V Zicboz support to the hwprobe API.
+> > > This patch introduces this for QEMU's user space emulator.
+> > >
+> > > Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
+> > > ---
+> > >  linux-user/syscall.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > >
+> > > diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> > > index 65ac3ac796..2f9a1c5279 100644
+> > > --- a/linux-user/syscall.c
+> > > +++ b/linux-user/syscall.c
+> > > @@ -8799,6 +8799,7 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
+> > >  #define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
+> > >  #define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
+> > >  #define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
+> > > +#define     RISCV_HWPROBE_EXT_ZICBOZ   (1 << 6)
+> > >
+> > >  #define RISCV_HWPROBE_KEY_CPUPERF_0     5
+> > >  #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
+> > > @@ -8855,6 +8856,8 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
+> > >                       RISCV_HWPROBE_EXT_ZBB : 0;
+> > >              value |= cfg->ext_zbs ?
+> > >                       RISCV_HWPROBE_EXT_ZBS : 0;
+> > > +            value |= cfg->ext_zicboz ?
+> > > +                     RISCV_HWPROBE_EXT_ZICBOZ : 0;
+> > >              __put_user(value, &pair->value);
+> > >              break;
+> > >          case RISCV_HWPROBE_KEY_CPUPERF_0:
+> > > --
+> > > 2.41.0
+> > >
+> > >
+> >
+> > We should also add support for getting the block size with
+> > RISCV_HWPROBE_KEY_ZICBOZ_BLOCK_SIZE.
+> 
+> Hi Andrew, this is already upstream, just the EXT_ZICBOZ is missing:
 
-On 24-11-2023 18:31, Nicholas Piggin wrote:
-> On Fri Nov 24, 2023 at 10:19 PM AEST, Cédric Le Goater wrote:
->> On 11/24/23 12:26, Nicholas Piggin wrote:
->>> For this and actually the last patch too, it would be good to mention
->>> (possibly in a header comment in the file too) what actual functionality
->>> is being provided/modeled. It looks like it's just modeling behaviour of
->>> reads and writes for some registers.
->>>
->>> Oh, and sorry I didn't follow development and comments on this too
->>> closely, so forgive me if I've missed things already said. I'll go
->>> back and read through the series.
->>>
->>> On Fri Nov 24, 2023 at 8:15 PM AEST, Chalapathi V wrote:
->>>> The nest1 chiplet handle the high speed i/o traffic over PCIe and others.
->>>> The nest1 chiplet consists of PowerBus Fabric controller,
->>>> nest Memory Management Unit, chiplet control unit and more.
->>>>
->>>> This commit creates a nest1 chiplet model and initialize and realize the
->>>> pervasive chiplet model where chiplet control registers are implemented.
->>>>
->>>> This commit also implement the read/write method for the powerbus scom
->>>> registers
->>> The powerbus scom registers, are those specifically for the PowerBus
->>> Fabric controller mentioned in the first paragraph, or is it a more
->>> general set of registers for the chiplet?
-Yes, They are for the PowerBus racetrack unit.
->>>> Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
->>>> ---
->>>>    include/hw/ppc/pnv_nest_chiplet.h |  36 ++++++
->>>>    include/hw/ppc/pnv_xscom.h        |   6 +
->>>>    hw/ppc/pnv_nest1_chiplet.c        | 197 ++++++++++++++++++++++++++++++
->>>>    hw/ppc/meson.build                |   1 +
->>>>    4 files changed, 240 insertions(+)
->>>>    create mode 100644 include/hw/ppc/pnv_nest_chiplet.h
->>>>    create mode 100644 hw/ppc/pnv_nest1_chiplet.c
->>>>
->>>> diff --git a/include/hw/ppc/pnv_nest_chiplet.h b/include/hw/ppc/pnv_nest_chiplet.h
->>>> new file mode 100644
->>>> index 0000000000..845030fb1a
->>>> --- /dev/null
->>>> +++ b/include/hw/ppc/pnv_nest_chiplet.h
->>>> @@ -0,0 +1,36 @@
->>>> +/*
->>>> + * QEMU PowerPC nest chiplet model
->>>> + *
->>>> + * Copyright (c) 2023, IBM Corporation.
->>>> + *
->>>> + * SPDX-License-Identifier: GPL-2.0-or-later
->>>> + *
->>>> + * This code is licensed under the GPL version 2 or later. See the
->>>> + * COPYING file in the top-level directory.
->>>> + *
->>>> + */
->>>> +
->>>> +#ifndef PPC_PNV_NEST1_CHIPLET_H
->>>> +#define PPC_PNV_NEST1_CHIPLET_H
->>>> +
->>>> +#include "hw/ppc/pnv_pervasive.h"
->>>> +
->>>> +#define TYPE_PNV_NEST1 "pnv-nest1-chiplet"
->>>> +#define PNV_NEST1(obj) OBJECT_CHECK(PnvNest1, (obj), TYPE_PNV_NEST1)
->>>> +
->>>> +typedef struct pb_scom {
->>>> +    uint64_t mode;
->>>> +    uint64_t hp_mode2_curr;
->>>> +} pb_scom;
->>>> +
->>>> +typedef struct PnvNest1 {
->>> Naming nitpicking again...
->>>
->>> The main ifndef guard for header files should match the file name, so
->>> the file should be called pnv_nest1_chiplet.h (and that matches the .c
->>> file too).
->>>
->>> I think this struct should be called Nest1Chiplet too.
->> I asked Chalapathi to do the exact opposit :)
-> Oops :)
->
->> I don't mind really, my argument was that most models represent HW logic
->> units or subunits of a bigger unit. I don't see the point in adding a
->> chip/chiplet suffix apart from PnvChip since it represents a socket or
->> processor.
->>
->> You choose. I will keep quiet :)
-> Ah. I can see that side of it. And for many of the nest chiplets (MC,
-> PAU, PCI) that makes sense. For Nest0 and Nest1... it's a bit
-> overloaded. First of all, all the nest chiplets are "nest". Then
-> there is also some nest units inside the processor chiplets (L2, L3,
-> NCU are considered to be nest). And then the nest also has a Pervasive
-> Chiplet itself, and we also have these pervasive registers in each
-> chiplet, etc., etc.
->
-> So my worry is we'll run into confusion if we shorten names too much.
->
-> We can always rename things, so it won't be the end of the world, but
-> thinking about the pervasive chiplet, I think we can already see that
-> "PnvPervasive" would not be a good name for it.
->
-> The chiplets have short names actually if that would help. Nest 1 is
-> called N1, so we could call it PnvN1Chiplet. That seems the usual
-> way to refer to them in docs, so I think a better name.
->
-> Thanks,
-> Nick
-Sure. Will rename this to PnvN1Chiplet.
+Oh, thanks. In that case,
+
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+
+drew
 
