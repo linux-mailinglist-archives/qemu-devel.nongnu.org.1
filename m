@@ -2,46 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F407F9327
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 15:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B06347F92CC
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 Nov 2023 14:06:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7GLm-0003J2-4n; Sun, 26 Nov 2023 09:43:10 -0500
+	id 1r7Eom-0000Ht-S6; Sun, 26 Nov 2023 08:05:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1r7GLI-0003Ft-69; Sun, 26 Nov 2023 09:42:43 -0500
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <samuel.tardieu@telecom-paris.fr>)
+ id 1r7Eob-0000Fb-2H
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 08:04:49 -0500
+Received: from zproxy4.enst.fr ([2001:660:330f:2::df])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1r7GLF-0006XR-GH; Sun, 26 Nov 2023 09:42:39 -0500
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id F249011EF6A;
- Sun, 26 Nov 2023 14:42:33 +0000 (UTC)
-From: ~inesvarhol <inesvarhol@git.sr.ht>
-Date: Wed, 15 Nov 2023 09:04:50 +0100
-Subject: [PATCH qemu 2/2] hw/arm: Add minimal support for the B-L475E-IOT01A
- board
+ (Exim 4.90_1) (envelope-from <samuel.tardieu@telecom-paris.fr>)
+ id 1r7EoY-0002OF-LT
+ for qemu-devel@nongnu.org; Sun, 26 Nov 2023 08:04:48 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id B3E15206FC;
+ Sun, 26 Nov 2023 14:04:42 +0100 (CET)
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id fO9awxgxRhyP; Sun, 26 Nov 2023 14:04:42 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id EF39D20700;
+ Sun, 26 Nov 2023 14:04:41 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr EF39D20700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1701003882;
+ bh=sMNCcs8QmzBZfvIU12/0SrHrU0F6fH/1C5AsulMQvoY=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=rSeyrBjNVfOFqKkhrLnJNNctVmD924Ni9/at6eafkIEqzEgGX1n1nmC4IzLNeyHem
+ cLrnL1Ee+H/DRmriK7gOjNV/+wv+Rb1GH/rQaFKbmOJBuPCJHFFewV2wnVaCxuWtX1
+ JqvmXqlIrlOIxG2X71xWk6H+cYZcBJNS5j3qTvOM=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id 0R2-9HLegSKx; Sun, 26 Nov 2023 14:04:41 +0100 (CET)
+Received: from buffy (unknown [IPv6:2a01:e34:ec63:e440:3bba:56bc:e324:3f15])
+ by zproxy4.enst.fr (Postfix) with ESMTPSA id 7174B206FC;
+ Sun, 26 Nov 2023 14:04:41 +0100 (CET)
+References: <6826113a-d428-401e-b5a3-56ad5d8fbaa4@gmail.com>
+ <87msv065vx.fsf@telecom-paris.fr>
+ <3380b626-0d94-489f-bf98-6146c1420a51@gmail.com>
+User-agent: mu4e 1.10.8; emacs 29.1
+From: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
+To: Petr Cvek <petrcvekcz@gmail.com>
+Cc: pbonzini@redhat.com, marcel.apfelbaum@gmail.com, mst@redhat.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] qemu/timer: Don't use RDTSC on i486
+Date: Sun, 26 Nov 2023 14:03:22 +0100
+In-reply-to: <3380b626-0d94-489f-bf98-6146c1420a51@gmail.com>
+Message-ID: <87il5o64yf.fsf@telecom-paris.fr>
 MIME-Version: 1.0
-Message-ID: <170100975340.4879.5844108484092111139-2@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <170100975340.4879.5844108484092111139-0@git.sr.ht>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
- peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
- arnaud.minier@telecom-paris.fr
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2001:660:330f:2::df;
+ envelope-from=samuel.tardieu@telecom-paris.fr; helo=zproxy4.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,181 +77,27 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~inesvarhol <inesvarhol@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
-This commit adds a new B-L475E-IOT01A board using the STM32L475VG SoC.
-The implementation is derived from the Netduino Plus 2 machine.
-There are no peripherals implemented yet, only memory regions.
+Petr Cvek <petrcvekcz@gmail.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Actually I was thinking about mentioning it in the commit=20
+> message also, but I wasn't able
+> to find any specification for that (if all compilers use it).
 
-Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
----
- MAINTAINERS                             |  7 +++
- configs/devices/arm-softmmu/default.mak |  1 +
- hw/arm/Kconfig                          |  6 ++
- hw/arm/b-l475e-iot01a.c                 | 79 +++++++++++++++++++++++++
- hw/arm/meson.build                      |  1 +
- 5 files changed, 94 insertions(+)
- create mode 100644 hw/arm/b-l475e-iot01a.c
+Note that this change would be safe: at worst, some compilers=20
+don't use __tune_i386__ and the situation would be the same as=20
+today without the patch.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 32458d41dd..6ae9ca3ef4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1130,6 +1130,13 @@ S: Maintained
- F: hw/arm/stm32l4x5_soc.c
- F: include/hw/arm/stm32l4x5_soc.h
-=20
-+B-L475E-IOT01A IoT Node
-+M: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+M: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-+L: qemu-arm@nongnu.org
-+S: Maintained
-+F: hw/arm/b-l475e-iot01a.c
-+
- SmartFusion2
- M: Subbaraya Sundeep <sundeep.lkml@gmail.com>
- M: Peter Maydell <peter.maydell@linaro.org>
-diff --git a/configs/devices/arm-softmmu/default.mak b/configs/devices/arm-so=
-ftmmu/default.mak
-index 980c48a7d9..023faa2f75 100644
---- a/configs/devices/arm-softmmu/default.mak
-+++ b/configs/devices/arm-softmmu/default.mak
-@@ -19,6 +19,7 @@ CONFIG_ARM_VIRT=3Dy
- # CONFIG_NSERIES=3Dn
- # CONFIG_STELLARIS=3Dn
- # CONFIG_STM32VLDISCOVERY=3Dn
-+# CONFIG_B_L475E_IOT01A=3Dn
- # CONFIG_REALVIEW=3Dn
- # CONFIG_VERSATILE=3Dn
- # CONFIG_VEXPRESS=3Dn
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index d2b94d9a47..7520dc5cc0 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -448,6 +448,12 @@ config STM32F405_SOC
-     select STM32F4XX_SYSCFG
-     select STM32F4XX_EXTI
-=20
-+config B_L475E_IOT01A
-+    bool
-+    default y
-+    depends on TCG && ARM
-+    select STM32L4X5_SOC
-+
- config STM32L4X5_SOC
-     bool
-     select ARM_V7M
-diff --git a/hw/arm/b-l475e-iot01a.c b/hw/arm/b-l475e-iot01a.c
-new file mode 100644
-index 0000000000..16e49871cd
---- /dev/null
-+++ b/hw/arm/b-l475e-iot01a.c
-@@ -0,0 +1,79 @@
-+/*
-+ * B-L475E-IOT01A Discovery Kit machine
-+ * (B-L475E-IOT01A IoT Node)
-+ *
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+ * Copyright (c) 2023 Ines Varhol <ines.varhol@telecom-paris.fr>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a c=
-opy
-+ * of this software and associated documentation files (the "Software"), to =
-deal
-+ * in the Software without restriction, including without limitation the rig=
-hts
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING F=
-ROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ *
-+ * Heavily inspired by the netduinoplus2 by Alistair Francis.
-+ * The reference used is the STMicroElectronics UM2153 User manual
-+ * Discovery kit for IoT node, multi-channel communication with STM32L4.
-+ * https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html#documentation
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/boards.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/qdev-clock.h"
-+#include "qemu/error-report.h"
-+#include "hw/arm/stm32l4x5_soc.h"
-+#include "hw/arm/boot.h"
-+
-+/* Main SYSCLK frequency in Hz (80MHz) */
-+#define SYSCLK_FRQ 80000000ULL
-+
-+static void b_l475e_iot01a_init(MachineState *machine)
-+{
-+    const Stm32l4x5SocClass *sc;
-+    DeviceState *dev;
-+    Clock *sysclk;
-+
-+    /* This clock doesn't need migration because it is fixed-frequency */
-+    sysclk =3D clock_new(OBJECT(machine), "SYSCLK");
-+    clock_set_hz(sysclk, SYSCLK_FRQ);
-+
-+    dev =3D qdev_new(TYPE_STM32L4X5XG_SOC);
-+    sc =3D STM32L4X5_SOC_GET_CLASS(dev);
-+    qdev_connect_clock_in(dev, "sysclk", sysclk);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+    armv7m_load_kernel(ARM_CPU(first_cpu),
-+                       machine->kernel_filename,
-+                       0, sc->flash_size);
-+}
-+
-+static void b_l475e_iot01a_machine_init(MachineClass *mc)
-+{
-+    static const char *machine_valid_cpu_types[] =3D {
-+        ARM_CPU_TYPE_NAME("cortex-m4"),
-+        NULL};
-+    mc->desc =3D "B-L475E-IOT01A Discovery Kit (Cortex-M4)";
-+    mc->init =3D b_l475e_iot01a_init;
-+    mc->valid_cpu_types =3D machine_valid_cpu_types;
-+
-+    /* SRAM pre-allocated as part of the SoC instantiation */
-+    mc->default_ram_size =3D 0;
-+}
-+
-+DEFINE_MACHINE("b-l475e-iot01a", b_l475e_iot01a_machine_init)
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 9766da10c4..bb92b27db3 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -42,6 +42,7 @@ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c'=
-, 'raspi.c'))
- arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
- arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
- arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
-+arm_ss.add(when: 'CONFIG_B_L475E_IOT01A', if_true: files('b-l475e-iot01a.c'))
- arm_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_soc.c'))
- arm_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp.c', '=
-xlnx-zcu102.c'))
- arm_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', 'xlnx=
--versal-virt.c'))
+> Other problem is the __tune_i386__ is also set when -mtune=3Di386=20
+> (but with -march=3Di686).
+
+Indeed, this is the case for GCC (not clang).
+
+  Sam
 --=20
-2.38.5
+Samuel Tardieu
+T=C3=A9l=C3=A9com Paris - Institut Polytechnique de Paris
 
