@@ -2,55 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A944D7FA15C
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 14:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 441057FA1A9
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 14:56:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7bzv-0001eG-Ja; Mon, 27 Nov 2023 08:50:03 -0500
+	id 1r7c56-0003OO-DT; Mon, 27 Nov 2023 08:55:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r7bzs-0001dd-Vo; Mon, 27 Nov 2023 08:50:01 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r7c55-0003O7-0m
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 08:55:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r7bzq-00076I-LL; Mon, 27 Nov 2023 08:50:00 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3BC5575A4BF;
- Mon, 27 Nov 2023 14:49:56 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id MmzbxkoiqsRa; Mon, 27 Nov 2023 14:49:54 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4ECEC75A4BE; Mon, 27 Nov 2023 14:49:54 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4CCB775A4BC;
- Mon, 27 Nov 2023 14:49:54 +0100 (CET)
-Date: Mon, 27 Nov 2023 14:49:54 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
- philmd@linaro.org
-Subject: Re: [PATCH v2 for-8.2] ppc/amigaone: Allow running AmigaOS without
- firmware image
-In-Reply-To: <CX9LVFYU6MBA.MLF4OMOCHE6K@wheely>
-Message-ID: <ab2ffd58-1ace-8f9d-977b-ed6935017f6a@eik.bme.hu>
-References: <20231125163425.3B3BC756078@zero.eik.bme.hu>
- <CX9EPBH7MMHK.14A30GV035VAZ@wheely>
- <0eb18a77-af0e-a84b-764c-b435ea912a3d@eik.bme.hu>
- <CX9LVFYU6MBA.MLF4OMOCHE6K@wheely>
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r7c53-0008H3-17
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 08:55:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701093319;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=ondaXhQMEDXPsmn9+5hsX+YecXGzW9aHq+UvCrJKhQc=;
+ b=ISljkfq1PgAVxTo11cBdeYIBvliCdo6rtzPFKIscujdMfM296p+nLcocJ9OKwW7qcosxGa
+ FQIaUTRXgIE/yyN4Lg3vJxc3+Lg84LUkB/xKZ3wDbrvcER5X2LtPWl1hXbas1sHpax2KA+
+ Mwnf0luyo2DQZlt8AlfXkCKQ0fAUWd4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-A9Uhlu25OmyDgsx5oWVldw-1; Mon, 27 Nov 2023 08:55:17 -0500
+X-MC-Unique: A9Uhlu25OmyDgsx5oWVldw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-332ee20a3f0so2037157f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 05:55:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701093317; x=1701698117;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :references:cc:to:from:content-language:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=ondaXhQMEDXPsmn9+5hsX+YecXGzW9aHq+UvCrJKhQc=;
+ b=XaWdX61d0MvCgHjzFf/6PAYqhRCLp1DWNc6mO3V/PBp6trbgoBzbGjnFhwHduVgWAl
+ hYq7PJcrOFV+R+cYvwfENwCA55yEMc6iY3NYeynZI4cLZqDyRBCLss7xqg+tlOmi7kWO
+ 2A6ktRYp7Xnrk2xddt8GD/NOI1Y0lKAiqVMzFkwf0/O4SAWMcKVMYj93pVXCe7nDkM9W
+ IXAW3G3pPT1GQCiR69v3Po+SPrpobYXACIVIVEL3J3WZ2pxijaChklfPI2U0+Ay8Zt1/
+ pdsLyU578I5fPlQ5s14qm0+80Fb1TvTRCMu7/+Pkl4DaJBq3lwfDaXWycgEkBiwJ+JcT
+ sC9w==
+X-Gm-Message-State: AOJu0YzNnXhiL2567NtIoCfxfdkRLpXSApGLwEd8UvRyj3PLHmzTGgGw
+ GrJwWg2aCcdr4HQrnErJEKYOKojaef9/Ehu7oMImn5Vm4wusb8HKvYNFFffg7KStJf98qF2m8G0
+ Lo+ZOvjcy1OGwnmY=
+X-Received: by 2002:adf:ed50:0:b0:332:ff83:ca89 with SMTP id
+ u16-20020adfed50000000b00332ff83ca89mr2386215wro.38.1701093316742; 
+ Mon, 27 Nov 2023 05:55:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGIXRq9x3EtsJ3iqE3ChhX/PQgsA3kpCfJME3W+tZ+Aatxi+HKA1qu1Dwd/WX7aqmLZo2ldmg==
+X-Received: by 2002:adf:ed50:0:b0:332:ff83:ca89 with SMTP id
+ u16-20020adfed50000000b00332ff83ca89mr2386201wro.38.1701093316315; 
+ Mon, 27 Nov 2023 05:55:16 -0800 (PST)
+Received: from ?IPV6:2003:cb:c745:2a00:d74a:a8c5:20b6:3ec3?
+ (p200300cbc7452a00d74aa8c520b63ec3.dip0.t-ipconnect.de.
+ [2003:cb:c745:2a00:d74a:a8c5:20b6:3ec3])
+ by smtp.gmail.com with ESMTPSA id
+ m21-20020a056000181500b00332f82265b8sm5932941wrh.4.2023.11.27.05.55.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 27 Nov 2023 05:55:16 -0800 (PST)
+Message-ID: <b9c8b4da-cb14-4a67-b98d-655ed7348bef@redhat.com>
+Date: Mon, 27 Nov 2023 14:55:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hostmem: Round up memory size for qemu_madvise() in
+ host_memory_backend_memory_complete()
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+To: Michal Privoznik <mprivozn@redhat.com>, qemu-devel@nongnu.org
+Cc: imammedo@redhat.com
+References: <f77d641d500324525ac036fe1827b3070de75fc1.1701088320.git.mprivozn@redhat.com>
+ <9b8a2863-1264-4058-b367-0b61a75921ac@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <9b8a2863-1264-4058-b367-0b61a75921ac@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,138 +149,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 27 Nov 2023, Nicholas Piggin wrote:
-> On Mon Nov 27, 2023 at 9:43 PM AEST, BALATON Zoltan wrote:
->> On Mon, 27 Nov 2023, Nicholas Piggin wrote:
->>> On Sun Nov 26, 2023 at 2:34 AM AEST, BALATON Zoltan wrote:
->>>> The machine uses a modified U-Boot under GPL license but the sources
->>>> of it are lost with only a binary available so it cannot be included
->>>> in QEMU. Allow running without the firmware image with -bios none
->>>> which can be used when calling a boot loader directly and thus
->>>> simplifying booting guests. We need a small routine that AmigaOS calls
->>>> from ROM which is added in this case to allow booting AmigaOS without
->>>> external firmware image.
->>>>
->>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>>> ---
->>>> v2: Unfortunately AmigaOS needs some additional ROM part which is added
->>>> Please merge for 8.2 as it allows booting AmigaOS simpler without
->>>> having to download separate firmware.
->>>
->>> How to test this?
+On 27.11.23 14:37, David Hildenbrand wrote:
+> On 27.11.23 13:32, Michal Privoznik wrote:
+>> Simple reproducer:
+>> qemu.git $ ./build/qemu-system-x86_64 \
+>> -m size=8389632k,slots=16,maxmem=25600000k \
+>> -object '{"qom-type":"memory-backend-file","id":"ram-node0","mem-path":"/hugepages2M/","prealloc":true,"size":8590983168,"host-nodes":[0],"policy":"bind"}' \
+>> -numa node,nodeid=0,cpus=0,memdev=ram-node0
 >>
->> You can check with -M amigaone -bios none then from QEMU monitor
->> (qemu) xp/10i 0xfff7ff80
->
-> Okay, so to fully test it you really need a non-free AmigaOS image?
-
-I'm afraid yes, it's hard to test without AmigaOS otherwise as that's the 
-only thing that seems to need this.
-
-> And, how does a user know how or when to use this? Should it just be
-> default if there is no bios binary found?
-
-It could be the default without -bios, that could also allow removing the 
-qtest special case than. Maybe it's easier for users so I'll change that 
-in v2.
-
->>>>  hw/ppc/amigaone.c | 20 +++++++++++++++++---
->>>>  1 file changed, 17 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
->>>> index 992a55e632..a11d2d5556 100644
->>>> --- a/hw/ppc/amigaone.c
->>>> +++ b/hw/ppc/amigaone.c
->>>> @@ -40,6 +40,16 @@
->>>>  #define PROM_ADDR 0xfff00000
->>>>  #define PROM_SIZE (512 * KiB)
->>>>
->>>> +/* AmigaOS calls this routine from ROM, use this if -bios none */
->>>> +static const char dummy_fw[] = {
->>>> +    0x38, 0x00, 0x00, 0x08, /* li      r0,8 */
->>>> +    0x7c, 0x09, 0x03, 0xa6, /* mtctr   r0 */
->>>> +    0x54, 0x63, 0xf8, 0x7e, /* srwi    r3,r3,1 */
->>>> +    0x42, 0x00, 0xff, 0xfc, /* bdnz    0x8 */
->>>> +    0x7c, 0x63, 0x18, 0xf8, /* not     r3,r3 */
->>>> +    0x4e, 0x80, 0x00, 0x20, /* blr */
->>>> +};
->>>
->>> This is clever, but does anything else create blobs like this?
+>> With current master I get:
 >>
->> There are some examples in hw/mips/{loongson3_virt.c, malta.c} at least
->> and maybe others that put code in guest memory. If this was longer than
->> this few instructions I'd consider putting it in a binary but this seems
->> simpler for such small code.
->
-> Thanks, compiling blob inline looks fine then.
->
-> It's 0x80 bytes from the end of prom AFAIKS. Should you make that
-> PROM_ADDR + PROM_SIZE - 0x80 instead of hard coding it?
-
-I thought about that after sending the patch, I'll change it too.
-
->>> It could be put into a .S in pc-bios, which might be a bit more
->>> consistent.
->>>
->>> We might make a ppc/ subdirectory under there, but that's for
->>> another time.
+>> qemu-system-x86_64: cannot bind memory to host NUMA nodes: Invalid argument
 >>
->> Maybe later we could reorganise these unless it's really necessary to
->> change this for 8.2 now.
->
-> Nah that's fine.
->
->> (The mips boards and some arm and riscv machines
->> seem to use rom_add_blob_fixed() which sould show up in info roms under
->> monitor so maybe I could look at changing to use that now if you think it
->> would be better that way.)
->
-> I'm not sure, I don't think it's necessary if your minimal patch works.
+>> The problem is that memory size (8193MiB) is not an integer
+>> multiple of underlying pagesize (2MiB) which triggers a check
+>> inside of madvise(), since we can't really set a madvise() policy
+>> just to a fraction of a page.
+> 
+> I thought we would just always fail create something that doesn't really
+> make any sense.
+> 
+> Why would we want to support that case?
+> 
+> Let me dig, I thought we would have had some check there at some point
+> that would make that fail (especially: RAM block not aligned to the
+> pagesize).
 
-It works but just for consistency with other similar machines I'll 
-consider trying rom_add_blob_fixed() now that there will be another 
-iteration.
 
-> I'll do a PR for 8.2 for SLOF and Skiboot updates, so happy to include
-> this as well.
+At least memory-backend-memfd properly fails for that case:
 
-Thanks, I'll only have time to do a v2 later but still before the next rc 
-due tomorrow.
+$ ./build/qemu-system-x86_64 -object memory-backend-memfd,hugetlb=on,size=3m,id=tmp
+qemu-system-x86_64: failed to resize memfd to 3145728: Invalid argument
 
-There are some more data around this function in ROM that I'm not sure 
-would be needed but don't know how to verify what AmigaOS accesses. I've 
-tried enabling memory_region* traces but those only seem to log io 
-regions, ram and rom region accesses are probably just memory reads so not 
-traced. Then I've tried adding watch points in gdb like this:
+memory-backend-file ends up creating a new file:
 
-(gdb) watch *(char [0x80000])*0xfff00000
-value requires 524288 bytes, which is more than max-value-size
-(gdb) show max-value-size
-Maximum value size is 65536 bytes.
-(gdb) watch *(char [0x10000])*0xfff00000
-Hardware watchpoint 1: *(char [0x10000])*0xfff00000
-(gdb) watch *(char [0x10000])*0xfff10000
-Hardware watchpoint 2: *(char [0x10000])*0xfff10000
-(gdb) watch *(char [0x10000])*0xfff20000
-Hardware watchpoint 3: *(char [0x10000])*0xfff20000
-(gdb) watch *(char [0x10000])*0xfff30000
-Hardware watchpoint 4: *(char [0x10000])*0xfff30000
-(gdb) watch *(char [0x10000])*0xfff40000
-Hardware watchpoint 5: *(char [0x10000])*0xfff40000
-(gdb) watch *(char [0x10000])*0xfff50000
-Hardware watchpoint 6: *(char [0x10000])*0xfff50000
-(gdb) watch *(char [0x10000])*0xfff60000
-Hardware watchpoint 7: *(char [0x10000])*0xfff60000
-(gdb) watch *(char [0x10000])*0xfff70000
-Hardware watchpoint 8: *(char [0x10000])*0xfff70000
+  $ ./build/qemu-system-x86_64 -object memory-backend-file,share=on,mem-path=/dev/hugepages/tmp,size=3m,id=tmp
 
-but they are not firing even for the code known to be accessed so not sure 
-how to trace rom access. Maybe I'll need to temporarily make it an io 
-region to be able to trace access to it. Any better idea for that? That 
-way I could check that no other parts of the rom are needed. With just 
-this routine it boots but wanted to make sure nothing else is needed 
-later.
+$ stat /dev/hugepages/tmp
+   File: /dev/hugepages/tmp
+   Size: 4194304         Blocks: 0          IO Block: 2097152 regular file
 
-Regards,
-BALATON Zoltan
+... and ends up sizing it properly aligned to the huge page size.
+
+
+Seems to be due to:
+
+     if (memory < block->page_size) {
+         error_setg(errp, "memory size 0x" RAM_ADDR_FMT " must be equal to "
+                    "or larger than page size 0x%zx",
+                    memory, block->page_size);
+         return NULL;
+     }
+
+     memory = ROUND_UP(memory, block->page_size);
+
+     /*
+      * ftruncate is not supported by hugetlbfs in older
+      * hosts, so don't bother bailing out on errors.
+      * If anything goes wrong with it under other filesystems,
+      * mmap will fail.
+      *
+      * Do not truncate the non-empty backend file to avoid corrupting
+      * the existing data in the file. Disabling shrinking is not
+      * enough. For example, the current vNVDIMM implementation stores
+      * the guest NVDIMM labels at the end of the backend file. If the
+      * backend file is later extended, QEMU will not be able to find
+      * those labels. Therefore, extending the non-empty backend file
+      * is disabled as well.
+      */
+     if (truncate && ftruncate(fd, offset + memory)) {
+         perror("ftruncate");
+     }
+
+So we create a bigger file and map the bigger file and also have a
+RAMBlock that is bigger. So we'll also consume more memory.
+
+... but the memory region is smaller and we tell the VM that it has
+less memory. Lot of work with no obvious benefit, and only some
+memory waste :)
+
+
+We better should have just rejected such memory backends right from
+the start. But now it's likely too late.
+
+I suspect other things like
+  * qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
+  * qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP);
+
+fail, but we don't care for hugetlb at least regarding merging
+and don't even log an error.
+
+But QEMU_MADV_DONTDUMP might also be broken, because that
+qemu_madvise() call will just fail.
+
+Your fix would be correct. But I do wonder if we want to just let that
+case fail and warn users that they are doing something that doesn't
+make too much sense.
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
