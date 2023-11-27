@@ -2,92 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1907F9868
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 05:37:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EE67F986C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 05:38:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7TMH-00088S-57; Sun, 26 Nov 2023 23:36:33 -0500
+	id 1r7TN0-0000aH-Pk; Sun, 26 Nov 2023 23:37:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r7TMD-000883-Tk
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 23:36:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r7TMA-0001DU-Q5
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 23:36:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701059786;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uB8RtCVtSAfV4uboXXib4r70O1crEDrMolu/UkoV8Y0=;
- b=YDgo6p9XSS/vuPrtqeL4A0KCBwiN8hI9ABjdAgBwTpZ8SmLOUVQgFMQhoR972mkzOOI/N1
- Bxt0LxoDeOfb/Xpw6cpshZmern/E1SuziPYZjPh0gIZXICrRZUBYT5IVghwS+htVFBE5ly
- go7OuEU88+wga7vThTOCq3t1S6X05PY=
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
- [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-kjJLYPeNMeuOtGw5MqKf5g-1; Sun, 26 Nov 2023 23:36:24 -0500
-X-MC-Unique: kjJLYPeNMeuOtGw5MqKf5g-1
-Received: by mail-oa1-f72.google.com with SMTP id
- 586e51a60fabf-1fa182dc04aso3228922fac.1
- for <qemu-devel@nongnu.org>; Sun, 26 Nov 2023 20:36:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1r7TMy-0000Zu-9p; Sun, 26 Nov 2023 23:37:16 -0500
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1r7TMw-0001GK-Jt; Sun, 26 Nov 2023 23:37:16 -0500
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3b5714439b3so1736053b6e.3; 
+ Sun, 26 Nov 2023 20:37:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701059831; x=1701664631; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XZ8OWMp5aMlD2RIaTogjS+gdRM+E3LKokmEAsbH4ErQ=;
+ b=E9wYAWERd1cgLWq8Fhu14aCNkS6EEzbyP0OHfD5q+qb+zRSkNV+XQy2EYEO2NK90EJ
+ 0noYbe7FuoXiTi0TX7lZVA9+rRDT4gzkbVLKtJKFPcLOVOb1ig77PnyZMbsMSGUJzChn
+ g7xueTrxx7E5cEv0Qau/csRi19a43JSwbPAUOLM6LXxDBM1dynEK6/AGXW5RgmhJBXyY
+ NSsdnX/f+KFoqjjp1Ek6po2fumsTfNjceNee3VUAEh0Ngrs2w6yaAvphPSq895dFYI5i
+ rgJOqdQR8ALQ/XSOUDaJqgq+HlY2lwSGi7dEn+2X8p3WHRwq2wYD8498mYg8sSREJVyk
+ MrIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701059784; x=1701664584;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uB8RtCVtSAfV4uboXXib4r70O1crEDrMolu/UkoV8Y0=;
- b=qwvEnqq6TkZpAqHe7zbVOwBV425dstev8g6ThIU7TtjdCVxw1udk3GUVyRczRuAjcr
- lfKc+MLY2eBSJjwSH0+WcOTJEPisMEis7oDSZZt/HNW1bDyOKZg0o08JhIg0LQ17hK6e
- edEKTXoQOHI96LAr6C30L49H1epKYWDoVvcWOdoIuj6DtL3T7SLf2SBi2oBh6lGvaIP2
- KYioddGo5Y472sCtZqwKxuKtU8EiWMKhgEsMrjZAuI1YeHgR/eB4f3qsrd96wpyyoDo7
- tzI6rY/xxSOKszA6nCOwS1Wd1sXrgje/IHzpJMTGzgsl7BekIqR3j2/c8zQBiE0dZ4MR
- ITLw==
-X-Gm-Message-State: AOJu0Yzt4VZhZIuS4qxh6c7lcxP/1eveqZAl7A1itvghWvOd3VaD+7Uw
- xgotf6AsWsZFxGgb0o2we0d8KpznEFES6JY1tt2gCBi3E6dBll+oCXo7ZfYgrzzSlgH4iaGM0RY
- EDXpgMNZvtzv+9gM=
-X-Received: by 2002:a05:6870:ea08:b0:1fa:1efd:f65e with SMTP id
- g8-20020a056870ea0800b001fa1efdf65emr9308579oap.21.1701059784159; 
- Sun, 26 Nov 2023 20:36:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHS3kztNt48niItFPhRKBja756oNavjoZfrYv85qD4BdhzRiKHQ1nqW8EJ9HSaJNJ1pWad57w==
-X-Received: by 2002:a05:6870:ea08:b0:1fa:1efd:f65e with SMTP id
- g8-20020a056870ea0800b001fa1efdf65emr9308568oap.21.1701059783938; 
- Sun, 26 Nov 2023 20:36:23 -0800 (PST)
-Received: from [192.168.68.51] ([43.252.115.3])
- by smtp.gmail.com with ESMTPSA id
- j25-20020a62e919000000b006930db1e6cfsm6334347pfh.62.2023.11.26.20.36.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 26 Nov 2023 20:36:23 -0800 (PST)
-Message-ID: <9c1cb48a-9de0-45ed-80e3-2ea4d4d5bff3@redhat.com>
-Date: Mon, 27 Nov 2023 15:36:19 +1100
+ d=1e100.net; s=20230601; t=1701059831; x=1701664631;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XZ8OWMp5aMlD2RIaTogjS+gdRM+E3LKokmEAsbH4ErQ=;
+ b=Ofvy3hQpKDpxmJKGNoVFA6l68hl3mcDgbMHed7gxURnHVpeFZTOj/ZYfNvfMR3Dxew
+ fWxrkAC/ZC9ZiqE2he+EDNsqN7Kr+FE7/910qPM/p7YOoFGNTnU+JOlX0ewvPYlhLbPd
+ 6HZddXGei7/eq/huBb1ci406GyfU3hdGBWlkQruMUw4O1d1X6cfwfAtq3vGCEPxonNjg
+ qPYxa1c1n/TxCKkPGRT+PwWDdKqzEVjWCZTJRXkaaNRU+XY8OOfe6KkRxXW+s0WZxQ6G
+ UYLKzI7upT1A1dY6uhyj96woz+OHPcbAG+CqbfA9UI8dL3jQJ4veTjmLnjo+msc5H57R
+ Viqw==
+X-Gm-Message-State: AOJu0YyaKC5tQ/7SVQ6Tc2PQSs3LE5W0VA6znEoybMrPQvfkbPe0hi1p
+ 46TUF/3NfRoLelDd/dXKQRsNHYaTdkLhkokt
+X-Google-Smtp-Source: AGHT+IEfoXc50tyBsAj1e1Hv7oEvFjdvhc38FEwe4bc4MMtN033Xk7c+bjxZzfu9izRIe1eRNoBb9w==
+X-Received: by 2002:a05:6808:b01:b0:3a7:1b28:4bc9 with SMTP id
+ s1-20020a0568080b0100b003a71b284bc9mr8924559oij.54.1701059830186; 
+ Sun, 26 Nov 2023 20:37:10 -0800 (PST)
+Received: from fedlinux.. ([106.84.128.244]) by smtp.gmail.com with ESMTPSA id
+ u15-20020a62ed0f000000b006c4d86a259csm6280070pfh.28.2023.11.26.20.37.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 26 Nov 2023 20:37:09 -0800 (PST)
+From: Sam Li <faithilikerun@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: dmitry.fomichev@wdc.com, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, dlemoal@kernel.org, hare@suse.de,
+ Hanna Reitz <hreitz@redhat.com>, stefanha@redhat.com,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Sam Li <faithilikerun@gmail.com>
+Subject: [PATCH v6 0/4] Add full zoned storage emulation to qcow2 driver
+Date: Mon, 27 Nov 2023 12:36:59 +0800
+Message-Id: <20231127043703.49489-1-faithilikerun@gmail.com>
+X-Mailer: git-send-email 2.40.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0 16/16] target/arm/kvm: Have
- kvm_arm_hw_debug_active take a ARMCPU argument
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
-References: <20231123183518.64569-1-philmd@linaro.org>
- <20231123183518.64569-17-philmd@linaro.org>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20231123183518.64569-17-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=faithilikerun@gmail.com; helo=mail-oi1-x230.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,56 +90,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Phil,
+This patch series add a new extension - zoned format - to the
+qcow2 driver thereby allowing full zoned storage emulation on
+the qcow2 img file. Users can attach such a qcow2 file to the
+guest as a zoned device.
 
-On 11/24/23 05:35, Philippe Mathieu-Daudé wrote:
-> Unify the "kvm_arm.h" API: All functions related to ARM vCPUs
-> take a ARMCPU* argument. Use the CPU() QOM cast macro When
-> calling the generic vCPU API from "sysemu/kvm.h".
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/arm/kvm.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
+Write pointer are preserved in the zoned metadata. It will be
+recovered after power cycle. Meanwhile, any open (implicit or
+explicit) zone will show up as closed.
 
-With the following comments addressed:
+Zone states are in memory. Read-only and offline states are
+device-internal events, which are not considerred in qcow2
+emulation for simplicity. The other zone states
+(closed, empty, full) can be inferred from write poiner
+values, presistent across QEMU reboots. The open states are
+kept in memory using open zone lists.
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+Zoned extension feature is optional. We only set it to host-manged 
+when emulating a zoned device. For non-zoned devices, it does not 
+need to consider setting this option.
 
-> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index 1f6da5529f..cbfea689cc 100644
-> --- a/target/arm/kvm.c
-> +++ b/target/arm/kvm.c
-> @@ -1455,11 +1455,11 @@ int kvm_arch_process_async_events(CPUState *cs)
->   
->   /**
->    * kvm_arm_hw_debug_active:
-> - * @cs: CPU State
-> + * @cpu: ARMCPU
->    *
->    * Return: TRUE if any hardware breakpoints in use.
->    */
-> -static bool kvm_arm_hw_debug_active(CPUState *cs)
-> +static bool kvm_arm_hw_debug_active(ARMCPU *cpu)
->   {
->       return ((cur_hw_wps > 0) || (cur_hw_bps > 0));
->   }
+To create a qcow2 image with zoned format feature, use command like
+this:
+$path/to/qemu-img create -f qcow2 zbc.qcow2 -o size=768M
+-o zone.size=64M -o zone.capacity=64M -o zone.conventional_zones=0
+-o zone.max_append_bytes=4096 -o zone.max_open_zones=10
+-o zone.max_active_zones=12 -o zone.mode=host-managed
 
-Either @cs or @cpu isn't dereferenced in kvm_arm_hw_debug_active(). So I guess
-the argument can be simply droped?
 
-> @@ -1493,7 +1493,7 @@ void kvm_arch_update_guest_debug(CPUState *cs, struct kvm_guest_debug *dbg)
->       if (kvm_sw_breakpoints_active(cs)) {
->           dbg->control |= KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_SW_BP;
->       }
-> -    if (kvm_arm_hw_debug_active(cs)) {
-> +    if (kvm_arm_hw_debug_active(ARM_CPU(cs))) {
->           dbg->control |= KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_HW;
->           kvm_arm_copy_hw_debug_data(&dbg->arch);
->       }
+Then add it to the QEMU command line:
+    -blockdev node-name=drive1,driver=qcow2,file.driver=file,file.filename=../qemu/test.qcow2 \
+    -device virtio-blk-pci,drive=drive1 \
 
-Thanks,
-Gavin
+v5->v6:
+- fix docs and specs [Eric, Markus, Stefan]
+- add general sanity checks for zoned device configurations while creation and opening [Eric]
+- fix LRU when implicitly open a zone for a long time [Stefan]
+
+v4->v5:
+- add incompatible bit for zoned format [Eric]
+- fix and manage zone resources via LRU [Damien]
+- renaming functions and fields, spec changes [Markus, Damien]
+- add closed zone list
+- make qemu iotests for zoned device consecutive [Stefan]
+
+v3->v4:
+- use QLIST for implicit, explicit open zones management [Stefan]
+- keep zone states in memory and drop state bits in wp metadata structure [Damien, Stefan]
+- change zone resource management and iotests accordingly
+- add tracing for number of implicit zones
+- address review comments [Stefan, Markus]:
+  * documentation, config, style
+
+v2->v3:
+- drop zoned_profile option [Klaus]
+- reformat doc comments of qcow2 [Markus]
+- add input validation and checks for zoned information [Stefan]
+- code style: format, comments, documentation, naming [Stefan]
+- add tracing function for wp tracking [Stefan]
+- reconstruct io path in check_zone_resources [Stefan]
+
+v1->v2:
+- add more tests to qemu-io zoned commands
+- make zone append change state to full when wp reaches end
+- add documentation to qcow2 zoned extension header
+- address review comments (Stefan):
+  * fix zoned_mata allocation size
+  * use bitwise or than addition
+  * fix wp index overflow and locking
+  * cleanups: comments, naming
+
+Sam Li (4):
+  docs/qcow2: add the zoned format feature
+  qcow2: add configurations for zoned format extension
+  qcow2: add zoned emulation capability
+  iotests: test the zoned format feature for qcow2 file
+
+ block/qcow2.c                            | 972 ++++++++++++++++++++++-
+ block/qcow2.h                            |  36 +-
+ block/trace-events                       |   2 +
+ docs/interop/qcow2.txt                   |  99 ++-
+ docs/system/qemu-block-drivers.rst.inc   |  35 +
+ include/block/block_int-common.h         |  13 +
+ include/qemu/queue.h                     |   1 +
+ qapi/block-core.json                     |  63 +-
+ tests/qemu-iotests/tests/zoned-qcow2     | 126 +++
+ tests/qemu-iotests/tests/zoned-qcow2.out | 118 +++
+ 10 files changed, 1460 insertions(+), 5 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/zoned-qcow2
+ create mode 100644 tests/qemu-iotests/tests/zoned-qcow2.out
+
+-- 
+2.40.1
 
 
