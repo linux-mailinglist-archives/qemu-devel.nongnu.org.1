@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EAF47FAB5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 21:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4437FAB7D
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 21:28:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7iCC-00031w-Jb; Mon, 27 Nov 2023 15:27:08 -0500
+	id 1r7iCR-0003LN-9q; Mon, 27 Nov 2023 15:27:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iCA-0002vc-LD
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:27:06 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iCF-0003GJ-6b
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:27:12 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iC8-0002p1-Sk
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:27:06 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iCB-0002pO-9Y
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:27:09 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 8D7B51FB79;
- Mon, 27 Nov 2023 20:27:03 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 1D6D71FB71;
+ Mon, 27 Nov 2023 20:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1701116823; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1701116826; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iG3ySoK+kjQLed5T1UGWfiBTuZNVuWrBdfLbg6Skwwk=;
- b=nrRJY+C1nYeZ/sGH++zrQvbRluH/4QOCKMWo3U79X3S50DuaA8shuxiRH7+LpNiNqzbi2k
- wsgz3fqBKUNRpsXAdp47HHjRpL/OyHA7ZKzTp74KfUMtoEWL+S6sCPdHHMhPXkdkkR+Cdg
- 8LSW8dVZ2SMPcrVYHrqS7EdvNqleaGk=
+ bh=G3lFVSaC2SFCUF6RJ0NZjaZayMP0TzCLKh4i0gsaGlA=;
+ b=R7qTSYoeh/lyv7uwhNraRG7SvxOzrbXB66pv9BCEKovlSyaGOv/t0+4OxOjRKYzcQ5wA2p
+ G/w/2a7LaT2ugEaCmspQxIEX4bHJDZGRFyRdHVIVsdTxFcwC1uDuMY2dIcYUJ3BhPaKMbM
+ eSmbooXWC+oLg7HvxNGwzalUhj1rLWM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1701116823;
+ s=susede2_ed25519; t=1701116826;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iG3ySoK+kjQLed5T1UGWfiBTuZNVuWrBdfLbg6Skwwk=;
- b=G9Ml0aZ0tRW5YKNALiedceEDzWQiUux3XpeyK15dNi4nhykEq+eRhwIjoJHc2abmHYPLfx
- pIBGUoXa5csyEfBA==
+ bh=G3lFVSaC2SFCUF6RJ0NZjaZayMP0TzCLKh4i0gsaGlA=;
+ b=6glQq5X2VmGB/OeWkWaUp7H0oDErRJjXS77QpVkE7cV8wipyL6nNQqm5DUObD9bz1+wH5L
+ OfgvDLj+XQPoJuBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C1921379A;
- Mon, 27 Nov 2023 20:27:01 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0CCE91379A;
+ Mon, 27 Nov 2023 20:27:03 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id MN7HEJX7ZGVfIQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 27 Nov 2023 20:27:01 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id EJk+MZf7ZGVfIQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 27 Nov 2023 20:27:03 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [RFC PATCH v3 17/30] migration/multifd: Decouple recv method from
- pages
-Date: Mon, 27 Nov 2023 17:25:59 -0300
-Message-Id: <20231127202612.23012-18-farosas@suse.de>
+Subject: [RFC PATCH v3 18/30] migration/multifd: Allow receiving pages without
+ packets
+Date: Mon, 27 Nov 2023 17:26:00 -0300
+Message-Id: <20231127202612.23012-19-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231127202612.23012-1-farosas@suse.de>
 References: <20231127202612.23012-1-farosas@suse.de>
@@ -78,8 +78,8 @@ X-Spamd-Result: default: False [0.90 / 50.00]; ARC_NA(0.00)[];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
  BAYES_HAM(-3.00)[100.00%]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,117 +101,307 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Next patch will abstract the type of data being received by the
-channels, so do some cleanup now to remove references to pages and
-dependency on 'normal_num'.
+Currently multifd does not need to have knowledge of pages on the
+receiving side because all the information needed is within the
+packets that come in the stream.
+
+We're about to add support to fixed-ram migration, which cannot use
+packets because it expects the ramblock section in the migration file
+to contain only the guest pages data.
+
+Add a data structure to transfer pages between the ram migration code
+and the multifd receiving threads.
+
+We don't want to reuse MultiFDPages_t for two reasons:
+
+a) multifd threads don't really need to know about the data they're
+   receiving.
+
+b) the receiving side has to be stopped to load the pages, which means
+   we can experiment with larger granularities than page size when
+   transferring data.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/multifd-zlib.c |  2 +-
- migration/multifd-zstd.c |  2 +-
- migration/multifd.c      | 12 +++++++-----
- migration/multifd.h      |  5 ++---
- 4 files changed, 11 insertions(+), 10 deletions(-)
+- stopped using MultiFDPages_t and added a new structure which can
+  take offset + size
+---
+ migration/multifd.c | 122 ++++++++++++++++++++++++++++++++++++++++++--
+ migration/multifd.h |  20 ++++++++
+ 2 files changed, 138 insertions(+), 4 deletions(-)
 
-diff --git a/migration/multifd-zlib.c b/migration/multifd-zlib.c
-index fd94e79dd9..e019d2d74e 100644
---- a/migration/multifd-zlib.c
-+++ b/migration/multifd-zlib.c
-@@ -314,7 +314,7 @@ static MultiFDMethods multifd_zlib_ops = {
-     .send_prepare = zlib_send_prepare,
-     .recv_setup = zlib_recv_setup,
-     .recv_cleanup = zlib_recv_cleanup,
--    .recv_pages = zlib_recv_pages
-+    .recv_data = zlib_recv_pages
- };
- 
- static void multifd_zlib_register(void)
-diff --git a/migration/multifd-zstd.c b/migration/multifd-zstd.c
-index 238eebbf4b..0b8414df5b 100644
---- a/migration/multifd-zstd.c
-+++ b/migration/multifd-zstd.c
-@@ -305,7 +305,7 @@ static MultiFDMethods multifd_zstd_ops = {
-     .send_prepare = zstd_send_prepare,
-     .recv_setup = zstd_recv_setup,
-     .recv_cleanup = zstd_recv_cleanup,
--    .recv_pages = zstd_recv_pages
-+    .recv_data = zstd_recv_pages
- };
- 
- static void multifd_zstd_register(void)
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 3476fac49f..c1381bdc21 100644
+index c1381bdc21..7dfab2367a 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -130,7 +130,7 @@ static void nocomp_recv_cleanup(MultiFDRecvParams *p)
- }
- 
- /**
-- * nocomp_recv_pages: read the data from the channel into actual pages
-+ * nocomp_recv_data: read the data from the channel
-  *
-  * For no compression we just need to read things into the correct place.
-  *
-@@ -139,7 +139,7 @@ static void nocomp_recv_cleanup(MultiFDRecvParams *p)
-  * @p: Params for the channel that we are using
-  * @errp: pointer to an error
-  */
--static int nocomp_recv_pages(MultiFDRecvParams *p, Error **errp)
-+static int nocomp_recv_data(MultiFDRecvParams *p, Error **errp)
+@@ -142,17 +142,36 @@ static void nocomp_recv_cleanup(MultiFDRecvParams *p)
+ static int nocomp_recv_data(MultiFDRecvParams *p, Error **errp)
  {
      uint32_t flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
++    ERRP_GUARD();
  
-@@ -161,7 +161,7 @@ static MultiFDMethods multifd_nocomp_ops = {
-     .send_prepare = nocomp_send_prepare,
-     .recv_setup = nocomp_recv_setup,
-     .recv_cleanup = nocomp_recv_cleanup,
--    .recv_pages = nocomp_recv_pages
-+    .recv_data = nocomp_recv_data
- };
+     if (flags != MULTIFD_FLAG_NOCOMP) {
+         error_setg(errp, "multifd %u: flags received %x flags expected %x",
+                    p->id, flags, MULTIFD_FLAG_NOCOMP);
+         return -1;
+     }
+-    for (int i = 0; i < p->normal_num; i++) {
+-        p->iov[i].iov_base = p->host + p->normal[i];
+-        p->iov[i].iov_len = p->page_size;
++
++    if (!migrate_multifd_packets()) {
++        MultiFDRecvData *data = p->data;
++        size_t ret;
++
++        ret = qio_channel_pread(p->c, (char *) data->opaque,
++                                data->size, data->file_offset, errp);
++        if (ret != data->size) {
++            error_prepend(errp,
++                          "multifd recv (%u): read 0x%zx, expected 0x%zx",
++                          p->id, ret, data->size);
++            return -1;
++        }
++
++        return 0;
++    } else {
++        for (int i = 0; i < p->normal_num; i++) {
++            p->iov[i].iov_base = p->host + p->normal[i];
++            p->iov[i].iov_len = p->page_size;
++        }
++
++        return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
+     }
+-    return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
+ }
  
- static MultiFDMethods *multifd_ops[MULTIFD_COMPRESSION__MAX] = {
-@@ -1126,6 +1126,7 @@ static void *multifd_recv_thread(void *opaque)
+ static MultiFDMethods multifd_nocomp_ops = {
+@@ -989,6 +1008,7 @@ int multifd_save_setup(Error **errp)
  
-     while (true) {
-         uint32_t flags = 0;
-+        bool has_data = false;
-         p->normal_num = 0;
+ struct {
+     MultiFDRecvParams *params;
++    MultiFDRecvData *data;
+     /* number of created threads */
+     int count;
+     /* syncs main thread and channels */
+@@ -999,6 +1019,49 @@ struct {
+     MultiFDMethods *ops;
+ } *multifd_recv_state;
  
-         if (p->quit) {
-@@ -1154,12 +1155,13 @@ static void *multifd_recv_thread(void *opaque)
-                                p->next_packet_size);
++int multifd_recv(void)
++{
++    int i;
++    static int next_recv_channel;
++    MultiFDRecvParams *p = NULL;
++    MultiFDRecvData *data = multifd_recv_state->data;
++
++    /*
++     * next_channel can remain from a previous migration that was
++     * using more channels, so ensure it doesn't overflow if the
++     * limit is lower now.
++     */
++    next_recv_channel %= migrate_multifd_channels();
++    for (i = next_recv_channel;; i = (i + 1) % migrate_multifd_channels()) {
++        p = &multifd_recv_state->params[i];
++
++        qemu_mutex_lock(&p->mutex);
++        if (p->quit) {
++            error_report("%s: channel %d has already quit!", __func__, i);
++            qemu_mutex_unlock(&p->mutex);
++            return -1;
++        }
++        if (!p->pending_job) {
++            p->pending_job++;
++            next_recv_channel = (i + 1) % migrate_multifd_channels();
++            break;
++        }
++        qemu_mutex_unlock(&p->mutex);
++    }
++    assert(p->data->size == 0);
++    multifd_recv_state->data = p->data;
++    p->data = data;
++    qemu_mutex_unlock(&p->mutex);
++    qemu_sem_post(&p->sem);
++
++    return 1;
++}
++
++MultiFDRecvData *multifd_get_recv_data(void)
++{
++    return multifd_recv_state->data;
++}
++
+ static void multifd_recv_terminate_threads(Error *err)
+ {
+     int i;
+@@ -1020,6 +1083,7 @@ static void multifd_recv_terminate_threads(Error *err)
+ 
+         qemu_mutex_lock(&p->mutex);
+         p->quit = true;
++        qemu_sem_post(&p->sem);
+         /*
+          * We could arrive here for two reasons:
+          *  - normal quit, i.e. everything went fine, just finished
+@@ -1069,6 +1133,7 @@ void multifd_load_cleanup(void)
+         p->c = NULL;
+         qemu_mutex_destroy(&p->mutex);
+         qemu_sem_destroy(&p->sem_sync);
++        qemu_sem_destroy(&p->sem);
+         g_free(p->name);
+         p->name = NULL;
+         p->packet_len = 0;
+@@ -1083,6 +1148,8 @@ void multifd_load_cleanup(void)
+     qemu_sem_destroy(&multifd_recv_state->sem_sync);
+     g_free(multifd_recv_state->params);
+     multifd_recv_state->params = NULL;
++    g_free(multifd_recv_state->data);
++    multifd_recv_state->data = NULL;
+     g_free(multifd_recv_state);
+     multifd_recv_state = NULL;
+ }
+@@ -1094,6 +1161,21 @@ void multifd_recv_sync_main(void)
+     if (!migrate_multifd() || !migrate_multifd_packets()) {
+         return;
+     }
++
++    if (!migrate_multifd_packets()) {
++        for (i = 0; i < migrate_multifd_channels(); i++) {
++            MultiFDRecvParams *p = &multifd_recv_state->params[i];
++
++            qemu_sem_post(&p->sem);
++            qemu_sem_wait(&p->sem_sync);
++
++            qemu_mutex_lock(&p->mutex);
++            assert(!p->pending_job || p->quit);
++            qemu_mutex_unlock(&p->mutex);
++        }
++        return;
++    }
++
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDRecvParams *p = &multifd_recv_state->params[i];
+ 
+@@ -1156,6 +1238,18 @@ static void *multifd_recv_thread(void *opaque)
  
              p->total_normal_pages += p->normal_num;
-+            has_data = !!p->normal_num;
+             has_data = !!p->normal_num;
++        } else {
++            /*
++             * No packets, so we need to wait for the vmstate code to
++             * give us work.
++             */
++            qemu_sem_wait(&p->sem);
++            qemu_mutex_lock(&p->mutex);
++            if (!p->pending_job) {
++                qemu_mutex_unlock(&p->mutex);
++                break;
++            }
++            has_data = !!p->data->size;
          }
  
          qemu_mutex_unlock(&p->mutex);
+@@ -1171,6 +1265,17 @@ static void *multifd_recv_thread(void *opaque)
+             qemu_sem_post(&multifd_recv_state->sem_sync);
+             qemu_sem_wait(&p->sem_sync);
+         }
++
++        if (!use_packets) {
++            qemu_mutex_lock(&p->mutex);
++            p->data->size = 0;
++            p->pending_job--;
++            qemu_mutex_unlock(&p->mutex);
++        }
++    }
++
++    if (!use_packets) {
++        qemu_sem_post(&p->sem_sync);
+     }
  
--        if (p->normal_num) {
--            ret = multifd_recv_state->ops->recv_pages(p, &local_err);
-+        if (has_data) {
-+            ret = multifd_recv_state->ops->recv_data(p, &local_err);
-             if (ret != 0) {
-                 break;
-             }
+     if (local_err) {
+@@ -1205,6 +1310,10 @@ int multifd_load_setup(Error **errp)
+     thread_count = migrate_multifd_channels();
+     multifd_recv_state = g_malloc0(sizeof(*multifd_recv_state));
+     multifd_recv_state->params = g_new0(MultiFDRecvParams, thread_count);
++
++    multifd_recv_state->data = g_new0(MultiFDRecvData, 1);
++    multifd_recv_state->data->size = 0;
++
+     qatomic_set(&multifd_recv_state->count, 0);
+     qemu_sem_init(&multifd_recv_state->sem_sync, 0);
+     multifd_recv_state->ops = multifd_ops[migrate_multifd_compression()];
+@@ -1214,9 +1323,14 @@ int multifd_load_setup(Error **errp)
+ 
+         qemu_mutex_init(&p->mutex);
+         qemu_sem_init(&p->sem_sync, 0);
++        qemu_sem_init(&p->sem, 0);
+         p->quit = false;
++        p->pending_job = 0;
+         p->id = i;
+ 
++        p->data = g_new0(MultiFDRecvData, 1);
++        p->data->size = 0;
++
+         if (use_packets) {
+             p->packet_len = sizeof(MultiFDPacket_t)
+                 + sizeof(uint64_t) * page_count;
 diff --git a/migration/multifd.h b/migration/multifd.h
-index 744b52762f..406d42dbae 100644
+index 406d42dbae..abaf16c3f2 100644
 --- a/migration/multifd.h
 +++ b/migration/multifd.h
-@@ -203,11 +203,10 @@ typedef struct {
-     int (*recv_setup)(MultiFDRecvParams *p, Error **errp);
-     /* Cleanup for receiving side */
-     void (*recv_cleanup)(MultiFDRecvParams *p);
--    /* Read all pages */
--    int (*recv_pages)(MultiFDRecvParams *p, Error **errp);
-+    /* Read all data */
-+    int (*recv_data)(MultiFDRecvParams *p, Error **errp);
- } MultiFDMethods;
+@@ -13,6 +13,8 @@
+ #ifndef QEMU_MIGRATION_MULTIFD_H
+ #define QEMU_MIGRATION_MULTIFD_H
  
- void multifd_register_ops(int method, MultiFDMethods *ops);
++typedef struct MultiFDRecvData MultiFDRecvData;
++
+ int multifd_save_setup(Error **errp);
+ void multifd_save_cleanup(void);
+ int multifd_load_setup(Error **errp);
+@@ -24,6 +26,8 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
+ void multifd_recv_sync_main(void);
+ int multifd_send_sync_main(QEMUFile *f);
+ int multifd_queue_page(QEMUFile *f, RAMBlock *block, ram_addr_t offset);
++int multifd_recv(void);
++MultiFDRecvData *multifd_get_recv_data(void);
  
- #endif
--
+ /* Multifd Compression flags */
+ #define MULTIFD_FLAG_SYNC (1 << 0)
+@@ -66,6 +70,13 @@ typedef struct {
+     RAMBlock *block;
+ } MultiFDPages_t;
+ 
++struct MultiFDRecvData {
++    void *opaque;
++    size_t size;
++    /* for preadv */
++    off_t file_offset;
++};
++
+ typedef struct {
+     /* Fields are only written at creating/deletion time */
+     /* No lock required for them, they are read only */
+@@ -156,6 +167,8 @@ typedef struct {
+ 
+     /* syncs main thread and channels */
+     QemuSemaphore sem_sync;
++    /* sem where to wait for more work */
++    QemuSemaphore sem;
+ 
+     /* this mutex protects the following parameters */
+     QemuMutex mutex;
+@@ -167,6 +180,13 @@ typedef struct {
+     uint32_t flags;
+     /* global number of generated multifd packets */
+     uint64_t packet_num;
++    int pending_job;
++    /*
++     * The owner of 'data' depends of 'pending_job' value:
++     * pending_job == 0 -> migration_thread can use it.
++     * pending_job != 0 -> multifd_channel can use it.
++     */
++    MultiFDRecvData *data;
+ 
+     /* thread local variables. No locking required */
+ 
 -- 
 2.35.3
 
