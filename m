@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E9B7FA7A0
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D8F7FA78C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:09:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7f65-0007SX-Bq; Mon, 27 Nov 2023 12:08:37 -0500
+	id 1r7f69-0007Tx-7V; Mon, 27 Nov 2023 12:08:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7f60-0007Qp-KS
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:33 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1r7f62-0007Rp-Rm
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:34 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7f5y-0004d8-Us
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:32 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40b4734b975so7801185e9.2
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 09:08:30 -0800 (PST)
+ id 1r7f5z-0004dH-JH
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:33 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40b4a8db314so155445e9.3
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 09:08:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701104909; x=1701709709; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701104910; x=1701709710; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=qtgG7nMoh/J0Wuwlj0UEmo0xDREAKAgqHzHLy2baaAs=;
- b=tHpm/FIbMSk76asN/NPxAIqbBY2sTRA/+K4/ECCf4J23jaswiYsw4rTu69Sb1D+Kpn
- gsW5s8f7GpWOCyW+2Fcp9t22nj8rGRMSQnK7UkF2vPNNqu6UnIBOH+yqKUKHIFSHZpLY
- KaUdaomqc1rfU24ZBgePb1+RzXZUGq4huSem6Idq144a5ww/TNDxVrUzY5HkS/q2viGQ
- YdJrhdyIthl1cyoKSGDLrTC/pxhfRIbvDGplFk6+qDjlWytxZJttCAkKQBzMH8NrqLvh
- sYLyMJJCQFELiXC33RkzHJcsTAMDyAIk8JrEuB0C4hPw4N/DUUQfCoWiseGwpQXlMUFh
- 2vxw==
+ :reply-to; bh=z25o5HgpS769sk9FWaELdrm182ytGgUoPKT3/jaRyEU=;
+ b=ZUBOqEcgtMjks5jLUb0ovvKTTXJQiIdSpspkVlepP2SMxSua04ytRYArzHCk+f0XjL
+ DpOuEWVTyPfFJL4o282mA2iaBQEfxw0cy4bqd5s8v6yC8l7AFWtXQGsWo2asJGceuhkK
+ Fa/xyK1YnayrWDZOaQ8vcX/DI0SnHlmdJN1yeCnxjaJOHrPNk87HoAC2g4Q2R+bkEszm
+ JFQbMVyHXM2m11NtsBIAG+ai6WMjBD9ed7hATA7SGjso03ph6+our+pMP+0oHQn8C3Xp
+ qWNvSR8evwKLi2vxOQcKjsEWSLlgBr3x4T9BPk8GEu3FPsokxe5gu4fosm4lV+QkRWk+
+ n5tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701104909; x=1701709709;
+ d=1e100.net; s=20230601; t=1701104910; x=1701709710;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qtgG7nMoh/J0Wuwlj0UEmo0xDREAKAgqHzHLy2baaAs=;
- b=cDuJERAMQFVRvVOu5PfySP7OLROYmX3ZPbb+subUysyz7csAEJh/UBJXYVYo1Ep7XV
- m3p8FpyUZ6r9jdgSm+5BYzpNDj/iE1gIxKTggTOyt8YDputg8wqPWhYdgxMyC59Pmxi0
- zoAc0+dKoWi+P5Gv0OlteSv5nJi/V4isjSCc/cJK6ikensZkcjICnbO7kzPKRYXnFPoC
- x211iRgnCRyefWxSifql8vupXMB4RKR7sRZI3D1a9g8dOIGVfSrGLHRcUZTtfML7JMgb
- Qgms6WyLvsdLIihrPYUcbhUbVyRYZTnAfTWN3sA8Zx4hHPYtbv0A/nfPefPUeXuLabOJ
- pwGw==
-X-Gm-Message-State: AOJu0Yw94UBbIsXEL+n0hX52vfXUEr7hRnRgI+zcmbFvAkUJITT/xLBb
- kqTN5pxEclbLzeO3Ma0jhNG30mgctUr4bcyckec=
-X-Google-Smtp-Source: AGHT+IFI95OCuo/NzHfu++Hwvcqtwnv7kWHHKLyJZoSdqe0rmFlF80OSPswbui0qYqzRs1hByj2xLQ==
-X-Received: by 2002:a05:600c:19ca:b0:40b:367a:806 with SMTP id
- u10-20020a05600c19ca00b0040b367a0806mr8757538wmq.20.1701104909282; 
+ bh=z25o5HgpS769sk9FWaELdrm182ytGgUoPKT3/jaRyEU=;
+ b=nbvwGfNK50HyRE4dpkxDwO5rh01L8JR5cZhnlqgSMjB+9xHx/sFQVX5jzK0WN/QAGA
+ JfDLlMrTHEF8JKb3575zHirKXerq6T7fvrw4fbAEJBQIsoRIA19kmEvUFSGoYweXXdaJ
+ qcOQOM7b95TTb2Hvn/PNX5KmKrJxWTkeasuQ4lpkg0TmacQT3Zb7whDsjTnR+0wGl0W8
+ EpuCqjvRDBwTshowE5wGOfl9yS5QAkn7nZ7vqlMfC3QnkTFZ5O7NXx9+bW9vnYp3yzQX
+ ku1o22KhF3chwc2obP8AKy1Tow9IQqRMyQxsluWnX9ZOyTKVOG+642Qhkou8msXk5k3r
+ Y8FQ==
+X-Gm-Message-State: AOJu0YyrRIgDLGsWt10c6dVGZsPhZymmteXPTbGyCeIZquRSGrSeMV8G
+ Sdvm2BzbJSdXsvKbBhYTVDkIeR7EqJUV9r5rTT8=
+X-Google-Smtp-Source: AGHT+IGuHifjooqi6K+dZu14L9z0TaDUyYIvYXdWTYrTdss6jC5rPP2/EKCkQV3ILVKTkJ2XWe4CaA==
+X-Received: by 2002:a05:600c:4ed0:b0:40b:2b86:c886 with SMTP id
+ g16-20020a05600c4ed000b0040b2b86c886mr5335928wmq.31.1701104909856; 
  Mon, 27 Nov 2023 09:08:29 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- fl8-20020a05600c0b8800b004030e8ff964sm15353216wmb.34.2023.11.27.09.08.28
+ fl8-20020a05600c0b8800b004030e8ff964sm15353216wmb.34.2023.11.27.09.08.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Nov 2023 09:08:28 -0800 (PST)
+ Mon, 27 Nov 2023 09:08:29 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/13] hw/virtio: Free VirtIOIOMMUPCI::vdev.reserved_regions[]
- on finalize()
-Date: Mon, 27 Nov 2023 17:08:16 +0000
-Message-Id: <20231127170823.589863-7-peter.maydell@linaro.org>
+Subject: [PULL 07/13] hw/misc/mps2-scc: Free MPS2SCC::oscclk[] array on
+ finalize()
+Date: Mon, 27 Nov 2023 17:08:17 +0000
+Message-Id: <20231127170823.589863-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231127170823.589863-1-peter.maydell@linaro.org>
 References: <20231127170823.589863-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,47 +100,48 @@ added the DEFINE_PROP_ARRAY() macro with the following comment:
   * It is the responsibility of the device deinit code to free the
   * @_arrayfield memory.
 
-Commit 8077b8e549 added:
+Commit 4fb013afcc added:
 
-  DEFINE_PROP_ARRAY("reserved-regions", VirtIOIOMMUPCI,
-                    vdev.nb_reserved_regions, vdev.reserved_regions,
-                    qdev_prop_reserved_region, ReservedRegion),
+  DEFINE_PROP_ARRAY("oscclk", MPS2SCC, num_oscclk, oscclk_reset,
+                    qdev_prop_uint32, uint32_t),
 
-but forgot to free the 'vdev.reserved_regions' array. Do it in the
+but forgot to free the 'oscclk_reset' array. Do it in the
 instance_finalize() handler.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 8077b8e549 ("virtio-iommu-pci: Add array of Interval properties") # v5.1.0+
+Fixes: 4fb013afcc ("hw/misc/mps2-scc: Support configurable number of OSCCLK values") # v6.0.0+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-id: 20231121174051.63038-3-philmd@linaro.org
+Message-id: 20231121174051.63038-4-philmd@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/virtio/virtio-iommu-pci.c | 8 ++++++++
+ hw/misc/mps2-scc.c | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/hw/virtio/virtio-iommu-pci.c b/hw/virtio/virtio-iommu-pci.c
-index 9459fbf6edf..cbdfe4c591c 100644
---- a/hw/virtio/virtio-iommu-pci.c
-+++ b/hw/virtio/virtio-iommu-pci.c
-@@ -95,10 +95,18 @@ static void virtio_iommu_pci_instance_init(Object *obj)
-                                 TYPE_VIRTIO_IOMMU);
+diff --git a/hw/misc/mps2-scc.c b/hw/misc/mps2-scc.c
+index b3b42a792cd..fe5034db140 100644
+--- a/hw/misc/mps2-scc.c
++++ b/hw/misc/mps2-scc.c
+@@ -329,6 +329,13 @@ static void mps2_scc_realize(DeviceState *dev, Error **errp)
+     s->oscclk = g_new0(uint32_t, s->num_oscclk);
  }
  
-+static void virtio_iommu_pci_instance_finalize(Object *obj)
++static void mps2_scc_finalize(Object *obj)
 +{
-+    VirtIOIOMMUPCI *dev = VIRTIO_IOMMU_PCI(obj);
++    MPS2SCC *s = MPS2_SCC(obj);
 +
-+    g_free(dev->vdev.prop_resv_regions);
++    g_free(s->oscclk_reset);
 +}
 +
- static const VirtioPCIDeviceTypeInfo virtio_iommu_pci_info = {
-     .generic_name  = TYPE_VIRTIO_IOMMU_PCI,
-     .instance_size = sizeof(VirtIOIOMMUPCI),
-     .instance_init = virtio_iommu_pci_instance_init,
-+    .instance_finalize = virtio_iommu_pci_instance_finalize,
-     .class_init    = virtio_iommu_pci_class_init,
+ static const VMStateDescription mps2_scc_vmstate = {
+     .name = "mps2-scc",
+     .version_id = 3,
+@@ -385,6 +392,7 @@ static const TypeInfo mps2_scc_info = {
+     .parent = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(MPS2SCC),
+     .instance_init = mps2_scc_init,
++    .instance_finalize = mps2_scc_finalize,
+     .class_init = mps2_scc_class_init,
  };
  
 -- 
