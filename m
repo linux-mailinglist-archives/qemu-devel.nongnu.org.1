@@ -2,54 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1416F7FA5C0
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 17:10:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC6B7FA5C9
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 17:11:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7eB9-0005kh-Fb; Mon, 27 Nov 2023 11:09:47 -0500
+	id 1r7eCh-0007Bg-BT; Mon, 27 Nov 2023 11:11:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5Qwu=HI=kaod.org=clg@ozlabs.org>)
- id 1r7eB7-0005kE-Vo; Mon, 27 Nov 2023 11:09:45 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r7eCd-0007BS-7R
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 11:11:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5Qwu=HI=kaod.org=clg@ozlabs.org>)
- id 1r7eB5-000297-KI; Mon, 27 Nov 2023 11:09:45 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sf9X26Tlvz4xNG;
- Tue, 28 Nov 2023 03:09:38 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r7eCZ-0002Yr-JG
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 11:11:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701101468;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=jJi1pXCz2FTajYxahtgyuVng9v+pFevLOt3ydLdO0fo=;
+ b=KzGDV1Fwb0bA2+tFb49HqukWVJfzxpug/3o008kotHE/sjbQCDkcf5NRBIE9gP+ESWbZ9F
+ zOgGEP8FgFPYFhRj+wbwYDj/AIvZWg8tQF7zb9VTk3tP8Czo/bckZ7qg11RTvUdUnHcE/O
+ gb2n+XQ04AR4zY9y4iBv/GqsQ0N76Og=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-3zlCwMRwMtiEQmAJORMD_A-1; Mon,
+ 27 Nov 2023 11:11:05 -0500
+X-MC-Unique: 3zlCwMRwMtiEQmAJORMD_A-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sf9Wx4Th9z4wb0;
- Tue, 28 Nov 2023 03:09:33 +1100 (AEDT)
-Message-ID: <edf7f3f9-c758-40a0-bcdc-d1f2607cbdbc@kaod.org>
-Date: Mon, 27 Nov 2023 17:09:30 +0100
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A4E99381AE4D;
+ Mon, 27 Nov 2023 16:11:05 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DE8D240C6EBB;
+ Mon, 27 Nov 2023 16:11:04 +0000 (UTC)
+Date: Mon, 27 Nov 2023 16:11:01 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Hyman Huang <yong.huang@smartx.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH] crypto: Introduce SM4 symmetric cipher algorithm
+Message-ID: <ZWS_lTYeKTLNfDrn@redhat.com>
+References: <386ee33ff8f1dc4e8416b037e548ae36c983d054.1701100272.git.yong.huang@smartx.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 02/10] hw/fsi: Introduce IBM's scratchpad
-Content-Language: en-US
-To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
-References: <20231026164741.1184058-1-ninad@linux.ibm.com>
- <20231026164741.1184058-3-ninad@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231026164741.1184058-3-ninad@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=5Qwu=HI=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <386ee33ff8f1dc4e8416b037e548ae36c983d054.1701100272.git.yong.huang@smartx.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,273 +78,103 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/26/23 18:47, Ninad Palsule wrote:
-> This is a part of patchset where scratchpad is introduced.
+On Mon, Nov 27, 2023 at 11:55:34PM +0800, Hyman Huang wrote:
+> Introduce the SM4 cipher algorithms (OSCCA GB/T 32907-2016).
 > 
-> The scratchpad provides a set of non-functional registers. The firmware
-> is free to use them, hardware does not support any special management
-> support. The scratchpad registers can be read or written from LBUS
-> slave.
+> SM4 (GBT.32907-2016) is a cryptographic standard issued by the
+> Organization of State Commercial Administration of China (OSCCA)
+> as an authorized cryptographic algorithms for the use within China.
+
+Just out of interest, what part of QEMU are you needing to use
+SM4 with ? Is it for a LUKS block driver cipher ?
+
 > 
-> In this model, The LBUS device is parent for the scratchpad.
-> 
-> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 > ---
-> v2:
-> - Incorporated Joel's review comments.
-> v5:
-> - Incorporated review comments by Cedric.
-> v6:
-> - Incorporated review comments by Daniel.
-> v7:
-> - Incorporated review comments by Philippe.
-> - Cleaned up unused bits.
-> ---
->   meson.build                        |  1 +
->   hw/fsi/trace.h                     |  1 +
->   include/hw/fsi/engine-scratchpad.h | 27 +++++++++
->   include/hw/fsi/fsi.h               | 16 +++++
->   hw/fsi/engine-scratchpad.c         | 93 ++++++++++++++++++++++++++++++
->   hw/fsi/Kconfig                     |  4 ++
->   hw/fsi/meson.build                 |  1 +
->   hw/fsi/trace-events                |  2 +
->   8 files changed, 145 insertions(+)
->   create mode 100644 hw/fsi/trace.h
->   create mode 100644 include/hw/fsi/engine-scratchpad.h
->   create mode 100644 include/hw/fsi/fsi.h
->   create mode 100644 hw/fsi/engine-scratchpad.c
->   create mode 100644 hw/fsi/trace-events
+>  crypto/block-luks.c             |  7 ++++++
+>  crypto/cipher-gcrypt.c.inc      |  4 ++++
+
+Looking at the gcrypt code, SM4 is only supported in >= 1.9.0 
+
+QEMU min version is 1.8.0, so you'll need to modify meson.build
+to check whether SM4 is supported and put conditionals in this
+file
+
+>  crypto/cipher-nettle.c.inc      | 42 +++++++++++++++++++++++++++++++++
+
+Looking at the nettle code, SM4 is only supported in unreleased
+versions thus far.
+
+So again will need a meson.build check and conditionals.
+
+>  crypto/cipher.c                 |  2 ++
+>  qapi/crypto.json                |  5 +++-
+>  tests/unit/test-crypto-cipher.c | 11 +++++++++
+>  6 files changed, 70 insertions(+), 1 deletion(-)
+
+
+> diff --git a/qapi/crypto.json b/qapi/crypto.json
+> index fd3d46ebd1..95fa10bb6d 100644
+> --- a/qapi/crypto.json
+> +++ b/qapi/crypto.json
+> @@ -94,6 +94,8 @@
+>  #
+>  # @twofish-256: Twofish with 256 bit / 32 byte keys
+>  #
+> +# @sm4: SM4 with 128 bit / 16 byte keys (since 8.2)
+
+We're in feature freeze for 8.2, so mark this 9.0 as that'll be the
+next available release this could be merged for.
+
+> +#
+>  # Since: 2.6
+>  ##
+>  { 'enum': 'QCryptoCipherAlgorithm',
+> @@ -102,7 +104,8 @@
+>             'des', '3des',
+>             'cast5-128',
+>             'serpent-128', 'serpent-192', 'serpent-256',
+> -           'twofish-128', 'twofish-192', 'twofish-256']}
+> +           'twofish-128', 'twofish-192', 'twofish-256',
+> +           'sm4']}
+>  
+>  ##
+>  # @QCryptoCipherMode:
+> diff --git a/tests/unit/test-crypto-cipher.c b/tests/unit/test-crypto-cipher.c
+> index d9d9d078ff..80a4984e43 100644
+> --- a/tests/unit/test-crypto-cipher.c
+> +++ b/tests/unit/test-crypto-cipher.c
+> @@ -382,6 +382,17 @@ static QCryptoCipherTestData test_data[] = {
+>          .plaintext = "90afe91bb288544f2c32dc239b2635e6",
+>          .ciphertext = "6cb4561c40bf0a9705931cb6d408e7fa",
+>      },
+> +    {
+> +        /* SM4, GB/T 32907-2016, Appendix A.1 */
+> +        .path = "/crypto/cipher/sm4",
+> +        .alg = QCRYPTO_CIPHER_ALG_SM4,
+> +        .mode = QCRYPTO_CIPHER_MODE_ECB,
+> +        .key = "0123456789abcdeffedcba9876543210",
+> +        .plaintext  =
+> +            "0123456789abcdeffedcba9876543210",
+> +        .ciphertext =
+> +            "681edf34d206965e86b3e94f536e4246",
+> +    },
+>      {
+>          /* #1 32 byte key, 32 byte PTX */
+>          .path = "/crypto/cipher/aes-xts-128-1",
+> -- 
+> 2.39.1
 > 
-> diff --git a/meson.build b/meson.build
-> index dcef8b1e79..793c7c1f20 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3257,6 +3257,7 @@ if have_system
->       'hw/char',
->       'hw/display',
->       'hw/dma',
-> +    'hw/fsi',
 
-This should be introduced in the first patch.
-
->       'hw/hyperv',
->       'hw/i2c',
->       'hw/i386',
-> diff --git a/hw/fsi/trace.h b/hw/fsi/trace.h
-> new file mode 100644
-> index 0000000000..ee67c7fb04
-> --- /dev/null
-> +++ b/hw/fsi/trace.h
-> @@ -0,0 +1 @@
-> +#include "trace/trace-hw_fsi.h"
-> diff --git a/include/hw/fsi/engine-scratchpad.h b/include/hw/fsi/engine-scratchpad.h
-> new file mode 100644
-> index 0000000000..4ffa871965
-> --- /dev/null
-> +++ b/include/hw/fsi/engine-scratchpad.h
-
-This model is introduced to early please drop from this patch.
-
-> @@ -0,0 +1,27 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2023 IBM Corp.
-> + *
-> + * IBM scratchpad engne
-> + */
-> +#ifndef FSI_ENGINE_SCRATCHPAD_H
-> +#define FSI_ENGINE_SCRATCHPAD_H
-> +
-> +#include "hw/fsi/lbus.h"
-> +#include "hw/fsi/fsi.h"
-> +
-> +#define ENGINE_CONFIG_NEXT            BE_BIT(0)
-> +#define ENGINE_CONFIG_TYPE_PEEK       (0x02 << 4)
-> +#define ENGINE_CONFIG_TYPE_FSI        (0x03 << 4)
-> +#define ENGINE_CONFIG_TYPE_SCRATCHPAD (0x06 << 4)
-> +
-> +#define TYPE_FSI_SCRATCHPAD "fsi.scratchpad"
-> +#define SCRATCHPAD(obj) OBJECT_CHECK(FSIScratchPad, (obj), TYPE_FSI_SCRATCHPAD)
-> +
-> +typedef struct FSIScratchPad {
-> +        FSILBusDevice parent;
-> +
-> +        uint32_t reg;
-> +} FSIScratchPad;
-> +
-> +#endif /* FSI_ENGINE_SCRATCHPAD_H */
-> diff --git a/include/hw/fsi/fsi.h b/include/hw/fsi/fsi.h
-> new file mode 100644
-> index 0000000000..b08b97f62b
-> --- /dev/null
-> +++ b/include/hw/fsi/fsi.h
-> @@ -0,0 +1,16 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2023 IBM Corp.
-> + *
-> + * IBM Flexible Service Interface
-> + */
-> +#ifndef FSI_FSI_H
-> +#define FSI_FSI_H
-> +
-> +#include "qemu/bitops.h"
-> +
-> +/* Bitwise operations at the word level. */
-> +#define BE_BIT(x)           BIT(31 - (x))
-
-31 ? BITS_PER_LONG would be better I think.
-
-> +#define BE_GENMASK(hb, lb)  MAKE_64BIT_MASK((lb), ((hb) - (lb) + 1))
-> +
-> +#endif
-> diff --git a/hw/fsi/engine-scratchpad.c b/hw/fsi/engine-scratchpad.c
-> new file mode 100644
-> index 0000000000..a8887cd613
-> --- /dev/null
-> +++ b/hw/fsi/engine-scratchpad.c
-
-DRop FSIScratchPad from this patch. It should be introduced later.
-
-However, TYPE_FSI_BUS should be introcuded now because the following
-patch needs it.
-
-
-> @@ -0,0 +1,93 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2023 IBM Corp.
-> + *
-> + * IBM scratchpad engine
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +
-> +#include "qapi/error.h"
-> +#include "qemu/log.h"
-> +#include "trace.h"
-> +
-> +#include "hw/fsi/engine-scratchpad.h"
-> +
-> +static uint64_t fsi_scratchpad_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    FSIScratchPad *s = SCRATCHPAD(opaque);
-> +
-> +    trace_fsi_scratchpad_read(addr, size);
-> +
-> +    if (addr) {
-> +        return 0;
-> +    }
-> +
-> +    return s->reg;
-> +}
-> +
-> +static void fsi_scratchpad_write(void *opaque, hwaddr addr, uint64_t data,
-> +                                 unsigned size)
-> +{
-> +    FSIScratchPad *s = SCRATCHPAD(opaque);
-> +
-> +    trace_fsi_scratchpad_write(addr, size, data);
-> +
-> +    if (addr) {
-> +        return;
-> +    }
-> +
-> +    s->reg = data;
-> +}
-> +
-> +static const struct MemoryRegionOps scratchpad_ops = {
-> +    .read = fsi_scratchpad_read,
-> +    .write = fsi_scratchpad_write,
-> +    .endianness = DEVICE_BIG_ENDIAN,
-> +};
-> +
-> +static void fsi_scratchpad_realize(DeviceState *dev, Error **errp)
-> +{
-> +    FSILBusDevice *ldev = FSI_LBUS_DEVICE(dev);
-> +
-> +    memory_region_init_io(&ldev->iomem, OBJECT(ldev), &scratchpad_ops,
-> +                          ldev, TYPE_FSI_SCRATCHPAD, 0x400);
-> +}
-> +
-> +static void fsi_scratchpad_reset(DeviceState *dev)
-> +{
-> +    FSIScratchPad *s = SCRATCHPAD(dev);
-> +
-> +    s->reg = 0;
-> +}
-> +
-> +static void fsi_scratchpad_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +    FSILBusDeviceClass *ldc = FSI_LBUS_DEVICE_CLASS(klass);
-> +
-> +    dc->realize = fsi_scratchpad_realize;
-> +    dc->reset = fsi_scratchpad_reset;
-> +
-> +    ldc->config =
-> +          ENGINE_CONFIG_NEXT            | /* valid */
-> +          0x00010000                    | /* slots */
-> +          0x00001000                    | /* version */
-> +          ENGINE_CONFIG_TYPE_SCRATCHPAD | /* type */
-> +          0x00000007;                     /* crc */
-> +}
-> +
-> +static const TypeInfo fsi_scratchpad_info = {
-> +    .name = TYPE_FSI_SCRATCHPAD,
-> +    .parent = TYPE_FSI_LBUS_DEVICE,
-> +    .instance_size = sizeof(FSIScratchPad),
-> +    .class_init = fsi_scratchpad_class_init,
-> +    .class_size = sizeof(FSILBusDeviceClass),
-> +};
-> +
-> +static void fsi_scratchpad_register_types(void)
-> +{
-> +    type_register_static(&fsi_scratchpad_info);
-> +}
-> +
-> +type_init(fsi_scratchpad_register_types);
-> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
-> index e650c660f0..f7c7fd1b28 100644
-> --- a/hw/fsi/Kconfig
-> +++ b/hw/fsi/Kconfig
-> @@ -1,2 +1,6 @@
-> +config FSI_SCRATCHPAD
-> +    bool
-> +    select FSI_LBUS
-> +
->   config FSI_LBUS
->       bool
-
-
-I am not sure we need all this config option. We will see that at the end
-when the models are ready.
-
-
-Thanks,
-
-C.
-
-
-
-> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
-> index 4074d3a7d2..d45a98c223 100644
-> --- a/hw/fsi/meson.build
-> +++ b/hw/fsi/meson.build
-> @@ -1 +1,2 @@
->   system_ss.add(when: 'CONFIG_FSI_LBUS', if_true: files('lbus.c'))
-> +system_ss.add(when: 'CONFIG_FSI_SCRATCHPAD', if_true: files('engine-scratchpad.c'))
-> diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
-> new file mode 100644
-> index 0000000000..c5753e2791
-> --- /dev/null
-> +++ b/hw/fsi/trace-events
-> @@ -0,0 +1,2 @@
-> +fsi_scratchpad_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
-> +fsi_scratchpad_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
