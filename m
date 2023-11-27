@@ -2,49 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F577F9DF3
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 11:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 317397F9E0F
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 12:00:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7ZE2-0001x9-Iy; Mon, 27 Nov 2023 05:52:26 -0500
+	id 1r7ZKI-0003lO-Hp; Mon, 27 Nov 2023 05:58:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1r7ZDz-0001we-L6; Mon, 27 Nov 2023 05:52:23 -0500
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1r7ZDw-00057e-MZ; Mon, 27 Nov 2023 05:52:23 -0500
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id E1FE444BC0;
- Mon, 27 Nov 2023 11:52:10 +0100 (CET)
-Message-ID: <b5e09800-1d75-4108-8222-72360b8144bf@proxmox.com>
-Date: Mon, 27 Nov 2023 11:51:58 +0100
+ (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
+ id 1r7ZKA-0003l1-LW
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 05:58:46 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
+ id 1r7ZK7-000664-7U
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 05:58:45 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1cf80a7be0aso33312935ad.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 02:58:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701082720; x=1701687520; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6aN4QhFaL8apbxcsvPexuVCG1iRmcUPijDiXk4+v4kI=;
+ b=UfAmw583f+KRhjnVy13yf6WModigmA6fHcAIp3dtRvs8OnqbXH1AmL+VKIEv4BW3gl
+ ueTwK9ZTkxwmMCrr/0wpWmHSGS7Q8vZ68+HgtX4O4KqhbMvGJmtLvaRK6MVzaUqmWHrh
+ GstT7Zfyb7fCb/lSo6BquQ8KMGeDxeKvy/VjWB98eiIAz/O/HZluuz5jqy1P+OxIUSQz
+ vCpM83qpyBtXofn7pmAppH/mMxVv8dTVyB7bOEFsnF7eXsoM0t3jjo2Kmpp+H4w5Rtsb
+ HQ6lBxw6g0VJPPCnD+vzntnnhZte4P3dizt0+U248VCkMuWCsN/lvA38ozSJ3kajaxZu
+ 1hSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701082720; x=1701687520;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6aN4QhFaL8apbxcsvPexuVCG1iRmcUPijDiXk4+v4kI=;
+ b=XUIe6Nub6ksVCxL9bwWt+93znoRcwiI5610aH50/pTjqKI2181+6aS5NcWnPw8rOTf
+ 7eCz08UPwOfEC3OGcAPrjSLQwTZii2Kpn9jw05OcI6XhWS0cDQfzwFPxJvLZ4IIUKSt5
+ PA5ftIkhqbeM9xy/KrSEvSOPtEgkx/B1aTAs6D/0le9mDGk1gMywW+Xjs0Rugl7tapXU
+ C24pxWyM3ygw8PORZW7yBVPtFpvqa4ieua1eA2T7aUyMfGpObOAw0wV5LzsUUdzeInEM
+ o1hUbSy7/lXL1/ttbTonB4mWmBrmRgOvvb2xUaGGp7S4JfF/y2W+laH1I8H9CxIvBmdf
+ MQZQ==
+X-Gm-Message-State: AOJu0YyKwXbH6maUOxxvAdrXFjIkp/jfsMZx8/b5oHjnojPUGxrc5HAq
+ 6HqYtjqBa4Svcs1Do5xjpe0=
+X-Google-Smtp-Source: AGHT+IGXajPLrjeSXNjubKZPYJj5JX4juxBeAPD0E2rIK0KNdHZ+tVHdj88eypV3YdtUeyyAt6Docw==
+X-Received: by 2002:a17:90b:4a4e:b0:285:68f3:80c4 with SMTP id
+ lb14-20020a17090b4a4e00b0028568f380c4mr13974926pjb.45.1701082720203; 
+ Mon, 27 Nov 2023 02:58:40 -0800 (PST)
+Received: from localhost.localdomain ([1.245.180.67])
+ by smtp.gmail.com with ESMTPSA id
+ mp21-20020a17090b191500b002801ca4fad2sm7508351pjb.10.2023.11.27.02.58.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Nov 2023 02:58:39 -0800 (PST)
+From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Fan Ni <fan.ni@samsung.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Cc: linux-cxl@lore.kernel.org, qemu-devel@nongnu.org,
+ Davidlohr Bueso <dave@stgolabs.net>, Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Subject: [PATCH v1 0/2] A Fixup for "QEMU: CXL mailbox rework and features
+ (Part 1)"
+Date: Mon, 27 Nov 2023 19:58:28 +0900
+Message-Id: <20231127105830.2104954-1-42.hyeyoo@gmail.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-8.2] ui/vnc-clipboard: fix inflate_buffer
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, kraxel@redhat.com,
- mcascell@redhat.com
-References: <20231122125826.228189-1-f.ebner@proxmox.com>
- <CAJ+F1CLFAuKF7CgbiBYnKv+7sjkXfJ9tURNuMNGu9NLru059nQ@mail.gmail.com>
- <b5419999-625f-45a3-9a61-b6cb8356cdbe@proxmox.com>
- <CAJ+F1C+CV-PbMAhw9V+OzDHnFiSyFW8+kFBZZ-n_7usoNP_S5w@mail.gmail.com>
- <1bf79e54-d4de-4ac4-b75d-c79bd52c3eb0@proxmox.com>
- <CAJ+F1CK2KqnN2ZpZAz=kD7Pwn0SbZkmi_jMPxi4ePwPAubDmkg@mail.gmail.com>
-Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-In-Reply-To: <CAJ+F1CK2KqnN2ZpZAz=kD7Pwn0SbZkmi_jMPxi4ePwPAubDmkg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=42.hyeyoo@gmail.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HK_RANDOM_ENVFROM=1, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,52 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 27.11.23 um 10:15 schrieb Marc-André Lureau:
-> 
-> It seems like a bug in tigervnc then. For some reason, the compressed
-> data doesn't trigger Z_STREAM_END on the decompression side. Have you
-> investigated or reported an issue to them?
-> 
+Hi, this is a fixup for the recent patch series "QEMU: CXL mailbox rework and
+features (Part 1)" [1].
 
-This was with noVNC. A colleague tested with TigerVNC. I haven't stepped
-through with GDB there, but it might be similar. No, I haven't
-reported/investigated for the VNC clients yet. Unfortunately, I've got
-my hands full with other things at the moment, so it will be a while
-until I can do that.
+This fixes two problems:
 
-Even if it's a bug in the clients, this was working before d921fea338
-("ui/vnc-clipboard: fix infinite loop in inflate_buffer
-(CVE-2023-3255)") so I still feel like it might be worth handling in QEMU.
+   1. Media Status in memory device status register not being correctly
+      read as "Disabled" while sanitation is in progress.
 
-But is it really a client error? What I don't understand is why the
-return value of inflate() is Z_BUF_ERROR even though all the input was
-handled.
+   2. QEMU assertion failure when it issues an MSI-X interrupt
+      (indicating the completion of the sanitize command).
 
-From https://www.zlib.net/manual.html
+[1] https://lore.kernel.org/linux-cxl/20231023160806.13206-1-Jonathan.Cameron@huawei.com
 
-"inflate() returns [...] Z_BUF_ERROR if no progress was possible or if
-there was not enough room in the output buffer when Z_FINISH is used."
+Hyeonggon Yoo (2):
+  hw/cxl/device: read from register values in mdev_reg_read()
+  hw/mem/cxl_type3: allocate more vectors for MSI-X
 
-> 51	        ret = inflate(&stream, Z_FINISH);
-> (gdb) p stream
-> $23 = {next_in = 0x555557652708 "", avail_in = 5, total_in = 12, next_out = 0x555557627378 "", avail_out = 8, total_out = 8, msg = 0x0, state = 0x5555578df5c0, zalloc = 0x7ffff7bc1560, zfree = 0x7ffff7bc1570, 
->   opaque = 0x0, data_type = 5, adler = 71434672, reserved = 0}
-> (gdb) n
-> 52	        switch (ret) {
-> (gdb) p stream
-> $24 = {next_in = 0x55555765270d "", avail_in = 0, total_in = 17, next_out = 0x555557627379 "", avail_out = 7, total_out = 9, msg = 0x0, state = 0x5555578df5c0, zalloc = 0x7ffff7bc1560, zfree = 0x7ffff7bc1570, 
->   opaque = 0x0, data_type = 128, adler = 99746224, reserved = 0}
-> (gdb) p ret
-> $25 = -5
-> (gdb) p out + 4
-> $26 = (uint8_t *) 0x555557627374 "fish"
+ hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
+ hw/mem/cxl_type3.c          |  2 +-
+ include/hw/cxl/cxl_device.h |  4 +++-
+ 3 files changed, 15 insertions(+), 8 deletions(-)
 
-Progress was made and there was enough space for the output (avail_out =
-7 after the call), so it really shouldn't return Z_BUF_ERROR, right?
-
-zlib version is 1:1.2.13.dfsg-1 (Debian 12 Bookworm)
-
-Best Regards,
-Fiona
+-- 
+2.39.1
 
 
