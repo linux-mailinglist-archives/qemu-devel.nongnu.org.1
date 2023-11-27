@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680C67FA637
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 17:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E007FA64E
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 17:25:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7eKf-0002dR-Rf; Mon, 27 Nov 2023 11:19:37 -0500
+	id 1r7eOk-00046c-MD; Mon, 27 Nov 2023 11:23:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=5Qwu=HI=kaod.org=clg@ozlabs.org>)
- id 1r7eKe-0002cU-24; Mon, 27 Nov 2023 11:19:36 -0500
+ id 1r7eOi-000463-52; Mon, 27 Nov 2023 11:23:48 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=5Qwu=HI=kaod.org=clg@ozlabs.org>)
- id 1r7eKb-0004Fn-HE; Mon, 27 Nov 2023 11:19:35 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sf9lN048tz4xQb;
- Tue, 28 Nov 2023 03:19:28 +1100 (AEDT)
+ id 1r7eOf-0004zp-Ti; Mon, 27 Nov 2023 11:23:47 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sf9rG06JYz4xR5;
+ Tue, 28 Nov 2023 03:23:42 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sf9lG43dfz4x5w;
- Tue, 28 Nov 2023 03:19:22 +1100 (AEDT)
-Message-ID: <163e54ff-d79c-4587-83c6-5fb8e95e7772@kaod.org>
-Date: Mon, 27 Nov 2023 17:19:19 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sf9r727Q0z4wcJ;
+ Tue, 28 Nov 2023 03:23:34 +1100 (AEDT)
+Message-ID: <6f8aede9-26ac-4921-8803-8eb1a74a48c0@kaod.org>
+Date: Mon, 27 Nov 2023 17:23:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 04/10] hw/fsi: Introduce IBM's FSI
+Subject: Re: [PATCH v7 05/10] hw/fsi: IBM's On-chip Peripheral Bus
 Content-Language: en-US
 To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
  peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
@@ -37,9 +38,9 @@ To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
  thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
 Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
 References: <20231026164741.1184058-1-ninad@linux.ibm.com>
- <20231026164741.1184058-5-ninad@linux.ibm.com>
+ <20231026164741.1184058-6-ninad@linux.ibm.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231026164741.1184058-5-ninad@linux.ibm.com>
+In-Reply-To: <20231026164741.1184058-6-ninad@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -69,284 +70,160 @@ On 10/26/23 18:47, Ninad Palsule wrote:
 > This is a part of patchset where IBM's Flexible Service Interface is
 > introduced.
 > 
-> This commit models the FSI bus. CFAM is hanging out of FSI bus. The bus
-> is model such a way that it is embedded inside the FSI master which is a
-> bus controller.
-> 
-> The FSI master: A controller in the platform service processor (e.g.
-> BMC) driving CFAM engine accesses into the POWER chip. At the
-> hardware level FSI is a bit-based protocol supporting synchronous and
-> DMA-driven accesses of engines in a CFAM.
+> The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
+> POWER processors. This now makes an appearance in the ASPEED SoC due
+> to tight integration of the FSI master IP with the OPB, mainly the
+> existence of an MMIO-mapping of the CFAM address straight onto a
+> sub-region of the OPB address space.
 > 
 > Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
 > Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
 > Reviewed-by: Joel Stanley <joel@jms.id.au>
 > ---
 > v2:
-> - Incorporated review comments by Joel
+> - Incorporated review comment by Joel.
 > v5:
 > - Incorporated review comments by Cedric.
 > v6:
 > - Incorporated review comments by Cedric & Daniel
 > v7:
-> - Cleaned up unused bits.
+> - Incorporated review comments by Cedric.
 > ---
->   include/hw/fsi/fsi-master.h |  30 +++++++
->   hw/fsi/fsi-master.c         | 162 ++++++++++++++++++++++++++++++++++++
->   hw/fsi/fsi.c                |  25 ++++++
->   hw/fsi/meson.build          |   2 +-
->   hw/fsi/trace-events         |   2 +
->   5 files changed, 220 insertions(+), 1 deletion(-)
->   create mode 100644 include/hw/fsi/fsi-master.h
->   create mode 100644 hw/fsi/fsi-master.c
->   create mode 100644 hw/fsi/fsi.c
+>   include/hw/fsi/opb.h | 33 ++++++++++++++++++++
+>   hw/fsi/fsi-master.c  |  3 +-
+>   hw/fsi/opb.c         | 74 ++++++++++++++++++++++++++++++++++++++++++++
+>   hw/fsi/Kconfig       |  4 +++
+>   hw/fsi/meson.build   |  1 +
+>   5 files changed, 113 insertions(+), 2 deletions(-)
+>   create mode 100644 include/hw/fsi/opb.h
+>   create mode 100644 hw/fsi/opb.c
 > 
-> diff --git a/include/hw/fsi/fsi-master.h b/include/hw/fsi/fsi-master.h
+> diff --git a/include/hw/fsi/opb.h b/include/hw/fsi/opb.h
 > new file mode 100644
-> index 0000000000..847078919c
+> index 0000000000..8b71bb55c2
 > --- /dev/null
-> +++ b/include/hw/fsi/fsi-master.h
-> @@ -0,0 +1,30 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2019 IBM Corp.
-> + *
-> + * IBM Flexible Service Interface Master
-> + */
-> +#ifndef FSI_FSI_MASTER_H
-> +#define FSI_FSI_MASTER_H
-> +
-> +#include "exec/memory.h"
-> +#include "hw/qdev-core.h"
-> +#include "hw/fsi/fsi.h"
-> +
-> +#define TYPE_FSI_MASTER "fsi.master"
-> +OBJECT_DECLARE_SIMPLE_TYPE(FSIMasterState, FSI_MASTER)
-> +
-> +#define FSI_MASTER_NR_REGS ((0x2e0 >> 2) + 1)
-> +
-> +typedef struct FSIMasterState {
-> +    DeviceState parent;
-> +    MemoryRegion iomem;
-> +    MemoryRegion opb2fsi;
-> +
-> +    FSIBus bus;
-> +
-> +    uint32_t regs[FSI_MASTER_NR_REGS];
-
-Move FSICFAMState here.
-
-
-> +} FSIMasterState;
-> +
-> +
-> +#endif /* FSI_FSI_H */
-> diff --git a/hw/fsi/fsi-master.c b/hw/fsi/fsi-master.c
-> new file mode 100644
-> index 0000000000..bb7a893003
-> --- /dev/null
-> +++ b/hw/fsi/fsi-master.c
-> @@ -0,0 +1,162 @@
+> +++ b/include/hw/fsi/opb.h
+> @@ -0,0 +1,33 @@
 > +/*
 > + * SPDX-License-Identifier: GPL-2.0-or-later
 > + * Copyright (C) 2023 IBM Corp.
 > + *
-> + * IBM Flexible Service Interface master
+> + * IBM On-Chip Peripheral Bus
 > + */
+> +#ifndef FSI_OPB_H
+> +#define FSI_OPB_H
 > +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "qemu/log.h"
-> +#include "trace.h"
-> +
+> +#include "exec/memory.h"
 > +#include "hw/fsi/fsi-master.h"
 > +
 > +#define TYPE_OP_BUS "opb"
+> +OBJECT_DECLARE_SIMPLE_TYPE(OPBus, OP_BUS)
 > +
-> +#define TO_REG(x)                               ((x) >> 2)
+> +typedef struct OPBus {
+> +        /*< private >*/
+> +        BusState bus;
 > +
-> +#define FSI_MENP0                               TO_REG(0x010)
-> +#define FSI_MENP32                              TO_REG(0x014)
-> +#define FSI_MSENP0                              TO_REG(0x018)
-> +#define FSI_MLEVP0                              TO_REG(0x018)
-> +#define FSI_MSENP32                             TO_REG(0x01c)
-> +#define FSI_MLEVP32                             TO_REG(0x01c)
-> +#define FSI_MCENP0                              TO_REG(0x020)
-> +#define FSI_MREFP0                              TO_REG(0x020)
-> +#define FSI_MCENP32                             TO_REG(0x024)
-> +#define FSI_MREFP32                             TO_REG(0x024)
+> +        /*< public >*/
+> +        MemoryRegion mr;
+> +        AddressSpace as;
 > +
-> +#define FSI_MVER                                TO_REG(0x074)
-> +#define FSI_MRESP0                              TO_REG(0x0d0)
-> +
-> +#define FSI_MRESB0                              TO_REG(0x1d0)
-> +#define   FSI_MRESB0_RESET_GENERAL              BE_BIT(0)
-> +#define   FSI_MRESB0_RESET_ERROR                BE_BIT(1)
-> +
-> +static uint64_t fsi_master_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    FSIMasterState *s = FSI_MASTER(opaque);
-> +
-> +    trace_fsi_master_read(addr, size);
-> +
-> +    if (addr + size > sizeof(s->regs)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for %u\n",
-> +                      __func__, addr, size);
-> +        return 0;
-> +    }
-> +
-> +    return s->regs[TO_REG(addr)];
-> +}
-> +
-> +static void fsi_master_write(void *opaque, hwaddr addr, uint64_t data,
-> +                             unsigned size)
-> +{
-> +    FSIMasterState *s = FSI_MASTER(opaque);
-> +
-> +    trace_fsi_master_write(addr, size, data);
-> +
-> +    if (addr + size > sizeof(s->regs)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Out of bounds write: %"HWADDR_PRIx" for %u\n",
-> +                      __func__, addr, size);
-> +        return;
-> +    }
-> +
-> +    switch (TO_REG(addr)) {
-> +    case FSI_MENP0:
-> +        s->regs[FSI_MENP0] = data;
-> +        break;
-> +    case FSI_MENP32:
-> +        s->regs[FSI_MENP32] = data;
-> +        break;
-> +    case FSI_MSENP0:
-> +        s->regs[FSI_MENP0] |= data;
-> +        break;
-> +    case FSI_MSENP32:
-> +        s->regs[FSI_MENP32] |= data;
-> +        break;
-> +    case FSI_MCENP0:
-> +        s->regs[FSI_MENP0] &= ~data;
-> +        break;
-> +    case FSI_MCENP32:
-> +        s->regs[FSI_MENP32] &= ~data;
-> +        break;
-> +    case FSI_MRESP0:
-> +        /* Perform necessary resets leave register 0 to indicate no errors */
-> +        break;
-> +    case FSI_MRESB0:
-> +        if (data & FSI_MRESB0_RESET_GENERAL) {
-> +            device_cold_reset(DEVICE(opaque));
-> +        }
-> +        if (data & FSI_MRESB0_RESET_ERROR) {
-> +            /* FIXME: this seems dubious */
-> +            device_cold_reset(DEVICE(opaque));
-> +        }
-> +        break;
-> +    default:
-> +        s->regs[TO_REG(addr)] = data;
-> +    }
-> +}
-> +
-> +static const struct MemoryRegionOps fsi_master_ops = {
-> +    .read = fsi_master_read,
-> +    .write = fsi_master_write,
-> +    .endianness = DEVICE_BIG_ENDIAN,
-> +};
+> +        /* Model OPB as dumb enough just to provide an address-space */
+> +        /* TODO: Maybe don't store device state in the bus? */
+> +        FSIMasterState fsi;
 
-Add a instance_init handler to initialize the cfam object.
+Please remove. FSIMasterState should be introduced later.
+
+> +} OPBus;
+> +
+> +typedef struct OPBusClass {
+> +        BusClass parent_class;
+> +} OPBusClass;
+> +
+> +#endif /* FSI_OPB_H */
+> diff --git a/hw/fsi/fsi-master.c b/hw/fsi/fsi-master.c
+> index bb7a893003..ec092b42ea 100644
+> --- a/hw/fsi/fsi-master.c
+> +++ b/hw/fsi/fsi-master.c
+> @@ -11,8 +11,7 @@
+>   #include "trace.h"
+>   
+>   #include "hw/fsi/fsi-master.h"
+> -
+> -#define TYPE_OP_BUS "opb"
+> +#include "hw/fsi/opb.h"
+
+ouch.
+
+This is an ugly hack because the modeling is broken. OPB should be introduced
+before tFSIMasterState.
 
 
-> +static void fsi_master_realize(DeviceState *dev, Error **errp)
-> +{
-> +    FSIMasterState *s = FSI_MASTER(dev);
-> +
-> +    qbus_init(&s->bus, sizeof(s->bus), TYPE_FSI_BUS, DEVICE(s), NULL);
-> +
-> +    memory_region_init_io(&s->iomem, OBJECT(s), &fsi_master_ops, s,
-> +                          TYPE_FSI_MASTER, 0x10000000);
-> +    memory_region_init(&s->opb2fsi, OBJECT(s), "fsi.opb2fsi", 0x10000000);
-> +
-> +    if (!object_property_set_bool(OBJECT(&s->bus), "realized", true, errp)) {
-> +        return;
-> +    }
-> +
-> +    memory_region_add_subregion(&s->opb2fsi, 0, &s->bus.slave.mr);
-> +
-> +    /* Let's add first CFAM */
-> +    object_initialize_child(OBJECT(BUS(&s->bus)), TYPE_FSI_CFAM, &s->bus.slave,
-> +                            TYPE_FSI_CFAM);
-> +    qdev_set_parent_bus(DEVICE(&s->bus.slave), BUS(&s->bus), &error_abort);
-> +    object_property_set_bool(OBJECT(&s->bus.slave), "realized", true, errp);
-
-This routine needs a lot of cleanup ... :/ I will provide you one.
-
-> +}
-> +
-> +static void fsi_master_reset(DeviceState *dev)
-> +{
-> +    FSIMasterState *s = FSI_MASTER(dev);
-> +
-> +    /* ASPEED default */
-> +    s->regs[FSI_MVER] = 0xe0050101;
-> +}
-> +
-> +static void fsi_master_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +
-> +    dc->bus_type = TYPE_OP_BUS;
-> +    dc->desc = "FSI Master";
-> +    dc->realize = fsi_master_realize;
-> +    dc->reset = fsi_master_reset;
-> +}
-> +
-> +static const TypeInfo fsi_master_info = {
-> +    .name = TYPE_FSI_MASTER,
-> +    .parent = TYPE_DEVICE,
-> +    .instance_size = sizeof(FSIMasterState),
-> +    .class_init = fsi_master_class_init,
-> +};
-> +
-> +static void fsi_register_types(void)
-> +{
-> +    type_register_static(&fsi_master_info);
-> +}
-> +
-> +type_init(fsi_register_types);
-> diff --git a/hw/fsi/fsi.c b/hw/fsi/fsi.c
+>   #define TO_REG(x)                               ((x) >> 2)
+>   
+> diff --git a/hw/fsi/opb.c b/hw/fsi/opb.c
 > new file mode 100644
-> index 0000000000..180283746e
+> index 0000000000..04771b4b27
 > --- /dev/null
-> +++ b/hw/fsi/fsi.c
-> @@ -0,0 +1,25 @@
+> +++ b/hw/fsi/opb.c
+> @@ -0,0 +1,74 @@
 > +/*
 > + * SPDX-License-Identifier: GPL-2.0-or-later
 > + * Copyright (C) 2023 IBM Corp.
 > + *
-> + * IBM Flexible Service Interface
+> + * IBM On-chip Peripheral Bus
 > + */
+> +
 > +#include "qemu/osdep.h"
 > +
 > +#include "qapi/error.h"
+> +#include "qemu/log.h"
 > +
-> +#include "hw/fsi/fsi.h"
-> +#include "hw/fsi/cfam.h"
+> +#include "hw/fsi/opb.h"
 > +
-> +static const TypeInfo fsi_bus_info = {
-> +    .name = TYPE_FSI_BUS,
-> +    .parent = TYPE_BUS,
-> +    .instance_size = sizeof(FSIBus),
-> +};
-> +
-> +static void fsi_bus_register_types(void)
+> +static void fsi_opb_realize(BusState *bus, Error **errp)
 > +{
-> +    type_register_static(&fsi_bus_info);
+> +    OPBus *opb = OP_BUS(bus);
+> +
+> +    memory_region_init_io(&opb->mr, OBJECT(opb), NULL, opb,
+> +                          NULL, UINT32_MAX);
+> +    address_space_init(&opb->as, &opb->mr, "opb");
+
+Please keep the above and put it in a instance_init handler and remove
+the rest. It should go under AspeedAPB2OPBState.
+
+> +
+> +    if (!object_property_set_bool(OBJECT(&opb->fsi), "realized", true, errp)) {
+> +        return;
+> +    }
+> +
+> +    memory_region_add_subregion(&opb->mr, 0x80000000, &opb->fsi.iomem);
+> +
+> +    /* OPB2FSI region */
+> +    /*
+> +     * Avoid endianness issues by mapping each slave's memory region directly.
+> +     * Manually bridging multiple address-spaces causes endian swapping
+> +     * headaches as memory_region_dispatch_read() and
+> +     * memory_region_dispatch_write() correct the endianness based on the
+> +     * target machine endianness and not relative to the device endianness on
+> +     * either side of the bridge.
+> +     */
+> +    /*
+> +     * XXX: This is a bit hairy and will need to be fixed when I sort out the
+> +     * bus/slave relationship and any changes to the CFAM modelling (multiple
+> +     * slaves, LBUS)
+> +     */
+> +    memory_region_add_subregion(&opb->mr, 0xa0000000, &opb->fsi.opb2fsi);
+> +}
+> +
+> +static void fsi_opb_init(Object *o)
+> +{
+> +    OPBus *opb = OP_BUS(o);
+> +
+> +    object_initialize_child(o, "fsi-master", &opb->fsi, TYPE_FSI_MASTER);
+> +    qdev_set_parent_bus(DEVICE(&opb->fsi), BUS(o), &error_abort);
 > +}
 
-
-This should be introduced in patch 2.
+Drop all of the above.
 
 
 Thanks,
@@ -355,27 +232,48 @@ C.
 
 
 
-
-> +type_init(fsi_bus_register_types);
+> +
+> +static void fsi_opb_class_init(ObjectClass *klass, void *data)
+> +{
+> +    BusClass *bc = BUS_CLASS(klass);
+> +    bc->realize = fsi_opb_realize;
+> +}
+> +
+> +static const TypeInfo opb_info = {
+> +    .name = TYPE_OP_BUS,
+> +    .parent = TYPE_BUS,
+> +    .instance_init = fsi_opb_init,
+> +    .instance_size = sizeof(OPBus),
+> +    .class_init = fsi_opb_class_init,
+> +    .class_size = sizeof(OPBusClass),
+> +};
+> +
+> +static void fsi_opb_register_types(void)
+> +{
+> +    type_register_static(&opb_info);
+> +}
+> +
+> +type_init(fsi_opb_register_types);
+> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+> index 8d712e77ed..0f6e6d331a 100644
+> --- a/hw/fsi/Kconfig
+> +++ b/hw/fsi/Kconfig
+> @@ -1,3 +1,7 @@
+> +config FSI_OPB
+> +    bool
+> +    select FSI_CFAM
+> +
+>   config FSI_CFAM
+>       bool
+>       select FSI
 > diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
-> index a9e7cd4099..f617943b4a 100644
+> index f617943b4a..407b8c2775 100644
 > --- a/hw/fsi/meson.build
 > +++ b/hw/fsi/meson.build
-> @@ -1,4 +1,4 @@
->   system_ss.add(when: 'CONFIG_FSI_LBUS', if_true: files('lbus.c'))
+> @@ -2,3 +2,4 @@ system_ss.add(when: 'CONFIG_FSI_LBUS', if_true: files('lbus.c'))
 >   system_ss.add(when: 'CONFIG_FSI_SCRATCHPAD', if_true: files('engine-scratchpad.c'))
 >   system_ss.add(when: 'CONFIG_FSI_CFAM', if_true: files('cfam.c'))
-> -system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi-slave.c'))
-> +system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi.c','fsi-master.c','fsi-slave.c'))
-> diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
-> index b57b2dcc86..89d8cd62c8 100644
-> --- a/hw/fsi/trace-events
-> +++ b/hw/fsi/trace-events
-> @@ -7,3 +7,5 @@ fsi_cfam_unimplemented_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%"
->   fsi_cfam_config_write_noaddr(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
->   fsi_slave_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
->   fsi_slave_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
-> +fsi_master_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
-> +fsi_master_write(uint64_t addr, uint32_t size, uint64_t data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
+>   system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi.c','fsi-master.c','fsi-slave.c'))
+> +system_ss.add(when: 'CONFIG_FSI_OPB', if_true: files('opb.c'))
 
 
