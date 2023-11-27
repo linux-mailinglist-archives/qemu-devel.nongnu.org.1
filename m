@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170E07F9E0E
+	by mail.lfdr.de (Postfix) with ESMTPS id 1142F7F9E0D
 	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 12:00:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7ZKI-0003ln-Tn; Mon, 27 Nov 2023 05:58:55 -0500
+	id 1r7ZKK-0003mK-2U; Mon, 27 Nov 2023 05:58:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1r7ZKB-0003l9-TE
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 05:58:48 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1r7ZKG-0003lV-59
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 05:58:52 -0500
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1r7ZK8-00066N-NG
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 05:58:46 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6cd89f2af9dso928471b3a.1
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 02:58:44 -0800 (PST)
+ id 1r7ZKB-00066m-Ty
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 05:58:50 -0500
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-2857670af8cso2774588a91.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 02:58:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701082723; x=1701687523; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701082726; x=1701687526; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LhYJOjXiM4Bj7KpsRd+A9qv7CrsEwzIsriCSWgcNzJc=;
- b=My2fX9ClIREDAqEJBZTUm+0jLv/YLLg3aaVug/4o1AVdSCXJZTMS3u7AWXVi8v6MPy
- rB5G5PvN8bvO6AxqMDFuG+9NjLoTiNzoPmv3btoqFSjdlAMkMKtKB0IkJ6i7NfC3e3G7
- cNhkyXUdpBtYYYCFUuGkqmJkySskxzjFWDhdEGh+TPTXh1/avk/49NtDnTKnsWajJ5ol
- GiGGjQvMqPB4TrpY6RUMuzsRW133WEgpL1/JCU8tUEk9Olx+yT7XJOBBbVLUo/y19C0G
- yTrr6BQqGzFQ3GDpVZt9MgLUNQP5jkajbnFykWNe6joeg/nMq/kNcmaaMFdp3EQBNmSG
- Hmcg==
+ bh=+0aTzAq6W7EbYaE2S8Vh4ITPH2FgfVuM24WZURH+ztM=;
+ b=SbIYukhwNAVd3odgbKuurNHcG8jHna+Q/0Bse2TTjZrYY2/Xjmh+uUpjAjB6XcpViR
+ ZM4/ZFoNLfnCwBMjizZHnyrV/ZFyhxF5a11RL9iN2SZ/OOnZPwRuNQ4vqGrCL13J09d5
+ +6kLk9HGQaQGKkdcRtwQ7TJ0/wTdEb281PTf0+67d23uG0pUPpwkdHV0WT+s4A11QpU+
+ bv1yFByZCanYkWlz4wMgUtdI5LaO97tID+AZhGSrbO5uHMgWwf+Nn1JjMJ0dqbTc2UpP
+ wWCKPzPOm6wC6AbrIXhpcqisYBmtlMUEDPWJFP86WYyTcuHRwI1O6hBLCFr59vkh/B//
+ z/Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701082723; x=1701687523;
+ d=1e100.net; s=20230601; t=1701082726; x=1701687526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LhYJOjXiM4Bj7KpsRd+A9qv7CrsEwzIsriCSWgcNzJc=;
- b=OIfSbxxRbhqTyqv0fUhoI5/9mAGLbyYvPgHEv+pa1V9M8/momnPqVqC/S3yf2m7d8i
- Hx+N8GoBvowEv/D7AxrKTZLvJfpp/pggMHlKh5H1lX8Ju/iyrOrfHtTMTf6o2AzyppbC
- 17nlZQmPJIbJbCeee2SxLoe2FB+pq9dH0QoIDKoerVmgAaYYkjzMEKAhDCKUHgCB038u
- /aID8lQIZwr/VUEp39Wy+i/sJRjx3BzS02gNfNpFFaVdrusu6PqvlJ1NQa1py0mUx1Be
- XvlObZlCuxVMPGmyRi0I+w3gZnPNMO7G/LN9gE+3U3+KszFPIdIvCMv6XjH3Y/dZ1OEa
- ljNg==
-X-Gm-Message-State: AOJu0YyhsG2/S5KbFCjwuLopXcs5UNsYPh/p5tSw2S59oCjloeA6qUv3
- Rw7QzSzQ4zQSxW2yYp4rTws=
-X-Google-Smtp-Source: AGHT+IEZ+MwgU+VJjGDw3ojZ0RNPwD1DqexbUg9l57CLuDVl/j0HWa2VEjfzqfGtifj7lrGBzHcLqg==
-X-Received: by 2002:a05:6a21:99a6:b0:18c:63cb:e86e with SMTP id
- ve38-20020a056a2199a600b0018c63cbe86emr7787487pzb.2.1701082723006; 
- Mon, 27 Nov 2023 02:58:43 -0800 (PST)
+ bh=+0aTzAq6W7EbYaE2S8Vh4ITPH2FgfVuM24WZURH+ztM=;
+ b=DWGMvN4dBWTkOkvnHmubGTm75ksuLTI4JM8dn0TkSkgXCdOdhVhw5wSbq3BO+/+qc1
+ iIjBqGbNwsbi3YnxIod9W3CZrGo7j/WdLx1LWaDjGhtLXlqHyoEbSZE3GG14gRChLwrO
+ rSyQTQRq0jx61YQepmxuGPIU82LkLc6BAz2mgRF2ANCRAbj4csBLODc/40h2COMpkY9U
+ 86mK1sZ7w6Egbw4msvrIe4jKzpMXkxVJYvncH3biPZ/w1YYVA6kuC8dJLClfQhjMZ7ee
+ pVJC8B2G4LTn2kRL0oTxKtlpq6SOSD2xrefjkZjcczdrPvYoLYrDoqrPRInVQrjrGA4V
+ hqyQ==
+X-Gm-Message-State: AOJu0YzHiomkvYbR7OclO8oPAEA4+oFmxDFtrp2HG2mwJQldnH6t6rC4
+ w2pD7AL0PnTVKuPPzzDwgcQ=
+X-Google-Smtp-Source: AGHT+IEskGqLC84KWDvFjyr7AKZEfqK0cO/j244GUmecCVGnRDrFCgipFW1MBBPfT7zBALrOei1xlg==
+X-Received: by 2002:a17:90b:4a84:b0:285:b6a6:c411 with SMTP id
+ lp4-20020a17090b4a8400b00285b6a6c411mr4026667pjb.4.1701082726429; 
+ Mon, 27 Nov 2023 02:58:46 -0800 (PST)
 Received: from localhost.localdomain ([1.245.180.67])
  by smtp.gmail.com with ESMTPSA id
- mp21-20020a17090b191500b002801ca4fad2sm7508351pjb.10.2023.11.27.02.58.40
+ mp21-20020a17090b191500b002801ca4fad2sm7508351pjb.10.2023.11.27.02.58.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Nov 2023 02:58:42 -0800 (PST)
+ Mon, 27 Nov 2023 02:58:45 -0800 (PST)
 From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Fan Ni <fan.ni@samsung.com>, "Michael S . Tsirkin" <mst@redhat.com>
 Cc: linux-cxl@lore.kernel.org, qemu-devel@nongnu.org,
  Davidlohr Bueso <dave@stgolabs.net>, Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Subject: [PATCH v1 1/2] hw/cxl/device: read from register values in
- mdev_reg_read()
-Date: Mon, 27 Nov 2023 19:58:29 +0900
-Message-Id: <20231127105830.2104954-2-42.hyeyoo@gmail.com>
+Subject: [PATCH v1 2/2] hw/mem/cxl_type3: allocate more vectors for MSI-X
+Date: Mon, 27 Nov 2023 19:58:30 +0900
+Message-Id: <20231127105830.2104954-3-42.hyeyoo@gmail.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20231127105830.2104954-1-42.hyeyoo@gmail.com>
 References: <20231127105830.2104954-1-42.hyeyoo@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=42.hyeyoo@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=42.hyeyoo@gmail.com; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: 0
 X-Spam_score: -0.1
 X-Spam_bar: /
@@ -95,77 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the current mdev_reg_read() implementation, it consistently returns
-that the Media Status is Ready (01b). This was fine until commit
-25a52959f99d ("hw/cxl: Add support for device sanitation") because the
-media was presumed to be ready.
+commit 43efb0bfad2b ("hw/cxl/mbox: Wire up interrupts for background
+completion") enables notifying background command completion via MSI-X
+interrupt (vector number 9).
 
-However, as per the CXL 3.0 spec "8.2.9.8.5.1 Sanitize (Opcode 4400h)",
-during sanitation, the Media State should be set to Disabled (11b). The
-mentioned commit correctly sets it to Disabled, but mdev_reg_read()
-still returns Media Status as Ready.
+However, the commit uses vector number 9 but the maximum number of
+entries is less thus resulting in error below. Fix it by passing
+nentries = 10 when calling msix_init_exclusive_bar().
 
-To address this, update mdev_reg_read() to read register values instead
-of returning dummy values.
+ # echo 1 > sanitize
+ Background command 4400h finished: success
+ qemu-system-x86_64: ../hw/pci/msix.c:529: msix_notify: Assertion `vector < dev->msix_entries_nr' failed.
 
-Fixes: commit 25a52959f99d ("hw/cxl: Add support for device sanitation")
+Fixes: 43efb0bfad2b ("hw/cxl/mbox: Wire up interrupts for background completion")
 Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 ---
- hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
- include/hw/cxl/cxl_device.h |  4 +++-
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ hw/mem/cxl_type3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-index 61a3c4dc2e..f1111eb20f 100644
---- a/hw/cxl/cxl-device-utils.c
-+++ b/hw/cxl/cxl-device-utils.c
-@@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque, hwaddr offset, uint64_t value,
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 52647b4ac7..72d9371347 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -685,7 +685,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+     ComponentRegisters *regs = &cxl_cstate->crb;
+     MemoryRegion *mr = &regs->component_registers;
+     uint8_t *pci_conf = pci_dev->config;
+-    unsigned short msix_num = 6;
++    unsigned short msix_num = 10;
+     int i, rc;
  
- static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size)
- {
--    uint64_t retval = 0;
--
--    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
--    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
-+    CXLDeviceState *cxl_dstate = opaque;
- 
--    return retval;
-+    return cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
- }
- 
- static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
-@@ -371,7 +368,15 @@ static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
-     cxl_dstate->mbox_msi_n = msi_n;
- }
- 
--static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
-+static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
-+{
-+    uint64_t memdev_status_reg;
-+
-+    memdev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
-+    memdev_status_reg = FIELD_DP64(memdev_status_reg, CXL_MEM_DEV_STS,
-+                                   MBOX_READY, 1);
-+    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = memdev_status_reg;
-+}
- 
- void cxl_device_register_init_t3(CXLType3Dev *ct3d)
- {
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index befb5f884b..873e6d6ab1 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -353,7 +353,9 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
- {
-     uint64_t dev_status_reg;
- 
--    dev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val);
-+    dev_status_reg = cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
-+    dev_status_reg = FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS,
-+                                val);
-     cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = dev_status_reg;
- }
- #define cxl_dev_disable_media(cxlds)                    \
+     QTAILQ_INIT(&ct3d->error_list);
 -- 
 2.39.1
 
