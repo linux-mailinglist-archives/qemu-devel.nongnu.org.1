@@ -2,81 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C177FA566
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 16:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C34CB7FA572
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 16:59:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7dyN-0007f6-EP; Mon, 27 Nov 2023 10:56:35 -0500
+	id 1r7e0s-0008St-DT; Mon, 27 Nov 2023 10:59:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r7dyL-0007dg-07
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:56:33 -0500
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r7e0q-0008Si-Vd
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:59:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r7dyJ-0008Vk-KP
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:56:32 -0500
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r7e0o-0000Fs-RA
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:59:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701100590;
+ s=mimecast20190719; t=1701100745;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=NEnvog/Q8aPfUl/eYFBChdiW9uxnBxBrEVVDkrY1D/8=;
- b=cokr+/czZwgmNcOqGPJ6w1bo9tsHqgoyJ/9Ed3IH4B+RUqyVDtdOqEx+f5taDsiqcNKz0U
- 9Mowvx4e0Cstp0yUcOwTmq6Q1gFm0ihDEE3DVXM2AFhTO+WFLJHlshppyIS9/N7zgmgIC2
- gGSn1LLmbVM5dErrOcCk6rKkmoaKeew=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6-RT34Q3waMb29W6MLRUAGSw-1; Mon, 27 Nov 2023 10:56:29 -0500
-X-MC-Unique: RT34Q3waMb29W6MLRUAGSw-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-77d683d5775so110665385a.0
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 07:56:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701100588; x=1701705388;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NEnvog/Q8aPfUl/eYFBChdiW9uxnBxBrEVVDkrY1D/8=;
- b=SlPxkdTtXwTTIxRFigLaRjhRwPDWGWN1jZnSTdiFHxNdctML7DMdM5VrtgNYQviY/M
- 0y8q5GaQXWNnG910DiArRUa/bxfEbeoxb3/1P/2Xr7xSpMbi7fZaOAUVEyFjBBy6IA3h
- 3jqa5bpPt+7W9Gw6KKhHSkVsvAP9de8onc4T8aLsm9GkntHp053MGyFnHIt+q+TPS/UX
- TN7O3+iAl9HmO7uANOQMbjmbOqc/uB0Jtovf8/dJ+bin2Qsxh3D3PdTbRMF6GqPR/ODC
- QVfVKu/zrFZvJoWY4jgMpn2XnqnlrghIJe3cvBsa7I2NEQ4Jnz5EpSVeivOE3MhAHVFf
- Grhg==
-X-Gm-Message-State: AOJu0YwdtaoXD5WHMSnntZI4qI9VuXAmdyTPsxQbVF7Lm5jBRiNMXUfK
- mUylwN17wG8fX16AFBuLeccibcDitBnRGiuPS+1VU/lgG5DuqBpMqsz7gv0idMAc/7ZQa0Xxp2k
- t332D1K5H1laOB1M=
-X-Received: by 2002:a05:620a:4710:b0:77d:59c7:8eb9 with SMTP id
- bs16-20020a05620a471000b0077d59c78eb9mr14203253qkb.7.1701100588563; 
- Mon, 27 Nov 2023 07:56:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFsFMtwCmNQln+DXFeLdAb4AgfN9kwoKAbax6rZ6soDU1ZcUf1XLbK0ACd1MW6iW+wiS0c7vg==
-X-Received: by 2002:a05:620a:4710:b0:77d:59c7:8eb9 with SMTP id
- bs16-20020a05620a471000b0077d59c78eb9mr14203247qkb.7.1701100588312; 
- Mon, 27 Nov 2023 07:56:28 -0800 (PST)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- dv16-20020a05620a1b9000b0077d85d22e89sm2645573qkb.63.2023.11.27.07.56.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Nov 2023 07:56:28 -0800 (PST)
-Date: Mon, 27 Nov 2023 10:56:26 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v1 6/7] tests/qtest/migration: Add a wrapper to print
- test names
-Message-ID: <ZWS8KguxGJi9idtQ@x1n>
-References: <20231124161432.3515-1-farosas@suse.de>
- <20231124161432.3515-7-farosas@suse.de> <ZWStsHj23pCbuGPP@x1n>
- <87y1ej2oay.fsf@suse.de>
+ bh=kK4WrFGMgOkZhrtabBf7fSuhlD9WIndeBxuMsKTjAqs=;
+ b=HTRuCIAiKrqJgDdRlU871qJ2bxxq6IkZ3P0IRxtV/925iW2QplCzmj7CLD/2SALGrULj0c
+ mRovAi7mR1cSeOLMHGoG/k1+40S1E8klfrliDBT1Yvc44BtOLSpIbmlCuQF3zKV4DRNyRs
+ PKuY5aOysdXvcjoC2TPuObDLHtI4Y9s=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-498-cWsBnjXuN7K6aWN6bXvdCw-1; Mon,
+ 27 Nov 2023 10:59:01 -0500
+X-MC-Unique: cWsBnjXuN7K6aWN6bXvdCw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 11E883813BC5;
+ Mon, 27 Nov 2023 15:59:01 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.14])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A17C32166B26;
+ Mon, 27 Nov 2023 15:58:59 +0000 (UTC)
+Date: Mon, 27 Nov 2023 09:58:57 -0600
+From: Eric Blake <eblake@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>
+Subject: Re: [PATCH 3/4] scsi: don't lock AioContext in I/O code path
+Message-ID: <bm7xuytk7kunjoeucb4fel3mjprqw33w7hqdlnrt4wx3tekqx3@o66wrxw3dxen>
+References: <20231123194931.171598-1-stefanha@redhat.com>
+ <20231123194931.171598-4-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87y1ej2oay.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20231123194931.171598-4-stefanha@redhat.com>
+User-Agent: NeoMutt/20231103
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,22 +83,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 27, 2023 at 12:44:53PM -0300, Fabiano Rosas wrote:
-> >> +static void migration_test_wrapper(const void *data)
-> >> +{
-> >> +    MigrationTest *test = (MigrationTest *)data;
-> >> +
-> >> +    g_test_message("Running /%s%s", qtest_get_arch(), test->name);
-> >
-> > /%s/%s?
+On Thu, Nov 23, 2023 at 02:49:30PM -0500, Stefan Hajnoczi wrote:
+> blk_aio_*() doesn't require the AioContext lock and the SCSI subsystem's
+> internal state also does not anymore.
 > 
-> The test name contains a leading slash.
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>  hw/scsi/scsi-disk.c    | 23 -----------------------
+>  hw/scsi/scsi-generic.c | 20 +++-----------------
+>  2 files changed, 3 insertions(+), 40 deletions(-)
+>
 
-Then I suppose qtest_add_func() just tried to omit the duplicated '/'?
-
-Never mind then.  My R-b holds.  Thanks,
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
 -- 
-Peter Xu
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
