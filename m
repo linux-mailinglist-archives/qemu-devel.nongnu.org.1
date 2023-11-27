@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A161A7F9EC5
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 12:39:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C907F9EC9
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 12:39:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7ZwN-0003tO-Pk; Mon, 27 Nov 2023 06:38:15 -0500
+	id 1r7ZwR-0003vQ-V8; Mon, 27 Nov 2023 06:38:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r7ZwM-0003t7-42
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 06:38:14 -0500
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ id 1r7ZwP-0003uZ-Kq
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 06:38:17 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1r7ZwK-0005Ki-6E
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 06:38:13 -0500
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3b8603e0fbaso931480b6e.0
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 03:38:11 -0800 (PST)
+ id 1r7ZwN-0005NB-Sv
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 06:38:17 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6cb66fbc63dso2801585b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 03:38:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1701085090; x=1701689890; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1701085094; x=1701689894; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4laNBhxjdOpN77Tvpdchd1EPt51g2nh+UO7IavgEcW0=;
- b=RK/R6uieFmz4KkoT+t1uqVd3GlWFq1RVURPqlfOh9pBWD8/DKFkgXeyb8w+37kEhaV
- m4sFRztPxBGjHwRdKi+E/JCD/0aPdOi6pbNfdz4o8iD7MQat0rBgAoWU27p2XuikB9Sq
- DpJQhLJjwVifHxeU1n5jNjoFYDroPnH5V+YujR/0djlVRRrIIElw6zyWfxs/uZVoLxKP
- NXPVxXdYnrAUBWQUn+cNT4Mp5olifESS8F0CGDciynXRASQCKycpoo6R+bQlMigDfpyl
- 2SS+lR8FsjUmTJUgjYZSMp+nRIcF3ikS/BQTLQ1IYzrI8M5wAfPAbvJlaCCIX0OFzzlc
- g1IA==
+ bh=/Pb1Caogol+24prXi47Ua7g4M4/tgt8iGoHokMfLRK4=;
+ b=ozbjjnxJnL90LRMWazZvrT9Io7HLiA/PEvXkeej4ObPyeu5oABJeUYJdhLNmOdrPkq
+ mk/tPY1DMYY+f3+TUX8AW1J6OMQByJvwWMvjjkMS4DMhfW5XcQ67DyDhH6iFVpVXDMqZ
+ e1L+IiLq4+biKOg+QnIG0PsTy+jnoake+SUnAmzvuj+My149m2RD3sgyMtZaGxL/IYJL
+ pnRvGKQAXTfTb/QUKErf4vs/2xqCASwQPM1PBzIXvkUbkXPM920K5M3Y0CZi9TEY8y2x
+ tYtjTfRfxP7pu2ZWqNqOQh8knOth59BFagkOMPrLmaenOccAVW70xpIFoyEFAt3+lteq
+ 2nSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701085090; x=1701689890;
+ d=1e100.net; s=20230601; t=1701085094; x=1701689894;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4laNBhxjdOpN77Tvpdchd1EPt51g2nh+UO7IavgEcW0=;
- b=KcTO948R9Xca4oxvyPgqUp15ttmvs/gsUwbUtW63y+ZgLKuAXububRwZhGc0VaWAhc
- RWaGFCBp4IbKMB7CyQY27kk/wdFLRsysLE8aUZVxipPDYN0GF3h6UadbfTOBTmDR4JQc
- M2H0HqvWsKChypqzQB9rX/bW3P+atNNzjWhf2Tui1b15c5L1ZKbOEDXGd0fRiE9wSL83
- EymTrbpINjaP5b/NiC3BwipI4vHAm52MM0qHdpwfOAs1qv/Oph/paUQwOwSUaiV7B7Ve
- sd+3sO2huqObf3Lyp7bZi41QS16iz5yHHs2Q7R9eAQhETHnd3LKTBi8Q1dOHV0YJs9Sn
- ot3Q==
-X-Gm-Message-State: AOJu0Yx+zsibioaZA2yHVYqZWBpI3d65fjZDOR9dZq3wCI1SET6uk0Zd
- VQpfIBReneo+PaKu/Ns+5gZdznl23tWMYTPNPOk=
-X-Google-Smtp-Source: AGHT+IEyJTK/0jwx7bM228cf01Q7fKLr1kfNQnjq6w/q78iiJG+lJWoJ2+SLpYADmuR/SssORL9APQ==
-X-Received: by 2002:a05:6808:1304:b0:3b2:f431:e02d with SMTP id
- y4-20020a056808130400b003b2f431e02dmr14712138oiv.26.1701085090711; 
- Mon, 27 Nov 2023 03:38:10 -0800 (PST)
+ bh=/Pb1Caogol+24prXi47Ua7g4M4/tgt8iGoHokMfLRK4=;
+ b=KTq6izTuFjL5wE2XSslbLLEFKOBerSE029tICuEw4+lBK/NMl+X8IZF8RyybzDnmVM
+ mp3KOh3k/5MN1XIcA++7Ngs0AckOdNhwPui29yZKR+4uNlJOA0/eBPE68wyQmW9gB4iL
+ ToIIP60W17X9rv0z1b3fdWuPYrTFmF2j9C01q0Eu3s27cCM/6NfZhBDGx5yHWZrurrZ4
+ 4BLckNTxL00SYpfXiWlweTBMXMLNAv/4Bmcq0rmfVtMnnp4fSyZcIipRXA6o11bQ62lE
+ 2541HzKU/zpH+Eo8XYw++PfM6dcD/eT7KqJJ7qiUbbKWOMytUhk3kYfnmjESMDLAKBFx
+ ktSA==
+X-Gm-Message-State: AOJu0Yx/o2+J/ex33j7UAbQ9EnLwMg0Jw1lrn1AgQ6eObjsC6afhOn+a
+ yOujNQJpgpaPzXquIWsV2jtKj01usmxY1gZPcTs=
+X-Google-Smtp-Source: AGHT+IEXnuods7P5hG44eRu2clPUOdegcXXHHRcdn24r7dVT80PpFpIUy+EvmGPf//6JljbZ3JTs6w==
+X-Received: by 2002:a05:6a20:748d:b0:18b:594a:284c with SMTP id
+ p13-20020a056a20748d00b0018b594a284cmr19542435pzd.15.1701085093736; 
+ Mon, 27 Nov 2023 03:38:13 -0800 (PST)
 Received: from grind.. ([2804:7f0:bdcd:fb00:6501:2693:db52:c621])
  by smtp.gmail.com with ESMTPSA id
- q15-20020a63e94f000000b00578b40a4903sm7618323pgj.22.2023.11.27.03.38.07
+ q15-20020a63e94f000000b00578b40a4903sm7618323pgj.22.2023.11.27.03.38.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Nov 2023 03:38:10 -0800 (PST)
+ Mon, 27 Nov 2023 03:38:13 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-9.0 v2 4/8] target/riscv/cpu.c: add riscv_cpu_is_32bit()
-Date: Mon, 27 Nov 2023 08:37:48 -0300
-Message-ID: <20231127113752.1290265-5-dbarboza@ventanamicro.com>
+Subject: [PATCH for-9.0 v2 5/8] target/riscv: add satp_mode profile support
+Date: Mon, 27 Nov 2023 08:37:49 -0300
+Message-ID: <20231127113752.1290265-6-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231127113752.1290265-1-dbarboza@ventanamicro.com>
 References: <20231127113752.1290265-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x232.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,58 +94,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Next patch will need to retrieve if a given RISCVCPU is 32 or 64 bit.
-The existing helper riscv_is_32bit() (hw/riscv/boot.c) will always check
-the first CPU of a given hart array, not any given CPU.
+'satp_mode' is a requirement for supervisor profiles like RVA22S64.
+User-mode/application profiles like RVA22U64 doesn't care.
 
-Create a helper to retrieve the info for any given CPU, not the first
-CPU of the hart array. The helper is using the same 32 bit check that
-riscv_cpu_satp_mode_finalize() was doing.
+Add 'satp_mode' to the profile description. If a profile requires it,
+set it during cpu_set_profile(). We'll also check it during finalize()
+to validate if the running config implements the profile.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- target/riscv/cpu.c | 7 ++++++-
- target/riscv/cpu.h | 1 +
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ target/riscv/cpu.c         |  1 +
+ target/riscv/cpu.h         |  1 +
+ target/riscv/tcg/tcg-cpu.c | 40 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index a395c77bda..2b79fe861b 100644
+index 2b79fe861b..a77118549b 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -53,6 +53,11 @@ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
- #define BYTE(x)   (x)
- #endif
- 
-+bool riscv_cpu_is_32bit(RISCVCPU *cpu)
-+{
-+    return riscv_cpu_mxl(&cpu->env) == MXL_RV32;
-+}
-+
- #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
-     {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
- 
-@@ -980,7 +985,7 @@ static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
- #ifndef CONFIG_USER_ONLY
- static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
- {
--    bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
-+    bool rv32 = riscv_cpu_is_32bit(cpu);
-     uint8_t satp_mode_map_max, satp_mode_supported_max;
- 
-     /* The CPU wants the OS to decide which satp mode to use */
+@@ -1543,6 +1543,7 @@ static RISCVCPUProfile RVA22U64 = {
+     .name = "rva22u64",
+     .misa_ext = RVI | RVM | RVA | RVF | RVD | RVC | RVU,
+     .priv_spec = RISCV_PROFILE_ATTR_UNUSED,
++    .satp_mode = RISCV_PROFILE_ATTR_UNUSED,
+     .ext_offsets = {
+         CPU_CFG_OFFSET(ext_zicsr), CPU_CFG_OFFSET(ext_zihintpause),
+         CPU_CFG_OFFSET(ext_zba), CPU_CFG_OFFSET(ext_zbb),
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 1f34eda1e4..485d2da3c2 100644
+index 485d2da3c2..6c5fceb5f5 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -695,6 +695,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
-                           uint64_t *cs_base, uint32_t *pflags);
+@@ -82,6 +82,7 @@ typedef struct riscv_cpu_profile {
+     bool enabled;
+     bool user_set;
+     int priv_spec;
++    int satp_mode;
+     const int32_t ext_offsets[];
+ } RISCVCPUProfile;
  
- void riscv_cpu_update_mask(CPURISCVState *env);
-+bool riscv_cpu_is_32bit(RISCVCPU *cpu);
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 4d25fc43d2..152f95718b 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -766,6 +766,31 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+     riscv_cpu_disable_priv_spec_isa_exts(cpu);
+ }
  
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
-                            target_ulong *ret_value,
++#ifndef CONFIG_USER_ONLY
++static bool riscv_cpu_validate_profile_satp(RISCVCPU *cpu,
++                                            RISCVCPUProfile *profile,
++                                            bool send_warn)
++{
++    int satp_max = satp_mode_max_from_map(cpu->cfg.satp_mode.supported);
++
++    if (profile->satp_mode > satp_max) {
++        if (send_warn) {
++            bool is_32bit = riscv_cpu_is_32bit(cpu);
++            const char *req_satp = satp_mode_str(profile->satp_mode, is_32bit);
++            const char *cur_satp = satp_mode_str(satp_max, is_32bit);
++
++            warn_report("Profile %s requires satp mode %s, "
++                        "but satp mode %s was set", profile->name,
++                        req_satp, cur_satp);
++        }
++
++        return false;
++    }
++
++    return true;
++}
++#endif
++
+ static void riscv_cpu_validate_profile(RISCVCPU *cpu,
+                                        RISCVCPUProfile *profile)
+ {
+@@ -775,6 +800,13 @@ static void riscv_cpu_validate_profile(RISCVCPU *cpu,
+     bool profile_impl = true;
+     int i;
+ 
++#ifndef CONFIG_USER_ONLY
++    if (profile->satp_mode != RISCV_PROFILE_ATTR_UNUSED) {
++        profile_impl = riscv_cpu_validate_profile_satp(cpu, profile,
++                                                       send_warn);
++    }
++#endif
++
+     if (profile->priv_spec != RISCV_PROFILE_ATTR_UNUSED &&
+         profile->priv_spec != env->priv_ver) {
+         profile_impl = false;
+@@ -1079,6 +1111,14 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
+         cpu->env.priv_ver = profile->priv_spec;
+     }
+ 
++#ifndef CONFIG_USER_ONLY
++    if (profile->satp_mode != RISCV_PROFILE_ATTR_UNUSED) {
++        const char *satp_prop = satp_mode_str(profile->satp_mode,
++                                              riscv_cpu_is_32bit(cpu));
++        object_property_set_bool(obj, satp_prop, profile->enabled, NULL);
++    }
++#endif
++
+     for (i = 0; misa_bits[i] != 0; i++) {
+         uint32_t bit = misa_bits[i];
+ 
 -- 
 2.41.0
 
