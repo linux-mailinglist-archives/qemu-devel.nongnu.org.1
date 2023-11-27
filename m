@@ -2,74 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC037FA4F2
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 16:40:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEFB7FA51B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 16:46:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7dhc-0007cw-8U; Mon, 27 Nov 2023 10:39:16 -0500
+	id 1r7dnE-0001JN-Cy; Mon, 27 Nov 2023 10:45:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7dhZ-0007bN-Ol
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:39:13 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7dnC-0001Ib-3z
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:45:02 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7dhX-00050c-Ca
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:39:13 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-54b8276361cso943205a12.0
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 07:39:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701099547; x=1701704347; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=l2PDJzhJCzfCpI7ibyz+gkjE41VqY5k7sYsjfM2g0Js=;
- b=jl0qFRS0kyisYb44x8N3UlLu3K6+GYGczzJME8d+IJfvfsSXa5k6B2Jrl4Xvshvtmc
- jKDXfTLk2qVggZxO62P/91HcU6rBJfv91tW9/qq/DcxqHDptXyQG0N2+2C53C3V10XpQ
- Gu14gKTERH1SCds/Pde9Yl/ETIz9cjQcJ71gIdG4/NaPBavOhGdcNUEbqurT3M6F0ssy
- c8TQz5QNGjC9pIO6TOOJjwfBtgSZaTP6yihgje9Xu1aFuoAf4qZSOudNGTXmEv7He1w9
- 502Pox7suJsa/ZzV8ZE+cDDwNInHBaFQmnjKnWfFkDH/NnR9Qi8/Z8taOJV0dWWSXTyq
- nL0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701099547; x=1701704347;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=l2PDJzhJCzfCpI7ibyz+gkjE41VqY5k7sYsjfM2g0Js=;
- b=G1b3UrxQibTnvW1CI9oOJObSBw1AmoYIwUp5erITn7WAjLaewC/yNjBTqx3P1HR5aw
- cq+yA1HBH4FrjxuzlJe/v+HGRg5SOCIKHKhWK8PYdjTXM9xlhcv0ZS0HehHFx5Eh6V16
- CJGl5IMnPqXKgcere9QR8FsF3SY5M8WjProGgSMJfeK/ZYvMkXAikouQww1Mk4UkzlLk
- h84N05d1Rh0C3MeAed7dwOJlk3wzkbh1RORfUyOOo4ju6NNNV7yXqheISuABODGzKm9x
- qHFij/DsoeiPChmkIEzyjPpsXnE/au7M8x5dj0/lekzy4eRumuLZca0mvSPSfdF0totV
- VNtg==
-X-Gm-Message-State: AOJu0YwLZD9GLMeZNxGaKFwPRA+lNv7F06KBYzGzPHry0FUNlcz4C60T
- YUVIwTdZH3Sxm1OxQ69+bHCUQAGh0Iq7/CGxfquafA==
-X-Google-Smtp-Source: AGHT+IE3bsuF8VD2brV9CC+FHxESlpZBxpGsJ5DJHBe3CekBC42Hx90w5mZHkZqbu3Y6FqjJHI9xgypg1mOoq+K4Fx4=
-X-Received: by 2002:a50:c292:0:b0:53d:b59c:8f91 with SMTP id
- o18-20020a50c292000000b0053db59c8f91mr7620026edf.27.1701099547741; Mon, 27
- Nov 2023 07:39:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7dnA-0005pI-B9
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:45:01 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 208B021B6C;
+ Mon, 27 Nov 2023 15:44:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1701099896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z40TZaYkcYiQpdli9J2Gg/hunRGtQ96x9fIM0bWQ7eU=;
+ b=uXeP+qfDbAKo/naH7KRz8TH2x6PSUCSm9xX2TaDx17BDt71U7HVE4PPpXBx2/f4evU5Nis
+ LlCm4wjZCNJXwdl6Uj6biX/VeSALhDOOoY2c1DLZhGHQhuNGbvcWrfflxZ5dQmIjMXLYVQ
+ zXrcWCnBbKeVjpfgWF0x0OshzWWWy8w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1701099896;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z40TZaYkcYiQpdli9J2Gg/hunRGtQ96x9fIM0bWQ7eU=;
+ b=h4Mu2sbrgDOa5hZZw1LGQ7wDGeeTyla+kAfHBeDVIVe92BhsqttPCfcAe1Ut+6tJxWLssY
+ knPwSOGQ+Q20S/AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A09181379A;
+ Mon, 27 Nov 2023 15:44:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 4CGrGXe5ZGUQSwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 27 Nov 2023 15:44:55 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Leonardo
+ Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>, Laurent Vivier
+ <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v1 6/7] tests/qtest/migration: Add a wrapper to print
+ test names
+In-Reply-To: <ZWStsHj23pCbuGPP@x1n>
+References: <20231124161432.3515-1-farosas@suse.de>
+ <20231124161432.3515-7-farosas@suse.de> <ZWStsHj23pCbuGPP@x1n>
+Date: Mon, 27 Nov 2023 12:44:53 -0300
+Message-ID: <87y1ej2oay.fsf@suse.de>
 MIME-Version: 1.0
-References: <20231124143505.1493184-1-fkonrad@amd.com>
-In-Reply-To: <20231124143505.1493184-1-fkonrad@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 27 Nov 2023 15:38:56 +0000
-Message-ID: <CAFEAcA8mqZHCC5+AWswWvCRXTyxOx4ezxtE5MaB+7irJ0q2ecA@mail.gmail.com>
-Subject: Re: [PATCH v1 0/3] ZynqMP / Versal: various fixes
-To: Frederic Konrad <fkonrad@amd.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, francisco.iglesias@amd.com, 
- edgar.iglesias@gmail.com, alistair@alistair23.me, luc.michel@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -3.10
+X-Spamd-Result: default: False [-3.10 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_THREE(0.00)[3];
+ RCPT_COUNT_SEVEN(0.00)[7]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MID_RHS_MATCH_FROM(0.00)[];
+ BAYES_HAM(-3.00)[100.00%]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,19 +96,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 24 Nov 2023 at 14:35, Frederic Konrad <fkonrad@amd.com> wrote:
+Peter Xu <peterx@redhat.com> writes:
+
+> On Fri, Nov 24, 2023 at 01:14:31PM -0300, Fabiano Rosas wrote:
+>> Our usage of gtest results in us losing the very basic functionality
+>> of "knowing which test failed". The issue is that gtest only prints
+>> test names ("paths" in gtest parlance) once the test has finished, but
+>> we use asserts in the tests and crash gtest itself before it can print
+>> anything. We also use a final abort when the result of g_test_run is
+>> not 0.
+>> 
+>> Depending on how the test failed/broke we can see the function that
+>> trigged the abort, which may be representative of the test, but it
+>> could also just be some generic function.
+>> 
+>> We have been relying on the primitive method of looking at the name of
+>> the previous successful test and then looking at the code to figure
+>> out which test should have come next.
+>> 
+>> Add a wrapper to the test registration that does the job of printing
+>> the test name before running.
+>> 
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  tests/qtest/migration-helpers.c | 32 ++++++++++++++++++++++++++++++++
+>>  tests/qtest/migration-helpers.h |  1 +
+>>  2 files changed, 33 insertions(+)
+>> 
+>> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+>> index f1106128a9..164e09c299 100644
+>> --- a/tests/qtest/migration-helpers.c
+>> +++ b/tests/qtest/migration-helpers.c
+>> @@ -298,3 +298,35 @@ char *resolve_machine_version(const char *alias, const char *var1,
+>>  
+>>      return find_common_machine_version(machine_name, var1, var2);
+>>  }
+>> +
+>> +typedef struct {
+>> +    char *name;
+>> +    void (*func)(void);
+>> +} MigrationTest;
+>> +
+>> +static void migration_test_destroy(gpointer data)
+>> +{
+>> +    MigrationTest *test = (MigrationTest *)data;
+>> +
+>> +    g_free(test->name);
+>> +    g_free(test);
+>> +}
+>> +
+>> +static void migration_test_wrapper(const void *data)
+>> +{
+>> +    MigrationTest *test = (MigrationTest *)data;
+>> +
+>> +    g_test_message("Running /%s%s", qtest_get_arch(), test->name);
 >
-> Hi,
->
-> Those are various simple fixes for ZynqMP:
->   * 1: fixes a possible out of bound access in the SPI model.
->   * 2: is a trivial fix for documentation url.
->   * 3: is a log guest error fix for the CSU DMA.
->
+> /%s/%s?
 
-
-
-Applied to target-arm.next, thanks.
-
--- PMM
+The test name contains a leading slash.
 
