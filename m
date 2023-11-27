@@ -2,74 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585BC7F9CD2
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 10:39:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A37E7F9CA4
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 10:31:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7Y3m-0002Ue-4M; Mon, 27 Nov 2023 04:37:46 -0500
+	id 1r7Xvi-0008Fg-6M; Mon, 27 Nov 2023 04:29:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7Y3h-0002TW-R6
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 04:37:43 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7Y3e-00013O-2x
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 04:37:40 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-549070a04baso5410534a12.3
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 01:37:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701077856; x=1701682656; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2gdF+10FWfbjAhaLZZCsre3wvTNLSeZJmCAbtcFR63k=;
- b=CSzbLbS0WWaN+qLJaCj7d3xUx1h9gCmsPoKnI6MUEatxaaLKIdDqSCa34FypnbaOrz
- eIDuFP7nInsI+jDebL+anhQUOsmOaE1C8I2dh8vMjBEttGo9SIKDDvWZywHQWGSVJ2Th
- 6pR2tN80TZ0V5Y/IpzcRKHu6GI2UYoeB8Nki5jdzDjLaB6SY9Q9MaK5v81U7/S9BqUQg
- 6sJkZc5icZveJXnrY2p2u6+cK99WkKrKNvdRgiaeQP+9eYBp1BMp5bSymyq1E+oDg+oD
- H3qtql9ZhmOkNL16EqnyggeV644oifQdvHpsR+vJsDSOBzJnXgvY3R8hRKbnFr2tUjwn
- 5YEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701077856; x=1701682656;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2gdF+10FWfbjAhaLZZCsre3wvTNLSeZJmCAbtcFR63k=;
- b=sy6ZmQAie5elRZ/FZTddgJiWbPqrXZXS/28dg/nVx+4cMuR3uIBFDka6jBRjbaU0tH
- M6zdHlZCpHAkrNU6au+6vwh//O2qPZHL3PDUNEo/JPZn9+CxX5tAqMCvxd3cyGuk3/Pm
- ujCaRSlt+93NFiqIJrBbe9Digfaf9tSeKC/VfGynO+SSpPQVEBNNwx7IdoGmFEzK9N4O
- oDb1HJN6asDVTwiPcj6SSqafiekXt2ooarCNdntjphvDMgxaIkRdfhjStcTH7ikgpI2c
- 2iJ/JiAVCCMgcmQDhvyaQ0UnQwZrZvbP7ngMa9UF7PRHo/1QQJM5FxjdiskhllPUvC67
- NUYA==
-X-Gm-Message-State: AOJu0Ywws1Gw+lZQJHPmJlK6XtbbGUSgYpmh15aI13tuNrr0BmIqMjq5
- bCiEtKD1rRHrfwzEVEpAbg0JHWKEoDl1NIbtxJbwbg==
-X-Google-Smtp-Source: AGHT+IGdFkFhvfzskrDUIhbgcZdIf9cV0CGwCWnWhppSj4lw4L8yZW3ABRIIlOzEvYq6aZ/LmPJGoeFj3GbjQoO0X20=
-X-Received: by 2002:a05:6402:704:b0:548:657c:9110 with SMTP id
- w4-20020a056402070400b00548657c9110mr8016128edx.38.1701077855863; Mon, 27 Nov
- 2023 01:37:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1r7Xts-0007di-5Q; Mon, 27 Nov 2023 04:27:34 -0500
+Received: from mgamail.intel.com ([192.198.163.7])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1r7Xtp-0006zw-MJ; Mon, 27 Nov 2023 04:27:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1701077250; x=1732613250;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=k4qQ90xnlqxXg5xAF7O7KR0ZyHVrgDSO64RcTtfjB+k=;
+ b=AioY9UxH3wPHBcK/Eg0nNvp78879ZDRD0NRCWN87/VW0CK2qj/TYcAeU
+ Zhh1x5IaAmgis19n7aK+bCwDEeVP//gDa/9rOVARFgPz1RgvupMFtg39p
+ 43A2Ike4HTS/xz0pc9S6c6o8sAI90QtBfzazQHbFAtjf+NG7vr/lo2852
+ T44Q4FTXFsfHta6BlVUwdAFYmfnyqNChsQOcgncfLazLcFFKaGfGfXcfQ
+ Tf9/W9HYLfGtoIZettwJVAXyYYw/Jsa0dWS9nb9LVaUWkH0Qx25p09zxs
+ SbnfimwCSnPBLbcDNqmf5GNmqmf9OxuT74sN2OqZmyhGSMV3fy2LkD2qy A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10906"; a="14227784"
+X-IronPort-AV: E=Sophos;i="6.04,230,1695711600"; d="scan'208";a="14227784"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2023 01:27:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10906"; a="802586265"
+X-IronPort-AV: E=Sophos;i="6.04,230,1695711600"; d="scan'208";a="802586265"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by orsmga001.jf.intel.com with ESMTP; 27 Nov 2023 01:27:21 -0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [RFC] docs/s390: Fix wrong command example in s390-cpu-topology.rst
+Date: Mon, 27 Nov 2023 17:39:15 +0800
+Message-Id: <20231127093915.565710-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <79bd7607-7590-4809-9412-7cf7276567d6@gmail.com>
-In-Reply-To: <79bd7607-7590-4809-9412-7cf7276567d6@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 27 Nov 2023 09:37:25 +0000
-Message-ID: <CAFEAcA-yvyB_t=JsEAp8eoX01gSKi04aNZ5Fq6F+gneRUMP6_w@mail.gmail.com>
-Subject: Re: [BUG] accel/tcg: cpu_exec_longjmp_cleanup: assertion failed: (cpu
- == current_cpu)
-To: Petr Cvek <petrcvekcz@gmail.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=192.198.163.7;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,25 +72,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 25 Nov 2023 at 13:09, Petr Cvek <petrcvekcz@gmail.com> wrote:
->
-> It seems there is a bug in SIGALRM handling when 486 system emulates x86_64 code.
+From: Zhao Liu <zhao1.liu@intel.com>
 
-486 host is pretty well out of support currently. Can you reproduce
-this on a less ancient host CPU type ?
+From s390_possible_cpu_arch_ids() in hw/s390x/s390-virtio-ccw.c, the
+"core-id" is the index of pssible_cpus->cpus[], so it should only be
+less than possible_cpus->len, which is equal to ms->smp.max_cpus.
 
-> ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion failed: (cpu == current_cpu)
-> Bail out! ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion failed: (cpu == current_cpu)
-> 0x48874a != 0x3c69e10
-> **
-> ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion failed: (cpu == current_cpu)
-> Bail out! ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion failed: (cpu == current_cpu)
+Fix the wrong "core-id" 112 because it is greater than maxcpus (36) in
+-smp.
 
-What compiler version do you build QEMU with? That
-assert is there because we have seen some buggy compilers
-in the past which don't correctly preserve the variable
-value as the setjmp/longjmp spec requires them to.
+Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+RFC: Not tested on S390 machine, just code reading.
+---
+ docs/devel/s390-cpu-topology.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-thanks
--- PMM
+diff --git a/docs/devel/s390-cpu-topology.rst b/docs/devel/s390-cpu-topology.rst
+index 9eab28d5e5d8..48313b92d417 100644
+--- a/docs/devel/s390-cpu-topology.rst
++++ b/docs/devel/s390-cpu-topology.rst
+@@ -15,7 +15,7 @@ have default values:
+     -smp 1,drawers=3,books=3,sockets=2,cores=2,maxcpus=36 \
+     -device z14-s390x-cpu,core-id=19,entitlement=high \
+     -device z14-s390x-cpu,core-id=11,entitlement=low \
+-    -device z14-s390x-cpu,core-id=112,entitlement=high \
++    -device z14-s390x-cpu,core-id=12,entitlement=high \
+    ...
+ 
+ Additions to query-cpus-fast
+@@ -78,7 +78,7 @@ modifiers for all configured vCPUs.
+       "dedicated": true,
+       "thread-id": 537005,
+       "props": {
+-        "core-id": 112,
++        "core-id": 12,
+         "socket-id": 0,
+         "drawer-id": 3,
+         "book-id": 2
+@@ -86,7 +86,7 @@ modifiers for all configured vCPUs.
+       "cpu-state": "operating",
+       "entitlement": "high",
+       "qom-path": "/machine/peripheral-anon/device[2]",
+-      "cpu-index": 112,
++      "cpu-index": 12,
+       "target": "s390x"
+     }
+   ]
+-- 
+2.34.1
+
 
