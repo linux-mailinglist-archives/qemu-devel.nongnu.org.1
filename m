@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0B77FA311
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 15:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AAA27FA33E
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 15:43:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7ckP-0007wN-3S; Mon, 27 Nov 2023 09:38:05 -0500
+	id 1r7con-0000fP-AI; Mon, 27 Nov 2023 09:42:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7ckN-0007vu-0T
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 09:38:03 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7ckL-0001dY-C9
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 09:38:02 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-50ba73196b1so3286760e87.0
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 06:38:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701095879; x=1701700679; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=JDV7NNWbW7feY0WfjlX/ZuNLxICHisJ+q0zr+V7dXXU=;
- b=vzAsu/CbsIE/xsotB3VNML7L8p/Po9tDtXVXTuUd/Mxt61Sa7MgnaeoLqDWSs5bGMm
- U2WzJA8BGu676WuwENwfKz+EUlnYzJSAq4dpFJGwdN5F7kVI9AQwZcs7QJKpgYYUnBpH
- H5ZxrVnTXlEzqT2TjFqLVydGxJB3J0HTKspaRH3w8/nf2a9+H6SjbkjVMYTakNcBmXl6
- tFKeChg11X4N9SeZ+oYIBS9Ay3bpqMVVAQkoRyVnAK3/xHR0o6+huxHS1NE3RTQx0oNA
- RP2Fm118t+z2+X8dO0U1BIpvAfp9ZO2qEctP2hq8tI+YK/DySZvNgIgUQN85D4rhy1S0
- BLBw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r7cok-0000eJ-1R
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 09:42:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r7coi-0002Qt-KQ
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 09:42:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701096151;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RTgpGaIH0yt5WRc0ini5auXF5C5RV39vT6brzeGQsug=;
+ b=VZ/BMg3/THIuwqFKXpfzan9WLaMP1s7xujPtb3+9oLzDL0lCo62SuPDKbmyzOoJixWAJ7D
+ 8LGWVlo45PTcN7b4KfBm9kCbN8lsbqLrmRpPhpdDhCdlkvytcDv1dD2VNhjLbQAxfwfJif
+ kyTwM6GkxS+bq9GIWwFR+GaJGaF1w/I=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-26-MTpxpX0kN-C_Ae10I2RhAQ-1; Mon, 27 Nov 2023 09:42:30 -0500
+X-MC-Unique: MTpxpX0kN-C_Ae10I2RhAQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-423a6c92800so3824821cf.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 06:42:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701095879; x=1701700679;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JDV7NNWbW7feY0WfjlX/ZuNLxICHisJ+q0zr+V7dXXU=;
- b=xHX3gXFNYKkf++Z1aKAmGxFeJMFBWsD0/WhC9iDCm0mdx9DGwMoBUeOgOshcbycNKK
- 6Nc/GzIPPA6XI5ZBUQWemcKftt0kx1BCW7rw28GGphlvQhiaAnZtvpterAiNwrKdl+GV
- 66NcZKQ1mnThL+PCK2hyKcWupnIMeoZI5czx8xc0MBdHqzrR1tMTR/gAN9J+woxV/AAp
- HhdrF29eBX4P38coE3Xir6lj/yckNLiPl9Xrklnzr045hdwW5wbdpWcVlnPq2RZwX5Hu
- GqLnc2Ww3U31aJlPPgGODxBtUiWtVFYo1glT+W7bh9ji18MXAR1PDYKzPVoHh25MEgoO
- Sw+A==
-X-Gm-Message-State: AOJu0YwT0DPzudstwCwXQdKpxzj5fylSV/Ahf/6BoJ7ysuyhgo8FfhXG
- ib4D6h+L4uRD5Tj/uy3apB11uKv+WsoyaFmZH02/Kg==
-X-Google-Smtp-Source: AGHT+IGIB619fZUypFeYYDiBVTqpyVsX3ELzRSXp8GJGbrlBy36lfY3EYY+jOtgzaIz3kcP2UL8VogOOOI3ZI+H28UY=
-X-Received: by 2002:a05:6512:280c:b0:503:3808:389a with SMTP id
- cf12-20020a056512280c00b005033808389amr10887334lfb.11.1701095879038; Mon, 27
- Nov 2023 06:37:59 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701096149; x=1701700949;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RTgpGaIH0yt5WRc0ini5auXF5C5RV39vT6brzeGQsug=;
+ b=pRPj0O8dfUe2SV4SXpjBRAfBwuWhDIpQWt0AiDZWb0hdAeC52qFOSOQQQn8zANI89J
+ c+8DhHJd/LTbMvUZ78Yy2icvGyFO7TDrQQLIPNLI1BMhUagKmBdShlAfRSIWi/lbOoGw
+ pfLvevmg4XRmKcAb+pTDL8vqQKW12Zxtb47cgjHKbWo/3j3UKIZm/3LR2Pn6qgxWZIaA
+ LmOwLa66vNHWNaJXOL+ZuTdV/c6EuRJxUswE4eMHVLzEI3JHzd8UYb1mXCxF4tRuDnQB
+ oqLI1WFaUjx+sqeDRi4hlG8nukQ6bdj/OVJaTlyXoL55SLCUg9K1m/gJtJaMLzT1q072
+ tDZw==
+X-Gm-Message-State: AOJu0YwG//G+HKw6K+tcL82FWOfhHgA+m7LZaI9XxFYSTwEifGh0kB1R
+ XgcmmVLWdWr/1ZT4l8szzFyShjPAQ6lRnT8tXQcdbif+dzixAgMF3Rqa0kDLaDiT+NpKMsF1i49
+ +thFq1DshZC9e3sY=
+X-Received: by 2002:a05:6214:2e04:b0:67a:52c7:f444 with SMTP id
+ mx4-20020a0562142e0400b0067a52c7f444mr911030qvb.6.1701096149640; 
+ Mon, 27 Nov 2023 06:42:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGB71GHhoFrkDpilzJCsXBaUstsVURLze2Ab6w/ypWJWBaj785z71ypmm8KsnngWsYbR/KWDA==
+X-Received: by 2002:a05:6214:2e04:b0:67a:52c7:f444 with SMTP id
+ mx4-20020a0562142e0400b0067a52c7f444mr911002qvb.6.1701096149224; 
+ Mon, 27 Nov 2023 06:42:29 -0800 (PST)
+Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ q10-20020a0cfa0a000000b0067a28752199sm2439595qvn.10.2023.11.27.06.42.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Nov 2023 06:42:28 -0800 (PST)
+Date: Mon, 27 Nov 2023 09:42:27 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v1 1/7] migration/multifd: Remove
+ MultiFDPages_t::packet_num
+Message-ID: <ZWSq0y00S5LcD5dB@x1n>
+References: <20231124161432.3515-1-farosas@suse.de>
+ <20231124161432.3515-2-farosas@suse.de>
 MIME-Version: 1.0
-References: <392b2fb5-1747-0f73-826f-b410cdc84f07@redhat.com>
- <CAFEAcA_F9+XDA_5_oyqqpjS+iaeOx=J05WsZ0QMB0016rUzDfw@mail.gmail.com>
- <531d4099-747f-5ab5-8c9c-30c50e6115c8@redhat.com>
-In-Reply-To: <531d4099-747f-5ab5-8c9c-30c50e6115c8@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 27 Nov 2023 14:37:47 +0000
-Message-ID: <CAFEAcA9c6Guo-juq37Lkfav9TR9zec_ymQkPdq4wSAmHRSb2-g@mail.gmail.com>
-Subject: Re: hanging process with commit 69562648f9 ("vl: revert behaviour for
- -display none")
-To: Sebastian Ott <sebott@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231124161432.3515-2-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,42 +99,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 27 Nov 2023 at 13:08, Sebastian Ott <sebott@redhat.com> wrote:
->
-> On Mon, 27 Nov 2023, Peter Maydell wrote:
-> > On Mon, 27 Nov 2023 at 12:29, Sebastian Ott <sebott@redhat.com> wrote:
-> >> qemu fails to start a guest using the following command (the process just
-> >> hangs): qemu-system-aarch64 -machine virt -cpu host -smp 4 -m 8192
-> >> -kernel /boot/vmlinuz-6.7.0-rc1 -initrd ~/basic.img -append "root=/dev/ram
-> >> console=ttyAMA0" -enable-kvm -device virtio-gpu,hostmem=2G -display none
-> >>
-> >> ..which I've used to debug a potential virtio-gpu issue. Bisect points to
-> >> 69562648f9 ("vl: revert behaviour for -display none")
-> >
-> > Is it actually hanging, or is the guest starting up fine but
-> > outputting to a serial port which you haven't directed anywhere?
->
-> Ough, that's indeed the case. I only had a quick glance at the bt in gdb
-> and obviously misinterpreted what I got there.
->
-> > The commandline is a bit odd because it doesn't set up any of:
-> > * a serial terminal
-> > * a graphical window/display
-> > * network forwarding that would allow ssh into the guest
-> >
-> > If you add '-serial stdio' do you see the guest output?
->
-> I do. I was using the serial terminal which got setup implicitly I guess.
+On Fri, Nov 24, 2023 at 01:14:26PM -0300, Fabiano Rosas wrote:
+> This was introduced by commit 34c55a94b1 ("migration: Create multipage
+> support") and never used.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Yep. The issue fixed by 69562648f9 is that we briefly incorrectly
-made "-display none" do more than just "disable the display window".
-The revert brings us back to the normal behaviour that if you
-want a serial port you need to ask for it. (Or use the -nographic
-option, which is a legacy 'do what I mean' option that does
-multiple things at once including turning off the GUI window,
-and adding a serial terminal and a monitor multiplexed onto stdio.
-But personally I find it clearer to explicitly ask for all
-this stuff via '-display none -serial ...' etc.)
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
--- PMM
+-- 
+Peter Xu
+
 
