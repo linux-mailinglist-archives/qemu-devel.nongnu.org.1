@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC127FAB82
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 21:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF587FAB88
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 21:30:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7iC0-0002Xv-BD; Mon, 27 Nov 2023 15:26:56 -0500
+	id 1r7iC1-0002dZ-Jj; Mon, 27 Nov 2023 15:26:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iBm-0002Tp-JS
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:26:43 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iBw-0002ag-Lt
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:26:53 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iBk-0002kz-GV
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:26:42 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iBr-0002lO-Ex
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:26:52 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 61F1821B2A;
- Mon, 27 Nov 2023 20:26:39 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 2C89D21B4C;
+ Mon, 27 Nov 2023 20:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1701116799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1701116802; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EUjd+KKO1a0SIehqfLmmOxI1GH8hjBJlH4OWswskEH8=;
- b=Na42/nziHYOau5dLtU4U1YahrBBmjKbU6XbybaVU7soxco5amQkmOTgUPqpayNeNyEj8mW
- ixMfytWJFo6YXUrnBud8Yz5D9oVnuD9o27wvQSVuGKopBfl6QuTs295Adz6e3eBZQeVZc0
- TpHM/jWPesVceO1nFvAu8ksbFPRcDa0=
+ bh=u3Y3JvwparVu6jz/rrX6XYg3Vvu0prcpcfTxv1yblC0=;
+ b=W/xsn22sKvYa/xiVM1HSkVg2Nkbf9cNwSyiuCdJwjs9M7e/YSKQaaWvF/em43fQYXd1EBn
+ lx2JZazgdyuSX9elJZwksF2UKPptFJ6+sUfgRZ8cJBYurTIjdAGhhRWDYRtrvY8eJFfiB1
+ 1szZK3yXobe03XsSikYtKi10zjr7XGs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1701116799;
+ s=susede2_ed25519; t=1701116802;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EUjd+KKO1a0SIehqfLmmOxI1GH8hjBJlH4OWswskEH8=;
- b=fQBPVpkru1rRKuDGTuxmINvJeoAlWYLiWecXr9+9iuavxBPN1uK+HSc3LBn7cVHMvKf6sF
- 9/18XuszpgQNr5DA==
+ bh=u3Y3JvwparVu6jz/rrX6XYg3Vvu0prcpcfTxv1yblC0=;
+ b=HPd2KiQd3fShUEv0HXYM3lhE6gnTfAKIsI70VvJWnsA1pTmJAbNYKvhlkKRj1Reie7cnoY
+ jPonGWU/5A2AzDAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6388D1379A;
- Mon, 27 Nov 2023 20:26:36 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D4E4F1379A;
+ Mon, 27 Nov 2023 20:26:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id uDW3Cnz7ZGVfIQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 27 Nov 2023 20:26:36 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id cFVfJn/7ZGVfIQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 27 Nov 2023 20:26:39 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>,
- Nikolay Borisov <nborisov@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v3 08/30] migration/ram: Add outgoing 'fixed-ram' migration
-Date: Mon, 27 Nov 2023 17:25:50 -0300
-Message-Id: <20231127202612.23012-9-farosas@suse.de>
+ Nikolay Borisov <nborisov@suse.com>
+Subject: [RFC PATCH v3 09/30] migration/ram: Add incoming 'fixed-ram' migration
+Date: Mon, 27 Nov 2023 17:25:51 -0300
+Message-Id: <20231127202612.23012-10-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231127202612.23012-1-farosas@suse.de>
 References: <20231127202612.23012-1-farosas@suse.de>
@@ -75,19 +73,20 @@ X-Spamd-Result: default: False [0.90 / 50.00]; ARC_NA(0.00)[];
  BROKEN_CONTENT_TYPE(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  RCVD_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_SEVEN(0.00)[11]; MID_CONTAINS_FROM(1.00)[];
+ RCPT_COUNT_SEVEN(0.00)[8]; MID_CONTAINS_FROM(1.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.com:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
  BAYES_HAM(-3.00)[100.00%]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,284 +102,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nikolay Borisov <nborisov@suse.com>
+Add the necessary code to parse the format changes for the 'fixed-ram'
+capability.
 
-Implement the outgoing migration side for the 'fixed-ram' capability.
-
-A bitmap is introduced to track which pages have been written in the
-migration file. Pages are written at a fixed location for every
-ramblock. Zero pages are ignored as they'd be zero in the destination
-migration as well.
-
-The migration stream is altered to put the dirty pages for a ramblock
-after its header instead of having a sequential stream of pages that
-follow the ramblock headers. Since all pages have a fixed location,
-RAM_SAVE_FLAG_EOS is no longer generated on every migration iteration.
-
-Without fixed-ram (current):        With fixed-ram (new):
-
- ---------------------               --------------------------------
- | ramblock 1 header |               | ramblock 1 header            |
- ---------------------               --------------------------------
- | ramblock 2 header |               | ramblock 1 fixed-ram header  |
- ---------------------               --------------------------------
- | ...               |               | padding to next 1MB boundary |
- ---------------------               | ...                          |
- | ramblock n header |               --------------------------------
- ---------------------               | ramblock 1 pages             |
- | RAM_SAVE_FLAG_EOS |               | ...                          |
- ---------------------               --------------------------------
- | stream of pages   |               | ramblock 2 header            |
- | (iter 1)          |               --------------------------------
- | ...               |               | ramblock 2 fixed-ram header  |
- ---------------------               --------------------------------
- | RAM_SAVE_FLAG_EOS |               | padding to next 1MB boundary |
- ---------------------               | ...                          |
- | stream of pages   |               --------------------------------
- | (iter 2)          |               | ramblock 2 pages             |
- | ...               |               | ...                          |
- ---------------------               --------------------------------
- | ...               |               | ...                          |
- ---------------------               --------------------------------
-                                     | RAM_SAVE_FLAG_EOS            |
-                                     --------------------------------
-                                     | ...                          |
-                                     --------------------------------
-
-where:
- - ramblock header: the generic information for a ramblock, such as
-   idstr, used_len, etc.
-
- - ramblock fixed-ram header: the new information added by this
-   feature: bitmap of pages written, bitmap size and offset of pages
-   in the migration file.
+One of the more notable changes in behavior is that in the 'fixed-ram'
+case ram pages are restored in one go rather than constantly looping
+through the migration stream.
 
 Signed-off-by: Nikolay Borisov <nborisov@suse.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
-- used a macro for alignment value
-- documented alignment assumptions
-- moved shadow_bmap debug code to multifd patch
-- did NOT use used_length for bmap, it breaks dirty page tracking somehow
-- uncommented the capability enabling
-- accounted for the bitmap size with ram_transferred_add()
+- added sanity check for pages_offset alignment
+- s/parsing/reading
+- used Error
+- fixed buffer size computation, now allowing an arbitrary limit
+- fixed dereference of pointer to packed struct member in endianness
+  conversion
 ---
- include/exec/ramblock.h |   8 +++
- migration/ram.c         | 121 +++++++++++++++++++++++++++++++++++++---
- 2 files changed, 120 insertions(+), 9 deletions(-)
+ migration/ram.c | 119 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 119 insertions(+)
 
-diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
-index 69c6a53902..e0e3f16852 100644
---- a/include/exec/ramblock.h
-+++ b/include/exec/ramblock.h
-@@ -44,6 +44,14 @@ struct RAMBlock {
-     size_t page_size;
-     /* dirty bitmap used during migration */
-     unsigned long *bmap;
-+    /* shadow dirty bitmap used when migrating to a file */
-+    unsigned long *shadow_bmap;
-+    /*
-+     * offset in the file pages belonging to this ramblock are saved,
-+     * used only during migration to a file.
-+     */
-+    off_t bitmap_offset;
-+    uint64_t pages_offset;
-     /* bitmap of already received pages in postcopy */
-     unsigned long *receivedmap;
- 
 diff --git a/migration/ram.c b/migration/ram.c
-index 8c7886ab79..4a0ab8105f 100644
+index 4a0ab8105f..08604222f2 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -94,6 +94,18 @@
- #define RAM_SAVE_FLAG_MULTIFD_FLUSH    0x200
- /* We can't use any flag that is bigger than 0x200 */
+@@ -106,6 +106,12 @@
+  */
+ #define FIXED_RAM_FILE_OFFSET_ALIGNMENT 0x100000
  
 +/*
-+ * fixed-ram migration supports O_DIRECT, so we need to make sure the
-+ * userspace buffer, the IO operation size and the file offset are
-+ * aligned according to the underlying device's block size. The first
-+ * two are already aligned to page size, but we need to add padding to
-+ * the file to align the offset.  We cannot read the block size
-+ * dynamically because the migration file can be moved between
-+ * different systems, so use 1M to cover most block sizes and to keep
-+ * the file offset aligned at page size as well.
++ * When doing fixed-ram migration, this is the amount we read from the
++ * pages region in the migration file at a time.
 + */
-+#define FIXED_RAM_FILE_OFFSET_ALIGNMENT 0x100000
++#define FIXED_RAM_LOAD_BUF_SIZE 0x100000
 +
  XBZRLECacheStats xbzrle_counters;
  
  /* used by the search for pages to send */
-@@ -1127,12 +1139,18 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss,
-         return 0;
-     }
- 
-+    stat64_add(&mig_stats.zero_pages, 1);
-+
-+    if (migrate_fixed_ram()) {
-+        /* zero pages are not transferred with fixed-ram */
-+        clear_bit(offset >> TARGET_PAGE_BITS, pss->block->shadow_bmap);
-+        return 1;
-+    }
-+
-     len += save_page_header(pss, file, pss->block, offset | RAM_SAVE_FLAG_ZERO);
-     qemu_put_byte(file, 0);
-     len += 1;
-     ram_release_page(pss->block->idstr, offset);
--
--    stat64_add(&mig_stats.zero_pages, 1);
-     ram_transferred_add(len);
- 
-     /*
-@@ -1190,14 +1208,20 @@ static int save_normal_page(PageSearchStatus *pss, RAMBlock *block,
- {
-     QEMUFile *file = pss->pss_channel;
- 
--    ram_transferred_add(save_page_header(pss, pss->pss_channel, block,
--                                         offset | RAM_SAVE_FLAG_PAGE));
--    if (async) {
--        qemu_put_buffer_async(file, buf, TARGET_PAGE_SIZE,
--                              migrate_release_ram() &&
--                              migration_in_postcopy());
-+    if (migrate_fixed_ram()) {
-+        qemu_put_buffer_at(file, buf, TARGET_PAGE_SIZE,
-+                           block->pages_offset + offset);
-+        set_bit(offset >> TARGET_PAGE_BITS, block->shadow_bmap);
-     } else {
--        qemu_put_buffer(file, buf, TARGET_PAGE_SIZE);
-+        ram_transferred_add(save_page_header(pss, pss->pss_channel, block,
-+                                             offset | RAM_SAVE_FLAG_PAGE));
-+        if (async) {
-+            qemu_put_buffer_async(file, buf, TARGET_PAGE_SIZE,
-+                                  migrate_release_ram() &&
-+                                  migration_in_postcopy());
-+        } else {
-+            qemu_put_buffer(file, buf, TARGET_PAGE_SIZE);
-+        }
-     }
-     ram_transferred_add(TARGET_PAGE_SIZE);
-     stat64_add(&mig_stats.normal_pages, 1);
-@@ -2413,6 +2437,8 @@ static void ram_save_cleanup(void *opaque)
-         block->clear_bmap = NULL;
-         g_free(block->bmap);
-         block->bmap = NULL;
-+        g_free(block->shadow_bmap);
-+        block->shadow_bmap = NULL;
-     }
- 
-     xbzrle_cleanup();
-@@ -2780,6 +2806,7 @@ static void ram_list_init_bitmaps(void)
-              */
-             block->bmap = bitmap_new(pages);
-             bitmap_set(block->bmap, 0, pages);
-+            block->shadow_bmap = bitmap_new(pages);
-             block->clear_bmap_shift = shift;
-             block->clear_bmap = bitmap_new(clear_bmap_size(pages, shift));
-         }
-@@ -2917,6 +2944,58 @@ void qemu_guest_free_page_hint(void *addr, size_t len)
-     }
+@@ -2996,6 +3002,35 @@ static void fixed_ram_insert_header(QEMUFile *file, RAMBlock *block)
+     qemu_put_buffer(file, (uint8_t *) header, header_size);
  }
  
-+#define FIXED_RAM_HDR_VERSION 1
-+struct FixedRamHeader {
-+    uint32_t version;
-+    /*
-+     * The target's page size, so we know how many pages are in the
-+     * bitmap.
-+     */
-+    uint64_t page_size;
-+    /*
-+     * The offset in the migration file where the pages bitmap is
-+     * found.
-+     */
-+    uint64_t bitmap_offset;
-+    /*
-+     * The offset in the migration file where the actual pages (data)
-+     * are found.
-+     */
-+    uint64_t pages_offset;
-+    /* end of v1 */
-+} QEMU_PACKED;
-+typedef struct FixedRamHeader FixedRamHeader;
-+
-+static void fixed_ram_insert_header(QEMUFile *file, RAMBlock *block)
++static bool fixed_ram_read_header(QEMUFile *file, FixedRamHeader *header,
++                                  Error **errp)
 +{
-+    g_autofree FixedRamHeader *header;
-+    size_t header_size, bitmap_size;
-+    long num_pages;
++    size_t ret, header_size = sizeof(FixedRamHeader);
 +
-+    header = g_new0(FixedRamHeader, 1);
-+    header_size = sizeof(FixedRamHeader);
++    ret = qemu_get_buffer(file, (uint8_t *)header, header_size);
++    if (ret != header_size) {
++        error_setg(errp, "Could not read whole fixed-ram migration header "
++                   "(expected %zd, got %zd bytes)", header_size, ret);
++        return false;
++    }
 +
-+    num_pages = block->used_length >> TARGET_PAGE_BITS;
-+    bitmap_size = BITS_TO_LONGS(num_pages) * sizeof(unsigned long);
++    /* migration stream is big-endian */
++    header->version = be32_to_cpu(header->version);
 +
-+    /*
-+     * Save the file offsets of where the bitmap and the pages should
-+     * go as they are written at the end of migration and during the
-+     * iterative phase, respectively.
-+     */
-+    block->bitmap_offset = qemu_get_offset(file) + header_size;
-+    block->pages_offset = ROUND_UP(block->bitmap_offset +
-+                                   bitmap_size,
-+                                   FIXED_RAM_FILE_OFFSET_ALIGNMENT);
++    if (header->version > FIXED_RAM_HDR_VERSION) {
++        error_setg(errp, "Migration fixed-ram capability version mismatch "
++                   "(expected %d, got %d)", FIXED_RAM_HDR_VERSION,
++                   header->version);
++        return false;
++    }
 +
-+    header->version = cpu_to_be32(FIXED_RAM_HDR_VERSION);
-+    header->page_size = cpu_to_be64(TARGET_PAGE_SIZE);
-+    header->bitmap_offset = cpu_to_be64(block->bitmap_offset);
-+    header->pages_offset = cpu_to_be64(block->pages_offset);
++    header->page_size = be64_to_cpu(header->page_size);
++    header->bitmap_offset = be64_to_cpu(header->bitmap_offset);
++    header->pages_offset = be64_to_cpu(header->pages_offset);
 +
-+    qemu_put_buffer(file, (uint8_t *) header, header_size);
++    return true;
 +}
 +
  /*
   * Each of ram_save_setup, ram_save_iterate and ram_save_complete has
   * long-running RCU critical section.  When rcu-reclaims in the code
-@@ -2966,6 +3045,13 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-             if (migrate_ignore_shared()) {
-                 qemu_put_be64(f, block->mr->addr);
-             }
-+
-+            if (migrate_fixed_ram()) {
-+                fixed_ram_insert_header(f, block);
-+                /* prepare offset for next ramblock */
-+                qemu_set_offset(f, block->pages_offset + block->used_length,
-+                                SEEK_SET);
-+            }
-         }
-     }
- 
-@@ -2999,6 +3085,19 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-     return qemu_fflush(f);
+@@ -3892,6 +3927,80 @@ void colo_flush_ram_cache(void)
+     trace_colo_flush_ram_cache_end();
  }
  
-+static void ram_save_shadow_bmap(QEMUFile *f)
++static void read_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block,
++                                    long num_pages, unsigned long *bitmap)
 +{
-+    RAMBlock *block;
++    unsigned long set_bit_idx, clear_bit_idx;
++    ram_addr_t offset;
++    void *host;
++    size_t read, unread, size, buf_size = FIXED_RAM_LOAD_BUF_SIZE;
 +
-+    RAMBLOCK_FOREACH_MIGRATABLE(block) {
-+        long num_pages = block->used_length >> TARGET_PAGE_BITS;
-+        long bitmap_size = BITS_TO_LONGS(num_pages) * sizeof(unsigned long);
-+        qemu_put_buffer_at(f, (uint8_t *)block->shadow_bmap, bitmap_size,
-+                           block->bitmap_offset);
-+        ram_transferred_add(bitmap_size);
++    for (set_bit_idx = find_first_bit(bitmap, num_pages);
++         set_bit_idx < num_pages;
++         set_bit_idx = find_next_bit(bitmap, num_pages, clear_bit_idx + 1)) {
++
++        clear_bit_idx = find_next_zero_bit(bitmap, num_pages, set_bit_idx + 1);
++
++        unread = TARGET_PAGE_SIZE * (clear_bit_idx - set_bit_idx);
++        offset = set_bit_idx << TARGET_PAGE_BITS;
++
++        while (unread > 0) {
++            host = host_from_ram_block_offset(block, offset);
++            size = MIN(unread, buf_size);
++
++            read = qemu_get_buffer_at(f, host, size,
++                                      block->pages_offset + offset);
++            offset += read;
++            unread -= read;
++        }
 +    }
 +}
 +
- /**
-  * ram_save_iterate: iterative stage for migration
-  *
-@@ -3188,6 +3287,10 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
-         return ret;
-     }
- 
-+    if (migrate_fixed_ram()) {
-+        ram_save_shadow_bmap(f);
++static int parse_ramblock_fixed_ram(QEMUFile *f, RAMBlock *block,
++                                    ram_addr_t length, Error **errp)
++{
++    g_autofree unsigned long *bitmap = NULL;
++    FixedRamHeader header;
++    size_t bitmap_size;
++    long num_pages;
++
++    if (!fixed_ram_read_header(f, &header, errp)) {
++        return -EINVAL;
 +    }
 +
-     if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
-         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
-     }
++    block->pages_offset = header.pages_offset;
++
++    /*
++     * Check the alignment of the file region that contains pages. We
++     * don't enforce FIXED_RAM_FILE_OFFSET_ALIGNMENT to allow that
++     * value to change in the future. Do only a sanity check with page
++     * size alignment.
++     */
++    if (!QEMU_IS_ALIGNED(block->pages_offset, TARGET_PAGE_SIZE)) {
++        error_setg(errp,
++                   "Error reading ramblock %s pages, region has bad alignment",
++                   block->idstr);
++        return -EINVAL;
++    }
++
++    num_pages = length / header.page_size;
++    bitmap_size = BITS_TO_LONGS(num_pages) * sizeof(unsigned long);
++
++    bitmap = g_malloc0(bitmap_size);
++    if (qemu_get_buffer_at(f, (uint8_t *)bitmap, bitmap_size,
++                           header.bitmap_offset) != bitmap_size) {
++        error_setg(errp, "Error reading dirty bitmap");
++        return -EINVAL;
++    }
++
++    read_ramblock_fixed_ram(f, block, num_pages, bitmap);
++
++    /* Skip pages array */
++    qemu_set_offset(f, block->pages_offset + length, SEEK_SET);
++
++    return 0;
++}
++
+ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+ {
+     int ret = 0;
+@@ -3900,6 +4009,16 @@ static int parse_ramblock(QEMUFile *f, RAMBlock *block, ram_addr_t length)
+ 
+     assert(block);
+ 
++    if (migrate_fixed_ram()) {
++        Error *local_err = NULL;
++
++        ret = parse_ramblock_fixed_ram(f, block, length, &local_err);
++        if (local_err) {
++            error_report_err(local_err);
++        }
++        return ret;
++    }
++
+     if (!qemu_ram_is_migratable(block)) {
+         error_report("block %s should not be migrated !", block->idstr);
+         return -EINVAL;
 -- 
 2.35.3
 
