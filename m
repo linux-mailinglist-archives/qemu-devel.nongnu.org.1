@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1655C7FA44D
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 16:22:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 684DE7FA45E
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 16:26:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7dQI-0002II-Rn; Mon, 27 Nov 2023 10:21:23 -0500
+	id 1r7dU9-000403-Nb; Mon, 27 Nov 2023 10:25:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r7dQG-0002Ha-Mx
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:21:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r7dQC-0001JG-PL
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:21:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701098475;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=riAuUDWUsz3JDlH7QBRCYBDxkcl9isb7XQKxvStUmPo=;
- b=dQcBKvhavP36Ym0RYRr048G+PRN0fE9iHlPmzXJC/OPzCfAjodaY4+7OCLuu32pWnsNd5V
- SyJlYcnpcQVQJjNEQzSmfGUlzC+KuMBq5tIvOduIAAzFQwlBeeUsiRTzOTttVf0UOHEigo
- L//uM//+bCzBCvsZexvNsqhKltqHeeg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-50-PxgQoTBvOa6zhNQIkQFqkw-1; Mon, 27 Nov 2023 10:21:12 -0500
-X-MC-Unique: PxgQoTBvOa6zhNQIkQFqkw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BF810811E8D;
- Mon, 27 Nov 2023 15:21:11 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.14])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 80728492BE7;
- Mon, 27 Nov 2023 15:21:10 +0000 (UTC)
-Date: Mon, 27 Nov 2023 09:21:08 -0600
-From: Eric Blake <eblake@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH 2/4] virtio-scsi: don't lock AioContext around
- virtio_queue_aio_attach_host_notifier()
-Message-ID: <cb5372l2vuovribjhxqwf4n7m5iads2rhfgcelpklkn44ckhru@hr62o7cncv4h>
-References: <20231123194931.171598-1-stefanha@redhat.com>
- <20231123194931.171598-3-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r7dU7-0003zY-5V
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:25:19 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r7dU1-0002TY-WB
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:25:18 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-54b532b261bso1799327a12.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 07:25:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701098712; x=1701703512; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gU5vq134YeDJUg7KQ04fU73aoPTCMb0HLfwO/xPb5p0=;
+ b=Mp52e5XocpIZ55Rtb0dpJ65gmCTo2XAv713ve/klhE4Q+wXygoY64tihSsPKz2LGW9
+ fcZF5rxmKwc+PkGKsawKAJWZ6ILhgB+PbQ3qgog2SIGSw7DK8FxR1O2U7QU4UQjojIOq
+ CxAAIIKqleQFZUobnKGFVos16TsY8DW5ltFcqNFC5wFPxUBl3tkwWZMnWVVrJMH0sCPH
+ aPYOQrZ1djamKk1viCDJsVUK5NjTDuqDWJa4eA3xm/Bf3noaCqQOKjhf9t/bi9HRYRmb
+ 04lXZ5g8ao+OGZOYpD0x5CaD/6HSewI2JcUbFJWFE4C5KcYm+4KE0nlXHrroq/qEm/1W
+ DLmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701098712; x=1701703512;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gU5vq134YeDJUg7KQ04fU73aoPTCMb0HLfwO/xPb5p0=;
+ b=n1FmVht3DZs4Pv6HiW9fQbSZDs7iYYmx8s/rTa/xwEoSL4CuuqS2p6lQ50B/Q64Xa1
+ zVC9tzYE0q58SZ2Lk2KAMOuKFpCPdl8q8oT0NyOdWzyW7/Nki8lXWTsJgcC6V+BjpldO
+ 7CncByPI1cavF6ra17m5BE4xYRQNIXKmfRQbP7YhIQQ712Km7NUOJhJXopjSic3x4rgb
+ JNdQrxH4V4/WGRn9381fR9NSX00oweO0OKGMN8CHb+F+yTcWYLZ2Nt918x9vZmwxdgWP
+ rHNE0WJhtBmg1g5Q8ddSWRPRyXJ3w79v4J9nD7nfnuh87cBJLT0jfyZhtIc0nAU7XTmT
+ p0iA==
+X-Gm-Message-State: AOJu0Yx9JjxS7aLuNGr6ObQ/cgH4w0047Br+wCMv1poGIWo/s8ehy58+
+ bJHeE9MDlwNgwWTTNLgsr6IlTnffD2GfKtEF70vaow==
+X-Google-Smtp-Source: AGHT+IEyK20eAAOWPPUluc61iRIzCX5rt9OiRFqsOYuCTghEf4VUTi+xhpYx5Run0kqqVAkryXZamfl8JT9RhikiMq4=
+X-Received: by 2002:a05:6402:206d:b0:54b:f2c:2014 with SMTP id
+ bd13-20020a056402206d00b0054b0f2c2014mr6858799edb.25.1701098711990; Mon, 27
+ Nov 2023 07:25:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231123194931.171598-3-stefanha@redhat.com>
-User-Agent: NeoMutt/20231103
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231124183325.95392-1-philmd@linaro.org>
+In-Reply-To: <20231124183325.95392-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 27 Nov 2023 15:25:00 +0000
+Message-ID: <CAFEAcA_iUzRysTrEv60Ptz2vyek_qXgYHjLHCGX2unYQdmCdzQ@mail.gmail.com>
+Subject: Re: [PATCH-for-8.2? v3 0/2] hw/net/can/xlnx-zynqmp: Avoid underflow
+ while popping FIFOs
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Francisco Iglesias <francisco.iglesias@amd.com>, 
+ Jason Wang <jasowang@redhat.com>, Vikram Garhwal <vikram.garhwal@amd.com>, 
+ Anton Kochkov <anton.kochkov@proton.me>, Pavel Pisa <pisa@cmp.felk.cvut.cz>, 
+ Vikram Garhwal <fnu.vikram@xilinx.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,25 +90,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 23, 2023 at 02:49:29PM -0500, Stefan Hajnoczi wrote:
-> virtio_queue_aio_attach_host_notifier() does not require the AioContext
-> lock. Stop taking the lock and remember add an explicit smp_wmb()
+On Fri, 24 Nov 2023 at 18:34, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> Series fully reviewed.
+>
+> Since v2:
+> - Addressed Vikram review comments,
+> - Added R-b tags
+>
+> Fix a pair of fuzzed bugs.
+>
+> Tested with the CAN tests from 'make check-qtest-aarch64'.
 
-s/remember// ?
 
-> because we were relying on the implicit barrier in the AioContext lock
-> before.
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->  hw/scsi/virtio-scsi-dataplane.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Applied to target-arm.next, thanks.
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+-- PMM
 
