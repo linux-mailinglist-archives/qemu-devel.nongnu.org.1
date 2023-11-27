@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F047A7FAB8E
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 21:31:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB027FAB92
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 21:31:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7iCa-0003mz-GV; Mon, 27 Nov 2023 15:27:32 -0500
+	id 1r7iCj-00045M-8H; Mon, 27 Nov 2023 15:27:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iCY-0003iW-Ng
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:27:30 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iCb-0003wl-Cs
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:27:33 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iCX-0002uQ-5v
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:27:30 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r7iCZ-0002ug-P1
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:27:33 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 1F6601FB71;
- Mon, 27 Nov 2023 20:27:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1701116848; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=teigS40Z9XH923OGo7nijlRjRuL+JJjtabkdVm33NUY=;
- b=yoyytkLmp8oST3A6p5CwaOmBvq25PYRl7I7cFi24LIAzGg6eoW79RRxL9QswD9iFcpNFnM
- TXfpOKCKfEkMlx9n0JwKa2wtVYBa6rTxqZ896ye7Ss01nBJbbSYcut1VB+F6vebY3uPxUt
- UYDHMOscyRQBM4c3JVrQT5OcvZG8kLI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1701116848;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=teigS40Z9XH923OGo7nijlRjRuL+JJjtabkdVm33NUY=;
- b=vSu0ytlyPKehTZeRtt9AR6o7BHF9uWpGutTZQOpGL7F5IPUurz/V3jCgf1DEM4nOSSlNMo
- LvEftrHAX/0x1FDg==
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A290F21B4C;
+ Mon, 27 Nov 2023 20:27:30 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0F8571379A;
- Mon, 27 Nov 2023 20:27:25 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 903811379A;
+ Mon, 27 Nov 2023 20:27:28 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id qBrFMa37ZGVfIQAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 27 Nov 2023 20:27:25 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id YEiXFbD7ZGVfIQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 27 Nov 2023 20:27:28 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [RFC PATCH v3 26/30] monitor: Extract fdset fd flags comparison into
- a function
-Date: Mon, 27 Nov 2023 17:26:08 -0300
-Message-Id: <20231127202612.23012-27-farosas@suse.de>
+Subject: [RFC PATCH v3 27/30] monitor: fdset: Match against O_DIRECT
+Date: Mon, 27 Nov 2023 17:26:09 -0300
+Message-Id: <20231127202612.23012-28-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231127202612.23012-1-farosas@suse.de>
 References: <20231127202612.23012-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: 3.90
-X-Spamd-Result: default: False [3.90 / 50.00]; ARC_NA(0.00)[];
+X-Spamd-Bar: ++++++++++
+X-Spam-Score: 10.99
+X-Rspamd-Server: rspamd1
+Authentication-Results: smtp-out1.suse.de; dkim=none;
+ spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither
+ permitted nor denied by domain of farosas@suse.de)
+ smtp.mailfrom=farosas@suse.de; 
+ dmarc=fail reason="No valid SPF,
+ No valid DKIM" header.from=suse.de (policy=none)
+X-Rspamd-Queue-Id: A290F21B4C
+X-Spamd-Result: default: False [10.99 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- R_MISSING_CHARSET(2.50)[]; MIME_GOOD(-0.10)[text/plain];
- BROKEN_CONTENT_TYPE(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_RATELIMIT(0.00)[to_ip_from(RLjrdmmf3juheryardexw6jb95)];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ BROKEN_CONTENT_TYPE(1.50)[]; R_SPF_SOFTFAIL(4.60)[~all:c];
+ NEURAL_HAM_LONG(-0.71)[-0.706]; RCVD_COUNT_THREE(0.00)[3];
+ MX_GOOD(-0.01)[]; NEURAL_HAM_SHORT(-0.10)[-0.490];
  RCPT_COUNT_SEVEN(0.00)[7]; MID_CONTAINS_FROM(1.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ R_DKIM_NA(2.20)[]; MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ BAYES_HAM(-0.00)[13.62%];
+ DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,48 +90,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're about to add one more condition to the flags comparison that
-requires an ifdef. Move the code into a separate function now to make
-it cleaner after the next patch.
+We're about to enable the use of O_DIRECT in the migration code and
+due to the alignment restrictions imposed by filesystems we need to
+make sure the flag is only used when doing aligned IO.
+
+The migration will do parallel IO to different regions of a file, so
+we need to use more than one file descriptor. Those cannot be obtained
+by duplicating (dup()) since duplicated file descriptors share the
+file status flags, including O_DIRECT. If one migration channel does
+unaligned IO while another sets O_DIRECT to do aligned IO, the
+filesystem would fail the unaligned operation.
+
+The add-fd QMP command along with the fdset code are specifically
+designed to allow the user to pass a set of file descriptors with
+different access flags into QEMU to be later fetched by code that
+needs to alternate between those flags when doing IO.
+
+Extend the fdset matching function to behave the same with the
+O_DIRECT flag.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- monitor/fds.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ monitor/fds.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/monitor/fds.c b/monitor/fds.c
-index 4ec3b7eea9..9a28e4b72b 100644
+index 9a28e4b72b..42bf3eb982 100644
 --- a/monitor/fds.c
 +++ b/monitor/fds.c
-@@ -406,6 +406,19 @@ AddfdInfo *monitor_fdset_add_fd(int fd, bool has_fdset_id, int64_t fdset_id,
-     return fdinfo;
- }
+@@ -413,6 +413,12 @@ static bool monitor_fdset_flags_match(int flags, int fd_flags)
  
-+#ifndef _WIN32
-+static bool monitor_fdset_flags_match(int flags, int fd_flags)
-+{
-+    bool match = false;
+     if ((flags & O_ACCMODE) == (fd_flags & O_ACCMODE)) {
+         match = true;
 +
-+    if ((flags & O_ACCMODE) == (fd_flags & O_ACCMODE)) {
-+        match = true;
-+    }
-+
-+    return match;
-+}
++#ifdef O_DIRECT
++        if ((flags & O_DIRECT) != (fd_flags & O_DIRECT)) {
++            match = false;
++        }
 +#endif
-+
- int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
- {
- #ifdef _WIN32
-@@ -431,7 +444,7 @@ int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
-                 return -1;
-             }
+     }
  
--            if ((flags & O_ACCMODE) == (mon_fd_flags & O_ACCMODE)) {
-+            if (monitor_fdset_flags_match(flags, mon_fd_flags)) {
-                 fd = mon_fdset_fd->fd;
-                 break;
-             }
+     return match;
 -- 
 2.35.3
 
