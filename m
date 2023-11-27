@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D86F7FA7A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:10:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AAF7FA7BB
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:11:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7f6B-0007UW-QW; Mon, 27 Nov 2023 12:08:43 -0500
+	id 1r7f67-0007TN-Cl; Mon, 27 Nov 2023 12:08:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7f62-0007Ro-R7
+ id 1r7f62-0007Rq-Rn
  for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:34 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7f5z-0004dM-JL
+ id 1r7f60-0004dY-53
  for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:33 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40b4744d603so7695495e9.2
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40b2ddab817so31259025e9.3
  for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 09:08:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1701104910; x=1701709710; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=+2uI5wNmH21FhUP7Rp19KQf2tC2ID75lHpAU974IEJI=;
- b=AtfBv7jqq4qRnRVCPjqzs7KQ/sj0tM6xMueJTMWjApWbO3HpVvp8tYhUmAFyxLVTiN
- Gav5Of/qOidOTJ39JedLMNJfUSzZFx1SH8IFig2dJaBLL2L0Dz0G9TochBE3ml4gsDHR
- U1hVLsnnY5ux2qFVDce6WlVOjqM2+WPreqgumVXi2sbdHcp8fNfcGtms8dyw/shpYZaa
- Vv5na606WWtr6Qk7shDxZNYJ3wIxyTm1vGdTj1HDrO2fu0BBxhFagJm7TriYZR1VGTsD
- SLYVVFTPZan+kvh8nR9D0DCccATpeOEoCHccSTuJm+7QEJlrhViL2K0ZAf9H2cwnG97/
- iBWQ==
+ :reply-to; bh=8Li9u/apX2z/hqU6tBl3/yWCNm5priiBHrKq1erqDx8=;
+ b=kf87bU9mvZgbYN2EfFtERGWyuazWVtB8zn5oSJZ1DteR+fYzbIakHkeD6JNHglvgTk
+ RQdZoJWzEhdmUakaCYPhQsZdJrrViTV1Wm+/TkykLGGsT8EHUEUJVbSf6B0RmuwOFP1L
+ 91eC6iF7FP0J/pmTJd1GWoLfoeg95e1Fzass752K1tOJ6cZ+1JkUtIIAV7hHn6DRvHVw
+ GbtbqJybgNPniRAhPGWMj2gUDm/RnaPut/U8FqFxMS2lFQ+Y1cIVxFQ0IvPcr/R62UFK
+ 2ElsjyFFhNxk9OKy3Dj6NEKGec9fzCgLUMDOWL5SV67qVHJ1E6CFqbaV4MmlQTNWh/sG
+ 5hww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1701104910; x=1701709710;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+2uI5wNmH21FhUP7Rp19KQf2tC2ID75lHpAU974IEJI=;
- b=edKELDlBHh+6DAHkGMojGGXA3nwgcH+JlmGTgk+d9gOa/v/NFH/r/VgiWCqE5h9wR0
- q6m3B77runfTrJftGLZBXzE3FAKIEL5JkapABFjASCYdVITVA7yg8APm0kvSAbcZr5Sk
- V3dNrLbc+C+4KGQ06G390+S3zaUC1pW8rGZ88Aa10wCu3NFK9i8s4serLDGeM76ta5IC
- tYhduweW1CTNpbGSYFz5vOfMStEFBFPYAMWGbXNxBl7LbDd0FXRzp3PxBvNA09UOhKnY
- GRKSCBVG3CaAvJj8wgUXqr9YhwdRVBto6o0d+iXs8k9nMAJoy0X8CHjkjTf514GbJ3d1
- tFVw==
-X-Gm-Message-State: AOJu0Ywz/OIr77S29AfgkZv/yQM5jnoXk6O6VYp/6dtCLHDC4toCT8ul
- m2EqogLo2W7MHk9OeGiaqY9v8DpAOpzYN06L2Vk=
-X-Google-Smtp-Source: AGHT+IFib3sAWbW3EY9wIWkCdeDuxGzhtZVy6NqjbxaO+bm8oTjqcjaZlmsqP3RodjV5IetviPlLUQ==
-X-Received: by 2002:a05:600c:1f8c:b0:40b:2baa:6a0d with SMTP id
- je12-20020a05600c1f8c00b0040b2baa6a0dmr4811964wmb.1.1701104910300; 
+ bh=8Li9u/apX2z/hqU6tBl3/yWCNm5priiBHrKq1erqDx8=;
+ b=OMgwnu6dSIhhelCEj0UeZ7rssIXSdk3PZhCgxZmJ/bJ7ieKD/S3COpDOh+TY4e7K5T
+ jV9XBc+qAptsbnLtGIJi0fHjCM2OkGNIKk4+2cV2sXhI1vNk5PpkMaQdm34bygkGEK5f
+ F7Ri56M1awAqI+uDUL3ijo+OW4JYk01F3Ix3VhvLinHHExmrpntkhGbI17FNJLQWra0y
+ +J4xMVfCea36XxVlxv9j03iiREPf5sIlcHc5FM3MAUWHEntrn6e1IlYqa/HE8pwRxOLA
+ c++4t1OcgRJWn9PQnBVXw38gYoqIVQarxT4QptXGhf9yy5GnwF5dz9NybManys1QmxR0
+ B1bg==
+X-Gm-Message-State: AOJu0Yxdzy1RNzJ2b5DzjCWsz18mYtS4cZrMn6I3xndJ5/vetfMSsnp3
+ YH1yru4ug1epNp1byZT2y+wClbYsoGaaVCP6TRA=
+X-Google-Smtp-Source: AGHT+IHidsQlkcjdo/msC76Qscrt63c2ufhA+Ni8HzenWAHzajm1R6IbjsqIATUbcXvieKEUneRPSg==
+X-Received: by 2002:a05:600c:4749:b0:40b:35aa:bfdd with SMTP id
+ w9-20020a05600c474900b0040b35aabfddmr5570219wmo.27.1701104910703; 
  Mon, 27 Nov 2023 09:08:30 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- fl8-20020a05600c0b8800b004030e8ff964sm15353216wmb.34.2023.11.27.09.08.29
+ fl8-20020a05600c0b8800b004030e8ff964sm15353216wmb.34.2023.11.27.09.08.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 27 Nov 2023 09:08:30 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/13] hw/nvram/xlnx-efuse: Free XlnxEFuse::ro_bits[] array on
- finalize()
-Date: Mon, 27 Nov 2023 17:08:18 +0000
-Message-Id: <20231127170823.589863-9-peter.maydell@linaro.org>
+Subject: [PULL 09/13] hw/nvram/xlnx-efuse-ctrl: Free XlnxVersalEFuseCtrl[]
+ "pg0-lock" array
+Date: Mon, 27 Nov 2023 17:08:19 +0000
+Message-Id: <20231127170823.589863-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231127170823.589863-1-peter.maydell@linaro.org>
 References: <20231127170823.589863-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,50 +100,51 @@ added the DEFINE_PROP_ARRAY() macro with the following comment:
   * It is the responsibility of the device deinit code to free the
   * @_arrayfield memory.
 
-Commit 68fbcc344e added:
+Commit 9e4aa1fafe added:
 
-  DEFINE_PROP_ARRAY("read-only", XlnxEFuse, ro_bits_cnt, ro_bits,
-                    qdev_prop_uint32, uint32_t),
+  DEFINE_PROP_ARRAY("pg0-lock",
+                    XlnxVersalEFuseCtrl, extra_pg0_lock_n16,
+                    extra_pg0_lock_spec, qdev_prop_uint16, uint16_t),
 
-but forgot to free the 'ro_bits' array. Do it in the instance_finalize
-handler.
+but forgot to free the 'extra_pg0_lock_spec' array. Do it in the
+instance_finalize() handler.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 68fbcc344e ("hw/nvram: Introduce Xilinx eFuse QOM") # v6.2.0+
+Fixes: 9e4aa1fafe ("hw/nvram: Xilinx Versal eFuse device") # v6.2.0+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20231121174051.63038-5-philmd@linaro.org
+Message-id: 20231121174051.63038-6-philmd@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/nvram/xlnx-efuse.c | 8 ++++++++
+ hw/nvram/xlnx-versal-efuse-ctrl.c | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/hw/nvram/xlnx-efuse.c b/hw/nvram/xlnx-efuse.c
-index 655c40b8d1e..f7b849f7de4 100644
---- a/hw/nvram/xlnx-efuse.c
-+++ b/hw/nvram/xlnx-efuse.c
-@@ -224,6 +224,13 @@ static void efuse_realize(DeviceState *dev, Error **errp)
-     }
+diff --git a/hw/nvram/xlnx-versal-efuse-ctrl.c b/hw/nvram/xlnx-versal-efuse-ctrl.c
+index beb5661c35f..2480af35e1b 100644
+--- a/hw/nvram/xlnx-versal-efuse-ctrl.c
++++ b/hw/nvram/xlnx-versal-efuse-ctrl.c
+@@ -726,6 +726,13 @@ static void efuse_ctrl_init(Object *obj)
+     sysbus_init_irq(sbd, &s->irq_efuse_imr);
  }
  
-+static void efuse_finalize(Object *obj)
++static void efuse_ctrl_finalize(Object *obj)
 +{
-+    XlnxEFuse *s = XLNX_EFUSE(obj);
++    XlnxVersalEFuseCtrl *s = XLNX_VERSAL_EFUSE_CTRL(obj);
 +
-+    g_free(s->ro_bits);
++    g_free(s->extra_pg0_lock_spec);
 +}
 +
- static void efuse_prop_set_drive(Object *obj, Visitor *v, const char *name,
-                                  void *opaque, Error **errp)
- {
-@@ -280,6 +287,7 @@ static const TypeInfo efuse_info = {
-     .name          = TYPE_XLNX_EFUSE,
-     .parent        = TYPE_DEVICE,
-     .instance_size = sizeof(XlnxEFuse),
-+    .instance_finalize = efuse_finalize,
-     .class_init    = efuse_class_init,
+ static const VMStateDescription vmstate_efuse_ctrl = {
+     .name = TYPE_XLNX_VERSAL_EFUSE_CTRL,
+     .version_id = 1,
+@@ -764,6 +771,7 @@ static const TypeInfo efuse_ctrl_info = {
+     .instance_size = sizeof(XlnxVersalEFuseCtrl),
+     .class_init    = efuse_ctrl_class_init,
+     .instance_init = efuse_ctrl_init,
++    .instance_finalize = efuse_ctrl_finalize,
  };
  
+ static void efuse_ctrl_register_types(void)
 -- 
 2.34.1
 
