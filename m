@@ -2,83 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569707F9F91
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 13:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC207F9F9A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 13:34:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7akX-0001xa-C7; Mon, 27 Nov 2023 07:30:05 -0500
+	id 1r7ao2-0002zM-2t; Mon, 27 Nov 2023 07:33:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1r7akU-0001vQ-KI
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 07:30:03 -0500
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1r7any-0002yh-UM
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 07:33:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1r7akS-00084T-0c
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 07:30:02 -0500
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1r7anx-0000Ic-Dz
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 07:33:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701088198;
+ s=mimecast20190719; t=1701088416;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type;
- bh=G7VnlTa/mYqucyexm0LB6VeTp/sOa88BU2XfhVLXw1E=;
- b=hJ7y4wiNiBw6+Gl8Vu0ATbtks+LtcePZFr9BMdMhd3uqZcUJxzxLlZHtG34aElnsjElMsj
- ujFcXWirDD4X8xgEBrrLF1nAz/PHvdw6Ks2cE1yJbq2aBSshfiPnqQTlEVxZ2ox1ZOvUor
- Z9s/QU2dv5pxPAgLAgx1ue33m1KyP2s=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=SC/qOzYy2aa58HZ8c/Dgyqetb4HOv/g97gogYJmILO0=;
+ b=ItT8CzNG5llnHV8gvRyZA1A8w7OcAq4Xf1bUlbQNGQOqlkcDobAAmdSXSk8bE363CHcPZ2
+ tTfL/8Cul84BtVHslKXgnXLtIlvJBmPdKeop5Lx//vwYKtTBnYjhO6rLBnkOudcpDsyZig
+ uPT0LG3gvT5gm97skhx3aCSTeBRQFZs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-50-aS8qWd56MQOp3KkX07s8BA-1; Mon, 27 Nov 2023 07:29:57 -0500
-X-MC-Unique: aS8qWd56MQOp3KkX07s8BA-1
-Received: by mail-ot1-f70.google.com with SMTP id
- 46e09a7af769-6d646a0d9bfso4407351a34.3
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 04:29:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701088195; x=1701692995;
- h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=G7VnlTa/mYqucyexm0LB6VeTp/sOa88BU2XfhVLXw1E=;
- b=tdHDEWdMGzNn1zGlKby4ubkBAmvr5vg31cGlyM7t03QHZm5IgCf33qYSsFByOPAWXZ
- kErC9k8McadqWqp75zEdzwqIeb0+w+rgzDxHkib5mTTBbvKU+KGWcbR89ehGbIr7dIv8
- 6b6kSY+MWVUo8OqUUi6TAXqb1z/o+XCSi3b7P20eUk3vAv4fsP+ISQH0wHEhbcLlRb6H
- uDig9RSXQ53vlr+YYc6/c1hpXtveVMRbDp9pWFBgqlIoc+DZluK1POuyqig+dyyEhyTg
- NZjp25J3W6pAIrIHsUfmHu3JNkZM76hNDyhmcyy4FclohUe1TFEjqE00x9uHYlK9qNqM
- XVgA==
-X-Gm-Message-State: AOJu0Yzjv7i4U2QHwYA/4qRDJL2UBnxzNnFuR93tbf6rVmA5Yg8aZDM4
- LSnGEmD6nwrdaKh4QhT2S+W86jwwyLHzpq3PNZm7qObV3dMk9V5kdTxZvRZX69rAzMb7OKBeskn
- 9QvvYF6w3kKmFMamX3AtOdcTESqooEG0z23bhY3TiwtFgy1bC8OSL/0fux5TO6MOVJ8HzyDMS
-X-Received: by 2002:a05:6830:448d:b0:6d8:1c4b:6c0e with SMTP id
- r13-20020a056830448d00b006d81c4b6c0emr6746117otv.9.1701088195739; 
- Mon, 27 Nov 2023 04:29:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IER2SdbRRYyOPgvJvQYyu+1YLOr5Vr/X96TShaQKe4Pj76cZg5gyt2fMTYvBAkrLd031U5PdA==
-X-Received: by 2002:a05:6830:448d:b0:6d8:1c4b:6c0e with SMTP id
- r13-20020a056830448d00b006d81c4b6c0emr6746097otv.9.1701088195484; 
- Mon, 27 Nov 2023 04:29:55 -0800 (PST)
-Received: from rh (p200300c93f306f0016d68197cd5f6027.dip0.t-ipconnect.de.
- [2003:c9:3f30:6f00:16d6:8197:cd5f:6027])
- by smtp.gmail.com with ESMTPSA id
- d12-20020a0cf0cc000000b00677f34c4b4fsm1563904qvl.6.2023.11.27.04.29.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Nov 2023 04:29:55 -0800 (PST)
-Date: Mon, 27 Nov 2023 13:29:51 +0100 (CET)
-From: Sebastian Ott <sebott@redhat.com>
+ us-mta-250-Ig1Z86nUNU2Jj2dMe5Lr0Q-1; Mon, 27 Nov 2023 07:32:31 -0500
+X-MC-Unique: Ig1Z86nUNU2Jj2dMe5Lr0Q-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8465588D017
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 12:32:31 +0000 (UTC)
+Received: from maggie.brq.redhat.com (unknown [10.43.3.102])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D4A2FC15883;
+ Mon, 27 Nov 2023 12:32:30 +0000 (UTC)
+From: Michal Privoznik <mprivozn@redhat.com>
 To: qemu-devel@nongnu.org
-cc: Peter Maydell <peter.maydell@linaro.org>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
-Subject: hanging process with commit 69562648f9 ("vl: revert behaviour for
- -display none")
-Message-ID: <392b2fb5-1747-0f73-826f-b410cdc84f07@redhat.com>
+Cc: david@redhat.com,
+	imammedo@redhat.com
+Subject: [PATCH] hostmem: Round up memory size for qemu_madvise() in
+ host_memory_backend_memory_complete()
+Date: Mon, 27 Nov 2023 13:32:27 +0100
+Message-ID: <f77d641d500324525ac036fe1827b3070de75fc1.1701088320.git.mprivozn@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=US-ASCII
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sebott@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mprivozn@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,19 +78,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hej,
+Simple reproducer:
+qemu.git $ ./build/qemu-system-x86_64 \
+-m size=8389632k,slots=16,maxmem=25600000k \
+-object '{"qom-type":"memory-backend-file","id":"ram-node0","mem-path":"/hugepages2M/","prealloc":true,"size":8590983168,"host-nodes":[0],"policy":"bind"}' \
+-numa node,nodeid=0,cpus=0,memdev=ram-node0
 
-qemu fails to start a guest using the following command (the process just
-hangs): qemu-system-aarch64 -machine virt -cpu host -smp 4 -m 8192 
--kernel /boot/vmlinuz-6.7.0-rc1 -initrd ~/basic.img -append "root=/dev/ram 
-console=ttyAMA0" -enable-kvm -device virtio-gpu,hostmem=2G -display none
+With current master I get:
 
-..which I've used to debug a potential virtio-gpu issue. Bisect points to
-69562648f9 ("vl: revert behaviour for -display none")
+qemu-system-x86_64: cannot bind memory to host NUMA nodes: Invalid argument
 
-Is that qemu cmd just invalid and shouldn't have worked in the first
-place?
+The problem is that memory size (8193MiB) is not an integer
+multiple of underlying pagesize (2MiB) which triggers a check
+inside of madvise(), since we can't really set a madvise() policy
+just to a fraction of a page.
 
-Sebastian
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+---
+ backends/hostmem.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/backends/hostmem.c b/backends/hostmem.c
+index 747e7838c0..4e88d048de 100644
+--- a/backends/hostmem.c
++++ b/backends/hostmem.c
+@@ -326,9 +326,10 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
+     HostMemoryBackendClass *bc = MEMORY_BACKEND_GET_CLASS(uc);
+     Error *local_err = NULL;
+     void *ptr;
+-    uint64_t sz;
+ 
+     if (bc->alloc) {
++        uint64_t sz;
++
+         bc->alloc(backend, &local_err);
+         if (local_err) {
+             goto out;
+@@ -337,6 +338,11 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
+         ptr = memory_region_get_ram_ptr(&backend->mr);
+         sz = memory_region_size(&backend->mr);
+ 
++        /* Round up size to be an integer multiple of pagesize, because
++         * madvise() does not really like setting advices on a fraction of a
++         * page. */
++        sz = ROUND_UP(sz, qemu_ram_pagesize(backend->mr.ram_block));
++
+         if (backend->merge) {
+             qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
+         }
+-- 
+2.41.0
 
 
