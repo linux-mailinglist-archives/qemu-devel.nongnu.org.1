@@ -2,72 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE63D7FA4B9
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 16:29:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC037FA4F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 16:40:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7dXE-0004zQ-NH; Mon, 27 Nov 2023 10:28:32 -0500
+	id 1r7dhc-0007cw-8U; Mon, 27 Nov 2023 10:39:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7dX9-0004yH-TB
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:28:27 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1r7dhZ-0007bN-Ol
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:39:13 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r7dX8-00034R-G5
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:28:27 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-54b0e553979so3379281a12.2
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 07:28:25 -0800 (PST)
+ id 1r7dhX-00050c-Ca
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:39:13 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-54b8276361cso943205a12.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 07:39:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701098904; x=1701703704; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NTiLm7FDOYgVyvB+1MRn5MRXQ5p38RB29/sXJrRP5t8=;
- b=ezxSa4XAxhrOv/2mNEXteTb5Z5C9LNWDa0x2xSsGo2qUO6In+MNlOXv5Vb62K6Ix7I
- B753DY/4L9x7zz86FxTqEhFzlb4hrM9d8L8nx4hKSQvx5r0Tl/3TaAwNqq6IL116X3oT
- D18JnltiPyoPs2ztSn7iNE0TItPFmUxAgsOWM7eH8ULgayIFqgbWrVtQFzW4q72jHBXx
- VnuJzzovtA1D3kDDD4TaVId01Z1uzrL6S73RB9DR06iZc6thtBLEY2CLo63gbDci+MfD
- NzapSxFZ5eskHyzEmZHiouZm3MURkGhchxEtDhSwhhheSqhciRJnFuT856flSwKZPR0x
- yZiw==
+ d=linaro.org; s=google; t=1701099547; x=1701704347; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=l2PDJzhJCzfCpI7ibyz+gkjE41VqY5k7sYsjfM2g0Js=;
+ b=jl0qFRS0kyisYb44x8N3UlLu3K6+GYGczzJME8d+IJfvfsSXa5k6B2Jrl4Xvshvtmc
+ jKDXfTLk2qVggZxO62P/91HcU6rBJfv91tW9/qq/DcxqHDptXyQG0N2+2C53C3V10XpQ
+ Gu14gKTERH1SCds/Pde9Yl/ETIz9cjQcJ71gIdG4/NaPBavOhGdcNUEbqurT3M6F0ssy
+ c8TQz5QNGjC9pIO6TOOJjwfBtgSZaTP6yihgje9Xu1aFuoAf4qZSOudNGTXmEv7He1w9
+ 502Pox7suJsa/ZzV8ZE+cDDwNInHBaFQmnjKnWfFkDH/NnR9Qi8/Z8taOJV0dWWSXTyq
+ nL0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701098904; x=1701703704;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NTiLm7FDOYgVyvB+1MRn5MRXQ5p38RB29/sXJrRP5t8=;
- b=gm9JdEdUUWUFqyOMWZCUAatRzijdhEBuGcyEzGMS2NRuPl9jI8GvZBb6CK/X8+lWCp
- JD5MX//jF+0EpxALqnK+DS0H4Kvl0ouXjca/UrlzdUOge0sVfPPvUiZ9aQFetTYsESTV
- 6lOTwn/z4M//yPSwE2QR1REGUh+h0akGIj6lf0/FbINovBzKEB271VXIckxwi0R7Cvzl
- ncH3dP7Zm8vElWkizabDB8/86mBQK3XvWKFfkC+ToeT8yjPGX5n3SEuhDlPGAXjIxPwN
- i9l3inVs1zXV6TDqdl6jP8RMnM6Pqow+NB8Mp/hr9UVipeBu4cjnA8gwlanMua+kmk8x
- Q8Yg==
-X-Gm-Message-State: AOJu0YxLwqRy4kUCMhx7a0a37uGXrusuCmKRp01PmyI+BluBJ+njc5GI
- 2L8Xb6lIOd2/hbId1y8I0Iu5EctiBH1GwfbGmMXf3A==
-X-Google-Smtp-Source: AGHT+IH2dVW1+fkBA98vF1kWQYtYWiq9ID++TmyrxUDqdQHtIpnDd6kM/hcVZI+RcqnVjj5ZSWHH3WaHptk8TXLdQf8=
-X-Received: by 2002:a50:8e42:0:b0:543:bd27:f4a9 with SMTP id
- 2-20020a508e42000000b00543bd27f4a9mr8963153edx.12.1701098903837; Mon, 27 Nov
- 2023 07:28:23 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701099547; x=1701704347;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=l2PDJzhJCzfCpI7ibyz+gkjE41VqY5k7sYsjfM2g0Js=;
+ b=G1b3UrxQibTnvW1CI9oOJObSBw1AmoYIwUp5erITn7WAjLaewC/yNjBTqx3P1HR5aw
+ cq+yA1HBH4FrjxuzlJe/v+HGRg5SOCIKHKhWK8PYdjTXM9xlhcv0ZS0HehHFx5Eh6V16
+ CJGl5IMnPqXKgcere9QR8FsF3SY5M8WjProGgSMJfeK/ZYvMkXAikouQww1Mk4UkzlLk
+ h84N05d1Rh0C3MeAed7dwOJlk3wzkbh1RORfUyOOo4ju6NNNV7yXqheISuABODGzKm9x
+ qHFij/DsoeiPChmkIEzyjPpsXnE/au7M8x5dj0/lekzy4eRumuLZca0mvSPSfdF0totV
+ VNtg==
+X-Gm-Message-State: AOJu0YwLZD9GLMeZNxGaKFwPRA+lNv7F06KBYzGzPHry0FUNlcz4C60T
+ YUVIwTdZH3Sxm1OxQ69+bHCUQAGh0Iq7/CGxfquafA==
+X-Google-Smtp-Source: AGHT+IE3bsuF8VD2brV9CC+FHxESlpZBxpGsJ5DJHBe3CekBC42Hx90w5mZHkZqbu3Y6FqjJHI9xgypg1mOoq+K4Fx4=
+X-Received: by 2002:a50:c292:0:b0:53d:b59c:8f91 with SMTP id
+ o18-20020a50c292000000b0053db59c8f91mr7620026edf.27.1701099547741; Mon, 27
+ Nov 2023 07:39:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20231121174051.63038-1-philmd@linaro.org>
-In-Reply-To: <20231121174051.63038-1-philmd@linaro.org>
+References: <20231124143505.1493184-1-fkonrad@amd.com>
+In-Reply-To: <20231124143505.1493184-1-fkonrad@amd.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 27 Nov 2023 15:28:12 +0000
-Message-ID: <CAFEAcA8qz=785qBAxwaDmyPkWbMbiYA=vzSS1Lnf8jvRgxBktQ@mail.gmail.com>
-Subject: Re: [PATCH-for-8.2 0/6] hw: Free DEFINE_PROP_ARRAY()'s arrays in
- instance_finalize()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Date: Mon, 27 Nov 2023 15:38:56 +0000
+Message-ID: <CAFEAcA8mqZHCC5+AWswWvCRXTyxOx4ezxtE5MaB+7irJ0q2ecA@mail.gmail.com>
+Subject: Re: [PATCH v1 0/3] ZynqMP / Versal: various fixes
+To: Frederic Konrad <fkonrad@amd.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, francisco.iglesias@amd.com, 
+ edgar.iglesias@gmail.com, alistair@alistair23.me, luc.michel@amd.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,19 +85,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 21 Nov 2023 at 17:40, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
+On Fri, 24 Nov 2023 at 14:35, Frederic Konrad <fkonrad@amd.com> wrote:
 >
-> In few places we forget to free the array allocated by the
-> DEFINE_PROP_ARRAY() macro handlers. Fix that.
+> Hi,
 >
-> Philippe Mathieu-Daud=C3=A9 (6):
->   hw/virtio: Add VirtioPCIDeviceTypeInfo::instance_finalize field
->   hw/virtio: Free VirtIOIOMMUPCI::vdev.reserved_regions[] on finalize()
->   hw/misc/mps2-scc: Free MPS2SCC::oscclk[] array on finalize()
->   hw/nvram/xlnx-efuse: Free XlnxEFuse::ro_bits[] array on finalize()
->   hw/nvram/xlnx-efuse-ctrl: Free XlnxVersalEFuseCtrl[] "pg0-lock" array
->   hw/input/stellaris_gamepad: Free StellarisGamepad::keycodes[] array
+> Those are various simple fixes for ZynqMP:
+>   * 1: fixes a possible out of bound access in the SPI model.
+>   * 2: is a trivial fix for documentation url.
+>   * 3: is a log guest error fix for the CSU DMA.
+>
+
+
 
 Applied to target-arm.next, thanks.
 
