@@ -2,76 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BA87FAA8B
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 20:45:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C42B7FAAE7
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 21:05:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7hWB-0001CK-3Q; Mon, 27 Nov 2023 14:43:43 -0500
+	id 1r7hqC-0005Md-Iy; Mon, 27 Nov 2023 15:04:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <arorajai2798@gmail.com>)
- id 1r7hW7-0001Bz-C9; Mon, 27 Nov 2023 14:43:39 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <arorajai2798@gmail.com>)
- id 1r7hW4-0002Fj-LN; Mon, 27 Nov 2023 14:43:39 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1cfbce92362so14198485ad.1; 
- Mon, 27 Nov 2023 11:43:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701114214; x=1701719014; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2ahiKFyzFbwEzdE7xhZcSTyQXSleyIgdmWJnU3ce4oM=;
- b=llvprczyl0jNo7lgeFIqKy84NA6GXu5Pdc4POpy1zMpBvv57QVgy6zwOkkk+QaOvoe
- DfMtrt2905XKfd+rE0SMaSz6c6mxF+hGSaNGx+BiWeiGMVo2B2o/9RhKVcMMoQfm5jGW
- UKTkPY1Nel4iOxeOB9kKfERJCbazWUEUtmhlVhyALj9eznp+S7yihSuyHJh2llluxgMm
- DKeJc+WcqZyGAb/XbFJsAcejhGPkURvFeKurFENdwiyWcXl8saNIfjs5JPe4takgSLLR
- tWUdeT+EX70/y5Y+gVqw92HgrU+72rX5pVAq0v43a/EncqxfCNZ70Ak9y0HFkEC2q7dk
- Rs1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701114214; x=1701719014;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2ahiKFyzFbwEzdE7xhZcSTyQXSleyIgdmWJnU3ce4oM=;
- b=s1COy04EQ6tPE6B6vfUD5V545bv+nG0LOsYTj1XHlFf50loaGVF7JOQznpkUQPhspb
- MsPfdDk5wOUsv3fC0HAh4ye6X72ujhkYh6QDfg9TogQHjqMxu4NW6va/LN2mB50fQCXT
- a7cXRMEUFL8JMYQhipZS43RiTLh+NZ6Carb3lP5TiLlKrNNlodj48IXQuNa6WE2hbP6o
- 6ADL61HNt5rgjdCnjPDomc0xGEosdDyZSlHxCiPMp82UUzUmViaXmXQskjVeMeagblIp
- tTb8wfF/i3BFh4hPGFAxw/tFCg0FY+DB7tEHnyNEhRMmU1yaoSTIlNFjYfExzXHP5Ohq
- xTxw==
-X-Gm-Message-State: AOJu0YyReUg5oQVQiSA5eJPiES+S0Hjobgi1GP1awfy6HcVr4+GIV2Lx
- zTOGLuBMBAiY8wqbkrjY3/mh989zeu6BeA==
-X-Google-Smtp-Source: AGHT+IGrimGWHLNtvgKdOoMjA9Xv7dX7JfCLE5f+L74IiewpQikVkFRApbWEMq9+g04xFKXpHw7thg==
-X-Received: by 2002:a17:902:ea03:b0:1cf:59df:23e with SMTP id
- s3-20020a170902ea0300b001cf59df023emr14323624plg.12.1701114214215; 
- Mon, 27 Nov 2023 11:43:34 -0800 (PST)
-Received: from localhost.localdomain ([2406:7400:56:d1b7:dcc3:8696:be12:127c])
- by smtp.gmail.com with ESMTPSA id
- i1-20020a170902c28100b001cf658f20ecsm8732647pld.96.2023.11.27.11.43.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Nov 2023 11:43:33 -0800 (PST)
-From: Jai Arora <arorajai2798@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org,
-	Jai Arora <arorajai2798@gmail.com>
-Subject: [PATCH] accel/kvm: Turn DPRINTF macro use into tracepoints
-Date: Tue, 28 Nov 2023 01:12:58 +0530
-Message-Id: <20231127194258.138603-1-arorajai2798@gmail.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <peterz@infradead.org>)
+ id 1r7hq5-0005Iq-PU
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:04:20 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterz@infradead.org>)
+ id 1r7hq2-0006Qx-OI
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:04:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description;
+ bh=HKdTKht77swWp6IqbMhOYILRR0g0Evek+a+XDBEGFI4=; b=VlhbNNJtOQjRl9xNXhif3pyBI3
+ Yp697PDT+1EY5w8uqPMVRgSViNRDlwsEBioaXw3hqY3eTB8lhCbqt0zd3cnGZiqHwqP840guPwjV2
+ oriE6LXZ82ilVLw6slHwTwphcRMD/0Nd1NsiEuOe9r4lBzOcT6SSF2nX3osd+EUhPcnLH6Ranfo9H
+ Bv1hzhp/gFFn6ry0jRZXH/H0Gc8LitSNJ60ue7C967EBwiz7XA/OdUI9oaNSFUlcKQNcT7WMTubkf
+ R85oEhWPha2wXYJ4yiCw7hSoq1yPIGJKgfABhWmW6p9IKG8obBpzJRziZFbyBKuL64aiz/cSiRsQN
+ YX0jqE5A==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1r7hp0-00BhJQ-Ds; Mon, 27 Nov 2023 20:03:10 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+ id B60BD3002F1; Mon, 27 Nov 2023 21:03:08 +0100 (CET)
+Date: Mon, 27 Nov 2023 21:03:08 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
+Cc: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Graf <graf@amazon.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Forrest Yuan Yu <yuanyu@google.com>, James Gowans <jgowans@amazon.com>,
+ James Morris <jamorris@linux.microsoft.com>,
+ John Andersen <john.s.andersen@intel.com>,
+ Marian Rotariu <marian.c.rotariu@gmail.com>,
+ Mihai =?utf-8?B?RG9uyJt1?= <mdontu@bitdefender.com>,
+ =?utf-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Thara Gopinath <tgopinath@microsoft.com>,
+ Trilok Soni <quic_tsoni@quicinc.com>, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?utf-8?Q?=C8=98tefan_=C8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+Subject: Re: [RFC PATCH v2 18/19] heki: x86: Protect guest kernel memory
+ using the KVM hypervisor
+Message-ID: <20231127200308.GY3818@noisy.programming.kicks-ass.net>
+References: <20231113022326.24388-1-mic@digikod.net>
+ <20231113022326.24388-19-mic@digikod.net>
+ <20231113085403.GC16138@noisy.programming.kicks-ass.net>
+ <b1dc0963-ab99-4a79-af19-ef5ed981fa60@linux.microsoft.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=arorajai2798@gmail.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+In-Reply-To: <b1dc0963-ab99-4a79-af19-ef5ed981fa60@linux.microsoft.com>
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=peterz@infradead.org; helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,149 +98,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To remove DPRINTF macros and use tracepoints
-for logging.
+On Mon, Nov 27, 2023 at 11:05:23AM -0600, Madhavan T. Venkataraman wrote:
+> Apologies for the late reply. I was on vacation. Please see my response below:
+> 
+> On 11/13/23 02:54, Peter Zijlstra wrote:
+> > On Sun, Nov 12, 2023 at 09:23:25PM -0500, Mickaël Salaün wrote:
+> >> From: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
+> >>
+> >> Implement a hypervisor function, kvm_protect_memory() that calls the
+> >> KVM_HC_PROTECT_MEMORY hypercall to request the KVM hypervisor to
+> >> set specified permissions on a list of guest pages.
+> >>
+> >> Using the protect_memory() function, set proper EPT permissions for all
+> >> guest pages.
+> >>
+> >> Use the MEM_ATTR_IMMUTABLE property to protect the kernel static
+> >> sections and the boot-time read-only sections. This enables to make sure
+> >> a compromised guest will not be able to change its main physical memory
+> >> page permissions. However, this also disable any feature that may change
+> >> the kernel's text section (e.g., ftrace, Kprobes), but they can still be
+> >> used on kernel modules.
+> >>
+> >> Module loading/unloading, and eBPF JIT is allowed without restrictions
+> >> for now, but we'll need a way to authenticate these code changes to
+> >> really improve the guests' security. We plan to use module signatures,
+> >> but there is no solution yet to authenticate eBPF programs.
+> >>
+> >> Being able to use ftrace and Kprobes in a secure way is a challenge not
+> >> solved yet. We're looking for ideas to make this work.
+> >>
+> >> Likewise, the JUMP_LABEL feature cannot work because the kernel's text
+> >> section is read-only.
+> > 
+> > What is the actual problem? As is the kernel text map is already RO and
+> > never changed.
+> 
+> For the JUMP_LABEL optimization, the text needs to be patched at some point.
+> That patching requires a writable mapping of the text page at the time of
+> patching.
+> 
+> In this Heki feature, we currently lock down the kernel text at the end of
+> kernel boot just before kicking off the init process. The lockdown is
+> implemented by setting the permissions of a text page to R_X in the extended
+> page table and not allowing write permissions in the EPT after that. So, jump label
+> patching during kernel boot is not a problem. But doing it after kernel
+> boot is a problem.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1827
+But you see, that's exactly what the kernel already does with the normal
+permissions. They get set to RX after init and are never changed.
 
-Signed-off-by: Jai Arora <arorajai2798@gmail.com>
----
- accel/kvm/kvm-all.c    | 32 ++++++++++----------------------
- accel/kvm/trace-events |  2 +-
- 2 files changed, 11 insertions(+), 23 deletions(-)
+See the previous patch, we establish a read-write alias and write there.
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index e39a810a4e..d0dd7e54c3 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -69,16 +69,6 @@
- #define KVM_GUESTDBG_BLOCKIRQ 0
- #endif
- 
--//#define DEBUG_KVM
--
--#ifdef DEBUG_KVM
--#define DPRINTF(fmt, ...) \
--    do { fprintf(stderr, fmt, ## __VA_ARGS__); } while (0)
--#else
--#define DPRINTF(fmt, ...) \
--    do { } while (0)
--#endif
--
- struct KVMParkedVcpu {
-     unsigned long vcpu_id;
-     int kvm_fd;
-@@ -331,7 +321,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
-     struct KVMParkedVcpu *vcpu = NULL;
-     int ret = 0;
- 
--    DPRINTF("kvm_destroy_vcpu\n");
-+    trace_kvm_dprintf("kvm_destroy_vcpu\n");
- 
-     ret = kvm_arch_destroy_vcpu(cpu);
-     if (ret < 0) {
-@@ -341,7 +331,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
-     mmap_size = kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
-     if (mmap_size < 0) {
-         ret = mmap_size;
--        DPRINTF("KVM_GET_VCPU_MMAP_SIZE failed\n");
-+        trace_kvm_dprintf("KVM_GET_VCPU_MMAP_SIZE failed\n");
-         goto err;
-     }
- 
-@@ -443,7 +433,6 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
-                                    PAGE_SIZE * KVM_DIRTY_LOG_PAGE_OFFSET);
-         if (cpu->kvm_dirty_gfns == MAP_FAILED) {
-             ret = -errno;
--            DPRINTF("mmap'ing vcpu dirty gfns failed: %d\n", ret);
-             goto err;
-         }
-     }
-@@ -2821,7 +2810,7 @@ int kvm_cpu_exec(CPUState *cpu)
-     struct kvm_run *run = cpu->kvm_run;
-     int ret, run_ret;
- 
--    DPRINTF("kvm_cpu_exec()\n");
-+    trace_kvm_dprintf("kvm_cpu_exec()\n");
- 
-     if (kvm_arch_process_async_events(cpu)) {
-         qatomic_set(&cpu->exit_request, 0);
-@@ -2848,7 +2837,7 @@ int kvm_cpu_exec(CPUState *cpu)
- 
-         kvm_arch_pre_run(cpu, run);
-         if (qatomic_read(&cpu->exit_request)) {
--            DPRINTF("interrupt exit requested\n");
-+	    trace_kvm_dprintf("interrupt exit requested\n");
-             /*
-              * KVM requires us to reenter the kernel after IO exits to complete
-              * instruction emulation. This self-signal will ensure that we
-@@ -2878,7 +2867,7 @@ int kvm_cpu_exec(CPUState *cpu)
- 
-         if (run_ret < 0) {
-             if (run_ret == -EINTR || run_ret == -EAGAIN) {
--                DPRINTF("io window exit\n");
-+		trace_kvm_dprintf("io window exit\n");
-                 kvm_eat_signals(cpu);
-                 ret = EXCP_INTERRUPT;
-                 break;
-@@ -2900,7 +2889,7 @@ int kvm_cpu_exec(CPUState *cpu)
-         trace_kvm_run_exit(cpu->cpu_index, run->exit_reason);
-         switch (run->exit_reason) {
-         case KVM_EXIT_IO:
--            DPRINTF("handle_io\n");
-+            trace_kvm_dprintf("handle_io\n");
-             /* Called outside BQL */
-             kvm_handle_io(run->io.port, attrs,
-                           (uint8_t *)run + run->io.data_offset,
-@@ -2910,7 +2899,7 @@ int kvm_cpu_exec(CPUState *cpu)
-             ret = 0;
-             break;
-         case KVM_EXIT_MMIO:
--            DPRINTF("handle_mmio\n");
-+            trace_kvm_dprintf("handle_mmio\n");
-             /* Called outside BQL */
-             address_space_rw(&address_space_memory,
-                              run->mmio.phys_addr, attrs,
-@@ -2920,11 +2909,11 @@ int kvm_cpu_exec(CPUState *cpu)
-             ret = 0;
-             break;
-         case KVM_EXIT_IRQ_WINDOW_OPEN:
--            DPRINTF("irq_window_open\n");
-+            trace_kvm_dprintf("irq_window_open\n");
-             ret = EXCP_INTERRUPT;
-             break;
-         case KVM_EXIT_SHUTDOWN:
--            DPRINTF("shutdown\n");
-+            trace_kvm_dprintf("shutdown\n");
-             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-             ret = EXCP_INTERRUPT;
-             break;
-@@ -2976,13 +2965,12 @@ int kvm_cpu_exec(CPUState *cpu)
-                 ret = 0;
-                 break;
-             default:
--                DPRINTF("kvm_arch_handle_exit\n");
-+                trace_kvm_dprintf("kvm_arch_handle_exit\n");
-                 ret = kvm_arch_handle_exit(cpu, run);
-                 break;
-             }
-             break;
-         default:
--            DPRINTF("kvm_arch_handle_exit\n");
-             ret = kvm_arch_handle_exit(cpu, run);
-             break;
-         }
-diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-index 399aaeb0ec..1754909efe 100644
---- a/accel/kvm/trace-events
-+++ b/accel/kvm/trace-events
-@@ -25,4 +25,4 @@ kvm_dirty_ring_reaper(const char *s) "%s"
- kvm_dirty_ring_reap(uint64_t count, int64_t t) "reaped %"PRIu64" pages (took %"PRIi64" us)"
- kvm_dirty_ring_reaper_kick(const char *reason) "%s"
- kvm_dirty_ring_flush(int finished) "%d"
--
-+kvm_dprintf(const char *s) "from KVM: %s"
--- 
-2.25.1
+You seem to lack basic understanding of how the kernel works in this
+regard, which makes me very nervous about you touching any of this.
 
+I must also say I really dislike your extra/random permssion calls all
+over the place. They don't really get us anything afaict. Why can't you
+plumb into the existing set_memory_*() family?
 
