@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B727FAB11
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 21:10:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A947FAB4A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 21:24:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7hvA-00070x-Kj; Mon, 27 Nov 2023 15:09:32 -0500
+	id 1r7i8M-0001Y0-Sk; Mon, 27 Nov 2023 15:23:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterz@infradead.org>)
- id 1r7hv3-0006yu-Nc
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:09:26 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r7i8L-0001Xn-Ca
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:23:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterz@infradead.org>)
- id 1r7hv0-0007H4-Pm
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:09:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
- Sender:Reply-To:Content-ID:Content-Description;
- bh=0g8rmOmWV3gIvWc7PsUFJZCK/mjDmfDlEjIfQZ9fLpw=; b=eDWXIpgRHK0l6Kp1zvM8AozfOF
- C6Od0RZKcBiM1TpdWu2XQUTQBZigv/lVFcp4wmzQVJpUa30ta0VAtD86zKeO0v7pZOLiVWQRr4KN8
- hk4FOzx8yGdiIasjtANlRLndmWRJMvBdSEMGCKmqSYLag0ay+cj9SgXrs1vld5SS+8dkv6bWq3SV5
- MDYEEFDnBglQijN9WYMxBEuwTpC4pfbqpYLSGbfh3mrMun861qNxt0UbAxZ6eZUufig+63zyL2qSO
- J7adiJq4wNyrGWs8soFqK96nVJbz6xxEW1NnrEo4DM5u7kBaGizRWOoC4Gn534kdhjeQxjkmw2wur
- fASu7jhg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1r7huM-00Bhd4-E7; Mon, 27 Nov 2023 20:08:42 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
- id 12A193002F1; Mon, 27 Nov 2023 21:08:42 +0100 (CET)
-Date: Mon, 27 Nov 2023 21:08:41 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
-Cc: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Graf <graf@amazon.com>, Chao Peng <chao.p.peng@linux.intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- Forrest Yuan Yu <yuanyu@google.com>, James Gowans <jgowans@amazon.com>,
- James Morris <jamorris@linux.microsoft.com>,
- John Andersen <john.s.andersen@intel.com>,
- Marian Rotariu <marian.c.rotariu@gmail.com>,
- Mihai =?utf-8?B?RG9uyJt1?= <mdontu@bitdefender.com>,
- =?utf-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
- Thara Gopinath <tgopinath@microsoft.com>,
- Trilok Soni <quic_tsoni@quicinc.com>, Wei Liu <wei.liu@kernel.org>,
- Will Deacon <will@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>,
- Zahra Tarkhani <ztarkhani@microsoft.com>,
- =?utf-8?Q?=C8=98tefan_=C8=98icleru?= <ssicleru@bitdefender.com>,
- dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
- x86@kernel.org, xen-devel@lists.xenproject.org
-Subject: Re: [RFC PATCH v2 17/19] heki: x86: Update permissions counters
- during text patching
-Message-ID: <20231127200841.GZ3818@noisy.programming.kicks-ass.net>
-References: <20231113022326.24388-1-mic@digikod.net>
- <20231113022326.24388-18-mic@digikod.net>
- <20231113081929.GA16138@noisy.programming.kicks-ass.net>
- <a52d8885-43cc-4a4e-bb47-9a800070779e@linux.microsoft.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r7i8J-0001ic-Tx
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 15:23:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701116586;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=c538PmiR9ahVj+eyGMW25DBp+plFfH0GMFxcSIAFpG0=;
+ b=ZQIlJT8lGS0U3JAzCDXiHUe6nnzoZHz8wtT+y4pwaeNCMKqiznAIVFhSBR+vWHsiBYoQXL
+ Hj6I1kGYF7UX9pXARv/mFMCVRcuuIsVyr7pyK3PILN1rUF3uhksmUPquLwMkBFnSX6RAxc
+ 8CCaQ4oAAcjH0VZJ2TiRVyvVByEdjqw=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-522-j_EBToKaOJGD3MZf1_LrAQ-1; Mon, 27 Nov 2023 15:23:05 -0500
+X-MC-Unique: j_EBToKaOJGD3MZf1_LrAQ-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-67a542b737fso1213276d6.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 12:23:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701116583; x=1701721383;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=c538PmiR9ahVj+eyGMW25DBp+plFfH0GMFxcSIAFpG0=;
+ b=gnJJTdeT83+V3ZPHjYKXMUWPvhyeeTe0ixWh4DI2hDPW71L0EfJmu/CrKSgABGSwY5
+ a0UlVNW0Jnx3Ljj7EVCQlLdMA/Ha53SYF1NQ3e4vCMGNYI0fzKSeQnMasNlVEFolwjMq
+ zbX9/7Ti8yiBZnyijOdx2/EC39kUz3ieZfzalQPsjLLgpL/lfkIV18fx59CFzFyDmfs6
+ wYXtY3mzNrjtX2gcu3gbYXPNMUmKsSejcyZPFm7jXF/f5EL4UqBQGn9ciYRODn1wN401
+ qpwBn4RReu5gPwJk6My+KYru334t3e8u5IJeub3yQRGfBgQrfZy/+1nmj8RZtT40xoJT
+ PNxQ==
+X-Gm-Message-State: AOJu0YxXKFIB3UZWnfa2YSpM3qj005DDlJjyBYjCTKMsQf0ilX2mtnhV
+ tmadwmt+InyDEEOBCf5H+LquR6THnDu9v73x1rk5N6vWm+K1ExeWBOh6Hlpn5O/6F+es6XjdRrL
+ 332Zs0Mv1kgomK1I=
+X-Received: by 2002:ad4:58ae:0:b0:67a:29c7:98cd with SMTP id
+ ea14-20020ad458ae000000b0067a29c798cdmr8836052qvb.4.1701116583580; 
+ Mon, 27 Nov 2023 12:23:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE1kxv8LUCBapbe4POntyJvC4XtQlIQyXMyk3oXnDdaMjGzMyp4vaDRmOvi0a6zKjMLP5f1AA==
+X-Received: by 2002:ad4:58ae:0:b0:67a:29c7:98cd with SMTP id
+ ea14-20020ad458ae000000b0067a29c798cdmr8836024qvb.4.1701116583301; 
+ Mon, 27 Nov 2023 12:23:03 -0800 (PST)
+Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ dw12-20020a0562140a0c00b0067a1c7d8e98sm3315000qvb.41.2023.11.27.12.23.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Nov 2023 12:23:02 -0800 (PST)
+Date: Mon, 27 Nov 2023 15:23:00 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v1 5/7] tests/qtest/migration: Print migration incoming
+ errors
+Message-ID: <ZWT6pCri-NmPy3Bt@x1n>
+References: <ZWSswkonmoz2ryQu@x1n>
+ <87ttp72ny1.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a52d8885-43cc-4a4e-bb47-9a800070779e@linux.microsoft.com>
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=peterz@infradead.org; helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+In-Reply-To: <87ttp72ny1.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,100 +100,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 27, 2023 at 10:48:29AM -0600, Madhavan T. Venkataraman wrote:
-> Apologies for the late reply. I was on vacation. Please see my response below:
-> 
-> On 11/13/23 02:19, Peter Zijlstra wrote:
-> > On Sun, Nov 12, 2023 at 09:23:24PM -0500, Mickaël Salaün wrote:
-> >> From: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
-> >>
-> >> X86 uses a function called __text_poke() to modify executable code. This
-> >> patching function is used by many features such as KProbes and FTrace.
-> >>
-> >> Update the permissions counters for the text page so that write
-> >> permissions can be temporarily established in the EPT to modify the
-> >> instructions in that page.
-> >>
-> >> Cc: Borislav Petkov <bp@alien8.de>
-> >> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> >> Cc: H. Peter Anvin <hpa@zytor.com>
-> >> Cc: Ingo Molnar <mingo@redhat.com>
-> >> Cc: Kees Cook <keescook@chromium.org>
-> >> Cc: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
-> >> Cc: Mickaël Salaün <mic@digikod.net>
-> >> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> >> Cc: Sean Christopherson <seanjc@google.com>
-> >> Cc: Thomas Gleixner <tglx@linutronix.de>
-> >> Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-> >> Cc: Wanpeng Li <wanpengli@tencent.com>
-> >> Signed-off-by: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
-> >> ---
-> >>
-> >> Changes since v1:
-> >> * New patch
-> >> ---
-> >>  arch/x86/kernel/alternative.c |  5 ++++
-> >>  arch/x86/mm/heki.c            | 49 +++++++++++++++++++++++++++++++++++
-> >>  include/linux/heki.h          | 14 ++++++++++
-> >>  3 files changed, 68 insertions(+)
-> >>
-> >> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-> >> index 517ee01503be..64fd8757ba5c 100644
-> >> --- a/arch/x86/kernel/alternative.c
-> >> +++ b/arch/x86/kernel/alternative.c
-> >> @@ -18,6 +18,7 @@
-> >>  #include <linux/mmu_context.h>
-> >>  #include <linux/bsearch.h>
-> >>  #include <linux/sync_core.h>
-> >> +#include <linux/heki.h>
-> >>  #include <asm/text-patching.h>
-> >>  #include <asm/alternative.h>
-> >>  #include <asm/sections.h>
-> >> @@ -1801,6 +1802,7 @@ static void *__text_poke(text_poke_f func, void *addr, const void *src, size_t l
-> >>  	 */
-> >>  	pgprot = __pgprot(pgprot_val(PAGE_KERNEL) & ~_PAGE_GLOBAL);
+On Mon, Nov 27, 2023 at 12:52:38PM -0300, Fabiano Rosas wrote:
+> >> @@ -118,6 +118,12 @@ void migrate_incoming_qmp(QTestState *to, const char *uri, const char *fmt, ...)
 > >>  
-> >> +	heki_text_poke_start(pages, cross_page_boundary ? 2 : 1, pgprot);
-> >>  	/*
-> >>  	 * The lock is not really needed, but this allows to avoid open-coding.
-> >>  	 */
-> >> @@ -1865,7 +1867,10 @@ static void *__text_poke(text_poke_f func, void *addr, const void *src, size_t l
-> >>  	}
-> >>  
-> >>  	local_irq_restore(flags);
+> >>      rsp = qtest_qmp(to, "{ 'execute': 'migrate-incoming', 'arguments': %p}",
+> >>                      args);
 > >> +
-> >>  	pte_unmap_unlock(ptep, ptl);
-> >> +	heki_text_poke_end(pages, cross_page_boundary ? 2 : 1, pgprot);
-> >> +
-> >>  	return addr;
-> >>  }
-> > 
-> > This makes no sense, we already use a custom CR3 with userspace alias
-> > for the actual pages to write to, why are you then frobbing permissions
-> > on that *again* ?
+> >> +    if (!qdict_haskey(rsp, "return")) {
+> >> +        g_autoptr(GString) s = qobject_to_json_pretty(QOBJECT(rsp), true);
+> >> +        g_test_message("%s", s->str);
+> >> +    }
+> >
+> > This traps the "migrate-incoming" command only (which, afaiu, only setup
+> > the listening), would this capture the incoming error?
 > 
-> Today, the permissions for a guest page in the extended page table
-> (EPT) are RWX (unless permissions are restricted for some specific
-> reason like for shadow page table pages). In this Heki feature, we
-> don't allow RWX by default in the EPT. We only allow those permissions
-> in the EPT that the guest page actually needs.  E.g., for a text page,
-> it is R_X in both the guest page table and the EPT.
+> This is about the migrate-incoming only. We could replace "incoming
+> migration" with "qmp_migrate_incoming" in the commit message to clarify.
 
-To what end? If you always mirror what the guest does, you've not
-actually gained anything.
+Ah.. Did you ever see this failure in any of your runs in these tests?  I
+think it means you hit the assertion right below this part, but I'm just
+curious how, as the URIs in the test cases are pretty constant.
 
-> For text patching, the above code establishes an alternate mapping in
-> the guest page table that is RW_ so that the text can be patched. That
-> needs to be reflected in the EPT so that the EPT permissions will
-> change from R_X to RWX. In other words, RWX is allowed only as
-> necessary. At the end of patching, the EPT permissions are restored to
-> R_X.
-> 
-> Does that address your comment?
+-- 
+Peter Xu
 
-No, if you want to mirror the native PTEs why don't you hook into the
-paravirt page-table muck and get all that for free?
-
-Also, this is the user range, are you saying you're also playing these
-daft games with user maps?
 
