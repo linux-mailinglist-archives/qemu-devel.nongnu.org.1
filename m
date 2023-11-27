@@ -2,99 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CC67FA7C7
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:14:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C77F7FA81D
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:34:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7fB3-0001Qn-NN; Mon, 27 Nov 2023 12:13:46 -0500
+	id 1r7fU6-0003uN-CK; Mon, 27 Nov 2023 12:33:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1r7fAr-0001LC-NK; Mon, 27 Nov 2023 12:13:35 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1r7fAp-0005jd-US; Mon, 27 Nov 2023 12:13:33 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ARHB2pE004561; Mon, 27 Nov 2023 17:13:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=wKriP0tI2MNSPApG0uP+f6zVIUaxKBJDofrBGufMoAc=;
- b=QvY0I5Sy1Ac5VwrqjA1mZxL2BTnaGeU0g6qulTpYxBpMLNY8GAZTrXCBrx3hxM1s1J82
- 8954zeWJCSdfuH0HbC2NVBJ/gUjhDKAoFWPDQT/I4Ad68Nmt1/OE8vjbSzCoaMUTb6j8
- 2bfknwB/JdabnFnkFdHZh2d11u7UY4SO7Ywq/NxlpNTMPMxOFXtMfXKS6VmfZP0r5H7h
- yll6fbARjntNQdQlvo6oBP0R6/j7XlVrBgy/KjMAutyOrM6FMNzNCwkTFpkClGfZAECC
- WTs1q2wDQD1UOsVy16QrgcS/FRQKwpC7liso2O3nfOCMLwasx+nBRJNdKkIflantfq+M 4w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umxd79u3m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Nov 2023 17:13:27 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ARHB0SD004369;
- Mon, 27 Nov 2023 17:13:27 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umxd79u3c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Nov 2023 17:13:27 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ARGqJEN009185; Mon, 27 Nov 2023 17:13:26 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukumyaad7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Nov 2023 17:13:25 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3ARHDMSo16056964
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Nov 2023 17:13:23 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D9AFE2004B;
- Mon, 27 Nov 2023 17:13:22 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 34CA020040;
- Mon, 27 Nov 2023 17:13:21 +0000 (GMT)
-Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 27 Nov 2023 17:13:21 +0000 (GMT)
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
- chalapathi.v@linux.ibm.com, saif.abrar@linux.vnet.ibm.com
-Subject: [PATCH v6 3/3] hw/ppc: N1 chiplet wiring
-Date: Mon, 27 Nov 2023 11:13:07 -0600
-Message-Id: <20231127171307.5237-4-chalapathi.v@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20231127171307.5237-1-chalapathi.v@linux.ibm.com>
-References: <20231127171307.5237-1-chalapathi.v@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r7fU3-0003tr-Ew
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:33:23 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r7fU1-0000r9-Jc
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:33:23 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40b31232bf0so36544155e9.1
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 09:33:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701106400; x=1701711200; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VTmP2SfuKtFGsLKLcYsU/86EziA+M1ZnG6uDYIkwoU0=;
+ b=fs8oG/5oyyCJQTu8Ht66+THWnjlOz/oWCiQ4ImnzRGyAQTvllqCkgwX2VkaPL95X7V
+ 4ItBcc1aJiAYuBBz8JaFGFi1xAUtoVJbr/IGwHguhD45cRQLyRWOnqGAE6jzsfV2+gbu
+ XggGKDT8x35ezVACgoalSocDlXpF3wtqyzdrE8PUWQ205wwrBoVfSnMQ2qQh43JFvFv1
+ Gb3gwE5Avxcua/5kP60Z76X2mn3eHudD4ND4MjozY7YXTfy1lYv2kpVGh825Qcw6JMF/
+ lUvFQvocGIxcBR7mGU1QFEtkI7uu37TgVWLhpUHUOVchvlp0Y6AO3G4J50gB1HvdFMx6
+ BxhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701106400; x=1701711200;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VTmP2SfuKtFGsLKLcYsU/86EziA+M1ZnG6uDYIkwoU0=;
+ b=Dl4aEphv9xEyUlHdGMmMWmE9ANmjKSJ+wMmdR5etsK9yuwSowQ1tq8r5sp/Rrsjh44
+ 7dt7lAPZnKzguivXWtWVJDvVJ+5mphMEE/I9Iw5vW7OOHRuvVLEMiCVjXWT4xvuX5bAh
+ NfSyxkKZeCjfo4xgoZZ/AoG7S5zQfgjZwHxlpP8O82B/DkjXVMzSXWY8myFaadUqeFIK
+ NyhcpJnX12ae58L4gkSIqK4ZSaBlOANJbratNxZoeDroJ6//fImTINofVzXQMDPXiI3J
+ NZxpEcnwGY8XhcHSY64L/PgNBZqYkgoQ2CSG9i53fbgVE1QKwTADSw0x9QzcaPaxTPYp
+ 6ySQ==
+X-Gm-Message-State: AOJu0Yy0/8M4sXSabJWhHxnbG7KL2s2NJm4ulgNJvsSiWPcCJezEdzk5
+ Tk/6If6+0kL/2MbnZTL6JJucfA==
+X-Google-Smtp-Source: AGHT+IH411Nyg7yP8L/cR/J1QT0JlX0NGhaja9cy/gYV/i1a4InFknzOZCfmW77NdlL1ZxAo3tPqjw==
+X-Received: by 2002:a05:600c:190a:b0:40b:3fed:cbeb with SMTP id
+ j10-20020a05600c190a00b0040b3fedcbebmr5769424wmq.32.1701106399879; 
+ Mon, 27 Nov 2023 09:33:19 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ iv8-20020a05600c548800b004063ea92492sm14712187wmb.22.2023.11.27.09.33.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Nov 2023 09:33:19 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+	qemu-stable@nongnu.org
+Subject: [PATCH for-8.2] target/arm: Disable SME if SVE is disabled
+Date: Mon, 27 Nov 2023 17:33:18 +0000
+Message-Id: <20231127173318.674758-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: frnwk3OC2LR4cdBDpMjUKmry3GlQItRo
-X-Proofpoint-ORIG-GUID: quegmE-nEgzE8_s1wMUwWhh5PbtKKhbF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-27_15,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- malwarescore=0 spamscore=0 bulkscore=0 mlxlogscore=753 suspectscore=0
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311270119
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,68 +90,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This part of the patchset connects the nest1 chiplet model to p10 chip.
+There is no architectural requirement that SME implies SVE, but
+our implementation currently assumes it. (FEAT_SME_FA64 does
+imply SVE.) So if you try to run a CPU with eg "-cpu max,sve=off"
+you quickly run into an assert when the guest tries to write to
+SMCR_EL1:
 
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
+#6  0x00007ffff4b38e96 in __GI___assert_fail
+    (assertion=0x5555566e69cb "sm", file=0x5555566e5b24 "../../target/arm/helper.c", line=6865, function=0x5555566e82f0 <__PRETTY_FUNCTION__.31> "sve_vqm1_for_el_sm") at ./assert/assert.c:101
+#7  0x0000555555ee33aa in sve_vqm1_for_el_sm (env=0x555557d291f0, el=2, sm=false) at ../../target/arm/helper.c:6865
+#8  0x0000555555ee3407 in sve_vqm1_for_el (env=0x555557d291f0, el=2) at ../../target/arm/helper.c:6871
+#9  0x0000555555ee3724 in smcr_write (env=0x555557d291f0, ri=0x555557da23b0, value=2147483663) at ../../target/arm/helper.c:6995
+#10 0x0000555555fd1dba in helper_set_cp_reg64 (env=0x555557d291f0, rip=0x555557da23b0, value=2147483663) at ../../target/arm/tcg/op_helper.c:839
+#11 0x00007fff60056781 in code_gen_buffer ()
+
+Avoid this unsupported and slightly odd combination by
+disabling SME when SVE is not present.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2005
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/ppc/pnv_chip.h |  2 ++
- hw/ppc/pnv.c              | 15 +++++++++++++++
- 2 files changed, 17 insertions(+)
+'-cpu sve=off,sme=on,sme_fa64=off' crashes in the same way, so just
+turning off FA64 isn't sufficient.  Maybe we should support
+SME-no-SVE, but for 8.2 at least turning off SME is better than
+letting users hit an assertion.
+---
+ target/arm/cpu.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 0ab5c42308..9b06c8d87c 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -4,6 +4,7 @@
- #include "hw/pci-host/pnv_phb4.h"
- #include "hw/ppc/pnv_core.h"
- #include "hw/ppc/pnv_homer.h"
-+#include "hw/ppc/pnv_n1_chiplet.h"
- #include "hw/ppc/pnv_lpc.h"
- #include "hw/ppc/pnv_occ.h"
- #include "hw/ppc/pnv_psi.h"
-@@ -113,6 +114,7 @@ struct Pnv10Chip {
-     PnvOCC       occ;
-     PnvSBE       sbe;
-     PnvHomer     homer;
-+    PnvN1Chiplet     n1_chiplet;
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 25e9d2ae7b8..0fe268ac785 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1743,6 +1743,15 @@ void arm_cpu_finalize_features(ARMCPU *cpu, Error **errp)
+             return;
+         }
  
-     uint32_t     nr_quads;
-     PnvQuad      *quads;
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 0297871bdd..6cf1f3319f 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1680,6 +1680,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
-     object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
-     object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
-     object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
-+    object_initialize_child(obj, "n1_chiplet", &chip10->n1_chiplet,
-+                            TYPE_PNV_N1_CHIPLET);
- 
-     chip->num_pecs = pcc->num_pecs;
- 
-@@ -1849,6 +1851,19 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(get_system_memory(), PNV10_HOMER_BASE(chip),
-                                 &chip10->homer.regs);
- 
-+    /* N1 chiplet */
-+    if (!qdev_realize(DEVICE(&chip10->n1_chiplet), NULL, errp)) {
-+        return;
-+    }
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_CHIPLET_CTRL_REGS_BASE,
-+             &chip10->n1_chiplet.nest_pervasive.xscom_ctrl_regs);
++        /*
++         * FEAT_SME is not architecturally dependent on FEAT_SVE (unless
++         * FEAT_SME_FA64 is present). However our implementation currently
++         * assumes it, so if the user asked for sve=off then turn off SME also.
++         */
++        if (cpu_isar_feature(aa64_sme, cpu) && !cpu_isar_feature(aa64_sve, cpu)) {
++            object_property_set_bool(OBJECT(cpu), "sme", false, &error_abort);
++        }
 +
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_EQ_BASE,
-+                           &chip10->n1_chiplet.xscom_pb_eq_regs);
-+
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_ES_BASE,
-+                           &chip10->n1_chiplet.xscom_pb_es_regs);
-+
-     /* PHBs */
-     pnv_chip_power10_phb_realize(chip, &local_err);
-     if (local_err) {
+         arm_cpu_sme_finalize(cpu, &local_err);
+         if (local_err != NULL) {
+             error_propagate(errp, local_err);
 -- 
-2.31.1
+2.34.1
 
 
