@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797E77FA7C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:14:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CC67FA7C7
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:14:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7fB3-0001Qo-Lo; Mon, 27 Nov 2023 12:13:46 -0500
+	id 1r7fB3-0001Qn-NN; Mon, 27 Nov 2023 12:13:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1r7fAu-0001No-5x; Mon, 27 Nov 2023 12:13:37 -0500
+ id 1r7fAr-0001LC-NK; Mon, 27 Nov 2023 12:13:35 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1r7fAs-0005jy-5V; Mon, 27 Nov 2023 12:13:35 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ id 1r7fAp-0005jd-US; Mon, 27 Nov 2023 12:13:33 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ARG93u2026468; Mon, 27 Nov 2023 17:13:24 GMT
+ 3ARHB2pE004561; Mon, 27 Nov 2023 17:13:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=I40/VuQUDR6/aQ004LeLlwRoCaceRiryozpH0ehp8ww=;
- b=MXmbt8nmfG0w2GffY0TyTuOhUZKooTn8QwNrmi//IGXi24ip+BcR2OWN5P9aiwwCwL1d
- l5n/nv4Ty72bmlVyMCdG731QDhOt0RTxkpaziTHvVL7caVTtFmaLnK55Tcm1JlF809JF
- 1aNvf5M33+7EEEjL9lgt6MWqJm3WoBGVL7RdZzm3Gaw094utSFiZ2e0SeAQX2kdY87PV
- uotWQ0HaSTc9JIEMcDp3MHolyJ+g6Y+WpiMVvaj3tn7CWTMZxkU2BzEgBAJcZ39fVrMN
- U0Ll9Sgfdeve5wBUwQgklDB5cyFKbMV1bWoJcjBS37gSodUG27nJRTxzPKvjira/wy8E Qw== 
+ bh=wKriP0tI2MNSPApG0uP+f6zVIUaxKBJDofrBGufMoAc=;
+ b=QvY0I5Sy1Ac5VwrqjA1mZxL2BTnaGeU0g6qulTpYxBpMLNY8GAZTrXCBrx3hxM1s1J82
+ 8954zeWJCSdfuH0HbC2NVBJ/gUjhDKAoFWPDQT/I4Ad68Nmt1/OE8vjbSzCoaMUTb6j8
+ 2bfknwB/JdabnFnkFdHZh2d11u7UY4SO7Ywq/NxlpNTMPMxOFXtMfXKS6VmfZP0r5H7h
+ yll6fbARjntNQdQlvo6oBP0R6/j7XlVrBgy/KjMAutyOrM6FMNzNCwkTFpkClGfZAECC
+ WTs1q2wDQD1UOsVy16QrgcS/FRQKwpC7liso2O3nfOCMLwasx+nBRJNdKkIflantfq+M 4w== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umwynju58-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umxd79u3m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Nov 2023 17:13:24 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ARGAgX7006510;
- Mon, 27 Nov 2023 17:13:24 GMT
+ Mon, 27 Nov 2023 17:13:27 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ARHB0SD004369;
+ Mon, 27 Nov 2023 17:13:27 GMT
 Received: from ppma22.wdc07v.mail.ibm.com
  (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umwynju46-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umxd79u3c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Nov 2023 17:13:23 +0000
+ Mon, 27 Nov 2023 17:13:27 +0000
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
  by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ARGvBHv009176; Mon, 27 Nov 2023 17:13:22 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukumyaacs-1
+ 3ARGqJEN009185; Mon, 27 Nov 2023 17:13:26 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukumyaad7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Nov 2023 17:13:22 +0000
+ Mon, 27 Nov 2023 17:13:25 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
  [10.20.54.100])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3ARHDJYB45941320
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3ARHDMSo16056964
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Nov 2023 17:13:19 GMT
+ Mon, 27 Nov 2023 17:13:23 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0BA4420040;
- Mon, 27 Nov 2023 17:13:19 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D9AFE2004B;
+ Mon, 27 Nov 2023 17:13:22 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5A19720043;
- Mon, 27 Nov 2023 17:13:17 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 34CA020040;
+ Mon, 27 Nov 2023 17:13:21 +0000 (GMT)
 Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
  by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 27 Nov 2023 17:13:17 +0000 (GMT)
+ Mon, 27 Nov 2023 17:13:21 +0000 (GMT)
 From: Chalapathi V <chalapathi.v@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
  clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
  chalapathi.v@linux.ibm.com, saif.abrar@linux.vnet.ibm.com
-Subject: [PATCH v6 2/3] hw/ppc: Add N1 chiplet model
-Date: Mon, 27 Nov 2023 11:13:06 -0600
-Message-Id: <20231127171307.5237-3-chalapathi.v@linux.ibm.com>
+Subject: [PATCH v6 3/3] hw/ppc: N1 chiplet wiring
+Date: Mon, 27 Nov 2023 11:13:07 -0600
+Message-Id: <20231127171307.5237-4-chalapathi.v@linux.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20231127171307.5237-1-chalapathi.v@linux.ibm.com>
 References: <20231127171307.5237-1-chalapathi.v@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AZqueIaL-uwiXyPHFFdhO6-JutNnvAoT
-X-Proofpoint-ORIG-GUID: V1lwftLd_RnoWeOtqctGqVGLsAcCPh_h
+X-Proofpoint-GUID: frnwk3OC2LR4cdBDpMjUKmry3GlQItRo
+X-Proofpoint-ORIG-GUID: quegmE-nEgzE8_s1wMUwWhh5PbtKKhbF
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-27_15,2023-11-27_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- lowpriorityscore=0 spamscore=0 bulkscore=0 suspectscore=0 malwarescore=0
- mlxscore=0 adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ mlxscore=0 phishscore=0
+ malwarescore=0 spamscore=0 bulkscore=0 mlxlogscore=753 suspectscore=0
+ lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2311060000 definitions=main-2311270119
 Received-SPF: pass client-ip=148.163.156.1;
  envelope-from=chalapathi.v@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
@@ -111,273 +111,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The N1 chiplet handle the high speed i/o traffic over PCIe and others.
-The N1 chiplet consists of PowerBus Fabric controller,
-nest Memory Management Unit, chiplet control unit and more.
-
-This commit creates a N1 chiplet model and initialize and realize the
-pervasive chiplet model where chiplet control registers are implemented.
-
-This commit also implement the read/write method for the powerbus scom
-registers
+This part of the patchset connects the nest1 chiplet model to p10 chip.
 
 Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
 ---
- include/hw/ppc/pnv_n1_chiplet.h |  35 +++++++
- include/hw/ppc/pnv_xscom.h      |   6 ++
- hw/ppc/pnv_n1_chiplet.c         | 171 ++++++++++++++++++++++++++++++++
- hw/ppc/meson.build              |   1 +
- 4 files changed, 213 insertions(+)
- create mode 100644 include/hw/ppc/pnv_n1_chiplet.h
- create mode 100644 hw/ppc/pnv_n1_chiplet.c
+ include/hw/ppc/pnv_chip.h |  2 ++
+ hw/ppc/pnv.c              | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/include/hw/ppc/pnv_n1_chiplet.h b/include/hw/ppc/pnv_n1_chiplet.h
-new file mode 100644
-index 0000000000..3c42ada7f4
---- /dev/null
-+++ b/include/hw/ppc/pnv_n1_chiplet.h
-@@ -0,0 +1,35 @@
-+/*
-+ * QEMU PowerPC N1 chiplet model
-+ *
-+ * Copyright (c) 2023, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This code is licensed under the GPL version 2 or later. See the
-+ * COPYING file in the top-level directory.
-+ *
-+ */
-+
-+#ifndef PPC_PNV_N1_CHIPLET_H
-+#define PPC_PNV_N1_CHIPLET_H
-+
-+#include "hw/ppc/pnv_nest_pervasive.h"
-+
-+#define TYPE_PNV_N1_CHIPLET "pnv-N1-chiplet"
-+#define PNV_N1_CHIPLET(obj) OBJECT_CHECK(PnvN1Chiplet, (obj), TYPE_PNV_N1_CHIPLET)
-+
-+typedef struct pb_scom {
-+    uint64_t mode;
-+    uint64_t hp_mode2_curr;
-+} pb_scom;
-+
-+typedef struct PnvN1Chiplet {
-+    DeviceState parent;
-+    MemoryRegion xscom_pb_eq_regs;
-+    MemoryRegion xscom_pb_es_regs;
-+    /* common pervasive chiplet unit */
-+    PnvNestChipletPervasive nest_pervasive;
-+    pb_scom eq[8];
-+    pb_scom es[4];
-+} PnvN1Chiplet;
-+#endif /*PPC_PNV_N1_CHIPLET_H */
-diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-index 3e15706dec..535ae1dab0 100644
---- a/include/hw/ppc/pnv_xscom.h
-+++ b/include/hw/ppc/pnv_xscom.h
-@@ -173,6 +173,12 @@ struct PnvXScomInterfaceClass {
- #define PNV10_XSCOM_N1_CHIPLET_CTRL_REGS_BASE      0x3000000
- #define PNV10_XSCOM_CHIPLET_CTRL_REGS_SIZE         0x400
- 
-+#define PNV10_XSCOM_N1_PB_SCOM_EQ_BASE      0x3011000
-+#define PNV10_XSCOM_N1_PB_SCOM_EQ_SIZE      0x200
-+
-+#define PNV10_XSCOM_N1_PB_SCOM_ES_BASE      0x3011300
-+#define PNV10_XSCOM_N1_PB_SCOM_ES_SIZE      0x100
-+
- #define PNV10_XSCOM_PEC_NEST_BASE  0x3011800 /* index goes downwards ... */
- #define PNV10_XSCOM_PEC_NEST_SIZE  0x100
- 
-diff --git a/hw/ppc/pnv_n1_chiplet.c b/hw/ppc/pnv_n1_chiplet.c
-new file mode 100644
-index 0000000000..8e4c21dbf6
---- /dev/null
-+++ b/hw/ppc/pnv_n1_chiplet.c
-@@ -0,0 +1,171 @@
-+/*
-+ * QEMU PowerPC N1 chiplet model
-+ *
-+ * Copyright (c) 2023, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This code is licensed under the GPL version 2 or later. See the
-+ * COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/ppc/pnv.h"
-+#include "hw/ppc/pnv_xscom.h"
+diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+index 0ab5c42308..9b06c8d87c 100644
+--- a/include/hw/ppc/pnv_chip.h
++++ b/include/hw/ppc/pnv_chip.h
+@@ -4,6 +4,7 @@
+ #include "hw/pci-host/pnv_phb4.h"
+ #include "hw/ppc/pnv_core.h"
+ #include "hw/ppc/pnv_homer.h"
 +#include "hw/ppc/pnv_n1_chiplet.h"
-+#include "hw/ppc/pnv_nest_pervasive.h"
-+
-+/*
-+ * The n1 chiplet contains chiplet control unit,
-+ * PowerBus/RaceTrack/Bridge logic, nest Memory Management Unit(nMMU)
-+ * and more.
-+ *
-+ * In this model Nest1 chiplet control registers are modelled via common
-+ * nest pervasive model and few PowerBus racetrack registers are modelled.
-+ */
-+
-+#define PB_SCOM_EQ0_HP_MODE2_CURR      0xe
-+#define PB_SCOM_ES3_MODE               0x8a
-+
-+static uint64_t pnv_n1_chiplet_pb_scom_eq_read(void *opaque, hwaddr addr,
-+                                                  unsigned size)
-+{
-+    PnvN1Chiplet *n1_chiplet = PNV_N1_CHIPLET(opaque);
-+    int reg = addr >> 3;
-+    uint64_t val = ~0ull;
-+
-+    switch (reg) {
-+    case PB_SCOM_EQ0_HP_MODE2_CURR:
-+        val = n1_chiplet->eq[0].hp_mode2_curr;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "%s: Invalid xscom read at 0x%" PRIx32 "\n",
-+                      __func__, reg);
-+    }
-+    return val;
-+}
-+
-+static void pnv_n1_chiplet_pb_scom_eq_write(void *opaque, hwaddr addr,
-+                                               uint64_t val, unsigned size)
-+{
-+    PnvN1Chiplet *n1_chiplet = PNV_N1_CHIPLET(opaque);
-+    int reg = addr >> 3;
-+
-+    switch (reg) {
-+    case PB_SCOM_EQ0_HP_MODE2_CURR:
-+        n1_chiplet->eq[0].hp_mode2_curr = val;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "%s: Invalid xscom write at 0x%" PRIx32 "\n",
-+                      __func__, reg);
-+    }
-+}
-+
-+static const MemoryRegionOps pnv_n1_chiplet_pb_scom_eq_ops = {
-+    .read = pnv_n1_chiplet_pb_scom_eq_read,
-+    .write = pnv_n1_chiplet_pb_scom_eq_write,
-+    .valid.min_access_size = 8,
-+    .valid.max_access_size = 8,
-+    .impl.min_access_size = 8,
-+    .impl.max_access_size = 8,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+};
-+
-+static uint64_t pnv_n1_chiplet_pb_scom_es_read(void *opaque, hwaddr addr,
-+                                          unsigned size)
-+{
-+    PnvN1Chiplet *n1_chiplet = PNV_N1_CHIPLET(opaque);
-+    int reg = addr >> 3;
-+    uint64_t val = ~0ull;
-+
-+    switch (reg) {
-+    case PB_SCOM_ES3_MODE:
-+        val = n1_chiplet->es[3].mode;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "%s: Invalid xscom read at 0x%" PRIx32 "\n",
-+                      __func__, reg);
-+    }
-+    return val;
-+}
-+
-+static void pnv_n1_chiplet_pb_scom_es_write(void *opaque, hwaddr addr,
-+                                               uint64_t val, unsigned size)
-+{
-+    PnvN1Chiplet *n1_chiplet = PNV_N1_CHIPLET(opaque);
-+    int reg = addr >> 3;
-+
-+    switch (reg) {
-+    case PB_SCOM_ES3_MODE:
-+        n1_chiplet->es[3].mode = val;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "%s: Invalid xscom write at 0x%" PRIx32 "\n",
-+                      __func__, reg);
-+    }
-+}
-+
-+static const MemoryRegionOps pnv_n1_chiplet_pb_scom_es_ops = {
-+    .read = pnv_n1_chiplet_pb_scom_es_read,
-+    .write = pnv_n1_chiplet_pb_scom_es_write,
-+    .valid.min_access_size = 8,
-+    .valid.max_access_size = 8,
-+    .impl.min_access_size = 8,
-+    .impl.max_access_size = 8,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+};
-+
-+static void pnv_n1_chiplet_realize(DeviceState *dev, Error **errp)
-+{
-+    PnvN1Chiplet *n1_chiplet = PNV_N1_CHIPLET(dev);
-+
-+    /* Initialize and realize nest pervasive common chiplet model */
-+    object_initialize_child(OBJECT(n1_chiplet), "nest_pervasive_common",
-+                            &n1_chiplet->nest_pervasive,
-+                            TYPE_PNV_NEST_PERVASIVE);
-+    object_property_set_str(OBJECT(&n1_chiplet->nest_pervasive),
-+                                   "parent-obj-name", "n1_chiplet", errp);
-+    if (!qdev_realize(DEVICE(&n1_chiplet->nest_pervasive), NULL, errp)) {
+ #include "hw/ppc/pnv_lpc.h"
+ #include "hw/ppc/pnv_occ.h"
+ #include "hw/ppc/pnv_psi.h"
+@@ -113,6 +114,7 @@ struct Pnv10Chip {
+     PnvOCC       occ;
+     PnvSBE       sbe;
+     PnvHomer     homer;
++    PnvN1Chiplet     n1_chiplet;
+ 
+     uint32_t     nr_quads;
+     PnvQuad      *quads;
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 0297871bdd..6cf1f3319f 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1680,6 +1680,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
+     object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
+     object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
+     object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
++    object_initialize_child(obj, "n1_chiplet", &chip10->n1_chiplet,
++                            TYPE_PNV_N1_CHIPLET);
+ 
+     chip->num_pecs = pcc->num_pecs;
+ 
+@@ -1849,6 +1851,19 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion(get_system_memory(), PNV10_HOMER_BASE(chip),
+                                 &chip10->homer.regs);
+ 
++    /* N1 chiplet */
++    if (!qdev_realize(DEVICE(&chip10->n1_chiplet), NULL, errp)) {
 +        return;
 +    }
++    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_CHIPLET_CTRL_REGS_BASE,
++             &chip10->n1_chiplet.nest_pervasive.xscom_ctrl_regs);
 +
-+    /* Nest1 chiplet power bus EQ xscom region */
-+    pnv_xscom_region_init(&n1_chiplet->xscom_pb_eq_regs, OBJECT(n1_chiplet),
-+                          &pnv_n1_chiplet_pb_scom_eq_ops, n1_chiplet,
-+                          "xscom-n1_chiplet-pb-scom-eq-regs",
-+                          PNV10_XSCOM_N1_PB_SCOM_EQ_SIZE);
++    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_EQ_BASE,
++                           &chip10->n1_chiplet.xscom_pb_eq_regs);
 +
-+    /* Nest1 chiplet power bus ES xscom region */
-+    pnv_xscom_region_init(&n1_chiplet->xscom_pb_es_regs, OBJECT(n1_chiplet),
-+                          &pnv_n1_chiplet_pb_scom_es_ops, n1_chiplet,
-+                          "xscom-n1_chiplet-pb-scom-es-regs",
-+                          PNV10_XSCOM_N1_PB_SCOM_ES_SIZE);
-+}
++    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_ES_BASE,
++                           &chip10->n1_chiplet.xscom_pb_es_regs);
 +
-+static void pnv_n1_chiplet_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->desc = "PowerNV n1 chiplet";
-+    dc->realize = pnv_n1_chiplet_realize;
-+}
-+
-+static const TypeInfo pnv_n1_chiplet_info = {
-+    .name          = TYPE_PNV_N1_CHIPLET,
-+    .parent        = TYPE_DEVICE,
-+    .instance_size = sizeof(PnvN1Chiplet),
-+    .class_init    = pnv_n1_chiplet_class_init,
-+    .interfaces    = (InterfaceInfo[]) {
-+        { TYPE_PNV_XSCOM_INTERFACE },
-+        { }
-+    }
-+};
-+
-+static void pnv_n1_chiplet_register_types(void)
-+{
-+    type_register_static(&pnv_n1_chiplet_info);
-+}
-+
-+type_init(pnv_n1_chiplet_register_types);
-diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-index d6f6f94fcc..256e453c0c 100644
---- a/hw/ppc/meson.build
-+++ b/hw/ppc/meson.build
-@@ -52,6 +52,7 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
-   'pnv_homer.c',
-   'pnv_pnor.c',
-   'pnv_nest_pervasive.c',
-+  'pnv_n1_chiplet.c',
- ))
- # PowerPC 4xx boards
- ppc_ss.add(when: 'CONFIG_PPC405', if_true: files(
+     /* PHBs */
+     pnv_chip_power10_phb_realize(chip, &local_err);
+     if (local_err) {
 -- 
 2.31.1
 
