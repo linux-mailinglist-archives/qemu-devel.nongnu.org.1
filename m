@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BC07F9C36
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 10:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF7E7F9C3A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 10:00:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7XRU-0002if-7E; Mon, 27 Nov 2023 03:58:12 -0500
+	id 1r7XRb-0002lZ-Fp; Mon, 27 Nov 2023 03:58:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1r7XRL-0002fu-5N; Mon, 27 Nov 2023 03:58:03 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1r7XRK-0002g2-Jt; Mon, 27 Nov 2023 03:58:03 -0500
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1r7XRA-0000JC-AE; Mon, 27 Nov 2023 03:58:01 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-285c3512f37so721256a91.3; 
- Mon, 27 Nov 2023 00:57:34 -0800 (PST)
+ id 1r7XRA-0000Je-AR; Mon, 27 Nov 2023 03:58:02 -0500
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-5bcfc508d14so2803268a12.3; 
+ Mon, 27 Nov 2023 00:57:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701075453; x=1701680253; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701075461; x=1701680261; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7K9aluml347AFFauR7NohNELKkT/1POWxw6ovnr1s2Q=;
- b=iL5OnR2/CQgLn4HVjgVLQp5220PxMpcPEdGkCqs8Twit0GHXkSBLGjWyu2/DVWSv41
- 5c+riCc3OSSN0nKSCGp1n1LgAkWvJjYCaPNbf4+LhAFkkd8xH+pt6B4M0tnaTLbmauxM
- fxBtBrZKH538k6v02VTvtVY7+wX/33HYk4TM9c0d0QU5UVxjnER+UuKfBm2U5PBEGAVB
- wxDaFtCJWknG4zT90rEYAI5PBxS8CE1FSbnfbQETy+m5GSCnw++6lacn4oxLqVkJi0Ax
- pzNRn8N90j0YB5WghYq1wq1G7ZbmI71RrlYRc+XKjqXc8e9WO4uH5QuBimiAQtJlAN30
- U59g==
+ bh=Wxu8fnOR3bRYjaWrjbiEIYAc8Ovilupp+SR6wMFCXwI=;
+ b=WXXgysobnQ86E06iUSKcd1Zl+lR+nI7jqX/1DTLeMfZC7vKH+do5oVrjTjXI4MxUiO
+ U09D6zhE/bWkSrmZ890UvTRcP5ydqvV94DBMeKwOolI5c8Nkk/YO1v7JxsGgjRJSBeAH
+ /VRoHvOZHdp9Gy9fPpms44hWeGH9iVYe/HbJwg6V/mlLO9eGkEO2jEGNFkcHrpw8+iJl
+ RSkxXxsuJHY8YnHqpcx10/IXOGL7GKAWaiXRjCblKaP7oCCwxS+6QKjXyfe74emiPZ3M
+ cH2FdQ5lbdUxWqXzRpZwy/tzIcBSDHEwActizDzkasckq2wolp46IaqnKx151hjd+bsD
+ aU+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701075453; x=1701680253;
+ d=1e100.net; s=20230601; t=1701075461; x=1701680261;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7K9aluml347AFFauR7NohNELKkT/1POWxw6ovnr1s2Q=;
- b=wpI3sQhc2pE2ErU2rCrFwMSUfaYxL77z/CcH3J4+00F9gbpIPmudgjBNzaUrreOw6U
- sp0Z2hlNs2e6pip7KuxVTSQc6D5+jkv8opKMc6ebsOYNB7MB7kyamuW3mI+3tE/nJlLw
- ailxSxhCIWjlnoGNHoQfYwu99xG5en8XJm6Hvwf1FUs6c8z700jXiUwHahPPgd83i7an
- uEpiJD4TFZNbXPAzRSEmn38Cw7DkUdk4BuWtMYfUl5sZKRXZNsRSk//lTnpLcLgeHb1p
- 2lVWreswqVFxCmmK9Fgo5M78BNevBVkc9ytUhhtkFvax4GNIoQqtQkNWyJ6Wa/eoWUTF
- BW/g==
-X-Gm-Message-State: AOJu0Ywkjysp23nDmPgk6wKVkFru0fO7lrDpi+HhVcsDfASHdHV6/Mqg
- plB45u6We2eSBwRWTz4DyTdrcL5N2KkwqA==
-X-Google-Smtp-Source: AGHT+IG4oNYfIjtkSzUq5mITf2w29DwgqozfzS4iu1Dl+txOQoH7uNuINdM9Om8Q+E7pxoCy7KrujQ==
-X-Received: by 2002:a17:90b:180c:b0:285:adb0:de3e with SMTP id
- lw12-20020a17090b180c00b00285adb0de3emr6218988pjb.34.1701075452780; 
- Mon, 27 Nov 2023 00:57:32 -0800 (PST)
+ bh=Wxu8fnOR3bRYjaWrjbiEIYAc8Ovilupp+SR6wMFCXwI=;
+ b=ph80i/sZSTFSikT1KGdQg2ymo4/TMLy9pYT/ZJ9StA6kSa6anFvo5ygyKy3yeZXhT7
+ 1mxesUvuJkxHHQH5xyedI5tsimEf9uqKiUdPVW+auYcxcYqFYVgxTRZNTwPF77pq6nP1
+ UozqtKbMDzugBxp/MVSJHMU1ncG1vYKmjmDVNysJgNn0xsJyq6GHRz0e7hCXJ8U77Cxk
+ q1hvu6dIRhT+8BqKJSYDfHkUbYsVuTNvM+OseeZ2V6eNTmBuJOpj/EJpFb9/551ExnXD
+ DOS4Djfppebb+oZ87dkGOmz6GsDnE2+nKFYl8E4fNV9rdQCkPN87Oxq5W/zkW+7PaCb9
+ 38UA==
+X-Gm-Message-State: AOJu0YwKjXjcg5+KlL/AWfB6pH+CWTDb0LwZ0gSaRVj7Z45hJZ/OIuAn
+ pepycJ5fEy0FX6RMI3vXM+OfwnBvVPlolQ==
+X-Google-Smtp-Source: AGHT+IF89SnoeL4yLPhkcef0IyoXE135ulceZtGHIxdwDpRHQC8dN837B6PwWnYS8ijHGxtv3bpdBQ==
+X-Received: by 2002:a17:90b:4a0b:b0:283:2873:8882 with SMTP id
+ kk11-20020a17090b4a0b00b0028328738882mr12455604pjb.10.1701075460817; 
+ Mon, 27 Nov 2023 00:57:40 -0800 (PST)
 Received: from fedlinux.. ([106.84.128.244]) by smtp.gmail.com with ESMTPSA id
- ci8-20020a17090afc8800b0027d0adf653bsm6906901pjb.7.2023.11.27.00.57.25
+ ci8-20020a17090afc8800b0027d0adf653bsm6906901pjb.7.2023.11.27.00.57.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Nov 2023 00:57:32 -0800 (PST)
+ Mon, 27 Nov 2023 00:57:40 -0800 (PST)
 From: Sam Li <faithilikerun@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, Klaus Jensen <its@irrelevant.dk>,
@@ -63,17 +63,16 @@ Cc: stefanha@redhat.com, Klaus Jensen <its@irrelevant.dk>,
  Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  dlemoal@kernel.org, Sam Li <faithilikerun@gmail.com>
-Subject: [RFC v2 1/7] docs/qcow2: add zd_extension_size option to the zoned
- format feature
-Date: Mon, 27 Nov 2023 16:56:35 +0800
-Message-Id: <20231127085641.3729-2-faithilikerun@gmail.com>
+Subject: [RFC v2 2/7] qcow2: add zd_extension configurations to zoned metadata
+Date: Mon, 27 Nov 2023 16:56:36 +0800
+Message-Id: <20231127085641.3729-3-faithilikerun@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231127085641.3729-1-faithilikerun@gmail.com>
 References: <20231127085641.3729-1-faithilikerun@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=faithilikerun@gmail.com; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=faithilikerun@gmail.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,25 +95,251 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Zone descriptor data is host definied data that is associated with
+each zone. Add zone descriptor extensions to zonedmeta struct.
+
 Signed-off-by: Sam Li <faithilikerun@gmail.com>
 ---
- docs/interop/qcow2.txt | 3 +++
- 1 file changed, 3 insertions(+)
+ block/qcow2.c                    | 69 +++++++++++++++++++++++++++++---
+ block/qcow2.h                    |  2 +
+ include/block/block_int-common.h |  6 +++
+ qapi/block-core.json             |  4 ++
+ 4 files changed, 76 insertions(+), 5 deletions(-)
 
-diff --git a/docs/interop/qcow2.txt b/docs/interop/qcow2.txt
-index 0f1938f056..458d05371a 100644
---- a/docs/interop/qcow2.txt
-+++ b/docs/interop/qcow2.txt
-@@ -428,6 +428,9 @@ The fields of the zoned extension are:
-                    The offset of zoned metadata structure in the contained
-                    image, in bytes.
+diff --git a/block/qcow2.c b/block/qcow2.c
+index 26f2bb4a87..75dff27216 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -354,7 +354,8 @@ static inline int qcow2_refresh_zonedmeta(BlockDriverState *bs)
+ {
+     int ret;
+     BDRVQcow2State *s = bs->opaque;
+-    uint64_t wps_size = s->zoned_header.zonedmeta_size;
++    uint64_t wps_size = s->zoned_header.zonedmeta_size -
++        s->zded_size;
+     g_autofree uint64_t *temp = NULL;
+     temp = g_new(uint64_t, wps_size);
+     ret = bdrv_pread(bs->file, s->zoned_header.zonedmeta_offset,
+@@ -364,7 +365,17 @@ static inline int qcow2_refresh_zonedmeta(BlockDriverState *bs)
+         return ret;
+     }
  
-+          44 - 51:  zd_extension_size
-+                    The size of zone descriptor extension data in bytes.
++    g_autofree uint8_t *zded = NULL;
++    zded = g_try_malloc0(s->zded_size);
++    ret = bdrv_pread(bs->file, s->zoned_header.zonedmeta_offset + wps_size,
++                     s->zded_size, zded, 0);
++    if (ret < 0) {
++        error_report("Can not read zded");
++        return ret;
++    }
 +
- == Full disk encryption header pointer ==
+     memcpy(bs->wps->wp, temp, wps_size);
++    memcpy(bs->zd_extensions, zded, s->zded_size);
+     return 0;
+ }
  
- The full disk encryption header must be present if, and only if, the
+@@ -390,6 +401,19 @@ qcow2_check_zone_options(Qcow2ZonedHeaderExtension *zone_opt)
+             return false;
+         }
+ 
++        if (zone_opt->zd_extension_size) {
++            if (zone_opt->zd_extension_size & 0x3f) {
++                error_report("zone descriptor extension size must be a "
++                             "multiple of 64B");
++                return false;
++            }
++
++            if ((zone_opt->zd_extension_size >> 6) > 0xff) {
++                error_report("Zone descriptor extension size is too large");
++                return false;
++            }
++        }
++
+         if (zone_opt->max_active_zones > zone_opt->nr_zones) {
+             error_report("Max_active_zones %" PRIu32 " exceeds "
+                          "nr_zones %" PRIu32". Set it to nr_zones.",
+@@ -676,6 +700,8 @@ qcow2_read_extensions(BlockDriverState *bs, uint64_t start_offset,
+             zoned_ext.conventional_zones =
+                 be32_to_cpu(zoned_ext.conventional_zones);
+             zoned_ext.nr_zones = be32_to_cpu(zoned_ext.nr_zones);
++            zoned_ext.zd_extension_size =
++                be32_to_cpu(zoned_ext.zd_extension_size);
+             zoned_ext.max_open_zones = be32_to_cpu(zoned_ext.max_open_zones);
+             zoned_ext.max_active_zones =
+                 be32_to_cpu(zoned_ext.max_active_zones);
+@@ -686,7 +712,8 @@ qcow2_read_extensions(BlockDriverState *bs, uint64_t start_offset,
+             zoned_ext.zonedmeta_size = be64_to_cpu(zoned_ext.zonedmeta_size);
+             s->zoned_header = zoned_ext;
+             bs->wps = g_malloc(sizeof(BlockZoneWps)
+-                + s->zoned_header.zonedmeta_size);
++                + zoned_ext.zonedmeta_size - s->zded_size);
++            bs->zd_extensions = g_malloc0(s->zded_size);
+             ret = qcow2_refresh_zonedmeta(bs);
+             if (ret < 0) {
+                 error_setg_errno(errp, -ret, "zonedmeta: "
+@@ -2264,6 +2291,7 @@ static void qcow2_refresh_limits(BlockDriverState *bs, Error **errp)
+     bs->bl.zone_size = s->zoned_header.zone_size;
+     bs->bl.zone_capacity = s->zoned_header.zone_capacity;
+     bs->bl.write_granularity = BDRV_SECTOR_SIZE;
++    bs->bl.zd_extension_size = s->zoned_header.zd_extension_size;
+ }
+ 
+ static int GRAPH_UNLOCKED
+@@ -3534,6 +3562,8 @@ int qcow2_update_header(BlockDriverState *bs)
+             .conventional_zones =
+                 cpu_to_be32(s->zoned_header.conventional_zones),
+             .nr_zones           = cpu_to_be32(s->zoned_header.nr_zones),
++            .zd_extension_size  =
++                cpu_to_be32(s->zoned_header.zd_extension_size),
+             .max_open_zones     = cpu_to_be32(s->zoned_header.max_open_zones),
+             .max_active_zones   =
+                 cpu_to_be32(s->zoned_header.max_active_zones),
+@@ -4287,6 +4317,15 @@ qcow2_co_create(BlockdevCreateOptions *create_options, Error **errp)
+         }
+         s->zoned_header.max_append_bytes = zone_host_managed->max_append_bytes;
+ 
++        uint64_t zded_size = 0;
++        if (zone_host_managed->has_descriptor_extension_size) {
++            s->zoned_header.zd_extension_size =
++                zone_host_managed->descriptor_extension_size;
++            zded_size = s->zoned_header.zd_extension_size *
++                bs->bl.nr_zones;
++        }
++        s->zded_size = zded_size;
++
+         if (!qcow2_check_zone_options(&s->zoned_header)) {
+             s->zoned_header.zoned = BLK_Z_NONE;
+             ret = -EINVAL;
+@@ -4294,7 +4333,7 @@ qcow2_co_create(BlockdevCreateOptions *create_options, Error **errp)
+         }
+ 
+         uint32_t nrz = s->zoned_header.nr_zones;
+-        zoned_meta_size =  sizeof(uint64_t) * nrz;
++        zoned_meta_size =  sizeof(uint64_t) * nrz + zded_size;
+         g_autofree uint64_t *meta = NULL;
+         meta = g_new0(uint64_t, nrz);
+ 
+@@ -4326,11 +4365,24 @@ qcow2_co_create(BlockdevCreateOptions *create_options, Error **errp)
+             error_setg_errno(errp, -ret, "Could not zero fill zoned metadata");
+             goto out;
+         }
+-        ret = bdrv_pwrite(blk_bs(blk)->file, offset, zoned_meta_size, meta, 0);
++
++        ret = bdrv_pwrite(blk_bs(blk)->file, offset,
++                          zoned_meta_size - zded_size, meta, 0);
+         if (ret < 0) {
+             error_setg_errno(errp, -ret, "Could not write zoned metadata "
+                                          "to disk");
+         }
++
++        if (zone_host_managed->has_descriptor_extension_size) {
++            /* Initialize zone descriptor extensions */
++            ret = bdrv_co_pwrite_zeroes(blk_bs(blk)->file, offset + zded_size,
++                                        zded_size, 0);
++            if (ret < 0) {
++                error_setg_errno(errp, -ret, "Could not write zone descriptor"
++                                             "extensions to disk");
++                goto out;
++            }
++        }
+     } else {
+         s->zoned_header.zoned = BLK_Z_NONE;
+     }
+@@ -4472,6 +4524,7 @@ qcow2_co_create_opts(BlockDriver *drv, const char *filename, QemuOpts *opts,
+         { BLOCK_OPT_MAX_OPEN_ZONES,     "zone.max-open-zones" },
+         { BLOCK_OPT_MAX_ACTIVE_ZONES,   "zone.max-active-zones" },
+         { BLOCK_OPT_MAX_APPEND_BYTES,   "zone.max-append-bytes" },
++        { BLOCK_OPT_ZD_EXT_SIZE,        "zone.descriptor-extension-size" },
+         { NULL, NULL },
+     };
+ 
+@@ -7061,7 +7114,13 @@ static QemuOptsList qcow2_create_opts = {
+             .name = BLOCK_OPT_MAX_OPEN_ZONES,                           \
+             .type = QEMU_OPT_NUMBER,                                    \
+             .help = "max open zones",                                   \
+-        },
++        },                                                              \
++            {                                                           \
++            .name = BLOCK_OPT_ZD_EXT_SIZE,                              \
++            .type = QEMU_OPT_SIZE,                                      \
++            .help = "zone descriptor extension size (defaults "         \
++                    "to 0, must be a multiple of 64 bytes)",            \
++        },                                                              \
+         QCOW_COMMON_OPTIONS,
+         { /* end of list */ }
+     }
+diff --git a/block/qcow2.h b/block/qcow2.h
+index 7f37bb4034..b7a8f4f4b6 100644
+--- a/block/qcow2.h
++++ b/block/qcow2.h
+@@ -249,6 +249,7 @@ typedef struct Qcow2ZonedHeaderExtension {
+     uint32_t max_append_bytes;
+     uint64_t zonedmeta_size;
+     uint64_t zonedmeta_offset;
++    uint32_t zd_extension_size; /* must be multiple of 64 B */
+ } QEMU_PACKED Qcow2ZonedHeaderExtension;
+ 
+ typedef struct Qcow2ZoneListEntry {
+@@ -456,6 +457,7 @@ typedef struct BDRVQcow2State {
+     uint32_t nr_zones_exp_open;
+     uint32_t nr_zones_imp_open;
+     uint32_t nr_zones_closed;
++    uint64_t zded_size;
+ } BDRVQcow2State;
+ 
+ typedef struct Qcow2COWRegion {
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 0d231bd1f7..c649f1ca75 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -64,6 +64,7 @@
+ #define BLOCK_OPT_MAX_APPEND_BYTES      "zone.max_append_bytes"
+ #define BLOCK_OPT_MAX_ACTIVE_ZONES      "zone.max_active_zones"
+ #define BLOCK_OPT_MAX_OPEN_ZONES        "zone.max_open_zones"
++#define BLOCK_OPT_ZD_EXT_SIZE        "zd_extension_size"
+ 
+ #define BLOCK_PROBE_BUF_SIZE        512
+ 
+@@ -912,6 +913,9 @@ typedef struct BlockLimits {
+     uint32_t max_active_zones;
+ 
+     uint32_t write_granularity;
++
++    /* size of data that is associated with a zone in bytes */
++    uint32_t zd_extension_size;
+ } BlockLimits;
+ 
+ typedef struct BdrvOpBlocker BdrvOpBlocker;
+@@ -1270,6 +1274,8 @@ struct BlockDriverState {
+ 
+     /* array of write pointers' location of each zone in the zoned device. */
+     BlockZoneWps *wps;
++
++    uint8_t *zd_extensions;
+ };
+ 
+ struct BlockBackendRootState {
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index ef98dc83a0..a7f238371c 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -5074,12 +5074,16 @@
+ #     append request that can be issued to the device.  It must be
+ #     512-byte aligned
+ #
++# @descriptor-extension-size: The size of zone descriptor extension
++#     data. Must be a multiple of 64 bytes (since 8.2)
++#
+ # Since 8.2
+ ##
+ { 'struct': 'Qcow2ZoneHostManaged',
+   'data': { '*size':          'size',
+             '*capacity':      'size',
+             '*conventional-zones': 'uint32',
++            '*descriptor-extension-size':  'size',
+             '*max-open-zones':     'uint32',
+             '*max-active-zones':   'uint32',
+             '*max-append-bytes':   'uint32' } }
 -- 
 2.40.1
 
