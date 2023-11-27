@@ -2,89 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1897E7F96D7
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 01:30:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA69A7F9700
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 02:02:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7PVj-000823-Pl; Sun, 26 Nov 2023 19:30:07 -0500
+	id 1r7Q03-0008S6-KN; Sun, 26 Nov 2023 20:01:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r7PVS-0007m5-M6
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 19:29:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1r7Q01-0008RH-7I; Sun, 26 Nov 2023 20:01:21 -0500
+Received: from pi.codeconstruct.com.au ([203.29.241.158]
+ helo=codeconstruct.com.au)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r7PVR-0001Kv-6V
- for qemu-devel@nongnu.org; Sun, 26 Nov 2023 19:29:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701044983;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MgRhQFyR9B0t9NkPJobP/zNe3X4Ln4TBq2Kx0B8Es7g=;
- b=atVgsGmmKqYX6xYkxkDjUzT3N7Mn18P4RgeGLzgspB6OTGHfiYoajNu85m8SydT3+jx0Au
- kpZrr71fPUxQ86GvUVn9SM89merBVsTr26pG43I/9P3DWcxlAYkdYXO9EJj0o0dKO86CC0
- LdDEiek8Mdmt23KC2b8wbp7E+BssO5o=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-488-8nCqBaGWOUa8IIt1D6GDEw-1; Sun, 26 Nov 2023 19:29:41 -0500
-X-MC-Unique: 8nCqBaGWOUa8IIt1D6GDEw-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1cfcf1e9442so4848195ad.3
- for <qemu-devel@nongnu.org>; Sun, 26 Nov 2023 16:29:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701044980; x=1701649780;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MgRhQFyR9B0t9NkPJobP/zNe3X4Ln4TBq2Kx0B8Es7g=;
- b=qKUGYJnTTIU74mZY7NrOeYYlW2+p+RHQj5x3x608VzK7/F1NeZ0Cq47kcpb/4FzPpA
- 2VfwitKvzHtcFSf01Grap4MNMzfvc2OCH5zJH0Zo3I5wYW9bZH7G6H0z34s2DOCwfFsC
- F7qBkhWNQtZa3s68wF2QP0b20QMNU8S4i0rcVDMhqwNEBF6gh85gfHY/L33QSgAJOfyu
- aesgee2XADlnz7bpbr2aZst2wvqf+JmXIe3JM0meJuJW91+ybg1gBsMYypLxNOpT0Jp5
- BZmODrcqvNBOO1RB6RHpP4IX2Zmi2FRbyN6IUgJ8fwlc7TdZlDLEqZXg/a0QdwFc/9AP
- nFPw==
-X-Gm-Message-State: AOJu0YziVODpyMjfqFKVt+fPV6RKs/4MlvwffqfztsV2er+Z0G+xPMzF
- s6vRm7RAoJDCzIWbN8TVjLS408wi9qiGGkMKXAeBpbaZu/UsKVQu2Kq9iIqnczxJ/gHYX7x32wK
- d1CbYCDrG2K5Kgxw=
-X-Received: by 2002:a17:902:bc85:b0:1cf:6f1a:33be with SMTP id
- bb5-20020a170902bc8500b001cf6f1a33bemr11259712plb.51.1701044980705; 
- Sun, 26 Nov 2023 16:29:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGftttaL9hvwCTQSgrHurr/7LhyZHZ8QoFXwpwXnoaPgir0fx3SCzBnrIHDfzRNHCWJa5QF4g==
-X-Received: by 2002:a17:902:bc85:b0:1cf:6f1a:33be with SMTP id
- bb5-20020a170902bc8500b001cf6f1a33bemr11259698plb.51.1701044980339; 
- Sun, 26 Nov 2023 16:29:40 -0800 (PST)
-Received: from [192.168.68.51] ([43.252.115.3])
- by smtp.gmail.com with ESMTPSA id
- 2-20020a170902c14200b001c755810f89sm6915410plj.181.2023.11.26.16.29.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 26 Nov 2023 16:29:40 -0800 (PST)
-Message-ID: <91f4dc0f-2cf4-4a1d-b36f-2fe1cfeb8dbc@redhat.com>
-Date: Mon, 27 Nov 2023 11:29:38 +1100
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1r7Pzy-0006Oz-1S; Sun, 26 Nov 2023 20:01:20 -0500
+Received: from [192.168.68.112] (203-57-215-234.dyn.iinet.net.au
+ [203.57.215.234])
+ by mail.codeconstruct.com.au (Postfix) with ESMTPSA id C1FC42012A;
+ Mon, 27 Nov 2023 09:01:05 +0800 (AWST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=codeconstruct.com.au; s=2022a; t=1701046868;
+ bh=gyXYbD+jBNyHAa8R6BFK0wYQc5cwzpYcgzXJaYq4x98=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References;
+ b=TE3nyeyssTkHYsI6HNVJmk3ZHWKqVWfMfFKPrCWw/TMGuYvoFnKK+ntONe1XTDFD8
+ BRPZn3W/lWFVNy3csGtPLbRE2ax2FDdSLKtvbQwva3M4NBiFCSF3CWsgaRweF9WSJP
+ vEoghqraiq6/UTU7BdJt+R4O0O1HUlRTrbqZl54N7GcbwPqQirQrOTcCkRqxq/HnMh
+ v+8RB6ZO5TesXJIoB6SuWyiHhE8F1gzZr1oaWRNhERIPriRyqwZ1wIMrpOCtBcpmPO
+ GlmwsDw839BNZkbIM25X2/AK4tXc1smOVgJrrFo+zMwD1A1V4n2TaUYhHmr/RdwdD8
+ uUmBxeaV7Z8dw==
+Message-ID: <5aa705e249de5b14797ba0facbe813fa4ca1c07a.camel@codeconstruct.com.au>
+Subject: Re: [PATCH-for-9.0 20/25] hw: Simplify memory_region_init_ram() calls
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,  qemu-ppc@nongnu.org,
+ =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,  Peter Xu
+ <peterx@redhat.com>, Joel Stanley <joel@jms.id.au>, Jean-Christophe Dubois
+ <jcd@tribudubois.net>, =?ISO-8859-1?Q?Herv=E9?= Poussineau
+ <hpoussin@reactos.org>
+Date: Mon, 27 Nov 2023 11:31:05 +1030
+In-Reply-To: <20231120213301.24349-21-philmd@linaro.org>
+References: <20231120213301.24349-1-philmd@linaro.org>
+ <20231120213301.24349-21-philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/21] target/arm/kvm: Unexport kvm_arm_vm_state_change
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20231123044219.896776-1-richard.henderson@linaro.org>
- <20231123044219.896776-22-richard.henderson@linaro.org>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20231123044219.896776-22-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=203.29.241.158;
+ envelope-from=andrew@codeconstruct.com.au; helo=codeconstruct.com.au
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,14 +76,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/23/23 15:42, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On Mon, 2023-11-20 at 22:32 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
+> Mechanical change using the following coccinelle script:
+>=20
+> @@
+> expression mr, owner, arg3, arg4, errp;
+> @@
+> -   memory_region_init_ram(mr, owner, arg3, arg4, &errp);
+>     if (
+> -       errp
+> +       !memory_region_init_ram(mr, owner, arg3, arg4, &errp)
+>     ) {
+>         ...
+>         return;
+>     }
+>=20
+> and removing the local Error variable.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->   target/arm/kvm_arm.h | 2 --
->   target/arm/kvm.c     | 2 +-
->   2 files changed, 1 insertion(+), 3 deletions(-)
-> 
+>  hw/arm/aspeed_ast2400.c | 6 ++----
+>  hw/arm/aspeed_ast2600.c | 6 ++----
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+For my own benefit it looks like the motivating thread for this series
+is:=C2=A0
 
+https://lore.kernel.org/qemu-devel/936e1ac4-cef8-08b4-c688-e5b1e057208b@lin=
+aro.org/
+
+Anyway,
+
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au> # aspeed
 
