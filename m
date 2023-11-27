@@ -2,66 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5519B7FA774
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:04:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6B27FA77B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:06:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7f0H-000341-Rn; Mon, 27 Nov 2023 12:02:37 -0500
+	id 1r7f36-0005pC-BW; Mon, 27 Nov 2023 12:05:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r7f05-0002sv-B6
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:02:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r7f01-0003Tk-K4
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:02:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701104537;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=he3Z/ilRUOu18I2Tb4luTuvdI1AreeJO6qRYtRye6U0=;
- b=FTGKMEZ//O+mMYDUhxRXyaNSM0b3TZ8RedOVVU639ALpYqzYAwJjdmesH1G+cplPMGZDr5
- aLZgPi4zOPz10Tcbrijub2+b3MZhk2ydm3QAgpCmtabRTZVbB27j/nYcwSVf9T8yeFCoV8
- kwWC4y9wEdvCm+2z6+xH3GVZzocVWEA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-mqPKmX6sM7WpcXvSPt9mOA-1; Mon,
- 27 Nov 2023 12:02:12 -0500
-X-MC-Unique: mqPKmX6sM7WpcXvSPt9mOA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D4C3F3C100A1;
- Mon, 27 Nov 2023 17:02:11 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.80])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5BAA85028;
- Mon, 27 Nov 2023 17:02:11 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Emanuele Giuseppe Esposito <eesposit@redhat.com>, <qemu-block@nongnu.org>,
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH] tests/unit/test-blockjob: delete complete_in_standby test
-Date: Mon, 27 Nov 2023 12:02:09 -0500
-Message-ID: <20231127170210.422728-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <madvenka@linux.microsoft.com>)
+ id 1r7f33-0005oZ-Kw
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:05:30 -0500
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <madvenka@linux.microsoft.com>) id 1r7f31-0004EM-HN
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:05:29 -0500
+Received: from [192.168.4.26] (unknown [47.186.13.91])
+ by linux.microsoft.com (Postfix) with ESMTPSA id D60A120B74C0;
+ Mon, 27 Nov 2023 09:05:23 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D60A120B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1701104726;
+ bh=hQp9k1xmzkhJv53kIi+fGz0Bm7C0uUgSE5lwBZUzRAE=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=rJ8cBOmhMjU1LJ0/8Jcu8Zs0D7K0IoJJgYpooleweR4JPTx8RVu3i076OKuSc40H8
+ vQyhttx9sRNbXZhKrbp4uy9amwle/wkhxSgx+XSVVJGrDjkKV6ziAkv22z1oJr2gBV
+ BrN8A1ek3f3VLgDmEE47gJhsasnKPJeYvbYTTmRg=
+Message-ID: <b1dc0963-ab99-4a79-af19-ef5ed981fa60@linux.microsoft.com>
+Date: Mon, 27 Nov 2023 11:05:23 -0600
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 18/19] heki: x86: Protect guest kernel memory using
+ the KVM hypervisor
+Content-Language: en-US
+To: Peter Zijlstra <peterz@infradead.org>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8?=
+ =?UTF-8?Q?n?= <mic@digikod.net>
+Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Graf <graf@amazon.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Forrest Yuan Yu <yuanyu@google.com>, James Gowans <jgowans@amazon.com>,
+ James Morris <jamorris@linux.microsoft.com>,
+ John Andersen <john.s.andersen@intel.com>,
+ Marian Rotariu <marian.c.rotariu@gmail.com>,
+ =?UTF-8?Q?Mihai_Don=C8=9Bu?= <mdontu@bitdefender.com>,
+ =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Thara Gopinath <tgopinath@microsoft.com>,
+ Trilok Soni <quic_tsoni@quicinc.com>, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?UTF-8?Q?=C8=98tefan_=C8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+References: <20231113022326.24388-1-mic@digikod.net>
+ <20231113022326.24388-19-mic@digikod.net>
+ <20231113085403.GC16138@noisy.programming.kicks-ass.net>
+From: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
+In-Reply-To: <20231113085403.GC16138@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=madvenka@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,178 +93,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit b6903cbe3a2e ("tests/unit/test-blockjob: Disable
-complete_in_standby test") disabled complete_in_standby unless the
-QEMU_TEST_FLAKY_TESTS environment variable is set because it suffers
-from a race with the IOThread.
+Apologies for the late reply. I was on vacation. Please see my response below:
 
-This patch removes the test case completely. While the test case made
-sense in the past when the AioContext lock prevented block jobs from
-running, that hasn't been the case at least since the introduction of
-the finer-grained job lock.
+On 11/13/23 02:54, Peter Zijlstra wrote:
+> On Sun, Nov 12, 2023 at 09:23:25PM -0500, Mickaël Salaün wrote:
+>> From: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
+>>
+>> Implement a hypervisor function, kvm_protect_memory() that calls the
+>> KVM_HC_PROTECT_MEMORY hypercall to request the KVM hypervisor to
+>> set specified permissions on a list of guest pages.
+>>
+>> Using the protect_memory() function, set proper EPT permissions for all
+>> guest pages.
+>>
+>> Use the MEM_ATTR_IMMUTABLE property to protect the kernel static
+>> sections and the boot-time read-only sections. This enables to make sure
+>> a compromised guest will not be able to change its main physical memory
+>> page permissions. However, this also disable any feature that may change
+>> the kernel's text section (e.g., ftrace, Kprobes), but they can still be
+>> used on kernel modules.
+>>
+>> Module loading/unloading, and eBPF JIT is allowed without restrictions
+>> for now, but we'll need a way to authenticate these code changes to
+>> really improve the guests' security. We plan to use module signatures,
+>> but there is no solution yet to authenticate eBPF programs.
+>>
+>> Being able to use ftrace and Kprobes in a secure way is a challenge not
+>> solved yet. We're looking for ideas to make this work.
+>>
+>> Likewise, the JUMP_LABEL feature cannot work because the kernel's text
+>> section is read-only.
+> 
+> What is the actual problem? As is the kernel text map is already RO and
+> never changed.
 
-I am not aware of a replacement mechanism that would make this test
-deterministic. I'm currently working on removing
-aio_context_acquire()/aio_context_release() so this test case will make
-even less sense when they are gone. Let's delete the test case
-completely.
+For the JUMP_LABEL optimization, the text needs to be patched at some point.
+That patching requires a writable mapping of the text page at the time of
+patching.
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- tests/unit/test-blockjob.c | 133 -------------------------------------
- 1 file changed, 133 deletions(-)
+In this Heki feature, we currently lock down the kernel text at the end of
+kernel boot just before kicking off the init process. The lockdown is
+implemented by setting the permissions of a text page to R_X in the extended
+page table and not allowing write permissions in the EPT after that. So, jump label
+patching during kernel boot is not a problem. But doing it after kernel
+boot is a problem.
 
-diff --git a/tests/unit/test-blockjob.c b/tests/unit/test-blockjob.c
-index a130f6fefb..230ff50eec 100644
---- a/tests/unit/test-blockjob.c
-+++ b/tests/unit/test-blockjob.c
-@@ -391,132 +391,6 @@ static void test_cancel_concluded(void)
-     cancel_common(s);
- }
- 
--/* (See test_yielding_driver for the job description) */
--typedef struct YieldingJob {
--    BlockJob common;
--    bool should_complete;
--} YieldingJob;
--
--static void yielding_job_complete(Job *job, Error **errp)
--{
--    YieldingJob *s = container_of(job, YieldingJob, common.job);
--    s->should_complete = true;
--    job_enter(job);
--}
--
--static int coroutine_fn yielding_job_run(Job *job, Error **errp)
--{
--    YieldingJob *s = container_of(job, YieldingJob, common.job);
--
--    job_transition_to_ready(job);
--
--    while (!s->should_complete) {
--        job_yield(job);
--    }
--
--    return 0;
--}
--
--/*
-- * This job transitions immediately to the READY state, and then
-- * yields until it is to complete.
-- */
--static const BlockJobDriver test_yielding_driver = {
--    .job_driver = {
--        .instance_size  = sizeof(YieldingJob),
--        .free           = block_job_free,
--        .user_resume    = block_job_user_resume,
--        .run            = yielding_job_run,
--        .complete       = yielding_job_complete,
--    },
--};
--
--/*
-- * Test that job_complete_locked() works even on jobs that are in a paused
-- * state (i.e., STANDBY).
-- *
-- * To do this, run YieldingJob in an IO thread, get it into the READY
-- * state, then have a drained section.  Before ending the section,
-- * acquire the context so the job will not be entered and will thus
-- * remain on STANDBY.
-- *
-- * job_complete_locked() should still work without error.
-- *
-- * Note that on the QMP interface, it is impossible to lock an IO
-- * thread before a drained section ends.  In practice, the
-- * bdrv_drain_all_end() and the aio_context_acquire() will be
-- * reversed.  However, that makes for worse reproducibility here:
-- * Sometimes, the job would no longer be in STANDBY then but already
-- * be started.  We cannot prevent that, because the IO thread runs
-- * concurrently.  We can only prevent it by taking the lock before
-- * ending the drained section, so we do that.
-- *
-- * (You can reverse the order of operations and most of the time the
-- * test will pass, but sometimes the assert(status == STANDBY) will
-- * fail.)
-- */
--static void test_complete_in_standby(void)
--{
--    BlockBackend *blk;
--    IOThread *iothread;
--    AioContext *ctx;
--    Job *job;
--    BlockJob *bjob;
--
--    /* Create a test drive, move it to an IO thread */
--    blk = create_blk(NULL);
--    iothread = iothread_new();
--
--    ctx = iothread_get_aio_context(iothread);
--    blk_set_aio_context(blk, ctx, &error_abort);
--
--    /* Create our test job */
--    bjob = mk_job(blk, "job", &test_yielding_driver, true,
--                  JOB_MANUAL_FINALIZE | JOB_MANUAL_DISMISS);
--    job = &bjob->job;
--    assert_job_status_is(job, JOB_STATUS_CREATED);
--
--    /* Wait for the job to become READY */
--    job_start(job);
--    /*
--     * Here we are waiting for the status to change, so don't bother
--     * protecting the read every time.
--     */
--    AIO_WAIT_WHILE_UNLOCKED(ctx, job->status != JOB_STATUS_READY);
--
--    /* Begin the drained section, pausing the job */
--    bdrv_drain_all_begin();
--    assert_job_status_is(job, JOB_STATUS_STANDBY);
--
--    /* Lock the IO thread to prevent the job from being run */
--    aio_context_acquire(ctx);
--    /* This will schedule the job to resume it */
--    bdrv_drain_all_end();
--    aio_context_release(ctx);
--
--    WITH_JOB_LOCK_GUARD() {
--        /* But the job cannot run, so it will remain on standby */
--        assert(job->status == JOB_STATUS_STANDBY);
--
--        /* Even though the job is on standby, this should work */
--        job_complete_locked(job, &error_abort);
--
--        /* The test is done now, clean up. */
--        job_finish_sync_locked(job, NULL, &error_abort);
--        assert(job->status == JOB_STATUS_PENDING);
--
--        job_finalize_locked(job, &error_abort);
--        assert(job->status == JOB_STATUS_CONCLUDED);
--
--        job_dismiss_locked(&job, &error_abort);
--    }
--
--    aio_context_acquire(ctx);
--    destroy_blk(blk);
--    aio_context_release(ctx);
--    iothread_join(iothread);
--}
--
- int main(int argc, char **argv)
- {
-     qemu_init_main_loop(&error_abort);
-@@ -532,12 +406,5 @@ int main(int argc, char **argv)
-     g_test_add_func("/blockjob/cancel/pending", test_cancel_pending);
-     g_test_add_func("/blockjob/cancel/concluded", test_cancel_concluded);
- 
--    /*
--     * This test is flaky and sometimes fails in CI and otherwise:
--     * don't run unless user opts in via environment variable.
--     */
--    if (getenv("QEMU_TEST_FLAKY_TESTS")) {
--        g_test_add_func("/blockjob/complete_in_standby", test_complete_in_standby);
--    }
-     return g_test_run();
- }
--- 
-2.42.0
+The lockdown is just for the current Heki implementation. In the future, we plan
+to have a way of authenticating guest requests to change permissions on a text page.
+Once that is in place, permissions on text pages can be changed on the fly to
+support features that depend on text patching - FTrace, KProbes, etc.
 
+Madhavan
 
