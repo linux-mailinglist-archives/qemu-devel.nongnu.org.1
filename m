@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439EF7FA350
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 15:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7637FA34F
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 15:44:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7cqL-0001nn-1X; Mon, 27 Nov 2023 09:44:13 -0500
+	id 1r7cqJ-0001nY-5k; Mon, 27 Nov 2023 09:44:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r7cqE-0001kT-Et
+ id 1r7cqE-0001kf-Hk
  for qemu-devel@nongnu.org; Mon, 27 Nov 2023 09:44:06 -0500
 Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r7cqA-0002Wv-AH
+ id 1r7cqB-0002X0-AL
  for qemu-devel@nongnu.org; Mon, 27 Nov 2023 09:44:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701096242; x=1732632242;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nNZxlP/+mHM4INzMxUBLcc7CZFEB23k6h7iHf/i18vk=;
- b=lKBBAN1mZwYdmvGkMdVzu6ITRur3M70D+/rD/pFGk50/T082eZOgey5b
- 2hU9RQsyeqr2uwMRC00jBDxoNW/D3o+potYJUdyQewYzIu0JoORvi5YLd
- LIP7TP1Dl9taNTwBPaxBlwlW/I6q2Y3jmqoP2WjlyuwYHSN/TUASnz1Ro
- r6fHzzDHXNwDYKvi8afpvN8ihXtRjyoEd0csw7BjPaNkNVDaDE2ubnf6x
- BUA1ySS7UdTCHKux5Jhas8skYzXiY2IW2W0opARDLASCTU81nfpth4trJ
- Watla+29CWE5OkyRi6RSgKLKK3CS2LJimXYuIixO4aU2ZlFDELuyIRVZW g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="396623361"
-X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; d="scan'208";a="396623361"
+ t=1701096243; x=1732632243;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=IQfImQG4moP9qan3oDU5QGVMINhdkRXqhe/QcRm3GjU=;
+ b=VWJYSh2hZmJWabJVgvnvFL+/fs4Kmw1Z46x+gaBJqZiQPtI0bMduQboA
+ qmySe+evoXb3WRj4etuMwIdMw4TpIJRTnLvDE63g1PzIm3SjjZZjFKbdf
+ v3Lt4mYmPxWe5kAjOoRMK6/1zR9fik+kmwXSScq+nMV5lGeWTwyiqthc/
+ 7grGwic/AIAJPNS7cRDodw9NdG5ZMsAQpOI/Hey3tt8A6Pbcl8Ue5A5V+
+ UvIH53RjO0l8ercr9hUH0TfQMIWr5VYnF19ujbQXdzGcnhngvFzLqDRuk
+ A/h3isDvy+rrSBu9yyaWWSOya3JVT9C2cLhCc1GdPT0ZeyKBDdiK6biId Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="396623370"
+X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; d="scan'208";a="396623370"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2023 06:43:58 -0800
+ 27 Nov 2023 06:44:00 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="1099796686"
-X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; d="scan'208";a="1099796686"
+X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="1099796689"
+X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; d="scan'208";a="1099796689"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga005.fm.intel.com with ESMTP; 27 Nov 2023 06:43:56 -0800
+ by fmsmga005.fm.intel.com with ESMTP; 27 Nov 2023 06:43:58 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 0/2] Cleanup unused included header in core.c & cluster.c
-Date: Mon, 27 Nov 2023 22:56:09 +0800
-Message-Id: <20231127145611.925817-1-zhao1.liu@linux.intel.com>
+Subject: [PATCH 1/2] hw/cpu/core: Cleanup unused included header in core.c
+Date: Mon, 27 Nov 2023 22:56:10 +0800
+Message-Id: <20231127145611.925817-2-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231127145611.925817-1-zhao1.liu@linux.intel.com>
+References: <20231127145611.925817-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=134.134.136.65;
@@ -78,20 +80,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Remove unused header in core.c and cluster.c, and reorder the remaining
-header files (except qemu/osdep.h) in alphabetical order.
+Remove unused header (qemu/module.h and sysemu/cpus.h) in core.c,
+and reorder the remaining header files (except qemu/osdep.h) in
+alphabetical order.
 
 Tested by "./configure" and then "make".
 
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (2):
-  hw/cpu/core: Cleanup unused included header in core.c
-  hw/cpu/cluster: Cleanup unused included header in cluster.c
+ hw/cpu/core.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
- hw/cpu/cluster.c | 5 ++---
- hw/cpu/core.c    | 7 +++----
- 2 files changed, 5 insertions(+), 7 deletions(-)
-
+diff --git a/hw/cpu/core.c b/hw/cpu/core.c
+index 987607515574..495a5c30ffe1 100644
+--- a/hw/cpu/core.c
++++ b/hw/cpu/core.c
+@@ -8,12 +8,11 @@
+  */
+ 
+ #include "qemu/osdep.h"
++
++#include "hw/boards.h"
+ #include "hw/cpu/core.h"
+-#include "qapi/visitor.h"
+-#include "qemu/module.h"
+ #include "qapi/error.h"
+-#include "sysemu/cpus.h"
+-#include "hw/boards.h"
++#include "qapi/visitor.h"
+ 
+ static void core_prop_get_core_id(Object *obj, Visitor *v, const char *name,
+                                   void *opaque, Error **errp)
 -- 
 2.34.1
 
