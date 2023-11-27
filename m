@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287967FA7BC
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:11:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 209937FA78B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 18:09:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7f5u-0007Oz-NI; Mon, 27 Nov 2023 12:08:26 -0500
+	id 1r7f6E-0007WM-7Y; Mon, 27 Nov 2023 12:08:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <patrick@rivosinc.com>)
- id 1r7f5s-0007Of-TL
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:24 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r7f63-0007Sb-JT
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:35 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <patrick@rivosinc.com>)
- id 1r7f5r-0004af-6v
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:24 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6cd89f2af9dso1371898b3a.1
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 09:08:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r7f61-0004dj-9Z
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 12:08:34 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40b427507b7so12741075e9.2
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 09:08:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1701104901; x=1701709701;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=y3pzaA2iozJj/N8vidb2ccmFICnnuhJzu37DFxDCrdU=;
- b=AW0zTNeiBJWJTJ8WA8KX1t/5lnTpu6yUtwRJR3jnB3e1r2HgwIQ5XTIEl4c9tM0mvL
- ZMiszUcQaDs5NhEhy5T5ZHHluKMh7J5by4bsgKmLSMdGEVjeNhZIkCkYyvJnZON/JUBE
- hC5tie3sQOTFJizXL4H//q3z0nemJGuHpgC1smkd5S+TqPRoBQ/otdqZAn5NR+4F36fC
- 40mmphuRGNZmgO+uq0zm67QXMvtJJe8FxZFG1o9ImZqwae+3iFt5n2zU1+AUCjeKtP1Y
- K3ywjhnN+pE4+UrEtEgiSJGz9x7a+i+6du6shv88i49j74JTLIFOc831hFd1DQ9NQePk
- OF0A==
+ d=linaro.org; s=google; t=1701104911; x=1701709711; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=VSnQX/38IwFzIkR+hMTwUicJZArqSWcbr4ZMRYvD5BY=;
+ b=rhMUlqoEdFFGmU1/to256yLyud9WNgJ7p6ROHKvXALTWU2laNm9oMASpYjSXZMZKyg
+ 2o/GMmwjdhVoJOOU5+ILTQULb2jRXTa2dqd3/s3YBJZ/JmrssoNyNE2avRZBKvRCW6JE
+ tcIxO5NPB3CB24gnzadA2v9JckcWbBTa068lYqZCEk0BaSH7VN3F8RIpQ97OU+59PK+K
+ rqaH58IOogSZctUv25yvs8u8X3Yy2CMCXFZN7JJSatXNdZab7i8Ny4WqHMxaglfatsYN
+ W1YS088jx15UN0H9LaAE0mI7DVi2PVCMVnjtQjfkwYM95Kiez2LFXiAn/JdZ6v+mte71
+ DVEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701104901; x=1701709701;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y3pzaA2iozJj/N8vidb2ccmFICnnuhJzu37DFxDCrdU=;
- b=AYXpTokGR3A4sjalsh8LbsmQAXMdCnYOnTsfFNB78q7kCBH5sRP8rUnTFCORAMTTrC
- nA97YdezpCY4jtcLwoKb9AgmJDUMG428dBzVZgfyg1y2zbQwR+C3Rm+ulX0En8fwpbsK
- kn6VDGozhX8X6PrgKnK58mLBDJdcVdLKkUVZbtv48vnyQKutB82p4HYVIsEFZg7euFeh
- /Dk+uY15gdgo5zZd8mUpVew/r4o1qkIX6JKV/4NyyGKRVtcBemATC8kSaAKopLrFMoza
- 9PKYbflB6j/G9d4cjOWim29BWpo3CMxHS3Iqhl95jDhhymKXvgHRRYDEhr/VT/Z3xmJe
- Z6TQ==
-X-Gm-Message-State: AOJu0Yxs1sxOeYVLhXStOc9cRguJH4hMpEu0MMk1OxoxBpQMqy3whhrI
- hQpicAiKvL0FIklDdHMLH7wyJg==
-X-Google-Smtp-Source: AGHT+IEwBkwQRA8Xvprm1ajg1KJ88yZYg4Dfl6mtNdV/hRGcxcvwFlytFqq2o07lcpUO1z/HNo7UCA==
-X-Received: by 2002:a17:903:44c:b0:1c9:aac5:df30 with SMTP id
- iw12-20020a170903044c00b001c9aac5df30mr13166653plb.66.1701104900998; 
- Mon, 27 Nov 2023 09:08:20 -0800 (PST)
-Received: from [10.0.17.156] ([12.44.203.122])
+ d=1e100.net; s=20230601; t=1701104911; x=1701709711;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VSnQX/38IwFzIkR+hMTwUicJZArqSWcbr4ZMRYvD5BY=;
+ b=CX48ypNMHG0bsKCds01VGNXQFJTJRuSAq/0Wunja3k25uBAsULwKwolF8RMuG6td2G
+ LrMMditP1IH39Zxgwjt/CjC9iaOoyJ7AumrQmQXHllY/3aSF3irhH+GUQVuO4lGDCj1v
+ lRJFr+7VIQhPc4oAwcQk6BbdSHaCfFStOR59XsAEI+ewOWu+FyQbCJ0F1vEoiIdwBI7G
+ OLlaMrXBzhz09vg+AYgCB6bNviUF+pMxq882GTxVQrpEIP43Elmgup3Nw7ZRWpJdWm6W
+ HD3sC1CnK8zNsBx/3bYt9eb+jnOCwE2YmhGhW4Q+CUWNy6i+nyCr92ymOSCFlCafiCey
+ TaWg==
+X-Gm-Message-State: AOJu0YwfD3SNWmGz4DGaRAgIOF+3z5tbXkxZmXJhh4rj8bD0/ntQjPBK
+ PGWSS99Qg/jLm+5ifuOSxCptGwQ+FCaP51ypL08=
+X-Google-Smtp-Source: AGHT+IEwxhzwsyGSVN7pY2EVQuoIAKsonm2kqCrh/byTAyeszfkdF85ds6vTdQPR8j+Bxx4MlhpceQ==
+X-Received: by 2002:a05:600c:4ed0:b0:409:5bd2:aa00 with SMTP id
+ g16-20020a05600c4ed000b004095bd2aa00mr10374989wmq.41.1701104911131; 
+ Mon, 27 Nov 2023 09:08:31 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d8-20020a170902654800b001c61acd5bd2sm8722354pln.112.2023.11.27.09.08.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Nov 2023 09:08:20 -0800 (PST)
-Message-ID: <9eba31fa-74b3-4d35-97d4-632fbdd2666f@rivosinc.com>
-Date: Mon, 27 Nov 2023 09:08:19 -0800
+ fl8-20020a05600c0b8800b004030e8ff964sm15353216wmb.34.2023.11.27.09.08.30
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 Nov 2023 09:08:30 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 10/13] hw/input/stellaris_gamepad: Free
+ StellarisGamepad::keycodes[] array
+Date: Mon, 27 Nov 2023 17:08:20 +0000
+Message-Id: <20231127170823.589863-11-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231127170823.589863-1-peter.maydell@linaro.org>
+References: <20231127170823.589863-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] RISC-V: Increase max vlen to 4096
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-riscv@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20231123001709.64934-1-patrick@rivosinc.com>
- <50795130-6a02-4611-8da7-c06158fc9cff@linaro.org>
-From: Patrick O'Neill <patrick@rivosinc.com>
-In-Reply-To: <50795130-6a02-4611-8da7-c06158fc9cff@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=patrick@rivosinc.com; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,54 +92,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Phil,
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-On 11/23/23 02:21, Philippe Mathieu-Daudé wrote:
-> Hi Patrick,
->
-> On 23/11/23 01:17, Patrick O'Neill wrote:
->> QEMU currently limits the max vlenb to 1024. GCC sets the upper bound
->> to 4096 [1]. There doesn't seem to be an upper bound set by the spec [2]
->> so this patch just changes QEMU to match GCC's upper bound.
->>
->> [1] 
->> https://github.com/gcc-mirror/gcc/blob/5d2a360f0a541646abb11efdbabc33c6a04de7ee/gcc/testsuite/gcc.target/riscv/rvv/base/zvl-unimplemented-2.c#L4
->> [2] https://github.com/riscv/riscv-v-spec/issues/204
->>
->> Signed-off-by: Patrick O'Neill <patrick@rivosinc.com>
->> ---
->> Tested by applying to QEMU v8.1.2 and running the GCC testsuite in QEMU
->> user mode with rv64gcv_zvl4096b. Failures are somewhat reasonable and on
->> first inspection appear to be in the same ballpark as failures for
->> rv64gcv_zvl1024b. Since I used tip-of-tree GCC I'm expecting those
->> failures to be GCC-caused & from skimming the debug log they appear to
->> be.
->> ---
->>   target/riscv/cpu.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
->> index 6ea22e0eea..2ff3a72fc0 100644
->> --- a/target/riscv/cpu.h
->> +++ b/target/riscv/cpu.h
->> @@ -97,7 +97,7 @@ typedef enum {
->>   #include "debug.h"
->>   #endif
->>
->> -#define RV_VLEN_MAX 1024
->> +#define RV_VLEN_MAX 4096
->
-> This seems to break the "cpu/vector" field migration. Maybe we don't
-> care, but this should be clarified in the commit description.
-I wasn't aware of that (this is actually my first patch to qemu!). Do
-you have a pointer to more information about the migration so I can
-write an appropriate blurb/understand what the migration was/did?
+Commit 0be6bfac62 ("qdev: Implement variable length array properties")
+added the DEFINE_PROP_ARRAY() macro with the following comment:
 
-Thanks,
-Patrick
->
-> Regards,
->
-> Phil.
->
+  * It is the responsibility of the device deinit code to free the
+  * @_arrayfield memory.
+
+Commit a75f336b97 added:
+
+  DEFINE_PROP_ARRAY("keycodes", StellarisGamepad, num_buttons,
+                    keycodes, qdev_prop_uint32, uint32_t),
+
+but forgot to free the 'keycodes' array. Do it in the instance_finalize
+handler.
+
+Fixes: a75f336b97 ("hw/input/stellaris_input: Convert to qdev")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20231121174051.63038-7-philmd@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/input/stellaris_gamepad.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
+index 06a0c0ce839..9dfa620e29a 100644
+--- a/hw/input/stellaris_gamepad.c
++++ b/hw/input/stellaris_gamepad.c
+@@ -63,6 +63,13 @@ static void stellaris_gamepad_realize(DeviceState *dev, Error **errp)
+     qemu_input_handler_register(dev, &stellaris_gamepad_handler);
+ }
+ 
++static void stellaris_gamepad_finalize(Object *obj)
++{
++    StellarisGamepad *s = STELLARIS_GAMEPAD(obj);
++
++    g_free(s->keycodes);
++}
++
+ static void stellaris_gamepad_reset_enter(Object *obj, ResetType type)
+ {
+     StellarisGamepad *s = STELLARIS_GAMEPAD(obj);
+@@ -92,6 +99,7 @@ static const TypeInfo stellaris_gamepad_info[] = {
+         .name = TYPE_STELLARIS_GAMEPAD,
+         .parent = TYPE_SYS_BUS_DEVICE,
+         .instance_size = sizeof(StellarisGamepad),
++        .instance_finalize = stellaris_gamepad_finalize,
+         .class_init = stellaris_gamepad_class_init,
+     },
+ };
+-- 
+2.34.1
+
 
