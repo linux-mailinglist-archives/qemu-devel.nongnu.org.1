@@ -2,81 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9BA7F986B
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 05:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8687F9883
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 06:06:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7TNE-0000dv-Q5; Sun, 26 Nov 2023 23:37:32 -0500
+	id 1r7Tno-0007pF-LU; Mon, 27 Nov 2023 00:05:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1r7TND-0000di-AK; Sun, 26 Nov 2023 23:37:31 -0500
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1r7TNA-0001HX-Vi; Sun, 26 Nov 2023 23:37:30 -0500
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6b20a48522fso2866665b3a.1; 
- Sun, 26 Nov 2023 20:37:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701059846; x=1701664646; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qEgsvS1v70lkWkwZYenZUkVI+Zt0FSWz1S0HBE37vOg=;
- b=T2PnCeORSq14YtlP1GEtJMV1ob/xMolRfemPrEEsdcX+bc90I5Xkzl9FbGZm8yDljV
- S5321uC3rpoitpLwh/w+sbJoqDVh+yqXuO+BoTt13cfo3JTAZ37uALBdxTCOptk4hrD/
- nQImn0HzLClExP/6esj7qWvikcflGzCJ4q3ASdekum+r1reKd3Rx5iUUrCprFgp0Cf5P
- w2h1M3T8X+UGhOhsZ+ngCdBMmvdlgMaw5n7NbovL0YbxAjW/t94E/SW8cBT1fzfdsRs8
- MPUAXkN23gg6rDH2/QmUwO0X5vyTcsFwk8UssyDPZ/bEdVt/FLx+r+zFRLGt40fEf1+3
- sS2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701059846; x=1701664646;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qEgsvS1v70lkWkwZYenZUkVI+Zt0FSWz1S0HBE37vOg=;
- b=Er/BrVxsyZOh1AXuVj3hKZ4oaJMKQYQdBKbM3+1Es0oS1w3fILWeygpw3Kq7DhwNmP
- VorE955sOeXXqlnaYVBzA44MWYsWRM/FPLT2uzPlLCD7Yxa1G0VrDmUoCWQjqfhPWePg
- xMb7b0SJn7wfnQPjSG8wf85PzbtSp+W2igtt5V38Gc72TO0+w/xRFY6H5fPi1dYw+LTp
- 8QqEkAq4JDq/y07IjPaZAfMyMyuNHXefGusS26BPWvXBRNNBBczTcGUmxxkiqM+P4xqC
- dGoPJimca3mCziHiKApHYVedQS+z6ZK8bD7lsbBfVVLxDu3ij3UNaYeQ6HgO608I5iE6
- pT/g==
-X-Gm-Message-State: AOJu0Yz5caoX8PKTzfNUw5xwC7nTiql7WITLR+Pfwcf2KbOYZsOmPGd1
- HXF5SZQOP3tJII+4amo/+3MC+lPsIT1X9lHL
-X-Google-Smtp-Source: AGHT+IHCHadOpVjshJ/USZbI7fhxdAb5DDFuDBqsKeg1fJfhnfz+giH2CWud6/1+f6T8zF3RLn7JpQ==
-X-Received: by 2002:a05:6a00:428c:b0:6cb:8b47:cb6c with SMTP id
- bx12-20020a056a00428c00b006cb8b47cb6cmr10163028pfb.6.1701059845797; 
- Sun, 26 Nov 2023 20:37:25 -0800 (PST)
-Received: from fedlinux.. ([106.84.128.244]) by smtp.gmail.com with ESMTPSA id
- u15-20020a62ed0f000000b006c4d86a259csm6280070pfh.28.2023.11.26.20.37.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 26 Nov 2023 20:37:25 -0800 (PST)
-From: Sam Li <faithilikerun@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: dmitry.fomichev@wdc.com, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, dlemoal@kernel.org, hare@suse.de,
- Hanna Reitz <hreitz@redhat.com>, stefanha@redhat.com,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Sam Li <faithilikerun@gmail.com>
-Subject: [PATCH v6 4/4] iotests: test the zoned format feature for qcow2 file
-Date: Mon, 27 Nov 2023 12:37:03 +0800
-Message-Id: <20231127043703.49489-5-faithilikerun@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231127043703.49489-1-faithilikerun@gmail.com>
-References: <20231127043703.49489-1-faithilikerun@gmail.com>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r7Tnl-0007oh-Vu; Mon, 27 Nov 2023 00:04:58 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r7Tnj-0005Ts-WB; Mon, 27 Nov 2023 00:04:57 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AR1AhDU008334; Mon, 27 Nov 2023 05:04:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=IohTfhf1ACIwzMUEOmJ/CU4tQEaUzAMEI0KbzZk2YLw=;
+ b=oKujm7RNQIjBDgvDDSMVnMrgdkDzyg/Ywd5k7d3gYdYZJkeeTDqC5kfYV0zJ23RWS+Z2
+ x4jntwDH9CkVspn4W2t4dE7kWHasr3KKGIb8kDsDb72AVMdTAgsMkxjF7i3dxHM06/B/
+ pffHDt33DRqZx50ZPFd1MgmZ5yGcCC4XkvR7Rl1iBPJl2od94Qk3je6soJr+/tdQeT2e
+ c2WbCp8qHZxl7vA4QJX4tbPG3KnkS9qfm+/eMjNgcVUszCSCDmxG47mw7gKBBJe2PcQC
+ 3LSW1hUZvrKSLR5xFT8QD/lulu+bpWR6zE7subJT9eqQfZTRzGGscniu8y+/mmN6yc8T Pg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgaq4tqs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Nov 2023 05:04:07 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AR4oHgn022883;
+ Mon, 27 Nov 2023 05:04:07 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgaq4tpk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Nov 2023 05:04:07 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AR44OTu029880; Mon, 27 Nov 2023 05:04:05 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukumy6kr0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Nov 2023 05:04:05 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AR544qV26018370
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 27 Nov 2023 05:04:04 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 593E458060;
+ Mon, 27 Nov 2023 05:04:04 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DFDD15805C;
+ Mon, 27 Nov 2023 05:03:52 +0000 (GMT)
+Received: from [9.43.20.5] (unknown [9.43.20.5])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 27 Nov 2023 05:03:52 +0000 (GMT)
+Message-ID: <652f5196-b4fc-8d67-3933-f44751c01122@linux.ibm.com>
+Date: Mon, 27 Nov 2023 10:33:51 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH-for-9.0 v2 1/8] hw/ppc/spapr_cpu_core: Access QDev
+ properties with proper API
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+Cc: Alistair Francis <alistair@alistair23.me>, Joel Stanley <joel@jms.id.au>, 
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Tyrone Ting <kfting@nuvoton.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Igor Mammedov <imammedo@redhat.com>, qemu-ppc@nongnu.org,
+ Hao Wu <wuhaotsh@google.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <20231123143813.42632-1-philmd@linaro.org>
+ <20231123143813.42632-2-philmd@linaro.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20231123143813.42632-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=faithilikerun@gmail.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QD_BCtNgMcWBdEJGnzrmj44oWtX9Ym6j
+X-Proofpoint-ORIG-GUID: I_Q-iQS0GbVTGEAYuvX0qCvdDxY8bL7z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-27_02,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0
+ mlxlogscore=753 phishscore=0 lowpriorityscore=0 spamscore=0 adultscore=0
+ mlxscore=0 priorityscore=1501 impostorscore=0 clxscore=1011 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
+ definitions=main-2311270035
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -54
+X-Spam_score: -5.5
+X-Spam_bar: -----
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.477,
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,275 +141,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The zoned format feature can be tested by:
-$ tests/qemu-iotests/check -qcow2 zoned-qcow2
 
-Signed-off-by: Sam Li <faithilikerun@gmail.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- tests/qemu-iotests/tests/zoned-qcow2     | 126 +++++++++++++++++++++++
- tests/qemu-iotests/tests/zoned-qcow2.out | 118 +++++++++++++++++++++
- 2 files changed, 244 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/zoned-qcow2
- create mode 100644 tests/qemu-iotests/tests/zoned-qcow2.out
 
-diff --git a/tests/qemu-iotests/tests/zoned-qcow2 b/tests/qemu-iotests/tests/zoned-qcow2
-new file mode 100755
-index 0000000000..d7141a35aa
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned-qcow2
-@@ -0,0 +1,126 @@
-+#!/usr/bin/env bash
-+#
-+# Test zone management operations for qcow2 file.
-+#
-+
-+seq="$(basename $0)"
-+echo "QA output created by $seq"
-+status=1 # failure is the default!
-+
-+file_name="zbc.qcow2"
-+_cleanup()
-+{
-+  _cleanup_test_img
-+  _rm_test_img "$file_name"
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+. ../common.rc
-+. ../common.filter
-+. ../common.qemu
-+
-+# This test only runs on Linux hosts with qcow2 image files.
-+_supported_fmt qcow2
-+_supported_proto file
-+_supported_os Linux
-+
-+echo
-+echo "=== Initial image setup ==="
-+echo
-+
-+$QEMU_IMG create -f qcow2 $file_name -o size=768M -o zone.size=64M -o \
-+zone.capacity=64M -o zone.conventional_zones=0 -o zone.max_append_bytes=131072 \
-+-o zone.max_open_zones=10 -o zone.max_active_zones=12 -o zone.mode=host-managed
-+
-+IMG="--image-opts -n driver=qcow2,file.driver=file,file.filename=$file_name"
-+QEMU_IO_OPTIONS=$QEMU_IO_OPTIONS_NO_FMT
-+
-+echo
-+echo "=== Testing a qcow2 img with zoned format ==="
-+echo
-+echo "case 1: test zone operations one by one"
-+
-+echo "(1) report zones[0]:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "report zones[0~9]:"
-+$QEMU_IO $IMG -c "zrp 0 10"
-+echo
-+echo "report zones[-1]:"  # zones[-1] dictates the last zone
-+$QEMU_IO $IMG -c "zrp 0x2C000000 2" # 0x2C000000 / 512 = 0x160000
-+echo
-+echo
-+echo "(2) open zones[0], zones[1], zones[-1] then close, finish, reset:"
-+$QEMU_IO $IMG << EOF
-+zo 0 0x4000000 # 0x4000000 / 512 = 0x20000
-+zrp 0 1
-+zo 0x4000000 0x4000000
-+zrp 0x4000000 1
-+zo 0x2C000000 0x4000000
-+zrp 0x2C000000 2
-+zc 0 0x4000000
-+zrp 0 1
-+zc 0x2C000000 0x4000000
-+zrp 0x2C000000 2
-+zf 0 0x4000000
-+zrp 0 1
-+zf 64M 64M
-+zrp 0x4000000 2
-+zf 0x2C000000 0x4000000
-+zrp 0x2C000000 2
-+zrs 0 0x4000000
-+zrp 0 1
-+zrs 0x4000000 0x4000000
-+zrp 0x4000000 1
-+zrs 0x2C000000 0x4000000
-+zrp 0x2C000000 2
-+EOF
-+
-+echo
-+echo "(3) append write with (4k, 8k) data"
-+$QEMU_IO $IMG -c "zrp 0 12" # the physical block size of the device is 4096
-+echo "Append write zones[0], zones[1] twice"
-+$QEMU_IO $IMG << EOF
-+zap -p 0 0x1000 0x2000
-+zrp 0 1
-+zap -p 0 0x1000 0x2000
-+zrp 0 1
-+zap -p 0x4000000 0x1000 0x2000
-+zrp 0x4000000 1
-+zap -p 0x4000000 0x1000 0x2000
-+zrp 0x4000000 1
-+EOF
-+
-+echo
-+echo "Reset all:"
-+$QEMU_IO $IMG -c "zrs 0 768M" -c "zrp 0 12"
-+echo
-+echo
-+
-+echo "case 2: test a sets of ops that works or not"
-+echo "(1) append write (4k, 4k) and then write to full"
-+$QEMU_IO $IMG << EOF
-+zap -p 0 0x1000 0x1000 # wrote (4k, 4k):
-+zrp 0 1
-+zap -p 0 0x1000 0x3ffd000
-+zrp 0 1
-+EOF
-+
-+echo "Reset zones[0]:"
-+$QEMU_IO $IMG -c "zrs 0 64M" -c "zrp 0 1"
-+
-+echo "(2) write in zones[0], zones[3], zones[8], and then reset all"
-+$QEMU_IO $IMG << EOF
-+zap -p 0 0x1000 0x1000
-+zap -p 0xc000000 0x1000 0x1000
-+zap -p 0x20000000 0x1000 0x1000
-+zrp 0 12
-+zrs 0 768M
-+zrp 0 12
-+EOF
-+
-+# success, all done
-+echo "*** done"
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/tests/zoned-qcow2.out b/tests/qemu-iotests/tests/zoned-qcow2.out
-new file mode 100644
-index 0000000000..3b30ef545b
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned-qcow2.out
-@@ -0,0 +1,118 @@
-+QA output created by zoned-qcow2
-+
-+=== Initial image setup ===
-+
-+Formatting 'zbc.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib zone.mode=host-managed zone.size=67108864 zone.capacity=67108864 zone.conventional_zones=0 zone.max_append_bytes=131072 zone.max_active_zones=12 zone.max_open_zones=10 size=805306368 lazy_refcounts=off refcount_bits=16
-+
-+=== Testing a qcow2 img with zoned format ===
-+
-+case 1: test zone operations one by one
-+(1) report zones[0]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+
-+report zones[0~9]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+
-+report zones[-1]:
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+
-+
-+(2) open zones[0], zones[1], zones[-1] then close, finish, reset:
-+qemu-io> bad argument count 8 to zo, expected 2 arguments
-+qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+qemu-io> qemu-io> start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:3, [type: 2]
-+qemu-io> qemu-io> start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:3, [type: 2]
-+qemu-io> qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+qemu-io> qemu-io> start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+qemu-io> qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x20000, zcond:14, [type: 2]
-+qemu-io> qemu-io> start: 0x20000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:14, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+qemu-io> qemu-io> start: 0x160000, len 0x20000, cap 0x20000, wptr 0x180000, zcond:14, [type: 2]
-+qemu-io> qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+qemu-io> qemu-io> start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+qemu-io> qemu-io> start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+qemu-io> 
-+(3) append write with (4k, 8k) data
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+Append write zones[0], zones[1] twice
-+qemu-io> After zap done, the append sector is 0x0
-+qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x18, zcond:2, [type: 2]
-+qemu-io> After zap done, the append sector is 0x18
-+qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x30, zcond:2, [type: 2]
-+qemu-io> After zap done, the append sector is 0x20000
-+qemu-io> start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20018, zcond:2, [type: 2]
-+qemu-io> After zap done, the append sector is 0x20018
-+qemu-io> start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20030, zcond:2, [type: 2]
-+qemu-io> 
-+Reset all:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+
-+
-+case 2: test a sets of ops that works or not
-+(1) append write (4k, 4k) and then write to full
-+qemu-io> bad argument count 8 to zap, expected between 3 and 4 arguments
-+qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+qemu-io> zone append failed: Operation not supported
-+qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+qemu-io> Reset zones[0]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+(2) write in zones[0], zones[3], zones[8], and then reset all
-+qemu-io> After zap done, the append sector is 0x0
-+qemu-io> After zap done, the append sector is 0x60000
-+qemu-io> After zap done, the append sector is 0x100000
-+qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x10, zcond:2, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60010, zcond:2, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100010, zcond:2, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+qemu-io> qemu-io> start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+qemu-io> *** done
--- 
-2.40.1
+On 11/23/23 20:08, Philippe Mathieu-Daudé wrote:
+> CPUState::start_powered_off field is part of the internal
+> implementation of a QDev CPU. It is exposed as the QDev
+> "start-powered-off" property. External components should
+> use the qdev properties API to access it.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+> ---
+>   hw/ppc/spapr_cpu_core.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+> index 91fae56573..24f759ba26 100644
+> --- a/hw/ppc/spapr_cpu_core.c
+> +++ b/hw/ppc/spapr_cpu_core.c
+> @@ -306,7 +306,7 @@ static PowerPCCPU *spapr_create_vcpu(SpaprCpuCore *sc, int i, Error **errp)
+>        * All CPUs start halted. CPU0 is unhalted from the machine level reset code
+>        * and the rest are explicitly started up by the guest using an RTAS call.
+>        */
+> -    cs->start_powered_off = true;
+> +    qdev_prop_set_bit(DEVICE(obj), "start-powered-off", true);
+>       cs->cpu_index = cc->core_id + i;
+>       if (!spapr_set_vcpu_id(cpu, cs->cpu_index, errp)) {
+>           return NULL;
 
