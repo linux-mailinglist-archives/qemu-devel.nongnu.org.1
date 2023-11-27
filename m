@@ -2,137 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441057FA1A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 14:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D21F7FA228
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 15:14:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7c56-0003OO-DT; Mon, 27 Nov 2023 08:55:24 -0500
+	id 1r7cMF-0000go-R8; Mon, 27 Nov 2023 09:13:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r7c55-0003O7-0m
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 08:55:23 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1r7cMD-0000gF-EW
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 09:13:05 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r7c53-0008H3-17
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 08:55:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701093319;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ondaXhQMEDXPsmn9+5hsX+YecXGzW9aHq+UvCrJKhQc=;
- b=ISljkfq1PgAVxTo11cBdeYIBvliCdo6rtzPFKIscujdMfM296p+nLcocJ9OKwW7qcosxGa
- FQIaUTRXgIE/yyN4Lg3vJxc3+Lg84LUkB/xKZ3wDbrvcER5X2LtPWl1hXbas1sHpax2KA+
- Mwnf0luyo2DQZlt8AlfXkCKQ0fAUWd4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-A9Uhlu25OmyDgsx5oWVldw-1; Mon, 27 Nov 2023 08:55:17 -0500
-X-MC-Unique: A9Uhlu25OmyDgsx5oWVldw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-332ee20a3f0so2037157f8f.0
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 05:55:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701093317; x=1701698117;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :references:cc:to:from:content-language:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=ondaXhQMEDXPsmn9+5hsX+YecXGzW9aHq+UvCrJKhQc=;
- b=XaWdX61d0MvCgHjzFf/6PAYqhRCLp1DWNc6mO3V/PBp6trbgoBzbGjnFhwHduVgWAl
- hYq7PJcrOFV+R+cYvwfENwCA55yEMc6iY3NYeynZI4cLZqDyRBCLss7xqg+tlOmi7kWO
- 2A6ktRYp7Xnrk2xddt8GD/NOI1Y0lKAiqVMzFkwf0/O4SAWMcKVMYj93pVXCe7nDkM9W
- IXAW3G3pPT1GQCiR69v3Po+SPrpobYXACIVIVEL3J3WZ2pxijaChklfPI2U0+Ay8Zt1/
- pdsLyU578I5fPlQ5s14qm0+80Fb1TvTRCMu7/+Pkl4DaJBq3lwfDaXWycgEkBiwJ+JcT
- sC9w==
-X-Gm-Message-State: AOJu0YzNnXhiL2567NtIoCfxfdkRLpXSApGLwEd8UvRyj3PLHmzTGgGw
- GrJwWg2aCcdr4HQrnErJEKYOKojaef9/Ehu7oMImn5Vm4wusb8HKvYNFFffg7KStJf98qF2m8G0
- Lo+ZOvjcy1OGwnmY=
-X-Received: by 2002:adf:ed50:0:b0:332:ff83:ca89 with SMTP id
- u16-20020adfed50000000b00332ff83ca89mr2386215wro.38.1701093316742; 
- Mon, 27 Nov 2023 05:55:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGIXRq9x3EtsJ3iqE3ChhX/PQgsA3kpCfJME3W+tZ+Aatxi+HKA1qu1Dwd/WX7aqmLZo2ldmg==
-X-Received: by 2002:adf:ed50:0:b0:332:ff83:ca89 with SMTP id
- u16-20020adfed50000000b00332ff83ca89mr2386201wro.38.1701093316315; 
- Mon, 27 Nov 2023 05:55:16 -0800 (PST)
-Received: from ?IPV6:2003:cb:c745:2a00:d74a:a8c5:20b6:3ec3?
- (p200300cbc7452a00d74aa8c520b63ec3.dip0.t-ipconnect.de.
- [2003:cb:c745:2a00:d74a:a8c5:20b6:3ec3])
- by smtp.gmail.com with ESMTPSA id
- m21-20020a056000181500b00332f82265b8sm5932941wrh.4.2023.11.27.05.55.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Nov 2023 05:55:16 -0800 (PST)
-Message-ID: <b9c8b4da-cb14-4a67-b98d-655ed7348bef@redhat.com>
-Date: Mon, 27 Nov 2023 14:55:15 +0100
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1r7cMA-0004Jt-VQ
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 09:13:05 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ARDfTGU024136; Mon, 27 Nov 2023 14:13:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=0Ia9IoZX41Mgc23muX2/YE1pE/HvKXfUkcedApIy++U=;
+ b=T2ZIBW3uCcQF/Knyn8+VignTDWodNkLdrpeAHn/5COJJKTXt+S8m7Y2D9Ze2EqH/hyX7
+ YfeN1U9kwjgpXYg94ZEiE4vmTNhnNmbJGfkO5S1I/OBh3zcnPSjCc7q4+M/CaZnYk3ra
+ y6RckvBnD85bECAIUef5XWYhBOdXc2tYz6zO0QtipJMF+JAteQ4cSfrnOcMfblB7p/qk
+ x0NpJ3ik9olhZ5uqPYpJ/FYhP4WlHoVvHyNLF7KUPnGK133rMNNpSa7CT31ULBGkUbK8
+ 3aMVWqKcV/YKbzr6pSFYTW0XHOFrkqc+pNRFfllRwK2gVIUe0Pg81oqC9p5U8ABQmn9T vw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umm07d1qc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Nov 2023 14:12:58 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ARDv7oQ023181;
+ Mon, 27 Nov 2023 14:12:58 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umm07d1pm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Nov 2023 14:12:57 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ARE4bDX016119; Mon, 27 Nov 2023 14:12:57 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwy1gk4m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Nov 2023 14:12:57 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3ARECuwi14418646
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 27 Nov 2023 14:12:56 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 12B045805D;
+ Mon, 27 Nov 2023 14:12:56 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 92CD158057;
+ Mon, 27 Nov 2023 14:12:55 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 27 Nov 2023 14:12:55 +0000 (GMT)
+Message-ID: <4e83c3a6-8160-49ba-afd2-0ba77dfb0640@linux.ibm.com>
+Date: Mon, 27 Nov 2023 09:12:55 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hostmem: Round up memory size for qemu_madvise() in
- host_memory_backend_memory_complete()
+Subject: Re: [PATCH v5 12/14] tests: acpi: implement TPM CRB tests for ARM virt
+To: Joelle van Dyne <j@getutm.app>
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
+ qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+References: <20231114020927.62315-1-j@getutm.app>
+ <20231114020927.62315-13-j@getutm.app>
+ <CAJ+F1CKx_MfZapE_vcb_e-nk=CMC2e8FN0QrONb4mzda_KNKUQ@mail.gmail.com>
+ <b1542ca5-18a6-44bd-a639-5765580bdc4d@linux.ibm.com>
+ <718d155f-004b-417e-8cba-d79ca4475850@linux.ibm.com>
+ <7412f9ab-6826-4e64-a583-a4dc8a921b70@linux.ibm.com>
+ <CA+E+eSDnC9cnm2CfPxFkp=yYkcjuBDaLbxb6Uwz3A4nzwAM3CQ@mail.gmail.com>
+ <d850ca40-d822-4e7d-b2ee-848f6d4208a7@linux.ibm.com>
+ <CA+E+eSANrNo23jcRk=rwLY1E19FHBROz+ifdr6mhEQ88xE0cOw@mail.gmail.com>
+ <a375b8d6-ae8e-45cd-816d-9b2737370b7b@linux.ibm.com>
+ <CA+E+eSCgUU=-f8XJw8i5RPFG2JauOW-SePyhMZbgB5XRfTMqRw@mail.gmail.com>
 Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-To: Michal Privoznik <mprivozn@redhat.com>, qemu-devel@nongnu.org
-Cc: imammedo@redhat.com
-References: <f77d641d500324525ac036fe1827b3070de75fc1.1701088320.git.mprivozn@redhat.com>
- <9b8a2863-1264-4058-b367-0b61a75921ac@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <9b8a2863-1264-4058-b367-0b61a75921ac@redhat.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <CA+E+eSCgUU=-f8XJw8i5RPFG2JauOW-SePyhMZbgB5XRfTMqRw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0WQJKAP3PBoR_GD6LklPQWmLUWtO94n-
+X-Proofpoint-GUID: NwXUFfAu5ceSOtOhGmrwUjux0vCeVZ2G
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-27_12,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ clxscore=1015 malwarescore=0 adultscore=0 suspectscore=0 mlxlogscore=999
+ impostorscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311270097
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -149,106 +127,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27.11.23 14:37, David Hildenbrand wrote:
-> On 27.11.23 13:32, Michal Privoznik wrote:
->> Simple reproducer:
->> qemu.git $ ./build/qemu-system-x86_64 \
->> -m size=8389632k,slots=16,maxmem=25600000k \
->> -object '{"qom-type":"memory-backend-file","id":"ram-node0","mem-path":"/hugepages2M/","prealloc":true,"size":8590983168,"host-nodes":[0],"policy":"bind"}' \
->> -numa node,nodeid=0,cpus=0,memdev=ram-node0
+
+
+On 11/24/23 21:39, Joelle van Dyne wrote:
+> On Fri, Nov 24, 2023 at 8:26 AM Stefan Berger <stefanb@linux.ibm.com> wrote:
 >>
->> With current master I get:
 >>
->> qemu-system-x86_64: cannot bind memory to host NUMA nodes: Invalid argument
 >>
->> The problem is that memory size (8193MiB) is not an integer
->> multiple of underlying pagesize (2MiB) which triggers a check
->> inside of madvise(), since we can't really set a madvise() policy
->> just to a fraction of a page.
+>> On 11/24/23 11:21, Joelle van Dyne wrote:
+>>> On Fri, Nov 24, 2023 at 8:17 AM Stefan Berger <stefanb@linux.ibm.com> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 11/23/23 19:56, Joelle van Dyne wrote:
+>>>>> On Tue, Nov 14, 2023 at 4:12 PM Stefan Berger <stefanb@linux.ibm.com> wrote:
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> On 11/14/23 16:05, Stefan Berger wrote:
+>>>>>>>
+>>>>>>>
+>>>>>>> On 11/14/23 13:03, Stefan Berger wrote:
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> On 11/14/23 04:36, Marc-André Lureau wrote:
+>>>>>>>>> Hi
+>>>>>>>>>
+>>>>>>>>> On Tue, Nov 14, 2023 at 6:12 AM Joelle van Dyne <j@getutm.app> wrote:
+>>>>>>>>>>
+>>>>>>>>>> Signed-off-by: Joelle van Dyne <j@getutm.app>
+>>>>>>>>>> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+>>>>>>>>>
+>>>>>>>>> nit: you also added tests for x86, could be a different patch?
+>>>>>>>>>
+>>>>>>>>> For arm, the test fails until next patch with:
+>>>>>>>>>
+>>>>>>>>> # starting QEMU: exec ./qemu-system-aarch64 -qtest
+>>>>>>>>> unix:/tmp/qtest-991279.sock -qtest-log /dev/null -chardev
+>>>>>>>>> socket,path=/tmp/qtest-991279.qmp,id=char0 -mon
+>>>>>>>>> chardev=char0,mode=control -display none -audio none -machine virt
+>>>>>>>>> -accel tcg -nodefaults -nographic -drive
+>>>>>>>>> if=pflash,format=raw,file=pc-bios/edk2-aarch64-code.fd,readonly=on
+>>>>>>>>> -drive if=pflash,format=raw,file=pc-bios/edk2-arm-vars.fd,snapshot=on
+>>>>>>>>> -cdrom tests/data/uefi-boot-images/bios-tables-test.aarch64.iso.qcow2
+>>>>>>>>> -cpu cortex-a57 -chardev
+>>>>>>>>> socket,id=chr,path=/tmp/qemu-test_acpi_virt_tcg_crb-device.KZ3GE2/sock
+>>>>>>>>> -tpmdev emulator,id=dev,chardev=chr -device tpm-crb-device,tpmdev=dev
+>>>>>>>>> -accel qtest
+>>>>>>>>> Warning! zero length expected file
+>>>>>>>>> 'tests/data/acpi/virt/TPM2.crb-device.tpm2'
+>>>>>>>>> Warning! zero length expected file
+>>>>>>>>> 'tests/data/acpi/virt/DSDT.crb-device.tpm2'
+>>>>>>>>> acpi-test: Warning!  binary file mismatch. Actual
+>>>>>>>>> [aml:/tmp/aml-GO4ME2], Expected
+>>>>>>>>> [aml:tests/data/acpi/virt/TPM2.crb-device.tpm2].
+>>>>>>>>> See source file tests/qtest/bios-tables-test.c for instructions on how
+>>>>>>>>> to update expected files.
+>>>>>>>>> acpi-test: Warning!  binary file mismatch. Actual
+>>>>>>>>> [aml:/tmp/aml-6N4ME2], Expected
+>>>>>>>>> [aml:tests/data/acpi/virt/DSDT.crb-device.tpm2].
+>>>>>>>>> See source file tests/qtest/bios-tables-test.c for instructions on how
+>>>>>>>>> to update expected files.
+>>>>>>>>> to see ASL diff between mismatched files install IASL, rebuild QEMU
+>>>>>>>>> from scratch and re-run tests with V=1 environment variable set**
+>>>>>>>>> ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
+>>>>>>>>> failed: (all_tables_match)
+>>>>>>>>> not ok /aarch64/acpi/virt/tpm2-crb -
+>>>>>>>>> ERROR:../tests/qtest/bios-tables-test.c:538:test_acpi_asl: assertion
+>>>>>>>>> failed: (all_tables_match)
+>>>>>>>>> Bail out!
+>>>>>>>>> qemu-system-aarch64: tpm-emulator: Could not cleanly shutdown the TPM:
+>>>>>>>>> Resource temporarily unavailable
+>>>>>>>>> Unexpected error in qio_channel_socket_writev() at
+>>>>>>>>> ../io/channel-socket.c:622:
+>>>>>>>>> /home/elmarco/src/qemu/buildall/tests/qtest/bios-tables-test: Unable
+>>>>>>>>> to write to socket: Bad file descriptor
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> Travis testing on s390x I see the following failures for this patchset
+>>>>>>>> (search for 'ERROR'):
+>>>>>>>>
+>>>>>>>> https://app.travis-ci.com/github/stefanberger/qemu-tpm/builds/267230363
+>>>>>>>>
+>>>>>>>> Summary of Failures:
+>>>>>>>>
+>>>>>>>> 134/320 qemu:qtest+qtest-aarch64 / qtest-aarch64/tpm-crb-device-test
+>>>>>>>> ERROR           0.70s   killed by signal 6 SIGABRT
+>>>>>>>>
+>>>>>>>> 219/320 qemu:qtest+qtest-x86_64 / qtest-x86_64/tpm-crb-test
+>>>>>>>> ERROR           0.88s   killed by signal 6 SIGABRT
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> Summary of Failures:
+>>>>>>>>
+>>>>>>>> 271/537 qemu:qtest+qtest-i386 / qtest-i386/tpm-crb-test
+>>>>>>>> ERROR           0.59s   killed by signal 6 SIGABRT
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> My guess is it's an endianess issue on big endian machines due to
+>>>>>>>> reading from the ROM device where we lost the .endianess:
+>>>>>>>>
+>>>>>>>> +const MemoryRegionOps tpm_crb_memory_ops = {
+>>>>>>>> +    .read = tpm_crb_mmio_read,
+>>>>>>>> +    .write = tpm_crb_mmio_write,
+>>>>>>>> +    .endianness = DEVICE_LITTLE_ENDIAN,
+>>>>>>>> +    .valid = {
+>>>>>>>> +        .min_access_size = 1,
+>>>>>>>> +        .max_access_size = 4,
+>>>>>>>> +    },
+>>>>>>>> +};
+>>>>>>>>
+>>>>>>>
+>>>>>>> I think we need a 2nd set of registers to support the endianess
+>>>>>>> conversion. It's not exactly nice, though. Basically the saved_regs
+>>>>>>> could be used for this directly, even though I did not do that but
+>>>>>>> introduced n_regs:
+>>>>>>> https://github.com/stefanberger/qemu-tpm/commit/90f6b21c0dd93dbb13d9e80a628f5b631fd07d91
+>>>>>>>
+>>>>>>> This patch allows the tests on s390x to run farther but the execution of
+>>>>>>> the command doesn't seem to work maybe due to command data that were
+>>>>>>> also written in wrong endianess. I don't know. I would have to get
+>>>>>>> access to a big endian / s390 machine to be able to fix it.
+>>>>>>>
+>>>>>>>
+>>>>>>
+>>>>>> The latest version now passes on Travis s390x:
+>>>>>> https://app.travis-ci.com/github/stefanberger/qemu-tpm/builds/267245220
+>>>>>>
+>>>>>
+>>>>> Are the tests failing on S390X due to the added code or are they
+>>>>> failing because previously it was untested? I don't think the original
+>>>>> code took account of endianness and that should be fixed, but feels
+>>>>> like it should be in a separate patch set?
+>>>>
+>>>> They are failing because something like the topmost one or two patches
+>>>> as in this branch here are missing for a big endian host:
+>>>>
+>>>> https://github.com/stefanberger/qemu-tpm/tree/joelle.v5%2B2nd_registers
+>>>
+>>> Right, but is this issue new due to the patchset? i.e. if just the
+>>
+>> Yes, it is due to this patchset. The reason is that CRB switched to a
+>> ROMD interface where the fact that the MMIO registers are little endian
+>> got lost for existing x86_64 support.
+>>
+>>> tests were added without the other patches, would they still fail? If
+>>> so, I think the fixes should be in another patchset while we disable
+>>> them in this patchset.
 > 
-> I thought we would just always fail create something that doesn't really
-> make any sense.
-> 
-> Why would we want to support that case?
-> 
-> Let me dig, I thought we would have had some check there at some point
-> that would make that fail (especially: RAM block not aligned to the
-> pagesize).
+> I see, how do you want to best integrate your changes? Do you want me
+> to squash your changes into the patch that introduces the code? Or do
+> you want them to be separate commits?
 
+I think squashing them in would be the right thing to do. You may want 
+to append _LE to the macros in the 2nd patch if you take them.
 
-At least memory-backend-memfd properly fails for that case:
-
-$ ./build/qemu-system-x86_64 -object memory-backend-memfd,hugetlb=on,size=3m,id=tmp
-qemu-system-x86_64: failed to resize memfd to 3145728: Invalid argument
-
-memory-backend-file ends up creating a new file:
-
-  $ ./build/qemu-system-x86_64 -object memory-backend-file,share=on,mem-path=/dev/hugepages/tmp,size=3m,id=tmp
-
-$ stat /dev/hugepages/tmp
-   File: /dev/hugepages/tmp
-   Size: 4194304         Blocks: 0          IO Block: 2097152 regular file
-
-... and ends up sizing it properly aligned to the huge page size.
-
-
-Seems to be due to:
-
-     if (memory < block->page_size) {
-         error_setg(errp, "memory size 0x" RAM_ADDR_FMT " must be equal to "
-                    "or larger than page size 0x%zx",
-                    memory, block->page_size);
-         return NULL;
-     }
-
-     memory = ROUND_UP(memory, block->page_size);
-
-     /*
-      * ftruncate is not supported by hugetlbfs in older
-      * hosts, so don't bother bailing out on errors.
-      * If anything goes wrong with it under other filesystems,
-      * mmap will fail.
-      *
-      * Do not truncate the non-empty backend file to avoid corrupting
-      * the existing data in the file. Disabling shrinking is not
-      * enough. For example, the current vNVDIMM implementation stores
-      * the guest NVDIMM labels at the end of the backend file. If the
-      * backend file is later extended, QEMU will not be able to find
-      * those labels. Therefore, extending the non-empty backend file
-      * is disabled as well.
-      */
-     if (truncate && ftruncate(fd, offset + memory)) {
-         perror("ftruncate");
-     }
-
-So we create a bigger file and map the bigger file and also have a
-RAMBlock that is bigger. So we'll also consume more memory.
-
-... but the memory region is smaller and we tell the VM that it has
-less memory. Lot of work with no obvious benefit, and only some
-memory waste :)
-
-
-We better should have just rejected such memory backends right from
-the start. But now it's likely too late.
-
-I suspect other things like
-  * qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
-  * qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP);
-
-fail, but we don't care for hugetlb at least regarding merging
-and don't even log an error.
-
-But QEMU_MADV_DONTDUMP might also be broken, because that
-qemu_madvise() call will just fail.
-
-Your fix would be correct. But I do wonder if we want to just let that
-case fail and warn users that they are doing something that doesn't
-make too much sense.
-
--- 
-Cheers,
-
-David / dhildenb
-
+     Stefan
 
