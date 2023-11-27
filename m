@@ -2,78 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C78E7FA05D
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 14:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7317FA133
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 14:38:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7bM8-0006va-4n; Mon, 27 Nov 2023 08:08:56 -0500
+	id 1r7boG-0005Ed-QY; Mon, 27 Nov 2023 08:38:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1r7bLx-0006v6-TV
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 08:08:46 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r7boD-00056s-Hc
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 08:37:58 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1r7bLv-0007PC-BH
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 08:08:45 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r7boA-0004mw-WA
+ for qemu-devel@nongnu.org; Mon, 27 Nov 2023 08:37:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701090521;
+ s=mimecast20190719; t=1701092272;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uN+YMVr7B6xs/+kDx1M6clvni89OI/FHCKS4UZYEppU=;
- b=PVLxkg4+kyLFTss94xpH9qI4gkKf6bMOx/6O+pxtllYjRtIutt7N37m56r5+Zo4ONd0dVA
- esggcRc/OfIyX9azL75yJR9OcpLTQYD+JhXmVhO6/zt64cFA8cbBwkTc36R73nEY15KKUT
- WszW7vBhVRGLZuL+3JMlVrou3ir4JlY=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=8cbJV255Ltok4CnZR0JM5UEfaNt3uX1+4+nhW6IFcQM=;
+ b=BxmKE+qyjUViSihBIHiSDCC6bmCMlk6Mdt7kNaJhPeOJp9JWmKRrfD58qzSZJISnpo0UaE
+ d+o9pRkKYrL7l+Dn4SdbMpfr7lxWJ1a6xLQoYYR7y7bNH77dXxohJhlxGCvv+DFSIL9tJq
+ ngUvWewzqr5j7EviXM9x9Sl1HvEr25k=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-7iEs1eDwMs6a8JpnkibrBg-1; Mon, 27 Nov 2023 08:08:39 -0500
-X-MC-Unique: 7iEs1eDwMs6a8JpnkibrBg-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-67a3773e271so16791766d6.3
- for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 05:08:39 -0800 (PST)
+ us-mta-609-ojpIwIfiOzSMnRQvGXmLlw-1; Mon, 27 Nov 2023 08:37:50 -0500
+X-MC-Unique: ojpIwIfiOzSMnRQvGXmLlw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40b4096abc8so10461905e9.0
+ for <qemu-devel@nongnu.org>; Mon, 27 Nov 2023 05:37:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701090519; x=1701695319;
- h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uN+YMVr7B6xs/+kDx1M6clvni89OI/FHCKS4UZYEppU=;
- b=bRVui+O/2UYE2ppS2t6ZCmqBVsxJqvVkB7ml1fwDEtIvrZzIdV4OUppc0yTKL2DUn6
- SQwqb0lGsQBwIfM7PFq9d4uKC+dMMor7vB/7hnZXJQvCXJHKgUzYv/xY9pjYAqAl68LY
- C4yekaDzkXtzYblhats3bGdZ2ZPywKDW2BYL3POe2+R6CfTyObUygIi2ye3pm1sAdpTx
- Tm7MfqYnl81O52Ou3QX2eeFSZJidNfvbrz+PdrxPgE10HnGFeM0vCg8Z+TW3VbpL6L4s
- NI7ULexLgefidiBI+G9tSO/j8H+RPXsfWlTlssNEX6wyMR0S75jhXsyFKZG0NGlEGMBL
- 99bw==
-X-Gm-Message-State: AOJu0YwkvP0PqfLTHXYQRFSaII//EBfuU5grWfFNjo+9E9hv/AZcmUl0
- 0wNfV/31TG/kSuuoK4jAKk9S6PwNbC1EhHneg/ZOudSLaKJX4zbN88jMZgxIqDPCvNotvgX6BBI
- yA54Ejlw4GzPItmQ=
-X-Received: by 2002:ad4:418e:0:b0:67a:3388:a878 with SMTP id
- e14-20020ad4418e000000b0067a3388a878mr6142224qvp.14.1701090519172; 
- Mon, 27 Nov 2023 05:08:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHRX3eUKo+CxOW4/FahA244oj0ubXrAnQ2dIRrVcE6+rEIR0UeDX44t+pU5ClX4pGqFKo1tBg==
-X-Received: by 2002:ad4:418e:0:b0:67a:3388:a878 with SMTP id
- e14-20020ad4418e000000b0067a3388a878mr6142208qvp.14.1701090518928; 
- Mon, 27 Nov 2023 05:08:38 -0800 (PST)
-Received: from rh (p200300c93f306f0016d68197cd5f6027.dip0.t-ipconnect.de.
- [2003:c9:3f30:6f00:16d6:8197:cd5f:6027])
+ d=1e100.net; s=20230601; t=1701092269; x=1701697069;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8cbJV255Ltok4CnZR0JM5UEfaNt3uX1+4+nhW6IFcQM=;
+ b=qiJE3S/qZ6hWBQJYaDfFvpZSdyTYaU/d7Z7TTXj7sgXoDpxNsDr4gdgdcmdUrVP5Kn
+ yV3LCdyg9ZzIEsph2lv4PD3vJhyM7Dtguw27qLkir1fzfn/VnUyYGfiG8ZBpAy7Z8IJd
+ bdb/ALM4lqKm2J9PGIlUSW0GnEp9yarV51tIRwRRbfwiOS4llPAczDzOHpLlL58alWuY
+ 2nCeA24C9soDpCfoB7fPv/JAhOlTi6Ytb4MKp4OZFU7P20IW70i/zmDzT3lvzkM2+nFd
+ oDVPmd4TXdSsqSWgLE0SphGpeobw/0DPtGeogIUST16rRwgvBVxCGfEkJMppYHhwaoU1
+ 5fcw==
+X-Gm-Message-State: AOJu0YwQX84PyObrDNOI9hpDbv8WjlkKZO9ULENT5/ppSVJlTf+A1ynx
+ c4ndfsDy8D7FH+6YpnrsXzdPhOqo3PXfuXoh/dIAnZQkAjaqU/K5HVwHoBO5C72vIFIuXniQf0V
+ yZY6vq7efTXbl8xbwULB6l6Y=
+X-Received: by 2002:a05:600c:1987:b0:409:5bd2:aa03 with SMTP id
+ t7-20020a05600c198700b004095bd2aa03mr9403388wmq.9.1701092269444; 
+ Mon, 27 Nov 2023 05:37:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFeNvgB+Mk2RNNP5DAKWxjC1cBEGBRaGGrq3IEn6oq1iryz5HxCCQ9xYC1nAyc3pn6IhYOrMA==
+X-Received: by 2002:a05:600c:1987:b0:409:5bd2:aa03 with SMTP id
+ t7-20020a05600c198700b004095bd2aa03mr9403369wmq.9.1701092268989; 
+ Mon, 27 Nov 2023 05:37:48 -0800 (PST)
+Received: from ?IPV6:2003:cb:c745:2a00:d74a:a8c5:20b6:3ec3?
+ (p200300cbc7452a00d74aa8c520b63ec3.dip0.t-ipconnect.de.
+ [2003:cb:c745:2a00:d74a:a8c5:20b6:3ec3])
  by smtp.gmail.com with ESMTPSA id
- ph25-20020a0562144a5900b0067a18544c41sm3191480qvb.58.2023.11.27.05.08.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Nov 2023 05:08:38 -0800 (PST)
-Date: Mon, 27 Nov 2023 14:08:35 +0100 (CET)
-From: Sebastian Ott <sebott@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-cc: qemu-devel@nongnu.org, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>
-Subject: Re: hanging process with commit 69562648f9 ("vl: revert behaviour
- for -display none")
-In-Reply-To: <CAFEAcA_F9+XDA_5_oyqqpjS+iaeOx=J05WsZ0QMB0016rUzDfw@mail.gmail.com>
-Message-ID: <531d4099-747f-5ab5-8c9c-30c50e6115c8@redhat.com>
-References: <392b2fb5-1747-0f73-826f-b410cdc84f07@redhat.com>
- <CAFEAcA_F9+XDA_5_oyqqpjS+iaeOx=J05WsZ0QMB0016rUzDfw@mail.gmail.com>
+ v11-20020a05600c444b00b0040b3867a297sm12300898wmn.36.2023.11.27.05.37.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 27 Nov 2023 05:37:48 -0800 (PST)
+Message-ID: <9b8a2863-1264-4058-b367-0b61a75921ac@redhat.com>
+Date: Mon, 27 Nov 2023 14:37:47 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sebott@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hostmem: Round up memory size for qemu_madvise() in
+ host_memory_backend_memory_complete()
+Content-Language: en-US
+To: Michal Privoznik <mprivozn@redhat.com>, qemu-devel@nongnu.org
+Cc: imammedo@redhat.com
+References: <f77d641d500324525ac036fe1827b3070de75fc1.1701088320.git.mprivozn@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <f77d641d500324525ac036fe1827b3070de75fc1.1701088320.git.mprivozn@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,33 +148,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 27 Nov 2023, Peter Maydell wrote:
-> On Mon, 27 Nov 2023 at 12:29, Sebastian Ott <sebott@redhat.com> wrote:
->> qemu fails to start a guest using the following command (the process just
->> hangs): qemu-system-aarch64 -machine virt -cpu host -smp 4 -m 8192
->> -kernel /boot/vmlinuz-6.7.0-rc1 -initrd ~/basic.img -append "root=/dev/ram
->> console=ttyAMA0" -enable-kvm -device virtio-gpu,hostmem=2G -display none
->>
->> ..which I've used to debug a potential virtio-gpu issue. Bisect points to
->> 69562648f9 ("vl: revert behaviour for -display none")
->
-> Is it actually hanging, or is the guest starting up fine but
-> outputting to a serial port which you haven't directed anywhere?
+On 27.11.23 13:32, Michal Privoznik wrote:
+> Simple reproducer:
+> qemu.git $ ./build/qemu-system-x86_64 \
+> -m size=8389632k,slots=16,maxmem=25600000k \
+> -object '{"qom-type":"memory-backend-file","id":"ram-node0","mem-path":"/hugepages2M/","prealloc":true,"size":8590983168,"host-nodes":[0],"policy":"bind"}' \
+> -numa node,nodeid=0,cpus=0,memdev=ram-node0
+> 
+> With current master I get:
+> 
+> qemu-system-x86_64: cannot bind memory to host NUMA nodes: Invalid argument
+> 
+> The problem is that memory size (8193MiB) is not an integer
+> multiple of underlying pagesize (2MiB) which triggers a check
+> inside of madvise(), since we can't really set a madvise() policy
+> just to a fraction of a page.
 
-Ough, that's indeed the case. I only had a quick glance at the bt in gdb
-and obviously misinterpreted what I got there.
+I thought we would just always fail create something that doesn't really 
+make any sense.
 
-> The commandline is a bit odd because it doesn't set up any of:
-> * a serial terminal
-> * a graphical window/display
-> * network forwarding that would allow ssh into the guest
->
-> If you add '-serial stdio' do you see the guest output?
+Why would we want to support that case?
 
-I do. I was using the serial terminal which got setup implicitly I guess.
-I'll make sure to always add this.
+Let me dig, I thought we would have had some check there at some point 
+that would make that fail (especially: RAM block not aligned to the 
+pagesize).
 
-Sry and thanks,
-Sebastian
+> 
+> Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+> ---
+>   backends/hostmem.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/backends/hostmem.c b/backends/hostmem.c
+> index 747e7838c0..4e88d048de 100644
+> --- a/backends/hostmem.c
+> +++ b/backends/hostmem.c
+> @@ -326,9 +326,10 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
+>       HostMemoryBackendClass *bc = MEMORY_BACKEND_GET_CLASS(uc);
+>       Error *local_err = NULL;
+>       void *ptr;
+> -    uint64_t sz;
+>   
+>       if (bc->alloc) {
+> +        uint64_t sz;
+> +
+>           bc->alloc(backend, &local_err);
+>           if (local_err) {
+>               goto out;
+> @@ -337,6 +338,11 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
+>           ptr = memory_region_get_ram_ptr(&backend->mr);
+>           sz = memory_region_size(&backend->mr);
+>   
+> +        /* Round up size to be an integer multiple of pagesize, because
+> +         * madvise() does not really like setting advices on a fraction of a
+> +         * page. */
+> +        sz = ROUND_UP(sz, qemu_ram_pagesize(backend->mr.ram_block));
+> +
+>           if (backend->merge) {
+>               qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
+>           }
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
