@@ -2,65 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F3E7FA535
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 16:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAAA7FA5A0
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 Nov 2023 17:07:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7ds0-00047x-OH; Mon, 27 Nov 2023 10:50:00 -0500
+	id 1r7e7P-0003jW-B2; Mon, 27 Nov 2023 11:05:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r7drw-00045i-BD
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:49:56 -0500
-Received: from mgamail.intel.com ([192.55.52.88])
+ (Exim 4.90_1) (envelope-from <SRS0=5Qwu=HI=kaod.org=clg@ozlabs.org>)
+ id 1r7e6v-0003Sd-QY; Mon, 27 Nov 2023 11:05:27 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r7dru-0006s1-43
- for qemu-devel@nongnu.org; Mon, 27 Nov 2023 10:49:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701100194; x=1732636194;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=tScOKRTWyNwoZDet8u6qjATSK7fwOtXymQ1UWotw77c=;
- b=QW/7fP3hL0H41xssaMNClqPAbFmMssrM2D9CA5uM7eB3hLxlJ4crQWDY
- REVquWizABqaYT5HPwy+s4N1LD59nkcq2Ztbew4N20H2RmXvFM+Ao7RxQ
- dbNwpebRCmFCaotiyGBgl0VOgv8NzsOG6iedCLjKIqpnpejJTExd8bCRG
- FSRW5kECfia4/vBCUsxEmUsshm8YzCRI86mDGSLgdRAbgZumc5trTmJPS
- BstPRBxViMEHaJloj+XYGMml796za3k8kZCcN/dL3HmhUcwdhTSRB3Xpx
- CwLkCLh7FrqAvJ3E0pDYGS09IXzRqulrc3ukS1hDq6azySTu9Qc//ucPM g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="423874301"
-X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; d="scan'208";a="423874301"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2023 07:49:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="797272989"
-X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; d="scan'208";a="797272989"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orsmga008.jf.intel.com with ESMTP; 27 Nov 2023 07:49:47 -0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] tests: bios-tables-test: Rename smbios type 4 related test
- functions
-Date: Tue, 28 Nov 2023 00:02:02 +0800
-Message-Id: <20231127160202.1037290-1-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <SRS0=5Qwu=HI=kaod.org=clg@ozlabs.org>)
+ id 1r7e6s-0001Xp-PH; Mon, 27 Nov 2023 11:05:25 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sf9Qw3DzMz4xPf;
+ Tue, 28 Nov 2023 03:05:12 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sf9Qm667Mz4wc0;
+ Tue, 28 Nov 2023 03:05:04 +1100 (AEDT)
+Message-ID: <145edc6c-2684-45bd-a4e7-399c98e2a3dc@kaod.org>
+Date: Mon, 27 Nov 2023 17:04:58 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.55.52.88;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 01/10] hw/fsi: Introduce IBM's Local bus
+Content-Language: en-US
+To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
+References: <20231026164741.1184058-1-ninad@linux.ibm.com>
+ <20231026164741.1184058-2-ninad@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231026164741.1184058-2-ninad@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=5Qwu=HI=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,89 +68,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+On 10/26/23 18:47, Ninad Palsule wrote:
+> This is a part of patchset where IBM's Flexible Service Interface is
+> introduced.
+> 
+> The LBUS is modelled to maintain the qdev bus hierarchy and to take
+> advantage of the object model to automatically generate the CFAM
+> configuration block. The configuration block presents engines in the
+> order they are attached to the CFAM's LBUS. Engine implementations
+> should subclass the LBusDevice and set the 'config' member of
+> LBusDeviceClass to match the engine's type.
+> 
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+> ---
+> v2:
+> - Incorporated Joel's review comments.
+> v5:
+> - Incorporated review comments by Cedric.
+> v6:
+> - Incorporated review comments by Cedric & Daniel.
+> v7:
+> - Incorporated review comments by Philippe.
+> ---
+>   include/hw/fsi/lbus.h | 43 +++++++++++++++++++++++++
+>   hw/fsi/lbus.c         | 74 +++++++++++++++++++++++++++++++++++++++++++
+>   hw/Kconfig            |  1 +
+>   hw/fsi/Kconfig        |  2 ++
+>   hw/fsi/meson.build    |  1 +
+>   hw/meson.build        |  1 +
+>   6 files changed, 122 insertions(+)
+>   create mode 100644 include/hw/fsi/lbus.h
+>   create mode 100644 hw/fsi/lbus.c
+>   create mode 100644 hw/fsi/Kconfig
+>   create mode 100644 hw/fsi/meson.build
+> 
+> diff --git a/include/hw/fsi/lbus.h b/include/hw/fsi/lbus.h
+> new file mode 100644
+> index 0000000000..4fa696bbdb
+> --- /dev/null
+> +++ b/include/hw/fsi/lbus.h
+> @@ -0,0 +1,43 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2023 IBM Corp.
+> + *
+> + * IBM Local bus and connected device structures.
+> + */
+> +#ifndef FSI_LBUS_H
+> +#define FSI_LBUS_H
+> +
+> +#include "exec/memory.h"
+> +#include "hw/qdev-core.h"
+> +
+> +#define TYPE_FSI_LBUS_DEVICE "fsi.lbus.device"
+> +OBJECT_DECLARE_TYPE(FSILBusDevice, FSILBusDeviceClass, FSI_LBUS_DEVICE)
+> +
+> +#define FSI_LBUS_MEM_REGION_SIZE  (2 * 1024 * 1024)
+> +#define FSI_LBUSDEV_IOMEM_SIZE    0x400
+> +
+> +typedef struct FSILBusDevice {
+> +    DeviceState parent;
+> +
+> +    MemoryRegion iomem;
+> +    uint32_t address;
 
-In fact, type4-count, core-count, core-count2, thread-count and
-thread-count2 are tested with KVM not TCG.
+This is address attribute is not useful. Models/HW unit generally do not
+know where their MMIO regions are mmapped in the address space.
 
-Rename these test functions to reflect KVM base instead of TCG.
+> +} FSILBusDevice;
+> +
+> +typedef struct FSILBusDeviceClass {
+> +    DeviceClass parent;
+> +
+> +    uint32_t config;
+> +} FSILBusDeviceClass;
+> +
+> +#define TYPE_FSI_LBUS "fsi.lbus"
+> +OBJECT_DECLARE_SIMPLE_TYPE(FSILBus, FSI_LBUS)
+> +
+> +typedef struct FSILBus {
+> +    BusState bus;
+> +
+> +    MemoryRegion mr;
+> +} FSILBus;
+> +
+> +DeviceState *lbus_create_device(FSILBus *bus, const char *type, uint32_t addr);
+> +int lbus_add_device(FSILBus *bus, FSILBusDevice *dev);
+> +#endif /* FSI_LBUS_H */
+> diff --git a/hw/fsi/lbus.c b/hw/fsi/lbus.c
+> new file mode 100644
+> index 0000000000..3a7335dde5
+> --- /dev/null
+> +++ b/hw/fsi/lbus.c
+> @@ -0,0 +1,74 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2023 IBM Corp.
+> + *
+> + * IBM Local bus where FSI slaves are connected
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qapi/error.h"
+> +#include "hw/fsi/lbus.h"
+> +
+> +#include "hw/qdev-properties.h"
+> +
+> +static void lbus_init(Object *o)
+> +{
+> +    FSILBus *lbus = FSI_LBUS(o);
+> +
+> +    memory_region_init(&lbus->mr, OBJECT(lbus), TYPE_FSI_LBUS,
+> +                       FSI_LBUS_MEM_REGION_SIZE - FSI_LBUSDEV_IOMEM_SIZE);
+> +}
+> +
+> +static const TypeInfo lbus_info = {
+> +    .name = TYPE_FSI_LBUS,
+> +    .parent = TYPE_BUS,
+> +    .instance_init = lbus_init,
+> +    .instance_size = sizeof(FSILBus),
+> +};
+> +
+> +static Property lbus_device_props[] = {
+> +    DEFINE_PROP_UINT32("address", FSILBusDevice, address, 0),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- tests/qtest/bios-tables-test.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Please remove lbus_device_props
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index 71af5cf69fc5..9a7e459e8ffb 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -1003,7 +1003,7 @@ static void test_acpi_q35_tcg(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_q35_tcg_type4_count(void)
-+static void test_acpi_q35_kvm_type4_count(void)
- {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -1019,7 +1019,7 @@ static void test_acpi_q35_tcg_type4_count(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_q35_tcg_core_count(void)
-+static void test_acpi_q35_kvm_core_count(void)
- {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -1036,7 +1036,7 @@ static void test_acpi_q35_tcg_core_count(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_q35_tcg_core_count2(void)
-+static void test_acpi_q35_kvm_core_count2(void)
- {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -1053,7 +1053,7 @@ static void test_acpi_q35_tcg_core_count2(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_q35_tcg_thread_count(void)
-+static void test_acpi_q35_kvm_thread_count(void)
- {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -1070,7 +1070,7 @@ static void test_acpi_q35_tcg_thread_count(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_q35_tcg_thread_count2(void)
-+static void test_acpi_q35_kvm_thread_count2(void)
- {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -2250,15 +2250,15 @@ int main(int argc, char *argv[])
-                 qtest_add_func("acpi/q35/kvm/xapic", test_acpi_q35_kvm_xapic);
-                 qtest_add_func("acpi/q35/kvm/dmar", test_acpi_q35_kvm_dmar);
-                 qtest_add_func("acpi/q35/type4-count",
--                               test_acpi_q35_tcg_type4_count);
-+                               test_acpi_q35_kvm_type4_count);
-                 qtest_add_func("acpi/q35/core-count",
--                               test_acpi_q35_tcg_core_count);
-+                               test_acpi_q35_kvm_core_count);
-                 qtest_add_func("acpi/q35/core-count2",
--                               test_acpi_q35_tcg_core_count2);
-+                               test_acpi_q35_kvm_core_count2);
-                 qtest_add_func("acpi/q35/thread-count",
--                               test_acpi_q35_tcg_thread_count);
-+                               test_acpi_q35_kvm_thread_count);
-                 qtest_add_func("acpi/q35/thread-count2",
--                               test_acpi_q35_tcg_thread_count2);
-+                               test_acpi_q35_kvm_thread_count2);
-             }
-             if (qtest_has_device("virtio-iommu-pci")) {
-                 qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
--- 
-2.34.1
+> +DeviceState *lbus_create_device(FSILBus *bus, const char *type, uint32_t addr)
+
+This routine is only used once in a realize handler which could propagate
+a possible error. Please remove.
+
+> +{
+> +    DeviceState *ds;
+> +    BusState *state = BUS(bus);
+> +    FSILBusDevice *dev;
+> +
+> +    ds = qdev_new(type);
+> +    qdev_prop_set_uint32(ds, "address", addr);
+> +    qdev_realize_and_unref(ds, state, &error_fatal);
+> +
+> +    dev = FSI_LBUS_DEVICE(ds);
+> +    memory_region_add_subregion(&bus->mr, dev->address,
+> +                                &dev->iomem);
+> +
+> +    return ds;
+> +}
+> +
+> +static void lbus_device_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +
+> +    dc->bus_type = TYPE_FSI_LBUS;
+> +    device_class_set_props(dc, lbus_device_props);
+> +}
+> +
+> +static const TypeInfo lbus_device_type_info = {
+> +    .name = TYPE_FSI_LBUS_DEVICE,
+> +    .parent = TYPE_DEVICE,
+> +    .instance_size = sizeof(FSILBusDevice),
+> +    .abstract = true,
+> +    .class_init = lbus_device_class_init,
+> +    .class_size = sizeof(FSILBusDeviceClass),
+> +};
+> +
+> +static void lbus_register_types(void)
+> +{
+> +    type_register_static(&lbus_info);
+> +    type_register_static(&lbus_device_type_info);
+> +}
+> +
+> +type_init(lbus_register_types);
+> diff --git a/hw/Kconfig b/hw/Kconfig
+> index 9ca7b38c31..2c00936c28 100644
+> --- a/hw/Kconfig
+> +++ b/hw/Kconfig
+> @@ -9,6 +9,7 @@ source core/Kconfig
+>   source cxl/Kconfig
+>   source display/Kconfig
+>   source dma/Kconfig
+> +source fsi/Kconfig
+>   source gpio/Kconfig
+>   source hyperv/Kconfig
+>   source i2c/Kconfig
+> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+> new file mode 100644
+> index 0000000000..e650c660f0
+> --- /dev/null
+> +++ b/hw/fsi/Kconfig
+> @@ -0,0 +1,2 @@
+> +config FSI_LBUS
+> +    bool
+> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
+> new file mode 100644
+> index 0000000000..4074d3a7d2
+> --- /dev/null
+> +++ b/hw/fsi/meson.build
+> @@ -0,0 +1 @@
+> +system_ss.add(when: 'CONFIG_FSI_LBUS', if_true: files('lbus.c'))
+> diff --git a/hw/meson.build b/hw/meson.build
+> index f01fac4617..463d702683 100644
+> --- a/hw/meson.build
+> +++ b/hw/meson.build
+> @@ -44,6 +44,7 @@ subdir('virtio')
+>   subdir('watchdog')
+>   subdir('xen')
+>   subdir('xenpv')
+> +subdir('fsi')
+>   
+>   subdir('alpha')
+>   subdir('arm')
+
+The meson.build file is not modified which means the new files are compiled.
+
+Thanks,
+
+C.
 
 
