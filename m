@@ -2,90 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16A57FBC37
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 15:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D05247FBC48
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 15:10:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7yk6-0000bF-1F; Tue, 28 Nov 2023 09:07:14 -0500
+	id 1r7ymS-0002IH-IT; Tue, 28 Nov 2023 09:09:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r7yjy-0000ae-1x
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:07:07 -0500
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r7yjw-0005oq-0L
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:07:05 -0500
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-1fa22326ad0so1788303fac.1
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 06:07:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701180422; x=1701785222; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IVBXxCL3b/HYlHx/ddymQrkvoQWPPSzCHh5nA+M6FXA=;
- b=NH+gOO4gLg4e7NkIPBnUuCbIhwVRpZzmehPkNmdyc4vQRvy1ZU7SgGGouQCXB/tuEW
- i4vYvbAYiA0tiZN4vDQWQoBPzQ/pnF71EKRMMdw3qBRym2C4jxyH3OjBD3MY0ES7iSkt
- 7ZRCyJ7Z4HE2iePIwGSQcl4uHza3I/ffJmULeIq3ZlPRW7C3IHCQuzyuHTQzwgzx+erL
- cbNUaX2asjQljGHjJdfPUla4YsHgHE30wl1fRhCxXp3jvui7FwFCZ+oVFx2ep6xUDTpd
- KEPkm33eDwunjzD8zj3jd0poDE9UTxB3b9ArKonTKnG8ZU297/qKLqL74j7Hk2QBW3x0
- F6Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701180422; x=1701785222;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IVBXxCL3b/HYlHx/ddymQrkvoQWPPSzCHh5nA+M6FXA=;
- b=MiD7WsAe+CSuvHsSIQ4Ki/kRhYhb7ukBJcXWQZWV6TkjiT66h8/yuQgp0CEAPcCSSJ
- DZJEMpuDEk2X9h4g8RGw8SR/+w0ROBH4j1UEhSbayQcmb8tS09nf7XTewdKSi/tcMnLU
- IXz9rujqlV191tXKVHaKQumGKC9/zIbPfQJGnQPislAlHT+dKi2LNiJo+Zu/s0A0k7gw
- GfIdPWcAPlqbpMeCcWbITmv5GpSI6ekiOWt/u2d556HawLyDbUVtXKgBLmGpXNAXPk81
- vwr0gbcYKMcpVuLR+hkGkjVnb/qJwaA4FLVBRkw/JzgAD1e2P8+Y1Jox1Y5nsTCL7u8E
- n69w==
-X-Gm-Message-State: AOJu0YxT6vdJP9wVIiUi4s0SGCHafwA1N7Wb71qf0Zh3MZWSNe6pmRhO
- CWE4Zq7Hgdty3VH8A6VXYruq3g==
-X-Google-Smtp-Source: AGHT+IGPFcCdUHQObrVW3CgDplXB4diSgReBGYpq27a3lR5i+QRn6MLEA6pyj1N1ZXX+VusUQtMu6A==
-X-Received: by 2002:a05:6870:55c9:b0:1fa:25de:2f6b with SMTP id
- qk9-20020a05687055c900b001fa25de2f6bmr11596564oac.23.1701180422236; 
- Tue, 28 Nov 2023 06:07:02 -0800 (PST)
-Received: from [172.20.7.39] ([187.217.227.247])
- by smtp.gmail.com with ESMTPSA id
- nx11-20020a056870be8b00b001e98b1544fesm2863972oab.9.2023.11.28.06.07.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 06:07:01 -0800 (PST)
-Message-ID: <67bdc461-14e0-4db8-b41a-f664361ff4e3@linaro.org>
-Date: Tue, 28 Nov 2023 08:06:59 -0600
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r7ymO-0002HX-5I
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:09:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1r7ymM-0006TC-CI
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:09:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701180573;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=suxL4UJkVW4VVz9E5xpldzyMrVw6dqhJgura48Wxb9o=;
+ b=LvboNJLMmoq7nW63zal2YfoDANnnyyeXeleBv3kyMYtTl+uH3haGFqRyiZQ/PWMrhTPTNG
+ Bo/PmUoH50DRUz0LgOeD2ldrtC78RSyvg5uWSZjB4Ne08Aw1olfrGUDlwYdH0alRYgbLPb
+ Op0T3T3f8Wqp7Hc4aTDTDUuKEE4iigg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-35-ZNEWE2z6ONSpyD4nmqdvUg-1; Tue,
+ 28 Nov 2023 09:09:31 -0500
+X-MC-Unique: ZNEWE2z6ONSpyD4nmqdvUg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E229D2824775;
+ Tue, 28 Nov 2023 14:09:30 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.195.36])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 34427502A;
+ Tue, 28 Nov 2023 14:09:30 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	stefanha@redhat.com,
+	qemu-devel@nongnu.org
+Subject: [PULL 0/4] Block layer patches
+Date: Tue, 28 Nov 2023 15:09:22 +0100
+Message-ID: <20231128140926.106077-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-9.0 09/11] hw/arm/bcm2836: Allocate ARM CPU state
- with object_new()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20231122183048.17150-1-philmd@linaro.org>
- <20231122183048.17150-10-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231122183048.17150-10-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::36;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x36.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,48 +76,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/22/23 12:30, Philippe Mathieu-Daudé wrote:
-> The ARMCPU type is forward declared as a pointer to all hw/ files.
-> Its declaration is restricted to target/arm/ files. By using a
-> pointer in BCM283XState instead of embedding the whole CPU state,
-> we don't need to include "cpu.h" which is target-specific.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/hw/arm/bcm2836.h |  4 ++--
->   hw/arm/bcm2836.c         | 19 ++++++++++---------
->   hw/arm/raspi.c           |  2 +-
->   3 files changed, 13 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/hw/arm/bcm2836.h b/include/hw/arm/bcm2836.h
-> index 6f90cabfa3..784bab0aad 100644
-> --- a/include/hw/arm/bcm2836.h
-> +++ b/include/hw/arm/bcm2836.h
-> @@ -14,7 +14,7 @@
->   
->   #include "hw/arm/bcm2835_peripherals.h"
->   #include "hw/intc/bcm2836_control.h"
-> -#include "target/arm/cpu.h"
-> +#include "target/arm/cpu-qom.h"
->   #include "qom/object.h"
->   
->   #define TYPE_BCM283X "bcm283x"
-> @@ -38,7 +38,7 @@ struct BCM283XState {
->       uint32_t enabled_cpus;
->   
->       struct {
-> -        ARMCPU core;
-> +        ARMCPU *core;
->       } cpu[BCM283X_NCPUS];
+The following changes since commit e867b01cd6658a64c16052117dbb18093a2f9772:
 
-I'd be tempted to drop the unused struct:
+  Merge tag 'qga-pull-2023-11-25' of https://github.com/kostyanf14/qemu into staging (2023-11-27 08:59:00 -0500)
 
-     ARMCPU *cpu[BCM283X_NCPUS];
+are available in the Git repository at:
 
-while you're at it.  Anyway,
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+for you to fetch changes up to 6e081324facf9aeece9c286774bab5af3b8d6099:
 
+  ide/via: Fix BAR4 value in legacy mode (2023-11-28 14:56:32 +0100)
 
-r~
+----------------------------------------------------------------
+Block layer patches
+
+- ide/via: Fix BAR4 value in legacy mode
+- export/vhost-user-blk: Fix consecutive drains
+- vmdk: Don't corrupt desc file in vmdk_write_cid
+- iotests: fix default machine type detection
+
+----------------------------------------------------------------
+Andrey Drobyshev (1):
+      iotests: fix default machine type detection
+
+BALATON Zoltan (1):
+      ide/via: Fix BAR4 value in legacy mode
+
+Fam Zheng (1):
+      vmdk: Don't corrupt desc file in vmdk_write_cid
+
+Kevin Wolf (1):
+      export/vhost-user-blk: Fix consecutive drains
+
+ include/qemu/vhost-user-server.h     |  1 +
+ block/export/vhost-user-blk-server.c |  9 +++++++--
+ block/vmdk.c                         | 28 ++++++++++++++++++--------
+ hw/ide/via.c                         | 17 ++++++++++------
+ util/vhost-user-server.c             | 39 ++++++++++++++++++++++++++++--------
+ tests/qemu-iotests/testenv.py        |  2 +-
+ tests/qemu-iotests/059               |  2 ++
+ tests/qemu-iotests/059.out           |  4 ++++
+ 8 files changed, 77 insertions(+), 25 deletions(-)
+
 
