@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9607FBCE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 15:39:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 085B07FBCE8
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 15:40:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7zEf-0006Dm-Ez; Tue, 28 Nov 2023 09:38:49 -0500
+	id 1r7zFx-0007lh-T2; Tue, 28 Nov 2023 09:40:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jag.raman@oracle.com>)
- id 1r7zEb-0006DV-WF
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:38:46 -0500
+ id 1r7zFh-0007cw-6B
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:39:59 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jag.raman@oracle.com>)
- id 1r7zES-000518-J7
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:38:45 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ id 1r7zFf-0005RO-Ew
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:39:52 -0500
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ASDTNds009219; Tue, 28 Nov 2023 14:38:31 GMT
+ 3ASDTmgI020095; Tue, 28 Nov 2023 14:39:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : references : in-reply-to : content-type :
  content-id : content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=3MocSvrMRXBca+QdtpggtNN6gbNfGLOoqc533XbO5Sc=;
- b=hJ++YBmidigj8wflNlOs+PT/cAWJlHWII6oNmMnjrjXG6PenX8+V+58oPpkdq4fCyO4t
- WiTSR/UIX6cH+D4i7kIGIUGGVEb18/qr5wW+PCSfOErvSgBoMJLP5BxWyNWBR5NuciZG
- Ywd6n98JStTfObZIeoWB/IaioMSR4F0aic4hHyTz1EdVLQfq56Ol6tswbZu4E+pfXqzg
- snLROpbCwNejM+0f3cmNmvBOzox8CwIAI4pzUxS03BE3DbUzbhxmbRgQonyAh33AnbgG
- Syw6rkOOAe3umDcmXhbzu/x1zWBppQc1raIrVjQRTYaHUa/D3SaqSO9Io4MUkFyYbCFN xw== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3un5txsf8k-1
+ bh=zLwMSC0WV3sYMyX0K/An2khsMRnuN/fIfcEUPzkLrAk=;
+ b=CyNigXuXt4QbBPGaNn/jpODo00ZwlAooMEj1dUfZAFiC2vxxlLK9LQ8mBSKoQQvdhoPi
+ 5MejaB5tO+WJMIOiERWo0ikZZien8Pet+zRI6GdnvxAd7tS7FYY3m+N+uffclTtiylM8
+ R9exHRFH3k/1udjGLsBbMFrteR4CZKUJpxz3FPPVwe2AgqTcaTFwWsZttIrVlgcYoRGu
+ CAzoRxFNlfP5vhrrqK39SnLN+DvVI0kQzDLG8jGXBZZE/cQF3e1TRwXtvBZYm0RpA2Pj
+ 9eY2MlC1EJPp0jyFTgOM2hCAsWYvV5giNvXytA/6Qk4v1nCbdaISkIT+YIvt1ZUm0oWk 3A== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uk7ucnvgt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Nov 2023 14:38:31 +0000
+ Tue, 28 Nov 2023 14:39:48 +0000
 Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3ASEGISt012638; Tue, 28 Nov 2023 14:38:30 GMT
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 3ASEXbnl014116; Tue, 28 Nov 2023 14:39:46 GMT
 Received: from nam10-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uk7c787cu-1
+ (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3uk7ccqwpv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Nov 2023 14:38:30 +0000
+ Tue, 28 Nov 2023 14:39:46 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ToF/U5aomQc+pFXQFFLT51O+QW/V9n66kVNwe228l1Wa9pzLLxFw7hDXJ+WlquBZjL7LpuCZKl1q1YSg2oQj6rDXX4cWAG5R4gsfNMDwsrimxRNjCZn2VHW7fT1EX3Hq9Lsb7wueuJmJ9+X8u8Ge5jplN/8M8+3pBdROPaqUFNeBcBHvVHhzRKUvBu5cXbATsy1Bhand7U1OxEFFbuw6L5u3gagKYy3EnHdg9BlHMEeR8MEppSdUrv7y8z1sAwIQRdkmtacwNFutTwM4NFe/huiPCRcdcnf6Oa/euA6KKQEF8hw3d7eMcVFUmTrODN38SK0nHgVzbJgZUcjTVWnkRQ==
+ b=SD1uRHg/NvJJItdqH4xAqIjo6ZFrM7nPfSpO2MfnIIB+6/TuO1skpjfb9ikczviLxyVXSp/jHRIhjOyzODB5aFqicLWGpubdXepotwQJmyk6f3ZYmuCD0AusRdDJJPRG+KiV2Zos0Fk8m2goN+B28F1fXbN05Ppb4qX7P194c2tVnfX2vf1h0lwtpQZnmI2WRTkijhcbeRRnLTVu7LQqrsqKG0hc4N7eYA/SjzQYNBsvEilSy6xet5pWLRH7irdO4SvvUxcbyav3OjV0e6mIWbKViIm2PR3DIyVYNYgH8APZIDTfQzc0AGf9oACyfpgaZAOawwmuaDF6vjyKU/Rpsw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3MocSvrMRXBca+QdtpggtNN6gbNfGLOoqc533XbO5Sc=;
- b=Jh56IzskW0TU3YPrfDAsJ57cbaQQ4M8hGeQjh+4Ry7bRl3lWrsQWEKG+/FDEpHF/T7fHsgAMxfci+NQQvSsHJPt4EaLd1L3qZsspRNS/9y5kOUrFyFm135Us1xWGZtEF1q4UoXa8e9RZyQjiP8wsYI46pl032iIHjiDNnD3u8HbmKuAo+nrPflFeYUCuqKRQIIIqVj9EeKhKlAhxfrxDg2munxVmuUkXbrhGL/duZJDD6zUcydj8X0h4AC7lSCAqKZuk6pTtoZeWtxQP4CZmV3rxZ8KjLGGC84U3eh2EoPtjngzeUg+Bd01F583xw+zfU364/62HwK8KIgNN36XfWQ==
+ bh=zLwMSC0WV3sYMyX0K/An2khsMRnuN/fIfcEUPzkLrAk=;
+ b=enTtH8o7uxEOkiCVQlqd/QgJghUrvVQx99s/IfzSHad59mV8zyTRocagWuJimj75fX93ee371GrZPakWEyyZ7UXtptgIX5HQtH09+8PCav3EPfAOFAs4tdnZweWcj8xYcPAjPX7/Ce2hUKta66toIIBJbvYOxnWxxOgq2E6pctCvpIpaUwdu6cDXq/+27c/7MVZzccjBvGNgi2kn1PfE3UsRiDDi4vNhA7cx2/iTiJ5X4OzIbJBbK+dYxjwg5Fvy21GLkWfILiyKOBd5/SA9Nb3nyPH6+YRgsOtifnBfDw0tPUW8s+lqDswACMcZszvhAAPgGOrS3v9A2lsj2bZ/4Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3MocSvrMRXBca+QdtpggtNN6gbNfGLOoqc533XbO5Sc=;
- b=i5RWpm9kkMJNqy63+wY4rNghBM1tMDtDLaQ/hbj+MJjp3w8YqXFLsI5uDI2kxMGi+Ym0/+qV7HL6b//TCN+ELd2EoRj1egw4YgoG1f/xCtqQ6m5Iqt908ipD1yWko+ArDUY+vVRqk/zeAqxDdJGRQnFZa3O9TdABjZcKKEoifmQ=
+ bh=zLwMSC0WV3sYMyX0K/An2khsMRnuN/fIfcEUPzkLrAk=;
+ b=A6W7eeRy/Hm2XSuP4/F7VOCCgXGZpDazvyu1qalqxbBRP1WtO1Mjn6kKmaPwOEfGLWaQ96nsA250RkB6wE74EPJtyf/IAmzoHKV8u3bsX8lugYa/HcvkhK38mxBVVwvHOJTx3UFqda3JOVOUDfL7lxZ3uiYcV0Y65VmTxuHdUsQ=
 Received: from MN2PR10MB4013.namprd10.prod.outlook.com (2603:10b6:208:185::25)
  by DM4PR10MB6718.namprd10.prod.outlook.com (2603:10b6:8:112::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.29; Tue, 28 Nov
- 2023 14:38:27 +0000
+ 2023 14:39:43 +0000
 Received: from MN2PR10MB4013.namprd10.prod.outlook.com
  ([fe80::3ee8:64b1:5ca6:c5f0]) by MN2PR10MB4013.namprd10.prod.outlook.com
  ([fe80::3ee8:64b1:5ca6:c5f0%7]) with mapi id 15.20.7025.022; Tue, 28 Nov 2023
- 14:38:27 +0000
+ 14:39:43 +0000
 From: Jag Raman <jag.raman@oracle.com>
 To: Mattias Nissler <mnissler@rivosinc.com>
 CC: Stefan Hajnoczi <stefanha@redhat.com>, QEMU Developers
@@ -80,14 +80,14 @@ CC: Stefan Hajnoczi <stefanha@redhat.com>, QEMU Developers
  =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, Elena
  Ufimtseva <elena.ufimtseva@oracle.com>, Richard Henderson
  <richard.henderson@linaro.org>
-Subject: Re: [PATCH v6 4/5] vfio-user: Message-based DMA support
-Thread-Topic: [PATCH v6 4/5] vfio-user: Message-based DMA support
-Thread-Index: AQHaDMWm7/wnkBhCcESdrwbIQa3YE7CP94AA
-Date: Tue, 28 Nov 2023 14:38:27 +0000
-Message-ID: <07E1244B-ECC2-4691-923E-07673C913D04@oracle.com>
+Subject: Re: [PATCH v6 5/5] vfio-user: Fix config space access byte order
+Thread-Topic: [PATCH v6 5/5] vfio-user: Fix config space access byte order
+Thread-Index: AQHaDMWofF08x6QB7kqt0yE9jkNGU7CP99uA
+Date: Tue, 28 Nov 2023 14:39:43 +0000
+Message-ID: <66A22F11-CBDA-4CBB-84C6-A06FED7D3499@oracle.com>
 References: <20231101131611.775299-1-mnissler@rivosinc.com>
- <20231101131611.775299-5-mnissler@rivosinc.com>
-In-Reply-To: <20231101131611.775299-5-mnissler@rivosinc.com>
+ <20231101131611.775299-6-mnissler@rivosinc.com>
+In-Reply-To: <20231101131611.775299-6-mnissler@rivosinc.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -95,70 +95,70 @@ X-MS-TNEF-Correlator:
 x-mailer: Apple Mail (2.3731.700.6)
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: MN2PR10MB4013:EE_|DM4PR10MB6718:EE_
-x-ms-office365-filtering-correlation-id: 2e093839-7cab-4efb-9a71-08dbf01faedd
+x-ms-office365-filtering-correlation-id: 957c81c9-f92c-4b3c-0a2d-08dbf01fdc9f
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: YgynLXEXpq8LefN4F4EwPz6noKFGOdTrKHyL2Mb56qPMBOSvFTpnIYjx3ZOI/ipBkm1e7B01bjq6BMRG1EsqJEJjqmCpSTr941dJCI8ILjCRFJoEdCv2KRpEnXzB2QzaNGlAz5P0LYjoe1oDS/y5dGMGoeTmrjXzcjQ5nQbKYmpmyUdhMlDb5tlfmSPDo9SM5LnTE8BrQscAzyZ6Wo93LvSV1dk73781AMcXN3k3rmCJ9KI3lKWbU8UkLj4kJOCPn1QRNFqZCFTdPUe6TmfwF1nyEDnxVhyyOiKtEC0FUE1UVtTaV690zdudueQ1VxxI+3V82oqdDjNXQ1g4tMP7d01nhwGXQH73hjsTZ7vBg9hfNr8iEL+hivglGadE+npmBoz4iqZcn6pgaFIIx2BOBaoqLA0a9/pyqZ8+KgYK6w/QiI0ALb/gz11obml6bOfI6ORB6xJq+gqn8cdijlx2l98YhpeuS/3qbaF0qyZOJgeqO0Vq8bHs18JjVRLaWw1U0dB9VZdteJwvM2ctipIbiUjyJoqi/QyYyS7PKe5Xzdz7hjcjsn+SLirKQtB3uF+FNK8OB1Tz/yjuAxV3/yh7sTJfK+wadPfTvBs7ayKhUpZY5tekmokF+nHfVRsTDkGQZoEfcl65n9XDTzoC+RvFqQ==
+x-microsoft-antispam-message-info: uvvFPnxmiQ+jhQy4xxkhjUdvi8+8bvZMT+QoYSmvNiCrpiH7mRG8CuIano6z3Q8+W++XeadL9JtexlYY9/afvJlrgNO8HWN5S4tpZuXqukT0NkRRh+zAUIpFzA8tbz/AorBDZimOdR6yBnxTC1pHcQQaAApYBoUXd4noAbNaOU6LFq66Q4xGss3gC33aDxba0+dz8/DzeWW6rutf1ls037qRWT3kmNNdZSR6UAjGe2l7ztZx9G6MHQNz+1xkjC/hEUxSJzbWPwNeUCOApjLMgnkOGflQGTOtZj+NqEYUnAaVjkgo+w2IcCsCuIDj2WLoWrYhhQ9GKkoWyzQibYESmuM+22eN5vUyFtcW2aMMVY5jt8F1R0vH2XFXmjYI4J00eqItPa6usEpZjsPLg/1L8dcLFWrAyrpWi4tnx4Jyma3CrEzCEjJ83hO7sFJjVpLNiJMGBYQcaba8fgT1AtZmEDghsZPBZY2CkQXebylr9WWj30ZJSrHmoi8ETSF37bQ7I5fegTeDfHdMmzWynzZzSbIRaBQDX7c7qFPEz087+D0aGY439D66Hm3KyhGtvBQRayMaDY6zkHyvLyhhHv9s968izvnyNyu1BcaEwroaLkKQrUGRhvgZmkgSeNCVfTVswh7tz2aMqC+GKkvJ1zg7nA==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MN2PR10MB4013.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(396003)(376002)(346002)(136003)(39860400002)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(2906002)(7416002)(44832011)(66946007)(41300700001)(76116006)(6512007)(66446008)(53546011)(64756008)(8676002)(6916009)(316002)(66556008)(66476007)(8936002)(54906003)(4326008)(6506007)(478600001)(5660300002)(966005)(71200400001)(6486002)(2616005)(26005)(83380400001)(38100700002)(86362001)(122000001)(38070700009)(36756003)(33656002)(45980500001);
+ SFS:(13230031)(366004)(396003)(376002)(346002)(136003)(39860400002)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(2906002)(7416002)(44832011)(66946007)(41300700001)(76116006)(6512007)(66446008)(53546011)(64756008)(8676002)(6916009)(316002)(66556008)(66476007)(8936002)(54906003)(4326008)(6506007)(478600001)(5660300002)(71200400001)(6486002)(2616005)(26005)(83380400001)(38100700002)(86362001)(122000001)(38070700009)(36756003)(33656002)(45980500001);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?OC7ltFNgW6tKbMvpi2CKT+GtoB9E3Gw5i1MpWvL5KG4gGswW7XGQP4JZFe?=
- =?iso-8859-1?Q?PpdG68HjM3zSYCfui89FvgPOx4+8HTA20dAJwE0qIvyXeaXBzw6zIBJP/5?=
- =?iso-8859-1?Q?69AYNZTdHFOMzs1R4J1U+bwWg2JT/+N+bPQiA7D0axsdKPo1sV98MhKSen?=
- =?iso-8859-1?Q?/D9spFB4Kw7q72emDXFKLr/ZHOPpqueteSgjOCDcIdjwN7HJUNTiHszYBy?=
- =?iso-8859-1?Q?UEJysf7qOH3rRHomrWLDvbHL+nZxAiAYpMbNpwMuu39N2kh15Po60Tec8h?=
- =?iso-8859-1?Q?XCpaTJOYEebBFyz304jlMi6HRMZ9O5v9unhkEhOLVtNmRXfdKG4Cqti54I?=
- =?iso-8859-1?Q?qf4vxs54D9+gpguSVVH+mlTSyyRx78DzHZYpqH7P2L26Wkaa9reaTxzB2d?=
- =?iso-8859-1?Q?c9Ws84eUQdj7CZJZRB2+6/MqFJ+A7rHV9bqx/Xap2N3B2LhDFCw6dGeTNB?=
- =?iso-8859-1?Q?uWoTA04hLvsWnhPzBI5J6LUu5QAn2E77VwAXdNOjKZ4TIjrqMnhpyyO/1F?=
- =?iso-8859-1?Q?jcXgxEAyPP01+wub17HDUxsdrmfPouUoL4AmeVhGtwoL2q0Vbln2VB39rR?=
- =?iso-8859-1?Q?6s9Xm3wDlIXwkP07bH89IvfDF5EHDlhgY7bRH2YSgHo614R10htOR7IF6c?=
- =?iso-8859-1?Q?QUNb10o2BDMmG1CSpWhfYTVs+/yDIp4AFGHqvvcwgJlXUtmO7RU5QUPU22?=
- =?iso-8859-1?Q?UAdOFmZFS8OiTPBD97X6PVkdcivH2Emv5fr8z0F5AEsn0OMjJvC++bRfhf?=
- =?iso-8859-1?Q?NarmiWGZl0uUBl6zvXabNWE/JwNXJxlzxVA7+RcNgN904eZFkSXCfO6it3?=
- =?iso-8859-1?Q?nUQ6KgpWj7GXfl09htbC1pda385p/qMsKtZ2yhq0klk9+YwwjqaWB4enwv?=
- =?iso-8859-1?Q?xwJ/usDcqqzOo5fRu80IWC6T5yI/+XzOK+H7zeQs0Y9BW1a0u54SX2ynJm?=
- =?iso-8859-1?Q?J6TQXRSFyWKONUXZ1F4lrR2WCcAbKC2Yp8IDgmYX+YAaBsZIBnk+qyMa/O?=
- =?iso-8859-1?Q?8WrkCVzPFx2ioZvJosEJRIe2BhEbcMQwUThSOdcz9pfWqaQGLz2nVgRRtN?=
- =?iso-8859-1?Q?shHqvPMyXghPhD+yW7QVLeOhmOn09mRgicZBBjtT5DyhjXUgKBGmhBO8eT?=
- =?iso-8859-1?Q?se5cft27b2LR14KKHavWvVATLQBo5YIINx5DVzLRJd5TnXzyppQKxD3AOn?=
- =?iso-8859-1?Q?Rhg+B+P+RLxd4we7Tj4fv2UznIm9RW9RozhrTcoLwrU3Cf7JYqNqfZURzJ?=
- =?iso-8859-1?Q?BvaphX7ljkgtjH6ZXrWY4I0FGNd6gsPrr7DVovhdkTkymotEDqGoLwET50?=
- =?iso-8859-1?Q?I/FTm7XC4v1LTdw6CFVIzAcZIxL7ae3jy+B4DT9Q6Mfe+MN0RLs2UVvkq2?=
- =?iso-8859-1?Q?RL277bzPwWBOFu9xnSRk9tMrKKjitNA+OgmKvO/ivEAlNj+D2L2Tf5Zb4U?=
- =?iso-8859-1?Q?BaCoHWn5Pthxozn9QPAybSI73I6Kfv+zluF56oQPKLYZF5nEW//9aIIY7Z?=
- =?iso-8859-1?Q?H2f+tHjIdK0O4c/b6r/x9k1xHvqjz275DtIvjmOXVDTo4V6iSAVXVFZOpU?=
- =?iso-8859-1?Q?SYhjqUX1G8Mj1y+frO2q+ItQQx7C8ETO5WWbYva+YqDt6iek+qjUeBcwFH?=
- =?iso-8859-1?Q?wDw5HGvEdB3wJIc8pHOa3dj/pmBfuCjwfr?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?dy6gS0wCgzr/EnF8AlHhDVs6YwMCNJilMuI93ap5csxjJvL5+pFwaBm9VU?=
+ =?iso-8859-1?Q?USbYeDMgfJQv+PMumqG3bDxEy/tPHE344dnGoOpA33F+XNGDZ0qIQIDkiV?=
+ =?iso-8859-1?Q?cFCsnt9oOyHA4XS6t/ltyzNOrewfbRWxyk96l8drmmQfbR7ijEocgG50X7?=
+ =?iso-8859-1?Q?B2JQchLuYZq+pVgo44IDwffeJ+vSzcKUet+b3BRhRbGpWcIquxLl8Fn0GY?=
+ =?iso-8859-1?Q?6Vx58Zf5F5MOk/JCK57QI8p5nqiqcbtDjIy7punlPhHJmRJ7HRmE0YiwFt?=
+ =?iso-8859-1?Q?Hd5BEgwV3rKniK+OzNQfTtCqMxQiSYAyRiPZpoTtdFj2bCKfsVtO4+s4x6?=
+ =?iso-8859-1?Q?iew7GNQAwFt+b0PY2uM5u1pDZIu4jRbk8Bhl9YTkWUGgWfjCIKmWNGKRzV?=
+ =?iso-8859-1?Q?8j9cTeo3fFhEujMVNvyvEtawZ5SAgGK8fEqfwj2Ba4xvEb9OxLDmeJs2e6?=
+ =?iso-8859-1?Q?FlWj+XT9qItn32nqI4K2F/aJBuSJKUS9h3IgRWKjVaxxUKqpvwgAgjb/2M?=
+ =?iso-8859-1?Q?iHw7/hiLbFMTvGNgewXhdw6aPQ3Vk/Ay7F4GxmcTdmtNxd6awGDu8UWiB0?=
+ =?iso-8859-1?Q?SqJOdt+BUKB8VOMTJ2R2OhZ8ynYqlLgYBT4LpOLTXlx2s7A1Ulcs33bVoP?=
+ =?iso-8859-1?Q?GoszbHbGSzUzVwMfHbyl8H56mwIHql9wmTxGEZ5pOpUvlI59mUS6fNirf/?=
+ =?iso-8859-1?Q?9iWFwddl8Ibe8Ulc2ArdyoKpNGY//ifdLM0F9rgyqBuSRki5wBsGqWbKl0?=
+ =?iso-8859-1?Q?fH6XfHyL8yGHMtwr+cRu7Z1Mk93KqxVGVAYpyBqmJ4bdiF0e5Yu7jU8W8s?=
+ =?iso-8859-1?Q?zTrpQq3itMzDN5vI6NMuNoyDudmNAb5h9qQmUOzmu1eL3nNDUCZS7HL0QW?=
+ =?iso-8859-1?Q?SD3dHPBLmH/H4bzbivfj4VCZSFZ0MLEvSYFKIIAtlnP9+tU+pxibO/XW0m?=
+ =?iso-8859-1?Q?nFcaNS9XSONiLvh8vFFGnUxJV5SgutaDZfEA3U1cb4pgs4sJLaDr9qFYix?=
+ =?iso-8859-1?Q?sKdfDRGErBXITx8IarRVUcn9bK2RGxE3QxACgsGtYVTWWj57eriTKOVIV0?=
+ =?iso-8859-1?Q?3hdU7vVSieFob0oA5mVvTqFN59JHK/Wi5H32LoedqWx15OJvWmLnBmQhhe?=
+ =?iso-8859-1?Q?rW+lRYE6LPdHiwQIwLqHS0RTceqh96J26qIVFYzVajYVEWtAgSaSSpqnuL?=
+ =?iso-8859-1?Q?Ksy64ArEUgqaJICTD8eumOmn8H7y0AJtd0M0dfoX3gMPfckcXN58+tUjzy?=
+ =?iso-8859-1?Q?1UuDTo3Wx5jyKmWqBRBUzBbPoWimRHT32gpSFMNdS1sSBcTrWafPv9tlh8?=
+ =?iso-8859-1?Q?cDTdeJUr9vnWFLMShsLo2DbOv1cSbGtbyOtmQETeTimup+bave9ESnmWAC?=
+ =?iso-8859-1?Q?fN7RcHZinbx6ZmvnIUAyDS1GRwuhNiIQe3k+j2Hn2Ycf9Zs99DmacWeu/v?=
+ =?iso-8859-1?Q?Ap6AOB4PRi3aD/TuRsPjzPqr2xMeckTSQ3HirvIZJrRf2WUjn0oMEfce8e?=
+ =?iso-8859-1?Q?8TBO9Z8+AhfciY8ZVfmBLD+vrhv7QL0EXkq4lA7KxlFefs2/auq5HRlGHt?=
+ =?iso-8859-1?Q?S0z/V6uZkKBNfoonBZEjAB3jQaQL4dHxdRhfPGNgqV5zqiCVlXTwwJ3vdj?=
+ =?iso-8859-1?Q?P37aL/O8vwYafQvQNLhG8/YNbVgr/7GRvi?=
 Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <C5E726B3AB6A6C429D80F69C629114D6@namprd10.prod.outlook.com>
+Content-ID: <FA7DB0BAD29BB84B8D23C5B396B403A4@namprd10.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: M5ggzAJV+0GGSxrGGmsVKoPGvsE0SkRBWMgBGqbHtY5zrfrRvXfot+SJoEKm00K9pO9NPQ+i8eQnanCV3hpmXAYGl70XvnQvsoq2maEe8HI2AJLB05eEp8g69HdFyLgtcVVB2BEWrPZUQYMmVuJRi7S+L/A/I7EPNPJfSHpXT7fhzY8NklQ6NuqsRGqRlz/D/HWiHLY6z0m/w0M7wyPr9HdXNPSLGiBwV5kJHf3iSb573IofUIxbv++Hw1ClPPDkmh4/ZbHup5zyBwQa+H0ZStCHoZX1OnNP1dNy4PkfGEzGpDHpnNGQqpPpMiseMV4TRyTRiVxA3mctD1wnESPBKy370s9Zb9XXQ0bVnF42F3ECeSQfRDa8dtBIW3twXKWU+E1yQC74IW5oC4t4stsxLcRcV2Ljs7wMOTdgsHYYDyF3OQrVJH0BPcCTD0cfB/xexrVCvLPdoM9Fn2+cUMjm0v9/WUIdA+c4HkWEUiaGOjQSy2um39dFndWlaVz9wYwmtGVPDBWezZ9RAE53J/Ut+cxEG95l9snpVQ4F8B2vkJ+G0Z1aTJiF4J865Po+iZ3ItqU5NXtktT7CD/d9MsPACC0f34nG3hLXlSiMQ+mWmWXN2Awr/tOWNNSJscGVR/9ra+RHO/x/EGsGmZEnyzVWXY23K0amAutr+5DEQ60tWxazQNNxFEGzQ3pobuN+USVXYF/NU//UDKVXi9PelbfAERVcHuXJJMofHiCcWnM9d0mAo7yTzJvfaY4eERl8h6cUkFelBf+kYQNcheumQI4FppO8wtW3oQtD/UdTZzwQfNnMKD9atClw+1zM0VmXxOjH2VdNzIA4ae9Ytj1co3ye336ipGKtuK3wwTcKv2pziGNU7D25fHHnJ/hPX4ksz9RVOKSSKA4T0Ony9w7SP47Hfw==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: uE3nE7IDN90ccerPRTuU0pFy62bR/LgLh2aX/QhauP1V65peGNQyJ5pUsNUXGtxUA7GAmrZBV5ufleF/xGgAne61UJDAU/wWTRkLRuFwkpbk8SOlBLhEtEbxHX+Y1iT7tRGvm7fh8itV7Bk/fkp3V25GbPHenawQnwltAShXVkaj6SkPa4lP52UZ0Dnxql61ZaWIYPfgfOZxnwzDGLwrsIu6t9OrjKQofDku2l5YnkpXkLmjUs2dJ5HqTjyp5ihyYWelOXkeoa9SgMhDL7Td53LpVawJMwsSRZUfJOHncOBJK3gnQe+5teIO/t9lUJVGcGe2OxBXDIivbQ6qlZttQapwcLkwS2c8JgqyEdo/ZQkVJf6IQoopaHDz1dDej55dZOxTO3gPrAlGmZmly6FXZDJObGW3Y94/hv956+Zr4S9BUejK9iZputLMBsKi76zuEiOPiEbXX93viP9nK7TK9bcudF5qLN/rRHT1SYn7Z256gL665PJjGvIguI25qhfNBQzuZWKuNbNAEj9v27qHrtnin17IzjNxSyZXH39LMbuB/7H+BpgLtDblUjPpP6gujt3D39+MsrZ1sfRTgJWTD0GZQAWiYfUq0aHvSTpKg6HuRWC7LG9AwXtkbBFOaufCcTTdPZ/f5DBoJd+GSA3x7pHjEw3T2510m2vIq781Lvi/2WUcyQsj+lPxZXyv1rcgmppy7udzDI126ku/dZlxYCOaH5udb9zlryiJRRv0xcjbsB7hJJNmIpnqlQUwasXNQezP8l2jZzsCm3E6+npV5Z9GwLx0kxKX8T5odQpwnKPRCsbw3QMQ+7g/vHh8eimCVa1meEIzDBtpiAJxBcjhI608np6DG5mggPkte/cAEtUyVfLMJI8rZ26OM7ty3AgFYBsWuP/NvAT/qP2r8odV7g==
 X-OriginatorOrg: oracle.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MN2PR10MB4013.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e093839-7cab-4efb-9a71-08dbf01faedd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2023 14:38:27.1438 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 957c81c9-f92c-4b3c-0a2d-08dbf01fdc9f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2023 14:39:43.8704 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: n0+2bhdTOrrM+5SrzUH1SqCMlRxiU68CkH+d07g3Kfyzwo5RHTKPG5D4s7h5UQncdwnbuaLpvxId+0smNyQ8Bg==
+X-MS-Exchange-CrossTenant-userprincipalname: HbIb7L8/2CRVLNlxt4ZSPjPloIhRxcB4itseYYfWE10rry/aEESwGNEfK/3cjtvKo0nsGqouHZkx7OFqC1Umdg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6718
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-28_15,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- bulkscore=0
- suspectscore=0 mlxscore=0 spamscore=0 adultscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311280117
-X-Proofpoint-GUID: pvS0R_ICMAVW2ziZ8ImZf_lbtsVd_2F4
-X-Proofpoint-ORIG-GUID: pvS0R_ICMAVW2ziZ8ImZf_lbtsVd_2F4
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ phishscore=0 mlxscore=0
+ malwarescore=0 adultscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
+ definitions=main-2311280117
+X-Proofpoint-GUID: -pKpfWQXWLYRJLgOkBlVWYecm_nc5vFr
+X-Proofpoint-ORIG-GUID: -pKpfWQXWLYRJLgOkBlVWYecm_nc5vFr
 Received-SPF: pass client-ip=205.220.165.32; envelope-from=jag.raman@oracle.com;
  helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -167,8 +167,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -189,196 +189,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 > On Nov 1, 2023, at 9:16 AM, Mattias Nissler <mnissler@rivosinc.com> wrote=
 :
 >=20
-> Wire up support for DMA for the case where the vfio-user client does not
-> provide mmap()-able file descriptors, but DMA requests must be performed
-> via the VFIO-user protocol. This installs an indirect memory region,
-> which already works for pci_dma_{read,write}, and pci_dma_map works
-> thanks to the existing DMA bounce buffering support.
->=20
-> Note that while simple scenarios work with this patch, there's a known
-> race condition in libvfio-user that will mess up the communication
-> channel. See https://github.com/nutanix/libvfio-user/issues/279 for
-> details as well as a proposed fix.
+> PCI config space is little-endian, so on a big-endian host we need to
+> perform byte swaps for values as they are passed to and received from
+> the generic PCI config space access machinery.
 >=20
 > Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
 
 Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
 
 > ---
-> hw/remote/trace-events    |   2 +
-> hw/remote/vfio-user-obj.c | 100 ++++++++++++++++++++++++++++++++------
-> 2 files changed, 87 insertions(+), 15 deletions(-)
+> hw/remote/vfio-user-obj.c | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/hw/remote/trace-events b/hw/remote/trace-events
-> index 0d1b7d56a5..358a68fb34 100644
-> --- a/hw/remote/trace-events
-> +++ b/hw/remote/trace-events
-> @@ -9,6 +9,8 @@ vfu_cfg_read(uint32_t offset, uint32_t val) "vfu: cfg: 0x=
-%x -> 0x%x"
-> vfu_cfg_write(uint32_t offset, uint32_t val) "vfu: cfg: 0x%x <- 0x%x"
-> vfu_dma_register(uint64_t gpa, size_t len) "vfu: registering GPA 0x%"PRIx=
-64", %zu bytes"
-> vfu_dma_unregister(uint64_t gpa) "vfu: unregistering GPA 0x%"PRIx64""
-> +vfu_dma_read(uint64_t gpa, size_t len) "vfu: DMA read 0x%"PRIx64", %zu b=
-ytes"
-> +vfu_dma_write(uint64_t gpa, size_t len) "vfu: DMA write 0x%"PRIx64", %zu=
- bytes"
-> vfu_bar_register(int i, uint64_t addr, uint64_t size) "vfu: BAR %d: addr =
-0x%"PRIx64" size 0x%"PRIx64""
-> vfu_bar_rw_enter(const char *op, uint64_t addr) "vfu: %s request for BAR =
-address 0x%"PRIx64""
-> vfu_bar_rw_exit(const char *op, uint64_t addr) "vfu: Finished %s of BAR a=
-ddress 0x%"PRIx64""
 > diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-> index 8b10c32a3c..9f5e385668 100644
+> index 9f5e385668..46a2036bd1 100644
 > --- a/hw/remote/vfio-user-obj.c
 > +++ b/hw/remote/vfio-user-obj.c
-> @@ -300,6 +300,63 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_=
-ctx, char * const buf,
->     return count;
-> }
->=20
-> +static MemTxResult vfu_dma_read(void *opaque, hwaddr addr, uint64_t *val=
-,
-> +                                unsigned size, MemTxAttrs attrs)
-> +{
-> +    MemoryRegion *region =3D opaque;
-> +    vfu_ctx_t *vfu_ctx =3D VFU_OBJECT(region->owner)->vfu_ctx;
-> +    uint8_t buf[sizeof(uint64_t)];
-> +
-> +    trace_vfu_dma_read(region->addr + addr, size);
-> +
-> +    g_autofree dma_sg_t *sg =3D g_malloc0(dma_sg_size());
-> +    vfu_dma_addr_t vfu_addr =3D (vfu_dma_addr_t)(region->addr + addr);
-> +    if (vfu_addr_to_sgl(vfu_ctx, vfu_addr, size, sg, 1, PROT_READ) < 0 |=
-|
-> +        vfu_sgl_read(vfu_ctx, sg, 1, buf) !=3D 0) {
-> +        return MEMTX_ERROR;
-> +    }
-> +
-> +    *val =3D ldn_he_p(buf, size);
-> +
-> +    return MEMTX_OK;
-> +}
-> +
-> +static MemTxResult vfu_dma_write(void *opaque, hwaddr addr, uint64_t val=
-,
-> +                                 unsigned size, MemTxAttrs attrs)
-> +{
-> +    MemoryRegion *region =3D opaque;
-> +    vfu_ctx_t *vfu_ctx =3D VFU_OBJECT(region->owner)->vfu_ctx;
-> +    uint8_t buf[sizeof(uint64_t)];
-> +
-> +    trace_vfu_dma_write(region->addr + addr, size);
-> +
-> +    stn_he_p(buf, size, val);
-> +
-> +    g_autofree dma_sg_t *sg =3D g_malloc0(dma_sg_size());
-> +    vfu_dma_addr_t vfu_addr =3D (vfu_dma_addr_t)(region->addr + addr);
-> +    if (vfu_addr_to_sgl(vfu_ctx, vfu_addr, size, sg, 1, PROT_WRITE) < 0 =
-||
-> +        vfu_sgl_write(vfu_ctx, sg, 1, buf) !=3D 0) {
-> +        return MEMTX_ERROR;
-> +    }
-> +
-> +    return MEMTX_OK;
-> +}
-> +
-> +static const MemoryRegionOps vfu_dma_ops =3D {
-> +    .read_with_attrs =3D vfu_dma_read,
-> +    .write_with_attrs =3D vfu_dma_write,
-> +    .endianness =3D DEVICE_HOST_ENDIAN,
-> +    .valid =3D {
-> +        .min_access_size =3D 1,
-> +        .max_access_size =3D 8,
-> +        .unaligned =3D true,
-> +    },
-> +    .impl =3D {
-> +        .min_access_size =3D 1,
-> +        .max_access_size =3D 8,
-> +    },
-> +};
-> +
-> static void dma_register(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
-> {
->     VfuObject *o =3D vfu_get_private(vfu_ctx);
-> @@ -308,17 +365,30 @@ static void dma_register(vfu_ctx_t *vfu_ctx, vfu_dm=
-a_info_t *info)
->     g_autofree char *name =3D NULL;
->     struct iovec *iov =3D &info->iova;
->=20
-> -    if (!info->vaddr) {
-> -        return;
-> -    }
-> -
->     name =3D g_strdup_printf("mem-%s-%"PRIx64"", o->device,
-> -                           (uint64_t)info->vaddr);
-> +                           (uint64_t)iov->iov_base);
->=20
->     subregion =3D g_new0(MemoryRegion, 1);
->=20
-> -    memory_region_init_ram_ptr(subregion, NULL, name,
-> -                               iov->iov_len, info->vaddr);
-> +    if (info->vaddr) {
-> +        memory_region_init_ram_ptr(subregion, OBJECT(o), name,
-> +                                   iov->iov_len, info->vaddr);
-> +    } else {
-> +        /*
-> +         * Note that I/O regions' MemoryRegionOps handle accesses of at =
-most 8
-> +         * bytes at a time, and larger accesses are broken down. However=
-,
-> +         * many/most DMA accesses are larger than 8 bytes and VFIO-user =
-can
-> +         * handle large DMA accesses just fine, thus this size restricti=
-on
-> +         * unnecessarily hurts performance, in particular given that eac=
-h
-> +         * access causes a round trip on the VFIO-user socket.
-> +         *
-> +         * TODO: Investigate how to plumb larger accesses through memory
-> +         * regions, possibly by amending MemoryRegionOps or by creating =
-a new
-> +         * memory region type.
-> +         */
-> +        memory_region_init_io(subregion, OBJECT(o), &vfu_dma_ops, subreg=
-ion,
-> +                              name, iov->iov_len);
-> +    }
->=20
->     dma_as =3D pci_device_iommu_address_space(o->pci_dev);
->=20
-> @@ -330,20 +400,20 @@ static void dma_register(vfu_ctx_t *vfu_ctx, vfu_dm=
-a_info_t *info)
-> static void dma_unregister(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
-> {
->     VfuObject *o =3D vfu_get_private(vfu_ctx);
-> +    MemoryRegionSection mr_section;
->     AddressSpace *dma_as =3D NULL;
-> -    MemoryRegion *mr =3D NULL;
-> -    ram_addr_t offset;
->=20
-> -    mr =3D memory_region_from_host(info->vaddr, &offset);
-> -    if (!mr) {
-> +    dma_as =3D pci_device_iommu_address_space(o->pci_dev);
-> +
-> +    mr_section =3D
-> +        memory_region_find(dma_as->root, (hwaddr)info->iova.iov_base, 1)=
-;
-> +    if (!mr_section.mr) {
->         return;
->     }
->=20
-> -    dma_as =3D pci_device_iommu_address_space(o->pci_dev);
-> -
-> -    memory_region_del_subregion(dma_as->root, mr);
-> +    memory_region_del_subregion(dma_as->root, mr_section.mr);
->=20
-> -    object_unparent((OBJECT(mr)));
-> +    object_unparent((OBJECT(mr_section.mr)));
->=20
->     trace_vfu_dma_unregister((uint64_t)info->iova.iov_base);
-> }
+> @@ -281,7 +281,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_c=
+tx, char * const buf,
+>     while (bytes > 0) {
+>         len =3D (bytes > pci_access_width) ? pci_access_width : bytes;
+>         if (is_write) {
+> -            memcpy(&val, ptr, len);
+> +            val =3D ldn_le_p(ptr, len);
+>             pci_host_config_write_common(o->pci_dev, offset,
+>                                          pci_config_size(o->pci_dev),
+>                                          val, len);
+> @@ -289,7 +289,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_c=
+tx, char * const buf,
+>         } else {
+>             val =3D pci_host_config_read_common(o->pci_dev, offset,
+>                                               pci_config_size(o->pci_dev)=
+, len);
+> -            memcpy(ptr, &val, len);
+> +            stn_le_p(ptr, len, val);
+>             trace_vfu_cfg_read(offset, val);
+>         }
+>         offset +=3D len;
 > --=20
 > 2.34.1
 >=20
