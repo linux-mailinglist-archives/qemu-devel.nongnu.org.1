@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8324C7FBC24
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 15:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CCA7FBC23
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 15:05:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7yhd-0006FQ-Us; Tue, 28 Nov 2023 09:04:42 -0500
+	id 1r7yhg-0006UI-T1; Tue, 28 Nov 2023 09:04:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r7yhC-000609-1g
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:04:16 -0500
+ id 1r7yhc-0006Ix-U2
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:04:41 -0500
 Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r7yh7-0004ps-Kp
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:04:13 -0500
+ id 1r7yha-0004xG-GK
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:04:40 -0500
 Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6d7e56f6845so3326812a34.0
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 06:03:59 -0800 (PST)
+ 46e09a7af769-6d7e8da5e8dso3181523a34.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 06:04:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701180237; x=1701785037; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701180276; x=1701785076; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VszYBxoqXTIGGEIvHjDkqIOwAC2hoq8cI38JTHQJpkM=;
- b=CEKh6bjQnkedNbSCfYIetxK85QUjimnt9tnW7NKsl2VVbpLC5pahRB8W2PMnke0L1V
- Gw+s4yqQ2TGDKgVHf8/wJiRz7McqO5NQgbGU5uHnj45tGAvPQ+DBqUp83ssdb07DxyvN
- Ne5vJjVHNn+mH6MeD3Xs14oNJDqKhd9urNXU9v+EJreOXY02NO4grY69WzsOPruW9I+h
- YpExnwR8ia33Nfer5NocJqETEbM+7EQ7dkgbjnEx1juTOSKpPU7/vAG9B44kECYE5JsE
- Yx3uOEjo6YSe9I2/p3HFlpG/jA+xiy93tER+L4g01NaHeYjRx4q+vpQxCUVKJ9FC2PN2
- QMTg==
+ bh=lHMBvlKj1AZPfM3WQXCWVjL1Gdm2AyDWlCFVnKi0uEw=;
+ b=r42Jf4IXLt0sti6ty1PGp9yY3m31/95sz51I8v/6O+kBFkdOqz1aEwE1vFYBD0nVnC
+ RECEIkpeKEv0k3ca+NHVmPXF4ZKOhAjePi2bnumKVTdqLr+iCaFnbKdLs9e7b7lByQGA
+ 0nZPD96StMdRuc7Y71m7RUnCjXsAhAm5zRCf5n2HwVx2ZcZrFlGIQuWnpgo3o7E6wX/P
+ fp0mKF3VVF0MaWrmu2GGeVfLf9sM3B7zDGJWLL8/NUUldEJRS2RgxiZnwABMq+FMcR95
+ yOwDAn8bgeaxHLMABEMbZcbEsHqfxfqBywjTmxXYbl/AIJjmF8LVu71DKG+S59TUfbwa
+ jqhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701180237; x=1701785037;
+ d=1e100.net; s=20230601; t=1701180276; x=1701785076;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VszYBxoqXTIGGEIvHjDkqIOwAC2hoq8cI38JTHQJpkM=;
- b=GVEzWE/gC3/a4IkWkaKNBR5grlq2vj9EvOTs+5ytdfik0+CyZDIHVv3jaJyza8aWxF
- FrAhJOZWlhE38La2gWf8wuT7GA05D3KFpKZEfB0GpYjAd2ZMPq6hWd5CoWSqv3x7OY1a
- VCGmNFPRydiSV52Y3YHPhvrA63inw4TxaaWFBHInQBmoFYsd7weBnkKuHiqz9A6LOD2z
- S98sZQ81FgaY14YsQ6ai/cumR5Fkkbt7kmwkg1xepl8Cn77tUOmkj3+86mNRWT3Uhofg
- boBoO/CZcx/QauiTszU8hw9b5RwCYIUG4gPm+3dy+PSbeQEwhjI/Wj7dmzEllV3sMiRC
- 4K2w==
-X-Gm-Message-State: AOJu0YxM5PpuyOppqvseffMmD/05VkJLD/URQCresue7rS37oBz0tipS
- GaIRkn9ZsJA4HeSSGCYZ+0byMg==
-X-Google-Smtp-Source: AGHT+IF7aUWlaUUDP3lwCOSjx2MW11BgZyMoTF+VnG6tOT83Nc2MqepU5kbtYtuRHV4oFmlWsJGaag==
-X-Received: by 2002:a05:6871:29c:b0:1fa:136f:5758 with SMTP id
- i28-20020a056871029c00b001fa136f5758mr16754943oae.44.1701180237509; 
- Tue, 28 Nov 2023 06:03:57 -0800 (PST)
+ bh=lHMBvlKj1AZPfM3WQXCWVjL1Gdm2AyDWlCFVnKi0uEw=;
+ b=p3azYCd7KWBvga0P73v0J8o486RZpM9CZTubOQEan4E6Fbp0d/CAObAX9SRYRopYWt
+ ZwcxD8G7bdhDJYnrB4YAJufkJiKVHtgnxr95rqeBaKS1KrEl7n08Q/eQJ7Fvo6ffaHFX
+ XBYJN/L+aq9ljuCKZD2tzAgnpFs4lMzn3mPxVGUygIZTX7GphMOKkvCnON1wz8EYY3SH
+ CxLVTz4TJaeDSjkAS2B7e/2DAmJ91R4fdew+5VTVNG8ZRXiylHVddbwTSgzDEeRp5feH
+ HFrtXcYHYNt36Sq3mIP70dbk2YubKwOD1Y37gU77aeOvk4hAHjiH/LvkZzIUR5L8ZaC4
+ 4QaQ==
+X-Gm-Message-State: AOJu0Yzxdr2o/fFNOdpMi6S3gDCbBWNgE0P6SyPM74BgDZkxS2KwOWRp
+ NYxOFHs3fTNyPu+GJcwoVL49bg==
+X-Google-Smtp-Source: AGHT+IFMiklwB5hWsMrQUYNk1ZbPPirycGyevA5FlDQF1WeL45cm6GAvtl0G0VZRH+k/syTixkdMtA==
+X-Received: by 2002:a05:6870:f626:b0:1f5:cd12:260f with SMTP id
+ ek38-20020a056870f62600b001f5cd12260fmr17921771oab.26.1701180276286; 
+ Tue, 28 Nov 2023 06:04:36 -0800 (PST)
 Received: from [172.20.7.39] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- ny13-20020a056871750d00b001fa1350df8esm2068309oac.2.2023.11.28.06.03.56
+ ny13-20020a056871750d00b001fa1350df8esm2068309oac.2.2023.11.28.06.04.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 06:03:57 -0800 (PST)
-Message-ID: <6de3ee23-cd69-49cd-a31a-fe00a4249e31@linaro.org>
-Date: Tue, 28 Nov 2023 08:03:55 -0600
+ Tue, 28 Nov 2023 06:04:35 -0800 (PST)
+Message-ID: <23cf8ae1-70be-4ffe-9409-60b8aecbb33b@linaro.org>
+Date: Tue, 28 Nov 2023 08:04:34 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0 07/11] hw/arm/bcm2836: Simplify access to
- 'start-powered-off' property
+Subject: Re: [PATCH-for-9.0 08/11] hw/arm/bcm2836: Use ARM_CPU 'mp-affinity'
+ property
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -72,9 +72,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 References: <20231122183048.17150-1-philmd@linaro.org>
- <20231122183048.17150-8-philmd@linaro.org>
+ <20231122183048.17150-9-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231122183048.17150-8-philmd@linaro.org>
+In-Reply-To: <20231122183048.17150-9-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
@@ -102,14 +102,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/22/23 12:30, Philippe Mathieu-Daudé wrote:
-> All ARM CPUs have the 'start-powered-off' property since commit
-> 5de164304a ("arm: Allow secondary KVM CPUs to be booted via PSCI").
-> 
-> Note: since commit c1b701587e ("target/arm: Move start-powered-off
-> property to generic CPUState"), all CPUs for all targets have it.
+> The 'mp-affinity' property is present since commit 15a21fe028
+> ("target-arm: Add mp-affinity property for ARM CPU class").
+> Use it and remove a /* TODO */ comment. Since all ARM CPUs
+> have this property, use &error_abort, because this call can
+> not fail.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
