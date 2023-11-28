@@ -2,79 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253967FBA42
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 13:39:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D071C7FBA51
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 13:41:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7xLC-0001fx-Ke; Tue, 28 Nov 2023 07:37:26 -0500
+	id 1r7xOA-0003Hl-KE; Tue, 28 Nov 2023 07:40:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r7xL7-0001fZ-El
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:37:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r7xO3-0003Fg-Kc; Tue, 28 Nov 2023 07:40:24 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r7xL1-00041n-2H
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:37:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701175030;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0TXXlHcEIF/S9wI+CACdibWbx6pm9OnLsFI9Pz4a9hQ=;
- b=H2gFVfipuQdZDQOfrQTjQ2LGom+30ovOTGnOFRxIagTTMN1c1+73lziIOxaQj18N7t0iBo
- VB23TbhE867LBqmQ0y5S/zjw861xuoQJzY7gQMBRroriRtlPmzQga8s8+LvKRxTsPkjWqO
- +R08EMigvCV32vU1kNtjohQQ2K7fnVI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-gbsXV41BOIeJeiiW-dAKBA-1; Tue, 28 Nov 2023 07:37:05 -0500
-X-MC-Unique: gbsXV41BOIeJeiiW-dAKBA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A063B101A54C;
- Tue, 28 Nov 2023 12:37:04 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 37E7F1121307;
- Tue, 28 Nov 2023 12:37:04 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4279B21E6A1F; Tue, 28 Nov 2023 13:37:02 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
- berrange@redhat.com,  peter.maydell@linaro.org,  farosas@suse.de
-Subject: Re: [PATCH] 'channel' and 'addr' in qmp_migrate() are not
- auto-freed. migrate_uri_parse() allocates memory which is returned to
- 'channel', which is leaked because there is no code for freeing 'channel'
- or 'addr'. So, free addr and channel to avoid memory leak. 'addr' does
- shallow copying of channel->addr, hence free 'channel' itself and deep
- free contents of 'addr'
-References: <20231128062520.36456-1-het.gala@nutanix.com>
- <87a5qy4aag.fsf@pond.sub.org>
- <db753099-b8a4-4057-9459-5174ff81ddee@nutanix.com>
- <875y1m19ls.fsf@pond.sub.org>
- <7d7c582a-50fa-4f66-a4c1-0753f69fc7d8@nutanix.com>
-Date: Tue, 28 Nov 2023 13:37:02 +0100
-In-Reply-To: <7d7c582a-50fa-4f66-a4c1-0753f69fc7d8@nutanix.com> (Het Gala's
- message of "Tue, 28 Nov 2023 17:05:54 +0530")
-Message-ID: <871qcavytt.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r7xO0-0004uy-AJ; Tue, 28 Nov 2023 07:40:22 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 5BDE575607B;
+ Tue, 28 Nov 2023 13:40:16 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id rb4QOIQnQZcY; Tue, 28 Nov 2023 13:40:14 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 704F4756078; Tue, 28 Nov 2023 13:40:14 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6E89F756066;
+ Tue, 28 Nov 2023 13:40:14 +0100 (CET)
+Date: Tue, 28 Nov 2023 13:40:14 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
+cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ philmd@linaro.org
+Subject: Re: [PATCH v2 for-8.2] ppc/amigaone: Allow running AmigaOS without
+ firmware image
+In-Reply-To: <595c26d6-ef8f-443e-8192-3e73ee6b7d75@kaod.org>
+Message-ID: <f83f1d7b-90db-5244-9eb8-8fe7721d3b08@eik.bme.hu>
+References: <20231125163425.3B3BC756078@zero.eik.bme.hu>
+ <CX9EPBH7MMHK.14A30GV035VAZ@wheely>
+ <0eb18a77-af0e-a84b-764c-b435ea912a3d@eik.bme.hu>
+ <CX9LVFYU6MBA.MLF4OMOCHE6K@wheely>
+ <3f188a09-9927-4fc3-a4eb-0cde34934539@kaod.org>
+ <CXA2ENP9VBT1.2THPXM7WFD3I3@wheely>
+ <595c26d6-ef8f-443e-8192-3e73ee6b7d75@kaod.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-759484113-1701175214=:91084"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,174 +70,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> On 28/11/23 3:29 pm, Markus Armbruster wrote:
->> Het Gala <het.gala@nutanix.com> writes:
->>
->>> On 28/11/23 12:46 pm, Markus Armbruster wrote:
->>>> Your commit message is all in one line.  You need to format it like
->>>>
->>>>        migration: Plug memory leak
->>>>
->>>>       'channel' and 'addr' in qmp_migrate() are not auto-freed.
->>>>       migrate_uri_parse() allocates memory which is returned to 'channel',
->>>>       which is leaked because there is no code for freeing 'channel' or
->>>>       'addr'.  So, free addr and channel to avoid memory leak.  'addr'
->>>>       does shallow copying of channel->addr, hence free 'channel' itself
->>>>       and deep free contents of 'addr'.
->>>>
->>>> Het Gala<het.gala@nutanix.com>  writes:
->>> Yeah, I made the changes in v2 patchset.
->>>>> ---
->>>>>    migration/migration.c | 2 ++
->>>>>    1 file changed, 2 insertions(+)
->>>>>
->>>>> diff --git a/migration/migration.c b/migration/migration.c
->>>>> index 28a34c9068..29efb51b62 100644
->>>>> --- a/migration/migration.c
->>>>> +++ b/migration/migration.c
->>>>> @@ -2004,6 +2004,8 @@ void qmp_migrate(const char *uri, bool has_channels,
->>>>>                              MIGRATION_STATUS_FAILED);
->>>>>            block_cleanup_parameters();
->>>>>        }
->>>>> +    g_free(channel);
->>>>> +    qapi_free_MigrationAddress(addr);
->>>>>          if (local_err) {
->>>>>            if (!resume_requested) {
->>>> 2. hmp_migrate()
->>>>
->>>>      hmp_migrate() allocates @channel with migrate_uri_parse(), adds it to
->>>>      list @caps, passes @caps to qmp_migrate(), then frees @caps with
->>>>      qapi_free_MigrationChannelList().
->>> Markus, sorry if I was not able to put point clearly, what I meant is that the local 'channel' variable used in qmp_migrate() i.e.
->>>
->>> 'MigrationChannel *channel = NULL', is defined in qmp_migrate() and if the user opts for 'uri' then '@channels' coming from hmp_migrate() will be NULL, and then migrate_uri_parse() will populate memory into 'channel', and that is not getting freed after it's use is over.
->>>
->>> I think, that is where memory leak might be happening ?
->> Aha!
->>
->>      if (uri && has_channels) {
->>          error_setg(errp, "'uri' and 'channels' arguments are mutually "
->>                     "exclusive; exactly one of the two should be present in "
->>                     "'migrate' qmp command ");
->>          return;
->>      } else if (channels) {
->>          /* To verify that Migrate channel list has only item */
->>          if (channels->next) {
->>              error_setg(errp, "Channel list has more than one entries");
->>              return;
->>          }
->>          channel = channels->value;
->>      } else if (uri) {
->>          /* caller uses the old URI syntax */
->>          if (!migrate_uri_parse(uri, &channel, errp)) {
->>              return;
->>          }
->>      } else {
->>          error_setg(errp, "neither 'uri' or 'channels' argument are "
->>                     "specified in 'migrate' qmp command ");
->>          return;
->>      }
->>
->> At this point, @channel is either channels->value, or from
->> migrate_uri_parse().
->>
->> We must not free in the former case, we must free in the latter case,
->>
->> Before your patch, we don't free.  Memory leak in the latter case.
->>
->> Afterwards, we free.  Double-free in the former case.
->>
->> You could guard the free, like so:
->>
->>      if (uri) {
->>          qapi_free_MigrationChannel(channel);
->>      }
+--3866299591-759484113-1701175214=:91084
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Tue, 28 Nov 2023, Cédric Le Goater wrote:
+> On 11/28/23 02:47, Nicholas Piggin wrote:
+>> On Tue Nov 28, 2023 at 2:37 AM AEST, Cédric Le Goater wrote:
+>>> 
+>>>> I'm not sure, I don't think it's necessary if your minimal patch works.
+>>>> 
+>>>> I'll do a PR for 8.2 for SLOF and Skiboot updates, so happy to include
+>>>> this as well.
+>>> 
+>>> I think this is a bit late for 8.2 to change FW images, well, at least
+>>> SLOF and skiboot. Are the new versions fixing something critical ?
+>> 
+>> Ah okay. Well then I can put them in next instead.
+>> 
+>> SLOF has a fix for virtio console over reboots, pretty minimal.
 >
-> Yeah, you explained it right. The above solution seems fine to me.
+> I see that commit dd4d4ea0add9 has :
 >
-> I am just curious to ask this: can we use g_autoptr() for local vaiable 'channel' and 'addr' ? As we are not passing these variables to the caller function, nor we are trying to transfer their ownership to another variable, so use of g_steal_pointer() also might not be required ?
-
-You could try something like
-
-diff --git a/migration/migration.c b/migration/migration.c
-index 28a34c9068..7faa9c2ebd 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1932,7 +1932,7 @@ void qmp_migrate(const char *uri, bool has_channels,
-     bool resume_requested;
-     Error *local_err = NULL;
-     MigrationState *s = migrate_get_current();
--    MigrationChannel *channel = NULL;
-+    g_autoptr(MigrationChannel) channel = NULL;
-     MigrationAddress *addr = NULL;
- 
-     /*
-@@ -1949,18 +1949,18 @@ void qmp_migrate(const char *uri, bool has_channels,
-             error_setg(errp, "Channel list has more than one entries");
-             return;
-         }
--        channel = channels->value;
-+        addr = channels->value->addr;
-     } else if (uri) {
-         /* caller uses the old URI syntax */
-         if (!migrate_uri_parse(uri, &channel, errp)) {
-             return;
-         }
-+        addr = channel->addr;
-     } else {
-         error_setg(errp, "neither 'uri' or 'channels' argument are "
-                    "specified in 'migrate' qmp command ");
-         return;
-     }
--    addr = channel->addr;
- 
-     /* transport mechanism not suitable for migration? */
-     if (!migration_channels_and_transport_compatible(addr, errp)) {
-
-Untested.
-
->>
->> By the way, I the conditional shown above is harder to understand than
->> necessary.  I like to get the errors out of the way at the beginning,
->> like this:
->>
->>      if (uri && has_channels) {
->>          error_setg(errp, "'uri' and 'channels' arguments are mutually "
->>                     "exclusive; exactly one of the two should be present in "
->>                     "'migrate' qmp command ");
->>          return;
->>      }
->>      if (!uri && !has_channels) {
->>          error_setg(errp, "neither 'uri' or 'channels' argument are "
->>                     "specified in 'migrate' qmp command ");
->>          return;
->>      }
->>
->>      if (channels) {
->>          /* To verify that Migrate channel list has only item */
->>
->> Or even
->>
->>      if (!uri == !has_channels) {
->>          error_setg(errp, "need either 'uri' or 'channels' argument")
->>          return;
->>      }
->>
->> Suggestion, not demand.  If you do it, separate patch.
->>
-> Yeah, I probably opted for 'if, else if' block because I found it easy to have all 4 options in that manner.
+>  Fixes: cf28264 ("virtio-serial: Rework shutdown sequence")
 >
-> '!uri == !has_channels' is same as '!uri && !has_channels' right ?
-
-No.  It's "either both are null/false, or both are non-null/true".
-
-> Now looking at the Qemu code, it is better to have conditional statements the way you mentioned. Will do it in a separate patch.
+> Looks good for 8.2
 >
+>> skiboot has some bug fixes but it's a bigger change and maybe not
+>> so important for QEMU.> Could they be merged in next release 
 >
-> Regards,
+> yes. it seems skiboot should be merged with chiptod support in 9.0.
 >
-> Het Gala
+>> and SLOF tagged with stable?
+>> 
+>> I think this amigaone patch could still be merged since it's only
+>> touching a new machine and it's fixing an issue of missing firmware.
+>
+> ARM does something similar with roms. See hw/arm/boot.c file.
+>
+> It will need a "Fixes" tag.
 
+That would be
+
+Fixes: d9656f860a38f83efc9710c515eab6a5b015134c
+
+as the only commit for this machine so far was the one that added it.
+
+Regards,
+BALATON Zoltan
+--3866299591-759484113-1701175214=:91084--
 
