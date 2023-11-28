@@ -2,112 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2751F7FBF0A
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 17:14:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 254EC7FBF1B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 17:21:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r80hg-0005Tq-QS; Tue, 28 Nov 2023 11:12:52 -0500
+	id 1r80pD-0007Tn-HB; Tue, 28 Nov 2023 11:20:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r80hd-0005S6-1K
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 11:12:49 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r80pB-0007SR-Pp
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 11:20:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r80ha-0002rB-R3
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 11:12:48 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1r80pA-0004U0-16
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 11:20:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701187965;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1701188434;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MOl0zH5t7ejYn6sMjijRgBd85PcJCBQ/8f22rks4iWs=;
- b=B/UnwEtvYL6lEN0IsNKi5qzcYjqa+bOHLeliQw4ovEDpig67BQIigRXjxqe049A1IIx/qN
- lN7B4OvpML/zVz2qXJKKMVvgBRixBPb3ualjz/Mp2A4367UsAl8kv2kS6qti6K6nnh9Coe
- q0yWf4jc2Wfctz+JowW5e4wpLGFfk5g=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-111-258Pxo3sO5K9ci9H--ynkA-1; Tue, 28 Nov 2023 11:12:44 -0500
-X-MC-Unique: 258Pxo3sO5K9ci9H--ynkA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a15ce298129so68700066b.0
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 08:12:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701187963; x=1701792763;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MOl0zH5t7ejYn6sMjijRgBd85PcJCBQ/8f22rks4iWs=;
- b=LZKhhP8HyuQgGpo9Qby08Ep/PfSpmf1GOsuKRZ6SqcjEB3aHgIdACXoPPOV2YG9r+w
- PX3gsJTuR6KGWYl+9YxlQ5udRVxkswDSFZE3KJk1HsSvmvmqHjS+Fnfb7Jqs2V44ZEdQ
- GR860jpvKXcGJBjKFx2KXzhekep3YAOuMjCcsE2kzYqLrUBDPmxFIRG+5rsdaGJNElrG
- UyyRWSwPaxrNK+BCUs+G8C5gHSItp37B+6wqIz1QRfCAJlj816SEAD6IJjT9ggFZ04I7
- Ft4UqtWc0a/g9+WWewfPhuEUQMGqBEpBIvBfCmGsTe1rllmhm58w8Oz2nBj5COYknw0+
- Hdsg==
-X-Gm-Message-State: AOJu0Yw1l1BKgQ2Gnv0G4Seb1mE05CiFu9a3DuKI8tZKif1Oa4NmCEbA
- 6eHhW8e7ZVpYFAhDFDTdGLVintxY9iOAI/jarY8zght2DEAkDBWWxW5Fj8kS9Gk6SIfzk9gJpsO
- THKTYvGKaCyVzyB4=
-X-Received: by 2002:a17:906:1019:b0:a10:eda7:7976 with SMTP id
- 25-20020a170906101900b00a10eda77976mr4348380ejm.56.1701187962808; 
- Tue, 28 Nov 2023 08:12:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE9oD7yiuiRAHRridHm0iyGUGQ3OevRM/3rjO5NBvN7KmuB9U/IqjenUZiLa88lLgCWnfgMPA==
-X-Received: by 2002:a17:906:1019:b0:a10:eda7:7976 with SMTP id
- 25-20020a170906101900b00a10eda77976mr4348360ejm.56.1701187962342; 
- Tue, 28 Nov 2023 08:12:42 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- l23-20020a170906231700b009ff1997ce86sm7040332eja.149.2023.11.28.08.12.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Nov 2023 08:12:41 -0800 (PST)
-Date: Tue, 28 Nov 2023 17:12:39 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini
- <pbonzini@redhat.com>, Max Filippov <jcmvbkbc@gmail.com>, David Hildenbrand
- <david@redhat.com>, Peter Xu <peterx@redhat.com>, Anton Johansson
- <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
- kvm@vger.kernel.org, Marek Vasut <marex@denx.de>, David Gibson
- <david@gibson.dropbear.id.au>, Brian Cain <bcain@quicinc.com>, Yoshinori
- Sato <ysato@users.sourceforge.jp>, "Edgar E . Iglesias"
- <edgar.iglesias@gmail.com>, Claudio Fontana <cfontana@suse.de>, Daniel
- Henrique Barboza <dbarboza@ventanamicro.com>, Artyom Tarasenko
- <atar4qemu@gmail.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- qemu-ppc@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Aurelien
- Jarno <aurelien@aurel32.net>, Ilya Leoshkevich <iii@linux.ibm.com>, Daniel
- Henrique Barboza <danielhb413@gmail.com>, Bastian Koppelmann
- <kbastian@mail.uni-paderborn.de>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clg@kaod.org>, Alistair Francis <alistair.francis@wdc.com>, Alessandro Di
- Federico <ale@rev.ng>, Song Gao <gaosong@loongson.cn>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Chris Wulff <crwulff@gmail.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org, Yanan Wang
- <wangyanan55@huawei.com>, Luc Michel <luc@lmichel.fr>, Weiwei Li
- <liweiwei@iscas.ac.cn>, Bin Meng <bin.meng@windriver.com>, Stafford Horne
- <shorne@gmail.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>, "Daniel P .
- Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Aleksandar Rikalo
- <aleksandar.rikalo@syrmia.com>, Bernhard Beschow <shentey@gmail.com>, Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-riscv@nongnu.org, Alex
- =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>, Nicholas Piggin
- <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>, Michael Rolnik
- <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Markus
- Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-Subject: Re: [PATCH 05/22] exec/cpu: Call qemu_init_vcpu() once in
- cpu_common_realize()
-Message-ID: <20231128171239.69b6d7b1@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230918160257.30127-6-philmd@linaro.org>
-References: <20230918160257.30127-1-philmd@linaro.org>
- <20230918160257.30127-6-philmd@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ bh=NSLJ7sfAbCtzsJw9UpWUsFVaixD0bh9s0OS9MCa78zY=;
+ b=OwUrAkI/V7m6Cl4xv91jNaRIXWxp+oJQrPFjRR+PdPWJdIX1tcoCcl4gNjZM8V7hbGfNt2
+ SXYl0e1YrZXHoGxZH1W59Vd8dVBza1kGRVDZeIDqr1OOwxD6QDX4NptV0f6Mhw/cU7GHqk
+ 5U7/dmzR0lRUYuLuF7oz19aclmW3wJA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-wl8EtfmHPISWq9bOgGYmoA-1; Tue,
+ 28 Nov 2023 11:20:31 -0500
+X-MC-Unique: wl8EtfmHPISWq9bOgGYmoA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D021A3806708;
+ Tue, 28 Nov 2023 16:20:30 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.132])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2CA8140C6EB9;
+ Tue, 28 Nov 2023 16:20:29 +0000 (UTC)
+Date: Tue, 28 Nov 2023 16:20:26 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Hyman Huang <yong.huang@smartx.com>, qemu-devel <qemu-devel@nongnu.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v2] crypto: Introduce SM4 symmetric cipher algorithm
+Message-ID: <ZWYTSrfRL-iXM1LX@redhat.com>
+References: <4413f00465bda93eda7a7560afb990ca01191062.1701185032.git.yong.huang@smartx.com>
+ <6776b07c-f1a8-4b96-9527-de8e0ed16980@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6776b07c-f1a8-4b96-9527-de8e0ed16980@linaro.org>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -129,367 +85,99 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 18 Sep 2023 18:02:38 +0200
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
+On Tue, Nov 28, 2023 at 04:57:20PM +0100, Philippe Mathieu-Daudé wrote:
+> Hi Hyman,
+> 
+> On 28/11/23 16:24, Hyman Huang wrote:
+> > Introduce the SM4 cipher algorithms (OSCCA GB/T 32907-2016).
+> > 
+> > SM4 (GBT.32907-2016) is a cryptographic standard issued by the
+> > Organization of State Commercial Administration of China (OSCCA)
+> > as an authorized cryptographic algorithms for the use within China.
+> > 
+> > Use the crypto-sm4 meson build option for enabling this feature.
+> > 
+> > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> > ---
+> >   crypto/block-luks.c             | 11 ++++++++
+> >   crypto/cipher-gcrypt.c.inc      |  8 ++++++
+> >   crypto/cipher-nettle.c.inc      | 49 +++++++++++++++++++++++++++++++++
+> >   crypto/cipher.c                 |  6 ++++
+> >   meson.build                     | 23 ++++++++++++++++
+> >   meson_options.txt               |  2 ++
+> >   qapi/crypto.json                |  5 +++-
+> >   scripts/meson-buildoptions.sh   |  3 ++
+> >   tests/unit/test-crypto-cipher.c | 13 +++++++++
+> >   9 files changed, 119 insertions(+), 1 deletion(-)
+> 
+> 
+> > diff --git a/meson.build b/meson.build
+> > index ec01f8b138..256d3257bb 100644
+> > --- a/meson.build
+> > +++ b/meson.build
+> > @@ -1480,6 +1480,7 @@ endif
+> >   gcrypt = not_found
+> >   nettle = not_found
+> >   hogweed = not_found
+> > +crypto_sm4 = not_found
+> >   xts = 'none'
+> >   if get_option('nettle').enabled() and get_option('gcrypt').enabled()
+> > @@ -1514,6 +1515,26 @@ if not gnutls_crypto.found()
+> >         xts = 'private'
+> >       endif
+> >     endif
+> > +  if get_option('crypto_sm4').enabled()
+> 
+> We want to detect it by default (not only when explicitly enabled) ...
+> 
+> > +    if get_option('gcrypt').enabled()
+> > +      # SM4 ALG is available in libgcrypt >= 1.9
+> > +      crypto_sm4 = dependency('libgcrypt', version: '>=1.9',
+> > +                              method: 'config-tool',
+> > +                              required: get_option('gcrypt'))
+> > +      # SM4 ALG static compilation
+> > +      if crypto_sm4.found() and get_option('prefer_static')
+> > +        crypto_sm4 = declare_dependency(dependencies: [
+> > +          crypto_sm4,
+> > +          cc.find_library('gpg-error', required: true)],
+> > +          version: crypto_sm4.version())
+> > +      endif
+> > +    else
+> > +      # SM4 ALG is available in nettle >= 3.9
+> > +      crypto_sm4 = dependency('nettle', version: '>=3.9',
+> > +                              method: 'pkg-config',
+> > +                              required: get_option('nettle'))
+> > +    endif
+> 
+> ... and if it was forced with --enable-crypto_sm4 AND not found,
+> display an error.
+> 
+> IIUC your config you try to find the best effort implementation then
+> if not found, keep going silently.
 
-> qemu_init_vcpu() is called in each ${target}_cpu_realize() before
-> the call to parent_realize(), which is cpu_common_realizefn().
-> Call it once there.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/core/cpu-common.c    | 3 +++
->  target/alpha/cpu.c      | 2 --
->  target/arm/cpu.c        | 2 --
->  target/avr/cpu.c        | 1 -
->  target/cris/cpu.c       | 2 --
->  target/hexagon/cpu.c    | 1 -
->  target/hppa/cpu.c       | 1 -
->  target/i386/cpu.c       | 4 +---
->  target/loongarch/cpu.c  | 2 --
->  target/m68k/cpu.c       | 2 --
->  target/microblaze/cpu.c | 2 --
->  target/mips/cpu.c       | 2 --
->  target/nios2/cpu.c      | 1 -
->  target/openrisc/cpu.c   | 2 --
->  target/ppc/cpu_init.c   | 1 -
->  target/riscv/cpu.c      | 2 --
->  target/rx/cpu.c         | 2 --
->  target/s390x/cpu.c      | 1 -
->  target/sh4/cpu.c        | 2 --
->  target/sparc/cpu.c      | 2 --
->  target/tricore/cpu.c    | 1 -
->  target/xtensa/cpu.c     | 2 --
->  22 files changed, 4 insertions(+), 36 deletions(-)
->=20
-> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-> index ced66c2b34..a3b8de7054 100644
-> --- a/hw/core/cpu-common.c
-> +++ b/hw/core/cpu-common.c
-> @@ -204,6 +204,9 @@ static void cpu_common_realizefn(DeviceState *dev, Er=
-ror **errp)
->          }
->      }
-> =20
-> +    /* Create CPU address space and vCPU thread */
-> +    qemu_init_vcpu(cpu);
-> +
->      if (dev->hotplugged) {
->          cpu_synchronize_post_init(cpu);
->          cpu_resume(cpu);
-> diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-> index 270ae787b1..eb78318bb8 100644
-> --- a/target/alpha/cpu.c
-> +++ b/target/alpha/cpu.c
-> @@ -82,8 +82,6 @@ static void alpha_cpu_realizefn(DeviceState *dev, Error=
- **errp)
->          return;
->      }
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      acc->parent_realize(dev, errp);
->  }
-> =20
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 6aca036b85..fc3772025c 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -2277,8 +2277,6 @@ static void arm_cpu_realizefn(DeviceState *dev, Err=
-or **errp)
->          }
->      }
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      acc->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-> index 84d353f30e..d3460b3960 100644
-> --- a/target/avr/cpu.c
-> +++ b/target/avr/cpu.c
-> @@ -119,7 +119,6 @@ static void avr_cpu_realizefn(DeviceState *dev, Error=
- **errp)
->          error_propagate(errp, local_err);
->          return;
->      }
-> -    qemu_init_vcpu(cs);
-> =20
->      mcc->parent_realize(dev, errp);
->      cpu_reset(cs);
-> diff --git a/target/cris/cpu.c b/target/cris/cpu.c
-> index 079872a5cc..671693a362 100644
-> --- a/target/cris/cpu.c
-> +++ b/target/cris/cpu.c
-> @@ -152,8 +152,6 @@ static void cris_cpu_realizefn(DeviceState *dev, Erro=
-r **errp)
->          return;
->      }
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      ccc->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-> index 7edc32701f..5b9bb3fe83 100644
-> --- a/target/hexagon/cpu.c
-> +++ b/target/hexagon/cpu.c
-> @@ -345,7 +345,6 @@ static void hexagon_cpu_realize(DeviceState *dev, Err=
-or **errp)
->                               NUM_VREGS + NUM_QREGS,
->                               "hexagon-hvx.xml", 0);
-> =20
-> -    qemu_init_vcpu(cs);
->      mcc->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-> index 11022f9c99..49082bd2ba 100644
-> --- a/target/hppa/cpu.c
-> +++ b/target/hppa/cpu.c
-> @@ -131,7 +131,6 @@ static void hppa_cpu_realizefn(DeviceState *dev, Erro=
-r **errp)
->          return;
->      }
-> =20
-> -    qemu_init_vcpu(cs);
->      acc->parent_realize(dev, errp);
-> =20
->  #ifndef CONFIG_USER_ONLY
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 7faaa6915f..cb41d30aab 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -7425,15 +7425,13 @@ static void x86_cpu_realizefn(DeviceState *dev, E=
-rror **errp)
-> =20
->      mce_init(cpu);
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      /*
->       * Most Intel and certain AMD CPUs support hyperthreading. Even thou=
-gh QEMU
->       * fixes this issue by adjusting CPUID_0000_0001_EBX and CPUID_8000_=
-0008_ECX
->       * based on inputs (sockets,cores,threads), it is still better to gi=
-ve
->       * users a warning.
->       *
-> -     * NOTE: the following code has to follow qemu_init_vcpu(). Otherwise
-> +     * NOTE: the following code has to follow cpu_common_realize(). Othe=
-rwise
+Yes, ignore the get_option() calls, and instead look at .found()
+in the library we just detected
 
-Does moving qemu_init_vcpu() past check and altering comment here
-makes cs->nr_threads somehow correct for following if()?
+ie
 
->       * cs->nr_threads hasn't be populated yet and the checking is incorr=
-ect.
->       */
->      if (IS_AMD_CPU(env) &&
+  if nettle.found()
+      ....check sm4 in nettle
+  endif
 
-missing context:
-       if (IS_AMD_CPU(env) &&
-           !(env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_TOPOEXT) &&
-           cs->nr_threads > 1 && !ht_warned) {
+  if gcrypt.found()
+      ....check sm4 in crypt
+  endif
 
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index 8029e70e76..dc0ac39833 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -565,8 +565,6 @@ static void loongarch_cpu_realizefn(DeviceState *dev,=
- Error **errp)
-> =20
->      loongarch_cpu_register_gdb_regs_for_features(cs);
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      lacc->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-> index 2bc0a62f0e..3da316bc30 100644
-> --- a/target/m68k/cpu.c
-> +++ b/target/m68k/cpu.c
-> @@ -321,8 +321,6 @@ static void m68k_cpu_realizefn(DeviceState *dev, Erro=
-r **errp)
-> =20
->      m68k_cpu_init_gdb(cpu);
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      mcc->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-> index 03c2c4db1f..1f19a6e07d 100644
-> --- a/target/microblaze/cpu.c
-> +++ b/target/microblaze/cpu.c
-> @@ -221,8 +221,6 @@ static void mb_cpu_realizefn(DeviceState *dev, Error =
-**errp)
->          return;
->      }
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      version =3D cpu->cfg.version ? cpu->cfg.version : DEFAULT_CPU_VERSIO=
-N;
->      for (i =3D 0; mb_cpu_lookup[i].name && version; i++) {
->          if (strcmp(mb_cpu_lookup[i].name, version) =3D=3D 0) {
-> diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-> index 8d6f633f72..0aea69aaf9 100644
-> --- a/target/mips/cpu.c
-> +++ b/target/mips/cpu.c
-> @@ -492,8 +492,6 @@ static void mips_cpu_realizefn(DeviceState *dev, Erro=
-r **errp)
->      fpu_init(env, env->cpu_model);
->      mvp_init(env);
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      mcc->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
-> index 876a6dcad2..7a92fc5f2c 100644
-> --- a/target/nios2/cpu.c
-> +++ b/target/nios2/cpu.c
-> @@ -216,7 +216,6 @@ static void nios2_cpu_realizefn(DeviceState *dev, Err=
-or **errp)
->      }
-> =20
->      realize_cr_status(cs);
-> -    qemu_init_vcpu(cs);
-> =20
->      /* We have reserved storage for cpuid; might as well use it. */
->      cpu->env.ctrl[CR_CPUID] =3D cs->cpu_index;
-> diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-> index cd25f1e9d5..e4ec95ca7f 100644
-> --- a/target/openrisc/cpu.c
-> +++ b/target/openrisc/cpu.c
-> @@ -141,8 +141,6 @@ static void openrisc_cpu_realizefn(DeviceState *dev, =
-Error **errp)
->          return;
->      }
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      occ->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index 7ab5ee92d9..e2c06c1f32 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -6833,7 +6833,6 @@ static void ppc_cpu_realize(DeviceState *dev, Error=
- **errp)
->      init_ppc_proc(cpu);
-> =20
->      ppc_gdb_init(cs, pcc);
-> -    qemu_init_vcpu(cs);
-> =20
->      pcc->parent_realize(dev, errp);
-> =20
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 7566757346..4f7ae55359 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1531,8 +1531,6 @@ static void riscv_cpu_realize(DeviceState *dev, Err=
-or **errp)
->      }
->  #endif
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      mcc->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-> index c9c8443cbd..089df61790 100644
-> --- a/target/rx/cpu.c
-> +++ b/target/rx/cpu.c
-> @@ -137,8 +137,6 @@ static void rx_cpu_realize(DeviceState *dev, Error **=
-errp)
->          return;
->      }
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      rcc->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-> index 0f0b11fd73..416ac6c4e0 100644
-> --- a/target/s390x/cpu.c
-> +++ b/target/s390x/cpu.c
-> @@ -252,7 +252,6 @@ static void s390_cpu_realizefn(DeviceState *dev, Erro=
-r **errp)
->      qemu_register_reset(s390_cpu_machine_reset_cb, S390_CPU(dev));
->  #endif
->      s390_cpu_gdb_init(cs);
-> -    qemu_init_vcpu(cs);
-> =20
->      scc->parent_realize(dev, &err);
->      /*
-> diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-> index 656d71f74a..e6690daf9a 100644
-> --- a/target/sh4/cpu.c
-> +++ b/target/sh4/cpu.c
-> @@ -228,8 +228,6 @@ static void superh_cpu_realizefn(DeviceState *dev, Er=
-ror **errp)
->          return;
->      }
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      scc->parent_realize(dev, errp);
->      cpu_reset(cs);
->  }
-> diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-> index 130ab8f578..2fdc95eda9 100644
-> --- a/target/sparc/cpu.c
-> +++ b/target/sparc/cpu.c
-> @@ -782,8 +782,6 @@ static void sparc_cpu_realizefn(DeviceState *dev, Err=
-or **errp)
->          return;
->      }
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      scc->parent_realize(dev, errp);
->  }
-> =20
-> diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-> index a3610aecca..0142cf556d 100644
-> --- a/target/tricore/cpu.c
-> +++ b/target/tricore/cpu.c
-> @@ -118,7 +118,6 @@ static void tricore_cpu_realizefn(DeviceState *dev, E=
-rror **errp)
->      if (tricore_has_feature(env, TRICORE_FEATURE_131)) {
->          set_feature(env, TRICORE_FEATURE_13);
->      }
-> -    qemu_init_vcpu(cs);
-> =20
->      tcc->parent_realize(dev, errp);
->      cpu_reset(cs);
-> diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-> index acaf8c905f..300d19d45c 100644
-> --- a/target/xtensa/cpu.c
-> +++ b/target/xtensa/cpu.c
-> @@ -174,8 +174,6 @@ static void xtensa_cpu_realizefn(DeviceState *dev, Er=
-ror **errp)
-> =20
->      cs->gdb_num_regs =3D xcc->config->gdb_regmap.num_regs;
-> =20
-> -    qemu_init_vcpu(cs);
-> -
->      xcc->parent_realize(dev, errp);
->  }
-> =20
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
