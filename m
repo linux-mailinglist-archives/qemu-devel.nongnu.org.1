@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD75F7FBC1E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 15:03:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0B57FBC1F
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 15:04:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7ygT-0005JR-J7; Tue, 28 Nov 2023 09:03:29 -0500
+	id 1r7ygq-0005XL-Lf; Tue, 28 Nov 2023 09:03:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r7ygG-0005F1-Uy
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:03:17 -0500
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ id 1r7ygc-0005RE-PM
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:03:39 -0500
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r7yfw-0004a2-4K
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:03:02 -0500
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-1fa4b632198so1340866fac.1
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 06:02:53 -0800 (PST)
+ id 1r7yga-0004ee-S6
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:03:38 -0500
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-1fa22332ca1so1381224fac.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 06:03:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701180172; x=1701784972; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701180215; x=1701785015; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=dec8iRgzEDFu7HMeARR9V8WSMJQftG6WNb8g4wP73b4=;
- b=ON0w0klFROy9TQ4jT8P7LdxBCc9sjUCEs2qDoP/G8ab0vqX3pT95QkRV/csv67HPlV
- UwMSRGDAYReGs6/1iav0JaU37iBAEtfjXZbx79oM3WsCr9vz02wkp1mz/uu6f6nD6MMF
- qDaSLzI7VrTF5D7ejrjLGUEqqsVMl/yp0oSLGzoon/BOcIRvQD6VPN6PkYKMWUp3hPi1
- Wt+0tjdTmxSlqFdrqe1j5QsjRkPytHBdwNyBXeQOhaFAZqQnG6qiwez6IPxIDcmhTZ+y
- oW0QR6grXV5TgxWWR4tMlhQ5euNriYV6cE6Sw9B5Iga+mSlAIeYoMT2Re/FMHEnhD9A9
- fttA==
+ bh=RAKgJw6UMC42KF6dxleVMJZB/VCBDYG7XXv4s7ycYDI=;
+ b=BeOXPkm8zKbGifwb+r46NYD+iSca/Z7Caw/XSk6YzHcQNsbybBPNnFBTutDAffRGVZ
+ ylkPGeUgYlTaGnsG2IE/bhU3Ogl3iXziXjM8wJkZJxSiPke4i7Golj3aR1oaaFzdQl/q
+ +icDp3PppyPrkeM/s3x0lb/+kD7nGdtt/S0hB0z+CwA7O3c4qReEmjJj7ek0zgSxPHTI
+ tRQyey60QN+jNt5guYY+jmoop0jYqQ4yYNf880AIOIvIAIjPxRuP5KO2ctZsdPbavBJC
+ +D62uK3R3THeHChXequOJe7Q2K4Qw7rtnJymRTjbqtUqNWe7Q44gbV7+idAGtwhqfZZR
+ p6hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701180172; x=1701784972;
+ d=1e100.net; s=20230601; t=1701180215; x=1701785015;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dec8iRgzEDFu7HMeARR9V8WSMJQftG6WNb8g4wP73b4=;
- b=uA33u1TIxLZjO6hYGTdIUCHp/w8bcFSePjRROlu+CvoucClENGJyS3BI7uXK7j3NtF
- DaRnvfOKMK5/ugzyCV1vWQCZj/PgyGCHF3jwmdHzNKsQIYlUF2xW3PUc/vedP4j5YqA3
- clJS/Bzxa/WwgyVnnKWqLQrM8JmuWMSgtgr83mJeG/WJVSbYh2uWRcMEXIxiPPFFiai3
- VzX7q1dlfbMTF3kIiQjPjh4cOJiFTxvzAKk8w6LjueCQcClBSusi1GvNClnXXz9m35+4
- z/zR2rORXF0Fzq7t/J5tCbiI1Rx2k9+gtAjoi9s4lzo06cbwYqwWyScEC3hDjj+cNruh
- eK4A==
-X-Gm-Message-State: AOJu0YzDqrpBSE49GiE+MRSW+7AyvzzJWOROpz0POGXw6T2mDPF/EKwa
- QNFMMCEmu9UfOwBOqffEfjpmqLbPXiFmbWxUXhsvDtTP
-X-Google-Smtp-Source: AGHT+IGyHpa6zzVI1Dhk0/OKElxnYt3uPc/JtVQNSVfQWa4BvYN1oUz123krcf0Atey1HQVQgxfEyA==
-X-Received: by 2002:a05:6870:a70b:b0:1fa:14a2:d3b2 with SMTP id
- g11-20020a056870a70b00b001fa14a2d3b2mr16120417oam.55.1701180172466; 
- Tue, 28 Nov 2023 06:02:52 -0800 (PST)
+ bh=RAKgJw6UMC42KF6dxleVMJZB/VCBDYG7XXv4s7ycYDI=;
+ b=EFjAn4kVpBJl5jJCEamhLpr1/YQkAFkkyHUN8oQZ+GGkfB65WfR8z15qmQ75pIrlfX
+ CiSfBRneYYT9Cs62ogmiJZTRBD0bwmUsWtOHjoY6+B037GSW4N/AXsTxfLd1hu9sLk4B
+ 92YLdCaim/l/nSzpAO+8lSUotVt828vRif2ZdcVkayTzm/Mlxap1DSo+0a455/i9b6pW
+ 3y1/PuY+ZM8U65kkGMTkXzWMdw6MC13kauFWw8hC/LJtRjXSnNIFOiMP6Tvl3S7FksAJ
+ eDdyedCC67iDM7JKEIGR9IGDgznF1oyoSSMrib9BTkV5dMpN7arzZUmzw9h0AWSSvPpF
+ BXOg==
+X-Gm-Message-State: AOJu0YwcjqEystyqU2b+6yb45Bog8bUaGm9kxtFBsqXKFHANCuSpl436
+ L3g5Ri4ST8Xy46iA8K4Ur/j3Mg==
+X-Google-Smtp-Source: AGHT+IEQoAKmEKLWKEvb7FD5meJQC4R5kWjcZM7Vrjvm03F2PyVt4uQqAw67wf2Z7rJIdGVwayut+g==
+X-Received: by 2002:a05:6870:d3cd:b0:1e9:7912:3bd9 with SMTP id
+ l13-20020a056870d3cd00b001e979123bd9mr8775761oag.9.1701180215233; 
+ Tue, 28 Nov 2023 06:03:35 -0800 (PST)
 Received: from [172.20.7.39] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- ny13-20020a056871750d00b001fa1350df8esm2068309oac.2.2023.11.28.06.02.51
+ ny13-20020a056871750d00b001fa1350df8esm2068309oac.2.2023.11.28.06.03.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 06:02:52 -0800 (PST)
-Message-ID: <74fee177-71d9-4303-9692-b4a496047a03@linaro.org>
-Date: Tue, 28 Nov 2023 08:02:49 -0600
+ Tue, 28 Nov 2023 06:03:34 -0800 (PST)
+Message-ID: <6d956240-6072-4dbe-b537-a0415cbe952f@linaro.org>
+Date: Tue, 28 Nov 2023 08:03:32 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0 05/11] target/arm: Move GTIMER definitions to
- 'cpu-defs.h'
+Subject: Re: [PATCH-for-9.0 06/11] hw/arm/bcm2836: Simplify use of
+ 'reset-cbar' property
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -72,13 +72,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 References: <20231122183048.17150-1-philmd@linaro.org>
- <20231122183048.17150-6-philmd@linaro.org>
+ <20231122183048.17150-7-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231122183048.17150-6-philmd@linaro.org>
+In-Reply-To: <20231122183048.17150-7-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2f.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -102,48 +102,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/22/23 12:30, Philippe Mathieu-Daudé wrote:
-> To allow GTIMER_* definitions to be used by non-ARM specific
-> hardware models, move them to a new target agnostic "cpu-defs.h"
-> header.
+> bcm2836_realize() is called by
+> 
+>   - bcm2836_class_init() which sets:
+> 
+>      bc->cpu_type = ARM_CPU_TYPE_NAME("cortex-a7")
+> 
+>   - bcm2837_class_init() which sets:
+> 
+>      bc->cpu_type = ARM_CPU_TYPE_NAME("cortex-a53")
+> 
+> Both Cortex-A7 / A53 have the ARM_FEATURE_CBAR set. If it isn't,
+> then this is a programming error: use &error_abort.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/arm/cpu-defs.h | 19 +++++++++++++++++++
->   target/arm/cpu.h      |  8 +-------
->   hw/arm/bcm2836.c      |  1 +
->   3 files changed, 21 insertions(+), 7 deletions(-)
->   create mode 100644 target/arm/cpu-defs.h
-> 
-> diff --git a/target/arm/cpu-defs.h b/target/arm/cpu-defs.h
-> new file mode 100644
-> index 0000000000..1ad76aff14
-> --- /dev/null
-> +++ b/target/arm/cpu-defs.h
-> @@ -0,0 +1,19 @@
-> +/*
-> + * ARM "target agnostic" CPU definitions
-> + *
-> + *  Copyright (c) 2003 Fabrice Bellard
-> + *
-> + * SPDX-License-Identifier: LGPL-2.1-or-later
-> + */
-> +
-> +#ifndef ARM_CPU_DEFS_H
-> +#define ARM_CPU_DEFS_H
-> +
-> +#define GTIMER_PHYS     0
-> +#define GTIMER_VIRT     1
-> +#define GTIMER_HYP      2
-> +#define GTIMER_SEC      3
-> +#define GTIMER_HYPVIRT  4
-> +#define NUM_GTIMERS     5
-> +
-> +#endif
 
-Hmm.  cpu-defs.h is pretty generic.
-Without looking forward in the patch series, perhaps better as gtimer.h?
-
-Is hw/arm/bcm2836.c really "non-arm-specific"?  Or did you mean "non-ARMCPU-specific"?
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
