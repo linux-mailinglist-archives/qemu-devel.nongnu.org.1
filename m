@@ -2,111 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE957FBE2B
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 16:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 145777FBE48
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 16:40:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r806u-0007Oa-Kx; Tue, 28 Nov 2023 10:34:52 -0500
+	id 1r80B5-0000A1-6S; Tue, 28 Nov 2023 10:39:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r806p-0007N5-JG
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:34:48 -0500
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r80B2-00009S-Bp
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:39:09 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r806n-000454-Ma
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:34:47 -0500
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r80B0-0005IY-Lb
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:39:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701185685;
+ s=mimecast20190719; t=1701185946;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D9lOQjODNv02P43/kZH/wGQ3w31tJS9+8fDtN67uTGI=;
- b=NyjTBJ5yv9WguSF41/HC+2EQMw2noy9dmB1Pr+cjC9SDTKgW7C2Ec8x6MAMxtNXwxEvlzW
- P9NRr+O9ayhJSBxnayYId2ZnJ8fvxG2qYKmiOku3jsB+elOePuFR1vuB2s4y1Av74axOLK
- Fv2jmzer0NBRoTeafmg5OjTL3q37Xao=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-377-WVDbl6tuOpeXaLDx_aPW4Q-1; Tue, 28 Nov 2023 10:34:43 -0500
-X-MC-Unique: WVDbl6tuOpeXaLDx_aPW4Q-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-50abbf4ee79so6032825e87.1
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 07:34:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701185682; x=1701790482;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=D9lOQjODNv02P43/kZH/wGQ3w31tJS9+8fDtN67uTGI=;
- b=IHW8j6kdYsNpnG5dr76Vj6GRSHCvdgOQagRtYhDdD0eJkhQO2YZJP6iNHb0/bd1tz8
- i17wccoPaXB9Qt7VhaBsoc5rnkMOxg04BRcMfJstpGlRD63z5WCtr5PcQFV/inr+3cMc
- 53gszZ6AnuXiV5ZCFAB/eVOXAQnPrHZwkuMw9arySBzis6Bsaz7tAKgJzZaJg4l2HB6h
- pOsPycZAlsYoVVUjK+0/YQH3q1xqdgqxECT/ECdD4QN9Jr1dcqHm6VFgY4HVcI/Gw0C7
- MM7bnoRHyV+5nIWAAKK4E5jgy/7hIpfZRkXoe7cjk9IshsM+V9bRuh0Yv1g894pPrzAw
- sWFA==
-X-Gm-Message-State: AOJu0YwirLkSbNPAfit+um31fZESrrgw2yzuCDr3hWxxcnyPs3E/Of97
- gRtzvoxT/aJtPsynse4zefHVAQNIndX7jmON1OM+16SrrnSPzYLiiZBDg4N7sXpcnZ1ustUZYvG
- wLzJG1i8qbxdSwoI=
-X-Received: by 2002:ac2:4acb:0:b0:50b:ac31:28e5 with SMTP id
- m11-20020ac24acb000000b0050bac3128e5mr5758120lfp.65.1701185682044; 
- Tue, 28 Nov 2023 07:34:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFVxWl5bdZvuMtpJUQ8Z+EaD52jviZNSCZAMpxb5IUoQ4q6GjfDoZU/DsJDwJO/WcMaVBCVag==
-X-Received: by 2002:ac2:4acb:0:b0:50b:ac31:28e5 with SMTP id
- m11-20020ac24acb000000b0050bac3128e5mr5758085lfp.65.1701185681511; 
- Tue, 28 Nov 2023 07:34:41 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- d11-20020a056402000b00b0054851cd28d2sm6365832edu.79.2023.11.28.07.34.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Nov 2023 07:34:41 -0800 (PST)
-Date: Tue, 28 Nov 2023 16:34:38 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini
- <pbonzini@redhat.com>, Max Filippov <jcmvbkbc@gmail.com>, David Hildenbrand
- <david@redhat.com>, Peter Xu <peterx@redhat.com>, Anton Johansson
- <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
- kvm@vger.kernel.org, Marek Vasut <marex@denx.de>, David Gibson
- <david@gibson.dropbear.id.au>, Brian Cain <bcain@quicinc.com>, Yoshinori
- Sato <ysato@users.sourceforge.jp>, "Edgar E . Iglesias"
- <edgar.iglesias@gmail.com>, Claudio Fontana <cfontana@suse.de>, Daniel
- Henrique Barboza <dbarboza@ventanamicro.com>, Artyom Tarasenko
- <atar4qemu@gmail.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- qemu-ppc@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Aurelien
- Jarno <aurelien@aurel32.net>, Ilya Leoshkevich <iii@linux.ibm.com>, Daniel
- Henrique Barboza <danielhb413@gmail.com>, Bastian Koppelmann
- <kbastian@mail.uni-paderborn.de>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clg@kaod.org>, Alistair Francis <alistair.francis@wdc.com>, Alessandro Di
- Federico <ale@rev.ng>, Song Gao <gaosong@loongson.cn>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Chris Wulff <crwulff@gmail.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org, Yanan Wang
- <wangyanan55@huawei.com>, Luc Michel <luc@lmichel.fr>, Weiwei Li
- <liweiwei@iscas.ac.cn>, Bin Meng <bin.meng@windriver.com>, Stafford Horne
- <shorne@gmail.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>, "Daniel P .
- Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Aleksandar Rikalo
- <aleksandar.rikalo@syrmia.com>, Bernhard Beschow <shentey@gmail.com>, Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-riscv@nongnu.org, Alex
- =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>, Nicholas Piggin
- <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>, Michael Rolnik
- <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Markus
- Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-Subject: Re: [PATCH 02/22] hw/intc/apic: Pass CPU using QOM link property
-Message-ID: <20231128163438.3d257bdd@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230918160257.30127-3-philmd@linaro.org>
-References: <20230918160257.30127-1-philmd@linaro.org>
- <20230918160257.30127-3-philmd@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ bh=FhliJe40ILRbl4h+52+3yHEmFQKJQ8NDVsRJxhwEMPA=;
+ b=cUgpV9YxMXV/hBwbsEQM9CgtOMRhEdp8LRaq5DghwrGr41omAwuZt9obdm4m7sy45v5FFp
+ rVj7ISWzaxRLtfpR5j90LeDBmD9vfEli0zoHbhYj20VU8fHAQP+AB8xVu9TcYWMqu4ejrr
+ xSZbleOqS+oPr3BmD7UppLtZBHwUD+8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-u01nM_pON7GmwTEx2sIurg-1; Tue,
+ 28 Nov 2023 10:39:02 -0500
+X-MC-Unique: u01nM_pON7GmwTEx2sIurg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44EB13C1E9D2;
+ Tue, 28 Nov 2023 15:39:02 +0000 (UTC)
+Received: from localhost (unknown [10.22.8.243])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D9E11C060BB;
+ Tue, 28 Nov 2023 15:39:01 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-stable@nongnu.org
+Subject: Re: [PATCH for-8.2] target/arm: Disable SME if SVE is disabled
+In-Reply-To: <20231127173318.674758-1-peter.maydell@linaro.org>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy Ross"
+References: <20231127173318.674758-1-peter.maydell@linaro.org>
+User-Agent: Notmuch/0.37 (https://notmuchmail.org)
+Date: Tue, 28 Nov 2023 16:39:00 +0100
+Message-ID: <877cm1yjjf.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -131,70 +83,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 18 Sep 2023 18:02:35 +0200
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
+On Mon, Nov 27 2023, Peter Maydell <peter.maydell@linaro.org> wrote:
 
-> QOM objects shouldn't access each other internals fields
-> except using the QOM API.
->=20
-> Declare the 'cpu' and 'base-addr' properties, set them
-> using object_property_set_link() and qdev_prop_set_uint32()
-> respectively.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-
+> There is no architectural requirement that SME implies SVE, but
+> our implementation currently assumes it. (FEAT_SME_FA64 does
+> imply SVE.) So if you try to run a CPU with eg "-cpu max,sve=off"
+> you quickly run into an assert when the guest tries to write to
+> SMCR_EL1:
+>
+> #6  0x00007ffff4b38e96 in __GI___assert_fail
+>     (assertion=0x5555566e69cb "sm", file=0x5555566e5b24 "../../target/arm/helper.c", line=6865, function=0x5555566e82f0 <__PRETTY_FUNCTION__.31> "sve_vqm1_for_el_sm") at ./assert/assert.c:101
+> #7  0x0000555555ee33aa in sve_vqm1_for_el_sm (env=0x555557d291f0, el=2, sm=false) at ../../target/arm/helper.c:6865
+> #8  0x0000555555ee3407 in sve_vqm1_for_el (env=0x555557d291f0, el=2) at ../../target/arm/helper.c:6871
+> #9  0x0000555555ee3724 in smcr_write (env=0x555557d291f0, ri=0x555557da23b0, value=2147483663) at ../../target/arm/helper.c:6995
+> #10 0x0000555555fd1dba in helper_set_cp_reg64 (env=0x555557d291f0, rip=0x555557da23b0, value=2147483663) at ../../target/arm/tcg/op_helper.c:839
+> #11 0x00007fff60056781 in code_gen_buffer ()
+>
+> Avoid this unsupported and slightly odd combination by
+> disabling SME when SVE is not present.
+>
+> Cc: qemu-stable@nongnu.org
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2005
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  hw/intc/apic_common.c    |  2 ++
->  target/i386/cpu-sysemu.c | 11 ++++++-----
->  2 files changed, 8 insertions(+), 5 deletions(-)
->=20
-> diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
-> index 68ad30e2f5..e28f7402ab 100644
-> --- a/hw/intc/apic_common.c
-> +++ b/hw/intc/apic_common.c
-> @@ -394,6 +394,8 @@ static Property apic_properties_common[] =3D {
->                      true),
->      DEFINE_PROP_BOOL("legacy-instance-id", APICCommonState, legacy_insta=
-nce_id,
->                       false),
-> +    DEFINE_PROP_LINK("cpu", APICCommonState, cpu, TYPE_X86_CPU, X86CPU *=
-),
-> +    DEFINE_PROP_UINT32("base-addr", APICCommonState, apicbase, 0),
->      DEFINE_PROP_END_OF_LIST(),
->  };
-> =20
-> diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
-> index 6a164d3769..6edfb7e2af 100644
-> --- a/target/i386/cpu-sysemu.c
-> +++ b/target/i386/cpu-sysemu.c
-> @@ -269,7 +269,6 @@ APICCommonClass *apic_get_class(Error **errp)
-> =20
->  void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
->  {
-> -    APICCommonState *apic;
->      APICCommonClass *apic_class =3D apic_get_class(errp);
-> =20
->      assert(apic_class);
-> @@ -279,11 +278,13 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
->                                OBJECT(cpu->apic_state));
->      object_unref(OBJECT(cpu->apic_state));
-> =20
-> +    if (!object_property_set_link(OBJECT(cpu->apic_state), "cpu",
-> +                                  OBJECT(cpu), errp)) {
-> +        return;
-> +    }
->      qdev_prop_set_uint32(cpu->apic_state, "id", cpu->apic_id);
-> -    /* TODO: convert to link<> */
-> -    apic =3D APIC_COMMON(cpu->apic_state);
-> -    apic->cpu =3D cpu;
-> -    apic->apicbase =3D APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE;
-> +    qdev_prop_set_uint32(cpu->apic_state, "base-addr",
-> +                         APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE=
-);
->  }
-> =20
->  void x86_cpu_apic_realize(X86CPU *cpu, Error **errp)
+> '-cpu sve=off,sme=on,sme_fa64=off' crashes in the same way, so just
+> turning off FA64 isn't sufficient.  Maybe we should support
+> SME-no-SVE, but for 8.2 at least turning off SME is better than
+> letting users hit an assertion.
+> ---
+>  target/arm/cpu.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+> index 25e9d2ae7b8..0fe268ac785 100644
+> --- a/target/arm/cpu.c
+> +++ b/target/arm/cpu.c
+> @@ -1743,6 +1743,15 @@ void arm_cpu_finalize_features(ARMCPU *cpu, Error **errp)
+>              return;
+>          }
+>  
+> +        /*
+> +         * FEAT_SME is not architecturally dependent on FEAT_SVE (unless
+> +         * FEAT_SME_FA64 is present). However our implementation currently
+> +         * assumes it, so if the user asked for sve=off then turn off SME also.
+> +         */
+
+Might be worth adding a note here that KVM currently does not support
+SME anyway? It took me a moment to remember that.
+
+> +        if (cpu_isar_feature(aa64_sme, cpu) && !cpu_isar_feature(aa64_sve, cpu)) {
+> +            object_property_set_bool(OBJECT(cpu), "sme", false, &error_abort);
+> +        }
+> +
+>          arm_cpu_sme_finalize(cpu, &local_err);
+>          if (local_err != NULL) {
+>              error_propagate(errp, local_err);
 
 
