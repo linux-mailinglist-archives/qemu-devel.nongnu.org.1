@@ -2,53 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5367FBA78
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 13:48:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B5F7FBB49
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 14:19:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7xVN-0006H2-D0; Tue, 28 Nov 2023 07:47:57 -0500
+	id 1r7xzZ-0005Os-DN; Tue, 28 Nov 2023 08:19:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r7xVC-00069X-3f
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:47:46 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r7xzV-0005NX-T2
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:19:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r7xV9-0006FM-CO
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:47:45 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 293EB756094;
- Tue, 28 Nov 2023 13:47:41 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id scJYRXcYr7MR; Tue, 28 Nov 2023 13:47:38 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id EA03F75607B; Tue, 28 Nov 2023 13:47:38 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E84F9756066;
- Tue, 28 Nov 2023 13:47:38 +0100 (CET)
-Date: Tue, 28 Nov 2023 13:47:38 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org
-cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Bernhard Beschow <shentey@gmail.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, vr_qemu@t-online.de
-Subject: Re: [PATCH v3 0/4] Fix IRQ routing in via south bridge
-In-Reply-To: <cover.1701035944.git.balaton@eik.bme.hu>
-Message-ID: <cc64f407-9a5a-d0b7-33b7-0f142a9ec6a1@eik.bme.hu>
-References: <cover.1701035944.git.balaton@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1r7xzU-0003oN-3x
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:19:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701177542;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0uEMI6wX77RWr9NKrq+alP3ex6YVAFPsaZT52MC6InM=;
+ b=GXY40jTge2WftsLpTOssvUKs7wM0zVo0bOFFqj+gree0jANoaN/C0EaEBW3CiV+MfG6Ogk
+ +32hxwVb2WQ8sk8RQrJCb9XmuuISWqAlyIqiejNk7fHb3rTNsc5zrefeamVLUi9b+K7fr3
+ Vw+akQw2LucpJpLfFMhLgHNqkvPnzaU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-371-4q90tbufMJintCsL5xPa7g-1; Tue, 28 Nov 2023 08:19:01 -0500
+X-MC-Unique: 4q90tbufMJintCsL5xPa7g-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CFC60811E82
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 13:19:00 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.16])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6ABC01C060AE;
+ Tue, 28 Nov 2023 13:19:00 +0000 (UTC)
+Date: Tue, 28 Nov 2023 08:01:32 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL 00/10] Misc bug fixes for QEMU 8.2.0-rc2
+Message-ID: <20231128130132.GA483827@fedora>
+References: <20231124152408.140936-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="k35UTLtRcUpJQlzj"
+Content-Disposition: inline
+In-Reply-To: <20231124152408.140936-1-pbonzini@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,79 +80,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 26 Nov 2023, BALATON Zoltan wrote:
-> Philippe,
->
-> Could this be merged for 8.2 as it fixes USB on the amigaone machine?
-> This would be useful as usb-storage is the simplest way to share data
-> with the host with these machines.
 
-Philippe, do you have some time to look at this now for 8.2 please? I 
-still hope this could be fixed for the amigaone machine on release and 
-dont' have to wait until the next one for USB to work on that machine.
+--k35UTLtRcUpJQlzj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Regards,
-BALATON Zoltan
+Applied, thanks.
 
-> This is a slight change from v2 adding more comments and improving
-> commit messages and clean things a bit but otherwise should be the
-> same as previous versions. Even v1 worked the same as this one and v2,
-> the additional check to avoid stuck bits is just paranoia, it does not
-> happen in practice as IRQ mappings are quite static, they are set once
-> at boot and don't change afterwards.
->
-> The rest is just some explanation on how we got here but can be
-> skipped if not interested in history.
->
-> This is going back to my original implementation of this IRQ routing
-> that I submitted already for 8.0 in the beginning of this year
-> (https://patchew.org/QEMU/cover.1677004414.git.balaton@eik.bme.hu/)
-> but Mark had concerns about that because he wanted to use PCI
-> interrupt routing instead. I've already told back then that won't work
-> but I could not convince reviewers about that. Now with the amigaone
-> machine this can also be seen and that's why this series is needed now.
->
-> The routing code in PCIBus cannot be used as that only considers the 4
-> PCI interrupts but there are about 12 interrupt sources in this chip
-> that need to be routed to ISA IRQs (the embedded chip functions and
-> the 4 PCI interrupts that are coming in through 4 pins of the chip).
-> Also the chip does not own the PCIBus, that's part of the north bridge
-> so it should not change the PCI interrupt routing of a bus it does not
-> own. (Piix calling pci_bus_irqs() I think is also wrong because the
-> PCI bus in that machine is also owned by the north bridge and piix
-> should not take over routing of IRQs on a bus it's connected to.)
-> Another concern from Mark was that this makes chip functions specific
-> to the chip and they cannot be used as individual PCI devices. Well,
-> yes, they are chip functions, are not user creatable and don't exist
-> as individual devices so it does not make sense to use them without
-> the actual VIA chip they are a function of so that's not a real
-> concern. These functions are also not actual PCI devices, they are
-> PCIDevice because they appear as PCI functions of the chip but are
-> connected internally and this series also models that correctly. This
-> seems to be supported by comments in Linux about how these VIA chip
-> function aren't following PCI standards and use ISA IRQs instead:
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/pci/quirks.c?h=v6.5.6#n1172
->
-> Therefore I think Mark's proposals are not improving this model so I
-> went back to the original approach which was tested to work and is
-> also simpler and easier to understand than trying to reuse PCI
-> intrrupt routing which does not work and would be more complex anyway
-> for no good reason.
->
-> Regards,
-> BALATON Zoltan
->
-> BALATON Zoltan (4):
->  hw/isa/vt82c686: Bring back via_isa_set_irq()
->  hw/usb/vt82c686-uhci-pci: Use ISA instead of PCI interrupts
->  hw/isa/vt82c686: Route PIRQ inputs using via_isa_set_irq()
->  hw/audio/via-ac97: Route interrupts using via_isa_set_irq()
->
-> hw/audio/via-ac97.c        |  8 ++--
-> hw/isa/vt82c686.c          | 79 +++++++++++++++++++++++++-------------
-> hw/usb/vt82c686-uhci-pci.c |  9 +++++
-> include/hw/isa/vt82c686.h  |  2 +
-> 4 files changed, 67 insertions(+), 31 deletions(-)
->
->
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+
+--k35UTLtRcUpJQlzj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVl5KwACgkQnKSrs4Gr
+c8io8QgAiCJMwCAdGJ0nYY0Ky+9JXbDiy2AW5Cu3uKCb1WdgaEIbtKDQb2n7ni2B
+2twES7JmHsSM/2FhuOvDfSsZmkdPv9ExWvgnBooFjc3+hNHsj1y/mO2EXQx1ntT8
+vKAv32lARl9oLIxzanH+QWoporuMjKcNCUGuHHDuro0oO0O6KcuhCLe0CX9yDGVI
+RipKfSBO1LJCk/dMWLdwTAFlfD6am/kxo6Sn74kHifGQ/N+V0Xipql5i8A4kjKdc
+Ef2KM2MtYiQ2oklCyQdJvUR3hZBv6wLTAFeaD/gh2Tprm3PmyxV7Ehu2/kfzZEBS
+xZBZPgivnuVghr3h5K3mNkfCX7HGxQ==
+=0IB0
+-----END PGP SIGNATURE-----
+
+--k35UTLtRcUpJQlzj--
+
 
