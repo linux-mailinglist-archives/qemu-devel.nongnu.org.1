@@ -2,105 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFAD7FC9E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 23:49:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A17B7FCA0C
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 23:57:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r86tl-0004oJ-TG; Tue, 28 Nov 2023 17:49:45 -0500
+	id 1r86zT-0006B5-8C; Tue, 28 Nov 2023 17:55:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1r86ti-0004nh-Gz; Tue, 28 Nov 2023 17:49:42 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r86zP-0006A0-FV
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 17:55:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1r86tg-00009h-JT; Tue, 28 Nov 2023 17:49:42 -0500
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ASMRkoT020831; Tue, 28 Nov 2023 22:49:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=mpu4mcuAAZQO4bqk1WaxOES2tNaMXqyi6H3YLC0/LRY=;
- b=TJiMX7wsbDHjiCtzo/pGgWJWT4bj0OI4F3RVOESpDw0pKGWvJALIljEAWLOY4iq1oaqB
- jO7WdgKrWs4goXcpB2sHYvF0f7hKBMku5LwssDXpx61wDbSeks7LxBMyD8Ywt+IKirSo
- LhwhaNTtTDy5DfKhmfK7LVjLbufy42OsQS3cI/AhmysBfI294LVunQbLHUcQbVLYkcXC
- fAa5QpE2go0u7h5w6m6Z1d7ouTN1+c6sfxpRUyzXzOTrUUEq4KgwcJ2rPqSFFnWdFt9B
- JsH3t8VydwBSHdyPUh4CRfMZ6mt9h06R/n76u5gev9/p8l8bCS0JgtNusI9egmVDFkCE Nw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unr4ysudm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Nov 2023 22:49:24 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ASMk813008931;
- Tue, 28 Nov 2023 22:49:24 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unr4ysudb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Nov 2023 22:49:24 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ASK05gb004998; Tue, 28 Nov 2023 22:49:23 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwfk30uu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Nov 2023 22:49:23 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3ASMnMlR21299798
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Nov 2023 22:49:22 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 694E35804B;
- Tue, 28 Nov 2023 22:49:22 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DBA095805B;
- Tue, 28 Nov 2023 22:49:19 +0000 (GMT)
-Received: from [9.67.87.213] (unknown [9.67.87.213])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 28 Nov 2023 22:49:19 +0000 (GMT)
-Message-ID: <2339b059-4297-450e-9616-6e6bc9c4926c@linux.ibm.com>
-Date: Tue, 28 Nov 2023 16:49:19 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 00/10] Introduce model for IBM's FSI
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20231026164741.1184058-1-ninad@linux.ibm.com>
- <417e8a68-2f35-4315-b694-892f78c811b6@kaod.org>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <417e8a68-2f35-4315-b694-892f78c811b6@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5TWZ2DfgaoJxORDXztWtvJSWHwDShib-
-X-Proofpoint-GUID: mqXXEPAX_XuiX5Kt7tCYE9AL6aDbTnwJ
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r86zM-0001ay-3B
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 17:55:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701212129;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Xin/C7uTM75mmI05qzEqtEpuaHR3U4VKO5QiGVJR0dE=;
+ b=B/6a6ptkn108rN+AHsqMrnTcVgOTPn3ZN++KfTZ7AHoCoz9JaXqsPCi+/wJN5k+9htuW2b
+ JBXsWGQMpaISkVD5/3l/IK4O0VMCiPhQ2tmSqUOni2nm/+gOhB43Dk1ZuNXm/fMTr58NM+
+ E073p4X/OHZvWPfpZ92hriiDCwsVoSg=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-kQuYIdCCOUak_3PnpqGBfw-1; Tue, 28 Nov 2023 17:55:28 -0500
+X-MC-Unique: kQuYIdCCOUak_3PnpqGBfw-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-2859d83dfafso5956365a91.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 14:55:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701212127; x=1701816927;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Xin/C7uTM75mmI05qzEqtEpuaHR3U4VKO5QiGVJR0dE=;
+ b=bXgFsaX50WQhWot4AIF6nA8tC3zdUFpOpz7RXk/GjIGTj7jXT96U1L9DPzQIRGc4zg
+ H30SQjyRHpFWtej5GYf6JLCS5oGAWOUSKiEiQI9J7kYDVbnB+l0/fkEA5Lvgu+mDNgkb
+ Xnxw6io97m5HRhUKKlHU/QfYVzVBdAtVAeRHkc/MMdMotFhPXkUsPbWYr0tlWViK1vQ1
+ MsEihynJ4SznN4R/kWWqw/g7iJgDQ/I7sQeBLMq75uFFzRJmsZAQk1yk+t+RClcqTww8
+ U09vgZhwuufQxUQVS8bGj7Z3ygSEov9p1CzB4mzbl2DZj/c8XY8cNgvDElAfDTfzlNPr
+ 29Dg==
+X-Gm-Message-State: AOJu0YxRPw5q+JpH+xks8ZCxaipbrA6P4x/7nJH2Idog2t9owpxjagAD
+ cglLATc64NAhsX1CDh6cerBWGJKU1PGJjv+BNKkCh+BYoBtfQl1yVrqcmS8PiVg9vTxDrxTM94p
+ 9GczRtXPJtdoZWz4=
+X-Received: by 2002:a17:90b:3906:b0:285:a152:fd3d with SMTP id
+ ob6-20020a17090b390600b00285a152fd3dmr12001930pjb.42.1701212127432; 
+ Tue, 28 Nov 2023 14:55:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFY51za9Tr1CVZ3fk//XPczsw/YAc+IKTuufMn1/U0K0mr4RhenB3mGs2CMdS7P+EQUohiPqQ==
+X-Received: by 2002:a17:90b:3906:b0:285:a152:fd3d with SMTP id
+ ob6-20020a17090b390600b00285a152fd3dmr12001897pjb.42.1701212126999; 
+ Tue, 28 Nov 2023 14:55:26 -0800 (PST)
+Received: from [192.168.68.51] ([43.252.115.3])
+ by smtp.gmail.com with ESMTPSA id
+ fs23-20020a17090af29700b002852528f62bsm9638944pjb.29.2023.11.28.14.55.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Nov 2023 14:55:26 -0800 (PST)
+Message-ID: <34773ba2-e5f7-4f73-a728-57c5004c8502@redhat.com>
+Date: Wed, 29 Nov 2023 09:55:15 +1100
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-28_24,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015
- adultscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 mlxscore=0
- malwarescore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- mlxlogscore=659 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311280179
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/8] machine: Introduce helper is_cpu_type_supported()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, richard.henderson@linaro.org,
+ quic_llindhol@quicinc.com, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ vijai@behindbytes.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+References: <20231126231210.112820-1-gshan@redhat.com>
+ <20231126231210.112820-3-gshan@redhat.com>
+ <c3e8f22b-c03e-4803-a960-699489afb92b@linaro.org>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <c3e8f22b-c03e-4803-a960-699489afb92b@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,104 +110,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+Hi Phil,
 
-On 11/27/23 10:31, Cédric Le Goater wrote:
-> Hello Ninad,
->
-> On 10/26/23 18:47, Ninad Palsule wrote:
->> Hello,
+On 11/28/23 20:38, Philippe Mathieu-Daudé wrote:
+> On 27/11/23 00:12, Gavin Shan wrote:
+>> The logic, to check if the specified CPU type is supported in
+>> machine_run_board_init(), is independent enough. Factor it out into
+>> helper is_cpu_type_supported(). machine_run_board_init() looks a bit
+>> clean with this. Since we're here, @machine_class is renamed to @mc
+>> to avoid multiple line spanning of code. The error messages and comments
+>> are tweaked a bit either.
 >>
->> Please review the patch-set version 7.
->> I have incorporated review comments from Cedric, Philippe and Thomas.
->
->
-> I reworked v7 with the suggestions I made in patches 1-6. Please check :
->
->   https://github.com/legoater/qemu/commits/aspeed-8.2
->
-> I will have more questions on the mappings because some parts are really
-> unclear.
->
-Thanks for the changes. I have 2 changes. I will send it as v8.
+>> No functional change intended.
+>>
+>> Signed-off-by: Gavin Shan <gshan@redhat.com>
+>> ---
+>>   hw/core/machine.c | 90 +++++++++++++++++++++++++++--------------------
+>>   1 file changed, 51 insertions(+), 39 deletions(-)
+>>
+>> diff --git a/hw/core/machine.c b/hw/core/machine.c
+>> index b3ef325936..05e1922b89 100644
+>> --- a/hw/core/machine.c
+>> +++ b/hw/core/machine.c
+>> @@ -1387,13 +1387,57 @@ out:
+>>       return r;
+>>   }
+>> +static void is_cpu_type_supported(const MachineState *machine, Error **errp)
+> 
+> Functions taking an Error** last argument should return a boolean value.
+> 
 
-Regards,
+Correct, especially @errp instead of @local_err will be passed from
+machine_run_board_init() to is_cpu_type_supported(). We needs an
+indicator for machine_run_board_init() to bail immediately to avoid
+calling mc->init() there in the failing cases.
 
-Ninad
+>> +{
+>> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
+>> +    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+>> +    CPUClass *cc;
+>> +    int i;
+>> +
+>> +    /*
+>> +     * Check if the user specified CPU type is supported when the valid
+>> +     * CPU types have been determined. Note that the user specified CPU
+>> +     * type is provided through '-cpu' option.
+>> +     */
+>> +    if (mc->valid_cpu_types && machine->cpu_type) {
+>> +        for (i = 0; mc->valid_cpu_types[i]; i++) {
+>> +            if (object_class_dynamic_cast(oc, mc->valid_cpu_types[i])) {
+>> +                break;
+>> +            }
+>> +        }
+>> +
+>> +        /* The user specified CPU type isn't valid */
+>> +        if (!mc->valid_cpu_types[i]) {
+>> +            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
+>> +            if (!mc->valid_cpu_types[1]) {
+>> +                error_append_hint(errp, "The only valid type is: %s",
+>> +                                  mc->valid_cpu_types[0]);
+>> +            } else {
+>> +                error_append_hint(errp, "The valid types are: %s",
+>> +                                  mc->valid_cpu_types[0]);
+>> +            }
+>> +
+>> +            for (i = 1; mc->valid_cpu_types[i]; i++) {
+>> +                error_append_hint(errp, ", %s", mc->valid_cpu_types[i]);
+>> +            }
+>> +
+>> +            error_append_hint(errp, "\n");
+>> +            return;
+>> +        }
+>> +    }
+>> +
+>> +    /* Check if CPU type is deprecated and warn if so */
+>> +    cc = CPU_CLASS(oc);
+>> +    if (cc && cc->deprecation_note) {
+>> +        warn_report("CPU model %s is deprecated -- %s",
+>> +                    machine->cpu_type, cc->deprecation_note);
+> 
+> Why did you move the deprecation warning within the is_supported check?
+> 
 
->
-> Thanks,
->
-> C.
->
->
->>
->> Ninad Palsule (10):
->>    hw/fsi: Introduce IBM's Local bus
->>    hw/fsi: Introduce IBM's scratchpad
->>    hw/fsi: Introduce IBM's cfam,fsi-slave
->>    hw/fsi: Introduce IBM's FSI
->>    hw/fsi: IBM's On-chip Peripheral Bus
->>    hw/fsi: Aspeed APB2OPB interface
->>    hw/arm: Hook up FSI module in AST2600
->>    hw/fsi: Added qtest
->>    hw/fsi: Added FSI documentation
->>    hw/fsi: Update MAINTAINER list
->>
->>   MAINTAINERS                        |   8 +
->>   docs/specs/fsi.rst                 | 138 +++++++++++++++
->>   docs/specs/index.rst               |   1 +
->>   meson.build                        |   1 +
->>   hw/fsi/trace.h                     |   1 +
->>   include/hw/arm/aspeed_soc.h        |   4 +
->>   include/hw/fsi/aspeed-apb2opb.h    |  33 ++++
->>   include/hw/fsi/cfam.h              |  34 ++++
->>   include/hw/fsi/engine-scratchpad.h |  27 +++
->>   include/hw/fsi/fsi-master.h        |  30 ++++
->>   include/hw/fsi/fsi-slave.h         |  29 +++
->>   include/hw/fsi/fsi.h               |  36 ++++
->>   include/hw/fsi/lbus.h              |  43 +++++
->>   include/hw/fsi/opb.h               |  33 ++++
->>   hw/arm/aspeed_ast2600.c            |  19 ++
->>   hw/fsi/aspeed-apb2opb.c            | 272 +++++++++++++++++++++++++++++
->>   hw/fsi/cfam.c                      | 173 ++++++++++++++++++
->>   hw/fsi/engine-scratchpad.c         |  93 ++++++++++
->>   hw/fsi/fsi-master.c                | 161 +++++++++++++++++
->>   hw/fsi/fsi-slave.c                 |  78 +++++++++
->>   hw/fsi/fsi.c                       |  25 +++
->>   hw/fsi/lbus.c                      |  74 ++++++++
->>   hw/fsi/opb.c                       |  74 ++++++++
->>   tests/qtest/aspeed-fsi-test.c      | 205 ++++++++++++++++++++++
->>   hw/Kconfig                         |   1 +
->>   hw/arm/Kconfig                     |   1 +
->>   hw/fsi/Kconfig                     |  23 +++
->>   hw/fsi/meson.build                 |   6 +
->>   hw/fsi/trace-events                |  13 ++
->>   hw/meson.build                     |   1 +
->>   tests/qtest/meson.build            |   1 +
->>   31 files changed, 1638 insertions(+)
->>   create mode 100644 docs/specs/fsi.rst
->>   create mode 100644 hw/fsi/trace.h
->>   create mode 100644 include/hw/fsi/aspeed-apb2opb.h
->>   create mode 100644 include/hw/fsi/cfam.h
->>   create mode 100644 include/hw/fsi/engine-scratchpad.h
->>   create mode 100644 include/hw/fsi/fsi-master.h
->>   create mode 100644 include/hw/fsi/fsi-slave.h
->>   create mode 100644 include/hw/fsi/fsi.h
->>   create mode 100644 include/hw/fsi/lbus.h
->>   create mode 100644 include/hw/fsi/opb.h
->>   create mode 100644 hw/fsi/aspeed-apb2opb.c
->>   create mode 100644 hw/fsi/cfam.c
->>   create mode 100644 hw/fsi/engine-scratchpad.c
->>   create mode 100644 hw/fsi/fsi-master.c
->>   create mode 100644 hw/fsi/fsi-slave.c
->>   create mode 100644 hw/fsi/fsi.c
->>   create mode 100644 hw/fsi/lbus.c
->>   create mode 100644 hw/fsi/opb.c
->>   create mode 100644 tests/qtest/aspeed-fsi-test.c
->>   create mode 100644 hw/fsi/Kconfig
->>   create mode 100644 hw/fsi/meson.build
->>   create mode 100644 hw/fsi/trace-events
->>
->
+This check is more relevant to CPU type, to check if the CPU type has
+been deprecated. Besides, @oc and @cc can be dropped from machine_run_board_init().
+
+>> +    }
+>> +}
+>>   void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp)
+>>   {
+>>       ERRP_GUARD();
+>>       MachineClass *machine_class = MACHINE_GET_CLASS(machine);
+>> -    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+>> -    CPUClass *cc;
+>>       Error *local_err = NULL;
+>>       /* This checkpoint is required by replay to separate prior clock
+>> @@ -1449,43 +1493,11 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+>>           machine->ram = machine_consume_memdev(machine, machine->memdev);
+>>       }
+>> -    /* If the machine supports the valid_cpu_types check and the user
+>> -     * specified a CPU with -cpu check here that the user CPU is supported.
+>> -     */
+>> -    if (machine_class->valid_cpu_types && machine->cpu_type) {
+>> -        int i;
+>> -
+>> -        for (i = 0; machine_class->valid_cpu_types[i]; i++) {
+>> -            if (object_class_dynamic_cast(oc,
+>> -                                          machine_class->valid_cpu_types[i])) {
+>> -                /* The user specified CPU is in the valid field, we are
+>> -                 * good to go.
+>> -                 */
+>> -                break;
+>> -            }
+>> -        }
+>> -
+>> -        if (!machine_class->valid_cpu_types[i]) {
+>> -            /* The user specified CPU is not valid */
+>> -            error_setg(&local_err, "Invalid CPU type: %s", machine->cpu_type);
+>> -            error_append_hint(&local_err, "The valid types are: %s",
+>> -                              machine_class->valid_cpu_types[0]);
+>> -            for (i = 1; machine_class->valid_cpu_types[i]; i++) {
+>> -                error_append_hint(&local_err, ", %s",
+>> -                                  machine_class->valid_cpu_types[i]);
+>> -            }
+>> -            error_append_hint(&local_err, "\n");
+>> -
+>> -            error_propagate(errp, local_err);
+>> -            return;
+>> -        }
+>> -    }
+>> -
+>> -    /* Check if CPU type is deprecated and warn if so */
+>> -    cc = CPU_CLASS(oc);
+>> -    if (cc && cc->deprecation_note) {
+>> -        warn_report("CPU model %s is deprecated -- %s", machine->cpu_type,
+>> -                    cc->deprecation_note);
+>> +    /* Check if the CPU type is supported */
+>> +    is_cpu_type_supported(machine, &local_err);
+>> +    if (local_err) {
+>> +        error_propagate(errp, local_err);
+> 
+> This becomes:
+> 
+>         if (!is_cpu_type_supported(machine, errp)) {
+> 
+
+Nod
+
+>> +        return;
+>>       }
+>>       if (machine->cgs) {
+> 
+
+Thanks,
+Gavin
+
 
