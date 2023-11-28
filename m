@@ -2,63 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145777FBE48
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 16:40:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C8E7FBE65
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 16:47:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r80B5-0000A1-6S; Tue, 28 Nov 2023 10:39:11 -0500
+	id 1r80HF-0004GN-0Z; Tue, 28 Nov 2023 10:45:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r80B2-00009S-Bp
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:39:09 -0500
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1r80Gz-0004DS-AD
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:45:26 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r80B0-0005IY-Lb
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:39:08 -0500
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1r80Gp-0006UO-12
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:45:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701185946;
+ s=mimecast20190719; t=1701186302;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FhliJe40ILRbl4h+52+3yHEmFQKJQ8NDVsRJxhwEMPA=;
- b=cUgpV9YxMXV/hBwbsEQM9CgtOMRhEdp8LRaq5DghwrGr41omAwuZt9obdm4m7sy45v5FFp
- rVj7ISWzaxRLtfpR5j90LeDBmD9vfEli0zoHbhYj20VU8fHAQP+AB8xVu9TcYWMqu4ejrr
- xSZbleOqS+oPr3BmD7UppLtZBHwUD+8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-u01nM_pON7GmwTEx2sIurg-1; Tue,
- 28 Nov 2023 10:39:02 -0500
-X-MC-Unique: u01nM_pON7GmwTEx2sIurg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yrCoDS9MUG1priUGb3Q/37WaBBDo23c1ylxj95tSakw=;
+ b=X04NTuT/0EFnIrspzTksJhjNb0o/ivC2uEz069rXdQ4M3nAFQFaH86YFwjwfF9wIc2j+98
+ 05jC2qwbZRng0fM+0OZPsy9LLRIf2hwySYH/GeY6Pn5XvD0wKfg/+VXiCPP8Le54aulVcE
+ C8J6tZcygTp8mw/1gNK3O/uru5/CuDc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-350-LSUyNFYgOfOZs6DG0AF3fg-1; Tue, 28 Nov 2023 10:42:58 -0500
+X-MC-Unique: LSUyNFYgOfOZs6DG0AF3fg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44EB13C1E9D2;
- Tue, 28 Nov 2023 15:39:02 +0000 (UTC)
-Received: from localhost (unknown [10.22.8.243])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D9E11C060BB;
- Tue, 28 Nov 2023 15:39:01 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-stable@nongnu.org
-Subject: Re: [PATCH for-8.2] target/arm: Disable SME if SVE is disabled
-In-Reply-To: <20231127173318.674758-1-peter.maydell@linaro.org>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20231127173318.674758-1-peter.maydell@linaro.org>
-User-Agent: Notmuch/0.37 (https://notmuchmail.org)
-Date: Tue, 28 Nov 2023 16:39:00 +0100
-Message-ID: <877cm1yjjf.fsf@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 15DF6185A790;
+ Tue, 28 Nov 2023 15:42:58 +0000 (UTC)
+Received: from pinwheel (unknown [10.39.195.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EC7C51121308;
+ Tue, 28 Nov 2023 15:42:56 +0000 (UTC)
+Date: Tue, 28 Nov 2023 16:42:54 +0100
+From: Kashyap Chamarthy <kchamart@redhat.com>
+To: qemu-devel@nongnu.org, kvm@vger.kernel.org, rust-vmm@lists.opendev.org,
+ devel@lists.libvirt.org
+Subject: [Call for Presentations] FOSDEM 2024: Virt & IaaS Devroom
+Message-ID: <ZWYKfu48zxiAlbFq@pinwheel>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kchamart@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,7 +62,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,60 +78,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 27 2023, Peter Maydell <peter.maydell@linaro.org> wrote:
+[Cross-posted to KVM, Rust-VMM, QEMU, and libvirt lists)
 
-> There is no architectural requirement that SME implies SVE, but
-> our implementation currently assumes it. (FEAT_SME_FA64 does
-> imply SVE.) So if you try to run a CPU with eg "-cpu max,sve=off"
-> you quickly run into an assert when the guest tries to write to
-> SMCR_EL1:
->
-> #6  0x00007ffff4b38e96 in __GI___assert_fail
->     (assertion=0x5555566e69cb "sm", file=0x5555566e5b24 "../../target/arm/helper.c", line=6865, function=0x5555566e82f0 <__PRETTY_FUNCTION__.31> "sve_vqm1_for_el_sm") at ./assert/assert.c:101
-> #7  0x0000555555ee33aa in sve_vqm1_for_el_sm (env=0x555557d291f0, el=2, sm=false) at ../../target/arm/helper.c:6865
-> #8  0x0000555555ee3407 in sve_vqm1_for_el (env=0x555557d291f0, el=2) at ../../target/arm/helper.c:6871
-> #9  0x0000555555ee3724 in smcr_write (env=0x555557d291f0, ri=0x555557da23b0, value=2147483663) at ../../target/arm/helper.c:6995
-> #10 0x0000555555fd1dba in helper_set_cp_reg64 (env=0x555557d291f0, rip=0x555557da23b0, value=2147483663) at ../../target/arm/tcg/op_helper.c:839
-> #11 0x00007fff60056781 in code_gen_buffer ()
->
-> Avoid this unsupported and slightly odd combination by
-> disabling SME when SVE is not present.
->
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2005
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> '-cpu sve=off,sme=on,sme_fa64=off' crashes in the same way, so just
-> turning off FA64 isn't sufficient.  Maybe we should support
-> SME-no-SVE, but for 8.2 at least turning off SME is better than
-> letting users hit an assertion.
-> ---
->  target/arm/cpu.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 25e9d2ae7b8..0fe268ac785 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -1743,6 +1743,15 @@ void arm_cpu_finalize_features(ARMCPU *cpu, Error **errp)
->              return;
->          }
->  
-> +        /*
-> +         * FEAT_SME is not architecturally dependent on FEAT_SVE (unless
-> +         * FEAT_SME_FA64 is present). However our implementation currently
-> +         * assumes it, so if the user asked for sve=off then turn off SME also.
-> +         */
+Hi, the CFP for the "Virt & IaaS" DevRoom is out[+].
 
-Might be worth adding a note here that KVM currently does not support
-SME anyway? It took me a moment to remember that.
+Something new this year is a new talk-submission system: so you need to
+create a new account, even if you've had an account with the older
+talk-submission system.  Details in the "Submit Your Proposal" section
+below.
 
-> +        if (cpu_isar_feature(aa64_sme, cpu) && !cpu_isar_feature(aa64_sve, cpu)) {
-> +            object_property_set_bool(OBJECT(cpu), "sme", false, &error_abort);
-> +        }
-> +
->          arm_cpu_sme_finalize(cpu, &local_err);
->          if (local_err != NULL) {
->              error_propagate(errp, local_err);
+========================================================================
+We are excited to announce that the call for proposals is now open for
+the Virtualization and Cloud infrastructure devroom at the upcoming
+FOSDEM 2024, to be hosted on February 3rd 2024.
+
+This devroom is a collaborative effort, and is organized by dedicated
+folks from projects such as OpenStack, Xen Project, KubeVirt, QEMU, KVM,
+and Foreman. We would like to invite all those who are involved in these
+fields to submit your proposals by December 8th, 2023.
+
+Important Dates
+---------------
+
+Submission deadline: 8th December 2023
+
+Acceptance notifications: 10th December 2023
+
+Final schedule announcement: 15th December 2023
+
+Devroom: 3rd February 2024
+
+About the Devroom
+-----------------
+
+The Virtualization & IaaS devroom will feature session topics such as
+open source hypervisors or virtual machine managers such as Xen Project,
+KVM, bhyve and VirtualBox as well as Infrastructure-as-a-Service
+projects such as KubeVirt, Apache CloudStack, OpenStack, QEMU and
+OpenNebula.
+
+This devroom will host presentations that focus on topics of shared
+interest, such as KVM; libvirt; shared storage; virtualized networking;
+cloud security; clustering and high availability; interfacing with
+multiple hypervisors; hyperconverged deployments; and scaling across
+hundreds or thousands of servers.
+
+Presentations in this devroom will be aimed at developers working on
+these platforms who are looking to collaborate and improve shared
+infrastructure or solve common problems. We seek topics that encourage
+dialog between projects and continued work post-FOSDEM.
+
+Submit Your Proposal
+--------------------
+
+All submissions must be made via the Pretalx event planning site[1]. It
+is a new submission system so you will need to create an account. If you
+submitted proposals for FOSDEM in previous years, you won’t be able to
+use your existing account.
+
+During submission please make sure to select Virtualization and Cloud
+infrastructure from the Track list. Please fill out all the required
+fields, and provide a meaningful abstract and description of your
+proposed session.
+
+Submission Guidelines
+---------------------
+
+We expect more proposals than we can possibly accept, so it is vitally
+important that you submit your proposal on or before the deadline. Late
+submissions are unlikely to be considered.
+
+All presentation slots are 30 minutes, with 20 minutes planned for
+presentations, and 10 minutes for Q&A.
+
+All presentations will be recorded and made available under Creative
+Commons licenses. In the Submission notes field, please indicate that
+you agree that your presentation will be licensed under the CC-By-SA-4.0
+or CC-By-4.0 license and that you agree to have your presentation
+recorded.  For example:
+
+"If my presentation is accepted for FOSDEM, I hereby agree to license
+all recordings, slides, and other associated materials under the
+Creative Commons Attribution Share-Alike 4.0 International License.
+
+Sincerely,
+
+<NAME>."
+
+In the Submission notes field, please also confirm that if your talk is
+accepted, you will be able to attend FOSDEM and deliver your
+presentation.  We will not consider proposals from prospective speakers
+who are unsure whether they will be able to secure funds for travel and
+lodging to attend FOSDEM. (Sadly, we are not able to offer travel
+funding for prospective speakers.)
+
+Code of Conduct
+---------------
+
+Following the release of the updated code of conduct for FOSDEM, we'd
+like to remind all speakers and attendees that all of the presentations
+and discussions in our devroom are held under the guidelines set in the
+CoC and we expect attendees, speakers, and volunteers to follow the CoC
+at all times.
+
+If you submit a proposal and it is accepted, you will be required to
+confirm that you accept the FOSDEM CoC. If you have any questions about
+the CoC or wish to have one of the devroom organizers review your
+presentation slides or any other content for CoC compliance, please
+email us and we will do our best to assist you.
+
+Questions?
+----------
+
+If you have any questions about this devroom, please send your questions
+to our devroom mailing list[2]. You can also subscribe to the list to
+receive updates about important dates, session announcements, and to
+connect with other attendees.
+
+See you all at FOSDEM!
+
+[1] https://pretalx.fosdem.org/fosdem-2024/cfp
+[2] virtualization-devroom-manager at fosdem.org
+=======================================================================
+
+[+] This email is a slightly formatted version of the official announce:
+    https://lists.fosdem.org/pipermail/fosdem/2023q4/003481.html
+
+-- 
+/kashyap
 
 
