@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEAC7FBB11
+	by mail.lfdr.de (Postfix) with ESMTPS id 265187FBB10
 	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 14:15:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7xv8-0002sH-Q3; Tue, 28 Nov 2023 08:14:34 -0500
+	id 1r7xvS-0002uF-Nl; Tue, 28 Nov 2023 08:14:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7xv4-0002rb-CF
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:14:30 -0500
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7xvQ-0002tv-LC
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:14:52 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7xv2-0002tU-5N
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:14:30 -0500
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a08e4352992so550677366b.1
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 05:14:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7xvP-0002v3-8j
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:14:52 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a02c48a0420so752673566b.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 05:14:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701177264; x=1701782064; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701177289; x=1701782089; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Wv+gmnL8J16L1l7YYAj7C2zH+0NIwbizMaSBPX68Mt8=;
- b=dE8PTe0gbI8WDZ2TxViNlBfa9BRtbkzqDyCGkseEg06x4JxAjth7tLhFiJIFN25fBu
- SY60YEZPKZ+QgRPfmGJ3SiTpHd8cMNR69goJpCmM2MYB7gPXRvVM5r4i4JoewhhW1gSk
- l+bXlLjNkoSaD2x0Z0+teYFGhkhkRv1Cuio3f4nxZ2PoPsy2UjUyb9quA0Y/pqNnlFKo
- 9OKxfSbVg72a9yCC3y/tG1UFPSJmHc4LSfJ9oOHDSOLVUk14CJEAoYcOP8JNgvbmyDhh
- qn6xUB8HgOyFTSswxsVBxEBTPq99gPNQIz1O8Pcb6zEgylgIHOdObAjeAvxcjZvv10zG
- 4xqg==
+ bh=6in//SQBjP9VE9IpQ2Qfw/3JXEDnJcufiZRfIQ08CVk=;
+ b=XwSl73UtXVlm3C/lV0n/0ffb8CRmNtwMGU8hiVsSGllBcc5Y2WpI4qazvOIkgMMENs
+ 6coCYBSRSSZmKxyQdk479NUt8+a6tO0MtJMN4MJ2En+h9Fe/io7cE+ieZP6tZS77ZIAa
+ IqOqNFzv4KWZrMYf8w6FJ25fO2JB0HGDsqO3Q+P7Zd3mrT7cSUSrfNLDn0Vs0d2cVAlk
+ SntEEScHVwY68MAUO5nJU/vfkYB+fQuW1vleELxXTZpsZItCruOVtkI5m9vT4TGIkgKm
+ iDRXMA+elCgkuOPYSZpGYdKgCST/DaBFrCHj3EyyUd9LRrLCD/gblb4EtMVNUX1ZFJ7q
+ 5rQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701177264; x=1701782064;
+ d=1e100.net; s=20230601; t=1701177289; x=1701782089;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wv+gmnL8J16L1l7YYAj7C2zH+0NIwbizMaSBPX68Mt8=;
- b=PNsPYINH7IBCpJcPDFWS5ACzBaQptRFiDwf/OJ/GAO2XSHB6sKgBkToCrFCMFkFCQq
- Rw2BEjGbgE0gEY28PpRWoUGKC3Bx2cKjExQ26OxqW+cyCFmtqhW/0rx6+kGYFo9IXJ2N
- DOqS1/B80WDy4zuIsOVOE2Xdc/VykkcTI8q2RvkmCVRUTzkvd6pH7/E41jomu/QftuLk
- tWeE0rupxlbGKq5o3IF0QT/ilMNawytDzhHf/yic2rExA2qeXTM2mQgw2sa5i2b6+qc/
- D/DcRMEivf7okE3xBRhkjtueyCulgRPg5kbDujnORuXEpP+luZ8UPFwiFmSOdvNlqAHV
- pTKQ==
-X-Gm-Message-State: AOJu0YxMBokpZZUWUMYwwUJHYwvVdGDf9vxJq3MW5MD9DVHfBjlirJJt
- Wlzt70iG7A93WRVZL9duess+1w==
-X-Google-Smtp-Source: AGHT+IHaAZdN3zqDqa9l1IX8NVYoCfRVvotAVzrrKpTGqXhXeKUTaWBma7xCN9rDMnB4eDzGXf/6Eg==
-X-Received: by 2002:a17:906:f354:b0:a0d:efba:4492 with SMTP id
- hg20-20020a170906f35400b00a0defba4492mr4707615ejb.10.1701177264594; 
- Tue, 28 Nov 2023 05:14:24 -0800 (PST)
+ bh=6in//SQBjP9VE9IpQ2Qfw/3JXEDnJcufiZRfIQ08CVk=;
+ b=MX5/QQbn6GdjTYjYV6eJujq7eWU6ZG1aJlu24fTC6dnBJ4zw0Aes3f8p6OedmWOaYb
+ 3VMMjU7vSRKRmdOZQkTFyO0vQ7mORdRZVo9Ajfn1k1u1javLoUB6HeFKue2R9vWjlY0D
+ tLLh3jhcXb1vOaWnPgidvCOIjuC1rHg96GmDy0BePBE38o21vzFQBBR3PbLK0EJrUAE9
+ 1ojGQU8znNmZ1IkVwLy0Lm/6cT30LNBTf8itcS/e8HW4f6m5WoYTNDdi/T8PfJ+grIHR
+ hYWBJOKOGfSwAnDz19gojirie91NTvVVSYIR0DuM41Xl0eOrWIWBkrtQq3bn4lBsPTTX
+ W1OA==
+X-Gm-Message-State: AOJu0YzP0Tyh+brk7Jm+VctYbSGg+YOfZZwHvMMLYKacSaDVKwK1UsiX
+ Xt8eXBDiXRy6zQc0lnO1HtIyH0qtTzQuAbiGAso=
+X-Google-Smtp-Source: AGHT+IHKkipjK3+WzXuiwPpkdrqvZ/wX6wLOBB6CQMVuNQj7aoYAcm/7pnvOYfqf1Ypz4FN5L+875w==
+X-Received: by 2002:a17:906:1358:b0:a00:7d00:66d7 with SMTP id
+ x24-20020a170906135800b00a007d0066d7mr10584143ejb.18.1701177289662; 
+ Tue, 28 Nov 2023 05:14:49 -0800 (PST)
 Received: from [192.168.69.100] (crb44-h02-176-184-13-61.dsl.sta.abo.bbox.fr.
  [176.184.13.61]) by smtp.gmail.com with ESMTPSA id
- j20-20020a1709064b5400b00a11e9036cffsm1202811ejv.195.2023.11.28.05.14.22
+ j20-20020a1709064b5400b00a11e9036cffsm1202811ejv.195.2023.11.28.05.14.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 05:14:23 -0800 (PST)
-Message-ID: <72c2d2ae-6f47-4a43-98a2-fb589f5e9de0@linaro.org>
-Date: Tue, 28 Nov 2023 14:14:21 +0100
+ Tue, 28 Nov 2023 05:14:49 -0800 (PST)
+Message-ID: <759b274c-bb58-4b3c-a504-9769e799e6e8@linaro.org>
+Date: Tue, 28 Nov 2023 14:14:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] docs/s390: Fix wrong command example in
- s390-cpu-topology.rst
+Subject: Re: [PATCH] target/hexagon/idef-parser/prepare: use env to invoke bash
 Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-References: <20231127134917.568552-1-zhao1.liu@linux.intel.com>
+To: Samuel Tardieu <sam@rfc1149.net>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Alessandro Di Federico <ale@rev.ng>,
+ Anton Johansson <anjo@rev.ng>
+References: <20231123211506.636533-1-sam@rfc1149.net>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231127134917.568552-1-zhao1.liu@linux.intel.com>
+In-Reply-To: <20231123211506.636533-1-sam@rfc1149.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,26 +92,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/11/23 14:49, Zhao Liu wrote:
-> From: Zhao Liu <zhao1.liu@intel.com>
+On 23/11/23 22:15, Samuel Tardieu wrote:
+> This file is the only one involved in the compilation process which
+> still uses the /bin/bash path.
 > 
->  From s390_possible_cpu_arch_ids() in hw/s390x/s390-virtio-ccw.c, the
-> "core-id" is the index of possible_cpus->cpus[], so it should only be
-> less than possible_cpus->len, which is equal to ms->smp.max_cpus.
-> 
-> Fix the wrong "core-id" 112, because it isn't less than maxcpus (36) in
-> -smp, and the valid core ids are 0-35 inclusive.
-> 
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
 > ---
-> Changes since v1 RFC:
->   * Fixed typo. (Nina)
->   * Polished the description of the reason for fixing the wrong core-id.
->     (Nina)
-> ---
->   docs/devel/s390-cpu-topology.rst | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   target/hexagon/idef-parser/prepare | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Patch queued, thanks!
 
