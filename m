@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9FD7FC0F9
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 19:04:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4817FC0FD
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 19:06:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r82Pv-0000Py-8N; Tue, 28 Nov 2023 13:02:39 -0500
+	id 1r82T0-00024y-Dt; Tue, 28 Nov 2023 13:05:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r82Po-0000Ob-Dq
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:02:34 -0500
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r82St-00024M-2m
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:05:43 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r82Pk-0007rF-Bd
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:02:31 -0500
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-50bbc36f767so1302457e87.1
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 10:02:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r82Sr-0000Gp-0a
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:05:42 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-54af0eca12dso6295346a12.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 10:05:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701194545; x=1701799345; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2lEzZanP7/CaHmG+Avp5B41ij/SnJl+RpexIA/tsw5E=;
- b=Ud/Hfq3gQ/7fXaJnFQMYK3IJ7Xr5n4DKU3ojow90rgu5A1dBX4KmuDCQya4PCf/cKi
- iAG1F+Rb0GtbZbX5nCD1Tsd7C7KVeNOYzoKmAsIjFqr7NqOowgnEUpkIzvjlsFsq+nsJ
- HrSeNKTcEoj5oRdYYjRCwIniicXKqS0RQHYa30n/MfZDD79aBVkoBRmahlduFaLQ1/fM
- Zpl+j2/uhlttjfOKzwKg0s9yHRFET0ZXrQbnITuDXTWv16tbYM/DLIYuXQPpo4rK4R2d
- DThdKAIcvec6B4/0MQ0wTYkx/XM9k7jrArAnkrHQ6iyPtay6z2ZKUepsdjyHabg3Cn8p
- QgJw==
+ d=linaro.org; s=google; t=1701194737; x=1701799537; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NIWhnJQJG9W6L+GQ8OQQYANhmKyMSUgwlyiLy7BMC10=;
+ b=S1v8vV124BHgk7JpllbHFm6UsK0RxBiaxGFK0xL0gFaBjQv+dkJ9FEzX+a05GlValI
+ oNGWUEfhBkEoTNcJQnPvIbu/wy+9gowfLUPdrQJrtYAZXHom35UvzrIzynS16ssNaxVt
+ LXLcsjb110Q4WgxtQRFsbrymPeY1st44LxJi4T4Q3HoDmWiAWulNwV2layp0b1VW5rHe
+ sSigxrcVClELN+7lxpMrMtJ8nqF/P9BcCCYSb4Kiuxm4/iRk+rsiQadnBzWjPCmd/YNi
+ JNSie54ratDSF+zzdiG9MziciNSZ3kM3O2tFRFjVvIT9PBgQm9rk5BwTwiIs5q2IVFmE
+ RDow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701194545; x=1701799345;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2lEzZanP7/CaHmG+Avp5B41ij/SnJl+RpexIA/tsw5E=;
- b=Ta7ei08nIV+DnOv9JMT+Z4V+zhT22j9ckDlwPpP77mM4+xmR6huOEW+Ta+r3m3T35N
- 55AxcZALT5BiQJX41iwT70GpG8nMZRRZyBFKpyryaybK0joJ2LZVTuclRQTwwYuuwQ0M
- a9bBb77BF8iBdRQtjg0ox+yBjayGC/X7XEmvoxDvVWxsHOmFKZMoK0nNwfig0nqEDqk0
- UpLn7PcxhYObeoeMlNn5Plwi4zkiYOJqPCwPalLjPVEuVyR1LD3T6H5PlRGDy/OlMbXb
- mlKMS+WSG29P3HRk0SbNdCczZCAPRZbkSCuEiTpg6wocQvfQeR4UPtstnJu5ZsL2JGpd
- aHrg==
-X-Gm-Message-State: AOJu0YzOmkmYqu2IhEXbneq1AsnRVJ+h+uwUkU4TJzSWtG8/g6ZQoQX6
- ePD5SQ6r3Xut1QPorhCGw3P3pg==
-X-Google-Smtp-Source: AGHT+IEaTIYC58ZdB9WrVr1OaKU7isbFghMpm2h7dP7y5wMC6+xBKWcnfOaos2LBkB8EX0Hfh5q0DA==
-X-Received: by 2002:a05:6512:3709:b0:50b:ad18:369b with SMTP id
- z9-20020a056512370900b0050bad18369bmr5525910lfr.29.1701194545032; 
- Tue, 28 Nov 2023 10:02:25 -0800 (PST)
-Received: from [192.168.174.227] ([91.223.100.55])
- by smtp.gmail.com with ESMTPSA id
- h5-20020a056512350500b0050ba4a21fdfsm1543929lfs.39.2023.11.28.10.02.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 10:02:24 -0800 (PST)
-Message-ID: <4a6ed3cf-e714-44c2-b438-44e59b469e7a@linaro.org>
-Date: Tue, 28 Nov 2023 12:02:07 -0600
+ d=1e100.net; s=20230601; t=1701194737; x=1701799537;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NIWhnJQJG9W6L+GQ8OQQYANhmKyMSUgwlyiLy7BMC10=;
+ b=ecLJOEm4GfRy4hrJYoRLgInrJzG38d9Cg4G9Sj7MnzNPqsu8SKqo7Mz5aYZ3+LffrF
+ kkLwDVjaJyL0GNszu5YOxD2t2VAzE76qnrNj3alhnD6sBdMwrQ7NukbgSTGF25Ct3V/Z
+ 9B8D7o01TVljPy3cbzt0dq1NpbE+LQywfkRDZDASZEHgbYystVG8Z91l2lB+yuX0JaBJ
+ der+DUu6PPYM89UzWVfD6M28nTtcItpTz0jbeKwE3fSwkfgM848uML/1kpBn7AbVsZy3
+ +4Rk7cIYq7Nv/jSljOs4S5I5GCxIl6PgNz2yy5kFyzyIRbPSSiNlVrfWL0uhldsCyo/g
+ X96g==
+X-Gm-Message-State: AOJu0Yxk1wHiQV5beK43B6rWOb+gZZBeNkZnAChpe7B1xH28wwcDBYlC
+ phCNV7Men+jWc6AJ3f/AGiyJoSS6JHEfvVuyDORqJA==
+X-Google-Smtp-Source: AGHT+IE+zOdndgNulH8JyfzXWnM4QLeBbIOxwYr633LIdfnxfVsvpDrsQQ/EOsCXvYBQC6BmAu1yejVfLifHIVm1P88=
+X-Received: by 2002:a50:c102:0:b0:54b:2af0:dee2 with SMTP id
+ l2-20020a50c102000000b0054b2af0dee2mr7943845edf.4.1701194736692; Tue, 28 Nov
+ 2023 10:05:36 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-8.2] target/arm: Disable SME if SVE is disabled
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20231127173318.674758-1-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231127173318.674758-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12c.google.com
+References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
+ <87edgjf2v4.fsf@draig.linaro.org>
+ <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
+In-Reply-To: <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 28 Nov 2023 18:05:25 +0000
+Message-ID: <CAFEAcA9M5mXQJRQWGTWoh52H+KmCYd2sWrKzM8RrA=Dh=VeTQg@mail.gmail.com>
+Subject: Re: QEMU Summit Minutes 2023
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ QEMU Developers <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,48 +89,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/27/23 11:33, Peter Maydell wrote:
-> There is no architectural requirement that SME implies SVE, but
-> our implementation currently assumes it. (FEAT_SME_FA64 does
-> imply SVE.) So if you try to run a CPU with eg "-cpu max,sve=off"
-> you quickly run into an assert when the guest tries to write to
-> SMCR_EL1:
-> 
-> #6  0x00007ffff4b38e96 in __GI___assert_fail
->      (assertion=0x5555566e69cb "sm", file=0x5555566e5b24 "../../target/arm/helper.c", line=6865, function=0x5555566e82f0 <__PRETTY_FUNCTION__.31> "sve_vqm1_for_el_sm") at ./assert/assert.c:101
-> #7  0x0000555555ee33aa in sve_vqm1_for_el_sm (env=0x555557d291f0, el=2, sm=false) at ../../target/arm/helper.c:6865
-> #8  0x0000555555ee3407 in sve_vqm1_for_el (env=0x555557d291f0, el=2) at ../../target/arm/helper.c:6871
-> #9  0x0000555555ee3724 in smcr_write (env=0x555557d291f0, ri=0x555557da23b0, value=2147483663) at ../../target/arm/helper.c:6995
-> #10 0x0000555555fd1dba in helper_set_cp_reg64 (env=0x555557d291f0, rip=0x555557da23b0, value=2147483663) at ../../target/arm/tcg/op_helper.c:839
-> #11 0x00007fff60056781 in code_gen_buffer ()
-> 
-> Avoid this unsupported and slightly odd combination by
-> disabling SME when SVE is not present.
-> 
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2005
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> '-cpu sve=off,sme=on,sme_fa64=off' crashes in the same way, so just
-> turning off FA64 isn't sufficient.  Maybe we should support
-> SME-no-SVE, but for 8.2 at least turning off SME is better than
-> letting users hit an assertion.
+On Tue, 28 Nov 2023 at 17:54, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+>
+> On 11/21/23 18:11, Alex Benn=C3=A9e wrote:
+> > Peter Maydell <peter.maydell@linaro.org> writes:
+> >> Topic 2: Are we happy with the email workflow?
+> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >>
+> >> This was a topic to see if there was any consensus among maintainers
+> >> about the long-term acceptability of sticking with email for patch
+> >> submission and review -- in five years' time, if we're still doing it
+> >> the same way, how would we feel about it?
+> >>
+> >> One area where we did get consensus was that now that we're doing CI
+> >> on gitlab we can change pull requests from maintainers from via-email
+> >> to gitlab merge requests. This would hopefully mean that instead of
+> >> the release-manager having to tell gitlab to do a merge and then
+> >> reporting back the results of any CI failures, the maintainer
+> >> could directly see the CI results and deal with fixing up failures
+> >> and resubmitting without involving the release manager. (This
+> >> may have the disbenefit that there isn't a single person any
+> >> more who looks at all the CI results and gets a sense of whether
+> >> particular test cases have pre-existing intermittent failures.)
+> >
+> > If we are keen to start processing merge requests for the 9.0 release w=
+e
+> > really should consider how it is going to work before we open up the
+> > taps post 8.2-final going out.
+> >
+> > Does anyone want to have a go at writing an updated process for
+> > docs/devel/submitting-a-pull-request.rst (or I guess merge-request) so
+> > we can discuss it and be ready early in the cycle? Ideally someone who
+> > already has experience with the workflow with other gitlab hosted
+> > projects.
+>
+>
+> Reading the Topic 2 paragraph above, I understand that a maintainer
+> of a subsystem would be able to merge its '-next' branch in the main
+> repository when CI is all green. Correct ?
 
-My first reaction was simply to change smcr_write, so that it does not compute SVL unless 
-SM (as otherwise the write does not (immediately) change vector length).
+I think my intention when writing that was to say that the submaintainer
+kicks things off and deals with resubmitting and rerunning if there
+are failures, but actually doing "merge this successfully tested
+pullreq" is still the release-manager's job.
 
-However, as I searched for other uses of sve_vqm1_for_el, I immediately ran into other 
-places in which are gated solely by isar_feature_aa64_sve.  So I think this simple patch 
-is best for 8.2.
+> It seems to me that we should also have a group of people approving
+> the MR.
 
-I also slightly wonder if SME && !SVE is a useful combination.  AFAIK, while v9 does not 
-*require* SVE, SVE2 is intended as a replacement for AdvSIMD, and I believe that so far 
-all v9 cpus have at least 128-bit SVE.
+I do think something like this is probably where we want to get to
+eventually, where there's a group of people with the rights to
+approve a merge, and maybe the rules about how many approvals
+or whose approval is needed can differ between "normal development"
+and "in freeze" periods. But the idea of the above text I think
+was that the first step is to change from how the release manager
+receives "please merge this" requests from the current "here's an
+email, you need to test it" to "here's a thing in the gitlab UI
+that has already passed the tests and is ready to go".
 
-In any case, I'll work on any improvements in this area for next cycle.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
+thanks
+-- PMM
 
