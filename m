@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 663E47FB855
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 11:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E92E7FB857
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 11:45:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7vZD-0006or-69; Tue, 28 Nov 2023 05:43:47 -0500
+	id 1r7vZC-0006om-JF; Tue, 28 Nov 2023 05:43:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1r7vZB-0006oP-Fr
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:43:45 -0500
+ id 1r7vZA-0006nb-3H
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:43:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1r7vZ8-0005hE-HN
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:43:45 -0500
+ id 1r7vZ7-0005hA-En
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:43:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701168215;
+ s=mimecast20190719; t=1701168214;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Xzdm5YKmAcApcYJb/8xg+e8LPU0ALlufPyzIkHlXIls=;
- b=BCafkelNHgcWfgJv5P0uZupH+eHrb3qL5wlSAn55E3NjtOYeBJ1DAEHahNU8NldGy+AXtt
- 2rZS3iYcXZoiZaEkz/I5F3Patryfk0FCqPjhu61F14UAsHDXw56s16G9DsxxCP+qH+sU+H
- Dpuh7BoTA+Ucm+CH6Ir03nQPdTBnG8Q=
+ bh=Wj2KOCSd3gkqmbd2ClDeaOLOq55F9jaRkAO+a/H8Y0M=;
+ b=QQQIOYOUtdGr0o7ptCRwlXVzp02reWtPAZnw5VmwsBBTuTsB3LPsy+mNjSK65M5VclWFG1
+ v1xQ+/ofCwdM/wCaX3h37rtLcbyqc4XW0vdDt7yg7yAlXGicrZqHnpLZCBQ0w3Mygc5K45
+ drXwq1b4vlxi2b7FSZXgE9fbTucKDLc=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-TWrBiRRdPC6xv7FHK5ke8w-1; Tue, 28 Nov 2023 05:43:30 -0500
-X-MC-Unique: TWrBiRRdPC6xv7FHK5ke8w-1
+ us-mta-398-KUyxP7KWMa26lB9DH_zD5w-1; Tue, 28 Nov 2023 05:43:33 -0500
+X-MC-Unique: KUyxP7KWMa26lB9DH_zD5w-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 34F1D8309A3;
- Tue, 28 Nov 2023 10:43:30 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A559481D871;
+ Tue, 28 Nov 2023 10:43:32 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0096420268D8;
- Tue, 28 Nov 2023 10:43:27 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 70FFE20268D7;
+ Tue, 28 Nov 2023 10:43:30 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gautam Dawar <gdawar@xilinx.com>, Jason Wang <jasowang@redhat.com>,
@@ -54,10 +54,10 @@ Cc: Gautam Dawar <gdawar@xilinx.com>, Jason Wang <jasowang@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Parav Pandit <parav@mellanox.com>, Lei Yang <leiyang@redhat.com>,
  si-wei.liu@oracle.com
-Subject: [RFC PATCH v2 09/10] vdpa: add vhost_vdpa_net_load_setup NetClient
- callback
-Date: Tue, 28 Nov 2023 11:43:02 +0100
-Message-Id: <20231128104303.3314000-10-eperezma@redhat.com>
+Subject: [RFC PATCH v2 10/10] virtio_net: register incremental migration
+ handlers
+Date: Tue, 28 Nov 2023 11:43:03 +0100
+Message-Id: <20231128104303.3314000-11-eperezma@redhat.com>
 In-Reply-To: <20231128104303.3314000-1-eperezma@redhat.com>
 References: <20231128104303.3314000-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -89,101 +89,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So the vDPA backend knows when a migration incoming starts.  NicState
-argument is needed so we can get the dma address space.
+This way VirtIONet can detect when the incoming migration starts.
+
+While registering in the backend (nc->peer) seems more logical, we need
+nic dma address space, and we cannot get it from the backend.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
-RFC v2:
-* Solve git conflict with .set_steering_ebpf
-* Fix x-svq=on use case which did not allocated iova_tree.
----
- include/net/net.h |  6 ++++++
- net/vhost-vdpa.c  | 33 +++++++++++++++++++++++++++++++++
- 2 files changed, 39 insertions(+)
+This could be done in vhost_vdpa or VirtIODevice struct, but future
+series will add state restore through CVQ so it's easier to start in
+VirtIONet directly.  If we need to make this more generic, we can move
+to VirtIODevice and expose callbacks from VirtIONet class.
 
-diff --git a/include/net/net.h b/include/net/net.h
-index ffbd2c8d56..68282dde31 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -42,6 +42,7 @@ typedef struct NICConf {
- 
- /* Net clients */
- 
-+struct NICState;
- typedef void (NetPoll)(NetClientState *, bool enable);
- typedef bool (NetCanReceive)(NetClientState *);
- typedef int (NetStart)(NetClientState *);
-@@ -69,6 +70,9 @@ typedef void (SocketReadStateFinalize)(SocketReadState *rs);
- typedef void (NetAnnounce)(NetClientState *);
- typedef bool (SetSteeringEBPF)(NetClientState *, int);
- typedef bool (NetCheckPeerType)(NetClientState *, ObjectClass *, Error **);
-+/* This can be called before start & pair, so get also the peer */
-+typedef int (NetMigrationLoadSetup)(NetClientState *, struct NICState *);
-+typedef int (NetMigrationLoadCleanup)(NetClientState *, struct NICState *);
- 
- typedef struct NetClientInfo {
-     NetClientDriver type;
-@@ -98,6 +102,8 @@ typedef struct NetClientInfo {
-     NetAnnounce *announce;
-     SetSteeringEBPF *set_steering_ebpf;
-     NetCheckPeerType *check_peer_type;
-+    NetMigrationLoadSetup *load_setup;
-+    NetMigrationLoadCleanup *load_cleanup;
- } NetClientInfo;
- 
- struct NetClientState {
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index a37de7860e..90f41280d2 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -407,6 +407,37 @@ static void vhost_vdpa_net_client_stop(NetClientState *nc)
-     }
+Also, the pointer may not be the best id, but there are not a lot of
+things initialized in n.
+---
+ hw/net/virtio-net.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 80c56f0cfc..374d0b4ec8 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -38,6 +38,7 @@
+ #include "qapi/qapi-events-migration.h"
+ #include "hw/virtio/virtio-access.h"
+ #include "migration/misc.h"
++#include "migration/register.h"
+ #include "standard-headers/linux/ethtool.h"
+ #include "sysemu/sysemu.h"
+ #include "trace.h"
+@@ -3810,9 +3811,39 @@ static void virtio_net_device_unrealize(DeviceState *dev)
+     virtio_cleanup(vdev);
  }
  
-+static int vhost_vdpa_net_load_setup(NetClientState *nc, NICState *nic)
++static int virtio_net_load_setup(QEMUFile *f, void *opaque)
 +{
-+    VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
-+    VirtIONet *n = qemu_get_nic_opaque(&nic->ncs[0]);
-+    VhostVDPAShared *shared = s->vhost_vdpa.shared;
-+    int r;
++    VirtIONet *n = opaque;
++    NetClientState *nc = qemu_get_subqueue(n->nic, 0);
 +
-+    if (s->always_svq) {
-+        /* iova tree is needed because of SVQ */
-+        shared->iova_tree = vhost_iova_tree_new(shared->iova_range.first,
-+                                                shared->iova_range.last);
++    if (nc->peer->info->load_setup) {
++        return nc->peer->info->load_setup(nc->peer, n->nic);
 +    }
 +
-+    r = vhost_vdpa_load_setup(shared, n->parent_obj.dma_as);
-+    if (unlikely(r < 0)) {
-+        g_clear_pointer(&s->vhost_vdpa.shared->iova_tree,
-+                        vhost_iova_tree_delete);
++    return 0;
++}
++
++static int virtio_net_load_cleanup(void *opaque)
++{
++    VirtIONet *n = opaque;
++    NetClientState *nc = qemu_get_subqueue(n->nic, 0);
++
++    if (nc->peer->info->load_cleanup) {
++        return nc->peer->info->load_cleanup(nc->peer, n->nic);
 +    }
 +
-+    return r;
++    return 0;
 +}
 +
-+static int vhost_vdpa_net_load_cleanup(NetClientState *nc, NICState *nic)
-+{
-+    VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
-+    VirtIONet *n = qemu_get_nic_opaque(&nic->ncs[0]);
++static const SaveVMHandlers savevm_virtio_net_handlers = {
++    .load_setup = virtio_net_load_setup,
++    .load_cleanup = virtio_net_load_cleanup,
++};
 +
-+    return vhost_vdpa_load_cleanup(s->vhost_vdpa.shared,
-+                             n->parent_obj.status & VIRTIO_CONFIG_S_DRIVER_OK);
-+}
-+
- static NetClientInfo net_vhost_vdpa_info = {
-         .type = NET_CLIENT_DRIVER_VHOST_VDPA,
-         .size = sizeof(VhostVDPAState),
-@@ -419,6 +450,8 @@ static NetClientInfo net_vhost_vdpa_info = {
-         .has_ufo = vhost_vdpa_has_ufo,
-         .check_peer_type = vhost_vdpa_check_peer_type,
-         .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
-+        .load_setup = vhost_vdpa_net_load_setup,
-+        .load_cleanup = vhost_vdpa_net_load_cleanup,
- };
+ static void virtio_net_instance_init(Object *obj)
+ {
+     VirtIONet *n = VIRTIO_NET(obj);
++    g_autoptr(GString) id = g_string_new(NULL);
  
- static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index,
+     /*
+      * The default config_size is sizeof(struct virtio_net_config).
+@@ -3824,6 +3855,10 @@ static void virtio_net_instance_init(Object *obj)
+                                   DEVICE(n));
+ 
+     ebpf_rss_init(&n->ebpf_rss);
++
++    g_string_printf(id, "%p", n);
++    register_savevm_live(id->str, VMSTATE_INSTANCE_ID_ANY, 1,
++                         &savevm_virtio_net_handlers, n);
+ }
+ 
+ static int virtio_net_pre_save(void *opaque)
 -- 
 2.39.3
 
