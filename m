@@ -2,69 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7811C7FB9E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 13:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253967FBA42
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 13:39:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7ws2-0004d8-7N; Tue, 28 Nov 2023 07:07:18 -0500
+	id 1r7xLC-0001fx-Ke; Tue, 28 Nov 2023 07:37:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r7wrt-0004cO-Uq
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:07:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r7xL7-0001fZ-El
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:37:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r7wrr-00060k-Kn
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:07:09 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r7xL1-00041n-2H
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:37:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701173225;
+ s=mimecast20190719; t=1701175030;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=iyCE0Y/GlXjluBGZionVv2ksC+0pbf9eKRVxi1TzhdM=;
- b=FGj3lbB35kvbAKx+ERLiorhp7eTtxbmu5jgzJg+AoIt0tLpI2+1sWDoNzGQ7fI971SdMjA
- sObGoswAD+v8gyYpb/xJ1iYCrZEDV4ADLSk2UzAXdVJbM8Ycogb6aIHfdJc2j54yOcD9nF
- ZG0zB+j3xcTyKGYNUwKHzQ19pNP6VNg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-685-BHQ0MLG4NduEeJ0LGsGRjg-1; Tue,
- 28 Nov 2023 07:07:00 -0500
-X-MC-Unique: BHQ0MLG4NduEeJ0LGsGRjg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=0TXXlHcEIF/S9wI+CACdibWbx6pm9OnLsFI9Pz4a9hQ=;
+ b=H2gFVfipuQdZDQOfrQTjQ2LGom+30ovOTGnOFRxIagTTMN1c1+73lziIOxaQj18N7t0iBo
+ VB23TbhE867LBqmQ0y5S/zjw861xuoQJzY7gQMBRroriRtlPmzQga8s8+LvKRxTsPkjWqO
+ +R08EMigvCV32vU1kNtjohQQ2K7fnVI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-342-gbsXV41BOIeJeiiW-dAKBA-1; Tue, 28 Nov 2023 07:37:05 -0500
+X-MC-Unique: gbsXV41BOIeJeiiW-dAKBA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C28FA1C06ECA;
- Tue, 28 Nov 2023 12:06:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A063B101A54C;
+ Tue, 28 Nov 2023 12:37:04 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 867A42166B26;
- Tue, 28 Nov 2023 12:06:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 37E7F1121307;
+ Tue, 28 Nov 2023 12:37:04 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7E0FC21E6A1F; Tue, 28 Nov 2023 13:06:58 +0100 (CET)
+ id 4279B21E6A1F; Tue, 28 Nov 2023 13:37:02 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
- Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 19/19] qapi/schema: refactor entity lookup helpers
-References: <20231116014350.653792-1-jsnow@redhat.com>
- <20231116014350.653792-20-jsnow@redhat.com>
-Date: Tue, 28 Nov 2023 13:06:58 +0100
-In-Reply-To: <20231116014350.653792-20-jsnow@redhat.com> (John Snow's message
- of "Wed, 15 Nov 2023 20:43:50 -0500")
-Message-ID: <877cm2xesd.fsf@pond.sub.org>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
+ berrange@redhat.com,  peter.maydell@linaro.org,  farosas@suse.de
+Subject: Re: [PATCH] 'channel' and 'addr' in qmp_migrate() are not
+ auto-freed. migrate_uri_parse() allocates memory which is returned to
+ 'channel', which is leaked because there is no code for freeing 'channel'
+ or 'addr'. So, free addr and channel to avoid memory leak. 'addr' does
+ shallow copying of channel->addr, hence free 'channel' itself and deep
+ free contents of 'addr'
+References: <20231128062520.36456-1-het.gala@nutanix.com>
+ <87a5qy4aag.fsf@pond.sub.org>
+ <db753099-b8a4-4057-9459-5174ff81ddee@nutanix.com>
+ <875y1m19ls.fsf@pond.sub.org>
+ <7d7c582a-50fa-4f66-a4c1-0753f69fc7d8@nutanix.com>
+Date: Tue, 28 Nov 2023 13:37:02 +0100
+In-Reply-To: <7d7c582a-50fa-4f66-a4c1-0753f69fc7d8@nutanix.com> (Het Gala's
+ message of "Tue, 28 Nov 2023 17:05:54 +0530")
+Message-ID: <871qcavytt.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,264 +90,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+Het Gala <het.gala@nutanix.com> writes:
 
-> This is not a clear win, but I was confused and I couldn't help myself.
+> On 28/11/23 3:29 pm, Markus Armbruster wrote:
+>> Het Gala <het.gala@nutanix.com> writes:
+>>
+>>> On 28/11/23 12:46 pm, Markus Armbruster wrote:
+>>>> Your commit message is all in one line.  You need to format it like
+>>>>
+>>>>        migration: Plug memory leak
+>>>>
+>>>>       'channel' and 'addr' in qmp_migrate() are not auto-freed.
+>>>>       migrate_uri_parse() allocates memory which is returned to 'channel',
+>>>>       which is leaked because there is no code for freeing 'channel' or
+>>>>       'addr'.  So, free addr and channel to avoid memory leak.  'addr'
+>>>>       does shallow copying of channel->addr, hence free 'channel' itself
+>>>>       and deep free contents of 'addr'.
+>>>>
+>>>> Het Gala<het.gala@nutanix.com>  writes:
+>>> Yeah, I made the changes in v2 patchset.
+>>>>> ---
+>>>>>    migration/migration.c | 2 ++
+>>>>>    1 file changed, 2 insertions(+)
+>>>>>
+>>>>> diff --git a/migration/migration.c b/migration/migration.c
+>>>>> index 28a34c9068..29efb51b62 100644
+>>>>> --- a/migration/migration.c
+>>>>> +++ b/migration/migration.c
+>>>>> @@ -2004,6 +2004,8 @@ void qmp_migrate(const char *uri, bool has_channels,
+>>>>>                              MIGRATION_STATUS_FAILED);
+>>>>>            block_cleanup_parameters();
+>>>>>        }
+>>>>> +    g_free(channel);
+>>>>> +    qapi_free_MigrationAddress(addr);
+>>>>>          if (local_err) {
+>>>>>            if (!resume_requested) {
+>>>> 2. hmp_migrate()
+>>>>
+>>>>      hmp_migrate() allocates @channel with migrate_uri_parse(), adds it to
+>>>>      list @caps, passes @caps to qmp_migrate(), then frees @caps with
+>>>>      qapi_free_MigrationChannelList().
+>>> Markus, sorry if I was not able to put point clearly, what I meant is that the local 'channel' variable used in qmp_migrate() i.e.
+>>>
+>>> 'MigrationChannel *channel = NULL', is defined in qmp_migrate() and if the user opts for 'uri' then '@channels' coming from hmp_migrate() will be NULL, and then migrate_uri_parse() will populate memory into 'channel', and that is not getting freed after it's use is over.
+>>>
+>>> I think, that is where memory leak might be happening ?
+>> Aha!
+>>
+>>      if (uri && has_channels) {
+>>          error_setg(errp, "'uri' and 'channels' arguments are mutually "
+>>                     "exclusive; exactly one of the two should be present in "
+>>                     "'migrate' qmp command ");
+>>          return;
+>>      } else if (channels) {
+>>          /* To verify that Migrate channel list has only item */
+>>          if (channels->next) {
+>>              error_setg(errp, "Channel list has more than one entries");
+>>              return;
+>>          }
+>>          channel = channels->value;
+>>      } else if (uri) {
+>>          /* caller uses the old URI syntax */
+>>          if (!migrate_uri_parse(uri, &channel, errp)) {
+>>              return;
+>>          }
+>>      } else {
+>>          error_setg(errp, "neither 'uri' or 'channels' argument are "
+>>                     "specified in 'migrate' qmp command ");
+>>          return;
+>>      }
+>>
+>> At this point, @channel is either channels->value, or from
+>> migrate_uri_parse().
+>>
+>> We must not free in the former case, we must free in the latter case,
+>>
+>> Before your patch, we don't free.  Memory leak in the latter case.
+>>
+>> Afterwards, we free.  Double-free in the former case.
+>>
+>> You could guard the free, like so:
+>>
+>>      if (uri) {
+>>          qapi_free_MigrationChannel(channel);
+>>      }
 >
-> Before:
+> Yeah, you explained it right. The above solution seems fine to me.
 >
-> lookup_entity(self, name: str, typ: Optional[type] = None
->               ) -> Optional[QAPISchemaEntity]: ...
+> I am just curious to ask this: can we use g_autoptr() for local vaiable 'channel' and 'addr' ? As we are not passing these variables to the caller function, nor we are trying to transfer their ownership to another variable, so use of g_steal_pointer() also might not be required ?
+
+You could try something like
+
+diff --git a/migration/migration.c b/migration/migration.c
+index 28a34c9068..7faa9c2ebd 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1932,7 +1932,7 @@ void qmp_migrate(const char *uri, bool has_channels,
+     bool resume_requested;
+     Error *local_err = NULL;
+     MigrationState *s = migrate_get_current();
+-    MigrationChannel *channel = NULL;
++    g_autoptr(MigrationChannel) channel = NULL;
+     MigrationAddress *addr = NULL;
+ 
+     /*
+@@ -1949,18 +1949,18 @@ void qmp_migrate(const char *uri, bool has_channels,
+             error_setg(errp, "Channel list has more than one entries");
+             return;
+         }
+-        channel = channels->value;
++        addr = channels->value->addr;
+     } else if (uri) {
+         /* caller uses the old URI syntax */
+         if (!migrate_uri_parse(uri, &channel, errp)) {
+             return;
+         }
++        addr = channel->addr;
+     } else {
+         error_setg(errp, "neither 'uri' or 'channels' argument are "
+                    "specified in 'migrate' qmp command ");
+         return;
+     }
+-    addr = channel->addr;
+ 
+     /* transport mechanism not suitable for migration? */
+     if (!migration_channels_and_transport_compatible(addr, errp)) {
+
+Untested.
+
+>>
+>> By the way, I the conditional shown above is harder to understand than
+>> necessary.  I like to get the errors out of the way at the beginning,
+>> like this:
+>>
+>>      if (uri && has_channels) {
+>>          error_setg(errp, "'uri' and 'channels' arguments are mutually "
+>>                     "exclusive; exactly one of the two should be present in "
+>>                     "'migrate' qmp command ");
+>>          return;
+>>      }
+>>      if (!uri && !has_channels) {
+>>          error_setg(errp, "neither 'uri' or 'channels' argument are "
+>>                     "specified in 'migrate' qmp command ");
+>>          return;
+>>      }
+>>
+>>      if (channels) {
+>>          /* To verify that Migrate channel list has only item */
+>>
+>> Or even
+>>
+>>      if (!uri == !has_channels) {
+>>          error_setg(errp, "need either 'uri' or 'channels' argument")
+>>          return;
+>>      }
+>>
+>> Suggestion, not demand.  If you do it, separate patch.
+>>
+> Yeah, I probably opted for 'if, else if' block because I found it easy to have all 4 options in that manner.
 >
-> lookup_type(self, name: str) -> Optional[QAPISchemaType]: ...
+> '!uri == !has_channels' is same as '!uri && !has_channels' right ?
+
+No.  It's "either both are null/false, or both are non-null/true".
+
+> Now looking at the Qemu code, it is better to have conditional statements the way you mentioned. Will do it in a separate patch.
 >
-> resolve_type(self, name: str, info: Optional[QAPISourceInfo],
->              what: Union[str, Callable[[Optional[QAPISourceInfo]], str]]
->              ) -> QAPISchemaType: ...
 >
-> After:
+> Regards,
 >
-> get_entity(self, name: str) -> Optional[QAPISchemaEntity]: ...
-> get_typed_entity(self, name: str, typ: Type[_EntityType]
->                  ) -> Optional[_EntityType]: ...
-> lookup_type(self, name: str) -> QAPISchemaType: ...
-> resolve_type(self, name: str, info: Optional[QAPISourceInfo],
->              what: Union[str, Callable[[Optional[QAPISourceInfo]], str]]
->              ) -> QAPISchemaType: ...
-
-.resolve_type()'s type remains the same.
-
-> In essence, any function that can return a None value becomes "get ..."
-> to encourage association with the dict.get() function which has the same
-> behavior. Any function named "lookup" or "resolve" by contrast is no
-> longer allowed to return a None value.
-
-.resolve_type() doesn't before the patch.
-
-> This means that any callers to resolve_type or lookup_type don't have to
-> check that the function worked, they can just assume it did.
->
-> Callers to resolve_type will be greeted with a QAPISemError if something
-> has gone wrong, as they have in the past. Callers to lookup_type will be
-> greeted with a KeyError if the entity does not exist, or a TypeError if
-> it does, but is the wrong type.
-
-Talking about .resolve_type() so much suggests you're changing it.
-You're not.
-
-Here's my own summary of the change, just to make sure I got it:
-
-1. Split .lookup_entity() into .get_entity() and .get_typed_entity().
-
-   schema.lookup_entity(name) and schema.lookup_entity(name, None)
-   become schema.get_entity(name).
-
-   schema.lookup_entity(name, typ) where typ is not None becomes
-   schema.get_typed_entity().
-
-2. Tighten .get_typed_entity()'s type from Optional[QAPISchemaEntity] to
-   Optional[_EntityType], where Entity is argument @typ.
-
-3. Change .lookup_type()'s behavior for "not found" from "return None"
-   to "throw KeyError if doesn't exist, throw TypeError if exists, but
-   not a type".
-
-Correct?
-
-> get_entity and get_typed_entity remain for any callers who are
-> specifically interested in the negative case. These functions have only
-> a single caller each.
-
-.get_entity()'s single caller being QAPIDocDirective.run(), and its
-other single caller being QAPISchema._make_implicit_object_type() ;-P
-
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  docs/sphinx/qapidoc.py     |  2 +-
->  scripts/qapi/introspect.py |  8 ++----
->  scripts/qapi/schema.py     | 52 ++++++++++++++++++++++++--------------
->  3 files changed, 36 insertions(+), 26 deletions(-)
->
-> diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-> index 8f3b9997a15..96deadbf7fc 100644
-> --- a/docs/sphinx/qapidoc.py
-> +++ b/docs/sphinx/qapidoc.py
-> @@ -508,7 +508,7 @@ def run(self):
-               vis = QAPISchemaGenRSTVisitor(self)
->              vis.visit_begin(schema)
->              for doc in schema.docs:
->                  if doc.symbol:
-> -                    vis.symbol(doc, schema.lookup_entity(doc.symbol))
-> +                    vis.symbol(doc, schema.get_entity(doc.symbol))
-
-@vis is a QAPISchemaGenRSTVisitor, and vis.symbol is
-
-    def symbol(self, doc, entity):
-        [...]
-        self._cur_doc = doc
-        entity.visit(self)
-        self._cur_doc = None
-
-When you add type hints to qapidoc.py, parameter @entity will be
-QAPISchemaEntity.  Type error since .get_entity() returns
-Optional[QAPISchemaEntity].  I'm fine with addressing that when adding
-types to qapidoc.py.
-
->                  else:
->                      vis.freeform(doc)
->              return vis.get_document_nodes()
-> diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
-> index 42981bce163..67c7d89aae0 100644
-> --- a/scripts/qapi/introspect.py
-> +++ b/scripts/qapi/introspect.py
-> @@ -227,14 +227,10 @@ def _use_type(self, typ: QAPISchemaType) -> str:
->  
->          # Map the various integer types to plain int
->          if typ.json_type() == 'int':
-> -            tmp = self._schema.lookup_type('int')
-> -            assert tmp is not None
-> -            typ = tmp
-> +            typ = self._schema.lookup_type('int')
->          elif (isinstance(typ, QAPISchemaArrayType) and
->                typ.element_type.json_type() == 'int'):
-> -            tmp = self._schema.lookup_type('intList')
-> -            assert tmp is not None
-> -            typ = tmp
-> +            typ = self._schema.lookup_type('intList')
->          # Add type to work queue if new
->          if typ not in self._used_types:
->              self._used_types.append(typ)
-
-Readability improvement here, due to tighter typing of .lookup_type():
-it now returns QAPISchemaType instead of Optional[QAPISchemaType].
-
-Before, lookup failure results in AssertionError.  Afterwards, it
-results in KeyError or TypeError.  Fine.  Is it worth mentioning in the
-commit message?  Genuine question!
-
-> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> index b5f377e68b8..5813136e78b 100644
-> --- a/scripts/qapi/schema.py
-> +++ b/scripts/qapi/schema.py
-> @@ -26,6 +26,8 @@
->      Dict,
->      List,
->      Optional,
-> +    Type,
-> +    TypeVar,
->      Union,
->      cast,
->  )
-> @@ -767,7 +769,6 @@ def check(
->              # Here we do:
->              assert self.tag_member.defined_in
->              base_type = schema.lookup_type(self.tag_member.defined_in)
-> -            assert base_type
-
-Same change of errors as above.
-
->              if not base_type.is_implicit():
->                  base = "base type '%s'" % self.tag_member.defined_in
->              if not isinstance(self.tag_member.type, QAPISchemaEnumType):
-> @@ -1111,6 +1112,12 @@ def visit(self, visitor: QAPISchemaVisitor) -> None:
->              self.arg_type, self.boxed)
->  
->  
-> +# Used for type-dependent type lookup return values.
-> +_EntityType = TypeVar(   # pylint: disable=invalid-name
-> +    '_EntityType', bound=QAPISchemaEntity
-> +)
-
-Oh, the fanciness!
-
-> +
-> +
->  class QAPISchema:
->      def __init__(self, fname: str):
->          self.fname = fname
-> @@ -1155,22 +1162,28 @@ def _def_entity(self, ent: QAPISchemaEntity) -> None:
->                  ent.info, "%s is already defined" % other_ent.describe())
->          self._entity_dict[ent.name] = ent
->  
-> -    def lookup_entity(
-> +    def get_entity(self, name: str) -> Optional[QAPISchemaEntity]:
-> +        return self._entity_dict.get(name)
-> +
-> +    def get_typed_entity(
->          self,
->          name: str,
-> -        typ: Optional[type] = None,
-> -    ) -> Optional[QAPISchemaEntity]:
-> -        ent = self._entity_dict.get(name)
-> -        if typ and not isinstance(ent, typ):
-> -            return None
-> +        typ: Type[_EntityType]
-> +    ) -> Optional[_EntityType]:
-> +        ent = self.get_entity(name)
-> +        if ent is not None and not isinstance(ent, typ):
-> +            etype = type(ent).__name__
-> +            ttype = typ.__name__
-> +            raise TypeError(
-> +                f"Entity '{name}' is of type '{etype}', not '{ttype}'."
-> +            )
->          return ent
->  
-> -    def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
-> -        typ = self.lookup_entity(name, QAPISchemaType)
-> -        if typ is None:
-> -            return None
-> -        assert isinstance(typ, QAPISchemaType)
-> -        return typ
-> +    def lookup_type(self, name: str) -> QAPISchemaType:
-> +        ent = self.get_typed_entity(name, QAPISchemaType)
-> +        if ent is None:
-> +            raise KeyError(f"Entity '{name}' is not defined.")
-> +        return ent
->  
->      def resolve_type(
->          self,
-> @@ -1178,13 +1191,14 @@ def resolve_type(
->          info: Optional[QAPISourceInfo],
->          what: Union[str, Callable[[Optional[QAPISourceInfo]], str]],
->      ) -> QAPISchemaType:
-> -        typ = self.lookup_type(name)
-> -        if not typ:
-> +        try:
-> +            return self.lookup_type(name)
-> +        except (KeyError, TypeError) as err:
->              if callable(what):
->                  what = what(info)
->              raise QAPISemError(
-> -                info, "%s uses unknown type '%s'" % (what, name))
-> -        return typ
-> +                info, "%s uses unknown type '%s'" % (what, name)
-> +            ) from err
-
-This is at best a wash for readability.
-
-When something throws KeyError or TypeError unexpectedly, we
-misinterpret the programming error as a semantic error in the schema.
-
->  
->      def _module_name(self, fname: str) -> str:
->          if QAPISchemaModule.is_system_module(fname):
-> @@ -1279,7 +1293,7 @@ def _make_array_type(
->          self, element_type: str, info: Optional[QAPISourceInfo]
->      ) -> str:
->          name = element_type + 'List'    # reserved by check_defn_name_str()
-> -        if not self.lookup_type(name):
-> +        if not self.get_entity(name):
->              self._def_entity(QAPISchemaArrayType(name, info, element_type))
->          return name
->  
-> @@ -1295,7 +1309,7 @@ def _make_implicit_object_type(
->              return None
->          # See also QAPISchemaObjectTypeMember.describe()
->          name = 'q_obj_%s-%s' % (name, role)
-> -        typ = self.lookup_entity(name, QAPISchemaObjectType)
-> +        typ = self.get_typed_entity(name, QAPISchemaObjectType)
->          if typ:
->              # The implicit object type has multiple users.  This can
->              # only be a duplicate definition, which will be flagged
+> Het Gala
 
 
