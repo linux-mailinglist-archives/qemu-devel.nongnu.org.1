@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3787FBBC1
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 14:38:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0600D7FBBBC
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 14:38:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7yI5-000211-HI; Tue, 28 Nov 2023 08:38:17 -0500
+	id 1r7yIB-00022q-M4; Tue, 28 Nov 2023 08:38:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7yI3-0001zx-C9
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:38:15 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7yI9-00022T-Vs
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:38:22 -0500
 Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7yI1-00087X-Of
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:38:15 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7yI8-00088B-Ag
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:38:21 -0500
 Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a02d91ab199so749211066b.0
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 05:38:13 -0800 (PST)
+ a640c23a62f3a-a03a900956dso1030857066b.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 05:38:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701178692; x=1701783492; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701178699; x=1701783499; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qTMVhitieSJNZvrttwpbFm3rdYpSlAZIyeSRfKEX9cE=;
- b=ArAKQ7vpO1RhuyIn3poB/u+rL+XcRgg/oFG/DjICEuEFQVxgaaRuzwF/XSHbc7g5hM
- ow/KoUFdKhpaiUGFxinahBA7Gie+ITN3Vnu5SUIfpMSz6xxsw/3iKAbRSz7xwKFs8EGM
- zSAFeatRMVqXyLg0Gr1CsZvbwXNhmZFxMoWJjjh3UxA8knv/OEfrxqw4RKCOPlBDM3hW
- hZmrjCpgBkRo7XkJ8wH1S+Ioni84l0uYmszDgVH1+h9v5JSvOitq+1UCTckiVo/4x4rq
- qZq+m8vkEXXupm6CD0enleGKHD26DHnddZrBfHVVFEYiDnH+lWCb5rwoqE8mrsHj5UCq
- Oedg==
+ bh=peKa62xUsod/edNIYUpkMuF8n0prRBNW2awRUt91oBs=;
+ b=LbAnZXgaoxF9OaPVqGHvYHvjK3zskXNd9NiWOmxPOWhw1VVjS6rJl9hOfyq8uiEbtQ
+ jCd5Zn0NL89iaynSXS3SbcgP07WPir6C9a7ZDMhlls6qwpCmPYq5Bsxr9+1lWb76JfCK
+ wMHQqGHAOqcTiwJketdwBIrqGG3lHjviqYERr5ctW5/3s0ife8ACkS8jpwwTkAMKLQfm
+ 4//oxzdNrASYNHpP2dstE/yUhy8I3teFwmsiKe9kJhiRZ62ZtPjFqpelPpXANCXiQOsY
+ 9ukHXABBTVhTLVaFqfxh0+R8nEi5/CyjNEIoEQC5q5Im5Yv9yfzsJBCaxSfiozqVJnw+
+ /1Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701178692; x=1701783492;
+ d=1e100.net; s=20230601; t=1701178699; x=1701783499;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qTMVhitieSJNZvrttwpbFm3rdYpSlAZIyeSRfKEX9cE=;
- b=kL+SmDBUqlRdltqDV3wae8K6Nf3TihUuv4kzHICD8m0EAMbuFSbHG7i4rbteH7tsKp
- rpDTIBMX1QDys2StTLZ4Px88VOiBDHktb+N2zlf1qJJPJdlCl9XIHsDxa5qiUCtgdLEE
- r6e0N2JOkC2uy7GQTzdyapd5Ln+l1WThh29hBpMSN9RLE4NJ+BjivQoengjBTgCg0FcP
- nSgx0T0QXHqYWN3OP6oK0Hnq/m3owjTa+/lIbV65hcOJ77sGmPZcA5Xz59qI0IGsRyk+
- Mf458kSKAqbn8PAoY3aiybObHs3tsgQUfAOdUTIIkbdpg5/xWAMAgRuyHqbDidOmPzuN
- njDg==
-X-Gm-Message-State: AOJu0YyWOoPULXTGVTPLTEEGLTHGnSXdg5+io/VvjUBju/I5MINWlqYH
- iStgY0Xi9WSJW/oIPqsDVLTH65jzBgl9cUHAFLA=
-X-Google-Smtp-Source: AGHT+IGFTktVv509/Xn1us4Zntg7l7ytNYzzZNufxod4L5ytUjErq3eZCr/oqAzvhkz1k3iC6bWmHA==
-X-Received: by 2002:a17:907:6d06:b0:9e5:2c72:9409 with SMTP id
- sa6-20020a1709076d0600b009e52c729409mr13673712ejc.43.1701178692301; 
- Tue, 28 Nov 2023 05:38:12 -0800 (PST)
+ bh=peKa62xUsod/edNIYUpkMuF8n0prRBNW2awRUt91oBs=;
+ b=DtE6jLTojFnEn/TPCoce+QZCQaZCp+KOvVJnMojft3QnPwUMh8JU2ybO449QTIGe1n
+ h9X3N+lidwli1lBVFi58icdTv90iKBIVGHNOfwUu/K5ZbWzcjerBrnySU9OUml+MCGIa
+ y6MPHxkrFNzY3ybMIADi1XEAZ1GOfqLEZLNSgz9pRJtYLSvdXDvds4AYG63mId/OCK4h
+ N6/SpUcrr+umnOq3DZ6eg5DURmEcdG3eBxYUguMNqcYNmmvgg23PAAVVsWp0Y60AOqhg
+ w6EPerOFGZx6QmEm9r5uxF/YzDV614qYlzqc/vQ50a8TUsFJF/9y8Pyo8ZZq9p4uOTu9
+ j10A==
+X-Gm-Message-State: AOJu0YyLqkdrDiXVfohZDaljv4ugMAE8a6py9sgV0ZdJr9qr53eZ9uIz
+ 0oOVuSiD4h7LsRQd91mVZwTX0hhGkcFYQY1fHiI=
+X-Google-Smtp-Source: AGHT+IHXs9TvCJCJ6Opq0VNRw/iNFvEnutEDCISq3W96dQ8yyYngqYKmic/SXOwifg2PGLpZ85BEkw==
+X-Received: by 2002:a17:906:7398:b0:a0f:e0fc:c41d with SMTP id
+ f24-20020a170906739800b00a0fe0fcc41dmr5591613ejl.34.1701178698932; 
+ Tue, 28 Nov 2023 05:38:18 -0800 (PST)
 Received: from m1x-phil.lan (crb44-h02-176-184-13-61.dsl.sta.abo.bbox.fr.
  [176.184.13.61]) by smtp.gmail.com with ESMTPSA id
- h18-20020a1709063b5200b009fdd2c6d042sm6955414ejf.148.2023.11.28.05.38.11
+ f3-20020a170906c08300b00a0a25541153sm5049993ejz.93.2023.11.28.05.38.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Nov 2023 05:38:11 -0800 (PST)
+ Tue, 28 Nov 2023 05:38:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 5/7] hw/audio/via-ac97: Route interrupts using via_isa_set_irq()
-Date: Tue, 28 Nov 2023 14:37:38 +0100
-Message-ID: <20231128133740.64525-6-philmd@linaro.org>
+ BALATON Zoltan <balaton@eik.bme.hu>, Gihun Nam <gihun.nam@outlook.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 6/7] hw/avr/atmega: Fix wrong initial value of stack pointer
+Date: Tue, 28 Nov 2023 14:37:39 +0100
+Message-ID: <20231128133740.64525-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231128133740.64525-1-philmd@linaro.org>
 References: <20231128133740.64525-1-philmd@linaro.org>
@@ -77,7 +76,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,70 +92,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Gihun Nam <gihun.nam@outlook.com>
 
-This device is a function of VIA south bridge and should allow setting
-interrupt routing within that chip. This is implemented in
-via_isa_set_irq().
+The current implementation initializes the stack pointer of AVR devices
+to 0. Although older AVR devices used to be like that, newer ones set
+it to RAMEND.
 
-Fixes: eb604411a78b82c468e2b8d81a9401eb8b9c7658
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-ID: <5329840e4be6dd8ae143d07cbfe61d8d2d106654.1701035944.git.balaton@eik.bme.hu>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1525
+Signed-off-by: Gihun Nam <gihun.nam@outlook.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <PH0P222MB0010877445B594724D40C924DEBDA@PH0P222MB0010.NAMP222.PROD.OUTLOOK.COM>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/audio/via-ac97.c | 8 ++++----
- hw/isa/vt82c686.c   | 1 +
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ target/avr/cpu.h |  3 +++
+ hw/avr/atmega.c  |  4 ++++
+ target/avr/cpu.c | 10 +++++++++-
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/hw/audio/via-ac97.c b/hw/audio/via-ac97.c
-index 30095a4c7a..4c127a1def 100644
---- a/hw/audio/via-ac97.c
-+++ b/hw/audio/via-ac97.c
-@@ -211,14 +211,14 @@ static void out_cb(void *opaque, int avail)
-                     AUD_set_active_out(s->vo, 0);
-                 }
-                 if (c->type & STAT_EOL) {
--                    pci_set_irq(&s->dev, 1);
-+                    via_isa_set_irq(&s->dev, 0, 1);
-                 }
-             }
-             if (CLEN_IS_FLAG(c)) {
-                 c->stat |= STAT_FLAG;
-                 c->stat |= STAT_PAUSED;
-                 if (c->type & STAT_FLAG) {
--                    pci_set_irq(&s->dev, 1);
-+                    via_isa_set_irq(&s->dev, 0, 1);
-                 }
-             }
-             if (CLEN_IS_STOP(c)) {
-@@ -305,13 +305,13 @@ static void sgd_write(void *opaque, hwaddr addr, uint64_t val, unsigned size)
-         if (val & STAT_EOL) {
-             s->aur.stat &= ~(STAT_EOL | STAT_PAUSED);
-             if (s->aur.type & STAT_EOL) {
--                pci_set_irq(&s->dev, 0);
-+                via_isa_set_irq(&s->dev, 0, 0);
-             }
-         }
-         if (val & STAT_FLAG) {
-             s->aur.stat &= ~(STAT_FLAG | STAT_PAUSED);
-             if (s->aur.type & STAT_FLAG) {
--                pci_set_irq(&s->dev, 0);
-+                via_isa_set_irq(&s->dev, 0, 0);
-             }
-         }
-         break;
-diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index a3eb6769fc..9c2333a277 100644
---- a/hw/isa/vt82c686.c
-+++ b/hw/isa/vt82c686.c
-@@ -622,6 +622,7 @@ void via_isa_set_irq(PCIDevice *d, int pin, int level)
-         break;
-     case 2: /* USB ports 0-1 */
-     case 3: /* USB ports 2-3 */
-+    case 5: /* AC97 audio */
-         max_irq = 14;
-         break;
-     }
+diff --git a/target/avr/cpu.h b/target/avr/cpu.h
+index 8a17862737..7960c5c57a 100644
+--- a/target/avr/cpu.h
++++ b/target/avr/cpu.h
+@@ -145,6 +145,9 @@ struct ArchCPU {
+     CPUState parent_obj;
+ 
+     CPUAVRState env;
++
++    /* Initial value of stack pointer */
++    uint32_t init_sp;
+ };
+ 
+ /**
+diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
+index a34803e642..31c8992d75 100644
+--- a/hw/avr/atmega.c
++++ b/hw/avr/atmega.c
+@@ -233,6 +233,10 @@ static void atmega_realize(DeviceState *dev, Error **errp)
+ 
+     /* CPU */
+     object_initialize_child(OBJECT(dev), "cpu", &s->cpu, mc->cpu_type);
++
++    object_property_set_uint(OBJECT(&s->cpu), "init-sp",
++                             mc->io_size + mc->sram_size - 1, &error_abort);
++
+     qdev_realize(DEVICE(&s->cpu), NULL, &error_abort);
+     cpudev = DEVICE(&s->cpu);
+ 
+diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+index 44de1e18d1..999c010ded 100644
+--- a/target/avr/cpu.c
++++ b/target/avr/cpu.c
+@@ -25,6 +25,7 @@
+ #include "cpu.h"
+ #include "disas/dis-asm.h"
+ #include "tcg/debug-assert.h"
++#include "hw/qdev-properties.h"
+ 
+ static void avr_cpu_set_pc(CPUState *cs, vaddr value)
+ {
+@@ -95,7 +96,7 @@ static void avr_cpu_reset_hold(Object *obj)
+     env->rampY = 0;
+     env->rampZ = 0;
+     env->eind = 0;
+-    env->sp = 0;
++    env->sp = cpu->init_sp;
+ 
+     env->skip = 0;
+ 
+@@ -152,6 +153,11 @@ static void avr_cpu_initfn(Object *obj)
+                       sizeof(cpu->env.intsrc) * 8);
+ }
+ 
++static Property avr_cpu_properties[] = {
++    DEFINE_PROP_UINT32("init-sp", AVRCPU, init_sp, 0),
++    DEFINE_PROP_END_OF_LIST()
++};
++
+ static ObjectClass *avr_cpu_class_by_name(const char *cpu_model)
+ {
+     ObjectClass *oc;
+@@ -228,6 +234,8 @@ static void avr_cpu_class_init(ObjectClass *oc, void *data)
+ 
+     device_class_set_parent_realize(dc, avr_cpu_realizefn, &mcc->parent_realize);
+ 
++    device_class_set_props(dc, avr_cpu_properties);
++
+     resettable_class_set_parent_phases(rc, NULL, avr_cpu_reset_hold, NULL,
+                                        &mcc->parent_phases);
+ 
 -- 
 2.41.0
 
