@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591367FCB2B
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 00:59:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3591C7FCB31
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 01:01:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r87xW-0001OZ-Vj; Tue, 28 Nov 2023 18:57:43 -0500
+	id 1r880a-0006Sb-Ri; Tue, 28 Nov 2023 19:00:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1r87xK-0001Fo-6h; Tue, 28 Nov 2023 18:57:32 -0500
+ id 1r87zs-00064Y-Ht; Tue, 28 Nov 2023 19:00:09 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1r87xE-0007qW-K7; Tue, 28 Nov 2023 18:57:29 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ id 1r87zo-0000GF-5p; Tue, 28 Nov 2023 19:00:08 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ASLFo2h024680; Tue, 28 Nov 2023 23:57:06 GMT
+ 3ASNbC4F019897; Tue, 28 Nov 2023 23:59:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=pp1;
- bh=2pd9lw4wD3DVZDGwK1Bm+jHxqAc/C70QTldobg994bY=;
- b=KVYHSbQzcfXpWUmdTrrkYAoLSjlMTxhwq2ksZW7iuIidtP18eQhlLlfhEFcAxviqFBne
- tvFuvbJmRVhsczc27BsGYYWpCAND6H84LCacs2yBz7IpdljpjKMIOtpsyY1fuCWNf+xT
- Zs7dOXpESHsRO7Xd0SXmQwL/ellOeGZ2ZNydac1xT5nMW4CapP2chO+xg0G03+Hq/VfE
- seTUsbanJnFtfByboGup63G7G8djE9NnIZUpF7sec5bcZ5eoZSXLn3HVVqiSGD8rjzhp
- 9KkL/llBWKG4kVg5YRjU9Ys6ThLrcgvwH4pCXSelFfeIVt7UrAxKhJYFHwKmMxoQ3O0g eg== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=/i9tJ02VHo84TiSEhuSwa17cmhLSbaOyz8zqww46fUE=;
+ b=i1By7GsWxoJ3gGeTRiV721LgeTHM7LqoYgdw7U4VzIp1cuTEaG5PoYhAtblorERjuZmO
+ qC9SldqMUn0ysjKUTHHJPqaEzrQiqMMrpIr+EidxUfsnTsViA4F058olvuali4cDS9rc
+ Dj/LP5lpuDSnM/KHGaJczELU2AUmQHv56i4WIRpnP66lN1ZXwnAMB7T7aH9JBjxYK1Kt
+ EZkcduAE5JZjpWbMsUrBcOIPn1tzHUrzYgxsSQvMC/kT1OaAUkgskXMHI9Zoaz5nS1T7
+ kum+lGcKvY5bGHIVwVYCN6bU6xHyEJoA4gx2A88+50bAxgvnqgIvwPFNE1k8S9fSWUhN 3A== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unnn27p4x-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unt1pgcfc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Nov 2023 23:57:06 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ASNAfFk008371;
- Tue, 28 Nov 2023 23:57:05 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unnn27p4g-1
+ Tue, 28 Nov 2023 23:59:44 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ASNxi8p010756;
+ Tue, 28 Nov 2023 23:59:44 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unt1pgc9d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Nov 2023 23:57:05 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ASMeBTe004908; Tue, 28 Nov 2023 23:57:04 GMT
+ Tue, 28 Nov 2023 23:59:44 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ASN06N5018258; Tue, 28 Nov 2023 23:57:04 GMT
 Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwfk3b24-1
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwy1u65v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 28 Nov 2023 23:57:04 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
  [10.241.53.105])
  by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3ASNv38N9568944
+ 3ASNv3BR3277462
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Nov 2023 23:57:03 GMT
+ Tue, 28 Nov 2023 23:57:04 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 520305805F;
+ by IMSVA (Postfix) with ESMTP id 9CC0A58059;
  Tue, 28 Nov 2023 23:57:03 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1313258043;
+ by IMSVA (Postfix) with ESMTP id 5B7FE58055;
  Tue, 28 Nov 2023 23:57:03 +0000 (GMT)
 Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
  by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
@@ -68,25 +68,28 @@ To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
  andrew@codeconstruct.com.au, joel@jms.id.au, pbonzini@redhat.com,
  marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
  philmd@linaro.org, lvivier@redhat.com
-Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
-Subject: [PATCH v8 00/10] Introduce model for IBM's FSI
-Date: Tue, 28 Nov 2023 17:56:50 -0600
-Message-Id: <20231128235700.599584-1-ninad@linux.ibm.com>
+Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org,
+ Andrew Jeffery <andrew@aj.id.au>
+Subject: [PATCH v8 01/10] hw/fsi: Introduce IBM's Local bus
+Date: Tue, 28 Nov 2023 17:56:51 -0600
+Message-Id: <20231128235700.599584-2-ninad@linux.ibm.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231128235700.599584-1-ninad@linux.ibm.com>
+References: <20231128235700.599584-1-ninad@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0lEtKCx5DM3fk0WksjAL0ATO30pXlFVQ
-X-Proofpoint-ORIG-GUID: SikcvjAzONSX0t5wQyzhyxqKrp3G6d_L
+X-Proofpoint-ORIG-GUID: gyzHq09xGP5dnIFoP-S0JRxeRCWYm3im
+X-Proofpoint-GUID: 6YPuAbDsBg4c58a-MNNuhCGt_yS71Il6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-28_25,2023-11-27_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- priorityscore=1501 mlxlogscore=236 malwarescore=0 adultscore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 mlxscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ impostorscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 adultscore=0 malwarescore=0
+ mlxlogscore=883 bulkscore=0 mlxscore=0 spamscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311060000 definitions=main-2311280188
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
@@ -112,77 +115,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+This is a part of patchset where IBM's Flexible Service Interface is
+introduced.
 
-Please review the patch-set version 8.
-I have incorporated review comments from Cedric.
-  - Fixed checkpatch failures.
-  - Fixed commit messages.
-  - Fixed LBUS memory map size.
+The LBUS is modelled to maintain mapped memory for the devices. The
+memory is mapped after CFAM config, peek table and FSI slave registers.
 
-Ninad Palsule (10):
-  hw/fsi: Introduce IBM's Local bus
-  hw/fsi: Introduce IBM's FSI Bus
-  hw/fsi: Introduce IBM's cfam,fsi-slave,scratchpad
-  hw/fsi: IBM's On-chip Peripheral Bus
-  hw/fsi: Introduce IBM's FSI master
-  hw/fsi: Aspeed APB2OPB interface
-  hw/arm: Hook up FSI module in AST2600
-  hw/fsi: Added qtest
-  hw/fsi: Added FSI documentation
-  hw/fsi: Update MAINTAINER list
-
- MAINTAINERS                     |   8 +
- docs/specs/fsi.rst              | 138 ++++++++++++++
- docs/specs/index.rst            |   1 +
- meson.build                     |   1 +
- hw/fsi/trace.h                  |   1 +
- include/hw/arm/aspeed_soc.h     |   4 +
- include/hw/fsi/aspeed-apb2opb.h |  34 ++++
- include/hw/fsi/cfam.h           |  45 +++++
- include/hw/fsi/fsi-master.h     |  32 ++++
- include/hw/fsi/fsi-slave.h      |  29 +++
- include/hw/fsi/fsi.h            |  24 +++
- include/hw/fsi/lbus.h           |  40 ++++
- include/hw/fsi/opb.h            |  25 +++
- hw/arm/aspeed_ast2600.c         |  19 ++
- hw/fsi/aspeed-apb2opb.c         | 316 ++++++++++++++++++++++++++++++++
- hw/fsi/cfam.c                   | 261 ++++++++++++++++++++++++++
- hw/fsi/fsi-master.c             | 165 +++++++++++++++++
- hw/fsi/fsi-slave.c              |  78 ++++++++
- hw/fsi/fsi.c                    |  22 +++
- hw/fsi/lbus.c                   |  51 ++++++
- hw/fsi/opb.c                    |  36 ++++
- tests/qtest/aspeed-fsi-test.c   | 205 +++++++++++++++++++++
- hw/Kconfig                      |   1 +
- hw/arm/Kconfig                  |   1 +
- hw/fsi/Kconfig                  |  21 +++
- hw/fsi/meson.build              |   5 +
- hw/fsi/trace-events             |  13 ++
- hw/meson.build                  |   1 +
- tests/qtest/meson.build         |   1 +
- 29 files changed, 1578 insertions(+)
- create mode 100644 docs/specs/fsi.rst
+Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+[ clg: - removed lbus_add_device() bc unused
+       - removed lbus_create_device() bc used only once
+       - removed "address" property
+       - updated meson.build to build fsi dir
+       - included an empty hw/fsi/trace-events ]
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ meson.build           |  1 +
+ hw/fsi/trace.h        |  1 +
+ include/hw/fsi/lbus.h | 40 +++++++++++++++++++++++++++++++++
+ hw/fsi/lbus.c         | 51 +++++++++++++++++++++++++++++++++++++++++++
+ hw/Kconfig            |  1 +
+ hw/fsi/Kconfig        |  2 ++
+ hw/fsi/meson.build    |  1 +
+ hw/fsi/trace-events   |  1 +
+ hw/meson.build        |  1 +
+ 9 files changed, 99 insertions(+)
  create mode 100644 hw/fsi/trace.h
- create mode 100644 include/hw/fsi/aspeed-apb2opb.h
- create mode 100644 include/hw/fsi/cfam.h
- create mode 100644 include/hw/fsi/fsi-master.h
- create mode 100644 include/hw/fsi/fsi-slave.h
- create mode 100644 include/hw/fsi/fsi.h
  create mode 100644 include/hw/fsi/lbus.h
- create mode 100644 include/hw/fsi/opb.h
- create mode 100644 hw/fsi/aspeed-apb2opb.c
- create mode 100644 hw/fsi/cfam.c
- create mode 100644 hw/fsi/fsi-master.c
- create mode 100644 hw/fsi/fsi-slave.c
- create mode 100644 hw/fsi/fsi.c
  create mode 100644 hw/fsi/lbus.c
- create mode 100644 hw/fsi/opb.c
- create mode 100644 tests/qtest/aspeed-fsi-test.c
  create mode 100644 hw/fsi/Kconfig
  create mode 100644 hw/fsi/meson.build
  create mode 100644 hw/fsi/trace-events
 
+diff --git a/meson.build b/meson.build
+index ec01f8b138..b6556efd51 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3298,6 +3298,7 @@ if have_system
+     'hw/char',
+     'hw/display',
+     'hw/dma',
++    'hw/fsi',
+     'hw/hyperv',
+     'hw/i2c',
+     'hw/i386',
+diff --git a/hw/fsi/trace.h b/hw/fsi/trace.h
+new file mode 100644
+index 0000000000..ee67c7fb04
+--- /dev/null
++++ b/hw/fsi/trace.h
+@@ -0,0 +1 @@
++#include "trace/trace-hw_fsi.h"
+diff --git a/include/hw/fsi/lbus.h b/include/hw/fsi/lbus.h
+new file mode 100644
+index 0000000000..a58e33d061
+--- /dev/null
++++ b/include/hw/fsi/lbus.h
+@@ -0,0 +1,40 @@
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Copyright (C) 2023 IBM Corp.
++ *
++ * IBM Local bus and connected device structures.
++ */
++#ifndef FSI_LBUS_H
++#define FSI_LBUS_H
++
++#include "exec/memory.h"
++#include "hw/qdev-core.h"
++
++#define TYPE_FSI_LBUS_DEVICE "fsi.lbus.device"
++OBJECT_DECLARE_TYPE(FSILBusDevice, FSILBusDeviceClass, FSI_LBUS_DEVICE)
++
++#define FSI_LBUS_MEM_REGION_SIZE  (2 * 1024 * 1024)
++#define FSI_LBUSDEV_IOMEM_START   0xc00 /* 3K used by CFAM config etc */
++
++typedef struct FSILBusDevice {
++    DeviceState parent;
++
++    MemoryRegion iomem;
++} FSILBusDevice;
++
++typedef struct FSILBusDeviceClass {
++    DeviceClass parent;
++
++    uint32_t config;
++} FSILBusDeviceClass;
++
++#define TYPE_FSI_LBUS "fsi.lbus"
++OBJECT_DECLARE_SIMPLE_TYPE(FSILBus, FSI_LBUS)
++
++typedef struct FSILBus {
++    BusState bus;
++
++    MemoryRegion mr;
++} FSILBus;
++
++#endif /* FSI_LBUS_H */
+diff --git a/hw/fsi/lbus.c b/hw/fsi/lbus.c
+new file mode 100644
+index 0000000000..84c46a00d7
+--- /dev/null
++++ b/hw/fsi/lbus.c
+@@ -0,0 +1,51 @@
++/*
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ * Copyright (C) 2023 IBM Corp.
++ *
++ * IBM Local bus where FSI slaves are connected
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "hw/fsi/lbus.h"
++
++#include "hw/qdev-properties.h"
++
++static void lbus_init(Object *o)
++{
++    FSILBus *lbus = FSI_LBUS(o);
++
++    memory_region_init(&lbus->mr, OBJECT(lbus), TYPE_FSI_LBUS,
++                       FSI_LBUS_MEM_REGION_SIZE - FSI_LBUSDEV_IOMEM_START);
++}
++
++static const TypeInfo lbus_info = {
++    .name = TYPE_FSI_LBUS,
++    .parent = TYPE_BUS,
++    .instance_init = lbus_init,
++    .instance_size = sizeof(FSILBus),
++};
++
++static void lbus_device_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->bus_type = TYPE_FSI_LBUS;
++}
++
++static const TypeInfo lbus_device_type_info = {
++    .name = TYPE_FSI_LBUS_DEVICE,
++    .parent = TYPE_DEVICE,
++    .instance_size = sizeof(FSILBusDevice),
++    .abstract = true,
++    .class_init = lbus_device_class_init,
++    .class_size = sizeof(FSILBusDeviceClass),
++};
++
++static void lbus_register_types(void)
++{
++    type_register_static(&lbus_info);
++    type_register_static(&lbus_device_type_info);
++}
++
++type_init(lbus_register_types);
+diff --git a/hw/Kconfig b/hw/Kconfig
+index 9ca7b38c31..2c00936c28 100644
+--- a/hw/Kconfig
++++ b/hw/Kconfig
+@@ -9,6 +9,7 @@ source core/Kconfig
+ source cxl/Kconfig
+ source display/Kconfig
+ source dma/Kconfig
++source fsi/Kconfig
+ source gpio/Kconfig
+ source hyperv/Kconfig
+ source i2c/Kconfig
+diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+new file mode 100644
+index 0000000000..e650c660f0
+--- /dev/null
++++ b/hw/fsi/Kconfig
+@@ -0,0 +1,2 @@
++config FSI_LBUS
++    bool
+diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
+new file mode 100644
+index 0000000000..4074d3a7d2
+--- /dev/null
++++ b/hw/fsi/meson.build
+@@ -0,0 +1 @@
++system_ss.add(when: 'CONFIG_FSI_LBUS', if_true: files('lbus.c'))
+diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
+new file mode 100644
+index 0000000000..8b13789179
+--- /dev/null
++++ b/hw/fsi/trace-events
+@@ -0,0 +1 @@
++
+diff --git a/hw/meson.build b/hw/meson.build
+index f01fac4617..463d702683 100644
+--- a/hw/meson.build
++++ b/hw/meson.build
+@@ -44,6 +44,7 @@ subdir('virtio')
+ subdir('watchdog')
+ subdir('xen')
+ subdir('xenpv')
++subdir('fsi')
+ 
+ subdir('alpha')
+ subdir('arm')
 -- 
 2.39.2
 
