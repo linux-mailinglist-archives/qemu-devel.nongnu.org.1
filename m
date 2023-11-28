@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F627FC3DD
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 19:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FC27FC815
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 22:39:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r83Hr-0004hM-N0; Tue, 28 Nov 2023 13:58:23 -0500
+	id 1r85mg-0003eU-Dn; Tue, 28 Nov 2023 16:38:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r83Ho-0004e4-OR
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:58:20 -0500
-Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
+ (Exim 4.90_1) (envelope-from <SRS0=PHl3=HJ=kaod.org=clg@ozlabs.org>)
+ id 1r85mT-0003do-0t; Tue, 28 Nov 2023 16:38:10 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r83Hj-0002AP-Vl
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:58:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1701197890; bh=VFPKB3nfAoFYCRyvJTzwdjiLf4ZWLXKcs+50hmMlUVI=;
- h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=bAO9Sg3brXjcdfRkvGTQvLpXM+s69l5M3t6iZbQ0DKawQpvkNQCXxbClMbNE6zzKa
- lOTN7aT189Q4nqZBPsIGxWa4+41NYINZdHqmHJnzhM3JSpBGd2PqgafIMxJUzL+QUo
- +2eD7Onz0elrpvV71MVrJVvzMYvjPs5TUorHT9W4=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Date: Tue, 28 Nov 2023 19:58:06 +0100
-Subject: [PATCH v2 3/3] hw/misc/pvpanic: add support for normal shutdowns
+ (Exim 4.90_1) (envelope-from <SRS0=PHl3=HJ=kaod.org=clg@ozlabs.org>)
+ id 1r85mP-0001oM-82; Tue, 28 Nov 2023 16:38:08 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SfwmQ2sXCz4xQS;
+ Wed, 29 Nov 2023 08:37:58 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SfwmL42NFz4wdD;
+ Wed, 29 Nov 2023 08:37:53 +1100 (AEDT)
+Message-ID: <771bdf1c-e688-4885-9e6b-100897141c51@kaod.org>
+Date: Tue, 28 Nov 2023 22:37:48 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/3] pnv nest1 chiplet model
+Content-Language: en-US
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+To: Chalapathi V <chalapathi.v@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ calebs@us.ibm.com, chalapathi.v@ibm.com, saif.abrar@linux.vnet.ibm.com
+References: <20231127171307.5237-1-chalapathi.v@linux.ibm.com>
+ <ed3e5f71-620c-48e7-a8c7-d083be78c192@kaod.org>
+In-Reply-To: <ed3e5f71-620c-48e7-a8c7-d083be78c192@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20231128-pvpanic-shutdown-v2-3-830393b45cb6@t-8ch.de>
-References: <20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de>
-In-Reply-To: <20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de>
-To: "Michael S. Tsirkin" <mst@redhat.com>, 
- Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1701197889; l=2339;
- i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
- bh=VFPKB3nfAoFYCRyvJTzwdjiLf4ZWLXKcs+50hmMlUVI=;
- b=xmiZR7JtVMmMGT1Q5kcfce7vsac+4NFfBn2a6GQ6mhvlckvzX3MsXNdnX/xfrr1XoQ3MNZHt9
- igKYShy12hXCnceoIIbbh4YPLfJ239OvZVCODqUkwbuxbNAD8mFtsJ5
-X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
- envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=PHl3=HJ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,74 +66,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Shutdown requests are normally hardware dependent.
-By extending pvpanic to also handle shutdown requests, guests can
-submit such requests with an easily implementable and cross-platform
-mechanism.
+On 11/28/23 18:38, Cédric Le Goater wrote:
+> On 11/27/23 18:13, Chalapathi V wrote:
+>> Hello,
+>>
+>> Thank you for the review and suggestions on V5.
+>>
+>> The suggestions and changes requested from V5 are addressed in V6.
+>>
+>> Updates in Version 6 of this series are:
+>> 1. adding a device-tree node in QEMU is removed as skiboot defines the
+>>     device-tree and QEMU should just follow it.
+>> 2. Renamed PnvPerv to PnvNestChipletPervasive in PATCH1 as the model provides
+>>     the common pervasive registers of all nest chiplets.
+>> 3. Nest1_chiplet model in PATCH2 is renamed to N1_chiplet to avoid the
+>>     confussions that may comeup later.
+>>
+>> Hence the new qom-tree looks like below.
+>> (qemu) info qom-tree
+>> /machine (powernv10-machine)
+>>    /chip[0] (power10_v2.0-pnv-chip)
+>>      /n1_chiplet (pnv-N1-chiplet)
+>>        /nest_pervasive_common (pnv-nest-chiplet-pervasive)
+>>          /xscom-n1_chiplet-control-regs[0] (memory-region)
+>>        /xscom-n1_chiplet-pb-scom-eq-regs[0] (memory-region)
+>>        /xscom-n1_chiplet-pb-scom-es-regs[0] (memory-region)
+>>
+>> Patches overview in V6.
+>> PATCH1: Create a common nest pervasive chiplet model with control chiplet scom
+>>          registers.
+>> PATCH2: Create a N1 chiplet model and implement powerbus scom registers.
+>>          Connect common nest pervasive model to N1 chiplet model to define
+>>          chiplet control scoms for N1 chiplet.
+>> PATCH3: Connect N1 chiplet model to p10 chip.
+>>
+>> Test covered:
+>> These changes are tested on a single socket and 2 socket P10 machine.
+> 
+> 
+> It would be nice to add in tests/avocado/ppc_powernv.py a simple test case
+> for a 2 socket machine :
+> 
+>          self.vm.add_args('-smp', '8,sockets=2,cores=1,threads=4')
+>      ...
+>      console_pattern = 'smp: Brought up 2 nodes, 8 CPUs'
 
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
----
- docs/specs/pvpanic.rst                   | 2 ++
- hw/misc/pvpanic.c                        | 5 +++++
- include/hw/misc/pvpanic.h                | 2 +-
- include/standard-headers/linux/pvpanic.h | 1 +
- 4 files changed, 9 insertions(+), 1 deletion(-)
+and test_linux_big_boot already exists ! :) Please run "make check
+&& make check-avocado" before sending a patchset. This is a good way
+to catch issues.
 
-diff --git a/docs/specs/pvpanic.rst b/docs/specs/pvpanic.rst
-index f894bc19555f..796cc0348a38 100644
---- a/docs/specs/pvpanic.rst
-+++ b/docs/specs/pvpanic.rst
-@@ -29,6 +29,8 @@ bit 1
-   a guest panic has happened and will be handled by the guest;
-   the host should record it or report it, but should not affect
-   the execution of the guest.
-+bit 2
-+  a guest shutdown has happened and should be processed by the host
- 
- PCI Interface
- -------------
-diff --git a/hw/misc/pvpanic.c b/hw/misc/pvpanic.c
-index a4982cc5928e..246f9ae4e992 100644
---- a/hw/misc/pvpanic.c
-+++ b/hw/misc/pvpanic.c
-@@ -40,6 +40,11 @@ static void handle_event(int event)
-         qemu_system_guest_crashloaded(NULL);
-         return;
-     }
-+
-+    if (event & PVPANIC_SHUTDOWN) {
-+        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-+        return;
-+    }
- }
- 
- /* return supported events on read */
-diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
-index 198047dc86ff..fa76ad93d998 100644
---- a/include/hw/misc/pvpanic.h
-+++ b/include/hw/misc/pvpanic.h
-@@ -23,7 +23,7 @@
- #define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
- 
- #define PVPANIC_IOPORT_PROP "ioport"
--#define PVPANIC_EVENTS (PVPANIC_PANICKED | PVPANIC_CRASH_LOADED)
-+#define PVPANIC_EVENTS (PVPANIC_PANICKED | PVPANIC_CRASH_LOADED | PVPANIC_SHUTDOWN)
- 
- /*
-  * PVPanicState for any device type
-diff --git a/include/standard-headers/linux/pvpanic.h b/include/standard-headers/linux/pvpanic.h
-index 54b7485390d3..38e53ad45929 100644
---- a/include/standard-headers/linux/pvpanic.h
-+++ b/include/standard-headers/linux/pvpanic.h
-@@ -5,5 +5,6 @@
- 
- #define PVPANIC_PANICKED	(1 << 0)
- #define PVPANIC_CRASH_LOADED	(1 << 1)
-+#define PVPANIC_SHUTDOWN       	(1 << 2)
- 
- #endif /* __PVPANIC_H__ */
+Thanks,
 
--- 
-2.43.0
+C.
+
+
 
 
