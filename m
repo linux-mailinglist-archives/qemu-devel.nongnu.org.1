@@ -2,121 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DE87FBE8D
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 16:52:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF96E7FBEA2
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 16:53:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r80Mk-000605-Fi; Tue, 28 Nov 2023 10:51:14 -0500
+	id 1r80OC-000720-BE; Tue, 28 Nov 2023 10:52:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r80Mh-0005y0-DM
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:51:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r80Md-0007lu-U9
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:51:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701186667;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=a7TaJ1fftDKYLjchnWgAH2T0JUqr3+5SdVc0/8Z4EIs=;
- b=cwM37Fq3LNEvtgAQnCwxpUZWpeMtth9bpanBnZLB+loi5ELGAD0dPe5FIUGPmP3o1Dlzir
- NvMxGr8neDLr1n9/FQg/9SdU8tjXTFhkgaR6r0gJzWaSW7AoZq89VZnGrZDW2kXe1gPxLJ
- NHE4Sy01MvwnQJvNNb/r/9+6SATpKu4=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-h4pV1DGcOeWcjSwxnQqY3w-1; Tue, 28 Nov 2023 10:51:05 -0500
-X-MC-Unique: h4pV1DGcOeWcjSwxnQqY3w-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a15ce298cf4so66043366b.1
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 07:51:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r80OA-00071Y-Dr
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:52:42 -0500
+Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r80O7-00083O-8n
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 10:52:40 -0500
+Received: by mail-ot1-x330.google.com with SMTP id
+ 46e09a7af769-6ce2eaf7c2bso3430677a34.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 07:52:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701186758; x=1701791558; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HcckzcY4tdsf2d2h4+wwOaQIuyaZz73wwAPwe9+zbAc=;
+ b=QXNQqjJEt5tQZtxhm1Y5XNGFylzkeRNK9FZtesJGmi2d2X0l72ViRtXxaxRiJrtSzo
+ D/YTCTMFuAM0Q22bFip3fSC4IZ3VqIuZQmuzjxOjMRwUTI/pMMc2BS8Y+VW3ZrNej2Ha
+ +lKMRvOHguI58i7a6NE64LHLAhOMD1lK5M/Yr2Ttey3uSuZBOCRvpS6h3P/gsxiYYxfF
+ BEeQhdp31tzS26fTuEnkkyV2u+IDp53g2gifsVDLhXnTV2g0NRr9YG8sW3BgQ9acliRE
+ DtLWzQuA1CGY3AOzaLoOf/kQhQLp/imznHsGZsxbTwJUTDpviFEO9GiK4QIefkVMPe8g
+ lLSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701186663; x=1701791463;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=a7TaJ1fftDKYLjchnWgAH2T0JUqr3+5SdVc0/8Z4EIs=;
- b=C6nKxVDUZFFDXPK+5MSiA7NgkM/1UORuOCeuoarCpP7GjmTvYGCneuYG5cacJVVeZG
- 7Nup7OXFjU/iR0KxKQYMCdtWp9eO8ys1RGOHCklDBSOFmLF46+B9FKnkiMkVWxwL+BKW
- INwCPh027pWfaZsX7q+2lI0YOpNh1xzUe00isZ/LvJwSzuvMHBf9AnKW/OLc0YWGeIyu
- zITlgcz24njMWq60DUMVQPiLtKLKZ8+jXrP16iUdWdnoWODt7n49sphLuIz1qcURuT/P
- VjZL1GktrFiXdUzeftpeIeVdv7GRvnwCsm76Xfd5NsIDbpn2odWqILO7Elrad+R92y0Y
- li9A==
-X-Gm-Message-State: AOJu0Yxxe+FLAGU61V1fW82OOy2gjpw/HJv7T17w/E7NsSGpr0U/anH6
- GJ1XT1AvGtcyPB9GwXSlTzr3vQidDW3pD3kD0IIdNpV1suGAqXM4qdLlhLwybW8vtOPTYkyxyXD
- C99clWtvf7fAXpm8=
-X-Received: by 2002:a17:906:eb08:b0:9fd:5708:cefd with SMTP id
- mb8-20020a170906eb0800b009fd5708cefdmr10544105ejb.76.1701186662902; 
- Tue, 28 Nov 2023 07:51:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEb0zDYECHV55FNXL39hwvytpLNp50WfqgLZLPXS6enMvDKVaq+r28r7KsslsxMoD0RVFay7w==
-X-Received: by 2002:a17:906:eb08:b0:9fd:5708:cefd with SMTP id
- mb8-20020a170906eb0800b009fd5708cefdmr10544093ejb.76.1701186662648; 
- Tue, 28 Nov 2023 07:51:02 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- cd19-20020a170906b35300b009ff783d892esm7045461ejb.146.2023.11.28.07.51.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Nov 2023 07:51:02 -0800 (PST)
-Date: Tue, 28 Nov 2023 16:50:59 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini
- <pbonzini@redhat.com>, Max Filippov <jcmvbkbc@gmail.com>, David Hildenbrand
- <david@redhat.com>, Peter Xu <peterx@redhat.com>, Anton Johansson
- <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
- kvm@vger.kernel.org, Marek Vasut <marex@denx.de>, David Gibson
- <david@gibson.dropbear.id.au>, Brian Cain <bcain@quicinc.com>, Yoshinori
- Sato <ysato@users.sourceforge.jp>, "Edgar E . Iglesias"
- <edgar.iglesias@gmail.com>, Claudio Fontana <cfontana@suse.de>, Daniel
- Henrique Barboza <dbarboza@ventanamicro.com>, Artyom Tarasenko
- <atar4qemu@gmail.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- qemu-ppc@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Aurelien
- Jarno <aurelien@aurel32.net>, Ilya Leoshkevich <iii@linux.ibm.com>, Daniel
- Henrique Barboza <danielhb413@gmail.com>, Bastian Koppelmann
- <kbastian@mail.uni-paderborn.de>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clg@kaod.org>, Alistair Francis <alistair.francis@wdc.com>, Alessandro Di
- Federico <ale@rev.ng>, Song Gao <gaosong@loongson.cn>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Chris Wulff <crwulff@gmail.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org, Yanan Wang
- <wangyanan55@huawei.com>, Luc Michel <luc@lmichel.fr>, Weiwei Li
- <liweiwei@iscas.ac.cn>, Bin Meng <bin.meng@windriver.com>, Stafford Horne
- <shorne@gmail.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>, "Daniel P .
- Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Aleksandar Rikalo
- <aleksandar.rikalo@syrmia.com>, Bernhard Beschow <shentey@gmail.com>, Mark
- Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-riscv@nongnu.org, Alex
- =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>, Nicholas Piggin
- <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>, Michael Rolnik
- <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Markus
- Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-Subject: Re: [PATCH 03/22] target/i386/kvm: Correct comment in
- kvm_cpu_realize()
-Message-ID: <20231128165059.0d991a0c@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230918160257.30127-4-philmd@linaro.org>
-References: <20230918160257.30127-1-philmd@linaro.org>
- <20230918160257.30127-4-philmd@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1701186758; x=1701791558;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HcckzcY4tdsf2d2h4+wwOaQIuyaZz73wwAPwe9+zbAc=;
+ b=fxG340VxEN+mkC0bOBZH5irhSC0abQvefF8IA8z0Y33TsEItTUjQb7zhsUrfYqi72o
+ T6dWGCN4YxgwPBeTrnwCRJn/6PsqP9vptrbIYbL7OXN2dk58AJe+UQ4j6qNTlwTc8bOg
+ fxCI9fMrQ2a80dO8/D87mDq+DNaRZgAQL/nxAhxt/MPdmxGOEsymOSRw5gKgrU83tFUV
+ O82RZYOFvwKgNGzn4cKvqHcPZea0YBSBrImgCgNbhuqN35wz+6KXyPrFpA2w8xACTIH7
+ LQ26TPXr0CEiy5Cq8N2PWiWWr8Shr2tf6uoJkwH2ooEdFDl69geW6zIyuaaY2An0PLS7
+ kwwQ==
+X-Gm-Message-State: AOJu0YwjWpMkz6AKe3VKd7PVd85MwLbvQkGiFRC+fmE1XGP96DL3WbE5
+ iKWhjm3FugfbhIVcR9H1fIej1Q==
+X-Google-Smtp-Source: AGHT+IGmY1MRwcvYYuCiMPoYGDKvDcybGCFph+5AxiONsBagth51pZB1afVWusK3o6dicBPIvy1evw==
+X-Received: by 2002:a9d:7303:0:b0:6d7:f540:45eb with SMTP id
+ e3-20020a9d7303000000b006d7f54045ebmr16902894otk.6.1701186757947; 
+ Tue, 28 Nov 2023 07:52:37 -0800 (PST)
+Received: from [172.20.7.39] ([187.217.227.247])
+ by smtp.gmail.com with ESMTPSA id
+ q10-20020a056830440a00b006c4f7ced5d2sm1674015otv.70.2023.11.28.07.52.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Nov 2023 07:52:37 -0800 (PST)
+Message-ID: <5717e259-7d0f-42bf-8d5a-43120bdb0284@linaro.org>
+Date: Tue, 28 Nov 2023 09:52:35 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] qemu/timer: Don't use RDTSC on i486
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, Petr Cvek <petrcvekcz@gmail.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "S. Tsirkin, Michael" <mst@redhat.com>
+References: <6826113a-d428-401e-b5a3-56ad5d8fbaa4@gmail.com>
+ <CABgObfabW_WKdfGFgao0BJ0wHYHRx6KzMsLzvqUvzu3ZMx5Bdw@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CABgObfabW_WKdfGFgao0BJ0wHYHRx6KzMsLzvqUvzu3ZMx5Bdw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,29 +96,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 18 Sep 2023 18:02:36 +0200
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
+On 11/26/23 09:56, Paolo Bonzini wrote:
+> 
+> 
+> Il sab 25 nov 2023, 13:23 Petr Cvek <petrcvekcz@gmail.com <mailto:petrcvekcz@gmail.com>> 
+> ha scritto:
+> 
+>     GCC defines __i386__ for i386 and i486, which both lack RDTSC instruction.
+>     The i386 seems to be impossible to distinguish, but i486 can be identified
+>     by checking for undefined __i486__.
+> 
+> 
+> As far as I know QEMU cannot be run on i486 anyway since TCG assumes the presence of 
+> CPUID. Have you actually tried?
 
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+TCG does not assume CPUID.
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+We might have problems without cmpxchg8b, but if so that's in accel/tcg/ not tcg/.
 
-> ---
->  target/i386/kvm/kvm-cpu.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-> index 7237378a7d..1fe62ce176 100644
-> --- a/target/i386/kvm/kvm-cpu.c
-> +++ b/target/i386/kvm/kvm-cpu.c
-> @@ -37,6 +37,7 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **err=
-p)
->       *  -> cpu_exec_realizefn():
->       *            -> accel_cpu_realizefn()
->       *               kvm_cpu_realizefn() -> host_cpu_realizefn()
-> +     *  -> cpu_common_realizefn()
->       *  -> check/update ucode_rev, phys_bits, mwait
->       */
->      if (cpu->max_features) {
 
+r~
 
