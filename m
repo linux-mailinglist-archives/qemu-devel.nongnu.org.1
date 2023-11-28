@@ -2,71 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D867FCAA1
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 00:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591367FCB2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 00:59:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r87Hn-0001eg-RZ; Tue, 28 Nov 2023 18:14:35 -0500
+	id 1r87xW-0001OZ-Vj; Tue, 28 Nov 2023 18:57:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r87Hl-0001dm-21
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 18:14:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1r87xK-0001Fo-6h; Tue, 28 Nov 2023 18:57:32 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r87Hj-0006P2-43
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 18:14:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701213269;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JOhZJUiHIx9vek3JrVo6kHC7HAezrI08fuvCLYq6yfI=;
- b=J3+nWp30+tcV+9Jcq8CycTmux01JKPc6pOaurH/iAQPqESgtkKiVl3p6ywi5ZsBz5JN798
- u6RA3fwKY4UJpQGDCBq5sSlgvhajWttUb95yu6iuf13u72qW96NfNzthgFEaS4UTJub/jE
- ZqW3n6A62iicZrr+1Gk5G44z98wJRyc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-4TWQxJw1OsSaH3FOvw3xRA-1; Tue, 28 Nov 2023 18:14:26 -0500
-X-MC-Unique: 4TWQxJw1OsSaH3FOvw3xRA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A0D8988CDC0;
- Tue, 28 Nov 2023 23:14:25 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.16])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AB0592166B27;
- Tue, 28 Nov 2023 23:14:24 +0000 (UTC)
-Date: Tue, 28 Nov 2023 18:14:23 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
- Michael Rolnik <mrolnik@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PULL 0/7] Misc fixes for 2023-11-28
-Message-ID: <20231128231423.GA741888@fedora>
-References: <20231128133740.64525-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1r87xE-0007qW-K7; Tue, 28 Nov 2023 18:57:29 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ASLFo2h024680; Tue, 28 Nov 2023 23:57:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=2pd9lw4wD3DVZDGwK1Bm+jHxqAc/C70QTldobg994bY=;
+ b=KVYHSbQzcfXpWUmdTrrkYAoLSjlMTxhwq2ksZW7iuIidtP18eQhlLlfhEFcAxviqFBne
+ tvFuvbJmRVhsczc27BsGYYWpCAND6H84LCacs2yBz7IpdljpjKMIOtpsyY1fuCWNf+xT
+ Zs7dOXpESHsRO7Xd0SXmQwL/ellOeGZ2ZNydac1xT5nMW4CapP2chO+xg0G03+Hq/VfE
+ seTUsbanJnFtfByboGup63G7G8djE9NnIZUpF7sec5bcZ5eoZSXLn3HVVqiSGD8rjzhp
+ 9KkL/llBWKG4kVg5YRjU9Ys6ThLrcgvwH4pCXSelFfeIVt7UrAxKhJYFHwKmMxoQ3O0g eg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unnn27p4x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Nov 2023 23:57:06 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ASNAfFk008371;
+ Tue, 28 Nov 2023 23:57:05 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unnn27p4g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Nov 2023 23:57:05 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ASMeBTe004908; Tue, 28 Nov 2023 23:57:04 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwfk3b24-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Nov 2023 23:57:04 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3ASNv38N9568944
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Nov 2023 23:57:03 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 520305805F;
+ Tue, 28 Nov 2023 23:57:03 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1313258043;
+ Tue, 28 Nov 2023 23:57:03 +0000 (GMT)
+Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 28 Nov 2023 23:57:03 +0000 (GMT)
+From: Ninad Palsule <ninad@linux.ibm.com>
+To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@codeconstruct.com.au, joel@jms.id.au, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ philmd@linaro.org, lvivier@redhat.com
+Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
+Subject: [PATCH v8 00/10] Introduce model for IBM's FSI
+Date: Tue, 28 Nov 2023 17:56:50 -0600
+Message-Id: <20231128235700.599584-1-ninad@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="atunKu3JQV9ozszU"
-Content-Disposition: inline
-In-Reply-To: <20231128133740.64525-1-philmd@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0lEtKCx5DM3fk0WksjAL0ATO30pXlFVQ
+X-Proofpoint-ORIG-GUID: SikcvjAzONSX0t5wQyzhyxqKrp3G6d_L
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_25,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0
+ priorityscore=1501 mlxlogscore=236 malwarescore=0 adultscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 mlxscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311280188
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,30 +112,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hello,
 
---atunKu3JQV9ozszU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Please review the patch-set version 8.
+I have incorporated review comments from Cedric.
+  - Fixed checkpatch failures.
+  - Fixed commit messages.
+  - Fixed LBUS memory map size.
 
-Applied, thanks.
+Ninad Palsule (10):
+  hw/fsi: Introduce IBM's Local bus
+  hw/fsi: Introduce IBM's FSI Bus
+  hw/fsi: Introduce IBM's cfam,fsi-slave,scratchpad
+  hw/fsi: IBM's On-chip Peripheral Bus
+  hw/fsi: Introduce IBM's FSI master
+  hw/fsi: Aspeed APB2OPB interface
+  hw/arm: Hook up FSI module in AST2600
+  hw/fsi: Added qtest
+  hw/fsi: Added FSI documentation
+  hw/fsi: Update MAINTAINER list
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+ MAINTAINERS                     |   8 +
+ docs/specs/fsi.rst              | 138 ++++++++++++++
+ docs/specs/index.rst            |   1 +
+ meson.build                     |   1 +
+ hw/fsi/trace.h                  |   1 +
+ include/hw/arm/aspeed_soc.h     |   4 +
+ include/hw/fsi/aspeed-apb2opb.h |  34 ++++
+ include/hw/fsi/cfam.h           |  45 +++++
+ include/hw/fsi/fsi-master.h     |  32 ++++
+ include/hw/fsi/fsi-slave.h      |  29 +++
+ include/hw/fsi/fsi.h            |  24 +++
+ include/hw/fsi/lbus.h           |  40 ++++
+ include/hw/fsi/opb.h            |  25 +++
+ hw/arm/aspeed_ast2600.c         |  19 ++
+ hw/fsi/aspeed-apb2opb.c         | 316 ++++++++++++++++++++++++++++++++
+ hw/fsi/cfam.c                   | 261 ++++++++++++++++++++++++++
+ hw/fsi/fsi-master.c             | 165 +++++++++++++++++
+ hw/fsi/fsi-slave.c              |  78 ++++++++
+ hw/fsi/fsi.c                    |  22 +++
+ hw/fsi/lbus.c                   |  51 ++++++
+ hw/fsi/opb.c                    |  36 ++++
+ tests/qtest/aspeed-fsi-test.c   | 205 +++++++++++++++++++++
+ hw/Kconfig                      |   1 +
+ hw/arm/Kconfig                  |   1 +
+ hw/fsi/Kconfig                  |  21 +++
+ hw/fsi/meson.build              |   5 +
+ hw/fsi/trace-events             |  13 ++
+ hw/meson.build                  |   1 +
+ tests/qtest/meson.build         |   1 +
+ 29 files changed, 1578 insertions(+)
+ create mode 100644 docs/specs/fsi.rst
+ create mode 100644 hw/fsi/trace.h
+ create mode 100644 include/hw/fsi/aspeed-apb2opb.h
+ create mode 100644 include/hw/fsi/cfam.h
+ create mode 100644 include/hw/fsi/fsi-master.h
+ create mode 100644 include/hw/fsi/fsi-slave.h
+ create mode 100644 include/hw/fsi/fsi.h
+ create mode 100644 include/hw/fsi/lbus.h
+ create mode 100644 include/hw/fsi/opb.h
+ create mode 100644 hw/fsi/aspeed-apb2opb.c
+ create mode 100644 hw/fsi/cfam.c
+ create mode 100644 hw/fsi/fsi-master.c
+ create mode 100644 hw/fsi/fsi-slave.c
+ create mode 100644 hw/fsi/fsi.c
+ create mode 100644 hw/fsi/lbus.c
+ create mode 100644 hw/fsi/opb.c
+ create mode 100644 tests/qtest/aspeed-fsi-test.c
+ create mode 100644 hw/fsi/Kconfig
+ create mode 100644 hw/fsi/meson.build
+ create mode 100644 hw/fsi/trace-events
 
---atunKu3JQV9ozszU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVmdE8ACgkQnKSrs4Gr
-c8jLJgf/XeF5wnPjk6sjvy3WB6EtyvU/9AoUL96ejivzuGhwEI+2GnYz4Yu4U+Q1
-RGax4w2RzQ+4lSmzdc9F49V4Dz+7WpjxQIaC4Qg8OAFkjbAvhcuVWUXgG2FIMWRT
-PWBIIMgyfYh3v0WaqrNn6N3UgCOYxJPu/nngnowa+cDodRbAuG5W/x1JnrV7eDEe
-KjsGER9KGZRhsQVU/IaN5CnK485QD67nLAUlKA0mNYHnYudkggvYes2vRkh5tsHn
-0eScGnWtZJFePZOokufb8VBw7/hKfe5xiJstGiRhWYMqkm4VKu6Tyw00TOsbNwJm
-VyDjOw7CMtt5h+NHFzGpvZoY6u3d2g==
-=gvwi
------END PGP SIGNATURE-----
-
---atunKu3JQV9ozszU--
+-- 
+2.39.2
 
 
