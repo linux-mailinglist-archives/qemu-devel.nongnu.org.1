@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335B47FBBBF
+	by mail.lfdr.de (Postfix) with ESMTPS id 639CC7FBBC0
 	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 14:38:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7yHc-0001nJ-Hs; Tue, 28 Nov 2023 08:37:48 -0500
+	id 1r7yHi-0001sM-2p; Tue, 28 Nov 2023 08:37:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7yHa-0001my-Q4
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:37:46 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7yHg-0001qr-6M
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:37:52 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7yHZ-0007uq-4d
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:37:46 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5482df11e73so7158733a12.0
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 05:37:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7yHe-0007ya-O1
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:37:51 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a013d22effcso740507866b.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 05:37:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701178663; x=1701783463; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZbNGDZzMkTmahEM+ics3uzeN3yQgsB5NCuwfdUgHe68=;
- b=TyCdmjCDOwn1RnFYiYf4dCStGYrjIrhsXybhAPk4hN2XB/qo3NaSJwJs6mvOLyW9Lk
- 94JxnP/mki9hpB/IpRBOi68eQrgJk/DJP4qcjRlyCbJAbrsBPsnrEPKyI+1beorIcjir
- yDJLfFG7NNwFZuluFiqvgjeXJNA1Ove9hdS/6E7GGadfp8ZDGfQVUWD3kBWc1f/n8frF
- FElLBlNf3VgEPqlBzjFBbaxUxn/xyg6zv2kHViqB+lI2ClZPy7yo/oG4QJ7MIh1CQlY4
- tkKfy1BVgCFYblpUlBMBd2kwkOmSlofs9QmAaMEGXKWhHmAbOgaI7U8fD2Ij0GB9qtBb
- lHXg==
+ d=linaro.org; s=google; t=1701178669; x=1701783469; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=htBKMVce+5k4Dd75IUusM/oeR5Wa1XdashAH0btXn4s=;
+ b=pvOS4t1YWqQkJ+frrO1KRiLgYsltZlr36WIdRcL/sg6mdGe5cjaC1Pvwfw+Vth7CUO
+ KLbS1h+D1eQgpskQPYx86IndfRZgi9rPydocaNO5q5jfIxPsqRDYaxfjfCI82WqXXl4g
+ VUy9g3YoRIFgbpndhHKABycEkd5Vcz7NuxaAG75iG0VEo9Su58aKZ8WLcoVAIYxoEih1
+ MYN4Sbc8oRn7p7oY251GDbtmbSCerid4l3NTLbueB+nbbMwBf7+ug44a0OD+yfmMLze6
+ qBjBCyE8wD/jWvSt/wSXsxBGYlTdQJ9rJRGoXmZvRzQdOhHooeyrUXvy1GpVvYtoBUa4
+ +Jtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701178663; x=1701783463;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZbNGDZzMkTmahEM+ics3uzeN3yQgsB5NCuwfdUgHe68=;
- b=RrJVfUArzIB8lNxLbwI1/ETnjCelwspLX/uEYL95rTfyO1fekzZkmPZPYQw6P9XyyG
- gY4tVT+H05X71NTEHkS5mkXM1u9I5aKLqnCeoYLiDkeKhY+L+enw+pEL4inq8cv2r6pL
- Rc2Y7eEmzLNDo4UFhVXrBz+6i14j7Tbr/OQujyErKNSi267fIN79QUCqHgZOKQNMHz7x
- 1huogJjKFT3sEX2Z5QMCVeH+F30FOG4V4OmZQTL/Y/BzA6F0WDQIXHH5za9KVHvNPnUX
- 5TteDvywOv1looYLCtouqSUmuq3oK/OKRTP9ir8AZMaU/26xMGc123c/vjCX4iF9FKwG
- N1Yg==
-X-Gm-Message-State: AOJu0Yw7AzR1FYJMA3p+sGwlUiSJAuXwd2XqjV7ih370/IJpmduVHb5x
- 1OkjlWxMBKXuWdNHRBQbbaZ9yv9E2GhhuSZkITc=
-X-Google-Smtp-Source: AGHT+IFoYf0Zb6DWFI+pBgJON7i0az9xOX0K0jASWqZ5I5zJeVpi69XCQw7zIsbWZEIQvrgCvkRPVw==
-X-Received: by 2002:a17:906:fa90:b0:9b2:be5e:7545 with SMTP id
- lt16-20020a170906fa9000b009b2be5e7545mr11295002ejb.36.1701178663251; 
- Tue, 28 Nov 2023 05:37:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701178669; x=1701783469;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=htBKMVce+5k4Dd75IUusM/oeR5Wa1XdashAH0btXn4s=;
+ b=RuRwnMtHIKh6wlaykDjG/xxYSE/m/qit02uABPJkB8GFyEr04seBjv1EmOeqRgB6+c
+ 8aSs6C2kdQRiVJEFIcoczfgtM9W79afA/DhwvntjMW1ooyjNXSlIoBQndfuenvbW41H5
+ R43d36NabRHJKl1aMbmaQdn1QijvbEB0wrHawyrLOocbIu3yU06VkXpqXT0RyNWCsFio
+ 1ZgWhp5hzobWVUHBBKUAZtIo8JFhwDvLCj1Qp9DspYt9niopaVoEMSH651dO3qY+pEar
+ L6jR8Yh6+MlXWlnCmNW0s4qJMAKoYH8IZcEnqRVl/qsuIkVs7NPngCUiNXWXJA5IJ94w
+ 3CGQ==
+X-Gm-Message-State: AOJu0YzeJwoNhYmVbdPZTOit1z8DCIxfBQOWsfMwJChMtsrGFfY1B7eg
+ TFEPEeavrRMaVMyW4bI088L5NKvtfviiNbj1Tyg=
+X-Google-Smtp-Source: AGHT+IG0ddno8ozv8YjUVBb7izg3bRab+R+FnCAjN+JZKFsEabaqSQdBXsAo+aa7K0NoVhkv5GF/PQ==
+X-Received: by 2002:a17:907:c8f:b0:9c6:8190:359f with SMTP id
+ gi15-20020a1709070c8f00b009c68190359fmr9290221ejc.33.1701178669125; 
+ Tue, 28 Nov 2023 05:37:49 -0800 (PST)
 Received: from m1x-phil.lan (crb44-h02-176-184-13-61.dsl.sta.abo.bbox.fr.
  [176.184.13.61]) by smtp.gmail.com with ESMTPSA id
- n27-20020a170906089b00b009fe0902961bsm6773252eje.23.2023.11.28.05.37.41
+ q26-20020a17090622da00b00a0d74d56d66sm3154544eja.42.2023.11.28.05.37.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 Nov 2023 05:37:42 -0800 (PST)
+ Tue, 28 Nov 2023 05:37:48 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Michael Rolnik <mrolnik@gmail.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 0/7] Misc fixes for 2023-11-28
-Date: Tue, 28 Nov 2023 14:37:33 +0100
-Message-ID: <20231128133740.64525-1-philmd@linaro.org>
+ BALATON Zoltan <balaton@eik.bme.hu>, Samuel Tardieu <sam@rfc1149.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Anton Johansson <anjo@rev.ng>, Alessandro Di Federico <ale@rev.ng>
+Subject: [PULL 1/7] target/hexagon/idef-parser/prepare: use env to invoke bash
+Date: Tue, 28 Nov 2023 14:37:34 +0100
+Message-ID: <20231128133740.64525-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231128133740.64525-1-philmd@linaro.org>
+References: <20231128133740.64525-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,55 +93,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit e867b01cd6658a64c16052117dbb18093a2f9772:
+From: Samuel Tardieu <sam@rfc1149.net>
 
-  Merge tag 'qga-pull-2023-11-25' of https://github.com/kostyanf14/qemu into staging (2023-11-27 08:59:00 -0500)
+This file is the only one involved in the compilation process which
+still uses the /bin/bash path.
 
-are available in the Git repository at:
+Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Message-ID: <20231123211506.636533-1-sam@rfc1149.net>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/hexagon/idef-parser/prepare | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://github.com/philmd/qemu.git tags/misc-next-20231128
-
-for you to fetch changes up to 0180a744636e6951996240b96a250d20ad0fad0d:
-
-  docs/s390: Fix wrong command example in s390-cpu-topology.rst (2023-11-28 14:27:18 +0100)
-
-----------------------------------------------------------------
-Misc fixes for 8.2
-
-* buildsys: Invoke bash via 'env' (Samuel)
-
-* doc: Fix example in s390-cpu-topology.rst (Zhao)
-
-* HW: Fix AVR ATMega reset stack (Gihun) and VT82C686 IRQ routing (Zoltan)
-
-----------------------------------------------------------------
-
-BALATON Zoltan (4):
-  hw/isa/vt82c686: Bring back via_isa_set_irq()
-  hw/usb/vt82c686-uhci-pci: Use ISA instead of PCI interrupts
-  hw/isa/vt82c686: Route PIRQ inputs using via_isa_set_irq()
-  hw/audio/via-ac97: Route interrupts using via_isa_set_irq()
-
-Gihun Nam (1):
-  hw/avr/atmega: Fix wrong initial value of stack pointer
-
-Samuel Tardieu (1):
-  target/hexagon/idef-parser/prepare: use env to invoke bash
-
-Zhao Liu (1):
-  docs/s390: Fix wrong command example in s390-cpu-topology.rst
-
- docs/devel/s390-cpu-topology.rst   |  6 +--
- include/hw/isa/vt82c686.h          |  2 +
- target/avr/cpu.h                   |  3 ++
- hw/audio/via-ac97.c                |  8 +--
- hw/avr/atmega.c                    |  4 ++
- hw/isa/vt82c686.c                  | 79 ++++++++++++++++++++----------
- hw/usb/vt82c686-uhci-pci.c         |  9 ++++
- target/avr/cpu.c                   | 10 +++-
- target/hexagon/idef-parser/prepare |  2 +-
- 9 files changed, 87 insertions(+), 36 deletions(-)
-
+diff --git a/target/hexagon/idef-parser/prepare b/target/hexagon/idef-parser/prepare
+index 72d6fcbd21..cb3622d4f8 100755
+--- a/target/hexagon/idef-parser/prepare
++++ b/target/hexagon/idef-parser/prepare
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/usr/bin/env bash
+ 
+ #
+ #  Copyright(c) 2019-2021 rev.ng Labs Srl. All Rights Reserved.
 -- 
 2.41.0
 
