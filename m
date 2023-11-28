@@ -2,58 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9297FB25A
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 08:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB4F7FB289
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 08:18:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7sBn-0004Fz-Al; Tue, 28 Nov 2023 02:07:23 -0500
+	id 1r7sLK-0007W7-Eu; Tue, 28 Nov 2023 02:17:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=PHl3=HJ=kaod.org=clg@ozlabs.org>)
- id 1r7sBk-0004FL-LL; Tue, 28 Nov 2023 02:07:20 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r7sLA-0007V4-OK
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 02:17:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=PHl3=HJ=kaod.org=clg@ozlabs.org>)
- id 1r7sBi-0002um-NB; Tue, 28 Nov 2023 02:07:20 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SfYRh4QYpz4wqN;
- Tue, 28 Nov 2023 18:07:12 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r7sL9-0004ZZ-5X
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 02:17:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701155821;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2IP2tERrhKSWpdlY1KYnTeBzIUVcIpzq6uYQQKwYKLw=;
+ b=OlV/LOebZtJc7niEylD89nyQGiInLYtcsT6BJ+8c8qmZGkvn98CZt+KHq7nJNyyFO6Felc
+ gahpPatKlQ6q5z8CUQVL58YaA5t17DfjJ9siNrfAN2OzF9cysY72YPwcHXeV3udzcC6GDL
+ M/BeNCDM+HdlZnpCW8w5E0/RK246KEU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-615-nqezglUbO7u2v3-NVjqIpg-1; Tue, 28 Nov 2023 02:16:57 -0500
+X-MC-Unique: nqezglUbO7u2v3-NVjqIpg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SfYRc4rrWz4wcJ;
- Tue, 28 Nov 2023 18:07:08 +1100 (AEDT)
-Message-ID: <595c26d6-ef8f-443e-8192-3e73ee6b7d75@kaod.org>
-Date: Tue, 28 Nov 2023 08:07:05 +0100
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8B10380346A;
+ Tue, 28 Nov 2023 07:16:57 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 59FCE20268D8;
+ Tue, 28 Nov 2023 07:16:57 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 39D8A21E6A1F; Tue, 28 Nov 2023 08:16:55 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
+ berrange@redhat.com,  peter.maydell@linaro.org,  farosas@suse.de
+Subject: Re: [PATCH] 'channel' and 'addr' in qmp_migrate() are not
+ auto-freed. migrate_uri_parse() allocates memory which is returned to
+ 'channel', which is leaked because there is no code for freeing 'channel'
+ or 'addr'. So, free addr and channel to avoid memory leak. 'addr' does
+ shallow copying of channel->addr, hence free 'channel' itself and deep
+ free contents of 'addr'
+References: <20231128062520.36456-1-het.gala@nutanix.com>
+Date: Tue, 28 Nov 2023 08:16:55 +0100
+In-Reply-To: <20231128062520.36456-1-het.gala@nutanix.com> (Het Gala's message
+ of "Tue, 28 Nov 2023 06:25:20 +0000")
+Message-ID: <87a5qy4aag.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 for-8.2] ppc/amigaone: Allow running AmigaOS without
- firmware image
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>, philmd@linaro.org
-References: <20231125163425.3B3BC756078@zero.eik.bme.hu>
- <CX9EPBH7MMHK.14A30GV035VAZ@wheely>
- <0eb18a77-af0e-a84b-764c-b435ea912a3d@eik.bme.hu>
- <CX9LVFYU6MBA.MLF4OMOCHE6K@wheely>
- <3f188a09-9927-4fc3-a4eb-0cde34934539@kaod.org>
- <CXA2ENP9VBT1.2THPXM7WFD3I3@wheely>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CXA2ENP9VBT1.2THPXM7WFD3I3@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=PHl3=HJ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,43 +86,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/28/23 02:47, Nicholas Piggin wrote:
-> On Tue Nov 28, 2023 at 2:37 AM AEST, Cédric Le Goater wrote:
->>
->>> I'm not sure, I don't think it's necessary if your minimal patch works.
->>>
->>> I'll do a PR for 8.2 for SLOF and Skiboot updates, so happy to include
->>> this as well.
->>
->> I think this is a bit late for 8.2 to change FW images, well, at least
->> SLOF and skiboot. Are the new versions fixing something critical ?
-> 
-> Ah okay. Well then I can put them in next instead.
-> 
-> SLOF has a fix for virtio console over reboots, pretty minimal.
+Your commit message is all in one line.  You need to format it like
 
-I see that commit dd4d4ea0add9 has :
+     migration: Plug memory leak
 
-   Fixes: cf28264 ("virtio-serial: Rework shutdown sequence")
+    'channel' and 'addr' in qmp_migrate() are not auto-freed.
+    migrate_uri_parse() allocates memory which is returned to 'channel',
+    which is leaked because there is no code for freeing 'channel' or
+    'addr'.  So, free addr and channel to avoid memory leak.  'addr'
+    does shallow copying of channel->addr, hence free 'channel' itself
+    and deep free contents of 'addr'.
 
-Looks good for 8.2
+Het Gala <het.gala@nutanix.com> writes:
 
-> skiboot has some bug fixes but it's a bigger change and maybe not
-> so important for QEMU.> Could they be merged in next release 
-
-yes. it seems skiboot should be merged with chiptod support in 9.0.
-
-> and SLOF tagged with stable?
+> Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp
+> migration flow")
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> ---
+>  migration/migration.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> I think this amigaone patch could still be merged since it's only
-> touching a new machine and it's fixing an issue of missing firmware.
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 28a34c9068..29efb51b62 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -2004,6 +2004,8 @@ void qmp_migrate(const char *uri, bool has_channels,
+>                            MIGRATION_STATUS_FAILED);
+>          block_cleanup_parameters();
+>      }
+> +    g_free(channel);
+> +    qapi_free_MigrationAddress(addr);
+>  
+>      if (local_err) {
+>          if (!resume_requested) {
 
-ARM does something similar with roms. See hw/arm/boot.c file.
+What makes you think there's a memory leak?  I can't see it.
 
-It will need a "Fixes" tag.
+qmp_migrate() has two callers:
 
-Thanks,
+1. qmp_marshal_migrate(), in generated qapi-commands-migration.c
 
-C.
+   qmp_marshal_migrate() deserializes @args into @arg with a visitor.
+   This allocates @arg and its members, including arg.channels.  It
+   passes all the members of @arg to qmp_migrate().  And then it frees
+   @arg and its members including arg.channels.
+
+2. hmp_migrate()
+
+   hmp_migrate() allocates @channel with migrate_uri_parse(), adds it to
+   list @caps, passes @caps to qmp_migrate(), then frees @caps with
+   qapi_free_MigrationChannelList().
 
 
