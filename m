@@ -2,68 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165247FBF27
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 17:26:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 320AC7FBF26
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 17:24:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r80tv-0001jG-Br; Tue, 28 Nov 2023 11:25:31 -0500
+	id 1r80sQ-000111-Tj; Tue, 28 Nov 2023 11:23:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r80to-0001im-9W
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 11:25:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r80tl-0005TV-PL
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 11:25:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701188716;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hIuWYSwKiKnv3p/PGuCqWSMys5rfkO+tE0T6znDdK2c=;
- b=LN3Il3ALmx/r/tD5TVDhTYYNe2k97lMmyURlfnl/m8DmQUQict2i7WFfXCQsjqQtZc9h0o
- 8xmc1ckWoBs7hoSiKD7gIexMHuNcHd+QAYWDjYzgasvHdi2PjBA/MnLYqBM8h8Lq94ZnEw
- ZmHXirGZyjyCdN9A++GhNUKqsbNCoCI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-z-KHglorO0iZTGRSaYi8MQ-1; Tue, 28 Nov 2023 11:23:34 -0500
-X-MC-Unique: z-KHglorO0iZTGRSaYi8MQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 38B72185A783
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 16:23:03 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.16])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 995EA1C060B0;
- Tue, 28 Nov 2023 16:23:02 +0000 (UTC)
-Date: Tue, 28 Nov 2023 11:23:00 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PULL 0/2] Firmware/seabios 20231128 patches
-Message-ID: <20231128162300.GA600358@fedora>
-References: <20231128081743.2214005-1-kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r80sN-00010T-SA
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 11:23:56 -0500
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r80sM-0004x4-9x
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 11:23:55 -0500
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6d7e67c169cso3696341a34.1
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 08:23:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701188632; x=1701793432; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=BRbjogKMfSYVyfMWKfz9FXy2r6Ghnx55y3VWtW1rO34=;
+ b=CVaiqmEBUms60Qk3H6Ojw0A79WBDm8NTOvQl2b/0b8cafneQPCFZs8LpE28O6kjR1o
+ B4irV7DqQiWViFEAuN01eIBtrtWDM9pFmZ2ttFXUuYs73Q7LaesM9TzfIEUEkZS7Judy
+ 7B8Fk0h3UBKklcOfGoxNlMsznVzTiuPJ0l4f3meCdxB2pLglanszNarZhuDL/r/BgLNo
+ g7f4JfjuZyq1dil0DU6gfWQeHTdl7Ei5kAruqoddgqirPB78DEu1fJnW/WU0XFCBhF+z
+ bl3yfkyMMjy38hSRH3uhvjQZxp8HJLNBpfBLwH1EZTFQWE99AMhp7ybwbptrmePPRe6b
+ WABQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701188632; x=1701793432;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BRbjogKMfSYVyfMWKfz9FXy2r6Ghnx55y3VWtW1rO34=;
+ b=Vuc2EJOfXoMDoIU4G2m2dAixDsS+WhRiZ64lhcaPzyWpMm40qdy9vVBcONskK4CsUa
+ Utrlc/iPEOh2CrrLmMvk99vTJcERFygFDETMHrKWjVv5T1N84HYYfKIBWWScg1vvY7mj
+ fe+dr5JyyGRowVoTWOOIzmV4mDKy8ejdc86H+RmBopeRmEeL8u/qrqWjiNzWmyAZssvj
+ gxcaGoRkwvT68WxzuEp4pfC6S9Kd+0xXH64J2Ell3T/NNm7tsVhEPfmQFhBwcRrbflOY
+ yLjP7u2isP1OQqCiUCuvdSEKuTzyPg4V1Uuhdt+akT4PJLb5nm9CSYqq3/WRL5TgGcsx
+ yJQg==
+X-Gm-Message-State: AOJu0YxVttEXCeD9yPzaU/6TvZG16nbmV3XzupPw9jOD4AtQ6rCehb4A
+ SbHhffHHOBT+89kUa3+w1lUstJoIs/OK2112zeQ=
+X-Google-Smtp-Source: AGHT+IFBrc5Qc4n3dYXmb+Y9HoNKfpxYykPAeQJy2+D9xzQcx1TtJhfTF8nhIjm4TVzF0W7irBzoDae7GxBmt6iQZF0=
+X-Received: by 2002:a05:6870:3c0a:b0:1fa:7b7:102 with SMTP id
+ gk10-20020a0568703c0a00b001fa07b70102mr19321353oab.59.1701188632149; Tue, 28
+ Nov 2023 08:23:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="R8dntiZqyLZ8JZOb"
-Content-Disposition: inline
-In-Reply-To: <20231128081743.2214005-1-kraxel@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231121173416.346610-1-kwolf@redhat.com>
+In-Reply-To: <20231121173416.346610-1-kwolf@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 28 Nov 2023 11:23:40 -0500
+Message-ID: <CAJSP0QVCPgG83iV-yc+WnRCaz4f0+=EP=dBCAvuJ47jtR-XtAg@mail.gmail.com>
+Subject: Re: [PATCH for-8.2 0/2] qdev array property fixes
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, thuth@redhat.com, armbru@redhat.com, 
+ philmd@linaro.org, peter.maydell@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=stefanha@gmail.com; helo=mail-ot1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,30 +85,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 21 Nov 2023 at 12:35, Kevin Wolf <kwolf@redhat.com> wrote:
+>
+> Kevin Wolf (2):
+>   qdev: Fix crash in array property getter
+>   string-output-visitor: Support lists for non-integer types
+>
+>  hw/core/qdev-properties.c    | 33 ++++++++++++++++++++++++++-------
+>  qapi/string-output-visitor.c | 24 ++++++++++++++++++++----
+>  2 files changed, 46 insertions(+), 11 deletions(-)
 
---R8dntiZqyLZ8JZOb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied, thanks!
 
-Applied, thanks.
+Stefan
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
-
---R8dntiZqyLZ8JZOb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVmE+QACgkQnKSrs4Gr
-c8jn0QgAv0rznOCkjnGwxwDTYq47MkU6GVRjLwxjlXFDtZ8Brj5RhmntpD+s4rWw
-E0iduWqX4zhsanDTHhsph47vWj/A4zB/MKyNURsUaJxWkmb0D77dP0aMWNqZ+tn2
-siYtORi+nwxfXuVpGrWkp4pye/3NvKYXsSdGhzPWLKKvqP7qdmJVAXZhYpMHj3Z/
-RCHr8RroSUr0dYFLSjy+HTAs7K2Cf9GkF6hz+zvMnuVbXIpHXQP5KoEgnjaKBn6N
-ImCDixqSyY1DXnkJuEOKjvfO39tY4g33yA/ttvm1pXSztQ3jGSJ1VsSov0NK0MQH
-s00N9Qan6K5z7JYWSO+ro6zg7uqNrw==
-=dkHY
------END PGP SIGNATURE-----
-
---R8dntiZqyLZ8JZOb--
-
+>
+> --
+> 2.42.0
+>
+>
 
