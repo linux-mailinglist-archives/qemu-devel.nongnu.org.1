@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6C47FB69A
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 11:04:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4533A7FB75B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 11:25:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7uwO-0005v5-Se; Tue, 28 Nov 2023 05:03:40 -0500
+	id 1r7vGX-0001pa-TC; Tue, 28 Nov 2023 05:24:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7uwM-0005uT-VC
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:03:38 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r7vGS-0001pB-Ja
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:24:26 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7uwL-0006Yb-1I
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:03:38 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-54af0eca12dso5500517a12.3
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 02:03:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r7vGN-0001n3-Jw
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:24:24 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-54bb9024378so277821a12.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 02:24:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701165814; x=1701770614; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rJJScPtOpa+hNpggTrp2M/ryFIsx93bzfQDuzRSLjBU=;
- b=XGNgL2X7YuzsN7zLeOLUn9GDlmX2I8nhxpq56WQ3yhQvX2dZJrGACKFBdkXN99rXpO
- eZDRYTvIE4UpuE4GT3v+vsuqN6HrudMnTfMr6I3pFtVTm+dEW7PrZG6nK/fM6WrZaEcl
- kW5XNB/wnnN+4F8Zix8nKPulZ5Msm/D0vAVePR+14tSKXcwzVJM1pMawa5oMD3smwarv
- N24ZTtySqplaXOGHZAzf9N/jwIxcD2DmK6mkN6YbnU1LEeeluqS0sVVjTwOVDz8M04mo
- bAKuDvxRKRrLe+mMO1R0MopMkfwMwueNT2bM1qlF/n0n5o1j/4nRIfWd5jPxj/AssIR2
- ukcw==
+ d=linaro.org; s=google; t=1701167057; x=1701771857; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=PLtMjpEjt957Y6uNi/prBFDVDdUpYxmByZfZDgExx38=;
+ b=k2gUSI6wxrAUTaGDyKyQ02sOlNBHLt4Lbqig3YzkCwK3jQ/61lXh8Ot15BwY7/MatY
+ Ty53fS+B3LhHclA6zY/gQmzjwJKlE+AiPorjBOEQf2QK+OmJGYQmV8pq5/rO8oajn70n
+ VM12lqMJjkbxTNl+9nyp/HanJLIE8J1YhGkm4W8nzk93S0OcmjZqp9g+iox+4vn1Tpls
+ vQlHdEMu+SFAROFKlnY7+o72Jl63ju/H598KtU6xcvjvqFTO+MSsz0BmvZ2WXQEWnd54
+ zsV28pM5Ljdfws44wlGpRvRYXWjoaqW5GMjVLFHNqf0KOliLkNqha87S86HEjsC+9hSl
+ oS9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701165814; x=1701770614;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rJJScPtOpa+hNpggTrp2M/ryFIsx93bzfQDuzRSLjBU=;
- b=nPzBEiR7Lyk8k22AtnUDtlVMFzQ9NWrN47ihM6fMv+dcqWhjxzuQHxcKtW/hDbC/fx
- 2sfEesbbFIWR/HIH60pwX8P4Au3BpaVGRpVYr7GNVYpEQ4UHc/BHcOsDxoK7CT3b9hTC
- 6y4ISQj64fWINlqIb8x0rBDgjPyLTHCLc6xSVX3kXhgD47KV9URtSqtEZi502bi8qVd9
- S7rcFqpzGYvylfIQAag7FMJRhDMEn3r7zT5e7OWSw5Mj3SYOrlwUVJHrEhs0kVhRXZC3
- lKArYBJn9yxYU7D+SAR7eVJAvv6YvRcs0oGsdRGVwTKoDYvreRqupYHA9cZaN/8yamtq
- 5gkg==
-X-Gm-Message-State: AOJu0Yy+VGOnM+2TdWP3FAZG0VC7fCavWf6q+cWlUh9QUaHnc8cOTs27
- +QiukZF7a75+CEA7IgozhKw3lQ==
-X-Google-Smtp-Source: AGHT+IGhQPZPsYZUaI8zV2escCUygen5HJXIFUHHggyFb2pZ/NP0vnMZ/PbF7OPiRJzfatq5IwAoyQ==
-X-Received: by 2002:a17:906:74d0:b0:a02:9e68:93ed with SMTP id
- z16-20020a17090674d000b00a029e6893edmr9949466ejl.1.1701165814121; 
- Tue, 28 Nov 2023 02:03:34 -0800 (PST)
-Received: from [192.168.69.100] (crb44-h02-176-184-13-61.dsl.sta.abo.bbox.fr.
- [176.184.13.61]) by smtp.gmail.com with ESMTPSA id
- r22-20020a170906351600b00a0c01560bdfsm3835090eja.139.2023.11.28.02.03.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 02:03:33 -0800 (PST)
-Message-ID: <c772249f-e8e1-414f-b6e9-3bf224ff14a9@linaro.org>
-Date: Tue, 28 Nov 2023 11:03:31 +0100
+ d=1e100.net; s=20230601; t=1701167057; x=1701771857;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PLtMjpEjt957Y6uNi/prBFDVDdUpYxmByZfZDgExx38=;
+ b=It0dOaCMnxlIfXIdeTA6h1k8OPge+qhr5GXD2dBdhwFsJZJ55EurfelU4nZHGgwH3t
+ ZKGvt8YuOn+0OB1Z1HaCVlYGKP9uz5poJv3CHkSyfqEpufswcVikwpUQSbabvXB4VC8u
+ d9Of8CDU1Qe1qizOdXfolBW4fMjIdqSk61CGPAu9EMbAFhgq+ehZZ/2dyRsF5b7F6MmM
+ u1Qb9yKAZ6L3wL1ZN25vk4Tev1ddVNy/Cqns4zCkr3e3l00jbriQBjiz9np6hybTYcBo
+ w8b1/PI4OnbdKXGSpyGATO4J2tFXf2NrnyoOG/4+cpZteYyCv1yL2Fo7FVFpLjTo+s/t
+ EMug==
+X-Gm-Message-State: AOJu0YxWKElgm4m6NP/2595+vyXs+SkTzB+sLuyCqabD+ss1IaB8Mq+r
+ +t801/DeKI4q+WpxGOqsHAduR3sH2Y+QOVEQALuZVg==
+X-Google-Smtp-Source: AGHT+IGQne7bMsx1OYZyFxt8JZi3hutMlQ0KnydGNXJgCmPJKTZhfV/HWuSeAFDeBCKleKZn02yD5lSFIoTBlJoH9pY=
+X-Received: by 2002:a05:6402:ca9:b0:54b:8a3:33d4 with SMTP id
+ cn9-20020a0564020ca900b0054b08a333d4mr8313637edb.21.1701167057341; Tue, 28
+ Nov 2023 02:24:17 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.0 v2 4/8] target/riscv/cpu.c: add
- riscv_cpu_is_32bit()
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com
-References: <20231127113752.1290265-1-dbarboza@ventanamicro.com>
- <20231127113752.1290265-5-dbarboza@ventanamicro.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231127113752.1290265-5-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+References: <20231127194258.138603-1-arorajai2798@gmail.com>
+In-Reply-To: <20231127194258.138603-1-arorajai2798@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 28 Nov 2023 10:24:06 +0000
+Message-ID: <CAFEAcA90WMfVxn8V5m730ggoOJhj=3-Wz5mt79ktZf==Pz7L1g@mail.gmail.com>
+Subject: Re: [PATCH] accel/kvm: Turn DPRINTF macro use into tracepoints
+To: Jai Arora <arorajai2798@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,22 +85,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/11/23 12:37, Daniel Henrique Barboza wrote:
-> Next patch will need to retrieve if a given RISCVCPU is 32 or 64 bit.
-> The existing helper riscv_is_32bit() (hw/riscv/boot.c) will always check
-> the first CPU of a given hart array, not any given CPU.
-> 
-> Create a helper to retrieve the info for any given CPU, not the first
-> CPU of the hart array. The helper is using the same 32 bit check that
-> riscv_cpu_satp_mode_finalize() was doing.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+On Mon, 27 Nov 2023 at 19:44, Jai Arora <arorajai2798@gmail.com> wrote:
+>
+> To remove DPRINTF macros and use tracepoints
+> for logging.
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1827
+>
+> Signed-off-by: Jai Arora <arorajai2798@gmail.com>
 > ---
->   target/riscv/cpu.c | 7 ++++++-
->   target/riscv/cpu.h | 1 +
->   2 files changed, 7 insertions(+), 1 deletion(-)
+>  accel/kvm/kvm-all.c    | 32 ++++++++++----------------------
+>  accel/kvm/trace-events |  2 +-
+>  2 files changed, 11 insertions(+), 23 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hi; thanks for sending in this patch.
 
+(I've CC'd the KVM maintainer.)
+
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index e39a810a4e..d0dd7e54c3 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -69,16 +69,6 @@
+>  #define KVM_GUESTDBG_BLOCKIRQ 0
+>  #endif
+>
+> -//#define DEBUG_KVM
+> -
+> -#ifdef DEBUG_KVM
+> -#define DPRINTF(fmt, ...) \
+> -    do { fprintf(stderr, fmt, ## __VA_ARGS__); } while (0)
+> -#else
+> -#define DPRINTF(fmt, ...) \
+> -    do { } while (0)
+> -#endif
+> -
+>  struct KVMParkedVcpu {
+>      unsigned long vcpu_id;
+>      int kvm_fd;
+> @@ -331,7 +321,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+>      struct KVMParkedVcpu *vcpu = NULL;
+>      int ret = 0;
+>
+> -    DPRINTF("kvm_destroy_vcpu\n");
+> +    trace_kvm_dprintf("kvm_destroy_vcpu\n");
+
+Rather than using a single tracepoint for every line
+that was previously a DPRINTF, it's preferable to
+use tracepoints whose name indicates what they're doing.
+Users can turn tracepoints on and off individually, and they
+might, for instance, only want to trace when the vcpu is
+destroyed and not also the very large number of events
+that will happen for kvm_cpu_exec entry/exits.
+
+If you look at the current set of events in accel/kvm/trace-events
+you can see the general style: the tracepoint name itself
+tells you the "what has happened", the arguments provide
+more info (eg which CPU did we just destroy), and it's
+rarely necessary to pass a string into the tracepoint function.
+
+thanks
+-- PMM
 
