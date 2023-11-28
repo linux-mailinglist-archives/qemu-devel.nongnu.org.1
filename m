@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C6B7FB90B
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 12:10:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 295857FB966
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 12:25:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7vxQ-00085B-4H; Tue, 28 Nov 2023 06:08:48 -0500
+	id 1r7wCM-0002hB-Lh; Tue, 28 Nov 2023 06:24:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7vxM-00084R-P1
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 06:08:45 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7wCK-0002h2-E3
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 06:24:12 -0500
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7vxJ-0001rp-Uj
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 06:08:43 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a08e4352992so532253866b.1
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 03:08:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7wCF-0004s2-Nd
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 06:24:10 -0500
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-50943ccbbaeso7412689e87.2
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 03:24:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701169720; x=1701774520; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701170646; x=1701775446; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=X4UnIEG4bLGgO/r4zSqP7V5F+JhAr1lIupKqM/3PPCM=;
- b=A3anCzrKNhNaUDrOPNiyM6Ve/m1H3IMSF1qhWEXm71ap7l9aKPuVpfs+/1cT/RtzyZ
- RhLLwJkubYyUTwC5+Tec5yrdKsPdqBhTWqkq+VDV/HFRolAtHbxdmyJnQvvPf/6S195k
- fdZaQVSqJH/alqAzCh4jS+stbvoFDlmr9DG4N+py3TW3YfBvLHIdep6YcNegFigM8sXJ
- EGoj1s+d3b3nl1/QO/oXZHNpe4nUJD6VmBw3FUGwc43u9Nu3eOvGxFesbo3Jp0x0vR80
- LyU1c70vfmMq1J+GjNATPbvnzQNFTdM0trr9fV2phQPzq674LfDGUOHwqd8pjwhS4lfB
- +A8w==
+ bh=lkgqpMWNN9aIWkoN208jbZ0DCwqJ9JVKRs3aY9WvOQI=;
+ b=T6QB++2Fgt5kYSbjtUfjfeTd0P1LALtT0sUvSCKPFTGVXtTuFAdOewjR9/lNvfdnIm
+ J5x7p3kGEA+AJY0DLudTgh5jbGJAC8hVRDDliuPQa4+5sS81wsRgUOJcZPixqNiT1CZm
+ 53/vwFW2xvWSHeIijxpNYFRBcGLPfMfDFOtbvwxd20gHYptKD/JemTSCYUbKvd9KCE1h
+ zs9HC8xkH1LQSNg281p+Os/6IirRKv5l/3Bh5r9jrBSw3CKvm4xOrtwuzqwIzn6NroAq
+ Z1iJ0YD1NUFIH3PFHbGKN29twaoXeBGH/NUsn2rNOrf/+SaKErCFBazJOWm2TVNHYWgx
+ 4Szg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701169720; x=1701774520;
+ d=1e100.net; s=20230601; t=1701170646; x=1701775446;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=X4UnIEG4bLGgO/r4zSqP7V5F+JhAr1lIupKqM/3PPCM=;
- b=EWPaVOH1oaWGFKFboU4chXXAS+lXiGD32he8eaMY8rXtOd6E/4V5MqfOyn4VXGnIGB
- tchm+A6gx6WqWRomjn/cF5dsHcOJDRw6dfxOE4tPq9R6y6PdeqtBYnjGrTgvfCs9Y9nd
- MNoULfV4irk+kTvT8Chc11nUk0AaFEHZYSXoIZLHd6RBrZTY0jAc8bdiRkctWYh+lBJ9
- RBgZwaByM9Ur4RG/HpQsVDVs2uyJpeGOP5JqmPp4MhuX2BK5iHxsKtKaMBp3xVC9baMo
- VYFx1OBuCNivPHd6MWXlWtuQU/mdW19taxiJUvgs1e2ejELCE7o+XNgRq4NO0XKCy0xR
- zGvw==
-X-Gm-Message-State: AOJu0YyFPSZ1pJoxRzfMLU+rLY7vQWceJvz41Y5seZXxaEkIWiK1lQdM
- gKSSdMx8vGb2DwwWXiIlrvTpNA==
-X-Google-Smtp-Source: AGHT+IE3YwJV3D3A1aewPMUI5dObg5IzWJIXt7LGU58Jll2640E75ZdasTK0xtsdgKz4qlp8GZKCog==
-X-Received: by 2002:a17:906:f813:b0:a16:3da0:dd36 with SMTP id
- kh19-20020a170906f81300b00a163da0dd36mr696408ejb.48.1701169720222; 
- Tue, 28 Nov 2023 03:08:40 -0800 (PST)
+ bh=lkgqpMWNN9aIWkoN208jbZ0DCwqJ9JVKRs3aY9WvOQI=;
+ b=JZESrrciDHHyoOvM30H+n3eXJQcNdGuP5ozv+H05MUfoxcJdkZACVRQFl1aly0wm/r
+ GDNg4CsXzxMQPO8ybOXQBXUPj7VfuxCHGnxseZ07IHhefchCIoBfdWRAfsGpeQqLhWcL
+ N1XjP2N8u2VOf+dXiX3KQzWqq55QWMEdh0oXoLgLd9lS4Tnq5qL7IhLdNgH7InahbwQA
+ 37nT+kCq/hkA+rtjTiWpVbF7NB+/T/3A17T7gdf8VSP0aYruGE8+OE66X87BhpV1M/1B
+ xB1gzdo2Gs6JWffTTjq4bATxPz5/ALhdZBjuw71nQP1Ai+5ZUQaXlNQqfKK894qluHgV
+ Apjg==
+X-Gm-Message-State: AOJu0YwjLCNgDJApCAqoRbgSZM8lMEJuWcRv8Jhf03/oPnq4Fy10SV5g
+ Vu9SfHjlckSZOCjBYRwB5HpYxQ==
+X-Google-Smtp-Source: AGHT+IGXeLI2wCQpXZNzdB4uxDCqUyCp1OJlpKs9UU+Sg1bL32mP6ZiclXPs1YQBkS3f5h9N7YLHFQ==
+X-Received: by 2002:a05:6512:3b0b:b0:509:1301:8470 with SMTP id
+ f11-20020a0565123b0b00b0050913018470mr13302170lfv.45.1701170645773; 
+ Tue, 28 Nov 2023 03:24:05 -0800 (PST)
 Received: from [192.168.69.100] (crb44-h02-176-184-13-61.dsl.sta.abo.bbox.fr.
  [176.184.13.61]) by smtp.gmail.com with ESMTPSA id
- w7-20020a17090633c700b009ff10633221sm6695711eja.128.2023.11.28.03.08.39
+ h9-20020a05600c314900b0040b32edf626sm11521547wmo.31.2023.11.28.03.24.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 03:08:39 -0800 (PST)
-Message-ID: <7a6efb0c-62fb-4047-a20a-261ebb8c99ac@linaro.org>
-Date: Tue, 28 Nov 2023 12:08:37 +0100
+ Tue, 28 Nov 2023 03:24:05 -0800 (PST)
+Message-ID: <95cc7c22-939f-4ce0-aecd-d0ff7b0e7c9c@linaro.org>
+Date: Tue, 28 Nov 2023 12:24:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-6.1 v6 14/17] accel/tcg: Move breakpoint recognition
- outside translation
+Subject: Re: [PATCH v2 4/4] target/arm: Add support for DC CVAP & DC CVADP ins
 Content-Language: en-US
-To: peter.maydell@linaro.org, Richard Henderson <richard.henderson@linaro.org>
-Cc: alex.bennee@linaro.org, qemu-devel@nongnu.org,
- mark.cave-ayland@ilande.co.uk, Max Filippov <jcmvbkbc@gmail.com>
-References: <20210720195439.626594-1-richard.henderson@linaro.org>
- <20210720195439.626594-15-richard.henderson@linaro.org>
+To: peter.maydell@linaro.org, richard.henderson@linaro.org,
+ Beata Michalska <beata.michalska@linaro.org>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: quintela@redhat.com, dgilbert@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, eric.auger@redhat.com,
+ qemu-arm@nongnu.org, pbonzini@redhat.com
+References: <20191105234100.22052-1-beata.michalska@linaro.org>
+ <20191105234100.22052-5-beata.michalska@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20210720195439.626594-15-richard.henderson@linaro.org>
+In-Reply-To: <20191105234100.22052-5-beata.michalska@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,74 +98,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi,
 
-On 20/7/21 21:54, Richard Henderson wrote:
-> Trigger breakpoints before beginning translation of a TB
-> that would begin with a BP.  Thus we never generate code
-> for the BP at all.
+On 6/11/19 00:41, Beata Michalska wrote:
+> ARMv8.2 introduced support for Data Cache Clean instructions
+> to PoP (point-of-persistence) - DC CVAP and PoDP (point-of-deep-persistence)
+> - DV CVADP. Both specify conceptual points in a memory system where all writes
+> that are to reach them are considered persistent.
+> The support provided considers both to be actually the same so there is no
+> distinction between the two. If none is available (there is no backing store
+> for given memory) both will result in Data Cache Clean up to the point of
+> coherency. Otherwise sync for the specified range shall be performed.
 > 
-> Single-step instructions within a page containing a BP so
-> that we are sure to check each insn for the BP as above.
-> 
-> We no longer need to flush any TBs when changing BPs.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/286
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/404
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/489
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Beata Michalska <beata.michalska@linaro.org>
 > ---
->   accel/tcg/cpu-exec.c   | 91 ++++++++++++++++++++++++++++++++++++++++--
->   accel/tcg/translator.c | 24 +----------
->   cpu.c                  | 20 ----------
->   3 files changed, 89 insertions(+), 46 deletions(-)
+>   linux-user/elfload.c |  2 ++
+>   target/arm/cpu.h     | 10 ++++++++++
+>   target/arm/cpu64.c   |  1 +
+>   target/arm/helper.c  | 56 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   4 files changed, 69 insertions(+)
 
 
-> diff --git a/cpu.c b/cpu.c
-> index 91d9e38acb..d6ae5ae581 100644
-> --- a/cpu.c
-> +++ b/cpu.c
-> @@ -225,11 +225,6 @@ void tb_invalidate_phys_addr(target_ulong addr)
->       tb_invalidate_phys_page_range(addr, addr + 1);
->       mmap_unlock();
->   }
-> -
-> -static void breakpoint_invalidate(CPUState *cpu, target_ulong pc)
-> -{
-> -    tb_invalidate_phys_addr(pc);
-> -}
+> +#ifndef CONFIG_USER_ONLY
+> +static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
+> +                          uint64_t value)
+> +{
+> +    ARMCPU *cpu = env_archcpu(env);
+> +    /* CTR_EL0 System register -> DminLine, bits [19:16] */
+> +    uint64_t dline_size = 4 << ((cpu->ctr >> 16) & 0xF);
+> +    uint64_t vaddr_in = (uint64_t) value;
+> +    uint64_t vaddr = vaddr_in & ~(dline_size - 1);
+> +    void *haddr;
+> +    int mem_idx = cpu_mmu_index(env, false);
+> +
+> +    /* This won't be crossing page boundaries */
+> +    haddr = probe_read(env, vaddr, dline_size, mem_idx, GETPC());
+> +    if (haddr) {
+> +
+> +        ram_addr_t offset;
+> +        MemoryRegion *mr;
+> +
+> +        /* RCU lock is already being held */
+> +        mr = memory_region_from_host(haddr, &offset);
+> +
+> +        if (mr) {
+> +            memory_region_do_writeback(mr, offset, dline_size);
+> +        }
+> +    }
+> +}
 
-This patch removed the last use of tb_invalidate_phys_addr() in
-user emulation:
 
-   void tb_invalidate_phys_addr(hwaddr addr)
-   {
-       mmap_lock();
-       tb_invalidate_phys_page(addr);
-       mmap_unlock();
-   }
+> +#ifndef CONFIG_USER_ONLY
+> +    /* Data Cache clean instructions up to PoP */
+> +    if (cpu_isar_feature(aa64_dcpop, cpu)) {
 
-Do we still need it?
+Am I correct understanding this is a TCG-only feature?
 
-(In sysemu there is a single use in Xtensa tb_invalidate_virtual_addr).
 
->   #else
->   void tb_invalidate_phys_addr(AddressSpace *as, hwaddr addr, MemTxAttrs attrs)
->   {
-> @@ -250,17 +245,6 @@ void tb_invalidate_phys_addr(AddressSpace *as, hwaddr addr, MemTxAttrs attrs)
->       ram_addr = memory_region_get_ram_addr(mr) + addr;
->       tb_invalidate_phys_page_range(ram_addr, ram_addr + 1);
->   }
-> -
-> -static void breakpoint_invalidate(CPUState *cpu, target_ulong pc)
-> -{
-> -    /*
-> -     * There may not be a virtual to physical translation for the pc
-> -     * right now, but there may exist cached TB for this pc.
-> -     * Flush the whole TB cache to force re-translation of such TBs.
-> -     * This is heavyweight, but we're debugging anyway.
-> -     */
-> -    tb_flush(cpu);
-> -}
+> +        define_one_arm_cp_reg(cpu, dcpop_reg);
+> +
+> +        if (cpu_isar_feature(aa64_dcpodp, cpu)) {
+> +            define_one_arm_cp_reg(cpu, dcpodp_reg);
+> +        }
+> +    }
+> +#endif /*CONFIG_USER_ONLY*/
 >   #endif
+>   
+>       /*
 
 
