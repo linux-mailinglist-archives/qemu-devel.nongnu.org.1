@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138467FBB40
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 14:18:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 763F27FBB86
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 14:27:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7xyR-0004D0-Os; Tue, 28 Nov 2023 08:18:00 -0500
+	id 1r7y6P-0007KA-M2; Tue, 28 Nov 2023 08:26:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7xyB-00047Y-VX
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:17:44 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7y6N-0007Iv-9N
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:26:11 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7xy9-0003XJ-Q8
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:17:43 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a0f49b31868so290651966b.3
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 05:17:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7y6L-0005HB-J5
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 08:26:11 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40b474c925bso12966425e9.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 05:26:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701177460; x=1701782260; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1701177968; x=1701782768; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=bwxZDlHBiD+VLowaqxssuHA2MKwz/h8deXxxB5iLqkI=;
- b=AyfrqTxW+/zkXcN+l88cLgcJ9v9oHHXrG1RijRpNDRwDDopg2j0Ec8FSabYQfcHFFb
- WtMV7YGynrhvELsj2Yx0zrye9FWd+JKcdWZghY0IGrzabq+XQheQDhk35cY0xJBKl+a9
- 3nvu9yNqI7p6DiRBDxc+H++n+gKDmYVkWKWxGY3dTb//Q3Nu9D4TrqVxQciBhlIzOkNw
- 0+Wf4h6HC2KoSqJ9cu+5/WeqlK9MvmXg4L7jtp7AeM9twR1TQj4Vlaij1GikUNfig/Yc
- WZ3chAlBUOGBFM6Md+5UToePQNqXYTJ9d9/+1p1S9xrSTeeoRcaN7yhR2eD7euGb7OJQ
- IaeA==
+ bh=7tzOBVS6gtiBUB+4PJSR3PCZgwxh4HMdBgzKXdr2vbk=;
+ b=ToELTGBtLH/z7NpOg5m0UgQVDoc9um6/OlBf5cQBg3Orp7ryYSDu79xKAYPqQxy3oj
+ HxEMQCe5mz3dWK6l38Ab3jPX9Tm4lTWZ2BC3md0gQ4AzAW0JNQq+KefaS295Qj33jKRA
+ Id3J8zh/tIylP55T9ZKnFQy+6XA3xagFTeMdHGDucOuYi8zq7oY+MHIh+SNWrI/a/WoA
+ Z2fw55Rnjs/v1cMyJpXYbkW1hrh1LqybY+fzdRQm4on7NdO7zVtmhZjxYGphwgljQEV2
+ mWAZ8ROcvrW2Fljs388WYM1087eAgXafc07/GsOZ/GSM+JyBN5YSW//v3Gdy6HpQsWOz
+ Hb9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701177460; x=1701782260;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1701177968; x=1701782768;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bwxZDlHBiD+VLowaqxssuHA2MKwz/h8deXxxB5iLqkI=;
- b=GREysT4bchPSOR+HgaWij5TbuQtog9bd+lcoMW6230eBKIsIkhUwyUasivLnRi2Iq7
- z5QSua0e3MeUPH+SAAfl/vb3UhjIqJQyn2WFYt1fSBEXyqI8oxm7MsLbwHyYtCrG5fj0
- RvfDmzSzuz1oZ60ZnB1UJTF8o4aVb6kNjHJz7YV8bEcNRn97OGmCqJlzX3Z4Jq0n8VUA
- 7c3jJ74OAuYAQmS5rjZ1zFwuxtDmeLrqDhGj8r0T20ZVg+b1xylz8pLCG3V4X3HyKKyv
- l+ugj+3XM31OJyG9aPl2eShMKh4kcCVIYIq+6b8fxhwvurZEIfWlq/8Z+QhKmtNDgCUb
- /Wtg==
-X-Gm-Message-State: AOJu0Ywfu6/XsCR8Ly0NcaiPDHbnxNhgp6O/SnGmxP36jqFMIt4Gzlqr
- tGpmiJNcKrDILMqN9EqgJwtiPg==
-X-Google-Smtp-Source: AGHT+IHvvunmYF61SeCfdV6MHkQ5DSA7Yxa9KrlVWP7l/YaVsH2vAALrRpvyhlbl4eO374KERKe6Eg==
-X-Received: by 2002:a17:906:2409:b0:9fd:4bed:72af with SMTP id
- z9-20020a170906240900b009fd4bed72afmr10834664eja.72.1701177460234; 
- Tue, 28 Nov 2023 05:17:40 -0800 (PST)
+ bh=7tzOBVS6gtiBUB+4PJSR3PCZgwxh4HMdBgzKXdr2vbk=;
+ b=Ur6v6cG9qBQDDlkwjs7iuzNAA8xtRz4mSxwYxgocirO1+o7QAe0Fwhfad8XgYJdeAo
+ oMZztJUzuu+BWPRqhHaTt/BRzrFQwIFfh57wYKRWHd/Zix1qtrojwmMNmtLtLzGSBSKC
+ Z0xANiZLQFzIRVVBYXFH1wt1x8qFn/Wv+kat538mNNoAmG+rXSIwp+cnI0PfUEbzFnIj
+ X+uwBZm1Ftc/n4ZH3x0mvOe8s5NEDE6YsubUijYib0hDMfR1ITu3gzR1CP8bPDSoopxK
+ c0n0GOGjXaOerh6i/hpfF+Z9Dq97q0Xjxz1z97kd2rwT2mQHXYJJ/MKcd5nIviU+B4wT
+ Rmhw==
+X-Gm-Message-State: AOJu0YxHFnkgstJkbOCPd5RKSoELgYZCrTYXMi6nxc9/zPSpjY2fwuly
+ L5zQO/W8vzMfiP2K0ZLKEpfC6A==
+X-Google-Smtp-Source: AGHT+IHGtg33/NopFmer5n0z1ifBfrthXd0wKU525XwIMabDbnV12Tf5VBvtIdXGg0HQYQTn9rmjEQ==
+X-Received: by 2002:a05:600c:5118:b0:40b:32fa:d8a3 with SMTP id
+ o24-20020a05600c511800b0040b32fad8a3mr11022769wms.18.1701177967786; 
+ Tue, 28 Nov 2023 05:26:07 -0800 (PST)
 Received: from [192.168.69.100] (crb44-h02-176-184-13-61.dsl.sta.abo.bbox.fr.
  [176.184.13.61]) by smtp.gmail.com with ESMTPSA id
- pw11-20020a17090720ab00b00a0f1025b17asm2511005ejb.130.2023.11.28.05.17.39
+ u17-20020a05600c19d100b004064cd71aa8sm17624558wmq.34.2023.11.28.05.26.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 05:17:39 -0800 (PST)
-Message-ID: <6800d44e-5c0f-4e36-8496-0a602d47d597@linaro.org>
-Date: Tue, 28 Nov 2023 14:17:38 +0100
+ Tue, 28 Nov 2023 05:26:07 -0800 (PST)
+Message-ID: <2b8e0424-1b93-4ae1-9d66-aeeaf7afc313@linaro.org>
+Date: Tue, 28 Nov 2023 14:26:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] avr: Fix wrong initial value of stack pointer
+Subject: Re: [PATCH v3 0/4] Fix IRQ routing in via south bridge
 Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, vr_qemu@t-online.de
+References: <cover.1701035944.git.balaton@eik.bme.hu>
+ <cc64f407-9a5a-d0b7-33b7-0f142a9ec6a1@eik.bme.hu>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Gihun Nam <gihun.nam@outlook.com>, qemu-devel@nongnu.org
-Cc: Michael Rolnik <mrolnik@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <PH0P222MB0010877445B594724D40C924DEBDA@PH0P222MB0010.NAMP222.PROD.OUTLOOK.COM>
- <e63b3129-9b42-46d5-877d-da6dcb2ec133@linaro.org>
-In-Reply-To: <e63b3129-9b42-46d5-877d-da6dcb2ec133@linaro.org>
+In-Reply-To: <cc64f407-9a5a-d0b7-33b7-0f142a9ec6a1@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,54 +94,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/11/23 20:22, Philippe Mathieu-Daudé wrote:
-> Hi Gihun,
-> 
-> On 27/11/23 03:54, Gihun Nam wrote:
->> The current implementation initializes the stack pointer of AVR devices
->> to 0. Although older AVR devices used to be like that, newer ones set
->> it to RAMEND.
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1525
->> Signed-off-by: Gihun Nam <gihun.nam@outlook.com>
->> ---
->> Edit code to use QOM property and add more description to commit message
->> about the changes
->>
->> Thanks for the detailed help, Mr. Peter!
->>
->> P.S. I don't understand how replies work with git send-email, so
->>       if I've done something wrong, please bear with me.
->>
->>   hw/avr/atmega.c  |  4 ++++
->>   target/avr/cpu.c | 10 +++++++++-
->>   target/avr/cpu.h |  3 +++
->>   3 files changed, 16 insertions(+), 1 deletion(-)
+Hi Zoltan,
 
-
->> diff --git a/target/avr/cpu.h b/target/avr/cpu.h
->> index 8a17862737..7960c5c57a 100644
->> --- a/target/avr/cpu.h
->> +++ b/target/avr/cpu.h
->> @@ -145,6 +145,9 @@ struct ArchCPU {
->>       CPUState parent_obj;
->>       CPUAVRState env;
->> +
->> +    /* Initial value of stack pointer */
->> +    uint32_t init_sp;
+On 28/11/23 13:47, BALATON Zoltan wrote:
+> On Sun, 26 Nov 2023, BALATON Zoltan wrote:
+>> Philippe,
+>>
+>> Could this be merged for 8.2 as it fixes USB on the amigaone machine?
+>> This would be useful as usb-storage is the simplest way to share data
+>> with the host with these machines.
 > 
-> Hmm the stack is 16-bit wide. I suppose AVRCPU::sp is 32-bit
-> wide because tcg_global_mem_new_i32() forces us to (the smaller
-> TCG register is 16-bit).
-> 
-> Preferably using uint16_t/DEFINE_PROP_UINT16/qdev_prop_set_uint16:
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Philippe, do you have some time to look at this now for 8.2 please? I 
+> still hope this could be fixed for the amigaone machine on release and 
+> dont' have to wait until the next one for USB to work on that machine.
 
-Since this is a fix, I'll queue the patch as it is. We can reduce
-the property to 16-bit later, if we find it helpful.
+Thanks for your detailed cover and patch descriptions.
 
-Thanks!
+I just finished to run my tests and they all passed.
+
+I couldn't spend much time reviewing the patches, but having a quick
+look I don't think the way you model it is correct. This is a tricky
+setup and apparently we don't fully understand it (I understand what
+you explained, but some pieces don't make sense to me). That said,
+I understand it help you and the AmigaOne users, and nobody objected.
+So, while being a bit reluctant, I am queuing this series; and will
+send a PR in a few. We'll have time to improve this model later.
+
+Regards,
 
 Phil.
 
