@@ -2,55 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58EF7FBA76
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 13:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5367FBA78
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 13:48:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7xUs-0005mK-Iv; Tue, 28 Nov 2023 07:47:26 -0500
+	id 1r7xVN-0006H2-D0; Tue, 28 Nov 2023 07:47:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=PHl3=HJ=kaod.org=clg@ozlabs.org>)
- id 1r7xUq-0005m7-NE; Tue, 28 Nov 2023 07:47:24 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r7xVC-00069X-3f
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:47:46 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=PHl3=HJ=kaod.org=clg@ozlabs.org>)
- id 1r7xUn-00069e-UC; Tue, 28 Nov 2023 07:47:24 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sfj0356bSz4wc3;
- Tue, 28 Nov 2023 23:47:15 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sfhzz62fKz4xPh;
- Tue, 28 Nov 2023 23:47:11 +1100 (AEDT)
-Message-ID: <8df98507-3b2f-426e-ab25-f571f06c769b@kaod.org>
-Date: Tue, 28 Nov 2023 13:47:04 +0100
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r7xV9-0006FM-CO
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 07:47:45 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 293EB756094;
+ Tue, 28 Nov 2023 13:47:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id scJYRXcYr7MR; Tue, 28 Nov 2023 13:47:38 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id EA03F75607B; Tue, 28 Nov 2023 13:47:38 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E84F9756066;
+ Tue, 28 Nov 2023 13:47:38 +0100 (CET)
+Date: Tue, 28 Nov 2023 13:47:38 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: qemu-devel@nongnu.org
+cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Bernhard Beschow <shentey@gmail.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, vr_qemu@t-online.de
+Subject: Re: [PATCH v3 0/4] Fix IRQ routing in via south bridge
+In-Reply-To: <cover.1701035944.git.balaton@eik.bme.hu>
+Message-ID: <cc64f407-9a5a-d0b7-33b7-0f142a9ec6a1@eik.bme.hu>
+References: <cover.1701035944.git.balaton@eik.bme.hu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] ppc/amigaone: Allow running AmigaOS without firmware
- image
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, philmd@linaro.org
-References: <20231128013253.80524756078@zero.eik.bme.hu>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231128013253.80524756078@zero.eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=PHl3=HJ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,104 +64,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/28/23 02:32, BALATON Zoltan wrote:
-> The machine uses a modified U-Boot under GPL license but the sources
-> of it are lost with only a binary available so it cannot be included
-> in QEMU. Allow running without the firmware image which can be used
-> when calling a boot loader directly and thus simplifying booting
-> guests. We need a small routine that AmigaOS calls from ROM which is
-> added in this case to allow booting AmigaOS without external firmware
-> image.
-> 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+On Sun, 26 Nov 2023, BALATON Zoltan wrote:
+> Philippe,
+>
+> Could this be merged for 8.2 as it fixes USB on the amigaone machine?
+> This would be useful as usb-storage is the simplest way to share data
+> with the host with these machines.
 
-Since this is 8.2 material :
+Philippe, do you have some time to look at this now for 8.2 please? I 
+still hope this could be fixed for the amigaone machine on release and 
+dont' have to wait until the next one for USB to work on that machine.
 
+Regards,
+BALATON Zoltan
 
-Fixes: d9656f860a38 ("hw/ppc: Add emulation of AmigaOne XE board")
-
-
-Thanks,
-
-C.
-
-
-
-> ---
-> v3: Instead of -bios none do this when no -bios option given, use
-> constants for address and rom_add_blob_fixed() to add dummy_fw.
-> This makes both code and usage a bit simpler.
-> 
->   hw/ppc/amigaone.c | 35 +++++++++++++++++++++++------------
->   1 file changed, 23 insertions(+), 12 deletions(-)
-> 
-> diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
-> index 992a55e632..ddfa09457a 100644
-> --- a/hw/ppc/amigaone.c
-> +++ b/hw/ppc/amigaone.c
-> @@ -36,10 +36,19 @@
->    * -device VGA,romfile=VGABIOS-lgpl-latest.bin
->    * from http://www.nongnu.org/vgabios/ instead.
->    */
-> -#define PROM_FILENAME "u-boot-amigaone.bin"
->   #define PROM_ADDR 0xfff00000
->   #define PROM_SIZE (512 * KiB)
->   
-> +/* AmigaOS calls this routine from ROM, use this if no firmware loaded */
-> +static const char dummy_fw[] = {
-> +    0x38, 0x00, 0x00, 0x08, /* li      r0,8 */
-> +    0x7c, 0x09, 0x03, 0xa6, /* mtctr   r0 */
-> +    0x54, 0x63, 0xf8, 0x7e, /* srwi    r3,r3,1 */
-> +    0x42, 0x00, 0xff, 0xfc, /* bdnz    0x8 */
-> +    0x7c, 0x63, 0x18, 0xf8, /* not     r3,r3 */
-> +    0x4e, 0x80, 0x00, 0x20, /* blr */
-> +};
-> +
->   static void amigaone_cpu_reset(void *opaque)
->   {
->       PowerPCCPU *cpu = opaque;
-> @@ -60,8 +69,6 @@ static void amigaone_init(MachineState *machine)
->       PowerPCCPU *cpu;
->       CPUPPCState *env;
->       MemoryRegion *rom, *pci_mem, *mr;
-> -    const char *fwname = machine->firmware ?: PROM_FILENAME;
-> -    char *filename;
->       ssize_t sz;
->       PCIBus *pci_bus;
->       Object *via;
-> @@ -94,20 +101,24 @@ static void amigaone_init(MachineState *machine)
->       }
->   
->       /* allocate and load firmware */
-> -    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, fwname);
-> -    if (filename) {
-> -        rom = g_new(MemoryRegion, 1);
-> -        memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
-> -        memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
-> +    rom = g_new(MemoryRegion, 1);
-> +    memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
-> +    memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
-> +    if (!machine->firmware) {
-> +        rom_add_blob_fixed("dummy-fw", dummy_fw, sizeof(dummy_fw),
-> +                           PROM_ADDR + PROM_SIZE - 0x80);
-> +    } else {
-> +        g_autofree char *filename = qemu_find_file(QEMU_FILE_TYPE_BIOS,
-> +                                                   machine->firmware);
-> +        if (!filename) {
-> +            error_report("Could not find firmware '%s'", machine->firmware);
-> +            exit(1);
-> +        }
->           sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE);
->           if (sz <= 0 || sz > PROM_SIZE) {
->               error_report("Could not load firmware '%s'", filename);
->               exit(1);
->           }
-> -        g_free(filename);
-> -    } else if (!qtest_enabled()) {
-> -        error_report("Could not find firmware '%s'", fwname);
-> -        exit(1);
->       }
->   
->       /* Articia S */
-
+> This is a slight change from v2 adding more comments and improving
+> commit messages and clean things a bit but otherwise should be the
+> same as previous versions. Even v1 worked the same as this one and v2,
+> the additional check to avoid stuck bits is just paranoia, it does not
+> happen in practice as IRQ mappings are quite static, they are set once
+> at boot and don't change afterwards.
+>
+> The rest is just some explanation on how we got here but can be
+> skipped if not interested in history.
+>
+> This is going back to my original implementation of this IRQ routing
+> that I submitted already for 8.0 in the beginning of this year
+> (https://patchew.org/QEMU/cover.1677004414.git.balaton@eik.bme.hu/)
+> but Mark had concerns about that because he wanted to use PCI
+> interrupt routing instead. I've already told back then that won't work
+> but I could not convince reviewers about that. Now with the amigaone
+> machine this can also be seen and that's why this series is needed now.
+>
+> The routing code in PCIBus cannot be used as that only considers the 4
+> PCI interrupts but there are about 12 interrupt sources in this chip
+> that need to be routed to ISA IRQs (the embedded chip functions and
+> the 4 PCI interrupts that are coming in through 4 pins of the chip).
+> Also the chip does not own the PCIBus, that's part of the north bridge
+> so it should not change the PCI interrupt routing of a bus it does not
+> own. (Piix calling pci_bus_irqs() I think is also wrong because the
+> PCI bus in that machine is also owned by the north bridge and piix
+> should not take over routing of IRQs on a bus it's connected to.)
+> Another concern from Mark was that this makes chip functions specific
+> to the chip and they cannot be used as individual PCI devices. Well,
+> yes, they are chip functions, are not user creatable and don't exist
+> as individual devices so it does not make sense to use them without
+> the actual VIA chip they are a function of so that's not a real
+> concern. These functions are also not actual PCI devices, they are
+> PCIDevice because they appear as PCI functions of the chip but are
+> connected internally and this series also models that correctly. This
+> seems to be supported by comments in Linux about how these VIA chip
+> function aren't following PCI standards and use ISA IRQs instead:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/pci/quirks.c?h=v6.5.6#n1172
+>
+> Therefore I think Mark's proposals are not improving this model so I
+> went back to the original approach which was tested to work and is
+> also simpler and easier to understand than trying to reuse PCI
+> intrrupt routing which does not work and would be more complex anyway
+> for no good reason.
+>
+> Regards,
+> BALATON Zoltan
+>
+> BALATON Zoltan (4):
+>  hw/isa/vt82c686: Bring back via_isa_set_irq()
+>  hw/usb/vt82c686-uhci-pci: Use ISA instead of PCI interrupts
+>  hw/isa/vt82c686: Route PIRQ inputs using via_isa_set_irq()
+>  hw/audio/via-ac97: Route interrupts using via_isa_set_irq()
+>
+> hw/audio/via-ac97.c        |  8 ++--
+> hw/isa/vt82c686.c          | 79 +++++++++++++++++++++++++-------------
+> hw/usb/vt82c686-uhci-pci.c |  9 +++++
+> include/hw/isa/vt82c686.h  |  2 +
+> 4 files changed, 67 insertions(+), 31 deletions(-)
+>
+>
 
