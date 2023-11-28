@@ -2,69 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713107FB4F2
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 09:56:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D3D7FB575
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 10:18:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7trm-0000lA-8p; Tue, 28 Nov 2023 03:54:50 -0500
+	id 1r7uDK-00078t-KU; Tue, 28 Nov 2023 04:17:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r7trj-0000kd-Rj
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 03:54:47 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r7tri-0003Iy-7B
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 03:54:47 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7DE0837036;
- Tue, 28 Nov 2023 11:54:56 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 08E79380AC;
- Tue, 28 Nov 2023 11:54:35 +0300 (MSK)
-Message-ID: <0e4fb831-94fd-47fd-9b9d-3cfb8423bf0a@tls.msk.ru>
-Date: Tue, 28 Nov 2023 11:54:34 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7uDD-000788-AR
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 04:16:59 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7uDA-0007Fh-JU
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 04:16:58 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a02d12a2444so753500966b.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 01:16:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701163014; x=1701767814; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1XV/TBPvwyYXxSNdtRwLlW8SZbceQ4dDfhHc5Ad6/ew=;
+ b=ruD1W/6Ua+nFWTQIyyDVvAtTQGj6Yr2T0SiYKvGVMB8GW03+MX0xqOWSKYlbYu+bCj
+ ruc/bF5ZOmKjOHnBcTrnzN6rocTbuhI0jQbaWN1Undjjk8zV4nVazcEYZ7tR+O9/TDXD
+ 05GnAYEV3S/6P2QiXSL6ZMQeuPKYeKqDuJ8Vc3D3NHlrzK6eWmN3ADjrC50um1GwYKrm
+ kD9Xq6Q4R4ye6OgLieHmj3O0vRI2b0kMgxNUxJfw7y3vzCnM2avupHr7lApP3HIKLrJf
+ iQkxN5m1W3dOTsYV5qapnUyGIPZNSdAo0M+gCiOjsjCBNVCkz3W/QpqQRnVHpZZHfXdm
+ bQug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701163014; x=1701767814;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1XV/TBPvwyYXxSNdtRwLlW8SZbceQ4dDfhHc5Ad6/ew=;
+ b=if/+MKO/r3uHODexAyLgR7JajquVDd1Z8QjYXRJ0+uI1MXnbApDuo7NQRNql0APYOl
+ 4LWP78v5teOVzy8IVD0VSxEeqbYW821wXA3Mv2RdAXGJFvDBUrIejmzSImhfZhn/hnbf
+ FOHPZpSBkt/D80I4nPiq0fklm7zLj3ZFrdOznddsZp7nH35z8XRi1UN3KGrFYHKtGyDh
+ cgO3mK6uJ6/sUO8nHZCADmkvE2XHVsCAVjw+cWtNv56MqnIXi9O2Ghr5nyWBR7k5Hbma
+ gKrxMMEdto5408dEZ6hSjj8gaNS/NAHZ0QCRVSlR6DA7XEC9aqMQsELVvdjiy3731Czb
+ S7qw==
+X-Gm-Message-State: AOJu0Yzbj8gkMs07VO8yZMrUE+N0gjrliM9v2vrF2fsPxAcGTEgLU3yn
+ yvFYbWblZC71PExuxSI7MSHcOA==
+X-Google-Smtp-Source: AGHT+IGovF0vaAVGmZMcA4JjRJhP3kcL4WzM25Ar+7sdhEG4PcKWRhs3Xat7nFKuBh1FrjCJ6lNjwA==
+X-Received: by 2002:a17:906:29cd:b0:a04:d7e3:61f4 with SMTP id
+ y13-20020a17090629cd00b00a04d7e361f4mr10037932eje.68.1701163014023; 
+ Tue, 28 Nov 2023 01:16:54 -0800 (PST)
+Received: from [192.168.69.100] (crb44-h02-176-184-13-61.dsl.sta.abo.bbox.fr.
+ [176.184.13.61]) by smtp.gmail.com with ESMTPSA id
+ fy12-20020a170906b7cc00b00a11b2677acbsm1093165ejb.163.2023.11.28.01.16.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Nov 2023 01:16:53 -0800 (PST)
+Message-ID: <c6dbd03f-a060-46b1-bf25-c9a6387f6347@linaro.org>
+Date: Tue, 28 Nov 2023 10:16:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/2] Firmware/seabios 20231128 patches
+Subject: Re: [PATCH v2 for-8.2] ppc/amigaone: Allow running AmigaOS without
+ firmware image
 Content-Language: en-US
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-References: <20231128081743.2214005-1-kraxel@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231128081743.2214005-1-kraxel@redhat.com>
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <20231125163425.3B3BC756078@zero.eik.bme.hu>
+ <CX9EPBH7MMHK.14A30GV035VAZ@wheely>
+ <0eb18a77-af0e-a84b-764c-b435ea912a3d@eik.bme.hu>
+ <CX9LVFYU6MBA.MLF4OMOCHE6K@wheely>
+ <3f188a09-9927-4fc3-a4eb-0cde34934539@kaod.org>
+ <CXA2ENP9VBT1.2THPXM7WFD3I3@wheely>
+ <595c26d6-ef8f-443e-8192-3e73ee6b7d75@kaod.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <595c26d6-ef8f-443e-8192-3e73ee6b7d75@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,13 +100,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-28.11.2023 11:17, Gerd Hoffmann :
+On 28/11/23 08:07, Cédric Le Goater wrote:
+> On 11/28/23 02:47, Nicholas Piggin wrote:
+>> On Tue Nov 28, 2023 at 2:37 AM AEST, Cédric Le Goater wrote:
+>>>
+>>>> I'm not sure, I don't think it's necessary if your minimal patch works.
+>>>>
+>>>> I'll do a PR for 8.2 for SLOF and Skiboot updates, so happy to include
+>>>> this as well.
 
-> seabios: update to 1.16.3 release
 
-Gerd, please also push this tag to seabios master git branch.
+>> I think this amigaone patch could still be merged since it's only
+>> touching a new machine and it's fixing an issue of missing firmware.
+> 
+> ARM does something similar with roms. See hw/arm/boot.c file.
+> 
+> It will need a "Fixes" tag.
 
-Thanks,
+Fixes: d9656f860a ("hw/ppc: Add emulation of AmigaOne XE board")
 
-/mjt
 
