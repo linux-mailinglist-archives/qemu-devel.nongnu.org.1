@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259887FBC14
+	by mail.lfdr.de (Postfix) with ESMTPS id 229DD7FBC13
 	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 15:01:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7ydY-0003fi-BA; Tue, 28 Nov 2023 09:00:29 -0500
+	id 1r7ydh-0003lO-7f; Tue, 28 Nov 2023 09:00:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r7ydC-0003ck-8o
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:00:09 -0500
-Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
+ id 1r7ydf-0003k3-0N
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:00:35 -0500
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r7yd6-0003kv-7T
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:00:03 -0500
-Received: by mail-oo1-xc34.google.com with SMTP id
- 006d021491bc7-58d52e0065fso1445942eaf.0
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 05:59:57 -0800 (PST)
+ id 1r7ydd-00046j-9p
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 09:00:34 -0500
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6d8162ca490so1350741a34.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 06:00:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701179996; x=1701784796; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1701180032; x=1701784832; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3SjKfuFYTY/mxOG+u2Dtw248AAIeHfRAB7xWDJc9Dec=;
- b=iec/1zxV12XtUwwRdJpo5/JJKuLPEM1EhTDu85KB3ARAJe+RCOllU8YpPB0SE2KbHv
- nKOl9yUs2XgN/7NUWSwYqTDD5jNvbCoye1TsU8vMLONQB2YZNImCrUfYUoWN2CTQdBh5
- E1hDSe2RzkazmdnLr798sTzcAN41p1TM5Qaw0oZu8q8hpYZG7Zbr1+ee2dJB7ClOfoaf
- ilC9SG3mxr+4Zobc7DMlPDuIRwIkH/av6vGPBmJQW4Lv1UB+uxldHc0/Pv0/YzbTGYwC
- 2sIB0Wic9u2+gi2zjFloIgVjdWio6rxOFHKrWEsJmjNwDxiaZ8pxQ7A7oT6LbDOArcA8
- dKnQ==
+ bh=NdAXHix7hNPYBXgjxbxBcDX5MGQGoqSrmEIfGMEy6Dk=;
+ b=cB4WozVCxtlZRK/mOTudH3EQQqx4dK+VbGdfeUWMKDqldv1T6kc6c4xyn0FJtvamtR
+ kqhKI2GRfm8A6n3Zirql1QhqNwIFPs/OBlhySnaTtG4SMh+oi66NG0JBUmHWFAz0YyeI
+ IcvDSy0yUaeTIJUKfKs0T+FmfUD1+KKu3Vw8I0j2RZU04h+/W4QYYU2cYlpzBxh/0EXT
+ n4Ts+5t2f1rILO1lNHYVdHKhB863ytNl161tFY6Xu+6UXg09R1Jfzbr7eZ0MK9wryPHB
+ d388RWYuuux3AtIJ+cCJ/XG5sJuKMT4ud3mh6sHNmBy5Ugd3SxAmWcKmx4JY2JSg/oL/
+ xNsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701179996; x=1701784796;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1701180032; x=1701784832;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3SjKfuFYTY/mxOG+u2Dtw248AAIeHfRAB7xWDJc9Dec=;
- b=BwRW1qfyxDJsdTm2GdGw8SHQEyXQ/VGzdPfSAU+6PmMTEd5AM6I2SS4KTXraJW/Nt8
- IKyGBY6vl1bGyjEAueM5ZouNMZtkJF/Oow1hxujqkHxLY4Ns5CyGziQRFmMH6LAa2bZt
- PIrDkHqUhxmhXdOXkcaekvmGTsBSuHK9KvOk7GdDQE5g41E1aG9dAhvU0albMul4II57
- dcX2TNxkrW+SgSQRdQI2IRWtklySMVcC1ymFNd3FdvRE4XIifWMBPr4wGTNVuE6evqaM
- B5Z4ipDs+9VViZ2iyKvhVjCDQtF7tmY6Uqudx2skaZgSFvBA0g7/Jbs9PmgJTOMAo74u
- vHGA==
-X-Gm-Message-State: AOJu0YwWXxUShkFh2JXPYBBWRVN1yNPKWcbaQl1Mvmli682mb89nX98X
- oUhgbZ9HmCRGBlD77bvEsIZx5Q==
-X-Google-Smtp-Source: AGHT+IHJTLTGV5zkPcsqTcvMES7nj8znt++o6Y2jWEqkx0qOT6SdX9eKNkZxXctb4Hv3vAd0u+biug==
-X-Received: by 2002:a05:6871:e803:b0:1fa:2cee:bb1f with SMTP id
- qd3-20020a056871e80300b001fa2ceebb1fmr5346811oac.20.1701179996237; 
- Tue, 28 Nov 2023 05:59:56 -0800 (PST)
+ bh=NdAXHix7hNPYBXgjxbxBcDX5MGQGoqSrmEIfGMEy6Dk=;
+ b=OoB6OpRn/xBRzDXBYt4XF8XISSbnajlAiT/jeFF8F2y6/uGlhHZNIG4mfUi/F4CcRq
+ C8nINT9AXxuceV+msrOMN9PEvyV332379bGwvv9J/jjkFnIHhoKiKHXikazz6tfL6dyE
+ aGK8gErUdmUXlzOslryjPHVBjDYlAtWBef24uQenE//+65wqPZDZO617UH/IeKkD/rLM
+ 5fQlG01vZzhxr+4QPvevoMKD4VxgQfONLHVztZl71zWNjNOghzirBcHHIBZZvcT3om86
+ HQKG9EP8v8DqkDw1cYPLqTXT/WH4A78TIEJFCd7MuIESJt8O2mjZzdK2BZwDbaCHACD3
+ jGgw==
+X-Gm-Message-State: AOJu0YxxXZPYqLp1SbRRG3a5SYGj89OiPV8GAnw7DF2tGYWNw0VVrb7P
+ BazJ1Dxx2q1YCIGxv99Fkz86+g==
+X-Google-Smtp-Source: AGHT+IG8SVpMS1/gpPC7RPWTPFYdxmAYmy7mWfZnX5dhoOw/XL8j4On3CMQVGnZLKCvNNhUN/uFv9g==
+X-Received: by 2002:a9d:7e8d:0:b0:6d3:1f0b:3fc7 with SMTP id
+ m13-20020a9d7e8d000000b006d31f0b3fc7mr7654231otp.7.1701180032126; 
+ Tue, 28 Nov 2023 06:00:32 -0800 (PST)
 Received: from [172.20.7.39] ([187.217.227.247])
  by smtp.gmail.com with ESMTPSA id
- h14-20020a056830164e00b006ce2e1a6cb2sm1678579otr.44.2023.11.28.05.59.54
+ h14-20020a056830164e00b006ce2e1a6cb2sm1678579otr.44.2023.11.28.06.00.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 05:59:55 -0800 (PST)
-Message-ID: <e96c8677-5cf8-489b-b27d-9d8c1c30e2a9@linaro.org>
-Date: Tue, 28 Nov 2023 07:59:52 -0600
+ Tue, 28 Nov 2023 06:00:31 -0800 (PST)
+Message-ID: <7a313871-8c1d-445e-92c6-5b20918afb89@linaro.org>
+Date: Tue, 28 Nov 2023 08:00:29 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0 03/11] target/arm: Declare
- ARM_CPU_TYPE_NAME/SUFFIX in 'cpu-qom.h'
+Subject: Re: [PATCH-for-9.0 04/11] target/arm: Move ARM_CPU_IRQ/FIQ
+ definitions to 'cpu-qom.h'
+Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost
@@ -71,14 +72,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-arm@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 References: <20231122183048.17150-1-philmd@linaro.org>
- <20231122183048.17150-4-philmd@linaro.org>
-Content-Language: en-US
+ <20231122183048.17150-5-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231122183048.17150-4-philmd@linaro.org>
+In-Reply-To: <20231122183048.17150-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -102,17 +102,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/22/23 12:30, Philippe Mathieu-Daudé wrote:
-> Missed in commit 2d56be5a29 ("target: Declare
-> FOO_CPU_TYPE_NAME/SUFFIX in 'cpu-qom.h'"). See
-> it for more details.
+> The ARM_CPU_IRQ/FIQ definitions are meant for the ARM CPU
+> QOM model. Move them to "cpu-qom.h" so any QOM code can
+> use them.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   target/arm/cpu-qom.h | 3 +++
->   target/arm/cpu.h     | 2 --
->   2 files changed, 3 insertions(+), 2 deletions(-)
+> Or do these definitions belong to cpu-defs.h?
+
+I think they belong with the qom bits.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
