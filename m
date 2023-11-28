@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E7837FAFE0
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 03:06:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F65B7FAFE4
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 03:09:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7nUK-000593-J4; Mon, 27 Nov 2023 21:06:12 -0500
+	id 1r7nXe-0006C0-Gk; Mon, 27 Nov 2023 21:09:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r7nUH-00058L-TP; Mon, 27 Nov 2023 21:06:09 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1r7nXY-0006BI-R4; Mon, 27 Nov 2023 21:09:36 -0500
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r7nUG-0000lz-7x; Mon, 27 Nov 2023 21:06:09 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6bd0e1b1890so4202402b3a.3; 
- Mon, 27 Nov 2023 18:06:07 -0800 (PST)
+ id 1r7nXW-00019G-Tw; Mon, 27 Nov 2023 21:09:32 -0500
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-5be30d543c4so3521372a12.2; 
+ Mon, 27 Nov 2023 18:09:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701137166; x=1701741966; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701137369; x=1701742169; darn=nongnu.org;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z5DF7g0v4NaTn+9wJLAgxFj2IuPQaBC4ZmhMBNiXAwI=;
- b=OoEXFVBh/ccM7HDw8wiO8C1fJcFSxHhtJNeGMt61ikixGQNH8pVVYYWrZ/8wDvXvmD
- WU27kFciVVli2vQ34hOlU2Knea7IEWtGdElnpMy6tv/pqhvveKzz0k2a9bGOn+dfCXSm
- FWAntO1ba7g7eNSMiN3TZ3fFAAbSy3Ywax0woem79AitS5IOrABCvBZQRySCG0y6TbQU
- aWDs9tTAFI+Wl1OvuoG+WvNAUY36uAfo4DxWHpfjWy9mmD4SbLlXD0qrGpe/fSsjwBAL
- +Qn5t0dBmR5aTL3NMMGqwKqWEKLs19awJivHbZzOxsNhxQwD5LKV6W/b8V2Y5TcH4WzB
- dB+g==
+ bh=3BfseZB9/C3OdWUDC/RmFJnY+Q6tEfyCoMEbwH4vC74=;
+ b=B/XakCIWsdLR3IBaUcFUXeQV/Iu4zBj8rUGmnGPWaB1r/umIKDSRc0KYDnSWTA3yq+
+ w5tzAEqnyjLdHqj/7ShrsaMHoV+6ZeKTmJTR3FuCXc4pBBx1d5sEVuQDACPTjT+LkCYy
+ Ef5K/oXc/r8jvztnGmd7tf1q85EbDS4K9irMoyhPq1TFpElCNTvQlTcgHV+tWu346dDi
+ G4VZSdwhOClVhx2OOe+u9cPTlpLzT2uyqKez/AnanDh1IZcSBQQBFEH5H8sby4/7hGsv
+ QkApmCw8Dw1cntXVy8NAL810fzkV4SULrXWSO3xMBy1e0E7vxPZzmHu88v0IXFgBph9G
+ gqdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701137166; x=1701741966;
+ d=1e100.net; s=20230601; t=1701137369; x=1701742169;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Z5DF7g0v4NaTn+9wJLAgxFj2IuPQaBC4ZmhMBNiXAwI=;
- b=wKFnJ2aGmzmIkS73f4iSAldRWCL/Q+DlXh3P7o/0pYhdHhGak21dJY4VSH021Fh/+G
- BnYGDuUJR6FGh9Jgud0/RMftrkUiGV9WsIDk7rcyJisb1RDIcf8AU6Ln9VtlUk1/rGf0
- aRG8bBC+J4QlFhH2NcRYMv/xeQ++nPT/dMvkqciqkbQK2SZfOmA+1q/Mo13LY8idQ3ZY
- hv41TqkXMYGs/Inz6lBihhjdtXh46IwmKhwWskzCFk//lrvEdzS4JdmGxACvPzSxc0E2
- jKAtaSnxkKML07nVCJ63GuY0S9npUBCHeODGciEAA974VDpmFg/EvK8GDozGTC+o2qLM
- DWRA==
-X-Gm-Message-State: AOJu0Yy/TojY6e9XKIkiHqccV/OwgdjG64xiSO5Hh8H02w9pSj3i2NWn
- ZmpR68Vv4DgVCN/ew7pfEYVD7Lsnunk=
-X-Google-Smtp-Source: AGHT+IGY+gmShNBvH3kIkhTFbG4sRJtLcv/ul3UZ4OfgWTnt9jdbBUKDMMS8SqkI9IjyUeU3B8D8ag==
-X-Received: by 2002:a05:6a00:244c:b0:6b7:18c1:c09a with SMTP id
- d12-20020a056a00244c00b006b718c1c09amr12981999pfj.5.1701137166231; 
- Mon, 27 Nov 2023 18:06:06 -0800 (PST)
+ bh=3BfseZB9/C3OdWUDC/RmFJnY+Q6tEfyCoMEbwH4vC74=;
+ b=cimweFh8Yfg0UANqSi5oHN6OrUbWltxLgcgUGmCpx0NTfPDXLjeIA3CqSI/ehiRtPn
+ 4wdQkwXZvYq6qaUjQn7h/Ph69DQkmqffde3bna9uJAvzg2DAKRRTdz5A8a/cdKNErr3Q
+ Z2tGIy/645lSDqA35OoI6iPflJfR0amteDxoNQd7D6VePMrtqLN23Vyfins2hhOj3R3T
+ lhzCs1xwRgNsK5QzXVkRxuEzyFCJtJxPD6OU5jOtMeZkqzQpfw8Bg/LB/maz1srt41TV
+ PjrGxw4P/k0sTYgxCQEDqr+bdcsR7+HAgEpqYFvgmipShX0FKqcRM9AZq1uqyf0gTvx4
+ z47Q==
+X-Gm-Message-State: AOJu0YxwFqf/AYlGPEqyxElOyBWk+cc7bBm2MDNRqtXhtvtkXvhn8huz
+ oiVn2Rk3p4pRVbaezelUzbU=
+X-Google-Smtp-Source: AGHT+IHz4zc0KvGCVWYmQO48qrAmNyJb/LZj0dNSTCzBy1NOcKlawtBc5v4TuEeTlgmO7uP2FxwEaA==
+X-Received: by 2002:a05:6a21:789a:b0:18c:3260:e20f with SMTP id
+ bf26-20020a056a21789a00b0018c3260e20fmr10124927pzc.33.1701137368746; 
+ Mon, 27 Nov 2023 18:09:28 -0800 (PST)
 Received: from localhost (121-44-66-27.tpgi.com.au. [121.44.66.27])
  by smtp.gmail.com with ESMTPSA id
- y42-20020a056a0003aa00b006baa1cf561dsm7776309pfs.0.2023.11.27.18.06.01
+ ot5-20020a17090b3b4500b00285d330ae8bsm2247767pjb.57.2023.11.27.18.09.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Nov 2023 18:06:05 -0800 (PST)
+ Mon, 27 Nov 2023 18:09:27 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Nov 2023 12:05:59 +1000
-Message-Id: <CXA2SMDK57YS.1BACSN5MDTSNI@wheely>
+Date: Tue, 28 Nov 2023 12:09:20 +1000
+Message-Id: <CXA2V6ZORQTU.T6GDJHYBZD92@wheely>
 Cc: <qemu-ppc@nongnu.org>, <fbarrat@linux.ibm.com>, <clg@kaod.org>,
  <calebs@us.ibm.com>, <chalapathi.v@ibm.com>,
  <saif.abrar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v6 2/3] hw/ppc: Add N1 chiplet model
+Subject: Re: [PATCH v6 3/3] hw/ppc: N1 chiplet wiring
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Chalapathi V" <chalapathi.v@linux.ibm.com>, <qemu-devel@nongnu.org>
 X-Mailer: aerc 0.15.2
 References: <20231127171307.5237-1-chalapathi.v@linux.ibm.com>
- <20231127171307.5237-3-chalapathi.v@linux.ibm.com>
-In-Reply-To: <20231127171307.5237-3-chalapathi.v@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
+ <20231127171307.5237-4-chalapathi.v@linux.ibm.com>
+In-Reply-To: <20231127171307.5237-4-chalapathi.v@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,47 +94,76 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Tue Nov 28, 2023 at 3:13 AM AEST, Chalapathi V wrote:
-> The N1 chiplet handle the high speed i/o traffic over PCIe and others.
-> The N1 chiplet consists of PowerBus Fabric controller,
-> nest Memory Management Unit, chiplet control unit and more.
->
-> This commit creates a N1 chiplet model and initialize and realize the
-> pervasive chiplet model where chiplet control registers are implemented.
->
-> This commit also implement the read/write method for the powerbus scom
-> registers
+> This part of the patchset connects the nest1 chiplet model to p10 chip.
 >
 > Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
 > ---
->  include/hw/ppc/pnv_n1_chiplet.h |  35 +++++++
->  include/hw/ppc/pnv_xscom.h      |   6 ++
->  hw/ppc/pnv_n1_chiplet.c         | 171 ++++++++++++++++++++++++++++++++
->  hw/ppc/meson.build              |   1 +
->  4 files changed, 213 insertions(+)
->  create mode 100644 include/hw/ppc/pnv_n1_chiplet.h
->  create mode 100644 hw/ppc/pnv_n1_chiplet.c
+>  include/hw/ppc/pnv_chip.h |  2 ++
+>  hw/ppc/pnv.c              | 15 +++++++++++++++
+>  2 files changed, 17 insertions(+)
 >
-> diff --git a/include/hw/ppc/pnv_n1_chiplet.h b/include/hw/ppc/pnv_n1_chip=
-let.h
-> new file mode 100644
-> index 0000000000..3c42ada7f4
-> --- /dev/null
-> +++ b/include/hw/ppc/pnv_n1_chiplet.h
-> @@ -0,0 +1,35 @@
-> +/*
-> + * QEMU PowerPC N1 chiplet model
-> + *
-> + * Copyright (c) 2023, IBM Corporation.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * This code is licensed under the GPL version 2 or later. See the
-> + * COPYING file in the top-level directory.
+> diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+> index 0ab5c42308..9b06c8d87c 100644
+> --- a/include/hw/ppc/pnv_chip.h
+> +++ b/include/hw/ppc/pnv_chip.h
+> @@ -4,6 +4,7 @@
+>  #include "hw/pci-host/pnv_phb4.h"
+>  #include "hw/ppc/pnv_core.h"
+>  #include "hw/ppc/pnv_homer.h"
+> +#include "hw/ppc/pnv_n1_chiplet.h"
+>  #include "hw/ppc/pnv_lpc.h"
+>  #include "hw/ppc/pnv_occ.h"
+>  #include "hw/ppc/pnv_psi.h"
+> @@ -113,6 +114,7 @@ struct Pnv10Chip {
+>      PnvOCC       occ;
+>      PnvSBE       sbe;
+>      PnvHomer     homer;
+> +    PnvN1Chiplet     n1_chiplet;
+> =20
+>      uint32_t     nr_quads;
+>      PnvQuad      *quads;
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 0297871bdd..6cf1f3319f 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -1680,6 +1680,8 @@ static void pnv_chip_power10_instance_init(Object *=
+obj)
+>      object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
+>      object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
+>      object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOM=
+ER);
+> +    object_initialize_child(obj, "n1_chiplet", &chip10->n1_chiplet,
+> +                            TYPE_PNV_N1_CHIPLET);
 
-Same question about tag here in in the .c. Otherwise,
+Another very small nit, we seem to have convention of minus rather than
+underscore for these names, so n1-chiplet fits better.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-Thanks,
-Nick
+> =20
+>      chip->num_pecs =3D pcc->num_pecs;
+> =20
+> @@ -1849,6 +1851,19 @@ static void pnv_chip_power10_realize(DeviceState *=
+dev, Error **errp)
+>      memory_region_add_subregion(get_system_memory(), PNV10_HOMER_BASE(ch=
+ip),
+>                                  &chip10->homer.regs);
+> =20
+> +    /* N1 chiplet */
+> +    if (!qdev_realize(DEVICE(&chip10->n1_chiplet), NULL, errp)) {
+> +        return;
+> +    }
+> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_CHIPLET_CTRL_REGS_BASE,
+> +             &chip10->n1_chiplet.nest_pervasive.xscom_ctrl_regs);
+> +
+> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_EQ_BASE,
+> +                           &chip10->n1_chiplet.xscom_pb_eq_regs);
+> +
+> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_ES_BASE,
+> +                           &chip10->n1_chiplet.xscom_pb_es_regs);
+> +
+>      /* PHBs */
+>      pnv_chip_power10_phb_realize(chip, &local_err);
+>      if (local_err) {
+
 
