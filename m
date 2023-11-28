@@ -2,71 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4817FC0FD
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 19:06:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54EEA7FC0FE
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 19:06:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r82T0-00024y-Dt; Tue, 28 Nov 2023 13:05:50 -0500
+	id 1r82TH-0002Es-3U; Tue, 28 Nov 2023 13:06:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r82St-00024M-2m
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:05:43 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r82TE-0002ET-9M
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:06:04 -0500
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r82Sr-0000Gp-0a
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:05:42 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-54af0eca12dso6295346a12.3
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 10:05:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r82TC-0000Kx-GS
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 13:06:04 -0500
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2c8880fbb33so75918401fa.0
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 10:06:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701194737; x=1701799537; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NIWhnJQJG9W6L+GQ8OQQYANhmKyMSUgwlyiLy7BMC10=;
- b=S1v8vV124BHgk7JpllbHFm6UsK0RxBiaxGFK0xL0gFaBjQv+dkJ9FEzX+a05GlValI
- oNGWUEfhBkEoTNcJQnPvIbu/wy+9gowfLUPdrQJrtYAZXHom35UvzrIzynS16ssNaxVt
- LXLcsjb110Q4WgxtQRFsbrymPeY1st44LxJi4T4Q3HoDmWiAWulNwV2layp0b1VW5rHe
- sSigxrcVClELN+7lxpMrMtJ8nqF/P9BcCCYSb4Kiuxm4/iRk+rsiQadnBzWjPCmd/YNi
- JNSie54ratDSF+zzdiG9MziciNSZ3kM3O2tFRFjVvIT9PBgQm9rk5BwTwiIs5q2IVFmE
- RDow==
+ d=linaro.org; s=google; t=1701194760; x=1701799560; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=m2LeVsrDjWyRn1jYA0xN7yrslB3v2IVPRw4NROBC4aE=;
+ b=HvmgtKyZ1pHcZ1TlOU4M769M5vM7APIQ9Cg3HXUl8iIPp5b93s5bvuPwtqX3QXW9iU
+ Ksro6konfB7Qx8BtTM11GooGQA+XopHVRJI9eIu7c8qgaMuFucFQYAExj1rAPQQhapBT
+ lfDY7mP72zgGvnB2eerrkPJXq8YPqH7nyNdlVLV/CQDnnFv1/03F/6gCGCpn/VbPv2ID
+ PiiMlKHmgmptJeiuIhaAhJQJMl0CxrZbff7nz02MMiT1y9q8FVMjEPr8JtkdrOM+b4w7
+ DZie6Qyyz0obecGxhG8ZyzaXdmZn5XEa6m97bvXiRh6jr7Dd2WNpNmNO/L3HkKtFye0M
+ tlXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701194737; x=1701799537;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NIWhnJQJG9W6L+GQ8OQQYANhmKyMSUgwlyiLy7BMC10=;
- b=ecLJOEm4GfRy4hrJYoRLgInrJzG38d9Cg4G9Sj7MnzNPqsu8SKqo7Mz5aYZ3+LffrF
- kkLwDVjaJyL0GNszu5YOxD2t2VAzE76qnrNj3alhnD6sBdMwrQ7NukbgSTGF25Ct3V/Z
- 9B8D7o01TVljPy3cbzt0dq1NpbE+LQywfkRDZDASZEHgbYystVG8Z91l2lB+yuX0JaBJ
- der+DUu6PPYM89UzWVfD6M28nTtcItpTz0jbeKwE3fSwkfgM848uML/1kpBn7AbVsZy3
- +4Rk7cIYq7Nv/jSljOs4S5I5GCxIl6PgNz2yy5kFyzyIRbPSSiNlVrfWL0uhldsCyo/g
- X96g==
-X-Gm-Message-State: AOJu0Yxk1wHiQV5beK43B6rWOb+gZZBeNkZnAChpe7B1xH28wwcDBYlC
- phCNV7Men+jWc6AJ3f/AGiyJoSS6JHEfvVuyDORqJA==
-X-Google-Smtp-Source: AGHT+IE+zOdndgNulH8JyfzXWnM4QLeBbIOxwYr633LIdfnxfVsvpDrsQQ/EOsCXvYBQC6BmAu1yejVfLifHIVm1P88=
-X-Received: by 2002:a50:c102:0:b0:54b:2af0:dee2 with SMTP id
- l2-20020a50c102000000b0054b2af0dee2mr7943845edf.4.1701194736692; Tue, 28 Nov
- 2023 10:05:36 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701194760; x=1701799560;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=m2LeVsrDjWyRn1jYA0xN7yrslB3v2IVPRw4NROBC4aE=;
+ b=vcOKYoxLuXdEbg0Mq/73aePPn7/IH8JuoQ+r4EhZiPduSt4YRXIT2ZbJWD2DmR1bRo
+ S9TIrXxrMa8juwMAspj17Kpi9QHxYFWQ8jrKIUyTjvfHb2MHupyTmiVxx60uhupv3LJo
+ OYT0+oQCAv0vT8uutgQ4bmmCFAGtETsb+UbC4laAaUkS6Wdx7+cXdkamhaZ7iEwYsOIb
+ VfMfvPoUMAH423IaX00T2KZNv6ZFc7x9aSK8i8pOr1db6D9Gk+dyFjkDeJ9BNlcfOiIJ
+ fSnXitrQ8BHk0dlhOORzwZ9bPnBbs7hyDjOzu7yc6w1vq0LRi2+vGU4PN5asby39U9p9
+ I5vg==
+X-Gm-Message-State: AOJu0YwuHTwjcmN3J9zMDRrDqICAHKdbARQ1wBbw++MCsB4oB1jEwKY8
+ OCS6U71WeL1RqFKQzcWu1TeKqA==
+X-Google-Smtp-Source: AGHT+IF27VLeipk+KQqBaMxXcyJ/ywFX0hCUzBYcKBrmbHlLK3+JCfTN5CKjjRroUdtxCW05N3hJWw==
+X-Received: by 2002:a2e:2ac5:0:b0:2c9:9837:4d7b with SMTP id
+ q188-20020a2e2ac5000000b002c998374d7bmr7482066ljq.4.1701194760502; 
+ Tue, 28 Nov 2023 10:06:00 -0800 (PST)
+Received: from [192.168.174.227] ([91.223.100.55])
+ by smtp.gmail.com with ESMTPSA id
+ a27-20020a2ebe9b000000b002bcdbfe36a1sm1760596ljr.84.2023.11.28.10.05.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Nov 2023 10:06:00 -0800 (PST)
+Message-ID: <d071f147-5d5b-457e-aeb6-9f77868245b9@linaro.org>
+Date: Tue, 28 Nov 2023 12:05:49 -0600
 MIME-Version: 1.0
-References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
- <87edgjf2v4.fsf@draig.linaro.org>
- <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
-In-Reply-To: <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 Nov 2023 18:05:25 +0000
-Message-ID: <CAFEAcA9M5mXQJRQWGTWoh52H+KmCYd2sWrKzM8RrA=Dh=VeTQg@mail.gmail.com>
-Subject: Re: QEMU Summit Minutes 2023
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-6.1 v6 14/17] accel/tcg: Move breakpoint recognition
+ outside translation
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ peter.maydell@linaro.org
+Cc: alex.bennee@linaro.org, qemu-devel@nongnu.org,
+ mark.cave-ayland@ilande.co.uk, Max Filippov <jcmvbkbc@gmail.com>
+References: <20210720195439.626594-1-richard.henderson@linaro.org>
+ <20210720195439.626594-15-richard.henderson@linaro.org>
+ <7a6efb0c-62fb-4047-a20a-261ebb8c99ac@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <7a6efb0c-62fb-4047-a20a-261ebb8c99ac@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,64 +98,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 28 Nov 2023 at 17:54, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
->
-> On 11/21/23 18:11, Alex Benn=C3=A9e wrote:
-> > Peter Maydell <peter.maydell@linaro.org> writes:
-> >> Topic 2: Are we happy with the email workflow?
-> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>
-> >> This was a topic to see if there was any consensus among maintainers
-> >> about the long-term acceptability of sticking with email for patch
-> >> submission and review -- in five years' time, if we're still doing it
-> >> the same way, how would we feel about it?
-> >>
-> >> One area where we did get consensus was that now that we're doing CI
-> >> on gitlab we can change pull requests from maintainers from via-email
-> >> to gitlab merge requests. This would hopefully mean that instead of
-> >> the release-manager having to tell gitlab to do a merge and then
-> >> reporting back the results of any CI failures, the maintainer
-> >> could directly see the CI results and deal with fixing up failures
-> >> and resubmitting without involving the release manager. (This
-> >> may have the disbenefit that there isn't a single person any
-> >> more who looks at all the CI results and gets a sense of whether
-> >> particular test cases have pre-existing intermittent failures.)
-> >
-> > If we are keen to start processing merge requests for the 9.0 release w=
-e
-> > really should consider how it is going to work before we open up the
-> > taps post 8.2-final going out.
-> >
-> > Does anyone want to have a go at writing an updated process for
-> > docs/devel/submitting-a-pull-request.rst (or I guess merge-request) so
-> > we can discuss it and be ready early in the cycle? Ideally someone who
-> > already has experience with the workflow with other gitlab hosted
-> > projects.
->
->
-> Reading the Topic 2 paragraph above, I understand that a maintainer
-> of a subsystem would be able to merge its '-next' branch in the main
-> repository when CI is all green. Correct ?
+On 11/28/23 05:08, Philippe Mathieu-Daudé wrote:
+> Hi,
+> 
+> On 20/7/21 21:54, Richard Henderson wrote:
+>> Trigger breakpoints before beginning translation of a TB
+>> that would begin with a BP.  Thus we never generate code
+>> for the BP at all.
+>>
+>> Single-step instructions within a page containing a BP so
+>> that we are sure to check each insn for the BP as above.
+>>
+>> We no longer need to flush any TBs when changing BPs.
+>>
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/286
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/404
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/489
+>> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   accel/tcg/cpu-exec.c   | 91 ++++++++++++++++++++++++++++++++++++++++--
+>>   accel/tcg/translator.c | 24 +----------
+>>   cpu.c                  | 20 ----------
+>>   3 files changed, 89 insertions(+), 46 deletions(-)
+> 
+> 
+>> diff --git a/cpu.c b/cpu.c
+>> index 91d9e38acb..d6ae5ae581 100644
+>> --- a/cpu.c
+>> +++ b/cpu.c
+>> @@ -225,11 +225,6 @@ void tb_invalidate_phys_addr(target_ulong addr)
+>>       tb_invalidate_phys_page_range(addr, addr + 1);
+>>       mmap_unlock();
+>>   }
+>> -
+>> -static void breakpoint_invalidate(CPUState *cpu, target_ulong pc)
+>> -{
+>> -    tb_invalidate_phys_addr(pc);
+>> -}
+> 
+> This patch removed the last use of tb_invalidate_phys_addr() in
+> user emulation:
+> 
+>    void tb_invalidate_phys_addr(hwaddr addr)
+>    {
+>        mmap_lock();
+>        tb_invalidate_phys_page(addr);
+>        mmap_unlock();
+>    }
+> 
+> Do we still need it?
 
-I think my intention when writing that was to say that the submaintainer
-kicks things off and deals with resubmitting and rerunning if there
-are failures, but actually doing "merge this successfully tested
-pullreq" is still the release-manager's job.
+Probably not.
 
-> It seems to me that we should also have a group of people approving
-> the MR.
+> (In sysemu there is a single use in Xtensa tb_invalidate_virtual_addr).
 
-I do think something like this is probably where we want to get to
-eventually, where there's a group of people with the rights to
-approve a merge, and maybe the rules about how many approvals
-or whose approval is needed can differ between "normal development"
-and "in freeze" periods. But the idea of the above text I think
-was that the first step is to change from how the release manager
-receives "please merge this" requests from the current "here's an
-email, you need to test it" to "here's a thing in the gitlab UI
-that has already passed the tests and is ready to go".
+I suspect that should be migrated to use the common HW breakpoint support.
 
-thanks
--- PMM
+
+r~
 
