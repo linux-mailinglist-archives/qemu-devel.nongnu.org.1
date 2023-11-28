@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BA07FAFC3
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 02:49:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CDF7FAFC9
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 02:51:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7nCh-0000Bl-Ph; Mon, 27 Nov 2023 20:47:59 -0500
+	id 1r7nFZ-0001Ts-OG; Mon, 27 Nov 2023 20:50:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r7nCc-0000BC-QJ; Mon, 27 Nov 2023 20:47:54 -0500
-Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
+ id 1r7nFR-0001Ni-1b; Mon, 27 Nov 2023 20:50:49 -0500
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r7nCb-0005zS-Bj; Mon, 27 Nov 2023 20:47:54 -0500
-Received: by mail-il1-x12a.google.com with SMTP id
- e9e14a558f8ab-359c22c44d6so20478775ab.2; 
- Mon, 27 Nov 2023 17:47:52 -0800 (PST)
+ id 1r7nFP-0006c1-0H; Mon, 27 Nov 2023 20:50:48 -0500
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3b3f55e1bbbso3266479b6e.2; 
+ Mon, 27 Nov 2023 17:50:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701136071; x=1701740871; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701136245; x=1701741045; darn=nongnu.org;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PItxwjB0fhJcmuKAKG+2+P2tnvj6NJ5t5MCqMq3owTM=;
- b=RmkTOgFUpSLQJi/auN7FQfVawX/eYk8T6OatrwwNPOb1nnqKHZ3AoWK7TCW0wQLtWM
- vWNx0YRYqizwJmSdRjSWfWiVeOgGi2bkcZvDuhdA7ara77vCCkDjavxoByMHJ89xax7Q
- pg3YixTqhvw4EMu/bw0MDqxCqS+1MH354vp9WjBLWh4nvUxvm5euXgUZCPtUL6qwVIqU
- p8rZ9jEAnyuEmmBAW4bSUDstOPsYqKVOX2BWFN8Q/m/qb6I3iro4NQ1io2ypQmTw4D82
- wkDBPIuExzIcRJg0uBCGosYDz2odkBfJLYijXvIxGVhY7UaWvOskPyVlHVI88j/TLSM/
- H5NA==
+ bh=zOIt79P3IRT5HGzhrYTMgU+7FB+E/U/MDKziaGb5GIo=;
+ b=Eo2BT9GYzSj0UGHd0zDI29bFO5f290dh+8lXKuid2ogj0GvJeHA90RFNQ+tlWs0xgy
+ aPK1HcnfU8Zh6xL5Yn01GyRk4aDD5da8o6sBLwNjIRDI4cWiZ17t6pkDA00VCLqtzQLO
+ eLeqqMeA5ROF5ycSbhv6YT7jsiAaeTh1tdjkp7MBllryXhsBeOojiwQY778L69f4hhjJ
+ KEFeBChnS8ehTEW4cY0a9wFKf3U7aB+40MKWk7f1V4MhV4wUXqkztYrtD2JXeIRpJG/S
+ llqCOuhXBwxaTqCt4WPMiOBMhFkWypZKr6kRz2xKXmuMMBqu3h42uz1+Lw972nBVlfsH
+ Rk6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701136071; x=1701740871;
+ d=1e100.net; s=20230601; t=1701136245; x=1701741045;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=PItxwjB0fhJcmuKAKG+2+P2tnvj6NJ5t5MCqMq3owTM=;
- b=ekqdB2AMVYGKOluCF0yFNcthdAdt4A9J9zUm/saCmzfphraCK5ejOZqxI5Efr6CFVu
- vVAtf6b6QOMvY+rWniLtA0f+TZPRsjH6DdCyWsjrppM4T/JiRNiLQUOziwFIJbDCN+I3
- aa6/iutuvknudTEBJtTV/hHzOwhMdHeO7qw1Har9jHtGCBAqu2U3z9RP7fvGbhnabELA
- gPXR7MvVbegN0Kx0zHj+F5zWFBiJq0qRbIyexNsjzGz923svUNJ+EvFAkLMPMDZ+8AOP
- 6ZrWtEq/6WHbwKgxCCgdUaFz3xIr6aW8qahB2EgLb4kUhEDVHhcKy3ue5qiUI8KRP4ml
- rOBQ==
-X-Gm-Message-State: AOJu0YzgTg7gH8uP9O2V1e3dYLce+laZoI/lermqyQ8YHU9S0id0YWvq
- HFUJn9Iebyn63A+JD50B4Sg=
-X-Google-Smtp-Source: AGHT+IH0GRkdqRukrLVtsAYzgPsXeO1xMNv9gdmH6PBFI6YZnrfMUaSdYly14fLR3fNzXj7soUydmQ==
-X-Received: by 2002:a05:6e02:cb3:b0:35c:7b32:23fb with SMTP id
- 19-20020a056e020cb300b0035c7b3223fbmr12793494ilg.22.1701136070983; 
- Mon, 27 Nov 2023 17:47:50 -0800 (PST)
+ bh=zOIt79P3IRT5HGzhrYTMgU+7FB+E/U/MDKziaGb5GIo=;
+ b=mZb4v9BBe644uImzqhDg13KrP7qs9fgFwuPhDl2T1Ko9u3aUo3gHJH2EXXQ/n+4GQP
+ XIwBhXxRybzUTP+o20xV9FpOHGqamZcronG6exvkxRpOrLWN2e4GtrdFKB77vWvmR9ZK
+ M12GmsqbBfgGrKrR8EVRdIAHylAneBdl5KhyctXz0JGP//rWlix/fjjz2kukK/NDuq55
+ uCJzaIkzcpjzJvn52U24PuIaKpCmhWP0PbqmN9UYCy0cpUsRNs/XB1WlJNL6YpCOwiYs
+ 3TsRv1SywLAhJswuxQ1ivTQvcat5yrCfMYG0PBSJ2B2BxJ1RDfbOATmY6+Gc6Lj7MKTK
+ 6BUg==
+X-Gm-Message-State: AOJu0Yz9k/StDXCU/l8hu8Cv868r+URF2Lt2ujHw1nTuw90q1t6GnICJ
+ qZMLFEBDymh/SwkMxr6PrLY=
+X-Google-Smtp-Source: AGHT+IGM2ojYtpPfPcXMV6yKV7eEKyGEShA8GQKHDpfX4rnk2BH+bZ9aqGhFSCoeiUvRByT+UhokuA==
+X-Received: by 2002:a05:6870:eca4:b0:1f9:f532:49c6 with SMTP id
+ eo36-20020a056870eca400b001f9f53249c6mr16007021oab.20.1701136245199; 
+ Mon, 27 Nov 2023 17:50:45 -0800 (PST)
 Received: from localhost (121-44-66-27.tpgi.com.au. [121.44.66.27])
  by smtp.gmail.com with ESMTPSA id
- 37-20020a631365000000b005b8ea15c338sm8308547pgt.62.2023.11.27.17.47.48
+ b3-20020a056a0002c300b006cbb83adc1bsm7831220pft.44.2023.11.27.17.50.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 Nov 2023 17:47:50 -0800 (PST)
+ Mon, 27 Nov 2023 17:50:44 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Nov 2023 11:47:45 +1000
-Message-Id: <CXA2ENP9VBT1.2THPXM7WFD3I3@wheely>
-Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "Daniel Henrique
- Barboza" <danielhb413@gmail.com>, <philmd@linaro.org>
-Subject: Re: [PATCH v2 for-8.2] ppc/amigaone: Allow running AmigaOS without
- firmware image
+Date: Tue, 28 Nov 2023 11:50:39 +1000
+Message-Id: <CXA2GVQCIAHR.2JI0TNI5W06UD@wheely>
+Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ "David Gibson" <david@gibson.dropbear.id.au>
+Subject: Re: [PATCH v3 0/4] Add BHRB Facility Support
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "BALATON Zoltan"
- <balaton@eik.bme.hu>
+To: "Miles Glenn" <milesg@linux.vnet.ibm.com>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.15.2
-References: <20231125163425.3B3BC756078@zero.eik.bme.hu>
- <CX9EPBH7MMHK.14A30GV035VAZ@wheely>
- <0eb18a77-af0e-a84b-764c-b435ea912a3d@eik.bme.hu>
- <CX9LVFYU6MBA.MLF4OMOCHE6K@wheely>
- <3f188a09-9927-4fc3-a4eb-0cde34934539@kaod.org>
-In-Reply-To: <3f188a09-9927-4fc3-a4eb-0cde34934539@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12a;
- envelope-from=npiggin@gmail.com; helo=mail-il1-x12a.google.com
+References: <20230925174351.617891-1-milesg@linux.vnet.ibm.com>
+ <CWBNQ9QDEYH8.3QL9E2V4ZF26G@wheely>
+ <66558e7df3b0eadece637f452bfbf7add72955eb.camel@linux.vnet.ibm.com>
+ <c39ad84ee405d3539b40db34f920dc2879a940b4.camel@linux.vnet.ibm.com>
+In-Reply-To: <c39ad84ee405d3539b40db34f920dc2879a940b4.camel@linux.vnet.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,26 +95,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Nov 28, 2023 at 2:37 AM AEST, C=C3=A9dric Le Goater wrote:
->
-> > I'm not sure, I don't think it's necessary if your minimal patch works.
+On Tue Nov 28, 2023 at 6:51 AM AEST, Miles Glenn wrote:
+> On Wed, 2023-10-18 at 10:59 -0500, Miles Glenn wrote:
+> > On Thu, 2023-10-19 at 01:06 +1000, Nicholas Piggin wrote:
+> > > On Tue Sep 26, 2023 at 3:43 AM AEST, Glenn Miles wrote:
+> > > > This is a series of patches for adding support for the Branch
+> > > > History
+> > > > Rolling Buffer (BHRB) facility.  This was added to the Power ISA
+> > > > starting with version 2.07.  Changes were subsequently made in
+> > > > version
+> > > > 3.1 to limit BHRB recording to instructions run in problem state
+> > > > only
+> > > > and to add a control bit to disable recording (MMCRA[BHRBRD]).
+> > > >=20
+> > > > Version 3 of this series disables branch recording on P8 and P9
+> > > > due
+> > > > to a drop in performance caused by recording branches outside of
+> > > > problem state.
+> > >=20
+> > > Thanks for these, they all look good to me.
+> > >=20
+> > > With P10 CPU, Linux perf branch recording appears to work with this
+> > > series, and I confirmed that Linux does disable BHRB in MMCRA at
+> > > boot, so it should not take the performance hit.
+> > >=20
+> > > It had a couple of compile bugs, no matter I fixed them, but I
+> > > often
+> > > trip overppc32 and user-mode when working on TCG too, so building
+> > > with --target-list including ppc64-softmmu,ppc-softmmu,
+> > > ppc64-linux-user,ppc64le-linux-user,ppc-linux-user is good to catch
+> > > those.
+> > >=20
+> > > Thanks,
+> > > Nick
+> > >=20
 > >=20
-> > I'll do a PR for 8.2 for SLOF and Skiboot updates, so happy to include
-> > this as well.
+> > Thanks, Nick.  I'll have to remember that for next time!
+> >=20
+> > Glenn
+> >=20
 >
-> I think this is a bit late for 8.2 to change FW images, well, at least
-> SLOF and skiboot. Are the new versions fixing something critical ?
+> Hi Nick,
+>
+> Is there anything else you need me to do for this series to be merged?
 
-Ah okay. Well then I can put them in next instead.
+Hey Glenn,
 
-SLOF has a fix for virtio console over reboots, pretty minimal.
-skiboot has some bug fixes but it's a bigger change and maybe not
-so important for QEMU.
-
-Could they be merged in next release and SLOF tagged with stable?
-
-I think this amigaone patch could still be merged since it's only
-touching a new machine and it's fixing an issue of missing firmware.
+No, sorry I just missed this cycle. I have it queued up, it'll have to
+go in after 8.2 release.
 
 Thanks,
 Nick
