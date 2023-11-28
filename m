@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E39E27FB852
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 11:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1117FB85D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 11:45:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7vYn-0006jz-5f; Tue, 28 Nov 2023 05:43:21 -0500
+	id 1r7vYo-0006k1-Ck; Tue, 28 Nov 2023 05:43:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1r7vYk-0006jW-Vl
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:43:18 -0500
+ id 1r7vYm-0006jr-4m
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:43:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1r7vYj-0005dq-Ig
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:43:18 -0500
+ id 1r7vYj-0005e7-Ja
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 05:43:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701168195;
+ s=mimecast20190719; t=1701168196;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VlbL1HFd0cOmdquKv/xWNmr/CPE5aCshT232rfU4Gmk=;
- b=O9Qzdct5SqPSwNkGe1qDYjKZHuW5W1badgipI82Fp1zWIlmAYmWWyI00wJ7kMy3D0roRxr
- O3UQGWvdKShsEDgn0doQYXYjAAQmG4SxYXhuerPAieTTL6GGv5EVFSqkxnzN8T2T0KwCzh
- zYgs0bzM/4p0YUveAgwDHrg9xkCruRE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-133-VigptARGM4-l-eOpI6UVpg-1; Tue, 28 Nov 2023 05:43:11 -0500
-X-MC-Unique: VigptARGM4-l-eOpI6UVpg-1
+ bh=jiCsDaivPOvgkYPv1nwn65nD5kYXp+LU4DCyQMQzLN4=;
+ b=MroIS/Ar0pbF7fPKHx1QOL1hUbvRgdVPOXuEHCg58Xgdqu0M2ISoUx64NlI0lqMiZ1yC7V
+ jeT8A7UQ8fdC6gg5M04zjEDCp+gxL3TYMvTQJbXpcEYKHl/gIFwaqAiza4qNjy59GW7EnN
+ o8Otrb/HHsoKhW8gked0jYoe/Kzs8cw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-hE13P9OkM-KnaogtQDKufQ-1; Tue,
+ 28 Nov 2023 05:43:13 -0500
+X-MC-Unique: hE13P9OkM-KnaogtQDKufQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5952A811E7B;
- Tue, 28 Nov 2023 10:43:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D43391C0512B;
+ Tue, 28 Nov 2023 10:43:12 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 25EED20268D8;
- Tue, 28 Nov 2023 10:43:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9483220268D7;
+ Tue, 28 Nov 2023 10:43:10 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gautam Dawar <gdawar@xilinx.com>, Jason Wang <jasowang@redhat.com>,
@@ -54,9 +54,9 @@ Cc: Gautam Dawar <gdawar@xilinx.com>, Jason Wang <jasowang@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Parav Pandit <parav@mellanox.com>, Lei Yang <leiyang@redhat.com>,
  si-wei.liu@oracle.com
-Subject: [RFC PATCH v2 01/10] vdpa: do not set virtio status bits if unneeded
-Date: Tue, 28 Nov 2023 11:42:54 +0100
-Message-Id: <20231128104303.3314000-2-eperezma@redhat.com>
+Subject: [RFC PATCH v2 02/10] vdpa: make batch_begin_once early return
+Date: Tue, 28 Nov 2023 11:42:55 +0100
+Message-Id: <20231128104303.3314000-3-eperezma@redhat.com>
 In-Reply-To: <20231128104303.3314000-1-eperezma@redhat.com>
 References: <20231128104303.3314000-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -88,28 +88,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Next commits will set DRIVER and ACKNOWLEDGE flags repeatedly in the
-case of a migration destination.  Let's save ioctls with this.
+Prefer early return so it is easier to merge
+vhost_vdpa_listener_begin_batch here and make iotlb baches begin and end
+symmetrical.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/virtio/vhost-vdpa.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 7500c2fc82..cc252fc2d8 100644
+index cc252fc2d8..bf9771870a 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -510,6 +510,10 @@ static int vhost_vdpa_add_status(struct vhost_dev *dev, uint8_t status)
-     if (ret < 0) {
-         return ret;
-     }
-+    if ((s & status) == status) {
-+        /* Don't set bits already set */
-+        return 0;
-+    }
+@@ -160,11 +160,12 @@ static void vhost_vdpa_listener_begin_batch(VhostVDPAShared *s)
  
-     s |= status;
+ static void vhost_vdpa_iotlb_batch_begin_once(VhostVDPAShared *s)
+ {
+-    if (s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH) &&
+-        !s->iotlb_batch_begin_sent) {
+-        vhost_vdpa_listener_begin_batch(s);
++    if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH)) ||
++        s->iotlb_batch_begin_sent) {
++        return;
+     }
+ 
++    vhost_vdpa_listener_begin_batch(s);
+     s->iotlb_batch_begin_sent = true;
+ }
  
 -- 
 2.39.3
