@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E097FB5EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 10:34:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C230F7FB60A
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 Nov 2023 10:40:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r7uTs-0005Ze-TG; Tue, 28 Nov 2023 04:34:13 -0500
+	id 1r7uY7-0007Tr-Lz; Tue, 28 Nov 2023 04:38:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r7uTr-0005ZN-84
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 04:34:11 -0500
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7uY5-0007Sm-B3
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 04:38:33 -0500
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r7uTp-0001IW-5s
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 04:34:11 -0500
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-5c2ad6a5515so2065428a12.2
- for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 01:34:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r7uY2-0002HX-Ai
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 04:38:33 -0500
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a011e9bf336so717266566b.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 01:38:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701164047; x=1701768847;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1701164308; x=1701769108; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8fOu+ykw0NpEaev8EdJ36MTlj0sPwIADHYwGj89OliE=;
- b=eK+g774GYJAU7l/axNU559x4giJ7CSsYYDS0QcCyk/fTt7IvMbaVBlgFT2/FzLinJ5
- 22sfr4ClK2ajS2Nfy+K1oq1YHPtgVIeHh21KnoEVmC3na0AKMST1k+uc++jVcCoTDwtq
- GaMSPq+IMB4qQsFpZa/ni+RA6HNqOSjkkmofDoeyczeziiUf4vLrl94ZIKYGH6pseuy6
- v0zJtB4ZXmvJgZcV6LrnztiB7UeO1rNqr+tjl+X5NohmYn8L8UjQzt76pX7gzsbJXbn0
- t4bM/+xtlhS9UvEmGPAVGSSJifMFgf2Tk6C8oVFP/2g3MMKK1R3Gd4eZfTTofCshP51U
- Po2Q==
+ bh=ntZh4VUyoyATGSlDTwaEMS64+Qw/HW3Uvdla6A8b9/Y=;
+ b=VFUvULtMe9A/YoEIDkbseppvG/wRtLhDqELVEQuLIxmlcmPTMxMkyD0SxwwcUW84aS
+ XYdfs+tgwawNkW6ocoLSuAewc6ytt8v5tDM39eeeuJlcS8P5IzKqdnmAmKFM/aN5xWQS
+ 7tuV0Yqrw79drsRoiuqDJb3VpLAOGqVGMZshGx2MvMOVpRfPd+tauv3pwIJByH2eQ9tv
+ 9IHPStIHowcNO42fY7lG0ZPc2kQ7VKfFUh8jKWGAoo2GfbMlWAbsKbEvdu8MwhdqQahA
+ jOTbZDOfVEvoVtTqlg0gboEzRaysEb4YGjpepmLfpwwHXhmzPLHwQIDfCAJvHNl3R/41
+ IRcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701164047; x=1701768847;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1701164308; x=1701769108;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8fOu+ykw0NpEaev8EdJ36MTlj0sPwIADHYwGj89OliE=;
- b=hfJtge7LTnPIvU6LPcepkjtzMIzoizFkESD9q5RGfl7KvExB76jLWd1Ii19/2YPWDb
- yMDCTWv3ojfdOn/y17TXkOGGWN2MWx0ip3lW1mLtQYW4y87KIWo/X4cfBcsfDS0wOXQM
- PLEUui6SqrSUo4Ut0VfR824/YTpD22fu5UdRMMK0qjVsoY4HIa3cxyQwHi5virtaSJaQ
- 4YYgLHTLbXZLo6yyEJTigEE1Hlbn6MeRphwt5jCYxaqncNv5Co5SoXrijKti52uqhorE
- 9rCLJshH0fBbEoZbr6AKfrUuBqumvRV79Ohht23+9yZ4jiIXr9CHVCuV2fojWHgyC0jM
- aeig==
-X-Gm-Message-State: AOJu0Yw8SPar56Jlo51dc5GvFmEDYEvGOCy7EBcDFAv8d/MiUMIEmyZ4
- XR6GIyeM7FXY6RYw+BIinTQubXEAL4q5dArH0wA=
-X-Google-Smtp-Source: AGHT+IFxfiAO5UM8R+dFhJ9bfeZWyHNzetvde6x6fnap8PEfK76qVQHxq0W9LGFUW9AZt6GjpxsDJw==
-X-Received: by 2002:a05:6a20:a114:b0:18b:4c44:d09 with SMTP id
- q20-20020a056a20a11400b0018b4c440d09mr16283131pzk.0.1701164047147; 
- Tue, 28 Nov 2023 01:34:07 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
- by smtp.gmail.com with ESMTPSA id
- iw9-20020a170903044900b001cf7f0ab8e5sm9826181plb.21.2023.11.28.01.34.05
+ bh=ntZh4VUyoyATGSlDTwaEMS64+Qw/HW3Uvdla6A8b9/Y=;
+ b=hR9+e8wZWjLL1A1a/uFKbCvrzfi6Ts4PwkGjzQTJMKrsaBAT3ZbkFhU9ODK26fu+7p
+ wr56dIhsSUMWJUzmdaVU+ADtlIuFkPNJaOPFgkB+hjB8kB2Zd0lkJfCAZiUU4UyP9t7O
+ rUKm+F0c/iazudgnYZoHjcMV7lggaY6tvUCGysX69vvDoAThp9lKQ4RtUucCt/+r2HKf
+ 7z/apyOlXNKg2slneccOtBzpuHtJivk39zAKaAJMMdtmLhwBqWRypiR4FNXsEz32KriW
+ qU1/IjRHw/jyZ14k3Dyf7mEUvRUf/QhReWLPyV2hgJf1EMDz4763kyhOr4qcvx9aY7VY
+ vOhw==
+X-Gm-Message-State: AOJu0Ywx3rNrxz6YRZmy6TFL2gcNHhi2xnePtZzd4ck4Aj3S5keO4s6u
+ OMoVd2eIlFkBvxEl+ccwgL7jQw==
+X-Google-Smtp-Source: AGHT+IEupKFHyDb3vonl8zQ5x7VZNO5h1YI/CxeUi/9nNcOR18H4ZHYQ0KB7OG1aM4W2hJ5Abp8OZg==
+X-Received: by 2002:a17:906:348c:b0:9e7:133a:5787 with SMTP id
+ g12-20020a170906348c00b009e7133a5787mr9700088ejb.38.1701164308594; 
+ Tue, 28 Nov 2023 01:38:28 -0800 (PST)
+Received: from [192.168.69.100] (crb44-h02-176-184-13-61.dsl.sta.abo.bbox.fr.
+ [176.184.13.61]) by smtp.gmail.com with ESMTPSA id
+ gg6-20020a170906e28600b00a090b36d618sm5418130ejb.60.2023.11.28.01.38.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 01:34:06 -0800 (PST)
-Message-ID: <939d6a7f-0cb9-473d-9438-421c3cd4c48e@daynix.com>
-Date: Tue, 28 Nov 2023 18:34:04 +0900
+ Tue, 28 Nov 2023 01:38:28 -0800 (PST)
+Message-ID: <c3e8f22b-c03e-4803-a960-699489afb92b@linaro.org>
+Date: Tue, 28 Nov 2023 10:38:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] Flexible SR-IOV support for virtio-net
+Subject: Re: [PATCH v7 2/8] machine: Introduce helper is_cpu_type_supported()
 Content-Language: en-US
-To: Yui Washizu <yui.washidu@gmail.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-References: <5d46f455-f530-4e5e-9ae7-13a2297d4bc5@daynix.com>
- <63ba118d-b203-4ec2-a4b5-a8ebacce5c1d@gmail.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <63ba118d-b203-4ec2-a4b5-a8ebacce5c1d@gmail.com>
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, richard.henderson@linaro.org,
+ quic_llindhol@quicinc.com, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
+ vijai@behindbytes.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+References: <20231126231210.112820-1-gshan@redhat.com>
+ <20231126231210.112820-3-gshan@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231126231210.112820-3-gshan@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::529;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x529.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,146 +100,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/11/28 17:47, Yui Washizu wrote:
+Hi Gavin,
+
+On 27/11/23 00:12, Gavin Shan wrote:
+> The logic, to check if the specified CPU type is supported in
+> machine_run_board_init(), is independent enough. Factor it out into
+> helper is_cpu_type_supported(). machine_run_board_init() looks a bit
+> clean with this. Since we're here, @machine_class is renamed to @mc
+> to avoid multiple line spanning of code. The error messages and comments
+> are tweaked a bit either.
 > 
-> On 2023/11/18 21:10, Akihiko Odaki wrote:
->> Hi,
->>
->> We are planning to add PCIe SR-IOV support to the virtio-net driver 
->> for Windows ("NetKVM")[1], and we want a SR-IOV feature for virtio-net 
->> emulation code in QEMU to test it. I expect there are other people 
->> interested in such a feature, considering that people are using igb[2] 
->> to test SR-IOV support in VMs.
->>
->> Washizu Yui have already proposed an RFC patch to add a SR-IOV feature 
->> to virtio-net emulation[3][4] but it's preliminary and has no 
->> configurability for VFs.
->>
->> Now I'm proposing to add SR-IOV support to virtio-net with full 
->> configurability for VFs by following the implementation of virtio-net 
->> failover[5]. I'm planning to write patches myself, but I know there 
->> are people interested in such patches so I'd like to let you know the 
->> idea beforehand.
->>
->> The idea:
->>
->> The problem when implementing configurability for VFs is that SR-IOV 
->> VFs can be realized and unrealized at runtime with a request from the 
->> guest. So a naive implementation cannot deal with a command line like 
->> the following:
->> -device virtio-net-pci,addr=0x0.0x0,sriov=on
->> -device virtio-net-pci,addr=0x0.0x1
->> -device virtio-net-pci,addr=0x0.0x2
->>
->> This will realize the virtio-net functions in 0x0.0x1 and 0x0.0x2 when 
->> the guest starts instead of when the guest requests to enable VFs.
->>
->> However, reviewing the virtio-net emulation code, I realized the 
->> virtio-net failover also "hides" devices when the guest starts. The 
->> following command line hides hostdev0 when the guest starts, and adds 
->> it when the guest requests VIRTIO_NET_F_STANDBY feature:
->>
->> -device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:6f:55:cc, \
->>   bus=root2,failover=on
->> -device vfiopci,host=5e:00.2,id=hostdev0,bus=root1,failover_pair_id=net1
->>
->> So it should be also possible to do similar to "hide" VFs and 
->> realize/unrealize them when the guest requests.
->>
->> There are two things I hate with this idea when contrasting it with 
->> the conventional multifunction feature[6] though. One is that the PF 
->> must be added before VFs; a similar limitation is imposed for failover.
->>
->> Another is that it will be specific to virtio-net. I was considering 
->> to implement a "generic" SR-IOV feature that will work on various 
->> devices, but I realized that will need lots of configuration 
->> validations. We may eventually want it, but probably it's better to 
->> avoid such a big leap as the first step.
->>
->> Please tell me if you have questions or suggestions.
->>
+> No functional change intended.
 > 
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> ---
+>   hw/core/machine.c | 90 +++++++++++++++++++++++++++--------------------
+>   1 file changed, 51 insertions(+), 39 deletions(-)
 > 
-> Hi, Odaki-san
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index b3ef325936..05e1922b89 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -1387,13 +1387,57 @@ out:
+>       return r;
+>   }
+>   
+> +static void is_cpu_type_supported(const MachineState *machine, Error **errp)
 
-Hi,
+Functions taking an Error** last argument should return a boolean value.
 
-> 
-> The idea appears to be practical and convenient.
-> 
-> I have some things I want to confirm.
-> I understood your idea can make deices for VFs,
-> created by qdev_new or qdev_realize function, invisible from guest OS.
-> Is my understanding correct ?
+> +{
+> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
+> +    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+> +    CPUClass *cc;
+> +    int i;
+> +
+> +    /*
+> +     * Check if the user specified CPU type is supported when the valid
+> +     * CPU types have been determined. Note that the user specified CPU
+> +     * type is provided through '-cpu' option.
+> +     */
+> +    if (mc->valid_cpu_types && machine->cpu_type) {
+> +        for (i = 0; mc->valid_cpu_types[i]; i++) {
+> +            if (object_class_dynamic_cast(oc, mc->valid_cpu_types[i])) {
+> +                break;
+> +            }
+> +        }
+> +
+> +        /* The user specified CPU type isn't valid */
+> +        if (!mc->valid_cpu_types[i]) {
+> +            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
+> +            if (!mc->valid_cpu_types[1]) {
+> +                error_append_hint(errp, "The only valid type is: %s",
+> +                                  mc->valid_cpu_types[0]);
+> +            } else {
+> +                error_append_hint(errp, "The valid types are: %s",
+> +                                  mc->valid_cpu_types[0]);
+> +            }
+> +
+> +            for (i = 1; mc->valid_cpu_types[i]; i++) {
+> +                error_append_hint(errp, ", %s", mc->valid_cpu_types[i]);
+> +            }
+> +
+> +            error_append_hint(errp, "\n");
+> +            return;
+> +        }
+> +    }
+> +
+> +    /* Check if CPU type is deprecated and warn if so */
+> +    cc = CPU_CLASS(oc);
+> +    if (cc && cc->deprecation_note) {
+> +        warn_report("CPU model %s is deprecated -- %s",
+> +                    machine->cpu_type, cc->deprecation_note);
 
-Yes, the guest will request to enable VFs with the standard SR-IOV 
-capability, and the virtio-net implementation will use appropriate 
-QEMU-internal APIs to create and realize VFs accordingly.
+Why did you move the deprecation warning within the is_supported check?
 
-> And, if your idea is realized,
-> will it be possible to specify the backend device for the virtio-pci-net 
-> device ?
+> +    }
+> +}
+>   
+>   void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp)
+>   {
+>       ERRP_GUARD();
+>       MachineClass *machine_class = MACHINE_GET_CLASS(machine);
+> -    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+> -    CPUClass *cc;
+>       Error *local_err = NULL;
+>   
+>       /* This checkpoint is required by replay to separate prior clock
+> @@ -1449,43 +1493,11 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+>           machine->ram = machine_consume_memdev(machine, machine->memdev);
+>       }
+>   
+> -    /* If the machine supports the valid_cpu_types check and the user
+> -     * specified a CPU with -cpu check here that the user CPU is supported.
+> -     */
+> -    if (machine_class->valid_cpu_types && machine->cpu_type) {
+> -        int i;
+> -
+> -        for (i = 0; machine_class->valid_cpu_types[i]; i++) {
+> -            if (object_class_dynamic_cast(oc,
+> -                                          machine_class->valid_cpu_types[i])) {
+> -                /* The user specified CPU is in the valid field, we are
+> -                 * good to go.
+> -                 */
+> -                break;
+> -            }
+> -        }
+> -
+> -        if (!machine_class->valid_cpu_types[i]) {
+> -            /* The user specified CPU is not valid */
+> -            error_setg(&local_err, "Invalid CPU type: %s", machine->cpu_type);
+> -            error_append_hint(&local_err, "The valid types are: %s",
+> -                              machine_class->valid_cpu_types[0]);
+> -            for (i = 1; machine_class->valid_cpu_types[i]; i++) {
+> -                error_append_hint(&local_err, ", %s",
+> -                                  machine_class->valid_cpu_types[i]);
+> -            }
+> -            error_append_hint(&local_err, "\n");
+> -
+> -            error_propagate(errp, local_err);
+> -            return;
+> -        }
+> -    }
+> -
+> -    /* Check if CPU type is deprecated and warn if so */
+> -    cc = CPU_CLASS(oc);
+> -    if (cc && cc->deprecation_note) {
+> -        warn_report("CPU model %s is deprecated -- %s", machine->cpu_type,
+> -                    cc->deprecation_note);
+> +    /* Check if the CPU type is supported */
+> +    is_cpu_type_supported(machine, &local_err);
+> +    if (local_err) {
+> +        error_propagate(errp, local_err);
 
-Yes, you can specify netdev like conventional virtio-net devices.
+This becomes:
 
-> 
-> Could you provide insights into the next steps
-> beyond the implementation details ?
-> About when do you expect your implementation
-> to be merged into qemu ?
-> Do you have a timeline for this plan ?
-> Moreover, is there any way
-> we can collaborate on the implementation you're planning ?
+        if (!is_cpu_type_supported(machine, errp)) {
 
-I intend to upstream my implementation. The flexibility of this design 
-will make the SR-IOV support useful for many people and make it suitable 
-for upstreaming. I also expect the implementation will be clean enough 
-for upstreaming. I'll submit it to the mailing list when I finish the 
-implementation so I'd like you to test and review it.
+> +        return;
+>       }
+>   
+>       if (machine->cgs) {
 
-By the way, I started the implementation and realized it may be better 
-to change the design so I present the design changes below:
-
-First I intend to change the CLI. The interface in my last proposal 
-expects there is only one PF in a bus and it is marked with "sriov" 
-property. However, the specification allows to have multiple PFs in a 
-bus so it's better to design the CLI so that it allows to have multiple 
-PFs though I'm not going to implement such a feature at first.
-
-The new CLI will instead add "sriov-pf" property to VFs, which 
-designates the PF paired with them. The below is an example of a command 
-line conforming to the new interface:
-
--device virtio-net-pci,addr=0x0.0x3,netdev=tap3,sriov-pf=pf1
--device virtio-net-pci,addr=0x0.0x2,netdev=tap2,id=pf1
--device virtio-net-pci,addr=0x0.0x1,netdev=tap1,sriov-pf=pf0
--device virtio-net-pci,addr=0x0.0x0,netdev=tap0,id=pf0
-
-Another design change is *not* to use the "device hiding" API of 
-failover. It is because fully-realized devices are useful when 
-validating the configuration. In particular, VFs must have a consistent 
-BAR configuration, and that can be validated only after they are realized.
-
-So I'm now considering to have "prototype VFs" realized before the PF 
-gets realized. Prototype VFs will be fully realized, but 
-virtio_write_config() and virtio_read_config() will do nothing for those 
-VFs, which effectively disables them. It is similar how functions are 
-disabled until function 0 gets plugged for a conventional multifunction 
-device (c.f., pci_host_config_write_common() and 
-pci_host_config_read_common()).
-
-When the PF gets realized, the PF will validate the configuration by 
-inspecting the prototype VFs. If the configuration looks valid, the PF 
-backs up DeviceState::opts and unplugs them. The PF will later use the 
-backed up device options to realize VFs when the guest requests.
-
-This design change forces to create VFs before the PF in the command 
-line. It is similar that the conventional multifunction requires 
-function 0 to be realized after the other functions.
-
-I may make other design changes as the implementation progresses, but 
-the above is the current design I have in mind.
-
-Regards,
-Akihiko Odaki
 
