@@ -2,79 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC11C7FD330
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 10:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 681BD7FD338
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 10:49:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8HAF-0002Ru-VL; Wed, 29 Nov 2023 04:47:27 -0500
+	id 1r8HBz-0003LT-6R; Wed, 29 Nov 2023 04:49:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <bounce-md_30504962.656708a1.v1-48503b51cc9f467ebb5f549c4f6d8b28@bounce.vates.tech>)
- id 1r8HAE-0002QG-60
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 04:47:26 -0500
-Received: from mail17.wdc04.mandrillapp.com ([205.201.139.17])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1r8HBx-0003Kw-33; Wed, 29 Nov 2023 04:49:13 -0500
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <bounce-md_30504962.656708a1.v1-48503b51cc9f467ebb5f549c4f6d8b28@bounce.vates.tech>)
- id 1r8HA4-0007MQ-MD
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 04:47:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech;
- s=mandrill; t=1701251233; x=1701511733;
- i=thierry.escande@vates.tech;
- bh=rKIDxgBMMeuR/URKFcK3pMCfb46noIOP7MUypE9m96Y=;
- h=From:Subject:Message-Id:To:Cc:References:In-Reply-To:Feedback-ID:
- Date:MIME-Version:Content-Type:Content-Transfer-Encoding:CC:Date:
- Subject:From;
- b=ERHbk/uIKJZNUXjjBvApVy7GCcorgIvRilIJitMr5a5Cb3vuHBKyyVf4hUaz/bBNP
- 5HNOT0L/573zAcL16Wja6X9n34GEGrMD0a4mCVyAZzt7CNlYZPUQSVLKIVOpky6CH9
- Y2qJICMfq4HJS5VXe//u2J9idZZ0sJMsk/aVAkQY=
-Received: from pmta16.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
- by mail17.wdc04.mandrillapp.com (Mailchimp) with ESMTP id 4SgDxs3gW0zRKLdtR
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 09:47:13 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
- i=@mandrillapp.com; q=dns/txt; s=mandrill; t=1701251233; h=from :
- subject : message-id : to : cc : references : in-reply-to : date :
- mime-version : content-type : content-transfer-encoding : from :
- x-mandrill-user : list-unsubscribe;
- bh=rKIDxgBMMeuR/URKFcK3pMCfb46noIOP7MUypE9m96Y=;
- b=N4DVo0ETUKmZcOpeAZNjl2Ygy4t7+gB6dD63kqh5KX5DUGRLqJcxuFQk5tA6s8zCall1i
- FFmDSN0EPN3gvMyHm6rnKq8YOmd2jCIvCWekgQf7uoCk+9uShOvkHIH+IUeNtwUER50zETq
- eyf50g0SBiOmMzUIsd53CloPYJIHgbQ=
-From: Thierry Escande <thierry.escande@vates.tech>
-Subject: =?utf-8?Q?Re:=20[PATCH=200/4]=20ICH9=20root=20PCI=20hotplug?=
-Received: from [37.26.189.201] by mandrillapp.com id
- 48503b51cc9f467ebb5f549c4f6d8b28; Wed, 29 Nov 2023 09:47:13 +0000
-X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
-X-Bm-Transport-Timestamp: 1701251232247
-Message-Id: <be4f338c-7b9e-4bc9-9092-01473ae24548@vates.tech>
-To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20231115171837.18866-1-thierry.escande@vates.tech>
- <20231124150135.0b99deeb@imammedo.users.ipa.redhat.com>
- <20231124094535-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231124094535-mutt-send-email-mst@kernel.org>
-X-Native-Encoded: 1
-X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,
- =20including=20all=20headers,
- =20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.48503b51cc9f467ebb5f549c4f6d8b28?=
-X-Mandrill-User: md_30504962
-Feedback-ID: 30504962:30504962.20231129:md
-Date: Wed, 29 Nov 2023 09:47:13 +0000
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1r8HBt-00083G-DF; Wed, 29 Nov 2023 04:49:12 -0500
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:b5a4:0:640:2bd1:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id F1B7261680;
+ Wed, 29 Nov 2023 12:49:03 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:27::1:23] (unknown [2a02:6b8:b081:27::1:23])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 2nRqQY0i2a60-hg2IrGzQ; Wed, 29 Nov 2023 12:49:03 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1701251343;
+ bh=8YfOF4JcRMVC2WFKXkwPHIIEl3/IRZg3Tbnyd9qai+U=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=vFHqEsMV+BAeCmRtF7rE4zjp9f4eOVl0hnYJ2iFYLYBQeBdEn3XTq7GAAXbYzuxT7
+ TbY+9SvlseUb5oIKrrvfijVtw8JL0eL54lVQQJi3olgWkGuRWMO2unSkc5M2GaPj/W
+ h5V82czInYDwEkLVbsYZCHY4G3NioRwRtQSEpS/w=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <ca2bf5a4-06c3-4e7d-afc1-39b5ebe27afb@yandex-team.ru>
+Date: Wed, 29 Nov 2023 12:49:02 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] block: commit: Allow users to request only format
+ driver names in backing file format
+Content-Language: en-US
+To: Peter Krempa <pkrempa@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-block@nongnu.org
+References: <cover.1700837066.git.pkrempa@redhat.com>
+ <8593619407b16a578896e1e9fcc77a18fe8d80fa.1700837066.git.pkrempa@redhat.com>
+ <632957d1-219d-4bbb-a0fc-b510c8b936ca@yandex-team.ru>
+ <ZWZikXhpevsA2ik2@angien.pipo.sk>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <ZWZikXhpevsA2ik2@angien.pipo.sk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=205.201.139.17;
- envelope-from=bounce-md_30504962.656708a1.v1-48503b51cc9f467ebb5f549c4f6d8b28@bounce.vates.tech;
- helo=mail17.wdc04.mandrillapp.com
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,51 +79,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/11/2023 15:54, Michael S. Tsirkin wrote:
-> On Fri, Nov 24, 2023 at 03:01:35PM +0100, Igor Mammedov wrote:
->> On Wed, 15 Nov 2023 17:18:53 +0000
->> Thierry Escande <thierry.escande@vates.tech> wrote:
->>
->>> Hi,
+On 29.11.23 00:58, Peter Krempa wrote:
+> On Tue, Nov 28, 2023 at 20:10:10 +0300, Vladimir Sementsov-Ogievskiy wrote:
+>> On 24.11.23 17:52, Peter Krempa wrote:
+>>> Introduce a new flag 'backing_file_format_no_protocol' for the
+>>> block-commit QMP command which instructs the internals to use 'raw'
+>>> instead of the protocol driver in case when a image is used without a
+>>> dummy 'raw' wrapper.
 >>>
->>> This series fixes acpi_hotplug_bridge accessor names, adds new accessors
->>> for acpi-root-pci-hotplug property, and enables root PCI hotplug by
->>> default for Q35 machine.
+>>> The flag is designed such that it can be always asserted by management
+>>> tools even when there isn't any update to backing files.
+>>>
+>>> The flag will be used by libvirt so that the backing images still
+>>> reference the proper format even when libvirt will stop using the dummy
+>>> raw driver (raw driver with no other config). Libvirt needs this so that
+>>> the images stay compatible with older libvirt versions which didn't
+>>> expect that a protocol driver name can appear in the backing file format
+>>> field.
+>>>
+>>> Signed-off-by: Peter Krempa <pkrempa@redhat.com>
+>>> ---
+> 
+> [...]
+> 
+>>> diff --git a/qapi/block-core.json b/qapi/block-core.json
+>>> index ca390c5700..367e896905 100644
+>>> --- a/qapi/block-core.json
+>>> +++ b/qapi/block-core.json
+>>> @@ -1810,6 +1810,14 @@
+>>>    #     Care should be taken when specifying the string, to specify a
+>>>    #     valid filename or protocol.  (Since 2.1)
+>>>    #
+>>> +# @backing-file-format-no-protocol: If true always use a 'format' driver name
+>>> +#     for the 'backing file format' field if updating the image header of the
+>>> +#     overlay of 'top'. Otherwise the real name of the driver of the backing
+>>> +#     image may be used which may be a protocol driver.
+>>> +#
+>>> +#     Can be used also when no image header will be updated.
+>>> +#     (default: false; since: 8.2)
+>>> +#
 >>
->> hotplug on Q35 hostbridge is not implemented intentionally
->> to keep machine close to the real world.
+>> Hi Peter.
 > 
->> PCIe spec 3.1a, 1.3.2.3. Root Complex Integrated Endpoint Rules
->> "
->> A Root Complex Integrated Endpoint may not be hot-plugged independent of the Root
->> Complex as a whole.
->> "
->> )
+> Hi,
 > 
-> To be more precise close to native hotplug.
-> But we used ACPI for several years now and it seems to be fine.
-> Maybe it's time we lifted the limitation?
+> Firstly to be honest, I consider the fact that qemu can put a protocol
+> driver into the header field named "backing file format" to be a bug.
+> After discussion with Kevin I understand the rationale of doing so, but
+> nevertheless, a backing protocol name is not a format and should have
+> had it's own header field.
+> 
+>> Hmm. Could this just be @backing-file-format ?
+> 
+> I don't really care too deeply about the name.
+> 
+> Calling it just @backing-file-format though would imply (as you write
+> below) that as argument the string to write into the metadata. More on
+> that below.
+> 
+>> As I understand, finally, that's just a string which we are going to put into qcow2 metadata.
+> 
+> Yes.
+> 
+>> And from qcow2 point of view, it's rather strange to set backing_file_format="raw" for backing image which is actually "qcow2".
+> 
+> Indeed, that would be wrong, but this is _NOT_ what this patch
+> actually does.
 
-And for what it's worth, lifting this limitation would allow PCIe 
-devices passthrough on Q35 VMs with Xen as such devices are hotplugged.
+Oh, right. Somehow I was confused. That was bad idea to review in the evening(
 
 > 
+> This patch ensures that only a *format* driver name is ever written to
+> the backing image. It overrides the fact that a *protocol* driver name
+> would be written into the field if the tail of the backing chain is a
+> raw image, which was instantiated in qemu without the dummy 'raw' driver
+> on top.
+
+Yes, right, I understand. How could I think that we are going to write "raw" instead of "qcow2", I can't say now)
+
 > 
+> Since a raw driver with no configuration simply passes request to the
+> *protocol* driver below it it's not needed in most configs. In fact as
+> stefanha figured out a long time ago it's just simpy overhead.
+
+I have always keep that in mind, but never really care. Cool that you rework it.
+
+> 
+> We need a format name in the backing file format field as libvirt
+> assumed for a very long time that such a field would contain only format
+> drivers, and since I want to remove the overhead of the 'raw' driver I
+> need to ensure that images won't break for older libvirt.
+> 
+>> "raw" say nothing to the reader and may be even misleading. Same for qemu, this seems just a strange thing.
 >>
->> PS:
->> but patch 1/4 is good cleanup, pls include Reviewed-by's and resend it
->> as a separate patch after 8.2 has been released (so it wouldn't get lost in the traffic).
->>
->>>
->>> Thierry Escande (4):
->>>    ich9: Remove unused hotplug field from ICH9LPCPMRegs struct
->>>    ich9: Renamed use_acpi_hotplug_bridge accessors
->>>    ich9: Add accessors for acpi-root-pci-hotplug
->>>    ich9: Enable root PCI hotplug by default
->>>
->>>   hw/acpi/ich9.c         | 23 +++++++++++++++++++++--
->>>   include/hw/acpi/ich9.h |  1 -
->>>   2 files changed, 21 insertions(+), 3 deletions(-)
->>>
->
+>> Also, what I dislike, that new feature sounds like hardcoded "raw" is the only format driver. If go this way, more honest name would be @backing-file-raw.
+> 
+> Once again, that is not what's happening here. The field enables that
+> only a *format* driver is used. This is only a problem when the final
+> image is raw, but without the dummy 'raw' driver on top of it. Thus
+> that's the reason the workaround only ever writes 'raw' into it.
+> Otherwise the proper format name is in the 'driver' field already and is
+> not overwritten.
+
+OK
+
+> 
+>> And, if we allow user to give any backing-file name to be written into qcow2 metadata after the operation, why not just allow to set any backing-file-name as well?
+> 
+> This IMO makes no sense to allow, but based on the reimagined design of
+> the 'backing file /format/' field it might appear that it does.
+> 
+> 'block-commit' and 'block-stream, can't change the format of any of the
+> images, they simply move data, thus for any non-raw image in a chain it
+> must still use actual format name. Only place it makes sense is in the
+> same cases when the code in this patch triggers.
+> 
+> And then it still doesn't make sense to write anything besides:
+> 1) The actual *format* of the image (thus 'raw')
+> 2) The protocol driver of the last image (e.g. NBD)
+> 
+> But since 'block-stream'/'block-commit' don't move the image to any
+> other storage, allowing the user to write any other protocol also
+> doesn't make any sense to write any other protocol.
+> 
+> Thus the two cases above are the only sane, this patch allows that 1) is
+> written into the image.
+> 
+>> So, I think simple @backing-file-format argument, allowing to set any string as backing format is a better concept.
+> 
+> While libvirt certainly has the data to do so, as noted in the paragraph
+> above it doesn't IMO make sense to allow write any arbitrary driver name
+> there.
+> 
+> And with design like this it allows libvirt to unconditionally use the
+> flag without thinking too much about what is the correct value.
+> 
+>> Moreover: in BlockdevCreateOptionsQcow2 we have backing-file and backing-fmt options. So I think, we should follow this and name the new option for block-job @backing-fmt.
+> 
+> This is different, you are creating an image and declaring it's backing
+> image format. With 'block-stream' and 'block-commit' the format of the
+> backing image won't change, just data will be shuffled around.
+> 
+
+OK, right, I understand now, thanks for comprehensive explanation.
+
+-- 
+Best regards,
+Vladimir
+
 
