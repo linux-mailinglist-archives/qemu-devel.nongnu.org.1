@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB917FD75F
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 14:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CF37FD79E
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 14:13:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8KBd-0008KE-FO; Wed, 29 Nov 2023 08:01:05 -0500
+	id 1r8KMC-0003LW-GA; Wed, 29 Nov 2023 08:12:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r8KBa-0008Jk-Tu; Wed, 29 Nov 2023 08:01:02 -0500
+ id 1r8KM6-0003Kl-1h; Wed, 29 Nov 2023 08:11:55 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1r8KBZ-0008Q4-31; Wed, 29 Nov 2023 08:01:02 -0500
+ id 1r8KM4-0002Yy-3D; Wed, 29 Nov 2023 08:11:53 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ADBAD37663;
- Wed, 29 Nov 2023 16:01:19 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id AF3B837671;
+ Wed, 29 Nov 2023 16:12:11 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C835F386C2;
- Wed, 29 Nov 2023 16:00:55 +0300 (MSK)
-Message-ID: <107a2390-2af1-4b8b-8149-5c97fc1f2668@tls.msk.ru>
-Date: Wed, 29 Nov 2023 16:00:55 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id C244D386E3;
+ Wed, 29 Nov 2023 16:11:47 +0300 (MSK)
+Message-ID: <eb792ad0-7199-4dde-95db-4b8eb7731c2e@tls.msk.ru>
+Date: Wed, 29 Nov 2023 16:11:47 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-8.2? 1/6] hw/virtio: Add
- VirtioPCIDeviceTypeInfo::instance_finalize field
+Subject: Re: [PATCH-for-8.2? 2/6] hw/virtio: Free
+ VirtIOIOMMUPCI::vdev.reserved_regions[] on finalize()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+ Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-stable@nongnu.org
 References: <20231121174051.63038-1-philmd@linaro.org>
- <20231121174051.63038-2-philmd@linaro.org>
+ <20231121174051.63038-3-philmd@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -62,7 +63,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231121174051.63038-2-philmd@linaro.org>
+In-Reply-To: <20231121174051.63038-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -88,47 +89,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-21.11.2023 20:40, Philippe Mathieu-Daudé:
-> The VirtioPCIDeviceTypeInfo structure, added in commit a4ee4c8baa
-> ("virtio: Helper for registering virtio device types") got extended
-> in commit 8ea90ee690 ("virtio: add class_size") with the @class_size
-> field. Do similarly with the @instance_finalize field.
+21.11.2023 20:40, Philippe Mathieu-Daudé пишет:
+> Commit 0be6bfac62 ("qdev: Implement variable length array properties")
+> added the DEFINE_PROP_ARRAY() macro with the following comment:
+> 
+>    * It is the responsibility of the device deinit code to free the
+>    * @_arrayfield memory.
+> 
+> Commit 8077b8e549 added:
+> 
+>    DEFINE_PROP_ARRAY("reserved-regions", VirtIOIOMMUPCI,
+>                      vdev.nb_reserved_regions, vdev.reserved_regions,
+>                      qdev_prop_reserved_region, ReservedRegion),
+> 
+> but forgot to free the 'vdev.reserved_regions' array. Do it in the
+> instance_finalize() handler.
 
-Since other patches in this series are Cc'ed to qemu-stable, and all
-uses this new field, it smells like this patch should also be picked
-up for -stable (doing that now).
+It is interesting that the actual code frees prop_resv_regions, not
+reserved_regions as the Subject says.  This is because of commit
+v8.1.0-2552-g41cc70cdf5, ""virtio-iommu: Rename reserved_regions
+into prop_resv_regions".
+
+:)
 
 /mjt
 
+> Cc: qemu-stable@nongnu.org
+> Fixes: 8077b8e549 ("virtio-iommu-pci: Add array of Interval properties") # v5.1.0+
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   include/hw/virtio/virtio-pci.h | 1 +
->   hw/virtio/virtio-pci.c         | 1 +
->   2 files changed, 2 insertions(+)
+>   hw/virtio/virtio-iommu-pci.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
 > 
-> diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-> index 5a3f182f99..59d88018c1 100644
-> --- a/include/hw/virtio/virtio-pci.h
-> +++ b/include/hw/virtio/virtio-pci.h
-> @@ -246,6 +246,7 @@ typedef struct VirtioPCIDeviceTypeInfo {
->       size_t instance_size;
->       size_t class_size;
->       void (*instance_init)(Object *obj);
-> +    void (*instance_finalize)(Object *obj);
->       void (*class_init)(ObjectClass *klass, void *data);
->       InterfaceInfo *interfaces;
->   } VirtioPCIDeviceTypeInfo;
-> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> index 205dbf24fb..e433879542 100644
-> --- a/hw/virtio/virtio-pci.c
-> +++ b/hw/virtio/virtio-pci.c
-> @@ -2391,6 +2391,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
->           .parent        = t->parent ? t->parent : TYPE_VIRTIO_PCI,
->           .instance_size = t->instance_size,
->           .instance_init = t->instance_init,
-> +        .instance_finalize = t->instance_finalize,
->           .class_size    = t->class_size,
->           .abstract      = true,
->           .interfaces    = t->interfaces,
+> diff --git a/hw/virtio/virtio-iommu-pci.c b/hw/virtio/virtio-iommu-pci.c
+> index 9459fbf6ed..cbdfe4c591 100644
+> --- a/hw/virtio/virtio-iommu-pci.c
+> +++ b/hw/virtio/virtio-iommu-pci.c
+> @@ -95,10 +95,18 @@ static void virtio_iommu_pci_instance_init(Object *obj)
+>                                   TYPE_VIRTIO_IOMMU);
+>   }
+>   
+> +static void virtio_iommu_pci_instance_finalize(Object *obj)
+> +{
+> +    VirtIOIOMMUPCI *dev = VIRTIO_IOMMU_PCI(obj);
+> +
+> +    g_free(dev->vdev.prop_resv_regions);
+> +}
+> +
+>   static const VirtioPCIDeviceTypeInfo virtio_iommu_pci_info = {
+>       .generic_name  = TYPE_VIRTIO_IOMMU_PCI,
+>       .instance_size = sizeof(VirtIOIOMMUPCI),
+>       .instance_init = virtio_iommu_pci_instance_init,
+> +    .instance_finalize = virtio_iommu_pci_instance_finalize,
+>       .class_init    = virtio_iommu_pci_class_init,
+>   };
+>   
 
 
