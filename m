@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9577FD8D1
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 15:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0AC7FD92B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 15:23:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8L6A-00088I-0J; Wed, 29 Nov 2023 08:59:30 -0500
+	id 1r8LRi-0004RC-UO; Wed, 29 Nov 2023 09:21:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r8L60-00087x-Vn
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 08:59:24 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8LRf-0004Qs-WD
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 09:21:44 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <petrcvekcz@gmail.com>)
- id 1r8L5z-0003gr-6t
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 08:59:20 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-54acdd65c88so7439595a12.2
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 05:59:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8LRe-0000PE-Dg
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 09:21:43 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3331974c2d2so399051f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 06:21:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701266357; x=1701871157; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701267700; x=1701872500; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=0H5zly31sc+usJuaKzIOG1MRfYS5TYlRVZoJmT64rTg=;
- b=ZYba3x3e5d2Sc0rCDOGQ4I8KgK/8jmlu5wuEUUEJk5BPvmqi6CY8Xca3IYbahEsfhf
- FvRSQPNvske05CpbLAev9dabi0kpspR4Y8l2nPAr8VjogxruKtxD3KSUo0ur2XfNJIxh
- 2wC9O6o/ZdGLS+I1L98lhhEUI1HAfKoYI54pEAyNDTBaYweD2qdFQ1UclBaHqhwqZH1Z
- ojU0Ahw7obzkkh0csiaKD3L+LDkD2jLkGL23Vr3dafSqRHbzppBbpfPDKXOIY34GxI+0
- hlLNG66JdjOlaRzdGESVdLk3ByMOVPmjxouvIMImPDJ3Pvt+UiVqjnUFyHSoOEeSta9V
- sZUg==
+ bh=7vuotNsSJ3mz1jNM/jv3owEo6FFWm28DP4IxuqSJZKw=;
+ b=PDoDwB8cXVOBBNiA1K5uIB2/TJOtpR2VPdSUTT8fTtyoKJLbHs0y/51vF6Tt4S/tBH
+ wuIyYiF2EM8JVf+whLB7+Yn6Lo7WLuy0uQDqKzmS1cC6kj+JpUbJYTMD8AMfQlaqAY5D
+ yNg4nm+d3zRLJ9GbLpWQaTdhNS/OcIPTopV0uD/Cj2+RrhH1IFPO5av7q4FdZJ/z78Ke
+ jbKgx/uR20+Mf7kEcdUaNhL97QATIAV9k1/Nj2y9/hIxqbyMxFiYUT2mQNWPgYA6ziz7
+ eMtcsQI7VhlCCz/b4hA2CGu9XMA7jw8bwBlHFv6sOS9JWedekOSTJcmg2nxUAeXX7FIv
+ lF1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701266357; x=1701871157;
+ d=1e100.net; s=20230601; t=1701267700; x=1701872500;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0H5zly31sc+usJuaKzIOG1MRfYS5TYlRVZoJmT64rTg=;
- b=d9uBb251y5RpekGMfmBa3HdKUpI/xcPsfYQXlzL97ra84YSH654as86Nn2rJHbkUGb
- qI6A2gd1zCdTJSorB3mLulnsIgm9dZ7VeL/3i1EHg1ruYQTgQ+rm25Tln9zV2awGpSgJ
- etxvJHwZN4V8Tz9zdxLAAudoXHNIAWiLjs9MrPVjlWKoGWv61aWnZVHGZt6ujgrwPfoF
- I7qpIdxPI7bb9DGKw/Fcez9mldx01Fp4bKETDvaDJ6t/NYivh8qRXhuwEiAA9LAEScUP
- KiCEQOfFzMAAUWWw7CuahLyyhLVNV0jD2NwE2dVVr2FbI+TDroo9MOkopl/P479MlMCv
- 5yFA==
-X-Gm-Message-State: AOJu0YxUA5uIsDd0UrSJQhpYRtZRPOWQ7BW2M9DyHvEWF2guW5OZ7Mbn
- 862yUsRo7+70m+lLf4ujhpo=
-X-Google-Smtp-Source: AGHT+IFecEBdkuS6oPhMmh9fpp94q233TP35kn1r8j0pI9Ao84VZjtHyPwXkqPVimy6VvqKOWNaP+g==
-X-Received: by 2002:a50:8a88:0:b0:547:9ebd:c0ab with SMTP id
- j8-20020a508a88000000b005479ebdc0abmr13600452edj.13.1701266357205; 
- Wed, 29 Nov 2023 05:59:17 -0800 (PST)
-Received: from ?IPV6:2001:1ae9:1e8:b200:ae52:b385:81fe:eeab?
- (2001-1ae9-1e8-b200-ae52-b385-81fe-eeab.ip6.tmcz.cz.
- [2001:1ae9:1e8:b200:ae52:b385:81fe:eeab])
- by smtp.gmail.com with ESMTPSA id
- c9-20020a50f609000000b0054bca15bf7bsm958924edn.3.2023.11.29.05.59.16
+ bh=7vuotNsSJ3mz1jNM/jv3owEo6FFWm28DP4IxuqSJZKw=;
+ b=mkDXhGrVLjCN1CrvM3C2rxNrY5LwYa9SyWHirCmy+EGxqFjUjI3AKAiK/mK1lawxyW
+ mibBkVWnqGZHf77ZatQxeps+d88Jw6QWT524DkKMkxNVe3cslK2NzpbgCPGzVDV5iwem
+ zBuC7eZjt2RPs0qm8b54WFvaDjmArFfTe716+84CBkRO7NAADtLJtmHbFYqz8HCsaNd1
+ 3ieEDt+wbFoSLbOJn9zkgBbVug3NfZdqh0omOUv8gr+9GK6dtoRrVdM054ZnLQOSZJEu
+ TqseOPm/sUgsmQSBYLkV7fv3iXgRoRqkt9eKHEkqWzCNiz/seCemrfu+6SwOQPeuL9MY
+ 7olg==
+X-Gm-Message-State: AOJu0YxoBQ2I89SYwUk6Q+P+do3VTv50QVt4eX5IhjtayqmtyKr5h//e
+ 6lu41wR+ipSY3D6Zr/cG9DRjFQ==
+X-Google-Smtp-Source: AGHT+IFqeZh1YFbYeNJ9ddNynhGdnVFpSRjEfbTycUACdaywiTZ+s9rue+IIoWve9gWLABYFY3GUhg==
+X-Received: by 2002:a5d:64c5:0:b0:333:17cb:c3d0 with SMTP id
+ f5-20020a5d64c5000000b0033317cbc3d0mr1810559wri.64.1701267700103; 
+ Wed, 29 Nov 2023 06:21:40 -0800 (PST)
+Received: from [192.168.69.100] (sal63-h02-176-184-16-250.dsl.sta.abo.bbox.fr.
+ [176.184.16.250]) by smtp.gmail.com with ESMTPSA id
+ 2-20020a5d47a2000000b00332ff137c29sm9913338wrb.79.2023.11.29.06.21.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Nov 2023 05:59:16 -0800 (PST)
-Message-ID: <8683637f-a436-44c5-9370-978f88b072a9@gmail.com>
-Date: Wed, 29 Nov 2023 14:59:08 +0100
+ Wed, 29 Nov 2023 06:21:39 -0800 (PST)
+Message-ID: <68337349-a8c7-4520-a381-a359bf8f8438@linaro.org>
+Date: Wed, 29 Nov 2023 15:21:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] accel/tcg: cpu_exec_longjmp_cleanup: assertion failed: (cpu
- == current_cpu)
-Content-Language: en-US, cs
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, pbonzini@redhat.com
-References: <79bd7607-7590-4809-9412-7cf7276567d6@gmail.com>
- <CAFEAcA-yvyB_t=JsEAp8eoX01gSKi04aNZ5Fq6F+gneRUMP6_w@mail.gmail.com>
-From: Petr Cvek <petrcvekcz@gmail.com>
-In-Reply-To: <CAFEAcA-yvyB_t=JsEAp8eoX01gSKi04aNZ5Fq6F+gneRUMP6_w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=petrcvekcz@gmail.com; helo=mail-ed1-x52e.google.com
+Subject: Re: QEMU Summit Minutes 2023
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>
+References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
+ <87edgjf2v4.fsf@draig.linaro.org>
+ <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
+ <ZWYsMsgxjDZ_T2zA@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <ZWYsMsgxjDZ_T2zA@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,37 +97,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dne 27. 11. 23 v 10:37 Peter Maydell napsal(a):
-> On Sat, 25 Nov 2023 at 13:09, Petr Cvek <petrcvekcz@gmail.com> wrote:
->>
->> It seems there is a bug in SIGALRM handling when 486 system emulates x86_64 code.
+On 28/11/23 19:06, Daniel P. Berrangé wrote:
+> On Tue, Nov 28, 2023 at 06:54:42PM +0100, Cédric Le Goater wrote:
+
+> Anyway, when a maintainer wants to merge a tree, I would expect to
+> have a MR opened against 'master' in qemu-project/qemu.  The CI
+> ought to then run and if it is all green, then someone would approve
+> it to merge to master.
 > 
-> 486 host is pretty well out of support currently. Can you reproduce
-> this on a less ancient host CPU type ?
+>> It seems to me that we should also have a group of people approving
+>> the MR.
 > 
+> Yes, while we could have one designated gate keeper approving all
+> MRs, that would defeat some of the benefit of MRs. So likely would
+> be good to have a pool, and also setup the config so that the owner
+> of an MR is not allow to approve their own MR, to guarantee there
+> is always a 2nd pair of eyes as sanity check.
 
-It seems it only fails when the code is compiled for i486. QEMU built with the same compiler with -march=i586 and above runs on the same physical hardware without a problem. All -march= variants were executed on ryzen 3600.
-
->> ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion failed: (cpu == current_cpu)
->> Bail out! ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion failed: (cpu == current_cpu)
->> 0x48874a != 0x3c69e10
->> **
->> ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion failed: (cpu == current_cpu)
->> Bail out! ERROR:../accel/tcg/cpu-exec.c:546:cpu_exec_longjmp_cleanup: assertion failed: (cpu == current_cpu)
-> 
-> What compiler version do you build QEMU with? That
-> assert is there because we have seen some buggy compilers
-> in the past which don't correctly preserve the variable
-> value as the setjmp/longjmp spec requires them to.
-> 
-
-i486 and i586+ code variants were compiled with GCC 13.2.0 (more exactly, slackware64 current multilib distribution).
-
-i486 binary which runs on the real 486 is also GCC 13.2.0 and installed as a part of the buildroot crosscompiler (about two week old git snapshot).
-
-> thanks
-> -- PMM
-
-best regards,
-Petr
+Are all our tests already on GitLab? Last time I remember Peter still
+had manual tests.
 
