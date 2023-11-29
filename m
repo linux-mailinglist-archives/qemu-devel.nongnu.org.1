@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8F57FDDEA
+	by mail.lfdr.de (Postfix) with ESMTPS id F3CD67FDDEB
 	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 18:05:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8NzD-00006a-VA; Wed, 29 Nov 2023 12:04:31 -0500
+	id 1r8NzE-00007t-HQ; Wed, 29 Nov 2023 12:04:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1r8NzB-0008VH-PM
+ id 1r8NzB-0008VM-Pj
  for qemu-devel@nongnu.org; Wed, 29 Nov 2023 12:04:29 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1r8Nz4-0002xS-6u
+ id 1r8Nz7-0002zY-PC
  for qemu-devel@nongnu.org; Wed, 29 Nov 2023 12:04:29 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1cfc985c92dso32690725ad.0
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 09:04:20 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d001e4cf7cso16456815ad.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 09:04:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1701277459; x=1701882259; darn=nongnu.org;
+ d=sifive.com; s=google; t=1701277464; x=1701882264; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dJELkFuyfQDdSzTxppnb6dbBJrlb+WrSMBGUjwM60Kk=;
- b=BBjqnS1wOQLIg5ryETwt0TqyfjDLKgMzQfRwEMnauf+6o9yLKXvSl8UvsWDGuNtONC
- cG8HFbAJto53VRX5Nwh7VuO7JkFT+Nq3MAu7Z1vgFjiN/55IxsLxBfWVW9FtaAQc2Oan
- +tZ1oI5RfL2PwnrYAaBcGGey5h/iI/xuL32FyujCelkq9TCtxiw2rjnGrC+y3RTkGw3p
- ZTGkDgPonp/xuKyMFlFfpLcnb1X4nqGZZZc+Cj166GqRyIEVhhzRynR0KWzlJvtfT3D4
- oOJIqTno//hlsEiatamxa8JkkIWg2pGlFVvA2cmAz7youo8BJnGnzoGuxWQT5zJRXvgS
- vMsw==
+ bh=y/52Np4NKh02g/xFTctIbb9Rk3QH3KmZVD4jfr+ROnU=;
+ b=BnJC9zFaBTE+KuQi+913fgYgJzyoY01SrjzZE7Yi4ApM/KEjTPxZqvQ+JHn6Ke51iY
+ 1Xsx4wBbB7O7OCF6p5Tj2gR+H/+nQde6l6YplcVJKfnBZ8ks7lzzye71FXFh4L+h1QxT
+ LeawK681sb7E/5M+QfzW6m8OlfFygTbqe5TDoU9EIklscjstMQUmRTH2Zcx/Ud2GJLUZ
+ FeeZhFD8b81r43BdrFoqJFDlZP9IT+ugiozmyExW3zXlXJKZvDFExSKxwY61DkkAoVWT
+ DLdMGY5DerRVPUTDSBW4FFed5FGyBvHvKPCGeslNJYvp0TNU3l9MFkKBTNOtNRcBictI
+ ys2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701277459; x=1701882259;
+ d=1e100.net; s=20230601; t=1701277464; x=1701882264;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dJELkFuyfQDdSzTxppnb6dbBJrlb+WrSMBGUjwM60Kk=;
- b=oSbeEMa3l4KclReLfgF+u2Q1rosjnzHdtkNdMN37tqqQmg8pzIyPqKqC1Qk/T/KqMJ
- XASymDGz3MyU0o7Ljf8qYz7cBgWMyvTPVMMiRV5J1DXrGvT/ec4RdlEjyUNOIL5fNYn5
- t25arzsVb6YoHKdOUlCfJio4hvghtzFZLqHlYJ+O/fI2nhSz5Q9vbkjV53GePwtcOFaI
- Jz5yPKFZhEMcopPckr4ZDM577YVDP2fC+YSNn01Psjp9wLjUMko5nYsjKJ/WqnxG47KH
- LyVIpI3UpbXyXBtd87psmUY9iGL72Vv2C6aSnL21DMK54gtA80qhlRoOJNv3s9woIZ8I
- FVsA==
-X-Gm-Message-State: AOJu0YyqW+v2EVj7Pr3HSj5pgZNGpiEyZuTTsuWzo3DRcakBIgruOL38
- 4AD16zIcb4ulBa3H/GzB42eBg675C7fZJ1OLsNM23iYKnEDq1UxATPCdJaNyJP7vB3ckvmgor7a
- InSQ5eNNvrp0Kxh4CEmS/EY6IqgqDC4oXSf7JFAfdHesD/Z91avX3KpjkE6MJPFl5ZGRKStlonw
- oK
-X-Google-Smtp-Source: AGHT+IGtISLNSYYlQnB2orEKvH+favtu3lmmMQSVNmGmJS4HhYsduK6E2/cKOIBHJd9Xz0i1f9bKQg==
-X-Received: by 2002:a17:902:db0d:b0:1cf:cc0d:9600 with SMTP id
- m13-20020a170902db0d00b001cfcc0d9600mr12603628plx.24.1701277458610; 
- Wed, 29 Nov 2023 09:04:18 -0800 (PST)
+ bh=y/52Np4NKh02g/xFTctIbb9Rk3QH3KmZVD4jfr+ROnU=;
+ b=r5RPkkbQr0iESuHXO6QQuupq6iHZY/6h/BbfOL7DJp7Oyz6HFm6IXN1EKYZyphkjKp
+ r4DILZHE+FBhSt6Zh91DIQ8+oih7dv3dRIUfHJ4gn0sSYv9b42fMx+J/2q5neTH1fAxX
+ S09EEBoxxU0Aoyg9wIkiroVp6NhliGFcprDDTyKu1hyJcMihD5noRjfPTKtV+F/42UBk
+ AEAbPo09SI+GTuyOXcPPjcFRFJWEprTVxcbLT8x7cb8GqUajGX3SdOLL1+EwsyGGWbDh
+ pb56rmheV+WKGTpMCCig/P1QCYrzXiHOpg7kLywUeVXrRPbNTllswrRd+zRH6yBWlUTJ
+ lz8A==
+X-Gm-Message-State: AOJu0YyV30FrNQe43IXxvSHJXQ32BoKtZEFe6n3zEGl1GMa1Kcb+4aSX
+ fVg8Zr0fD/ke6Hs8pmZV/oM0jS35MNRPMifITmC7Mc1qS5y4IFIEupZreRjX6mNq8M+LOwNx1kn
+ yeBcxnwVY0AZdefcFrE19uoGxao/63xxCf+lElQqjKpBMbjUyr8vTWF0T4IXt19PpAi/0tkcyIv
+ 7g
+X-Google-Smtp-Source: AGHT+IGPkJTg5S4qK9RbfO9IBCM3zCOpCzFFQO5hQQl/OBPXkd7sDcYYORFcpVhkQWVE7/Dm0AMdqA==
+X-Received: by 2002:a17:902:d50f:b0:1cf:eacb:a12c with SMTP id
+ b15-20020a170902d50f00b001cfeacba12cmr7898292plg.65.1701277464063; 
+ Wed, 29 Nov 2023 09:04:24 -0800 (PST)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- p5-20020a170902eac500b001cfc6838e30sm6921383pld.308.2023.11.29.09.04.16
+ p5-20020a170902eac500b001cfc6838e30sm6921383pld.308.2023.11.29.09.04.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Nov 2023 09:04:18 -0800 (PST)
+ Wed, 29 Nov 2023 09:04:23 -0800 (PST)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -68,17 +68,17 @@ Cc: Max Chou <max.chou@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Junqiang Wang <wangjunqiang@iscas.ac.cn>
-Subject: [PATCH 1/2] target/riscv: Add vill check for whole vector register
- move instructions
-Date: Thu, 30 Nov 2023 01:03:57 +0800
-Message-Id: <20231129170400.21251-2-max.chou@sifive.com>
+Subject: [PATCH 2/2] target/riscv: The whole vector register move instructions
+ depend on vsew
+Date: Thu, 30 Nov 2023 01:03:58 +0800
+Message-Id: <20231129170400.21251-3-max.chou@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231129170400.21251-1-max.chou@sifive.com>
 References: <20231129170400.21251-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,39 +101,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ratified version of RISC-V V spec section 16.6 says that
-`The instructions operate as if EEW=SEW`.
-
-So the whole vector register move instructions depend on the vtype
-register that means the whole vector register move instructions should
-raise an illegal-instruction exception when vtype.vill=1.
+The RISC-V v spec 16.6 section says that the whole vector register move
+instructions operate as if EEW=SEW. So it should depends on the vsew
+field of vtype register.
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/insn_trans/trans_rvv.c.inc | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 78bd363310d..114ad87397f 100644
+index 114ad87397f..3871f0ea73d 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -3631,13 +3631,14 @@ static bool trans_vcompress_vm(DisasContext *s, arg_r *a)
- }
- 
- /*
-- * Whole Vector Register Move Instructions ignore vtype and vl setting.
-- * Thus, we don't need to check vill bit. (Section 16.6)
-+ * Whole Vector Register Move Instructions depend on vtype register(vsew).
-+ * Thus, we need to check vill bit. (Section 16.6)
-  */
- #define GEN_VMV_WHOLE_TRANS(NAME, LEN)                             \
- static bool trans_##NAME(DisasContext *s, arg_##NAME * a)               \
- {                                                                       \
-     if (require_rvv(s) &&                                               \
-+        vext_check_isa_ill(s) &&                                        \
-         QEMU_IS_ALIGNED(a->rd, LEN) &&                                  \
+@@ -3643,8 +3643,7 @@ static bool trans_##NAME(DisasContext *s, arg_##NAME * a)               \
          QEMU_IS_ALIGNED(a->rs2, LEN)) {                                 \
          uint32_t maxsz = (s->cfg_ptr->vlen >> 3) * LEN;                 \
+         if (s->vstart_eq_zero) {                                        \
+-            /* EEW = 8 */                                               \
+-            tcg_gen_gvec_mov(MO_8, vreg_ofs(s, a->rd),                  \
++            tcg_gen_gvec_mov(s->sew, vreg_ofs(s, a->rd),                \
+                              vreg_ofs(s, a->rs2), maxsz, maxsz);        \
+             mark_vs_dirty(s);                                           \
+         } else {                                                        \
 -- 
 2.34.1
 
