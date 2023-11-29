@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA5C7FCDB4
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 05:03:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE057FCDB5
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 05:04:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8Blh-0005yH-WB; Tue, 28 Nov 2023 23:01:46 -0500
+	id 1r8Bnb-0006k1-Ic; Tue, 28 Nov 2023 23:03:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r8Bld-0005xg-2A; Tue, 28 Nov 2023 23:01:41 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1r8BnY-0006ji-Jq; Tue, 28 Nov 2023 23:03:40 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r8Bla-0003H1-NT; Tue, 28 Nov 2023 23:01:40 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6b20577ef7bso5483229b3a.3; 
- Tue, 28 Nov 2023 20:01:37 -0800 (PST)
+ id 1r8BnU-0003QP-6t; Tue, 28 Nov 2023 23:03:40 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1cfd78f8a12so23161175ad.2; 
+ Tue, 28 Nov 2023 20:03:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701230497; x=1701835297; darn=nongnu.org;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
+ d=gmail.com; s=20230601; t=1701230614; x=1701835414; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tSYd/WLHvOZ6KlygnEHMfjwMAYIoOP8ch3+oFfJt2Yg=;
- b=ECm+BF1SJgGvE0G4J+7osTLDJqdLRAVshpE5AzZfJbcioZ+5WPsQtc84BwBm9C5rNp
- U0HrKDhyDqeuLPjnZy5EnMb+TycA9LeCLfFYnVAjUCMHJ2Nv8lxv7usUAgSJQ7IGxGxu
- LTA4OcXK4XY3r6nkqxxyDzxJbnrt7/l+imioqh6UXGV6AM5fvZlSyAfnffqZZJzf+Q18
- troEc2BWiEg1PrmIbE1KuoiPDLaGwccghsZy5Qc2Mgg5wECVeHHotlnAUMfgmnOvFtYt
- l1MiEhw0i5e2ljEs9mVv1G8eGOKp/jDe9tDPi3gjMEPg4+nxbSz/9HBiz8PpaIFBMHE6
- fvrQ==
+ bh=nsyE4ZVtmuFYSoiNQHPXl5LPtvUAxRNDHM10YVRxAgI=;
+ b=KHA42SJ+kFiwhDXMuNI9wBoB1fcpJsdcxww50r6sDSfwjDMTBS678CIuj3z/KDrywy
+ eNMegyqLEpfhMPh7sj4i9JwNe+cTLrORToLQxU8Q7Z13Y7wpVOcHXpoycHNiJerNAKgr
+ W9Blz1dgOWPdP8tjvuI4eQVIDFEauwFfE30mr5EbXDSmjqdjXcV76R3ZeFXOOEBjtIZy
+ TYBvZNa80UYVWgnZfaWdTX43u70yq7ZmjrqgKQ5/LmnprN4idMFBSZk7sX/J8rV1V4PN
+ oJpMEqc3b00IatFeM0kZSDMKDuX6rREn+wLnDjbdrb3RCxKwrA5XYZdxqrVq9qWAhq67
+ UdnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701230497; x=1701835297;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
+ d=1e100.net; s=20230601; t=1701230614; x=1701835414;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=tSYd/WLHvOZ6KlygnEHMfjwMAYIoOP8ch3+oFfJt2Yg=;
- b=lOGfHCqJpUmrEwf3VbOHU3ddjoWoCBmY7xPIsuq8o/I2/Oz8znCK1dfUyoYMWmfxYw
- v60BEokzfyIM2MdP0ZfRZFSgKjBfUUVUCpEnVDJhz5H45himkS8P5CVwVg1J+hG9h5Kw
- xirYW2Su690mqzASP5uytsh8/OiA7ISOS1R4Z4Ttz2n1qpDQr8D0jSA1mv4q0gAWtpPf
- ito8VF3H54kVHgVlA4vLqD/8Yg9Z3XsaTZ99giPX/30RcRW8JOKJMrN26sxsr1zx+4PS
- NnYroVE0GdcLgGDcJy0xXSYXscSownYw0CX+OdsaCAZBqvkuAQOjT+Em4cXt6cPQr07J
- SZRQ==
-X-Gm-Message-State: AOJu0YzOV20tuelF7GNUBXE2lS75gGB8KVoWO04oAKR+xc1rNRoFyV6L
- S0ynALwTrJvqaI7AD1HufVs=
-X-Google-Smtp-Source: AGHT+IHqTgRVW1PYD+1MXPjBHnXTNNaCZ25/R6D5OH0ObvGQ5tgoVQei01R/Gky7kyayoL/t85VM0g==
-X-Received: by 2002:a05:6a00:391f:b0:6c3:3213:2d17 with SMTP id
- fh31-20020a056a00391f00b006c332132d17mr19156167pfb.29.1701230496779; 
- Tue, 28 Nov 2023 20:01:36 -0800 (PST)
+ bh=nsyE4ZVtmuFYSoiNQHPXl5LPtvUAxRNDHM10YVRxAgI=;
+ b=aOT8bGPBz5nmtGGVu8cIP7Vl/vxmq9R5FOpXQyLi38zpSyuslHAvYXrZQTZ3n30KnL
+ QGXvDCOTzCkhqVWIjLvTe4b4U5wi5ViAKqMbSCLD58NZwowhCCQTEFYRMkKEg/W5CEHk
+ vDeVrjrJlHB2Zold1rQRBEiVlyv64nLZaIfecD0zLgOQRz5kAlEDIHDNwpKb5i5te5AO
+ OwFR/O+UPMYUArb+1NDSlEhoUwaBCmS/FDv2mwX9kyIlLphgoarAUZcpev8VQwelQTAJ
+ r9YyQNUDtsfPsAdzG3/fpMz2ngAwKE4fIdRMf6OXBOL5KaaWH0T54BJC5MM39eqoJm0j
+ oiSQ==
+X-Gm-Message-State: AOJu0Yy6jaxB+eBZPSnhGpHm4hTMrtwQa2q71rKG5VXVHiwkRgK39Tca
+ cxN9T0S2CDbhr0WWRmD+eJo=
+X-Google-Smtp-Source: AGHT+IE18pU6Vi8mB+StR0U0sgNEM44bSlSPCrasYzsfRV9QnGBfldGVYlHe7AtBkghoP8KoXODDug==
+X-Received: by 2002:a17:903:234c:b0:1cf:cb27:3aa5 with SMTP id
+ c12-20020a170903234c00b001cfcb273aa5mr12350251plh.5.1701230613892; 
+ Tue, 28 Nov 2023 20:03:33 -0800 (PST)
 Received: from localhost ([124.170.16.164]) by smtp.gmail.com with ESMTPSA id
- it18-20020a056a00459200b0068fe9c7b199sm9677751pfb.105.2023.11.28.20.01.33
+ s10-20020a170902ea0a00b001cfc3f73927sm5808048plg.9.2023.11.28.20.03.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 20:01:36 -0800 (PST)
+ Tue, 28 Nov 2023 20:03:33 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Nov 2023 14:01:31 +1000
-Message-Id: <CXAZVME5KCFG.32WTQX49G8W7B@wheely>
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
+Date: Wed, 29 Nov 2023 14:03:27 +1000
+Message-Id: <CXAZX3XHE6O8.1CFCJWZKXV9EB@wheely>
 Cc: <clegoate@redhat.com>, <qemu-devel@nongnu.org>, <mikey@neuling.org>,
  <vaibhav@linux.ibm.com>, <jniethe5@gmail.com>, <sbhat@linux.ibm.com>,
  <kconsul@linux.vnet.ibm.com>, <danielhb413@gmail.com>
-Subject: Re: [PATCH v2 04/14] spapr: nested: Introduce cap-nested-papr for
- Nested PAPR API
+Subject: Re: [PATCH v2 05/14] spapr: nested: register nested-hv api hcalls
+ only for cap-nested-hv
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.15.2
 References: <20231012104951.194876-1-harshpb@linux.ibm.com>
- <20231012104951.194876-5-harshpb@linux.ibm.com>
-In-Reply-To: <20231012104951.194876-5-harshpb@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+ <20231012104951.194876-6-harshpb@linux.ibm.com>
+In-Reply-To: <20231012104951.194876-6-harshpb@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,23 +94,50 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Thu Oct 12, 2023 at 8:49 PM AEST, Harsh Prateek Bora wrote:
-> Introduce a SPAPR capability cap-nested-papr which provides a nested
-> HV facility to the guest. This is similar to cap-nested-hv, but uses
-> a different (incompatible) API and so they are mutually exclusive.
-> This new API is to enable support for KVM on PowerVM and recently the
-> Linux kernel side patches have been accepted upstream as well [1].
-> Support for related hcalls is being added in next set of patches.
+> Since cap-nested-hv and cap-nested-papr are mutually exclusive, now it
+> makes sense to register api specfic hcalls only when respective
+> capability is enabled, hence this change.
+>
+> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-We do want to be able to support both APIs on a per-guest basis. It
-doesn't look like the vmstate bits will be a problem, both could be
-enabled if the logic permitted it and that wouldn't cause a
-compatibility problem I think?
+I think this basically makes sense anyway since if you don't enable
+cap-nested-hv, then no need to register the hcalls. This patch could
+be pulled to the front of the series.
 
-And it's a bit of a nitpick, but the capability should not be permitted
-before the actual APIs are supported IMO. You could split this into
-adding .api first, so the implementation can test it, and add the spapr
-caps at the end.
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-Thanks,
-Nick
+> ---
+>  hw/ppc/spapr_caps.c  | 1 +
+>  hw/ppc/spapr_hcall.c | 2 --
+>  2 files changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+> index 9b53f19ec8..ed3e638334 100644
+> --- a/hw/ppc/spapr_caps.c
+> +++ b/hw/ppc/spapr_caps.c
+> @@ -456,6 +456,7 @@ static void cap_nested_kvm_hv_apply(SpaprMachineState=
+ *spapr,
+> =20
+>      if (!spapr->nested.api) {
+>          spapr->nested.api =3D NESTED_API_KVM_HV;
+> +        spapr_register_nested();
+>      } else {
+>          error_setg(errp, "Nested-HV APIs are mutually exclusive/incompat=
+ible");
+>          error_append_hint(errp, "Please use either cap-nested-hv or "
+> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+> index 522a2396c7..8ae55087ec 100644
+> --- a/hw/ppc/spapr_hcall.c
+> +++ b/hw/ppc/spapr_hcall.c
+> @@ -1635,8 +1635,6 @@ static void hypercall_register_types(void)
+>      spapr_register_hypercall(KVMPPC_H_CAS, h_client_architecture_support=
+);
+> =20
+>      spapr_register_hypercall(KVMPPC_H_UPDATE_DT, h_update_dt);
+> -
+> -    spapr_register_nested();
+>  }
+> =20
+>  type_init(hypercall_register_types)
+
 
