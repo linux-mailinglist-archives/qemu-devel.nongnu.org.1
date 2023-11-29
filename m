@@ -2,68 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D9977FD729
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 13:53:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB917FD75F
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 14:03:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8K2y-0005rn-Hb; Wed, 29 Nov 2023 07:52:09 -0500
+	id 1r8KBd-0008KE-FO; Wed, 29 Nov 2023 08:01:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8K2q-0005rY-LS
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:52:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r8KBa-0008Jk-Tu; Wed, 29 Nov 2023 08:01:02 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8K2n-0006gA-QX
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:51:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701262316;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7m8iFpi+sdzw01gp5zF7Z/Lrd1jJaM05alWBgvRanWM=;
- b=KJp64A/YBLA64jze8b9mOb4t3xFu9onxfx9cLd9ilbSIBhqUfDJvXhXJLa8lYXEUtTG8Ki
- +GOxItaCaVcRWpqr/RzE6BEN2808s8n/IgwRSqkiHQ2RrZKMACFTiIZDxWng3cdJe62GJT
- nC6j1CCW41e1ck1iJG5TLLci23G4eSc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-356-rF8l087fOXyGKm0HL10GBA-1; Wed,
- 29 Nov 2023 07:51:52 -0500
-X-MC-Unique: rF8l087fOXyGKm0HL10GBA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 067EE28088A8;
- Wed, 29 Nov 2023 12:51:52 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A1D675028;
- Wed, 29 Nov 2023 12:51:51 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AEFD021E6A1F; Wed, 29 Nov 2023 13:51:50 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
- berrange@redhat.com,  peter.maydell@linaro.org,  farosas@suse.de
-Subject: Re: [PATCH v3] migration: free 'channel' after its use in migration.c
-References: <20231129080624.161578-1-het.gala@nutanix.com>
-Date: Wed, 29 Nov 2023 13:51:50 +0100
-In-Reply-To: <20231129080624.161578-1-het.gala@nutanix.com> (Het Gala's
- message of "Wed, 29 Nov 2023 08:06:24 +0000")
-Message-ID: <87fs0ok9i1.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1r8KBZ-0008Q4-31; Wed, 29 Nov 2023 08:01:02 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id ADBAD37663;
+ Wed, 29 Nov 2023 16:01:19 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id C835F386C2;
+ Wed, 29 Nov 2023 16:00:55 +0300 (MSK)
+Message-ID: <107a2390-2af1-4b8b-8149-5c97fc1f2668@tls.msk.ru>
+Date: Wed, 29 Nov 2023 16:00:55 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2? 1/6] hw/virtio: Add
+ VirtioPCIDeviceTypeInfo::instance_finalize field
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Alistair Francis <alistair@alistair23.me>, Kevin Wolf <kwolf@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Eric Auger <eric.auger@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+References: <20231121174051.63038-1-philmd@linaro.org>
+ <20231121174051.63038-2-philmd@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20231121174051.63038-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,264 +88,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'ld like to suggest a clearer subject:
+21.11.2023 20:40, Philippe Mathieu-Daudé:
+> The VirtioPCIDeviceTypeInfo structure, added in commit a4ee4c8baa
+> ("virtio: Helper for registering virtio device types") got extended
+> in commit 8ea90ee690 ("virtio: add class_size") with the @class_size
+> field. Do similarly with the @instance_finalize field.
 
-  migration: Plug memory leak with migration URIs
+Since other patches in this series are Cc'ed to qemu-stable, and all
+uses this new field, it smells like this patch should also be picked
+up for -stable (doing that now).
 
-Het Gala <het.gala@nutanix.com> writes:
+/mjt
 
-> 'channel' in qmp_migrate() and qmp_migrate_incoming() is not
-> auto-freed. migrate_uri_parse() allocates memory to 'channel' if
-
-Not sure we need the first sentence.  QMP commands never free their
-arguments.
-
-> the user opts for old syntax - uri, which is leaked because there
-> is no code for freeing 'channel'.
-> So, free channel to avoid memory leak in case where 'channels'
-> is empty and uri parsing is required.
-> Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp
-> migration flow")
->
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> Suggested-by: Markus Armbruster <armbru@redhat.com>
-
-Keep the Fixes: tag on a single line, and next to the other tags:
-
-  [...]
-  is empty and uri parsing is required.
-
-  Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp migration flow")
-  Signed-off-by: Het Gala <het.gala@nutanix.com>
-  Suggested-by: Markus Armbruster <armbru@redhat.com>
-
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  migration/migration.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 28a34c9068..34340f3440 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -515,7 +515,7 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
->                                            MigrationChannelList *channels,
->                                            Error **errp)
->  {
-> -    MigrationChannel *channel = NULL;
-> +    g_autoptr(MigrationChannel) channel = NULL;
->      MigrationAddress *addr = NULL;
->      MigrationIncomingState *mis = migration_incoming_get_current();
->  
-> @@ -533,18 +533,18 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
->              error_setg(errp, "Channel list has more than one entries");
->              return;
->          }
-> -        channel = channels->value;
-> +        addr = channels->value->addr;
->      } else if (uri) {
->          /* caller uses the old URI syntax */
->          if (!migrate_uri_parse(uri, &channel, errp)) {
->              return;
->          }
-> +        addr = channel->addr;
->      } else {
->          error_setg(errp, "neither 'uri' or 'channels' argument are "
->                     "specified in 'migrate-incoming' qmp command ");
->          return;
->      }
-> -    addr = channel->addr;
->  
->      /* transport mechanism not suitable for migration? */
->      if (!migration_channels_and_transport_compatible(addr, errp)) {
-> @@ -1932,7 +1932,7 @@ void qmp_migrate(const char *uri, bool has_channels,
->      bool resume_requested;
->      Error *local_err = NULL;
->      MigrationState *s = migrate_get_current();
-> -    MigrationChannel *channel = NULL;
-> +    g_autoptr(MigrationChannel) channel = NULL;
->      MigrationAddress *addr = NULL;
->  
->      /*
-> @@ -1949,18 +1949,18 @@ void qmp_migrate(const char *uri, bool has_channels,
->              error_setg(errp, "Channel list has more than one entries");
->              return;
->          }
-> -        channel = channels->value;
-> +        addr = channels->value->addr;
->      } else if (uri) {
->          /* caller uses the old URI syntax */
->          if (!migrate_uri_parse(uri, &channel, errp)) {
->              return;
->          }
-> +        addr = channel->addr;
->      } else {
->          error_setg(errp, "neither 'uri' or 'channels' argument are "
->                     "specified in 'migrate' qmp command ");
->          return;
->      }
-> -    addr = channel->addr;
->  
->      /* transport mechanism not suitable for migration? */
->      if (!migration_channels_and_transport_compatible(addr, errp)) {
-
-I tested this with an --enable-santizers build.  Before the patch:
-
-    $ qemu-system-x86_64 -nodefaults -S -display none -monitor stdio -incoming unix:123
-    ==3260873==WARNING: ASan doesn't fully support makecontext/swapcontext functions and may produce false positives in some cases!
-    QEMU 8.1.92 monitor - type 'help' for more information
-    (qemu) q
-
-    =================================================================
-    ==3260873==ERROR: LeakSanitizer: detected memory leaks
-
-    Direct leak of 40 byte(s) in 1 object(s) allocated from:
-        #0 0x7f0ba08ba097 in calloc (/lib64/libasan.so.8+0xba097)
-        #1 0x7f0b9f4eb5b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
-        #2 0x55b446454dbe in migrate_uri_parse ../migration/migration.c:490
-        #3 0x55b4464557c9 in qemu_start_incoming_migration ../migration/migration.c:539
-        #4 0x55b446461687 in qmp_migrate_incoming ../migration/migration.c:1734
-        #5 0x55b4463df1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
-        #6 0x55b4463e4d8e in qemu_init ../system/vl.c:3753
-        #7 0x55b446f63ca9 in main ../system/main.c:47
-        #8 0x7f0b9d04a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
-
-    Direct leak of 16 byte(s) in 1 object(s) allocated from:
-        #0 0x7f0ba08ba097 in calloc (/lib64/libasan.so.8+0xba097)
-        #1 0x7f0b9f4eb5b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
-        #2 0x55b4464557c9 in qemu_start_incoming_migration ../migration/migration.c:539
-        #3 0x55b446461687 in qmp_migrate_incoming ../migration/migration.c:1734
-        #4 0x55b4463df1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
-        #5 0x55b4463e4d8e in qemu_init ../system/vl.c:3753
-        #6 0x55b446f63ca9 in main ../system/main.c:47
-        #7 0x7f0b9d04a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
-
-    Direct leak of 8 byte(s) in 1 object(s) allocated from:
-        #0 0x7f0ba08bb1a8 in operator new(unsigned long) (/lib64/libasan.so.8+0xbb1a8)
-        #1 0x7f0b9a9255b7 in _sub_I_65535_0.0 (/lib64/libtcmalloc_minimal.so.4+0xe5b7)
-
-    Indirect leak of 48 byte(s) in 1 object(s) allocated from:
-        #0 0x7f0ba08ba097 in calloc (/lib64/libasan.so.8+0xba097)
-        #1 0x7f0b9f4eb5b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
-        #2 0x55b4464557c9 in qemu_start_incoming_migration ../migration/migration.c:539
-        #3 0x55b446461687 in qmp_migrate_incoming ../migration/migration.c:1734
-        #4 0x55b4463df1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
-        #5 0x55b4463e4d8e in qemu_init ../system/vl.c:3753
-        #6 0x55b446f63ca9 in main ../system/main.c:47
-        #7 0x7f0b9d04a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
-
-    Indirect leak of 4 byte(s) in 1 object(s) allocated from:
-        #0 0x7f0ba08ba6af in __interceptor_malloc (/lib64/libasan.so.8+0xba6af)
-        #1 0x7f0b9f4eb128 in g_malloc (/lib64/libglib-2.0.so.0+0x5f128)
-
-    SUMMARY: AddressSanitizer: 116 byte(s) leaked in 5 allocation(s).
-
-
-Afterwards:
-
-    ==3260526==WARNING: ASan doesn't fully support makecontext/swapcontext functions and may produce false positives in some cases!
-    QEMU 8.1.92 monitor - type 'help' for more information
-    (qemu) q
-
-    =================================================================
-    ==3260526==ERROR: LeakSanitizer: detected memory leaks
-
-    Direct leak of 40 byte(s) in 1 object(s) allocated from:
-        #0 0x7f97e54ba097 in calloc (/lib64/libasan.so.8+0xba097)
-        #1 0x7f97e41c75b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
-        #2 0x55ae31b02dbe in migrate_uri_parse ../migration/migration.c:490
-        #3 0x55ae31b0382c in qemu_start_incoming_migration ../migration/migration.c:539
-        #4 0x55ae31b0f724 in qmp_migrate_incoming ../migration/migration.c:1734
-        #5 0x55ae31a8d1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
-        #6 0x55ae31a92d8e in qemu_init ../system/vl.c:3753
-        #7 0x55ae32611de2 in main ../system/main.c:47
-        #8 0x7f97e1c4a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
-
-    Direct leak of 8 byte(s) in 1 object(s) allocated from:
-        #0 0x7f97e54bb1a8 in operator new(unsigned long) (/lib64/libasan.so.8+0xbb1a8)
-        #1 0x7f97df6055b7 in _sub_I_65535_0.0 (/lib64/libtcmalloc_minimal.so.4+0xe5b7)
-
-    SUMMARY: AddressSanitizer: 48 byte(s) leaked in 2 allocation(s).
-
-This confirms the patch succeeds at plugging leaks the -incoming path.
-It also shows there's one left in migrate_uri_parse():
-
-    bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
-                           Error **errp)
-    {
-        g_autoptr(MigrationChannel) val = g_new0(MigrationChannel, 1);
-        g_autoptr(MigrationAddress) addr = g_new0(MigrationAddress, 1);
-        SocketAddress *saddr = NULL;
-
-Useless initializer.
-
-        InetSocketAddress *isock = &addr->u.rdma;
-        strList **tail = &addr->u.exec.args;
-
-        if (strstart(uri, "exec:", NULL)) {
-            addr->transport = MIGRATION_ADDRESS_TYPE_EXEC;
-    #ifdef WIN32
-            QAPI_LIST_APPEND(tail, g_strdup(exec_get_cmd_path()));
-            QAPI_LIST_APPEND(tail, g_strdup("/c"));
-    #else
-            QAPI_LIST_APPEND(tail, g_strdup("/bin/sh"));
-            QAPI_LIST_APPEND(tail, g_strdup("-c"));
-    #endif
-            QAPI_LIST_APPEND(tail, g_strdup(uri + strlen("exec:")));
-        } else if (strstart(uri, "rdma:", NULL)) {
-            if (inet_parse(isock, uri + strlen("rdma:"), errp)) {
-                qapi_free_InetSocketAddress(isock);
-                return false;
-            }
-            addr->transport = MIGRATION_ADDRESS_TYPE_RDMA;
-        } else if (strstart(uri, "tcp:", NULL) ||
-                    strstart(uri, "unix:", NULL) ||
-                    strstart(uri, "vsock:", NULL) ||
-                    strstart(uri, "fd:", NULL)) {
-
-Aside: indentation is off.
-
-            addr->transport = MIGRATION_ADDRESS_TYPE_SOCKET;
-            saddr = socket_parse(uri, errp);
-
-@saddr allocated.
-
-            if (!saddr) {
-                return false;
-            }
-            addr->u.socket.type = saddr->type;
-            addr->u.socket.u = saddr->u;
-
-Members of @saddr copied into @addr.
-
-        } else if (strstart(uri, "file:", NULL)) {
-            addr->transport = MIGRATION_ADDRESS_TYPE_FILE;
-            addr->u.file.filename = g_strdup(uri + strlen("file:"));
-            if (file_parse_offset(addr->u.file.filename, &addr->u.file.offset,
-                                  errp)) {
-                return false;
-            }
-        } else {
-            error_setg(errp, "unknown migration protocol: %s", uri);
-            return false;
-        }
-
-        val->channel_type = MIGRATION_CHANNEL_TYPE_MAIN;
-        val->addr = g_steal_pointer(&addr);
-        *channel = g_steal_pointer(&val);
-
-@saddr leaked.
-
-        return true;
-    }
-
-Obvious fix: g_free(saddr) right after copying its members.
-
-Another fix: make @saddr g_autofree, and keep the initializer.
-
-Separate patch.  Would you like to take care of it?
-
-This one, preferably with the commit message improved:
-Tested-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+>   include/hw/virtio/virtio-pci.h | 1 +
+>   hw/virtio/virtio-pci.c         | 1 +
+>   2 files changed, 2 insertions(+)
+> 
+> diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
+> index 5a3f182f99..59d88018c1 100644
+> --- a/include/hw/virtio/virtio-pci.h
+> +++ b/include/hw/virtio/virtio-pci.h
+> @@ -246,6 +246,7 @@ typedef struct VirtioPCIDeviceTypeInfo {
+>       size_t instance_size;
+>       size_t class_size;
+>       void (*instance_init)(Object *obj);
+> +    void (*instance_finalize)(Object *obj);
+>       void (*class_init)(ObjectClass *klass, void *data);
+>       InterfaceInfo *interfaces;
+>   } VirtioPCIDeviceTypeInfo;
+> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+> index 205dbf24fb..e433879542 100644
+> --- a/hw/virtio/virtio-pci.c
+> +++ b/hw/virtio/virtio-pci.c
+> @@ -2391,6 +2391,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+>           .parent        = t->parent ? t->parent : TYPE_VIRTIO_PCI,
+>           .instance_size = t->instance_size,
+>           .instance_init = t->instance_init,
+> +        .instance_finalize = t->instance_finalize,
+>           .class_size    = t->class_size,
+>           .abstract      = true,
+>           .interfaces    = t->interfaces,
 
 
