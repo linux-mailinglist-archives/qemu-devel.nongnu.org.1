@@ -2,73 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72777FD662
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 13:15:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4885B7FD6FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 13:41:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8JRs-0006A6-Fy; Wed, 29 Nov 2023 07:13:48 -0500
+	id 1r8Jqm-0002tf-6U; Wed, 29 Nov 2023 07:39:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r8JRm-00069p-2k
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:13:42 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r8Jqk-0002tS-1X
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:39:30 -0500
+Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r8JRk-00069z-CG
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:13:41 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 34AC33761B;
- Wed, 29 Nov 2023 15:13:50 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 61EC838657;
- Wed, 29 Nov 2023 15:13:26 +0300 (MSK)
-Message-ID: <ccc89939-8f8f-4c0d-b401-46f463d0db5f@tls.msk.ru>
-Date: Wed, 29 Nov 2023 15:13:26 +0300
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r8Jqg-0003Ps-Nl
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:39:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+ t=1701261561; bh=nGM1zQ0u/zSmrfTpfVNZVLVTDlZCshWujzKBMVdEOW0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=pxacJb2VP5Kvz+iA0WcmK0ZiFwUK0IZrjG3MixmGTIROPkDXabIp5O+6AyLAdtStu
+ t6vj1WuAhGFTFeT6LTji4GK/c40u3BqdE4bVlpPkroo0Bg1bSEMN4CyqiYEx2Ba4Un
+ AHnfcKQAIhspE7jhf07NWwKqXCaiFT8eWTKdXAt8=
+Date: Wed, 29 Nov 2023 13:39:20 +0100
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+To: Cornelia Huck <cohuck@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 3/3] hw/misc/pvpanic: add support for normal shutdowns
+Message-ID: <2d249b3e-0976-4c7e-969a-88d54feb290a@t-8ch.de>
+References: <20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de>
+ <20231128-pvpanic-shutdown-v2-3-830393b45cb6@t-8ch.de>
+ <874jh5x90t.fsf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] Fix IRQ routing in via south bridge
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, vr_qemu@t-online.de
-References: <cover.1701035944.git.balaton@eik.bme.hu>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <cover.1701035944.git.balaton@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <874jh5x90t.fsf@redhat.com>
+Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
+ envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,24 +61,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-27.11.2023 01:49, BALATON Zoltan:
-> Philippe,
+On 2023-11-29 09:23:46+0100, Cornelia Huck wrote:
+> On Tue, Nov 28 2023, Thomas Weißschuh <thomas@t-8ch.de> wrote:
 > 
-> Could this be merged for 8.2 as it fixes USB on the amigaone machine?
-> This would be useful as usb-storage is the simplest way to share data
-> with the host with these machines.
+> > Shutdown requests are normally hardware dependent.
+> > By extending pvpanic to also handle shutdown requests, guests can
+> > submit such requests with an easily implementable and cross-platform
+> > mechanism.
+> >
+> > Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+> > ---
+> >  docs/specs/pvpanic.rst                   | 2 ++
+> >  hw/misc/pvpanic.c                        | 5 +++++
+> >  include/hw/misc/pvpanic.h                | 2 +-
+> >  include/standard-headers/linux/pvpanic.h | 1 +
+> >  4 files changed, 9 insertions(+), 1 deletion(-)
 > 
-> This is a slight change from v2 adding more comments and improving
-> commit messages and clean things a bit but otherwise should be the
-> same as previous versions. Even v1 worked the same as this one and v2,
-> the additional check to avoid stuck bits is just paranoia, it does not
-> happen in practice as IRQ mappings are quite static, they are set once
-> at boot and don't change afterwards.
+> (...)
+> 
+> > diff --git a/include/standard-headers/linux/pvpanic.h b/include/standard-headers/linux/pvpanic.h
+> > index 54b7485390d3..38e53ad45929 100644
+> > --- a/include/standard-headers/linux/pvpanic.h
+> > +++ b/include/standard-headers/linux/pvpanic.h
+> > @@ -5,5 +5,6 @@
+> >  
+> >  #define PVPANIC_PANICKED	(1 << 0)
+> >  #define PVPANIC_CRASH_LOADED	(1 << 1)
+> > +#define PVPANIC_SHUTDOWN       	(1 << 2)
+> >  
+> >  #endif /* __PVPANIC_H__ */
+> >
+> 
+> This hunk needs to come in via a separate headers update, or has to be
+> split out into a placeholder patch if it is not included in the Linux
+> kernel yet.
 
-Should this patchset be picked up for stable-8.1?
+Greg KH actually want this header removed from the Linux UAPI headers,
+as it is not in fact a Linux UAPI [0].
+It's also a weird workflow to have the specification in qemu but the
+header as part of Linux that is re-imported in qemu.
 
+What do you think about maintaining the header as a private part of qemu
+and dropping it from Linux UAPI?
 
-Thanks,
+Contrary to my response to Greg this wouldn't break old versions of
+qemu, as qemu is using a private copy that would still exist there.
 
-/mjt
+[0] https://lore.kernel.org/lkml/2023110431-pacemaker-pruning-0e4c@gregkh/
 
