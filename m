@@ -2,58 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6A47FE225
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 22:41:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F7A7FE32F
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 23:32:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8SHh-0003qx-PT; Wed, 29 Nov 2023 16:39:53 -0500
+	id 1r8T4q-0008SN-QL; Wed, 29 Nov 2023 17:30:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=KBMj=HK=kaod.org=clg@ozlabs.org>)
- id 1r8SHa-0003k2-Od; Wed, 29 Nov 2023 16:39:47 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r8T4e-0008S3-2K; Wed, 29 Nov 2023 17:30:29 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=KBMj=HK=kaod.org=clg@ozlabs.org>)
- id 1r8SHY-0007RF-ET; Wed, 29 Nov 2023 16:39:46 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SgXlt5f0kz4xWj;
- Thu, 30 Nov 2023 08:39:38 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SgXln6g31z4xWg;
- Thu, 30 Nov 2023 08:39:33 +1100 (AEDT)
-Message-ID: <149f7908-6d25-482b-bfa4-59235535d9e2@kaod.org>
-Date: Wed, 29 Nov 2023 22:39:31 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 00/10] Introduce model for IBM's FSI
-Content-Language: en-US
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20231026164741.1184058-1-ninad@linux.ibm.com>
- <417e8a68-2f35-4315-b694-892f78c811b6@kaod.org>
- <a1fbfc7b-6f5a-44c4-9af4-65dac15763b6@linux.ibm.com>
- <1f2a6342-5d14-4549-bd44-1fe51f84f18d@kaod.org>
-In-Reply-To: <1f2a6342-5d14-4549-bd44-1fe51f84f18d@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=KBMj=HK=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r8T4c-0002Vp-1E; Wed, 29 Nov 2023 17:30:27 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 448D1756094;
+ Wed, 29 Nov 2023 23:30:22 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id CjTlDXVTPovU; Wed, 29 Nov 2023 23:30:20 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 027FB756078; Wed, 29 Nov 2023 23:30:19 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v4] ppc/amigaone: Allow running AmigaOS without firmware image
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
+ philmd@linaro.org
+Message-Id: <20231129223020.027FB756078@zero.eik.bme.hu>
+Date: Wed, 29 Nov 2023 23:30:19 +0100 (CET)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,53 +56,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/29/23 22:29, Cédric Le Goater wrote:
-> On 11/29/23 15:56, Ninad Palsule wrote:
->> Hello Cedric,
->>
->> On 11/27/23 10:31, Cédric Le Goater wrote:
->>> Hello Ninad,
->>>
->>> On 10/26/23 18:47, Ninad Palsule wrote:
->>>> Hello,
->>>>
->>>> Please review the patch-set version 7.
->>>> I have incorporated review comments from Cedric, Philippe and Thomas.
->>>
->>>
->>> I reworked v7 with the suggestions I made in patches 1-6. Please check :
->>>
->>>   https://github.com/legoater/qemu/commits/aspeed-8.2
->>>
->>> I will have more questions on the mappings because some parts are really
->>> unclear.
->>>
->> I forgot to mention in my last mail. If I build against your aspeed-8.2 branch then rainier machine is failing to boot.
->>
->> The same images are working with qemu master branch.
->>
->> fsi/qemu-system-arm -M rainier-bmc -nographic -kernel ./fitImage-linux.bin -dtb ./aspeed-bmc-ibm-rainier.dtb -initrd ./obmc-phosphor-initramfs.rootfs.cpio.xz -drive file=./obmc-phosphor-image.rootfs.wic.qcow2,if=sd,index=2 -append 'rootwait console=ttyS4,115200n8 root=PARTLABEL=rofs-a' -net nic -net user,hostfwd=:127.0.0.1:3222-:22,hostfwd=:127.0.0.1:2234-:1234 -trace 'fsi*'
->>                          |
->>                          |
->> Starting systemd-udevd version 254^
->> [   50.630407] /dev/disk/by-partlabel/rofs-a: Can't open blockdev
->> mount: mounting /dev/disk/by-partlabel/rofs-a on /mnt/rofs failed: No such file or directory
->> /bin/sh: can't access tty; job control turned off
-> 
-> Hello,
-> 
-> Please try with  '-M rainier-bmc,boot-emmc=false' to avoid using the
-> boot emmc mode which is the default for the rainier machine.
-> 
-> I just updated the aspeed-8.2 branch to take into account the -kernel
-> option when booting the rainier.
+The machine uses a modified U-Boot under GPL license but the sources
+of it are lost with only a binary available so it cannot be included
+in QEMU. Allow running without the firmware image which can be used
+when calling a boot loader directly and thus simplifying booting
+guests. We need a small routine that AmigaOS calls from ROM which is
+added in this case to allow booting AmigaOS without external firmware
+image.
 
-Instead, please update your emmc file image which should contain a
-boot area with u-boot.spl and uboot. See patch "hw/sd: Support boot
-area in emmc image". Or use  '-M rainier-bmc,boot-emmc=false'
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+v4: Simplify dummy_fw, there's no need to shift in a loop, doing it in
+    one instruction works just as well, only the result is used
 
-Thanks,
+ hw/ppc/amigaone.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-C.
+diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+index 992a55e632..d09cf79f93 100644
+--- a/hw/ppc/amigaone.c
++++ b/hw/ppc/amigaone.c
+@@ -36,10 +36,16 @@
+  * -device VGA,romfile=VGABIOS-lgpl-latest.bin
+  * from http://www.nongnu.org/vgabios/ instead.
+  */
+-#define PROM_FILENAME "u-boot-amigaone.bin"
+ #define PROM_ADDR 0xfff00000
+ #define PROM_SIZE (512 * KiB)
+ 
++/* AmigaOS calls this routine from ROM, use this if no firmware loaded */
++static const char dummy_fw[] = {
++    0x54, 0x63, 0xc2, 0x3e, /* srwi    r3,r3,8 */
++    0x7c, 0x63, 0x18, 0xf8, /* not     r3,r3 */
++    0x4e, 0x80, 0x00, 0x20, /* blr */
++};
++
+ static void amigaone_cpu_reset(void *opaque)
+ {
+     PowerPCCPU *cpu = opaque;
+@@ -60,8 +66,6 @@ static void amigaone_init(MachineState *machine)
+     PowerPCCPU *cpu;
+     CPUPPCState *env;
+     MemoryRegion *rom, *pci_mem, *mr;
+-    const char *fwname = machine->firmware ?: PROM_FILENAME;
+-    char *filename;
+     ssize_t sz;
+     PCIBus *pci_bus;
+     Object *via;
+@@ -94,20 +98,24 @@ static void amigaone_init(MachineState *machine)
+     }
+ 
+     /* allocate and load firmware */
+-    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, fwname);
+-    if (filename) {
+-        rom = g_new(MemoryRegion, 1);
+-        memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
+-        memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
++    rom = g_new(MemoryRegion, 1);
++    memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
++    memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
++    if (!machine->firmware) {
++        rom_add_blob_fixed("dummy-fw", dummy_fw, sizeof(dummy_fw),
++                           PROM_ADDR + PROM_SIZE - 0x80);
++    } else {
++        g_autofree char *filename = qemu_find_file(QEMU_FILE_TYPE_BIOS,
++                                                   machine->firmware);
++        if (!filename) {
++            error_report("Could not find firmware '%s'", machine->firmware);
++            exit(1);
++        }
+         sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE);
+         if (sz <= 0 || sz > PROM_SIZE) {
+             error_report("Could not load firmware '%s'", filename);
+             exit(1);
+         }
+-        g_free(filename);
+-    } else if (!qtest_enabled()) {
+-        error_report("Could not find firmware '%s'", fwname);
+-        exit(1);
+     }
+ 
+     /* Articia S */
+-- 
+2.30.9
 
 
