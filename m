@@ -2,91 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BBE7FD3A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 11:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC127FD414
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 11:26:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8HVS-0000An-TB; Wed, 29 Nov 2023 05:09:22 -0500
+	id 1r8Hkk-0003lr-AF; Wed, 29 Nov 2023 05:25:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r8HVR-0000Af-42
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 05:09:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1r8Hke-0003jG-OO; Wed, 29 Nov 2023 05:25:04 -0500
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1r8HVL-00043d-NY
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 05:09:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701252554;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zZkKWpTtBdKIXYZquT5PGOdUzD9eB0G5s9HEBm/gqFo=;
- b=hCuuidiDQxsFomY5Kmj/kNq+r4tQvCl70Hv8/HMtKlKG8PE1R/sfvv5ubv3FpSH13czNRX
- mn2LGFLQCBsJE0rOwlrZuQ9CUZ7qG8cFIknk5lWRNjpDFOD1AQ7dinqhP9EAXPxdqZG11z
- Ad+1IynR2OVW3EN88Y8JZ4b1Q+32zWs=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-KJyoIVeOOXi1uwpQruxE-g-1; Wed, 29 Nov 2023 05:09:13 -0500
-X-MC-Unique: KJyoIVeOOXi1uwpQruxE-g-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a114f099bebso221003766b.2
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 02:09:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701252552; x=1701857352;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zZkKWpTtBdKIXYZquT5PGOdUzD9eB0G5s9HEBm/gqFo=;
- b=o12E0O8lnBXM5wCJWH18Vs46mJgP5yWuumvHRSis5sm8Q2iNHCsn0OQaQDMOTrS9YI
- aaBg5AaJyKa3mVFuITChpxmyjzGENB/J7RK66UmzyGG6YJNRtfwqT+G+9X+nnkhN+0qo
- WZXpUTjXul6CpIHCfTybgzypsWwFg7JrIKAd6nud9Xesf3Yt4H8tUwLJK9AE6RHiZWbK
- g7M5aocX2ZbDgLkYse42HzuKBxMGPkRtKG7fT/Zf7/L6rbuga15p3HGr9U81Miptiz75
- repOF71czx9v6051o39/Np1DFJWYPsGu4sEG00p7nb9bZHzwEzfSNQwEiz52KHNvxzYv
- nDnQ==
-X-Gm-Message-State: AOJu0Ywiqs/ARm3rZyYPXBm49pNDuOcjJt/wyf7g02QDLVOZNY+n7JYJ
- 8i4bEc4lh17AVC6UQ1qgnOEOf1H9hSXt+b406zN12aZWWvP89jmkZG4R0UVW3DebS9m7iwPWmhB
- sC8Ic8Ihu2r71DkI=
-X-Received: by 2002:a17:906:eb53:b0:a02:3f1e:59e6 with SMTP id
- mc19-20020a170906eb5300b00a023f1e59e6mr12396378ejb.71.1701252552102; 
- Wed, 29 Nov 2023 02:09:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH1jCjM/Pp6FRxEukxdH3H9DK9qrTBt9O9Tv0bsOULGF6IoZ5VjKcTBqqAoiTMhLw3UldvmLw==
-X-Received: by 2002:a17:906:eb53:b0:a02:3f1e:59e6 with SMTP id
- mc19-20020a170906eb5300b00a023f1e59e6mr12396361ejb.71.1701252551795; 
- Wed, 29 Nov 2023 02:09:11 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 3-20020a170906018300b00a0a8b2b74ddsm5704796ejb.154.2023.11.29.02.09.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Nov 2023 02:09:11 -0800 (PST)
-Date: Wed, 29 Nov 2023 11:09:10 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] tests: bios-tables-test: Rename smbios type 4 related
- test functions
-Message-ID: <20231129110910.34df85a2@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231127160202.1037290-1-zhao1.liu@linux.intel.com>
-References: <20231127160202.1037290-1-zhao1.liu@linux.intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1r8Hkc-0007tw-13; Wed, 29 Nov 2023 05:25:04 -0500
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:d11:0:640:6943:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id D21CF6129B;
+ Wed, 29 Nov 2023 13:24:57 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:27::1:23] (unknown [2a02:6b8:b081:27::1:23])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id vOSbJa01JOs0-thDNvgtJ; Wed, 29 Nov 2023 13:24:57 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1701253497;
+ bh=sP5c2BvMVg1GcTCwO2OzCKTOEjCiEumsh+q7Q9/BjKE=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=wbHuBfJ5oG8hrOomOG06Q3UKM1szLMWY1Ujufqtk0zCJRIxjes3rscRr35EirZgcv
+ OA/J6PmINnZmsHaB9RZRDXP2et3X1W8P7H3ZYFSgtTaXDzUAGlhUCMSvXQvn4HI5GY
+ HyMG58vOncAwNKAWhKtCE16hrsEZaIq2R5LUG1aE=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <95c38d36-d12e-4d94-8411-07f2cca48e77@yandex-team.ru>
+Date: Wed, 29 Nov 2023 13:24:57 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] block: stream: Allow users to request only format
+ driver names in backing file format
+Content-Language: en-US
+To: Peter Krempa <pkrempa@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ John Snow <jsnow@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-block@nongnu.org
+References: <cover.1700837066.git.pkrempa@redhat.com>
+ <3a18ad1c3ed99d07f80be03f706779d46bd508c0.1700837066.git.pkrempa@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <3a18ad1c3ed99d07f80be03f706779d46bd508c0.1700837066.git.pkrempa@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,93 +75,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 28 Nov 2023 00:02:02 +0800
-Zhao Liu <zhao1.liu@linux.intel.com> wrote:
-
-> From: Zhao Liu <zhao1.liu@intel.com>
+On 24.11.23 17:52, Peter Krempa wrote:
+> Introduce a new flag 'backing_file_format_no_protocol' for the
+> block-commit QMP command which instructs the internals to use 'raw'
+> instead of the protocol driver in case when a image is used without a
+> dummy 'raw' wrapper.
 > 
-> In fact, type4-count, core-count, core-count2, thread-count and
-> thread-count2 are tested with KVM not TCG.
+> The flag is designed such that it can be always asserted by management
+> tools even when there isn't any update to backing files.
 > 
-> Rename these test functions to reflect KVM base instead of TCG.
+> The flag will be used by libvirt so that the backing images still
+> reference the proper format even when libvirt will stop using the dummy
+> raw driver (raw driver with no other config). Libvirt needs this so that
+> the images stay compatible with older libvirt versions which didn't
+> expect that a protocol driver name can appear in the backing file format
+> field.
 > 
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-
+> Signed-off-by: Peter Krempa <pkrempa@redhat.com>
 > ---
->  tests/qtest/bios-tables-test.c | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
+>   block/monitor/block-hmp-cmds.c         |  2 +-
+>   block/stream.c                         | 10 +++++++++-
+>   blockdev.c                             |  7 +++++++
+>   include/block/block_int-global-state.h |  3 +++
+>   qapi/block-core.json                   | 11 ++++++++++-
+>   5 files changed, 30 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> index 71af5cf69fc5..9a7e459e8ffb 100644
-> --- a/tests/qtest/bios-tables-test.c
-> +++ b/tests/qtest/bios-tables-test.c
-> @@ -1003,7 +1003,7 @@ static void test_acpi_q35_tcg(void)
->      free_test_data(&data);
->  }
->  
-> -static void test_acpi_q35_tcg_type4_count(void)
-> +static void test_acpi_q35_kvm_type4_count(void)
->  {
->      test_data data = {
->          .machine = MACHINE_Q35,
-> @@ -1019,7 +1019,7 @@ static void test_acpi_q35_tcg_type4_count(void)
->      free_test_data(&data);
->  }
->  
-> -static void test_acpi_q35_tcg_core_count(void)
-> +static void test_acpi_q35_kvm_core_count(void)
->  {
->      test_data data = {
->          .machine = MACHINE_Q35,
-> @@ -1036,7 +1036,7 @@ static void test_acpi_q35_tcg_core_count(void)
->      free_test_data(&data);
->  }
->  
-> -static void test_acpi_q35_tcg_core_count2(void)
-> +static void test_acpi_q35_kvm_core_count2(void)
->  {
->      test_data data = {
->          .machine = MACHINE_Q35,
-> @@ -1053,7 +1053,7 @@ static void test_acpi_q35_tcg_core_count2(void)
->      free_test_data(&data);
->  }
->  
-> -static void test_acpi_q35_tcg_thread_count(void)
-> +static void test_acpi_q35_kvm_thread_count(void)
->  {
->      test_data data = {
->          .machine = MACHINE_Q35,
-> @@ -1070,7 +1070,7 @@ static void test_acpi_q35_tcg_thread_count(void)
->      free_test_data(&data);
->  }
->  
-> -static void test_acpi_q35_tcg_thread_count2(void)
-> +static void test_acpi_q35_kvm_thread_count2(void)
->  {
->      test_data data = {
->          .machine = MACHINE_Q35,
-> @@ -2250,15 +2250,15 @@ int main(int argc, char *argv[])
->                  qtest_add_func("acpi/q35/kvm/xapic", test_acpi_q35_kvm_xapic);
->                  qtest_add_func("acpi/q35/kvm/dmar", test_acpi_q35_kvm_dmar);
->                  qtest_add_func("acpi/q35/type4-count",
-> -                               test_acpi_q35_tcg_type4_count);
-> +                               test_acpi_q35_kvm_type4_count);
->                  qtest_add_func("acpi/q35/core-count",
-> -                               test_acpi_q35_tcg_core_count);
-> +                               test_acpi_q35_kvm_core_count);
->                  qtest_add_func("acpi/q35/core-count2",
-> -                               test_acpi_q35_tcg_core_count2);
-> +                               test_acpi_q35_kvm_core_count2);
->                  qtest_add_func("acpi/q35/thread-count",
-> -                               test_acpi_q35_tcg_thread_count);
-> +                               test_acpi_q35_kvm_thread_count);
->                  qtest_add_func("acpi/q35/thread-count2",
-> -                               test_acpi_q35_tcg_thread_count2);
-> +                               test_acpi_q35_kvm_thread_count2);
->              }
->              if (qtest_has_device("virtio-iommu-pci")) {
->                  qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
+> diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
+> index c729cbf1eb..28e708a981 100644
+> --- a/block/monitor/block-hmp-cmds.c
+> +++ b/block/monitor/block-hmp-cmds.c
+> @@ -509,7 +509,7 @@ void hmp_block_stream(Monitor *mon, const QDict *qdict)
+>       const char *base = qdict_get_try_str(qdict, "base");
+>       int64_t speed = qdict_get_try_int(qdict, "speed", 0);
+> 
+> -    qmp_block_stream(device, device, base, NULL, NULL, NULL,
+> +    qmp_block_stream(device, device, base, NULL, NULL, NULL, false, false,
+
+that should be
+
++    qmp_block_stream(device, device, base, NULL, NULL, false, false, NULL,
+
+
+( definitely we lack named arguments of python in C :)
+
+
+with that fixed:
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+>                        qdict_haskey(qdict, "speed"), speed,
+>                        true, BLOCKDEV_ON_ERROR_REPORT, NULL,
+>                        false, false, false, false, &error);
+
+...
+
+> --- a/blockdev.c
+> +++ b/blockdev.c
+> @@ -2408,6 +2408,8 @@ void qmp_block_stream(const char *job_id, const char *device,
+>                         const char *base,
+>                         const char *base_node,
+>                         const char *backing_file,
+> +                      bool has_backing_file_format_no_protocol,
+> +                      bool backing_file_format_no_protocol,
+>                         const char *bottom,
+>                         bool has_speed, int64_t speed,
+>                         bool has_on_error, BlockdevOnError on_error,
+
+-- 
+Best regards,
+Vladimir
 
 
