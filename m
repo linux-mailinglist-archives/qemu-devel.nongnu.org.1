@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144C57FDF48
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 19:25:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0D67FDF4B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 19:28:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8PEj-00065k-CZ; Wed, 29 Nov 2023 13:24:37 -0500
+	id 1r8PHi-0006xF-EG; Wed, 29 Nov 2023 13:27:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r8PEh-00065Y-MX
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:24:35 -0500
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8PHg-0006x2-NY
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:27:40 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r8PEg-00036x-9N
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:24:35 -0500
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-58d3c5126e9so65913eaf.1
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 10:24:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8PHf-0003s9-82
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:27:40 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3316d3d11e1so52401f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 10:27:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701282272; x=1701887072; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hpsdDpYcFTUYGeheLMQuUlT2IqKJIFHea+RJOj250SE=;
- b=JO1bJuvB8FeUhsxs5x89hu1Yr8xC1fG0H3VQKoYoiQOGGOCoens5cGY5hUcA2ncyQv
- xlu4Zd1bb3cE0FRLaF3CZd7ba7zQUyY5CBQOeRHxS4yWfXbOrQTfZtg7b5dhdMl4Q5Zj
- vJ7FVuwKsMLOVeVmnaMwHEoZzB6OyH9FvqWKRBbvTcsiWYluXIAGZQfHnEWx5Tdg4ggo
- HSbgqNjatX+bYpUXDJLBBw/yJR14YJoZtjZ4zHuG25NKD0kA+n7r+ohFtf29wRrPJLgq
- g2wtPnGRz8BDqFdzYsbs81bbI1zGSvNROVaX7uS1kIr04ZfukLFgJLz7MOwUM3wZK4c4
- e4wg==
+ d=linaro.org; s=google; t=1701282457; x=1701887257; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=h7g6Xt7SqNUkovvZBvw7S7CNmc66KixrFa4G4GlHEy0=;
+ b=QmjjyEXh3XVmhBMikJC+cNWuYyMY8qg7DS3C5gMZMzFXL376gRGIpw0dJem7w9dFOw
+ 2jwS7dWYFUvpg09AIm9OaUk7buvyojajwDWds0QQokOY/nA1lJinX6ZckwrWcMAS9mlG
+ Jt72O8tjjNP+/DaXpsNAJefAUWLADuYDT31NeN2qrnh3B7QCPGSnOv7dGDpB+tpgn+h6
+ bWLWSmDWa7Gg5JwJEnrB41D1pt/wIyAQguO/elWEAyAcE/iz6i29gAkN5dZDzlrgtQlu
+ SRQEGkAopm5hovCDOK+L2j1rXAOZbn1oKtS6llNQail/wO0+hLdCnD7VL4VLTYfEkow2
+ C71Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701282272; x=1701887072;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hpsdDpYcFTUYGeheLMQuUlT2IqKJIFHea+RJOj250SE=;
- b=gWxYl7iUr0UoNkzBPOr2brVAirva2XpPWI8+B1PmpwS9VNLHCFR51IilsTjvy4NiR2
- c2z74jhOQahtPK+cO7ASxDyBc4RQSjrnRAtkgBbkQgduGifCIPSNgLemTFAZMMAni5Bf
- RLjdZ20cO9bH8vDibJOc5ALOQmuFu77jB+goVs+pxmR7zD6vrxQFtmx9smjuNQaJRAyD
- a9/lbdStgnglmKWXJ2XaMT8cWmkrBxQvAhjrxf/gqBS5zrmThTy2+PFMg9sx8mtYSLfd
- 6P8Ta0gkzksH0SKKdwVSmtbsQHcGqhOmpxkr3qOD8ii+DEKEFrT7YPP/UanrHak2oT0S
- WHbw==
-X-Gm-Message-State: AOJu0YxzhfsaE2cfcL8ItkRMB0R8VnU/8SgrmFBp6D5C33ZesKgBvoy0
- E9cFaOYew7shkMo8+oRd1hGU7MphKxvGfEWgF1w=
-X-Google-Smtp-Source: AGHT+IG9ojLtCnQukzQEbtMByytmd1QyB5vRR8O5OtW/S79OGshz75sio5La7JEXQ+0OF3zrTRdQC5opcQtvIJEuUNQ=
-X-Received: by 2002:a05:6820:228b:b0:56c:d297:164c with SMTP id
- ck11-20020a056820228b00b0056cd297164cmr21108644oob.4.1701282272577; Wed, 29
- Nov 2023 10:24:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701282457; x=1701887257;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h7g6Xt7SqNUkovvZBvw7S7CNmc66KixrFa4G4GlHEy0=;
+ b=nZQKV6EKjR+c4roZFyPr4I6pooYIlGWM1yWcj4vvIruTOjPVdjJW69PpoJXOBVCmVH
+ YhttPDvt0DR8l0rLrrajtILn7m7rj6YDrMXJsXxf/FtWNthhNfDZGhtKM1MkACep0w4A
+ if/0sfWCiwSs7MsBicJmAQrr7xXZ6xCSIm7X9wuzDUlJUQ9lGZi1LsKNH8/LxJHiMc48
+ ksgecEWQ2EH7Kk9y3Zotv9H2H0IG1UWsyG/65xccDSJ+hAxsoTKnxFuhFWNTm843e4S8
+ vxa6Ci4Yp9ZVVCQdISAk1QkToiW+xTrdkg9eMqZQu4pjUEoW45TE12JWBnrc4mOOXBGL
+ aZ4Q==
+X-Gm-Message-State: AOJu0YzwedW6bncwYDV+YV9qdea39IVKO4LIZ5P8g2lgNIPco94ia41n
+ h8k9GmmZZIJPei9R2RQCOjyz4yUPU2anD9t1yw8VMw==
+X-Google-Smtp-Source: AGHT+IHRJm2dlBuAqbicoxsjusNEyhuXvlLpeh0mteSE05tsC3sC19Z4gyNdwEVJ4/xBSEnVAKv6tg==
+X-Received: by 2002:a05:6000:cc1:b0:333:1bc8:40f7 with SMTP id
+ dq1-20020a0560000cc100b003331bc840f7mr1598889wrb.14.1701282457279; 
+ Wed, 29 Nov 2023 10:27:37 -0800 (PST)
+Received: from localhost.localdomain (28.red-95-127-46.staticip.rima-tde.net.
+ [95.127.46.28]) by smtp.gmail.com with ESMTPSA id
+ m6-20020a056000180600b00332e73f8231sm16764163wrh.39.2023.11.29.10.27.35
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 29 Nov 2023 10:27:36 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] hw/core/cpu: Remove final vestiges of dynamic state tracing
+Date: Wed, 29 Nov 2023 19:27:34 +0100
+Message-ID: <20231129182734.15565-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
- <87edgjf2v4.fsf@draig.linaro.org>
- <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
- <ZWYsMsgxjDZ_T2zA@redhat.com>
- <68337349-a8c7-4520-a381-a359bf8f8438@linaro.org>
- <CAJSP0QVzwJ8GFAaprwt6892zhxC9-uuKAk9d2cftXebFkMoVog@mail.gmail.com>
- <CAJSP0QVSe6MZOS=20d9NMkJOAwsXaFF3aOOxZFkzhT-XZogG-w@mail.gmail.com>
- <877cm08pkc.fsf@draig.linaro.org>
-In-Reply-To: <877cm08pkc.fsf@draig.linaro.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 29 Nov 2023 13:24:20 -0500
-Message-ID: <CAJSP0QXcukka4VzrY6cghYm0gD1TSVP3xRwie0CTp_LF=FdRuw@mail.gmail.com>
-Subject: Re: QEMU Summit Minutes 2023
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc31.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,29 +91,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 29 Nov 2023 at 11:57, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
-> Stefan Hajnoczi <stefanha@gmail.com> writes:
->
-> > To give a picture of the state of the CI, I'd say it fails 80% of the
-> > time. Usually 2 or 3 of the tests fail randomly from a group of <10
-> > tests that commonly fail randomly.
->
-> Do you have a list anywhere?
+The dynamic state tracing was removed in commit d0aaf08bb9.
 
-No, I will need to review the test results from the past two weeks.
+Fixes: d0aaf08bb9 ("tcg: remove the final vestiges of dstate")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/core/cpu.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Tests I remember causing trouble:
-- avocado tests: plain unreliable, most of the time the CI job fails
-but the test output doesn't show hard failures, just a bunch of
-warnings
-- netdev-socket: UNIX domain socket tests are non-deterministic
-- qemu-iotests/161: randomly complains that another QEMU may be
-running (file locking cleanup is probably racy)
-- cfi and s390 jobs are particularly prone to random failures/timeouts
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index c0c8320413..134ecb907e 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -437,9 +437,6 @@ struct qemu_work_item;
+  * @kvm_fd: vCPU file descriptor for KVM.
+  * @work_mutex: Lock to prevent multiple access to @work_list.
+  * @work_list: List of pending asynchronous work.
+- * @trace_dstate_delayed: Delayed changes to trace_dstate (includes all changes
+- *                        to @trace_dstate).
+- * @trace_dstate: Dynamic tracing state of events for this vCPU (bitmask).
+  * @plugin_mask: Plugin event bitmap. Modified only via async work.
+  * @ignore_memory_transaction_failures: Cached copy of the MachineState
+  *    flag of the same name: allows the board to suppress calling of the
+-- 
+2.41.0
 
-There are more that I don't remember.
-
-Stefan
 
