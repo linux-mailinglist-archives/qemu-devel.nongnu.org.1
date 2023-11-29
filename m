@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D877FDF26
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 19:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8737FDF35
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 19:20:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8P3F-0002lN-Cr; Wed, 29 Nov 2023 13:12:45 -0500
+	id 1r8P9a-0004R8-RX; Wed, 29 Nov 2023 13:19:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8P3D-0002kr-80
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:12:43 -0500
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8P9Y-0004Qh-SE
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:19:16 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8P38-0000bk-LY
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:12:42 -0500
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2c9c149848fso1116281fa.2
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 10:12:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8P9W-0001wn-Og
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:19:16 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40b54261442so338445e9.1
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 10:19:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701281556; x=1701886356; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701281952; x=1701886752; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=W+SAwFCgzjTGbYYX57PnFPnKNJzdZPh7wPIM2FCdJgU=;
- b=yK3/wd0bbwFsmTIedhmkyZCZXX0HIkDzraLQTN/2T4m/BMNZSyJ8Jx9LK3E7KEFNXK
- LM4bHFITmMVQPY8oeTGvKeefWObWd0aCIoExMnhdc+S/mQmRIuVom+/TNf39KdQ3mOKF
- BqbhDaL5bytuWBO1zYa1sz+fC7SPjzP5VyZPxbATZbvhK/9pCq2eS7YUpICikhYIvak7
- TAQ2J/Ahv293EV/4IROjjXn6eYYsNIDxwvjM7VxaYCieS63od8u+FgqNT/GbY0pa66Ju
- Aw1Pq6zr2SbZKYqMPQ+XMwiW8DAyl8LOYwxoQSlM+kA3sncO/LYZaWxIrIHNFAfZqZZ7
- aing==
+ bh=O67nj3ihOXab9yVHwsLpzpens1sh6+zrFKbF+LsLRw0=;
+ b=RCgp8cVbn9IJY4kKc6o/UIbVHUTsD/UzDZ1ul+wxwQOaaXRurgunETu5Dg0Tfcpdwm
+ hBEXbyVFC/gp+pLwWbcIN65ddeKXpe0RM+2q3LQj1amAxLXINGSEigsiPqT1rqeBhTH6
+ ro3itmeIBiQ7EjPwhKaeOw71KAZJGbzlQqIXtSxu866ziwwfXXCpPBl5gSqgPiipGaKb
+ m7So5ATt7uVwHusYdtuddckphISVSFkDVwoDYB0xwObCXEaW2/QhvvzWLYO/BFSrO9dz
+ MNEZ0Ircjf6sEvFzvP8t3iw9Tw8iNQCneGcTBNDXo/7b2oLmUmHHzYq/ptfoEzOFdDNt
+ azEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701281556; x=1701886356;
+ d=1e100.net; s=20230601; t=1701281952; x=1701886752;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=W+SAwFCgzjTGbYYX57PnFPnKNJzdZPh7wPIM2FCdJgU=;
- b=ZbpIlR41BK2qrqAohUeq/u8rZAhmAcN2OvdAq7gvE8Wz60z3nbTGgbgcpSzLJ6QTlf
- Lr9wLXxPuNMdOSIYKKarapJ9BArOn08l5swTxl2ycOnrWl0iG/d2qCI3kX7V/teSalU6
- biv29BGdsvN5wyylHdEjCY8ufaNJhJm0jZR5tqeyUOl4EgjJOeRGX7LfBneky8KBwpWk
- A1/I3slOcmyJfX7wTRuXWBicwSWHadSBmUjBvdIr/LkIJPoRMu7aakmNcj3Rlq77zbbz
- 6yWWT6YYwNnwo9FVRaM+rOTdiqnI22UPTx0/6jPqz/KetAeWs+HnMgC1uHdQGpyhy94L
- ohiA==
-X-Gm-Message-State: AOJu0YzNGVNx8RJi4JffJ0HjB77ihSBVE8Z2/KCKVMuSozIZMpGjRZVq
- uF6YPrEuIdK2503IbOPknArUFQ==
-X-Google-Smtp-Source: AGHT+IEhI8htPAVzC6vKTXhGann0MqXFeiVYlIed9jIdEJxpW5rGCviIQIz/ZmKGpnd8K77qqxi2/g==
-X-Received: by 2002:a2e:7804:0:b0:2c9:af50:da62 with SMTP id
- t4-20020a2e7804000000b002c9af50da62mr5012974ljc.14.1701281556142; 
- Wed, 29 Nov 2023 10:12:36 -0800 (PST)
+ bh=O67nj3ihOXab9yVHwsLpzpens1sh6+zrFKbF+LsLRw0=;
+ b=b9HnpLswFd/T+VcGLaRL4MpUkwB8gdOK5byt1h32hEHYr5QCnqkNmyLW8CNbDDLLKB
+ LLms7g4gp7rTbmeURJ3tHmB7zofFA/9K/t9ShWoaW9NUqAtKLl9LTbJU136rDkgEjlrl
+ +Zp17zLGSTFml85MrYrEjiW4iBnzHLCn1f9EAkp/2EUitRSN1w+LDzoAeNOutGqCthQK
+ Sv/pMah1t9NvUcnZCaQZ0fEKkSFNaDSf7180o7DGKMUT+mdv2BXxcsJy41SfrUWvCW05
+ DJfaYb+jHNjd3KvEL3mzpqHWG4Egvo+hL5JHgLB+c7GiLz4u31VaogWoThK0ps934OVT
+ 60dA==
+X-Gm-Message-State: AOJu0Yzwv+KvdOR2IFXJvh1vJCicaTYn9ZWS4z0Hg9qYT8g/f2W5LyTz
+ gzcrNj1t9jBkf0ZIEvIfOkvFPA==
+X-Google-Smtp-Source: AGHT+IFIfJVqRN14w+6y3/7CCk/zkoN6O9DNxJnb9/N0v99EPGQaodNgDTCzRNJpD8nnP7J2Idm+oA==
+X-Received: by 2002:a05:600c:5118:b0:3f6:9634:c8d6 with SMTP id
+ o24-20020a05600c511800b003f69634c8d6mr14139139wms.18.1701281952006; 
+ Wed, 29 Nov 2023 10:19:12 -0800 (PST)
 Received: from [192.168.110.175] (28.red-95-127-46.staticip.rima-tde.net.
  [95.127.46.28]) by smtp.gmail.com with ESMTPSA id
- t6-20020a05600001c600b00332ff21038fsm10038958wrx.106.2023.11.29.10.12.33
+ u13-20020a05600c19cd00b003fefaf299b6sm2990713wmq.38.2023.11.29.10.19.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Nov 2023 10:12:35 -0800 (PST)
-Message-ID: <519d21d5-5773-4686-ab2b-0cb3ae94abb3@linaro.org>
-Date: Wed, 29 Nov 2023 19:12:32 +0100
+ Wed, 29 Nov 2023 10:19:11 -0800 (PST)
+Message-ID: <6d3b5c65-2442-459d-9bd7-8bbf01e69916@linaro.org>
+Date: Wed, 29 Nov 2023 19:19:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] crypto: Introduce SM4 symmetric cipher algorithm
+Subject: Re: [PATCH 1/4] Add ivshmem-flat device
 Content-Language: en-US
-To: Hyman Huang <yong.huang@smartx.com>, qemu-devel <qemu-devel@nongnu.org>
-Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-References: <3c9608d818225af1e20478f98501594a5fea9353.1701270110.git.yong.huang@smartx.com>
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, alex.bennee@linaro.org,
+ richard.henderson@linaro.org
+Cc: thuth@redhat.com, Anton Kochkov <anton.kochkov@proton.me>
+References: <20231127052024.435743-1-gustavo.romero@linaro.org>
+ <20231127052024.435743-2-gustavo.romero@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <3c9608d818225af1e20478f98501594a5fea9353.1701270110.git.yong.huang@smartx.com>
+In-Reply-To: <20231127052024.435743-2-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,100 +94,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/11/23 16:17, Hyman Huang wrote:
-> Introduce the SM4 cipher algorithms (OSCCA GB/T 32907-2016).
+On 27/11/23 06:20, Gustavo Romero wrote:
+> Add a new device, ivshmem-flat, which is similar to the ivshmem PCI but
+> does not require a PCI bus. It's meant to be used on machines like those
+> with Cortex-M MCUs, which usually lack a PCI/PCIe bus, e.g. lm3s6965evb
+> and mps2-an385.
 > 
-> SM4 (GBT.32907-2016) is a cryptographic standard issued by the
-> Organization of State Commercial Administration of China (OSCCA)
-> as an authorized cryptographic algorithms for the use within China.
+> The device currently only supports the sysbus bus.
 > 
-> Use the crypto-sm4 meson build option to explicitly control the
-> feature, which would be detected by default.
+> The following is an example on how to create the ivshmem-flat device on
+> a Stellaris machine:
 > 
-> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> $ qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic
+>                    -net none -chardev stdio,id=con,mux=on
+>                    -serial chardev:con -mon chardev=con,mode=readline
+>                    -chardev socket,path=/tmp/ivshmem_socket,id=ivf
+>                    -device ivshmem-flat,x-irq-qompath=/machine/unattached/device[1]/nvic/unnamed-gpio-in[0],x-bus-qompath="/sysbus",chardev=ivf
+>                    -kernel zephyr_qemu.elf
+> 
+> The new device, just like the ivshmem PCI device, supports both peer
+> notification via hardware interrupts and shared memory.
+> 
+> The IRQ QOM path for the target machine can be determined by creating
+> the VM without the ivshmem-flat device, going to the QEMU console and
+> listing the QOM nodes with 'info qom-tree'. In the Stellaris example
+> above the input IRQ is in the NVIC IC.
+> 
+> The MMRs for status and control (notification) are mapped to the MMIO
+> region at 0x400FF000 (default), whilst the shared memory region start
+> is mapped at addr. 0x40100000 (default), but both addresses can be set
+> when creating the device by using 'x-bus-address-{mmr,shmem}' options,
+> respectively.
+> 
+> The device shared memory size can be set using the 'shmem-size' option
+> and it defaults to 4 MiB, which is the default size of shmem allocated
+> by the ivshmem server.
+> 
+
+Per https://gitlab.com/qemu-project/qemu/-/issues/1134#note_1667709336:
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1134
+
+> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 > ---
->   crypto/block-luks.c             | 11 ++++++++
->   crypto/cipher-gcrypt.c.inc      |  8 ++++++
->   crypto/cipher-nettle.c.inc      | 49 +++++++++++++++++++++++++++++++++
->   crypto/cipher.c                 |  6 ++++
->   meson.build                     | 42 ++++++++++++++++++++++++++++
->   meson_options.txt               |  2 ++
->   qapi/crypto.json                |  5 +++-
->   scripts/meson-buildoptions.sh   |  3 ++
->   tests/unit/test-crypto-cipher.c | 13 +++++++++
->   9 files changed, 138 insertions(+), 1 deletion(-)
-
-
-> diff --git a/meson.build b/meson.build
-> index ec01f8b138..765f9c9f50 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -1480,6 +1480,7 @@ endif
->   gcrypt = not_found
->   nettle = not_found
->   hogweed = not_found
-> +crypto_sm4 = not_found
->   xts = 'none'
->   
->   if get_option('nettle').enabled() and get_option('gcrypt').enabled()
-> @@ -1505,6 +1506,28 @@ if not gnutls_crypto.found()
->            cc.find_library('gpg-error', required: true)],
->           version: gcrypt.version())
->       endif
-> +    crypto_sm4 = gcrypt
-> +    # SM4 ALG is available in libgcrypt >= 1.9
-> +    if gcrypt.found() and not cc.links('''
-> +      #include <gcrypt.h>
-> +      int main(void) {
-> +        gcry_cipher_hd_t handler;
-> +        gcry_cipher_open(&handler, GCRY_CIPHER_SM4, GCRY_CIPHER_MODE_ECB, 0);
-> +        return 0;
-> +      }''', dependencies: gcrypt)
-> +      crypto_sm4 = not_found
-> +      if get_option('crypto_sm4').enabled()
-> +        error('could not link sm4')
-
-'could not link libsm4'? Up to the maintainer.
-
-> +      else
-> +        warning('could not link sm4, disabling')
-> +      endif
-> +    endif
-> +    if crypto_sm4.found() and get_option('prefer_static')
-> +      crypto_sm4 = declare_dependency(dependencies: [
-> +        gcrypt,
-> +        cc.find_library('gpg-error', required: true)],
-> +        version: gcrypt.version())
-> +    endif
->     endif
->     if (not get_option('nettle').auto() or have_system) and not gcrypt.found()
->       nettle = dependency('nettle', version: '>=3.4',
-> @@ -1513,6 +1536,23 @@ if not gnutls_crypto.found()
->       if nettle.found() and not cc.has_header('nettle/xts.h', dependencies: nettle)
->         xts = 'private'
->       endif
-> +    crypto_sm4 = nettle
-> +    # SM4 ALG is available in nettle >= 3.9
-> +    if nettle.found() and not cc.links('''
-> +      #include <nettle/sm4.h>
-> +      int main(void) {
-> +        struct sm4_ctx ctx;
-> +        unsigned char key[16] = {0};
-> +        sm4_set_encrypt_key(&ctx, key);
-> +        return 0;
-> +      }''', dependencies: nettle)
-> +      crypto_sm4 = not_found
-> +      if get_option('crypto_sm4').enabled()
-> +        error('could not link sm4')
-
-Ditto, otherwise:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +      else
-> +        warning('could not link sm4, disabling')
-> +      endif
-> +    endif
->     endif
->   endif
+>   docs/system/devices/ivshmem-flat.rst |  89 +++++
+>   hw/arm/mps2.c                        |   2 +
+>   hw/arm/stellaris.c                   |   5 +-
+>   hw/arm/virt.c                        |   2 +
+>   hw/core/sysbus-fdt.c                 |   1 +
+>   hw/misc/Kconfig                      |   5 +
+>   hw/misc/ivshmem-flat.c               | 477 +++++++++++++++++++++++++++
+>   hw/misc/meson.build                  |   2 +
+>   hw/misc/trace-events                 |  18 +
+>   include/hw/misc/ivshmem-flat.h       |  72 ++++
+>   10 files changed, 672 insertions(+), 1 deletion(-)
+>   create mode 100644 docs/system/devices/ivshmem-flat.rst
+>   create mode 100644 hw/misc/ivshmem-flat.c
+>   create mode 100644 include/hw/misc/ivshmem-flat.h
 
 
