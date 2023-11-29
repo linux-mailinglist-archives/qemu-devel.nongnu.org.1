@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5897FDFAE
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 19:49:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4858E7FE067
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 20:43:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8PbY-0002yN-8Y; Wed, 29 Nov 2023 13:48:12 -0500
+	id 1r8QRc-0003Ht-8h; Wed, 29 Nov 2023 14:42:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r8PbW-0002yC-TB
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:48:10 -0500
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r8QRX-0003HI-3y
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 14:41:56 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r8PbV-0007Xg-Df
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:48:10 -0500
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3b8412723c4so52276b6e.0
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 10:48:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r8QRV-0001nO-G9
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 14:41:54 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-54bd7e5182cso260845a12.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 11:41:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701283688; x=1701888488; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=El9pvocyNav9Deg2XPp3FsGgfbgcxii3OR6oYcaJ0wU=;
- b=s9dyRZk62G/izBgyXx55W+XjDUP/r+ztoHqGO73bRvNgIucAJA5C7NTUOsL2gfBXhD
- Hw28L+Y1Kflw1GfRkv3p5s+80aoHEvYJd2T5Kp4KBki6tTom1btDrPO6tt32VMlXdERP
- JE2/kaS/79FGvR/M/K7Z7a+XHCkz5zEx+WM5HhOUW0jfNLWPKCmhRGaXRdYlxNy0TfSO
- rCdOFS0H+Rc4DhiCnaAhANN/ltBj0wSGISh7ku+ag9E/k6dr5pc9V51HyEQLhGwEptl5
- mlHmfQrMo2qDMQNqVjLy9RyldEam2x3WSo1K4w6ymy0iQE+vEiqpIt4w9WrJusZSnh9A
- mnmQ==
+ d=linaro.org; s=google; t=1701286911; x=1701891711; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=572tFnImS4KTm2pG7ZiqsXMrCZAo9D13blSFZtmGxKQ=;
+ b=Ap6S8K+n7dyXMqKVGSz2WgOpmedPKcDXIbzQabosb/OljNusjctErtK9JEwDWryZGg
+ 40KzVdnt25eJFlfzZ4U/CpcJ50T4zxZUBCz7EMmjjmTgj2YYMex2OgiMzS9jtrax1mN/
+ m6oZqPOt/+OfpEfc3nK1+Vs+bBrEBYvfIE6GyNk/x4yhqhJIYB6rKGMhIwilPy+2O1Uj
+ XXJq2dgB6EctPLedODv7W7CQUcCPrZZIWUbSnPRqDyysh2OFVX+2L9noRBd11Iz5Hvaa
+ WVG0T+ffamLdQ6EbWgy9bKom1CC3prxR3Hjb6MAUDT67nmToybchaDEiBrce4EPi7prN
+ NX7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701283688; x=1701888488;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=El9pvocyNav9Deg2XPp3FsGgfbgcxii3OR6oYcaJ0wU=;
- b=TYJ0egsh3Fro62TWWXICyXvAyzDjsblS2sFTkv3TMVtxF3x80txYBZ+XTVsupA4l7a
- quxKDOjfgEo0kIW0EKeGvWbxgHkZO+NRH8vr9Hr7wK2vA6KW5dhdfMgZ8ks75goXPfHy
- HHiV++PFY8QR/lGVPntv/YL6PTR9fXGa4pFh8NGhbV9zEhWUtSOwsjoJKNM+3HGdD6Hy
- opxyZ1ZP54FUH1NcsjszShOV8cx2ARgGfpS6fZEJwBNBxLqX7HV90jHi2HI5G4ruCz3R
- rpKVBIav0MmsRvjCyQbLSqhcXeA9w332kkyHZzN9Q6bXq0bI8L6+TzNdsc26+oCGMIeu
- 7Bmw==
-X-Gm-Message-State: AOJu0Yz8zziCLvoW0ab1ak2VLaSofwzL9rDPAFzAdADgseEgPipA7CXh
- 5aWLwppTVWiHgGz8LsW46chvYw==
-X-Google-Smtp-Source: AGHT+IGFlmhbUZb3OPQynuBsubsK7AqmLhob6RomLKASYGDPwo+fo4s5DBEWMhXVKHqFEA+h0nTxAA==
-X-Received: by 2002:a05:6808:1898:b0:3b8:983f:4469 with SMTP id
- bi24-20020a056808189800b003b8983f4469mr2768515oib.8.1701283688315; 
- Wed, 29 Nov 2023 10:48:08 -0800 (PST)
-Received: from [192.168.174.227] (rrcs-71-42-197-3.sw.biz.rr.com.
- [71.42.197.3]) by smtp.gmail.com with ESMTPSA id
- j6-20020aca1706000000b003b84aad737csm2362188oii.8.2023.11.29.10.48.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Nov 2023 10:48:07 -0800 (PST)
-Message-ID: <75c6480c-0716-418e-b453-468b2cbef0af@linaro.org>
-Date: Wed, 29 Nov 2023 12:48:06 -0600
+ d=1e100.net; s=20230601; t=1701286911; x=1701891711;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=572tFnImS4KTm2pG7ZiqsXMrCZAo9D13blSFZtmGxKQ=;
+ b=c85M8P1F2MUgGM+8k8ROwcACjFZPVvK3qvsI1nsZ4qY25xA7x/bOkghjKJ3vkeyUsM
+ VrP1kr48zgCMdrMeD6gTmN36h9QnkwZ+QpKCUB7G9hW9UbpddU67iDmDFxQjV5YUQBSt
+ Fp9yMl2QSfIIgAJLs2FUV6chmJm66+fafw8xgz0EYYIOOmuyvoua91agSwjcQ/dX7Ih7
+ XksF8IMgoaahD4TXvkkNRT94R7Y2uhoM+7nBMPD4/dcwRc5c+gq1t6ymv0Zuv7qnZMMX
+ 5rYW9FKxcWpRhV9OVXrtVatOQnGU0wUUVfKnhRx+481SnLKq06z4NHIO0pwcnQTHojWi
+ AIlg==
+X-Gm-Message-State: AOJu0YzmLOap1bUT0lh86Jo8/RYLMswcEo9VgX5+1TbKH1y/9WYdvspa
+ +TTMTQuHeG4k+wX1XKSsNO7WinA37ir9pHAxiFLXmA==
+X-Google-Smtp-Source: AGHT+IFbQHaM8DxzQSRkOO7RlThBpDKT3c+EcLZpiQtr0rpcP3XzZvJxM7QEU75yK85XX1zSBM37kLMI2COUV7oeYRw=
+X-Received: by 2002:a05:6402:5143:b0:54b:2894:d1d8 with SMTP id
+ n3-20020a056402514300b0054b2894d1d8mr9742546edd.27.1701286910983; Wed, 29 Nov
+ 2023 11:41:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/core/cpu: Update description of CPUState::node
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>
-References: <20231129183243.15859-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231129183243.15859-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
+ <87edgjf2v4.fsf@draig.linaro.org>
+ <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
+ <ZWYsMsgxjDZ_T2zA@redhat.com>
+ <CANCZdfq6dPArtLjwAbV9MxQnR6pOn6MR+gB7eTogUyw8WuyjCw@mail.gmail.com>
+ <ZWdrhGhmY--yUluR@redhat.com>
+In-Reply-To: <ZWdrhGhmY--yUluR@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 29 Nov 2023 19:41:09 +0000
+Message-ID: <CAFEAcA830vK7nAMi2oxeLek_PsJw_F81gUE7PY6029OevG-kFA@mail.gmail.com>
+Subject: Re: QEMU Summit Minutes 2023
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Warner Losh <imp@bsdimp.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ QEMU Developers <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,30 +94,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/29/23 12:32, Philippe Mathieu-Daudé wrote:
-> 'next_cpu' was converted to 'node' in commit bdc44640cb
-> ("cpu: Use QTAILQ for CPU list").
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/hw/core/cpu.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> index 134ecb907e..3208b938f7 100644
-> --- a/include/hw/core/cpu.h
-> +++ b/include/hw/core/cpu.h
-> @@ -430,7 +430,7 @@ struct qemu_work_item;
->    * @gdb_regs: Additional GDB registers.
->    * @gdb_num_regs: Number of total registers accessible to GDB.
->    * @gdb_num_g_regs: Number of registers in GDB 'g' packets.
-> - * @next_cpu: Next CPU sharing TB cache.
-> + * @node: QTAILQ of CPUs sharing TB cache.
->    * @opaque: User data.
->    * @mem_io_pc: Host Program Counter at which the memory was accessed.
->    * @accel: Pointer to accelerator specific state.
+On Wed, 29 Nov 2023 at 16:49, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
+ wrote:
+>
+> On Wed, Nov 29, 2023 at 08:50:06AM -0700, Warner Losh wrote:
+> > I'd honestly optimize for 'frequent merges of smaller things' rather th=
+an
+> > 'infrequent merges of larger things'. The latter has caused most of the
+> > issues for me. It's harder to contribute because the overhead of doing =
+so
+> > is so large you want to batch everything. Let's not optimize for that
+> > workaround for the high-friction submission process we have now. If the=
+re's
+> > always smaller bits of work going in all the time, you'll find few comm=
+it
+> > races... though the CI pipeline is rather large, so having a ci-staging
+> > branch to land the MRs to that have completed CI, but not CI on the tip=
+,
+> > might not be bad... but the resolution of conflicts can be tricky, thou=
+gh
+> > infrequent, so if a ci-staging branch bounces, all MRs would need to be
+> > manually requeued after humans look at why and think through who needs =
+to
+> > talk to whom, or if it's just a 'other things landed before you could g=
+et
+> > yours in and it's not the ci-staging being full of other people's commi=
+ts
+> > that is at fault.
+>
+> I agree. Right now we tend to have fairly large pull requests, because
+> people are concious of each pull request consuming non-trivial resources
+> from the release maintainer. If this new MR based approach reduces the
+> load on the release maintainer, then sending frequent small pull requests
+> is almost certainly going to be better.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+FWIW, in the current system also I would recommend submitting
+smaller pullrequests rather than large ones. For me when I'm doing
+release handling, pushing pullreqs through the process is not
+that difficult. The problems come when there are test failures
+that need to be tracked down, and those are more likely to be
+problematic if they're in the middle of a huge pullreq than
+if they're in a smaller one.
 
-r~
+Plus waiting means things don't get into the tree as soon, which
+just extends the timelines on things.
+
+thanks
+-- PMM
 
