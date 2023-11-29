@@ -2,107 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B54837FCB7E
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 01:37:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2297FCC6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 02:44:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r88Yj-0008M7-Ai; Tue, 28 Nov 2023 19:36:10 -0500
+	id 1r89bR-00031H-1k; Tue, 28 Nov 2023 20:43:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1r88Yh-0008L6-FN
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 19:36:07 -0500
-Received: from mail-dm6nam10on2051.outbound.protection.outlook.com
- ([40.107.93.51] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1r88Yb-0001XQ-Q6
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 19:36:07 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bNwTqQwaIYjcRssVjQTkTBLuEfwgIAe4OPVDfD9yHo9kDmCmCGWVfAGObZKBW4uKLc3A6p3ztk1bVqhz+EocN7ZbHc3XHaX1VYf2xR3M0mjwXyvXn86xoV/IeNmLHnwJO+dXUXJZZd7gViEMF97GXhIvbB0a3vhhRSBQFsYabYJ7BulDkAnlTHVT7Ivp3+6pYITUAVMO5fefJXJHs3dnY+x5TPc0nzjl0dGDvB3i41VX5ZUF92VMy6y9UbgvGZkZPlwaRKSkNTf3ERAwhsvQ6L82/UpcTg3q/TMVt4Om8nN7f57rb/pWcvuDOvh+foH8kFtpYaeM8JYcrgukrmJmDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LwLtYvjlizrQ8vy1E3hYp9bcYxD3sTpktoBJ/0x2zSQ=;
- b=mw1jDGvC3JOz3WjeGVYwjnyQ6D1UVy5UMUwCc/mnLI1OIN/1fN6SlmV9Z8bgnbkHwqOK+eESyv0iaBhjAc7OYKRDvcER28SutBE00Uk1y8CRD6yAYhVqsmLqeyT5bkWwu/rVD8sG5TcHYsmnrNKpVGuT2wTy25dPvohZJvmUd450nLFvZv6hCB9TnWaYMuWhbP+yOOoJKGphjzqw5mnREjuXbO5t2FZC50ORrpS4plvvAy9e/jlWW8ZTo51Ca6aNCTMUb96juHBs0JRYna9lKNHXVmjH2Rp3fdT1HcDrm3CSPoaRsVafRcb7rWPbHbUDxGKuhV6peu6OKE2R2McOKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LwLtYvjlizrQ8vy1E3hYp9bcYxD3sTpktoBJ/0x2zSQ=;
- b=CmrFh9VgOfWSfXlpA2hLOkSfk+FrnTrB9zwo6kqiYzxvvHVL5dK6pOWH9vCXqn9tylo1B8hOJ8EKBE6kE7YeK4Ghrbr+FVsTttCoN2i7RvP3Ntm0nzyQICgSWc6CFmETl5sso4hb1YeTHNDccOJUwLr3sOYYH8r2f8LIpzwb20w=
-Received: from DS7PR05CA0083.namprd05.prod.outlook.com (2603:10b6:8:57::29) by
- PH7PR12MB5711.namprd12.prod.outlook.com (2603:10b6:510:1e2::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7025.27; Wed, 29 Nov 2023 00:30:54 +0000
-Received: from DS1PEPF00017095.namprd03.prod.outlook.com
- (2603:10b6:8:57:cafe::99) by DS7PR05CA0083.outlook.office365.com
- (2603:10b6:8:57::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.22 via Frontend
- Transport; Wed, 29 Nov 2023 00:30:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF00017095.mail.protection.outlook.com (10.167.17.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7046.17 via Frontend Transport; Wed, 29 Nov 2023 00:30:54 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Tue, 28 Nov
- 2023 18:30:53 -0600
-Content-Type: text/plain; charset="utf-8"
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1r89bK-000316-Te
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 20:42:55 -0500
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1r89bH-00010F-Cj
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 20:42:54 -0500
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-5bdbe2de25fso4800886a12.3
+ for <qemu-devel@nongnu.org>; Tue, 28 Nov 2023 17:40:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701222047; x=1701826847;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=P/FriLM1ETDZdX0Z6B2Tjp1f4iMIZCk1vHjrNhNmZiQ=;
+ b=qIQC1nNgpnGtndr0wtCSydYbx66a/ssAHwNTDsm4q03HSbSjcUgOmY5PSACH9+n0m1
+ tMZv+9nUeEZAuHE9lttcGdJM81lnRphHdVN2jLjxrUkuBVpDux6sGduJgkfypdi4+b/B
+ FSeIW7p6NPhzGiJakS5/kRvYjUJsEiFLAhGw3fkp1Anbt4q79TYEuGIa8PLOb8XJLXcJ
+ SLfxVGKvM+FeJl9DpuiV3ZKlg+FG1TgQXi72dkymLOJq33deUIucR/+r19SQck+SCmJ2
+ fA1iDwvwHZrEH4corLpWPdM0C0Nn9XIuRruSXFedLLXD+XV1AZNIqoM24MSDr+OO1nzU
+ kH2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701222047; x=1701826847;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=P/FriLM1ETDZdX0Z6B2Tjp1f4iMIZCk1vHjrNhNmZiQ=;
+ b=ZCd8ulwEEN/dMIrxJ8H7f2w5D/dek00yrUK5snMwfWLSyxLZzRpIqjuFMD3xmZ7kjG
+ xObMtggdqOrmnzzRmFNt6WjJWaSzmHfa5aAXaiRDe/TVSUAenR/kT9Nfsllx3eUNFOHx
+ FmOXarXM1F1KvDOxWmxBmCEAZzwBT4gFZHqwjejCMKy/sdrPAKQpuFAM00KRB6Ddizrf
+ Rqa/ZNHXmVIlVaB4ORTkK1IJfSp3rIeYnwt0xGFLdETElfj8nA9AUhGtg4JKl+EsqiH2
+ h8ILL9KylGyFEtxFzO0dF/Qhu3Le1Qdwi9rSDhp12EAzRRYjKQVdKC6f6fSnWlwk/8d4
+ 9iTw==
+X-Gm-Message-State: AOJu0YxOjluULnWCDWE6CdRfItfDCfSnBKET4/Xn8AWaA38LFZcUV7Fw
+ C0YBj8U3S2yuxpUXk8jFSSJexLCj2ucvk9EyhGPkbg==
+X-Google-Smtp-Source: AGHT+IEbDrgsnLGlv88KeHWB1c1x3SGlC0ey/kSgC8it2aiUiQVaBz5Yv0nmz00dsHCCjdqQZnLHkrT7pdzI3TIwwes=
+X-Received: by 2002:a05:6a21:9706:b0:18b:3571:ef12 with SMTP id
+ ub6-20020a056a21970600b0018b3571ef12mr15407205pzb.16.1701222045567; Tue, 28
+ Nov 2023 17:40:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: [ANNOUNCE] QEMU 8.2.0-rc2 is now available
-From: Michael Roth <michael.roth@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <stefanha@redhat.com>
-Date: Tue, 28 Nov 2023 18:30:38 -0600
-Message-ID: <170121783801.751264.4259803758204195675@amd.com>
-User-Agent: alot/0.9
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017095:EE_|PH7PR12MB5711:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a6e4c1b-65ba-4c33-9974-08dbf0727282
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Wl54DdQuSEFEmFRsc+/QCF9QnGntmz29D4P1Fig5nEsNmphMYfSD7yTnmt1wAbfg5yZ7qJ3NLAnwH2JNjtRuuFMOzoQUGYaBZpugruh/dwU4Y8KnbiZ1BDaZUdzOnL7rDiSCZeVoVwKWHKGfodqlcLZ85Xz6KBC9nI3e7BV1NPkJWJwHwAAVhHdvwBEMyaq7Q9MX8OfojJt/RB8t2fF3T6auooclDmVvGSVR2Wti8YohyXO8Hv9s7Aq7JVOLZ0rDUkxcVDn0ZQl+GhicYskHC9b5FUaJNkt2JFiNPDK5s71DFCnxiJuoA3syJg9XFk+QILhlXwqLNdgeHa3lPXYHsHtNfkXLjDf3Bb+kB6gBbPItaV6pjqlMtQteopTd6jkJVzu3ouQ/OwA6g+I4JikJOrOUU/LTzZO+HkAbHnZhFaUxwayJj4u2UCcamrLBD6g5siEzx4Xu8eV7mduLPMSil+wc3V5vzrUgw3ouRAu3yeybZKyf1FLCXM/9eJt7S5maJURPMMe/iP2qQ+06L4QVzbXZ5BH8Ow5NNzLTMSOmYMDuL/7JD0ywc2zgtUrqVfDayRUtbaed14SpQ1x6yNRsG6ikxsu5D+zVBj++Pk71ecojhZIMomqn0nU7LMUIT59Kk36tCU22VkyXejh61tMOKn+hyI8QRMlyiIANwkn2juvYZrPxTgagpZrfDTITenLLDrTC4K2rDQFgTU+d/Opk0UzrS4dHOqopu5UBpedFAfHl6ptALmPa0kHtGZ4365f1WLR42AWl52KQPgLj5uA79XNxo41DIR2nGjp0A3AmMNmmetjLdH/mmydy72+VQyL0
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(396003)(346002)(376002)(136003)(230273577357003)(230922051799003)(230173577357003)(64100799003)(82310400011)(1800799012)(186009)(451199024)(40470700004)(36840700001)(46966006)(966005)(6666004)(478600001)(2616005)(16526019)(47076005)(5660300002)(83380400001)(426003)(336012)(2906002)(70586007)(40460700003)(8936002)(316002)(8676002)(70206006)(4326008)(6916009)(44832011)(82740400003)(36756003)(81166007)(36860700001)(86362001)(356005)(66574015)(41300700001)(40480700001)(26005)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2023 00:30:54.0375 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a6e4c1b-65ba-4c33-9974-08dbf0727282
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017095.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5711
-Received-SPF: softfail client-ip=40.107.93.51;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <4413f00465bda93eda7a7560afb990ca01191062.1701185032.git.yong.huang@smartx.com>
+ <6776b07c-f1a8-4b96-9527-de8e0ed16980@linaro.org>
+ <ZWYTSrfRL-iXM1LX@redhat.com>
+In-Reply-To: <ZWYTSrfRL-iXM1LX@redhat.com>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Wed, 29 Nov 2023 09:40:29 +0800
+Message-ID: <CAK9dgmYK7D_U2LtbiyFjtoocosAh5j91JLb_ACEpj56YpraNUQ@mail.gmail.com>
+Subject: Re: [PATCH v2] crypto: Introduce SM4 symmetric cipher algorithm
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000b5e2ff060b409f91"
+Received-SPF: none client-ip=2607:f8b0:4864:20::536;
+ envelope-from=yong.huang@smartx.com; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,135 +91,312 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+--000000000000b5e2ff060b409f91
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On behalf of the QEMU Team, I'd like to announce the availability of the
-third release candidate for the QEMU 8.2 release. This release is meant
-for testing purposes and should not be used in a production environment.
+I'll try to understand the comment, if i misunderstood, please point out.
 
-  http://download.qemu.org/qemu-8.2.0-rc2.tar.xz
-  http://download.qemu.org/qemu-8.2.0-rc2.tar.xz.sig
+On Wed, Nov 29, 2023 at 12:20=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
+redhat.com>
+wrote:
 
-You can help improve the quality of the QEMU 8.2 release by testing this
-release and reporting bugs using our GitLab issue tracker:
+> On Tue, Nov 28, 2023 at 04:57:20PM +0100, Philippe Mathieu-Daud=C3=A9 wro=
+te:
+> > Hi Hyman,
+> >
+> > On 28/11/23 16:24, Hyman Huang wrote:
+> > > Introduce the SM4 cipher algorithms (OSCCA GB/T 32907-2016).
+> > >
+> > > SM4 (GBT.32907-2016) is a cryptographic standard issued by the
+> > > Organization of State Commercial Administration of China (OSCCA)
+> > > as an authorized cryptographic algorithms for the use within China.
+> > >
+> > > Use the crypto-sm4 meson build option for enabling this feature.
+> > >
+> > > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> > > ---
+> > >   crypto/block-luks.c             | 11 ++++++++
+> > >   crypto/cipher-gcrypt.c.inc      |  8 ++++++
+> > >   crypto/cipher-nettle.c.inc      | 49
+> +++++++++++++++++++++++++++++++++
+> > >   crypto/cipher.c                 |  6 ++++
+> > >   meson.build                     | 23 ++++++++++++++++
+> > >   meson_options.txt               |  2 ++
+> > >   qapi/crypto.json                |  5 +++-
+> > >   scripts/meson-buildoptions.sh   |  3 ++
+> > >   tests/unit/test-crypto-cipher.c | 13 +++++++++
+> > >   9 files changed, 119 insertions(+), 1 deletion(-)
+> >
+> >
+> > > diff --git a/meson.build b/meson.build
+> > > index ec01f8b138..256d3257bb 100644
+> > > --- a/meson.build
+> > > +++ b/meson.build
+> > > @@ -1480,6 +1480,7 @@ endif
+> > >   gcrypt =3D not_found
+> > >   nettle =3D not_found
+> > >   hogweed =3D not_found
+> > > +crypto_sm4 =3D not_found
+> > >   xts =3D 'none'
+> > >   if get_option('nettle').enabled() and get_option('gcrypt').enabled(=
+)
+> > > @@ -1514,6 +1515,26 @@ if not gnutls_crypto.found()
+> > >         xts =3D 'private'
+> > >       endif
+> > >     endif
+> > > +  if get_option('crypto_sm4').enabled()
+> >
+> > We want to detect it by default (not only when explicitly enabled) ...
+> >
+> > > +    if get_option('gcrypt').enabled()
+> > > +      # SM4 ALG is available in libgcrypt >=3D 1.9
+> > > +      crypto_sm4 =3D dependency('libgcrypt', version: '>=3D1.9',
+> > > +                              method: 'config-tool',
+> > > +                              required: get_option('gcrypt'))
+> > > +      # SM4 ALG static compilation
+> > > +      if crypto_sm4.found() and get_option('prefer_static')
+> > > +        crypto_sm4 =3D declare_dependency(dependencies: [
+> > > +          crypto_sm4,
+> > > +          cc.find_library('gpg-error', required: true)],
+> > > +          version: crypto_sm4.version())
+> > > +      endif
+> > > +    else
+> > > +      # SM4 ALG is available in nettle >=3D 3.9
+> > > +      crypto_sm4 =3D dependency('nettle', version: '>=3D3.9',
+> > > +                              method: 'pkg-config',
+> > > +                              required: get_option('nettle'))
+> > > +    endif
+> >
+> > ... and if it was forced with --enable-crypto_sm4 AND not found,
+> > display an error.
+> >
+> > IIUC your config you try to find the best effort implementation then
+> > if not found, keep going silently.
+>
+> Yes, ignore the get_option() calls, and instead look at .found()
+> in the library we just detected
+>
+ie
+>
+>   if nettle.found()
+>       ....check sm4 in nettle
+>   endif
+>
+>   if gcrypt.found()
+>       ....check sm4 in crypt
+>   endif
+>
+> To detect if sm4 is supported, there may be two methods:
+One is to specify the version explicitly(ligcrypt >=3D1.9,nettle >=3D 3.9)
+as in patch
 
-  https://gitlab.com/qemu-project/qemu/-/milestones/10
+Another is to use the cc.link for a test. eg:
 
-The release plan, as well a documented known issues for release
-candidates, are available at:
++      crypto_sm4 =3D gcrypt
++      if gcrypt.found() and not cc.links('''
++        #include <gcrypt.h>
++        void main(void) {
++          gcry_cipher_hd_t handler;
++          gcry_cipher_open(&handler, GCRY_CIPHER_SM4,
+GCRY_CIPHER_MODE_ECB, 0);
++        }''', dependencies: gcrypt)
++        crypto_sm4 =3D not_found
++      endif
 
-  http://wiki.qemu.org/Planning/8.2
+Is the latter a better choice?
 
-Please add entries to the ChangeLog for the 8.2 release below:
 
-  http://wiki.qemu.org/ChangeLog/8.2
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-
+> https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-
+> https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-
+> https://www.instagram.com/dberrange :|
+>
+>
 
-Thank you to everyone involved!
+--=20
+Best regards
 
-Changes since rc1:
+--000000000000b5e2ff060b409f91
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-abf635ddfe: Update version for v8.2.0-rc2 release (Stefan Hajnoczi)
-6e081324fa: ide/via: Fix BAR4 value in legacy mode (BALATON Zoltan)
-411132c979: export/vhost-user-blk: Fix consecutive drains (Kevin Wolf)
-9fb7b350ba: vmdk: Don't corrupt desc file in vmdk_write_cid (Fam Zheng)
-3b7094fe83: iotests: fix default machine type detection (Andrey Drobyshev)
-0180a74463: docs/s390: Fix wrong command example in s390-cpu-topology.rst (=
-Zhao Liu)
-235948bf53: hw/avr/atmega: Fix wrong initial value of stack pointer (Gihun =
-Nam)
-0ed083a1bc: hw/audio/via-ac97: Route interrupts using via_isa_set_irq() (BA=
-LATON Zoltan)
-01f13ee245: hw/isa/vt82c686: Route PIRQ inputs using via_isa_set_irq() (BAL=
-ATON Zoltan)
-032a443be6: hw/usb/vt82c686-uhci-pci: Use ISA instead of PCI interrupts (BA=
-LATON Zoltan)
-7e01bd80c1: hw/isa/vt82c686: Bring back via_isa_set_irq() (BALATON Zoltan)
-57c3150acc: target/hexagon/idef-parser/prepare: use env to invoke bash (Sam=
-uel Tardieu)
-ea7ec158c1: string-output-visitor: Support lists for non-integer types (Kev=
-in Wolf)
-50571883f6: qdev: Fix crash in array property getter (Kevin Wolf)
-eb0ce1346e: seabios: update binaries to 1.16.3 release (Gerd Hoffmann)
-3161f9f40e: seabios: update submodule to 1.16.3 release (Gerd Hoffmann)
-1ee80592bf: hw/dma/xlnx_csu_dma: don't throw guest errors when stopping the=
- SRC DMA (Frederic Konrad)
-a9bc470ec2: hw/misc, hw/ssi: Fix some URLs for AMD / Xilinx models (Frederi=
-c Konrad)
-90bb6d6764: hw/ssi/xilinx_spips: fix an out of bound access (Frederic Konra=
-d)
-6e782ffd55: hw/input/stellaris_gamepad: Free StellarisGamepad::keycodes[] a=
-rray (Philippe Mathieu-Daud=C3=A9)
-4f10c66077: hw/nvram/xlnx-efuse-ctrl: Free XlnxVersalEFuseCtrl[] "pg0-lock"=
- array (Philippe Mathieu-Daud=C3=A9)
-49b3e28b7b: hw/nvram/xlnx-efuse: Free XlnxEFuse::ro_bits[] array on finaliz=
-e() (Philippe Mathieu-Daud=C3=A9)
-896dd6ff7b: hw/misc/mps2-scc: Free MPS2SCC::oscclk[] array on finalize() (P=
-hilippe Mathieu-Daud=C3=A9)
-c9a4aa06df: hw/virtio: Free VirtIOIOMMUPCI::vdev.reserved_regions[] on fina=
-lize() (Philippe Mathieu-Daud=C3=A9)
-837053a7f4: hw/virtio: Add VirtioPCIDeviceTypeInfo::instance_finalize field=
- (Philippe Mathieu-Daud=C3=A9)
-8729856c19: hw/net/can/xlnx-zynqmp: Avoid underflow while popping RX FIFO (=
-Philippe Mathieu-Daud=C3=A9)
-75d0e6b5c6: hw/net/can/xlnx-zynqmp: Avoid underflow while popping TX FIFOs =
-(Philippe Mathieu-Daud=C3=A9)
-8d37a1425b: target/arm: Handle overflow in calculation of next timer tick (=
-Peter Maydell)
-11a3c4a286: target/arm: Set IL bit for pauth, SVE access, BTI trap syndrome=
-s (Peter Maydell)
-7e5b19793d: build-sys: fix meson project version usage (Marc-Andr=C3=A9 Lur=
-eau)
-81a541e9f0: scripts: adjust url to Coverity tools (Paolo Bonzini)
-9abbb37535: configure: Make only once with pseudo-"in source tree" builds (=
-Akihiko Odaki)
-cd9113633f: system: Use &error_abort in memory_region_init_ram_[device_]ptr=
-() (Philippe Mathieu-Daud=C3=A9)
-2037a73997: disas/cris: Pass buffer size to format_dec() to avoid overflow =
-warning (Philippe Mathieu-Daud=C3=A9)
-e4b9d1999c: audio: Free consumed default audio devices (Akihiko Odaki)
-541069e653: .gitlab-ci.d/cirrus: Add manual testing of macOS 14 (Sonoma) (P=
-hilippe Mathieu-Daud=C3=A9)
-1a1e889f35: buildsys: Bump known good meson version to v1.2.3 (Philippe Mat=
-hieu-Daud=C3=A9)
-6dc8a88785: docs: document what configure does with virtual environments (P=
-aolo Bonzini)
-913e47cb6b: tests: respect --enable/--disable-download for Avocado (Paolo B=
-onzini)
-adff55b520: coverity: physmem: use simple assertions instead of modelling (=
-Vladimir Sementsov-Ogievskiy)
-6ef164188d: tests/tcg: finesse the registers check for "hidden" regs (Alex =
-Benn=C3=A9e)
-c2118e9e1a: configure: don't try a "native" cross for linux-user (Alex Benn=
-=C3=A9e)
-8848c52967: tests/tcg: enable semiconsole test for Arm (Alex Benn=C3=A9e)
-56611e17d2: tests/tcg: enable arm softmmu tests (Alex Benn=C3=A9e)
-e8368b1c95: testing: move arm system tests into their own folder (Alex Benn=
-=C3=A9e)
-575aac007c: hw/core: skip loading debug on all failures (Alex Benn=C3=A9e)
-84dd7d88c9: docs/system: clarify limits of using gdbstub in system emulatio=
-n (Alex Benn=C3=A9e)
-ef073ebd32: docs/emulation: expand warning about semihosting (Alex Benn=C3=
-=A9e)
-1be75e24e8: tests/tcg: fixup Aarch64 semiconsole test (Alex Benn=C3=A9e)
-9997771bc1: target/nios2: Deprecate the Nios II architecture (Philippe Math=
-ieu-Daud=C3=A9)
-4789f9d3a1: plugins: fix win plugin tests on cross compile (Greg Manning)
-8e721c3277: tests/docker: merge debian-native with debian-amd64 (Alex Benn=
-=C3=A9e)
-7528ef7321: .gitlab-ci.d/cirrus: Upgrade macOS to 13 (Ventura) (Philippe Ma=
-thieu-Daud=C3=A9)
-aa5730b07e: tests/docker: replace fedora-i386 with debian-i686 (Daniel P. B=
-errang=C3=A9)
-6bca4d7d1f: target/riscv/cpu_helper.c: Fix mxr bit behavior (Ivan Klokov)
-82d53adfbb: target/riscv/cpu_helper.c: Invalid exception on MMU translation=
- stage (Ivan Klokov)
-a7472560ca: riscv: Fix SiFive E CLINT clock frequency (Rom=C3=A1n C=C3=A1rd=
-enas)
-9bbf03275e: target/riscv: don't verify ISA compatibility for zicntr and zih=
-pm (Cl=C3=A9ment Chigot)
-7a87ba8956: hw/riscv/virt.c: do create_fdt() earlier, add finalize_fdt() (D=
-aniel Henrique Barboza)
-301c65f49f: linux-user/riscv: Add Zicboz block size to hwprobe (Palmer Dabb=
-elt)
-69c224816e: target/hppa: Update SeaBIOS-hppa to version 13 (Helge Deller)
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif">I&#39;ll try to understand t=
+he comment, if i misunderstood, please point out.</div></div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Nov 29, 2023=
+ at 12:20=E2=80=AFAM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange=
+@redhat.com">berrange@redhat.com</a>&gt; wrote:<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;bo=
+rder-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">=
+On Tue, Nov 28, 2023 at 04:57:20PM +0100, Philippe Mathieu-Daud=C3=A9 wrote=
+:<br>
+&gt; Hi Hyman,<br>
+&gt; <br>
+&gt; On 28/11/23 16:24, Hyman Huang wrote:<br>
+&gt; &gt; Introduce the SM4 cipher algorithms (OSCCA GB/T 32907-2016).<br>
+&gt; &gt; <br>
+&gt; &gt; SM4 (GBT.32907-2016) is a cryptographic standard issued by the<br=
+>
+&gt; &gt; Organization of State Commercial Administration of China (OSCCA)<=
+br>
+&gt; &gt; as an authorized cryptographic algorithms for the use within Chin=
+a.<br>
+&gt; &gt; <br>
+&gt; &gt; Use the crypto-sm4 meson build option for enabling this feature.<=
+br>
+&gt; &gt; <br>
+&gt; &gt; Signed-off-by: Hyman Huang &lt;<a href=3D"mailto:yong.huang@smart=
+x.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+&gt; &gt; ---<br>
+&gt; &gt;=C2=A0 =C2=A0crypto/block-luks.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0| 11 ++++++++<br>
+&gt; &gt;=C2=A0 =C2=A0crypto/cipher-gcrypt.c.inc=C2=A0 =C2=A0 =C2=A0 |=C2=
+=A0 8 ++++++<br>
+&gt; &gt;=C2=A0 =C2=A0crypto/cipher-nettle.c.inc=C2=A0 =C2=A0 =C2=A0 | 49 +=
+++++++++++++++++++++++++++++++++<br>
+&gt; &gt;=C2=A0 =C2=A0crypto/cipher.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 6 ++++<br>
+&gt; &gt;=C2=A0 =C2=A0meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 23 ++++++++++++++++<br>
+&gt; &gt;=C2=A0 =C2=A0meson_options.txt=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0|=C2=A0 2 ++<br>
+&gt; &gt;=C2=A0 =C2=A0qapi/crypto.json=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 5 +++-<br>
+&gt; &gt;=C2=A0 =C2=A0scripts/meson-buildoptions.sh=C2=A0 =C2=A0|=C2=A0 3 +=
++<br>
+&gt; &gt;=C2=A0 =C2=A0tests/unit/test-crypto-cipher.c | 13 +++++++++<br>
+&gt; &gt;=C2=A0 =C2=A09 files changed, 119 insertions(+), 1 deletion(-)<br>
+&gt; <br>
+&gt; <br>
+&gt; &gt; diff --git a/meson.build b/meson.build<br>
+&gt; &gt; index ec01f8b138..256d3257bb 100644<br>
+&gt; &gt; --- a/meson.build<br>
+&gt; &gt; +++ b/meson.build<br>
+&gt; &gt; @@ -1480,6 +1480,7 @@ endif<br>
+&gt; &gt;=C2=A0 =C2=A0gcrypt =3D not_found<br>
+&gt; &gt;=C2=A0 =C2=A0nettle =3D not_found<br>
+&gt; &gt;=C2=A0 =C2=A0hogweed =3D not_found<br>
+&gt; &gt; +crypto_sm4 =3D not_found<br>
+&gt; &gt;=C2=A0 =C2=A0xts =3D &#39;none&#39;<br>
+&gt; &gt;=C2=A0 =C2=A0if get_option(&#39;nettle&#39;).enabled() and get_opt=
+ion(&#39;gcrypt&#39;).enabled()<br>
+&gt; &gt; @@ -1514,6 +1515,26 @@ if not gnutls_crypto.found()<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0xts =3D &#39;private&#39;<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0endif<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0endif<br>
+&gt; &gt; +=C2=A0 if get_option(&#39;crypto_sm4&#39;).enabled()<br>
+&gt; <br>
+&gt; We want to detect it by default (not only when explicitly enabled) ...=
+<br>
+&gt; <br>
+&gt; &gt; +=C2=A0 =C2=A0 if get_option(&#39;gcrypt&#39;).enabled()<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 # SM4 ALG is available in libgcrypt &gt;=3D=
+ 1.9<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 crypto_sm4 =3D dependency(&#39;libgcrypt&#3=
+9;, version: &#39;&gt;=3D1.9&#39;,<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 method: &#39;config-tool&#39;,<br=
+>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 required: get_option(&#39;gcrypt&=
+#39;))<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 # SM4 ALG static compilation<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 if crypto_sm4.found() and get_option(&#39;p=
+refer_static&#39;)<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 crypto_sm4 =3D declare_dependency(de=
+pendencies: [<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 crypto_sm4,<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cc.find_library(&#39;gpg-erro=
+r&#39;, required: true)],<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 version: crypto_sm4.version()=
+)<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 endif<br>
+&gt; &gt; +=C2=A0 =C2=A0 else<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 # SM4 ALG is available in nettle &gt;=3D 3.=
+9<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 crypto_sm4 =3D dependency(&#39;nettle&#39;,=
+ version: &#39;&gt;=3D3.9&#39;,<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 method: &#39;pkg-config&#39;,<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 required: get_option(&#39;nettle&=
+#39;))<br>
+&gt; &gt; +=C2=A0 =C2=A0 endif<br>
+&gt; <br>
+&gt; ... and if it was forced with --enable-crypto_sm4 AND not found,<br>
+&gt; display an error.<br>
+&gt; <br>
+&gt; IIUC your config you try to find the best effort implementation then<b=
+r>
+&gt; if not found, keep going silently.<br>
+<br>
+Yes, ignore the get_option() calls, and instead look at .found()<br>
+in the library we just detected=C2=A0<br></blockquote><blockquote class=3D"=
+gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border=
+-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">
+ie<br>
+<br>
+=C2=A0 if nettle.found()<br>
+=C2=A0 =C2=A0 =C2=A0 ....check sm4 in nettle<br>
+=C2=A0 endif<br>
+<br>
+=C2=A0 if gcrypt.found()<br>
+=C2=A0 =C2=A0 =C2=A0 ....check sm4 in crypt<br>
+=C2=A0 endif<br>
+<br></blockquote><div><div><div class=3D"gmail_default" style=3D"font-famil=
+y:&quot;comic sans ms&quot;,sans-serif">To detect if sm4 is supported, ther=
+e may be two methods:</div><div class=3D"gmail_default" style=3D"font-famil=
+y:&quot;comic sans ms&quot;,sans-serif">One is to specify the version expli=
+citly(ligcrypt &gt;=3D1.9,nettle &gt;=3D 3.9)=C2=A0</div><div class=3D"gmai=
+l_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">as in=
+ patch</div><div class=3D"gmail_default" style=3D"font-family:&quot;comic s=
+ans ms&quot;,sans-serif"><br></div><div class=3D"gmail_default" style=3D"fo=
+nt-family:&quot;comic sans ms&quot;,sans-serif">Another is to use the cc.li=
+nk for a test. eg:</div><div class=3D"gmail_default" style=3D"font-family:&=
+quot;comic sans ms&quot;,sans-serif"><br></div><div class=3D"gmail_default"=
+ style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">+ =C2=A0 =C2=A0=
+ =C2=A0crypto_sm4 =3D gcrypt</div><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif">+ =C2=A0 =C2=A0 =C2=A0if gcr=
+ypt.found() and not cc.links(&#39;&#39;&#39;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0#include &lt;gcrypt.h&gt;<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0void main(void=
+) {<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0gcry_cipher_hd_t handler;<br>+ =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0gcry_cipher_open(&amp;handler, GCRY_CIPHE=
+R_SM4, GCRY_CIPHER_MODE_ECB, 0);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0}&#39;&#39=
+;&#39;, dependencies: gcrypt)<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0crypto_sm4 =
+=3D not_found<br>+ =C2=A0 =C2=A0 =C2=A0endif<br></div><br></div><div><div c=
+lass=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-=
+serif">Is the latter a better choice?</div></div></div><div>=C2=A0<br></div=
+><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
+-left-width:1px;border-left-style:solid;border-left-color:rgb(204,204,204);=
+padding-left:1ex">
+<br>
+With regards,<br>
+Daniel<br>
+-- <br>
+|: <a href=3D"https://berrange.com" rel=3D"noreferrer" target=3D"_blank">ht=
+tps://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D"http=
+s://www.flickr.com/photos/dberrange" rel=3D"noreferrer" target=3D"_blank">h=
+ttps://www.flickr.com/photos/dberrange</a> :|<br>
+|: <a href=3D"https://libvirt.org" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com" rel=3D"n=
+oreferrer" target=3D"_blank">https://fstop138.berrange.com</a> :|<br>
+|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer" target=3D"_bla=
+nk">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D=
+"https://www.instagram.com/dberrange" rel=3D"noreferrer" target=3D"_blank">=
+https://www.instagram.com/dberrange</a> :|<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--000000000000b5e2ff060b409f91--
 
