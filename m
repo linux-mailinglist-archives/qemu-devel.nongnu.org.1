@@ -2,81 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752887FCDCB
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 05:17:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED107FCDD9
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 05:21:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8C0h-0000TS-4G; Tue, 28 Nov 2023 23:17:18 -0500
+	id 1r8C44-0001Iz-5a; Tue, 28 Nov 2023 23:20:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r8C0Y-0000Sy-PU; Tue, 28 Nov 2023 23:17:08 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r8C0V-0006nA-HW; Tue, 28 Nov 2023 23:17:05 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6cdcef8b400so374567b3a.1; 
- Tue, 28 Nov 2023 20:17:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701231421; x=1701836221; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AUicCaaHo9tQqHvHbS8DANafmn3rLeSDBVn8O4kwRng=;
- b=NLgbkdlIVF/TnpSLfnlb+lzafX9Fw3et2tiXLzS0XtQFQysLsj6zrOHddNjnKmoRQr
- dVhQVr0m4KvyNxrwALFLnlbQk8OEe07Zt0XfkO61yYLAGu2HEWvKDHEwRcaOybr4y0CB
- Km0f4mXMbik9yBTRD12cU0xnCrE1GjkFe4xYWyBSWzKJhBcRo7ZuNOjgdPOWaxtXyM67
- WuHpLqRht6JpRWjVjVQsaJsSApQR0WcBARh0+aDqelkptEkBMqXrpK9YUzS71Bi7taeQ
- 23H4ZWg6DfLHrgusAnwW5sDAC+H+a8mcuTHrgqqLocYWz/wF1Vu1VeFGBwBrzBv5Uy0Z
- uJuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701231421; x=1701836221;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=AUicCaaHo9tQqHvHbS8DANafmn3rLeSDBVn8O4kwRng=;
- b=fRWGzLrqfgXlVgvUNv6etLMMpGFumskmFys+g8z1hjXVefIJypu6vSA2PKe+4CHwWr
- z8CuziRaTBUtu1y8dHRQMZ4mRuBRWXzBuqKWQfvjcCT6ff2QyP386DZlYwOwVLMGRmxp
- xlKUAQhbptYJ1rDkSrdUH+YEBomF5Ao9pYBfFP66CRQTesK6oj6e4q2LpQZP3UfOcOlC
- CdqAOgmnXJJ1t7XEAPkHT6CvxD5foGGzQwhnIVCFkq/pBQgVomU7KHNMEdo76QrlC4nz
- gaj0XzSS1zAp2CdAYBJ0yt0Yxp2JlQ304I6K9aG2IuaqK6e+yncwA4TvsjkDMykNRwK8
- p9Zg==
-X-Gm-Message-State: AOJu0YyZimhHrg/i5d/Zd1V8wikeUw2hx2jUGohN9gj2WwxlTU4u62SQ
- JzSZ1uNnMFh9HkkfpQIoSWI8Ycw83P4=
-X-Google-Smtp-Source: AGHT+IEDgejK4o2IO1Cuq+QydXNP/ZsWU2X1x1fEy/ruFF10/JHL6wCOgOE14ebmpOJd32dST2I4gw==
-X-Received: by 2002:a05:6a00:15cb:b0:6cd:85a4:bbbc with SMTP id
- o11-20020a056a0015cb00b006cd85a4bbbcmr12169200pfu.9.1701231421204; 
- Tue, 28 Nov 2023 20:17:01 -0800 (PST)
-Received: from localhost ([124.170.16.164]) by smtp.gmail.com with ESMTPSA id
- j24-20020aa78d18000000b0068fece2c190sm9574667pfe.70.2023.11.28.20.16.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 Nov 2023 20:17:00 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r8C42-0001Ip-LU
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 23:20:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r8C40-0007Iv-LI
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 23:20:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701231639;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=NLW1LRZ3HC0mLPGeg2ehIhu4KoKpYkCrJ1Q++RvtGLM=;
+ b=f6cjEjsZQvcH5V2OS/pZQIUjVWct9mCwY53aJiyRWNzmtXwUGDlJtpW8ok7HGIbSqjYjhs
+ l/2TKwaTvzM0DLgwMnfhoBLwgwKhPxRvbYFCBCWnqHTtQ35prMpLDFAW+GNQwolyv1WaQ9
+ 7ycu5pNz4oLBtCfnfNbf/otyb33t6OE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-484-2O7ynqm5NsqaooHEb5juLQ-1; Tue, 28 Nov 2023 23:20:37 -0500
+X-MC-Unique: 2O7ynqm5NsqaooHEb5juLQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DC394101A52D;
+ Wed, 29 Nov 2023 04:20:35 +0000 (UTC)
+Received: from gshan.redhat.com (unknown [10.64.136.61])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2EFC3492BE0;
+ Wed, 29 Nov 2023 04:20:25 +0000 (UTC)
+From: Gavin Shan <gshan@redhat.com>
+To: qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, b.galvani@gmail.com, strahinja.p.jankovic@gmail.com,
+ sundeep.lkml@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ marcin.juszkiewicz@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
+ vijai@behindbytes.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+Subject: [PATCH v8 0/9] Unified CPU type check
+Date: Wed, 29 Nov 2023 14:20:03 +1000
+Message-ID: <20231129042012.277831-1-gshan@redhat.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Nov 2023 14:16:55 +1000
-Message-Id: <CXB07EXQ2G1I.2BAP4QJEPR4NH@wheely>
-Cc: <clegoate@redhat.com>, <qemu-devel@nongnu.org>, <mikey@neuling.org>,
- <vaibhav@linux.ibm.com>, <jniethe5@gmail.com>, <sbhat@linux.ibm.com>,
- <kconsul@linux.vnet.ibm.com>, <danielhb413@gmail.com>
-Subject: Re: [PATCH v2 13/14] spapr: nested: keep nested-hv exit code
- restricted to its API.
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20231012104951.194876-1-harshpb@linux.ibm.com>
- <20231012104951.194876-14-harshpb@linux.ibm.com>
-In-Reply-To: <20231012104951.194876-14-harshpb@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,60 +83,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Oct 12, 2023 at 8:49 PM AEST, Harsh Prateek Bora wrote:
-> spapr_exit_nested gets triggered on a nested guest exit and currently
-> being used only for nested-hv API. Isolating code flows based on API
-> helps extending it to be used with nested PAPR API as well.
->
+This series bases on Phil's repository because the prepatory commits
+have been queued to the branch.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+  https://gitlab.com/philmd/qemu.git (branch: cpus-next)
 
-> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> ---
->  hw/ppc/spapr_nested.c | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-> index 607fb7ead2..e2d0cb5559 100644
-> --- a/hw/ppc/spapr_nested.c
-> +++ b/hw/ppc/spapr_nested.c
-> @@ -325,7 +325,7 @@ static target_ulong h_enter_nested(PowerPCCPU *cpu,
->      return env->gpr[3];
->  }
-> =20
-> -void spapr_exit_nested(PowerPCCPU *cpu, int excp)
-> +static void spapr_exit_nested_hv(PowerPCCPU *cpu, int excp)
->  {
->      CPUPPCState *env =3D &cpu->env;
->      SpaprCpuState *spapr_cpu =3D spapr_cpu_state(cpu);
-> @@ -337,8 +337,6 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
->      struct kvmppc_pt_regs *regs;
->      hwaddr len;
-> =20
-> -    assert(spapr_cpu->in_nested);
-> -
->      nested_save_state(&l2_state, cpu);
->      hsrr0 =3D env->spr[SPR_HSRR0];
->      hsrr1 =3D env->spr[SPR_HSRR1];
-> @@ -428,6 +426,17 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
->      address_space_unmap(CPU(cpu)->as, regs, len, len, true);
->  }
-> =20
-> +void spapr_exit_nested(PowerPCCPU *cpu, int excp)
-> +{
-> +    SpaprMachineState *spapr =3D SPAPR_MACHINE(qdev_get_machine());
-> +    SpaprCpuState *spapr_cpu =3D spapr_cpu_state(cpu);
-> +
-> +    assert(spapr_cpu->in_nested);
-> +    if (spapr->nested.api =3D=3D NESTED_API_KVM_HV) {
-> +        spapr_exit_nested_hv(cpu, excp);
-> +    }
-> +}
-> +
->  SpaprMachineStateNestedGuest *spapr_get_nested_guest(SpaprMachineState *=
-spapr,
->                                                       target_ulong guesti=
-d)
->  {
+There are two places where the user specified CPU type is checked to see
+if it's supported or allowed by the board: machine_run_board_init() and
+mc->init(). We don't have to maintain two duplicate sets of logic. This
+series intends to move the check to machine_run_board_init() so that we
+have unified CPU type check.
+
+This series can be checked out from:
+
+  git@github.com:gwshan/qemu.git (branch: kvm/cpu-type)
+
+PATCH[1-4] refactors and improves the logic to validate CPU type in
+           machine_run_board_init()
+PATCH[5-9] validates the CPU type in machine_run_board_init() for the
+           individual boards
+
+v1: https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00302.html
+v2: https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00528.html
+v3: https://lists.nongnu.org/archive/html/qemu-arm/2023-09/msg00157.html
+v4: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00005.html
+v5: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00611.html
+v6: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00768.html
+v7: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg01045.html
+
+Testing
+=======
+
+Before the series is applied:
+
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
+  qemu-system-aarch64: mach-virt: CPU type cortex-a8-arm-cpu not supported
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
+  qemu-system-aarch64: sbsa-ref: CPU type cortex-a53-arm-cpu not supported
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+  qemu-system-aarch64: sbsa-ref: CPU type sa1100-arm-cpu not supported
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
+  qemu-system-aarch64: unable to find CPU model 'host'
+
+After the series is applied:
+
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
+  qemu-system-aarch64: Invalid CPU model: cortex-a8
+  The valid models are: cortex-a7, cortex-a15, cortex-a35, cortex-a55,     \
+                        cortex-a72, cortex-a76, cortex-a710, a64fx,        \
+                        neoverse-n1, neoverse-v1, neoverse-n2, cortex-a53, \
+                        cortex-a57, max
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
+  qemu-system-aarch64: Invalid CPU model: cortex-a53
+  The valid models are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1,  \
+                        neoverse-n2, max
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+  qemu-system-aarch64: Invalid CPU model: sa1100
+  The valid models are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1,  \
+                        neoverse-n2, max
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
+  qemu-system-aarch64: unable to find CPU model 'host'
+
+Changelog
+=========
+v8:
+  * Pick r-bs from Phil                                          (Gavin)
+  * Drop @local_err and use @errp in machine_run_board_init()    (Phil)
+  * Add PATCH[v8 3/9] to improve is_cpu_type_supported()         (Phil)
+  * Use g_autofree and replace 'type' with 'model' for the
+    error messages in is_cpu_type_supported()                    (Phil)
+v7:
+  * Add 'return' after error_propagate() in machine_run_board_init()
+    to avoid calling mc->init() in the failing case              (Marcin)
+v6:
+  * Drop PATCH[v5 01-23], queued by Phil                         (Phil)
+  * Clearer hint if only one CPU type is supported and have
+    'const MachineState *' in is_cpu_type_supported()            (Phil)
+  * Move valid_cpu_types[] to board's class_init() function      (Phil)
+
+Gavin Shan (9):
+  machine: Use error handling when CPU type is checked
+  machine: Introduce helper is_cpu_type_supported()
+  machine: Improve is_cpu_type_supported()
+  machine: Print CPU model name instead of CPU type
+  hw/arm/virt: Hide host CPU model for tcg
+  hw/arm/virt: Check CPU type in machine_run_board_init()
+  hw/arm/sbsa-ref: Check CPU type in machine_run_board_init()
+  hw/arm: Check CPU type in machine_run_board_init()
+  hw/riscv/shakti_c: Check CPU type in machine_run_board_init()
+
+ hw/arm/bananapi_m2u.c   | 12 +++---
+ hw/arm/cubieboard.c     | 12 +++---
+ hw/arm/mps2-tz.c        | 26 +++++++++---
+ hw/arm/mps2.c           | 26 +++++++++---
+ hw/arm/msf2-som.c       | 12 +++---
+ hw/arm/musca.c          | 12 +++---
+ hw/arm/npcm7xx_boards.c | 12 +++---
+ hw/arm/orangepi.c       | 12 +++---
+ hw/arm/sbsa-ref.c       | 36 +++++-----------
+ hw/arm/virt.c           | 60 +++++++++++----------------
+ hw/core/machine.c       | 92 ++++++++++++++++++++++++-----------------
+ hw/riscv/shakti_c.c     | 13 +++---
+ 12 files changed, 168 insertions(+), 157 deletions(-)
+
+-- 
+2.42.0
 
 
