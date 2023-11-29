@@ -2,87 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481667FDA89
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 15:55:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BDB7FDA98
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 15:57:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8LxR-00071R-I0; Wed, 29 Nov 2023 09:54:33 -0500
+	id 1r8M02-00007l-Ux; Wed, 29 Nov 2023 09:57:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r8LxP-00071B-KE
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 09:54:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1r8Lzo-00006R-I5; Wed, 29 Nov 2023 09:57:01 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r8LxO-0007CA-1O
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 09:54:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701269668;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=0iwKuOdVlxbXkpX/UhIPBt4wbrz6KW/6ZKuWs65LzSI=;
- b=cE5ZynQdn9ryIFaN5hhV1/bml8CgC5963gMKQboKqn0wD0SxE0/aiRUmDP+n3m8dvhd6zE
- y299PDQcP8VLVqpXQ8tM5hr9aMlbrTH18YwTeDYNrAu/ech11MB9GbrMBkOXKJ6QHnmClX
- oc+wqxGyILtgdyAfosjFsFl/qSV83qs=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-446-wk_yVqp8NeS6nQNzawZTag-1; Wed, 29 Nov 2023 09:54:27 -0500
-X-MC-Unique: wk_yVqp8NeS6nQNzawZTag-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a04b426b3c0so151356766b.0
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 06:54:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701269665; x=1701874465;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0iwKuOdVlxbXkpX/UhIPBt4wbrz6KW/6ZKuWs65LzSI=;
- b=pAvVJjUALRF1hNZKG0+i1RhAQC82z6W9K0lvyCUrwPPvL0EMPgbYDDeyIm7+OovQsB
- 0tXzJl8YbuVfbjHHTFhJKVybnhMLWgbYM32Pb8+b8cw+Gw8KoS5lEFX8KLvDdhTtcm/b
- jFPT5urgUip41m5zSrtsbMlkiehtRoqHXbcrgx+KIcsSMSo1sU9BhOEEByAr54Hkqtjx
- UVP86bUryOrkr0X3wDK8XxSs5NItEFP3yEsaFXJvNE84fL9e6x/JppY5oVTWJLIx9xla
- oP7dUi9skOF374GfzZMzbRXmjeShKAyvLO037kZGQOlZbqepzu41UFLkRA0sOKj72iUV
- ea9Q==
-X-Gm-Message-State: AOJu0Yxv03vjRkuEnRVoARbij2fscPmyIFiRoE50vTHyKwBU6Vniyngw
- wWB6OzGotraWH/cBB8vwU2CPS+3mnJ05BZP4rmUCv2I9R4ngPsP/4jYnrYfwh7asmFn5bXotKNX
- DWXh+NqEkn6cUZSwlbhG6uac=
-X-Received: by 2002:a17:906:15:b0:9f2:859f:713e with SMTP id
- 21-20020a170906001500b009f2859f713emr14972582eja.3.1701269665740; 
- Wed, 29 Nov 2023 06:54:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG1BSpRCWdSnUaN1u4Q0zV0pKjPzqjOyFsEF8f+kskFtV1gx1RRlw6dYqFcfxVOJ2ibKaMXeQ==
-X-Received: by 2002:a17:906:15:b0:9f2:859f:713e with SMTP id
- 21-20020a170906001500b009f2859f713emr14972568eja.3.1701269665468; 
- Wed, 29 Nov 2023 06:54:25 -0800 (PST)
-Received: from redhat.com ([2.55.57.48]) by smtp.gmail.com with ESMTPSA id
- ck16-20020a170906c45000b00a0029289961sm7957928ejb.190.2023.11.29.06.54.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Nov 2023 06:54:24 -0800 (PST)
-Date: Wed, 29 Nov 2023 09:54:21 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Thierry Escande <thierry.escande@vates.tech>
-Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH 0/4] ICH9 root PCI hotplug
-Message-ID: <20231129095400-mutt-send-email-mst@kernel.org>
-References: <20231115171837.18866-1-thierry.escande@vates.tech>
- <20231124150135.0b99deeb@imammedo.users.ipa.redhat.com>
- <20231124094535-mutt-send-email-mst@kernel.org>
- <be4f338c-7b9e-4bc9-9092-01473ae24548@vates.tech>
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1r8Lzl-0007hn-Gr; Wed, 29 Nov 2023 09:57:00 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ATEiAPx011907; Wed, 29 Nov 2023 14:56:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=Ih1nHrR1TSSuJUsXkba7PLZfJLpEaWddd74IxSPkRtE=;
+ b=JS34VWJx8CI1hVns0OCPrGPZXYfX2f2VPob4erv/7h1jHqLXl1AuGK4DzmvlYIep6GBl
+ 9Bcc9UvMmGU3g7UkHz1iBp36r6DW8NMvYhkHnXByWeB4zm7xSVO+mFZf5Ye8dEEtFu6n
+ TRtlxw6AMJ0Cbd6chOEc+rIRP4jc+WkiyIgQ7rujKiNPAZQf79+MOH/bkAvECUty4Zyg
+ GZj1q5x+nip9zGXd1WEjuT+poy7y88LMYxyrWzA/nrjs13Au8yHn4DD/zlEDOsOxbomK
+ 3wz7+wvFJ04Avjnk+p/inP2jNPW9sMcNKimOjte36EXTgBUt3qfm4UAsxRt6/CQENhAC aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3up7ar0fq2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Nov 2023 14:56:41 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ATEj4iD014390;
+ Wed, 29 Nov 2023 14:56:40 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3up7ar0fma-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Nov 2023 14:56:40 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3ATEBNdV004317; Wed, 29 Nov 2023 14:56:37 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwy1yapn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Nov 2023 14:56:37 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
+ [10.39.53.233])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3ATEua7K49218238
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 Nov 2023 14:56:37 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 831C85804E;
+ Wed, 29 Nov 2023 14:56:36 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DEC075803F;
+ Wed, 29 Nov 2023 14:56:34 +0000 (GMT)
+Received: from [9.67.13.86] (unknown [9.67.13.86])
+ by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 29 Nov 2023 14:56:34 +0000 (GMT)
+Message-ID: <a1fbfc7b-6f5a-44c4-9af4-65dac15763b6@linux.ibm.com>
+Date: Wed, 29 Nov 2023 08:56:34 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 00/10] Introduce model for IBM's FSI
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org
+References: <20231026164741.1184058-1-ninad@linux.ibm.com>
+ <417e8a68-2f35-4315-b694-892f78c811b6@kaod.org>
+Content-Language: en-US
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <417e8a68-2f35-4315-b694-892f78c811b6@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: yFMbS6IkdABEeS6T_VNpwTC4x9dzxXwV
+X-Proofpoint-ORIG-GUID: iDLv6uVv22_xiyvZVDWxrDxxjan6_ZJh
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <be4f338c-7b9e-4bc9-9092-01473ae24548@vates.tech>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-29_12,2023-11-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ spamscore=0 clxscore=1015 mlxscore=0 adultscore=0 bulkscore=0
+ priorityscore=1501 impostorscore=0 mlxlogscore=773 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311290113
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,56 +117,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 29, 2023 at 09:47:13AM +0000, Thierry Escande wrote:
-> On 24/11/2023 15:54, Michael S. Tsirkin wrote:
-> > On Fri, Nov 24, 2023 at 03:01:35PM +0100, Igor Mammedov wrote:
-> > > On Wed, 15 Nov 2023 17:18:53 +0000
-> > > Thierry Escande <thierry.escande@vates.tech> wrote:
-> > > 
-> > > > Hi,
-> > > > 
-> > > > This series fixes acpi_hotplug_bridge accessor names, adds new accessors
-> > > > for acpi-root-pci-hotplug property, and enables root PCI hotplug by
-> > > > default for Q35 machine.
-> > > 
-> > > hotplug on Q35 hostbridge is not implemented intentionally
-> > > to keep machine close to the real world.
-> > 
-> > > PCIe spec 3.1a, 1.3.2.3. Root Complex Integrated Endpoint Rules
-> > > "
-> > > A Root Complex Integrated Endpoint may not be hot-plugged independent of the Root
-> > > Complex as a whole.
-> > > "
-> > > )
-> > 
-> > To be more precise close to native hotplug.
-> > But we used ACPI for several years now and it seems to be fine.
-> > Maybe it's time we lifted the limitation?
-> 
-> And for what it's worth, lifting this limitation would allow PCIe devices
-> passthrough on Q35 VMs with Xen as such devices are hotplugged.
+Hello Cedric,
 
+On 11/27/23 10:31, Cédric Le Goater wrote:
+> Hello Ninad,
+>
+> On 10/26/23 18:47, Ninad Palsule wrote:
+>> Hello,
+>>
+>> Please review the patch-set version 7.
+>> I have incorporated review comments from Cedric, Philippe and Thomas.
+>
+>
+> I reworked v7 with the suggestions I made in patches 1-6. Please check :
+>
+>   https://github.com/legoater/qemu/commits/aspeed-8.2
+>
+> I will have more questions on the mappings because some parts are really
+> unclear.
+>
+I forgot to mention in my last mail. If I build against your aspeed-8.2 
+branch then rainier machine is failing to boot.
 
-More motivation in the commit log would be a good idea here.
+The same images are working with qemu master branch.
 
-> > 
-> > 
-> > > 
-> > > PS:
-> > > but patch 1/4 is good cleanup, pls include Reviewed-by's and resend it
-> > > as a separate patch after 8.2 has been released (so it wouldn't get lost in the traffic).
-> > > 
-> > > > 
-> > > > Thierry Escande (4):
-> > > >    ich9: Remove unused hotplug field from ICH9LPCPMRegs struct
-> > > >    ich9: Renamed use_acpi_hotplug_bridge accessors
-> > > >    ich9: Add accessors for acpi-root-pci-hotplug
-> > > >    ich9: Enable root PCI hotplug by default
-> > > > 
-> > > >   hw/acpi/ich9.c         | 23 +++++++++++++++++++++--
-> > > >   include/hw/acpi/ich9.h |  1 -
-> > > >   2 files changed, 21 insertions(+), 3 deletions(-)
-> > > > 
-> > 
+fsi/qemu-system-arm -M rainier-bmc -nographic -kernel 
+./fitImage-linux.bin -dtb ./aspeed-bmc-ibm-rainier.dtb -initrd 
+./obmc-phosphor-initramfs.rootfs.cpio.xz -drive 
+file=./obmc-phosphor-image.rootfs.wic.qcow2,if=sd,index=2 -append 
+'rootwait console=ttyS4,115200n8 root=PARTLABEL=rofs-a' -net nic -net 
+user,hostfwd=:127.0.0.1:3222-:22,hostfwd=:127.0.0.1:2234-:1234 -trace 'fsi*'
+                         |
+                         |
+Starting systemd-udevd version 254^
+[   50.630407] /dev/disk/by-partlabel/rofs-a: Can't open blockdev
+mount: mounting /dev/disk/by-partlabel/rofs-a on /mnt/rofs failed: No 
+such file or directory
+/bin/sh: can't access tty; job control turned off
 
+>
+> Thanks,
+>
+> C.
+>
+>
+>>
+>> Ninad Palsule (10):
+>>    hw/fsi: Introduce IBM's Local bus
+>>    hw/fsi: Introduce IBM's scratchpad
+>>    hw/fsi: Introduce IBM's cfam,fsi-slave
+>>    hw/fsi: Introduce IBM's FSI
+>>    hw/fsi: IBM's On-chip Peripheral Bus
+>>    hw/fsi: Aspeed APB2OPB interface
+>>    hw/arm: Hook up FSI module in AST2600
+>>    hw/fsi: Added qtest
+>>    hw/fsi: Added FSI documentation
+>>    hw/fsi: Update MAINTAINER list
+>>
+>>   MAINTAINERS                        |   8 +
+>>   docs/specs/fsi.rst                 | 138 +++++++++++++++
+>>   docs/specs/index.rst               |   1 +
+>>   meson.build                        |   1 +
+>>   hw/fsi/trace.h                     |   1 +
+>>   include/hw/arm/aspeed_soc.h        |   4 +
+>>   include/hw/fsi/aspeed-apb2opb.h    |  33 ++++
+>>   include/hw/fsi/cfam.h              |  34 ++++
+>>   include/hw/fsi/engine-scratchpad.h |  27 +++
+>>   include/hw/fsi/fsi-master.h        |  30 ++++
+>>   include/hw/fsi/fsi-slave.h         |  29 +++
+>>   include/hw/fsi/fsi.h               |  36 ++++
+>>   include/hw/fsi/lbus.h              |  43 +++++
+>>   include/hw/fsi/opb.h               |  33 ++++
+>>   hw/arm/aspeed_ast2600.c            |  19 ++
+>>   hw/fsi/aspeed-apb2opb.c            | 272 +++++++++++++++++++++++++++++
+>>   hw/fsi/cfam.c                      | 173 ++++++++++++++++++
+>>   hw/fsi/engine-scratchpad.c         |  93 ++++++++++
+>>   hw/fsi/fsi-master.c                | 161 +++++++++++++++++
+>>   hw/fsi/fsi-slave.c                 |  78 +++++++++
+>>   hw/fsi/fsi.c                       |  25 +++
+>>   hw/fsi/lbus.c                      |  74 ++++++++
+>>   hw/fsi/opb.c                       |  74 ++++++++
+>>   tests/qtest/aspeed-fsi-test.c      | 205 ++++++++++++++++++++++
+>>   hw/Kconfig                         |   1 +
+>>   hw/arm/Kconfig                     |   1 +
+>>   hw/fsi/Kconfig                     |  23 +++
+>>   hw/fsi/meson.build                 |   6 +
+>>   hw/fsi/trace-events                |  13 ++
+>>   hw/meson.build                     |   1 +
+>>   tests/qtest/meson.build            |   1 +
+>>   31 files changed, 1638 insertions(+)
+>>   create mode 100644 docs/specs/fsi.rst
+>>   create mode 100644 hw/fsi/trace.h
+>>   create mode 100644 include/hw/fsi/aspeed-apb2opb.h
+>>   create mode 100644 include/hw/fsi/cfam.h
+>>   create mode 100644 include/hw/fsi/engine-scratchpad.h
+>>   create mode 100644 include/hw/fsi/fsi-master.h
+>>   create mode 100644 include/hw/fsi/fsi-slave.h
+>>   create mode 100644 include/hw/fsi/fsi.h
+>>   create mode 100644 include/hw/fsi/lbus.h
+>>   create mode 100644 include/hw/fsi/opb.h
+>>   create mode 100644 hw/fsi/aspeed-apb2opb.c
+>>   create mode 100644 hw/fsi/cfam.c
+>>   create mode 100644 hw/fsi/engine-scratchpad.c
+>>   create mode 100644 hw/fsi/fsi-master.c
+>>   create mode 100644 hw/fsi/fsi-slave.c
+>>   create mode 100644 hw/fsi/fsi.c
+>>   create mode 100644 hw/fsi/lbus.c
+>>   create mode 100644 hw/fsi/opb.c
+>>   create mode 100644 tests/qtest/aspeed-fsi-test.c
+>>   create mode 100644 hw/fsi/Kconfig
+>>   create mode 100644 hw/fsi/meson.build
+>>   create mode 100644 hw/fsi/trace-events
+>>
+>
 
