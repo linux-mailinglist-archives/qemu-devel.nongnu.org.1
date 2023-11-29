@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F2E7FDBF3
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 16:50:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C3387FDBF4
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 16:51:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8MpP-0006og-BP; Wed, 29 Nov 2023 10:50:19 -0500
+	id 1r8MqX-0007br-R5; Wed, 29 Nov 2023 10:51:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1r8MpN-0006oW-NQ
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:50:17 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r8MqS-0007bJ-5X
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:51:25 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1r8MpK-0001ql-Dw
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:50:17 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a00ac0101d9so944188166b.0
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 07:50:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r8MqO-000204-Au
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:51:23 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40859dee28cso55695225e9.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 07:51:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1701273013; x=1701877813;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Mo6IPX1rIM1Q6S5J0FWEynoJ6POS8mNv5VnYtM3Gd2I=;
- b=v2JchSFxb44rjz7CLGrnhfRB7umlZwjEAguEX1haw5wsijiP1wVUTK4+XBnLdTxyFE
- rtAWgOEjaIOPfx9Pxbd1KWK4sT2mHp+L0vMSvJneMtZvtjO5pbDtHkUUsLZ21/wmCThY
- viD7/BTFuwsm5FRsd5wEhCa4sK9HgkstpgKq8k9k+dRUmcQbkJXadH3SapoNdt/bueAy
- +QLyWj8AcIIT8ZpXJXxkU20kV2pbUJ4Q0wasUweUONzlJXBt7WAMEBlEA4FRtxY+x+ZF
- 3gshqFYLpR7P15za4cXMuNAzzuTYdK/pmZkb9mfrSRdkvXQ0P1KmIsyToOirC4cykKOu
- VY5g==
+ d=linaro.org; s=google; t=1701273078; x=1701877878; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Oi840bZPsJnJDsYEmDQY5jS5eVekW5E5cE4qxTKZSpE=;
+ b=NPRnP2Aa3G7aB5VslQ35ujXZ5USGCAMrvQSC9rzW6Elnpp4psGOBT2k7Pr70A7Ut7c
+ oim2y0C3FrwSuK7GORPr1uNseJ/hDMMRhm9XLYdBIAGgJvXI/z3AxjJHkSo2kkPm6wWE
+ cGoFyZlQcktttPaxzClx9pJrF1XULMna+Nc54hqX5PNcukBbeto00p3Rm3mlj248IlVA
+ AE9W34bH7T9EZQzlXrRGATvATA/CpoaLaWqSF7BeoQIcB/lERgvY8fy5MYlV3E7WTCRf
+ k8MTsQcyYdtTkBdU5l//SyucOKCDqXZJ/lImzXSR6i48oItH6UyWa/FSRiMylEQcG4jm
+ WhGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701273013; x=1701877813;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Mo6IPX1rIM1Q6S5J0FWEynoJ6POS8mNv5VnYtM3Gd2I=;
- b=pHw9xxSEWRSJUmAbmN0ATlIkYBQYNtcv8KkNLXFZFtLNCRfdjLFVYZPYSlgSuQapS+
- cIPJYCvTbru3B3O0Dy0s9OnT0cxvG1h3kPMqPRNmqRbdXF0B4uak+ZbTbZmZjBNahwYh
- f0otIfJz5kS4bZN602/V9FyE60X2FNNT7blnvijxjwvWxqEFfMddetGR2btjPuwNKUDV
- nNgynjzo3YqWvL3R/Zig9VNAThxx3MUm3MVQkmFtl0SchuF8fV7vk3bJ9ip4q1p5SD6X
- D9nYfw1lVNepFI5tT9AqsryhKzZYeNtvun6A3X5VNW3qvRVk9hPTE4iivYoU/G8UdU++
- /rnQ==
-X-Gm-Message-State: AOJu0Yx9tvJowLaK1RkKxAXmt3UVqnK44gO2YMndY451/RrbKOZcISR1
- n6BmkMaEwMFLWGZDiBwZioKiW7ub83mtUxsdqeg93g==
-X-Google-Smtp-Source: AGHT+IEwW8cQ0fyx9uH0bVZCd10+nl8ixFtNdcrPUWSl5dGS23py2E+jCZdqAAkhedIuq8kNSTYcYSyxXCtne4fLCcQ=
-X-Received: by 2002:a17:906:20de:b0:a01:811c:ce9 with SMTP id
- c30-20020a17090620de00b00a01811c0ce9mr15822127ejc.0.1701273012719; Wed, 29
- Nov 2023 07:50:12 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701273078; x=1701877878;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Oi840bZPsJnJDsYEmDQY5jS5eVekW5E5cE4qxTKZSpE=;
+ b=Qizg8gQJQAdqcSm5fmJC2jzKrrPpWBrKG6uk7HAPGeQn3zfIaADeGJmLdk0RtxqNDN
+ pLvBvKNRs5JS02V2iPM9oAoOa/5BpyCjA7eEetqwzJUo4rJEK59yGtYtGqgXll9yovov
+ ti/dM4t7cNG2YNXISpLhBgZVzhjkXFK1k78QTJiGoPPFu+1xtJz01vGd6Ln8bdQjV+pK
+ wA+4NMZoGTFesO17bvvRVkBW4GlSg6vhqulEb0KVSq6C+6p1IdI74bqnFsw1snJDJXtE
+ ht7O0NHnqD9FJ0UOtfCDVRe11V+RXLX2zJoz9fw6/RSxRIcxkeP0KvpBs/OrhTfPEKfT
+ JXIA==
+X-Gm-Message-State: AOJu0YzR9baC9G/DU+x5reICfOf2GDYvXLidDgvTogTDxc2+P7czs9fR
+ pEQV4isBUEt+HTSDRE4D1k/kjA==
+X-Google-Smtp-Source: AGHT+IHVKMO+WNszJ7VWWB/6jF4QzUyF2fy6LfFm3oz1np7ooZKEeSb/4zk85emyLIW3Cn/Xfvgi1g==
+X-Received: by 2002:a05:600c:470f:b0:40b:37ef:3671 with SMTP id
+ v15-20020a05600c470f00b0040b37ef3671mr14989844wmo.38.1701273078039; 
+ Wed, 29 Nov 2023 07:51:18 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ i5-20020adfe485000000b0033300a0b444sm9039313wrm.66.2023.11.29.07.51.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Nov 2023 07:51:17 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 43A3D5F7AF;
+ Wed, 29 Nov 2023 15:51:17 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Nicolas Eder <nicolas.eder@lauterbach.com>
+Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, "Christian Boenig" <christian.boenig@lauterbach.com>
+Subject: Re: [PATCH v3 03/20] gdbstub: moving code so that it can be easier
+ accessed from outside the gdbstub: fromhex and tohex functions moved to a
+ cutils header. GDBRegisterState moved to gdbstub.h
+In-Reply-To: <20231107130323.4126-4-nicolas.eder@lauterbach.com> (Nicolas
+ Eder's message of "Tue, 7 Nov 2023 14:03:06 +0100")
+References: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
+ <20231107130323.4126-4-nicolas.eder@lauterbach.com>
+User-Agent: mu4e 1.11.25; emacs 29.1
+Date: Wed, 29 Nov 2023 15:51:17 +0000
+Message-ID: <87jzq0a77u.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
- <87edgjf2v4.fsf@draig.linaro.org>
- <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
- <ZWYsMsgxjDZ_T2zA@redhat.com>
-In-Reply-To: <ZWYsMsgxjDZ_T2zA@redhat.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 29 Nov 2023 08:50:06 -0700
-Message-ID: <CANCZdfq6dPArtLjwAbV9MxQnR6pOn6MR+gB7eTogUyw8WuyjCw@mail.gmail.com>
-Subject: Re: QEMU Summit Minutes 2023
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="00000000000096e469060b4c7d07"
-Received-SPF: none client-ip=2a00:1450:4864:20::636;
- envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x636.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,290 +99,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000096e469060b4c7d07
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Nicolas Eder <nicolas.eder@lauterbach.com> writes:
 
-On Wed, Nov 29, 2023 at 8:44=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com>
-wrote:
+> ---
+>  gdbstub/gdbstub.c      |  9 +--------
+>  gdbstub/internals.h    | 26 --------------------------
+>  include/cutils.h       | 30 ++++++++++++++++++++++++++++++
+>  include/exec/gdbstub.h |  9 ++++++++-
 
-> On Tue, Nov 28, 2023 at 06:54:42PM +0100, C=C3=A9dric Le Goater wrote:
-> > On 11/21/23 18:11, Alex Benn=C3=A9e wrote:
-> > > Peter Maydell <peter.maydell@linaro.org> writes:
-> > >
-> > > > QEMU Summit Minutes 2023
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-> > > >
-> > > > As usual, we held a QEMU Summit meeting at KVM Forum.  This is an
-> > > > invite-only meeting for the most active maintainers and
-> submaintainers
-> > > > in the project, and we discuss various project-wide issues, usually
-> > > > process stuff. We then post the minutes of the meeting to the list =
-as
-> > > > a jumping off point for wider discussion and for those who weren't
-> > > > able to attend.
-> > > >
-> > > <snip>
-> > > >
-> > > > Topic 2: Are we happy with the email workflow?
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > >
-> > > > This was a topic to see if there was any consensus among maintainer=
-s
-> > > > about the long-term acceptability of sticking with email for patch
-> > > > submission and review -- in five years' time, if we're still doing =
-it
-> > > > the same way, how would we feel about it?
-> > > >
-> > > > One area where we did get consensus was that now that we're doing C=
-I
-> > > > on gitlab we can change pull requests from maintainers from via-ema=
-il
-> > > > to gitlab merge requests. This would hopefully mean that instead of
-> > > > the release-manager having to tell gitlab to do a merge and then
-> > > > reporting back the results of any CI failures, the maintainer
-> > > > could directly see the CI results and deal with fixing up failures
-> > > > and resubmitting without involving the release manager. (This
-> > > > may have the disbenefit that there isn't a single person any
-> > > > more who looks at all the CI results and gets a sense of whether
-> > > > particular test cases have pre-existing intermittent failures.)
-> > >
-> > > If we are keen to start processing merge requests for the 9.0 release
-> we
-> > > really should consider how it is going to work before we open up the
-> > > taps post 8.2-final going out.
-> > >
-> > > Does anyone want to have a go at writing an updated process for
-> > > docs/devel/submitting-a-pull-request.rst (or I guess merge-request) s=
-o
-> > > we can discuss it and be ready early in the cycle? Ideally someone wh=
-o
-> > > already has experience with the workflow with other gitlab hosted
-> > > projects.
->
-> If no one else beats me to it, I can try and write up something,
-> since I'm pretty familiar with gitlab PR from libvirt & other
-> projects.
->
-> > Reading the Topic 2 paragraph above, I understand that a maintainer
-> > of a subsystem would be able to merge its '-next' branch in the main
-> > repository when CI is all green. Correct ?
->
-> A maintainer would have their own fork of qemu-project/qemu, under
-> their namespace, or if there are maintainers collaborating, they
-> might have a separate group nmamespace for their subsystem.
-> eg qemu-block-subsys/qemu, or we could use sub-groups perhaps
-> so  qemu-project/block-subsys/qemu  for official subsystem
-> trees.
->
-> Anyway, when a maintainer wants to merge a tree, I would expect to
-> have a MR opened against 'master' in qemu-project/qemu.  The CI
-> ought to then run and if it is all green, then someone would approve
-> it to merge to master.
->
-> > It seems to me that we should also have a group of people approving
-> > the MR.
->
-> Yes, while we could have one designated gate keeper approving all
-> MRs, that would defeat some of the benefit of MRs. So likely would
-> be good to have a pool, and also setup the config so that the owner
-> of an MR is not allow to approve their own MR, to guarantee there
-> is always a 2nd pair of eyes as sanity check.
->
-> We might also need to consider enabling 'merge trains', so that
-> we get a serialized CI run again after hte MR is approved, in
-> case 'master' moved onwards since the initial CI pipeline when
-> the MR was opened.
->
+Please split into the utils and the reg state patches as they are unrelated.
 
-I'd honestly optimize for 'frequent merges of smaller things' rather than
-'infrequent merges of larger things'. The latter has caused most of the
-issues for me. It's harder to contribute because the overhead of doing so
-is so large you want to batch everything. Let's not optimize for that
-workaround for the high-friction submission process we have now. If there's
-always smaller bits of work going in all the time, you'll find few commit
-races... though the CI pipeline is rather large, so having a ci-staging
-branch to land the MRs to that have completed CI, but not CI on the tip,
-might not be bad... but the resolution of conflicts can be tricky, though
-infrequent, so if a ci-staging branch bounces, all MRs would need to be
-manually requeued after humans look at why and think through who needs to
-talk to whom, or if it's just a 'other things landed before you could get
-yours in and it's not the ci-staging being full of other people's commits
-that is at fault.
+>  4 files changed, 39 insertions(+), 35 deletions(-)
+>  create mode 100644 include/cutils.h
+>
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index 1e96a71c0c..c43ff89393 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -44,14 +44,7 @@
+>  #include "exec/hwaddr.h"
+>=20=20
+>  #include "internals.h"
+> -
+> -typedef struct GDBRegisterState {
+> -    int base_reg;
+> -    int num_regs;
+> -    gdb_get_reg_cb get_reg;
+> -    gdb_set_reg_cb set_reg;
+> -    const char *xml;
+> -} GDBRegisterState;
+> +#include "cutils.h"
+>=20=20
+>  GDBState gdbserver_state;
+>=20=20
+> diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+> index 465c24b36e..011e6f1858 100644
+> --- a/gdbstub/internals.h
+> +++ b/gdbstub/internals.h
+> @@ -74,32 +74,6 @@ typedef struct GDBState {
+>  /* lives in main gdbstub.c */
+>  extern GDBState gdbserver_state;
+>=20=20
+> -/*
+> - * Inline utility function, convert from int to hex and back
+> - */
+> -
+> -static inline int fromhex(int v)
+> -{
+> -    if (v >=3D '0' && v <=3D '9') {
+> -        return v - '0';
+> -    } else if (v >=3D 'A' && v <=3D 'F') {
+> -        return v - 'A' + 10;
+> -    } else if (v >=3D 'a' && v <=3D 'f') {
+> -        return v - 'a' + 10;
+> -    } else {
+> -        return 0;
+> -    }
+> -}
+> -
+> -static inline int tohex(int v)
+> -{
+> -    if (v < 10) {
+> -        return v + '0';
+> -    } else {
+> -        return v - 10 + 'a';
+> -    }
+> -}
+> -
+>  /*
+>   * Connection helpers for both system and user backends
+>   */
+> diff --git a/include/cutils.h b/include/cutils.h
+> new file mode 100644
+> index 0000000000..a6b8dc3690
+> --- /dev/null
+> +++ b/include/cutils.h
+> @@ -0,0 +1,30 @@
+> +#ifndef CUTILS_H
+> +#define CUTILS_H
 
-Warner
+We already have include/qemu/cutils.h where I think these can go.
+
+> +
+> +/*
+> + * Inline utility function, convert from int to hex and back
+> + */
+
+Becoming common util functions they could do with a little cleaning up
+before wider use.
+
+  - kdoc comment string
+  - rename to be clearer, maybe:
+    - hexchar_to_nibble
+    - nibble_to_hexchar
+=20=20=20=20
+
+> +
+> +static inline int fromhex(int v)
 
 
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-
-> https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-
-> https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-
-> https://www.instagram.com/dberrange :|
->
->
->
+> +{
+> +    if (v >=3D '0' && v <=3D '9') {
+> +        return v - '0';
+> +    } else if (v >=3D 'A' && v <=3D 'F') {
+> +        return v - 'A' + 10;
+> +    } else if (v >=3D 'a' && v <=3D 'f') {
+> +        return v - 'a' + 10;
+> +    } else {
+> +        return 0;
 
---00000000000096e469060b4c7d07
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+g_assert_not_reached()? or document invalid chars are squashed to 0
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Nov 29, 2023 at 8:44=E2=80=AF=
-AM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com">berra=
-nge@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">On Tue, Nov 28, 2023 at 06:54:42PM +0100, C=C3=A9dric Le Goat=
-er wrote:<br>
-&gt; On 11/21/23 18:11, Alex Benn=C3=A9e wrote:<br>
-&gt; &gt; Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org" tar=
-get=3D"_blank">peter.maydell@linaro.org</a>&gt; writes:<br>
-&gt; &gt; <br>
-&gt; &gt; &gt; QEMU Summit Minutes 2023<br>
-&gt; &gt; &gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D<br>
-&gt; &gt; &gt; <br>
-&gt; &gt; &gt; As usual, we held a QEMU Summit meeting at KVM Forum.=C2=A0 =
-This is an<br>
-&gt; &gt; &gt; invite-only meeting for the most active maintainers and subm=
-aintainers<br>
-&gt; &gt; &gt; in the project, and we discuss various project-wide issues, =
-usually<br>
-&gt; &gt; &gt; process stuff. We then post the minutes of the meeting to th=
-e list as<br>
-&gt; &gt; &gt; a jumping off point for wider discussion and for those who w=
-eren&#39;t<br>
-&gt; &gt; &gt; able to attend.<br>
-&gt; &gt; &gt; <br>
-&gt; &gt; &lt;snip&gt;<br>
-&gt; &gt; &gt; <br>
-&gt; &gt; &gt; Topic 2: Are we happy with the email workflow?<br>
-&gt; &gt; &gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D<br>
-&gt; &gt; &gt; <br>
-&gt; &gt; &gt; This was a topic to see if there was any consensus among mai=
-ntainers<br>
-&gt; &gt; &gt; about the long-term acceptability of sticking with email for=
- patch<br>
-&gt; &gt; &gt; submission and review -- in five years&#39; time, if we&#39;=
-re still doing it<br>
-&gt; &gt; &gt; the same way, how would we feel about it?<br>
-&gt; &gt; &gt; <br>
-&gt; &gt; &gt; One area where we did get consensus was that now that we&#39=
-;re doing CI<br>
-&gt; &gt; &gt; on gitlab we can change pull requests from maintainers from =
-via-email<br>
-&gt; &gt; &gt; to gitlab merge requests. This would hopefully mean that ins=
-tead of<br>
-&gt; &gt; &gt; the release-manager having to tell gitlab to do a merge and =
-then<br>
-&gt; &gt; &gt; reporting back the results of any CI failures, the maintaine=
-r<br>
-&gt; &gt; &gt; could directly see the CI results and deal with fixing up fa=
-ilures<br>
-&gt; &gt; &gt; and resubmitting without involving the release manager. (Thi=
-s<br>
-&gt; &gt; &gt; may have the disbenefit that there isn&#39;t a single person=
- any<br>
-&gt; &gt; &gt; more who looks at all the CI results and gets a sense of whe=
-ther<br>
-&gt; &gt; &gt; particular test cases have pre-existing intermittent failure=
-s.)<br>
-&gt; &gt; <br>
-&gt; &gt; If we are keen to start processing merge requests for the 9.0 rel=
-ease we<br>
-&gt; &gt; really should consider how it is going to work before we open up =
-the<br>
-&gt; &gt; taps post 8.2-final going out.<br>
-&gt; &gt; <br>
-&gt; &gt; Does anyone want to have a go at writing an updated process for<b=
-r>
-&gt; &gt; docs/devel/submitting-a-pull-request.rst (or I guess merge-reques=
-t) so<br>
-&gt; &gt; we can discuss it and be ready early in the cycle? Ideally someon=
-e who<br>
-&gt; &gt; already has experience with the workflow with other gitlab hosted=
-<br>
-&gt; &gt; projects.<br>
-<br>
-If no one else beats me to it, I can try and write up something,<br>
-since I&#39;m pretty familiar with gitlab PR from libvirt &amp; other<br>
-projects.<br>
-<br>
-&gt; Reading the Topic 2 paragraph above, I understand that a maintainer<br=
->
-&gt; of a subsystem would be able to merge its &#39;-next&#39; branch in th=
-e main<br>
-&gt; repository when CI is all green. Correct ?<br>
-<br>
-A maintainer would have their own fork of qemu-project/qemu, under<br>
-their namespace, or if there are maintainers collaborating, they<br>
-might have a separate group nmamespace for their subsystem.<br>
-eg qemu-block-subsys/qemu, or we could use sub-groups perhaps<br>
-so=C2=A0 qemu-project/block-subsys/qemu=C2=A0 for official subsystem<br>
-trees.<br>
-<br>
-Anyway, when a maintainer wants to merge a tree, I would expect to<br>
-have a MR opened against &#39;master&#39; in qemu-project/qemu.=C2=A0 The C=
-I<br>
-ought to then run and if it is all green, then someone would approve<br>
-it to merge to master.<br>
-<br>
-&gt; It seems to me that we should also have a group of people approving<br=
->
-&gt; the MR.<br>
-<br>
-Yes, while we could have one designated gate keeper approving all<br>
-MRs, that would defeat some of the benefit of MRs. So likely would<br>
-be good to have a pool, and also setup the config so that the owner<br>
-of an MR is not allow to approve their own MR, to guarantee there<br>
-is always a 2nd pair of eyes as sanity check.<br>
-<br>
-We might also need to consider enabling &#39;merge trains&#39;, so that<br>
-we get a serialized CI run again after hte MR is approved, in<br>
-case &#39;master&#39; moved onwards since the initial CI pipeline when<br>
-the MR was opened.<br></blockquote><div><br></div><div>I&#39;d honestly opt=
-imize for &#39;frequent merges of smaller things&#39; rather than &#39;infr=
-equent merges of larger things&#39;. The latter has caused most of the issu=
-es for me. It&#39;s harder to contribute because the overhead of doing so i=
-s so large you want to batch everything. Let&#39;s not optimize for that wo=
-rkaround for the high-friction submission process we have now. If there&#39=
-;s always smaller bits of work going in all the time, you&#39;ll find few c=
-ommit races... though the CI pipeline is rather large, so having a ci-stagi=
-ng branch to land the MRs to that have completed CI, but not CI on the tip,=
- might not be bad... but the resolution of conflicts can be tricky, though =
-infrequent, so if a ci-staging branch bounces, all MRs would need to be man=
-ually requeued after humans look at why and think through who needs to talk=
- to whom, or if it&#39;s just a &#39;other things landed before you could g=
-et yours in and it&#39;s not the ci-staging being full of other people&#39;=
-s commits that is at fault.</div><div><br></div><div>Warner<br></div><div>=
-=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
-.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-With regards,<br>
-Daniel<br>
--- <br>
-|: <a href=3D"https://berrange.com" rel=3D"noreferrer" target=3D"_blank">ht=
-tps://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D"http=
-s://www.flickr.com/photos/dberrange" rel=3D"noreferrer" target=3D"_blank">h=
-ttps://www.flickr.com/photos/dberrange</a> :|<br>
-|: <a href=3D"https://libvirt.org" rel=3D"noreferrer" target=3D"_blank">htt=
-ps://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com" rel=3D"n=
-oreferrer" target=3D"_blank">https://fstop138.berrange.com</a> :|<br>
-|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer" target=3D"_bla=
-nk">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D=
-"https://www.instagram.com/dberrange" rel=3D"noreferrer" target=3D"_blank">=
-https://www.instagram.com/dberrange</a> :|<br>
-<br>
-<br>
-</blockquote></div></div>
+> +    }
+> +}
+> +
+> +static inline int tohex(int v)
+> +{
 
---00000000000096e469060b4c7d07--
+g_assert(v =3D< 0xf)
+
+> +    if (v < 10) {
+> +        return v + '0';
+> +    } else {
+> +        return v - 10 + 'a';
+> +    }
+> +}
+> +
+> +#endif /* CUTILS_H */
+> diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+> index f696e29477..cb70ebd7b4 100644
+> --- a/include/exec/gdbstub.h
+> +++ b/include/exec/gdbstub.h
+> @@ -15,11 +15,18 @@ typedef struct GDBFeature {
+>      const char *xml;
+>  } GDBFeature;
+>=20=20
+> -
+>  /* Get or set a register.  Returns the size of the register.  */
+>  typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int re=
+g);
+>  typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
+>=20=20
+> +typedef struct GDBRegisterState {
+> +    int base_reg;
+> +    int num_regs;
+> +    gdb_get_reg_cb get_reg;
+> +    gdb_set_reg_cb set_reg;
+> +    const char *xml;
+> +} GDBRegisterState;
+> +
+>  /**
+>   * gdb_register_coprocessor() - register a supplemental set of registers
+>   * @cpu - the CPU associated with registers
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
