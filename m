@@ -2,71 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4EF7FD098
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 09:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2EF7FD0A3
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 09:24:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8FoV-0006r9-KR; Wed, 29 Nov 2023 03:20:56 -0500
+	id 1r8FrR-0007zc-5o; Wed, 29 Nov 2023 03:23:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8FoS-0006qh-OK
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 03:20:53 -0500
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r8FrO-0007zB-Eq
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 03:23:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8FoR-0000fe-2V
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 03:20:52 -0500
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r8FrM-0001Ok-RO
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 03:23:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701246048;
+ s=mimecast20190719; t=1701246231;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S/3cDfRa5LH4GWX/yLB4BmmZ5fLLYCoRPZZdEvvflmc=;
- b=RzvXKuKe6Y/ra+/XJ7+bRO5CeXUsMAH7YKMi8x2SX9MChnOts92aPK8e0+nVoAnboO8aaH
- K6s0AmDS7qTL4FoyU3UC83lIpyHQj8H2911UGnhkugvi3CeXXjAGx1naCysRLySMYmjfVm
- /wHTkj9/RCyjWACz0VLMJwxj1Tl8LhA=
+ bh=ADmzhu/8DY+OfJQEMmAt4FVjfP0nIt8HrPxBGzZjuDg=;
+ b=P3si8cc/2bDB0yk8S3JWjGdda59l1/iVV3is1HqBwz3BELVbeKRjxfsBhOgvbTJOXgOT6M
+ 4zptgTIUYY2sZ4ht6EoSqCGOYXg9RA6mOW63ao8I8Qk5t2uu/HmKQivYSg6PzZ3g+eebj1
+ FB7I+Wrnb1mJ9pokDpfwGVkCKtPQFs4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-H-wAc1oJMQuj81Eds4H6LQ-1; Wed, 29 Nov 2023 03:20:45 -0500
-X-MC-Unique: H-wAc1oJMQuj81Eds4H6LQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-302-DXFV8MskP368vtIdLBzRtQ-1; Wed, 29 Nov 2023 03:23:48 -0500
+X-MC-Unique: DXFV8MskP368vtIdLBzRtQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 30733101A529;
- Wed, 29 Nov 2023 08:20:44 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E441220268D6;
- Wed, 29 Nov 2023 08:20:42 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id EF53721E6A1F; Wed, 29 Nov 2023 09:20:41 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Gavin Shan <gshan@redhat.com>
-Cc: qemu-arm@nongnu.org,  qemu-devel@nongnu.org,  qemu-riscv@nongnu.org,
- peter.maydell@linaro.org,  imammedo@redhat.com,  b.galvani@gmail.com,
- strahinja.p.jankovic@gmail.com,  sundeep.lkml@gmail.com,
- kfting@nuvoton.com,  wuhaotsh@google.com,  nieklinnenbank@gmail.com,
- rad@semihalf.com,  quic_llindhol@quicinc.com,
- marcin.juszkiewicz@linaro.org,  eduardo@habkost.net,
- marcel.apfelbaum@gmail.com,  philmd@linaro.org,  wangyanan55@huawei.com,
- vijai@behindbytes.com,  palmer@dabbelt.com,  alistair.francis@wdc.com,
- bin.meng@windriver.com,  liwei1518@gmail.com,  dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com,  shan.gavin@gmail.com
-Subject: Re: [PATCH v8 1/9] machine: Use error handling when CPU type is
- checked
-References: <20231129042012.277831-1-gshan@redhat.com>
- <20231129042012.277831-2-gshan@redhat.com>
-Date: Wed, 29 Nov 2023 09:20:41 +0100
-In-Reply-To: <20231129042012.277831-2-gshan@redhat.com> (Gavin Shan's message
- of "Wed, 29 Nov 2023 14:20:04 +1000")
-Message-ID: <87bkbdnf6u.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0C87805957;
+ Wed, 29 Nov 2023 08:23:47 +0000 (UTC)
+Received: from localhost (dhcp-192-239.str.redhat.com [10.33.192.239])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A03821C060AE;
+ Wed, 29 Nov 2023 08:23:47 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth
+ <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+Subject: Re: [PATCH v2 3/3] hw/misc/pvpanic: add support for normal shutdowns
+In-Reply-To: <20231128-pvpanic-shutdown-v2-3-830393b45cb6@t-8ch.de>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy Ross"
+References: <20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de>
+ <20231128-pvpanic-shutdown-v2-3-830393b45cb6@t-8ch.de>
+User-Agent: Notmuch/0.37 (https://notmuchmail.org)
+Date: Wed, 29 Nov 2023 09:23:46 +0100
+Message-ID: <874jh5x90t.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,76 +87,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Gavin Shan <gshan@redhat.com> writes:
+On Tue, Nov 28 2023, Thomas Wei=C3=9Fschuh <thomas@t-8ch.de> wrote:
 
-> QEMU will be terminated if the specified CPU type isn't supported
-> in machine_run_board_init(). The list of supported CPU type names
-> is tracked by mc->valid_cpu_types.
-
-Suggest to drop the second sentence.
-
-> The error handling can be used to propagate error messages, to be
-> consistent how the errors are handled for other situations in the
-> same function.
+> Shutdown requests are normally hardware dependent.
+> By extending pvpanic to also handle shutdown requests, guests can
+> submit such requests with an easily implementable and cross-platform
+> mechanism.
 >
-> No functional change intended.
->
-> Suggested-by: Igor Mammedov <imammedo@redhat.com>
-> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas@t-8ch.de>
 > ---
-> v8: Drop @local_err and use @errp to be compatible with
->     ERRP_GUARD()                                          (Phil)
-> ---
->  hw/core/machine.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
+>  docs/specs/pvpanic.rst                   | 2 ++
+>  hw/misc/pvpanic.c                        | 5 +++++
+>  include/hw/misc/pvpanic.h                | 2 +-
+>  include/standard-headers/linux/pvpanic.h | 1 +
+>  4 files changed, 9 insertions(+), 1 deletion(-)
+
+(...)
+
+> diff --git a/include/standard-headers/linux/pvpanic.h b/include/standard-=
+headers/linux/pvpanic.h
+> index 54b7485390d3..38e53ad45929 100644
+> --- a/include/standard-headers/linux/pvpanic.h
+> +++ b/include/standard-headers/linux/pvpanic.h
+> @@ -5,5 +5,6 @@
+>=20=20
+>  #define PVPANIC_PANICKED	(1 << 0)
+>  #define PVPANIC_CRASH_LOADED	(1 << 1)
+> +#define PVPANIC_SHUTDOWN       	(1 << 2)
+>=20=20
+>  #endif /* __PVPANIC_H__ */
 >
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index 0c17398141..bde7f4af6d 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -1466,15 +1466,16 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
->  
->          if (!machine_class->valid_cpu_types[i]) {
->              /* The user specified CPU is not valid */
-> -            error_report("Invalid CPU type: %s", machine->cpu_type);
-> -            error_printf("The valid types are: %s",
-> -                         machine_class->valid_cpu_types[0]);
-> +            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
-> +            error_append_hint(errp, "The valid types are: %s",
-> +                              machine_class->valid_cpu_types[0]);
->              for (i = 1; machine_class->valid_cpu_types[i]; i++) {
-> -                error_printf(", %s", machine_class->valid_cpu_types[i]);
-> +                error_append_hint(errp, ", %s",
-> +                                  machine_class->valid_cpu_types[i]);
->              }
-> -            error_printf("\n");
->  
-> -            exit(1);
-> +            error_append_hint(&errp, "\n");
-> +            return;
->          }
->      }
 
-This cleans up an anti-pattern: use of error_report() within a function that
-returns errors through an Error **errp parameter.
-
-Cleanup, not bug fix, because the only caller passes &error_abort.
-
-Suggest to start the commit message with a mention of the anti-pattern.
-Here's how I'd write it:
-
-    Functions that use an Error **errp parameter to return errors should
-    not also report them to the user, because reporting is the caller's
-    job.
-
-    machine_run_board_init() violates this principle: it calls
-    error_report(), error_printf(), and exit(1) when the machine doesn't
-    support the requested CPU type.
-
-    Clean this up by using error_setg() and error_append_hint() instead.
-    No functional change, as the only caller passes &error_fatal.
-
-Whether you use my suggestion or not:
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+This hunk needs to come in via a separate headers update, or has to be
+split out into a placeholder patch if it is not included in the Linux
+kernel yet.
 
 
