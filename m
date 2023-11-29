@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6967FDBFF
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 16:54:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7807FDC2A
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 17:04:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8MsK-0008Ly-O2; Wed, 29 Nov 2023 10:53:20 -0500
+	id 1r8N1R-00036o-N1; Wed, 29 Nov 2023 11:02:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r8MsG-0008LC-GZ
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:53:16 -0500
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r8N1N-00036J-PQ
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 11:02:42 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1r8MsE-0002Kx-Vg
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:53:16 -0500
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-58d18c224c7so3573947eaf.2
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 07:53:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r8N1L-0004N6-5J
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 11:02:41 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2c8880f14eeso88285441fa.3
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 08:02:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701273193; x=1701877993; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=HWqPIFSvSqCC0qwOaqb8JkqLD5cRd07nuSBNeIYVDV0=;
- b=B5KjWLUYV5rRZo/oEKfVsAd2WZw3hB3mUjjSJMweqEx04ToEUPsKNTmki3v6YN5AP/
- 2HRavx49KK2nlcNZA2mLYyGz1f/UUSvA1bRiIaqJqeQ7zpt0M0J0TTqX7gJs6rWaMTDe
- YGE0PAYH2Lt6BP8dW/KEhzfYt4+zANb3GXfg+Zf646hmtdpzIrtcyYpzEt9Zz9MMnKPN
- ObKpwjke9q+pYdUVERN8qrPZ13S7dFPiGaWHXIbO0r8kv5YMs+PGcajTCaonJDllnYNJ
- R9E92GBztaTN8USQCULoFzJVgP4V67WJ3pIi9z3CoF8wovpaIkd/XoJievpamO6pFKLi
- sDJw==
+ d=linaro.org; s=google; t=1701273757; x=1701878557; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JAYOTHzF1OaG7TB8X+N7Ima8n16kw44jGX8Iis3iDqs=;
+ b=VN/5ZyaEGOR2d/Bez8kaJDht49/zjp05/Y1raJtrwWr0pCPBaAzyRaKi4f/pXKreUN
+ Pbd1S09OHsnfPfHhbUan6qSlMHtF3iVMQ2sA4Z/Wn2wreOeGvkkLP7+X2J1aLcFqgwAJ
+ mf6jiWi7+xurdHrofAPrbHBBHmOQjeScjEEP/S/G1dmCvq/S6NVH7x5UxEgFiZyxq6pL
+ C++Uc74EaQdFvzTcDAv4XQjh6+xw7jMAwXwoDJ+WpekRkgh9ew+oDL6YKuFaLEtcwEXN
+ z/WPC4vHOpGV95daLj6f2kJ6o4p7sANjbmhr5jrT2mBEvJYEhZuk4AczL4YC+koWyHS+
+ 72ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701273193; x=1701877993;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HWqPIFSvSqCC0qwOaqb8JkqLD5cRd07nuSBNeIYVDV0=;
- b=IujrfMxIj+XVZplScTczmLJHmXaNEsDIWroYKGCAddXKNBGQAO+Rl+/joYf85RGHaE
- euknnHjIicMYgye3S25SO707TADgoM+mLTCdyjnS9TyHEjn/LPshMxfT3xtBINmjL1ey
- veaWO2jp6C9sftJj7VXV1CcFKEtqSDTosKKT9wk5yOJiKbcGQSnjs9lmHd9gEHcwliAJ
- MuVrfl8bh2uGrd2XF2Kn+G5VU3U6AHvFoYCp5YcRxwKYZIH9A1bq3ErjwueWVXAfWKej
- e24aKN72BAiDZPZMu+hhWReMSUL6ISdJT2Dp99DgfFe0fLjeqBbUR22Q/k4czs/rwJfO
- 9MiA==
-X-Gm-Message-State: AOJu0Yyufrb9BwZ7NOa0gyXP9tzyisRwz2bMKfySOcJcTrHJqIDL4c7C
- npn98rCLrpQqs90toG0rG1nOTwQ/gOy5tndS2Rs=
-X-Google-Smtp-Source: AGHT+IHWwZZBq3uAoPjEsP86VsHX1Uh2r290hDKXuuPldAgesZUzqNCibMrJOVKi3kKlFJaHH6VQ5/tt0wg6JeJfmrM=
-X-Received: by 2002:a05:6820:1ca5:b0:589:d6c7:8573 with SMTP id
- ct37-20020a0568201ca500b00589d6c78573mr23554548oob.3.1701273192575; Wed, 29
- Nov 2023 07:53:12 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701273757; x=1701878557;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=JAYOTHzF1OaG7TB8X+N7Ima8n16kw44jGX8Iis3iDqs=;
+ b=hPkQpyfjI2QMF6ijXUFn7oyQAti+OeTGQcnI2wfGwHmmjXdNvQknMicSSOYE4mcQvt
+ /2A4Xs86+/7JTmgFShirQJbsWk1iIF1GlOOTQhXMkvCY1KXW8WpbNoY9WxjVHBUHVKtj
+ +Mc7gKfwU2TCVdeTB6ywDG2g2G1bwFPNZrkD404ftbqNVPQ8awVMrhbEZpiP+H0Lt/IT
+ jOSh9n9iOky4IDfV/bQbz02xDmJ5fz6Rg5z2vVEVvR8GKLFGGekqK7UqWEG6qtsuPqY5
+ QQ6iGIFeYv/efwLL5Ene6GdevbwNT2tlm+IeSUmJEF4LRNh4fqU/Rff1C9Hk4H2aCeii
+ XlaA==
+X-Gm-Message-State: AOJu0YyG1d4fNBIs4hiYqT+QyviHSleF+7jOp2KILroUOH7J2YO4z3NB
+ p4GNRbDf6G4AZTXt9KK+lQn3eQ==
+X-Google-Smtp-Source: AGHT+IFi56qjdPJnsl0pDAXdhQP4zvoq2ix5m8/RpkTpH83iQstJzL/QFDhFwraPveKnW7l6dJFdXQ==
+X-Received: by 2002:a2e:2405:0:b0:2c9:b880:9059 with SMTP id
+ k5-20020a2e2405000000b002c9b8809059mr3091840ljk.7.1701273756589; 
+ Wed, 29 Nov 2023 08:02:36 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ m40-20020a05600c3b2800b004042dbb8925sm2714896wms.38.2023.11.29.08.02.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Nov 2023 08:02:36 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id D36BE5F7AF;
+ Wed, 29 Nov 2023 16:02:35 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Nicolas Eder <nicolas.eder@lauterbach.com>
+Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, "Christian Boenig" <christian.boenig@lauterbach.com>
+Subject: Re: [PATCH v3 04/20] mcdstub: added header with defines specific to
+ the mcd tcp packet communication
+In-Reply-To: <20231107130323.4126-5-nicolas.eder@lauterbach.com> (Nicolas
+ Eder's message of "Tue, 7 Nov 2023 14:03:07 +0100")
+References: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
+ <20231107130323.4126-5-nicolas.eder@lauterbach.com>
+User-Agent: mu4e 1.11.25; emacs 29.1
+Date: Wed, 29 Nov 2023 16:02:35 +0000
+Message-ID: <875y1ka6p0.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
- <87edgjf2v4.fsf@draig.linaro.org>
- <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
- <ZWYsMsgxjDZ_T2zA@redhat.com>
- <68337349-a8c7-4520-a381-a359bf8f8438@linaro.org>
- <CAJSP0QVzwJ8GFAaprwt6892zhxC9-uuKAk9d2cftXebFkMoVog@mail.gmail.com>
-In-Reply-To: <CAJSP0QVzwJ8GFAaprwt6892zhxC9-uuKAk9d2cftXebFkMoVog@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 29 Nov 2023 10:53:00 -0500
-Message-ID: <CAJSP0QVSe6MZOS=20d9NMkJOAwsXaFF3aOOxZFkzhT-XZogG-w@mail.gmail.com>
-Subject: Re: QEMU Summit Minutes 2023
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc33.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,16 +98,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To give a picture of the state of the CI, I'd say it fails 80% of the
-time. Usually 2 or 3 of the tests fail randomly from a group of <10
-tests that commonly fail randomly.
+Nicolas Eder <nicolas.eder@lauterbach.com> writes:
 
-In order for the CI to be usable to submaintainers I think it should
-_pass_ at least 90% of the time.
+> ---
+>  include/mcdstub/mcd_shared_defines.h | 108 +++++++++++++++++++++++++++
+>  1 file changed, 108 insertions(+)
+>  create mode 100644 include/mcdstub/mcd_shared_defines.h
+>
+> diff --git a/include/mcdstub/mcd_shared_defines.h b/include/mcdstub/mcd_s=
+hared_defines.h
+> new file mode 100644
+> index 0000000000..fa1adb5c77
+> --- /dev/null
+> +++ b/include/mcdstub/mcd_shared_defines.h
+> @@ -0,0 +1,108 @@
+> +/*
+> + *this file is shared between the mcd dll and the mcd stub.
+> + *it has to be kept exectly the same!
+> + */
 
-There is still some way to go but I think this goal is achievable in
-the next 2 or 3 months because the set of problematic tests is not
-that large.
+If this comes from the published API headers it needs clear attribution
+and a license header. I assume it won't update anything like as
+frequently as our linux and Xen headers so I don't think we need special
+tooling to handle updates.
 
-Stefan
+> +
+> +#ifndef MCD_SHARED_DEFINES
+> +#define MCD_SHARED_DEFINES
+> +
+> +/* default tcp port */
+> +#define MCD_DEFAULT_TCP_PORT "1235"
+> +
+> +/* tcp data characters */
+> +#define TCP_CHAR_OPEN_SERVER 'I'
+> +#define TCP_CHAR_OPEN_CORE 'i'
+> +#define TCP_CHAR_GO 'C'
+> +#define TCP_CHAR_STEP 'c'
+> +#define TCP_CHAR_BREAK 'b'
+> +#define TCP_CHAR_QUERY 'q'
+> +#define TCP_CHAR_CLOSE_SERVER 'D'
+> +#define TCP_CHAR_CLOSE_CORE 'd'
+> +#define TCP_CHAR_KILLQEMU 'k'
+> +#define TCP_CHAR_RESET 'r'
+> +#define TCP_CHAR_READ_REGISTER 'p'
+> +#define TCP_CHAR_WRITE_REGISTER 'P'
+> +#define TCP_CHAR_READ_MEMORY 'm'
+> +#define TCP_CHAR_WRITE_MEMORY 'M'
+> +#define TCP_CHAR_BREAKPOINT_INSERT 't'
+> +#define TCP_CHAR_BREAKPOINT_REMOVE 'T'
+> +
+> +/* tcp protocol chars */
+> +#define TCP_ACKNOWLEDGED '+'
+> +#define TCP_NOT_ACKNOWLEDGED '-'
+> +#define TCP_COMMAND_START '$'
+> +#define TCP_COMMAND_END '#'
+> +#define TCP_WAS_LAST '|'
+> +#define TCP_WAS_NOT_LAST '~'
+> +#define TCP_HANDSHAKE_SUCCESS "shaking your hand"
+> +#define TCP_EXECUTION_SUCCESS "success"
+> +#define TCP_EXECUTION_ERROR "error"
+> +
+> +/* tcp query arguments */
+> +#define QUERY_FIRST "f"
+> +#define QUERY_CONSEQUTIVE "c"
+> +#define QUERY_END_INDEX "!"
+> +
+> +#define QUERY_ARG_SYSTEM "system"
+> +#define QUERY_ARG_CORES "cores"
+> +#define QUERY_ARG_RESET "reset"
+> +#define QUERY_ARG_TRIGGER "trigger"
+> +#define QUERY_ARG_MEMORY "memory"
+> +#define QUERY_ARG_REGGROUP "reggroup"
+> +#define QUERY_ARG_REG "reg"
+> +#define QUERY_ARG_STATE "state"
+> +
+> +/* tcp query packet argument list */
+> +#define TCP_ARGUMENT_NAME "name"
+> +#define TCP_ARGUMENT_DATA "data"
+> +#define TCP_ARGUMENT_ID "id"
+> +#define TCP_ARGUMENT_TYPE "type"
+> +#define TCP_ARGUMENT_BITS_PER_MAU "bpm"
+> +#define TCP_ARGUMENT_INVARIANCE "i"
+> +#define TCP_ARGUMENT_ENDIAN "e"
+> +#define TCP_ARGUMENT_MIN "min"
+> +#define TCP_ARGUMENT_MAX "max"
+> +#define TCP_ARGUMENT_SUPPORTED_ACCESS_OPTIONS "sao"
+> +#define TCP_ARGUMENT_REGGROUPID "reggroupid"
+> +#define TCP_ARGUMENT_MEMSPACEID "memspaceid"
+> +#define TCP_ARGUMENT_SIZE "size"
+> +#define TCP_ARGUMENT_THREAD "thread"
+> +#define TCP_ARGUMENT_ADDRESS "address"
+> +#define TCP_ARGUMENT_STOP_STRING "stop_str"
+> +#define TCP_ARGUMENT_INFO_STRING "info_str"
+> +#define TCP_ARGUMENT_STATE "state"
+> +#define TCP_ARGUMENT_EVENT "event"
+> +#define TCP_ARGUMENT_DEVICE "device"
+> +#define TCP_ARGUMENT_CORE "core"
+> +#define TCP_ARGUMENT_AMOUNT_CORE "nr_cores"
+> +#define TCP_ARGUMENT_AMOUNT_TRIGGER "nr_trigger"
+> +#define TCP_ARGUMENT_OPTION "option"
+> +#define TCP_ARGUMENT_ACTION "action"
+> +#define TCP_ARGUMENT_OPCODE "opcode"
+> +
+> +/* for packets sent to qemu */
+> +#define ARGUMENT_SEPARATOR ';'
+> +#define NEGATIVE_FLAG 0
+> +#define POSITIVE_FLAG 1
+> +
+> +/* core states */
+> +#define CORE_STATE_RUNNING "running"
+> +#define CORE_STATE_HALTED "halted"
+> +#define CORE_STATE_DEBUG "debug"
+> +#define CORE_STATE_UNKNOWN "unknown"
+> +
+> +/* breakpoint types */
+> +#define MCD_BREAKPOINT_HW 1
+> +#define MCD_BREAKPOINT_READ 2
+> +#define MCD_BREAKPOINT_WRITE 3
+> +#define MCD_BREAKPOINT_RW 4
+> +
+> +/* trigger data */
+> +#define MCD_TRIG_ACT_BREAK "check_data_value"
+> +#define MCD_TRIG_OPT_VALUE "break_on_trigger"
+> +
+> +/* register mem space key words */
+> +#define MCD_GRP_KEYWORD "GPR"
+> +#define MCD_CP_KEYWORD "CP"
+> +
+> +#endif
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
