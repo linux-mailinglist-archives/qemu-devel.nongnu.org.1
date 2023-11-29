@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C20A7FE091
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 20:57:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB1A7FE0E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 21:21:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8Qft-0007Th-88; Wed, 29 Nov 2023 14:56:45 -0500
+	id 1r8R21-0002dd-Kc; Wed, 29 Nov 2023 15:19:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r8Qfo-0007Rg-Sq
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 14:56:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1r8Qfm-0004PR-AQ
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 14:56:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701287797;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1r8R1z-0002ch-53; Wed, 29 Nov 2023 15:19:35 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1r8R1w-0000X8-Ny; Wed, 29 Nov 2023 15:19:34 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 7B0EC219C5;
+ Wed, 29 Nov 2023 20:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1701289168; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/coadPn+sc9xiWSzcANbfgrPP5rjPXDBWuHi5ymh2L8=;
- b=gYV9MhsvY3ULu1IouxR89xs9caffECYLLH2MfOsZ/1QgQIM9cruqOhl6AI7ieSF9icVj77
- x+rp25IxG3R4fTLdTt4r5w8vtE0TPbtqQNmIpjmN32K0EHKskBdINBQUxqpVid6Gel+QCz
- EkJZL55kXM7ObKcAg+kx/WhANjsXMPU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-RuQccRyZNLa7YHgHxw2Ysw-1; Wed, 29 Nov 2023 14:56:34 -0500
-X-MC-Unique: RuQccRyZNLa7YHgHxw2Ysw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=ltK4vFx5VWsh2lZkRoSa0YlWHrq5gR0k3QUnWz3f974=;
+ b=zD4JIq6IUihylGmT4Ky6b6X++57pY7+V2e/a/NzV0BpXtABQZFr/4NpA9bVq3Xgg4Wj6XH
+ Xo3tVS6VbrGfhOjz2EuZpGegzxfyrN4KPal+jNgVCOSMqVxa8+rI7wqtBKLW5VoHj01nmW
+ x4mgKZhNkL6FQebTSZOd13B5EuaBpRA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1701289168;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ltK4vFx5VWsh2lZkRoSa0YlWHrq5gR0k3QUnWz3f974=;
+ b=ldp8ng08clxE4c0GzmKwLTaDjtyIPDQGpeyqXkNi8CGMu+YsRH8yedr/yB1lkg8jiJxHTK
+ rqLlVn918E3BlxDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0C409101A54C;
- Wed, 29 Nov 2023 19:56:33 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 17D701121308;
- Wed, 29 Nov 2023 19:56:31 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>, Paul Durrant <paul@xen.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Alberto Garcia <berto@igalia.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>,
- John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Eric Blake <eblake@redhat.com>, Wen Congyang <wencongyang2@huawei.com>,
- <qemu-block@nongnu.org>, xen-devel@lists.xenproject.org,
- Coiby Xu <Coiby.Xu@gmail.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Xie Changlong <xiechanglong.d@gmail.com>, Ari Sundholm <ari@tuxera.com>,
- Li Zhijian <lizhijian@fujitsu.com>, Cleber Rosa <crosa@redhat.com>,
- Juan Quintela <quintela@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Zhang Chen <chen.zhang@intel.com>, Peter Xu <peterx@redhat.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Leonardo Bras <leobras@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Fam Zheng <fam@euphon.net>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH 12/12] block: remove outdated AioContext locking comments
-Date: Wed, 29 Nov 2023 14:55:53 -0500
-Message-ID: <20231129195553.942921-13-stefanha@redhat.com>
-In-Reply-To: <20231129195553.942921-1-stefanha@redhat.com>
-References: <20231129195553.942921-1-stefanha@redhat.com>
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E83841388B;
+ Wed, 29 Nov 2023 20:19:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id L2h3K8+cZ2XSPQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 29 Nov 2023 20:19:27 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, =?utf-8?Q?Jo=C3=A3o?= Silva <jsilva@suse.de>, Lin Ma
+ <lma@suse.com>,
+ Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>,
+ Eric Blake <eblake@redhat.com>, "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: Re: [PATCH v2 09/10] block: Convert qmp_query_block() to coroutine_fn
+In-Reply-To: <b1f840cc-82c7-4ff5-8ab8-38382e425181@redhat.com>
+References: <20230609201910.12100-1-farosas@suse.de>
+ <20230609201910.12100-10-farosas@suse.de>
+ <b1f840cc-82c7-4ff5-8ab8-38382e425181@redhat.com>
+Date: Wed, 29 Nov 2023 17:19:25 -0300
+Message-ID: <87wmu09usy.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spamd-Result: default: False [-2.91 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_SPAM_SHORT(1.19)[0.397];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCPT_COUNT_SEVEN(0.00)[11];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -2.91
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,399 +104,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AioContext lock no longer exists.
+Hanna Czenczek <hreitz@redhat.com> writes:
 
-There is one noteworthy change:
+> On 09.06.23 22:19, Fabiano Rosas wrote:
+>> This is another caller of bdrv_get_allocated_file_size() that needs to
+>> be converted to a coroutine because that function will be made
+>> asynchronous when called (indirectly) from the QMP dispatcher.
+>>
+>> This QMP command is a candidate because it calls bdrv_do_query_node_info=
+(),
+>> which in turn calls bdrv_get_allocated_file_size().
+>>
+>> We've determined bdrv_do_query_node_info() to be coroutine-safe (see
+>> previous commits), so we can just put this QMP command in a coroutine.
+>>
+>> Since qmp_query_block() now expects to run in a coroutine, its callers
+>> need to be converted as well. Convert hmp_info_block(), which calls
+>> only coroutine-safe code, including qmp_query_named_block_nodes()
+>> which has been converted to coroutine in the previous patches.
+>>
+>> Now that all callers of bdrv_[co_]block_device_info() are using the
+>> coroutine version, a few things happen:
+>>
+>>   - we can return to using bdrv_block_device_info() without a wrapper;
+>>
+>>   - bdrv_get_allocated_file_size() can stop being mixed;
+>>
+>>   - bdrv_co_get_allocated_file_size() needs to be put under the graph
+>>     lock because it is being called wthout the wrapper;
+>>
+>>   - bdrv_do_query_node_info() doesn't need to acquire the AioContext
+>>     because it doesn't call aio_poll anymore;
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>   block.c                        |  2 +-
+>>   block/monitor/block-hmp-cmds.c |  2 +-
+>>   block/qapi.c                   | 18 +++++++++---------
+>>   hmp-commands-info.hx           |  1 +
+>>   include/block/block-hmp-cmds.h |  2 +-
+>>   include/block/block-io.h       |  2 +-
+>>   include/block/qapi.h           | 12 ++++--------
+>>   qapi/block-core.json           |  2 +-
+>>   8 files changed, 19 insertions(+), 22 deletions(-)
+>
+> After this series has been sent, we got some usages of=20
+> GRAPH_RDLOCK_GUARD_MAINLOOP() that no longer fit with this patch =E2=80=
+=93 I=E2=80=99ve=20
+> also mentioned one case on patch 7, not yet realizing that this was a=20
+> new thing.=C2=A0 Those must now be fixed (e.g. in qmp_query_block(), or i=
+n=20
+> bdrv_snapshot_list()), or they=E2=80=99ll crash.
 
-  - * More specifically, these functions use BDRV_POLL_WHILE(bs), which
-  - * requires the caller to be either in the main thread and hold
-  - * the BlockdriverState (bs) AioContext lock, or directly in the
-  - * home thread that runs the bs AioContext. Calling them from
-  - * another thread in another AioContext would cause deadlocks.
-  + * More specifically, these functions use BDRV_POLL_WHILE(bs), which requires
-  + * the caller to be either in the main thread or directly in the home thread
-  + * that runs the bs AioContext. Calling them from another thread in another
-  + * AioContext would cause deadlocks.
+Hi, thanks for the reviews!
 
-I am not sure whether deadlocks are still possible. Maybe they have just
-moved to the fine-grained locks that have replaced the AioContext. Since
-I am not sure if the deadlocks are gone, I have kept the substance
-unchanged and just removed mention of the AioContext.
-
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- include/block/block-common.h         |  3 --
- include/block/block-io.h             |  9 ++--
- include/block/block_int-common.h     |  2 -
- block.c                              | 73 ++++++----------------------
- block/block-backend.c                |  8 ---
- block/export/vhost-user-blk-server.c |  4 --
- tests/qemu-iotests/202               |  2 +-
- tests/qemu-iotests/203               |  3 +-
- 8 files changed, 22 insertions(+), 82 deletions(-)
-
-diff --git a/include/block/block-common.h b/include/block/block-common.h
-index d7599564db..a846023a09 100644
---- a/include/block/block-common.h
-+++ b/include/block/block-common.h
-@@ -70,9 +70,6 @@
-  * automatically takes the graph rdlock when calling the wrapped function. In
-  * the same way, no_co_wrapper_bdrv_wrlock functions automatically take the
-  * graph wrlock.
-- *
-- * If the first parameter of the function is a BlockDriverState, BdrvChild or
-- * BlockBackend pointer, the AioContext lock for it is taken in the wrapper.
-  */
- #define no_co_wrapper
- #define no_co_wrapper_bdrv_rdlock
-diff --git a/include/block/block-io.h b/include/block/block-io.h
-index 8eb39a858b..b49e0537dd 100644
---- a/include/block/block-io.h
-+++ b/include/block/block-io.h
-@@ -332,11 +332,10 @@ bdrv_co_copy_range(BdrvChild *src, int64_t src_offset,
-  * "I/O or GS" API functions. These functions can run without
-  * the BQL, but only in one specific iothread/main loop.
-  *
-- * More specifically, these functions use BDRV_POLL_WHILE(bs), which
-- * requires the caller to be either in the main thread and hold
-- * the BlockdriverState (bs) AioContext lock, or directly in the
-- * home thread that runs the bs AioContext. Calling them from
-- * another thread in another AioContext would cause deadlocks.
-+ * More specifically, these functions use BDRV_POLL_WHILE(bs), which requires
-+ * the caller to be either in the main thread or directly in the home thread
-+ * that runs the bs AioContext. Calling them from another thread in another
-+ * AioContext would cause deadlocks.
-  *
-  * Therefore, these functions are not proper I/O, because they
-  * can't run in *any* iothreads, but only in a specific one.
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 4e31d161c5..151279d481 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -1192,8 +1192,6 @@ struct BlockDriverState {
-     /* The error object in use for blocking operations on backing_hd */
-     Error *backing_blocker;
- 
--    /* Protected by AioContext lock */
--
-     /*
-      * If we are reading a disk image, give its size in sectors.
-      * Generally read-only; it is written to by load_snapshot and
-diff --git a/block.c b/block.c
-index 91ace5d2d5..e773584dfd 100644
---- a/block.c
-+++ b/block.c
-@@ -1616,11 +1616,6 @@ out:
-     g_free(gen_node_name);
- }
- 
--/*
-- * The caller must always hold @bs AioContext lock, because this function calls
-- * bdrv_refresh_total_sectors() which polls when called from non-coroutine
-- * context.
-- */
- static int no_coroutine_fn GRAPH_UNLOCKED
- bdrv_open_driver(BlockDriverState *bs, BlockDriver *drv, const char *node_name,
-                  QDict *options, int open_flags, Error **errp)
-@@ -2901,7 +2896,7 @@ uint64_t bdrv_qapi_perm_to_blk_perm(BlockPermission qapi_perm)
-  * Replaces the node that a BdrvChild points to without updating permissions.
-  *
-  * If @new_bs is non-NULL, the parent of @child must already be drained through
-- * @child and the caller must hold the AioContext lock for @new_bs.
-+ * @child.
-  */
- static void GRAPH_WRLOCK
- bdrv_replace_child_noperm(BdrvChild *child, BlockDriverState *new_bs)
-@@ -3041,9 +3036,8 @@ static TransactionActionDrv bdrv_attach_child_common_drv = {
-  *
-  * Returns new created child.
-  *
-- * The caller must hold the AioContext lock for @child_bs. Both @parent_bs and
-- * @child_bs can move to a different AioContext in this function. Callers must
-- * make sure that their AioContext locking is still correct after this.
-+ * Both @parent_bs and @child_bs can move to a different AioContext in this
-+ * function.
-  */
- static BdrvChild * GRAPH_WRLOCK
- bdrv_attach_child_common(BlockDriverState *child_bs,
-@@ -3142,9 +3136,8 @@ bdrv_attach_child_common(BlockDriverState *child_bs,
- /*
-  * Function doesn't update permissions, caller is responsible for this.
-  *
-- * The caller must hold the AioContext lock for @child_bs. Both @parent_bs and
-- * @child_bs can move to a different AioContext in this function. Callers must
-- * make sure that their AioContext locking is still correct after this.
-+ * Both @parent_bs and @child_bs can move to a different AioContext in this
-+ * function.
-  *
-  * After calling this function, the transaction @tran may only be completed
-  * while holding a writer lock for the graph.
-@@ -3184,9 +3177,6 @@ bdrv_attach_child_noperm(BlockDriverState *parent_bs,
-  *
-  * On failure NULL is returned, errp is set and the reference to
-  * child_bs is also dropped.
-- *
-- * The caller must hold the AioContext lock @child_bs, but not that of @ctx
-- * (unless @child_bs is already in @ctx).
-  */
- BdrvChild *bdrv_root_attach_child(BlockDriverState *child_bs,
-                                   const char *child_name,
-@@ -3226,9 +3216,6 @@ out:
-  *
-  * On failure NULL is returned, errp is set and the reference to
-  * child_bs is also dropped.
-- *
-- * If @parent_bs and @child_bs are in different AioContexts, the caller must
-- * hold the AioContext lock for @child_bs, but not for @parent_bs.
-  */
- BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
-                              BlockDriverState *child_bs,
-@@ -3418,9 +3405,8 @@ static BdrvChildRole bdrv_backing_role(BlockDriverState *bs)
-  *
-  * Function doesn't update permissions, caller is responsible for this.
-  *
-- * The caller must hold the AioContext lock for @child_bs. Both @parent_bs and
-- * @child_bs can move to a different AioContext in this function. Callers must
-- * make sure that their AioContext locking is still correct after this.
-+ * Both @parent_bs and @child_bs can move to a different AioContext in this
-+ * function.
-  *
-  * After calling this function, the transaction @tran may only be completed
-  * while holding a writer lock for the graph.
-@@ -3513,9 +3499,8 @@ out:
- }
- 
- /*
-- * The caller must hold the AioContext lock for @backing_hd. Both @bs and
-- * @backing_hd can move to a different AioContext in this function. Callers must
-- * make sure that their AioContext locking is still correct after this.
-+ * Both @bs and @backing_hd can move to a different AioContext in this
-+ * function.
-  *
-  * If a backing child is already present (i.e. we're detaching a node), that
-  * child node must be drained.
-@@ -3574,8 +3559,6 @@ int bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
-  * itself, all options starting with "${bdref_key}." are considered part of the
-  * BlockdevRef.
-  *
-- * The caller must hold the main AioContext lock.
-- *
-  * TODO Can this be unified with bdrv_open_image()?
-  */
- int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
-@@ -3745,9 +3728,7 @@ done:
-  *
-  * The BlockdevRef will be removed from the options QDict.
-  *
-- * The caller must hold the lock of the main AioContext and no other AioContext.
-- * @parent can move to a different AioContext in this function. Callers must
-- * make sure that their AioContext locking is still correct after this.
-+ * @parent can move to a different AioContext in this function.
-  */
- BdrvChild *bdrv_open_child(const char *filename,
-                            QDict *options, const char *bdref_key,
-@@ -3778,9 +3759,7 @@ BdrvChild *bdrv_open_child(const char *filename,
- /*
-  * Wrapper on bdrv_open_child() for most popular case: open primary child of bs.
-  *
-- * The caller must hold the lock of the main AioContext and no other AioContext.
-- * @parent can move to a different AioContext in this function. Callers must
-- * make sure that their AioContext locking is still correct after this.
-+ * @parent can move to a different AioContext in this function.
-  */
- int bdrv_open_file_child(const char *filename,
-                          QDict *options, const char *bdref_key,
-@@ -3923,8 +3902,6 @@ out:
-  * The reference parameter may be used to specify an existing block device which
-  * should be opened. If specified, neither options nor a filename may be given,
-  * nor can an existing BDS be reused (that is, *pbs has to be NULL).
-- *
-- * The caller must always hold the main AioContext lock.
-  */
- static BlockDriverState * no_coroutine_fn
- bdrv_open_inherit(const char *filename, const char *reference, QDict *options,
-@@ -4217,7 +4194,6 @@ close_and_fail:
-     return NULL;
- }
- 
--/* The caller must always hold the main AioContext lock. */
- BlockDriverState *bdrv_open(const char *filename, const char *reference,
-                             QDict *options, int flags, Error **errp)
- {
-@@ -4665,10 +4641,7 @@ int bdrv_reopen_set_read_only(BlockDriverState *bs, bool read_only,
-  *
-  * Return 0 on success, otherwise return < 0 and set @errp.
-  *
-- * The caller must hold the AioContext lock of @reopen_state->bs.
-  * @reopen_state->bs can move to a different AioContext in this function.
-- * Callers must make sure that their AioContext locking is still correct after
-- * this.
-  */
- static int GRAPH_UNLOCKED
- bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
-@@ -4801,8 +4774,6 @@ out_rdlock:
-  * It is the responsibility of the caller to then call the abort() or
-  * commit() for any other BDS that have been left in a prepare() state
-  *
-- * The caller must hold the AioContext lock of @reopen_state->bs.
-- *
-  * After calling this function, the transaction @change_child_tran may only be
-  * completed while holding a writer lock for the graph.
-  */
-@@ -5437,8 +5408,6 @@ int bdrv_drop_filter(BlockDriverState *bs, Error **errp)
-  * child.
-  *
-  * This function does not create any image files.
-- *
-- * The caller must hold the AioContext lock for @bs_top.
-  */
- int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
-                 Error **errp)
-@@ -5545,9 +5514,8 @@ static void bdrv_delete(BlockDriverState *bs)
-  * after the call (even on failure), so if the caller intends to reuse the
-  * dictionary, it needs to use qobject_ref() before calling bdrv_open.
-  *
-- * The caller holds the AioContext lock for @bs. It must make sure that @bs
-- * stays in the same AioContext, i.e. @options must not refer to nodes in a
-- * different AioContext.
-+ * The caller must make sure that @bs stays in the same AioContext, i.e.
-+ * @options must not refer to nodes in a different AioContext.
-  */
- BlockDriverState *bdrv_insert_node(BlockDriverState *bs, QDict *options,
-                                    int flags, Error **errp)
-@@ -7575,10 +7543,6 @@ static TransactionActionDrv set_aio_context = {
-  *
-  * Must be called from the main AioContext.
-  *
-- * The caller must own the AioContext lock for the old AioContext of bs, but it
-- * must not own the AioContext lock for new_context (unless new_context is the
-- * same as the current context of bs).
-- *
-  * @visited will accumulate all visited BdrvChild objects. The caller is
-  * responsible for freeing the list afterwards.
-  */
-@@ -7631,13 +7595,6 @@ static bool bdrv_change_aio_context(BlockDriverState *bs, AioContext *ctx,
-  *
-  * If ignore_child is not NULL, that child (and its subgraph) will not
-  * be touched.
-- *
-- * This function still requires the caller to take the bs current
-- * AioContext lock, otherwise draining will fail since AIO_WAIT_WHILE
-- * assumes the lock is always held if bs is in another AioContext.
-- * For the same reason, it temporarily also holds the new AioContext, since
-- * bdrv_drained_end calls BDRV_POLL_WHILE that assumes the lock is taken too.
-- * Therefore the new AioContext lock must not be taken by the caller.
-  */
- int bdrv_try_change_aio_context(BlockDriverState *bs, AioContext *ctx,
-                                 BdrvChild *ignore_child, Error **errp)
-@@ -7663,8 +7620,8 @@ int bdrv_try_change_aio_context(BlockDriverState *bs, AioContext *ctx,
- 
-     /*
-      * Linear phase: go through all callbacks collected in the transaction.
--     * Run all callbacks collected in the recursion to switch all nodes
--     * AioContext lock (transaction commit), or undo all changes done in the
-+     * Run all callbacks collected in the recursion to switch every node's
-+     * AioContext (transaction commit), or undo all changes done in the
-      * recursion (transaction abort).
-      */
- 
-diff --git a/block/block-backend.c b/block/block-backend.c
-index f412bed274..209eb07528 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -390,8 +390,6 @@ BlockBackend *blk_new(AioContext *ctx, uint64_t perm, uint64_t shared_perm)
-  * Both sets of permissions can be changed later using blk_set_perm().
-  *
-  * Return the new BlockBackend on success, null on failure.
-- *
-- * Callers must hold the AioContext lock of @bs.
-  */
- BlockBackend *blk_new_with_bs(BlockDriverState *bs, uint64_t perm,
-                               uint64_t shared_perm, Error **errp)
-@@ -416,8 +414,6 @@ BlockBackend *blk_new_with_bs(BlockDriverState *bs, uint64_t perm,
-  * Just as with bdrv_open(), after having called this function the reference to
-  * @options belongs to the block layer (even on failure).
-  *
-- * Called without holding an AioContext lock.
-- *
-  * TODO: Remove @filename and @flags; it should be possible to specify a whole
-  * BDS tree just by specifying the @options QDict (or @reference,
-  * alternatively). At the time of adding this function, this is not possible,
-@@ -872,8 +868,6 @@ BlockBackend *blk_by_public(BlockBackendPublic *public)
- 
- /*
-  * Disassociates the currently associated BlockDriverState from @blk.
-- *
-- * The caller must hold the AioContext lock for the BlockBackend.
-  */
- void blk_remove_bs(BlockBackend *blk)
- {
-@@ -915,8 +909,6 @@ void blk_remove_bs(BlockBackend *blk)
- 
- /*
-  * Associates a new BlockDriverState with @blk.
-- *
-- * Callers must hold the AioContext lock of @bs.
-  */
- int blk_insert_bs(BlockBackend *blk, BlockDriverState *bs, Error **errp)
- {
-diff --git a/block/export/vhost-user-blk-server.c b/block/export/vhost-user-blk-server.c
-index 16f48388d3..50c358e8cd 100644
---- a/block/export/vhost-user-blk-server.c
-+++ b/block/export/vhost-user-blk-server.c
-@@ -278,7 +278,6 @@ static void vu_blk_exp_resize(void *opaque)
-     vu_config_change_msg(&vexp->vu_server.vu_dev);
- }
- 
--/* Called with vexp->export.ctx acquired */
- static void vu_blk_drained_begin(void *opaque)
- {
-     VuBlkExport *vexp = opaque;
-@@ -287,7 +286,6 @@ static void vu_blk_drained_begin(void *opaque)
-     vhost_user_server_detach_aio_context(&vexp->vu_server);
- }
- 
--/* Called with vexp->export.blk AioContext acquired */
- static void vu_blk_drained_end(void *opaque)
- {
-     VuBlkExport *vexp = opaque;
-@@ -300,8 +298,6 @@ static void vu_blk_drained_end(void *opaque)
-  * Ensures that bdrv_drained_begin() waits until in-flight requests complete
-  * and the server->co_trip coroutine has terminated. It will be restarted in
-  * vhost_user_server_attach_aio_context().
-- *
-- * Called with vexp->export.ctx acquired.
-  */
- static bool vu_blk_drained_poll(void *opaque)
- {
-diff --git a/tests/qemu-iotests/202 b/tests/qemu-iotests/202
-index b784dcd791..13304242e5 100755
---- a/tests/qemu-iotests/202
-+++ b/tests/qemu-iotests/202
-@@ -21,7 +21,7 @@
- # Check that QMP 'transaction' blockdev-snapshot-sync with multiple drives on a
- # single IOThread completes successfully.  This particular command triggered a
- # hang due to recursive AioContext locking and BDRV_POLL_WHILE().  Protect
--# against regressions.
-+# against regressions even though the AioContext lock no longer exists.
- 
- import iotests
- 
-diff --git a/tests/qemu-iotests/203 b/tests/qemu-iotests/203
-index ab80fd0e44..1ba878522b 100755
---- a/tests/qemu-iotests/203
-+++ b/tests/qemu-iotests/203
-@@ -21,7 +21,8 @@
- # Check that QMP 'migrate' with multiple drives on a single IOThread completes
- # successfully.  This particular command triggered a hang in the source QEMU
- # process due to recursive AioContext locking in bdrv_invalidate_all() and
--# BDRV_POLL_WHILE().
-+# BDRV_POLL_WHILE().  Protect against regressions even though the AioContext
-+# lock no longer exists.
- 
- import iotests
- 
--- 
-2.42.0
-
+Yes, there's been a lot of changes since this series was sent. I'll
+rebase it and re-evaluate. Stefan just sent an AioContext series which
+will probably help bring the complexity of down for this series. Let's
+see how it goes.
 
