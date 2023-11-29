@@ -2,67 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869BE7FD482
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 11:41:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D72777FD662
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 13:15:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8Hz8-00081f-Gj; Wed, 29 Nov 2023 05:40:03 -0500
+	id 1r8JRs-0006A6-Fy; Wed, 29 Nov 2023 07:13:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1r8Hyr-000813-MM; Wed, 29 Nov 2023 05:39:46 -0500
-Received: from ams.source.kernel.org ([145.40.68.75])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r8JRm-00069p-2k
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:13:42 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1r8Hyo-0002Hu-VC; Wed, 29 Nov 2023 05:39:45 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by ams.source.kernel.org (Postfix) with ESMTP id CFC6DB83E18;
- Wed, 29 Nov 2023 10:39:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F537C433C7;
- Wed, 29 Nov 2023 10:39:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1701254372;
- bh=DWiyWVQyvwX0QtpnUdmdbZUPhO2TKjrfeTspbmele+4=;
- h=From:To:Cc:Subject:Date:From;
- b=Z+GzO6NaSoKqXFujNfYaVdZR6qkQj9LBYVGmAKcd8GBpQiv2deun6NLRNBVft1UbF
- 632vYqg0s9eH/rY1rJggVkiobng+YqN3OEvIQziuvOnJcAmiqg2EaF8mjmGJ3cE5v7
- Z8USy/Eb3YVOa+SvTBiuvm6qaecn2U3DZmiZSRThqq5Gda2RaPfaiwc8U3o2lWeAZQ
- dyhWcG2Q53Ajhg6NfD/G53ULt/P9pemqZuuhdLWDeNRCuI8q5JSlIBbBreInV0CR3Q
- 3NCkssQ0FyTa9hONsEARqEkdpIpHdF+Wn0EIDJBEiSeMXxtOWu2ZsYxFzYwN+yXf9J
- N9wbkLMwj0cdg==
-From: Conor Dooley <conor@kernel.org>
-To: qemu-riscv@nongnu.org
-Cc: conor@kernel.org, Conor Dooley <conor.dooley@microchip.com>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Subject: [PATCH v1] riscv: support new isa extension detection devicetree
- properties
-Date: Wed, 29 Nov 2023 10:39:13 +0000
-Message-Id: <20231129-pebble-tuition-52fe03be95ae@spud>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1r8JRk-00069z-CG
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:13:41 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 34AC33761B;
+ Wed, 29 Nov 2023 15:13:50 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 61EC838657;
+ Wed, 29 Nov 2023 15:13:26 +0300 (MSK)
+Message-ID: <ccc89939-8f8f-4c0d-b401-46f463d0db5f@tls.msk.ru>
+Date: Wed, 29 Nov 2023 15:13:26 +0300
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9982;
- i=conor.dooley@microchip.com; h=from:subject:message-id;
- bh=lnF5C6B65MkbtS58gF5BMqYWfik82GRxGJnThjkV97M=;
- b=owGbwMvMwCFWscWwfUFT0iXG02pJDKnpIuetzje9112dEGi1pP1S4eaUOqOWRu/gFtFdsyQ4B
- Xmu52V1lLIwiHEwyIopsiTe7muRWv/HZYdzz1uYOaxMIEMYuDgFYCKSzxn+cOv9KTGP3txmxdGd
- pM6YoHzGQ7I3ul3UlOWIHzfjoohTDP+0PhbP+3tcOFCEVXFfxQTlBJnkxTMMDl7orDzq8Wqd+wp
- mAA==
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp;
- fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.40.68.75; envelope-from=conor@kernel.org;
- helo=ams.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] Fix IRQ routing in via south bridge
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, vr_qemu@t-online.de
+References: <cover.1701035944.git.balaton@eik.bme.hu>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <cover.1701035944.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,230 +84,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Conor Dooley <conor.dooley@microchip.com>
+27.11.2023 01:49, BALATON Zoltan:
+> Philippe,
+> 
+> Could this be merged for 8.2 as it fixes USB on the amigaone machine?
+> This would be useful as usb-storage is the simplest way to share data
+> with the host with these machines.
+> 
+> This is a slight change from v2 adding more comments and improving
+> commit messages and clean things a bit but otherwise should be the
+> same as previous versions. Even v1 worked the same as this one and v2,
+> the additional check to avoid stuck bits is just paranoia, it does not
+> happen in practice as IRQ mappings are quite static, they are set once
+> at boot and don't change afterwards.
 
-A few months ago I submitted a patch to various lists, deprecating
-"riscv,isa" with a lengthy commit message [0] that is now commit
-aeb71e42caae ("dt-bindings: riscv: deprecate riscv,isa") in the Linux
-kernel tree. Primarily, the goal was to replace "riscv,isa" with a new
-set of properties that allowed for strictly defining the meaning of
-various extensions, where "riscv,isa" was tied to whatever definitions
-inflicted upon us by the ISA manual, which have seen some variance over
-time.
+Should this patchset be picked up for stable-8.1?
 
-Two new properties were introduced: "riscv,isa-base" and
-"riscv,isa-extensions". The former is a simple string to communicate the
-base ISA implemented by a hart and the latter an array of strings used
-to communicate the set of ISA extensions supported, per the definitions
-of each substring in extensions.yaml [1]. A beneficial side effect was
-also the ability to define vendor extensions in a more "official" way,
-as the ISA manual and other RVI specifications only covered the format
-for vendor extensions in the ISA string, but not the meaning of vendor
-extensions, for obvious reasons.
 
-Add support for setting these two new properties in the devicetrees for
-the various devicetree platforms supported by QEMU for RISC-V. The Linux
-kernel already supports parsing ISA extensions from these new
-properties, and documenting them in the dt-binding is a requirement for
-new extension detection being added to the kernel.
+Thanks,
 
-A side effect of the implementation is that the meaning for elements in
-"riscv,isa" and in "riscv,isa-extensions" are now tied together as they
-are constructed from the same source. The same applies to the ISA string
-provided in ACPI tables, but there does not appear to be any strict
-definitions of meanings in ACPI land either.
-
-Link: https://lore.kernel.org/qemu-riscv/20230702-eats-scorebook-c951f170d29f@spud/ [0]
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/riscv/extensions.yaml [1]
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
-The apart from the bonding of ACPI and DT definitions which concerns me
-a bit, I'm a wee bit worried about the vendor extensions diverging from
-what ends up in bindings. Ideally I think there should be acked binding
-patches for extensions, but that's well outside of my jurisdiction!
-
-There's two 80 char line length violations in this, but the file already
-has some > 80 char lines, so I figured that it'd be fine...
-
-CC: Alistair Francis <Alistair.Francis@wdc.com>
-CC: Bin Meng <bin.meng@windriver.com>
-CC: Palmer Dabbelt <palmer@dabbelt.com>
-CC: Weiwei Li <liwei1518@gmail.com>
-CC: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-CC: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-CC: qemu-riscv@nongnu.org
-CC: qemu-devel@nongnu.org
----
- hw/riscv/sifive_u.c |  7 ++-----
- hw/riscv/spike.c    |  6 ++----
- hw/riscv/virt.c     |  6 ++----
- target/riscv/cpu.c  | 50 +++++++++++++++++++++++++++++++++++++++++++++
- target/riscv/cpu.h  |  1 +
- 5 files changed, 57 insertions(+), 13 deletions(-)
-
-diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-index ec76dce6c9..4e6eed863b 100644
---- a/hw/riscv/sifive_u.c
-+++ b/hw/riscv/sifive_u.c
-@@ -171,7 +171,6 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
-         int cpu_phandle = phandle++;
-         nodename = g_strdup_printf("/cpus/cpu@%d", cpu);
-         char *intc = g_strdup_printf("/cpus/cpu@%d/interrupt-controller", cpu);
--        char *isa;
-         qemu_fdt_add_subnode(fdt, nodename);
-         /* cpu 0 is the management hart that does not have mmu */
-         if (cpu != 0) {
-@@ -180,11 +179,10 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
-             } else {
-                 qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv48");
-             }
--            isa = riscv_isa_string(&s->soc.u_cpus.harts[cpu - 1]);
-+            riscv_isa_set_props(&s->soc.u_cpus.harts[cpu - 1], fdt, nodename);
-         } else {
--            isa = riscv_isa_string(&s->soc.e_cpus.harts[0]);
-+            riscv_isa_set_props(&s->soc.e_cpus.harts[0], fdt, nodename);
-         }
--        qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", isa);
-         qemu_fdt_setprop_string(fdt, nodename, "compatible", "riscv");
-         qemu_fdt_setprop_string(fdt, nodename, "status", "okay");
-         qemu_fdt_setprop_cell(fdt, nodename, "reg", cpu);
-@@ -194,7 +192,6 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
-         qemu_fdt_setprop_string(fdt, intc, "compatible", "riscv,cpu-intc");
-         qemu_fdt_setprop(fdt, intc, "interrupt-controller", NULL, 0);
-         qemu_fdt_setprop_cell(fdt, intc, "#interrupt-cells", 1);
--        g_free(isa);
-         g_free(intc);
-         g_free(nodename);
-     }
-diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
-index 81f7e53aed..1657554d7b 100644
---- a/hw/riscv/spike.c
-+++ b/hw/riscv/spike.c
-@@ -59,7 +59,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
-     MachineState *ms = MACHINE(s);
-     uint32_t *clint_cells;
-     uint32_t cpu_phandle, intc_phandle, phandle = 1;
--    char *name, *mem_name, *clint_name, *clust_name;
-+    char *mem_name, *clint_name, *clust_name;
-     char *core_name, *cpu_name, *intc_name;
-     static const char * const clint_compat[2] = {
-         "sifive,clint0", "riscv,clint0"
-@@ -113,9 +113,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
-             } else {
-                 qemu_fdt_setprop_string(fdt, cpu_name, "mmu-type", "riscv,sv48");
-             }
--            name = riscv_isa_string(&s->soc[socket].harts[cpu]);
--            qemu_fdt_setprop_string(fdt, cpu_name, "riscv,isa", name);
--            g_free(name);
-+            riscv_isa_set_props(&s->soc[socket].harts[cpu], fdt, cpu_name);
-             qemu_fdt_setprop_string(fdt, cpu_name, "compatible", "riscv");
-             qemu_fdt_setprop_string(fdt, cpu_name, "status", "okay");
-             qemu_fdt_setprop_cell(fdt, cpu_name, "reg",
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index c7fc97e273..435ad66cd3 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -238,7 +238,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
-     int cpu;
-     uint32_t cpu_phandle;
-     MachineState *ms = MACHINE(s);
--    char *name, *cpu_name, *core_name, *intc_name, *sv_name;
-+    char *cpu_name, *core_name, *intc_name, *sv_name;
-     bool is_32_bit = riscv_is_32bit(&s->soc[0]);
-     uint8_t satp_mode_max;
- 
-@@ -259,9 +259,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
-             g_free(sv_name);
-         }
- 
--        name = riscv_isa_string(cpu_ptr);
--        qemu_fdt_setprop_string(ms->fdt, cpu_name, "riscv,isa", name);
--        g_free(name);
-+        riscv_isa_set_props(cpu_ptr, ms->fdt, cpu_name);
- 
-         if (cpu_ptr->cfg.ext_zicbom) {
-             qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cbom-block-size",
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 83c7c0cf07..5a7e8d06ad 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -31,6 +31,7 @@
- #include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
- #include "fpu/softfloat-helpers.h"
-+#include "sysemu/device_tree.h"
- #include "sysemu/kvm.h"
- #include "sysemu/tcg.h"
- #include "kvm/kvm_riscv.h"
-@@ -1735,6 +1736,55 @@ char *riscv_isa_string(RISCVCPU *cpu)
-     return isa_str;
- }
- 
-+static char **riscv_isa_extensions_list(RISCVCPU *cpu, int *count)
-+{
-+    int maxlen = ARRAY_SIZE(riscv_single_letter_exts) + ARRAY_SIZE(isa_edata_arr);
-+    char **extensions = g_new(char *, maxlen);
-+
-+    for (int i = 0; i < sizeof(riscv_single_letter_exts) - 1; i++) {
-+        if (cpu->env.misa_ext & RV(riscv_single_letter_exts[i])) {
-+            extensions[*count] = g_new(char, 2);
-+            snprintf(extensions[*count], 2, "%c",
-+                     qemu_tolower(riscv_single_letter_exts[i]));
-+            (*count)++;
-+        }
-+    }
-+
-+    for (const RISCVIsaExtData *edata = isa_edata_arr; edata && edata->name; edata++) {
-+        if (isa_ext_is_enabled(cpu, edata->ext_enable_offset)) {
-+            extensions[*count] = g_new(char, strlen(edata->name) + 1);
-+            snprintf(extensions[*count], strlen(edata->name) + 1, "%s",
-+                     edata->name);
-+            (*count)++;
-+        }
-+    }
-+
-+    return extensions;
-+}
-+
-+void riscv_isa_set_props(RISCVCPU *cpu, void *fdt, char *nodename)
-+{
-+    const size_t maxlen = sizeof("rv128i");
-+    g_autofree char *isa_base = g_new(char, maxlen);
-+    g_autofree char *riscv_isa;
-+    char **isa_extensions;
-+    int count = 0;
-+
-+    riscv_isa = riscv_isa_string(cpu);
-+    qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", riscv_isa);
-+
-+    snprintf(isa_base, maxlen, "rv%di", TARGET_LONG_BITS);
-+    qemu_fdt_setprop_string(fdt, nodename, "riscv,isa-base", isa_base);
-+
-+    isa_extensions = riscv_isa_extensions_list(cpu, &count);
-+    qemu_fdt_setprop_string_array(fdt, nodename, "riscv,isa-extensions",
-+                                  isa_extensions, count);
-+
-+    for (int i = 0; i < count; i++) {
-+        g_free(isa_extensions[i]);
-+    }
-+}
-+
- static gint riscv_cpu_list_compare(gconstpointer a, gconstpointer b)
- {
-     ObjectClass *class_a = (ObjectClass *)a;
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index bf58b0f0b5..d2dae07665 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -490,6 +490,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                         MMUAccessType access_type, int mmu_idx,
-                         bool probe, uintptr_t retaddr);
- char *riscv_isa_string(RISCVCPU *cpu);
-+void riscv_isa_set_props(RISCVCPU *cpu, void *fdt, char *nodename);
- void riscv_cpu_list(void);
- 
- #define cpu_list riscv_cpu_list
--- 
-2.39.2
-
+/mjt
 
