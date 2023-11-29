@@ -2,87 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C897FDDCA
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 17:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4BA7FDDEC
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 18:05:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8Nsu-0004hN-W5; Wed, 29 Nov 2023 11:58:01 -0500
+	id 1r8NzD-00005I-J2; Wed, 29 Nov 2023 12:04:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8Nst-0004dz-1j
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 11:57:59 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1r8Nys-0008AY-Nd
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 12:04:18 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8Nsr-00010F-Hy
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 11:57:58 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40b4746ae51so28359905e9.2
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 08:57:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1r8Nyr-0002vm-0s
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 12:04:10 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1cf8e569c35so47431855ad.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 09:04:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701277076; x=1701881876; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BF0WsKY8zAGsrs/mGWJd2fM9bhE9+AnmOo9yKHngfB0=;
- b=HgkVuZaW8h/uSINhAwE+AUeGLAKtX0P0WoqCnB9LT1AMTPMlDwNJ4HrzS/sczFee2C
- GwwNkUld/7gEDqck69d1Xp9ZwEXEAAQJtUp3WTN3Oy2jkF6DsrGUzg2eepw0YU0YRxpU
- B1n7XueP0+4eNXFckxVmf/pXuEZNYkMA8eaZlTJry1St3l4zSlEnDqOfokh8IdRFt+SM
- ZGyNWUiQOC2HMubM3GGOo/LA53nfp7iIlXVow1dH+/skXpG1FIhiOG5ISXECqXRvjdbD
- 7kksxAC6e/AMzgu+nLIylAcar3tXXQpnudWFTOcJTVJ3USYbiDsLtAC7+2I5MyLWrIq5
- yMyw==
+ d=sifive.com; s=google; t=1701277446; x=1701882246; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GHbV0I+QOlx/OHbttaWIvpuptP06zgPxIiK8T4xUKr8=;
+ b=UWZ8HTpyeG8enxTTZVnFMovD422VvuoReVFXFWVB9uBwIFm64Mop1nFO/+d2SY/pFD
+ 4l8jHyRgxjZg+caXuYQLVcO4z0924GWBxfUKwVHXcFYVYX9OaBS8GKw4KZQoWkGDAW+q
+ pSi0zkML0SyE1h/6JexRl8OWzOT0pEPu5800jADEV7+RH6gNa3FMsgMQGthUkfMYm1Qn
+ ovbfrraLk2R0QRoaRHRWngjzQj0s7zY0INzsvclxQlx3EJP25s5Q67lElmPeLBsjN3do
+ CASxkDqep2gk+knRYNtPyGmrTQdc1Ofrg0bJiO2qa6zb8uNtCL94ss2CUW/HDHfNYILu
+ d97A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701277076; x=1701881876;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=BF0WsKY8zAGsrs/mGWJd2fM9bhE9+AnmOo9yKHngfB0=;
- b=KQ9Dku8VRQaVHrS6TYy/xMmRlhVLu+1UOA5Wyrlam2HuLe7ZVhJy3XZuWNQLCVZ6sd
- N8342u9QGvUCATGHf71TmdfEEiC52XG529PTBBDW3Wbz6ZtAiXfJkH/aGOu8zouNHWmj
- cy8U4ZYnpHE/ZflZj7Sv0X9HOcq8RWCxosuAIiBEODCcz4mpi1C1b4fT5Qvxn9ZyTUFX
- L6ERSer1EmVBEe99Xim5wuQxfBzvMYBoB5oDVHhyIwjx0L0Kqhkfb8w+brkQTUKJmq1S
- mws2qtNtzo74xzk8Fm/PIVFOYTB+UqGptVDeNBf6WG9owYniGtErKrhrBN2ha88X6L2n
- RsjQ==
-X-Gm-Message-State: AOJu0YzX0e4ppPj7j/SHx2URmO1Uxg/fApQliaPoqtaguSolgcvwqg3v
- cKRwdk7N0ELS5uSk0pS47bYZJg==
-X-Google-Smtp-Source: AGHT+IG8jrpwMvX26E1id8I58Q5M2fNw5j57wVIIaXpQQeDUT5nmJy6H+OVVM8EndD0yduhf9Bzh6A==
-X-Received: by 2002:a05:600c:3553:b0:40b:42e2:1c53 with SMTP id
- i19-20020a05600c355300b0040b42e21c53mr9084734wmq.13.1701277075926; 
- Wed, 29 Nov 2023 08:57:55 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- fm24-20020a05600c0c1800b0040b3e26872dsm2929223wmb.8.2023.11.29.08.57.55
+ d=1e100.net; s=20230601; t=1701277446; x=1701882246;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GHbV0I+QOlx/OHbttaWIvpuptP06zgPxIiK8T4xUKr8=;
+ b=Uvj54a2IEQWQTgEdmv+XAtXfFVzXGp1EooD6VzKeYIlgcH19bfSgUDGfviYHK5SVkC
+ GwgqOoR8WU4M1G3VhdZNYRSbTdn+owi4rTt1QG5wbgVwnjs/uXt84HHSMcudUH7sogjH
+ WIVVqOctSymMJnp5qVOBgZXLIi/bWs3T5jnpkoZD6YKckZP7TWQJ6RGVBzENaMBg2j81
+ gtR6EYURH/ELzUZutIJsYEOaCWfbD83FyAkv0bqdPksa4ez9iuaZc8cN8Mw/M4glycnf
+ 3vSbS0Yy4c51oRa7L4nJKlK6SOHVEt0CwsczuFip1eogNbeZDlwpLnq0h8Tt8FpqkVps
+ k9yg==
+X-Gm-Message-State: AOJu0Yzf78K7Uz+aIMJUGzp9Mb16wbcfcrNfHVGtAf7nNV3Ho7j9jCEV
+ 9HM/XbV2sansKB9jU/MU0DCO5qslkWqdxqoMCb1Yf5sOdos5Z0s0coR0EHkiS8jSFOkiliClY5D
+ W3Kzn9tY8UlbY7RxwzussmQSnkT8mi0+KI3BKMHjtL53VNQp9tYC86LnaZX6Iq35n0X9Lc2Syxo
+ co
+X-Google-Smtp-Source: AGHT+IGS72HbMSuocMS11YGVXLkTRyLrDuNhqa3kKuUeWl1xSfaLpl5JFUot3EDT67Lae2idsXwLBA==
+X-Received: by 2002:a17:903:1d2:b0:1cf:ad61:7a67 with SMTP id
+ e18-20020a17090301d200b001cfad617a67mr18396967plh.32.1701277445789; 
+ Wed, 29 Nov 2023 09:04:05 -0800 (PST)
+Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
+ [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
+ p5-20020a170902eac500b001cfc6838e30sm6921383pld.308.2023.11.29.09.04.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Nov 2023 08:57:55 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 4D4B25F7AF;
- Wed, 29 Nov 2023 16:57:55 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Peter Maydell
- <peter.maydell@linaro.org>,  QEMU Developers <qemu-devel@nongnu.org>
-Subject: Re: QEMU Summit Minutes 2023
-In-Reply-To: <CAJSP0QVSe6MZOS=20d9NMkJOAwsXaFF3aOOxZFkzhT-XZogG-w@mail.gmail.com>
- (Stefan Hajnoczi's message of "Wed, 29 Nov 2023 10:53:00 -0500")
-References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
- <87edgjf2v4.fsf@draig.linaro.org>
- <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
- <ZWYsMsgxjDZ_T2zA@redhat.com>
- <68337349-a8c7-4520-a381-a359bf8f8438@linaro.org>
- <CAJSP0QVzwJ8GFAaprwt6892zhxC9-uuKAk9d2cftXebFkMoVog@mail.gmail.com>
- <CAJSP0QVSe6MZOS=20d9NMkJOAwsXaFF3aOOxZFkzhT-XZogG-w@mail.gmail.com>
-User-Agent: mu4e 1.11.25; emacs 29.1
-Date: Wed, 29 Nov 2023 16:57:55 +0000
-Message-ID: <877cm08pkc.fsf@draig.linaro.org>
+ Wed, 29 Nov 2023 09:04:05 -0800 (PST)
+From: Max Chou <max.chou@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Max Chou <max.chou@sifive.com>
+Subject: [PATCH 0/2] Make vector whole-register move (vmv) depend on vtype
+ register
+Date: Thu, 30 Nov 2023 01:03:56 +0800
+Message-Id: <20231129170400.21251-1-max.chou@sifive.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,25 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Hajnoczi <stefanha@gmail.com> writes:
+The ratified v1.0 version of RISC-V V spec section 16.6 says that 
+`The instructions operate as if EEW=SEW.`.
 
-> To give a picture of the state of the CI, I'd say it fails 80% of the
-> time. Usually 2 or 3 of the tests fail randomly from a group of <10
-> tests that commonly fail randomly.
+So the whole vector register move instructions depend on the vtype
+register that means the implementation needs to be fixed to raise an
+illegal-instruction exception when vtype.vill=1, as is the case with
+most other vector instructions.
 
-Do you have a list anywhere?
+Reference:
+- https://github.com/riscv/riscv-v-spec/blob/v1.0/v-spec.adoc#whole-vector-register-move
+- https://github.com/riscv/riscv-v-spec/commit/856fe5bd1cb135c39258e6ca941bf234ae63e1b1
 
->
-> In order for the CI to be usable to submaintainers I think it should
-> _pass_ at least 90% of the time.
->
-> There is still some way to go but I think this goal is achievable in
-> the next 2 or 3 months because the set of problematic tests is not
-> that large.
->
-> Stefan
+Max Chou (2):
+  target/riscv: Add vill check for whole vector register move
+    instructions
+  target/riscv: The whole vector register move instructions depend on
+    vsew
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+ target/riscv/insn_trans/trans_rvv.c.inc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+-- 
+2.34.1
+
 
