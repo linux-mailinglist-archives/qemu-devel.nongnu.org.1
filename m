@@ -2,106 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BDB7FDA98
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 15:57:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B44A7FDAB8
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 16:03:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8M02-00007l-Ux; Wed, 29 Nov 2023 09:57:14 -0500
+	id 1r8M50-0001c2-Fr; Wed, 29 Nov 2023 10:02:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1r8Lzo-00006R-I5; Wed, 29 Nov 2023 09:57:01 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
+ id 1r8M4U-0001Sl-PH
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:02:02 -0500
+Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1r8Lzl-0007hn-Gr; Wed, 29 Nov 2023 09:57:00 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ATEiAPx011907; Wed, 29 Nov 2023 14:56:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=Ih1nHrR1TSSuJUsXkba7PLZfJLpEaWddd74IxSPkRtE=;
- b=JS34VWJx8CI1hVns0OCPrGPZXYfX2f2VPob4erv/7h1jHqLXl1AuGK4DzmvlYIep6GBl
- 9Bcc9UvMmGU3g7UkHz1iBp36r6DW8NMvYhkHnXByWeB4zm7xSVO+mFZf5Ye8dEEtFu6n
- TRtlxw6AMJ0Cbd6chOEc+rIRP4jc+WkiyIgQ7rujKiNPAZQf79+MOH/bkAvECUty4Zyg
- GZj1q5x+nip9zGXd1WEjuT+poy7y88LMYxyrWzA/nrjs13Au8yHn4DD/zlEDOsOxbomK
- 3wz7+wvFJ04Avjnk+p/inP2jNPW9sMcNKimOjte36EXTgBUt3qfm4UAsxRt6/CQENhAC aw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3up7ar0fq2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Nov 2023 14:56:41 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ATEj4iD014390;
- Wed, 29 Nov 2023 14:56:40 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3up7ar0fma-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Nov 2023 14:56:40 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3ATEBNdV004317; Wed, 29 Nov 2023 14:56:37 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwy1yapn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Nov 2023 14:56:37 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3ATEua7K49218238
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 29 Nov 2023 14:56:37 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 831C85804E;
- Wed, 29 Nov 2023 14:56:36 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DEC075803F;
- Wed, 29 Nov 2023 14:56:34 +0000 (GMT)
-Received: from [9.67.13.86] (unknown [9.67.13.86])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 29 Nov 2023 14:56:34 +0000 (GMT)
-Message-ID: <a1fbfc7b-6f5a-44c4-9af4-65dac15763b6@linux.ibm.com>
-Date: Wed, 29 Nov 2023 08:56:34 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 00/10] Introduce model for IBM's FSI
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20231026164741.1184058-1-ninad@linux.ibm.com>
- <417e8a68-2f35-4315-b694-892f78c811b6@kaod.org>
-Content-Language: en-US
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <417e8a68-2f35-4315-b694-892f78c811b6@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yFMbS6IkdABEeS6T_VNpwTC4x9dzxXwV
-X-Proofpoint-ORIG-GUID: iDLv6uVv22_xiyvZVDWxrDxxjan6_ZJh
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
+ id 1r8M4O-0000Fd-4h
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:01:49 -0500
+Received: (qmail 1961 invoked by uid 484); 29 Nov 2023 15:01:22 -0000
+X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
+ smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
+ uid 484) with qmail-scanner-2.11 
+ (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
+ Clear:RC:1(10.2.11.92):. 
+ Processed in 0.521504 secs); 29 Nov 2023 15:01:22 -0000
+Received: from nedpc1.intern.lauterbach.com (HELO [10.2.11.92])
+ (Authenticated_SSL:neder@[10.2.11.92])
+ (envelope-sender <nicolas.eder@lauterbach.com>)
+ by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
+ encrypted SMTP
+ for <alex.bennee@linaro.org>; 29 Nov 2023 15:01:21 -0000
+Content-Type: multipart/alternative;
+ boundary="------------0LCCgr6xToBMFx09Z2ThKsb4"
+Message-ID: <2fbb34b1-b2cb-4456-b358-919442a21b47@lauterbach.com>
+Date: Wed, 29 Nov 2023 16:01:20 +0100
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-29_12,2023-11-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- spamscore=0 clxscore=1015 mlxscore=0 adultscore=0 bulkscore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=773 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311290113
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/20] first version of mcdstub
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Christian Boenig <christian.boenig@lauterbach.com>
+References: <20231107130323.4126-1-nicolas.eder@lauterbach.com>
+ <87a5qwbov0.fsf@draig.linaro.org>
+Content-Language: en-US
+From: "nicolas.eder@lauterbach.com" <nicolas.eder@lauterbach.com>
+In-Reply-To: <87a5qwbov0.fsf@draig.linaro.org>
+Received-SPF: pass client-ip=62.154.241.196;
+ envelope-from=nicolas.eder@lauterbach.com; helo=smtp1.lauterbach.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,117 +69,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+This is a multi-part message in MIME format.
+--------------0LCCgr6xToBMFx09Z2ThKsb4
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 11/27/23 10:31, Cédric Le Goater wrote:
-> Hello Ninad,
+
+On 29/11/2023 15:44, Alex Bennée wrote:
+> Nicolas Eder<nicolas.eder@lauterbach.com>  writes:
 >
-> On 10/26/23 18:47, Ninad Palsule wrote:
->> Hello,
+>> SUMMARY
+>> =======
 >>
->> Please review the patch-set version 7.
->> I have incorporated review comments from Cedric, Philippe and Thomas.
->
->
-> I reworked v7 with the suggestions I made in patches 1-6. Please check :
->
->   https://github.com/legoater/qemu/commits/aspeed-8.2
->
-> I will have more questions on the mappings because some parts are really
-> unclear.
->
-I forgot to mention in my last mail. If I build against your aspeed-8.2 
-branch then rainier machine is failing to boot.
+>> This patch-set introduces the first version of the mcdstub.
+>> The mcdstub is a debug interface, which enables debugging QEMU
+>> using the MCD (Multi-Core Debug) API.
+>> The mcdstub uses TCP to communicate with the host debug software. However,
+>> because MCD is merely an API, the TCP communication is not part of
+>> the MCD spec but specific to this project.
+>>
+>> To translate between the MCD API and the TCP data stream coming from the mcdstub,
+>> the host has to use a shared library (.dll/.so).
+>> Such a shared library will be available soon Lauterbach's open source site
+>> and will be linked to from inside this project in a future patch.
+> Do you have a timeline for this? Its impossible to test without some
+> sort of open implementation of the library.
 
-The same images are working with qemu master branch.
+You can find the library source code here:
 
-fsi/qemu-system-arm -M rainier-bmc -nographic -kernel 
-./fitImage-linux.bin -dtb ./aspeed-bmc-ibm-rainier.dtb -initrd 
-./obmc-phosphor-initramfs.rootfs.cpio.xz -drive 
-file=./obmc-phosphor-image.rootfs.wic.qcow2,if=sd,index=2 -append 
-'rootwait console=ttyS4,115200n8 root=PARTLABEL=rofs-a' -net nic -net 
-user,hostfwd=:127.0.0.1:3222-:22,hostfwd=:127.0.0.1:2234-:1234 -trace 'fsi*'
-                         |
-                         |
-Starting systemd-udevd version 254^
-[   50.630407] /dev/disk/by-partlabel/rofs-a: Can't open blockdev
-mount: mounting /dev/disk/by-partlabel/rofs-a on /mnt/rofs failed: No 
-such file or directory
-/bin/sh: can't access tty; job control turned off
+https://gitlab.com/lauterbach/mcdrefsrv
+
+It can be built using CMake.
 
 >
-> Thanks,
->
-> C.
->
->
+>> The MCD API itself can be downloaded here:https://repo.lauterbach.com/sprint_mcd_api_v1_0.zip
 >>
->> Ninad Palsule (10):
->>    hw/fsi: Introduce IBM's Local bus
->>    hw/fsi: Introduce IBM's scratchpad
->>    hw/fsi: Introduce IBM's cfam,fsi-slave
->>    hw/fsi: Introduce IBM's FSI
->>    hw/fsi: IBM's On-chip Peripheral Bus
->>    hw/fsi: Aspeed APB2OPB interface
->>    hw/arm: Hook up FSI module in AST2600
->>    hw/fsi: Added qtest
->>    hw/fsi: Added FSI documentation
->>    hw/fsi: Update MAINTAINER list
+>> QUICK START
+>> ===========
 >>
->>   MAINTAINERS                        |   8 +
->>   docs/specs/fsi.rst                 | 138 +++++++++++++++
->>   docs/specs/index.rst               |   1 +
->>   meson.build                        |   1 +
->>   hw/fsi/trace.h                     |   1 +
->>   include/hw/arm/aspeed_soc.h        |   4 +
->>   include/hw/fsi/aspeed-apb2opb.h    |  33 ++++
->>   include/hw/fsi/cfam.h              |  34 ++++
->>   include/hw/fsi/engine-scratchpad.h |  27 +++
->>   include/hw/fsi/fsi-master.h        |  30 ++++
->>   include/hw/fsi/fsi-slave.h         |  29 +++
->>   include/hw/fsi/fsi.h               |  36 ++++
->>   include/hw/fsi/lbus.h              |  43 +++++
->>   include/hw/fsi/opb.h               |  33 ++++
->>   hw/arm/aspeed_ast2600.c            |  19 ++
->>   hw/fsi/aspeed-apb2opb.c            | 272 +++++++++++++++++++++++++++++
->>   hw/fsi/cfam.c                      | 173 ++++++++++++++++++
->>   hw/fsi/engine-scratchpad.c         |  93 ++++++++++
->>   hw/fsi/fsi-master.c                | 161 +++++++++++++++++
->>   hw/fsi/fsi-slave.c                 |  78 +++++++++
->>   hw/fsi/fsi.c                       |  25 +++
->>   hw/fsi/lbus.c                      |  74 ++++++++
->>   hw/fsi/opb.c                       |  74 ++++++++
->>   tests/qtest/aspeed-fsi-test.c      | 205 ++++++++++++++++++++++
->>   hw/Kconfig                         |   1 +
->>   hw/arm/Kconfig                     |   1 +
->>   hw/fsi/Kconfig                     |  23 +++
->>   hw/fsi/meson.build                 |   6 +
->>   hw/fsi/trace-events                |  13 ++
->>   hw/meson.build                     |   1 +
->>   tests/qtest/meson.build            |   1 +
->>   31 files changed, 1638 insertions(+)
->>   create mode 100644 docs/specs/fsi.rst
->>   create mode 100644 hw/fsi/trace.h
->>   create mode 100644 include/hw/fsi/aspeed-apb2opb.h
->>   create mode 100644 include/hw/fsi/cfam.h
->>   create mode 100644 include/hw/fsi/engine-scratchpad.h
->>   create mode 100644 include/hw/fsi/fsi-master.h
->>   create mode 100644 include/hw/fsi/fsi-slave.h
->>   create mode 100644 include/hw/fsi/fsi.h
->>   create mode 100644 include/hw/fsi/lbus.h
->>   create mode 100644 include/hw/fsi/opb.h
->>   create mode 100644 hw/fsi/aspeed-apb2opb.c
->>   create mode 100644 hw/fsi/cfam.c
->>   create mode 100644 hw/fsi/engine-scratchpad.c
->>   create mode 100644 hw/fsi/fsi-master.c
->>   create mode 100644 hw/fsi/fsi-slave.c
->>   create mode 100644 hw/fsi/fsi.c
->>   create mode 100644 hw/fsi/lbus.c
->>   create mode 100644 hw/fsi/opb.c
->>   create mode 100644 tests/qtest/aspeed-fsi-test.c
->>   create mode 100644 hw/fsi/Kconfig
->>   create mode 100644 hw/fsi/meson.build
->>   create mode 100644 hw/fsi/trace-events
+>> Attention: MCD is currently only supported for qemu-system-arm !
 >>
->
+>> Three components are required to Debug QEMU via MCD:
+>>
+>> 1. qemu-system-arm (built with this patch series applied).
+>> 2. MCD shared library (translates between the MCD API and TCP data).
+>> 3. Host debugging software with support for the MCD API (e.g.
+>> Lauterbach TRACE32).
+> We will need some sort of basic implementation to exercise the API as I
+> assume TRACE32 is a paid for binary.
+
+I am working on a python script, which directly calls the API functions. 
+Upon completion it will be added to the mcdrefsrv gitlab.
+
+--------------0LCCgr6xToBMFx09Z2ThKsb4
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 29/11/2023 15:44, Alex Bennée wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:87a5qwbov0.fsf@draig.linaro.org">
+      <pre class="moz-quote-pre" wrap="">Nicolas Eder <a class="moz-txt-link-rfc2396E" href="mailto:nicolas.eder@lauterbach.com">&lt;nicolas.eder@lauterbach.com&gt;</a> writes:
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">SUMMARY
+=======
+
+This patch-set introduces the first version of the mcdstub.
+The mcdstub is a debug interface, which enables debugging QEMU
+using the MCD (Multi-Core Debug) API.
+The mcdstub uses TCP to communicate with the host debug software. However,
+because MCD is merely an API, the TCP communication is not part of
+the MCD spec but specific to this project.
+
+To translate between the MCD API and the TCP data stream coming from the mcdstub,
+the host has to use a shared library (.dll/.so).
+Such a shared library will be available soon Lauterbach's open source site
+and will be linked to from inside this project in a future patch.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Do you have a timeline for this? Its impossible to test without some
+sort of open implementation of the library.</pre>
+    </blockquote>
+    <p>You can find the library source code here:</p>
+    <p><a class="moz-txt-link-freetext" href="https://gitlab.com/lauterbach/mcdrefsrv">https://gitlab.com/lauterbach/mcdrefsrv</a></p>
+    <p>It can be built using CMake.<br>
+    </p>
+    <blockquote type="cite" cite="mid:87a5qwbov0.fsf@draig.linaro.org">
+      <pre class="moz-quote-pre" wrap="">
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">The MCD API itself can be downloaded here: <a class="moz-txt-link-freetext" href="https://repo.lauterbach.com/sprint_mcd_api_v1_0.zip">https://repo.lauterbach.com/sprint_mcd_api_v1_0.zip</a>
+
+QUICK START
+===========
+
+Attention: MCD is currently only supported for qemu-system-arm !
+
+Three components are required to Debug QEMU via MCD:
+
+1. qemu-system-arm (built with this patch series applied).
+2. MCD shared library (translates between the MCD API and TCP data).
+3. Host debugging software with support for the MCD API (e.g.
+Lauterbach TRACE32).
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+We will need some sort of basic implementation to exercise the API as I
+assume TRACE32 is a paid for binary.</pre>
+    </blockquote>
+    <p>I am working on a python script, which directly calls the API
+      functions. Upon completion it will be added to the mcdrefsrv
+      gitlab.</p>
+    <p><span style="white-space: pre-wrap">
+</span></p>
+  </body>
+</html>
+
+--------------0LCCgr6xToBMFx09Z2ThKsb4--
 
