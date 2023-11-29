@@ -2,67 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2EF7FD0A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 09:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 655C57FD299
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 10:28:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8FrR-0007zc-5o; Wed, 29 Nov 2023 03:23:57 -0500
+	id 1r8Gqa-0005s8-2d; Wed, 29 Nov 2023 04:27:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r8FrO-0007zB-Eq
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 03:23:54 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1r8GqS-0005rx-GX
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 04:27:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1r8FrM-0001Ok-RO
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 03:23:54 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1r8GqQ-0002uh-7k
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 04:26:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701246231;
+ s=mimecast20190719; t=1701250016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ADmzhu/8DY+OfJQEMmAt4FVjfP0nIt8HrPxBGzZjuDg=;
- b=P3si8cc/2bDB0yk8S3JWjGdda59l1/iVV3is1HqBwz3BELVbeKRjxfsBhOgvbTJOXgOT6M
- 4zptgTIUYY2sZ4ht6EoSqCGOYXg9RA6mOW63ao8I8Qk5t2uu/HmKQivYSg6PzZ3g+eebj1
- FB7I+Wrnb1mJ9pokDpfwGVkCKtPQFs4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2JhdbkDjf4JoDRbM9TAwjTy9WAKNpOXfEVP+u5YXIXc=;
+ b=aeAx29ZMC9syAOXavHaql6+E25gaYVj8vJ7xOfw0ytdGILvMkwF1zFfBnjfzNDwR0ne/ry
+ CfKmASvL7ARhAJnCH7UM03XvrMPeAVXdaJU4JmDiphgKReO68U2ricKeccHKktDYbwXhYI
+ 4ZIVXwwA6hQsDvZ/j7x8WckvDOv+8PQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-302-DXFV8MskP368vtIdLBzRtQ-1; Wed, 29 Nov 2023 03:23:48 -0500
-X-MC-Unique: DXFV8MskP368vtIdLBzRtQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0C87805957;
- Wed, 29 Nov 2023 08:23:47 +0000 (UTC)
-Received: from localhost (dhcp-192-239.str.redhat.com [10.33.192.239])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A03821C060AE;
- Wed, 29 Nov 2023 08:23:47 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>, "Michael S. Tsirkin"
- <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Subject: Re: [PATCH v2 3/3] hw/misc/pvpanic: add support for normal shutdowns
-In-Reply-To: <20231128-pvpanic-shutdown-v2-3-830393b45cb6@t-8ch.de>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de>
- <20231128-pvpanic-shutdown-v2-3-830393b45cb6@t-8ch.de>
-User-Agent: Notmuch/0.37 (https://notmuchmail.org)
-Date: Wed, 29 Nov 2023 09:23:46 +0100
-Message-ID: <874jh5x90t.fsf@redhat.com>
+ us-mta-620-CiyshQP8Oza1ivfsCYl-aw-1; Wed, 29 Nov 2023 04:26:54 -0500
+X-MC-Unique: CiyshQP8Oza1ivfsCYl-aw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-407d3e55927so45443685e9.1
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 01:26:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701250013; x=1701854813;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2JhdbkDjf4JoDRbM9TAwjTy9WAKNpOXfEVP+u5YXIXc=;
+ b=rJfUe/HVJ8etmyzvdKOZirgsr+keX5ziTDl7ExEioiNd/JxdJhb09pKHnysgn4InpE
+ wT9DwsVEfjUl3wreR78BB/aQROdKMbd7quinMyi/lDbQbbhBAkk9VZMfdG2um+h5fBb3
+ rbzltojsyJhofRsFuAHlxyMzLZTQ7yihD91ckm9OoIXhl256FRWkihBGENxj6w34d46R
+ k6wJEwb1tN0DDpsiofqmSzg0sBbWyx/NUMyz1PQKTmEU8cFba3uRkT37MHLjVUmvDiDz
+ ukHtq+RK7ZXbkfhglErzru2YKfLzroQOyyEzf+1MUoFf1WvUD2ODZPWQqoAfY1h2gkb7
+ ZPHg==
+X-Gm-Message-State: AOJu0Ywg/RsT6zsmxvkGOvjN2ZGVJGVqGbMPptx7xnkXMpm4gSb5qNfn
+ ygoTWRolTHJNsPeFlUl/iF04fXKUo1VHiBAdn4QYpN9xLCk4TycL6+FOeMHaT+egkeL7r6O5TB6
+ /lXPwEQ2SEc6sNOM=
+X-Received: by 2002:a05:600c:4e8b:b0:40b:4c1a:f5b2 with SMTP id
+ f11-20020a05600c4e8b00b0040b4c1af5b2mr3569099wmq.35.1701250013659; 
+ Wed, 29 Nov 2023 01:26:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEVSwkKf6VFFzK6oZ6k1/AdiSzFLwCJxmua3KCBUqFBy/lO7dwP8Ky7NOgreTzDVmQ8RG0unQ==
+X-Received: by 2002:a05:600c:4e8b:b0:40b:4c1a:f5b2 with SMTP id
+ f11-20020a05600c4e8b00b0040b4c1af5b2mr3569086wmq.35.1701250013328; 
+ Wed, 29 Nov 2023 01:26:53 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-199.retail.telecomitalia.it.
+ [79.46.200.199]) by smtp.gmail.com with ESMTPSA id
+ g14-20020a05600c310e00b0040b481222e3sm1497182wmo.41.2023.11.29.01.26.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Nov 2023 01:26:52 -0800 (PST)
+Date: Wed, 29 Nov 2023 10:26:50 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: fam@euphon.net, stefanha@redhat.com, jasowang@redhat.com, 
+ mst@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 1/2] vhost: Add worker backend callouts
+Message-ID: <o57b224fc2ngmaosulzunhq5pwegh2zz3lqfkchplxwjtkzsdx@5wl4jdfj2mio>
+References: <20231127002834.8670-1-michael.christie@oracle.com>
+ <20231127002834.8670-2-michael.christie@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20231127002834.8670-2-michael.christie@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,39 +100,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 28 2023, Thomas Wei=C3=9Fschuh <thomas@t-8ch.de> wrote:
-
-> Shutdown requests are normally hardware dependent.
-> By extending pvpanic to also handle shutdown requests, guests can
-> submit such requests with an easily implementable and cross-platform
-> mechanism.
+On Sun, Nov 26, 2023 at 06:28:33PM -0600, Mike Christie wrote:
+>This adds the vhost backend callouts for the worker ioctls added in the
+>6.4 linux kernel commit:
 >
-> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas@t-8ch.de>
-> ---
->  docs/specs/pvpanic.rst                   | 2 ++
->  hw/misc/pvpanic.c                        | 5 +++++
->  include/hw/misc/pvpanic.h                | 2 +-
->  include/standard-headers/linux/pvpanic.h | 1 +
->  4 files changed, 9 insertions(+), 1 deletion(-)
-
-(...)
-
-> diff --git a/include/standard-headers/linux/pvpanic.h b/include/standard-=
-headers/linux/pvpanic.h
-> index 54b7485390d3..38e53ad45929 100644
-> --- a/include/standard-headers/linux/pvpanic.h
-> +++ b/include/standard-headers/linux/pvpanic.h
-> @@ -5,5 +5,6 @@
->=20=20
->  #define PVPANIC_PANICKED	(1 << 0)
->  #define PVPANIC_CRASH_LOADED	(1 << 1)
-> +#define PVPANIC_SHUTDOWN       	(1 << 2)
->=20=20
->  #endif /* __PVPANIC_H__ */
+>c1ecd8e95007 ("vhost: allow userspace to create workers")
 >
+>Signed-off-by: Mike Christie <michael.christie@oracle.com>
+>---
+> hw/virtio/vhost-backend.c         | 28 ++++++++++++++++++++++++++++
+> include/hw/virtio/vhost-backend.h | 14 ++++++++++++++
+> 2 files changed, 42 insertions(+)
 
-This hunk needs to come in via a separate headers update, or has to be
-split out into a placeholder patch if it is not included in the Linux
-kernel yet.
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+
+>
+>diff --git a/hw/virtio/vhost-backend.c b/hw/virtio/vhost-backend.c
+>index 17f3fc6a0823..833804dd40f2 100644
+>--- a/hw/virtio/vhost-backend.c
+>+++ b/hw/virtio/vhost-backend.c
+>@@ -158,6 +158,30 @@ static int vhost_kernel_set_vring_busyloop_timeout(struct vhost_dev *dev,
+>     return vhost_kernel_call(dev, VHOST_SET_VRING_BUSYLOOP_TIMEOUT, s);
+> }
+>
+>+static int vhost_kernel_new_worker(struct vhost_dev *dev,
+>+                                   struct vhost_worker_state *worker)
+>+{
+>+    return vhost_kernel_call(dev, VHOST_NEW_WORKER, worker);
+>+}
+>+
+>+static int vhost_kernel_free_worker(struct vhost_dev *dev,
+>+                                    struct vhost_worker_state *worker)
+>+{
+>+    return vhost_kernel_call(dev, VHOST_FREE_WORKER, worker);
+>+}
+>+
+>+static int vhost_kernel_attach_vring_worker(struct vhost_dev *dev,
+>+                                            struct vhost_vring_worker *worker)
+>+{
+>+    return vhost_kernel_call(dev, VHOST_ATTACH_VRING_WORKER, worker);
+>+}
+>+
+>+static int vhost_kernel_get_vring_worker(struct vhost_dev *dev,
+>+                                         struct vhost_vring_worker *worker)
+>+{
+>+    return vhost_kernel_call(dev, VHOST_GET_VRING_WORKER, worker);
+>+}
+>+
+> static int vhost_kernel_set_features(struct vhost_dev *dev,
+>                                      uint64_t features)
+> {
+>@@ -313,6 +337,10 @@ const VhostOps kernel_ops = {
+>         .vhost_set_vring_err = vhost_kernel_set_vring_err,
+>         .vhost_set_vring_busyloop_timeout =
+>                                 vhost_kernel_set_vring_busyloop_timeout,
+>+        .vhost_get_vring_worker = vhost_kernel_get_vring_worker,
+>+        .vhost_attach_vring_worker = vhost_kernel_attach_vring_worker,
+>+        .vhost_new_worker = vhost_kernel_new_worker,
+>+        .vhost_free_worker = vhost_kernel_free_worker,
+>         .vhost_set_features = vhost_kernel_set_features,
+>         .vhost_get_features = vhost_kernel_get_features,
+>         .vhost_set_backend_cap = vhost_kernel_set_backend_cap,
+>diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
+>index 96ccc18cd33b..9f16d0884e8f 100644
+>--- a/include/hw/virtio/vhost-backend.h
+>+++ b/include/hw/virtio/vhost-backend.h
+>@@ -33,6 +33,8 @@ struct vhost_memory;
+> struct vhost_vring_file;
+> struct vhost_vring_state;
+> struct vhost_vring_addr;
+>+struct vhost_vring_worker;
+>+struct vhost_worker_state;
+> struct vhost_scsi_target;
+> struct vhost_iotlb_msg;
+> struct vhost_virtqueue;
+>@@ -73,6 +75,14 @@ typedef int (*vhost_set_vring_err_op)(struct vhost_dev *dev,
+>                                       struct vhost_vring_file *file);
+> typedef int (*vhost_set_vring_busyloop_timeout_op)(struct vhost_dev *dev,
+>                                                    struct vhost_vring_state *r);
+>+typedef int (*vhost_attach_vring_worker_op)(struct vhost_dev *dev,
+>+                                            struct vhost_vring_worker *worker);
+>+typedef int (*vhost_get_vring_worker_op)(struct vhost_dev *dev,
+>+                                         struct vhost_vring_worker *worker);
+>+typedef int (*vhost_new_worker_op)(struct vhost_dev *dev,
+>+                                   struct vhost_worker_state *worker);
+>+typedef int (*vhost_free_worker_op)(struct vhost_dev *dev,
+>+                                    struct vhost_worker_state *worker);
+> typedef int (*vhost_set_features_op)(struct vhost_dev *dev,
+>                                      uint64_t features);
+> typedef int (*vhost_get_features_op)(struct vhost_dev *dev,
+>@@ -151,6 +161,10 @@ typedef struct VhostOps {
+>     vhost_set_vring_call_op vhost_set_vring_call;
+>     vhost_set_vring_err_op vhost_set_vring_err;
+>     vhost_set_vring_busyloop_timeout_op vhost_set_vring_busyloop_timeout;
+>+    vhost_new_worker_op vhost_new_worker;
+>+    vhost_free_worker_op vhost_free_worker;
+>+    vhost_get_vring_worker_op vhost_get_vring_worker;
+>+    vhost_attach_vring_worker_op vhost_attach_vring_worker;
+>     vhost_set_features_op vhost_set_features;
+>     vhost_get_features_op vhost_get_features;
+>     vhost_set_backend_cap_op vhost_set_backend_cap;
+>-- 
+>2.34.1
+>
 
 
