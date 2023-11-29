@@ -2,142 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5A47FE146
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 21:44:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7572D7FE160
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 21:51:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8ROt-00018f-Dv; Wed, 29 Nov 2023 15:43:15 -0500
+	id 1r8RWC-0002mr-JW; Wed, 29 Nov 2023 15:50:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1r8ROq-00018J-Nb
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 15:43:12 -0500
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1r8ROo-0004tc-MQ
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 15:43:12 -0500
-Received: from pps.filterd (m0127840.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 3ATG19Lk023275; Wed, 29 Nov 2023 12:43:07 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- from:to:cc:subject:date:message-id:content-transfer-encoding
- :content-type:mime-version; s=proofpoint20171006; bh=p/XOLvMHbs6
- crkgqqVaRW2Crk4FnFljBAOE7QPREl9w=; b=yRIBO82Mx8bp37WskaM0kQ1oeTE
- mNOylJDb0XmO1HWDhNQVLgqH3iBNG44C1bvzzGg1NHJWwpAB+HLMY0UoBs9OpFVp
- UGYw5UuPZ7BByTVLu0eXbm0O8AFNC2O7D5dRNH43QouWrSE1xPRnlCWrWbLgfsFL
- /V6Q6zRAjuL/61pNtHr2uzjmVsDlMRSfm84PgvonHnj2RtAMn1VGCHJpCmbtXOov
- sCWXK/ibEIftn8pz6vHnw4Y2xtjCn5bSaJuFF4khTwKpWZBpdy8C8RwOB5k7uSaO
- 2zPYkhLfIaQfcMM45Q7Pb8fFDdzIIWz+odyWoagnwclQqTWQ1/dnxoT90aQ==
-Received: from nam10-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam10lp2100.outbound.protection.outlook.com [104.47.58.100])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3unvuchun7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Nov 2023 12:43:07 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kfTW1r0NkBGHE4vEKPyKdYYYzHgAkq2Tzwq8nHVXNeVzi/3jpGPywQyZfaICrgN3BvZQnhISxY6lMpjsllVXGtmY6jr5MEDXYhGdTH0fL6ci8gNsFdWReYtrDaFQ7/QB9XD1LF8dtu6LhoaNaNB5YXsz1AQekq9cvB1nM/H0g3ER/VETaOC/wgXNSYnWc4FJA6NfzZx+vstYOjilgSn94ubj6ypu9nacNet+85t4A+H0Lr/D6a3a2pmhQ7XuScq9a4l8FXrZ3F0gQaeONprwse60LVWseStVXwj4qXt5ceFCsWLN8oKY1iU5wrOkGwvbmLzvf3EtPl8PCjEsl5vSfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p/XOLvMHbs6crkgqqVaRW2Crk4FnFljBAOE7QPREl9w=;
- b=Eppt0DSG/VIlsfZTsU8VTTnzhr02R5Uinp7Nr5YW2yzEhDWMhTDvBzhY8MGPSPSur9pTrEfrLWTcio+KCHE9nxbGWx+MoHCsmW7vzqWa0BudFXuJ/y9U8dtWvw3k1Ww5Qau94EsRexzuCjZWcDp0JVwvJ/RDmHBcA78nj99GPuRA+cUY2k8vtcqwMSnGRThQ5Uf6jExKOQ1he15vJ0KB/d0vzTvfBpi2juABsqvEANj8pbhc8AxLVtNtn2+MP1/r+RrYpxWhIdy/eTEWLnMywkmyh2U3RkuS4gd+e/JcL8evZNz8kiHj3e1uPmSehMNft3om+RCXT4geyr5AJUQ8iw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p/XOLvMHbs6crkgqqVaRW2Crk4FnFljBAOE7QPREl9w=;
- b=BkAQKsccomLN/4YP5DHtsGj0PEtYCxZmZ/ynWJ4cohc+sG1bWLTtG9HK4EGOo2nwn/1DdApBhNsFBfHZL4dntvszQHM0aaQY5PDygBchZxl4gEyfAoGogQd2Iv1GWT+h2tQiyZiuyhgc1FHY9H21Nkjskm3+uatcXiPNfvpwSzlahhXxPCkQE4X3IO+u2scMOhAHD4m+JhJnX0VkZMxU7lWUpKz1ZOMVlC5XCi6HIL+OwXyvpeek/s5ZOzF5wyz4ZnUOJS8vlUWYiMI0XJBGYV81nNSjJRovTTmhPCOaulW6mRynroWYH9X6b25Gd8eS0/4580csVT35UZTsnjWKcA==
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by IA1PR02MB8970.namprd02.prod.outlook.com (2603:10b6:208:3ad::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.25; Wed, 29 Nov
- 2023 20:43:04 +0000
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::bf6f:93ea:cea5:91b5]) by SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::bf6f:93ea:cea5:91b5%2]) with mapi id 15.20.7025.022; Wed, 29 Nov 2023
- 20:43:04 +0000
-From: Het Gala <het.gala@nutanix.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8RWA-0002mU-3U
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 15:50:46 -0500
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8RW8-0006Ir-Ep
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 15:50:45 -0500
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2c9afe6e21fso3660581fa.0
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 12:50:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701291042; x=1701895842; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SRIF0HwWnMcIde9FIOMMN3+/mbfqwhuX49V+gQ6VB9c=;
+ b=oFRl+l1o+/V6v0nLsMnUlywDEYCI6NFX8NrQTEh/Bvf8iIIr7HlbxgLupmVWwsbTBT
+ xQyc9JSXiKxNy5CY4GovkoniismNw5BYSh1J2IEM3L88wIGngBrFRmubxwFfpHzFDf8V
+ EKK3wZaJjBb6pYMfgFZVU6CfMkysRwTDX2u7r/3KWdGaorILS8fNZts0pcANFtt3oyx9
+ P1u+2yHFMTrdkhfPShnQ2iF8xXFnUFuuW3XBv9c293Syo5N4zo7/RgV7ySfUk/Oexr5a
+ z2hNOLT5dZ2DBTsDqU3XVZkhMuREGTZAF1BUfWA1zhu7s7gHumm4728QEAa3P+Iyz5mE
+ 9z4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701291042; x=1701895842;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SRIF0HwWnMcIde9FIOMMN3+/mbfqwhuX49V+gQ6VB9c=;
+ b=we4nk4PS8Jri2HbEZt4QTBnl6cAmAsq/uOPSMPW8yPqMMk2VlFAsL90EpTd1mo/y9/
+ NTJphuMCtHQqiyJzd9EiKsEKLk9tlIyNHWsDiuqtPFC48WVbDbzxLeoiy97YwIx25/O/
+ LJB9g2b7d9ekYgZK/XFFvkRXXrVoUu4FFzFAiEHmHa4RnaDUzf1ueSMaJqKSGL23etdt
+ zZGAOFZVOCTVLBdQISUIKaFGWdsekiy6oyifa++RW59/j/hLE6rcK84lgrLi0CYDD0Sr
+ dAVs4vLYPpvbhpgPk6ONkwOtQUKpZtKrlAPGOlbDy1u4j5gdOK3IMp2+bwY2xHHeVuIX
+ rRHg==
+X-Gm-Message-State: AOJu0Yw7ep//eXfpGb+bZ/TPeWGIi3lnLi8hOZiheHP0xWBKJy0133c5
+ KxHh9wnkQ59vGCRD7Jn6VM9zEOBklnn90+xrnptppw==
+X-Google-Smtp-Source: AGHT+IHvUUbkS8uQp7Mq/MO3uA81NKO6ABeKVWmmledI3OMctsyW8mvoi+BWILmqRXm+0/Dlg0QC1Q==
+X-Received: by 2002:a2e:b1c7:0:b0:2c9:c3a2:c89b with SMTP id
+ e7-20020a2eb1c7000000b002c9c3a2c89bmr1154586lja.45.1701291041715; 
+ Wed, 29 Nov 2023 12:50:41 -0800 (PST)
+Received: from m1x-phil.lan (sal63-h02-176-184-16-250.dsl.sta.abo.bbox.fr.
+ [176.184.16.250]) by smtp.gmail.com with ESMTPSA id
+ l15-20020a05600c4f0f00b0040b33222a39sm3398847wmq.45.2023.11.29.12.50.40
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 29 Nov 2023 12:50:41 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: prerna.saxena@nutanix.com, quintela@redhat.com, berrange@redhat.com,
- peter.maydell@linaro.org, farosas@suse.de, armbru@redhat.com,
- Het Gala <het.gala@nutanix.com>
-Subject: [PATCH v4] migration: Plug memory leak with migration URIs
-Date: Wed, 29 Nov 2023 20:43:01 +0000
-Message-Id: <20231129204301.131228-1-het.gala@nutanix.com>
-X-Mailer: git-send-email 2.22.3
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH8PR22CA0020.namprd22.prod.outlook.com
- (2603:10b6:510:2d1::27) To SJ2PR02MB9955.namprd02.prod.outlook.com
- (2603:10b6:a03:55f::16)
+Cc: Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, kvm@vger.kernel.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] accel: Do not set CPUState::can_do_io in non-TCG accels
+Date: Wed, 29 Nov 2023 21:50:37 +0100
+Message-ID: <20231129205037.16849-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|IA1PR02MB8970:EE_
-X-MS-Office365-Filtering-Correlation-Id: 44dab496-a10c-48da-bf80-08dbf11bc91b
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: u8wqkc7j7eJcDoqZyPzgNje+6+T09gYMex1CpNxrndisQJeNLVvB5GcvRJJoGBK0KJqDKn6cRhLw61mJBQCn4LqnK91aGPGGkWF37qNzgEjAwVvPb3eeGSLOt6YjO6FYNuaEmQkuZt//SrasDYIBf4/s/v/TbBSMJecNgyX8d07xkufECTQ/lMUloOtBAGYNgIm1dMrv+gPMn7/TGEcXCYN7rRmmyM1f5WJwj0StU6yvBxsEi/AcH+CEcBckTd1E13grQIn1UGp2JKuGFDtB8VLkq8Zefx9eKHUCWiwQZiftBsPcgqO90uqLS+wjm3SS5aimJ7lVy2XB4vDkUbyt5Y7fnMFeOZf6M9EMDRgZwCOQ3FJBl1Y6Tk4XDDz66DN0hhmLMDeHw+VJur43S+kjux9pt0L2ILhof9MnH+EUxU+Rv5VZRLoevKkK9OwiJx5aJTBV9vIbWa4Mnm4ZjOuQOcsviMz2WY6kQYohKGuoSCF+51uejaZz1cE9WGSWuHJyEo+TxsNF9JdCncDzi0sko+e7CpUqbeQmYB9uZLY/KQAEw8WvOh2RW7i+KTP7y4tYXq1vq6pMUMhoChA51MMKg16FBYMzhYrqBMlUHSQCeOp1OZFoAPOiELxbNrBExFZFM1JeVMf98AVhkUbtbBzwS8MBqNuybHHRlu86qAR+WE8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(39860400002)(366004)(376002)(346002)(136003)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(2616005)(5660300002)(316002)(6916009)(66556008)(8676002)(66946007)(66476007)(8936002)(6486002)(4326008)(478600001)(38350700005)(38100700002)(36756003)(26005)(44832011)(6512007)(6506007)(41300700001)(1076003)(107886003)(52116002)(6666004)(83380400001)(86362001)(202311291699003)(2906002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?AVvQx4wTaneO6mAa0sTDjAcDiPd83ABLHSxncmhDRq0rcDo+c+ZAmYcGJT+G?=
- =?us-ascii?Q?QNp27/W5FBF9+zw208DYjoBAXsBeBBdOgiDRxPgZJGZsGsyLCznfaOBAhrIf?=
- =?us-ascii?Q?x6mMhhaI9ga63MxCoTfyzXjTneRai03cIn4i6DCYH76UZZx6YkzCCdNFsUaE?=
- =?us-ascii?Q?Jju4n/iuOhDUOAkO85KflFtbV1w7XVyKS0TBJyqOCbGDNZVtxxoj4iIFlL/0?=
- =?us-ascii?Q?EOr7M+y5MtNMD5RI7txaN2Fj+zcz1erNx7ZA+pbE/YWpPydcm0VFQobNm7ED?=
- =?us-ascii?Q?P17x9s+h/jeonDxDqeCw6l4Hk2DVEjzn65ZmpbXPj6lM0UhgzZaP1u6ANi6b?=
- =?us-ascii?Q?UyFA+cEoKep6yvTAZZeunk4sQJN7e8XhBkstHRL6ASt/DngZGcmwmn1SIUil?=
- =?us-ascii?Q?5YPLadjPuOoVSXn1NNk4tSdVu/S8+HxTFbsrrKXGzxjTE5SPQ3HCt9rD6DZ+?=
- =?us-ascii?Q?ac0KJsIzmRd1PV9LgoRX1IgaR8b0Edc1+86OPn6tzub0MGyYDqsxy0416Yjz?=
- =?us-ascii?Q?gS6Vj2OU2wL1I5NXPJwILnJf/4AUJicmNcpetmpy8JrmtYjXeNkJ9zXZOoao?=
- =?us-ascii?Q?XIaaR6x9n+2gh0VjXOd/+xI+/UHdMzDuldCdmA9jgn35dNLlND7rEZUQgNG6?=
- =?us-ascii?Q?cXNyWqrLaJEMmRygU82fwHr4JhGLCF0nbNxcEaB0jkUDNARbOWThN9exZsCs?=
- =?us-ascii?Q?HF3iN2Qd47EbPP33AHKMggMi4wE/aNpKDYf56tUDVoQbrfgd2EVkAeLtKqPI?=
- =?us-ascii?Q?v64OJ3dr5s4g+dwRXZhIbkMN8N/zjUJs/OnGSRL2UCKRnmmbbfgjnBVvepj0?=
- =?us-ascii?Q?vL1QLJCDNE6XD0PQeHjUM4dhscUpQ0aNk4pGZ1x8aR8H9X8LERD8+XoA7lrn?=
- =?us-ascii?Q?xt0GUyhWfws4upGRI0ElJ+0Cj68F5WBI7nKt1qgx09/HrGTs+mDgdCKNniqd?=
- =?us-ascii?Q?FDZ4ZOQu5qrb0G49/hG6IOEyi9Ye42Ln+6OiHycAlOfVpGCMD8kljkO3jAh4?=
- =?us-ascii?Q?b5eaTfOnDXpl652lRhRCIe9zbkDcJFm4YhNEZPbT6KA/IBs5iWpZIeNJOt46?=
- =?us-ascii?Q?IsOkTL2uo9FX6ckkjtctZ21A9RaHQV0wP/e/VtfGjlZlvH4D1jZSaew59LBq?=
- =?us-ascii?Q?7jGy0dfvn3B5n8aEL/1+53XpN/bT6ghB1bDRo/8yEYa8MKWx85Z90mvM5lTS?=
- =?us-ascii?Q?xi5Dz4GxANAltts9E+JaZQIZfxx6o6M9z0N79mIiuk5X2u591UdlID4vt35f?=
- =?us-ascii?Q?ahMN+lYJRu6NOitSVtt0v2orOW892YB31JOdo6JPERo6AfMTDx+X6Kln1C3i?=
- =?us-ascii?Q?ay7yZyiiRQNattVb7bdnzVpfB5QqOHuo+z+4tHbeGNDtR1dEz3CtQwxRHnDc?=
- =?us-ascii?Q?BZol8ty/zPUxeU/Lr8a98uw/TLxtw6O1yBYhq+CzuOIco/tl+rNvYnsOGUQD?=
- =?us-ascii?Q?hqnutvEdNQI2OwIgXuxLMZWGTuTP9FfxOFkNlDnACGoJ/X5bekrwlFflIH6R?=
- =?us-ascii?Q?GABKddWCd7ThSyumVVEQLBH6FKbU3AJ1xkxsXfKO6ZB5ZOYC3yPntO+JDOZo?=
- =?us-ascii?Q?6WLb+ks7/8Ig2Si8MJ5yfcP+D/HnFCKGI+uFwsIS?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 44dab496-a10c-48da-bf80-08dbf11bc91b
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2023 20:43:04.4613 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AtG/YnFYDUn2B6APoG0JSabf6eGAfAPJz4ftpBFLKs4mDr8VBrgtXtxUWnmSZSw1/IBcaw1lZ9/hFtLKkfLceQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR02MB8970
-X-Proofpoint-GUID: QIeI9w-siXphgwaMl-yo3cs8ZkCU8U4Z
-X-Proofpoint-ORIG-GUID: QIeI9w-siXphgwaMl-yo3cs8ZkCU8U4Z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-28_27,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68; envelope-from=het.gala@nutanix.com;
- helo=mx0a-002c1b01.pphosted.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -154,84 +89,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-migrate_uri_parse() allocates memory to 'channel' if the user
-opts for old syntax - uri, which is leaked because there is no
-code for freeing 'channel'.
-So, free channel to avoid memory leak in case where 'channels'
-is empty and uri parsing is required.
+'can_do_io' is specific to TCG. Having it set in non-TCG
+code is confusing, so remove it from QTest / HVF / KVM.
 
-Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp migration flow")
-Signed-off-by: Het Gala <het.gala@nutanix.com>
-Suggested-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- migration/migration.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ accel/dummy-cpus.c        | 1 -
+ accel/hvf/hvf-accel-ops.c | 1 -
+ accel/kvm/kvm-accel-ops.c | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 28a34c9068..34340f3440 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -515,7 +515,7 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
-                                           MigrationChannelList *channels,
-                                           Error **errp)
- {
--    MigrationChannel *channel = NULL;
-+    g_autoptr(MigrationChannel) channel = NULL;
-     MigrationAddress *addr = NULL;
-     MigrationIncomingState *mis = migration_incoming_get_current();
+diff --git a/accel/dummy-cpus.c b/accel/dummy-cpus.c
+index b75c919ac3..1005ec6f56 100644
+--- a/accel/dummy-cpus.c
++++ b/accel/dummy-cpus.c
+@@ -27,7 +27,6 @@ static void *dummy_cpu_thread_fn(void *arg)
+     qemu_mutex_lock_iothread();
+     qemu_thread_get_self(cpu->thread);
+     cpu->thread_id = qemu_get_thread_id();
+-    cpu->neg.can_do_io = true;
+     current_cpu = cpu;
  
-@@ -533,18 +533,18 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
-             error_setg(errp, "Channel list has more than one entries");
-             return;
-         }
--        channel = channels->value;
-+        addr = channels->value->addr;
-     } else if (uri) {
-         /* caller uses the old URI syntax */
-         if (!migrate_uri_parse(uri, &channel, errp)) {
-             return;
-         }
-+        addr = channel->addr;
-     } else {
-         error_setg(errp, "neither 'uri' or 'channels' argument are "
-                    "specified in 'migrate-incoming' qmp command ");
-         return;
-     }
--    addr = channel->addr;
+ #ifndef _WIN32
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index abe7adf7ee..2bba54cf70 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -428,7 +428,6 @@ static void *hvf_cpu_thread_fn(void *arg)
+     qemu_thread_get_self(cpu->thread);
  
-     /* transport mechanism not suitable for migration? */
-     if (!migration_channels_and_transport_compatible(addr, errp)) {
-@@ -1932,7 +1932,7 @@ void qmp_migrate(const char *uri, bool has_channels,
-     bool resume_requested;
-     Error *local_err = NULL;
-     MigrationState *s = migrate_get_current();
--    MigrationChannel *channel = NULL;
-+    g_autoptr(MigrationChannel) channel = NULL;
-     MigrationAddress *addr = NULL;
+     cpu->thread_id = qemu_get_thread_id();
+-    cpu->neg.can_do_io = true;
+     current_cpu = cpu;
  
-     /*
-@@ -1949,18 +1949,18 @@ void qmp_migrate(const char *uri, bool has_channels,
-             error_setg(errp, "Channel list has more than one entries");
-             return;
-         }
--        channel = channels->value;
-+        addr = channels->value->addr;
-     } else if (uri) {
-         /* caller uses the old URI syntax */
-         if (!migrate_uri_parse(uri, &channel, errp)) {
-             return;
-         }
-+        addr = channel->addr;
-     } else {
-         error_setg(errp, "neither 'uri' or 'channels' argument are "
-                    "specified in 'migrate' qmp command ");
-         return;
-     }
--    addr = channel->addr;
+     hvf_init_vcpu(cpu);
+diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
+index 6195150a0b..f273f415db 100644
+--- a/accel/kvm/kvm-accel-ops.c
++++ b/accel/kvm/kvm-accel-ops.c
+@@ -36,7 +36,6 @@ static void *kvm_vcpu_thread_fn(void *arg)
+     qemu_mutex_lock_iothread();
+     qemu_thread_get_self(cpu->thread);
+     cpu->thread_id = qemu_get_thread_id();
+-    cpu->neg.can_do_io = true;
+     current_cpu = cpu;
  
-     /* transport mechanism not suitable for migration? */
-     if (!migration_channels_and_transport_compatible(addr, errp)) {
+     r = kvm_init_vcpu(cpu, &error_fatal);
 -- 
-2.22.3
+2.41.0
 
 
