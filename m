@@ -2,49 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4885B7FD6FD
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 13:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 546277FD6FE
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 13:41:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8Jqm-0002tf-6U; Wed, 29 Nov 2023 07:39:32 -0500
+	id 1r8Js4-0003Vp-2V; Wed, 29 Nov 2023 07:40:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r8Jqk-0002tS-1X
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:39:30 -0500
-Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r8Js0-0003Rm-Hb
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:40:50 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r8Jqg-0003Ps-Nl
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:39:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1701261561; bh=nGM1zQ0u/zSmrfTpfVNZVLVTDlZCshWujzKBMVdEOW0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=pxacJb2VP5Kvz+iA0WcmK0ZiFwUK0IZrjG3MixmGTIROPkDXabIp5O+6AyLAdtStu
- t6vj1WuAhGFTFeT6LTji4GK/c40u3BqdE4bVlpPkroo0Bg1bSEMN4CyqiYEx2Ba4Un
- AHnfcKQAIhspE7jhf07NWwKqXCaiFT8eWTKdXAt8=
-Date: Wed, 29 Nov 2023 13:39:20 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-To: Cornelia Huck <cohuck@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 3/3] hw/misc/pvpanic: add support for normal shutdowns
-Message-ID: <2d249b3e-0976-4c7e-969a-88d54feb290a@t-8ch.de>
-References: <20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de>
- <20231128-pvpanic-shutdown-v2-3-830393b45cb6@t-8ch.de>
- <874jh5x90t.fsf@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r8Jry-0003uV-KV
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 07:40:48 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7673E75A4C3;
+ Wed, 29 Nov 2023 13:40:42 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id 5n_ieyo_utam; Wed, 29 Nov 2023 13:40:40 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 8DAEF75A4C2; Wed, 29 Nov 2023 13:40:40 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8AD17756094;
+ Wed, 29 Nov 2023 13:40:40 +0100 (CET)
+Date: Wed, 29 Nov 2023 13:40:40 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Michael Tokarev <mjt@tls.msk.ru>
+cc: qemu-devel@nongnu.org, philmd@linaro.org, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Bernhard Beschow <shentey@gmail.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, vr_qemu@t-online.de
+Subject: Re: [PATCH v3 0/4] Fix IRQ routing in via south bridge
+In-Reply-To: <ccc89939-8f8f-4c0d-b401-46f463d0db5f@tls.msk.ru>
+Message-ID: <ad822769-d035-56f4-744a-3a3ebd254045@eik.bme.hu>
+References: <cover.1701035944.git.balaton@eik.bme.hu>
+ <ccc89939-8f8f-4c0d-b401-46f463d0db5f@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <874jh5x90t.fsf@redhat.com>
-Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
- envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,51 +66,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023-11-29 09:23:46+0100, Cornelia Huck wrote:
-> On Tue, Nov 28 2023, Thomas Weißschuh <thomas@t-8ch.de> wrote:
-> 
-> > Shutdown requests are normally hardware dependent.
-> > By extending pvpanic to also handle shutdown requests, guests can
-> > submit such requests with an easily implementable and cross-platform
-> > mechanism.
-> >
-> > Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-> > ---
-> >  docs/specs/pvpanic.rst                   | 2 ++
-> >  hw/misc/pvpanic.c                        | 5 +++++
-> >  include/hw/misc/pvpanic.h                | 2 +-
-> >  include/standard-headers/linux/pvpanic.h | 1 +
-> >  4 files changed, 9 insertions(+), 1 deletion(-)
-> 
-> (...)
-> 
-> > diff --git a/include/standard-headers/linux/pvpanic.h b/include/standard-headers/linux/pvpanic.h
-> > index 54b7485390d3..38e53ad45929 100644
-> > --- a/include/standard-headers/linux/pvpanic.h
-> > +++ b/include/standard-headers/linux/pvpanic.h
-> > @@ -5,5 +5,6 @@
-> >  
-> >  #define PVPANIC_PANICKED	(1 << 0)
-> >  #define PVPANIC_CRASH_LOADED	(1 << 1)
-> > +#define PVPANIC_SHUTDOWN       	(1 << 2)
-> >  
-> >  #endif /* __PVPANIC_H__ */
-> >
-> 
-> This hunk needs to come in via a separate headers update, or has to be
-> split out into a placeholder patch if it is not included in the Linux
-> kernel yet.
+On Wed, 29 Nov 2023, Michael Tokarev wrote:
+> 27.11.2023 01:49, BALATON Zoltan:
+>> Philippe,
+>> 
+>> Could this be merged for 8.2 as it fixes USB on the amigaone machine?
+>> This would be useful as usb-storage is the simplest way to share data
+>> with the host with these machines.
+>> 
+>> This is a slight change from v2 adding more comments and improving
+>> commit messages and clean things a bit but otherwise should be the
+>> same as previous versions. Even v1 worked the same as this one and v2,
+>> the additional check to avoid stuck bits is just paranoia, it does not
+>> happen in practice as IRQ mappings are quite static, they are set once
+>> at boot and don't change afterwards.
+>
+> Should this patchset be picked up for stable-8.1?
 
-Greg KH actually want this header removed from the Linux UAPI headers,
-as it is not in fact a Linux UAPI [0].
-It's also a weird workflow to have the specification in qemu but the
-header as part of Linux that is re-imported in qemu.
+The amigaone machine was added now in 8.2 so the problem does not occur in 
+8.1 yet (the different usage of this chip by amigaone firmware uncovered 
+the issue that made this fix necessary). So 8.1 should still work without 
+this therefore I don't think this is needed in stable.
 
-What do you think about maintaining the header as a private part of qemu
-and dropping it from Linux UAPI?
-
-Contrary to my response to Greg this wouldn't break old versions of
-qemu, as qemu is using a private copy that would still exist there.
-
-[0] https://lore.kernel.org/lkml/2023110431-pacemaker-pruning-0e4c@gregkh/
+Regards,
+BALATON Zoltan
 
