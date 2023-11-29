@@ -2,67 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 681BD7FD338
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 10:49:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFDE7FD374
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 11:02:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8HBz-0003LT-6R; Wed, 29 Nov 2023 04:49:15 -0500
+	id 1r8HNp-0005Ru-UG; Wed, 29 Nov 2023 05:01:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1r8HBx-0003Kw-33; Wed, 29 Nov 2023 04:49:13 -0500
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r8HNj-0005R1-Dr
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 05:01:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1r8HBt-00083G-DF; Wed, 29 Nov 2023 04:49:12 -0500
-Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:b5a4:0:640:2bd1:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id F1B7261680;
- Wed, 29 Nov 2023 12:49:03 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:27::1:23] (unknown [2a02:6b8:b081:27::1:23])
- by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 2nRqQY0i2a60-hg2IrGzQ; Wed, 29 Nov 2023 12:49:03 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1701251343;
- bh=8YfOF4JcRMVC2WFKXkwPHIIEl3/IRZg3Tbnyd9qai+U=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=vFHqEsMV+BAeCmRtF7rE4zjp9f4eOVl0hnYJ2iFYLYBQeBdEn3XTq7GAAXbYzuxT7
- TbY+9SvlseUb5oIKrrvfijVtw8JL0eL54lVQQJi3olgWkGuRWMO2unSkc5M2GaPj/W
- h5V82czInYDwEkLVbsYZCHY4G3NioRwRtQSEpS/w=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <ca2bf5a4-06c3-4e7d-afc1-39b5ebe27afb@yandex-team.ru>
-Date: Wed, 29 Nov 2023 12:49:02 +0300
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1r8HNd-0002kU-8p
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 05:01:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701252073;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FQbeoichjRPVmjTRtFwkEjWK455cPUkHAqPqjjgVxLA=;
+ b=doebxg21k2d+Yrs2RpONYVT5T2couXRMtb6lFYpzFYzphtEV5dr4Onx+VCrUM6SuWYYPcn
+ vJmkrcys3o9yuksivhyZ/MgUyjbPdu3cFgvgQpX7Lf0UhGQvziqJ0XwoDJ2gn8WTfFkx+8
+ Eogl4X+K6Czcu7gJVKAUl4JvjDUtWsY=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-616-VgnSz_GYP0mCGoo_1gnBBg-1; Wed, 29 Nov 2023 05:01:12 -0500
+X-MC-Unique: VgnSz_GYP0mCGoo_1gnBBg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-54554ea191bso4409472a12.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 02:01:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701252069; x=1701856869;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FQbeoichjRPVmjTRtFwkEjWK455cPUkHAqPqjjgVxLA=;
+ b=tgabh/O6y6gWJ0fldqTgbtPNsidkzg3zFs70icBUYjOZhCLG8fP9ZCz60GlvUz2jhP
+ GanGFSKZopQKbJrXNvhFRXrTaEjX4w1Fv9dUIjy7HC9Ha+tS20SAi+N4AAOoN2MWJHSf
+ ygxDtnYMHYnSflAOs099zXaz5rcOYpOE/lZerzLkVCkO6KMFJ/FGKGnd8/gLBB5zPpfL
+ nfAQtWwcU4rgvr/ScZw3Nf5jw9j0rDzWybBClIRaHP1pzaW3vOxwlRXAI22UMHPJNWQn
+ lOGwlX324L+ajd/zeJqup/v1CC76DguyTVhPZTa1ZUjfERKWesx5j880ov/PtF3Z8GF6
+ nXyA==
+X-Gm-Message-State: AOJu0Ywh53HbuqgC13cz3EkYSqoW/MOFEhxktmm7h8MV1tZZhGtugd2V
+ t35MROQQWk+agkCO0W+Ux14BlszSKjWm0Y/XyrXJw0LCS7wc5O/nn4Y/HHOgCWjPROUuklnSyzH
+ 8ZQ7ajWdqoTZ/BYhu5pG4510=
+X-Received: by 2002:a05:6402:354b:b0:54b:44b8:259f with SMTP id
+ f11-20020a056402354b00b0054b44b8259fmr9068209edd.10.1701252069196; 
+ Wed, 29 Nov 2023 02:01:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGlmeU9hXxXx5lRE2yHmPeT8k1M+DmI6ryHIucI7BV9tlI20WBMOf8kqCjPgrk0M5IH5UR3fg==
+X-Received: by 2002:a05:6402:354b:b0:54b:44b8:259f with SMTP id
+ f11-20020a056402354b00b0054b44b8259fmr9068188edd.10.1701252068880; 
+ Wed, 29 Nov 2023 02:01:08 -0800 (PST)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ cw13-20020a056402228d00b0054b651ce8a1sm3185955edb.45.2023.11.29.02.01.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Nov 2023 02:01:08 -0800 (PST)
+Date: Wed, 29 Nov 2023 11:01:07 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Fiona Ebner <f.ebner@proxmox.com>, "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?="
+ <berrange@redhat.com>, qemu-devel@nongnu.org, Peter Maydell
+ <peter.maydell@linaro.org>, Suravee Suthikulpanit
+ <suravee.suthikulpanit@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Ani
+ Sinha <anisinha@redhat.com>
+Subject: Re: [PULL 31/53] hw/i386/pc: Default to use SMBIOS 3.0 for newer
+ machine models
+Message-ID: <20231129110107.7993894d@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231128105920-mutt-send-email-mst@kernel.org>
+References: <cover.1687782442.git.mst@redhat.com>
+ <59c230dab17176f798fb938ba4318543d9cf31d8.1687782442.git.mst@redhat.com>
+ <bb7a62d4-886b-4887-94f7-c41659bfc6f6@proxmox.com>
+ <ZWX1n7OWh81Dd2tJ@redhat.com>
+ <76e8060f-ad71-4aa7-a675-baa735c9c2f2@proxmox.com>
+ <20231128105920-mutt-send-email-mst@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] block: commit: Allow users to request only format
- driver names in backing file format
-Content-Language: en-US
-To: Peter Krempa <pkrempa@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org
-References: <cover.1700837066.git.pkrempa@redhat.com>
- <8593619407b16a578896e1e9fcc77a18fe8d80fa.1700837066.git.pkrempa@redhat.com>
- <632957d1-219d-4bbb-a0fc-b510c8b936ca@yandex-team.ru>
- <ZWZikXhpevsA2ik2@angien.pipo.sk>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <ZWZikXhpevsA2ik2@angien.pipo.sk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,152 +112,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29.11.23 00:58, Peter Krempa wrote:
-> On Tue, Nov 28, 2023 at 20:10:10 +0300, Vladimir Sementsov-Ogievskiy wrote:
->> On 24.11.23 17:52, Peter Krempa wrote:
->>> Introduce a new flag 'backing_file_format_no_protocol' for the
->>> block-commit QMP command which instructs the internals to use 'raw'
->>> instead of the protocol driver in case when a image is used without a
->>> dummy 'raw' wrapper.
->>>
->>> The flag is designed such that it can be always asserted by management
->>> tools even when there isn't any update to backing files.
->>>
->>> The flag will be used by libvirt so that the backing images still
->>> reference the proper format even when libvirt will stop using the dummy
->>> raw driver (raw driver with no other config). Libvirt needs this so that
->>> the images stay compatible with older libvirt versions which didn't
->>> expect that a protocol driver name can appear in the backing file format
->>> field.
->>>
->>> Signed-off-by: Peter Krempa <pkrempa@redhat.com>
->>> ---
-> 
-> [...]
-> 
->>> diff --git a/qapi/block-core.json b/qapi/block-core.json
->>> index ca390c5700..367e896905 100644
->>> --- a/qapi/block-core.json
->>> +++ b/qapi/block-core.json
->>> @@ -1810,6 +1810,14 @@
->>>    #     Care should be taken when specifying the string, to specify a
->>>    #     valid filename or protocol.  (Since 2.1)
->>>    #
->>> +# @backing-file-format-no-protocol: If true always use a 'format' driver name
->>> +#     for the 'backing file format' field if updating the image header of the
->>> +#     overlay of 'top'. Otherwise the real name of the driver of the backing
->>> +#     image may be used which may be a protocol driver.
->>> +#
->>> +#     Can be used also when no image header will be updated.
->>> +#     (default: false; since: 8.2)
->>> +#
->>
->> Hi Peter.
-> 
-> Hi,
-> 
-> Firstly to be honest, I consider the fact that qemu can put a protocol
-> driver into the header field named "backing file format" to be a bug.
-> After discussion with Kevin I understand the rationale of doing so, but
-> nevertheless, a backing protocol name is not a format and should have
-> had it's own header field.
-> 
->> Hmm. Could this just be @backing-file-format ?
-> 
-> I don't really care too deeply about the name.
-> 
-> Calling it just @backing-file-format though would imply (as you write
-> below) that as argument the string to write into the metadata. More on
-> that below.
-> 
->> As I understand, finally, that's just a string which we are going to put into qcow2 metadata.
-> 
-> Yes.
-> 
->> And from qcow2 point of view, it's rather strange to set backing_file_format="raw" for backing image which is actually "qcow2".
-> 
-> Indeed, that would be wrong, but this is _NOT_ what this patch
-> actually does.
+On Tue, 28 Nov 2023 11:00:29 -0500
+"Michael S. Tsirkin" <mst@redhat.com> wrote:
 
-Oh, right. Somehow I was confused. That was bad idea to review in the evening(
+> On Tue, Nov 28, 2023 at 03:53:21PM +0100, Fiona Ebner wrote:
+> > Am 28.11.23 um 15:13 schrieb Daniel P. Berrang=C3=A9: =20
+> > > On Tue, Nov 28, 2023 at 02:57:17PM +0100, Fiona Ebner wrote: =20
+> > >> we received some reports about the new default causing issues for
+> > >> certain guest OSes [0][1]. Namely, for Juniper vSRX, where boot fails
+> > >> and Microsoft Windows, where querying an UUID set via QEMU cmdline
+> > >> -smbios 'type=3D1,uuid=3Da4656bd0-a07d-48e0-9dfd-bdc84667a8d0'
+> > >> in Powershell with
+> > >> get-wmiobject win32_computersystemproduct | Select-Object
+> > >> -expandProperty UUID
+> > >> doesn't return any value anymore and can trip up some guest
+> > >> applications. The original report is about Windows 10 and I reproduc=
+ed
+> > >> this with Windows Server 2019 and the German (but I hope it doesn't
+> > >> matter this time) version of Windows Server 2022.
+> > >>
+> > >> Using machine type 8.0 or the machine option smbios-entry-point-type=
+=3D32
+> > >> are workarounds.
+> > >>
+> > >> Since Windows is widely used, that seems a bit unfortunate. Just wan=
+ted
+> > >> to ask if you are aware of the issue and if there is something else =
+that
+> > >> can be done other than specifying the more specific machine commandl=
+ine
+> > >> for those OSes? =20
+> > >=20
+> > > I don't recall seeing this issue mentioned before. Could you file a
+> > > bug at https://gitlab.com/qemu-project/qemu
+> > >  =20
+> >=20
+> > I made one for the Windows issue:
+> > https://gitlab.com/qemu-project/qemu/-/issues/2008
+> >=20
+> > It's not clear to me if this is a bug in QEMU or just a bug/limitation
+> > of the guest OS when 64 bit entry is used by SMBIOS.
+> >=20
+> > I didn't create one for vSRX, because I'm not using it myself and since
+> > it's based on FreeBSD and FreeBSD 13.1 can boot just fine with both 32
+> > and 64 bit entry, it might be an issue on their side.
+> >=20
+> > Best Regards,
+> > Fiona =20
+>=20
+> I would be inclined to limit this to when we have too many VCPUs then.
+> Igor WDYT?
 
-> 
-> This patch ensures that only a *format* driver name is ever written to
-> the backing image. It overrides the fact that a *protocol* driver name
-> would be written into the field if the tail of the backing chain is a
-> raw image, which was instantiated in qemu without the dummy 'raw' driver
-> on top.
-
-Yes, right, I understand. How could I think that we are going to write "raw" instead of "qcow2", I can't say now)
-
-> 
-> Since a raw driver with no configuration simply passes request to the
-> *protocol* driver below it it's not needed in most configs. In fact as
-> stefanha figured out a long time ago it's just simpy overhead.
-
-I have always keep that in mind, but never really care. Cool that you rework it.
-
-> 
-> We need a format name in the backing file format field as libvirt
-> assumed for a very long time that such a field would contain only format
-> drivers, and since I want to remove the overhead of the 'raw' driver I
-> need to ensure that images won't break for older libvirt.
-> 
->> "raw" say nothing to the reader and may be even misleading. Same for qemu, this seems just a strange thing.
->>
->> Also, what I dislike, that new feature sounds like hardcoded "raw" is the only format driver. If go this way, more honest name would be @backing-file-raw.
-> 
-> Once again, that is not what's happening here. The field enables that
-> only a *format* driver is used. This is only a problem when the final
-> image is raw, but without the dummy 'raw' driver on top of it. Thus
-> that's the reason the workaround only ever writes 'raw' into it.
-> Otherwise the proper format name is in the 'driver' field already and is
-> not overwritten.
-
-OK
-
-> 
->> And, if we allow user to give any backing-file name to be written into qcow2 metadata after the operation, why not just allow to set any backing-file-name as well?
-> 
-> This IMO makes no sense to allow, but based on the reimagined design of
-> the 'backing file /format/' field it might appear that it does.
-> 
-> 'block-commit' and 'block-stream, can't change the format of any of the
-> images, they simply move data, thus for any non-raw image in a chain it
-> must still use actual format name. Only place it makes sense is in the
-> same cases when the code in this patch triggers.
-> 
-> And then it still doesn't make sense to write anything besides:
-> 1) The actual *format* of the image (thus 'raw')
-> 2) The protocol driver of the last image (e.g. NBD)
-> 
-> But since 'block-stream'/'block-commit' don't move the image to any
-> other storage, allowing the user to write any other protocol also
-> doesn't make any sense to write any other protocol.
-> 
-> Thus the two cases above are the only sane, this patch allows that 1) is
-> written into the image.
-> 
->> So, I think simple @backing-file-format argument, allowing to set any string as backing format is a better concept.
-> 
-> While libvirt certainly has the data to do so, as noted in the paragraph
-> above it doesn't IMO make sense to allow write any arbitrary driver name
-> there.
-> 
-> And with design like this it allows libvirt to unconditionally use the
-> flag without thinking too much about what is the correct value.
-> 
->> Moreover: in BlockdevCreateOptionsQcow2 we have backing-file and backing-fmt options. So I think, we should follow this and name the new option for block-job @backing-fmt.
-> 
-> This is different, you are creating an image and declaring it's backing
-> image format. With 'block-stream' and 'block-commit' the format of the
-> backing image won't change, just data will be shuffled around.
-> 
-
-OK, right, I understand now, thanks for comprehensive explanation.
-
--- 
-Best regards,
-Vladimir
+Let me try to reproduce and see if Windows debug logs would provide some cl=
+ue.
 
 
