@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8737FDF35
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 19:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC8E7FDF37
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 19:21:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8P9a-0004R8-RX; Wed, 29 Nov 2023 13:19:18 -0500
+	id 1r8PAq-00053Y-So; Wed, 29 Nov 2023 13:20:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8P9Y-0004Qh-SE
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:19:16 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8PAm-00051I-Rs
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:20:33 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8P9W-0001wn-Og
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:19:16 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40b54261442so338445e9.1
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 10:19:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8PAb-0002GR-Mp
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 13:20:32 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-332c7d4a6a7so60880f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 10:20:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701281952; x=1701886752; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701282015; x=1701886815; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=O67nj3ihOXab9yVHwsLpzpens1sh6+zrFKbF+LsLRw0=;
- b=RCgp8cVbn9IJY4kKc6o/UIbVHUTsD/UzDZ1ul+wxwQOaaXRurgunETu5Dg0Tfcpdwm
- hBEXbyVFC/gp+pLwWbcIN65ddeKXpe0RM+2q3LQj1amAxLXINGSEigsiPqT1rqeBhTH6
- ro3itmeIBiQ7EjPwhKaeOw71KAZJGbzlQqIXtSxu866ziwwfXXCpPBl5gSqgPiipGaKb
- m7So5ATt7uVwHusYdtuddckphISVSFkDVwoDYB0xwObCXEaW2/QhvvzWLYO/BFSrO9dz
- MNEZ0Ircjf6sEvFzvP8t3iw9Tw8iNQCneGcTBNDXo/7b2oLmUmHHzYq/ptfoEzOFdDNt
- azEQ==
+ bh=jrJgUADk/hybonerpgZ6VO/OMxeOJQdGzZfxbZZOY70=;
+ b=TROyaSHouSbFU3wYRuvQlZGBPgLsq0FBawUmPftH0rfbkSFnlhRZKnFKxFvnVsJdEL
+ 9PebhRtxushUe+ZPi+KcPsYqjsQoEPDd9MB9IOZKiEKP3mhDJL5bI1+2woFcaVLZ5s5f
+ zUfboFmraUksSTetlYWwZbcISQ6LVqq6dcVA06Y/by/cMpyIEd8X/j1ryLe6zLv3vUt3
+ AWKX0TJcDqPjRz2mNiEOldxJPPCkgu+k4511r/3IW/AtuQzD1G2jtxZpPeHFRsh+G+Gf
+ j3HK5hju9SpYyX02Ng+2M+WeY4h/+xowwN58pJHl6pIX0wrWwl/Grq+6yEQRnNvrraAr
+ g4Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701281952; x=1701886752;
+ d=1e100.net; s=20230601; t=1701282015; x=1701886815;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O67nj3ihOXab9yVHwsLpzpens1sh6+zrFKbF+LsLRw0=;
- b=b9HnpLswFd/T+VcGLaRL4MpUkwB8gdOK5byt1h32hEHYr5QCnqkNmyLW8CNbDDLLKB
- LLms7g4gp7rTbmeURJ3tHmB7zofFA/9K/t9ShWoaW9NUqAtKLl9LTbJU136rDkgEjlrl
- +Zp17zLGSTFml85MrYrEjiW4iBnzHLCn1f9EAkp/2EUitRSN1w+LDzoAeNOutGqCthQK
- Sv/pMah1t9NvUcnZCaQZ0fEKkSFNaDSf7180o7DGKMUT+mdv2BXxcsJy41SfrUWvCW05
- DJfaYb+jHNjd3KvEL3mzpqHWG4Egvo+hL5JHgLB+c7GiLz4u31VaogWoThK0ps934OVT
- 60dA==
-X-Gm-Message-State: AOJu0Yzwv+KvdOR2IFXJvh1vJCicaTYn9ZWS4z0Hg9qYT8g/f2W5LyTz
- gzcrNj1t9jBkf0ZIEvIfOkvFPA==
-X-Google-Smtp-Source: AGHT+IFIfJVqRN14w+6y3/7CCk/zkoN6O9DNxJnb9/N0v99EPGQaodNgDTCzRNJpD8nnP7J2Idm+oA==
-X-Received: by 2002:a05:600c:5118:b0:3f6:9634:c8d6 with SMTP id
- o24-20020a05600c511800b003f69634c8d6mr14139139wms.18.1701281952006; 
- Wed, 29 Nov 2023 10:19:12 -0800 (PST)
+ bh=jrJgUADk/hybonerpgZ6VO/OMxeOJQdGzZfxbZZOY70=;
+ b=cLXeO4dAEnvNCCZtDD6jeQvI+rzLMl/lB8g3s1sGur9Ph6spH5g0ojdPp5NEY9I/uR
+ a0Ka6zdozTbhg/V3G4s/gGChEW4z4oUoPGR51WFWw0/fz9cm59iVQIC9APtsXaVHRkQP
+ hANa5ZVyw2mrz6judr5ThiNet69yh0jAcRkVUF2o3+NO46OysdiEbK5rKG8B4uEmbH3G
+ 9hIcC+xjOZ2q4Rk3Kv77JwM6mhiAUP+y3U/k7J2RqRF+4NqAuFjHoZE7fUtq+8Ihezgg
+ unNUkX4+qPwH3KUWDBrastHYA33BXxMSSkQtZb+tRnF8vs91PUPjYjfkfStayBLGhvzj
+ FW6w==
+X-Gm-Message-State: AOJu0YxsYRvP7H5quqFlUrH5xQJBO5wxhqtD7Q+62ux/08FiE9d7jUsh
+ 4vESMc7J9ljDBn/v86SMsK2yfA==
+X-Google-Smtp-Source: AGHT+IEUJ3MJLG3PQBcVEp3NGGgN8wy50CRYQN80utadGCUeQYh8RP38QFsvIAIgMpKCfwzlzyAnaA==
+X-Received: by 2002:a5d:6405:0:b0:333:1015:a982 with SMTP id
+ z5-20020a5d6405000000b003331015a982mr3641219wru.29.1701282015545; 
+ Wed, 29 Nov 2023 10:20:15 -0800 (PST)
 Received: from [192.168.110.175] (28.red-95-127-46.staticip.rima-tde.net.
  [95.127.46.28]) by smtp.gmail.com with ESMTPSA id
- u13-20020a05600c19cd00b003fefaf299b6sm2990713wmq.38.2023.11.29.10.19.10
+ u13-20020a05600c19cd00b003fefaf299b6sm2990713wmq.38.2023.11.29.10.20.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Nov 2023 10:19:11 -0800 (PST)
-Message-ID: <6d3b5c65-2442-459d-9bd7-8bbf01e69916@linaro.org>
-Date: Wed, 29 Nov 2023 19:19:09 +0100
+ Wed, 29 Nov 2023 10:20:15 -0800 (PST)
+Message-ID: <aacb0899-cde7-4722-bde9-8f2106cee06c@linaro.org>
+Date: Wed, 29 Nov 2023 19:20:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] Add ivshmem-flat device
+Subject: Re: [PATCH 4/4] hw/misc/ivshmem: Rename ivshmem to ivshmem-pci
 Content-Language: en-US
 To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
  peter.maydell@linaro.org, alex.bennee@linaro.org,
  richard.henderson@linaro.org
-Cc: thuth@redhat.com, Anton Kochkov <anton.kochkov@proton.me>
+Cc: thuth@redhat.com
 References: <20231127052024.435743-1-gustavo.romero@linaro.org>
- <20231127052024.435743-2-gustavo.romero@linaro.org>
+ <20231127052024.435743-5-gustavo.romero@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231127052024.435743-2-gustavo.romero@linaro.org>
+In-Reply-To: <20231127052024.435743-5-gustavo.romero@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,61 +95,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 27/11/23 06:20, Gustavo Romero wrote:
-> Add a new device, ivshmem-flat, which is similar to the ivshmem PCI but
-> does not require a PCI bus. It's meant to be used on machines like those
-> with Cortex-M MCUs, which usually lack a PCI/PCIe bus, e.g. lm3s6965evb
-> and mps2-an385.
+> Because now there is also an MMIO ivshmem device (ivshmem-flat.c), and
+> ivshmem.c is a PCI specific implementation, rename it to ivshmem-pci.c.
 > 
-> The device currently only supports the sysbus bus.
-> 
-> The following is an example on how to create the ivshmem-flat device on
-> a Stellaris machine:
-> 
-> $ qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic
->                    -net none -chardev stdio,id=con,mux=on
->                    -serial chardev:con -mon chardev=con,mode=readline
->                    -chardev socket,path=/tmp/ivshmem_socket,id=ivf
->                    -device ivshmem-flat,x-irq-qompath=/machine/unattached/device[1]/nvic/unnamed-gpio-in[0],x-bus-qompath="/sysbus",chardev=ivf
->                    -kernel zephyr_qemu.elf
-> 
-> The new device, just like the ivshmem PCI device, supports both peer
-> notification via hardware interrupts and shared memory.
-> 
-> The IRQ QOM path for the target machine can be determined by creating
-> the VM without the ivshmem-flat device, going to the QEMU console and
-> listing the QOM nodes with 'info qom-tree'. In the Stellaris example
-> above the input IRQ is in the NVIC IC.
-> 
-> The MMRs for status and control (notification) are mapped to the MMIO
-> region at 0x400FF000 (default), whilst the shared memory region start
-> is mapped at addr. 0x40100000 (default), but both addresses can be set
-> when creating the device by using 'x-bus-address-{mmr,shmem}' options,
-> respectively.
-> 
-> The device shared memory size can be set using the 'shmem-size' option
-> and it defaults to 4 MiB, which is the default size of shmem allocated
-> by the ivshmem server.
-> 
-
-Per https://gitlab.com/qemu-project/qemu/-/issues/1134#note_1667709336:
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1134
-
 > Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 > ---
->   docs/system/devices/ivshmem-flat.rst |  89 +++++
->   hw/arm/mps2.c                        |   2 +
->   hw/arm/stellaris.c                   |   5 +-
->   hw/arm/virt.c                        |   2 +
->   hw/core/sysbus-fdt.c                 |   1 +
->   hw/misc/Kconfig                      |   5 +
->   hw/misc/ivshmem-flat.c               | 477 +++++++++++++++++++++++++++
->   hw/misc/meson.build                  |   2 +
->   hw/misc/trace-events                 |  18 +
->   include/hw/misc/ivshmem-flat.h       |  72 ++++
->   10 files changed, 672 insertions(+), 1 deletion(-)
->   create mode 100644 docs/system/devices/ivshmem-flat.rst
->   create mode 100644 hw/misc/ivshmem-flat.c
->   create mode 100644 include/hw/misc/ivshmem-flat.h
+>   hw/misc/{ivshmem.c => ivshmem-pci.c} | 0
+>   hw/misc/meson.build                  | 2 +-
+>   2 files changed, 1 insertion(+), 1 deletion(-)
+>   rename hw/misc/{ivshmem.c => ivshmem-pci.c} (100%)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
