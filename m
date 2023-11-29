@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E9C7FDBE0
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 16:47:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 915087FDBEC
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 16:47:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8MlZ-0004gN-Ba; Wed, 29 Nov 2023 10:46:21 -0500
+	id 1r8Mmw-0005pZ-Pp; Wed, 29 Nov 2023 10:47:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1r8Mkk-0004W2-6u
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:45:32 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r8Mmt-0005pP-D0
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:47:43 -0500
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1r8Mkg-0000YN-47
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:45:29 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-54b8a4d64b5so4097987a12.0
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 07:45:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r8Mmr-0001AB-SW
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 10:47:43 -0500
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-3b565e35fedso3944200b6e.2
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 07:47:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1701272722; x=1701877522;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=/urIYvISorp11S22g91YjdaocJ3v4MjeDZDmhdTf1Zg=;
- b=xm2mzSFaV5SfeAO1XCeKtjIIzqxquz5Rus7wm4P5K8MZb2567a8wsGW6TRKl/0Wdl/
- ax75oK6RXz9t73r2pyQS0b4Q+wC+1nu3GLaBzAMacE+uZ1ESl5/mQjQpC9XvgF0YTI+i
- jPC9Z+rxkcSRV50qV4nZWrW7LA/rYJ9QfSIEjxMMRwWkO0UpquSQ9DlU8A5oQdR2rlWc
- /ssuIz2H5j1J1sYtx0LfNdoileyV5IHVQj8aNANJxN5lYafvGlOmCRmcmLpilKmnF39s
- +Cucc6seFGZgusKCebwisnvICHMgt5SvA5t8abW94nJ4kjIQOM0PIb/VTasQNcf43PZl
- jOVg==
+ d=gmail.com; s=20230601; t=1701272860; x=1701877660; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fKE2POUF4iEOTbLiXcPexg7wWa4PlrF+puwDT/rxgM0=;
+ b=Lc+RVmhrJYyN08Qw0FzS0vb3FI1pDnc+4tEgqAagp2cEcqS7+B6z9jLHs61Xty8tdp
+ 19gQOPFaFEt1mkKjQUV7doqbUQHKd+DXw4eYEnP72Mwgo1YmXGQo2GJ3ihMUGYv1NepY
+ Ac6XPrrOOCpGEvIZ4rF85gQh7UEi1TIcg+937l4of8eTHd9Apf5ML8NKvoZBizZ5oEWl
+ kMOIlf4Qi91/1Qk9nHhvf1hCt0rNrB3B2NPnGkE8IlHLeRU0D8aoIQn/zc7pYNvzZNUi
+ Ea8Re51CsU+LUaI1oTLkKSPmVl6oustC1Iamk/KDPyIj2bgbGCRGapn//Nr/jsLH0DiM
+ P3LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701272722; x=1701877522;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/urIYvISorp11S22g91YjdaocJ3v4MjeDZDmhdTf1Zg=;
- b=BdFUNNp5GmxKGsXxvpnsFLizavYjfAcpgb/zuWvPCQHWpezH3xO6eaFzNRiPt6NuAi
- ozkM+q18IymhNtWIKPPdKLrqtWZdBLjplicCrxq67gk30eOXQibuYeXyWAiQnBDc2LTm
- v6YrKAMs7bJjMyhG8DlE+LIr653/pId63W6qe3prwyulfgCUrh2O28tDR3PxUg+TMeXc
- 7yGqSpZK+WCYJ0+uN6Za1J+3sA0pJBHXUpUGBFPRxcBB1V+xydqPH8f1HW9em2z8jtWA
- mzSxJEtL3jIKvA4wgBviQ66S1Ys2uGAvVEPf2bs8evarckbB4nM87tRyk+dJE3+iSOmg
- Ue8w==
-X-Gm-Message-State: AOJu0YyEKVqDcpHO9aA5qw0hrSOzmaSvNzWc3bqSHmzKbnBqLZEGq5p1
- dV3BPCS1tksnw1JoAec2H+7EoMHotnCEy7gUmT8L5w==
-X-Google-Smtp-Source: AGHT+IGovQd4XC0RYf90+VbwiQSQCJZtBdwbEP4bnaGZiYFwyAECXizBC0AwGHaBNKuW0Gm1TFCTy9Ec1NYiUt2VVik=
-X-Received: by 2002:a17:906:195b:b0:9fe:6349:d8ba with SMTP id
- b27-20020a170906195b00b009fe6349d8bamr13529625eje.27.1701272721796; Wed, 29
- Nov 2023 07:45:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701272860; x=1701877660;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fKE2POUF4iEOTbLiXcPexg7wWa4PlrF+puwDT/rxgM0=;
+ b=RCednHof2RORZH5GR2JI9yV4JgZUCF/CLA/c+4GsKvt1utsARZsVwcE+H4DYipw82V
+ JcF0mPxQXQAN5KZVfQvfiAy0pO6p/3P8zaenOrayZK13YAW00XoOr/IlhiZdNhjywMwm
+ tc6DMFFQJUwNZfKuyfznhPCW3Bt+U/BpRS5A8x1XphAsvWfkNhKesdI0Q3pIqO38MU5h
+ FtFX/lkMSjfIx73g7J27gRP8NKuHAshujafvoXV6ixMQeTYo3T/biZ1k/TMCk8V5BEzf
+ i/GHvV+EQthMilptCwm/5bqU3mSMkMggwgoi6WTFnkkYiA/puxchnGDul0/jlLxqRPO4
+ XRDw==
+X-Gm-Message-State: AOJu0YxdGx1mQHISjvw/n6SQJE+zhJk/eaSEIcyuTBbKRJYCzmFcfXvN
+ JVeX5AUV0lPj+sp9ZqJUeTomIUQefTLcRSudPM/9mU9I
+X-Google-Smtp-Source: AGHT+IFzojLvuNzZ6kPfueFYKXdKre2hFDIB5jv1/FU9AlGNHbEmwGVH4Z1aYXwBxWLiTTXN6coWjx+2Hh99cb+TyMc=
+X-Received: by 2002:a54:4386:0:b0:3b8:8247:71d with SMTP id
+ u6-20020a544386000000b003b88247071dmr7751102oiv.18.1701272860564; Wed, 29 Nov
+ 2023 07:47:40 -0800 (PST)
 MIME-Version: 1.0
 References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
  <87edgjf2v4.fsf@draig.linaro.org>
@@ -56,9 +58,9 @@ References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
  <ZWYsMsgxjDZ_T2zA@redhat.com>
  <68337349-a8c7-4520-a381-a359bf8f8438@linaro.org>
 In-Reply-To: <68337349-a8c7-4520-a381-a359bf8f8438@linaro.org>
-From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 29 Nov 2023 08:45:15 -0700
-Message-ID: <CANCZdfqMyemEMXs0xtHbZ+_Ebk2UGc++gPbO4e8svTaYTCEGpQ@mail.gmail.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 29 Nov 2023 10:47:28 -0500
+Message-ID: <CAJSP0QVzwJ8GFAaprwt6892zhxC9-uuKAk9d2cftXebFkMoVog@mail.gmail.com>
 Subject: Re: QEMU Summit Minutes 2023
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
@@ -66,15 +68,16 @@ Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
  Peter Maydell <peter.maydell@linaro.org>,
  QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="0000000000003fc6a8060b4c6cbb"
-Received-SPF: none client-ip=2a00:1450:4864:20::52e;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=stefanha@gmail.com; helo=mail-oi1-x22e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,14 +94,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000003fc6a8060b4c6cbb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Nov 29, 2023 at 8:33=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philmd=
-@linaro.org>
-wrote:
-
+On Wed, 29 Nov 2023 at 09:22, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
 > On 28/11/23 19:06, Daniel P. Berrang=C3=A9 wrote:
 > > On Tue, Nov 28, 2023 at 06:54:42PM +0100, C=C3=A9dric Le Goater wrote:
 >
@@ -118,87 +116,20 @@ wrote:
 >
 > Are all our tests already on GitLab? Last time I remember Peter still
 > had manual tests.
->
 
-As a low-volume maintainer, I'd love nothing more than to push my PR
-asynchronously to the release cycle. I'll get immediate yes/no feedback and
-have a chance to fix the 'no' from the CI and/or reviewers. I'd know early
-in the review when CI tests break that I can deal with in parallel. All as
-part of the normal process. Now I have to publish in email, and push to
-gitlab and it's very manual, not integrated and a large source of friction
-for me as someone who does things from time to time rather than all the
-time (since it's the most radically different set or processes from
-anything else I contribute to). This way, I don't have to care about
-freezes or whatever. During the non-freeze times it goes in once whatever
-criteria are ticked (reviewers and no objections, my say so, CI working,
-etc) During the freeze times the release engineer ticks another box for it
-to go in... or not... and after the freeze, we'll have a battle royale of
-accumulated MRs that will go in, though not all queued once since we'll
-have to re-run the CI with the new changes.
+Hi Philippe,
+QEMU no longer depends on those manual tests even if they still exist.
+I did not run any manual tests during the 8.2 release cycle.
 
-And maybe we could consider just branching for release. Freeze master for
-as long as it takes to branch (which needn't be tip) and then master goes
-on with life and the release engineer lands bug fixes to the release branch
-like we do now in frozen master. That way we don't get the big in-rush
-effects when the freeze lifts. FreeBSD went to this a decade ago and makes
-releases so much easier.
+I want to highlight that the CI is not yet reliable. It fails due to
+intermittent issues more often than it passes. Most of the issues are
+related to unreliable test cases. Some of the issues are related to
+temporary infrastructure outages where the tests fail when
+initializing the environment (e.g. failure to download dependencies).
 
-Warner
+I am willing to review the CI failure history for the past two weeks
+and submit patches to disable unreliable tests. The test owners can
+investigate and fix those tests if they want to re-enable them.
 
---0000000000003fc6a8060b4c6cbb
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Nov 29, 2023 at 8:33=E2=80=AF=
-AM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">phi=
-lmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">On 28/11/23 19:06, Daniel P. Berrang=C3=A9 wrote:<br>
-&gt; On Tue, Nov 28, 2023 at 06:54:42PM +0100, C=C3=A9dric Le Goater wrote:=
-<br>
-<br>
-&gt; Anyway, when a maintainer wants to merge a tree, I would expect to<br>
-&gt; have a MR opened against &#39;master&#39; in qemu-project/qemu.=C2=A0 =
-The CI<br>
-&gt; ought to then run and if it is all green, then someone would approve<b=
-r>
-&gt; it to merge to master.<br>
-&gt; <br>
-&gt;&gt; It seems to me that we should also have a group of people approvin=
-g<br>
-&gt;&gt; the MR.<br>
-&gt; <br>
-&gt; Yes, while we could have one designated gate keeper approving all<br>
-&gt; MRs, that would defeat some of the benefit of MRs. So likely would<br>
-&gt; be good to have a pool, and also setup the config so that the owner<br=
->
-&gt; of an MR is not allow to approve their own MR, to guarantee there<br>
-&gt; is always a 2nd pair of eyes as sanity check.<br>
-<br>
-Are all our tests already on GitLab? Last time I remember Peter still<br>
-had manual tests.<br></blockquote><div><br></div><div>As a low-volume maint=
-ainer, I&#39;d love nothing more than to push my PR asynchronously to the r=
-elease cycle. I&#39;ll get immediate yes/no feedback and have a chance to f=
-ix the &#39;no&#39; from the CI and/or reviewers. I&#39;d know early in the=
- review when CI tests break that I can deal with in parallel. All as part o=
-f the normal process. Now I have to publish in email, and push to gitlab an=
-d it&#39;s very manual, not integrated and a large source of friction for m=
-e as someone who does things from time to time rather than all the time (si=
-nce it&#39;s the most radically different set or processes from anything el=
-se I contribute to). This way, I don&#39;t have to care about freezes or wh=
-atever. During the non-freeze times it goes in once whatever criteria are t=
-icked (reviewers and no objections, my say so, CI working, etc) During the =
-freeze times the release engineer ticks another box for it to go in... or n=
-ot... and after the freeze, we&#39;ll have a battle royale of accumulated M=
-Rs that will go in, though not all queued once since we&#39;ll have to re-r=
-un the CI with the new changes.</div><div><br></div><div>And maybe we could=
- consider just branching for release. Freeze master for as long as it takes=
- to branch (which needn&#39;t be tip) and then master goes on with life and=
- the release engineer lands bug fixes to the release branch like we do now =
-in frozen master. That way we don&#39;t get the big in-rush effects when th=
-e freeze lifts. FreeBSD went to this a decade ago and makes releases so muc=
-h easier.</div><div><br></div><div>Warner<br></div></div></div>
-
---0000000000003fc6a8060b4c6cbb--
+Stefan
 
