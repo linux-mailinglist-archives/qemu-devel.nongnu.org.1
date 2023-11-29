@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D99B7FCDDB
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 05:21:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 024F87FCDE5
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 05:22:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8C4i-0001qK-T7; Tue, 28 Nov 2023 23:21:24 -0500
+	id 1r8C4p-0001xi-9T; Tue, 28 Nov 2023 23:21:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r8C4d-0001mw-MB
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 23:21:19 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r8C4n-0001x6-IT
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 23:21:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r8C4Z-0007MM-Ir
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 23:21:19 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r8C4m-0007OZ-6l
+ for qemu-devel@nongnu.org; Tue, 28 Nov 2023 23:21:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701231674;
+ s=mimecast20190719; t=1701231687;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:mime-version: content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TnfSUVkggHVi7wcVMR9K0zJDXRXwlY7wqA3paeGEYRY=;
- b=Ie+jV/SseGg/aLOxNMSeQ/L3p+2pOTnIUVOvLT/maSei3yJWKRODz1t8N4qYHz/r+3Urz2
- JKXO2VTgnJF6KVibF/KdHgV9KyhES+pS61SofBnrkghR6UobphncvQ3NelHNGoAHfVvI0A
- 4Z5hQwzL/Qro368TZiP4bA3E7i+wmgQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-41-iGosh_8SNxa3y-AnZ__VhQ-1; Tue,
- 28 Nov 2023 23:21:10 -0500
-X-MC-Unique: iGosh_8SNxa3y-AnZ__VhQ-1
+ bh=d7NYObB3HzjLGvBykfZzqKbWPtYH6Ie46SXcxizf7tY=;
+ b=e4TBc+z/myHG7pTgxwBg3gC+VYw0sFazMAY75Gr5mIRYKRCqnOEUc6LKwMsv2jZMbHs/g8
+ mKQIpvYeZeqIXiLxaiOjCP7mB0sn+4eCD0g9TLJhKe9wInckuOvsB/WC7WpXORdW5rVXhb
+ EWGL0I1Bsphqh2j4W3UXpopIfjD9K7Y=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-365-E71sB-9OO3W7GOueJ7OcdQ-1; Tue, 28 Nov 2023 23:21:19 -0500
+X-MC-Unique: E71sB-9OO3W7GOueJ7OcdQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5DF8F1C0BA44;
- Wed, 29 Nov 2023 04:21:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D75B8185A782;
+ Wed, 29 Nov 2023 04:21:17 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.61])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CD032492BE0;
- Wed, 29 Nov 2023 04:21:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E4EBF492BE0;
+ Wed, 29 Nov 2023 04:21:09 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
@@ -52,13 +52,14 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
  vijai@behindbytes.com, palmer@dabbelt.com, alistair.francis@wdc.com,
  bin.meng@windriver.com, liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
-Subject: [PATCH v8 4/9] machine: Print CPU model name instead of CPU type
-Date: Wed, 29 Nov 2023 14:20:07 +1000
-Message-ID: <20231129042012.277831-5-gshan@redhat.com>
+Subject: [PATCH v8 5/9] hw/arm/virt: Hide host CPU model for tcg
+Date: Wed, 29 Nov 2023 14:20:08 +1000
+Message-ID: <20231129042012.277831-6-gshan@redhat.com>
 In-Reply-To: <20231129042012.277831-1-gshan@redhat.com>
 References: <20231129042012.277831-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
@@ -86,50 +87,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The names of supported CPU models instead of CPU types should be
-printed when the user specified CPU type isn't supported, to be
-consistent with the output from '-cpu ?'.
+The 'host' CPU model isn't available until KVM or HVF is enabled.
+For example, the following error messages are seen when the guest
+is started with option '-cpu cortex-a8' on tcg after the next commit
+is applied to check the CPU type in machine_run_board_init().
 
-Correct the error messages to print CPU model names instead of CPU
-type names.
+  ERROR:../hw/core/machine.c:1423:is_cpu_type_supported: \
+  assertion failed: (model != NULL)
+  Bail out! ERROR:../hw/core/machine.c:1423:is_cpu_type_supported: \
+  assertion failed: (model != NULL)
+  Aborted (core dumped)
+
+Hide 'host' CPU model until KVM or HVF is enabled. With this applied,
+the valid CPU models can be shown.
+
+  qemu-system-aarch64: Invalid CPU type: cortex-a8
+  The valid types are: cortex-a7, cortex-a15, cortex-a35, \
+  cortex-a55, cortex-a72, cortex-a76, cortex-a710, a64fx, \
+  neoverse-n1, neoverse-v1, neoverse-n2, cortex-a53,      \
+  cortex-a57, max
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-v8: Use g_autofree                                        (Phil)
-    Relace 'type' with 'model' in error messages          (Gavin)
----
- hw/core/machine.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ hw/arm/virt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index c58c84abf5..946875930c 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1408,15 +1408,19 @@ static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index be2856c018..668c0d3194 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -220,7 +220,9 @@ static const char *valid_cpus[] = {
+ #endif
+     ARM_CPU_TYPE_NAME("cortex-a53"),
+     ARM_CPU_TYPE_NAME("cortex-a57"),
++#if defined(CONFIG_KVM) || defined(CONFIG_HVF)
+     ARM_CPU_TYPE_NAME("host"),
++#endif
+     ARM_CPU_TYPE_NAME("max"),
+ };
  
-         /* The user specified CPU type isn't valid */
-         if (!mc->valid_cpu_types[i]) {
--            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
-+            g_autofree char *requested = cpu_model_from_type(machine->cpu_type);
-+            error_setg(errp, "Invalid CPU model: %s", requested);
-             if (!mc->valid_cpu_types[1]) {
--                error_append_hint(errp, "The only valid type is: %s\n",
--                                  mc->valid_cpu_types[0]);
-+                g_autofree char *model = cpu_model_from_type(
-+                                                 mc->valid_cpu_types[0]);
-+                error_append_hint(errp, "The only valid type is: %s\n", model);
-             } else {
--                error_append_hint(errp, "The valid types are: ");
-+                error_append_hint(errp, "The valid models are: ");
-                 for (i = 0; mc->valid_cpu_types[i]; i++) {
-+                    g_autofree char *model = cpu_model_from_type(
-+                                                 mc->valid_cpu_types[i]);
-                     error_append_hint(errp, "%s%s",
--                                      mc->valid_cpu_types[i],
-+                                      model,
-                                       mc->valid_cpu_types[i + 1] ? ", " : "");
-                 }
-                 error_append_hint(errp, "\n");
 -- 
 2.42.0
 
