@@ -2,68 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FE47FCD35
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 04:10:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F17A47FCD98
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 04:49:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8AwJ-0003pg-35; Tue, 28 Nov 2023 22:08:39 -0500
+	id 1r8BYU-00034S-Kb; Tue, 28 Nov 2023 22:48:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1r8AwG-0003pH-So
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 22:08:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1r8AwE-00012L-Qa
- for qemu-devel@nongnu.org; Tue, 28 Nov 2023 22:08:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701227313;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=rrqpu8fOLGtKRd/awKRuJnAQW4KEBttTh2O70f/GeZg=;
- b=HoWI9qQypRreZDpx/en32fcmqcyEAjaCMI9qmRNndAgLa9K9L4lfXQQATePzsMY5FpAL29
- mBNoAi8wqcvA9R1jnc2f69FFVQ5FltrEP4nULKp4UCGkAxIMlCjJlPt+NpdLwHdIm+T0z+
- Zohevk6OI4EegyAo83BOlGH5oDIM6CY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-287-TXtO9iFXPdKn7XZMHHQnWQ-1; Tue,
- 28 Nov 2023 22:08:30 -0500
-X-MC-Unique: TXtO9iFXPdKn7XZMHHQnWQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A15E2280640D;
- Wed, 29 Nov 2023 03:08:29 +0000 (UTC)
-Received: from virt-mtcollins-01.lab.eng.rdu2.redhat.com
- (virt-mtcollins-01.lab.eng.rdu2.redhat.com [10.8.1.196])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 91125492BFA;
- Wed, 29 Nov 2023 03:08:29 +0000 (UTC)
-From: Shaoqin Huang <shahuang@redhat.com>
-To: qemu-arm@nongnu.org
-Cc: eauger@redhat.com, Shaoqin Huang <shahuang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
- qemu-devel@nongnu.org
-Subject: [PATCH v3] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
-Date: Tue, 28 Nov 2023 22:08:27 -0500
-Message-Id: <20231129030827.2657755-1-shahuang@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=shahuang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r8BYK-00033Y-Gi; Tue, 28 Nov 2023 22:47:58 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1r8BYI-0000SA-Dt; Tue, 28 Nov 2023 22:47:55 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6cbe716b511so4766093b3a.3; 
+ Tue, 28 Nov 2023 19:47:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701229670; x=1701834470; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zwLCSbjrqbB8zFk7O7IsMYDhiegCcOuBn6fltNdkjNY=;
+ b=iMb+KgGEDdFC5fN+nmtmyBt3reFPuyejepaDoS97J+csp7zGqPobMMtqJOip6lJprE
+ RegU/cXaZH9ZAXI0SwlYYPtbudlPLJ4GqfAzLGuRwvpvVxmrI6mfhtACV9dg0cwJVmfd
+ xQx36AwPK0Qi9LnWIPADMUrBfr9+9C6x/Im82/mZC0V/5Y6j9gOfCaGu5r4m6O1VAVsI
+ 2EiSKgSunr+D1+3bYJd0rB6C0OPduTeQHbzYdM9s6ugzKDghyXTPZJk4IaO9YZ60yrl2
+ 4ML4CqyoT/dRefGqseVRiqaMN2D3kvHb4UF/emS/GW0IPsDK6PtbTAbtTrubJDSKTyV3
+ nULA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701229670; x=1701834470;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=zwLCSbjrqbB8zFk7O7IsMYDhiegCcOuBn6fltNdkjNY=;
+ b=lMAN2KShr2hgs0r9mqa7Pa8wMcUJE/ORZGT3AdvHXaln/F+3bDQ0awBrp95fr0mySJ
+ fBDysXFgZAYQy/dvmyR//Iuzk5p2oZ5Uf9XUceKtSLsba2jqCuY8ovqo7dryPhfJbYsA
+ avQ3FoUn4S6QbE6BF2tFP4iZZ7CdlKCzxIfM2fk0QZjc4SZjj9ng/z6jBQRSgK59qies
+ ACwxou2XK6pDyWoDze2y1zfSTUdWb10LZlTZjBCFU1sCx6/aqh5tvBEKN3r/lmeIrPez
+ gvtkxYzsZddfiYUXL7JC6bZW/LNRwcRepf2b7KahH4iUpGInr/UA7YAO5Gm2tGiIwN49
+ jNrg==
+X-Gm-Message-State: AOJu0YwhjJgNR68vkv4ZItf6v8cVVrt2INtN+bVVik/CWu4IfyW9YX1n
+ 1n7D66Q+/Odycy2J1iv/zxo=
+X-Google-Smtp-Source: AGHT+IEkg2c4Dqj25U9w9IXHE6CqALz0N7wq9bUtGJlAxnVh/smPCrrI6SGrE2k44sLAKbzgSOeyWg==
+X-Received: by 2002:a05:6a00:1a88:b0:6cd:aff4:8dcc with SMTP id
+ e8-20020a056a001a8800b006cdaff48dccmr2547244pfv.29.1701229670354; 
+ Tue, 28 Nov 2023 19:47:50 -0800 (PST)
+Received: from localhost ([124.170.16.164]) by smtp.gmail.com with ESMTPSA id
+ q18-20020a056a00085200b006cc02e550f0sm6546596pfk.130.2023.11.28.19.47.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 28 Nov 2023 19:47:49 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Nov 2023 13:47:43 +1000
+Message-Id: <CXAZL2F3WKME.1ZE6Y4IFGFHUF@wheely>
+Cc: <clegoate@redhat.com>, <qemu-devel@nongnu.org>, <mikey@neuling.org>,
+ <vaibhav@linux.ibm.com>, <jniethe5@gmail.com>, <sbhat@linux.ibm.com>,
+ <kconsul@linux.vnet.ibm.com>, <danielhb413@gmail.com>
+Subject: Re: [PATCH v2 01/14] spapr: nested: move nested part of
+ spapr_get_pate into spapr_nested.c
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20231012104951.194876-1-harshpb@linux.ibm.com>
+ <20231012104951.194876-2-harshpb@linux.ibm.com>
+In-Reply-To: <20231012104951.194876-2-harshpb@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,269 +93,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The KVM_ARM_VCPU_PMU_V3_FILTER provide the ability to let the VMM decide
-which PMU events are provided to the guest. Add a new option
-`pmu-filter` as -accel sub-option to set the PMU Event Filtering.
-Without the filter, the KVM will expose all events from the host to
-guest by default.
+On Thu Oct 12, 2023 at 8:49 PM AEST, Harsh Prateek Bora wrote:
+> Most of the nested code has already been moved to spapr_nested.c
+> This logic inside spapr_get_pate is related to nested guests and
+> better suited for spapr_nested.c, hence moving there.
+>
+> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-The `pmu-filter` has such format:
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-  pmu-filter="{A,D}:start-end[;{A,D}:start-end...]"
-
-The A means "allow" and D means "deny", start is the first event of the
-range and the end is the last one. The first registered range defines
-the global policy(global ALLOW if the first @action is DENY, global DENY
-if the first @action is ALLOW). The start and end only support hex
-format now. For example:
-
-  pmu-filter="A:0x11-0x11;A:0x23-0x3a;D:0x30-0x30"
-
-Since the first action is allow, we have a global deny policy. It
-will allow event 0x11 (The cycle counter), events 0x23 to 0x3a is
-also allowed except the event 0x30 is denied, and all the other events
-are disallowed.
-
-Here is an real example shows how to use the PMU Event Filtering, when
-we launch a guest by use kvm, add such command line:
-
-  # qemu-system-aarch64 \
-	-accel kvm,pmu-filter="D:0x11-0x11"
-
-Since the first action is deny, we have a global allow policy. This
-disables the filtering of the cycle counter (event 0x11 being CPU_CYCLES).
-
-And then in guest, use the perf to count the cycle:
-
-  # perf stat sleep 1
-
-   Performance counter stats for 'sleep 1':
-
-              1.22 msec task-clock                       #    0.001 CPUs utilized
-                 1      context-switches                 #  820.695 /sec
-                 0      cpu-migrations                   #    0.000 /sec
-                55      page-faults                      #   45.138 K/sec
-   <not supported>      cycles
-           1128954      instructions
-            227031      branches                         #  186.323 M/sec
-              8686      branch-misses                    #    3.83% of all branches
-
-       1.002492480 seconds time elapsed
-
-       0.001752000 seconds user
-       0.000000000 seconds sys
-
-As we can see, the cycle counter has been disabled in the guest, but
-other pmu events are still work.
-
-Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
----
-v2->v3:
-  - Improve commits message, use kernel doc wording, add more explaination on
-    filter example, fix some typo error.                [Eric]
-  - Add g_free() in kvm_arch_set_pmu_filter() to prevent memory leak. [Eric]
-  - Add more precise error message report.              [Eric]
-  - In options doc, add pmu-filter rely on KVM_ARM_VCPU_PMU_V3_FILTER support in
-    KVM.                                                [Eric]
-
-v1->v2:
-  - Add more description for allow and deny meaning in 
-    commit message.                                     [Sebastian]
-  - Small improvement.                                  [Sebastian]
-
-v2: https://lore.kernel.org/all/20231117060838.39723-1-shahuang@redhat.com/
-v1: https://lore.kernel.org/all/20231113081713.153615-1-shahuang@redhat.com/
----
- include/sysemu/kvm_int.h |  1 +
- qemu-options.hx          | 21 +++++++++++++
- target/arm/kvm.c         | 23 ++++++++++++++
- target/arm/kvm64.c       | 68 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 113 insertions(+)
-
-diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
-index fd846394be..8f4601474f 100644
---- a/include/sysemu/kvm_int.h
-+++ b/include/sysemu/kvm_int.h
-@@ -120,6 +120,7 @@ struct KVMState
-     uint32_t xen_caps;
-     uint16_t xen_gnttab_max_frames;
-     uint16_t xen_evtchn_max_pirq;
-+    char *kvm_pmu_filter;
- };
- 
- void kvm_memory_listener_register(KVMState *s, KVMMemoryListener *kml,
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 42fd09e4de..8b721d6668 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -187,6 +187,7 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
-     "                tb-size=n (TCG translation block cache size)\n"
-     "                dirty-ring-size=n (KVM dirty ring GFN count, default 0)\n"
-     "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
-+    "                pmu-filter={A,D}:start-end[;...] (KVM PMU Event Filter, default no filter. ARM only)\n"
-     "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
-     "                thread=single|multi (enable multi-threaded TCG)\n", QEMU_ARCH_ALL)
- SRST
-@@ -259,6 +260,26 @@ SRST
-         impact on the memory. By default, this feature is disabled
-         (eager-split-size=0).
- 
-+    ``pmu-filter={A,D}:start-end[;...]``
-+        KVM implements pmu event filtering to prevent a guest from being able to
-+	sample certain events. It depends on the KVM_ARM_VCPU_PMU_V3_FILTER attr
-+	supported in KVM. It has the following format:
-+
-+	pmu-filter="{A,D}:start-end[;{A,D}:start-end...]"
-+
-+	The A means "allow" and D means "deny", start is the first event of the
-+	range and the end is the last one. The first registered range defines
-+	the global policy(global ALLOW if the first @action is DENY, global DENY
-+	if the first @action is ALLOW). The start and end only support hex
-+	format now. For example:
-+
-+	pmu-filter="A:0x11-0x11;A:0x23-0x3a;D:0x30-0x30"
-+
-+	Since the first action is allow, we have a global deny policy. It
-+	will allow event 0x11 (The cycle counter), events 0x23 to 0x3a is
-+	also allowed except the event 0x30 is denied, and all the other events
-+	are disallowed.
-+
-     ``notify-vmexit=run|internal-error|disable,notify-window=n``
-         Enables or disables notify VM exit support on x86 host and specify
-         the corresponding notify window to trigger the VM exit if enabled.
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 7903e2ddde..116a0d3d2b 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -1108,6 +1108,22 @@ static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
-     s->kvm_eager_split_size = value;
- }
- 
-+static char *kvm_arch_get_pmu_filter(Object *obj, Error **errp)
-+{
-+    KVMState *s = KVM_STATE(obj);
-+
-+    return g_strdup(s->kvm_pmu_filter);
-+}
-+
-+static void kvm_arch_set_pmu_filter(Object *obj, const char *pmu_filter,
-+                                    Error **errp)
-+{
-+    KVMState *s = KVM_STATE(obj);
-+
-+    g_free(s->kvm_pmu_filter);
-+    s->kvm_pmu_filter = g_strdup(pmu_filter);
-+}
-+
- void kvm_arch_accel_class_init(ObjectClass *oc)
- {
-     object_class_property_add(oc, "eager-split-size", "size",
-@@ -1116,4 +1132,11 @@ void kvm_arch_accel_class_init(ObjectClass *oc)
- 
-     object_class_property_set_description(oc, "eager-split-size",
-         "Eager Page Split chunk size for hugepages. (default: 0, disabled)");
-+
-+    object_class_property_add_str(oc, "pmu-filter",
-+                                  kvm_arch_get_pmu_filter,
-+                                  kvm_arch_set_pmu_filter);
-+
-+    object_class_property_set_description(oc, "pmu-filter",
-+        "PMU Event Filtering description for guest pmu. (default: NULL, disabled)");
- }
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 3c175c93a7..7947b83b36 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -10,6 +10,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include <asm-arm64/kvm.h>
- #include <sys/ioctl.h>
- #include <sys/ptrace.h>
- 
-@@ -131,6 +132,70 @@ static bool kvm_arm_set_device_attr(CPUState *cs, struct kvm_device_attr *attr,
-     return true;
- }
- 
-+static void kvm_arm_pmu_filter_init(CPUState *cs)
-+{
-+    static bool pmu_filter_init = false;
-+    struct kvm_pmu_event_filter filter;
-+    struct kvm_device_attr attr = {
-+        .group      = KVM_ARM_VCPU_PMU_V3_CTRL,
-+        .attr       = KVM_ARM_VCPU_PMU_V3_FILTER,
-+        .addr       = (uint64_t)&filter,
-+    };
-+    KVMState *kvm_state = cs->kvm_state;
-+    char *tmp;
-+    char *str, act;
-+
-+    if (!kvm_state->kvm_pmu_filter)
-+        return;
-+
-+    if (kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, attr)) {
-+        error_report("The kernel doesn't support the pmu event filter!\n");
-+        abort();
-+    }
-+
-+    /* The filter only needs to be initialized for 1 vcpu. */
-+    if (!pmu_filter_init)
-+        pmu_filter_init = true;
-+
-+    tmp = g_strdup(kvm_state->kvm_pmu_filter);
-+
-+    for (str = strtok(tmp, ";"); str != NULL; str = strtok(NULL, ";")) {
-+        unsigned short start = 0, end = 0;
-+
-+        sscanf(str, "%c:%hx-%hx", &act, &start, &end);
-+        if ((act != 'A' && act != 'D') || (!start && !end)) {
-+            error_report("skipping invalid filter %s\n", str);
-+            continue;
-+        }
-+
-+        filter = (struct kvm_pmu_event_filter) {
-+            .base_event     = start,
-+            .nevents        = end - start + 1,
-+            .action         = act == 'A' ? KVM_PMU_EVENT_ALLOW :
-+                                           KVM_PMU_EVENT_DENY,
-+        };
-+
-+        if (!kvm_arm_set_device_attr(cs, &attr, "PMU Event Filter")) {
-+            if (errno == EINVAL)
-+                error_report("Invalid filter range [0x%x-0x%x]. "
-+                             "ARMv8.0 support 10 bits event space, "
-+                             "ARMv8.1 support 16 bits event space",
-+                             start, end);
-+            else if (errno == ENODEV)
-+                error_report("GIC not initialized");
-+            else if (errno == ENXIO)
-+                error_report("PMUv3 not properly configured or in-kernel irqchip "
-+                             "not configured.");
-+            else if (errno == EBUSY)
-+                error_report("PMUv3 already initialized or a VCPU has already run");
-+
-+            abort();
-+        }
-+    }
-+
-+    g_free(tmp);
-+}
-+
- void kvm_arm_pmu_init(CPUState *cs)
- {
-     struct kvm_device_attr attr = {
-@@ -141,6 +206,9 @@ void kvm_arm_pmu_init(CPUState *cs)
-     if (!ARM_CPU(cs)->has_pmu) {
-         return;
-     }
-+
-+    kvm_arm_pmu_filter_init(cs);
-+
-     if (!kvm_arm_set_device_attr(cs, &attr, "PMU")) {
-         error_report("failed to init PMU");
-         abort();
--- 
-2.40.1
+> ---
+>  hw/ppc/spapr.c                | 28 ++--------------------------
+>  hw/ppc/spapr_nested.c         | 29 +++++++++++++++++++++++++++++
+>  include/hw/ppc/spapr_nested.h |  3 ++-
+>  3 files changed, 33 insertions(+), 27 deletions(-)
+>
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index cb840676d3..a2c69d0f4f 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -1341,7 +1341,6 @@ void spapr_init_all_lpcrs(target_ulong value, targe=
+t_ulong mask)
+>      }
+>  }
+> =20
+> -
+>  static bool spapr_get_pate(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu,
+>                             target_ulong lpid, ppc_v3_pate_t *entry)
+>  {
+> @@ -1354,33 +1353,10 @@ static bool spapr_get_pate(PPCVirtualHypervisor *=
+vhyp, PowerPCCPU *cpu,
+>          /* Copy PATE1:GR into PATE0:HR */
+>          entry->dw0 =3D spapr->patb_entry & PATE0_HR;
+>          entry->dw1 =3D spapr->patb_entry;
+> -
+> +        return true;
+>      } else {
+> -        uint64_t patb, pats;
+> -
+> -        assert(lpid !=3D 0);
+> -
+> -        patb =3D spapr->nested_ptcr & PTCR_PATB;
+> -        pats =3D spapr->nested_ptcr & PTCR_PATS;
+> -
+> -        /* Check if partition table is properly aligned */
+> -        if (patb & MAKE_64BIT_MASK(0, pats + 12)) {
+> -            return false;
+> -        }
+> -
+> -        /* Calculate number of entries */
+> -        pats =3D 1ull << (pats + 12 - 4);
+> -        if (pats <=3D lpid) {
+> -            return false;
+> -        }
+> -
+> -        /* Grab entry */
+> -        patb +=3D 16 * lpid;
+> -        entry->dw0 =3D ldq_phys(CPU(cpu)->as, patb);
+> -        entry->dw1 =3D ldq_phys(CPU(cpu)->as, patb + 8);
+> +        return spapr_get_pate_nested(spapr, cpu, lpid, entry);
+>      }
+> -
+> -    return true;
+>  }
+> =20
+>  #define HPTE(_table, _i)   (void *)(((uint64_t *)(_table)) + ((_i) * 2))
+> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+> index 121aa96ddc..123e127b08 100644
+> --- a/hw/ppc/spapr_nested.c
+> +++ b/hw/ppc/spapr_nested.c
+> @@ -6,6 +6,35 @@
+>  #include "hw/ppc/spapr.h"
+>  #include "hw/ppc/spapr_cpu_core.h"
+>  #include "hw/ppc/spapr_nested.h"
+> +#include "mmu-book3s-v3.h"
+> +
+> +bool spapr_get_pate_nested(SpaprMachineState *spapr, PowerPCCPU *cpu,
+> +                           target_ulong lpid, ppc_v3_pate_t *entry)
+> +{
+> +    uint64_t patb, pats;
+> +
+> +    assert(lpid !=3D 0);
+> +
+> +    patb =3D spapr->nested_ptcr & PTCR_PATB;
+> +    pats =3D spapr->nested_ptcr & PTCR_PATS;
+> +
+> +    /* Check if partition table is properly aligned */
+> +    if (patb & MAKE_64BIT_MASK(0, pats + 12)) {
+> +        return false;
+> +    }
+> +
+> +    /* Calculate number of entries */
+> +    pats =3D 1ull << (pats + 12 - 4);
+> +    if (pats <=3D lpid) {
+> +        return false;
+> +    }
+> +
+> +    /* Grab entry */
+> +    patb +=3D 16 * lpid;
+> +    entry->dw0 =3D ldq_phys(CPU(cpu)->as, patb);
+> +    entry->dw1 =3D ldq_phys(CPU(cpu)->as, patb + 8);
+> +    return true;
+> +}
+> =20
+>  #ifdef CONFIG_TCG
+>  #define PRTS_MASK      0x1f
+> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.=
+h
+> index d383486476..e3d15d6d0b 100644
+> --- a/include/hw/ppc/spapr_nested.h
+> +++ b/include/hw/ppc/spapr_nested.h
+> @@ -98,5 +98,6 @@ struct nested_ppc_state {
+> =20
+>  void spapr_register_nested(void);
+>  void spapr_exit_nested(PowerPCCPU *cpu, int excp);
+> -
+> +bool spapr_get_pate_nested(SpaprMachineState *spapr, PowerPCCPU *cpu,
+> +                           target_ulong lpid, ppc_v3_pate_t *entry);
+>  #endif /* HW_SPAPR_NESTED_H */
 
 
