@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4858E7FE067
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 20:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7627FE079
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 20:48:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8QRc-0003Ht-8h; Wed, 29 Nov 2023 14:42:00 -0500
+	id 1r8QWi-0004qM-KU; Wed, 29 Nov 2023 14:47:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r8QRX-0003HI-3y
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 14:41:56 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1r8QRV-0001nO-G9
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 14:41:54 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-54bd7e5182cso260845a12.0
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 11:41:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701286911; x=1701891711; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=572tFnImS4KTm2pG7ZiqsXMrCZAo9D13blSFZtmGxKQ=;
- b=Ap6S8K+n7dyXMqKVGSz2WgOpmedPKcDXIbzQabosb/OljNusjctErtK9JEwDWryZGg
- 40KzVdnt25eJFlfzZ4U/CpcJ50T4zxZUBCz7EMmjjmTgj2YYMex2OgiMzS9jtrax1mN/
- m6oZqPOt/+OfpEfc3nK1+Vs+bBrEBYvfIE6GyNk/x4yhqhJIYB6rKGMhIwilPy+2O1Uj
- XXJq2dgB6EctPLedODv7W7CQUcCPrZZIWUbSnPRqDyysh2OFVX+2L9noRBd11Iz5Hvaa
- WVG0T+ffamLdQ6EbWgy9bKom1CC3prxR3Hjb6MAUDT67nmToybchaDEiBrce4EPi7prN
- NX7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701286911; x=1701891711;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=572tFnImS4KTm2pG7ZiqsXMrCZAo9D13blSFZtmGxKQ=;
- b=c85M8P1F2MUgGM+8k8ROwcACjFZPVvK3qvsI1nsZ4qY25xA7x/bOkghjKJ3vkeyUsM
- VrP1kr48zgCMdrMeD6gTmN36h9QnkwZ+QpKCUB7G9hW9UbpddU67iDmDFxQjV5YUQBSt
- Fp9yMl2QSfIIgAJLs2FUV6chmJm66+fafw8xgz0EYYIOOmuyvoua91agSwjcQ/dX7Ih7
- XksF8IMgoaahD4TXvkkNRT94R7Y2uhoM+7nBMPD4/dcwRc5c+gq1t6ymv0Zuv7qnZMMX
- 5rYW9FKxcWpRhV9OVXrtVatOQnGU0wUUVfKnhRx+481SnLKq06z4NHIO0pwcnQTHojWi
- AIlg==
-X-Gm-Message-State: AOJu0YzmLOap1bUT0lh86Jo8/RYLMswcEo9VgX5+1TbKH1y/9WYdvspa
- +TTMTQuHeG4k+wX1XKSsNO7WinA37ir9pHAxiFLXmA==
-X-Google-Smtp-Source: AGHT+IFbQHaM8DxzQSRkOO7RlThBpDKT3c+EcLZpiQtr0rpcP3XzZvJxM7QEU75yK85XX1zSBM37kLMI2COUV7oeYRw=
-X-Received: by 2002:a05:6402:5143:b0:54b:2894:d1d8 with SMTP id
- n3-20020a056402514300b0054b2894d1d8mr9742546edd.27.1701286910983; Wed, 29 Nov
- 2023 11:41:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <madvenka@linux.microsoft.com>)
+ id 1r8QWg-0004q6-M3
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 14:47:14 -0500
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <madvenka@linux.microsoft.com>) id 1r8QWe-0002bL-TH
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 14:47:14 -0500
+Received: from [192.168.4.26] (unknown [47.186.13.91])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 170A820B74C0;
+ Wed, 29 Nov 2023 11:47:08 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 170A820B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1701287230;
+ bh=/AE04joHGbexNg6/1EM+o2YovtZhSbAJbfvFr6KppsI=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=m2zcYwwKjEICCbmm6pNwRqAhVUCXZ16/8j+Rm7KklfOt+2Ayb4zeushfGcTbZxznq
+ 3hN7N2zKM0A0/gQ44k2UL+nPl6XrqJsEKFGafJpDqPaapCdFHry5gFf1f4pq+6pJ/l
+ apo4cqq0Sd+X0a18QxRWb+mfxOTM3r6ttMVsuAlE=
+Message-ID: <e430efa3-6a7a-44c8-a1d2-9943c76f748e@linux.microsoft.com>
+Date: Wed, 29 Nov 2023 13:47:07 -0600
 MIME-Version: 1.0
-References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
- <87edgjf2v4.fsf@draig.linaro.org>
- <ef77ed27-8b95-480e-97da-8e0c53bf3aa1@redhat.com>
- <ZWYsMsgxjDZ_T2zA@redhat.com>
- <CANCZdfq6dPArtLjwAbV9MxQnR6pOn6MR+gB7eTogUyw8WuyjCw@mail.gmail.com>
- <ZWdrhGhmY--yUluR@redhat.com>
-In-Reply-To: <ZWdrhGhmY--yUluR@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 29 Nov 2023 19:41:09 +0000
-Message-ID: <CAFEAcA830vK7nAMi2oxeLek_PsJw_F81gUE7PY6029OevG-kFA@mail.gmail.com>
-Subject: Re: QEMU Summit Minutes 2023
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Warner Losh <imp@bsdimp.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 18/19] heki: x86: Protect guest kernel memory using
+ the KVM hypervisor
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>, Alexander Graf <graf@amazon.com>,
+ Chao Peng <chao.p.peng@linux.intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Forrest Yuan Yu <yuanyu@google.com>, James Gowans <jgowans@amazon.com>,
+ James Morris <jamorris@linux.microsoft.com>,
+ John Andersen <john.s.andersen@intel.com>,
+ Marian Rotariu <marian.c.rotariu@gmail.com>,
+ =?UTF-8?Q?Mihai_Don=C8=9Bu?= <mdontu@bitdefender.com>,
+ =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Thara Gopinath <tgopinath@microsoft.com>,
+ Trilok Soni <quic_tsoni@quicinc.com>, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?UTF-8?Q?=C8=98tefan_=C8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+References: <20231113022326.24388-1-mic@digikod.net>
+ <20231113022326.24388-19-mic@digikod.net>
+ <20231113085403.GC16138@noisy.programming.kicks-ass.net>
+ <b1dc0963-ab99-4a79-af19-ef5ed981fa60@linux.microsoft.com>
+ <20231127200308.GY3818@noisy.programming.kicks-ass.net>
+Content-Language: en-US
+From: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
+In-Reply-To: <20231127200308.GY3818@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=madvenka@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,51 +95,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 29 Nov 2023 at 16:49, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
->
-> On Wed, Nov 29, 2023 at 08:50:06AM -0700, Warner Losh wrote:
-> > I'd honestly optimize for 'frequent merges of smaller things' rather th=
-an
-> > 'infrequent merges of larger things'. The latter has caused most of the
-> > issues for me. It's harder to contribute because the overhead of doing =
-so
-> > is so large you want to batch everything. Let's not optimize for that
-> > workaround for the high-friction submission process we have now. If the=
-re's
-> > always smaller bits of work going in all the time, you'll find few comm=
-it
-> > races... though the CI pipeline is rather large, so having a ci-staging
-> > branch to land the MRs to that have completed CI, but not CI on the tip=
-,
-> > might not be bad... but the resolution of conflicts can be tricky, thou=
-gh
-> > infrequent, so if a ci-staging branch bounces, all MRs would need to be
-> > manually requeued after humans look at why and think through who needs =
-to
-> > talk to whom, or if it's just a 'other things landed before you could g=
-et
-> > yours in and it's not the ci-staging being full of other people's commi=
-ts
-> > that is at fault.
->
-> I agree. Right now we tend to have fairly large pull requests, because
-> people are concious of each pull request consuming non-trivial resources
-> from the release maintainer. If this new MR based approach reduces the
-> load on the release maintainer, then sending frequent small pull requests
-> is almost certainly going to be better.
 
-FWIW, in the current system also I would recommend submitting
-smaller pullrequests rather than large ones. For me when I'm doing
-release handling, pushing pullreqs through the process is not
-that difficult. The problems come when there are test failures
-that need to be tracked down, and those are more likely to be
-problematic if they're in the middle of a huge pullreq than
-if they're in a smaller one.
 
-Plus waiting means things don't get into the tree as soon, which
-just extends the timelines on things.
+On 11/27/23 14:03, Peter Zijlstra wrote:
+> On Mon, Nov 27, 2023 at 11:05:23AM -0600, Madhavan T. Venkataraman wrote:
+>> Apologies for the late reply. I was on vacation. Please see my response below:
+>>
+>> On 11/13/23 02:54, Peter Zijlstra wrote:
+>>> On Sun, Nov 12, 2023 at 09:23:25PM -0500, Mickaël Salaün wrote:
+>>>> From: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
+>>>>
+>>>> Implement a hypervisor function, kvm_protect_memory() that calls the
+>>>> KVM_HC_PROTECT_MEMORY hypercall to request the KVM hypervisor to
+>>>> set specified permissions on a list of guest pages.
+>>>>
+>>>> Using the protect_memory() function, set proper EPT permissions for all
+>>>> guest pages.
+>>>>
+>>>> Use the MEM_ATTR_IMMUTABLE property to protect the kernel static
+>>>> sections and the boot-time read-only sections. This enables to make sure
+>>>> a compromised guest will not be able to change its main physical memory
+>>>> page permissions. However, this also disable any feature that may change
+>>>> the kernel's text section (e.g., ftrace, Kprobes), but they can still be
+>>>> used on kernel modules.
+>>>>
+>>>> Module loading/unloading, and eBPF JIT is allowed without restrictions
+>>>> for now, but we'll need a way to authenticate these code changes to
+>>>> really improve the guests' security. We plan to use module signatures,
+>>>> but there is no solution yet to authenticate eBPF programs.
+>>>>
+>>>> Being able to use ftrace and Kprobes in a secure way is a challenge not
+>>>> solved yet. We're looking for ideas to make this work.
+>>>>
+>>>> Likewise, the JUMP_LABEL feature cannot work because the kernel's text
+>>>> section is read-only.
+>>>
+>>> What is the actual problem? As is the kernel text map is already RO and
+>>> never changed.
+>>
+>> For the JUMP_LABEL optimization, the text needs to be patched at some point.
+>> That patching requires a writable mapping of the text page at the time of
+>> patching.
+>>
+>> In this Heki feature, we currently lock down the kernel text at the end of
+>> kernel boot just before kicking off the init process. The lockdown is
+>> implemented by setting the permissions of a text page to R_X in the extended
+>> page table and not allowing write permissions in the EPT after that. So, jump label
+>> patching during kernel boot is not a problem. But doing it after kernel
+>> boot is a problem.
+> 
+> But you see, that's exactly what the kernel already does with the normal
+> permissions. They get set to RX after init and are never changed.
+> 
+> See the previous patch, we establish a read-write alias and write there.
+> 
+> You seem to lack basic understanding of how the kernel works in this
+> regard, which makes me very nervous about you touching any of this.
+> 
+> I must also say I really dislike your extra/random permssion calls all
+> over the place. They don't really get us anything afaict. Why can't you
+> plumb into the existing set_memory_*() family?
 
-thanks
--- PMM
+I have responded to your comments on your other email. Please read my
+response there.
+
+Thanks.
+
+Madhavan
 
