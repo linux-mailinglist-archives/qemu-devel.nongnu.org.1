@@ -2,51 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E7557FDED0
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 18:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4506A7FDECE
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 18:48:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8OfX-0004Ej-Cm; Wed, 29 Nov 2023 12:48:15 -0500
+	id 1r8OfX-0004BV-C5; Wed, 29 Nov 2023 12:48:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r8OfR-0004CO-Ld
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 12:48:09 -0500
-Received: from todd.t-8ch.de ([159.69.126.157])
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r8OfM-000475-0j
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 12:48:04 -0500
+Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r8OfJ-0003la-7N
- for qemu-devel@nongnu.org; Wed, 29 Nov 2023 12:48:09 -0500
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1r8OfH-0003lY-Qf
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 12:48:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1701280076; bh=OAKTixNnk0Mdc2RHTrlAQSoqF0v3FjByPtbesHlviYo=;
- h=From:Subject:Date:To:Cc:From;
- b=TDK1Vfw1S2FPRVeLvyOShkez+nWKF//w5/MQbSUKjVRNeZCwn46lwMUqgO3zxp76M
- 3PDE2QRk2gOjdVIBZIHOVwkaXOre3N6LDoOEE3b5lCmMtzG9C8Zd40eoloUlReSk7v
- hGQCjCFoJMM4zFlx3A43+ngrv4pvqLPlOn3ig1Hs=
+ t=1701280076; bh=fXPK/ieLyOctY/QvpO55plUhgrfm0NYym34/Dt/Hm74=;
+ h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+ b=pIXQmKgDh0lfqr7Nydc92I6edWukCJo2b6WhsAF2LbSwVfitzqx2Kapls9KyxWXYj
+ Zear2xeUgRKkT9+LJ9jmboVj093M5sVPUUvzNPKdhWX9Q6USsQ1HiW6s9+RkNpnIkh
+ XcYQQHIxLoHSmzVERbs1evuYGUYOXHwlFDkP9BOs=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Subject: [PATCH v3 0/4] hw/misc/pvpanic: add support for normal shutdowns
-Date: Wed, 29 Nov 2023 18:47:52 +0100
-Message-Id: <20231129-pvpanic-shutdown-v3-0-c9a2892fc523@t-8ch.de>
+Date: Wed, 29 Nov 2023 18:47:53 +0100
+Subject: [PATCH v3 1/4] linux-headers: drop pvpanic.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAEh5Z2UC/32NsQ7CIBRFf8W8WQzwqIKT/2EcCn0KC22goqbpv
- 0s7dTCO5ybn3AkypUAZzrsJEpWQQx8r4H4HzrfxQSx0lUFyiUJwxYYytDE4lv1z7PpXZFySssp
- ZZZSBqg2J7uG9Jq+3yj7ksU+f9aGIZf0TK4LxWsQGRXPSRtjLyLTzh45gaRW58aX+4cvqa+Ro0
- KrG2ePGn+f5C2DMjHnvAAAA
+Message-Id: <20231129-pvpanic-shutdown-v3-1-c9a2892fc523@t-8ch.de>
+References: <20231129-pvpanic-shutdown-v3-0-c9a2892fc523@t-8ch.de>
+In-Reply-To: <20231129-pvpanic-shutdown-v3-0-c9a2892fc523@t-8ch.de>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
  Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org, =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1701280076; l=2469;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1701280076; l=3680;
  i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
- bh=OAKTixNnk0Mdc2RHTrlAQSoqF0v3FjByPtbesHlviYo=;
- b=ecE5MWn8SwYTVFbawFTiaYbJECTTDG0UfoVrtMQNt/yS4QDQTi+Pb2tWYSyQzebxIC3NMZLR6
- eL0SoWQd4B2DUeLOhG/9PBtJA6Wl/SH9uTtg+Jt3wxJXm4kIjLPHOKN
+ bh=fXPK/ieLyOctY/QvpO55plUhgrfm0NYym34/Dt/Hm74=;
+ b=tFLRXTDeD6z2/8zD221OiyPKkIHwiDy8xaaEgnEliNdaHG2M39je+xg38S1C9n0znBM5PkqT7
+ b5FuMR4xGRFAGgkQ0BP4gcFhFhdq+i64btMQIK884G6ra6Z3hi6czud
 X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
- helo=todd.t-8ch.de
+Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
+ envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -68,66 +66,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Shutdown requests are normally hardware dependent.
-By extending pvpanic to also handle shutdown requests, guests can
-submit such requests with an easily implementable and cross-platform
-mechanism.
+misc/pvpanic.h from the Linux UAPI does not define a Linux UAPI but a
+qemu device API.
 
-The background is the usage of minimal Linux kernels with different
-architectures for testing purposes.
-Poweroff support varies highly per architecture and requires a bunch of
-code to be compiled to work.
-pvpanic on the other hand is very small and uniform.
+This leads to a weird process when updates to the interface are needed:
+1) Change to the specification in the qemu tree
+2) Change to the header in the Linux tree
+3) Re-import of the header into Qemu.
 
-I sent an RFC[0] for this before to qemu-devel and lkml which didn't
-generate feedback, so let's discuss the concrete proposal.
+The kernel prefers to drop the header anyways.
 
-Patch 1 and 2 are general cleanups, that seems useful even without this
-proposal being implemented.
+Prepare for the removal from the Linux UAPI headers by moving the
+contents to the existing pvpanic.h header.
 
-A corresponding patch has been submitted for Linux [1].
-This is also where the request was voiced to drop move away from a
-pvpanic uapi header in Linux.
-
-[0] https://lore.kernel.org/all/984794aa-4af0-4c68-a74e-7420ec3151a5@t-8ch.de/
-[1] https://lore.kernel.org/lkml/20231104-pvpanic-shutdown-v1-1-5ee7c9b3e301@weissschuh.net/
-
+Link: https://lore.kernel.org/lkml/2023110431-pacemaker-pruning-0e4c@gregkh/
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
 ---
-Changes in v3:
-- Drop from Linux imported pvpanic header as discussed with Cornelia and
-  requested by Greg
-- Link to v2: https://lore.kernel.org/r/20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de
-
-Changes in v2:
-- Remove RFC status
-- Add Ack from Thomas to 2nd patch
-- Fix typo in title of 2nd patch
-- Link to v1: https://lore.kernel.org/r/20231104-pvpanic-shutdown-v1-0-02353157891b@t-8ch.de
-
----
-Thomas Weißschuh (4):
-      linux-headers: drop pvpanic.h
-      hw/misc/pvpanic: centralize definition of supported events
-      tests/qtest/pvpanic: use centralized definition of supported events
-      hw/misc/pvpanic: add support for normal shutdowns
-
- docs/specs/pvpanic.rst                   | 2 ++
- hw/misc/pvpanic-isa.c                    | 3 +--
- hw/misc/pvpanic-pci.c                    | 3 +--
- hw/misc/pvpanic.c                        | 8 ++++++--
- include/hw/misc/pvpanic.h                | 5 +++++
+ hw/misc/pvpanic-isa.c                    | 1 -
+ hw/misc/pvpanic-pci.c                    | 1 -
+ hw/misc/pvpanic.c                        | 1 -
+ include/hw/misc/pvpanic.h                | 3 +++
  include/standard-headers/linux/pvpanic.h | 9 ---------
  scripts/update-linux-headers.sh          | 3 +--
- tests/qtest/pvpanic-pci-test.c           | 5 +++--
- tests/qtest/pvpanic-test.c               | 5 +++--
- 9 files changed, 22 insertions(+), 21 deletions(-)
----
-base-commit: abf635ddfe3242df907f58967f3c1e6763bbca2d
-change-id: 20231104-pvpanic-shutdown-02e4b4cb4949
+ 6 files changed, 4 insertions(+), 14 deletions(-)
 
-Best regards,
+diff --git a/hw/misc/pvpanic-isa.c b/hw/misc/pvpanic-isa.c
+index ccec50f61bbd..ef438a31fbe9 100644
+--- a/hw/misc/pvpanic-isa.c
++++ b/hw/misc/pvpanic-isa.c
+@@ -21,7 +21,6 @@
+ #include "hw/misc/pvpanic.h"
+ #include "qom/object.h"
+ #include "hw/isa/isa.h"
+-#include "standard-headers/linux/pvpanic.h"
+ #include "hw/acpi/acpi_aml_interface.h"
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(PVPanicISAState, PVPANIC_ISA_DEVICE)
+diff --git a/hw/misc/pvpanic-pci.c b/hw/misc/pvpanic-pci.c
+index fbcaa50731b3..1de138357b95 100644
+--- a/hw/misc/pvpanic-pci.c
++++ b/hw/misc/pvpanic-pci.c
+@@ -21,7 +21,6 @@
+ #include "hw/misc/pvpanic.h"
+ #include "qom/object.h"
+ #include "hw/pci/pci_device.h"
+-#include "standard-headers/linux/pvpanic.h"
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(PVPanicPCIState, PVPANIC_PCI_DEVICE)
+ 
+diff --git a/hw/misc/pvpanic.c b/hw/misc/pvpanic.c
+index 1540e9091a45..4915ef256e74 100644
+--- a/hw/misc/pvpanic.c
++++ b/hw/misc/pvpanic.c
+@@ -21,7 +21,6 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/misc/pvpanic.h"
+ #include "qom/object.h"
+-#include "standard-headers/linux/pvpanic.h"
+ 
+ static void handle_event(int event)
+ {
+diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
+index fab94165d03d..dffca827f77a 100644
+--- a/include/hw/misc/pvpanic.h
++++ b/include/hw/misc/pvpanic.h
+@@ -18,6 +18,9 @@
+ #include "exec/memory.h"
+ #include "qom/object.h"
+ 
++#define PVPANIC_PANICKED	(1 << 0)
++#define PVPANIC_CRASH_LOADED	(1 << 1)
++
+ #define TYPE_PVPANIC_ISA_DEVICE "pvpanic"
+ #define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
+ 
+diff --git a/include/standard-headers/linux/pvpanic.h b/include/standard-headers/linux/pvpanic.h
+deleted file mode 100644
+index 54b7485390d3..000000000000
+--- a/include/standard-headers/linux/pvpanic.h
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-
+-#ifndef __PVPANIC_H__
+-#define __PVPANIC_H__
+-
+-#define PVPANIC_PANICKED	(1 << 0)
+-#define PVPANIC_CRASH_LOADED	(1 << 1)
+-
+-#endif /* __PVPANIC_H__ */
+diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
+index 34295c0fe55b..555bdc8af2eb 100755
+--- a/scripts/update-linux-headers.sh
++++ b/scripts/update-linux-headers.sh
+@@ -215,8 +215,7 @@ for i in "$tmpdir"/include/linux/*virtio*.h \
+          "$tmpdir/include/linux/const.h" \
+          "$tmpdir/include/linux/kernel.h" \
+          "$tmpdir/include/linux/vhost_types.h" \
+-         "$tmpdir/include/linux/sysinfo.h" \
+-         "$tmpdir/include/misc/pvpanic.h"; do
++         "$tmpdir/include/linux/sysinfo.h"; do
+     cp_portable "$i" "$output/include/standard-headers/linux"
+ done
+ mkdir -p "$output/include/standard-headers/drm"
+
 -- 
-Thomas Weißschuh <thomas@t-8ch.de>
+2.43.0
 
 
