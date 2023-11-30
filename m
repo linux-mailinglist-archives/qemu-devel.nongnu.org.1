@@ -2,101 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4397FEBA1
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 10:14:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C2B7FEBAB
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 10:16:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8d66-0002HW-Sj; Thu, 30 Nov 2023 04:12:38 -0500
+	id 1r8d9N-0003hf-P1; Thu, 30 Nov 2023 04:16:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r8d65-0002H7-Bx; Thu, 30 Nov 2023 04:12:37 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1r8d63-0007FW-OE; Thu, 30 Nov 2023 04:12:37 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40b31232bf0so5491615e9.1; 
- Thu, 30 Nov 2023 01:12:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701335553; x=1701940353; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=siaYtfcd1nV01H+dRdqoPqqRzYarxavISfuT4qVZzyM=;
- b=kFTW26cB1g+6+yN96YyCagaDNfHoBTGDcERrIwfilgIMLcIVOZI9hrB+b9zt18NlnH
- c7msdklXPzoastVcPEtSrKp7z4JZejdcW1yEZHGlQN7oksqfPwkdrr+Fx+BIP4wotoIE
- AFUqdcK2o4hVrJJlJb+U1fWyijyUdeViFsBbKNfI8tBtJ6VvoXWseyEw6lvslKMsh8UH
- mcdYQX9hFpoHCDAJNmooTcEGkiamL/xB7QZZ5aeUB3zBGdH6yfQEoAUa5eU4ACAjkO5e
- jSw5xzB/S3JpJKD9K2ukUKpobrlBUol1I2PVL/kOCcZci4/N0djmlTjKSlAVlsDxBrf3
- YU/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701335553; x=1701940353;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=siaYtfcd1nV01H+dRdqoPqqRzYarxavISfuT4qVZzyM=;
- b=llP0gcCzqPjcL5VYTBixOQ5ZLMb2angW52RIFoXE5nWgfgsSyeK7PDYfozIJP2ewBp
- GUj3xkKWNqJFAWkr2vZY3NQUBHLAGPRLYXJvNGNhEvvwgyXBOaV9D7GXaigYTebzvcRn
- VqSrDxX8K+bI3yXZyeAQk/1G/XBFCUzu9Dppe06qWh/PUjKGN7PTSOmBeY+yrSKexAV2
- jsxlsVObha8CJJhnhrFe1MDBWM4Uuwa6cAwPcHYszlXNR7mPoDtcwVSxZXhRtYJG2rlE
- zXg/3+UC81U9YPBZoR8CWSgA39EAdVTWFXYZaUSS9iYTEBNxLi+Smu6DuW7JL2YiEWtP
- j58A==
-X-Gm-Message-State: AOJu0Yz5O1wrQ0++jpYz+C6kPGsCScAfafCsSMqUFXsr6t+f1NkXjts9
- 2PqDoqKES95OUZHCmIZsFDg=
-X-Google-Smtp-Source: AGHT+IHK+u82BOt6ta4eeN8cUN9H4SuoQH8m39Aqnj8S1aTgEt3vYUylXWxM8EvP4Mg+jRJiQRSjlA==
-X-Received: by 2002:a05:600c:3110:b0:3f5:fff8:d4f3 with SMTP id
- g16-20020a05600c311000b003f5fff8d4f3mr15366829wmo.7.1701335553272; 
- Thu, 30 Nov 2023 01:12:33 -0800 (PST)
-Received: from [192.168.17.21] (54-240-197-238.amazon.com. [54.240.197.238])
- by smtp.gmail.com with ESMTPSA id
- w3-20020a05600c474300b0040b36050f1bsm1227874wmo.44.2023.11.30.01.12.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Nov 2023 01:12:32 -0800 (PST)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <bc173dc3-1cdf-43d2-8ab5-9df4dd0a6a51@xen.org>
-Date: Thu, 30 Nov 2023 09:12:27 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/12] block: remove AioContext locking
-Content-Language: en-US
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1r8d9H-0003gZ-9f; Thu, 30 Nov 2023 04:15:55 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1r8d9D-0007gt-JF; Thu, 30 Nov 2023 04:15:54 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AU9CGNH028745; Thu, 30 Nov 2023 09:14:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=U7xhAiXyHYuSi9gQG6NV4CZH7LkdmdMB32D1ZOqvl2E=;
+ b=AFBdvLera18ekFkEDQHSP2T6dJxy+bj5KW/jP/YQxVyqxiHZtRJXrFC+0ntnZuEvmXMl
+ m5dICRXNSmZBGnKsumVVgBAXL4u0dvBZSGFJjow9KpyWozqGgg5e9lV0A3P1DYtJVgrk
+ fcIAkenPAVxLZnA9inVImJFIRFFp84wVlNbQYq2PnUAD94eddwhNGmE1WEaq+o2oyHt9
+ lgMLNpBO+kPcZI3+78p/T21qN3TQ/nrMIklnS6Mpmi8dOIQR1PJPM8F2VFLdmlnmfYt2
+ bNGyD4yvrGuvjfFw260kty5gkpovVQqcuoFvY7pDIz7evPqH74AstesKRFOdN22SZxO6 0g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3upqj4g6aa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Nov 2023 09:14:59 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AU9CSaJ029884;
+ Thu, 30 Nov 2023 09:14:58 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3upqj4g684-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Nov 2023 09:14:58 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AU7Xw9A030737; Thu, 30 Nov 2023 09:14:55 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uku8tddeu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Nov 2023 09:14:55 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AU9EqIJ6750948
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Nov 2023 09:14:52 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F14720043;
+ Thu, 30 Nov 2023 09:14:52 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CB6D20040;
+ Thu, 30 Nov 2023 09:14:48 +0000 (GMT)
+Received: from [9.171.32.92] (unknown [9.171.32.92])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Nov 2023 09:14:48 +0000 (GMT)
+Message-ID: <c3ac8d9c2b9d611e84672436ce1a96aedcaacf5e.camel@linux.ibm.com>
+Subject: Re: [PATCH 2/6] qemu/main-loop: rename QEMU_IOTHREAD_LOCK_GUARD to
+ QEMU_BQL_LOCK_GUARD
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Alberto Garcia <berto@igalia.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>,
- John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Eric Blake <eblake@redhat.com>, Wen Congyang <wencongyang2@huawei.com>,
- qemu-block@nongnu.org, xen-devel@lists.xenproject.org,
- Coiby Xu <Coiby.Xu@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Xie Changlong <xiechanglong.d@gmail.com>, Ari Sundholm <ari@tuxera.com>,
- Li Zhijian <lizhijian@fujitsu.com>, Cleber Rosa <crosa@redhat.com>,
- Juan Quintela <quintela@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Zhang Chen <chen.zhang@intel.com>, Peter Xu <peterx@redhat.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Leonardo Bras <leobras@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Fam Zheng <fam@euphon.net>,
- Fabiano Rosas <farosas@suse.de>
-References: <20231129195553.942921-1-stefanha@redhat.com>
- <20231129195553.942921-6-stefanha@redhat.com>
-Organization: Xen Project
-In-Reply-To: <20231129195553.942921-6-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Cc: Jean-Christophe Dubois <jcd@tribudubois.net>, Fabiano Rosas
+ <farosas@suse.de>, qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas Huth
+ <thuth@redhat.com>, Hyman Huang <yong.huang@smartx.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Andrey
+ Smirnov <andrew.smirnov@gmail.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>, Artyom Tarasenko
+ <atar4qemu@gmail.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Max Filippov <jcmvbkbc@gmail.com>, Alistair Francis
+ <alistair.francis@wdc.com>, Paul Durrant <paul@xen.org>, Jagannathan Raman
+ <jag.raman@oracle.com>, Juan Quintela <quintela@redhat.com>, "Daniel P."
+ =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>,
+ qemu-arm@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Daniel
+ Henrique Barboza <danielhb413@gmail.com>, Elena Ufimtseva
+ <elena.ufimtseva@oracle.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>, Roman Bolshakov
+ <rbolshakov@ddn.com>, Huacai Chen <chenhuacai@kernel.org>, Fam Zheng
+ <fam@euphon.net>, Eric Blake <eblake@redhat.com>, Jiri Slaby
+ <jslaby@suse.cz>, Alexander Graf <agraf@csgraf.de>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liwei1518@gmail.com>, Eric
+ Farman <farman@linux.ibm.com>, Stafford Horne <shorne@gmail.com>, David
+ Hildenbrand <david@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org, Pavel
+ Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org, Aleksandar
+ Rikalo <aleksandar.rikalo@syrmia.com>, John Snow <jsnow@redhat.com>, Sunil
+ Muthuswamy <sunilmut@microsoft.com>, Michael Roth <michael.roth@amd.com>,
+ David Gibson <david@gibson.dropbear.id.au>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, Bin
+ Meng <bin.meng@windriver.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org,
+ qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Peter Xu <peterx@redhat.com>, Anthony Perard <anthony.perard@citrix.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>, Vladimir
+ Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, =?ISO-8859-1?Q?C=E9dric?=
+ Le Goater <clg@kaod.org>, qemu-ppc@nongnu.org, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Leonardo Bras <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Date: Thu, 30 Nov 2023 10:14:47 +0100
+In-Reply-To: <20231129212625.1051502-3-stefanha@redhat.com>
+References: <20231129212625.1051502-1-stefanha@redhat.com>
+ <20231129212625.1051502-3-stefanha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: k5g-bglZZ81amYqAueJeLCJOKEKz4uGW
+X-Proofpoint-GUID: hyHEB3c1P1gBAyQsdYHk4l82Bt-Qzmtx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-30_07,2023-11-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 suspectscore=0 clxscore=1011 impostorscore=0
+ phishscore=0 mlxlogscore=810 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311300068
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,64 +154,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/11/2023 19:55, Stefan Hajnoczi wrote:
-> This is the big patch that removes
-> aio_context_acquire()/aio_context_release() from the block layer and
-> affected block layer users.
-> 
-> There isn't a clean way to split this patch and the reviewers are likely
-> the same group of people, so I decided to do it in one patch.
-> 
+On Wed, 2023-11-29 at 16:26 -0500, Stefan Hajnoczi wrote:
+> The name "iothread" is overloaded. Use the term Big QEMU Lock (BQL)
+> instead, it is already widely used and unambiguous.
+>=20
 > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 > ---
->   include/block/block-global-state.h |   9 +-
->   include/block/block-io.h           |   3 +-
->   include/block/snapshot.h           |   2 -
->   block.c                            | 234 +---------------------
->   block/block-backend.c              |  14 --
->   block/copy-before-write.c          |  22 +--
->   block/export/export.c              |  22 +--
->   block/io.c                         |  45 +----
->   block/mirror.c                     |  19 --
->   block/monitor/bitmap-qmp-cmds.c    |  20 +-
->   block/monitor/block-hmp-cmds.c     |  29 ---
->   block/qapi-sysemu.c                |  27 +--
->   block/qapi.c                       |  18 +-
->   block/raw-format.c                 |   5 -
->   block/replication.c                |  58 +-----
->   block/snapshot.c                   |  22 +--
->   block/write-threshold.c            |   6 -
->   blockdev.c                         | 307 +++++------------------------
->   blockjob.c                         |  18 --
->   hw/block/dataplane/virtio-blk.c    |  10 -
->   hw/block/dataplane/xen-block.c     |  17 +-
->   hw/block/virtio-blk.c              |  45 +----
->   hw/core/qdev-properties-system.c   |   9 -
->   job.c                              |  16 --
->   migration/block.c                  |  33 +---
->   migration/migration-hmp-cmds.c     |   3 -
->   migration/savevm.c                 |  22 ---
->   net/colo-compare.c                 |   2 -
->   qemu-img.c                         |   4 -
->   qemu-io.c                          |  10 +-
->   qemu-nbd.c                         |   2 -
->   replay/replay-debugging.c          |   4 -
->   tests/unit/test-bdrv-drain.c       |  51 +----
->   tests/unit/test-bdrv-graph-mod.c   |   6 -
->   tests/unit/test-block-iothread.c   |  31 ---
->   tests/unit/test-blockjob.c         | 137 -------------
->   tests/unit/test-replication.c      |  11 --
->   util/async.c                       |   4 -
->   util/vhost-user-server.c           |   3 -
->   scripts/block-coroutine-wrapper.py |   3 -
->   tests/tsan/suppressions.tsan       |   1 -
->   41 files changed, 102 insertions(+), 1202 deletions(-)
-> 
+> =C2=A0include/qemu/main-loop.h=C2=A0 | 20 ++++++++++----------
+> =C2=A0hw/i386/kvm/xen_evtchn.c=C2=A0 | 14 +++++++-------
+> =C2=A0hw/i386/kvm/xen_gnttab.c=C2=A0 |=C2=A0 2 +-
+> =C2=A0hw/mips/mips_int.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 2 +-
+> =C2=A0hw/ppc/ppc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> =C2=A0target/i386/kvm/xen-emu.c |=C2=A0 2 +-
+> =C2=A0target/ppc/excp_helper.c=C2=A0 |=C2=A0 2 +-
+> =C2=A0target/ppc/helper_regs.c=C2=A0 |=C2=A0 2 +-
+> =C2=A0target/riscv/cpu_helper.c |=C2=A0 4 ++--
+> =C2=A09 files changed, 25 insertions(+), 25 deletions(-)
+>=20
+> diff --git a/include/qemu/main-loop.h b/include/qemu/main-loop.h
+> index d6f75e57bd..0b6a3e4824 100644
+> --- a/include/qemu/main-loop.h
+> +++ b/include/qemu/main-loop.h
+> @@ -344,13 +344,13 @@ void qemu_bql_lock_impl(const char *file, int
+> line);
+> =C2=A0void qemu_bql_unlock(void);
+> =C2=A0
+> =C2=A0/**
+> - * QEMU_IOTHREAD_LOCK_GUARD
+> + * QEMU_BQL_LOCK_GUARD
+> =C2=A0 *
+> - * Wrap a block of code in a conditional
+> qemu_mutex_{lock,unlock}_iothread.
+> + * Wrap a block of code in a conditional qemu_bql_{lock,unlock}.
+> =C2=A0 */
+> -typedef struct IOThreadLockAuto IOThreadLockAuto;
+> +typedef struct BQLLockAuto BQLLockAuto;
+> =C2=A0
+> -static inline IOThreadLockAuto *qemu_iothread_auto_lock(const char
+> *file,
+> +static inline BQLLockAuto *qemu_bql_auto_lock(const char *file,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int line)
 
-Reviewed-by: Paul Durrant <paul@xen.org>
+The padding is not correct anymore.
 
+Other than this:
+
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
