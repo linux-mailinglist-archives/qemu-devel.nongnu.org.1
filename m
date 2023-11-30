@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819767FF22A
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF417FF23C
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:37:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8i7k-0007T8-Ur; Thu, 30 Nov 2023 09:34:40 -0500
+	id 1r8i7m-0007hI-82; Thu, 30 Nov 2023 09:34:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8i7V-0006xN-Ot; Thu, 30 Nov 2023 09:34:26 -0500
+ id 1r8i7d-0007Db-WF; Thu, 30 Nov 2023 09:34:35 -0500
 Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8i7S-0001Un-Ct; Thu, 30 Nov 2023 09:34:24 -0500
+ id 1r8i7a-0001Un-R7; Thu, 30 Nov 2023 09:34:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701354862; x=1732890862;
+ t=1701354870; x=1732890870;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KYdyPQbbzxDFAf7dgOGDTufkcJTYeF0L4udr4i03f58=;
- b=nVrvZOQ2zLkvLt5zc8ZVitp4F2lAJYYQ8h/3qzfWoW1DVQSHCf2z1Rc2
- ZY7lB/2RolYIauH4MmK8UoWWPCjFSoKkUIg5M8axmfXQzKOs4kO5dB6X5
- b4L5K6vhIdabnxupL4uSx5jQ2w7/L+LcqjRwCUwHKBlZbps+Z7B+uEiik
- 4mLGQTaQ8IKKS9re6pSsoAVjqxkLby+cvtwle1w16lrA0u97jSkZUPloM
- BDYav9fCPYUT5CCLJCMFNsItvuJ7+qEuwhvmvXla5GqDYu8E9ivjxtZjt
- /lPdP8dPID0SVeJvSPDrzMcqeEdURJL0KdwWjAt04UuFu8LqsnjbJmJm7 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="479532180"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="479532180"
+ bh=R67m9mW34W7uiETtegm4359TeHvWglaSP7oCtBRRyHM=;
+ b=A7LjNdy2Cl1idzU5WEFIh+IWk8Jzgx+oZMnkcWWtXEiBUFFkT/qfZgE5
+ hxToLcxpj6GyFJdUmYrR3xl6iTpyXjCHVXryCJivk9IVEXMynH3qD/F93
+ eZnF3oI3uoB9wTsOYbYzwVhR7rujApL7YoQncNreDK3s+PWogwgDKYscv
+ fHDjpsvLXafe7ptI6j94QyqN6O6c7lNS5pSNyI0uu2LE+70jBQgd3MemS
+ 3iUMkv9SeFyfAk2dsH0xS2vL1De5JV3jYMzlr9VFS03gM1krd3pUFUXvZ
+ rlBt+VgCxFCc1s4joYsmk5zTtuxFaA0iw00Mg+BNptKoBPWRsXqqVMfY7 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="479532214"
+X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="479532214"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Nov 2023 06:34:19 -0800
+ 30 Nov 2023 06:34:28 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="942730082"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="942730082"
+X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="942730090"
+X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="942730090"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orsmga005.jf.intel.com with ESMTP; 30 Nov 2023 06:34:09 -0800
+ by orsmga005.jf.intel.com with ESMTP; 30 Nov 2023 06:34:18 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -70,10 +70,9 @@ Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
  Thomas Huth <thuth@redhat.com>, Zhiyuan Lv <zhiyuan.lv@intel.com>,
  Zhenyu Wang <zhenyu.z.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 24/41] hw/cpu/socket: Abstract cpu-socket level as topology
- device
-Date: Thu, 30 Nov 2023 22:41:46 +0800
-Message-Id: <20231130144203.2307629-25-zhao1.liu@linux.intel.com>
+Subject: [RFC 25/41] hw/cpu/book: Abstract cpu-book level as topology device
+Date: Thu, 30 Nov 2023 22:41:47 +0800
+Message-Id: <20231130144203.2307629-26-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
 References: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
@@ -105,62 +104,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Abstract socket level as a topology device "cpu-socket" to allow user to
-create socket level topology from cli and later the cpu-sockets could be
+Abstract book level as a topology device "cpu-book" to allow user to
+create book level topology from cli and later the cpu-books could be
 added into topology tree.
 
-In addition, mark the cpu-socket as DEVICE_CATEGORY_CPU_DEF category to
+In addition, mark the cpu-book as DEVICE_CATEGORY_CPU_DEF category to
 indicate it belongs to the basic CPU definition and should be created
 from cli before board initialization.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- MAINTAINERS             |  2 ++
- hw/cpu/meson.build      |  2 +-
- hw/cpu/socket.c         | 46 +++++++++++++++++++++++++++++++++++++++++
- include/hw/cpu/socket.h | 38 ++++++++++++++++++++++++++++++++++
+ MAINTAINERS           |  2 ++
+ hw/cpu/book.c         | 46 +++++++++++++++++++++++++++++++++++++++++++
+ hw/cpu/meson.build    |  2 +-
+ include/hw/cpu/book.h | 38 +++++++++++++++++++++++++++++++++++
  4 files changed, 87 insertions(+), 1 deletion(-)
- create mode 100644 hw/cpu/socket.c
- create mode 100644 include/hw/cpu/socket.h
+ create mode 100644 hw/cpu/book.c
+ create mode 100644 include/hw/cpu/book.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 91d0936edb32..6a9fa0aeed0c 100644
+index 6a9fa0aeed0c..dd5adfda64cc 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1864,6 +1864,7 @@ F: hw/core/null-machine.c
+@@ -1862,6 +1862,7 @@ F: hw/core/machine.c
+ F: hw/core/machine-smp.c
+ F: hw/core/null-machine.c
  F: hw/core/numa.c
++F: hw/cpu/book.c
  F: hw/cpu/cluster.c
  F: hw/cpu/die.c
-+F: hw/cpu/socket.c
- F: qapi/machine.json
- F: qapi/machine-common.json
- F: qapi/machine-target.json
-@@ -1872,6 +1873,7 @@ F: include/hw/core/cpu.h
+ F: hw/cpu/socket.c
+@@ -1871,6 +1872,7 @@ F: qapi/machine-target.json
+ F: include/hw/boards.h
+ F: include/hw/core/cpu.h
  F: include/hw/core/cpu-topo.h
++F: include/hw/cpu/book.h
  F: include/hw/cpu/cluster.h
  F: include/hw/cpu/die.h
-+F: include/hw/cpu/socket.h
- F: include/sysemu/numa.h
- F: tests/unit/test-smp-parse.c
- T: git https://gitlab.com/ehabkost/qemu.git machine-next
-diff --git a/hw/cpu/meson.build b/hw/cpu/meson.build
-index e685fe1c7d8a..251724fea86c 100644
---- a/hw/cpu/meson.build
-+++ b/hw/cpu/meson.build
-@@ -1,4 +1,4 @@
--system_ss.add(files('core.c', 'cluster.c', 'die.c'))
-+system_ss.add(files('core.c', 'cluster.c', 'die.c', 'socket.c'))
- 
- system_ss.add(when: 'CONFIG_ARM11MPCORE', if_true: files('arm11mpcore.c'))
- system_ss.add(when: 'CONFIG_REALVIEW', if_true: files('realview_mpcore.c'))
-diff --git a/hw/cpu/socket.c b/hw/cpu/socket.c
+ F: include/hw/cpu/socket.h
+diff --git a/hw/cpu/book.c b/hw/cpu/book.c
 new file mode 100644
-index 000000000000..afd29f8a91c1
+index 000000000000..4b16267b10eb
 --- /dev/null
-+++ b/hw/cpu/socket.c
++++ b/hw/cpu/book.c
 @@ -0,0 +1,46 @@
 +/*
-+ * CPU socket abstract device
++ * CPU book abstract device
 + *
 + * Copyright (c) 2023 Intel Corporation
 + * Author: Zhao Liu <zhao1.liu@intel.com>
@@ -180,39 +169,49 @@ index 000000000000..afd29f8a91c1
 + */
 +
 +#include "qemu/osdep.h"
-+#include "hw/cpu/socket.h"
++#include "hw/cpu/book.h"
 +
-+static void cpu_socket_class_init(ObjectClass *oc, void *data)
++static void cpu_book_class_init(ObjectClass *oc, void *data)
 +{
 +    DeviceClass *dc = DEVICE_CLASS(oc);
 +    CPUTopoClass *tc = CPU_TOPO_CLASS(oc);
 +
 +    set_bit(DEVICE_CATEGORY_CPU_DEF, dc->categories);
 +
-+    tc->level = CPU_TOPO_SOCKET;
++    tc->level = CPU_TOPO_BOOK;
 +}
 +
-+static const TypeInfo cpu_socket_type_info = {
-+    .name = TYPE_CPU_SOCKET,
++static const TypeInfo cpu_book_type_info = {
++    .name = TYPE_CPU_BOOK,
 +    .parent = TYPE_CPU_TOPO,
-+    .class_init = cpu_socket_class_init,
-+    .instance_size = sizeof(CPUSocket),
++    .class_init = cpu_book_class_init,
++    .instance_size = sizeof(CPUBook),
 +};
 +
-+static void cpu_socket_register_types(void)
++static void cpu_book_register_types(void)
 +{
-+    type_register_static(&cpu_socket_type_info);
++    type_register_static(&cpu_book_type_info);
 +}
 +
-+type_init(cpu_socket_register_types)
-diff --git a/include/hw/cpu/socket.h b/include/hw/cpu/socket.h
++type_init(cpu_book_register_types)
+diff --git a/hw/cpu/meson.build b/hw/cpu/meson.build
+index 251724fea86c..c44b54c5abb0 100644
+--- a/hw/cpu/meson.build
++++ b/hw/cpu/meson.build
+@@ -1,4 +1,4 @@
+-system_ss.add(files('core.c', 'cluster.c', 'die.c', 'socket.c'))
++system_ss.add(files('core.c', 'cluster.c', 'die.c', 'socket.c', 'book.c'))
+ 
+ system_ss.add(when: 'CONFIG_ARM11MPCORE', if_true: files('arm11mpcore.c'))
+ system_ss.add(when: 'CONFIG_REALVIEW', if_true: files('realview_mpcore.c'))
+diff --git a/include/hw/cpu/book.h b/include/hw/cpu/book.h
 new file mode 100644
-index 000000000000..897852903cd2
+index 000000000000..b91bd553bea6
 --- /dev/null
-+++ b/include/hw/cpu/socket.h
++++ b/include/hw/cpu/book.h
 @@ -0,0 +1,38 @@
 +/*
-+ * CPU socket abstract device
++ * CPU book abstract device
 + *
 + * Copyright (c) 2023 Intel Corporation
 + * Author: Zhao Liu <zhao1.liu@intel.com>
@@ -231,24 +230,24 @@ index 000000000000..897852903cd2
 + * along with this program; if not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#ifndef HW_CPU_SOCKET_H
-+#define HW_CPU_SOCKET_H
++#ifndef HW_CPU_BOOK_H
++#define HW_CPU_BOOK_H
 +
 +#include "hw/core/cpu-topo.h"
 +#include "hw/qdev-core.h"
 +
-+#define TYPE_CPU_SOCKET "cpu-socket"
++#define TYPE_CPU_BOOK "cpu-book"
 +
-+OBJECT_DECLARE_SIMPLE_TYPE(CPUSocket, CPU_SOCKET)
++OBJECT_DECLARE_SIMPLE_TYPE(CPUBook, CPU_BOOK)
 +
-+struct CPUSocket {
++struct CPUBook {
 +    /*< private >*/
-+    CPUTopoState parent_obj;
++    CPUTopoState obj;
 +
 +    /*< public >*/
 +};
 +
-+#endif /* HW_CPU_SOCKET_H */
++#endif /* HW_CPU_BOOK_H */
 -- 
 2.34.1
 
