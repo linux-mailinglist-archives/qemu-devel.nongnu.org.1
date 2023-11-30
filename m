@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C35A7FF1BA
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:26:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 638B57FF1BB
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:26:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8hz3-0006GN-1q; Thu, 30 Nov 2023 09:25:41 -0500
+	id 1r8hzM-0006II-JB; Thu, 30 Nov 2023 09:26:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8hz0-0006Fm-8T
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 09:25:38 -0500
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8hz4-0006HA-H8
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 09:25:42 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8hyx-0008Pr-Ht
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 09:25:37 -0500
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-50bbb4de875so1429255e87.0
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 06:25:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8hz2-0008Ue-97
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 09:25:42 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a00f67f120aso139350366b.2
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 06:25:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701354333; x=1701959133; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701354338; x=1701959138; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/RVrwZHzqL53D0d21SzvbYXyLe3vUhOAbfQcX8nMf5Y=;
- b=NpP/uEpw5XkiKyWF/D0NUol+2idkFYl1Vqm4Z8PiTyeB5h4HaaNz73DqH5oA64bjBO
- ABv3V3n5SsdttRmCF8AYcTwwo1av94dgxft5KEV1oJpHFfwg4EIRlbtIdwJXE3AeyHsO
- WNOEBZ1hqfr4o3PkZpqCnznS7b5RAfUKHxKJmdvTYGJkLqIO5WDJLhTx97jLcOQ6cZNM
- frmURUwIVrbeZHqkEI0w2hG6aAq6pNdUc0K63jupeT3PwF9hvm+Dv0I5/1Mlu3CkeLiy
- Nl37KwTq5X3oww/GC+f/6cax0rw8oXOGsoleZJmvY3HrSG/FnKct91f5WjICZOJ0fANr
- U1SA==
+ bh=xIkyywCV84pixVtgL1sg5DGw0uU59TDxgCkewEW8ZWA=;
+ b=x+h5n80jNYvLNFDbTDUSqEOuvy4Xwe7SIP3w4w6ZkMPz6gB8fMJbmlwvbpTD0JtKAb
+ n4onOvvL/Jk4e2HLEgqp7Grk/d4mf3ao3nEAt2j+rTC0tFHTg1zUr7nWL5UGAZrCgNzG
+ 2JqOgE7ErniQGfZc4RiapsBSNt0TDEIsSpEMLq041dof6sltz2kjoADPbpWyhzdlddEd
+ Idy1N6gYsNhbA+xWFlMr03u1aXjXZLB6hPYj+Bbq906kGMPWu6FxdrSKWSm2F3VsTi4n
+ +lb5R2vRx0hQpexuk6qvr4wKocbBChflV7TiY9dUAjEcPntv54XlyAeCPzsAWVYjwGdd
+ gCkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701354333; x=1701959133;
+ d=1e100.net; s=20230601; t=1701354338; x=1701959138;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/RVrwZHzqL53D0d21SzvbYXyLe3vUhOAbfQcX8nMf5Y=;
- b=pByunrmvhH4GszS7kLDd8ETaZJpiphKdwb6FsgF/wN+PpsvXydNpDwTITC36NLUils
- ohkuoiQHNhFMwU4QSqSVlxUvnc7tW5WFEgYh166xDdSM9s1QKCRUWxdM5kv+B6zpi7lJ
- zqWSBXZWNwjmBJsGJzhkKQyGLmA3G6XJjeL+M8cCtrC1/ZYnzBKfrJBRc9rh7TKfLGWL
- VJ1oLXNrOmEHjmCKgJsqFrbPIjz6w4fjbbHiuw26QRf9+l071EtPfMBXbqYjM1xPyrSL
- fwqeIb83VK3u4D9+PGcan5LJslPhqgHdUDKdYNYIV2jAiOFrEtvQha69ITQlWhvtDEe5
- Iw1g==
-X-Gm-Message-State: AOJu0YyCxUDc7O5wqHPARtQYMx029RvvbmfAVl74DRTNM1rHtr8ZAKnk
- 41MfTWqM3bIYcG0kT6l32kjde6KCqjOh7Ai80H0gBA==
-X-Google-Smtp-Source: AGHT+IHqWxGWu3FYouLY1vUkrVp9oOiZ2MHIh5pGZ884N/2cipX2YzXpycbaYUz7Fboid2u/imneaQ==
-X-Received: by 2002:a05:6512:3da5:b0:50b:d4c7:193c with SMTP id
- k37-20020a0565123da500b0050bd4c7193cmr460444lfv.24.1701354333339; 
- Thu, 30 Nov 2023 06:25:33 -0800 (PST)
+ bh=xIkyywCV84pixVtgL1sg5DGw0uU59TDxgCkewEW8ZWA=;
+ b=dKFxcGCEBtNG5urk5RYsDf89XK+bWUXTZjeUke7XqScGRPO/8+ftdPTN+yJf67DzjW
+ 4OoZ7FNS+d/tEitQz33Xjxx/xXmCIhkE6qaxfwKcmALZQvy3JgIz81TG/qBhAedenBXD
+ nTOHD0PKFq9G27Bt9hT8lLlPDDKWsuUrtyPAmOV0m61v++sFBxYDviZDJRpAsrp6Ky6a
+ azUjOQH2VvCdIWWxLH1GdwbnZ7AkH816VH1TKYw3DBrR4jpZkwnIMjFDWSMFx9xgXuaj
+ 8llh1uE0AfvYThLxJ/nfxCJKADK+Ykc0HAnPBeNCwrs9T3pbqGwSPr3vP3nzwzQ8m/nQ
+ kKTQ==
+X-Gm-Message-State: AOJu0YwLs4k2oDyCF18cBskqASTx1hONayG8gst25yL23g6vwayohEC7
+ GBAXlzO5Lrk8mwMi5BqpJ5ieU3TfwZ6JcBIDoxgK3g==
+X-Google-Smtp-Source: AGHT+IEpyAnrNBvuMziOwmmwDC1iNrqxscHHuoDGifVRWcovxZN51cUU10YATP1nmC1osU6RFMv2Eg==
+X-Received: by 2002:a17:906:738b:b0:9f8:2f30:d74f with SMTP id
+ f11-20020a170906738b00b009f82f30d74fmr14711296ejl.7.1701354338665; 
+ Thu, 30 Nov 2023 06:25:38 -0800 (PST)
 Received: from m1x-phil.lan (sev93-h02-176-184-17-116.dsl.sta.abo.bbox.fr.
  [176.184.17.116]) by smtp.gmail.com with ESMTPSA id
- w8-20020a056402070800b0054aeac2c4b9sm591628edx.81.2023.11.30.06.25.32
+ n23-20020a170906089700b0099297782aa9sm726356eje.49.2023.11.30.06.25.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 30 Nov 2023 06:25:32 -0800 (PST)
+ Thu, 30 Nov 2023 06:25:38 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 2/3] target/arm: Restrict DC CVAP & DC CVADP
- instructions to TCG accel
-Date: Thu, 30 Nov 2023 15:25:18 +0100
-Message-ID: <20231130142519.28417-3-philmd@linaro.org>
+Subject: [PATCH-for-9.0 3/3] target/arm/tcg: Including missing
+ 'exec/exec-all.h' header
+Date: Thu, 30 Nov 2023 15:25:19 +0100
+Message-ID: <20231130142519.28417-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231130142519.28417-1-philmd@linaro.org>
 References: <20231130142519.28417-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,36 +92,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hardware accelerators handle that in *hardware*.
+translate_insn() ends up calling probe_access_full(), itself
+declared in "exec/exec-all.h":
+
+  TranslatorOps::translate_insn
+    -> aarch64_tr_translate_insn()
+      -> is_guarded_page()
+        -> probe_access_full()
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/helper.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/arm/tcg/translate-a64.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 4844cf1d78..20e13215bb 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -7645,6 +7645,7 @@ static const ARMCPRegInfo rndr_reginfo[] = {
- static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
-                           uint64_t value)
- {
-+#ifdef CONFIG_TCG
-     ARMCPU *cpu = env_archcpu(env);
-     /* CTR_EL0 System register -> DminLine, bits [19:16] */
-     uint64_t dline_size = 4 << ((cpu->ctr >> 16) & 0xF);
-@@ -7669,6 +7670,10 @@ static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
-         }
- #endif /*CONFIG_USER_ONLY*/
-     }
-+#else
-+    /* Handled by hardware accelerator. */
-+    g_assert_not_reached();
-+#endif /* CONFIG_TCG */
- }
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index a2e49c39f9..f3b5b9124d 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -18,6 +18,7 @@
+  */
+ #include "qemu/osdep.h"
  
- static const ARMCPRegInfo dcpop_reg[] = {
++#include "exec/exec-all.h"
+ #include "translate.h"
+ #include "translate-a64.h"
+ #include "qemu/log.h"
 -- 
 2.41.0
 
