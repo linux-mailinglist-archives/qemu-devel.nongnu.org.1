@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844A17FF811
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 18:20:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 196857FF841
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 18:31:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8khP-00055y-UW; Thu, 30 Nov 2023 12:19:39 -0500
+	id 1r8kr5-0001Cw-Hm; Thu, 30 Nov 2023 12:29:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1r8khN-00055E-Ba
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:19:37 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1r8khL-0006db-TN
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:19:37 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1cfa5840db3so11252015ad.2
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 09:19:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701364774; x=1701969574; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NGaFxDd9DEgIY946KKxNCCYQHrryKrWh5AcjMejeCmY=;
- b=GWv+dUDnBRa8ngDezM0lLSRt7ieJHmjJzmYp+ujFbqGm5dOxynPizD+JBfD/QWTmw2
- jW8MVq8W2OjxWfKz2nCE+OUD9jZ7FCLQsN02JK++70zpleHTvxhAdiLRA39Qg1tHOxoa
- NhIlnz98jjsTtNyPUpR2jXq1sdAnC1J88cdO4wuCpKXD2klXqIGxsJd0O3hNtqfp6FpR
- jd5z+inS/SuTtgpfwj3R3F2yjetddazQ9hwbUgJiDsy2Y6GZfnVa+wr6yZIiVQdqQIT+
- d+AIS7Q8KPU3bmXsbHfGvNJSsjVZ4LissIdYXs3+1NweP6jrUnlrFZ/b3fAlvkugua7F
- a//g==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8kr3-0001CJ-Gf
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:29:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8kr0-000070-WF
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:29:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701365371;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2syQazUixQ9MRGEWciltuCA7KgWyHKWfewPM6ZmXPj4=;
+ b=FKy2OEeW07soO3UiJFW9yoi28Nis8iIpEq3mT7OfuRwU7BJ/r+ay4PTIQG5AjAcS0KskVb
+ GtSnEaHFM9wDm66vDylGieCay9b1ZjKcOzXr5/p4ZD8bT6zFvLE1yxMRicCRt7dqXdI2Gg
+ NXl1ryYrEXP3zp8ms5tKlYQx1ApGXO8=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-501-EXgM-7hFNaCgS-a7ZUKmAA-1; Thu, 30 Nov 2023 12:29:29 -0500
+X-MC-Unique: EXgM-7hFNaCgS-a7ZUKmAA-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-77d98b1df76so26833085a.0
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 09:29:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701364774; x=1701969574;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NGaFxDd9DEgIY946KKxNCCYQHrryKrWh5AcjMejeCmY=;
- b=OMfFxrbQP1WjkzQtGZvtcXTG3Gi+PelW/uHnuGwAz9XHTXTviEvXtY92rZgDunqcTF
- +LgciCVdSg0vcAUgfsgSwc4LRBDfw0v6TyiAo0GH2WrZBJAFHxhBFEU4JjFfh9JETBMG
- Gg5fnS/sztgv7BGUrsRw7SvpfNlZjjPijd+TS/8qXuglrladLg0geD8FufFG6990NJ8u
- ZMuQz1H6Y3UbTYYZe3q/QPNSPhYwgMQ8RVowa7d2/YGZPMjVrM8XYwO6BwmaZc30EJeQ
- v5KcNZojU1XGmd3HwRgKuyxsUDFfMSBwoTKd4I2wETGZvVTPsiPhamTar3+TiM88+UDJ
- uAEQ==
-X-Gm-Message-State: AOJu0Yx2F0PRyPQ/qX0vHUUQIkXb0p+dakSEtkHjfWnwdDjrr8oiw+MW
- AiYzJSATnCA0la5g2CjazeKxx+TCvr8=
-X-Google-Smtp-Source: AGHT+IFUVoe11eoZ2T5TJ0ADewQphfA2qPSEp0EHce/eCPspGNjqMobYxN5Lpo2USuY4H6VRwRTwKQ==
-X-Received: by 2002:a17:902:724a:b0:1cf:d2c3:2865 with SMTP id
- c10-20020a170902724a00b001cfd2c32865mr13135930pll.40.1701364774296; 
- Thu, 30 Nov 2023 09:19:34 -0800 (PST)
-Received: from octofox.hsd1.ca.comcast.net
- ([2601:646:a201:19d0:7eb0:c76b:d82c:8f94])
- by smtp.gmail.com with ESMTPSA id
- bc3-20020a170902930300b001cc29ffcd96sm1645926plb.192.2023.11.30.09.19.33
+ d=1e100.net; s=20230601; t=1701365369; x=1701970169;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2syQazUixQ9MRGEWciltuCA7KgWyHKWfewPM6ZmXPj4=;
+ b=jluvqXgKP7oGLGqwz7a6aDaeNy+lZBPEXgWpgEcsy1myyyB9MfmCK9RHGay8AWFGm4
+ y4FyCJlh/o8xiLO0rnDnWRXLnD64oVtUm7HGTpMbIVjzl/xzklzMa5TTMlCA2V2a//FR
+ ViBe3pzEHCUiToLUXbm5++otwnjDO0RECPBDhfbUqoGkQiPGGCb4/cKtGlFYnExRWSJm
+ CMXLwLfCWLmcp0xB7V/fW6XxGUeMu+GAdCzTDgxY6B+W0br/M6cWUNEcD+vQXeami3dG
+ xQi+WbK5ui8ysxoiG2RUyucV8fNTG9OUzNumFmIvEGwfNuP4D1lRAkuuZpFItBSQZhBk
+ Qjmw==
+X-Gm-Message-State: AOJu0YwthaZwTq59LUDgpHfyR1JVSRIFjHvf4OZB36OZWR9Q3RXt5FI3
+ I4xhltUvxWpEq1RaPef3X+NtI2ICX+yd/PclaDrno4W9NSvl5qoCMa0u+6EePVJB9HelTJkhLMz
+ AJhyf7U70HeYS380=
+X-Received: by 2002:a05:620a:372a:b0:77d:8c81:ea2d with SMTP id
+ de42-20020a05620a372a00b0077d8c81ea2dmr21566926qkb.0.1701365369326; 
+ Thu, 30 Nov 2023 09:29:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IESWKFJ/OpUIBL90CSTO4eJGiNWnzSnSXO4MNLlkZqCXfDQoSszoBxeAs5QXzVH5OgQwpRC5A==
+X-Received: by 2002:a05:620a:372a:b0:77d:8c81:ea2d with SMTP id
+ de42-20020a05620a372a00b0077d8c81ea2dmr21566913qkb.0.1701365369033; 
+ Thu, 30 Nov 2023 09:29:29 -0800 (PST)
+Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ e15-20020a37ac0f000000b007659935ce64sm673442qkm.71.2023.11.30.09.29.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Nov 2023 09:19:33 -0800 (PST)
-From: Max Filippov <jcmvbkbc@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 2/2] tests/tcg/xtensa: add icount/ibreak priority test
-Date: Thu, 30 Nov 2023 09:19:20 -0800
-Message-Id: <20231130171920.3798954-3-jcmvbkbc@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231130171920.3798954-1-jcmvbkbc@gmail.com>
-References: <20231130171920.3798954-1-jcmvbkbc@gmail.com>
+ Thu, 30 Nov 2023 09:29:28 -0800 (PST)
+Date: Thu, 30 Nov 2023 12:29:26 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
+ berrange@redhat.com, peter.maydell@linaro.org, farosas@suse.de,
+ armbru@redhat.com
+Subject: Re: [PATCH v4] migration: Plug memory leak with migration URIs
+Message-ID: <ZWjGdg-gic-C1PA_@x1n>
+References: <20231129204301.131228-1-het.gala@nutanix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231129204301.131228-1-het.gala@nutanix.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,58 +98,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When icount and ibreak exceptions are due to happen on the same address
-icount has higher precedence.
+On Wed, Nov 29, 2023 at 08:43:01PM +0000, Het Gala wrote:
+> migrate_uri_parse() allocates memory to 'channel' if the user
+> opts for old syntax - uri, which is leaked because there is no
+> code for freeing 'channel'.
+> So, free channel to avoid memory leak in case where 'channels'
+> is empty and uri parsing is required.
+> 
+> Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp migration flow")
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> Suggested-by: Markus Armbruster <armbru@redhat.com>
 
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
----
- tests/tcg/xtensa/test_break.S | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-diff --git a/tests/tcg/xtensa/test_break.S b/tests/tcg/xtensa/test_break.S
-index 3aa18b5cec3f..4c618feb5b10 100644
---- a/tests/tcg/xtensa/test_break.S
-+++ b/tests/tcg/xtensa/test_break.S
-@@ -129,7 +129,7 @@ test ibreak_remove
- 4:
- test_end
- 
--test ibreak_priority
-+test ibreak_break_priority
-     set_vector debug_vector, 2f
-     rsil    a2, debug_level - 1
-     movi    a2, 1f
-@@ -145,6 +145,29 @@ test ibreak_priority
-     movi    a3, 0x2
-     assert  eq, a2, a3
- test_end
-+
-+test ibreak_icount_priority
-+    set_vector debug_vector, 2f
-+    rsil    a2, debug_level - 1
-+    movi    a2, 1f
-+    wsr     a2, ibreaka0
-+    movi    a2, 1
-+    wsr     a2, ibreakenable
-+    movi    a2, -2
-+    wsr     a2, icount
-+    movi    a2, 1
-+    wsr     a2, icountlevel
-+    isync
-+    rsil    a2, 0
-+    nop
-+1:
-+    break   0, 0
-+    test_fail
-+2:
-+    rsr     a2, debugcause
-+    movi    a3, 0x1
-+    assert  eq, a2, a3
-+test_end
- #endif
- 
- test icount
+> @@ -533,18 +533,18 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+>              error_setg(errp, "Channel list has more than one entries");
+>              return;
+>          }
+> -        channel = channels->value;
+> +        addr = channels->value->addr;
+>      } else if (uri) {
+>          /* caller uses the old URI syntax */
+>          if (!migrate_uri_parse(uri, &channel, errp)) {
+>              return;
+>          }
+> +        addr = channel->addr;
+>      } else {
+>          error_setg(errp, "neither 'uri' or 'channels' argument are "
+>                     "specified in 'migrate-incoming' qmp command ");
+>          return;
+>      }
+> -    addr = channel->addr;
+
+Why these "addr" lines need change?  Won't that behave the same as before?
+
+Thanks,
+
 -- 
-2.39.2
+Peter Xu
 
 
