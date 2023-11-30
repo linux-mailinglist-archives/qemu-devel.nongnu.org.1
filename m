@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB337FED7E
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 12:04:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92AB17FED94
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 12:13:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8epK-0004Mh-La; Thu, 30 Nov 2023 06:03:26 -0500
+	id 1r8exZ-00070J-5n; Thu, 30 Nov 2023 06:11:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r8epI-0004MK-G1; Thu, 30 Nov 2023 06:03:24 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1r8exV-0006zV-BB; Thu, 30 Nov 2023 06:11:53 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r8epG-0001TS-FR; Thu, 30 Nov 2023 06:03:24 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1cfb4d28c43so7586145ad.1; 
- Thu, 30 Nov 2023 03:03:21 -0800 (PST)
+ id 1r8exT-0002tZ-5D; Thu, 30 Nov 2023 06:11:52 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6cdd13c586fso776567b3a.0; 
+ Thu, 30 Nov 2023 03:11:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701342199; x=1701946999; darn=nongnu.org;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=gmail.com; s=20230601; t=1701342709; x=1701947509; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CA4hMSh8baJcecNmTirTLG0Rl5oCnwlvvCUB8mNGD3E=;
- b=S/Zh80T2fiSkEI7war7hxlhIalV0p8Lhb7RgG/sKp6B8TZhxeInxpoxeaWPwTTWeZO
- JJgIyqqzHmY5kM1MXNOM+5l8OwF0hQv+hitletCeMmgkH0Af+ScgjiRb5FqnXtrQAQAj
- +KAtxEptizaEZq8nyG5Tk7HcniMEX901ZKGfhJaBCUI+rfGD+OCbyDR+xK05DMcL3pH1
- Fft7a3yXPB4mEmPh/OVj7WcEJnN+KVPhV4ClX47hC7vacTuxFqZfcTm//pnx2ZNieyPG
- xgtaxPAD/HP926hMl31GAkRgfped3S+4icEaZGwGC0Anq2Hp8QJ1nEb0uejpJIMT0eFO
- YMlg==
+ bh=SDh1/WK9u6sCAh+OxZwPWashhhvllPg5p2JzQqcS9PU=;
+ b=Hb3oLTQah4Nra4lIhPlv/ggfomw18BJvpeYTY2umy6JXFFaWP8QILc6bdNLhaqBtb5
+ zK/LL9E5dNlaPzDJw9dH0IGnHbylN3LVWqhbfUC/JcYBYrK2DmIYtyuchlUycav9zBGX
+ vePW6+aOhs+XJtuAM/+5VOTaqULXZnOGCQcOxpuJQ+Z4mbY6+iwu7konwAz/PufMuBjO
+ QP7prnfLt+f/JxjiX/LKrVsZw+sfNEBdsY14Cw5uG9PoHD2b0aBYbS1hGW16nbAk0CDQ
+ CWOu+/1i8cTxPpcyKmta1PKjmsIrW8tGLyz/JyWVyA8vaes34ecYJyQHe6zn4lOJSXIv
+ ixuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701342199; x=1701946999;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=1e100.net; s=20230601; t=1701342709; x=1701947509;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=CA4hMSh8baJcecNmTirTLG0Rl5oCnwlvvCUB8mNGD3E=;
- b=buFr/4Z/KjiQd53aRtYuNMB/iDj4iJVjHqtQtBGvHLPEcQeCDn6uLYVAaZs17RZHM5
- /oJVaGvdDQ1RwjHDdWXfuACAOjD8a4UI4/kJV6Stl0YsDB72cTdlHvuQVz3ugC5HDKyE
- +3iT4M8njwFWhwmAT8ukMjqf4zq/1aKtKgrXfmFW5fJ3Z358M2L2Wr7VZCb/Fub55jE0
- KdL01eQMMVyHbJHNQ9s+gJ9fTWQvxA8sALeRSKxKd1iy2GqQi3q8LtGwNu8LVfzp3xrU
- nZiGEJhM1IdNyQA4IZB5vRXRGcVpwbu3QWZoDUHwrgZpBqIDd53AKeFI9E2z8BSlcIb4
- bCCw==
-X-Gm-Message-State: AOJu0YwebJshj5vrw71QVQbyjyD2/O2lzlFEePnKhQqvJMQGy0gIETjy
- oaQ7OTGzHwazN+RAfYHTwTVuyTE4NA8=
-X-Google-Smtp-Source: AGHT+IGOeEcCSCr+HZbvQRqS0UvB12UTiGPbQN6tz8B5qMl3Cjc2if2TOo/dg6Bq4nGZXCJyURSJ0Q==
-X-Received: by 2002:a17:903:11c8:b0:1cc:4e9f:d27 with SMTP id
- q8-20020a17090311c800b001cc4e9f0d27mr22818204plh.1.1701342198957; 
- Thu, 30 Nov 2023 03:03:18 -0800 (PST)
+ bh=SDh1/WK9u6sCAh+OxZwPWashhhvllPg5p2JzQqcS9PU=;
+ b=qzsZ4bdFvJ0K4pwcqEFcNMR9RKoT7dkYWKidnL5TyPumEtFK8RlM1YpggjUt/67Fj6
+ FHLy4aKB379CBH1+rC+M1cgbHOOIh/PoomP5KLiW88LwjWgscW/WNBCz5DACpC+qWSfM
+ N4n++uiq04B+ezq8kNiFZtUHFsd9yUXpALD2CqF4yWUeZ7KIgWsk+mzfkN9ZbIOZemZ8
+ 2clo7EajQXtFfXkEXGWAM7S0rfcjS9XyFqD6zbdNTwGkVeAKqcH0X1pRyAf+yunX6fAT
+ BBKpzYgrzbR6848gfpbAlWXHMtw1trfr5uOBX8vXI+qU+Lk+HaYHy3Pa+0wi/qX0eVTo
+ fW7A==
+X-Gm-Message-State: AOJu0YwGWzccMhb08ucq9CuwOY58WrWB/9GNVM4Wh42NInam6k9blv5l
+ 5VqL6SBuzkXwqvBV8EJj0TI=
+X-Google-Smtp-Source: AGHT+IGqVF0+VgFau29RvjdJe9rOJnBOUf/WyV5gyegKIq9fQQhlSPLK96goMLKBE/MH671iY+XerQ==
+X-Received: by 2002:a05:6a00:35c7:b0:6cb:4c60:7398 with SMTP id
+ dc7-20020a056a0035c700b006cb4c607398mr19989945pfb.13.1701342709403; 
+ Thu, 30 Nov 2023 03:11:49 -0800 (PST)
 Received: from localhost ([124.170.16.164]) by smtp.gmail.com with ESMTPSA id
- y11-20020a170902b48b00b001cfa4178981sm1025469plr.309.2023.11.30.03.03.14
+ o25-20020a056a001b5900b006cdd38b72dbsm973456pfv.148.2023.11.30.03.11.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Nov 2023 03:03:16 -0800 (PST)
+ Thu, 30 Nov 2023 03:11:48 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Nov 2023 21:03:11 +1000
-Message-Id: <CXC3H0PGQZEG.1QL49XWJNHLL6@wheely>
-Subject: Re: [PATCH v3] ppc/amigaone: Allow running AmigaOS without firmware
- image
+Date: Thu, 30 Nov 2023 21:11:42 +1000
+Message-Id: <CXC3NJMX3IHH.LY7HE54F29I@wheely>
+Cc: <clegoate@redhat.com>, <qemu-devel@nongnu.org>, <mikey@neuling.org>,
+ <vaibhav@linux.ibm.com>, <jniethe5@gmail.com>, <sbhat@linux.ibm.com>,
+ <kconsul@linux.vnet.ibm.com>, <danielhb413@gmail.com>
+Subject: Re: [PATCH v2 04/14] spapr: nested: Introduce cap-nested-papr for
+ Nested PAPR API
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>
-Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>,
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Daniel Henrique Barboza"
- <danielhb413@gmail.com>, <philmd@linaro.org>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.15.2
-References: <20231128013253.80524756078@zero.eik.bme.hu>
- <8df98507-3b2f-426e-ab25-f571f06c769b@kaod.org>
- <356aadfe-98d6-1b31-46e1-4d01ceedd477@eik.bme.hu>
-In-Reply-To: <356aadfe-98d6-1b31-46e1-4d01ceedd477@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+References: <20231012104951.194876-1-harshpb@linux.ibm.com>
+ <20231012104951.194876-5-harshpb@linux.ibm.com>
+ <CXAZVME5KCFG.32WTQX49G8W7B@wheely>
+ <614cb3f5-454a-c83b-47b1-a0387a8aa187@linux.ibm.com>
+In-Reply-To: <614cb3f5-454a-c83b-47b1-a0387a8aa187@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,40 +95,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Nov 30, 2023 at 8:49 AM AEST, BALATON Zoltan wrote:
-> On Tue, 28 Nov 2023, C=C3=A9dric Le Goater wrote:
-> > On 11/28/23 02:32, BALATON Zoltan wrote:
-> >> The machine uses a modified U-Boot under GPL license but the sources
-> >> of it are lost with only a binary available so it cannot be included
-> >> in QEMU. Allow running without the firmware image which can be used
-> >> when calling a boot loader directly and thus simplifying booting
-> >> guests. We need a small routine that AmigaOS calls from ROM which is
-> >> added in this case to allow booting AmigaOS without external firmware
-> >> image.
-> >>=20
-> >> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> >
-> > Since this is 8.2 material :
-> >
-> >
-> > Fixes: d9656f860a38 ("hw/ppc: Add emulation of AmigaOne XE board")
+On Thu Nov 30, 2023 at 4:19 PM AEST, Harsh Prateek Bora wrote:
 >
-> This has missed rc2 but I hope there still will be a pull request before=
-=20
-> rc3 which is the last chance now. I've sent a v4 which simpilifies the=20
-
-Sigh, yes a few hiccups but I will send a PR with your v3 and a SLOF
-update.
-
-> inserted code as I've found there's no need to do it like in the rom as=
-=20
-> the only place it's called from just cares about the result.
 >
-> I forgot the Fixes tag again, sorry, but the one above is still the same.
+> On 11/29/23 09:31, Nicholas Piggin wrote:
+> > On Thu Oct 12, 2023 at 8:49 PM AEST, Harsh Prateek Bora wrote:
+> >> Introduce a SPAPR capability cap-nested-papr which provides a nested
+> >> HV facility to the guest. This is similar to cap-nested-hv, but uses
+> >> a different (incompatible) API and so they are mutually exclusive.
+> >> This new API is to enable support for KVM on PowerVM and recently the
+> >> Linux kernel side patches have been accepted upstream as well [1].
+> >> Support for related hcalls is being added in next set of patches.
+> >=20
+> > We do want to be able to support both APIs on a per-guest basis. It
+> > doesn't look like the vmstate bits will be a problem, both could be
+> > enabled if the logic permitted it and that wouldn't cause a
+> > compatibility problem I think?
+> >=20
+>
+> I am not sure if it makes sense to have both APIs working in parallel=20
+> for a nested guest.
 
-That's okay I added it. I'll just keep v3 since I have done some
-tests with it. If it matches the the old rom then it seems like
-a good starting point anyway, can always patch it later.
+Not for the nested guest, but for the nested KVM host (i.e., the direct
+pseries guest running QEMU). QEMU doesn't know ahead of time which API
+might be used by the OS.
+
+> Former uses h_enter_guest and expects L1 to store=20
+> most of the regs, and has no concept like GSB where the communication=20
+> between L1 and L0 takes place in a standard format which is used at=20
+> nested guest exit also. Here, we have separate APIs for guest/vcpu=20
+> create and then do a run_vcpu for a specific vcpu. So, we cant really=20
+> use both APIs interchangeably while running a nested guest. BTW, L1=20
+> kernel uses only either of the APIs at a time, preferably this one if=20
+> supported.
+
+Yeah not on the same guest. And it's less about running two different
+APIs on different guests with the same L1 simultaneously (although we
+could probably change KVM to support that fairly easily, and we might
+want to for testing purposes), but more about compatibility. What if
+we boot or exec into an old kernel that doesn't support the new API?
+>
+> > And it's a bit of a nitpick, but the capability should not be permitted
+> > before the actual APIs are supported IMO. You could split this into
+> > adding .api first, so the implementation can test it, and add the spapr
+> > caps at the end.
+> >=20
+>
+> Agree, I shall update as suggested.
 
 Thanks,
 Nick
