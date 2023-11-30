@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839577FF99C
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 19:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2374B7FFBBA
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 20:46:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8lxD-0004Tv-JD; Thu, 30 Nov 2023 13:40:03 -0500
+	id 1r8mzZ-000445-4U; Thu, 30 Nov 2023 14:46:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1r8lxA-0004TG-Tv
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 13:40:00 -0500
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r8mzS-00041o-Su
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:46:26 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1r8lx9-00043q-Gc
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 13:40:00 -0500
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-1fa37df6da8so626085fac.2
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 10:39:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r8mzR-0007Jy-Dp
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:46:26 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2c9b8aa4fc7so17751431fa.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 11:46:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701369597; x=1701974397; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=CZ1rg/KJwPlerOGXgxpRsvRdTr0rTqRqbRHgz2vDDTM=;
- b=WuRI6Zt70e1X8RVuy3xnTc+9cR4rUMhXZ5+14JvkITiI8KsxV+FlK0Pa0aXi2qC6hE
- 4w4c4KBTql1tlFXpOC0LxWuHph1/HARtjVStjhYOanFPI2hzgkC+GqQpt5mY4LCZymrp
- S2tl35kLJv3dFqmvICIY56leAfbVKJ98u15kSLVBEU8mkT38zcUzgXONfLy4ySqsaVjf
- 2kci0Xd0uY7kY6U+rM6Fd3Imih62KYoKSlNGgPr0FtyWO6EA427iIupuTPjFk0wo7RGs
- NO7q20sgFjgtqhWGT7ycz8dPlPgYdgp4up4r1coE1dHmwQmq9pdWtgKQ1oRJmaDbJ5Wx
- HdyQ==
+ d=linaro.org; s=google; t=1701373583; x=1701978383; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=P5jaemYcRn4/pBqbCndudYBCVOJZzXayR/s1I9ImqWI=;
+ b=oEDK7ylhbTeLgF+JYaNNhxqHc0ySUckVbsP9Trblnropkf5wJaLOoQthRgSCBcInUn
+ YymUfFGqIPcmcUoiL8U9mfkt0PTdlB7HUHsfVS1hmHB7jdF5gopWB25WhETv/Bx4/bKI
+ 8gX46rLT+1cd6L56czsw/uUs/JnhxXKATfWiZaH1frwkSOB0kLzDRyRcoElc+iTCGoMq
+ wrNCqMYroKOUCOTUsTobFjFzxDbflts0xAeyuikEsN0GAwV8LHiABovkB5XUJeKA5jey
+ zOrdfrZ97kyCvSelpzgthPcLKL9UrAKxfKigea4/eiyL/kwWGxX/Lu/ynuiQGGeLiaGZ
+ pGCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701369597; x=1701974397;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CZ1rg/KJwPlerOGXgxpRsvRdTr0rTqRqbRHgz2vDDTM=;
- b=ZQg3jVA8UvdABlWkf0V2YLIIp1QI9x6bAo3S8IHlyPB6Y59sOze9ZCE+6LbyC/6xhH
- zlYWLEZ/YRvU74TjoQp4oqIAyUDi4dTQnqXsKv5YwM/I3hj/rm83swmZYsYdih+1YIZt
- Ww4GzqjynHF+oPIBpXP6EAOtup8Q57BLPx1cnX95dEe2d+7ARWJmIs34Sg+fWq+tBRA5
- RqZ2UoAv1VZLsqAoYRETWXB5TxpSDNbBJrxWyqv4ZmOJy3DPsFZEDVb45iO/E1FvsQ61
- rlgm0tUqlrvRL12bHfX60ugRTsiwEqxB5Y/FjTF4prO15I3xbXPa26MPpOZDev6Dfsa2
- nvMA==
-X-Gm-Message-State: AOJu0YxX5UFXpnov/rrSBWvsuSIfsL2w8MD2/IMKY3SCwOW6P785IC91
- MqjcLiWD1iPtdlg17Cijpwu0X+iEjyMKVw==
-X-Google-Smtp-Source: AGHT+IGRAQhUN6A+hv3f2v1unNYbgGvc8cnugRyPrWt+OD5a7EMgivRTJkdMeAqsmPevGSHHeMv7dw==
-X-Received: by 2002:a05:6870:f78f:b0:1f9:574c:b5ec with SMTP id
- fs15-20020a056870f78f00b001f9574cb5ecmr30935190oab.27.1701369597145; 
- Thu, 30 Nov 2023 10:39:57 -0800 (PST)
-Received: from taylor-ubuntu.austin.rr.com (068-203-008-061.res.spectrum.com.
- [68.203.8.61]) by smtp.gmail.com with ESMTPSA id
- gc5-20020a056870678500b001fa4f5ffd90sm384372oab.26.2023.11.30.10.39.56
+ d=1e100.net; s=20230601; t=1701373583; x=1701978383;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=P5jaemYcRn4/pBqbCndudYBCVOJZzXayR/s1I9ImqWI=;
+ b=tUKiPb3npKnMKcKbLgvtbqCdEXuUflsZ6sA9Xtz/i7EiAg1GZXdcINpFYzpYRzEQx3
+ 4Rf4lrtTO3X1UcAJB9uqlqQtzjbmuytxcvgl64yW4+TrD6s5ikFd/y7ceDKgc0j+V9Zr
+ cBHhbS3IXZ9JMYMvN0v9dOXBlrm9eiIUFijmOBJiac/UoMXIVW9IRBSwWGe0wsWvTU5/
+ MslwB1cdHljkZyLE00RNBWCPmLOJ47BEv2gzYXW5vTZIShRe48X64MDaI7EigrkNPZNW
+ L+wU+6L/EExAenj8HKfY7PtLigL3+JPOi1HIaplB1/GeqQLS/LNuykNzCCtIgKwtrR88
+ iXfA==
+X-Gm-Message-State: AOJu0YxyzbuJtkncjs4ypk5BapexFmRSXP7NwCYpMp4Xhz2pzVGNA2+T
+ fCgR+hbRyunbIZ2cG5X8qapsUb8sCuQz98oPNXqt/g==
+X-Google-Smtp-Source: AGHT+IE9ty0p0UFHQ60xwF1xqod6ikGojEPRwLv7UnPjH484UgrUEbS+Q5i85MYlpHGnIw2TFDrO2g==
+X-Received: by 2002:a05:6512:2310:b0:50b:ae1f:ff24 with SMTP id
+ o16-20020a056512231000b0050bae1fff24mr113872lfu.31.1701364275748; 
+ Thu, 30 Nov 2023 09:11:15 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ h9-20020a05600c314900b0040b3d8907fesm2621507wmo.29.2023.11.30.09.11.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Nov 2023 10:39:56 -0800 (PST)
-From: Taylor Simpson <ltaylorsimpson@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
- quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
- ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
-Subject: [PATCH] Hexagon (target/hexagon) Fix shadow variable when idef-parser
- is off
-Date: Thu, 30 Nov 2023 11:39:55 -0700
-Message-Id: <20231130183955.54314-1-ltaylorsimpson@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ Thu, 30 Nov 2023 09:11:15 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0C7795FB51;
+ Thu, 30 Nov 2023 17:11:15 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Jai Arora <arorajai2798@gmail.com>
+Cc: qemu-devel@nongnu.org,  qemu-trivial@nongnu.org,  pbonzini@redhat.com,
+ peter.maydell@linaro.org
+Subject: Re: [PATCH v3] accel/kvm: Turn DPRINTF macro use into tracepoints
+In-Reply-To: <20231130155058.237850-1-arorajai2798@gmail.com> (Jai Arora's
+ message of "Thu, 30 Nov 2023 21:20:58 +0530")
+References: <20231130155058.237850-1-arorajai2798@gmail.com>
+User-Agent: mu4e 1.11.25; emacs 29.1
+Date: Thu, 30 Nov 2023 17:11:15 +0000
+Message-ID: <87edg76ua4.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-oa1-x31.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,37 +96,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adding -Werror=shadow=compatible-local causes Hexagon not to build
-when idef-parser is off.  The "label" variable in CHECK_NOSHUF_PRED
-shadows a variable in the surrounding code.
+Jai Arora <arorajai2798@gmail.com> writes:
 
-Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
----
- target/hexagon/macros.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> Patch removes DRPINTF macro and adds multiple tracepoints
+> to capture different kvm events.
 
-diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
-index 9a51b5709b..f99390e2a8 100644
---- a/target/hexagon/macros.h
-+++ b/target/hexagon/macros.h
-@@ -93,13 +93,13 @@
- 
- #define CHECK_NOSHUF_PRED(GET_EA, SIZE, PRED) \
-     do { \
--        TCGLabel *label = gen_new_label(); \
--        tcg_gen_brcondi_tl(TCG_COND_EQ, PRED, 0, label); \
-+        TCGLabel *noshuf_label = gen_new_label(); \
-+        tcg_gen_brcondi_tl(TCG_COND_EQ, PRED, 0, noshuf_label); \
-         GET_EA; \
-         if (insn->slot == 0 && ctx->pkt->pkt_has_store_s1) { \
-             probe_noshuf_load(EA, SIZE, ctx->mem_idx); \
-         } \
--        gen_set_label(label); \
-+        gen_set_label(noshuf_label); \
-         if (insn->slot == 0 && ctx->pkt->pkt_has_store_s1) { \
-             process_store(ctx, 1); \
-         } \
--- 
-2.34.1
+maybe add "We drop the DPRINTFs that don't add any additional
+information than trace_kvm_run_exit already does."
 
+Otherwise:
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+p.s.
+
+It is helpful to add a mini-changelog bellow the --- line so reviewers
+can see what changes have already been made to the patch. The git
+tooling will strip this log when the maintainer applies the patches.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
