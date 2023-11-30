@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9487FF1E1
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D6E7FF1E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:32:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8i54-0001ah-3i; Thu, 30 Nov 2023 09:31:54 -0500
+	id 1r8i5G-0001fX-1H; Thu, 30 Nov 2023 09:32:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8i4y-0001YB-IE; Thu, 30 Nov 2023 09:31:48 -0500
+ id 1r8i54-0001d3-5x; Thu, 30 Nov 2023 09:31:54 -0500
 Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8i4w-000157-Ab; Thu, 30 Nov 2023 09:31:48 -0500
+ id 1r8i52-000157-KU; Thu, 30 Nov 2023 09:31:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701354706; x=1732890706;
+ t=1701354712; x=1732890712;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=q8av5JpkyS6FnEIeBR5gNojelDu9V7STUz/Dtf8UH7E=;
- b=SXRPthXIKWLa7vnXnPXE7eXzXWzC6Rp5EpH7BMg9RdCE3R+U4c5GLN3w
- UNRaw+EcrhRvAS+qHjMgSwBYfd8JhT2ax3YFnkXbQ143V40Yus8ygxp0A
- IWaUrzfcJzJVRZZOyoCiwfzzGA8Q4sRaEA4pGauZhrV5wm2y/drOwHCit
- y396H48MPdJ7c1MOdEy2iOBrvffqoj2kDA7lrH/fKjOJvXKnBcQlVGKR+
- KMT8x4UTXXm7owEf3ZoK/yBC5/LDu5iJJdYF3uvWfZrvDAxMmiX1uso4b
- 58psAnVf3ZBESpu5RHvGYAiRU83drUqdYriakl1iD5G6LzsEHoohQ3UWh A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="479531061"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="479531061"
+ bh=FvkKzJCE6FUWENQ9f97m08P62P/QoMoZpAQ1rnP03oI=;
+ b=HtfMqBHHZUN7GgJRWat9fIWsFbhJkMP4kLDyPJrkFVSgc68P71B6J9KH
+ h4MDq+Da2PJF8O8mzW2oB7HcQtW9oQaBJzWha7RJrHOxgHxUajKXquZ5+
+ k5SFchDNnnduvUwiL7l5Leg5heYe7kOS2aCbeACzpETnW/WU5jZiyR5CO
+ ZByDc/4VqhgrTLErOHeCmuc1L954soYl7YZJ6bEQwOYnmhUVkeQ9dfZDQ
+ Aj50DQIlBTJ64MBaIY+469zRzDq97JDKlDhbz187rR/cAOp7cM35d1N7y
+ 5VF7AFFvaQfOsz6AT5X7J1LB9tt5XSvqXlKoIjfUcn9HOGsNw3es/4S0l w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="479531156"
+X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="479531156"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Nov 2023 06:31:11 -0800
+ 30 Nov 2023 06:31:20 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="942729632"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="942729632"
+X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="942729654"
+X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="942729654"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orsmga005.jf.intel.com with ESMTP; 30 Nov 2023 06:31:01 -0800
+ by orsmga005.jf.intel.com with ESMTP; 30 Nov 2023 06:31:10 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -70,10 +70,9 @@ Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
  Thomas Huth <thuth@redhat.com>, Zhiyuan Lv <zhiyuan.lv@intel.com>,
  Zhenyu Wang <zhenyu.z.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 04/41] qom/object: Introduce helper to resolve path from
- non-direct parent
-Date: Thu, 30 Nov 2023 22:41:26 +0800
-Message-Id: <20231130144203.2307629-5-zhao1.liu@linux.intel.com>
+Subject: [RFC 05/41] qdev: Set device parent and id after setting properties
+Date: Thu, 30 Nov 2023 22:41:27 +0800
+Message-Id: <20231130144203.2307629-6-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
 References: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
@@ -105,73 +104,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-When we support child<> property creation from cli, the peripheral
-container (/machine/peripheral) may not be the direct parent of the
-devices created from cli.
+The properties setting does not conflict with the creation of child<>
+property.
 
-For this case, add a helper to resolve path from non-direct parent.
+Pre-setting the device's properties can help the device's parent
+selection. Some topology devices (e.g., CPUs that support hotplug)
+usually define topology sub indexes as properties, and the selection of
+their parent needs to be based on these proteries.
+
+Move qdev_set_id() after properties setting to help the next user-child
+introduction.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/qom/object.h | 15 +++++++++++++++
- qom/object.c         | 18 ++++++++++++++++++
- 2 files changed, 33 insertions(+)
+ system/qdev-monitor.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index afccd24ca7ab..494eef801be3 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -1562,6 +1562,21 @@ Object *object_resolve_path_type(const char *path, const char *typename,
-  */
- Object *object_resolve_path_at(Object *parent, const char *path);
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index 7ee33a50142a..107411bb50cc 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -700,14 +700,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts, long *category,
+         }
+     }
  
-+/**
-+ * object_resolve_path_from:
-+ * @parent: the object from which to resolve the path
-+ * @path: the path to resolve
-+ * @ambiguous: returns true if the path resolution failed because of an
-+ *   ambiguous match
-+ *
-+ * This is like object_resolve_path_at(), except @parent may be the
-+ * partial parent of @path.
-+ *
-+ * Returns: The resolved object or NULL on path lookup failure.
-+ */
-+Object *object_resolve_path_from(Object *parent, const char *path,
-+                                 bool *ambiguous);
-+
- /**
-  * object_resolve_path_component:
-  * @parent: the object in which to resolve the path
-diff --git a/qom/object.c b/qom/object.c
-index 95c0dc8285fe..da29e88816b5 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -2192,6 +2192,24 @@ Object *object_resolve_path_at(Object *parent, const char *path)
-     return object_resolve_abs_path(parent, parts, TYPE_OBJECT);
- }
+-    /*
+-     * set dev's parent and register its id.
+-     * If it fails it means the id is already taken.
+-     */
+     id = g_strdup(qdict_get_try_str(opts, "id"));
+-    if (!qdev_set_id(dev, id, errp)) {
+-        goto err_del_dev;
+-    }
  
-+Object *object_resolve_path_from(Object *parent, const char *path,
-+                                 bool *ambiguousp)
-+{
-+    g_auto(GStrv) parts = NULL;
-+    bool ambiguous = false;
-+    Object *obj;
-+
-+    parts = g_strsplit(path, "/", 0);
-+    assert(parts);
-+
-+    obj = object_resolve_partial_path(parent, parts, TYPE_OBJECT,
-+                                      &ambiguous);
-+    if (ambiguousp) {
-+        *ambiguousp = ambiguous;
+     /* set properties */
+     dev->opts = qdict_clone_shallow(opts);
+@@ -721,6 +714,14 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts, long *category,
+         goto err_del_dev;
+     }
+ 
++    /*
++     * set dev's parent and register its id.
++     * If it fails it means the id is already taken.
++     */
++    if (!qdev_set_id(dev, id, errp)) {
++        goto err_del_dev;
 +    }
-+    return obj;
-+}
 +
- typedef struct StringProperty
- {
-     char *(*get)(Object *, Error **);
+     if (!qdev_realize(dev, bus, errp)) {
+         goto err_del_dev;
+     }
 -- 
 2.34.1
 
