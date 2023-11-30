@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5953E7FFE81
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 23:33:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDA27FFE94
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 23:40:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8pZn-0007R7-CL; Thu, 30 Nov 2023 17:32:07 -0500
+	id 1r8pgV-0000zg-7i; Thu, 30 Nov 2023 17:39:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r8pZl-0007Qq-6x
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 17:32:05 -0500
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1r8pZf-0002EC-FS
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 17:32:04 -0500
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-1fa486a0e10so791651fac.3
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 14:31:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701383518; x=1701988318; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SwsiSyMNkvjfd5s3StNC5NWwuLlmlfXm+lcpVaAqzaw=;
- b=dqFJIdWZPd//pSq5k5VgbPZ9/ejcAvuumkKLTZVD3lbFv1383qyhGMT5dHfowrmf/E
- J3+wD8UK6gxGZDr4SGu1nNgd7cwcrVMn7dFh826y9W+NYrrYXM34NGbLEYLi8qt5cWx2
- NxEEFyJ/2sWNYngr9ryDDru9QjXtHuMMCpxifZrYxkDnAjKvJjEEaiEF/N6ndV0/rTz2
- n3B22dBQvO1E3StxtlPL/sdpYT9p+PHRgGiM4EzD7jH+9SwlG/SBBbFq3lBkZ6ovpC5L
- diDnVS/pJ0mgLkdYSa9P3u73lEHMWLMEu22mhXFdBu0vdJb/UrmFlcBiY63ZYTQgFlBr
- 71xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701383518; x=1701988318;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SwsiSyMNkvjfd5s3StNC5NWwuLlmlfXm+lcpVaAqzaw=;
- b=WZ47sCyNbOdqsos8DxrvptJHtlQvQJ6HCeSR86Lw34yJdDjPiRg5CjUIhMucVZ0Vk6
- faJnjPFDyCpCVaTNFOfEcQDQBx/zax/ueC/EtuYET7OtM5N8rzqmvUugVvDNV46jWx6N
- erju8CxkHAa/EVPBP9+T189cvpQ3d+6e9WQC0xdBtthV2Ryq5uHE6f95brMitUNHckha
- 8A+0kuL4irWV4DZ2iJuuwPkg7dYjgmUtnN8Ol0+z/RQvXZOZO8Mp6GknvMj4+F+JbYmF
- X7zXMPp8G3f0Wzw8Cw4IHjr1vFoZu96zCgMxR/KA4B7SYwOkIEkWqHcPsDlY+GyW3r19
- 7XVw==
-X-Gm-Message-State: AOJu0Yw834OP2aSSrFZMHIo4tDlpPtCwar/eDhDUGO+AMBTQ+yWF0BbC
- MA009qk3iaClM2B4NmfyUyqKxg==
-X-Google-Smtp-Source: AGHT+IH3SFDsQV2+eNN8LLhJlM8cdzCqsAddHsixuGLImZCIOIYka/Vxjyp1AxCCZyTyQgJZZpeUNA==
-X-Received: by 2002:a05:6870:64a6:b0:1fa:ea94:5da2 with SMTP id
- cz38-20020a05687064a600b001faea945da2mr51585oab.14.1701383517981; 
- Thu, 30 Nov 2023 14:31:57 -0800 (PST)
-Received: from [172.20.102.4] (rrcs-71-42-197-3.sw.biz.rr.com. [71.42.197.3])
- by smtp.gmail.com with ESMTPSA id
- bg14-20020a056830360e00b006d869f25b96sm34882otb.19.2023.11.30.14.31.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Nov 2023 14:31:57 -0800 (PST)
-Message-ID: <a44716ad-aa83-403e-bdf1-a75f6c76f420@linaro.org>
-Date: Thu, 30 Nov 2023 16:31:55 -0600
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r8pgS-0000zO-Ox
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 17:39:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r8pgR-0003WG-6z
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 17:39:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701383937;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WI2Jf1OC4iSvALmYQfUtReNWVl9fhkLMLHnroecJUTI=;
+ b=ckth6JiZ9FxZVu9kCgeZjhaPNC/YCTdd5lpxtoOzdOTLU2ggTbptM/87Lb4VCxos2eaez1
+ Hkvx/FYWr4di3whgeQMGy/ifF5dLEEstkLSIah1KhhFc1GJOOUFdRFojN2hzoVSH7X2p+d
+ SEw5JE8j/gSbTxvae9BEjVGXsjf5C0Y=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-370-2yT6W-xzPFaqTYNGz5hOgg-1; Thu,
+ 30 Nov 2023 17:38:54 -0500
+X-MC-Unique: 2yT6W-xzPFaqTYNGz5hOgg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A778629ABA10;
+ Thu, 30 Nov 2023 22:38:52 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.190])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6177140C6EB9;
+ Thu, 30 Nov 2023 22:38:49 +0000 (UTC)
+Date: Thu, 30 Nov 2023 16:38:47 -0600
+From: Eric Blake <eblake@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, 
+ Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Alberto Garcia <berto@igalia.com>,
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>, 
+ John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
+ Wen Congyang <wencongyang2@huawei.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, 
+ Coiby Xu <Coiby.Xu@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Xie Changlong <xiechanglong.d@gmail.com>, Ari Sundholm <ari@tuxera.com>, 
+ Li Zhijian <lizhijian@fujitsu.com>, Cleber Rosa <crosa@redhat.com>, 
+ Juan Quintela <quintela@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Zhang Chen <chen.zhang@intel.com>, Peter Xu <peterx@redhat.com>, 
+ Anthony Perard <anthony.perard@citrix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Leonardo Bras <leobras@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Fam Zheng <fam@euphon.net>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH 09/12] docs: remove AioContext lock from IOThread docs
+Message-ID: <dt2akuchauh75it4qw4j3sghioirzalmv4ehsjsdhi4w4inj3z@l4tpvy74dejw>
+References: <20231129195553.942921-1-stefanha@redhat.com>
+ <20231129195553.942921-10-stefanha@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0] accel/tcg: Remove unused tb_invalidate_phys_addr()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-References: <20231130203241.31099-1-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231130203241.31099-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231129195553.942921-10-stefanha@redhat.com>
+User-Agent: NeoMutt/20231103
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,26 +97,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/30/23 14:32, Philippe Mathieu-Daudé wrote:
-> Commit e3f7c801f1 introduced the TCGCPUOps::debug_check_breakpoint()
-> handler, and commit 10c37828b2 "moved breakpoint recognition outside
-> of translation", so "we no longer need to flush any TBs when changing
-> BPs".
+On Wed, Nov 29, 2023 at 02:55:50PM -0500, Stefan Hajnoczi wrote:
+> Encourage the use of locking primitives and stop mentioning the
+> AioContext lock since it is being removed.
 > 
-> The last target using tb_invalidate_phys_addr() was converted to the
-> debug_check_breakpoint(), so this function is now unused. Remove it.
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>  docs/devel/multiple-iothreads.txt | 45 +++++++++++--------------------
+>  1 file changed, 15 insertions(+), 30 deletions(-)
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> Based-on: <20231130171920.3798954-1-jcmvbkbc@gmail.com>
-> ---
->   include/exec/exec-all.h |  5 -----
->   cpu-target.c            | 29 -----------------------------
->   2 files changed, 34 deletions(-)
+> diff --git a/docs/devel/multiple-iothreads.txt b/docs/devel/multiple-iothreads.txt
+> index a3e949f6b3..4865196bde 100644
+> --- a/docs/devel/multiple-iothreads.txt
 
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
-
-r~
 
