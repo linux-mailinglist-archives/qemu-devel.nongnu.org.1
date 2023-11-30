@@ -2,81 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D36D7FE8D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 06:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 113117FE914
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 07:21:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8Zzi-0007Tb-0U; Thu, 30 Nov 2023 00:53:50 -0500
+	id 1r8aPK-0005mB-J1; Thu, 30 Nov 2023 01:20:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1r8Zzf-0007Sk-7N
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 00:53:47 -0500
-Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1r8ZzV-0002yz-Mf
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 00:53:39 -0500
-Received: by mail-vs1-xe36.google.com with SMTP id
- ada2fe7eead31-46447559b88so164897137.3
- for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 21:53:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701323616; x=1701928416; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Mgq0XUokpMEwm/lyaTuRlVPlG/Ztry5zPvlFvOzXz64=;
- b=PLb3roO3yOhdYWb4eOz6kdZmnn28bkXFY8iAWKS4e+w4SgRj9g2LslsUzMvZOi/Sj2
- r2zvsqSuw7uIf2k3T8JbbnsRwhRw/J/bIsVkda1q8S9pITqkrSQL6m+6WnWF5kWaHr30
- s0IFcSGgceXI3R66TR44RUB9YLcqNOBBROa7roAuXRY7ElmVXeq9PqRbtHGqAOZ/V5x3
- AULBG+3mP5TcYf7Th0iRx6FdtgvmbXpz/HNQBUHFJpZxSgv2s8NSteyHEJ9InZtBDZad
- cuVk5jt6fpJ1AyUK6f49/Ucw3OaL5rrqDiP7RDpaiRr45UrUdYLjMVsrevI3arBm402A
- lUCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701323616; x=1701928416;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Mgq0XUokpMEwm/lyaTuRlVPlG/Ztry5zPvlFvOzXz64=;
- b=NOuGKPod8bnKb6YxCAl+daq325vJh/uK9VIcU6DBo1fHjNtYcYUDpu5rAJVntPgvZT
- iPVAIRHPBEVPVZVrKnusgSfn222wl+zRasJwMZxV3GT+YKgUk6FCK5UBVonSh17c25OT
- XxO5uTn+2r2JlDkDhC7sDCXBxWQieYjB8GYBCAIx2Qmxkpu897kCAaMy8qrJz8Nd2isT
- KohfZ6dQsyUzVNVBfM/t3zHUs16uQhuL6eQP1NAaxfsDlHMAEJgstnh5NG7kvTrLFyEb
- tuoW/Yu7clhbRHijTjHUot8vULIEQTZo8+VS2kAmt84qNLEjlTnmfUCB80asCnP5hGxz
- Ncgg==
-X-Gm-Message-State: AOJu0YxtPn5Qf216FvDKeBasfVHjnK4YoegPd9tCn5eTlr6TMiK3pBTb
- DnwE5sH3fvhipMa7wr2YhvJTu0H43+DR3ov+/+3zip9Ne3TARg==
-X-Google-Smtp-Source: AGHT+IErKSG7ighF2ltt6mrv2NoRdVrtfHmLSvVkH6T0kAwAhb0ZBswwgJEmW/dnLiO8CAiX182F43CIW91BdTxMrY0=
-X-Received: by 2002:a05:6102:3746:b0:462:866e:2f2f with SMTP id
- u6-20020a056102374600b00462866e2f2fmr18151988vst.9.1701323616445; Wed, 29 Nov
- 2023 21:53:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r8aPI-0005lu-1J; Thu, 30 Nov 2023 01:20:16 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1r8aPG-0008Nb-2d; Thu, 30 Nov 2023 01:20:15 -0500
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AU67THp028120; Thu, 30 Nov 2023 06:20:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=q5Q/aJ8RoGo4MlOhg+wTvywUCG03xNSptDWCxezTobQ=;
+ b=mKdecy41Q9HxnXBoaH+Ash4SkfGzLMJkQuK0dlRdFU5lNGIoPAs63XYDdsGhIvMzyoj0
+ 4fiYW83FfpOVjP103Tbjd6oH/A2OgNWDATo9Z/JW3wrq78AsGmZuXPliMZ1DtYlgMp/k
+ fxxQIvHQdRSr3+gkqK80mD+xpWdr5Ty3uf4hzmudhcR87H4xDmtoWLgc6pZvUlVx/Eso
+ fa81IFvV73h1mjI0RLbXCA9TCVXFetB3T8RjnXf7F1vRri7VmbjwD7s+KhMUCZqC4UfP
+ V7HMCOjePp4yRSvcJPAq8Qb/2HbeSirGMytY0nYHFEuYw/LKTanBMA3luIx2bDq+1tFj Kw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3upmuqrj19-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Nov 2023 06:20:05 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AU67r24030803;
+ Thu, 30 Nov 2023 06:20:05 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3upmuqrhyq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Nov 2023 06:20:05 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3AU400o2022364; Thu, 30 Nov 2023 06:20:04 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwfkc0s4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Nov 2023 06:20:04 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3AU6K2j049742124
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Nov 2023 06:20:03 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A539B5805A;
+ Thu, 30 Nov 2023 06:20:02 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 705EA5803F;
+ Thu, 30 Nov 2023 06:19:59 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Nov 2023 06:19:59 +0000 (GMT)
+Message-ID: <614cb3f5-454a-c83b-47b1-a0387a8aa187@linux.ibm.com>
+Date: Thu, 30 Nov 2023 11:49:57 +0530
 MIME-Version: 1.0
-References: <20231127105830.2104954-1-42.hyeyoo@gmail.com>
- <20231127105830.2104954-3-42.hyeyoo@gmail.com>
- <20231127175322.k3zt65vicd4o2ifv@offworld>
- <CAB=+i9RkLLXTcKNKw9j1EAHEu8ixCzeum88vsYj3mYW6MsbVgQ@mail.gmail.com>
- <20231128124611.0000663e@Huawei.com>
-In-Reply-To: <20231128124611.0000663e@Huawei.com>
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Date: Thu, 30 Nov 2023 14:53:26 +0900
-Message-ID: <CAB=+i9Q_RXst4yMqB6FGo-i9tMLHNd_UMO3zPs5jxdOgHKtPYA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] hw/mem/cxl_type3: allocate more vectors for MSI-X
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e36;
- envelope-from=42.hyeyoo@gmail.com; helo=mail-vs1-xe36.google.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v2 04/14] spapr: nested: Introduce cap-nested-papr for
+ Nested PAPR API
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: clegoate@redhat.com, qemu-devel@nongnu.org, mikey@neuling.org,
+ vaibhav@linux.ibm.com, jniethe5@gmail.com, sbhat@linux.ibm.com,
+ kconsul@linux.vnet.ibm.com, danielhb413@gmail.com
+References: <20231012104951.194876-1-harshpb@linux.ibm.com>
+ <20231012104951.194876-5-harshpb@linux.ibm.com>
+ <CXAZVME5KCFG.32WTQX49G8W7B@wheely>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <CXAZVME5KCFG.32WTQX49G8W7B@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vsDVCzAwrCIBtcQ9YENLyy1NFtG_2gtX
+X-Proofpoint-ORIG-GUID: nhhhdpuP2XQFbuf35rpK6MnNNESjpwmS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-30_03,2023-11-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ priorityscore=1501 adultscore=0 clxscore=1011 impostorscore=0 bulkscore=0
+ mlxscore=0 lowpriorityscore=0 mlxlogscore=672 suspectscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
+ definitions=main-2311300045
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.177,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,66 +118,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Nov 28, 2023 at 9:46=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Tue, 28 Nov 2023 09:27:28 +0900
-> Hyeonggon Yoo <42.hyeyoo@gmail.com> wrote:
->
-> > On Tue, Nov 28, 2023 at 2:53=E2=80=AFAM Davidlohr Bueso <dave@stgolabs.=
-net> wrote:
-> > >
-> > > On Mon, 27 Nov 2023, Hyeonggon Yoo wrote:
-> > >
-> > > >commit 43efb0bfad2b ("hw/cxl/mbox: Wire up interrupts for background
-> > > >completion") enables notifying background command completion via MSI=
--X
-> > > >interrupt (vector number 9).
-> > > >
-> > > >However, the commit uses vector number 9 but the maximum number of
-> > > >entries is less thus resulting in error below. Fix it by passing
-> > > >nentries =3D 10 when calling msix_init_exclusive_bar().
-> > >
-> > > Hmm yeah this was already set to 10 in Jonathan's tree, thanks for re=
-porting.
-> >
-> > Oh, yeah, it's based on the mainline tree. I should have checked Jonath=
-an's.
-> >
-> > hmm it's already 10 there but vector number 9 is already being used by =
-PCIe DOE.
-> > So I think it should change msix_num =3D 11 and use vector number 10 fo=
-r
-> > background command completion interrupt instead?
-> >
-> > https://gitlab.com/jic23/qemu/-/commit/2823f19188664a6d48a965ea8170c9ef=
-a23cddab
->
-> Whilst I clearly messed up a rebase as this wasn't intended, it should be=
- fine
-> to have multiple things sharing a vector.
 
-I wasn't 100% sure of that, thanks for confirming.
-I'll drop this patch in v2 (assuming it's going to be fixed in the
-next PR of your tree)
 
-For my own learning, I would like to give a few questions
-(sorry to bother, no pressures):
+On 11/29/23 09:31, Nicholas Piggin wrote:
+> On Thu Oct 12, 2023 at 8:49 PM AEST, Harsh Prateek Bora wrote:
+>> Introduce a SPAPR capability cap-nested-papr which provides a nested
+>> HV facility to the guest. This is similar to cap-nested-hv, but uses
+>> a different (incompatible) API and so they are mutually exclusive.
+>> This new API is to enable support for KVM on PowerVM and recently the
+>> Linux kernel side patches have been accepted upstream as well [1].
+>> Support for related hcalls is being added in next set of patches.
+> 
+> We do want to be able to support both APIs on a per-guest basis. It
+> doesn't look like the vmstate bits will be a problem, both could be
+> enabled if the logic permitted it and that wouldn't cause a
+> compatibility problem I think?
+> 
 
-> On my todo list is making the case of too few vectors being available wor=
-k for
-> all the cases in which case everything may end up on one vector.
+I am not sure if it makes sense to have both APIs working in parallel 
+for a nested guest. Former uses h_enter_guest and expects L1 to store 
+most of the regs, and has no concept like GSB where the communication 
+between L1 and L0 takes place in a standard format which is used at 
+nested guest exit also. Here, we have separate APIs for guest/vcpu 
+create and then do a run_vcpu for a specific vcpu. So, we cant really 
+use both APIs interchangeably while running a nested guest. BTW, L1 
+kernel uses only either of the APIs at a time, preferably this one if 
+supported.
 
-You mean the device needs to support sharing
-a vector for different features?
+> And it's a bit of a nitpick, but the capability should not be permitted
+> before the actual APIs are supported IMO. You could split this into
+> adding .api first, so the implementation can test it, and add the spapr
+> caps at the end.
+> 
 
-> So we do need to expand the vectors to cover what we are asking for, but
-> moving this to 11 is a nice to have rather than required.
+Agree, I shall update as suggested.
 
-May I ask what do you mean by "expand the vectors" to cover what we
-are asking for?
+regards,
+Harsh
 
-Thanks!
---
-Hyeonggon
+> Thanks,
+> Nick
 
