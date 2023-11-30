@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3AA7FFB23
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 20:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A77E7FFB73
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 20:36:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8mb3-0004fK-HB; Thu, 30 Nov 2023 14:21:13 -0500
+	id 1r8mpL-0000x3-Lo; Thu, 30 Nov 2023 14:35:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r8mb0-0004eo-TE
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:21:10 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r8mp2-0000tZ-Le
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:35:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r8maw-0002fi-FH
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:21:10 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r8moy-0005Pl-MR
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:35:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701372061;
+ s=mimecast20190719; t=1701372935;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=afJtp1/bOi8OTWHw9YFIvYdMpw6OpEAY6Zj/UXKihoM=;
- b=fFnb/wBuT25MTamAImmn7B71pdI/TLHNx1qzLnfTD8GCa9gxW7C4BTEkyK1aEEWS+Nb89H
- ziwTaQKA3rw3YCKg015aoHeSQjRxojf9q2bTca9AHvJV1uCiu4Mm1eFeC9hQsKjZh13ibk
- U9XNZFRCRzusz+c4LHuZKKXnalteALk=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FnaIgPv4I8jNEtbAbtepXEookW4mdG5YQTpZSadpwPk=;
+ b=G6dnjs9i00CSuCv5Ccuf9884xTt/miQhv0hUeVUJ9tAoSms4/PhT+GWdqtqILuxh3vp6GP
+ C0Hn3n/GqL/XSWgG+2Wt2yXv+f/DTlXDsV3+ZLW8jgNSUncbzIzVLj12Wpb5Dqv4qhpiVA
+ +jZCHlpMeKFWUZMlBPlaVfsdGa7wxWU=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-2tXFmLBeMcer27UuDAH0uw-1; Thu, 30 Nov 2023 14:20:59 -0500
-X-MC-Unique: 2tXFmLBeMcer27UuDAH0uw-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a047f347c1cso374886466b.1
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 11:20:59 -0800 (PST)
+ us-mta-354-RgzcWwa_Ode5qSMkoOR1PQ-1; Thu, 30 Nov 2023 14:35:33 -0500
+X-MC-Unique: RgzcWwa_Ode5qSMkoOR1PQ-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2c9c217cfdeso17179321fa.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 11:35:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701372058; x=1701976858;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=afJtp1/bOi8OTWHw9YFIvYdMpw6OpEAY6Zj/UXKihoM=;
- b=UMbkPaBdRZf2nk9mCDbFbi6BfRsi2pCnnQIfEgE6tzaeS5m0O2qCdbFaTWlrrkIE3f
- 3sMZO3zRwZIOqtVtiY2YkK04EWplCpARG6zOp5ZCW1zv1I2cooMg6H28ayXmAy9ztaWC
- GTzVevB6O/mnwFuohhmHw0HuLGZw8om4myswOeIdV1P+GW4/1d8QUs/5UJyV1hKzthwC
- Bm0BMW3Wz+2e9aSSUDICE7WG/eqhtjkHun2LVvfQz3/SzhGfvXFpQmaOS1lZwbDYPT1c
- IcuPaM8UX8FTVkP07Y4jjmxwhnY/v19Y/tviSIRruOdxQSv9Jx4elmv1m5AtBgsxUVj/
- 2JMQ==
-X-Gm-Message-State: AOJu0Yy9DyNlpbrxreuEjlIAtbKVgnrVcFWPFqXKt92aVHTRL+ThDdPo
- ph1eFiruxBZmTsQdwx2V6r/cH4lDEq4jAO79xzyttdoTEMlpFDz5WrZj7MVKGI4iZA87rVWyrCO
- ujEmi26s8I0FcQpU=
-X-Received: by 2002:a2e:924b:0:b0:2c9:ba9b:7281 with SMTP id
- v11-20020a2e924b000000b002c9ba9b7281mr3758ljg.0.1701367061946; 
- Thu, 30 Nov 2023 09:57:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFtUd8Ivz1Rur9xp1YhViXZEQxTK1dU3mOJ+EXLEJKCocWO1zpYngColK4vckxwYg8jR8U1CQ==
-X-Received: by 2002:a2e:924b:0:b0:2c9:ba9b:7281 with SMTP id
- v11-20020a2e924b000000b002c9ba9b7281mr3406ljg.0.1701367057298; 
- Thu, 30 Nov 2023 09:57:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701372932; x=1701977732;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :references:cc:to:from:content-language:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=FnaIgPv4I8jNEtbAbtepXEookW4mdG5YQTpZSadpwPk=;
+ b=f5KdRJkYtEmGfMro6S4IcjPWyhS6QYAsHYgYSfFNnm8M6KaGAt2qVWiIZVCuBR+wQC
+ azQq8umHFwGHzaYUbsuy/U97RBr1EO5/WL6td+s8F41FPTO9XJE34sp/hhKTxqopGmOY
+ 6n6OKsq7/JO0Sfp7BbA9X6E3oSk36z22qy99frjNX9R6NsCCVDgFcG/rtoaSMZL2nf6d
+ K6a+h6iSY+KvdjjODJsLwTpeeuAI2+5z/XJoeSEMutp/y9VoBIHBh5x04Q+7Xy4ZzhCG
+ VgImDZtTydePIyUryK/MFXzBsfnPHLW7gRlSSW45S1lzjAVtNZMw0pMdgga/LwrdtY+d
+ +Jeg==
+X-Gm-Message-State: AOJu0YxmhwH308ly/VisZpT4oHFHW3ttZdmIwtQqsTtzBt0fqzgLzPzL
+ 0UGwhhaY/EQ2ktaTAPWE0pWv/c4G2NgVjCRiPRDo09yx3J+jQLobpOEzk1TOZs3mVPb89wqCCN9
+ SjADuH0VKPG9txNRObNQFvNU=
+X-Received: by 2002:a2e:8285:0:b0:2c9:c4e8:7fed with SMTP id
+ y5-20020a2e8285000000b002c9c4e87fedmr30685ljg.47.1701372932295; 
+ Thu, 30 Nov 2023 11:35:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGnomrPe+pQhw2chq1RLMvv18b9cz74eMnm0bIsWiXbofEono+ZuC6CFe9xXKGqqgo3ICCwQA==
+X-Received: by 2002:a05:600c:5487:b0:402:f55c:faee with SMTP id
+ iv7-20020a05600c548700b00402f55cfaeemr1456wmb.26.1701367776206; 
+ Thu, 30 Nov 2023 10:09:36 -0800 (PST)
 Received: from ?IPV6:2003:cb:c71c:3600:33e6:971c:5f64:fab5?
  (p200300cbc71c360033e6971c5f64fab5.dip0.t-ipconnect.de.
  [2003:cb:c71c:3600:33e6:971c:5f64:fab5])
  by smtp.gmail.com with ESMTPSA id
- a13-20020a05600c348d00b0040b5377cf03sm6411656wmq.1.2023.11.30.09.57.35
+ h6-20020a05600c350600b0040b43da0bbasm2742105wmq.30.2023.11.30.10.09.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Nov 2023 09:57:36 -0800 (PST)
-Message-ID: <a971db32-4867-4aaf-9da7-20627a867747@redhat.com>
-Date: Thu, 30 Nov 2023 18:57:35 +0100
+ Thu, 30 Nov 2023 10:09:35 -0800 (PST)
+Message-ID: <499000b3-091f-4bff-911f-c2506b056827@redhat.com>
+Date: Thu, 30 Nov 2023 19:09:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 03/70] RAMBlock/guest_memfd: Enable
  KVM_GUEST_MEMFD_ALLOW_HUGEPAGE
 Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
 To: Peter Xu <peterx@redhat.com>
 Cc: Sean Christopherson <seanjc@google.com>, Xiaoyao Li
  <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -94,7 +95,7 @@ References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
  <45d28654-9565-46df-81b9-6563a4aef78c@redhat.com>
  <ZWixXm-sboNZ-mzG@google.com>
  <d6bfd8be-7e8c-4a95-9e27-31775f8e352e@redhat.com> <ZWjKiDy3UMq3cRkD@x1n>
-From: David Hildenbrand <david@redhat.com>
+ <a971db32-4867-4aaf-9da7-20627a867747@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -140,7 +141,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <ZWjKiDy3UMq3cRkD@x1n>
+In-Reply-To: <a971db32-4867-4aaf-9da7-20627a867747@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
@@ -168,16 +169,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.11.23 18:46, Peter Xu wrote:
-> On Thu, Nov 30, 2023 at 05:54:26PM +0100, David Hildenbrand wrote:
->> But likely we want THP support here. Because for hugetlb, one would actually
->> have to instruct the kernel which size to use, like we do for memfd with
->> hugetlb.
+On 30.11.23 18:57, David Hildenbrand wrote:
+> On 30.11.23 18:46, Peter Xu wrote:
+>> On Thu, Nov 30, 2023 at 05:54:26PM +0100, David Hildenbrand wrote:
+>>> But likely we want THP support here. Because for hugetlb, one would actually
+>>> have to instruct the kernel which size to use, like we do for memfd with
+>>> hugetlb.
+>>
+>> I doubt it, as VM can still leverage larger sizes if possible?
 > 
-> I doubt it, as VM can still leverage larger sizes if possible?
+> What do you doubt? I am talking about the current implementation and
+> expected semantics of KVM_GUEST_MEMFD_ALLOW_HUGEPAGE.
+> 
 
-What do you doubt? I am talking about the current implementation and 
-expected semantics of KVM_GUEST_MEMFD_ALLOW_HUGEPAGE.
+I looked at the kernel implementation, and it simply allocates a 
+PMD-sized folio and puts it into the pagecache. So hugetlb is not involved.
+
+That raises various questions:
+
+1) What are the semantics if we ever allow migrating/compacting such
+    folios. Would we allow split them into smaller pages when required
+    (or compact into larger)? What happens when we would partially zap
+    them (fallocate?)right now? IOW, do they behave like THP, and do we
+    want them to behave like THP?
+
+2) If they behave like THP, wow would we able to compact them into
+    bigger pages? khugepaged only works on VMAs IIRC.
+
+3) How would you allocate gigantic pages if not by the help of hugetlb
+    and reserved pools? At least as of today, runtime allocation of
+    gigantic pages is extremely unreliable and compaction into gigantic
+    pages does not work. So gigantic pages would be something for that
+    far distant future.
+
+4) cont-pte-sizes folios?
+
+Maybe it's all clarified already, in that case I'd appreciate a pointer.
+
+Looking at the current code, it looks like it behaves like shmem thp, 
+just without any way to collapse afterwards (unless I am missing something).
 
 -- 
 Cheers,
