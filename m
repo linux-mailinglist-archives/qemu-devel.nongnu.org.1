@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F9C7FF24D
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:38:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A717FF22F
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:37:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8i5m-0002i9-Rh; Thu, 30 Nov 2023 09:32:38 -0500
+	id 1r8i5r-0002uo-43; Thu, 30 Nov 2023 09:32:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8i5j-0002di-VH; Thu, 30 Nov 2023 09:32:35 -0500
+ id 1r8i5o-0002lI-5O; Thu, 30 Nov 2023 09:32:40 -0500
 Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8i5i-00018C-8E; Thu, 30 Nov 2023 09:32:35 -0500
+ id 1r8i5m-00018C-Ff; Thu, 30 Nov 2023 09:32:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701354754; x=1732890754;
+ t=1701354758; x=1732890758;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rfkBnAETWygr5TaDQC+NvTNqfHDXa5mpCuKsaH8rIdY=;
- b=Ag1XePDD2FePUzSKmuUDpE7NF4gT9yhn41TTfIMQ4aTp0bfemOeaE+B/
- 9cvZUJiAZWbnvVhF3XG+topf0XVoZA98fk3uBeZk2Nzso4Li3BKpAEVJz
- RL6vEqgsFeuH+rza1o54AwS/r0gv0Fuia6rzbZAvZMsK2N60Qv3nyNk0b
- uwURKY9ChtNgvA7tYOWWiOU6dEX4BgMFNnPomTFcobqxyIjTpSJTiACX8
- L5jRn99Mg8TGH0KEfrKXuna7B7Tw5le/iNU6EJobWWhqlxLdzM/hvshPy
- b6Vu4serM+JI3fWRftm/YSblHc04uI613usQYkthJ359MhteMaVfUXO+H Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="479531551"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="479531551"
+ bh=qW0hllcBGqseRYTHsmnEpW0X6HH9DmoP+0BU5Dr4Av4=;
+ b=OWd4U0MN285ZMI0jhm1u6O/voRUZgeXxPDaArm2/dQWVEeNWFmMRPhJv
+ dh1X4DD8oG9SmUCQVduTNbbz9ITX0zqOLy4KwTTDeSprzwLbw8R9d5edD
+ P5aOnn0qdvtAjDuF/HD8fUXt9UVjUBs2SE/VsHuKiutzwKjSeznT9Qfv/
+ KRD3EjxUP8JYOTUoZM1cew2LoAZ57Q+EE2Go74s7qGKQM7P4PngYWiaAp
+ VpGQSeV/0J2eXAia5QeAq3MLrMURqAmYnJyHisCXQBn2rmcopWVETDSRf
+ 88AaxhWrzKXHWCAh4OnHMC/cejOVwqzg4vOsIzulj6J1NY0YdPeuLv0f9 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="479531608"
+X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="479531608"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Nov 2023 06:32:08 -0800
+ 30 Nov 2023 06:32:17 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="942729798"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="942729798"
+X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="942729823"
+X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="942729823"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orsmga005.jf.intel.com with ESMTP; 30 Nov 2023 06:31:58 -0800
+ by orsmga005.jf.intel.com with ESMTP; 30 Nov 2023 06:32:07 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -70,10 +70,9 @@ Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
  Thomas Huth <thuth@redhat.com>, Zhiyuan Lv <zhiyuan.lv@intel.com>,
  Zhenyu Wang <zhenyu.z.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 10/41] hw/core/topo: Add virtual method to update topology info
- for parent
-Date: Thu, 30 Nov 2023 22:41:32 +0800
-Message-Id: <20231130144203.2307629-11-zhao1.liu@linux.intel.com>
+Subject: [RFC 11/41] hw/core/topo: Add virtual method to check topology child
+Date: Thu, 30 Nov 2023 22:41:33 +0800
+Message-Id: <20231130144203.2307629-12-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
 References: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
@@ -105,36 +104,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-When a new topology device is inserted into the topology tree,
-its'parents (including non-direct parent) need to update topology
-information.
+When a new topology child is to be inserted into the topology tree, its
+parents (including non-direct parents) need to check if this child is
+supported.
 
-Add the virtual method to help parents on topology tree update
-topology information statistics.
+Add the virtual method to allow topology device to check the support for
+their topology children.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/core/cpu-topo.c         | 20 ++++++++++++++++++++
+ hw/core/cpu-topo.c         | 22 ++++++++++++++++++++++
  include/hw/core/cpu-topo.h |  4 ++++
- 2 files changed, 24 insertions(+)
+ 2 files changed, 26 insertions(+)
 
 diff --git a/hw/core/cpu-topo.c b/hw/core/cpu-topo.c
-index 3e0c183388d8..e244f0a3564e 100644
+index e244f0a3564e..cba2dc747e74 100644
 --- a/hw/core/cpu-topo.c
 +++ b/hw/core/cpu-topo.c
-@@ -154,6 +154,20 @@ static void cpu_topo_build_hierarchy(CPUTopoState *topo, Error **errp)
-     cpu_topo_refresh_free_child_index(parent);
+@@ -168,6 +168,23 @@ static void cpu_topo_update_info(CPUTopoState *topo, bool is_realize)
+     }
  }
  
-+static void cpu_topo_update_info(CPUTopoState *topo, bool is_realize)
++static void cpu_topo_check_support(CPUTopoState *topo, Error **errp)
 +{
 +    CPUTopoState *parent = topo->parent;
 +    CPUTopoClass *tc;
 +
 +    while (parent) {
 +        tc = CPU_TOPO_GET_CLASS(parent);
-+        if (tc->update_topo_info) {
-+            tc->update_topo_info(parent, topo, is_realize);
++        if (tc->check_topo_child) {
++            tc->check_topo_child(parent, topo, errp);
++            if (*errp) {
++                return;
++            }
 +        }
 +        parent = parent->parent;
 +    }
@@ -143,45 +145,37 @@ index 3e0c183388d8..e244f0a3564e 100644
  static void cpu_topo_set_parent(CPUTopoState *topo, Error **errp)
  {
      Object *obj = OBJECT(topo);
-@@ -178,6 +192,11 @@ static void cpu_topo_set_parent(CPUTopoState *topo, Error **errp)
+@@ -191,6 +208,11 @@ static void cpu_topo_set_parent(CPUTopoState *topo, Error **errp)
+     }
  
      if (topo->parent) {
-         cpu_topo_build_hierarchy(topo, errp);
++        cpu_topo_check_support(topo, errp);
 +        if (*errp) {
 +            return;
 +        }
 +
-+        cpu_topo_update_info(topo, true);
-     }
- }
- 
-@@ -203,6 +222,7 @@ static void cpu_topo_destroy_hierarchy(CPUTopoState *topo)
-         return;
-     }
- 
-+    cpu_topo_update_info(topo, false);
-     QTAILQ_REMOVE(&parent->children, topo, sibling);
-     parent->num_children--;
- 
+         cpu_topo_build_hierarchy(topo, errp);
+         if (*errp) {
+             return;
 diff --git a/include/hw/core/cpu-topo.h b/include/hw/core/cpu-topo.h
-index c0dfff9dc63b..79cd8606feca 100644
+index 79cd8606feca..1ffdb0be6d38 100644
 --- a/include/hw/core/cpu-topo.h
 +++ b/include/hw/core/cpu-topo.h
-@@ -44,6 +44,8 @@ OBJECT_DECLARE_TYPE(CPUTopoState, CPUTopoClass, CPU_TOPO)
- /**
-  * CPUTopoClass:
+@@ -46,6 +46,8 @@ OBJECT_DECLARE_TYPE(CPUTopoState, CPUTopoClass, CPU_TOPO)
   * @level: Topology level for this CPUTopoClass.
-+ * @update_topo_info: Method to update topology information statistics when
-+ *     new child (including direct child and non-direct child) is added.
+  * @update_topo_info: Method to update topology information statistics when
+  *     new child (including direct child and non-direct child) is added.
++ * @check_topo_child: Method to check the support for new child (including
++ *     direct child and non-direct child) to be added.
   */
  struct CPUTopoClass {
      /*< private >*/
-@@ -51,6 +53,8 @@ struct CPUTopoClass {
- 
-     /*< public >*/
+@@ -55,6 +57,8 @@ struct CPUTopoClass {
      CPUTopoLevel level;
-+    void (*update_topo_info)(CPUTopoState *parent, CPUTopoState *child,
-+                             bool is_realize);
+     void (*update_topo_info)(CPUTopoState *parent, CPUTopoState *child,
+                              bool is_realize);
++    void (*check_topo_child)(CPUTopoState *parent, CPUTopoState *child,
++                             Error **errp);
  };
  
  /**
