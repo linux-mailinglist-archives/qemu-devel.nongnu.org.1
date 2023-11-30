@@ -2,91 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C837FF289
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:40:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4E37FF391
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 16:27:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8iAD-0006XZ-AR; Thu, 30 Nov 2023 09:37:13 -0500
+	id 1r8iv7-00039t-LX; Thu, 30 Nov 2023 10:25:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8iA8-0006Aa-3K; Thu, 30 Nov 2023 09:37:08 -0500
-Received: from mgamail.intel.com ([192.55.52.43])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8iA6-0002CQ-3H; Thu, 30 Nov 2023 09:37:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701355026; x=1732891026;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=1TBuBuayUq5ep3LedB2XG6MRM6nllhfykxLgfM/A+kw=;
- b=myqWtp1P9nIxX3zGWkd+pg+VMXUsWniH8dQHsxW3R+KbkCEABxG17x8c
- ONKvlYZuYK5ox8SUFymjCAw00e/2uGgACySYv8IIggSRUloxftjDec4Ab
- c13nCqcDVwEce5HAdPunFvQaGAym4zsz/zGvsTs/Vx7JIekY5HDndp5KT
- DehAIe5ltwf+oi7OWyhQQNHcLDr/Sbkxe0GPRoYDcsnceuuHT/qci34hG
- QTXJqWQgYr2WnjLAxgjy6R3m63RnwXwzlM2T/cQ5Tk/iT1Bdim/V3f2vH
- uIsEq3C29nWVxklROcJCr+lF+KqcjbkNtctvz7gE73VaK77TvgaW6eIuL w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="479532878"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="479532878"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Nov 2023 06:37:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="942730622"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="942730622"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orsmga005.jf.intel.com with ESMTP; 30 Nov 2023 06:36:52 -0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-ppc@nongnu.org,
- xen-devel@lists.xenproject.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- qemu-s390x@nongnu.org
-Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Zhiyuan Lv <zhiyuan.lv@intel.com>,
- Zhenyu Wang <zhenyu.z.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 41/41] hw/i386: Cleanup non-QOM topology support
-Date: Thu, 30 Nov 2023 22:42:03 +0800
-Message-Id: <20231130144203.2307629-42-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
-References: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r8iuu-00036C-Df
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 10:25:29 -0500
+Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r8iur-0003JJ-R4
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 10:25:27 -0500
+Received: by mail-oi1-x232.google.com with SMTP id
+ 5614622812f47-3b8412723c4so615870b6e.0
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 07:25:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701357924; x=1701962724; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Q1sYlCR+h46u7F8BXbMBUaK/bgTyBE5IwIsbR3noZPA=;
+ b=Jyifrbv96izDrD/PDQxDMoVBX97eLQBETycHz8DJVw1QZngaPzAXjoAEK089VVkl5k
+ zwG8QoZvFwDpb8GrYEjf6VIpeTsFwNRP8fyHHrWBNfidvvJfjEcazm6MNkyJsDECUMv6
+ a2DGZi8WpcHPzkI7+kROVnL2PFOej651l9XPU1Y/ioEIOD5fWylKRIKlYwradIGbiKKh
+ yZQaigxR/gqrcniWwggAXhHVxfSZrG5Ijh4ybEwdbDYxKT2QxX/qgQbh8V04zBYvvsVg
+ POgWW+TQ1ifkMZZ3T6P+JRN8SnLHSQhS01KkRzXo9jed0LwEHuWpu7isdMAUWNgbGlk+
+ wGXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701357924; x=1701962724;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q1sYlCR+h46u7F8BXbMBUaK/bgTyBE5IwIsbR3noZPA=;
+ b=o0Dn/muwprfppzdZnGnjYZ//A6qwyy5JveqNPZf+Via0g2i5pwemJPvZWEhlAl2xGo
+ dweIH/ocqlDwrvXXH5pK+SYP7fPU8fXWrmaL+LVPq5opZt90BCPh97QAywPdMdFqWbCk
+ fmwURH4jtToC9PcBQPERp8FNs4RKr78n+QPMACET+vAwKWmx/zo0kokCz04X8VW74Mmj
+ l5BI67ed5ndRbIRfNhuZn4FFNeaYg5nv3F9gZVg0eGLdPdXzyK61VSRkqCpPyBP9WTrw
+ Wq56/MUNrwOS6bTBKNDbnTXkFg6BKzBWbeNAHNWVhujQE4RwogEsCVXZ3s3cURHUklmp
+ FDJg==
+X-Gm-Message-State: AOJu0YzlRNdpQDUxwDzYzUVHoU+/2Xq8euemEv6Qg13XnbqqHQc2ujN1
+ Ub3eZcpPcceZcaHcO44Lg4Ygpw==
+X-Google-Smtp-Source: AGHT+IHMJ4ZQ0aPM16L53lE59DQ9OpcIDS87Mar2sBFZOwqxDeKTHNqmedH8YRDG91gV3q72UCOE8g==
+X-Received: by 2002:a05:6808:1211:b0:3b8:43fe:96d9 with SMTP id
+ a17-20020a056808121100b003b843fe96d9mr31743671oil.35.1701357921497; 
+ Thu, 30 Nov 2023 07:25:21 -0800 (PST)
+Received: from ?IPV6:2607:fb90:f2e0:8450:be70:af46:b71a:41bf?
+ ([2607:fb90:f2e0:8450:be70:af46:b71a:41bf])
+ by smtp.gmail.com with ESMTPSA id
+ bf6-20020a056808190600b003a43759b9cdsm207572oib.29.2023.11.30.07.25.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 30 Nov 2023 07:25:21 -0800 (PST)
+Message-ID: <6db88fca-9ca7-4aa7-90ae-0dba182dda0e@linaro.org>
+Date: Thu, 30 Nov 2023 09:25:18 -0600
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.0 0/3] target/arm/tcg: Few non-TCG cleanups
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+References: <20231130142519.28417-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231130142519.28417-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.55.52.43;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,95 +95,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+On 11/30/23 08:25, Philippe Mathieu-Daudé wrote:
+> Few non-TCG cleanups extracted from a bigger rework.
+> 
+> Philippe Mathieu-Daudé (3):
+>    target/arm: Restrict TCG specific helpers
+>    target/arm: Restrict DC CVAP & DC CVADP instructions to TCG accel
+>    target/arm/tcg: Including missing 'exec/exec-all.h' header
+> 
+>   target/arm/helper.c            | 60 +++-------------------------------
+>   target/arm/tcg/op_helper.c     | 55 +++++++++++++++++++++++++++++++
+>   target/arm/tcg/translate-a64.c |  1 +
+>   3 files changed, 61 insertions(+), 55 deletions(-)
+> 
 
-After i386 supports QOM topology, drop original topology logic.
+Series:
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- hw/i386/x86.c | 52 +++++++++++----------------------------------------
- 1 file changed, 11 insertions(+), 41 deletions(-)
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 99f6c502de43..cba8b806cdb6 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -118,7 +118,8 @@ out:
- 
- void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
- {
--    int i;
-+    CPUCore *core;
-+    int i, cpu_index = 0, core_idx = 0;
-     const CPUArchIdList *possible_cpus;
-     MachineState *ms = MACHINE(x86ms);
-     MachineClass *mc = MACHINE_GET_CLASS(x86ms);
-@@ -153,34 +154,17 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
- 
-     possible_cpus = mc->possible_cpu_arch_ids(ms);
- 
--    /*
--     * possible_cpus_qom_granu means the QOM topology support.
--     *
--     * TODO: Drop the "!mc->smp_props.possible_cpus_qom_granu" case when
--     * i386 completes QOM topology support.
--     */
--    if (mc->smp_props.possible_cpus_qom_granu) {
--        CPUCore *core;
--        int cpu_index = 0;
--        int core_idx = 0;
--
--        MACHINE_CORE_FOREACH(ms, core) {
--            for (i = 0; i < core->plugged_threads; i++) {
--                x86_cpu_new(x86ms, possible_cpus->cpus[cpu_index].arch_id,
--                            OBJECT(core), cpu_index, &error_fatal);
--                cpu_index++;
--            }
--
--            if (core->plugged_threads < core->nr_threads) {
--                cpu_index += core->nr_threads - core->plugged_threads;
--            }
--            core_idx++;
-+    MACHINE_CORE_FOREACH(ms, core) {
-+        for (i = 0; i < core->plugged_threads; i++) {
-+            x86_cpu_new(x86ms, possible_cpus->cpus[cpu_index].arch_id,
-+                        OBJECT(core), cpu_index, &error_fatal);
-+            cpu_index++;
-         }
--    } else {
--        for (i = 0; i < ms->smp.cpus; i++) {
--            x86_cpu_new(x86ms, possible_cpus->cpus[i].arch_id,
--                        NULL, i, &error_fatal);
-+
-+        if (core->plugged_threads < core->nr_threads) {
-+            cpu_index += core->nr_threads - core->plugged_threads;
-         }
-+        core_idx++;
-     }
- }
- 
-@@ -460,20 +444,6 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
-         return;
-     }
- 
--    /*
--     * possible_cpus_qom_granu means the QOM topology support.
--     *
--     * TODO: Drop the "!mc->smp_props.possible_cpus_qom_granu" case when
--     * i386 completes QOM topology support.
--     */
--    if (!mc->smp_props.possible_cpus_qom_granu) {
--        x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids);
--        x86_cpu_assign_topo_id(cpu, &topo_ids, errp);
--        if (*errp) {
--            return;
--        }
--    }
--
-     if (hyperv_feat_enabled(cpu, HYPERV_FEAT_VPINDEX) &&
-         kvm_enabled() && !kvm_hv_vpindex_settable()) {
-         error_setg(errp, "kernel doesn't allow setting HyperV VP_INDEX");
--- 
-2.34.1
-
+r~
 
