@@ -2,142 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F297FFC01
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 21:10:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FFDF7FFC08
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 21:12:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8nLL-00086b-99; Thu, 30 Nov 2023 15:09:03 -0500
+	id 1r8nO2-0001Do-16; Thu, 30 Nov 2023 15:11:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8nLI-00083m-PM
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 15:09:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
+ id 1r8nNz-0001CR-S0
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 15:11:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8nLG-0002fD-2D
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 15:09:00 -0500
+ (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
+ id 1r8nNy-0003Ga-BY
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 15:11:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701374936;
+ s=mimecast20190719; t=1701375105;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=vQ5m3o7+UqdtWYSDU6QubOO0VIH9lcTK3EaDyGHvbxw=;
- b=Mtct1fO/ctWsHPFB+5wB3YkKWIi/8kY27OjH8kRwmuhYOoj/9W0NoGoJs1A18gtogaCYUD
- vRffEee1eUh+KlaA+W6L6CSktX+K5UIEAVyUr+LBUSgmdRbz278lk3afFfDrj6OZVBpOpg
- eBP1oeEHCSNxEordsBYKyhvdgJ8WBVU=
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
- [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-6C214UYcOWGKkmbbGs3GBw-1; Thu, 30 Nov 2023 15:08:55 -0500
-X-MC-Unique: 6C214UYcOWGKkmbbGs3GBw-1
-Received: by mail-oo1-f72.google.com with SMTP id
- 006d021491bc7-58dba38a819so212689eaf.0
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 12:08:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701374935; x=1701979735;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vQ5m3o7+UqdtWYSDU6QubOO0VIH9lcTK3EaDyGHvbxw=;
- b=lAvZrOZnVxiJTzMtH2xISZMUanAzPHvEPuRVmdQ24Ye5gySHCNwzyNnYju3JlLxBjg
- q7UbWqzkiTy27Kmg8cbh/s2Gj/Fi5BLP+NHj708ENuRAS5a++s89lZHkvrwtDE8h6fka
- Q//QLEXXLLVV1d42hrV3ROF4AqE6WzZ8ZI4D7pFFuG6Abscl0DS6p1fvTqr2cej8fRxd
- 5hL3qYodubxT+/0UoRdXEsd5zDoJ40hea7rejDbtgxNuzUmOxN12zKHOX7v4ciqbTkjy
- EZruxNHt6jo/lCKYk8pbE0OldcDehg2LAE1PMym61r5A0FN5qftotMdN9+nM/5dQq2bQ
- wRbQ==
-X-Gm-Message-State: AOJu0YxZVP8D+E+7RN+gNBXhkH83WlHBt0DupFXc2UaYvkqAagfw/H9x
- CiiEnf7Li3EynOv1vCyFbw4PnF0nejkVJpgJKoP+HlaeRHCCdcKSDfIyR8NyJpQPdpXJOysdYAh
- s5aEMzNKBoGmTRnw=
-X-Received: by 2002:a05:6820:a8f:b0:58d:e3d3:ec72 with SMTP id
- de15-20020a0568200a8f00b0058de3d3ec72mr3219625oob.0.1701374934928; 
- Thu, 30 Nov 2023 12:08:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEFrVwMaTOwUyaQhegCiYW255oqkz3A1nA2DFXZquNCGnC+wsIvv9V9+I7etJ6uoaw71Bi5Lw==
-X-Received: by 2002:a05:6820:a8f:b0:58d:e3d3:ec72 with SMTP id
- de15-20020a0568200a8f00b0058de3d3ec72mr3219606oob.0.1701374934634; 
- Thu, 30 Nov 2023 12:08:54 -0800 (PST)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- qr13-20020a05620a390d00b0077d5e1e4edesm790071qkn.57.2023.11.30.12.08.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Nov 2023 12:08:54 -0800 (PST)
-Date: Thu, 30 Nov 2023 15:08:49 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Jean-Christophe Dubois <jcd@tribudubois.net>,
- Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org,
- Song Gao <gaosong@loongson.cn>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>, Paul Durrant <paul@xen.org>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Juan Quintela <quintela@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Huacai Chen <chenhuacai@kernel.org>, Fam Zheng <fam@euphon.net>,
- Eric Blake <eblake@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
- Alexander Graf <agraf@csgraf.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Weiwei Li <liwei1518@gmail.com>, Eric Farman <farman@linux.ibm.com>,
- Stafford Horne <shorne@gmail.com>, David Hildenbrand <david@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- John Snow <jsnow@redhat.com>, Sunil Muthuswamy <sunilmut@microsoft.com>,
- Michael Roth <michael.roth@amd.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Bin Meng <bin.meng@windriver.com>,
- Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org,
- qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ bh=tXPEDHXBySYyZ9z2Oau1Dfqyd6k2HfiTh1ThFKhEvnc=;
+ b=d119AgwEhGZXZ40qTDwFk/cAE/WHBM+6xslX+RDVfykVTE74v4r+7d8z18ncGfKulM7Mip
+ IIplUYw6IoU2p5t7GL5wFhVCJBuLppzdfSh1VJ33dDFcSrAV1y+A2Yx8EUYauGKDGESGXg
+ hQZNtxeyKo3f6JLI/utMQqnRKg4LFjQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-600-XVIh1GohPIOQgTa1MqPbXg-1; Thu,
+ 30 Nov 2023 15:11:41 -0500
+X-MC-Unique: XVIh1GohPIOQgTa1MqPbXg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 87D983C10148;
+ Thu, 30 Nov 2023 20:11:41 +0000 (UTC)
+Received: from angien.pipo.sk (unknown [10.45.242.11])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 92F48492BFC;
+ Thu, 30 Nov 2023 20:11:39 +0000 (UTC)
+Date: Thu, 30 Nov 2023 21:11:37 +0100
+From: Peter Krempa <pkrempa@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, qemu-ppc@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Leonardo Bras <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: Re: [PATCH 1/6] system/cpus: rename qemu_mutex_lock_iothread() to
- qemu_bql_lock()
-Message-ID: <ZWjr0TKxihlpd1jm@x1n>
-References: <20231129212625.1051502-1-stefanha@redhat.com>
- <20231129212625.1051502-2-stefanha@redhat.com>
+ Markus Armbruster <armbru@redhat.com>, qemu-block@nongnu.org
+Subject: Re: [PATCH v2 1/2] block: commit: Allow users to request only format
+ driver names in backing file format
+Message-ID: <ZWjseWvd1n7mOJ6s@angien.pipo.sk>
+References: <cover.1701360249.git.pkrempa@redhat.com>
+ <2062cb544eab1a3ac785de65fd8c9b2a3f0265dc.1701360249.git.pkrempa@redhat.com>
+ <glhxou7nm34iouz4df4vz7hatzkziom3l5ba6cvdo4q5zvrayz@6hqdwepwqq5i>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231129212625.1051502-2-stefanha@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <glhxou7nm34iouz4df4vz7hatzkziom3l5ba6cvdo4q5zvrayz@6hqdwepwqq5i>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -153,48 +86,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 29, 2023 at 04:26:20PM -0500, Stefan Hajnoczi wrote:
-> The Big QEMU Lock (BQL) has many names and they are confusing. The
-> actual QemuMutex variable is called qemu_global_mutex but it's commonly
-> referred to as the BQL in discussions and some code comments. The
-> locking APIs, however, are called qemu_mutex_lock_iothread() and
-> qemu_mutex_unlock_iothread().
+On Thu, Nov 30, 2023 at 13:24:18 -0600, Eric Blake wrote:
+> On Thu, Nov 30, 2023 at 05:06:03PM +0100, Peter Krempa wrote:
+> > Introduce a new flag 'backing_file_format_no_protocol' for the
+> > block-commit QMP command which instructs the internals to use 'raw'
+> > instead of the protocol driver in case when a image is used without a
+> > dummy 'raw' wrapper.
+> > 
+> > The flag is designed such that it can be always asserted by management
+> > tools even when there isn't any update to backing files.
+> > 
+> > The flag will be used by libvirt so that the backing images still
+> > reference the proper format even when libvirt will stop using the dummy
+> > raw driver (raw driver with no other config). Libvirt needs this so that
+> > the images stay compatible with older libvirt versions which didn't
+> > expect that a protocol driver name can appear in the backing file format
+> > field.
+> > 
+> > Signed-off-by: Peter Krempa <pkrempa@redhat.com>
+> > Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> > ---
 > 
-> The "iothread" name is historic and comes from when the main thread was
-> split into into KVM vcpu threads and the "iothread" (now called the main
-> loop thread). I have contributed to the confusion myself by introducing
-> a separate --object iothread, a separate concept unrelated to the BQL.
-> 
-> The "iothread" name is no longer appropriate for the BQL. Rename the
-> locking APIs to:
-> - void qemu_bql_lock(void)
-> - void qemu_bql_unlock(void)
-> - bool qemu_bql_locked(void)
-> 
-> There are more APIs with "iothread" in their names. Subsequent patches
-> will rename them. There are also comments and documentation that will be
-> updated in later patches.
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > +++ b/qapi/block-core.json
+> > @@ -1810,6 +1810,14 @@
+> >  #     Care should be taken when specifying the string, to specify a
+> >  #     valid filename or protocol.  (Since 2.1)
+> >  #
+> > +# @backing-file-format-no-protocol: If true always use a 'format' driver name
+> > +#     for the 'backing file format' field if updating the image header of the
+> > +#     overlay of 'top'. Otherwise the real name of the driver of the backing
+> > +#     image may be used which may be a protocol driver.
+> > +#
+> > +#     Can be used also when no image header will be updated.
+> > +#     (default: false; since: 9.0)
 
-Acked-by: Peter Xu <peterx@redhat.com>
 
-Two nickpicks:
+As I've previously stated, I don't really care about a name as long as I
+don't have to keep re-sending,
 
-  - BQL contains "QEMU" as the 2nd character, so maybe easier to further
-    rename qemu_bql into bql_?
+> This is a long name.  What about:
 
-  - Could we keep the full spell of BQL at some places, so people can still
-    reference it if not familiar?  IIUC most of the BQL helpers will root
-    back to the major three functions (_lock, _unlock, _locked), perhaps
-    add a comment of "BQL stands for..." over these three functions as
-    comment?
+But is the long name really a problem?
 
-Please take or ignore these nitpicks; my ACK will stand irrelevant.
+> @backing-mask-protocol: If true, replace any protocol mentioned in the
+>     'backing file format' with 'raw', rather than storing the protocol
+>     name as the backing format.  Can be used even when no image header
+>     will be updated (default false; since 9.0).
 
-Thanks,
-
--- 
-Peter Xu
+Sounds okay to me. In the end, nobody will really see this as libvirt
+will be using it internally
 
 
