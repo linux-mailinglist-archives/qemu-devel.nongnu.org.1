@@ -2,54 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E487FE3A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 Nov 2023 23:50:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC9B7FE4B6
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 01:19:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8TMx-0004au-PQ; Wed, 29 Nov 2023 17:49:23 -0500
+	id 1r8Ujy-00028S-KZ; Wed, 29 Nov 2023 19:17:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r8TMu-0004aW-Rm; Wed, 29 Nov 2023 17:49:21 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r8TMs-0006IQ-Gi; Wed, 29 Nov 2023 17:49:20 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 028D275A4C3;
- Wed, 29 Nov 2023 23:49:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id rVP5-wyav5-H; Wed, 29 Nov 2023 23:49:07 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id B1A4775A4C2; Wed, 29 Nov 2023 23:49:07 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id AF93F756094;
- Wed, 29 Nov 2023 23:49:07 +0100 (CET)
-Date: Wed, 29 Nov 2023 23:49:07 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, philmd@linaro.org
-Subject: Re: [PATCH v3] ppc/amigaone: Allow running AmigaOS without firmware
- image
-In-Reply-To: <8df98507-3b2f-426e-ab25-f571f06c769b@kaod.org>
-Message-ID: <356aadfe-98d6-1b31-46e1-4d01ceedd477@eik.bme.hu>
-References: <20231128013253.80524756078@zero.eik.bme.hu>
- <8df98507-3b2f-426e-ab25-f571f06c769b@kaod.org>
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1r8Ujv-00028E-KA
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 19:17:11 -0500
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1r8Ujr-0003aL-HD
+ for qemu-devel@nongnu.org; Wed, 29 Nov 2023 19:17:11 -0500
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2856437b584so399958a91.3
+ for <qemu-devel@nongnu.org>; Wed, 29 Nov 2023 16:15:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701303302; x=1701908102;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WPdnB+jA4JdOFKs7TNgoDaYLJ2jsVfiE1YPhDq2rm14=;
+ b=NA44gEQVVyfEBW4Ohs/TnUw4JBK3cCqfsjN4OleJXH8fRK469YjwBUbzHdzsVs5p1b
+ H+8RKhc698Vs1//sUqC8c3zm2n6nqs9uH01fawTTDTKdaHRuxG1JVQspAYLTpbiGYjdh
+ eg4YC+nW2Ok9ETK58hKUy0V6y14FwhK5h6xTNOoXFQvN/Kw70EvOerN+3kMZ/vEi16D3
+ SyfqJx+5P/j4STqxQ51Dm3Cq6IErO2IiiVi0XQdxBudhQTRmTp7Ay9/2etMIUoxAbqfg
+ xymw9R+0SdtdH0PQVbe/gUeYQk7373wsKu0fCJogMDZSbNEmLYp73dmOViS0BZ5zVOT0
+ uVrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701303302; x=1701908102;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WPdnB+jA4JdOFKs7TNgoDaYLJ2jsVfiE1YPhDq2rm14=;
+ b=qniwL/ooVS9iSFoahWRi2LcGHLd12Gv1gt3VHgmA5qVYfRi/iEC998LaOFkfn8OLKI
+ w4qwXtyGB3qYxstPfxxMkHOEwaJk0GNabRI4UG/ObntoZ41hgaw/kQG5jMBuKS79Ymrs
+ zT6Ol3kNcfwxHxIXniU1ecgrkphmWyOg+H9lAePgNYgHVfcn00ILJE+JR5yMWEQA3r89
+ tEMiyvmj9c7supjZuCjj1fgS2o1GGG2iiVKZ41Edbw+LIkw6K94TPZNbGr0N8VcXg1Cu
+ 3PSUYvN8vQHUoyfzs2H1imZ8iGSHI9sk7VnGS3XsnlIP50f3IAEVZuXGZKc+eBjUP8Cz
+ BnTA==
+X-Gm-Message-State: AOJu0YxUZaGVrBYikz3Ft9jQIgFE3QOh0J77TwQ1w9JEmw8IFP96iQhf
+ h+xxuHncGnzLGOquG11U1R7Lphz7aoMWG8AgUrk6MGkP
+X-Google-Smtp-Source: AGHT+IHP+Sod6mtDqq9f3Aonv9QM04tSe5XYp9yI4veLXUO5xdmlVjcayzdUTij5iF9MChZotRtlEQ==
+X-Received: by 2002:a17:90b:1e02:b0:285:b08a:780d with SMTP id
+ pg2-20020a17090b1e0200b00285b08a780dmr13850436pjb.23.1701303301394; 
+ Wed, 29 Nov 2023 16:15:01 -0800 (PST)
+Received: from localhost.localdomain ([118.114.59.192])
+ by smtp.gmail.com with ESMTPSA id
+ u7-20020a17090ae00700b00285256be528sm1957611pjy.47.2023.11.29.16.14.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Nov 2023 16:15:00 -0800 (PST)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Hyman Huang <yong.huang@smartx.com>
+Subject: [PATCH v4] crypto: Introduce SM4 symmetric cipher algorithm
+Date: Thu, 30 Nov 2023 08:14:51 +0800
+Message-Id: <db81f006f92f4b5e71020a52bc84fcaee607c615.1701303229.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-738657218-1701298147=:24843"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,125 +95,351 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Introduce the SM4 cipher algorithms (OSCCA GB/T 32907-2016).
 
---3866299591-738657218-1701298147=:24843
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+SM4 (GBT.32907-2016) is a cryptographic standard issued by the
+Organization of State Commercial Administration of China (OSCCA)
+as an authorized cryptographic algorithms for the use within China.
 
-On Tue, 28 Nov 2023, Cédric Le Goater wrote:
-> On 11/28/23 02:32, BALATON Zoltan wrote:
->> The machine uses a modified U-Boot under GPL license but the sources
->> of it are lost with only a binary available so it cannot be included
->> in QEMU. Allow running without the firmware image which can be used
->> when calling a boot loader directly and thus simplifying booting
->> guests. We need a small routine that AmigaOS calls from ROM which is
->> added in this case to allow booting AmigaOS without external firmware
->> image.
->> 
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->
-> Since this is 8.2 material :
->
->
-> Fixes: d9656f860a38 ("hw/ppc: Add emulation of AmigaOne XE board")
+Use the crypto-sm4 meson build option to explicitly control the
+feature, which would be detected by default.
 
-This has missed rc2 but I hope there still will be a pull request before 
-rc3 which is the last chance now. I've sent a v4 which simpilifies the 
-inserted code as I've found there's no need to do it like in the rom as 
-the only place it's called from just cares about the result.
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ crypto/block-luks.c             | 11 ++++++++
+ crypto/cipher-gcrypt.c.inc      |  8 ++++++
+ crypto/cipher-nettle.c.inc      | 49 +++++++++++++++++++++++++++++++++
+ crypto/cipher.c                 |  6 ++++
+ meson.build                     | 42 ++++++++++++++++++++++++++++
+ meson_options.txt               |  2 ++
+ qapi/crypto.json                |  5 +++-
+ scripts/meson-buildoptions.sh   |  3 ++
+ tests/unit/test-crypto-cipher.c | 13 +++++++++
+ 9 files changed, 138 insertions(+), 1 deletion(-)
 
-I forgot the Fixes tag again, sorry, but the one above is still the same.
+diff --git a/crypto/block-luks.c b/crypto/block-luks.c
+index fb01ec38bb..f0813d69b4 100644
+--- a/crypto/block-luks.c
++++ b/crypto/block-luks.c
+@@ -95,12 +95,23 @@ qcrypto_block_luks_cipher_size_map_twofish[] = {
+     { 0, 0 },
+ };
+ 
++#ifdef CONFIG_CRYPTO_SM4
++static const QCryptoBlockLUKSCipherSizeMap
++qcrypto_block_luks_cipher_size_map_sm4[] = {
++    { 16, QCRYPTO_CIPHER_ALG_SM4},
++    { 0, 0 },
++};
++#endif
++
+ static const QCryptoBlockLUKSCipherNameMap
+ qcrypto_block_luks_cipher_name_map[] = {
+     { "aes", qcrypto_block_luks_cipher_size_map_aes },
+     { "cast5", qcrypto_block_luks_cipher_size_map_cast5 },
+     { "serpent", qcrypto_block_luks_cipher_size_map_serpent },
+     { "twofish", qcrypto_block_luks_cipher_size_map_twofish },
++#ifdef CONFIG_CRYPTO_SM4
++    { "sm4", qcrypto_block_luks_cipher_size_map_sm4},
++#endif
+ };
+ 
+ QEMU_BUILD_BUG_ON(sizeof(struct QCryptoBlockLUKSKeySlot) != 48);
+diff --git a/crypto/cipher-gcrypt.c.inc b/crypto/cipher-gcrypt.c.inc
+index a6a0117717..1377cbaf14 100644
+--- a/crypto/cipher-gcrypt.c.inc
++++ b/crypto/cipher-gcrypt.c.inc
+@@ -35,6 +35,9 @@ bool qcrypto_cipher_supports(QCryptoCipherAlgorithm alg,
+     case QCRYPTO_CIPHER_ALG_SERPENT_256:
+     case QCRYPTO_CIPHER_ALG_TWOFISH_128:
+     case QCRYPTO_CIPHER_ALG_TWOFISH_256:
++#ifdef CONFIG_CRYPTO_SM4
++    case QCRYPTO_CIPHER_ALG_SM4:
++#endif
+         break;
+     default:
+         return false;
+@@ -219,6 +222,11 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgorithm alg,
+     case QCRYPTO_CIPHER_ALG_TWOFISH_256:
+         gcryalg = GCRY_CIPHER_TWOFISH;
+         break;
++#ifdef CONFIG_CRYPTO_SM4
++    case QCRYPTO_CIPHER_ALG_SM4:
++        gcryalg = GCRY_CIPHER_SM4;
++        break;
++#endif
+     default:
+         error_setg(errp, "Unsupported cipher algorithm %s",
+                    QCryptoCipherAlgorithm_str(alg));
+diff --git a/crypto/cipher-nettle.c.inc b/crypto/cipher-nettle.c.inc
+index 24cc61f87b..42b39e18a2 100644
+--- a/crypto/cipher-nettle.c.inc
++++ b/crypto/cipher-nettle.c.inc
+@@ -33,6 +33,9 @@
+ #ifndef CONFIG_QEMU_PRIVATE_XTS
+ #include <nettle/xts.h>
+ #endif
++#ifdef CONFIG_CRYPTO_SM4
++#include <nettle/sm4.h>
++#endif
+ 
+ static inline bool qcrypto_length_check(size_t len, size_t blocksize,
+                                         Error **errp)
+@@ -426,6 +429,30 @@ DEFINE_ECB_CBC_CTR_XTS(qcrypto_nettle_twofish,
+                        QCryptoNettleTwofish, TWOFISH_BLOCK_SIZE,
+                        twofish_encrypt_native, twofish_decrypt_native)
+ 
++#ifdef CONFIG_CRYPTO_SM4
++typedef struct QCryptoNettleSm4 {
++    QCryptoCipher base;
++    struct sm4_ctx key[2];
++} QCryptoNettleSm4;
++
++static void sm4_encrypt_native(void *ctx, size_t length,
++                               uint8_t *dst, const uint8_t *src)
++{
++    struct sm4_ctx *keys = ctx;
++    sm4_crypt(&keys[0], length, dst, src);
++}
++
++static void sm4_decrypt_native(void *ctx, size_t length,
++                               uint8_t *dst, const uint8_t *src)
++{
++    struct sm4_ctx *keys = ctx;
++    sm4_crypt(&keys[1], length, dst, src);
++}
++
++DEFINE_ECB(qcrypto_nettle_sm4,
++           QCryptoNettleSm4, SM4_BLOCK_SIZE,
++           sm4_encrypt_native, sm4_decrypt_native)
++#endif
+ 
+ bool qcrypto_cipher_supports(QCryptoCipherAlgorithm alg,
+                              QCryptoCipherMode mode)
+@@ -443,6 +470,9 @@ bool qcrypto_cipher_supports(QCryptoCipherAlgorithm alg,
+     case QCRYPTO_CIPHER_ALG_TWOFISH_128:
+     case QCRYPTO_CIPHER_ALG_TWOFISH_192:
+     case QCRYPTO_CIPHER_ALG_TWOFISH_256:
++#ifdef CONFIG_CRYPTO_SM4
++    case QCRYPTO_CIPHER_ALG_SM4:
++#endif
+         break;
+     default:
+         return false;
+@@ -701,6 +731,25 @@ static QCryptoCipher *qcrypto_cipher_ctx_new(QCryptoCipherAlgorithm alg,
+ 
+             return &ctx->base;
+         }
++#ifdef CONFIG_CRYPTO_SM4
++    case QCRYPTO_CIPHER_ALG_SM4:
++        {
++            QCryptoNettleSm4 *ctx = g_new0(QCryptoNettleSm4, 1);
++
++            switch (mode) {
++            case QCRYPTO_CIPHER_MODE_ECB:
++                ctx->base.driver = &qcrypto_nettle_sm4_driver_ecb;
++                break;
++            default:
++                goto bad_cipher_mode;
++            }
++
++            sm4_set_encrypt_key(&ctx->key[0], key);
++            sm4_set_decrypt_key(&ctx->key[1], key);
++
++            return &ctx->base;
++        }
++#endif
+ 
+     default:
+         error_setg(errp, "Unsupported cipher algorithm %s",
+diff --git a/crypto/cipher.c b/crypto/cipher.c
+index 74b09a5b26..5f512768ea 100644
+--- a/crypto/cipher.c
++++ b/crypto/cipher.c
+@@ -38,6 +38,9 @@ static const size_t alg_key_len[QCRYPTO_CIPHER_ALG__MAX] = {
+     [QCRYPTO_CIPHER_ALG_TWOFISH_128] = 16,
+     [QCRYPTO_CIPHER_ALG_TWOFISH_192] = 24,
+     [QCRYPTO_CIPHER_ALG_TWOFISH_256] = 32,
++#ifdef CONFIG_CRYPTO_SM4
++    [QCRYPTO_CIPHER_ALG_SM4] = 16,
++#endif
+ };
+ 
+ static const size_t alg_block_len[QCRYPTO_CIPHER_ALG__MAX] = {
+@@ -53,6 +56,9 @@ static const size_t alg_block_len[QCRYPTO_CIPHER_ALG__MAX] = {
+     [QCRYPTO_CIPHER_ALG_TWOFISH_128] = 16,
+     [QCRYPTO_CIPHER_ALG_TWOFISH_192] = 16,
+     [QCRYPTO_CIPHER_ALG_TWOFISH_256] = 16,
++#ifdef CONFIG_CRYPTO_SM4
++    [QCRYPTO_CIPHER_ALG_SM4] = 16,
++#endif
+ };
+ 
+ static const bool mode_need_iv[QCRYPTO_CIPHER_MODE__MAX] = {
+diff --git a/meson.build b/meson.build
+index ec01f8b138..6d43c56c66 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1480,6 +1480,7 @@ endif
+ gcrypt = not_found
+ nettle = not_found
+ hogweed = not_found
++crypto_sm4 = not_found
+ xts = 'none'
+ 
+ if get_option('nettle').enabled() and get_option('gcrypt').enabled()
+@@ -1505,6 +1506,28 @@ if not gnutls_crypto.found()
+          cc.find_library('gpg-error', required: true)],
+         version: gcrypt.version())
+     endif
++    crypto_sm4 = gcrypt
++    # SM4 ALG is available in libgcrypt >= 1.9
++    if gcrypt.found() and not cc.links('''
++      #include <gcrypt.h>
++      int main(void) {
++        gcry_cipher_hd_t handler;
++        gcry_cipher_open(&handler, GCRY_CIPHER_SM4, GCRY_CIPHER_MODE_ECB, 0);
++        return 0;
++      }''', dependencies: gcrypt)
++      crypto_sm4 = not_found
++      if get_option('crypto_sm4').enabled()
++        error('could not link libsm4')
++      else
++        warning('could not link libsm4, disabling')
++      endif
++    endif
++    if crypto_sm4.found() and get_option('prefer_static')
++      crypto_sm4 = declare_dependency(dependencies: [
++        gcrypt,
++        cc.find_library('gpg-error', required: true)],
++        version: gcrypt.version())
++    endif
+   endif
+   if (not get_option('nettle').auto() or have_system) and not gcrypt.found()
+     nettle = dependency('nettle', version: '>=3.4',
+@@ -1513,6 +1536,23 @@ if not gnutls_crypto.found()
+     if nettle.found() and not cc.has_header('nettle/xts.h', dependencies: nettle)
+       xts = 'private'
+     endif
++    crypto_sm4 = nettle
++    # SM4 ALG is available in nettle >= 3.9
++    if nettle.found() and not cc.links('''
++      #include <nettle/sm4.h>
++      int main(void) {
++        struct sm4_ctx ctx;
++        unsigned char key[16] = {0};
++        sm4_set_encrypt_key(&ctx, key);
++        return 0;
++      }''', dependencies: nettle)
++      crypto_sm4 = not_found
++      if get_option('crypto_sm4').enabled()
++        error('could not link libsm4')
++      else
++        warning('could not link libsm4, disabling')
++      endif
++    endif
+   endif
+ endif
+ 
+@@ -2199,6 +2239,7 @@ config_host_data.set('CONFIG_GNUTLS_CRYPTO', gnutls_crypto.found())
+ config_host_data.set('CONFIG_TASN1', tasn1.found())
+ config_host_data.set('CONFIG_GCRYPT', gcrypt.found())
+ config_host_data.set('CONFIG_NETTLE', nettle.found())
++config_host_data.set('CONFIG_CRYPTO_SM4', crypto_sm4.found())
+ config_host_data.set('CONFIG_HOGWEED', hogweed.found())
+ config_host_data.set('CONFIG_QEMU_PRIVATE_XTS', xts == 'private')
+ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
+@@ -4273,6 +4314,7 @@ summary_info += {'nettle':            nettle}
+ if nettle.found()
+    summary_info += {'  XTS':             xts != 'private'}
+ endif
++summary_info += {'SM4 ALG support':   crypto_sm4}
+ summary_info += {'AF_ALG support':    have_afalg}
+ summary_info += {'rng-none':          get_option('rng_none')}
+ summary_info += {'Linux keyring':     have_keyring}
+diff --git a/meson_options.txt b/meson_options.txt
+index c9baeda639..db8de4ec5b 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -172,6 +172,8 @@ option('nettle', type : 'feature', value : 'auto',
+        description: 'nettle cryptography support')
+ option('gcrypt', type : 'feature', value : 'auto',
+        description: 'libgcrypt cryptography support')
++option('crypto_sm4', type : 'feature', value : 'auto',
++       description: 'SM4 symmetric cipher algorithm support')
+ option('crypto_afalg', type : 'feature', value : 'disabled',
+        description: 'Linux AF_ALG crypto backend driver')
+ option('libdaxctl', type : 'feature', value : 'auto',
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index fd3d46ebd1..2f2aeff5fd 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -94,6 +94,8 @@
+ #
+ # @twofish-256: Twofish with 256 bit / 32 byte keys
+ #
++# @sm4: SM4 with 128 bit / 16 byte keys (since 9.0)
++#
+ # Since: 2.6
+ ##
+ { 'enum': 'QCryptoCipherAlgorithm',
+@@ -102,7 +104,8 @@
+            'des', '3des',
+            'cast5-128',
+            'serpent-128', 'serpent-192', 'serpent-256',
+-           'twofish-128', 'twofish-192', 'twofish-256']}
++           'twofish-128', 'twofish-192', 'twofish-256',
++           'sm4']}
+ 
+ ##
+ # @QCryptoCipherMode:
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 680fa3f581..f189f34829 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -106,6 +106,7 @@ meson_options_help() {
+   printf "%s\n" '  colo-proxy      colo-proxy support'
+   printf "%s\n" '  coreaudio       CoreAudio sound support'
+   printf "%s\n" '  crypto-afalg    Linux AF_ALG crypto backend driver'
++  printf "%s\n" '  crypto-sm4      SM4 symmetric cipher algorithm support'
+   printf "%s\n" '  curl            CURL block device driver'
+   printf "%s\n" '  curses          curses UI'
+   printf "%s\n" '  dbus-display    -display dbus support'
+@@ -282,6 +283,8 @@ _meson_option_parse() {
+     --disable-coroutine-pool) printf "%s" -Dcoroutine_pool=false ;;
+     --enable-crypto-afalg) printf "%s" -Dcrypto_afalg=enabled ;;
+     --disable-crypto-afalg) printf "%s" -Dcrypto_afalg=disabled ;;
++    --enable-crypto-sm4) printf "%s" -Dcrypto_sm4=enabled ;;
++    --disable-crypto-sm4) printf "%s" -Dcrypto_sm4=disabled ;;
+     --enable-curl) printf "%s" -Dcurl=enabled ;;
+     --disable-curl) printf "%s" -Dcurl=disabled ;;
+     --enable-curses) printf "%s" -Dcurses=enabled ;;
+diff --git a/tests/unit/test-crypto-cipher.c b/tests/unit/test-crypto-cipher.c
+index d9d9d078ff..11ab1a54fc 100644
+--- a/tests/unit/test-crypto-cipher.c
++++ b/tests/unit/test-crypto-cipher.c
+@@ -382,6 +382,19 @@ static QCryptoCipherTestData test_data[] = {
+         .plaintext = "90afe91bb288544f2c32dc239b2635e6",
+         .ciphertext = "6cb4561c40bf0a9705931cb6d408e7fa",
+     },
++#ifdef CONFIG_CRYPTO_SM4
++    {
++        /* SM4, GB/T 32907-2016, Appendix A.1 */
++        .path = "/crypto/cipher/sm4",
++        .alg = QCRYPTO_CIPHER_ALG_SM4,
++        .mode = QCRYPTO_CIPHER_MODE_ECB,
++        .key = "0123456789abcdeffedcba9876543210",
++        .plaintext  =
++            "0123456789abcdeffedcba9876543210",
++        .ciphertext =
++            "681edf34d206965e86b3e94f536e4246",
++    },
++#endif
+     {
+         /* #1 32 byte key, 32 byte PTX */
+         .path = "/crypto/cipher/aes-xts-128-1",
+-- 
+2.39.1
 
-Regards,
-BALATON Zoltan
-
->
->
-> Thanks,
->
-> C.
->
->
->
->> ---
->> v3: Instead of -bios none do this when no -bios option given, use
->> constants for address and rom_add_blob_fixed() to add dummy_fw.
->> This makes both code and usage a bit simpler.
->>
->>   hw/ppc/amigaone.c | 35 +++++++++++++++++++++++------------
->>   1 file changed, 23 insertions(+), 12 deletions(-)
->> 
->> diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
->> index 992a55e632..ddfa09457a 100644
->> --- a/hw/ppc/amigaone.c
->> +++ b/hw/ppc/amigaone.c
->> @@ -36,10 +36,19 @@
->>    * -device VGA,romfile=VGABIOS-lgpl-latest.bin
->>    * from http://www.nongnu.org/vgabios/ instead.
->>    */
->> -#define PROM_FILENAME "u-boot-amigaone.bin"
->>   #define PROM_ADDR 0xfff00000
->>   #define PROM_SIZE (512 * KiB)
->>   +/* AmigaOS calls this routine from ROM, use this if no firmware loaded 
->> */
->> +static const char dummy_fw[] = {
->> +    0x38, 0x00, 0x00, 0x08, /* li      r0,8 */
->> +    0x7c, 0x09, 0x03, 0xa6, /* mtctr   r0 */
->> +    0x54, 0x63, 0xf8, 0x7e, /* srwi    r3,r3,1 */
->> +    0x42, 0x00, 0xff, 0xfc, /* bdnz    0x8 */
->> +    0x7c, 0x63, 0x18, 0xf8, /* not     r3,r3 */
->> +    0x4e, 0x80, 0x00, 0x20, /* blr */
->> +};
->> +
->>   static void amigaone_cpu_reset(void *opaque)
->>   {
->>       PowerPCCPU *cpu = opaque;
->> @@ -60,8 +69,6 @@ static void amigaone_init(MachineState *machine)
->>       PowerPCCPU *cpu;
->>       CPUPPCState *env;
->>       MemoryRegion *rom, *pci_mem, *mr;
->> -    const char *fwname = machine->firmware ?: PROM_FILENAME;
->> -    char *filename;
->>       ssize_t sz;
->>       PCIBus *pci_bus;
->>       Object *via;
->> @@ -94,20 +101,24 @@ static void amigaone_init(MachineState *machine)
->>       }
->>         /* allocate and load firmware */
->> -    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, fwname);
->> -    if (filename) {
->> -        rom = g_new(MemoryRegion, 1);
->> -        memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
->> -        memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
->> +    rom = g_new(MemoryRegion, 1);
->> +    memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
->> +    memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
->> +    if (!machine->firmware) {
->> +        rom_add_blob_fixed("dummy-fw", dummy_fw, sizeof(dummy_fw),
->> +                           PROM_ADDR + PROM_SIZE - 0x80);
->> +    } else {
->> +        g_autofree char *filename = qemu_find_file(QEMU_FILE_TYPE_BIOS,
->> +                                                   machine->firmware);
->> +        if (!filename) {
->> +            error_report("Could not find firmware '%s'", 
->> machine->firmware);
->> +            exit(1);
->> +        }
->>           sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE);
->>           if (sz <= 0 || sz > PROM_SIZE) {
->>               error_report("Could not load firmware '%s'", filename);
->>               exit(1);
->>           }
->> -        g_free(filename);
->> -    } else if (!qtest_enabled()) {
->> -        error_report("Could not find firmware '%s'", fwname);
->> -        exit(1);
->>       }
->>         /* Articia S */
->
->
->
---3866299591-738657218-1701298147=:24843--
 
