@@ -2,98 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FB67FF806
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 18:19:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 613A47FF80B
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 18:20:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8kfR-0003j5-Gp; Thu, 30 Nov 2023 12:17:37 -0500
+	id 1r8khN-000551-Fs; Thu, 30 Nov 2023 12:19:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8kfP-0003ip-P2
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:17:35 -0500
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1r8khL-00054a-Rs
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:19:35 -0500
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8kfN-0006Ne-NI
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:17:35 -0500
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-50bc59115c2so1736024e87.2
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 09:17:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1r8khK-0006dQ-5W
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:19:35 -0500
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5c632a97786so354759a12.0
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 09:19:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701364650; x=1701969450; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ncJF/tFfi+Vxe0JJs5NOco4mWvPIcg//viVvFk0VtvY=;
- b=M+2yvn0cXzK4R1GpF+b70l323LU6Bp66wlwt4mKfMQ/eK2MFOxrS42aWg1yO1nKt6T
- DgUHolhBa9UaHNc78KMEqnZlFXQjy5yl52ruVuKjA5EsncL2qH/z/Gn/aNChv0YKtm4i
- 9bnnmSCBAploOdvXpPHFP8+Q7VZ1B+tCsifyL1O9Fi35vh1r+aF4Q/B+gx/5FAvR2cXv
- 7HCnHOh17tOeS/l+AMYYJO/MP50pxTUd8ZJICwPx0UuwdfvHUeEzChGE3wrHejIqdB04
- J9caSGGO3fYSyJIpUMgPUkUz+ydLKhQFlQacHX7HIQiWkrrt9gO13D+mI8v8Tcyd27Sj
- HmUA==
+ d=gmail.com; s=20230601; t=1701364772; x=1701969572; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=37m80Sr+MJhJOm8ngATALzjP14GgCjasGIeVOeueyPk=;
+ b=ddsy8EiuH8ZHx7qJ7TDZung8DHWv4rjiDGtDIoyO/2uNLGoH/g6wpO7d8uLUfokV39
+ jqSgkT0QptUQ8pOiw2zjO2/zympdyHnpOtfpwkHV3F4XA+LvRvWiOTDPtVPlW0m49LTy
+ qW4flpR8Eh11VmtFaR1Vzd0LqtSQBX4+28t62p/An1ZbbrkvNCicPefY33USesykQbMk
+ alQ4V/K7AS0+uV9pEpgn3dsWWSyEavmaBuFt+pmTw5m/zI7B7OLMY+FbCvAuAedgzqH5
+ M9GKgOaFKz1m1fRH3RVEOojapSoXFJsfavdv0t0rVTdJSlsLflaAOhTDkptETg+P/iSx
+ G7uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701364650; x=1701969450;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ncJF/tFfi+Vxe0JJs5NOco4mWvPIcg//viVvFk0VtvY=;
- b=YpyZvk3+KsFSWXeFAQ9bEWLhj6ZY9hr7388Gw+5Lio2mOr8nKwlNvW3J9V/U6Qctj1
- aUeahHBVl1XBcj7yccmr2BEEt5KfFgwoIrniCB4vSCFH4wMmtDLqbjiU6pmscJ3f4meb
- vXXFhnPCMIzxr2+JhmNmoocT12PB/d1JG/rV5MqEJ0zsbtoqxJdvnJE1+UEA/peC/ziU
- HhYdTiYJDYqbSNeiXNqUnjadP9KlERLJnJutlzL+gVmhcUlD/Y4BElCf5tfuw6ormVZv
- BgAn7TJYQ04yJ8wEb2jrE5VJ2NZPeZuuuvpPteStjDDD2GcJqE+jepfo3WcP3TZMtbtU
- A++A==
-X-Gm-Message-State: AOJu0YwoZaoASDCFfL8ms36W4tVT4pCVt1VdQ/DYIjt5uVPGor0lNUNk
- vDC0PHplmrCvBuew3ZEyEd5Qv/Q9tgoGyNZYxmD2wg==
-X-Google-Smtp-Source: AGHT+IHyBf4gryM8usvsVL6eA443ep2RuQutoKDbkZG5wHeNkd2kuLvfvE/b9UBAhP595RxEKL/Guw==
-X-Received: by 2002:a17:906:3bc6:b0:a19:83cc:530e with SMTP id
- v6-20020a1709063bc600b00a1983cc530emr52030ejf.11.1701363977149; 
- Thu, 30 Nov 2023 09:06:17 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- t14-20020adfe44e000000b00332cb846f21sm2013005wrm.27.2023.11.30.09.06.15
+ d=1e100.net; s=20230601; t=1701364772; x=1701969572;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=37m80Sr+MJhJOm8ngATALzjP14GgCjasGIeVOeueyPk=;
+ b=oSYy8uvM7GqYg/7putKubYinoh+Q8eI2qQuxs/2RhPI+y3VKvPCe3FNuh/HzDoALOQ
+ ygDPkd/A/mBF3y60K3RwbKN68amx3Dn26ya5DPJYILGjBjBRI0xdbuS7qzixGtHl6Fst
+ qtatMBObsLRUKcn86s63sdO1ZS1cWUPqfdH1vcEIGqQSmsC6jT1XPC5SnfUYRUNCx6eX
+ 2lb0PHMKggi7FS7Y+wLT7065swLxKw3+MtyDWnS9H+4I9QMF04LqYTJZZy0XzzFC3bHe
+ P3o1uAysrB2qE5IZtDuOCNhrOz9DfAHDonWoeJGGWid+FwIMyanQiAMpPSk+DXOiwtvB
+ Auxg==
+X-Gm-Message-State: AOJu0YxEiiuH5pPaA/bulWuwZ8eDOFxy8nMDiOpv+2s+09G+BPfgGDUs
+ SeUc25bVlTS12i7QJ+MkYlFgpzZqFQY=
+X-Google-Smtp-Source: AGHT+IHqUrfh37uC+jl0qJhFl6zlZ60eyvO84DCFGHxr2HybtoWEhBY3EllI3L1sFxlDHK/tuA17bw==
+X-Received: by 2002:a17:90b:1e02:b0:285:adb1:6acb with SMTP id
+ pg2-20020a17090b1e0200b00285adb16acbmr17619791pjb.29.1701364771973; 
+ Thu, 30 Nov 2023 09:19:31 -0800 (PST)
+Received: from octofox.hsd1.ca.comcast.net
+ ([2601:646:a201:19d0:7eb0:c76b:d82c:8f94])
+ by smtp.gmail.com with ESMTPSA id
+ bc3-20020a170902930300b001cc29ffcd96sm1645926plb.192.2023.11.30.09.19.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Nov 2023 09:06:15 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 00C9F5FB51;
- Thu, 30 Nov 2023 16:59:55 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,  Eric Farman <farman@linux.ibm.com>,  Cleber Rosa
- <crosa@redhat.com>,  Andrew Jeffery <andrew@codeconstruct.com.au>,  Wainer
- dos Santos Moschetta <wainersm@redhat.com>,  Philippe =?utf-8?Q?Mathieu-D?=
- =?utf-8?Q?aud=C3=A9?=
- <philmd@linaro.org>,  Yoshinori Sato <ysato@users.sourceforge.jp>,
- =?utf-8?Q?C=C3=A9dric?=
- Le Goater <clg@kaod.org>,  Eric Auger <eric.auger@redhat.com>,
- qemu-arm@nongnu.org,  Halil Pasic <pasic@linux.ibm.com>,  Pavel Dovgalyuk
- <pavel.dovgaluk@ispras.ru>,  Aurelien Jarno <aurelien@aurel32.net>,
- qemu-s390x@nongnu.org,  Beraldo Leal <bleal@redhat.com>,  Joel Stanley
- <joel@jms.id.au>,  Paolo Bonzini <pbonzini@redhat.com>,  Christian
- Borntraeger <borntraeger@linux.ibm.com>,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 2/3] docs/devel: rationalise unstable gitlab tests under
- FLAKY_TESTS
-In-Reply-To: <CAFEAcA91HawkhdxmQmz-+t1favfWmzJCpgAy6xr_1+AEomEXNg@mail.gmail.com>
- (Peter Maydell's message of "Thu, 30 Nov 2023 16:40:06 +0000")
-References: <20231130153333.2424775-1-alex.bennee@linaro.org>
- <20231130153333.2424775-3-alex.bennee@linaro.org>
- <CAFEAcA91HawkhdxmQmz-+t1favfWmzJCpgAy6xr_1+AEomEXNg@mail.gmail.com>
-User-Agent: mu4e 1.11.25; emacs 29.1
-Date: Thu, 30 Nov 2023 16:59:55 +0000
-Message-ID: <87jzpz6ut0.fsf@draig.linaro.org>
+ Thu, 30 Nov 2023 09:19:31 -0800 (PST)
+From: Max Filippov <jcmvbkbc@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 0/2] target/xtensa: use generic instruction breakpoint
+ infrastructure
+Date: Thu, 30 Nov 2023 09:19:18 -0800
+Message-Id: <20231130171920.3798954-1-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x135.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pg1-x533.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,104 +93,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+Hello,
 
-> On Thu, 30 Nov 2023 at 15:33, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
->>
->> It doesn't make sense to have two classes of flaky tests. While it may
->> take the constrained environment of CI to trigger failures easily it
->> doesn't mean they don't occasionally happen on developer machines. As
->> CI is the gating factor to passing there is no point developers
->> running the tests locally anyway unless they are trying to fix things.
->>
->> While we are at it update the language in the docs to discourage the
->> QEMU_TEST_FLAKY_TESTS becoming a permanent solution.
->>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> ---
->>  docs/devel/testing.rst                   | 31 +++++++++++++++---------
->>  tests/avocado/boot_linux.py              |  8 +++---
->>  tests/avocado/boot_linux_console.py      |  5 ++--
->>  tests/avocado/intel_iommu.py             |  5 ++--
->>  tests/avocado/linux_initrd.py            |  5 ++--
->>  tests/avocado/machine_aspeed.py          |  8 +++---
->>  tests/avocado/machine_mips_malta.py      |  8 +++---
->>  tests/avocado/machine_rx_gdbsim.py       |  8 +++---
->>  tests/avocado/machine_s390_ccw_virtio.py |  2 +-
->>  tests/avocado/replay_kernel.py           |  5 ++--
->>  tests/avocado/reverse_debugging.py       | 14 +++++++----
->>  tests/avocado/smmu.py                    |  5 ++--
->>  tests/avocado/tuxrun_baselines.py        |  4 +--
->>  13 files changed, 67 insertions(+), 41 deletions(-)
->>
->> diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
->> index 22218dbedb..579d1837e0 100644
->> --- a/docs/devel/testing.rst
->> +++ b/docs/devel/testing.rst
->> @@ -1371,23 +1371,32 @@ conditions. For example, tests that take longer =
-to execute when QEMU is
->>  compiled with debug flags. Therefore, the ``AVOCADO_TIMEOUT_EXPECTED`` =
-variable
->>  has been used to determine whether those tests should run or not.
->>
->> -GITLAB_CI
->> -^^^^^^^^^
->> -A number of tests are flagged to not run on the GitLab CI. Usually beca=
-use
->> -they proved to the flaky or there are constraints on the CI environment=
- which
->> -would make them fail. If you encounter a similar situation then use that
->> -variable as shown on the code snippet below to skip the test:
->> +QEMU_TEST_FLAKY_TESTS
->> +^^^^^^^^^^^^^^^^^^^^^
->> +Some tests are not working reliably and thus are disabled by default.
->> +This includes tests that don't run reliably on GitLab's CI which
->> +usually expose real issues that are rarely seen on developer machines
->> +due to the constraints of the CI environment. If you encounter a
->> +similar situation then mark the test as shown on the code snippet
->> +below:
->>
->>  .. code::
->>
->> -  @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
->> +  @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on =
-GitLab')
->>    def test(self):
->>        do_something()
->
-> Can we also say here that when marking a test as flaky:
->  * we should raise a github issue giving details of what goes wrong
->  * the URL of that issue should be in a comment above the @skipUnless
->    line ?
->
-> That way we have a history of why we disabled the test and we
-> might even manage to fix it some day, in which case we'll know
-> we are able to unmark it as flaky...
+this series makes target/xtensa use generic instruction breakpoint
+infrastructure removing its use of tb_invalidate_phys_addr. It also adds
+a new TCG test checking relative priority of icount and ibreak exceptions
+for target/xtensa.
 
-Good idea, I'll update.
+Max Filippov (2):
+  target/xtensa: use generic instruction breakpoint infrastructure
+  tests/tcg/xtensa: add icount/ibreak priority test
 
->
->> +To run such tests locally you will need to set the environment
->> +variable. For example:
->> +
->> +.. code::
->> +
->> +   env QEMU_TEST_FLAKY_TESTS=3D1 ./pyvenv/bin/avocado run \
->> +      tests/avocado/boot_linux.py:BootLinuxPPC64.test_pseries_tcg
->
-> The "env" here is unnecessary (assuming a standard Posix shell);
-> "VAR=3Dvalue foo" will run "foo" with VAR set to 'value' only
-> for the duration of that command.
+ target/xtensa/cpu.c           |  1 +
+ target/xtensa/cpu.h           |  4 +++
+ target/xtensa/dbg_helper.c    | 46 +++++++++++++++++++++++------------
+ target/xtensa/helper.c        | 12 +++++++++
+ target/xtensa/translate.c     | 17 -------------
+ tests/tcg/xtensa/test_break.S | 25 ++++++++++++++++++-
+ 6 files changed, 71 insertions(+), 34 deletions(-)
 
-Ahh I habit I've picked up from running a fish shell. Do we want to
-assume everyone's interactive shell is Posix compatible?
+-- 
+2.39.2
 
->
-> thanks
-> -- PMM
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
