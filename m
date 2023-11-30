@@ -2,87 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196857FF841
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 18:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 419277FF8C8
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 18:48:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8kr5-0001Cw-Hm; Thu, 30 Nov 2023 12:29:39 -0500
+	id 1r8l83-0004n7-4L; Thu, 30 Nov 2023 12:47:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8kr3-0001CJ-Gf
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:29:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8l7o-0004mO-0S
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:46:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8kr0-000070-WF
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:29:36 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8l7m-00031L-N7
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 12:46:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701365371;
+ s=mimecast20190719; t=1701366413;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=2syQazUixQ9MRGEWciltuCA7KgWyHKWfewPM6ZmXPj4=;
- b=FKy2OEeW07soO3UiJFW9yoi28Nis8iIpEq3mT7OfuRwU7BJ/r+ay4PTIQG5AjAcS0KskVb
- GtSnEaHFM9wDm66vDylGieCay9b1ZjKcOzXr5/p4ZD8bT6zFvLE1yxMRicCRt7dqXdI2Gg
- NXl1ryYrEXP3zp8ms5tKlYQx1ApGXO8=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=36I5dLdDPjWyeCL12KYtafeS98q0dzJu36IdMWUqn0o=;
+ b=bvgJrwcKkx2UKgM/VFryWSW1jDQVDXjHph0SSdwcD6E95e0RQdTyYFJUHMoFjPGffFfuEp
+ Rbexy3BaYOut5gVG4fGMeZiZvCC77nDilMgbSGBEDnpJnV7bQG/3JViTOpsk4eU9Qykm8w
+ nXvfVTK1vfcbm0GckV/9Vr9KdtqYOrk=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-501-EXgM-7hFNaCgS-a7ZUKmAA-1; Thu, 30 Nov 2023 12:29:29 -0500
-X-MC-Unique: EXgM-7hFNaCgS-a7ZUKmAA-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-77d98b1df76so26833085a.0
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 09:29:29 -0800 (PST)
+ us-mta-674-mPri4f51P1Gx4W6XYs8ZSQ-1; Thu, 30 Nov 2023 12:46:52 -0500
+X-MC-Unique: mPri4f51P1Gx4W6XYs8ZSQ-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-67a06b43afcso3631186d6.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 09:46:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701365369; x=1701970169;
+ d=1e100.net; s=20230601; t=1701366411; x=1701971211;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2syQazUixQ9MRGEWciltuCA7KgWyHKWfewPM6ZmXPj4=;
- b=jluvqXgKP7oGLGqwz7a6aDaeNy+lZBPEXgWpgEcsy1myyyB9MfmCK9RHGay8AWFGm4
- y4FyCJlh/o8xiLO0rnDnWRXLnD64oVtUm7HGTpMbIVjzl/xzklzMa5TTMlCA2V2a//FR
- ViBe3pzEHCUiToLUXbm5++otwnjDO0RECPBDhfbUqoGkQiPGGCb4/cKtGlFYnExRWSJm
- CMXLwLfCWLmcp0xB7V/fW6XxGUeMu+GAdCzTDgxY6B+W0br/M6cWUNEcD+vQXeami3dG
- xQi+WbK5ui8ysxoiG2RUyucV8fNTG9OUzNumFmIvEGwfNuP4D1lRAkuuZpFItBSQZhBk
- Qjmw==
-X-Gm-Message-State: AOJu0YwthaZwTq59LUDgpHfyR1JVSRIFjHvf4OZB36OZWR9Q3RXt5FI3
- I4xhltUvxWpEq1RaPef3X+NtI2ICX+yd/PclaDrno4W9NSvl5qoCMa0u+6EePVJB9HelTJkhLMz
- AJhyf7U70HeYS380=
-X-Received: by 2002:a05:620a:372a:b0:77d:8c81:ea2d with SMTP id
- de42-20020a05620a372a00b0077d8c81ea2dmr21566926qkb.0.1701365369326; 
- Thu, 30 Nov 2023 09:29:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IESWKFJ/OpUIBL90CSTO4eJGiNWnzSnSXO4MNLlkZqCXfDQoSszoBxeAs5QXzVH5OgQwpRC5A==
-X-Received: by 2002:a05:620a:372a:b0:77d:8c81:ea2d with SMTP id
- de42-20020a05620a372a00b0077d8c81ea2dmr21566913qkb.0.1701365369033; 
- Thu, 30 Nov 2023 09:29:29 -0800 (PST)
+ bh=36I5dLdDPjWyeCL12KYtafeS98q0dzJu36IdMWUqn0o=;
+ b=epWdjyQm5AqJ7Ma92KD0/hOK9URLCsNyFhN6KLOG4FF1dWXwlrdVmCuFbD6dZDAoY3
+ ugz0W4JjnO+gKEEpH0cDNB8x5DCN6Vg65QRRm8LYmU+T7Vq5q4JIRHUrwscMkw36TFw3
+ 67irY370A+jTQLLyjEXR1xkcdK9SKdXJf9+WK1auk78RoYC4g/GuJr1NULfmK5Qh/rLf
+ M/9Fv3l0WI8bx1K37telBWlGh6bFg1vIZHXRu2j0r2FuPJC95GN6OdrQQ+m+NqMsy1L9
+ E8H704WJOXb7lf+o8iXgsBPna4Lxy04aJFVk7lbOoX50pl1bENZlSe3TkDATUqKFapDF
+ 15hQ==
+X-Gm-Message-State: AOJu0Yy1uIhaJmlK+VAsqSeq+eFqSi4HQ+PYSIDwFqynjUp46T3QPoG4
+ c9HrpyxfxygrvHdaYVYtqmiBR8T+6phKq8B7lWb9pGRVxZXEXjdThN2CAKqTRzpHdh7OUxZj9Ki
+ 3jKH9g/X5uuZOaLk=
+X-Received: by 2002:ad4:4085:0:b0:67a:1673:fec4 with SMTP id
+ l5-20020ad44085000000b0067a1673fec4mr23023345qvp.2.1701366411714; 
+ Thu, 30 Nov 2023 09:46:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFrwAfPkyoM5agFa8bqH8//SMn/Txut1an3SMNcAFFZOVZCrPk5A8jIwhA4JHR7Kt/V7x+pIQ==
+X-Received: by 2002:ad4:4085:0:b0:67a:1673:fec4 with SMTP id
+ l5-20020ad44085000000b0067a1673fec4mr23023320qvp.2.1701366411412; 
+ Thu, 30 Nov 2023 09:46:51 -0800 (PST)
 Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- e15-20020a37ac0f000000b007659935ce64sm673442qkm.71.2023.11.30.09.29.28
+ ka7-20020a05622a440700b00423f1cc1227sm681028qtb.43.2023.11.30.09.46.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Nov 2023 09:29:28 -0800 (PST)
-Date: Thu, 30 Nov 2023 12:29:26 -0500
+ Thu, 30 Nov 2023 09:46:50 -0800 (PST)
+Date: Thu, 30 Nov 2023 12:46:48 -0500
 From: Peter Xu <peterx@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
- berrange@redhat.com, peter.maydell@linaro.org, farosas@suse.de,
- armbru@redhat.com
-Subject: Re: [PATCH v4] migration: Plug memory leak with migration URIs
-Message-ID: <ZWjGdg-gic-C1PA_@x1n>
-References: <20231129204301.131228-1-het.gala@nutanix.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
+ Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+Subject: Re: [PATCH v3 03/70] RAMBlock/guest_memfd: Enable
+ KVM_GUEST_MEMFD_ALLOW_HUGEPAGE
+Message-ID: <ZWjKiDy3UMq3cRkD@x1n>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-4-xiaoyao.li@intel.com>
+ <bc84fa4f-4866-4321-8f30-1388eed7e64f@redhat.com>
+ <05f0e440-36a2-4d3a-8caa-842b34e50dce@intel.com>
+ <0fbfc413-7c74-4b2a-bade-6f3f04ca82c2@redhat.com>
+ <4708c33a-bb8d-484e-ac7b-b7e8d3ed445a@intel.com>
+ <45d28654-9565-46df-81b9-6563a4aef78c@redhat.com>
+ <ZWixXm-sboNZ-mzG@google.com>
+ <d6bfd8be-7e8c-4a95-9e27-31775f8e352e@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231129204301.131228-1-het.gala@nutanix.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <d6bfd8be-7e8c-4a95-9e27-31775f8e352e@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,39 +118,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 29, 2023 at 08:43:01PM +0000, Het Gala wrote:
-> migrate_uri_parse() allocates memory to 'channel' if the user
-> opts for old syntax - uri, which is leaked because there is no
-> code for freeing 'channel'.
-> So, free channel to avoid memory leak in case where 'channels'
-> is empty and uri parsing is required.
-> 
-> Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp migration flow")
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> Suggested-by: Markus Armbruster <armbru@redhat.com>
+On Thu, Nov 30, 2023 at 05:54:26PM +0100, David Hildenbrand wrote:
+> But likely we want THP support here. Because for hugetlb, one would actually
+> have to instruct the kernel which size to use, like we do for memfd with
+> hugetlb.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+I doubt it, as VM can still leverage larger sizes if possible?
 
-> @@ -533,18 +533,18 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
->              error_setg(errp, "Channel list has more than one entries");
->              return;
->          }
-> -        channel = channels->value;
-> +        addr = channels->value->addr;
->      } else if (uri) {
->          /* caller uses the old URI syntax */
->          if (!migrate_uri_parse(uri, &channel, errp)) {
->              return;
->          }
-> +        addr = channel->addr;
->      } else {
->          error_setg(errp, "neither 'uri' or 'channels' argument are "
->                     "specified in 'migrate-incoming' qmp command ");
->          return;
->      }
-> -    addr = channel->addr;
-
-Why these "addr" lines need change?  Won't that behave the same as before?
+IIUC one of the major challenges of gmem hugepage is how to support
+security features while reusing existing mm infrastructures as much as
+possible.
 
 Thanks,
 
