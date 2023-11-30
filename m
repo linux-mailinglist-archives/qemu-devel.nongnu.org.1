@@ -2,30 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DF67FEFA7
+	by mail.lfdr.de (Postfix) with ESMTPS id C578F7FEFA6
 	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:00:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8gd1-0000QU-QW; Thu, 30 Nov 2023 07:58:51 -0500
+	id 1r8gd5-0000SZ-MP; Thu, 30 Nov 2023 07:58:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org>)
- id 1r8gcp-0000Oq-Dq; Thu, 30 Nov 2023 07:58:39 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1r8gcq-0000P1-1I; Thu, 30 Nov 2023 07:58:40 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org>)
- id 1r8gcn-0007in-1q; Thu, 30 Nov 2023 07:58:39 -0500
+ id 1r8gcm-0007ii-U5; Thu, 30 Nov 2023 07:58:39 -0500
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sgx834Y27z4xWv;
- Thu, 30 Nov 2023 23:58:27 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sgx815VyTz4xhx;
+ Thu, 30 Nov 2023 23:58:25 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sgx701Ypyz4xW7;
- Thu, 30 Nov 2023 23:57:31 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sgx716RjTz4xWv;
+ Thu, 30 Nov 2023 23:57:33 +1100 (AEDT)
 Message-ID: <53cb0a57-d8c4-4c59-b37f-60182410e0cd@kaod.org>
 Date: Thu, 30 Nov 2023 13:57:28 +0100
 MIME-Version: 1.0
@@ -91,15 +90,14 @@ From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
 In-Reply-To: <20231129212625.1051502-2-stefanha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
