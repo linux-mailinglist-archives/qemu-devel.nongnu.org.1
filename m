@@ -2,91 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4FB7FEF7E
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 13:49:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3DF67FEFA7
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:00:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8gSv-0005vc-NL; Thu, 30 Nov 2023 07:48:25 -0500
+	id 1r8gd1-0000QU-QW; Thu, 30 Nov 2023 07:58:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r8gSt-0005us-RF
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 07:48:23 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r8gSs-0005Zj-5C
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 07:48:23 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org>)
+ id 1r8gcp-0000Oq-Dq; Thu, 30 Nov 2023 07:58:39 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org>)
+ id 1r8gcn-0007in-1q; Thu, 30 Nov 2023 07:58:39 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sgx834Y27z4xWv;
+ Thu, 30 Nov 2023 23:58:27 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 10C811FCE6;
- Thu, 30 Nov 2023 12:48:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1701348500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RTuA0vwRJM61+hvnoP8MdxxsojJVxdHRURHd6eKRNXI=;
- b=C/sVKUTSkov48n4XmsDwYxa5K9R2+3uy4IskBU8i++S79PqU/4AbI4gLWA7qvXW8YuWKFQ
- XVAEqmUIsd2sHw6Xj8L1S9fP1iFVe4JDMW6EIi8ZTJFdcnxkhH2VI6ZjFGVUwpMErVs2c1
- m5gLmiRh2v7cnI/gg9kGFajQq1czCXk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1701348500;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RTuA0vwRJM61+hvnoP8MdxxsojJVxdHRURHd6eKRNXI=;
- b=e/lvIcPcjWHPbX/O4yoyyVvQtXxhaYi6ps20QsMhuBJbQ8LwDFOm+7MW7PbAOIZl5xMzoY
- cJIQ86PSkMkNj/Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A850B1342E;
- Thu, 30 Nov 2023 12:48:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id hyj7JZOEaGWzNQAAD6G6ig
- (envelope-from <cfontana@suse.de>); Thu, 30 Nov 2023 12:48:19 +0000
-Message-ID: <3d8bbcc9-89fb-5631-b109-24a9d08da1f5@suse.de>
-Date: Thu, 30 Nov 2023 13:48:19 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sgx701Ypyz4xW7;
+ Thu, 30 Nov 2023 23:57:31 +1100 (AEDT)
+Message-ID: <53cb0a57-d8c4-4c59-b37f-60182410e0cd@kaod.org>
+Date: Thu, 30 Nov 2023 13:57:28 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH] accel: Do not set CPUState::can_do_io in non-TCG accels
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] system/cpus: rename qemu_mutex_lock_iothread() to
+ qemu_bql_lock()
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, kvm@vger.kernel.org
-References: <20231129205037.16849-1-philmd@linaro.org>
-From: Claudio Fontana <cfontana@suse.de>
-In-Reply-To: <20231129205037.16849-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org,
+ Song Gao <gaosong@loongson.cn>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Hyman Huang <yong.huang@smartx.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Artyom Tarasenko
+ <atar4qemu@gmail.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Paul Durrant <paul@xen.org>,
+ Jagannathan Raman <jag.raman@oracle.com>, Juan Quintela
+ <quintela@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, qemu-arm@nongnu.org, Jason Wang
+ <jasowang@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>,
+ Jiri Slaby <jslaby@suse.cz>, Alexander Graf <agraf@csgraf.de>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liwei1518@gmail.com>,
+ Eric Farman <farman@linux.ibm.com>, Stafford Horne <shorne@gmail.com>,
+ David Hildenbrand <david@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ John Snow <jsnow@redhat.com>, Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Michael Roth <michael.roth@amd.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bin Meng <bin.meng@windriver.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org,
+ qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Peter Xu <peterx@redhat.com>, Anthony Perard <anthony.perard@citrix.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-ppc@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Leonardo Bras
+ <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+References: <20231129212625.1051502-1-stefanha@redhat.com>
+ <20231129212625.1051502-2-stefanha@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231129212625.1051502-2-stefanha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -4.10
-X-Spamd-Result: default: False [-4.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[6];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.177,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,77 +115,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
-
-took a quick look with 
-
-grep -R can_do_io
-
-and this seems to be in include/hw/core/cpu.h as well as cpu-common.c,
-
-maybe there is more meat to address to fully solve this?
-
-Before we had stuff for reset in cpu-common.c under a
-if (tcg_enabled()) {
-}
-
-but now we have cpu_exec_reset_hold(),
-should the implementation for tcg of cpu_exec_reset_hold() do that (and potentially other tcg-specific non-arch-specific cpu variables we might need)?
-
-If can_do_io is TCG-specific, maybe the whole field existence / visibility can be conditioned on TCG actually being at least compiled-in?
-This might help find problems of the field being used in the wrong context, by virtue of getting an error when compiling with --disable-tcg for example.
-
-Ciao,
-
-Claudio
-
-
-On 11/29/23 21:50, Philippe Mathieu-Daudé wrote:
-> 'can_do_io' is specific to TCG. Having it set in non-TCG
-> code is confusing, so remove it from QTest / HVF / KVM.
+On 11/29/23 22:26, Stefan Hajnoczi wrote:
+> The Big QEMU Lock (BQL) has many names and they are confusing. The
+> actual QemuMutex variable is called qemu_global_mutex but it's commonly
+> referred to as the BQL in discussions and some code comments. The
+> locking APIs, however, are called qemu_mutex_lock_iothread() and
+> qemu_mutex_unlock_iothread().
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  accel/dummy-cpus.c        | 1 -
->  accel/hvf/hvf-accel-ops.c | 1 -
->  accel/kvm/kvm-accel-ops.c | 1 -
->  3 files changed, 3 deletions(-)
+> The "iothread" name is historic and comes from when the main thread was
+> split into into KVM vcpu threads and the "iothread" (now called the main
+> loop thread). I have contributed to the confusion myself by introducing
+> a separate --object iothread, a separate concept unrelated to the BQL.
 > 
-> diff --git a/accel/dummy-cpus.c b/accel/dummy-cpus.c
-> index b75c919ac3..1005ec6f56 100644
-> --- a/accel/dummy-cpus.c
-> +++ b/accel/dummy-cpus.c
-> @@ -27,7 +27,6 @@ static void *dummy_cpu_thread_fn(void *arg)
->      qemu_mutex_lock_iothread();
->      qemu_thread_get_self(cpu->thread);
->      cpu->thread_id = qemu_get_thread_id();
-> -    cpu->neg.can_do_io = true;
->      current_cpu = cpu;
->  
->  #ifndef _WIN32
-> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-> index abe7adf7ee..2bba54cf70 100644
-> --- a/accel/hvf/hvf-accel-ops.c
-> +++ b/accel/hvf/hvf-accel-ops.c
-> @@ -428,7 +428,6 @@ static void *hvf_cpu_thread_fn(void *arg)
->      qemu_thread_get_self(cpu->thread);
->  
->      cpu->thread_id = qemu_get_thread_id();
-> -    cpu->neg.can_do_io = true;
->      current_cpu = cpu;
->  
->      hvf_init_vcpu(cpu);
-> diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-> index 6195150a0b..f273f415db 100644
-> --- a/accel/kvm/kvm-accel-ops.c
-> +++ b/accel/kvm/kvm-accel-ops.c
-> @@ -36,7 +36,6 @@ static void *kvm_vcpu_thread_fn(void *arg)
->      qemu_mutex_lock_iothread();
->      qemu_thread_get_self(cpu->thread);
->      cpu->thread_id = qemu_get_thread_id();
-> -    cpu->neg.can_do_io = true;
->      current_cpu = cpu;
->  
->      r = kvm_init_vcpu(cpu, &error_fatal);
+> The "iothread" name is no longer appropriate for the BQL. Rename the
+> locking APIs to:
+> - void qemu_bql_lock(void)
+> - void qemu_bql_unlock(void)
+> - bool qemu_bql_locked(void)
+> 
+> There are more APIs with "iothread" in their names. Subsequent patches
+> will rename them. There are also comments and documentation that will be
+> updated in later patches.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
+
 
 
