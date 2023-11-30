@@ -2,84 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E517FF054
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48AA7FF05D
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:41:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8hFB-0008Rj-Kc; Thu, 30 Nov 2023 08:38:17 -0500
+	id 1r8hIJ-0002Ht-MN; Thu, 30 Nov 2023 08:41:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r8hF5-0008Pm-03
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 08:38:12 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1r8hEw-0007Lc-Th
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 08:38:09 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8hI3-0002Ed-1B
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 08:41:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8hI1-0008Ae-Jp
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 08:41:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701351672;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Kawx21l4Sqb97cinJgnCFNHuqemu9NZkb9To8vuw+Sk=;
+ b=YnPMdtZbIkwPqSj08fSvk8yWLGGUoZv4+23ttt7fQoB+eHM/ukJs2lgpumcmIg2wB1l01f
+ udT+/8zp9GT8nEBGxhs87VBRiBmRVoyuPTCCSVcg0M6D61OW+RHfCGPHdh3HVX5JgQjSxO
+ O02SOAm1/ENxdp9IKg64mxUbAp6175c=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-863pm83-OSyMve0bF47UEQ-1; Thu, 30 Nov 2023 08:41:09 -0500
+X-MC-Unique: 863pm83-OSyMve0bF47UEQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id E4E1521AF3;
- Thu, 30 Nov 2023 13:37:59 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 95AC413AB1;
- Thu, 30 Nov 2023 13:37:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id omWqITeQaGXJQgAAD6G6ig
- (envelope-from <cfontana@suse.de>); Thu, 30 Nov 2023 13:37:59 +0000
-Message-ID: <96479d73-b5b0-68da-4ce9-65bbadb0bc56@suse.de>
-Date: Thu, 30 Nov 2023 14:37:55 +0100
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 04429101A594;
+ Thu, 30 Nov 2023 13:41:09 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D678E492BFC;
+ Thu, 30 Nov 2023 13:41:08 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A035821E6A1F; Thu, 30 Nov 2023 14:41:02 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Kevin Wolf <kwolf@redhat.com>,  qemu-devel@nongnu.org,
+ thuth@redhat.com,  philmd@linaro.org,  peter.maydell@linaro.org,  Stefan
+ Hajnoczi <stefanha@redhat.com>
+Subject: Re: [PATCH for-8.2 2/2] string-output-visitor: Support lists for
+ non-integer types
+References: <20231121173416.346610-1-kwolf@redhat.com>
+ <20231121173416.346610-3-kwolf@redhat.com>
+ <87bkbb9yht.fsf@pond.sub.org>
+ <CAJSP0QXsbVV45587ufPM5MFErMQUonHzoCFc2ZzGWJKFqbYN7w@mail.gmail.com>
+Date: Thu, 30 Nov 2023 14:41:02 +0100
+In-Reply-To: <CAJSP0QXsbVV45587ufPM5MFErMQUonHzoCFc2ZzGWJKFqbYN7w@mail.gmail.com>
+ (Stefan Hajnoczi's message of "Thu, 30 Nov 2023 08:21:24 -0500")
+Message-ID: <87fs0n8ikx.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH] accel: Do not set CPUState::can_do_io in non-TCG accels
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, kvm@vger.kernel.org
-References: <20231129205037.16849-1-philmd@linaro.org>
- <3d8bbcc9-89fb-5631-b109-24a9d08da1f5@suse.de>
- <73ca9d6c-62d4-412a-b847-f2c421887e96@linaro.org>
-From: Claudio Fontana <cfontana@suse.de>
-In-Reply-To: <73ca9d6c-62d4-412a-b847-f2c421887e96@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: ++++++
-Authentication-Results: smtp-out1.suse.de; dkim=none;
- dmarc=fail reason="No valid SPF, No valid DKIM" header.from=suse.de
- (policy=none); 
- spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither
- permitted nor denied by domain of cfontana@suse.de)
- smtp.mailfrom=cfontana@suse.de
-X-Rspamd-Server: rspamd2
-X-Spamd-Result: default: False [6.98 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- MIME_GOOD(-0.10)[text/plain]; R_SPF_SOFTFAIL(4.60)[~all:c];
- RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_THREE(0.00)[3];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- MX_GOOD(-0.01)[]; NEURAL_SPAM_LONG(3.19)[0.911];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- R_DKIM_NA(2.20)[]; MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[];
- DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
-X-Spam-Score: 6.98
-X-Rspamd-Queue-Id: E4E1521AF3
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=cfontana@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -63
-X-Spam_score: -6.4
-X-Spam_bar: ------
-X-Spam_report: (-6.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.177,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,58 +86,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/30/23 14:31, Philippe Mathieu-Daudé wrote:
-> Hi Claudio,
-> 
-> On 30/11/23 13:48, Claudio Fontana wrote:
->> Hi Philippe,
->>
->> took a quick look with
->>
->> grep -R can_do_io
->>
->> and this seems to be in include/hw/core/cpu.h as well as cpu-common.c,
->>
->> maybe there is more meat to address to fully solve this?
->>
->> Before we had stuff for reset in cpu-common.c under a
->> if (tcg_enabled()) {
->> }
->>
->> but now we have cpu_exec_reset_hold(),
->> should the implementation for tcg of cpu_exec_reset_hold() do that (and potentially other tcg-specific non-arch-specific cpu variables we might need)?
-> 
-> Later we eventually get there:
-> 
-> diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-> index 9b038b1af5..e2c5cf97dc 100644
-> --- a/accel/tcg/tcg-accel-ops.c
-> +++ b/accel/tcg/tcg-accel-ops.c
-> @@ -89,6 +89,9 @@ static void tcg_cpu_reset_hold(CPUState *cpu)
-> 
->       cpu->accel->icount_extra = 0;
->       cpu->accel->mem_io_pc = 0;
-> +
-> +    qatomic_set(&cpu->neg.icount_decr.u32, 0);
-> +    cpu->neg.can_do_io = true;
->   }
-> 
-> My branch is huge, I'm trying to split it, maybe I shouldn't have
-> sent this single non-TCG patch out of it. I'll Cc you.
+Stefan Hajnoczi <stefanha@gmail.com> writes:
 
-Thanks and congrats for the rework effort there!
-
-Ciao,
-
-Claudio
-
-> 
->> If can_do_io is TCG-specific, maybe the whole field existence / visibility can be conditioned on TCG actually being at least compiled-in?
->> This might help find problems of the field being used in the wrong context, by virtue of getting an error when compiling with --disable-tcg for example.
+> On Thu, 30 Nov 2023 at 08:12, Markus Armbruster <armbru@redhat.com> wrote:
 >>
->> Ciao,
->>
->> Claudio
-> 
+>> I understand Stefan already took this patch.  I'm looking at it anyway,
+>> because experience has taught me to be very afraid of the string
+>> visitors.
+>
+> Hi Markus,
+> I should have waited for your review. Sorry!
+
+No reason to be sorry!  It's a regression, and we're at rc2 already.
 
 
