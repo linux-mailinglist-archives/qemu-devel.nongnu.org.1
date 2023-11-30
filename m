@@ -2,72 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3A27FE985
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 08:11:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FF47FE997
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 08:19:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8bBN-0003nO-BT; Thu, 30 Nov 2023 02:09:57 -0500
+	id 1r8bJJ-0007nX-PV; Thu, 30 Nov 2023 02:18:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8bBK-0003nA-VL
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 02:09:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8bJH-0007lx-PA
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 02:18:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8bBJ-00007Q-3M
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 02:09:54 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8bJF-0001cZ-Dh
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 02:18:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701328191;
+ s=mimecast20190719; t=1701328684;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=B5jMznOcmZIjXjINNROHEylog8pC9eJMqhfpCclJlTg=;
- b=hCmH1EbLPgb0NDrVMByUjxqzA/KAgxbf5Xeuqh0vaAdP+4hoZlEqG3R4Iuu+V+5Qog0N6C
- z6ap8VgvBAXLyBgO+aWVLC2WJIJeq5KcNbPIO/VQNYQZrlptJ7hG8zFi8wgrvwUx6qZqcl
- wyyZhYtrrfRMYsNfmjuamejbd9oAzLI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-IoBmG_6oN6SRy8tOubcJIw-1; Thu,
- 30 Nov 2023 02:09:50 -0500
-X-MC-Unique: IoBmG_6oN6SRy8tOubcJIw-1
+ bh=2p1/yCCqE7V/A9ix7GiHFBqyRKKVluWD2OXS34K6s/4=;
+ b=cWVg8K33PVk7LhWgamcGlvPpSqW34R/YI8pga3l9sSI7VbyDqG14eDWoOdSEA0Es2zQ0qU
+ LC8dpDGJO9T6LDdxWRQxqjujM8+c7nlFuzzvFamioghvChPGfBY9ThkytDF5FMamOOFv9X
+ ZwQtL+ZEfuvSzqxt3nQeWuBFexUN5v0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-faJQaflrONWae7UjryOpGg-1; Thu, 30 Nov 2023 02:17:58 -0500
+X-MC-Unique: faJQaflrONWae7UjryOpGg-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 033BD1C18CCD;
- Thu, 30 Nov 2023 07:09:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AF742811001;
+ Thu, 30 Nov 2023 07:17:56 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9206C40C6EB9;
- Thu, 30 Nov 2023 07:09:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7D59D40C6EB9;
+ Thu, 30 Nov 2023 07:17:55 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 81CFF21E6A1F; Thu, 30 Nov 2023 08:09:48 +0100 (CET)
+ id 90DFA21E6A1F; Thu, 30 Nov 2023 08:17:54 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
- berrange@redhat.com,  peter.maydell@linaro.org,  farosas@suse.de
-Subject: Re: [PATCH v3] migration: free 'channel' after its use in migration.c
-References: <20231129080624.161578-1-het.gala@nutanix.com>
- <87fs0ok9i1.fsf@pond.sub.org>
- <80e9331a-0691-4bd1-8589-a78c2814e627@nutanix.com>
-Date: Thu, 30 Nov 2023 08:09:48 +0100
-In-Reply-To: <80e9331a-0691-4bd1-8589-a78c2814e627@nutanix.com> (Het Gala's
- message of "Thu, 30 Nov 2023 02:07:26 +0530")
-Message-ID: <878r6fg1j7.fsf@pond.sub.org>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org,  Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Fabiano Rosas <farosas@suse.de>,  qemu-s390x@nongnu.org,  Song Gao
+ <gaosong@loongson.cn>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Thomas Huth <thuth@redhat.com>,  Hyman Huang <yong.huang@smartx.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,  David Woodhouse
+ <dwmw2@infradead.org>,  Andrey Smirnov <andrew.smirnov@gmail.com>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Kevin Wolf <kwolf@redhat.com>,  Ilya
+ Leoshkevich <iii@linux.ibm.com>,  Artyom Tarasenko <atar4qemu@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  Max Filippov
+ <jcmvbkbc@gmail.com>,  Alistair Francis <alistair.francis@wdc.com>,  Paul
+ Durrant <paul@xen.org>,  Jagannathan Raman <jag.raman@oracle.com>,  Juan
+ Quintela <quintela@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ qemu-arm@nongnu.org,  Jason Wang <jasowang@redhat.com>,  Gerd Hoffmann
+ <kraxel@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  =?utf-8?Q?Marc-An?=
+ =?utf-8?Q?dr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  BALATON Zoltan <balaton@eik.bme.hu>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,  Elena Ufimtseva
+ <elena.ufimtseva@oracle.com>,  Aurelien Jarno <aurelien@aurel32.net>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,  Roman Bolshakov
+ <rbolshakov@ddn.com>,  Huacai Chen <chenhuacai@kernel.org>,  Fam Zheng
+ <fam@euphon.net>,  Eric Blake <eblake@redhat.com>,  Jiri Slaby
+ <jslaby@suse.cz>,  Alexander Graf <agraf@csgraf.de>,  Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>,  Weiwei Li <liwei1518@gmail.com>,  Eric
+ Farman <farman@linux.ibm.com>,  Stafford Horne <shorne@gmail.com>,  David
+ Hildenbrand <david@redhat.com>,  Markus Armbruster <armbru@redhat.com>,
+ Reinoud Zandijk <reinoud@netbsd.org>,  Palmer Dabbelt
+ <palmer@dabbelt.com>,  Cameron Esfahani <dirty@apple.com>,
+ xen-devel@lists.xenproject.org,  Pavel Dovgalyuk
+ <pavel.dovgaluk@ispras.ru>,  qemu-riscv@nongnu.org,  Aleksandar Rikalo
+ <aleksandar.rikalo@syrmia.com>,  John Snow <jsnow@redhat.com>,  Sunil
+ Muthuswamy <sunilmut@microsoft.com>,  Michael Roth <michael.roth@amd.com>,
+ David Gibson <david@gibson.dropbear.id.au>,  "Michael S. Tsirkin"
+ <mst@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>,  Bin
+ Meng <bin.meng@windriver.com>,  Stefano Stabellini
+ <sstabellini@kernel.org>,  kvm@vger.kernel.org,  qemu-block@nongnu.org,
+ Halil Pasic <pasic@linux.ibm.com>,  Peter Xu <peterx@redhat.com>,
+ Anthony Perard <anthony.perard@citrix.com>,  Harsh Prateek Bora
+ <harshpb@linux.ibm.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  Eduardo
+ Habkost <eduardo@habkost.net>,  Paolo Bonzini <pbonzini@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,  =?utf-8?Q?C?=
+ =?utf-8?Q?=C3=A9dric?= Le
+ Goater <clg@kaod.org>,  qemu-ppc@nongnu.org,  Philippe =?utf-8?Q?Mathieu-?=
+ =?utf-8?Q?Daud=C3=A9?=
+ <philmd@linaro.org>,  Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Nicholas Piggin <npiggin@gmail.com>,  Jiaxun Yang
+ <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH 6/6] Rename "QEMU global mutex" to "BQL" in comments and
+ docs
+References: <20231129212625.1051502-1-stefanha@redhat.com>
+ <20231129212625.1051502-7-stefanha@redhat.com>
+Date: Thu, 30 Nov 2023 08:17:54 +0100
+In-Reply-To: <20231129212625.1051502-7-stefanha@redhat.com> (Stefan Hajnoczi's
+ message of "Wed, 29 Nov 2023 16:26:25 -0500")
+Message-ID: <874jh3g15p.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,126 +130,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
+Stefan Hajnoczi <stefanha@redhat.com> writes:
 
-> On 29/11/23 6:21 pm, Markus Armbruster wrote:
->> I'ld like to suggest a clearer subject:
->>
->>    migration: Plug memory leak with migration URIs
-> Ack. Will update the commit message
->> Het Gala<het.gala@nutanix.com>  writes:
->>
->>> 'channel' in qmp_migrate() and qmp_migrate_incoming() is not
->>> auto-freed. migrate_uri_parse() allocates memory to 'channel' if
->>
->> Not sure we need the first sentence.  QMP commands never free their
->> arguments.
+> The term "QEMU global mutex" is identical to the more widely used Big
+> QEMU Lock ("BQL"). Update the code comments and documentation to use
+> "BQL" instead of "QEMU global mutex".
 >
-> Ack.
->
->>> the user opts for old syntax - uri, which is leaked because there
->>> is no code for freeing 'channel'.
->>> So, free channel to avoid memory leak in case where 'channels'
->>> is empty and uri parsing is required.
->>> Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp
->>> migration flow")
->>>
->>> Signed-off-by: Het Gala<het.gala@nutanix.com>
->>> Suggested-by: Markus Armbruster<armbru@redhat.com>
->>
->> Keep the Fixes: tag on a single line, and next to the other tags:
->>
->>    [...]
->>    is empty and uri parsing is required.
->>
->>    Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp migration flow")
->>    Signed-off-by: Het Gala<het.gala@nutanix.com>
->>    Suggested-by: Markus Armbruster<armbru@redhat.com>
->
-> Ack.
->
-> [...]
->
->>> +        addr = channels->value->addr;
->>>       } else if (uri) {
->>>           /* caller uses the old URI syntax */
->>>           if (!migrate_uri_parse(uri, &channel, errp)) {
->>>               return;
->>>           }
->>> +        addr = channel->addr;
->>>       } else {
->>>           error_setg(errp, "neither 'uri' or 'channels' argument are "
->>>                      "specified in 'migrate' qmp command ");
->>>           return;
->>>       }
->>> -    addr = channel->addr;
->>>         /* transport mechanism not suitable for migration? */
->>>       if (!migration_channels_and_transport_compatible(addr, errp)) {
->>
->> I tested this with an --enable-santizers build.  Before the patch:
->>
->>      $ qemu-system-x86_64 -nodefaults -S -display none -monitor stdio -incoming unix:123
->>      ==3260873==WARNING: ASan doesn't fully support makecontext/swapcontext functions and may produce false positives in some cases!
->>      QEMU 8.1.92 monitor - type 'help' for more information
->>      (qemu) q
->>
->>      =================================================================
->>      ==3260873==ERROR: LeakSanitizer: detected memory leaks
->>
->>      Direct leak of 40 byte(s) in 1 object(s) allocated from:
->>          #0 0x7f0ba08ba097 in calloc (/lib64/libasan.so.8+0xba097)
->>          #1 0x7f0b9f4eb5b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
->>          #2 0x55b446454dbe in migrate_uri_parse ../migration/migration.c:490
->>          #3 0x55b4464557c9 in qemu_start_incoming_migration ../migration/migration.c:539
->>          #4 0x55b446461687 in qmp_migrate_incoming ../migration/migration.c:1734
->>          #5 0x55b4463df1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
->>          #6 0x55b4463e4d8e in qemu_init ../system/vl.c:3753
->>          #7 0x55b446f63ca9 in main ../system/main.c:47
->>          #8 0x7f0b9d04a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
->>
->>      Direct leak of 16 byte(s) in 1 object(s) allocated from:
->>          #0 0x7f0ba08ba097 in calloc (/lib64/libasan.so.8+0xba097)
->>          #1 0x7f0b9f4eb5b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
->>          #2 0x55b4464557c9 in qemu_start_incoming_migration ../migration/migration.c:539
->>          #3 0x55b446461687 in qmp_migrate_incoming ../migration/migration.c:1734
->>          #4 0x55b4463df1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
->>          #5 0x55b4463e4d8e in qemu_init ../system/vl.c:3753
->>          #6 0x55b446f63ca9 in main ../system/main.c:47
->>          #7 0x7f0b9d04a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
->>
->>      Direct leak of 8 byte(s) in 1 object(s) allocated from:
->>          #0 0x7f0ba08bb1a8 in operator new(unsigned long) (/lib64/libasan.so.8+0xbb1a8)
->>          #1 0x7f0b9a9255b7 in _sub_I_65535_0.0 (/lib64/libtcmalloc_minimal.so.4+0xe5b7)
->>
->>      Indirect leak of 48 byte(s) in 1 object(s) allocated from:
->>          #0 0x7f0ba08ba097 in calloc (/lib64/libasan.so.8+0xba097)
->>          #1 0x7f0b9f4eb5b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
->>          #2 0x55b4464557c9 in qemu_start_incoming_migration ../migration/migration.c:539
->>          #3 0x55b446461687 in qmp_migrate_incoming ../migration/migration.c:1734
->>          #4 0x55b4463df1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
->>          #5 0x55b4463e4d8e in qemu_init ../system/vl.c:3753
->>          #6 0x55b446f63ca9 in main ../system/main.c:47
->>          #7 0x7f0b9d04a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
->>
->>      Indirect leak of 4 byte(s) in 1 object(s) allocated from:
->>          #0 0x7f0ba08ba6af in __interceptor_malloc (/lib64/libasan.so.8+0xba6af)
->>          #1 0x7f0b9f4eb128 in g_malloc (/lib64/libglib-2.0.so.0+0x5f128)
->>
->>      SUMMARY: AddressSanitizer: 116 byte(s) leaked in 5 allocation(s).
->
-> curious: how to get this stack trace ? I tried to configure and build qemu with --enable-santizers option, but on running the tests 'make -j test', I see:
->
-> ==226453==LeakSanitizer has encountered a fatal error. ==226453==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1 ==226453==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-I built with
-
-    $ ../configure --disable-werror --target-list=x86_64-softmmu --enable-debug --enable-sanitizers 
-    $ make
-
-then ran the manual test shown above.
-
-"make check" fails differently for me than it does for you.
-
-[...]
+For QAPI
+Acked-by: Markus Armbruster <armbru@redhat.com>
 
 
