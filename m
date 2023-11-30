@@ -2,60 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370117FF61A
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 17:34:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CB67FF671
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 17:42:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8jyT-0004rr-T0; Thu, 30 Nov 2023 11:33:13 -0500
+	id 1r8k6D-0001fg-Rw; Thu, 30 Nov 2023 11:41:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1r8jyP-0004pJ-MS
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 11:33:09 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1r8jyK-0007DK-22
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 11:33:08 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Sh1v36g4Vz6J9fy;
- Fri,  1 Dec 2023 00:32:31 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id C0AAB1404F4;
- Fri,  1 Dec 2023 00:32:54 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 30 Nov
- 2023 16:32:54 +0000
-Date: Thu, 30 Nov 2023 16:32:53 +0000
-To: Davidlohr Bueso <dave@stgolabs.net>
-CC: Hyeonggon Yoo <42.hyeyoo@gmail.com>, Fan Ni <fan.ni@samsung.com>, "Michael
- S . Tsirkin" <mst@redhat.com>, <linux-cxl@lore.kernel.org>,
- <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v1 1/2] hw/cxl/device: read from register values in
- mdev_reg_read()
-Message-ID: <20231130163253.00002140@Huawei.com>
-In-Reply-To: <20231127202702.zkqomoapz2iprpra@offworld>
-References: <20231127105830.2104954-1-42.hyeyoo@gmail.com>
- <20231127105830.2104954-2-42.hyeyoo@gmail.com>
- <20231127202702.zkqomoapz2iprpra@offworld>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r8k67-0001fU-84
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 11:41:07 -0500
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1r8k63-0000Cq-SQ
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 11:41:05 -0500
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2c9b7bd6fffso15809031fa.3
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 08:41:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701362458; x=1701967258; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MsyXXDyAXykqAjb/T5ppI8uWl8n1qg1OdjdBH8wm6vM=;
+ b=etnZl35aFnaZAcfneb/YW7xOjnT6CyYtXonpJxbadm0JJYZoVIG0YzXREDI+xSD30j
+ DIQvG52DUQb9FmkTh/M1HDGsLOa1hveiaVYGouSASysOOaBBVbnSSeT0Qc5NyAPAKCpX
+ IBe1+3ugxnsgk3NISrCNVd5q9gv4uwx4NPQQvSawdDnrljqUqlFVhAKQ0FhGYmSgqROg
+ q93lUGx+ITrHOumDat5YQP05c8fJaJX9EnGYJxuqGMby2tjy+WD8qFIFh861IkZ5G5ks
+ MunR4GHvDlg4xZ0WDN9A8ZXfyE8OL8HcO7OZlo2+3N+4jx7F3qfLDPhTVxmqTKEP/3SI
+ Fsgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701362458; x=1701967258;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MsyXXDyAXykqAjb/T5ppI8uWl8n1qg1OdjdBH8wm6vM=;
+ b=osgg7wXuYj3tK5wIT+vJq/hb6FuOY+SoZXyW42/6mofURm28X9LJ0+vgDoqoI+ED1a
+ EUN8KbrWSBSvikrdehiS+mC3dS0XBrIOXiiUVo7XNjqSU5VoxYZVltwIaekZsiuvdfE9
+ YEbTJz82MZEsLAbV1j5S6QgSPNM+sZAkSQg+XgJGKFKhrvKd7VsdxeTehfAJaBtyqQZb
+ 1YSchpJ5/lXeZZBDk7aPkmeZMrAnMHUTud2fIEgzaRWMSrxMKsisE++7zdxoDUunN5SH
+ 5fx118AckEPh699W57vuVDi4QmCPz06JzInvpdpvejtFGnxu+LIun1aJtoHiOU5NUDHH
+ hZtA==
+X-Gm-Message-State: AOJu0YxQ5Wme8eWsovziHEiLsaL89aRuADF+iF2oklU0y4wuYtWVNPe8
+ XIKDiupxuA44fN4/PcUU98lK0hffq0a0C5EV+hor5NQrAkKiTX8L
+X-Google-Smtp-Source: AGHT+IF3dMS9Rz9iWdac9/jkopgixoCg+pfD2O2LRP9BgWEweDkPEs3TYPbT8vO9wh368SMFVj/Mil+AEPo7wy4CtVU=
+X-Received: by 2002:a05:6402:f19:b0:54b:4067:6278 with SMTP id
+ i25-20020a0564020f1900b0054b40676278mr27922eda.26.1701362418461; Thu, 30 Nov
+ 2023 08:40:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231130153333.2424775-1-alex.bennee@linaro.org>
+ <20231130153333.2424775-3-alex.bennee@linaro.org>
+In-Reply-To: <20231130153333.2424775-3-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 30 Nov 2023 16:40:06 +0000
+Message-ID: <CAFEAcA91HawkhdxmQmz-+t1favfWmzJCpgAy6xr_1+AEomEXNg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] docs/devel: rationalise unstable gitlab tests under
+ FLAKY_TESTS
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>, 
+ Cleber Rosa <crosa@redhat.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Eric Auger <eric.auger@redhat.com>, qemu-arm@nongnu.org, 
+ Halil Pasic <pasic@linux.ibm.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, 
+ Aurelien Jarno <aurelien@aurel32.net>, qemu-s390x@nongnu.org, 
+ Beraldo Leal <bleal@redhat.com>, Joel Stanley <joel@jms.id.au>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x232.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,49 +97,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 27 Nov 2023 12:27:02 -0800
-Davidlohr Bueso <dave@stgolabs.net> wrote:
+On Thu, 30 Nov 2023 at 15:33, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> It doesn't make sense to have two classes of flaky tests. While it may
+> take the constrained environment of CI to trigger failures easily it
+> doesn't mean they don't occasionally happen on developer machines. As
+> CI is the gating factor to passing there is no point developers
+> running the tests locally anyway unless they are trying to fix things.
+>
+> While we are at it update the language in the docs to discourage the
+> QEMU_TEST_FLAKY_TESTS becoming a permanent solution.
+>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> ---
+>  docs/devel/testing.rst                   | 31 +++++++++++++++---------
+>  tests/avocado/boot_linux.py              |  8 +++---
+>  tests/avocado/boot_linux_console.py      |  5 ++--
+>  tests/avocado/intel_iommu.py             |  5 ++--
+>  tests/avocado/linux_initrd.py            |  5 ++--
+>  tests/avocado/machine_aspeed.py          |  8 +++---
+>  tests/avocado/machine_mips_malta.py      |  8 +++---
+>  tests/avocado/machine_rx_gdbsim.py       |  8 +++---
+>  tests/avocado/machine_s390_ccw_virtio.py |  2 +-
+>  tests/avocado/replay_kernel.py           |  5 ++--
+>  tests/avocado/reverse_debugging.py       | 14 +++++++----
+>  tests/avocado/smmu.py                    |  5 ++--
+>  tests/avocado/tuxrun_baselines.py        |  4 +--
+>  13 files changed, 67 insertions(+), 41 deletions(-)
+>
+> diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+> index 22218dbedb..579d1837e0 100644
+> --- a/docs/devel/testing.rst
+> +++ b/docs/devel/testing.rst
+> @@ -1371,23 +1371,32 @@ conditions. For example, tests that take longer t=
+o execute when QEMU is
+>  compiled with debug flags. Therefore, the ``AVOCADO_TIMEOUT_EXPECTED`` v=
+ariable
+>  has been used to determine whether those tests should run or not.
+>
+> -GITLAB_CI
+> -^^^^^^^^^
+> -A number of tests are flagged to not run on the GitLab CI. Usually becau=
+se
+> -they proved to the flaky or there are constraints on the CI environment =
+which
+> -would make them fail. If you encounter a similar situation then use that
+> -variable as shown on the code snippet below to skip the test:
+> +QEMU_TEST_FLAKY_TESTS
+> +^^^^^^^^^^^^^^^^^^^^^
+> +Some tests are not working reliably and thus are disabled by default.
+> +This includes tests that don't run reliably on GitLab's CI which
+> +usually expose real issues that are rarely seen on developer machines
+> +due to the constraints of the CI environment. If you encounter a
+> +similar situation then mark the test as shown on the code snippet
+> +below:
+>
+>  .. code::
+>
+> -  @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
+> +  @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on G=
+itLab')
+>    def test(self):
+>        do_something()
 
-> On Mon, 27 Nov 2023, Hyeonggon Yoo wrote:
-> 
-> >In the current mdev_reg_read() implementation, it consistently returns
-> >that the Media Status is Ready (01b). This was fine until commit
-> >25a52959f99d ("hw/cxl: Add support for device sanitation") because the
-> >media was presumed to be ready.
-> >
-> >However, as per the CXL 3.0 spec "8.2.9.8.5.1 Sanitize (Opcode 4400h)",
-> >during sanitation, the Media State should be set to Disabled (11b). The
-> >mentioned commit correctly sets it to Disabled, but mdev_reg_read()
-> >still returns Media Status as Ready.
-> >
-> >To address this, update mdev_reg_read() to read register values instead
-> >of returning dummy values.
-> >
-> >Fixes: commit 25a52959f99d ("hw/cxl: Add support for device sanitation")
-> >Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>  
-> 
-> Looks good, thanks.
-> 
-> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-> 
-> In addition how about the following to further robustify?
->    - disallow certain incoming cci cmd when media is disabled
->    - deal with memory reads/writes when media is disabled
->    - make __toggle_media() a nop when passed value is already set
->    - play nice with arm64 uses little endian reads and writes (this
->      should be extended to all of mbox/cci of course).
-This one you've lost me on.  Arm64 and x86 both little endian.
+Can we also say here that when marking a test as flaky:
+ * we should raise a github issue giving details of what goes wrong
+ * the URL of that issue should be in a comment above the @skipUnless
+   line ?
 
-If you mean generally harden the code we haven't fixed up for
-big endian systems then fair enough - that indeed needs doing.
-Tricky to be sure we got it all right though unless we have a big
-endian arch to test on...
+That way we have a history of why we disabled the test and we
+might even manage to fix it some day, in which case we'll know
+we are able to unmark it as flaky...
 
-Jonathan
+> +To run such tests locally you will need to set the environment
+> +variable. For example:
+> +
+> +.. code::
+> +
+> +   env QEMU_TEST_FLAKY_TESTS=3D1 ./pyvenv/bin/avocado run \
+> +      tests/avocado/boot_linux.py:BootLinuxPPC64.test_pseries_tcg
 
+The "env" here is unnecessary (assuming a standard Posix shell);
+"VAR=3Dvalue foo" will run "foo" with VAR set to 'value' only
+for the duration of that command.
+
+thanks
+-- PMM
 
