@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20057FF200
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:34:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F9C7FF24D
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 15:38:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8i5e-0002JO-AB; Thu, 30 Nov 2023 09:32:30 -0500
+	id 1r8i5m-0002i9-Rh; Thu, 30 Nov 2023 09:32:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8i5c-0002Ce-MQ; Thu, 30 Nov 2023 09:32:28 -0500
+ id 1r8i5j-0002di-VH; Thu, 30 Nov 2023 09:32:35 -0500
 Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1r8i5Z-00018C-R6; Thu, 30 Nov 2023 09:32:28 -0500
+ id 1r8i5i-00018C-8E; Thu, 30 Nov 2023 09:32:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701354745; x=1732890745;
+ t=1701354754; x=1732890754;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zcorAWDLgR7QueFdQsmIMfIxo58a5rqxmGG3Y6CdsHI=;
- b=BHQusIU/dLjU7NIEFO13j/KoSWNdsI89J3t8B9uBenczJR1PmTV8FBLm
- E+ahwlmHKBlzwa/iZqQxhUBjic7ds+AAPrO9R5H+q7O77VBGHJjTmswfd
- BTEbjWhbo3q3CqVZbQ4XINjGAu8BO549AFEZlGI3g6yCFb/bx6VvpMmUG
- cXpnY2RuaT07IlBdECwHVDfU+VbKPQGxfth0hudjh4wLdyASHe9LXoswi
- QJc1MBj7MaPiD/Oq6G7ODk4xQLtt73mMyalO6wxMisttEb8xw4F/xnPU6
- 6+8cg7H5cXSIcLhjUFbW2W1vKgDlbk2VKCyytVbSo8u6zagME+9U3J5ZQ A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="479531490"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="479531490"
+ bh=rfkBnAETWygr5TaDQC+NvTNqfHDXa5mpCuKsaH8rIdY=;
+ b=Ag1XePDD2FePUzSKmuUDpE7NF4gT9yhn41TTfIMQ4aTp0bfemOeaE+B/
+ 9cvZUJiAZWbnvVhF3XG+topf0XVoZA98fk3uBeZk2Nzso4Li3BKpAEVJz
+ RL6vEqgsFeuH+rza1o54AwS/r0gv0Fuia6rzbZAvZMsK2N60Qv3nyNk0b
+ uwURKY9ChtNgvA7tYOWWiOU6dEX4BgMFNnPomTFcobqxyIjTpSJTiACX8
+ L5jRn99Mg8TGH0KEfrKXuna7B7Tw5le/iNU6EJobWWhqlxLdzM/hvshPy
+ b6Vu4serM+JI3fWRftm/YSblHc04uI613usQYkthJ359MhteMaVfUXO+H Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="479531551"
+X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="479531551"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Nov 2023 06:31:58 -0800
+ 30 Nov 2023 06:32:08 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="942729745"
-X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="942729745"
+X-IronPort-AV: E=McAfee;i="6600,9927,10910"; a="942729798"
+X-IronPort-AV: E=Sophos;i="6.04,239,1695711600"; d="scan'208";a="942729798"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orsmga005.jf.intel.com with ESMTP; 30 Nov 2023 06:31:48 -0800
+ by orsmga005.jf.intel.com with ESMTP; 30 Nov 2023 06:31:58 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -70,9 +70,10 @@ Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
  Thomas Huth <thuth@redhat.com>, Zhiyuan Lv <zhiyuan.lv@intel.com>,
  Zhenyu Wang <zhenyu.z.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 09/41] hw/core/topo: Support topology index for topology device
-Date: Thu, 30 Nov 2023 22:41:31 +0800
-Message-Id: <20231130144203.2307629-10-zhao1.liu@linux.intel.com>
+Subject: [RFC 10/41] hw/core/topo: Add virtual method to update topology info
+ for parent
+Date: Thu, 30 Nov 2023 22:41:32 +0800
+Message-Id: <20231130144203.2307629-11-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
 References: <20231130144203.2307629-1-zhao1.liu@linux.intel.com>
@@ -104,159 +105,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Topology index is used to identify the topology child under the same
-parent topology device.
+When a new topology device is inserted into the topology tree,
+its'parents (including non-direct parent) need to update topology
+information.
 
-This field corresponds to the topology sub index (e.g., socket-id/
-core-id/thread-id) used for addressing.
+Add the virtual method to help parents on topology tree update
+topology information statistics.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/core/cpu-topo.c         | 77 ++++++++++++++++++++++++++++++++++++++
- include/hw/core/cpu-topo.h |  6 +++
- 2 files changed, 83 insertions(+)
+ hw/core/cpu-topo.c         | 20 ++++++++++++++++++++
+ include/hw/core/cpu-topo.h |  4 ++++
+ 2 files changed, 24 insertions(+)
 
 diff --git a/hw/core/cpu-topo.c b/hw/core/cpu-topo.c
-index 4428b979a5dc..3e0c183388d8 100644
+index 3e0c183388d8..e244f0a3564e 100644
 --- a/hw/core/cpu-topo.c
 +++ b/hw/core/cpu-topo.c
-@@ -50,6 +50,66 @@ static const char *cpu_topo_level_to_string(CPUTopoLevel level)
-     return NULL;
+@@ -154,6 +154,20 @@ static void cpu_topo_build_hierarchy(CPUTopoState *topo, Error **errp)
+     cpu_topo_refresh_free_child_index(parent);
  }
  
-+static void cpu_topo_refresh_free_child_index(CPUTopoState *topo)
++static void cpu_topo_update_info(CPUTopoState *topo, bool is_realize)
 +{
-+    CPUTopoState *child;
++    CPUTopoState *parent = topo->parent;
++    CPUTopoClass *tc;
 +
-+    /*
-+     * Fast way: Assume that the index grows sequentially and that there
-+     * are no "index hole" in the previous children.
-+     *
-+     * The previous check on num_children ensures that free_child_index + 1
-+     * does not hit the max_children limit.
-+     */
-+    if (topo->free_child_index + 1 == topo->num_children) {
-+        topo->free_child_index++;
-+        return;
-+    }
-+
-+    /* Slow way: Search the "index hole". The index hole must be found. */
-+    for (int index = 0; index < topo->num_children; index++) {
-+        bool existed = false;
-+
-+        QTAILQ_FOREACH(child, &topo->children, sibling) {
-+            if (child->index == index) {
-+                existed = true;
-+                break;
-+            }
++    while (parent) {
++        tc = CPU_TOPO_GET_CLASS(parent);
++        if (tc->update_topo_info) {
++            tc->update_topo_info(parent, topo, is_realize);
 +        }
-+
-+        if (!existed) {
-+            topo->free_child_index = index;
-+            return;
-+        }
++        parent = parent->parent;
 +    }
 +}
 +
-+static void cpu_topo_validate_index(CPUTopoState *topo, Error **errp)
-+{
-+    CPUTopoState *parent = topo->parent, *child;
-+
-+    if (topo->index < 0) {
-+        error_setg(errp, "Invalid topology index (%d).",
-+                   topo->index);
-+        return;
-+    }
-+
-+    if (parent->max_children && topo->index >= parent->max_children) {
-+        error_setg(errp, "Invalid topology index (%d): "
-+                   "The maximum index is %d.",
-+                   topo->index, parent->max_children);
-+        return;
-+    }
-+
-+    QTAILQ_FOREACH(child, &topo->children, sibling) {
-+        if (child->index == topo->index) {
-+            error_setg(errp, "Duplicate topology index (%d)",
-+                       topo->index);
-+            return;
-+        }
-+    }
-+}
-+
- static void cpu_topo_build_hierarchy(CPUTopoState *topo, Error **errp)
+ static void cpu_topo_set_parent(CPUTopoState *topo, Error **errp)
  {
-     CPUTopoState *parent = topo->parent;
-@@ -80,7 +140,18 @@ static void cpu_topo_build_hierarchy(CPUTopoState *topo, Error **errp)
-     }
+     Object *obj = OBJECT(topo);
+@@ -178,6 +192,11 @@ static void cpu_topo_set_parent(CPUTopoState *topo, Error **errp)
  
-     parent->num_children++;
-+    if (topo->index == UNASSIGNED_TOPO_INDEX) {
-+        topo->index = parent->free_child_index;
-+    } else if (topo->index != parent->free_child_index) {
-+        /* The index has been set, then we need to validate it. */
-+        cpu_topo_validate_index(topo, errp);
+     if (topo->parent) {
+         cpu_topo_build_hierarchy(topo, errp);
 +        if (*errp) {
 +            return;
 +        }
-+    }
 +
-     QTAILQ_INSERT_TAIL(&parent->children, topo, sibling);
-+    cpu_topo_refresh_free_child_index(parent);
++        cpu_topo_update_info(topo, true);
+     }
  }
  
- static void cpu_topo_set_parent(CPUTopoState *topo, Error **errp)
-@@ -135,6 +206,10 @@ static void cpu_topo_destroy_hierarchy(CPUTopoState *topo)
+@@ -203,6 +222,7 @@ static void cpu_topo_destroy_hierarchy(CPUTopoState *topo)
+         return;
+     }
+ 
++    cpu_topo_update_info(topo, false);
      QTAILQ_REMOVE(&parent->children, topo, sibling);
      parent->num_children--;
  
-+    if (topo->index < parent->free_child_index) {
-+        parent->free_child_index = topo->index;
-+    }
-+
-     if (!parent->num_children) {
-         parent->child_level = CPU_TOPO_UNKNOWN;
-     }
-@@ -180,6 +255,8 @@ static void cpu_topo_instance_init(Object *obj)
-     CPUTopoState *topo = CPU_TOPO(obj);
-     QTAILQ_INIT(&topo->children);
- 
-+    topo->index = UNASSIGNED_TOPO_INDEX;
-+    topo->free_child_index = 0;
-     topo->child_level = CPU_TOPO_UNKNOWN;
- }
- 
 diff --git a/include/hw/core/cpu-topo.h b/include/hw/core/cpu-topo.h
-index ebcbdd854da5..c0dfff9dc63b 100644
+index c0dfff9dc63b..79cd8606feca 100644
 --- a/include/hw/core/cpu-topo.h
 +++ b/include/hw/core/cpu-topo.h
-@@ -24,6 +24,8 @@
- #include "hw/qdev-core.h"
- #include "qemu/queue.h"
- 
-+#define UNASSIGNED_TOPO_INDEX -1
-+
- typedef enum CPUTopoLevel {
-     CPU_TOPO_UNKNOWN,
-     CPU_TOPO_THREAD,
-@@ -53,6 +55,8 @@ struct CPUTopoClass {
- 
+@@ -44,6 +44,8 @@ OBJECT_DECLARE_TYPE(CPUTopoState, CPUTopoClass, CPU_TOPO)
  /**
-  * CPUTopoState:
-+ * @index: Topology index within parent's topology queue.
-+ * @free_child_index: Cached free index to be specified for next child.
-  * @num_children: Number of topology children under this topology device.
-  * @max_children: Maximum number of children allowed to be inserted under
-  *     this topology device.
-@@ -66,6 +70,8 @@ struct CPUTopoState {
-     DeviceState parent_obj;
+  * CPUTopoClass:
+  * @level: Topology level for this CPUTopoClass.
++ * @update_topo_info: Method to update topology information statistics when
++ *     new child (including direct child and non-direct child) is added.
+  */
+ struct CPUTopoClass {
+     /*< private >*/
+@@ -51,6 +53,8 @@ struct CPUTopoClass {
  
      /*< public >*/
-+    int index;
-+    int free_child_index;
-     int num_children;
-     int max_children;
-     CPUTopoLevel child_level;
+     CPUTopoLevel level;
++    void (*update_topo_info)(CPUTopoState *parent, CPUTopoState *child,
++                             bool is_realize);
+ };
+ 
+ /**
 -- 
 2.34.1
 
