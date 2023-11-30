@@ -2,86 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296AB7FFDB6
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 22:40:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 124637FFDBC
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 22:41:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8olO-0001xI-Ka; Thu, 30 Nov 2023 16:40:02 -0500
+	id 1r8ome-0003Ac-5D; Thu, 30 Nov 2023 16:41:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r8olM-0001vv-He
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 16:40:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r8omb-00039R-ED; Thu, 30 Nov 2023 16:41:17 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r8olC-0001En-8j
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 16:40:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701380389;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yJx77l9Qm/nY+elC71n/KnbdxOWlhoVS1buECAHBREs=;
- b=LFs3gQsnX48M6RwN9XBt7RhQN+Hg6oEP6rb9Fd8EMyKFFNdJSqyReFRQv7I7NUzx+XULwW
- +Jy3o/CVjC/ziPk184/L/DTCQ4IVW6/9Wpg7n/xPSAdW0a4yN6ToX8midsH/GsZN3/wt6V
- oz4slgKnvjEp3lfa9aR2EfegAcj1Pwk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-408-HAPuHUsKOV6zC7w_7qgJMg-1; Thu,
- 30 Nov 2023 16:39:46 -0500
-X-MC-Unique: HAPuHUsKOV6zC7w_7qgJMg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9BA1E3C000A9;
- Thu, 30 Nov 2023 21:39:45 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.190])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C8DEB1C060AE;
- Thu, 30 Nov 2023 21:39:42 +0000 (UTC)
-Date: Thu, 30 Nov 2023 15:39:41 -0600
-From: Eric Blake <eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r8omZ-0001eG-95; Thu, 30 Nov 2023 16:41:17 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4629E75A4C4;
+ Thu, 30 Nov 2023 22:41:11 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id wx21V_Q-LTE0; Thu, 30 Nov 2023 22:41:09 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 4F947756094; Thu, 30 Nov 2023 22:41:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4B666756066;
+ Thu, 30 Nov 2023 22:41:09 +0100 (CET)
+Date: Thu, 30 Nov 2023 22:41:09 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, 
- Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Alberto Garcia <berto@igalia.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>, 
- John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
- Wen Congyang <wencongyang2@huawei.com>, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, 
- Coiby Xu <Coiby.Xu@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Xie Changlong <xiechanglong.d@gmail.com>, Ari Sundholm <ari@tuxera.com>, 
- Li Zhijian <lizhijian@fujitsu.com>, Cleber Rosa <crosa@redhat.com>, 
- Juan Quintela <quintela@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Jason Wang <jasowang@redhat.com>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Zhang Chen <chen.zhang@intel.com>, Peter Xu <peterx@redhat.com>, 
- Anthony Perard <anthony.perard@citrix.com>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- Leonardo Bras <leobras@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Fam Zheng <fam@euphon.net>, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 07/12] aio-wait: draw equivalence between
- AIO_WAIT_WHILE() and AIO_WAIT_WHILE_UNLOCKED()
-Message-ID: <y6j7swfr36mmzdoq4ajc3ptmqf5kamptc3wfdyjcuxkk5lbwxk@uqmvf674x7p7>
-References: <20231129195553.942921-1-stefanha@redhat.com>
- <20231129195553.942921-8-stefanha@redhat.com>
+cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org, 
+ Jean-Christophe Dubois <jcd@tribudubois.net>, 
+ Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org, 
+ Song Gao <gaosong@loongson.cn>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Thomas Huth <thuth@redhat.com>, Hyman Huang <yong.huang@smartx.com>, 
+ Marcelo Tosatti <mtosatti@redhat.com>, 
+ David Woodhouse <dwmw2@infradead.org>, 
+ Andrey Smirnov <andrew.smirnov@gmail.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>, 
+ Ilya Leoshkevich <iii@linux.ibm.com>, 
+ Artyom Tarasenko <atar4qemu@gmail.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Max Filippov <jcmvbkbc@gmail.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Paul Durrant <paul@xen.org>, 
+ Jagannathan Raman <jag.raman@oracle.com>, 
+ Juan Quintela <quintela@redhat.com>, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
+ qemu-arm@nongnu.org, Jason Wang <jasowang@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
+ Aurelien Jarno <aurelien@aurel32.net>, 
+ Hailiang Zhang <zhanghailiang@xfusion.com>, 
+ Roman Bolshakov <rbolshakov@ddn.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>, 
+ Jiri Slaby <jslaby@suse.cz>, Alexander Graf <agraf@csgraf.de>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Eric Farman <farman@linux.ibm.com>, Stafford Horne <shorne@gmail.com>, 
+ David Hildenbrand <david@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, 
+ Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org, 
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org, 
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
+ John Snow <jsnow@redhat.com>, Sunil Muthuswamy <sunilmut@microsoft.com>, 
+ Michael Roth <michael.roth@amd.com>, 
+ David Gibson <david@gibson.dropbear.id.au>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Bin Meng <bin.meng@windriver.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org, 
+ qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>, 
+ Anthony Perard <anthony.perard@citrix.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ Leonardo Bras <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH 1/6] system/cpus: rename qemu_mutex_lock_iothread() to
+ qemu_bql_lock()
+In-Reply-To: <20231130204325.GE1184658@fedora>
+Message-ID: <2e5f3da3-958e-fed3-5e15-0e9aa09159e1@eik.bme.hu>
+References: <20231129212625.1051502-1-stefanha@redhat.com>
+ <20231129212625.1051502-2-stefanha@redhat.com> <ZWjr0TKxihlpd1jm@x1n>
+ <20231130204325.GE1184658@fedora>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231129195553.942921-8-stefanha@redhat.com>
-User-Agent: NeoMutt/20231103
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,23 +117,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 29, 2023 at 02:55:48PM -0500, Stefan Hajnoczi wrote:
-> Now that the AioContext lock no longer exists, AIO_WAIT_WHILE() and
-> AIO_WAIT_WHILE_UNLOCKED() are equivalent.
-> 
-> A future patch will get rid of AIO_WAIT_WHILE_UNLOCKED().
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->  include/block/aio-wait.h | 16 ++++------------
->  1 file changed, 4 insertions(+), 12 deletions(-)
+On Thu, 30 Nov 2023, Stefan Hajnoczi wrote:
+
+> On Thu, Nov 30, 2023 at 03:08:49PM -0500, Peter Xu wrote:
+>> On Wed, Nov 29, 2023 at 04:26:20PM -0500, Stefan Hajnoczi wrote:
+>>> The Big QEMU Lock (BQL) has many names and they are confusing. The
+>>> actual QemuMutex variable is called qemu_global_mutex but it's commonly
+>>> referred to as the BQL in discussions and some code comments. The
+>>> locking APIs, however, are called qemu_mutex_lock_iothread() and
+>>> qemu_mutex_unlock_iothread().
+>>>
+>>> The "iothread" name is historic and comes from when the main thread was
+>>> split into into KVM vcpu threads and the "iothread" (now called the main
+>>> loop thread). I have contributed to the confusion myself by introducing
+>>> a separate --object iothread, a separate concept unrelated to the BQL.
+>>>
+>>> The "iothread" name is no longer appropriate for the BQL. Rename the
+>>> locking APIs to:
+>>> - void qemu_bql_lock(void)
+>>> - void qemu_bql_unlock(void)
+>>> - bool qemu_bql_locked(void)
+>>>
+>>> There are more APIs with "iothread" in their names. Subsequent patches
+>>> will rename them. There are also comments and documentation that will be
+>>> updated in later patches.
+>>>
+>>> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+>>
+>> Acked-by: Peter Xu <peterx@redhat.com>
+>>
+>> Two nickpicks:
+>>
+>>   - BQL contains "QEMU" as the 2nd character, so maybe easier to further
+>>     rename qemu_bql into bql_?
 >
+> Philippe wondered whether the variable name should end with _mutex (or
+> _lock is common too), so an alternative might be big_qemu_lock. That's
+> imperfect because it doesn't start with the usual qemu_ prefix.
+> qemu_big_lock is better in that regard but inconsistent with our BQL
+> abbreviation.
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+BQL isn't very specific for those unfamiliar with the code but it's short 
+and already used and known by people so I'm OK with qemu_bql with some 
+comments and docs explainig here and there what bql stands for should be 
+enough for new people to quickly find out. If we want to be more verbose 
+how about "qemu_global_mutex" which is self describing but longer and does 
+not resemble BQL so then comments may be needed to explain this is what 
+was called BQL as well. I don't mind either way though.
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Regards,
+BALATON Zoltan
 
+> I don't like putting an underscore at the end. It's unusual and would
+> make me wonder what that means.
+>
+> Naming is hard, but please discuss and I'm open to change to BQL
+> variable's name to whatever we all agree on.
+>
+>>
+>>   - Could we keep the full spell of BQL at some places, so people can still
+>>     reference it if not familiar?  IIUC most of the BQL helpers will root
+>>     back to the major three functions (_lock, _unlock, _locked), perhaps
+>>     add a comment of "BQL stands for..." over these three functions as
+>>     comment?
+>
+> Yes, I'll update the doc comments to say "Big QEMU Lock (BQL)" for each
+> of these functions.
+>
+> Stefan
+>
 
