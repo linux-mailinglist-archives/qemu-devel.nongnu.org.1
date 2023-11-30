@@ -2,56 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AD97FEFE9
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:19:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AACEB7FEFF2
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:21:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8gvx-0008E2-Jr; Thu, 30 Nov 2023 08:18:25 -0500
+	id 1r8gyP-00011x-PO; Thu, 30 Nov 2023 08:20:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r8gvt-0008CG-PZ; Thu, 30 Nov 2023 08:18:21 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org>)
+ id 1r8gyJ-000108-Hn; Thu, 30 Nov 2023 08:20:51 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1r8gvs-0003CC-4k; Thu, 30 Nov 2023 08:18:21 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 2AD3275A4C4;
- Thu, 30 Nov 2023 14:18:18 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id T_wA2zeOEYia; Thu, 30 Nov 2023 14:18:16 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4063975A4C3; Thu, 30 Nov 2023 14:18:16 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3E4D075A4C7;
- Thu, 30 Nov 2023 14:18:16 +0100 (CET)
-Date: Thu, 30 Nov 2023 14:18:16 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, philmd@linaro.org
-Subject: Re: [PATCH v3] ppc/amigaone: Allow running AmigaOS without firmware
- image
-In-Reply-To: <CXC3H0PGQZEG.1QL49XWJNHLL6@wheely>
-Message-ID: <4299c2d3-3321-b551-4627-573bcb3c769d@eik.bme.hu>
-References: <20231128013253.80524756078@zero.eik.bme.hu>
- <8df98507-3b2f-426e-ab25-f571f06c769b@kaod.org>
- <356aadfe-98d6-1b31-46e1-4d01ceedd477@eik.bme.hu>
- <CXC3H0PGQZEG.1QL49XWJNHLL6@wheely>
+ (Exim 4.90_1) (envelope-from <SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org>)
+ id 1r8gyG-0003hC-KZ; Thu, 30 Nov 2023 08:20:51 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sgxdj5bkSz4xjY;
+ Fri,  1 Dec 2023 00:20:41 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sgxck69gcz4xW7;
+ Fri,  1 Dec 2023 00:19:50 +1100 (AEDT)
+Message-ID: <f9b6941c-15b9-40ec-bc17-a154678d1a1c@kaod.org>
+Date: Thu, 30 Nov 2023 14:19:44 +0100
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-494487108-1701350296=:60650"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/6] qemu/main-loop: rename qemu_cond_wait_iothread() to
+ qemu_cond_wait_bql()
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org,
+ Song Gao <gaosong@loongson.cn>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Hyman Huang <yong.huang@smartx.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Artyom Tarasenko
+ <atar4qemu@gmail.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Paul Durrant <paul@xen.org>,
+ Jagannathan Raman <jag.raman@oracle.com>, Juan Quintela
+ <quintela@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, qemu-arm@nongnu.org, Jason Wang
+ <jasowang@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>,
+ Jiri Slaby <jslaby@suse.cz>, Alexander Graf <agraf@csgraf.de>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liwei1518@gmail.com>,
+ Eric Farman <farman@linux.ibm.com>, Stafford Horne <shorne@gmail.com>,
+ David Hildenbrand <david@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ John Snow <jsnow@redhat.com>, Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Michael Roth <michael.roth@amd.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bin Meng <bin.meng@windriver.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org,
+ qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Peter Xu <peterx@redhat.com>, Anthony Perard <anthony.perard@citrix.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-ppc@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Leonardo Bras
+ <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+References: <20231129212625.1051502-1-stefanha@redhat.com>
+ <20231129212625.1051502-4-stefanha@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231129212625.1051502-4-stefanha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,52 +116,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 11/29/23 22:26, Stefan Hajnoczi wrote:
+> The name "iothread" is overloaded. Use the term Big QEMU Lock (BQL)
+> instead, it is already widely used and unambiguous.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
---3866299591-494487108-1701350296=:60650
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
 
-On Thu, 30 Nov 2023, Nicholas Piggin wrote:
-> On Thu Nov 30, 2023 at 8:49 AM AEST, BALATON Zoltan wrote:
->> On Tue, 28 Nov 2023, Cédric Le Goater wrote:
->>> On 11/28/23 02:32, BALATON Zoltan wrote:
->>>> The machine uses a modified U-Boot under GPL license but the sources
->>>> of it are lost with only a binary available so it cannot be included
->>>> in QEMU. Allow running without the firmware image which can be used
->>>> when calling a boot loader directly and thus simplifying booting
->>>> guests. We need a small routine that AmigaOS calls from ROM which is
->>>> added in this case to allow booting AmigaOS without external firmware
->>>> image.
->>>>
->>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>>
->>> Since this is 8.2 material :
->>>
->>>
->>> Fixes: d9656f860a38 ("hw/ppc: Add emulation of AmigaOne XE board")
->>
->> This has missed rc2 but I hope there still will be a pull request before
->> rc3 which is the last chance now. I've sent a v4 which simpilifies the
->
-> Sigh, yes a few hiccups but I will send a PR with your v3 and a SLOF
-> update.
->
->> inserted code as I've found there's no need to do it like in the rom as
->> the only place it's called from just cares about the result.
->>
->> I forgot the Fixes tag again, sorry, but the one above is still the same.
->
-> That's okay I added it. I'll just keep v3 since I have done some
-> tests with it. If it matches the the old rom then it seems like
-> a good starting point anyway, can always patch it later.
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-The only change is the code in it so it should not change any test results 
-but v3 could work too, it just now seems unnecessary to include that much 
-code when the short version is the same. Anyway, eiher v3 or v4 is OK.
+Thanks,
 
-Regards,
-BALATON Zoltan
---3866299591-494487108-1701350296=:60650--
+C.
+
+
+
 
