@@ -2,85 +2,157 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2374B7FFBBA
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 20:46:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3AA7FFB23
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 20:21:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8mzZ-000445-4U; Thu, 30 Nov 2023 14:46:33 -0500
+	id 1r8mb3-0004fK-HB; Thu, 30 Nov 2023 14:21:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8mzS-00041o-Su
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:46:26 -0500
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8mzR-0007Jy-Dp
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:46:26 -0500
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2c9b8aa4fc7so17751431fa.1
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 11:46:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701373583; x=1701978383; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=P5jaemYcRn4/pBqbCndudYBCVOJZzXayR/s1I9ImqWI=;
- b=oEDK7ylhbTeLgF+JYaNNhxqHc0ySUckVbsP9Trblnropkf5wJaLOoQthRgSCBcInUn
- YymUfFGqIPcmcUoiL8U9mfkt0PTdlB7HUHsfVS1hmHB7jdF5gopWB25WhETv/Bx4/bKI
- 8gX46rLT+1cd6L56czsw/uUs/JnhxXKATfWiZaH1frwkSOB0kLzDRyRcoElc+iTCGoMq
- wrNCqMYroKOUCOTUsTobFjFzxDbflts0xAeyuikEsN0GAwV8LHiABovkB5XUJeKA5jey
- zOrdfrZ97kyCvSelpzgthPcLKL9UrAKxfKigea4/eiyL/kwWGxX/Lu/ynuiQGGeLiaGZ
- pGCg==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r8mb0-0004eo-TE
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:21:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1r8maw-0002fi-FH
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:21:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701372061;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=afJtp1/bOi8OTWHw9YFIvYdMpw6OpEAY6Zj/UXKihoM=;
+ b=fFnb/wBuT25MTamAImmn7B71pdI/TLHNx1qzLnfTD8GCa9gxW7C4BTEkyK1aEEWS+Nb89H
+ ziwTaQKA3rw3YCKg015aoHeSQjRxojf9q2bTca9AHvJV1uCiu4Mm1eFeC9hQsKjZh13ibk
+ U9XNZFRCRzusz+c4LHuZKKXnalteALk=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-622-2tXFmLBeMcer27UuDAH0uw-1; Thu, 30 Nov 2023 14:20:59 -0500
+X-MC-Unique: 2tXFmLBeMcer27UuDAH0uw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a047f347c1cso374886466b.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 11:20:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701373583; x=1701978383;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=P5jaemYcRn4/pBqbCndudYBCVOJZzXayR/s1I9ImqWI=;
- b=tUKiPb3npKnMKcKbLgvtbqCdEXuUflsZ6sA9Xtz/i7EiAg1GZXdcINpFYzpYRzEQx3
- 4Rf4lrtTO3X1UcAJB9uqlqQtzjbmuytxcvgl64yW4+TrD6s5ikFd/y7ceDKgc0j+V9Zr
- cBHhbS3IXZ9JMYMvN0v9dOXBlrm9eiIUFijmOBJiac/UoMXIVW9IRBSwWGe0wsWvTU5/
- MslwB1cdHljkZyLE00RNBWCPmLOJ47BEv2gzYXW5vTZIShRe48X64MDaI7EigrkNPZNW
- L+wU+6L/EExAenj8HKfY7PtLigL3+JPOi1HIaplB1/GeqQLS/LNuykNzCCtIgKwtrR88
- iXfA==
-X-Gm-Message-State: AOJu0YxyzbuJtkncjs4ypk5BapexFmRSXP7NwCYpMp4Xhz2pzVGNA2+T
- fCgR+hbRyunbIZ2cG5X8qapsUb8sCuQz98oPNXqt/g==
-X-Google-Smtp-Source: AGHT+IE9ty0p0UFHQ60xwF1xqod6ikGojEPRwLv7UnPjH484UgrUEbS+Q5i85MYlpHGnIw2TFDrO2g==
-X-Received: by 2002:a05:6512:2310:b0:50b:ae1f:ff24 with SMTP id
- o16-20020a056512231000b0050bae1fff24mr113872lfu.31.1701364275748; 
- Thu, 30 Nov 2023 09:11:15 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- h9-20020a05600c314900b0040b3d8907fesm2621507wmo.29.2023.11.30.09.11.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Nov 2023 09:11:15 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0C7795FB51;
- Thu, 30 Nov 2023 17:11:15 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Jai Arora <arorajai2798@gmail.com>
-Cc: qemu-devel@nongnu.org,  qemu-trivial@nongnu.org,  pbonzini@redhat.com,
- peter.maydell@linaro.org
-Subject: Re: [PATCH v3] accel/kvm: Turn DPRINTF macro use into tracepoints
-In-Reply-To: <20231130155058.237850-1-arorajai2798@gmail.com> (Jai Arora's
- message of "Thu, 30 Nov 2023 21:20:58 +0530")
-References: <20231130155058.237850-1-arorajai2798@gmail.com>
-User-Agent: mu4e 1.11.25; emacs 29.1
-Date: Thu, 30 Nov 2023 17:11:15 +0000
-Message-ID: <87edg76ua4.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1701372058; x=1701976858;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=afJtp1/bOi8OTWHw9YFIvYdMpw6OpEAY6Zj/UXKihoM=;
+ b=UMbkPaBdRZf2nk9mCDbFbi6BfRsi2pCnnQIfEgE6tzaeS5m0O2qCdbFaTWlrrkIE3f
+ 3sMZO3zRwZIOqtVtiY2YkK04EWplCpARG6zOp5ZCW1zv1I2cooMg6H28ayXmAy9ztaWC
+ GTzVevB6O/mnwFuohhmHw0HuLGZw8om4myswOeIdV1P+GW4/1d8QUs/5UJyV1hKzthwC
+ Bm0BMW3Wz+2e9aSSUDICE7WG/eqhtjkHun2LVvfQz3/SzhGfvXFpQmaOS1lZwbDYPT1c
+ IcuPaM8UX8FTVkP07Y4jjmxwhnY/v19Y/tviSIRruOdxQSv9Jx4elmv1m5AtBgsxUVj/
+ 2JMQ==
+X-Gm-Message-State: AOJu0Yy9DyNlpbrxreuEjlIAtbKVgnrVcFWPFqXKt92aVHTRL+ThDdPo
+ ph1eFiruxBZmTsQdwx2V6r/cH4lDEq4jAO79xzyttdoTEMlpFDz5WrZj7MVKGI4iZA87rVWyrCO
+ ujEmi26s8I0FcQpU=
+X-Received: by 2002:a2e:924b:0:b0:2c9:ba9b:7281 with SMTP id
+ v11-20020a2e924b000000b002c9ba9b7281mr3758ljg.0.1701367061946; 
+ Thu, 30 Nov 2023 09:57:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFtUd8Ivz1Rur9xp1YhViXZEQxTK1dU3mOJ+EXLEJKCocWO1zpYngColK4vckxwYg8jR8U1CQ==
+X-Received: by 2002:a2e:924b:0:b0:2c9:ba9b:7281 with SMTP id
+ v11-20020a2e924b000000b002c9ba9b7281mr3406ljg.0.1701367057298; 
+ Thu, 30 Nov 2023 09:57:37 -0800 (PST)
+Received: from ?IPV6:2003:cb:c71c:3600:33e6:971c:5f64:fab5?
+ (p200300cbc71c360033e6971c5f64fab5.dip0.t-ipconnect.de.
+ [2003:cb:c71c:3600:33e6:971c:5f64:fab5])
+ by smtp.gmail.com with ESMTPSA id
+ a13-20020a05600c348d00b0040b5377cf03sm6411656wmq.1.2023.11.30.09.57.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 30 Nov 2023 09:57:36 -0800 (PST)
+Message-ID: <a971db32-4867-4aaf-9da7-20627a867747@redhat.com>
+Date: Thu, 30 Nov 2023 18:57:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/70] RAMBlock/guest_memfd: Enable
+ KVM_GUEST_MEMFD_ALLOW_HUGEPAGE
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>, Xiaoyao Li
+ <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-4-xiaoyao.li@intel.com>
+ <bc84fa4f-4866-4321-8f30-1388eed7e64f@redhat.com>
+ <05f0e440-36a2-4d3a-8caa-842b34e50dce@intel.com>
+ <0fbfc413-7c74-4b2a-bade-6f3f04ca82c2@redhat.com>
+ <4708c33a-bb8d-484e-ac7b-b7e8d3ed445a@intel.com>
+ <45d28654-9565-46df-81b9-6563a4aef78c@redhat.com>
+ <ZWixXm-sboNZ-mzG@google.com>
+ <d6bfd8be-7e8c-4a95-9e27-31775f8e352e@redhat.com> <ZWjKiDy3UMq3cRkD@x1n>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <ZWjKiDy3UMq3cRkD@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,25 +168,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jai Arora <arorajai2798@gmail.com> writes:
+On 30.11.23 18:46, Peter Xu wrote:
+> On Thu, Nov 30, 2023 at 05:54:26PM +0100, David Hildenbrand wrote:
+>> But likely we want THP support here. Because for hugetlb, one would actually
+>> have to instruct the kernel which size to use, like we do for memfd with
+>> hugetlb.
+> 
+> I doubt it, as VM can still leverage larger sizes if possible?
 
-> Patch removes DRPINTF macro and adds multiple tracepoints
-> to capture different kvm events.
+What do you doubt? I am talking about the current implementation and 
+expected semantics of KVM_GUEST_MEMFD_ALLOW_HUGEPAGE.
 
-maybe add "We drop the DPRINTFs that don't add any additional
-information than trace_kvm_run_exit already does."
+-- 
+Cheers,
 
-Otherwise:
+David / dhildenb
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
-p.s.
-
-It is helpful to add a mini-changelog bellow the --- line so reviewers
-can see what changes have already been made to the patch. The git
-tooling will strip this log when the maintainer applies the patches.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
