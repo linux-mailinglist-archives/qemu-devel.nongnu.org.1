@@ -2,74 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFDF7FFC08
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 21:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64DAE7FFC5C
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 21:18:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8nO2-0001Do-16; Thu, 30 Nov 2023 15:11:50 -0500
+	id 1r8nT4-0002er-LF; Thu, 30 Nov 2023 15:17:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1r8nNz-0001CR-S0
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 15:11:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1r8nNy-0003Ga-BY
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 15:11:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701375105;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tXPEDHXBySYyZ9z2Oau1Dfqyd6k2HfiTh1ThFKhEvnc=;
- b=d119AgwEhGZXZ40qTDwFk/cAE/WHBM+6xslX+RDVfykVTE74v4r+7d8z18ncGfKulM7Mip
- IIplUYw6IoU2p5t7GL5wFhVCJBuLppzdfSh1VJ33dDFcSrAV1y+A2Yx8EUYauGKDGESGXg
- hQZNtxeyKo3f6JLI/utMQqnRKg4LFjQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-600-XVIh1GohPIOQgTa1MqPbXg-1; Thu,
- 30 Nov 2023 15:11:41 -0500
-X-MC-Unique: XVIh1GohPIOQgTa1MqPbXg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 87D983C10148;
- Thu, 30 Nov 2023 20:11:41 +0000 (UTC)
-Received: from angien.pipo.sk (unknown [10.45.242.11])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 92F48492BFC;
- Thu, 30 Nov 2023 20:11:39 +0000 (UTC)
-Date: Thu, 30 Nov 2023 21:11:37 +0100
-From: Peter Krempa <pkrempa@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Markus Armbruster <armbru@redhat.com>, qemu-block@nongnu.org
-Subject: Re: [PATCH v2 1/2] block: commit: Allow users to request only format
- driver names in backing file format
-Message-ID: <ZWjseWvd1n7mOJ6s@angien.pipo.sk>
-References: <cover.1701360249.git.pkrempa@redhat.com>
- <2062cb544eab1a3ac785de65fd8c9b2a3f0265dc.1701360249.git.pkrempa@redhat.com>
- <glhxou7nm34iouz4df4vz7hatzkziom3l5ba6cvdo4q5zvrayz@6hqdwepwqq5i>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8nT1-0002dG-LN
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 15:16:59 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8nT0-0004EX-0L
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 15:16:59 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a00a9c6f283so192023366b.0
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 12:16:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701375416; x=1701980216; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lS3aLZ0zIWdXiaISMQ/RtOasorHUAcvYTG4xZ5Za+a8=;
+ b=CI49e5c66LKusBKZclHMVxDfUpyj6lAF0ytoSX/yCpM8MjFJZgpJTzjQJPCrhAwnkR
+ 3o949sRckdbFtQtC1QyazIved7+clNyWKu53kAFINyYaHWUzr5en56Y9HBwKl3nkOsbc
+ SGSFJx/NvIqmxY1YfPFDgAB5W1pmkdiZdG+BHzM8eCVPWAIyMb1uU+l7NiUCBZO2dVk2
+ fY2LilTvRnaSLoMAcnnrJae5r9oxUrK3DDjkviHA82j5JL44F2rtjmJ5KcSMjFzMZLGp
+ 3VUv7AIQWBiY76wKpTmS5CHIvVAWFUp4fDRvSIQfkuM9fMgkNCeCFMdIH5dJNpklWdqH
+ hJFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701375416; x=1701980216;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lS3aLZ0zIWdXiaISMQ/RtOasorHUAcvYTG4xZ5Za+a8=;
+ b=b229WULeXb73162ev+YRm4e1Wwt47WtIQQWqOIRE7Rkk2CABmVll89Zi06u+PYrAZ5
+ lU7KQ5EDpQW1GiWPRcjUKl8RGeF2OWwah/EJxN3P7KddwrFMogEC7xqGaHubQyCywdoy
+ V2Ipotb+PUTJfml7wMKLp/WMzt4Q4dAhHxfAxzXt0gEOMYjJxOMIF7pLzExshKbQAarp
+ dppB9o1Dm0aUcLLOEoOtURGDjfRWCc/PRPOV7k6V9ds7x+GiYN3+2TDPbtABaT2eC8Kl
+ AqYmTo4im01+XZG/yH0yn0bIvQMe2ptrchu+QdcP6kqNnodNKR9XgnZZLXdpmNuUtI7T
+ 9pQw==
+X-Gm-Message-State: AOJu0YxI97l0o+AO9deyBIgZGzT3+HyaFIPuaNVuZE15NXjiwA3nlIr8
+ t5T/+qKOTTlOo5AInqYwoTMpmw==
+X-Google-Smtp-Source: AGHT+IGoHe0VnRFJcVpIpprWW/pTC8xVEHm0G6y11BmSQBtpZjkHtJwHtwU2Tno1cZN7XJtlk8beIA==
+X-Received: by 2002:a17:906:2259:b0:a04:bc39:c1c7 with SMTP id
+ 25-20020a170906225900b00a04bc39c1c7mr105699ejr.36.1701375416295; 
+ Thu, 30 Nov 2023 12:16:56 -0800 (PST)
+Received: from [192.168.69.100] (sev93-h02-176-184-17-116.dsl.sta.abo.bbox.fr.
+ [176.184.17.116]) by smtp.gmail.com with ESMTPSA id
+ hd37-20020a17090796a500b009c503bf61c9sm1029032ejc.165.2023.11.30.12.16.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 30 Nov 2023 12:16:55 -0800 (PST)
+Message-ID: <36fe2c1d-4db6-498e-a7ce-da74410b4a03@linaro.org>
+Date: Thu, 30 Nov 2023 21:16:53 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <glhxou7nm34iouz4df4vz7hatzkziom3l5ba6cvdo4q5zvrayz@6hqdwepwqq5i>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Hexagon (target/hexagon) Fix shadow variable when
+ idef-parser is off
+Content-Language: en-US
+To: Taylor Simpson <ltaylorsimpson@gmail.com>, qemu-devel@nongnu.org
+Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
+ quic_mliebel@quicinc.com, richard.henderson@linaro.org, ale@rev.ng,
+ anjo@rev.ng
+References: <20231130183955.54314-1-ltaylorsimpson@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231130183955.54314-1-ltaylorsimpson@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,54 +94,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 30, 2023 at 13:24:18 -0600, Eric Blake wrote:
-> On Thu, Nov 30, 2023 at 05:06:03PM +0100, Peter Krempa wrote:
-> > Introduce a new flag 'backing_file_format_no_protocol' for the
-> > block-commit QMP command which instructs the internals to use 'raw'
-> > instead of the protocol driver in case when a image is used without a
-> > dummy 'raw' wrapper.
-> > 
-> > The flag is designed such that it can be always asserted by management
-> > tools even when there isn't any update to backing files.
-> > 
-> > The flag will be used by libvirt so that the backing images still
-> > reference the proper format even when libvirt will stop using the dummy
-> > raw driver (raw driver with no other config). Libvirt needs this so that
-> > the images stay compatible with older libvirt versions which didn't
-> > expect that a protocol driver name can appear in the backing file format
-> > field.
-> > 
-> > Signed-off-by: Peter Krempa <pkrempa@redhat.com>
-> > Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> > ---
+On 30/11/23 19:39, Taylor Simpson wrote:
+> Adding -Werror=shadow=compatible-local causes Hexagon not to build
+> when idef-parser is off.  The "label" variable in CHECK_NOSHUF_PRED
+> shadows a variable in the surrounding code.
 > 
-> > +++ b/qapi/block-core.json
-> > @@ -1810,6 +1810,14 @@
-> >  #     Care should be taken when specifying the string, to specify a
-> >  #     valid filename or protocol.  (Since 2.1)
-> >  #
-> > +# @backing-file-format-no-protocol: If true always use a 'format' driver name
-> > +#     for the 'backing file format' field if updating the image header of the
-> > +#     overlay of 'top'. Otherwise the real name of the driver of the backing
-> > +#     image may be used which may be a protocol driver.
-> > +#
-> > +#     Can be used also when no image header will be updated.
-> > +#     (default: false; since: 9.0)
+> Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+> ---
+>   target/hexagon/macros.h | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
+> index 9a51b5709b..f99390e2a8 100644
+> --- a/target/hexagon/macros.h
+> +++ b/target/hexagon/macros.h
+> @@ -93,13 +93,13 @@
+>   
+>   #define CHECK_NOSHUF_PRED(GET_EA, SIZE, PRED) \
+>       do { \
+> -        TCGLabel *label = gen_new_label(); \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, PRED, 0, label); \
+> +        TCGLabel *noshuf_label = gen_new_label(); \
+> +        tcg_gen_brcondi_tl(TCG_COND_EQ, PRED, 0, noshuf_label); \
 
+Fragile, but sufficient.
 
-As I've previously stated, I don't really care about a name as long as I
-don't have to keep re-sending,
-
-> This is a long name.  What about:
-
-But is the long name really a problem?
-
-> @backing-mask-protocol: If true, replace any protocol mentioned in the
->     'backing file format' with 'raw', rather than storing the protocol
->     name as the backing format.  Can be used even when no image header
->     will be updated (default false; since 9.0).
-
-Sounds okay to me. In the end, nobody will really see this as libvirt
-will be using it internally
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
