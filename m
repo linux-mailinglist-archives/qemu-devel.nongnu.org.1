@@ -2,86 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024DB7FFB09
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 20:18:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D707FFB37
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 20:25:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8mWy-0003Rq-Mi; Thu, 30 Nov 2023 14:17:00 -0500
+	id 1r8meE-0005Ql-B1; Thu, 30 Nov 2023 14:24:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8mWu-0003Qw-La
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:16:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r8meB-0005Qd-JW
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:24:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1r8mWt-00023a-1D
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:16:56 -0500
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r8me9-0003It-Jz
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 14:24:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701371809;
+ s=mimecast20190719; t=1701372265;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=2eKlWRv7yzylB+1maPtzg8B2uyJpfWIeA+vQfTEx7+c=;
- b=IynqAdWHj61AtFaizIuzQbN1ku8ip6muEEp/XttHDkuUrx8PPW/MwAV6GLgwezKamPVuln
- oBBSDc7jeei/SeMYcVqu5q4CpH2txkYLVXQinSwaQ+IRnZTRK4guWCQWQL4Q3KVCjxKaEY
- X3NBHkckzd9Jp0R6iGtPY+8bbZWYMr4=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qiTcE6EU08wHka11o1eRTnjhASTCyNBzW6O8qPaxEJo=;
+ b=dbuChA0AjYTjmTHBusFv/LR8eHYXgOLN842dm36qPK5YC83ARh3vY4dzOVH8Kp59vAqpHe
+ 4Tqi9PJz2bBZa4D/2Mc0JMWLV/0tguQUWdyBhphc/v4BjQkAvInxL6Pxf4g8Kq/0U0UrbK
+ NHGw2qtRafyNQLzTpzkpy9duh365FIg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-75-sHoipnd7NZKvONtTGL4JXw-1; Thu, 30 Nov 2023 14:16:47 -0500
-X-MC-Unique: sHoipnd7NZKvONtTGL4JXw-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-423c28eababso3320241cf.1
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 11:16:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701371807; x=1701976607;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2eKlWRv7yzylB+1maPtzg8B2uyJpfWIeA+vQfTEx7+c=;
- b=US//XORaVopI9mVzJmmd2xGaB/xDbMKxiA72ZDfMFJXZClZO1kYk3jVHR/k8ImR5d0
- M1JMeI5HGVRUSKf5ObLOgvM0YNhsGgbC6Z/0m5vjlgmiez+QxJWMlRzDR+aLSZxttVDw
- UAENPgpBI4ZA2JupxOhi3oRPn0KMYEHxik5LisZFnNUv3mtkOchaq1T/wxOmST8X1/G1
- iGq/yZrA0pfSQt7QgNri6PeI8AvcjN6GsiT9OCEpORoR8qG3Y/lMbAQgoaVG91Mzpqy1
- SAsaF1lb/N0T93jKYzKpD4qpx0jPnseNdtqCPCzra5vWDRQQnzUFHZYonUeuTDw2Ydvk
- WWlw==
-X-Gm-Message-State: AOJu0YwrEcQkosZ9r5Bgia1KTMFUNE40WbhROIRuUf/uFwcC21Rz+OrW
- qt1Q5n0G7JAYYjIl0z6PVgO8DWelUJZoZYD6iZ802fiZ4cVnd5zL2rkGVkkmqKes+LkcM2GTwHD
- uM0XwyQUEuDh1Va4=
-X-Received: by 2002:a05:622a:104a:b0:423:ccec:9c3b with SMTP id
- f10-20020a05622a104a00b00423ccec9c3bmr14884371qte.1.1701371807029; 
- Thu, 30 Nov 2023 11:16:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGOi9NB13ybQsKnb0IJqSvw3s0v/UgTSocLfyyQ/uHGKqe0JTBigyK6oRXryLJt4trSkIdt8A==
-X-Received: by 2002:a05:622a:104a:b0:423:ccec:9c3b with SMTP id
- f10-20020a05622a104a00b00423ccec9c3bmr14884343qte.1.1701371806679; 
- Thu, 30 Nov 2023 11:16:46 -0800 (PST)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- h14-20020ac8568e000000b00423e6885152sm747535qta.75.2023.11.30.11.16.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Nov 2023 11:16:46 -0800 (PST)
-Date: Thu, 30 Nov 2023 14:16:44 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org,
- prerna.saxena@nutanix.com, quintela@redhat.com, berrange@redhat.com,
- peter.maydell@linaro.org, farosas@suse.de
-Subject: Re: [PATCH v4] migration: Plug memory leak with migration URIs
-Message-ID: <ZWjfnIjec3udUZZ-@x1n>
-References: <20231129204301.131228-1-het.gala@nutanix.com>
- <ZWjGdg-gic-C1PA_@x1n> <87il5j2io0.fsf@pond.sub.org>
+ us-mta-454-e5BHyGdoP_a6YnvffYrxzw-1; Thu, 30 Nov 2023 14:24:21 -0500
+X-MC-Unique: e5BHyGdoP_a6YnvffYrxzw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B281101A550;
+ Thu, 30 Nov 2023 19:24:21 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.190])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1C39940C6EB9;
+ Thu, 30 Nov 2023 19:24:20 +0000 (UTC)
+Date: Thu, 30 Nov 2023 13:24:18 -0600
+From: Eric Blake <eblake@redhat.com>
+To: Peter Krempa <pkrempa@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Markus Armbruster <armbru@redhat.com>, qemu-block@nongnu.org
+Subject: Re: [PATCH v2 1/2] block: commit: Allow users to request only format
+ driver names in backing file format
+Message-ID: <glhxou7nm34iouz4df4vz7hatzkziom3l5ba6cvdo4q5zvrayz@6hqdwepwqq5i>
+References: <cover.1701360249.git.pkrempa@redhat.com>
+ <2062cb544eab1a3ac785de65fd8c9b2a3f0265dc.1701360249.git.pkrempa@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87il5j2io0.fsf@pond.sub.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <2062cb544eab1a3ac785de65fd8c9b2a3f0265dc.1701360249.git.pkrempa@redhat.com>
+User-Agent: NeoMutt/20231103
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,60 +83,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 30, 2023 at 07:35:43PM +0100, Markus Armbruster wrote:
-> Peter Xu <peterx@redhat.com> writes:
+On Thu, Nov 30, 2023 at 05:06:03PM +0100, Peter Krempa wrote:
+> Introduce a new flag 'backing_file_format_no_protocol' for the
+> block-commit QMP command which instructs the internals to use 'raw'
+> instead of the protocol driver in case when a image is used without a
+> dummy 'raw' wrapper.
 > 
-> > On Wed, Nov 29, 2023 at 08:43:01PM +0000, Het Gala wrote:
-> >> migrate_uri_parse() allocates memory to 'channel' if the user
-> >> opts for old syntax - uri, which is leaked because there is no
-> >> code for freeing 'channel'.
-> >> So, free channel to avoid memory leak in case where 'channels'
-> >> is empty and uri parsing is required.
-> >> 
-> >> Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp migration flow")
-> >> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> >> Suggested-by: Markus Armbruster <armbru@redhat.com>
-> >
-> > Reviewed-by: Peter Xu <peterx@redhat.com>
-> >
-> >> @@ -533,18 +533,18 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
-> >>              error_setg(errp, "Channel list has more than one entries");
-> >>              return;
-> >>          }
-> >> -        channel = channels->value;
-> >> +        addr = channels->value->addr;
-> >>      } else if (uri) {
-> >>          /* caller uses the old URI syntax */
-> >>          if (!migrate_uri_parse(uri, &channel, errp)) {
-> >>              return;
-> >>          }
-> >> +        addr = channel->addr;
-> >>      } else {
-> >>          error_setg(errp, "neither 'uri' or 'channels' argument are "
-> >>                     "specified in 'migrate-incoming' qmp command ");
-> >>          return;
-> >>      }
-> >> -    addr = channel->addr;
-> >
-> > Why these "addr" lines need change?  Won't that behave the same as before?
+> The flag is designed such that it can be always asserted by management
+> tools even when there isn't any update to backing files.
 > 
-> In the first case, @channel is now null.  If we left the assignment to
-> @addr alone, it would crash.  Clearer now?
+> The flag will be used by libvirt so that the backing images still
+> reference the proper format even when libvirt will stop using the dummy
+> raw driver (raw driver with no other config). Libvirt needs this so that
+> the images stay compatible with older libvirt versions which didn't
+> expect that a protocol driver name can appear in the backing file format
+> field.
+> 
+> Signed-off-by: Peter Krempa <pkrempa@redhat.com>
+> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
 
-Is it this one?
+> +++ b/qapi/block-core.json
+> @@ -1810,6 +1810,14 @@
+>  #     Care should be taken when specifying the string, to specify a
+>  #     valid filename or protocol.  (Since 2.1)
+>  #
+> +# @backing-file-format-no-protocol: If true always use a 'format' driver name
+> +#     for the 'backing file format' field if updating the image header of the
+> +#     overlay of 'top'. Otherwise the real name of the driver of the backing
+> +#     image may be used which may be a protocol driver.
+> +#
+> +#     Can be used also when no image header will be updated.
+> +#     (default: false; since: 9.0)
 
-    if (uri && has_channels) {
-        error_setg(errp, "'uri' and 'channels' arguments are mutually "
-                   "exclusive; exactly one of the two should be present in "
-                   "'migrate-incoming' qmp command ");
-        return;
-    }
+This is a long name.  What about:
 
-It returns already?
+@backing-mask-protocol: If true, replace any protocol mentioned in the
+    'backing file format' with 'raw', rather than storing the protocol
+    name as the backing format.  Can be used even when no image header
+    will be updated (default false; since 9.0).
 
-Thanks,
+or s/mask/hide/ if that sounds better.
 
 -- 
-Peter Xu
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
