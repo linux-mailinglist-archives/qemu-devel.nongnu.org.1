@@ -2,101 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5357FEFF3
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:22:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 950A87FEFEE
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:21:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8gyz-0001vQ-1T; Thu, 30 Nov 2023 08:21:33 -0500
+	id 1r8gxy-0000qF-Hq; Thu, 30 Nov 2023 08:20:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org>)
- id 1r8gym-0001b4-71; Thu, 30 Nov 2023 08:21:24 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r8gxw-0000pw-5J; Thu, 30 Nov 2023 08:20:28 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org>)
- id 1r8gyj-0003kM-Lh; Thu, 30 Nov 2023 08:21:19 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SgxfF5JRqz4xhb;
- Fri,  1 Dec 2023 00:21:09 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SgxdL6Gzsz4xdZ;
- Fri,  1 Dec 2023 00:20:22 +1100 (AEDT)
-Message-ID: <d9164828-22fb-42a4-b71a-5ae14a172d50@kaod.org>
-Date: Thu, 30 Nov 2023 14:20:17 +0100
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1r8gxr-0003f4-6T; Thu, 30 Nov 2023 08:20:27 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id CFE0475A4C4;
+ Thu, 30 Nov 2023 14:20:19 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id fgRWA-UexEfO; Thu, 30 Nov 2023 14:20:17 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A141A75A4C3; Thu, 30 Nov 2023 14:20:17 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9F9B5756094;
+ Thu, 30 Nov 2023 14:20:17 +0100 (CET)
+Date: Thu, 30 Nov 2023 14:20:17 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Nicholas Piggin <npiggin@gmail.com>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
+Subject: Re: [PULL 2/2] ppc/amigaone: Allow running AmigaOS without firmware
+ image
+In-Reply-To: <112af298-8a0b-e238-1850-919a5ee11e25@eik.bme.hu>
+Message-ID: <ec6c710f-ff10-f565-e2fb-800548c280d0@eik.bme.hu>
+References: <20231130124111.109602-1-npiggin@gmail.com>
+ <20231130124111.109602-3-npiggin@gmail.com>
+ <112af298-8a0b-e238-1850-919a5ee11e25@eik.bme.hu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] system/cpus: rename qemu_global_mutex to qemu_bql
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Jean-Christophe Dubois <jcd@tribudubois.net>,
- Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org,
- Song Gao <gaosong@loongson.cn>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Hyman Huang <yong.huang@smartx.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Artyom Tarasenko
- <atar4qemu@gmail.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>, Paul Durrant <paul@xen.org>,
- Jagannathan Raman <jag.raman@oracle.com>, Juan Quintela
- <quintela@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, qemu-arm@nongnu.org, Jason Wang
- <jasowang@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, Huacai Chen <chenhuacai@kernel.org>,
- Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>,
- Jiri Slaby <jslaby@suse.cz>, Alexander Graf <agraf@csgraf.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liwei1518@gmail.com>,
- Eric Farman <farman@linux.ibm.com>, Stafford Horne <shorne@gmail.com>,
- David Hildenbrand <david@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- John Snow <jsnow@redhat.com>, Sunil Muthuswamy <sunilmut@microsoft.com>,
- Michael Roth <michael.roth@amd.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Bin Meng <bin.meng@windriver.com>,
- Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org,
- qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Peter Xu <peterx@redhat.com>, Anthony Perard <anthony.perard@citrix.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-ppc@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Leonardo Bras
- <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20231129212625.1051502-1-stefanha@redhat.com>
- <20231129212625.1051502-5-stefanha@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231129212625.1051502-5-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=Tvl7=HL=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,21 +65,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/29/23 22:26, Stefan Hajnoczi wrote:
-> The APIs using qemu_global_mutex now follow the Big QEMU Lock (BQL)
-> nomenclature. It's a little strange that the actual QemuMutex variable
-> that embodies the BQL is called qemu_global_mutex instead of qemu_bql.
-> Rename it for consistency.
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+On Thu, 30 Nov 2023, BALATON Zoltan wrote:
+> On Thu, 30 Nov 2023, Nicholas Piggin wrote:
+>> From: BALATON Zoltan <balaton@eik.bme.hu>
+>> 
+>> The machine uses a modified U-Boot under GPL license but the sources
+>> of it are lost with only a binary available so it cannot be included
+>> in QEMU. Allow running without the firmware image which can be used
+>> when calling a boot loader directly and thus simplifying booting
+>> guests. We need a small routine that AmigaOS calls from ROM which is
+>> added in this case to allow booting AmigaOS without external firmware
+>> image.
+>
+> Wrong version. I've sent a v4 of this patch yesterday.
 
+Just seen message from maintainer that picked v3 on purpose as this was 
+already tested. As it also works v4 just simplifies it it's OK then to 
+merge this. Sorry for the noise.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Regards,
+BALATON Zoltan
 
-Thanks,
-
-C.
-
-
-
+>> Fixes: d9656f860a38 ("hw/ppc: Add emulation of AmigaOne XE board")
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>> hw/ppc/amigaone.c | 35 +++++++++++++++++++++++------------
+>> 1 file changed, 23 insertions(+), 12 deletions(-)
+>> 
+>> diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+>> index 992a55e632..ddfa09457a 100644
+>> --- a/hw/ppc/amigaone.c
+>> +++ b/hw/ppc/amigaone.c
+>> @@ -36,10 +36,19 @@
+>>  * -device VGA,romfile=VGABIOS-lgpl-latest.bin
+>>  * from http://www.nongnu.org/vgabios/ instead.
+>>  */
+>> -#define PROM_FILENAME "u-boot-amigaone.bin"
+>> #define PROM_ADDR 0xfff00000
+>> #define PROM_SIZE (512 * KiB)
+>> 
+>> +/* AmigaOS calls this routine from ROM, use this if no firmware loaded */
+>> +static const char dummy_fw[] = {
+>> +    0x38, 0x00, 0x00, 0x08, /* li      r0,8 */
+>> +    0x7c, 0x09, 0x03, 0xa6, /* mtctr   r0 */
+>> +    0x54, 0x63, 0xf8, 0x7e, /* srwi    r3,r3,1 */
+>> +    0x42, 0x00, 0xff, 0xfc, /* bdnz    0x8 */
+>> +    0x7c, 0x63, 0x18, 0xf8, /* not     r3,r3 */
+>> +    0x4e, 0x80, 0x00, 0x20, /* blr */
+>> +};
+>> +
+>> static void amigaone_cpu_reset(void *opaque)
+>> {
+>>     PowerPCCPU *cpu = opaque;
+>> @@ -60,8 +69,6 @@ static void amigaone_init(MachineState *machine)
+>>     PowerPCCPU *cpu;
+>>     CPUPPCState *env;
+>>     MemoryRegion *rom, *pci_mem, *mr;
+>> -    const char *fwname = machine->firmware ?: PROM_FILENAME;
+>> -    char *filename;
+>>     ssize_t sz;
+>>     PCIBus *pci_bus;
+>>     Object *via;
+>> @@ -94,20 +101,24 @@ static void amigaone_init(MachineState *machine)
+>>     }
+>>
+>>     /* allocate and load firmware */
+>> -    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, fwname);
+>> -    if (filename) {
+>> -        rom = g_new(MemoryRegion, 1);
+>> -        memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
+>> -        memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
+>> +    rom = g_new(MemoryRegion, 1);
+>> +    memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
+>> +    memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
+>> +    if (!machine->firmware) {
+>> +        rom_add_blob_fixed("dummy-fw", dummy_fw, sizeof(dummy_fw),
+>> +                           PROM_ADDR + PROM_SIZE - 0x80);
+>> +    } else {
+>> +        g_autofree char *filename = qemu_find_file(QEMU_FILE_TYPE_BIOS,
+>> +                                                   machine->firmware);
+>> +        if (!filename) {
+>> +            error_report("Could not find firmware '%s'", 
+>> machine->firmware);
+>> +            exit(1);
+>> +        }
+>>         sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE);
+>>         if (sz <= 0 || sz > PROM_SIZE) {
+>>             error_report("Could not load firmware '%s'", filename);
+>>             exit(1);
+>>         }
+>> -        g_free(filename);
+>> -    } else if (!qtest_enabled()) {
+>> -        error_report("Could not find firmware '%s'", fwname);
+>> -        exit(1);
+>>     }
+>>
+>>     /* Articia S */
+>> 
+>
+>
 
