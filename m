@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7217FFD4E
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 22:13:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 581247FFD90
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 22:33:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8oJw-0004GX-Hs; Thu, 30 Nov 2023 16:11:40 -0500
+	id 1r8odT-0007xc-4W; Thu, 30 Nov 2023 16:31:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8oJr-0004ET-UP
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 16:11:36 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8oJp-0004yJ-On
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 16:11:35 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3316bb1303bso1032634f8f.0
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 13:11:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701378689; x=1701983489; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D6DpIPM9dgtNKIIK4PxEbwWzfaC12DsR6qNFu+Tq0ks=;
- b=ZtRweszGZxR5NiB2ebQQqy9a9pzXzrt3IZ+Y3ErCvIAQoth1fVLnuXGEYqknm2ylTT
- vWtJTIE3FBVS7FD7ux+qQioCQEG3JU8I4Uy5mSJ2oEKdAo2cK2BMPdVaBUZQ2xO7oFf9
- pJ6DM7Y0q7z3QOx8699cD5c4QnRlKPGPACYwcBPNCt9Htp0yiOp59q0KzX6a6TtXPWRD
- 8Y/5huWVEjYQEokm489/ZspBh4nA03fuq7Py09P1AihaxyfdlSztJQWwEe9f2J1BF3Vp
- 8n3+Lhh4TfnScUjCFearyoYmuf29aahJG3U8sQ+xGWpNjYH91Y09HMMAV6CpjnmAauwM
- PIDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701378689; x=1701983489;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=D6DpIPM9dgtNKIIK4PxEbwWzfaC12DsR6qNFu+Tq0ks=;
- b=H8MMPtQS0RMJKIzlChCQW3HFM0JeSSaW55rzkhaxTKA2J79NJQvLxsY6ZoKjN9sgEv
- ArYoqBgqrtzS6YkD8G6RZ+PUp+taUsPa4bSrqASxN9KsBCiMzxkX6DA2gYHz8i2j4ZtO
- PmHd+vq/S6uEy/NjzdJH2TnbyNfueX91zBm+10j/RR1FTKu083UcA6gTj/58NMkF7IjP
- 4sgevaxC4sehFuJfuh4iq+yISQY7EAHVuSlYmwuO0jf4A9AnyAv7epiKRd+4pU82X64J
- 3tVH17Ho6YTw5sYXHMmdp/UrEgT0df3PyhO+QkemuNU9zEn8e7ERVqp6zUC/MpgAXAhx
- YaHQ==
-X-Gm-Message-State: AOJu0YxiFJ8R6zJN9dByI/1OzcHiGgZqsyQsC11o3LaxUCUAHlHxzIZe
- fP8yJcd1AFu7LfmuO4sbV6fPkA==
-X-Google-Smtp-Source: AGHT+IGobIhznsLZI0meAuoDJeZV6clqOOZJoaUfsbHIfNrEDaILCELOq0STZoZnABddHrdVvF7P6A==
-X-Received: by 2002:adf:db49:0:b0:333:2fd2:812d with SMTP id
- f9-20020adfdb49000000b003332fd2812dmr109002wrj.74.1701378689474; 
- Thu, 30 Nov 2023 13:11:29 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- i9-20020adffc09000000b00333083a20e5sm2451760wrr.113.2023.11.30.13.11.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Nov 2023 13:11:29 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BFEC75FB51;
- Thu, 30 Nov 2023 21:11:28 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Jai Arora <arorajai2798@gmail.com>
-Cc: qemu-devel@nongnu.org,  qemu-trivial@nongnu.org,  pbonzini@redhat.com,
- peter.maydell@linaro.org
-Subject: Re: [PATCH v4] accel/kvm: Turn DPRINTF macro use into tracepoints
-In-Reply-To: <2e454e52639560c4768006ec2a93dcf6ba02b210.1701373822.git.arorajai2798@gmail.com>
- (Jai Arora's message of "Fri, 1 Dec 2023 01:32:36 +0530")
-References: <2e454e52639560c4768006ec2a93dcf6ba02b210.1701373822.git.arorajai2798@gmail.com>
-User-Agent: mu4e 1.11.25; emacs 29.1
-Date: Thu, 30 Nov 2023 21:11:28 +0000
-Message-ID: <87zfyv54lb.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r8odR-0007xM-Ja
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 16:31:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1r8odP-0008KV-V0
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 16:31:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701379907;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=V/gvXfT47TeQd2gZo/6v34/l0zAaPUjzItBRjKteQxw=;
+ b=TV5tquf6ZoXo207BFz4Qjby+yJn1Pui7Fn+5mVyAkydC0XR6b50/L4K5hYVjEyKZBdzg/p
+ +SOeyhAzELkQZvW4djNpkROmaqchvCUDIhIC2gtFNT6Y3tLVRH3hCSMwaCOmYSPzolaRO7
+ rRKTvdyDVRGWem/CvUUBFFiANoeVMFo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-487-q1IMUd4SMcOPNw2L8mcRsA-1; Thu, 30 Nov 2023 16:31:43 -0500
+X-MC-Unique: q1IMUd4SMcOPNw2L8mcRsA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C7125824021;
+ Thu, 30 Nov 2023 21:31:42 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.190])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 540E81C060AE;
+ Thu, 30 Nov 2023 21:31:39 +0000 (UTC)
+Date: Thu, 30 Nov 2023 15:31:37 -0600
+From: Eric Blake <eblake@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, 
+ Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Alberto Garcia <berto@igalia.com>,
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>, 
+ John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
+ Wen Congyang <wencongyang2@huawei.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, 
+ Coiby Xu <Coiby.Xu@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Xie Changlong <xiechanglong.d@gmail.com>, Ari Sundholm <ari@tuxera.com>, 
+ Li Zhijian <lizhijian@fujitsu.com>, Cleber Rosa <crosa@redhat.com>, 
+ Juan Quintela <quintela@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Zhang Chen <chen.zhang@intel.com>, Peter Xu <peterx@redhat.com>, 
+ Anthony Perard <anthony.perard@citrix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Leonardo Bras <leobras@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Fam Zheng <fam@euphon.net>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH 05/12] block: remove AioContext locking
+Message-ID: <haqk3uaxn25it4myxsockwyqxarroyqpzpticpxfdzld4qwewh@edcz4bipmqlw>
+References: <20231129195553.942921-1-stefanha@redhat.com>
+ <20231129195553.942921-6-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231129195553.942921-6-stefanha@redhat.com>
+User-Agent: NeoMutt/20231103
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,182 +97,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jai Arora <arorajai2798@gmail.com> writes:
-
-> Patch removes DRPINTF macro and adds multiple tracepoints
-> to capture different kvm events.
->
-> We also drop the DPRINTFs that don't add any additional
-> information than trace_kvm_run_exit already does.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1827
->
-> Signed-off-by: Jai Arora <arorajai2798@gmail.com>
-
-But you didn't add my reviewed-by tag ;-)
-
-Tools like b4 will do the collection of tags for you if you want.
-
+On Wed, Nov 29, 2023 at 02:55:46PM -0500, Stefan Hajnoczi wrote:
+> This is the big patch that removes
+> aio_context_acquire()/aio_context_release() from the block layer and
+> affected block layer users.
+> 
+> There isn't a clean way to split this patch and the reviewers are likely
+> the same group of people, so I decided to do it in one patch.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 > ---
-> v4: Adds changes in commit message requested by Alex Bennee
->
-> ps.
->
-> I tried using git notes for the change log
-> May be it did not reflect. Thanks for the feedback and review
->
->  accel/kvm/kvm-all.c    | 28 ++++++----------------------
->  accel/kvm/trace-events |  7 ++++++-
->  2 files changed, 12 insertions(+), 23 deletions(-)
->
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index e39a810a4e..80ac7b35b7 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -69,16 +69,6 @@
->  #define KVM_GUESTDBG_BLOCKIRQ 0
->  #endif
->=20=20
-> -//#define DEBUG_KVM
-> -
-> -#ifdef DEBUG_KVM
-> -#define DPRINTF(fmt, ...) \
-> -    do { fprintf(stderr, fmt, ## __VA_ARGS__); } while (0)
-> -#else
-> -#define DPRINTF(fmt, ...) \
-> -    do { } while (0)
-> -#endif
-> -
->  struct KVMParkedVcpu {
->      unsigned long vcpu_id;
->      int kvm_fd;
-> @@ -331,7 +321,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
->      struct KVMParkedVcpu *vcpu =3D NULL;
->      int ret =3D 0;
->=20=20
-> -    DPRINTF("kvm_destroy_vcpu\n");
-> +    trace_kvm_destroy_vcpu();
->=20=20
->      ret =3D kvm_arch_destroy_vcpu(cpu);
->      if (ret < 0) {
-> @@ -341,7 +331,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
->      mmap_size =3D kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
->      if (mmap_size < 0) {
->          ret =3D mmap_size;
-> -        DPRINTF("KVM_GET_VCPU_MMAP_SIZE failed\n");
-> +        trace_kvm_failed_get_vcpu_mmap_size();
->          goto err;
->      }
->=20=20
-> @@ -443,7 +433,6 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
->                                     PAGE_SIZE * KVM_DIRTY_LOG_PAGE_OFFSET=
-);
->          if (cpu->kvm_dirty_gfns =3D=3D MAP_FAILED) {
->              ret =3D -errno;
-> -            DPRINTF("mmap'ing vcpu dirty gfns failed: %d\n", ret);
->              goto err;
->          }
->      }
-> @@ -2821,7 +2810,7 @@ int kvm_cpu_exec(CPUState *cpu)
->      struct kvm_run *run =3D cpu->kvm_run;
->      int ret, run_ret;
->=20=20
-> -    DPRINTF("kvm_cpu_exec()\n");
-> +    trace_kvm_cpu_exec();
->=20=20
->      if (kvm_arch_process_async_events(cpu)) {
->          qatomic_set(&cpu->exit_request, 0);
-> @@ -2848,7 +2837,7 @@ int kvm_cpu_exec(CPUState *cpu)
->=20=20
->          kvm_arch_pre_run(cpu, run);
->          if (qatomic_read(&cpu->exit_request)) {
-> -            DPRINTF("interrupt exit requested\n");
-> +	    trace_kvm_interrupt_exit_request();
->              /*
->               * KVM requires us to reenter the kernel after IO exits to c=
-omplete
->               * instruction emulation. This self-signal will ensure that =
-we
-> @@ -2878,7 +2867,7 @@ int kvm_cpu_exec(CPUState *cpu)
->=20=20
->          if (run_ret < 0) {
->              if (run_ret =3D=3D -EINTR || run_ret =3D=3D -EAGAIN) {
-> -                DPRINTF("io window exit\n");
-> +                trace_kvm_io_window_exit();
->                  kvm_eat_signals(cpu);
->                  ret =3D EXCP_INTERRUPT;
->                  break;
-> @@ -2900,7 +2889,6 @@ int kvm_cpu_exec(CPUState *cpu)
->          trace_kvm_run_exit(cpu->cpu_index, run->exit_reason);
->          switch (run->exit_reason) {
->          case KVM_EXIT_IO:
-> -            DPRINTF("handle_io\n");
->              /* Called outside BQL */
->              kvm_handle_io(run->io.port, attrs,
->                            (uint8_t *)run + run->io.data_offset,
-> @@ -2910,7 +2898,6 @@ int kvm_cpu_exec(CPUState *cpu)
->              ret =3D 0;
->              break;
->          case KVM_EXIT_MMIO:
-> -            DPRINTF("handle_mmio\n");
->              /* Called outside BQL */
->              address_space_rw(&address_space_memory,
->                               run->mmio.phys_addr, attrs,
-> @@ -2920,11 +2907,9 @@ int kvm_cpu_exec(CPUState *cpu)
->              ret =3D 0;
->              break;
->          case KVM_EXIT_IRQ_WINDOW_OPEN:
-> -            DPRINTF("irq_window_open\n");
->              ret =3D EXCP_INTERRUPT;
->              break;
->          case KVM_EXIT_SHUTDOWN:
-> -            DPRINTF("shutdown\n");
->              qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
->              ret =3D EXCP_INTERRUPT;
->              break;
-> @@ -2959,6 +2944,7 @@ int kvm_cpu_exec(CPUState *cpu)
->              ret =3D 0;
->              break;
->          case KVM_EXIT_SYSTEM_EVENT:
-> +            trace_kvm_run_exit_system_event(cpu->cpu_index, run->system_=
-event.type);
->              switch (run->system_event.type) {
->              case KVM_SYSTEM_EVENT_SHUTDOWN:
->                  qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDO=
-WN);
-> @@ -2976,13 +2962,11 @@ int kvm_cpu_exec(CPUState *cpu)
->                  ret =3D 0;
->                  break;
->              default:
-> -                DPRINTF("kvm_arch_handle_exit\n");
->                  ret =3D kvm_arch_handle_exit(cpu, run);
->                  break;
->              }
->              break;
->          default:
-> -            DPRINTF("kvm_arch_handle_exit\n");
->              ret =3D kvm_arch_handle_exit(cpu, run);
->              break;
->          }
-> diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-> index 399aaeb0ec..f61a21019a 100644
-> --- a/accel/kvm/trace-events
-> +++ b/accel/kvm/trace-events
-> @@ -25,4 +25,9 @@ kvm_dirty_ring_reaper(const char *s) "%s"
->  kvm_dirty_ring_reap(uint64_t count, int64_t t) "reaped %"PRIu64" pages (=
-took %"PRIi64" us)"
->  kvm_dirty_ring_reaper_kick(const char *reason) "%s"
->  kvm_dirty_ring_flush(int finished) "%d"
-> -
-> +kvm_destroy_vcpu(void) ""
-> +kvm_failed_get_vcpu_mmap_size(void) ""
-> +kvm_cpu_exec(void) ""
-> +kvm_interrupt_exit_request(void) ""
-> +kvm_io_window_exit(void) ""
-> +kvm_run_exit_system_event(int cpu_index, uint32_t event_type) "cpu_index=
- %d, system_even_type %d"
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> +++ b/block.c
+> @@ -7585,29 +7433,12 @@ void coroutine_fn bdrv_co_leave(BlockDriverState *bs, AioContext *old_ctx)
+>  
+>  void coroutine_fn bdrv_co_lock(BlockDriverState *bs)
+>  {
+> -    AioContext *ctx = bdrv_get_aio_context(bs);
+> -
+> -    /* In the main thread, bs->aio_context won't change concurrently */
+> -    assert(qemu_get_current_aio_context() == qemu_get_aio_context());
+> -
+> -    /*
+> -     * We're in coroutine context, so we already hold the lock of the main
+> -     * loop AioContext. Don't lock it twice to avoid deadlocks.
+> -     */
+> -    assert(qemu_in_coroutine());
+
+Is this assertion worth keeping in the short term?...
+
+> -    if (ctx != qemu_get_aio_context()) {
+> -        aio_context_acquire(ctx);
+> -    }
+> +    /* TODO removed in next patch */
+>  }
+
+...I guess I'll see in the next patch.
+
+>  
+>  void coroutine_fn bdrv_co_unlock(BlockDriverState *bs)
+>  {
+> -    AioContext *ctx = bdrv_get_aio_context(bs);
+> -
+> -    assert(qemu_in_coroutine());
+> -    if (ctx != qemu_get_aio_context()) {
+> -        aio_context_release(ctx);
+> -    }
+> +    /* TODO removed in next patch */
+>  }
+
+Same comment.
+
+> +++ b/blockdev.c
+> @@ -1395,7 +1352,6 @@ static void external_snapshot_action(TransactionAction *action,
+>      /* File name of the new image (for 'blockdev-snapshot-sync') */
+>      const char *new_image_file;
+>      ExternalSnapshotState *state = g_new0(ExternalSnapshotState, 1);
+> -    AioContext *aio_context;
+>      uint64_t perm, shared;
+>  
+>      /* TODO We'll eventually have to take a writer lock in this function */
+
+I'm guessing removal of the locking gets us one step closer to
+implementing this TODO at a later time?  Or is it now a stale comment?
+Either way, it doesn't affect this patch.
+
+> +++ b/migration/block.c
+> @@ -270,7 +270,6 @@ static int mig_save_device_bulk(QEMUFile *f, BlkMigDevState *bmds)
+>  
+>      if (bmds->shared_base) {
+>          qemu_mutex_lock_iothread();
+> -        aio_context_acquire(blk_get_aio_context(bb));
+...
+> @@ -313,22 +311,10 @@ static int mig_save_device_bulk(QEMUFile *f, BlkMigDevState *bmds)
+>      block_mig_state.submitted++;
+>      blk_mig_unlock();
+>  
+> -    /* We do not know if bs is under the main thread (and thus does
+> -     * not acquire the AioContext when doing AIO) or rather under
+> -     * dataplane.  Thus acquire both the iothread mutex and the
+> -     * AioContext.
+> -     *
+> -     * This is ugly and will disappear when we make bdrv_* thread-safe,
+> -     * without the need to acquire the AioContext.
+> -     */
+> -    qemu_mutex_lock_iothread();
+> -    aio_context_acquire(blk_get_aio_context(bmds->blk));
+
+Will conflict, but with trivial resolution, with your other thread
+renaming things to qemu_bql_lock().
+
+
+> +++ b/tests/unit/test-blockjob.c
+
+> -static void test_complete_in_standby(void)
+> -{
+
+> @@ -531,13 +402,5 @@ int main(int argc, char **argv)
+>      g_test_add_func("/blockjob/cancel/standby", test_cancel_standby);
+>      g_test_add_func("/blockjob/cancel/pending", test_cancel_pending);
+>      g_test_add_func("/blockjob/cancel/concluded", test_cancel_concluded);
+> -
+> -    /*
+> -     * This test is flaky and sometimes fails in CI and otherwise:
+> -     * don't run unless user opts in via environment variable.
+> -     */
+> -    if (getenv("QEMU_TEST_FLAKY_TESTS")) {
+> -        g_test_add_func("/blockjob/complete_in_standby", test_complete_in_standby);
+> -    }
+
+Looks like you ripped out this entire test, because it is no longer
+viable.  I might have mentioned it in the commit message, or squashed
+the removal of this test into the earlier 02/12 patch.
+
+Reviewed-by: Eric Blake <eblake@redhat.com>
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
+
 
