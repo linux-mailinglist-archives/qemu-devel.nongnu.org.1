@@ -2,125 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 168547FF0B2
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:50:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 467397FF0BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 14:51:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8hQj-0006dD-L2; Thu, 30 Nov 2023 08:50:13 -0500
+	id 1r8hRs-0007dU-4z; Thu, 30 Nov 2023 08:51:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8hQV-0006V3-AK
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 08:50:02 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r8hRo-0007Xk-Lf
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 08:51:20 -0500
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r8hQT-0001Ig-BV
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 08:49:59 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40b54261442so7822535e9.1
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 05:49:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1r8hRm-0001px-HQ
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 08:51:20 -0500
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3b85c88710eso502182b6e.3
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 05:51:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701352196; x=1701956996; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701352277; x=1701957077; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=MzXC86kI/230MRmOExolGBgQpce+zyW7qougvXLVSk8=;
- b=I25aAQN3MwjonWQAuXfFk0f4HfMOhFTw+vwYH+7LaxUmESp8giU/JcRynvg2cOAK4O
- FWD7RjbjDPJuNzJfgD7AF3l+TAvHpfAzRpkxijP8NhSPqx7FXKVi3Rj5AUl8Mk2PgEo8
- lu2As9DQDyDTONl/qwdnbfLGqFeVoG53EFquA9ex65zkrLcjzCh39o5L+pp2UOKaEYp/
- xeutKbblANB4GiSU+yBeHo/Aoe3bBh3FGOfj98GwJsNf59xTu7vBpChQhj46TdzWj+Am
- It6Fb0V2KAMeHpMqxtEVVc9D+Au5qphui+PQBerUAapilUICqP8bHOFpv32vUrrX8zwk
- kK1w==
+ bh=Cf/2Zvu4Hq15RJi1vO3BfKYdCYK7/8i9PcDCPQknr+A=;
+ b=bjHFVkbuW2hSXqCfK7opQk2P6/I1rKf85EaOXm2XnJNeLWeU1MT0KvD+CBRIM6aIuH
+ T3dIBoA4w1CsdCGUV9Bbp45LpzTXKfQEM45GCaIMm8H5OnCq5k/t1iRhIq4RGv7GiBdf
+ SIn9jH3GDjIah/IH+DDZu5cAMwbiUU77CPFn6kKJM8tb0AJ0b1iI+0qqRdJhEAEtZle1
+ pR/nqNXLiqh4jLobCwwSO/M2ZvqwH2+Ey9zmzouBpshwLmfkh7IH4ZwZuyc8AgWrS0kk
+ kjZ4xLXlvJ4Gj3f6w2o2oMReg1kjzFR30+3aFqx3cwtvsNhIq6q7e7HkwkCnBoTp75rA
+ zcQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701352196; x=1701956996;
+ d=1e100.net; s=20230601; t=1701352277; x=1701957077;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MzXC86kI/230MRmOExolGBgQpce+zyW7qougvXLVSk8=;
- b=tfksNp7ATF3SnAsee1MuvraGeNO484uXKu9c3HggtTkx0H9ZojjkaMjsP6ZNWopVTh
- x7gLvQl+BLFAGM8YOVK5JIUfUwaaXaNKzKtFLOFYpadhey/J02mkMSWAKDWOP7/JNzgh
- oYAV6UsOwrm+W3aaLUaOMU5fFz3htnJcY4M/MDhp8YWMyNiP6T9klTi8CKtz6LLn9sZt
- zN8impCE9F3dTv97SCyKsqNuUm2/PZc3UbgF2rbzd6+WCOyuMZlE7ZnhKYTko2BWJu7t
- g5UhLIocu0YAE26osFgrhRmZN65AKfo/mDoETirG0uDeRp61HK30P7e05ZR5dMM1VFiX
- UYFA==
-X-Gm-Message-State: AOJu0Yz4J5R/DEjL43euhpJQXm88Kh0AqX8oeHubTlagZH3Gb+7CLPrC
- UjEg3yZUH7ufI9CsqROw7KdmyA==
-X-Google-Smtp-Source: AGHT+IGEZM/F60lbKf+pyOaxLGJZDqngSEf0GXts+oJS0AF+AGOPuKqrMqfmt5a2LHBk+wqKglvvAA==
-X-Received: by 2002:adf:f588:0:b0:332:eb19:9530 with SMTP id
- f8-20020adff588000000b00332eb199530mr14573473wro.32.1701352195915; 
- Thu, 30 Nov 2023 05:49:55 -0800 (PST)
-Received: from [192.168.69.100] (sev93-h02-176-184-17-116.dsl.sta.abo.bbox.fr.
- [176.184.17.116]) by smtp.gmail.com with ESMTPSA id
- h1-20020adfe981000000b00332f6202b82sm1595392wrm.9.2023.11.30.05.49.50
+ bh=Cf/2Zvu4Hq15RJi1vO3BfKYdCYK7/8i9PcDCPQknr+A=;
+ b=sHQs1oMjl8tiDWWU0SHerohwHnuZUVirvzZ822WTYk6weTT/XFQl4cqyh6eX793CO6
+ pbNejV5bQvHieLS2wQnvfGGlmAVVSa6zfpiuFp9VEXua44uNrbsow2qznqqyt4ckbYHt
+ 7nd142jKXmDeKMPEioqN0GvSkooA9zUNwbNSKz6v9szZps8LHb5To1477pzqXhMCDVZ1
+ vTCedHVLX7zwpeXVPnzRzJ4RbunQxaISn4Rne1j+nV3iMioLXCzBWS5egCgsMV1/BY1j
+ S7bJ11YB7iBA827YLfSeA6P8do8TDOMOGI+pOADV/G0XsYk5zAyvNyZkHkNIk750BoLm
+ VACg==
+X-Gm-Message-State: AOJu0YyAwDZfAMq3wDWwJrL7zeYS/AYyg31sJYTlIN19fniSIpPEgcUE
+ DyKe9uOCRJ9fc+UkiSqyUlUS5w==
+X-Google-Smtp-Source: AGHT+IGPNIg+tSohi3PYkGeKLnn9cq6kdFZFM9ZqqPoeCFL1n0LzgznAg9EZZ11xFuByv9gBUY5ung==
+X-Received: by 2002:a05:6808:14c6:b0:3b8:5c84:291a with SMTP id
+ f6-20020a05680814c600b003b85c84291amr22001667oiw.46.1701352277293; 
+ Thu, 30 Nov 2023 05:51:17 -0800 (PST)
+Received: from [172.20.102.4] (rrcs-71-42-197-3.sw.biz.rr.com. [71.42.197.3])
+ by smtp.gmail.com with ESMTPSA id
+ ev25-20020a056808291900b003b2f2724c48sm174558oib.11.2023.11.30.05.51.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 Nov 2023 05:49:55 -0800 (PST)
-Message-ID: <fcaff24d-0ced-4547-898f-a9b8bf49be45@linaro.org>
-Date: Thu, 30 Nov 2023 14:49:48 +0100
+ Thu, 30 Nov 2023 05:51:16 -0800 (PST)
+Message-ID: <768e7409-62a7-441c-960d-dc99ab89c7d0@linaro.org>
+Date: Thu, 30 Nov 2023 07:51:14 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] Rename "QEMU global mutex" to "BQL" in comments and
- docs
+Subject: Re: [PATCH] accel: Do not set CPUState::can_do_io in non-TCG accels
 Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Jean-Christophe Dubois <jcd@tribudubois.net>,
- Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org,
- Song Gao <gaosong@loongson.cn>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Hyman Huang <yong.huang@smartx.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Artyom Tarasenko
- <atar4qemu@gmail.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>, Paul Durrant <paul@xen.org>,
- Jagannathan Raman <jag.raman@oracle.com>, Juan Quintela
- <quintela@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, qemu-arm@nongnu.org, Jason Wang
- <jasowang@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, Huacai Chen <chenhuacai@kernel.org>,
- Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>,
- Jiri Slaby <jslaby@suse.cz>, Alexander Graf <agraf@csgraf.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liwei1518@gmail.com>,
- Eric Farman <farman@linux.ibm.com>, Stafford Horne <shorne@gmail.com>,
- David Hildenbrand <david@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- John Snow <jsnow@redhat.com>, Sunil Muthuswamy <sunilmut@microsoft.com>,
- Michael Roth <michael.roth@amd.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Bin Meng <bin.meng@windriver.com>,
- Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org,
- qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Peter Xu <peterx@redhat.com>, Anthony Perard <anthony.perard@citrix.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Leonardo Bras
- <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20231129212625.1051502-1-stefanha@redhat.com>
- <20231129212625.1051502-7-stefanha@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231129212625.1051502-7-stefanha@redhat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, kvm@vger.kernel.org
+References: <20231129205037.16849-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231129205037.16849-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -143,69 +95,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/11/23 22:26, Stefan Hajnoczi wrote:
-> The term "QEMU global mutex" is identical to the more widely used Big
-> QEMU Lock ("BQL"). Update the code comments and documentation to use
-> "BQL" instead of "QEMU global mutex".
+On 11/29/23 14:50, Philippe Mathieu-Daudé wrote:
+> 'can_do_io' is specific to TCG. Having it set in non-TCG
+> code is confusing, so remove it from QTest / HVF / KVM.
 > 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   docs/devel/multi-thread-tcg.rst   |  7 +++----
->   docs/devel/qapi-code-gen.rst      |  2 +-
->   docs/devel/replay.rst             |  2 +-
->   docs/devel/multiple-iothreads.txt | 16 ++++++++--------
->   include/block/blockjob.h          |  6 +++---
->   include/io/task.h                 |  2 +-
->   include/qemu/coroutine-core.h     |  2 +-
->   include/qemu/coroutine.h          |  2 +-
->   hw/block/dataplane/virtio-blk.c   |  8 ++++----
->   hw/block/virtio-blk.c             |  2 +-
->   hw/scsi/virtio-scsi-dataplane.c   |  6 +++---
->   net/tap.c                         |  2 +-
->   12 files changed, 28 insertions(+), 29 deletions(-)
+>   accel/dummy-cpus.c        | 1 -
+>   accel/hvf/hvf-accel-ops.c | 1 -
+>   accel/kvm/kvm-accel-ops.c | 1 -
+>   3 files changed, 3 deletions(-)
+> 
+> diff --git a/accel/dummy-cpus.c b/accel/dummy-cpus.c
+> index b75c919ac3..1005ec6f56 100644
+> --- a/accel/dummy-cpus.c
+> +++ b/accel/dummy-cpus.c
+> @@ -27,7 +27,6 @@ static void *dummy_cpu_thread_fn(void *arg)
+>       qemu_mutex_lock_iothread();
+>       qemu_thread_get_self(cpu->thread);
+>       cpu->thread_id = qemu_get_thread_id();
+> -    cpu->neg.can_do_io = true;
+>       current_cpu = cpu;
+
+I expect this is ok...
+
+When I was moving this variable around just recently, 464dacf6, I wondered about these 
+other settings, and I wondered if they used to be required for implementing some i/o on 
+behalf of hw accel.  Something that has now been factored out to e.g. kvm_handle_io, which 
+now uses address_space_rw directly.
+
+I see 3 reads of can_do_io: accel/tcg/{cputlb.c, icount-common.c} and system/watchpoint.c. 
+  The final one is nested within replay_running_debug(), which implies icount and tcg.
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
-> diff --git a/include/block/blockjob.h b/include/block/blockjob.h
-> index e594c10d23..b2bc7c04d6 100644
-> --- a/include/block/blockjob.h
-> +++ b/include/block/blockjob.h
-> @@ -54,7 +54,7 @@ typedef struct BlockJob {
+r~
+
 >   
->       /**
->        * Speed that was set with @block_job_set_speed.
-> -     * Always modified and read under QEMU global mutex (GLOBAL_STATE_CODE).
-> +     * Always modified and read under BQL (GLOBAL_STATE_CODE).
-
-"under the BQL"
-
->        */
->       int64_t speed;
+>   #ifndef _WIN32
+> diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+> index abe7adf7ee..2bba54cf70 100644
+> --- a/accel/hvf/hvf-accel-ops.c
+> +++ b/accel/hvf/hvf-accel-ops.c
+> @@ -428,7 +428,6 @@ static void *hvf_cpu_thread_fn(void *arg)
+>       qemu_thread_get_self(cpu->thread);
 >   
-> @@ -66,7 +66,7 @@ typedef struct BlockJob {
+>       cpu->thread_id = qemu_get_thread_id();
+> -    cpu->neg.can_do_io = true;
+>       current_cpu = cpu;
 >   
->       /**
->        * Block other operations when block job is running.
-> -     * Always modified and read under QEMU global mutex (GLOBAL_STATE_CODE).
-> +     * Always modified and read under BQL (GLOBAL_STATE_CODE).
-
-Ditto,
-
->        */
->       Error *blocker;
+>       hvf_init_vcpu(cpu);
+> diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
+> index 6195150a0b..f273f415db 100644
+> --- a/accel/kvm/kvm-accel-ops.c
+> +++ b/accel/kvm/kvm-accel-ops.c
+> @@ -36,7 +36,6 @@ static void *kvm_vcpu_thread_fn(void *arg)
+>       qemu_mutex_lock_iothread();
+>       qemu_thread_get_self(cpu->thread);
+>       cpu->thread_id = qemu_get_thread_id();
+> -    cpu->neg.can_do_io = true;
+>       current_cpu = cpu;
 >   
-> @@ -89,7 +89,7 @@ typedef struct BlockJob {
->   
->       /**
->        * BlockDriverStates that are involved in this block job.
-> -     * Always modified and read under QEMU global mutex (GLOBAL_STATE_CODE).
-> +     * Always modified and read under BQL (GLOBAL_STATE_CODE).
-
-Ditto.
-
->        */
->       GSList *nodes;
->   } BlockJob;
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>       r = kvm_init_vcpu(cpu, &error_fatal);
 
 
