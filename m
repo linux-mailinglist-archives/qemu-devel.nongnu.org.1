@@ -2,144 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C2B7FEBAB
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 10:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB547FEC4F
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 10:55:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8d9N-0003hf-P1; Thu, 30 Nov 2023 04:16:01 -0500
+	id 1r8djl-0001nH-Sc; Thu, 30 Nov 2023 04:53:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1r8d9H-0003gZ-9f; Thu, 30 Nov 2023 04:15:55 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
+ id 1r8dje-0001mw-P3
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 04:53:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1r8d9D-0007gt-JF; Thu, 30 Nov 2023 04:15:54 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AU9CGNH028745; Thu, 30 Nov 2023 09:14:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=U7xhAiXyHYuSi9gQG6NV4CZH7LkdmdMB32D1ZOqvl2E=;
- b=AFBdvLera18ekFkEDQHSP2T6dJxy+bj5KW/jP/YQxVyqxiHZtRJXrFC+0ntnZuEvmXMl
- m5dICRXNSmZBGnKsumVVgBAXL4u0dvBZSGFJjow9KpyWozqGgg5e9lV0A3P1DYtJVgrk
- fcIAkenPAVxLZnA9inVImJFIRFFp84wVlNbQYq2PnUAD94eddwhNGmE1WEaq+o2oyHt9
- lgMLNpBO+kPcZI3+78p/T21qN3TQ/nrMIklnS6Mpmi8dOIQR1PJPM8F2VFLdmlnmfYt2
- bNGyD4yvrGuvjfFw260kty5gkpovVQqcuoFvY7pDIz7evPqH74AstesKRFOdN22SZxO6 0g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3upqj4g6aa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Nov 2023 09:14:59 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AU9CSaJ029884;
- Thu, 30 Nov 2023 09:14:58 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3upqj4g684-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Nov 2023 09:14:58 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AU7Xw9A030737; Thu, 30 Nov 2023 09:14:55 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uku8tddeu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Nov 2023 09:14:55 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3AU9EqIJ6750948
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Nov 2023 09:14:52 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F14720043;
- Thu, 30 Nov 2023 09:14:52 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2CB6D20040;
- Thu, 30 Nov 2023 09:14:48 +0000 (GMT)
-Received: from [9.171.32.92] (unknown [9.171.32.92])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 30 Nov 2023 09:14:48 +0000 (GMT)
-Message-ID: <c3ac8d9c2b9d611e84672436ce1a96aedcaacf5e.camel@linux.ibm.com>
-Subject: Re: [PATCH 2/6] qemu/main-loop: rename QEMU_IOTHREAD_LOCK_GUARD to
- QEMU_BQL_LOCK_GUARD
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Jean-Christophe Dubois <jcd@tribudubois.net>, Fabiano Rosas
- <farosas@suse.de>, qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas Huth
- <thuth@redhat.com>, Hyman Huang <yong.huang@smartx.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Andrey
- Smirnov <andrew.smirnov@gmail.com>, Peter Maydell
- <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>, Artyom Tarasenko
- <atar4qemu@gmail.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Max Filippov <jcmvbkbc@gmail.com>, Alistair Francis
- <alistair.francis@wdc.com>, Paul Durrant <paul@xen.org>, Jagannathan Raman
- <jag.raman@oracle.com>, Juan Quintela <quintela@redhat.com>, "Daniel P."
- =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Daniel
- Henrique Barboza <danielhb413@gmail.com>, Elena Ufimtseva
- <elena.ufimtseva@oracle.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Hailiang Zhang <zhanghailiang@xfusion.com>, Roman Bolshakov
- <rbolshakov@ddn.com>, Huacai Chen <chenhuacai@kernel.org>, Fam Zheng
- <fam@euphon.net>, Eric Blake <eblake@redhat.com>, Jiri Slaby
- <jslaby@suse.cz>, Alexander Graf <agraf@csgraf.de>, Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liwei1518@gmail.com>, Eric
- Farman <farman@linux.ibm.com>, Stafford Horne <shorne@gmail.com>, David
- Hildenbrand <david@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org, Pavel
- Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org, Aleksandar
- Rikalo <aleksandar.rikalo@syrmia.com>, John Snow <jsnow@redhat.com>, Sunil
- Muthuswamy <sunilmut@microsoft.com>, Michael Roth <michael.roth@amd.com>,
- David Gibson <david@gibson.dropbear.id.au>, "Michael S. Tsirkin"
- <mst@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, Bin
- Meng <bin.meng@windriver.com>,
- Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org,
- qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Peter Xu <peterx@redhat.com>, Anthony Perard <anthony.perard@citrix.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>, Eduardo Habkost
- <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>, Vladimir
- Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, =?ISO-8859-1?Q?C=E9dric?=
- Le Goater <clg@kaod.org>, qemu-ppc@nongnu.org, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Leonardo Bras <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 30 Nov 2023 10:14:47 +0100
-In-Reply-To: <20231129212625.1051502-3-stefanha@redhat.com>
-References: <20231129212625.1051502-1-stefanha@redhat.com>
- <20231129212625.1051502-3-stefanha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
+ id 1r8djc-0005rL-QE
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 04:53:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701338007;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4iCLDB7Y6gjf/LcLb2tXV3PXtJbSmB1p05jMADgF5oA=;
+ b=gor4ai4shrVHzOHQcF5mZ3wV8VWvEQ8X/D4eBHzifBRjcx53O+MFGVjFRhN205MfzZw4Rn
+ rLcpQ4Lz8zPbKThQfs/XH2Npkf4Yr83QBmCufbuiDNvH4t6byMiC9Jwr7llmOOGYSBobQw
+ Cw7h+dL0deAc0yWjvulBAXHZXMS/EJc=
+Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
+ [209.85.221.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-157-7Tuc0WdcOJeUQng7URFWMA-1; Thu, 30 Nov 2023 04:52:14 -0500
+X-MC-Unique: 7Tuc0WdcOJeUQng7URFWMA-1
+Received: by mail-vk1-f200.google.com with SMTP id
+ 71dfb90a1353d-4acad6aba41so316052e0c.1
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 01:52:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701337934; x=1701942734;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4iCLDB7Y6gjf/LcLb2tXV3PXtJbSmB1p05jMADgF5oA=;
+ b=VPJ69rQjsdfwdZ9a4XSTpDuhrP4nxoX6Dxb50xZzvzJJHkjmWjIrUFV62fEzI3L9re
+ WEnaOQFLwiJJlbvH0Va3I3saK8qUHUJS6DI+IeYPsqFVqU4tMVMXXqjbYmt4BBEPADfe
+ J+x9mnxZ1A87p/Z94v/7nz6rxtZbzy3LDS1LaQVjecKCkXhflwnubwiQ4Bp+6J5szDjq
+ 5pzENBnO63WTqbKBSmT6DEWVJVLvYAKKwxifx9pTAU2yodTHIcjJtLh8ZQu40tjoCIjB
+ sX6/nT0OxuuwC8Fmy63vX/xNUI1WhcqwwjvYXkzyIPTJzxeOm+HpBAUPP5NQonY/a8IU
+ exEw==
+X-Gm-Message-State: AOJu0YwAaTk+SuQdLk0ZSW/TJb6fhyO1dEq7PJb3n5UFP8McCQ6qeU9f
+ 2pzAQ1HJ7UeE2oHsbdOV2itpKxZhlIN+9tmHYU3dvy9ksaaCDz0nO2g5V16UIsQ8s0qt0d8V8jH
+ ZkNL+HiYawBEJjBNCJ4ROVTTIHewPLGM=
+X-Received: by 2002:a1f:6244:0:b0:4b2:8446:a9d4 with SMTP id
+ w65-20020a1f6244000000b004b28446a9d4mr6276910vkb.12.1701337933771; 
+ Thu, 30 Nov 2023 01:52:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG1QugqnI71W8Ub+Xt5qve0p9jIyO4lh3OH0DUldQvX7k88996Fh/6f5yZsE8CeaeIJbZi8RuLIzmLLqJzOov0=
+X-Received: by 2002:a1f:6244:0:b0:4b2:8446:a9d4 with SMTP id
+ w65-20020a1f6244000000b004b28446a9d4mr6276896vkb.12.1701337933352; Thu, 30
+ Nov 2023 01:52:13 -0800 (PST)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: k5g-bglZZ81amYqAueJeLCJOKEKz4uGW
-X-Proofpoint-GUID: hyHEB3c1P1gBAyQsdYHk4l82Bt-Qzmtx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-30_07,2023-11-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
- lowpriorityscore=0 suspectscore=0 clxscore=1011 impostorscore=0
- phishscore=0 mlxlogscore=810 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311300068
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20231123075630.12057-1-akihiko.odaki@daynix.com>
+ <53966853-640a-4581-a08d-8b452afc4c2a@redhat.com>
+In-Reply-To: <53966853-640a-4581-a08d-8b452afc4c2a@redhat.com>
+From: YangHang Liu <yanghliu@redhat.com>
+Date: Thu, 30 Nov 2023 17:52:02 +0800
+Message-ID: <CAGYh1E-4fiF+Y0JBKPRwJNbuJzdJuWnR6yA-eNLBjW9++xov3w@mail.gmail.com>
+Subject: Re: [PATCH] pcie_sriov: Remove g_new assertion
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000029241e060b5b9b2a"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=yanghliu@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -157,56 +95,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2023-11-29 at 16:26 -0500, Stefan Hajnoczi wrote:
-> The name "iothread" is overloaded. Use the term Big QEMU Lock (BQL)
-> instead, it is already widely used and unambiguous.
->=20
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
-> =C2=A0include/qemu/main-loop.h=C2=A0 | 20 ++++++++++----------
-> =C2=A0hw/i386/kvm/xen_evtchn.c=C2=A0 | 14 +++++++-------
-> =C2=A0hw/i386/kvm/xen_gnttab.c=C2=A0 |=C2=A0 2 +-
-> =C2=A0hw/mips/mips_int.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 2 +-
-> =C2=A0hw/ppc/ppc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> =C2=A0target/i386/kvm/xen-emu.c |=C2=A0 2 +-
-> =C2=A0target/ppc/excp_helper.c=C2=A0 |=C2=A0 2 +-
-> =C2=A0target/ppc/helper_regs.c=C2=A0 |=C2=A0 2 +-
-> =C2=A0target/riscv/cpu_helper.c |=C2=A0 4 ++--
-> =C2=A09 files changed, 25 insertions(+), 25 deletions(-)
->=20
-> diff --git a/include/qemu/main-loop.h b/include/qemu/main-loop.h
-> index d6f75e57bd..0b6a3e4824 100644
-> --- a/include/qemu/main-loop.h
-> +++ b/include/qemu/main-loop.h
-> @@ -344,13 +344,13 @@ void qemu_bql_lock_impl(const char *file, int
-> line);
-> =C2=A0void qemu_bql_unlock(void);
-> =C2=A0
-> =C2=A0/**
-> - * QEMU_IOTHREAD_LOCK_GUARD
-> + * QEMU_BQL_LOCK_GUARD
-> =C2=A0 *
-> - * Wrap a block of code in a conditional
-> qemu_mutex_{lock,unlock}_iothread.
-> + * Wrap a block of code in a conditional qemu_bql_{lock,unlock}.
-> =C2=A0 */
-> -typedef struct IOThreadLockAuto IOThreadLockAuto;
-> +typedef struct BQLLockAuto BQLLockAuto;
-> =C2=A0
-> -static inline IOThreadLockAuto *qemu_iothread_auto_lock(const char
-> *file,
-> +static inline BQLLockAuto *qemu_bql_auto_lock(const char *file,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int line)
+--00000000000029241e060b5b9b2a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The padding is not correct anymore.
+After applying this patch, the VM with a igbvf will not crash during reboot=
+.
 
-Other than this:
+Tested-by: Yanghang Liu<yanghliu@redhat.com>
 
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+
+
+On Mon, Nov 27, 2023 at 5:12=E2=80=AFPM C=C3=A9dric Le Goater <clg@redhat.c=
+om> wrote:
+
+> On 11/23/23 08:56, Akihiko Odaki wrote:
+> > g_new() aborts if the allocation fails so it returns NULL only if the
+> > requested allocation size is zero. register_vfs() makes such an
+> > allocation if NumVFs is zero so it should not assert that g_new()
+> > returns a non-NULL value.
+> >
+> > Fixes: 7c0fa8dff8 ("pcie: Add support for Single Root I/O Virtualizatio=
+n
+> (SR/IOV)")
+> > Buglink: https://issues.redhat.com/browse/RHEL-17209
+> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>
+>
+> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
+>
+> Thanks,
+>
+> C.
+>
+>
+> > ---
+> >   hw/pci/pcie_sriov.c | 1 -
+> >   1 file changed, 1 deletion(-)
+> >
+> > diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+> > index 5ef8950940..a1fe65f5d8 100644
+> > --- a/hw/pci/pcie_sriov.c
+> > +++ b/hw/pci/pcie_sriov.c
+> > @@ -178,7 +178,6 @@ static void register_vfs(PCIDevice *dev)
+> >       num_vfs =3D pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_=
+VF);
+> >
+> >       dev->exp.sriov_pf.vf =3D g_new(PCIDevice *, num_vfs);
+> > -    assert(dev->exp.sriov_pf.vf);
+> >
+> >       trace_sriov_register_vfs(dev->name, PCI_SLOT(dev->devfn),
+> >                                PCI_FUNC(dev->devfn), num_vfs);
+>
+>
+>
+
+--00000000000029241e060b5b9b2a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>After applying this patch, the VM with a igbvf will n=
+ot crash during reboot.</div><div><br></div><div>Tested-by: Yanghang Liu&lt=
+;<a href=3D"mailto:yanghliu@redhat.com">yanghliu@redhat.com</a>&gt;</div><d=
+iv><div dir=3D"ltr" class=3D"gmail_signature" data-smartmail=3D"gmail_signa=
+ture"><div dir=3D"ltr"><div><br></div></div></div></div><br></div><br><div =
+class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Nov 27,=
+ 2023 at 5:12=E2=80=AFPM C=C3=A9dric Le Goater &lt;<a href=3D"mailto:clg@re=
+dhat.com">clg@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
+,204);padding-left:1ex">On 11/23/23 08:56, Akihiko Odaki wrote:<br>
+&gt; g_new() aborts if the allocation fails so it returns NULL only if the<=
+br>
+&gt; requested allocation size is zero. register_vfs() makes such an<br>
+&gt; allocation if NumVFs is zero so it should not assert that g_new()<br>
+&gt; returns a non-NULL value.<br>
+&gt; <br>
+&gt; Fixes: 7c0fa8dff8 (&quot;pcie: Add support for Single Root I/O Virtual=
+ization (SR/IOV)&quot;)<br>
+&gt; Buglink: <a href=3D"https://issues.redhat.com/browse/RHEL-17209" rel=
+=3D"noreferrer" target=3D"_blank">https://issues.redhat.com/browse/RHEL-172=
+09</a><br>
+&gt; Signed-off-by: Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@dayni=
+x.com" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;<br>
+<br>
+<br>
+Reviewed-by: C=C3=A9dric Le Goater &lt;<a href=3D"mailto:clg@redhat.com" ta=
+rget=3D"_blank">clg@redhat.com</a>&gt;<br>
+<br>
+Thanks,<br>
+<br>
+C.<br>
+<br>
+<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0hw/pci/pcie_sriov.c | 1 -<br>
+&gt;=C2=A0 =C2=A01 file changed, 1 deletion(-)<br>
+&gt; <br>
+&gt; diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c<br>
+&gt; index 5ef8950940..a1fe65f5d8 100644<br>
+&gt; --- a/hw/pci/pcie_sriov.c<br>
+&gt; +++ b/hw/pci/pcie_sriov.c<br>
+&gt; @@ -178,7 +178,6 @@ static void register_vfs(PCIDevice *dev)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0num_vfs =3D pci_get_word(dev-&gt;config + sr=
+iov_cap + PCI_SRIOV_NUM_VF);<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0dev-&gt;exp.sriov_pf.vf =3D g_new(PCIDevice =
+*, num_vfs);<br>
+&gt; -=C2=A0 =C2=A0 assert(dev-&gt;exp.sriov_pf.vf);<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0trace_sriov_register_vfs(dev-&gt;name, PCI_S=
+LOT(dev-&gt;devfn),<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 PCI_FUNC(dev-&gt;devfn), num_vfs)=
+;<br>
+<br>
+<br>
+</blockquote></div>
+
+--00000000000029241e060b5b9b2a--
+
 
