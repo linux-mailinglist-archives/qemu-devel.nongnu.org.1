@@ -2,107 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113117FE914
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 07:21:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3A27FE985
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 Nov 2023 08:11:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8aPK-0005mB-J1; Thu, 30 Nov 2023 01:20:18 -0500
+	id 1r8bBN-0003nO-BT; Thu, 30 Nov 2023 02:09:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1r8aPI-0005lu-1J; Thu, 30 Nov 2023 01:20:16 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8bBK-0003nA-VL
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 02:09:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1r8aPG-0008Nb-2d; Thu, 30 Nov 2023 01:20:15 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AU67THp028120; Thu, 30 Nov 2023 06:20:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=q5Q/aJ8RoGo4MlOhg+wTvywUCG03xNSptDWCxezTobQ=;
- b=mKdecy41Q9HxnXBoaH+Ash4SkfGzLMJkQuK0dlRdFU5lNGIoPAs63XYDdsGhIvMzyoj0
- 4fiYW83FfpOVjP103Tbjd6oH/A2OgNWDATo9Z/JW3wrq78AsGmZuXPliMZ1DtYlgMp/k
- fxxQIvHQdRSr3+gkqK80mD+xpWdr5Ty3uf4hzmudhcR87H4xDmtoWLgc6pZvUlVx/Eso
- fa81IFvV73h1mjI0RLbXCA9TCVXFetB3T8RjnXf7F1vRri7VmbjwD7s+KhMUCZqC4UfP
- V7HMCOjePp4yRSvcJPAq8Qb/2HbeSirGMytY0nYHFEuYw/LKTanBMA3luIx2bDq+1tFj Kw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3upmuqrj19-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Nov 2023 06:20:05 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AU67r24030803;
- Thu, 30 Nov 2023 06:20:05 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3upmuqrhyq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Nov 2023 06:20:05 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3AU400o2022364; Thu, 30 Nov 2023 06:20:04 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwfkc0s4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Nov 2023 06:20:04 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3AU6K2j049742124
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Nov 2023 06:20:03 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A539B5805A;
- Thu, 30 Nov 2023 06:20:02 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 705EA5803F;
- Thu, 30 Nov 2023 06:19:59 +0000 (GMT)
-Received: from [9.109.242.129] (unknown [9.109.242.129])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 30 Nov 2023 06:19:59 +0000 (GMT)
-Message-ID: <614cb3f5-454a-c83b-47b1-a0387a8aa187@linux.ibm.com>
-Date: Thu, 30 Nov 2023 11:49:57 +0530
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r8bBJ-00007Q-3M
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 02:09:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701328191;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=B5jMznOcmZIjXjINNROHEylog8pC9eJMqhfpCclJlTg=;
+ b=hCmH1EbLPgb0NDrVMByUjxqzA/KAgxbf5Xeuqh0vaAdP+4hoZlEqG3R4Iuu+V+5Qog0N6C
+ z6ap8VgvBAXLyBgO+aWVLC2WJIJeq5KcNbPIO/VQNYQZrlptJ7hG8zFi8wgrvwUx6qZqcl
+ wyyZhYtrrfRMYsNfmjuamejbd9oAzLI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-IoBmG_6oN6SRy8tOubcJIw-1; Thu,
+ 30 Nov 2023 02:09:50 -0500
+X-MC-Unique: IoBmG_6oN6SRy8tOubcJIw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 033BD1C18CCD;
+ Thu, 30 Nov 2023 07:09:50 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9206C40C6EB9;
+ Thu, 30 Nov 2023 07:09:49 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 81CFF21E6A1F; Thu, 30 Nov 2023 08:09:48 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
+ berrange@redhat.com,  peter.maydell@linaro.org,  farosas@suse.de
+Subject: Re: [PATCH v3] migration: free 'channel' after its use in migration.c
+References: <20231129080624.161578-1-het.gala@nutanix.com>
+ <87fs0ok9i1.fsf@pond.sub.org>
+ <80e9331a-0691-4bd1-8589-a78c2814e627@nutanix.com>
+Date: Thu, 30 Nov 2023 08:09:48 +0100
+In-Reply-To: <80e9331a-0691-4bd1-8589-a78c2814e627@nutanix.com> (Het Gala's
+ message of "Thu, 30 Nov 2023 02:07:26 +0530")
+Message-ID: <878r6fg1j7.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v2 04/14] spapr: nested: Introduce cap-nested-papr for
- Nested PAPR API
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: clegoate@redhat.com, qemu-devel@nongnu.org, mikey@neuling.org,
- vaibhav@linux.ibm.com, jniethe5@gmail.com, sbhat@linux.ibm.com,
- kconsul@linux.vnet.ibm.com, danielhb413@gmail.com
-References: <20231012104951.194876-1-harshpb@linux.ibm.com>
- <20231012104951.194876-5-harshpb@linux.ibm.com>
- <CXAZVME5KCFG.32WTQX49G8W7B@wheely>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <CXAZVME5KCFG.32WTQX49G8W7B@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vsDVCzAwrCIBtcQ9YENLyy1NFtG_2gtX
-X-Proofpoint-ORIG-GUID: nhhhdpuP2XQFbuf35rpK6MnNNESjpwmS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-30_03,2023-11-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- priorityscore=1501 adultscore=0 clxscore=1011 impostorscore=0 bulkscore=0
- mlxscore=0 lowpriorityscore=0 mlxlogscore=672 suspectscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311300045
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.177,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,44 +83,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Het Gala <het.gala@nutanix.com> writes:
 
+> On 29/11/23 6:21 pm, Markus Armbruster wrote:
+>> I'ld like to suggest a clearer subject:
+>>
+>>    migration: Plug memory leak with migration URIs
+> Ack. Will update the commit message
+>> Het Gala<het.gala@nutanix.com>  writes:
+>>
+>>> 'channel' in qmp_migrate() and qmp_migrate_incoming() is not
+>>> auto-freed. migrate_uri_parse() allocates memory to 'channel' if
+>>
+>> Not sure we need the first sentence.  QMP commands never free their
+>> arguments.
+>
+> Ack.
+>
+>>> the user opts for old syntax - uri, which is leaked because there
+>>> is no code for freeing 'channel'.
+>>> So, free channel to avoid memory leak in case where 'channels'
+>>> is empty and uri parsing is required.
+>>> Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp
+>>> migration flow")
+>>>
+>>> Signed-off-by: Het Gala<het.gala@nutanix.com>
+>>> Suggested-by: Markus Armbruster<armbru@redhat.com>
+>>
+>> Keep the Fixes: tag on a single line, and next to the other tags:
+>>
+>>    [...]
+>>    is empty and uri parsing is required.
+>>
+>>    Fixes: 5994024f ("migration: Implement MigrateChannelList to qmp migration flow")
+>>    Signed-off-by: Het Gala<het.gala@nutanix.com>
+>>    Suggested-by: Markus Armbruster<armbru@redhat.com>
+>
+> Ack.
+>
+> [...]
+>
+>>> +        addr = channels->value->addr;
+>>>       } else if (uri) {
+>>>           /* caller uses the old URI syntax */
+>>>           if (!migrate_uri_parse(uri, &channel, errp)) {
+>>>               return;
+>>>           }
+>>> +        addr = channel->addr;
+>>>       } else {
+>>>           error_setg(errp, "neither 'uri' or 'channels' argument are "
+>>>                      "specified in 'migrate' qmp command ");
+>>>           return;
+>>>       }
+>>> -    addr = channel->addr;
+>>>         /* transport mechanism not suitable for migration? */
+>>>       if (!migration_channels_and_transport_compatible(addr, errp)) {
+>>
+>> I tested this with an --enable-santizers build.  Before the patch:
+>>
+>>      $ qemu-system-x86_64 -nodefaults -S -display none -monitor stdio -incoming unix:123
+>>      ==3260873==WARNING: ASan doesn't fully support makecontext/swapcontext functions and may produce false positives in some cases!
+>>      QEMU 8.1.92 monitor - type 'help' for more information
+>>      (qemu) q
+>>
+>>      =================================================================
+>>      ==3260873==ERROR: LeakSanitizer: detected memory leaks
+>>
+>>      Direct leak of 40 byte(s) in 1 object(s) allocated from:
+>>          #0 0x7f0ba08ba097 in calloc (/lib64/libasan.so.8+0xba097)
+>>          #1 0x7f0b9f4eb5b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
+>>          #2 0x55b446454dbe in migrate_uri_parse ../migration/migration.c:490
+>>          #3 0x55b4464557c9 in qemu_start_incoming_migration ../migration/migration.c:539
+>>          #4 0x55b446461687 in qmp_migrate_incoming ../migration/migration.c:1734
+>>          #5 0x55b4463df1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
+>>          #6 0x55b4463e4d8e in qemu_init ../system/vl.c:3753
+>>          #7 0x55b446f63ca9 in main ../system/main.c:47
+>>          #8 0x7f0b9d04a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
+>>
+>>      Direct leak of 16 byte(s) in 1 object(s) allocated from:
+>>          #0 0x7f0ba08ba097 in calloc (/lib64/libasan.so.8+0xba097)
+>>          #1 0x7f0b9f4eb5b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
+>>          #2 0x55b4464557c9 in qemu_start_incoming_migration ../migration/migration.c:539
+>>          #3 0x55b446461687 in qmp_migrate_incoming ../migration/migration.c:1734
+>>          #4 0x55b4463df1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
+>>          #5 0x55b4463e4d8e in qemu_init ../system/vl.c:3753
+>>          #6 0x55b446f63ca9 in main ../system/main.c:47
+>>          #7 0x7f0b9d04a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
+>>
+>>      Direct leak of 8 byte(s) in 1 object(s) allocated from:
+>>          #0 0x7f0ba08bb1a8 in operator new(unsigned long) (/lib64/libasan.so.8+0xbb1a8)
+>>          #1 0x7f0b9a9255b7 in _sub_I_65535_0.0 (/lib64/libtcmalloc_minimal.so.4+0xe5b7)
+>>
+>>      Indirect leak of 48 byte(s) in 1 object(s) allocated from:
+>>          #0 0x7f0ba08ba097 in calloc (/lib64/libasan.so.8+0xba097)
+>>          #1 0x7f0b9f4eb5b0 in g_malloc0 (/lib64/libglib-2.0.so.0+0x5f5b0)
+>>          #2 0x55b4464557c9 in qemu_start_incoming_migration ../migration/migration.c:539
+>>          #3 0x55b446461687 in qmp_migrate_incoming ../migration/migration.c:1734
+>>          #4 0x55b4463df1c2 in qmp_x_exit_preconfig ../system/vl.c:2718
+>>          #5 0x55b4463e4d8e in qemu_init ../system/vl.c:3753
+>>          #6 0x55b446f63ca9 in main ../system/main.c:47
+>>          #7 0x7f0b9d04a54f in __libc_start_call_main (/lib64/libc.so.6+0x2754f)
+>>
+>>      Indirect leak of 4 byte(s) in 1 object(s) allocated from:
+>>          #0 0x7f0ba08ba6af in __interceptor_malloc (/lib64/libasan.so.8+0xba6af)
+>>          #1 0x7f0b9f4eb128 in g_malloc (/lib64/libglib-2.0.so.0+0x5f128)
+>>
+>>      SUMMARY: AddressSanitizer: 116 byte(s) leaked in 5 allocation(s).
+>
+> curious: how to get this stack trace ? I tried to configure and build qemu with --enable-santizers option, but on running the tests 'make -j test', I see:
+>
+> ==226453==LeakSanitizer has encountered a fatal error. ==226453==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1 ==226453==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
 
-On 11/29/23 09:31, Nicholas Piggin wrote:
-> On Thu Oct 12, 2023 at 8:49 PM AEST, Harsh Prateek Bora wrote:
->> Introduce a SPAPR capability cap-nested-papr which provides a nested
->> HV facility to the guest. This is similar to cap-nested-hv, but uses
->> a different (incompatible) API and so they are mutually exclusive.
->> This new API is to enable support for KVM on PowerVM and recently the
->> Linux kernel side patches have been accepted upstream as well [1].
->> Support for related hcalls is being added in next set of patches.
-> 
-> We do want to be able to support both APIs on a per-guest basis. It
-> doesn't look like the vmstate bits will be a problem, both could be
-> enabled if the logic permitted it and that wouldn't cause a
-> compatibility problem I think?
-> 
+I built with
 
-I am not sure if it makes sense to have both APIs working in parallel 
-for a nested guest. Former uses h_enter_guest and expects L1 to store 
-most of the regs, and has no concept like GSB where the communication 
-between L1 and L0 takes place in a standard format which is used at 
-nested guest exit also. Here, we have separate APIs for guest/vcpu 
-create and then do a run_vcpu for a specific vcpu. So, we cant really 
-use both APIs interchangeably while running a nested guest. BTW, L1 
-kernel uses only either of the APIs at a time, preferably this one if 
-supported.
+    $ ../configure --disable-werror --target-list=x86_64-softmmu --enable-debug --enable-sanitizers 
+    $ make
 
-> And it's a bit of a nitpick, but the capability should not be permitted
-> before the actual APIs are supported IMO. You could split this into
-> adding .api first, so the implementation can test it, and add the spapr
-> caps at the end.
-> 
+then ran the manual test shown above.
 
-Agree, I shall update as suggested.
+"make check" fails differently for me than it does for you.
 
-regards,
-Harsh
+[...]
 
-> Thanks,
-> Nick
 
