@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72565800744
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 10:39:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 120DE80073A
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 10:38:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8zx3-0003ud-QP; Fri, 01 Dec 2023 04:36:50 -0500
+	id 1r8zx0-0003rZ-NM; Fri, 01 Dec 2023 04:36:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8zwz-0003r7-6d
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 04:36:45 -0500
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1r8zwx-0003os-0H
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 04:36:43 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r8zwv-000473-Ej
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 04:36:44 -0500
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-50abbb23122so2654207e87.3
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 01:36:40 -0800 (PST)
+ id 1r8zws-00045m-Q0
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 04:36:42 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3332f1512e8so614315f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 01:36:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701423399; x=1702028199; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701423397; x=1702028197; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q2mKYaqQwRPyOn+b0fzZNJnY6rsKfn5mWX6d/74jDLg=;
- b=DooEn7I5+el7NsJXelnMCt73JPXdY9tu6QCs/dc7mAFi4QBxxjpnxHdkowtawrkXTG
- Qag2gkC7GpirsYOjUnD156kTBehmubcBiyZtAE40vIbXFOBRAoEsIluhtKR9TTY8fPb1
- gRef1bnCd85bGbRqe4z4o7tMeiQooJi9dDRIZteBAUc+i8fIEET0qjlZknn+VrwsMlSS
- KdYy4ZVO1qsPLVhKgQF0iI7QnYlDUZvtcaHEJwfBN9vjJf7VkpwVFTwxpqZJdU+GzTnW
- aWGUqSrCzc49duo23H/58LG9uIWGnYWYyIITOCx+5vQQP3+HfTuyV4WmHMf4NGR+NdT5
- Rz9A==
+ bh=zUg0v3uMioRQGt7KqmfkhZG/6jp+lM3qQiMuLIa+vH0=;
+ b=oXDWf09RmiIRCVulq4DlBdwaRrYZJwRGXZLOx0TtXyLVLCIjtV+/M77fRVzhzwjWm2
+ sF6ZU3+gtHGsP8GaMNRTkKNrHuYFMl7t/0HR3Q25MhdO0mvSDf2u+VImsy9RN/J4xDIh
+ DFBqqsQvrxFzpQjZYKllBaT37m7/Lt7chqp49NkGXWTEnn3OEuHJE96g3Xy3n9OMkI2X
+ DUC7OzxE603WGqDgoWGixdCQt9IOo1Sd/tNDMpmbEtfeaiY/FEDLaS4zDXbC1stsdQNX
+ t5oZpAJWWF4R21HrGpvTx5X9QdYJPoekpb+F8rInNCPUIKniDD8lcC7U1TR7Uag0SwgD
+ ieSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701423399; x=1702028199;
+ d=1e100.net; s=20230601; t=1701423397; x=1702028197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q2mKYaqQwRPyOn+b0fzZNJnY6rsKfn5mWX6d/74jDLg=;
- b=FcR+pGmGUmewC9GnAycNPU5VDGDNR85eiMKy2SV0F+zyWdRfquM0qBxIqh8blaDh6k
- 1IV+zyLykaT+R3m5YE51IDswV7w+48Z2SkpXzTG7SBuTH19obrvFOxJ/gXOF9wSAtDB2
- Zak6OVW8ErnfCI10wvicUTYKYxdpv9zkVSXhF3R7snOLqKAHTyTHhHsISKTzQ2qW8nvc
- ArGQmvkylJ+aI+WXDmhcYjV8XlVPpDINDC4ZDKjLM+iQvSTy/EFhnPi1uXK3ur7tyFl2
- wMMSSPUqORYYJ0FApiqIjKr8WPnk1/cjVBWjveAjGR5l/y/8mjoXcTtmemdEevgZl7SW
- 7Uuw==
-X-Gm-Message-State: AOJu0Yw5BKB0XV7/Mm1UQstAJewI6MG1FUmn2m8QmdcI8wruk7QDPBJa
- 0k8aIF1isBp+H4E2HDeAdhPF/A==
-X-Google-Smtp-Source: AGHT+IHrRm8DuyhmQuyxSyjOm/het5dGuh07U0eMAeCC1SuHzlsB1iiP0egWpBM8h58oUjRUwe3icA==
-X-Received: by 2002:a05:6512:142:b0:50b:c194:d413 with SMTP id
- m2-20020a056512014200b0050bc194d413mr418108lfo.55.1701423399512; 
- Fri, 01 Dec 2023 01:36:39 -0800 (PST)
+ bh=zUg0v3uMioRQGt7KqmfkhZG/6jp+lM3qQiMuLIa+vH0=;
+ b=JXLwX6yOgp8kMHy3aIPVzPKNXWG1fItlPsyw0gqYkVmUr8YR3YsYApipU+OpYPTXBl
+ yjhqlV/rZturcLvUvg7+TWmgVH99V/kpwnvnXU7X6c3hdIMN4x01uuA/LwSNmBEaL5cf
+ nXXVhyOliWyQ1Fov6+s28XQ2irtEE+vU67nvUt1TByzXjtULB0xOFjKTNtfVcyN4NxNu
+ f1i+fHBgRODnsEnoRUyrC0bguhMiRkamPRTbFOxwxMD3YahOhAuw/QFd+5nrzcE6ah8K
+ Xn2a+vJul3qju3eMa5ig2a1PE8ilUklE1/LoXAf/2uPpP70uw+KHDQ8HxxmFJGwqO6u6
+ bOzQ==
+X-Gm-Message-State: AOJu0YyFUog4sXvmaOsPRIbpXo7SFk8sVLBsSnV28Va2E7JZ3eixJObC
+ Hymes1LdcLLqoWz0JxzrJLdXBw==
+X-Google-Smtp-Source: AGHT+IF5YpFIIVOQPIwqlm+Msp1gnNr9LAAmvo1rv7MRDucoWXwn5yVmSu5AMnlj5cKMS//LCN69pw==
+X-Received: by 2002:a5d:5918:0:b0:332:c585:400a with SMTP id
+ v24-20020a5d5918000000b00332c585400amr608471wrd.44.1701423397373; 
+ Fri, 01 Dec 2023 01:36:37 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- f12-20020adfdb4c000000b00332d3b89561sm3710366wrj.97.2023.12.01.01.36.35
+ j6-20020a5d5646000000b0033307ffb193sm3716885wrw.29.2023.12.01.01.36.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 01 Dec 2023 01:36:37 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 658B65FB69;
+ by draig.lan (Postfix) with ESMTP id 7BB945FB6B;
  Fri,  1 Dec 2023 09:36:34 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,17 +77,17 @@ Cc: Eric Farman <farman@linux.ibm.com>,
  Aurelien Jarno <aurelien@aurel32.net>, Cleber Rosa <crosa@redhat.com>,
  Joel Stanley <joel@jms.id.au>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 5/7] tests/avocado: tag sbsa tests as tcg only
-Date: Fri,  1 Dec 2023 09:36:31 +0000
-Message-Id: <20231201093633.2551497-6-alex.bennee@linaro.org>
+Subject: [PATCH v2 6/7] gitlab: build the correct microblaze target
+Date: Fri,  1 Dec 2023 09:36:32 +0000
+Message-Id: <20231201093633.2551497-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231201093633.2551497-1-alex.bennee@linaro.org>
 References: <20231201093633.2551497-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,26 +110,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As firmware runs at a higher privilege level than the hypervisor we
-can only run these tests under TCG emulation.
+We inadvertently built the LE target for BE tests.
 
+Fixes: 78ebc00b06 (gitlab: shuffle some targets and reduce avocado noise)
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/avocado/machine_aarch64_sbsaref.py | 1 +
- 1 file changed, 1 insertion(+)
+ .gitlab-ci.d/buildtest.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index bdd1efc768..c25a691b64 100644
---- a/tests/avocado/machine_aarch64_sbsaref.py
-+++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -20,6 +20,7 @@ class Aarch64SbsarefMachine(QemuSystemTest):
-     """
-     :avocado: tags=arch:aarch64
-     :avocado: tags=machine:sbsa-ref
-+    :avocado: tags=accel:tcg
-     """
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 7f9af83b10..62b5379a5e 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -41,7 +41,7 @@ build-system-ubuntu:
+   variables:
+     IMAGE: ubuntu2204
+     CONFIGURE_ARGS: --enable-docs
+-    TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
++    TARGETS: alpha-softmmu microblaze-softmmu mips64el-softmmu
+     MAKE_CHECK_ARGS: check-build
  
-     timeout = 180
+ check-system-ubuntu:
 -- 
 2.39.2
 
