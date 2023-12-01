@@ -2,69 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC02800CC5
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 15:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB4C800CDF
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 15:06:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r943c-00020u-RH; Fri, 01 Dec 2023 08:59:52 -0500
+	id 1r9491-0004Od-Gq; Fri, 01 Dec 2023 09:05:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r943Q-0001xh-KH
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 08:59:40 -0500
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r948s-0004Nq-V1
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 09:05:19 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r943O-0003v5-HO
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 08:59:40 -0500
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-50abbb23122so3010917e87.3
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 05:59:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r948i-0007Qh-NE
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 09:05:18 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-54c54a3b789so1233275a12.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 06:05:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701439177; x=1702043977; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1701439505; x=1702044305; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ZoDrotQ/U2UikiecDBIyj1zFrN2+3Zyl5wDgz7ChxoE=;
- b=UMfvl5rmHQniw9tc260pD9F+jmHsQ1eQBiyPBJbJRq11dfccRjZZWx6wi83ooGbUc7
- MYmw9PeJA8gBKqN04B3GEoZDu+vVAgR3DDlR8wPGW+WmvtI+HS5Kom2vbJnS/mYh54O/
- L45aJPPzrBRhHPRVJIWrtd7yaWKcGl8XqUfUXrLJjrZMsLXfVyuTfuqSAMM42wikQ9DR
- w1DgJk+4SM9tqPKBO03ajiBdTzFg8pZzttHjyz9ZIuV2XHYxICgud+F1SltnjTXNE57z
- wuT7tutvn16i1GvMJIyoHM19X7m+YoSxzWoGpMGlMXpDF1KF891qlxnrL+x7rW/V5ZXv
- BC5Q==
+ bh=GXVnY5gcb6WVUU34Zw3qA5TR/PBHpiFz51PWZTPDVPk=;
+ b=U3fkgmIuYHWJQKWPX2dAaDBEpySGkiSeU2tKHippYkZ4LM/RwVNeNRZQkf7umc4Zow
+ 3qJmcP1oLyU0pPFPP/4UFkBcoHe3f8AL6ySlXEcvLiKbdvfF2MNpukpX+A5bXtHOHnAO
+ xf26cU3XP38sRTEwqJ3CVUrb6mk9RdUTaJV6dA1cdoJs1SNPGiQxP6ISOV2XF5/tVTXP
+ SmC+duOaH0uhb+NIdGG4gUyt2nDcfNQUzOntUEncyVNea9X0SbyUM9Q8oNMbunXF1Gkw
+ 9S6dJJsfpPY773V2JUCuHJvf0ZiTlkrtCtGlruIfRRm2NO2SWOTCflnWbfUkOul29CK8
+ Hppw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701439177; x=1702043977;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1701439505; x=1702044305;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZoDrotQ/U2UikiecDBIyj1zFrN2+3Zyl5wDgz7ChxoE=;
- b=JxVm9Grh+ovYANOwhXMDqeHbp+G2GIsnMrCCdsy3twthj0Je5PcU9IXwB+STQmUrLo
- BzozPGsIfilXGNTraeFfqAUH3GDRybzYrwPvzXUfWF9uwTS0vcJOB5vRNEbRu/TAWnqr
- kadu7+rXd9sXevrAWrFAga1hFmX3qYtV3DODAyNmuX2gBh6ZAo5YimnT6eQ6BHJeJMRJ
- yrUZ8/0ClHU0Aqws9kHjqRUpC31oExOJsbow2r61hR+tgUsap7LOgTN+pfjeBJJXnuGr
- g6YgiEaTl4tpnE4b4g97vvc+NR8xLjcH2zS6T2uuut1cSQKoeLYGru0t5qYZsN7cERfU
- 5qeQ==
-X-Gm-Message-State: AOJu0Yx7mgFUp88CoXDMbZXspTNWCYB79CmueETEfHBLkTcd2sXKWT6Y
- DxV+YQP88WAcUWZVw3wCmWEpNg==
-X-Google-Smtp-Source: AGHT+IELHviIikteIdX912jWo9Ef6/9CSx0lzTWd+9Y+d/9hZdu/KrhuBHx14nxOG9/UZezMeNHQAQ==
-X-Received: by 2002:ac2:555e:0:b0:50b:e06a:f23b with SMTP id
- l30-20020ac2555e000000b0050be06af23bmr32287lfk.71.1701439176959; 
- Fri, 01 Dec 2023 05:59:36 -0800 (PST)
+ bh=GXVnY5gcb6WVUU34Zw3qA5TR/PBHpiFz51PWZTPDVPk=;
+ b=FOVx1YSkrftvkgDsUtVWsfQ0gA6k8v24ofz8zMxqHAg1i752hQ7Pl0zZnKfFMq0Fi0
+ Zb+b2KZ/nO+DvZs8NXHDmYlJVk01F0R2ExE5gwdPjtNVyGcGY5A7dRz8DIpa7ErA3gYr
+ JjLijGpujSc2y91gj8Jzrfxjox95lii2zAYtFvEJNMJa2KuV01rfA7GsOsfN/QJRcoJq
+ Y6FBv7JthcWLhpvQdtLlRtHDI/P/hwkUywDuC2gNzkSxHt80Wxz3zWcxFdY1YCKmn3TH
+ mIE1sZqAwSPIsTEZP4zlhxkmWCad+ivoWPHVI9H8/ZLM/9tJJMaaMzw3uXJaVEI+Mcay
+ zI6A==
+X-Gm-Message-State: AOJu0Yx6PIkC4H7GijeArZ6cSaazkPTq/QmpkZO3jDNB/zoGd9AEXL8w
+ wAbXXzUYvfLq4GrHsEgIzQbiwg==
+X-Google-Smtp-Source: AGHT+IFWuyEzmcF3T18erY4ajahbnIlA3B8tJP3umbeljyI0tHkBQoMPslOySJdkyRQXvSO04JQJPw==
+X-Received: by 2002:a50:9313:0:b0:54c:553e:67f5 with SMTP id
+ m19-20020a509313000000b0054c553e67f5mr1302866eda.8.1701439505403; 
+ Fri, 01 Dec 2023 06:05:05 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.160.225])
  by smtp.gmail.com with ESMTPSA id
- fb13-20020a05600c520d00b0040b3e7569fcsm9108015wmb.11.2023.12.01.05.59.34
+ bx11-20020a0564020b4b00b0054c4b6da934sm294789edb.9.2023.12.01.06.05.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Dec 2023 05:59:36 -0800 (PST)
-Message-ID: <5a3a91d7-7e0f-4bea-b8e2-ccfab0bbd283@linaro.org>
-Date: Fri, 1 Dec 2023 14:59:33 +0100
+ Fri, 01 Dec 2023 06:05:04 -0800 (PST)
+Message-ID: <f8738d36-2527-4620-9532-fca530ef8f0d@linaro.org>
+Date: Fri, 1 Dec 2023 15:05:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/7] tests/avocado: drop
- BootLinuxConsole.test_mips_malta_cpio test
+Subject: Re: [PATCH v2 4/7] tests/avocado: drop malta yamon tests
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Eric Farman <farman@linux.ibm.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>,
  Andrew Jeffery <andrew@codeconstruct.com.au>,
@@ -78,23 +76,24 @@ Cc: Eric Farman <farman@linux.ibm.com>,
  =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Aurelien Jarno <aurelien@aurel32.net>, Cleber Rosa <crosa@redhat.com>,
- Joel Stanley <joel@jms.id.au>, Stefan Hajnoczi <stefanha@redhat.com>
+ Joel Stanley <joel@jms.id.au>
 References: <20231201093633.2551497-1-alex.bennee@linaro.org>
- <20231201093633.2551497-4-alex.bennee@linaro.org>
- <cbcdea98-4fc2-4952-9f7b-b3db242ad8b6@linaro.org>
- <1f9eb253-0346-4264-8817-11cf079e8f07@linaro.org>
-In-Reply-To: <1f9eb253-0346-4264-8817-11cf079e8f07@linaro.org>
+ <20231201093633.2551497-5-alex.bennee@linaro.org>
+ <45077c53-ed18-4821-bfbe-6dba3ca994d4@linaro.org>
+ <87ttp25bqh.fsf@draig.linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <87ttp25bqh.fsf@draig.linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,117 +109,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/12/23 14:57, Philippe Mathieu-Daudé wrote:
-> On 1/12/23 14:45, Philippe Mathieu-Daudé wrote:
+On 1/12/23 13:49, Alex Bennée wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+> 
+>> Hi Alex,
+>>
 >> On 1/12/23 10:36, Alex Bennée wrote:
->>> The assets are no longer archived by Debian so we can't run this on
->>> CI. While some people may still have the test in their cache we do
->>> have more recent images from tuxrun so this isn't a great loss.
+>>> The assets are no longer available on the website so these are
+>>> blocking CI.
 >>>
+>>
+>> How are these "blocking CI"? Missing artifact wasn't be fatal,
+>> is it now? Also, did the artifact cache got flushed? These tests
+>> pass locally, I disagree with removing them.
+>>
+>> I can send a patch using YAMON_PATH like we have with RESCUE_YL_PATH,
+>> but I still consider missing artifact shouldn't be an issue. We are
+>> missing the point of the Avocado cache and the possibility to manually
+>> add artifacts.
+> 
+> Sure but in this case the binaries are gone, you can't share them and no
+
+Per https://mips.com/develop/tools/boot-loaders/:
+"To support existing users of these, and the QEMU project, YAMON is now 
+available under the GPL License."
+
+Their link https://mips.com/downloads/yamon-version-02-22/ is incorrect,
+Mark emailed the webmaster to ask for the correct one.
+
+Mark, any update?
+
+> one else can ever run the test. At that point it just becomes dead
+> weight in the repository. This doesn't stop you keeping your own branch
+> where old tests live on while close to a warm cache but it does somewhat
+> limit the use of the test to the wider community.
+> 
+>>
 >>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
 >>> Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
 >>> ---
->>>   tests/avocado/boot_linux_console.py | 22 ----------------------
->>>   1 file changed, 22 deletions(-)
->>>
->>> diff --git a/tests/avocado/boot_linux_console.py 
->>> b/tests/avocado/boot_linux_console.py
->>> index 231b4f68e5..5d978f6dd0 100644
->>> --- a/tests/avocado/boot_linux_console.py
->>> +++ b/tests/avocado/boot_linux_console.py
->>> @@ -116,28 +116,6 @@ def test_x86_64_pc(self):
->>>           console_pattern = 'Kernel command line: %s' % 
->>> kernel_command_line
->>>           self.wait_for_console_pattern(console_pattern)
->>> -    def test_mips_malta(self):
->>> -        """
->>> -        :avocado: tags=arch:mips
->>> -        :avocado: tags=machine:malta
->>> -        :avocado: tags=endian:big
->>> -        """
->>> -        deb_url = ('http://snapshot.debian.org/archive/debian/'
->>> -                   '20130217T032700Z/pool/main/l/linux-2.6/'
->>> -                   'linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb')
-> 
-> This link still works for me, what am I missing?
-> 
-> $ wget 
-> http://snapshot.debian.org/archive/debian/20130217T032700Z/pool/main/l/linux-2.6/linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb
-> --2023-12-01 14:55:31-- 
-> http://snapshot.debian.org/archive/debian/20130217T032700Z/pool/main/l/linux-2.6/linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb
-> Resolving snapshot.debian.org (snapshot.debian.org)... 185.17.185.185, 
-> 193.62.202.27
-> Connecting to snapshot.debian.org 
-> (snapshot.debian.org)|185.17.185.185|:80... connected.
-> HTTP request sent, awaiting response... 200 OK
-> Length: 30231730 (29M)
-> Saving to: ‘linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb’
-> 
->     linux-image-2.6.32-5-4kc-ma  12%[=>    ]   3,71M  1,23MB/s    eta 20s
-
-Sharing HTTP headers:
-
-$ curl -v 
-http://snapshot.debian.org/archive/debian/20130217T032700Z/pool/main/l/linux-2.6/linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb
-*   Trying 193.62.202.27:80...
-* Connected to snapshot.debian.org (193.62.202.27) port 80 (#0)
- > GET 
-/archive/debian/20130217T032700Z/pool/main/l/linux-2.6/linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb 
-HTTP/1.1
- > Host: snapshot.debian.org
- > User-Agent: curl/8.1.2
- > Accept: */*
- >
-< HTTP/1.1 200 OK
-< Date: Fri, 01 Dec 2023 13:54:55 GMT
-< Server: Apache
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: sameorigin
-< Referrer-Policy: no-referrer
-< X-Xss-Protection: 1
-< Permissions-Policy: interest-cohort=()
-< Last-Modified: Sun, 17 Feb 2013 03:34:37 GMT
-< ETag: "1cd4cb2-4d5e349b3403e"
-< Accept-Ranges: bytes
-< Content-Length: 30231730
-< X-Clacks-Overhead: GNU Terry Pratchett
-< Cache-Control: max-age=31536000, public
-< X-Varnish: 383440315
-< Age: 0
-< Via: 1.1 varnish (Varnish/6.5)
-< connection: close
-
->> Anyway, the lesson is we can't rely on Debian snapshot mirror
->> anymore, so more need to be cleaned:
->>
->> $ git grep url.*snapshot.debian.org
->> tests/avocado/boot_linux_console.py:127:        deb_url = 
->> ('http://snapshot.debian.org/archive/debian/'
->> tests/avocado/boot_linux_console.py:160:        deb_url = 
->> ('http://snapshot.debian.org/archive/debian/'
->> tests/avocado/boot_linux_console.py:203:        deb_url = 
->> ('http://snapshot.debian.org/archive/debian/'
->> tests/avocado/boot_linux_console.py:513:        deb_url = 
->> ('https://snapshot.debian.org/archive/debian/'
->> tests/avocado/boot_linux_console.py:1129:        deb_url = 
->> ('http://snapshot.debian.org/archive/debian/'
->> tests/avocado/boot_linux_console.py:1255:        deb_url = 
->> ('https://snapshot.debian.org/archive/debian-ports'
->> tests/avocado/boot_linux_console.py:1299:        deb_url = 
->> ('http://snapshot.debian.org/archive/debian/'
->> tests/avocado/machine_s390_ccw_virtio.py:50:        kernel_url = 
->> ('https://snapshot.debian.org/archive/debian/'
->> tests/avocado/machine_s390_ccw_virtio.py:56:        initrd_url = 
->> ('https://snapshot.debian.org/archive/debian/'
->> tests/avocado/replay_kernel.py:110:        deb_url = 
->> ('http://snapshot.debian.org/archive/debian/'
->> tests/avocado/replay_kernel.py:139:        deb_url = 
->> ('http://snapshot.debian.org/archive/debian/'
->> tests/avocado/replay_kernel.py:287:        deb_url = 
->> ('https://snapshot.debian.org/archive/debian-ports'
->> tests/avocado/replay_kernel.py:445:        deb_url = 
->> ('http://snapshot.debian.org/archive/debian/'
+>>>    tests/avocado/machine_mips_malta.py | 37 -----------------------------
+>>>    1 file changed, 37 deletions(-)
+>>> diff --git a/tests/avocado/machine_mips_malta.py
+>>> b/tests/avocado/machine_mips_malta.py
+>>> index 959dcf5602..3a1ec85c20 100644
+>>> --- a/tests/avocado/machine_mips_malta.py
+>>> +++ b/tests/avocado/machine_mips_malta.py
+>>> @@ -122,40 +122,3 @@ def test_mips_malta_i6400_framebuffer_logo_8cores(self):
+>>>            :avocado: tags=mips:smp
+>>>            """
+>>>            self.do_test_i6400_framebuffer_logo(8)
+>>> -
+>>> -class MaltaMachine(QemuSystemTest):
+>>> -
+>>> -    def do_test_yamon(self):
+>>> -        rom_url = ('http://www.imgtec.com/tools/mips-tools/downloads/'
+>>> -                   'yamon/yamon-bin-02.22.zip')
+>>> -        rom_hash = '8da7ecddbc5312704b8b324341ee238189bde480'
+>>> -        zip_path = self.fetch_asset(rom_url, asset_hash=rom_hash)
+>>> -
+>>> -        archive.extract(zip_path, self.workdir)
+>>> -        yamon_path = os.path.join(self.workdir, 'yamon-02.22.bin')
+>>> -
+>>> -        self.vm.set_console()
+>>> -        self.vm.add_args('-bios', yamon_path)
+>>> -        self.vm.launch()
+>>> -
+>>> -        prompt =  'YAMON>'
+>>> -        pattern = 'YAMON ROM Monitor'
+>>> -        interrupt_interactive_console_until_pattern(self, pattern, prompt)
+>>> -        wait_for_console_pattern(self, prompt)
+>>> -        self.vm.shutdown()
+>>> -
+>>> -    def test_mipsel_malta_yamon(self):
+>>> -        """
+>>> -        :avocado: tags=arch:mipsel
+>>> -        :avocado: tags=machine:malta
+>>> -        :avocado: tags=endian:little
+>>> -        """
+>>> -        self.do_test_yamon()
+>>> -
+>>> -    def test_mips64el_malta_yamon(self):
+>>> -        """
+>>> -        :avocado: tags=arch:mips64el
+>>> -        :avocado: tags=machine:malta
+>>> -        :avocado: tags=endian:little
+>>> -        """
+>>> -        self.do_test_yamon()
 > 
 
 
