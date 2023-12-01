@@ -2,77 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05687800B3C
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 13:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A17E800B45
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 13:51:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r92qY-0000HZ-Ot; Fri, 01 Dec 2023 07:42:18 -0500
+	id 1r92xk-0002lo-66; Fri, 01 Dec 2023 07:49:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r92qT-0000H8-Du
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 07:42:13 -0500
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r92xX-0002ez-O6
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 07:49:33 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r92qR-0004Ai-4X
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 07:42:12 -0500
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-50bdebb1786so136754e87.1
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 04:42:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r92xV-0006hh-Bk
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 07:49:30 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40b3e7f2fd9so19544715e9.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 04:49:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701434529; x=1702039329; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Rzr2C3tYaTtpvC5YjlZy+d5GSu5v+cRvuPJ4uwng2do=;
- b=pxdvT0ZOioFNWatz3xVRod5NmcIwUUViZTUXzRvqemW9xiCi/QBVRNTCx4e/IEuoJV
- qvc8P67BKcCageEfrddNCjMmB0fzrEInZ5tvRwSrf8Kb7SMfyrHro87v+Opmj8V7HFI5
- ovt9IdawYNabSbI3QHGHhfYKm8b1bQ3aesl6J2SKekelGV3v2jjt89dFQJlsi8lJj68W
- Q0DMHjmc34N4mCZhXrcVqTZgHzrhnTzRruQIFhBoTBeGGLUUf5bOETomWgq9aOeqh/Hf
- Vqae3gPb3M/zSzsAfAjhvhsoPeb04ywooQ8Mf4Hyby6lyI59TydcH4/4fd/81dCb3sWF
- v8PQ==
+ d=linaro.org; s=google; t=1701434968; x=1702039768; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Tx3EFWqudBWzKUVDQjLsPe5TU6E1CtJIeeIFWwdw7Tw=;
+ b=orFn8cRYG+FCjE0mr/1CuvQ7ADxWJOaKr0F3snRTBktw1jNL2wTnCTpgZC/ri8RdWT
+ dzwjRBbB9d8fMt2rU7TOXwHaFHVOAqhvvWMVCEiZLG50Er8OKuZ3mb2cRRRLhJg+Pixe
+ Gg6CvQjroV/na8JRu+SCaP/krcg4o6DVTqiIizram1UOHodCfAa6p74PaFKslOvvkDPT
+ pmMhoN9oL9/HUIR7BbGfpd1GtHw/TeC6z28v+cYJakUc/vbT6DjQIVpOyU3hn2VB4ifc
+ cpxxYCqb5Yku+mYEP4Xv7q6NHu6eIAXK/yvh2H8siXyNW+ERCakfMaFWsCT0SsGO13zN
+ 8OEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701434529; x=1702039329;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Rzr2C3tYaTtpvC5YjlZy+d5GSu5v+cRvuPJ4uwng2do=;
- b=N9ppruVuDrz8QeMUdLR8uGC05lTvvnXBKoCF0YRfLKqczqyBCIuw+BJ7fm1Tp/Ln2x
- 18B0S+DQVZ22t5I9Tg0yVtq3d+86wCRkRVV8Juc6B6skqvfRnPdKTccsL2WDJ2GHfXn+
- k4/FP3Ik3OABbI3KzdnXHU7n/geRxbIRtg9pOMpHkuedUFM3Tl3NqSjtd3qnto4jwIcB
- dyteZQRTEYS4Sq43lzzHAw+f3nEmTIvHUJAQt9Ws+aQoYll1RtIxWw2q/tndCIo3mfl8
- PdTBOBZkUXGA8H49GYZ/7GSyvG3TxGfi5OxrTtOkxjSDMgz8KDUcN13swjAhyrnMbYCK
- rJ4A==
-X-Gm-Message-State: AOJu0YxeNdbXSnUPeMCux5UQUDgb5tYylcSTY29W5uS2o7cx8+SCsEJT
- 8HevDoYc8bupBbGwRHSKu5qKCA==
-X-Google-Smtp-Source: AGHT+IGy6DXeCHekWscBu5A+XV6JibkKF+ChfM6qbl0dYiQPfLd8+DUzxv1hU6jvFQRVX0OQTHV8TQ==
-X-Received: by 2002:ac2:52ba:0:b0:50b:d177:d9e7 with SMTP id
- r26-20020ac252ba000000b0050bd177d9e7mr640922lfm.3.1701434529422; 
- Fri, 01 Dec 2023 04:42:09 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.160.225])
- by smtp.gmail.com with ESMTPSA id
- e2-20020adf9bc2000000b003332fa77a0fsm2094388wrc.21.2023.12.01.04.42.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Dec 2023 04:42:09 -0800 (PST)
-Message-ID: <63d6f19a-ec9b-4397-bf90-95e89a618838@linaro.org>
-Date: Fri, 1 Dec 2023 13:42:07 +0100
+ d=1e100.net; s=20230601; t=1701434968; x=1702039768;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Tx3EFWqudBWzKUVDQjLsPe5TU6E1CtJIeeIFWwdw7Tw=;
+ b=n3gHqICILTfwMTDENm5sP4exUw9oHdk9LypVoDjhMESZNsH1fm6xnbP1wIZfS9fktu
+ +KimU1K95zHZKnVJcyePBN/RWseu2ze9sIMuSPlv1TF8EeN4LsNFEH1xnEWQf3ahyCYa
+ 9UyDugKRjbz4xq/q03zPmf5nQD51yd4AzdWYgIl3SEnqYYP10ilJzieZorgwusJTse0H
+ gikKI3idSWj3iSGsmT7tqse/5vvXVQo3jqWBmO8wFpXs60TGxPTHWJKWgbRHhaaHyvDo
+ Pm14NC/yylgvNbVJp36OL/oBbTKMryu7arxBDRtHQoQ0uSQuk4UDLd621I7WhtI4vk1x
+ pNnw==
+X-Gm-Message-State: AOJu0YzYgtYXsgBGkyggaZu/lgYnBfiaEXtUHcTg7uEJQ38irAxkqf4f
+ 2ti3qE3i8Q+qLQXs0He83r0PbQ==
+X-Google-Smtp-Source: AGHT+IGaPhBpG++ovez/2Ltb3qFAPfnPkMqdUCph7Cz1Q6OqwaSG48OC0vcToMvL0oGmhL7KiuySNQ==
+X-Received: by 2002:a05:600c:4f55:b0:40b:5e21:c59d with SMTP id
+ m21-20020a05600c4f5500b0040b5e21c59dmr262870wmq.107.1701434967720; 
+ Fri, 01 Dec 2023 04:49:27 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ h19-20020a05600c351300b0040b347d90d0sm8841404wmq.12.2023.12.01.04.49.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 01 Dec 2023 04:49:27 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 096205FB5F;
+ Fri,  1 Dec 2023 12:49:27 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Eric Farman <farman@linux.ibm.com>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Leif Lindholm
+ <quic_llindhol@quicinc.com>,  Beraldo Leal <bleal@redhat.com>,  Andrew
+ Jeffery <andrew@codeconstruct.com.au>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Marcin Juszkiewicz
+ <marcin.juszkiewicz@linaro.org>,  Pavel Dovgalyuk
+ <pavel.dovgaluk@ispras.ru>,  Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org,  Radoslaw Biernacki <rad@semihalf.com>,  Yoshinori
+ Sato <ysato@users.sourceforge.jp>,  Eric Auger <eric.auger@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,  qemu-s390x@nongnu.org,  Wainer dos
+ Santos Moschetta <wainersm@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@kaod.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,  Aurelien Jarno
+ <aurelien@aurel32.net>,  Cleber Rosa <crosa@redhat.com>,  Joel Stanley
+ <joel@jms.id.au>
+Subject: Re: [PATCH v2 4/7] tests/avocado: drop malta yamon tests
+In-Reply-To: <45077c53-ed18-4821-bfbe-6dba3ca994d4@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 1 Dec 2023 11:24:14
+ +0100")
+References: <20231201093633.2551497-1-alex.bennee@linaro.org>
+ <20231201093633.2551497-5-alex.bennee@linaro.org>
+ <45077c53-ed18-4821-bfbe-6dba3ca994d4@linaro.org>
+User-Agent: mu4e 1.11.25; emacs 29.1
+Date: Fri, 01 Dec 2023 12:49:26 +0000
+Message-ID: <87ttp25bqh.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] linux-user: Fix openat() emulation to not modify atime
-Content-Language: en-US
-To: Shu-Chun Weng <scw@google.com>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>,
- Samuel Thibault <samuel.thibault@ens-lyon.org>, Jonah Petri
- <jonah@petri.us>, Edoardo Spadolini <edoardo.spadolini@gmail.com>
-References: <20231201032140.2470599-1-scw@google.com>
- <20231201032140.2470599-3-scw@google.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231201032140.2470599-3-scw@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,39 +112,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Shu-Chun,
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-On 1/12/23 04:21, Shu-Chun Weng wrote:
-> Commit b8002058 strengthened openat()'s /proc detection by calling
-> realpath(3) on the given path, which allows various paths and symlinks
-> that points to the /proc file system to be intercepted correctly.
-> 
-> Using realpath(3), though, has a side effect that it reads the symlinks
-> along the way, and thus changes their atime. The results in the
-> following code snippet already get ~now instead of the real atime:
-> 
->    int fd = open("/path/to/a/symlink", O_PATH | O_NOFOLLOW);
->    struct stat st;
->    fstat(fd, st);
->    return st.st_atime;
-> 
-> This change opens a path that doesn't appear to be part of /proc
-> directly and checks the destination of /proc/self/fd/n to determine if
-> it actually refers to a file in /proc.
-> 
-> Neither this nor the existing code works with symlinks or indirect paths
-> (e.g.  /tmp/../proc/self/exe) that points to /proc/self/exe because it
-> is itself a symlink, and both realpath(3) and /proc/self/fd/n will
-> resolve into the location of QEMU.
+> Hi Alex,
+>
+> On 1/12/23 10:36, Alex Benn=C3=A9e wrote:
+>> The assets are no longer available on the website so these are
+>> blocking CI.
+>>=20
+>
+> How are these "blocking CI"? Missing artifact wasn't be fatal,
+> is it now? Also, did the artifact cache got flushed? These tests
+> pass locally, I disagree with removing them.
+>
+> I can send a patch using YAMON_PATH like we have with RESCUE_YL_PATH,
+> but I still consider missing artifact shouldn't be an issue. We are
+> missing the point of the Avocado cache and the possibility to manually
+> add artifacts.
 
-Does this fix any of the following issues?
-https://gitlab.com/qemu-project/qemu/-/issues/829
-https://gitlab.com/qemu-project/qemu/-/issues/927
-https://gitlab.com/qemu-project/qemu/-/issues/2004
+Sure but in this case the binaries are gone, you can't share them and no
+one else can ever run the test. At that point it just becomes dead
+weight in the repository. This doesn't stop you keeping your own branch
+where old tests live on while close to a warm cache but it does somewhat
+limit the use of the test to the wider community.
 
-> Signed-off-by: Shu-Chun Weng <scw@google.com>
-> ---
->   linux-user/syscall.c | 42 +++++++++++++++++++++++++++++++++---------
->   1 file changed, 33 insertions(+), 9 deletions(-)
+>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Cc: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>> ---
+>>   tests/avocado/machine_mips_malta.py | 37 -----------------------------
+>>   1 file changed, 37 deletions(-)
+>> diff --git a/tests/avocado/machine_mips_malta.py
+>> b/tests/avocado/machine_mips_malta.py
+>> index 959dcf5602..3a1ec85c20 100644
+>> --- a/tests/avocado/machine_mips_malta.py
+>> +++ b/tests/avocado/machine_mips_malta.py
+>> @@ -122,40 +122,3 @@ def test_mips_malta_i6400_framebuffer_logo_8cores(s=
+elf):
+>>           :avocado: tags=3Dmips:smp
+>>           """
+>>           self.do_test_i6400_framebuffer_logo(8)
+>> -
+>> -class MaltaMachine(QemuSystemTest):
+>> -
+>> -    def do_test_yamon(self):
+>> -        rom_url =3D ('http://www.imgtec.com/tools/mips-tools/downloads/'
+>> -                   'yamon/yamon-bin-02.22.zip')
+>> -        rom_hash =3D '8da7ecddbc5312704b8b324341ee238189bde480'
+>> -        zip_path =3D self.fetch_asset(rom_url, asset_hash=3Drom_hash)
+>> -
+>> -        archive.extract(zip_path, self.workdir)
+>> -        yamon_path =3D os.path.join(self.workdir, 'yamon-02.22.bin')
+>> -
+>> -        self.vm.set_console()
+>> -        self.vm.add_args('-bios', yamon_path)
+>> -        self.vm.launch()
+>> -
+>> -        prompt =3D  'YAMON>'
+>> -        pattern =3D 'YAMON ROM Monitor'
+>> -        interrupt_interactive_console_until_pattern(self, pattern, prom=
+pt)
+>> -        wait_for_console_pattern(self, prompt)
+>> -        self.vm.shutdown()
+>> -
+>> -    def test_mipsel_malta_yamon(self):
+>> -        """
+>> -        :avocado: tags=3Darch:mipsel
+>> -        :avocado: tags=3Dmachine:malta
+>> -        :avocado: tags=3Dendian:little
+>> -        """
+>> -        self.do_test_yamon()
+>> -
+>> -    def test_mips64el_malta_yamon(self):
+>> -        """
+>> -        :avocado: tags=3Darch:mips64el
+>> -        :avocado: tags=3Dmachine:malta
+>> -        :avocado: tags=3Dendian:little
+>> -        """
+>> -        self.do_test_yamon()
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
