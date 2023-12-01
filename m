@@ -2,88 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF39E8008C1
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 11:45:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B35780090E
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 11:51:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r910k-0006Ae-3G; Fri, 01 Dec 2023 05:44:42 -0500
+	id 1r916N-0007NE-NX; Fri, 01 Dec 2023 05:50:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r910i-0006AS-A1
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:44:40 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r916A-0007N4-LF
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:50:18 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r910f-0007Bg-GT
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:44:40 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-54bf9a54fe3so2414937a12.3
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 02:44:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r9167-0000s9-DS
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:50:17 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-54b8a4d64b5so2234425a12.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 02:50:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701427476; x=1702032276; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701427812; x=1702032612; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fugN4KgxB91Avy5CuqaH0uab0gF6UbNKCvDqkJzjmYI=;
- b=AYnCTlbC017D9MypFMPln3mbcDHwggqwNueOriGlRmnnb3E9wB6QTC6laznpPjXOUj
- 1KxEbBL9rteiL95n8aGp7zwSYfvBEAHS/o9kXdUqvUhWymTg/ryXTUyfrwnR/1ditSZd
- UF0Zg3al1m5Y4Fc/wHVwESvs3ob+cXGo8wGRwV1Vytiaa2Gyni5WF6NYQwO4FeM0XnCW
- QIWv5+bjcevZuiqsKgNh8Dxsov5g1PSymb4FsYc8G7bGO1u9wfshQydZQnk1cbKi+sDC
- TxwytkBbpsFYvG29QFixHXq+5m3jAVO6ac//XZR9tGIfynHx3b0ZClHUzvnh+xc5o68a
- Mf4A==
+ bh=M+/x1399FgyQ1bsemMbw/0oIdLWeaxMZ0tW1YE95xP8=;
+ b=VuKYiE6UrNgf+TEvVGbDBpN+NnngPx95PU7uGp/LsLHVEJPhLN6Y2PS30BnVCBYUi8
+ wPlfWk7vCDCrZeT0qtuqbxe8EP1x7SB2XNPFCepasrS6bGqnbnJNeBWqOAxkEaNb13od
+ zloh0twrx9iL0AWs3GUTrc9EbMgeSdO/SPV3Ghdhh3roQo4hCU79SEMsIpQFxu1mj6hu
+ JS9IT9eOQxKlypmQDfRrXpophZGxLbbjbBJihEMSkJdaGcLys9dd07fIzqS9KC+CLQZE
+ AcKZYqQ0vAIKRjntDO/dgxa9hxPNcGV4ppWuYBXBMOLWdJ/i0vrY6HdGvhEgz4o7aE0/
+ SJOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701427476; x=1702032276;
+ d=1e100.net; s=20230601; t=1701427812; x=1702032612;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fugN4KgxB91Avy5CuqaH0uab0gF6UbNKCvDqkJzjmYI=;
- b=orSJVfwG2FpGePQfxay6vWc4InZO7DoQxNsinzwpyUjjy1otZU35KqltavwL2F2VKN
- pfnb7Q+JUPaashPb6H/lzV4TqvTKx/pscDVpav3nEVBoEZzlxx03vsoxRdAwEdvu7I8d
- XTGGF45RF/LNJWJ12t6pjCmxvpodftoaGuFSsUgirDc4UbP+gZxEsqzycAZ151vGGhB0
- L8OCVMpFBJtbF4/2Qh4NX5lGXFhKPcWZJH4zWpIknoy6WmQAKzcrxGDb0GtCh/dK8EGJ
- Koic5url0IN6XpDNa8zwQzeIPDJbIvTUxTj0N8RxlO7GgtSH8eioptYLLzplGh0Ng3zX
- cfXQ==
-X-Gm-Message-State: AOJu0YyqMYvdVO5xEAi0nNHcsUo0BEvfHb1e5LfCRO+e/3fJzqIRyJxj
- F6IKZFBM+OQtWsFZ+evlz8SqVQ==
-X-Google-Smtp-Source: AGHT+IGhXS2SC9TnAIKlwhETC4tEf/fsx6JxpzAvIf/Ww/eJdE8DcKZnPz3L5reGEpkAb9pFmJ7t2Q==
-X-Received: by 2002:a50:9344:0:b0:54a:f1db:c2b3 with SMTP id
- n4-20020a509344000000b0054af1dbc2b3mr724054eda.0.1701427475710; 
- Fri, 01 Dec 2023 02:44:35 -0800 (PST)
+ bh=M+/x1399FgyQ1bsemMbw/0oIdLWeaxMZ0tW1YE95xP8=;
+ b=Z8+ExNbAQtuPzCLhhqtZnjcwagzrb3zQxng3VQ7cYLh/840/T8sHrwGgp3xSJTt75f
+ SdwWixa4RK/A5US7XlxQCYZgTAVOhdSSCHdPhTCI8Wci66lU18CrFKM0Eplq2pYxu2N7
+ pyLD7XI9RrE+sP0m/beYLV2JWT2cjXIk1xjdNLSZcu1MDgdFFxEGSnJ7rvMr+HDt6ewu
+ /M4FRP37sBvysnbrfrlsSVyg1OAtNP9sIWECOidzcp8IOBBcqW8zfvhQoXALMIkJkhts
+ d//6XOboKMWLGH+0AfZbzgVejXZsavw19cyCGiRpSDr7emqrSk0AtNKBOmDZAqwihm/e
+ k0Bw==
+X-Gm-Message-State: AOJu0YzqLvc9aOV0RBMmG2ACI8FWQW69RT0XtyvDtHJp7nCUV4unJvkd
+ 8Lv4kse5mzQ7hRCYeKGbv7tUtQ==
+X-Google-Smtp-Source: AGHT+IEoNd3XbxTrFPmmQSIyj5WpMZ8l6EsZqP+gIaS/ORU3r0B2FGmV0AtiXDeDwORH7d96vCujOw==
+X-Received: by 2002:a50:8e12:0:b0:54b:e6:5be3 with SMTP id
+ 18-20020a508e12000000b0054b00e65be3mr713226edw.11.1701427811869; 
+ Fri, 01 Dec 2023 02:50:11 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.160.225])
  by smtp.gmail.com with ESMTPSA id
- y24-20020a056402135800b00548d649f638sm1487495edw.96.2023.12.01.02.44.32
+ dn16-20020a05640222f000b0054c54b3ea3fsm486617edb.21.2023.12.01.02.50.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Dec 2023 02:44:35 -0800 (PST)
-Message-ID: <f976901a-b1a0-45ff-a079-f348e9459aba@linaro.org>
-Date: Fri, 1 Dec 2023 11:44:31 +0100
+ Fri, 01 Dec 2023 02:50:11 -0800 (PST)
+Message-ID: <6d6d75e9-c7d3-4b62-ac8e-9aa3b09005c2@linaro.org>
+Date: Fri, 1 Dec 2023 11:50:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V9 42/46] tests/avocado: add cpr regression test
+Subject: Re: [PATCH] Hexagon (target/hexagon) Fix shadow variable when
+ idef-parser is off
 Content-Language: en-US
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi
- <stefanha@redhat.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Eric Blake <eblake@redhat.com>, Jason Zeng <jason.zeng@linux.intel.com>,
- Zheng Chuan <zhengchuan@huawei.com>, Mark Kanda <mark.kanda@oracle.com>,
- Guoyi Tu <tugy@chinatelecom.cn>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philippe.mathieu.daude@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, David Hildenbrand <david@redhat.com>,
- John Snow <jsnow@redhat.com>, Peng Liang <tcx4c70@gmail.com>
-References: <1658851843-236870-1-git-send-email-steven.sistare@oracle.com>
- <1658851843-236870-43-git-send-email-steven.sistare@oracle.com>
+To: Brian Cain <bcain@quicinc.com>, Taylor Simpson
+ <ltaylorsimpson@gmail.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "Matheus Bernardino (QUIC)" <quic_mathbern@quicinc.com>,
+ Sid Manning <sidneym@quicinc.com>,
+ "Marco Liebel (QUIC)" <quic_mliebel@quicinc.com>,
+ "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+ "ale@rev.ng" <ale@rev.ng>, "anjo@rev.ng" <anjo@rev.ng>
+References: <20231130183955.54314-1-ltaylorsimpson@gmail.com>
+ <36fe2c1d-4db6-498e-a7ce-da74410b4a03@linaro.org>
+ <SN6PR02MB42057D4FC09929723903517AB882A@SN6PR02MB4205.namprd02.prod.outlook.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <1658851843-236870-43-git-send-email-steven.sistare@oracle.com>
+In-Reply-To: <SN6PR02MB42057D4FC09929723903517AB882A@SN6PR02MB4205.namprd02.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,115 +99,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Steve,
-
-On 26/7/22 18:10, Steve Sistare wrote:
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->   MAINTAINERS          |   1 +
->   tests/avocado/cpr.py | 176 +++++++++++++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 177 insertions(+)
->   create mode 100644 tests/avocado/cpr.py
+On 30/11/23 21:39, Brian Cain wrote:
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index b93b0bb..adc1218 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3172,6 +3172,7 @@ F: stubs/cpr-state.c
->   F: include/migration/cpr.h
->   F: migration/cpr.c
->   F: hw/vfio/cpr.c
-> +F: tests/avocado/cpr.py
+> 
+>> -----Original Message-----
+>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Sent: Thursday, November 30, 2023 2:17 PM
+>> To: Taylor Simpson <ltaylorsimpson@gmail.com>; qemu-devel@nongnu.org
+>> Cc: Brian Cain <bcain@quicinc.com>; Matheus Bernardino (QUIC)
+>> <quic_mathbern@quicinc.com>; Sid Manning <sidneym@quicinc.com>; Marco
+>> Liebel (QUIC) <quic_mliebel@quicinc.com>; richard.henderson@linaro.org;
+>> ale@rev.ng; anjo@rev.ng
+>> Subject: Re: [PATCH] Hexagon (target/hexagon) Fix shadow variable when idef-
+>> parser is off
+>>
+>> WARNING: This email originated from outside of Qualcomm. Please be wary of
+>> any links or attachments, and do not enable macros.
+>>
+>> On 30/11/23 19:39, Taylor Simpson wrote:
+>>> Adding -Werror=shadow=compatible-local causes Hexagon not to build
+>>> when idef-parser is off.  The "label" variable in CHECK_NOSHUF_PRED
+>>> shadows a variable in the surrounding code.
+>>>
+>>> Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+>>> ---
+>>>    target/hexagon/macros.h | 6 +++---
+>>>    1 file changed, 3 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
+>>> index 9a51b5709b..f99390e2a8 100644
+>>> --- a/target/hexagon/macros.h
+>>> +++ b/target/hexagon/macros.h
+>>> @@ -93,13 +93,13 @@
+>>>
+>>>    #define CHECK_NOSHUF_PRED(GET_EA, SIZE, PRED) \
+>>>        do { \
+>>> -        TCGLabel *label = gen_new_label(); \
+>>> -        tcg_gen_brcondi_tl(TCG_COND_EQ, PRED, 0, label); \
+>>> +        TCGLabel *noshuf_label = gen_new_label(); \
+>>> +        tcg_gen_brcondi_tl(TCG_COND_EQ, PRED, 0, noshuf_label); \
+>>
+>> Fragile, but sufficient.
+> 
+> The fragility here refers to the fact that CHECK_NOSHUF_PRED() macro could show up in other contexts and then could shadow those?
 
-Maybe rename migration_cpr.py.
+Yes.
 
->   
->   Record/replay
->   M: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-> diff --git a/tests/avocado/cpr.py b/tests/avocado/cpr.py
-> new file mode 100644
-> index 0000000..11e1376
-> --- /dev/null
-> +++ b/tests/avocado/cpr.py
-> @@ -0,0 +1,176 @@
-> +# cpr test
+> We could change the macro to a function or expand the macro to take a label declared outside.  Would that be preferred?  Or are there other suggestions?
 
-"migration CPR test"
-
-> +
-> +# Copyright (c) 2021, 2022 Oracle and/or its affiliates.
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2.
-> +# See the COPYING file in the top-level directory.
-
-Preferably replace/complement with SPDX tag.
-
-> +
-> +import tempfile
-> +from avocado_qemu import QemuSystemTest
-> +from avocado.utils import wait
-> +
-> +class Cpr(QemuSystemTest):
-
-MigrationCpr
-
-> +    """
-> +    :avocado: tags=cpr
-
-Also:
-        :avocado: tags=migration
-
-or even:
-
-        :avocado: tags=migration
-        :avocado: tags=migration:cpr
-
-> +    """
-> +
-> +    timeout = 5
-> +    fast_timeout = 1
-
-These methods ...
-
-> +    @staticmethod
-> +    def has_status(vm, status, command):
-> +        return vm.command(command)['status'] in status
-
-            s/status/status_set/
-> +
-> +    def wait_for_status(self, vm, status, command):
-> +        wait.wait_for(self.has_status,
-> +                      timeout=self.timeout,
-> +                      step=0.1,
-> +                      args=(vm,status,command,))
-
-            s/status/status_set/
-
-> +
-> +    def wait_for_runstate(self, vm, status):
-> +        self.wait_for_status(vm, status, 'query-status')
-
-            s/status/status_set/
-
-> +
-> +    def wait_for_migration(self, vm, status):
-> +        self.wait_for_status(vm, status, 'query-migrate')
-
-            s/status/status_set/
-
-> +
-> +    def run_and_fail(self, vm, msg):
-> +        # Qemu will fail fast, so disable monitor to avoid timeout in accept
-> +        vm.set_qmp_monitor(False)
-> +        vm.launch()
-> +        vm.wait(self.timeout)
-> +        self.assertRegex(vm.get_log(), msg)
-
-... are generic so could go to QemuSystemTest.
-
-The rest LGTM!
+Nah, this is good enough, no need to over-engineer IMHO
+(I just wanted to remark this could still bit us in the
+future, and -Werror will fire).
 
 Regards,
 
 Phil.
+
 
