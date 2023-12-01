@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA6E800E49
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 16:15:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F8C800E5F
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 16:17:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r95EM-0007mK-An; Fri, 01 Dec 2023 10:15:03 -0500
+	id 1r95Fi-0001tr-HE; Fri, 01 Dec 2023 10:16:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r95EI-0007Rf-IJ
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 10:14:58 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1r95Fg-0001sc-9n
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 10:16:24 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r95EE-0005P5-7x
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 10:14:56 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40b479ec4a3so20149965e9.2
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 07:14:53 -0800 (PST)
+ id 1r95Fd-0005me-9I
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 10:16:23 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40b40423df8so19542825e9.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 07:16:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701443693; x=1702048493; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701443778; x=1702048578; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BvpUgN/RqDHcT+hK4lm0re1niy4qNm1TIIBpDqfm/T4=;
- b=dIwFbvwXoRrh4xQpNOL8Bzs/b1lZrmPrXJN6ztrY8CpQkGYUPxNqcg5ArHPPKB1c/Y
- 3szLW09Rmy4AQeKhz23u5b2Lxhe5wxjd7zRYz0+MBQ6mJtv+NX/aVIOUI3ELWiye5gyM
- ZskIBiSQnhbiDnwsGDz1xvvHVwZrYBfIyoDqjitvFxCQFnQUwg4H2a/NG0OZLbq/Hzd/
- B52EmH93yaX093E9HwfbXXzWXLZB4UEwTJoBEKI9tHnc1SNZ9w8iuX5Gf3H3onvLgIim
- Snx2taCMz5uv7mcmw7V0CsX4mHBk4KKBBsvIMneJ9si492K+MaZdNHIFWHInFwzt7Tza
- j9iQ==
+ bh=CyWKN675Mp/AhD1Z4srHmHehDQ8aHFa/YesOt9qdJE4=;
+ b=Xn87V8WY7Vujes8rItUa6l/PoVONCzZxWunFB7sdKWndd5eAPgyF8eMNLAc9rWgYxz
+ +haIFxoiJfBEgJ+frSS3P2YFgwyczpKo4HBpAEkW0M+FMQoCAC5lzJpdBrYB5E+G7wiQ
+ grza9ve8hJC79Hq0ykDh58qeYEXpx8B6Y4so2G/Iflv7HNO2vfIjwbwAYZD2h/kf1qnn
+ m3XnjPUl/ko5FC3ZrytuVBd+EgdQCBYHs0OlkM5Y7zFpXVX/B9+L2SCd4kffrXxbbqE4
+ StbfYyLeC5DDZ5VR0zR3pDIbm+u0G/xmzPOtCUdk6I0vDdeATlgbUqAH9I1VHvzUlfO0
+ Tojg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701443693; x=1702048493;
+ d=1e100.net; s=20230601; t=1701443778; x=1702048578;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=BvpUgN/RqDHcT+hK4lm0re1niy4qNm1TIIBpDqfm/T4=;
- b=YWHFlM9MafIjKCny6yM4Mn1syWBINo8aE/hIR82WmRO0RU7eofi8n1D0wIfl7okbWq
- 42c1QoT8yjt1NnHPMlPG5FiFm7rfqqTLcI2+75zYg1UWp78EuundKAGQiwT0cVIjHhph
- M0bmYrw04OQg0E10ArYK6c9wCWCMX7h4HlsEeWDYPyHkNKollx6qI9WD8cJbOyB9xxgK
- oBZbRkytQvNkZBBzQHJBweZwRmP7hqVVSlASxmecWewcVFNLUnykpmSrTdhW4JHygLyg
- 3B7q0CQFnRhzC8KonZrV+A7aAXWQsNUzlIbgrL6nzj3p3heO5IbsENJuY5YEzNS3i2Ps
- OLIg==
-X-Gm-Message-State: AOJu0YznwUEgWewn8sa2/7+gZB7FNVquIDEkS5449hSxHl4IwZrlPvic
- 30/AODhXIKMqjCCLEo+wQYuKng==
-X-Google-Smtp-Source: AGHT+IFtqKRWiGt4fD1/GiYZcnZyk0t8BplW8j/OM4xtPy4IBW4uocOj7Drs634NcBJp6Jal4JhgUg==
-X-Received: by 2002:a1c:7316:0:b0:40b:5e22:98c with SMTP id
- d22-20020a1c7316000000b0040b5e22098cmr700703wmb.123.1701443692716; 
- Fri, 01 Dec 2023 07:14:52 -0800 (PST)
+ bh=CyWKN675Mp/AhD1Z4srHmHehDQ8aHFa/YesOt9qdJE4=;
+ b=vowDNOUEcPKOsrgwTpivfD/70OlMs4mVW+n/F3iGzp6sAuAJn/3HeZn+JU7OfBY3C/
+ ggLatRd3aSUr0chCUVDu5uAyr/IjHGtA90qS8I0W00pX/UoJq/kB8PPgAigHpzX2EDbo
+ ZWgXfv5IkxqmGFkhvhPYZSQyqgvPrjTsJZlTlsfMfvVuXisC7aVMYEqPoE0eiGt9EyBv
+ jwoo84OzDkXgQmXqTQ2IBiy3iK3OxXTK7iFHsdkbEoLpDIFdfxzasH0eJ8sFs9fFgPTI
+ +fYJI71J7zvw77pgvOBaEypaBeErp6OzFUA/q2I2w3oczbFgh4YWz1tv5iGD4e45nE7G
+ YG3g==
+X-Gm-Message-State: AOJu0YzGSf9Q+c5j3WYP8BBQnockfX260tyIG4yHDbD/ePHR33htpeuf
+ x2RMtXe29u1ITpbkxY5HgTv8wg==
+X-Google-Smtp-Source: AGHT+IHaRCIE4y4wqjJjCi3MOWstu3TCbsIKk2lODrjqTxQE7eP8sKA8U7pZcsBy8J/A0CcuAn4ytQ==
+X-Received: by 2002:a05:600c:6009:b0:40b:5e4a:4086 with SMTP id
+ az9-20020a05600c600900b0040b5e4a4086mr372183wmb.166.1701443778395; 
+ Fri, 01 Dec 2023 07:16:18 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p11-20020a05600c468b00b0040b561924bbsm7414744wmo.21.2023.12.01.07.14.51
+ fa10-20020a05600c518a00b00405442edc69sm9342448wmb.14.2023.12.01.07.16.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Dec 2023 07:14:51 -0800 (PST)
+ Fri, 01 Dec 2023 07:16:17 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EAA9C5FB5F;
- Fri,  1 Dec 2023 15:14:50 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id AC9BF5FB5F;
+ Fri,  1 Dec 2023 15:16:16 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Eric Farman <farman@linux.ibm.com>,  Peter
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ qemu-devel@nongnu.org,  Eric Farman <farman@linux.ibm.com>,  Peter
  Maydell <peter.maydell@linaro.org>,  Leif Lindholm
  <quic_llindhol@quicinc.com>,  Beraldo Leal <bleal@redhat.com>,  Andrew
  Jeffery <andrew@codeconstruct.com.au>,  Paolo Bonzini
@@ -74,24 +75,24 @@ Cc: qemu-devel@nongnu.org,  Eric Farman <farman@linux.ibm.com>,  Peter
  <clg@kaod.org>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,  Aurelien Jarno
  <aurelien@aurel32.net>,  Cleber Rosa <crosa@redhat.com>,  Joel Stanley
- <joel@jms.id.au>,  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH v2 3/7] tests/avocado: drop
- BootLinuxConsole.test_mips_malta_cpio test
-In-Reply-To: <1f9eb253-0346-4264-8817-11cf079e8f07@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 1 Dec 2023 14:57:11
+ <joel@jms.id.au>
+Subject: Re: [PATCH v2 4/7] tests/avocado: drop malta yamon tests
+In-Reply-To: <f8738d36-2527-4620-9532-fca530ef8f0d@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 1 Dec 2023 15:05:02
  +0100")
 References: <20231201093633.2551497-1-alex.bennee@linaro.org>
- <20231201093633.2551497-4-alex.bennee@linaro.org>
- <cbcdea98-4fc2-4952-9f7b-b3db242ad8b6@linaro.org>
- <1f9eb253-0346-4264-8817-11cf079e8f07@linaro.org>
+ <20231201093633.2551497-5-alex.bennee@linaro.org>
+ <45077c53-ed18-4821-bfbe-6dba3ca994d4@linaro.org>
+ <87ttp25bqh.fsf@draig.linaro.org>
+ <f8738d36-2527-4620-9532-fca530ef8f0d@linaro.org>
 User-Agent: mu4e 1.11.25; emacs 29.1
-Date: Fri, 01 Dec 2023 15:14:50 +0000
-Message-ID: <87o7fa5505.fsf@draig.linaro.org>
+Date: Fri, 01 Dec 2023 15:16:16 +0000
+Message-ID: <87il5i54xr.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,65 +117,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> On 1/12/23 14:45, Philippe Mathieu-Daud=C3=A9 wrote:
->> On 1/12/23 10:36, Alex Benn=C3=A9e wrote:
->>> The assets are no longer archived by Debian so we can't run this on
->>> CI. While some people may still have the test in their cache we do
->>> have more recent images from tuxrun so this isn't a great loss.
+> On 1/12/23 13:49, Alex Benn=C3=A9e wrote:
+>> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+>>=20
+>>> Hi Alex,
 >>>
->>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
->>> Cc: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->>> ---
->>> =C2=A0 tests/avocado/boot_linux_console.py | 22 ----------------------
->>> =C2=A0 1 file changed, 22 deletions(-)
+>>> On 1/12/23 10:36, Alex Benn=C3=A9e wrote:
+>>>> The assets are no longer available on the website so these are
+>>>> blocking CI.
+>>>>
 >>>
->>> diff --git a/tests/avocado/boot_linux_console.py
->>> b/tests/avocado/boot_linux_console.py
->>> index 231b4f68e5..5d978f6dd0 100644
->>> --- a/tests/avocado/boot_linux_console.py
->>> +++ b/tests/avocado/boot_linux_console.py
->>> @@ -116,28 +116,6 @@ def test_x86_64_pc(self):
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 console_pattern =
-=3D 'Kernel command line: %s' %
->>> kernel_command_line
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.wait_for_co=
-nsole_pattern(console_pattern)
->>> -=C2=A0=C2=A0=C2=A0 def test_mips_malta(self):
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 """
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 :avocado: tags=3Darch:mips
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 :avocado: tags=3Dmachine:ma=
-lta
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 :avocado: tags=3Dendian:big
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 """
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 deb_url =3D ('http://snapsh=
-ot.debian.org/archive/debian/'
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 '20130217T032700Z/pool/main/l/linux=
--2.6/'
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 'linux-image-2.6.32-5-4kc-malta_2.6=
-.32-48_mips.deb')
+>>> How are these "blocking CI"? Missing artifact wasn't be fatal,
+>>> is it now? Also, did the artifact cache got flushed? These tests
+>>> pass locally, I disagree with removing them.
+>>>
+>>> I can send a patch using YAMON_PATH like we have with RESCUE_YL_PATH,
+>>> but I still consider missing artifact shouldn't be an issue. We are
+>>> missing the point of the Avocado cache and the possibility to manually
+>>> add artifacts.
+>> Sure but in this case the binaries are gone, you can't share them
+>> and no
 >
-> This link still works for me, what am I missing?
->
-> $ wget
-> http://snapshot.debian.org/archive/debian/20130217T032700Z/pool/main/l/li=
-nux-2.6/linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb
-> --2023-12-01 14:55:31--
->   http://snapshot.debian.org/archive/debian/20130217T032700Z/pool/main/l/=
-linux-2.6/linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb
-> Resolving snapshot.debian.org (snapshot.debian.org)... 185.17.185.185,
-> 193.62.202.27
-> Connecting to snapshot.debian.org
-> (snapshot.debian.org)|185.17.185.185|:80... connected.
-> HTTP request sent, awaiting response... 200 OK
-> Length: 30231730 (29M)
-> Saving to: =E2=80=98linux-image-2.6.32-5-4kc-malta_2.6.32-48_mips.deb=E2=
-=80=99
+> Per https://mips.com/develop/tools/boot-loaders/:
+> "To support existing users of these, and the QEMU project, YAMON is
+> now available under the GPL License."
 
-The failing link is the malta_cpio linux-4.7 one, I've fixed that in the
-PR.
+Maybe we should build it like the other ROMs?
+
+Anyway I've dropped this commit from the PR so I'll leave it to you to
+fix up however you want.
 
 --=20
 Alex Benn=C3=A9e
