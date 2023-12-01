@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43542801416
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 21:12:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 586F88014B2
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 21:41:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r99qe-0002FL-1r; Fri, 01 Dec 2023 15:10:52 -0500
+	id 1r9AJE-0000ss-KA; Fri, 01 Dec 2023 15:40:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r99qR-0002C3-KM
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 15:10:39 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r9AJ8-0000ru-54
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 15:40:18 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r99qP-0000YN-RT
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 15:10:39 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-33332096330so605860f8f.1
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 12:10:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r9AJ6-0005lI-GZ
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 15:40:17 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a00a9c6f283so369793866b.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 12:40:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701461435; x=1702066235; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=kVcPK636IKoCmLj7cFIPYNJoGycc7hzLNcQT6ZBeFus=;
- b=M024XVhSNk933AP2oftyDFByGGqaNcUoOgE4IKn0g0A4qqP3n32AdjDD4MpMkyNSMY
- vBpO2QoX1TPrVDC4LU5Js1AVq97EyA1bXPmt8kTVd2gZ8NKPHJheBCchqxqhEIBqVRWk
- NJchUzjaU7Qnj9yq2zXRpeJNCB7ZMjBOmYVq3UJIjOZ2OXml3gehfjJIkigZPV2ZE26Y
- 4URdOMLs9NJQI0OXZEYvku0voGJDFeUdTuP5f9qxKxVwbjNlEQrf9pX5RulqTIdBi0VJ
- T9+sC8KzKVXn0/Rw7NMjXk2IPZIRO11m9L47kVnKdQIcLSnCHZ7G97eJYNGp3hXHLACp
- SdDg==
+ d=linaro.org; s=google; t=1701463214; x=1702068014; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=omWx0ivN1JbHTna1zIfu5jObd2Eaa29yPeazVzr4Zv0=;
+ b=WC/ag1ES3/WlxHAqmCnW4kvCi+UEhUcOHVSo3eZYYEOZmRuHF472eV4II7/NZ1sd3p
+ 2BPgQ4T0Rbz33zo0pFuejv5EgbhiqtdGFOeAGBb6pKPCKkpfpEk2ak1G5N2bFmqeljrH
+ /GeYRQWy4zlBo0HGybetztQjS+h8hc+15bG5rAsWUtGk2QBOGB0YDrqAMhASdP8hKvyO
+ ius/vsmSqMpop0roHIzA7v5J67gZBWwxB+23Z0w68n7ioimHue+gSBm1c1D+uPiAtl26
+ 0L8z1ilJQnYeu90WEdefSHR1d6d+MXoxKU9xRqDREZFT+ggsSdshL962Y/bujRJGukOO
+ oVkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701461435; x=1702066235;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kVcPK636IKoCmLj7cFIPYNJoGycc7hzLNcQT6ZBeFus=;
- b=Zo3bCRgNb9LfrVpqwFIIICNSWta1W0YRxHhTDkBNZ5v8uNb2RLD3HBH/fjtnfv9JcF
- hecQUdspmtPo3Fqwb57308EHfGEuJXptmPldkgHUcIvkmGofC+or9+zxhA7XDMzz61Yu
- KoSl76c5TFbdJkSc8/BOxVXyC/k+JuyocAakRLPWSNt1IfOtBpBP9xHvqnA7ipERoQwa
- AG0CSKkf8R6gLxRjL39zbmvCo7+IK3H3zcWDIlOUTVI6FGlOaWcz2mowPsACz1Wd9F4f
- 74uX9s+ZUfOgp4xeayFNTDDhz5/72Bz91Xr7SAHa95NsXikS3Ifd8i5bfpq3aHx6c5Nm
- pv/w==
-X-Gm-Message-State: AOJu0YyAk321Xre8Lt2VorC/j+oOftSKrXxcJ1zvpu0jy/UKPsN1F8b5
- fRt5Io4W/eFjblEHnQd8nTrpaA==
-X-Google-Smtp-Source: AGHT+IHjhv5pCr/J84wVTFt7jYsYcPtUpW9Zy+fWCcsahJ3GIBErkDgNSRxVahInJPZhCyzwdtsiGg==
-X-Received: by 2002:a5d:4091:0:b0:333:161f:9fec with SMTP id
- o17-20020a5d4091000000b00333161f9fecmr1208496wrp.12.1701461435101; 
- Fri, 01 Dec 2023 12:10:35 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- x1-20020adfdd81000000b0033318b927besm5004511wrl.42.2023.12.01.12.10.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Dec 2023 12:10:33 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EBE295FB5F;
- Fri,  1 Dec 2023 20:10:32 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ d=1e100.net; s=20230601; t=1701463214; x=1702068014;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=omWx0ivN1JbHTna1zIfu5jObd2Eaa29yPeazVzr4Zv0=;
+ b=Br9Yt6OlfNPKpCttT38I2Yku5GENAfNFqa0BzZPvX+7Ox3oU1A5nV5/xVJ8UNDrvkU
+ faj68Zv0KT8IXSZyQDofgyswBMSRu1I01XHwExdIKfayU5oRFrpUqUuNtH4Y4rAf/LFR
+ fdhwjmf2KtM2FEkyIHzY3uEi6eJdtVBlk56oiAOxSB3FDO07I+oreJ5KGTpPyKd8HQ4i
+ KwPspmDp+CNcT5A8LO1/kjTXIwSoXSSBBgbn47F98r39i8c+lhW4daBx/E2TBKzbKAVx
+ wqcD9Bxtk0Qt8/ikymqFkPgrP18eCHO5OzjTxbgrWx3tSOVUmcMEeou4Hc66Ea7yGwb2
+ 23ig==
+X-Gm-Message-State: AOJu0YzG0/UXN2X9CHuWA9JYDbOlh1ejjYnNs9RB5tEa/+MBlumWiQce
+ sYKlwrsvW40/rYERXRD+NOp8Yg==
+X-Google-Smtp-Source: AGHT+IEtzaOHNa722Uzn9Rr2cprb9eGvXiFfnLl3C+NSyMNcu8OD+5fPdiAs25ovVSjFzqzCykDAlQ==
+X-Received: by 2002:a17:906:6606:b0:a18:c1d8:34ec with SMTP id
+ b6-20020a170906660600b00a18c1d834ecmr2197406ejp.67.1701463213857; 
+ Fri, 01 Dec 2023 12:40:13 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.160.225])
+ by smtp.gmail.com with ESMTPSA id
+ g9-20020a1709063b0900b009ca522853ecsm2270809ejf.58.2023.12.01.12.40.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 01 Dec 2023 12:40:13 -0800 (PST)
+Message-ID: <fed51ed3-f1b2-4340-ab61-e18ab7c097e3@linaro.org>
+Date: Fri, 1 Dec 2023 21:40:11 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] tests/avocado: mark
+ ReplayKernelNormal.test_mips64el_malta as flaky
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [RFC PATCH] tests/avocado: mark
- ReplayKernelNormal.test_mips64el_malta as flaky
-Date: Fri,  1 Dec 2023 20:10:27 +0000
-Message-Id: <20231201201027.2689404-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20231201201027.2689404-1-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231201201027.2689404-1-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,38 +96,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I missed this when going through the recent failure logs. I can run
-the test 30 times without failure locally but it seems to hang pretty
-reliably on GitLab's CI infra-structure.
+On 1/12/23 21:10, Alex Bennée wrote:
+> I missed this when going through the recent failure logs. I can run
+> the test 30 times without failure locally but it seems to hang pretty
+> reliably on GitLab's CI infra-structure.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   tests/avocado/replay_kernel.py | 3 +++
+>   1 file changed, 3 insertions(+)
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tests/avocado/replay_kernel.py | 3 +++
- 1 file changed, 3 insertions(+)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index af086eab08..c37afa662c 100644
---- a/tests/avocado/replay_kernel.py
-+++ b/tests/avocado/replay_kernel.py
-@@ -119,6 +119,8 @@ def test_mips_malta(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
- 
-+    # See https://gitlab.com/qemu-project/qemu/-/issues/2013
-+    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
-     def test_mips64el_malta(self):
-         """
-         This test requires the ar tool to extract "data.tar.gz" from
-@@ -134,6 +136,7 @@ def test_mips64el_malta(self):
- 
-         :avocado: tags=arch:mips64el
-         :avocado: tags=machine:malta
-+        :avocado: tags=flaky
-         """
-         deb_url = ('http://snapshot.debian.org/archive/debian/'
-                    '20130217T032700Z/pool/main/l/linux-2.6/'
--- 
-2.39.2
 
 
