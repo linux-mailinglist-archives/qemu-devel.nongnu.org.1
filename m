@@ -2,95 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C3A800BC6
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 14:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C59B800C39
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 14:32:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r93Tz-0003Fe-Md; Fri, 01 Dec 2023 08:23:03 -0500
+	id 1r93b2-00052p-Qt; Fri, 01 Dec 2023 08:30:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r93Tx-0003FK-Iw
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 08:23:01 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r93b0-00052Y-Qr; Fri, 01 Dec 2023 08:30:18 -0500
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r93Tv-00046q-Cf
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 08:23:00 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a02cc476581so308024366b.2
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 05:22:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1r93az-0000Fy-7A; Fri, 01 Dec 2023 08:30:18 -0500
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6d856210057so286004a34.1; 
+ Fri, 01 Dec 2023 05:30:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701436975; x=1702041775; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pDzgw0j2ieqF7WeN0XsF3Hhb7PjtVQk/oV1FS05l49E=;
- b=ffzNil0XC2xcgPu+KuSf7i0cslX5Yz5j9MCUXoHKEy/FYPeijBJH+7ndfC6cQWHmiZ
- k2fWRa5yXSKiIWaMDL+nSp2ofg2bsUsf2GepsxPOTObq+f4T9ImQD1v34kBq7qxEgdIA
- wZY/0SS/z0t6ftB2ddsGdXJ6zwrx4Jg32QiOGQmRGmeC1yYtqb0JC0cDAfRHSBxZY+Wh
- 99ddRbUwh26rWIH4DauRY7yDKBv+pxxdo6Spd4AylATePgXyWA9TKB8J2izEkM5Xjrwg
- pNxTFr6bzizZXkqtOId+MOG2DqAeZbzX2aUbdoa8VKfPxLtCZ9t3dCLijRVlIZ/fVWyq
- zj6Q==
+ d=gmail.com; s=20230601; t=1701437413; x=1702042213; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MH+NVr5dvJ1pbj6ZslFfay8kvyZdy3CtR1L09cAHFFU=;
+ b=aPNT10YuyjdMBaFpl+c2v1755AC4G2P5TgL6CsBKU5lsCkSrE5Jj0t+0OkcRZHpTsT
+ /IQgjRLDmMXIrlk/1Q0He3/wvuhubKG4GLGprVpgIlsvA/l8EgoiuEvdpimLmBBoaO9c
+ YH9dIXvwe0QDI7HZpWP8HtWhcW078ekvesk25eyUvyVMK7OWwePUoU6JDqFrwPMQ4/s8
+ C2qeiRb14NE8VBNtc5083vnWYRL2PGgoWyNjcpHeXgry5rmxo4nGtNZmIbdIFZcnDpmB
+ fm0SQDGa6o/evxCFyNENl+mw86IsixElsiWOdmhimPAYYD0NeAXp4/tocom2OGOzIJPe
+ saZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701436975; x=1702041775;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pDzgw0j2ieqF7WeN0XsF3Hhb7PjtVQk/oV1FS05l49E=;
- b=MbVlmBjsgvGDov3cORTrZsXwkNkB0iY9n6gguuUMVq0QJGfpSbmS1b3cSMNMWka//o
- Xk5o7fkvjaqHguNKMp1cJtfyKCAdgKlOEDvBP/fu5avmAUeMXjT+q2+dAxOX58vsrdcB
- X6qwCVHA+DSgXbuQKer32r8+gRxCFyvXzFXvaA0WoOzGlbaB5o20p2fQN4QNHkEblxrK
- yppS6onUjuf1QEC99mFxzNWE/48vig4qoooNwbJ9SvaKIYia5IqKsFBN0jcupephZoVI
- pB0tlkSXWOwEKufmFRqGRE9FvUvnyw0K6hbfG/t3poNYXXX/xSWuIuVUjeDW5vpq0t2z
- /kzA==
-X-Gm-Message-State: AOJu0YwsLxmgTBUt/0tcvADlkbZleajkDh5gm9GHBhmNf7IUQckfS3EB
- pXakZGWiz0E9KW6Bdp8/Qr82ng==
-X-Google-Smtp-Source: AGHT+IHVI7JYrojw9sIMg+Tp6pTuaLL9Wy+ZTtntBTDr8IlR3PdphG53O4TSPsayIps7CVPcEw1WtA==
-X-Received: by 2002:a17:907:5095:b0:9f3:18f8:475b with SMTP id
- fv21-20020a170907509500b009f318f8475bmr682651ejc.62.1701436975267; 
- Fri, 01 Dec 2023 05:22:55 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.160.225])
- by smtp.gmail.com with ESMTPSA id
- cf6-20020a170906b2c600b00a1937153bddsm1360721ejb.20.2023.12.01.05.22.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Dec 2023 05:22:54 -0800 (PST)
-Message-ID: <72ae8131-9cd3-4180-bcbb-d69f113211ac@linaro.org>
-Date: Fri, 1 Dec 2023 14:22:51 +0100
+ d=1e100.net; s=20230601; t=1701437413; x=1702042213;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MH+NVr5dvJ1pbj6ZslFfay8kvyZdy3CtR1L09cAHFFU=;
+ b=Ehyz+/e6/6/4jkbIf87vsXGGzk5IkXpE+y++W1pnVNk7/fdd8Dhb5I+8emP7IqxEZn
+ 6mW4m0wa/das2vIeseZtzjwrqyMR+7VTtFy4d1oQr+ImlC7t5i9mBVV4A5nTIZJ44zEi
+ /vio6J0lXlEF5Cs8+OsH9b/EELapPSE+iblQZEjW4oJ58gRNihxiI/bMm831E3seQIhR
+ DfSfQyka4ynZAK+S/P1xiQDFpLvaOPndmnzGfFaQqMsXA/AzScR+jTsHHobMX9s73W63
+ uSvFCMZ0jakwYCcN6PeQVdbGV0kTtzNS925NuyquxjCqtMiVQ3zcXGMjWAFEcQnJmrJe
+ IsVw==
+X-Gm-Message-State: AOJu0YwrhH8u1f92TuYV5Du0rUM6Q3USjD6+cMQDGHKXX2q4vzkbYN4S
+ K3JXISNXlFLBHqaDSYqw7q8bbr9Ne95VASlogfw=
+X-Google-Smtp-Source: AGHT+IHXTtOeEYVzJ0MUB5wDmesbCYgLew+qvlkXJnbvzcyd1lqJsAFa3O7z82jRVvwWfOtpRp0Cgl2i1zs78AypaqQ=
+X-Received: by 2002:a05:6870:7d01:b0:1fa:f387:e0a1 with SMTP id
+ os1-20020a0568707d0100b001faf387e0a1mr1270505oab.9.1701437412780; Fri, 01 Dec
+ 2023 05:30:12 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/7] tests/avocado: drop malta yamon tests
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>,
+References: <20231201093633.2551497-1-alex.bennee@linaro.org>
+In-Reply-To: <20231201093633.2551497-1-alex.bennee@linaro.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Fri, 1 Dec 2023 08:30:00 -0500
+Message-ID: <CAJSP0QUzOOinLjVBPak-j4pLoBeaAQX5XFET+7W9JUnrxkNvNA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] final fixes for 8.2
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Eric Farman <farman@linux.ibm.com>, 
  Peter Maydell <peter.maydell@linaro.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Beraldo Leal <bleal@redhat.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
  Paolo Bonzini <pbonzini@redhat.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Thomas Huth <thuth@redhat.com>,
  qemu-arm@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, 
  Eric Auger <eric.auger@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
  qemu-s390x@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
  Christian Borntraeger <borntraeger@linux.ibm.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Cleber Rosa <crosa@redhat.com>,
- Joel Stanley <joel@jms.id.au>
-References: <20231201093633.2551497-1-alex.bennee@linaro.org>
- <20231201093633.2551497-5-alex.bennee@linaro.org>
- <45077c53-ed18-4821-bfbe-6dba3ca994d4@linaro.org>
- <87ttp25bqh.fsf@draig.linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <87ttp25bqh.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+ Aurelien Jarno <aurelien@aurel32.net>, 
+ Cleber Rosa <crosa@redhat.com>, Joel Stanley <joel@jms.id.au>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=stefanha@gmail.com; helo=mail-ot1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -108,47 +99,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alex,
+On Fri, 1 Dec 2023 at 07:56, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
+e:
+>
+> 8.2 is looking fairly stable but I do have one bug fix for gdbstub
+> which I came across while debugging something else. The changes for
+> avocado rationalise all flaky tests under the QEMU_TEST_FLAKY_TESTS
+> environment variable. The final patch re-adds the flaky tests to the
+> CI as a manually run allow_fail job so we can still attempt to debug
+> their failure in the place they tend to fall over.
 
-On 1/12/23 13:49, Alex Bennée wrote:
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> 
->> Hi Alex,
->>
->> On 1/12/23 10:36, Alex Bennée wrote:
->>> The assets are no longer available on the website so these are
->>> blocking CI.
->>>
->>
->> How are these "blocking CI"? Missing artifact wasn't be fatal,
->> is it now? Also, did the artifact cache got flushed? These tests
->> pass locally, I disagree with removing them.
->>
->> I can send a patch using YAMON_PATH like we have with RESCUE_YL_PATH,
->> but I still consider missing artifact shouldn't be an issue. We are
->> missing the point of the Avocado cache and the possibility to manually
->> add artifacts.
-> 
-> Sure but in this case the binaries are gone, you can't share them and no
-> one else can ever run the test. At that point it just becomes dead
-> weight in the repository. This doesn't stop you keeping your own branch
-> where old tests live on while close to a warm cache but it does somewhat
-> limit the use of the test to the wider community.
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-No, I still disagree. The tests/avocado/ directory started as a place
-to share tests, not to add CI gating tests. That was discussed again
-2 or 3 years ago, we even recommended to change from the "opt-out on CI"
-policy to the "opt-in for Gating CI". Daniel suggested the Tiers
-approach, having only Tier-1 gating.
-
-I think the mistake is to consider all tests as gating.
-
-Why don't you want to share QEMU tests in the QEMU repository?
-
-We might have some misunderstanding on what tests/ is for, so let's
-discuss...
-
-Regards,
-
-Phil.
+>
+> v2
+> --
+>
+>   - addressed some review comments
+>   - emphasised raising a bug for failing tests
+>   - drop some tests now missing assets online
+>   - fix wrong microblaze target for tests
+>
+> The following still need review:
+>
+>   gitlab: build the correct microblaze target
+>   tests/avocado: tag sbsa tests as tcg only
+>   tests/avocado: drop malta yamon tests
+>   tests/avocado: drop BootLinuxConsole.test_mips_malta_cpio test
+>
+> Alex.
+>
+> Alex Benn=C3=A9e (7):
+>   gdbstub: use a better signal when we halt for IO reasons
+>   docs/devel: rationalise unstable gitlab tests under FLAKY_TESTS
+>   tests/avocado: drop BootLinuxConsole.test_mips_malta_cpio test
+>   tests/avocado: drop malta yamon tests
+>   tests/avocado: tag sbsa tests as tcg only
+>   gitlab: build the correct microblaze target
+>   gitlab: add optional job to run flaky avocado tests
+>
+>  docs/devel/testing.rst                   | 32 ++++++++++------
+>  gdbstub/internals.h                      |  1 +
+>  gdbstub/system.c                         |  2 +-
+>  .gitlab-ci.d/buildtest.yml               | 32 +++++++++++++++-
+>  tests/avocado/boot_linux.py              | 10 +++--
+>  tests/avocado/boot_linux_console.py      | 28 ++------------
+>  tests/avocado/intel_iommu.py             |  6 ++-
+>  tests/avocado/linux_initrd.py            |  7 +++-
+>  tests/avocado/machine_aarch64_sbsaref.py |  1 +
+>  tests/avocado/machine_aspeed.py          | 10 +++--
+>  tests/avocado/machine_mips_malta.py      | 47 ++++--------------------
+>  tests/avocado/machine_rx_gdbsim.py       | 10 +++--
+>  tests/avocado/machine_s390_ccw_virtio.py |  3 +-
+>  tests/avocado/replay_kernel.py           |  8 +++-
+>  tests/avocado/reverse_debugging.py       | 16 +++++---
+>  tests/avocado/smmu.py                    |  6 ++-
+>  tests/avocado/tuxrun_baselines.py        |  5 ++-
+>  17 files changed, 122 insertions(+), 102 deletions(-)
+>
+> --
+> 2.39.2
+>
+>
 
