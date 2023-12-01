@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4238A8010F8
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 18:17:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6578010FD
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 18:18:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r977H-0002ul-Jn; Fri, 01 Dec 2023 12:15:53 -0500
+	id 1r977P-00030m-Cd; Fri, 01 Dec 2023 12:15:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r976v-0002pY-C6
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:30 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r976x-0002r2-TC
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r976r-0007bK-PD
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:28 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r976u-0007gG-03
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701450917;
+ s=mimecast20190719; t=1701450926;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HcqmRn12BT+d9v+3hVGltIEaZdiZEdqOlouvfncpm0k=;
- b=TD7zRenJGyNbFMBoJwm1g/hVdTpPDDEsxPws64zYNXLtzbvdKKU5z2U7FQwA/kHsCjgyeF
- Y4/L0+vBJSWjbY8IpWzr57/hOwa/NfD+tc0NJAAp8ONXcKYBpXLYnTwqvSrd33/0FtwJ7T
- pvZapOpOzzC2AG+6UpUI1xmRWXrSQnA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CqGUbUKz1J6foLX0wqsHp2msAP52n1m0k2H2ScM6SAM=;
+ b=CnrT+iMDmx036ijdLykAXPWap8/vle3zKlDwzqzh+GG6vy11B3El326qDm0If1OENDOcZd
+ e6QOA5/LVvSHbYukuRLgfcuxOlYKMZylxJTFdsVBDhOr9YocmCIYkcEWqGql8C5wiuuA/G
+ Mr6SA9lxrOpSJbfURrP1v2r16Qrpu4Q=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-b5kU4bWbPpWGcR6viWIYmg-1; Fri, 01 Dec 2023 12:15:16 -0500
-X-MC-Unique: b5kU4bWbPpWGcR6viWIYmg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-40b3dbe99d9so17264545e9.1
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 09:15:16 -0800 (PST)
+ us-mta-308-U07wH23pO_6wAX3TJkTE1Q-1; Fri, 01 Dec 2023 12:15:18 -0500
+X-MC-Unique: U07wH23pO_6wAX3TJkTE1Q-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40b554730c5so16577195e9.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 09:15:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701450914; x=1702055714;
+ d=1e100.net; s=20230601; t=1701450916; x=1702055716;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HcqmRn12BT+d9v+3hVGltIEaZdiZEdqOlouvfncpm0k=;
- b=oijAoO2wXBYZqke3a3dUjUpooNNCcuvc7PBvlRkvg+gSmPHyGGbGPkYrsBSsn2v0Iw
- NNLleqz5Y5I9Ay8txnX9/VQ+9yqSwt7SXksZCy5zRSOyq3BRBLH0yWhr8cXnYni+FUHs
- M3dScgj6OSF28uLwGhTgoOaGImsQaYqL2biOlDbHstvl1nmMfqZfe9q5U+dx3Y2jMpgG
- KieBvDjgsdegPhfxhYMKizGZg81NGPLRDMi1LzAVFER3cjDhbVdUp11F3MOmC6T2LtB9
- ycOwYU2gnh3t9LwvKVY3tVL0iSyb0OUNyHfQNV3SVRpl8kfk9/ai4LRZ9H5JhemdeAFz
- tGGg==
-X-Gm-Message-State: AOJu0YzcsabRP58s1+EU1VIfc9D0kc9KrZlDfXK+cDNyd+0mExneqCkZ
- K9HtE6hsaJSF/ypJnVA/+3bDN2HXSsj2RSzq4+k/bYa2xKMhBu0BW0bbV/cmLCrxosYyWBhwyv0
- +chzTLN3BtdkGnr+smXF8Dm+P+JUCOoImkk0rhjonsxHpBJR6PVdl5I+NhVJrexeFQKsi
-X-Received: by 2002:a05:600c:a0a:b0:40b:5e21:cc34 with SMTP id
- z10-20020a05600c0a0a00b0040b5e21cc34mr542514wmp.95.1701450914391; 
- Fri, 01 Dec 2023 09:15:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFKMUAYwlJscWdCMj9DOg7fjL/7mwTAeBidRLBU1VxhSjtszUcku/Oo/S90/pNqrqxj5NTD4w==
-X-Received: by 2002:a05:600c:a0a:b0:40b:5e21:cc34 with SMTP id
- z10-20020a05600c0a0a00b0040b5e21cc34mr542500wmp.95.1701450913845; 
- Fri, 01 Dec 2023 09:15:13 -0800 (PST)
+ bh=CqGUbUKz1J6foLX0wqsHp2msAP52n1m0k2H2ScM6SAM=;
+ b=D3Pyg/LyX+2pL1v9ubtScVJs+HazkaYEi/MhhJdKF9FqZMSYKgdcz+joUr+ZgJiYbZ
+ leupxHNIpRfUJgUVAcCPXHy6HCVyEhKpyyBxi7JgX7/Qind6FO9Fbi0/XC+BJsHaOdsW
+ dU2R1nlg45QMDUbyiMmcDu/MZ4aQyV/3nqauA8hOIuWiU26k5PwKT78Jom9vTkxHYyRe
+ bDYQ5SDTXw2LpVpfVfYbKev5HSgLDRw8/BQmpa4yQNm68+ouZjr231jdFVOegTGG8pa7
+ NPbmv3nhTtmnrL1w5IHTpFnE3KSE4gMwJHXRZW5OH75G126WxcxQTvuMeQqIetbvPXGb
+ lpBA==
+X-Gm-Message-State: AOJu0YxFsfNxasmdxqjazioLLhoYeHbH+uVJWYe7ygOEDjmF2Fr7K21L
+ TlaRqOquovDlo7hBODhhX1CUAm1yfLzFdYmhnDNrZKw/zEwNerPi5h12objDUoVcouGCnwDyIvh
+ JK80FucQsFgJaelbTv8gHpPOTHiywEkl4igxba1k+LOgU/wqZ+STwIoNvKumHFxATUHCC
+X-Received: by 2002:a05:600c:46c7:b0:40b:5e1c:5c1e with SMTP id
+ q7-20020a05600c46c700b0040b5e1c5c1emr573631wmo.51.1701450916558; 
+ Fri, 01 Dec 2023 09:15:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IExs/mykcIw0CtZBDHfb+ecvZnNMbPVi4t7USW4RiVMWZWjsx3JQapD39Wf+Ibi3ESiGgpCUg==
+X-Received: by 2002:a05:600c:46c7:b0:40b:5e1c:5c1e with SMTP id
+ q7-20020a05600c46c700b0040b5e1c5c1emr573623wmo.51.1701450916154; 
+ Fri, 01 Dec 2023 09:15:16 -0800 (PST)
 Received: from redhat.com ([2a06:c701:73e1:6f00:c7ce:b553:4096:d504])
  by smtp.gmail.com with ESMTPSA id
- j14-20020a5d464e000000b003330f9287a8sm4708469wrs.51.2023.12.01.09.15.12
+ j11-20020a05600c190b00b0040b47c69d08sm9663134wmq.18.2023.12.01.09.15.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Dec 2023 09:15:13 -0800 (PST)
-Date: Fri, 1 Dec 2023 12:15:11 -0500
+ Fri, 01 Dec 2023 09:15:15 -0800 (PST)
+Date: Fri, 1 Dec 2023 12:15:14 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/15] osdep: add getloadavg
-Message-ID: <dc864d3a3777424187280e50c9bfb84dced54f12.1701450838.git.mst@redhat.com>
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 02/15] netdev: set timeout depending on loadavg
+Message-ID: <cadfc7293977ecadc2d6c48d7cffc553ed2f85f1.1701450838.git.mst@redhat.com>
 References: <cover.1701450838.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,55 +100,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-getloadavg is supported on Linux, BSDs, Solaris.
+netdev test keeps failing sometimes.
+I don't think we should increase the timeout some more:
+let's try something else instead, testing how busy the
+system is.
 
-Following man page:
-RETURN VALUE
-       If the load average was unobtainable, -1 is returned; otherwise,
-       the number of samples actually retrieved is returned.
-
-accordingly, make stub for systems which don't support this function return -1
-for consistency.
+Seems to work for me.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/qemu/osdep.h | 10 ++++++++++
- meson.build          |  1 +
- 2 files changed, 11 insertions(+)
+ tests/qtest/netdev-socket.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 475a1c62ff..d30ba73eda 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -779,6 +779,16 @@ static inline int platform_does_not_support_system(const char *command)
- }
- #endif /* !HAVE_SYSTEM_FUNCTION */
+diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
+index 7ba1eff120..bb99d08b5e 100644
+--- a/tests/qtest/netdev-socket.c
++++ b/tests/qtest/netdev-socket.c
+@@ -18,6 +18,32 @@
  
-+/**
-+ * If the load average was unobtainable, -1 is returned
-+ */
-+#ifndef HAVE_GETLOADAVG_FUNCTION
-+static inline int getloadavg(double loadavg[], int nelem)
+ #define CONNECTION_TIMEOUT    120
+ 
++static double connection_timeout(void)
 +{
-+    return -1;
-+}
-+#endif /* !HAVE_GETLOADAVG_FUNCTION */
++    double load;
++    int ret = getloadavg(&load, 1);
 +
- #ifdef __cplusplus
- }
- #endif
-diff --git a/meson.build b/meson.build
-index ec01f8b138..d2c4c2adb3 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2293,6 +2293,7 @@ config_host_data.set('HAVE_GLIB_WITH_SLICE_ALLOCATOR', glib_has_gslice)
- config_host_data.set('HAVE_OPENPTY', cc.has_function('openpty', dependencies: util))
- config_host_data.set('HAVE_STRCHRNUL', cc.has_function('strchrnul'))
- config_host_data.set('HAVE_SYSTEM_FUNCTION', cc.has_function('system', prefix: '#include <stdlib.h>'))
-+config_host_data.set('HAVE_GETLOADAVG_FUNCTION', cc.has_function('getloadavg', prefix: '#include <stdlib.h>'))
- if rbd.found()
-   config_host_data.set('HAVE_RBD_NAMESPACE_EXISTS',
-                        cc.has_function('rbd_namespace_exists',
++    /*
++     * If we can't get load data, or load is low because we just started
++     * running, assume load of 1 (we are alone in this system).
++     */
++    if (ret < 1 || load < 1.0) {
++        load = 1.0;
++    }
++    /*
++     * No one wants to wait more than 10 minutes for this test. Higher load?
++     * Too bad.
++     */
++    if (load > 10.0) {
++        fprintf(stderr, "Warning: load %f higher than 10 - test might timeout\n",
++                load);
++        load = 10.0;
++    }
++
++    /* if load is high increase timeout as we might not get a chance to run */
++    return load * CONNECTION_TIMEOUT;
++}
++
+ #define EXPECT_STATE(q, e, t)                             \
+ do {                                                      \
+     char *resp = NULL;                                    \
+@@ -31,7 +57,7 @@ do {                                                      \
+         if (g_str_equal(resp, e)) {                       \
+             break;                                        \
+         }                                                 \
+-    } while (g_test_timer_elapsed() < CONNECTION_TIMEOUT); \
++    } while (g_test_timer_elapsed() < connection_timeout()); \
+     g_assert_cmpstr(resp, ==, e);                         \
+     g_free(resp);                                         \
+ } while (0)
 -- 
 MST
 
