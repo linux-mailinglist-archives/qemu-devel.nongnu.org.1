@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F109E80092D
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 11:58:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52386800931
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 11:59:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r91Db-00024E-Bw; Fri, 01 Dec 2023 05:57:59 -0500
+	id 1r91Eg-0002jD-D0; Fri, 01 Dec 2023 05:59:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r91DT-00022t-39
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:57:51 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r91Ea-0002YQ-Es
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:59:02 -0500
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r91DR-0004N8-0j
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:57:50 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40b4746ae51so18612795e9.2
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 02:57:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r91EU-0004U5-S6
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:58:57 -0500
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-50bc8e37b5fso2820107e87.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 02:58:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701428267; x=1702033067; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701428333; x=1702033133; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=DNRPfE3nS0S9aFqg9iDHO3DZDtkZRObv/JYi45WTizo=;
- b=OS4mdo4Lj/VuiDkyuJ8pP7AoGJ+LB4MvndeQC76qwYg6pMVxvTPXUtNCheP8+pN7wd
- oj2eCn7x3tPULtb3wEllBO+XI0eNFWQYgO1NkdLwQcRjZFUIK6H/Pb4TUjs0B/0aVW/R
- AQJ4gWT90ywIOTcHGPW1jfPIJc2d+K600DCYr9lgNWCFt5nFfLf4290xHyQs+b7J27W6
- MdvTLvKQjxoUp4A9EfCFHK1UzC+WljLjOxYayPlOJ/h3H83Lu5TilP7ZQ4E+vpE4mIK8
- mAE9tEoHXCeBHuiIJV4C6c9gbqk4Wmde8/tnDX9ym1vyApAYtPgOvkJ930jjBwNz9hpc
- WBCA==
+ bh=kBgEHer+ht0dHaP6LJn8O1147TeXZtstiObP4o2ORIE=;
+ b=yyYBidxIwnP/yECByAwEj1U8ScmGdnOSohVSKzyBsjPuUDynXQJDmnP/6yp1nSq8q5
+ w3bbQoHhgDD2nAuOdBGyyVjuX/GXBoFPj2ZcqeGrNi3S1IhlsjzuDiYOk6vDjF66v1Wp
+ asaUT7FrQPV0/ioRrMwK52JQQMtJu0K5S3BM/xoqb+Mz+fNJDbFKTzJ5JNhS3dYp+pRy
+ RPrIXVV9wsJTkL4aG3jaLgvBYVDEIbyHUDVfyCqsOvhI/XgJfZVOvTQrFUiSfCW9wKRO
+ SvyZDEXQwEGwOqxq12gjnkCYv5/7JwdEy5XgfKJiYEU3rhXueR+sttFKiqPiEjV8BBgK
+ VOQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701428267; x=1702033067;
+ d=1e100.net; s=20230601; t=1701428333; x=1702033133;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DNRPfE3nS0S9aFqg9iDHO3DZDtkZRObv/JYi45WTizo=;
- b=Fhda+OkklFy6SqrILa53qY7ISJxBCHBxxQuLQDZruTjK4zCI0oRlXXhqhrlf2oQiGK
- qSCdO0tP+L3ARu1zQ/6LaXJTWnjwrTtwCEHp9HEPKIIA3mJER91mIm8fGHc2RgOVirN7
- eg2oC/cf53X71Y9JSsblSTOy6nhD5pqYdTbRSWWNJK6fSiLA+Te9xcXNvcn4lcZfWIf5
- V+OVew4wVzG/pGA/MHVrAb02xbNFJjtIvrGkVquq9Q/MMT3SUscNM422KnbKlEYPoffD
- aFfv5NFBMeYgSsfFNY/aaziCDuqEihQ8L1qAjiQVxbFB/kNDH+sQsUdWwDio+hCGCgqe
- RIbg==
-X-Gm-Message-State: AOJu0YzqhPyMHb7YV/ysjF58kDzJgBapnVKTPJqkQIRZJu1I53TQ/chf
- I9krOphgg8VI5q0qbCs+mgObpQ==
-X-Google-Smtp-Source: AGHT+IG5WsuVWqCIgmlBCmfkg0OkVxgbaNYeOvgP60jLLTkRjCX0PiXTtDD6TLw1h8mkc5t5EJEyrA==
-X-Received: by 2002:a05:600c:1709:b0:40b:5e59:c566 with SMTP id
- c9-20020a05600c170900b0040b5e59c566mr332467wmn.144.1701428267367; 
- Fri, 01 Dec 2023 02:57:47 -0800 (PST)
+ bh=kBgEHer+ht0dHaP6LJn8O1147TeXZtstiObP4o2ORIE=;
+ b=duG0UxjcbkVUf31t4fxdpozC1AB8KwPvjJDLWDgTQkb8Yxi6Ggfej0qm1tLDFodknj
+ 0s1vj3ob12sp6hN88p6b/Gimr8+G38srVfQTY+4DOWJ0t0yhWnUcsO74Cg9Y+8Ashd8p
+ tgs3pOr4llyZeKqsOlAEujtCfkD/o3CAJ/fOnlnfhNhlxUMoKAOm8AQfBeJh6LNQZCxM
+ b0msWAMDB/OCqja6p2Ax3W8lkF/DkbAwC1Hphz9FLl97gFShB4hYNdlelHVTq8qtupBa
+ nkIQZFH632D4cxgJMqMvO3etiOjvD+QtWLxmhKVVMnS2U2n3pbAL9aK0x/c82KtGkDlJ
+ 4eOg==
+X-Gm-Message-State: AOJu0YyVApiZd5zNZ+7wgt91RMiZzGLYQDQUlqo8yPcAMKtFscwvWAMZ
+ QR1p+Hyn0FDhnXgyRH75p0h0Ww==
+X-Google-Smtp-Source: AGHT+IFFwM1ZKy97oak8J+Rv7ndWdysgnH6YMTw9IM1ZOw/7O+SBo5Jv9glACV8c6uZ3wTh7JlJkaQ==
+X-Received: by 2002:a05:6512:3ca2:b0:50b:cf6d:fe33 with SMTP id
+ h34-20020a0565123ca200b0050bcf6dfe33mr912018lfv.58.1701428333107; 
+ Fri, 01 Dec 2023 02:58:53 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.160.225])
  by smtp.gmail.com with ESMTPSA id
- a13-20020a05600c348d00b0040b5377cf03sm8725717wmq.1.2023.12.01.02.57.44
+ a13-20020a05600c348d00b0040b5377cf03sm8725717wmq.1.2023.12.01.02.58.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Dec 2023 02:57:47 -0800 (PST)
-Message-ID: <83046c42-1df3-499e-b202-b123391d39cb@linaro.org>
-Date: Fri, 1 Dec 2023 11:57:43 +0100
+ Fri, 01 Dec 2023 02:58:52 -0800 (PST)
+Message-ID: <33f3cdfa-fe4a-4512-bf87-5b26e2fc2c81@linaro.org>
+Date: Fri, 1 Dec 2023 11:58:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 3/9] machine: Improve is_cpu_type_supported()
+Subject: Re: [PATCH v8 4/9] machine: Print CPU model name instead of CPU type
 Content-Language: en-US
 To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
@@ -71,13 +71,13 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
  liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
 References: <20231129042012.277831-1-gshan@redhat.com>
- <20231129042012.277831-4-gshan@redhat.com>
+ <20231129042012.277831-5-gshan@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231129042012.277831-4-gshan@redhat.com>
+In-Reply-To: <20231129042012.277831-5-gshan@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,24 +101,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 29/11/23 05:20, Gavin Shan wrote:
-> It's no sense to check the CPU type when mc->valid_cpu_types[0] is
-> NULL.
-
-This case is a programming error, right? We should simply:
-
-  assert(!mc->valid_cpu_types || *mc->valid_cpu_types);
-
-> So the check is skipped for this particular case. The constraint
-> has been taken when the error messags are appended.
+> The names of supported CPU models instead of CPU types should be
+> printed when the user specified CPU type isn't supported, to be
+> consistent with the output from '-cpu ?'.
 > 
-> A precise hint for the error message is given when mc->valid_cpu_types[0]
-> is the only valid entry. Besides, enumeration on mc->valid_cpu_types[0]
-> when we have mutiple valid entries there is avoided to increase the code
-> readability, as suggested by Philippe Mathieu-Daudé.
+> Correct the error messages to print CPU model names instead of CPU
+> type names.
 > 
 > Signed-off-by: Gavin Shan <gshan@redhat.com>
 > ---
->   hw/core/machine.c | 18 ++++++++++++------
->   1 file changed, 12 insertions(+), 6 deletions(-)
+> v8: Use g_autofree                                        (Phil)
+>      Relace 'type' with 'model' in error messages          (Gavin)
+> ---
+>   hw/core/machine.c | 14 +++++++++-----
+>   1 file changed, 9 insertions(+), 5 deletions(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
