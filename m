@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C288010FB
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 18:17:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561F18010EE
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 18:16:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r977T-00039N-3s; Fri, 01 Dec 2023 12:16:03 -0500
+	id 1r977Q-00030F-M4; Fri, 01 Dec 2023 12:16:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r9770-0002tU-KP
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:36 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r9773-0002uG-LB
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:38 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r976v-0007hG-LS
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:32 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r9771-0007iq-9j
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701450929;
+ s=mimecast20190719; t=1701450934;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=j1hOBUzznV6qwBLHdYGsGjqCYe0rh/UilHyB5ByAGcE=;
- b=e5SS0T9XPREV9SV+mVVUd3ABEXy14UAc5/9tbW+rFW7FE0HhuuoAKFYvUKfY5ZFO6w1t0c
- /0JKBKbRZtiTbxv2C8xRaHSfhOiCwUWFSnrYeRNiwaogUJf5pHhiDpE0U5Dr+gbQodfWWf
- er4GhjjXJUufAWn8N3wmlTBQ38zN/ec=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mIm/ZZ+AtEMMvxQLcKFz+qdaAOEyPQ7KcKiLyzLcQQQ=;
+ b=J0WdiMDiJeyGZq6kb6iG/XA8y2/lBH6qhtQq1BXQ4alNeW4pC6gztNc6YRzciw94z3mf68
+ lYGx+cFm7MiSEpGCw+f6qtUdRpTIaq4D9wypyEU9Ei6huBIZ2tNw7S3X6Aho5AZWhHUGD4
+ rlLg/vRqvxwcF0Eai7KbuHppgeDMB4c=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-mvO_hj0UOteIO-9pfisOkQ-1; Fri, 01 Dec 2023 12:15:27 -0500
-X-MC-Unique: mvO_hj0UOteIO-9pfisOkQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-40b4a837eb8so17897355e9.3
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 09:15:27 -0800 (PST)
+ us-mta-383-JFujUxdjOUq66T9cpcxk-A-1; Fri, 01 Dec 2023 12:15:30 -0500
+X-MC-Unique: JFujUxdjOUq66T9cpcxk-A-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40b297925ccso17137615e9.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 09:15:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701450926; x=1702055726;
+ d=1e100.net; s=20230601; t=1701450928; x=1702055728;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j1hOBUzznV6qwBLHdYGsGjqCYe0rh/UilHyB5ByAGcE=;
- b=c5qBxHyAm7o4uPTXisVWuB4FwUuFNHcQz0w0pUFfAgb2MTIUhNA2pJW5497QicSOB7
- WB7uMooQvLEke1veHYRNukVxUk3h92elpkkl49DnxrjniCLgExz0JhDjEuJc5Eq3Aiv4
- foU4kjI5dyxI7gQZn5/yk2k05feP0hsc/DF2PZn5gTpJimJhKCpf6glKAYDahNebS4pd
- MufdBpTjvRuL5sSvW/MGrqadPTBLMgmC+MAlVIR/6BRBRGzZHrCQF1ZFs4Fi6MRm2KBk
- 0gTO4ggpH5nRZJv8QKv/lnjdpPvYNmRXY0MZJjGpoZhR+IZam6qJnSwlMAywZXhGAEsD
- xgcg==
-X-Gm-Message-State: AOJu0YxHz5HDkYyCW65hPs72Q6WJ8YllO+xXSXybxrhPaYnHTwSPE04a
- /pOKtviH8lyVUWv8mEkBEhJ7eRYfMlb3SfLp009RyKp7ib/2rpmIJhZeKhQTdeNHY0PZbNCYajM
- 4T6o4Qecw89xQB1PjexKz/RjZF+dMXId2yf37hJi20FRd0QrdYpujAN6gGAvKzF0wtKaD
-X-Received: by 2002:a05:600c:600e:b0:40b:5e21:e271 with SMTP id
- az14-20020a05600c600e00b0040b5e21e271mr501667wmb.94.1701450925883; 
- Fri, 01 Dec 2023 09:15:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEfa3qD8q4726y2sfBZUwbTjbmwiE7D+dW2jkioycjzd+UBSSGh5e7clpmSwQdPSYYpWTnKtw==
-X-Received: by 2002:a05:600c:600e:b0:40b:5e21:e271 with SMTP id
- az14-20020a05600c600e00b0040b5e21e271mr501660wmb.94.1701450925642; 
- Fri, 01 Dec 2023 09:15:25 -0800 (PST)
+ bh=mIm/ZZ+AtEMMvxQLcKFz+qdaAOEyPQ7KcKiLyzLcQQQ=;
+ b=pArXJnyTZriFeCKpElXSMY9+cvLAUQI00rWucXnwCDRxMZsXzK9n7LKMDM6YhZt9as
+ elaO0tDrTsA38NNF8VkEDOxYYkQNnIxZfvTxFVFJKhgpI0f0db+Zp/sP5i2b1V/d455P
+ zGbOeufdp01hv1cQjWIHVk7rwude1AShRnucC1hYeq5sMzv7gwP28WASfgT5vIlXaVT/
+ ThhE2CtxO89Z3H7FY3/FhoWq/AtJeDJ6o2dxusHKeK5N1GBScdjZZp4w4yG32JZNZ6Hr
+ GHqAgMJXqn6cQOLLdEtodHdfP0OjHoRwXawx5V1tBg6eG1pwv6MqZj4wLg3NMgUrt2By
+ 8P7g==
+X-Gm-Message-State: AOJu0YyrPeXc7yn8N3qqKSMDdaW+5YJYULvMoEBaKUOggLj9J+572wJz
+ QouKwG8opkVP5k47neVYK1VdA8l1UC6Tmowbpd/B8aigRXBt3yDzCilhng/39eNg6HJKtlEibIA
+ BihJnFvmIfont3hDKOf8bQ+RC0GGlHy80eJ4i1lXKL6ykh7wwkQsSGIvZWptu95fD0pRR
+X-Received: by 2002:a05:600c:6003:b0:40b:5e22:974 with SMTP id
+ az3-20020a05600c600300b0040b5e220974mr797983wmb.99.1701450928392; 
+ Fri, 01 Dec 2023 09:15:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGQ3WlOhsWzu1uBXzuftI+71IX/uk6qlLfHxlliu7daUVG7SIcVu0iGmSptjR45Oe54zj5iYg==
+X-Received: by 2002:a05:600c:6003:b0:40b:5e22:974 with SMTP id
+ az3-20020a05600c600300b0040b5e220974mr797971wmb.99.1701450928059; 
+ Fri, 01 Dec 2023 09:15:28 -0800 (PST)
 Received: from redhat.com ([2a06:c701:73e1:6f00:c7ce:b553:4096:d504])
  by smtp.gmail.com with ESMTPSA id
- s1-20020a5d5101000000b003333521a1cesm678426wrt.57.2023.12.01.09.15.24
+ d4-20020a05600c3ac400b0040b538047b4sm9494751wms.3.2023.12.01.09.15.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Dec 2023 09:15:25 -0800 (PST)
-Date: Fri, 1 Dec 2023 12:15:23 -0500
+ Fri, 01 Dec 2023 09:15:27 -0800 (PST)
+Date: Fri, 1 Dec 2023 12:15:25 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Volker =?utf-8?Q?R=C3=BCmelin?= <vr_qemu@t-online.de>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 06/15] hw/audio/hda-codec: reenable the audio mixer
-Message-ID: <25ea4d4c77a3023f10269fbf1e37339f8327c97e.1701450838.git.mst@redhat.com>
+Subject: [PULL 07/15] virtio-snd: check AUD_register_card return value
+Message-ID: <e1da0b9785cd7618c13820ca1846f6c1d82b4687.1701450838.git.mst@redhat.com>
 References: <cover.1701450838.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -103,69 +103,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Commit b7639b7dd0 ("hw/audio: Simplify hda audio init") inverted
-the sense of hda codec property mixer during initialization.
-Change the code so that mixer=on enables the hda mixer emulation
-and mixer=off disables the hda mixer emulation.
+AUD_register_card might fail. Even though errp was passed as an
+argument, the call's return value was not checked for failure.
 
-With this change audio playback and recording streams don't start
-muted by default.
-
-Fixes: b7639b7dd0 ("hw/audio: Simplify hda audio init")
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20231105172552.8405-2-vr_qemu@t-online.de>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Fixes: Coverity CID 1523899
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Message-Id: <20231109162034.2108018-1-manos.pitsidianakis@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/audio/hda-codec.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ hw/audio/virtio-snd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-index f756e419bb..0bc20d49f6 100644
---- a/hw/audio/hda-codec.c
-+++ b/hw/audio/hda-codec.c
-@@ -868,10 +868,10 @@ static Property hda_audio_properties[] = {
- static void hda_audio_init_output(HDACodecDevice *hda, Error **errp)
- {
-     HDAAudioState *a = HDA_AUDIO(hda);
--    const struct desc_codec *desc = &output_nomixemu;
-+    const struct desc_codec *desc = &output_mixemu;
- 
-     if (!a->mixer) {
--        desc = &output_mixemu;
-+        desc = &output_nomixemu;
+diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+index 2fe966e311..83e97858e0 100644
+--- a/hw/audio/virtio-snd.c
++++ b/hw/audio/virtio-snd.c
+@@ -1102,7 +1102,9 @@ static void virtio_snd_realize(DeviceState *dev, Error **errp)
+         return;
      }
  
-     hda_audio_init(hda, desc, errp);
-@@ -880,10 +880,10 @@ static void hda_audio_init_output(HDACodecDevice *hda, Error **errp)
- static void hda_audio_init_duplex(HDACodecDevice *hda, Error **errp)
- {
-     HDAAudioState *a = HDA_AUDIO(hda);
--    const struct desc_codec *desc = &duplex_nomixemu;
-+    const struct desc_codec *desc = &duplex_mixemu;
+-    AUD_register_card("virtio-sound", &vsnd->card, errp);
++    if (!AUD_register_card("virtio-sound", &vsnd->card, errp)) {
++        return;
++    }
  
-     if (!a->mixer) {
--        desc = &duplex_mixemu;
-+        desc = &duplex_nomixemu;
-     }
- 
-     hda_audio_init(hda, desc, errp);
-@@ -892,10 +892,10 @@ static void hda_audio_init_duplex(HDACodecDevice *hda, Error **errp)
- static void hda_audio_init_micro(HDACodecDevice *hda, Error **errp)
- {
-     HDAAudioState *a = HDA_AUDIO(hda);
--    const struct desc_codec *desc = &micro_nomixemu;
-+    const struct desc_codec *desc = &micro_mixemu;
- 
-     if (!a->mixer) {
--        desc = &micro_mixemu;
-+        desc = &micro_nomixemu;
-     }
- 
-     hda_audio_init(hda, desc, errp);
+     /* set default params for all streams */
+     default_params.features = 0;
 -- 
 MST
 
