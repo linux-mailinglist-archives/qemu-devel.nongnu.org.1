@@ -2,85 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639D1800E3E
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 16:14:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB10800E30
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 16:14:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r95CV-0004t6-Sr; Fri, 01 Dec 2023 10:13:07 -0500
+	id 1r95Cn-00053w-JG; Fri, 01 Dec 2023 10:13:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r95C0-0004qm-Lt
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 10:12:36 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1r95C4-0004rF-50
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 10:12:42 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1r95By-0003tD-Kq
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 10:12:36 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40b595bf5d2so18221265e9.2
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 07:12:32 -0800 (PST)
+ id 1r95Bz-00040A-DH
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 10:12:39 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40b40423df8so19504115e9.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 07:12:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701443551; x=1702048351; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701443554; x=1702048354; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LTrDNbYJOBcXJe0QIsla+RGqqidagZ/wagIa9X/ca1U=;
- b=lQ0UGDdsVNJG2WGR7RUw95wjbmZfd9A3ORuVSilG/27w62yrkpEKOrKUBEkIPYxIae
- DaXav+08hmjhdwccp8RgonWA/qqBEUeZf5j5vz/qvz/iaCTKkNYgSBV22RNooEdAe/xq
- fnhxsBjKXrRuGYAjJHtJRuVxW38X7xwC9HjIiqSQFe9kEgSOX3yDH2i/5Zfcnyc0PU1E
- 0HERjNNFEntYO1sp7Uzfbbl15ZLkQe/y9WmwRfKM9D5XI3kmGkrTqjaZ48ufKcnGQJS9
- 3+x7+3OJO2IJubpfid2ySVuFU7AZ3lvOmUmKF3+oD+TMY5N3nJ+ntqFdpufj5lkTPS3h
- Ubxg==
+ bh=x+4RIhvIWUcpCT7qUh814AJlZGLCqs4LOMeRimhH8r0=;
+ b=fg2X59czmtDQxdrGIcVWNwFufWDX6/u5b0S7ERubPODP7cyt1YlbhlFPYGyPCkYieM
+ FlhaqHaERwF98g0GVLDiTQclWzCAZoPqR6HpefsK8wMeqkHNow1EkT6ezLlT8GnCcrZw
+ zo0mz6Rd10cvUYOCzfepmfbFvuU0teb0TjTrwGgDh3j5JHFuUnLpIKHbaiU4KQ+TYH5o
+ d1QXzeXHud39iWcqnKLFDhFCK7n2i6xnhMQwv1C0Rwd9sutLY055LheLX0TcTSC0G1dr
+ 2Jk+7NeynbWtxUqbZe80U3kMRlkHm7ZZS6RAWdnjFPSDbofy3ifaW2MBHypnDRL6lLP5
+ /BcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701443551; x=1702048351;
+ d=1e100.net; s=20230601; t=1701443554; x=1702048354;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LTrDNbYJOBcXJe0QIsla+RGqqidagZ/wagIa9X/ca1U=;
- b=G/VnmTyIKhqfGb90c3kBnoDSZQthiZ+S8lX84rG+yLQKaXUsiRXQ16Yv61a8fnkrRR
- FiGEOa04wCEelqE1Wp19nRnEm3Y+1zMncKJVWo6ACuO1pBFHpnryK6V15bCw4P8oYP5d
- /HY1OJG6P19VRGOdlG5mzgB/PZdGNSQ7MLhMgZomX0PrnrnMpuF09Vm5/cbmxNqCMoFI
- I22+v2ne4Rv4g4iiXUiMI5Q1P1Ic3kY8/ydVkTA9jKf0355sjqg5TlG2D4QYfKlNTiH6
- N9ACsmG50DTMIzxN/YNxqzm9a2sjhBR4YntaI+XxnZFI9rr36F5g6ild5Z1kgXVZ7uyn
- Mpng==
-X-Gm-Message-State: AOJu0YxWe7CM4sVM4IB/uZzUQVwIRgjH+2YXhs4NsA4dKXyVa9IhyDrA
- E1mdDeLJ1csK5WfIH8LujW0azg==
-X-Google-Smtp-Source: AGHT+IFIXGsAnlt/Y2TNLGMkoYJVTHmE6Bb5mgXSldoqSHN+PXzG6tO17uyxxO6NLD8iHdCTOmLBqA==
-X-Received: by 2002:a5d:540b:0:b0:333:2fd2:3c0c with SMTP id
- g11-20020a5d540b000000b003332fd23c0cmr648167wrv.197.1701443551790; 
- Fri, 01 Dec 2023 07:12:31 -0800 (PST)
+ bh=x+4RIhvIWUcpCT7qUh814AJlZGLCqs4LOMeRimhH8r0=;
+ b=Q/xwIQ0AH2uxo1MG2+wdHKmRVp132jRlGKBRTQv4SNzBTRCnxfLihnDKV50v5ti/Fq
+ /BEXLvPA9p0ZB+c5ff66BlAspNB8kGedisEdJIcYkeeSfT9DyL3lsdMIPHRlNxxhmQLo
+ Z7E4AxzROh5PNLNbWI0I6JikuncfaksCT6+k3qSrnnEMqb/bkdx/0SLotHX3ea7aswUL
+ caEDKjr63/iQ1HNQlp3pKzxXA7SqpBZ+H4MLbwhfBAJ9sdlCuCqdihDsZJDGjcC38y7t
+ +xBclfA9akPl5XLFDzOrIEOnzUm1c4P7jDp++M8sRK4iM6ozyoULrDG5AAgUl2gVFvE+
+ Rg+w==
+X-Gm-Message-State: AOJu0Yw8eCqky4vTw9iTxHl3mzXyUk2kRZACsHXPGkT0rySR6Y50x6wH
+ YL0DdTuyi9Z0NiEJSQ0lXzbKcg==
+X-Google-Smtp-Source: AGHT+IH3EwFR/B2ezm6hg3FPVhAUZVDSRWwVPahZhRORlaZSAYWfKLdhcYGgjVsvuiD5HkXMYex+pQ==
+X-Received: by 2002:a05:600c:2317:b0:40b:5e4a:409a with SMTP id
+ 23-20020a05600c231700b0040b5e4a409amr347344wmo.186.1701443553654; 
+ Fri, 01 Dec 2023 07:12:33 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p8-20020adfcc88000000b0032f9688ea48sm4432922wrj.10.2023.12.01.07.12.29
+ bg36-20020a05600c3ca400b003fe1fe56202sm5800283wmb.33.2023.12.01.07.12.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Dec 2023 07:12:29 -0800 (PST)
+ Fri, 01 Dec 2023 07:12:31 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 453C65FB67;
+ by draig.lan (Postfix) with ESMTP id 568205FB69;
  Fri,  1 Dec 2023 15:12:29 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Cleber Rosa <crosa@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-arm@nongnu.org (open list:SBSA-REF)
-Subject: [PULL 4/6] tests/avocado: tag sbsa tests as tcg only
-Date: Fri,  1 Dec 2023 15:12:26 +0000
-Message-Id: <20231201151228.2610209-5-alex.bennee@linaro.org>
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PULL 5/6] gitlab: build the correct microblaze target
+Date: Fri,  1 Dec 2023 15:12:27 +0000
+Message-Id: <20231201151228.2610209-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231201151228.2610209-1-alex.bennee@linaro.org>
 References: <20231201151228.2610209-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,29 +98,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As firmware runs at a higher privilege level than the hypervisor we
-can only run these tests under TCG emulation.
+We inadvertently built the LE target for BE tests.
 
+Fixes: 78ebc00b06 (gitlab: shuffle some targets and reduce avocado noise)
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20231201093633.2551497-6-alex.bennee@linaro.org>
+Message-Id: <20231201093633.2551497-7-alex.bennee@linaro.org>
 
-diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index bdd1efc768..528c7d2934 100644
---- a/tests/avocado/machine_aarch64_sbsaref.py
-+++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -20,6 +20,10 @@ class Aarch64SbsarefMachine(QemuSystemTest):
-     """
-     :avocado: tags=arch:aarch64
-     :avocado: tags=machine:sbsa-ref
-+    :avocado: tags=accel:tcg
-+
-+    As firmware runs at a higher privilege level than the hypervisor we
-+    can only run these tests under TCG emulation.
-     """
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 7f9af83b10..62b5379a5e 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -41,7 +41,7 @@ build-system-ubuntu:
+   variables:
+     IMAGE: ubuntu2204
+     CONFIGURE_ARGS: --enable-docs
+-    TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
++    TARGETS: alpha-softmmu microblaze-softmmu mips64el-softmmu
+     MAKE_CHECK_ARGS: check-build
  
-     timeout = 180
+ check-system-ubuntu:
 -- 
 2.39.2
 
