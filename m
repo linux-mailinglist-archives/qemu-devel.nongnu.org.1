@@ -2,159 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92B080048E
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 08:18:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB2C800694
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 10:09:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8xlO-0003Cd-TE; Fri, 01 Dec 2023 02:16:39 -0500
+	id 1r8zV6-0006yC-Kl; Fri, 01 Dec 2023 04:07:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1r8xlF-00038u-6i; Fri, 01 Dec 2023 02:16:29 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1r8zV4-0006xm-5X
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 04:07:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1r8xlC-0004NW-V3; Fri, 01 Dec 2023 02:16:28 -0500
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B1725a0004180; Fri, 1 Dec 2023 07:15:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=BzkqJ/jGQ8feZTMTV7kBM2CKnfMMKrkrySy6iUP9EuY=;
- b=b+xga7mwfs1rp6LEevn9sUHSCU1lMKC/Z/EnZFVSkTZqk7CHQROyPzsnuQdIM07JAGOd
- ya+rGqq00S4Crr3b2meBlGLmSR+zVLKt6N0RKDFEL0B0+PyddOMnJ1Oo3KMNYy0V45Tp
- zQl06ERE0CoEmNthAoELlOyVtJJ5tOVa5/qwQCWWe44HfrE8ufDG2+WNPURfGtiA7LjI
- gEQQwLy0ElzkEJ/RfK3dlxHsbtQvtJbXCubTiiy4RG3biUGoEqTvt7IqDZAaduT8B7ug
- IPbSIbm/F1XOJB6WbUJbwyRiB0naqI1VwIbtR2szxG9CAwjLNMBiE/wFu+M9Q33M+Xk/ eA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqar7gaus-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 01 Dec 2023 07:15:41 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B17FebO014948;
- Fri, 1 Dec 2023 07:15:40 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqar7ga27-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 01 Dec 2023 07:15:40 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B16Ye5v029654; Fri, 1 Dec 2023 07:11:06 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukv8p3h96-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 01 Dec 2023 07:11:06 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3B17B5Ah30016124
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 1 Dec 2023 07:11:05 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2A81A58052;
- Fri,  1 Dec 2023 07:11:05 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8CEAB58054;
- Fri,  1 Dec 2023 07:10:35 +0000 (GMT)
-Received: from [9.43.126.227] (unknown [9.43.126.227])
- by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  1 Dec 2023 07:10:35 +0000 (GMT)
-Message-ID: <6debe854-55df-e901-e154-5ed390178c74@linux.ibm.com>
-Date: Fri, 1 Dec 2023 12:40:33 +0530
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1r8zUp-00059s-6Q
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 04:07:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701421657;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=A9eCwdznEfwk6zN1R6l8MArlkRgoou+vOpOnzaUmnys=;
+ b=UW668tbAIhCuYOPPvWiV9GWjo19JtUSzDK8yazh+c4hNji4/SrLAKhxzW55nyd8t7rdLOG
+ gNDjf/Cs43cxiGDmi/VxT7pkQQ2hnKXkgZuilV5Mv/My3+vdwuxnkYoqY9ZyiqqZ6Vs2q5
+ JZLgi9iieQ08BGb0r0Z3lfmc2Y7YIvU=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677-hMnVxx_FOxGMlk1jflQWeQ-1; Fri, 01 Dec 2023 04:07:35 -0500
+X-MC-Unique: hMnVxx_FOxGMlk1jflQWeQ-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-54c671c035dso62991a12.1
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 01:07:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701421654; x=1702026454;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=A9eCwdznEfwk6zN1R6l8MArlkRgoou+vOpOnzaUmnys=;
+ b=Xsq/UhYNfTA2ZnvvCHy2KZZLm4PiijyKuPmBZ4uyCnwJ8nkLvC8HpwOWeAdZTQ6QsW
+ bCcZKmfGgvTx+dGWix1xWzwDNAUDv5aM13ilFwgxQVZTo/W7QWsXjlXPl7j8oZj2eGpK
+ 1Z2U32abDEHhLwFi77FgCsOKmtFfRTeUV/TQCFf6sSR2tINck/WnsVy4GunWamFlG3Bc
+ TLmZwnIyjCNDQ8KiMD9icDY8Oj7MyQgavjgiSvRSASgq86R+QSBSc4qhF95aP1ekXHak
+ ISPkXsl9XGDacBrNqhukY4xi7oDvOsU8ECKTFO/6oNNUg4rXA0R6aey6ZkP2+r/cTc0o
+ BaIw==
+X-Gm-Message-State: AOJu0Yxp/aCnj+wG1dA8JAT7wpg1VC/1xwfyWMPK8E/EHckC0V/TChSc
+ b43cpNpAxhzoybolFy+7IMjB8s91LnHIolBCXdFRZMP/rn+U8+AK5FFULMbbNV8gycx+25WbXoH
+ Zpo13b7TB8OTI8d0=
+X-Received: by 2002:a50:d709:0:b0:54b:a930:b4c4 with SMTP id
+ t9-20020a50d709000000b0054ba930b4c4mr479385edi.15.1701421654076; 
+ Fri, 01 Dec 2023 01:07:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGqXcD6f64HtWANpD1gUxJl4JDbWXgZKvC//HBhaDMyc6NJrFb6Hm10PuI2cgqImV+tN8yyDg==
+X-Received: by 2002:a50:d709:0:b0:54b:a930:b4c4 with SMTP id
+ t9-20020a50d709000000b0054ba930b4c4mr479377edi.15.1701421653655; 
+ Fri, 01 Dec 2023 01:07:33 -0800 (PST)
+Received: from [10.43.3.102] (nat-pool-brq-t.redhat.com. [213.175.37.10])
+ by smtp.gmail.com with ESMTPSA id
+ m14-20020aa7c2ce000000b0054affcfea3csm1443513edp.34.2023.12.01.01.07.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 01 Dec 2023 01:07:33 -0800 (PST)
+Message-ID: <de569c7a-2e21-4a98-a4a9-98132b43c621@redhat.com>
+Date: Fri, 1 Dec 2023 10:07:32 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 2/6] qemu/main-loop: rename QEMU_IOTHREAD_LOCK_GUARD to
- QEMU_BQL_LOCK_GUARD
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hostmem: Round up memory size for qemu_madvise() in
+ host_memory_backend_memory_complete()
 Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Jean-Christophe Dubois <jcd@tribudubois.net>,
- Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org,
- Song Gao <gaosong@loongson.cn>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Paul Durrant <paul@xen.org>, Jagannathan Raman <jag.raman@oracle.com>,
- Juan Quintela <quintela@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, qemu-arm@nongnu.org, Jason Wang
- <jasowang@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Huacai Chen <chenhuacai@kernel.org>, Fam Zheng <fam@euphon.net>,
- Eric Blake <eblake@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
- Alexander Graf <agraf@csgraf.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Weiwei Li <liwei1518@gmail.com>, Eric Farman <farman@linux.ibm.com>,
- Stafford Horne <shorne@gmail.com>, David Hildenbrand <david@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- John Snow <jsnow@redhat.com>, Sunil Muthuswamy <sunilmut@microsoft.com>,
- Michael Roth <michael.roth@amd.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Bin Meng <bin.meng@windriver.com>,
- Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org,
- qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Peter Xu <peterx@redhat.com>, Anthony Perard <anthony.perard@citrix.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Leonardo Bras
- <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20231129212625.1051502-1-stefanha@redhat.com>
- <20231129212625.1051502-3-stefanha@redhat.com>
- <c3ac8d9c2b9d611e84672436ce1a96aedcaacf5e.camel@linux.ibm.com>
- <20231130202732.GA1184658@fedora>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20231130202732.GA1184658@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: imammedo@redhat.com
+References: <f77d641d500324525ac036fe1827b3070de75fc1.1701088320.git.mprivozn@redhat.com>
+ <9b8a2863-1264-4058-b367-0b61a75921ac@redhat.com>
+ <b9c8b4da-cb14-4a67-b98d-655ed7348bef@redhat.com>
+From: =?UTF-8?B?TWljaGFsIFByw612b3puw61r?= <mprivozn@redhat.com>
+In-Reply-To: <b9c8b4da-cb14-4a67-b98d-655ed7348bef@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: S1sEqcNGAK1f1yUwyiWHNf41PAnYA7MY
-X-Proofpoint-GUID: B-XJS9KsqjYFS8Hl-N4F0TWzVhOEzlLk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-01_04,2023-11-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- impostorscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 phishscore=0 adultscore=0 mlxlogscore=778 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312010044
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.177,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mprivozn@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -170,62 +103,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 12/1/23 01:57, Stefan Hajnoczi wrote:
-> On Thu, Nov 30, 2023 at 10:14:47AM +0100, Ilya Leoshkevich wrote:
->> On Wed, 2023-11-29 at 16:26 -0500, Stefan Hajnoczi wrote:
->>> The name "iothread" is overloaded. Use the term Big QEMU Lock (BQL)
->>> instead, it is already widely used and unambiguous.
+On 11/27/23 14:55, David Hildenbrand wrote:
+> On 27.11.23 14:37, David Hildenbrand wrote:
+>> On 27.11.23 13:32, Michal Privoznik wrote:
+>>> Simple reproducer:
+>>> qemu.git $ ./build/qemu-system-x86_64 \
+>>> -m size=8389632k,slots=16,maxmem=25600000k \
+>>> -object
+>>> '{"qom-type":"memory-backend-file","id":"ram-node0","mem-path":"/hugepages2M/","prealloc":true,"size":8590983168,"host-nodes":[0],"policy":"bind"}' \
+>>> -numa node,nodeid=0,cpus=0,memdev=ram-node0
 >>>
->>> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->>> ---
->>>   include/qemu/main-loop.h  | 20 ++++++++++----------
->>>   hw/i386/kvm/xen_evtchn.c  | 14 +++++++-------
->>>   hw/i386/kvm/xen_gnttab.c  |  2 +-
->>>   hw/mips/mips_int.c        |  2 +-
->>>   hw/ppc/ppc.c              |  2 +-
->>>   target/i386/kvm/xen-emu.c |  2 +-
->>>   target/ppc/excp_helper.c  |  2 +-
->>>   target/ppc/helper_regs.c  |  2 +-
->>>   target/riscv/cpu_helper.c |  4 ++--
->>>   9 files changed, 25 insertions(+), 25 deletions(-)
+>>> With current master I get:
 >>>
->>> diff --git a/include/qemu/main-loop.h b/include/qemu/main-loop.h
->>> index d6f75e57bd..0b6a3e4824 100644
->>> --- a/include/qemu/main-loop.h
->>> +++ b/include/qemu/main-loop.h
->>> @@ -344,13 +344,13 @@ void qemu_bql_lock_impl(const char *file, int
->>> line);
->>>   void qemu_bql_unlock(void);
->>>   
->>>   /**
->>> - * QEMU_IOTHREAD_LOCK_GUARD
->>> + * QEMU_BQL_LOCK_GUARD
->>>    *
->>> - * Wrap a block of code in a conditional
->>> qemu_mutex_{lock,unlock}_iothread.
->>> + * Wrap a block of code in a conditional qemu_bql_{lock,unlock}.
->>>    */
->>> -typedef struct IOThreadLockAuto IOThreadLockAuto;
->>> +typedef struct BQLLockAuto BQLLockAuto;
->>>   
->>> -static inline IOThreadLockAuto *qemu_iothread_auto_lock(const char
->>> *file,
->>> +static inline BQLLockAuto *qemu_bql_auto_lock(const char *file,
->>>                                                           int line)
+>>> qemu-system-x86_64: cannot bind memory to host NUMA nodes: Invalid
+>>> argument
+>>>
+>>> The problem is that memory size (8193MiB) is not an integer
+>>> multiple of underlying pagesize (2MiB) which triggers a check
+>>> inside of madvise(), since we can't really set a madvise() policy
+>>> just to a fraction of a page.
 >>
->> The padding is not correct anymore.
+>> I thought we would just always fail create something that doesn't really
+>> make any sense.
+>>
+>> Why would we want to support that case?
+>>
+>> Let me dig, I thought we would have had some check there at some point
+>> that would make that fail (especially: RAM block not aligned to the
+>> pagesize).
 > 
-> Good point, I didn't check the formatting after search-and-replace. I
-> will fix this across the patch series in v2.
+> 
+> At least memory-backend-memfd properly fails for that case:
+> 
+> $ ./build/qemu-system-x86_64 -object
+> memory-backend-memfd,hugetlb=on,size=3m,id=tmp
+> qemu-system-x86_64: failed to resize memfd to 3145728: Invalid argument
+> 
+> memory-backend-file ends up creating a new file:
+> 
+>  $ ./build/qemu-system-x86_64 -object
+> memory-backend-file,share=on,mem-path=/dev/hugepages/tmp,size=3m,id=tmp
+> 
+> $ stat /dev/hugepages/tmp
+>   File: /dev/hugepages/tmp
+>   Size: 4194304         Blocks: 0          IO Block: 2097152 regular file
+> 
+> ... and ends up sizing it properly aligned to the huge page size.
+> 
+> 
+> Seems to be due to:
+> 
+>     if (memory < block->page_size) {
+>         error_setg(errp, "memory size 0x" RAM_ADDR_FMT " must be equal to "
+>                    "or larger than page size 0x%zx",
+>                    memory, block->page_size);
+>         return NULL;
+>     }
+> 
+>     memory = ROUND_UP(memory, block->page_size);
+> 
+>     /*
+>      * ftruncate is not supported by hugetlbfs in older
+>      * hosts, so don't bother bailing out on errors.
+>      * If anything goes wrong with it under other filesystems,
+>      * mmap will fail.
+>      *
+>      * Do not truncate the non-empty backend file to avoid corrupting
+>      * the existing data in the file. Disabling shrinking is not
+>      * enough. For example, the current vNVDIMM implementation stores
+>      * the guest NVDIMM labels at the end of the backend file. If the
+>      * backend file is later extended, QEMU will not be able to find
+>      * those labels. Therefore, extending the non-empty backend file
+>      * is disabled as well.
+>      */
+>     if (truncate && ftruncate(fd, offset + memory)) {
+>         perror("ftruncate");
+>     }
+> 
+> So we create a bigger file and map the bigger file and also have a
+> RAMBlock that is bigger. So we'll also consume more memory.
+> 
+> ... but the memory region is smaller and we tell the VM that it has
+> less memory. Lot of work with no obvious benefit, and only some
+> memory waste :)
+> 
+> 
+> We better should have just rejected such memory backends right from
+> the start. But now it's likely too late.
+> 
+> I suspect other things like
+>  * qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
+>  * qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP);
+> 
+> fail, but we don't care for hugetlb at least regarding merging
+> and don't even log an error.
+> 
+> But QEMU_MADV_DONTDUMP might also be broken, because that
+> qemu_madvise() call will just fail.
+> 
+> Your fix would be correct. But I do wonder if we want to just let that
+> case fail and warn users that they are doing something that doesn't
+> make too much sense.
 > 
 
-Yeh, some comments in 5/6 and 6/6 can also make full use of 80 char 
-width after search-replace effect.
+Yeah, what's suspicious is: if the size is smaller than page size we
+error out, but if it's larger (but still not aligned) we accept that.
+I'm failing to see reasoning there. Looks like the ROUND_UP() was added
+in v0.13.0-rc0~1201^2~4 (though it's done with some bit magic) and the
+check itself was added in v2.8.0-rc0~30^2~23. So it's a bit late, yes.
 
-regards,
-Harsh
+OTOH - if users want to waste resources, should we stop them? For
+instance, when user requests more vCPUs than physical CPUs a warning is
+printed:
 
-> Stefan
+$ ./build/qemu-system-x86_64 -accel kvm -smp cpus=128
+qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested
+(128) exceeds the recommended cpus supported by KVM (8)
+
+but that's about it. So maybe the error can be demoted to just a warning?
+
+Michal
+
 
