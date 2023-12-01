@@ -2,83 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BB480091F
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 11:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F8E800925
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 11:55:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r919S-0000NJ-8Z; Fri, 01 Dec 2023 05:53:42 -0500
+	id 1r91AG-00010v-8f; Fri, 01 Dec 2023 05:54:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r919R-0000NB-2k
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:53:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1r919N-0003c0-2x
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:53:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701428016;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=oFydMwBlCdGsCyFLsZj+nrybJG0md9CPG5ArQvt7VQw=;
- b=Fi4CaiSP6fN4TypDRQsBEuAg8QXIrEufoZAmYHo9srf8bK8uyMg/7SgJTsCzubauQTK4Zr
- Dhwok8a9YEz4Qe73AEj3mV/IF57qMPqQj9/XnRZuBzXRPvtT3lXnAVcNHz9XCl59lth49p
- RfqLuhdO3pAbiBSEgoDPzfWl8sn00vg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-434-CBAWIX9BNh6gYIQIQp4DwA-1; Fri, 01 Dec 2023 05:53:34 -0500
-X-MC-Unique: CBAWIX9BNh6gYIQIQp4DwA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 70559811E86;
- Fri,  1 Dec 2023 10:53:33 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.148])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4CEED2026D6E;
- Fri,  1 Dec 2023 10:53:33 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6C77221E6A1F; Fri,  1 Dec 2023 11:53:32 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  David Hildenbrand
- <david@redhat.com>,  Igor Mammedov <imammedo@redhat.com>,  "Michael S .
- Tsirkin" <mst@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,  Peter Xu
- <peterx@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Eric Blake <eblake@redhat.com>,  Marcelo Tosatti
- <mtosatti@redhat.com>,  qemu-devel@nongnu.org,  kvm@vger.kernel.org,
- Michael Roth <michael.roth@amd.com>,  Sean Christopherson
- <seanjc@google.com>,  Claudio Fontana <cfontana@suse.de>,  Gerd Hoffmann
- <kraxel@redhat.com>,  Isaku Yamahata <isaku.yamahata@gmail.com>,  Chenyi
- Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v3 27/70] i386/tdx: Add property sept-ve-disable for
- tdx-guest object
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-28-xiaoyao.li@intel.com>
-Date: Fri, 01 Dec 2023 11:53:32 +0100
-In-Reply-To: <20231115071519.2864957-28-xiaoyao.li@intel.com> (Xiaoyao Li's
- message of "Wed, 15 Nov 2023 02:14:36 -0500")
-Message-ID: <87sf4mw5w3.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r91A5-0000yr-Tg
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:54:22 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r919n-0003eb-NX
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 05:54:20 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-54bec1d3854so2434509a12.2
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 02:54:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701428042; x=1702032842; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AF3+hJ4SletQg3wGyy+npS73Q4aYLZ13CxdgfQWgTk8=;
+ b=q1XXjVCguDmLZ29lJqJ7aIY2hqtqZo7qEolVvWgc3sHQG7rHQkpx3xwqy06aBvs8Ir
+ kFuA4f1Mv531R8W8tMQKm6XeFVt88IborJEbaz04K8Vof/uJy1jWAY6/9ZTqB6c7yj3O
+ Ir8giKImjFNPI5XuhW+LMjeEb/Iqz8tABs79mVfz1hIvMp1C/sFTev08h6TKC0gNDaCs
+ BYfVij8PtMZRYvGKHOy/T8C1tHmXcfmkAxkychPkbimCNPMfo7ueOONFnlyugD/p6vhP
+ JOcdTyocOo87uoP5sHEDnFev7xoQNpfsVfGMs8ak7VfdcuPYpVzsq0d0Z4J1+WSmk3Aa
+ Fvgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701428042; x=1702032842;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AF3+hJ4SletQg3wGyy+npS73Q4aYLZ13CxdgfQWgTk8=;
+ b=XCi0kPyzVmauvd3M+boDedu6e0sG2o0hkbZBJWbd6KPkTJEskjsZk5pnalRoXSYMPt
+ +t7C38/4g3bc1CL0QDmEKoPGjFBr3y9YPiY2fl/mqpWHLC6PcPjOCaLlJBi2TS1m3y3H
+ Qt4dyWsDoZ/RlmuuB7Yhgvaa/AcYg4qEqQ6bqZmVu55bpOvfNhqJowOgS39GvlEX/BHe
+ K98LXImnEaErAEwWkFNTUtux4XV68iYrNQCFAAun8lmgDGseWaIYx05+iFGBUFOPAhb+
+ LZe6uZmJcORDJHzdBh2Jclgq8HKOMqi3lgdylrUyh2p8uIzGU3wUzf+xwm9sH/aq/V49
+ kUAQ==
+X-Gm-Message-State: AOJu0YxLrfswb6DwkCUfgP0+tAnDF1ISGs4Zmnq7Hwe1HX9nvWlRKnNF
+ F7R/Oc4SEMgUKfDOL+UQAARP9BN+VYR48uA/C5Y9Xw==
+X-Google-Smtp-Source: AGHT+IHA+KeVhFP0g2fHKrw1WtLjj9ptv2maeSI0+k5Ur+CEAyev9FU7LgQSWCpsRYN5Lr+SqNCPdA==
+X-Received: by 2002:a50:cc8b:0:b0:54b:44b8:259f with SMTP id
+ q11-20020a50cc8b000000b0054b44b8259fmr647701edi.10.1701428042162; 
+ Fri, 01 Dec 2023 02:54:02 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.160.225])
+ by smtp.gmail.com with ESMTPSA id
+ l3-20020aa7d943000000b0054afe3625a9sm1520020eds.43.2023.12.01.02.53.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 01 Dec 2023 02:54:01 -0800 (PST)
+Message-ID: <fd8715af-ef1c-4ccc-b602-25776a56fc76@linaro.org>
+Date: Fri, 1 Dec 2023 11:53:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/9] machine: Introduce helper is_cpu_type_supported()
+Content-Language: en-US
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, b.galvani@gmail.com, strahinja.p.jankovic@gmail.com,
+ sundeep.lkml@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ marcin.juszkiewicz@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, wangyanan55@huawei.com, vijai@behindbytes.com,
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+References: <20231129042012.277831-1-gshan@redhat.com>
+ <20231129042012.277831-3-gshan@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231129042012.277831-3-gshan@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,52 +100,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
+Hi Gavin,
 
-> Bit 28 of TD attribute, named SEPT_VE_DISABLE. When set to 1, it disables
-> EPT violation conversion to #VE on guest TD access of PENDING pages.
->
-> Some guest OS (e.g., Linux TD guest) may require this bit as 1.
-> Otherwise refuse to boot.
->
-> Add sept-ve-disable property for tdx-guest object, for user to configure
-> this bit.
->
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+On 29/11/23 05:20, Gavin Shan wrote:
+> The logic, to check if the specified CPU type is supported in
+> machine_run_board_init(), is independent enough. Factor it out into
+> helper is_cpu_type_supported(). machine_run_board_init() looks a bit
+> clean with this. Since we're here, @machine_class is renamed to @mc to
+> avoid multiple line spanning of code. The comments are tweaked a bit
+> either.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
 > ---
-> Changes in v3:
-> - update the comment of property @sept-ve-disable to make it more
->   descriptive and use new format. (Daniel and Markus)
+> v8: Move the precise message hint to PATCH[v8 3/9]        (Gavin)
 > ---
->  qapi/qom.json         |  7 ++++++-
->  target/i386/kvm/tdx.c | 24 ++++++++++++++++++++++++
->  2 files changed, 30 insertions(+), 1 deletion(-)
->
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index 8e08257dac2f..3a29659e0155 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -883,10 +883,15 @@
->  #
->  # Properties for tdx-guest objects.
->  #
-> +# @sept-ve-disable: toggle bit 28 of TD attributes to control disabling
-> +#     of EPT violation conversion to #VE on guest TD access of PENDING
-> +#     pages.  Some guest OS (e.g., Linux TD guest) may require this to
-> +#     be set, otherwise they refuse to boot.
-> +#
->  # Since: 8.2
->  ##
->  { 'struct': 'TdxGuestProperties',
-> -  'data': { }}
-> +  'data': { '*sept-ve-disable': 'bool' } }
->  
->  ##
->  # @ThreadContextProperties:
+>   hw/core/machine.c | 83 +++++++++++++++++++++++++----------------------
+>   1 file changed, 45 insertions(+), 38 deletions(-)
+> 
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index bde7f4af6d..1797e002f9 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -1387,13 +1387,53 @@ out:
+>       return r;
+>   }
+>   
+> +static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+> +{
+> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
+> +    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+> +    CPUClass *cc;
+> +    int i;
+> +
+> +    /*
+> +     * Check if the user specified CPU type is supported when the valid
+> +     * CPU types have been determined. Note that the user specified CPU
+> +     * type is provided through '-cpu' option.
+> +     */
+> +    if (mc->valid_cpu_types && machine->cpu_type) {
+> +        for (i = 0; mc->valid_cpu_types[i]; i++) {
+> +            if (object_class_dynamic_cast(oc, mc->valid_cpu_types[i])) {
+> +                break;
+> +            }
+> +        }
+> +
+> +        /* The user specified CPU type isn't valid */
+> +        if (!mc->valid_cpu_types[i]) {
+> +            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
+> +            error_append_hint(errp, "The valid types are: %s",
+> +                              mc->valid_cpu_types[0]);
+> +            for (i = 1; mc->valid_cpu_types[i]; i++) {
+> +                error_append_hint(errp, ", %s", mc->valid_cpu_types[i]);
+> +            }
+> +
+> +            error_append_hint(errp, "\n");
+> +            return false;
+> +        }
+> +    }
+> +
+> +    /* Check if CPU type is deprecated and warn if so */
+> +    cc = CPU_CLASS(oc);
+> +    if (cc && cc->deprecation_note) {
 
-Acked-by: Markus Armbruster <armbru@redhat.com>
+cc can't be NULL, right? Otherwise,
 
-[...]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +        warn_report("CPU model %s is deprecated -- %s",
+> +                    machine->cpu_type, cc->deprecation_note);
+> +    }
+> +
+> +    return true;
+> +}
 
 
