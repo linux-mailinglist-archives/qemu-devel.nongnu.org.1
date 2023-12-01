@@ -2,82 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33EF800207
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 04:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBA3800226
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 04:35:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r8u6X-0002xB-KP; Thu, 30 Nov 2023 22:22:13 -0500
+	id 1r8uHi-00060E-PC; Thu, 30 Nov 2023 22:33:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3X1FpZQMKCtgM6QAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--scw.bounces.google.com>)
- id 1r8u6V-0002wy-Sz
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 22:22:11 -0500
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3X1FpZQMKCtgM6QAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--scw.bounces.google.com>)
- id 1r8u6U-0002hH-8B
- for qemu-devel@nongnu.org; Thu, 30 Nov 2023 22:22:11 -0500
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-5cfe0b63eeeso30219467b3.0
- for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 19:22:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1701400928; x=1702005728; darn=nongnu.org;
- h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=51XLYpmadR/yFErptaAwZRJFyAyQ9e208pyzDLJGMCw=;
- b=JpzxLoGzGHe1Mdbwctviv0WvIErQjZyOTFuVImBV3DDcHCQvoAm8/guryfDAOU2u41
- mG9qc48QxXPowKqHcPaJOXqGrcYiXnnqjP8JHsS9rYVRDotvPrqc146jYtAnkf2O03pN
- x/Fe7SKiTOTvjeezvt5TzXhuATCE2tI7MEGg69dW213FhcFnWsvdTBrmZwiZjnh+0hhp
- ol/yiuuMB+7BEhT8LuTqDT/9tRbN/9L1R+UHUpLFOoy/nqcVSJVA9cLG3oXkyvHk1mUX
- 9R2pvCTdIrBmOL97ddLZbWJPQc7kE3lB4dFswb0Fyhc054GcY5Aqtl3l6jf61nxqYo/l
- 3L7A==
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r8uHg-0005zX-6N
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 22:33:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r8uHe-0007VT-HZ
+ for qemu-devel@nongnu.org; Thu, 30 Nov 2023 22:33:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701401621;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pDA/YtOoP8t8dKReQnD71j9147YsvGu3IU9MGrJu/m0=;
+ b=g+LaaVx2nm5yx8amrjtxIOCzPXv8nXEBEiYZTVOlKLoK7ammqQpzntsAxgZvNFNr1N6FEp
+ BqsNciJ7baQT6kMFU8Rg8XRunV7AoYJrui2+LAH8WA+tOb5OmgOC/CDpWRtNv4MyPLnMxb
+ xfp/1qbX+T7M87j30VoZE5JMCBPpP4M=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-480-8XNUdUhONze6antiBWXRnA-1; Thu, 30 Nov 2023 22:33:39 -0500
+X-MC-Unique: 8XNUdUhONze6antiBWXRnA-1
+Received: by mail-oo1-f72.google.com with SMTP id
+ 006d021491bc7-58a21120248so1929496eaf.0
+ for <qemu-devel@nongnu.org>; Thu, 30 Nov 2023 19:33:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701400928; x=1702005728;
- h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=51XLYpmadR/yFErptaAwZRJFyAyQ9e208pyzDLJGMCw=;
- b=fGop2+N3lfwblY115XpL+EU3AvlYYR8kHWGrI+9AOgWVfg6S5EiXF1Be66PPfgWLWU
- imcP28faqFJA+WmEKakZhuzL+BDn3VgCOg2scbWZZuFqqhyolsf+ZEcxWb1W8Kpku2zV
- Djht3hrG7ikHh8jRuZY7Yr6OmtfKLavBCnbdCYNTR0q5ptm84lj3PcMfHn60qBhNi5Xx
- MryOLAC368roAF2qFA6EB1g+otE0VwnZLglsvGdcrZWOGi/Vzi8K4k3R0lX4vRwEqCPB
- V1WSyqA+zRed4/aYAaADqcZDYFglhkqMQ+emjoZaMKUilD5rGLYU898gtxF935W6E6IZ
- Z/Tg==
-X-Gm-Message-State: AOJu0Ywmj6kLFXTj3MP4y55oT2LDyszHKyeqplkGsN2KqNLV+vLLYqSX
- dimxKz3kqG6SS15F3AcR3alPuZ4/uPTY/s5olXQAnGsmGEx5YJyVVDd4jmvBBy8kIlggEqVzWTE
- HugZNmRGLu2E9Zl7UqbYoO27M453EoLpZ2QuGyTIhhZwdepV7JTh+
-X-Google-Smtp-Source: AGHT+IEGMC6Glz+2p+GzbJfZHMYK/AKaec8yADZ0Bd/fJuUgvHAIKCWPqL3+YO8tMI4CNiE/uSMiXBY=
-X-Received: from scw-glinux.svl.corp.google.com
- ([2620:15c:2d3:205:73b4:ef07:4b25:48e5])
- (user=scw job=sendgmr) by 2002:a05:690c:340b:b0:5cb:73ab:3e4d with SMTP id
- fn11-20020a05690c340b00b005cb73ab3e4dmr681976ywb.6.1701400927960; Thu, 30 Nov
- 2023 19:22:07 -0800 (PST)
-Date: Thu, 30 Nov 2023 19:21:40 -0800
-In-Reply-To: <20231201032140.2470599-1-scw@google.com>
-Message-Id: <20231201032140.2470599-3-scw@google.com>
-Mime-Version: 1.0
-References: <20231201032140.2470599-1-scw@google.com>
-X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
-Subject: [PATCH 2/2] linux-user: Fix openat() emulation to not modify atime
-From: Shu-Chun Weng <scw@google.com>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Shu-Chun Weng <scw@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3X1FpZQMKCtgM6QAIIAF8.6IGK8GO-78P8FHIHAHO.ILA@flex--scw.bounces.google.com;
- helo=mail-yw1-x114a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ d=1e100.net; s=20230601; t=1701401618; x=1702006418;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pDA/YtOoP8t8dKReQnD71j9147YsvGu3IU9MGrJu/m0=;
+ b=JmuUmGRJMDHME59CRI7RueDslXbCQmI8+yIC3RPpCjmNXL3f6uDBIY+IrpvDejlV/S
+ gvhlnu03P2gbhzSrL2y7+Tb6ua+uBYVywtOGTiHoe/+NwlUGoEjuqoRn1gIUuNaXhASK
+ +lAKoV89Ffia0K8M2iAsAdQtRm7US8245FKDS/JCpc6mdgaC+yWIeRYOCOSTINu/u1h5
+ MWkkqv6MCX+i0an0Pt3AVxO8OzVPjh1yoT588FR9A/5+zQFKnjerdjwo6l4+WUKSutsO
+ Za0WKgpCYGxk6LWzFQXVQXEGyqa7EzgBynsICk1fich4ibAfjK2vvkAZog/ZH7kCW8c/
+ 55xg==
+X-Gm-Message-State: AOJu0YyfDIHcMp5PsApHg8nFXH8+aqmE6vFmUG1Q9Nr/0+kdtghMRAE8
+ XCFutLDsDi1W1f8LySD7zq0WE7yaZcnQbm9QGpSRgZemX7xk4MEE4CVrc+m7KES6mDJS4CIwjf3
+ P/R1nOEZFq+cnc+4=
+X-Received: by 2002:a05:6808:3084:b0:3b8:6151:cacb with SMTP id
+ bl4-20020a056808308400b003b86151cacbmr1895377oib.10.1701401618666; 
+ Thu, 30 Nov 2023 19:33:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFLNblhD5zWTa0i5YTn2QIev5tya97sYzEWqFH0zt12ePHxZanyGqH3f/gH+EO//66wXm4hCQ==
+X-Received: by 2002:a05:6808:3084:b0:3b8:6151:cacb with SMTP id
+ bl4-20020a056808308400b003b86151cacbmr1895345oib.10.1701401618359; 
+ Thu, 30 Nov 2023 19:33:38 -0800 (PST)
+Received: from [192.168.68.51] ([43.252.115.3])
+ by smtp.gmail.com with ESMTPSA id
+ b17-20020aa78ed1000000b006c06779e593sm2013549pfr.16.2023.11.30.19.33.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 30 Nov 2023 19:33:37 -0800 (PST)
+Message-ID: <a1a3a5f9-f785-4b27-9b33-ea5b29e919b3@redhat.com>
+Date: Fri, 1 Dec 2023 14:33:26 +1100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/9] machine: Use error handling when CPU type is
+ checked
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ peter.maydell@linaro.org, imammedo@redhat.com, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
+ wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
+ quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, vijai@behindbytes.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+References: <20231129042012.277831-1-gshan@redhat.com>
+ <20231129042012.277831-2-gshan@redhat.com> <87bkbdnf6u.fsf@pond.sub.org>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <87bkbdnf6u.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,101 +109,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit b8002058 strengthened openat()'s /proc detection by calling
-realpath(3) on the given path, which allows various paths and symlinks
-that points to the /proc file system to be intercepted correctly.
+Hi Markus,
 
-Using realpath(3), though, has a side effect that it reads the symlinks
-along the way, and thus changes their atime. The results in the
-following code snippet already get ~now instead of the real atime:
+On 11/29/23 19:20, Markus Armbruster wrote:
+> Gavin Shan <gshan@redhat.com> writes:
+> 
+>> QEMU will be terminated if the specified CPU type isn't supported
+>> in machine_run_board_init(). The list of supported CPU type names
+>> is tracked by mc->valid_cpu_types.
+> 
+> Suggest to drop the second sentence.
+> 
 
-  int fd = open("/path/to/a/symlink", O_PATH | O_NOFOLLOW);
-  struct stat st;
-  fstat(fd, st);
-  return st.st_atime;
+Indeed, it's not so helpful.
 
-This change opens a path that doesn't appear to be part of /proc
-directly and checks the destination of /proc/self/fd/n to determine if
-it actually refers to a file in /proc.
+>> The error handling can be used to propagate error messages, to be
+>> consistent how the errors are handled for other situations in the
+>> same function.
+>>
+>> No functional change intended.
+>>
+>> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+>> Signed-off-by: Gavin Shan <gshan@redhat.com>
+>> ---
+>> v8: Drop @local_err and use @errp to be compatible with
+>>      ERRP_GUARD()                                          (Phil)
+>> ---
+>>   hw/core/machine.c | 13 +++++++------
+>>   1 file changed, 7 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/hw/core/machine.c b/hw/core/machine.c
+>> index 0c17398141..bde7f4af6d 100644
+>> --- a/hw/core/machine.c
+>> +++ b/hw/core/machine.c
+>> @@ -1466,15 +1466,16 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+>>   
+>>           if (!machine_class->valid_cpu_types[i]) {
+>>               /* The user specified CPU is not valid */
+>> -            error_report("Invalid CPU type: %s", machine->cpu_type);
+>> -            error_printf("The valid types are: %s",
+>> -                         machine_class->valid_cpu_types[0]);
+>> +            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
+>> +            error_append_hint(errp, "The valid types are: %s",
+>> +                              machine_class->valid_cpu_types[0]);
+>>               for (i = 1; machine_class->valid_cpu_types[i]; i++) {
+>> -                error_printf(", %s", machine_class->valid_cpu_types[i]);
+>> +                error_append_hint(errp, ", %s",
+>> +                                  machine_class->valid_cpu_types[i]);
+>>               }
+>> -            error_printf("\n");
+>>   
+>> -            exit(1);
+>> +            error_append_hint(&errp, "\n");
+>> +            return;
+>>           }
+>>       }
+> 
+> This cleans up an anti-pattern: use of error_report() within a function that
+> returns errors through an Error **errp parameter.
+> 
+> Cleanup, not bug fix, because the only caller passes &error_abort.
+> 
+> Suggest to start the commit message with a mention of the anti-pattern.
+> Here's how I'd write it:
+> 
+>      Functions that use an Error **errp parameter to return errors should
+>      not also report them to the user, because reporting is the caller's
+>      job.
+> 
+>      machine_run_board_init() violates this principle: it calls
+>      error_report(), error_printf(), and exit(1) when the machine doesn't
+>      support the requested CPU type.
+> 
+>      Clean this up by using error_setg() and error_append_hint() instead.
+>      No functional change, as the only caller passes &error_fatal.
+> 
 
-Neither this nor the existing code works with symlinks or indirect paths
-(e.g.  /tmp/../proc/self/exe) that points to /proc/self/exe because it
-is itself a symlink, and both realpath(3) and /proc/self/fd/n will
-resolve into the location of QEMU.
+Thanks for the nice write-up. I will take it if v9 is needed to address
+comments from other people.
 
-Signed-off-by: Shu-Chun Weng <scw@google.com>
----
- linux-user/syscall.c | 42 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 33 insertions(+), 9 deletions(-)
+> Whether you use my suggestion or not:
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> 
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index e384e14248..25e2cda10a 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8308,8 +8308,6 @@ static int open_net_route(CPUArchState *cpu_env, int fd)
- int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-                     int flags, mode_t mode, bool safe)
- {
--    g_autofree char *proc_name = NULL;
--    const char *pathname;
-     struct fake_open {
-         const char *filename;
-         int (*fill)(CPUArchState *cpu_env, int fd);
-@@ -8333,13 +8331,39 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
- #endif
-         { NULL, NULL, NULL }
-     };
-+    char pathname[PATH_MAX];
- 
--    /* if this is a file from /proc/ filesystem, expand full name */
--    proc_name = realpath(fname, NULL);
--    if (proc_name && strncmp(proc_name, "/proc/", 6) == 0) {
--        pathname = proc_name;
-+    if (strncmp(fname, "/proc/", 6) == 0) {
-+        pstrcpy(pathname, sizeof(pathname), fname);
-     } else {
--        pathname = fname;
-+        char procpath[PATH_MAX];
-+        int fd, n;
-+
-+        if (safe) {
-+            fd = safe_openat(dirfd, path(fname), flags, mode);
-+        } else {
-+            fd = openat(dirfd, path(fname), flags, mode);
-+        }
-+        if (fd < 0) {
-+            return fd;
-+        }
-+
-+        /*
-+         * Try to get the real path of the file we just opened. We avoid calling
-+         * `realpath(3)` because it calls `readlink(2)` on symlinks which
-+         * changes their atime. Note that since `/proc/self/exe` is a symlink,
-+         * `pathname` will never resolves to it (neither will `realpath(3)`).
-+         * That's why we check `fname` against the "/proc/" prefix first.
-+         */
-+        snprintf(procpath, sizeof(procpath), "/proc/self/fd/%d", fd);
-+        n = readlink(procpath, pathname, sizeof(pathname));
-+        pathname[n < sizeof(pathname) ? n : sizeof(pathname)] = '\0';
-+
-+        /* if this is not a file from /proc/ filesystem, the fd is good as-is */
-+        if (strncmp(pathname, "/proc/", 6) != 0) {
-+            return fd;
-+        }
-+        close(fd);
-     }
- 
-     if (is_proc_myself(pathname, "exe")) {
-@@ -8390,9 +8414,9 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-     }
- 
-     if (safe) {
--        return safe_openat(dirfd, path(pathname), flags, mode);
-+        return safe_openat(dirfd, pathname, flags, mode);
-     } else {
--        return openat(dirfd, path(pathname), flags, mode);
-+        return openat(dirfd, pathname, flags, mode);
-     }
- }
- 
+Thanks for your review.
+
+Thanks,
+Gavin
+
 
