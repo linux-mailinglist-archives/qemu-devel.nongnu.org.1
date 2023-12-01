@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE6A800AD7
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 13:26:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B98800B22
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 13:39:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r92a1-0004mb-7T; Fri, 01 Dec 2023 07:25:13 -0500
+	id 1r92mZ-0007cq-NQ; Fri, 01 Dec 2023 07:38:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r92Zx-0004lU-Nf; Fri, 01 Dec 2023 07:25:09 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r92mX-0007cT-3g
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 07:38:09 -0500
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1r92Zw-0002wl-48; Fri, 01 Dec 2023 07:25:09 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-28613d87c4cso1872672a91.3; 
- Fri, 01 Dec 2023 04:25:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1r92mV-0003Ed-7E
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 07:38:08 -0500
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-50bc743c7f7so2823669e87.3
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 04:38:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701433506; x=1702038306; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=88X429hdm82eN1N5tztqHF9L+1Np9uq1z6GRyO2coPo=;
- b=lkAgTJfApeux3Mc3ZoQNKmVMkeGMANJqTR6HjNfyJFnVuVr3QtdoRAvFV9cc1S6uGJ
- HnNeQcyFPtB0AoYRZVb19H9TeLJkyy9iXCBXx2iwYw+hH6qqp5Riss0IE3LMOERHfml4
- n/SCPOVcd7suZX/zzpqmuetoG7OmoB+jG7IK71QYXxhVXLanAtunxbCFiOqzqy8PsFxs
- TpMdw2EDlFm2dE0ytTV1sOSUmzOvu8Eplg4N+mIb6KDev0oekUmJfJbeOWE0z8CV+Kb9
- TNvo1D6MLoLJIo3f5vc326nXWu4HqEezg2/BOLCy55gtN7kFExybRorZtNBjjUfqzNJb
- j5YQ==
+ d=linaro.org; s=google; t=1701434285; x=1702039085; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aJh++K+d4yNCAqMv6qP4dBCvQBedPipsezm3BLTLEqs=;
+ b=sF/IvptYKdLzIWuW92QQU5lXtJ0znhvTZuv3S4N1jvVXSVtiT8Wvh9W+UM3h60H5G5
+ I5RwxJDOgBgRcfJ9aSMLxKs+dopa0rf10YoCNb61QCa3SlZvZsE0bbBiIy+5YXXEvDE8
+ hp2hSMdklsc45ZB9SQIaQyMLNiMdFY+RTJqAJ9ecKUEmjWYDMM4Pn0mepi2xn4oXzYPu
+ q/rqtvYOLZEiKiCYPZ3Vova38N6LGkMzHe5qgQvSk2DwvqeNaHoebI+nnengkVj35QOa
+ DhhEAq37IiW9Ng6pv+c4j8OGNncSblNjypafJD9lanAfFvaBuVZRpckcvr1X/Uk0on4S
+ jKGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701433506; x=1702038306;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=88X429hdm82eN1N5tztqHF9L+1Np9uq1z6GRyO2coPo=;
- b=kTx2YlTRy1OPzZtKt2I7br9e8RV+r5mU62CAKDU+xucxP8Rpn5mRagZ+MxJjsiOfKZ
- inT8usyBw5a4y41VpgCHRziLd3sAo77lAx9PzZuy++orwiXpQbYzvWVzEYR7NqNrqebu
- jpX9CBL1FIaNfMS9IYQiCP6qrveYS30be44bwu+UbLHksVLdA+7QHDtLAzzEmKparLFg
- vXTl5qea0sSAYvFrc8oYw73ZdJKngfhZe9kTPZY278yg2WHwHeJ/7hwA7fKz3lZq1ewI
- sTrxTvCWk879/wjkDC1sJc43xMJKkoRs16bYo5IReP+/KS2O4W1DuDop6uQoJBg4cGw9
- T2tQ==
-X-Gm-Message-State: AOJu0YwTlWDeidxQeTavasxd4XbPTDgpfdXnR8Xr4/ZIFnhNUPSOXKpL
- WlB3DXbcSmpuVtAUXGveOjgMr/Nw+8M=
-X-Google-Smtp-Source: AGHT+IFSNCr997eJLdN2Q097u2m2P4jWefCJfyVdcCCGQROCEbWqG2E31YdMbOBSCsUaUJEb5VJKxg==
-X-Received: by 2002:a17:90b:3e89:b0:285:ff7d:ad6b with SMTP id
- rj9-20020a17090b3e8900b00285ff7dad6bmr11241767pjb.4.1701433505617; 
- Fri, 01 Dec 2023 04:25:05 -0800 (PST)
-Received: from wheely.local0.net ([124.170.16.164])
+ d=1e100.net; s=20230601; t=1701434285; x=1702039085;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aJh++K+d4yNCAqMv6qP4dBCvQBedPipsezm3BLTLEqs=;
+ b=IUxU13WupFiOFzaDCi62Gfhj5f/blAEdFLMM2k0XTF2d7e6k039OiIYK1eU1BUxd8w
+ p0H99VTaica5BLnYxV/+XWgVGA2TS4o3dW47eD0yPTWUnx4ujARnnivDsw8II6z+4+tq
+ ATulIJKiswEedZxyWWomvh8vELXIX+Ge7tvi+S2CgIGWceoNmuB2BWsnbotpM8v47qcL
+ R3Rc+mTOHtMC1OZIf7MhBBH1qgWpHxcgLcJ8Mz7VF3QL7ZEWyaXmaDScbtnxaSwm2P8D
+ D+O2dF2UddfQpCuCRMuJL3FRPafTGus30Qgb4eiGUUxJt4jz44z3NERKovK5htoAYMhZ
+ vy5A==
+X-Gm-Message-State: AOJu0Yy3jIGHq06jmpN1BtOZLoTydHtcndnagIwYc+EAAuTVb8NJFjK7
+ T3MSQPrRQcJ6DiV2C5UcrWXF1g==
+X-Google-Smtp-Source: AGHT+IHBheyzKXXCKc4hZ9OvgWQp7McQWIoZ2oU3AMbhB/a+3NecV4unh/NEnT9LesYAK57xm+Y5aw==
+X-Received: by 2002:ac2:5e2e:0:b0:50b:d764:649b with SMTP id
+ o14-20020ac25e2e000000b0050bd764649bmr645191lfg.80.1701434284678; 
+ Fri, 01 Dec 2023 04:38:04 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.160.225])
  by smtp.gmail.com with ESMTPSA id
- 1-20020a17090a19c100b00280070a2613sm5355932pjj.51.2023.12.01.04.25.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Dec 2023 04:25:05 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- qemu-devel@nongnu.org,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH 0/7] ppc: pnv ChipTOD and various timebase fixes
-Date: Fri,  1 Dec 2023 22:24:55 +1000
-Message-ID: <20231201122455.143936-2-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231201122455.143936-1-npiggin@gmail.com>
-References: <20231201122455.143936-1-npiggin@gmail.com>
+ u6-20020a5d4686000000b0033315876d3esm4099137wrq.12.2023.12.01.04.38.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 01 Dec 2023 04:38:04 -0800 (PST)
+Message-ID: <3d64ec14-09a8-4446-9a22-2b2981b1bc06@linaro.org>
+Date: Fri, 1 Dec 2023 13:38:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1036.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2? 1/2] linux-user: Define TARGET_O_LARGEFILE for
+ aarch64
+Content-Language: en-US
+To: Shu-Chun Weng <scw@google.com>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20231201032140.2470599-1-scw@google.com>
+ <20231201032140.2470599-2-scw@google.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231201032140.2470599-2-scw@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,58 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The chiptod/TFMR/state machine is not really tied to the other
-time register fixes, but they touch some of the same code, and
-logically same facility.
+On 1/12/23 04:21, Shu-Chun Weng wrote:
+> In 050a1ba, when moving the macros from preprocessor-guarding to
+> file-based definition, TARGET_O_LARGEFILE appeared to have been
+> accidentally left off.
+> 
+> This may have correctness implication, but so far I was only confused by
+> strace's output.
+> 
 
-Changes since v1 of chiptod patches:
-- Split hackish ChipTOD<->TFMR/TBST interface into its own patch
-- Fix multi-socket addressing on P9 / chip ID mode (P10 works)
-- Change chiptod primary/secondary setting to use class properties
-- Add more comments to explain TOD overview and timebase state
-  machine.
-- SMT support for TFMR, some functionality is limited to thread 0.
-- FIRMWARE_CONTROL_ERROR bit implemented in TFMR.
-- Misc cleanups and bug fixes.
+Fixes: 050a1ba69a ("linux-user: move arm/aarch64/m68k fcntl definitions 
+to [arm|aarch64|m68k]/target_fcntl.h")
 
-The hacky part, addressing core from chiptod, is still hacky. Is
-there strong objection to it?
-
-This successfully runs skiboot chiptod initialisation code with
-POWER9 and POWER10 multi-socket, multi-core, SMT. That requires
-skiboot 7.1 (not in-tree), otherwise chiptod init is skipped on
-QEMU machines.
-
-Thanks,
-Nick
-
-Nicholas Piggin (7):
-  target/ppc: Rename TBL to TB on 64-bit
-  target/ppc: Improve timebase register defines naming
-  target/ppc: Fix move-to timebase SPR access permissions
-  pnv/chiptod: Add POWER9/10 chiptod model
-  pnv/chiptod: Implement the ChipTOD to Core transfer
-  target/ppc: Implement core timebase state machine and TFMR
-  target/ppc: Add SMT support to time facilities
-
- include/hw/ppc/pnv_chip.h    |   3 +
- include/hw/ppc/pnv_chiptod.h |  55 ++++
- include/hw/ppc/pnv_core.h    |   4 +
- include/hw/ppc/pnv_xscom.h   |   9 +
- target/ppc/cpu.h             |  50 +++-
- hw/ppc/pnv.c                 |  63 +++++
- hw/ppc/pnv_chiptod.c         | 509 +++++++++++++++++++++++++++++++++++
- target/ppc/helper_regs.c     |  39 ++-
- target/ppc/ppc-qmp-cmds.c    |   4 +
- target/ppc/timebase_helper.c | 309 ++++++++++++++++++++-
- target/ppc/translate.c       |  42 ++-
- hw/ppc/meson.build           |   1 +
- hw/ppc/trace-events          |   4 +
- 13 files changed, 1067 insertions(+), 25 deletions(-)
- create mode 100644 include/hw/ppc/pnv_chiptod.h
- create mode 100644 hw/ppc/pnv_chiptod.c
-
--- 
-2.42.0
+> Signed-off-by: Shu-Chun Weng <scw@google.com>
+> ---
+>   linux-user/aarch64/target_fcntl.h | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/linux-user/aarch64/target_fcntl.h b/linux-user/aarch64/target_fcntl.h
+> index efdf6e5f05..55ab788a7c 100644
+> --- a/linux-user/aarch64/target_fcntl.h
+> +++ b/linux-user/aarch64/target_fcntl.h
+> @@ -11,6 +11,7 @@
+>   #define TARGET_O_DIRECTORY      040000 /* must be a directory */
+>   #define TARGET_O_NOFOLLOW      0100000 /* don't follow links */
+>   #define TARGET_O_DIRECT        0200000 /* direct disk access hint */
+> +#define TARGET_O_LARGEFILE     0400000
+>   
+>   #include "../generic/fcntl.h"
+>   #endif
+> 
 
 
