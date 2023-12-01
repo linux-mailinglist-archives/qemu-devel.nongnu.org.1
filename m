@@ -2,77 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7EB28011FD
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 18:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B288011FF
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 18:47:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r97ZC-0000NE-Dj; Fri, 01 Dec 2023 12:44:42 -0500
+	id 1r97bK-0001Ht-KB; Fri, 01 Dec 2023 12:46:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r97ZA-0000Mu-6H
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:44:40 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r97bI-0001Hh-JD
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:46:52 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1r97Z8-0001bu-Ei
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:44:39 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 384321FD47;
- Fri,  1 Dec 2023 17:44:35 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B49881369E;
- Fri,  1 Dec 2023 17:44:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id uU62HoIbamXjcQAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 01 Dec 2023 17:44:34 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Yuan Liu <yuan1.liu@intel.com>, quintela@redhat.com, peterx@redhat.com,
- leobras@redhat.com
-Cc: qemu-devel@nongnu.org, yuan1.liu@intel.com, nanhai.zou@intel.com
-Subject: Re: [PATCH v2 3/4] configure: add qpl option
-In-Reply-To: <20231109154638.488213-4-yuan1.liu@intel.com>
-References: <20231109154638.488213-1-yuan1.liu@intel.com>
- <20231109154638.488213-4-yuan1.liu@intel.com>
-Date: Fri, 01 Dec 2023 14:44:32 -0300
-Message-ID: <87cyvpbywv.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1r97bG-000244-Lm
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:46:52 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40b397793aaso15779855e9.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 09:46:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701452808; x=1702057608; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=OPxps29sFV31BfFgv7ektG4J+wAARFlyn8EY5Iffn2g=;
+ b=WDjZ469ihNa5p2GbrwlQdxO4R8aY1c3cN5tVIvpf0lwoBXBTRZe/HaGmITF8dXC6Jm
+ 8KZtY+jUMY4aqh+fLTpBN/s9Lj2+bO3NzYcUQ45Xl02la34Qjb80jR8bvsubOn+ROqJZ
+ Llg/WhuieFoKJeJqgy0ukGpLfttZz6F/cthtDSn/NKeWZhOpptvPYSawzsGdVHxXzPyS
+ lqLwtgATgXTccAz6DFt+s47RZgYiW8GvncC2vb29zRp3UA85X/s8tIfajx9R48L+U9ze
+ 8RM4MKGwMpfsjVE/ZPAkLzzvsYYeACLVJNwCpHOZdXVKLVSoAPWlbhENVGuom5tZXRqj
+ VbCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701452808; x=1702057608;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=OPxps29sFV31BfFgv7ektG4J+wAARFlyn8EY5Iffn2g=;
+ b=rwOdi83PugIqExSDH7Ahq2sIPPuUN5K/vezRPRHk1uoGnIjZ7s3k2dO/xoH5fS4FNr
+ rBwSwjw6miBdvlSXZJ7Wq9OZOHWtyaUbmEibc8rxMUYCRrUZNHZElYVtRp1opbZDZBST
+ vMtU57pXBtiqzFs9uXHpka2GnthceoUHLTDlTXnyWz8idZoglOHt8VwB0FAIS0AhonqR
+ GQq3wzeXiFcW3JAcvZowmE8gcrkdJpS8PDZpWckSXX+5hznSclH8r6IFOfbeWkPlYErH
+ KesgJ0VbTlflfiAw1tV5QdtnbrkKy1lKcAiufiaRVu5wbo0dD6RRTq1kQrJZqTAVe1JO
+ Pg/A==
+X-Gm-Message-State: AOJu0YzPzIAwLP48qEzZq1bFbdlpjhleVd4clmR/T2HoTLG4KEeIapHx
+ XTnX3WBc8SvgUL3F9mTIrcRN2A==
+X-Google-Smtp-Source: AGHT+IHEnQVyiiQwNIwF6B+s4EJ8EfZ70MyucAAfpNOxY6qdBpSmouGxua5BRI5f/je+NA03z1gSBw==
+X-Received: by 2002:a05:600c:211a:b0:408:369a:dad1 with SMTP id
+ u26-20020a05600c211a00b00408369adad1mr906319wml.4.1701452808461; 
+ Fri, 01 Dec 2023 09:46:48 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ h15-20020a05600c314f00b004083a105f27sm9611857wmo.26.2023.12.01.09.46.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 01 Dec 2023 09:46:47 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 7F07F5FB5F;
+ Fri,  1 Dec 2023 17:46:47 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Cleber
+ Rosa <crosa@redhat.com>,  Wainer dos Santos Moschetta
+ <wainersm@redhat.com>,  Beraldo Leal <bleal@redhat.com>,  Jiaxun Yang
+ <jiaxun.yang@flygoat.com>
+Subject: Re: [PULL 3/6] tests/avocado: drop
+ BootLinuxConsole.test_mips_malta_cpio test
+In-Reply-To: <bfec6eb4-ebfe-4f9f-8f48-626e539d1a68@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 1 Dec 2023 17:49:33
+ +0100")
+References: <20231201151228.2610209-1-alex.bennee@linaro.org>
+ <20231201151228.2610209-4-alex.bennee@linaro.org>
+ <bfec6eb4-ebfe-4f9f-8f48-626e539d1a68@linaro.org>
+User-Agent: mu4e 1.11.25; emacs 29.1
+Date: Fri, 01 Dec 2023 17:46:47 +0000
+Message-ID: <87a5qt6cjc.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Bar: ++++++++++
-X-Spam-Score: 10.29
-X-Rspamd-Server: rspamd1
-Authentication-Results: smtp-out2.suse.de; dkim=none;
- spf=softfail (smtp-out2.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither
- permitted nor denied by domain of farosas@suse.de)
- smtp.mailfrom=farosas@suse.de; 
- dmarc=fail reason="No valid SPF,
- No valid DKIM" header.from=suse.de (policy=none)
-X-Rspamd-Queue-Id: 384321FD47
-X-Spamd-Result: default: False [10.29 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_SPAM_SHORT(3.00)[1.000];
- MIME_GOOD(-0.10)[text/plain]; R_SPF_SOFTFAIL(4.60)[~all:c];
- RCVD_COUNT_THREE(0.00)[3]; MX_GOOD(-0.01)[];
- NEURAL_SPAM_LONG(3.50)[1.000]; RCPT_COUNT_SEVEN(0.00)[7];
- DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- R_DKIM_NA(2.20)[]; MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[];
- DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,102 +102,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Yuan Liu <yuan1.liu@intel.com> writes:
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> the Query Processing Library (QPL) is an open-source library that
-> supports data compression and decompression features.
+> On 1/12/23 16:12, Alex Benn=C3=A9e wrote:
+>> The assets are no longer archived by Debian so we can't run this on
+>> CI. While some people may still have the test in their cache we do
+>> have more recent images from tuxrun so this isn't a great loss.
+>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
+>> Cc: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Message-Id: <20231201093633.2551497-4-alex.bennee@linaro.org>
+>> diff --git a/tests/avocado/boot_linux_console.py
+>> b/tests/avocado/boot_linux_console.py
+>> index 231b4f68e5..ba2f99b53a 100644
+>> --- a/tests/avocado/boot_linux_console.py
+>> +++ b/tests/avocado/boot_linux_console.py
+>> @@ -191,47 +191,6 @@ def test_mips64el_fuloong2e(self):
+>>           console_pattern =3D 'Kernel command line: %s' % kernel_command=
+_line
+>>           self.wait_for_console_pattern(console_pattern)
+>>   -    def test_mips_malta_cpio(self):
+>> -        """
+>> -        :avocado: tags=3Darch:mips
+>> -        :avocado: tags=3Dmachine:malta
+>> -        :avocado: tags=3Dendian:big
+>> -        """
+>> -        deb_url =3D ('http://snapshot.debian.org/archive/debian/'
+>> -                   '20160601T041800Z/pool/main/l/linux/'
+>> -                   'linux-image-4.5.0-2-4kc-malta_4.5.5-1_mips.deb')
 >
-> add --enable-qpl and --disable-qpl options to enable and disable
-> the QPL compression accelerator. The QPL compression accelerator
-> can accelerate the Zlib compression algorithm during the live migration.
+> In https://lore.kernel.org/qemu-devel/87o7fa5505.fsf@draig.linaro.org/
+> you mention the linux-4.7 kernel but now you are removing the 4.5
+> which
+> also works...
 >
-> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-> ---
->  meson.build                   | 7 +++++++
->  meson_options.txt             | 2 ++
->  scripts/meson-buildoptions.sh | 3 +++
->  3 files changed, 12 insertions(+)
+> $ wget
+> http://snapshot.debian.org/archive/debian/20160601T041800Z/pool/main/l/li=
+nux/linux-image-4.5.0-2-4kc-malta_4.5.5-1_mips.deb
+> --2023-12-01 17:46:49--
+>   http://snapshot.debian.org/archive/debian/20160601T041800Z/pool/main/l/=
+linux/linux-image-4.5.0-2-4kc-malta_4.5.5-1_mips.deb
+> Resolving snapshot.debian.org (snapshot.debian.org)... 185.17.185.185,
+> 193.62.202.27
+> Connecting to snapshot.debian.org
+> (snapshot.debian.org)|185.17.185.185|:80... connected.
+> HTTP request sent, awaiting response... 200 OK
+> Length: 29893440 (29M)
+> Saving to: =E2=80=98linux-image-4.5.0-2-4kc-malta_4.5.5-1_mips.deb=E2=80=
+=99
 >
-> diff --git a/meson.build b/meson.build
-> index 259dc5f308..b4ba30b4fa 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -1032,6 +1032,11 @@ if not get_option('zstd').auto() or have_block
->                      required: get_option('zstd'),
->                      method: 'pkg-config')
->  endif
-> +qpl = not_found
-> +if not get_option('qpl').auto()
-> +    qpl = dependency('libqpl', required: get_option('qpl'),
-> +                     method: 'pkg-config')
-> +endif
-
-Hm.. I'm not having success with pkg-config:
-
-../meson.build:1043:10: ERROR: Dependency "libqpl" not found, tried
-pkgconfig
-
-It seems it doesn't find the static library. I had to use this instead:
-
-qpl = declare_dependency(dependencies: cc.find_library('qpl',
-                         required: get_option('qpl')))
-
-What am I missing here?
-
->  virgl = not_found
+> linux-image-4.5.0-2-4kc-malta_4  12%[=3D>   ]   3,52M  1,07MB/s    eta 25s
+> ^C
 >
->  have_vhost_user_gpu = have_tools and targetos == 'linux' and pixman.found()
-> @@ -2165,6 +2170,7 @@ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
->  config_host_data.set('CONFIG_STATX', has_statx)
->  config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
->  config_host_data.set('CONFIG_ZSTD', zstd.found())
-> +config_host_data.set('CONFIG_QPL', qpl.found())
->  config_host_data.set('CONFIG_FUSE', fuse.found())
->  config_host_data.set('CONFIG_FUSE_LSEEK', fuse_lseek.found())
->  config_host_data.set('CONFIG_SPICE_PROTOCOL', spice_protocol.found())
-> @@ -4325,6 +4331,7 @@ summary_info += {'snappy support':    snappy}
->  summary_info += {'bzip2 support':     libbzip2}
->  summary_info += {'lzfse support':     liblzfse}
->  summary_info += {'zstd support':      zstd}
-> +summary_info += {'Query Processing Library support': qpl}
->  summary_info += {'NUMA host support': numa}
->  summary_info += {'capstone':          capstone}
->  summary_info += {'libpmem support':   libpmem}
-> diff --git a/meson_options.txt b/meson_options.txt
-> index 3c7398f3c6..71cd533985 100644
-> --- a/meson_options.txt
-> +++ b/meson_options.txt
-> @@ -255,6 +255,8 @@ option('xkbcommon', type : 'feature', value : 'auto',
->         description: 'xkbcommon support')
->  option('zstd', type : 'feature', value : 'auto',
->         description: 'zstd compression support')
-> +option('qpl', type : 'feature', value : 'auto',
-> +       description: 'Query Processing Library support')
->  option('fuse', type: 'feature', value: 'auto',
->         description: 'FUSE block device export')
->  option('fuse_lseek', type : 'feature', value : 'auto',
-> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-> index 7ca4b77eae..0909d1d517 100644
-> --- a/scripts/meson-buildoptions.sh
-> +++ b/scripts/meson-buildoptions.sh
-> @@ -220,6 +220,7 @@ meson_options_help() {
->    printf "%s\n" '                  Xen PCI passthrough support'
->    printf "%s\n" '  xkbcommon       xkbcommon support'
->    printf "%s\n" '  zstd            zstd compression support'
-> +  printf "%s\n" '  qpl             Query Processing Library support'
->  }
->  _meson_option_parse() {
->    case $1 in
-> @@ -556,6 +557,8 @@ _meson_option_parse() {
->      --disable-xkbcommon) printf "%s" -Dxkbcommon=disabled ;;
->      --enable-zstd) printf "%s" -Dzstd=enabled ;;
->      --disable-zstd) printf "%s" -Dzstd=disabled ;;
-> +    --enable-qpl) printf "%s" -Dqpl=enabled ;;
-> +    --disable-qpl) printf "%s" -Dqpl=disabled ;;
->      *) return 1 ;;
->    esac
->  }
-> --
-> 2.39.3
+> Can we not rush and figure out what is the problem please?
+
+This was the failure on gitlab:
+
+  https://gitlab.com/qemu-project/qemu/-/jobs/5637828476
+
+>
+>> -        deb_hash =3D 'a3c84f3e88b54e06107d65a410d1d1e8e0f340f8'
+>> -        deb_path =3D self.fetch_asset(deb_url, asset_hash=3Ddeb_hash)
+>> -        kernel_path =3D self.extract_from_deb(deb_path,
+>> -                                            '/boot/vmlinux-4.5.0-2-4kc-=
+malta')
+>> -        initrd_url =3D ('https://github.com/groeck/linux-build-test/raw=
+/'
+>> -                      '8584a59ed9e5eb5ee7ca91f6d74bbb06619205b8/rootfs/'
+>> -                      'mips/rootfs.cpio.gz')
+>> -        initrd_hash =3D 'bf806e17009360a866bf537f6de66590de349a99'
+>> -        initrd_path_gz =3D self.fetch_asset(initrd_url, asset_hash=3Din=
+itrd_hash)
+>> -        initrd_path =3D self.workdir + "rootfs.cpio"
+>> -        archive.gzip_uncompress(initrd_path_gz, initrd_path)
+>> -
+>> -        self.vm.set_console()
+>> -        kernel_command_line =3D (self.KERNEL_COMMON_COMMAND_LINE
+>> -                               + 'console=3DttyS0 console=3Dtty '
+>> -                               + 'rdinit=3D/sbin/init noreboot')
+>> -        self.vm.add_args('-kernel', kernel_path,
+>> -                         '-initrd', initrd_path,
+>> -                         '-append', kernel_command_line,
+>> -                         '-no-reboot')
+>> -        self.vm.launch()
+>> -        self.wait_for_console_pattern('Boot successful.')
+>> -
+>> -        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
+>> -                                                'BogoMIPS')
+>> -        exec_command_and_wait_for_pattern(self, 'uname -a',
+>> -                                                'Debian')
+>> -        exec_command_and_wait_for_pattern(self, 'reboot',
+>> -                                                'reboot: Restarting sys=
+tem')
+>> -        # Wait for VM to shut down gracefully
+>> -        self.vm.wait()
+>> -
+>>       @skipUnless(os.getenv('AVOCADO_ALLOW_UNTRUSTED_CODE'), 'untrusted =
+code')
+>>       def test_mips64el_malta_5KEc_cpio(self):
+>>           """
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
