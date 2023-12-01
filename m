@@ -2,89 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C408010F7
-	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 18:17:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C67A8011AE
+	for <lists+qemu-devel@lfdr.de>; Fri,  1 Dec 2023 18:28:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r977S-000399-Ub; Fri, 01 Dec 2023 12:16:02 -0500
+	id 1r97IU-0005mT-CK; Fri, 01 Dec 2023 12:27:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r977K-0002yA-Ok
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r97IS-0005mF-Ev
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:27:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r977J-0007qD-7c
- for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:15:54 -0500
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1r97IQ-0002eU-SE
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 12:27:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701450951;
+ s=mimecast20190719; t=1701451641;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y/1346WFPfT2DlqplCYFNEXbcgwKMGa8XcJVKkLgfMI=;
- b=DKpcbK2p99K9MENXy87fYYuMl+Ph5p/KLrxa+tLNQeha2jg1SXvjzFILSlW0Ot18ig6Uza
- 8twExL/nQSzt2DIOWVDRTka8f2VFopYWVvWSFs/ug33Uf32TasB9OhHPZHXoyiEPvgIkRR
- WJf32GRcC+Wav+FLrMPenM3Ns4KpbL4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4YNZsdmlAmnzdojqWpGoWMp4jrtu25STCGS1mnmMLLA=;
+ b=BJuEjG3yJm2C81I0zev56wHuowzg8iBij6XzmTcrSqmCJJsl3MlKYsT+WFdlykK9MbSgXF
+ k7xs1JW+g3E7T+CipVB279Uwv8J90BhNxLJJG4Pt1pVPdq0M6Incl34/0MxdIuFPBPlbnQ
+ uM1gNw5cOI2av3SXHeKME8LPNd99z3w=
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
+ [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-HBvZZZsmM7mzxcnfTj0sdg-1; Fri, 01 Dec 2023 12:15:50 -0500
-X-MC-Unique: HBvZZZsmM7mzxcnfTj0sdg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40b3d81399dso15777695e9.1
- for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 09:15:50 -0800 (PST)
+ us-mta-507-FoquT9z6OViraX2K3fVQ2A-1; Fri, 01 Dec 2023 12:27:19 -0500
+X-MC-Unique: FoquT9z6OViraX2K3fVQ2A-1
+Received: by mail-pf1-f199.google.com with SMTP id
+ d2e1a72fcca58-6c7c69e4367so3058574b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 01 Dec 2023 09:27:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701450948; x=1702055748;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Y/1346WFPfT2DlqplCYFNEXbcgwKMGa8XcJVKkLgfMI=;
- b=ufzpyUlhrIQvJF80hIdinP+bWRKY0yINHpJVif1K7nELI91WTTDaRbE0j68KKYc+W1
- 1CEovyznzWmxpx1qgtlpeXyFl9PyyHsabdJX62A0OX6vFA63E38uEVruBfRPU8xI19RV
- dspKEZ2YWzPEQMjACJshvs9BnZf+QuP+RqLcFrv6G9KrerSOnbKPRwXeBmBbuNHFUWf7
- +9rSw1SfRAbZmJOyg1HtvfkWsQIWXtTBnbJyfxNmPmSbcFrA4apv6zRAEcKsjviZ2D8B
- RK+gIH3Uu5H8P20EbU/QbP0+AXVbu0VwodfwbGIU+fyIOQ3ac+GzWBC4Q5IArbtcRIaB
- Vk6w==
-X-Gm-Message-State: AOJu0YzJPrwontMdeUVxKvqOpHhY+1JJfr6rI005nwmtDhf0ic7bgh7l
- +PqmapGIOzzylXsLqJ5+Fzk49c1FN5M7k7OlaoKoBtE3Qg0Lr1ei2E1KdBk6Ml49jC9MQoa5PsS
- s9s1ob9Tc95J0MvrflVoHxxq3O93RoeIKDucmWDlEBW71mZDqnjvY6oQiuXw2VvzcMOrR
-X-Received: by 2002:a05:600c:502c:b0:40b:5f03:b430 with SMTP id
- n44-20020a05600c502c00b0040b5f03b430mr234461wmr.338.1701450948579; 
- Fri, 01 Dec 2023 09:15:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGMPpLHmOqUohWYI4rLkYBzQ+qPC1wO5ht+svhYyNRWVUQIjzXqUVCIKlRM12adwtSyXLtJjQ==
-X-Received: by 2002:a05:600c:502c:b0:40b:5f03:b430 with SMTP id
- n44-20020a05600c502c00b0040b5f03b430mr234450wmr.338.1701450948303; 
- Fri, 01 Dec 2023 09:15:48 -0800 (PST)
-Received: from redhat.com ([2a06:c701:73e1:6f00:c7ce:b553:4096:d504])
+ d=1e100.net; s=20230601; t=1701451639; x=1702056439;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4YNZsdmlAmnzdojqWpGoWMp4jrtu25STCGS1mnmMLLA=;
+ b=B99XkGueRmJO6k016xfeUgZ7jElmOIh9Cl3nXxT+ZVS0kuiwQkq5nS+0d8prL9E7Er
+ AXlyU4BGK+J1+JfHeEVjWcDxDcvU7bYHJdEbKYAPaeNce3idWU+uJ9AZlINt6fMuTcWJ
+ Sy3foHE7qrt6kAmcOHVYsu36apAbUMNUnsXumbo2Z/4mrbzWQY2E2JFM1dRiKLKSeUyT
+ c5ltkC+QqdQU4S8x8zRp6RO4DxdNeQ/kbw1vyheBpk8QJSMsDNYe7sYpoA30UUaqzZdx
+ Lp+sjAD1VdNr5YCGacJV7Cgi6+cKBgkpycufcgA8//t1SEXOTh55+ba3jdxFWojfEDZ5
+ foUA==
+X-Gm-Message-State: AOJu0YzTZmRD6wzEEUOQ/56dCEwBOTlehczgjoTHpnCW+4vOtV798hk0
+ akUJ0+QdXLznWoMhBOMTBE+xLkYMdyJwnD0yTZuH0yG7yXho0QzUNV2VtPXrtBGCIj8G5jj9v7E
+ IMkTbLsLQaG3t6uA=
+X-Received: by 2002:a05:6a20:a129:b0:18c:ba47:74e7 with SMTP id
+ q41-20020a056a20a12900b0018cba4774e7mr17553512pzk.52.1701451638945; 
+ Fri, 01 Dec 2023 09:27:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE5lZOneeAxC2lyxSRfGLMm/kXqZxipEN+NdMWFcuDMENczO/oXAQAFv2lfYvjXvUIaCoRYEA==
+X-Received: by 2002:a05:6a20:a129:b0:18c:ba47:74e7 with SMTP id
+ q41-20020a056a20a12900b0018cba4774e7mr17553494pzk.52.1701451638618; 
+ Fri, 01 Dec 2023 09:27:18 -0800 (PST)
+Received: from smtpclient.apple ([116.73.132.95])
  by smtp.gmail.com with ESMTPSA id
- c4-20020a05600c0a4400b0040b4ccdcffbsm6041208wmq.2.2023.12.01.09.15.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Dec 2023 09:15:47 -0800 (PST)
-Date: Fri, 1 Dec 2023 12:15:45 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Li Feng <fengli@smartx.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PULL 15/15] vhost-user-scsi: free the inflight area when reset
-Message-ID: <d4ad718733df4c87b9133bb57ea77b0040923541.1701450838.git.mst@redhat.com>
+ m15-20020a62f20f000000b00690c52267easm3221978pfh.40.2023.12.01.09.27.16
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 01 Dec 2023 09:27:18 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+Subject: Re: [PULL 03/15] tests/acpi/bios-tables-test: do not write new blobs
+ unless there are changes
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <11a3b4ebee91cf6129c8d6fa3fd94fb29b1f8bff.1701450838.git.mst@redhat.com>
+Date: Fri, 1 Dec 2023 22:57:04 +0530
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8D04BA30-F97A-48E3-8922-1094ED42AC12@redhat.com>
 References: <cover.1701450838.git.mst@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1701450838.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ <11a3b4ebee91cf6129c8d6fa3fd94fb29b1f8bff.1701450838.git.mst@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: Apple Mail (2.3774.200.91.1.1)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,69 +105,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Feng <fengli@smartx.com>
 
-Keep it the same to vhost-user-blk.
-At the same time, fix the vhost_reset_device.
 
-Signed-off-by: Li Feng <fengli@smartx.com>
-Message-Id: <20231123055431.217792-3-fengli@smartx.com>
-Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/scsi/vhost-user-scsi.c | 16 ++++++++++++++++
- hw/virtio/virtio.c        |  2 +-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+> On 01-Dec-2023, at 10:45=E2=80=AFPM, Michael S. Tsirkin =
+<mst@redhat.com> wrote:
+>=20
+> From: Ani Sinha <anisinha@redhat.com>
+>=20
+> When dumping table blobs using rebuild-expected-aml.sh, table blobs =
+from all
+> test variants are dumped regardless of whether there are any actual =
+changes to
+> the tables or not. This creates lot of new files for various test =
+variants that
+> are not part of the git repository. This is because we do not check in =
+all table
+> blobs for all test variants into the repository. Only those blobs for =
+those
+> variants that are different from the generic test-variant agnostic =
+blob are
+> checked in.
+>=20
+> This change makes the test smarter by checking if at all there are any =
+changes
+> in the tables from the checked-in gold master blobs and take actions
+> accordingly.
+>=20
+> When there are no changes:
+> - No new table blobs would be written.
+> - Existing table blobs will be refreshed (git diff will show no =
+changes).
+> When there are changes:
+> - New table blob files will be dumped.
+> - Existing table blobs will be refreshed (git diff will show that the =
+files
+>   changed, asl diff will show the actual changes).
+> When new tables are introduced:
+> - Zero byte empty file blobs for new tables as instructed in the =
+header of
+>   bios-tables-test.c will be regenerated to actual table blobs.
+>=20
+> This would make analyzing changes to tables less confusing and there =
+would
+> be no need to clean useless untracked files when there are no table =
+changes.
+>=20
+> CC: peter.maydell@linaro.org
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> Message-Id: <20231107044952.5461-1-anisinha@redhat.com>
+> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 2060f9f94b..780f10559d 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -360,6 +360,20 @@ static Property vhost_user_scsi_properties[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-+static void vhost_user_scsi_reset(VirtIODevice *vdev)
-+{
-+    VHostUserSCSI *s = VHOST_USER_SCSI(vdev);
-+    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-+
-+    vhost_dev_free_inflight(vsc->inflight);
-+}
-+
-+static struct vhost_dev *vhost_user_scsi_get_vhost(VirtIODevice *vdev)
-+{
-+    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
-+    return &vsc->dev;
-+}
-+
- static const VMStateDescription vmstate_vhost_scsi = {
-     .name = "virtio-scsi",
-     .minimum_version_id = 1,
-@@ -385,6 +399,8 @@ static void vhost_user_scsi_class_init(ObjectClass *klass, void *data)
-     vdc->set_config = vhost_scsi_common_set_config;
-     vdc->set_status = vhost_user_scsi_set_status;
-     fwc->get_dev_path = vhost_scsi_common_get_fw_dev_path;
-+    vdc->reset = vhost_user_scsi_reset;
-+    vdc->get_vhost = vhost_user_scsi_get_vhost;
- }
- 
- static void vhost_user_scsi_instance_init(Object *obj)
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index e5105571cf..3a160f86ed 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2137,7 +2137,7 @@ void virtio_reset(void *opaque)
-         vdev->device_endian = virtio_default_endian();
-     }
- 
--    if (vdev->vhost_started) {
-+    if (vdev->vhost_started && k->get_vhost) {
-         vhost_reset_device(k->get_vhost(vdev));
-     }
- 
--- 
-MST
+You missed DanPB and Igor=E2=80=99s tags :(
+
+> ---
+> tests/qtest/bios-tables-test.c | 14 +++++++++++++-
+> 1 file changed, 13 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/tests/qtest/bios-tables-test.c =
+b/tests/qtest/bios-tables-test.c
+> index 71af5cf69f..fe6a9a8563 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -112,6 +112,7 @@ static const char *iasl;
+> #endif
+>=20
+> static int verbosity_level;
+> +static GArray *load_expected_aml(test_data *data);
+>=20
+> static bool compare_signature(const AcpiSdtTable *sdt, const char =
+*signature)
+> {
+> @@ -244,21 +245,32 @@ static void test_acpi_fadt_table(test_data =
+*data)
+>=20
+> static void dump_aml_files(test_data *data, bool rebuild)
+> {
+> -    AcpiSdtTable *sdt;
+> +    AcpiSdtTable *sdt, *exp_sdt;
+>     GError *error =3D NULL;
+>     gchar *aml_file =3D NULL;
+> +    test_data exp_data =3D {};
+>     gint fd;
+>     ssize_t ret;
+>     int i;
+>=20
+> +    exp_data.tables =3D load_expected_aml(data);
+>     for (i =3D 0; i < data->tables->len; ++i) {
+>         const char *ext =3D data->variant ? data->variant : "";
+>         sdt =3D &g_array_index(data->tables, AcpiSdtTable, i);
+> +        exp_sdt =3D &g_array_index(exp_data.tables, AcpiSdtTable, i);
+>         g_assert(sdt->aml);
+> +        g_assert(exp_sdt->aml);
+>=20
+>         if (rebuild) {
+>             aml_file =3D g_strdup_printf("%s/%s/%.4s%s", data_dir, =
+data->machine,
+>                                        sdt->aml, ext);
+> +            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
+> +                sdt->aml_len =3D=3D exp_sdt->aml_len &&
+> +                !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
+> +                /* identical tables, no need to write new files */
+> +                g_free(aml_file);
+> +                continue;
+> +            }
+>             fd =3D g_open(aml_file, O_WRONLY|O_TRUNC|O_CREAT,
+>                         S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+>             if (fd < 0) {
+> --=20
+> MST
+>=20
 
 
