@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD535801D11
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C222A801D1F
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:43:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9QEm-00058B-QN; Sat, 02 Dec 2023 08:40:52 -0500
+	id 1r9QEn-00058h-OL; Sat, 02 Dec 2023 08:40:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEh-00057F-CA
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:47 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEf-00056f-KZ
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:45 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEd-0008WO-HK
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:45 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEc-0008WN-LA
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:44 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id AB92211F322;
+ by mail-b.sr.ht (Postfix) with ESMTPSA id EA9B011F335;
  Sat,  2 Dec 2023 13:40:33 +0000 (UTC)
 From: ~lbryndza <lbryndza@git.sr.ht>
-Date: Sat, 02 Dec 2023 13:12:37 +0100
-Subject: [PATCH qemu v3 05/20] Fixing the basic functionality of STM32 timers
-Message-ID: <170152443229.18048.53824064267512246-5@git.sr.ht>
+Date: Sat, 02 Dec 2023 13:13:59 +0100
+Subject: [PATCH qemu v3 06/20] Fixing the basic functionality of STM32 timers
+Message-ID: <170152443229.18048.53824064267512246-6@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <170152443229.18048.53824064267512246-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair23@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
 Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
  helo=mail-b.sr.ht
@@ -66,48 +66,31 @@ count down modes. This commit fixes bugs with interrupt
 reporting and implements the basic modes of the counter's
 time-base block.
 
-Add timer update function using ptimer implementation
+Add timer update UIF
 
 Signed-off-by: Lucjan Bryndza <lbryndza.oss@icloud.com>
 ---
- hw/timer/stm32f2xx_timer.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ hw/timer/stm32f2xx_timer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/hw/timer/stm32f2xx_timer.c b/hw/timer/stm32f2xx_timer.c
-index 9261090b84..62c98b5f04 100644
+index 62c98b5f04..bd3d1bcf24 100644
 --- a/hw/timer/stm32f2xx_timer.c
 +++ b/hw/timer/stm32f2xx_timer.c
-@@ -68,6 +68,28 @@ static void stm32f2xx_timer_set_count(STM32F2XXTimerState =
-*s, uint32_t cnt)
+@@ -90,6 +90,12 @@ static void stm32f2xx_timer_update(STM32F2XXTimerState *s)
      }
  }
-=20
-+static void stm32f2xx_timer_update(STM32F2XXTimerState *s)
+ 
++static void stm32f2xx_timer_update_uif(STM32F2XXTimerState *s, uint8_t value)
 +{
-+    if (s->tim_cr1 & TIM_CR1_DIR) {
-+        s->count_mode =3D TIMER_DOWN_COUNT;
-+    } else {
-+        s->count_mode =3D TIMER_UP_COUNT;
-+    }
-+
-+    if (s->tim_cr1 & TIM_CR1_CMS) {
-+        s->count_mode =3D TIMER_UP_COUNT;
-+    }
-+
-+    if (s->tim_cr1 & TIM_CR1_CEN) {
-+        DB_PRINT("Enabling timer\n");
-+        ptimer_set_freq(s->timer, s->freq_hz);
-+        ptimer_run(s->timer, !(s->tim_cr1 & 0x04));
-+    } else {
-+        DB_PRINT("Disabling timer\n");
-+        ptimer_stop(s->timer);
-+    }
++    s->tim_sr &= ~TIM_SR1_UIF;
++    s->tim_sr |= (value & TIM_SR1_UIF);
++    qemu_set_irq(s->irq, value);
 +}
-+
-=20
+ 
  static void stm32f2xx_timer_reset(DeviceState *dev)
  {
---=20
+-- 
 2.38.5
 
 
