@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C477801B56
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00976801B4A
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:02:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9KwA-0004O2-OJ; Sat, 02 Dec 2023 03:01:18 -0500
+	id 1r9KwA-0004O7-Os; Sat, 02 Dec 2023 03:01:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9Kvl-0004K6-TM
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:53 -0500
-Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
+ id 1r9Kvt-0004Lc-20
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:01:02 -0500
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9Kvk-0004zd-7l
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:53 -0500
-Received: by mail-il1-x12e.google.com with SMTP id
- e9e14a558f8ab-35c18e55633so12373205ab.2
- for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:00:51 -0800 (PST)
+ id 1r9Kvp-00050W-8D
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:58 -0500
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6d7f3a4bbc6so970019a34.2
+ for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:00:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504051; x=1702108851;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504055; x=1702108855;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Bj8XVIcfBYxFCt7yVr0gyoBi8ZlaEENnjEghOjifY8I=;
- b=jrIIeuK9mldjdWmrTFtJDYi54EqW0GcbmzTMs1zBt8Tmrw/27Ldx1MLakuywnnherw
- kzvKASXC8CP1T0lplz4srN1ynT22Sla7W3+BiJ8TG6rU3EtrkZillHO3H08jaCVbO63n
- xLx9tMq7+NWM/DiQ5n+9nZYbm+J0YqBL1R/3pvWWp8cJGWE3FzxN47LhkEcmJ3NaXOkf
- ryAz2/aykkCTC6OM4sdT/0kQGks8en9nlm+9FCZPZQzRa5I8OXK17LepdxaJGIVHFpxK
- WF4B22VbBcansVTF00cC8EZSwikG1UNuolD+CVJjwp07ModOdAMnkCk7dlamOBI5XdX3
- LM5w==
+ :reply-to; bh=aq8m7VGcssqI78XGOxjsweJbMFDzrgiYzBdT9vBPUfc=;
+ b=b9XJBbB2aCOw3MMvo6HE1iUlRJYx66nJw6BX2LWUb9ujDwznN2UPV1msIv0WhXU0IU
+ LJq6Wt1IsOFVTYM8HFo6aO58Pxt0zUhHXOUuyJcJRCPyi+lC7veeqTJp9wRr8fUvpGTk
+ acC0AdQU53KuL9WcLKC4G+RRx4Nk0h31InoKyjMt90+sNeAV8mMiRaCNm6GUC7+7V6vc
+ 2vYQHrBxD5P5GPcO2AwBKHOpKn4v7ErvSJ8WAudyjVcwhMQh8DJ9GKqi6zPaggtLNhej
+ lnXImSWy1uZDf6RA8vysbxbjMn0LBQg+pZUqJcKVcHRLWPlp2Z1YwVeGV0ZwHL+RPG4/
+ 8XFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701504051; x=1702108851;
+ d=1e100.net; s=20230601; t=1701504055; x=1702108855;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Bj8XVIcfBYxFCt7yVr0gyoBi8ZlaEENnjEghOjifY8I=;
- b=bEkqj/FQiZDeHf74MaSCfQkKFkUtJ28gNLoipPKn+CNVyD8pG8IlvqkxqVMyQOhHIv
- jm51+PX0S5Kzmc8wDdgtayyqmqzjElHLPsTVbDjUEof+WCEbLtpGL01gkUTSme6WxnCO
- j0zlR8X1qZpL4gjeiPkLr32lQfPCvTH1xSKYQufbT1laNUCe2sI8X+bQEayP8x63r6Om
- 9g3C51gLTKjfRKdxPqyVeDtQQvJksxSGV9n3QFhQbcImI2bLD8NY3AheabCWoITPW8sZ
- YsJ1oW2j0NNmAdfLLKsJINXweih+gkOO1IRJ5VwnEz6TZEGFHL5IHTRqgrUYiRQYZYHE
- YhBw==
-X-Gm-Message-State: AOJu0YwNeESJqosECA9Hiby2vbvbl5AJb/P4yT4sMGMklE697qh6Smi4
- bGE1O2uHxvPQaUMJx2jKzsm1yg==
-X-Google-Smtp-Source: AGHT+IG6Xiul2ufJptSl6rNTgX/WyEaTOhl3ssbdyNFFtxdeVXcZh8guEm61cpqewSpBe2uVM9+hZg==
-X-Received: by 2002:a92:cb4d:0:b0:35d:5995:798b with SMTP id
- f13-20020a92cb4d000000b0035d5995798bmr1130440ilq.37.1701504050726; 
- Sat, 02 Dec 2023 00:00:50 -0800 (PST)
+ bh=aq8m7VGcssqI78XGOxjsweJbMFDzrgiYzBdT9vBPUfc=;
+ b=MVC7H5A4EH1EIJPyQwRfZ1l4ZkJEPBIZ16KoNhcleUj/oc4dsDTIjDRKhcyIwGHGwP
+ rulqjbASkQrtMU/ox4f4Oxg+ZxZsOEm2HaKqEEKu3sqki7ZDS8QiR9QmCyUis5udW/lM
+ gZimizIAlBJCut/Ep+xBZ41IAkt6Du9BYOm1mXIhOiV5prbpnExaKf+BQMZI8j3ANrvc
+ VPE8xVqsHR9A3T1Hcmt7CpQAtZAMLdh7jhzZadLmHWxSz25oEpNc6wl7Thn2to4qPXXG
+ LgQFpifIFc27y+EWi3A/RIQTnLS2RP9hF4/5F3JG7JLCgDa+gwrRWipV7FlVfLKO8GUE
+ xzIg==
+X-Gm-Message-State: AOJu0YyEIrUz9DtBAxBzJ6K1hir91dcYW95wbG22GhogDuCP8bB4hNZv
+ m1fX2dibESzXuTwhb1Tpy3+W3A==
+X-Google-Smtp-Source: AGHT+IGP5DDkVd5YZHh+wEb+YwuRFEC5HDnv3mv3jAtKS7Ycukej4oyk+1C96W8a54tLTbhwEF0N5A==
+X-Received: by 2002:a54:458c:0:b0:3b8:b063:8275 with SMTP id
+ z12-20020a54458c000000b003b8b0638275mr992499oib.119.1701504055569; 
+ Sat, 02 Dec 2023 00:00:55 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- bg6-20020a17090b0d8600b00286558ad352sm2735558pjb.8.2023.12.02.00.00.47
+ w24-20020aa78598000000b006cdd1561dcbsm4087492pfn.134.2023.12.02.00.00.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 02 Dec 2023 00:00:50 -0800 (PST)
+ Sat, 02 Dec 2023 00:00:55 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 02 Dec 2023 17:00:27 +0900
-Subject: [PATCH 04/14] hw/pci: Add pci-failover
+Date: Sat, 02 Dec 2023 17:00:28 +0900
+Subject: [PATCH 05/14] virtio-net: Implement pci-failover
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231202-sriov-v1-4-32b3570f7bd6@daynix.com>
+Message-Id: <20231202-sriov-v1-5-32b3570f7bd6@daynix.com>
 References: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
 In-Reply-To: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -77,8 +77,8 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Yui Washizu <yui.washidu@gmail.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::12e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-il1-x12e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,130 +100,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pci-failover allows to create a device capable of failover without
-relying on DeviceListener::hide_device(), which intrudes the
-pci-device implementation from outside.
+This change removes the parsing of pci-device's failover_pair_id
+property from virtio-net, and lets pci-device to report an error if
+an unknown ID is specified for the property.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/pci/pci_device.h | 14 ++++++++++++++
- hw/pci/pci.c                | 43 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 57 insertions(+)
+ include/hw/virtio/virtio-net.h |  3 ++-
+ hw/net/virtio-net.c            | 24 ++++--------------------
+ hw/virtio/virtio-net-pci.c     | 14 ++++++++++++++
+ 3 files changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index 8e287c5414..a7bfb192e8 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -9,6 +9,11 @@ typedef struct PCIDeviceClass PCIDeviceClass;
- DECLARE_OBJ_CHECKERS(PCIDevice, PCIDeviceClass,
-                      PCI_DEVICE, TYPE_PCI_DEVICE)
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index 55977f01f0..753cab4b32 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -218,7 +218,6 @@ struct VirtIONet {
+     /* primary failover device is hidden*/
+     bool failover_primary_hidden;
+     bool failover;
+-    DeviceListener primary_listener;
+     QDict *primary_opts;
+     bool primary_opts_from_json;
+     Notifier migration_state;
+@@ -233,6 +232,8 @@ size_t virtio_net_handle_ctrl_iov(VirtIODevice *vdev,
+                                   unsigned out_num);
+ void virtio_net_set_netclient_name(VirtIONet *n, const char *name,
+                                    const char *type);
++bool virtio_net_set_primary(VirtIONet *n, const QDict *device_opts,
++                            bool from_json, Error **errp);
+ uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n);
  
-+#define TYPE_PCI_FAILOVER "pci-failover"
-+typedef struct PCIFailoverClass PCIFailoverClass;
-+DECLARE_CLASS_CHECKERS(PCIFailoverClass, PCI_FAILOVER, TYPE_PCI_FAILOVER)
-+#define PCI_FAILOVER(obj) INTERFACE_CHECK(PciFailover, (obj), TYPE_PCI_FAILOVER)
-+
- /*
-  * Implemented by devices that can be plugged on CXL buses. In the spec, this is
-  * actually a "CXL Component, but we name it device to match the PCI naming.
-@@ -162,6 +167,15 @@ struct PCIDevice {
-     uint32_t acpi_index;
- };
- 
-+struct PCIFailoverClass {
-+    /* private */
-+    InterfaceClass parent_class;
-+
-+    /* public */
-+    bool (* set_primary)(DeviceState *dev, const QDict *device_opts,
-+                         bool from_json, Error **errp);
-+};
-+
- static inline int pci_intx(PCIDevice *pci_dev)
- {
-     return pci_get_byte(pci_dev->config + PCI_INTERRUPT_PIN) - 1;
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 53c59a5b9f..3d07246f8e 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -46,6 +46,7 @@
- #include "hw/pci/msix.h"
- #include "hw/hotplug.h"
- #include "hw/boards.h"
-+#include "qapi/qmp/qdict.h"
- #include "qapi/error.h"
- #include "qemu/cutils.h"
- #include "pci-internal.h"
-@@ -2050,6 +2051,40 @@ PCIDevice *pci_find_device(PCIBus *bus, int bus_num, uint8_t devfn)
-     return bus->devices[devfn];
+ #endif
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 80c56f0cfc..7def9a1200 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3536,19 +3536,11 @@ static void virtio_net_migration_state_notifier(Notifier *notifier, void *data)
+     virtio_net_handle_migration_primary(n, s);
  }
  
-+static bool pci_qdev_hide(DeviceClass *dc, const QDict *device_opts,
-+                          bool from_json, Error **errp)
-+{
-+    const char *standby_id;
-+    DeviceState *dev;
-+    ObjectClass *class;
-+    ObjectClass *interface;
-+
-+    if (!device_opts) {
-+        return false;
-+    }
-+
-+    if (!qdict_haskey(device_opts, "failover_pair_id")) {
-+        return false;
-+    }
-+
-+    standby_id = qdict_get_str(device_opts, "failover_pair_id");
-+    dev = qdev_find_recursive(sysbus_get_default(), standby_id);
-+    if (!dev) {
-+        error_setg(errp, "failover pair not found");
-+        return false;
-+    }
-+
-+    class = object_get_class(OBJECT(dev));
-+    interface = object_class_dynamic_cast(class, TYPE_PCI_FAILOVER);
-+    if (!interface) {
+-static bool failover_hide_primary_device(DeviceListener *listener,
+-                                         const QDict *device_opts,
+-                                         bool from_json,
+-                                         Error **errp)
++bool virtio_net_set_primary(VirtIONet *n, const QDict *device_opts,
++                            bool from_json, Error **errp)
+ {
+-    VirtIONet *n = container_of(listener, VirtIONet, primary_listener);
+-    const char *standby_id;
+-
+-    if (!device_opts) {
+-        return false;
+-    }
+-
+-    if (!qdict_haskey(device_opts, "failover_pair_id")) {
++    if (!n->failover) {
 +        error_setg(errp, "failover pair does not support failover");
-+        return false;
-+    }
-+
-+    return ((PCIFailoverClass *)interface)->set_primary(dev, device_opts,
-+                                                        from_json, errp);
+         return false;
+     }
+ 
+@@ -3557,11 +3549,6 @@ static bool failover_hide_primary_device(DeviceListener *listener,
+         return false;
+     }
+ 
+-    standby_id = qdict_get_str(device_opts, "failover_pair_id");
+-    if (g_strcmp0(standby_id, n->netclient_name) != 0) {
+-        return false;
+-    }
+-
+     /*
+      * The hide helper can be called several times for a given device.
+      * Check there is only one primary for a virtio-net device but
+@@ -3621,9 +3608,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     if (n->failover) {
+-        n->primary_listener.hide_device = failover_hide_primary_device;
+         qatomic_set(&n->failover_primary_hidden, true);
+-        device_listener_register(&n->primary_listener);
+         migration_add_notifier(&n->migration_state,
+                                virtio_net_migration_state_notifier);
+         n->host_features |= (1ULL << VIRTIO_NET_F_STANDBY);
+@@ -3789,7 +3774,6 @@ static void virtio_net_device_unrealize(DeviceState *dev)
+ 
+     if (n->failover) {
+         qobject_unref(n->primary_opts);
+-        device_listener_unregister(&n->primary_listener);
+         migration_remove_notifier(&n->migration_state);
+     } else {
+         assert(n->primary_opts == NULL);
+diff --git a/hw/virtio/virtio-net-pci.c b/hw/virtio/virtio-net-pci.c
+index e03543a70a..e421cd9cea 100644
+--- a/hw/virtio/virtio-net-pci.c
++++ b/hw/virtio/virtio-net-pci.c
+@@ -64,10 +64,19 @@ static void virtio_net_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
+     qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
+ }
+ 
++static bool virtio_net_pci_set_primary(DeviceState *dev,
++                                       const QDict *device_opts,
++                                       bool from_json, Error **errp)
++{
++    return virtio_net_set_primary(&VIRTIO_NET_PCI(dev)->vdev, device_opts,
++                                  from_json, errp);
 +}
 +
- #define ONBOARD_INDEX_MAX (16 * 1024 - 1)
- 
- static void pci_qdev_realize(DeviceState *qdev, Error **errp)
-@@ -2653,6 +2688,7 @@ static void pci_device_class_init(ObjectClass *klass, void *data)
+ static void virtio_net_pci_class_init(ObjectClass *klass, void *data)
  {
-     DeviceClass *k = DEVICE_CLASS(klass);
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
++    PCIFailoverClass *pfc = PCI_FAILOVER_CLASS(klass);
+     VirtioPCIClass *vpciklass = VIRTIO_PCI_CLASS(klass);
  
-+    k->hide = pci_qdev_hide;
-     k->realize = pci_qdev_realize;
-     k->unrealize = pci_qdev_unrealize;
-     k->bus_type = TYPE_PCI_BUS;
-@@ -2861,6 +2897,12 @@ static const TypeInfo pci_device_type_info = {
-     .class_base_init = pci_device_class_base_init,
+     k->romfile = "efi-virtio.rom";
+@@ -75,6 +84,7 @@ static void virtio_net_pci_class_init(ObjectClass *klass, void *data)
+     k->device_id = PCI_DEVICE_ID_VIRTIO_NET;
+     k->revision = VIRTIO_PCI_ABI_VERSION;
+     k->class_id = PCI_CLASS_NETWORK_ETHERNET;
++    pfc->set_primary = virtio_net_pci_set_primary;
+     set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
+     device_class_set_props(dc, virtio_net_properties);
+     vpciklass->realize = virtio_net_pci_realize;
+@@ -98,6 +108,10 @@ static const VirtioPCIDeviceTypeInfo virtio_net_pci_info = {
+     .instance_size = sizeof(VirtIONetPCI),
+     .instance_init = virtio_net_pci_instance_init,
+     .class_init    = virtio_net_pci_class_init,
++    .interfaces = (InterfaceInfo[]) {
++        { TYPE_PCI_FAILOVER },
++        { }
++    },
  };
  
-+static const TypeInfo pci_failover_type_info = {
-+    .name = TYPE_PCI_FAILOVER,
-+    .parent = TYPE_INTERFACE,
-+    .class_size = sizeof(PCIFailoverClass),
-+};
-+
- static void pci_register_types(void)
- {
-     type_register_static(&pci_bus_info);
-@@ -2870,6 +2912,7 @@ static void pci_register_types(void)
-     type_register_static(&cxl_interface_info);
-     type_register_static(&pcie_interface_info);
-     type_register_static(&pci_device_type_info);
-+    type_register_static(&pci_failover_type_info);
- }
- 
- type_init(pci_register_types)
+ static void virtio_net_pci_register(void)
 
 -- 
 2.43.0
