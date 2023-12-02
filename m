@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A687801D22
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:44:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A52801D1B
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:42:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9QEs-0005Ad-E7; Sat, 02 Dec 2023 08:40:58 -0500
+	id 1r9QEv-0005Bl-IX; Sat, 02 Dec 2023 08:41:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEq-0005A9-6Y
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:56 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEs-0005Ar-Kv
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:58 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEn-0008WQ-WD
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:55 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEp-000055-Cj
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:57 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 4664711F35F;
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 776BD11F361;
  Sat,  2 Dec 2023 13:40:34 +0000 (UTC)
 From: ~lbryndza <lbryndza@git.sr.ht>
-Date: Sat, 02 Dec 2023 13:16:56 +0100
-Subject: [PATCH qemu v3 08/20] Fixing the basic functionality of STM32 timers
-Message-ID: <170152443229.18048.53824064267512246-8@git.sr.ht>
+Date: Sat, 02 Dec 2023 13:18:17 +0100
+Subject: [PATCH qemu v3 09/20] Fixing the basic functionality of STM32 timers
+Message-ID: <170152443229.18048.53824064267512246-9@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <170152443229.18048.53824064267512246-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair23@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
  helo=mail-b.sr.ht
@@ -66,36 +66,75 @@ count down modes. This commit fixes bugs with interrupt
 reporting and implements the basic modes of the counter's
 time-base block.
 
-Update time reset functions
+Timer read function modified
 
 Signed-off-by: Lucjan Bryndza <lbryndza.oss@icloud.com>
 ---
- hw/timer/stm32f2xx_timer.c | 4 ----
- 1 file changed, 4 deletions(-)
+ hw/timer/stm32f2xx_timer.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
 diff --git a/hw/timer/stm32f2xx_timer.c b/hw/timer/stm32f2xx_timer.c
-index cee25252f7..20ca762601 100644
+index 20ca762601..07d82b841a 100644
 --- a/hw/timer/stm32f2xx_timer.c
 +++ b/hw/timer/stm32f2xx_timer.c
-@@ -128,8 +128,6 @@ static void stm32f2xx_timer_tick(void *opaque)
- static void stm32f2xx_timer_reset(DeviceState *dev)
- {
-     STM32F2XXTimerState *s = STM32F2XXTIMER(dev);
--    int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+@@ -159,15 +159,18 @@ static uint64_t stm32f2xx_timer_read(void *opaque, hwad=
+dr offset,
+     case TIM_CR1:
+         return s->tim_cr1;
+     case TIM_CR2:
+-        return s->tim_cr2;
++        qemu_log_mask(LOG_GUEST_ERROR, "stm32_timer: CR2 not supported");
++        return 0;
+     case TIM_SMCR:
+-        return s->tim_smcr;
++        qemu_log_mask(LOG_GUEST_ERROR, "stm32_timer: SMCR not supported");
++        return 0;
+     case TIM_DIER:
+         return s->tim_dier;
+     case TIM_SR:
+         return s->tim_sr;
+     case TIM_EGR:
+-        return s->tim_egr;
++        qemu_log_mask(LOG_GUEST_ERROR, "stm32_timer: EGR write only");
++        return 0;
+     case TIM_CCMR1:
+         return s->tim_ccmr1;
+     case TIM_CCMR2:
+@@ -175,8 +178,7 @@ static uint64_t stm32f2xx_timer_read(void *opaque, hwaddr=
+ offset,
+     case TIM_CCER:
+         return s->tim_ccer;
+     case TIM_CNT:
+-        return stm32f2xx_ns_to_ticks(s, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL=
+)) -
+-               s->tick_offset;
++        return stm32f2xx_timer_get_count(s);
+     case TIM_PSC:
+         return s->tim_psc;
+     case TIM_ARR:
+@@ -190,16 +192,17 @@ static uint64_t stm32f2xx_timer_read(void *opaque, hwad=
+dr offset,
+     case TIM_CCR4:
+         return s->tim_ccr4;
+     case TIM_DCR:
+-        return s->tim_dcr;
++        qemu_log_mask(LOG_GUEST_ERROR, "stm32_timer: DCR not supported");
++        return 0;
+     case TIM_DMAR:
+-        return s->tim_dmar;
++        qemu_log_mask(LOG_GUEST_ERROR, "stm32_timer: CR2 not supported");
++        return 0;
+     case TIM_OR:
+         return s->tim_or;
+     default:
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "%s: Bad offset 0x%"HWADDR_PRIx"\n", __func__, offset);
+     }
 -
-     s->tim_cr1 = 0;
-     s->tim_cr2 = 0;
-     s->tim_smcr = 0;
-@@ -148,8 +146,6 @@ static void stm32f2xx_timer_reset(DeviceState *dev)
-     s->tim_dcr = 0;
-     s->tim_dmar = 0;
-     s->tim_or = 0;
--
--    s->tick_offset = stm32f2xx_ns_to_ticks(s, now);
+     return 0;
  }
- 
- static uint64_t stm32f2xx_timer_read(void *opaque, hwaddr offset,
--- 
+=20
+--=20
 2.38.5
 
 
