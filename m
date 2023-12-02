@@ -2,79 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B60A801AC9
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 05:50:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CF1801B4F
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:03:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9HwF-0003cj-OE; Fri, 01 Dec 2023 23:49:11 -0500
+	id 1r9Kvm-0004K4-Ec; Sat, 02 Dec 2023 03:00:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <arorajai2798@gmail.com>)
- id 1r9HwD-0003c9-Lh; Fri, 01 Dec 2023 23:49:09 -0500
-Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1r9KvT-0004Hm-LA
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:41 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <arorajai2798@gmail.com>)
- id 1r9HwB-0004hk-Pb; Fri, 01 Dec 2023 23:49:09 -0500
-Received: by mail-il1-x12d.google.com with SMTP id
- e9e14a558f8ab-35c18e55633so11546855ab.2; 
- Fri, 01 Dec 2023 20:49:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1r9KvQ-0004vR-4N
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:35 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d048c171d6so12144085ad.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:00:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701492545; x=1702097345; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Xvi4mRz2w/E5pz1gAepmyUvWL5xNH8ENXIxXh94Gg9Y=;
- b=P9BVABsrKZQbNJuge+r/q2bbpy0w9Rycd6AvZWXWhpv+vDBquN+PGiDfQykzR216+Z
- 1W65FuT2EFiB9hskUpC6bb+gPHWlQzFRXzUZ4H4sMlFp/8WSpAJ5DsVYmv2YhQoEcsIo
- E46HFYe+s0M3FF4On6kLzhWSSQ/gvOhYnrLRz8wt88BzeYfJn7O8AEh7Rh8eOPsMP0Xn
- jgx5gaYoWqI01l2/q6PE/tgLWxX0JR2Xe1ZVL0og0/ypTu+yBamevLHIqkOCrM5vHR2C
- 5aTqPT4MOUWB1i8ZwMbdCH+u4GVSO4LVjq6ssUFgmZRbzfjY8ln/67a7meqWNvErVx7V
- aWOw==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504029; x=1702108829;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tnX6Z12zqSN0J7SdKBlef8wbLoS0SpAxBo4zWGV6cw8=;
+ b=NjMEJ8+ZMpAltv4M1XwDTjJuk7dx7oV/np1RGvqUWgkzsxzu8oiqzbUrbZ8jadVWpF
+ LIsddYnzwTFqahzIW4gAGGQzuispcQYyweBy9/N9Z0ScEJ4ZoJnnlte34+Yaa5QwJauy
+ Oxi4KsUA9nug8AcSCGTIHYpwlLz3mvCoeX8XPQp+DbTDksS1CBHwJA0KJk32aWAtHILy
+ /kFGW88bOFUbkt9GouuKIP+ZgukIDd70rBUHqUn+BlFgeD5JO1KSsRCSCg29Uvqetpg7
+ AfpBuIE0eerQzeueWSE2Tu014JSph7XZ/a2oMsfKjP0MxeUiJML92+SBxuxNA4VmcAX3
+ 8yag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701492545; x=1702097345;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1701504029; x=1702108829;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Xvi4mRz2w/E5pz1gAepmyUvWL5xNH8ENXIxXh94Gg9Y=;
- b=pmsvXWppxoX6m1ub1VWwvmE+aAJ2f+vpyUo2pw8KyAzmwfn8S3wdt7RVtDzWdPwx20
- 0iaIprubiW+5r5/x0GbmAbMWx7t9wVgCj7eeCCHfHBZpWBBxGeKhHAgcSGgLJVbklSP3
- 04Kx/9bysJ6cyYZj5uwPKv1Uu+MglXTbPhUkA4S9wRXifQxwtu6v3nOvumsIU5lyeWKm
- 7q2/V27XTHmaaYg1f2nfZ9ERdt2uTKRXynh5uxJ6sXsPwyK4Ckz04HdyF70P/YkLjOn/
- dloZdlmQUYs/0M4qTiBjwJuTu5FIN/uoC0h33c3jA5FgQqEvc125Kj0gxJ9NumHn1Poe
- WGgw==
-X-Gm-Message-State: AOJu0YwxtWoOxIdlkXjLir4owjqkYApg1zkECU/0Dtqfv5xceRKAuelD
- wzb2gLo9ZRyn+0WjimbAx58nN5yjAO9pQg==
-X-Google-Smtp-Source: AGHT+IHZ5O1iFckILdx3dWYnCSgSjxEgvXFf/xAWgPtFj0tK0gUkZHRVAZ4mRL35WgnZB4iQfx+iRA==
-X-Received: by 2002:a05:6e02:1d12:b0:35d:5995:798d with SMTP id
- i18-20020a056e021d1200b0035d5995798dmr961284ila.39.1701492545307; 
- Fri, 01 Dec 2023 20:49:05 -0800 (PST)
-Received: from localhost.localdomain ([2406:7400:56:4f3d:dcc3:8696:be12:127c])
- by smtp.gmail.com with ESMTPSA id
- t11-20020a170902e84b00b001d076c2e346sm149652plg.51.2023.12.01.20.49.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Dec 2023 20:49:04 -0800 (PST)
-From: Jai Arora <arorajai2798@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, pbonzini@redhat.com, peter.maydell@linaro.org,
- alex.bennee@linaro.org, philmd@linaro.org,
- Jai Arora <arorajai2798@gmail.com>
-Subject: [PATCH v5] accel/kvm: Turn DPRINTF macro use into tracepoints
-Date: Sat,  2 Dec 2023 10:18:46 +0530
-Message-Id: <20231202044846.258855-1-arorajai2798@gmail.com>
-X-Mailer: git-send-email 2.25.1
+ bh=tnX6Z12zqSN0J7SdKBlef8wbLoS0SpAxBo4zWGV6cw8=;
+ b=CJBbxrIEXyz4Uo0rUR26VFNPcZjZwlYG8Hal7CUoCWJ7qlSjWqNcKnGzCQ71LL0VJ8
+ 9kHmq2wTQx2Ntifi67p/nr9UNNVKeZ1swpBHwVIPpx1N20KBRiRYbDSwwAVdx+g2IfF3
+ aln0168HxsiAlQRT7qMHU7r31Y6pbVtKAq19oX5vf+Uk1zJYKndSxHjJIBb9qDqcGEDR
+ lvx21fq87gc1P2JD/Hy1OVKDH53Kp9wkaHkJOC/oz3c5vNwVZD61arqbU6Awuuxlter0
+ CPt/2ZqQpJtghXkvhLr63cf5eCTi14JRRxvu4HcfodUKRQ+nl34l14DDHAQ7F321Fu+j
+ 39RQ==
+X-Gm-Message-State: AOJu0Yw0eS9KOqmcEZRH73atrezHUo7N7+yLqB0QXjvb+EjXDa8dXJkT
+ yVHQ5YJ+Rl3F3KG3pP0bYAicyw==
+X-Google-Smtp-Source: AGHT+IHdMAz828vKWhFldAigxg+YLhLoVqpU8I3jnWQoT3sp3rmLkPY6uzuHsg1teXZAkVnD49yi2A==
+X-Received: by 2002:a17:902:f544:b0:1d0:6ffd:9e1a with SMTP id
+ h4-20020a170902f54400b001d06ffd9e1amr998016plf.108.1701504029534; 
+ Sat, 02 Dec 2023 00:00:29 -0800 (PST)
+Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
+ p12-20020a170902eacc00b001d075e847d5sm581686pld.44.2023.12.02.00.00.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 02 Dec 2023 00:00:29 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 00/14] virtio-net: add support for SR-IOV emulation
+Date: Sat, 02 Dec 2023 17:00:23 +0900
+Message-Id: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12d;
- envelope-from=arorajai2798@gmail.com; helo=mail-il1-x12d.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABfkamUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDIKFbXJSZX6ZraWJglJZkZGaUlGqhBFRbUJSallkBNic6trYWAOI/Sa5
+ XAAAA
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>, 
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Yui Washizu <yui.washidu@gmail.com>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.4
+Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,172 +102,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Patch removes DPRINTF macro and adds multiple tracepoints
-to capture different kvm events.
+Introduction
+------------
 
-We also drop the DPRINTFs that don't add any additional
-information than trace_kvm_run_exit already does.
+This series is based on the RFC series submitted by Yui Washizu[1].
+See also [2] for the context.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1827
+This series enables SR-IOV emulation for virtio-net. It is useful
+to test SR-IOV support on the guest, or to expose several vDPA devices in a
+VM. vDPA devices can also provide L2 switching feature for offloading
+though it is out of scope to allow the guest to configure such a feature.
 
-Signed-off-by: Jai Arora <arorajai2798@gmail.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The new code of SR-IOV emulation for virtio-net actually resides in
+virtio-pci since it's specific to PCI. Although it is written in a way
+agnostic to the virtio device type, it is restricted for virtio-net because
+of lack of validation.
+
+User Interface
+--------------
+
+A user can configure a SR-IOV capable virtio-net device by adding
+virtio-net-pci functions to a bus. Below is a command line example:
+  -netdev user,id=n -netdev user,id=o -netdev user,id=p -netdev user,id=q
+  -device virtio-net-pci,addr=0x0.0x3,netdev=q,sriov-pf=f
+  -device virtio-net-pci,addr=0x0.0x2,netdev=p,sriov-pf=f
+  -device virtio-net-pci,addr=0x0.0x1,netdev=o,sriov-pf=f
+  -device virtio-net-pci,addr=0x0.0x0,netdev=n,id=f
+
+The VFs specify the paired PF with "sriov-pf" property. The PF must be
+added after all VFs. It is user's responsibility to ensure that VFs have
+function numbers larger than one of the PF, and the function numbers have
+a consistent stride.
+
+Implementation Challenge
+------------------------
+
+The major problem with SR-IOV emulation is that it allows the guest to
+realize and unrealize VFs at runtime, which means we cannot realize VFs at
+initialization time and keep them. In this series, virtio-pci realizes VFs
+at initialization time, but instead of keeping them, it extracts VF
+configurations that are necessary to initialize the PF and device options
+that will be used to realize VFs later, and unrealize them.
+
+Retrieving Device Options
+-------------------------
+
+Usually device options are applied with property setters, and applied
+options are bound to a particular device instance. It is problematic for
+SR-IOV emulation because it recreates device instances at runtime. The
+earlier RFC series[1] had no configurability because of this.
+Looking at the code, I found there are currently two methods to retrieve
+device options at initialization time, but both of them had downsides.
+
+Existing Approach: DeviceState::opts
+------------------------------------
+
+One of them is to reading DeviceState::opts, which holds options except
+"id", "bus", and "driver". However, this member of DeviceState is only used
+by vfio to know the "rombar" option of pci-device is set and vfio shouldn't
+do that in my opinion. DeviceState::opts is untyped, and it is
+responsibility of pci-device to type the "rombar" property, but vfio reads
+the untyped value in an intrusive way. There will be no usage of
+DeviceState::opts If I eliminate this hacky usage, and keeping it only for
+SR-IOV emulation of virtio-net is too much. As such, I determined
+DeviceState::opts should be gone.
+
+Existing Approach: DeviceListener::hide_device()
+------------------------------------------------
+
+The other method is to use DeviceListener::hide_device() callback. The
+callback receives device options and decide *not* to realize the device
+when a device is being added. virtio-net uses it to _hide_ the primary
+device.
+
+A downside of this approach is that it needs explicit registration.
+virtio-net failover implementation only registers a DeviceListener after
+a virtio-net device is added so it simply *ignores* the primary device
+if it is added before the virtio-net device. It is better generate some
+error message in such a situation at least.
+
+Another problem of DeviceListener::hide_device() is that it is called for
+all devices. For virtio-net failover, the primary device should be a
+pci-device. For the SR-IOV emulation, the VF should be a virtio-pci.
+
+Proposal: DeviceClass::hide()
+-----------------------------
+
+In this series, I propose DeviceClass:hide() as an alternative to
+DeviceListener::hide_device(). A device that can be hidden implements this
+function to decide whether it should be hidden. It requires no
+registration, and encapsled in specific devices.
+
+Summary
+-------
+
+Patch 1 will change the definition of "rombar" property of pci-device to
+eliminate DeviceState::opts access in vfio. It will be used later to
+generate an error if rombar is requested for SR-IOV VF.
+Patch 2 removes DeviceState::opts.
+Patch 3 adds DeviceClass::hide().
+Patch 4 and 5 use DeviceClass::hide() to implement virtio-net failover.
+Patch 6 removes DeviceListener::hide_device().
+Patch [7, 11] makes trivial changes for SR-IOV emulation.
+Patch 12 changes the common SR-IOV emulation code to accept device options.
+Patch 13 adds the SR-IOV emulation code to virtio-pci.
+Patch 14 enables the SR-IOV emulation code for virtio-net.
+
+[1] https://patchew.org/QEMU/1689731808-3009-1-git-send-email-yui.washidu@gmail.com/
+[2] https://lore.kernel.org/all/5d46f455-f530-4e5e-9ae7-13a2297d4bc5@daynix.com/
+
+Co-developed-by: Yui Washizu <yui.washidu@gmail.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-v5: Addressed review comments by Philippe Mathieu-Daudé
-Corrects typo DRPINTF in commit message
-Changed %d to PRIu32 in kvm_run_exit_system_event
- 
-I am not sure what you meant by keeping previous tag.
-I think you meant to keep version tag same,
-so I will keep patch tag as v5 again this time.
+Akihiko Odaki (14):
+      vfio: Avoid inspecting option QDict for rombar
+      hw/qdev: Remove opts member
+      qdev: Add DeviceClass::hide()
+      hw/pci: Add pci-failover
+      virtio-net: Implement pci-failover
+      qdev: Remove DeviceListener::hide_device()
+      hw/pci: Add hide()
+      qdev: Add qdev_device_new_from_qdict()
+      hw/pci: Do not add ROM BAR for SR-IOV VF
+      msix: Call pcie_sriov_vf_register_bar() for SR-IOV VF
+      pcie_sriov: Release VFs failed to realize
+      pcie_sriov: Allow to specify VF device options
+      virtio-pci: add SR-IOV capability
+      virtio-net: Add SR-IOV capability
 
-Thank you for the feedback.
+ docs/pcie_sriov.txt            |   2 +-
+ include/hw/pci/pci_device.h    |  21 +++++
+ include/hw/pci/pcie_sriov.h    |  13 ++-
+ include/hw/qdev-core.h         |  61 +++++-------
+ include/hw/virtio/virtio-net.h |   3 +-
+ include/hw/virtio/virtio-pci.h |   2 +
+ include/monitor/qdev.h         |   2 +
+ hw/core/qdev.c                 |  19 ----
+ hw/net/igb.c                   |   2 +-
+ hw/net/virtio-net.c            |  24 +----
+ hw/nvme/ctrl.c                 |   2 +-
+ hw/pci/msix.c                  |   8 +-
+ hw/pci/pci.c                   |  61 +++++++++++-
+ hw/pci/pcie_sriov.c            |  71 +++++++++++---
+ hw/vfio/pci.c                  |   3 +-
+ hw/virtio/virtio-net-pci.c     |  15 +++
+ hw/virtio/virtio-pci.c         | 208 +++++++++++++++++++++++++++++++++++++++--
+ system/qdev-monitor.c          |  49 +++++++---
+ 18 files changed, 442 insertions(+), 124 deletions(-)
+---
+base-commit: 4705fc0c8511d073bee4751c3c974aab2b10a970
+change-id: 20231202-sriov-9402fb262be8
 
- accel/kvm/kvm-all.c    | 28 ++++++----------------------
- accel/kvm/trace-events |  7 ++++++-
- 2 files changed, 12 insertions(+), 23 deletions(-)
-
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index e39a810a4e..80ac7b35b7 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -69,16 +69,6 @@
- #define KVM_GUESTDBG_BLOCKIRQ 0
- #endif
- 
--//#define DEBUG_KVM
--
--#ifdef DEBUG_KVM
--#define DPRINTF(fmt, ...) \
--    do { fprintf(stderr, fmt, ## __VA_ARGS__); } while (0)
--#else
--#define DPRINTF(fmt, ...) \
--    do { } while (0)
--#endif
--
- struct KVMParkedVcpu {
-     unsigned long vcpu_id;
-     int kvm_fd;
-@@ -331,7 +321,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
-     struct KVMParkedVcpu *vcpu = NULL;
-     int ret = 0;
- 
--    DPRINTF("kvm_destroy_vcpu\n");
-+    trace_kvm_destroy_vcpu();
- 
-     ret = kvm_arch_destroy_vcpu(cpu);
-     if (ret < 0) {
-@@ -341,7 +331,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
-     mmap_size = kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
-     if (mmap_size < 0) {
-         ret = mmap_size;
--        DPRINTF("KVM_GET_VCPU_MMAP_SIZE failed\n");
-+        trace_kvm_failed_get_vcpu_mmap_size();
-         goto err;
-     }
- 
-@@ -443,7 +433,6 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
-                                    PAGE_SIZE * KVM_DIRTY_LOG_PAGE_OFFSET);
-         if (cpu->kvm_dirty_gfns == MAP_FAILED) {
-             ret = -errno;
--            DPRINTF("mmap'ing vcpu dirty gfns failed: %d\n", ret);
-             goto err;
-         }
-     }
-@@ -2821,7 +2810,7 @@ int kvm_cpu_exec(CPUState *cpu)
-     struct kvm_run *run = cpu->kvm_run;
-     int ret, run_ret;
- 
--    DPRINTF("kvm_cpu_exec()\n");
-+    trace_kvm_cpu_exec();
- 
-     if (kvm_arch_process_async_events(cpu)) {
-         qatomic_set(&cpu->exit_request, 0);
-@@ -2848,7 +2837,7 @@ int kvm_cpu_exec(CPUState *cpu)
- 
-         kvm_arch_pre_run(cpu, run);
-         if (qatomic_read(&cpu->exit_request)) {
--            DPRINTF("interrupt exit requested\n");
-+	    trace_kvm_interrupt_exit_request();
-             /*
-              * KVM requires us to reenter the kernel after IO exits to complete
-              * instruction emulation. This self-signal will ensure that we
-@@ -2878,7 +2867,7 @@ int kvm_cpu_exec(CPUState *cpu)
- 
-         if (run_ret < 0) {
-             if (run_ret == -EINTR || run_ret == -EAGAIN) {
--                DPRINTF("io window exit\n");
-+                trace_kvm_io_window_exit();
-                 kvm_eat_signals(cpu);
-                 ret = EXCP_INTERRUPT;
-                 break;
-@@ -2900,7 +2889,6 @@ int kvm_cpu_exec(CPUState *cpu)
-         trace_kvm_run_exit(cpu->cpu_index, run->exit_reason);
-         switch (run->exit_reason) {
-         case KVM_EXIT_IO:
--            DPRINTF("handle_io\n");
-             /* Called outside BQL */
-             kvm_handle_io(run->io.port, attrs,
-                           (uint8_t *)run + run->io.data_offset,
-@@ -2910,7 +2898,6 @@ int kvm_cpu_exec(CPUState *cpu)
-             ret = 0;
-             break;
-         case KVM_EXIT_MMIO:
--            DPRINTF("handle_mmio\n");
-             /* Called outside BQL */
-             address_space_rw(&address_space_memory,
-                              run->mmio.phys_addr, attrs,
-@@ -2920,11 +2907,9 @@ int kvm_cpu_exec(CPUState *cpu)
-             ret = 0;
-             break;
-         case KVM_EXIT_IRQ_WINDOW_OPEN:
--            DPRINTF("irq_window_open\n");
-             ret = EXCP_INTERRUPT;
-             break;
-         case KVM_EXIT_SHUTDOWN:
--            DPRINTF("shutdown\n");
-             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-             ret = EXCP_INTERRUPT;
-             break;
-@@ -2959,6 +2944,7 @@ int kvm_cpu_exec(CPUState *cpu)
-             ret = 0;
-             break;
-         case KVM_EXIT_SYSTEM_EVENT:
-+            trace_kvm_run_exit_system_event(cpu->cpu_index, run->system_event.type);
-             switch (run->system_event.type) {
-             case KVM_SYSTEM_EVENT_SHUTDOWN:
-                 qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-@@ -2976,13 +2962,11 @@ int kvm_cpu_exec(CPUState *cpu)
-                 ret = 0;
-                 break;
-             default:
--                DPRINTF("kvm_arch_handle_exit\n");
-                 ret = kvm_arch_handle_exit(cpu, run);
-                 break;
-             }
-             break;
-         default:
--            DPRINTF("kvm_arch_handle_exit\n");
-             ret = kvm_arch_handle_exit(cpu, run);
-             break;
-         }
-diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-index 399aaeb0ec..a25902597b 100644
---- a/accel/kvm/trace-events
-+++ b/accel/kvm/trace-events
-@@ -25,4 +25,9 @@ kvm_dirty_ring_reaper(const char *s) "%s"
- kvm_dirty_ring_reap(uint64_t count, int64_t t) "reaped %"PRIu64" pages (took %"PRIi64" us)"
- kvm_dirty_ring_reaper_kick(const char *reason) "%s"
- kvm_dirty_ring_flush(int finished) "%d"
--
-+kvm_destroy_vcpu(void) ""
-+kvm_failed_get_vcpu_mmap_size(void) ""
-+kvm_cpu_exec(void) ""
-+kvm_interrupt_exit_request(void) ""
-+kvm_io_window_exit(void) ""
-+kvm_run_exit_system_event(int cpu_index, uint32_t event_type) "cpu_index %d, system_even_type %"PRIu32
+Best regards,
 -- 
-2.25.1
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
