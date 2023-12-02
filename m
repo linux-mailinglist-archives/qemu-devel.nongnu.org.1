@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5DF801D1A
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD535801D11
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:42:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9QEj-00056d-Lx; Sat, 02 Dec 2023 08:40:50 -0500
+	id 1r9QEm-00058B-QN; Sat, 02 Dec 2023 08:40:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEb-00055Y-9U
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:42 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEh-00057F-CA
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:47 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEV-0008VH-NU
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:37 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEd-0008WO-HK
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:45 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 6769A11F314;
+ by mail-b.sr.ht (Postfix) with ESMTPSA id AB92211F322;
  Sat,  2 Dec 2023 13:40:33 +0000 (UTC)
 From: ~lbryndza <lbryndza@git.sr.ht>
-Date: Sat, 02 Dec 2023 13:11:07 +0100
-Subject: [PATCH qemu v3 04/20] Fixing the basic functionality of STM32 timers
-Message-ID: <170152443229.18048.53824064267512246-4@git.sr.ht>
+Date: Sat, 02 Dec 2023 13:12:37 +0100
+Subject: [PATCH qemu v3 05/20] Fixing the basic functionality of STM32 timers
+Message-ID: <170152443229.18048.53824064267512246-5@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <170152443229.18048.53824064267512246-0@git.sr.ht>
 To: qemu-devel@nongnu.org
@@ -66,35 +66,47 @@ count down modes. This commit fixes bugs with interrupt
 reporting and implements the basic modes of the counter's
 time-base block.
 
-Add stm32 timer set counter function
+Add timer update function using ptimer implementation
 
 Signed-off-by: Lucjan Bryndza <lbryndza.oss@icloud.com>
 ---
- hw/timer/stm32f2xx_timer.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/timer/stm32f2xx_timer.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/hw/timer/stm32f2xx_timer.c b/hw/timer/stm32f2xx_timer.c
-index 0c5586cb8b..9261090b84 100644
+index 9261090b84..62c98b5f04 100644
 --- a/hw/timer/stm32f2xx_timer.c
 +++ b/hw/timer/stm32f2xx_timer.c
-@@ -59,6 +59,16 @@ static uint32_t stm32f2xx_timer_get_count(STM32F2XXTimerSt=
-ate *s)
+@@ -68,6 +68,28 @@ static void stm32f2xx_timer_set_count(STM32F2XXTimerState =
+*s, uint32_t cnt)
+     }
  }
 =20
-=20
-+static void stm32f2xx_timer_set_count(STM32F2XXTimerState *s, uint32_t cnt)
++static void stm32f2xx_timer_update(STM32F2XXTimerState *s)
 +{
-+    if (s->count_mode =3D=3D TIMER_UP_COUNT) {
-+        ptimer_set_count(s->timer, s->tim_arr - (cnt & 0xffff));
++    if (s->tim_cr1 & TIM_CR1_DIR) {
++        s->count_mode =3D TIMER_DOWN_COUNT;
 +    } else {
-+        ptimer_set_count(s->timer, cnt & 0xffff);
++        s->count_mode =3D TIMER_UP_COUNT;
++    }
++
++    if (s->tim_cr1 & TIM_CR1_CMS) {
++        s->count_mode =3D TIMER_UP_COUNT;
++    }
++
++    if (s->tim_cr1 & TIM_CR1_CEN) {
++        DB_PRINT("Enabling timer\n");
++        ptimer_set_freq(s->timer, s->freq_hz);
++        ptimer_run(s->timer, !(s->tim_cr1 & 0x04));
++    } else {
++        DB_PRINT("Disabling timer\n");
++        ptimer_stop(s->timer);
 +    }
 +}
 +
-+
+=20
  static void stm32f2xx_timer_reset(DeviceState *dev)
  {
-     STM32F2XXTimerState *s =3D STM32F2XXTIMER(dev);
 --=20
 2.38.5
 
