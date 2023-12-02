@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481BB80199B
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 02:43:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0172080199D
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 02:43:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9F1i-0007c5-Hc; Fri, 01 Dec 2023 20:42:38 -0500
+	id 1r9F1g-0007ZE-Gw; Fri, 01 Dec 2023 20:42:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=6700ee1bd8=volodymyr_babchuk@epam.com>)
- id 1r9F0v-0007MF-Cl; Fri, 01 Dec 2023 20:41:49 -0500
+ id 1r9F0u-0007M3-6B; Fri, 01 Dec 2023 20:41:48 -0500
 Received: from mx0b-0039f301.pphosted.com ([148.163.137.242])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=6700ee1bd8=volodymyr_babchuk@epam.com>)
- id 1r9F0r-00058X-Hs; Fri, 01 Dec 2023 20:41:48 -0500
-Received: from pps.filterd (m0174680.ppops.net [127.0.0.1])
- by mx0b-0039f301.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B21Xj1G026535; Sat, 2 Dec 2023 01:41:29 GMT
+ id 1r9F0n-00057W-TB; Fri, 01 Dec 2023 20:41:47 -0500
+Received: from pps.filterd (m0174683.ppops.net [127.0.0.1])
+ by mx0b-0039f301.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 3B21X1Qo015641;
+ Sat, 2 Dec 2023 01:41:28 GMT
 Received: from eur05-vi1-obe.outbound.protection.outlook.com
- (mail-vi1eur05lp2169.outbound.protection.outlook.com [104.47.17.169])
- by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3uqt8mg21a-2
+ (mail-vi1eur05lp2168.outbound.protection.outlook.com [104.47.17.168])
+ by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3uqa3aucrx-4
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 02 Dec 2023 01:41:28 +0000
+ Sat, 02 Dec 2023 01:41:27 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jGCrxnIg0hx0I3TroprqXEzfV37pt5UBN3qgZ6sHOIaLco2UI05WeDf63axAmzWBd1/ijxxnXvwdweK6tu5lvhRh/RE+9pTP2G8+adDlbIglzwzWlrTAlXvLTdZlxluGQ6Y1HzLvDwnDhEB8ENNjyYSYxPvSOUkniY/a3CuaElP/XImGEWNw0iSULnK7yu/eBtZxzuVRHG/G5bmTujZrKe+OJUMebD51rhRpp84UM8e0B2xjpe2Fhud/cZHFe6Y1fkUB5U4ajOPBpH1CRtfn8WnhO2XXDt6pAmEm8SEW2xDdI+WpUZb9hS/MfkXt2A72Suhg93v+zVj28YGEBXjprA==
+ b=OaLUJZVHbDztQuejeV3sVzX9LQU04aVbSmv6N1+oehtTnAAhn/d0BRXPldl2gYXq2KaPN9ErL2dLwwsVPG4DzjCbs/+cBHHP7vzC4FXsZ1ZlidenVD2ZGTl7Z0Z6LueVkvtprsCld3qxHXba9Jib6WuP3dGZ3PxtWY3m6VF4fojNRb5hpSeI6KGDfwL4hxq8PV9aWQM+lLemx6GrB9atYebLl/6dfb+4nHC02TVaYBW3xmxCDMz51aD7gFzUCUCJuqbPh63ihiqIZlmF8BS5P/LkLfgbLOz4AEclRyjotWpYccn0n+RVFF6Rbn1Y2LXH0KZNY5QbnsvXiGUSbxfUlQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D1sE3o7/1/WPykkUQrLgvygBnr35JJ7+xArB8a3+h6c=;
- b=Ga0bvfX1781S5oJ36DK+txA+SIru21JrwNvdbJA++aWoarOvheBw3/tnmIdU3JzvffKVBSpIia+uHH61hAwwglTylple+AMST8z7oAkwrzW2ibFejJznUTSYEN5FtcOq7I0/lMpJYLb9M/CPIYx/DZbJBRlhgPNE5DkCQxpPFoBxh7ea2kdd7SSl7eyTNIKnDT68F8tRAFQuccw+7QsZNEungjBazOEbRkq4ZJIMR/rrbzn+O+uTGdroywaErbZfvQhCCmzU8R4oDUe7C/Rr432dZZrVs5UqFN8M05jvU5CFuUBYzdlbIAdOvMjKhv3P2YRytKx9gF5pumb4nO8DPA==
+ bh=602dKa1VR8fPvQHqtVLjjZVu2RbSyKF63LAUWSpxQ3M=;
+ b=n5j+mlTaClkxyp0BuuIR4D9Qif3k2R5aIZOsruCjfVhMMaE/Fb2MKDI//oLt6GoKcTLPaF9Dbm0ddoBOKOB4xpSh1zxkxO0glRHmR4rkciPCN9ss8tbXO6fmg07dyVR7YZ5uSThrKtBmeVZ7v3cams7U1+VeV6DXSwSj1oOeJRYxYn84+twy38J8vOmVfHgu3J6AFgL6RSsWUxG3Yz+GfoGnRmrDYpnD0GcJKyMsCsM5tT6cuZxRWO/8rmC6yqZpAy1t6DKT4CrswmJUFMsDgt8JfH/SrdVs0SpQJciGGQVymv2BwWjmITd7P/AV9tYeyblDOXqM3ehKqZ1UG1nXBg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
  dkim=pass header.d=epam.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D1sE3o7/1/WPykkUQrLgvygBnr35JJ7+xArB8a3+h6c=;
- b=cjla2c6sIf2gY0Bk6CbEMrhNTKF/v206Un2TND/fDyd7GBqGM9BxXmgrjtap7b76z5p5VYirm4ZhY0wE4wZ4sLdXsK59MAizaW7YcDyO/+7wFvrWq7dWYQ+ChqVtKV2ONVmyrYpPVocNre63zSwgptZAe9iVX8HhLdRqaQKMOTggMCqfgUkQHp9cKzEfBOfJdWkGNjajtuSm9uRDMYpqVbbmPO7xM+ZcZGFWNuX7eTU0GU0CfH9tOgRPJuKvvqCVO4/XDZhNsshIicso3duyWw5XUa5F75C1xTOq/oG17RfziQxRg4nCcjGKaRKHg7/G6pnwDjsogErtABe/RCOJYg==
+ bh=602dKa1VR8fPvQHqtVLjjZVu2RbSyKF63LAUWSpxQ3M=;
+ b=jmtdybKPcY4lEbWoQ99WvmhKu6sGJJDGM3Vv4VcsJgkESUcB7X2AhT9dOMfKwrbezhkHQ8sR6CQSNihRCRfSZZ2nBsO6YBFWIRVA0/Y3UrF18GiihDS5g7jm+X8nBCnJtA48k3CGXvXv0hfwJcnf/EFvArRK8nLuxkiIAMZo2tWQ/7bGIn833iHAmNL46MVTHkaVSntgX1i8gHBeZjxct5s/ewXcV2NjXKACPB7Pc/3AFNMRr7Tn2LeTVe9VmaAJgdv7TvugrjW72J/E4IvdR51qoQcsmpy5YQPh0Ecjr13RoHkn8DKo6/Izcpu67GZqEDLQLDnv3lobQOvLy0RAdg==
 Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
  by AS8PR03MB7285.eurprd03.prod.outlook.com (2603:10a6:20b:2ef::21)
  with Microsoft SMTP Server (version=TLS1_2,
@@ -54,15 +54,14 @@ To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 CC: David Woodhouse <dwmw@amazon.co.uk>, Stefano Stabellini
  <sstabellini@kernel.org>, Julien Grall <julien@xen.org>,
  Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>, Volodymyr Babchuk
- <Volodymyr_Babchuk@epam.com>, Peter Maydell <peter.maydell@linaro.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>, "open list:X86 Xen CPUs"
- <xen-devel@lists.xenproject.org>
-Subject: [PATCH v4 6/6] xen_arm: Add virtual PCIe host bridge support
-Thread-Topic: [PATCH v4 6/6] xen_arm: Add virtual PCIe host bridge support
-Thread-Index: AQHaJMCo0BornjVbl0aSaRGzaWWdGA==
+ <Volodymyr_Babchuk@epam.com>, =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?=
+ <philmd@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Subject: [PATCH v4 5/6] xen_arm: set mc->max_cpus to GUEST_MAX_VCPUS
+Thread-Topic: [PATCH v4 5/6] xen_arm: set mc->max_cpus to GUEST_MAX_VCPUS
+Thread-Index: AQHaJMCoUgquUnKvjU6ewDeCcsRksA==
 Date: Sat, 2 Dec 2023 01:41:23 +0000
-Message-ID: <20231202014108.2017803-7-volodymyr_babchuk@epam.com>
+Message-ID: <20231202014108.2017803-6-volodymyr_babchuk@epam.com>
 References: <20231202014108.2017803-1-volodymyr_babchuk@epam.com>
 In-Reply-To: <20231202014108.2017803-1-volodymyr_babchuk@epam.com>
 Accept-Language: en-US
@@ -72,68 +71,77 @@ X-MS-TNEF-Correlator:
 x-mailer: git-send-email 2.42.0
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|AS8PR03MB7285:EE_
-x-ms-office365-filtering-correlation-id: 949ee9dc-8a24-4199-2fba-08dbf2d7cad8
+x-ms-office365-filtering-correlation-id: e70983a7-4d8f-4f2d-df4e-08dbf2d7ca8b
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: KjcoTtbcWIF5OI9JMph43mydcyPVte4s3LMDrNx5qdhvPSNe0/0WYy66kIGdvXPRsG1OII0xO4bQtscefMIdVX1GLtLX9HiNsE6VNylJ28AQEVf/qwoqky8TFmL7sFI4IjznsGXRT/Z31s3w7mFvDPTdiaDZoTIPaXP3PvF2hH9308KG+blQiApKyMSaUkaWxroEdgnkK0L3oWAwUuBBvH8SVOMbhrYs+3KWV4hM1P8eZZzxbbG/s5RVQXM6L8/1aKNEHxaCRhfIUxH2HNIKPnjqiPB0l3xror0VlAV31QJigvn6CsheyKvdMmPccdjCy9NDSoY3IxD1HTaaQZnW9wpkYb7GJYeEuFmqoY2CffJY+RjvBCnnsT8gXGloDrIn5fjk8OPtVu/6QzJsMXG9OdRG06CscvbvNfginu52f/g2u8tmgq3Nnq7okFaMEmYkjYx9OgF74oNmhl+VjUnFH2ciraxSmirBoAr3IHLPvVkwkT5VKizaXLIJ8+G/qUjOky2BX/tti/DDu0VgFutkR7eiYujXkLr1zad/X1Q4aJ+SK9ujG7CjYuQVFCB2Hmi8AaTQV15Y6lXTeEV+45w9UaDxv8Zl4KXDfPvJMeBKrraK2pxBuZtiZ6S2gEXFYYYr
+x-microsoft-antispam-message-info: +s0BWuGbZAopSfMhTEaqbTkFuUiXuR19EHTqtUxKwmvHHJrR2SZyYgmi6h8dGwpOhF0U1Rgpakk8Ien6fQ4WcXK6H5Rd6R1ZfhmCFIBg99OpJFdcLgnpw45HZfvbuKtyuTU7tEW7rDlw5uCm0G2w8MUBLfgvhZ3eTqCSVOyLK9TQYXKKuyantVjZiqjOfvprou4in6zz6VMVmC+K70Eq9l53ActWBCybkQy9+yjIAEzkvxSTgugvYvQkz/6IIkK9y01NjgRyj8RVq7zubFxZu/8aWxh6H0MBO1eWdD5BnT/TS+T3XwsgbqAR7FWhjXG9jvGStypGUEQgrqyS9r6T595gg/ndFj7VOdCuYQXKmZFHR+/RPSyFNtFHJaOK7anCLQ5zwL0fwpqfqywmmftWkg8OVljiV1H6B3xP1B9dDP0vn3zSXHQx5sUhvOO0a+3XOXHOTcJYGOvBxuMSMQXoMBaACOD+xc4awbtWNlM9Ju229ONPeMKiUiL+3u4POjwlGo+H/TP97svK9JAP9+QABsK3Oe0IeHo9+0NZhln8us7b5XVjHUqISrx0e8/EQ/V9eRo9ifJEZNTNe2xVPj8FqkevFhzA6UP2ZqLmXU54XSySZ2aGImMwtqpfE0bAh6V1
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(376002)(396003)(366004)(346002)(136003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(122000001)(38070700009)(41300700001)(2906002)(30864003)(5660300002)(83380400001)(71200400001)(55236004)(38100700002)(6506007)(6512007)(1076003)(2616005)(26005)(66556008)(478600001)(91956017)(6486002)(36756003)(76116006)(66946007)(64756008)(66446008)(8936002)(6916009)(54906003)(86362001)(66476007)(4326008)(316002)(8676002);
+ SFS:(13230031)(39860400002)(376002)(396003)(366004)(346002)(136003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(122000001)(38070700009)(41300700001)(2906002)(5660300002)(83380400001)(71200400001)(55236004)(38100700002)(6506007)(6512007)(1076003)(2616005)(26005)(66556008)(478600001)(91956017)(6486002)(36756003)(76116006)(66946007)(64756008)(66446008)(8936002)(6916009)(54906003)(86362001)(66476007)(4326008)(316002)(8676002);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?VhgFjOw+sealzzey+FGUtYx94cTDA3Fwtvwmq16SmwvPTlWgX5H3ssFwFL?=
- =?iso-8859-1?Q?0Fosjv3h/vxxmJmoZXu9zVwy31vbYcKHiR5dQ08rEMxG7izt6aAlNsTG1k?=
- =?iso-8859-1?Q?Wp7NLi6lmjzElnlT1FH+1W7Bh8xcgqT7TXyV3Wq76j3GPSNwslqNI6ICMl?=
- =?iso-8859-1?Q?qYewA6FbZ+PbXTJw6nt98MtcsvsaAhuRFGxmfZ2KxEvjIAurslCK+tHa9X?=
- =?iso-8859-1?Q?AiBNsmGB47HQH36nDPL9pyNfUfXU7nZaM56c1OojZqxCmWuxqjaVBV52kP?=
- =?iso-8859-1?Q?KmGhZ0RCPCQwmbz7Xz0XyZpHoIQ3iZ+8beBJE3TwuMVqZ7NOJJnxBrcApO?=
- =?iso-8859-1?Q?8p3Ux6bwxtbXP5htXiqyWxeYkJ6Mfk+635xCpJIROSScArkQq+TAOLHxGk?=
- =?iso-8859-1?Q?zceKiRNevznDa9wLalBJYdQ2whq105PF/ddDJWm2c+k1pTf09p+Ya14eeO?=
- =?iso-8859-1?Q?4ICz7qvhdzlYlK750kqsNdzI08MkhhXYbwoZ9wIfVCpfbhOoRwTjYZptnG?=
- =?iso-8859-1?Q?cKx7YZbWVny7y/ftvuhcb+I/LGfNSPW+S9KFOQVzLvQ+UBlQvVbA6tMY4U?=
- =?iso-8859-1?Q?tkOTzdWRKecrUvNw9wBMN883xslrNE2Tnav1A7oGvcxOGuWVRp48NMYt1v?=
- =?iso-8859-1?Q?QEW9FSELaWS13fkGoJ7RfPfXT9DWcGDwaCtV7ORvjjFNtDUseseL67fv2S?=
- =?iso-8859-1?Q?FLYnQ2nUpSWRQg5pUdY6zZSdegViUWjxrnQz3x4fkniSozTynM8wQi2zMp?=
- =?iso-8859-1?Q?W1zLJi/Nj7/88/kin6ARaxEBjymdb11E3N4PnidqHP1TonsV6V44WaVyx3?=
- =?iso-8859-1?Q?R2LR6pDh58b+DDkMluWTaO9VpFVQsCQNp9JmbUly/azjNtK+GBoCUyoy0u?=
- =?iso-8859-1?Q?pLJTEF9D/V02rNYvpvfYVKi0m22cXrvQx+HRwvEjaxfo/T/w6UBuJqwkb8?=
- =?iso-8859-1?Q?fNA6C2fhZ9H/gcFCW1PqiOlKidG1CuYhAF+0CZkn+GY2RR9jlKT03YbeZf?=
- =?iso-8859-1?Q?qBrXSuBifypJswmMCgvcTY1RaWE3fz0I0xKY3kRV9E9EXcq+HcyoQBqmI/?=
- =?iso-8859-1?Q?aSYhrTr0c0fmMg9E53DHYYdC6kOet5T/UvahnLJrAIgxcoyOCzcSeIkm43?=
- =?iso-8859-1?Q?p6Pi47OMb9KNR71cqcoa16Wrwr9XtX/ib0dDmL9sM9vz9QzpyfIMQoZQ6p?=
- =?iso-8859-1?Q?K35griJGW7/Ct2S+wPhd4Z8ezmc3dqkQkiNBeruRoOlpGBE/1L/1TxNi4l?=
- =?iso-8859-1?Q?AWvLxMlcJdWDOR0tsGT3RtBjnK6knZfXiYm8frb5cqAG74njybQDIsAYP4?=
- =?iso-8859-1?Q?Hmx3TPX6pmHmzh1Grnu0uX7hUHhZ31PbUoj2UfVt8wNCqSr5LfphHVJ6uO?=
- =?iso-8859-1?Q?mdMq2fLw7nA3JjWLWe0J/jeV8Zz0r+Dxs+6fvDodPxdT08VWYRCezs5f5B?=
- =?iso-8859-1?Q?X0izHYqIxbhUcYsYRMSMgGxw5EzF4U8Z9VxBaOIkGNNwPXbua2HRWXm0mA?=
- =?iso-8859-1?Q?YPspzzGL2IlgKMuuBbyy3Tp63gvqZu/BMLL/uMP5T9lRq+Ohl+dsr7R4O/?=
- =?iso-8859-1?Q?XRwlG8s3yMhTUD3ScLcf+wvbzh5O+Ai7yxOOvxZNpEoeSM7/tQJY1YdvWS?=
- =?iso-8859-1?Q?2aazPX28x5hKi7u0r88hOWWSRgeAZeKlox4+osPF3zv6V29n0QFQ5pow?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZlV5eThXcW9ZOWYxb3VxbTh6SEVUWmJ1S3BIclJFQ0dmR3gybXd6YmRKT05L?=
+ =?utf-8?B?amY3UXUwVmo1aWdib2pzbkdFUkJtWXNqZmJhZThqZ2Zka1d1L1Z2aTh3U0ha?=
+ =?utf-8?B?elRPNkRoRkorRlBMeERXbVVDZGx0dlhhQTRmNk1adXpNYkU1QTJWWmY5WS91?=
+ =?utf-8?B?Mm55K0JnMUQ2bVBQeWk2NGw0UEY5RTdMY0MzR2hEc0tSbUcwYVRmYkxpRlZ6?=
+ =?utf-8?B?RHRpUjRVUENod0RDVHM0Zk9oTGorSDFUUkQ0aEdJdURJRW52aHE0RmZZQk9B?=
+ =?utf-8?B?MVR3NldKM2taLzdEbzdMd3htcmU3RWRyaFZZOUhDRHUrMEF5b2MvbGpYT3dv?=
+ =?utf-8?B?ZWZ5b1B0N0NlNjJ5Zi94bk5tak11MGo3dlJKNEFQUjBsdlFHMFVZd2FvTGhy?=
+ =?utf-8?B?cjhhdlFieTFrYkZwc1Vpem1rNHE1VDYxRGd4TDNwUEVuTlkrRzRpRTVwVU1F?=
+ =?utf-8?B?aEJnZ2p3YW9EdmFFdDhxVVhZTmpoejZzOHcyaXhpZjVjaXhVVHRhOHRoSy9L?=
+ =?utf-8?B?Szl5aCtoM0Q0SExDbXA3bHc0T0tub1QwOC9GbzVXUTZKbnVEMzlUUjRXOFhW?=
+ =?utf-8?B?UHduV1lsT3BBZmZtZjd3VDd4Uko3R3lyQVFDSFBRMFdUK0l4NFNnTjc4RCtF?=
+ =?utf-8?B?YUwvR1NwcmV6YndPbTlQenVQbDluSlNSeHE1bS9JU3V5Y2dxM2xScnBSMHEr?=
+ =?utf-8?B?dUt5aGYwRk44Njdabm8zUzVaYXF1RHdKeEdhSUZSa2IxdlZFQStxWlFnc2RD?=
+ =?utf-8?B?N1p5T1BUUEJPWXgyb25xR1FTdTk1MktmV0xyU3M4ZmNsNEgybDN0TVVPU2p4?=
+ =?utf-8?B?TkY1OUVkWHlDZ0N3b0U4c3pXVXJuMmFabEpIeGVkYWZSb1RTKzFwME1Yd0dm?=
+ =?utf-8?B?bytIQ2h1M0NoYi94WURuQWo0QVZ0Q2I5YkdGSFZFeERsRUdXVEFyQ2xBUEFS?=
+ =?utf-8?B?R2tRUXBadVBrVi9xVjBwU25GTkMrcWhjQjRaN1ZzbTZibVp1d29NdjAxYjBk?=
+ =?utf-8?B?NTVzTUUyRzkzTkdqRmFLUit3a0FsSXlSWGRQTEUxYm5TWVY0c3pYd3RvMWZp?=
+ =?utf-8?B?MUVHcmxDVEdVVWg0ckhEUUdBY21VOXMyTUVGeUhyMERWUFA2amJaMkRoOHIy?=
+ =?utf-8?B?R09TYXlLUitjRWgvOFpYT2JBWmg2T3VvZ3VwS0oycDl2RkFEak51Tjh5cmo3?=
+ =?utf-8?B?cCtZV3JneUora01OY09tWDFrK2RBdU1nSlIrUnQrSEhVME9RMzM5NjVhZkk1?=
+ =?utf-8?B?QzJQRStKM0pxOWpsSm9xMzRhTGc3ODZUenpiRTRzeVk3b0lGSUx1cWRYTFU4?=
+ =?utf-8?B?THFUQTRFTldtME1oS3lWQk1kVDBiUW9zUDRmSHEza3pOdkk5RHY3S2NZdHFi?=
+ =?utf-8?B?alVjZW5NbmVGUEhuQXZzRDRMZWMzRE0va2xWdE41VkNWZXpTSHd2U2tlMm5m?=
+ =?utf-8?B?QS9YY2psb1dCd0VRVjd4VUdOZFpJYTkzOVdTNHcvaU9hY2F3Z1BvRHAwbllG?=
+ =?utf-8?B?bUZVSVJ4UWRGMjZsVWtacGdOWWkwK1dvaXpJNHZXNWRYeTNJSCtRUlFDODM1?=
+ =?utf-8?B?VTdndVhYMFZIUW9wTk5nZWEwVjhwMTJnMytISUpRWVNvdUh0czJqaWgwSkFV?=
+ =?utf-8?B?djB0RW5ZTjhHMGM0YjU2ZkNZQkxoNVBWMnVsTVcxbnhkSGdDN3V0bHJ5cFBh?=
+ =?utf-8?B?U0tqYjlNNC9CTHpkVHBBVkE3cmF0ZmRLRHJtVE8xL01vaDJKbXo1YURPNFY1?=
+ =?utf-8?B?NXF3RSt4M2greXJlVkh5UmdhUFlBRENnb3RlY0JSa0lNTWwrRytYazg4VVdK?=
+ =?utf-8?B?K2NmdG5wQStBTlRIOW9IYnRQRVpnWUNPQzRIMDZpcnRlOUVHbktPZUdGWXFo?=
+ =?utf-8?B?VHFiWjlYWGg1TkFoc2hwUkFsSUNlMFptbDErdXZYNTI1WndIU0p2MnZtVzJI?=
+ =?utf-8?B?WmwzU1VuSmxjbThkUmU4WDZUVmhidXJKVk1KdEJvWVhER21QZk9TMFZBMnFH?=
+ =?utf-8?B?Q2wrWHlSd3Y5SVdQUnZJWXZERFU3THNxR1pHTms1MU42REc1dk1tcmFlSHla?=
+ =?utf-8?B?VGhQclkvYUdwTFRLMlJVT0MrZjZ5cSsxUUUzdW13VVYxVnZaUERZbTZEQ0Zp?=
+ =?utf-8?B?RVQ2ZG5pMEFkZnB0cW14dDA4L3Z2YTdvaWRuWGNSMXlpR2hFNEtkRkI2dXJy?=
+ =?utf-8?B?VVE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A693FC4ED0861F4C8A66227288172DCC@eurprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-OriginatorOrg: epam.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 949ee9dc-8a24-4199-2fba-08dbf2d7cad8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2023 01:41:23.7697 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e70983a7-4d8f-4f2d-df4e-08dbf2d7ca8b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2023 01:41:23.2558 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: K5v7ptYctR9rW7ZhsrwIHjfqXwoq44w6D1no8yvkruzTXjGGCP8BfZJENombVT6PWoRF/fHWT/9E7P7bBxmCDTJNraWf7drlA2uQX0A819I=
+X-MS-Exchange-CrossTenant-userprincipalname: 93VqHggG33F6TgXuJ/tp66ZEcCvhd05TUHlugZb2BVT1QYQD+oEV6jiM32nRXuyNPtb5/A2Nh11NbNZ/fqpuSFmg5uaOwPOcOc0sGQeMk/Y=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB7285
-X-Proofpoint-ORIG-GUID: zPLSo3Bgabl3StRLPmaNAY-xl3gPbGSz
-X-Proofpoint-GUID: zPLSo3Bgabl3StRLPmaNAY-xl3gPbGSz
+X-Proofpoint-ORIG-GUID: 8ZBby8TmH1h2ph8djR-WB88q5H98YnKi
+X-Proofpoint-GUID: 8ZBby8TmH1h2ph8djR-WB88q5H98YnKi
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-01_24,2023-11-30_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- phishscore=0 suspectscore=0 impostorscore=0 mlxscore=0 adultscore=0
- malwarescore=0 lowpriorityscore=0 mlxlogscore=999 clxscore=1015
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=999
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 impostorscore=0 clxscore=1015
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311060000 definitions=main-2312020009
 Received-SPF: pass client-ip=148.163.137.242;
  envelope-from=prvs=6700ee1bd8=volodymyr_babchuk@epam.com;
@@ -161,403 +169,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-
-The bridge is needed for virtio-pci support, as QEMU can emulate the
-whole bridge with any virtio-pci devices connected to it.
-
-This patch provides a flexible way to configure PCIe bridge resources
-using QEMU machine properties. We made this for several reasons:
-
-- We don't want to clash with vPCI devices, so we need information
-  from Xen toolstack on which PCI bus to use.
-- The guest memory layout that describes these resources is not stable
-  and may vary between guests, so we cannot rely on static resources
-  to be always the same for both ends.
-- Also the device-models which run in different domains and serve
-  virtio-pci devices for the same guest should use different host
-  bridge resources for Xen to distinguish. The rule for the guest
-  device-tree generation is one PCI host bridge per backend domain.
-
-Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-
----
-
-Changes in v3:
-
- - Use QOM properties instead of reading from XenStore
- - Remove unneeded includes
- - Move pcie_* fields into "struct cfg"
-
-Changes in v2:
-
- - Renamed virtio_pci_host to pcie_host entries in XenStore, because
- there is nothing specific to virtio-pci: any PCI device can be
- emulated via this newly created bridge.
----
- hw/arm/xen_arm.c            | 226 ++++++++++++++++++++++++++++++++++++
- hw/xen/xen-hvm-common.c     |   9 +-
- include/hw/xen/xen_native.h |   8 +-
- 3 files changed, 240 insertions(+), 3 deletions(-)
-
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index b9c3ae14b6..dc6d3a1d82 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -34,6 +34,7 @@
- #include "hw/xen/xen-hvm-common.h"
- #include "sysemu/tpm.h"
- #include "hw/xen/arch_hvm.h"
-+#include "hw/pci-host/gpex.h"
-=20
- #define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
- OBJECT_DECLARE_SIMPLE_TYPE(XenArmState, XEN_ARM)
-@@ -57,6 +58,10 @@ struct XenArmState {
-=20
-     struct {
-         uint64_t tpm_base_addr;
-+        MemMapEntry pcie_mmio;
-+        MemMapEntry pcie_ecam;
-+        MemMapEntry pcie_mmio_high;
-+        int         pcie_irq_base;
-     } cfg;
- };
-=20
-@@ -73,6 +78,15 @@ static MemoryRegion ram_lo, ram_hi;
- #define NR_VIRTIO_MMIO_DEVICES   \
-    (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_FIRST)
-=20
-+#define XEN_ARM_PCIE_ECAM_BASE          "pcie-ecam-base"
-+#define XEN_ARM_PCIE_ECAM_SIZE          "pcie-ecam-size"
-+#define XEN_ARM_PCIE_MEM_BASE           "pcie-mem-base"
-+#define XEN_ARM_PCIE_MEM_SIZE           "pcie-mem-size"
-+#define XEN_ARM_PCIE_PREFETCH_BASE      "pcie-prefetch-mem-base"
-+#define XEN_ARM_PCIE_PREFETCH_SIZE      "pcie-prefetch-mem-size"
-+#define XEN_ARM_PCIE_IRQ_BASE           "pcie-irq-base"
-+
-+/* TODO It should be xendevicemodel_set_pci_intx_level() for PCI interrupt=
-s. */
- static void xen_set_irq(void *opaque, int irq, int level)
- {
-     if (xendevicemodel_set_irq_level(xen_dmod, xen_domid, irq, level)) {
-@@ -129,6 +143,89 @@ static void xen_init_ram(MachineState *machine)
-     }
- }
-=20
-+static bool xen_validate_pcie_config(XenArmState *xam)
-+{
-+    if (xam->cfg.pcie_ecam.base =3D=3D 0 &&
-+        xam->cfg.pcie_ecam.size =3D=3D 0 &&
-+        xam->cfg.pcie_mmio.base =3D=3D 0 &&
-+        xam->cfg.pcie_mmio.size =3D=3D 0 &&
-+        xam->cfg.pcie_mmio_high.base =3D=3D 0 &&
-+        xam->cfg.pcie_mmio_high.size =3D=3D 0 &&
-+        xam->cfg.pcie_irq_base =3D=3D 0) {
-+
-+        /* It's okay, user just don't want PCIe brige */
-+
-+        return false;
-+    }
-+
-+    if (xam->cfg.pcie_ecam.base =3D=3D 0 ||
-+        xam->cfg.pcie_ecam.size =3D=3D 0 ||
-+        xam->cfg.pcie_mmio.base =3D=3D 0 ||
-+        xam->cfg.pcie_mmio.size =3D=3D 0 ||
-+        xam->cfg.pcie_mmio_high.base =3D=3D 0 ||
-+        xam->cfg.pcie_mmio_high.size =3D=3D 0 ||
-+        xam->cfg.pcie_irq_base =3D=3D 0) {
-+
-+        /* User provided some PCIe options, but not all of them */
-+
-+        error_printf("Incomplete PCIe bridge configuration\n");
-+
-+        exit(1);
-+    }
-+
-+    return true;
-+}
-+
-+static void xen_create_pcie(XenArmState *xam)
-+{
-+    MemoryRegion *mmio_alias, *mmio_alias_high, *mmio_reg;
-+    MemoryRegion *ecam_alias, *ecam_reg;
-+    DeviceState *dev;
-+    int i;
-+
-+    dev =3D qdev_new(TYPE_GPEX_HOST);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+    /* Map ECAM space */
-+    ecam_alias =3D g_new0(MemoryRegion, 1);
-+    ecam_reg =3D sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0);
-+    memory_region_init_alias(ecam_alias, OBJECT(dev), "pcie-ecam",
-+                             ecam_reg, 0, xam->cfg.pcie_ecam.size);
-+    memory_region_add_subregion(get_system_memory(), xam->cfg.pcie_ecam.ba=
-se,
-+                                ecam_alias);
-+
-+    /* Map the MMIO space */
-+    mmio_alias =3D g_new0(MemoryRegion, 1);
-+    mmio_reg =3D sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
-+    memory_region_init_alias(mmio_alias, OBJECT(dev), "pcie-mmio",
-+                             mmio_reg,
-+                             xam->cfg.pcie_mmio.base,
-+                             xam->cfg.pcie_mmio.size);
-+    memory_region_add_subregion(get_system_memory(), xam->cfg.pcie_mmio.ba=
-se,
-+                                mmio_alias);
-+
-+    /* Map the MMIO_HIGH space */
-+    mmio_alias_high =3D g_new0(MemoryRegion, 1);
-+    memory_region_init_alias(mmio_alias_high, OBJECT(dev), "pcie-mmio-high=
-",
-+                             mmio_reg,
-+                             xam->cfg.pcie_mmio_high.base,
-+                             xam->cfg.pcie_mmio_high.size);
-+    memory_region_add_subregion(get_system_memory(),
-+                                xam->cfg.pcie_mmio_high.base,
-+                                mmio_alias_high);
-+
-+    /* Legacy PCI interrupts (#INTA - #INTD) */
-+    for (i =3D 0; i < GPEX_NUM_IRQS; i++) {
-+        qemu_irq irq =3D qemu_allocate_irq(xen_set_irq, NULL,
-+                                         xam->cfg.pcie_irq_base + i);
-+
-+        sysbus_connect_irq(SYS_BUS_DEVICE(dev), i, irq);
-+        gpex_set_irq_num(GPEX_HOST(dev), i, xam->cfg.pcie_irq_base + i);
-+    }
-+
-+    DPRINTF("Created PCIe host bridge\n");
-+}
-+
- void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
- {
-     hw_error("Invalid ioreq type 0x%x\n", req->type);
-@@ -189,6 +286,12 @@ static void xen_arm_init(MachineState *machine)
-     xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener=
-);
-=20
-     xen_create_virtio_mmio_devices(xam);
-+    if (xen_validate_pcie_config(xam)) {
-+        xen_create_pcie(xam);
-+    } else {
-+        DPRINTF("PCIe host bridge is not configured,"
-+                " only virtio-mmio can be used\n");
-+    }
-=20
- #ifdef CONFIG_TPM
-     if (xam->cfg.tpm_base_addr) {
-@@ -225,6 +328,90 @@ static void xen_arm_set_tpm_base_addr(Object *obj, Vis=
-itor *v,
- }
- #endif
-=20
-+static void xen_arm_get_pcie_prop(Object *obj, Visitor *v,
-+                                  const char *name, void *opaque,
-+                                  Error **errp)
-+{
-+    XenArmState *xam =3D XEN_ARM(obj);
-+    hwaddr *target;
-+
-+    if (!strcmp(name, XEN_ARM_PCIE_ECAM_BASE)) {
-+        target =3D &xam->cfg.pcie_ecam.base;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_ECAM_SIZE)) {
-+        target =3D &xam->cfg.pcie_ecam.size;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_MEM_BASE)) {
-+        target =3D &xam->cfg.pcie_mmio.base;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_MEM_SIZE)) {
-+        target =3D &xam->cfg.pcie_mmio.size;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_PREFETCH_BASE)) {
-+        target =3D &xam->cfg.pcie_mmio_high.base;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_PREFETCH_SIZE)) {
-+        target =3D &xam->cfg.pcie_mmio_high.size;
-+    } else {
-+        /* Unreachable */
-+        assert(false);
-+        return;
-+    }
-+
-+    visit_type_uint64(v, name, target, errp);
-+}
-+
-+static void xen_arm_set_pcie_prop(Object *obj, Visitor *v,
-+                                  const char *name, void *opaque,
-+                                  Error **errp)
-+{
-+    XenArmState *xam =3D XEN_ARM(obj);
-+    uint64_t value;
-+    hwaddr *target;
-+
-+    if (!strcmp(name, XEN_ARM_PCIE_ECAM_BASE)) {
-+        target =3D &xam->cfg.pcie_ecam.base;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_ECAM_SIZE)) {
-+        target =3D &xam->cfg.pcie_ecam.size;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_MEM_BASE)) {
-+        target =3D &xam->cfg.pcie_mmio.base;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_MEM_SIZE)) {
-+        target =3D &xam->cfg.pcie_mmio.size;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_PREFETCH_BASE)) {
-+        target =3D &xam->cfg.pcie_mmio_high.base;
-+    } else if (!strcmp(name, XEN_ARM_PCIE_PREFETCH_SIZE)) {
-+        target =3D &xam->cfg.pcie_mmio_high.size;
-+    } else {
-+        /* Unreachable */
-+        assert(false);
-+        return;
-+    }
-+
-+    if (!visit_type_uint64(v, name, &value, errp)) {
-+        return;
-+    }
-+    *target =3D value;
-+}
-+
-+static void xen_arm_get_pcie_irq_base(Object *obj, Visitor *v,
-+                                      const char *name, void *opaque,
-+                                      Error **errp)
-+{
-+    XenArmState *xam =3D XEN_ARM(obj);
-+    int64_t value =3D xam->cfg.pcie_irq_base;
-+
-+    visit_type_int(v, name, &value, errp);
-+}
-+
-+static void xen_arm_set_pcie_irq_base(Object *obj, Visitor *v,
-+                                      const char *name, void *opaque,
-+                                      Error **errp)
-+{
-+    XenArmState *xam =3D XEN_ARM(obj);
-+    int64_t value;
-+
-+    if (!visit_type_int(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    xam->cfg.pcie_irq_base =3D value;
-+}
-+
- static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
- {
-=20
-@@ -246,6 +433,45 @@ static void xen_arm_machine_class_init(ObjectClass *oc=
-, void *data)
-=20
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_TPM_TIS_SYSBUS);
- #endif
-+
-+    object_class_property_add(oc, XEN_ARM_PCIE_ECAM_BASE, "uint64_t",
-+                              xen_arm_get_pcie_prop,
-+                              xen_arm_set_pcie_prop, NULL, NULL);
-+    object_class_property_set_description(oc, XEN_ARM_PCIE_ECAM_BASE,
-+        "Base address for ECAM range of virtual PCIe host bridge");
-+    object_class_property_add(oc, XEN_ARM_PCIE_ECAM_SIZE, "uint64_t",
-+                              xen_arm_get_pcie_prop,
-+                              xen_arm_set_pcie_prop, NULL, NULL);
-+    object_class_property_set_description(oc, XEN_ARM_PCIE_ECAM_SIZE,
-+        "Size of ECAM range of virtual PCIe host bridge");
-+
-+    object_class_property_add(oc, XEN_ARM_PCIE_MEM_BASE, "uint64_t",
-+                              xen_arm_get_pcie_prop,
-+                              xen_arm_set_pcie_prop, NULL, NULL);
-+    object_class_property_set_description(oc, XEN_ARM_PCIE_MEM_BASE,
-+        "Base address for non-prefetchable memory of virtual PCIe host bri=
-dge");
-+    object_class_property_add(oc, XEN_ARM_PCIE_MEM_SIZE, "uint64_t",
-+                              xen_arm_get_pcie_prop,
-+                              xen_arm_set_pcie_prop, NULL, NULL);
-+    object_class_property_set_description(oc, XEN_ARM_PCIE_MEM_SIZE,
-+        "Size of non-prefetchable memory of virtual PCIe host bridge");
-+
-+    object_class_property_add(oc, XEN_ARM_PCIE_PREFETCH_BASE, "uint64_t",
-+                              xen_arm_get_pcie_prop,
-+                              xen_arm_set_pcie_prop, NULL, NULL);
-+    object_class_property_set_description(oc, XEN_ARM_PCIE_PREFETCH_BASE,
-+        "Base address for prefetchable memory of virtual PCIe host bridge"=
-);
-+    object_class_property_add(oc, XEN_ARM_PCIE_PREFETCH_SIZE, "uint64_t",
-+                              xen_arm_get_pcie_prop,
-+                              xen_arm_set_pcie_prop, NULL, NULL);
-+    object_class_property_set_description(oc, XEN_ARM_PCIE_PREFETCH_SIZE,
-+        "Size of prefetchable memory of virtual PCIe host bridge");
-+
-+    object_class_property_add(oc, XEN_ARM_PCIE_IRQ_BASE, "int",
-+                              xen_arm_get_pcie_irq_base,
-+                              xen_arm_set_pcie_irq_base, NULL, NULL);
-+    object_class_property_set_description(oc, XEN_ARM_PCIE_IRQ_BASE,
-+        "Number of first PCI legacy interrupt for PCIe host bridge");
- }
-=20
- static const TypeInfo xen_arm_machine_type =3D {
-diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index 2e7897dbd2..19fcccdb16 100644
---- a/hw/xen/xen-hvm-common.c
-+++ b/hw/xen/xen-hvm-common.c
-@@ -47,6 +47,8 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, =
-MemoryRegion *mr,
-     g_free(pfn_list);
- }
-=20
-+uint16_t xen_pci_segment;
-+
- static void xen_set_memory(struct MemoryListener *listener,
-                            MemoryRegionSection *section,
-                            bool add)
-@@ -382,7 +384,12 @@ static void cpu_ioreq_config(XenIOState *state, ioreq_=
-t *req)
-     }
-=20
-     QLIST_FOREACH(xendev, &state->dev_list, entry) {
--        if (xendev->sbdf !=3D sbdf) {
-+        /*
-+         * As we append xen_pci_segment just before forming dm_op in
-+         * xen_map_pcidev() we need to check with appended xen_pci_segment
-+         * here as well.
-+         */
-+        if ((xendev->sbdf | (xen_pci_segment << 16)) !=3D sbdf) {
-             continue;
-         }
-=20
-diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-index 6f09c48823..2b1debaff4 100644
---- a/include/hw/xen/xen_native.h
-+++ b/include/hw/xen/xen_native.h
-@@ -431,6 +431,8 @@ static inline void xen_unmap_io_section(domid_t dom,
-                                                     0, start_addr, end_add=
-r);
- }
-=20
-+extern uint16_t xen_pci_segment;
-+
- static inline void xen_map_pcidev(domid_t dom,
-                                   ioservid_t ioservid,
-                                   PCIDevice *pci_dev)
-@@ -441,7 +443,8 @@ static inline void xen_map_pcidev(domid_t dom,
-=20
-     trace_xen_map_pcidev(ioservid, pci_dev_bus_num(pci_dev),
-                          PCI_SLOT(pci_dev->devfn), PCI_FUNC(pci_dev->devfn=
-));
--    xendevicemodel_map_pcidev_to_ioreq_server(xen_dmod, dom, ioservid, 0,
-+    xendevicemodel_map_pcidev_to_ioreq_server(xen_dmod, dom, ioservid,
-+                                              xen_pci_segment,
-                                               pci_dev_bus_num(pci_dev),
-                                               PCI_SLOT(pci_dev->devfn),
-                                               PCI_FUNC(pci_dev->devfn));
-@@ -457,7 +460,8 @@ static inline void xen_unmap_pcidev(domid_t dom,
-=20
-     trace_xen_unmap_pcidev(ioservid, pci_dev_bus_num(pci_dev),
-                            PCI_SLOT(pci_dev->devfn), PCI_FUNC(pci_dev->dev=
-fn));
--    xendevicemodel_unmap_pcidev_from_ioreq_server(xen_dmod, dom, ioservid,=
- 0,
-+    xendevicemodel_unmap_pcidev_from_ioreq_server(xen_dmod, dom, ioservid,
-+                                                  xen_pci_segment,
-                                                   pci_dev_bus_num(pci_dev)=
-,
-                                                   PCI_SLOT(pci_dev->devfn)=
-,
-                                                   PCI_FUNC(pci_dev->devfn)=
-);
---=20
-2.42.0
+RnJvbTogT2xla3NhbmRyIFR5c2hjaGVua28gPG9sZWtzYW5kcl90eXNoY2hlbmtvQGVwYW0uY29t
+Pg0KDQpUaGUgbnVtYmVyIG9mIHZDUFVzIHVzZWQgZm9yIHRoZSBJT1JFUSBjb25maWd1cmF0aW9u
+IChtYWNoaW5lLT5zbXAuY3B1cykNCnNob3VsZCByZWFsbHkgbWF0Y2ggdGhlIHN5c3RlbSB2YWx1
+ZSBhcyBmb3IgZWFjaCB2Q1BVIHdlIHNldHVwIGEgZGVkaWNhdGVkDQpldnRjaG4gZm9yIHRoZSBj
+b21tdW5pY2F0aW9uIHdpdGggWGVuIGF0IHRoZSBydW50aW1lLiBUaGlzIGlzIG5lZWRlZA0KZm9y
+IHRoZSBJT1JFUSB0byBiZSBwcm9wZXJseSBjb25maWd1cmVkIGFuZCB3b3JrIGlmIHRoZSBpbnZv
+bHZlZCBkb21haW4NCmhhcyBtb3JlIHRoYW4gb25lIHZDUFUgYXNzaWduZWQuDQoNClNldCB0aGUg
+bnVtYmVyIG9mIGN1cnJlbnQgc3VwcG9ydGVkIGd1ZXN0IHZDUFVzIGhlcmUgKDEyOCkgd2hpY2gg
+aXMNCmRlZmluZWQgaW4gcHVibGljIGhlYWRlciBhcmNoLWFybS5oLiBTbyB3aGVuIHRoZSB0b29s
+c3RhY2sgcGFzcw0KbWF4X3ZjcHVzIHVzaW5nICItc21wIiBhcmcsIG1hY2hpbmUgY3JlYXRpb24g
+d2lsbCBub3QgZmFpbC4NCg0KU2lnbmVkLW9mZi1ieTogT2xla3NhbmRyIFR5c2hjaGVua28gPG9s
+ZWtzYW5kcl90eXNoY2hlbmtvQGVwYW0uY29tPg0KU2lnbmVkLW9mZi1ieTogVm9sb2R5bXlyIEJh
+YmNodWsgPHZvbG9keW15cl9iYWJjaHVrQGVwYW0uY29tPg0KUmV2aWV3ZWQtYnk6IFBoaWxpcHBl
+IE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGluYXJvLm9yZz4NCi0tLQ0KIGh3L2FybS94ZW5fYXJt
+LmMgfCAyICstDQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0p
+DQoNCmRpZmYgLS1naXQgYS9ody9hcm0veGVuX2FybS5jIGIvaHcvYXJtL3hlbl9hcm0uYw0KaW5k
+ZXggYTU2MzE1MjlkMC4uYjljM2FlMTRiNiAxMDA2NDQNCi0tLSBhL2h3L2FybS94ZW5fYXJtLmMN
+CisrKyBiL2h3L2FybS94ZW5fYXJtLmMNCkBAIC0yMzEsNyArMjMxLDcgQEAgc3RhdGljIHZvaWQg
+eGVuX2FybV9tYWNoaW5lX2NsYXNzX2luaXQoT2JqZWN0Q2xhc3MgKm9jLCB2b2lkICpkYXRhKQ0K
+ICAgICBNYWNoaW5lQ2xhc3MgKm1jID0gTUFDSElORV9DTEFTUyhvYyk7DQogICAgIG1jLT5kZXNj
+ID0gIlhlbiBQYXJhLXZpcnR1YWxpemVkIFBDIjsNCiAgICAgbWMtPmluaXQgPSB4ZW5fYXJtX2lu
+aXQ7DQotICAgIG1jLT5tYXhfY3B1cyA9IDE7DQorICAgIG1jLT5tYXhfY3B1cyA9IEdVRVNUX01B
+WF9WQ1BVUzsNCiAgICAgbWMtPmRlZmF1bHRfbWFjaGluZV9vcHRzID0gImFjY2VsPXhlbiI7DQog
+ICAgIC8qIFNldCBleHBsaWNpdGx5IGhlcmUgdG8gbWFrZSBzdXJlIHRoYXQgcmVhbCByYW1fc2l6
+ZSBpcyBwYXNzZWQgKi8NCiAgICAgbWMtPmRlZmF1bHRfcmFtX3NpemUgPSAwOw0KLS0gDQoyLjQy
+LjANCg==
 
