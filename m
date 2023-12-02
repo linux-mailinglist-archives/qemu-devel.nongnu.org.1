@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B863801B48
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:02:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C477801B56
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:03:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9Kvw-0004Kz-Ov; Sat, 02 Dec 2023 03:01:06 -0500
+	id 1r9KwA-0004O2-OJ; Sat, 02 Dec 2023 03:01:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9Kvg-0004IS-TG
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:49 -0500
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ id 1r9Kvl-0004K6-TM
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:53 -0500
+Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9Kve-0004yR-NX
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:48 -0500
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-1fb04b2251bso510056fac.0
- for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:00:46 -0800 (PST)
+ id 1r9Kvk-0004zd-7l
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:53 -0500
+Received: by mail-il1-x12e.google.com with SMTP id
+ e9e14a558f8ab-35c18e55633so12373205ab.2
+ for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:00:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504045; x=1702108845;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504051; x=1702108851;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vEZSvELmMn+CZAABU4UFznXntadvaecyTxpcvBhacJw=;
- b=raG8ubyCjw63i3WfjYpq6JzcDsXn0D8prKKwRLHMavmQFhxFK6vCLi8jbuufkBnvqA
- G6JXqjGIrllo1q4TmmJhO0tloouU4lVajciQ5mfqRmXj7o7XfIbyxsxBoHH9/wNTIlUy
- H/CA2Uz/5ny4n/zIBpSeaUg+jqAPpeH+RLClRpP8FEnIHEYiUMFnuULbgQw5NQRIharU
- 8jZOVmlVYgP8dtI+JcLPZ4rKQ8SoGqBvpEUf5EQXtSuH7hOFkaYQ67+ln0djpFfR6abf
- AFEjodNUp+Gt9/1xZkfxXQweiWFIKlnDSIoZScwEj7PFxF65De1XdGBFsuPn3LnGdZFH
- 4giA==
+ :reply-to; bh=Bj8XVIcfBYxFCt7yVr0gyoBi8ZlaEENnjEghOjifY8I=;
+ b=jrIIeuK9mldjdWmrTFtJDYi54EqW0GcbmzTMs1zBt8Tmrw/27Ldx1MLakuywnnherw
+ kzvKASXC8CP1T0lplz4srN1ynT22Sla7W3+BiJ8TG6rU3EtrkZillHO3H08jaCVbO63n
+ xLx9tMq7+NWM/DiQ5n+9nZYbm+J0YqBL1R/3pvWWp8cJGWE3FzxN47LhkEcmJ3NaXOkf
+ ryAz2/aykkCTC6OM4sdT/0kQGks8en9nlm+9FCZPZQzRa5I8OXK17LepdxaJGIVHFpxK
+ WF4B22VbBcansVTF00cC8EZSwikG1UNuolD+CVJjwp07ModOdAMnkCk7dlamOBI5XdX3
+ LM5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701504045; x=1702108845;
+ d=1e100.net; s=20230601; t=1701504051; x=1702108851;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vEZSvELmMn+CZAABU4UFznXntadvaecyTxpcvBhacJw=;
- b=lG0+Rjko8WS753JJKnR93PYRlayAz1g5xo07nYOCx2kqYmD2eBAog5dx0E/87eV6Pg
- hkeSynfcFBVapUFzR1qKBWAMPxXg4ZO/hM/FZvfmIvnwQZjaG2iyp+jOryWCpC/hTmut
- cTa/7+N8U7VyZUbdw8wBpjHqI15yWd1q6bmyRc4pgZr9TKtBBHNPjlPN+XbchtYgKYq3
- db+QdlXvDmXATMlLDlXWR1BH1NBXNO/eZGzFW8MyilCkTlFBv5taKlJkquCT62lwbmQf
- MajxE6lYjgD3D4z3OTLveR7Wo2ELRULgIMEi07jAQJPQ2h4/U/rJvRhxchAkikvoG3Xf
- JMdg==
-X-Gm-Message-State: AOJu0YxHEtzMT+wzClaUJduqVBpIZJ16biSwFPhLx2CfZ4emXevk3fuG
- dB1lcHF2fxNkFnIjUEQm1vATQw==
-X-Google-Smtp-Source: AGHT+IGAl67z3a/aDV7FWG8vBviS0LIZNv65Vrp/DLSXRuKZijKJCgFo0GYNGuk4Eaaf7OVEg3cizQ==
-X-Received: by 2002:a05:6870:c0b:b0:1fa:edc2:892e with SMTP id
- le11-20020a0568700c0b00b001faedc2892emr1224357oab.11.1701504045535; 
- Sat, 02 Dec 2023 00:00:45 -0800 (PST)
+ bh=Bj8XVIcfBYxFCt7yVr0gyoBi8ZlaEENnjEghOjifY8I=;
+ b=bEkqj/FQiZDeHf74MaSCfQkKFkUtJ28gNLoipPKn+CNVyD8pG8IlvqkxqVMyQOhHIv
+ jm51+PX0S5Kzmc8wDdgtayyqmqzjElHLPsTVbDjUEof+WCEbLtpGL01gkUTSme6WxnCO
+ j0zlR8X1qZpL4gjeiPkLr32lQfPCvTH1xSKYQufbT1laNUCe2sI8X+bQEayP8x63r6Om
+ 9g3C51gLTKjfRKdxPqyVeDtQQvJksxSGV9n3QFhQbcImI2bLD8NY3AheabCWoITPW8sZ
+ YsJ1oW2j0NNmAdfLLKsJINXweih+gkOO1IRJ5VwnEz6TZEGFHL5IHTRqgrUYiRQYZYHE
+ YhBw==
+X-Gm-Message-State: AOJu0YwNeESJqosECA9Hiby2vbvbl5AJb/P4yT4sMGMklE697qh6Smi4
+ bGE1O2uHxvPQaUMJx2jKzsm1yg==
+X-Google-Smtp-Source: AGHT+IG6Xiul2ufJptSl6rNTgX/WyEaTOhl3ssbdyNFFtxdeVXcZh8guEm61cpqewSpBe2uVM9+hZg==
+X-Received: by 2002:a92:cb4d:0:b0:35d:5995:798b with SMTP id
+ f13-20020a92cb4d000000b0035d5995798bmr1130440ilq.37.1701504050726; 
+ Sat, 02 Dec 2023 00:00:50 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- a11-20020a17090acb8b00b00286541736a4sm2813051pju.29.2023.12.02.00.00.42
+ bg6-20020a17090b0d8600b00286558ad352sm2735558pjb.8.2023.12.02.00.00.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 02 Dec 2023 00:00:45 -0800 (PST)
+ Sat, 02 Dec 2023 00:00:50 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 02 Dec 2023 17:00:26 +0900
-Subject: [PATCH 03/14] qdev: Add DeviceClass::hide()
+Date: Sat, 02 Dec 2023 17:00:27 +0900
+Subject: [PATCH 04/14] hw/pci: Add pci-failover
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231202-sriov-v1-3-32b3570f7bd6@daynix.com>
+Message-Id: <20231202-sriov-v1-4-32b3570f7bd6@daynix.com>
 References: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
 In-Reply-To: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -77,15 +77,14 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Yui Washizu <yui.washidu@gmail.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2001:4860:4864:20::31;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x31.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::12e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-il1-x12e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,96 +100,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DeviceClass::hide() is a better alternative to
-DeviceListener::hide_device() that does not need listener registration
-and is contained in specific devices that need the hiding capability.
+pci-failover allows to create a device capable of failover without
+relying on DeviceListener::hide_device(), which intrudes the
+pci-device implementation from outside.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/qdev-core.h | 33 +++++++++++++++++++++++----------
- system/qdev-monitor.c  | 11 +++++++++++
- 2 files changed, 34 insertions(+), 10 deletions(-)
+ include/hw/pci/pci_device.h | 14 ++++++++++++++
+ hw/pci/pci.c                | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 6befbca311..de221b6f02 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -56,16 +56,15 @@
-  * Hiding a device
-  * ---------------
-  *
-- * To hide a device, a DeviceListener function hide_device() needs to
-- * be registered. It can be used to defer adding a device and
-- * therefore hide it from the guest. The handler registering to this
-- * DeviceListener can save the QOpts passed to it for re-using it
-- * later. It must return if it wants the device to be hidden or
-- * visible. When the handler function decides the device shall be
-- * visible it will be added with qdev_device_add() and realized as any
-- * other device. Otherwise qdev_device_add() will return early without
-- * adding the device. The guest will not see a "hidden" device until
-- * it was marked visible and qdev_device_add called again.
-+ * To hide a device, a DeviceClass function hide() needs to be registered. It
-+ * can be used to defer adding a device and therefore hide it from the guest.
-+ * The handler can save the QOpts passed to it for re-using it later. It must
-+ * return if it wants the device to be hidden or visible. When the handler
-+ * function decides the device shall be visible it will be added with
-+ * qdev_device_add() and realized as any other device. Otherwise
-+ * qdev_device_add() will return early without adding the device. The guest
-+ * will not see a "hidden" device until it was marked visible and
-+ * qdev_device_add called again.
-  *
-  */
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index 8e287c5414..a7bfb192e8 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -9,6 +9,11 @@ typedef struct PCIDeviceClass PCIDeviceClass;
+ DECLARE_OBJ_CHECKERS(PCIDevice, PCIDeviceClass,
+                      PCI_DEVICE, TYPE_PCI_DEVICE)
  
-@@ -90,6 +89,8 @@ typedef enum DeviceCategory {
-     DEVICE_CATEGORY_MAX
- } DeviceCategory;
- 
-+typedef bool (*DeviceHide)(DeviceClass *dc, const QDict *device_opts,
-+                           bool from_json, Error **errp);
- typedef void (*DeviceRealize)(DeviceState *dev, Error **errp);
- typedef void (*DeviceUnrealize)(DeviceState *dev);
- typedef void (*DeviceReset)(DeviceState *dev);
-@@ -151,6 +152,18 @@ struct DeviceClass {
-     bool hotpluggable;
- 
-     /* callbacks */
-+    /**
-+     * @hide: informs qdev if a device should be visible or hidden.
-+     *
-+     * This callback is called upon init of the DeviceState.
-+     * We can hide a failover device depending for example on the device
-+     * opts.
-+     *
-+     * On errors, it returns false and errp is set. Device creation
-+     * should fail in this case.
-+     */
-+    DeviceHide hide;
++#define TYPE_PCI_FAILOVER "pci-failover"
++typedef struct PCIFailoverClass PCIFailoverClass;
++DECLARE_CLASS_CHECKERS(PCIFailoverClass, PCI_FAILOVER, TYPE_PCI_FAILOVER)
++#define PCI_FAILOVER(obj) INTERFACE_CHECK(PciFailover, (obj), TYPE_PCI_FAILOVER)
 +
-     /**
-      * @reset: deprecated device reset method pointer
-      *
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 71c00f62ee..639beabc5f 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -669,6 +669,17 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-         return NULL;
-     }
+ /*
+  * Implemented by devices that can be plugged on CXL buses. In the spec, this is
+  * actually a "CXL Component, but we name it device to match the PCI naming.
+@@ -162,6 +167,15 @@ struct PCIDevice {
+     uint32_t acpi_index;
+ };
  
-+    if (dc->hide) {
-+        if (dc->hide(dc, opts, from_json, errp)) {
-+            if (bus && !qbus_is_hotpluggable(bus)) {
-+                error_setg(errp, QERR_BUS_NO_HOTPLUG, bus->name);
-+            }
-+            return NULL;
-+        } else if (*errp) {
-+            return NULL;
-+        }
++struct PCIFailoverClass {
++    /* private */
++    InterfaceClass parent_class;
++
++    /* public */
++    bool (* set_primary)(DeviceState *dev, const QDict *device_opts,
++                         bool from_json, Error **errp);
++};
++
+ static inline int pci_intx(PCIDevice *pci_dev)
+ {
+     return pci_get_byte(pci_dev->config + PCI_INTERRUPT_PIN) - 1;
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 53c59a5b9f..3d07246f8e 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -46,6 +46,7 @@
+ #include "hw/pci/msix.h"
+ #include "hw/hotplug.h"
+ #include "hw/boards.h"
++#include "qapi/qmp/qdict.h"
+ #include "qapi/error.h"
+ #include "qemu/cutils.h"
+ #include "pci-internal.h"
+@@ -2050,6 +2051,40 @@ PCIDevice *pci_find_device(PCIBus *bus, int bus_num, uint8_t devfn)
+     return bus->devices[devfn];
+ }
+ 
++static bool pci_qdev_hide(DeviceClass *dc, const QDict *device_opts,
++                          bool from_json, Error **errp)
++{
++    const char *standby_id;
++    DeviceState *dev;
++    ObjectClass *class;
++    ObjectClass *interface;
++
++    if (!device_opts) {
++        return false;
 +    }
 +
-     if (phase_check(PHASE_MACHINE_READY) && bus && !qbus_is_hotpluggable(bus)) {
-         error_setg(errp, QERR_BUS_NO_HOTPLUG, bus->name);
-         return NULL;
++    if (!qdict_haskey(device_opts, "failover_pair_id")) {
++        return false;
++    }
++
++    standby_id = qdict_get_str(device_opts, "failover_pair_id");
++    dev = qdev_find_recursive(sysbus_get_default(), standby_id);
++    if (!dev) {
++        error_setg(errp, "failover pair not found");
++        return false;
++    }
++
++    class = object_get_class(OBJECT(dev));
++    interface = object_class_dynamic_cast(class, TYPE_PCI_FAILOVER);
++    if (!interface) {
++        error_setg(errp, "failover pair does not support failover");
++        return false;
++    }
++
++    return ((PCIFailoverClass *)interface)->set_primary(dev, device_opts,
++                                                        from_json, errp);
++}
++
+ #define ONBOARD_INDEX_MAX (16 * 1024 - 1)
+ 
+ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+@@ -2653,6 +2688,7 @@ static void pci_device_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *k = DEVICE_CLASS(klass);
+ 
++    k->hide = pci_qdev_hide;
+     k->realize = pci_qdev_realize;
+     k->unrealize = pci_qdev_unrealize;
+     k->bus_type = TYPE_PCI_BUS;
+@@ -2861,6 +2897,12 @@ static const TypeInfo pci_device_type_info = {
+     .class_base_init = pci_device_class_base_init,
+ };
+ 
++static const TypeInfo pci_failover_type_info = {
++    .name = TYPE_PCI_FAILOVER,
++    .parent = TYPE_INTERFACE,
++    .class_size = sizeof(PCIFailoverClass),
++};
++
+ static void pci_register_types(void)
+ {
+     type_register_static(&pci_bus_info);
+@@ -2870,6 +2912,7 @@ static void pci_register_types(void)
+     type_register_static(&cxl_interface_info);
+     type_register_static(&pcie_interface_info);
+     type_register_static(&pci_device_type_info);
++    type_register_static(&pci_failover_type_info);
+ }
+ 
+ type_init(pci_register_types)
 
 -- 
 2.43.0
