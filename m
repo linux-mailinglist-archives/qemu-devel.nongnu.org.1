@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86405801B54
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B863801B48
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:02:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9Kvm-0004K2-1I; Sat, 02 Dec 2023 03:00:54 -0500
+	id 1r9Kvw-0004Kz-Ov; Sat, 02 Dec 2023 03:01:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9Kvb-0004IB-An
+ id 1r9Kvg-0004IS-TG
  for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:49 -0500
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9KvZ-0004xC-Le
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:43 -0500
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-58d08497aa1so1954959eaf.0
- for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:00:41 -0800 (PST)
+ id 1r9Kve-0004yR-NX
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:00:48 -0500
+Received: by mail-oa1-x31.google.com with SMTP id
+ 586e51a60fabf-1fb04b2251bso510056fac.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:00:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504040; x=1702108840;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504045; x=1702108845;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=2S+QsDyqDyIlvvpRINrQ1P4xjH1/QaHDNGsQRs2XIL0=;
- b=FuT+3TshDdtjiqOmbcjuLrVdRjmS81QRqKfBI/Kdkfvfy9VpLnLXXdMhddWWeHC9a2
- JZ8bVzZUhbVcN89BuNFeU9DD9NUi1u5fjQ7luiFCSNZZfO1u4D9dcre1lI2jDnb2OxEz
- dmdUgrQ1FDPkQVu8lM7b9lAkE/yorvJO/JF6ImdfNkKohT3ql39Aw9pRwY8T8KuKBtEr
- ttnk1itKK09R3RZRJcA1BLW27wnvVvh4n7xQK5nS1w16P8QlCOz1n6X6Vmb6FtMl43wb
- DdKRe4j2v3jBcviZ6mJMkGkOH+oZJaGAJfBfW64WHmqlx6OUGzHAIbvSLodfONJ5GhWt
- bvPg==
+ :reply-to; bh=vEZSvELmMn+CZAABU4UFznXntadvaecyTxpcvBhacJw=;
+ b=raG8ubyCjw63i3WfjYpq6JzcDsXn0D8prKKwRLHMavmQFhxFK6vCLi8jbuufkBnvqA
+ G6JXqjGIrllo1q4TmmJhO0tloouU4lVajciQ5mfqRmXj7o7XfIbyxsxBoHH9/wNTIlUy
+ H/CA2Uz/5ny4n/zIBpSeaUg+jqAPpeH+RLClRpP8FEnIHEYiUMFnuULbgQw5NQRIharU
+ 8jZOVmlVYgP8dtI+JcLPZ4rKQ8SoGqBvpEUf5EQXtSuH7hOFkaYQ67+ln0djpFfR6abf
+ AFEjodNUp+Gt9/1xZkfxXQweiWFIKlnDSIoZScwEj7PFxF65De1XdGBFsuPn3LnGdZFH
+ 4giA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701504040; x=1702108840;
+ d=1e100.net; s=20230601; t=1701504045; x=1702108845;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2S+QsDyqDyIlvvpRINrQ1P4xjH1/QaHDNGsQRs2XIL0=;
- b=dHBPkwV99p3XeTp+yxWLppiqZovqgRSX0a0XvglT0ehkX7HNvJsPyiALD5NCioZVSC
- dJMEPvW19kCt0FZk3tx18Yc+GpBzoOJUxEdKrG/V2LM8Oo8AXVCuicmL0KTTDTs1Offp
- gtjSipV47v7uQbyCqLQkldaIArfsfpFfJIRB/hxZKKu68hTQzBu529AHcnfOlF8DHMfo
- pQdmhrCj2jtvcTnt5wEYAD6cWmFHn9AZwo0zSOHNenvzFm+KpklJ4MbASS6k+hdO9ZtW
- EbVLiP6ePFkmPC29kDmP3Xh7ognfCQnQRSYsbzogcc6f1pSqf5M0gvaT9iGpg28YS7xH
- h5Tw==
-X-Gm-Message-State: AOJu0YxkIkyJO0ioQ0bmy4Q141c7iOYvTBrc0CX2YxMdRV4MXtxR/OHD
- e9zS5y2hD41l3KywldMpK7dYFg==
-X-Google-Smtp-Source: AGHT+IHVQe5TIvceBmipGBNc1CxkcZYyB9SChYBRLbRmmLgxNpX5zFcYZ7sAQCH2mojhfNlk3ic8IQ==
-X-Received: by 2002:a05:6358:896:b0:170:911:8b80 with SMTP id
- m22-20020a056358089600b0017009118b80mr982336rwj.28.1701504040152; 
- Sat, 02 Dec 2023 00:00:40 -0800 (PST)
+ bh=vEZSvELmMn+CZAABU4UFznXntadvaecyTxpcvBhacJw=;
+ b=lG0+Rjko8WS753JJKnR93PYRlayAz1g5xo07nYOCx2kqYmD2eBAog5dx0E/87eV6Pg
+ hkeSynfcFBVapUFzR1qKBWAMPxXg4ZO/hM/FZvfmIvnwQZjaG2iyp+jOryWCpC/hTmut
+ cTa/7+N8U7VyZUbdw8wBpjHqI15yWd1q6bmyRc4pgZr9TKtBBHNPjlPN+XbchtYgKYq3
+ db+QdlXvDmXATMlLDlXWR1BH1NBXNO/eZGzFW8MyilCkTlFBv5taKlJkquCT62lwbmQf
+ MajxE6lYjgD3D4z3OTLveR7Wo2ELRULgIMEi07jAQJPQ2h4/U/rJvRhxchAkikvoG3Xf
+ JMdg==
+X-Gm-Message-State: AOJu0YxHEtzMT+wzClaUJduqVBpIZJ16biSwFPhLx2CfZ4emXevk3fuG
+ dB1lcHF2fxNkFnIjUEQm1vATQw==
+X-Google-Smtp-Source: AGHT+IGAl67z3a/aDV7FWG8vBviS0LIZNv65Vrp/DLSXRuKZijKJCgFo0GYNGuk4Eaaf7OVEg3cizQ==
+X-Received: by 2002:a05:6870:c0b:b0:1fa:edc2:892e with SMTP id
+ le11-20020a0568700c0b00b001faedc2892emr1224357oab.11.1701504045535; 
+ Sat, 02 Dec 2023 00:00:45 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- 1-20020a17090a000100b0027722832498sm6730481pja.52.2023.12.02.00.00.37
+ a11-20020a17090acb8b00b00286541736a4sm2813051pju.29.2023.12.02.00.00.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 02 Dec 2023 00:00:39 -0800 (PST)
+ Sat, 02 Dec 2023 00:00:45 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 02 Dec 2023 17:00:25 +0900
-Subject: [PATCH 02/14] hw/qdev: Remove opts member
+Date: Sat, 02 Dec 2023 17:00:26 +0900
+Subject: [PATCH 03/14] qdev: Add DeviceClass::hide()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231202-sriov-v1-2-32b3570f7bd6@daynix.com>
+Message-Id: <20231202-sriov-v1-3-32b3570f7bd6@daynix.com>
 References: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
 In-Reply-To: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -77,14 +77,15 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Yui Washizu <yui.washidu@gmail.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2f.google.com
+Received-SPF: none client-ip=2001:4860:4864:20::31;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x31.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,88 +101,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer used.
+DeviceClass::hide() is a better alternative to
+DeviceListener::hide_device() that does not need listener registration
+and is contained in specific devices that need the hiding capability.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/pci/pci_device.h |  2 +-
- include/hw/qdev-core.h      |  4 ----
- hw/core/qdev.c              |  1 -
- system/qdev-monitor.c       | 12 +++++++-----
- 4 files changed, 8 insertions(+), 11 deletions(-)
+ include/hw/qdev-core.h | 33 +++++++++++++++++++++++----------
+ system/qdev-monitor.c  | 11 +++++++++++
+ 2 files changed, 34 insertions(+), 10 deletions(-)
 
-diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
-index 5b6436992f..8e287c5414 100644
---- a/include/hw/pci/pci_device.h
-+++ b/include/hw/pci/pci_device.h
-@@ -205,7 +205,7 @@ static inline uint16_t pci_get_bdf(PCIDevice *dev)
-     return PCI_BUILD_BDF(pci_bus_num(pci_get_bus(dev)), dev->devfn);
- }
- 
--static inline bool pci_rom_bar_explicitly_enabled(PCIDevice *dev)
-+static inline bool pci_rom_bar_explicitly_enabled(PCIDevice *d)
- {
-     return d->rom_bar && d->rom_bar != -1;
- }
 diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 151d968238..6befbca311 100644
+index 6befbca311..de221b6f02 100644
 --- a/include/hw/qdev-core.h
 +++ b/include/hw/qdev-core.h
-@@ -237,10 +237,6 @@ struct DeviceState {
-      * @pending_deleted_expires_ms: optional timeout for deletion events
-      */
-     int64_t pending_deleted_expires_ms;
--    /**
--     * @opts: QDict of options for the device
--     */
--    QDict *opts;
+@@ -56,16 +56,15 @@
+  * Hiding a device
+  * ---------------
+  *
+- * To hide a device, a DeviceListener function hide_device() needs to
+- * be registered. It can be used to defer adding a device and
+- * therefore hide it from the guest. The handler registering to this
+- * DeviceListener can save the QOpts passed to it for re-using it
+- * later. It must return if it wants the device to be hidden or
+- * visible. When the handler function decides the device shall be
+- * visible it will be added with qdev_device_add() and realized as any
+- * other device. Otherwise qdev_device_add() will return early without
+- * adding the device. The guest will not see a "hidden" device until
+- * it was marked visible and qdev_device_add called again.
++ * To hide a device, a DeviceClass function hide() needs to be registered. It
++ * can be used to defer adding a device and therefore hide it from the guest.
++ * The handler can save the QOpts passed to it for re-using it later. It must
++ * return if it wants the device to be hidden or visible. When the handler
++ * function decides the device shall be visible it will be added with
++ * qdev_device_add() and realized as any other device. Otherwise
++ * qdev_device_add() will return early without adding the device. The guest
++ * will not see a "hidden" device until it was marked visible and
++ * qdev_device_add called again.
+  *
+  */
+ 
+@@ -90,6 +89,8 @@ typedef enum DeviceCategory {
+     DEVICE_CATEGORY_MAX
+ } DeviceCategory;
+ 
++typedef bool (*DeviceHide)(DeviceClass *dc, const QDict *device_opts,
++                           bool from_json, Error **errp);
+ typedef void (*DeviceRealize)(DeviceState *dev, Error **errp);
+ typedef void (*DeviceUnrealize)(DeviceState *dev);
+ typedef void (*DeviceReset)(DeviceState *dev);
+@@ -151,6 +152,18 @@ struct DeviceClass {
+     bool hotpluggable;
+ 
+     /* callbacks */
++    /**
++     * @hide: informs qdev if a device should be visible or hidden.
++     *
++     * This callback is called upon init of the DeviceState.
++     * We can hide a failover device depending for example on the device
++     * opts.
++     *
++     * On errors, it returns false and errp is set. Device creation
++     * should fail in this case.
++     */
++    DeviceHide hide;
++
      /**
-      * @hotplugged: was device added after PHASE_MACHINE_READY?
-      */
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index 43d863b0c5..c98691a90d 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -706,7 +706,6 @@ static void device_finalize(Object *obj)
-         dev->canonical_path = NULL;
-     }
- 
--    qobject_unref(dev->opts);
-     g_free(dev->id);
- }
- 
+      * @reset: deprecated device reset method pointer
+      *
 diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index a13db763e5..71c00f62ee 100644
+index 71c00f62ee..639beabc5f 100644
 --- a/system/qdev-monitor.c
 +++ b/system/qdev-monitor.c
-@@ -625,6 +625,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-     char *id;
-     DeviceState *dev = NULL;
-     BusState *bus = NULL;
-+    QDict *properties;
- 
-     driver = qdict_get_try_str(opts, "driver");
-     if (!driver) {
-@@ -705,13 +706,14 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
+@@ -669,6 +669,17 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
+         return NULL;
      }
  
-     /* set properties */
--    dev->opts = qdict_clone_shallow(opts);
--    qdict_del(dev->opts, "driver");
--    qdict_del(dev->opts, "bus");
--    qdict_del(dev->opts, "id");
-+    properties = qdict_clone_shallow(opts);
-+    qdict_del(properties, "driver");
-+    qdict_del(properties, "bus");
-+    qdict_del(properties, "id");
- 
--    object_set_properties_from_keyval(&dev->parent_obj, dev->opts, from_json,
-+    object_set_properties_from_keyval(&dev->parent_obj, properties, from_json,
-                                       errp);
-+    qobject_unref(properties);
-     if (*errp) {
-         goto err_del_dev;
-     }
++    if (dc->hide) {
++        if (dc->hide(dc, opts, from_json, errp)) {
++            if (bus && !qbus_is_hotpluggable(bus)) {
++                error_setg(errp, QERR_BUS_NO_HOTPLUG, bus->name);
++            }
++            return NULL;
++        } else if (*errp) {
++            return NULL;
++        }
++    }
++
+     if (phase_check(PHASE_MACHINE_READY) && bus && !qbus_is_hotpluggable(bus)) {
+         error_setg(errp, QERR_BUS_NO_HOTPLUG, bus->name);
+         return NULL;
 
 -- 
 2.43.0
