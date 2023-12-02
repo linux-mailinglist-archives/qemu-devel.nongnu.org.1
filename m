@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4AF801B65
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A9B801B97
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 10:04:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9L3C-0007Kw-3X; Sat, 02 Dec 2023 03:08:34 -0500
+	id 1r9Luh-0007mM-Hj; Sat, 02 Dec 2023 04:03:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9L39-0007K6-Qk
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:08:31 -0500
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ id 1r9Lue-0007lv-9i
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 04:03:48 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9L37-0000F8-SM
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:08:31 -0500
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-3b85dcecc62so1055606b6e.2
- for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:08:29 -0800 (PST)
+ id 1r9Luc-00054z-Hc
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 04:03:48 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-28659348677so1077601a91.0
+ for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 01:03:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504508; x=1702109308;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701507823; x=1702112623;
  darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AQPMqVoM84cdEJIS2oBXYDn/8Ps1tjqa86r+oMitaBQ=;
- b=yc6RZ08kqkfNrIPQa86TmFzxV82abVJxtEn8l7YImLz2sNP95WMzwYjScsAig1hXds
- SRJDMbo0CsnEZJF+Nm/UYHcm030bLlfOuu5T3i7Kd0MfLRqXyPeJpZ38A1UNZq0brJ/N
- eWq9tCso/GVU9tSHPDvgtz3+1yO0fiIODSkbnxLXFjeVjdezKU0Mb2Qfl6A8QbyHjPHc
- 8abLRGblGTaQ2//5moqsYQRN041gg5PWaXjpKxiKZCm5hlq4dNMa29/FnSWZqwC1JHC3
- fsyv59W0mT5NK8OyRuqJaAQfy/0GZfH7cv4YjrQ7xNcVIDOazvFurlUaNMxr7DO+MM0f
- pjOA==
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=nKw9R5c507ZufmmUq2p+S5Dtt/jVaEYi9Io6H1xqHIc=;
+ b=t2sg5c4e23lKStJSrpP+Eg/OPdHL+sW+uI9BJc1gD49kg4+xFpX6OFegHIMdHiMMMV
+ Cg+CxA49c4wZUbcKZnLeh9jn3kebbrflG24Btv4qUr75PSDRvJEtG4ywbFwMdJ9d66TZ
+ MISGbhKJsjujAkNEcnFhj4N5yZjRROjfs0j5pyq/mV1ou9NRBIvhf8WnFNiQlPzoIVIf
+ u5pGfmIXQ0Brzw/5sr0IbWD5d9b8ylD0pqeixclD9dxaFSMMXbmGzckwnsFNNDhawdQU
+ 8LBRj8kQuBAJfFvCSs9ruoMFZMF9WnJBIcp3ZVp+c0j0OuV27mdm2ZzJgPBmFEBuhyaD
+ MH7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701504508; x=1702109308;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AQPMqVoM84cdEJIS2oBXYDn/8Ps1tjqa86r+oMitaBQ=;
- b=BDxwqQ6/sq3SDQ+GCBsa1zHnwumEdUFRTwyNzDtAMyp8R9jdx7uuZGNjByaBV5+IYe
- B49RHPu0WOmoZsaJsDljxhD1ziDJfhpFaq+V+MBcDOL5Du5nu6SkaWmihuq8ddnuXSek
- UlQY425U6IPF2ij9zBzpsIv2JdJ8ChBsFA1ugz8wV0nBG7JizRqGpulxq5tzmtp9/4A3
- u498K3nDy3kKb4fate4qHUmnHuWYOOGbJSN2Ys0p3OLXodIa9yeO4a+4wnQZW82iaqQj
- OWjUe62yHcVyg4gaj+gjc/QPfGwdo5te16BZl+98og4E3ExlxIFKzfUlQd1g1ccdE+7B
- tPwQ==
-X-Gm-Message-State: AOJu0Yz68qKiuGoW4ZQzQWEOeVaz6EgSWFZauhaDNt+Ubss1TsbVSkXU
- zSbDKsnpQVx1YpBUn8oZ0ujHCA==
-X-Google-Smtp-Source: AGHT+IEN/XSeaQASyoTS0Nq2l6SMq8bUCNiFeJ12509dTUSBU9oAGhDNvnDOnH4FcYfH0Kyzmkaw6A==
-X-Received: by 2002:a05:6358:c6a0:b0:170:17eb:3787 with SMTP id
- fe32-20020a056358c6a000b0017017eb3787mr865183rwb.47.1701504508447; 
- Sat, 02 Dec 2023 00:08:28 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
- by smtp.gmail.com with ESMTPSA id
- 28-20020a17090a191c00b00285dfa07befsm4687926pjg.34.2023.12.02.00.08.25
+ d=1e100.net; s=20230601; t=1701507823; x=1702112623;
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nKw9R5c507ZufmmUq2p+S5Dtt/jVaEYi9Io6H1xqHIc=;
+ b=IFWmVOUL2Ulxc+AosYbaCRQbW/ftxLY/3hXbAaVxYxsygxpGSgUr1zneVDIvXNMqZn
+ wVAhNUOhn5hyu3rLA/7aujeujHgDJVbOd42rkIXaY2Y1lPPGRu1qCVo38lk0KpWkcbsB
+ yrxTAig3A6PwZyxD08DvaZPW+0mg3vPvpEKj68jU6REyTzd4iJadCqXlQDekA1wkGofm
+ quJc2MA2BSPYfhOtx7CdQjSEioU0nEpAgIklkNrP4P4UagnHoM09AftOOY9k10raNSdb
+ duTKoH8kAQRk49NCCP0BD3MC6OA73YoO4L5fUMZtiR+sPLH9Z6m0sQ0ax4NynqN9Digb
+ UjjA==
+X-Gm-Message-State: AOJu0Yy40QotWLLamo9GZzJK9O13qBLce7HtXg4IFnxxByIQMjNSbop/
+ cTjqDwm4ZvqHn5Kkzm8MsYOOBQ==
+X-Google-Smtp-Source: AGHT+IFU+ve/ruOMJwh+ASaRxKE0G5g7bMvXROJfTFVKgvuiACJ3VNzZyyC9NI/BAHJNsfnA4XmPDQ==
+X-Received: by 2002:a17:90a:1999:b0:286:6cc0:629d with SMTP id
+ 25-20020a17090a199900b002866cc0629dmr1045579pji.28.1701507823371; 
+ Sat, 02 Dec 2023 01:03:43 -0800 (PST)
+Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
+ q10-20020a17090a68ca00b00285256be528sm146045pjj.47.2023.12.02.01.03.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 02 Dec 2023 00:08:28 -0800 (PST)
-Message-ID: <f7527574-1c16-49cd-adcc-9a7ffcbe4826@daynix.com>
-Date: Sat, 2 Dec 2023 17:08:24 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/14] virtio-net: add support for SR-IOV emulation
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Jason Wang <jasowang@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Yui Washizu <yui.washidu@gmail.com>
-References: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
-Content-Language: en-US
+ Sat, 02 Dec 2023 01:03:43 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Sat, 02 Dec 2023 18:03:36 +0900
+Subject: [PATCH] qdev: Report an error for machine without HotplugHandler
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::22e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22e.google.com
+Message-Id: <20231202-bus-v1-1-f7540e3a8d62@daynix.com>
+X-B4-Tracking: v=1; b=H4sIAOfyamUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDIKGbVFqsa26aaGJqkmyaYmlqqQRUWVCUmpZZATYlOra2FgB3Od4HVQA
+ AAA==
+To: Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.4
+Received-SPF: none client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,23 +93,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/02 17:00, Akihiko Odaki wrote:
-> Introduction
-> ------------
-> 
-> This series is based on the RFC series submitted by Yui Washizu[1].
-> See also [2] for the context.
-> 
-> This series enables SR-IOV emulation for virtio-net. It is useful
-> to test SR-IOV support on the guest, or to expose several vDPA devices in a
-> VM. vDPA devices can also provide L2 switching feature for offloading
-> though it is out of scope to allow the guest to configure such a feature.
-> 
-> The new code of SR-IOV emulation for virtio-net actually resides in
-> virtio-pci since it's specific to PCI. Although it is written in a way
-> agnostic to the virtio device type, it is restricted for virtio-net because
-> of lack of validation.
+The HotplugHandler of the machine will be used when the parent bus does
+not exist, but the machine may not have one. Report an error in such a
+case instead of aborting.
 
-I forgot to prefix this as RFC. It is the first version of the series 
-and I'm open for design changes.
+Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ system/qdev-monitor.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index a13db763e5..62246c65f7 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -927,9 +927,16 @@ void qdev_unplug(DeviceState *dev, Error **errp)
+     qdev_hot_removed = true;
+ 
+     hotplug_ctrl = qdev_get_hotplug_handler(dev);
+-    /* hotpluggable device MUST have HotplugHandler, if it doesn't
+-     * then something is very wrong with it */
+-    g_assert(hotplug_ctrl);
++    if (!hotplug_ctrl) {
++        /*
++         * hotpluggable bus MUST have HotplugHandler, if it doesn't
++         * then something is very wrong with it
++         */
++        assert(!dev->parent_bus);
++
++        error_setg(errp, "The machine does not support hotplugging for a device without parent bus");
++        return;
++}
+ 
+     /* If device supports async unplug just request it to be done,
+      * otherwise just remove it synchronously */
+
+---
+base-commit: 4705fc0c8511d073bee4751c3c974aab2b10a970
+change-id: 20231202-bus-75a454c5d959
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
+
 
