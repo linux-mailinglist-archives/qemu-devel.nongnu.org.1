@@ -2,49 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9515A8019A0
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 02:44:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C854780199E
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 02:43:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9F2K-00085a-Bw; Fri, 01 Dec 2023 20:43:16 -0500
+	id 1r9F1l-0007hR-Jp; Fri, 01 Dec 2023 20:42:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=6700ee1bd8=volodymyr_babchuk@epam.com>)
- id 1r9F0w-0007Mi-MS; Fri, 01 Dec 2023 20:41:52 -0500
+ id 1r9F0y-0007N1-Ng
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 20:41:53 -0500
 Received: from mx0b-0039f301.pphosted.com ([148.163.137.242])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=6700ee1bd8=volodymyr_babchuk@epam.com>)
- id 1r9F0r-00057x-L2; Fri, 01 Dec 2023 20:41:49 -0500
-Received: from pps.filterd (m0174680.ppops.net [127.0.0.1])
- by mx0b-0039f301.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B21Xj1F026535; Sat, 2 Dec 2023 01:41:28 GMT
+ id 1r9F0v-0005AG-4P
+ for qemu-devel@nongnu.org; Fri, 01 Dec 2023 20:41:52 -0500
+Received: from pps.filterd (m0174683.ppops.net [127.0.0.1])
+ by mx0b-0039f301.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 3B21X1Qp015641;
+ Sat, 2 Dec 2023 01:41:28 GMT
 Received: from eur05-vi1-obe.outbound.protection.outlook.com
- (mail-vi1eur05lp2169.outbound.protection.outlook.com [104.47.17.169])
- by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3uqt8mg21a-1
+ (mail-vi1eur05lp2168.outbound.protection.outlook.com [104.47.17.168])
+ by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3uqa3aucrx-5
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Sat, 02 Dec 2023 01:41:28 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SEAmJw/RfgQlQetNGPXo4byxBirZelVMJD5WPeHgSFmJUwbhNzYy5i9cdd7y333i6TR7fB5xFPJPAvkM1jPqYR5YHa2iyNNTd9mcoDbs8QBO9lcV/O0TxMnt+THk7htiA+aJRr12XbdlOROacR4Qhjrf6wZoEAPrsdWuJ8o9XowXuc9YNI/mv3q8PP411fM0tl3fv207rGUJAW6CtjPBLNjmi5+jsqqis9wwX+TVvOFRwgOaz8gSVhdYYV/NCwqseqEYTmmp1ozhtWkxysdnsi+TeICxVJo8sCKXblgvp74/4DCzvXWRnaqlMm/PseJbNx6q+Xsap42b7UvG9J+A/Q==
+ b=evgsby7gz/Ac8GwTIfqoRFTRzPmH0hKPD7MXGciMQApj+h6bzr+qiBXDrqvdOeHSOTiAOCf2dDrxrwVXvoQH2IwR9hYCNEtrMDpbhs+TPIl9H8bPeGpytNIkv+Fm9myvomwhMI4W3O2Z35Po3s5jzalZqSjsgNFrvDLuBhNhLc2MFXD9daFmSvZ9OV4QLAl0AwZ9WJ4zE49kMCvnxG6f+qPb21O8K0pXLZW1pRnVBaCZW2ULZGqycTE77OZBnEoW+2cV6iKY4eD85YYh9eCBlbpnVTyzKRTttn/21GDgqQ4roTIW2cwVV1lVoDSyYUnJX1aVprKUchrIzYA6Wj4PoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e1n55VDPs3q/qzv0KviJW7OAskEpl6y9Jb0QmGMv7BY=;
- b=H14uBLZ9SV8COi0sLNJoH9JCpr2imtKK7egkdqVmpFf35Rxh+r5LlHDoQbfM61YSB2pOrEnhOZUKyc4kGWEIkvap2ImddRXuXfPjy2d/e2rZs2ccuoHFBnKxWe0a3FW5tEMgPhj+WDScFR1E0Ibr4n62c7WubZBkxGFlb3GNfS6rfPRIZIlznjdpNODp+KkvK4WYpG7orhpeONQZ+72QeY1oV4n2v+Ip4q6NBj8dzfm9qUosI9IcRQpq/4u7SFhKgQICxMN2tMZkMUdLQQ4rm2SdOTEmjLLB/sHhASvcF984IPEKl/cVMCMn+0jhPodBNMdcXXX11c3oSuO4eKLnYg==
+ bh=Fd2GMMSSgW+cobh8ZFxigRxf9cE6MrLzy6vrJfU+U7k=;
+ b=H8nppiCDopCEb4w4RFLyg5fnqD7n2zxU61EBUWHbI7dOQh95DbaHny/Xn1hZZNUwFC0mYifREFd4Iw5RFHXhyUVHFHxJ44akhw/vcxBpPynz5yrZSqdfpxXlaVdnDUxwqkuhrRabjGIOgGpfEJpEBBCnhI3qhOf+i55FriY0wLlvogGnlKshgNzpr3hExRwz+G0s0iEop5NBxNSOM5wY5fZMnV+KAc2QJ7x+Qr4lrJYK7AIhIMHXF6DDuqY+Vh7cH3Ix/+iuKp0UelppDyWDOGJYuhF0t6KYH06xbG5YCVL77dyJsp/OkLmEtdDDaV8hJXK7P0iRBeETrtmadSi+Nw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
  dkim=pass header.d=epam.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e1n55VDPs3q/qzv0KviJW7OAskEpl6y9Jb0QmGMv7BY=;
- b=cCkpiFp+kXiGriRoI8mV6kMEJOnSJtDNVWy2iCabs7WeOdbpPOd2/mAAG2Q5U1dD+Ta9bTEQcj53B0ijvxqCNzn3PviFqluGOAdV/z2KTrJ9zDURaIEdOk/Q1+xP2XZG/uoR1MJ0T5pzKOdidB5+t8oyzwQny7kt0L57fGpVUh4Be/N9j0C/EBCZeBTLnazDXzQyid3SvNh7DPp9iCzepSdpI70tQPqFiMPZHbGmzEzu3wWTtNLMeh9+bLT/6S0yJ8efWxy2A8Zb5P2kkFnp+YJ1ySLYmFvIEvV2VPH9R0xCQdf7gg0t96VJcTvm/9YRUG/kMJIPkNmb2OLVJ1lCEA==
+ bh=Fd2GMMSSgW+cobh8ZFxigRxf9cE6MrLzy6vrJfU+U7k=;
+ b=fhiCsy4UcIdXcJzerKHyeBvLKrFvEnwvUEo38J+B4dtHk+/M0ljwut9yWBYxVk6Jx5thkuLPhrNCj+uVumXUltzf0wyiv2bDAAmONj/xUVfLA6SHIohdh4Jo3ojqh6vgEXP4EYfes49mYNtWDb2oMDOhZ+K8q5gSL3yXyovbKPaAX7kgGrwth4C5Zre7fUmYyeiL4+rYcVXyW5VLE79psW3zhB0NlqOkdqYYCRFRTdXLvJkPCJ5RiU6qBvy6f5FuBL/adjNxjD9R0dublAjDDtZmL3TSHf7wmss6mU7w1wmgVbgPeotG+WbWQeDQpsIkBvI289drc5/Fh2CtdRPAbA==
 Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
  by AS8PR03MB7285.eurprd03.prod.outlook.com (2603:10a6:20b:2ef::21)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.27; Sat, 2 Dec
- 2023 01:41:22 +0000
+ 2023 01:41:23 +0000
 Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
  ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
  ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7046.027; Sat, 2 Dec 2023
@@ -53,20 +55,22 @@ From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
 To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 CC: David Woodhouse <dwmw@amazon.co.uk>, Stefano Stabellini
  <sstabellini@kernel.org>, Julien Grall <julien@xen.org>, Volodymyr Babchuk
- <Volodymyr_Babchuk@epam.com>, Paul Durrant <xadimgnik@gmail.com>, Oleksandr
- Tyshchenko <Oleksandr_Tyshchenko@epam.com>, Anthony Perard
- <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>, Kevin Wolf
- <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Jason Wang
- <jasowang@redhat.com>, "open list:X86 Xen CPUs"
- <xen-devel@lists.xenproject.org>, "open list:Block layer core"
- <qemu-block@nongnu.org>
-Subject: [PATCH v4 2/6] xen: backends: don't overwrite XenStore nodes created
- by toolstack
-Thread-Topic: [PATCH v4 2/6] xen: backends: don't overwrite XenStore nodes
- created by toolstack
-Thread-Index: AQHaJMCnWt9mOmaDRU+ewbw5BkugTg==
-Date: Sat, 2 Dec 2023 01:41:21 +0000
-Message-ID: <20231202014108.2017803-3-volodymyr_babchuk@epam.com>
+ <Volodymyr_Babchuk@epam.com>, Greg Kurz <groug@kaod.org>, Christian
+ Schoenebeck <qemu_oss@crudebyte.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, "Michael S. Tsirkin" <mst@redhat.com>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?iso-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?iso-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, Thomas Huth
+ <thuth@redhat.com>, =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?=
+ <philmd@linaro.org>, "open list:X86 Xen CPUs"
+ <xen-devel@lists.xenproject.org>
+Subject: [RFC PATCH v4 4/6] xen: add option to disable legacy backends
+Thread-Topic: [RFC PATCH v4 4/6] xen: add option to disable legacy backends
+Thread-Index: AQHaJMCn9jPeta/9M0OenQld9P6brA==
+Date: Sat, 2 Dec 2023 01:41:22 +0000
+Message-ID: <20231202014108.2017803-5-volodymyr_babchuk@epam.com>
 References: <20231202014108.2017803-1-volodymyr_babchuk@epam.com>
 In-Reply-To: <20231202014108.2017803-1-volodymyr_babchuk@epam.com>
 Accept-Language: en-US
@@ -76,44 +80,44 @@ X-MS-TNEF-Correlator:
 x-mailer: git-send-email 2.42.0
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|AS8PR03MB7285:EE_
-x-ms-office365-filtering-correlation-id: 2d1ede76-dd9d-4e19-7f6d-08dbf2d7c9c3
+x-ms-office365-filtering-correlation-id: 5480e286-e83e-4782-b3d8-08dbf2d7ca52
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MMThguZxYyc2qA1XGKMz68EIW9kBjMLwXgX1YRmjswg5MpXuBZMFqz4530j4qTmvGfEzf4QpvDgn/ZGqW2ETHypnn2BcQho5f1rD3ECd795v8+XuB7jrOAmJxPkooUBrMKz7qHqpk8g0N5x+cAZJz0+BmnFMg2y+/kbMU8AR/IqKs34JbBTlCZ0McssgU2gp10rCPLkn6EehBP9CjJKxXwde8qG22pBVtINOaTOi+WaaRY71TYSs5O0Fhf4iWbWRCw7dPk00VHowuHpQv+3ax1C8lpSAZ/2ejsn/iv+RKYuip/Nn3rTqT9Zwp44W8fJXH2Q1lvxcBjJ1feEQtENMU7i506AbhuIxBqV4s6Sw2bfLNg0YUwF1WLQK9+4GHrE/bp8/AzonGKIy8ymzvoFP71cAQorIg2P3MueX5DaMWeiUiYlBBesRcDCzfOLBIAC/TynUCvHuc20pw69qwkEd3u7RD2lzskg1zaP1YnMCKkgnrZUqOceiJnOCYcIqUc17xJDvtGLD2TQLB/FsjdqeVb/EXJHXw5ZHmj5pvzniU6sKsg0p/R6kXA0HffwGtitOX40aPKkAGWMZNfUuSD9+45NWMDCfTIyjRGTKLXffsTU3bqhPFSeLuXr1mduZOgma
+x-microsoft-antispam-message-info: CerkD+0MuaBOyAz3p6g74xYtIv9wM49imDVSzEdH3vDYnA3TKQ/rNAsW0LPMKG2ffUlv06Q57NdqD3EpzEKMz8vy3FIRgSoDx+DhZMgyFyoBG6TW6H0nM7cTgy62y6VMkZJ9ZajZcnR9PxjPt8PAz5jMfFSb405akum1WdBgRwO/YQIB9I4Op/hoxpX2y6JeoVlnOT3/yAQ20IfICBWtxzrBuVyHzXj40KVqrll+/M5y+dF44MJPbwoK6uL9SH3DMfSTearFMsNZK+cU1xxZApcKmJhn8fr12Of3W3ymCod57+SqXYdV+5yy9IIgk3onppc1a2VuUOa0NyCgPKHm/HqY7iD+ujZEMihs6ULLDYjjJUlanHg3feVXsHFFbvB9URV5LpF1k6C8wdYwET+c7vxVL6EUWuFpFsbPdDQDHaZBmN5zAO8mYfAYCFfxmWV2/YC3BH3+x/jOy+G0KcvnNI1me00rPnUj7yRGROwETs6zWApkW4d0xoxPkMaLZkj6bH2EMo+J65TN2YbQKyDw+pObl2U2wSh51xdBDYdwf1VqF6/VjKo/ZyECydhc5AQtw3bL0C174OpevwPOjB5QoWTbTnGrz2/4XsB4OBx3tHz7q84SohuyZcBZuUZg9m3lME+XxSEEs5Jf+l3O1d4e1Q==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(376002)(396003)(366004)(346002)(136003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(122000001)(38070700009)(41300700001)(2906002)(7416002)(5660300002)(83380400001)(71200400001)(55236004)(38100700002)(6506007)(6512007)(1076003)(2616005)(26005)(66556008)(478600001)(91956017)(6486002)(36756003)(76116006)(66946007)(64756008)(66446008)(8936002)(6916009)(54906003)(86362001)(66476007)(4326008)(316002)(8676002);
+ SFS:(13230031)(39860400002)(376002)(396003)(366004)(346002)(136003)(230173577357003)(230273577357003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(122000001)(38070700009)(41300700001)(2906002)(7416002)(5660300002)(83380400001)(71200400001)(55236004)(38100700002)(6506007)(6512007)(1076003)(2616005)(26005)(66556008)(478600001)(91956017)(966005)(6486002)(36756003)(76116006)(66946007)(64756008)(66446008)(8936002)(6916009)(54906003)(86362001)(66476007)(4326008)(316002)(8676002);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?51HpuABsT+tbpDbgqyY9AbOxSV3pOA+yo7ZIgcKPxX3+Yl3xlM+Vbh+7BR?=
- =?iso-8859-1?Q?XYv4jUYUkebgveC2lO21EB41Jr5YTve61LB+pxcCCSlhdMzGf0aQsoEhDF?=
- =?iso-8859-1?Q?FvJOxUkVM4EsfgSN2fMJPybvwzn2GsQtC8E8uyDiR/lHutVXVqDrAMQSfe?=
- =?iso-8859-1?Q?xQ6WzSOv5NUj7lOtIX6cr5JEkkzXHYyOnpjQ92ux7FEYPBvNXmBR6cBAMF?=
- =?iso-8859-1?Q?nnfV5wBs4jLtyahgH8ko1lx1oXHMxyPDd4Q5FxwqrU3MkzlxkhN8jU6htt?=
- =?iso-8859-1?Q?cF4GlEdWrRiEr41xMrYETpOC3MQnnx+ikNPlTKTDOU2tU3HQZihVIJOLSD?=
- =?iso-8859-1?Q?6nXP0FoNwiYu7KxOlR+Lik4T4bbnbPWrOrOCrCQl4VQp+76Y0bjO5maDB6?=
- =?iso-8859-1?Q?vNFd2ypi4InVFYGWifRbN3gwvh0JzhlUsbRIewwvVqFmAtKaDjhsHu8E8Y?=
- =?iso-8859-1?Q?839dLGyN4unOoUouWTUVFiwX8q1l5nCcyF6PdQ3lW8tbV3WUgVwWCDyR+f?=
- =?iso-8859-1?Q?rVmPzX9cPBop8WyTrH32xdcPnfTodRDQDt06Thpl9S3WV3sO20J83XhRNU?=
- =?iso-8859-1?Q?QKVLwujHjgxg2aNQ2cy2fB7vzVRkLIqBOahgE8r/AC/CTHI4aYFMcY5302?=
- =?iso-8859-1?Q?EGxV0F4AsBKz08TKx/NQXmEWS59XgX6QhJAAO+dD8x8MaV7g2vZ53JvSbX?=
- =?iso-8859-1?Q?X4xtl/j8W0mAm8RkmUJACAAJHT04dQEGNtE1b6NGZCnpST6oAfz1Y5DUU7?=
- =?iso-8859-1?Q?L8SpGkOpH3RXieHaLIdSF1rTeBeo4VlGNaUGFad9GfReksU4P4JkBrFPxT?=
- =?iso-8859-1?Q?2Le1rzzGswcfJNsOblU4GNuwa3f9RMQ5ztY3zGp33xfBTQQ0KiTA6PCELu?=
- =?iso-8859-1?Q?OJDn7a3QfEg90voMtLBRCy7fAvcUpCuVoBu3OuqAHVoqFYHd6kw0htoH3W?=
- =?iso-8859-1?Q?cziwFFfg2Bg07YlqkX6oaeiA/jbH0ism9ogZpHAxQeaeorK9OnE32CXUsB?=
- =?iso-8859-1?Q?WAh6dcgySAahJ3ujvVhQybOQk6iW4Fa7Or0uhIT3QJAxOKyM6N9/jEl9dO?=
- =?iso-8859-1?Q?YyQ03bLk1pqACIgT2hMA+547J22FgmGpC2850M4guwbP30lXN1vcPgRagH?=
- =?iso-8859-1?Q?cgmsEwuc1L8GY+vzkGHkOpf9fb5XI2+RHoZkjJFKZlvqZ+b9OgoeAby4K0?=
- =?iso-8859-1?Q?iSRqWyCRfNwh9lyypwXwYPlrlCgYj3UGiWr9grCTXgkUqCrPVn6PI/aNBI?=
- =?iso-8859-1?Q?oq1Qr+29RfYBqfbGw52YqTcSrisxnbTHA0GC+dcm43bXVQHX9XsYjF9GLY?=
- =?iso-8859-1?Q?9NIJR1LWsiWZ/D7O733mnUp9qnPf7kAI7acAK/adUOXXdZw6mBQvV+mqjg?=
- =?iso-8859-1?Q?qzZDdYAVujc4yoyHUDacRewipRBz9hblr8xMtH9nFYmxQ6TKLd7YvfjBHv?=
- =?iso-8859-1?Q?wVTqXVVgCTH+KIlFa8dxkourpkmKKQqKVjFwk/8AAysb2uMFyOe7VrpyHk?=
- =?iso-8859-1?Q?bCIpSg8dCkcA9vsk3URnSn0wxZUee/zfXd7ZzLur08dAkA4+Qh9MUNB1IL?=
- =?iso-8859-1?Q?Zydfq0x1+ubuKDbWQwEir4+KU6Iqn8TfrkdnaJNUkgFcngs8RbnkvuzvUs?=
- =?iso-8859-1?Q?1yfrMF32EWwJ1zCgl8cFKuCRt6o7rbYfq1HT/UCYDEQnyqvAlYBq3aCg?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?VDaAzlQx3V58HmlzhgqPi4loXNjVAuABbd53jLxEG/sNIsj1WGzNiNpctK?=
+ =?iso-8859-1?Q?FL4qcwfYU4+IhSAJIoibLF/26qGFCTR6P0y42LaVa+xFOTHVMqnHoEljHY?=
+ =?iso-8859-1?Q?rSbjUGyHnuii5/9CSYRNybCv2OZvXAwIy7LQ0+BY3l/zK5ynrZ1ZMVPyw2?=
+ =?iso-8859-1?Q?EwqBxFymhHzeyl73w11KcSTM4wWa8nlbn63FJt594XHO5bhlaz/AZUIB8u?=
+ =?iso-8859-1?Q?cECmvxGZUmUkE/2fBnn1O1VMbl/l/VxXQtyzKqvNtudp4TW5BYwB7ZHPli?=
+ =?iso-8859-1?Q?/hd3BtrdgAI/hsPNEBQQfSBqDmYyeLTRxHRguGQyesEUeOBoVQYISsdSkD?=
+ =?iso-8859-1?Q?qlzuR32seLeic430mKHMbfu2J3DSkZyrPNt/2LnOmKSwSCYF2OtQpNtqxx?=
+ =?iso-8859-1?Q?DsE5suCT/6HyQ96r4wLu4K45XuY56fK6lHPZTkQnFZdxioBojyqpN3pZGH?=
+ =?iso-8859-1?Q?JfAzs6HFYBGhBGpNGt1qQ3R6ywKoekdZaZD5MOJpnMyE1cnDGyHhVEwzNs?=
+ =?iso-8859-1?Q?wnDc0i5dRf9UAmhgbpPVxZ/kZjLx0Nl3E6JdtmLiQ2Zu38+AAgKKd19LVC?=
+ =?iso-8859-1?Q?WjkLyHoEr2FA5iu6YJEHy577zVd8k2WPPlVPRhXpKWO4LOHNPh03fV9qCC?=
+ =?iso-8859-1?Q?97tQexVsPoaRADIiXwIAMxNtbpKVbkNPCk1RHbbhFQqtCpi1fiKGuJaBFX?=
+ =?iso-8859-1?Q?ovPBoQcu0/3uTY+giBx7oXKn5Q83yGPUooNUng7Jpa780DspH1nsfuPoA7?=
+ =?iso-8859-1?Q?YkaMDtZx5QFslBoKPu+w5FxIgZqQBcCjVWW9LFSAq8ftEESM9xjRy+ehJs?=
+ =?iso-8859-1?Q?mVVZCnrP5apO8SQNqIYONFXL0mf9r72aU+jyRxWp3aDhU+Jiyekp3HVEzN?=
+ =?iso-8859-1?Q?RD2NGz/S5iHUjpRAIVdPEaQzEf8ACQ0CjfW+JkCArc0gUiEIpLlsu04S69?=
+ =?iso-8859-1?Q?kr1xYdeUrlS25qTrI6GbSg+fWORhg77+Ec3b9xyMrkcBqPOgR0UPGdnF60?=
+ =?iso-8859-1?Q?pZXvosrul2U1G0/woR5Mvw6PaXeHziDD7xtcKMblvCkDPyEFRXS1TuyTo6?=
+ =?iso-8859-1?Q?HJGpcgUslb1mFGviemRbzgPUI/JiCgktF1DNqEoUUqLGNTLD2rXJ/FNuzJ?=
+ =?iso-8859-1?Q?QGcouD1Tho6q/u2B2UuoIHlugSCbOSLoSqtIJ2OXSauxMoeK3gmD9aQbz6?=
+ =?iso-8859-1?Q?uQiXLN+HBCn1BHhfHoKMuLtuEnf0AVEHoJ2dYaUGN2IKCXKtaEtZMDaVyr?=
+ =?iso-8859-1?Q?ekNm20vVcEuc4NDMB1y4aMV+ZWhfukcj+oRYWD2talnCwBu7E7hq3meRF0?=
+ =?iso-8859-1?Q?slRHEGsnUaoh9TkhKlnIq7W1JLa0RmL4WWeoKm8laDNUZleYgHu19250Kq?=
+ =?iso-8859-1?Q?econ0iUM3gR+uGe+CAsudp4nvvIThbVpT9F0oWGmYHumKGVyOcADDAYmK9?=
+ =?iso-8859-1?Q?GsT1e/XXAZJ7m7v4UEpUYp7T8dNKY602XQUzryzseRRKx8FkqJN+UpXeX/?=
+ =?iso-8859-1?Q?T8TCrPQ7dDpKYs9og019SVfsrLF9kp+wxY1As0VPNwha1KloYAj0shqjhi?=
+ =?iso-8859-1?Q?SyLLUF59TssiwtDgjUCmMuyH1FIVy/UWGNhWj9qP7sgOzAd3VmEWs0BUyd?=
+ =?iso-8859-1?Q?Ht3yGMgc1SsgaAmsKYcjOK0s7Cdk5NAOWxaj81VEEUbMjVPLHQy3Udog?=
  =?iso-8859-1?Q?=3D=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -121,23 +125,23 @@ MIME-Version: 1.0
 X-OriginatorOrg: epam.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d1ede76-dd9d-4e19-7f6d-08dbf2d7c9c3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2023 01:41:21.8562 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5480e286-e83e-4782-b3d8-08dbf2d7ca52
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2023 01:41:22.9033 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cMQRk7WlMAfSNsVqy3636sGywGbOhKOh16PGYpKJeoRjC0y1+tJpdgxeO5Gr7PVYuecS2oLks5jbrBk0WCeJBQlTiBHDGHyfDKTPiZzLWgc=
+X-MS-Exchange-CrossTenant-userprincipalname: a1qj5xIyQoXDsKFOo/VQUNU3VnUIgQn/vGUHu79TGShyRiwd+nswyBKKUDkz/0BPoZL9hhI5/tGNHz4LNnnRRAwhsgUl9SDAlUdoZwZBejE=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB7285
-X-Proofpoint-ORIG-GUID: vAFYO3NAXhPymQwhKxackEVEJwcDayWJ
-X-Proofpoint-GUID: vAFYO3NAXhPymQwhKxackEVEJwcDayWJ
+X-Proofpoint-ORIG-GUID: auP1DLL3KenOzM_fnUodKFyRiOKe1i-B
+X-Proofpoint-GUID: auP1DLL3KenOzM_fnUodKFyRiOKe1i-B
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-01_24,2023-11-30_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- phishscore=0 suspectscore=0 impostorscore=0 mlxscore=0 adultscore=0
- malwarescore=0 lowpriorityscore=0 mlxlogscore=999 clxscore=1015
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=999
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 impostorscore=0 clxscore=1015
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311060000 definitions=main-2312020009
 Received-SPF: pass client-ip=148.163.137.242;
  envelope-from=prvs=6700ee1bd8=volodymyr_babchuk@epam.com;
@@ -165,146 +169,235 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xen PV devices in QEMU can be created in two ways: either by QEMU
-itself, if they were passed via command line, or by Xen toolstack. In
-the latter case, QEMU scans XenStore entries and configures devices
-accordingly.
+This patch makes legacy backends optional. As was discussed at [1]
+this is a solution to a problem when we can't run QEMU as a device
+model in a non-privileged domain. This is because legacy backends
+assume that they are always running in domain with ID =3D 0. Actually,
+this may prevent running QEMU in a privileged domain with ID not equal
+to zero.
 
-In the second case we don't want QEMU to write/delete front-end
-entries for two reasons: it might have no access to those entries if
-it is running in un-privileged domain and it is just incorrect to
-overwrite entries already provided by Xen toolstack, because toolstack
-manages those nodes. For example, it might read backend- or frontend-
-state to be sure that they are both disconnected and it is safe to
-destroy a domain.
+With this patch it is possible to provide
+"--disable-xen-legacy-backends" configure option to get QEMU binary
+that can run in a driver domain. With price of not be able to use
+legacy backends of course.
 
-This patch checks presence of xendev->backend to check if Xen PV
-device was configured by Xen toolstack to decide if it should touch
-frontend entries in XenStore. Also, when we need to remove XenStore
-entries during device teardown only if they weren't created by Xen
-toolstack. If they were created by toolstack, then it is toolstack's
-job to do proper clean-up.
+[1]
+https://lists.gnu.org/archive/html/qemu-devel/2023-11/msg05022.html
 
-Suggested-by: Paul Durrant <xadimgnik@gmail.com>
-Suggested-by: David Woodhouse <dwmw@amazon.co.uk>
-Co-Authored-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
 ---
 
-Changes in v4:
-  - don't touch "tty" entry in the console backend
+I am not sure if I made correct changes to build system, so this patch
+is tagged as RFC.
 
 Changes in v3:
- - Rephrased the commit message
+ - New patch in v3
 ---
- hw/block/xen-block.c | 16 +++++++++-------
- hw/net/xen_nic.c     | 18 ++++++++++--------
- hw/xen/xen-bus.c     | 14 +++++++++-----
- 3 files changed, 28 insertions(+), 20 deletions(-)
+ hw/9pfs/meson.build           |  4 +++-
+ hw/display/meson.build        |  4 +++-
+ hw/i386/pc.c                  |  2 ++
+ hw/usb/meson.build            |  5 ++++-
+ hw/xen/meson.build            | 11 ++++++++---
+ hw/xen/xen-hvm-common.c       |  2 ++
+ hw/xenpv/xen_machine_pv.c     |  2 ++
+ meson.build                   |  5 +++++
+ meson_options.txt             |  2 ++
+ scripts/meson-buildoptions.sh |  4 ++++
+ 10 files changed, 35 insertions(+), 6 deletions(-)
 
-diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-index c2ac9db4a2..dac519a6d3 100644
---- a/hw/block/xen-block.c
-+++ b/hw/block/xen-block.c
-@@ -390,13 +390,15 @@ static void xen_block_realize(XenDevice *xendev, Erro=
-r **errp)
+diff --git a/hw/9pfs/meson.build b/hw/9pfs/meson.build
+index 2944ea63c3..e8306ba8d2 100644
+--- a/hw/9pfs/meson.build
++++ b/hw/9pfs/meson.build
+@@ -15,7 +15,9 @@ fs_ss.add(files(
+ ))
+ fs_ss.add(when: 'CONFIG_LINUX', if_true: files('9p-util-linux.c'))
+ fs_ss.add(when: 'CONFIG_DARWIN', if_true: files('9p-util-darwin.c'))
+-fs_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen-9p-backend.c'))
++if have_xen_legacy_backends
++  fs_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen-9p-backend.c'))
++endif
+ system_ss.add_all(when: 'CONFIG_FSDEV_9P', if_true: fs_ss)
 =20
-     xen_device_backend_printf(xendev, "info", "%u", blockdev->info);
+ specific_ss.add(when: 'CONFIG_VIRTIO_9P', if_true: files('virtio-9p-device=
+.c'))
+diff --git a/hw/display/meson.build b/hw/display/meson.build
+index 344dfe3d8c..18d657f6b3 100644
+--- a/hw/display/meson.build
++++ b/hw/display/meson.build
+@@ -14,7 +14,9 @@ system_ss.add(when: 'CONFIG_PL110', if_true: files('pl110=
+.c'))
+ system_ss.add(when: 'CONFIG_SII9022', if_true: files('sii9022.c'))
+ system_ss.add(when: 'CONFIG_SSD0303', if_true: files('ssd0303.c'))
+ system_ss.add(when: 'CONFIG_SSD0323', if_true: files('ssd0323.c'))
+-system_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xenfb.c'))
++if have_xen_legacy_backends
++  system_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xenfb.c'))
++endif
 =20
--    xen_device_frontend_printf(xendev, "virtual-device", "%lu",
--                               vdev->number);
--    xen_device_frontend_printf(xendev, "device-type", "%s",
--                               blockdev->device_type);
--
--    xen_device_backend_printf(xendev, "sector-size", "%u",
--                              conf->logical_block_size);
-+    if (!xendev->backend) {
-+        xen_device_frontend_printf(xendev, "virtual-device", "%lu",
-+                                   vdev->number);
-+        xen_device_frontend_printf(xendev, "device-type", "%s",
-+                                   blockdev->device_type);
+ system_ss.add(when: 'CONFIG_VGA_PCI', if_true: files('vga-pci.c'))
+ system_ss.add(when: 'CONFIG_VGA_ISA', if_true: files('vga-isa.c'))
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 29b9964733..91857af428 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1263,7 +1263,9 @@ void pc_basic_device_init(struct PCMachineState *pcms=
+,
+             pci_create_simple(pcms->bus, -1, "xen-platform");
+         }
+         pcms->xenbus =3D xen_bus_init();
++#ifdef CONFIG_XEN_LEGACY_BACKENDS
+         xen_be_init();
++#endif
+     }
+ #endif
+=20
+diff --git a/hw/usb/meson.build b/hw/usb/meson.build
+index e94149ebde..8d395745b2 100644
+--- a/hw/usb/meson.build
++++ b/hw/usb/meson.build
+@@ -84,6 +84,9 @@ if libusb.found()
+   hw_usb_modules +=3D {'host': usbhost_ss}
+ endif
+=20
+-system_ss.add(when: ['CONFIG_USB', 'CONFIG_XEN_BUS', libusb], if_true: fil=
+es('xen-usb.c'))
++if have_xen_legacy_backends
++  system_ss.add(when: ['CONFIG_USB', 'CONFIG_XEN_BUS', libusb],
++                if_true: files('xen-usb.c'))
++endif
+=20
+ modules +=3D { 'hw-usb': hw_usb_modules }
+diff --git a/hw/xen/meson.build b/hw/xen/meson.build
+index d887fa9ba4..964c3364f2 100644
+--- a/hw/xen/meson.build
++++ b/hw/xen/meson.build
+@@ -2,11 +2,16 @@ system_ss.add(when: ['CONFIG_XEN_BUS'], if_true: files(
+   'xen-backend.c',
+   'xen-bus-helper.c',
+   'xen-bus.c',
+-  'xen-legacy-backend.c',
+-  'xen_devconfig.c',
+-  'xen_pvdev.c',
+ ))
+=20
++if have_xen_legacy_backends
++  system_ss.add(when: ['CONFIG_XEN_BUS'], if_true: files(
++    'xen_pvdev.c',
++    'xen-legacy-backend.c',
++    'xen_devconfig.c',
++  ))
++endif
 +
-+        xen_device_backend_printf(xendev, "sector-size", "%u",
-+                                  conf->logical_block_size);
-+    }
+ system_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
+   'xen-operations.c',
+ ))
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 565dc39c8f..2e7897dbd2 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -869,7 +869,9 @@ void xen_register_ioreq(XenIOState *state, unsigned int=
+ max_cpus,
 =20
-     xen_block_set_size(blockdev);
+     xen_bus_init();
 =20
-diff --git a/hw/net/xen_nic.c b/hw/net/xen_nic.c
-index afa10c96e8..27442bef38 100644
---- a/hw/net/xen_nic.c
-+++ b/hw/net/xen_nic.c
-@@ -315,14 +315,16 @@ static void xen_netdev_realize(XenDevice *xendev, Err=
-or **errp)
++#ifdef CONFIG_XEN_LEGACY_BACKENDS
+     xen_be_init();
++#endif
 =20
-     qemu_macaddr_default_if_unset(&netdev->conf.macaddr);
+     return;
 =20
--    xen_device_frontend_printf(xendev, "mac", "%02x:%02x:%02x:%02x:%02x:%0=
-2x",
--                               netdev->conf.macaddr.a[0],
--                               netdev->conf.macaddr.a[1],
--                               netdev->conf.macaddr.a[2],
--                               netdev->conf.macaddr.a[3],
--                               netdev->conf.macaddr.a[4],
--                               netdev->conf.macaddr.a[5]);
--
-+    if (!xendev->backend) {
-+        xen_device_frontend_printf(xendev, "mac",
-+                                   "%02x:%02x:%02x:%02x:%02x:%02x",
-+                                   netdev->conf.macaddr.a[0],
-+                                   netdev->conf.macaddr.a[1],
-+                                   netdev->conf.macaddr.a[2],
-+                                   netdev->conf.macaddr.a[3],
-+                                   netdev->conf.macaddr.a[4],
-+                                   netdev->conf.macaddr.a[5]);
-+    }
-     netdev->nic =3D qemu_new_nic(&net_xen_info, &netdev->conf,
-                                object_get_typename(OBJECT(xendev)),
-                                DEVICE(xendev)->id, netdev);
-diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
-index dd0171ab98..d0f17aeb27 100644
---- a/hw/xen/xen-bus.c
-+++ b/hw/xen/xen-bus.c
-@@ -599,8 +599,10 @@ static void xen_device_backend_destroy(XenDevice *xend=
-ev)
+diff --git a/hw/xenpv/xen_machine_pv.c b/hw/xenpv/xen_machine_pv.c
+index 9f9f137f99..03a55f345c 100644
+--- a/hw/xenpv/xen_machine_pv.c
++++ b/hw/xenpv/xen_machine_pv.c
+@@ -37,7 +37,9 @@ static void xen_init_pv(MachineState *machine)
+     setup_xen_backend_ops();
 =20
-     g_assert(xenbus->xsh);
+     /* Initialize backend core & drivers */
++#ifdef CONFIG_XEN_LEGACY_BACKENDS
+     xen_be_init();
++#endif
 =20
--    xs_node_destroy(xenbus->xsh, XBT_NULL, xendev->backend_path,
--                    &local_err);
-+    if (!xendev->backend) {
-+        xs_node_destroy(xenbus->xsh, XBT_NULL, xendev->backend_path,
-+                        &local_err);
-+    }
-     g_free(xendev->backend_path);
-     xendev->backend_path =3D NULL;
+     switch (xen_mode) {
+     case XEN_ATTACH:
+diff --git a/meson.build b/meson.build
+index ec01f8b138..c8a43dd97d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1749,6 +1749,9 @@ have_xen_pci_passthrough =3D get_option('xen_pci_pass=
+through') \
+            error_message: 'Xen PCI passthrough not available on this platf=
+orm') \
+   .allowed()
 =20
-@@ -764,8 +766,10 @@ static void xen_device_frontend_destroy(XenDevice *xen=
-dev)
++have_xen_legacy_backends =3D get_option('xen-legacy-backends').require(xen=
+.found(),
++           error_message: 'Xen legacy backends requested but Xen not enabl=
+ed').allowed()
++
 =20
-     g_assert(xenbus->xsh);
-=20
--    xs_node_destroy(xenbus->xsh, XBT_NULL, xendev->frontend_path,
--                    &local_err);
-+    if (!xendev->backend) {
-+        xs_node_destroy(xenbus->xsh, XBT_NULL, xendev->frontend_path,
-+                        &local_err);
-+    }
-     g_free(xendev->frontend_path);
-     xendev->frontend_path =3D NULL;
-=20
-@@ -1063,7 +1067,7 @@ static void xen_device_realize(DeviceState *dev, Erro=
-r **errp)
-     xen_device_backend_set_online(xendev, true);
-     xen_device_backend_set_state(xendev, XenbusStateInitWait);
-=20
--    if (!xen_device_frontend_exists(xendev)) {
-+    if (!xen_device_frontend_exists(xendev) && !xendev->backend) {
-         xen_device_frontend_printf(xendev, "backend", "%s",
-                                    xendev->backend_path);
-         xen_device_frontend_printf(xendev, "backend-id", "%u",
+ cacard =3D not_found
+ if not get_option('smartcard').auto() or have_system
+@@ -2219,6 +2222,7 @@ config_host_data.set('CONFIG_DBUS_DISPLAY', dbus_disp=
+lay)
+ config_host_data.set('CONFIG_CFI', get_option('cfi'))
+ config_host_data.set('CONFIG_SELINUX', selinux.found())
+ config_host_data.set('CONFIG_XEN_BACKEND', xen.found())
++config_host_data.set('CONFIG_XEN_LEGACY_BACKENDS', have_xen_legacy_backend=
+s)
+ config_host_data.set('CONFIG_LIBDW', libdw.found())
+ if xen.found()
+   # protect from xen.version() having less than three components
+@@ -3049,6 +3053,7 @@ config_all +=3D config_targetos
+ config_all +=3D config_all_disas
+ config_all +=3D {
+   'CONFIG_XEN': xen.found(),
++  'CONFIG_XEN_LEGACY_BACKENDS': have_xen_legacy_backends,
+   'CONFIG_SYSTEM_ONLY': have_system,
+   'CONFIG_USER_ONLY': have_user,
+   'CONFIG_ALL': true,
+diff --git a/meson_options.txt b/meson_options.txt
+index c9baeda639..91dd677257 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -77,6 +77,8 @@ option('nvmm', type: 'feature', value: 'auto',
+        description: 'NVMM acceleration support')
+ option('xen', type: 'feature', value: 'auto',
+        description: 'Xen backend support')
++option('xen-legacy-backends', type: 'feature', value: 'auto',
++       description: 'Xen legacy backends (9pfs, fb, qusb) support')
+ option('xen_pci_passthrough', type: 'feature', value: 'auto',
+        description: 'Xen PCI passthrough support')
+ option('tcg', type: 'feature', value: 'enabled',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 680fa3f581..b5acef008f 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -218,6 +218,8 @@ meson_options_help() {
+   printf "%s\n" '  werror          Treat warnings as errors'
+   printf "%s\n" '  whpx            WHPX acceleration support'
+   printf "%s\n" '  xen             Xen backend support'
++  printf "%s\n" '  xen-legacy-backends'
++  printf "%s\n" '                  Xen legacy backends (9pfs, fb, qusb) su=
+pport'
+   printf "%s\n" '  xen-pci-passthrough'
+   printf "%s\n" '                  Xen PCI passthrough support'
+   printf "%s\n" '  xkbcommon       xkbcommon support'
+@@ -556,6 +558,8 @@ _meson_option_parse() {
+     --disable-whpx) printf "%s" -Dwhpx=3Ddisabled ;;
+     --enable-xen) printf "%s" -Dxen=3Denabled ;;
+     --disable-xen) printf "%s" -Dxen=3Ddisabled ;;
++    --enable-xen-legacy-backends) printf "%s" -Dxen-legacy-backends=3Denab=
+led ;;
++    --disable-xen-legacy-backends) printf "%s" -Dxen-legacy-backends=3Ddis=
+abled ;;
+     --enable-xen-pci-passthrough) printf "%s" -Dxen_pci_passthrough=3Denab=
+led ;;
+     --disable-xen-pci-passthrough) printf "%s" -Dxen_pci_passthrough=3Ddis=
+abled ;;
+     --enable-xkbcommon) printf "%s" -Dxkbcommon=3Denabled ;;
 --=20
 2.42.0
 
