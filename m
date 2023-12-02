@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F7C801D1D
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:43:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6987801D19
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:42:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9QEe-00055u-QI; Sat, 02 Dec 2023 08:40:45 -0500
+	id 1r9QEl-00057O-CB; Sat, 02 Dec 2023 08:40:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEa-00055K-PE
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:40 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEb-00055Z-QZ
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:42 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QET-0008V6-Ie
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:36 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEU-0008VD-Sl
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:38 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id D004911F014;
- Sat,  2 Dec 2023 13:40:32 +0000 (UTC)
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 1A41811F0B1;
+ Sat,  2 Dec 2023 13:40:33 +0000 (UTC)
 From: ~lbryndza <lbryndza@git.sr.ht>
-Date: Sat, 02 Dec 2023 13:05:19 +0100
-Subject: [PATCH qemu v3 02/20] Fixing the basic functionality of STM32 timers
-Message-ID: <170152443229.18048.53824064267512246-2@git.sr.ht>
+Date: Sat, 02 Dec 2023 13:09:37 +0100
+Subject: [PATCH qemu v3 03/20] Fixing the basic functionality of STM32 timers
+Message-ID: <170152443229.18048.53824064267512246-3@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <170152443229.18048.53824064267512246-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair23@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
 Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
  helo=mail-b.sr.ht
@@ -66,96 +66,35 @@ count down modes. This commit fixes bugs with interrupt
 reporting and implements the basic modes of the counter's
 time-base block.
 
-Remove wrong qemu timer implementation
+Add timer get counter function
 
 Signed-off-by: Lucjan Bryndza <lbryndza.oss@icloud.com>
 ---
- hw/timer/stm32f2xx_timer.c | 55 ++++----------------------------------
- 1 file changed, 5 insertions(+), 50 deletions(-)
+ hw/timer/stm32f2xx_timer.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/timer/stm32f2xx_timer.c b/hw/timer/stm32f2xx_timer.c
-index ba8694dcd3..f03f594a17 100644
+index f03f594a17..0c5586cb8b 100644
 --- a/hw/timer/stm32f2xx_timer.c
 +++ b/hw/timer/stm32f2xx_timer.c
-@@ -23,12 +23,17 @@
-  */
-=20
- #include "qemu/osdep.h"
-+#include "qapi/error.h"
- #include "hw/irq.h"
- #include "hw/qdev-properties.h"
- #include "hw/timer/stm32f2xx_timer.h"
- #include "migration/vmstate.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-+#include "qemu/typedefs.h"
-+#include "qemu/timer.h"
-+#include "qemu/main-loop.h"
-+#include "sysemu/dma.h"
-=20
- #ifndef STM_TIMER_ERR_DEBUG
- #define STM_TIMER_ERR_DEBUG 0
-@@ -42,57 +47,7 @@
-=20
+@@ -48,6 +48,16 @@
  #define DB_PRINT(fmt, args...) DB_PRINT_L(1, fmt, ## args)
-=20
--static void stm32f2xx_timer_set_alarm(STM32F2XXTimerState *s, int64_t now);
-=20
--static void stm32f2xx_timer_interrupt(void *opaque)
--{
--    STM32F2XXTimerState *s =3D opaque;
--
--    DB_PRINT("Interrupt\n");
--
--    if (s->tim_dier & TIM_DIER_UIE && s->tim_cr1 & TIM_CR1_CEN) {
--        s->tim_sr |=3D 1;
--        qemu_irq_pulse(s->irq);
--        stm32f2xx_timer_set_alarm(s, s->hit_time);
--    }
--
--    if (s->tim_ccmr1 & (TIM_CCMR1_OC2M2 | TIM_CCMR1_OC2M1) &&
--        !(s->tim_ccmr1 & TIM_CCMR1_OC2M0) &&
--        s->tim_ccmr1 & TIM_CCMR1_OC2PE &&
--        s->tim_ccer & TIM_CCER_CC2E) {
--        /* PWM 2 - Mode 1 */
--        DB_PRINT("PWM2 Duty Cycle: %d%%\n",
--                s->tim_ccr2 / (100 * (s->tim_psc + 1)));
--    }
--}
--
--static inline int64_t stm32f2xx_ns_to_ticks(STM32F2XXTimerState *s, int64_t =
-t)
--{
--    return muldiv64(t, s->freq_hz, 1000000000ULL) / (s->tim_psc + 1);
--}
--
--static void stm32f2xx_timer_set_alarm(STM32F2XXTimerState *s, int64_t now)
--{
--    uint64_t ticks;
--    int64_t now_ticks;
--
--    if (s->tim_arr =3D=3D 0) {
--        return;
--    }
--
--    DB_PRINT("Alarm set at: 0x%x\n", s->tim_cr1);
--
--    now_ticks =3D stm32f2xx_ns_to_ticks(s, now);
--    ticks =3D s->tim_arr - (now_ticks - s->tick_offset);
--
--    DB_PRINT("Alarm set in %d ticks\n", (int) ticks);
--
--    s->hit_time =3D muldiv64((ticks + (uint64_t) now_ticks) * (s->tim_psc + =
-1),
--                               1000000000ULL, s->freq_hz);
--
--    timer_mod(s->timer, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + s->hit_time);
--    DB_PRINT("Wait Time: %" PRId64 " ticks\n", s->hit_time);
--}
-=20
+ 
+ 
++static uint32_t stm32f2xx_timer_get_count(STM32F2XXTimerState *s)
++{
++    uint64_t cnt = ptimer_get_count(s->timer);
++    if (s->count_mode == TIMER_UP_COUNT) {
++        return s->tim_arr - (cnt & 0xffff);
++    } else {
++        return cnt & 0xffff;
++    }
++}
++
+ 
  static void stm32f2xx_timer_reset(DeviceState *dev)
  {
---=20
+-- 
 2.38.5
 
 
