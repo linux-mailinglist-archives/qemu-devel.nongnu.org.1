@@ -2,157 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0172080199D
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 02:43:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B60A801AC9
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 05:50:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9F1g-0007ZE-Gw; Fri, 01 Dec 2023 20:42:36 -0500
+	id 1r9HwF-0003cj-OE; Fri, 01 Dec 2023 23:49:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=6700ee1bd8=volodymyr_babchuk@epam.com>)
- id 1r9F0u-0007M3-6B; Fri, 01 Dec 2023 20:41:48 -0500
-Received: from mx0b-0039f301.pphosted.com ([148.163.137.242])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=6700ee1bd8=volodymyr_babchuk@epam.com>)
- id 1r9F0n-00057W-TB; Fri, 01 Dec 2023 20:41:47 -0500
-Received: from pps.filterd (m0174683.ppops.net [127.0.0.1])
- by mx0b-0039f301.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 3B21X1Qo015641;
- Sat, 2 Dec 2023 01:41:28 GMT
-Received: from eur05-vi1-obe.outbound.protection.outlook.com
- (mail-vi1eur05lp2168.outbound.protection.outlook.com [104.47.17.168])
- by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3uqa3aucrx-4
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 02 Dec 2023 01:41:27 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OaLUJZVHbDztQuejeV3sVzX9LQU04aVbSmv6N1+oehtTnAAhn/d0BRXPldl2gYXq2KaPN9ErL2dLwwsVPG4DzjCbs/+cBHHP7vzC4FXsZ1ZlidenVD2ZGTl7Z0Z6LueVkvtprsCld3qxHXba9Jib6WuP3dGZ3PxtWY3m6VF4fojNRb5hpSeI6KGDfwL4hxq8PV9aWQM+lLemx6GrB9atYebLl/6dfb+4nHC02TVaYBW3xmxCDMz51aD7gFzUCUCJuqbPh63ihiqIZlmF8BS5P/LkLfgbLOz4AEclRyjotWpYccn0n+RVFF6Rbn1Y2LXH0KZNY5QbnsvXiGUSbxfUlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=602dKa1VR8fPvQHqtVLjjZVu2RbSyKF63LAUWSpxQ3M=;
- b=n5j+mlTaClkxyp0BuuIR4D9Qif3k2R5aIZOsruCjfVhMMaE/Fb2MKDI//oLt6GoKcTLPaF9Dbm0ddoBOKOB4xpSh1zxkxO0glRHmR4rkciPCN9ss8tbXO6fmg07dyVR7YZ5uSThrKtBmeVZ7v3cams7U1+VeV6DXSwSj1oOeJRYxYn84+twy38J8vOmVfHgu3J6AFgL6RSsWUxG3Yz+GfoGnRmrDYpnD0GcJKyMsCsM5tT6cuZxRWO/8rmC6yqZpAy1t6DKT4CrswmJUFMsDgt8JfH/SrdVs0SpQJciGGQVymv2BwWjmITd7P/AV9tYeyblDOXqM3ehKqZ1UG1nXBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
- dkim=pass header.d=epam.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=602dKa1VR8fPvQHqtVLjjZVu2RbSyKF63LAUWSpxQ3M=;
- b=jmtdybKPcY4lEbWoQ99WvmhKu6sGJJDGM3Vv4VcsJgkESUcB7X2AhT9dOMfKwrbezhkHQ8sR6CQSNihRCRfSZZ2nBsO6YBFWIRVA0/Y3UrF18GiihDS5g7jm+X8nBCnJtA48k3CGXvXv0hfwJcnf/EFvArRK8nLuxkiIAMZo2tWQ/7bGIn833iHAmNL46MVTHkaVSntgX1i8gHBeZjxct5s/ewXcV2NjXKACPB7Pc/3AFNMRr7Tn2LeTVe9VmaAJgdv7TvugrjW72J/E4IvdR51qoQcsmpy5YQPh0Ecjr13RoHkn8DKo6/Izcpu67GZqEDLQLDnv3lobQOvLy0RAdg==
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
- by AS8PR03MB7285.eurprd03.prod.outlook.com (2603:10a6:20b:2ef::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.27; Sat, 2 Dec
- 2023 01:41:23 +0000
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7046.027; Sat, 2 Dec 2023
- 01:41:23 +0000
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: David Woodhouse <dwmw@amazon.co.uk>, Stefano Stabellini
- <sstabellini@kernel.org>, Julien Grall <julien@xen.org>,
- Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>, Volodymyr Babchuk
- <Volodymyr_Babchuk@epam.com>, =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
-Subject: [PATCH v4 5/6] xen_arm: set mc->max_cpus to GUEST_MAX_VCPUS
-Thread-Topic: [PATCH v4 5/6] xen_arm: set mc->max_cpus to GUEST_MAX_VCPUS
-Thread-Index: AQHaJMCoUgquUnKvjU6ewDeCcsRksA==
-Date: Sat, 2 Dec 2023 01:41:23 +0000
-Message-ID: <20231202014108.2017803-6-volodymyr_babchuk@epam.com>
-References: <20231202014108.2017803-1-volodymyr_babchuk@epam.com>
-In-Reply-To: <20231202014108.2017803-1-volodymyr_babchuk@epam.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: git-send-email 2.42.0
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|AS8PR03MB7285:EE_
-x-ms-office365-filtering-correlation-id: e70983a7-4d8f-4f2d-df4e-08dbf2d7ca8b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: +s0BWuGbZAopSfMhTEaqbTkFuUiXuR19EHTqtUxKwmvHHJrR2SZyYgmi6h8dGwpOhF0U1Rgpakk8Ien6fQ4WcXK6H5Rd6R1ZfhmCFIBg99OpJFdcLgnpw45HZfvbuKtyuTU7tEW7rDlw5uCm0G2w8MUBLfgvhZ3eTqCSVOyLK9TQYXKKuyantVjZiqjOfvprou4in6zz6VMVmC+K70Eq9l53ActWBCybkQy9+yjIAEzkvxSTgugvYvQkz/6IIkK9y01NjgRyj8RVq7zubFxZu/8aWxh6H0MBO1eWdD5BnT/TS+T3XwsgbqAR7FWhjXG9jvGStypGUEQgrqyS9r6T595gg/ndFj7VOdCuYQXKmZFHR+/RPSyFNtFHJaOK7anCLQ5zwL0fwpqfqywmmftWkg8OVljiV1H6B3xP1B9dDP0vn3zSXHQx5sUhvOO0a+3XOXHOTcJYGOvBxuMSMQXoMBaACOD+xc4awbtWNlM9Ju229ONPeMKiUiL+3u4POjwlGo+H/TP97svK9JAP9+QABsK3Oe0IeHo9+0NZhln8us7b5XVjHUqISrx0e8/EQ/V9eRo9ifJEZNTNe2xVPj8FqkevFhzA6UP2ZqLmXU54XSySZ2aGImMwtqpfE0bAh6V1
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(376002)(396003)(366004)(346002)(136003)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(122000001)(38070700009)(41300700001)(2906002)(5660300002)(83380400001)(71200400001)(55236004)(38100700002)(6506007)(6512007)(1076003)(2616005)(26005)(66556008)(478600001)(91956017)(6486002)(36756003)(76116006)(66946007)(64756008)(66446008)(8936002)(6916009)(54906003)(86362001)(66476007)(4326008)(316002)(8676002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZlV5eThXcW9ZOWYxb3VxbTh6SEVUWmJ1S3BIclJFQ0dmR3gybXd6YmRKT05L?=
- =?utf-8?B?amY3UXUwVmo1aWdib2pzbkdFUkJtWXNqZmJhZThqZ2Zka1d1L1Z2aTh3U0ha?=
- =?utf-8?B?elRPNkRoRkorRlBMeERXbVVDZGx0dlhhQTRmNk1adXpNYkU1QTJWWmY5WS91?=
- =?utf-8?B?Mm55K0JnMUQ2bVBQeWk2NGw0UEY5RTdMY0MzR2hEc0tSbUcwYVRmYkxpRlZ6?=
- =?utf-8?B?RHRpUjRVUENod0RDVHM0Zk9oTGorSDFUUkQ0aEdJdURJRW52aHE0RmZZQk9B?=
- =?utf-8?B?MVR3NldKM2taLzdEbzdMd3htcmU3RWRyaFZZOUhDRHUrMEF5b2MvbGpYT3dv?=
- =?utf-8?B?ZWZ5b1B0N0NlNjJ5Zi94bk5tak11MGo3dlJKNEFQUjBsdlFHMFVZd2FvTGhy?=
- =?utf-8?B?cjhhdlFieTFrYkZwc1Vpem1rNHE1VDYxRGd4TDNwUEVuTlkrRzRpRTVwVU1F?=
- =?utf-8?B?aEJnZ2p3YW9EdmFFdDhxVVhZTmpoejZzOHcyaXhpZjVjaXhVVHRhOHRoSy9L?=
- =?utf-8?B?Szl5aCtoM0Q0SExDbXA3bHc0T0tub1QwOC9GbzVXUTZKbnVEMzlUUjRXOFhW?=
- =?utf-8?B?UHduV1lsT3BBZmZtZjd3VDd4Uko3R3lyQVFDSFBRMFdUK0l4NFNnTjc4RCtF?=
- =?utf-8?B?YUwvR1NwcmV6YndPbTlQenVQbDluSlNSeHE1bS9JU3V5Y2dxM2xScnBSMHEr?=
- =?utf-8?B?dUt5aGYwRk44Njdabm8zUzVaYXF1RHdKeEdhSUZSa2IxdlZFQStxWlFnc2RD?=
- =?utf-8?B?N1p5T1BUUEJPWXgyb25xR1FTdTk1MktmV0xyU3M4ZmNsNEgybDN0TVVPU2p4?=
- =?utf-8?B?TkY1OUVkWHlDZ0N3b0U4c3pXVXJuMmFabEpIeGVkYWZSb1RTKzFwME1Yd0dm?=
- =?utf-8?B?bytIQ2h1M0NoYi94WURuQWo0QVZ0Q2I5YkdGSFZFeERsRUdXVEFyQ2xBUEFS?=
- =?utf-8?B?R2tRUXBadVBrVi9xVjBwU25GTkMrcWhjQjRaN1ZzbTZibVp1d29NdjAxYjBk?=
- =?utf-8?B?NTVzTUUyRzkzTkdqRmFLUit3a0FsSXlSWGRQTEUxYm5TWVY0c3pYd3RvMWZp?=
- =?utf-8?B?MUVHcmxDVEdVVWg0ckhEUUdBY21VOXMyTUVGeUhyMERWUFA2amJaMkRoOHIy?=
- =?utf-8?B?R09TYXlLUitjRWgvOFpYT2JBWmg2T3VvZ3VwS0oycDl2RkFEak51Tjh5cmo3?=
- =?utf-8?B?cCtZV3JneUora01OY09tWDFrK2RBdU1nSlIrUnQrSEhVME9RMzM5NjVhZkk1?=
- =?utf-8?B?QzJQRStKM0pxOWpsSm9xMzRhTGc3ODZUenpiRTRzeVk3b0lGSUx1cWRYTFU4?=
- =?utf-8?B?THFUQTRFTldtME1oS3lWQk1kVDBiUW9zUDRmSHEza3pOdkk5RHY3S2NZdHFi?=
- =?utf-8?B?alVjZW5NbmVGUEhuQXZzRDRMZWMzRE0va2xWdE41VkNWZXpTSHd2U2tlMm5m?=
- =?utf-8?B?QS9YY2psb1dCd0VRVjd4VUdOZFpJYTkzOVdTNHcvaU9hY2F3Z1BvRHAwbllG?=
- =?utf-8?B?bUZVSVJ4UWRGMjZsVWtacGdOWWkwK1dvaXpJNHZXNWRYeTNJSCtRUlFDODM1?=
- =?utf-8?B?VTdndVhYMFZIUW9wTk5nZWEwVjhwMTJnMytISUpRWVNvdUh0czJqaWgwSkFV?=
- =?utf-8?B?djB0RW5ZTjhHMGM0YjU2ZkNZQkxoNVBWMnVsTVcxbnhkSGdDN3V0bHJ5cFBh?=
- =?utf-8?B?U0tqYjlNNC9CTHpkVHBBVkE3cmF0ZmRLRHJtVE8xL01vaDJKbXo1YURPNFY1?=
- =?utf-8?B?NXF3RSt4M2greXJlVkh5UmdhUFlBRENnb3RlY0JSa0lNTWwrRytYazg4VVdK?=
- =?utf-8?B?K2NmdG5wQStBTlRIOW9IYnRQRVpnWUNPQzRIMDZpcnRlOUVHbktPZUdGWXFo?=
- =?utf-8?B?VHFiWjlYWGg1TkFoc2hwUkFsSUNlMFptbDErdXZYNTI1WndIU0p2MnZtVzJI?=
- =?utf-8?B?WmwzU1VuSmxjbThkUmU4WDZUVmhidXJKVk1KdEJvWVhER21QZk9TMFZBMnFH?=
- =?utf-8?B?Q2wrWHlSd3Y5SVdQUnZJWXZERFU3THNxR1pHTms1MU42REc1dk1tcmFlSHla?=
- =?utf-8?B?VGhQclkvYUdwTFRLMlJVT0MrZjZ5cSsxUUUzdW13VVYxVnZaUERZbTZEQ0Zp?=
- =?utf-8?B?RVQ2ZG5pMEFkZnB0cW14dDA4L3Z2YTdvaWRuWGNSMXlpR2hFNEtkRkI2dXJy?=
- =?utf-8?B?VVE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A693FC4ED0861F4C8A66227288172DCC@eurprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <arorajai2798@gmail.com>)
+ id 1r9HwD-0003c9-Lh; Fri, 01 Dec 2023 23:49:09 -0500
+Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <arorajai2798@gmail.com>)
+ id 1r9HwB-0004hk-Pb; Fri, 01 Dec 2023 23:49:09 -0500
+Received: by mail-il1-x12d.google.com with SMTP id
+ e9e14a558f8ab-35c18e55633so11546855ab.2; 
+ Fri, 01 Dec 2023 20:49:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701492545; x=1702097345; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Xvi4mRz2w/E5pz1gAepmyUvWL5xNH8ENXIxXh94Gg9Y=;
+ b=P9BVABsrKZQbNJuge+r/q2bbpy0w9Rycd6AvZWXWhpv+vDBquN+PGiDfQykzR216+Z
+ 1W65FuT2EFiB9hskUpC6bb+gPHWlQzFRXzUZ4H4sMlFp/8WSpAJ5DsVYmv2YhQoEcsIo
+ E46HFYe+s0M3FF4On6kLzhWSSQ/gvOhYnrLRz8wt88BzeYfJn7O8AEh7Rh8eOPsMP0Xn
+ jgx5gaYoWqI01l2/q6PE/tgLWxX0JR2Xe1ZVL0og0/ypTu+yBamevLHIqkOCrM5vHR2C
+ 5aTqPT4MOUWB1i8ZwMbdCH+u4GVSO4LVjq6ssUFgmZRbzfjY8ln/67a7meqWNvErVx7V
+ aWOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701492545; x=1702097345;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Xvi4mRz2w/E5pz1gAepmyUvWL5xNH8ENXIxXh94Gg9Y=;
+ b=pmsvXWppxoX6m1ub1VWwvmE+aAJ2f+vpyUo2pw8KyAzmwfn8S3wdt7RVtDzWdPwx20
+ 0iaIprubiW+5r5/x0GbmAbMWx7t9wVgCj7eeCCHfHBZpWBBxGeKhHAgcSGgLJVbklSP3
+ 04Kx/9bysJ6cyYZj5uwPKv1Uu+MglXTbPhUkA4S9wRXifQxwtu6v3nOvumsIU5lyeWKm
+ 7q2/V27XTHmaaYg1f2nfZ9ERdt2uTKRXynh5uxJ6sXsPwyK4Ckz04HdyF70P/YkLjOn/
+ dloZdlmQUYs/0M4qTiBjwJuTu5FIN/uoC0h33c3jA5FgQqEvc125Kj0gxJ9NumHn1Poe
+ WGgw==
+X-Gm-Message-State: AOJu0YwxtWoOxIdlkXjLir4owjqkYApg1zkECU/0Dtqfv5xceRKAuelD
+ wzb2gLo9ZRyn+0WjimbAx58nN5yjAO9pQg==
+X-Google-Smtp-Source: AGHT+IHZ5O1iFckILdx3dWYnCSgSjxEgvXFf/xAWgPtFj0tK0gUkZHRVAZ4mRL35WgnZB4iQfx+iRA==
+X-Received: by 2002:a05:6e02:1d12:b0:35d:5995:798d with SMTP id
+ i18-20020a056e021d1200b0035d5995798dmr961284ila.39.1701492545307; 
+ Fri, 01 Dec 2023 20:49:05 -0800 (PST)
+Received: from localhost.localdomain ([2406:7400:56:4f3d:dcc3:8696:be12:127c])
+ by smtp.gmail.com with ESMTPSA id
+ t11-20020a170902e84b00b001d076c2e346sm149652plg.51.2023.12.01.20.49.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 01 Dec 2023 20:49:04 -0800 (PST)
+From: Jai Arora <arorajai2798@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, pbonzini@redhat.com, peter.maydell@linaro.org,
+ alex.bennee@linaro.org, philmd@linaro.org,
+ Jai Arora <arorajai2798@gmail.com>
+Subject: [PATCH v5] accel/kvm: Turn DPRINTF macro use into tracepoints
+Date: Sat,  2 Dec 2023 10:18:46 +0530
+Message-Id: <20231202044846.258855-1-arorajai2798@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-OriginatorOrg: epam.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e70983a7-4d8f-4f2d-df4e-08dbf2d7ca8b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2023 01:41:23.2558 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 93VqHggG33F6TgXuJ/tp66ZEcCvhd05TUHlugZb2BVT1QYQD+oEV6jiM32nRXuyNPtb5/A2Nh11NbNZ/fqpuSFmg5uaOwPOcOc0sGQeMk/Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB7285
-X-Proofpoint-ORIG-GUID: 8ZBby8TmH1h2ph8djR-WB88q5H98YnKi
-X-Proofpoint-GUID: 8ZBby8TmH1h2ph8djR-WB88q5H98YnKi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-01_24,2023-11-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- malwarescore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 adultscore=0 spamscore=0 impostorscore=0 clxscore=1015
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312020009
-Received-SPF: pass client-ip=148.163.137.242;
- envelope-from=prvs=6700ee1bd8=volodymyr_babchuk@epam.com;
- helo=mx0b-0039f301.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12d;
+ envelope-from=arorajai2798@gmail.com; helo=mail-il1-x12d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -169,30 +90,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RnJvbTogT2xla3NhbmRyIFR5c2hjaGVua28gPG9sZWtzYW5kcl90eXNoY2hlbmtvQGVwYW0uY29t
-Pg0KDQpUaGUgbnVtYmVyIG9mIHZDUFVzIHVzZWQgZm9yIHRoZSBJT1JFUSBjb25maWd1cmF0aW9u
-IChtYWNoaW5lLT5zbXAuY3B1cykNCnNob3VsZCByZWFsbHkgbWF0Y2ggdGhlIHN5c3RlbSB2YWx1
-ZSBhcyBmb3IgZWFjaCB2Q1BVIHdlIHNldHVwIGEgZGVkaWNhdGVkDQpldnRjaG4gZm9yIHRoZSBj
-b21tdW5pY2F0aW9uIHdpdGggWGVuIGF0IHRoZSBydW50aW1lLiBUaGlzIGlzIG5lZWRlZA0KZm9y
-IHRoZSBJT1JFUSB0byBiZSBwcm9wZXJseSBjb25maWd1cmVkIGFuZCB3b3JrIGlmIHRoZSBpbnZv
-bHZlZCBkb21haW4NCmhhcyBtb3JlIHRoYW4gb25lIHZDUFUgYXNzaWduZWQuDQoNClNldCB0aGUg
-bnVtYmVyIG9mIGN1cnJlbnQgc3VwcG9ydGVkIGd1ZXN0IHZDUFVzIGhlcmUgKDEyOCkgd2hpY2gg
-aXMNCmRlZmluZWQgaW4gcHVibGljIGhlYWRlciBhcmNoLWFybS5oLiBTbyB3aGVuIHRoZSB0b29s
-c3RhY2sgcGFzcw0KbWF4X3ZjcHVzIHVzaW5nICItc21wIiBhcmcsIG1hY2hpbmUgY3JlYXRpb24g
-d2lsbCBub3QgZmFpbC4NCg0KU2lnbmVkLW9mZi1ieTogT2xla3NhbmRyIFR5c2hjaGVua28gPG9s
-ZWtzYW5kcl90eXNoY2hlbmtvQGVwYW0uY29tPg0KU2lnbmVkLW9mZi1ieTogVm9sb2R5bXlyIEJh
-YmNodWsgPHZvbG9keW15cl9iYWJjaHVrQGVwYW0uY29tPg0KUmV2aWV3ZWQtYnk6IFBoaWxpcHBl
-IE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGluYXJvLm9yZz4NCi0tLQ0KIGh3L2FybS94ZW5fYXJt
-LmMgfCAyICstDQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0p
-DQoNCmRpZmYgLS1naXQgYS9ody9hcm0veGVuX2FybS5jIGIvaHcvYXJtL3hlbl9hcm0uYw0KaW5k
-ZXggYTU2MzE1MjlkMC4uYjljM2FlMTRiNiAxMDA2NDQNCi0tLSBhL2h3L2FybS94ZW5fYXJtLmMN
-CisrKyBiL2h3L2FybS94ZW5fYXJtLmMNCkBAIC0yMzEsNyArMjMxLDcgQEAgc3RhdGljIHZvaWQg
-eGVuX2FybV9tYWNoaW5lX2NsYXNzX2luaXQoT2JqZWN0Q2xhc3MgKm9jLCB2b2lkICpkYXRhKQ0K
-ICAgICBNYWNoaW5lQ2xhc3MgKm1jID0gTUFDSElORV9DTEFTUyhvYyk7DQogICAgIG1jLT5kZXNj
-ID0gIlhlbiBQYXJhLXZpcnR1YWxpemVkIFBDIjsNCiAgICAgbWMtPmluaXQgPSB4ZW5fYXJtX2lu
-aXQ7DQotICAgIG1jLT5tYXhfY3B1cyA9IDE7DQorICAgIG1jLT5tYXhfY3B1cyA9IEdVRVNUX01B
-WF9WQ1BVUzsNCiAgICAgbWMtPmRlZmF1bHRfbWFjaGluZV9vcHRzID0gImFjY2VsPXhlbiI7DQog
-ICAgIC8qIFNldCBleHBsaWNpdGx5IGhlcmUgdG8gbWFrZSBzdXJlIHRoYXQgcmVhbCByYW1fc2l6
-ZSBpcyBwYXNzZWQgKi8NCiAgICAgbWMtPmRlZmF1bHRfcmFtX3NpemUgPSAwOw0KLS0gDQoyLjQy
-LjANCg==
+Patch removes DPRINTF macro and adds multiple tracepoints
+to capture different kvm events.
+
+We also drop the DPRINTFs that don't add any additional
+information than trace_kvm_run_exit already does.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1827
+
+Signed-off-by: Jai Arora <arorajai2798@gmail.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+v5: Addressed review comments by Philippe Mathieu-Daudé
+Corrects typo DRPINTF in commit message
+Changed %d to PRIu32 in kvm_run_exit_system_event
+ 
+I am not sure what you meant by keeping previous tag.
+I think you meant to keep version tag same,
+so I will keep patch tag as v5 again this time.
+
+Thank you for the feedback.
+
+ accel/kvm/kvm-all.c    | 28 ++++++----------------------
+ accel/kvm/trace-events |  7 ++++++-
+ 2 files changed, 12 insertions(+), 23 deletions(-)
+
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index e39a810a4e..80ac7b35b7 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -69,16 +69,6 @@
+ #define KVM_GUESTDBG_BLOCKIRQ 0
+ #endif
+ 
+-//#define DEBUG_KVM
+-
+-#ifdef DEBUG_KVM
+-#define DPRINTF(fmt, ...) \
+-    do { fprintf(stderr, fmt, ## __VA_ARGS__); } while (0)
+-#else
+-#define DPRINTF(fmt, ...) \
+-    do { } while (0)
+-#endif
+-
+ struct KVMParkedVcpu {
+     unsigned long vcpu_id;
+     int kvm_fd;
+@@ -331,7 +321,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+     struct KVMParkedVcpu *vcpu = NULL;
+     int ret = 0;
+ 
+-    DPRINTF("kvm_destroy_vcpu\n");
++    trace_kvm_destroy_vcpu();
+ 
+     ret = kvm_arch_destroy_vcpu(cpu);
+     if (ret < 0) {
+@@ -341,7 +331,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+     mmap_size = kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
+     if (mmap_size < 0) {
+         ret = mmap_size;
+-        DPRINTF("KVM_GET_VCPU_MMAP_SIZE failed\n");
++        trace_kvm_failed_get_vcpu_mmap_size();
+         goto err;
+     }
+ 
+@@ -443,7 +433,6 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+                                    PAGE_SIZE * KVM_DIRTY_LOG_PAGE_OFFSET);
+         if (cpu->kvm_dirty_gfns == MAP_FAILED) {
+             ret = -errno;
+-            DPRINTF("mmap'ing vcpu dirty gfns failed: %d\n", ret);
+             goto err;
+         }
+     }
+@@ -2821,7 +2810,7 @@ int kvm_cpu_exec(CPUState *cpu)
+     struct kvm_run *run = cpu->kvm_run;
+     int ret, run_ret;
+ 
+-    DPRINTF("kvm_cpu_exec()\n");
++    trace_kvm_cpu_exec();
+ 
+     if (kvm_arch_process_async_events(cpu)) {
+         qatomic_set(&cpu->exit_request, 0);
+@@ -2848,7 +2837,7 @@ int kvm_cpu_exec(CPUState *cpu)
+ 
+         kvm_arch_pre_run(cpu, run);
+         if (qatomic_read(&cpu->exit_request)) {
+-            DPRINTF("interrupt exit requested\n");
++	    trace_kvm_interrupt_exit_request();
+             /*
+              * KVM requires us to reenter the kernel after IO exits to complete
+              * instruction emulation. This self-signal will ensure that we
+@@ -2878,7 +2867,7 @@ int kvm_cpu_exec(CPUState *cpu)
+ 
+         if (run_ret < 0) {
+             if (run_ret == -EINTR || run_ret == -EAGAIN) {
+-                DPRINTF("io window exit\n");
++                trace_kvm_io_window_exit();
+                 kvm_eat_signals(cpu);
+                 ret = EXCP_INTERRUPT;
+                 break;
+@@ -2900,7 +2889,6 @@ int kvm_cpu_exec(CPUState *cpu)
+         trace_kvm_run_exit(cpu->cpu_index, run->exit_reason);
+         switch (run->exit_reason) {
+         case KVM_EXIT_IO:
+-            DPRINTF("handle_io\n");
+             /* Called outside BQL */
+             kvm_handle_io(run->io.port, attrs,
+                           (uint8_t *)run + run->io.data_offset,
+@@ -2910,7 +2898,6 @@ int kvm_cpu_exec(CPUState *cpu)
+             ret = 0;
+             break;
+         case KVM_EXIT_MMIO:
+-            DPRINTF("handle_mmio\n");
+             /* Called outside BQL */
+             address_space_rw(&address_space_memory,
+                              run->mmio.phys_addr, attrs,
+@@ -2920,11 +2907,9 @@ int kvm_cpu_exec(CPUState *cpu)
+             ret = 0;
+             break;
+         case KVM_EXIT_IRQ_WINDOW_OPEN:
+-            DPRINTF("irq_window_open\n");
+             ret = EXCP_INTERRUPT;
+             break;
+         case KVM_EXIT_SHUTDOWN:
+-            DPRINTF("shutdown\n");
+             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+             ret = EXCP_INTERRUPT;
+             break;
+@@ -2959,6 +2944,7 @@ int kvm_cpu_exec(CPUState *cpu)
+             ret = 0;
+             break;
+         case KVM_EXIT_SYSTEM_EVENT:
++            trace_kvm_run_exit_system_event(cpu->cpu_index, run->system_event.type);
+             switch (run->system_event.type) {
+             case KVM_SYSTEM_EVENT_SHUTDOWN:
+                 qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+@@ -2976,13 +2962,11 @@ int kvm_cpu_exec(CPUState *cpu)
+                 ret = 0;
+                 break;
+             default:
+-                DPRINTF("kvm_arch_handle_exit\n");
+                 ret = kvm_arch_handle_exit(cpu, run);
+                 break;
+             }
+             break;
+         default:
+-            DPRINTF("kvm_arch_handle_exit\n");
+             ret = kvm_arch_handle_exit(cpu, run);
+             break;
+         }
+diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+index 399aaeb0ec..a25902597b 100644
+--- a/accel/kvm/trace-events
++++ b/accel/kvm/trace-events
+@@ -25,4 +25,9 @@ kvm_dirty_ring_reaper(const char *s) "%s"
+ kvm_dirty_ring_reap(uint64_t count, int64_t t) "reaped %"PRIu64" pages (took %"PRIi64" us)"
+ kvm_dirty_ring_reaper_kick(const char *reason) "%s"
+ kvm_dirty_ring_flush(int finished) "%d"
+-
++kvm_destroy_vcpu(void) ""
++kvm_failed_get_vcpu_mmap_size(void) ""
++kvm_cpu_exec(void) ""
++kvm_interrupt_exit_request(void) ""
++kvm_io_window_exit(void) ""
++kvm_run_exit_system_event(int cpu_index, uint32_t event_type) "cpu_index %d, system_even_type %"PRIu32
+-- 
+2.25.1
+
 
