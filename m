@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F58801D0F
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B140801D17
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:42:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9QEo-000594-JB; Sat, 02 Dec 2023 08:40:54 -0500
+	id 1r9QEu-0005BC-3n; Sat, 02 Dec 2023 08:41:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEf-00056h-Lp
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:46 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEs-0005Af-Df
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:58 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEc-000057-U9
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:44 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEo-00005N-FZ
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:56 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id BB78411F362;
- Sat,  2 Dec 2023 13:40:34 +0000 (UTC)
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 0C1EF11F363;
+ Sat,  2 Dec 2023 13:40:35 +0000 (UTC)
 From: ~lbryndza <lbryndza@git.sr.ht>
-Date: Sat, 02 Dec 2023 13:18:54 +0100
-Subject: [PATCH qemu v3 10/20] Fixing the basic functionality of STM32 timers
-Message-ID: <170152443229.18048.53824064267512246-10@git.sr.ht>
+Date: Sat, 02 Dec 2023 13:19:25 +0100
+Subject: [PATCH qemu v3 11/20] Fixing the basic functionality of STM32 timers
+Message-ID: <170152443229.18048.53824064267512246-11@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <170152443229.18048.53824064267512246-0@git.sr.ht>
 To: qemu-devel@nongnu.org
@@ -66,29 +66,31 @@ count down modes. This commit fixes bugs with interrupt
 reporting and implements the basic modes of the counter's
 time-base block.
 
-Add read CR1 function
+Add update CR function
 
 Signed-off-by: Lucjan Bryndza <lbryndza.oss@icloud.com>
 ---
- hw/timer/stm32f2xx_timer.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ hw/timer/stm32f2xx_timer.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/timer/stm32f2xx_timer.c b/hw/timer/stm32f2xx_timer.c
-index 07d82b841a..1b3fa5da2c 100644
+index 1b3fa5da2c..96cf189933 100644
 --- a/hw/timer/stm32f2xx_timer.c
 +++ b/hw/timer/stm32f2xx_timer.c
-@@ -206,6 +206,14 @@ static uint64_t stm32f2xx_timer_read(void *opaque, hwadd=
-r offset,
-     return 0;
+@@ -214,6 +214,16 @@ static void stm32f2xx_update_cr1(STM32F2XXTimerState *s,=
+ uint64_t value)
+     ptimer_transaction_commit(s->timer);
+     DB_PRINT("write cr1 =3D %x\n", s->tim_cr1);
  }
-=20
-+static void stm32f2xx_update_cr1(STM32F2XXTimerState *s, uint64_t value)
++
++static void stm32f2xx_update_sr(STM32F2XXTimerState *s, uint64_t value)
 +{
-+    s->tim_cr1 =3D value & 0x3FF;
++    s->tim_sr ^=3D (value ^ 0xFFFF);
++    s->tim_sr &=3D 0x1eFF;
 +    ptimer_transaction_begin(s->timer);
-+    stm32f2xx_timer_update(s);
++    stm32f2xx_timer_update_uif(s, s->tim_sr & 0x1);
 +    ptimer_transaction_commit(s->timer);
-+    DB_PRINT("write cr1 =3D %x\n", s->tim_cr1);
++    DB_PRINT("write sr =3D %x\n", s->tim_sr);
 +}
  static void stm32f2xx_timer_write(void *opaque, hwaddr offset,
                          uint64_t val64, unsigned size)
