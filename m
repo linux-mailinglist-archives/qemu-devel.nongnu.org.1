@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E579801B49
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA6B801B4B
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 09:02:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9KwD-0004Pk-3d; Sat, 02 Dec 2023 03:01:22 -0500
+	id 1r9KwH-0004QZ-I4; Sat, 02 Dec 2023 03:01:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9Kvv-0004Mh-Kd
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:01:04 -0500
-Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
+ id 1r9Kw3-0004OM-26
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:01:16 -0500
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1r9Kvt-00051Q-49
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:01:03 -0500
-Received: by mail-il1-x135.google.com with SMTP id
- e9e14a558f8ab-35d396ae91fso10315205ab.3
- for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:01:00 -0800 (PST)
+ id 1r9Kw0-00052w-9g
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 03:01:09 -0500
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-517ab9a4a13so1089614a12.1
+ for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 00:01:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504060; x=1702108860;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1701504066; x=1702108866;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FtHitzkUtA9s8p+8tFrhebFAAv44x+6SLPyGvXp0SkM=;
- b=IL9QxYvh1BMyCo4CVdKMX8Utf66FpjiMk3MfMPIKTwM5yac0lHBcHwt5fuVo5pBzPV
- FEVFZ6iMaSRwBk3WgTWSrF6F9MNShlUDwurhTaqBdQEg777OGCrWirg4FV48bY+PIAf+
- YPaYqIADTAVnF1h18QieNRXZaHof8Gh4bpEgMrgZNMPCbX52uOeSPhTtQu49lTJWM7aR
- oo/kJkPnopVSfXCqZfxpPbl2kFNCKCzf/SLuZHlJYa2dccmqc+JPVVl6Y0ahNkmPMNej
- TsfFuJJ75gwIjHSC8rh2XvnnYTBH/zhUISmgT8zJcaFvXMgn+1O/O1G4S5MuXasg8HW4
- mraA==
+ :reply-to; bh=QAYyku7fpNHviK5U06HOAT5ynzSeWxO3H+3lWwncrV4=;
+ b=qUFIsiUp6Y3uh4yKdTiP2+gKEWCENTYo5QfR0oeoy1sgLBrGE7Sm/Qq3Sh6HHlNzOd
+ qq0+OLsYsrhrJunmujtbwtcQARzj1FZWHuKg7iJ17X2EMv7ngwibPe4CKbPE19CDFtBW
+ jROgJW1toANYjK60lzF8jV2X33mpGDuORzoFSh1foqdeEu5AGsdfnBM94xSgFTCmUWnZ
+ cYvL2gR3ELqgCkQCeanrhkb+I1KmDaZN0KLPy0hC1OIE1ng6JpnT5OyCC0CpaxJPfKzB
+ rC4Rd484Vw1PSp/T5Nu4b78VcEmv9gPeImjpHmx3Y0iQcRKBwtgPwgaj9yc2suKnnFYD
+ xnrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701504060; x=1702108860;
+ d=1e100.net; s=20230601; t=1701504066; x=1702108866;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FtHitzkUtA9s8p+8tFrhebFAAv44x+6SLPyGvXp0SkM=;
- b=CUZ7ha7cgBZiqh496Apr4R/zio3A17NBnqo408wns5ZWeagdBt6/dhLzaYHEapchpl
- goB9w0dZFa6FEU/3H4j4dW+5eTxwN67o0jAiZDRpk3YnJDBFE+VZdfx9/DCh3x8bczun
- ZDvWxC6zgJ8CzU/RPtiDIcasgPPAdNA5es6GPm+jqk7ph+R5PJsdkGiHotkAt4Ejsxpm
- 6yLCIWRB1fXjcWu+Hao1sSdrDFXjiTo4jyZhDL4J1k6VnFKtq3CcdrG43yW/BR4dg2Xh
- +JSs7ai5pkWqWJUaiz5wBIeneejAtKWn/8IXE1OHpOBeiOGsDO6Icf6Qjir3SZPw2DGz
- IRpw==
-X-Gm-Message-State: AOJu0YzXLHQkXNQhylDdf7c/tRl2NQvu0X9jmaHDpYQ9Ahj7/E8Rkn/w
- 2X2+Cbg2fXELAg2CtI+X/OtDCg==
-X-Google-Smtp-Source: AGHT+IGcx+erN1zGqRmllSQfRVjs05PCWY8p+aRCrjJ9b9gyZwc4QuuWB8kCWb379lfuRW8j8InqOw==
-X-Received: by 2002:a05:6e02:154b:b0:35d:59a2:332d with SMTP id
- j11-20020a056e02154b00b0035d59a2332dmr1098657ilu.49.1701504060175; 
- Sat, 02 Dec 2023 00:01:00 -0800 (PST)
+ bh=QAYyku7fpNHviK5U06HOAT5ynzSeWxO3H+3lWwncrV4=;
+ b=OJxJqGFwdLcpz/qywvOLOCQQEbfVaUAwxQivGpvqmKc/UjGo+ZUxdm5cqLS9jEuMYW
+ 1AUvnzyluRUahVleXJPfm3KxTsy0CWgbnsMjeQkCMeoAGb1OBS+H/yTs810STWe9+8/Q
+ crLOv0Ujjn+Wp5Dn/cv1nf9UQZgYKdVyVKV2yniW5QA7xvpfNbYUwItMdQyVcb9BSBEn
+ kYG+Hy2dK3uxqswZZ4RyGauofc5S+x7aBeAACOpuJ00rGMHVLvFkmP68iBh7W4DmHW1j
+ fG91ZznijQT5sPUwqw6wAJIskJjrF1oAoIQBhw9SVCeQ8Z8/Sr7wd7T87DdsVNAIA+KF
+ hgcQ==
+X-Gm-Message-State: AOJu0YxK4yvafq4FmULXomB9LeKLOO9vUvOm/Rsp034XHI2PG5YsoRp8
+ k4SJ+rrBsayOwyMThL5nO/DyxQ==
+X-Google-Smtp-Source: AGHT+IGLq2bSgHxf58UrE0lvYBapyzTh027hMmhqiPI1/drn5SiKHXxA+Se68P/X9gJozXldZFjYkg==
+X-Received: by 2002:a17:902:f2d2:b0:1d0:6ffd:e2bc with SMTP id
+ h18-20020a170902f2d200b001d06ffde2bcmr672433plc.86.1701504065688; 
+ Sat, 02 Dec 2023 00:01:05 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- q11-20020a170902a3cb00b001a98f844e60sm4587690plb.263.2023.12.02.00.00.57
+ 13-20020a170902c20d00b001cc2f9fd74csm2386885pll.189.2023.12.02.00.01.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 02 Dec 2023 00:00:59 -0800 (PST)
+ Sat, 02 Dec 2023 00:01:05 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 02 Dec 2023 17:00:29 +0900
-Subject: [PATCH 06/14] qdev: Remove DeviceListener::hide_device()
+Date: Sat, 02 Dec 2023 17:00:30 +0900
+Subject: [PATCH 07/14] hw/pci: Add hide()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231202-sriov-v1-6-32b3570f7bd6@daynix.com>
+Message-Id: <20231202-sriov-v1-7-32b3570f7bd6@daynix.com>
 References: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
 In-Reply-To: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -77,8 +77,8 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Yui Washizu <yui.washidu@gmail.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::135;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-il1-x135.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::531;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,106 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is no longer used.
+hide() can be implemented to prevent creating a PCI device and get
+device options.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/qdev-core.h | 24 ------------------------
- hw/core/qdev.c         | 18 ------------------
- system/qdev-monitor.c  |  9 ---------
- 3 files changed, 51 deletions(-)
+ include/hw/pci/pci_device.h | 2 ++
+ hw/pci/pci.c                | 8 ++++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index de221b6f02..9acf6f79c4 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -306,17 +306,6 @@ struct DeviceState {
- struct DeviceListener {
-     void (*realize)(DeviceListener *listener, DeviceState *dev);
-     void (*unrealize)(DeviceListener *listener, DeviceState *dev);
--    /*
--     * This callback is called upon init of the DeviceState and
--     * informs qdev if a device should be visible or hidden.  We can
--     * hide a failover device depending for example on the device
--     * opts.
--     *
--     * On errors, it returns false and errp is set. Device creation
--     * should fail in this case.
--     */
--    bool (*hide_device)(DeviceListener *listener, const QDict *device_opts,
--                        bool from_json, Error **errp);
-     QTAILQ_ENTRY(DeviceListener) link;
- };
+diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+index a7bfb192e8..deae29f070 100644
+--- a/include/hw/pci/pci_device.h
++++ b/include/hw/pci/pci_device.h
+@@ -29,6 +29,8 @@ DECLARE_CLASS_CHECKERS(PCIFailoverClass, PCI_FAILOVER, TYPE_PCI_FAILOVER)
+ struct PCIDeviceClass {
+     DeviceClass parent_class;
  
-@@ -1054,19 +1043,6 @@ static inline void qbus_mark_full(BusState *bus)
- void device_listener_register(DeviceListener *listener);
- void device_listener_unregister(DeviceListener *listener);
- 
--/**
-- * qdev_should_hide_device() - check if device should be hidden
-- *
-- * @opts: options QDict
-- * @from_json: true if @opts entries are typed, false for all strings
-- * @errp: pointer to error object
-- *
-- * When a device is added via qdev_device_add() this will be called.
-- *
-- * Return: if the device should be added now or not.
-- */
--bool qdev_should_hide_device(const QDict *opts, bool from_json, Error **errp);
--
- typedef enum MachineInitPhase {
-     /* current_machine is NULL.  */
-     PHASE_NO_MACHINE,
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index c98691a90d..e61a147016 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -224,24 +224,6 @@ void device_listener_unregister(DeviceListener *listener)
-     QTAILQ_REMOVE(&device_listeners, listener, link);
- }
- 
--bool qdev_should_hide_device(const QDict *opts, bool from_json, Error **errp)
--{
--    ERRP_GUARD();
--    DeviceListener *listener;
--
--    QTAILQ_FOREACH(listener, &device_listeners, link) {
--        if (listener->hide_device) {
--            if (listener->hide_device(listener, opts, from_json, errp)) {
--                return true;
--            } else if (*errp) {
--                return false;
--            }
--        }
--    }
--
--    return false;
--}
--
- void qdev_set_legacy_instance_id(DeviceState *dev, int alias_id,
-                                  int required_for_version)
++    bool (*hide)(PCIDeviceClass *pc, const QDict *device_opts, bool from_json,
++                 Error **errp);
+     void (*realize)(PCIDevice *dev, Error **errp);
+     PCIUnregisterFunc *exit;
+     PCIConfigReadFunc *config_read;
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 3d07246f8e..67d8ae3f61 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -2054,11 +2054,19 @@ PCIDevice *pci_find_device(PCIBus *bus, int bus_num, uint8_t devfn)
+ static bool pci_qdev_hide(DeviceClass *dc, const QDict *device_opts,
+                           bool from_json, Error **errp)
  {
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 639beabc5f..42aac94b8c 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -660,15 +660,6 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-         }
-     }
++    PCIDeviceClass *pc = PCI_DEVICE_CLASS(dc);
+     const char *standby_id;
+     DeviceState *dev;
+     ObjectClass *class;
+     ObjectClass *interface;
  
--    if (qdev_should_hide_device(opts, from_json, errp)) {
--        if (bus && !qbus_is_hotpluggable(bus)) {
--            error_setg(errp, QERR_BUS_NO_HOTPLUG, bus->name);
--        }
--        return NULL;
--    } else if (*errp) {
--        return NULL;
--    }
--
-     if (dc->hide) {
-         if (dc->hide(dc, opts, from_json, errp)) {
-             if (bus && !qbus_is_hotpluggable(bus)) {
++    if (pc->hide) {
++        bool hide = pc->hide(pc, device_opts, from_json, errp);
++        if (hide || *errp) {
++            return hide;
++        }
++    }
++
+     if (!device_opts) {
+         return false;
+     }
 
 -- 
 2.43.0
