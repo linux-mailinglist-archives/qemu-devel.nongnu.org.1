@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D026E801D15
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E38801D1E
+	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 14:43:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9QEx-0005DQ-U1; Sat, 02 Dec 2023 08:41:03 -0500
+	id 1r9QF0-0005DR-4x; Sat, 02 Dec 2023 08:41:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEw-0005CZ-3C
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEw-0005Ca-3S
  for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:41:02 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEr-00006c-C8
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:40:59 -0500
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1r9QEr-00006k-Ca
+ for qemu-devel@nongnu.org; Sat, 02 Dec 2023 08:41:00 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 6931A11F36A;
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 8FCD711F36B;
  Sat,  2 Dec 2023 13:40:36 +0000 (UTC)
 From: ~lbryndza <lbryndza@git.sr.ht>
-Date: Sat, 02 Dec 2023 13:24:39 +0100
-Subject: [PATCH qemu v3 18/20] Fixing the basic functionality of STM32 timers
-Message-ID: <170152443229.18048.53824064267512246-18@git.sr.ht>
+Date: Sat, 02 Dec 2023 13:26:25 +0100
+Subject: [PATCH qemu v3 19/20] Fixing the basic functionality of STM32 timers
+Message-ID: <170152443229.18048.53824064267512246-19@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <170152443229.18048.53824064267512246-0@git.sr.ht>
 To: qemu-devel@nongnu.org
@@ -66,31 +66,41 @@ count down modes. This commit fixes bugs with interrupt
 reporting and implements the basic modes of the counter's
 time-base block.
 
-Update timer realize
+Update timer structures
 
 Signed-off-by: Lucjan Bryndza <lbryndza.oss@icloud.com>
 ---
- hw/timer/stm32f2xx_timer.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/hw/timer/stm32f2xx_timer.h | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/hw/timer/stm32f2xx_timer.c b/hw/timer/stm32f2xx_timer.c
-index c237b3053c..9a992231fa 100644
---- a/hw/timer/stm32f2xx_timer.c
-+++ b/hw/timer/stm32f2xx_timer.c
-@@ -394,7 +394,11 @@ static void stm32f2xx_timer_init(Object *obj)
- static void stm32f2xx_timer_realize(DeviceState *dev, Error **errp)
- {
-     STM32F2XXTimerState *s =3D STM32F2XXTIMER(dev);
--    s->timer =3D timer_new_ns(QEMU_CLOCK_VIRTUAL, stm32f2xx_timer_interrupt,=
- s);
-+    if (s->freq_hz =3D=3D 0) {
-+        error_setg(errp, "stm32f2xx_timer: Timer clock not defined");
-+        return;
-+    }
-+    s->timer =3D ptimer_init(stm32f2xx_timer_tick, s, PTIMER_POLICY_LEGACY);
- }
+diff --git a/include/hw/timer/stm32f2xx_timer.h b/include/hw/timer/stm32f2xx_=
+timer.h
+index 8112878aa7..c83f7b0d6f 100644
+--- a/include/hw/timer/stm32f2xx_timer.h
++++ b/include/hw/timer/stm32f2xx_timer.h
+@@ -28,6 +28,7 @@
+ #include "hw/sysbus.h"
+ #include "qemu/timer.h"
+ #include "qom/object.h"
++#include "hw/ptimer.h"
 =20
- static void stm32f2xx_timer_class_init(ObjectClass *klass, void *data)
+ #define TIM_CR1      0x00
+ #define TIM_CR2      0x04
+@@ -79,12 +80,10 @@ struct STM32F2XXTimerState {
+=20
+     /* <public> */
+     MemoryRegion iomem;
+-    QEMUTimer *timer;
++    ptimer_state *timer;
+     qemu_irq irq;
+-
+-    int64_t tick_offset;
+-    uint64_t hit_time;
+     uint64_t freq_hz;
++    int count_mode;
+=20
+     uint32_t tim_cr1;
+     uint32_t tim_cr2;
 --=20
 2.38.5
 
