@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F30A80282B
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7210E802839
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:56:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9uLN-00031N-Mq; Sun, 03 Dec 2023 16:49:41 -0500
+	id 1r9uLP-00037Q-E4; Sun, 03 Dec 2023 16:49:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uL7-0002sU-MO; Sun, 03 Dec 2023 16:49:25 -0500
-Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
+ id 1r9uL8-0002sq-6f; Sun, 03 Dec 2023 16:49:26 -0500
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uL5-0008Iu-OW; Sun, 03 Dec 2023 16:49:25 -0500
-Received: by mail-yw1-x1131.google.com with SMTP id
- 00721157ae682-5d226f51f71so42065127b3.3; 
- Sun, 03 Dec 2023 13:49:22 -0800 (PST)
+ id 1r9uL6-0008J0-Dh; Sun, 03 Dec 2023 16:49:25 -0500
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-5c08c47c055so41668797b3.1; 
+ Sun, 03 Dec 2023 13:49:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701640162; x=1702244962; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701640163; x=1702244963; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=imxvMsz0CNvo8nrzFvIRSqzHEH+HatWQq7mvnvZiPnw=;
- b=fInABZ6+tvoxTbKMeoE7H9LD0I7oMQ/dNZ/6Dx12u0+Orww12lnpSrYpDMewWFIhvB
- fpXhLnW8R2x/THn7NCltolV1sT+awAk4iGyX+JBqoiOm3A7Ln+VVXPj/deoaER3hLwP5
- wfzY2BTWt3VPgwWbhir8tU5oP7Gvs05Q6liNepn8UkY3LHUIEkaLHVO8gqFEkHgO0PtF
- KNT85ZjcYJ002obD2OhYtOVvX41zFSWAUNHWD3bEn93MrOBSf/hF/IIgQrsggRwme6Si
- Gq7TM6deZjO0/U3IMW02dgs1TUD4Tdbci9xL84slRqQdiAH7Ot50/ZR3C3iPtoRjvyBV
- xY3A==
+ bh=ceI73nY+WORMm25Lfb079HY3yTTZKu7+HhKvNA+xgeM=;
+ b=FA7VMu6O4MCQkW/AkHRMtV80wFABxd9BsFR5lwPKW2Ll6IhWQKUUYsiqazSTylppKm
+ IJAABaBldXxppuAp9MJ5y5Cn+/3L3rCdAxzPCu2bvnds7HfKbPMp9kxjJAchE2xyxVhb
+ r6rswdWBpYqUsVDCmGugeTeNfq5G/vUS+91CMdiKF7F5TUkJAvOcQZ+mxc9QKofQK2NO
+ Gy0K8VtVNOPgGZkU8V9ws4mu1wFEpU03nkSq+agG9aemQGbAO07glFxqDOPsD9gDDxYP
+ BqAVsvmc2D1gYhfZ4A0SsxbjRJsUAH4MDfjP1eY5AEUILKbC2Pcmxfv6FDVwdXq2AXwM
+ Fatg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701640162; x=1702244962;
+ d=1e100.net; s=20230601; t=1701640163; x=1702244963;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=imxvMsz0CNvo8nrzFvIRSqzHEH+HatWQq7mvnvZiPnw=;
- b=Zn+9yR+m78cDgLUccGbbnN03PMTibty0OG2ss3y7Su7O9te+AtXi3fA6xiSOibQEys
- 5Wnd8MQWzo5SLxc82MMGn6thGJ55crLRd4GE/z33hAuTx+OCsWSVIdAF+ITOwGFc8fiW
- NzE5/drvIW7A/G/TZ3x2yH9bR8UPbkDR5RtKEdSs2iZQ8eYjw2NzMMwxt13dE6HarNrR
- CW69LOlPaPrAFAHXLEnerQ3I7xxbQTJhpXFgiKTmXTv4PQXqV8f2SFqItHLJBtRZbOaV
- ucLRVEGENbfQw6l7ZZxApLYZAUfD/W8MuHGcCsMKhJqNjRIHI97K2II48rSXYPGhczMS
- 4nhw==
-X-Gm-Message-State: AOJu0YzqCionSpJnQYJkEdr/34y5PIyvQiEBe6qboCj00GZlAeHvej9L
- FMivS15JGHt/UsPZ9LTnjE7DEpU76CAQ2A==
-X-Google-Smtp-Source: AGHT+IHDQgMt+PwkCEyhlYiUA6w5agr0sptasBPa8IH5eGAbMe7ImZgQz5z1yvw1U2gKM/pOxNMS6g==
-X-Received: by 2002:a81:ac15:0:b0:5d7:1940:dd73 with SMTP id
- k21-20020a81ac15000000b005d71940dd73mr1658232ywh.73.1701640161732; 
- Sun, 03 Dec 2023 13:49:21 -0800 (PST)
+ bh=ceI73nY+WORMm25Lfb079HY3yTTZKu7+HhKvNA+xgeM=;
+ b=xRFoVO9V6XMt/ACcl06gRpkuBVxzeFAWK5I5N/MsiJeLAeoME+0Wqoa9yxb0fV8N12
+ RiVWsDYq2d2yzTEj3MqjHBf0zbxCa51Zd9BgkpT0cqmFwu9k9A2l15YbLDct2m78Embb
+ HC/GDwgmaTAO+cejXOtnO6cX2/SpGPBaPQWIWi5wwNwwiW9kpVJ9jgu8krMLcBJ8Muhl
+ ZgoFmVFdIrsMGLbkySQUtkyUm2kih7n0teWykS1p23BtxBZizoXrhEJxX+nuONsHOYuC
+ 2w3KkpnsBrQ2L8ipNSG/4zs2uKbXf7HAfKipkiJ8aMDtxGrntzM+q4AEyVAUCw98UtSC
+ Vezg==
+X-Gm-Message-State: AOJu0YwdrreCBWgd3pkKlEwYmr6EDOV4216M5y4SA/TtwY40SYztBmG5
+ aLdCJYb747VCT173gV2Wc/ycaD+1kB9AWA==
+X-Google-Smtp-Source: AGHT+IF9+x0PyfdKtuMIOxqgJIsnLZYfO/3ZUfvh2kmBDOM/FRyB7qrE+OJH/t1M1KT63pGzOFX8cQ==
+X-Received: by 2002:a81:ac62:0:b0:5d7:1940:53d5 with SMTP id
+ z34-20020a81ac62000000b005d7194053d5mr1704964ywj.77.1701640162831; 
+ Sun, 03 Dec 2023 13:49:22 -0800 (PST)
 Received: from localhost.localdomain ([201.206.180.22])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a816502000000b00597e912e67esm2832788ywb.131.2023.12.03.13.49.20
+ z2-20020a816502000000b00597e912e67esm2832788ywb.131.2023.12.03.13.49.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Dec 2023 13:49:21 -0800 (PST)
+ Sun, 03 Dec 2023 13:49:22 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v3 06/45] Add BCM2838 GPIO stub
-Date: Sun,  3 Dec 2023 15:48:31 -0600
-Message-Id: <20231203214910.1364468-7-sergey.kambalin@auriga.com>
+Subject: [PATCH v3 07/45] Implement BCM2838 GPIO functionality
+Date: Sun,  3 Dec 2023 15:48:32 -0600
+Message-Id: <20231203214910.1364468-8-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231203214910.1364468-6-sergey.kambalin@auriga.com>
+In-Reply-To: <20231203214910.1364468-7-sergey.kambalin@auriga.com>
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
  <20231203214910.1364468-1-sergey.kambalin@auriga.com>
  <20231203214910.1364468-2-sergey.kambalin@auriga.com>
@@ -71,10 +71,11 @@ References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
  <20231203214910.1364468-4-sergey.kambalin@auriga.com>
  <20231203214910.1364468-5-sergey.kambalin@auriga.com>
  <20231203214910.1364468-6-sergey.kambalin@auriga.com>
+ <20231203214910.1364468-7-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1131.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x112b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,269 +100,239 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- hw/arm/bcm2838.c                     |   4 +-
- hw/gpio/bcm2838_gpio.c               | 152 +++++++++++++++++++++++++++
- hw/gpio/meson.build                  |   5 +-
- include/hw/arm/bcm2838_peripherals.h |   2 -
- include/hw/gpio/bcm2838_gpio.h       |  40 +++++++
- 5 files changed, 198 insertions(+), 5 deletions(-)
- create mode 100644 hw/gpio/bcm2838_gpio.c
- create mode 100644 include/hw/gpio/bcm2838_gpio.h
+ hw/gpio/bcm2838_gpio.c | 192 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 189 insertions(+), 3 deletions(-)
 
-diff --git a/hw/arm/bcm2838.c b/hw/arm/bcm2838.c
-index 042e543006..8925957c6c 100644
---- a/hw/arm/bcm2838.c
-+++ b/hw/arm/bcm2838.c
-@@ -14,7 +14,7 @@
- #include "hw/arm/bcm2838.h"
- #include "trace.h"
- 
--#define GIC400_MAINTAINANCE_IRQ      9
-+#define GIC400_MAINTENANCE_IRQ      9
- #define GIC400_TIMER_NS_EL2_IRQ     10
- #define GIC400_TIMER_VIRT_IRQ       11
- #define GIC400_LEGACY_FIQ           12
-@@ -163,7 +163,7 @@ static void bcm2838_realize(DeviceState *dev, Error **errp)
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), n + 4 * BCM283X_NCPUS,
-                            qdev_get_gpio_in(gicdev,
--                                            PPI(n, GIC400_MAINTAINANCE_IRQ)));
-+                                            PPI(n, GIC400_MAINTENANCE_IRQ)));
- 
-         /* Connect timers from the CPU to the interrupt controller */
-         qdev_connect_gpio_out(cpudev, GTIMER_PHYS,
 diff --git a/hw/gpio/bcm2838_gpio.c b/hw/gpio/bcm2838_gpio.c
-new file mode 100644
-index 0000000000..15b66cb559
---- /dev/null
+index 15b66cb559..51eb55b00a 100644
+--- a/hw/gpio/bcm2838_gpio.c
 +++ b/hw/gpio/bcm2838_gpio.c
-@@ -0,0 +1,152 @@
-+/*
-+ * Raspberry Pi (BCM2838) GPIO Controller
-+ * This implementation is based on bcm2835_gpio (hw/gpio/bcm2835_gpio.c)
-+ *
-+ * Copyright (c) 2022 Auriga LLC
-+ *
-+ * Authors:
-+ *  Lotosh, Aleksey <aleksey.lotosh@auriga.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
+@@ -19,6 +19,7 @@
+ #include "hw/sysbus.h"
+ #include "migration/vmstate.h"
+ #include "hw/gpio/bcm2838_gpio.h"
++#include "hw/irq.h"
+ 
+ #define GPFSEL0   0x00
+ #define GPFSEL1   0x04
+@@ -57,14 +58,139 @@
+ #define RESET_VAL_CNTRL_REG2 0x50AAA95A;
+ #define RESET_VAL_CNTRL_REG3 0x00055555;
+ 
++#define NUM_FSELN_IN_GPFSELN 10
++#define NUM_BITS_FSELN       3
++#define MASK_FSELN           0x7
 +
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "qemu/timer.h"
-+#include "qapi/error.h"
-+#include "hw/sysbus.h"
-+#include "migration/vmstate.h"
-+#include "hw/gpio/bcm2838_gpio.h"
-+
-+#define GPFSEL0   0x00
-+#define GPFSEL1   0x04
-+#define GPFSEL2   0x08
-+#define GPFSEL3   0x0C
-+#define GPFSEL4   0x10
-+#define GPFSEL5   0x14
-+#define GPSET0    0x1C
-+#define GPSET1    0x20
-+#define GPCLR0    0x28
-+#define GPCLR1    0x2C
-+#define GPLEV0    0x34
-+#define GPLEV1    0x38
-+#define GPEDS0    0x40
-+#define GPEDS1    0x44
-+#define GPREN0    0x4C
-+#define GPREN1    0x50
-+#define GPFEN0    0x58
-+#define GPFEN1    0x5C
-+#define GPHEN0    0x64
-+#define GPHEN1    0x68
-+#define GPLEN0    0x70
-+#define GPLEN1    0x74
-+#define GPAREN0   0x7C
-+#define GPAREN1   0x80
-+#define GPAFEN0   0x88
-+#define GPAFEN1   0x8C
-+
-+#define GPIO_PUP_PDN_CNTRL_REG0 0xE4
-+#define GPIO_PUP_PDN_CNTRL_REG1 0xE8
-+#define GPIO_PUP_PDN_CNTRL_REG2 0xEC
-+#define GPIO_PUP_PDN_CNTRL_REG3 0xF0
-+
-+#define RESET_VAL_CNTRL_REG0 0xAAA95555;
-+#define RESET_VAL_CNTRL_REG1 0xA0AAAAAA;
-+#define RESET_VAL_CNTRL_REG2 0x50AAA95A;
-+#define RESET_VAL_CNTRL_REG3 0x00055555;
-+
-+#define BYTES_IN_WORD        4
-+
-+static uint64_t bcm2838_gpio_read(void *opaque, hwaddr offset, unsigned size)
+ #define BYTES_IN_WORD        4
+ 
++static uint32_t gpfsel_get(BCM2838GpioState *s, uint8_t reg)
 +{
-+    uint64_t value = 0;
-+
-+    qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
-+                  TYPE_BCM2838_GPIO, __func__, offset);
-+
++    int i;
++    uint32_t value = 0;
++    for (i = 0; i < NUM_FSELN_IN_GPFSELN; i++) {
++        uint32_t index = NUM_FSELN_IN_GPFSELN * reg + i;
++        if (index < sizeof(s->fsel)) {
++            value |= (s->fsel[index] & MASK_FSELN) << (NUM_BITS_FSELN * i);
++        }
++    }
 +    return value;
 +}
 +
-+static void bcm2838_gpio_write(void *opaque, hwaddr offset, uint64_t value,
-+                               unsigned size)
++static void gpfsel_set(BCM2838GpioState *s, uint8_t reg, uint32_t value)
 +{
-+    qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
-+                  TYPE_BCM2838_GPIO, __func__, offset);
-+}
-+
-+static void bcm2838_gpio_reset(DeviceState *dev)
-+{
-+    BCM2838GpioState *s = BCM2838_GPIO(dev);
-+
-+    s->lev0 = 0;
-+    s->lev1 = 0;
-+
-+    s->pup_cntrl_reg[0] = RESET_VAL_CNTRL_REG0;
-+    s->pup_cntrl_reg[1] = RESET_VAL_CNTRL_REG1;
-+    s->pup_cntrl_reg[2] = RESET_VAL_CNTRL_REG2;
-+    s->pup_cntrl_reg[3] = RESET_VAL_CNTRL_REG3;
-+}
-+
-+static const MemoryRegionOps bcm2838_gpio_ops = {
-+    .read = bcm2838_gpio_read,
-+    .write = bcm2838_gpio_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static const VMStateDescription vmstate_bcm2838_gpio = {
-+    .name = "bcm2838_gpio",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT8_ARRAY(fsel, BCM2838GpioState, BCM2838_GPIO_NUM),
-+        VMSTATE_UINT32(lev0, BCM2838GpioState),
-+        VMSTATE_UINT32(lev1, BCM2838GpioState),
-+        VMSTATE_UINT8(sd_fsel, BCM2838GpioState),
-+        VMSTATE_UINT32_ARRAY(pup_cntrl_reg, BCM2838GpioState,
-+                             GPIO_PUP_PDN_CNTRL_NUM),
-+        VMSTATE_END_OF_LIST()
++    int i;
++    for (i = 0; i < NUM_FSELN_IN_GPFSELN; i++) {
++        uint32_t index = NUM_FSELN_IN_GPFSELN * reg + i;
++        if (index < sizeof(s->fsel)) {
++            int fsel = (value >> (NUM_BITS_FSELN * i)) & MASK_FSELN;
++            s->fsel[index] = fsel;
++        }
 +    }
-+};
-+
-+static void bcm2838_gpio_init(Object *obj)
-+{
-+    BCM2838GpioState *s = BCM2838_GPIO(obj);
-+    DeviceState *dev = DEVICE(obj);
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
-+
-+    memory_region_init_io(&s->iomem, obj, &bcm2838_gpio_ops, s,
-+                          "bcm2838_gpio", BCM2838_GPIO_REGS_SIZE);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+    qdev_init_gpio_out(dev, s->out, BCM2838_GPIO_NUM);
 +}
 +
-+static void bcm2838_gpio_realize(DeviceState *dev, Error **errp)
++static int gpfsel_is_out(BCM2838GpioState *s, int index)
 +{
-+    /* Temporary stub. Do nothing */
++    if (index >= 0 && index < BCM2838_GPIO_NUM) {
++        return s->fsel[index] == 1;
++    }
++    return 0;
 +}
 +
-+static void bcm2838_gpio_class_init(ObjectClass *klass, void *data)
++static void gpset(BCM2838GpioState *s, uint32_t val, uint8_t start,
++                  uint8_t count, uint32_t *lev)
 +{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
++    uint32_t changes = val & ~*lev;
++    uint32_t cur = 1;
 +
-+    dc->vmsd = &vmstate_bcm2838_gpio;
-+    dc->realize = &bcm2838_gpio_realize;
-+    dc->reset = &bcm2838_gpio_reset;
++    int i;
++    for (i = 0; i < count; i++) {
++        if ((changes & cur) && (gpfsel_is_out(s, start + i))) {
++            qemu_set_irq(s->out[start + i], 1);
++        }
++        cur <<= 1;
++    }
++
++    *lev |= val;
 +}
 +
-+static const TypeInfo bcm2838_gpio_info = {
-+    .name          = TYPE_BCM2838_GPIO,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(BCM2838GpioState),
-+    .instance_init = bcm2838_gpio_init,
-+    .class_init    = bcm2838_gpio_class_init,
-+};
-+
-+static void bcm2838_gpio_register_types(void)
++static void gpclr(BCM2838GpioState *s, uint32_t val, uint8_t start,
++                  uint8_t count, uint32_t *lev)
 +{
-+    type_register_static(&bcm2838_gpio_info);
++    uint32_t changes = val & *lev;
++    uint32_t cur = 1;
++
++    int i;
++    for (i = 0; i < count; i++) {
++        if ((changes & cur) && (gpfsel_is_out(s, start + i))) {
++            qemu_set_irq(s->out[start + i], 0);
++        }
++        cur <<= 1;
++    }
++
++    *lev &= ~val;
 +}
 +
-+type_init(bcm2838_gpio_register_types)
-diff --git a/hw/gpio/meson.build b/hw/gpio/meson.build
-index 066ea96480..8a8d03d885 100644
---- a/hw/gpio/meson.build
-+++ b/hw/gpio/meson.build
-@@ -9,6 +9,9 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files('imx_gpio.c'))
- system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_gpio.c'))
- system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_gpio.c'))
- system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_gpio.c'))
--system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_gpio.c'))
-+system_ss.add(when: 'CONFIG_RASPI', if_true: files(
-+    'bcm2835_gpio.c',
-+    'bcm2838_gpio.c'
-+))
- system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_gpio.c'))
- system_ss.add(when: 'CONFIG_SIFIVE_GPIO', if_true: files('sifive_gpio.c'))
-diff --git a/include/hw/arm/bcm2838_peripherals.h b/include/hw/arm/bcm2838_peripherals.h
-index 5a72355183..d07831753a 100644
---- a/include/hw/arm/bcm2838_peripherals.h
-+++ b/include/hw/arm/bcm2838_peripherals.h
-@@ -11,8 +11,6 @@
+ static uint64_t bcm2838_gpio_read(void *opaque, hwaddr offset, unsigned size)
+ {
++    BCM2838GpioState *s = (BCM2838GpioState *)opaque;
+     uint64_t value = 0;
  
- #include "hw/arm/bcm2835_peripherals.h"
+-    qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
+-                  TYPE_BCM2838_GPIO, __func__, offset);
++    switch (offset) {
++    case GPFSEL0:
++    case GPFSEL1:
++    case GPFSEL2:
++    case GPFSEL3:
++    case GPFSEL4:
++    case GPFSEL5:
++        value = gpfsel_get(s, offset / BYTES_IN_WORD);
++        break;
++    case GPSET0:
++    case GPSET1:
++    case GPCLR0:
++    case GPCLR1:
++        /* Write Only */
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s: Attempt reading from write only"
++                      " register. %lu will be returned. Address 0x%"HWADDR_PRIx
++                      ", size %u\n", TYPE_BCM2838_GPIO, __func__, value, offset,
++                      size);
++        break;
++    case GPLEV0:
++        value = s->lev0;
++        break;
++    case GPLEV1:
++        value = s->lev1;
++        break;
++    case GPEDS0:
++    case GPEDS1:
++    case GPREN0:
++    case GPREN1:
++    case GPFEN0:
++    case GPFEN1:
++    case GPHEN0:
++    case GPHEN1:
++    case GPLEN0:
++    case GPLEN1:
++    case GPAREN0:
++    case GPAREN1:
++    case GPAFEN0:
++    case GPAFEN1:
++        /* Not implemented */
++        qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
++                      TYPE_BCM2838_GPIO, __func__, offset);
++        break;
++    case GPIO_PUP_PDN_CNTRL_REG0:
++    case GPIO_PUP_PDN_CNTRL_REG1:
++    case GPIO_PUP_PDN_CNTRL_REG2:
++    case GPIO_PUP_PDN_CNTRL_REG3:
++        value = s->pup_cntrl_reg[(offset - GPIO_PUP_PDN_CNTRL_REG0)
++                                 / sizeof(s->pup_cntrl_reg[0])];
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s: bad offset %"HWADDR_PRIx"\n",
++                      TYPE_BCM2838_GPIO, __func__, offset);
++        break;
++    }
  
--#define GENET_OFFSET            0x1580000
--
- /* SPI */
- #define GIC_SPI_INTERRUPT_MBOX         33
- #define GIC_SPI_INTERRUPT_MPHI         40
-diff --git a/include/hw/gpio/bcm2838_gpio.h b/include/hw/gpio/bcm2838_gpio.h
-new file mode 100644
-index 0000000000..06d48e0c19
---- /dev/null
-+++ b/include/hw/gpio/bcm2838_gpio.h
-@@ -0,0 +1,40 @@
-+/*
-+ * Raspberry Pi (BCM2838) GPIO Controller
-+ * This implementation is based on bcm2835_gpio (hw/gpio/bcm2835_gpio.c)
-+ *
-+ * Copyright (c) 2022 Auriga LLC
-+ *
-+ * Authors:
-+ *  Lotosh, Aleksey <aleksey.lotosh@auriga.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
+     return value;
+ }
+@@ -72,14 +198,74 @@ static uint64_t bcm2838_gpio_read(void *opaque, hwaddr offset, unsigned size)
+ static void bcm2838_gpio_write(void *opaque, hwaddr offset, uint64_t value,
+                                unsigned size)
+ {
+-    qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
++    BCM2838GpioState *s = (BCM2838GpioState *)opaque;
 +
-+#ifndef BCM2838_GPIO_H
-+#define BCM2838_GPIO_H
++    switch (offset) {
++    case GPFSEL0:
++    case GPFSEL1:
++    case GPFSEL2:
++    case GPFSEL3:
++    case GPFSEL4:
++    case GPFSEL5:
++        gpfsel_set(s, offset / BYTES_IN_WORD, value);
++        break;
++    case GPSET0:
++        gpset(s, value, 0, 32, &s->lev0);
++        break;
++    case GPSET1:
++        gpset(s, value, 32, 22, &s->lev1);
++        break;
++    case GPCLR0:
++        gpclr(s, value, 0, 32, &s->lev0);
++        break;
++    case GPCLR1:
++        gpclr(s, value, 32, 22, &s->lev1);
++        break;
++    case GPLEV0:
++    case GPLEV1:
++        /* Read Only */
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s: Attempt writing %lu to read "
++                      "only register. Ignored. Address 0x%"HWADDR_PRIx", size "
++                      "%u\n", TYPE_BCM2838_GPIO, __func__, value, offset, size);
++        break;
++    case GPEDS0:
++    case GPEDS1:
++    case GPREN0:
++    case GPREN1:
++    case GPFEN0:
++    case GPFEN1:
++    case GPHEN0:
++    case GPHEN1:
++    case GPLEN0:
++    case GPLEN1:
++    case GPAREN0:
++    case GPAREN1:
++    case GPAFEN0:
++    case GPAFEN1:
++        /* Not implemented */
++        qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
++                      TYPE_BCM2838_GPIO, __func__, offset);
++        break;
++    case GPIO_PUP_PDN_CNTRL_REG0:
++    case GPIO_PUP_PDN_CNTRL_REG1:
++    case GPIO_PUP_PDN_CNTRL_REG2:
++    case GPIO_PUP_PDN_CNTRL_REG3:
++        s->pup_cntrl_reg[(offset - GPIO_PUP_PDN_CNTRL_REG0)
++                         / sizeof(s->pup_cntrl_reg[0])] = value;
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s: bad offset %"HWADDR_PRIx"\n",
+                   TYPE_BCM2838_GPIO, __func__, offset);
++    }
++    return;
+ }
+ 
+ static void bcm2838_gpio_reset(DeviceState *dev)
+ {
+     BCM2838GpioState *s = BCM2838_GPIO(dev);
+ 
++    memset(s->fsel, 0, sizeof(s->fsel));
 +
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+
-+#define TYPE_BCM2838_GPIO "bcm2838-gpio"
-+OBJECT_DECLARE_SIMPLE_TYPE(BCM2838GpioState, BCM2838_GPIO)
-+
-+#define BCM2838_GPIO_REGS_SIZE 0x1000
-+#define BCM2838_GPIO_NUM       58
-+#define GPIO_PUP_PDN_CNTRL_NUM 4
-+
-+struct BCM2838GpioState {
-+    SysBusDevice parent_obj;
-+
-+    MemoryRegion iomem;
-+
-+
-+    uint8_t fsel[BCM2838_GPIO_NUM];
-+    uint32_t lev0, lev1;
-+    uint8_t sd_fsel;
-+    qemu_irq out[BCM2838_GPIO_NUM];
-+    uint32_t pup_cntrl_reg[GPIO_PUP_PDN_CNTRL_NUM];
-+};
-+
-+#endif
+     s->lev0 = 0;
+     s->lev1 = 0;
+ 
 -- 
 2.34.1
 
