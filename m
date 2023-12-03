@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC0A80281B
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:51:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6234802817
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:51:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9uL3-0002qd-SG; Sun, 03 Dec 2023 16:49:21 -0500
+	id 1r9uL6-0002rO-M7; Sun, 03 Dec 2023 16:49:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uL0-0002pw-DX; Sun, 03 Dec 2023 16:49:18 -0500
+ id 1r9uL1-0002qA-Aj; Sun, 03 Dec 2023 16:49:20 -0500
 Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uKy-0008Hh-LW; Sun, 03 Dec 2023 16:49:18 -0500
+ id 1r9uKz-0008Ho-AX; Sun, 03 Dec 2023 16:49:19 -0500
 Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-5d34f8f211fso38041247b3.0; 
+ 00721157ae682-5cece20f006so45050667b3.3; 
  Sun, 03 Dec 2023 13:49:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701640155; x=1702244955; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701640156; x=1702244956; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vjJI0cIxkRTZ5OWIw3bVVRHcwjcOeypwu8X8iyLqwmA=;
- b=OWXLZ7hopVimcmy6e0JkLjT7jNDBTTSjR5M2rWFnl537aRUHAde3MW4Bipo8fx8WKO
- xlk1yIInUhkDcyJjODN5Meg7fO744UrqWZVBxs6sYsh/FyuthUoO10JaRg79on8Dzyp6
- 1gn+ZJI2WRQKA2KD/rqBGNuEZEpFN7bSKT9nuhdc/bs0vRpdC0uCWpHUEjpdMTCcBWGm
- bDizYaNF/iiHBryC37jKC5lbnbp7AzzE7A/W4aVauuocqqysjGVdlr6bt/cCrnWLxSud
- 2pgH+R8ak1f56ZEfppBg2STR5rQgLFbx32QIUPGmKNNe7Ec9sanc4wuNAzdaAo0AGSTX
- 4iUw==
+ bh=DToKVpvlexd+YNhAs9MVA6EGWpl46MywNEXdi2wvJUE=;
+ b=ANoF2QTrLvW3wyI9yuKZhpaoPepp7exaNR+H9DUh2NucLzmifIuXnz8vU5CR5fsgDU
+ HtKLiQ5fVaz+vaOBW9M3coIWyS/MaaVJ0AlaIqyoAbcdEzMgm8+DL+FZcdDzN7dtfQ9b
+ wUgB+9FUT3Q4wPrmXPkwPKDptDa+6eOS5nKJpjA319DHbbK40CmN2QhpAnqC6ey4OjNi
+ YxZw3dMgmMCHQwC5Lti3q3izQJJNvgDJFXtcTY6jcOb3FLXt6mKGgKnM8J7UctwYjBXg
+ gaUZjuNQPizbMu2vMwqfu70bp/p5xs3mvf1JS5n9Tn5bk9K60tlPeuZfT5nn0zvrSRuD
+ pBvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701640155; x=1702244955;
+ d=1e100.net; s=20230601; t=1701640156; x=1702244956;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vjJI0cIxkRTZ5OWIw3bVVRHcwjcOeypwu8X8iyLqwmA=;
- b=lNTUBCLtcJVeyXeT8JmOEybmlfd+0pfW4Y7fBfI9jwKSwA0tjB8NMSssMSZs8Zh0Jv
- kAPh2odjeoAbvCn3I37H0/iOUxJk1iu6OPkblGzeMXfUaBUlwvDyeMlAsw0mXygFW3ND
- z01MhMcs94oQS9zIo01NtPJR8OBcf/S0gDKG46neJ+ozyQQ52Z6Gg7xcUl0y0dxzXtEX
- YIsIUic1ODObzUbgD+UkhSLZLh1mai2Vjz8QTxoA83Y3aaB5AvY91Uw8R8kgoY9+yLOV
- fcNgDddcfqwlFgi6k7fFBeT3oRVhM7XCCPMxQpNl4UslVzT2jlu45nzz+IJAU79YrdSd
- l0mw==
-X-Gm-Message-State: AOJu0YwjPvuHnEXVPfy3jNFovEm+MbP3+9kjPzpTo4Scr9f2tqQoKb7Q
- qyW18SCavyJsvWVBR+WjrgJoPTswHXMy6Q==
-X-Google-Smtp-Source: AGHT+IE2KoI09SxcEY+bD1jtd5/AJeujAYnyxUooS9KCwsWY2SPSVRWNUE3a+pT1x4sR1Jgn+LBq1A==
-X-Received: by 2002:a81:f011:0:b0:5d7:1940:53ef with SMTP id
- p17-20020a81f011000000b005d7194053efmr1664325ywm.103.1701640154770; 
- Sun, 03 Dec 2023 13:49:14 -0800 (PST)
+ bh=DToKVpvlexd+YNhAs9MVA6EGWpl46MywNEXdi2wvJUE=;
+ b=MOKCYX+LJANO8719vNs2IYUUebyhaMI4JiqaTNHTRFIKsF/JAeJakgJKz+1jtc9QrY
+ p5jJ4gxVDEHc58SxBkelxVaHccIu6Z5prDPZ01Xc/fVLcLfpIryVohuvMWHJ/1r1syVZ
+ IPDmGoFLF3auajSO/fA1o6zxK88Sks4lYoFwtCaIhkLk6QHv/xT6K2+HC2I1WwBidp9b
+ kqGV0UB7Z3VVv6CJkaYGe0fk85hvp5aWwYV0y0p8jaTHJj8fKf0k/XcNz5+qS+RDLRf9
+ 3m1ijDL26erIKmwbM678yowV1tuYG11+HUFmtY70Ww/Yl188Hnnc3NnGtbrPG6B6id7M
+ 7ugA==
+X-Gm-Message-State: AOJu0YxIhDovc0qWhzI9X/ur6ZthYa2A9kw179nl65XO/7w8tv661icf
+ FpeykZ5sfwU+oUHbgRSqVbHbCqr7vW8zqQ==
+X-Google-Smtp-Source: AGHT+IFtVRi9GUIDWMV1r6Mr/uNnIHsCbx5FylQG97kdNfnw3bGBf8L0k8KTigZJdw0tWaMLhqtfuQ==
+X-Received: by 2002:a05:690c:281:b0:583:c917:7ff0 with SMTP id
+ bf1-20020a05690c028100b00583c9177ff0mr2170167ywb.51.1701640155860; 
+ Sun, 03 Dec 2023 13:49:15 -0800 (PST)
 Received: from localhost.localdomain ([201.206.180.22])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a816502000000b00597e912e67esm2832788ywb.131.2023.12.03.13.49.13
+ z2-20020a816502000000b00597e912e67esm2832788ywb.131.2023.12.03.13.49.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Dec 2023 13:49:14 -0800 (PST)
+ Sun, 03 Dec 2023 13:49:15 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v3 00/45] Raspberry Pi 4B machine
-Date: Sun,  3 Dec 2023 15:48:25 -0600
-Message-Id: <20231203214910.1364468-1-sergey.kambalin@auriga.com>
+Subject: [PATCH v3 01/45] Split out common part of BCM283X classes
+Date: Sun,  3 Dec 2023 15:48:26 -0600
+Message-Id: <20231203214910.1364468-2-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230726132512.149618-1-sergey.kambalin@auriga.com>
+In-Reply-To: <20231203214910.1364468-1-sergey.kambalin@auriga.com>
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
+ <20231203214910.1364468-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
@@ -91,138 +92,307 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introducing Raspberry Pi 4B model.
-It contains new BCM2838 SoC, PCIE subsystem,
-RNG200, Thermal sensor and Genet network controller.
+Pre setup for BCM2838 introduction
 
-It can work with recent linux kernels 6.x.x.
-Two avocado tests was added to check that.
+Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+---
+ hw/arm/bcm2836.c         | 102 ++++++++++++++++++++++-----------------
+ hw/arm/raspi.c           |   2 +-
+ include/hw/arm/bcm2836.h |  26 +++++++++-
+ 3 files changed, 83 insertions(+), 47 deletions(-)
 
-Unit tests has been made as read/write operations
-via mailbox properties.
-
-Genet integration test is under development.
-
-Every single commit
-1) builds without errors
-2) passes regression tests
-3) passes style check*
-*the only exception is bcm2838-mbox-property-test.c file
-containing heavy macros usage which cause a lot of
-false-positives of checkpatch.pl.
-
-I did my best to keep the commits less than 200 changes,
-but had to make some of them a bit more in order to
-keep their integrity.
-
-This is v2 patchset with the most of v1 remarks fixed.
-I named it as 'v3' because of mistakes while attempts to send v2 patchset.
-Please remove all other v1 and v2 patchsets except the very first one.
-
-Sergey Kambalin (45):
-  Split out common part of BCM283X classes
-  Split out common part of peripherals
-  Split out raspi machine common part
-  Introduce BCM2838 SoC
-  Add GIC-400 to BCM2838 SoC
-  Add BCM2838 GPIO stub
-  Implement BCM2838 GPIO functionality
-  Connect SD controller to BCM2838 GPIO
-  Add GPIO and SD to BCM2838 periph
-  Add BCM2838 checkpoint support
-  Introduce Raspberry PI 4 machine
-  Temporarily disable unimplemented rpi4b devices
-  Add memory region for BCM2837 RPiVid ASB
-  Add BCM2838 PCIE Root Complex
-  Add BCM2838 PCIE host
-  Enable BCM2838 PCIE
-  Add RNG200 skeleton
-  Add RNG200 RNG and RBG
-  Get rid of RNG200 timer
-  Implement BCM2838 thermal sensor
-  Add clock_isp stub
-  Add GENET stub
-  Add GENET register structs. Part 1
-  Add GENET register structs. Part 2
-  Add GENET register structs. Part 3
-  Add GENET register structs. Part 4
-  Add GENET register access macros
-  Implement GENET register ops
-  Implement GENET MDIO
-  Implement GENET TX path
-  Implement GENET RX path
-  Enable BCM2838 GENET controller
-  Connect RNG200, PCIE and GENET to GIC
-  Add Rpi4b boot tests
-  Add mailbox test stub
-  Add mailbox test constants
-  Add mailbox tests tags. Part 1
-  Add mailbox tests tags. Part 2
-  Add mailbox tests tags. Part 3
-  Add mailbox property tests. Part 1
-  Add mailbox property tests. Part 2
-  Add mailbox property tests. Part 3
-  Add missed BCM2835 properties
-  Append added properties to mailbox test
-  Add RPi4B to paspi4.rst
-
- docs/system/arm/raspi.rst                |   11 +-
- hw/arm/bcm2835_peripherals.c             |  218 +++--
- hw/arm/bcm2836.c                         |  116 ++-
- hw/arm/bcm2838.c                         |  288 ++++++
- hw/arm/bcm2838_pcie.c                    |  289 ++++++
- hw/arm/bcm2838_peripherals.c             |  292 ++++++
- hw/arm/meson.build                       |    8 +-
- hw/arm/raspi.c                           |  131 +--
- hw/arm/raspi4b.c                         |  112 +++
- hw/arm/trace-events                      |    6 +
- hw/gpio/bcm2838_gpio.c                   |  389 ++++++++
- hw/gpio/meson.build                      |    5 +-
- hw/misc/bcm2835_property.c               |   47 +
- hw/misc/bcm2838_rng200.c                 |  420 +++++++++
- hw/misc/bcm2838_thermal.c                |   98 ++
- hw/misc/meson.build                      |    2 +
- hw/misc/trace-events                     |    9 +
- hw/net/bcm2838_genet.c                   | 1088 ++++++++++++++++++++++
- hw/net/meson.build                       |    2 +
- hw/net/trace-events                      |   16 +
- include/hw/arm/bcm2835_peripherals.h     |   29 +-
- include/hw/arm/bcm2836.h                 |   27 +-
- include/hw/arm/bcm2838.h                 |   31 +
- include/hw/arm/bcm2838_pcie.h            |   75 ++
- include/hw/arm/bcm2838_peripherals.h     |   97 ++
- include/hw/arm/raspberrypi-fw-defs.h     |   12 +-
- include/hw/arm/raspi_platform.h          |   37 +
- include/hw/display/bcm2835_fb.h          |    2 +
- include/hw/gpio/bcm2838_gpio.h           |   45 +
- include/hw/misc/bcm2838_rng200.h         |   43 +
- include/hw/misc/bcm2838_thermal.h        |   24 +
- include/hw/net/bcm2838_genet.h           |  426 +++++++++
- tests/avocado/boot_linux_console.py      |   92 ++
- tests/qtest/bcm2838-mailbox.c            |   61 ++
- tests/qtest/bcm2838-mailbox.h            |  584 ++++++++++++
- tests/qtest/bcm2838-mbox-property-test.c |  621 ++++++++++++
- tests/qtest/meson.build                  |    3 +-
- 37 files changed, 5551 insertions(+), 205 deletions(-)
- create mode 100644 hw/arm/bcm2838.c
- create mode 100644 hw/arm/bcm2838_pcie.c
- create mode 100644 hw/arm/bcm2838_peripherals.c
- create mode 100644 hw/arm/raspi4b.c
- create mode 100644 hw/gpio/bcm2838_gpio.c
- create mode 100644 hw/misc/bcm2838_rng200.c
- create mode 100644 hw/misc/bcm2838_thermal.c
- create mode 100644 hw/net/bcm2838_genet.c
- create mode 100644 include/hw/arm/bcm2838.h
- create mode 100644 include/hw/arm/bcm2838_pcie.h
- create mode 100644 include/hw/arm/bcm2838_peripherals.h
- create mode 100644 include/hw/gpio/bcm2838_gpio.h
- create mode 100644 include/hw/misc/bcm2838_rng200.h
- create mode 100644 include/hw/misc/bcm2838_thermal.h
- create mode 100644 include/hw/net/bcm2838_genet.h
- create mode 100644 tests/qtest/bcm2838-mailbox.c
- create mode 100644 tests/qtest/bcm2838-mailbox.h
- create mode 100644 tests/qtest/bcm2838-mbox-property-test.c
-
+diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
+index 166dc896c0..66a2b57b38 100644
+--- a/hw/arm/bcm2836.c
++++ b/hw/arm/bcm2836.c
+@@ -29,12 +29,12 @@ struct BCM283XClass {
+ };
+ 
+ static Property bcm2836_enabled_cores_property =
+-    DEFINE_PROP_UINT32("enabled-cpus", BCM283XState, enabled_cpus, 0);
++    DEFINE_PROP_UINT32("enabled-cpus", BCM283XBaseState, enabled_cpus, 0);
+ 
+-static void bcm2836_init(Object *obj)
++static void bcm283x_base_init(Object *obj)
+ {
+-    BCM283XState *s = BCM283X(obj);
+-    BCM283XClass *bc = BCM283X_GET_CLASS(obj);
++    BCM283XBaseState *s = BCM283X_BASE(obj);
++    BCM283XBaseClass *bc = BCM283X_BASE_GET_CLASS(obj);
+     int n;
+ 
+     for (n = 0; n < bc->core_count; n++) {
+@@ -50,6 +50,11 @@ static void bcm2836_init(Object *obj)
+         object_initialize_child(obj, "control", &s->control,
+                                 TYPE_BCM2836_CONTROL);
+     }
++}
++
++static void bcm283x_init(Object *obj)
++{
++    BCM283XState *s = BCM283X(obj);
+ 
+     object_initialize_child(obj, "peripherals", &s->peripherals,
+                             TYPE_BCM2835_PERIPHERALS);
+@@ -61,10 +66,11 @@ static void bcm2836_init(Object *obj)
+                               "vcram-size");
+ }
+ 
+-static bool bcm283x_common_realize(DeviceState *dev, Error **errp)
++bool bcm283x_common_realize(DeviceState *dev, Error **errp)
+ {
+     BCM283XState *s = BCM283X(dev);
+-    BCM283XClass *bc = BCM283X_GET_CLASS(dev);
++    BCM283XBaseState *s_base = BCM283X_BASE(dev);
++    BCM283XBaseClass *bc = BCM283X_BASE_GET_CLASS(dev);
+     Object *obj;
+ 
+     /* common peripherals from bcm2835 */
+@@ -77,96 +83,98 @@ static bool bcm283x_common_realize(DeviceState *dev, Error **errp)
+         return false;
+     }
+ 
+-    object_property_add_alias(OBJECT(s), "sd-bus", OBJECT(&s->peripherals),
+-                              "sd-bus");
++    object_property_add_alias(OBJECT(s_base), "sd-bus",
++                              OBJECT(&s->peripherals), "sd-bus");
+ 
+-    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(&s->peripherals), 0,
+-                            bc->peri_base, 1);
++    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(&s->peripherals),
++                            0, bc->peri_base, 1);
+     return true;
+ }
+ 
+ static void bcm2835_realize(DeviceState *dev, Error **errp)
+ {
+     BCM283XState *s = BCM283X(dev);
++    BCM283XBaseState *s_base = BCM283X_BASE(dev);
+ 
+     if (!bcm283x_common_realize(dev, errp)) {
+         return;
+     }
+ 
+-    if (!qdev_realize(DEVICE(&s->cpu[0].core), NULL, errp)) {
++    if (!qdev_realize(DEVICE(&s_base->cpu[0].core), NULL, errp)) {
+         return;
+     }
+ 
+     /* Connect irq/fiq outputs from the interrupt controller. */
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 0,
+-            qdev_get_gpio_in(DEVICE(&s->cpu[0].core), ARM_CPU_IRQ));
++            qdev_get_gpio_in(DEVICE(&s_base->cpu[0].core), ARM_CPU_IRQ));
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 1,
+-            qdev_get_gpio_in(DEVICE(&s->cpu[0].core), ARM_CPU_FIQ));
++            qdev_get_gpio_in(DEVICE(&s_base->cpu[0].core), ARM_CPU_FIQ));
+ }
+ 
+ static void bcm2836_realize(DeviceState *dev, Error **errp)
+ {
+-    BCM283XState *s = BCM283X(dev);
+-    BCM283XClass *bc = BCM283X_GET_CLASS(dev);
+     int n;
++    BCM283XState *s = BCM283X(dev);
++    BCM283XBaseState *s_base = BCM283X_BASE(dev);
++    BCM283XBaseClass *bc = BCM283X_BASE_GET_CLASS(dev);
+ 
+     if (!bcm283x_common_realize(dev, errp)) {
+         return;
+     }
+ 
+     /* bcm2836 interrupt controller (and mailboxes, etc.) */
+-    if (!sysbus_realize(SYS_BUS_DEVICE(&s->control), errp)) {
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s_base->control), errp)) {
+         return;
+     }
+ 
+-    sysbus_mmio_map(SYS_BUS_DEVICE(&s->control), 0, bc->ctrl_base);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s_base->control), 0, bc->ctrl_base);
+ 
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 0,
+-        qdev_get_gpio_in_named(DEVICE(&s->control), "gpu-irq", 0));
++        qdev_get_gpio_in_named(DEVICE(&s_base->control), "gpu-irq", 0));
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->peripherals), 1,
+-        qdev_get_gpio_in_named(DEVICE(&s->control), "gpu-fiq", 0));
++        qdev_get_gpio_in_named(DEVICE(&s_base->control), "gpu-fiq", 0));
+ 
+     for (n = 0; n < BCM283X_NCPUS; n++) {
+         /* TODO: this should be converted to a property of ARM_CPU */
+-        s->cpu[n].core.mp_affinity = (bc->clusterid << 8) | n;
++        s_base->cpu[n].core.mp_affinity = (bc->clusterid << 8) | n;
+ 
+         /* set periphbase/CBAR value for CPU-local registers */
+-        if (!object_property_set_int(OBJECT(&s->cpu[n].core), "reset-cbar",
++        if (!object_property_set_int(OBJECT(&s_base->cpu[n].core), "reset-cbar",
+                                      bc->peri_base, errp)) {
+             return;
+         }
+ 
+         /* start powered off if not enabled */
+-        if (!object_property_set_bool(OBJECT(&s->cpu[n].core),
++        if (!object_property_set_bool(OBJECT(&s_base->cpu[n].core),
+                                       "start-powered-off",
+-                                      n >= s->enabled_cpus,
++                                      n >= s_base->enabled_cpus,
+                                       errp)) {
+             return;
+         }
+ 
+-        if (!qdev_realize(DEVICE(&s->cpu[n].core), NULL, errp)) {
++        if (!qdev_realize(DEVICE(&s_base->cpu[n].core), NULL, errp)) {
+             return;
+         }
+ 
+         /* Connect irq/fiq outputs from the interrupt controller. */
+-        qdev_connect_gpio_out_named(DEVICE(&s->control), "irq", n,
+-                qdev_get_gpio_in(DEVICE(&s->cpu[n].core), ARM_CPU_IRQ));
+-        qdev_connect_gpio_out_named(DEVICE(&s->control), "fiq", n,
+-                qdev_get_gpio_in(DEVICE(&s->cpu[n].core), ARM_CPU_FIQ));
++        qdev_connect_gpio_out_named(DEVICE(&s_base->control), "irq", n,
++            qdev_get_gpio_in(DEVICE(&s_base->cpu[n].core), ARM_CPU_IRQ));
++        qdev_connect_gpio_out_named(DEVICE(&s_base->control), "fiq", n,
++            qdev_get_gpio_in(DEVICE(&s_base->cpu[n].core), ARM_CPU_FIQ));
+ 
+         /* Connect timers from the CPU to the interrupt controller */
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_PHYS,
+-                qdev_get_gpio_in_named(DEVICE(&s->control), "cntpnsirq", n));
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_VIRT,
+-                qdev_get_gpio_in_named(DEVICE(&s->control), "cntvirq", n));
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_HYP,
+-                qdev_get_gpio_in_named(DEVICE(&s->control), "cnthpirq", n));
+-        qdev_connect_gpio_out(DEVICE(&s->cpu[n].core), GTIMER_SEC,
+-                qdev_get_gpio_in_named(DEVICE(&s->control), "cntpsirq", n));
++        qdev_connect_gpio_out(DEVICE(&s_base->cpu[n].core), GTIMER_PHYS,
++            qdev_get_gpio_in_named(DEVICE(&s_base->control), "cntpnsirq", n));
++        qdev_connect_gpio_out(DEVICE(&s_base->cpu[n].core), GTIMER_VIRT,
++            qdev_get_gpio_in_named(DEVICE(&s_base->control), "cntvirq", n));
++        qdev_connect_gpio_out(DEVICE(&s_base->cpu[n].core), GTIMER_HYP,
++            qdev_get_gpio_in_named(DEVICE(&s_base->control), "cnthpirq", n));
++        qdev_connect_gpio_out(DEVICE(&s_base->cpu[n].core), GTIMER_SEC,
++            qdev_get_gpio_in_named(DEVICE(&s_base->control), "cntpsirq", n));
+     }
+ }
+ 
+-static void bcm283x_class_init(ObjectClass *oc, void *data)
++static void bcm283x_base_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+ 
+@@ -177,7 +185,7 @@ static void bcm283x_class_init(ObjectClass *oc, void *data)
+ static void bcm2835_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+-    BCM283XClass *bc = BCM283X_CLASS(oc);
++    BCM283XBaseClass *bc = BCM283X_BASE_CLASS(oc);
+ 
+     bc->cpu_type = ARM_CPU_TYPE_NAME("arm1176");
+     bc->core_count = 1;
+@@ -188,7 +196,7 @@ static void bcm2835_class_init(ObjectClass *oc, void *data)
+ static void bcm2836_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+-    BCM283XClass *bc = BCM283X_CLASS(oc);
++    BCM283XBaseClass *bc = BCM283X_BASE_CLASS(oc);
+ 
+     bc->cpu_type = ARM_CPU_TYPE_NAME("cortex-a7");
+     bc->core_count = BCM283X_NCPUS;
+@@ -202,7 +210,7 @@ static void bcm2836_class_init(ObjectClass *oc, void *data)
+ static void bcm2837_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+-    BCM283XClass *bc = BCM283X_CLASS(oc);
++    BCM283XBaseClass *bc = BCM283X_BASE_CLASS(oc);
+ 
+     bc->cpu_type = ARM_CPU_TYPE_NAME("cortex-a53");
+     bc->core_count = BCM283X_NCPUS;
+@@ -230,11 +238,17 @@ static const TypeInfo bcm283x_types[] = {
+ #endif
+     }, {
+         .name           = TYPE_BCM283X,
+-        .parent         = TYPE_DEVICE,
++        .parent         = TYPE_BCM283X_BASE,
+         .instance_size  = sizeof(BCM283XState),
+-        .instance_init  = bcm2836_init,
+-        .class_size     = sizeof(BCM283XClass),
+-        .class_init     = bcm283x_class_init,
++        .instance_init  = bcm283x_init,
++        .abstract       = true,
++    }, {
++        .name           = TYPE_BCM283X_BASE,
++        .parent         = TYPE_DEVICE,
++        .instance_size  = sizeof(BCM283XBaseState),
++        .instance_init  = bcm283x_base_init,
++        .class_size     = sizeof(BCM283XBaseClass),
++        .class_init     = bcm283x_base_class_init,
+         .abstract       = true,
+     }
+ };
+diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
+index cc4c4ec9bf..af866ebce2 100644
+--- a/hw/arm/raspi.c
++++ b/hw/arm/raspi.c
+@@ -252,7 +252,7 @@ static void setup_boot(MachineState *machine, RaspiProcessorId processor_id,
+         s->binfo.firmware_loaded = true;
+     }
+ 
+-    arm_load_kernel(&s->soc.cpu[0].core, machine, &s->binfo);
++    arm_load_kernel(&s->soc.parent_obj.cpu[0].core, machine, &s->binfo);
+ }
+ 
+ static void raspi_machine_init(MachineState *machine)
+diff --git a/include/hw/arm/bcm2836.h b/include/hw/arm/bcm2836.h
+index 6f90cabfa3..5a6717ca91 100644
+--- a/include/hw/arm/bcm2836.h
++++ b/include/hw/arm/bcm2836.h
+@@ -17,8 +17,10 @@
+ #include "target/arm/cpu.h"
+ #include "qom/object.h"
+ 
++#define TYPE_BCM283X_BASE "bcm283x-base"
++OBJECT_DECLARE_TYPE(BCM283XBaseState, BCM283XBaseClass, BCM283X_BASE)
+ #define TYPE_BCM283X "bcm283x"
+-OBJECT_DECLARE_TYPE(BCM283XState, BCM283XClass, BCM283X)
++OBJECT_DECLARE_SIMPLE_TYPE(BCM283XState, BCM283X)
+ 
+ #define BCM283X_NCPUS 4
+ 
+@@ -30,7 +32,7 @@ OBJECT_DECLARE_TYPE(BCM283XState, BCM283XClass, BCM283X)
+ #define TYPE_BCM2836 "bcm2836"
+ #define TYPE_BCM2837 "bcm2837"
+ 
+-struct BCM283XState {
++struct BCM283XBaseState {
+     /*< private >*/
+     DeviceState parent_obj;
+     /*< public >*/
+@@ -41,7 +43,27 @@ struct BCM283XState {
+         ARMCPU core;
+     } cpu[BCM283X_NCPUS];
+     BCM2836ControlState control;
++};
++
++struct BCM283XBaseClass {
++    /*< private >*/
++    DeviceClass parent_class;
++    /*< public >*/
++    const char *name;
++    const char *cpu_type;
++    unsigned core_count;
++    hwaddr peri_base; /* Peripheral base address seen by the CPU */
++    hwaddr ctrl_base; /* Interrupt controller and mailboxes etc. */
++    int clusterid;
++};
++
++struct BCM283XState {
++    /*< private >*/
++    BCM283XBaseState parent_obj;
++    /*< public >*/
+     BCM2835PeripheralState peripherals;
+ };
+ 
++bool bcm283x_common_realize(DeviceState *dev, Error **errp);
++
+ #endif /* BCM2836_H */
 -- 
 2.34.1
 
