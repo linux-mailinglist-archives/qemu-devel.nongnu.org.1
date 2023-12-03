@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41BD802813
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94683802821
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:52:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9uLh-0003Yx-Vj; Sun, 03 Dec 2023 16:50:02 -0500
+	id 1r9uLk-0003bR-CW; Sun, 03 Dec 2023 16:50:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uLe-0003WA-D4; Sun, 03 Dec 2023 16:49:58 -0500
+ id 1r9uLf-0003YE-Rt; Sun, 03 Dec 2023 16:49:59 -0500
 Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uLc-0008Rl-NT; Sun, 03 Dec 2023 16:49:58 -0500
+ id 1r9uLe-0008S0-49; Sun, 03 Dec 2023 16:49:59 -0500
 Received: by mail-yw1-x112f.google.com with SMTP id
- 00721157ae682-5d3c7ef7b31so29053117b3.3; 
- Sun, 03 Dec 2023 13:49:56 -0800 (PST)
+ 00721157ae682-5d7a47d06eeso10987447b3.1; 
+ Sun, 03 Dec 2023 13:49:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701640195; x=1702244995; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701640196; x=1702244996; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KE00WoL8kxJ8pW7oRCni4sp/uw+yPOzo+IEwlEl9WAg=;
- b=P69KpKYP/7wFhubqKiORzlxS88HxIskTgYoCsOmAYLbg5qBHEli+s1K3xu/mvCtiKX
- zuM3RnvhtGhNXNh3pE1bVIfXF1A8uM5AmHSL3qc25EFEbwcfAHWan9tsBk/LOpoGAyc3
- JedJKAwraViLjemh+yF7IHkGmQgeWE6E2wouYj6pN466F/peutB1I6SgcVNoNHzJtzXZ
- FhFde7WVEKS84NeybqQHZvvHc4lIDCEFr0Igon5eP3in82ZS7pYBF8k19MHvkAiJhH3F
- xEsrfrzkwUOzqEse3p3yJCyEi+Y/T0o1gPpTNe9PKWxH6OqlEjYaQ0xs6WVCSXnw5tEk
- 6BdA==
+ bh=y/krSYU1BfE52MIIAgN9xYHAgzoYPsQ2UC+lvFrcJE0=;
+ b=CerVqYujg/5c+nhT+Trh5d2/l1IE/bLtaxk43Dz8OrtQI1Ry50N5hUmKcc/Jk33T4S
+ Ak83WKA4RZEJ0quZHKekZr8wd9+Zt2caZl9nX4oBa+rOwvLuco97DyX/um0cotzfvzlN
+ 6T3hLK154MkAYuei3B4g+vetq0kjVlobjLgBTSkw2qYNWNSEd8WuW/W4Kznv2GJBHaOC
+ zSG3/PBNCKypcsuP8vsiTHqW4/A28waNvEdCDH/uLGerGwc1De/JY/dw7i9wESCCE2sH
+ TNI4xTtNg2pPszH4WrJXE7jzkhkO8oBV+FagEuOX67O+Egm5oSEtcH45FKQGvMkpt4y4
+ TKfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701640195; x=1702244995;
+ d=1e100.net; s=20230601; t=1701640196; x=1702244996;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KE00WoL8kxJ8pW7oRCni4sp/uw+yPOzo+IEwlEl9WAg=;
- b=MgbqERgXUciFKHAETtnl1526imowDHvXdU4xyh3bTeWO/WyJYfcXXnQp4wf1ri/yLh
- lXptVMF33FjoQ5FVteJLtKDq6AQBRxtznGVVjePLtEsWaHDDoVi8lEPc7wWf5rYrm8T+
- R2ZG1tgbx78Nrg+VnkFfyosgvya2wJ54AvJCVSAxUZKkOKS7xd6zOUMhwYgh7w8y7jTf
- MtbtzRUZh81aev0EBMqWN6mu/1AdYu/aP2C0HxiYg53KLdSvE7etI1Gk5Fe2b47l2+SJ
- 7QV3Kk72M8pDBEH7NN/+a4r/eSooNbvZXjc5oSi0r0cuH01l1fq9g6+H60ef/uSad0CU
- lD5w==
-X-Gm-Message-State: AOJu0YwagSf3i66KSMfH8i/7cOAqcx8n4rBiUiR5bAq+2YBcLvo0lW45
- ZXX5wn8cEkloxat9wDdeo5Xk/T0sdxwCRA==
-X-Google-Smtp-Source: AGHT+IHVdXFpKTTCOMyKMq2bFmi7BmTmrWuAfRMRVoeSh0CA7c1Fw4iq1A+94q/7v12lfxdMtyNrsA==
-X-Received: by 2002:a81:ac5b:0:b0:5d7:1941:3550 with SMTP id
- z27-20020a81ac5b000000b005d719413550mr1485117ywj.55.1701640195405; 
- Sun, 03 Dec 2023 13:49:55 -0800 (PST)
+ bh=y/krSYU1BfE52MIIAgN9xYHAgzoYPsQ2UC+lvFrcJE0=;
+ b=lEQcgEhI3u6GhnRMQ4HF8zu+fd9xJQffKgSg2e+Eq/V2ucLQ5ku06K2aJwm8JGflV0
+ uf5r8YkjI3LuganFm3uBFEMvYc6L1SRs+Xs9rIVKZwV77bfCm3IhvEMs/wcrFNzVLOpW
+ OojyxxF7mEEmlor7u4tAQ1/gEFBMcoWG9UuRNr/9/1ntk3w2wcW7d9J5TP8who+e/RM1
+ jasqA1+7EhNlEyQWZ3Q2oQB8JcebBErLQ1cE80GuDsGHi8S21ScOPiqbpTSZqB4RUmt3
+ sjxuZ9UTUAEXX6c1x1xAiTUzya9LfY1heb/vPvQCLTl1IxXPEHNwAZ5YBof/SEWGwSI5
+ nugg==
+X-Gm-Message-State: AOJu0YxxuFVnbaKYyU4WEIZ5rAOkWjw5ZYnpxD486Wq+pPZibA9fUaWR
+ yG4QYGbjmP+Lu7MI6PbJqFLKgkuHB2fLug==
+X-Google-Smtp-Source: AGHT+IE6CWd6S/C0YEd2OTum854ymwD3oMhJZ2meNlKFALDc5K9eFDMprx9Ecvt5oRfPP1/rALZIVQ==
+X-Received: by 2002:a81:99d0:0:b0:5d4:8806:9885 with SMTP id
+ q199-20020a8199d0000000b005d488069885mr2338520ywg.42.1701640196391; 
+ Sun, 03 Dec 2023 13:49:56 -0800 (PST)
 Received: from localhost.localdomain ([201.206.180.22])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a816502000000b00597e912e67esm2832788ywb.131.2023.12.03.13.49.54
+ z2-20020a816502000000b00597e912e67esm2832788ywb.131.2023.12.03.13.49.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Dec 2023 13:49:55 -0800 (PST)
+ Sun, 03 Dec 2023 13:49:56 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v3 36/45] Add mailbox test constants
-Date: Sun,  3 Dec 2023 15:49:01 -0600
-Message-Id: <20231203214910.1364468-37-sergey.kambalin@auriga.com>
+Subject: [PATCH v3 37/45] Add mailbox tests tags. Part 1
+Date: Sun,  3 Dec 2023 15:49:02 -0600
+Message-Id: <20231203214910.1364468-38-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231203214910.1364468-36-sergey.kambalin@auriga.com>
+In-Reply-To: <20231203214910.1364468-37-sergey.kambalin@auriga.com>
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
  <20231203214910.1364468-1-sergey.kambalin@auriga.com>
  <20231203214910.1364468-2-sergey.kambalin@auriga.com>
@@ -101,6 +101,7 @@ References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
  <20231203214910.1364468-34-sergey.kambalin@auriga.com>
  <20231203214910.1364468-35-sergey.kambalin@auriga.com>
  <20231203214910.1364468-36-sergey.kambalin@auriga.com>
+ <20231203214910.1364468-37-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
@@ -129,159 +130,224 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- tests/qtest/bcm2838-mailbox.h | 139 ++++++++++++++++++++++++++++++++++
- 1 file changed, 139 insertions(+)
+ tests/qtest/bcm2838-mailbox.h | 195 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 190 insertions(+), 5 deletions(-)
 
 diff --git a/tests/qtest/bcm2838-mailbox.h b/tests/qtest/bcm2838-mailbox.h
-index 1d02ca9c2c..8acc4bd2ff 100644
+index 8acc4bd2ff..04472fe23d 100644
 --- a/tests/qtest/bcm2838-mailbox.h
 +++ b/tests/qtest/bcm2838-mailbox.h
-@@ -7,6 +7,145 @@
-  * See the COPYING file in the top-level directory.
-  */
+@@ -147,13 +147,21 @@
+ /* Used to test stubs that don't perform actual work */
+ #define DUMMY_VALUE 0x12345678
  
-+#define MBOX0_BASE 0xFE00B880
-+#define MBOX1_BASE 0xFE00B8A0
-+
-+#define MBOX_REG_READ   0x00
-+#define MBOX_REG_WRITE  0x00
-+#define MBOX_REG_PEEK   0x10
-+#define MBOX_REG_SENDER 0x14
-+#define MBOX_REG_STATUS 0x18
-+#define MBOX_REG_CONFIG 0x1C
-+
-+#define MBOX_READ_EMPTY 0x40000000
-+
-+#define MBOX_CHANNEL_ID_PROPERTY 8
-+
-+#define MBOX_PROCESS_REQUEST      0x00000000
-+#define MBOX_SUCCESS              0x80000000
-+#define MBOX_ERROR_PARSING_BUFFER 0x80000001
-+
-+#define TAG_END                    0x00000000
-+#define TAG_GET_FIRMWARE_REVISION  0x00000001
-+#define TAG_GET_FIRMWARE_VARIANT   0x00000002
-+#define TAG_GET_BOARD_REVISION     0x00010002
-+#define TAG_GET_ARM_MEMORY         0x00010005
-+#define TAG_GET_VC_MEMORY          0x00010006
-+#define TAG_SET_DEVICE_POWER_STATE 0x00028001
-+#define TAG_GET_CLOCK_STATE        0x00030001
-+#define TAG_GET_CLOCK_RATE         0x00030002
-+#define TAG_GET_MAX_CLOCK_RATE     0x00030004
-+#define TAG_GET_MIN_CLOCK_RATE     0x00030007
-+#define TAG_GET_CLOCKS             0x00010007
-+#define TAG_GET_TEMPERATURE        0x00030006
-+#define TAG_GET_MAX_TEMPERATURE    0x0003000a
-+#define TAG_ALLOCATE_BUFFER        0x00040001
-+#define TAG_RELEASE_FRAMEBUFFER    0x00048001
-+#define TAG_BLANK_FRAMEBUFFER      0x00040002
-+#define TAG_GET_FB_PHYS_WIDTH      0x00040003
-+#define TAG_TEST_FB_PHYS_WIDTH     0x00044003
-+#define TAG_SET_FB_PHYS_WIDTH      0x00048003
-+#define TAG_GET_FB_VIRT_WIDTH      0x00040004
-+#define TAG_TEST_FB_VIRT_WIDTH     0x00044004
-+#define TAG_SET_FB_VIRT_WIDTH      0x00048004
-+#define TAG_GET_FB_DEPTH           0x00040005
-+#define TAG_TEST_FB_DEPTH          0x00044005
-+#define TAG_SET_FB_DEPTH           0x00048005
-+#define TAG_GET_PIXEL_ORDER        0x00040006
-+#define TAG_TEST_PIXEL_ORDER       0x00044006
-+#define TAG_SET_PIXEL_ORDER        0x00048006
-+#define TAG_GET_FB_ALPHA_MODE      0x00040007
-+#define TAG_TEST_FB_ALPHA_MODE     0x00044007
-+#define TAG_SET_FB_ALPHA_MODE      0x00048007
-+#define TAG_GET_PITCH              0x00040008
-+#define TAG_SET_PITCH              0x00048008
-+#define TAG_GET_VIRTUAL_OFFSET     0x00040009
-+#define TAG_TEST_VIRTUAL_OFFSET    0x00044009
-+#define TAG_SET_VIRTUAL_OFFSET     0x00048009
-+#define TAG_GET_OVERSCAN           0x0004000a
-+#define TAG_TEST_OVERSCAN          0x0004400a
-+#define TAG_SET_OVERSCAN           0x0004800a
-+#define TAG_SET_PALETTE            0x0004800b
-+#define TAG_GET_COMMANDLINE        0x00050001
-+#define TAG_GET_DMA_CHANNELS       0x00060001
-+#define TAG_GET_THROTTLED          0x00030046
-+#define TAG_GET_NUM_DISPLAYS       0x00040013
-+#define TAG_GET_DISPLAY_SETTINGS   0x00040014
-+#define TAG_GET_GPIO_CONFIG        0x00030043
-+#define TAG_SET_GPIO_CONFIG        0x00038043
-+#define TAG_GET_GPIO_STATE         0x00030041
-+#define TAG_SET_GPIO_STATE         0x00038041
-+#define TAG_INITIALIZE_VCHIQ       0x00048010
-+
-+#define BOARD_REVISION    11546898
-+#define FIRMWARE_REVISION 346337
-+#define FIRMWARE_VARIANT  0x77777777 /* TODO: Find the real value */
-+
-+#define ARM_MEMORY_BASE 0x00000000
-+#define ARM_MEMORY_SIZE 0x3c000000
-+#define VC_MEMORY_BASE  0x3c000000
-+#define VC_MEMORY_SIZE  0x04000000
-+#define VC_FB_BASE      0x3c100000
-+#define VC_FB_SIZE      0x00096000
-+
-+#define CLOCK_ID_ROOT      0x00000000
-+#define CLOCK_ID_EMMC      0x00000001
-+#define CLOCK_ID_UART      0x00000002
-+#define CLOCK_ID_ARM       0x00000003
-+#define CLOCK_ID_CORE      0x00000004
-+#define CLOCK_ID_UNDEFINED 0x12345678
-+
-+#define CLOCK_RATE_EMMC 50000000
-+#define CLOCK_RATE_UART 3000000
-+#define CLOCK_RATE_CORE 350000000
-+#define CLOCK_RATE_ANY  700000000
-+
-+#define DEVICE_ID_SD_CARD   0x00000000
-+#define DEVICE_ID_UART0     0x00000001
-+#define DEVICE_ID_UART1     0x00000002
-+#define DEVICE_ID_USB HCD   0x00000003
-+#define DEVICE_ID_I2C0      0x00000004
-+#define DEVICE_ID_I2C1      0x00000005
-+#define DEVICE_ID_I2C2      0x00000006
-+#define DEVICE_ID_SPI       0x00000007
-+#define DEVICE_ID_CCP2TX    0x00000008
-+#define DEVICE_ID_UNKNOWN_0 0x00000009
-+#define DEVICE_ID_UNKNOWN_1 0x0000000a
-+
-+#define TEMPERATURE_ID_SOC 0x00000000
-+
-+#define TEMPERATURE_SOC     25000
-+#define TEMPERATURE_SOC_MAX 99000
-+
-+#define ALIGN_4K 4096
-+
-+#define PIXEL_ORDER_BGR 0
-+#define PIXEL_ORDER_RGB 1
-+
-+#define ALPHA_MODE_ENABLED  0
-+#define ALPHA_MODE_REVERSED 1
-+#define ALPHA_MODE_IGNORED  2
-+
-+#define GPIO_MASK 0x003c
-+
-+#define GPIO_0 0x00000080
-+
-+#define GPIO_DIRECTION_IN  0
-+#define GPIO_DIRECTION_OUT 1
-+
-+#define GPIO_TERMINATION_DISABLED 0
-+#define GPIO_TERMINATION_ENABLED  1
-+
-+#define GPIO_TERMINATION_PULLUP_DISABLED 0
-+#define GPIO_TERMINATION_PULLUP_ENABLED  1
-+
-+#define GPIO_POLARITY_LOW  0
-+#define GPIO_POLARITY_HIGH 1
-+
-+#define GPIO_STATE_DOWN 0
-+
-+/* Used to test stubs that don't perform actual work */
-+#define DUMMY_VALUE 0x12345678
- 
- REG32(MBOX_WRITE_REG, 0)
+-REG32(MBOX_WRITE_REG, 0)
++REG32(MBOX_WRITE_REG,          0)
  FIELD(MBOX_WRITE_REG, CHANNEL, 0, 4)
+-FIELD(MBOX_WRITE_REG, DATA, 4, 28)
++FIELD(MBOX_WRITE_REG, DATA,    4, 28)
+ 
+-REG32(MBOX_SIZE_STAT, 0)
+-FIELD(MBOX_WRITE_REG, SIZE, 0, 30)
+-FIELD(MBOX_WRITE_REG, SUCCESS, 30, 1)
++REG32(MBOX_SIZE_STAT,          0)
++FIELD(MBOX_SIZE_STAT, SIZE,    0, 30)
++FIELD(MBOX_SIZE_STAT, SUCCESS, 30, 1)
++
++REG32(SET_DEVICE_POWER_STATE_CMD,        0)
++FIELD(SET_DEVICE_POWER_STATE_CMD, EN,    0, 1)
++FIELD(SET_DEVICE_POWER_STATE_CMD, WAIT,  1, 1)
++
++REG32(GET_CLOCK_STATE_CMD,        0)
++FIELD(GET_CLOCK_STATE_CMD, EN,    0, 1)
++FIELD(GET_CLOCK_STATE_CMD, NPRES, 1, 1)
+ 
+ typedef struct {
+     uint32_t size;
+@@ -176,6 +184,183 @@ typedef struct {                                                        \
+     };                                                                  \
+ } TypeName
+ 
++DECLARE_TAG_TYPE(TAG_GET_FIRMWARE_REVISION_t,
++    struct {},
++    struct {
++        uint32_t revision;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_FIRMWARE_VARIANT_t,
++    struct {},
++    struct {
++        uint32_t variant;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_BOARD_REVISION_t,
++    struct {},
++    struct {
++        uint32_t revision;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_ARM_MEMORY_t,
++    struct {},
++    struct {
++        uint32_t base;
++        uint32_t size;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_VC_MEMORY_t,
++    struct {},
++    struct {
++        uint32_t base;
++        uint32_t size;
++    });
++
++DECLARE_TAG_TYPE(TAG_SET_DEVICE_POWER_STATE_t,
++    struct {
++        uint32_t device_id;
++        uint32_t cmd;
++    },
++    struct {
++        uint32_t device_id;
++        uint32_t cmd;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_CLOCK_STATE_t,
++    struct {
++        uint32_t clock_id;
++    },
++    struct {
++        uint32_t clock_id;
++        uint32_t cmd;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_CLOCK_RATE_t,
++    struct {
++        uint32_t clock_id;
++    },
++    struct {
++        uint32_t clock_id;
++        uint32_t rate;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_MAX_CLOCK_RATE_t,
++    struct {
++        uint32_t clock_id;
++    },
++    struct {
++        uint32_t clock_id;
++        uint32_t rate;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_MIN_CLOCK_RATE_t,
++    struct {
++        uint32_t clock_id;
++    },
++    struct {
++        uint32_t clock_id;
++        uint32_t rate;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_CLOCKS_t,
++    struct {},
++    struct {
++        uint32_t root_clock;
++        uint32_t arm_clock;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_TEMPERATURE_t,
++    struct {
++        uint32_t temperature_id;
++    },
++    struct {
++        uint32_t temperature_id;
++        uint32_t temperature;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_MAX_TEMPERATURE_t,
++    struct {
++        uint32_t temperature_id;
++    },
++    struct {
++        uint32_t temperature_id;
++        uint32_t temperature;
++    });
++
++DECLARE_TAG_TYPE(TAG_ALLOCATE_BUFFER_t,
++    struct {
++        uint32_t alignment;
++    },
++    struct {
++        uint32_t base;
++        uint32_t size;
++    });
++
++DECLARE_TAG_TYPE(TAG_RELEASE_FRAMEBUFFER_t,
++    struct {},
++    struct {});
++
++DECLARE_TAG_TYPE(TAG_BLANK_FRAMEBUFFER_t,
++    struct {
++        uint32_t on;
++    },
++    struct {
++        uint32_t on;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_FB_PHYS_WIDTH_t,
++    struct {},
++    struct {
++        uint32_t width;
++        uint32_t height;
++    });
++
++DECLARE_TAG_TYPE(TAG_TEST_FB_PHYS_WIDTH_t,
++    struct {
++        uint32_t width;
++        uint32_t height;
++    },
++    struct {
++        uint32_t width;
++        uint32_t height;
++    });
++
++DECLARE_TAG_TYPE(TAG_SET_FB_PHYS_WIDTH_t,
++    struct {
++        uint32_t width;
++        uint32_t height;
++    },
++    struct {
++        uint32_t width;
++        uint32_t height;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_FB_VIRT_WIDTH_t,
++    struct {},
++    struct {
++        uint32_t width;
++        uint32_t height;
++    });
++
++DECLARE_TAG_TYPE(TAG_TEST_FB_VIRT_WIDTH_t,
++    struct {
++        uint32_t width;
++        uint32_t height;
++    },
++    struct {
++        uint32_t width;
++        uint32_t height;
++    });
++
++DECLARE_TAG_TYPE(TAG_SET_FB_VIRT_WIDTH_t,
++    struct {
++        uint32_t width;
++        uint32_t height;
++    },
++    struct {
++        uint32_t width;
++        uint32_t height;
++    });
+ 
+ int mbox0_has_data(void);
+ void mbox0_read_message(uint8_t channel, void *msgbuf, size_t msgbuf_size);
 -- 
 2.34.1
 
