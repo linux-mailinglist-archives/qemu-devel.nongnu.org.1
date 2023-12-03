@@ -2,105 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D40802439
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 14:30:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E48880253A
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 16:44:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9mWv-0006QU-1Q; Sun, 03 Dec 2023 08:29:05 -0500
+	id 1r9obv-0004yJ-H8; Sun, 03 Dec 2023 10:42:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1r9mWr-0006QF-0x
- for qemu-devel@nongnu.org; Sun, 03 Dec 2023 08:29:01 -0500
-Received: from mout.kundenserver.de ([212.227.17.24])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1r9mWo-00033a-8g
- for qemu-devel@nongnu.org; Sun, 03 Dec 2023 08:28:59 -0500
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue108 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1MFba4-1r2h7i31Ly-00H89v; Sun, 03 Dec 2023 14:28:52 +0100
-Message-ID: <6b56a4ca-4b4d-4149-b20a-a4857b67404e@vivier.eu>
-Date: Sun, 3 Dec 2023 14:28:51 +0100
+ (Exim 4.90_1) (envelope-from <venture@google.com>)
+ id 1r9obs-0004xW-ND
+ for qemu-devel@nongnu.org; Sun, 03 Dec 2023 10:42:20 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <venture@google.com>)
+ id 1r9obr-0006gy-3U
+ for qemu-devel@nongnu.org; Sun, 03 Dec 2023 10:42:20 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40b422a274dso52765e9.0
+ for <qemu-devel@nongnu.org>; Sun, 03 Dec 2023 07:42:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1701618137; x=1702222937; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=KQVZLnYJxTvpClCwQ9PSw3B++ib0BCgP/XV4g3SRaNY=;
+ b=FqKm59PNkmR/QJdrQPqCoYn3Vc3H1AXq4o0p771ee8owhoOzg4jPgfHHeHIUuKsZXU
+ MvOtveqS3t4hgV4dGYQoVhjiF3OV3k0p6AYJ9CPoiwcBudRWEWL1ONN/dfjTKlTuBOLY
+ GRm8X2KmZSfh9t1Fxa8BmgVfCfkav4Kg0Y+LintIRwbjpm1Zd7Bu2gkfh9HDPa+e8uU9
+ rWd9sc3RM/NhkZT3DZ4M+AR/5EhHJGHJ89vkXQQSOWqLu8BzbGrPvbG8LWA/ROCQ7Pwl
+ L+ztYNZVFlqIyP4m/n7uAX2d61djkgiamRFlobRls61erjMU86vCWeFO0JyKJPIZUqYt
+ idcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701618137; x=1702222937;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KQVZLnYJxTvpClCwQ9PSw3B++ib0BCgP/XV4g3SRaNY=;
+ b=GFRVPm+SuCYFwPVcrn5OZamF8bzR1MOrlibA02AaquC3A3lwBnu8x7hAui6EM9BnCy
+ MJzHpQ/AzwHZM7rUb7jJr+SLKCuPn2ztTWt6gLoiB1OrrcVgCVmcJlAtp1feP8NRDpPv
+ HgZon+/eA+bkruNVyxl0mHbUpWUtsQ3miInwhiKr8vzAqSN87YMqI0vmd6EV12/MHBZg
+ D8SdJEfh7xW9YTci+hmWYXxIs2C5utNyvqJ8tY9mKXqOBNs8Onm0KJgZhYAZ9ebMGcAJ
+ FmSr8bfWkOOXJ5Jon+L0BGPsniwV8MPtBP+ZYMm1H62iK/5UEhC0Hh6Wz+ETUZZQ8ihs
+ Ncww==
+X-Gm-Message-State: AOJu0YyWv3+glCZ1Y+CYugq8pz8fWBII1M6K/tdkkD0jDkQ0sxOC+rzi
+ Lt7pg8929iYAGQt8dOWzu3Bk4gAq2GZkw4YjykFCxQ==
+X-Google-Smtp-Source: AGHT+IEeeZE/OxL60MlvjpX5+jCmo4ccDDLIw3l9WqHNc1cH7/m/NFzBFFjhwjGd+X0zAfM8BUeFA7ojJDaKdCCHnFI=
+X-Received: by 2002:a05:600c:3ca3:b0:40b:5972:f56b with SMTP id
+ bg35-20020a05600c3ca300b0040b5972f56bmr318127wmb.3.1701618136674; Sun, 03 Dec
+ 2023 07:42:16 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] linux-user: Define TARGET_O_LARGEFILE for aarch64
-Content-Language: fr
-To: Shu-Chun Weng <scw@google.com>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-References: <20231201032140.2470599-1-scw@google.com>
- <20231201032140.2470599-2-scw@google.com>
-From: Laurent Vivier <laurent@vivier.eu>
-Autocrypt: addr=laurent@vivier.eu; keydata=
- xsFNBFYFJhkBEAC2me7w2+RizYOKZM+vZCx69GTewOwqzHrrHSG07MUAxJ6AY29/+HYf6EY2
- WoeuLWDmXE7A3oJoIsRecD6BXHTb0OYS20lS608anr3B0xn5g0BX7es9Mw+hV/pL+63EOCVm
- SUVTEQwbGQN62guOKnJJJfphbbv82glIC/Ei4Ky8BwZkUuXd7d5NFJKC9/GDrbWdj75cDNQx
- UZ9XXbXEKY9MHX83Uy7JFoiFDMOVHn55HnncflUncO0zDzY7CxFeQFwYRbsCXOUL9yBtqLer
- Ky8/yjBskIlNrp0uQSt9LMoMsdSjYLYhvk1StsNPg74+s4u0Q6z45+l8RAsgLw5OLtTa+ePM
- JyS7OIGNYxAX6eZk1+91a6tnqfyPcMbduxyBaYXn94HUG162BeuyBkbNoIDkB7pCByed1A7q
- q9/FbuTDwgVGVLYthYSfTtN0Y60OgNkWCMtFwKxRaXt1WFA5ceqinN/XkgA+vf2Ch72zBkJL
- RBIhfOPFv5f2Hkkj0MvsUXpOWaOjatiu0fpPo6Hw14UEpywke1zN4NKubApQOlNKZZC4hu6/
- 8pv2t4HRi7s0K88jQYBRPObjrN5+owtI51xMaYzvPitHQ2053LmgsOdN9EKOqZeHAYG2SmRW
- LOxYWKX14YkZI5j/TXfKlTpwSMvXho+efN4kgFvFmP6WT+tPnwARAQABzSJMYXVyZW50IFZp
- dmllciA8bGF1cmVudEB2aXZpZXIuZXU+wsF4BBMBAgAiBQJWBTDeAhsDBgsJCAcDAgYVCAIJ
- CgsEFgIDAQIeAQIXgAAKCRDzDDi9Py++PCEdD/oD8LD5UWxhQrMQCsUgLlXCSM7sxGLkwmmF
- ozqSSljEGRhffxZvO35wMFcdX9Z0QOabVoFTKrT04YmvbjsErh/dP5zeM/4EhUByeOS7s6Yl
- HubMXVQTkak9Wa9Eq6irYC6L41QNzz/oTwNEqL1weV1+XC3TNnht9B76lIaELyrJvRfgsp9M
- rE+PzGPo5h7QHWdL/Cmu8yOtPLa8Y6l/ywEJ040IoiAUfzRoaJs2csMXf0eU6gVBhCJ4bs91
- jtWTXhkzdl4tdV+NOwj3j0ukPy+RjqeL2Ej+bomnPTOW8nAZ32dapmu7Fj7VApuQO/BSIHyO
- NkowMMjB46yohEepJaJZkcgseaus0x960c4ua/SUm/Nm6vioRsxyUmWd2nG0m089pp8LPopq
- WfAk1l4GciiMepp1Cxn7cnn1kmG6fhzedXZ/8FzsKjvx/aVeZwoEmucA42uGJ3Vk9TiVdZes
- lqMITkHqDIpHjC79xzlWkXOsDbA2UY/P18AtgJEZQPXbcrRBtdSifCuXdDfHvI+3exIdTpvj
- BfbgZAar8x+lcsQBugvktlQWPfAXZu4Shobi3/mDYMEDOE92dnNRD2ChNXg2IuvAL4OW40wh
- gXlkHC1ZgToNGoYVvGcZFug1NI+vCeCFchX+L3bXyLMg3rAfWMFPAZLzn42plIDMsBs+x2yP
- +c7BTQRWBSYZARAAvFJBFuX9A6eayxUPFaEczlMbGXugs0mazbOYGlyaWsiyfyc3PStHLFPj
- rSTaeJpPCjBJErwpZUN4BbpkBpaJiMuVO6egrC8Xy8/cnJakHPR2JPEvmj7Gm/L9DphTcE15
- 92rxXLesWzGBbuYxKsj8LEnrrvLyi3kNW6B5LY3Id+ZmU8YTQ2zLuGV5tLiWKKxc6s3eMXNq
- wrJTCzdVd6ThXrmUfAHbcFXOycUyf9vD+s+WKpcZzCXwKgm7x1LKsJx3UhuzT8ier1L363RW
- ZaJBZ9CTPiu8R5NCSn9V+BnrP3wlFbtLqXp6imGhazT9nJF86b5BVKpF8Vl3F0/Y+UZ4gUwL
- d9cmDKBcmQU/JaRUSWvvolNu1IewZZu3rFSVgcpdaj7F/1aC0t5vLdx9KQRyEAKvEOtCmP4m
- 38kU/6r33t3JuTJnkigda4+Sfu5kYGsogeYG6dNyjX5wpK5GJIJikEhdkwcLM+BUOOTi+I9u
- tX03BGSZo7FW/J7S9y0l5a8nooDs2gBRGmUgYKqQJHCDQyYut+hmcr+BGpUn9/pp2FTWijrP
- inb/Pc96YDQLQA1q2AeAFv3Rx3XoBTGl0RCY4KZ02c0kX/dm3eKfMX40XMegzlXCrqtzUk+N
- 8LeipEsnOoAQcEONAWWo1HcgUIgCjhJhBEF0AcELOQzitbJGG5UAEQEAAcLBXwQYAQIACQUC
- VgUmGQIbDAAKCRDzDDi9Py++PCD3D/9VCtydWDdOyMTJvEMRQGbx0GacqpydMEWbE3kUW0ha
- US5jz5gyJZHKR3wuf1En/3z+CEAEfP1M3xNGjZvpaKZXrgWaVWfXtGLoWAVTfE231NMQKGoB
- w2Dzx5ivIqxikXB6AanBSVpRpoaHWb06tPNxDL6SVV9lZpUn03DSR6gZEZvyPheNWkvz7bE6
- FcqszV/PNvwm0C5Ju7NlJA8PBAQjkIorGnvN/vonbVh5GsRbhYPOc/JVwNNr63P76rZL8Gk/
- hb3xtcIEi5CCzab45+URG/lzc6OV2nTj9Lg0SNcRhFZ2ILE3txrmI+aXmAu26+EkxLLfqCVT
- ohb2SffQha5KgGlOSBXustQSGH0yzzZVZb+HZPEvx6d/HjQ+t9sO1bCpEgPdZjyMuuMp9N1H
- ctbwGdQM2Qb5zgXO+8ZSzwC+6rHHIdtcB8PH2j+Nd88dVGYlWFKZ36ELeZxD7iJflsE8E8yg
- OpKgu3nD0ahBDqANU/ZmNNarBJEwvM2vfusmNnWm3QMIwxNuJghRyuFfx694Im1js0ZY3LEU
- JGSHFG4ZynA+ZFUPA6Xf0wHeJOxGKCGIyeKORsteIqgnkINW9fnKJw2pgk8qHkwVc3Vu+wGS
- ZiJK0xFusPQehjWTHn9WjMG1zvQ5TQQHxau/2FkP45+nRPco6vVFQe8JmgtRF8WFJA==
-In-Reply-To: <20231201032140.2470599-2-scw@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:w9yTliDamNiYZyLJsaaXJGFTzfkIzUZB8Fm7unWYkQWaHXgQMVV
- 2oj4xCvPel5g5zJLcDz2NbLs2l62fwy2Blm3k6shj2NnG07Uf1jzKNWvGNUZg6xgQ68Yu7/
- kXw3X9YWFWETaDIPOa20wELUOYdY/zQ/Duc8d5Ud/qMwK0I3AIG488ZDX7kSlEc2EHkWbP4
- LZCFMozOoQQOt3i/vWaNA==
-UI-OutboundReport: notjunk:1;M01:P0:kx+M5hztDl0=;jiTvK/3ob4UW2HcfuPVvXG5Kz05
- Pw/Tf3uca9Y7c2pEfLryW1cMmWSkiCZbRJpRn/pcJ1oUOoxPxTHbwb/JedCLJ2orxSHiTEyJ3
- tnVtZFf4kKQKWh8LTdmPbekM+OgNtcGeVq1rM9e1Op868VTswCxn6WH0u+zSGUC0AHzGESeiM
- GB48cM+t6/rHHw+SpIgk4v45aEbdDiuy8K4Txw6Ef+BT7dY3HbAb5GkuuCJA4lyXnuLzvArFH
- DP1zhCrfn1n6VtjqlXFDmTJhsva2Mb9aqrNYA18536cTZu5fVNrfenY5TEnc9COOvZXDXEnTb
- hGTnYQSGdf8mZgYWzq2WRrGH3KzaKhOGDnhrlnw1J9XrSVQvnql1CNDRJVlW+z22lBGYdr3BA
- trXLwGJvixZrTVbndavZhTi/4NHD8hpvfT5/RhQsviATRtIR87FqyGQ9J16Pl2PIq9bUnKbEY
- uj+X/JVoIA9De/ocLSP0qds9zVF1AtqMZk4md+Xq00m0FSCL8yKdAOtFBhpoNHfBCXuBpkeIt
- KLUECM4f9STjMf3zrNWaXtV6DcRRfAgFP8dMXFHQ+WLA4bYK7ojsKjRSTMMM/qAiVtL1e/hI/
- ye2qtSb8p6o+KAvDxfhItHHF8d7ftO8CCiYTmRHSUAA4gX51mnAp2deAANtly0v6Ji8obvZKF
- hNZFjYcZpEl/BSfsbnz29waqczgnKlS3j8SkAi6K3DTDFpZHtY9sypy2LxdMnf6iVT/70dNEi
- mVoTCNCBZSMKzc3DGOQc+pW4ruWXI6Ivm4TIAnB186xVNiKQajAz7+rvK6Zukpi3Cj+bldvQd
- 9M59zjLtKHi1arCtX9xvJfewvVZf+9JbIcDAK3dUlMR4DW0/3NvBLkDjxFksZGfbJWLYiFM2d
- hE6hQxJyvo4dQOg==
-Received-SPF: none client-ip=212.227.17.24; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231116163633.276671-1-venture@google.com>
+ <40d8f91c-e951-413f-8f15-446f0f1b4938@redhat.com>
+In-Reply-To: <40d8f91c-e951-413f-8f15-446f0f1b4938@redhat.com>
+From: Patrick Venture <venture@google.com>
+Date: Sun, 3 Dec 2023 07:42:03 -0800
+Message-ID: <CAO=notyr9V2Z3Ad=rm6qinVmfobB4ESn70Bn5rA-3gGm3Siv-w@mail.gmail.com>
+Subject: Re: [PATCH v2] system/memory: use ldn_he_p/stn_he_p
+To: David Hildenbrand <david@redhat.com>
+Cc: pbonzini@redhat.com, peterx@redhat.com, philmd@linaro.org, 
+ peter.maydell@linaro.org, richard.henderson@linaro.org, qemu-devel@nongnu.org, 
+ qemu-stable@nongnu.org, Chris Rauer <crauer@google.com>, 
+ Peter Foley <pefoley@google.com>
+Content-Type: multipart/alternative; boundary="000000000000950380060b9cd85e"
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=venture@google.com; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,31 +90,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 01/12/2023 à 04:21, Shu-Chun Weng a écrit :
-> In 050a1ba, when moving the macros from preprocessor-guarding to
-> file-based definition, TARGET_O_LARGEFILE appeared to have been
-> accidentally left off.
-> 
-> This may have correctness implication, but so far I was only confused by
-> strace's output.
-> 
-> Signed-off-by: Shu-Chun Weng <scw@google.com>
-> ---
->   linux-user/aarch64/target_fcntl.h | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/linux-user/aarch64/target_fcntl.h b/linux-user/aarch64/target_fcntl.h
-> index efdf6e5f05..55ab788a7c 100644
-> --- a/linux-user/aarch64/target_fcntl.h
-> +++ b/linux-user/aarch64/target_fcntl.h
-> @@ -11,6 +11,7 @@
->   #define TARGET_O_DIRECTORY      040000 /* must be a directory */
->   #define TARGET_O_NOFOLLOW      0100000 /* don't follow links */
->   #define TARGET_O_DIRECT        0200000 /* direct disk access hint */
-> +#define TARGET_O_LARGEFILE     0400000
->   
->   #include "../generic/fcntl.h"
->   #endif
+--000000000000950380060b9cd85e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+On Fri, Nov 17, 2023 at 12:43=E2=80=AFAM David Hildenbrand <david@redhat.co=
+m> wrote:
+
+> On 16.11.23 17:36, Patrick Venture wrote:
+> > Using direct pointer dereferencing can allow for unaligned accesses,
+> > which was seen during execution with sanitizers enabled.
+> >
+> > Reviewed-by: Chris Rauer <crauer@google.com>
+> > Reviewed-by: Peter Foley <pefoley@google.com>
+> > Signed-off-by: Patrick Venture <venture@google.com>
+> > Cc: qemu-stable@nongnu.org
+>
+>
+>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
+
+Friendly ping? Is this going to be applied or do I need to add another CC
+or?  I do think it should go into stable.
+
+--000000000000950380060b9cd85e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Fri, Nov 17, 2023 at 12:43=E2=80=
+=AFAM David Hildenbrand &lt;<a href=3D"mailto:david@redhat.com">david@redha=
+t.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
+1ex">On 16.11.23 17:36, Patrick Venture wrote:<br>
+&gt; Using direct pointer dereferencing can allow for unaligned accesses,<b=
+r>
+&gt; which was seen during execution with sanitizers enabled.<br>
+&gt; <br>
+&gt; Reviewed-by: Chris Rauer &lt;<a href=3D"mailto:crauer@google.com" targ=
+et=3D"_blank">crauer@google.com</a>&gt;<br>
+&gt; Reviewed-by: Peter Foley &lt;<a href=3D"mailto:pefoley@google.com" tar=
+get=3D"_blank">pefoley@google.com</a>&gt;<br>
+&gt; Signed-off-by: Patrick Venture &lt;<a href=3D"mailto:venture@google.co=
+m" target=3D"_blank">venture@google.com</a>&gt;<br>
+&gt; Cc: <a href=3D"mailto:qemu-stable@nongnu.org" target=3D"_blank">qemu-s=
+table@nongnu.org</a><br>
+<br>
+<br>
+<br>
+Reviewed-by: David Hildenbrand &lt;<a href=3D"mailto:david@redhat.com" targ=
+et=3D"_blank">david@redhat.com</a>&gt;<br>
+<br>
+-- <br>
+Cheers,<br>
+<br>
+David / dhildenb<br></blockquote><div><br></div><div>Friendly=C2=A0ping? Is=
+ this going to be applied or do I need to add another CC or?=C2=A0 I do thi=
+nk it should go into stable.</div><div>=C2=A0</div></div></div>
+
+--000000000000950380060b9cd85e--
 
