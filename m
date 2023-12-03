@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87768027F5
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:37:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C70B8027EB
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:36:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9u2Q-0002St-F0; Sun, 03 Dec 2023 16:30:06 -0500
+	id 1r9u2O-0002JT-8b; Sun, 03 Dec 2023 16:30:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9u2C-0001oG-4i; Sun, 03 Dec 2023 16:29:52 -0500
-Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
+ id 1r9u2D-0001vx-Jg; Sun, 03 Dec 2023 16:29:53 -0500
+Received: from mail-yb1-xb2f.google.com ([2607:f8b0:4864:20::b2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9u29-0005Xw-IZ; Sun, 03 Dec 2023 16:29:51 -0500
-Received: by mail-yb1-xb35.google.com with SMTP id
- 3f1490d57ef6-daf4f0e3a0fso1989504276.1; 
- Sun, 03 Dec 2023 13:29:48 -0800 (PST)
+ id 1r9u2B-0005YP-S0; Sun, 03 Dec 2023 16:29:53 -0500
+Received: by mail-yb1-xb2f.google.com with SMTP id
+ 3f1490d57ef6-db539ab8e02so2184993276.0; 
+ Sun, 03 Dec 2023 13:29:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701638988; x=1702243788; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701638989; x=1702243789; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=laWmoNjX7Q2VjrFH6E3XuRIGiJEarrDw3NKpsYtiHac=;
- b=FwB3UOKREYjnz8BW61DvSL9xs98W2OjJ771DvFpG0msLbsj7krU1k1RedQvZ/6Uz+d
- 8VISb8ihilVS+ZMc9JU/U7VWHEdG9E/SvLNqZByBMQPADTRO4LR1+vBfWQ0GNHX0wvM8
- yUtarkxXVaJ1fbbAGamTkoamKXxN4cnLC3wvJeHBEsTWxY/2hC1CSPSknE5gSXAAqmqO
- XpOkfYENNsAQ3wMlisDkMOvNS8ZLY7OjMavFnwcyNp6QCrBSGV3MHd17H0lnmbT6hV0A
- ntvi7gsF0UYmJ1GR3pNZOjvQ1ZquOYTjJOUT5GCC9TlWrWnRI8m6qWk9tktW02c/3lnE
- Cc3w==
+ bh=gY8sUeibQtSIKqZZj4hPgQKFQsYZHNo91+gsd8Kiers=;
+ b=VchIxTaHzE/Q26lfnVbzLHh6MiSP8MUiuEvF/zZfAVBaHJC8+8ykYZTAQNa6Eh+Ahj
+ CWvHogQzAuLQ5jQEUmzj/WZW9eC2ZvfBjMOV6GXcwbeWu1Fy8vUaOli2l6nXJNj8rGAL
+ i+ykCDk46q6d19eOeeVgpE8oIN2AguQotijFcxYT1SpBourAKQtP3tA3PGo+YAwFN9Tv
+ v1oKItMAgRhEpuMSENnuEOE4YVWBYtgFCsABnarMvK/7QU138AGCx1+TY5pUtzdyuOvi
+ em9SROQvVoS6rjDOiXMPcSGbuz4Q2np9X8OkiOOXalxrl9mQSnyTKUvfshqUyK1B+3PC
+ FLLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701638988; x=1702243788;
+ d=1e100.net; s=20230601; t=1701638989; x=1702243789;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=laWmoNjX7Q2VjrFH6E3XuRIGiJEarrDw3NKpsYtiHac=;
- b=cDu0cGR1r6+Et7BqIkXQydoG1IrT14P/XozY8mT4VoHi1i3x5j89twsp/33rKA9awp
- Er+rNgxnUm+5to4t2BENx2gou3KGh2n4S37hnsHEYEbPfiiGlgpNVXmfuYe9wjyPfExU
- ZuLGwrd3k1Hk2sEbLgQjxgFH/V9kGLKtYwcyXgLhblcYUPZ7dcAkST/sA4m1dDMyOI2J
- A5003bNM+5tbZJ6+RpQEtE/dl6fqx0ZewKFxaOxV3tq5/jZMeDQFMoo69QIuZiNqCVwP
- cOfQbItqyLg9qBrNmbAdnfA2DIwQiRXcKI71ebQ1Z5RAlVIVO95gmu86eGdMFMEALA9Z
- aNqA==
-X-Gm-Message-State: AOJu0YzoZvhNDw86lPQAgjMg8RB9Us0noezJbkThJ2YSUDh6K6n1Y3ny
- 08Udf9ZA95Ro9SskRdZmWBnUWl15PH3OaA==
-X-Google-Smtp-Source: AGHT+IHWO77GjJEdVB2CKBM1BR5kafugmcxstS18KcujjIv1cxFDlhQFh6JgdvBnQQd1TcOUZffd5g==
-X-Received: by 2002:a25:bb05:0:b0:db5:479f:93a2 with SMTP id
- z5-20020a25bb05000000b00db5479f93a2mr1883844ybg.34.1701638988118; 
- Sun, 03 Dec 2023 13:29:48 -0800 (PST)
+ bh=gY8sUeibQtSIKqZZj4hPgQKFQsYZHNo91+gsd8Kiers=;
+ b=rUfQCZX7MsJh6IT1krASNxlDo1SL9M58KG1ApuKbIS9mbPv4reaXocru9uvSqx9FgY
+ X3yBJYCoYckEqAj9sscx28DswWh4ns8yasTW5cHWhnStoJiGAcB0Au3obeln1dt2/pIA
+ LCbiou2RGGHSz5vtXmvUacJWvlmZ+yMJOrsJWUHcern8+rlIt/O9XFEk4RYMj//Zt2jV
+ EG96YqFWQ4Ox+w50tioWQYnCB984SLh+yIql19Nl8P9LfnlsahTfgDHIReSmvv+umtqK
+ gjpYaALTRg56PKfmSWBd0O2W2RfINcK2KqzjJoD/n+D9rXawS2kR5ZHsJbrs6ez4Vhw9
+ tC4g==
+X-Gm-Message-State: AOJu0YzaYlnlpamDV8k+H1BLbBDybtkVGDpTNwzO4ZQj9nbblqOqeL1K
+ TEsHOEppd+O1umEeXVXabhf4eRXy0swsVA==
+X-Google-Smtp-Source: AGHT+IEOLEflvl8zdkitssxI5ZdSx8ZtvgBOrzHzim2vYuNLk2ZEr33bBgL+OMVe0FllMVdLpNz8SA==
+X-Received: by 2002:a5b:41:0:b0:db7:dacf:ed85 with SMTP id
+ e1-20020a5b0041000000b00db7dacfed85mr1908746ybp.102.1701638989290; 
+ Sun, 03 Dec 2023 13:29:49 -0800 (PST)
 Received: from localhost.localdomain ([201.206.180.22])
  by smtp.gmail.com with ESMTPSA id
- c17-20020a25a291000000b00d9cc606c78csm1807318ybi.41.2023.12.03.13.29.47
+ c17-20020a25a291000000b00d9cc606c78csm1807318ybi.41.2023.12.03.13.29.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Dec 2023 13:29:47 -0800 (PST)
+ Sun, 03 Dec 2023 13:29:49 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH 38/45] Add mailbox tests tags. Part 2
-Date: Sun,  3 Dec 2023 15:28:58 -0600
-Message-Id: <20231203212905.1364036-39-sergey.kambalin@auriga.com>
+Subject: [PATCH 39/45] Add mailbox tests tags. Part 3
+Date: Sun,  3 Dec 2023 15:28:59 -0600
+Message-Id: <20231203212905.1364036-40-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231203212905.1364036-38-sergey.kambalin@auriga.com>
+In-Reply-To: <20231203212905.1364036-39-sergey.kambalin@auriga.com>
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
  <20231203212905.1364036-1-sergey.kambalin@auriga.com>
  <20231203212905.1364036-2-sergey.kambalin@auriga.com>
@@ -103,10 +103,11 @@ References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
  <20231203212905.1364036-36-sergey.kambalin@auriga.com>
  <20231203212905.1364036-37-sergey.kambalin@auriga.com>
  <20231203212905.1364036-38-sergey.kambalin@auriga.com>
+ <20231203212905.1364036-39-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
- envelope-from=serg.oker@gmail.com; helo=mail-yb1-xb35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2f;
+ envelope-from=serg.oker@gmail.com; helo=mail-yb1-xb2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -131,167 +132,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- tests/qtest/bcm2838-mailbox.h | 152 ++++++++++++++++++++++++++++++++++
- 1 file changed, 152 insertions(+)
+ tests/qtest/bcm2838-mailbox.h | 78 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
 diff --git a/tests/qtest/bcm2838-mailbox.h b/tests/qtest/bcm2838-mailbox.h
-index 04472fe23d..49668668da 100644
+index 49668668da..2b140a5d32 100644
 --- a/tests/qtest/bcm2838-mailbox.h
 +++ b/tests/qtest/bcm2838-mailbox.h
-@@ -362,6 +362,158 @@ DECLARE_TAG_TYPE(TAG_SET_FB_VIRT_WIDTH_t,
-         uint32_t height;
+@@ -514,6 +514,84 @@ DECLARE_TAG_TYPE(TAG_GET_DMA_CHANNELS_t,
+         uint32_t mask;
      });
  
-+DECLARE_TAG_TYPE(TAG_GET_FB_DEPTH_t,
++DECLARE_TAG_TYPE(TAG_GET_THROTTLED_t,
 +    struct {},
 +    struct {
++        uint32_t throttled;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_NUM_DISPLAYS_t,
++    struct {},
++    struct {
++        uint32_t num_displays;
++    });
++
++DECLARE_TAG_TYPE(TAG_GET_DISPLAY_SETTINGS_t,
++    struct {},
++    struct {
++        uint32_t display_num;
++        uint32_t phys_width;
++        uint32_t phys_height;
 +        uint32_t bpp;
++        uint16_t pitch;
++        uint32_t virt_width;
++        uint32_t virt_height;
++        uint16_t virt_width_offset;
++        uint32_t virt_height_offset;
++        uint32_t fb_bus_address_lo;
++        uint32_t fb_bus_address_hi;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_TEST_FB_DEPTH_t,
++DECLARE_TAG_TYPE(TAG_GET_GPIO_CONFIG_t,
 +    struct {
-+        uint32_t bpp;
++        uint32_t gpio_num;
 +    },
 +    struct {
-+        uint32_t bpp;
++        uint32_t zero;
++        uint32_t direction;
++        uint32_t polarity;
++        uint32_t term_en;
++        uint32_t term_pull_up;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_SET_FB_DEPTH_t,
++
++DECLARE_TAG_TYPE(TAG_SET_GPIO_CONFIG_t,
 +    struct {
-+        uint32_t bpp;
++        uint32_t gpio_num;
++        uint32_t direction;
++        uint32_t polarity;
++        uint32_t term_en;
++        uint32_t term_pull_up;
++        uint32_t state;
 +    },
 +    struct {
-+        uint32_t bpp;
++        uint32_t zero;
 +    });
 +
-+DECLARE_TAG_TYPE(TAG_GET_PIXEL_ORDER_t,
++DECLARE_TAG_TYPE(TAG_GET_GPIO_STATE_t,
++    struct {
++        uint32_t gpio_num;
++    },
++    struct {
++        uint32_t zero;
++        uint32_t state;
++    });
++
++DECLARE_TAG_TYPE(TAG_SET_GPIO_STATE_t,
++    struct {
++        uint32_t gpio_num;
++        uint32_t state;
++    },
++    struct {
++        uint32_t zero;
++    });
++
++DECLARE_TAG_TYPE(TAG_INITIALIZE_VCHIQ_t,
 +    struct {},
 +    struct {
-+        uint32_t pixel_order;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_TEST_PIXEL_ORDER_t,
-+    struct {
-+        uint32_t pixel_order;
-+    },
-+    struct {
-+        uint32_t pixel_order;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_SET_PIXEL_ORDER_t,
-+    struct {
-+        uint32_t pixel_order;
-+    },
-+    struct {
-+        uint32_t pixel_order;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_GET_FB_ALPHA_MODE_t,
-+    struct {},
-+    struct {
-+        uint32_t alpha_mode;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_TEST_FB_ALPHA_MODE_t,
-+    struct {
-+        uint32_t alpha_mode;
-+    },
-+    struct {
-+        uint32_t alpha_mode;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_SET_FB_ALPHA_MODE_t,
-+    struct {
-+        uint32_t alpha_mode;
-+    },
-+    struct {
-+        uint32_t alpha_mode;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_GET_PITCH_t,
-+    struct {},
-+    struct {
-+        uint32_t pitch;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_SET_PITCH_t,
-+    struct {
-+        uint32_t pitch;
-+    },
-+    struct {});
-+
-+DECLARE_TAG_TYPE(TAG_GET_VIRTUAL_OFFSET_t,
-+    struct {},
-+    struct {
-+        uint32_t x;
-+        uint32_t y;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_TEST_VIRTUAL_OFFSET_t,
-+    struct {
-+        uint32_t x;
-+        uint32_t y;
-+    },
-+    struct {
-+        uint32_t x;
-+        uint32_t y;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_SET_VIRTUAL_OFFSET_t,
-+    struct {
-+        uint32_t x;
-+        uint32_t y;
-+    },
-+    struct {
-+        uint32_t x;
-+        uint32_t y;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_GET_OVERSCAN_t,
-+    struct {},
-+    struct {
-+        uint32_t top;
-+        uint32_t bottom;
-+        uint32_t left;
-+        uint32_t right;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_TEST_OVERSCAN_t,
-+    struct {
-+        uint32_t top;
-+        uint32_t bottom;
-+        uint32_t left;
-+        uint32_t right;
-+    },
-+    struct {
-+        uint32_t top;
-+        uint32_t bottom;
-+        uint32_t left;
-+        uint32_t right;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_SET_OVERSCAN_t,
-+    struct {
-+        uint32_t top;
-+        uint32_t bottom;
-+        uint32_t left;
-+        uint32_t right;
-+    },
-+    struct {
-+        uint32_t top;
-+        uint32_t bottom;
-+        uint32_t left;
-+        uint32_t right;
-+    });
-+
-+DECLARE_TAG_TYPE(TAG_GET_COMMANDLINE_t,
-+    struct {},
-+    struct {});
-+
-+DECLARE_TAG_TYPE(TAG_GET_DMA_CHANNELS_t,
-+    struct {},
-+    struct {
-+        uint32_t mask;
++        uint32_t zero;
 +    });
 +
  int mbox0_has_data(void);
