@@ -2,90 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE69801E8D
-	for <lists+qemu-devel@lfdr.de>; Sat,  2 Dec 2023 22:00:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0FC80212B
+	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 07:04:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9X5I-0008O8-59; Sat, 02 Dec 2023 15:59:32 -0500
+	id 1r9fZS-0000bV-Jr; Sun, 03 Dec 2023 01:03:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r9X5G-0008Nq-PB
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 15:59:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
+ id 1r9fZK-0000ZN-3Q; Sun, 03 Dec 2023 01:03:06 -0500
+Received: from mail-co1nam11on2060c.outbound.protection.outlook.com
+ ([2a01:111:f400:7eab::60c]
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1r9X5F-0000La-5A
- for qemu-devel@nongnu.org; Sat, 02 Dec 2023 15:59:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701550767;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Xc3gDoShkgGh6wQ6v4rVConeUynScFpLkNTYAu5ELNQ=;
- b=VNqUwsC+qISMR9UseDg8fB9h1jlidxkxCghYuVZiTC4gWVD1TrHMuHDLVf2kKneNqJYOb1
- iDns3kkkvCXkAg31n8UX4yq6+tedU3ahKxCOXSsI+kBs6sFPkYUHZgHZF+himQrp191iK5
- hFauiFlDAaBJRs1RJfZ4QnHfW/T8xXo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-Y1Gly220NQWXHoF59OFCvA-1; Sat, 02 Dec 2023 15:59:26 -0500
-X-MC-Unique: Y1Gly220NQWXHoF59OFCvA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40b3dae2285so23905665e9.2
- for <qemu-devel@nongnu.org>; Sat, 02 Dec 2023 12:59:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701550765; x=1702155565;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Xc3gDoShkgGh6wQ6v4rVConeUynScFpLkNTYAu5ELNQ=;
- b=GekkO4gkzliq1+4wQONn2L0PG9JFp94TBocqCnUCwR9873F5PTAmOmUBsRAe98QThB
- 9TKarH40+bd4qY11jmn68GII7FXxKZRovrndXIJQY/Z5bQI0dlGq/IthveUg3DokmKrn
- DMiebVaendtogNrFLmjMtLQ7deKUmrdelHhOkoyPJy2g2WveIG0NEEvHCP0MK4nh3oGu
- U3w1k/ummAV+/xyPkV5t8o+U0TRVSoi4jKYL1MiNhzib7rjWe/aIZOwDLZj+AJbGGjX/
- pgFKQGr7Z0OXCXY9k9hiS2aWUOL8vOv45wPViiDbkiWTJXQFr/NkbWYkMwxCraBsqKt4
- P7YQ==
-X-Gm-Message-State: AOJu0Yyl4hOIWlP3Y9oBN5Ncf22MxN+oJBk//QWqm1hpDj06dyt2xFUE
- ITN6oVKBuxe0rPo3bRBRCIC/kRxvQ9pcyGVP5GDgmAjT8miYPZ3Y2FQarGXltRaUo9xDJaJ8qPp
- iGNgGBhjI1FruuW8=
-X-Received: by 2002:a05:600c:20e:b0:40b:5e1e:fb97 with SMTP id
- 14-20020a05600c020e00b0040b5e1efb97mr1023100wmi.76.1701550765004; 
- Sat, 02 Dec 2023 12:59:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHiC/IZKov3qRLBzoqjIJGagG9wBaJdsJQqz6SM0Lv2NkPU/AQ+p4EiqK1k9U1GKPtwg3ePEQ==
-X-Received: by 2002:a05:600c:20e:b0:40b:5e1e:fb97 with SMTP id
- 14-20020a05600c020e00b0040b5e1efb97mr1023093wmi.76.1701550764584; 
- Sat, 02 Dec 2023 12:59:24 -0800 (PST)
-Received: from redhat.com ([2.55.11.133]) by smtp.gmail.com with ESMTPSA id
- ay31-20020a05600c1e1f00b004080f0376a0sm9705351wmb.42.2023.12.02.12.59.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 Dec 2023 12:59:23 -0800 (PST)
-Date: Sat, 2 Dec 2023 15:59:21 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>
-Subject: Re: [PULL 03/15] tests/acpi/bios-tables-test: do not write new blobs
- unless there are changes
-Message-ID: <20231202155913-mutt-send-email-mst@kernel.org>
-References: <cover.1701450838.git.mst@redhat.com>
- <11a3b4ebee91cf6129c8d6fa3fd94fb29b1f8bff.1701450838.git.mst@redhat.com>
- <8D04BA30-F97A-48E3-8922-1094ED42AC12@redhat.com>
+ (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
+ id 1r9fZH-0006Sk-Ja; Sun, 03 Dec 2023 01:03:05 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G+/7kHWNo1JnvBFDnGagZkhzryzTC9MQvwu+j7W8CngZzUcWLEsGF9lJiON4DodhdzqVmIFQxQXNHGU0Rkv3tq/8RoM84UxPrIHrQmXw1eT8S2CKW8XR9ZN3MRvDkjXFJhlI5BfXrlsT2VKxRdn8CZk7C7i/RcwnHRgZkm+gF3a5a5O5bO0QfCZV2lLhpdF2PTv/vlIg3Jmabb3KdWAY25OuRZNGu2qnhoZob3x5RR1drICbgsU2tdsmg3hIo8bGT7XBPHY/5o5amVvC0KMiMzpIjB28NRRPTYUBqWvMd/KeneKKuh9Kl7bOkNiyp1E7b6OGRzQuKZxM9yCS0oXU8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4XF+RZA13GJye/VxIgi2Wa9pQjI4tdthSHGRlMfKlb8=;
+ b=M7I6hGQGW+MGLWxfBxgbyfoRfWIYFXM2Pt4mfv4pHwZi99whTf8i/9hU72WjGeINQ4FIa2dqoZ9NXNOdSvDaLyU9pS7PuriBzn3WY4Nsd+GoYCiHh+m/dRw4sRPtSZS8MzwmQSbqpxi1yfwLK/Cp6HZQTPsTFskC7szXAREgt7jSe7aMqBhvDZf9RF5iFx/wk2D2FyJiMzOuFOfTbPm/VdgmKz5ytmzsoMIipzVlZyYkxsxGg0qAJieCEzDDQMNbEkN5RqZCffeuRNHlW5On45C384yOdYGy7ONsNZDWXrYjvyNqoxnwZo4ShomrM+dD/hsWMgqiNcPT7cgb/u9LzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4XF+RZA13GJye/VxIgi2Wa9pQjI4tdthSHGRlMfKlb8=;
+ b=MOcAN6Ao1sTRTKYVNjK+RyU2mfiYTDyFf6i0mZkJS0ebTCp0UTyUl2xeGdEC9lDizXjxN9F3KLwEwrLcDd6GxKNYI7jDtS+LXlBaarTwT8WkxmD+ZYeoXm4Hkvy2g9e/AfJHiWV0JHk5vipqHWF+RtEYW9cCyO3Ga2fGJXNnvPhAN2ILgCSvOA/ZN8dpeEsb3HwIU/0ooY8TECfG6uzQp9u5cYv5kousqWjsRStzLkwqu0ZsDW9JVpEtG3p47xwMKEo7QaouA4KvktGgiRv/TcYBNwHQjmwRH+bvAS2vZr1WI8LB8j4/dFMMwV1OA+WbNJH9iZuqrNxwIpcGTH/lPw==
+Received: from MW4PR03CA0246.namprd03.prod.outlook.com (2603:10b6:303:b4::11)
+ by BL0PR12MB4866.namprd12.prod.outlook.com (2603:10b6:208:1cf::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.32; Sun, 3 Dec
+ 2023 06:02:55 +0000
+Received: from MWH0EPF000971E5.namprd02.prod.outlook.com
+ (2603:10b6:303:b4:cafe::8) by MW4PR03CA0246.outlook.office365.com
+ (2603:10b6:303:b4::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.29 via Frontend
+ Transport; Sun, 3 Dec 2023 06:02:55 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ MWH0EPF000971E5.mail.protection.outlook.com (10.167.243.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7068.20 via Frontend Transport; Sun, 3 Dec 2023 06:02:54 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sat, 2 Dec 2023
+ 22:02:54 -0800
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.41; Sat, 2 Dec 2023 22:02:53 -0800
+Received: from sgarnayak-dt.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
+ Transport; Sat, 2 Dec 2023 22:02:47 -0800
+From: <ankita@nvidia.com>
+To: <ankita@nvidia.com>, <jgg@nvidia.com>, <alex.williamson@redhat.com>,
+ <clg@redhat.com>, <shannon.zhaosl@gmail.com>, <peter.maydell@linaro.org>,
+ <ani@anisinha.ca>, <berrange@redhat.com>, <eduardo@habkost.net>,
+ <imammedo@redhat.com>, <mst@redhat.com>, <eblake@redhat.com>,
+ <armbru@redhat.com>, <david@redhat.com>, <gshan@redhat.com>,
+ <Jonathan.Cameron@huawei.com>
+CC: <aniketa@nvidia.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>, <vsethi@nvidia.com>, <acurrid@nvidia.com>,
+ <dnigam@nvidia.com>, <udhoke@nvidia.com>, <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>
+Subject: [PATCH v5 0/2] acpi: report numa nodes for device memory using GI
+Date: Sun, 3 Dec 2023 11:32:43 +0530
+Message-ID: <20231203060245.31593-1-ankita@nvidia.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8D04BA30-F97A-48E3-8922-1094ED42AC12@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E5:EE_|BL0PR12MB4866:EE_
+X-MS-Office365-Filtering-Correlation-Id: c19bfe35-37dc-48e8-4bd0-08dbf3c57db8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: mBxyCksaJXDyo9mzbjDFz7IsQ38LXPyOERlbCJysVPIb4gOiYaOrLwrhlOKQJVW01emKvf1XLWJjyZlrLI7nVbUa/no+70HOSBu5iuzNSuFcmTVFVx/+ZW5Rjk//2dYsFriVHllhtPtyyHEtv+1Y2dCM1rD2LxNE57vbZpaxqG9Jhd5NcGmjd1jq1OPW1FkStoNukpMDX7rFPNRNLZZgl/gA1MkTb2fDETyzTeQISZ/BWEN/jF+7qrUhvTCenDV2VKQpyxn9dJjk+zeZ9r1vHAO+dDz3KSrLaPx6uld4mhTwCPIfrG0djttDWvkHAa8CL9d5IbbsC/1mZ5SPLKFbf6Hh+87+SocjnYFVES6Sqwkk0TePStA/VcjL53RqkTUG/8zdvbsBXzCqXvWsAA+yOVlTdoeosBxJWqEM0JVbADlKQy8l+oAv2AzPLJeetODPCA4f1tVKw4SZdKHB55mxKgnrQ0Sfah8RZEit5+Byung6dJxEpsQG7zCZxbziTwp0u1fncTjLUt6skB9tMs943wDnZojhpYtmKIYDwW9CkOccLQoCkjQQVFWRWfD/9GXHvj2KTMPMm3DVVSGqFsxKkzAA7ZYakOC21ciVZySaYWvYaiyzJCwD789bFNieCs9Q8ffsIy/lvQJmhaQHcUn74JOKQ2SVqqsN1VesOAqq6P6W72BtmWt/YRjyRN9xqVTEzxCPmKfBwDlRxq8aqDK9ysVyFSC4GRdXe7nwFAsvNrw8yv+V+EHUiedvjBGdiKQNpcHlWfkC8Csjn48+Fy461uHVYe16S105DB1M+kwx9CcqOoRlhkewTNPYrGtFOGLmsb3OsUm2H5BR0hxT8GzdUw==
+X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(376002)(346002)(396003)(39850400004)(230922051799003)(186009)(64100799003)(451199024)(82310400011)(1800799012)(40470700004)(36840700001)(46966006)(110136005)(70206006)(54906003)(40480700001)(316002)(70586007)(5660300002)(4326008)(8936002)(8676002)(7416002)(40460700003)(47076005)(2876002)(83380400001)(426003)(336012)(86362001)(966005)(2906002)(478600001)(6666004)(1076003)(26005)(2616005)(36756003)(921008)(7636003)(82740400003)(36860700001)(41300700001)(356005)(7696005);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2023 06:02:54.5456 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c19bfe35-37dc-48e8-4bd0-08dbf3c57db8
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000971E5.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB4866
+Received-SPF: softfail client-ip=2a01:111:f400:7eab::60c;
+ envelope-from=ankita@nvidia.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,101 +132,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 01, 2023 at 10:57:04PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 01-Dec-2023, at 10:45 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > 
-> > From: Ani Sinha <anisinha@redhat.com>
-> > 
-> > When dumping table blobs using rebuild-expected-aml.sh, table blobs from all
-> > test variants are dumped regardless of whether there are any actual changes to
-> > the tables or not. This creates lot of new files for various test variants that
-> > are not part of the git repository. This is because we do not check in all table
-> > blobs for all test variants into the repository. Only those blobs for those
-> > variants that are different from the generic test-variant agnostic blob are
-> > checked in.
-> > 
-> > This change makes the test smarter by checking if at all there are any changes
-> > in the tables from the checked-in gold master blobs and take actions
-> > accordingly.
-> > 
-> > When there are no changes:
-> > - No new table blobs would be written.
-> > - Existing table blobs will be refreshed (git diff will show no changes).
-> > When there are changes:
-> > - New table blob files will be dumped.
-> > - Existing table blobs will be refreshed (git diff will show that the files
-> >   changed, asl diff will show the actual changes).
-> > When new tables are introduced:
-> > - Zero byte empty file blobs for new tables as instructed in the header of
-> >   bios-tables-test.c will be regenerated to actual table blobs.
-> > 
-> > This would make analyzing changes to tables less confusing and there would
-> > be no need to clean useless untracked files when there are no table changes.
-> > 
-> > CC: peter.maydell@linaro.org
-> > Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> > Message-Id: <20231107044952.5461-1-anisinha@redhat.com>
-> > Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> 
-> You missed DanPB and Igor’s tags :(
+From: Ankit Agrawal <ankita@nvidia.com>
 
-fixed now, thanks!
+There are upcoming devices which allow CPU to cache coherently access
+their memory. It is sensible to expose such memory as NUMA nodes separate
+from the sysmem node to the OS. The ACPI spec provides a scheme in SRAT
+called Generic Initiator Affinity Structure [1] to allow an association
+between a Proximity Domain (PXM) and a Generic Initiator (GI) (e.g.
+heterogeneous processors and accelerators, GPUs, and I/O devices with
+integrated compute or DMA engines).
 
-> > ---
-> > tests/qtest/bios-tables-test.c | 14 +++++++++++++-
-> > 1 file changed, 13 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> > index 71af5cf69f..fe6a9a8563 100644
-> > --- a/tests/qtest/bios-tables-test.c
-> > +++ b/tests/qtest/bios-tables-test.c
-> > @@ -112,6 +112,7 @@ static const char *iasl;
-> > #endif
-> > 
-> > static int verbosity_level;
-> > +static GArray *load_expected_aml(test_data *data);
-> > 
-> > static bool compare_signature(const AcpiSdtTable *sdt, const char *signature)
-> > {
-> > @@ -244,21 +245,32 @@ static void test_acpi_fadt_table(test_data *data)
-> > 
-> > static void dump_aml_files(test_data *data, bool rebuild)
-> > {
-> > -    AcpiSdtTable *sdt;
-> > +    AcpiSdtTable *sdt, *exp_sdt;
-> >     GError *error = NULL;
-> >     gchar *aml_file = NULL;
-> > +    test_data exp_data = {};
-> >     gint fd;
-> >     ssize_t ret;
-> >     int i;
-> > 
-> > +    exp_data.tables = load_expected_aml(data);
-> >     for (i = 0; i < data->tables->len; ++i) {
-> >         const char *ext = data->variant ? data->variant : "";
-> >         sdt = &g_array_index(data->tables, AcpiSdtTable, i);
-> > +        exp_sdt = &g_array_index(exp_data.tables, AcpiSdtTable, i);
-> >         g_assert(sdt->aml);
-> > +        g_assert(exp_sdt->aml);
-> > 
-> >         if (rebuild) {
-> >             aml_file = g_strdup_printf("%s/%s/%.4s%s", data_dir, data->machine,
-> >                                        sdt->aml, ext);
-> > +            if (!g_file_test(aml_file, G_FILE_TEST_EXISTS) &&
-> > +                sdt->aml_len == exp_sdt->aml_len &&
-> > +                !memcmp(sdt->aml, exp_sdt->aml, sdt->aml_len)) {
-> > +                /* identical tables, no need to write new files */
-> > +                g_free(aml_file);
-> > +                continue;
-> > +            }
-> >             fd = g_open(aml_file, O_WRONLY|O_TRUNC|O_CREAT,
-> >                         S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
-> >             if (fd < 0) {
-> > -- 
-> > MST
-> > 
+While a single node per device may cover several use cases, it is however
+insufficient for a full utilization of the NVIDIA GPUs MIG
+(Mult-Instance GPUs) [2] feature. The feature allows partitioning of the
+GPU device resources (including device memory) into several (upto 8)
+isolated instances. Each of the partitioned memory requires a dedicated NUMA
+node to operate. The partitions are not fixed and they can be created/deleted
+at runtime.
+
+Linux OS does not provide a means to dynamically create/destroy NUMA nodes
+and such feature implementation is expected to be non-trivial. The nodes
+that OS discovers at the boot time while parsing SRAT remains fixed. So we
+utilize the GI Affinity structures that allows association between nodes
+and devices. Multiple GI structures per device/BDF is possible, allowing
+creation of multiple nodes in the VM by exposing unique PXM in each of these
+structures.
+
+Implement the mechanism to build the GI affinity structures as Qemu currently
+does not. Introduce a new acpi-generic-initiator object that allows an
+association of a set of nodes with a device. During SRAT creation, all such
+objected are identified and used to add the GI Affinity Structures. Currently,
+only PCI device is supported.
+
+The admin will create a range of 8 nodes and associate that with the device
+using the acpi-generic-initiator object. While a configuration of less than
+8 nodes per device is allowed, such configuration will prevent utilization of
+the feature to the fullest. This setting is applicable to all the Grace+Hopper
+systems. The following is an example of the Qemu command line arguments to
+create 8 nodes and link them to the device 'dev0':
+
+-numa node,nodeid=2 \
+-numa node,nodeid=3 \
+-numa node,nodeid=4 \
+-numa node,nodeid=5 \
+-numa node,nodeid=6 \
+-numa node,nodeid=7 \
+-numa node,nodeid=8 \
+-numa node,nodeid=9 \
+-device vfio-pci-nohotplug,host=0009:01:00.0,bus=pcie.0,addr=04.0,rombar=0,id=dev0 \
+-object acpi-generic-initiator,id=gi0,pci-dev=dev0,host-nodes=2-9 \
+
+The performance benefits can be realized by providing the NUMA node distances
+appropriately (through libvirt tags or Qemu params). The admin can get the
+distance among nodes in hardware using `numactl -H`.
+
+This series goes along with the vfio-pci variant driver [3] under review.
+
+Applied over v8.2.0-rc2.
+
+[1] ACPI Spec 6.3, Section 5.2.16.6
+[2] https://www.nvidia.com/en-in/technologies/multi-instance-gpu
+[3] https://lore.kernel.org/all/20231114081611.30550-1-ankita@nvidia.com/
+
+Link for v4:
+https://lore.kernel.org/all/20231119130111.761-1-ankita@nvidia.com/
+
+v4 -> v5
+- Removed acpi-dev option until full support.
+- The numa nodes are saved as bitmap instead of uint16List.
+- Replaced asserts to exit calls.
+- Addressed other miscellaneous comments.
+
+v3 -> v4
+- changed the ':' delimited way to a uint16 array to communicate the
+nodes associated with the device.
+- added asserts to handle invalid inputs.
+- addressed other miscellaneous v3 comments.
+
+v2 -> v3
+- changed param to accept a ':' delimited list of numa nodes, instead
+of a range.
+- Removed nvidia-acpi-generic-initiator object.
+- Addressed miscellaneous comments in v2.
+
+v1 -> v2
+- Removed dependency on sysfs to communicate the feature with variant module.
+- Use GI Affinity SRAT structure instead of Memory Affinity.
+- No DSDT entries needed to communicate the PXM for the device. SRAT GI
+structure is used instead.
+- New objects introduced to establish link between device and nodes.
+
+Ankit Agrawal (2):
+  qom: new object to associate device to numa node
+  hw/acpi: Implement the SRAT GI affinity structure
+
+ hw/acpi/acpi-generic-initiator.c         | 169 +++++++++++++++++++++++
+ hw/acpi/meson.build                      |   1 +
+ hw/arm/virt-acpi-build.c                 |   3 +
+ include/hw/acpi/acpi-generic-initiator.h |  53 +++++++
+ qapi/qom.json                            |  17 +++
+ 5 files changed, 243 insertions(+)
+ create mode 100644 hw/acpi/acpi-generic-initiator.c
+ create mode 100644 include/hw/acpi/acpi-generic-initiator.h
+
+-- 
+2.34.1
 
 
