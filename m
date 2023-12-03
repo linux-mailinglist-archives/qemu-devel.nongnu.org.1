@@ -2,125 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4BF80281E
-	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:51:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1C38028EF
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 00:14:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9uM0-0003kp-UO; Sun, 03 Dec 2023 16:50:21 -0500
+	id 1r9veQ-00085x-H8; Sun, 03 Dec 2023 18:13:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uLo-0003iZ-2t; Sun, 03 Dec 2023 16:50:08 -0500
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uLm-0000Gh-A8; Sun, 03 Dec 2023 16:50:07 -0500
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-5d400779f16so19483547b3.0; 
- Sun, 03 Dec 2023 13:50:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701640204; x=1702245004; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=igayQuYX/F7iH3RNFaYv1D/3MuPEz8Ua3kpb9vPSfPs=;
- b=kaOF7IfaIOXV+JKgdFMzHVAFjiRvNofVcYYbyUfksxM8GS3SJ08iruFZjnzUB4i7/j
- TGYZLXeZffSRw9cltwFic7eWHwNyqActuk2RLh+21+R7gyvv7xATcl32saodMrnvsSbf
- UHTbwfKDClcuNMv5IFGT7l4BooHxTKpmuVjkYvxX6I0pBIeMdYHnOZrv7hzkfcOf+f/r
- C0ZBkXIzFpU2cjU0Y3ts9DbQC9sZvYywU3YEtPwod7wGY/ePJd/wTeaxjxcp6O3dpHxN
- eYYLAwlsqYkESf906PXWTJme32igY3jfjhXdG0zKPSIUXgzrTY0fwavLhvxLo14N9Ydw
- IjRg==
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r9veM-00085m-Up
+ for qemu-devel@nongnu.org; Sun, 03 Dec 2023 18:13:23 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r9veI-0006vc-0h
+ for qemu-devel@nongnu.org; Sun, 03 Dec 2023 18:13:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701645193;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AddhGMlN52/YRv1w4anICuPDpCboCFFpiOkqpWi288Y=;
+ b=Kl/wJYHYvY0sFMyzpgJJ5haVd97/giD1K/Da7lnsU4XlmrOzrczV8nLvPGIdPffU5u+P/M
+ 43fowZp+r4Gaf5W/7DOhzKQhILPVknjATAnDLc9WfCzHAf2Lazqk6AGE5WZdulxzSwqV/w
+ 0B3P7IyznCXRAZAaQxHAeYUs81/ijn0=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-679-ehyNTjznPV-l5-FzLxNeTA-1; Sun, 03 Dec 2023 18:13:12 -0500
+X-MC-Unique: ehyNTjznPV-l5-FzLxNeTA-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-286a4fc4e9eso851317a91.2
+ for <qemu-devel@nongnu.org>; Sun, 03 Dec 2023 15:13:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701640204; x=1702245004;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=igayQuYX/F7iH3RNFaYv1D/3MuPEz8Ua3kpb9vPSfPs=;
- b=ft68T2WyaL76dQtY8n1blcERnAJW8LSNmChjwc9naxX6m1XQM9qv+i71hmMzHqLvGL
- Q+rI8u45dXfhn2Bu6SJ37wT6FJF+chU/8TRfwj4u076PKrg5G4Uy1j3Y7JDVJytExQ9c
- WnNFd4dA4i6oTQtAi79iq0ApzERfYEY5fFl3r+NjBok9KUPTKG+K/BzCdtvCnM99LbP6
- LUYhkomSldmCwcN8MFRtmnB77N5Koi4IsmmFbQ+ZlBFy5qcqMnNYBW65yb2UGrSoo5OD
- h2ZBbdWKwLj652IE9BLcXzbUBUNlIxfNqV6Kmewu3ML2wA49MwDbU3IpaKDokhG95awm
- Qubg==
-X-Gm-Message-State: AOJu0YxrggQsJ8S0rJ28Wp6rSJm2Bat9Yd03rN/QSq4cDEhuhWhXB7Vi
- pOSuA/+ENM3Ki7CNQqLbKFnJ3H/iy8l1rQ==
-X-Google-Smtp-Source: AGHT+IGJOluqEiVEbFJHO0+PfXYArc+3uNdBAxI10raVIoBoj4jYGVhYHpLUJLAMI9SY/18BZwC8BQ==
-X-Received: by 2002:a81:7bd5:0:b0:5d7:307f:3efd with SMTP id
- w204-20020a817bd5000000b005d7307f3efdmr1454247ywc.25.1701640204510; 
- Sun, 03 Dec 2023 13:50:04 -0800 (PST)
-Received: from localhost.localdomain ([201.206.180.22])
+ d=1e100.net; s=20230601; t=1701645191; x=1702249991;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AddhGMlN52/YRv1w4anICuPDpCboCFFpiOkqpWi288Y=;
+ b=lcp9DrH1R+J3qae84iw6zdL0O9MX5T423X2GDm3bUD996TUEc8SSu6/P2LyfxtCrzh
+ /ypU8Jj5/JFjG63kr61PVN+0AXDhojb4CG6s42qNdi8e2LfxWjQ0ZZoJ2YIYcPN4h6/m
+ 0tqv3R63wIkao7Qepyg+ijEGf4lUZb7CzxMhSrzOtXdm3qQZslLiQLqng781qCp8UEEm
+ ZEqs8Hi0t8uoSLeotdiasB9UYI/a5MYOtG5xUst9lFz/ZZ6DboGi1CGobryx5n33cT9t
+ KpPtqu89/0yPjc1/6+A8W7Rkd4RuQRzeeDuD4WYOsQFvNTKdhn7OX1pBegePMiAaSsju
+ lsXw==
+X-Gm-Message-State: AOJu0YyXZ73o+XkhyfD1cpE/jobxz1xkgKVtdMLwArmuc2I8+UFkTD6s
+ iBpMH7msvzYX0etRGA5J/v45+NXi27m/wqny/gOXcgN5hr0EiPwTd5DY841zR9OIFM78nNS6lgt
+ tq87nboK9R0Vd0fk=
+X-Received: by 2002:a17:90a:30f:b0:286:9bc6:c95b with SMTP id
+ 15-20020a17090a030f00b002869bc6c95bmr880590pje.2.1701645191401; 
+ Sun, 03 Dec 2023 15:13:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGYZLxpcLLDwWKkFG0eLU9HhxgLcfhQzygxMJrc2gwA+9M5g110HqEjOiPCuSoBu1NURDVQtQ==
+X-Received: by 2002:a17:90a:30f:b0:286:9bc6:c95b with SMTP id
+ 15-20020a17090a030f00b002869bc6c95bmr880565pje.2.1701645191092; 
+ Sun, 03 Dec 2023 15:13:11 -0800 (PST)
+Received: from [192.168.68.51] ([43.252.115.3])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a816502000000b00597e912e67esm2832788ywb.131.2023.12.03.13.50.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Dec 2023 13:50:04 -0800 (PST)
-From: Sergey Kambalin <serg.oker@gmail.com>
-X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v3 45/45] Add RPi4B to paspi4.rst
-Date: Sun,  3 Dec 2023 15:49:10 -0600
-Message-Id: <20231203214910.1364468-46-sergey.kambalin@auriga.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231203214910.1364468-45-sergey.kambalin@auriga.com>
-References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
- <20231203214910.1364468-1-sergey.kambalin@auriga.com>
- <20231203214910.1364468-2-sergey.kambalin@auriga.com>
- <20231203214910.1364468-3-sergey.kambalin@auriga.com>
- <20231203214910.1364468-4-sergey.kambalin@auriga.com>
- <20231203214910.1364468-5-sergey.kambalin@auriga.com>
- <20231203214910.1364468-6-sergey.kambalin@auriga.com>
- <20231203214910.1364468-7-sergey.kambalin@auriga.com>
- <20231203214910.1364468-8-sergey.kambalin@auriga.com>
- <20231203214910.1364468-9-sergey.kambalin@auriga.com>
- <20231203214910.1364468-10-sergey.kambalin@auriga.com>
- <20231203214910.1364468-11-sergey.kambalin@auriga.com>
- <20231203214910.1364468-12-sergey.kambalin@auriga.com>
- <20231203214910.1364468-13-sergey.kambalin@auriga.com>
- <20231203214910.1364468-14-sergey.kambalin@auriga.com>
- <20231203214910.1364468-15-sergey.kambalin@auriga.com>
- <20231203214910.1364468-16-sergey.kambalin@auriga.com>
- <20231203214910.1364468-17-sergey.kambalin@auriga.com>
- <20231203214910.1364468-18-sergey.kambalin@auriga.com>
- <20231203214910.1364468-19-sergey.kambalin@auriga.com>
- <20231203214910.1364468-20-sergey.kambalin@auriga.com>
- <20231203214910.1364468-21-sergey.kambalin@auriga.com>
- <20231203214910.1364468-22-sergey.kambalin@auriga.com>
- <20231203214910.1364468-23-sergey.kambalin@auriga.com>
- <20231203214910.1364468-24-sergey.kambalin@auriga.com>
- <20231203214910.1364468-25-sergey.kambalin@auriga.com>
- <20231203214910.1364468-26-sergey.kambalin@auriga.com>
- <20231203214910.1364468-27-sergey.kambalin@auriga.com>
- <20231203214910.1364468-28-sergey.kambalin@auriga.com>
- <20231203214910.1364468-29-sergey.kambalin@auriga.com>
- <20231203214910.1364468-30-sergey.kambalin@auriga.com>
- <20231203214910.1364468-31-sergey.kambalin@auriga.com>
- <20231203214910.1364468-32-sergey.kambalin@auriga.com>
- <20231203214910.1364468-33-sergey.kambalin@auriga.com>
- <20231203214910.1364468-34-sergey.kambalin@auriga.com>
- <20231203214910.1364468-35-sergey.kambalin@auriga.com>
- <20231203214910.1364468-36-sergey.kambalin@auriga.com>
- <20231203214910.1364468-37-sergey.kambalin@auriga.com>
- <20231203214910.1364468-38-sergey.kambalin@auriga.com>
- <20231203214910.1364468-39-sergey.kambalin@auriga.com>
- <20231203214910.1364468-40-sergey.kambalin@auriga.com>
- <20231203214910.1364468-41-sergey.kambalin@auriga.com>
- <20231203214910.1364468-42-sergey.kambalin@auriga.com>
- <20231203214910.1364468-43-sergey.kambalin@auriga.com>
- <20231203214910.1364468-44-sergey.kambalin@auriga.com>
- <20231203214910.1364468-45-sergey.kambalin@auriga.com>
+ p7-20020a17090a348700b00280c285f878sm7252609pjb.55.2023.12.03.15.13.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 03 Dec 2023 15:13:10 -0800 (PST)
+Message-ID: <c9f68946-2824-48a5-a0a1-290d7ddba178@redhat.com>
+Date: Mon, 4 Dec 2023 09:13:00 +1000
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/9] machine: Introduce helper is_cpu_type_supported()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, b.galvani@gmail.com, strahinja.p.jankovic@gmail.com,
+ sundeep.lkml@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
+ nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
+ marcin.juszkiewicz@linaro.org, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, wangyanan55@huawei.com, vijai@behindbytes.com,
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+References: <20231129042012.277831-1-gshan@redhat.com>
+ <20231129042012.277831-3-gshan@redhat.com>
+ <fd8715af-ef1c-4ccc-b602-25776a56fc76@linaro.org>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <fd8715af-ef1c-4ccc-b602-25776a56fc76@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1129.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -136,49 +110,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
----
- docs/system/arm/raspi.rst | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Hi Phil,
 
-diff --git a/docs/system/arm/raspi.rst b/docs/system/arm/raspi.rst
-index 922fe375a6..db9e0949ef 100644
---- a/docs/system/arm/raspi.rst
-+++ b/docs/system/arm/raspi.rst
-@@ -1,5 +1,5 @@
--Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``)
--======================================================================================
-+Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``, ``raspi4b-2g``)
-+======================================================================================================
- 
- 
- QEMU provides models of the following Raspberry Pi boards:
-@@ -12,12 +12,13 @@ QEMU provides models of the following Raspberry Pi boards:
-   Cortex-A53 (4 cores), 512 MiB of RAM
- ``raspi3b``
-   Cortex-A53 (4 cores), 1 GiB of RAM
--
-+``raspi4b-2g``
-+  Cortex-A72 (4 cores), 2 GiB of RAM
- 
- Implemented devices
- -------------------
- 
-- * ARM1176JZF-S, Cortex-A7 or Cortex-A53 CPU
-+ * ARM1176JZF-S, Cortex-A7, Cortex-A53 or Cortex-A72 CPU
-  * Interrupt controller
-  * DMA controller
-  * Clock and reset controller (CPRMAN)
-@@ -33,6 +34,8 @@ Implemented devices
-  * USB2 host controller (DWC2 and MPHI)
-  * MailBox controller (MBOX)
-  * VideoCore firmware (property)
-+ * PCIE Root Port (raspi4b-2g)
-+ * GENET Ethernet Controller (raspi4b-2g)
- 
- 
- Missing devices
--- 
-2.34.1
+On 12/1/23 20:53, Philippe Mathieu-Daudé wrote:
+> On 29/11/23 05:20, Gavin Shan wrote:
+>> The logic, to check if the specified CPU type is supported in
+>> machine_run_board_init(), is independent enough. Factor it out into
+>> helper is_cpu_type_supported(). machine_run_board_init() looks a bit
+>> clean with this. Since we're here, @machine_class is renamed to @mc to
+>> avoid multiple line spanning of code. The comments are tweaked a bit
+>> either.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Gavin Shan <gshan@redhat.com>
+>> ---
+>> v8: Move the precise message hint to PATCH[v8 3/9]        (Gavin)
+>> ---
+>>   hw/core/machine.c | 83 +++++++++++++++++++++++++----------------------
+>>   1 file changed, 45 insertions(+), 38 deletions(-)
+>>
+>> diff --git a/hw/core/machine.c b/hw/core/machine.c
+>> index bde7f4af6d..1797e002f9 100644
+>> --- a/hw/core/machine.c
+>> +++ b/hw/core/machine.c
+>> @@ -1387,13 +1387,53 @@ out:
+>>       return r;
+>>   }
+>> +static bool is_cpu_type_supported(const MachineState *machine, Error **errp)
+>> +{
+>> +    MachineClass *mc = MACHINE_GET_CLASS(machine);
+>> +    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+>> +    CPUClass *cc;
+>> +    int i;
+>> +
+>> +    /*
+>> +     * Check if the user specified CPU type is supported when the valid
+>> +     * CPU types have been determined. Note that the user specified CPU
+>> +     * type is provided through '-cpu' option.
+>> +     */
+>> +    if (mc->valid_cpu_types && machine->cpu_type) {
+>> +        for (i = 0; mc->valid_cpu_types[i]; i++) {
+>> +            if (object_class_dynamic_cast(oc, mc->valid_cpu_types[i])) {
+>> +                break;
+>> +            }
+>> +        }
+>> +
+>> +        /* The user specified CPU type isn't valid */
+>> +        if (!mc->valid_cpu_types[i]) {
+>> +            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
+>> +            error_append_hint(errp, "The valid types are: %s",
+>> +                              mc->valid_cpu_types[0]);
+>> +            for (i = 1; mc->valid_cpu_types[i]; i++) {
+>> +                error_append_hint(errp, ", %s", mc->valid_cpu_types[i]);
+>> +            }
+>> +
+>> +            error_append_hint(errp, "\n");
+>> +            return false;
+>> +        }
+>> +    }
+>> +
+>> +    /* Check if CPU type is deprecated and warn if so */
+>> +    cc = CPU_CLASS(oc);
+>> +    if (cc && cc->deprecation_note) {
+> 
+> cc can't be NULL, right? Otherwise,
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+
+machine->cpu_type is either mc->default_cpu_type or returned from parse_cpu_option().
+It can be NULL if mc->default_cpu_type is invalid, which is a program error. So
+assert(cc != NULL) should be used instead. I will fold the change to PATCH[v9 3/9]
+
+>> +        warn_report("CPU model %s is deprecated -- %s",
+>> +                    machine->cpu_type, cc->deprecation_note);
+>> +    }
+>> +
+>> +    return true;
+>> +}
+> 
+
+Thanks,
+Gavin
 
 
