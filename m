@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9429780282D
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC92802830
 	for <lists+qemu-devel@lfdr.de>; Sun,  3 Dec 2023 22:55:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9uLR-00039V-71; Sun, 03 Dec 2023 16:49:45 -0500
+	id 1r9uLV-0003FE-18; Sun, 03 Dec 2023 16:49:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uLG-0002ut-VW; Sun, 03 Dec 2023 16:49:37 -0500
-Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
+ id 1r9uLI-0002v6-2x; Sun, 03 Dec 2023 16:49:38 -0500
+Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9uLF-0008L2-C5; Sun, 03 Dec 2023 16:49:34 -0500
-Received: by mail-yb1-xb36.google.com with SMTP id
- 3f1490d57ef6-db7d198e791so926022276.3; 
- Sun, 03 Dec 2023 13:49:31 -0800 (PST)
+ id 1r9uLG-0008LF-9A; Sun, 03 Dec 2023 16:49:35 -0500
+Received: by mail-yw1-x1136.google.com with SMTP id
+ 00721157ae682-5d40c728fc4so18873427b3.1; 
+ Sun, 03 Dec 2023 13:49:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701640170; x=1702244970; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701640172; x=1702244972; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fVH9O9un+zwSeBPQSL0IeMDZWUWBtxU0cSyYzIJS41g=;
- b=I0QfP1ZoKcXO1bzQlICkBv7N08gN0qGt46uxumFCUH2B68WFEpb4dVPY6saLyjM+kP
- VhPmj6pXCxjlaMKc6KAK7/gI/vcsPdy+Dr1KKaZ7vH+855fj7GzUXwo/Xl72Nt/sYiPi
- VMtE4UwwCjBrUmOHJeAiEiP2X+m0OaHepIyEwBQqBNvMU//pJ4Kl0Zpffyi9LcFzbP0b
- S4kkl6TX4Yzlulr2OHTCL94UKOPYRXZ1c0XXrVT2g7IosHTg0voweNkcTcm1z6pqy813
- NZAVz5Shj3niiFs/55BEbCESvD9aTRmONS1UgV48dGei6XOwDy+qAZ9hoK1MHxvWfbTn
- 01hw==
+ bh=wFeuloyQQG/pWB1qNvNMADuHoBFz7/WggqgaHUnwlWg=;
+ b=ToVDV/foZWTKoKqjr6XLWg6BxnJZSPglIvBVaueAYvogWUycPhaNV/643GimP60BpH
+ iQRhA6cz/OJxb4jQNDVqmcEvJ/QUygMk9wFOA5Q5NUsujWiUc1iuzcn1YH6Pvq2JH9O1
+ 8emtouf1kigXDGhs9QmfDN3jxp0PNaghvOZHafq/RfzXBHK+gVQmGyMzo4Z0WaeRY1/x
+ BQqngJDOgsW1w29aoDSzZiJWZGUVN8Are7z5lRJqxHXsntqecdvWCe3VJ3bLhpMbej5U
+ ibJo6STKNVq6IDwHHq6BCkeS2oQOA/VdbL9EqyWIMJnxIx2h5vFzCs4uvt50MlKxI/ZA
+ leeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701640170; x=1702244970;
+ d=1e100.net; s=20230601; t=1701640172; x=1702244972;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fVH9O9un+zwSeBPQSL0IeMDZWUWBtxU0cSyYzIJS41g=;
- b=S0+GhlaZKPQpbibFeaCG1NtoIRZkGs0NuCd4l4JyKvpiqraXHTois/q/jRNu0H13o1
- vax2MaefCKPkNGUl6DuJOgs00vQsk8G78MYmRQHkoYl1u95fdzD03cAWxHPLsM4wDvFM
- L1cMkv3ovhLfPhzc3/pzdaKtxKI/wYhfgASExqfeC5l0Zh2PNXj+2EE1RhiTOw8PjF5m
- pltyHkg+9k0Sx5GPIWBe/x3ecazTJr8eRD8K6G7e+AmYflYSvHk3DweqYYPC74jmQOVu
- WkjBotFCBJwgmWaBlIugADH4j672vH6oQmFUeZ5bnXX/3Zack69j46VPb32Q3VZDiXqW
- LJUQ==
-X-Gm-Message-State: AOJu0Yw81Kr1mODhphzO4yXorezVid4Kci/vO6BuVpVBskrlOU7cpiYc
- i+1WHVHpI2YMxDhcGvhnNL9VKmKTBbPWiA==
-X-Google-Smtp-Source: AGHT+IETRbcbITgQ8jbZF2VCHqOfPrMa75tXndYPylkntwABKjrRr57+K4v84hcJ6FZZYsZiZu7erQ==
-X-Received: by 2002:a81:b712:0:b0:5d7:1940:8ddb with SMTP id
- v18-20020a81b712000000b005d719408ddbmr619775ywh.66.1701640170589; 
- Sun, 03 Dec 2023 13:49:30 -0800 (PST)
+ bh=wFeuloyQQG/pWB1qNvNMADuHoBFz7/WggqgaHUnwlWg=;
+ b=jSULBbmSAxrDser7BxvT3qz2MXULI4VX+dOou54imCBjihT5p+dUasrMj+lZLapQFs
+ Hg3OWSdWSKquzHTkVGE/SnCfF0KaAd9qa6MXqt1wiU5Xu0dnIKvvBJoAhk8ZtU+XJVrq
+ 34Gtt9yLTirZKsg3A5aC2yBoo29ZMdEX50+plLo7BLaEosczMhEH+G05B/Bp13NXcee4
+ v3nCJZLuzI9CC/VLulYzpyLxHvKO3ss3pxcZRYFYVDcmxX+Gpp/yXyB/TKJt4UULuBkW
+ Gl02YSjwGBb2QfxNmpVBFDxhWOfJ6DAM5L+XUlevag+xa3pMnCPJfckDRwpJth41HqO0
+ hbSw==
+X-Gm-Message-State: AOJu0YwV/0Jz8isDo2vxYtkF7b2UO7UW5h1qPpSd0HBZo5bEtJVextsv
+ y95maSvatBNf0kmVsxtb6cb8IIIiFtU1fQ==
+X-Google-Smtp-Source: AGHT+IGhZVotxpyF302dvPBhuwSAkmUj6W8FPhJDJK8PabVJRkErwx29wYPeM0A8UTArzRa5Yqz4zw==
+X-Received: by 2002:a0d:e655:0:b0:5d7:1940:3eeb with SMTP id
+ p82-20020a0de655000000b005d719403eebmr2066647ywe.28.1701640171863; 
+ Sun, 03 Dec 2023 13:49:31 -0800 (PST)
 Received: from localhost.localdomain ([201.206.180.22])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a816502000000b00597e912e67esm2832788ywb.131.2023.12.03.13.49.29
+ z2-20020a816502000000b00597e912e67esm2832788ywb.131.2023.12.03.13.49.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Dec 2023 13:49:30 -0800 (PST)
+ Sun, 03 Dec 2023 13:49:31 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v3 13/45] Add memory region for BCM2837 RPiVid ASB
-Date: Sun,  3 Dec 2023 15:48:38 -0600
-Message-Id: <20231203214910.1364468-14-sergey.kambalin@auriga.com>
+Subject: [PATCH v3 14/45] Add BCM2838 PCIE Root Complex
+Date: Sun,  3 Dec 2023 15:48:39 -0600
+Message-Id: <20231203214910.1364468-15-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231203214910.1364468-13-sergey.kambalin@auriga.com>
+In-Reply-To: <20231203214910.1364468-14-sergey.kambalin@auriga.com>
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
  <20231203214910.1364468-1-sergey.kambalin@auriga.com>
  <20231203214910.1364468-2-sergey.kambalin@auriga.com>
@@ -78,10 +78,11 @@ References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
  <20231203214910.1364468-11-sergey.kambalin@auriga.com>
  <20231203214910.1364468-12-sergey.kambalin@auriga.com>
  <20231203214910.1364468-13-sergey.kambalin@auriga.com>
+ <20231203214910.1364468-14-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
- envelope-from=serg.oker@gmail.com; helo=mail-yb1-xb36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,56 +107,183 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- hw/arm/bcm2838_peripherals.c         | 3 +++
- include/hw/arm/bcm2838_peripherals.h | 3 ++-
- include/hw/arm/raspi_platform.h      | 1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ hw/arm/bcm2838_pcie.c         | 74 +++++++++++++++++++++++++++++++++++
+ hw/arm/meson.build            |  5 ++-
+ hw/arm/trace-events           |  4 ++
+ include/hw/arm/bcm2838_pcie.h | 53 +++++++++++++++++++++++++
+ 4 files changed, 135 insertions(+), 1 deletion(-)
+ create mode 100644 hw/arm/bcm2838_pcie.c
+ create mode 100644 include/hw/arm/bcm2838_pcie.h
 
-diff --git a/hw/arm/bcm2838_peripherals.c b/hw/arm/bcm2838_peripherals.c
-index 196fb890a2..d3b42cf25b 100644
---- a/hw/arm/bcm2838_peripherals.c
-+++ b/hw/arm/bcm2838_peripherals.c
-@@ -182,6 +182,9 @@ static void bcm2838_peripherals_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->gpio), 0));
- 
-     object_property_add_alias(OBJECT(s), "sd-bus", OBJECT(&s->gpio), "sd-bus");
+diff --git a/hw/arm/bcm2838_pcie.c b/hw/arm/bcm2838_pcie.c
+new file mode 100644
+index 0000000000..3b4373c6a6
+--- /dev/null
++++ b/hw/arm/bcm2838_pcie.c
+@@ -0,0 +1,74 @@
++/*
++ * BCM2838 PCIe Root Complex emulation
++ *
++ * Copyright (C) 2022 Ovchinnikov Vitalii <vitalii.ovchinnikov@auriga.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-+    /* BCM2838 RPiVid ASB must be mapped to prevent kernel crash */
-+    create_unimp(s_base, &s->asb, "bcm2838-asb", RPI4B_ASB_OFFSET, 0x24);
- }
- 
- static void bcm2838_peripherals_class_init(ObjectClass *oc, void *data)
-diff --git a/include/hw/arm/bcm2838_peripherals.h b/include/hw/arm/bcm2838_peripherals.h
-index 0a87645e01..af085934c9 100644
---- a/include/hw/arm/bcm2838_peripherals.h
-+++ b/include/hw/arm/bcm2838_peripherals.h
-@@ -64,12 +64,13 @@ struct BCM2838PeripheralState {
-     MemoryRegion mphi_mr_alias;
- 
-     SDHCIState emmc2;
--    UnimplementedDeviceState clkisp;
-     BCM2838GpioState gpio;
- 
-     OrIRQState mmc_irq_orgate;
-     OrIRQState dma_7_8_irq_orgate;
-     OrIRQState dma_9_10_irq_orgate;
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "qapi/error.h"
++#include "hw/irq.h"
++#include "hw/pci-host/gpex.h"
++#include "hw/qdev-properties.h"
++#include "migration/vmstate.h"
++#include "qemu/module.h"
++#include "hw/arm/bcm2838_pcie.h"
++#include "trace.h"
 +
-+    UnimplementedDeviceState asb;
- };
++/*
++ * RC root part (D0:F0)
++ */
++
++static void bcm2838_pcie_root_reg_reset(PCIDevice *dev)
++{
++    BCM2838PcieRootState *s = BCM2838_PCIE_ROOT(dev);
++    memset(s->regs, 0xFF, sizeof(s->regs));
++}
++
++static void bcm2838_pcie_root_realize(PCIDevice *dev, Error **errp) {
++    bcm2838_pcie_root_reg_reset(dev);
++}
++
++static void bcm2838_pcie_root_init(Object *obj)
++{
++    PCIBridge *br = PCI_BRIDGE(obj);
++    br->bus_name = "pcie.1";
++}
++
++static void bcm2838_pcie_root_class_init(ObjectClass *class, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(class);
++    PCIDeviceClass *k = PCI_DEVICE_CLASS(class);
++    BCM2838PcieRootClass *brpc = BCM2838_PCIE_ROOT_CLASS(class);
++
++    dc->desc = "BCM2711 PCIe Bridge";
++    /*
++     * PCI-facing part of the host bridge, not usable without the host-facing
++     * part, which can't be device_add'ed.
++     */
++    dc->user_creatable = false;
++    k->vendor_id = BCM2838_PCIE_VENDOR_ID;
++    k->device_id = BCM2838_PCIE_DEVICE_ID;
++    k->revision = BCM2838_PCIE_REVISION;
++    brpc->parent_obj.exp_offset = BCM2838_PCIE_EXP_CAP_OFFSET;
++    brpc->parent_obj.aer_offset = BCM2838_PCIE_AER_CAP_OFFSET;
++    brpc->parent_realize = k->realize;
++    k->realize = bcm2838_pcie_root_realize;
++}
++
++static const TypeInfo bcm2838_pcie_root_info = {
++    .name = TYPE_BCM2838_PCIE_ROOT,
++    .parent = TYPE_PCIE_ROOT_PORT,
++    .instance_size = sizeof(BCM2838PcieRootState),
++    .instance_init = bcm2838_pcie_root_init,
++    .class_init = bcm2838_pcie_root_class_init,
++};
++
++static void bcm2838_pcie_register(void)
++{
++    type_register_static(&bcm2838_pcie_root_info);
++}
++
++type_init(bcm2838_pcie_register)
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index 27e6797de2..b26ed13c6f 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -39,7 +39,10 @@ arm_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('allwinner-a10.c', 'cubi
+ arm_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3.c', 'orangepi.c'))
+ arm_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40.c', 'bananapi_m2u.c'))
+ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c', 'raspi.c'))
+-arm_ss.add(when: ['CONFIG_RASPI', 'TARGET_AARCH64'], if_true: files('bcm2838.c', 'raspi4b.c'))
++arm_ss.add(when: ['CONFIG_RASPI', 'TARGET_AARCH64'], if_true: files(
++  'bcm2838.c',
++  'bcm2838_pcie.c',
++  'raspi4b.c'))
+ arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
+ arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
+ arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
+diff --git a/hw/arm/trace-events b/hw/arm/trace-events
+index 4f0167e638..6cfab31539 100644
+--- a/hw/arm/trace-events
++++ b/hw/arm/trace-events
+@@ -55,5 +55,9 @@ smmuv3_notify_flag_add(const char *iommu) "ADD SMMUNotifier node for iommu mr=%s
+ smmuv3_notify_flag_del(const char *iommu) "DEL SMMUNotifier node for iommu mr=%s"
+ smmuv3_inv_notifiers_iova(const char *name, uint16_t asid, uint16_t vmid, uint64_t iova, uint8_t tg, uint64_t num_pages) "iommu mr=%s asid=%d vmid=%d iova=0x%"PRIx64" tg=%d num_pages=0x%"PRIx64
  
- struct BCM2838PeripheralClass {
-diff --git a/include/hw/arm/raspi_platform.h b/include/hw/arm/raspi_platform.h
-index 0db146e592..537fc6b4af 100644
---- a/include/hw/arm/raspi_platform.h
-+++ b/include/hw/arm/raspi_platform.h
-@@ -74,6 +74,7 @@ uint64_t board_ram_size(uint32_t board_rev);
- #define DMA_OFFSET              0x7000   /* DMA controller, channels 0-14 */
- #define ARBA_OFFSET             0x9000
- #define BRDG_OFFSET             0xa000
-+#define RPI4B_ASB_OFFSET        0xa000   /* BCM2838 (BCM2711) RPiVid ASB */
- #define ARM_OFFSET              0xB000   /* ARM control block */
- #define ARMCTRL_OFFSET          (ARM_OFFSET + 0x000)
- #define ARMCTRL_IC_OFFSET       (ARM_OFFSET + 0x200) /* Interrupt controller */
++# bcm2838_pcie.c
++bcm2838_pcie_host_read(unsigned int size, uint64_t offset, uint64_t value) "%u bytes @ 0x%04"PRIx64": 0x%016"PRIx64
++bcm2838_pcie_host_write(unsigned int size, uint64_t offset, uint64_t value) "%u bytes @ 0x%04"PRIx64": 0x%016"PRIx64
++
+ # bcm2838.c
+ bcm2838_gic_set_irq(int irq, int level) "gic irq:%d lvl:%d"
+diff --git a/include/hw/arm/bcm2838_pcie.h b/include/hw/arm/bcm2838_pcie.h
+new file mode 100644
+index 0000000000..39828f817f
+--- /dev/null
++++ b/include/hw/arm/bcm2838_pcie.h
+@@ -0,0 +1,53 @@
++/*
++ * BCM2838 PCIe Root Complex emulation
++ *
++ * Copyright (C) 2022 Ovchinnikov Vitalii <vitalii.ovchinnikov@auriga.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef BCM2838_PCIE_H
++#define BCM2838_PCIE_H
++
++#include "exec/hwaddr.h"
++#include "hw/sysbus.h"
++#include "hw/pci/pci.h"
++#include "hw/pci/pcie_host.h"
++#include "hw/pci/pcie_port.h"
++#include "qom/object.h"
++
++#define TYPE_BCM2838_PCIE_ROOT "bcm2838-pcie-root"
++OBJECT_DECLARE_TYPE(BCM2838PcieRootState, BCM2838PcieRootClass,
++                    BCM2838_PCIE_ROOT)
++
++#define BCM2838_PCIE_VENDOR_ID      0x14E4
++#define BCM2838_PCIE_DEVICE_ID      0x2711
++#define BCM2838_PCIE_REVISION       20
++
++#define BCM2838_PCIE_REGS_SIZE      0x9310
++#define BCM2838_PCIE_NUM_IRQS       4
++
++#define BCM2838_PCIE_EXP_CAP_OFFSET 0xAC
++#define BCM2838_PCIE_AER_CAP_OFFSET 0x100
++
++#define BCM2838_PCIE_EXT_CFG_DATA   0x8000
++#define BCM2838_PCIE_EXT_CFG_INDEX  0x9000
++
++struct BCM2838PcieRootState {
++    /*< private >*/
++    PCIESlot parent_obj;
++
++    /*< public >*/
++    uint8_t regs[BCM2838_PCIE_REGS_SIZE - PCIE_CONFIG_SPACE_SIZE];
++};
++
++struct BCM2838PcieRootClass {
++    /*< private >*/
++    PCIERootPortClass parent_obj;
++
++    /*< public >*/
++    void (*parent_realize)(PCIDevice *dev, Error **errp);
++};
++
++
++#endif /* BCM2838_PCIE_H */
 -- 
 2.34.1
 
