@@ -2,90 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA672803B7D
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 18:26:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AD4803BC9
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 18:36:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rACgk-0008Tu-Nn; Mon, 04 Dec 2023 12:24:58 -0500
+	id 1rACr2-0001hz-0G; Mon, 04 Dec 2023 12:35:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rACgi-0008TX-8K
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 12:24:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rACgf-0004jQ-MB
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 12:24:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701710692;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qP9842CMa1SWO9Gu20fi+3+crajyVAvpTIBeEgbrKrI=;
- b=XlE06u0B0MA0Zi4xm/Wgj2VA1P0gCW98XfU+EfMrS933Qdxd9pYytYMw3JqPwtCzbM0wJv
- VMF+AzXnzSXbZOm3zXyePFyyb+W7DuUp3AP3x45dO9q0sqWj1APJTSUtIYaTz1RssgC/9H
- ULlO+WmGRHzXcledym4GXccKjBzAPI8=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-424-C_DBApNfOr26okhtGdMhZQ-1; Mon, 04 Dec 2023 12:24:50 -0500
-X-MC-Unique: C_DBApNfOr26okhtGdMhZQ-1
-Received: by mail-io1-f69.google.com with SMTP id
- ca18e2360f4ac-7b385a73066so119224239f.1
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 09:24:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rACqv-0001hf-Pg
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 12:35:30 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rACqe-0007BR-Vc
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 12:35:26 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1d048d38881so17633645ad.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 09:33:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701711189; x=1702315989;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=TMljpsCjPAnNRCwEDjSGgFjYXzA+41QGdnkJ0tbPLFs=;
+ b=z5s2Aw+nzGBeGUaQgm+oFJbOdhjwTwapZDC0wAfvW+EroKrKeWfBiW4hfp/xaNeGP5
+ w30qduU8SCxLatBeV9aU7NJJ0jpcEsg2hhwZbUtJzLfBg51ARv3E3Zl0VCZUplruvw8v
+ mU93m2Plhe5QVUA7RIQQyOd6cyFPMkYZXqXKJYcaWU+sqsP0VeKmj9lu4rolOs0ZfcT+
+ UTa3QcPN0dgGEEOr+JxTneotPOV4mvw1Lxm+FMZNJamhNuIpOtfAQn72maqNYgF0LFzK
+ Ah8+bUP+Yo7XBDvuWSQ8xwmBdSymyEy/T+TsKC8Hnq0breeZOaX6pW0hJP138l0G1UCr
+ mO8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701710690; x=1702315490;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qP9842CMa1SWO9Gu20fi+3+crajyVAvpTIBeEgbrKrI=;
- b=hTcDaUrwiRE0YBFAy0zBYc+Jzgi04u3l55ZNxipWxVAVA3d+qHSpJ0cUPRQxvbUy9N
- He4LqvSNWwst5TBr7ugcGi45e+ghgsOqK+3URLE70CzjtUsgWqdNdSfpsau2SP3xenrn
- nqp3XFp7nl/9aO6EW48POGMLk4e3AT31beDU3gmkzgDlteyI04UBT9APOIkoQXntN2B+
- TNgtJKHlcKifEGsPqpVinwGO+Vc/VpvBuUlvXZEg90711UQvEg+zbqalfIfcBiPBu03N
- 0+cgl2n8RfHj+Yzg9is3uoyFsVozD8QjPU++ITxGfJqRWU75LVOi2iw3DGpzHBxcRPvk
- SFFQ==
-X-Gm-Message-State: AOJu0YwOWqM83zL0NbDCxgcpIcczQHuvaTgIn2BqjoYX5yf/5HVrOnhE
- l/emO+ewwd0ZxDHDGiXtsL1ExzVzguJIR+/KN9eRnQmUB9S/v8M/Yr8+ku34UpraZb/ZoX4UZNr
- sNK2GpWfbPMvwN5M=
-X-Received: by 2002:a05:6e02:1a62:b0:35d:692c:5968 with SMTP id
- w2-20020a056e021a6200b0035d692c5968mr4859032ilv.3.1701710689694; 
- Mon, 04 Dec 2023 09:24:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGQkf/RLFmQvwwpvRCgP02D6aaw/ojneXaMkveodNdP7auR7iGPQDkMsqv0uBAW4mmVlekHiQ==
-X-Received: by 2002:a05:6e02:1a62:b0:35d:692c:5968 with SMTP id
- w2-20020a056e021a6200b0035d692c5968mr4858996ilv.3.1701710689314; 
- Mon, 04 Dec 2023 09:24:49 -0800 (PST)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- br14-20020a05663846ce00b0046677381f9dsm2655915jab.61.2023.12.04.09.24.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Dec 2023 09:24:49 -0800 (PST)
-Date: Mon, 4 Dec 2023 12:24:47 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH V6 05/14] migration: propagate suspended runstate
-Message-ID: <ZW4LX9FpfTj77TZv@x1n>
-References: <1701380247-340457-1-git-send-email-steven.sistare@oracle.com>
- <1701380247-340457-6-git-send-email-steven.sistare@oracle.com>
- <ZWkVbiQNl16hC1LW@x1n>
- <ea771378-33c4-4d4e-9de2-d39310028d10@oracle.com>
+ d=1e100.net; s=20230601; t=1701711189; x=1702315989;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TMljpsCjPAnNRCwEDjSGgFjYXzA+41QGdnkJ0tbPLFs=;
+ b=WqbtXnI1/Z3uGomHL4O7WgaSCIeU3QBZ1HNkd/NgPSjosc94Su/KVm6tifvblSD80P
+ IdTRBmwHjKQ7z3AO+P6c4+t9sDrzzuHiQ0UT2vJ5NAo676OAURWtEgeEreCM/OyXskDv
+ R+Fos/FqAa8Sy0wu6jGk4B5s91RRKDvOSS/XDgVR7mfP2ET2SH5fQEfPgqtOMvccfirz
+ ZpShKMCoul847eDSboTSJvjnS1w6rYwmKbOkUkLudjjsM1KlNzZEfwQbwXsGruAzFfoY
+ N76Adc+SvGrnuiX0wrW8MMuLEWht99qeXrIj35oNRPUfIAr/3zRpnEJnmIQjZ4YbCxuf
+ nkIg==
+X-Gm-Message-State: AOJu0YzCSroPCkuaxy+aBeTbY8lW2pkVHUOQf1ElcfdyxklB2kU4C1P0
+ W6ecBa7ksm0XOVRUoWQQ1JTZYC6xRPXy4zvCDevyUg==
+X-Google-Smtp-Source: AGHT+IEP+QHMWgmJ0EuPGEFvN16V73dePnkoR52iWKZvNE0sBZqieNd4iA02svLldNwcuDBmCzgItrp5+iDGO/2GdZ0=
+X-Received: by 2002:a17:90a:e551:b0:281:5550:ce3d with SMTP id
+ ei17-20020a17090ae55100b002815550ce3dmr2037267pjb.31.1701711187596; Mon, 04
+ Dec 2023 09:33:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ea771378-33c4-4d4e-9de2-d39310028d10@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <cover.1701705003.git.yong.huang@smartx.com>
+ <ZW39KzXUbWrJUdQH@redhat.com>
+ <CAK9dgmapfxO93ZMSiw+aT6E1XLLrs+sXXprwCxgB8egeznsLBQ@mail.gmail.com>
+ <ZW4Dm2TI9d4XBDtT@redhat.com>
+In-Reply-To: <ZW4Dm2TI9d4XBDtT@redhat.com>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Tue, 5 Dec 2023 01:32:51 +0800
+Message-ID: <CAK9dgmZ75OBDCNi-oMm-FKfzmfSo116dqYKi9PJucZa9DbSu8A@mail.gmail.com>
+Subject: Re: [RFC 0/8] Support generic Luks encryption
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000d8eed8060bb2829c"
+Received-SPF: none client-ip=2607:f8b0:4864:20::630;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,122 +90,346 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 01, 2023 at 11:23:33AM -0500, Steven Sistare wrote:
-> >> @@ -109,6 +117,7 @@ static int global_state_post_load(void *opaque, int version_id)
-> >>          return -EINVAL;
-> >>      }
-> >>      s->state = r;
-> >> +    vm_set_suspended(s->vm_was_suspended || r == RUN_STATE_SUSPENDED);
-> > 
-> > IIUC current vm_was_suspended (based on my read of your patch) was not the
-> > same as a boolean representing "whether VM is suspended", but only a
-> > temporary field to remember that for a VM stop request.  To be explicit, I
-> > didn't see this flag set in qemu_system_suspend() in your previous patch.
-> > 
-> > If so, we can already do:
-> > 
-> >   vm_set_suspended(s->vm_was_suspended);
-> > 
-> > Irrelevant of RUN_STATE_SUSPENDED?
-> 
-> We need both terms of the expression.
-> 
-> If the vm *is* suspended (RUN_STATE_SUSPENDED), then vm_was_suspended = false.
-> We call global_state_store prior to vm_stop_force_state, so the incoming
-> side sees s->state = RUN_STATE_SUSPENDED and s->vm_was_suspended = false.
+--000000000000d8eed8060bb2829c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Right.
+On Tue, Dec 5, 2023 at 12:51=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com>
+wrote:
 
-> However, the runstate is RUN_STATE_INMIGRATE.  When incoming finishes by
-> calling vm_start, we need to restore the suspended state.  Thus in 
-> global_state_post_load, we must set vm_was_suspended = true.
+> On Tue, Dec 05, 2023 at 12:41:16AM +0800, Yong Huang wrote:
+> > On Tue, Dec 5, 2023 at 12:24=E2=80=AFAM Daniel P. Berrang=C3=A9 <berran=
+ge@redhat.com>
+> > wrote:
+> >
+> > > On Tue, Dec 05, 2023 at 12:06:17AM +0800, Hyman Huang wrote:
+> > > > This functionality was motivated by the following to-do list seen
+> > > > in crypto documents:
+> > > > https://wiki.qemu.org/Features/Block/Crypto
+> > > >
+> > > > The last chapter says we should "separate header volume":
+> > > >
+> > > > The LUKS format has ability to store the header in a separate volum=
+e
+> > > > from the payload. We should extend the LUKS driver in QEMU to suppo=
+rt
+> > > > this use case.
+> > > >
+> > > > As a proof-of-concept, I've created this patchset, which I've named
+> > > > the Gluks: generic luks. As their name suggests, they offer
+> encryption
+> > > > for any format that QEMU theoretically supports.
+> > >
+> > > I don't see the point in creating a new driver.
+> > >
+> > > I would expect detached header support to be implemented via an
+> > > optional new 'header' field in the existing driver. ie
+> > >
+> > > diff --git a/qapi/block-core.json b/qapi/block-core.json
+> > > index ca390c5700..48d1f2a974 100644
+> > > --- a/qapi/block-core.json
+> > > +++ b/qapi/block-core.json
+> > > @@ -3352,11 +3352,15 @@
+> > >  #     decryption key (since 2.6). Mandatory except when doing a
+> > >  #     metadata-only probe of the image.
+> > >  #
+> > > +# @header: optional reference to the location of a blockdev
+> > > +#     storing a detached LUKS heaer
+> > > +#
+> > >  # Since: 2.9
+> > >  ##
+> > >  { 'struct': 'BlockdevOptionsLUKS',
+> > >    'base': 'BlockdevOptionsGenericFormat',
+> > > -  'data': { '*key-secret': 'str' } }
+> > > +  'data': { '*key-secret': 'str',
+> > > +            "*header-file': 'BlockdevRef'} }
+> > >
+> > >  ##
+> > >  # @BlockdevOptionsGenericCOWFormat:
+> > > @@ -4941,9 +4945,18 @@
+> > >  #
+> > >  # Driver specific image creation options for LUKS.
+> > >  #
+> > > -# @file: Node to create the image format on
+> > > +# @file: Node to create the image format on. Mandatory
+> > > +#     unless a detached header file is specified using
+> > > +#     @header.
+> > >  #
+> > > -# @size: Size of the virtual disk in bytes
+> > > +# @size: Size of the virtual disk in bytes.  Mandatory
+> > > +#     unless a detached header file is specified using
+> > > +#     @header.
+> > > +#
+> > > +# @header: optional reference to the location of a blockdev
+> > > +#     storing a detached LUKS heaer. The @file option is
+> > > +#     is optional when this is given, unless it is desired
+> > > +#     to perform pre-allocation
+> > >  #
+> > >  # @preallocation: Preallocation mode for the new image (since: 4.2)
+> > >  #     (default: off; allowed values: off, metadata, falloc, full)
+> > > @@ -4952,8 +4965,9 @@
+> > >  ##
+> > >  { 'struct': 'BlockdevCreateOptionsLUKS',
+> > >    'base': 'QCryptoBlockCreateOptionsLUKS',
+> > > -  'data': { 'file':             'BlockdevRef',
+> > > -            'size':             'size',
+> > > +  'data': { '*file':            'BlockdevRef',
+> > > +            '*size':            'size',
+> > > +            '*header':          'BlockdevRef'
+> > >              '*preallocation':   'PreallocMode' } }
+> > >
+> > >  ##
+> > >
+> > > It ends up giving basicallly the same workflow as you outline,
+> > > without needing the new block driver
+> > >
+> >
+> > How about the design and usage, could it be simpler? Any advice? :)
+> >
+> >
+> > As you can see below, the Gluks format block layer driver's design is
+> > quite simple.
+> >
+> >          virtio-blk/vhost-user-blk...(front-end device)
+> >               ^
+> >               |
+> >              Gluks   (format-like disk node)
+> >           /         \
+> >        file       header (blockdev reference)
+> >         /             \
+> >      file            file (protocol node)
+> >        |               |
+> >    disk data       Luks data
+>
+> What I suggested above ends up with the exact same block driver
+> graph, unless I'm missing something.
+>
 
-With above, shouldn't global_state_get_runstate() (on dest) fetch SUSPENDED
-already?  Then I think it should call vm_start(SUSPENDED) if to start.
+I could overlook something or fail to adequately convey the goal of the
+patchset. :(
 
-Maybe you're talking about the special case where autostart==false?  We
-used to have this (existing process_incoming_migration_bh()):
+Indeed, utilizing the same block driver might be effective if our only goal
+is to divide the header volume, giving us an additional way to use Luks.
 
-    if (!global_state_received() ||
-        global_state_get_runstate() == RUN_STATE_RUNNING) {
-        if (autostart) {
-            vm_start();
-        } else {
-            runstate_set(RUN_STATE_PAUSED);
-        }
-    }
+While supporting encryption for any disk format that QEMU is capable of
+supporting is another feature of this patchset. This implies that we might
+link the Luks header to other blockdev references, which might alter how
+the Luks are used and make them incompatible with it. It's not
+user-friendly in my opinion, and I'm not aware of a more elegant solution.
 
-If so maybe I get you, because in the "else" path we do seem to lose the
-SUSPENDED state again, but in that case IMHO we should logically set
-vm_was_suspended only when we "lose" it - we didn't lose it during
-migration, but only until we decided to switch to PAUSED (due to
-autostart==false). IOW, change above to something like:
 
-    state = global_state_get_runstate();
-    if (!global_state_received() || runstate_is_alive(state)) {
-        if (autostart) {
-            vm_start(state);
-        } else {
-            if (runstate_is_suspended(state)) {
-                /* Remember suspended state before setting system to STOPed */
-                vm_was_suspended = true;
-            }
-            runstate_set(RUN_STATE_PAUSED);
-        }
-    }
 
-It may or may not have a functional difference even if current patch,
-though.  However maybe clearer to follow vm_was_suspended's strict
-definition.
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-
+> https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-
+> https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-
+> https://www.instagram.com/dberrange :|
+>
+>
 
-> 
-> If the vm *was* suspended, but is currently stopped (eg RUN_STATE_PAUSED),
-> then vm_was_suspended = true.  Migration from that state sets
-> vm_was_suspended = s->vm_was_suspended = true in global_state_post_load and 
-> ends with runstate_set(RUN_STATE_PAUSED).
-> 
-> I will add a comment here in the code.
->  
-> >>      return 0;
-> >>  }
-> >> @@ -134,6 +143,7 @@ static const VMStateDescription vmstate_globalstate = {
-> >>      .fields = (VMStateField[]) {
-> >>          VMSTATE_UINT32(size, GlobalState),
-> >>          VMSTATE_BUFFER(runstate, GlobalState),
-> >> +        VMSTATE_BOOL(vm_was_suspended, GlobalState),
-> >>          VMSTATE_END_OF_LIST()
-> >>      },
-> >>  };
-> > 
-> > I think this will break migration between old/new, unfortunately.  And
-> > since the global state exist mostly for every VM, all VM setup should be
-> > affected, and over all archs.
-> 
-> Thanks, I keep forgetting that my binary tricks are no good here.  However,
-> I have one other trick up my sleeve, which is to store vm_was_running in
-> global_state.runstate[strlen(runstate) + 2].  It is forwards and backwards
-> compatible, since that byte is always 0 in older qemu.  It can be implemented
-> with a few lines of code change confined to global_state.c, versus many lines 
-> spread across files to do it the conventional way using a compat property and
-> a subsection.  Sound OK?  
+--=20
+Best regards
 
-Tricky!  But sounds okay to me.  I think you're inventing some of your own
-way of being compatible, not relying on machine type as a benefit.  If go
-this route please document clearly on the layout and also what it looked
-like in old binaries.
+--000000000000d8eed8060bb2829c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I think maybe it'll be good to keep using strings, so in the new binaries
-we allow >1 strings, then we define properly on those strings (index 0:
-runstate, existed since start; index 2: suspended, perhaps using "1"/"0" to
-express, while 0x00 means old binary, etc.).
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Dec 5, 202=
+3 at 12:51=E2=80=AFAM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrang=
+e@redhat.com">berrange@redhat.com</a>&gt; wrote:<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;bo=
+rder-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">=
+On Tue, Dec 05, 2023 at 12:41:16AM +0800, Yong Huang wrote:<br>
+&gt; On Tue, Dec 5, 2023 at 12:24=E2=80=AFAM Daniel P. Berrang=C3=A9 &lt;<a=
+ href=3D"mailto:berrange@redhat.com" target=3D"_blank">berrange@redhat.com<=
+/a>&gt;<br>
+&gt; wrote:<br>
+&gt; <br>
+&gt; &gt; On Tue, Dec 05, 2023 at 12:06:17AM +0800, Hyman Huang wrote:<br>
+&gt; &gt; &gt; This functionality was motivated by the following to-do list=
+ seen<br>
+&gt; &gt; &gt; in crypto documents:<br>
+&gt; &gt; &gt; <a href=3D"https://wiki.qemu.org/Features/Block/Crypto" rel=
+=3D"noreferrer" target=3D"_blank">https://wiki.qemu.org/Features/Block/Cryp=
+to</a><br>
+&gt; &gt; &gt;<br>
+&gt; &gt; &gt; The last chapter says we should &quot;separate header volume=
+&quot;:<br>
+&gt; &gt; &gt;<br>
+&gt; &gt; &gt; The LUKS format has ability to store the header in a separat=
+e volume<br>
+&gt; &gt; &gt; from the payload. We should extend the LUKS driver in QEMU t=
+o support<br>
+&gt; &gt; &gt; this use case.<br>
+&gt; &gt; &gt;<br>
+&gt; &gt; &gt; As a proof-of-concept, I&#39;ve created this patchset, which=
+ I&#39;ve named<br>
+&gt; &gt; &gt; the Gluks: generic luks. As their name suggests, they offer =
+encryption<br>
+&gt; &gt; &gt; for any format that QEMU theoretically supports.<br>
+&gt; &gt;<br>
+&gt; &gt; I don&#39;t see the point in creating a new driver.<br>
+&gt; &gt;<br>
+&gt; &gt; I would expect detached header support to be implemented via an<b=
+r>
+&gt; &gt; optional new &#39;header&#39; field in the existing driver. ie<br=
+>
+&gt; &gt;<br>
+&gt; &gt; diff --git a/qapi/block-core.json b/qapi/block-core.json<br>
+&gt; &gt; index ca390c5700..48d1f2a974 100644<br>
+&gt; &gt; --- a/qapi/block-core.json<br>
+&gt; &gt; +++ b/qapi/block-core.json<br>
+&gt; &gt; @@ -3352,11 +3352,15 @@<br>
+&gt; &gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0decryption key (since 2.6). Mandatory =
+except when doing a<br>
+&gt; &gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0metadata-only probe of the image.<br>
+&gt; &gt;=C2=A0 #<br>
+&gt; &gt; +# @header: optional reference to the location of a blockdev<br>
+&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0storing a detached LUKS heaer<br>
+&gt; &gt; +#<br>
+&gt; &gt;=C2=A0 # Since: 2.9<br>
+&gt; &gt;=C2=A0 ##<br>
+&gt; &gt;=C2=A0 { &#39;struct&#39;: &#39;BlockdevOptionsLUKS&#39;,<br>
+&gt; &gt;=C2=A0 =C2=A0 &#39;base&#39;: &#39;BlockdevOptionsGenericFormat&#3=
+9;,<br>
+&gt; &gt; -=C2=A0 &#39;data&#39;: { &#39;*key-secret&#39;: &#39;str&#39; } =
+}<br>
+&gt; &gt; +=C2=A0 &#39;data&#39;: { &#39;*key-secret&#39;: &#39;str&#39;,<b=
+r>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;*header-file&#39=
+;: &#39;BlockdevRef&#39;} }<br>
+&gt; &gt;<br>
+&gt; &gt;=C2=A0 ##<br>
+&gt; &gt;=C2=A0 # @BlockdevOptionsGenericCOWFormat:<br>
+&gt; &gt; @@ -4941,9 +4945,18 @@<br>
+&gt; &gt;=C2=A0 #<br>
+&gt; &gt;=C2=A0 # Driver specific image creation options for LUKS.<br>
+&gt; &gt;=C2=A0 #<br>
+&gt; &gt; -# @file: Node to create the image format on<br>
+&gt; &gt; +# @file: Node to create the image format on. Mandatory<br>
+&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0unless a detached header file is specified =
+using<br>
+&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0@header.<br>
+&gt; &gt;=C2=A0 #<br>
+&gt; &gt; -# @size: Size of the virtual disk in bytes<br>
+&gt; &gt; +# @size: Size of the virtual disk in bytes.=C2=A0 Mandatory<br>
+&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0unless a detached header file is specified =
+using<br>
+&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0@header.<br>
+&gt; &gt; +#<br>
+&gt; &gt; +# @header: optional reference to the location of a blockdev<br>
+&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0storing a detached LUKS heaer. The @file op=
+tion is<br>
+&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0is optional when this is given, unless it i=
+s desired<br>
+&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0to perform pre-allocation<br>
+&gt; &gt;=C2=A0 #<br>
+&gt; &gt;=C2=A0 # @preallocation: Preallocation mode for the new image (sin=
+ce: 4.2)<br>
+&gt; &gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0(default: off; allowed values: off, me=
+tadata, falloc, full)<br>
+&gt; &gt; @@ -4952,8 +4965,9 @@<br>
+&gt; &gt;=C2=A0 ##<br>
+&gt; &gt;=C2=A0 { &#39;struct&#39;: &#39;BlockdevCreateOptionsLUKS&#39;,<br=
+>
+&gt; &gt;=C2=A0 =C2=A0 &#39;base&#39;: &#39;QCryptoBlockCreateOptionsLUKS&#=
+39;,<br>
+&gt; &gt; -=C2=A0 &#39;data&#39;: { &#39;file&#39;:=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0&#39;BlockdevRef&#39;,<br>
+&gt; &gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;size&#39;:=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;size&#39;,<br>
+&gt; &gt; +=C2=A0 &#39;data&#39;: { &#39;*file&#39;:=C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 &#39;BlockdevRef&#39;,<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;*size&#39;:=C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;size&#39;,<br>
+&gt; &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;*header&#39;:=C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;BlockdevRef&#39;<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;*preallocati=
+on&#39;:=C2=A0 =C2=A0&#39;PreallocMode&#39; } }<br>
+&gt; &gt;<br>
+&gt; &gt;=C2=A0 ##<br>
+&gt; &gt;<br>
+&gt; &gt; It ends up giving basicallly the same workflow as you outline,<br=
+>
+&gt; &gt; without needing the new block driver<br>
+&gt; &gt;<br>
+&gt; <br>
+&gt; How about the design and usage, could it be simpler? Any advice? :)<br=
+>
+&gt; <br>
+&gt; <br>
+&gt; As you can see below, the Gluks format block layer driver&#39;s design=
+ is<br>
+&gt; quite simple.<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio-blk/vhost-user-blk...(front-e=
+nd device)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0^<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Gluks=C2=A0 =C2=A0(for=
+mat-like disk node)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0\<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 file=C2=A0 =C2=A0 =C2=A0 =C2=A0header (bloc=
+kdev reference)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0\<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 file=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 file=
+ (protocol node)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0|<br>
+&gt;=C2=A0 =C2=A0 disk data=C2=A0 =C2=A0 =C2=A0 =C2=A0Luks data<br>
+<br>
+What I suggested above ends up with the exact same block driver<br>
+graph, unless I&#39;m missing something.<br></blockquote><div><br></div><di=
+v class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sa=
+ns-serif">I could overlook something or fail to adequately convey the goal =
+of the patchset. :(</div><div class=3D"gmail_default" style=3D"font-family:=
+&quot;comic sans ms&quot;,sans-serif"><br></div><div class=3D"gmail_default=
+" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Indeed, utiliz=
+ing the same block driver might be effective if our only goal is to divide =
+the header volume, giving us an additional way to use Luks.</div><div class=
+=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-seri=
+f"><br></div><div class=3D"gmail_default" style=3D"font-family:&quot;comic =
+sans ms&quot;,sans-serif">While supporting encryption for any disk format t=
+hat QEMU is capable of supporting is another feature of this patchset. This=
+ implies that we might link the Luks header to other blockdev references, w=
+hich might alter how the Luks are used and make them incompatible with it. =
+It&#39;s not user-friendly in my opinion, and I&#39;m not aware of a more e=
+legant solution.</div><div class=3D"gmail_default" style=3D"font-family:&qu=
+ot;comic sans ms&quot;,sans-serif"><br></div><div class=3D"gmail_default" s=
+tyle=3D"font-family:&quot;comic sans ms&quot;,sans-serif"><br></div><blockq=
+uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-wi=
+dth:1px;border-left-style:solid;border-left-color:rgb(204,204,204);padding-=
+left:1ex">
+<br>
+With regards,<br>
+Daniel<br>
+-- <br>
+|: <a href=3D"https://berrange.com" rel=3D"noreferrer" target=3D"_blank">ht=
+tps://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D"http=
+s://www.flickr.com/photos/dberrange" rel=3D"noreferrer" target=3D"_blank">h=
+ttps://www.flickr.com/photos/dberrange</a> :|<br>
+|: <a href=3D"https://libvirt.org" rel=3D"noreferrer" target=3D"_blank">htt=
+ps://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com" rel=3D"n=
+oreferrer" target=3D"_blank">https://fstop138.berrange.com</a> :|<br>
+|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer" target=3D"_bla=
+nk">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a href=3D=
+"https://www.instagram.com/dberrange" rel=3D"noreferrer" target=3D"_blank">=
+https://www.instagram.com/dberrange</a> :|<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
 
-I hope this trick will need less code than the subsection solution,
-otherwise I'd still consider going with that, which is the "common
-solution".
-
-Let's also see whether Juan/Fabiano/others has any opinions.
-
--- 
-Peter Xu
-
+--000000000000d8eed8060bb2829c--
 
