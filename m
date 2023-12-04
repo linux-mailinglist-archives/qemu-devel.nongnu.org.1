@@ -2,80 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 380DB803768
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 15:47:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D523180377E
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 15:50:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAADv-0005wb-Lg; Mon, 04 Dec 2023 09:47:03 -0500
+	id 1rAAGx-00089X-Jl; Mon, 04 Dec 2023 09:50:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rAADt-0005vy-7K
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:47:01 -0500
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rAADr-00041l-L5
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:47:00 -0500
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-1faf56466b8so1944936fac.3
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 06:46:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701701217; x=1702306017; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1ECSPRAPd4OzpboZqLyRqPkuRh/es5tymXvcGE9TzPs=;
- b=PsCvEKx8DUg9EoPIsoak3NjXq6pV25nXCKv5wNX7ou0HJeYSQArUo6CK2j4evfcUEU
- ZB3fw+xOxiCqvR7mGnPGBae0QSRQ7ZtcsQfxe8jrqX/Fq/NkjdNtiC5dZLTqF1gZw7kx
- VtP6SXvL0NmWhzqHzGcnDpq4ExrmJcvuBE2BnbsgkENZxtnAx1VEYRw82kraOYMEWVd0
- hN36ffe19cXXzAR0kOwMpfuo3XG3JT2v+6+coCyBeXa/aQq3gSdoezb+qEMMqVjUDdcY
- jFFU3z7agnqKs2NXm2C6EE/4roKNnKsWlSBPu1mm7ArcbFli1Z3i/Gh3bDj/hfPoZSBF
- BbEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701701217; x=1702306017;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1ECSPRAPd4OzpboZqLyRqPkuRh/es5tymXvcGE9TzPs=;
- b=L//TntK63rreXI7WI7oBae/kKvjtpSRGbo+0vugQPW6Yl45Qalf55SBQaRmTST8Ko/
- pwGzQYj3l755+Lpx+FJk/W64pUPAyUUs2rGjwBL8Anhjbi78LdK4ToFTf7pX9ruczu+7
- nYUQERb0TO2zlaHxHvWHSx7FPN3pnAV52CG1HPkIaXMGcgqEzfh/OFQCobyoEhQrt0UU
- zBAiAnoFFigqEcsv9ac9SQmPNrbWy8BPWOx16o7tmie9BEo4D5H7xTLW3cprYK3Iqzzi
- G0HsiPOK22k6Se4uiCAIxA0FU9LqDu1ZtCHCpRELCLlWznp3+pKR0rA2UWvRJhjg8lkh
- cXqg==
-X-Gm-Message-State: AOJu0YyC8iu3Y/q8+cqF3XPmZswJfvaN3/pxNpf440FvXOYRcUPqGF2Y
- WGrDNxcbMgnpARrcKcWhkXHhLP1v+uc8bZ1Gj6U=
-X-Google-Smtp-Source: AGHT+IFYK5SzVMOKOmwn9dYwD8wOS9JLHIGyWzn9CTEKPmb21pTPn6vq2NN4jFuZaDO6VpuTj4QDXLoTiAtjRp0G0Lk=
-X-Received: by 2002:a05:6870:41c8:b0:1fb:210:5511 with SMTP id
- z8-20020a05687041c800b001fb02105511mr6130361oac.18.1701701217055; Mon, 04 Dec
- 2023 06:46:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rAAGt-00089E-4E
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:50:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rAAGr-00050u-IN
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:50:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701701404;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=q15/3BVVyOaihcucEucNKs/jzap+i7xs4+FWf0/CsZk=;
+ b=Ost3AWy/dHsq1RQsEKl+UDWP48e3cYiFMOCYJmO/kVxeipKWOo/Lkw5lyJB0XEROYe8m6r
+ 0Zb7jCnWL2u8CMMTtCzcKd3uIyN/1QpkxzOo6w781FOzVSw0yh19E8f3Ey+ULesqDedV+p
+ qvgcGNnoGXlcMx++HIzYKuYizMf6YEg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-241-5wDKJD6mPs27fxPG3prMrg-1; Mon, 04 Dec 2023 09:49:58 -0500
+X-MC-Unique: 5wDKJD6mPs27fxPG3prMrg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B74B811E8F;
+ Mon,  4 Dec 2023 14:49:57 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.49])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3903240C6EB9;
+ Mon,  4 Dec 2023 14:49:55 +0000 (UTC)
+Date: Mon, 4 Dec 2023 09:49:54 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Alberto Garcia <berto@igalia.com>,
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+ John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Wen Congyang <wencongyang2@huawei.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, Coiby Xu <Coiby.Xu@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Xie Changlong <xiechanglong.d@gmail.com>,
+ Ari Sundholm <ari@tuxera.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ Cleber Rosa <crosa@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Zhang Chen <chen.zhang@intel.com>, Peter Xu <peterx@redhat.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Leonardo Bras <leobras@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Fam Zheng <fam@euphon.net>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH 01/12] virtio-scsi: replace AioContext lock with
+ tmf_bh_lock
+Message-ID: <20231204144954.GA1492005@fedora>
+References: <20231129195553.942921-1-stefanha@redhat.com>
+ <20231129195553.942921-2-stefanha@redhat.com>
+ <tng432xox5h3zwi7vkc7nbuu2bckkackqtdifqt2dtsn7t2eti@m2jwhopket2s>
 MIME-Version: 1.0
-References: <20231201205630.10837-1-philmd@linaro.org>
-In-Reply-To: <20231201205630.10837-1-philmd@linaro.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 4 Dec 2023 09:46:43 -0500
-Message-ID: <CAJSP0QWvzeuVvDLwoeZGCPzq_37e6WQRwYp2t3OOe-+jH+ksmQ@mail.gmail.com>
-Subject: Re: [PATCH-for-8.2 v2] tests/avocado: Update yamon-bin-02.22.zip URL
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Aurelien Jarno <aurelien@aurel32.net>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Huacai Chen <chenhuacai@kernel.org>, 
- Beraldo Leal <bleal@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- BALATON Zoltan <balaton@eik.bme.hu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x35.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="xuVVbWEiWN36eeYa"
+Content-Disposition: inline
+In-Reply-To: <tng432xox5h3zwi7vkc7nbuu2bckkackqtdifqt2dtsn7t2eti@m2jwhopket2s>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,47 +103,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 1 Dec 2023 at 15:56, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> http://www.imgtec.com/tools/mips-tools/downloads/ redirects
-> to https://mips.com/downloads/yamon-version-02-22/ then points
-> to an invalid path to a s3 bucket. Use the correct path. The
-> site will eventually be fixed.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> Supersedes: <20231201142139.39816-1-philmd@linaro.org>
-> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Cc: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
->  tests/avocado/machine_mips_malta.py | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
 
-Applied, thanks!
+--xuVVbWEiWN36eeYa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Nov 30, 2023 at 09:25:52AM -0600, Eric Blake wrote:
+> On Wed, Nov 29, 2023 at 02:55:42PM -0500, Stefan Hajnoczi wrote:
+> > Protect the Task Management Function BH state with a lock. The TMF BH
+> > runs in the main loop thread. An IOThread might process a TMF at the
+> > same time as the TMF BH is running. Therefore tmf_bh_list and tmf_bh
+> > must be protected by a lock.
+> >=20
+> > Run TMF request completion in the IOThread using aio_wait_bh_oneshot().
+> > This avoids more locking to protect the virtqueue and SCSI layer state.
+>=20
+> Are we trying to get this into 8.2?
+
+No. 8.2 still has the AioContext lock is therefore safe without this
+patch.
 
 Stefan
 
->
-> diff --git a/tests/avocado/machine_mips_malta.py b/tests/avocado/machine_=
-mips_malta.py
-> index 9bd54518bf..8e1ee120f4 100644
-> --- a/tests/avocado/machine_mips_malta.py
-> +++ b/tests/avocado/machine_mips_malta.py
-> @@ -124,8 +124,9 @@ def test_mips_malta_i6400_framebuffer_logo_8cores(sel=
-f):
->  class MaltaMachine(QemuSystemTest):
->
->      def do_test_yamon(self):
-> -        rom_url =3D ('http://www.imgtec.com/tools/mips-tools/downloads/'
-> -                   'yamon/yamon-bin-02.22.zip')
-> +        rom_url =3D ('https://s3-eu-west-1.amazonaws.com/'
-> +                   'downloads-mips/mips-downloads/'
-> +                   'YAMON/yamon-bin-02.22.zip')
->          rom_hash =3D '8da7ecddbc5312704b8b324341ee238189bde480'
->          zip_path =3D self.fetch_asset(rom_url, asset_hash=3Drom_hash)
->
-> --
-> 2.41.0
->
+>=20
+> >=20
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > ---
+> >  include/hw/virtio/virtio-scsi.h |  3 +-
+> >  hw/scsi/virtio-scsi.c           | 62 ++++++++++++++++++++++-----------
+> >  2 files changed, 43 insertions(+), 22 deletions(-)
+> >
+>=20
+> Reviewed-by: Eric Blake <eblake@redhat.com>
+>=20
+> --=20
+> Eric Blake, Principal Software Engineer
+> Red Hat, Inc.
+> Virtualization:  qemu.org | libguestfs.org
+>=20
+
+--xuVVbWEiWN36eeYa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVt5xIACgkQnKSrs4Gr
+c8jrKAgAi9Ez+xTcPA2/0XgPvi0dsAshvngJFgGPGKyor2T6HSiEfY5fZnA+zl/Z
+6RqIc79YvldlUyqQVTXHU/H0yF/UW4h9d2gz0nlaCBx/1H0xzbAmLUTMW5bGQ/vT
+N5SCBl6RSfDRmU/eZcbrIqHOaphPCeBt4v6mnfrCF5F9XAS/Iarz7MybbHWnZEq3
+93KGFY1LBRQIwp/IhNA+lkMxrysBl5fYLCoKaVxj03r5DSP3c/QwSKcy2jyubAG1
+SQS2QRmPHmOOK5jyL2mMs6cnUk8spfmqH9BJl/46nXpvYpJ63m/6ujHjfxGbp9EJ
+dJdPCfP8N/qcMJGUlSGyGL7UfQp3cQ==
+=UZuA
+-----END PGP SIGNATURE-----
+
+--xuVVbWEiWN36eeYa--
+
 
