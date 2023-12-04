@@ -2,137 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33664803547
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 14:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BBD803627
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 15:14:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA9Fk-0005KR-Gj; Mon, 04 Dec 2023 08:44:52 -0500
+	id 1rA9gh-000501-PA; Mon, 04 Dec 2023 09:12:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rA9Fj-0005KF-Ay
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 08:44:51 -0500
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1rA9gf-0004zr-TT
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:12:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rA9Fg-00025O-MP
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 08:44:51 -0500
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1rA9gc-0005rI-6X
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:12:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701697485;
+ s=mimecast20190719; t=1701699157;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=tdkQxNqtMWP8bSr1GKih/F4rURaRyVyZ5CNGBJ3ThtY=;
- b=RNI+842DXOsJwQa+2xlbWK5sZoz/WGnY2hcwnM0vccK4rqT3c+vqDJ804OsC3h7DnvdhLw
- fD/Q1M+Z4cbU6mZeASg/g7s2dEB80y9AX1aP14PpCGiD6AwF7uB/AmPcxl0YdYNXp5NxZX
- B4nVP2NvfJROK9NBKPM/wUedDiL5OKw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=HJvppl0bnHuGXwMnHNYv8qakLAHXl1pv+rHU9YgacsA=;
+ b=QzqcSOCho4ZWVin1JlU6z6rVBc/sooXjpPerg8N/PUaK1+/bbLZRQ+WX1y8UraaO2PwvMx
+ MppFCR8f0AcmIBZWfCLvmmFSFqDIhatxCpCy2hzFdGsIWLh6eBP87YKiaSohpVKDFmRKiW
+ iH2Vr7XVtJgdHAlQBSfGs5nSkIyCXac=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-286-9JcfZaQ-Ota9EyjsvmrGnw-1; Mon, 04 Dec 2023 08:44:19 -0500
-X-MC-Unique: 9JcfZaQ-Ota9EyjsvmrGnw-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3333c009305so1876825f8f.1
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 05:44:16 -0800 (PST)
+ us-mta-148-2ZL0wHaOMnqfgzN1LSlTrg-1; Mon, 04 Dec 2023 09:12:35 -0500
+X-MC-Unique: 2ZL0wHaOMnqfgzN1LSlTrg-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-547bb01fec2so3520690a12.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 06:12:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701697452; x=1702302252;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1701699154; x=1702303954;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tdkQxNqtMWP8bSr1GKih/F4rURaRyVyZ5CNGBJ3ThtY=;
- b=FS5YxzHQ2Jl40zfwlk4T6DeY38P6BUPAplbT+2T/tDIUJCAxzbBzhqZILSG68VCPzu
- RWa0oGrWry7xjdBLGDa3raE7jUZJbapu1X+wqqAE3ctxKKZv53vFWGIVmQOM8XYGO8xh
- wyisydZ0y/hTVdXXRe1o6/+/DTPvR6KWsiWTPtKOlyEvV9ez9kH83TiGe6B40u3VTxoW
- ht6nVFl0/Kpqp/h2p+L7yTK2538vBpfuBnr+Uq7rRD1xtX+mnB84dOMNf+UAJyiWshk9
- Kl32P8S1ZSUskwafkU7HJ738Oo5EhN5LFKEjeE9xLL6ohsRaqFajN1cC+4dqRm53DIhj
- v3aA==
-X-Gm-Message-State: AOJu0YzTpGpiODgWs9rsru55KqPVHFMMoSo0iFADO5fUdaw76RK0EISg
- s+/vREE9AYqTOgkiSk8J0mq0RzkjS2XQ5RMFdQYwTF3LCfTxiUcoYn6ftk9poxsW3r/zTEyhsZj
- SooGUTn12kt48sLo=
-X-Received: by 2002:a05:600c:8608:b0:40c:707:261f with SMTP id
- ha8-20020a05600c860800b0040c0707261fmr1755552wmb.134.1701697452832; 
- Mon, 04 Dec 2023 05:44:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGeP1anA4UUJPWyi5biHuQSAzA4rfDL3sKV8KLMcmQM3cXm+fMnmhaDED3Vzg3bn5iJ0m0tfQ==
-X-Received: by 2002:a05:600c:8608:b0:40c:707:261f with SMTP id
- ha8-20020a05600c860800b0040c0707261fmr1755541wmb.134.1701697452473; 
- Mon, 04 Dec 2023 05:44:12 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-178-85.web.vodafone.de.
- [109.43.178.85]) by smtp.gmail.com with ESMTPSA id
- f16-20020a05600c4e9000b0040b4e44cf8dsm15014378wmq.47.2023.12.04.05.44.10
+ bh=HJvppl0bnHuGXwMnHNYv8qakLAHXl1pv+rHU9YgacsA=;
+ b=wGsgiiLqdfk6kfFUW1R9J/GpKEYQ4gnrOJFZ3MP+6uOgmfpJLcaMudMicSqpJ3m6Ev
+ 7ys1ta90yC5LIp6vTgRlKUQ2lsB/mDxqOHqWG/YKkOe7YMaUtsBdneSlLGQezd3AMJ4D
+ bepBIcAzrD08jwwuMzD/YQIMSld1cMOq5zFgJcvowG83PmWFROEwkejjZZfr+f9Y4gnx
+ ucd5EUJrDhjdU9RDvAHPGMQC4O7tJSM3rHr9n2tz7t+CXg05C25XVCGF+b9pbB4KeHj+
+ f8gIA4L2PUAs4QJ58rtJoe+dNnxeoPyZjIcSzpCJcaAaO9qJGWADE9VKOcKd3AAz6AVL
+ Gcww==
+X-Gm-Message-State: AOJu0YwL7c794oheQawnE+0+H+ItftFDqNYtRVc+1tJa1iyimFQ3wd54
+ FdTZT7XstM3Rr/Vh8V6soB+hG3IJzb9pVwkMnv7lQywRzHWQdkbK3jn00A9VNfYYKaSYe7xcBnK
+ eiYVCR2J4h8/xy2U=
+X-Received: by 2002:aa7:c911:0:b0:54c:c68e:95a7 with SMTP id
+ b17-20020aa7c911000000b0054cc68e95a7mr612591edt.52.1701699154379; 
+ Mon, 04 Dec 2023 06:12:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEXS+40ULlw5o4zVwS+jmxYechxhc74FiL7R76SS/YdTu9Y5fSQ4VrjIzJUn/oOuDD0XQU+IQ==
+X-Received: by 2002:aa7:c911:0:b0:54c:c68e:95a7 with SMTP id
+ b17-20020aa7c911000000b0054cc68e95a7mr612584edt.52.1701699153977; 
+ Mon, 04 Dec 2023 06:12:33 -0800 (PST)
+Received: from [10.43.3.102] (nat-pool-brq-t.redhat.com. [213.175.37.10])
+ by smtp.gmail.com with ESMTPSA id
+ b19-20020a50ccd3000000b0054c49f1f207sm4224382edj.39.2023.12.04.06.12.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Dec 2023 05:44:11 -0800 (PST)
-Message-ID: <02ad8ad4-147a-472b-b865-5ebdcd0d622d@redhat.com>
-Date: Mon, 4 Dec 2023 14:44:09 +0100
+ Mon, 04 Dec 2023 06:12:33 -0800 (PST)
+Message-ID: <7e70c5d4-8c18-4861-8aca-497ba940c839@redhat.com>
+Date: Mon, 4 Dec 2023 15:12:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-8.2 v2] tests/avocado: Update yamon-bin-02.22.zip URL
+Subject: Re: [PATCH] hostmem: Round up memory size for qemu_madvise() in
+ host_memory_backend_memory_complete()
+To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: imammedo@redhat.com
+References: <f77d641d500324525ac036fe1827b3070de75fc1.1701088320.git.mprivozn@redhat.com>
+ <9b8a2863-1264-4058-b367-0b61a75921ac@redhat.com>
+ <b9c8b4da-cb14-4a67-b98d-655ed7348bef@redhat.com>
+ <de569c7a-2e21-4a98-a4a9-98132b43c621@redhat.com>
+ <0b6dacd2-a7c0-469f-830a-9162dfae75bf@redhat.com>
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Aurelien Jarno <aurelien@aurel32.net>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Stefan Hajnoczi <stefanha@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
- Beraldo Leal <bleal@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- BALATON Zoltan <balaton@eik.bme.hu>
-References: <20231201205630.10837-1-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231201205630.10837-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: =?UTF-8?B?TWljaGFsIFByw612b3puw61r?= <mprivozn@redhat.com>
+In-Reply-To: <0b6dacd2-a7c0-469f-830a-9162dfae75bf@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mprivozn@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,38 +106,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01/12/2023 21.56, Philippe Mathieu-Daudé wrote:
-> http://www.imgtec.com/tools/mips-tools/downloads/ redirects
-> to https://mips.com/downloads/yamon-version-02-22/ then points
-> to an invalid path to a s3 bucket. Use the correct path. The
-> site will eventually be fixed.
+On 12/4/23 10:21, David Hildenbrand wrote:
+> On 01.12.23 10:07, Michal Prívozník wrote:
+>> On 11/27/23 14:55, David Hildenbrand wrote:
+>>> On 27.11.23 14:37, David Hildenbrand wrote:
+>>>> On 27.11.23 13:32, Michal Privoznik wrote:
+>>>>> Simple reproducer:
+>>>>> qemu.git $ ./build/qemu-system-x86_64 \
+>>>>> -m size=8389632k,slots=16,maxmem=25600000k \
+>>>>> -object
+>>>>> '{"qom-type":"memory-backend-file","id":"ram-node0","mem-path":"/hugepages2M/","prealloc":true,"size":8590983168,"host-nodes":[0],"policy":"bind"}' \
+>>>>> -numa node,nodeid=0,cpus=0,memdev=ram-node0
+>>>>>
+>>>>> With current master I get:
+>>>>>
+>>>>> qemu-system-x86_64: cannot bind memory to host NUMA nodes: Invalid
+>>>>> argument
+>>>>>
+>>>>> The problem is that memory size (8193MiB) is not an integer
+>>>>> multiple of underlying pagesize (2MiB) which triggers a check
+>>>>> inside of madvise(), since we can't really set a madvise() policy
+>>>>> just to a fraction of a page.
+>>>>
+>>>> I thought we would just always fail create something that doesn't
+>>>> really
+>>>> make any sense.
+>>>>
+>>>> Why would we want to support that case?
+>>>>
+>>>> Let me dig, I thought we would have had some check there at some point
+>>>> that would make that fail (especially: RAM block not aligned to the
+>>>> pagesize).
+>>>
+>>>
+>>> At least memory-backend-memfd properly fails for that case:
+>>>
+>>> $ ./build/qemu-system-x86_64 -object
+>>> memory-backend-memfd,hugetlb=on,size=3m,id=tmp
+>>> qemu-system-x86_64: failed to resize memfd to 3145728: Invalid argument
+>>>
+>>> memory-backend-file ends up creating a new file:
+>>>
+>>>   $ ./build/qemu-system-x86_64 -object
+>>> memory-backend-file,share=on,mem-path=/dev/hugepages/tmp,size=3m,id=tmp
+>>>
+>>> $ stat /dev/hugepages/tmp
+>>>    File: /dev/hugepages/tmp
+>>>    Size: 4194304         Blocks: 0          IO Block: 2097152 regular
+>>> file
+>>>
+>>> ... and ends up sizing it properly aligned to the huge page size.
+>>>
+>>>
+>>> Seems to be due to:
+>>>
+>>>      if (memory < block->page_size) {
+>>>          error_setg(errp, "memory size 0x" RAM_ADDR_FMT " must be
+>>> equal to "
+>>>                     "or larger than page size 0x%zx",
+>>>                     memory, block->page_size);
+>>>          return NULL;
+>>>      }
+>>>
+>>>      memory = ROUND_UP(memory, block->page_size);
+>>>
+>>>      /*
+>>>       * ftruncate is not supported by hugetlbfs in older
+>>>       * hosts, so don't bother bailing out on errors.
+>>>       * If anything goes wrong with it under other filesystems,
+>>>       * mmap will fail.
+>>>       *
+>>>       * Do not truncate the non-empty backend file to avoid corrupting
+>>>       * the existing data in the file. Disabling shrinking is not
+>>>       * enough. For example, the current vNVDIMM implementation stores
+>>>       * the guest NVDIMM labels at the end of the backend file. If the
+>>>       * backend file is later extended, QEMU will not be able to find
+>>>       * those labels. Therefore, extending the non-empty backend file
+>>>       * is disabled as well.
+>>>       */
+>>>      if (truncate && ftruncate(fd, offset + memory)) {
+>>>          perror("ftruncate");
+>>>      }
+>>>
+>>> So we create a bigger file and map the bigger file and also have a
+>>> RAMBlock that is bigger. So we'll also consume more memory.
+>>>
+>>> ... but the memory region is smaller and we tell the VM that it has
+>>> less memory. Lot of work with no obvious benefit, and only some
+>>> memory waste :)
+>>>
+>>>
+>>> We better should have just rejected such memory backends right from
+>>> the start. But now it's likely too late.
+>>>
+>>> I suspect other things like
+>>>   * qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
+>>>   * qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP);
+>>>
+>>> fail, but we don't care for hugetlb at least regarding merging
+>>> and don't even log an error.
+>>>
+>>> But QEMU_MADV_DONTDUMP might also be broken, because that
+>>> qemu_madvise() call will just fail.
+>>>
+>>> Your fix would be correct. But I do wonder if we want to just let that
+>>> case fail and warn users that they are doing something that doesn't
+>>> make too much sense.
+>>>
+>>
+>> Yeah, what's suspicious is: if the size is smaller than page size we
+>> error out, but if it's larger (but still not aligned) we accept that.
+>> I'm failing to see reasoning there. Looks like the ROUND_UP() was added
+>> in v0.13.0-rc0~1201^2~4 (though it's done with some bit magic) and the
+>> check itself was added in v2.8.0-rc0~30^2~23. So it's a bit late, yes.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> Supersedes: <20231201142139.39816-1-philmd@linaro.org>
-> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Cc: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
->   tests/avocado/machine_mips_malta.py | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+> Yeah.
 > 
-> diff --git a/tests/avocado/machine_mips_malta.py b/tests/avocado/machine_mips_malta.py
-> index 9bd54518bf..8e1ee120f4 100644
-> --- a/tests/avocado/machine_mips_malta.py
-> +++ b/tests/avocado/machine_mips_malta.py
-> @@ -124,8 +124,9 @@ def test_mips_malta_i6400_framebuffer_logo_8cores(self):
->   class MaltaMachine(QemuSystemTest):
->   
->       def do_test_yamon(self):
-> -        rom_url = ('http://www.imgtec.com/tools/mips-tools/downloads/'
-> -                   'yamon/yamon-bin-02.22.zip')
-> +        rom_url = ('https://s3-eu-west-1.amazonaws.com/'
-> +                   'downloads-mips/mips-downloads/'
-> +                   'YAMON/yamon-bin-02.22.zip')
->           rom_hash = '8da7ecddbc5312704b8b324341ee238189bde480'
->           zip_path = self.fetch_asset(rom_url, asset_hash=rom_hash)
->   
+>>
+>> OTOH - if users want to waste resources, should we stop them? For
+> 
+> It's all inconsistent, including memfd handling or what you noted above.
+> 
+> For example, Having a 1025 MiB guest on gigantic pages, consuming 2 GiB
+> really is just absolutely stupid.
+> 
+> Likely the user wants to know about such mistakes instead of making QEMU
+> silence all side effects of that. :)
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Agreed. As I said, consistency should win here.
+
+> 
+> 
+>> instance, when user requests more vCPUs than physical CPUs a warning is
+>> printed:
+>>
+>> $ ./build/qemu-system-x86_64 -accel kvm -smp cpus=128
+>> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested
+>> (128) exceeds the recommended cpus supported by KVM (8)
+> 
+> But that case is still reasonable for testing guest behavior with many
+> vCPUs, or migrating from a machine with more vCPUs.
+> 
+> Here, the guest will actually see all vCPUs. In comparison, the memory
+> waste here will never ever be consumable by the VM.
+
+Good point.
+
+> 
+>>
+>> but that's about it. So maybe the error can be demoted to just a warning?
+> 
+> The question is what we want to do, for example, with the
+> qemu_madvise(QEMU_MADV_DONTDUMP). It will similarly simply fail.
+
+It will. But the retval of qemu_madvise() is not checked here, and in
+qemu_ram_setup_dump() it's just a warning.
+
+> 
+> I'm curious, are there real customers running into that?
+> 
+>
+
+No, I haven't seen any bugreport from a customer, just our QE ran into
+this issue: https://issues.redhat.com/browse/RHEL-1127 (I've asked to
+make this issue public).
+
+
+> We could fix it all that but always warn when something like that is
+> being done.
+> 
+
+Fair enough. After all of this, I'm inclined to turn this into a proper
+error and deny not page aligned sizes. There's no real benefit in having
+them and furthermore, the original bug report is about cryptic error
+message.
+
+Michal
 
 
