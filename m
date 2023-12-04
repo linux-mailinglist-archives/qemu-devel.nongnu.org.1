@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E678038F8
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 16:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D038039BA
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 17:09:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAB0p-0004Xf-J6; Mon, 04 Dec 2023 10:37:35 -0500
+	id 1rABV1-0006ga-9l; Mon, 04 Dec 2023 11:08:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rAB0l-0004XG-Dl
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:37:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rAB0k-0001sf-1d
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:37:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701704249;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Fc24NWMQLYLdB1JxNKAGXDm/FWd2EgI9NmNM72eUnlM=;
- b=hlUxo0v+Qe6ebNatPu5kBEmKK97HG60RD0yYsAI99/AilORi5YGvIMyiPGrnp7zxYOGStd
- KQzy5TXtQ9hMSg+pJxsaGhDg+O85b2QcLOMFdb93+0vutyJ8XadMD/p+wqiA3ohyNutkgv
- YS4GdAoKWlBsIRYRkSKn0/yrQYmdHJU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-VtBvAg9SPTefofWbUPH1rA-1; Mon,
- 04 Dec 2023 10:37:22 -0500
-X-MC-Unique: VtBvAg9SPTefofWbUPH1rA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 436B038116E3;
- Mon,  4 Dec 2023 15:37:22 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.49])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9DD3B492BFC;
- Mon,  4 Dec 2023 15:37:21 +0000 (UTC)
-Date: Mon, 4 Dec 2023 10:37:20 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH 2/4] virtio-scsi: don't lock AioContext around
- virtio_queue_aio_attach_host_notifier()
-Message-ID: <20231204153720.GH1492005@fedora>
-References: <20231123194931.171598-1-stefanha@redhat.com>
- <20231123194931.171598-3-stefanha@redhat.com>
- <cb5372l2vuovribjhxqwf4n7m5iads2rhfgcelpklkn44ckhru@hr62o7cncv4h>
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rABUy-0006fq-E3
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 11:08:44 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rABUv-0005Gu-5u
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 11:08:44 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6ce47909313so692369b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 08:06:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701705996; x=1702310796;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3M0DS6b6jQp9VBTYqAfl5mjd7il15W+Sq0+VP+RPvsg=;
+ b=YNWvKpDqsUH0DUw7thpy8aKmcGwyPhZr4FTWGN37xs9FVVcYiP2IsYQ+uOXs4EKXQi
+ hUenUKMfmqmWoxdy5LOY7+ACaajlzW7EzzLpGcj/I3lNbPjj3gVAKIARW6g+LyPppnMm
+ JXcevRik61ZWTdb6AuT1OMP6hqzb5CCQVEW5+890u69wGVou3grPDtNvTJXfI3uw8EzE
+ 01Lgh9y14eP7pf7PWcXR3HrDuGHKK7yKG3gquuKww4oSPPikZ5CCKP+0eQv8/JaTyjMK
+ gq1+VEk2Fd+7mXj2pzButHBqYje87IuKt0HoAHSoxVlMhXWcVCT9GdGA7H26Rg7VGdR5
+ 4ZhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701705996; x=1702310796;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3M0DS6b6jQp9VBTYqAfl5mjd7il15W+Sq0+VP+RPvsg=;
+ b=ju9rPEwI98MPbl29XgLG79QmBv91bziw/NVEXmhB+p5m4KdOInz8Z1e+inuVeVl7se
+ JqHsaQ0fJaDr/1yuzuEB/irx4odPjfBdpqeL+jmC8PHTuUc0PNlhSSMTjGGBsPYOOiuE
+ kDbEbyv756jpfF2HA5RnarsGMQ1qEDu4yyPjpEF3SokeB7Tfdso+X740rPBhNWqPNj0B
+ TfiMBz4Dcy19/0hpMK3dI7U+/0VhSrYjbS6UsJgMHDJpe/LB5RIfheTlY7XRZ5NKWf8h
+ rRzE0H8nCPSIVDVofrokbvMoywWBkhyni7B3DiHp6JspZlCSPcXb/Moo2eSMhWijlwS7
+ IHBg==
+X-Gm-Message-State: AOJu0Yyu35Eg5sqmYBXrQiz+va9YWiTU/ccALzCxcj1rS9/SEEOx7AwG
+ GgQSLyYT4jseH02bbD+hjgO26/2aVjBxg6Hu9WM9QZv6
+X-Google-Smtp-Source: AGHT+IGqnvTQqqmT8ZLS12TRGTR9th4384Jy2RldrDQA0YT2oJiEytawINso1J0lYs3KMmSF8lmv6Q==
+X-Received: by 2002:a05:6a20:1444:b0:18f:97c:5b77 with SMTP id
+ a4-20020a056a20144400b0018f097c5b77mr1765753pzi.69.1701705995398; 
+ Mon, 04 Dec 2023 08:06:35 -0800 (PST)
+Received: from localhost.localdomain ([125.71.95.66])
+ by smtp.gmail.com with ESMTPSA id
+ m17-20020aa78a11000000b006be4bb0d2dcsm7993064pfa.149.2023.12.04.08.06.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Dec 2023 08:06:34 -0800 (PST)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ yong.huang@smartx.com
+Subject: [RFC 0/8] Support generic Luks encryption
+Date: Tue,  5 Dec 2023 00:06:17 +0800
+Message-Id: <cover.1701705003.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="2DxQU/HZ7VPrFXs4"
-Content-Disposition: inline
-In-Reply-To: <cb5372l2vuovribjhxqwf4n7m5iads2rhfgcelpklkn44ckhru@hr62o7cncv4h>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,38 +91,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This functionality was motivated by the following to-do list seen
+in crypto documents:
+https://wiki.qemu.org/Features/Block/Crypto 
 
---2DxQU/HZ7VPrFXs4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The last chapter says we should "separate header volume": 
 
-On Mon, Nov 27, 2023 at 09:21:08AM -0600, Eric Blake wrote:
-> On Thu, Nov 23, 2023 at 02:49:29PM -0500, Stefan Hajnoczi wrote:
-> > virtio_queue_aio_attach_host_notifier() does not require the AioContext
-> > lock. Stop taking the lock and remember add an explicit smp_wmb()
->=20
-> s/remember// ?
+The LUKS format has ability to store the header in a separate volume
+from the payload. We should extend the LUKS driver in QEMU to support
+this use case.
 
-Will fix, thanks!
+As a proof-of-concept, I've created this patchset, which I've named
+the Gluks: generic luks. As their name suggests, they offer encryption
+for any format that QEMU theoretically supports.
 
-Stefan
+As you can see below, the Gluks format block layer driver's design is
+quite simple.
 
---2DxQU/HZ7VPrFXs4
-Content-Type: application/pgp-signature; name="signature.asc"
+         virtio-blk/vhost-user-blk...(front-end device)
+              ^            
+              |            
+             Gluks   (format-like disk node) 
+          /         \         
+       file       header (blockdev reference)
+        /             \        
+     file            file (protocol node)
+       |               |
+   disk data       Luks data 
 
------BEGIN PGP SIGNATURE-----
+We don't need to create a new disk format in order to use the Gluks
+to encrypt the disk; all we need to do is construct a Luks header, which
+we will refer to as the "Gluk" because it only contains Luks header data
+and no user data. The creation command, for instance, is nearly
+identical to Luks image:
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVt8jAACgkQnKSrs4Gr
-c8gOtwf/RLH9hbp4kF4oDct8PQ0w6jp/MWd6Lx60sYzvlSfLb6KYt18+wUz1Z5Eq
-IC6T3RaxlQu0mCnl6eKoj5ZwWKKHM0Ip63FGQrqg9svn+/qEHmkX+gIJ8cXNcREK
-WtwhDwsLmnmZ8wAPGtJzKZIx7DSp+nxTgZIO8Vo5cJT06gsOeww6G6hON4SgmWl0
-HhICF2WzpFwMwYijstntIIUVrBrkEYMZVCttTXgSlnO7J7+aik+kXZqt3LuKqfAW
-Rk2/6kwWWJ0JhmU6C7IdnfiiWt+K0IQVPRzs9YyVp4w7bDXN7nekR2Fd/IRfkmdS
-Ptakrea2O6VpxEZyl9pTQdlWbAAGpg==
-=UmxJ
------END PGP SIGNATURE-----
+$ qemu-img create --object secret,id=sec0,data=abc123 -f gluks
+  -o cipher-alg=aes-256,cipher-mode=xts -o key-secret=sec0
+  cipher.gluks
 
---2DxQU/HZ7VPrFXs4--
+As previously mentioned, the "size" option is not accepted during the
+generation of the Gluks format because it only contains the Luks header
+data.
+
+To hot-add a raw disk with Gluks encryption, see the following steps:
+
+1. add a protocol blockdev node of data disk 
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+  "arguments":{"node-name": "libvirt-1-storage", "driver": "file",
+  "filename": "/path/to/test_disk.raw"}}'
+
+2. add a protocol blockdev node of Luks header
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+  "arguments":{"node-name": "libvirt-2-storage", "driver": "file",
+  "filename": "/path/to/cipher.gluks" }}'
+
+3. add the secret for decrypting the cipher stored in Gluks header
+$ virsh qemu-monitor-command c81_node1 '{"execute":"object-add",
+  "arguments":{"qom-type": "secret", "id":
+  "libvirt-2-storage-secret0", "data": "abc123"}}'
+
+4. add the Gluks-drived blockdev to connect the user disk with Luks
+   header, QEMU will use the cipher in the Luks header to
+   encrypt/decrypt the disk data
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+  "arguments":{"node-name": "libvirt-1-format", "driver": "gluks", "file":
+  "libvirt-1-storage", "header": "libvirt-2-storage", "key-secret":
+  "libvirt-2-storage-secret0"}}' 
+
+5. add the device finally
+$ virsh qemu-monitor-command vm '{"execute":"device_add",
+  "arguments": {"num-queues": "1", "driver": "virtio-blk-pci", "scsi":
+  "off", "drive": "libvirt-1-format", "id": "virtio-disk1"}}'
+
+Do the reverse to hot-del the raw disk.
+
+To hot-add a qcow2 disk with Gluks encryption:
+
+1. add a protocol blockdev node of data disk
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+  "arguments":{"node-name": "libvirt-1-storage", "driver": "file",
+  "filename": "/path/to/test_disk.qcow2"}}'
+
+2. add a protocol blockdev node of Luks header as above.
+   block ref: libvirt-2-storage
+
+3. add the secret for decrypting the cipher stored in Gluks header as
+   above too 
+   secret ref: libvirt-2-storage-secret0
+
+4. add the qcow2-drived blockdev format node:
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+  "arguments":{"node-name": "libvirt-1-format", "driver": "qcow2",
+  "file": "libvirt-1-storage"}}'
+
+5. add the Gluks-drived blockdev to connect the qcow2 disk with Luks
+   header 
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+  "arguments":{"node-name": "libvirt-2-format", "driver": "gluks",
+  "file": "libvirt-1-format", "header": "libvirt-2-storage",
+  "key-secret": "libvirt-2-format-secret0"}}'
+
+6. add the device finally
+$ virsh qemu-monitor-command vm '{"execute":"device_add",
+  "arguments": {"num-queues": "1", "driver": "virtio-blk-pci", "scsi":
+  "off", "drive": "libvirt-2-format", "id": "virtio-disk2"}}'
+
+In a virtual machine, several disk nodes are allowed to share a single
+Gluks header.
+
+This patchset, as previously said, is a proof-of-concept; additional
+work may be required before productization. As the title suggests, we
+have uploaded it solely for comments. Additionally, a thorough test
+would be performed on the following version.
+
+Any ideas and comments about this feature would be appreciated.
+
+Thanks,
+
+Yong
+
+Best regared !
+
+Hyman Huang (8):
+  crypto: Export util functions and structures
+  crypto: Introduce payload offset set function
+  Gluks: Add the basic framework
+  Gluks: Introduce Gluks options
+  qapi: Introduce Gluks types to qapi
+  crypto: Provide the Luks crypto driver to Gluks
+  Gluks: Implement the fundamental block layer driver hooks.
+  block: Support Gluks format image creation using qemu-img
+
+ block.c                |   5 +
+ block/crypto.c         |  20 +---
+ block/crypto.h         |  23 ++++
+ block/generic-luks.c   | 250 +++++++++++++++++++++++++++++++++++++++++
+ block/generic-luks.h   |  29 +++++
+ block/meson.build      |   1 +
+ crypto/block.c         |   5 +
+ include/crypto/block.h |   1 +
+ qapi/block-core.json   |  22 +++-
+ qapi/crypto.json       |  10 +-
+ 10 files changed, 348 insertions(+), 18 deletions(-)
+ create mode 100644 block/generic-luks.c
+ create mode 100644 block/generic-luks.h
+
+-- 
+2.39.1
 
 
