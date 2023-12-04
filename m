@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667998039CA
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 17:10:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9F18039BD
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 17:09:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rABVK-0006sF-BQ; Mon, 04 Dec 2023 11:09:06 -0500
+	id 1rABVY-0006wM-5L; Mon, 04 Dec 2023 11:09:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rABVH-0006pa-MV
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 11:09:03 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rABVV-0006vY-Gm
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 11:09:17 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rABV8-0005Hm-RB
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 11:09:03 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6ce3efb78e2so1773994b3a.1
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 08:06:54 -0800 (PST)
+ id 1rABVD-0005IQ-8M
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 11:09:17 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6cb55001124so4270346b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 08:06:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701706013; x=1702310813;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701706018; x=1702310818;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k1QeiOhFy3aR8sUUfQkgHk63IJyiyAt+CbeADuDdbL0=;
- b=jabphSQR0piJnaKvIWeDcDtPxMEZAHMSDJ09P8H0NK9MCghtkuuxDl3Ri3JvPjjlUn
- r93GXvBjOGWASBZG8KlDfxGH59SMwHDA12KT9eIzHEHhUjGLdR3UBsymwtkqkHEzMrc+
- NgZZM+QoHjaUqhV12LrbEK6XAUrddxMaGC3+G3QGieisF2TilBNGk4tRaMZ5uXNKvL9v
- MhiZIxnbTU9E/ukQcyY+aq05/ZI36pDbfhMKyzSXRQDC3XgGfj3yxAcSaDsGYrvE14UP
- A7tkTwSbJ8krlrqeTL9AyJ0zOvuqimC/VmNaqFP/SDnibU1Zae2LXSy0aEvlMPkNMs+U
- n9cw==
+ bh=77C9fyBK+wCjHbA0j2qTNKB4ASsAQiztQYgybK7k++I=;
+ b=1Z7oHjtEyvRQ8V/KsmHMRV4Nju+keGOinh0s+3ElEBauUBL2GZ+Zj9rr7VuHaXUlJm
+ xPPDSyLO9DiCYJ0yc66vTxKL9kzYRJz4tv8SJablzvpX1cMBYV7IsDB3CKDeUfMjciqV
+ BZjt2gw+rejhr1kHt1RDOmDVxsi6HW2CsxzqTmvtNReyUxgxtLHa9+SBVPnOrjJxWKPi
+ 5wpTTjxYs4aBQQybZy9FhixWrF1SNGeJseMDf8R6Y2Wt1hV3fJWdYWFFGFlm8KLx/u8t
+ UAzznTPZaRFYI/UdgldfHNqP+/Vb3OVfn+UwRorcrC27cDWHZsMkE6IO6Ki2cOMNz6oe
+ 7c4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701706013; x=1702310813;
+ d=1e100.net; s=20230601; t=1701706018; x=1702310818;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k1QeiOhFy3aR8sUUfQkgHk63IJyiyAt+CbeADuDdbL0=;
- b=U+/LqBGoLCqcDVWJ81Hk241Gfppvppt4s1VpFJeuwR+mOG5oov+Nt0KC7Fo5fJBfqC
- p7rryXwmTdA16TcVScC3R/r1XQgRdz4iJ3QNRZ1rOTc34wiXFCvR/AdpEaOleEUaN1IL
- B428aKUCvsMO1wQFgkcoVC157plPlwu7agVC6EvijyDiidCbYX99n4EoUp8yvc/iLxWd
- skgLkPbrtWAvTlVROsoyZJjhHEh2sb9HA9xWV23B+KFnN4BLMio52MOQcsiM/NRviajo
- wi75+Kdee57JNGXmBOdAZWKmeRepDtgEV65PdkfLa3PmxmxpoNfIHNllqzKNoWk/7YRx
- qPbw==
-X-Gm-Message-State: AOJu0YzbZOmekhvITh8b9kblFUDkqjcOy2dyLMPU9t/2GmLfS5PRKkZX
- flSTktwK6e9oYvgsVxFZcA04n0WmmB7MDno4nV8rLsaL
-X-Google-Smtp-Source: AGHT+IGdBS90NTg8Ug8m0G305HsVDpnrwP4uMHSmgOGJGA2h6QwXbx9fykdVNFp8Y0lJbZ5Xi8qP9Q==
-X-Received: by 2002:a05:6a00:1150:b0:6ce:2732:583 with SMTP id
- b16-20020a056a00115000b006ce27320583mr5056556pfm.52.1701706012830; 
- Mon, 04 Dec 2023 08:06:52 -0800 (PST)
+ bh=77C9fyBK+wCjHbA0j2qTNKB4ASsAQiztQYgybK7k++I=;
+ b=AdK1+AYczoxuPwg74soPSvkSMzKXwROx3+id+kq0Ygu8x+4gk/0OQotP2A6gpn5OSj
+ uwQHguzppezGOCPE543yuS9atUMsyWbRdoqXEEH1Ur/UiM1uCiMS0FLVtD88XSPDWR+V
+ ccDbQeDsxKTKwePdtOkqcL41faO9JPbWeZPvCUaokKQlNJgbuQEU63++Mqea2Drc0iiv
+ JQXIBw4JCX85IBsXEbfiIDCSBygT1FjltdUUzSDKTSFIA+nw28pt7WvgqusAzppc5PxS
+ t61Hr+uW9kCBfFHxU5EvuYn9VNJGbLXjyMVbPfjx+voCLvLyRwfhXclljWAIIyMolfJn
+ BZQw==
+X-Gm-Message-State: AOJu0YyH8YNNEKKbBQDrmboklGhH9Ex2Fgme1oayGbtLAWEeHf1p5gZM
+ 9oJYOZxWzXPYkZ9OWgWxBxriqENDOl+rD1cgAaiGw2Ta
+X-Google-Smtp-Source: AGHT+IEqHaQzs6HU2aZxrQNo9kCWPDV1YIaMDi0HAkWOowjgkc4i+LeTjSOkDfqtvvOvSRpMRX73VQ==
+X-Received: by 2002:a05:6a20:138b:b0:18f:97c:3864 with SMTP id
+ hn11-20020a056a20138b00b0018f097c3864mr3406251pzc.62.1701706017473; 
+ Mon, 04 Dec 2023 08:06:57 -0800 (PST)
 Received: from localhost.localdomain ([125.71.95.66])
  by smtp.gmail.com with ESMTPSA id
- m17-20020aa78a11000000b006be4bb0d2dcsm7993064pfa.149.2023.12.04.08.06.48
+ m17-20020aa78a11000000b006be4bb0d2dcsm7993064pfa.149.2023.12.04.08.06.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Dec 2023 08:06:52 -0800 (PST)
+ Mon, 04 Dec 2023 08:06:57 -0800 (PST)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  yong.huang@smartx.com
-Subject: [RFC 4/8] Gluks: Introduce Gluks options
-Date: Tue,  5 Dec 2023 00:06:21 +0800
-Message-Id: <b11dab3ce45427d8beb8ddf5afd60a3419965aab.1701705003.git.yong.huang@smartx.com>
+Subject: [RFC 5/8] qapi: Introduce Gluks types to qapi
+Date: Tue,  5 Dec 2023 00:06:22 +0800
+Message-Id: <356796b03a257593357fe660e49b17e2057009ef.1701705003.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1701705003.git.yong.huang@smartx.com>
 References: <cover.1701705003.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
- envelope-from=yong.huang@smartx.com; helo=mail-pf1-x42a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::432;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,86 +94,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similar to Luks, the Gluks format primarily recycles the
-Luks choices with the exception of the "size" option.
+Primarily using the Luks types again, Gluks adds an
+extra option called "header", which points to the Luks
+header node's description.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- block/crypto.c       |  4 ++--
- block/generic-luks.c | 18 ++++++++++++++++++
- block/generic-luks.h |  3 +++
- 3 files changed, 23 insertions(+), 2 deletions(-)
+ qapi/block-core.json | 22 +++++++++++++++++++++-
+ qapi/crypto.json     | 10 +++++++---
+ 2 files changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/block/crypto.c b/block/crypto.c
-index 6afae1de2e..6f8528dccc 100644
---- a/block/crypto.c
-+++ b/block/crypto.c
-@@ -150,7 +150,7 @@ error:
- }
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index ca390c5700..e2208f6891 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3185,12 +3185,14 @@
+ #
+ # @snapshot-access: Since 7.0
+ #
++# @gluks: Since 9.0
++#
+ # Since: 2.9
+ ##
+ { 'enum': 'BlockdevDriver',
+   'data': [ 'blkdebug', 'blklogwrites', 'blkreplay', 'blkverify', 'bochs',
+             'cloop', 'compress', 'copy-before-write', 'copy-on-read', 'dmg',
+-            'file', 'snapshot-access', 'ftp', 'ftps', 'gluster',
++            'file', 'snapshot-access', 'ftp', 'ftps', 'gluks', 'gluster',
+             {'name': 'host_cdrom', 'if': 'HAVE_HOST_BLOCK_DEVICE' },
+             {'name': 'host_device', 'if': 'HAVE_HOST_BLOCK_DEVICE' },
+             'http', 'https',
+@@ -3957,6 +3959,23 @@
+             '*debug': 'int',
+             '*logfile': 'str' } }
  
- 
--static QemuOptsList block_crypto_runtime_opts_luks = {
-+QemuOptsList block_crypto_runtime_opts_luks = {
-     .name = "crypto",
-     .head = QTAILQ_HEAD_INITIALIZER(block_crypto_runtime_opts_luks.head),
-     .desc = {
-@@ -181,7 +181,7 @@ static QemuOptsList block_crypto_create_opts_luks = {
- };
- 
- 
--static QemuOptsList block_crypto_amend_opts_luks = {
-+QemuOptsList block_crypto_amend_opts_luks = {
-     .name = "crypto",
-     .head = QTAILQ_HEAD_INITIALIZER(block_crypto_create_opts_luks.head),
-     .desc = {
-diff --git a/block/generic-luks.c b/block/generic-luks.c
-index f23e202991..ebc0365d40 100644
---- a/block/generic-luks.c
-+++ b/block/generic-luks.c
-@@ -35,6 +35,21 @@ typedef struct BDRVGLUKSState {
-     uint64_t header_size;   /* In bytes */
- } BDRVGLUKSState;
- 
-+static QemuOptsList gluks_create_opts_luks = {
-+    .name = "crypto",
-+    .head = QTAILQ_HEAD_INITIALIZER(gluks_create_opts_luks.head),
-+    .desc = {
-+        BLOCK_CRYPTO_OPT_DEF_LUKS_KEY_SECRET(""),
-+        BLOCK_CRYPTO_OPT_DEF_LUKS_CIPHER_ALG(""),
-+        BLOCK_CRYPTO_OPT_DEF_LUKS_CIPHER_MODE(""),
-+        BLOCK_CRYPTO_OPT_DEF_LUKS_IVGEN_ALG(""),
-+        BLOCK_CRYPTO_OPT_DEF_LUKS_IVGEN_HASH_ALG(""),
-+        BLOCK_CRYPTO_OPT_DEF_LUKS_HASH_ALG(""),
-+        BLOCK_CRYPTO_OPT_DEF_LUKS_ITER_TIME(""),
-+        { /* end of list */ }
-+    },
-+};
++##
++# @BlockdevOptionsGLUKS:
++#
++# Driver specific block device options for GLUKS.
++#
++# @header: reference to the definition of the luks header node.
++#
++# @key-secret: the ID of a QCryptoSecret object providing the
++#     decryption key.
++#
++# Since: 9.0
++##
++{ 'struct': 'BlockdevOptionsGLUKS',
++  'base': 'BlockdevOptionsGenericFormat',
++  'data': { 'header': 'BlockdevRef',
++            'key-secret': 'str' } }
 +
- static int gluks_open(BlockDriverState *bs, QDict *options, int flags,
-                       Error **errp)
- {
-@@ -71,6 +86,9 @@ static BlockDriver bdrv_generic_luks = {
-     .bdrv_co_create_opts    = gluks_co_create_opts,
-     .bdrv_child_perm        = gluks_child_perms,
-     .bdrv_co_getlength      = gluks_co_getlength,
-+
-+    .create_opts            = &gluks_create_opts_luks,
-+    .amend_opts             = &block_crypto_amend_opts_luks,
- };
+ ##
+ # @BlockdevOptionsIoUring:
+ #
+@@ -4680,6 +4699,7 @@
+       'file':       'BlockdevOptionsFile',
+       'ftp':        'BlockdevOptionsCurlFtp',
+       'ftps':       'BlockdevOptionsCurlFtps',
++      'gluks':      'BlockdevOptionsGLUKS',
+       'gluster':    'BlockdevOptionsGluster',
+       'host_cdrom':  { 'type': 'BlockdevOptionsFile',
+                        'if': 'HAVE_HOST_BLOCK_DEVICE' },
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index fd3d46ebd1..9afb242b5b 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -154,11 +154,13 @@
+ #
+ # @luks: LUKS encryption format.  Recommended for new images
+ #
++# @gluks: generic LUKS encryption format. (since 9.0)
++#
+ # Since: 2.6
+ ##
+ { 'enum': 'QCryptoBlockFormat',
+ #  'prefix': 'QCRYPTO_BLOCK_FORMAT',
+-  'data': ['qcow', 'luks']}
++  'data': ['qcow', 'luks', 'gluks']}
  
- static void block_generic_luks_init(void)
-diff --git a/block/generic-luks.h b/block/generic-luks.h
-index 2aae866fa4..f18adf41ea 100644
---- a/block/generic-luks.h
-+++ b/block/generic-luks.h
-@@ -23,4 +23,7 @@
- #ifndef GENERIC_LUKS_H
- #define GENERIC_LUKS_H
+ ##
+ # @QCryptoBlockOptionsBase:
+@@ -246,7 +248,8 @@
+   'base': 'QCryptoBlockOptionsBase',
+   'discriminator': 'format',
+   'data': { 'qcow': 'QCryptoBlockOptionsQCow',
+-            'luks': 'QCryptoBlockOptionsLUKS' } }
++            'luks': 'QCryptoBlockOptionsLUKS',
++            'gluks': 'QCryptoBlockOptionsLUKS' } }
  
-+extern QemuOptsList block_crypto_runtime_opts_luks;
-+extern QemuOptsList block_crypto_amend_opts_luks;
-+
- #endif /* GENERIC_LUKS_H */
+ ##
+ # @QCryptoBlockCreateOptions:
+@@ -260,7 +263,8 @@
+   'base': 'QCryptoBlockOptionsBase',
+   'discriminator': 'format',
+   'data': { 'qcow': 'QCryptoBlockOptionsQCow',
+-            'luks': 'QCryptoBlockCreateOptionsLUKS' } }
++            'luks': 'QCryptoBlockCreateOptionsLUKS',
++            'gluks': 'QCryptoBlockCreateOptionsLUKS' } }
+ 
+ ##
+ # @QCryptoBlockInfoBase:
 -- 
 2.39.1
 
