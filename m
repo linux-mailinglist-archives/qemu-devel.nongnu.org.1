@@ -2,158 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615B9802E90
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 10:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 441B5802F43
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 10:51:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA5FE-0002zv-Os; Mon, 04 Dec 2023 04:28:05 -0500
+	id 1rA5aF-0005t0-NB; Mon, 04 Dec 2023 04:49:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1rA5FC-0002zm-92
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 04:28:02 -0500
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rA5aD-0005sS-0H
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 04:49:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
- id 1rA5FA-0005r2-7F
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 04:28:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701682080; x=1733218080;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=RkfO/1OqSPuiO8CAyxMOFXyxMGw/XFXx2to5dB9NXys=;
- b=MIqKX/Ib5Doskw49yHiawz1sQfKVDdnI1dsCN2zLypzVcx1pqKSrF0Cl
- 6aaRQtUsxS8/SKzcfFvI4NQDSce1Vg//LC1+Uwl/U+3eQNMgFkFgkH0S0
- hTYvxYw+yc9YZLUthTnZ+Wr3FaEvaJu4hUpXxxRfiPbaM3e37tkuUskBV
- SHdVhce9SrJG1wKb6wnMfT5Khhayt2Kcy9+6bCQjeILl4LNupyCU/u7yl
- DkV8vpYM4Nge5R2l92Thn8JEiYJmoT0g5qc4zVuKbGccIz/arLQ+fKijj
- USiBVanOBtqt4NwE/Fd+DUTC6DosfQISEJNjDoTbeTD5/+C6fV/igvHNc Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="558354"
-X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
-   d="scan'208";a="558354"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2023 01:27:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="836527348"
-X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; d="scan'208";a="836527348"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmsmga008.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 04 Dec 2023 01:27:57 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 4 Dec 2023 01:27:57 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Mon, 4 Dec 2023 01:27:57 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.101)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Mon, 4 Dec 2023 01:27:56 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nr4wNaw52wob9tM58Yk3drcwvipnQVd5Z3llkBO3X1yP0ooFhoDABZb91qHv3JfaYSqswZiFYxLEbEPRJfeevGWgVf946e7L6e+2dw3syq1r6QXP3cZt3+6bouNP/YY9h1n8jXbFAXIMFLspRaOJPRLL1BslUOfSWLYKVG9BmaSaXNtzvRlyqkxWjxFDL744/AsLGF5fpiqgIXZZpYnSrg/5wiQrYc8WcMYgAry44sqZZM5eP365PhPBHZiJtQxrmAGa6rX2jc80NWynNGM17ysPKwRkD16aOhNtqK+nwrdhzIgl8DzgBNRftF/rvdWJpZXL0NDm5p52PsEqvpUGYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=com5yD2d15rCMh55xinH0ip6H7X0FMNSQbvAVbjukkI=;
- b=gTNoXprF6tIuhQx+G7koW5kXpuI9tRKHFVEg3I6/Z3srHuI+j18Dn4TTQso5FPWZiQm83tBzHQ96VbrESgWF/609wXJiQ5xY2WoXykqRJH/q3iEj0wjD0T47rREcyUeATEHmms447ioHtJ1zyKsSfQpQ/7erRUlV6/siQCsYVZ9klI40JqTNpngWn7YnzHLu+/xEUFFh8AzTupir0GfZWrTG/Ec2dr1Xd/aPpyASOH+oSdLlUFtUjXbg3xTfMZSunBPdedw6UGlJ+RUSxy4kBzrx6KQ+5Nc/uT4LDU9V95a56cTO/ICdjxqs8LMJrBPoVOkOgUeQM0Kh9MuQfamM9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BY5PR11MB4388.namprd11.prod.outlook.com (2603:10b6:a03:1c9::17)
- by SJ0PR11MB4816.namprd11.prod.outlook.com (2603:10b6:a03:2ad::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.33; Mon, 4 Dec
- 2023 09:27:55 +0000
-Received: from BY5PR11MB4388.namprd11.prod.outlook.com
- ([fe80::1a92:8068:1ee6:59fb]) by BY5PR11MB4388.namprd11.prod.outlook.com
- ([fe80::1a92:8068:1ee6:59fb%5]) with mapi id 15.20.7046.033; Mon, 4 Dec 2023
- 09:27:54 +0000
-From: "Liu, Yuan1" <yuan1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-CC: "quintela@redhat.com" <quintela@redhat.com>, "peterx@redhat.com"
- <peterx@redhat.com>, "farosas@suse.de" <farosas@suse.de>,
- "leobras@redhat.com" <leobras@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "Zou, Nanhai" <nanhai.zou@intel.com>
-Subject: RE: [PATCH v2 1/4] migration: Introduce multifd-compression-accel
- parameter
-Thread-Topic: [PATCH v2 1/4] migration: Introduce multifd-compression-accel
- parameter
-Thread-Index: AQHaE6gs7VhgsmOXYUaBbCE/V4euo7CURyWigAS4/9A=
-Date: Mon, 4 Dec 2023 09:27:54 +0000
-Message-ID: <BY5PR11MB4388065E98C0F50724CFED2AA386A@BY5PR11MB4388.namprd11.prod.outlook.com>
-References: <20231109154638.488213-1-yuan1.liu@intel.com>
- <20231109154638.488213-2-yuan1.liu@intel.com> <87jzpyz3hm.fsf@pond.sub.org>
-In-Reply-To: <87jzpyz3hm.fsf@pond.sub.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BY5PR11MB4388:EE_|SJ0PR11MB4816:EE_
-x-ms-office365-filtering-correlation-id: 0c7ad422-dfaa-4477-9c13-08dbf4ab4bae
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 5zHbBP5PpjGMzrosyDZ9M6Z8uZXuKfj3HES6n+Ms9REkZsXsQDoVSufhCGx4z44hZg0+lDGtdQCUKprCIbtKhwzCi0XwmMF+z0pQIJDnfuHkEMFgTQdM+wXYYQdGo5d38zaJJj3Vea//3fCIqahh5j3hPDvqXA5NmZcn/Cg4GLP0XHXQ0zcPPhQPpOEToC81t9nKFN8XXX8amkPD4+7cOOxyTn7mX/sAnitDL6br2U2JjAyXU+e9J7I8T2DC1gsejAo3/Mc19hGRMyXRpA8NyALmGUPrhlt62JJSyR/dput+AQ4ps2DNRqi1WjR0bpF+NLyWkkXMhzaugM0yJ0z68exELTMyUFRUtpWzzFKHGnwRx58EPvL4zgjlnSO1j6nnXnL0Hg5H+FHt4aBTd9sikYBTMnUmqehoGE4Dz9eGfCFwrFtThOm74jJriPz6nIWI9/eQ8hXtg5gFC50L6L2Pd3MhCNkM4EqKr/Uyfnb6WD5pN6Z8DjvVDDY8TQKP3qaa0darq9J3lpXbyccbbuxPUIhbabpUQORdsrAkRHC1NNohQeTtdrUajFfyPNSRNUFH1A4YxvFB3zMonrOqpuFFisnXt573YY36Q04qPk16F2EtpCTs/itg6NTJJ0ypMb+5
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BY5PR11MB4388.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39860400002)(366004)(396003)(136003)(376002)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(66899024)(83380400001)(82960400001)(38100700002)(122000001)(41300700001)(26005)(66556008)(66476007)(6916009)(66946007)(76116006)(64756008)(5660300002)(66446008)(8936002)(8676002)(52536014)(4326008)(316002)(54906003)(107886003)(9686003)(53546011)(6506007)(71200400001)(30864003)(478600001)(2906002)(7696005)(86362001)(38070700009)(33656002)(55016003);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?7MbjfBcFpmeGqPq93rc8s3bgdRZLb6rK7XIhokWZ3qPMvqyZQODsCMsoL6uL?=
- =?us-ascii?Q?/aogGm2Ew/stW0UihqgXMcPlcaFxhhloI9Ko4MJbhD7rjwx1u2uq7jPWTusk?=
- =?us-ascii?Q?KpxucWOlOnZKfqttk1EHoUsDAYnwUWENsrbMM6N0c4CjGsxMKwNNE0+2N7c4?=
- =?us-ascii?Q?KIE7uGiUVNycnfftxFfg4k9eJTS+iTEqL0XWSbdSVUxjkIK7KYEPxEGf2sGo?=
- =?us-ascii?Q?0jLHFukMrx7gIo/niGIkUgY5YgArTLZ2yrzo7ohfaPLrPCaKCQVs92wIayh+?=
- =?us-ascii?Q?tquQ99RyR4hFXi+JPZdT/B2V9913YfwKf3s3sBTQ1/h7ZBe7or4jMUfNgfVO?=
- =?us-ascii?Q?cF15SlB4cCqwVZRQJbRVKjtFeVw2c2KE9FX+xt8lelzN80kRmychIFVTnfy4?=
- =?us-ascii?Q?9At1W6B9tZTnrD6y06NRiEot5V6QXu9wOV7TwNx4OL/N5EX9kO7lLEj5kU0Q?=
- =?us-ascii?Q?P/9XmWsb63lZ5Sq0DhNPGAtgOZpDUMhqFm1hXE72mmVM3xpXeC10LsvVNZxM?=
- =?us-ascii?Q?tLiwTzNXMTZOc+XNC5WTHnW76YEwNsrSobFbuRGgqb4S8g6pf9CyAHbHo/yf?=
- =?us-ascii?Q?XDLeoeyIHzr0L/pugV/k9+VmOvoCyI19+13lYnp2XZdxHQlLec8uQcBCam0X?=
- =?us-ascii?Q?WjG+h9+cLVpj3so+Q+pDYP/sZtNrobcadZ32zcaAJawLpjVANKqj6nVKJkCp?=
- =?us-ascii?Q?HP77FE9Z18X3LruDWNYcZr9vM8y+9cAky0WBEBBKanyQbgAYGtngwW7KDwik?=
- =?us-ascii?Q?VkW0JPh4QKRXdNweBRJ4o7PIx1Lk+tU3OKO2NHK3vYZ3jTghnfd/2vQDBQn4?=
- =?us-ascii?Q?xlIEKH7oe8V4cWKQjmT7299ARMh26LuQ0LSn4B673AwQqQQnfUuAdZrfa66f?=
- =?us-ascii?Q?RYr1MY2wWXxI6EY9YF0ttHUZqMVOqbm4T7yKSaCjYtKetlTzSIEaIVToRoMg?=
- =?us-ascii?Q?mnBKfES7eEEKAXtowRYq0Fq/r6xqaGj40cPM3DVxqSkf+0CwYq3ONqdNjS26?=
- =?us-ascii?Q?fbDu0lt4trSraiJtcsaKMe5XGFQjiOKP1TU1UziwEP9Qvo/7JyHip4ud4vW1?=
- =?us-ascii?Q?yHSFwFsM934zXA5OwZfNEiLM4CANQOwW/eQyStwdeddiA8+7w6/EZG+hx/mT?=
- =?us-ascii?Q?FzztGgaz78wrFPwOGEAUZTBnsLZRPYY5NkIzGakdGxmDoyPKVEMNgNzAohGk?=
- =?us-ascii?Q?Cs2u7OuIpxqXo+D5Im19ZkLiCfwFStqzKP6wjgrY/7YgfKdpyVRZ7yU3fIfj?=
- =?us-ascii?Q?7uaY+zcK5yfpMp7shDmiAlPfBX3LcSv4oCkyUaVezOPNugI1HuPSUOhumMz2?=
- =?us-ascii?Q?9i0N/X9OGMcIo2ydXvO8XwTmc3If1HhoTflFdW2wKdxBXLR0fnikP6FszTMr?=
- =?us-ascii?Q?Q5UFqmzvwtwqJDzWIMvA1X9TEvOxCtfT6zVPU7YkXrbqeQrmhVkVwsJ3ZMFY?=
- =?us-ascii?Q?YAl14RXWt1bNEkJvhbAAdgqM8gAq2oXCGH4RqaDXJsHoKkCEQCHlQ58BjY/p?=
- =?us-ascii?Q?LN45AgYCJSXXiBQ9HMX2c9Ysl7aeWKi6LK9luA0fcXh6yFacbW3/pfNrHWhN?=
- =?us-ascii?Q?NpkmowemSRYvOy9kAjeCipL/MkPVwc09stKWQGcf?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rA5aA-0006vP-OU
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 04:49:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701683381;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=46vw4URnK2PYwoHjN2H1ZC7HJD0lck26Xja9vMv8EaM=;
+ b=MQ9+aUu4gbKxtbnvfBlUyxiXTPgMKF6xjcsfLV1Qm5Ouns2iGEG0VX8uitv91zG3Csx4Nx
+ 7nCDewUKrYJM02gc+o3xNxOpnrio0BKmaWcd4SShsklQ1jyGi4P3SVq7bVkQHyW/hrtRpS
+ 0uwahiINRVQ/a3yOaJfjP+LbHrJAqWk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-223-TqtH4V-oNTOTGxIqiJKA1Q-1; Mon, 04 Dec 2023 04:49:39 -0500
+X-MC-Unique: TqtH4V-oNTOTGxIqiJKA1Q-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40b3d81399dso29108315e9.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 01:49:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701683378; x=1702288178;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=46vw4URnK2PYwoHjN2H1ZC7HJD0lck26Xja9vMv8EaM=;
+ b=Iq9wbkQdfwU95cJdNPqJIqETu4G3rrKHKN0VcycSvg5YxfuQgGB/9ycbMX1GzW8KU9
+ C+lNi1B6wB/efZOrhdZpE6MOzx6RNj/bKJlFH4nSRc6EN62mLnxN2FZoRzO8vmtMtMbi
+ 69KEdAfK8RNIhJy6s2cPY+NzrRLF+Q4IoYdNJ2FPoDU6WNJt5Xsa7C8rtU3GsNluWQAz
+ rbrhMEkAe/DkMbQ0N+U1lLGCGHSyr1JrJKAGdb3ICdv2LbYPBtelgrzJpPmAfaJ9/wTF
+ 0uTIuBcCX2TERDmM3k/CtK+T+X8BKoTEWWfIRI2VCpwAC7FN0wdWemDAI0OFaOyZyJEi
+ A3/g==
+X-Gm-Message-State: AOJu0YwzTJwkDhzf2sDBGyWfXQOhhwTf6Wm9/BNcaG1h7FHoxduYUai+
+ LTrK4TeEM+xoKBGnP2SDlKuIdR7biOwTAtP2tNbCCLfqbFLP2LJPyQkZNecSPO8jaaxQTrTg3s5
+ QgpjSnS5w8w4Fiko=
+X-Received: by 2002:a05:600c:3d8c:b0:40b:5f03:b3f6 with SMTP id
+ bi12-20020a05600c3d8c00b0040b5f03b3f6mr1269139wmb.280.1701683378393; 
+ Mon, 04 Dec 2023 01:49:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHrVVEiK9CKg1HOt5hRL4xckL1L9r3PhJQazPgPUHHfCBsXXZ01Vj4vUAusnLTh5G/sTqG1SA==
+X-Received: by 2002:a05:600c:3d8c:b0:40b:5f03:b3f6 with SMTP id
+ bi12-20020a05600c3d8c00b0040b5f03b3f6mr1269125wmb.280.1701683377941; 
+ Mon, 04 Dec 2023 01:49:37 -0800 (PST)
+Received: from ?IPV6:2003:cb:c722:3700:6501:8925:6f9:fcdc?
+ (p200300cbc72237006501892506f9fcdc.dip0.t-ipconnect.de.
+ [2003:cb:c722:3700:6501:8925:6f9:fcdc])
+ by smtp.gmail.com with ESMTPSA id
+ i1-20020a05600c354100b0040588d85b3asm17849077wmq.15.2023.12.04.01.49.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Dec 2023 01:49:37 -0800 (PST)
+Message-ID: <8b1773b5-368a-429f-a984-ad3c85794ffa@redhat.com>
+Date: Mon, 4 Dec 2023 10:49:35 +0100
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4388.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c7ad422-dfaa-4477-9c13-08dbf4ab4bae
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Dec 2023 09:27:54.9225 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lfhmyKb3xbw4a9ws6AI2za1J5aYdPC4jP2HOOi+HHPqdIhgNGaCb/UJh4SrBVSuS+ERweSpWjt0NQaLurDPfIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4816
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=yuan1.liu@intel.com;
- helo=mgamail.intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/70] physmem: replace function name with __func__ in
+ ram_block_discard_range()
+Content-Language: en-US
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-9-xiaoyao.li@intel.com>
+ <24521a5c-beec-4f08-8e89-2a413788bf8b@redhat.com>
+ <616b5d4e-39a1-4f61-8fa6-1938fb4df1a7@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <616b5d4e-39a1-4f61-8fa6-1938fb4df1a7@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -171,329 +163,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> -----Original Message-----
-> From: Markus Armbruster <armbru@redhat.com>
-> Sent: Friday, December 1, 2023 5:17 PM
-> To: Liu, Yuan1 <yuan1.liu@intel.com>
-> Cc: quintela@redhat.com; peterx@redhat.com; farosas@suse.de;
-> leobras@redhat.com; qemu-devel@nongnu.org; Zou, Nanhai
-> <nanhai.zou@intel.com>
-> Subject: Re: [PATCH v2 1/4] migration: Introduce multifd-compression-acce=
-l
-> parameter
->=20
-> Yuan Liu <yuan1.liu@intel.com> writes:
->=20
-> > Introduce the multifd-compression-accel option to enable or disable
-> > live migration data (de)compression accelerator.
-> >
-> > The default value of multifd-compression-accel is auto, and the
-> > enabling and selection of the accelerator are automatically detected.
-> > By setting multifd-compression-accel=3Dnone, the acceleration function =
-can
-> be disabled.
-> > Similarly, users can explicitly specify a specific accelerator name,
-> > such as multifd-compression-accel=3Dqpl.
-> >
-> > Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-> > Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-> > ---
-> >  hw/core/qdev-properties-system.c    | 11 +++++++++++
-> >  include/hw/qdev-properties-system.h |  4 ++++
-> >  migration/migration-hmp-cmds.c      | 10 ++++++++++
-> >  migration/options.c                 | 24 ++++++++++++++++++++++++
-> >  migration/options.h                 |  1 +
-> >  qapi/migration.json                 | 26 +++++++++++++++++++++++++-
-> >  6 files changed, 75 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/hw/core/qdev-properties-system.c
-> > b/hw/core/qdev-properties-system.c
-> > index 688340610e..ed23035845 100644
-> > --- a/hw/core/qdev-properties-system.c
-> > +++ b/hw/core/qdev-properties-system.c
-> > @@ -673,6 +673,17 @@ const PropertyInfo qdev_prop_multifd_compression =
-=3D
-> {
-> >      .set_default_value =3D qdev_propinfo_set_default_value_enum,
-> >  };
-> >
-> > +/* --- MultiFD Compression Accelerator --- */
-> > +
-> > +const PropertyInfo qdev_prop_multifd_compression_accel =3D {
-> > +    .name =3D "MultiFDCompressionAccel",
-> > +    .description =3D "MultiFD Compression Accelerator, "
-> > +                   "auto/none/qpl",
-> > +    .enum_table =3D &MultiFDCompressionAccel_lookup,
-> > +    .get =3D qdev_propinfo_get_enum,
-> > +    .set =3D qdev_propinfo_set_enum,
-> > +    .set_default_value =3D qdev_propinfo_set_default_value_enum,
-> > +};
-> >  /* --- Reserved Region --- */
-> >
-> >  /*
-> > diff --git a/include/hw/qdev-properties-system.h
-> > b/include/hw/qdev-properties-system.h
-> > index 0ac327ae60..da086bd836 100644
-> > --- a/include/hw/qdev-properties-system.h
-> > +++ b/include/hw/qdev-properties-system.h
-> > @@ -7,6 +7,7 @@ extern const PropertyInfo qdev_prop_chr;  extern const
-> > PropertyInfo qdev_prop_macaddr;  extern const PropertyInfo
-> > qdev_prop_reserved_region;  extern const PropertyInfo
-> > qdev_prop_multifd_compression;
-> > +extern const PropertyInfo qdev_prop_multifd_compression_accel;
-> >  extern const PropertyInfo qdev_prop_losttickpolicy;  extern const
-> > PropertyInfo qdev_prop_blockdev_on_error;  extern const PropertyInfo
-> > qdev_prop_bios_chs_trans; @@ -41,6 +42,9 @@ extern const PropertyInfo
-> > qdev_prop_pcie_link_width;  #define
-> > DEFINE_PROP_MULTIFD_COMPRESSION(_n, _s, _f, _d) \
-> >      DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_multifd_compression, =
-\
-> >                         MultiFDCompression)
-> > +#define DEFINE_PROP_MULTIFD_COMPRESSION_ACCEL(_n, _s, _f, _d) \
-> > +    DEFINE_PROP_SIGNED(_n, _s, _f, _d,
-> qdev_prop_multifd_compression_accel, \
-> > +                       MultiFDCompressionAccel)
-> >  #define DEFINE_PROP_LOSTTICKPOLICY(_n, _s, _f, _d) \
-> >      DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_losttickpolicy, \
-> >                          LostTickPolicy) diff --git
-> > a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-> > index a82597f18e..3a278c89d9 100644
-> > --- a/migration/migration-hmp-cmds.c
-> > +++ b/migration/migration-hmp-cmds.c
-> > @@ -344,6 +344,11 @@ void hmp_info_migrate_parameters(Monitor *mon,
-> const QDict *qdict)
-> >          monitor_printf(mon, "%s: %s\n",
-> >
-> MigrationParameter_str(MIGRATION_PARAMETER_MULTIFD_COMPRESSION),
-> >              MultiFDCompression_str(params->multifd_compression));
-> > +        assert(params->has_multifd_compression_accel);
-> > +        monitor_printf(mon, "%s: %s\n",
-> > +            MigrationParameter_str(
-> > +                MIGRATION_PARAMETER_MULTIFD_COMPRESSION_ACCEL),
-> > +
-> > + MultiFDCompressionAccel_str(params->multifd_compression_accel));
-> >          monitor_printf(mon, "%s: %" PRIu64 " bytes\n",
-> >
-> MigrationParameter_str(MIGRATION_PARAMETER_XBZRLE_CACHE_SIZE),
-> >              params->xbzrle_cache_size); @@ -610,6 +615,11 @@ void
-> > hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-> >          visit_type_MultiFDCompression(v, param, &p-
-> >multifd_compression,
-> >                                        &err);
-> >          break;
-> > +    case MIGRATION_PARAMETER_MULTIFD_COMPRESSION_ACCEL:
-> > +        p->has_multifd_compression_accel =3D true;
-> > +        visit_type_MultiFDCompressionAccel(v, param,
-> > +                                           &p-
-> >multifd_compression_accel, &err);
-> > +        break;
-> >      case MIGRATION_PARAMETER_MULTIFD_ZLIB_LEVEL:
-> >          p->has_multifd_zlib_level =3D true;
-> >          visit_type_uint8(v, param, &p->multifd_zlib_level, &err);
-> > diff --git a/migration/options.c b/migration/options.c index
-> > 42fb818956..4c567c49e6 100644
-> > --- a/migration/options.c
-> > +++ b/migration/options.c
-> > @@ -59,6 +59,8 @@
-> >  #define DEFAULT_MIGRATE_X_CHECKPOINT_DELAY (200 * 100)  #define
-> > DEFAULT_MIGRATE_MULTIFD_CHANNELS 2  #define
-> > DEFAULT_MIGRATE_MULTIFD_COMPRESSION MULTIFD_COMPRESSION_NONE
-> > +/* By default use the accelerator for multifd compression */ #define
-> > +DEFAULT_MIGRATE_MULTIFD_COMPRESSION_ACCEL
-> > +MULTIFD_COMPRESSION_ACCEL_AUTO
->=20
-> The comment is inaccurate.  You could add "when available".  I'd simply
-> drop the comment.
->=20
-> >  /* 0: means nocompress, 1: best speed, ... 9: best compress ratio */
-> > #define DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL 1
-> >  /* 0: means nocompress, 1: best speed, ... 20: best compress ratio */
-> > @@ -139,6 +141,9 @@ Property migration_properties[] =3D {
-> >      DEFINE_PROP_MULTIFD_COMPRESSION("multifd-compression",
-> MigrationState,
-> >                        parameters.multifd_compression,
-> >                        DEFAULT_MIGRATE_MULTIFD_COMPRESSION),
-> > +    DEFINE_PROP_MULTIFD_COMPRESSION_ACCEL("multifd-compression-accel",
-> > +                      MigrationState,
-> > + parameters.multifd_compression_accel,
->=20
-> Break the line after MigrationState for local consistency, please.
->=20
-> > +                      DEFAULT_MIGRATE_MULTIFD_COMPRESSION_ACCEL),
-> >      DEFINE_PROP_UINT8("multifd-zlib-level", MigrationState,
-> >                        parameters.multifd_zlib_level,
-> >                        DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL),
-> > @@ -818,6 +823,15 @@ MultiFDCompression
-> migrate_multifd_compression(void)
-> >      return s->parameters.multifd_compression;
-> >  }
-> >
-> > +MultiFDCompressionAccel migrate_multifd_compression_accel(void)
-> > +{
-> > +    MigrationState *s =3D migrate_get_current();
-> > +
-> > +    assert(s->parameters.multifd_compression_accel <
-> > +           MULTIFD_COMPRESSION_ACCEL__MAX);
-> > +    return s->parameters.multifd_compression_accel;
-> > +}
-> > +
-> >  int migrate_multifd_zlib_level(void)
-> >  {
-> >      MigrationState *s =3D migrate_get_current(); @@ -945,6 +959,8 @@
-> > MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-> >      params->multifd_channels =3D s->parameters.multifd_channels;
-> >      params->has_multifd_compression =3D true;
-> >      params->multifd_compression =3D s->parameters.multifd_compression;
-> > +    params->has_multifd_compression_accel =3D true;
-> > +    params->multifd_compression_accel =3D
-> > + s->parameters.multifd_compression_accel;
-> >      params->has_multifd_zlib_level =3D true;
-> >      params->multifd_zlib_level =3D s->parameters.multifd_zlib_level;
-> >      params->has_multifd_zstd_level =3D true; @@ -999,6 +1015,7 @@ void
-> > migrate_params_init(MigrationParameters *params)
-> >      params->has_block_incremental =3D true;
-> >      params->has_multifd_channels =3D true;
-> >      params->has_multifd_compression =3D true;
-> > +    params->has_multifd_compression_accel =3D true;
-> >      params->has_multifd_zlib_level =3D true;
-> >      params->has_multifd_zstd_level =3D true;
-> >      params->has_xbzrle_cache_size =3D true; @@ -1273,6 +1290,9 @@
-> > static void migrate_params_test_apply(MigrateSetParameters *params,
-> >      if (params->has_multifd_compression) {
-> >          dest->multifd_compression =3D params->multifd_compression;
-> >      }
-> > +    if (params->has_multifd_compression_accel) {
-> > +        dest->multifd_compression_accel =3D params-
-> >multifd_compression_accel;
-> > +    }
-> >      if (params->has_xbzrle_cache_size) {
-> >          dest->xbzrle_cache_size =3D params->xbzrle_cache_size;
-> >      }
-> > @@ -1394,6 +1414,10 @@ static void
-> migrate_params_apply(MigrateSetParameters *params, Error **errp)
-> >      if (params->has_multifd_compression) {
-> >          s->parameters.multifd_compression =3D params-
-> >multifd_compression;
-> >      }
-> > +    if (params->has_multifd_compression_accel) {
-> > +        s->parameters.multifd_compression_accel =3D
-> > +            params->multifd_compression_accel;
-> > +    }
-> >      if (params->has_xbzrle_cache_size) {
-> >          s->parameters.xbzrle_cache_size =3D params->xbzrle_cache_size;
-> >          xbzrle_cache_resize(params->xbzrle_cache_size, errp); diff
-> > --git a/migration/options.h b/migration/options.h index
-> > 237f2d6b4a..e59bf4b5c1 100644
-> > --- a/migration/options.h
-> > +++ b/migration/options.h
-> > @@ -85,6 +85,7 @@ uint64_t migrate_avail_switchover_bandwidth(void);
-> >  uint64_t migrate_max_postcopy_bandwidth(void);
-> >  int migrate_multifd_channels(void);
-> >  MultiFDCompression migrate_multifd_compression(void);
-> > +MultiFDCompressionAccel migrate_multifd_compression_accel(void);
-> >  int migrate_multifd_zlib_level(void);  int
-> > migrate_multifd_zstd_level(void);  uint8_t
-> > migrate_throttle_trigger_threshold(void);
-> > diff --git a/qapi/migration.json b/qapi/migration.json index
-> > db3df12d6c..47239328e4 100644
-> > --- a/qapi/migration.json
-> > +++ b/qapi/migration.json
-> > @@ -616,6 +616,22 @@
-> >              { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
-> >
-> >  ##
-> > +# @MultiFDCompressionAccel:
-> > +#
-> > +# An enumeration of multifd compression accelerator.
-> > +#
-> > +# @auto: automatically determined if accelerator is available.
->=20
-> Well, it's always automatically determined.  Suggest:
->=20
->    # @auto: if accelerators are available, enable one of them.
->=20
-> > +#
-> > +# @none: disable compression accelerator.
-> > +#
-> > +# @qpl: enable qpl compression accelerator.
-> > +#
-> > +# Since: 8.2
-> > +##
-> > +{ 'enum': 'MultiFDCompressionAccel',
-> > +  'data': [ 'auto', 'none',
-> > +            { 'name': 'qpl', 'if': 'CONFIG_QPL' } ] } ##
-> >  # @BitmapMigrationBitmapAliasTransform:
-> >  #
-> >  # @persistent: If present, the bitmap will be made persistent or @@
-> > -798,6 +814,9 @@  # @multifd-compression: Which compression method to
-> > use.  Defaults to
-> >  #     none.  (Since 5.0)
-> >  #
-> > +# @multifd-compression-accel: Which compression accelerator to use.
-> Defaults to
-> > +#     auto.  (Since 8.2)
->=20
-> Long line.  Better:
->=20
->    # @multifd-compression-accel: Which compression accelerator to use.
->    #     Defaults to auto.  (Since 8.2)
->=20
-> > +#
-> >  # @multifd-zlib-level: Set the compression level to be used in live
-> >  #     migration, the compression level is an integer between 0 and 9,
-> >  #     where 0 means no compression, 1 means the best compression
-> > @@ -853,7 +872,7 @@
-> >             'block-incremental',
-> >             'multifd-channels',
-> >             'xbzrle-cache-size', 'max-postcopy-bandwidth',
-> > -           'max-cpu-throttle', 'multifd-compression',
-> > +           'max-cpu-throttle', 'multifd-compression',
-> > + 'multifd-compression-accel',
->=20
-> Long line.  Either
->=20
->               'max-cpu-throttle', 'multifd-compression',
->               'multifd-compression-accel',
->=20
-> or, if you want to keep compression together
->=20
->               'max-cpu-throttle',
->               'multifd-compression', 'multifd-compression-accel',
->=20
-> or
->=20
->               'max-cpu-throttle',
->               'multifd-compression',
->               'multifd-compression-accel',
->=20
-> You choose.
->=20
-> >             'multifd-zlib-level', 'multifd-zstd-level',
-> >             'block-bitmap-mapping',
-> >             { 'name': 'x-vcpu-dirty-limit-period', 'features':
-> > ['unstable'] }, @@ -974,6 +993,9 @@  # @multifd-compression: Which
-> > compression method to use.  Defaults to
-> >  #     none.  (Since 5.0)
-> >  #
-> > +# @multifd-compression-accel: Which compression acclerator to use.
-> Defaults to
-> > +#     auto.  (Since 8.2)
-> > +#
-> >  # @multifd-zlib-level: Set the compression level to be used in live
-> >  #     migration, the compression level is an integer between 0 and 9,
-> >  #     where 0 means no compression, 1 means the best compression
-> > @@ -1046,6 +1068,7 @@
-> >              '*max-postcopy-bandwidth': 'size',
-> >              '*max-cpu-throttle': 'uint8',
-> >              '*multifd-compression': 'MultiFDCompression',
-> > +            '*multifd-compression-accel': 'MultiFDCompressionAccel',
-> >              '*multifd-zlib-level': 'uint8',
-> >              '*multifd-zstd-level': 'uint8',
-> >              '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
-> > @@ -1257,6 +1280,7 @@
->=20
-> Missing documentation update.  Copy it from MigrateSetParameters, please.
-Sure, I will update a document and all the above suggestions in the next ve=
-rsion
+On 04.12.23 08:40, Xiaoyao Li wrote:
+> On 11/16/2023 2:21 AM, David Hildenbrand wrote:
+>> On 15.11.23 08:14, Xiaoyao Li wrote:
+>>> Use __func__ to avoid hard-coded function name.
+>>>
+>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>> ---
+>>
+>> That can be queued independently.
+> 
+> Will you queue it for 9.0? for someone else?
+> 
+> Do I need to send it separately?
+
+Probably best to just send it as a separate cleanup. Likely, Paolo will 
+queue it. If not, I can do it.
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
