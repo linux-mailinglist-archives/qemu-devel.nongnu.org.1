@@ -2,142 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC37803D49
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 19:39:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB93C803DD7
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 19:58:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rADqW-0000ZD-Dx; Mon, 04 Dec 2023 13:39:08 -0500
+	id 1rAE8S-0003M0-C0; Mon, 04 Dec 2023 13:57:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rADqT-0000Z1-PX
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 13:39:05 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rADqS-00011Q-DV
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 13:39:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701715143;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8H+Zc+i/bkK5ibBWZPievG2MLUGvUYvxnFn4vwVMcOA=;
- b=V3zyyH6x2AdVwW5I2IDyZ2uNIbEIy7MWCqnRxBsYARPEfIM1xHme8Q47k6jG014bSQK+V8
- bf5CynE3zsV/sqG4f+eaqnZ6UlDMiMyVTs191PXEKQYfNfsFVHb4BGrQEnVhnKZAdoquwH
- WzJYm0C7Vj+kP9SHC3KTJ93EylkwO7w=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-e3wNedtXMmW6GzWx9HydDg-1; Mon, 04 Dec 2023 13:39:01 -0500
-X-MC-Unique: e3wNedtXMmW6GzWx9HydDg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-40b40234b64so38032765e9.0
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 10:39:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701715140; x=1702319940;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rAE8P-0003LT-8Q
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 13:57:37 -0500
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rAE8N-0007Uz-9J
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 13:57:37 -0500
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3b8b0ced0f4so1092306b6e.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 10:57:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701716254; x=1702321054; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8H+Zc+i/bkK5ibBWZPievG2MLUGvUYvxnFn4vwVMcOA=;
- b=n8Hep9uPBQgrOM2lm5NEr7UKrTiojdWqwDgDpwe7ynyt3ZyWXh4H2IiDf6gZsfubQl
- qSB5gr9iFe8nZVuFVoVN5rDLYoPXAFGNkIkk3hpw+7XEM06elvBps0sTWiJy+zO43g01
- C79Wy3RYumTIzyq0B82ASzGXL9DVc4F9mChdfQmWZIfaPLNIyLZ/Z8yDXSSRbNRSAEcV
- C9y/QxPN2YGwijshAjbLr3k4BFgGxrSUV3vMSBI/BPUlJxagLCuMgjNpNe1lM7A4GeWN
- JsBszvw+qaVHM+ePl6Wj3JsFCM33dy4bjBX+O4pNHEGAnI8RUVIokAT21rO8i4zSmDbi
- iu2Q==
-X-Gm-Message-State: AOJu0Yyeuvk1TLMSfFTOQxZbcmTTlk1q9rqruM4qm0pyNc+p6oy5PtMA
- IFZdWu5hzJvY9qTV/PDDva6DmjF0W9NOCcK1NXbIrteh8O6tvkpHxG0mndcefudRSK1XtNfsG2+
- 2L+0d6xhOnxVac/s=
-X-Received: by 2002:a05:600c:4453:b0:40b:5e21:cc14 with SMTP id
- v19-20020a05600c445300b0040b5e21cc14mr2773729wmn.63.1701715140779; 
- Mon, 04 Dec 2023 10:39:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHCQ7V4vfXcl7OaBWfHXjBjaEDfV7p/9GgIV3UYghE2MA8V06+pkik/eLP9XIFl9LwmhoKOUQ==
-X-Received: by 2002:a05:600c:4453:b0:40b:5e21:cc14 with SMTP id
- v19-20020a05600c445300b0040b5e21cc14mr2773721wmn.63.1701715140378; 
- Mon, 04 Dec 2023 10:39:00 -0800 (PST)
-Received: from ?IPV6:2003:cb:c722:3700:6501:8925:6f9:fcdc?
- (p200300cbc72237006501892506f9fcdc.dip0.t-ipconnect.de.
- [2003:cb:c722:3700:6501:8925:6f9:fcdc])
- by smtp.gmail.com with ESMTPSA id
- l3-20020a5d5603000000b00333371c7382sm7868325wrv.72.2023.12.04.10.38.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Dec 2023 10:38:59 -0800 (PST)
-Message-ID: <9ef38722-0a49-4d4c-87da-56f6ea988050@redhat.com>
-Date: Mon, 4 Dec 2023 19:38:59 +0100
+ bh=7A+P2VnkIUmQap26NpaLB0r5vKjcZDlrn/xUkO8VP0Y=;
+ b=gKsXjzIltaAnQAEqUILr6xLp0EFHz1mntthY79+r3oBq1SR0z7qccju1ZkOaR+rEEq
+ LfUDFqvRV5vsK7Eh4cK6Bt3ZvjxA9OgUdk6+VSMu0mSdWdkW/8YIrjUFnviROnJ9fBWJ
+ IpbxNUrqnY75qdaxJDAyX8n7frhJOTtfF9GYlfxjgkpdzsV7lGQW/mH9CR1WrKRCBuEK
+ ChDJFVa/7oqZLlZSszB7Y9IVu1k2iRPilmVTBAx+3WGPzOwg/GZGvd2tMXcUs9rRWCxS
+ rOL6vYX+osLbuqha6EpwO3mw3SHVq2HvRpt1buiN1zAzUCYjTyvMiMP3fkFoZmvJoAe9
+ Mo2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701716254; x=1702321054;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7A+P2VnkIUmQap26NpaLB0r5vKjcZDlrn/xUkO8VP0Y=;
+ b=ldbOv1RstE+hZ1xU31e9rJ5EN3gUgEnOplh7Fq/qlrjSnmB0JyooXIyC7bKFuugxzH
+ GD1tCS74o+ScZSpAQImdNBrIqHiuANLjsx3nRSGzEQZLBvsYQ95UzI+mVWaSM8nmaOF2
+ 7nZIKz2g6oFVfTjAwlcRGuTsJwBxcTNr0CYIfk0pLmos7JLwP6SvvW0g35MLK0wBmEvU
+ yQTIw3U7WK5QRddNqD82dPnmG1v8CWDQTvOPjG8uVwWuwoR8WQXGpVV83sgQVAslyMWA
+ 3vMt0pQfU/68SB5wz6Tjr0a35Awe1fZUCuMT2srlCbltpc/6ZzCt8i8AMZzXBtHbn70u
+ /yCQ==
+X-Gm-Message-State: AOJu0YxUHugbQ9QMXEFojUKW6ajksMRo/XZDfsFp5GVg1idf6Rn2TsO9
+ c2kjqWi0+ttKY+HFR5m8V+gOoyhC7qHY/7y8YPs=
+X-Google-Smtp-Source: AGHT+IGYyzQNkmTq6w/neIvt3cJAnzrBNGGmGKqX4FFdACvUUaqUTPaFXwvLOQG873Yh+QoAtil7X7u0ZVP3NQScGTM=
+X-Received: by 2002:a05:6870:1ec8:b0:1fb:788:e8b4 with SMTP id
+ pc8-20020a0568701ec800b001fb0788e8b4mr116372oab.47.1701716253854; Mon, 04 Dec
+ 2023 10:57:33 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hostmem: Round up memory size for qemu_madvise() in
- host_memory_backend_memory_complete()
-Content-Language: en-US
-To: =?UTF-8?B?TWljaGFsIFByw612b3puw61r?= <mprivozn@redhat.com>,
- qemu-devel@nongnu.org
-Cc: imammedo@redhat.com
-References: <f77d641d500324525ac036fe1827b3070de75fc1.1701088320.git.mprivozn@redhat.com>
- <9b8a2863-1264-4058-b367-0b61a75921ac@redhat.com>
- <b9c8b4da-cb14-4a67-b98d-655ed7348bef@redhat.com>
- <de569c7a-2e21-4a98-a4a9-98132b43c621@redhat.com>
- <0b6dacd2-a7c0-469f-830a-9162dfae75bf@redhat.com>
- <7e70c5d4-8c18-4861-8aca-497ba940c839@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <7e70c5d4-8c18-4861-8aca-497ba940c839@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231204183638.GZ9696@kitsune.suse.cz>
+In-Reply-To: <20231204183638.GZ9696@kitsune.suse.cz>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Mon, 4 Dec 2023 13:57:21 -0500
+Message-ID: <CAJSP0QUShqgd18ZFib-EzwWbG1uz4E4pKNXpiTBauQhsDXUiyw@mail.gmail.com>
+Subject: Re: qemu ppc64 crash when adding CPU
+To: =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=stefanha@gmail.com; helo=mail-oi1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -154,19 +86,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->>
-> 
-> Fair enough. After all of this, I'm inclined to turn this into a proper
-> error and deny not page aligned sizes. There's no real benefit in having
-> them and furthermore, the original bug report is about cryptic error
-> message.
-> 
+On Mon, 4 Dec 2023 at 13:37, Michal Such=C3=A1nek <msuchanek@suse.de> wrote=
+:
+>
+> Hello,
+>
+> When running a VM with libvirt I get:
+>
+> /usr/bin/qemu-system-ppc64 --version
+> QEMU emulator version 8.1.3 (Virtualization / 15.5)
+> Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
+>
+> /usr/bin/qemu-system-ppc64 -name
+> guest=3Dsles12sp5-ppc64le,debug-threads=3Don -S -object
+> {"qom-type":"secret","id":"masterKey0","format":"raw","file":"/var/lib/li=
+bvirt/qemu/domain-11-sles12sp5-ppc64le/master-key.aes"}
+> -machine
+> pseries-7.1,usb=3Doff,dump-guest-core=3Doff,memory-backend=3Dppc_spapr.ra=
+m
+> -accel tcg -cpu POWER9 -m 4096 -object
+> {"qom-type":"memory-backend-ram","id":"ppc_spapr.ram","size":4294967296}
+> -overcommit mem-lock=3Doff -smp 16,sockets=3D1,dies=3D1,cores=3D2,threads=
+=3D8
+> -uuid a6ad6a7d-125b-4525-b452-241ce2000eda -display none -no-user-config
+> -nodefaults -chardev socket,id=3Dcharmonitor,fd=3D29,server=3Don,wait=3Do=
+ff -mon
+> chardev=3Dcharmonitor,id=3Dmonitor,mode=3Dcontrol -rtc base=3Dutc -no-shu=
+tdown
+> -boot strict=3Don -device
+> {"driver":"qemu-xhci","p2":15,"p3":15,"id":"usb","bus":"pci.0","addr":"0x=
+3"}
+> -device
+> {"driver":"virtio-scsi-pci","id":"scsi0","bus":"pci.0","addr":"0x4"}
+> -device
+> {"driver":"virtio-serial-pci","id":"virtio-serial0","bus":"pci.0","addr":=
+"0x2"}
+> -blockdev
+> {"driver":"file","filename":"/home/hramrach/Downloads/SLE-12-SP5-Server-M=
+INI-ISO-ppc64le-GM-DVD.iso","node-name":"libvirt-2-storage","auto-read-only=
+":true,"discard":"unmap"}
+> -blockdev
+> {"node-name":"libvirt-2-format","read-only":true,"driver":"raw","file":"l=
+ibvirt-2-storage"}
+> -device
+> {"driver":"scsi-cd","bus":"scsi0.0","channel":0,"scsi-id":0,"lun":0,"devi=
+ce_id":"drive-scsi0-0-0-0","drive":"libvirt-2-format","id":"scsi0-0-0-0","b=
+ootindex":2}
+> -blockdev
+> {"driver":"file","filename":"/var/lib/libvirt/images/sles12sp5-ppc64le.qc=
+ow2","node-name":"libvirt-1-storage","auto-read-only":true,"discard":"unmap=
+"}
+> -blockdev
+> {"node-name":"libvirt-1-format","read-only":false,"discard":"unmap","driv=
+er":"qcow2","file":"libvirt-1-storage","backing":null}
+> -device
+> {"driver":"scsi-hd","bus":"scsi0.0","channel":0,"scsi-id":0,"lun":1,"devi=
+ce_id":"drive-scsi0-0-0-1","drive":"libvirt-1-format","id":"scsi0-0-0-1","b=
+ootindex":1}
+> -netdev {"type":"tap","fd":"30","id":"hostnet0"} -device
+> {"driver":"e1000","netdev":"hostnet0","id":"net0","mac":"52:54:00:3b:d5:a=
+5","bus":"pci.0","addr":"0x1"}
+> -chardev pty,id=3Dcharserial0 -device
+> {"driver":"spapr-vty","chardev":"charserial0","id":"serial0","reg":805306=
+368}
+> -audiodev {"id":"audio1","driver":"none"} -device
+> {"driver":"virtio-balloon-pci","id":"balloon0","bus":"pci.0","addr":"0x5"=
+}
+> -object
+> {"qom-type":"rng-random","id":"objrng0","filename":"/dev/urandom"}
+> -device
+> {"driver":"virtio-rng-pci","rng":"objrng0","id":"rng0","bus":"pci.0","add=
+r":"0x6"}
+> -sandbox
+> on,obsolete=3Ddeny,elevateprivileges=3Ddeny,spawn=3Ddeny,resourcecontrol=
+=3Ddeny
+> -msg timestamp=3Don
+>
+> virsh qemu-monitor-command sles12sp5-ppc64le query-hotpluggable-cpus | jq=
+ . | cat
+> {
+>   "return": [
+>     {
+>       "props": {
+>         "core-id": 8,
+>         "node-id": 0
+>       },
+>       "vcpus-count": 8,
+>       "qom-path": "/machine/unattached/device[2]",
+>       "type": "power9_v2.2-spapr-cpu-core"
+>     },
+>     {
+>       "props": {
+>         "core-id": 0,
+>         "node-id": 0
+>       },
+>       "vcpus-count": 8,
+>       "qom-path": "/machine/unattached/device[1]",
+>       "type": "power9_v2.2-spapr-cpu-core"
+>     }
+>   ],
+>   "id": "libvirt-155"
+> }
+>
+> virsh qemu-monitor-command sles12sp5-ppc64le device_del '"id":"/machine/u=
+nattached/device[2]"' | jq .
+> {
+>   "return": {},
+>   "id": "libvirt-218"
+> }
+>
+> virsh qemu-monitor-command sles12sp5-ppc64le query-hotpluggable-cpus | jq=
+ . | cat
+> {
+>   "return": [
+>     {
+>       "props": {
+>         "core-id": 8,
+>         "node-id": 0
+>       },
+>       "vcpus-count": 8,
+>       "type": "power9_v2.2-spapr-cpu-core"
+>     },
+>     {
+>       "props": {
+>         "core-id": 0,
+>         "node-id": 0
+>       },
+>       "vcpus-count": 8,
+>       "qom-path": "/machine/unattached/device[1]",
+>       "type": "power9_v2.2-spapr-cpu-core"
+>     }
+>   ],
+>   "id": "libvirt-235"
+> }
+>
+> virsh qemu-monitor-command sles12sp5-ppc64le device_add '"id":"cpu-666"' =
+'"driver":"power9_v2.2-spapr-cpu-core"' '"core-id":8' '"node-id":0'  | jq .
+>
+> __GI_raise (sig=3D6) at ../sysdeps/unix/sysv/linux/raise.c:51
+> 51      }
+> (gdb) up
+> #1  0x00007f7839c553e5 in __GI_abort () at abort.c:79
+> 79            raise (SIGABRT);
+> (gdb) up
+> #2  0x00007f783c54a125 in g_assertion_message (domain=3Ddomain@entry=3D0x=
+0, file=3Dfile@entry=3D0x556b3baf9242 "../tcg/tcg.c", line=3Dline@entry=3D7=
+84, func=3Dfunc@entry=3D0x556b3bb55720 <__func__.55816> "tcg_register_threa=
+d",
+>     message=3Dmessage@entry=3D0x7f76a46e8f40 "assertion failed: (n < tcg_=
+max_ctxs)") at ../glib/gtestutils.c:3223
+> 3223        g_abort ();
+>
+> This ends the usable part of stacktrace, going upp the call stack gdb
+> locks up.
+>
+> Looking at tcg.c line 784 is here:
+>
+> ster_thread(void)
+> {
+>     TCGContext *s =3D g_malloc(sizeof(*s));
+>     unsigned int i, n;
+>
+>     *s =3D tcg_init_ctx;
+>
+>     /* Relink mem_base.  */
+>     for (i =3D 0, n =3D tcg_init_ctx.nb_globals; i < n; ++i) {
+>         if (tcg_init_ctx.temps[i].mem_base) {
+>             ptrdiff_t b =3D tcg_init_ctx.temps[i].mem_base - tcg_init_ctx=
+.temps;
+>             tcg_debug_assert(b >=3D 0 && b < n);
+>             s->temps[i].mem_base =3D &s->temps[b];
+>         }
+>     }
+>
+>     /* Claim an entry in tcg_ctxs */
+>     n =3D qatomic_fetch_inc(&tcg_cur_ctxs);
+> >>> g_assert(n < tcg_max_ctxs); <<<
+>     qatomic_set(&tcg_ctxs[n], s);
+>
+>     if (n > 0) {
+>         alloc_tcg_plugin_context(s);
+>         tcg_region_initial_alloc(s);
+>     }
+>
+>     tcg_ctx =3D s;
+> }
+>
+> Any idea why qemu would be crashing here?
 
-I guess if we glue this to compat machines we should be definitely fine.
+Hi Michal,
 
--- 
-Cheers,
+$ git grep tcg_cur_ctxs
+tcg/region.c:409:    unsigned int n_ctxs =3D qatomic_read(&tcg_cur_ctxs);
+tcg/region.c:889:    unsigned int n_ctxs =3D qatomic_read(&tcg_cur_ctxs);
+tcg/tcg-internal.h:34:extern unsigned int tcg_cur_ctxs;
+tcg/tcg.c:241:unsigned int tcg_cur_ctxs;
+tcg/tcg.c:806:    n =3D qatomic_fetch_inc(&tcg_cur_ctxs);
+tcg/tcg.c:1369:    tcg_cur_ctxs =3D 1;
 
-David / dhildenb
+I don't see a qatomic_dec(&tcg_cur_ctxs) anywhere, so it seems hot
+unplugging a vcpu doesn't release the tcg_cur_ctxs refcount. Do we
+need a tcg_unregister_thread() function?
 
+CCing Richard Henderson.
+
+Stefan
 
