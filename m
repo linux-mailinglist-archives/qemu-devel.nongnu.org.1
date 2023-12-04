@@ -2,73 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1407280293A
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 00:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86160802970
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 01:31:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9w88-0001IZ-VL; Sun, 03 Dec 2023 18:44:09 -0500
+	id 1r9wnC-0004Qj-OM; Sun, 03 Dec 2023 19:26:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9w7N-0007Z1-3t; Sun, 03 Dec 2023 18:43:29 -0500
-Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
+ id 1r9wn7-0004Q3-M8; Sun, 03 Dec 2023 19:26:29 -0500
+Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9w7E-0002u8-5z; Sun, 03 Dec 2023 18:43:20 -0500
-Received: by mail-yw1-x1133.google.com with SMTP id
- 00721157ae682-5d6b9143782so21063187b3.0; 
- Sun, 03 Dec 2023 15:43:11 -0800 (PST)
+ id 1r9wn4-00004z-4p; Sun, 03 Dec 2023 19:26:29 -0500
+Received: by mail-yw1-x1130.google.com with SMTP id
+ 00721157ae682-5d3687a6574so37194987b3.2; 
+ Sun, 03 Dec 2023 16:26:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701646991; x=1702251791; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pjKhO+PzqqrLoVjDzrdEJqubBSeVITy6r+qEgUKg3Ec=;
- b=artuqTEQXqK6HQDjiRX4EQTeJNoRgKtIFrIXEMkvidWlwsXmIPQqdsDCbC2m24uYPO
- y7v43TfnBNt9kX54BaTNh8uRz+hSZhdkmVlaeRkJUfg9pNLf+NE9JgFBaCEPkOTv2w1m
- v9L8XMN26KfyWxuFc1K4+QtDNgqXCnL5F+uCTpGD9bfixNWlwnEZpYbkj3dnN2xVaGAB
- 6Ig0G/jJlbzrAnWr31UqErqQTJSzGjXDnYLPybomfkHp9CWtR5Cyk92xr4X/bMglUmtj
- PcSAhfozNQlMxTCvcPHAqDNHRPguclLNLG+LmJU38sdas/+XxXjzqP13eHCWvpQNH1Xz
- e5Jw==
+ d=gmail.com; s=20230601; t=1701649584; x=1702254384; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vjJI0cIxkRTZ5OWIw3bVVRHcwjcOeypwu8X8iyLqwmA=;
+ b=R/rIPDZhhmSmjdBTh60Ab/IEvdsOvCFw55iQHl6QJtUttjRZE5CwJAatfjK2jXj3ry
+ MBWyPqxJqEbIwIrS6+LSpX+6cBHppmRrJTD9VoidymSmLbb9Va8tSKLr030aRcaL7mNQ
+ 2TtmabE2qGbeoGJGE/ybPyitR1I1wIbe6SXYGa3SDcglM3DgUxFowyGcT1Ny+EmrteK7
+ GhcEGTz2tEtOimtaxW0gONC/uAHYxzUTNWRL29BBoFmjyQdFN1kVHGSYcUpQAfzw597p
+ M71DVfQphgNJWpu5IF9LXaM1DXsuzwJbST3RDIxl7hEUM+xF6okJBDz7hG6NS9OFRkoR
+ MGDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701646991; x=1702251791;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pjKhO+PzqqrLoVjDzrdEJqubBSeVITy6r+qEgUKg3Ec=;
- b=dytRGiHcAlkGFgSasGyhDeGewZFWgRBrJ+Bwt8sGKxj6aGDwU3NtiYtfjPXmAS/Z6G
- pifC25JuGqUS+Snp4rsK4VnqULHASg4fRZzVyg74viBAmDTEttLZR1z1ZiVsbNoWTusp
- 175gOpmIFEPLyejbu2cP/q9LW11cwkI9MsDe0GNucueOx4wCVojwZY5ZZjxfoMqJfLt5
- fv5mlh3e/PDhC/nHSHovtXCZvl1uBp1yzICQz8nTKv4HnBirgRDe63fEQEVQyKCZYwsu
- xsi7/gfyPjVYhBMU3EDdoY6cC6CAlTISNHa3wK0aiWWR4Y8Rb2mEb3sU+fNCBzTXxb3J
- MQdg==
-X-Gm-Message-State: AOJu0YzMzY9vvwVNfwlszKfXK0rJz68DDKuGxsjEgzvizRScRa9QCvoy
- RLo4DHdZuS1po9FnHm2XnGgVnm/3RpweAA==
-X-Google-Smtp-Source: AGHT+IF4XXmHicMfJxoD12yQR1d0LGUg/tA9EDCU5gsdv01G+TnabO//StkRHPuys5ubV90TabT9NQ==
-X-Received: by 2002:a81:4e82:0:b0:5d7:34a4:3143 with SMTP id
- c124-20020a814e82000000b005d734a43143mr2043034ywb.12.1701646990878; 
- Sun, 03 Dec 2023 15:43:10 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701649584; x=1702254384;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vjJI0cIxkRTZ5OWIw3bVVRHcwjcOeypwu8X8iyLqwmA=;
+ b=oCdvAdogWFGcGpUBKgFNA78A4UYM3xv0qFwgcL5RawJRSPhI3O3xbecnz+2hMPS+ut
+ mL6CIexh9zSf3pMTdUBi/qxqYfEP5oUYujZ7wdiIxkimRnfO4Sd1j+qOfQk6Z4ZIhAN6
+ efUAE8UL7+dblJvYcOxsqGbtsxq5C5tqa+fYCjhqCdTnq9zIvoJwZXE1t4ZTrpxs9OUu
+ GZqhZ1tEDFtYt33ZkuFnKLq6pT2hmKoddWefKRnHkwTpGKUeOEhAF+6Cy0ayfirgTDSh
+ olI1JUR8PITU81hYVprTyMiIdtIjP8lsKhDSwMB+hSLzVQBa5uoFa1+ZPq3KRtmHVlmj
+ 5WIA==
+X-Gm-Message-State: AOJu0YwXxgxX9cQWMJL3LJcfHSfSk/iD81jKBiA4pA928+9yJD9gpGCq
+ cthmNmmyGtiGk/X7+NvU/Zv7AJEZcSZA/w==
+X-Google-Smtp-Source: AGHT+IGyiJiGFImbDpAkZfFRVvbffXeltgu1rVWo/OxSHjk4MvoKZamNFGQ62xJOjFwZwiZdrAlmBQ==
+X-Received: by 2002:a05:690c:350d:b0:5d8:df11:a672 with SMTP id
+ fq13-20020a05690c350d00b005d8df11a672mr109320ywb.3.1701649582467; 
+ Sun, 03 Dec 2023 16:26:22 -0800 (PST)
 Received: from localhost.localdomain ([201.206.180.22])
  by smtp.gmail.com with ESMTPSA id
- c126-20020a0dda84000000b005d718fff165sm1536299ywe.78.2023.12.03.15.43.10
+ l63-20020a0de242000000b005d3e6ce07e7sm2443187ywe.6.2023.12.03.16.26.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Dec 2023 15:43:10 -0800 (PST)
+ Sun, 03 Dec 2023 16:26:21 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v3 44/45] Append added properties to mailbox test
-Date: Sun,  3 Dec 2023 17:42:12 -0600
-Message-Id: <20231203234213.1366214-45-sergey.kambalin@auriga.com>
+Subject: [PATCH v3 00/45] Raspberry Pi 4B machine
+Date: Sun,  3 Dec 2023 18:25:34 -0600
+Message-Id: <20231204002619.1367044-1-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230726132512.149618-1-sergey.kambalin@auriga.com>
-References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1133.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,72 +88,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
----
- tests/qtest/bcm2838-mbox-property-test.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+Introducing Raspberry Pi 4B model.
+It contains new BCM2838 SoC, PCIE subsystem,
+RNG200, Thermal sensor and Genet network controller.
 
-diff --git a/tests/qtest/bcm2838-mbox-property-test.c b/tests/qtest/bcm2838-mbox-property-test.c
-index 1b4a2ed9cb..3a2e7f9194 100644
---- a/tests/qtest/bcm2838-mbox-property-test.c
-+++ b/tests/qtest/bcm2838-mbox-property-test.c
-@@ -269,6 +269,12 @@ DECLARE_TEST_CASE_SETUP(GET_MIN_CLOCK_RATE, ANY) {
-     tag->request.value.clock_id = CLOCK_ID_UNDEFINED;
- }
- 
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_CLOCKS) {
-+    g_assert_cmphex(tag->response.value.root_clock, ==, CLOCK_ID_ROOT);
-+    g_assert_cmphex(tag->response.value.arm_clock, ==, CLOCK_ID_ARM);
-+}
-+
- /*----------------------------------------------------------------------------*/
- DECLARE_TEST_CASE(GET_TEMPERATURE) {
-     g_assert_cmphex(tag->response.value.temperature_id, ==, TEMPERATURE_ID_SOC);
-@@ -535,17 +541,19 @@ DECLARE_TEST_CASE(GET_COMMANDLINE) {
-     /* No special checks are needed for this test case */
- }
- 
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_THROTTLED) {
-+    g_assert_cmpint(tag->response.value.throttled, ==, 0);
-+}
-+
- /*----------------------------------------------------------------------------*/
- DECLARE_TEST_CASE(GET_NUM_DISPLAYS) {
-     g_assert_cmpint(tag->response.value.num_displays, ==, 1);
- }
- 
- /*----------------------------------------------------------------------------*/
--DECLARE_TEST_CASE(SET_PITCH) {
--    /* No special checks are needed for this test case */
--}
--DECLARE_TEST_CASE_SETUP(SET_PITCH) {
--    tag->request.value.pitch = DUMMY_VALUE;
-+DECLARE_TEST_CASE(INITIALIZE_VCHIQ) {
-+    g_assert_cmpint(tag->response.value.zero, ==, 0);
- }
- 
- /*----------------------------------------------------------------------------*/
-@@ -571,6 +579,7 @@ int main(int argc, char **argv)
-     QTEST_ADD_TEST_CASE(GET_CLOCK_RATE, ANY);
-     QTEST_ADD_TEST_CASE(GET_MAX_CLOCK_RATE, ANY);
-     QTEST_ADD_TEST_CASE(GET_MIN_CLOCK_RATE, ANY);
-+    QTEST_ADD_TEST_CASE(GET_CLOCKS);
-     QTEST_ADD_TEST_CASE(GET_TEMPERATURE);
-     QTEST_ADD_TEST_CASE(GET_MAX_TEMPERATURE);
-     QTEST_ADD_TEST_CASE(ALLOCATE_BUFFER);
-@@ -604,8 +613,9 @@ int main(int argc, char **argv)
-     QTEST_ADD_TEST_CASE(SET_OVERSCAN);
-     QTEST_ADD_TEST_CASE(GET_DMA_CHANNELS);
-     QTEST_ADD_TEST_CASE(GET_COMMANDLINE);
-+    QTEST_ADD_TEST_CASE(GET_THROTTLED);
-     QTEST_ADD_TEST_CASE(GET_NUM_DISPLAYS);
--    QTEST_ADD_TEST_CASE(SET_PITCH);
-+    QTEST_ADD_TEST_CASE(INITIALIZE_VCHIQ);
- 
-     return g_test_run();
- }
+It can work with recent linux kernels 6.x.x.
+Two avocado tests was added to check that.
+
+Unit tests has been made as read/write operations
+via mailbox properties.
+
+Genet integration test is under development.
+
+Every single commit
+1) builds without errors
+2) passes regression tests
+3) passes style check*
+*the only exception is bcm2838-mbox-property-test.c file
+containing heavy macros usage which cause a lot of
+false-positives of checkpatch.pl.
+
+I did my best to keep the commits less than 200 changes,
+but had to make some of them a bit more in order to
+keep their integrity.
+
+This is v2 patchset with the most of v1 remarks fixed.
+I named it as 'v3' because of mistakes while attempts to send v2 patchset.
+Please remove all other v1 and v2 patchsets except the very first one.
+
+Sergey Kambalin (45):
+  Split out common part of BCM283X classes
+  Split out common part of peripherals
+  Split out raspi machine common part
+  Introduce BCM2838 SoC
+  Add GIC-400 to BCM2838 SoC
+  Add BCM2838 GPIO stub
+  Implement BCM2838 GPIO functionality
+  Connect SD controller to BCM2838 GPIO
+  Add GPIO and SD to BCM2838 periph
+  Add BCM2838 checkpoint support
+  Introduce Raspberry PI 4 machine
+  Temporarily disable unimplemented rpi4b devices
+  Add memory region for BCM2837 RPiVid ASB
+  Add BCM2838 PCIE Root Complex
+  Add BCM2838 PCIE host
+  Enable BCM2838 PCIE
+  Add RNG200 skeleton
+  Add RNG200 RNG and RBG
+  Get rid of RNG200 timer
+  Implement BCM2838 thermal sensor
+  Add clock_isp stub
+  Add GENET stub
+  Add GENET register structs. Part 1
+  Add GENET register structs. Part 2
+  Add GENET register structs. Part 3
+  Add GENET register structs. Part 4
+  Add GENET register access macros
+  Implement GENET register ops
+  Implement GENET MDIO
+  Implement GENET TX path
+  Implement GENET RX path
+  Enable BCM2838 GENET controller
+  Connect RNG200, PCIE and GENET to GIC
+  Add Rpi4b boot tests
+  Add mailbox test stub
+  Add mailbox test constants
+  Add mailbox tests tags. Part 1
+  Add mailbox tests tags. Part 2
+  Add mailbox tests tags. Part 3
+  Add mailbox property tests. Part 1
+  Add mailbox property tests. Part 2
+  Add mailbox property tests. Part 3
+  Add missed BCM2835 properties
+  Append added properties to mailbox test
+  Add RPi4B to paspi4.rst
+
+ docs/system/arm/raspi.rst                |   11 +-
+ hw/arm/bcm2835_peripherals.c             |  218 +++--
+ hw/arm/bcm2836.c                         |  116 ++-
+ hw/arm/bcm2838.c                         |  288 ++++++
+ hw/arm/bcm2838_pcie.c                    |  289 ++++++
+ hw/arm/bcm2838_peripherals.c             |  292 ++++++
+ hw/arm/meson.build                       |    8 +-
+ hw/arm/raspi.c                           |  131 +--
+ hw/arm/raspi4b.c                         |  112 +++
+ hw/arm/trace-events                      |    6 +
+ hw/gpio/bcm2838_gpio.c                   |  389 ++++++++
+ hw/gpio/meson.build                      |    5 +-
+ hw/misc/bcm2835_property.c               |   47 +
+ hw/misc/bcm2838_rng200.c                 |  420 +++++++++
+ hw/misc/bcm2838_thermal.c                |   98 ++
+ hw/misc/meson.build                      |    2 +
+ hw/misc/trace-events                     |    9 +
+ hw/net/bcm2838_genet.c                   | 1088 ++++++++++++++++++++++
+ hw/net/meson.build                       |    2 +
+ hw/net/trace-events                      |   16 +
+ include/hw/arm/bcm2835_peripherals.h     |   29 +-
+ include/hw/arm/bcm2836.h                 |   27 +-
+ include/hw/arm/bcm2838.h                 |   31 +
+ include/hw/arm/bcm2838_pcie.h            |   75 ++
+ include/hw/arm/bcm2838_peripherals.h     |   97 ++
+ include/hw/arm/raspberrypi-fw-defs.h     |   12 +-
+ include/hw/arm/raspi_platform.h          |   37 +
+ include/hw/display/bcm2835_fb.h          |    2 +
+ include/hw/gpio/bcm2838_gpio.h           |   45 +
+ include/hw/misc/bcm2838_rng200.h         |   43 +
+ include/hw/misc/bcm2838_thermal.h        |   24 +
+ include/hw/net/bcm2838_genet.h           |  426 +++++++++
+ tests/avocado/boot_linux_console.py      |   92 ++
+ tests/qtest/bcm2838-mailbox.c            |   61 ++
+ tests/qtest/bcm2838-mailbox.h            |  584 ++++++++++++
+ tests/qtest/bcm2838-mbox-property-test.c |  621 ++++++++++++
+ tests/qtest/meson.build                  |    3 +-
+ 37 files changed, 5551 insertions(+), 205 deletions(-)
+ create mode 100644 hw/arm/bcm2838.c
+ create mode 100644 hw/arm/bcm2838_pcie.c
+ create mode 100644 hw/arm/bcm2838_peripherals.c
+ create mode 100644 hw/arm/raspi4b.c
+ create mode 100644 hw/gpio/bcm2838_gpio.c
+ create mode 100644 hw/misc/bcm2838_rng200.c
+ create mode 100644 hw/misc/bcm2838_thermal.c
+ create mode 100644 hw/net/bcm2838_genet.c
+ create mode 100644 include/hw/arm/bcm2838.h
+ create mode 100644 include/hw/arm/bcm2838_pcie.h
+ create mode 100644 include/hw/arm/bcm2838_peripherals.h
+ create mode 100644 include/hw/gpio/bcm2838_gpio.h
+ create mode 100644 include/hw/misc/bcm2838_rng200.h
+ create mode 100644 include/hw/misc/bcm2838_thermal.h
+ create mode 100644 include/hw/net/bcm2838_genet.h
+ create mode 100644 tests/qtest/bcm2838-mailbox.c
+ create mode 100644 tests/qtest/bcm2838-mailbox.h
+ create mode 100644 tests/qtest/bcm2838-mbox-property-test.c
+
 -- 
 2.34.1
 
