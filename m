@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B63803287
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 13:25:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 341DA8032B9
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 13:31:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA7yw-00018N-KV; Mon, 04 Dec 2023 07:23:26 -0500
+	id 1rA85O-00039m-CN; Mon, 04 Dec 2023 07:30:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rA7yu-00017y-Pc
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 07:23:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rA7yt-0006bX-5N
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 07:23:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701692601;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dWZu5FfP/T6893g/T7OkCWZ5TjUDQF2GRJyknmRuI+M=;
- b=YWX10rZ0s5676l67ETxhydAkNz65bip3MQPrnlerfxIFRQJSjeA7SQ4zCVwtC05dWOOtmL
- CK/bEb9FrlgYu06/xEjYEL3eQb7xvBhSoPZb7tnNHhzWgPl5aLYD5V5AQiD1MS7DreDXHM
- JXxyolVQg11PuXNja6QwICYT4DidyCs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-577-gbryS5XWMFajJ2gqyBp4cw-1; Mon, 04 Dec 2023 07:23:18 -0500
-X-MC-Unique: gbryS5XWMFajJ2gqyBp4cw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rA85M-00039R-3a
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 07:30:04 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rA85J-0002Da-Ed
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 07:30:03 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 205218371C6;
- Mon,  4 Dec 2023 12:23:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.237])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 671D7492BFE;
- Mon,  4 Dec 2023 12:23:10 +0000 (UTC)
-Date: Mon, 4 Dec 2023 13:23:09 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Alberto Garcia <berto@igalia.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>,
- John Snow <jsnow@redhat.com>, Eric Blake <eblake@redhat.com>,
- Wen Congyang <wencongyang2@huawei.com>, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, Coiby Xu <Coiby.Xu@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Xie Changlong <xiechanglong.d@gmail.com>,
- Ari Sundholm <ari@tuxera.com>, Li Zhijian <lizhijian@fujitsu.com>,
- Cleber Rosa <crosa@redhat.com>, Juan Quintela <quintela@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Zhang Chen <chen.zhang@intel.com>, Peter Xu <peterx@redhat.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Leonardo Bras <leobras@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Fam Zheng <fam@euphon.net>, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 06/12] scsi: remove AioContext locking
-Message-ID: <ZW3ErXZ2ZOo_kX2x@redhat.com>
-References: <20231129195553.942921-1-stefanha@redhat.com>
- <20231129195553.942921-7-stefanha@redhat.com>
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 7A7DB1FE60;
+ Mon,  4 Dec 2023 12:29:56 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F3B461398A;
+ Mon,  4 Dec 2023 12:29:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 5ljWLUPGbWWSCAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 04 Dec 2023 12:29:55 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: "Liu, Yuan1" <yuan1.liu@intel.com>, "quintela@redhat.com"
+ <quintela@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "leobras@redhat.com" <leobras@redhat.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "Zou, Nanhai"
+ <nanhai.zou@intel.com>
+Subject: RE: [PATCH v2 3/4] configure: add qpl option
+In-Reply-To: <BY5PR11MB4388B24F2EF2D319325F4673A386A@BY5PR11MB4388.namprd11.prod.outlook.com>
+References: <20231109154638.488213-1-yuan1.liu@intel.com>
+ <20231109154638.488213-4-yuan1.liu@intel.com> <87cyvpbywv.fsf@suse.de>
+ <BY5PR11MB4388B24F2EF2D319325F4673A386A@BY5PR11MB4388.namprd11.prod.outlook.com>
+Date: Mon, 04 Dec 2023 09:29:53 -0300
+Message-ID: <87edg2gnge.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231129195553.942921-7-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain
+X-Spamd-Bar: ++
+Authentication-Results: smtp-out2.suse.de; dkim=none;
+ dmarc=fail reason="No valid SPF, No valid DKIM" header.from=suse.de
+ (policy=none); 
+ spf=softfail (smtp-out2.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither
+ permitted nor denied by domain of farosas@suse.de)
+ smtp.mailfrom=farosas@suse.de
+X-Rspamd-Server: rspamd2
+X-Spamd-Result: default: False [2.81 / 50.00]; ARC_NA(0.00)[];
+ TO_DN_EQ_ADDR_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ MIME_GOOD(-0.10)[text/plain];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ NEURAL_HAM_LONG(-0.98)[-0.975]; R_SPF_SOFTFAIL(4.60)[~all:c];
+ RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_THREE(0.00)[3];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ R_DKIM_NA(2.20)[]; MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
+X-Spam-Score: 2.81
+X-Rspamd-Queue-Id: 7A7DB1FE60
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,48 +95,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 29.11.2023 um 20:55 hat Stefan Hajnoczi geschrieben:
-> The AioContext lock no longer has any effect. Remove it.
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->  include/hw/virtio/virtio-scsi.h | 14 --------------
->  hw/scsi/scsi-bus.c              |  2 --
->  hw/scsi/scsi-disk.c             | 28 ++++------------------------
->  hw/scsi/virtio-scsi.c           | 18 ------------------
->  4 files changed, 4 insertions(+), 58 deletions(-)
+"Liu, Yuan1" <yuan1.liu@intel.com> writes:
 
-> @@ -2531,13 +2527,11 @@ static void scsi_unrealize(SCSIDevice *dev)
->  static void scsi_hd_realize(SCSIDevice *dev, Error **errp)
->  {
->      SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, dev);
-> -    AioContext *ctx = NULL;
-> +
->      /* can happen for devices without drive. The error message for missing
->       * backend will be issued in scsi_realize
->       */
->      if (s->qdev.conf.blk) {
-> -        ctx = blk_get_aio_context(s->qdev.conf.blk);
-> -        aio_context_acquire(ctx);
->          if (!blkconf_blocksizes(&s->qdev.conf, errp)) {
->              goto out;
->          }
-> @@ -2549,15 +2543,11 @@ static void scsi_hd_realize(SCSIDevice *dev, Error **errp)
->      }
->      scsi_realize(&s->qdev, errp);
->  out:
-> -    if (ctx) {
-> -        aio_context_release(ctx);
-> -    }
->  }
+>> -----Original Message-----
+>> From: Fabiano Rosas <farosas@suse.de>
+>> Sent: Saturday, December 2, 2023 1:45 AM
+>> To: Liu, Yuan1 <yuan1.liu@intel.com>; quintela@redhat.com;
+>> peterx@redhat.com; leobras@redhat.com
+>> Cc: qemu-devel@nongnu.org; Liu, Yuan1 <yuan1.liu@intel.com>; Zou, Nanhai
+>> <nanhai.zou@intel.com>
+>> Subject: Re: [PATCH v2 3/4] configure: add qpl option
+>> 
+>> Yuan Liu <yuan1.liu@intel.com> writes:
+>> 
+>> > the Query Processing Library (QPL) is an open-source library that
+>> > supports data compression and decompression features.
+>> >
+>> > add --enable-qpl and --disable-qpl options to enable and disable the
+>> > QPL compression accelerator. The QPL compression accelerator can
+>> > accelerate the Zlib compression algorithm during the live migration.
+>> >
+>> > Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+>> > Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+>> > ---
+>> >  meson.build                   | 7 +++++++
+>> >  meson_options.txt             | 2 ++
+>> >  scripts/meson-buildoptions.sh | 3 +++
+>> >  3 files changed, 12 insertions(+)
+>> >
+>> > diff --git a/meson.build b/meson.build index 259dc5f308..b4ba30b4fa
+>> > 100644
+>> > --- a/meson.build
+>> > +++ b/meson.build
+>> > @@ -1032,6 +1032,11 @@ if not get_option('zstd').auto() or have_block
+>> >                      required: get_option('zstd'),
+>> >                      method: 'pkg-config')  endif
+>> > +qpl = not_found
+>> > +if not get_option('qpl').auto()
+>> > +    qpl = dependency('libqpl', required: get_option('qpl'),
+>> > +                     method: 'pkg-config') endif
+>> 
+>> Hm.. I'm not having success with pkg-config:
+>> 
+>> ../meson.build:1043:10: ERROR: Dependency "libqpl" not found, tried
+>> pkgconfig
+>> 
+>> It seems it doesn't find the static library. I had to use this instead:
+>> 
+>> qpl = declare_dependency(dependencies: cc.find_library('qpl',
+>>                          required: get_option('qpl')))
+>> 
+>> What am I missing here?
+> Sorry about this, the QPL repo(https://github.com/intel/qpl) does not yet support libqpl pkg-config file, we are in the process of adding this functionality and we hope to resolve libqpl's dependencies through pkg-config file.
+> I will explicitly address this issue and provide relevant documentation in the next version.
 
-This doesn't build for me:
+Ok, just remember to test with a clean setup next time.
 
-../hw/scsi/scsi-disk.c:2545:1: error: label at end of compound statement is a C2x extension [-Werror,-Wc2x-extensions]
-}
-^
-1 error generated.
+>
+> For the pkg-config test, 
+> 1. create /usr/lib64/pkgconfig/libqpl.pc
+> 2. add below lines
+> prefix=/usr/local
+> exec_prefix=${prefix}
+> libdir=${exec_prefix}/lib
+> includedir=${prefix}/include
+>
+> Name: libqpl
+> Description: Intel Query Processing Library
+> Version: 1.3.0
+> Libs: -L${libdir} -lqpl -lpthread -laccel-config -ldl -lstdc++
 
-Kevin
+We could probably do this with meson directly instead of requiring a
+pkg-config preliminary setup. My meson-fu is not the best, but something
+like:
+
+  qpl = declare_dependency(dependencies: [
+       cc.find_library('qpl', required: get_option('qpl')),
+       cc.find_library('accel-config', required: get_option('qpl')),
+       ...
+       ], link_args: ['-lstdc++', ...])
+
+> Cflags: -I${includedir}
+>
+> 3. Install the header files to /usr/local/include/qpl and static library to /usr/local/lib64/libqpl.a
+
+For this part is ok to just point to the official docs.
 
 
