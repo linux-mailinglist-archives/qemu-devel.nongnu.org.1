@@ -2,80 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00188802964
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 01:28:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CEC680299F
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 01:50:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9woU-0007Af-Fr; Sun, 03 Dec 2023 19:27:54 -0500
+	id 1r9x81-0004ej-Pw; Sun, 03 Dec 2023 19:48:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9wnz-00051q-Lt; Sun, 03 Dec 2023 19:27:24 -0500
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9wny-0000L8-2j; Sun, 03 Dec 2023 19:27:23 -0500
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-5d4f71f7e9fso24244207b3.0; 
- Sun, 03 Dec 2023 16:27:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701649640; x=1702254440; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=igayQuYX/F7iH3RNFaYv1D/3MuPEz8Ua3kpb9vPSfPs=;
- b=Do8cNZhJW5JRZAPco0FvBELH0G4dda0xBue/tgJ/LXFSJ5qWaW2ofp6cRi6kczLkJs
- 8fvevEwkPzFvH0GXLjnxRQ2BSBpEZJ+GzaM7oDzNldR/QG+0/nvUx22BTL5tzNHtvrAR
- FAGwkfc5sRR4ExXMFswK7HxbVB13YzfIMJRhlqlN0JZNgNeysHO/3EtY7JekaZhVancL
- KFLlSJ0mhFU9lZhuB2H+2pxTFBatHzdjqdAuk37FUDb/8eE0K/5X7fdkiRy7VTTc2lg1
- kfOmEr/JXrEi93AxdvspikHEjpihrF9oCWXJj51wtNOgvlm+WI/1581vtWqiPDicPPVa
- a3EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701649640; x=1702254440;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=igayQuYX/F7iH3RNFaYv1D/3MuPEz8Ua3kpb9vPSfPs=;
- b=ZMCr5XIdC/q2eHVYWYmXmCJBpUDkeYTCWlX3a27xI4dBZFGZdNe6ycMnUcDgPrUEqs
- eo7E9hpvdGp6d5nJdJUBo05e7feeT3VF+wTWFHJkMUmRecbY8UgO7H9i6CGVR2DSEHrG
- 6/zuctc8ukOEH9MwmiDlIEcsv386btDC+8NW5wU+RZgiL1woA87lYVlMXpU5z5mYb7Hq
- cOFEfh6k9lwHf2r7UECWamIwSrI4TjHD/Jzad/evBl9dtVZskuGDrQCcBzdf5kk5gg1g
- LSXFC56Ih0ezrAZZvNha5xLTdcYs5eiGuxsar+ldGsehn8uRIQ80WGd+hd8S7WwXUoUW
- qs+Q==
-X-Gm-Message-State: AOJu0YwGBwJwXpP3ap0Nj3DQxzQQXcIrZx3L/GPQY6upmV47nFVMADcO
- riuPGnSR4jzpQi6wYQis318oMaBmsFgtJQ==
-X-Google-Smtp-Source: AGHT+IF5vXWrbflm3T7MfmtcvNTSYUbyhJWRXTlF6bKvzFJuUzChuPpCVvX8Q/4RETnpTtYus+jWYg==
-X-Received: by 2002:a81:4ecd:0:b0:5d8:1e33:483c with SMTP id
- c196-20020a814ecd000000b005d81e33483cmr604997ywb.32.1701649640566; 
- Sun, 03 Dec 2023 16:27:20 -0800 (PST)
-Received: from localhost.localdomain ([201.206.180.22])
- by smtp.gmail.com with ESMTPSA id
- l63-20020a0de242000000b005d3e6ce07e7sm2443187ywe.6.2023.12.03.16.27.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Dec 2023 16:27:20 -0800 (PST)
-From: Sergey Kambalin <serg.oker@gmail.com>
-X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r9x7u-0004e0-9o
+ for qemu-devel@nongnu.org; Sun, 03 Dec 2023 19:47:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r9x7s-0000We-Fu
+ for qemu-devel@nongnu.org; Sun, 03 Dec 2023 19:47:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701650876;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=wqV49eQwtKIBLiG5qLWYmBON0hlLvH3bmdEmtYFl3lE=;
+ b=Dy/JI+O3IO9kaV9Fu9MkkN3HUfW/+f+jJs56CBBlwKvuGLKz7N7qd4LtysxFU5s9wSuPHb
+ tVze86BIBSNgslLGB3AioRmOMMlBAlK97DgMjPawAAb5YA6RYsIJfNij8uKpx0nQLhTMlA
+ uHVSF6D/RHy/U5c5DMpn1N3WPm+7SxU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-mKJZJdgeNFqf648IlC0_Bw-1; Sun, 03 Dec 2023 19:47:50 -0500
+X-MC-Unique: mKJZJdgeNFqf648IlC0_Bw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A5F8185A780;
+ Mon,  4 Dec 2023 00:47:49 +0000 (UTC)
+Received: from gshan.redhat.com (unknown [10.64.136.61])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A511A492BE0;
+ Mon,  4 Dec 2023 00:47:40 +0000 (UTC)
+From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v3 45/45] Add RPi4B to paspi4.rst
-Date: Sun,  3 Dec 2023 18:26:19 -0600
-Message-Id: <20231204002619.1367044-46-sergey.kambalin@auriga.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231204002619.1367044-1-sergey.kambalin@auriga.com>
-References: <20231204002619.1367044-1-sergey.kambalin@auriga.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, imammedo@redhat.com,
+ kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
+ rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ armbru@redhat.com, wangyanan55@huawei.com, vijai@behindbytes.com,
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+Subject: [PATCH v9 0/9] Unified CPU type check
+Date: Mon,  4 Dec 2023 10:47:17 +1000
+Message-ID: <20231204004726.483558-1-gshan@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1129.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,49 +83,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
----
- docs/system/arm/raspi.rst | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+This series bases on Phil's repository because the prepatory commits
+have been queued to the branch.
 
-diff --git a/docs/system/arm/raspi.rst b/docs/system/arm/raspi.rst
-index 922fe375a6..db9e0949ef 100644
---- a/docs/system/arm/raspi.rst
-+++ b/docs/system/arm/raspi.rst
-@@ -1,5 +1,5 @@
--Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``)
--======================================================================================
-+Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``, ``raspi4b-2g``)
-+======================================================================================================
- 
- 
- QEMU provides models of the following Raspberry Pi boards:
-@@ -12,12 +12,13 @@ QEMU provides models of the following Raspberry Pi boards:
-   Cortex-A53 (4 cores), 512 MiB of RAM
- ``raspi3b``
-   Cortex-A53 (4 cores), 1 GiB of RAM
--
-+``raspi4b-2g``
-+  Cortex-A72 (4 cores), 2 GiB of RAM
- 
- Implemented devices
- -------------------
- 
-- * ARM1176JZF-S, Cortex-A7 or Cortex-A53 CPU
-+ * ARM1176JZF-S, Cortex-A7, Cortex-A53 or Cortex-A72 CPU
-  * Interrupt controller
-  * DMA controller
-  * Clock and reset controller (CPRMAN)
-@@ -33,6 +34,8 @@ Implemented devices
-  * USB2 host controller (DWC2 and MPHI)
-  * MailBox controller (MBOX)
-  * VideoCore firmware (property)
-+ * PCIE Root Port (raspi4b-2g)
-+ * GENET Ethernet Controller (raspi4b-2g)
- 
- 
- Missing devices
+  https://gitlab.com/philmd/qemu.git (branch: cpus-next)
+
+There are two places where the user specified CPU type is checked to see
+if it's supported or allowed by the board: machine_run_board_init() and
+mc->init(). We don't have to maintain two duplicate sets of logic. This
+series intends to move the check to machine_run_board_init() so that we
+have unified CPU type check.
+
+This series can be checked out from:
+
+  git@github.com:gwshan/qemu.git (branch: kvm/cpu-type)
+
+PATCH[1-4] refactors and improves the logic to validate CPU type in
+           machine_run_board_init()
+PATCH[5-9] validates the CPU type in machine_run_board_init() for the
+           individual boards
+
+v1: https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00302.html
+v2: https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00528.html
+v3: https://lists.nongnu.org/archive/html/qemu-arm/2023-09/msg00157.html
+v4: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00005.html
+v5: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00611.html
+v6: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00768.html
+v7: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg01045.html
+v8: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg01168.html
+
+Testing
+=======
+
+Before the series is applied:
+
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
+  qemu-system-aarch64: mach-virt: CPU type cortex-a8-arm-cpu not supported
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
+  qemu-system-aarch64: sbsa-ref: CPU type cortex-a53-arm-cpu not supported
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+  qemu-system-aarch64: sbsa-ref: CPU type sa1100-arm-cpu not supported
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
+  qemu-system-aarch64: unable to find CPU model 'host'
+
+After the series is applied:
+
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
+  qemu-system-aarch64: Invalid CPU model: cortex-a8
+  The valid models are: cortex-a7, cortex-a15, cortex-a35, cortex-a55,     \
+                        cortex-a72, cortex-a76, cortex-a710, a64fx,        \
+                        neoverse-n1, neoverse-v1, neoverse-n2, cortex-a53, \
+                        cortex-a57, max
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
+  qemu-system-aarch64: Invalid CPU model: cortex-a53
+  The valid models are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1,  \
+                        neoverse-n2, max
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
+  qemu-system-aarch64: Invalid CPU model: sa1100
+  The valid models are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1,  \
+                        neoverse-n2, max
+  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
+  qemu-system-aarch64: unable to find CPU model 'host'
+
+Changelog
+=========
+v9:
+  * Pick r-bs from Markus and Phil                               (Gavin)
+  * Improved change log for PATCH[v9 1/9]                        (Markus)
+  * assert(mc->valid_cpu_types[0] != NULL) and assert(cc != NULL)
+    in is_cpu_type_supported() of PATCH[v9 3/9]                  (Phil)
+v8:
+  * Pick r-bs from Phil                                          (Gavin)
+  * Drop @local_err and use @errp in machine_run_board_init()    (Phil)
+  * Add PATCH[v8 3/9] to improve is_cpu_type_supported()         (Phil)
+  * Use g_autofree and replace 'type' with 'model' for the
+    error messages in is_cpu_type_supported()                    (Phil)
+v7:
+  * Add 'return' after error_propagate() in machine_run_board_init()
+    to avoid calling mc->init() in the failing case              (Marcin)
+v6:
+  * Drop PATCH[v5 01-23], queued by Phil                         (Phil)
+  * Clearer hint if only one CPU type is supported and have
+    'const MachineState *' in is_cpu_type_supported()            (Phil)
+  * Move valid_cpu_types[] to board's class_init() function      (Phil)
+
+Gavin Shan (9):
+  machine: Use error handling when CPU type is checked
+  machine: Introduce helper is_cpu_type_supported()
+  machine: Improve is_cpu_type_supported()
+  machine: Print CPU model name instead of CPU type
+  hw/arm/virt: Hide host CPU model for tcg
+  hw/arm/virt: Check CPU type in machine_run_board_init()
+  hw/arm/sbsa-ref: Check CPU type in machine_run_board_init()
+  hw/arm: Check CPU type in machine_run_board_init()
+  hw/riscv/shakti_c: Check CPU type in machine_run_board_init()
+
+ hw/arm/bananapi_m2u.c   | 12 +++---
+ hw/arm/cubieboard.c     | 12 +++---
+ hw/arm/mps2-tz.c        | 26 +++++++++---
+ hw/arm/mps2.c           | 26 +++++++++---
+ hw/arm/msf2-som.c       | 12 +++---
+ hw/arm/musca.c          | 12 +++---
+ hw/arm/npcm7xx_boards.c | 12 +++---
+ hw/arm/orangepi.c       | 12 +++---
+ hw/arm/sbsa-ref.c       | 36 +++++-----------
+ hw/arm/virt.c           | 60 ++++++++++----------------
+ hw/core/machine.c       | 94 +++++++++++++++++++++++++----------------
+ hw/riscv/shakti_c.c     | 13 +++---
+ 12 files changed, 170 insertions(+), 157 deletions(-)
+
 -- 
-2.34.1
+2.42.0
 
 
