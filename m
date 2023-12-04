@@ -2,139 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4EC802E70
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 10:22:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09861802E76
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 10:24:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA58y-0001JY-6P; Mon, 04 Dec 2023 04:21:36 -0500
+	id 1rA5BX-00020D-5p; Mon, 04 Dec 2023 04:24:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rA58v-0001JA-GT
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 04:21:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
+ id 1rA5BU-000205-OL
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 04:24:12 -0500
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rA58t-0003if-NO
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 04:21:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701681690;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=tc75wqmwpTlOFyQiLAQ0bHBYISxk1tSqwpM808aphXc=;
- b=I/GDBAVgJXJo3dESI6bur8NZAXXEFOfwOgPn2exTbnhRscI79T40GvxDGRMC8VT3PpXXBl
- 90EIqws8n5lk3QBCVXJ5Z+ixVm7GiVMXUTLSB4sW6G4doZ6sOBUzN404oYw06xZPX+/Ben
- 3DBOE/EWipFIYIi/6oVihpKD75ei9fo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-d5IkX-g3O7ipd85bLJGe-g-1; Mon, 04 Dec 2023 04:21:27 -0500
-X-MC-Unique: d5IkX-g3O7ipd85bLJGe-g-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4083717431eso30502745e9.1
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 01:21:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701681685; x=1702286485;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tc75wqmwpTlOFyQiLAQ0bHBYISxk1tSqwpM808aphXc=;
- b=wiq2u8I/9mzmIH/iJGcoei4FN0v6I9kL81PCWMuSIL3K5wKDmDGR+YvcpLrvcBCRhx
- iYJV29px4SCGXmScotRNMtx4uE5RIHmfhld/7IUedJFTc8hLa2dxWOOH98PzXwbYxOmp
- 0zAcY2eGT1D1+s79tF3LOLZuD5wlb9KBi0C3/7rronMcqzep2VK54ukJGiltU2Cp2ARK
- boAUbD8CYhMdRsZ9vB3LXfbHP8rBg7GysZCw9pc3EtbhNRUT+92Oeca106BsrB4Iv+1P
- O1VVFy1xVgfUTz6o9HB9iGeZ3HgpYXkXmV1c+Va/NUkRJVfWIBXi9S5JUzjL6j2glTap
- NhHw==
-X-Gm-Message-State: AOJu0Yxi/a25lXqg70YiiiMNP11eCoTy9a61piztJ4j+NmCoDZWUTyKl
- 42b+ngYApfJP5hZKGXbxJlIAdQVD3pusWSdrae7wmXqReqFyvuAxAZmvZNXCrYAOxclKnM3xZdd
- ObWVQr3lcOZ05MXs=
-X-Received: by 2002:a05:600c:4393:b0:40c:909:fdb4 with SMTP id
- e19-20020a05600c439300b0040c0909fdb4mr1147187wmn.90.1701681685640; 
- Mon, 04 Dec 2023 01:21:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEazfDLPWikCue2Jo7ekcZy1hCydwB6W1HMc1w6ETI8Lu7UVQXwoO6eV+8+jpdWv2h0Hj7wng==
-X-Received: by 2002:a05:600c:4393:b0:40c:909:fdb4 with SMTP id
- e19-20020a05600c439300b0040c0909fdb4mr1147179wmn.90.1701681685142; 
- Mon, 04 Dec 2023 01:21:25 -0800 (PST)
-Received: from ?IPV6:2003:cb:c722:3700:6501:8925:6f9:fcdc?
- (p200300cbc72237006501892506f9fcdc.dip0.t-ipconnect.de.
- [2003:cb:c722:3700:6501:8925:6f9:fcdc])
- by smtp.gmail.com with ESMTPSA id
- r20-20020a05600c35d400b0040c05c768afsm7033321wmq.9.2023.12.04.01.21.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Dec 2023 01:21:24 -0800 (PST)
-Message-ID: <0b6dacd2-a7c0-469f-830a-9162dfae75bf@redhat.com>
-Date: Mon, 4 Dec 2023 10:21:23 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hostmem: Round up memory size for qemu_madvise() in
- host_memory_backend_memory_complete()
+ (Exim 4.90_1) (envelope-from <yuan1.liu@intel.com>)
+ id 1rA5BS-0005Ka-Ad
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 04:24:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1701681850; x=1733217850;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=0IRcfaMeAy1ug7sBFZnCpNtaNPrrIwwqEpzoc5qBelA=;
+ b=Mo5iKZ52vbKREglVXxStfMfM/L0JYjKPfq7G/+coFWqBXFJ50dXakasf
+ 7FP+1I7pLyfSTrivIgKF/k4GJO8JR5JGn3ZTWttjuOeM4K/KzOyKwNJPA
+ AXSFKgU8Ol03IeSjxxIT2jGUtscqmdRcRWMs/T8uWVAHzeTPnOZm19WG7
+ 7pIJF9WCA1GmqaQbt2QxD5DRvdGQKj5i9lngTXHcGur/zKAzup/sU9Xhb
+ 3QyH4Rs3XfDe8LYWjKWYpGffFe47dT+LPVPeViPEi4HRln60AmsLWzfHm
+ /dByZIwHlCuTnzEUxnf0qH0Ie+6y/2ezAvhwQ3VY5kL5D8yzkpCiy5M3d w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="557827"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="557827"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2023 01:24:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="914359137"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; d="scan'208";a="914359137"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmsmga001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 04 Dec 2023 01:24:06 -0800
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 4 Dec 2023 01:24:05 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Mon, 4 Dec 2023 01:24:05 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Mon, 4 Dec 2023 01:24:05 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fIh1UMfaTXdWTLdiEYT3zPk8UES2J3WQ2h1X2aw5njow7LMWnrXDhRWMhBw5ulLxHxoii+2ctuO2oE1UwT63kdH0kfAZaQh1qw+CJ2pZe5N0vZuPFi//9zm2EOv34Hru26KFlrt9QR7XAyKxm3pkm7Ufud4QbLTdun2HmeN+eNsu5sYkFsQw+0IS+5p06SxcI0/GylI4tntP2K3IRIOUYzjfZy1iNUJIGIty+r6RxxwihZw/zUC9W4Z1LE4q2u7q5ISCFjJsLfn1Xu+9WTfGeWydnXlmahRt7PH87eVnp7EHws5r4mNmuxpB3pPtjfo+0p9E8yvaI/eMDv04ot5vGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R3Ld5EuElxO0Mu5La9NNQXQUQ1ECbvAEFcme9loVXiE=;
+ b=MPN4vgXsZLrCFNC1/61ZB9QzSc+AsbefczeIQ++2AUN6zVI+iiNFyDR3wbckc/Tt9xg5o2JjBymIrR56sc5jxTUIrsYgSRKFHEsHiCUsl3apDvCdpDvAAmMg41vR0L+zq2DXDbnZbU8i8HkmOw6/fslUhbuw7kkO6OcXNKENiXbLFAuHzhA4lziuXTTTsS9fb+eddvTLXb0fVYO1gvt9Txpck+H8mwmokh6/ZdpO2cO7IYdTm10iZ0JnVtzZfhD+AZ9ruS1COWBSOFyttm73Qo+jsa6fA9Pe7lUblrdqr8boGL7HxlABr++jSTlj5qTY12qD2OC89m4DtV3h22bxrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BY5PR11MB4388.namprd11.prod.outlook.com (2603:10b6:a03:1c9::17)
+ by SJ0PR11MB4816.namprd11.prod.outlook.com (2603:10b6:a03:2ad::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.33; Mon, 4 Dec
+ 2023 09:24:02 +0000
+Received: from BY5PR11MB4388.namprd11.prod.outlook.com
+ ([fe80::1a92:8068:1ee6:59fb]) by BY5PR11MB4388.namprd11.prod.outlook.com
+ ([fe80::1a92:8068:1ee6:59fb%5]) with mapi id 15.20.7046.033; Mon, 4 Dec 2023
+ 09:24:02 +0000
+From: "Liu, Yuan1" <yuan1.liu@intel.com>
+To: Fabiano Rosas <farosas@suse.de>, "quintela@redhat.com"
+ <quintela@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "leobras@redhat.com" <leobras@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "Zou, Nanhai"
+ <nanhai.zou@intel.com>
+Subject: RE: [PATCH v2 2/4] multifd: Implement multifd compression accelerator
+Thread-Topic: [PATCH v2 2/4] multifd: Implement multifd compression accelerator
+Thread-Index: AQHaE6gtVL7lGZiJP0mGbA32I0Qg8bCU2XSAgAQlb4A=
+Date: Mon, 4 Dec 2023 09:24:01 +0000
+Message-ID: <BY5PR11MB4388F8D96B1166DB495083D3A386A@BY5PR11MB4388.namprd11.prod.outlook.com>
+References: <20231109154638.488213-1-yuan1.liu@intel.com>
+ <20231109154638.488213-3-yuan1.liu@intel.com> <87a5qtby4w.fsf@suse.de>
+In-Reply-To: <87a5qtby4w.fsf@suse.de>
+Accept-Language: en-US
 Content-Language: en-US
-To: =?UTF-8?B?TWljaGFsIFByw612b3puw61r?= <mprivozn@redhat.com>,
- qemu-devel@nongnu.org
-Cc: imammedo@redhat.com
-References: <f77d641d500324525ac036fe1827b3070de75fc1.1701088320.git.mprivozn@redhat.com>
- <9b8a2863-1264-4058-b367-0b61a75921ac@redhat.com>
- <b9c8b4da-cb14-4a67-b98d-655ed7348bef@redhat.com>
- <de569c7a-2e21-4a98-a4a9-98132b43c621@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <de569c7a-2e21-4a98-a4a9-98132b43c621@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BY5PR11MB4388:EE_|SJ0PR11MB4816:EE_
+x-ms-office365-filtering-correlation-id: 4d4b306e-414e-4e92-9032-08dbf4aac0cb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: yfdErfeDWLJ4NhBBx0HCVgBZidm6h8BvXR5tP7/L05H7c4XkhNk6hWfB1V9k3MVpLsWQRcpDpbuF+LH08x+yRHiMcrW8Ec9AUEIoGWG3xXY42rOZeIz5laZExnQW0rkAnoJUnFBIJls+6xR4YcpjMaI7HILZSQMMgN/DkrFr5Ez+0tAoyE6TE/kuyp3nW58/f7vNIbuaCx8L2Gim9/qd0gsLQczHxcae0ejdh9sTPeTNeChi5csyMkTvdc0+XierRuEp7JppDEUyKSEW85s2EcnXKmr01wWK9Nng4WCqVrVlihKLRtLpYTpqLVYi4gMxSXqgGjUVp2VCxmXl9E1mXPAtlm8Ez/lE6zdVcObuQXsO9xjqvDcEppuE8h1vMEqbTqXBzSm/7EXfXfr/wTm+8AGBEwk9TLwneTa2NnqJ9n96qbBy+1kP8ygreCRrRjRWSZXPxQoieHdBBkjyjbawDXf0X5xGCB68eBeB5zw/e57cnaCQy1ILxGYPc4EP8aOMss+KNQDM6ptVjYWernE1lwcZqC0DLlv9fbcO1h/JezyO6CBI/epXICRcYpC6Od6dRNl/6DkOKEZ5xPbihJBPoR/U071wxH4vzLo+34eCXFzwIT7UOKL74/3+CCtBB9JZ
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BY5PR11MB4388.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(39860400002)(366004)(396003)(136003)(376002)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(83380400001)(82960400001)(38100700002)(122000001)(41300700001)(26005)(66556008)(66476007)(66946007)(76116006)(64756008)(5660300002)(66446008)(8936002)(8676002)(52536014)(4326008)(316002)(54906003)(107886003)(110136005)(9686003)(53546011)(6506007)(71200400001)(478600001)(2906002)(7696005)(86362001)(38070700009)(33656002)(55016003);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?oV9P4o4+7+BaOinJ0mGekLFnRpIbBB/c0hqXIL9Z33Ai7sUk3sPIksZQxcO6?=
+ =?us-ascii?Q?5Fx9oaRrzdcGVRMzZOt8KB6yCr3krocEIyEb+aT/bvHOIrGzIknypngZxnNo?=
+ =?us-ascii?Q?1kUC3mzNxz1i31QlKLQkoAEzsfvr5K2ojQzFYAnjTri056vITnD2Ta2jGpiN?=
+ =?us-ascii?Q?gub6/VtGZYKUmoiWziu+fd6KDPBAd6ZTePeP/OKMCtH9B5BDK0P3eTxxm5zW?=
+ =?us-ascii?Q?UXVqWptUpcgZPKSCrUKZ6IeZ6z5DnHZds8CATT62FCwhTqfOEzBmtQc++whz?=
+ =?us-ascii?Q?yGUElHd6fA28zcHBdMF5198q/6OmqNGQrKlrVgukjy0y/LuTugOF2IKEf9TS?=
+ =?us-ascii?Q?qH2yZePM/3ZzqDYPqSOpbRG6wyuqqWCfCrFX4M6dahx5hS0m6ZMc0IlYbCE6?=
+ =?us-ascii?Q?wJUZZdtl1by3a5BSIsdic9VOpSgkkquohAjNpv2GIVfCd7g+N2fcad8QpLxQ?=
+ =?us-ascii?Q?J29NvJhqcwxj6EfpC7Q8hVlV7r7gHtyTwwvKankq/YYaCdEzdwHNq0EoL9Xs?=
+ =?us-ascii?Q?uUM+AbT9x93kEeh5K0jc+KYTCLegyCB9qTr/DshrbBqVB4yv4HO8XBOH2xBl?=
+ =?us-ascii?Q?uMfxCFyjp1MPcB+WeG8AsMviN9BfA4M99doU2RmsvuyBaQ60EuD8tgpJV187?=
+ =?us-ascii?Q?qptrUxDiIXeTaLt5W8V947QfEhzMfkiz5TE6hdQCr0uzAfxT7JZvnzlUUub1?=
+ =?us-ascii?Q?WDOh4dm5KQ88mIzOmLiKkuC67G7snVbeXUBYluXtAjwylWthBGClZ243mh0D?=
+ =?us-ascii?Q?7PyolryzSJ01D7YOyFVH5Ihgu0qUrFV4ywDpSnOui6JOjYxW067BwWMCDxdO?=
+ =?us-ascii?Q?e67HX20itqjsTBT2clJCFuJfaJnXTHB9MOsjCySM6DRTWk0kl7/9VXejFVdC?=
+ =?us-ascii?Q?juMv53TmiBD81lmJ5Hs4oXQ9sxIK5jP+HqaYHd3HmJcqNtko8cm0u0ge7Zsb?=
+ =?us-ascii?Q?25yJZ5lEd2MkafwGqZuU9FVPlJRVMlv5FLSbM8H4lMHqaqGJqjQyv/VzpQlA?=
+ =?us-ascii?Q?2jD4DTlfaUCCfyEMVCrJj8i7uzwJD7rKd5tgVbNDCNZcwm5pQ3jofP95IEqY?=
+ =?us-ascii?Q?EbPATDCHPDk8cVyXf47EQamz+bIKB9jqdwgBEyW/3TqWmt6s/JDHm05d7T3d?=
+ =?us-ascii?Q?9JqQ3evgzyN9dvNUvzSTzmhpa02Tv7JERl1A2yJaCBRlVHZNRt09NAdhiGbU?=
+ =?us-ascii?Q?9j0u5Z6Mk+jdE666lh2IGcbSfpq+OxMlVdPWi9zAb6aXJL9ne9nKYxbPs7Ph?=
+ =?us-ascii?Q?RfSJ5tYgqs9Y4WsvLahZN0zwRrJ6JX5vJgYXZAXA9kel52vz1EKgM7C2gZcy?=
+ =?us-ascii?Q?hvPVroDKcWIloG9X7BRDG6WNbaproCPLjRs1IgYUzPbrcGBU3hakWeIFrNz/?=
+ =?us-ascii?Q?QjInfcVbLnRah3E9Cl+GAWa23WNqalE6QUPiGivwVxXryBvylO3i93t1Bv9E?=
+ =?us-ascii?Q?2qB0NtGyoriEp8VWa1dwhLhH/YlRLuix2QTfR2tfUvCFyxsVZafoKurtI6Tk?=
+ =?us-ascii?Q?hD8IbIpIvE6LZAHnFrRcnqgBWfpLh9Bqb8DI/vUyxar26ocP6xCngEpFEKfu?=
+ =?us-ascii?Q?CzI50XAqDLvPHRyBWPeAdk9hc0XqQaBZzM2eawzl?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4388.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d4b306e-414e-4e92-9032-08dbf4aac0cb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Dec 2023 09:24:01.9132 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: vqCXN4M2ln/EQfIH2cAc0w+VMEdHmTEHvZlgfW28fYJYYKZhWnsKCykWIiZra3LW2gs7/27ivq/NB/pYtfVtWw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4816
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=yuan1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -152,158 +169,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01.12.23 10:07, Michal Prívozník wrote:
-> On 11/27/23 14:55, David Hildenbrand wrote:
->> On 27.11.23 14:37, David Hildenbrand wrote:
->>> On 27.11.23 13:32, Michal Privoznik wrote:
->>>> Simple reproducer:
->>>> qemu.git $ ./build/qemu-system-x86_64 \
->>>> -m size=8389632k,slots=16,maxmem=25600000k \
->>>> -object
->>>> '{"qom-type":"memory-backend-file","id":"ram-node0","mem-path":"/hugepages2M/","prealloc":true,"size":8590983168,"host-nodes":[0],"policy":"bind"}' \
->>>> -numa node,nodeid=0,cpus=0,memdev=ram-node0
->>>>
->>>> With current master I get:
->>>>
->>>> qemu-system-x86_64: cannot bind memory to host NUMA nodes: Invalid
->>>> argument
->>>>
->>>> The problem is that memory size (8193MiB) is not an integer
->>>> multiple of underlying pagesize (2MiB) which triggers a check
->>>> inside of madvise(), since we can't really set a madvise() policy
->>>> just to a fraction of a page.
->>>
->>> I thought we would just always fail create something that doesn't really
->>> make any sense.
->>>
->>> Why would we want to support that case?
->>>
->>> Let me dig, I thought we would have had some check there at some point
->>> that would make that fail (especially: RAM block not aligned to the
->>> pagesize).
->>
->>
->> At least memory-backend-memfd properly fails for that case:
->>
->> $ ./build/qemu-system-x86_64 -object
->> memory-backend-memfd,hugetlb=on,size=3m,id=tmp
->> qemu-system-x86_64: failed to resize memfd to 3145728: Invalid argument
->>
->> memory-backend-file ends up creating a new file:
->>
->>   $ ./build/qemu-system-x86_64 -object
->> memory-backend-file,share=on,mem-path=/dev/hugepages/tmp,size=3m,id=tmp
->>
->> $ stat /dev/hugepages/tmp
->>    File: /dev/hugepages/tmp
->>    Size: 4194304         Blocks: 0          IO Block: 2097152 regular file
->>
->> ... and ends up sizing it properly aligned to the huge page size.
->>
->>
->> Seems to be due to:
->>
->>      if (memory < block->page_size) {
->>          error_setg(errp, "memory size 0x" RAM_ADDR_FMT " must be equal to "
->>                     "or larger than page size 0x%zx",
->>                     memory, block->page_size);
->>          return NULL;
->>      }
->>
->>      memory = ROUND_UP(memory, block->page_size);
->>
->>      /*
->>       * ftruncate is not supported by hugetlbfs in older
->>       * hosts, so don't bother bailing out on errors.
->>       * If anything goes wrong with it under other filesystems,
->>       * mmap will fail.
->>       *
->>       * Do not truncate the non-empty backend file to avoid corrupting
->>       * the existing data in the file. Disabling shrinking is not
->>       * enough. For example, the current vNVDIMM implementation stores
->>       * the guest NVDIMM labels at the end of the backend file. If the
->>       * backend file is later extended, QEMU will not be able to find
->>       * those labels. Therefore, extending the non-empty backend file
->>       * is disabled as well.
->>       */
->>      if (truncate && ftruncate(fd, offset + memory)) {
->>          perror("ftruncate");
->>      }
->>
->> So we create a bigger file and map the bigger file and also have a
->> RAMBlock that is bigger. So we'll also consume more memory.
->>
->> ... but the memory region is smaller and we tell the VM that it has
->> less memory. Lot of work with no obvious benefit, and only some
->> memory waste :)
->>
->>
->> We better should have just rejected such memory backends right from
->> the start. But now it's likely too late.
->>
->> I suspect other things like
->>   * qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
->>   * qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP);
->>
->> fail, but we don't care for hugetlb at least regarding merging
->> and don't even log an error.
->>
->> But QEMU_MADV_DONTDUMP might also be broken, because that
->> qemu_madvise() call will just fail.
->>
->> Your fix would be correct. But I do wonder if we want to just let that
->> case fail and warn users that they are doing something that doesn't
->> make too much sense.
->>
-> 
-> Yeah, what's suspicious is: if the size is smaller than page size we
-> error out, but if it's larger (but still not aligned) we accept that.
-> I'm failing to see reasoning there. Looks like the ROUND_UP() was added
-> in v0.13.0-rc0~1201^2~4 (though it's done with some bit magic) and the
-> check itself was added in v2.8.0-rc0~30^2~23. So it's a bit late, yes.
-
-Yeah.
-
-> 
-> OTOH - if users want to waste resources, should we stop them? For
-
-It's all inconsistent, including memfd handling or what you noted above.
-
-For example, Having a 1025 MiB guest on gigantic pages, consuming 2 GiB 
-really is just absolutely stupid.
-
-Likely the user wants to know about such mistakes instead of making QEMU 
-silence all side effects of that. :)
-
-
-> instance, when user requests more vCPUs than physical CPUs a warning is
-> printed:
-> 
-> $ ./build/qemu-system-x86_64 -accel kvm -smp cpus=128
-> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested
-> (128) exceeds the recommended cpus supported by KVM (8)
-
-But that case is still reasonable for testing guest behavior with many 
-vCPUs, or migrating from a machine with more vCPUs.
-
-Here, the guest will actually see all vCPUs. In comparison, the memory 
-waste here will never ever be consumable by the VM.
-
-> 
-> but that's about it. So maybe the error can be demoted to just a warning?
-
-The question is what we want to do, for example, with the 
-qemu_madvise(QEMU_MADV_DONTDUMP). It will similarly simply fail.
-
-I'm curious, are there real customers running into that?
-
-
-We could fix it all that but always warn when something like that is 
-being done.
-
--- 
-Cheers,
-
-David / dhildenb
-
+> -----Original Message-----
+> From: Fabiano Rosas <farosas@suse.de>
+> Sent: Saturday, December 2, 2023 2:01 AM
+> To: Liu, Yuan1 <yuan1.liu@intel.com>; quintela@redhat.com;
+> peterx@redhat.com; leobras@redhat.com
+> Cc: qemu-devel@nongnu.org; Liu, Yuan1 <yuan1.liu@intel.com>; Zou, Nanhai
+> <nanhai.zou@intel.com>
+> Subject: Re: [PATCH v2 2/4] multifd: Implement multifd compression
+> accelerator
+>=20
+> Yuan Liu <yuan1.liu@intel.com> writes:
+>=20
+> > when starting multifd live migration, if the compression method is
+> > enabled, compression method can be accelerated using accelerators.
+> >
+> > Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+> > Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+> > ---
+> >  migration/multifd.c | 38 ++++++++++++++++++++++++++++++++++++--
+> >  migration/multifd.h |  8 ++++++++
+> >  2 files changed, 44 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/migration/multifd.c b/migration/multifd.c index
+> > 1fe53d3b98..7149e67867 100644
+> > --- a/migration/multifd.c
+> > +++ b/migration/multifd.c
+> > @@ -165,6 +165,34 @@ static MultiFDMethods multifd_nocomp_ops =3D {
+> > static MultiFDMethods *multifd_ops[MULTIFD_COMPRESSION__MAX] =3D {
+> >      [MULTIFD_COMPRESSION_NONE] =3D &multifd_nocomp_ops,  };
+> > +static MultiFDAccelMethods
+> > +*accel_multifd_ops[MULTIFD_COMPRESSION_ACCEL__MAX];
+> > +
+> > +static MultiFDMethods *get_multifd_ops(void) {
+> > +    MultiFDCompression comp =3D migrate_multifd_compression();
+> > +    MultiFDCompressionAccel accel =3D
+> > +migrate_multifd_compression_accel();
+> > +
+> > +    if (comp =3D=3D MULTIFD_COMPRESSION_NONE ||
+> > +        accel =3D=3D MULTIFD_COMPRESSION_ACCEL_NONE) {
+> > +        return multifd_ops[comp];
+> > +    }
+> > +    if (accel =3D=3D MULTIFD_COMPRESSION_ACCEL_AUTO) {
+> > +        for (int i =3D 0; i < MULTIFD_COMPRESSION_ACCEL__MAX; i++) {
+> > +            if (accel_multifd_ops[i] &&
+> > +                accel_multifd_ops[i]->is_supported(comp)) {
+> > +                return accel_multifd_ops[i]->get_multifd_methods();
+> > +            }
+> > +        }
+> > +        return multifd_ops[comp];
+> > +    }
+> > +
+> > +    /* Check if a specified accelerator is available */
+> > +    if (accel_multifd_ops[accel] &&
+>=20
+> The CI is complaining that we might reach here with accel=3D2
+> when !CONFIG_QPL. It seems the assert at migrate_multifd_compression_acce=
+l
+> is not enough.
+I will add assert to check both comp and accel next version in the get_mult=
+ifd_ops function.
 
