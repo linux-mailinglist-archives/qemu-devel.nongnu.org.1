@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39228038C4
+	by mail.lfdr.de (Postfix) with ESMTPS id B359A8038C2
 	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 16:27:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAApo-000420-6b; Mon, 04 Dec 2023 10:26:12 -0500
+	id 1rAApz-000450-En; Mon, 04 Dec 2023 10:26:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAApl-00040I-F3
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:26:09 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAApp-00042I-0A
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:26:13 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAApj-0005Ro-3w
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:26:09 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40b399a6529so35192475e9.1
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 07:26:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAApm-0005T5-6T
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:26:12 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40c0a074e71so12517235e9.1
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 07:26:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701703563; x=1702308363; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701703568; x=1702308368; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JZhXIwTdxRXKPCMPSGzqdtq6zXuxgS6BLrIc53hBnkQ=;
- b=Ik+y3p73xNQfV08P+AWscF27YgM2soO9QqwULde5RKAUM5V6O4fJOaBu+f6F4Fkxdk
- OJcInbvEUHhxAxlOL/phLcTzgS3yhLdv59DvZuvdIiBGihh/1WkclPpwz7Zio9NozoU5
- U53xJShD/AWx5lHWe0R+y50Ljv1LtQL7kimtihmyTJ2ujhzLVQVP8A35O5E+0V3H4kZG
- oKTFi6w6aJeMvMtFIxvx18siorRt4JoWGKzozBcZ/+X+z5o2os/N+ePhoHnKPOH0TxFf
- qf+hm97krD4csOQMPCcop1p4wjMu68g/lu+AWsXon7DVy5mupHa19c1a965PPTkdu3Ip
- cKuA==
+ bh=hwIlmu7y+8erPdoR/Kkd+7013w7hW587KwHOvMnbXVw=;
+ b=MB/sBipiwkb23i9jGyz/FuzYzwo/tL9DvMx8tI32jrTb1hZbXDKQBKGT49F+B84bRw
+ TNndYFi6jP1HjOHggS/8eEvinRohZZ8pWwjBjhrNT48HwqYl3rwuK0VliMh5+Sk+npK+
+ R+W+nbbdF4QDFcXPPIuSLnYM407qA2HPrlGW7amMpwdTNOCuLbZGNZIyG8ijvHzTh4KE
+ IygEVVjkHodQVjwZJF0YFoBsfsysLk8dq10Sn+0Uqmf2r7bl/41pit2mk/6IqJsIdy/o
+ 6zSTWiJRdsNx9Bg2wcBzhqFDTKPzu7ZlKJxK4E4LwmSlnrA8QeICKXDRYC/vkmvsHZs/
+ bsbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701703563; x=1702308363;
+ d=1e100.net; s=20230601; t=1701703568; x=1702308368;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JZhXIwTdxRXKPCMPSGzqdtq6zXuxgS6BLrIc53hBnkQ=;
- b=U/sulzseVenqivcSwkHe7MEthbeyIepVZm28l8dfHUo6EZ0lr2eFDr1kG2iC3O8sEL
- E/JGBFDoOweBNEKqrru60UnQqpqu104kSb4hhsVDNZXZjo9smVIk1/TDccEwopUx97bx
- 4rqjmeAmk9PZm8BMzWJD8UpgpomWLUzoWakRHxlKGczh8iAPT1MRLFBZCy5SBRsQJe2t
- y0hNwexGS0IGFmxIgC8hi1Xj9fNXm+IT76KCaSN3jgrsG2IuNUO4XoeC1zE84Rzqoj11
- bjq+1roIa0+W0Ju624WT/Rmn3dnL1NM0yUiUvX+z2WxgLd/hy5ANH/XlSzv7SvN2LjGf
- iKsg==
-X-Gm-Message-State: AOJu0Yywax/hL7IsBWSaPmfTyFhsTj7Tmk0CMjmIoJa5wwBUgUuYUcv2
- IrVJoL0F1fKoflgTJKQe0v4Gl1py+Gmn8Fg+JVg=
-X-Google-Smtp-Source: AGHT+IF7S4hN8Ty5stC/jwuTrFR39QKReM8akbhMSJT2uVxez0h9m7F5yWhXmozxOaiazE800TIZvA==
-X-Received: by 2002:a1c:7712:0:b0:40b:5e56:7b58 with SMTP id
- t18-20020a1c7712000000b0040b5e567b58mr1265580wmi.161.1701703562831; 
- Mon, 04 Dec 2023 07:26:02 -0800 (PST)
+ bh=hwIlmu7y+8erPdoR/Kkd+7013w7hW587KwHOvMnbXVw=;
+ b=xA/PlvLAnkJj7kkZe/FlHtaUnkwyLLQWJcpnU9Xz9ylXITUOcEq6Ju1jgrXHKpFXQe
+ 8O0o1MAX2pczghB/eicpoT0oPfOdb7j+G3ySqG7LaZuxjZI7LOvFBPFLbmsvbe5hIu8x
+ 1fjKDaNAI0U9G6XtjOBgn8CIGnEedPBYRK28PHJ/I1dQAaNx6aiYPr4jqh4izxJRt7HU
+ 3mhBQzZclLnl1A2aSUofxEnFmhbbW3LEr8CJPycYwF1HKL8SgX5rEqld30POkcIj6QQ7
+ IDKZZbou6Roots4J8YMQY5kE++58Umr5vm6mJQDUwYyo3dKmjMXMnr2dlx5deE+x4ptm
+ 7xQg==
+X-Gm-Message-State: AOJu0Yz3eI+tcOkfStu5D2HQwqrAO/uIdzdr830Eh8EEm3EUOhq9J2TZ
+ 3Koz9/uJBRoai5vZXrUOYC4PwEhlpZjlLHPAYQM=
+X-Google-Smtp-Source: AGHT+IEO8jGWysVtJ00t3Be9HD2MxetjOg8h35eCcRxj0jBNyQExo3+7A8UzZGuCwcPrVVepITwy/A==
+X-Received: by 2002:a05:600c:354f:b0:40b:3645:4671 with SMTP id
+ i15-20020a05600c354f00b0040b36454671mr3949699wmq.10.1701703568398; 
+ Mon, 04 Dec 2023 07:26:08 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.140.35])
  by smtp.gmail.com with ESMTPSA id
- iv11-20020a05600c548b00b0040b4cb14d40sm19082346wmb.19.2023.12.04.07.26.01
+ r21-20020a05600c35d500b0040b3e79bad3sm15354298wmq.40.2023.12.04.07.26.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 04 Dec 2023 07:26:02 -0800 (PST)
+ Mon, 04 Dec 2023 07:26:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, Patrick Venture <venture@google.com>,
- qemu-stable@nongnu.org, Chris Rauer <crauer@google.com>,
- Peter Foley <pefoley@google.com>,
+Cc: qemu-riscv@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>
-Subject: [PULL 1/4] system/memory: use ldn_he_p/stn_he_p
-Date: Mon,  4 Dec 2023 16:25:21 +0100
-Message-ID: <20231204152524.37803-2-philmd@linaro.org>
+ Alistair Francis <alistair.francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PULL 2/4] target/riscv/kvm: fix shadowing in
+ kvm_riscv_(get|put)_regs_csr
+Date: Mon,  4 Dec 2023 16:25:22 +0100
+Message-ID: <20231204152524.37803-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231204152524.37803-1-philmd@linaro.org>
 References: <20231204152524.37803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,73 +95,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Patrick Venture <venture@google.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Using direct pointer dereferencing can allow for unaligned accesses,
-which was seen during execution with sanitizers enabled.
+KVM_RISCV_GET_CSR() and KVM_RISCV_SET_CSR() use an 'int ret' variable
+that is used to do an early 'return' if ret > 0. Both are being called
+in functions that are also declaring a 'ret' integer, initialized with
+'0', and this integer is used as return of the function.
 
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Chris Rauer <crauer@google.com>
-Reviewed-by: Peter Foley <pefoley@google.com>
-Signed-off-by: Patrick Venture <venture@google.com>
+The result is that the compiler is less than pleased and is pointing
+shadowing errors:
+
+../target/riscv/kvm/kvm-cpu.c: In function 'kvm_riscv_get_regs_csr':
+../target/riscv/kvm/kvm-cpu.c:90:13: error: declaration of 'ret' shadows a previous local [-Werror=shadow=compatible-local]
+   90 |         int ret = kvm_get_one_reg(cs, RISCV_CSR_REG(env, csr), &reg); \
+      |             ^~~
+../target/riscv/kvm/kvm-cpu.c:539:5: note: in expansion of macro 'KVM_RISCV_GET_CSR'
+  539 |     KVM_RISCV_GET_CSR(cs, env, sstatus, env->mstatus);
+      |     ^~~~~~~~~~~~~~~~~
+../target/riscv/kvm/kvm-cpu.c:536:9: note: shadowed declaration is here
+  536 |     int ret = 0;
+      |         ^~~
+
+../target/riscv/kvm/kvm-cpu.c: In function 'kvm_riscv_put_regs_csr':
+../target/riscv/kvm/kvm-cpu.c:98:13: error: declaration of 'ret' shadows a previous local [-Werror=shadow=compatible-local]
+   98 |         int ret = kvm_set_one_reg(cs, RISCV_CSR_REG(env, csr), &reg); \
+      |             ^~~
+../target/riscv/kvm/kvm-cpu.c:556:5: note: in expansion of macro 'KVM_RISCV_SET_CSR'
+  556 |     KVM_RISCV_SET_CSR(cs, env, sstatus, env->mstatus);
+      |     ^~~~~~~~~~~~~~~~~
+../target/riscv/kvm/kvm-cpu.c:553:9: note: shadowed declaration is here
+  553 |     int ret = 0;
+      |         ^~~
+
+The macros are doing early returns for non-zero returns and the local
+'ret' variable for both functions is used just to do 'return 0', so
+remove them from kvm_riscv_get_regs_csr() and kvm_riscv_put_regs_csr()
+and do a straight 'return 0' in the end.
+
+For good measure let's also rename the 'ret' variables in
+KVM_RISCV_GET_CSR() and KVM_RISCV_SET_CSR() to '_ret' to make them more
+resilient to these kind of errors.
+
+Fixes: 937f0b4512 ("target/riscv: Implement kvm_arch_get_registers")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-ID: <20231116163633.276671-1-venture@google.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20231123101338.1040134-1-dbarboza@ventanamicro.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- system/memory.c | 32 ++------------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ target/riscv/kvm/kvm-cpu.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/system/memory.c b/system/memory.c
-index 4d9cb0a7ff..798b6c0a17 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -1339,22 +1339,7 @@ static uint64_t memory_region_ram_device_read(void *opaque,
-                                               hwaddr addr, unsigned size)
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 78fa1fa162..45b6cf1cfa 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -87,17 +87,17 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+ 
+ #define KVM_RISCV_GET_CSR(cs, env, csr, reg) \
+     do { \
+-        int ret = kvm_get_one_reg(cs, RISCV_CSR_REG(env, csr), &reg); \
+-        if (ret) { \
+-            return ret; \
++        int _ret = kvm_get_one_reg(cs, RISCV_CSR_REG(env, csr), &reg); \
++        if (_ret) { \
++            return _ret; \
+         } \
+     } while (0)
+ 
+ #define KVM_RISCV_SET_CSR(cs, env, csr, reg) \
+     do { \
+-        int ret = kvm_set_one_reg(cs, RISCV_CSR_REG(env, csr), &reg); \
+-        if (ret) { \
+-            return ret; \
++        int _ret = kvm_set_one_reg(cs, RISCV_CSR_REG(env, csr), &reg); \
++        if (_ret) { \
++            return _ret; \
+         } \
+     } while (0)
+ 
+@@ -533,7 +533,6 @@ static int kvm_riscv_put_regs_core(CPUState *cs)
+ 
+ static int kvm_riscv_get_regs_csr(CPUState *cs)
  {
-     MemoryRegion *mr = opaque;
--    uint64_t data = (uint64_t)~0;
--
--    switch (size) {
--    case 1:
--        data = *(uint8_t *)(mr->ram_block->host + addr);
--        break;
--    case 2:
--        data = *(uint16_t *)(mr->ram_block->host + addr);
--        break;
--    case 4:
--        data = *(uint32_t *)(mr->ram_block->host + addr);
--        break;
--    case 8:
--        data = *(uint64_t *)(mr->ram_block->host + addr);
--        break;
--    }
-+    uint64_t data = ldn_he_p(mr->ram_block->host + addr, size);
+-    int ret = 0;
+     CPURISCVState *env = &RISCV_CPU(cs)->env;
  
-     trace_memory_region_ram_device_read(get_cpu_index(), mr, addr, data, size);
- 
-@@ -1368,20 +1353,7 @@ static void memory_region_ram_device_write(void *opaque, hwaddr addr,
- 
-     trace_memory_region_ram_device_write(get_cpu_index(), mr, addr, data, size);
- 
--    switch (size) {
--    case 1:
--        *(uint8_t *)(mr->ram_block->host + addr) = (uint8_t)data;
--        break;
--    case 2:
--        *(uint16_t *)(mr->ram_block->host + addr) = (uint16_t)data;
--        break;
--    case 4:
--        *(uint32_t *)(mr->ram_block->host + addr) = (uint32_t)data;
--        break;
--    case 8:
--        *(uint64_t *)(mr->ram_block->host + addr) = data;
--        break;
--    }
-+    stn_he_p(mr->ram_block->host + addr, size, data);
+     KVM_RISCV_GET_CSR(cs, env, sstatus, env->mstatus);
+@@ -545,12 +544,12 @@ static int kvm_riscv_get_regs_csr(CPUState *cs)
+     KVM_RISCV_GET_CSR(cs, env, stval, env->stval);
+     KVM_RISCV_GET_CSR(cs, env, sip, env->mip);
+     KVM_RISCV_GET_CSR(cs, env, satp, env->satp);
+-    return ret;
++
++    return 0;
  }
  
- static const MemoryRegionOps ram_device_mem_ops = {
+ static int kvm_riscv_put_regs_csr(CPUState *cs)
+ {
+-    int ret = 0;
+     CPURISCVState *env = &RISCV_CPU(cs)->env;
+ 
+     KVM_RISCV_SET_CSR(cs, env, sstatus, env->mstatus);
+@@ -563,7 +562,7 @@ static int kvm_riscv_put_regs_csr(CPUState *cs)
+     KVM_RISCV_SET_CSR(cs, env, sip, env->mip);
+     KVM_RISCV_SET_CSR(cs, env, satp, env->satp);
+ 
+-    return ret;
++    return 0;
+ }
+ 
+ static int kvm_riscv_get_regs_fp(CPUState *cs)
 -- 
 2.41.0
 
