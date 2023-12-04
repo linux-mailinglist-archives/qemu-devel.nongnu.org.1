@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8B9802C7C
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 08:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD990802C7F
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 08:55:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA3lw-0002ku-48; Mon, 04 Dec 2023 02:53:45 -0500
+	id 1rA3n4-0003N0-Oz; Mon, 04 Dec 2023 02:54:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rA3lt-0002kl-BB
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 02:53:41 -0500
-Received: from mgamail.intel.com ([134.134.136.24])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rA3lq-0008Ks-7Q
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 02:53:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701676418; x=1733212418;
- h=message-id:date:mime-version:subject:from:to:cc:
- references:in-reply-to:content-transfer-encoding;
- bh=67DjuCGxzf39p7Qq1oJjTIG6g0fDGwhqloeIiFq7LLw=;
- b=RWzJrKU8MiKso6tlQmHq6Yy/5h75G2mLQ2FhEfdYk05SbvdG8xlnRDYl
- 4inDFGgc/iMJxXi7s9umRQI50u0N8s2w6QNkLy36clR4YB+iNYTQmmEvb
- EH3gTiFJjyQSbb3Nay5edB/OOE3ONTkQxiYzf3PrSh9emvScSq7TpeoJC
- Ko5ZH9GxgTdXd1YKRgTiDFTT2VFMPr/zrwTQFWyCAuYerW5EcgTWiepRc
- os+dwzIy3WD/VWVRpuPUs05xjtTWekEcUOtzVlT0xsEC+BeX3kqt/8BM9
- UBrlKY03M/SjCq990CLrAWTRikCNpoHdc/DMvVyl0HrxvxPlztoaX7+od A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="396505196"
-X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; d="scan'208";a="396505196"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2023 23:53:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="746746214"
-X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; d="scan'208";a="746746214"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.29.154])
- ([10.93.29.154])
- by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2023 23:53:29 -0800
-Message-ID: <309118fb-5737-40cb-b34d-916546443d4d@intel.com>
-Date: Mon, 4 Dec 2023 15:53:22 +0800
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rA3n2-0003Mj-UT
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 02:54:52 -0500
+Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rA3n1-0008R8-8P
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 02:54:52 -0500
+Received: by mail-yw1-x1134.google.com with SMTP id
+ 00721157ae682-5d33574f64eso44569027b3.3
+ for <qemu-devel@nongnu.org>; Sun, 03 Dec 2023 23:54:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701676490; x=1702281290; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bYnmv2Vzy2MKZJLX90chlVXBqyLghXG1WAjaA6GnU78=;
+ b=FaBQuStgnrSz9n+zS3rfK4gLUgszN84TaLQBmcOF62gE+TVq1LiMYeRWX7TBUm4Y9K
+ T7b097aI5hSns5XGYfGdjTgKRW/PZevt1JKbVnB2GChBu8Tius9QwHu9ogUNDc4VNOvS
+ EvNfdRaZwIrqm2jKPHCtIJsU/GLCJYCDUO+lLaE5f17ykUry6A5J9jsM6LNgKGbJ04QX
+ ++rS+L9ZiGsoJgNqyGqXM+oCBtM+w3vMaMZbhQvigIPlPM3dOPHJhzmEmILT1m6SM8DG
+ iPfxnQWOPWL+m3pH89QnKhnxWf9nvl7TtUvW/pqd1JTBNRxRXloqOFdjF8e4Tppakcs6
+ eKWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701676490; x=1702281290;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bYnmv2Vzy2MKZJLX90chlVXBqyLghXG1WAjaA6GnU78=;
+ b=pSaCAMSwrrEfSflqRKo6SiWe10K3/+JM0PZ/lbC4Qp2IsaDW/ExxY26rrb7DQh5sUC
+ RgDlIMxi+Rq3AXFtRscBtSCuxPNSRZ46W9fs1xwRl09VCgHUISA1rIcTnfhlw6nk9Ubb
+ 5XqazqZKQ3zlTLoAPiwYPkuI+rEhEsQyLFpfRztb5Z5f9DgzvRdfTbsQ/cYIrK5p0vpy
+ 2LVIdRkzlhw6dYIGFNWmO1ypxZ5aFcabmZfuIfXNtLJtTlIQguOC1/ahWQ3Dbe3Hdi6+
+ kdwK/pZblcRCvEXLEKYw4RywCwOh4Jp7/S9hVA/0QlmB5jhY/+Z13rFPFEfeJprli0zR
+ FMbg==
+X-Gm-Message-State: AOJu0YxyqmFWBD60oSkxlarDDIqerBzTLSrpjx4u4ZanzzlzeunSkyqE
+ ZiG4ImTy67v2z8GDkqPUfL6kcOVLqePlXQ8IQlk=
+X-Google-Smtp-Source: AGHT+IFWwWoT/7pKMlC7gPZ0TIQhFO6C9aIYI4MzQ6rDlUNboiyjyQACRdcEQ++3d7T/RacDSLfnbUY8L3XoC3AAZiE=
+X-Received: by 2002:a81:450d:0:b0:5d7:1940:b36d with SMTP id
+ s13-20020a81450d000000b005d71940b36dmr2856357ywa.57.1701676489760; Sun, 03
+ Dec 2023 23:54:49 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/70] physmem: Relax the alignment check of
- host_startaddr in ram_block_discard_range()
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: David Hildenbrand <david@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Michael Roth <michael.roth@amd.com>, Sean Christopherson
- <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
- <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-8-xiaoyao.li@intel.com>
- <a61206eb-03c4-41e3-a876-bb67577e5204@redhat.com>
- <00b533ee-fbb1-4e78-bc8b-b6d87761bb92@intel.com>
- <419ffc61-fcd7-4940-a550-9ce6c6a14e1b@redhat.com>
- <4fe173c9-6be2-4850-a5a4-d2b9299278f9@intel.com>
-In-Reply-To: <4fe173c9-6be2-4850-a5a4-d2b9299278f9@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=134.134.136.24; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+References: <20231107093744.388099-1-aesteve@redhat.com>
+ <20231107093744.388099-2-aesteve@redhat.com>
+In-Reply-To: <20231107093744.388099-2-aesteve@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 4 Dec 2023 11:54:38 +0400
+Message-ID: <CAJ+F1CLohGjKaKYk8x4MbNQ6e0M=E15VeJ5wjYW=O9nMapOZmg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] hw/virtio: check owner for removing objects
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ kraxel@redhat.com, stefanha@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-yw1-x1134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,91 +88,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/4/2023 3:35 PM, Xiaoyao Li wrote:
-> On 11/20/2023 5:56 PM, David Hildenbrand wrote:
->> On 16.11.23 03:56, Xiaoyao Li wrote:
->>> On 11/16/2023 2:20 AM, David Hildenbrand wrote:
->>>> On 15.11.23 08:14, Xiaoyao Li wrote:
->>>>> Commit d3a5038c461 ("exec: ram_block_discard_range") introduced
->>>>> ram_block_discard_range() which grabs some code from
->>>>> ram_discard_range(). However, during code movement, it changed 
->>>>> alignment
->>>>> check of host_startaddr from qemu_host_page_size to rb->page_size.
->>>>>
->>>>> When ramblock is back'ed by hugepage, it requires the startaddr to be
->>>>> huge page size aligned, which is a overkill. e.g., TDX's 
->>>>> private-shared
->>>>> page conversion is done at 4KB granularity. Shared page is discarded
->>>>> when it gets converts to private and when shared page back'ed by
->>>>> hugepage it is going to fail on this check.
->>>>>
->>>>> So change to alignment check back to qemu_host_page_size.
->>>>>
->>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>>>> ---
->>>>> Changes in v3:
->>>>>    - Newly added in v3;
->>>>> ---
->>>>>    system/physmem.c | 2 +-
->>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/system/physmem.c b/system/physmem.c
->>>>> index c56b17e44df6..8a4e42c7cf60 100644
->>>>> --- a/system/physmem.c
->>>>> +++ b/system/physmem.c
->>>>> @@ -3532,7 +3532,7 @@ int ram_block_discard_range(RAMBlock *rb,
->>>>> uint64_t start, size_t length)
->>>>>        uint8_t *host_startaddr = rb->host + start;
->>>>> -    if (!QEMU_PTR_IS_ALIGNED(host_startaddr, rb->page_size)) {
->>>>> +    if (!QEMU_PTR_IS_ALIGNED(host_startaddr, qemu_host_page_size)) {
->>>>
->>>> For your use cases, rb->page_size should always match 
->>>> qemu_host_page_size.
->>>>
->>>> IIRC, we only set rb->page_size to different values for hugetlb. And
->>>> guest_memfd does not support hugetlb.
->>>>
->>>> Even if QEMU is using THP, rb->page_size should 4k.
->>>>
->>>> Please elaborate how you can actually trigger that. From what I recall,
->>>> guest_memfd is not compatible with hugetlb.
->>>
->>> It's the shared memory that can be back'ed by hugetlb.
->>
->> Serious question: does that configuration make any sense to support at 
->> this point? I claim: no.
->>
->>>
->>> Later patch 9 introduces ram_block_convert_page(), which will discard
->>> shared memory when it gets converted to private. TD guest can request
->>> convert a 4K to private while the page is previously back'ed by hugetlb
->>> as 2M shared page.
->>
->> So you can call ram_block_discard_guest_memfd_range() on subpage 
->> basis, but not ram_block_discard_range().
->>
->> ram_block_convert_range() would have to thought that that 
->> (questionable) combination of hugetlb for shmem and ordinary pages for 
->> guest_memfd cannot discard shared memory.
->>
->> And it probably shouldn't either way. There are other problems when 
->> not using hugetlb along with preallocation.
-> 
-> If I understand correctly, preallocation needs to be enabled for 
-> hugetlb. And in preallocation case, it doesn't need to discard memory. 
-> Is it correct?
-> 
->> The check in ram_block_discard_range() is correct, whoever ends up 
->> calling it has to stop calling it.
->>
->  > So, I need add logic to ram_block_discard_page() that if the size of
+On Tue, Nov 7, 2023 at 1:37=E2=80=AFPM Albert Esteve <aesteve@redhat.com> w=
+rote:
+>
+> Shared objects lack spoofing protection.
+> For VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE messages
+> received by the vhost-user interface, any backend was
+> allowed to remove entries from the shared table just
+> by knowing the UUID. Only the owner of the entry
+> shall be allowed to removed their resources
+> from the table.
+>
+> To fix that, add a check for all
+> *SHARED_OBJECT_REMOVE messages received.
+> A vhost device can only remove TYPE_VHOST_DEV
+> entries that are owned by them, otherwise skip
+> the removal, and inform the device that the entry
+> has not been removed in the answer.
+>
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> ---
+>  hw/virtio/vhost-user.c | 21 +++++++++++++++++++--
+>  1 file changed, 19 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> index 7b42ae8aae..5fdff0241f 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -1602,10 +1602,26 @@ vhost_user_backend_handle_shared_object_add(struc=
+t vhost_dev *dev,
+>  }
+>
+>  static int
+> -vhost_user_backend_handle_shared_object_remove(VhostUserShared *object)
+> +vhost_user_backend_handle_shared_object_remove(struct vhost_dev *dev,
+> +                                               VhostUserShared *object)
+>  {
+>      QemuUUID uuid;
+>
+> +    switch (virtio_object_type(&uuid)) {
 
-Sorry, I made a typo.
+../hw/virtio/vhost-user.c:1619:13: error: =E2=80=98uuid=E2=80=99 may be use=
+d
+uninitialized [-Werror=3Dmaybe-uninitialized]
+ 1619 |     switch (virtio_object_type(&uuid)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
 
-Correct myself, s/ram_block_discard_page()/ram_block_convert_range()
+> +    case TYPE_VHOST_DEV:
+> +    {
+> +        struct vhost_dev *owner =3D virtio_lookup_vhost_device(&uuid);
+> +        if (owner =3D=3D NULL || dev !=3D owner) {
+> +            /* Not allowed to remove non-owned entries */
+> +            return 0;
+> +        }
+> +        break;
+> +    }
+> +    default:
+> +        /* Not allowed to remove non-owned entries */
+> +        return 0;
 
-> shared memory indicates hugepage, skip the discarding?
-> 
-> 
+How do you remove TYPE_DMABUF entries after this patch?
 
+> +    }
+> +
+>      memcpy(uuid.data, object->uuid, sizeof(object->uuid));
+>      return virtio_remove_resource(&uuid);
+>  }
+> @@ -1785,7 +1801,8 @@ static gboolean backend_read(QIOChannel *ioc, GIOCo=
+ndition condition,
+>          ret =3D vhost_user_backend_handle_shared_object_add(dev, &payloa=
+d.object);
+>          break;
+>      case VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE:
+> -        ret =3D vhost_user_backend_handle_shared_object_remove(&payload.=
+object);
+> +        ret =3D vhost_user_backend_handle_shared_object_remove(dev,
+> +                                                             &payload.ob=
+ject);
+>          break;
+>      case VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP:
+>          ret =3D vhost_user_backend_handle_shared_object_lookup(dev->opaq=
+ue, ioc,
+> --
+> 2.41.0
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
