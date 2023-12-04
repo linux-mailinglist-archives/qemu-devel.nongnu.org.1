@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09721802CC1
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 09:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9DE802CC0
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 09:09:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA40n-0000rN-8H; Mon, 04 Dec 2023 03:09:05 -0500
+	id 1rA40r-0000rn-67; Mon, 04 Dec 2023 03:09:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1rA40k-0000qr-AM
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:09:02 -0500
+ id 1rA40n-0000rc-9r
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:09:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1rA40i-0005of-Nm
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:09:02 -0500
+ id 1rA40l-0005pE-TF
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:09:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701677339;
+ s=mimecast20190719; t=1701677343;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oR60ATf4YFxCKSXIOQ/fcanosmfsigIJj2/ZsrPHDTk=;
- b=Arsyy/N2l+cydHuHeKSU955fVvDEkAcVyXmaAUdMGqSz77M1Uxlj27d6uL8MJW2q6WLibM
- QZkxPL/Fl+gADybu2DSRM7X3Gi/jx3KI5XcrbgiO+5SUa1FpiIpwY8ROG+3Z5CIlD47DfO
- Wo9+P3VroemY5vVTeVJYBuibB+4YhCA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-2hRpUznFP0qAmGAn01W1Sw-1; Mon, 04 Dec 2023 03:08:57 -0500
-X-MC-Unique: 2hRpUznFP0qAmGAn01W1Sw-1
+ bh=cbx0CbRPmpK3iZsn5VbZb3ke1ETeDjA0AGw38OyRxS8=;
+ b=bCXbR8BxdiGu8L2PQGEajDCM0qOio6fwjjvce6T7Je8wo7tDc/Nj501pQEYUPBn756yHMk
+ oYYiVXxDlbk6t0gzc5x43e3EZrDegN6bYg4wOAeoKbZZoTqTzLlDBugdOuJ3X3WbJFXxgg
+ oZLT5JC0uE0B1iBUA5b5oizadbkKNKg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-DMBUjQ-mP0Ob3HqOwt0wsw-1; Mon,
+ 04 Dec 2023 03:09:01 -0500
+X-MC-Unique: DMBUjQ-mP0Ob3HqOwt0wsw-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 70D69101A53B;
- Mon,  4 Dec 2023 08:08:57 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3C54D1C06364;
+ Mon,  4 Dec 2023 08:09:01 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.5])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B711719E91;
- Mon,  4 Dec 2023 08:08:56 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F016419E91;
+ Mon,  4 Dec 2023 08:08:59 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>, stefanha@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
-Subject: [PULL 1/3] ui/gtk-egl: move function calls back to regular code path
-Date: Mon,  4 Dec 2023 12:08:48 +0400
-Message-ID: <20231204080850.4068242-2-marcandre.lureau@redhat.com>
+ Fiona Ebner <f.ebner@proxmox.com>
+Subject: [PULL 2/3] ui/vnc-clipboard: fix inflate_buffer
+Date: Mon,  4 Dec 2023 12:08:49 +0400
+Message-ID: <20231204080850.4068242-3-marcandre.lureau@redhat.com>
 In-Reply-To: <20231204080850.4068242-1-marcandre.lureau@redhat.com>
 References: <20231204080850.4068242-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -85,54 +85,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-Commit 6f189a08c1 ("ui/gtk-egl: Check EGLSurface before doing
-scanout") introduced a regression when QEMU is running with a
-virtio-gpu-gl-device on a host under X11. After the guest has
-initialized the virtio-gpu-gl-device, the guest screen only
-shows "Display output is not active.".
+Commit d921fea338 ("ui/vnc-clipboard: fix infinite loop in
+inflate_buffer (CVE-2023-3255)") removed this hunk, but it is still
+required, because it can happen that stream.avail_in becomes zero
+before coming across a return value of Z_STREAM_END in the loop.
 
-Commit 6f189a08c1 moved all function calls in
-gd_egl_scanout_texture() to a code path which is only called
-once after gd_egl_init() succeeds in gd_egl_scanout_texture().
-Move all function calls in gd_egl_scanout_texture() back to
-the regular code path so they get always called if one of the
-gd_egl_init() calls was successful.
+This fixes the host->guest direction of the clipboard with noVNC and
+TigerVNC as clients.
 
-Fixes: 6f189a08c1 ("ui/gtk-egl: Check EGLSurface before doing scanout")
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20231111104020.26183-1-vr_qemu@t-online.de>
+Fixes: d921fea338 ("ui/vnc-clipboard: fix infinite loop in inflate_buffer (CVE-2023-3255)")
+Reported-by: Friedrich Weber <f.weber@proxmox.com>
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20231122125826.228189-1-f.ebner@proxmox.com>
 ---
- ui/gtk-egl.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ ui/vnc-clipboard.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index cd2f176502..3af5ac5bcf 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -249,14 +249,14 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
-         if (!vc->gfx.esurface) {
-             return;
+diff --git a/ui/vnc-clipboard.c b/ui/vnc-clipboard.c
+index c759be3438..124b6fbd9c 100644
+--- a/ui/vnc-clipboard.c
++++ b/ui/vnc-clipboard.c
+@@ -69,6 +69,11 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t in_len, uint32_t *size)
          }
-+    }
+     }
  
--        eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
--                       vc->gfx.esurface, vc->gfx.ectx);
-+    eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
-+                   vc->gfx.esurface, vc->gfx.ectx);
- 
--        gtk_egl_set_scanout_mode(vc, true);
--        egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
--                             backing_id, false);
--    }
-+    gtk_egl_set_scanout_mode(vc, true);
-+    egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
-+                         backing_id, false);
- }
- 
- void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
++    *size = stream.total_out;
++    inflateEnd(&stream);
++
++    return out;
++
+ err_end:
+     inflateEnd(&stream);
+ err:
 -- 
 2.43.0
 
