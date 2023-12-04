@@ -2,86 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB25E8036DA
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 15:34:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA48803764
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 15:47:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAA1b-0007wg-Bk; Mon, 04 Dec 2023 09:34:19 -0500
+	id 1rAACk-0004jV-Cf; Mon, 04 Dec 2023 09:45:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rAA1Y-0007vl-Nl
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:34:16 -0500
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rAACg-0004jB-78
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:45:46 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rAA1S-0006Ci-RG
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:34:16 -0500
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rAACe-0003r2-F3
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 09:45:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701700449;
+ s=mimecast20190719; t=1701701142;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=VmAAnk2hgXAxz3YwAXy2av/6HBbaMs5STpe6b+ZkGUU=;
- b=RfrZKOmdxqeWXbjsNPEXB/pgEcfcrzKRanXo388cCKZdR39NWAqC2ePwXfSrBtk3eAVZBm
- +BqIN4Tf6WLwUAQG8h/vv1QMF7j+U8EHbw8Ihq7x0E+0ZRkXHJfohTggLdUoSeKh4Vpl6H
- BWMkVwhm1okJidFMPihcZtCKuzUWKWc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-j35TmjwUNKevqb14ZTIcdA-1; Mon,
- 04 Dec 2023 09:34:06 -0500
-X-MC-Unique: j35TmjwUNKevqb14ZTIcdA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=PCbprzdfFqFK45U8PSvA3nnOJTPCVh3ncdifUNaVPHE=;
+ b=PTzn97O1FijeHNuSnqUsQKCTX2czYZlEUNhIZhE9GQ4JMNrg5Ok1vdQuLOZBzaUh83VGQN
+ kzy3Im+rpGF2okcYNUeO4IRVFo/dvYSpKqE2EY3XLs8adY0sAATriQYZ6n+X2WeU2lAeeB
+ IvSnhAOGzv47Gt/rgOIxqoFEKC8+t4U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-259-tNwz5HQ6MHKwdqM6unQzLw-1; Mon, 04 Dec 2023 09:45:41 -0500
+X-MC-Unique: tNwz5HQ6MHKwdqM6unQzLw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D5A631C06535;
- Mon,  4 Dec 2023 14:34:03 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.237])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B9F2240C6EB9;
- Mon,  4 Dec 2023 14:33:58 +0000 (UTC)
-Date: Mon, 4 Dec 2023 15:33:57 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Alberto Garcia <berto@igalia.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>,
- John Snow <jsnow@redhat.com>, Eric Blake <eblake@redhat.com>,
- Wen Congyang <wencongyang2@huawei.com>, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, Coiby Xu <Coiby.Xu@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Xie Changlong <xiechanglong.d@gmail.com>,
- Ari Sundholm <ari@tuxera.com>, Li Zhijian <lizhijian@fujitsu.com>,
- Cleber Rosa <crosa@redhat.com>, Juan Quintela <quintela@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Zhang Chen <chen.zhang@intel.com>, Peter Xu <peterx@redhat.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Leonardo Bras <leobras@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Fam Zheng <fam@euphon.net>, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 05/12] block: remove AioContext locking
-Message-ID: <ZW3jVZZ_Kuf99g8O@redhat.com>
-References: <20231129195553.942921-1-stefanha@redhat.com>
- <20231129195553.942921-6-stefanha@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BCE9B101A53B;
+ Mon,  4 Dec 2023 14:45:40 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.49])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2954A492BFC;
+ Mon,  4 Dec 2023 14:45:39 +0000 (UTC)
+Date: Mon, 4 Dec 2023 09:45:38 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Het Gala <het.gala@nutanix.com>, peterx@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>
+Subject: Re: [PULL 0/1] Migration 20231201 patches
+Message-ID: <20231204144538.GA1491611@fedora>
+References: <20231201163613.1371497-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="fJmiFVHNYXWMY2Ut"
 Content-Disposition: inline
-In-Reply-To: <20231129195553.942921-6-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+In-Reply-To: <20231201163613.1371497-1-peterx@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,51 +84,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 29.11.2023 um 20:55 hat Stefan Hajnoczi geschrieben:
-> This is the big patch that removes
-> aio_context_acquire()/aio_context_release() from the block layer and
-> affected block layer users.
-> 
-> There isn't a clean way to split this patch and the reviewers are likely
-> the same group of people, so I decided to do it in one patch.
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-> @@ -7585,29 +7433,12 @@ void coroutine_fn bdrv_co_leave(BlockDriverState *bs, AioContext *old_ctx)
->  
->  void coroutine_fn bdrv_co_lock(BlockDriverState *bs)
->  {
-> -    AioContext *ctx = bdrv_get_aio_context(bs);
-> -
-> -    /* In the main thread, bs->aio_context won't change concurrently */
-> -    assert(qemu_get_current_aio_context() == qemu_get_aio_context());
-> -
-> -    /*
-> -     * We're in coroutine context, so we already hold the lock of the main
-> -     * loop AioContext. Don't lock it twice to avoid deadlocks.
-> -     */
-> -    assert(qemu_in_coroutine());
-> -    if (ctx != qemu_get_aio_context()) {
-> -        aio_context_acquire(ctx);
-> -    }
-> +    /* TODO removed in next patch */
->  }
+--fJmiFVHNYXWMY2Ut
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It's still there at the end of the series.
+Applied, thanks.
 
->  void coroutine_fn bdrv_co_unlock(BlockDriverState *bs)
->  {
-> -    AioContext *ctx = bdrv_get_aio_context(bs);
-> -
-> -    assert(qemu_in_coroutine());
-> -    if (ctx != qemu_get_aio_context()) {
-> -        aio_context_release(ctx);
-> -    }
-> +    /* TODO removed in next patch */
->  }
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
 
-This one, too.
+--fJmiFVHNYXWMY2Ut
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVt5hIACgkQnKSrs4Gr
+c8gq6AgAw2OhkkrsomG2EvVfxSGc13nkl8SAS2fxwAOHPgit1CaGNFtJmx+yeGzX
+HoITB6Jyji0j4gCdVmvxuFRTkKyUu6ZoGr/1LARGTKgVQJx0iXxHt2IqnMAII+ns
+uzOr0xnNfpCpzT/0gaNH7wp0cczGpGN2rBkmez8wU3EO74inCJTjsl5KoUhc6rZ+
+GQPG3+iY72cu9PnbSsk4B4m8DKJvQzwnf/uBAGg62pTTydANfDHbfAxJo5o9q1nw
+PpYDfjyxoThbuVWLPlORZmgjXxiEh8WuSnylSjRENOwR5CzQOvPPSmKIFbleraew
+6e87ED50K0Bst9NQDVG2pOIUZtKHsw==
+=n4hb
+-----END PGP SIGNATURE-----
+
+--fJmiFVHNYXWMY2Ut--
 
 
