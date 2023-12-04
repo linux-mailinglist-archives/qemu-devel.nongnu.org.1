@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF32802CF9
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 09:18:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8E2802CFC
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 09:19:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA49M-0003w1-KN; Mon, 04 Dec 2023 03:17:58 -0500
+	id 1rA49Q-0003xB-92; Mon, 04 Dec 2023 03:18:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rA49D-0003vV-U5; Mon, 04 Dec 2023 03:17:49 -0500
+ id 1rA49I-0003wK-9g; Mon, 04 Dec 2023 03:17:52 -0500
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rA49A-0008Ln-Jx; Mon, 04 Dec 2023 03:17:46 -0500
+ id 1rA49F-0008Ln-Hd; Mon, 04 Dec 2023 03:17:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701677865; x=1733213865;
+ t=1701677870; x=1733213870;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FseLNrhRJQO2dldXL9Brgo7JAYGGDCtpqUTWRwEyuAo=;
- b=VkPyfF8QuNSWA80I3pcfiPCGDWvZGaJqzpYhoOvRcLkOrXRaccrZ46rj
- OnHme3PToMXM1EsoUrUSXXHte+AnANjszub4QlyiZvF8ij94axzuarUjt
- tDaSGHEpRaIG9M8qTkFM6zodN7F3/wCM5O3b3dvtY22T/ElGIlPnddXq7
- 5sYDXSRYO+A6d+eyqvE2F9DWDHyB39IuwTMGU/YyMx84RPP9QVvKiaCjX
- e1ur2d6Vmy/roPAX0bpDJgGaygv1uqYvkx5a2lrelQEmP3052anifkx0Q
- cr1zcj1CR5Dx+Gefe2hm3M9lw3mc1VVVTdjlIK8211I0UC041ArRyvbzZ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="581574"
+ bh=sDTLmkyzQ+lNPezqK369KVJFY1U9DKxyrI2uwpw47sY=;
+ b=QLzM+IR3njx7MH4+IH0M1H391Ra1nBP4UnbBH+xbgI+KB7RcUpGN53zr
+ 4kyRNGAQ8hGhrbXbmmOJLdlQIbYka0dXAHJALu8HXjVgrGysvJpTIRKpN
+ P0Wj+80S5MTvglpXjTPsF1v9p/abc1+2ApTKCIFWfjOm0kKLiwyyuITmM
+ Aq6WvetuZPJO7Vjngqrkm/vpi0cgUVpPvOHQaErywclVFTiuXqQ1cNEOc
+ c9HVDSHjv7p5GixFmjf365Vzy66UoKlGYrs6HKKkNskmEcq09XSNA5soT
+ z1m0WWQOG3nS++FCI35zPF8gB5FxWhAJQeKZYzkHKHIpJLo3EYnPjfoDn w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="581604"
 X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
-   d="scan'208";a="581574"
+   d="scan'208";a="581604"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2023 00:17:17 -0800
+ 04 Dec 2023 00:17:20 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="804829701"
-X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; d="scan'208";a="804829701"
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="804829711"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; d="scan'208";a="804829711"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orsmga001.jf.intel.com with ESMTP; 04 Dec 2023 00:17:13 -0800
+ by orsmga001.jf.intel.com with ESMTP; 04 Dec 2023 00:17:16 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -46,10 +46,10 @@ To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 2/3] scripts/checkpatch: Add --codespell and --codespellfile
- options
-Date: Mon,  4 Dec 2023 16:29:16 +0800
-Message-Id: <20231204082917.2430223-3-zhao1.liu@linux.intel.com>
+Subject: [RFC 3/3] scripts/spelling: Add common spelling mistakes in default
+ spelling.txt
+Date: Mon,  4 Dec 2023 16:29:17 +0800
+Message-Id: <20231204082917.2430223-4-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231204082917.2430223-1-zhao1.liu@linux.intel.com>
 References: <20231204082917.2430223-1-zhao1.liu@linux.intel.com>
@@ -80,129 +80,288 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Add two spelling check options (--codespell and --codespellfile) to
-enhance spelling check through dictionary, which copied the Linux
-kernel's implementation in checkpatch.pl.
+Select the typos in commits from 7.0.0 to 8.2.0-rc2 that were typed more
+than three times to add to the default dictionary selling.txt.
+
+The typos were counted by (Referenced Kees' command in Linux kernel's
+commit 66b47b4a9dad00):
+
+$ git log --format='%H' v7.0.0..v8.2.0-rc2 | \
+   while read commit ; do \
+     echo "commit $commit" ; \
+     git log --format=email --stat -p -1 $commit | \
+     ./scripts/checkpatch.pl --codespell - ; \
+   done | \
+   tee spell_v7.0.0..v8.2.0-rc2.txt | \
+   grep "may be misspelled" | awk '{print $2}' | \
+   tr A-Z a-z | sort | uniq -c | sort -rn
+
+The typos were listed as follows (In addition to variable naming and
+misreporting, select typos greater than three times):
+
+   1289 'fpr'
+    222 'ot'
+     45 'hace'
+     25 'te'
+     24 'parm'
+     21 'sie'
+     20 'nd'
+     20 'clen'
+     15 'sring'
+     14 'hax'
+     13 'hda'
+     12 'endianess'
+     10 'tabl'
+     10 'stip'
+     10 'datas'
+      9 'reenable'
+      8 'unitialized'
+      8 'invers'
+      7 'seh'
+      7 'priviledge'
+      7 'indentification'
+      7 'existance'
+      6 'varience'
+      6 'unuseful'
+      6 'tranfer'
+      6 'tne'
+      6 'octects'
+      6 'informations'
+      6 'indicies'
+      6 'extenstion'
+      6 'betwen'
+      6 'ammends'
+      5 'writting'
+      5 'wont'
+      5 'som'
+      5 'responsability'
+      5 'padd'
+      5 'offsetp'
+      5 'negotation'
+      5 'necesary'
+      5 'nam'
+      5 'maintainance'
+      5 'extnesion'
+      5 'convertion'
+      5 'configuraiton'
+      5 'comparision'
+      5 'arbitrer'
+      5 'an
+      5 'algorithim'
+      5 'addreses'
+      5 'achived'
+      5 'accomodate'
+      4 'undocummented'
+      4 'ue'
+      4 'truely'
+      4 'tre'
+      4 'suppoted'
+      4 'separatly'
+      4 'reenabled'
+      4 'occured'
+      4 'myu'
+      4 'mone'
+      4 'ment'
+      4 'limitaions'
+      4 'instread'
+      4 'infomation'
+      4 'implment'
+      4 'hammmer'
+      4 'desciptor'
+      4 'defintions'
+      4 'crypted'
+      4 'constext'
+      4 'acces'
+      3 'wronly'
+      3 'wether'
+      3 'vill'
+      3 'unsupport'
+      3 'unneded'
+      3 'transfered'
+      3 'sxl'
+      3 'suppor'
+      3 'superceded'
+      3 'succesfully'
+      3 'slighly'
+      3 'setted'
+      3 'respectivelly'
+      3 'reigster'
+      3 'recive'
+      3 'priviledged'
+      3 'potentialy'
+      3 'phyiscal'
+      3 'pathes'
+      3 'othe'
+      3 'ontaining'
+      3 'nunber'
+      3 'missmatch'
+      3 'minumum'
+      3 'mesage'
+      3 'legnth'
+      3 'kenel'
+      3 'intialized'
+      3 'inbetween'
+      3 'implemetation'
+      3 'garanteed'
+      3 'explictly'
+      3 'enhacements'
+      3 'ealier'
+      3 'doen't'
+      3 'diferent'
+      3 'debuging'
+      3 'daa'
+      3 'convergance'
+      3 'compatiblity'
+      3 'caf'
+      3 'buid'
+      3 'becase'
+      3 'bandwith'
+      3 'atleast'
+      3 'asume'
+      3 'analoguous'
+      3 'alse'
+      3 'addtionally'
+      3 'addtional'
+      3 'addresss'
+      3 'acknowledgement'
+      3 'accross'
+      3 'acceses'
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- scripts/checkpatch.pl | 66 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
+ scripts/spelling.txt | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 755a1f683866..20ee07f016ca 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -38,7 +38,10 @@ my $summary_file = 0;
- my $root;
- my %debug;
- my $help = 0;
-+my $codespell = 0;
- my $spelling_file = "$D/spelling.txt";
-+my $codespellfile = "/usr/share/codespell/dictionary.txt";
-+my $user_codespellfile = "";
- 
- sub help {
- 	my ($exitcode) = @_;
-@@ -70,6 +73,9 @@ Options:
-                              is all off)
-   --test-only=WORD           report only warnings/errors containing WORD
-                              literally
-+  --codespell                Use the codespell dictionary for spelling/typos
-+                             (default:$codespellfile)
-+  --codespellfile            Use this codespell dictionary
-   --color[=WHEN]             Use colors 'always', 'never', or only when output
-                              is a terminal ('auto'). Default is 'auto'.
-   -h, --help, --version      display this help and exit
-@@ -102,15 +108,37 @@ GetOptions(
- 	'summary!'	=> \$summary,
- 	'mailback!'	=> \$mailback,
- 	'summary-file!'	=> \$summary_file,
--
- 	'debug=s'	=> \%debug,
- 	'test-only=s'	=> \$tst_only,
-+	'codespell!'	=> \$codespell,
-+	'codespellfile=s'	=> \$user_codespellfile,
- 	'color=s'       => \$color,
- 	'no-color'      => sub { $color = 'never'; },
- 	'h|help'	=> \$help,
- 	'version'	=> \$help
- ) or help(1);
- 
-+if ($user_codespellfile) {
-+	# Use the user provided codespell file unconditionally
-+	$codespellfile = $user_codespellfile;
-+} elsif (!(-f $codespellfile)) {
-+	# If /usr/share/codespell/dictionary.txt is not present, try to find it
-+	# under codespell's install directory: <codespell_root>/data/dictionary.txt
-+	if (($codespell || $help) && which("python3") ne "") {
-+		my $python_codespell_dict = << "EOF";
-+
-+import os.path as op
-+import codespell_lib
-+codespell_dir = op.dirname(codespell_lib.__file__)
-+codespell_file = op.join(codespell_dir, 'data', 'dictionary.txt')
-+print(codespell_file, end='')
-+EOF
-+
-+		my $codespell_dict = `python3 -c "$python_codespell_dict" 2> /dev/null`;
-+		$codespellfile = $codespell_dict if (-f $codespell_dict);
-+	}
-+}
-+
- help(0) if ($help);
- 
- my $exit = 0;
-@@ -364,6 +392,30 @@ if (open(my $spelling, '<', $spelling_file)) {
- 	warn "No typos will be found - file '$spelling_file': $!\n";
- }
- 
-+if ($codespell) {
-+	if (open(my $spelling, '<', $codespellfile)) {
-+		while (<$spelling>) {
-+			my $line = $_;
-+
-+			$line =~ s/\s*\n?$//g;
-+			$line =~ s/^\s*//g;
-+
-+			next if ($line =~ m/^\s*#/);
-+			next if ($line =~ m/^\s*$/);
-+			next if ($line =~ m/, disabled/i);
-+
-+			$line =~ s/,.*$//;
-+
-+			my ($suspect, $fix) = split(/->/, $line);
-+
-+			$spelling_fix{$suspect} = $fix;
-+		}
-+		close($spelling);
-+	} else {
-+		warn "No codespell typos will be found - file '$codespellfile': $!\n";
-+	}
-+}
-+
- $misspellings = join("|", sort keys %spelling_fix) if keys %spelling_fix;
- 
- # This can be modified by sub possible.  Since it can be empty, be careful
-@@ -506,6 +558,18 @@ sub top_of_kernel_tree {
- 	return 1;
- }
- 
-+sub which {
-+	my ($bin) = @_;
-+
-+	foreach my $path (split(/:/, $ENV{PATH})) {
-+		if (-e "$path/$bin") {
-+			return "$path/$bin";
-+		}
-+	}
-+
-+	return "";
-+}
-+
- sub expand_tabs {
- 	my ($str) = @_;
- 
+diff --git a/scripts/spelling.txt b/scripts/spelling.txt
+index 549ffd0f2d78..177dee2bb28d 100644
+--- a/scripts/spelling.txt
++++ b/scripts/spelling.txt
+@@ -28,6 +28,7 @@ accelaration||acceleration
+ accelearion||acceleration
+ acceleratoin||acceleration
+ accelleration||acceleration
++acces||access
+ accesing||accessing
+ accesnt||accent
+ accessable||accessible
+@@ -50,6 +51,7 @@ acessable||accessible
+ acess||access
+ acessing||accessing
+ achitecture||architecture
++achived||achieved
+ acient||ancient
+ acitions||actions
+ acitve||active
+@@ -95,6 +97,7 @@ albumns||albums
+ alegorical||allegorical
+ algined||aligned
+ algorith||algorithm
++algorithim||algorithm
+ algorithmical||algorithmically
+ algoritm||algorithm
+ algoritms||algorithms
+@@ -124,6 +127,7 @@ altough||although
+ alue||value
+ ambigious||ambiguous
+ ambigous||ambiguous
++ammend||amend
+ amoung||among
+ amount of times||number of times
+ amout||amount
+@@ -248,6 +252,7 @@ beeing||being
+ befor||before
+ begining||beginning
+ beter||better
++betwen||between
+ betweeen||between
+ bianries||binaries
+ bitmast||bitmask
+@@ -350,6 +355,7 @@ comsuming||consuming
+ comaptible||compatible
+ compability||compatibility
+ compaibility||compatibility
++comparision||comparison
+ comparsion||comparison
+ compatability||compatibility
+ compatable||compatible
+@@ -385,6 +391,7 @@ configred||configured
+ configuartion||configuration
+ configuation||configuration
+ configued||configured
++configuraiton||configuration
+ configuratoin||configuration
+ configuraton||configuration
+ configuretion||configuration
+@@ -658,6 +665,7 @@ exteneded||extended
+ extensability||extensibility
+ extention||extension
+ extenstion||extension
++extnesion||extension
+ extracter||extractor
+ faied||failed
+ faield||failed
+@@ -796,6 +804,7 @@ implementd||implemented
+ implemetation||implementation
+ implemntation||implementation
+ implentation||implementation
++implment||implement
+ implmentation||implementation
+ implmenting||implementing
+ incative||inactive
+@@ -812,11 +821,13 @@ incuding||including
+ inculde||include
+ indendation||indentation
+ indended||intended
++indentification||identification
+ independant||independent
+ independantly||independently
+ independed||independent
+ indiate||indicate
+ indicat||indicate
++indicies||indices
+ inexpect||inexpected
+ inferface||interface
+ infinit||infinite
+@@ -850,6 +861,7 @@ instace||instance
+ instal||install
+ instanciate||instantiate
+ instanciated||instantiated
++instread||instead
+ instuments||instruments
+ insufficent||insufficient
+ inteface||interface
+@@ -934,6 +946,7 @@ libary||library
+ librairies||libraries
+ libraris||libraries
+ licenceing||licencing
++limitaion||limitation
+ limted||limited
+ logaritmic||logarithmic
+ loggging||logging
+@@ -1331,6 +1344,7 @@ resouce||resource
+ resouces||resources
+ resoures||resources
+ responce||response
++responsability||responsibility
+ resrouce||resource
+ ressizes||resizes
+ ressource||resource
+@@ -1554,6 +1568,7 @@ throught||through
+ tansition||transition
+ trackling||tracking
+ troughput||throughput
++truely||truly
+ trys||tries
+ thses||these
+ tiggers||triggers
+@@ -1623,6 +1638,7 @@ unknouwn||unknown
+ unknow||unknown
+ unkown||unknown
+ unamed||unnamed
++undocummented||undocumented
+ uneeded||unneeded
+ unneded||unneeded
+ unneccecary||unnecessary
 -- 
 2.34.1
 
