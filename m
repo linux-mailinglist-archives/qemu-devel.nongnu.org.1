@@ -2,84 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A26802C46
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 08:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B0C802C6B
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 08:53:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA3a6-0008Qx-71; Mon, 04 Dec 2023 02:41:30 -0500
+	id 1rA3kU-00026d-QA; Mon, 04 Dec 2023 02:52:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rA3Zz-0008QM-PE
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 02:41:24 -0500
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1rA3kS-00026G-KU
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 02:52:12 -0500
+Received: from mailout07.t-online.de ([194.25.134.83])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rA3Zu-00031M-Oj
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 02:41:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701675678; x=1733211678;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=jMnjDLBqJ4t4/XvKEv0l+/ysieTqDpI4VbHwZZMz/Hk=;
- b=Pe6XULX4GXNWJzE6vNfwc+nAz/vtRctW88eBZg08xHQGfucywMLBeo+I
- R1iMRSpNOqX1ghL5qJ1kwzAIL3tqU0QbgITMaY6F+qRGDe8d6JL/TQ9Wr
- KqkC8Auc65zja4tP8ypSM4krMBr0DXSp1ogJn0Ed9ZT9oxbDhmoMrnj7a
- 79qBK6LDZXEV2K5uOIDyI2MfpBiA5uQNS2avhXWr9d1zffYFmSALyEv3+
- XCQZef50vBWipQE+dPccZb+0wBn9xlaEO2F2qG0lE17s2zX1A7mirDjyj
- Qd0F65yVYweKxsnPNyp/gCSxym9kksSVPYKf0VoiaNpa1Zz5uWjSmC95+ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="12411513"
-X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; d="scan'208";a="12411513"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2023 23:41:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="763858934"
-X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; d="scan'208";a="763858934"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.29.154])
- ([10.93.29.154])
- by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2023 23:41:02 -0800
-Message-ID: <616b5d4e-39a1-4f61-8fa6-1938fb4df1a7@intel.com>
-Date: Mon, 4 Dec 2023 15:40:59 +0800
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1rA3kQ-0007wc-Ko
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 02:52:12 -0500
+Received: from fwd89.aul.t-online.de (fwd89.aul.t-online.de [10.223.144.115])
+ by mailout07.t-online.de (Postfix) with SMTP id 4AD16216D0;
+ Mon,  4 Dec 2023 08:52:08 +0100 (CET)
+Received: from [192.168.211.200] ([93.236.147.152]) by fwd89.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1rA3kN-19yPfV0; Mon, 4 Dec 2023 08:52:07 +0100
+Message-ID: <383e2947-c0ec-4157-8c48-e95f205908c9@t-online.de>
+Date: Mon, 4 Dec 2023 08:52:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/70] physmem: replace function name with __func__ in
- ram_block_discard_range()
+Subject: Re: [PATCH for 8.2] hw/audio/virtio-sound: mark the device as
+ unmigratable
+From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
+To: Gerd Hoffmann <kraxel@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+References: <20231204072837.6058-1-vr_qemu@t-online.de>
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Michael Roth <michael.roth@amd.com>, Sean Christopherson
- <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
- <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-9-xiaoyao.li@intel.com>
- <24521a5c-beec-4f08-8e89-2a413788bf8b@redhat.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <24521a5c-beec-4f08-8e89-2a413788bf8b@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+In-Reply-To: <20231204072837.6058-1-vr_qemu@t-online.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TOI-EXPURGATEID: 150726::1701676327-13FFC820-8F8DBD5E/0/0 CLEAN NORMAL
+X-TOI-MSGID: 97bd7cd1-6be6-4ed6-b179-3991594699ee
+Received-SPF: pass client-ip=194.25.134.83; envelope-from=vr_qemu@t-online.de;
+ helo=mailout07.t-online.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,20 +66,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/16/2023 2:21 AM, David Hildenbrand wrote:
-> On 15.11.23 08:14, Xiaoyao Li wrote:
->> Use __func__ to avoid hard-coded function name.
->>
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> ---
-> 
-> That can be queued independently.
+Am 04.12.23 um 08:28 schrieb Volker Rümelin:
 
-Will you queue it for 9.0? for someone else?
+> The virtio-sound device is currently not migratable. QEMU crashes
+> on the source machine at some point during the migration with a
+> segmentation fault.
+>
+> Even with this bug fixed, the virtio-sound device doesn't migrate
+> the state of the audio streams. For example, running streams leave
+> the device on the destination machine in a broken condition.
+>
+> Mark the device as unmigratable until these issues have been fixed.
+>
+> Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+> ---
+>  hw/audio/virtio-snd.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-Do I need to send it separately?
+I already have a working patch series with 6 patches to fix these
+issues. I wrote them in the last two days, which means they are not yet
+in a reviewable state and the series is too big for 8.2. I think I need
+another weekend or two before I send them to the qemu-devel mailing list.
 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
+With best regards,
+Volker
+
+> diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+> index 2fe966e311..b10fad1228 100644
+> --- a/hw/audio/virtio-snd.c
+> +++ b/hw/audio/virtio-snd.c
+> @@ -68,6 +68,7 @@ static const VMStateDescription vmstate_virtio_snd_device = {
+>  
+>  static const VMStateDescription vmstate_virtio_snd = {
+>      .name = TYPE_VIRTIO_SND,
+> +    .unmigratable = 1,
+>      .minimum_version_id = VIRTIO_SOUND_VM_VERSION,
+>      .version_id = VIRTIO_SOUND_VM_VERSION,
+>      .fields = (VMStateField[]) {
 
 
