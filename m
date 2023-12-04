@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A149803E69
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 20:33:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 720EE803E99
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 20:42:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAEfx-0002zO-8Z; Mon, 04 Dec 2023 14:32:17 -0500
+	id 1rAEoI-0005RD-7k; Mon, 04 Dec 2023 14:40:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rAEfl-0002z9-3M
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 14:32:07 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAEoA-0005M0-G7
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 14:40:49 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rAEfi-0004rl-8F
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 14:32:03 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 599B4218F4;
- Mon,  4 Dec 2023 19:31:59 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C58C81398A;
- Mon,  4 Dec 2023 19:31:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id jA+vIS4pbmURMgAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 04 Dec 2023 19:31:58 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Leonardo Bras
- <leobras@redhat.com>
-Subject: Re: [PATCH V6 05/14] migration: propagate suspended runstate
-In-Reply-To: <ZW4LX9FpfTj77TZv@x1n>
-References: <1701380247-340457-1-git-send-email-steven.sistare@oracle.com>
- <1701380247-340457-6-git-send-email-steven.sistare@oracle.com>
- <ZWkVbiQNl16hC1LW@x1n> <ea771378-33c4-4d4e-9de2-d39310028d10@oracle.com>
- <ZW4LX9FpfTj77TZv@x1n>
-Date: Mon, 04 Dec 2023 16:31:56 -0300
-Message-ID: <87r0k1n4r7.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAEo8-0000SI-Di
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 14:40:46 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40c032962c5so30423325e9.3
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 11:40:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701718842; x=1702323642; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=14EOn/NO7w4OooejbiwleYHqjjs9Ad124VSgwVmol90=;
+ b=JbI76pvOSg7lkOprQeJzhzwdmasPqLpNd0B8bQ9KOXsYH3KuZzeEInF/reFMB3BqV2
+ wXDcePSB1L6kWp+3zKyfhPq1sceJXSlgcG1l6eqH1oWRFuEFVX2NBKjL+wRoYGQNCuat
+ FJ9ne8Sjxi33KWsAzv29v+mZuaHYejHppyME4tbyIjJenB1cI+SVSu3SXn27pU8mqt9l
+ vZ5TRNU6Vu/wYbZ/d8i4WTtMu03yNVlu/K9zDlcz8yup//NAkEY57ZQcxMYKSi9sjbxU
+ M06ll2SmXPh0cGrNUg3a0+8CW+bcOCVLBj0c7CEVF4X/EVKjVXjogFworciSUCKo0nl1
+ PycA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701718842; x=1702323642;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=14EOn/NO7w4OooejbiwleYHqjjs9Ad124VSgwVmol90=;
+ b=eiTCG8qNzdscFEgwq58t83TkTuO/cV2QDqH+MIEU+QfAf5wSCQK6a3gpaGw+VHteNP
+ wLwIA8rS7wfrVIp3nFTJULOf2rGW3yTtfczuX/X6VCU41Cqz9Lz5i/7c1Vaiq/M67SDM
+ JrSIMoyAgs/2ik2MqKDX89O9J6LC7gJ5vhxWKuF2p6U2PtDTdN28pfTOeKrcJCCq9bDV
+ zKr5fbumSIjwx+ptRihnPMoP+qcA7y6sVWDpDUH34Y7pCuT7r/Au2c1rW9LTKTdoP6+l
+ UjfmOlKI9y6pA5Ng1IjaogTxz8C66Jbi8rQzS/8cVwyV4vGzby83W+RXVCb8BA2HLN3c
+ jrrw==
+X-Gm-Message-State: AOJu0YzUX5b/DQ6zcpxrvEu9BM3GcHhn4UqpCHgOYPLUeo9asIKBFHT5
+ Iz70Z8IASJUeUatfro79bEy326BHTrAvAuBQ2lM=
+X-Google-Smtp-Source: AGHT+IEsRUSPBOoDNP8Mp9FdsvA6sZOjl24+mQrm6Zpqg/jD+0e0X9AsjK8HDCvYyU56KJEJcQJw+A==
+X-Received: by 2002:a5d:480f:0:b0:333:2fd2:3c02 with SMTP id
+ l15-20020a5d480f000000b003332fd23c02mr2588460wrq.187.1701718842455; 
+ Mon, 04 Dec 2023 11:40:42 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.140.35])
+ by smtp.gmail.com with ESMTPSA id
+ w12-20020a5d680c000000b003333e09990dsm6688458wru.8.2023.12.04.11.40.41
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 04 Dec 2023 11:40:42 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
+ Stefan Hajnoczi <stefanha@gmail.com>
+Subject: [RFC PATCH-for-8.2?] accel/tcg: Implement tcg_unregister_thread()
+Date: Mon,  4 Dec 2023 20:40:39 +0100
+Message-ID: <20231204194039.56169-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Bar: ++++++++++
-X-Spam-Score: 10.28
-X-Rspamd-Server: rspamd1
-Authentication-Results: smtp-out1.suse.de; dkim=none;
- spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither
- permitted nor denied by domain of farosas@suse.de)
- smtp.mailfrom=farosas@suse.de; 
- dmarc=fail reason="No valid SPF,
- No valid DKIM" header.from=suse.de (policy=none)
-X-Rspamd-Queue-Id: 599B4218F4
-X-Spamd-Result: default: False [10.28 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- MIME_GOOD(-0.10)[text/plain]; NEURAL_SPAM_SHORT(2.99)[0.995];
- R_SPF_SOFTFAIL(4.60)[~all:c]; RCVD_COUNT_THREE(0.00)[3];
- MX_GOOD(-0.01)[]; NEURAL_SPAM_LONG(3.50)[1.000];
- RCPT_COUNT_SEVEN(0.00)[8]; FUZZY_BLOCKED(0.00)[rspamd.com];
- FROM_EQ_ENVFROM(0.00)[]; R_DKIM_NA(2.20)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[];
- DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,124 +91,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+Unplugging vCPU triggers the following assertion in
+tcg_register_thread():
 
-> On Fri, Dec 01, 2023 at 11:23:33AM -0500, Steven Sistare wrote:
->> >> @@ -109,6 +117,7 @@ static int global_state_post_load(void *opaque, int version_id)
->> >>          return -EINVAL;
->> >>      }
->> >>      s->state = r;
->> >> +    vm_set_suspended(s->vm_was_suspended || r == RUN_STATE_SUSPENDED);
->> > 
->> > IIUC current vm_was_suspended (based on my read of your patch) was not the
->> > same as a boolean representing "whether VM is suspended", but only a
->> > temporary field to remember that for a VM stop request.  To be explicit, I
->> > didn't see this flag set in qemu_system_suspend() in your previous patch.
->> > 
->> > If so, we can already do:
->> > 
->> >   vm_set_suspended(s->vm_was_suspended);
->> > 
->> > Irrelevant of RUN_STATE_SUSPENDED?
->> 
->> We need both terms of the expression.
->> 
->> If the vm *is* suspended (RUN_STATE_SUSPENDED), then vm_was_suspended = false.
->> We call global_state_store prior to vm_stop_force_state, so the incoming
->> side sees s->state = RUN_STATE_SUSPENDED and s->vm_was_suspended = false.
->
-> Right.
->
->> However, the runstate is RUN_STATE_INMIGRATE.  When incoming finishes by
->> calling vm_start, we need to restore the suspended state.  Thus in 
->> global_state_post_load, we must set vm_was_suspended = true.
->
-> With above, shouldn't global_state_get_runstate() (on dest) fetch SUSPENDED
-> already?  Then I think it should call vm_start(SUSPENDED) if to start.
->
-> Maybe you're talking about the special case where autostart==false?  We
-> used to have this (existing process_incoming_migration_bh()):
->
->     if (!global_state_received() ||
->         global_state_get_runstate() == RUN_STATE_RUNNING) {
->         if (autostart) {
->             vm_start();
->         } else {
->             runstate_set(RUN_STATE_PAUSED);
->         }
->     }
->
-> If so maybe I get you, because in the "else" path we do seem to lose the
-> SUSPENDED state again, but in that case IMHO we should logically set
-> vm_was_suspended only when we "lose" it - we didn't lose it during
-> migration, but only until we decided to switch to PAUSED (due to
-> autostart==false). IOW, change above to something like:
->
->     state = global_state_get_runstate();
->     if (!global_state_received() || runstate_is_alive(state)) {
->         if (autostart) {
->             vm_start(state);
->         } else {
->             if (runstate_is_suspended(state)) {
->                 /* Remember suspended state before setting system to STOPed */
->                 vm_was_suspended = true;
->             }
->             runstate_set(RUN_STATE_PAUSED);
->         }
->     }
->
-> It may or may not have a functional difference even if current patch,
-> though.  However maybe clearer to follow vm_was_suspended's strict
-> definition.
->
->> 
->> If the vm *was* suspended, but is currently stopped (eg RUN_STATE_PAUSED),
->> then vm_was_suspended = true.  Migration from that state sets
->> vm_was_suspended = s->vm_was_suspended = true in global_state_post_load and 
->> ends with runstate_set(RUN_STATE_PAUSED).
->> 
->> I will add a comment here in the code.
->>  
->> >>      return 0;
->> >>  }
->> >> @@ -134,6 +143,7 @@ static const VMStateDescription vmstate_globalstate = {
->> >>      .fields = (VMStateField[]) {
->> >>          VMSTATE_UINT32(size, GlobalState),
->> >>          VMSTATE_BUFFER(runstate, GlobalState),
->> >> +        VMSTATE_BOOL(vm_was_suspended, GlobalState),
->> >>          VMSTATE_END_OF_LIST()
->> >>      },
->> >>  };
->> > 
->> > I think this will break migration between old/new, unfortunately.  And
->> > since the global state exist mostly for every VM, all VM setup should be
->> > affected, and over all archs.
->> 
->> Thanks, I keep forgetting that my binary tricks are no good here.  However,
->> I have one other trick up my sleeve, which is to store vm_was_running in
->> global_state.runstate[strlen(runstate) + 2].  It is forwards and backwards
->> compatible, since that byte is always 0 in older qemu.  It can be implemented
->> with a few lines of code change confined to global_state.c, versus many lines 
->> spread across files to do it the conventional way using a compat property and
->> a subsection.  Sound OK?  
->
-> Tricky!  But sounds okay to me.  I think you're inventing some of your own
-> way of being compatible, not relying on machine type as a benefit.  If go
-> this route please document clearly on the layout and also what it looked
-> like in old binaries.
->
-> I think maybe it'll be good to keep using strings, so in the new binaries
-> we allow >1 strings, then we define properly on those strings (index 0:
-> runstate, existed since start; index 2: suspended, perhaps using "1"/"0" to
-> express, while 0x00 means old binary, etc.).
->
-> I hope this trick will need less code than the subsection solution,
-> otherwise I'd still consider going with that, which is the "common
-> solution".
->
-> Let's also see whether Juan/Fabiano/others has any opinions.
+ 796 void tcg_register_thread(void)
+ 797 {
+ ...
+ 812     /* Claim an entry in tcg_ctxs */
+ 813     n = qatomic_fetch_inc(&tcg_cur_ctxs);
+ 814     g_assert(n < tcg_max_ctxs);
 
-Can't we pack the structure and just go ahead and slash 'runstate' in
-half? That would claim some unused bytes for future backward
-compatibility issues.
+Implement and use tcg_unregister_thread() so when a
+vCPU is unplugged, the tcg_cur_ctxs refcount is
+decremented.
+
+Reported-by: Michal Suchánek <msuchanek@suse.de>
+Suggested-by: Stefan Hajnoczi <stefanha@gmail.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+RFC: untested
+Report: https://lore.kernel.org/qemu-devel/20231204183638.GZ9696@kitsune.suse.cz/
+---
+ include/tcg/startup.h           |  5 +++++
+ accel/tcg/tcg-accel-ops-mttcg.c |  1 +
+ accel/tcg/tcg-accel-ops-rr.c    |  1 +
+ tcg/tcg.c                       | 17 +++++++++++++++++
+ 4 files changed, 24 insertions(+)
+
+diff --git a/include/tcg/startup.h b/include/tcg/startup.h
+index f71305765c..520942a4a1 100644
+--- a/include/tcg/startup.h
++++ b/include/tcg/startup.h
+@@ -45,6 +45,11 @@ void tcg_init(size_t tb_size, int splitwx, unsigned max_cpus);
+  */
+ void tcg_register_thread(void);
+ 
++/**
++ * tcg_unregister_thread: Unregister this thread with the TCG runtime
++ */
++void tcg_unregister_thread(void);
++
+ /**
+  * tcg_prologue_init(): Generate the code for the TCG prologue
+  *
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
+index fac80095bb..88d7427aad 100644
+--- a/accel/tcg/tcg-accel-ops-mttcg.c
++++ b/accel/tcg/tcg-accel-ops-mttcg.c
+@@ -120,6 +120,7 @@ static void *mttcg_cpu_thread_fn(void *arg)
+ 
+     tcg_cpus_destroy(cpu);
+     qemu_mutex_unlock_iothread();
++    tcg_unregister_thread();
+     rcu_remove_force_rcu_notifier(&force_rcu.notifier);
+     rcu_unregister_thread();
+     return NULL;
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index 611932f3c3..c2af3aad21 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -302,6 +302,7 @@ static void *rr_cpu_thread_fn(void *arg)
+         rr_deal_with_unplugged_cpus();
+     }
+ 
++    tcg_unregister_thread();
+     rcu_remove_force_rcu_notifier(&force_rcu);
+     rcu_unregister_thread();
+     return NULL;
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index d2ea22b397..5125342d70 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -781,11 +781,18 @@ static void alloc_tcg_plugin_context(TCGContext *s)
+  * modes.
+  */
+ #ifdef CONFIG_USER_ONLY
++
+ void tcg_register_thread(void)
+ {
+     tcg_ctx = &tcg_init_ctx;
+ }
++
++void tcg_unregister_thread(void)
++{
++}
++
+ #else
++
+ void tcg_register_thread(void)
+ {
+     TCGContext *s = g_malloc(sizeof(*s));
+@@ -814,6 +821,16 @@ void tcg_register_thread(void)
+ 
+     tcg_ctx = s;
+ }
++
++void tcg_unregister_thread(void)
++{
++    unsigned int n;
++
++    n = qatomic_fetch_dec(&tcg_cur_ctxs);
++    g_free(tcg_ctxs[n]);
++    qatomic_set(&tcg_ctxs[n], NULL);
++}
++
+ #endif /* !CONFIG_USER_ONLY */
+ 
+ /* pool based memory allocation */
+-- 
+2.41.0
+
 
