@@ -2,80 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF718803695
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 15:27:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D09803459
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 14:20:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA9uL-0001Xr-07; Mon, 04 Dec 2023 09:26:49 -0500
+	id 1rA8qg-0002rN-6r; Mon, 04 Dec 2023 08:18:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tianren@smartx.com>)
- id 1rA6VH-00063l-B1
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 05:48:43 -0500
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tianren@smartx.com>)
- id 1rA6VD-0006v5-NX
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 05:48:41 -0500
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6cda22140f2so4231466b3a.1
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 02:46:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701686794; x=1702291594;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=OAWc6clR/laPKYDA7XTFiRSDi0wLvmh/mXsGOTF/fbs=;
- b=lMpJyoKsQvEtzoO0I29FCUS/KX2nAL8M1zO5qVI+wyTFr2PLNsi29yUXILcc/RIxKs
- hD+z6g4MSi5i1TPgu9NIRrYYQQrXGQ+P28VUQRgp4D6EHkvJJhwykSkgrThgk1/V+b5x
- GIU41sc22WzN5Yl68QfasnH7kp9+66VyLBEmfnV7B4L1yE1JB/vGQE8hjcJ13ZyIW1ef
- xKOfqdmVhCpoC9H2roVpK3ITtBbOFVZB7243x4CUgCU1q53T3JX8GSJpw6LglGeRVIqg
- ljWBFF5kzLmFSZzx7Qjm33kF8pEHlxNf4JC9Al7S/74l6gCljda2mzXj3SnAjtYeefzX
- D3Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701686794; x=1702291594;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OAWc6clR/laPKYDA7XTFiRSDi0wLvmh/mXsGOTF/fbs=;
- b=tn8bo2pwFF6lP1bZzpcMAAdbPjj2gi6gMMm2IUZdG2OIJUnkU5N0771iODXcOlNDp2
- GAe94SYRxpOM1WwgtsoRYQ9dYilNCoHfHldt8hh5aOXafTIrPqeIay11MZ2JD2VvIczR
- BChQHOkkdWhyxRDfR37g7aMFxCIn7buAHfGxrFlrHRA0MH73ibWBy3BOZ2PPv3aCA9cX
- domcLHLWVUKNm7z1udeFupn0md8rTbgvKIhvJ5l1SEqLogDuJ9VsmnGzAbv9OW79bj8x
- bMvcQA3LdRdcLHrFDmDwAVQLfQpaMr07rSbVQwIjJEXTYRCwoCQgXHAyLvKs14+mNVte
- F6PQ==
-X-Gm-Message-State: AOJu0Yy9M2rnGvZDL26sebhBxbN7e/q5+0n6JhYTc4sgxZOFISLqug8h
- s4jampA15sEULdb9hoVdTHB64y9vBcipfNJ8pHzv5LYaO00rtA==
-X-Google-Smtp-Source: AGHT+IGlhGfAQS7GKjksi9QV0yMtsmOOMsfBKi4BY6aqHOT2ZRDGa7KeEV3t8ro+RDqaMikx+Re1Fw==
-X-Received: by 2002:a05:6a00:2305:b0:6ce:2731:a091 with SMTP id
- h5-20020a056a00230500b006ce2731a091mr4809527pfh.64.1701686794278; 
- Mon, 04 Dec 2023 02:46:34 -0800 (PST)
-Received: from localhost.localdomain ([1.202.18.10])
- by smtp.gmail.com with ESMTPSA id
- bm10-20020a056a00320a00b006c4d128b71esm7537551pfb.98.2023.12.04.02.46.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Dec 2023 02:46:33 -0800 (PST)
-From: tianren <tianren@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, pbonzini@redhat.com,
- Tianren Zhang <tianren@smartx.com>
-Subject: [PATCH] qemu: send stop event after bdrv_flush_all
-Date: Mon,  4 Dec 2023 18:45:59 +0800
-Message-Id: <20231204104559.10243-1-tianren@smartx.com>
-X-Mailer: git-send-email 2.22.0
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rA8qe-0002qh-V7
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 08:18:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rA8qc-0007ym-5e
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 08:18:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701695933;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=VHQ4HR2B7MLC//HgFh3nAtqLerMP/Y4A9vM9X/MfQuk=;
+ b=UaF4V0No7fy4bcb7RMdbuicrA6ZKcxjbGqQal9rokXi850dNMkeZKTGQZe9gjgq+heEYie
+ xUZo1y1kiqscOhHUnpt6jn2JrlFuzAzn2KPgt30BdbD3yZcXPq1IGQMxR7X0d/TOubDrmE
+ mEi/Lte4HAf9feBBmj8CyZrwZrQJiKA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-628-mkzkasI9PUCWPgI5RxpOKg-1; Mon, 04 Dec 2023 08:18:49 -0500
+X-MC-Unique: mkzkasI9PUCWPgI5RxpOKg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9B9E1101A52D;
+ Mon,  4 Dec 2023 13:18:48 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.237])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B423140C6EB9;
+ Mon,  4 Dec 2023 13:18:43 +0000 (UTC)
+Date: Mon, 4 Dec 2023 14:18:42 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Alberto Garcia <berto@igalia.com>,
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+ John Snow <jsnow@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Wen Congyang <wencongyang2@huawei.com>, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, Coiby Xu <Coiby.Xu@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Xie Changlong <xiechanglong.d@gmail.com>,
+ Ari Sundholm <ari@tuxera.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ Cleber Rosa <crosa@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Zhang Chen <chen.zhang@intel.com>, Peter Xu <peterx@redhat.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Leonardo Bras <leobras@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Fam Zheng <fam@euphon.net>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH 03/12] aio: make
+ aio_context_acquire()/aio_context_release() a no-op
+Message-ID: <ZW3RsnWZou44DFSE@redhat.com>
+References: <20231129195553.942921-1-stefanha@redhat.com>
+ <20231129195553.942921-4-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::430;
- envelope-from=tianren@smartx.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231129195553.942921-4-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 04 Dec 2023 09:26:44 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,49 +99,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tianren Zhang <tianren@smartx.com>
+Am 29.11.2023 um 20:55 hat Stefan Hajnoczi geschrieben:
+> aio_context_acquire()/aio_context_release() has been replaced by
+> fine-grained locking to protect state shared by multiple threads. The
+> AioContext lock still plays the role of balancing locking in
+> AIO_WAIT_WHILE() and many functions in QEMU either require that the
+> AioContext lock is held or not held for this reason. In other words, the
+> AioContext lock is purely there for consistency with itself and serves
+> no real purpose anymore.
+> 
+> Stop actually acquiring/releasing the lock in
+> aio_context_acquire()/aio_context_release() so that subsequent patches
+> can remove callers across the codebase incrementally.
+> 
+> I have performed "make check" and qemu-iotests stress tests across
+> x86-64, ppc64le, and aarch64 to confirm that there are no failures as a
+> result of eliminating the lock.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-The stop process is not finished until bdrv_flush_all
-is done. Some users (e.g., libvirt) detects the STOP
-event and invokes some lock release logic to revoke
-the disk lock held by current qemu when such event is
-emitted. In such case, if the bdrv_flush_all is after
-the stop event, it's possible that the disk lock is
-released while the qemu is still waiting for I/O.
-Therefore, it's better to have the stop event generated
-after the whole stop process is done.
+YOLO.
 
-Change-Id: Ia2f95cd55edfdeb71ee2e04005ac216cfabffa22
-Signed-off-by: Tianren Zhang <tianren@smartx.com>
----
- system/cpus.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/system/cpus.c b/system/cpus.c
-index a444a747f0..b0421f3e22 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -268,15 +268,16 @@ static int do_vm_stop(RunState state, bool send_stop)
-         cpu_disable_ticks();
-         pause_all_vcpus();
-         vm_state_notify(0, state);
--        if (send_stop) {
--            qapi_event_send_stop();
--        }
-     }
- 
-     bdrv_drain_all();
-     ret = bdrv_flush_all();
-     trace_vm_stop_flush_all(ret);
- 
-+    if (runstate_is_running() && send_stop) {
-+        qapi_event_send_stop();
-+    }
-+
-     return ret;
- }
- 
--- 
-2.38.1
+Acked-by: Kevin Wolf <kwolf@redhat.com>
 
 
