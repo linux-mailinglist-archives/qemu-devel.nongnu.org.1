@@ -2,152 +2,153 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51421804277
+	by mail.lfdr.de (Postfix) with ESMTPS id 56EB3804278
 	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 00:18:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAIBA-0002NR-3L; Mon, 04 Dec 2023 18:16:44 -0500
+	id 1rAIB9-0002Ls-H4; Mon, 04 Dec 2023 18:16:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <michael.christie@oracle.com>)
- id 1rAIB1-0002LX-PQ
+ id 1rAIB1-0002LW-Oz
  for qemu-devel@nongnu.org; Mon, 04 Dec 2023 18:16:35 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <michael.christie@oracle.com>)
- id 1rAIAz-0007Cj-BK
+ id 1rAIAz-0007Eb-DA
  for qemu-devel@nongnu.org; Mon, 04 Dec 2023 18:16:35 -0500
 Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B4MoCt4004747; Mon, 4 Dec 2023 23:16:27 GMT
+ 3B4MoD2N004790; Mon, 4 Dec 2023 23:16:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references :
  content-transfer-encoding : content-type : mime-version;
- s=corp-2023-11-20; bh=JWoPemWX+ddCBvFFZOWOFw4Y+h7bgjS6zI46pz45x3c=;
- b=gP8b+GuZhXdYZ0JxrhCteKV/t057T9MZqZn6GawP9MbKcHKx4dFLCmJMM2Eqi9EsWWvN
- Rems3+6jbeOIcUG9D+vekA6ToN3e4nFhX1VZyYvcM1fR7cYsHJMYoxYL3wNbrbB7VhQy
- qnroMKtkgV/F05wxkiHIBGOVsfgeujFsXfIweXOTZncr7svDZQd5AT2HC0I9FbJCgeHj
- iCuv3H58eghtsCAoGEYSH+jePwhraGmTLS0CEe7DRd9q1t6QSh+XKo6Jwdg5B7oTSEyc
- QJ1wzmqTKqszffWU9whWL/xLMqlmTlifOfR7uOe2UoU7/9AB0iwoqpjhKX9n87XZXP1e uQ== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3usqnf02bh-1
+ s=corp-2023-11-20; bh=De/CiSuYl1RMsvOdH4u5lpdwzUmtWE9lejwG3iDf0R4=;
+ b=dAO8ltSJh0fkXB1COIiVbGTNP3+TohCb3lOuGr4GhZ0nhldiPjFK0V16Mhm2nwxfWDFy
+ v/hD15T3B4eBejdPs4fmRLfa44LEMW60BhHfgzBM/XVpEIbj2yyUYYvK7r23wC/3oR/i
+ HEffYynKEJ8Db+6K2yTlhLiA5qCxaYWbZdFNknCEJaESu0BGxCisK98TEy9hNFScMbyr
+ yMJpaSsh2evlV/dO9ZVabxxHIsMkYttybGrsVI001OLTG45H2ACh+EtinnH4ksdYZKNk
+ vNX4MlITr7gzERgA8zcX8Xb9cJb37LpybTesunYCiSBWcChckQMsVR1MGG99LIz7wrVy Qg== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3usqnf02bp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 04 Dec 2023 23:16:30 +0000
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 3B4MIqXE018427; Mon, 4 Dec 2023 23:16:27 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02lp2041.outbound.protection.outlook.com [104.47.56.41])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3uqu16hnch-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Mon, 04 Dec 2023 23:16:27 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B4MIteK028635; Mon, 4 Dec 2023 23:16:26 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com
- (mail-dm3nam02lp2040.outbound.protection.outlook.com [104.47.56.40])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uqu1d18xm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 04 Dec 2023 23:16:25 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PCSbUjT7fX6wz/9Wqc0hhTAYwEiUmOVd3UmFa2Ml5I0uwLWj8J2zJQ7NLllVifp5DV3Ocm+NMAtREXCNM38MGPtEpV3cQXvvG4x7Eo9BbO85XmGFEkVm6hBJIGsi0wYqkLH0KmvVQ0OXkpR6oGkZ01RO8bSpa6/q5gCfvQVdc8JPHlTRfYGT0pRBT1fEHMSoR8WQE3EPrSA3XI+PXLqTSS0moicL8Oas768myKZ/k34Kg5f17ky6pHXp0jW3CymQotPYjY5ESBBF81aIhR4mDW9tTzGCEWo62jdX2uD4oWnBoFq0se+5EGQ3jsnpRGBt4ISFvJWdzTd6ZkNph4k9Ow==
+ b=aiK3RXMDEVgzQfCE1sSEk8owGsbN/KQkGgGmzR+f0yfg2Z+ojGRLsFjFVNDjMDsi9TzpjCarP2U3rChR7zpgWbxcho9gJgHtuxhb6F90XehMVVJYmYQpoXgw6QRhjIqZd9Y/+VR48AL1+ygAGa9GsXKz//QJXdINB1RrBHhEEN7ZXPYcb1Rcho+aKNuYfNkaWtdYwhIn4IVUOZY7FTStciLikQRZL8WHH8OD4F59HOVML4H5eSWzpsPnXyzRA9JB/ra9vDOob0RVEqQxdU9gD86BqhgMJH/6H+QVbASVxF039yH+deCLfXgeLWQke1Q1iJt539vwzgkQgS/19NJ5lw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JWoPemWX+ddCBvFFZOWOFw4Y+h7bgjS6zI46pz45x3c=;
- b=USBsaurFmq2bmtZk7qMfrimquyrkbDVBFdrwmUtMoUhUwTbLRpVHd7kPC5gZ1dAmbbx2mthJQYANZPkFcXxvGhpZMWJtyWi9NbwpRIqla4uNbItZ9G4AqWBRtBuSfS2ieS7wOwwdFQcRnofIkFepC5lxVgSOdCHf2N3CI36xwllzpzs/2tVWgvMMDS2m90uLLueFu/PcL6kM8tXVqK/6PV8MREmwuyPlsd3cQA1jnjphLq08OHF/+TGSp8yWHD93gc/TnesmE3kEK2Gz9eF4eSTkSInAvMBgP+wowBLUOH0x6/ARa/dubPujuAa7xmfoWRU4GeeYtHuh1R9cyTYjSw==
+ bh=De/CiSuYl1RMsvOdH4u5lpdwzUmtWE9lejwG3iDf0R4=;
+ b=Qd7p56zNzdMrDEAia8ax4yrlZQde/LWhBACPxcU56/q0iQObdEV8hFqrXEccLp5a+FUO4wX2RIejsaKswJk35iEOEU7T5R0I2mcXGw0hRJ4Mu+DKE23GZOD/cYfhDWUUe8FHwmH6COEUYXx9ok0r/5pwmsm11kgLJRjCgUmqk4bO6Qa5uygERodxCPy+HJxsdhG5QsG4pzJhgLOor5LGCoPtr5pAlEpHbS0vETnq5M2Gi4wDDgLz9MzutFr+GIiKifYH2KnSVbk4resYkX/MNEFzgxisvlpTwkAOU+/Ik8EsMJ5QdueY5PGLVZY8fvxrVMWAqVtvNmWtD27lf7W3qg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JWoPemWX+ddCBvFFZOWOFw4Y+h7bgjS6zI46pz45x3c=;
- b=NCrrJTeNB98qfLqgyZeE3VQpsB3QvH6qr3tCqF7QJnjlXT443AGuoOmvF4gtGtDeOkcjQ4J/4Xz+1ZZFPo4JB/zWBn5+GvDHEsuqk+NR0XpdFqEbpTUXY42+9PFaGiwSmQdF14NOs7G/XhX4MqbQFx4/0vRmf6DmJxk6SeRXLfo=
+ bh=De/CiSuYl1RMsvOdH4u5lpdwzUmtWE9lejwG3iDf0R4=;
+ b=VY7rH6dMyGLsKjE0/9JUveQuL1/BKJ3QiCvaKgO+PaXe+Eg3DuyyOQNJ7jYqmhmjpZq8ue4bdOcwbNGCU+knvb6WRZD7GtLuixQCzpcKmWdXLWBp/Y6nRZSK40UZYE64qhlG1GSkQnDUuUX4rfQW+aQUAxWOYtQK6QqQ5uhqSBU=
 Received: from CY8PR10MB7243.namprd10.prod.outlook.com (2603:10b6:930:7c::10)
  by MN6PR10MB7466.namprd10.prod.outlook.com (2603:10b6:208:477::17)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Mon, 4 Dec
- 2023 23:16:24 +0000
+ 2023 23:16:25 +0000
 Received: from CY8PR10MB7243.namprd10.prod.outlook.com
  ([fe80::449f:4fd9:2d3e]) by CY8PR10MB7243.namprd10.prod.outlook.com
  ([fe80::449f:4fd9:2d3e%4]) with mapi id 15.20.7046.033; Mon, 4 Dec 2023
- 23:16:24 +0000
+ 23:16:25 +0000
 From: Mike Christie <michael.christie@oracle.com>
 To: fam@euphon.net, stefanha@redhat.com, jasowang@redhat.com, mst@redhat.com, 
  sgarzare@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org
 Cc: Mike Christie <michael.christie@oracle.com>
-Subject: [PATCH v3 1/2] vhost: Add worker backend callouts
-Date: Mon,  4 Dec 2023 17:16:17 -0600
-Message-Id: <20231204231618.21962-2-michael.christie@oracle.com>
+Subject: [PATCH v3 2/2] vhost-scsi: Add support for a worker thread per
+ virtqueue
+Date: Mon,  4 Dec 2023 17:16:18 -0600
+Message-Id: <20231204231618.21962-3-michael.christie@oracle.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231204231618.21962-1-michael.christie@oracle.com>
 References: <20231204231618.21962-1-michael.christie@oracle.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: DS7PR05CA0055.namprd05.prod.outlook.com
- (2603:10b6:8:2f::15) To CY8PR10MB7243.namprd10.prod.outlook.com
+X-ClientProxiedBy: DM5PR07CA0090.namprd07.prod.outlook.com
+ (2603:10b6:4:ae::19) To CY8PR10MB7243.namprd10.prod.outlook.com
  (2603:10b6:930:7c::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CY8PR10MB7243:EE_|MN6PR10MB7466:EE_
-X-MS-Office365-Filtering-Correlation-Id: 173042d0-c949-4025-a3fa-08dbf51f0887
+X-MS-Office365-Filtering-Correlation-Id: 4ce50e8d-9eea-4879-ef7f-08dbf51f094f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MxVx5TFvHqTWgPIiPc1QUA5QZQ6pjUEPzSyWJhtHYzOpfwRoUwytrp629wPK9S4kv+3w8W3qKhhtNGwIN6T98rkBXM5n3ZEzcImyEvUkQwzbUJsuEUByVLAdOllm1J9UFa2c+ofaGfpJ7ssThriGEomOVtCFEh+1oLDT38KO3Uk6xWfAomHZ/ttPscXnrxaU7dd5kGdGF8zEHpqwtzTwHD9jX+KnunzI73p7MaMZFRQCoLz+iT9Ng9b1qaaR2qYcIYGBNRzCRh6fQw+YdlBmPU8H6onMXOnfmT9QA3sS25Cr2WezMq9wpYdr9IWnUf+ah5GascxrSkfKtG4VdHIUOOZG33TkpbH/p4+SG7ZTPIx+sAYx4/vs+0Bdt3XMPAHf+Nh2+Luprr9aU1TfdkU/gV0yCXVY9MDStk/q3QUrn8pQ4zE3p/xns6TslB4Q+vmFi0Vq9N6FiF6cePdJXgiBOuLb6gDL//ZX4cPi1jUXh2/5ZUbigYW03VKkebFMCuEzrc19m16/NnPafECkk8YB3HVhNJ8olgSdXX3djh8Ux//QJnaY4AdXf4gyk+v3PTxb
+X-Microsoft-Antispam-Message-Info: +iwBqTIJQ6pA9LgcubkF4a7AW5yGBpsKTb56HRQAOw8/wvox19VVTJJxLX5O6v2kibhyTNEXOqAGOdnWQz91HRNUwMSkfYhinx17GUTP6Wo39zByt65glBmvfCaHRyapuw8U3V6mez4A3J897kljgjJNztIfW4/53FT9hagK1ySHg9S0PXbe1MtaY9oNfCjz4/U4HSp9yE0vj5aDyi/cGUlK82EvlHNOL5MqSl1WuxJtBtwskaWtSs6+mnB3EyPsTDEIWcETkQLf0HumjtdfOQQ+PdIXs1agV3ppAhwmhZuw/xnJbg88gG9Wx1EC89vALvKjHX4AntytZXPgRAQjT+ePnEhW4IXrz9MlNDVG+TqHrSO2Vs3AKO082FBXQunRwfA2K/GT8CEnYeuAvVvUOL65fVo3EjtbsToNGzZO6w7X5deiG2HhyeIhKIHz7ANmM2YhPoplcS37IH1esM+IazomVsm2AdoEfie+jdYpHjdZGfEQGez3dwi/GHopCdyYfS2OzpTeuhnyPbXpu+EvzoIsBufgcgsqtqj8n3AZOECrTfok2vcOo61rFyCYtbe2
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CY8PR10MB7243.namprd10.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230031)(136003)(39860400002)(366004)(346002)(376002)(396003)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(66556008)(66476007)(66946007)(4326008)(8676002)(8936002)(316002)(6486002)(478600001)(6666004)(5660300002)(36756003)(41300700001)(2906002)(86362001)(2616005)(107886003)(26005)(1076003)(38100700002)(6506007)(6512007);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aWP4V8LZ60j9LQHHaMAej13SSFGQqAaKDVNK2JrXn6BrgO93lOnCHobPU6gJ?=
- =?us-ascii?Q?4ASzvp0TspmMTsWMHiSE344JV5MNm2l7cYCf/AxBcU8c3CmobfdEBu+KyFxQ?=
- =?us-ascii?Q?u9/U0tZLtFRr58qZaLTxRZmUB/C9TJIU30Qci7eG77/BwP0eQUMMKL3+OiKn?=
- =?us-ascii?Q?mqXB5bneMofPlzHSpkqIRoNBGl9sJ51QPgjQNwyYRevErA/Rk/SImfyyyWOP?=
- =?us-ascii?Q?JkgLvIK/OSxqbYDTcUTyoxksjJH7vE5JXhBCCsYAnnisqyZKMrS9PFuO5vY4?=
- =?us-ascii?Q?HFRPXviW1/goiDwP/YV5RCLnj8d/4SepyB5OHK9MZFDbZJbSlLDWd1Miyf+U?=
- =?us-ascii?Q?4MguOTxpCjnrL9ZRg/CVB+VTKqj03sw83ZeYfy2WCs96onVx6SDVEpjFqhHe?=
- =?us-ascii?Q?ul/U/bMRN5kw0xFiCUYOq1ThnzQD7GXIDeS/9dsCuKuzuQEUXAP+PjkVKFbA?=
- =?us-ascii?Q?tLx8FPnaGqfntvZ/1bEbxvZW2kuvv5Ajr/ctxt7KmH4YlhNc7hdh0Hmp9cnC?=
- =?us-ascii?Q?x5LsXtYD6q1RZTKudYkey+1xesyRbmOrmmbH5FbXMVKaFSbiHvvTUE8v/Z8I?=
- =?us-ascii?Q?bQWzmhk+gnwlnGn96Czh44PEfR34yHkknXh9WyqLWxZR3DDqU9Wzj+97hUF2?=
- =?us-ascii?Q?yJlQwf1MWUYIuRbPg2JSpN4osyGiQZTR1J1GxOFIdEH5T+Y0RMWlnl1ZzB0T?=
- =?us-ascii?Q?Vv7EzRvzRJ5eYKZ4xL3xThAZotu3zaa4rdUFiO3gzoaA1hw/L4VfMt4PvPtn?=
- =?us-ascii?Q?TBflFwtqvjh65n/oi+P4NnM28h7koyQJcYRk8nG8EdMveoF74LogpCjyGKcQ?=
- =?us-ascii?Q?wgCcrRHdakrsRGpl7lz0r4qNCb5e/UGt+/qAEz/REDadpOKkUEjtSYM6PZ2D?=
- =?us-ascii?Q?fb9pk/MN3vZH3yuJx5+qucePJI5vYCl1g/etubnAJugpMhuQMw4tOVxwGVb5?=
- =?us-ascii?Q?+T8KkUYeBPAnumHF52W/LgWP92X7uN/Ng2rEWNdgrTIuABQftvY5OBkxva5t?=
- =?us-ascii?Q?6xWbtMSIchOoFYdlQI5pNm9xdI9SxN3BYTFpBh93x1RSPRJ6afFN/QJv/wWM?=
- =?us-ascii?Q?yd1Eoa5pA9n+Qtq+T/ksIdJWq/tNV6oOb04+3GwpxLAudkF/a5Ys+NsQDf1H?=
- =?us-ascii?Q?tgSydWSYbwyYXUGSogN8l0rAq+0MwBEzHnS4PEN7EY8HGIeVkvjo9pf6tdqk?=
- =?us-ascii?Q?yD2r/5mjBZSkxyuWCQGLya5C6NzeSvJLbajWD/MqvsP5flllybEAA8+lngUz?=
- =?us-ascii?Q?5C+pTKTixrdl0DEsQEPT3nsBoPKaW1U+9WAfzFyZ7DjQIzt7TLJYUTWy7imE?=
- =?us-ascii?Q?/0iztZTrylorny1GLoq8dJXlElpgz4GMXGIcpJdUpl89ydz8CIYWfAbX55NT?=
- =?us-ascii?Q?M5M9Gl7mK+fr6eZOiMI9ip6zWp2ZrXQ05Xv7+fHK9IGmFoSGs6Iw30Re9Uz6?=
- =?us-ascii?Q?+X0O7pDdtPGBBnT/dsaOoc1iqxsByf3f6+9C8SfqluojhWSJY9q52iOQGrSl?=
- =?us-ascii?Q?VLfrGq9NW4X/wqmWG/Lt4xzcLfPrg/1OzZErSPo+ZUzomOx0MfIXtXi6ojI/?=
- =?us-ascii?Q?rdik+ubXyOvRHgwO7yMQntNTEAjMUCyXuc1cMnXmnUz4Sr3QD7T47q+v/VxZ?=
- =?us-ascii?Q?Zg=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?fpyCURnSnNaL8vSSVktnPAR79vS91taKMrebJHRuvpWc1NspAjDnS8NDXDZk?=
+ =?us-ascii?Q?78oewxesP0S0x3qfDQcVYyj205kVNQR3B8b7ieoEZi6CgguiEdEZdz4+ImRM?=
+ =?us-ascii?Q?rEy4qWaI8+m3+zZXA/f5207vncwThTFoDJSTK6TA12IT2w7KgtWumy7ZkcdI?=
+ =?us-ascii?Q?o7bHdsLw9EgAGuCopc5wMPvWIBnBHk8TnAJINcq+KDRauSnXyNHdkcWd+e5C?=
+ =?us-ascii?Q?GOOdMJwsMmmDmRDt+EDWTkpyNz0tqt1NfwivmWYVutD42yfz38bmMFNuwi6/?=
+ =?us-ascii?Q?REVlXNFQCC/NHgxcnqvumgRdzwxKuiQS1nqzJBQGWTW9Kbbp6t5V6Mb4Wyut?=
+ =?us-ascii?Q?7XvEE4FcpqJL5ZlW47aTaQNmn6YEOtrU12QqnmeuueY+7z/vvhIv07WaAmqX?=
+ =?us-ascii?Q?tPSkH717THdV9vD3pPNewdeoVrEUqzX3VurBw9kX3UwObQSBlS34AJW16neh?=
+ =?us-ascii?Q?MGOfefvUOVMyREFxTrU8f4ukhyr6zX46cc4VCCBQl3zkzgIEGCJGNQ8k5f6a?=
+ =?us-ascii?Q?U6MrOUnLitOSlEMKOklzlMtcvwEkTVCokmFQ3/2reAz7QGwJ2hYsNdusPmwe?=
+ =?us-ascii?Q?/1ibwh02JiyEwPwCO9QuFFERmWYUsy6ACrAxSDIto0SwLVcd2Wq87TO4ayi6?=
+ =?us-ascii?Q?G8fz+WRGlRO9O3ENDoeeHxrX4Gp8ORAI5Z54sXpnwvojzc9wYj8lbtqX4mYF?=
+ =?us-ascii?Q?qjOz1N2bLaGFvYP9sQLWsKmj/sl6d7TwhgXenNR1kqtlzqkV+7gNoJfaKIv7?=
+ =?us-ascii?Q?3tKsZUWWetArGgWBFQc1loMaJQ01zSyvlK5Spvg8pYR72nczKhKYJ/IZaRZm?=
+ =?us-ascii?Q?hHaCWaNhC2yJwWntzKCiMRY3MuksSlmzzpOgP6Knb+gm/4J/OoofZSWFyo0j?=
+ =?us-ascii?Q?VuwF+f4kPSiRvnEjpXdRY5JkbLTy4/rr94SbKKZQHPN/BaiWiSmoBu7Zmc5B?=
+ =?us-ascii?Q?N50QDr4Qe+iKG+qQT+w56BHQ5+QjGIjo1FaY8yucs8vV4pFtzLlc5UgnJr9B?=
+ =?us-ascii?Q?DggHxqHm514jznba9lWINTjXUffNp/7656TIwTbR/Tscu37G0QUV0EnpuZG5?=
+ =?us-ascii?Q?moGN6tGEV/2rpGzpC5YWiwa+XoJSmtBbN7bLGEenHDwm2cwmXOftoT0VeyOJ?=
+ =?us-ascii?Q?eohstx6oa3ioELwdC2T5cB5KRHuuxB5szAWaQoYWRcJK5X4zV+2luRX+5gPe?=
+ =?us-ascii?Q?82MJOMqeZZQgP8JwV3YgIXnfctZZbrqxEaNgOSn9vzhvx6YXv3j3GGMiOI9F?=
+ =?us-ascii?Q?MqxBmXalcJI+uvI1F9BRBke/1shOWQJdiH2cS55YJGKrDoESpk2oAxuXCiaU?=
+ =?us-ascii?Q?NnT/CbBYh8xwrfib+V0UWpaHUQLfQk2DG+x1s/AqSJyJojuickvf5F69yhS/?=
+ =?us-ascii?Q?UuuYa0q9bJfzlgdZ1iUEaSb/PrjdeCyU/evyhFrnRcR87ls9iWeD8bbqm3P4?=
+ =?us-ascii?Q?3R5ETh+UG8XnEBa5HTNLA87atqIAG7gkrTQEAhg7US7yKCQjufw55wDou2Q8?=
+ =?us-ascii?Q?PubuPwim2sZfeSq94i6SjiHHf0x5mw5/F3m/xF+L4Vvcn6A5Lsm+qw1Nu9vt?=
+ =?us-ascii?Q?wiNz6jjXWYvJdFxOKuPc3v6tlih6YOOt+TE0hGgQd3TM3Bnadj7NRvtdK8zN?=
+ =?us-ascii?Q?uw=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 2BoC9sNI7IMW3xshEXy6utVCf2P1XY37yOXAMdrRgxLDE8ILjk+M52HhQrr4/A+DZ9YoTroeEuL8MxDEdsnomH0Boxs1pM1zBft9rn/gDEvnBa/NE7SD0p14Gi4EfRDpaHiTM9gcwSOd3Cw9uvS9ZWXlcYinyGqL59SHfiFSFzR3IT2lxLqZyAfH+u/d2N2xDT9VGm4CeexSus/zHBybuk7K2i8B1m+68rYNsbEHl5dvhr2pOSOv3mqNDtzowXcn3xweIKU+sXzWzko8jlqu6gYTeryXAK0PPm56CXGTrL2FLgbnIbX6C5OUa49fVnuV2FdRHwQvJLxt0GisOkmfED4Xx6Hst3RQyIHHkUgig1ht0A5cs3xLyq29lfTGyOHOkeKHZC2oZVZPA/MJdOm1sa2pobK93AxeDmifUlDcYbjdZ4Ehl3iobrF730JDY3lFhO8bgqyrFNbUFjwoJJ2HIrVHeE9gEIm0n5/+2tQYBzZMmqyMiTh9Nd/lUO9fyoQGuxjjqPiuSKlL8jQPxJe/xXWq9yP3jagdpNeV6W9vbWpsaAIUX4tMS0evXxve84XyraaE7gGsBvov6BIa+7/jS8whWxL9pqWfF3b1PlZq9CJe5gqA5vhn/nF1ObtSBSuHINyFZCzTi2GloICgt8uDeFjxavcTRVund+fD3WvBKvGyHaNvSIACWGxTTwId4C43OIFXwwu4MYeDhTQusE5v9uR8gcSFSuR/eQpgLhjNhr65TO8+UWWix5PN3o+m4WqvZP5g3kzyGSYe+FVwVwPiuGQ14oRDxE+f29ZkbBJDnKmyPsEdH54k8yu//OHIru8y
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: YrHX7nM7rhuFinDQCh3oMMafbwfRJ3T2FQn/aPq3iaY1n95UPMgYhnFdRUPPiKLQDrTDFFt5RUlo5RgXE+DBrDEyZDmSBalMyUmSQrNrKcvBR/pP9H+bSj8cdRVlVvjFjmbebgwqhR+SmhfBgcoPvMPaIB/kmQZoBkc+4FUaR8C918EEsDPnp9qxvtDHKLxbgb9NEYdpaPp/m5+ZjfOCN14ZDk8RZn7zdF8mXPtPZqWsNSjMJwezWHrC2zhzWwnIyM7UZW7V0pRoMU01lwsdTAl+ujgH1hMkwIOZgOLgW163FpOobS0SIyNXvUzQIJqRqfjlM8CwMYCB6T7QZQACny/AorTR9PtwtVnIlcBSq0XzC+3qmSwlqwzJmwjgxHoeuDlnZd1mas/8y5ED+Eztp8GDiBFuM+iEAAm6sbQUT5ntuKdrn6O+Sa739gTcoY0IJ24CzgYUdzejhq8tzEHrritx7sy2YOu9VLi+ivTssYvC8V1AnI3Lu5vuplS01mYDQZkWzd+ExFzffFed/FM6AqyP0HnEImDxjDcaJOFqmRPpo5HwSCFS157ZsGrrzHhDPiaS+kDNUU0/jQjGq2v2SsmewUh7KHqyPhJWKJJDJPRVmDBNYFUwY1zzgoi6H94xjFCrLeCR920W4MdIm5QxRxmXS+jNjkdBctGYbH7BsseqLZMAJaHe4KFeo4nVD0EUkzHGkp94EZ1xo0GAtaBX5MINdiNUG+GuaVtpBPa1jBAxUQ8nblJpoZ8xww1xkSg3OuQ52cK7FHC0US2ixPGWwzwdEWGWNQJThm7qdGVghW88QHhJ+eg2Jqj+4gP9S63N
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 173042d0-c949-4025-a3fa-08dbf51f0887
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ce50e8d-9eea-4879-ef7f-08dbf51f094f
 X-MS-Exchange-CrossTenant-AuthSource: CY8PR10MB7243.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2023 23:16:24.0252 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2023 23:16:25.3041 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7VUiDmH692U4t66Mn0xl6NKFpBW15MaMH9ygkqL2nAvI1GVmPqUFGhKx291G31RltLO/USIt9abZTy4Lw5A1irrSZ84DTvHOPRTF7U0ACrk=
+X-MS-Exchange-CrossTenant-UserPrincipalName: D4dPtJgf44eMJMCTX3KrOVbrDJqNfpucC/jZmsuBEHmbkX0+EauuNXco/+Q7uTp6930AFbnvGSerqnA+Y6GxWmc4aOAmly8w4N1VL4DqMFA=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR10MB7466
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-04_21,2023-12-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- mlxlogscore=999
- adultscore=0 suspectscore=0 phishscore=0 spamscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ malwarescore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311060000 definitions=main-2312040182
-X-Proofpoint-ORIG-GUID: nDKB-0gEOB6wDXlL7UvDxGDv0k9QpLIG
-X-Proofpoint-GUID: nDKB-0gEOB6wDXlL7UvDxGDv0k9QpLIG
+X-Proofpoint-ORIG-GUID: 8nndg8F4231XkG2M-sNOJpDWvL-d_WAZ
+X-Proofpoint-GUID: 8nndg8F4231XkG2M-sNOJpDWvL-d_WAZ
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=michael.christie@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -173,105 +174,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds the vhost backend callouts for the worker ioctls added in the
-6.4 linux kernel commit:
+This adds support for vhost-scsi to be able to create a worker thread
+per virtqueue. Right now for vhost-net we get a worker thread per
+tx/rx virtqueue pair which scales nicely as we add more virtqueues and
+CPUs, but for scsi we get the single worker thread that's shared by all
+virtqueues. When trying to send IO to more than 2 virtqueues the single
+thread becomes a bottlneck.
 
-c1ecd8e95007 ("vhost: allow userspace to create workers")
+This patch adds a new setting, worker_per_virtqueue, which can be set
+to:
+
+false: Existing behavior where we get the single worker thread.
+true: Create a worker per IO virtqueue.
 
 Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
 ---
- hw/virtio/vhost-backend.c         | 28 ++++++++++++++++++++++++++++
- include/hw/virtio/vhost-backend.h | 14 ++++++++++++++
- 2 files changed, 42 insertions(+)
+ hw/scsi/vhost-scsi.c            | 62 +++++++++++++++++++++++++++++++++
+ include/hw/virtio/virtio-scsi.h |  1 +
+ 2 files changed, 63 insertions(+)
 
-diff --git a/hw/virtio/vhost-backend.c b/hw/virtio/vhost-backend.c
-index 17f3fc6a0823..833804dd40f2 100644
---- a/hw/virtio/vhost-backend.c
-+++ b/hw/virtio/vhost-backend.c
-@@ -158,6 +158,30 @@ static int vhost_kernel_set_vring_busyloop_timeout(struct vhost_dev *dev,
-     return vhost_kernel_call(dev, VHOST_SET_VRING_BUSYLOOP_TIMEOUT, s);
- }
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index 3126df9e1d9d..08aa7534df51 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -165,6 +165,59 @@ static const VMStateDescription vmstate_virtio_vhost_scsi = {
+     .pre_save = vhost_scsi_pre_save,
+ };
  
-+static int vhost_kernel_new_worker(struct vhost_dev *dev,
-+                                   struct vhost_worker_state *worker)
++static int vhost_scsi_set_workers(VHostSCSICommon *vsc, bool per_virtqueue)
 +{
-+    return vhost_kernel_call(dev, VHOST_NEW_WORKER, worker);
++    struct vhost_dev *dev = &vsc->dev;
++    struct vhost_vring_worker vq_worker;
++    struct vhost_worker_state worker;
++    int i, ret;
++
++    /* Use default worker */
++    if (!per_virtqueue || dev->nvqs == VHOST_SCSI_VQ_NUM_FIXED + 1) {
++        return 0;
++    }
++
++    /*
++     * ctl/evt share the first worker since it will be rare for them
++     * to send cmds while IO is running.
++     */
++    for (i = VHOST_SCSI_VQ_NUM_FIXED + 1; i < dev->nvqs; i++) {
++        memset(&worker, 0, sizeof(worker));
++
++        ret = dev->vhost_ops->vhost_new_worker(dev, &worker);
++        if (ret == -ENOTTY) {
++            /*
++             * worker ioctls are not implemented so just ignore and
++             * and continue device setup.
++             */
++            warn_report("vhost-scsi: Backend supports a single worker. "
++                        "Ignoring worker_per_virtqueue=true setting.");
++            ret = 0;
++            break;
++        } else if (ret) {
++            break;
++        }
++
++        memset(&vq_worker, 0, sizeof(vq_worker));
++        vq_worker.worker_id = worker.worker_id;
++        vq_worker.index = i;
++
++        ret = dev->vhost_ops->vhost_attach_vring_worker(dev, &vq_worker);
++        if (ret == -ENOTTY) {
++            /*
++             * It's a bug for the kernel to have supported the worker creation
++             * ioctl but not attach.
++             */
++            dev->vhost_ops->vhost_free_worker(dev, &worker);
++            break;
++        } else if (ret) {
++            break;
++        }
++    }
++
++    return ret;
 +}
 +
-+static int vhost_kernel_free_worker(struct vhost_dev *dev,
-+                                    struct vhost_worker_state *worker)
-+{
-+    return vhost_kernel_call(dev, VHOST_FREE_WORKER, worker);
-+}
-+
-+static int vhost_kernel_attach_vring_worker(struct vhost_dev *dev,
-+                                            struct vhost_vring_worker *worker)
-+{
-+    return vhost_kernel_call(dev, VHOST_ATTACH_VRING_WORKER, worker);
-+}
-+
-+static int vhost_kernel_get_vring_worker(struct vhost_dev *dev,
-+                                         struct vhost_vring_worker *worker)
-+{
-+    return vhost_kernel_call(dev, VHOST_GET_VRING_WORKER, worker);
-+}
-+
- static int vhost_kernel_set_features(struct vhost_dev *dev,
-                                      uint64_t features)
+ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
  {
-@@ -313,6 +337,10 @@ const VhostOps kernel_ops = {
-         .vhost_set_vring_err = vhost_kernel_set_vring_err,
-         .vhost_set_vring_busyloop_timeout =
-                                 vhost_kernel_set_vring_busyloop_timeout,
-+        .vhost_get_vring_worker = vhost_kernel_get_vring_worker,
-+        .vhost_attach_vring_worker = vhost_kernel_attach_vring_worker,
-+        .vhost_new_worker = vhost_kernel_new_worker,
-+        .vhost_free_worker = vhost_kernel_free_worker,
-         .vhost_set_features = vhost_kernel_set_features,
-         .vhost_get_features = vhost_kernel_get_features,
-         .vhost_set_backend_cap = vhost_kernel_set_backend_cap,
-diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
-index a86d103f8245..70c2e8ffeee5 100644
---- a/include/hw/virtio/vhost-backend.h
-+++ b/include/hw/virtio/vhost-backend.h
-@@ -45,6 +45,8 @@ struct vhost_memory;
- struct vhost_vring_file;
- struct vhost_vring_state;
- struct vhost_vring_addr;
-+struct vhost_vring_worker;
-+struct vhost_worker_state;
- struct vhost_scsi_target;
- struct vhost_iotlb_msg;
- struct vhost_virtqueue;
-@@ -85,6 +87,14 @@ typedef int (*vhost_set_vring_err_op)(struct vhost_dev *dev,
-                                       struct vhost_vring_file *file);
- typedef int (*vhost_set_vring_busyloop_timeout_op)(struct vhost_dev *dev,
-                                                    struct vhost_vring_state *r);
-+typedef int (*vhost_attach_vring_worker_op)(struct vhost_dev *dev,
-+                                            struct vhost_vring_worker *worker);
-+typedef int (*vhost_get_vring_worker_op)(struct vhost_dev *dev,
-+                                         struct vhost_vring_worker *worker);
-+typedef int (*vhost_new_worker_op)(struct vhost_dev *dev,
-+                                   struct vhost_worker_state *worker);
-+typedef int (*vhost_free_worker_op)(struct vhost_dev *dev,
-+                                    struct vhost_worker_state *worker);
- typedef int (*vhost_set_features_op)(struct vhost_dev *dev,
-                                      uint64_t features);
- typedef int (*vhost_get_features_op)(struct vhost_dev *dev,
-@@ -172,6 +182,10 @@ typedef struct VhostOps {
-     vhost_set_vring_call_op vhost_set_vring_call;
-     vhost_set_vring_err_op vhost_set_vring_err;
-     vhost_set_vring_busyloop_timeout_op vhost_set_vring_busyloop_timeout;
-+    vhost_new_worker_op vhost_new_worker;
-+    vhost_free_worker_op vhost_free_worker;
-+    vhost_get_vring_worker_op vhost_get_vring_worker;
-+    vhost_attach_vring_worker_op vhost_attach_vring_worker;
-     vhost_set_features_op vhost_set_features;
-     vhost_get_features_op vhost_get_features;
-     vhost_set_backend_cap_op vhost_set_backend_cap;
+     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
+@@ -232,6 +285,13 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+         goto free_vqs;
+     }
+ 
++    ret = vhost_scsi_set_workers(vsc, vs->conf.worker_per_virtqueue);
++    if (ret < 0) {
++        error_setg(errp, "vhost-scsi: vhost worker setup failed: %s",
++                   strerror(-ret));
++        goto free_vqs;
++    }
++
+     /* At present, channel and lun both are 0 for bootable vhost-scsi disk */
+     vsc->channel = 0;
+     vsc->lun = 0;
+@@ -297,6 +357,8 @@ static Property vhost_scsi_properties[] = {
+                                                  VIRTIO_SCSI_F_T10_PI,
+                                                  false),
+     DEFINE_PROP_BOOL("migratable", VHostSCSICommon, migratable, false),
++    DEFINE_PROP_BOOL("worker_per_virtqueue", VirtIOSCSICommon,
++                     conf.worker_per_virtqueue, false),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio-scsi.h
+index 779568ab5d28..0e9a1867665e 100644
+--- a/include/hw/virtio/virtio-scsi.h
++++ b/include/hw/virtio/virtio-scsi.h
+@@ -51,6 +51,7 @@ typedef struct virtio_scsi_config VirtIOSCSIConfig;
+ struct VirtIOSCSIConf {
+     uint32_t num_queues;
+     uint32_t virtqueue_size;
++    bool worker_per_virtqueue;
+     bool seg_max_adjust;
+     uint32_t max_sectors;
+     uint32_t cmd_per_lun;
 -- 
 2.34.1
 
