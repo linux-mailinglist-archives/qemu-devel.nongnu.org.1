@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E52802D10
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 09:21:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C19802D22
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 09:30:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA4CV-0006lL-Vw; Mon, 04 Dec 2023 03:21:12 -0500
+	id 1rA4K8-00083h-Am; Mon, 04 Dec 2023 03:29:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rA4CO-0006kp-RU
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:21:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rA4Js-00083Q-7j
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:28:49 -0500
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rA4CM-0000WL-Qe
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:21:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701678061;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pTO86TCuL1UlS79sTHit9l55mFHn8DMRvVTJs0BXuBk=;
- b=GlIwHtcTDbIc+8ClBSEah32TSBO0Ujqce38VFMPQqv4dX19JsMMxm4oBZkH0+jNtE2Ft3j
- 7970UdcBnJUdPGgly4wrp8qistHe7qo2BrpkRb+9C3N/U92ZMgOHs+1mcnXuKSUbbChv+0
- MV2enGr1cNMonB51Oa3dcbn7xOmvGf0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-GRYoxPWyMMCmFbykIm5yiQ-1; Mon, 04 Dec 2023 03:20:58 -0500
-X-MC-Unique: GRYoxPWyMMCmFbykIm5yiQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-332d213c2bbso3113193f8f.1
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 00:20:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701678057; x=1702282857;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pTO86TCuL1UlS79sTHit9l55mFHn8DMRvVTJs0BXuBk=;
- b=jRAC27UFHqanFzvKYmmuTSIjqtIMxND9ahUhHMEXBuCb0hKfB6NxpcLzKm1BWsNi8B
- a1bggXI7C1QnliolqpjlO62u5aXlMWD2/UX0revLSp2gj8wpmCpmBYWG5SjVDoR8W6ra
- mZLMKUdcz04owSfsig3AjOdrm7gFnpwGOExae5y6h0HuuiScnSsmKSWhwnaTlf6CiMjh
- AWTAPC6L828+nZi0kxaPLBLKZkvWez11f2OY0baEJiY3wvMqRoCznPwTvP3fWjDs7BGT
- e81XEZdYS9OXIBIOZvTVNXZkSuL67a1hDUBbAO6rnL4RkyVcRczecE2XQ4TtULDEGVo9
- l+hA==
-X-Gm-Message-State: AOJu0YwmNU0tIaI3MLVOPkdDHYy5Q9AMvP1j5RyWlmyDpC7Rjr1mY29q
- QtKpWR6IAkXj3ZtkZktneYwd6d70KhfXgB/L9HuV4oF0NkQ9zt0t+AsJXaKLymMOEQEBFrZNm85
- +NAr2Ppu4UREV2Ys=
-X-Received: by 2002:a05:600c:28c:b0:40b:3dae:1ff6 with SMTP id
- 12-20020a05600c028c00b0040b3dae1ff6mr2118800wmk.14.1701678057713; 
- Mon, 04 Dec 2023 00:20:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEf8hhX7V/TrPoraERuMM+xAqa/A1ymr74mNOgmOEoUDJ0rwfZKK+dE0Xd3iBOiPoJyE/qnCg==
-X-Received: by 2002:a05:600c:28c:b0:40b:3dae:1ff6 with SMTP id
- 12-20020a05600c028c00b0040b3dae1ff6mr2118796wmk.14.1701678057406; 
- Mon, 04 Dec 2023 00:20:57 -0800 (PST)
-Received: from redhat.com ([2.55.11.133]) by smtp.gmail.com with ESMTPSA id
- f17-20020a05600c155100b004083729fc14sm17711374wmg.20.2023.12.04.00.20.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Dec 2023 00:20:56 -0800 (PST)
-Date: Mon, 4 Dec 2023 03:20:53 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Volker =?iso-8859-1?Q?R=FCmelin?= <vr_qemu@t-online.de>
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH for 8.2] hw/audio/virtio-sound: mark the device as
- unmigratable
-Message-ID: <20231204032047-mutt-send-email-mst@kernel.org>
-References: <20231204072837.6058-1-vr_qemu@t-online.de>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rA4Jp-000537-Es
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:28:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1701678525; x=1733214525;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=ZKx6aOAxCYxX3nIGvol2ORfDeTABYuzt1dyIIWAXVOE=;
+ b=CQwlmL8glUxFLn4WrR1xNl5qZPNMTHxZIuKo/6A4Ih3eyypRcPG0S1U8
+ W6Pmx3yXix7/JX6KdHB+VpPMZLMU/R6qq8Tn0xiEtF7vw3CQjPosgRzQ1
+ TBef4kqZ1jG3QaTix9YVGwXJcRJBHnwdA4FQzlc9ZsNsL6RO/z07bJuuh
+ BcKh+hPyxpqcPIBwGiF23inacYRJAIet37dvqDGt7plZhiCbKsGF0+aQH
+ tMVYx3dnYxkUipOvKKiphzZvIx9lVAPsBXftTOXYzWaLNp1pZbx5LR/LW
+ 6zG9Zt6UHgMKTxseRnUb+m8zjgQBf3VsOAJXU5c5yNcNvknKxotqbsiRk w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="743945"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="743945"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2023 00:28:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="1017759073"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; d="scan'208";a="1017759073"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.29.154])
+ ([10.93.29.154])
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2023 00:28:35 -0800
+Message-ID: <489b0ea2-f698-4bce-9b80-1ff516407934@intel.com>
+Date: Mon, 4 Dec 2023 16:28:30 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 26/70] i386/tdx: Initialize TDX before creating TD vcpus
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
+ Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-27-xiaoyao.li@intel.com>
+ <ZVSk_-m-AAK7dYZ1@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZVSk_-m-AAK7dYZ1@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231204072837.6058-1-vr_qemu@t-online.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,38 +94,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 04, 2023 at 08:28:37AM +0100, Volker Rümelin wrote:
-> The virtio-sound device is currently not migratable. QEMU crashes
-> on the source machine at some point during the migration with a
-> segmentation fault.
+On 11/15/2023 7:01 PM, Daniel P. BerrangÃ© wrote:
+> On Wed, Nov 15, 2023 at 02:14:35AM -0500, Xiaoyao Li wrote:
+>> Invoke KVM_TDX_INIT in kvm_arch_pre_create_vcpu() that KVM_TDX_INIT
+>> configures global TD configurations, e.g. the canonical CPUID config,
+>> and must be executed prior to creating vCPUs.
+>>
+>> Use kvm_x86_arch_cpuid() to setup the CPUID settings for TDX VM.
+>>
+>> Note, this doesn't address the fact that QEMU may change the CPUID
+>> configuration when creating vCPUs, i.e. punts on refactoring QEMU to
+>> provide a stable CPUID config prior to kvm_arch_init().
+>>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+>> ---
+>> Changes in v3:
+>> - Pass @errp in tdx_pre_create_vcpu() and pass error info to it. (Daniel)
+>> ---
+>>   accel/kvm/kvm-all.c        |  9 +++++++-
+>>   target/i386/kvm/kvm.c      |  9 ++++++++
+>>   target/i386/kvm/tdx-stub.c |  5 +++++
+>>   target/i386/kvm/tdx.c      | 45 ++++++++++++++++++++++++++++++++++++++
+>>   target/i386/kvm/tdx.h      |  4 ++++
+>>   5 files changed, 71 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+>> index 6b5f4d62f961..a92fff471b58 100644
+>> --- a/accel/kvm/kvm-all.c
+>> +++ b/accel/kvm/kvm-all.c
+>> @@ -441,8 +441,15 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+>>   
+>>       trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+>>   
+>> +    /*
+>> +     * tdx_pre_create_vcpu() may call cpu_x86_cpuid(). It in turn may call
+>> +     * kvm_vm_ioctl(). Set cpu->kvm_state in advance to avoid NULL pointer
+>> +     * dereference.
+>> +     */
+>> +    cpu->kvm_state = s;
+>>       ret = kvm_arch_pre_create_vcpu(cpu, errp);
+>>       if (ret < 0) {
+>> +        cpu->kvm_state = NULL;
+>>           goto err;
+>>       }
+>>   
+>> @@ -450,11 +457,11 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+>>       if (ret < 0) {
+>>           error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu failed (%lu)",
+>>                            kvm_arch_vcpu_id(cpu));
+>> +        cpu->kvm_state = NULL;
+>>           goto err;
+>>       }
+>>   
+>>       cpu->kvm_fd = ret;
+>> -    cpu->kvm_state = s;
+>>       cpu->vcpu_dirty = true;
+>>       cpu->dirty_pages = 0;
+>>       cpu->throttle_us_per_full = 0;
+>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+>> index dafe4d262977..fc840653ceb6 100644
+>> --- a/target/i386/kvm/kvm.c
+>> +++ b/target/i386/kvm/kvm.c
+>> @@ -2268,6 +2268,15 @@ int kvm_arch_init_vcpu(CPUState *cs)
+>>       return r;
+>>   }
+>>   
+>> +int kvm_arch_pre_create_vcpu(CPUState *cpu, Error **errp)
+>> +{
+>> +    if (is_tdx_vm()) {
+>> +        return tdx_pre_create_vcpu(cpu, errp);
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>>   int kvm_arch_destroy_vcpu(CPUState *cs)
+>>   {
+>>       X86CPU *cpu = X86_CPU(cs);
+>> diff --git a/target/i386/kvm/tdx-stub.c b/target/i386/kvm/tdx-stub.c
+>> index 1d866d5496bf..3877d432a397 100644
+>> --- a/target/i386/kvm/tdx-stub.c
+>> +++ b/target/i386/kvm/tdx-stub.c
+>> @@ -6,3 +6,8 @@ int tdx_kvm_init(MachineState *ms, Error **errp)
+>>   {
+>>       return -EINVAL;
+>>   }
+>> +
+>> +int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+>> +{
+>> +    return -EINVAL;
+>> +}
+>> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+>> index 1f5d8117d1a9..122a37c93de3 100644
+>> --- a/target/i386/kvm/tdx.c
+>> +++ b/target/i386/kvm/tdx.c
+>> @@ -467,6 +467,49 @@ int tdx_kvm_init(MachineState *ms, Error **errp)
+>>       return 0;
+>>   }
+>>   
+>> +int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+>> +{
+>> +    MachineState *ms = MACHINE(qdev_get_machine());
+>> +    X86CPU *x86cpu = X86_CPU(cpu);
+>> +    CPUX86State *env = &x86cpu->env;
+>> +    struct kvm_tdx_init_vm *init_vm;
 > 
-> Even with this bug fixed, the virtio-sound device doesn't migrate
-> the state of the audio streams. For example, running streams leave
-> the device on the destination machine in a broken condition.
+> Mark this as auto-free to avoid the g_free() requirement
 > 
-> Mark the device as unmigratable until these issues have been fixed.
+>    g_autofree  struct kvm_tdx_init_vm *init_vm = NULL;
 > 
-> Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+>> +    int r = 0;
+>> +
+>> +    qemu_mutex_lock(&tdx_guest->lock);
+> 
+>     QEMU_LOCK_GUARD(&tdx_guest->lock);
+> 
+> to eliminate the mutex_unlock requirement, thus eliminating all
+> 'goto' jumps and label targets, in favour of a plain 'return -1'
+> everywhere.
+> 
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Learned!
 
-> ---
->  hw/audio/virtio-snd.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-> index 2fe966e311..b10fad1228 100644
-> --- a/hw/audio/virtio-snd.c
-> +++ b/hw/audio/virtio-snd.c
-> @@ -68,6 +68,7 @@ static const VMStateDescription vmstate_virtio_snd_device = {
->  
->  static const VMStateDescription vmstate_virtio_snd = {
->      .name = TYPE_VIRTIO_SND,
-> +    .unmigratable = 1,
->      .minimum_version_id = VIRTIO_SOUND_VM_VERSION,
->      .version_id = VIRTIO_SOUND_VM_VERSION,
->      .fields = (VMStateField[]) {
-> -- 
-> 2.35.3
+thanks!
 
 
