@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB128038C5
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 16:27:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 134E38038C1
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 16:27:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAAq1-0004Bu-JY; Mon, 04 Dec 2023 10:26:25 -0500
+	id 1rAAq2-0004Fc-0y; Mon, 04 Dec 2023 10:26:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAApt-00044g-JV
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:26:19 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAApz-0004BG-Bn
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:26:23 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAApr-0005Ua-Nm
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:26:17 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40859dee28cso45795295e9.0
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 07:26:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAApx-0005Ys-7y
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 10:26:22 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40c08af319cso17433395e9.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 07:26:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701703574; x=1702308374; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701703579; x=1702308379; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+FOPF54Ts8pAoe2u+mRITxVWTs2rKpGlxkYcxd5nZGU=;
- b=unhO0vPOPsQV3moEqnMZVbwn65CO8XyEKgM1NzWHs7HilesFr6SPvFpUvCdDufLrNT
- /eaaiUedKax2jnR5Hk2IyZXTBQqXLGvtbIA85mM+ELvKVI0bFeurBZTHXkodpvDWQ1/S
- LCMSVM2Rh2gQNY4YY9UxnSeWggU1KTFWdKYuv23raIZ/ZT6W5udpQzfASrtakXvoma1v
- YrBJp+Bs6QcOZ6dG3Zf0Yc+rw+rlwJAZWd89CJXlF9buTBaZ6rm8EALCH5Z9aDzFwUHZ
- VvOdG9quBLkb3UglbFFBy2xaAaeHyySxhnxTy3mo50lOpEN8iMwZR420Ni+uwa60LdzN
- 0XNQ==
+ bh=Mc/WowXZKK7/TX1A9Zcf22gua9+ILUXdw0tlS4dSjm8=;
+ b=kP4bBJfgiDaAns7ZPWOng4eKwj8M84b99wi/LaEiEeEJVtzEKorQjCfymII3ePmTi7
+ MtRt4p4pXRTBQjPYgCdZDT1qGso44cu1OEh5d4pKTcteNPZmZRIOPGqw9JiY+5JqDxe7
+ QcNuPq/+XUgdonY6ZJ9j4r/oqAvxSv40utKrxow0SNI9jtj/PVioIDVi6/EHy3jmgmIW
+ WpKA0ZJWgI69tp2L00IiGdOpAnDpPuD3a/tjn/lAYgtgc5kAENzTvzji6/1egNlji+dV
+ yOn6qh1wJbp6nm88T739gGqfkwzJpwcXGLNBmSh/5GCZTf5BrRmJgC3mNb4Z4A+W+nAd
+ 9Plw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701703574; x=1702308374;
+ d=1e100.net; s=20230601; t=1701703579; x=1702308379;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+FOPF54Ts8pAoe2u+mRITxVWTs2rKpGlxkYcxd5nZGU=;
- b=bNSNpL5xQQ83QwE0Ms39GmvU9MdIPebcHPzkypyPkY0qcnXIwJItJMSch/Zghnizmq
- 7AkdMBvf2LWpgxraisUaQri5hJHQm0IdNoYg+8hpL6DSwGXVOfVoNz7gfuQS/oYLgyju
- CrGQiA84N2NBbgrxOWSojUlb3ZY8yRNwvKCzGnGXHYR7NHoKXQA6SNlvH/i5fGZjv081
- p9MGVKcIMCb/ASjvfbqZjjNYpEOtE/jDEwMv5cQ5KC71QQKq88/U47OxNGYZn3PFSZvc
- 9cfVgdNhJYLtbJUz49GrKqUAolENkrE4x3D/SaC7qrzA9/rbRtz/HB+tbS88q3+Isy/+
- 8hig==
-X-Gm-Message-State: AOJu0YzeZPxzjcSIUC9rbKUFne1xYB2LJQ3SQehEZ5HBvaBAYXcohBap
- lTqdRbgLUrEB9mCWZz+paOe6l29HQFZLbD1lQn8=
-X-Google-Smtp-Source: AGHT+IHX+CPEIaEpuFbgoGNu1DuFkQK9sEDxOVnHsarn5RwVqTxFiaafONykOxKvWdzchz6EXCOIcg==
-X-Received: by 2002:a5d:60cf:0:b0:333:3c99:7d28 with SMTP id
- x15-20020a5d60cf000000b003333c997d28mr2476076wrt.75.1701703574003; 
- Mon, 04 Dec 2023 07:26:14 -0800 (PST)
+ bh=Mc/WowXZKK7/TX1A9Zcf22gua9+ILUXdw0tlS4dSjm8=;
+ b=X9y3W6XgzYnEvwbbBOKLFtwwt8RFoITWAB3DwS+GO6tPHX7hYTdP2tK7KvOOBD+koa
+ 5go4fn3oH3wEp/fgyMhA6n0lPVoRMOo7IyryigE+POPXpDUnsq2pTK1fB3NRnTI55sE1
+ 3LTHYJdArf2NkZiwVqo+gRuaMKownRIMlY3vAHSIrRIA3EDw7uDkBGXn808Puo8440Tv
+ wf9E58WT6MQ/9OthVAi184mHx5pKdpto082SJU0gURdsC9lZkeKvN7dz8pZCFjIshGFl
+ ZOMwPOIR4IQNyxoqLlIGumKsL6fJ8WsvRTLZkamzu5X+1DlICc5ULJIpSncOpLMvI2VZ
+ R68g==
+X-Gm-Message-State: AOJu0YxwsziONdfRRApExQpXhJwDRSBNBNUqJjBjZIr/6j2u15l2Qu11
+ oaKkvnkMgGxklumImS/n6QdnwajZIN8/wCXE/YQ=
+X-Google-Smtp-Source: AGHT+IFpuJ/WehPrdQud0bKSl0qgqUC8/QkLfkP52uZ5GhtgYHvijdiFJ29T8B/gD7HdUH/8GHXR3Q==
+X-Received: by 2002:a05:600c:b45:b0:40b:5e21:ec27 with SMTP id
+ k5-20020a05600c0b4500b0040b5e21ec27mr2617623wmr.89.1701703579710; 
+ Mon, 04 Dec 2023 07:26:19 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.140.35])
  by smtp.gmail.com with ESMTPSA id
- j19-20020a5d6e53000000b00333423ffcd6sm4629412wrz.51.2023.12.04.07.26.12
+ u8-20020a05600c19c800b004030e8ff964sm19132875wmq.34.2023.12.04.07.26.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 04 Dec 2023 07:26:13 -0800 (PST)
+ Mon, 04 Dec 2023 07:26:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Cleber Rosa <crosa@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 3/4] tests/avocado: Update yamon-bin-02.22.zip URL
-Date: Mon,  4 Dec 2023 16:25:23 +0100
-Message-ID: <20231204152524.37803-4-philmd@linaro.org>
+ Beraldo Leal <bleal@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PULL 4/4] tests/avocado: mark ReplayKernelNormal.test_mips64el_malta
+ as flaky
+Date: Mon,  4 Dec 2023 16:25:24 +0100
+Message-ID: <20231204152524.37803-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231204152524.37803-1-philmd@linaro.org>
 References: <20231204152524.37803-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,34 +97,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-http://www.imgtec.com/tools/mips-tools/downloads/ redirects
-to https://mips.com/downloads/yamon-version-02-22/ then points
-to an invalid path to a s3 bucket. Use the correct path. The
-site will eventually be fixed.
+From: Alex Bennée <alex.bennee@linaro.org>
 
+I missed this when going through the recent failure logs. I can run
+the test 30 times without failure locally but it seems to hang pretty
+reliably on GitLab's CI infra-structure.
+
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20231201201027.2689404-1-alex.bennee@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231201205630.10837-1-philmd@linaro.org>
 ---
- tests/avocado/machine_mips_malta.py | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/avocado/replay_kernel.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/avocado/machine_mips_malta.py b/tests/avocado/machine_mips_malta.py
-index 99bee49e9a..8cf84bd805 100644
---- a/tests/avocado/machine_mips_malta.py
-+++ b/tests/avocado/machine_mips_malta.py
-@@ -128,8 +128,9 @@ def test_mips_malta_i6400_framebuffer_logo_8cores(self):
- class MaltaMachine(QemuSystemTest):
+diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
+index af086eab08..c37afa662c 100644
+--- a/tests/avocado/replay_kernel.py
++++ b/tests/avocado/replay_kernel.py
+@@ -119,6 +119,8 @@ def test_mips_malta(self):
  
-     def do_test_yamon(self):
--        rom_url = ('http://www.imgtec.com/tools/mips-tools/downloads/'
--                   'yamon/yamon-bin-02.22.zip')
-+        rom_url = ('https://s3-eu-west-1.amazonaws.com/'
-+                   'downloads-mips/mips-downloads/'
-+                   'YAMON/yamon-bin-02.22.zip')
-         rom_hash = '8da7ecddbc5312704b8b324341ee238189bde480'
-         zip_path = self.fetch_asset(rom_url, asset_hash=rom_hash)
+         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
  
++    # See https://gitlab.com/qemu-project/qemu/-/issues/2013
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+     def test_mips64el_malta(self):
+         """
+         This test requires the ar tool to extract "data.tar.gz" from
+@@ -134,6 +136,7 @@ def test_mips64el_malta(self):
+ 
+         :avocado: tags=arch:mips64el
+         :avocado: tags=machine:malta
++        :avocado: tags=flaky
+         """
+         deb_url = ('http://snapshot.debian.org/archive/debian/'
+                    '20130217T032700Z/pool/main/l/linux-2.6/'
 -- 
 2.41.0
 
