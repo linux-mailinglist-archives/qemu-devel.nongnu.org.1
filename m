@@ -2,88 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA81680436F
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 01:31:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 875E0804527
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 03:41:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAJLJ-00034R-NZ; Mon, 04 Dec 2023 19:31:17 -0500
+	id 1rALMY-0007SL-3b; Mon, 04 Dec 2023 21:40:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1rAJLH-00034B-Tw
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:31:15 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rALMQ-0007Re-9A
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 21:40:35 -0500
+Received: from mgamail.intel.com ([134.134.136.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1rAJLG-0001cS-9v
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:31:15 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B508ZbL027538; Tue, 5 Dec 2023 00:31:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-11-20;
- bh=yMwjAub9+1KHYiieejFgLR3tmFcx5/8qKqcboFkhuks=;
- b=lYXGoOT5M6qHlYmNpBUgmytBwxRSCGhr6AZ1LPL3Mbz95cqcXw8K5EZZ4i+gUQHc7N82
- iriZF/lpJVpxd6dYPgDuexb1xVgmQfc+ZlCAP//Tl8o/RjTFEo5ovjTt49XcR0gt3Lav
- HZJgx/JTwCWdYxeZahQgYshU6h9iCA/4fYc/ID3Xe1YlAkm8JWJXf9K/yKQPESu2bzlk
- RMbXpwjnPeeLUmFoBBkhhR8Wap0wdtgUr+5ELn1YFyUEQAGEUuVD1Ujt661flsQx/sMk
- keqpo45iG5o+OcT/ZIa+3vuaYV3WFPijJSaj+ZqhYKPAyVj6YtNXiDi2anN8XTmcTo7z SA== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uss28r1g7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 05 Dec 2023 00:31:12 +0000
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B4MIXgZ004891; Tue, 5 Dec 2023 00:31:12 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uqu16dheu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 05 Dec 2023 00:31:12 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B50Rjkd016626;
- Tue, 5 Dec 2023 00:31:11 GMT
-Received: from localhost.localdomain (dhcp-10-191-8-104.vpn.oracle.com
- [10.191.8.104])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3uqu16dhc0-1; Tue, 05 Dec 2023 00:31:11 +0000
-From: Annie Li <annie.li@oracle.com>
-To: qemu-devel@nongnu.org, imammedo@redhat.com
-Cc: annie.li@oracle.com, miguel.luis@oracle.com
-Subject: [RFC PATCH 11/11] arm/virt: enable sleep support
-Date: Tue,  5 Dec 2023 00:31:06 +0000
-Message-Id: <20231205003106.1297-1-annie.li@oracle.com>
-X-Mailer: git-send-email 2.30.1.windows.1
-In-Reply-To: <20231205002143.562-1-annie.li@oracle.com>
-References: <20231205002143.562-1-annie.li@oracle.com>
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rALMM-0005QE-Cx
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 21:40:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1701744030; x=1733280030;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BStm0IG0TGW8yLK+dWHICb7ZIscZLOYUIoVfC1+k9gg=;
+ b=WjmHmWMIUMU7Y0PPlsd9tOvhR9gw7iI1AAVKNrg6IkiLlCwGskv7wG71
+ tPzHSFyc4XznC0l2d8/5xH3VH8QV1x/8UwP0SkuEBz8DptU4y5TXtks4F
+ HfF1a8HeZG4dC64za7N45/3ae2fob9CuBSbchYtKcDHD9jhlk5qsK930C
+ O6dbkr9RMC/KOl+CioTLid+u8dXgcKLjqajOXuYcklSHYPTFp5Dsq2S5b
+ r1Td66/reoEAT5d+2QqpO5MSjtaYqauXAS7Mkyj/mm+/l7yr4Lu2QnTRX
+ mmilufnCq2i2nf1WfrHeeNzJTPBSRXa8d/WuGlQsMCgARXvJu1PXqZ+Y6 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="458153847"
+X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; d="scan'208";a="458153847"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2023 18:40:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; d="scan'208";a="18799006"
+Received: from unknown (HELO localhost.fm.intel.com) ([10.105.154.69])
+ by orviesa001.jf.intel.com with ESMTP; 04 Dec 2023 18:40:25 -0800
+From: Dongwon Kim <dongwon.kim@intel.com>
+To: qemu-devel@nongnu.org
+Cc: Dongwon Kim <dongwon.kim@intel.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: [PATCH] ui/gtk: flush display pipeline before saving vmstate when
+ blob=true
+Date: Mon,  4 Dec 2023 18:40:51 +0000
+Message-Id: <20231204184051.16873-1-dongwon.kim@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-04_23,2023-12-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- suspectscore=0
- mlxlogscore=999 adultscore=0 phishscore=0 malwarescore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312050003
-X-Proofpoint-ORIG-GUID: BIvWiSmTp9OTJPAjEEKRM47fCitC9MvF
-X-Proofpoint-GUID: BIvWiSmTp9OTJPAjEEKRM47fCitC9MvF
-Received-SPF: pass client-ip=205.220.165.32; envelope-from=annie.li@oracle.com;
- helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=134.134.136.31;
+ envelope-from=dongwon.kim@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,30 +76,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Miguel Luis <miguel.luis@oracle.com>
+If the guest state is paused before it gets a response for the current
+scanout frame submission (resource-flush), it won't start submitting
+new frames after being restored as it still waits for the old response,
+which is accepted as a scanout render done signal. So it's needed to
+unblock the current scanout render pipeline before the run state is
+changed to make sure the guest receives the response for the current
+frame submission.
 
-This is for reference that qmp_system_sleep relies on wakeup support delegated
-by qemu_wakeup_suspend_enabled() hence the need for calling
-qemu_register_wakeup_support().
-
-Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
 ---
- hw/arm/virt.c | 1 +
- 1 file changed, 1 insertion(+)
+ ui/gtk.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 8b9a328360..6407734105 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2309,6 +2309,7 @@ static void machvirt_init(MachineState *machine)
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 810d7fc796..0f6237dd2f 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -678,6 +678,18 @@ static const DisplayGLCtxOps egl_ctx_ops = {
+ static void gd_change_runstate(void *opaque, bool running, RunState state)
+ {
+     GtkDisplayState *s = opaque;
++    int i;
++
++    if (state == RUN_STATE_SAVE_VM) {
++        for (i = 0; i < s->nb_vcs; i++) {
++            VirtualConsole *vc = &s->vc[i];
++
++            if (vc->gfx.guest_fb.dmabuf) {
++                /* force flushing current scanout blob rendering process */
++                gd_hw_gl_flushed(vc);
++            }
++        }
++    }
  
-      /* connect sleep request */
-      vms->sleep_notifier.notify = virt_sleep_req;
-+     qemu_register_wakeup_support();
- 
-      /* connect powerdown request */
-      vms->powerdown_notifier.notify = virt_powerdown_req;
+     gd_update_caption(s);
+ }
 -- 
-2.34.3
+2.34.1
 
 
