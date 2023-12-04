@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3027802965
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 01:28:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90899802991
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 01:36:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9wnQ-0004Xt-8B; Sun, 03 Dec 2023 19:26:48 -0500
+	id 1r9wnn-0004ly-NQ; Sun, 03 Dec 2023 19:27:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9wnD-0004Rd-Tm; Sun, 03 Dec 2023 19:26:37 -0500
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
+ id 1r9wnG-0004SQ-GI; Sun, 03 Dec 2023 19:26:39 -0500
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1r9wnA-00006S-HD; Sun, 03 Dec 2023 19:26:34 -0500
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-5d8ddcc433fso182497b3.1; 
- Sun, 03 Dec 2023 16:26:31 -0800 (PST)
+ id 1r9wnB-00006l-S9; Sun, 03 Dec 2023 19:26:36 -0500
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-5d05ff42db0so43606127b3.2; 
+ Sun, 03 Dec 2023 16:26:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701649591; x=1702254391; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701649592; x=1702254392; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hfYRXu2++EiNfxFS//da1r77rkXtLqsXyrHlBY61ejo=;
- b=K2pYhCDNZUJg29Qn3bdm3xofplSLpEf24q8x6xJgMA2KCpR2oitOw6oLhiwXEveIoC
- gTxv2OuR238pAFGAz4raAVWjksTdHmN/PQBUtxIgDCjmw5VI8wPLCkBimEVqKlF8h27+
- DYh8AXAAeRlv0Atxoc3tPLmYnkjThsywPr46L6faFscpVZigeqDGEQLx2unySPuGcEwm
- kVDYj3U+6qvkPR3LKsqPQQmVErLgZQMjjrZcHinZPGPaT9JIPVj/MdaF/YpJLFqmbtCj
- ymUJOxrmX+vEJky21ltJ03R8Hzvjkso56HKdoM2fSGgOss+tBRyr/01Gu2w5qCyzYPnO
- lK7w==
+ bh=imxvMsz0CNvo8nrzFvIRSqzHEH+HatWQq7mvnvZiPnw=;
+ b=YVIOsLm5hrVUerbLAlqlZlCGaPxpl4fvkQeszgy75itZCjqYLfsTjphvRUvCskzUnd
+ 2o7b9o+82a5PLKDK9R2P9pIi/S7C1Eb9iFXKx4shP4AwUjxzvBVPNvrxFUeAtuEBW/nQ
+ X2cIn8s1a2ZCB41MvAp0yfeCnPfxrXpiP0AYqZC7NTWvjd99aVQeZeV2yGrEQrQ0yk8J
+ THzA4xHNGCs/clXZSN8uVrLyeAvGDVEP5Fw7w17joPDgijnjU8PavZRllkc6Q7kJF0ZL
+ fjJobW5lNq2f8UEqEcgrzR4XgqTsJehrtfpup1pTctNcfrzvG61a8BO4vWUFB/ss9KeR
+ NrgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701649591; x=1702254391;
+ d=1e100.net; s=20230601; t=1701649592; x=1702254392;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hfYRXu2++EiNfxFS//da1r77rkXtLqsXyrHlBY61ejo=;
- b=ZyN+Wia3ynbNvgLkc1jo+CpV596I7XIfFyAWNz+/ylliEAjk8KxWVzliSmwEt54hl6
- uXq+q7Y2AUPnNXUfBlaqif7/+GEaLby2h9Oj0Jo1pkvpT7KlLTTKcTrtWXB5nM9pccVS
- uGQGNMAZgZS+tM6RVtRm/gDqCGw45luaz7/gM85gHX1eezRZcXYvJYgx3zl7qaEfsIW4
- 5fnFhM3Ie0gNMqfcWRjPgft2GySHTnPmsThWtwQS3mfkJ5ziWuEf6NHSt1Zq4G1kXohW
- DZ/fgVobQhcVQrI7NCh23xlGA7J5iUnnGPfEV5rXk88AtomcgqzzFw+vH+YUySV6qC+5
- QSjw==
-X-Gm-Message-State: AOJu0Yy/l+5n21wavwONTipJhAtfL8HuiftLqf6NoNyS+3Y8+721zePS
- QNQ5LpO6YYvj1VAj8bk+8ySWHo0inrcNYQ==
-X-Google-Smtp-Source: AGHT+IFrxtab4iN/phhGQw7GnwrDV9WWQ3YqMiKUqfq7P2F8KsS89KQb+rZkjyOvVAzvCRTOOe1xZQ==
-X-Received: by 2002:a05:690c:3505:b0:5d3:99b9:93a3 with SMTP id
- fq5-20020a05690c350500b005d399b993a3mr690293ywb.11.1701649590641; 
- Sun, 03 Dec 2023 16:26:30 -0800 (PST)
+ bh=imxvMsz0CNvo8nrzFvIRSqzHEH+HatWQq7mvnvZiPnw=;
+ b=d7f3XlhJk6KssSR5rZw7Ut+REPFFgZSoOIU+F5p2VxeTpig4qrdQFmAbsh+J+98NEg
+ ge9c26Nia8U+odvqRBsiuTF5NHBD5Qq/RI3QrBA4TBeX7kIFaq8BXnvpc2oQiUOzjwdO
+ 7xhXhp88ymWApR4JvryNRi4wkXHPbcpffmh+xMd8FuEt0g1FAz2CTEYTQFt5XkHOD6ay
+ wltr2O+9RYR5IJZemcOtzZLoKKIHsQSdPQqMKCpWRFtTnhUkzPecjgfvwUneC697sNl6
+ CfamSsVF/njmq92yQZYeU+fbsyMn+msjhORUj1BoMJ3kQhgTQRBgAWHPpmHUReeIAyHr
+ v6dw==
+X-Gm-Message-State: AOJu0YxTalAWHMsnqlDL72Fzq5DwXyu8K/sLW/5BqQpX7MiZm/gty3s6
+ JFOMHiOMcU8hJ1mLV30hBDpmyk8bTW1SEw==
+X-Google-Smtp-Source: AGHT+IFwx/farTQc0pFkqqw8wlF1j0V1+zso/oWU/1t73FJwr9/snSsnqTqElij8FBBp8znPiDI9Pg==
+X-Received: by 2002:a81:57d5:0:b0:5d7:1941:2c21 with SMTP id
+ l204-20020a8157d5000000b005d719412c21mr2240074ywb.78.1701649591864; 
+ Sun, 03 Dec 2023 16:26:31 -0800 (PST)
 Received: from localhost.localdomain ([201.206.180.22])
  by smtp.gmail.com with ESMTPSA id
- l63-20020a0de242000000b005d3e6ce07e7sm2443187ywe.6.2023.12.03.16.26.29
+ l63-20020a0de242000000b005d3e6ce07e7sm2443187ywe.6.2023.12.03.16.26.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 03 Dec 2023 16:26:30 -0800 (PST)
+ Sun, 03 Dec 2023 16:26:31 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v3 05/45] Add GIC-400 to BCM2838 SoC
-Date: Sun,  3 Dec 2023 18:25:39 -0600
-Message-Id: <20231204002619.1367044-6-sergey.kambalin@auriga.com>
+Subject: [PATCH v3 06/45] Add BCM2838 GPIO stub
+Date: Sun,  3 Dec 2023 18:25:40 -0600
+Message-Id: <20231204002619.1367044-7-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231204002619.1367044-1-sergey.kambalin@auriga.com>
 References: <20231204002619.1367044-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1129.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x112c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,305 +93,269 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- hw/arm/bcm2838.c                     | 167 +++++++++++++++++++++++++++
- hw/arm/trace-events                  |   2 +
- include/hw/arm/bcm2838.h             |   2 +
- include/hw/arm/bcm2838_peripherals.h |  39 +++++++
- 4 files changed, 210 insertions(+)
+ hw/arm/bcm2838.c                     |   4 +-
+ hw/gpio/bcm2838_gpio.c               | 152 +++++++++++++++++++++++++++
+ hw/gpio/meson.build                  |   5 +-
+ include/hw/arm/bcm2838_peripherals.h |   2 -
+ include/hw/gpio/bcm2838_gpio.h       |  40 +++++++
+ 5 files changed, 198 insertions(+), 5 deletions(-)
+ create mode 100644 hw/gpio/bcm2838_gpio.c
+ create mode 100644 include/hw/gpio/bcm2838_gpio.h
 
 diff --git a/hw/arm/bcm2838.c b/hw/arm/bcm2838.c
-index c61c59661b..042e543006 100644
+index 042e543006..8925957c6c 100644
 --- a/hw/arm/bcm2838.c
 +++ b/hw/arm/bcm2838.c
-@@ -14,8 +14,36 @@
+@@ -14,7 +14,7 @@
  #include "hw/arm/bcm2838.h"
  #include "trace.h"
  
-+#define GIC400_MAINTAINANCE_IRQ      9
-+#define GIC400_TIMER_NS_EL2_IRQ     10
-+#define GIC400_TIMER_VIRT_IRQ       11
-+#define GIC400_LEGACY_FIQ           12
-+#define GIC400_TIMER_S_EL1_IRQ      13
-+#define GIC400_TIMER_NS_EL1_IRQ     14
-+#define GIC400_LEGACY_IRQ           15
-+
-+/* Number of external interrupt lines to configure the GIC with */
-+#define GIC_NUM_IRQS                192
-+
-+#define PPI(cpu, irq) (GIC_NUM_IRQS + (cpu) * GIC_INTERNAL + GIC_NR_SGIS + irq)
-+
-+#define GIC_BASE_OFS                0x0000
-+#define GIC_DIST_OFS                0x1000
-+#define GIC_CPU_OFS                 0x2000
-+#define GIC_VIFACE_THIS_OFS         0x4000
-+#define GIC_VIFACE_OTHER_OFS(cpu)  (0x5000 + (cpu) * 0x200)
-+#define GIC_VCPU_OFS                0x6000
-+
- #define VIRTUAL_PMU_IRQ 7
+-#define GIC400_MAINTAINANCE_IRQ      9
++#define GIC400_MAINTENANCE_IRQ      9
+ #define GIC400_TIMER_NS_EL2_IRQ     10
+ #define GIC400_TIMER_VIRT_IRQ       11
+ #define GIC400_LEGACY_FIQ           12
+@@ -163,7 +163,7 @@ static void bcm2838_realize(DeviceState *dev, Error **errp)
  
-+static void bcm2838_gic_set_irq(void *opaque, int irq, int level)
-+{
-+    BCM2838State *s = (BCM2838State *)opaque;
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), n + 4 * BCM283X_NCPUS,
+                            qdev_get_gpio_in(gicdev,
+-                                            PPI(n, GIC400_MAINTAINANCE_IRQ)));
++                                            PPI(n, GIC400_MAINTENANCE_IRQ)));
+ 
+         /* Connect timers from the CPU to the interrupt controller */
+         qdev_connect_gpio_out(cpudev, GTIMER_PHYS,
+diff --git a/hw/gpio/bcm2838_gpio.c b/hw/gpio/bcm2838_gpio.c
+new file mode 100644
+index 0000000000..15b66cb559
+--- /dev/null
++++ b/hw/gpio/bcm2838_gpio.c
+@@ -0,0 +1,152 @@
++/*
++ * Raspberry Pi (BCM2838) GPIO Controller
++ * This implementation is based on bcm2835_gpio (hw/gpio/bcm2835_gpio.c)
++ *
++ * Copyright (c) 2022 Auriga LLC
++ *
++ * Authors:
++ *  Lotosh, Aleksey <aleksey.lotosh@auriga.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
-+    trace_bcm2838_gic_set_irq(irq, level);
-+    qemu_set_irq(qdev_get_gpio_in(DEVICE(&s->gic), irq), level);
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "qemu/module.h"
++#include "qemu/timer.h"
++#include "qapi/error.h"
++#include "hw/sysbus.h"
++#include "migration/vmstate.h"
++#include "hw/gpio/bcm2838_gpio.h"
++
++#define GPFSEL0   0x00
++#define GPFSEL1   0x04
++#define GPFSEL2   0x08
++#define GPFSEL3   0x0C
++#define GPFSEL4   0x10
++#define GPFSEL5   0x14
++#define GPSET0    0x1C
++#define GPSET1    0x20
++#define GPCLR0    0x28
++#define GPCLR1    0x2C
++#define GPLEV0    0x34
++#define GPLEV1    0x38
++#define GPEDS0    0x40
++#define GPEDS1    0x44
++#define GPREN0    0x4C
++#define GPREN1    0x50
++#define GPFEN0    0x58
++#define GPFEN1    0x5C
++#define GPHEN0    0x64
++#define GPHEN1    0x68
++#define GPLEN0    0x70
++#define GPLEN1    0x74
++#define GPAREN0   0x7C
++#define GPAREN1   0x80
++#define GPAFEN0   0x88
++#define GPAFEN1   0x8C
++
++#define GPIO_PUP_PDN_CNTRL_REG0 0xE4
++#define GPIO_PUP_PDN_CNTRL_REG1 0xE8
++#define GPIO_PUP_PDN_CNTRL_REG2 0xEC
++#define GPIO_PUP_PDN_CNTRL_REG3 0xF0
++
++#define RESET_VAL_CNTRL_REG0 0xAAA95555;
++#define RESET_VAL_CNTRL_REG1 0xA0AAAAAA;
++#define RESET_VAL_CNTRL_REG2 0x50AAA95A;
++#define RESET_VAL_CNTRL_REG3 0x00055555;
++
++#define BYTES_IN_WORD        4
++
++static uint64_t bcm2838_gpio_read(void *opaque, hwaddr offset, unsigned size)
++{
++    uint64_t value = 0;
++
++    qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
++                  TYPE_BCM2838_GPIO, __func__, offset);
++
++    return value;
 +}
 +
- static void bcm2838_init(Object *obj)
- {
-     BCM2838State *s = BCM2838(obj);
-@@ -28,11 +56,14 @@ static void bcm2838_init(Object *obj)
-                               "vcram-size");
-     object_property_add_alias(obj, "command-line", OBJECT(&s->peripherals),
-                               "command-line");
++static void bcm2838_gpio_write(void *opaque, hwaddr offset, uint64_t value,
++                               unsigned size)
++{
++    qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
++                  TYPE_BCM2838_GPIO, __func__, offset);
++}
 +
-+    object_initialize_child(obj, "gic", &s->gic, TYPE_ARM_GIC);
- }
- 
- static void bcm2838_realize(DeviceState *dev, Error **errp)
- {
-     int n;
-+    int int_n;
-     BCM2838State *s = BCM2838(dev);
-     BCM283XBaseState *s_base = BCM283X_BASE(dev);
-     BCM283XBaseClass *bc_base = BCM283X_BASE_GET_CLASS(dev);
-@@ -56,6 +87,13 @@ static void bcm2838_realize(DeviceState *dev, Error **errp)
-         /* TODO: this should be converted to a property of ARM_CPU */
-         s_base->cpu[n].core.mp_affinity = (bc_base->clusterid << 8) | n;
- 
-+        /* set periphbase/CBAR value for CPU-local registers */
-+        if (!object_property_set_int(OBJECT(&s_base->cpu[n].core), "reset-cbar",
-+                                     bc_base->ctrl_base + BCM2838_GIC_BASE,
-+                                     errp)) {
-+            return;
-+        }
++static void bcm2838_gpio_reset(DeviceState *dev)
++{
++    BCM2838GpioState *s = BCM2838_GPIO(dev);
 +
-         /* start powered off if not enabled */
-         if (!object_property_set_bool(OBJECT(&s_base->cpu[n].core),
-                                       "start-powered-off",
-@@ -68,6 +106,135 @@ static void bcm2838_realize(DeviceState *dev, Error **errp)
-             return;
-         }
-     }
++    s->lev0 = 0;
++    s->lev1 = 0;
 +
-+    if (!object_property_set_uint(OBJECT(&s->gic), "revision", 2, errp)) {
-+        return;
++    s->pup_cntrl_reg[0] = RESET_VAL_CNTRL_REG0;
++    s->pup_cntrl_reg[1] = RESET_VAL_CNTRL_REG1;
++    s->pup_cntrl_reg[2] = RESET_VAL_CNTRL_REG2;
++    s->pup_cntrl_reg[3] = RESET_VAL_CNTRL_REG3;
++}
++
++static const MemoryRegionOps bcm2838_gpio_ops = {
++    .read = bcm2838_gpio_read,
++    .write = bcm2838_gpio_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++};
++
++static const VMStateDescription vmstate_bcm2838_gpio = {
++    .name = "bcm2838_gpio",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT8_ARRAY(fsel, BCM2838GpioState, BCM2838_GPIO_NUM),
++        VMSTATE_UINT32(lev0, BCM2838GpioState),
++        VMSTATE_UINT32(lev1, BCM2838GpioState),
++        VMSTATE_UINT8(sd_fsel, BCM2838GpioState),
++        VMSTATE_UINT32_ARRAY(pup_cntrl_reg, BCM2838GpioState,
++                             GPIO_PUP_PDN_CNTRL_NUM),
++        VMSTATE_END_OF_LIST()
 +    }
++};
 +
-+    if (!object_property_set_uint(OBJECT(&s->gic), "num-cpu", BCM283X_NCPUS,
-+                                  errp)) {
-+        return;
-+    }
++static void bcm2838_gpio_init(Object *obj)
++{
++    BCM2838GpioState *s = BCM2838_GPIO(obj);
++    DeviceState *dev = DEVICE(obj);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
 +
-+    if (!object_property_set_uint(OBJECT(&s->gic), "num-irq",
-+                                  GIC_NUM_IRQS + GIC_INTERNAL, errp)) {
-+        return;
-+    }
++    memory_region_init_io(&s->iomem, obj, &bcm2838_gpio_ops, s,
++                          "bcm2838_gpio", BCM2838_GPIO_REGS_SIZE);
++    sysbus_init_mmio(sbd, &s->iomem);
++    qdev_init_gpio_out(dev, s->out, BCM2838_GPIO_NUM);
++}
 +
-+    if (!object_property_set_bool(OBJECT(&s->gic),
-+                                  "has-virtualization-extensions", true,
-+                                  errp)) {
-+        return;
-+    }
++static void bcm2838_gpio_realize(DeviceState *dev, Error **errp)
++{
++    /* Temporary stub. Do nothing */
++}
 +
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->gic), errp)) {
-+        return;
-+    }
++static void bcm2838_gpio_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
 +
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->gic), 0,
-+                    bc_base->ctrl_base + BCM2838_GIC_BASE + GIC_DIST_OFS);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->gic), 1,
-+                    bc_base->ctrl_base + BCM2838_GIC_BASE + GIC_CPU_OFS);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->gic), 2,
-+                    bc_base->ctrl_base + BCM2838_GIC_BASE + GIC_VIFACE_THIS_OFS);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->gic), 3,
-+                    bc_base->ctrl_base + BCM2838_GIC_BASE + GIC_VCPU_OFS);
++    dc->vmsd = &vmstate_bcm2838_gpio;
++    dc->realize = &bcm2838_gpio_realize;
++    dc->reset = &bcm2838_gpio_reset;
++}
 +
-+    for (n = 0; n < BCM283X_NCPUS; n++) {
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&s->gic), 4 + n,
-+                        bc_base->ctrl_base + BCM2838_GIC_BASE
-+                            + GIC_VIFACE_OTHER_OFS(n));
-+    }
++static const TypeInfo bcm2838_gpio_info = {
++    .name          = TYPE_BCM2838_GPIO,
++    .parent        = TYPE_SYS_BUS_DEVICE,
++    .instance_size = sizeof(BCM2838GpioState),
++    .instance_init = bcm2838_gpio_init,
++    .class_init    = bcm2838_gpio_class_init,
++};
 +
-+    DeviceState *gicdev = DEVICE(&s->gic);
++static void bcm2838_gpio_register_types(void)
++{
++    type_register_static(&bcm2838_gpio_info);
++}
 +
-+    for (n = 0; n < BCM283X_NCPUS; n++) {
-+        DeviceState *cpudev = DEVICE(&s_base->cpu[n]);
-+
-+        /* Connect the GICv2 outputs to the CPU */
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), n,
-+                           qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), n + BCM283X_NCPUS,
-+                           qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), n + 2 * BCM283X_NCPUS,
-+                           qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), n + 3 * BCM283X_NCPUS,
-+                           qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
-+
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), n + 4 * BCM283X_NCPUS,
-+                           qdev_get_gpio_in(gicdev,
-+                                            PPI(n, GIC400_MAINTAINANCE_IRQ)));
-+
-+        /* Connect timers from the CPU to the interrupt controller */
-+        qdev_connect_gpio_out(cpudev, GTIMER_PHYS,
-+                    qdev_get_gpio_in(gicdev, PPI(n, GIC400_TIMER_NS_EL1_IRQ)));
-+        qdev_connect_gpio_out(cpudev, GTIMER_VIRT,
-+                    qdev_get_gpio_in(gicdev, PPI(n, GIC400_TIMER_VIRT_IRQ)));
-+        qdev_connect_gpio_out(cpudev, GTIMER_HYP,
-+                    qdev_get_gpio_in(gicdev, PPI(n, GIC400_TIMER_NS_EL2_IRQ)));
-+        qdev_connect_gpio_out(cpudev, GTIMER_SEC,
-+                    qdev_get_gpio_in(gicdev, PPI(n, GIC400_TIMER_S_EL1_IRQ)));
-+        /* PMU interrupt */
-+        qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0,
-+                    qdev_get_gpio_in(gicdev, PPI(n, VIRTUAL_PMU_IRQ)));
-+    }
-+
-+    /* Connect UART0 to the interrupt controller */
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&ps_base->uart0), 0,
-+                       qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_UART0));
-+
-+    /* Connect AUX / UART1 to the interrupt controller */
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&ps_base->aux), 0,
-+                       qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_AUX_UART1));
-+
-+    /* Connect VC mailbox to the interrupt controller */
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&ps_base->mboxes), 0,
-+                       qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_MBOX));
-+
-+    /* Connect SD host to the interrupt controller */
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&ps_base->sdhost), 0,
-+                       qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_SDHOST));
-+
-+    /* According to DTS, EMMC and EMMC2 share one irq */
-+    DeviceState *mmc_irq_orgate = DEVICE(&ps->mmc_irq_orgate);
-+
-+    /* Connect EMMC and EMMC2 to the interrupt controller */
-+    qdev_connect_gpio_out(mmc_irq_orgate, 0,
-+                          qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_EMMC_EMMC2));
-+
-+    /* Connect USB OTG and MPHI to the interrupt controller */
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&ps_base->mphi), 0,
-+                       qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_MPHI));
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&ps_base->dwc2), 0,
-+                       qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_DWC2));
-+
-+    /* Connect DMA 0-6 to the interrupt controller */
-+    for (int_n = GIC_SPI_INTERRUPT_DMA_0; int_n <= GIC_SPI_INTERRUPT_DMA_6;
-+         int_n++) {
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&ps_base->dma),
-+                           int_n - GIC_SPI_INTERRUPT_DMA_0,
-+                           qdev_get_gpio_in(gicdev, int_n));
-+    }
-+
-+    /* According to DTS, DMA 7 and 8 share one irq */
-+    DeviceState *dma_7_8_irq_orgate = DEVICE(&ps->dma_7_8_irq_orgate);
-+
-+    /* Connect DMA 7-8 to the interrupt controller */
-+    qdev_connect_gpio_out(dma_7_8_irq_orgate, 0,
-+                          qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_DMA_7_8));
-+
-+    /* According to DTS, DMA 9 and 10 share one irq */
-+    DeviceState *dma_9_10_irq_orgate = DEVICE(&ps->dma_9_10_irq_orgate);
-+
-+    /* Connect DMA 9-10 to the interrupt controller */
-+    qdev_connect_gpio_out(dma_9_10_irq_orgate, 0,
-+                          qdev_get_gpio_in(gicdev, GIC_SPI_INTERRUPT_DMA_9_10));
-+
-+    /* Pass through inbound GPIO lines to the GIC */
-+    qdev_init_gpio_in(dev, bcm2838_gic_set_irq, GIC_NUM_IRQS);
-+
-+    /* Pass through outbound IRQ lines from the GIC */
-+    qdev_pass_gpios(DEVICE(&s->gic), DEVICE(&s->peripherals), NULL);
- }
- 
- static void bcm2838_class_init(ObjectClass *oc, void *data)
-diff --git a/hw/arm/trace-events b/hw/arm/trace-events
-index cdc1ea06a8..4f0167e638 100644
---- a/hw/arm/trace-events
-+++ b/hw/arm/trace-events
-@@ -55,3 +55,5 @@ smmuv3_notify_flag_add(const char *iommu) "ADD SMMUNotifier node for iommu mr=%s
- smmuv3_notify_flag_del(const char *iommu) "DEL SMMUNotifier node for iommu mr=%s"
- smmuv3_inv_notifiers_iova(const char *name, uint16_t asid, uint16_t vmid, uint64_t iova, uint8_t tg, uint64_t num_pages) "iommu mr=%s asid=%d vmid=%d iova=0x%"PRIx64" tg=%d num_pages=0x%"PRIx64
- 
-+# bcm2838.c
-+bcm2838_gic_set_irq(int irq, int level) "gic irq:%d lvl:%d"
-diff --git a/include/hw/arm/bcm2838.h b/include/hw/arm/bcm2838.h
-index bddc25ca9a..e53c7bedf9 100644
---- a/include/hw/arm/bcm2838.h
-+++ b/include/hw/arm/bcm2838.h
-@@ -10,6 +10,7 @@
- #define BCM2838_H
- 
- #include "hw/arm/bcm2836.h"
-+#include "hw/intc/arm_gic.h"
- #include "hw/arm/bcm2838_peripherals.h"
- 
- #define BCM2838_PERI_LOW_BASE 0xfc000000
-@@ -24,6 +25,7 @@ struct BCM2838State {
-     BCM283XBaseState parent_obj;
-     /*< public >*/
-     BCM2838PeripheralState peripherals;
-+    GICState gic;
- };
- 
- #endif /* BCM2838_H */
++type_init(bcm2838_gpio_register_types)
+diff --git a/hw/gpio/meson.build b/hw/gpio/meson.build
+index 066ea96480..8a8d03d885 100644
+--- a/hw/gpio/meson.build
++++ b/hw/gpio/meson.build
+@@ -9,6 +9,9 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files('imx_gpio.c'))
+ system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_gpio.c'))
+ system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_gpio.c'))
+ system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_gpio.c'))
+-system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_gpio.c'))
++system_ss.add(when: 'CONFIG_RASPI', if_true: files(
++    'bcm2835_gpio.c',
++    'bcm2838_gpio.c'
++))
+ system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_gpio.c'))
+ system_ss.add(when: 'CONFIG_SIFIVE_GPIO', if_true: files('sifive_gpio.c'))
 diff --git a/include/hw/arm/bcm2838_peripherals.h b/include/hw/arm/bcm2838_peripherals.h
-index 7039b67cc9..5a72355183 100644
+index 5a72355183..d07831753a 100644
 --- a/include/hw/arm/bcm2838_peripherals.h
 +++ b/include/hw/arm/bcm2838_peripherals.h
-@@ -11,6 +11,41 @@
+@@ -11,8 +11,6 @@
  
  #include "hw/arm/bcm2835_peripherals.h"
  
-+#define GENET_OFFSET            0x1580000
+-#define GENET_OFFSET            0x1580000
+-
+ /* SPI */
+ #define GIC_SPI_INTERRUPT_MBOX         33
+ #define GIC_SPI_INTERRUPT_MPHI         40
+diff --git a/include/hw/gpio/bcm2838_gpio.h b/include/hw/gpio/bcm2838_gpio.h
+new file mode 100644
+index 0000000000..06d48e0c19
+--- /dev/null
++++ b/include/hw/gpio/bcm2838_gpio.h
+@@ -0,0 +1,40 @@
++/*
++ * Raspberry Pi (BCM2838) GPIO Controller
++ * This implementation is based on bcm2835_gpio (hw/gpio/bcm2835_gpio.c)
++ *
++ * Copyright (c) 2022 Auriga LLC
++ *
++ * Authors:
++ *  Lotosh, Aleksey <aleksey.lotosh@auriga.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
-+/* SPI */
-+#define GIC_SPI_INTERRUPT_MBOX         33
-+#define GIC_SPI_INTERRUPT_MPHI         40
-+#define GIC_SPI_INTERRUPT_DWC2         73
-+#define GIC_SPI_INTERRUPT_DMA_0        80
-+#define GIC_SPI_INTERRUPT_DMA_6        86
-+#define GIC_SPI_INTERRUPT_DMA_7_8      87
-+#define GIC_SPI_INTERRUPT_DMA_9_10     88
-+#define GIC_SPI_INTERRUPT_AUX_UART1    93
-+#define GIC_SPI_INTERRUPT_SDHOST       120
-+#define GIC_SPI_INTERRUPT_UART0        121
-+#define GIC_SPI_INTERRUPT_RNG200       125
-+#define GIC_SPI_INTERRUPT_EMMC_EMMC2   126
-+#define GIC_SPI_INTERRUPT_PCI_INT_A    143
-+#define GIC_SPI_INTERRUPT_GENET_A      157
-+#define GIC_SPI_INTERRUPT_GENET_B      158
++#ifndef BCM2838_GPIO_H
++#define BCM2838_GPIO_H
++
++#include "hw/sysbus.h"
++#include "qom/object.h"
++
++#define TYPE_BCM2838_GPIO "bcm2838-gpio"
++OBJECT_DECLARE_SIMPLE_TYPE(BCM2838GpioState, BCM2838_GPIO)
++
++#define BCM2838_GPIO_REGS_SIZE 0x1000
++#define BCM2838_GPIO_NUM       58
++#define GPIO_PUP_PDN_CNTRL_NUM 4
++
++struct BCM2838GpioState {
++    SysBusDevice parent_obj;
++
++    MemoryRegion iomem;
 +
 +
-+/* GPU (legacy) DMA interrupts */
-+#define GPU_INTERRUPT_DMA0      16
-+#define GPU_INTERRUPT_DMA1      17
-+#define GPU_INTERRUPT_DMA2      18
-+#define GPU_INTERRUPT_DMA3      19
-+#define GPU_INTERRUPT_DMA4      20
-+#define GPU_INTERRUPT_DMA5      21
-+#define GPU_INTERRUPT_DMA6      22
-+#define GPU_INTERRUPT_DMA7_8    23
-+#define GPU_INTERRUPT_DMA9_10   24
-+#define GPU_INTERRUPT_DMA11     25
-+#define GPU_INTERRUPT_DMA12     26
-+#define GPU_INTERRUPT_DMA13     27
-+#define GPU_INTERRUPT_DMA14     28
-+#define GPU_INTERRUPT_DMA15     31
- 
- #define TYPE_BCM2838_PERIPHERALS "bcm2838-peripherals"
- OBJECT_DECLARE_TYPE(BCM2838PeripheralState, BCM2838PeripheralClass,
-@@ -24,6 +59,10 @@ struct BCM2838PeripheralState {
-     MemoryRegion peri_low_mr;
-     MemoryRegion peri_low_mr_alias;
-     MemoryRegion mphi_mr_alias;
++    uint8_t fsel[BCM2838_GPIO_NUM];
++    uint32_t lev0, lev1;
++    uint8_t sd_fsel;
++    qemu_irq out[BCM2838_GPIO_NUM];
++    uint32_t pup_cntrl_reg[GPIO_PUP_PDN_CNTRL_NUM];
++};
 +
-+    OrIRQState mmc_irq_orgate;
-+    OrIRQState dma_7_8_irq_orgate;
-+    OrIRQState dma_9_10_irq_orgate;
- };
- 
- struct BCM2838PeripheralClass {
++#endif
 -- 
 2.34.1
 
