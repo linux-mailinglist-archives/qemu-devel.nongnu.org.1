@@ -2,44 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF160803E3E
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 20:21:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C62B803E40
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 20:21:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAEU3-0007B0-KQ; Mon, 04 Dec 2023 14:19:59 -0500
+	id 1rAEVW-0000E5-UR; Mon, 04 Dec 2023 14:21:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rAETs-0007AM-Pk; Mon, 04 Dec 2023 14:19:48 -0500
-Received: from mail-b.sr.ht ([173.195.146.151])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rAETm-0008Td-Bi; Mon, 04 Dec 2023 14:19:48 -0500
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 6373211EF13;
- Mon,  4 Dec 2023 19:19:39 +0000 (UTC)
-From: ~inesvarhol <inesvarhol@git.sr.ht>
-Date: Mon, 04 Dec 2023 19:19:39 +0000
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAEVK-0000Cm-Us
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 14:21:18 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAEVI-0000QN-VT
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 14:21:18 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40c08af319cso20175315e9.2
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 11:21:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701717675; x=1702322475; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3K/U+JD4ImiFJaCFjnxh0fAVGR6LL6OMJRLgu24pJPg=;
+ b=k9agstqViAD1Wgx4pRVKJWKN5zTVqp+fCV0deOn4dPsMgtK8SpaN3sX1o7T4AKIg5j
+ hzIyUZqFvhvjQhe0bjSHrXvKY52Qtbm5woyauQWKSyjVSrclv2cjWSAvLwbcLanbmTlf
+ t/q5fw280UBR07SbN6laCD8llElzrHo/S2Y6jXkU5y7X6F3gOqmyRXfK9ZEpmB+/PPM4
+ Heczdv0Jis4OhDOIHFQ+gFQDI2YxwYLSsN1dMm2gNFupDI96yW54X7wrHv80OH2eMJUl
+ 0txxxIeQ1KLAg0CXTia0taYX8MYmxP0s22TQq5ICtIJAGHw4rZFSWyT2dGysp9FHOmLj
+ cGhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701717675; x=1702322475;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3K/U+JD4ImiFJaCFjnxh0fAVGR6LL6OMJRLgu24pJPg=;
+ b=gZQorqVLjDXsHOHkbeVHe7xnfV/q3IFkck2//ZpUT32WhLDBkVXBHddnJSKRJcQpIA
+ LYXCfHs/g3arU3Lj2RCe8xwujtH1aoqgmE6q8XxhNqGQTx0fwG6YVx8uE2iC2MT6232p
+ +JyU0p6O9gIJ1POsIKfOSoBoFOINPOdCUBIJzBoMMa5qR8s2TdgN32uqNx77q40cvSbS
+ brN6KFOig+mm4Lhh5qfqyUVS0qn0+5Hu5jAaLodLYYCd2a/vEObt5enqS+EJwATG5/WO
+ KSxqNm4aMol1w2om/IWAu1J1JPiyqqqw+Q9/iNxNaEjXvhLdwoGHDRVHu0uMo+s6syef
+ rCvQ==
+X-Gm-Message-State: AOJu0YwfDiuT0Je0MPspPiTL995mZh9s8ePpMlVvNq2JEOm6SCaW6031
+ Ov8LbRLiM7vmjJsjQhw7CAD09ne8r0ArG6fIYZo=
+X-Google-Smtp-Source: AGHT+IG1hFIYsvYPdiT3Mz7DFwzBAjpZtxUN/DEBvvbdBmqnvLKs8muREdRIsHtv42dVlQzJM5/KRw==
+X-Received: by 2002:a05:600c:3510:b0:40b:4e35:d1d9 with SMTP id
+ h16-20020a05600c351000b0040b4e35d1d9mr2671938wmq.14.1701717674804; 
+ Mon, 04 Dec 2023 11:21:14 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.140.35])
+ by smtp.gmail.com with ESMTPSA id
+ l15-20020a05600c4f0f00b0040b33222a39sm19896197wmq.45.2023.12.04.11.21.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Dec 2023 11:21:14 -0800 (PST)
+Message-ID: <9112b12a-0a11-43c8-aa7d-77ca5b957428@linaro.org>
+Date: Mon, 4 Dec 2023 20:21:12 +0100
 MIME-Version: 1.0
-Subject: [PATCH RFC v3 0/1] Implement STM32L4x5 EXTI
-Message-ID: <170171757903.6536.10207274798404158986-0@git.sr.ht>
-X-Mailer: git.sr.ht
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
- peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
- arnaud.minier@telecom-paris.fr
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2?] hw/ufs: avoid generating the same ID string for
+ different LU devices
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Akinobu Mita <akinobu.mita@gmail.com>, qemu-devel@nongnu.org
+Cc: jeuk20.kim@samsung.com, qemu-block <qemu-block@nongnu.org>
+References: <20231204150543.48252-1-akinobu.mita@gmail.com>
+ <1f537ae8-c3e6-4213-b2c7-b9398b8e1f64@linaro.org>
+In-Reply-To: <1f537ae8-c3e6-4213-b2c7-b9398b8e1f64@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -52,69 +90,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~inesvarhol <inesvarhol@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch allows to emulate the STM32L4x5 EXTI device.
-It implements register access and software interruptions.
+Hi Jeuk,
 
-This is RFC because we're new at contributing to QEMU.
-We had some difficulties writing qtests and the result might be bizarre.
+On 4/12/23 17:50, Philippe Mathieu-Daudé wrote:
+> On 4/12/23 16:05, Akinobu Mita wrote:
+>> QEMU would not start when trying to create two UFS host controllers and
+>> a UFS logical unit for each with the following options:
+>>
+>> -device ufs,id=bus0 \
+>> -device ufs-lu,drive=drive1,bus=bus0,lun=0 \
+>> -device ufs,id=bus1 \
+>> -device ufs-lu,drive=drive2,bus=bus1,lun=0 \
+>>
+>> This is because the same ID string ("0:0:0/scsi-disk") is generated
+>> for both UFS logical units.
+>>
+>> To fix this issue, prepend the parent pci device's path to make
+>> the ID string unique.
+>> ("0000:00:03.0/0:0:0/scsi-disk" and "0000:00:04.0/0:0:0/scsi-disk")
+>>
+>> Fixes: 096434fea13a ("hw/ufs: Modify lu.c to share codes with SCSI 
+>> subsystem")
 
-We have some questions about the next steps for our stm32l4x5 project :
+If you think this must be fixed for the 8.2 release, please assign
+a release blocker issues to the GitLab 8.2 milestone here:
+https://gitlab.com/qemu-project/qemu/-/milestones/10
 
-Should we send a non-RFC patch after this peripheral implementation is
-reviewed,
-or should we wait for more peripherals to be implemented?
-We have syscfg and uart implementations ongoing.
+>> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+>> ---
+>>   hw/ufs/ufs.c | 8 ++++++++
+>>   1 file changed, 8 insertions(+)
+>>
+>> diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
+>> index 68c5f1f6c9..eccdb852a0 100644
+>> --- a/hw/ufs/ufs.c
+>> +++ b/hw/ufs/ufs.c
+>> @@ -1323,9 +1323,17 @@ static bool ufs_bus_check_address(BusState 
+>> *qbus, DeviceState *qdev,
+>>       return true;
+>>   }
+>> +static char *ufs_bus_get_dev_path(DeviceState *dev)
+>> +{
+>> +    BusState *bus = qdev_get_parent_bus(dev);
+>> +
+>> +    return qdev_get_dev_path(bus->parent);
+>> +}
+>> +
+>>   static void ufs_bus_class_init(ObjectClass *class, void *data)
+>>   {
+>>       BusClass *bc = BUS_CLASS(class);
+>> +    bc->get_dev_path = ufs_bus_get_dev_path;
+>>       bc->check_address = ufs_bus_check_address;
+>>   }
+> 
 
-Also, should the version numbers restart from 1 when sending a non-RFC
-tag ?
-
-Sincerely,
-In=C3=A8s Varhol
-
-
-Changes from v2 to v3:
-- adding more tests writing/reading in exti registers
-- adding tests checking that interrupt work by reading NVIC registers
-- correcting exti_write in SWIER (so it sets an irq only when a bit goes
-from '0' to '1')
-- correcting exti_set_irq (so it never writes in PR when the relevant
-bit in IMR is '0')
-
-Changes from v1 to v2:
-- use arrays to deduplicate code and logic
-- move internal constant EXTI_NUM_GPIO_EVENT_IN_LINES from the header
-to the .c file
-- Improve copyright headers
-- replace static const with #define
-- use the DEFINE_TYPES macro
-- fill the impl and valid field of the exti's MemoryRegionOps
-- fix invalid test caused by a last minute change
-
-Based-on: <170049810484.22920.612074576971878323-0@git.sr.ht>
-([RFC v3 2/2] hw/arm: Add minimal support for the B-L475E-IOT01A board)
-
-In=C3=A8s Varhol (1):
-  Implement STM32L4x5 EXTI
-
- hw/arm/Kconfig                    |   1 +
- hw/arm/stm32l4x5_soc.c            |  65 +++-
- hw/misc/Kconfig                   |   3 +
- hw/misc/meson.build               |   1 +
- hw/misc/stm32l4x5_exti.c          | 306 +++++++++++++++++++
- hw/misc/trace-events              |   5 +
- include/hw/arm/stm32l4x5_soc.h    |   3 +
- include/hw/misc/stm32l4x5_exti.h  |  58 ++++
- tests/qtest/meson.build           |   5 +
- tests/qtest/stm32l4x5_exti-test.c | 485 ++++++++++++++++++++++++++++++
- 10 files changed, 930 insertions(+), 2 deletions(-)
- create mode 100644 hw/misc/stm32l4x5_exti.c
- create mode 100644 include/hw/misc/stm32l4x5_exti.h
- create mode 100644 tests/qtest/stm32l4x5_exti-test.c
-
---=20
-2.38.5
 
