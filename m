@@ -2,44 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEC680299F
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 01:50:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB8180299C
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 01:49:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1r9x81-0004ej-Pw; Sun, 03 Dec 2023 19:48:06 -0500
+	id 1r9x8F-0004hi-NJ; Sun, 03 Dec 2023 19:48:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r9x7u-0004e0-9o
- for qemu-devel@nongnu.org; Sun, 03 Dec 2023 19:47:58 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r9x87-0004gz-5N
+ for qemu-devel@nongnu.org; Sun, 03 Dec 2023 19:48:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r9x7s-0000We-Fu
- for qemu-devel@nongnu.org; Sun, 03 Dec 2023 19:47:58 -0500
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1r9x85-000163-NK
+ for qemu-devel@nongnu.org; Sun, 03 Dec 2023 19:48:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701650876;
+ s=mimecast20190719; t=1701650887;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=wqV49eQwtKIBLiG5qLWYmBON0hlLvH3bmdEmtYFl3lE=;
- b=Dy/JI+O3IO9kaV9Fu9MkkN3HUfW/+f+jJs56CBBlwKvuGLKz7N7qd4LtysxFU5s9wSuPHb
- tVze86BIBSNgslLGB3AioRmOMMlBAlK97DgMjPawAAb5YA6RYsIJfNij8uKpx0nQLhTMlA
- uHVSF6D/RHy/U5c5DMpn1N3WPm+7SxU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-mKJZJdgeNFqf648IlC0_Bw-1; Sun, 03 Dec 2023 19:47:50 -0500
-X-MC-Unique: mKJZJdgeNFqf648IlC0_Bw-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Lp1q/BWuHKtsyc0Pp2ZWNDYZQcuu4upOXCfcp+F1D/g=;
+ b=STXXCL4PytPGZn0/TOXM4PAFSUIIOzU3ipdoneQ4CXGL0mibxVYJS5aEjZ8vQ/0a7e2D21
+ W1oHCQKQgoN2QTqP+NoZA4MajC2L+9JotT0w/uqSQE7blIESn3gz46D4yZqxGkEGzaVav0
+ 4BBOtpKH6vJ+Kr1W+XGnUXCbFqQFJqY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-MLlmBdKgObKt-2QwCgrLaQ-1; Sun,
+ 03 Dec 2023 19:47:59 -0500
+X-MC-Unique: MLlmBdKgObKt-2QwCgrLaQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A5F8185A780;
- Mon,  4 Dec 2023 00:47:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA2013C0E64C;
+ Mon,  4 Dec 2023 00:47:57 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.61])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A511A492BE0;
- Mon,  4 Dec 2023 00:47:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 277DF492BE0;
+ Mon,  4 Dec 2023 00:47:49 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
@@ -51,9 +52,11 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
  palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  liwei1518@gmail.com, dbarboza@ventanamicro.com,
  zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
-Subject: [PATCH v9 0/9] Unified CPU type check
-Date: Mon,  4 Dec 2023 10:47:17 +1000
-Message-ID: <20231204004726.483558-1-gshan@redhat.com>
+Subject: [PATCH v9 1/9] machine: Use error handling when CPU type is checked
+Date: Mon,  4 Dec 2023 10:47:18 +1000
+Message-ID: <20231204004726.483558-2-gshan@redhat.com>
+In-Reply-To: <20231204004726.483558-1-gshan@redhat.com>
+References: <20231204004726.483558-1-gshan@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -83,115 +86,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series bases on Phil's repository because the prepatory commits
-have been queued to the branch.
+Functions that use an Error **errp parameter to return errors should
+not also report them to the user, because reporting is the caller's
+job. The principle is violated by machine_run_board_init() because
+it calls error_report(), error_printf(), and exit(1) when the machine
+doesn't support the requested CPU type.
 
-  https://gitlab.com/philmd/qemu.git (branch: cpus-next)
+Clean this up by using error_setg() and error_append_hint() instead.
+No functional change, as the only caller passes &error_fatal.
 
-There are two places where the user specified CPU type is checked to see
-if it's supported or allowed by the board: machine_run_board_init() and
-mc->init(). We don't have to maintain two duplicate sets of logic. This
-series intends to move the check to machine_run_board_init() so that we
-have unified CPU type check.
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+---
+v9: Improved change log                                  (Markus)
+---
+ hw/core/machine.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-This series can be checked out from:
-
-  git@github.com:gwshan/qemu.git (branch: kvm/cpu-type)
-
-PATCH[1-4] refactors and improves the logic to validate CPU type in
-           machine_run_board_init()
-PATCH[5-9] validates the CPU type in machine_run_board_init() for the
-           individual boards
-
-v1: https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00302.html
-v2: https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00528.html
-v3: https://lists.nongnu.org/archive/html/qemu-arm/2023-09/msg00157.html
-v4: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00005.html
-v5: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00611.html
-v6: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00768.html
-v7: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg01045.html
-v8: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg01168.html
-
-Testing
-=======
-
-Before the series is applied:
-
-  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
-  qemu-system-aarch64: mach-virt: CPU type cortex-a8-arm-cpu not supported
-  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
-  qemu-system-aarch64: sbsa-ref: CPU type cortex-a53-arm-cpu not supported
-  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
-  qemu-system-aarch64: sbsa-ref: CPU type sa1100-arm-cpu not supported
-  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
-  qemu-system-aarch64: unable to find CPU model 'host'
-
-After the series is applied:
-
-  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M virt -cpu cortex-a8
-  qemu-system-aarch64: Invalid CPU model: cortex-a8
-  The valid models are: cortex-a7, cortex-a15, cortex-a35, cortex-a55,     \
-                        cortex-a72, cortex-a76, cortex-a710, a64fx,        \
-                        neoverse-n1, neoverse-v1, neoverse-n2, cortex-a53, \
-                        cortex-a57, max
-  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu cortex-a53
-  qemu-system-aarch64: Invalid CPU model: cortex-a53
-  The valid models are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1,  \
-                        neoverse-n2, max
-  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu sa1100
-  qemu-system-aarch64: Invalid CPU model: sa1100
-  The valid models are: cortex-a57, cortex-a72, neoverse-n1, neoverse-v1,  \
-                        neoverse-n2, max
-  [gshan@gshan q]$ ./build/qemu-system-aarch64 -M sbsa-ref -cpu host
-  qemu-system-aarch64: unable to find CPU model 'host'
-
-Changelog
-=========
-v9:
-  * Pick r-bs from Markus and Phil                               (Gavin)
-  * Improved change log for PATCH[v9 1/9]                        (Markus)
-  * assert(mc->valid_cpu_types[0] != NULL) and assert(cc != NULL)
-    in is_cpu_type_supported() of PATCH[v9 3/9]                  (Phil)
-v8:
-  * Pick r-bs from Phil                                          (Gavin)
-  * Drop @local_err and use @errp in machine_run_board_init()    (Phil)
-  * Add PATCH[v8 3/9] to improve is_cpu_type_supported()         (Phil)
-  * Use g_autofree and replace 'type' with 'model' for the
-    error messages in is_cpu_type_supported()                    (Phil)
-v7:
-  * Add 'return' after error_propagate() in machine_run_board_init()
-    to avoid calling mc->init() in the failing case              (Marcin)
-v6:
-  * Drop PATCH[v5 01-23], queued by Phil                         (Phil)
-  * Clearer hint if only one CPU type is supported and have
-    'const MachineState *' in is_cpu_type_supported()            (Phil)
-  * Move valid_cpu_types[] to board's class_init() function      (Phil)
-
-Gavin Shan (9):
-  machine: Use error handling when CPU type is checked
-  machine: Introduce helper is_cpu_type_supported()
-  machine: Improve is_cpu_type_supported()
-  machine: Print CPU model name instead of CPU type
-  hw/arm/virt: Hide host CPU model for tcg
-  hw/arm/virt: Check CPU type in machine_run_board_init()
-  hw/arm/sbsa-ref: Check CPU type in machine_run_board_init()
-  hw/arm: Check CPU type in machine_run_board_init()
-  hw/riscv/shakti_c: Check CPU type in machine_run_board_init()
-
- hw/arm/bananapi_m2u.c   | 12 +++---
- hw/arm/cubieboard.c     | 12 +++---
- hw/arm/mps2-tz.c        | 26 +++++++++---
- hw/arm/mps2.c           | 26 +++++++++---
- hw/arm/msf2-som.c       | 12 +++---
- hw/arm/musca.c          | 12 +++---
- hw/arm/npcm7xx_boards.c | 12 +++---
- hw/arm/orangepi.c       | 12 +++---
- hw/arm/sbsa-ref.c       | 36 +++++-----------
- hw/arm/virt.c           | 60 ++++++++++----------------
- hw/core/machine.c       | 94 +++++++++++++++++++++++++----------------
- hw/riscv/shakti_c.c     | 13 +++---
- 12 files changed, 170 insertions(+), 157 deletions(-)
-
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 0c17398141..bde7f4af6d 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1466,15 +1466,16 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+ 
+         if (!machine_class->valid_cpu_types[i]) {
+             /* The user specified CPU is not valid */
+-            error_report("Invalid CPU type: %s", machine->cpu_type);
+-            error_printf("The valid types are: %s",
+-                         machine_class->valid_cpu_types[0]);
++            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
++            error_append_hint(errp, "The valid types are: %s",
++                              machine_class->valid_cpu_types[0]);
+             for (i = 1; machine_class->valid_cpu_types[i]; i++) {
+-                error_printf(", %s", machine_class->valid_cpu_types[i]);
++                error_append_hint(errp, ", %s",
++                                  machine_class->valid_cpu_types[i]);
+             }
+-            error_printf("\n");
+ 
+-            exit(1);
++            error_append_hint(&errp, "\n");
++            return;
+         }
+     }
+ 
 -- 
 2.42.0
 
