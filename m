@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282F9802D94
-	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 09:51:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AA7802DCB
+	for <lists+qemu-devel@lfdr.de>; Mon,  4 Dec 2023 10:07:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rA4eZ-0002XD-Dj; Mon, 04 Dec 2023 03:50:11 -0500
+	id 1rA4tN-0005jn-Q4; Mon, 04 Dec 2023 04:05:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rA4eW-0002Wk-FC
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:50:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rA4eU-0007kp-Qq
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 03:50:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701679805;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RokDO3QdPhWeRocvgfKaBmZ1TTaso2aNG+vh8QpQ1RU=;
- b=S9WWcx0GtYAH7QQzMlUYDcji2+6dmjJWCAJ7X5Jm8gisIUAHmJOs4CkKk4uNHYbf8sM0uK
- oza4cCcsLtlibOpeYa7Ky6f2XF1ZLWFXZdzzPryZku1OYeCSoAgqrnWigJHX+LfCfX42Do
- ys1HpTVm4AxAwvGH6mFPDYwO2rn1Onk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-50-jQitIPCfMoKOSQKjqTnnxQ-1; Mon, 04 Dec 2023 03:50:04 -0500
-X-MC-Unique: jQitIPCfMoKOSQKjqTnnxQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33343bb5dc2so824087f8f.0
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 00:50:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yui.washidu@gmail.com>)
+ id 1rA4tJ-0005jW-4m; Mon, 04 Dec 2023 04:05:25 -0500
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yui.washidu@gmail.com>)
+ id 1rA4tH-0006Bo-Gt; Mon, 04 Dec 2023 04:05:24 -0500
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-58d98188dc0so2587797eaf.3; 
+ Mon, 04 Dec 2023 01:05:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701680721; x=1702285521; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QYCtqNEEn4MNLo6m39wNgy13wLOicfFKufAAov37rDo=;
+ b=c9YwUx3aE/6DxAb2FIp8rOnRrN4tJjKr18LYyI1wPDmb2VITT/VoPlSFpkMnjHC4j7
+ vvAMUJ9rAXOGEyYGyXqctLGJBfbfhFXxuRK57Ih5AipddN9P2ynR2r9rqW9XIno/Ni7J
+ xNNkRAOYxTkdgJ0Co0jWVb07ArgFqf2Ea7sOX1OTnXBpQCoG4/8FVR7R2bd1Bx4pQzo/
+ E3tJLOqpC79w6OyGW4h/q1sk1Ruw3cUM4uOMpy7Um8g6mBIQNPzH5oXmH1u8UbUvVd7J
+ n6ZuzYWyC6rPGaTDx4JxRmK1UZb/YCd12/Ie/JUXh61RCwMk0nIJSjmcybTbQ+Cmsb1I
+ iPTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701679803; x=1702284603;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1701680721; x=1702285521;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RokDO3QdPhWeRocvgfKaBmZ1TTaso2aNG+vh8QpQ1RU=;
- b=Iet0oqHvDCEYp7zcNzvQnkwndedLdFuytCSkcv3LkecvgsmmUq/CMIgKKPAYit9Xic
- 1HpVjDHVk356p1M7klNy8XXmPsKI1YMy8mBiW/WtVD8Dl6rqgfJwiqcGga2okKFL7XsX
- DniV0YSb4o82qGinW37wmacc9aspHL24vhblIvHAodzBfTQZjgdCwKE90zDeI2RdNgSH
- JhTNnEpDmYgujNFYhA7hu+KEVTPpTsnnm+KouJ/LF/o+3VT3K4BO1KqyonYULMt4OnEt
- 24kQC+pgwmiCqAlQxh6IqNRgXpvG4DTbpPvVO6rgTeXaN+5tUk/VhZO1afPwCjnbUVqK
- 90JA==
-X-Gm-Message-State: AOJu0YyIZ7LKp6hlJ/8Db0GD6NqK80Tq5cB8IeYabXVHcqodsiqhyPLG
- spk1scuCOqVgtw1Ga9pRokGOvXVjbf7XHbw6zuwId48UqXWhe5jGi1EudhQs/sSFhQoMQ8HCdjF
- Ije8dAbDCJdGOnbs=
-X-Received: by 2002:a5d:6ad2:0:b0:333:2fd2:6f7b with SMTP id
- u18-20020a5d6ad2000000b003332fd26f7bmr2637074wrw.133.1701679802942; 
- Mon, 04 Dec 2023 00:50:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEssd6UZQqbygOskFzu2pYplK9/wFI8cuyI+O/jCuFk0X7jc5DnJPSXwFJTgw8SMVkwf21zxw==
-X-Received: by 2002:a5d:6ad2:0:b0:333:2fd2:6f7b with SMTP id
- u18-20020a5d6ad2000000b003332fd26f7bmr2637064wrw.133.1701679802560; 
- Mon, 04 Dec 2023 00:50:02 -0800 (PST)
-Received: from redhat.com ([2.55.11.133]) by smtp.gmail.com with ESMTPSA id
- dm11-20020a0560000bcb00b0033334625bdbsm7542868wrb.13.2023.12.04.00.50.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Dec 2023 00:50:01 -0800 (PST)
-Date: Mon, 4 Dec 2023 03:49:58 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, stefanha@gmail.com,
- marcandre.lureau@gmail.com
-Subject: Re: [PATCH 0/3] Virtio dmabuf improvements
-Message-ID: <20231204034947-mutt-send-email-mst@kernel.org>
-References: <20231107093744.388099-1-aesteve@redhat.com>
- <CADSE00Ji6Gk8LJF-1Yr9VBmmcOFFAVYMVGQYsdT59kQQ2adyDA@mail.gmail.com>
+ bh=QYCtqNEEn4MNLo6m39wNgy13wLOicfFKufAAov37rDo=;
+ b=W3Dllxq5CDcC9XMHdSyOmnZikRR68U40Jm1s8ABMwMaIBPzjwhVYa1u5SkE/Tl5XRl
+ wOPEL5NRveHMqJuc/HCtNhf6Fjq3zMjoyNoUIlIFiWW9Vduhp4OdAXxoyA36g6JAJFOR
+ paAan3P92aGHVZaYmUGEpBXw1uxeFKUDbcmzDGOc9GWz+yfjCAHvW5bejWctUU8Xu+R/
+ JvRy5sDB0P7yIToQjCZH/j0iK+FN6ZXAO+nAJ2ga3pRg+JqTC66Or5S/dEaJOJyaHYVv
+ f2+l0DDxZ58wvayaVKtXoz6MXIPt9v3HSazK5AbM/WK8sAsyaT14lKcjOjdZLGYLFZEc
+ focQ==
+X-Gm-Message-State: AOJu0YyLjXPr7NBlERUtt3sX3tBeomvvAP6G05ZVlO6u934s9+CriPiu
+ LffsvoxvQshZdftHIr4iQb4=
+X-Google-Smtp-Source: AGHT+IHc9QvOUAjzN4hZIUzgRdbzFyy1C6Y1KqwbRwYUg8bxpILaHmosWW47JLC67k7wPDR1L0WYOQ==
+X-Received: by 2002:a05:6358:3a24:b0:170:17eb:7c54 with SMTP id
+ g36-20020a0563583a2400b0017017eb7c54mr4167488rwe.39.1701680721250; 
+ Mon, 04 Dec 2023 01:05:21 -0800 (PST)
+Received: from [100.64.1.32] (M113150237005.v4.enabler.ne.jp. [113.150.237.5])
+ by smtp.gmail.com with ESMTPSA id
+ y8-20020a62ce08000000b006ce57f2a254sm819850pfg.209.2023.12.04.01.05.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 Dec 2023 01:05:20 -0800 (PST)
+Message-ID: <66082b70-d898-461b-a59a-b7b6f49a1886@gmail.com>
+Date: Mon, 4 Dec 2023 18:04:00 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADSE00Ji6Gk8LJF-1Yr9VBmmcOFFAVYMVGQYsdT59kQQ2adyDA@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/14] virtio-net: add support for SR-IOV emulation
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Jason Wang <jasowang@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
+References: <20231202-sriov-v1-0-32b3570f7bd6@daynix.com>
+ <f7527574-1c16-49cd-adcc-9a7ffcbe4826@daynix.com>
+From: Yui Washizu <yui.washidu@gmail.com>
+In-Reply-To: <f7527574-1c16-49cd-adcc-9a7ffcbe4826@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=yui.washidu@gmail.com; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,46 +101,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Nov 30, 2023 at 04:49:35PM +0100, Albert Esteve wrote:
-> 
-> 
-> 
-> On Tue, Nov 7, 2023 at 10:37 AM Albert Esteve <aesteve@redhat.com> wrote:
-> 
->     Various improvements for the virtio-dmabuf module.
->     This patch includes:
-> 
->     - Check for ownership before allowing a vhost device
->       to remove an object from the table.
->     - Properly cleanup shared resources if a vhost device
->       object gets cleaned up.
->     - Rename virtio dmabuf functions to `virtio_dmabuf_*`
-> 
->     Albert Esteve (3):
->       hw/virtio: check owner for removing objects
->       hw/virtio: cleanup shared resources
->       hw/virtio: rename virtio dmabuf API
-> 
->      hw/display/virtio-dmabuf.c        | 14 +++++-----
->      hw/virtio/vhost-user.c            | 33 ++++++++++++++++++-----
->      hw/virtio/vhost.c                 |  5 ++++
->      include/hw/virtio/vhost.h         |  6 +++++
->      include/hw/virtio/virtio-dmabuf.h | 33 ++++++++++++-----------
->      tests/unit/test-virtio-dmabuf.c   | 44 +++++++++++++++----------------
->      6 files changed, 83 insertions(+), 52 deletions(-)
-> 
->     --
->     2.41.0
-> 
-> 
-> 
-> Bump :)
-> 
-> @Marc-André Lureau could you please take a look? You suggested the API
-> upgrades, so would be great if you could check if it is what you had in mind.
-> 
-> Thanks!
 
-All this is post releas material, right?
+On 2023/12/02 17:08, Akihiko Odaki wrote:
+> On 2023/12/02 17:00, Akihiko Odaki wrote:
+>> Introduction
+>> ------------
+>>
+>> This series is based on the RFC series submitted by Yui Washizu[1].
+>> See also [2] for the context.
+>>
+>> This series enables SR-IOV emulation for virtio-net. It is useful
+>> to test SR-IOV support on the guest, or to expose several vDPA 
+>> devices in a
+>> VM. vDPA devices can also provide L2 switching feature for offloading
+>> though it is out of scope to allow the guest to configure such a 
+>> feature.
+>>
+>> The new code of SR-IOV emulation for virtio-net actually resides in
+>> virtio-pci since it's specific to PCI. Although it is written in a way
+>> agnostic to the virtio device type, it is restricted for virtio-net 
+>> because
+>> of lack of validation.
+>
+> I forgot to prefix this as RFC. It is the first version of the series 
+> and I'm open for design changes.
+
+
+Thank you. I'll proceed with building and reviewing the patch content.
 
 
