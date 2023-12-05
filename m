@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDF4804342
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 01:23:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C83C8804354
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 01:25:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAJCI-00060z-Jb; Mon, 04 Dec 2023 19:21:58 -0500
+	id 1rAJEg-0006mZ-Ty; Mon, 04 Dec 2023 19:24:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1rAJCG-00060X-Vi
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:21:56 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1rAJEZ-0006lz-Gc
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:24:21 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1rAJCE-0005VA-VE
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:21:56 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1rAJEP-0007HF-D7
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:24:13 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B503gHS008346; Tue, 5 Dec 2023 00:21:52 GMT
+ 3B508OlM009063; Tue, 5 Dec 2023 00:24:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding;
- s=corp-2023-11-20; bh=EYMdKBS7wBKRnAHNftFxEAIyeyEz1k6aw2EyKQ04GT4=;
- b=a0I6b4ZKQmlw/RTBNwy+DhhpM0NgpCsLsOLIH2OfLq/1uVaVko5F11huRd3d04M20Pq3
- MEefEGO1pgMUmHO7gNNEdqUq9pFGHSSqPZbS/qwuuql/Rwt2uCiJlOgcsWyz4oZN81Pn
- b3M0oyRNPjDMfBKZDZKJjaiFbe5hlIpgxpKJChmQhVLmkyFS5X6xVbLs+k5X7Jy+ubtH
- nD9tQ4cODHzSQL8jGosEJy6dXVOHJuyT+Yoxl+sRwOUjhENMKn28vSHe2GdRk3RSWYxQ
- N/hUAx5oaGy0Z26/82py/G7TqPri2wc/e4ZmIgt8qYAfE+p5LV+hLCYALM0JVtJ7Lir8 AQ== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2023-11-20;
+ bh=xLlWCVQdyKvoGB1k6nc+Rv5KTykEMJd608sRbj4o7CQ=;
+ b=dShQTg5u4s+KHNUF/l7FwsZhLLux7S/uPuyXgv2ALj5lr0M7pjNC3qtsiWU47xwN1q5Y
+ m05jTHub4hj4D0SargE2f/e74c01KKGXVns5LL2v7vtY+zeQt0onu95rStIGr/Gj5oZm
+ B2mr4LhC1FnyiVzLDF1p8vKuMp0RMCTQf3nkomCnUcvtmtlwzAzZ41f4fkd4WdQ3BQX7
+ bKEGQf0pL/eJyB0K5c/OKmDiEwrxI7GszQ5l6wsvsT9rHiu1YpcAPA4kU24r9XKBIcS8
+ 3Kf8thyL6gpTfMc48BnDyA7DxF4+gLhhCtHtBkw0Y8sUgT7b1aAqYgTDaMqAgIZQmq80 iw== 
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3usrtsg11b-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uss2cg0w0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 05 Dec 2023 00:21:51 +0000
+ Tue, 05 Dec 2023 00:24:04 +0000
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B4MIri9018503; Tue, 5 Dec 2023 00:21:51 GMT
+ with ESMTP id 3B4MIq9r018471; Tue, 5 Dec 2023 00:24:03 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uqu16kj9g-1
+ 3uqu16kkya-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 05 Dec 2023 00:21:51 +0000
+ Tue, 05 Dec 2023 00:24:03 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B50LoxD015944;
- Tue, 5 Dec 2023 00:21:50 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B50O2YV020972;
+ Tue, 5 Dec 2023 00:24:03 GMT
 Received: from localhost.localdomain (dhcp-10-191-8-104.vpn.oracle.com
  [10.191.8.104])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3uqu16kj7u-1; Tue, 05 Dec 2023 00:21:50 +0000
+ 3uqu16kkx1-1; Tue, 05 Dec 2023 00:24:02 +0000
 From: Annie Li <annie.li@oracle.com>
 To: qemu-devel@nongnu.org, imammedo@redhat.com
 Cc: annie.li@oracle.com, miguel.luis@oracle.com
-Subject: [RFC PATCH 00/11] Support ACPI Control Method Sleep button
-Date: Tue,  5 Dec 2023 00:21:43 +0000
-Message-Id: <20231205002143.562-1-annie.li@oracle.com>
+Subject: [RFC PATCH 01/11] acpi: hmp/qmp: Add hmp/qmp support for system_sleep
+Date: Tue,  5 Dec 2023 00:23:56 +0000
+Message-Id: <20231205002356.1239-1-annie.li@oracle.com>
 X-Mailer: git-send-email 2.30.1.windows.1
+In-Reply-To: <20231205002143.562-1-annie.li@oracle.com>
+References: <20231205002143.562-1-annie.li@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-04_22,2023-12-04_01,2023-05-22_02
+ definitions=2023-12-04_23,2023-12-04_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  malwarescore=0
- mlxlogscore=883 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312050001
-X-Proofpoint-GUID: N_4Q9ge0Eh2OQ7aQffmdLYsbZdzMF3fw
-X-Proofpoint-ORIG-GUID: N_4Q9ge0Eh2OQ7aQffmdLYsbZdzMF3fw
-Received-SPF: pass client-ip=205.220.177.32; envelope-from=annie.li@oracle.com;
- helo=mx0b-00069f02.pphosted.com
+ engine=8.12.0-2311060000 definitions=main-2312050002
+X-Proofpoint-GUID: Y2ii5i4XvBv6FPEHrpl1WqVG3jimkxWG
+X-Proofpoint-ORIG-GUID: Y2ii5i4XvBv6FPEHrpl1WqVG3jimkxWG
+Received-SPF: pass client-ip=205.220.165.32; envelope-from=annie.li@oracle.com;
+ helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -96,129 +99,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ACPI sleep button can be implemented as a fixed hardware button
-or Control Method Sleep button.
+Following hmp/qmp commands are implemented for pressing virtual
+sleep button,
 
-The patch of implementing a fixed hardware sleep button was posted
-here 1). More discussions can be found here 2). Essentially, the
-discussion mainly focuses on whether the sleep button is implemented
-as a fixed hardware button or Control Method Sleep button. The latter
-benefits different architectures since the code can be shared among
-them.
+hmp: system_sleep
+qmp: { "execute": "system_sleep" }
 
-This patch set implements Control Method Sleep button for both x86
-and ARM platform.
+These commands put the guest into suspend or other power states
+depending on the power settings inside the guest.
 
-For x86, a sleep button GPE event handler is implemented, so a GPE
-event is triggered to indicate the OSPM the sleep button is pressed.
-Tests have been done for Linux 6.6.0-rc2+, and Windows Server 2016,
-the sleep button works as expected.
+Signed-off-by: Annie Li <annie.li@oracle.com>
+---
+ hmp-commands.hx            | 14 ++++++++++++++
+ hw/core/machine-hmp-cmds.c |  5 +++++
+ hw/core/machine-qmp-cmds.c |  9 +++++++++
+ include/monitor/hmp.h      |  1 +
+ qapi/machine.json          | 18 ++++++++++++++++++
+ qapi/pragma.json           |  1 +
+ 6 files changed, 48 insertions(+)
 
-For ARM, a GED event is triggered to notify the OSPM. With proper
-debug knobs it is possible to see the guest OSPM acknowledges the
-sleep event:
-
-[ 268.429495] evregion-0119 ev_address_space_dispa: ----Entry
-[ 268.430480] evrgnini-0043 ev_system_memory_regio: ----Entry
-[ 268.431423] evrgnini-0079 ev_system_memory_regio: ----Exit- AE_OK
-[ 268.432303] evregion-0230 ev_address_space_dispa: Handler 0000000081544775 (@00000000e8f0a66d) Address 0000000009080000 [SystemMemory]
-[ 268.433943] evregion-0325 ev_address_space_dispa: ----Exit- AE_OK
-[ 268.434793]   evmisc-0132 ev_queue_notify_reques: Dispatching Notify on [SLPB] (Device) Value 0x80 (Status Change) Node 00000000ada658b8
-
-But that seems to be all, depicting that sleep/wakeup for ARM is broken
-and there are still missing some pieces of the puzzle.
-
-Nonetheless, we would like to take this RFC as an opportunity for updates
-on this subject as possible roadmaps.
-
-1) https://lists.gnu.org/archive/html/qemu-devel/2017-07/msg06478.html
-2) https://lore.kernel.org/all/20210920095316.2dd133be@redhat.com/T/#mfe24f89778020deeacfe45083f3eea3cf9f55961
-
-Annie Li (6):
-  acpi: hmp/qmp: Add hmp/qmp support for system_sleep
-  acpi: Implement control method sleep button
-  test/acpi: allow DSDT table changes
-  acpi: Support Control Method sleep button for x86
-  tests/acpi/bios-tables-test: update DSDT tables for Control Method
-    Sleep button
-  acpi: Send the GPE event of suspend and wakeup for x86
-
-Miguel Luis (5):
-  hw/acpi: Add ACPI GED support for the sleep event
-  tests/acpi: allow FACP and DSDT table changes for arm/virt
-  hw/arm: enable sleep support for arm/virt
-  tests/acpi: Update FACP and DSDT tables for sleep button
-  arm/virt: enable sleep support
-
- hmp-commands.hx                               |  14 +++++
- hw/acpi/control_method_device.c               |  49 ++++++++++++++++++
- hw/acpi/core.c                                |  17 ++++--
- hw/acpi/generic_event_device.c                |   9 ++++
- hw/acpi/meson.build                           |   1 +
- hw/arm/virt-acpi-build.c                      |  13 +++++
- hw/arm/virt.c                                 |  14 ++++-
- hw/core/machine-hmp-cmds.c                    |   5 ++
- hw/core/machine-qmp-cmds.c                    |  11 ++++
- hw/i386/acpi-build.c                          |   9 ++++
- include/hw/acpi/acpi.h                        |   1 +
- include/hw/acpi/acpi_dev_interface.h          |   1 +
- include/hw/acpi/control_method_device.h       |  20 +++++++
- include/hw/acpi/generic_event_device.h        |   1 +
- include/hw/arm/virt.h                         |   1 +
- include/monitor/hmp.h                         |   1 +
- qapi/machine.json                             |  18 +++++++
- qapi/pragma.json                              |   1 +
- tests/data/acpi/pc/DSDT                       | Bin 6830 -> 7012 bytes
- tests/data/acpi/pc/DSDT.acpierst              | Bin 6741 -> 6923 bytes
- tests/data/acpi/pc/DSDT.acpihmat              | Bin 8155 -> 8337 bytes
- tests/data/acpi/pc/DSDT.bridge                | Bin 13701 -> 13883 bytes
- tests/data/acpi/pc/DSDT.cphp                  | Bin 7294 -> 7476 bytes
- tests/data/acpi/pc/DSDT.dimmpxm               | Bin 8484 -> 8666 bytes
- tests/data/acpi/pc/DSDT.hpbridge              | Bin 6781 -> 6963 bytes
- tests/data/acpi/pc/DSDT.hpbrroot              | Bin 3337 -> 3519 bytes
- tests/data/acpi/pc/DSDT.ipmikcs               | Bin 6902 -> 7084 bytes
- tests/data/acpi/pc/DSDT.memhp                 | Bin 8189 -> 8371 bytes
- tests/data/acpi/pc/DSDT.nohpet                | Bin 6688 -> 6870 bytes
- tests/data/acpi/pc/DSDT.numamem               | Bin 6836 -> 7018 bytes
- tests/data/acpi/pc/DSDT.roothp                | Bin 10623 -> 10805 bytes
- tests/data/acpi/q35/DSDT                      | Bin 8355 -> 8537 bytes
- tests/data/acpi/q35/DSDT.acpierst             | Bin 8372 -> 8554 bytes
- tests/data/acpi/q35/DSDT.acpihmat             | Bin 9680 -> 9862 bytes
- tests/data/acpi/q35/DSDT.acpihmat-noinitiator | Bin 8634 -> 8816 bytes
- tests/data/acpi/q35/DSDT.applesmc             | Bin 8401 -> 8583 bytes
- tests/data/acpi/q35/DSDT.bridge               | Bin 11968 -> 12150 bytes
- tests/data/acpi/q35/DSDT.core-count           | Bin 12913 -> 13095 bytes
- tests/data/acpi/q35/DSDT.core-count2          | Bin 33770 -> 33952 bytes
- tests/data/acpi/q35/DSDT.cphp                 | Bin 8819 -> 9001 bytes
- tests/data/acpi/q35/DSDT.cxl                  | Bin 9713 -> 9895 bytes
- tests/data/acpi/q35/DSDT.dimmpxm              | Bin 10009 -> 10191 bytes
- tests/data/acpi/q35/DSDT.ipmibt               | Bin 8430 -> 8612 bytes
- tests/data/acpi/q35/DSDT.ipmismbus            | Bin 8443 -> 8625 bytes
- tests/data/acpi/q35/DSDT.ivrs                 | Bin 8372 -> 8554 bytes
- tests/data/acpi/q35/DSDT.memhp                | Bin 9714 -> 9896 bytes
- tests/data/acpi/q35/DSDT.mmio64               | Bin 9485 -> 9667 bytes
- tests/data/acpi/q35/DSDT.multi-bridge         | Bin 13208 -> 13390 bytes
- tests/data/acpi/q35/DSDT.noacpihp             | Bin 8235 -> 8417 bytes
- tests/data/acpi/q35/DSDT.nohpet               | Bin 8213 -> 8395 bytes
- tests/data/acpi/q35/DSDT.numamem              | Bin 8361 -> 8543 bytes
- tests/data/acpi/q35/DSDT.pvpanic-isa          | Bin 8456 -> 8638 bytes
- tests/data/acpi/q35/DSDT.thread-count         | Bin 12913 -> 13095 bytes
- tests/data/acpi/q35/DSDT.thread-count2        | Bin 33770 -> 33952 bytes
- tests/data/acpi/q35/DSDT.tis.tpm12            | Bin 8961 -> 9143 bytes
- tests/data/acpi/q35/DSDT.tis.tpm2             | Bin 8987 -> 9169 bytes
- tests/data/acpi/q35/DSDT.type4-count          | Bin 18589 -> 18771 bytes
- tests/data/acpi/q35/DSDT.viot                 | Bin 9464 -> 9646 bytes
- tests/data/acpi/q35/DSDT.xapic                | Bin 35718 -> 35900 bytes
- tests/data/acpi/virt/DSDT                     | Bin 5196 -> 5278 bytes
- tests/data/acpi/virt/DSDT.acpihmatvirt        | Bin 5282 -> 5364 bytes
- tests/data/acpi/virt/DSDT.memhp               | Bin 6557 -> 6639 bytes
- tests/data/acpi/virt/DSDT.pxb                 | Bin 7679 -> 7761 bytes
- tests/data/acpi/virt/DSDT.topology            | Bin 5398 -> 5480 bytes
- tests/data/acpi/virt/FACP                     | Bin 276 -> 276 bytes
- 65 files changed, 181 insertions(+), 5 deletions(-)
- create mode 100644 hw/acpi/control_method_device.c
- create mode 100644 include/hw/acpi/control_method_device.h
-
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 765349ed14..bd01e49ec5 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -652,6 +652,20 @@ SRST
+   whether profiling is on or off.
+ ERST
+ 
++    {
++        .name       = "system_sleep",
++        .args_type  = "",
++        .params     = "",
++        .help       = "send ACPI sleep event",
++        .cmd = hmp_system_sleep,
++    },
++
++SRST
++``system_sleep``
++  Push the virtual sleep button; if supported the system will enter
++  an ACPI sleep state.
++ERST
++
+     {
+         .name       = "system_reset",
+         .args_type  = "",
+diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+index a6ff6a4875..641a365e3e 100644
+--- a/hw/core/machine-hmp-cmds.c
++++ b/hw/core/machine-hmp-cmds.c
+@@ -185,6 +185,11 @@ void hmp_system_reset(Monitor *mon, const QDict *qdict)
+     qmp_system_reset(NULL);
+ }
+ 
++void hmp_system_sleep(Monitor *mon, const QDict *qdict)
++{
++    qmp_system_sleep(NULL);
++}
++
+ void hmp_system_powerdown(Monitor *mon, const QDict *qdict)
+ {
+     qmp_system_powerdown(NULL);
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index 3860a50c3b..9f1e636c90 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -257,6 +257,15 @@ void qmp_system_reset(Error **errp)
+     qemu_system_reset_request(SHUTDOWN_CAUSE_HOST_QMP_SYSTEM_RESET);
+ }
+ 
++void qmp_system_sleep(Error **errp)
++{
++    if (!qemu_wakeup_suspend_enabled()) {
++        error_setg(errp,
++                   "suspend from running is not supported by this guest");
++        return;
++    }
++}
++
+ void qmp_system_powerdown(Error **errp)
+ {
+     qemu_system_powerdown_request();
+diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
+index 13f9a2dedb..d72a3b775c 100644
+--- a/include/monitor/hmp.h
++++ b/include/monitor/hmp.h
+@@ -45,6 +45,7 @@ void hmp_quit(Monitor *mon, const QDict *qdict);
+ void hmp_stop(Monitor *mon, const QDict *qdict);
+ void hmp_sync_profile(Monitor *mon, const QDict *qdict);
+ void hmp_system_reset(Monitor *mon, const QDict *qdict);
++void hmp_system_sleep(Monitor *mon, const QDict *qdict);
+ void hmp_system_powerdown(Monitor *mon, const QDict *qdict);
+ void hmp_exit_preconfig(Monitor *mon, const QDict *qdict);
+ void hmp_announce_self(Monitor *mon, const QDict *qdict);
+diff --git a/qapi/machine.json b/qapi/machine.json
+index b6d634b30d..3ac69df92f 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -297,6 +297,24 @@
+ ##
+ { 'command': 'system_reset' }
+ 
++##
++# @system_sleep:
++#
++# Requests that a guest perform a ACPI sleep transition by pushing a virtual
++# sleep button.
++#
++# Notes: A guest may or may not respond to this command. This command
++#        returning does not indicate that a guest has accepted the request
++#        or that it has gone to sleep.
++#
++# Example:
++#
++# -> { "execute": "system_sleep" }
++# <- { "return": {} }
++#
++##
++{ 'command': 'system_sleep' }
++
+ ##
+ # @system_powerdown:
+ #
+diff --git a/qapi/pragma.json b/qapi/pragma.json
+index 0aa4eeddd3..ef15229854 100644
+--- a/qapi/pragma.json
++++ b/qapi/pragma.json
+@@ -23,6 +23,7 @@
+         'set_password',
+         'system_powerdown',
+         'system_reset',
++        'system_sleep',
+         'system_wakeup' ],
+     # Commands allowed to return a non-dictionary
+     'command-returns-exceptions': [
 -- 
 2.34.3
 
