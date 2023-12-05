@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83C8804354
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 01:25:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21A8804357
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 01:26:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAJEg-0006mZ-Ty; Mon, 04 Dec 2023 19:24:27 -0500
+	id 1rAJGT-0007Qw-W7; Mon, 04 Dec 2023 19:26:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1rAJEZ-0006lz-Gc
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:24:21 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1rAJGQ-0007QZ-K4
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:26:15 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1rAJEP-0007HF-D7
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:24:13 -0500
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ id 1rAJGO-0000hd-WC
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:26:14 -0500
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B508OlM009063; Tue, 5 Dec 2023 00:24:05 GMT
+ 3B503dqN007441; Tue, 5 Dec 2023 00:26:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-11-20;
- bh=xLlWCVQdyKvoGB1k6nc+Rv5KTykEMJd608sRbj4o7CQ=;
- b=dShQTg5u4s+KHNUF/l7FwsZhLLux7S/uPuyXgv2ALj5lr0M7pjNC3qtsiWU47xwN1q5Y
- m05jTHub4hj4D0SargE2f/e74c01KKGXVns5LL2v7vtY+zeQt0onu95rStIGr/Gj5oZm
- B2mr4LhC1FnyiVzLDF1p8vKuMp0RMCTQf3nkomCnUcvtmtlwzAzZ41f4fkd4WdQ3BQX7
- bKEGQf0pL/eJyB0K5c/OKmDiEwrxI7GszQ5l6wsvsT9rHiu1YpcAPA4kU24r9XKBIcS8
- 3Kf8thyL6gpTfMc48BnDyA7DxF4+gLhhCtHtBkw0Y8sUgT7b1aAqYgTDaMqAgIZQmq80 iw== 
+ bh=to5ibbp6gAN/HwF6WWVXndYPBAr+vJG5Ff7IzVdx5iM=;
+ b=VtTFiBjyeK38k+sAtUdfgPPH1QxtxohmclrZ43bi1RFp7OhJPFgURQof7+2BQG83B/hn
+ vOSKUZnCoPYsw50L7GWRwjQdXavxYZebkCmArwzonc5hk0s3odg54Qo3wPpJzydYybok
+ e19jGz+lw6+vd0qJtMHCSOHO0rBixQLiY4M6ZYhimpaa+h1DFdxXpJOrRKQO3QL20m2b
+ h/yGCwnb2LKjDf5a0WpUuxLDomoMSxhhAK0hVxLH1gm2MgHW3TtCZpX08iiLj+6jKBFU
+ R8oJz+/txLdKTS+3LigQSTRBlZj3Vo+ONfo30Y7dUggUqxRXPsCopXvvR9kOvsyASyrN 9w== 
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uss2cg0w0-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3usrvcg13w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 05 Dec 2023 00:24:04 +0000
+ Tue, 05 Dec 2023 00:26:11 +0000
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B4MIq9r018471; Tue, 5 Dec 2023 00:24:03 GMT
+ with ESMTP id 3B4MIrVB018494; Tue, 5 Dec 2023 00:26:10 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uqu16kkya-1
+ 3uqu16knn3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 05 Dec 2023 00:24:03 +0000
+ Tue, 05 Dec 2023 00:26:10 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B50O2YV020972;
- Tue, 5 Dec 2023 00:24:03 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B50QANS027632;
+ Tue, 5 Dec 2023 00:26:10 GMT
 Received: from localhost.localdomain (dhcp-10-191-8-104.vpn.oracle.com
  [10.191.8.104])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3uqu16kkx1-1; Tue, 05 Dec 2023 00:24:02 +0000
+ 3uqu16knm1-1; Tue, 05 Dec 2023 00:26:09 +0000
 From: Annie Li <annie.li@oracle.com>
 To: qemu-devel@nongnu.org, imammedo@redhat.com
 Cc: annie.li@oracle.com, miguel.luis@oracle.com
-Subject: [RFC PATCH 01/11] acpi: hmp/qmp: Add hmp/qmp support for system_sleep
-Date: Tue,  5 Dec 2023 00:23:56 +0000
-Message-Id: <20231205002356.1239-1-annie.li@oracle.com>
+Subject: [RFC PATCH 02/11] acpi: Implement control method sleep button
+Date: Tue,  5 Dec 2023 00:26:03 +0000
+Message-Id: <20231205002603.545-1-annie.li@oracle.com>
 X-Mailer: git-send-email 2.30.1.windows.1
 In-Reply-To: <20231205002143.562-1-annie.li@oracle.com>
 References: <20231205002143.562-1-annie.li@oracle.com>
@@ -72,10 +72,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311060000 definitions=main-2312050002
-X-Proofpoint-GUID: Y2ii5i4XvBv6FPEHrpl1WqVG3jimkxWG
-X-Proofpoint-ORIG-GUID: Y2ii5i4XvBv6FPEHrpl1WqVG3jimkxWG
-Received-SPF: pass client-ip=205.220.165.32; envelope-from=annie.li@oracle.com;
- helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-GUID: Mf7td2tHTFE0nU2RFK2ZAGa40ecyol6F
+X-Proofpoint-ORIG-GUID: Mf7td2tHTFE0nU2RFK2ZAGa40ecyol6F
+Received-SPF: pass client-ip=205.220.177.32; envelope-from=annie.li@oracle.com;
+ helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -99,139 +99,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following hmp/qmp commands are implemented for pressing virtual
-sleep button,
+The control method sleep button is added, as well as its GPE event
+handler.
 
-hmp: system_sleep
-qmp: { "execute": "system_sleep" }
-
-These commands put the guest into suspend or other power states
-depending on the power settings inside the guest.
-
+Co-Developed-by: Miguel Luis <miguel.luis@oracle.com>
 Signed-off-by: Annie Li <annie.li@oracle.com>
 ---
- hmp-commands.hx            | 14 ++++++++++++++
- hw/core/machine-hmp-cmds.c |  5 +++++
- hw/core/machine-qmp-cmds.c |  9 +++++++++
- include/monitor/hmp.h      |  1 +
- qapi/machine.json          | 18 ++++++++++++++++++
- qapi/pragma.json           |  1 +
- 6 files changed, 48 insertions(+)
+ hw/acpi/control_method_device.c         | 49 +++++++++++++++++++++++++
+ hw/acpi/meson.build                     |  1 +
+ include/hw/acpi/control_method_device.h | 20 ++++++++++
+ 3 files changed, 70 insertions(+)
 
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index 765349ed14..bd01e49ec5 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -652,6 +652,20 @@ SRST
-   whether profiling is on or off.
- ERST
- 
-+    {
-+        .name       = "system_sleep",
-+        .args_type  = "",
-+        .params     = "",
-+        .help       = "send ACPI sleep event",
-+        .cmd = hmp_system_sleep,
-+    },
+diff --git a/hw/acpi/control_method_device.c b/hw/acpi/control_method_device.c
+new file mode 100644
+index 0000000000..9e4841b8e2
+--- /dev/null
++++ b/hw/acpi/control_method_device.c
+@@ -0,0 +1,49 @@
++/*
++ * Control method devices
++ *
++ * Copyright (C) 2023 Oracle and/or its affiliates.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ *
++ */
 +
-+SRST
-+``system_sleep``
-+  Push the virtual sleep button; if supported the system will enter
-+  an ACPI sleep state.
-+ERST
++#include "qemu/osdep.h"
++#include "hw/acpi/control_method_device.h"
++#include "hw/mem/nvdimm.h"
 +
-     {
-         .name       = "system_reset",
-         .args_type  = "",
-diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
-index a6ff6a4875..641a365e3e 100644
---- a/hw/core/machine-hmp-cmds.c
-+++ b/hw/core/machine-hmp-cmds.c
-@@ -185,6 +185,11 @@ void hmp_system_reset(Monitor *mon, const QDict *qdict)
-     qmp_system_reset(NULL);
- }
- 
-+void hmp_system_sleep(Monitor *mon, const QDict *qdict)
++void acpi_dsdt_add_sleep_button(Aml *scope)
 +{
-+    qmp_system_sleep(NULL);
++    Aml *dev = aml_device("\\_SB."ACPI_SLEEP_BUTTON_DEVICE);
++    aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0C0E")));
++    Aml *pkg = aml_package(2);
++    aml_append(pkg, aml_int(0x01));
++    aml_append(pkg, aml_int(0x04));
++    aml_append(dev, aml_name_decl("_PRW", pkg));
++    aml_append(dev, aml_operation_region("\\Boo", AML_SYSTEM_IO,
++                                         aml_int(0x201), 0x1));
++    Aml *field = aml_field("\\Boo", AML_BYTE_ACC, AML_NOLOCK,
++                           AML_WRITE_AS_ZEROS);
++    aml_append(field, aml_named_field("SBP", 1));
++    aml_append(field, aml_named_field("SBW", 1));
++    aml_append(dev, field);
++    aml_append(scope, dev);
 +}
 +
- void hmp_system_powerdown(Monitor *mon, const QDict *qdict)
- {
-     qmp_system_powerdown(NULL);
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 3860a50c3b..9f1e636c90 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -257,6 +257,15 @@ void qmp_system_reset(Error **errp)
-     qemu_system_reset_request(SHUTDOWN_CAUSE_HOST_QMP_SYSTEM_RESET);
- }
- 
-+void qmp_system_sleep(Error **errp)
++void acpi_dsdt_add_sleep_gpe_event_handler(Aml *scope)
 +{
-+    if (!qemu_wakeup_suspend_enabled()) {
-+        error_setg(errp,
-+                   "suspend from running is not supported by this guest");
-+        return;
-+    }
++     Aml *method = aml_method("_L07", 0, AML_NOTSERIALIZED);
++     Aml *condition = aml_if(aml_name("\\_SB.SLPB.SBP"));
++     aml_append(condition, aml_store(aml_int(1), aml_name("\\_SB.SLPB.SBP")));
++     aml_append(condition,
++                aml_notify(aml_name("\\_SB."ACPI_SLEEP_BUTTON_DEVICE),
++                                    aml_int(0x80)));
++     aml_append(method, condition);
++     condition = aml_if(aml_name("\\_SB.SLPB.SBW"));
++     aml_append(condition, aml_store(aml_int(1), aml_name("\\_SB.SLPB.SBW")));
++     aml_append(condition,
++                aml_notify(aml_name("\\_SB."ACPI_SLEEP_BUTTON_DEVICE),
++                                    aml_int(0x2)));
++     aml_append(method, condition);
++     aml_append(scope, method);
 +}
+diff --git a/hw/acpi/meson.build b/hw/acpi/meson.build
+index fc1b952379..486d28cf42 100644
+--- a/hw/acpi/meson.build
++++ b/hw/acpi/meson.build
+@@ -16,6 +16,7 @@ acpi_ss.add(when: 'CONFIG_ACPI_PCI', if_true: files('pci.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_CXL', if_true: files('cxl.c'), if_false: files('cxl-stub.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_VMGENID', if_true: files('vmgenid.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('generic_event_device.c'))
++acpi_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('control_method_device.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_HMAT', if_true: files('hmat.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_APEI', if_true: files('ghes.c'), if_false: files('ghes-stub.c'))
+ acpi_ss.add(when: 'CONFIG_ACPI_PIIX4', if_true: files('piix4.c'))
+diff --git a/include/hw/acpi/control_method_device.h b/include/hw/acpi/control_method_device.h
+new file mode 100644
+index 0000000000..bce20512c4
+--- /dev/null
++++ b/include/hw/acpi/control_method_device.h
+@@ -0,0 +1,20 @@
++/*
++ * Control method devices
++ *
++ * Copyright (C) 2023 Oracle and/or its affiliates.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ *
++ */
 +
- void qmp_system_powerdown(Error **errp)
- {
-     qemu_system_powerdown_request();
-diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
-index 13f9a2dedb..d72a3b775c 100644
---- a/include/monitor/hmp.h
-+++ b/include/monitor/hmp.h
-@@ -45,6 +45,7 @@ void hmp_quit(Monitor *mon, const QDict *qdict);
- void hmp_stop(Monitor *mon, const QDict *qdict);
- void hmp_sync_profile(Monitor *mon, const QDict *qdict);
- void hmp_system_reset(Monitor *mon, const QDict *qdict);
-+void hmp_system_sleep(Monitor *mon, const QDict *qdict);
- void hmp_system_powerdown(Monitor *mon, const QDict *qdict);
- void hmp_exit_preconfig(Monitor *mon, const QDict *qdict);
- void hmp_announce_self(Monitor *mon, const QDict *qdict);
-diff --git a/qapi/machine.json b/qapi/machine.json
-index b6d634b30d..3ac69df92f 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -297,6 +297,24 @@
- ##
- { 'command': 'system_reset' }
- 
-+##
-+# @system_sleep:
-+#
-+# Requests that a guest perform a ACPI sleep transition by pushing a virtual
-+# sleep button.
-+#
-+# Notes: A guest may or may not respond to this command. This command
-+#        returning does not indicate that a guest has accepted the request
-+#        or that it has gone to sleep.
-+#
-+# Example:
-+#
-+# -> { "execute": "system_sleep" }
-+# <- { "return": {} }
-+#
-+##
-+{ 'command': 'system_sleep' }
 +
- ##
- # @system_powerdown:
- #
-diff --git a/qapi/pragma.json b/qapi/pragma.json
-index 0aa4eeddd3..ef15229854 100644
---- a/qapi/pragma.json
-+++ b/qapi/pragma.json
-@@ -23,6 +23,7 @@
-         'set_password',
-         'system_powerdown',
-         'system_reset',
-+        'system_sleep',
-         'system_wakeup' ],
-     # Commands allowed to return a non-dictionary
-     'command-returns-exceptions': [
++#ifndef HW_ACPI_CONTROL_METHOD_DEVICE_H
++#define HW_ACPI_CONTROL_NETHOD_DEVICE_H
++
++#define ACPI_SLEEP_BUTTON_DEVICE "SLPB"
++
++void acpi_dsdt_add_sleep_button(Aml *scope);
++void acpi_dsdt_add_sleep_gpe_event_handler(Aml *scope);
++
++#endif
 -- 
 2.34.3
 
