@@ -2,86 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C6380554F
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 14:00:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1CF80570F
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 15:19:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAV0z-0000kg-SR; Tue, 05 Dec 2023 07:59:05 -0500
+	id 1rAWGH-0007uV-Qp; Tue, 05 Dec 2023 09:18:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rAV0w-0000kT-UB
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 07:59:02 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rAV0v-0007Bn-Ee
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 07:59:02 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id AE13A21C74;
- Tue,  5 Dec 2023 12:58:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1701781139; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rAWGF-0007tw-Gc
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 09:18:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rAWGE-0000WG-0E
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 09:18:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701785932;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=pSugmQ25prXSi/zTS+KtBKm+KkU+CDDclDRaOle63LE=;
- b=ZYLVKUWOD4JzyNp+WaO6nrWcWvv/AZBJDgY1gt8Ctry85CIrvHDBjwm+lLX5PDB/qhB8Pl
- htSOiSJEYXgzPtSGtFGwyBqLOuck90jJtd048q7gUqBD2hOL1l1xbLVTrniFEPG3dgvU87
- d92IOTC/f9vvApHVIYPMp3v+iczJGCU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1701781139;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pSugmQ25prXSi/zTS+KtBKm+KkU+CDDclDRaOle63LE=;
- b=SUC3e26QfL1bakrJfG1P9cZFWWc/cJfMVE/sYQzDgFJEOyCxoR6GO5lkDw32hbX7R79K6M
- GcYiImzf3q5Go/AQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ bh=bi3aPNpGxf7OQ82N4Y83tTQ30Js3feQErQARRbqRx1o=;
+ b=F8RvlTdSdJBfC47vEjmLV6EPz0/gshIkIQtfaxzd5uATrn3QH+SNudMKMqYUvY+NOA+Am0
+ OBDYjJHCXh6vpXii/ySQYPDgfAeGlQ18GLkFFTA0GZ1uBggQWiI7Jj9s3SDDXcJkC3OZDC
+ IeV1VLmIEu9HKq2jl9fSfTPu4J1+V7w=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-73-rITRxfYaOkiOGR5_MFukaA-1; Tue, 05 Dec 2023 09:18:45 -0500
+X-MC-Unique: rITRxfYaOkiOGR5_MFukaA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 31835136CF;
- Tue,  5 Dec 2023 12:58:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id kf3GOZIeb2V0KAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 05 Dec 2023 12:58:58 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
-Cc: prerna.saxena@nutanix.com, quintela@redhat.com, berrange@redhat.com,
- peter.maydell@linaro.org, armbru@redhat.com, Het Gala
- <het.gala@nutanix.com>
-Subject: Re: [PATCH] migration: Simplify initial conditionals in migration
- for better readability
-In-Reply-To: <20231205080039.197615-1-het.gala@nutanix.com>
-References: <20231205080039.197615-1-het.gala@nutanix.com>
-Date: Tue, 05 Dec 2023 09:58:24 -0300
-Message-ID: <87a5qon6vj.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E07B7185A785
+ for <qemu-devel@nongnu.org>; Tue,  5 Dec 2023 14:18:44 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.85])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 45C863C27;
+ Tue,  5 Dec 2023 14:18:44 +0000 (UTC)
+Date: Tue, 5 Dec 2023 07:33:08 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: Re: [PULL 0/3] Misc patches for QEMU 8.2-rc3
+Message-ID: <20231205123308.GA1850954@fedora>
+References: <20231204142532.581730-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [-2.26 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.16)[95.97%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_SEVEN(0.00)[8];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -2.26
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="JbT92ZrhdDMgvxfv"
+Content-Disposition: inline
+In-Reply-To: <20231204142532.581730-1-thuth@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,16 +80,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
 
-> The inital conditional statements in qmp migration functions is harder
-> to understand than necessary. It is better to get all errors out of
-> the way in the beginning itself to have better readability and error
-> handling.
->
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> Suggested-by: Markus Armbruster <armbru@redhat.com>
+--JbT92ZrhdDMgvxfv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+
+--JbT92ZrhdDMgvxfv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVvGIQACgkQnKSrs4Gr
+c8ipkQgAoL8m5eyQHElMzVpaiGp9ZUiiYmOqafXZerwoJaVDmiVbWqHYS9vgBcgx
+3QjocXWI3DU8iYw7hr6DeyTyw8h9jqawTwi+uYeg6OYgmxlJUblev1C8E31D3gvz
+eQENlkCA1iyhKHTrHF2er3XEYraL/DdXc9pl0nbOXCUEzXPK6fgkZQV6tt9cDYWq
+JuKfWoBUBu5CCHTvMsF1IHZdBL/sfY4UsES82hnqnOpOApTjbGFHpVwf54N+GiW3
+YZFEGWjQXOWgRDpB556oRKacFaqGbN+MSkfP9If6WHXCZA7tU5x8NKCo/pzsoy9y
+wdjxJyeVF+0kwVyq2+CynD6Xx+N0kQ==
+=yp5U
+-----END PGP SIGNATURE-----
+
+--JbT92ZrhdDMgvxfv--
 
 
