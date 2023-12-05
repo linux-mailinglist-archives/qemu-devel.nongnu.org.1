@@ -2,160 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EB3804278
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 00:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BDF4804342
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 01:23:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAIB9-0002Ls-H4; Mon, 04 Dec 2023 18:16:43 -0500
+	id 1rAJCI-00060z-Jb; Mon, 04 Dec 2023 19:21:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael.christie@oracle.com>)
- id 1rAIB1-0002LW-Oz
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 18:16:35 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
+ id 1rAJCG-00060X-Vi
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:21:56 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael.christie@oracle.com>)
- id 1rAIAz-0007Eb-DA
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 18:16:35 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
+ id 1rAJCE-0005VA-VE
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 19:21:56 -0500
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B4MoD2N004790; Mon, 4 Dec 2023 23:16:30 GMT
+ 3B503gHS008346; Tue, 5 Dec 2023 00:21:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : in-reply-to : references :
- content-transfer-encoding : content-type : mime-version;
- s=corp-2023-11-20; bh=De/CiSuYl1RMsvOdH4u5lpdwzUmtWE9lejwG3iDf0R4=;
- b=dAO8ltSJh0fkXB1COIiVbGTNP3+TohCb3lOuGr4GhZ0nhldiPjFK0V16Mhm2nwxfWDFy
- v/hD15T3B4eBejdPs4fmRLfa44LEMW60BhHfgzBM/XVpEIbj2yyUYYvK7r23wC/3oR/i
- HEffYynKEJ8Db+6K2yTlhLiA5qCxaYWbZdFNknCEJaESu0BGxCisK98TEy9hNFScMbyr
- yMJpaSsh2evlV/dO9ZVabxxHIsMkYttybGrsVI001OLTG45H2ACh+EtinnH4ksdYZKNk
- vNX4MlITr7gzERgA8zcX8Xb9cJb37LpybTesunYCiSBWcChckQMsVR1MGG99LIz7wrVy Qg== 
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-11-20; bh=EYMdKBS7wBKRnAHNftFxEAIyeyEz1k6aw2EyKQ04GT4=;
+ b=a0I6b4ZKQmlw/RTBNwy+DhhpM0NgpCsLsOLIH2OfLq/1uVaVko5F11huRd3d04M20Pq3
+ MEefEGO1pgMUmHO7gNNEdqUq9pFGHSSqPZbS/qwuuql/Rwt2uCiJlOgcsWyz4oZN81Pn
+ b3M0oyRNPjDMfBKZDZKJjaiFbe5hlIpgxpKJChmQhVLmkyFS5X6xVbLs+k5X7Jy+ubtH
+ nD9tQ4cODHzSQL8jGosEJy6dXVOHJuyT+Yoxl+sRwOUjhENMKn28vSHe2GdRk3RSWYxQ
+ N/hUAx5oaGy0Z26/82py/G7TqPri2wc/e4ZmIgt8qYAfE+p5LV+hLCYALM0JVtJ7Lir8 AQ== 
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3usqnf02bp-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3usrtsg11b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 04 Dec 2023 23:16:30 +0000
+ Tue, 05 Dec 2023 00:21:51 +0000
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B4MIqXE018427; Mon, 4 Dec 2023 23:16:27 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com
- (mail-dm3nam02lp2041.outbound.protection.outlook.com [104.47.56.41])
+ with ESMTP id 3B4MIri9018503; Tue, 5 Dec 2023 00:21:51 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uqu16hnch-1
+ 3uqu16kj9g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 04 Dec 2023 23:16:27 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aiK3RXMDEVgzQfCE1sSEk8owGsbN/KQkGgGmzR+f0yfg2Z+ojGRLsFjFVNDjMDsi9TzpjCarP2U3rChR7zpgWbxcho9gJgHtuxhb6F90XehMVVJYmYQpoXgw6QRhjIqZd9Y/+VR48AL1+ygAGa9GsXKz//QJXdINB1RrBHhEEN7ZXPYcb1Rcho+aKNuYfNkaWtdYwhIn4IVUOZY7FTStciLikQRZL8WHH8OD4F59HOVML4H5eSWzpsPnXyzRA9JB/ra9vDOob0RVEqQxdU9gD86BqhgMJH/6H+QVbASVxF039yH+deCLfXgeLWQke1Q1iJt539vwzgkQgS/19NJ5lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=De/CiSuYl1RMsvOdH4u5lpdwzUmtWE9lejwG3iDf0R4=;
- b=Qd7p56zNzdMrDEAia8ax4yrlZQde/LWhBACPxcU56/q0iQObdEV8hFqrXEccLp5a+FUO4wX2RIejsaKswJk35iEOEU7T5R0I2mcXGw0hRJ4Mu+DKE23GZOD/cYfhDWUUe8FHwmH6COEUYXx9ok0r/5pwmsm11kgLJRjCgUmqk4bO6Qa5uygERodxCPy+HJxsdhG5QsG4pzJhgLOor5LGCoPtr5pAlEpHbS0vETnq5M2Gi4wDDgLz9MzutFr+GIiKifYH2KnSVbk4resYkX/MNEFzgxisvlpTwkAOU+/Ik8EsMJ5QdueY5PGLVZY8fvxrVMWAqVtvNmWtD27lf7W3qg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=De/CiSuYl1RMsvOdH4u5lpdwzUmtWE9lejwG3iDf0R4=;
- b=VY7rH6dMyGLsKjE0/9JUveQuL1/BKJ3QiCvaKgO+PaXe+Eg3DuyyOQNJ7jYqmhmjpZq8ue4bdOcwbNGCU+knvb6WRZD7GtLuixQCzpcKmWdXLWBp/Y6nRZSK40UZYE64qhlG1GSkQnDUuUX4rfQW+aQUAxWOYtQK6QqQ5uhqSBU=
-Received: from CY8PR10MB7243.namprd10.prod.outlook.com (2603:10b6:930:7c::10)
- by MN6PR10MB7466.namprd10.prod.outlook.com (2603:10b6:208:477::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Mon, 4 Dec
- 2023 23:16:25 +0000
-Received: from CY8PR10MB7243.namprd10.prod.outlook.com
- ([fe80::449f:4fd9:2d3e]) by CY8PR10MB7243.namprd10.prod.outlook.com
- ([fe80::449f:4fd9:2d3e%4]) with mapi id 15.20.7046.033; Mon, 4 Dec 2023
- 23:16:25 +0000
-From: Mike Christie <michael.christie@oracle.com>
-To: fam@euphon.net, stefanha@redhat.com, jasowang@redhat.com, mst@redhat.com, 
- sgarzare@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org
-Cc: Mike Christie <michael.christie@oracle.com>
-Subject: [PATCH v3 2/2] vhost-scsi: Add support for a worker thread per
- virtqueue
-Date: Mon,  4 Dec 2023 17:16:18 -0600
-Message-Id: <20231204231618.21962-3-michael.christie@oracle.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231204231618.21962-1-michael.christie@oracle.com>
-References: <20231204231618.21962-1-michael.christie@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: DM5PR07CA0090.namprd07.prod.outlook.com
- (2603:10b6:4:ae::19) To CY8PR10MB7243.namprd10.prod.outlook.com
- (2603:10b6:930:7c::10)
+ Tue, 05 Dec 2023 00:21:51 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B50LoxD015944;
+ Tue, 5 Dec 2023 00:21:50 GMT
+Received: from localhost.localdomain (dhcp-10-191-8-104.vpn.oracle.com
+ [10.191.8.104])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 3uqu16kj7u-1; Tue, 05 Dec 2023 00:21:50 +0000
+From: Annie Li <annie.li@oracle.com>
+To: qemu-devel@nongnu.org, imammedo@redhat.com
+Cc: annie.li@oracle.com, miguel.luis@oracle.com
+Subject: [RFC PATCH 00/11] Support ACPI Control Method Sleep button
+Date: Tue,  5 Dec 2023 00:21:43 +0000
+Message-Id: <20231205002143.562-1-annie.li@oracle.com>
+X-Mailer: git-send-email 2.30.1.windows.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR10MB7243:EE_|MN6PR10MB7466:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ce50e8d-9eea-4879-ef7f-08dbf51f094f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +iwBqTIJQ6pA9LgcubkF4a7AW5yGBpsKTb56HRQAOw8/wvox19VVTJJxLX5O6v2kibhyTNEXOqAGOdnWQz91HRNUwMSkfYhinx17GUTP6Wo39zByt65glBmvfCaHRyapuw8U3V6mez4A3J897kljgjJNztIfW4/53FT9hagK1ySHg9S0PXbe1MtaY9oNfCjz4/U4HSp9yE0vj5aDyi/cGUlK82EvlHNOL5MqSl1WuxJtBtwskaWtSs6+mnB3EyPsTDEIWcETkQLf0HumjtdfOQQ+PdIXs1agV3ppAhwmhZuw/xnJbg88gG9Wx1EC89vALvKjHX4AntytZXPgRAQjT+ePnEhW4IXrz9MlNDVG+TqHrSO2Vs3AKO082FBXQunRwfA2K/GT8CEnYeuAvVvUOL65fVo3EjtbsToNGzZO6w7X5deiG2HhyeIhKIHz7ANmM2YhPoplcS37IH1esM+IazomVsm2AdoEfie+jdYpHjdZGfEQGez3dwi/GHopCdyYfS2OzpTeuhnyPbXpu+EvzoIsBufgcgsqtqj8n3AZOECrTfok2vcOo61rFyCYtbe2
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY8PR10MB7243.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(39860400002)(366004)(346002)(376002)(396003)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(66556008)(66476007)(66946007)(4326008)(8676002)(8936002)(316002)(6486002)(478600001)(6666004)(5660300002)(36756003)(41300700001)(2906002)(86362001)(2616005)(107886003)(26005)(1076003)(38100700002)(6506007)(6512007);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?fpyCURnSnNaL8vSSVktnPAR79vS91taKMrebJHRuvpWc1NspAjDnS8NDXDZk?=
- =?us-ascii?Q?78oewxesP0S0x3qfDQcVYyj205kVNQR3B8b7ieoEZi6CgguiEdEZdz4+ImRM?=
- =?us-ascii?Q?rEy4qWaI8+m3+zZXA/f5207vncwThTFoDJSTK6TA12IT2w7KgtWumy7ZkcdI?=
- =?us-ascii?Q?o7bHdsLw9EgAGuCopc5wMPvWIBnBHk8TnAJINcq+KDRauSnXyNHdkcWd+e5C?=
- =?us-ascii?Q?GOOdMJwsMmmDmRDt+EDWTkpyNz0tqt1NfwivmWYVutD42yfz38bmMFNuwi6/?=
- =?us-ascii?Q?REVlXNFQCC/NHgxcnqvumgRdzwxKuiQS1nqzJBQGWTW9Kbbp6t5V6Mb4Wyut?=
- =?us-ascii?Q?7XvEE4FcpqJL5ZlW47aTaQNmn6YEOtrU12QqnmeuueY+7z/vvhIv07WaAmqX?=
- =?us-ascii?Q?tPSkH717THdV9vD3pPNewdeoVrEUqzX3VurBw9kX3UwObQSBlS34AJW16neh?=
- =?us-ascii?Q?MGOfefvUOVMyREFxTrU8f4ukhyr6zX46cc4VCCBQl3zkzgIEGCJGNQ8k5f6a?=
- =?us-ascii?Q?U6MrOUnLitOSlEMKOklzlMtcvwEkTVCokmFQ3/2reAz7QGwJ2hYsNdusPmwe?=
- =?us-ascii?Q?/1ibwh02JiyEwPwCO9QuFFERmWYUsy6ACrAxSDIto0SwLVcd2Wq87TO4ayi6?=
- =?us-ascii?Q?G8fz+WRGlRO9O3ENDoeeHxrX4Gp8ORAI5Z54sXpnwvojzc9wYj8lbtqX4mYF?=
- =?us-ascii?Q?qjOz1N2bLaGFvYP9sQLWsKmj/sl6d7TwhgXenNR1kqtlzqkV+7gNoJfaKIv7?=
- =?us-ascii?Q?3tKsZUWWetArGgWBFQc1loMaJQ01zSyvlK5Spvg8pYR72nczKhKYJ/IZaRZm?=
- =?us-ascii?Q?hHaCWaNhC2yJwWntzKCiMRY3MuksSlmzzpOgP6Knb+gm/4J/OoofZSWFyo0j?=
- =?us-ascii?Q?VuwF+f4kPSiRvnEjpXdRY5JkbLTy4/rr94SbKKZQHPN/BaiWiSmoBu7Zmc5B?=
- =?us-ascii?Q?N50QDr4Qe+iKG+qQT+w56BHQ5+QjGIjo1FaY8yucs8vV4pFtzLlc5UgnJr9B?=
- =?us-ascii?Q?DggHxqHm514jznba9lWINTjXUffNp/7656TIwTbR/Tscu37G0QUV0EnpuZG5?=
- =?us-ascii?Q?moGN6tGEV/2rpGzpC5YWiwa+XoJSmtBbN7bLGEenHDwm2cwmXOftoT0VeyOJ?=
- =?us-ascii?Q?eohstx6oa3ioELwdC2T5cB5KRHuuxB5szAWaQoYWRcJK5X4zV+2luRX+5gPe?=
- =?us-ascii?Q?82MJOMqeZZQgP8JwV3YgIXnfctZZbrqxEaNgOSn9vzhvx6YXv3j3GGMiOI9F?=
- =?us-ascii?Q?MqxBmXalcJI+uvI1F9BRBke/1shOWQJdiH2cS55YJGKrDoESpk2oAxuXCiaU?=
- =?us-ascii?Q?NnT/CbBYh8xwrfib+V0UWpaHUQLfQk2DG+x1s/AqSJyJojuickvf5F69yhS/?=
- =?us-ascii?Q?UuuYa0q9bJfzlgdZ1iUEaSb/PrjdeCyU/evyhFrnRcR87ls9iWeD8bbqm3P4?=
- =?us-ascii?Q?3R5ETh+UG8XnEBa5HTNLA87atqIAG7gkrTQEAhg7US7yKCQjufw55wDou2Q8?=
- =?us-ascii?Q?PubuPwim2sZfeSq94i6SjiHHf0x5mw5/F3m/xF+L4Vvcn6A5Lsm+qw1Nu9vt?=
- =?us-ascii?Q?wiNz6jjXWYvJdFxOKuPc3v6tlih6YOOt+TE0hGgQd3TM3Bnadj7NRvtdK8zN?=
- =?us-ascii?Q?uw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: YrHX7nM7rhuFinDQCh3oMMafbwfRJ3T2FQn/aPq3iaY1n95UPMgYhnFdRUPPiKLQDrTDFFt5RUlo5RgXE+DBrDEyZDmSBalMyUmSQrNrKcvBR/pP9H+bSj8cdRVlVvjFjmbebgwqhR+SmhfBgcoPvMPaIB/kmQZoBkc+4FUaR8C918EEsDPnp9qxvtDHKLxbgb9NEYdpaPp/m5+ZjfOCN14ZDk8RZn7zdF8mXPtPZqWsNSjMJwezWHrC2zhzWwnIyM7UZW7V0pRoMU01lwsdTAl+ujgH1hMkwIOZgOLgW163FpOobS0SIyNXvUzQIJqRqfjlM8CwMYCB6T7QZQACny/AorTR9PtwtVnIlcBSq0XzC+3qmSwlqwzJmwjgxHoeuDlnZd1mas/8y5ED+Eztp8GDiBFuM+iEAAm6sbQUT5ntuKdrn6O+Sa739gTcoY0IJ24CzgYUdzejhq8tzEHrritx7sy2YOu9VLi+ivTssYvC8V1AnI3Lu5vuplS01mYDQZkWzd+ExFzffFed/FM6AqyP0HnEImDxjDcaJOFqmRPpo5HwSCFS157ZsGrrzHhDPiaS+kDNUU0/jQjGq2v2SsmewUh7KHqyPhJWKJJDJPRVmDBNYFUwY1zzgoi6H94xjFCrLeCR920W4MdIm5QxRxmXS+jNjkdBctGYbH7BsseqLZMAJaHe4KFeo4nVD0EUkzHGkp94EZ1xo0GAtaBX5MINdiNUG+GuaVtpBPa1jBAxUQ8nblJpoZ8xww1xkSg3OuQ52cK7FHC0US2ixPGWwzwdEWGWNQJThm7qdGVghW88QHhJ+eg2Jqj+4gP9S63N
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ce50e8d-9eea-4879-ef7f-08dbf51f094f
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR10MB7243.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2023 23:16:25.3041 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D4dPtJgf44eMJMCTX3KrOVbrDJqNfpucC/jZmsuBEHmbkX0+EauuNXco/+Q7uTp6930AFbnvGSerqnA+Y6GxWmc4aOAmly8w4N1VL4DqMFA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR10MB7466
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-04_21,2023-12-04_01,2023-05-22_02
+ definitions=2023-12-04_22,2023-12-04_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  malwarescore=0
- mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
+ mlxlogscore=883 mlxscore=0 suspectscore=0 adultscore=0 spamscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312040182
-X-Proofpoint-ORIG-GUID: 8nndg8F4231XkG2M-sNOJpDWvL-d_WAZ
-X-Proofpoint-GUID: 8nndg8F4231XkG2M-sNOJpDWvL-d_WAZ
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=michael.christie@oracle.com; helo=mx0a-00069f02.pphosted.com
+ engine=8.12.0-2311060000 definitions=main-2312050001
+X-Proofpoint-GUID: N_4Q9ge0Eh2OQ7aQffmdLYsbZdzMF3fw
+X-Proofpoint-ORIG-GUID: N_4Q9ge0Eh2OQ7aQffmdLYsbZdzMF3fw
+Received-SPF: pass client-ip=205.220.177.32; envelope-from=annie.li@oracle.com;
+ helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
@@ -174,127 +96,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds support for vhost-scsi to be able to create a worker thread
-per virtqueue. Right now for vhost-net we get a worker thread per
-tx/rx virtqueue pair which scales nicely as we add more virtqueues and
-CPUs, but for scsi we get the single worker thread that's shared by all
-virtqueues. When trying to send IO to more than 2 virtqueues the single
-thread becomes a bottlneck.
+The ACPI sleep button can be implemented as a fixed hardware button
+or Control Method Sleep button.
 
-This patch adds a new setting, worker_per_virtqueue, which can be set
-to:
+The patch of implementing a fixed hardware sleep button was posted
+here 1). More discussions can be found here 2). Essentially, the
+discussion mainly focuses on whether the sleep button is implemented
+as a fixed hardware button or Control Method Sleep button. The latter
+benefits different architectures since the code can be shared among
+them.
 
-false: Existing behavior where we get the single worker thread.
-true: Create a worker per IO virtqueue.
+This patch set implements Control Method Sleep button for both x86
+and ARM platform.
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+For x86, a sleep button GPE event handler is implemented, so a GPE
+event is triggered to indicate the OSPM the sleep button is pressed.
+Tests have been done for Linux 6.6.0-rc2+, and Windows Server 2016,
+the sleep button works as expected.
 
----
- hw/scsi/vhost-scsi.c            | 62 +++++++++++++++++++++++++++++++++
- include/hw/virtio/virtio-scsi.h |  1 +
- 2 files changed, 63 insertions(+)
+For ARM, a GED event is triggered to notify the OSPM. With proper
+debug knobs it is possible to see the guest OSPM acknowledges the
+sleep event:
 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 3126df9e1d9d..08aa7534df51 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -165,6 +165,59 @@ static const VMStateDescription vmstate_virtio_vhost_scsi = {
-     .pre_save = vhost_scsi_pre_save,
- };
- 
-+static int vhost_scsi_set_workers(VHostSCSICommon *vsc, bool per_virtqueue)
-+{
-+    struct vhost_dev *dev = &vsc->dev;
-+    struct vhost_vring_worker vq_worker;
-+    struct vhost_worker_state worker;
-+    int i, ret;
-+
-+    /* Use default worker */
-+    if (!per_virtqueue || dev->nvqs == VHOST_SCSI_VQ_NUM_FIXED + 1) {
-+        return 0;
-+    }
-+
-+    /*
-+     * ctl/evt share the first worker since it will be rare for them
-+     * to send cmds while IO is running.
-+     */
-+    for (i = VHOST_SCSI_VQ_NUM_FIXED + 1; i < dev->nvqs; i++) {
-+        memset(&worker, 0, sizeof(worker));
-+
-+        ret = dev->vhost_ops->vhost_new_worker(dev, &worker);
-+        if (ret == -ENOTTY) {
-+            /*
-+             * worker ioctls are not implemented so just ignore and
-+             * and continue device setup.
-+             */
-+            warn_report("vhost-scsi: Backend supports a single worker. "
-+                        "Ignoring worker_per_virtqueue=true setting.");
-+            ret = 0;
-+            break;
-+        } else if (ret) {
-+            break;
-+        }
-+
-+        memset(&vq_worker, 0, sizeof(vq_worker));
-+        vq_worker.worker_id = worker.worker_id;
-+        vq_worker.index = i;
-+
-+        ret = dev->vhost_ops->vhost_attach_vring_worker(dev, &vq_worker);
-+        if (ret == -ENOTTY) {
-+            /*
-+             * It's a bug for the kernel to have supported the worker creation
-+             * ioctl but not attach.
-+             */
-+            dev->vhost_ops->vhost_free_worker(dev, &worker);
-+            break;
-+        } else if (ret) {
-+            break;
-+        }
-+    }
-+
-+    return ret;
-+}
-+
- static void vhost_scsi_realize(DeviceState *dev, Error **errp)
- {
-     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-@@ -232,6 +285,13 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
-         goto free_vqs;
-     }
- 
-+    ret = vhost_scsi_set_workers(vsc, vs->conf.worker_per_virtqueue);
-+    if (ret < 0) {
-+        error_setg(errp, "vhost-scsi: vhost worker setup failed: %s",
-+                   strerror(-ret));
-+        goto free_vqs;
-+    }
-+
-     /* At present, channel and lun both are 0 for bootable vhost-scsi disk */
-     vsc->channel = 0;
-     vsc->lun = 0;
-@@ -297,6 +357,8 @@ static Property vhost_scsi_properties[] = {
-                                                  VIRTIO_SCSI_F_T10_PI,
-                                                  false),
-     DEFINE_PROP_BOOL("migratable", VHostSCSICommon, migratable, false),
-+    DEFINE_PROP_BOOL("worker_per_virtqueue", VirtIOSCSICommon,
-+                     conf.worker_per_virtqueue, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio-scsi.h
-index 779568ab5d28..0e9a1867665e 100644
---- a/include/hw/virtio/virtio-scsi.h
-+++ b/include/hw/virtio/virtio-scsi.h
-@@ -51,6 +51,7 @@ typedef struct virtio_scsi_config VirtIOSCSIConfig;
- struct VirtIOSCSIConf {
-     uint32_t num_queues;
-     uint32_t virtqueue_size;
-+    bool worker_per_virtqueue;
-     bool seg_max_adjust;
-     uint32_t max_sectors;
-     uint32_t cmd_per_lun;
+[ 268.429495] evregion-0119 ev_address_space_dispa: ----Entry
+[ 268.430480] evrgnini-0043 ev_system_memory_regio: ----Entry
+[ 268.431423] evrgnini-0079 ev_system_memory_regio: ----Exit- AE_OK
+[ 268.432303] evregion-0230 ev_address_space_dispa: Handler 0000000081544775 (@00000000e8f0a66d) Address 0000000009080000 [SystemMemory]
+[ 268.433943] evregion-0325 ev_address_space_dispa: ----Exit- AE_OK
+[ 268.434793]   evmisc-0132 ev_queue_notify_reques: Dispatching Notify on [SLPB] (Device) Value 0x80 (Status Change) Node 00000000ada658b8
+
+But that seems to be all, depicting that sleep/wakeup for ARM is broken
+and there are still missing some pieces of the puzzle.
+
+Nonetheless, we would like to take this RFC as an opportunity for updates
+on this subject as possible roadmaps.
+
+1) https://lists.gnu.org/archive/html/qemu-devel/2017-07/msg06478.html
+2) https://lore.kernel.org/all/20210920095316.2dd133be@redhat.com/T/#mfe24f89778020deeacfe45083f3eea3cf9f55961
+
+Annie Li (6):
+  acpi: hmp/qmp: Add hmp/qmp support for system_sleep
+  acpi: Implement control method sleep button
+  test/acpi: allow DSDT table changes
+  acpi: Support Control Method sleep button for x86
+  tests/acpi/bios-tables-test: update DSDT tables for Control Method
+    Sleep button
+  acpi: Send the GPE event of suspend and wakeup for x86
+
+Miguel Luis (5):
+  hw/acpi: Add ACPI GED support for the sleep event
+  tests/acpi: allow FACP and DSDT table changes for arm/virt
+  hw/arm: enable sleep support for arm/virt
+  tests/acpi: Update FACP and DSDT tables for sleep button
+  arm/virt: enable sleep support
+
+ hmp-commands.hx                               |  14 +++++
+ hw/acpi/control_method_device.c               |  49 ++++++++++++++++++
+ hw/acpi/core.c                                |  17 ++++--
+ hw/acpi/generic_event_device.c                |   9 ++++
+ hw/acpi/meson.build                           |   1 +
+ hw/arm/virt-acpi-build.c                      |  13 +++++
+ hw/arm/virt.c                                 |  14 ++++-
+ hw/core/machine-hmp-cmds.c                    |   5 ++
+ hw/core/machine-qmp-cmds.c                    |  11 ++++
+ hw/i386/acpi-build.c                          |   9 ++++
+ include/hw/acpi/acpi.h                        |   1 +
+ include/hw/acpi/acpi_dev_interface.h          |   1 +
+ include/hw/acpi/control_method_device.h       |  20 +++++++
+ include/hw/acpi/generic_event_device.h        |   1 +
+ include/hw/arm/virt.h                         |   1 +
+ include/monitor/hmp.h                         |   1 +
+ qapi/machine.json                             |  18 +++++++
+ qapi/pragma.json                              |   1 +
+ tests/data/acpi/pc/DSDT                       | Bin 6830 -> 7012 bytes
+ tests/data/acpi/pc/DSDT.acpierst              | Bin 6741 -> 6923 bytes
+ tests/data/acpi/pc/DSDT.acpihmat              | Bin 8155 -> 8337 bytes
+ tests/data/acpi/pc/DSDT.bridge                | Bin 13701 -> 13883 bytes
+ tests/data/acpi/pc/DSDT.cphp                  | Bin 7294 -> 7476 bytes
+ tests/data/acpi/pc/DSDT.dimmpxm               | Bin 8484 -> 8666 bytes
+ tests/data/acpi/pc/DSDT.hpbridge              | Bin 6781 -> 6963 bytes
+ tests/data/acpi/pc/DSDT.hpbrroot              | Bin 3337 -> 3519 bytes
+ tests/data/acpi/pc/DSDT.ipmikcs               | Bin 6902 -> 7084 bytes
+ tests/data/acpi/pc/DSDT.memhp                 | Bin 8189 -> 8371 bytes
+ tests/data/acpi/pc/DSDT.nohpet                | Bin 6688 -> 6870 bytes
+ tests/data/acpi/pc/DSDT.numamem               | Bin 6836 -> 7018 bytes
+ tests/data/acpi/pc/DSDT.roothp                | Bin 10623 -> 10805 bytes
+ tests/data/acpi/q35/DSDT                      | Bin 8355 -> 8537 bytes
+ tests/data/acpi/q35/DSDT.acpierst             | Bin 8372 -> 8554 bytes
+ tests/data/acpi/q35/DSDT.acpihmat             | Bin 9680 -> 9862 bytes
+ tests/data/acpi/q35/DSDT.acpihmat-noinitiator | Bin 8634 -> 8816 bytes
+ tests/data/acpi/q35/DSDT.applesmc             | Bin 8401 -> 8583 bytes
+ tests/data/acpi/q35/DSDT.bridge               | Bin 11968 -> 12150 bytes
+ tests/data/acpi/q35/DSDT.core-count           | Bin 12913 -> 13095 bytes
+ tests/data/acpi/q35/DSDT.core-count2          | Bin 33770 -> 33952 bytes
+ tests/data/acpi/q35/DSDT.cphp                 | Bin 8819 -> 9001 bytes
+ tests/data/acpi/q35/DSDT.cxl                  | Bin 9713 -> 9895 bytes
+ tests/data/acpi/q35/DSDT.dimmpxm              | Bin 10009 -> 10191 bytes
+ tests/data/acpi/q35/DSDT.ipmibt               | Bin 8430 -> 8612 bytes
+ tests/data/acpi/q35/DSDT.ipmismbus            | Bin 8443 -> 8625 bytes
+ tests/data/acpi/q35/DSDT.ivrs                 | Bin 8372 -> 8554 bytes
+ tests/data/acpi/q35/DSDT.memhp                | Bin 9714 -> 9896 bytes
+ tests/data/acpi/q35/DSDT.mmio64               | Bin 9485 -> 9667 bytes
+ tests/data/acpi/q35/DSDT.multi-bridge         | Bin 13208 -> 13390 bytes
+ tests/data/acpi/q35/DSDT.noacpihp             | Bin 8235 -> 8417 bytes
+ tests/data/acpi/q35/DSDT.nohpet               | Bin 8213 -> 8395 bytes
+ tests/data/acpi/q35/DSDT.numamem              | Bin 8361 -> 8543 bytes
+ tests/data/acpi/q35/DSDT.pvpanic-isa          | Bin 8456 -> 8638 bytes
+ tests/data/acpi/q35/DSDT.thread-count         | Bin 12913 -> 13095 bytes
+ tests/data/acpi/q35/DSDT.thread-count2        | Bin 33770 -> 33952 bytes
+ tests/data/acpi/q35/DSDT.tis.tpm12            | Bin 8961 -> 9143 bytes
+ tests/data/acpi/q35/DSDT.tis.tpm2             | Bin 8987 -> 9169 bytes
+ tests/data/acpi/q35/DSDT.type4-count          | Bin 18589 -> 18771 bytes
+ tests/data/acpi/q35/DSDT.viot                 | Bin 9464 -> 9646 bytes
+ tests/data/acpi/q35/DSDT.xapic                | Bin 35718 -> 35900 bytes
+ tests/data/acpi/virt/DSDT                     | Bin 5196 -> 5278 bytes
+ tests/data/acpi/virt/DSDT.acpihmatvirt        | Bin 5282 -> 5364 bytes
+ tests/data/acpi/virt/DSDT.memhp               | Bin 6557 -> 6639 bytes
+ tests/data/acpi/virt/DSDT.pxb                 | Bin 7679 -> 7761 bytes
+ tests/data/acpi/virt/DSDT.topology            | Bin 5398 -> 5480 bytes
+ tests/data/acpi/virt/FACP                     | Bin 276 -> 276 bytes
+ 65 files changed, 181 insertions(+), 5 deletions(-)
+ create mode 100644 hw/acpi/control_method_device.c
+ create mode 100644 include/hw/acpi/control_method_device.h
+
 -- 
-2.34.1
+2.34.3
 
 
