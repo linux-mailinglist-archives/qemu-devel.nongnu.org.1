@@ -2,104 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689C6804EBF
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 10:53:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0BF804FAD
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 11:01:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAS6k-00071R-I2; Tue, 05 Dec 2023 04:52:50 -0500
+	id 1rASED-0003DW-5F; Tue, 05 Dec 2023 05:00:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hahn@univention.de>)
- id 1rAS6i-00071G-Jf
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 04:52:48 -0500
-Received: from mail.univention.de ([82.198.197.8])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rASE1-0003DC-HL
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 05:00:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hahn@univention.de>)
- id 1rAS6g-0005Py-Dm
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 04:52:48 -0500
-Received: from localhost (localhost [127.0.0.1])
- by lankmoj.knut.univention.de (Postfix) with ESMTP id 895A2102539
- for <qemu-devel@nongnu.org>; Tue,  5 Dec 2023 10:52:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=univention.de;
- s=202111; t=1701769961;
- bh=Hp5H7GdPBhKJ8UdlrCR+0uxBm63pdWItY+Ftff8TlBI=;
- h=Date:To:From:Subject:From;
- b=BfjJEgYfLpXxAfCK/QRi6RKLSBGa7/AxHpRWvJ8EkOUBKjgs7X2rMeLRAp0IYZgLt
- dBShcSy1JbcB3UG8/9NAVZF9YZ3fyF7284K0AvpI5aUtOjdOw4g1DdvNX65n7ynJFl
- H+Dyve87W3A8XidDNprzjy++aar+ksfLzAude7WVJxFFw5wu9kxzQgOahquENgkEWH
- NLA1byXMh2Tc1IL/89/r8kuyzajw2oUg/+Q1o29+1ZDVNi8tG3sGsn0gP8/w/f5Y4T
- ZixBYs5CsWdos7E1XS/QAkXSrCBdyVyN03Mw+PsP/LYmxAo5e5r297+e1NnPXeo9pu
- DUuwnLdmJzzAA==
-X-Virus-Scanned: by amavisd-new-2.11.0 (20160426) (Debian) at
- knut.univention.de
-Received: from mail.univention.de ([127.0.0.1])
- by localhost (lankmoj.knut.univention.de [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id JeEbntXpbzlp for <qemu-devel@nongnu.org>;
- Tue,  5 Dec 2023 10:52:39 +0100 (CET)
-Received: from [172.16.0.193] (opnsense.knut.univention.de [192.168.250.250])
- by lankmoj.knut.univention.de (Postfix) with ESMTPSA id C25A5FEF31
- for <qemu-devel@nongnu.org>; Tue,  5 Dec 2023 10:52:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=univention.de;
- s=202111; t=1701769959;
- bh=Hp5H7GdPBhKJ8UdlrCR+0uxBm63pdWItY+Ftff8TlBI=;
- h=Date:To:From:Subject:From;
- b=Olu19QBpSm4+p3THySNz4ckzrtqeUysAvxtMVaU4FAvA+kSBbqcIjGgtpdhGiyIBS
- 9oGI+URz8SFSpTkzbOq1Exxhe9HodrQS5iCP/hCLLFpFjtU71TFtOnk3hlA3b5vTQJ
- AZqKeFLlwzvsmBbhHujSWSj9gsguVBbgoUHFUOgbhNdkkry3qq+B5t0ROcnIyVW1wk
- HqGZ0iogjgFVtpxGrHqX6HRh/sxQ8bkp4rjXWQ21i3e59alW37eAWhUE8FGYVCFCvt
- g86kzk+KqSGluoqK7lQ+22HwC8hjbBYrfH5x5W5UbzynVSWOo7WBgXUjEYjXL4gsGN
- i/Zyp6NKioL5w==
-Message-ID: <9447a47d-751c-4913-a60b-8d92f87f2998@univention.de>
-Date: Tue, 5 Dec 2023 10:52:39 +0100
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rASDy-0007Zl-6x
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 05:00:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701770417;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=P29+OP8mtK4lYCsIjQ5WcTRc6MzmwNvNSuJmgm4Cx4E=;
+ b=aUSO7avtuIgyiJwBbC3z5jIrUGA0Tn+gC9gV1kPfj4x5GNZVh7YEukZOljxtvjP7DofAzZ
+ sMDPLeIs3DDE6xKOVnfd5OuhwOZ1jzNX4ncxMC//tkYmynrRJiAJjIoOgHIJ717aPmOr6R
+ w2+jWZvVScbqgH2+5UDTUFkjZXxBGls=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-230-g-OAht1UPrW02mYyWsQMng-1; Tue, 05 Dec 2023 05:00:12 -0500
+X-MC-Unique: g-OAht1UPrW02mYyWsQMng-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3A093101A551;
+ Tue,  5 Dec 2023 10:00:12 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.43])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A304140C6EB9;
+ Tue,  5 Dec 2023 10:00:10 +0000 (UTC)
+Date: Tue, 5 Dec 2023 11:00:09 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>
+Subject: Re: [PATCH 1/4] scsi: only access SCSIDevice->requests from one thread
+Message-ID: <ZW70qXZ-xn5LSY67@redhat.com>
+References: <20231123194931.171598-1-stefanha@redhat.com>
+ <20231123194931.171598-2-stefanha@redhat.com>
+ <ZWoDwd-EeuAKyDE2@redhat.com> <20231204163002.GI1492005@fedora>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: qemu-devel@nongnu.org
-Content-Language: en-US
-From: Philipp Hahn <hahn@univention.de>
-Subject: "Instant clone" with Qemu?
-Autocrypt: addr=hahn@univention.de; keydata=
- xsDNBE5YkqgBDADMOfTu14LoiaEyXNZ9+9dHOLceNHdH31k3p76CwAtdo9+oDm2rnSfrHapX
- H1Bc+I89tT2dR1Pd3t+jjVOqzij0E8SOaQPMto93+Bdr34p6sO8MU5Bh6Nn97bn+SP13YF1T
- J/HdX4ZnLBXMqgo2dT16tnNbUwLZ2AUJ95t2p1Tearkv47URju947dh2mgmArdzPWCq46un5
- QgAxoQ7GtA7Ysw37P3aveyWIJ5cyOHkl0G788nr6dgGjUuX5i3w98zy/ONjkoeAuJgbkkwGd
- T9OHPrUwUQN6Kx2jTmOJb+w3PN3cLKW+zZ30iJ0LZIpME72D6ui9KQQ9/4OE5NQN5YQzhtN3
- 1OZtLw921QM7meQHDvH4XpkNuOpTg4aOhDgIzGxaBCu4Np8Mfn9+pI9DHDqN6MiXSWCV/vxp
- QC4Mi08TN2pJ9795R3AIQ3SgLPDpPSmAn2vSby4EI9yP3c/wPcNS/96pcjWVlRzNo4ZOyjCO
- ICh4Y3iASL/DLNRMTWYgkmMAEQEAAc08UGhpbGlwcCBNYXR0aGlhcyBIYWhuIChVbml2ZW50
- aW9uIEdtYkgpIDxoYWhuQHVuaXZlbnRpb24uZGU+wsEUBBMBCAA+AhsDBQsJCAcDBRUKCQgL
- BRYCAwEAAh4BAheAFiEEWK98LgB82+YsWeB49Q79z4rQSxoFAmOkpyUFCRc9GfYACgkQ9Q79
- z4rQSxoaWQwAgYjv60FRSNvz+SGdTKFdBoY0B1DiPVVDO7teR9+biooChRfSo5hhwUqcseMa
- 6Tx4apAt9IMMbQAI+tFy963jXVnwwhpid7GxoQdWjoXDM6LKj4d4WG59vl2Q4TMS5ofblJcf
- lkM+rXFVorK6Ne7U0La46WzlfjtKQMdECRL7BmNDKnxGHzK++3Lv+rZaOBfj3grxhGUF5Vdp
- Cc+K5FPf8OxjmsikMYkpfn0WnRBJZVulBDhyHrs99rPogAUglISX+1k7linCZYFRCAIbENGz
- ZqdJtxpV6K3OrpHLsKw4yzhk/iN+e6pj481WJ1D7Pz4OwY6bg4cj8lVBvQCyO6ZGdjrp+HNz
- yLWvzdnbJ0aPpNSUVSVgvX56xtqQTiwy+fZkY/P/KyfNOFgokCRV80+uY/8bv0pLW1TOGMn9
- gtfIKF2c3Xi/wL8bQ4+VykYZqSP2GUGreasaDszlFnuy/HUp7cq3SWm0+vU4uEAULgDetoUM
- jVgwz2sSAaAMBlXJqjgzzsBNBE5YlEQBCAC9mNHGrz+MdTCEn+Pd5CZ2OKKJxCwWUOlPTBds
- Ut18ORaHa+gjhob5BcCZr+H0cJQbhM2wJK3oAaUwGtu8XX/l51+Pqugey/G3OueaSS6o1uVs
- iy7Hz2lUGol1GaErSLOJJ3ufhBd8nhMVp6BMsxEQV6R7pFqdy+mPBnlc8Gei6gvIQ0xIYRDK
- BFZ5MXki8A6KGuq20Cc6Wm6EJwY0LIKWm6RjbZD6MVYx6SlBHM68VQsx4duoySW9wjJQITnD
- nHIFD9X1j2yjUIEhVDsoJ7GPBPt8RrdPzDPPnGwhwqeHO4UouYyyvS5b3RHr8/LTx/vtf/US
- w0TDQtRyWsSDw+BzABEBAAHCwN8EGAEIAAkFAk5YlEQCGwwACgkQ9Q79z4rQSxorfAv/WZhH
- AXN37ITr7ylVWuEf0wqSU/YMR+H3hKRXZPGdKgOljMP59Ki90sh8ELgCgP5014MeA5DR116G
- RZSieRCTki27L1xLNL4COhknEoRkMtXSQAUjWviksRP/sy/V9rF6C8gN2cZVStW9pJgTeFmt
- e5O23aiM+DwxCLH+TEPLAu4du52u6zOAOP+lvIdm5X6D11YUUg12b7ITS+APi+pMJqSFuNTh
- 4Mb++fb1pSi2MYjrzDZbaPSBqj/Dlwh4Wf7QVbYGCmeBgtg47V3jPGEZ7r1vJBB/7RATus3g
- jJyYJLZ8vp8IUwrNKXTCwnWcp4FSYPfEMSlnsAKnJKiMJQwNVoI05DZK3xA5hbB9pN+Z1TSR
- VUmMGOhvzgFESP0MmAXd+W0daJlU/eYJAtS1Thc0VntMmANl0xE2YWrsTnSegD20Kk9Y3yI4
- /Cx6mtKYYrhXBde2ZnwVFE+Ff7nGUZecfjKcPIeVbFLsfBbawh6cFm2meX5sN/a0HNPtCdrD 3toP
-Organization: Univention GmbH
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=82.198.197.8; envelope-from=hahn@univention.de;
- helo=mail.univention.de
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="x7fWRZBeOjyImcXF"
+Content-Disposition: inline
+In-Reply-To: <20231204163002.GI1492005@fedora>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,47 +84,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
 
-by accident I stumbled over "VMware Instant Clone" ¹, which allows 
-cloning of running VMs by copy-on-write-sharing the disk images and 
-memory content; the network MAC address gets changed (or a different 
-bridge is used?).
-I wonder if something similar can also be done with Qemu? My current 
-solution would be to:
-- start and install the VM
-- create a live-snapshot into the qcow2 file
-- clone the disk image, e.g. put a qcow2 overlay on it per clone
-- start and restore the clones from that live-snapshot
-- put the clones in individual bridges and let the host do some network 
-address translation (NAT) to give each clone a unique external IP address.
+--x7fWRZBeOjyImcXF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Has someone done something similar or is there even a better alternative?
+Am 04.12.2023 um 17:30 hat Stefan Hajnoczi geschrieben:
+> On Fri, Dec 01, 2023 at 05:03:13PM +0100, Kevin Wolf wrote:
+> > Am 23.11.2023 um 20:49 hat Stefan Hajnoczi geschrieben:
+> > > Stop depending on the AioContext lock and instead access
+> > > SCSIDevice->requests from only one thread at a time:
+> > > - When the VM is running only the BlockBackend's AioContext may access
+> > >   the requests list.
+> > > - When the VM is stopped only the main loop may access the requests
+> > >   list.
+> > >=20
+> > > These constraints protect the requests list without the need for lock=
+ing
+> > > in the I/O code path.
+> > >=20
+> > > Note that multiple IOThreads are not supported yet because the code
+> > > assumes all SCSIRequests are executed from a single AioContext. Leave
+> > > that as future work.
+> > >=20
+> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > > ---
+> > >  include/hw/scsi/scsi.h |   7 +-
+> > >  hw/scsi/scsi-bus.c     | 174 ++++++++++++++++++++++++++++-----------=
+--
+> > >  2 files changed, 124 insertions(+), 57 deletions(-)
+> > >=20
+> > > diff --git a/include/hw/scsi/scsi.h b/include/hw/scsi/scsi.h
+> > > index 3692ca82f3..10c4e8288d 100644
+> > > --- a/include/hw/scsi/scsi.h
+> > > +++ b/include/hw/scsi/scsi.h
+> > > @@ -69,14 +69,19 @@ struct SCSIDevice
+> > >  {
+> > >      DeviceState qdev;
+> > >      VMChangeStateEntry *vmsentry;
+> > > -    QEMUBH *bh;
+> > >      uint32_t id;
+> > >      BlockConf conf;
+> > >      SCSISense unit_attention;
+> > >      bool sense_is_ua;
+> > >      uint8_t sense[SCSI_SENSE_BUF_SIZE];
+> > >      uint32_t sense_len;
+> > > +
+> > > +    /*
+> > > +     * The requests list is only accessed from the AioContext that e=
+xecutes
+> > > +     * requests or from the main loop when IOThread processing is st=
+opped.
+> > > +     */
+> > >      QTAILQ_HEAD(, SCSIRequest) requests;
+> > > +
+> > >      uint32_t channel;
+> > >      uint32_t lun;
+> > >      int blocksize;
+> > > diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+> > > index fc4b77fdb0..b8bfde9565 100644
+> > > --- a/hw/scsi/scsi-bus.c
+> > > +++ b/hw/scsi/scsi-bus.c
+> > > @@ -85,6 +85,82 @@ SCSIDevice *scsi_device_get(SCSIBus *bus, int chan=
+nel, int id, int lun)
+> > >      return d;
+> > >  }
+> > > =20
+> > > +/*
+> > > + * Invoke @fn() for each enqueued request in device @s. Must be call=
+ed from the
+> > > + * main loop thread while the guest is stopped. This is only suitabl=
+e for
+> > > + * vmstate ->put(), use scsi_device_for_each_req_async() for other c=
+ases.
+> > > + */
+> > > +static void scsi_device_for_each_req_sync(SCSIDevice *s,
+> > > +                                          void (*fn)(SCSIRequest *, =
+void *),
+> > > +                                          void *opaque)
+> > > +{
+> > > +    SCSIRequest *req;
+> > > +    SCSIRequest *next_req;
+> > > +
+> > > +    assert(!runstate_is_running());
+> > > +    assert(qemu_in_main_thread());
+> > > +
+> > > +    QTAILQ_FOREACH_SAFE(req, &s->requests, next, next_req) {
+> > > +        fn(req, opaque);
+> > > +    }
+> > > +}
+> > > +
+> > > +typedef struct {
+> > > +    SCSIDevice *s;
+> > > +    void (*fn)(SCSIRequest *, void *);
+> > > +    void *fn_opaque;
+> > > +} SCSIDeviceForEachReqAsyncData;
+> > > +
+> > > +static void scsi_device_for_each_req_async_bh(void *opaque)
+> > > +{
+> > > +    g_autofree SCSIDeviceForEachReqAsyncData *data =3D opaque;
+> > > +    SCSIDevice *s =3D data->s;
+> > > +    SCSIRequest *req;
+> > > +    SCSIRequest *next;
+> > > +
+> > > +    /*
+> > > +     * It is unlikely that the AioContext will change before this BH=
+ is called,
+> > > +     * but if it happens then ->requests must not be accessed from t=
+his
+> > > +     * AioContext.
+> > > +     */
+> >=20
+> > What is the scenario where this happens? I would have expected that
+> > switching the AioContext of a node involves draining the node first,
+> > which would execute this BH before the context changes.
+>=20
+> I don't think aio_poll() is invoked by bdrv_drained_begin() when there
+> are no requests in flight. In that case the BH could remain pending
+> across bdrv_drained_begin()/bdrv_drained_end().
 
-Background: our test suite currently provisions a set of multiple VMs, 
-which are dependent on each other. Provisioning them takes sometimes 
-many hours. After that the test suite runs inside these VMs and again 
-takes many hours.
-I'd like to speed that up by parallelizing these tests, e.g.
-1. setup the VM environment once
-2. clone the VM environments as the resources allow
-3. distribute tests over these environments to run in parallel and to 
-allow running flaky tests multiple times from a clean clone again
+Hm, I wonder if that is actually a bug. Without executing pending BHs,
+you can't be sure that nothing touches the node any more.
 
-¹<https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-853B1E2B-76CE-4240-A654-3806912820EB.html>
--- 
-Philipp Hahn
-Open Source Software Engineer
+Before commit 5e8ac217, we always polled at least once, though I think
+that was an unintentional side effect.
 
-Univention GmbH
-Mary-Somerville-Str. 1
-28359 Bremen
-Germany | Deutschland
-Phone: +49 (0)421 22232-0 | E-Mail: info@univention.de
+> > The other option I see is an empty BlockBackend, which can change its
+> > AioContext without polling BHs, but in that case there is no connection
+> > to other users, so the only change could come from virtio-scsi itself.
+> > If there is such a case, it would probably be helpful to be specific in
+> > the comment.
+> >
+> > > +    if (blk_get_aio_context(s->conf.blk) =3D=3D qemu_get_current_aio=
+_context()) {
+> > > +        QTAILQ_FOREACH_SAFE(req, &s->requests, next, next) {
+> > > +            data->fn(req, data->fn_opaque);
+> > > +        }
+> > > +    }
+> >=20
+> > Of course, if the situation does happen, the question is why just doing
+> > nothing is correct. Wouldn't that mean that the guest still sees stuck
+> > requests?
+> >=20
+> > Would rescheduling the BH in the new context be better?
+>=20
+> In the case where there are no requests it is correct to do nothing,
+> but it's not a general solution.
 
-https://www.univention.de | https://www.univention.com
+Why is it correct when there are no requests? I can see this for
+scsi_device_purge_requests() because it only cancels in-flight requests,
+but scsi_dma_restart_cb() is about requests queued at the device level
+that are not in flight in the block layer. Not restarting them if there
+aren't any other requests in flight seems wrong.
 
-Managing Directors: Peter H. Ganten, Stefan Gohmann
-Local court: Amtsgericht Bremen
-HRB 20755 | Ust-ID: DE220051310
+> > > +
+> > > +    /* Drop the reference taken by scsi_device_for_each_req_async() =
+*/
+> > > +    object_unref(OBJECT(s));
+> > > +}
+> > > +
+> > > +/*
+> > > + * Schedule @fn() to be invoked for each enqueued request in device =
+@s. @fn()
+> > > + * runs in the AioContext that is executing the request.
+> > > + */
+> > > +static void scsi_device_for_each_req_async(SCSIDevice *s,
+> > > +                                           void (*fn)(SCSIRequest *,=
+ void *),
+> > > +                                           void *opaque)
+> >=20
+> > If we keep the behaviour above (doesn't do anything if the AioContext
+> > changes), then I think it needs to be documented for this function and
+> > callers should be explicit about why it's okay.
+>=20
+> I think your suggestion to reschedule in the new AioContext is best.
+
+Ok, then the answer for the above is less important.
+
+Kevin
+
+--x7fWRZBeOjyImcXF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmVu9KkACgkQfwmycsiP
+L9Y9Pw/+KVtWecD3XyrQB0GCRc5YjDbEpsMtIBo8XqbZ8LL4d6pR+63Y7+AlWRIx
+rBoDfek09hY2uE3hIviv7tPwG49Vg6e6f5Yv1VecDQaFNJZuawF7kebFf3PtI7vl
+xiK0EJN48Fhb11aYkT5CH7GBy+cQudcc4YCGw71NA4hdH7y5tf49xfSBwiN3a0MX
+lSs4hegf9HT8G0/OSovKFvJ7mn4+q7o9nujnDbTZZ1zOfRl9RMdjRfRXiJK0DICn
+dDzbiDKzgTX4qa6LrWCpcfi4DDWMFYCeJUxilFSkmqeHadx2bHc6cJe3YwpBZgId
+GAyA8ZIS6OYlSdKD5fWVj10MkkvqurMBe70ZlG+1kz80ETet/Hnb9Qh/EFJVunUs
+hizfliHjk09n8TIFz8uSny/B5Hd8x3wKZaxRVjQ0ybf4OI8t0Ti1mB27LF7ZYZ3r
+LUy1OvRC297SjOeFli1tkCJwF5s734/kD9wPJSekVmmGuH951MLG/4RBXvFv/1lf
+fCSHZP02ktYzJ/EHip4O/1lAc1IbPCxV8/TKLrbr0X7R79OCG04vfEwMG5ETvudh
+c9lHJ0HTg//dLHz0AKz+bAGQto7aGH+WqxArnrf4bXqjsRfTHFSI4Cfj3Nh4aVWh
+F+Gz++X6CDvuk56y3YMiijzdMqOR6GyNQmDLi4zo1fZzlO/muN0=
+=BlnZ
+-----END PGP SIGNATURE-----
+
+--x7fWRZBeOjyImcXF--
+
 
