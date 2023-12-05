@@ -2,56 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973E9804B6D
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 08:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66400804BA2
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 09:02:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAQAc-0005sD-NJ; Tue, 05 Dec 2023 02:48:42 -0500
+	id 1rAQMb-0008D2-9d; Tue, 05 Dec 2023 03:01:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1rAQAa-0005ru-GO; Tue, 05 Dec 2023 02:48:40 -0500
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1rAQMX-0008CT-LI
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 03:01:01 -0500
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1rAQAX-0005IW-8c; Tue, 05 Dec 2023 02:48:40 -0500
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 3B57m629081069;
- Tue, 5 Dec 2023 15:48:06 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
- (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Tue, 5 Dec 2023
- 15:48:04 +0800
-Date: Tue, 5 Dec 2023 15:47:59 +0800
-To: <qemu-devel@nongnu.org>
-CC: <peter.maydell@linaro.org>, <edgar.iglesias@gmail.com>,
- <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
- <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
- <in.meng@windriver.com>, <liweiwei@iscas.ac.cn>,
- <dbarboza@ventanamicro.com>, <hiwei_liu@linux.alibaba.com>,
- <qemu-riscv@nongnu.org>, <peterx@redhat.com>, <david@redhat.com>
-Subject: Re: [PATCH v4 0/4] Support RISC-V IOPMP
-Message-ID: <ZW7Vr1SGnEoHADAY@ethan84-VirtualBox>
-References: <20231122053251.440723-1-ethan84@andestech.com>
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1rAQMT-0000bu-9J
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 03:01:01 -0500
+Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 3B57fHZp028762; Tue, 5 Dec 2023 00:00:53 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ from:to:cc:subject:date:message-id:content-transfer-encoding
+ :content-type:mime-version; s=proofpoint20171006; bh=laCLZ6d8mgr
+ s2Aqz0YXp7O4KXOH2FNMlZZA1nrKuHJ8=; b=itbEK8cpqMr4PTORTqx9ItpNk0c
+ QMk35u9Vm51QYsWYY4eSkrlIi+p3zdiixecrdYe5QkCxWR67ZhqvEia9uKtzJ3dY
+ QoiXH/KO9M0jQUg3mdB0li+xjqBh8E3Es5tgS8CEYRZmNEPU7onzkKeDoAyA1da5
+ qCCpL6nn+FTLgNmLG6axEG2gy7wwZ2aScuPivNYBaGTAMUoJMnpm34lTRmcAPdgl
+ XIF2OpBL3Va/8OZU+9pAtUvijYuebVyJlqug4QyUZ290blfWmxl12nvbHc4tg6Bn
+ Niyg6D9uvvChvdougbYrb6eIA0hMMU7gYb46+IJDOavmwOxnPB5NwbBKVsQ==
+Received: from nam02-bn1-obe.outbound.protection.outlook.com
+ (mail-bn1nam02lp2040.outbound.protection.outlook.com [104.47.51.40])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3ur4sfmvh7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Dec 2023 00:00:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=N6ik4SX66qNgMxpDS4SHW5kTjYJPpupKJyhNPPEWb3ngAOrZPoDWEGuopOesrdEk0JnVynP9Q3zGruzC/cj2LjEmJyp7gt3TecBACxo1N26xaX4sx3YQjRSc5jK3znlGok7Fgb/eNXG75Ps95Q2rZ1nBkbAoOHKXioXStzxGJ5X3aLE7tk7/hdBm8JlAjAJnVAxkn+JNIp2TY4w9rv8Qvd302Rte4nJrRWhJP3j0bjrCVJIyp3F8G62SIHUNTa+EoCSKy9POhrdsD40AGCmqTzu212+KI7HyBBbVvEc+DLuoK5d1QVkMiG/ATBHthgTk2qPCDd4mmtWrTFaSguiW8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=laCLZ6d8mgrs2Aqz0YXp7O4KXOH2FNMlZZA1nrKuHJ8=;
+ b=AsVcb7fvZQQZch1q1+qWtnKUg82fyLGHPsDyedNHivgc7AyFn2eFcbXtsyRtgSQLWIVw06O2nNRcjFXgBGXDBnGC+SK7I6R66Qd4PwFS+eYJKHsiCFdzIcj6hUhO42+tqa2HXzQDEsBJlPHpN9JFDx6GbbgTked7Fe8ICbDSwSIpNlECuhouXxrUuCeGxIYNOpQWxBuPKK4pTV/Bhe0B8UcBeIvhYTorl4A+T06WkqdBaOx3hHcKsYkHD9ofdByLvObukw5QTxbldcSx2hmg3YhmCK7pBXDYJZly9zKw0FnYu3HuaOIXTvmIz6ET+q9Zm9N2ISrqCy6/vArN648gIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=laCLZ6d8mgrs2Aqz0YXp7O4KXOH2FNMlZZA1nrKuHJ8=;
+ b=n2MXkcoAc4+wX8dKpB03zTdEKJBxtbg8XCcIGMBJHmtFlnbTH3necnPYVAhyHHR1iWNmIua3SJrD4zwxLK1hJeoAd2bbufgPdVhU7F+86+SIdAAPdV/6D27qooqPUb7wEgY3TM+XrwWn1lAsqW6mJGG3cQ4a6l9edlWWo7cADWh+A9/NE4w5KC16AW9ArRxLpYuJOV55pzKbrEte4jibNgRGkmXhCkl7TEo2QU6F/56NnD+YZtZoYMaEJGqfya62Xhsny9xI+0fzwLWPT3IungoU8Izyv/oJ9D+wkCkwHwPbkKX+/v43R8zGjpTwlvLvDnX4K273fCHjOCZfyZRlhw==
+Received: from PH7PR02MB9944.namprd02.prod.outlook.com (2603:10b6:510:2f7::8)
+ by BL0PR02MB6499.namprd02.prod.outlook.com (2603:10b6:208:1c5::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Tue, 5 Dec
+ 2023 08:00:49 +0000
+Received: from PH7PR02MB9944.namprd02.prod.outlook.com
+ ([fe80::603d:1f11:4db4:cb17]) by PH7PR02MB9944.namprd02.prod.outlook.com
+ ([fe80::603d:1f11:4db4:cb17%3]) with mapi id 15.20.7046.033; Tue, 5 Dec 2023
+ 08:00:48 +0000
+From: Het Gala <het.gala@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, quintela@redhat.com, berrange@redhat.com,
+ peter.maydell@linaro.org, farosas@suse.de, armbru@redhat.com,
+ Het Gala <het.gala@nutanix.com>
+Subject: [PATCH] migration: Simplify initial conditionals in migration for
+ better readability
+Date: Tue,  5 Dec 2023 08:00:39 +0000
+Message-Id: <20231205080039.197615-1-het.gala@nutanix.com>
+X-Mailer: git-send-email 2.22.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR08CA0059.namprd08.prod.outlook.com
+ (2603:10b6:a03:117::36) To PH7PR02MB9944.namprd02.prod.outlook.com
+ (2603:10b6:510:2f7::8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231122053251.440723-1-ethan84@andestech.com>
-User-Agent: Mutt/2.1.4 (2021-12-11)
-X-Originating-IP: [10.0.12.51]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 3B57m629081069
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR02MB9944:EE_|BL0PR02MB6499:EE_
+X-MS-Office365-Filtering-Correlation-Id: 82de73b6-50d7-414c-2a75-08dbf5684aea
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: k/c83hEutJkD1wiHj6hkJW33DkNHtoKO6QchfRypVNXYOtUJ3JYFhsv5yOtbjUhfrYNkDT/gU+MUWw7QNPvOw8l4gCB4rdtJBCRfDvkNklxbM3HSbi23wxzhzQdEj0LLAN9GG9QrAWAThVGBFTzx/oKhrLco3KtcUh0SDXkNWe9+Yf8CNHuL/DQoh8F62c8gpWUfrwJcz8EK1urN8cIlYdoBv6drpXBKG2/NAvmC0CVOTRZvKpND+7DlrAcCwRPOKpbgYtmLhvrysXoahoR1ebjNakM9Mkxlg92KsEvFTlfXwBlEH8lWWrjS0fw6r3VneHgCgjVEKM++nj85wAZ50RYXxNiBmWOWtreqldn25tKKNb5wnVYydlxBA2vchcmhMxg7x+1RxPDzT9x9t844t0QSzPrXINjXvIv+ChNJXut2+vqQLej0HL1UjD6CzFDCDiTKJszrkJHpX9Q4GEZWi5qvo9P7xfo0v3Gb33QHgRWAM05HtiORMxLAq2TySIfxDsnCvIiTXiG9wT+YQLPKUyoCkqZWG3csgVwa/bE34eCr4hapYPrvKzvdmU1fQJ4xfTFL7/kY4FIBkdPePuq4q+ql1tsxuSqzYhB3K4vK0sM2SsjfqMowda0RP9X/f18dmCK08jO396/w/MIPvoEgnf7yuDXwWi8nRPWPd+DQyRs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR02MB9944.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(39850400004)(346002)(396003)(136003)(376002)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(6512007)(5660300002)(38100700002)(2906002)(44832011)(86362001)(36756003)(41300700001)(1076003)(2616005)(107886003)(26005)(6666004)(6506007)(478600001)(6486002)(8676002)(4326008)(66946007)(66556008)(66476007)(6916009)(316002)(83380400001)(8936002)(38350700005)(52116002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Ja62yUgY9+Cgb9yoTlSfexmDj0TNcw/Gjh0KcBxD3prycNqCAOGCuq+L5GCL?=
+ =?us-ascii?Q?OCj0T9s1ElTW0SyO1+0Yfrh4LwwGjVxYHl6t08a7G8H5pBnQJmeFz2hNHtyR?=
+ =?us-ascii?Q?wTzG1QxFETVEsVZsanZPgIuE+pv0IG44OOUv4JXlII4IKtiOhRObVPE5QfEn?=
+ =?us-ascii?Q?gYl4QazLnzB/iySgxbjrz1f3RDqOUHRkeD4wfoLyF9idb3S9rAVqHYk/S8fE?=
+ =?us-ascii?Q?HlVKpE5TN3EcBAxHzMxQWX/usmgFk59ecFSsIM8j3Ve1sSEHW9O9SdA42txx?=
+ =?us-ascii?Q?DuyHCc73HOtFdjmLtToW1KEGxM7T3vZbABm6Fa8eSGjH10AIn7n5W2Ydzgvx?=
+ =?us-ascii?Q?GPDg2SjzLW+NDz+to5thevgWEYjm/gP7zEhv64VV9aX+QSGmbBRubL1JX53a?=
+ =?us-ascii?Q?ae6skz0Siw+YsKcQ9sRIJIvrffIwB+Pf/fR1mwBFHOXZKi6W9sKTu3PUFP0A?=
+ =?us-ascii?Q?rK7W2ReX+6Re+91DqG2VkqbaIoXhZRWk8x7J68H8PpAa8eIcNR52PB11zaJ2?=
+ =?us-ascii?Q?p3EzpoNntXjcHzoETSUeg821TZIBE07k+MfeJ/QFUoyc2DX+PJJfBrlYK8Xo?=
+ =?us-ascii?Q?585IBJib+4x4w7yPfCWwJq+6HLkyyY4SxhqIBx9ktQtDi22NR9mpHKpYxY1O?=
+ =?us-ascii?Q?Fmo3UyZVszr7ZpyMLlTfXbJpY7oIY+CDAUNmQzLz+tmdDObX9+w2a2Mqhjbp?=
+ =?us-ascii?Q?JSD1LLivN/khHVi2VRDpGLYSStaDQVzweqDyFsnkquhk+Ctks01rYCh+ob5f?=
+ =?us-ascii?Q?5KxWufZHyVtl+gtW7tjNs1sA5+Cn4NJ4doi/kIQ3JjWuWtagmcBPgoCCwv5x?=
+ =?us-ascii?Q?D4uh/jUq5lYEEMmD8L3WX/Fbk49xPhil6XMW0nSHwt95QEytuEFCod7tLzLM?=
+ =?us-ascii?Q?I9nQn0qwxr6DfVkMdt3yWATkbwXh8Ijrs3i0dgQCErcr+DXTF1Qba9J2+tnx?=
+ =?us-ascii?Q?Ul2zag7fK22ZxHiWTdKHUB2oJ7DI1V9GJX6t7O2sNZGE1ZRk7gpdvDy/YbyC?=
+ =?us-ascii?Q?Ej5kDkRwD0wnJeUVMxbA6YSUGW4CHmXWdN/Qp2eyzpJCF1buR+V6RIpA3u9P?=
+ =?us-ascii?Q?HOcd17PXh5XWG81vLs0UvGpQJh9X0pRz7jccACukuM+8kPN7+cx3gmDdk5/O?=
+ =?us-ascii?Q?pUKMjuXFpJCM9qROsBizu28K085o83RNXhtBJjVLmL56WaDRFgKhSwtpSsgp?=
+ =?us-ascii?Q?khay4ayPHhhERd8dEGGd58xLcXopGNeo3KZqECPyb2KF9cqH2mP5S8Zx3lOm?=
+ =?us-ascii?Q?0SOVNyy7dOQNQWR+TW9AVQ85z9SgU5O1nw7Q43xmGtOb6ImapFsCuyq7YkuD?=
+ =?us-ascii?Q?xgI2U1YNz7Zpza3Fl7g5joCt+rc2VGaAT81G8C5jBHrWaP3gJaUeDVlOuQCb?=
+ =?us-ascii?Q?N/lb5/Bo3UXqw372RXyo1DY4BSau3vhjZhNq7QJJkeHPk7AzyD9PB4YNNCC0?=
+ =?us-ascii?Q?qG8ORupmBYhjT2AadaRgCoQbU6CrMIJCF5oqPttMDnEvKgPsygdmKLz/bEzY?=
+ =?us-ascii?Q?04nXPkY+ABm7eTicWgjqduYJZ5SD9DrzDDV9ytIv07Mw1XqZ5BRCro5dYUkw?=
+ =?us-ascii?Q?17H0PChXfII5sKSAWksig7kSTSRtXgQNrR8fttR1?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82de73b6-50d7-414c-2a75-08dbf5684aea
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR02MB9944.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2023 08:00:48.7281 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Vuf1wqm17+NSFGZs+xqbJx44XFF9obuFdpoqIS7/jidJfjpaIHX3UZdt4QngFkG8VriaGph/3EuznlE2S3EM2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR02MB6499
+X-Proofpoint-ORIG-GUID: UGO2pVCOKMoiR4qGkAUtdc2shLjfqq51
+X-Proofpoint-GUID: UGO2pVCOKMoiR4qGkAUtdc2shLjfqq51
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_27,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
+ helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,77 +152,99 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ethan Chen <ethan84@andestech.com>
-From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping.
-https://patchew.org/QEMU/20231122053251.440723-1-ethan84@andestech.com/
+The inital conditional statements in qmp migration functions is harder
+to understand than necessary. It is better to get all errors out of
+the way in the beginning itself to have better readability and error
+handling.
 
-On Wed, Nov 22, 2023 at 01:32:47PM +0800, Ethan Chen wrote:
-> This series implements IOPMP specification v1.0.0-draft4 rapid-k model.
-> The specification url:
-> https://github.com/riscv-non-isa/iopmp-spec/blob/main/riscv_iopmp_specification.pdf
-> 
-> When IOPMP is enabled, a DMA device ATCDMAC300 is added to RISC-V virt
-> platform. This DMA device is connected to the IOPMP and has the functionalities
-> required by IOPMP, including:
-> - Support setup the connection to IOPMP
-> - Support asynchronous I/O to handle stall transactions
-> - Send transaction information
-> 
-> IOPMP takes a transaction which partially match an entry as a partially hit
-> error. The transaction size is depending on source device, destination device
-> and bus.
-> 
-> Source device can send a transaction_info to IOPMP. IOPMP will check partially
-> hit by transaction_info. If source device does not send a transaction_info,
-> IOPMP checks information in IOMMU and dose not check partially hit.
-> 
-> Changes for v4:
-> 
->   - Add descriptions of IOPMP and ATCDMAC300
->   - Refine coding style and comments
->   - config XILINX_AXI does not include file stream.c but selects config STREAM
->     instead.
->   - ATCDMAC300: INT_STATUS is write 1 clear per bit
-> 		            Rename iopmp_address_sink to transcation_info_sink
->   - IOPMP: Refine error message and remove unused variable
->   - VIRT: Document new options
-> 	        atcdmac300 is only added when iopmp is enabled
->           serial setting should not be changed
-> 
-> Ethan Chen (4):
->   hw/core: Add config stream
->   Add RISC-V IOPMP support
->   hw/dma: Add Andes ATCDMAC300 support
->   hw/riscv/virt: Add IOPMP support
-> 
->  docs/system/riscv/virt.rst                    |  11 +
->  hw/Kconfig                                    |   1 +
->  hw/core/Kconfig                               |   3 +
->  hw/core/meson.build                           |   2 +-
->  hw/dma/Kconfig                                |   4 +
->  hw/dma/atcdmac300.c                           | 566 ++++++++++
->  hw/dma/meson.build                            |   1 +
->  hw/misc/Kconfig                               |   4 +
->  hw/misc/meson.build                           |   1 +
->  hw/misc/riscv_iopmp.c                         | 966 ++++++++++++++++++
->  hw/riscv/Kconfig                              |   2 +
->  hw/riscv/virt.c                               |  65 ++
->  include/hw/dma/atcdmac300.h                   | 180 ++++
->  include/hw/misc/riscv_iopmp.h                 | 341 +++++++
->  .../hw/misc/riscv_iopmp_transaction_info.h    |  28 +
->  include/hw/riscv/virt.h                       |  10 +-
->  16 files changed, 2183 insertions(+), 2 deletions(-)
->  create mode 100644 hw/dma/atcdmac300.c
->  create mode 100644 hw/misc/riscv_iopmp.c
->  create mode 100644 include/hw/dma/atcdmac300.h
->  create mode 100644 include/hw/misc/riscv_iopmp.h
->  create mode 100644 include/hw/misc/riscv_iopmp_transaction_info.h
-> 
-> -- 
-> 2.34.1
-> 
+Signed-off-by: Het Gala <het.gala@nutanix.com>
+Suggested-by: Markus Armbruster <armbru@redhat.com>
+---
+ migration/migration.c | 36 ++++++++++++++++--------------------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
+
+diff --git a/migration/migration.c b/migration/migration.c
+index 3ce04b2aaf..962ee7564c 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -523,28 +523,26 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
+     /*
+      * Having preliminary checks for uri and channel
+      */
+-    if (uri && has_channels) {
+-        error_setg(errp, "'uri' and 'channels' arguments are mutually "
+-                   "exclusive; exactly one of the two should be present in "
+-                   "'migrate-incoming' qmp command ");
++    if (!uri == !channels) {
++        error_setg(errp, "need either 'uri' or 'channels' argument");
+         return;
+-    } else if (channels) {
++    }
++
++    if (channels) {
+         /* To verify that Migrate channel list has only item */
+         if (channels->next) {
+             error_setg(errp, "Channel list has more than one entries");
+             return;
+         }
+         addr = channels->value->addr;
+-    } else if (uri) {
++    }
++
++    if (uri) {
+         /* caller uses the old URI syntax */
+         if (!migrate_uri_parse(uri, &channel, errp)) {
+             return;
+         }
+         addr = channel->addr;
+-    } else {
+-        error_setg(errp, "neither 'uri' or 'channels' argument are "
+-                   "specified in 'migrate-incoming' qmp command ");
+-        return;
+     }
+ 
+     /* transport mechanism not suitable for migration? */
+@@ -1939,28 +1937,26 @@ void qmp_migrate(const char *uri, bool has_channels,
+     /*
+      * Having preliminary checks for uri and channel
+      */
+-    if (uri && has_channels) {
+-        error_setg(errp, "'uri' and 'channels' arguments are mutually "
+-                   "exclusive; exactly one of the two should be present in "
+-                   "'migrate' qmp command ");
++    if (!uri == !channels) {
++        error_setg(errp, "need either 'uri' or 'channels' argument");
+         return;
+-    } else if (channels) {
++    }
++
++    if (channels) {
+         /* To verify that Migrate channel list has only item */
+         if (channels->next) {
+             error_setg(errp, "Channel list has more than one entries");
+             return;
+         }
+         addr = channels->value->addr;
+-    } else if (uri) {
++    }
++
++    if (uri) {
+         /* caller uses the old URI syntax */
+         if (!migrate_uri_parse(uri, &channel, errp)) {
+             return;
+         }
+         addr = channel->addr;
+-    } else {
+-        error_setg(errp, "neither 'uri' or 'channels' argument are "
+-                   "specified in 'migrate' qmp command ");
+-        return;
+     }
+ 
+     /* transport mechanism not suitable for migration? */
+-- 
+2.22.3
+
 
