@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013AC804A9E
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 07:52:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AB1804AF9
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 08:16:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAPGU-0002e2-R4; Tue, 05 Dec 2023 01:50:42 -0500
+	id 1rAPeA-0007gv-Rx; Tue, 05 Dec 2023 02:15:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tianren@smartx.com>)
- id 1rAPGR-0002dm-6Q
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 01:50:39 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tianren@smartx.com>)
- id 1rAPGO-0001nK-L7
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 01:50:38 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6cbd24d9557so4227923b3a.1
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 22:48:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701758912; x=1702363712;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=5s6k5u06GezO0EJtSNzZXzT0SrsiRdYLdBsGH9qs3Vg=;
- b=Fc1ct+TMbWBj1iuuv9x3o57hN7GDTu8kI9RPPS7gjlGTjwlyQBPrMjq5tqEpJBaQGC
- cat2NBUb3Hgky99iXcZpWdwSuPsjKoQDiYw4+y6GfnRnfavWvkEq4e/jR7E106T1kbL/
- sclYbXER+jH4He/kT2CtEpEPp0rbbqmP1P3FkaxknL8JVY3pMRITc9P0kGLc7BlGzORx
- Bc7ChbTHMWn/0S/yAkgh3cG4Y178+Up2TFOuqo8xhLY9cZVTBxrI2dftX6WlI+5WXG3o
- /QFRu/YyAColnzK68BzhBmJgURu4qXaWSqMdfCsv5LQW2UHXuLauOypPxyxkf2ybL4SJ
- ZXPw==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1rAPe6-0007fx-KN
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 02:15:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1rAPe4-0002XQ-On
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 02:15:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701760502;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=sL2mQwYQomeKZCmAYIRkF9VCDBpAP9maQ6ksfUJSQgI=;
+ b=HSv1WpIvcc84/3lpLxGFjuC/kIvnGCt5Df2f/UxWLzDEJEmXbiMY5nDemsL224/jI6veUK
+ G7Y/yoD+DOFcm4HaDWRIq97gYeceJKaaTbY+1oJEcE6T/ID/nKUjMBWyNQGlud4LdV3Tue
+ 8FWDJ5QTLVcXDqEPEPqd1AmpQUpOXZ0=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-63-iO1DGG0YO-WVO6cRBbJeJg-1; Tue, 05 Dec 2023 02:15:00 -0500
+X-MC-Unique: iO1DGG0YO-WVO6cRBbJeJg-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-54c7be1e466so3569981a12.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 23:15:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701758912; x=1702363712;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5s6k5u06GezO0EJtSNzZXzT0SrsiRdYLdBsGH9qs3Vg=;
- b=H/A1E6Zx/cNGP6jBZzXG/OalxXiu1SJcB+kYeZNaWBw/9W2eeeESZ8NeIbhejbnE75
- TfKPU9knMoE04cZaNUI6pBBdPMQfw3dVUn5pI/YvyfU5bEeLHsdBwovJu0cJ3V+2/7Jn
- tCNIkZgfXJD6NlB2f33+ooLvkpHmbNcxLHEVfg0CzLX6EXmN50kCHh4wGNVrxxmJ0SLK
- 666On5MVW90yjmQQFBN3tuN7I63cczbR0/mKa08xgz6KjBZgThiskx2hdj/PpQxVlLtm
- K+UwKJsng2fgHIbUycUA3YbkdmPo5AokbmCYtsOwcklvsDroLXP+yfs+LCyev7q345m0
- QJsw==
-X-Gm-Message-State: AOJu0YyabNwrBq7aHVacQ0oR1YSJWQCULCLMMcxzNsLBJbieWqtcqb/L
- bgVCvIi41SCC11Firb6Mqwh9mESH6cKMan8B/pZvxaX+H04=
-X-Google-Smtp-Source: AGHT+IH1FNmPh4E6ZvPda07aqeY51zw3T/yYgIZa1pSmm7FsFmHKCQqTp+yV4D5/ftvbTsxdMBCrAg==
-X-Received: by 2002:a05:6a00:3317:b0:6ce:2731:47b6 with SMTP id
- cq23-20020a056a00331700b006ce273147b6mr872335pfb.22.1701758912004; 
- Mon, 04 Dec 2023 22:48:32 -0800 (PST)
-Received: from tianren.zelin.local ([221.122.98.162])
- by smtp.gmail.com with ESMTPSA id
- fj32-20020a056a003a2000b006900cb919b8sm5166926pfb.53.2023.12.04.22.48.30
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 04 Dec 2023 22:48:31 -0800 (PST)
-From: tianren@smartx.com
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, pbonzini@redhat.com,
- Tianren Zhang <tianren@smartx.com>
-Subject: [PATCH v2] qemu: send stop event after bdrv_flush_all
-Date: Tue,  5 Dec 2023 01:48:26 -0500
-Message-ID: <20231205064826.5000-1-tianren@smartx.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20230601; t=1701760498; x=1702365298;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sL2mQwYQomeKZCmAYIRkF9VCDBpAP9maQ6ksfUJSQgI=;
+ b=hoKI7MFkzdIKKF80cBKQXL+pUJ6HU4rYF/f5o1Wvbt663k/C/P7TUUglMgol6N9Sbl
+ upJdNPbcn6JFEdShSxKgGVtr8aATEbPDWj94wJda12WYOxixabgz8tSqMOQb+GwuOr6i
+ +5Fa8+Armh52tsV4JdByo04O1EoCFvYynFIr7+spwYYsJa+YoDPwfiMzx0f/X6uBHLVF
+ MBwWlkKlERsKeIhwprqpTHAnf8Yg5KWJ+R+Cb9cJcR04SP1KOG8wOA6QN8osXi5pxmgY
+ ovqQYRvAy5VzFCKy4ld76v6MQ7EYCd6YpAGKVb2xRBhNQVjbLC04YHxEjWGg62L79406
+ KohA==
+X-Gm-Message-State: AOJu0Yy3gZU84SKat5ITnjJsNKHfk8Q35cVsRgVa3Nk4NHlzzkTimSNm
+ c1+zbhILcpTMMsaVGIehF5mYM6SAyziAXYr8OY0L6I3r1x5nFIG3/CUrtuD3hB4oT7DQI64Jp7H
+ aL/ifsGvi+FX4iN24l5Ftl0Aw5aALmAO8ZcKwXbs=
+X-Received: by 2002:a50:d7d5:0:b0:54c:b72b:93 with SMTP id
+ m21-20020a50d7d5000000b0054cb72b0093mr1049240edj.25.1701760498401; 
+ Mon, 04 Dec 2023 23:14:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFn4Bv6jAqTakMSneKyb/Gv+U5KIIBK6W/TK6H2f5NN0VlQO6r8ngLCx9YDYUVhP+g0X7HoDd0AU+Mw5CmHhZU=
+X-Received: by 2002:a50:d7d5:0:b0:54c:b72b:93 with SMTP id
+ m21-20020a50d7d5000000b0054cb72b0093mr1049230edj.25.1701760498057; 
+ Mon, 04 Dec 2023 23:14:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
- envelope-from=tianren@smartx.com; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231204184051.16873-1-dongwon.kim@intel.com>
+In-Reply-To: <20231204184051.16873-1-dongwon.kim@intel.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 5 Dec 2023 11:14:46 +0400
+Message-ID: <CAMxuvaxQc0EM0jPDTgmK+hM9EMjqrY696RzS4NWengbdC5ifpg@mail.gmail.com>
+Subject: Re: [PATCH] ui/gtk: flush display pipeline before saving vmstate when
+ blob=true
+To: Dongwon Kim <dongwon.kim@intel.com>
+Cc: qemu-devel@nongnu.org, Vivek Kasireddy <vivek.kasireddy@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,61 +95,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tianren Zhang <tianren@smartx.com>
+Hi
 
-The stop process is not finished until bdrv_flush_all
-is done. Some users (e.g., libvirt) detect the STOP
-event and invokes some lock release logic to revoke
-the disk lock held by current qemu when such event is
-emitted. In such case, if the bdrv_flush_all is after
-the stop event, it's possible that the disk lock is
-released while the qemu is still waiting for I/O.
-Therefore, it's better to have the stop event generated
-after the whole stop process is done, so we can
-guarantee to users that the stop process is finished
-when they get the STOP event.
+On Tue, Dec 5, 2023 at 6:40=E2=80=AFAM Dongwon Kim <dongwon.kim@intel.com> =
+wrote:
+>
+> If the guest state is paused before it gets a response for the current
+> scanout frame submission (resource-flush), it won't start submitting
+> new frames after being restored as it still waits for the old response,
+> which is accepted as a scanout render done signal. So it's needed to
+> unblock the current scanout render pipeline before the run state is
+> changed to make sure the guest receives the response for the current
+> frame submission.
+>
+> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+> ---
+>  ui/gtk.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/ui/gtk.c b/ui/gtk.c
+> index 810d7fc796..0f6237dd2f 100644
+> --- a/ui/gtk.c
+> +++ b/ui/gtk.c
+> @@ -678,6 +678,18 @@ static const DisplayGLCtxOps egl_ctx_ops =3D {
+>  static void gd_change_runstate(void *opaque, bool running, RunState stat=
+e)
+>  {
+>      GtkDisplayState *s =3D opaque;
+> +    int i;
+> +
+> +    if (state =3D=3D RUN_STATE_SAVE_VM) {
+> +        for (i =3D 0; i < s->nb_vcs; i++) {
+> +            VirtualConsole *vc =3D &s->vc[i];
+> +
+> +            if (vc->gfx.guest_fb.dmabuf) {
 
-Change-Id: Ia2f95cd55edfdeb71ee2e04005ac216cfabffa22
-Signed-off-by: Tianren Zhang <tianren@smartx.com>
----
-v2: do not call runstate_is_running twice
----
- system/cpus.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+&& ..dmabuf->fence_fd >=3D 0
 
-diff --git a/system/cpus.c b/system/cpus.c
-index a444a747f0..49af0f92b5 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -262,21 +262,24 @@ void cpu_interrupt(CPUState *cpu, int mask)
- static int do_vm_stop(RunState state, bool send_stop)
- {
-     int ret = 0;
-+    bool do_send_stop = false;
- 
-     if (runstate_is_running()) {
-         runstate_set(state);
-         cpu_disable_ticks();
-         pause_all_vcpus();
-         vm_state_notify(0, state);
--        if (send_stop) {
--            qapi_event_send_stop();
--        }
-+        do_send_stop = send_stop;
-     }
- 
-     bdrv_drain_all();
-     ret = bdrv_flush_all();
-     trace_vm_stop_flush_all(ret);
- 
-+    if (do_send_stop) {
-+        qapi_event_send_stop();
-+    }
-+
-     return ret;
- }
- 
--- 
-2.41.0
+> +                /* force flushing current scanout blob rendering process=
+ */
+> +                gd_hw_gl_flushed(vc);
+
+This defeats the purpose of the fence, maybe we should wait for it to
+be signaled first. At worse, I suppose the client can have some
+glitches. Although since the guest is stopped, this is unlikely.
 
 
