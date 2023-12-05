@@ -2,65 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C04805AFB
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 18:16:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BAE805B43
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 18:44:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAZ0c-0006yV-JA; Tue, 05 Dec 2023 12:14:58 -0500
+	id 1rAZS2-00087p-CF; Tue, 05 Dec 2023 12:43:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1rAZ0b-0006xm-0c
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 12:14:57 -0500
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1rAZRz-00086x-KU
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 12:43:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
- id 1rAZ0X-00018c-T4
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 12:14:56 -0500
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1rAZRx-0000Pv-0h
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 12:43:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701796493;
+ s=mimecast20190719; t=1701798188;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MWv5UftpHSeglsYJOgk1egRE3AjSNgip0MVdxroh8M8=;
- b=EZ4JvavHO46g8esvutU9NnXNy70Rc7f20lD1i321vSg0tC+BaHLUmFNO08gI3tJyZeWeeI
- uxhbILSLaWMwInNdL27fG1HkRn2TDFwl+tiReaHsaeS77milHsgOZ1jjnfIzlkxuEXEC3D
- OnbUxgEulNl9Z/2ajoDyc0wFm5j7/BM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-523-MqDroST8MiW23QfM-uqVEQ-1; Tue,
- 05 Dec 2023 12:14:51 -0500
-X-MC-Unique: MqDroST8MiW23QfM-uqVEQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A85EB280640D;
- Tue,  5 Dec 2023 17:14:50 +0000 (UTC)
-Received: from speedmetal.lan (unknown [10.45.242.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AA95051E3;
- Tue,  5 Dec 2023 17:14:48 +0000 (UTC)
-From: Peter Krempa <pkrempa@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- John Snow <jsnow@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PATCH v3 2/2] block: stream: Allow users to request only format
- driver names in backing file format
-Date: Tue,  5 Dec 2023 18:14:42 +0100
-Message-ID: <bbee9a0a59748a8893289bf8249f568f0d587e62.1701796348.git.pkrempa@redhat.com>
-In-Reply-To: <cover.1701796348.git.pkrempa@redhat.com>
-References: <cover.1701796348.git.pkrempa@redhat.com>
+ bh=BhPK9lPuEu1Tjk9dz8JEVxTHlnsUJEkABxPYnbpOYRQ=;
+ b=B2lRNVVb/CSxnVmdKF+xg98wh4TQBgm1v5A3QtCxUaRuOFy8j/4gW17NJYCGtCC1iRSOEW
+ IikcqGB6LTE9I/lTssQBsZutyfS0GJLsUHMwRe3AjEGpus6wpAkppd1yMUxgyLuDOx0j2v
+ IcHZIsp4NGAAqrbZCT2CaP8KhayfRe0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-261-QToKnJDNMgy_EuyK1k-gzw-1; Tue, 05 Dec 2023 12:42:57 -0500
+X-MC-Unique: QToKnJDNMgy_EuyK1k-gzw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3333aaf02b0so3187863f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 09:42:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701798176; x=1702402976;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BhPK9lPuEu1Tjk9dz8JEVxTHlnsUJEkABxPYnbpOYRQ=;
+ b=nx8A9TzS2jY0x83YG/YuI4Ons4ya3Zn1nF3jMVz3/Xfm3BRWSXyfrm/AddvVs03YCe
+ CyYtVLicI9RbSvv4PRiKffhVZr9yKrppAbrdZGIipt0qI6ogfkXXCb3+w40zY9JLwssp
+ KQUKC/rS1g7kXpZFR2zRi2x/fQbLmvN0x6+Ejp2+1r8fSHow94fNtamUnTy7RUxjhGW7
+ J39cE0PtGmIyfqKj9iQBjq3MLr/0RxK+/A3kOt8ip/yrVVcOkMqQMlw8a13qXFEsFYQ4
+ pYBt9iqPQJQOwDEB3obJ84+q/Zw5GY+4ymfV0fCGBBUgC2I8IuCKKqTDoVslZA5PiCfV
+ ov7g==
+X-Gm-Message-State: AOJu0Yzj9XETKppw7D0wz1AeMTAER/YxrYSrfOybANpQIygYoO0fPXL6
+ K2Rda8xT2/gSkiEh/JC7NenkRfAZfN/MMDy3Y+0mWsTmhebYa07nUPdhMuvIuBKMAW0pTsb2AkG
+ tjzIZ+p1SOoMinUg=
+X-Received: by 2002:a05:600c:1f88:b0:40b:5e4a:4073 with SMTP id
+ je8-20020a05600c1f8800b0040b5e4a4073mr748755wmb.147.1701798176293; 
+ Tue, 05 Dec 2023 09:42:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+FJ/LzShh/0WO2SV7dJ74dDQuCvaU+6w/IrM2aknFdX4ulHxUM/yKYdBfY1mTx1A/yY7WOA==
+X-Received: by 2002:a05:600c:1f88:b0:40b:5e4a:4073 with SMTP id
+ je8-20020a05600c1f8800b0040b5e4a4073mr748740wmb.147.1701798175928; 
+ Tue, 05 Dec 2023 09:42:55 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ f17-20020a05600c155100b004083729fc14sm23055664wmg.20.2023.12.05.09.42.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 Dec 2023 09:42:55 -0800 (PST)
+Message-ID: <0e8ee2a6-c0b5-4edc-a616-1f6c3f00beaf@redhat.com>
+Date: Tue, 5 Dec 2023 18:42:53 +0100
 MIME-Version: 1.0
-Content-type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] target/i386/host-cpu: Use IOMMU addr width for
+ passthrough devices on Intel platforms
+Content-Language: en-US
+To: Vivek Kasireddy <vivek.kasireddy@intel.com>, qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Laszlo Ersek <lersek@redhat.com>, Dongwon Kim <dongwon.kim@intel.com>
+References: <20231113073239.270591-1-vivek.kasireddy@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <20231113073239.270591-1-vivek.kasireddy@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pkrempa@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -69,7 +90,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,167 +106,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new flag 'backing-mask-protocol' for the block-stream QMP
-command which instructs the internals to use 'raw' instead of the
-protocol driver in case when a image is used without a dummy 'raw'
-wrapper.
+On 11/13/23 08:32, Vivek Kasireddy wrote:
+> A recent OVMF update has resulted in MMIO regions being placed at
+> the upper end of the physical address space. As a result, when a
+> Host device is passthrough'd to the Guest via VFIO, the following
+> mapping failures occur when VFIO tries to map the MMIO regions of
+> the device:
+> VFIO_MAP_DMA failed: Invalid argument
+> vfio_dma_map(0x557b2f2736d0, 0x380000000000, 0x1000000, 0x7f98ac400000) = -22 (Invalid argument)
 
-The flag is designed such that it can be always asserted by management
-tools even when there isn't any update to backing files.
+OVMF and Seabios guests are impacted. Seabios 1.16.3 introduced
+the same change of the pci window placement.
 
-The flag will be used by libvirt so that the backing images still
-reference the proper format even when libvirt will stop using the dummy
-raw driver (raw driver with no other config). Libvirt needs this so that
-the images stay compatible with older libvirt versions which didn't
-expect that a protocol driver name can appear in the backing file format
-field.
+C.
 
-Signed-off-by: Peter Krempa <pkrempa@redhat.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- block/monitor/block-hmp-cmds.c         |  2 +-
- block/stream.c                         | 10 +++++++++-
- blockdev.c                             |  7 +++++++
- include/block/block_int-global-state.h |  3 +++
- qapi/block-core.json                   |  9 ++++++++-
- 5 files changed, 28 insertions(+), 3 deletions(-)
-
-diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
-index c729cbf1eb..9080e29d4d 100644
---- a/block/monitor/block-hmp-cmds.c
-+++ b/block/monitor/block-hmp-cmds.c
-@@ -509,7 +509,7 @@ void hmp_block_stream(Monitor *mon, const QDict *qdict)
-     const char *base = qdict_get_try_str(qdict, "base");
-     int64_t speed = qdict_get_try_int(qdict, "speed", 0);
-
--    qmp_block_stream(device, device, base, NULL, NULL, NULL,
-+    qmp_block_stream(device, device, base, NULL, NULL, false, false, NULL,
-                      qdict_haskey(qdict, "speed"), speed,
-                      true, BLOCKDEV_ON_ERROR_REPORT, NULL,
-                      false, false, false, false, &error);
-diff --git a/block/stream.c b/block/stream.c
-index 01fe7c0f16..da62410dde 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -39,6 +39,7 @@ typedef struct StreamBlockJob {
-     BlockDriverState *target_bs;
-     BlockdevOnError on_error;
-     char *backing_file_str;
-+    bool backing_mask_protocol;
-     bool bs_read_only;
- } StreamBlockJob;
-
-@@ -95,7 +96,12 @@ static int stream_prepare(Job *job)
-         if (unfiltered_base) {
-             base_id = s->backing_file_str ?: unfiltered_base->filename;
-             if (unfiltered_base->drv) {
--                base_fmt = unfiltered_base->drv->format_name;
-+                if (s->backing_mask_protocol &&
-+                    unfiltered_base->drv->protocol_name) {
-+                    base_fmt = "raw";
-+                } else {
-+                    base_fmt = unfiltered_base->drv->format_name;
-+                }
-             }
-         }
-
-@@ -247,6 +253,7 @@ static const BlockJobDriver stream_job_driver = {
-
- void stream_start(const char *job_id, BlockDriverState *bs,
-                   BlockDriverState *base, const char *backing_file_str,
-+                  bool backing_mask_protocol,
-                   BlockDriverState *bottom,
-                   int creation_flags, int64_t speed,
-                   BlockdevOnError on_error,
-@@ -398,6 +405,7 @@ void stream_start(const char *job_id, BlockDriverState *bs,
-     s->base_overlay = base_overlay;
-     s->above_base = above_base;
-     s->backing_file_str = g_strdup(backing_file_str);
-+    s->backing_mask_protocol = backing_mask_protocol;
-     s->cor_filter_bs = cor_filter_bs;
-     s->target_bs = bs;
-     s->bs_read_only = bs_read_only;
-diff --git a/blockdev.c b/blockdev.c
-index 9ced07a8c4..a5ca1cf3ad 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -2408,6 +2408,8 @@ void qmp_block_stream(const char *job_id, const char *device,
-                       const char *base,
-                       const char *base_node,
-                       const char *backing_file,
-+                      bool has_backing_mask_protocol,
-+                      bool backing_mask_protocol,
-                       const char *bottom,
-                       bool has_speed, int64_t speed,
-                       bool has_on_error, BlockdevOnError on_error,
-@@ -2443,6 +2445,10 @@ void qmp_block_stream(const char *job_id, const char *device,
-         return;
-     }
-
-+    if (!has_backing_mask_protocol) {
-+        backing_mask_protocol = false;
-+    }
-+
-     if (!has_on_error) {
-         on_error = BLOCKDEV_ON_ERROR_REPORT;
-     }
-@@ -2531,6 +2537,7 @@ void qmp_block_stream(const char *job_id, const char *device,
-     }
-
-     stream_start(job_id, bs, base_bs, backing_file,
-+                 backing_mask_protocol,
-                  bottom_bs, job_flags, has_speed ? speed : 0, on_error,
-                  filter_node_name, &local_err);
-     if (local_err) {
-diff --git a/include/block/block_int-global-state.h b/include/block/block_int-global-state.h
-index 2162269df6..d2201e27f4 100644
---- a/include/block/block_int-global-state.h
-+++ b/include/block/block_int-global-state.h
-@@ -46,6 +46,8 @@
-  * flatten the whole backing file chain onto @bs.
-  * @backing_file_str: The file name that will be written to @bs as the
-  * the new backing file if the job completes. Ignored if @base is %NULL.
-+ * @backing_mask_protocol: Replace potential protocol name with 'raw' in
-+ *                         'backing file format' header
-  * @creation_flags: Flags that control the behavior of the Job lifetime.
-  *                  See @BlockJobCreateFlags
-  * @speed: The maximum speed, in bytes per second, or 0 for unlimited.
-@@ -64,6 +66,7 @@
-  */
- void stream_start(const char *job_id, BlockDriverState *bs,
-                   BlockDriverState *base, const char *backing_file_str,
-+                  bool backing_mask_protocol,
-                   BlockDriverState *bottom,
-                   int creation_flags, int64_t speed,
-                   BlockdevOnError on_error,
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 726145ec8a..04982bff96 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -2826,6 +2826,11 @@
- #     Care should be taken when specifying the string, to specify a
- #     valid filename or protocol.  (Since 2.1)
- #
-+# @backing-mask-protocol: If true, replace any protocol mentioned in the
-+#     'backing file format' with 'raw', rather than storing the protocol
-+#     name as the backing format.  Can be used even when no image header
-+#     will be updated (default false; since 9.0).
-+#
- # @speed: the maximum speed, in bytes per second
- #
- # @on-error: the action to take on an error (default report). 'stop'
-@@ -2864,7 +2869,9 @@
- ##
- { 'command': 'block-stream',
-   'data': { '*job-id': 'str', 'device': 'str', '*base': 'str',
--            '*base-node': 'str', '*backing-file': 'str', '*bottom': 'str',
-+            '*base-node': 'str', '*backing-file': 'str',
-+            '*backing-mask-protocol': 'bool',
-+            '*bottom': 'str',
-             '*speed': 'int', '*on-error': 'BlockdevOnError',
-             '*filter-node-name': 'str',
-             '*auto-finalize': 'bool', '*auto-dismiss': 'bool' },
--- 
-2.43.0
+> The above failures are mainly seen on some Intel platforms where
+> the physical address width is larger than the Host's IOMMU
+> address width. In these cases, VFIO fails to map the MMIO regions
+> because the IOVAs would be larger than the IOMMU aperture regions.
+> 
+> Therefore, one way to solve this problem would be to ensure that
+> cpu->phys_bits = <IOMMU phys_bits>
+> This can be done by parsing the IOMMU caps value from sysfs and
+> extracting the address width and using it to override the
+> phys_bits value as shown in this patch.
+> 
+> Previous attempt at solving this issue in OVMF:
+> https://edk2.groups.io/g/devel/topic/102359124
+> 
+> Cc: Gerd Hoffmann <kraxel@redhat.com>
+> Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Cc: Alex Williamson <alex.williamson@redhat.com>
+> Cc: Laszlo Ersek <lersek@redhat.com>
+> Cc: Dongwon Kim <dongwon.kim@intel.com>
+> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> ---
+>   target/i386/host-cpu.c | 61 +++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 60 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
+> index 92ecb7254b..8326ec95bc 100644
+> --- a/target/i386/host-cpu.c
+> +++ b/target/i386/host-cpu.c
+> @@ -12,6 +12,8 @@
+>   #include "host-cpu.h"
+>   #include "qapi/error.h"
+>   #include "qemu/error-report.h"
+> +#include "qemu/config-file.h"
+> +#include "qemu/option.h"
+>   #include "sysemu/sysemu.h"
+>   
+>   /* Note: Only safe for use on x86(-64) hosts */
+> @@ -51,11 +53,58 @@ static void host_cpu_enable_cpu_pm(X86CPU *cpu)
+>       env->features[FEAT_1_ECX] |= CPUID_EXT_MONITOR;
+>   }
+>   
+> +static int intel_iommu_check(void *opaque, QemuOpts *opts, Error **errp)
+> +{
+> +    g_autofree char *dev_path = NULL, *iommu_path = NULL, *caps = NULL;
+> +    const char *driver = qemu_opt_get(opts, "driver");
+> +    const char *device = qemu_opt_get(opts, "host");
+> +    uint32_t *iommu_phys_bits = opaque;
+> +    struct stat st;
+> +    uint64_t iommu_caps;
+> +
+> +    /*
+> +     * Check if the user is passthroughing any devices via VFIO. We don't
+> +     * have to limit phys_bits if there are no valid passthrough devices.
+> +     */
+> +    if (g_strcmp0(driver, "vfio-pci") || !device) {
+> +        return 0;
+> +    }
+> +
+> +    dev_path = g_strdup_printf("/sys/bus/pci/devices/%s", device);
+> +    if (stat(dev_path, &st) < 0) {
+> +        return 0;
+> +    }
+> +
+> +    iommu_path = g_strdup_printf("%s/iommu/intel-iommu/cap", dev_path);
+> +    if (stat(iommu_path, &st) < 0) {
+> +        return 0;
+> +    }
+> +
+> +    if (g_file_get_contents(iommu_path, &caps, NULL, NULL)) {
+> +        if (sscanf(caps, "%lx", &iommu_caps) != 1) {
+> +            return 0;
+> +        }
+> +        *iommu_phys_bits = ((iommu_caps >> 16) & 0x3f) + 1;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +static uint32_t host_iommu_phys_bits(void)
+> +{
+> +    uint32_t iommu_phys_bits = 0;
+> +
+> +    qemu_opts_foreach(qemu_find_opts("device"),
+> +                      intel_iommu_check, &iommu_phys_bits, NULL);
+> +    return iommu_phys_bits;
+> +}
+> +
+>   static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
+>   {
+>       uint32_t host_phys_bits = host_cpu_phys_bits();
+> +    uint32_t iommu_phys_bits = host_iommu_phys_bits();
+>       uint32_t phys_bits = cpu->phys_bits;
+> -    static bool warned;
+> +    static bool warned, warned2;
+>   
+>       /*
+>        * Print a warning if the user set it to a value that's not the
+> @@ -78,6 +127,16 @@ static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
+>           }
+>       }
+>   
+> +    if (iommu_phys_bits && phys_bits > iommu_phys_bits) {
+> +        phys_bits = iommu_phys_bits;
+> +        if (!warned2) {
+> +            warn_report("Using physical bits (%u)"
+> +                        " to prevent VFIO mapping failures",
+> +                        iommu_phys_bits);
+> +            warned2 = true;
+> +        }
+> +    }
+> +
+>       return phys_bits;
+>   }
+>   
 
 
