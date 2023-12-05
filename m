@@ -2,111 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313A5804FDA
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 11:10:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A760804FDC
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 11:10:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rASLs-00050I-A5; Tue, 05 Dec 2023 05:08:28 -0500
+	id 1rASNU-0006Pk-Pl; Tue, 05 Dec 2023 05:10:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1rASLj-0004zf-5i; Tue, 05 Dec 2023 05:08:20 -0500
-Received: from mail-dm6nam10on20600.outbound.protection.outlook.com
- ([2a01:111:f400:7e88::600]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1rASLh-0001aC-6t; Tue, 05 Dec 2023 05:08:18 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y/dLUxUVACR6rv1iUetkI6Bf5aTmr3F+vVntkFM99uGTVYusQkygsPsChF2nNM6jEvObK+w+tU1iBgGPmiH0egq++zR4vs4ojhlHneU0S2EAvOCzMPc242RiPKWnkZcUFVhYR1D0PNWyYsNojk1Bc58dUuIwkZMC6YLyGAdTvqbTP6p0aemZwhD8nE6X2NXiozrBx0NDhwd/mgrsI2AfR1jzOz8pdhU7kKhZ1ZAtjV5xT4IR8pJ8Y/xbyT3ukweCEMnWNW+uQmImeAOXQ2XHTXJ6VhjK+Hrows1IpKmYti7odeNoQEUEZkRJh+1hJrsvyXJCndlu7g2W1mcIT5a63w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sz1cnUiVTv94tT6QFK+z3UwvPSZIx1UHPOxAhsMZlrU=;
- b=To3b3wIUodZVkJi21JjUpjYz2+UGC8yWpmbcEuMpfhr2hidO5mHzfO3AuHAiqFi9G2570dcmob21yvzKYfcsqi36uRL4s6eCmuuxuCQD77yc2ZQl7nPg1NITUhCV3U7oJT/59ZDIRjWPSnN3+b52npFBwJujAQzpOtnleydZFogekHdo7Z3vvPwKZos7C0NXwL+QLLAcJvas7JgrI2ZC9HB2vVGfjDLHr4CQ3Gq4DfBXQHW0yRK9tn2IYrYELy1cMy3cAAV73KqidiBB/FbDlA4VC8IGixEFNxCE8AVnkuZTxqATRMPgDuhU59+I9FxnhHTAH+CmKdzO/rHdf8SaKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sz1cnUiVTv94tT6QFK+z3UwvPSZIx1UHPOxAhsMZlrU=;
- b=NvRU7p7iim8aOY9bUEXyEkftQysOaqKtqkk4pvtE8KWNGwNnkM5+OuX+ZbEijLddcsy38TTdWIWE6C+k4i+P921mNGQceddJ7IJ2hCoZfzbquKb9rr2KnqEmY+gDE2fDa+3Ic7kZIGfmrT4vnP4q3jViYvf96QJmjmVSGnInXKE=
-Received: from DM6PR02CA0154.namprd02.prod.outlook.com (2603:10b6:5:332::21)
- by MN0PR12MB5761.namprd12.prod.outlook.com (2603:10b6:208:374::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Tue, 5 Dec
- 2023 10:08:10 +0000
-Received: from CY4PEPF0000EDD1.namprd03.prod.outlook.com
- (2603:10b6:5:332:cafe::fd) by DM6PR02CA0154.outlook.office365.com
- (2603:10b6:5:332::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34 via Frontend
- Transport; Tue, 5 Dec 2023 10:08:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CY4PEPF0000EDD1.mail.protection.outlook.com (10.167.241.205) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7068.20 via Frontend Transport; Tue, 5 Dec 2023 10:08:09 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Tue, 5 Dec
- 2023 04:08:09 -0600
-Received: from xhdvaralaxm41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.34 via
- Frontend Transport; Tue, 5 Dec 2023 04:08:07 -0600
-From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-arm@nongnu.org>, <qemu-block@nongnu.org>, Alistair Francis
- <alistair@alistair23.me>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
- Francisco Iglesias <frasse.iglesias@gmail.com>, <saipavanboddu@gmail.com>
-Subject: [PATCH 1/1] xlnx-versal-ospi: disable reentrancy detection for
- iomem_dac
-Date: Tue, 5 Dec 2023 15:38:02 +0530
-Message-ID: <20231205100802.2705561-2-sai.pavan.boddu@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231205100802.2705561-1-sai.pavan.boddu@amd.com>
-References: <20231205100802.2705561-1-sai.pavan.boddu@amd.com>
+ (Exim 4.90_1) (envelope-from <msuchanek@suse.de>) id 1rASNS-0006PI-8R
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 05:10:06 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <msuchanek@suse.de>) id 1rASNQ-0001s4-Ob
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 05:10:05 -0500
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 95C901FB86;
+ Tue,  5 Dec 2023 10:10:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1701771000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wlMBlmMVQDhfJK4oW9jmBohXdifPev0Ysiee1WdHbTc=;
+ b=fp+zflDXOgy2lTgRr3Nu49Tlbl2IiUUyI6lJScsVPoPpCk9M8qP2/4D7k/ON5BKtKGQX1/
+ kOhNWTswioLmqW/pilt5AoJ2hNq9RwwuaV1b0OW2W+fcuysCOh6T+0EJ0hyZ8FQnMxI6xq
+ K1IHQ3DSIS1Xr69BwhiKwPaibrtQCGI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1701771000;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wlMBlmMVQDhfJK4oW9jmBohXdifPev0Ysiee1WdHbTc=;
+ b=8nTU5BUanUmO4nHkQbChc/4KWt0z8JYnjGXBNjU3vSpUjVazGUqT8z/WVyOn0OZs6fsdm/
+ 7q82PAtg00Cf44DQ==
+Date: Tue, 5 Dec 2023 11:09:59 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH-for-8.2?] accel/tcg: Implement tcg_unregister_thread()
+Message-ID: <20231205100959.GB9696@kitsune.suse.cz>
+References: <20231204194039.56169-1-philmd@linaro.org>
+ <CAJSP0QUjZQQCk+VSJyxLq2jzuK=nxXDCiBn-r4dVzNPOCgH67w@mail.gmail.com>
+ <20231204200937.GA9696@kitsune.suse.cz>
+ <caa90c99-aada-467b-a005-84642cd55a86@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD1:EE_|MN0PR12MB5761:EE_
-X-MS-Office365-Filtering-Correlation-Id: 24ec1ddc-b360-49db-cea1-08dbf57a159a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: m0d6R3jOVIIvM2FkdCw7Zr756Qh3bZ2h+Pdnlp62jpVECdBmUA0K13NCdSLc7893YM9WXRAUnbRgFq50cfhICKTLrh1BNtKDc482lKGICjHEWoShU7xu85IzPtI62LlAgUq+30II1/1kr3w94gSHTMmAKWKb4V3C7piZMgAK82GPDzLGTxHQfHSc2srBnP2yPWYhZy9DiEfl626RDmpsq8lyN7FjyuoGIEIE3JVfpGvK/Al9vFzmq2OuNdhLZP4/15zmFzJyM+jpk/F+w/vNwYY+ubLFjWGoR36AvII3h5aIHpIh28cidXi8LcMyBSPN9N7gPdSIXrVBeWYiZPHM9H35bCezJivac0A/3zNPHXGgPsmgcDYvT0IhL2CmBXODoLyrfWkkBoyUa971ajbmohS309hE02go19U5tTQu/rkcOvETmQlJQI1QjgYG23ALodiev6Opq4LnKuNHvaHK+T3b2z5H08A4iak6SL7ic2NmVyhtwZU6S3wxGwOiaKbjKI0cpZF3vqpuiLsgEI4YsN/Vy91SmJqCc92f6+Ka7MisCTHbM7Lj3zmhEmE6EuFsrr/SeeElZpjEJOnToKN1IetyD/H5rl5VI0tx4rsT6gkmyP6RVdFo9E+PO4k+SzpBgp7TKs6YdmpGYmBvy3Q2P9nSacam0ccsUgL3Ggm1C1o/F25Eu/Oiked4zLjZg8Qtri7RfRb+bGhCwNQ1uXfNFeBFzjeqz/cEqRsjRbwERkTo+XS/4+pK8nY6yrBQh/g2H4xCcwJd7XhWs3uSJdHOVAgzwJ2QWbXwXuLSb++sZs9BOQ/H2ZnPKzeUgk6E7W0F
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(346002)(396003)(136003)(376002)(39860400002)(230922051799003)(1800799012)(82310400011)(451199024)(64100799003)(186009)(46966006)(40470700004)(36840700001)(336012)(426003)(1076003)(83380400001)(26005)(82740400003)(6666004)(478600001)(2616005)(40480700001)(8676002)(4326008)(8936002)(6916009)(70586007)(70206006)(316002)(54906003)(36860700001)(81166007)(47076005)(356005)(40460700003)(5660300002)(2906002)(4744005)(86362001)(41300700001)(36756003)(103116003)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2023 10:08:09.9245 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 24ec1ddc-b360-49db-cea1-08dbf57a159a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD1.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5761
-Received-SPF: softfail client-ip=2a01:111:f400:7e88::600;
- envelope-from=sai.pavan.boddu@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+In-Reply-To: <caa90c99-aada-467b-a005-84642cd55a86@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spamd-Result: default: False [-1.30 / 50.00]; ARC_NA(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; RCPT_COUNT_FIVE(0.00)[5];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-0.999];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_ZERO(0.00)[0];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ FREEMAIL_CC(0.00)[gmail.com,linaro.org,nongnu.org,redhat.com];
+ BAYES_HAM(-0.00)[17.21%]; SUBJECT_HAS_QUESTION(0.00)[]
+X-Spam-Score: -1.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=msuchanek@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,29 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The OSPI DMA reads flash data through the OSPI linear address space (the
-iomem_dac region), because of this the reentrancy guard introduced in
-commit a2e1753b ("memory: prevent dma-reentracy issues") is disabled for
-the memory region.
+On Mon, Dec 04, 2023 at 03:02:45PM -0800, Richard Henderson wrote:
+> On 12/4/23 12:09, Michal Suchánek wrote:
+> > On Mon, Dec 04, 2023 at 02:50:17PM -0500, Stefan Hajnoczi wrote:
+> > > On Mon, 4 Dec 2023 at 14:40, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+> > > > +void tcg_unregister_thread(void)
+> > > > +{
+> > > > +    unsigned int n;
+> > > > +
+> > > > +    n = qatomic_fetch_dec(&tcg_cur_ctxs);
+> > > > +    g_free(tcg_ctxs[n]);
+> > > > +    qatomic_set(&tcg_ctxs[n], NULL);
+> > > > +}
+> > > 
+> > > tcg_ctxs[n] may not be our context, so this looks like it could free
+> > > another thread's context and lead to undefined behavior.
+> 
+> Correct.
+> 
+> > There is cpu->thread_id so perhaps cpu->thread_ctx could be added as
+> > well. That would require a bitmap of used threads contexts rather than a
+> > counter, though.
+> 
+> Or don't free the context at all, but re-use it when incrementing and
+> tcg_ctxs[n] != null (i.e. plugging in a repacement vcpu).  After all, there
+> can only be tcg_max_ctxs contexts.
 
-Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
----
- hw/ssi/xlnx-versal-ospi.c | 1 +
- 1 file changed, 1 insertion(+)
+But you would not know which contexts are in use and which aren't without
+tracking the association of contexts to CPUs.
 
-diff --git a/hw/ssi/xlnx-versal-ospi.c b/hw/ssi/xlnx-versal-ospi.c
-index 1a61679c2f..5123e7dde7 100644
---- a/hw/ssi/xlnx-versal-ospi.c
-+++ b/hw/ssi/xlnx-versal-ospi.c
-@@ -1772,6 +1772,7 @@ static void xlnx_versal_ospi_init(Object *obj)
-     memory_region_init_io(&s->iomem_dac, obj, &ospi_dac_ops, s,
-                           TYPE_XILINX_VERSAL_OSPI "-dac", 0x20000000);
-     sysbus_init_mmio(sbd, &s->iomem_dac);
-+    s->iomem_dac.disable_reentrancy_guard = true;
- 
-     sysbus_init_irq(sbd, &s->irq);
- 
--- 
-2.25.1
+Unless there is a cpu array somewhere and you can use the same index for
+both to create the association.
 
+Thanks
+
+Michal
 
