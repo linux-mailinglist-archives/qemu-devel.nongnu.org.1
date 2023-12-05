@@ -2,162 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D6880484C
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 04:48:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFA580486B
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 05:07:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAMOM-0005cg-0A; Mon, 04 Dec 2023 22:46:38 -0500
+	id 1rAMh2-00081P-3j; Mon, 04 Dec 2023 23:05:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1rAMOJ-0005cJ-EP
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 22:46:35 -0500
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1rAMOH-000374-9v
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 22:46:35 -0500
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B51pVIc032720; Tue, 5 Dec 2023 03:46:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=qcppdkim1;
- bh=6TYcNpU1mBbCD2yNqO7hsoDq8cYZSdUwfYPMuncq/tg=;
- b=N3f9iuxltMs2e3jV0ZNC596bVoz/IM1EyHakSE3NWDvXaa5/7bR18jehAadOiqZ3u2EQ
- dciW4PEvIozrFMfsAYU9y0c655SbESbPHdCBP4wTkoJ1+2BsofuZhVczv3xF57UbojpV
- I8S4q0N+Wsaw3oNetORgaVBW2p2ejisOgeykVIBMaGOkdOFuxVBr/lfHby2Gqpd34Zgn
- 1KmOaACIzlZuHNZKFtkIwX+hKcDGmE660N3/gR5UF3+pKAkTrAcrlymHnLLMySGoi8VR
- /Z/LEiAOnAgdndHF0UhNCMuSt5NqIRKnOSzw8GzktANXYkeLAM6MBSN+9T8H8f1oEWYp vw== 
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2168.outbound.protection.outlook.com [104.47.57.168])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3us8wpjuea-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Dec 2023 03:46:30 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k9H0e2ajAfBkykbMEXy4NTIR2JZTzwMxp4v+7VSojYAPJMqGq3AWM1aIhz/kwClf7bAmgytAOsMmOr6lgw1TYSrRektoRgK4REwUXG4ob42W2b3OfQTdMxQ8NCV1yDFKhCKd14J5F2vLMZLLc3ot3F0hFDgX/g468Jl4MCO12DzDgp+JA2R5EiObZTaZFdhgfWOjmNJ4oUcYC6KNYxE4DAo866gZ2FN4EAQIDNfQVkNkw5/r5QrPB5039SwRN7QzumZMAiWo2mHRv1ZHH6qBlQ61M0B/j8+fsnr7E0JEpUF+WtlF6m+hV+w+DHPTkmie7+vF9XNc8xwdubQMAysojg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6TYcNpU1mBbCD2yNqO7hsoDq8cYZSdUwfYPMuncq/tg=;
- b=ik3Akjv2SS83QGH3i21PMp3ON4iDZE9Wl+cvgjN3VFPF8LurU1/Q4iO+cz4WnemRYZY7TqK2Fqe/Bai/anZ64FS7AJwn1KZWyoGWVa4rnUGIcymyWqa1oyyo4d2x/mBNeF2oodGGE615JhaPCxR5wTUCZ1xLI85aOMvzjC+B3ci4vXcci6yRAZjXLWmKl2CU0KsC0WdD62tBGvCLr6av5BSY+SJt6Qss0HTr7owmoAuuTjjsxLcGKAGABYZF8ZFL6d2kyf8liNBAKJe14fNrJAl44/HTuD2SCPD6XwRyukTCfwb9OZtRsQ2+M0U379hx77BNV1YDOocEt7uZzHF81A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=quicinc.com; dmarc=pass action=none header.from=quicinc.com;
- dkim=pass header.d=quicinc.com; arc=none
-Received: from BN7PR02MB4194.namprd02.prod.outlook.com (2603:10b6:406:f8::18)
- by CO6PR02MB7586.namprd02.prod.outlook.com (2603:10b6:303:a5::24)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Tue, 5 Dec
- 2023 03:46:26 +0000
-Received: from BN7PR02MB4194.namprd02.prod.outlook.com
- ([fe80::de3e:72c1:17d3:19c2]) by BN7PR02MB4194.namprd02.prod.outlook.com
- ([fe80::de3e:72c1:17d3:19c2%2]) with mapi id 15.20.7046.034; Tue, 5 Dec 2023
- 03:46:25 +0000
-From: Brian Cain <bcain@quicinc.com>
-To: Taylor Simpson <ltaylorsimpson@gmail.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "Matheus Bernardino (QUIC)" <quic_mathbern@quicinc.com>, Sid Manning
- <sidneym@quicinc.com>, "Marco Liebel (QUIC)" <quic_mliebel@quicinc.com>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "philmd@linaro.org" <philmd@linaro.org>, "ale@rev.ng" <ale@rev.ng>,
- "anjo@rev.ng" <anjo@rev.ng>
-Subject: RE: [PATCH 3/9] Hexagon (target/hexagon) Make generators object
- oriented - gen_helper_protos
-Thread-Topic: [PATCH 3/9] Hexagon (target/hexagon) Make generators object
- oriented - gen_helper_protos
-Thread-Index: AQHaJx3QNHJuX0Nbg0KH2glKrR5ZfrCaAfLg
-Date: Tue, 5 Dec 2023 03:46:25 +0000
-Message-ID: <BN7PR02MB41943B67448AAC160D120ED2B885A@BN7PR02MB4194.namprd02.prod.outlook.com>
-References: <20231205015303.575807-1-ltaylorsimpson@gmail.com>
- <20231205015303.575807-4-ltaylorsimpson@gmail.com>
-In-Reply-To: <20231205015303.575807-4-ltaylorsimpson@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN7PR02MB4194:EE_|CO6PR02MB7586:EE_
-x-ms-office365-filtering-correlation-id: e0945a68-197d-4e8d-32be-08dbf544c193
-x-ld-processed: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: OZhSexxAsqCVZRHwyJ+lHaCRM5DjJ41824aCSFb3IfAQKtVuvO7ol4SVuTJadb2LpdUgMOrEawJOuy0SNQJA8McHv7Kwcn0P3GLlhYf+lZ5KhahrG39gOf5f8L+sRDZiAKyNt3+HQT+be6XpCgu4sa6TwupxhIo775gMkGmqlobAC8vdfktZucOh4UUJA8qlqO4QOJiQS+d70MSBTTgNceykgFoajFBD+EzXu6H2aCBXIFgLFOX4vxJwxrO/sHZAj7ly79zZxMtjkgo3FRbpusLN/zXN6ZgtZUh1NktcIuBAN+DMmHYicB64X6bntwKfFPfFM/Q14dURskzQswzo22I+cNgzgSq7axQDM+bRZwaTzCzQkqrBESxpAWmVxhkEKIPQE+i2tibpThMhbiBLBXjzYSF9Z9ddz7SwCwzhTIi5G1Yfe1nme53wNAEC0xIIMRVE0SDt9WKQsbjaRsqXJ6VMvd0UOQD54f92v3LnFpQLXAtdH2ccfzoY0lGswXtM5yaKMnVLPCTzYOU53REFMkBfFWT7cMpzxFicdDru0+JixGNyjGdA24Uv2bpZeAUC1EBauMW4Q2DMvAB+IgyziXifwSFKVFLB+nvceaZRRabUev0c4QfMOSdvhyGJWI1ECZ13/0bTQ7gnxgLS66b/FHq/guuT06sFKzn6/4Zpamo=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN7PR02MB4194.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(136003)(376002)(396003)(39860400002)(346002)(230273577357003)(230173577357003)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(54906003)(66556008)(66476007)(66446008)(64756008)(66946007)(76116006)(4326008)(8676002)(8936002)(110136005)(316002)(478600001)(71200400001)(5660300002)(38070700009)(41300700001)(33656002)(2906002)(86362001)(52536014)(83380400001)(26005)(38100700002)(122000001)(55016003)(6506007)(9686003)(7696005)(53546011);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dHpsQlh0VFF0SENwK2VnNU1tbGk5MzBaNWJYN3R4cmdnUGRSNjdpS1BIUHVC?=
- =?utf-8?B?d3JEc01hWUNXdk1CNDhNbXUya1VrVHpjdlRPejNON1FMZEtuVGZ3a09kM3lw?=
- =?utf-8?B?NVhWUW5tRG1qMUdBK2RGY0NIVmNFdzZVVUZzajJ0TU96RFM1S3JmZmlsQ3lu?=
- =?utf-8?B?KzYyclUzS3RGT0RSV0lOUitOeUNWQzlDQyt4YXZEZ1E5YWZpK1lub2hEd09N?=
- =?utf-8?B?TXcvOStPLzZLaFVQTXJDOWdUeHh0MGlZRzBndEZpMXRCSkhyd3JmM3lPa3pP?=
- =?utf-8?B?NkZpS1lvVndBbXdrWFFhWTBmL1VmRjlpaGNhaVVKRDljRFliL2JVamhmanpK?=
- =?utf-8?B?K3N1TjZnV3dyZUY5MEc4WjhLT0dRTmZ6d0psamphclczZGFLdG41YVRXS0xh?=
- =?utf-8?B?T2tqeWdxNWc1OUMwZTMzMzVMSTY2QzBxaFUwT0ZZRzBSUDB6S0hxVDR6QjVC?=
- =?utf-8?B?NU1xL1lFR0hTN0JmWXdKSDZOL1hYWEhUTmsvVFQ5WEd5RHJ1VitSSFhkVEx0?=
- =?utf-8?B?VWpFa3N5M2VXSnczSUdEUm1Ybnp0V1hrNEMzNVJ6MlJUWVJWYnNraDgwREl0?=
- =?utf-8?B?cTl3VXVMMnlIdVAwR25nUzQxbTBaT2tVMVp2NGpPNWpyMXdWcnozSnVwc2dG?=
- =?utf-8?B?Qi9Fc2hjN3EvN1FoeHA1STRtV1h6cHEwcXBVQ0ZrNDdHVVdzMDNmMm1NbUNM?=
- =?utf-8?B?RExVYU4xbzVrR3p0VnZvd2ZkeVROWGFYdDJYVGYwYitLUlBFWlpnb0NzejBL?=
- =?utf-8?B?WHBCc291S25VZGFUamtIL3JMSHNTeEY3d2hxcENLbmpVTXhRMDNpU2xRb3ZI?=
- =?utf-8?B?cFQ0aTFibXdPcHJURzBJTWR1MytPVTRFcDQyK2NsNlV1Z3ByajM2UUVrc0hu?=
- =?utf-8?B?eGprMVFybkRCTG8xc0JKUG9lNVI3ZjJ6ak5pdFp2RUc2ZDJpR3liNHV2QWtL?=
- =?utf-8?B?N0xwU3ZYeDJhRWhVckdHNlpCQjFYTXZadmptTTVjdUFzQ3hYTC9ibTVnc2ll?=
- =?utf-8?B?UHhOb1VaeHVrdTczUlhYdEtlYnpFNFZ2OGpWMDFrcFlsQ0R1eGNJdzBhZ3kx?=
- =?utf-8?B?MWhZb3hqSDZwM0d3NWhWV2FoWUMyRm5zVE1BRGlRY1FnQ1lmeGpsRUFSb0JH?=
- =?utf-8?B?bTRIeVJPcDFhbUI5Y1VzKy9RbXI2Qk10cWwreVRnVFEyV2QwTlUxNDZIUExi?=
- =?utf-8?B?cGt0Z0E4WGxJa0NtbEUybXhTQmdCM0svcjFvVm9qZ3hsakp0QURKMlJCS0pW?=
- =?utf-8?B?akp1S1Uyb3huekVUNnc2djhjNmJ2eWVienJFTCtkNVdGN05KZm1nQVd0bmJH?=
- =?utf-8?B?dFh6WFpEQmp6dXd2K1Q1eHZLS1I2TWNVWFcyUm1FVlQ4NlNJcm1aNVh1Q2tV?=
- =?utf-8?B?SkdHai9PT2IzaTdKaTBJUVJITVNpeUdBMGlwcURZZjNSL1JTdFl4RGxXcWFP?=
- =?utf-8?B?SjY4aHNKV2J6akI4ZHF4NGRnQkc3NzMvRGx1NmtjeUkzMk4wZGRlWDFkaWZu?=
- =?utf-8?B?N2w2SnEyTTB4Wi91QzZlRHhaYjVxSUdHajBjazI3d0FrUkhYNS9UbHh2R2Rx?=
- =?utf-8?B?UFZqTVdGb2hXUjhJRnRMZnFrNnhKNTRpMitXakJuRmVtSTRYenNLNUsyY1kz?=
- =?utf-8?B?RzlKZzB6Y3RyTVBRTngxOTMzMEw0K0w3R2duQ1FzV0ltWFlOZlB1N1VzZGtB?=
- =?utf-8?B?R2V0L3RyRVdLS0Q2V0JFWldFT1d1eUdqWURjQVJjZm5ERzg0YTI4SU1rWmdu?=
- =?utf-8?B?N0VPVkVMNWF1TFVacUZRNHhIOUhvc1h2b2tmUjFjRHZkQ1EzVVA5ZHVCWkI2?=
- =?utf-8?B?RFRYSStZOXovNG9uNzRHSXVrSHRpUUR6OHdnbEM1d1ZVRk9NM0pWMFVmQTVU?=
- =?utf-8?B?TnlXcC9vTC9kMm12VHFKVjAwMWMrSlp5UGtOVzA2RlZJeVA1MEp3UkprZzRL?=
- =?utf-8?B?elFad1YwdmtZYXVTN1NESkhwclRzZk40am1aRmNWNzVUWHk1aGtXMVFzeUlR?=
- =?utf-8?B?dW44QnlRZTcyUjZKeWxZMC94UTlGUTV1VGNMK1B4N013b1gvR0R2eE5hc3p4?=
- =?utf-8?B?NTQ2cVlpdUpQQjF4K0lzRGpZdTR2UXhTTXhtS1lOUysvVkR5ckh2WHBmR1la?=
- =?utf-8?Q?7E1JeLHVmpwGGb1Q2es/hrvMd?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <arorajai2798@gmail.com>)
+ id 1rAMgv-0007zJ-6F; Mon, 04 Dec 2023 23:05:49 -0500
+Received: from mail-ua1-x934.google.com ([2607:f8b0:4864:20::934])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <arorajai2798@gmail.com>)
+ id 1rAMgs-0001Wx-Sl; Mon, 04 Dec 2023 23:05:48 -0500
+Received: by mail-ua1-x934.google.com with SMTP id
+ a1e0cc1a2514c-7c44f5f3ca2so1180228241.0; 
+ Mon, 04 Dec 2023 20:05:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701749145; x=1702353945; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=RGRQdKV++7TWtTYNQD7DT9S9FhfWdvD6kVbYXYnoNN0=;
+ b=UnXWbQZbn40uHXi9au26pNmk5WqUb5RPfXA7nXdf0DS3HGO25vzJa3uSlFj6RJwTFZ
+ vfRMjFOTWOBFw/Kj2/Ba6Lif0BmcX23in0cSJ9RLAr2d0+dwvie6QmmYTc+eIta9PvQT
+ Ysg23sx4H3pqEbvz2vTx561LhRlxgzc2yxe7NvtHT0ptLC+HWGWMTQmUzaTVtECAgi0+
+ yapAnLoLuxtLb+2PFuOpONSid/4jWk3CkRsE4N6oqH4PmtuV3JvSuj4yCNitYdD/FPVe
+ mLBGWLVMxF7rNDSvflboiJFqlq/QmR8934wkD1EpJVPbjgRa5eFATVSbI78pau0l7QkM
+ 0dgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701749145; x=1702353945;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RGRQdKV++7TWtTYNQD7DT9S9FhfWdvD6kVbYXYnoNN0=;
+ b=nSGz/S0wJOaLmwNFCRjjYQgNMhUq4ogHZipfScfyDrHaCquk7e/aE33oi4YipsMUMi
+ 2VbpSNtBticQkbbNJTMsMSyqSaOEPfD0IzzQEzdff5RrHlLbXdILPgdN5yg/Utrt0jdI
+ nWbCycvJu4R1Woq7ksGn/PPEMmTf8QG8ziHmai0Vizr1qSxnxdpvg5BMr5po9/lfW4R5
+ lGbCqJJukPAFf6jSE0lFj1O2EoQYRWDJ69i3IAfiz5ZIrV5MEuLvbttWTRL2xIZPS5aj
+ 8Xw3EyEnagf75o4hEZIulWfBXrX7PXNgdZUOI7mMJhoMVNH87t5UCK5rPhWJ4KeA9BRX
+ 2+NA==
+X-Gm-Message-State: AOJu0YxXmbrnqggx+260oWYBWfbYl3yK2Xzm/ncycfVTy80zCf7M6aFx
+ SZFj3fSX1I5MiHMUt2JtLN6cBGNq+z4AUNFtJLrOGqLF
+X-Google-Smtp-Source: AGHT+IHjVvMfIZn+eXXupeKcLpWXVB9134wVl/RFtRVBLhcVT0PKZHT3ZgRknee/PQF7xuW9AoHFFQSE0LkNl8RIW7w=
+X-Received: by 2002:a67:b449:0:b0:464:8174:9b4d with SMTP id
+ c9-20020a67b449000000b0046481749b4dmr2479188vsm.32.1701749144916; Mon, 04 Dec
+ 2023 20:05:44 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: V1uFL0ci/JltJBBOtw8LX//Uwc8Ixlsac10gWCPQEMcD3ojtpCPpo/3Kx5PGmU2Fo4sFAmouaIAhq/kLR9HFtvVYB/IZMxfB7/cba8jT/jjE3MA3s3IzQqDLfs5roBQ/FXmxmrD/HY3b76TCJ1YuFADJle+I28jd6O3d/42oefIJst8KrcceqqGstIbhZp4zFBD816Do3C4os6GdLM5QFgWwjhCiYxhiebFczO5Di2IOZ3Z+Vn9P4eRyHeUiSlk+U3uezp2zyFyIVcLQrDWJlp1wYSx6w/KLq37nG6zNo/WmradnpTsGa4VBzApbRTr3P+88AmmXN9B2QyT8P9hh8LOVtzqRGbkAlnjMXceJ5f372KxRoMTRQsq807PLzgQTz8oSj8bDQh6hF5etoazEFRXqBhzh0aygknpOcunuXXKprFCRL83r3b8z66AfmdXG89tAa3f5kfnwryz0x52xyXAGTXkCtZWba1kCAJ59DytptNOyM1xj1hdj+lA79FISFnnaMGfFBVLuw1xCBjeklLiCGBYZhEZbYrwqnPxYJ/BHCVbLj7EYi5EzuKPTJgl/eQAIA+wybj6hV06wz9GueA6KUIaVDbqioQSGHtbK5CeKoNPx7ZtZu5TJNRtQAkwCyl8nf176wNKcLpnFgMrtQPLo68tgvUBmzDfg4LpdsQfYZ8sM1seiNlryTHzPuHWsWZwu1YZEe0/B3dJDbdxazbqkvgly8T3O3q/Ew2NO/NMEdWsRDpkXdui72fKp6DkzEWqSXM3qx0V+iUqW+4EQJwYdBrwF0ciYTQzQl0PmElY/mMs/Ve0zMb6Ji0XfYLbv2+tvo4exNi7GCFckMfQ3JQ==
-X-OriginatorOrg: quicinc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN7PR02MB4194.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0945a68-197d-4e8d-32be-08dbf544c193
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Dec 2023 03:46:25.6752 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: TloeBJZ0qn+AktfhopNSTmpZvBgc7329SKAP7HmxJSHMJTeVd2Om1luwuoREFHTG7BXXtUT6kCxx98Ya5su0XQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR02MB7586
-X-Proofpoint-GUID: BXkVKBWiMq6fP-trH6uMeh-yQRAZwvf9
-X-Proofpoint-ORIG-GUID: BXkVKBWiMq6fP-trH6uMeh-yQRAZwvf9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-04_24,2023-12-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 clxscore=1015 malwarescore=0 bulkscore=0 phishscore=0
- mlxlogscore=716 impostorscore=0 adultscore=0 suspectscore=0
- priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2312050030
-Received-SPF: pass client-ip=205.220.180.131; envelope-from=bcain@quicinc.com;
- helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231202044846.258855-1-arorajai2798@gmail.com>
+In-Reply-To: <20231202044846.258855-1-arorajai2798@gmail.com>
+From: JAI ARORA <arorajai2798@gmail.com>
+Date: Tue, 5 Dec 2023 09:35:31 +0530
+Message-ID: <CA+9mx632wGOa2egPZBKLnr5UZLzeX74V8wF0=pkfO+jQg0dM2A@mail.gmail.com>
+Subject: Re: [PATCH v5] accel/kvm: Turn DPRINTF macro use into tracepoints
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, pbonzini@redhat.com, peter.maydell@linaro.org, 
+ alex.bennee@linaro.org, philmd@linaro.org, Jai Arora <arorajai2798@gmail.com>
+Content-Type: multipart/alternative; boundary="00000000000047972c060bbb5946"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::934;
+ envelope-from=arorajai2798@gmail.com; helo=mail-ua1-x934.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -173,216 +84,425 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVGF5bG9yIFNpbXBzb24g
-PGx0YXlsb3JzaW1wc29uQGdtYWlsLmNvbT4NCj4gU2VudDogTW9uZGF5LCBEZWNlbWJlciA0LCAy
-MDIzIDc6NTMgUE0NCj4gVG86IHFlbXUtZGV2ZWxAbm9uZ251Lm9yZw0KPiBDYzogQnJpYW4gQ2Fp
-biA8YmNhaW5AcXVpY2luYy5jb20+OyBNYXRoZXVzIEJlcm5hcmRpbm8gKFFVSUMpDQo+IDxxdWlj
-X21hdGhiZXJuQHF1aWNpbmMuY29tPjsgU2lkIE1hbm5pbmcgPHNpZG5leW1AcXVpY2luYy5jb20+
-OyBNYXJjbw0KPiBMaWViZWwgKFFVSUMpIDxxdWljX21saWViZWxAcXVpY2luYy5jb20+OyByaWNo
-YXJkLmhlbmRlcnNvbkBsaW5hcm8ub3JnOw0KPiBwaGlsbWRAbGluYXJvLm9yZzsgYWxlQHJldi5u
-ZzsgYW5qb0ByZXYubmc7IGx0YXlsb3JzaW1wc29uQGdtYWlsLmNvbQ0KPiBTdWJqZWN0OiBbUEFU
-Q0ggMy85XSBIZXhhZ29uICh0YXJnZXQvaGV4YWdvbikgTWFrZSBnZW5lcmF0b3JzIG9iamVjdA0K
-PiBvcmllbnRlZCAtIGdlbl9oZWxwZXJfcHJvdG9zDQo+IA0KPiBXQVJOSU5HOiBUaGlzIGVtYWls
-IG9yaWdpbmF0ZWQgZnJvbSBvdXRzaWRlIG9mIFF1YWxjb21tLiBQbGVhc2UgYmUgd2FyeSBvZg0K
-PiBhbnkgbGlua3Mgb3IgYXR0YWNobWVudHMsIGFuZCBkbyBub3QgZW5hYmxlIG1hY3Jvcy4NCj4g
-DQo+IFNpZ25lZC1vZmYtYnk6IFRheWxvciBTaW1wc29uIDxsdGF5bG9yc2ltcHNvbkBnbWFpbC5j
-b20+DQo+IC0tLQ0KPiAgdGFyZ2V0L2hleGFnb24vZ2VuX2hlbHBlcl9wcm90b3MucHkgfCAxODQg
-KysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiAgdGFyZ2V0L2hleGFnb24vaGV4X2NvbW1v
-bi5weSAgICAgICAgfCAgMTUgKy0tDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDU1IGluc2VydGlvbnMo
-KyksIDE0NCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS90YXJnZXQvaGV4YWdvbi9n
-ZW5faGVscGVyX3Byb3Rvcy5weQ0KPiBiL3RhcmdldC9oZXhhZ29uL2dlbl9oZWxwZXJfcHJvdG9z
-LnB5DQo+IGluZGV4IDEzMTA0Mzc5NWEuLjkyNzcxOTllMWQgMTAwNzU1DQo+IC0tLSBhL3Rhcmdl
-dC9oZXhhZ29uL2dlbl9oZWxwZXJfcHJvdG9zLnB5DQo+ICsrKyBiL3RhcmdldC9oZXhhZ29uL2dl
-bl9oZWxwZXJfcHJvdG9zLnB5DQo+IEBAIC0yMiwzOSArMjIsNiBAQA0KPiAgaW1wb3J0IHN0cmlu
-Zw0KPiAgaW1wb3J0IGhleF9jb21tb24NCj4gDQo+IC0jIw0KPiAtIyMgSGVscGVycyBmb3IgZ2Vu
-X2hlbHBlcl9wcm90b3R5cGUNCj4gLSMjDQo+IC1kZWZfaGVscGVyX3R5cGVzID0gew0KPiAtICAg
-ICJOIjogInMzMiIsDQo+IC0gICAgIk8iOiAiczMyIiwNCj4gLSAgICAiUCI6ICJzMzIiLA0KPiAt
-ICAgICJNIjogInMzMiIsDQo+IC0gICAgIkMiOiAiczMyIiwNCj4gLSAgICAiUiI6ICJzMzIiLA0K
-PiAtICAgICJWIjogInB0ciIsDQo+IC0gICAgIlEiOiAicHRyIiwNCj4gLX0NCj4gLQ0KPiAtZGVm
-X2hlbHBlcl90eXBlc19wYWlyID0gew0KPiAtICAgICJSIjogInM2NCIsDQo+IC0gICAgIkMiOiAi
-czY0IiwNCj4gLSAgICAiUyI6ICJzNjQiLA0KPiAtICAgICJHIjogInM2NCIsDQo+IC0gICAgIlYi
-OiAicHRyIiwNCj4gLSAgICAiUSI6ICJwdHIiLA0KPiAtfQ0KPiAtDQo+IC0NCj4gLWRlZiBnZW5f
-ZGVmX2hlbHBlcl9vcG4oZiwgdGFnLCByZWd0eXBlLCByZWdpZCwgaSk6DQo+IC0gICAgaWYgaGV4
-X2NvbW1vbi5pc19wYWlyKHJlZ2lkKToNCj4gLSAgICAgICAgZi53cml0ZShmIiwge2RlZl9oZWxw
-ZXJfdHlwZXNfcGFpcltyZWd0eXBlXX0iKQ0KPiAtICAgIGVsaWYgaGV4X2NvbW1vbi5pc19zaW5n
-bGUocmVnaWQpOg0KPiAtICAgICAgICBmLndyaXRlKGYiLCB7ZGVmX2hlbHBlcl90eXBlc1tyZWd0
-eXBlXX0iKQ0KPiAtICAgIGVsc2U6DQo+IC0gICAgICAgIGhleF9jb21tb24uYmFkX3JlZ2lzdGVy
-KHJlZ3R5cGUsIHJlZ2lkKQ0KPiAtDQo+IC0NCj4gICMjDQo+ICAjIyBHZW5lcmF0ZSB0aGUgREVG
-X0hFTFBFUiBwcm90b3R5cGUgZm9yIGFuIGluc3RydWN0aW9uDQo+ICAjIyAgICAgRm9yIEEyX2Fk
-ZDogUmQzMj1hZGQoUnMzMixSdDMyKQ0KPiBAQCAtNjUsMTE2ICszMiw2MiBAQCBkZWYgZ2VuX2hl
-bHBlcl9wcm90b3R5cGUoZiwgdGFnLCB0YWdyZWdzLCB0YWdpbW1zKToNCj4gICAgICByZWdzID0g
-dGFncmVnc1t0YWddDQo+ICAgICAgaW1tcyA9IHRhZ2ltbXNbdGFnXQ0KPiANCj4gLSAgICBudW1y
-ZXN1bHRzID0gMA0KPiArICAgICMjIElmIHRoZXJlIGlzIGEgc2NhbGFyIHJlc3VsdCwgaXQgaXMg
-dGhlIHJldHVybiB0eXBlDQo+ICsgICAgcmV0dXJuX3R5cGUgPSAiIg0KDQpTaG91bGQgd2UgdXNl
-IGByZXR1cm5fdHlwZSA9IE5vbmVgIGhlcmU/DQoNCj4gICAgICBudW1zY2FsYXJyZXN1bHRzID0g
-MA0KPiAtICAgIG51bXNjYWxhcnJlYWR3cml0ZSA9IDANCj4gICAgICBmb3IgcmVndHlwZSwgcmVn
-aWQgaW4gcmVnczoNCj4gLSAgICAgICAgaWYgaGV4X2NvbW1vbi5pc193cml0dGVuKHJlZ2lkKToN
-Cj4gLSAgICAgICAgICAgIG51bXJlc3VsdHMgKz0gMQ0KPiAtICAgICAgICAgICAgaWYgaGV4X2Nv
-bW1vbi5pc19zY2FsYXJfcmVnKHJlZ3R5cGUpOg0KPiArICAgICAgICByZWcgPSBoZXhfY29tbW9u
-LmdldF9yZWdpc3Rlcih0YWcsIHJlZ3R5cGUsIHJlZ2lkKQ0KPiArICAgICAgICBpZiByZWcuaXNf
-d3JpdHRlbigpIGFuZCByZWcuaXNfc2NhbGFyX3JlZygpOg0KPiArICAgICAgICAgICAgICAgIHJl
-dHVybl90eXBlID0gcmVnLmhlbHBlcl9wcm90b190eXBlKCkNCj4gICAgICAgICAgICAgICAgICBu
-dW1zY2FsYXJyZXN1bHRzICs9IDENCj4gLSAgICAgICAgaWYgaGV4X2NvbW1vbi5pc19yZWFkd3Jp
-dGUocmVnaWQpOg0KPiAtICAgICAgICAgICAgaWYgaGV4X2NvbW1vbi5pc19zY2FsYXJfcmVnKHJl
-Z3R5cGUpOg0KPiAtICAgICAgICAgICAgICAgIG51bXNjYWxhcnJlYWR3cml0ZSArPSAxDQo+ICsg
-ICAgaWYgbnVtc2NhbGFycmVzdWx0cyA9PSAwOg0KPiArICAgICAgICByZXR1cm5fdHlwZSA9ICJ2
-b2lkIg0KDQpTaG91bGQgd2UgdXNlIGByZXR1cm5fdHlwZSA9IE5vbmVgIGhlcmU/DQoNCj4gDQo+
-ICAgICAgaWYgbnVtc2NhbGFycmVzdWx0cyA+IDE6DQo+IC0gICAgICAgICMjIFRoZSBoZWxwZXIg
-aXMgYm9ndXMgd2hlbiB0aGVyZSBpcyBtb3JlIHRoYW4gb25lIHJlc3VsdA0KPiAtICAgICAgICBm
-LndyaXRlKGYiREVGX0hFTFBFUl8xKHt0YWd9LCB2b2lkLCBlbnYpXG4iKQ0KPiAtICAgIGVsc2U6
-DQo+IC0gICAgICAgICMjIEZpZ3VyZSBvdXQgaG93IG1hbnkgYXJndW1lbnRzIHRoZSBoZWxwZXIg
-d2lsbCB0YWtlDQo+IC0gICAgICAgIGlmIG51bXNjYWxhcnJlc3VsdHMgPT0gMDoNCj4gLSAgICAg
-ICAgICAgIGRlZl9oZWxwZXJfc2l6ZSA9IGxlbihyZWdzKSArIGxlbihpbW1zKSArIG51bXNjYWxh
-cnJlYWR3cml0ZSArIDENCj4gLSAgICAgICAgICAgIGlmIGhleF9jb21tb24ubmVlZF9wa3RfaGFz
-X211bHRpX2NvZih0YWcpOg0KPiAtICAgICAgICAgICAgICAgIGRlZl9oZWxwZXJfc2l6ZSArPSAx
-DQo+IC0gICAgICAgICAgICBpZiBoZXhfY29tbW9uLm5lZWRfcGt0X25lZWRfY29tbWl0KHRhZyk6
-DQo+IC0gICAgICAgICAgICAgICAgZGVmX2hlbHBlcl9zaXplICs9IDENCj4gLSAgICAgICAgICAg
-IGlmIGhleF9jb21tb24ubmVlZF9wYXJ0MSh0YWcpOg0KPiAtICAgICAgICAgICAgICAgIGRlZl9o
-ZWxwZXJfc2l6ZSArPSAxDQo+IC0gICAgICAgICAgICBpZiBoZXhfY29tbW9uLm5lZWRfc2xvdCh0
-YWcpOg0KPiAtICAgICAgICAgICAgICAgIGRlZl9oZWxwZXJfc2l6ZSArPSAxDQo+IC0gICAgICAg
-ICAgICBpZiBoZXhfY29tbW9uLm5lZWRfUEModGFnKToNCj4gLSAgICAgICAgICAgICAgICBkZWZf
-aGVscGVyX3NpemUgKz0gMQ0KPiAtICAgICAgICAgICAgaWYgaGV4X2NvbW1vbi5oZWxwZXJfbmVl
-ZHNfbmV4dF9QQyh0YWcpOg0KPiAtICAgICAgICAgICAgICAgIGRlZl9oZWxwZXJfc2l6ZSArPSAx
-DQo+IC0gICAgICAgICAgICBpZiBoZXhfY29tbW9uLm5lZWRfY29uZGV4ZWNfcmVnKHRhZywgcmVn
-cyk6DQo+IC0gICAgICAgICAgICAgICAgZGVmX2hlbHBlcl9zaXplICs9IDENCj4gLSAgICAgICAg
-ICAgIGYud3JpdGUoZiJERUZfSEVMUEVSX3tkZWZfaGVscGVyX3NpemV9KHt0YWd9IikNCj4gLSAg
-ICAgICAgICAgICMjIFRoZSByZXR1cm4gdHlwZSBpcyB2b2lkDQo+IC0gICAgICAgICAgICBmLndy
-aXRlKCIsIHZvaWQiKQ0KPiAtICAgICAgICBlbHNlOg0KPiAtICAgICAgICAgICAgZGVmX2hlbHBl
-cl9zaXplID0gbGVuKHJlZ3MpICsgbGVuKGltbXMpICsgbnVtc2NhbGFycmVhZHdyaXRlDQo+IC0g
-ICAgICAgICAgICBpZiBoZXhfY29tbW9uLm5lZWRfcGt0X2hhc19tdWx0aV9jb2YodGFnKToNCj4g
-LSAgICAgICAgICAgICAgICBkZWZfaGVscGVyX3NpemUgKz0gMQ0KPiAtICAgICAgICAgICAgaWYg
-aGV4X2NvbW1vbi5uZWVkX3BrdF9uZWVkX2NvbW1pdCh0YWcpOg0KPiAtICAgICAgICAgICAgICAg
-IGRlZl9oZWxwZXJfc2l6ZSArPSAxDQo+IC0gICAgICAgICAgICBpZiBoZXhfY29tbW9uLm5lZWRf
-cGFydDEodGFnKToNCj4gLSAgICAgICAgICAgICAgICBkZWZfaGVscGVyX3NpemUgKz0gMQ0KPiAt
-ICAgICAgICAgICAgaWYgaGV4X2NvbW1vbi5uZWVkX3Nsb3QodGFnKToNCj4gLSAgICAgICAgICAg
-ICAgICBkZWZfaGVscGVyX3NpemUgKz0gMQ0KPiAtICAgICAgICAgICAgaWYgaGV4X2NvbW1vbi5u
-ZWVkX1BDKHRhZyk6DQo+IC0gICAgICAgICAgICAgICAgZGVmX2hlbHBlcl9zaXplICs9IDENCj4g
-LSAgICAgICAgICAgIGlmIGhleF9jb21tb24ubmVlZF9jb25kZXhlY19yZWcodGFnLCByZWdzKToN
-Cj4gLSAgICAgICAgICAgICAgICBkZWZfaGVscGVyX3NpemUgKz0gMQ0KPiAtICAgICAgICAgICAg
-aWYgaGV4X2NvbW1vbi5oZWxwZXJfbmVlZHNfbmV4dF9QQyh0YWcpOg0KPiAtICAgICAgICAgICAg
-ICAgIGRlZl9oZWxwZXJfc2l6ZSArPSAxDQo+IC0gICAgICAgICAgICBmLndyaXRlKGYiREVGX0hF
-TFBFUl97ZGVmX2hlbHBlcl9zaXplfSh7dGFnfSIpDQo+IC0NCj4gLSAgICAgICAgIyMgR2VuZXJh
-dGUgdGhlIHFlbXUgREVGX0hFTFBFUiB0eXBlIGZvciBlYWNoIHJlc3VsdA0KPiAtICAgICAgICAj
-IyBJdGVyYXRlIG92ZXIgdGhpcyBsaXN0IHR3aWNlDQo+IC0gICAgICAgICMjIC0gRW1pdCB0aGUg
-c2NhbGFyIHJlc3VsdA0KPiAtICAgICAgICAjIyAtIEVtaXQgdGhlIHZlY3RvciByZXN1bHQNCj4g
-LSAgICAgICAgaSA9IDANCj4gLSAgICAgICAgZm9yIHJlZ3R5cGUsIHJlZ2lkIGluIHJlZ3M6DQo+
-IC0gICAgICAgICAgICBpZiBoZXhfY29tbW9uLmlzX3dyaXR0ZW4ocmVnaWQpOg0KPiAtICAgICAg
-ICAgICAgICAgIGlmIG5vdCBoZXhfY29tbW9uLmlzX2h2eF9yZWcocmVndHlwZSk6DQo+IC0gICAg
-ICAgICAgICAgICAgICAgIGdlbl9kZWZfaGVscGVyX29wbihmLCB0YWcsIHJlZ3R5cGUsIHJlZ2lk
-LCBpKQ0KPiAtICAgICAgICAgICAgICAgIGkgKz0gMQ0KPiArICAgICAgICByYWlzZSBFeGNlcHRp
-b24oIm51bXNjYWxhcnJlc3VsdHMgPiAxIikNCj4gDQo+IC0gICAgICAgICMjIFB1dCB0aGUgZW52
-IGJldHdlZW4gdGhlIG91dHB1dHMgYW5kIGlucHV0cw0KPiAtICAgICAgICBmLndyaXRlKCIsIGVu
-diIpDQo+IC0gICAgICAgIGkgKz0gMQ0KPiArICAgIGRlY2xhcmVkID0gW10NCj4gKyAgICBkZWNs
-YXJlZC5hcHBlbmQocmV0dXJuX3R5cGUpDQo+IA0KPiAtICAgICAgICAjIFNlY29uZCBwYXNzDQo+
-IC0gICAgICAgIGZvciByZWd0eXBlLCByZWdpZCBpbiByZWdzOg0KPiAtICAgICAgICAgICAgaWYg
-aGV4X2NvbW1vbi5pc193cml0dGVuKHJlZ2lkKToNCj4gLSAgICAgICAgICAgICAgICBpZiBoZXhf
-Y29tbW9uLmlzX2h2eF9yZWcocmVndHlwZSk6DQo+IC0gICAgICAgICAgICAgICAgICAgIGdlbl9k
-ZWZfaGVscGVyX29wbihmLCB0YWcsIHJlZ3R5cGUsIHJlZ2lkLCBpKQ0KPiAtICAgICAgICAgICAg
-ICAgICAgICBpICs9IDENCj4gLQ0KPiAtICAgICAgICAjIyBGb3IgY29uZGl0aW9uYWwgaW5zdHJ1
-Y3Rpb25zLCB3ZSBwYXNzIGluIHRoZSBkZXN0aW5hdGlvbiByZWdpc3Rlcg0KPiAtICAgICAgICBp
-ZiAiQV9DT05ERVhFQyIgaW4gaGV4X2NvbW1vbi5hdHRyaWJkaWN0W3RhZ106DQo+IC0gICAgICAg
-ICAgICBmb3IgcmVndHlwZSwgcmVnaWQgaW4gcmVnczoNCj4gLSAgICAgICAgICAgICAgICBpZiBo
-ZXhfY29tbW9uLmlzX3dyaXRlb25seShyZWdpZCkgYW5kIG5vdCBoZXhfY29tbW9uLmlzX2h2eF9y
-ZWcoDQo+IC0gICAgICAgICAgICAgICAgICAgIHJlZ3R5cGUNCj4gLSAgICAgICAgICAgICAgICAp
-Og0KPiAtICAgICAgICAgICAgICAgICAgICBnZW5fZGVmX2hlbHBlcl9vcG4oZiwgdGFnLCByZWd0
-eXBlLCByZWdpZCwgaSkNCj4gLSAgICAgICAgICAgICAgICAgICAgaSArPSAxDQo+IC0NCj4gLSAg
-ICAgICAgIyMgR2VuZXJhdGUgdGhlIHFlbXUgdHlwZSBmb3IgZWFjaCBpbnB1dCBvcGVyYW5kIChy
-ZWdzIGFuZCBpbW1lZGlhdGVzKQ0KPiArICAgICMjIFB1dCB0aGUgZW52IGJldHdlZW4gdGhlIG91
-dHB1dHMgYW5kIGlucHV0cw0KPiArICAgIGRlY2xhcmVkLmFwcGVuZCgiZW52IikNCj4gKw0KPiAr
-ICAgICMjIEZvciBwcmVkaWNhdGVkIGluc3RydWN0aW9ucywgd2UgcGFzcyBpbiB0aGUgZGVzdGlu
-YXRpb24gcmVnaXN0ZXINCj4gKyAgICBpZiBoZXhfY29tbW9uLmlzX3ByZWRpY2F0ZWQodGFnKToN
-Cj4gICAgICAgICAgZm9yIHJlZ3R5cGUsIHJlZ2lkIGluIHJlZ3M6DQo+IC0gICAgICAgICAgICBp
-ZiBoZXhfY29tbW9uLmlzX3JlYWQocmVnaWQpOg0KPiAtICAgICAgICAgICAgICAgIGlmIGhleF9j
-b21tb24uaXNfaHZ4X3JlZyhyZWd0eXBlKSBhbmQNCj4gaGV4X2NvbW1vbi5pc19yZWFkd3JpdGUo
-cmVnaWQpOg0KPiAtICAgICAgICAgICAgICAgICAgICBjb250aW51ZQ0KPiAtICAgICAgICAgICAg
-ICAgIGdlbl9kZWZfaGVscGVyX29wbihmLCB0YWcsIHJlZ3R5cGUsIHJlZ2lkLCBpKQ0KPiAtICAg
-ICAgICAgICAgICAgIGkgKz0gMQ0KPiAtICAgICAgICBmb3IgaW1tbGV0dCwgYml0cywgaW1tc2hp
-ZnQgaW4gaW1tczoNCj4gLSAgICAgICAgICAgIGYud3JpdGUoIiwgczMyIikNCj4gLQ0KPiAtICAg
-ICAgICAjIyBBZGQgdGhlIGFyZ3VtZW50cyBmb3IgdGhlIGluc3RydWN0aW9uIHBrdF9oYXNfbXVs
-dGlfY29mLA0KPiAtICAgICAgICAjIyBwa3RfbmVlZHNfY29tbWl0LCBQQywgbmV4dF9QQywgc2xv
-dCwgYW5kIHBhcnQxIChpZiBuZWVkZWQpDQo+IC0gICAgICAgIGlmIGhleF9jb21tb24ubmVlZF9w
-a3RfaGFzX211bHRpX2NvZih0YWcpOg0KPiAtICAgICAgICAgICAgZi53cml0ZSgiLCBpMzIiKQ0K
-PiAtICAgICAgICBpZiBoZXhfY29tbW9uLm5lZWRfcGt0X25lZWRfY29tbWl0KHRhZyk6DQo+IC0g
-ICAgICAgICAgICBmLndyaXRlKCcsIGkzMicpDQo+IC0gICAgICAgIGlmIGhleF9jb21tb24ubmVl
-ZF9QQyh0YWcpOg0KPiAtICAgICAgICAgICAgZi53cml0ZSgiLCBpMzIiKQ0KPiAtICAgICAgICBp
-ZiBoZXhfY29tbW9uLmhlbHBlcl9uZWVkc19uZXh0X1BDKHRhZyk6DQo+IC0gICAgICAgICAgICBm
-LndyaXRlKCIsIGkzMiIpDQo+IC0gICAgICAgIGlmIGhleF9jb21tb24ubmVlZF9zbG90KHRhZyk6
-DQo+IC0gICAgICAgICAgICBmLndyaXRlKCIsIGkzMiIpDQo+IC0gICAgICAgIGlmIGhleF9jb21t
-b24ubmVlZF9wYXJ0MSh0YWcpOg0KPiAtICAgICAgICAgICAgZi53cml0ZSgiICwgaTMyIikNCj4g
-LSAgICAgICAgZi53cml0ZSgiKVxuIikNCj4gKyAgICAgICAgICAgIHJlZyA9IGhleF9jb21tb24u
-Z2V0X3JlZ2lzdGVyKHRhZywgcmVndHlwZSwgcmVnaWQpDQo+ICsgICAgICAgICAgICBpZiByZWcu
-aXNfd3JpdGVvbmx5KCkgYW5kIG5vdCByZWcuaXNfaHZ4X3JlZygpOg0KPiArICAgICAgICAgICAg
-ICAgIGRlY2xhcmVkLmFwcGVuZChyZWcuaGVscGVyX3Byb3RvX3R5cGUoKSkNCj4gKyAgICAjIyBQ
-YXNzIHRoZSBIVlggZGVzdGluYXRpb24gcmVnaXN0ZXJzDQo+ICsgICAgZm9yIHJlZ3R5cGUsIHJl
-Z2lkIGluIHJlZ3M6DQo+ICsgICAgICAgIHJlZyA9IGhleF9jb21tb24uZ2V0X3JlZ2lzdGVyKHRh
-ZywgcmVndHlwZSwgcmVnaWQpDQo+ICsgICAgICAgIGlmIHJlZy5pc193cml0dGVuKCkgYW5kIHJl
-Zy5pc19odnhfcmVnKCk6DQo+ICsgICAgICAgICAgICBkZWNsYXJlZC5hcHBlbmQocmVnLmhlbHBl
-cl9wcm90b190eXBlKCkpDQo+ICsgICAgIyMgUGFzcyB0aGUgc291cmNlIHJlZ2lzdGVycw0KPiAr
-ICAgIGZvciByZWd0eXBlLCByZWdpZCBpbiByZWdzOg0KPiArICAgICAgICByZWcgPSBoZXhfY29t
-bW9uLmdldF9yZWdpc3Rlcih0YWcsIHJlZ3R5cGUsIHJlZ2lkKQ0KPiArICAgICAgICBpZiByZWcu
-aXNfcmVhZCgpIGFuZCBub3QgKHJlZy5pc19odnhfcmVnKCkgYW5kIHJlZy5pc19yZWFkd3JpdGUo
-KSk6DQo+ICsgICAgICAgICAgICBkZWNsYXJlZC5hcHBlbmQocmVnLmhlbHBlcl9wcm90b190eXBl
-KCkpDQo+ICsgICAgIyMgUGFzcyB0aGUgaW1tZWRpYXRlcw0KPiArICAgIGZvciBpbW1sZXR0LCBi
-aXRzLCBpbW1zaGlmdCBpbiBpbW1zOg0KPiArICAgICAgICBkZWNsYXJlZC5hcHBlbmQoInMzMiIp
-DQo+ICsNCj4gKyAgICAjIyBPdGhlciBzdHVmZiB0aGUgaGVscGVyIG1pZ2h0IG5lZWQNCj4gKyAg
-ICBpZiBoZXhfY29tbW9uLm5lZWRfcGt0X2hhc19tdWx0aV9jb2YodGFnKToNCj4gKyAgICAgICAg
-ZGVjbGFyZWQuYXBwZW5kKCJpMzIiKQ0KPiArICAgIGlmIGhleF9jb21tb24ubmVlZF9wa3RfbmVl
-ZF9jb21taXQodGFnKToNCj4gKyAgICAgICAgZGVjbGFyZWQuYXBwZW5kKCJpMzIiKQ0KPiArICAg
-IGlmIGhleF9jb21tb24ubmVlZF9QQyh0YWcpOg0KPiArICAgICAgICBkZWNsYXJlZC5hcHBlbmQo
-ImkzMiIpDQo+ICsgICAgaWYgaGV4X2NvbW1vbi5uZWVkX25leHRfUEModGFnKToNCj4gKyAgICAg
-ICAgZGVjbGFyZWQuYXBwZW5kKCJpMzIiKQ0KPiArICAgIGlmIGhleF9jb21tb24ubmVlZF9zbG90
-KHRhZyk6DQo+ICsgICAgICAgIGRlY2xhcmVkLmFwcGVuZCgiaTMyIikNCj4gKyAgICBpZiBoZXhf
-Y29tbW9uLm5lZWRfcGFydDEodGFnKToNCj4gKyAgICAgICAgZGVjbGFyZWQuYXBwZW5kKCJpMzIi
-KQ0KDQpXaGF0IGRvIHlvdSB0aGluayBvZiB0aGlzIGluc3RlYWQ/ICBUaGUgZGVsdGEgYmVsb3cg
-aXMgb24gdG9wIG9mIHRoaXMgcGF0Y2guDQoNCi0tLSBhL3RhcmdldC9oZXhhZ29uL2dlbl9oZWxw
-ZXJfcHJvdG9zLnB5DQorKysgYi90YXJnZXQvaGV4YWdvbi9nZW5faGVscGVyX3Byb3Rvcy5weQ0K
-QEAgLTczLDE4ICs3Myw5IEBAIGRlZiBnZW5faGVscGVyX3Byb3RvdHlwZShmLCB0YWcsIHRhZ3Jl
-Z3MsIHRhZ2ltbXMpOg0KICAgICAgICAgZGVjbGFyZWQuYXBwZW5kKCJzMzIiKQ0KIA0KICAgICAj
-IyBPdGhlciBzdHVmZiB0aGUgaGVscGVyIG1pZ2h0IG5lZWQNCi0gICAgaWYgaGV4X2NvbW1vbi5u
-ZWVkX3BrdF9oYXNfbXVsdGlfY29mKHRhZyk6DQotICAgICAgICBkZWNsYXJlZC5hcHBlbmQoImkz
-MiIpDQotICAgIGlmIGhleF9jb21tb24ubmVlZF9wa3RfbmVlZF9jb21taXQodGFnKToNCi0gICAg
-ICAgIGRlY2xhcmVkLmFwcGVuZCgiaTMyIikNCi0gICAgaWYgaGV4X2NvbW1vbi5uZWVkX1BDKHRh
-Zyk6DQotICAgICAgICBkZWNsYXJlZC5hcHBlbmQoImkzMiIpDQotICAgIGlmIGhleF9jb21tb24u
-bmVlZF9uZXh0X1BDKHRhZyk6DQotICAgICAgICBkZWNsYXJlZC5hcHBlbmQoImkzMiIpDQotICAg
-IGlmIGhleF9jb21tb24ubmVlZF9zbG90KHRhZyk6DQotICAgICAgICBkZWNsYXJlZC5hcHBlbmQo
-ImkzMiIpDQotICAgIGlmIGhleF9jb21tb24ubmVlZF9wYXJ0MSh0YWcpOg0KLSAgICAgICAgZGVj
-bGFyZWQuYXBwZW5kKCJpMzIiKQ0KKyAgICBmb3Igc3R1ZmYgaW4gaGV4X2NvbW1vbi5vdGhlcl9z
-dHVmZjoNCisgICAgICAgIGlmIHN0dWZmKHRhZyk6DQorICAgICAgICAgICAgZGVjbGFyZWQuYXBw
-ZW5kKCdpMzInKQ0KIA0KICAgICBhcmd1bWVudHMgPSAiLCAiLmpvaW4oZGVjbGFyZWQpDQogICAg
-IGYud3JpdGUoZiJERUZfSEVMUEVSX3tsZW4oZGVjbGFyZWQpIC0gMX0oe3RhZ30sIHthcmd1bWVu
-dHN9KVxuIikNCmRpZmYgLS1naXQgYS90YXJnZXQvaGV4YWdvbi9nZW5fdGNnX2Z1bmNzLnB5IGIv
-dGFyZ2V0L2hleGFnb24vZ2VuX3RjZ19mdW5jcy5weQ0KaW5kZXggOGMyYmMwM2MxMC4uY2IwMmQ5
-MTg4NiAxMDA3NTUNCi0tLSBhL3RhcmdldC9oZXhhZ29uL2dlbl90Y2dfZnVuY3MucHkNCisrKyBi
-L3RhcmdldC9oZXhhZ29uL2dlbl90Y2dfZnVuY3MucHkNCkBAIC0xMDksMTggKzEwOSw5IEBAIGRl
-ZiBnZW5fdGNnX2Z1bmMoZiwgdGFnLCByZWdzLCBpbW1zKToNCiAgICAgICAgICAgICBkZWNsYXJl
-ZC5hcHBlbmQoZiJ0Y2dfY29uc3RhbnRfdGwoe2hleF9jb21tb24uaW1tX25hbWUoaW1tbGV0dCl9
-KSIpDQogDQogICAgICAgICAjIyBPdGhlciBzdHVmZiB0aGUgaGVscGVyIG1pZ2h0IG5lZWQNCi0g
-ICAgICAgIGlmIGhleF9jb21tb24ubmVlZF9wa3RfaGFzX211bHRpX2NvZih0YWcpOg0KLSAgICAg
-ICAgICAgIGRlY2xhcmVkLmFwcGVuZCgidGNnX2NvbnN0YW50X3RsKGN0eC0+cGt0LT5wa3RfaGFz
-X211bHRpX2NvZikiKQ0KLSAgICAgICAgaWYgaGV4X2NvbW1vbi5uZWVkX3BrdF9uZWVkX2NvbW1p
-dCh0YWcpOg0KLSAgICAgICAgICAgIGRlY2xhcmVkLmFwcGVuZCgidGNnX2NvbnN0YW50X3RsKGN0
-eC0+bmVlZF9jb21taXQpIikNCi0gICAgICAgIGlmIGhleF9jb21tb24ubmVlZF9QQyh0YWcpOg0K
-LSAgICAgICAgICAgIGRlY2xhcmVkLmFwcGVuZCgidGNnX2NvbnN0YW50X3RsKGN0eC0+cGt0LT5w
-YykiKQ0KLSAgICAgICAgaWYgaGV4X2NvbW1vbi5uZWVkX25leHRfUEModGFnKToNCi0gICAgICAg
-ICAgICBkZWNsYXJlZC5hcHBlbmQoInRjZ19jb25zdGFudF90bChjdHgtPm5leHRfUEMpIikNCi0g
-ICAgICAgIGlmIGhleF9jb21tb24ubmVlZF9zbG90KHRhZyk6DQotICAgICAgICAgICAgZGVjbGFy
-ZWQuYXBwZW5kKCJnZW5fc2xvdHZhbChjdHgpIikNCi0gICAgICAgIGlmIGhleF9jb21tb24ubmVl
-ZF9wYXJ0MSh0YWcpOg0KLSAgICAgICAgICAgIGRlY2xhcmVkLmFwcGVuZCgidGNnX2NvbnN0YW50
-X3RsKGluc24tPnBhcnQxKSIpDQorICAgICAgICBmb3Igc3R1ZmYsIHRleHQgaW4gaGV4X2NvbW1v
-bi5vdGhlcl9zdHVmZjoNCisgICAgICAgICAgICBpZiBzdHVmZih0YWcpOg0KKyAgICAgICAgICAg
-ICAgICBkZWNsYXJlZC5hcHBlbmQodGV4dCkNCiANCiAgICAgICAgIGFyZ3VtZW50cyA9ICIsICIu
-am9pbihkZWNsYXJlZCkNCiAgICAgICAgIGYud3JpdGUoZiIgICAgZ2VuX2hlbHBlcl97dGFnfSh7
-YXJndW1lbnRzfSk7XG4iKQ0KZGlmZiAtLWdpdCBhL3RhcmdldC9oZXhhZ29uL2hleF9jb21tb24u
-cHkgYi90YXJnZXQvaGV4YWdvbi9oZXhfY29tbW9uLnB5DQppbmRleCA5MGQ2MWExYjE2Li45NTQ1
-MzI5MjFkIDEwMDc1NQ0KLS0tIGEvdGFyZ2V0L2hleGFnb24vaGV4X2NvbW1vbi5weQ0KKysrIGIv
-dGFyZ2V0L2hleGFnb24vaGV4X2NvbW1vbi5weQ0KQEAgLTEwMjgsMyArMTAyOCwxMyBAQCBkZWYg
-Z2V0X3JlZ2lzdGVyKHRhZywgcmVndHlwZSwgcmVnaWQpOg0KICAgICAgICAgcmV0dXJuIHJlZ2lz
-dGVyc1tmIntyZWd0eXBlfXtyZWdpZH0iXQ0KICAgICBlbHNlOg0KICAgICAgICAgcmV0dXJuIG5l
-d19yZWdpc3RlcnNbZiJ7cmVndHlwZX17cmVnaWR9Il0NCisNCisNCitvdGhlcl9zdHVmZiA9IHsN
-CisgICAgbmVlZF9wa3RfaGFzX211bHRpX2NvZjogInRjZ19jb25zdGFudF90bChjdHgtPnBrdC0+
-cGt0X2hhc19tdWx0aV9jb2YpIiwNCisgICAgbmVlZF9wa3RfbmVlZF9jb21taXQ6ICJ0Y2dfY29u
-c3RhbnRfdGwoY3R4LT5uZWVkX2NvbW1pdCkiLA0KKyAgICBuZWVkX1BDOiAidGNnX2NvbnN0YW50
-X3RsKGN0eC0+cGt0LT5wYykiLA0KKyAgICBuZWVkX25leHRfUEM6ICJ0Y2dfY29uc3RhbnRfdGwo
-Y3R4LT5uZXh0X1BDKSIsDQorICAgIG5lZWRfc2xvdDogImdlbl9zbG90dmFsKGN0eCkiLA0KKyAg
-ICBuZWVkX3BhcnQxOiAidGNnX2NvbnN0YW50X3RsKGluc24tPnBhcnQxKSIsDQorfQ0KDQoNCg==
+--00000000000047972c060bbb5946
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello maintainers,
+
+This is a friendly ping.
+Are there any other review comments for this patch?
+
+
+Thanks,
+Jai Arora
+
+On Sat, 2 Dec 2023 at 10:19, Jai Arora <arorajai2798@gmail.com> wrote:
+
+> Patch removes DPRINTF macro and adds multiple tracepoints
+> to capture different kvm events.
+>
+> We also drop the DPRINTFs that don't add any additional
+> information than trace_kvm_run_exit already does.
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1827
+>
+> Signed-off-by: Jai Arora <arorajai2798@gmail.com>
+> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> v5: Addressed review comments by Philippe Mathieu-Daud=C3=A9
+> Corrects typo DRPINTF in commit message
+> Changed %d to PRIu32 in kvm_run_exit_system_event
+>
+> I am not sure what you meant by keeping previous tag.
+> I think you meant to keep version tag same,
+> so I will keep patch tag as v5 again this time.
+>
+> Thank you for the feedback.
+>
+>  accel/kvm/kvm-all.c    | 28 ++++++----------------------
+>  accel/kvm/trace-events |  7 ++++++-
+>  2 files changed, 12 insertions(+), 23 deletions(-)
+>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index e39a810a4e..80ac7b35b7 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -69,16 +69,6 @@
+>  #define KVM_GUESTDBG_BLOCKIRQ 0
+>  #endif
+>
+> -//#define DEBUG_KVM
+> -
+> -#ifdef DEBUG_KVM
+> -#define DPRINTF(fmt, ...) \
+> -    do { fprintf(stderr, fmt, ## __VA_ARGS__); } while (0)
+> -#else
+> -#define DPRINTF(fmt, ...) \
+> -    do { } while (0)
+> -#endif
+> -
+>  struct KVMParkedVcpu {
+>      unsigned long vcpu_id;
+>      int kvm_fd;
+> @@ -331,7 +321,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+>      struct KVMParkedVcpu *vcpu =3D NULL;
+>      int ret =3D 0;
+>
+> -    DPRINTF("kvm_destroy_vcpu\n");
+> +    trace_kvm_destroy_vcpu();
+>
+>      ret =3D kvm_arch_destroy_vcpu(cpu);
+>      if (ret < 0) {
+> @@ -341,7 +331,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)
+>      mmap_size =3D kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
+>      if (mmap_size < 0) {
+>          ret =3D mmap_size;
+> -        DPRINTF("KVM_GET_VCPU_MMAP_SIZE failed\n");
+> +        trace_kvm_failed_get_vcpu_mmap_size();
+>          goto err;
+>      }
+>
+> @@ -443,7 +433,6 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+>                                     PAGE_SIZE * KVM_DIRTY_LOG_PAGE_OFFSET=
+);
+>          if (cpu->kvm_dirty_gfns =3D=3D MAP_FAILED) {
+>              ret =3D -errno;
+> -            DPRINTF("mmap'ing vcpu dirty gfns failed: %d\n", ret);
+>              goto err;
+>          }
+>      }
+> @@ -2821,7 +2810,7 @@ int kvm_cpu_exec(CPUState *cpu)
+>      struct kvm_run *run =3D cpu->kvm_run;
+>      int ret, run_ret;
+>
+> -    DPRINTF("kvm_cpu_exec()\n");
+> +    trace_kvm_cpu_exec();
+>
+>      if (kvm_arch_process_async_events(cpu)) {
+>          qatomic_set(&cpu->exit_request, 0);
+> @@ -2848,7 +2837,7 @@ int kvm_cpu_exec(CPUState *cpu)
+>
+>          kvm_arch_pre_run(cpu, run);
+>          if (qatomic_read(&cpu->exit_request)) {
+> -            DPRINTF("interrupt exit requested\n");
+> +           trace_kvm_interrupt_exit_request();
+>              /*
+>               * KVM requires us to reenter the kernel after IO exits to
+> complete
+>               * instruction emulation. This self-signal will ensure that =
+we
+> @@ -2878,7 +2867,7 @@ int kvm_cpu_exec(CPUState *cpu)
+>
+>          if (run_ret < 0) {
+>              if (run_ret =3D=3D -EINTR || run_ret =3D=3D -EAGAIN) {
+> -                DPRINTF("io window exit\n");
+> +                trace_kvm_io_window_exit();
+>                  kvm_eat_signals(cpu);
+>                  ret =3D EXCP_INTERRUPT;
+>                  break;
+> @@ -2900,7 +2889,6 @@ int kvm_cpu_exec(CPUState *cpu)
+>          trace_kvm_run_exit(cpu->cpu_index, run->exit_reason);
+>          switch (run->exit_reason) {
+>          case KVM_EXIT_IO:
+> -            DPRINTF("handle_io\n");
+>              /* Called outside BQL */
+>              kvm_handle_io(run->io.port, attrs,
+>                            (uint8_t *)run + run->io.data_offset,
+> @@ -2910,7 +2898,6 @@ int kvm_cpu_exec(CPUState *cpu)
+>              ret =3D 0;
+>              break;
+>          case KVM_EXIT_MMIO:
+> -            DPRINTF("handle_mmio\n");
+>              /* Called outside BQL */
+>              address_space_rw(&address_space_memory,
+>                               run->mmio.phys_addr, attrs,
+> @@ -2920,11 +2907,9 @@ int kvm_cpu_exec(CPUState *cpu)
+>              ret =3D 0;
+>              break;
+>          case KVM_EXIT_IRQ_WINDOW_OPEN:
+> -            DPRINTF("irq_window_open\n");
+>              ret =3D EXCP_INTERRUPT;
+>              break;
+>          case KVM_EXIT_SHUTDOWN:
+> -            DPRINTF("shutdown\n");
+>              qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+>              ret =3D EXCP_INTERRUPT;
+>              break;
+> @@ -2959,6 +2944,7 @@ int kvm_cpu_exec(CPUState *cpu)
+>              ret =3D 0;
+>              break;
+>          case KVM_EXIT_SYSTEM_EVENT:
+> +            trace_kvm_run_exit_system_event(cpu->cpu_index,
+> run->system_event.type);
+>              switch (run->system_event.type) {
+>              case KVM_SYSTEM_EVENT_SHUTDOWN:
+>
+>  qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> @@ -2976,13 +2962,11 @@ int kvm_cpu_exec(CPUState *cpu)
+>                  ret =3D 0;
+>                  break;
+>              default:
+> -                DPRINTF("kvm_arch_handle_exit\n");
+>                  ret =3D kvm_arch_handle_exit(cpu, run);
+>                  break;
+>              }
+>              break;
+>          default:
+> -            DPRINTF("kvm_arch_handle_exit\n");
+>              ret =3D kvm_arch_handle_exit(cpu, run);
+>              break;
+>          }
+> diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+> index 399aaeb0ec..a25902597b 100644
+> --- a/accel/kvm/trace-events
+> +++ b/accel/kvm/trace-events
+> @@ -25,4 +25,9 @@ kvm_dirty_ring_reaper(const char *s) "%s"
+>  kvm_dirty_ring_reap(uint64_t count, int64_t t) "reaped %"PRIu64" pages
+> (took %"PRIi64" us)"
+>  kvm_dirty_ring_reaper_kick(const char *reason) "%s"
+>  kvm_dirty_ring_flush(int finished) "%d"
+> -
+> +kvm_destroy_vcpu(void) ""
+> +kvm_failed_get_vcpu_mmap_size(void) ""
+> +kvm_cpu_exec(void) ""
+> +kvm_interrupt_exit_request(void) ""
+> +kvm_io_window_exit(void) ""
+> +kvm_run_exit_system_event(int cpu_index, uint32_t event_type) "cpu_index
+> %d, system_even_type %"PRIu32
+> --
+> 2.25.1
+>
+>
+
+--00000000000047972c060bbb5946
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hello maintainers,</div><div><br></div><div>This is a=
+ friendly ping.<br></div><div>Are there any other review comments for this =
+patch?<br></div><br><div><br></div><div>Thanks, <br></div><div>Jai Arora<br=
+></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail=
+_attr">On Sat, 2 Dec 2023 at 10:19, Jai Arora &lt;<a href=3D"mailto:aroraja=
+i2798@gmail.com">arorajai2798@gmail.com</a>&gt; wrote:<br></div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">Patch removes DPRINTF macro and adds=
+ multiple tracepoints<br>
+to capture different kvm events.<br>
+<br>
+We also drop the DPRINTFs that don&#39;t add any additional<br>
+information than trace_kvm_run_exit already does.<br>
+<br>
+Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/1827" re=
+l=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qemu/-/i=
+ssues/1827</a><br>
+<br>
+Signed-off-by: Jai Arora &lt;<a href=3D"mailto:arorajai2798@gmail.com" targ=
+et=3D"_blank">arorajai2798@gmail.com</a>&gt;<br>
+Reviewed-by: Alex Benn=C3=A9e &lt;<a href=3D"mailto:alex.bennee@linaro.org"=
+ target=3D"_blank">alex.bennee@linaro.org</a>&gt;<br>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
+o.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
+---<br>
+v5: Addressed review comments by Philippe Mathieu-Daud=C3=A9<br>
+Corrects typo DRPINTF in commit message<br>
+Changed %d to PRIu32 in kvm_run_exit_system_event<br>
+<br>
+I am not sure what you meant by keeping previous tag.<br>
+I think you meant to keep version tag same,<br>
+so I will keep patch tag as v5 again this time.<br>
+<br>
+Thank you for the feedback.<br>
+<br>
+=C2=A0accel/kvm/kvm-all.c=C2=A0 =C2=A0 | 28 ++++++----------------------<br=
+>
+=C2=A0accel/kvm/trace-events |=C2=A0 7 ++++++-<br>
+=C2=A02 files changed, 12 insertions(+), 23 deletions(-)<br>
+<br>
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c<br>
+index e39a810a4e..80ac7b35b7 100644<br>
+--- a/accel/kvm/kvm-all.c<br>
++++ b/accel/kvm/kvm-all.c<br>
+@@ -69,16 +69,6 @@<br>
+=C2=A0#define KVM_GUESTDBG_BLOCKIRQ 0<br>
+=C2=A0#endif<br>
+<br>
+-//#define DEBUG_KVM<br>
+-<br>
+-#ifdef DEBUG_KVM<br>
+-#define DPRINTF(fmt, ...) \<br>
+-=C2=A0 =C2=A0 do { fprintf(stderr, fmt, ## __VA_ARGS__); } while (0)<br>
+-#else<br>
+-#define DPRINTF(fmt, ...) \<br>
+-=C2=A0 =C2=A0 do { } while (0)<br>
+-#endif<br>
+-<br>
+=C2=A0struct KVMParkedVcpu {<br>
+=C2=A0 =C2=A0 =C2=A0unsigned long vcpu_id;<br>
+=C2=A0 =C2=A0 =C2=A0int kvm_fd;<br>
+@@ -331,7 +321,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)<br>
+=C2=A0 =C2=A0 =C2=A0struct KVMParkedVcpu *vcpu =3D NULL;<br>
+=C2=A0 =C2=A0 =C2=A0int ret =3D 0;<br>
+<br>
+-=C2=A0 =C2=A0 DPRINTF(&quot;kvm_destroy_vcpu\n&quot;);<br>
++=C2=A0 =C2=A0 trace_kvm_destroy_vcpu();<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0ret =3D kvm_arch_destroy_vcpu(cpu);<br>
+=C2=A0 =C2=A0 =C2=A0if (ret &lt; 0) {<br>
+@@ -341,7 +331,7 @@ static int do_kvm_destroy_vcpu(CPUState *cpu)<br>
+=C2=A0 =C2=A0 =C2=A0mmap_size =3D kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);<=
+br>
+=C2=A0 =C2=A0 =C2=A0if (mmap_size &lt; 0) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D mmap_size;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;KVM_GET_VCPU_MMAP_SIZE failed\n&=
+quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_kvm_failed_get_vcpu_mmap_size();<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto err;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+@@ -443,7 +433,6 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 PAGE_SIZE * KVM_DIRTY_=
+LOG_PAGE_OFFSET);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (cpu-&gt;kvm_dirty_gfns =3D=3D MAP_FAI=
+LED) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D -errno;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;mmap&#39;ing vcpu =
+dirty gfns failed: %d\n&quot;, ret);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto err;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+@@ -2821,7 +2810,7 @@ int kvm_cpu_exec(CPUState *cpu)<br>
+=C2=A0 =C2=A0 =C2=A0struct kvm_run *run =3D cpu-&gt;kvm_run;<br>
+=C2=A0 =C2=A0 =C2=A0int ret, run_ret;<br>
+<br>
+-=C2=A0 =C2=A0 DPRINTF(&quot;kvm_cpu_exec()\n&quot;);<br>
++=C2=A0 =C2=A0 trace_kvm_cpu_exec();<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0if (kvm_arch_process_async_events(cpu)) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qatomic_set(&amp;cpu-&gt;exit_request, 0)=
+;<br>
+@@ -2848,7 +2837,7 @@ int kvm_cpu_exec(CPUState *cpu)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0kvm_arch_pre_run(cpu, run);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (qatomic_read(&amp;cpu-&gt;exit_reques=
+t)) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;interrupt exit req=
+uested\n&quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0trace_kvm_interrupt_exit_request(=
+);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * KVM requires us to reent=
+er the kernel after IO exits to complete<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * instruction emulation. T=
+his self-signal will ensure that we<br>
+@@ -2878,7 +2867,7 @@ int kvm_cpu_exec(CPUState *cpu)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (run_ret &lt; 0) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (run_ret =3D=3D -EINTR |=
+| run_ret =3D=3D -EAGAIN) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;io w=
+indow exit\n&quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_kvm_io_windo=
+w_exit();<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0kvm_eat_signa=
+ls(cpu);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D EXCP_=
+INTERRUPT;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+@@ -2900,7 +2889,6 @@ int kvm_cpu_exec(CPUState *cpu)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0trace_kvm_run_exit(cpu-&gt;cpu_index, run=
+-&gt;exit_reason);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0switch (run-&gt;exit_reason) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case KVM_EXIT_IO:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;handle_io\n&quot;)=
+;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Called outside BQL */<br=
+>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0kvm_handle_io(run-&gt;io.po=
+rt, attrs,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0(uint8_t *)run + run-&gt;io.data_offset,<br>
+@@ -2910,7 +2898,6 @@ int kvm_cpu_exec(CPUState *cpu)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D 0;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case KVM_EXIT_MMIO:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;handle_mmio\n&quot=
+;);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Called outside BQL */<br=
+>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0address_space_rw(&amp;addre=
+ss_space_memory,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 run-&gt;mmio.phys_addr, attrs,<br>
+@@ -2920,11 +2907,9 @@ int kvm_cpu_exec(CPUState *cpu)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D 0;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case KVM_EXIT_IRQ_WINDOW_OPEN:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;irq_window_open\n&=
+quot;);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D EXCP_INTERRUPT;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case KVM_EXIT_SHUTDOWN:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;shutdown\n&quot;);=
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qemu_system_reset_request(S=
+HUTDOWN_CAUSE_GUEST_RESET);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D EXCP_INTERRUPT;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+@@ -2959,6 +2944,7 @@ int kvm_cpu_exec(CPUState *cpu)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D 0;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case KVM_EXIT_SYSTEM_EVENT:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_kvm_run_exit_system_event(=
+cpu-&gt;cpu_index, run-&gt;system_event.type);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0switch (run-&gt;system_even=
+t.type) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case KVM_SYSTEM_EVENT_SHUTD=
+OWN:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qemu_system_s=
+hutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);<br>
+@@ -2976,13 +2962,11 @@ int kvm_cpu_exec(CPUState *cpu)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D 0;<br=
+>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0default:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;kvm_=
+arch_handle_exit\n&quot;);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D kvm_a=
+rch_handle_exit(cpu, run);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0default:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINTF(&quot;kvm_arch_handle_ex=
+it\n&quot;);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D kvm_arch_handle_exi=
+t(cpu, run);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events<br>
+index 399aaeb0ec..a25902597b 100644<br>
+--- a/accel/kvm/trace-events<br>
++++ b/accel/kvm/trace-events<br>
+@@ -25,4 +25,9 @@ kvm_dirty_ring_reaper(const char *s) &quot;%s&quot;<br>
+=C2=A0kvm_dirty_ring_reap(uint64_t count, int64_t t) &quot;reaped %&quot;PR=
+Iu64&quot; pages (took %&quot;PRIi64&quot; us)&quot;<br>
+=C2=A0kvm_dirty_ring_reaper_kick(const char *reason) &quot;%s&quot;<br>
+=C2=A0kvm_dirty_ring_flush(int finished) &quot;%d&quot;<br>
+-<br>
++kvm_destroy_vcpu(void) &quot;&quot;<br>
++kvm_failed_get_vcpu_mmap_size(void) &quot;&quot;<br>
++kvm_cpu_exec(void) &quot;&quot;<br>
++kvm_interrupt_exit_request(void) &quot;&quot;<br>
++kvm_io_window_exit(void) &quot;&quot;<br>
++kvm_run_exit_system_event(int cpu_index, uint32_t event_type) &quot;cpu_in=
+dex %d, system_even_type %&quot;PRIu32<br>
+-- <br>
+2.25.1<br>
+<br>
+</blockquote></div>
+
+--00000000000047972c060bbb5946--
 
