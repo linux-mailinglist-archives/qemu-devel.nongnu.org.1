@@ -2,70 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B608060DB
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 22:34:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 000AB8060DC
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 22:35:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAd2J-0005KK-2d; Tue, 05 Dec 2023 16:32:59 -0500
+	id 1rAd3e-0005zD-Og; Tue, 05 Dec 2023 16:34:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rAd2F-0005Jn-JP
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 16:32:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rAd3a-0005tx-9k
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 16:34:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rAd2E-0007ZY-3R
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 16:32:55 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rAd3X-0007p0-MK
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 16:34:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701811970;
+ s=mimecast20190719; t=1701812054;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=FpZKZOvJ21Pc/b19keqg69iPhC6H4JcTl7dCU239Hvs=;
- b=TUuGN9kxfHIWgp44nlGyVACInnuZytILHFO/jzqOxD1tsEXEHM3dIeIncTxD26xEJIZP1+
- KNLUJzEwHVDkc2PQomSWySAajjrf84u4asqpxvB0NidOJU+b9pkfkbLAwbQY0PPFTDYtwC
- vy5fcpwcwDqttlRhpEIc7RmmxUMtTOQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-249-OCYAGa4nOJurFuXJZgeN5A-1; Tue,
- 05 Dec 2023 16:32:45 -0500
-X-MC-Unique: OCYAGa4nOJurFuXJZgeN5A-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 045713C0257D;
- Tue,  5 Dec 2023 21:32:44 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.111])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8026B1C060AF;
- Tue,  5 Dec 2023 21:32:43 +0000 (UTC)
-Date: Tue, 5 Dec 2023 16:32:40 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Jeuk Kim <jeuk20.kim@gmail.com>
-Cc: stefanha@redhat.com, jeuk20.kim@gmail.com, jeuk20.kim@samsung.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PULL 0/1] ufs fix for 2023-12-05
-Message-ID: <20231205213240.GA1997833@fedora>
-References: <cover.1701752391.git.jeuk20.kim@samsung.com>
+ bh=HOg38wsN4kOy4IPGuDHB2hfvdWRkd1sSRBhEKOflqHk=;
+ b=hNRs8Yx/B2xjw2N9KxGBVHDx6AFAgEFYsNuluYD7LCxE8tB6/nS++CzGEwbLatpU2NYcaO
+ IZuFR0jVfOwDjS/BvvgwXjnNYTvXqvsV8YrV2rlv5WHoRKY6o3JFMrNlz+PIUd1odx+lWo
+ AeeGymscx74D0yqvplpFOfy+NbEH2gw=
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com
+ [209.85.160.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-34-Z2fuFcSMMm6yQbjjjo6j7g-1; Tue, 05 Dec 2023 16:34:10 -0500
+X-MC-Unique: Z2fuFcSMMm6yQbjjjo6j7g-1
+Received: by mail-oa1-f71.google.com with SMTP id
+ 586e51a60fabf-1fb209f75a0so1142918fac.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 13:34:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701812050; x=1702416850;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HOg38wsN4kOy4IPGuDHB2hfvdWRkd1sSRBhEKOflqHk=;
+ b=V0Ld02bh8nHXzg4BPjerrmtUbBGsu07HUWDgmpWArkqGSrXiTVV8/8C7WKgVW+0eFo
+ hUM4K7hgZVWrYbRYbGe7JF5IJ7biFiRIVjM/xMSl/IPulj2v+ruqjw5g5scd6WcitLRs
+ t3r0PPsuWc0gWFNLtLmeEDSMqnW5PGafQs472/IUYpFPYlNNcV7O9o5aaiaXL0Y675/g
+ f7GfPjSdJoHTzhSWZ34qW8yd+Cym1UnvWpU0/D8wTmwGMuyspGvdzMoHYA4a2a+I5FvH
+ kxjAtH2TEZUQkg3tHqKXUwDjSHoAp3dQ/r2TOWzsI3983+UJIE1UpxpIpIpEzs45hZhh
+ Y3AA==
+X-Gm-Message-State: AOJu0YzdhIDt/oBFxDM3AXNEvipx3xFkq4zzTTZtH1lGssBbeAV3mrUr
+ p1LpgyIq/OPkHEMEzawZVmgG/ha7SNRkSJi6mxu8njdhZ7aaEMFGMJx2mk1OsD/A+05YS/4ZaT/
+ 4IDescCP7zlMU2UE=
+X-Received: by 2002:a05:6358:284:b0:16b:c3ef:3686 with SMTP id
+ w4-20020a056358028400b0016bc3ef3686mr35875581rwj.0.1701812049988; 
+ Tue, 05 Dec 2023 13:34:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFxlNU0YXRTXXp197AIHTnY0axrjNiHu43RWsg86TaBz7kp/xYkgGd1qwjt9Tye8AQg27WBPw==
+X-Received: by 2002:a05:6358:284:b0:16b:c3ef:3686 with SMTP id
+ w4-20020a056358028400b0016bc3ef3686mr35875563rwj.0.1701812049626; 
+ Tue, 05 Dec 2023 13:34:09 -0800 (PST)
+Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ c14-20020a0cf2ce000000b0067abdd0834esm2568523qvm.121.2023.12.05.13.34.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Dec 2023 13:34:08 -0800 (PST)
+Date: Tue, 5 Dec 2023 16:34:06 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH V6 06/14] migration: preserve suspended runstate
+Message-ID: <ZW-XTitcPj3JJxR9@x1n>
+References: <1701380247-340457-1-git-send-email-steven.sistare@oracle.com>
+ <1701380247-340457-7-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="3VdRyNXCOdqDl64B"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1701752391.git.jeuk20.kim@samsung.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+In-Reply-To: <1701380247-340457-7-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,30 +100,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Nov 30, 2023 at 01:37:19PM -0800, Steve Sistare wrote:
+> A guest that is migrated in the suspended state automaticaly wakes and
+> continues execution.  This is wrong; the guest should end migration in
+> the same state it started.  The root cause is that the outgoing migration
+> code automatically wakes the guest, then saves the RUNNING runstate in
+> global_state_store(), hence the incoming migration code thinks the guest is
+> running and continues the guest if autostart is true.
+> 
+> On the outgoing side, delete the call to qemu_system_wakeup_request().
+> Now that vm_stop completely stops a vm in the suspended state (from the
+> preceding patches), the existing call to vm_stop_force_state is sufficient
+> to correctly migrate all vmstate.
+> 
+> On the incoming side, call vm_start if the pre-migration state was running
+> or suspended.  For the latter, vm_start correctly restores the suspended
+> state, and a future system_wakeup monitor request will cause the vm to
+> resume running.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
---3VdRyNXCOdqDl64B
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
-
---3VdRyNXCOdqDl64B
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVvlvgACgkQnKSrs4Gr
-c8gxzAf8CKmeHw1VdzjnU6o229lYV8PvyFqkUqsNXNiTsmcYlN5yjxl19oWCbtvP
-E8KOy/0eVz6V9QtLIBOM1cv++h2lEM1W2uXjJCytvfMmnbPpQFzTjX8PAOAylxqc
-N+Ya+Y1cQJtbsHdQV4/zT7vrmD6xc7neN/SNYHVyZ+FOv1myFpzOrD3jXYNEcGk1
-qyHFfNXEisZ8ZhxIIuqRgbAXkLd2s4kYmN24zpgq8ocChtvJHtz81ebbjSjZfGie
-jmxa3PuBST5CJELvPNS2EcQRxaG4PHe5bYXhfwGekUhlSTSUHo0gqFOb0iRi36Ub
-mM3oa5ylvqJ9fI21uHs/NCpt0b+GHw==
-=FgM2
------END PGP SIGNATURE-----
-
---3VdRyNXCOdqDl64B--
+-- 
+Peter Xu
 
 
