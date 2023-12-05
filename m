@@ -2,177 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217538056F1
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 15:15:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 094D180573D
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 15:24:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAWCO-0005wL-31; Tue, 05 Dec 2023 09:14:56 -0500
+	id 1rAWLE-0001xI-Mt; Tue, 05 Dec 2023 09:24:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAWCL-0005w4-ND
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 09:14:53 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rAWLB-0001x6-EH
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 09:24:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAWCJ-0007vF-H8
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 09:14:53 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B5Cs8eg012790; Tue, 5 Dec 2023 14:14:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=aH2QRV2RJmbp8RThunsKrxArHFuGIbevq8Kgj9yl1eY=;
- b=Rh9vOgckDm/Z/cSZ/7ubL6scfOUnoZB6KQ297qlwTQTaf2stmAuk9ALs+/ZWM7Oi97NV
- 90S2HTrHJ79fT1R+LfJ+HBreyvaT9fVq93gIO48abAjZGdRJCKod+BEoLaHlVcogE+M9
- zIRy2vqhObVfWqGdjTd0igOUFwphJT3WnJA1/yRy3/eSqIWQHkMQia/0mcWOvYvDdViX
- bJmyLOu07piV1yPc4xt6QwXSQq4vgakq17f6qR06VBs2I3A2eMg4OY3nhBUloylb82Tn
- p/ijZIvcPil1RuRQ90Cv33Wo9I4nKy1vf+YLLjldxmBPFMScKzcrDdwCDs6OhpRsnEtU pQ== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ut15n0k5v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 05 Dec 2023 14:14:48 +0000
-Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B5E8YPK039692; Tue, 5 Dec 2023 14:14:47 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam10lp2100.outbound.protection.outlook.com [104.47.58.100])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uqu17jn91-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 05 Dec 2023 14:14:47 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GmgkitF4LsrAft/yxZFqNQvR3dEbMqKY/xDpWiVAd8fSIOyBIBPR5VimQkFEf8Ljeb2Z1UZSapuw/tfBEFlfiFW/ir1FRvWB1mEFUQl6p4flgAzrhwbFa4eA9gMlMN5Li3gt4hHVLXJ/YsyBHC4b0tC7c96y3mNJGdnPcOcbiQnB1Oa9KnFKb7UVVFUE6ldA1AWAdRKNlWf/9XC2slNUZ2SrR0v/+Y5ni5e4YQlNHfpZEGEqqYuIjaMexZFRxNi+sz8yndCC0MD83anhPPGQvTgeZV0/mDffBRv6WQqdEVQMv0phfvmW+iEkvK7yArzjWF+PdhSSC4pTs1ADkHRvXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aH2QRV2RJmbp8RThunsKrxArHFuGIbevq8Kgj9yl1eY=;
- b=Z5SPAEgtGVOy95xA6WJbjaWPshnV1lk9RIU2i6XEyYhCmtKxcFbVY0sdyuBdTPN2KdsWuaseSerWUzv7Mcp7T+9ldDuRHivAjapov7q+o1qcS6yi6CkJ9oONF37NqBNkVdqw4JY1oyHL9IbKxh3ydkhinjo61Z0pooHmjRP0wlHrrnBwqWS9b8P+YbDsTls76+tjnsoacCUULliRv0KJ7g+JFFbhu+J0/MqVcR4CBXNgDEVjd5SmBw6t809S1mlHwMHOhFUV0QZRgV/1RxmsFSi4FBS6uROE+Vdty5P4i3N/Y+4GSm7EY7cxARgVzc+j5eg69TVhwMUmaNaXauiD1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aH2QRV2RJmbp8RThunsKrxArHFuGIbevq8Kgj9yl1eY=;
- b=uuheYPSVNQ531M/Tb2+Y7vWzG7vhAuHD03LG+GBtFQSIW5KC3/m79OoPWh8FkKCIvf5EmbNzXCsqIsgvzpiCn3s8jw51038fDGbKRLSHxFkVeQ3wMniB9HZdQ/yn7vmgFkzkkwlcAajYiVYeEsPSNk8bE+leJ8EFAaMA4jjAByY=
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
- by DS0PR10MB7320.namprd10.prod.outlook.com (2603:10b6:8:fe::5) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7046.34; Tue, 5 Dec 2023 14:14:44 +0000
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::d609:b162:ba7c:4e96]) by SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::d609:b162:ba7c:4e96%4]) with mapi id 15.20.7046.028; Tue, 5 Dec 2023
- 14:14:44 +0000
-Message-ID: <126e688e-4d53-4b34-a867-04517f24a439@oracle.com>
-Date: Tue, 5 Dec 2023 09:14:40 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V6 05/14] migration: propagate suspended runstate
-Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-References: <1701380247-340457-1-git-send-email-steven.sistare@oracle.com>
- <1701380247-340457-6-git-send-email-steven.sistare@oracle.com>
- <ZWkVbiQNl16hC1LW@x1n> <ea771378-33c4-4d4e-9de2-d39310028d10@oracle.com>
- <ZW4LX9FpfTj77TZv@x1n> <87r0k1n4r7.fsf@suse.de> <ZW4wTK0dld9pPCtX@x1n>
- <87o7f5n08z.fsf@suse.de> <ZW5M19173nTZTLv1@x1n> <87cyvkn7j7.fsf@suse.de>
-From: Steven Sistare <steven.sistare@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <87cyvkn7j7.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0082.namprd05.prod.outlook.com
- (2603:10b6:a03:332::27) To SA2PR10MB4684.namprd10.prod.outlook.com
- (2603:10b6:806:119::14)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rAWL7-0002KI-Jt
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 09:24:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701786231;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UY9bog1VZ+UXDM3uNM5z+XyhI74MaOkNgfc1Ppyfx3M=;
+ b=P8Fe1IbQh5vs/XtJpEfTONklZH9m+CTpACvAA+mwjpumOtgAoHj5/xziWyam//QSPQ5FA4
+ jNu1K4JFjWXVx4P2z56m1hzj2JS2v9i3v54bbQrk6/myPY3ZKfYeI2XR+frIeUcKpa9ZWt
+ /ms+A8LHR2ZkGhAB0v1/PYTKlQtcq8I=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-225-vt515AkyNzmg9vULceWqUw-1; Tue, 05 Dec 2023 09:23:50 -0500
+X-MC-Unique: vt515AkyNzmg9vULceWqUw-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-daee86e2d70so4921403276.0
+ for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 06:23:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701786230; x=1702391030;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=UY9bog1VZ+UXDM3uNM5z+XyhI74MaOkNgfc1Ppyfx3M=;
+ b=WOh0s1BMIYy83z3STSYI7M5OeRuK0SctThjsSdYyA7mIZF8rUnFsWnMOcQQL8bzFI3
+ llCBOiO8MP4swhPGLqJxik9u+ilhPxf0cbsCFWXtNdn7VsvAGQQMRdw0ksX20mIjXlV1
+ Kk9bHQojzXZDVIqA3hS3d91mRMELhAOQ6DL7wgIGcMLGnmsvyC9BcZzl6hqSWZDKDzej
+ tFcq4+WPaRx0AkNDqql96m6JV5yvceTKXBwX6MM6Na9knME0xRFBCA2l4NLaYkpkmZ6a
+ LXalGFUSBto+wZlSo/4ygxtZrcVsi20Xyd8v8chT09K6Bfi+0Zu4EipBRY9sSOIl5tpU
+ 0D7Q==
+X-Gm-Message-State: AOJu0Yymu7y5hPKtfke8pbnohMkQFfr4t3drKfITwJ/UX28rVK4htRhT
+ 12QNBYJYkW/qCNS0Tl6qul1rV85Tq322TsupLTwNZ9I0qqHimh7DjFkCgchVo3//fCg/XSdAk00
+ 8G2clm0k85m2w8I00C4InZ4v+tGNV8h8=
+X-Received: by 2002:a25:7651:0:b0:db7:dacf:3fa3 with SMTP id
+ r78-20020a257651000000b00db7dacf3fa3mr3934222ybc.80.1701786229522; 
+ Tue, 05 Dec 2023 06:23:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHLDi17ahNLI6d8qDtxQgUlRZwCyuz6Dce0CzoRdq1uVCE/yzYUaBtDMAZwTq5zoJISQItrVfEavvuXsa4pVzs=
+X-Received: by 2002:a25:7651:0:b0:db7:dacf:3fa3 with SMTP id
+ r78-20020a257651000000b00db7dacf3fa3mr3934207ybc.80.1701786229207; Tue, 05
+ Dec 2023 06:23:49 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|DS0PR10MB7320:EE_
-X-MS-Office365-Filtering-Correlation-Id: 957b3701-d667-42ba-f50c-08dbf59c87cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WsfcL+boA5pRM69T3CSLSo2CEEpMTSUjVBBakQMpitc/nAOWe1pKqecvCghSUnsDQuGlQsu7KKSX07+jIK8gq4b7HvESIp2djsUxQl8LRlxuz6NDaTrqzwPEYdFJKU2+BD+a2DgMcdjIU/OQHcvem16YljUkBcRyeOAxPjmNLS2VgytI3cDkKdHtxKXcAWp8bQxLAiyuE+9RuGSV8yo+ARI9zZFOSduUcOa/o2LlKOwYoxTUfv19h1G6dmdMBkE2H8SBP73e3+tWCw/USxUhFmZq4YYaYKNvYjSUcNFozLcJUE9HqjwnNuQ+1okzuXQS2dpubuAH+epvJynKSGSjiBn8bE5dQlO7hE1r5iUmgMljBzbzt5LvsB8gmTDPfBknnonLi03NhGMSNulGZ5xbYx0b5h6iBXpfDjWc0WB6tuFFgZLU9xRVnFkwwF5piyLW8+0suUuCKbGRkRuHA4m/uFbZ1NKn5MovU0mQoH3CqScMtkBHLF+wETiZwHzybKA+Vxs/yZbMI3Cz+wBVctX/W+WVSUg0NL6+0f4DUFSv3l4ziYBM7q8woKpcvVuJpTFWiU9hPMn2ZbBRrnBGDPh9wh+Dy1/ul7auiMYMgZwVscwz4dxzljc1ouG7WyA5JW4noVOz6Pp5wvxX8LQxsmS9iw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(346002)(366004)(136003)(376002)(396003)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(15650500001)(2906002)(6666004)(6486002)(478600001)(8936002)(8676002)(4326008)(44832011)(86362001)(31696002)(66556008)(66476007)(110136005)(54906003)(66946007)(316002)(5660300002)(26005)(83380400001)(36756003)(41300700001)(31686004)(38100700002)(2616005)(6512007)(36916002)(53546011)(6506007)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YWtHaTFtZUszMUFVUWpTY1BxTG5UaWdHQkhuMGErdjhVbXBTeENmUmFJSko3?=
- =?utf-8?B?QkNOOEpEakc4RGNidkd5UStoUXRXbERIWUhNRmJoMnhreEM3QTNReTc3b1RW?=
- =?utf-8?B?bk5jbkV2Mzg4NnpHcTBzbUJ3YTh2dG4wR3UxVE1NVG5vUW9EQlVlS2NiWERG?=
- =?utf-8?B?b0p4NVo4dUoxdk5KZVRCY096TFJJV1pjR0pTNUtTNHV4cGZVdmZaSmJyQXBB?=
- =?utf-8?B?UGxZNHJSVFg3T1JhaWZVa3o2bll0dWNvK0wyZVlEY0gwZjVQWTJzejdxQlpt?=
- =?utf-8?B?dG54VGpNSUtOL0s5N3BtbkR6TXBxOWZBbHJ3Y3NNWkFabElCVTNwYUFyM04r?=
- =?utf-8?B?R0NUQjNmWDMwSDFhSElmMjRpODRyQ0JtMUFQUXFWODA4NnJIclBRVkYrNzRH?=
- =?utf-8?B?N2xPUm9jWjEycCtKclE5bDU2cCtuOTkvUXY5Q25ZLy9xS21FM24yamZ2dlVl?=
- =?utf-8?B?cExPa0JPSzkrSkNOeTh3dFNUNmhVNmdicTV4SDB0NDZZUk1hcDRyRXJuYysw?=
- =?utf-8?B?Z3dkSlllcEErNkEyYjMvYTl2bmpHTWRXczErMTFqQUlQclA2djFuTHhmWTcz?=
- =?utf-8?B?Z0FBU2Q4cUtlcU5IampYMTkxNU92VkZ1VDFVMWNqUDQweWl1SEZtenMrRHd2?=
- =?utf-8?B?NjEyS0M1bnpNcytnelhFV1Y1cjBuYXBvSW50dlM1cm5YNmFSRjNNMW82V0t4?=
- =?utf-8?B?S2Z5akhDdnVIUVhnM21LUS8wZlJVRzYxTWJHLzk2Q3p3K2p0Vk5kMkl1Qldo?=
- =?utf-8?B?bXE3bHdmZDdkQ245RjZubisrejR4NW5Pd2U5cHpPaXVIYXdTRlZLKzZJbXls?=
- =?utf-8?B?QWZ3bkpJdDJTY1I0UnlUOE4rd1JtN2tUUkV5Q1BKbUNWdVI2eGtkN0RTcG5K?=
- =?utf-8?B?SVB4UXIrNUZ1cGc4b2Y5OVptd2k2c1FMZDBmaUpZUzllN0cxUkZvMkgvbGhh?=
- =?utf-8?B?YjBSMHptbjlGQXlqL2s1V3plV3V6MDJZcWlnK2RHUTRuZFN6Tzg0SWtlTWJr?=
- =?utf-8?B?QXJzQXdPUWlVdWRKcGhzWUZIYkZHZXNXNVFvQ2dNMVNOR1Zybm5GTEVMajFl?=
- =?utf-8?B?VWtGdlpLVEpZTDlKTCttMkduYnl3SGo0WFdyTDV5eXYvODQwRjFGZHBCd3NC?=
- =?utf-8?B?NTdrK2hsV0lZUmZzRlBuNTMxcFhjaGdLY3VxY2dHMmU4RmIyZFlRWjVhZUI5?=
- =?utf-8?B?SUdQTmdhb3U2RXRnZFpWMWhwM3EwS0g1R3czYjFmOFBMeVJJRkdJT3FTR1R1?=
- =?utf-8?B?Yjh3R2Z0bGNlQVU0YW53YjNNckJTSG5jSGQ3NDBiL0oyd0l6QnJQVVV6M1I4?=
- =?utf-8?B?M0hSK2lWRzFxemsrRE11QU55Z2VmbmFyTnVOQitLYXpDK051aHJOR2NPcysw?=
- =?utf-8?B?cEdTOWNDZktCRFE4eXI0WENWUVQ4SXY1d1VEbHJIMjNhL3dQb2wvOFJPTC8r?=
- =?utf-8?B?OFVobDJjL1lVWklleXFLY2JqNzBFMFNoRTk3OTJDejBROGlYTFhTSXRvajlO?=
- =?utf-8?B?MHFQaE1tNnE2NTB3aEU4QkR2T1NXbnpQWWRrTmV2dW1qcEYvbWZ5UDdKQ2xi?=
- =?utf-8?B?Z3R5ZHViVXpSbGlXU2FnbXB5eFpaeU5OTXhVek9iQXlvUi9CQ05yZWkzYW1L?=
- =?utf-8?B?L2tJYWNEd1ZuQUtDOTQraERoSzc0RUhHNWlVV2VGblBoK2RpVFJoY2xSRnNr?=
- =?utf-8?B?a3hkcVA3NWhLRlVoeDlxRWVVaklKdkovMi9VQU53bDRyallUb0lqUWRnVFZQ?=
- =?utf-8?B?bzRTNTdWNlcyRHJDcHR0VkhjNUFFenZaR3A3cTMybC9Pb0dnckF2QnZqTWZD?=
- =?utf-8?B?YUw2YjNXVGxST0JjUDdYWUFFWjA5SzZBY3dlWVdLUDgxd3dtTGdDc2lHaHNX?=
- =?utf-8?B?S0t0K1RZcUZIODdFUGMvNUhnZU5sVkVOK1hFZHV3TVZmSXBKdThvNnFQdW1P?=
- =?utf-8?B?a3lFZmdiU3g2MjhWNzg4a3NFZGl4a2FteWZUOHVtL09SdkM1SUpRNWFmWTlC?=
- =?utf-8?B?cHNoNGRaamJZWk1EZy82UXVwUUVnaWFnMEVMSHlkVGJ4S3paRHFQNWtnanR2?=
- =?utf-8?B?MGpaNVduUXF2QmJraU55V29RczJYV0pvL0xjbkhkdUVldmZTL3N6TjhnUDBQ?=
- =?utf-8?B?ajNmTm1BckFKY3czSmZzcFMwV3U1dElscGFsWnRkdTBFSTh0NU0vWnIyWk41?=
- =?utf-8?B?T2c9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: wIU+tBdT50+JCEnelfCTznHdOxD36EAsWDrE+5rJhFH31iuz57sROgl5J5Z6QdXUzCEiJPrmeUR0DErcofFQKT0gulyf9HnK3dV/oGlN5HlMDAm0PxeabvSsBZeQGzFMNqmLxBil2bbtjLYphYso7HtbuzOJLNvlwXmw/lbKYMRCr9ierivEFggX7gjDRhsYAlNQVcNXaKfqHSH68QH49Gdlo+T1S1IphGnwxYCDTHKRaa+XwJ7P2BOXEP1+0MSgyHveG0KLzhV/7VWtFpDMkdUSoANZi3eAs1uJhKG5VYVkLQBvKehuRWyFttH0Ycu7MJqr+OvKwZudXxLuddUjltZQa0KACZYTxFt9B+lHHOMuIf84A795sZxUBbolQDRE+/8hxPmxQzuNROqXkrW/W0pCoDEiDvodvV4jNc0KlM87MdRGu4oF/msBBCEwNYLYNTz3EOm/A8vWzUJry60BonppcIwNwP9D8STW5LBL5+nOVxMwuFROQ+WeHKRDHpuXEKASm6JOioSjGXHMqezEhTNGU3IbV2nUR3N78Iit+TBehI0vE2W7rn4AjQY/86aMficR+3IBcdZECsh7/vHj4urNUeTHPJ9dovOzOikuwVfnJNxkfeBjsTmzhLRwnIznm0KlY6SJlbHXASGAKzdcjyF3ciB1pzdSBcaPwa+Bcqvn0YPBJ/FXTHHoaJ35b/vBmb7H9L6GmOW780MRkcTvel2QnbqhKrFGmheMLs/idGtoWt0zaU0GUsEwybJYPFKXNGnLyTNKnOIKVD767SurVxbuVozrsP/Beqyudgh0wKk=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 957b3701-d667-42ba-f50c-08dbf59c87cb
-X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2023 14:14:44.6758 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DgD1w1nR//XAoXJlndQbJcAzos1T7AOX3pMETwbKAkiyxApkAcreDWpq5leMletUOsvvaEbT/srW8eHtj8zNRclKFMt4XrWGC3GUXaA/eb4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7320
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-05_09,2023-12-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- spamscore=0
- malwarescore=0 phishscore=0 bulkscore=0 adultscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312050111
-X-Proofpoint-ORIG-GUID: FmtB990cz7f6xoYyY5lrsTOlg_NsNKBz
-X-Proofpoint-GUID: FmtB990cz7f6xoYyY5lrsTOlg_NsNKBz
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20231019143455.2377694-1-eperezma@redhat.com>
+ <1e565b27-2897-4063-8eff-e42cfd5934c2@oracle.com>
+ <CAJaqyWeOG0Eoc8W9FYFzJ9r1ENd3Cd1oLGF=ggJvWth2xD6u9A@mail.gmail.com>
+ <b4cdaabd-45b1-4ff7-a267-05230a754588@oracle.com>
+In-Reply-To: <b4cdaabd-45b1-4ff7-a267-05230a754588@oracle.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Tue, 5 Dec 2023 15:23:13 +0100
+Message-ID: <CAJaqyWe0Umnazu2dBGCWd36BC2yFWzXPg4r_Ak4erGiwmqgCGQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/18] Map memory at destination .load_setup in
+ vDPA-net migration
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: qemu-devel@nongnu.org, Shannon <shannon.nelson@amd.com>, 
+ Parav Pandit <parav@mellanox.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, yin31149@gmail.com,
+ Jason Wang <jasowang@redhat.com>, 
+ Yajun Wu <yajunw@nvidia.com>, Zhu Lingshan <lingshan.zhu@intel.com>, 
+ Lei Yang <leiyang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>, 
+ Juan Quintela <quintela@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
+ Gautam Dawar <gdawar@xilinx.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -190,62 +105,259 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/5/2023 7:44 AM, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
->> On Mon, Dec 04, 2023 at 06:09:16PM -0300, Fabiano Rosas wrote:
->>> Right, I got your point. I just think we could avoid designing this new
->>> string format by creating new fields with the extra space:
->>>
->>> typedef struct QEMU_PACKED {
->>>     uint32_t size;
->>>     uint8_t runstate[50];
->>>     uint8_t unused[50];
->>>     RunState state;
->>>     bool received;
->>> } GlobalState;
->>>
->>> In my mind this works seamlessly, or am I mistaken?
->>
->> I think what you proposed should indeed work.
->>
->> Currently it's:
->>
->>     .fields = (VMStateField[]) {
->>         VMSTATE_UINT32(size, GlobalState),
->>         VMSTATE_BUFFER(runstate, GlobalState),
->>         VMSTATE_END_OF_LIST()
->>     },
->>
->> I had a quick look at vmstate_info_buffer, it mostly only get()/put() those
->> buffers with its sizeof(), so looks all fine.  For sure in all cases we'd
->> better test it to verify.
->>
->> One side note is since we so far use qapi_enum_parse() for the runstate, I
->> think the "size" is not ever used..
->>
->> If we do want a split, IMHO we can consider making runstate[] even smaller
->> to just free up the rest spaces all in one shot:
->>
->>   typedef struct QEMU_PACKED {
->>       uint32_t size;
->>       /*
->>        * Assuming 16 is good enough to fit all possible runstate strings..
->>        * This field must be a string ending with '\0'.
->>        */
->>       uint8_t runstate[16];
->>       /* 0x00 when QEMU doesn't support it, or "0"/"1" to reflect its state */
->>       uint8_t vm_was_suspended[1];
->>       /*
->>        * Still free of use space.  Note that we only have 99 bytes for use
->>        * because the last byte (the 100th byte) must be zero due to legacy
->>        * reasons, if not it may be set to zero after loaded on dest QEMU. 
->>        */
-> 
-> I'd add a 'uint8_t reserved;' to go along with this comment instead of
-> leaving a hole.
+On Fri, Nov 3, 2023 at 9:19=E2=80=AFPM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+>
+>
+> On 11/2/2023 5:37 AM, Eugenio Perez Martin wrote:
+> > On Thu, Nov 2, 2023 at 11:13=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.c=
+om> wrote:
+> >>
+> >>
+> >> On 10/19/2023 7:34 AM, Eugenio P=C3=A9rez wrote:
+> >>> Current memory operations like pinning may take a lot of time at the
+> >>>
+> >>> destination.  Currently they are done after the source of the migrati=
+on is
+> >>>
+> >>> stopped, and before the workload is resumed at the destination.  This=
+ is a
+> >>>
+> >>> period where neigher traffic can flow, nor the VM workload can contin=
+ue
+> >>>
+> >>> (downtime).
+> >>>
+> >>>
+> >>>
+> >>> We can do better as we know the memory layout of the guest RAM at the
+> >>>
+> >>> destination from the moment the migration starts.  Moving that operat=
+ion allows
+> >>>
+> >>> QEMU to communicate the kernel the maps while the workload is still r=
+unning in
+> >>>
+> >>> the source, so Linux can start mapping them.  Ideally, all IOMMU is c=
+onfigured,
+> >>>
+> >>> but if the vDPA parent driver uses on-chip IOMMU and .set_map we're s=
+till
+> >>>
+> >>> saving all the pinning time.
+> >> I get what you want to say, though not sure how pinning is relevant to
+> >> on-chip IOMMU and .set_map here, essentially pinning is required for a=
+ll
+> >> parent vdpa drivers that perform DMA hence don't want VM pages to move
+> >> around.
+> > Basically highlighting that the work done under .set_map is not only
+> > pinning, but it is a significant fraction on it. It can be reworded or
+> > deleted for sure.
+> >
+> >>>
+> >>>
+> >>> Note that further devices setup at the end of the migration may alter=
+ the guest
+> >>>
+> >>> memory layout. But same as the previous point, many operations are st=
+ill done
+> >>>
+> >>> incrementally, like memory pinning, so we're saving time anyway.
+> >>>
+> >>>
+> >>>
+> >>> The first bunch of patches just reorganizes the code, so memory relat=
+ed
+> >>>
+> >>> operation parameters are shared between all vhost_vdpa devices.  This=
+ is
+> >>>
+> >>> because the destination does not know what vhost_vdpa struct will hav=
+e the
+> >>>
+> >>> registered listener member, so it is easier to place them in a shared=
+ struct
+> >>>
+> >>> rather to keep them in vhost_vdpa struct.  Future version may squash =
+or omit
+> >>>
+> >>> these patches.
+> >> It looks this VhostVDPAShared facility (patch 1-13) is also what I nee=
+d
+> >> in my SVQ descriptor group series [*], for which I've built similar
+> >> construct there. If possible please try to merge this in ASAP. I'll
+> >> rework my series on top of that.
+> >>
+> >> [*]
+> >> https://github.com/siwliu-kernel/qemu/commit/813518354af5ee8a6e867b2bf=
+7dff3d6004fbcd5
+> >>
+> > I can send it individually, for sure.
+> >
+> > MST, Jason, can this first part be merged? It doesn't add a lot by
+> > itself but it helps pave the way for future changes.
+> If it cannot, it doesn't matter. I can pick it from here and get my
+> series posted with your patches 1-13 applied upfront. This should work,
+> I think?
+>
+> >>>
+> >>>
+> >>> Only tested with vdpa_sim. I'm sending this before full benchmark, as=
+ some work
+> >>>
+> >>> like [1] can be based on it, and Si-Wei agreed on benchmark this seri=
+es with
+> >>>
+> >>> his experience.
+> >> Haven't done the full benchmark compared to pre-map at destination yet=
+,
+> >> though an observation is that the destination QEMU seems very easy to
+> >> get stuck for very long time while in mid of pinning pages. During thi=
+s
+> >> period, any client doing read-only QMP query or executing HMP info
+> >> command got frozen indefinitely (subject to how large size the memory =
+is
+> >> being pinned). Is it possible to unblock those QMP request or HMP
+> >> command from being executed (at least the read-only ones) while in
+> >> migration? Yield from the load_setup corourtine and spawn another thre=
+ad?
+> >>
+> > Ok, I wasn't aware of that.
+> >
+> > I think we cannot yield in a coroutine and wait for an ioctl.
+> I was wondering if we need a separate coroutine out of the general
+> migration path to support this special code without overloading
+> load_setup or its callers. For instance, unblock the source from sending
+> guest rams while allow destination pin pages in parallel should be
+> possible.
+>
 
-I'll use this scheme, thanks.  It is a clearer than implicitly packing strings.
+Hi Si-Wei,
 
-- Steve
+I'm working on this, I think I'll be able to send a new version soon.
+Just a question, when the mapping is done in vhost_vdpa_dev_start as
+the current upstream master does, are you able to interact with QMP?
+
+Thanks!
+
+> Regardless, a separate thread is needed to carry out all the heavy
+> lifting, i.e. ioctl(2) or write(2) syscalls to map&pin pages.
+>
+>
+> > One
+> > option that came to my mind is to effectively use another thread, and
+> > use a POSIX barrier (or equivalent on glib / QEMU) before finishing
+> > the migration.
+> Yes, a separate thread is needed anyway.
+>
+> >   I'm not sure if there are more points where we can
+> > check the barrier and tell the migration to continue or stop though.
+> I think there is, for e.g. what if the dma_map fails. There must be a
+> check point for that.
+>
+> >
+> > Another option is to effectively start doing these ioctls in an
+> > asynchronous way, io_uring cmds like, but I'd like to achieve this
+> > first.
+> Yes, io_uring or any async API could be another option. Though this
+> needs new uAPI through additional kernel facility to support. Anyway,
+> it's up to you to decide. :)
+>
+> Regards,
+> -Siwei
+> >> Having said, not sure if .load_setup is a good fit for what we want to
+> >> do. Searching all current users of .load_setup, either the job can be
+> >> done instantly or the task is time bound without trapping into kernel
+> >> for too long. Maybe pinning is too special use case here...
+> >>
+> >> -Siwei
+> >>>
+> >>>
+> >>> Future directions on top of this series may include:
+> >>>
+> >>> * Iterative migration of virtio-net devices, as it may reduce downtim=
+e per [1].
+> >>>
+> >>>     vhost-vdpa net can apply the configuration through CVQ in the des=
+tination
+> >>>
+> >>>     while the source is still migrating.
+> >>>
+> >>> * Move more things ahead of migration time, like DRIVER_OK.
+> >>>
+> >>> * Check that the devices of the destination are valid, and cancel the=
+ migration
+> >>>
+> >>>     in case it is not.
+> >>>
+> >>>
+> >>>
+> >>> [1] https://lore.kernel.org/qemu-devel/6c8ebb97-d546-3f1c-4cdd-54e23a=
+566f61@nvidia.com/T/
+> >>>
+> >>>
+> >>>
+> >>> Eugenio P=C3=A9rez (18):
+> >>>
+> >>>     vdpa: add VhostVDPAShared
+> >>>
+> >>>     vdpa: move iova tree to the shared struct
+> >>>
+> >>>     vdpa: move iova_range to vhost_vdpa_shared
+> >>>
+> >>>     vdpa: move shadow_data to vhost_vdpa_shared
+> >>>
+> >>>     vdpa: use vdpa shared for tracing
+> >>>
+> >>>     vdpa: move file descriptor to vhost_vdpa_shared
+> >>>
+> >>>     vdpa: move iotlb_batch_begin_sent to vhost_vdpa_shared
+> >>>
+> >>>     vdpa: move backend_cap to vhost_vdpa_shared
+> >>>
+> >>>     vdpa: remove msg type of vhost_vdpa
+> >>>
+> >>>     vdpa: move iommu_list to vhost_vdpa_shared
+> >>>
+> >>>     vdpa: use VhostVDPAShared in vdpa_dma_map and unmap
+> >>>
+> >>>     vdpa: use dev_shared in vdpa_iommu
+> >>>
+> >>>     vdpa: move memory listener to vhost_vdpa_shared
+> >>>
+> >>>     vdpa: do not set virtio status bits if unneeded
+> >>>
+> >>>     vdpa: add vhost_vdpa_load_setup
+> >>>
+> >>>     vdpa: add vhost_vdpa_net_load_setup NetClient callback
+> >>>
+> >>>     vdpa: use shadow_data instead of first device v->shadow_vqs_enabl=
+ed
+> >>>
+> >>>     virtio_net: register incremental migration handlers
+> >>>
+> >>>
+> >>>
+> >>>    include/hw/virtio/vhost-vdpa.h |  43 +++++---
+> >>>
+> >>>    include/net/net.h              |   4 +
+> >>>
+> >>>    hw/net/virtio-net.c            |  23 +++++
+> >>>
+> >>>    hw/virtio/vdpa-dev.c           |   7 +-
+> >>>
+> >>>    hw/virtio/vhost-vdpa.c         | 183 ++++++++++++++++++-----------=
+----
+> >>>
+> >>>    net/vhost-vdpa.c               | 127 ++++++++++++-----------
+> >>>
+> >>>    hw/virtio/trace-events         |  14 +--
+> >>>
+> >>>    7 files changed, 239 insertions(+), 162 deletions(-)
+> >>>
+> >>>
+> >>>
+>
+
 
