@@ -2,76 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83961805E57
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 20:07:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 887B1805E80
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 20:21:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAak6-00047m-4r; Tue, 05 Dec 2023 14:06:02 -0500
+	id 1rAaxh-0006nb-Tq; Tue, 05 Dec 2023 14:20:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1rAak1-00046g-EK
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 14:05:58 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rAaxf-0006nS-Os
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 14:20:03 -0500
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1rAajz-0007l5-DL
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 14:05:57 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-54c77d011acso1286a12.1
- for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 11:05:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1701803147; x=1702407947; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gw+HClEm0o3m3bd5eihfgY7qr1l46Gguv1nAmvhNjC0=;
- b=F/bQ1EB/NFdU0u4FbxOATjcSx4PmND0AD3bwPXxH2z0vJwembSsw4d2uXzwSfIzy2N
- w97KKMXP3302LXS77Z+4kRr5erkDTs3990FGA+G0a7antL8TH+8xh/fFYzeT7Yw6jHQn
- J1dYGyq1yrloJUaZHHPia8ls1GVHFkU5I436tfe49Z40o/+JRqQ6cejg3Y0eQT7c0Hkt
- NQdz31/sYqb9uqSKhnQaZanMMze/sNxbkSye/s28hiYjQQH9wJV4FvTHG3oKQubxSUBI
- rhw/+4S63oQthpqmxK3N1YLaHkjJA0epTnWxDmZzAyWDeFs0nU3/qUe9PzbDkmOM8cFF
- UkDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701803147; x=1702407947;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gw+HClEm0o3m3bd5eihfgY7qr1l46Gguv1nAmvhNjC0=;
- b=D1tp1Zle+iLcFg1omKa/aGFZv+M9m+7uI4IdESl6ua8Ah+cGalDf5K7VXqgbemzgWp
- QMKppelJXA4AFxxDJCwwA9zEngwh4ZzGJul2QeSKofmW1CC013zaQehfAatheL62npcS
- x0n2nJxjIpF93rXYAwz7RLG6KCSpmksiSukyHinA58JO0WHAPEy9ex6oKZ0HMet+PrNp
- NWqlAEVRZAnPs088QIWDdoGWPgP86/UEvnoT1ENq9lesqiGe7BevJReZbS8hAxRceVFj
- jsGaZ3rc2q8TZ5wtWsa/3JtAjcc8lCINr8RaE5yuFYUltSJTMMwywpn2lY9VcHqaQN1f
- jqcg==
-X-Gm-Message-State: AOJu0Yz+PWF3qtvdBzOIuPVR+XUtg3LreQhwKMxz3XTZvOw+JLxywM2m
- hcD7cXWKnM4wS7PRV/X8fZYhQqIttZygHsKY5tXMUQ==
-X-Google-Smtp-Source: AGHT+IEPdkLzR70RVDG+MuqjAYxalxOHK8MZ2PgsyzInuyk6LNA6LO1KI2uvRiyddjhHTItTFITJScKyPTmnFMI/svk=
-X-Received: by 2002:a50:aacf:0:b0:54b:321:ef1a with SMTP id
- r15-20020a50aacf000000b0054b0321ef1amr4516edc.6.1701803146467; Tue, 05 Dec
- 2023 11:05:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rAaxe-0002oC-3h
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 14:20:03 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 994F91FBAE;
+ Tue,  5 Dec 2023 19:19:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1701803998; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=fi2/VjN21n4BsNaj75yo+zB/HIguYCKJmEDTrayWC2Y=;
+ b=JAW/EI44lbHhmBJJVs3M19rBakWTQeHooflZjfTPT8tnvqmveRZLpTvJaDNuMZI6NEaOaM
+ VJpR+XfJVP5G3ta/QRen1CmmiJYVs7eJtGHe9/Hzs3S2+6mAM0FpIPsyRYLcba8jFUveZz
+ Mwsxp+IH6/fPJnIBMfxrMAjkLm5ZxF8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1701803998;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=fi2/VjN21n4BsNaj75yo+zB/HIguYCKJmEDTrayWC2Y=;
+ b=/ndT/LEmOe9A88EXBw1OXgMQQjAPSBj4xR03NmFBqrVskYmL39g9Z3KkOOadUnDfOuee9K
+ KTu0gw5zSYFL+tBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1B01E136CF;
+ Tue,  5 Dec 2023 19:19:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id dG0QNN13b2XmOgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 05 Dec 2023 19:19:57 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org, Peter
+ Xu <peterx@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, =?utf-8?Q?Daniel?=
+ =?utf-8?Q?_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>
+Subject: Re: [PATCH V6 00/14] fix migration of suspended runstate
+In-Reply-To: <a0350701-617e-43a2-b856-02c35a203fb8@oracle.com>
+References: <1701380247-340457-1-git-send-email-steven.sistare@oracle.com>
+ <a0350701-617e-43a2-b856-02c35a203fb8@oracle.com>
+Date: Tue, 05 Dec 2023 16:19:55 -0300
+Message-ID: <874jgwmp7o.fsf@suse.de>
 MIME-Version: 1.0
-References: <20231113063156.2264941-1-potin.lai.pt@gmail.com>
- <ZVQDHlS7TgZpXms8@mail.minyard.net>
-In-Reply-To: <ZVQDHlS7TgZpXms8@mail.minyard.net>
-From: Patrick Venture <venture@google.com>
-Date: Tue, 5 Dec 2023 11:05:33 -0800
-Message-ID: <CAO=notw8mNjiCGK1h7CjmhyHwvXY92BYKW5qvh6NO5romZ7LGA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/i2c: add pca9543 i2c-mux switch
-To: minyard@acm.org
-Cc: Potin Lai <potin.lai.pt@gmail.com>, qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000006be7a060bc7ec8c"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=venture@google.com; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -0.79
+X-Spamd-Result: default: False [-0.79 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-0.50)[79.91%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-0.978]; RCPT_COUNT_SEVEN(0.00)[8];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,181 +100,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000006be7a060bc7ec8c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Steven Sistare <steven.sistare@oracle.com> writes:
 
-On Tue, Nov 14, 2023 at 3:30=E2=80=AFPM Corey Minyard <minyard@acm.org> wro=
-te:
-
-> On Mon, Nov 13, 2023 at 02:31:56PM +0800, Potin Lai wrote:
-> > Add pca9543 2-channel i2c-mux switch support.
-> >
-> > Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+> Hi Peter and Fabiano,
 >
-> Looks good to me.
+> Any comments on these patches, before I send V7?  They are not affected by
+> the other changes we have discussed, except for renaming runstate_is_started
+> to runstate_is_live.
 >
-> Acked-by: Corey Minyard <cminyard@mvista.com>
->
-> > ---
-> >  hw/i2c/i2c_mux_pca954x.c         | 12 ++++++++++++
-> >  include/hw/i2c/i2c_mux_pca954x.h |  1 +
-> >  2 files changed, 13 insertions(+)
-> >
-> > diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
-> > index db5db956a6..6aace0fc47 100644
-> > --- a/hw/i2c/i2c_mux_pca954x.c
-> > +++ b/hw/i2c/i2c_mux_pca954x.c
-> > @@ -30,6 +30,7 @@
-> >
-> >  #define PCA9548_CHANNEL_COUNT 8
-> >  #define PCA9546_CHANNEL_COUNT 4
-> > +#define PCA9543_CHANNEL_COUNT 2
-> >
-> >  /*
-> >   * struct Pca954xState - The pca954x state object.
-> > @@ -172,6 +173,12 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t
-> channel)
-> >      return pca954x->bus[channel];
-> >  }
-> >
-> > +static void pca9543_class_init(ObjectClass *klass, void *data)
-> > +{
-> > +    Pca954xClass *s =3D PCA954X_CLASS(klass);
-> > +    s->nchans =3D PCA9543_CHANNEL_COUNT;
-> > +}
-> > +
-> >  static void pca9546_class_init(ObjectClass *klass, void *data)
-> >  {
-> >      Pca954xClass *s =3D PCA954X_CLASS(klass);
-> > @@ -246,6 +253,11 @@ static const TypeInfo pca954x_info[] =3D {
-> >          .class_init    =3D pca954x_class_init,
-> >          .abstract      =3D true,
-> >      },
-> > +    {
-> > +        .name          =3D TYPE_PCA9543,
-> > +        .parent        =3D TYPE_PCA954X,
-> > +        .class_init    =3D pca9543_class_init,
-> > +    },
-> >      {
-> >          .name          =3D TYPE_PCA9546,
-> >          .parent        =3D TYPE_PCA954X,
-> > diff --git a/include/hw/i2c/i2c_mux_pca954x.h
-> b/include/hw/i2c/i2c_mux_pca954x.h
-> > index 3dd25ec983..1da5508ed5 100644
-> > --- a/include/hw/i2c/i2c_mux_pca954x.h
-> > +++ b/include/hw/i2c/i2c_mux_pca954x.h
-> > @@ -3,6 +3,7 @@
-> >
-> >  #include "hw/i2c/i2c.h"
-> >
-> > +#define TYPE_PCA9543 "pca9543"
-> >  #define TYPE_PCA9546 "pca9546"
-> >  #define TYPE_PCA9548 "pca9548"
-> >
-> > --
-> > 2.31.1
-> >
-> >
+>   [PATCH V6 04/14] cpus: vm_resume
+>   [PATCH V6 06/14] migration: preserve suspended runstate
+>   [PATCH V6 07/14] migration: preserve suspended for snapshot
 
+Nothing catches my eye for now.
 
-Corey, can you include this in a pull email? I don't quite have that set up
-at present, Titus is going to help me figure it out.
+>   [PATCH V6 08/14] migration: preserve suspended for bg_migration
 
-Patrick
+This has my r-b already.
 
---00000000000006be7a060bc7ec8c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Nov 14, 2023 at 3:30=E2=80=AF=
-PM Corey Minyard &lt;<a href=3D"mailto:minyard@acm.org">minyard@acm.org</a>=
-&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
-0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On M=
-on, Nov 13, 2023 at 02:31:56PM +0800, Potin Lai wrote:<br>
-&gt; Add pca9543 2-channel i2c-mux switch support.<br>
-&gt; <br>
-&gt; Signed-off-by: Potin Lai &lt;<a href=3D"mailto:potin.lai.pt@gmail.com"=
- target=3D"_blank">potin.lai.pt@gmail.com</a>&gt;<br>
-<br>
-Looks good to me.<br>
-<br>
-Acked-by: Corey Minyard &lt;<a href=3D"mailto:cminyard@mvista.com" target=
-=3D"_blank">cminyard@mvista.com</a>&gt;<br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 hw/i2c/i2c_mux_pca954x.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 12 +=
-+++++++++++<br>
-&gt;=C2=A0 include/hw/i2c/i2c_mux_pca954x.h |=C2=A0 1 +<br>
-&gt;=C2=A0 2 files changed, 13 insertions(+)<br>
-&gt; <br>
-&gt; diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c<br>
-&gt; index db5db956a6..6aace0fc47 100644<br>
-&gt; --- a/hw/i2c/i2c_mux_pca954x.c<br>
-&gt; +++ b/hw/i2c/i2c_mux_pca954x.c<br>
-&gt; @@ -30,6 +30,7 @@<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 #define PCA9548_CHANNEL_COUNT 8<br>
-&gt;=C2=A0 #define PCA9546_CHANNEL_COUNT 4<br>
-&gt; +#define PCA9543_CHANNEL_COUNT 2<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 /*<br>
-&gt;=C2=A0 =C2=A0* struct Pca954xState - The pca954x state object.<br>
-&gt; @@ -172,6 +173,12 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_=
-t channel)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 return pca954x-&gt;bus[channel];<br>
-&gt;=C2=A0 }<br>
-&gt;=C2=A0 <br>
-&gt; +static void pca9543_class_init(ObjectClass *klass, void *data)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 Pca954xClass *s =3D PCA954X_CLASS(klass);<br>
-&gt; +=C2=A0 =C2=A0 s-&gt;nchans =3D PCA9543_CHANNEL_COUNT;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt;=C2=A0 static void pca9546_class_init(ObjectClass *klass, void *data)<b=
-r>
-&gt;=C2=A0 {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 Pca954xClass *s =3D PCA954X_CLASS(klass);<br>
-&gt; @@ -246,6 +253,11 @@ static const TypeInfo pca954x_info[] =3D {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .class_init=C2=A0 =C2=A0 =3D pca954x=
-_class_init,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .abstract=C2=A0 =C2=A0 =C2=A0 =3D tr=
-ue,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 },<br>
-&gt; +=C2=A0 =C2=A0 {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 .name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=3D TYPE_PCA9543,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 .parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TY=
-PE_PCA954X,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 .class_init=C2=A0 =C2=A0 =3D pca9543_clas=
-s_init,<br>
-&gt; +=C2=A0 =C2=A0 },<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =3D TYPE_PCA9546,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=3D TYPE_PCA954X,<br>
-&gt; diff --git a/include/hw/i2c/i2c_mux_pca954x.h b/include/hw/i2c/i2c_mux=
-_pca954x.h<br>
-&gt; index 3dd25ec983..1da5508ed5 100644<br>
-&gt; --- a/include/hw/i2c/i2c_mux_pca954x.h<br>
-&gt; +++ b/include/hw/i2c/i2c_mux_pca954x.h<br>
-&gt; @@ -3,6 +3,7 @@<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 #include &quot;hw/i2c/i2c.h&quot;<br>
-&gt;=C2=A0 <br>
-&gt; +#define TYPE_PCA9543 &quot;pca9543&quot;<br>
-&gt;=C2=A0 #define TYPE_PCA9546 &quot;pca9546&quot;<br>
-&gt;=C2=A0 #define TYPE_PCA9548 &quot;pca9548&quot;<br>
-&gt;=C2=A0 <br>
-&gt; -- <br>
-&gt; 2.31.1<br>
-&gt; <br>
-&gt;</blockquote><div><br></div><div>Corey, can you include this in a pull =
-email? I don&#39;t quite have that set up at present, Titus is going to hel=
-p me figure it out.</div><div><br></div><div>Patrick=C2=A0</div></div></div=
->
-
---00000000000006be7a060bc7ec8c--
 
