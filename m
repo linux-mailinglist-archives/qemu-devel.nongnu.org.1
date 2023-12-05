@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B6880607A
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 22:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4417B80607D
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 22:14:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAcjB-00024j-QT; Tue, 05 Dec 2023 16:13:13 -0500
+	id 1rAcjX-0002B4-Vn; Tue, 05 Dec 2023 16:13:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1rAcjA-00024S-8M; Tue, 05 Dec 2023 16:13:12 -0500
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ id 1rAcjV-0002AT-Sx; Tue, 05 Dec 2023 16:13:33 -0500
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1rAcj5-0002gF-AT; Tue, 05 Dec 2023 16:13:11 -0500
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2c9fbb846b7so35643451fa.2; 
- Tue, 05 Dec 2023 13:13:05 -0800 (PST)
+ id 1rAcjT-0002hV-UH; Tue, 05 Dec 2023 16:13:33 -0500
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-50bf4f97752so3664624e87.1; 
+ Tue, 05 Dec 2023 13:13:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701810783; x=1702415583; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701810809; x=1702415609; darn=nongnu.org;
  h=user-agent:in-reply-to:content-disposition:mime-version:references
  :message-id:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Vg6vzoFsNKxfiUEYJ1FNgFnml/SyvhQ4XQv0nwtbyOg=;
- b=UUjC75TBAS4gTDEV33VUvfIfIUhuyE2C+GGOiWkRqr/cNwTKRyaVz+IrxDLQ8eciDl
- 6meEiJKEi0TthbJ6v8F4HZzJc9xBiEzH1OO/7na8EwkcUlP5Rv8w1I2kz0luB8MET/XS
- 2o592vH1dSn9J4Kx41h+kvBXU4cpBz3CNPw7JgY6nSmpvfpV9BK9eh6fY/rS70GmeAaI
- arto6/qNkXFv/eUmJOXUpVQN9a25Pb+pGZj7N0fO9KW2p8di6aPrqihM0091LCpbmJ/L
- zPhIyfPYNOCbW7qsD4EUHhTQF27kY3GpaijFdeDUG23GZYi0TObcQCXBS1+zTlE0C6OZ
- REzg==
+ bh=hSnts+DjeJW59pYGClkR2eHh3EHs7M5AyvMgXOnU0bs=;
+ b=SGSNqq6anBMrO6eULF6VX/a2inucNGUIJKGKOadazemVATtSrJWXMCV7RaEV8V51Kp
+ iOHx5MJRlgJlkDoAB26SRQGf5P0RAq0pbeJ69YUGLFrJqOq0LHXoMRjAIgjspjiNty9d
+ oopd9YK+ZLQoPS5q6frDT5wG2t0LujeMmP0TN9TXhOuZivtX2x8LZSIjLVOJJm7KWcKK
+ wzQ+KWEY9CrRwh9kq7xCnyrTZK5+O7bw27Lc9DTlHEqy/03l7yMwFGYPCColSjUo1+XI
+ lL5P/AT6iO89HhHtS4qFqrETI2JgldzBXgj4rZba3PDs7SdWGwhvtto6+QaAFWHBJZYj
+ cZoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701810783; x=1702415583;
+ d=1e100.net; s=20230601; t=1701810809; x=1702415609;
  h=user-agent:in-reply-to:content-disposition:mime-version:references
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Vg6vzoFsNKxfiUEYJ1FNgFnml/SyvhQ4XQv0nwtbyOg=;
- b=laTF5anze3Q/2NC8XKWvK/GxCWAq+uyzqVRalkACczSdMjUKqrApLxcmeiUsXzCVK9
- cFEziVkCTAFQnvSveYk1wmQiPwN6f6YiPaip0unTGXb5dK6pJjZCrgRg7rwzysz025t6
- kf92voWt1rKwXSPDKzOdNSQX0+SUFSkmQ6GYDynblnM+NbE+EzbjRZ7rAIv9UYOXb8vz
- ka93J++E/YUfaGs6DdgjkWQzIBqoFY2sRRuB5Dzev8EdxKEx63C9bvPyYd5I6dpehS1i
- 3FCz+9KIQJL6Vag4Lh08PQ0cjf58zV7UJ44giwIbdbkGkzBQae4m4qZodP/tcgvXvQUG
- o09Q==
-X-Gm-Message-State: AOJu0YxKdRj04969NoqGtnEtXgNmyNCpk+tkF/+fjqnwaFeU0TAwneg5
- bSxNPvK4EvzPQW//hTlM2yo=
-X-Google-Smtp-Source: AGHT+IFHhs+37duPYj0YL3zb151FtYeqIE+nIi1qjU0V8ZfZTAzA28oA+onq41oLDLxfs6HAtOgx7A==
-X-Received: by 2002:a05:6512:e95:b0:50c:d80:85e6 with SMTP id
- bi21-20020a0565120e9500b0050c0d8085e6mr805853lfb.54.1701810783336; 
- Tue, 05 Dec 2023 13:13:03 -0800 (PST)
+ bh=hSnts+DjeJW59pYGClkR2eHh3EHs7M5AyvMgXOnU0bs=;
+ b=kPj7fs14FthZyNyes/rXs7VrJzvxq8uo9JOCQ+R2NcjDbdgLwT0u0O5BR91XFBRKNG
+ pq/Uz21x+yx/gzmhlHp9g3vJfv6yC0NZIIs1XNs9Rx9opxL8G8qNlN3S/mMss7IQEbH/
+ UyISgDSoPkwjpV68e7/DxsPEYrr4VlyD/gjsUQXnWcb7fil/nw9vWDzEOpqvZ7y/wrpT
+ LYe1x8H/n3NYxu5+k7QTNhj5wVDNzEv8Q2zC5GvkK6S8zA/EfB1Cdh8KjjNHVytNrZuL
+ +zGpkpSDhKvzEi981C+Q75XT+DZ/Vp2opUyP/NP57K5jGG8aHOLcafZd+u9l9dQLT4lU
+ eI2Q==
+X-Gm-Message-State: AOJu0YwKdJuDQ82pXYUrRqB4oPhI7njUaXlYyP68jpJZN/AGhsTKWclJ
+ 5gPTs/KAQ5GrONDMiqx3qIg=
+X-Google-Smtp-Source: AGHT+IGQoh6rojSTmMWfLu+V1GVIDIliJYEpz3/a1y+u1vPvnEu3J8u5qUWOvglzcW3fZhnaX32xpw==
+X-Received: by 2002:ac2:5dd4:0:b0:50b:e9ec:4e2c with SMTP id
+ x20-20020ac25dd4000000b0050be9ec4e2cmr2904844lfq.104.1701810809243; 
+ Tue, 05 Dec 2023 13:13:29 -0800 (PST)
 Received: from fralle-msi (217-76-87-105.cust.bredband2.com. [217.76.87.105])
  by smtp.gmail.com with ESMTPSA id
- f25-20020a193819000000b00507987ff761sm920405lfa.56.2023.12.05.13.13.02
+ m12-20020ac24acc000000b0050bc6ab211dsm1660905lfp.208.2023.12.05.13.13.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 Dec 2023 13:13:02 -0800 (PST)
-Date: Tue, 5 Dec 2023 22:13:01 +0100
+ Tue, 05 Dec 2023 13:13:29 -0800 (PST)
+Date: Tue, 5 Dec 2023 22:13:27 +0100
 From: Francisco Iglesias <frasse.iglesias@gmail.com>
 To: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
@@ -62,24 +62,24 @@ Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>, saipavanboddu@gmail.com
-Subject: Re: [PATCH 1/2] block: m25p80: Add support of mt35xu02gbba
-Message-ID: <20231205211300.GB9927@fralle-msi>
+Subject: Re: [PATCH 2/2] arm: xlnx-versal-virt: Add machine property ospi-flash
+Message-ID: <20231205211327.GC9927@fralle-msi>
 References: <20231205095226.2688032-1-sai.pavan.boddu@amd.com>
- <20231205095226.2688032-2-sai.pavan.boddu@amd.com>
+ <20231205095226.2688032-3-sai.pavan.boddu@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231205095226.2688032-2-sai.pavan.boddu@amd.com>
+In-Reply-To: <20231205095226.2688032-3-sai.pavan.boddu@amd.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=frasse.iglesias@gmail.com; helo=mail-lj1-x229.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -1020
 X-Spam_score: -102.1
 X-Spam_bar: ---------------------------------------------------
 X-Spam_report: (-102.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01, USER_IN_WELCOMELIST=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_WELCOMELIST=-0.01,
  USER_IN_WHITELIST=-100 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,93 +96,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On [2023 Dec 05] Tue 15:22:25, Sai Pavan Boddu wrote:
-> Add Micro 2Gb OSPI flash part with sfdp data.
+On [2023 Dec 05] Tue 15:22:26, Sai Pavan Boddu wrote:
+> This property allows users to change flash model on command line as
+> below.
+> 
+>    ex: "-M xlnx-versal-virt,ospi-flash=mt35xu02gbba"
 > 
 > Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
 
 Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
 
-
 > ---
->  hw/block/m25p80_sfdp.h |  1 +
->  hw/block/m25p80.c      |  3 +++
->  hw/block/m25p80_sfdp.c | 36 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 40 insertions(+)
+>  hw/arm/xlnx-versal-virt.c | 31 ++++++++++++++++++++++++++++++-
+>  1 file changed, 30 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/block/m25p80_sfdp.h b/hw/block/m25p80_sfdp.h
-> index 011a880f66..1733b56950 100644
-> --- a/hw/block/m25p80_sfdp.h
-> +++ b/hw/block/m25p80_sfdp.h
-> @@ -16,6 +16,7 @@
->  #define M25P80_SFDP_MAX_SIZE  (1 << 24)
->  
->  uint8_t m25p80_sfdp_n25q256a(uint32_t addr);
-> +uint8_t m25p80_sfdp_mt35xu02g(uint32_t addr);
->  
->  uint8_t m25p80_sfdp_mx25l25635e(uint32_t addr);
->  uint8_t m25p80_sfdp_mx25l25635f(uint32_t addr);
-> diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
-> index afc3fdf4d6..c8c7f6c1c3 100644
-> --- a/hw/block/m25p80.c
-> +++ b/hw/block/m25p80.c
-> @@ -267,6 +267,9 @@ static const FlashPartInfo known_devices[] = {
->      { INFO("mt25ql512ab", 0x20ba20, 0x1044, 64 << 10, 1024, ER_4K | ER_32K) },
->      { INFO_STACKED("mt35xu01g", 0x2c5b1b, 0x104100, 128 << 10, 1024,
->                     ER_4K | ER_32K, 2) },
-> +    { INFO_STACKED("mt35xu02gbba", 0x2c5b1c, 0x104100, 128 << 10, 2048,
-> +                   ER_4K | ER_32K, 4),
-> +                   .sfdp_read = m25p80_sfdp_mt35xu02g },
->      { INFO_STACKED("n25q00",    0x20ba21, 0x1000, 64 << 10, 2048, ER_4K, 4) },
->      { INFO_STACKED("n25q00a",   0x20bb21, 0x1000, 64 << 10, 2048, ER_4K, 4) },
->      { INFO_STACKED("mt25ql01g", 0x20ba21, 0x1040, 64 << 10, 2048, ER_4K, 2) },
-> diff --git a/hw/block/m25p80_sfdp.c b/hw/block/m25p80_sfdp.c
-> index b33811a4f5..6ee2cfaf11 100644
-> --- a/hw/block/m25p80_sfdp.c
-> +++ b/hw/block/m25p80_sfdp.c
-> @@ -57,6 +57,42 @@ static const uint8_t sfdp_n25q256a[] = {
+> diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
+> index 537118224f..c57cff74d8 100644
+> --- a/hw/arm/xlnx-versal-virt.c
+> +++ b/hw/arm/xlnx-versal-virt.c
+> @@ -49,6 +49,7 @@ struct VersalVirt {
+>      struct {
+>          bool secure;
+>      } cfg;
+> +    char *ospi_model;
 >  };
->  define_sfdp_read(n25q256a);
 >  
-> +static const uint8_t sfdp_mt35xu02g[] = {
-> +    0x53, 0x46, 0x44, 0x50, 0x06, 0x01, 0x01, 0xff,
-> +    0x00, 0x06, 0x01, 0x10, 0x30, 0x00, 0x00, 0xff,
-> +    0x84, 0x00, 0x01, 0x02, 0x80, 0x00, 0x00, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xe5, 0x20, 0x8a, 0xff, 0xff, 0xff, 0xff, 0x7f,
-> +    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +    0xee, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00,
-> +    0xff, 0xff, 0x00, 0x00, 0x0c, 0x20, 0x11, 0xd8,
-> +    0x0f, 0x52, 0x00, 0x00, 0x24, 0x5a, 0x99, 0x00,
-> +    0x8b, 0x8e, 0x03, 0xe1, 0xac, 0x01, 0x27, 0x38,
-> +    0x7a, 0x75, 0x7a, 0x75, 0xfb, 0xbd, 0xd5, 0x5c,
-> +    0x00, 0x00, 0x70, 0xff, 0x81, 0xb0, 0x38, 0x36,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0x43, 0x0e, 0xff, 0xff, 0x21, 0xdc, 0x5c, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-> +};
+>  static void fdt_create(VersalVirt *s)
+> @@ -637,6 +638,22 @@ static void sd_plugin_card(SDHCIState *sd, DriveInfo *di)
+>                             &error_fatal);
+>  }
+>  
+> +static char *versal_get_ospi_model(Object *obj, Error **errp)
+> +{
+> +    VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
 > +
-> +define_sfdp_read(mt35xu02g);
+> +    return g_strdup(s->ospi_model);
+> +}
+> +
+> +static void versal_set_ospi_model(Object *obj, const char *value, Error **errp)
+> +{
+> +    VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
+> +
+> +    g_free(s->ospi_model);
+> +    s->ospi_model = g_strdup(value);
+> +}
+> +
+> +
+>  static void versal_virt_init(MachineState *machine)
+>  {
+>      VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(machine);
+> @@ -736,7 +753,7 @@ static void versal_virt_init(MachineState *machine)
 >  
->  /*
->   * Matronix
+>          spi_bus = qdev_get_child_bus(DEVICE(&s->soc.pmc.iou.ospi), "spi0");
+>  
+> -        flash_dev = qdev_new("mt35xu01g");
+> +        flash_dev = qdev_new(s->ospi_model ? s->ospi_model : "mt35xu01g");
+>          if (dinfo) {
+>              qdev_prop_set_drive_err(flash_dev, "drive",
+>                                      blk_by_legacy_dinfo(dinfo), &error_fatal);
+> @@ -769,6 +786,13 @@ static void versal_virt_machine_instance_init(Object *obj)
+>                               0);
+>  }
+>  
+> +static void versal_virt_machine_finalize(Object *obj)
+> +{
+> +    VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
+> +
+> +    g_free(s->ospi_model);
+> +}
+> +
+>  static void versal_virt_machine_class_init(ObjectClass *oc, void *data)
+>  {
+>      MachineClass *mc = MACHINE_CLASS(oc);
+> @@ -780,6 +804,10 @@ static void versal_virt_machine_class_init(ObjectClass *oc, void *data)
+>      mc->default_cpus = XLNX_VERSAL_NR_ACPUS + XLNX_VERSAL_NR_RCPUS;
+>      mc->no_cdrom = true;
+>      mc->default_ram_id = "ddr";
+> +    object_class_property_add_str(oc, "ospi-flash", versal_get_ospi_model,
+> +                                   versal_set_ospi_model);
+> +    object_class_property_set_description(oc, "ospi-flash",
+> +                                          "Change the OSPI Flash model");
+>  }
+>  
+>  static const TypeInfo versal_virt_machine_init_typeinfo = {
+> @@ -788,6 +816,7 @@ static const TypeInfo versal_virt_machine_init_typeinfo = {
+>      .class_init = versal_virt_machine_class_init,
+>      .instance_init = versal_virt_machine_instance_init,
+>      .instance_size = sizeof(VersalVirt),
+> +    .instance_finalize = versal_virt_machine_finalize,
+>  };
+>  
+>  static void versal_virt_machine_init_register_types(void)
 > -- 
 > 2.25.1
 > 
