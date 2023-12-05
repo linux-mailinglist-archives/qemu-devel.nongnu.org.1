@@ -2,82 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5CE804E48
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 10:45:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF196804EC9
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 10:54:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rARyb-0004qQ-Fs; Tue, 05 Dec 2023 04:44:25 -0500
+	id 1rAS86-0001Az-0X; Tue, 05 Dec 2023 04:54:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rARyY-0004q2-LV
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 04:44:22 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rARyX-00028H-0q
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 04:44:22 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40c0873cf84so27273965e9.1
- for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 01:44:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701769459; x=1702374259; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3BNi9AliG2z++0r2YBuoPltqUX8sWnzDSdCV27+5l14=;
- b=gRaGZy6e6Yh7K1RHf+QT8dAB1j+ZWGafC3AcKsd0uI/5LnW4vATCRwkwxANS0YA4BH
- bQXB2x1BaHfrC9YeB3zzgYCRpfUeJTgpUsGORqvuBMSh4Xy18mpDoklsTKrXFetmvuRf
- 6UL8RIPgeiecwBvS6Bg4gF5cwtJ7rexd/ko8WEoTeabmGvCC8kjpoVIrj9CQm2NcgN8e
- JnBGk0+NAqk4pdTqBCN/UbwJf/WbOh3EhkNrAtvno1Y4q27uUVHerH5R4QhSYn3K6sdw
- 9CMJw56Sy+sEG53N0/dmH97p3NEW4cGSTkL5NXyZJAU1Syq8LoCHwpPNhf6PdBQKso13
- yDew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701769459; x=1702374259;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3BNi9AliG2z++0r2YBuoPltqUX8sWnzDSdCV27+5l14=;
- b=tC7JxQ2blPalHOb+Bn3G2mU8wtoaq8jtUC788XizEtiMAPXMSxtBEGdymz8Aw6Uv6z
- MCRKz0Ymv8dIGeHkGX/akxdEty6jTPjUcrHo3+4fkvHEbP5r98Hjxvf++1/Nmt5Ldkca
- DZJdzpCIbZ1XiDGXsA7XuygVy/eoIys4dqNmWLlpOC5nFpK2Yx2HSwcS3rbZa4/EMVLc
- wh1GetpFBwn3JBvEkv0OKH/XOv9wv9vFlxyW/U8Wxu8ako46ueYiSp1j/79AKcUXMwo8
- BgObDqH5hJ07PaiUrJji2+shjuS0pwLwnm1zSFHtBWng0RMdaneegeCXPJcDtoia1CWM
- gckg==
-X-Gm-Message-State: AOJu0YwcG/a2quPgZd8Ab4GgEfMr7QMhhbYpQosACpAcfRYbKSwsy5UT
- HfauG25/SrSrDfdqetjCpKImOaq01cl8abYy4DA=
-X-Google-Smtp-Source: AGHT+IHlsHHCo+BPMprUjWiOUMfMPxoNL1IZwLv8jUwri4D8bIRKiKwDWqROEzs1u32VmZnQNmozkw==
-X-Received: by 2002:a05:600c:4e94:b0:408:575e:f24f with SMTP id
- f20-20020a05600c4e9400b00408575ef24fmr303132wmq.28.1701769459000; 
- Tue, 05 Dec 2023 01:44:19 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.201.231])
- by smtp.gmail.com with ESMTPSA id
- ay31-20020a05600c1e1f00b004080f0376a0sm18116463wmb.42.2023.12.05.01.44.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Dec 2023 01:44:18 -0800 (PST)
-Message-ID: <f873dd1e-b5ee-452e-9dd7-2f25ef2ada7b@linaro.org>
-Date: Tue, 5 Dec 2023 10:44:15 +0100
+ (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
+ id 1rAS82-00015E-CS; Tue, 05 Dec 2023 04:54:10 -0500
+Received: from mail-mw2nam10on2063.outbound.protection.outlook.com
+ ([40.107.94.63] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
+ id 1rAS80-0005cA-OR; Tue, 05 Dec 2023 04:54:10 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iG8Ul7bV43No4CqcOWQk77eGjnVUAg6v21TPG34zfyBpzjM5gYfHB80K+F0K2+xEzoh1a1aE5jFqjv43wpwCvbNZMgLHPmKAARqfNIBp7JRYq/GpC52AXxCvA8LvHuIzW/QOxW5f66z8NRFYssGFk8Gavziqyu8iQVwQGXK6WY2mGAW+nIm8d8q13/mYDOsFiUlsbSx9jMPMwNoGOp9TtlGn0afAKfYQFt2NWZYQr+ewgCj7x+GhFckZtnjpHrO1OSSvYrdMIeRxGWWbg6dtn/1mY5B63Q3NNfmslAIFn7obqR6S0dGQMFDBW0OyYoCeY+lIesQSG4VgVdLVQ3im5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NNv14aJ0REm80Nw3ApfkRpR/D9RBQt469d3vbMvf6Mg=;
+ b=jRua9Tm3z8FB5v6zLCBnq0hGDULMMu0BfWOvLzSwbyfFX0F5bRUoqsHpA/M9Y+r0rbz1HV4zhJtnM9+mKQiA71QwK5a1IQ0LerOULgLWP+x3fdxag6O0T7Prud2LTVI40soppFCoZGXVQ+9PFS1bTflep2QFkgOqgOSK0h11e+uApWnPEde6HE1CGV4WNTs3e6zYjXu0tpA61FdpJNSeFgl4jQpK0HdRabQlrcc4zaz+6t5tR2ooSevKv4dIhPElvpBO10NrieU4Pz/6Dhbdv4LdVSTXXGdOaYHEuKs0a8ciJl6tzu/1qmPlaPsjbSkOuhJJjf9mKhDvcpouYxAo7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NNv14aJ0REm80Nw3ApfkRpR/D9RBQt469d3vbMvf6Mg=;
+ b=aGOekLXLhk1wZExipj8QdH8gOXHt237TSmKawlJCkm9yicgAcM5O1WvdG/mkm2ZhgyZWRus9vDl4TywCFioYIxI7ej8wEwhxW5arJJSr+5boKhOVgRVQCGS5kP0q1UhmyZkDmyIHgnB7pCZImeB1cFP8WVq3sAZajClxoVDHKoo=
+Received: from DS7PR03CA0205.namprd03.prod.outlook.com (2603:10b6:5:3b6::30)
+ by CH2PR12MB4182.namprd12.prod.outlook.com (2603:10b6:610:ae::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Tue, 5 Dec
+ 2023 09:49:01 +0000
+Received: from DS1PEPF00017099.namprd05.prod.outlook.com
+ (2603:10b6:5:3b6:cafe::65) by DS7PR03CA0205.outlook.office365.com
+ (2603:10b6:5:3b6::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.33 via Frontend
+ Transport; Tue, 5 Dec 2023 09:49:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS1PEPF00017099.mail.protection.outlook.com (10.167.18.103) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7068.20 via Frontend Transport; Tue, 5 Dec 2023 09:49:00 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Tue, 5 Dec
+ 2023 03:48:56 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Tue, 5 Dec
+ 2023 03:48:24 -0600
+Received: from xhdvaralaxm41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.34 via
+ Frontend Transport; Tue, 5 Dec 2023 03:48:22 -0600
+From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <qemu-arm@nongnu.org>, <qemu-block@nongnu.org>, Alistair Francis
+ <alistair@alistair23.me>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>,
+ Francisco Iglesias <frasse.iglesias@gmail.com>, <saipavanboddu@gmail.com>
+Subject: [PATCH 0/1] versal-ospi fix
+Date: Tue, 5 Dec 2023 15:18:01 +0530
+Message-ID: <20231205094802.2683581-1-sai.pavan.boddu@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 01/11] acpi: hmp/qmp: Add hmp/qmp support for
- system_sleep
-Content-Language: en-US
-To: Annie Li <annie.li@oracle.com>, qemu-devel@nongnu.org, imammedo@redhat.com
-Cc: miguel.luis@oracle.com
-References: <20231205002143.562-1-annie.li@oracle.com>
- <20231205002356.1239-1-annie.li@oracle.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231205002356.1239-1-annie.li@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017099:EE_|CH2PR12MB4182:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55e53cf8-7b46-403b-119d-08dbf57768b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Lp5j6xRWb3F5wyDPRfnPvFf9zKoDch+O0K6xkXE/0c9PNyhaue548xaG+3+m8usOv5uP7ncNHNgKsQN259o3rkvXuVUf9AMx4MRX5mR3QuYbTlFp6oKq9diHJfWPrYMDTGNjjcJEiGZLSqtGKSimwGs1r9PKdw++voEk/UowX9snY/PnUduc0rhHqw+YDuqX4F5VE+pgdJd2D9op6Go8+gO5Us/CN7lYjs17FOIHdjSrKkOqTLTogDMyBKo3Qpq11AmoVjFk+6+l+dRiARRzkjrfgpkSFlupHtARh1iiIX/hm3osQ3ef1VW+nY6U6AZhdW0rwn5RIPXiwTWR7Ln6q9W/zeEOyefIm7/hKIDif5ZKVdEIl67U7j7gYPZj+53X/vLx4nIgXEBZzKkXnDyuA3dpOKHs3kRBuSQSiglLSvcTgGLK4OLJ9/6dEvCXkABS8DaHWHvNDuz0837XtBwT7v+aopE+qK8Pa+spAcmc72rNVqUv44KRdFZuu4J278dHkuNSaUkJreVh0QKWOAyLXTbyN2oqjEI6/SXGVj3TB6LI0Vpqsx7soxp98tE68is+i4uFs2Q89WAXQnlsrtdnZ1jAC06tDMmUv2hCvkxRPJnYbX+Ulj4Fr9Q9Muk0DwY9o4iDSTcMUmowjaP1EBbGaGjYnt047cXhgPWJZQzANIaIdCKbQ1gcqCxSm5vA28D9XoCt6nfSgCm80lEk6HSC+Nb8doFRMU+xhguFQ9N4VIjajndAG7JYr8DGr6ngAK9YyDVNGQGnwarUx5xRXGSqNQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(39860400002)(136003)(346002)(396003)(376002)(230922051799003)(1800799012)(186009)(82310400011)(451199024)(64100799003)(36840700001)(40470700004)(46966006)(36860700001)(40480700001)(478600001)(6666004)(54906003)(356005)(81166007)(70586007)(70206006)(316002)(26005)(47076005)(2616005)(1076003)(83380400001)(4326008)(8676002)(6916009)(8936002)(426003)(336012)(82740400003)(40460700003)(5660300002)(2906002)(558084003)(41300700001)(103116003)(86362001)(36756003)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2023 09:49:00.8689 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55e53cf8-7b46-403b-119d-08dbf57768b2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017099.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4182
+Received-SPF: softfail client-ip=40.107.94.63;
+ envelope-from=sai.pavan.boddu@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) AC_FROM_MANY_DOTS=2.499, BAYES_00=-1.9,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,61 +124,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Annie,
+Disable reentrancy on iomem_dac memory-region.
 
-On 5/12/23 01:23, Annie Li wrote:
-> Following hmp/qmp commands are implemented for pressing virtual
-> sleep button,
-> 
-> hmp: system_sleep
-> qmp: { "execute": "system_sleep" }
-> 
-> These commands put the guest into suspend or other power states
-> depending on the power settings inside the guest.
-> 
-> Signed-off-by: Annie Li <annie.li@oracle.com>
-> ---
->   hmp-commands.hx            | 14 ++++++++++++++
->   hw/core/machine-hmp-cmds.c |  5 +++++
->   hw/core/machine-qmp-cmds.c |  9 +++++++++
->   include/monitor/hmp.h      |  1 +
->   qapi/machine.json          | 18 ++++++++++++++++++
->   qapi/pragma.json           |  1 +
->   6 files changed, 48 insertions(+)
+Sai Pavan Boddu (1):
+  xlnx-versal-ospi: disable reentrancy detection for iomem_dac
 
+ hw/ssi/xlnx-versal-ospi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> index b6d634b30d..3ac69df92f 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -297,6 +297,24 @@
->   ##
->   { 'command': 'system_reset' }
->   
-> +##
-> +# @system_sleep:
+-- 
+2.25.1
 
-@since 9.0
-
-> +#
-> +# Requests that a guest perform a ACPI sleep transition by pushing a virtual
-> +# sleep button.
-> +#
-> +# Notes: A guest may or may not respond to this command. This command
-> +#        returning does not indicate that a guest has accepted the request
-> +#        or that it has gone to sleep.
-> +#
-> +# Example:
-> +#
-> +# -> { "execute": "system_sleep" }
-> +# <- { "return": {} }
-> +#
-> +##
-> +{ 'command': 'system_sleep' }
-
-Do we want a 'mode' argument, starting here with control_method?
-
-> +
->   ##
->   # @system_powerdown:
->   #
 
