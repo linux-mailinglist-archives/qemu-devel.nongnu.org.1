@@ -2,79 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A10805CA9
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 18:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44465805D30
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 19:22:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAZdJ-0003QT-KE; Tue, 05 Dec 2023 12:54:57 -0500
+	id 1rAa2G-0008V6-0e; Tue, 05 Dec 2023 13:20:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
- id 1rAZdH-0003Px-OL
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 12:54:55 -0500
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nabihestefan@google.com>)
- id 1rAZdG-0003sl-43
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 12:54:55 -0500
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-58d9dcdf201so3771336eaf.2
- for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 09:54:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1701798891; x=1702403691; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ah8a11d2I6vEhBdY+zb9gYIMyM45JmQk4Nwqq58ChyI=;
- b=hKVf91iHt73TQtvlv76Z6B3vAZtSvO91NK85LJ67+HHXlrvuQP9SC11TVojhrIblxc
- wP5GPkILP9uoHERM9uE+9Jx1Lul5dUYe+MhOk/UZIOGA1Ms72ujGSdR/xBXwK+Te86cD
- bdMZ66jvsP6ui+XQNezKnt3iTU/4hxTP9XtejJwGBXMhsLgD+XMPneZvyZCvXG6ZrPuq
- qps5asRZF76BEYFiePblsRClbbWPaGyQ0IohixHYcd+kJ+ZVeKG8PGy5z37KxZHS3Q14
- 6RIBdp1n+Tu8rfzWT4EMrx0vpum6CDnmJUwMX2ow3E6WfIazg727kzmeutwB/TH562H6
- Nlaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701798891; x=1702403691;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ah8a11d2I6vEhBdY+zb9gYIMyM45JmQk4Nwqq58ChyI=;
- b=K7TzKUAhGsqarRANXBdvXCzVkQHLHyKkHAJ9Vw7PHI4ORQF9+vrFTbI78KZbTzgn5n
- fCWYUTDumpvKwLbrJCNU3bt5K1XpdtUleid4ik2Np/unAms1gpeO3RK6ApFeiHua0lSl
- iKW9AvH0tva8WAXowBNK6QfYfIQMq2RtSqbD5BwpxkuEklqjCKbrXdIb6eDlR2KUrTfc
- ZpQkw/c7iA4W0hVPgVKQKUyqAG+3ADpIK1hF1txkmuHrADaErUmup1FLxiUdWOq0pe2p
- Q3/GJKloJ5OG8W3ZzEBpz7ADecDUgHy1Tgs6dM2rJYO4V0JnrmNW7pjvlKvJ7jD1pVUA
- /MkQ==
-X-Gm-Message-State: AOJu0Yzw7nFtrUJKgj4a6CqiwNBbrn2USBS+65GSwlhHOh9EspnchQ95
- izuah056E0c4jZVfuQmNuOG41SRKPPsXX+Nb6chtSQ==
-X-Google-Smtp-Source: AGHT+IHk3c6IHgFHtJuCLf5ZCCZsAPeC0Zu6yB87JUdASjQ9aiWRLhJ+cC4JKfa3Pd3JiD6TMu+btoABBbG+lZU/IiM=
-X-Received: by 2002:a05:6870:ed95:b0:1fb:75a:de75 with SMTP id
- fz21-20020a056870ed9500b001fb075ade75mr8710445oab.99.1701798891531; Tue, 05
- Dec 2023 09:54:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rAa1z-0008UR-3I
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 13:20:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rAa1u-0002h6-O5
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 13:20:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1701800421;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=eFkXBHi0g9elebJAxvoO9P+CWlnlZ1lnQhrpQ4+NAns=;
+ b=W4+y4mZfSY1XemyaU19m1xoAbrs3Hirecr/8oAGgu3giSiwYyo0+zFGsBLmLbpel7UWiZ3
+ 16R3ZM24SfhzoUHGewpWVLl2Q5S0QJyyOteXe5kLduV9jG74x6Xcls069z/LHcnJ6K9MBn
+ 0y9cEfIYXVRjtnHwgMzfnj0kAW9p4L0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-407-Kqz6uEAtM--M6ZQHnqRW-Q-1; Tue,
+ 05 Dec 2023 13:20:16 -0500
+X-MC-Unique: Kqz6uEAtM--M6ZQHnqRW-Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B0314280640A;
+ Tue,  5 Dec 2023 18:20:15 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.111])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 07EE92026F95;
+ Tue,  5 Dec 2023 18:20:12 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Cleber Rosa <crosa@redhat.com>, Xie Changlong <xiechanglong.d@gmail.com>,
+ Paul Durrant <paul@xen.org>, Ari Sundholm <ari@tuxera.com>,
+ Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>,
+ John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Wen Congyang <wencongyang2@huawei.com>, Alberto Garcia <berto@igalia.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
+ Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
+ Fabiano Rosas <farosas@suse.de>, Hanna Reitz <hreitz@redhat.com>,
+ Zhang Chen <chen.zhang@intel.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Peter Xu <peterx@redhat.com>,
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Leonardo Bras <leobras@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ xen-devel@lists.xenproject.org
+Subject: [PATCH v2 00/14] aio: remove AioContext lock
+Date: Tue,  5 Dec 2023 13:19:57 -0500
+Message-ID: <20231205182011.1976568-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20231027175532.3601297-1-nabihestefan@google.com>
-In-Reply-To: <20231027175532.3601297-1-nabihestefan@google.com>
-From: Nabih Estefan <nabihestefan@google.com>
-Date: Tue, 5 Dec 2023 09:54:40 -0800
-Message-ID: <CA+QoejW--t61WoJm8-gz2WV25owoKHg4dbOm2+_+Zrdu1DuFnA@mail.gmail.com>
-Subject: Re: [PATCH v5 00/11] Implementation of NPI Mailbox and GMAC
- Networking Module
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
- wuhaotsh@google.com, jasonwang@redhat.com, avi.fishman@nuvoton.com, 
- kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=nabihestefan@google.com; helo=mail-oo1-xc2e.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,88 +97,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+v2:
+- Add Patch 2 "scsi: assert that callbacks run in the correct AioContext" [Kevin]
+- Add Patch 7 "block: remove bdrv_co_lock()" [Eric and Kevin]
+- Remove stray goto label in Patch 8 [Kevin]
+- Fix "eeked" -> "eked" typo in Patch 10 [Eric]
 
-Since all patches for this change have been reviewed, is it possible
-to apply it to the current branch so it can be fully upstreamed?
+This series removes the AioContext locking APIs from QEMU.
+aio_context_acquire() and aio_context_release() are currently only needed to
+support the locking discipline required by AIO_POLL_WHILE() (except for a stray
+user that I converted in Patch 1). AIO_POLL_WHILE() doesn't really need the
+AioContext lock anymore, so it's possible to remove the API. This is a nice
+simplification because the AioContext locking rules were sometimes tricky or
+underspecified, leading to many bugs of the years.
 
-Thank you!
-Nabih Estefan (he/him) |  Software Engineer |
-nabihestefan@google.com |  857-308-9574
+This patch series removes these APIs across the codebase and cleans up the
+documentation/comments that refers to them.
 
-Nabih Estefan (he/him) |  Software Engineer |
-nabihestefan@google.com |  857-308-9574
+Patch 1 is a AioContext lock user I forgot to convert in my earlier SCSI
+conversion series.
 
+Patch 2 adds an assertion to the SCSI code to ensure that callbacks are invoked
+in the correct AioContext.
 
+Patch 3 removes tests for the AioContext lock because they will no longer be
+needed when the lock is gone.
 
-On Fri, Oct 27, 2023 at 10:55=E2=80=AFAM Nabih Estefan <nabihestefan@google=
-.com> wrote:
->
-> From: Nabih Estefan Diaz <nabihestefan@google.com>
->
-> [Changes since v4]
-> Added Signed-off-by tag and fixed patch 4 commit message as suggested by
-> Peter Maydell (peter.maydell@linaro.org)
->
-> [Changes since v3]
-> Fixed comments from Hao Wu (wuhaotsh@google.com)
->
-> [Changes since v2]
-> Fixed bugs related to the RC functionality of the GMAC. Added and
-> squashed patches related to that.
->
-> [Changes since v1]
-> Fixed some errors in formatting.
-> Fixed a merge error that I didn't see in v1.
-> Removed Nuvoton 8xx references since that is a separate patch set.
->
-> [Original Cover]
-> Creates NPI Mailbox Module with data verification for read and write (int=
-ernal and external),
-> wiring to the Nuvoton SoC, and QTests.
->
-> Also creates the GMAC Networking Module. Implements read and write functi=
-onalities with cooresponding descriptors
-> and registers. Also includes QTests for the different functionalities.
->
-> Hao Wu (5):
->   hw/misc: Add Nuvoton's PCI Mailbox Module
->   hw/arm: Add PCI mailbox module to Nuvoton SoC
->   hw/misc: Add qtest for NPCM7xx PCI Mailbox
->   hw/net: Add NPCMXXX GMAC device
->   hw/arm: Add GMAC devices to NPCM7XX SoC
->
-> Nabih Estefan Diaz (6):
->   tests/qtest: Creating qtest for GMAC Module
->   include/hw/net: Implemented Classes and Masks for GMAC Descriptors
->   hw/net: General GMAC Implementation
->   hw/net: GMAC Rx Implementation
->   hw/net: GMAC Tx Implementation
->   tests/qtest: Adding PCS Module test to GMAC Qtest
->
->  docs/system/arm/nuvoton.rst         |   2 +
->  hw/arm/npcm7xx.c                    |  53 +-
->  hw/misc/meson.build                 |   1 +
->  hw/misc/npcm7xx_pci_mbox.c          | 324 ++++++++++
->  hw/misc/trace-events                |   5 +
->  hw/net/meson.build                  |   2 +-
->  hw/net/npcm_gmac.c                  | 942 ++++++++++++++++++++++++++++
->  hw/net/trace-events                 |  19 +
->  include/hw/arm/npcm7xx.h            |   4 +
->  include/hw/misc/npcm7xx_pci_mbox.h  |  81 +++
->  include/hw/net/npcm_gmac.h          | 340 ++++++++++
->  tests/qtest/meson.build             |   8 +-
->  tests/qtest/npcm7xx_pci_mbox-test.c | 238 +++++++
->  tests/qtest/npcm_gmac-test.c        | 341 ++++++++++
->  14 files changed, 2351 insertions(+), 9 deletions(-)
->  create mode 100644 hw/misc/npcm7xx_pci_mbox.c
->  create mode 100644 hw/net/npcm_gmac.c
->  create mode 100644 include/hw/misc/npcm7xx_pci_mbox.h
->  create mode 100644 include/hw/net/npcm_gmac.h
->  create mode 100644 tests/qtest/npcm7xx_pci_mbox-test.c
->  create mode 100644 tests/qtest/npcm_gmac-test.c
->
-> --
-> 2.42.0.820.g83a721a137-goog
->
+Patches 4-10 remove the AioContext lock. These can be reviewed by categorizing
+the call sites into 1. places that take the lock because they call an API that
+requires the lock (ultimately AIO_POLL_WHILE()) and 2. places that take the
+lock to protect state. There should be no instances of case 2 left. If you see
+one, you've found a bug in this patch series!
+
+Patches 11-14 remove comments.
+
+Based-on: 20231204164259.1515217-1-stefanha@redhat.com ("[PATCH v2 0/4] scsi: eliminate AioContext lock")
+Since SCSI needs to stop relying on the AioContext lock before we can remove
+the lock.
+
+Stefan Hajnoczi (14):
+  virtio-scsi: replace AioContext lock with tmf_bh_lock
+  scsi: assert that callbacks run in the correct AioContext
+  tests: remove aio_context_acquire() tests
+  aio: make aio_context_acquire()/aio_context_release() a no-op
+  graph-lock: remove AioContext locking
+  block: remove AioContext locking
+  block: remove bdrv_co_lock()
+  scsi: remove AioContext locking
+  aio-wait: draw equivalence between AIO_WAIT_WHILE() and
+    AIO_WAIT_WHILE_UNLOCKED()
+  aio: remove aio_context_acquire()/aio_context_release() API
+  docs: remove AioContext lock from IOThread docs
+  scsi: remove outdated AioContext lock comment
+  job: remove outdated AioContext locking comments
+  block: remove outdated AioContext locking comments
+
+ docs/devel/multiple-iothreads.txt    |  45 ++--
+ include/block/aio-wait.h             |  16 +-
+ include/block/aio.h                  |  17 --
+ include/block/block-common.h         |   3 -
+ include/block/block-global-state.h   |  23 +-
+ include/block/block-io.h             |  12 +-
+ include/block/block_int-common.h     |   2 -
+ include/block/graph-lock.h           |  21 +-
+ include/block/snapshot.h             |   2 -
+ include/hw/virtio/virtio-scsi.h      |  17 +-
+ include/qemu/job.h                   |  20 --
+ block.c                              | 363 ++++-----------------------
+ block/backup.c                       |   4 +-
+ block/blklogwrites.c                 |   8 +-
+ block/blkverify.c                    |   4 +-
+ block/block-backend.c                |  33 +--
+ block/commit.c                       |  16 +-
+ block/copy-before-write.c            |  22 +-
+ block/export/export.c                |  22 +-
+ block/export/vhost-user-blk-server.c |   4 -
+ block/graph-lock.c                   |  44 +---
+ block/io.c                           |  45 +---
+ block/mirror.c                       |  41 +--
+ block/monitor/bitmap-qmp-cmds.c      |  20 +-
+ block/monitor/block-hmp-cmds.c       |  29 ---
+ block/qapi-sysemu.c                  |  27 +-
+ block/qapi.c                         |  18 +-
+ block/qcow2.c                        |   4 +-
+ block/quorum.c                       |   8 +-
+ block/raw-format.c                   |   5 -
+ block/replication.c                  |  72 +-----
+ block/snapshot.c                     |  26 +-
+ block/stream.c                       |  12 +-
+ block/vmdk.c                         |  20 +-
+ block/write-threshold.c              |   6 -
+ blockdev.c                           | 319 +++++------------------
+ blockjob.c                           |  30 +--
+ hw/block/dataplane/virtio-blk.c      |  10 -
+ hw/block/dataplane/xen-block.c       |  17 +-
+ hw/block/virtio-blk.c                |  45 +---
+ hw/core/qdev-properties-system.c     |   9 -
+ hw/scsi/scsi-bus.c                   |   2 -
+ hw/scsi/scsi-disk.c                  |  46 ++--
+ hw/scsi/virtio-scsi.c                |  80 +++---
+ job.c                                |  16 --
+ migration/block.c                    |  33 +--
+ migration/migration-hmp-cmds.c       |   3 -
+ migration/savevm.c                   |  22 --
+ net/colo-compare.c                   |   2 -
+ qemu-img.c                           |   4 -
+ qemu-io.c                            |  10 +-
+ qemu-nbd.c                           |   2 -
+ replay/replay-debugging.c            |   4 -
+ system/dma-helpers.c                 |   3 +
+ tests/unit/test-aio.c                |  67 +----
+ tests/unit/test-bdrv-drain.c         |  91 ++-----
+ tests/unit/test-bdrv-graph-mod.c     |  26 +-
+ tests/unit/test-block-iothread.c     |  31 ---
+ tests/unit/test-blockjob.c           | 137 ----------
+ tests/unit/test-replication.c        |  11 -
+ util/async.c                         |  14 --
+ util/vhost-user-server.c             |   3 -
+ scripts/block-coroutine-wrapper.py   |   7 +-
+ tests/qemu-iotests/202               |   2 +-
+ tests/qemu-iotests/203               |   3 +-
+ tests/tsan/suppressions.tsan         |   1 -
+ 66 files changed, 340 insertions(+), 1741 deletions(-)
+
+-- 
+2.43.0
+
 
