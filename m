@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E90805D45
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 19:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24435805D31
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 19:22:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAa2x-0000N1-6c; Tue, 05 Dec 2023 13:21:29 -0500
+	id 1rAa35-0000Wz-DJ; Tue, 05 Dec 2023 13:21:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rAa2Z-0000Gz-Sh
+ id 1rAa2Z-0000H9-Up
  for qemu-devel@nongnu.org; Tue, 05 Dec 2023 13:21:04 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rAa2K-0002ng-0x
+ id 1rAa2M-0002nx-9v
  for qemu-devel@nongnu.org; Tue, 05 Dec 2023 13:21:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701800447;
+ s=mimecast20190719; t=1701800449;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pcv/XqVh2Z7iu9z6gUwclnS+Bu4/7vR59iug4jWCKh4=;
- b=I0eWWqwf0rzerGOK+nmlDAFUP2UBjGGpJ3jZEG7FhY7wE8tYTxD0QWxEt8In9/fkW2Yia1
- 5Y7wgKcu7MzgmT2mLE4CcZkHWj2Nc23XUodVGZQi+Ji1u6Om0OO3WE/rR/EVl8Fx7Iq/Ij
- UyHizvNWA+fdecJ+zxwP8ARPvNxJY+E=
+ bh=CXVutLONoGnwNzaaLHCyq57V4khRfPmIjmlvVDaOzsM=;
+ b=ZjRoZFj/19+U94nQjnDuvnQzFgMrK7AH2OJJkuXnx3sBuf4JCBuJQWAMBuMWO8hlNz9goW
+ xAaRoNaANihLOnLyfCOIHFrYnxIJK+05vf/m+iSVv0NyH0o+iSTBv76xL5c1zzeKmn/qcx
+ G8S+rrt8RFwGRxNGf1ZtRQ6HOeqRk/4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-vcT85WOuNBCsPHqsqxe_sw-1; Tue,
- 05 Dec 2023 13:20:42 -0500
-X-MC-Unique: vcT85WOuNBCsPHqsqxe_sw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-FJu31-KlP_-4-uDfX0zTIw-1; Tue,
+ 05 Dec 2023 13:20:44 -0500
+X-MC-Unique: FJu31-KlP_-4-uDfX0zTIw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 309EC3C2A1C8;
- Tue,  5 Dec 2023 18:20:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 52F743C2A1CB;
+ Tue,  5 Dec 2023 18:20:43 +0000 (UTC)
 Received: from localhost (unknown [10.39.194.111])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 716931121312;
- Tue,  5 Dec 2023 18:20:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AF518492BE6;
+ Tue,  5 Dec 2023 18:20:42 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -66,15 +66,15 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Fam Zheng <fam@euphon.net>, Leonardo Bras <leobras@redhat.com>,
  David Hildenbrand <david@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>,
  xen-devel@lists.xenproject.org
-Subject: [PATCH v2 09/14] aio-wait: draw equivalence between AIO_WAIT_WHILE()
- and AIO_WAIT_WHILE_UNLOCKED()
-Date: Tue,  5 Dec 2023 13:20:06 -0500
-Message-ID: <20231205182011.1976568-10-stefanha@redhat.com>
+Subject: [PATCH v2 10/14] aio: remove
+ aio_context_acquire()/aio_context_release() API
+Date: Tue,  5 Dec 2023 13:20:07 -0500
+Message-ID: <20231205182011.1976568-11-stefanha@redhat.com>
 In-Reply-To: <20231205182011.1976568-1-stefanha@redhat.com>
 References: <20231205182011.1976568-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -100,68 +100,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the AioContext lock no longer exists, AIO_WAIT_WHILE() and
-AIO_WAIT_WHILE_UNLOCKED() are equivalent.
+Delete these functions because nothing calls these functions anymore.
 
-A future patch will get rid of AIO_WAIT_WHILE_UNLOCKED().
+I introduced these APIs in commit 98563fc3ec44 ("aio: add
+aio_context_acquire() and aio_context_release()") in 2014. It's with a
+sigh of relief that I delete these APIs almost 10 years later.
+
+Thanks to Paolo Bonzini's vision for multi-queue QEMU, we got an
+understanding of where the code needed to go in order to remove the
+limitations that the original dataplane and the IOThread/AioContext
+approach that followed it.
+
+Emanuele Giuseppe Esposito had the splendid determination to convert
+large parts of the codebase so that they no longer needed the AioContext
+lock. This was a painstaking process, both in the actual code changes
+required and the iterations of code review that Emanuele eked out of
+Kevin and me over many months.
+
+Kevin Wolf tackled multitudes of graph locking conversions to protect
+in-flight I/O from run-time changes to the block graph as well as the
+clang Thread Safety Analysis annotations that allow the compiler to
+check whether the graph lock is being used correctly.
+
+And me, well, I'm just here to add some pizzazz to the QEMU multi-queue
+block layer :). Thank you to everyone who helped with this effort,
+including Eric Blake, code reviewer extraordinaire, and others who I've
+forgotten to mention.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- include/block/aio-wait.h | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ include/block/aio.h | 17 -----------------
+ util/async.c        | 10 ----------
+ 2 files changed, 27 deletions(-)
 
-diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
-index 5449b6d742..157f105916 100644
---- a/include/block/aio-wait.h
-+++ b/include/block/aio-wait.h
-@@ -63,9 +63,6 @@ extern AioWait global_aio_wait;
-  * @ctx: the aio context, or NULL if multiple aio contexts (for which the
-  *       caller does not hold a lock) are involved in the polling condition.
-  * @cond: wait while this conditional expression is true
-- * @unlock: whether to unlock and then lock again @ctx. This applies
-- * only when waiting for another AioContext from the main loop.
-- * Otherwise it's ignored.
-  *
-  * Wait while a condition is true.  Use this to implement synchronous
-  * operations that require event loop activity.
-@@ -78,7 +75,7 @@ extern AioWait global_aio_wait;
-  * wait on conditions between two IOThreads since that could lead to deadlock,
-  * go via the main loop instead.
+diff --git a/include/block/aio.h b/include/block/aio.h
+index f08b358077..af05512a7d 100644
+--- a/include/block/aio.h
++++ b/include/block/aio.h
+@@ -278,23 +278,6 @@ void aio_context_ref(AioContext *ctx);
   */
--#define AIO_WAIT_WHILE_INTERNAL(ctx, cond, unlock) ({              \
-+#define AIO_WAIT_WHILE_INTERNAL(ctx, cond) ({                      \
-     bool waited_ = false;                                          \
-     AioWait *wait_ = &global_aio_wait;                             \
-     AioContext *ctx_ = (ctx);                                      \
-@@ -95,13 +92,7 @@ extern AioWait global_aio_wait;
-         assert(qemu_get_current_aio_context() ==                   \
-                qemu_get_aio_context());                            \
-         while ((cond)) {                                           \
--            if (unlock && ctx_) {                                  \
--                aio_context_release(ctx_);                         \
--            }                                                      \
-             aio_poll(qemu_get_aio_context(), true);                \
--            if (unlock && ctx_) {                                  \
--                aio_context_acquire(ctx_);                         \
--            }                                                      \
-             waited_ = true;                                        \
-         }                                                          \
-     }                                                              \
-@@ -109,10 +100,11 @@ extern AioWait global_aio_wait;
-     waited_; })
+ void aio_context_unref(AioContext *ctx);
  
- #define AIO_WAIT_WHILE(ctx, cond)                                  \
--    AIO_WAIT_WHILE_INTERNAL(ctx, cond, true)
-+    AIO_WAIT_WHILE_INTERNAL(ctx, cond)
- 
-+/* TODO replace this with AIO_WAIT_WHILE() in a future patch */
- #define AIO_WAIT_WHILE_UNLOCKED(ctx, cond)                         \
--    AIO_WAIT_WHILE_INTERNAL(ctx, cond, false)
-+    AIO_WAIT_WHILE_INTERNAL(ctx, cond)
- 
+-/* Take ownership of the AioContext.  If the AioContext will be shared between
+- * threads, and a thread does not want to be interrupted, it will have to
+- * take ownership around calls to aio_poll().  Otherwise, aio_poll()
+- * automatically takes care of calling aio_context_acquire and
+- * aio_context_release.
+- *
+- * Note that this is separate from bdrv_drained_begin/bdrv_drained_end.  A
+- * thread still has to call those to avoid being interrupted by the guest.
+- *
+- * Bottom halves, timers and callbacks can be created or removed without
+- * acquiring the AioContext.
+- */
+-void aio_context_acquire(AioContext *ctx);
+-
+-/* Relinquish ownership of the AioContext. */
+-void aio_context_release(AioContext *ctx);
+-
  /**
-  * aio_wait_kick:
+  * aio_bh_schedule_oneshot_full: Allocate a new bottom half structure that will
+  * run only once and as soon as possible.
+diff --git a/util/async.c b/util/async.c
+index dfd44ef612..460529057c 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -719,16 +719,6 @@ void aio_context_unref(AioContext *ctx)
+     g_source_unref(&ctx->source);
+ }
+ 
+-void aio_context_acquire(AioContext *ctx)
+-{
+-    /* TODO remove this function */
+-}
+-
+-void aio_context_release(AioContext *ctx)
+-{
+-    /* TODO remove this function */
+-}
+-
+ QEMU_DEFINE_STATIC_CO_TLS(AioContext *, my_aiocontext)
+ 
+ AioContext *qemu_get_current_aio_context(void)
 -- 
 2.43.0
 
