@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E82804454
-	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 02:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4AD80445C
+	for <lists+qemu-devel@lfdr.de>; Tue,  5 Dec 2023 02:55:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAKct-0002t5-7f; Mon, 04 Dec 2023 20:53:31 -0500
+	id 1rAKcu-0002tS-00; Mon, 04 Dec 2023 20:53:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rAKcf-0002q9-V3
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 20:53:18 -0500
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1rAKcj-0002rH-RM
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 20:53:22 -0500
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rAKce-0005yM-Cu
- for qemu-devel@nongnu.org; Mon, 04 Dec 2023 20:53:17 -0500
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3b84e328327so2853548b6e.2
- for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 17:53:16 -0800 (PST)
+ id 1rAKcf-00062b-RC
+ for qemu-devel@nongnu.org; Mon, 04 Dec 2023 20:53:21 -0500
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3b844e3e817so2880912b6e.0
+ for <qemu-devel@nongnu.org>; Mon, 04 Dec 2023 17:53:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701741194; x=1702345994; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701741196; x=1702345996; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YX52rAacWGPHiinB+0t2CMAB9QvzNPHES8Kqre+0Amc=;
- b=kk3wBn3AzB9rN+D1WD+2/J9pLuzzQ1ApX5Gw68O7NDngKQzJToLGQka/0Oc10fqAjB
- cqiMI6xvfsGOWSGcehHpFcnZDg78l/Ayt3Eri09FyPKcyCZNG7Jt9g2a6YAxPxG6fsF/
- Sgz8XQzz7zKwvQXWzPBYBuOpnwmEBgOLD1w32AEXpNAA7p4gDe/LgeYBvp58izvAH1bv
- T2AQ9PS5ZEZI4cJJnFHQD8wMQHkLLuGsiEk1WvGq73ynp9T1GVa6jJQVsHFad/HlDHj0
- 5CC+3YhL1xIshHYXZLapC3OZapOC9BkDP9OQx9wPujMR+RRW8G3wNwefvdlWnUiNuTVD
- Wm1g==
+ bh=vU7urSwAfTeA4lekHsW5PsTdoQI6A7TfKeK5Fim2yKU=;
+ b=AvrypG26VcnqmKRZkLOdZIQUZBE1evj6GmHVZDo1y9pFlYvYvYC2WiUCNs7zLPOQSj
+ FglNdNWCaWfuXGIWltFQMRt5cF+4HDWXTERCl0jWDtV37vG3QuhRoGlC8iAwecvEp+/h
+ DQjtC7tVDs/HVQQG8/yw/F3Bv6oLpBnTwW3CZRlOV01vBWL981qafLjQHnnCAJnYlIQT
+ WzJ/OHoM1DtGlMo+pC8GGwTlbabomUafKb8I9g0GF2HS4X3ugO36om9+OqXVI6cUPbO9
+ Y8/0nRr+VQA/wMFgReKjtiv+AA9IBAq8qVAPP8PJRw57ZtQlQMlhV3VVDff1+ltE7Uyn
+ yCPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701741194; x=1702345994;
+ d=1e100.net; s=20230601; t=1701741196; x=1702345996;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YX52rAacWGPHiinB+0t2CMAB9QvzNPHES8Kqre+0Amc=;
- b=PVWxbpUGh9dH0wk5emBj8VynMPmERg5dXbI/ex2lc4Yp0unnKOmw3A2FicXK9MMB7s
- FjOZ0YK1Ug3vbp3IRqLCfzcBlXyeHPyFq9WWmOhmHNagb/M0AMbr13Ju/Pf+SSnavQjp
- fMtE8kD63R2EjOkAox4MlFi1kaYJboTjmLaZKMNDr3HWfX745visSP51sL2jfUf1GGpz
- 2oku3rHatGqTnJqMr0Ck36M9HHCjPwMv/Sija2Ld/5lN9rVJzgOltVP+YzmjaLHeXGlj
- 6F0vO/xmP77yUcmLVdUL9fG0g52gMUnuX5lHjSnZATf0gKtyakG8PRSJa1Gog8faO64/
- lsBw==
-X-Gm-Message-State: AOJu0Yzg9CaylsrWfEJ0oCr0OezmHClFpS+f++6aFG15K8k2SIULKj1J
- TcWqL2nH8OhK6msarNBXS7/0LEs+dXDvZA==
-X-Google-Smtp-Source: AGHT+IHzJ8qe1ef4XWxnMEa8qYUbiekU6Fi3hQMVD7/u18fMokUFS57Ol/Yp3w4n7LJTlJwobY5vEA==
-X-Received: by 2002:a05:6808:1a84:b0:3b8:382b:8e1f with SMTP id
- bm4-20020a0568081a8400b003b8382b8e1fmr5110639oib.28.1701741194395; 
- Mon, 04 Dec 2023 17:53:14 -0800 (PST)
+ bh=vU7urSwAfTeA4lekHsW5PsTdoQI6A7TfKeK5Fim2yKU=;
+ b=Phe4gki2l30wF0CTuSH4qXlKeZABLDPyEvdyGvJi7Tq71OwU8H/J0H4e1utBRSA1NC
+ 9mLtJyp8uGQTZK5TrzwlE22AUGAZ1bxBiAr9iMxck5vnm+J41aiC8LHrosLFcVFQLI40
+ NsWBAFVPE5+j861RttMY5sQgof8qbdXQbCNiL1Gz7ROmO0EnCp2j4sJPqcCtPq/vL0V/
+ KcLq1UWVl31poQhrVwFMvQldtjyQ359e/5eBVdQI5bKzKhgQ8NLlql/OGf/Pjkqp3gsz
+ z/gvJyhdpIw2M27qkIR3RhVUyW5KUg1/TREd92IgcH9W4W3xTTgaEptmiMUEHE/KBF9R
+ +++w==
+X-Gm-Message-State: AOJu0YxdbW8tyYV46KDoVqTw5LOHemLAIU+0uOAH49KqTo+6Uwzg0hDI
+ p24NDkksrHsaGLqJ7pF4kpZ2FctqJWYSiw==
+X-Google-Smtp-Source: AGHT+IGpGeB+c6CQucE4HZVEDn2SDN3MNRgTRNMeaHH/ylSgR0BhuC5i17QVXBLuuL3qbzYc1yr8JA==
+X-Received: by 2002:a05:6808:1644:b0:3b8:bb04:dab5 with SMTP id
+ az4-20020a056808164400b003b8bb04dab5mr2667256oib.52.1701741195711; 
+ Mon, 04 Dec 2023 17:53:15 -0800 (PST)
 Received: from taylor-ubuntu.austin.rr.com (068-203-008-061.res.spectrum.com.
  [68.203.8.61]) by smtp.gmail.com with ESMTPSA id
- c4-20020aca1c04000000b003b8b7063a44sm1064624oic.44.2023.12.04.17.53.13
+ c4-20020aca1c04000000b003b8b7063a44sm1064624oic.44.2023.12.04.17.53.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Dec 2023 17:53:14 -0800 (PST)
+ Mon, 04 Dec 2023 17:53:15 -0800 (PST)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
  quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
  ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
-Subject: [PATCH 6/9] Hexagon (target/hexagon) Make generators object oriented
- - gen_op_regs
-Date: Mon,  4 Dec 2023 18:53:00 -0700
-Message-Id: <20231205015303.575807-7-ltaylorsimpson@gmail.com>
+Subject: [PATCH 7/9] Hexagon (target/hexagon) Make generators object oriented
+ - gen_analyze_funcs
+Date: Mon,  4 Dec 2023 18:53:01 -0700
+Message-Id: <20231205015303.575807-8-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231205015303.575807-1-ltaylorsimpson@gmail.com>
 References: <20231205015303.575807-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-oi1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,38 +95,546 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This patch conflicts with
+https://lists.gnu.org/archive/html/qemu-devel/2023-11/msg00729.html
+If that series goes in first, we'll rework this patch and vice versa.
+
 Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 ---
- target/hexagon/gen_op_regs.py | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ target/hexagon/gen_analyze_funcs.py | 163 +---------------------------
+ target/hexagon/hex_common.py        | 151 ++++++++++++++++++++++++++
+ 2 files changed, 157 insertions(+), 157 deletions(-)
 
-diff --git a/target/hexagon/gen_op_regs.py b/target/hexagon/gen_op_regs.py
-index a8a7712129..7b7b33895a 100755
---- a/target/hexagon/gen_op_regs.py
-+++ b/target/hexagon/gen_op_regs.py
-@@ -70,6 +70,7 @@ def strip_reg_prefix(x):
- def main():
-     hex_common.read_semantics_file(sys.argv[1])
-     hex_common.read_attribs_file(sys.argv[2])
+diff --git a/target/hexagon/gen_analyze_funcs.py b/target/hexagon/gen_analyze_funcs.py
+index c3b521abef..a9af666cef 100755
+--- a/target/hexagon/gen_analyze_funcs.py
++++ b/target/hexagon/gen_analyze_funcs.py
+@@ -23,162 +23,6 @@
+ import hex_common
+ 
+ 
+-##
+-## Helpers for gen_analyze_func
+-##
+-def is_predicated(tag):
+-    return "A_CONDEXEC" in hex_common.attribdict[tag]
+-
+-
+-def analyze_opn_old(f, tag, regtype, regid, regno):
+-    regN = f"{regtype}{regid}N"
+-    predicated = "true" if is_predicated(tag) else "false"
+-    if regtype == "R":
+-        if regid in {"ss", "tt"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_reg_read_pair(ctx, {regN});\n")
+-        elif regid in {"dd", "ee", "xx", "yy"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_reg_write_pair(ctx, {regN}, {predicated});\n")
+-        elif regid in {"s", "t", "u", "v"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_reg_read(ctx, {regN});\n")
+-        elif regid in {"d", "e", "x", "y"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_reg_write(ctx, {regN}, {predicated});\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    elif regtype == "P":
+-        if regid in {"s", "t", "u", "v"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_pred_read(ctx, {regN});\n")
+-        elif regid in {"d", "e", "x"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_pred_write(ctx, {regN});\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    elif regtype == "C":
+-        if regid == "ss":
+-            f.write(
+-                f"    const int {regN} = insn->regno[{regno}] "
+-                "+ HEX_REG_SA0;\n"
+-            )
+-            f.write(f"    ctx_log_reg_read_pair(ctx, {regN});\n")
+-        elif regid == "dd":
+-            f.write(f"    const int {regN} = insn->regno[{regno}] " "+ HEX_REG_SA0;\n")
+-            f.write(f"    ctx_log_reg_write_pair(ctx, {regN}, {predicated});\n")
+-        elif regid == "s":
+-            f.write(
+-                f"    const int {regN} = insn->regno[{regno}] "
+-                "+ HEX_REG_SA0;\n"
+-            )
+-            f.write(f"    ctx_log_reg_read(ctx, {regN});\n")
+-        elif regid == "d":
+-            f.write(f"    const int {regN} = insn->regno[{regno}] " "+ HEX_REG_SA0;\n")
+-            f.write(f"    ctx_log_reg_write(ctx, {regN}, {predicated});\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    elif regtype == "M":
+-        if regid == "u":
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_reg_read(ctx, {regN});\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    elif regtype == "V":
+-        newv = "EXT_DFL"
+-        if hex_common.is_new_result(tag):
+-            newv = "EXT_NEW"
+-        elif hex_common.is_tmp_result(tag):
+-            newv = "EXT_TMP"
+-        if regid in {"dd", "xx"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(
+-                f"    ctx_log_vreg_write_pair(ctx, {regN}, {newv}, " f"{predicated});\n"
+-            )
+-        elif regid in {"uu", "vv"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_vreg_read_pair(ctx, {regN});\n")
+-        elif regid in {"s", "u", "v", "w"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_vreg_read(ctx, {regN});\n")
+-        elif regid in {"d", "x", "y"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_vreg_write(ctx, {regN}, {newv}, " f"{predicated});\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    elif regtype == "Q":
+-        if regid in {"d", "e", "x"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_qreg_write(ctx, {regN});\n")
+-        elif regid in {"s", "t", "u", "v"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_qreg_read(ctx, {regN});\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    elif regtype == "G":
+-        if regid in {"dd"}:
+-            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
+-        elif regid in {"d"}:
+-            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
+-        elif regid in {"ss"}:
+-            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
+-        elif regid in {"s"}:
+-            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    elif regtype == "S":
+-        if regid in {"dd"}:
+-            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
+-        elif regid in {"d"}:
+-            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
+-        elif regid in {"ss"}:
+-            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
+-        elif regid in {"s"}:
+-            f.write(f"//    const int {regN} = insn->regno[{regno}];\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    else:
+-        hex_common.bad_register(regtype, regid)
+-
+-
+-def analyze_opn_new(f, tag, regtype, regid, regno):
+-    regN = f"{regtype}{regid}N"
+-    if regtype == "N":
+-        if regid in {"s", "t"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_reg_read(ctx, {regN});\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    elif regtype == "P":
+-        if regid in {"t", "u", "v"}:
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_pred_read(ctx, {regN});\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    elif regtype == "O":
+-        if regid == "s":
+-            f.write(f"    const int {regN} = insn->regno[{regno}];\n")
+-            f.write(f"    ctx_log_vreg_read(ctx, {regN});\n")
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    else:
+-        hex_common.bad_register(regtype, regid)
+-
+-
+-def analyze_opn(f, tag, regtype, regid, i):
+-    if hex_common.is_pair(regid):
+-        analyze_opn_old(f, tag, regtype, regid, i)
+-    elif hex_common.is_single(regid):
+-        if hex_common.is_old_val(regtype, regid, tag):
+-            analyze_opn_old(f, tag, regtype, regid, i)
+-        elif hex_common.is_new_val(regtype, regid, tag):
+-            analyze_opn_new(f, tag, regtype, regid, i)
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    else:
+-        hex_common.bad_register(regtype, regid)
+-
+-
+ ##
+ ## Generate the code to analyze the instruction
+ ##     For A2_add: Rd32=add(Rs32,Rt32), { RdV=RsV+RtV;}
+@@ -203,7 +47,11 @@ def gen_analyze_func(f, tag, regs, imms):
+     i = 0
+     ## Analyze all the registers
+     for regtype, regid in regs:
+-        analyze_opn(f, tag, regtype, regid, i)
++        reg = hex_common.get_register(tag, regtype, regid)
++        if reg.is_written():
++            reg.analyze_write(f, tag, i)
++        else:
++            reg.analyze_read(f, i)
+         i += 1
+ 
+     has_generated_helper = not hex_common.skip_qemu_helper(
+@@ -236,6 +84,7 @@ def main():
+     if is_idef_parser_enabled:
+         hex_common.read_idef_parser_enabled_file(sys.argv[5])
+     hex_common.calculate_attribs()
 +    hex_common.init_registers()
-     tagregs = hex_common.get_tagregs(full=True)
+     tagregs = hex_common.get_tagregs()
      tagimms = hex_common.get_tagimms()
  
-@@ -80,11 +81,12 @@ def main():
-             wregs = []
-             regids = ""
-             for regtype, regid, _, numregs in regs:
--                if hex_common.is_read(regid):
-+                reg = hex_common.get_register(tag, regtype, regid)
-+                if reg.is_read():
-                     if regid[0] not in regids:
-                         regids += regid[0]
-                     rregs.append(regtype + regid + numregs)
--                if hex_common.is_written(regid):
-+                if reg.is_written():
-                     wregs.append(regtype + regid + numregs)
-                     if regid[0] not in regids:
-                         regids += regid[0]
+diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
+index 384f377621..e64d114cf3 100755
+--- a/target/hexagon/hex_common.py
++++ b/target/hexagon/hex_common.py
+@@ -475,6 +475,12 @@ def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+             gen_log_reg_write(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_reg_write(ctx, {self.reg_num}, {predicated});
++        """))
+ 
+ class GprSource(Register, Single, OldSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -482,12 +488,22 @@ def decl_tcg(self, f, tag, regno):
+         f.write(code_fmt(f"""\
+             TCGv {self.reg_tcg()} = hex_gpr[{self.reg_num}];
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_reg_read(ctx, {self.reg_num});
++        """))
+ 
+ class GprNewSource(Register, Single, NewSource):
+     def decl_tcg(self, f, tag, regno):
+         f.write(code_fmt(f"""\
+             TCGv {self.reg_tcg()} = get_result_gpr(ctx, insn->regno[{regno}]);
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_reg_read(ctx, {self.reg_num});
++        """))
+ 
+ class GprReadWrite(Register, Single, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -506,6 +522,12 @@ def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+             gen_log_reg_write(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_reg_write(ctx, {self.reg_num}, {predicated});
++        """))
+ 
+ class ControlDest(Register, Single, Dest):
+     def decl_reg_num(self, f, regno):
+@@ -521,6 +543,12 @@ def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+             gen_write_ctrl_reg(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_reg_write(ctx, {self.reg_num}, {predicated});
++        """))
+ 
+ class ControlSource(Register, Single, OldSource):
+     def decl_reg_num(self, f, regno):
+@@ -533,6 +561,11 @@ def decl_tcg(self, f, tag, regno):
+             TCGv {self.reg_tcg()} = tcg_temp_new();
+             gen_read_ctrl_reg(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_reg_read(ctx, {self.reg_num});
++        """))
+ 
+ class ModifierSource(Register, Single, OldSource):
+     def decl_reg_num(self, f, regno):
+@@ -549,6 +582,11 @@ def decl_tcg(self, f, tag, regno):
+     def idef_arg(self, declared):
+         declared.append(self.reg_tcg())
+         declared.append("CS")
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_reg_read(ctx, {self.reg_num});
++        """))
+ 
+ class PredDest(Register, Single, Dest):
+     def decl_tcg(self, f, tag, regno):
+@@ -560,6 +598,11 @@ def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+             gen_log_pred_write(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_pred_write(ctx, {self.reg_num});
++        """))
+ 
+ class PredSource(Register, Single, OldSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -567,12 +610,22 @@ def decl_tcg(self, f, tag, regno):
+         f.write(code_fmt(f"""\
+             TCGv {self.reg_tcg()} = hex_pred[{self.reg_num}];
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_pred_read(ctx, {self.reg_num});
++        """))
+ 
+ class PredNewSource(Register, Single, NewSource):
+     def decl_tcg(self, f, tag, regno):
+         f.write(code_fmt(f"""\
+             TCGv {self.reg_tcg()} = get_result_pred(ctx, insn->regno[{regno}]);
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_pred_read(ctx, {self.reg_num});
++        """))
+ 
+ class PredReadWrite(Register, Single, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -585,6 +638,11 @@ def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+             gen_log_pred_write(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_pred_write(ctx, {self.reg_num});
++        """))
+ 
+ class PairDest(Register, Pair, Dest):
+     def decl_tcg(self, f, tag, regno):
+@@ -597,6 +655,12 @@ def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+             gen_log_reg_write_pair(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_reg_write_pair(ctx, {self.reg_num}, {predicated});
++        """))
+ 
+ class PairSource(Register, Pair, OldSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -607,6 +671,11 @@ def decl_tcg(self, f, tag, regno):
+                                     hex_gpr[{self.reg_num}],
+                                     hex_gpr[{self.reg_num} + 1]);
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_reg_read_pair(ctx, {self.reg_num});
++        """))
+ 
+ class PairReadWrite(Register, Pair, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -622,6 +691,12 @@ def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+             gen_log_reg_write_pair(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_reg_write_pair(ctx, {self.reg_num}, {predicated});
++        """))
+ 
+ class ControlPairDest(Register, Pair, Dest):
+     def decl_reg_num(self, f, regno):
+@@ -638,6 +713,12 @@ def log_write(self, f, tag):
+         f.write(code_fmt(f"""\
+             gen_write_ctrl_reg_pair(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_reg_write_pair(ctx, {self.reg_num}, {predicated});
++        """))
+ 
+ class ControlPairSource(Register, Pair, OldSource):
+     def decl_reg_num(self, f, regno):
+@@ -650,6 +731,11 @@ def decl_tcg(self, f, tag, regno):
+             TCGv_i64 {self.reg_tcg()} = tcg_temp_new_i64();
+             gen_read_ctrl_reg_pair(ctx, {self.reg_num}, {self.reg_tcg()});
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_reg_read_pair(ctx, {self.reg_num});
++        """))
+ 
+ class VRegDest(Register, Hvx, Dest):
+     def decl_tcg(self, f, tag, regno):
+@@ -669,6 +755,13 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg()}) */
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        newv = hvx_newv(tag)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_vreg_write(ctx, {self.reg_num}, {newv}, {predicated});
++        """))
+ 
+ class VRegSource(Register, Hvx, OldSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -685,6 +778,11 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg()}) */
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_vreg_read(ctx, {self.reg_num});
++        """))
+ 
+ class VRegNewSource(Register, Hvx, NewSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -698,6 +796,11 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg()}) */
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_vreg_read(ctx, {self.reg_num});
++        """))
+ 
+ class VRegReadWrite(Register, Hvx, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -720,6 +823,13 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg()}) */
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        newv = hvx_newv(tag)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_vreg_write(ctx, {self.reg_num}, {newv}, {predicated});
++        """))
+ 
+ class VRegTmp(Register, Hvx, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -744,6 +854,13 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg()}) */
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        newv = hvx_newv(tag)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_vreg_write(ctx, {self.reg_num}, {newv}, {predicated});
++        """))
+ 
+ class VRegPairDest(Register, Hvx, Dest):
+     def decl_tcg(self, f, tag, regno):
+@@ -763,6 +880,13 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMVectorPair *)({self.helper_arg()}) */
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        newv = hvx_newv(tag)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_vreg_write_pair(ctx, {self.reg_num}, {newv}, {predicated});
++        """))
+ 
+ class VRegPairSource(Register, Hvx, OldSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -786,6 +910,11 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMVectorPair *)({self.helper_arg()}) */
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_vreg_read_pair(ctx, {self.reg_num});
++        """))
+ 
+ class VRegPairReadWrite(Register, Hvx, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -814,6 +943,13 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMVectorPair *)({self.helper_arg()}) */
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        newv = hvx_newv(tag)
++        predicated = "true" if is_predicated(tag) else "false"
++        f.write(code_fmt(f"""\
++            ctx_log_vreg_write_pair(ctx, {self.reg_num}, {newv}, {predicated});
++        """))
+ 
+ class QRegDest(Register, Hvx, Dest):
+     def decl_tcg(self, f, tag, regno):
+@@ -833,6 +969,11 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMQReg *)({self.helper_arg()}) */
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_qreg_write(ctx, {self.reg_num});
++        """))
+ 
+ class QRegSource(Register, Hvx, OldSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -850,6 +991,11 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMQReg *)({self.helper_arg()}) */
+         """))
++    def analyze_read(self, f, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_qreg_read(ctx, {self.reg_num});
++        """))
+ 
+ class QRegReadWrite(Register, Hvx, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -872,6 +1018,11 @@ def helper_hvx_desc(self, f):
+         f.write(code_fmt(f"""\
+             /* {self.reg_tcg()} is *(MMQReg *)({self.helper_arg()}) */
+         """))
++    def analyze_write(self, f, tag, regno):
++        self.decl_reg_num(f, regno)
++        f.write(code_fmt(f"""\
++            ctx_log_qreg_write(ctx, {self.reg_num});
++        """))
+ 
+ def init_registers():
+     regs = {
 -- 
 2.34.1
 
