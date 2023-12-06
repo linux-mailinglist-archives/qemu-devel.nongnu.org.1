@@ -2,91 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3044807112
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 14:44:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78776807169
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 14:58:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAsCA-0001id-T7; Wed, 06 Dec 2023 08:44:10 -0500
+	id 1rAsNy-0003Qo-KV; Wed, 06 Dec 2023 08:56:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rAsBx-0001iR-Vz
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 08:43:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <edmund.raile@proton.me>)
+ id 1rAsNw-0003Qd-2U
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 08:56:20 -0500
+Received: from mail-4325.protonmail.ch ([185.70.43.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rAsBu-0003XK-Sg
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 08:43:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701870234;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cGbNWein5+1xHR10S1uc1ylcdJmgisND/IaKWA1UWts=;
- b=JuJ/JP359ZUjCcgWYL/o061Et07RvWskz4tK/NaoKlEBh3WNqMcxCssjj0PEiyryZ9uBG8
- RTQT+kVOwARgQdpendFil+RrR1pYfuD/cSSwCFAkJn1rcSz8iTtyDNce71D7n57epmKu0M
- yL87IyqGIkk9yjl2Y2SB1FBhd8hzGC0=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-aDecz-S2Mridt6mBmjkFKg-1; Wed, 06 Dec 2023 08:43:52 -0500
-X-MC-Unique: aDecz-S2Mridt6mBmjkFKg-1
-Received: by mail-vk1-f197.google.com with SMTP id
- 71dfb90a1353d-4b309d9aad0so249639e0c.1
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 05:43:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701870232; x=1702475032;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cGbNWein5+1xHR10S1uc1ylcdJmgisND/IaKWA1UWts=;
- b=QPxB5lMfu67lflB1fJJZIISXC+fs6ayyCI/u2Duhzv8ZsShdij6MKkRN2kEzLHslRN
- DeQAjASbK2GR6vX4zyiAP6YWKMxo+bw69LhxITIUlyou/+C0AEwJHXGaFWCZQDR+KV27
- IpV8oAykpFyIFUNL778dIoyxOBtiAL1kymFeR1x6/wMldHPixo1+aUnhW8Ipf/l5trEq
- s2gJH4rNbEoXCbOSIHs3IYkzlTcDx4U9Fw1RITXCJz9+/eEKbWE24uz5RYCvR4m2W46u
- j5y5ly/ElBvzoMAfg2t+QUr2g9I9XxDQ2ZdQrrJXMFzqPuwhZfDsc1J+22wvEFLLgMqr
- lZOA==
-X-Gm-Message-State: AOJu0Ywds7LlVjb0FBiXV8Tcvk0+4cr2vWWXXrFcwHMUjloJagIGHnKk
- vU7PjQUMTLQB4Te5pvjDsuRQQG08ba3wDiBeVF6ipUM45efMQqO5bsp4gkzXAgwsWMxOd3llvUa
- TufQ1hkcZ3aNTN4b4jDjGn+K5yE3NqJk=
-X-Received: by 2002:a05:6122:4e26:b0:4b2:c554:ef03 with SMTP id
- ge38-20020a0561224e2600b004b2c554ef03mr940417vkb.21.1701870232155; 
- Wed, 06 Dec 2023 05:43:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGYw/IwMhZjw8QhOHqgPBLvQOT8KiowIQ+XS74Wf/xU6c5/sE8vHDL7fpQ0FUEh8TQE+7xHAguLn5NGS3q/sJ8=
-X-Received: by 2002:a05:6122:4e26:b0:4b2:c554:ef03 with SMTP id
- ge38-20020a0561224e2600b004b2c554ef03mr940401vkb.21.1701870231925; Wed, 06
- Dec 2023 05:43:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <edmund.raile@proton.me>)
+ id 1rAsNq-00064s-Lh
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 08:56:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+ s=protonmail; t=1701870967; x=1702130167;
+ bh=1Tlh1KwucuBsjEqxXbUOlij/OBpeinNP+vzyBT2hBSU=;
+ h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+ Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+ b=ARXaX1eyc56bJSTvA7PFeXOwVSd+QpAcWbi1oxOG7zdTW2/Nkek3pVxTWoZ/s4uuJ
+ cCnzXhiFxcR/0vIDuHcLOdHmMJD5Tvd9igOAr964QaJmWHLwRqcSMQIQGZv/KHmtUX
+ xtV7SJv4D88yTlgniPp5V38kujUjk67zEpRoXeuqJotJudRfEP+MS2CHmt+rjvYA1h
+ JRlERdA9+skQDrUic5hX3iUppTL491NFy0qodB485Bq1Qd9W3Df0dG8zpi9JwjtS1k
+ yWxpcK+G7uNk9AWpamAL9nwTws7T7fjnVld3Sy39mVEjpAKxcPbkiFW4qa4UBhjCoE
+ jC+Qr+COuQdWA==
+Date: Wed, 06 Dec 2023 13:55:55 +0000
+To: qemu-devel@nongnu.org
+From: Edmund Raile <edmund.raile@proton.me>
+Cc: marcandre.lureau@redhat.com, kraxel@redhat.com,
+ Edmund Raile <edmund.raile@proton.me>
+Subject: [PATCH] [PATCH v4] ui/gtk-clipboard: async owner_change
+ clipboard_request
+Message-ID: <20231206135519.509296-2-edmund.raile@proton.me>
+Feedback-ID: 45198251:user:proton
 MIME-Version: 1.0
-References: <20231205222816.1152720-1-michael.roth@amd.com>
- <4e78f214-43ee-4c3a-ba49-d3b54aff8737@linaro.org>
- <20231206131248.q2yfrrfpfga7zfie@amd.com>
-In-Reply-To: <20231206131248.q2yfrrfpfga7zfie@amd.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 6 Dec 2023 14:43:39 +0100
-Message-ID: <CABgObfYbBbjXVR6YXBwt9v6Nmy-DNrCm4+kAEmWUJ-wMjjD09A@mail.gmail.com>
-Subject: Re: [PATCH v2 for-8.2?] i386/sev: Avoid SEV-ES crash due to missing
- MSR_EFER_LMA bit
-To: Michael Roth <michael.roth@amd.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Marcelo Tosatti <mtosatti@redhat.com>, 
- Tom Lendacky <thomas.lendacky@amd.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, kvm@vger.kernel.org, 
- Lara Lazier <laramglazier@gmail.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
- Maxim Levitsky <mlevitsk@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=185.70.43.25; envelope-from=edmund.raile@proton.me;
+ helo=mail-4325.protonmail.ch
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,40 +65,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 6, 2023 at 2:13=E2=80=AFPM Michael Roth <michael.roth@amd.com> =
-wrote:
-> > This 'Fixes:' tag is misleading, since as you mentioned this commit
-> > only exposes the issue.
->
-> That's true, a "Workaround-for: " tag or something like that might be mor=
-e
-> appropriate. I just wanted to make it clear that SEV-ES support is no lon=
-ger
-> working with that patch applied, so I used Fixes: and elaborated on the
-> commit message. I can change it if there's a better way to convey this
-> though.
+Previous implementation of both functions was blocking and caused guest
+freezes / crashes on host clipboard owner change.
+ * use callbacks instead of waiting for GTK to deliver
+   clipboard content type evaluation and contents
+ * evaluate a serial in the info struct to discard old events
 
-That's fine, Fixes is also for automated checks, like "if you have
-this commit you also want this one".
+Fixes: d11ebe2ca257 ("ui/gtk: add clipboard support")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1150
+Signed-off-by: Edmund Raile <edmund.raile@proton.me>
+---
+Gitlab user kolAflash is to credit for determining that the main issue
+of the QEMU-UI-GTK clipboard is the call to the blocking function
+gtk_clipboard_wait_is_text_available in gd_owner_change, causing guests
+to freeze / crash when GTK takes too long.
+Marc-Andr=C3=A9 Lureau suggested:=20
+ * gd_clipboard_request might express the same issue due to using
+   gtk_clipboard_wait_for_text
+ * the callbacks could use the QemuClipboardInfo struct's serial field
+   to discard old events
+ * storing the serial for the owner change callback inside the
+   GtkDisplay struct
 
-> >
-> > Commit d499f196fe ("target/i386: Added consistency checks for EFER")
-> > or around it seems more appropriate.
->
-> Those checks seem to be more for TCG.
+This patch implements asynchronous gd_clipboard_request and
+gd_owner_change with serial checking.
 
-Yes, that's 100% TCG code.
+What I haven't implemented is gd_clipboard_notify's
+QEMU_CLIPBOARD_RESET_SERIAL handling, I don't know how to.
 
-> The actual bug is in the host
-> kernel, and it seems to have been there basically since the original
-> SEV-ES host support went in in 2020. I've also sent a patch to address
-> this in KVM:
->
->   https://lore.kernel.org/lkml/20231205234956.1156210-1-michael.roth@amd.=
-com/T/#u
+Please help me test this patch.
+The issue mentions the conditions, so far it has been stable.
+Note that you will need to build QEMU with `enable-gtk-clipboard`.
+command line options for qemu-vdagent:
+-device virtio-serial,packed=3Don,ioeventfd=3Don \
+-device virtserialport,name=3Dcom.redhat.spice.0,chardev=3Dvdagent0 \
+-chardev qemu-vdagent,id=3Dvdagent0,name=3Dvdagent,clipboard=3Don,mouse=3Do=
+ff \
+The guests spice-vdagent user service may have to be started manually.
 
-Thanks, looking at it.
+If testing is sufficient and shows no way to break this, we could undo
+or modify 29e0bfffab87d89c65c0890607e203b1579590a3
+to have the GTK UI's clipboard built-in by default again.
 
-Paolo
+Previous threads:
+ * https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg06027.html
+ * https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg04397.html
+ * https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05755.html
+ include/ui/gtk.h   |  1 +
+ ui/gtk-clipboard.c | 79 ++++++++++++++++++++++++++++++++++++++--------
+ 2 files changed, 66 insertions(+), 14 deletions(-)
+
+diff --git a/include/ui/gtk.h b/include/ui/gtk.h
+index aa3d637029..ac44609770 100644
+--- a/include/ui/gtk.h
++++ b/include/ui/gtk.h
+@@ -147,6 +147,7 @@ struct GtkDisplayState {
+     uint32_t cbpending[QEMU_CLIPBOARD_SELECTION__COUNT];
+     GtkClipboard *gtkcb[QEMU_CLIPBOARD_SELECTION__COUNT];
+     bool cbowner[QEMU_CLIPBOARD_SELECTION__COUNT];
++    uint32_t cb_serial_owner_change;
+=20
+     DisplayOptions *opts;
+ };
+diff --git a/ui/gtk-clipboard.c b/ui/gtk-clipboard.c
+index 8d8a636fd1..6b2c32abee 100644
+--- a/ui/gtk-clipboard.c
++++ b/ui/gtk-clipboard.c
+@@ -133,26 +133,81 @@ static void gd_clipboard_notify(Notifier *notifier, v=
+oid *data)
+     }
+ }
+=20
++/*
++ * asynchronous clipboard text transfer callback
++ * called when host (gtk) is ready to deliver to guest
++ */
++static void gd_clipboard_request_text_callback
++    (GtkClipboard *clipboard, const gchar *text, gpointer data)
++{
++    QemuClipboardInfo *info =3D data;
++
++    if (!text || !qemu_clipboard_check_serial(info, true)) {
++        qemu_clipboard_info_unref(info);
++        return;
++    }
++
++    qemu_clipboard_set_data(info->owner, info, QEMU_CLIPBOARD_TYPE_TEXT,
++                            strlen(text), text, true);
++    qemu_clipboard_info_unref(info);
++}
++
++/*
++ * asynchronous clipboard data transfer initiator
++ * guest requests, host delivers when ready
++ */
+ static void gd_clipboard_request(QemuClipboardInfo *info,
+                                  QemuClipboardType type)
+ {
+     GtkDisplayState *gd =3D container_of(info->owner, GtkDisplayState, cbp=
+eer);
+-    char *text;
+=20
+     switch (type) {
+     case QEMU_CLIPBOARD_TYPE_TEXT:
+-        text =3D gtk_clipboard_wait_for_text(gd->gtkcb[info->selection]);
+-        if (text) {
+-            qemu_clipboard_set_data(&gd->cbpeer, info, type,
+-                                    strlen(text), text, true);
+-            g_free(text);
+-        }
++        gtk_clipboard_request_text
++            (gd->gtkcb[info->selection],
++             gd_clipboard_request_text_callback, info);
+         break;
+     default:
+         break;
+     }
+ }
+=20
++/*
++ * asynchronous clipboard text availability notification callback
++ * called when host (gtk) is ready to notify guest
++ */
++static void gd_owner_change_text_callback
++    (GtkClipboard *clipboard, const gchar *text, gpointer data)
++{
++    QemuClipboardInfo *info =3D data;
++    GtkDisplayState *gd =3D container_of(info->owner, GtkDisplayState, cbp=
+eer);
++
++    /*
++     * performing the subtraction of uints as ints
++     * is a neat trick to guard against rollover issues
++     */
++    if (!text ||
++        (((int32_t)(info->serial - gd->cb_serial_owner_change)) < 0))
++    {
++        goto end;
++    }
++    gd->cb_serial_owner_change =3D info->serial;
++
++    info->types[QEMU_CLIPBOARD_TYPE_TEXT].available =3D true;
++    qemu_clipboard_update(info);
++
++end:
++    /*
++     * this notification info struct is temporary
++     * and can safely be freed after use
++     */
++    qemu_clipboard_info_unref(info);
++}
++
++/*
++ * asynchronous clipboard data availability notification initiator
++ * host notifies guest when ready
++ */
+ static void gd_owner_change(GtkClipboard *clipboard,
+                             GdkEvent *event,
+                             gpointer data)
+@@ -166,16 +221,12 @@ static void gd_owner_change(GtkClipboard *clipboard,
+         return;
+     }
+=20
+-
+     switch (event->owner_change.reason) {
+     case GDK_OWNER_CHANGE_NEW_OWNER:
+         info =3D qemu_clipboard_info_new(&gd->cbpeer, s);
+-        if (gtk_clipboard_wait_is_text_available(clipboard)) {
+-            info->types[QEMU_CLIPBOARD_TYPE_TEXT].available =3D true;
+-        }
+-
+-        qemu_clipboard_update(info);
+-        qemu_clipboard_info_unref(info);
++        info->serial =3D ++gd->cb_serial_owner_change;
++        gtk_clipboard_request_text
++            (clipboard, gd_owner_change_text_callback, info);
+         break;
+     default:
+         qemu_clipboard_peer_release(&gd->cbpeer, s);
+--=20
+2.42.0
+
 
 
