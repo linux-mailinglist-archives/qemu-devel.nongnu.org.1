@@ -2,53 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA2680724D
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 15:24:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19ACF80725A
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 15:26:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAsoC-0002Oe-Ql; Wed, 06 Dec 2023 09:23:28 -0500
+	id 1rAsqx-0003OS-5t; Wed, 06 Dec 2023 09:26:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edmund.raile@proton.me>)
- id 1rAsoA-0002Ny-CF
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 09:23:26 -0500
-Received: from mail-4319.protonmail.ch ([185.70.43.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edmund.raile@proton.me>)
- id 1rAso6-00031O-1n
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 09:23:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
- s=protonmail; t=1701872598; x=1702131798;
- bh=A8Jk/BOxCJe6M9F5lvuwW/R1HrS3nQzEs9j8zKQcTww=;
- h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
- Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
- b=aDskFkC2CBM/SlgD+VFtuEIgTJFeHt3PG35g0SS/reXYMPF2tgVMYNQ4bzL51ter0
- goJypVM9y7A0N7hW2Dgxru9C++ydZYJPmtuHRfnOatew9PM+uqJPZmX2xSYknraDT7
- 0Kbxpfcy2nNxDvSIEORrcjFKrXg7TYELMiaApR7dhPkxsEt13dIfo+3FP/oDhv1gTa
- dOYI5MI+CLlMo6WSUCbWPkzztwJkVbs0g+RLl6am61+paoWjKM+0dtVx2HHXR90I1W
- 8g4DZxvPCRCTUF/NfbdwxqqvyehSSzCQ+Gtd3NV7wTZ15ESwenUhms5RHQwkkpjanW
- Q39iirLnkgBCg==
-Date: Wed, 06 Dec 2023 14:22:57 +0000
-To: qemu-devel@nongnu.org
-From: Edmund Raile <edmund.raile@proton.me>
-Cc: marcandre.lureau@redhat.com, kraxel@redhat.com,
- Edmund Raile <edmund.raile@proton.me>
-Subject: [PATCH v4] ui/gtk-clipboard: async owner_change clipboard_request
-Message-ID: <20231206142243.510068-1-edmund.raile@proton.me>
-Feedback-ID: 45198251:user:proton
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAsqu-0003MU-9w
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 09:26:16 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAsqj-0003wH-9E
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 09:26:11 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-54d048550dfso2723855a12.0
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 06:26:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701872761; x=1702477561; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=969M4ThTsIABLSVj+C+PJad4gKG6kky8YByk7WTveoU=;
+ b=QmKfuYE01N1z6i4bbeiL5fhSxmcAw2FYYXCBaMf/G9uSSMVthxmwck0Ip6Btlr6lFv
+ SNNS+eSwqN9rYgWaGJ368YGV8N5dgxAI8MBFsPNJB+sSqXOW1EZUjwCZWtylvxPnc6+h
+ DrEebbwaoRVdO4pIhcVJCab9vsKBY8BYCKtIdLbPhUv3hvtBCS8JmCXBT1K22M9EouwJ
+ KyShiz97EakNXviRMbIfpQDyTR43kXk2yR8g1qVoJPt+nii+lOSWnVIoQ9rK+LjmmcOB
+ DM3kQWKXRUfosjoWOAUWywranA/GKCgOKKzhSn3Hck+9Ur5ILwTav3GG4zYej8/o1AA9
+ r9kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701872761; x=1702477561;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=969M4ThTsIABLSVj+C+PJad4gKG6kky8YByk7WTveoU=;
+ b=gVEzxNN2q52W1gTqLJgdNG1CIlAy3A73MROwr/F3UNkZSW8UeH4DrbyDJK94CKSBdZ
+ lm+ER9sjxX46kj3h9tDCz/zjfKfdLa5LMHHPlZDhImNobz6GyMbSJ3AgCRjI0jqQruV7
+ e3AwQ2xT7i68osy+ZSLJRnMq7A0f3V42m9XebFIaELzL0dRN6U+wVcLw1gCGAqHMZfm2
+ 2S/mm4eYhs1AP8YOWf0J3bQK6GNxn9NbHAMhTBfxZOkg78duwNwSaTWHsYpQei7qGH0X
+ Q3cpl6m7s913O0EqAQTC9Xa93NBaodVCrzVrDytXmuOSf+R4CR+7g3jjgt+rbENZPdBu
+ ozeA==
+X-Gm-Message-State: AOJu0Yzf5DukQl7sA6Tx3j60UYemye/M+4uBaQiAdNgH2tS08nYhqtcv
+ 9qlaAPhkQZpup5mD5lk4N9ed3g==
+X-Google-Smtp-Source: AGHT+IGoAzq6z6lD5Mpqyv3lJ7rc9v84cYoJYIsbfi/P82fq+CxzhTO04Ex8aI1wj4UV6Td1xXzyPw==
+X-Received: by 2002:a17:906:1b02:b0:a19:a19b:423a with SMTP id
+ o2-20020a1709061b0200b00a19a19b423amr501891ejg.165.1701872761126; 
+ Wed, 06 Dec 2023 06:26:01 -0800 (PST)
+Received: from [192.168.69.100] (tal33-h02-176-184-38-132.dsl.sta.abo.bbox.fr.
+ [176.184.38.132]) by smtp.gmail.com with ESMTPSA id
+ dk13-20020a170906f0cd00b00a1e04f24df1sm463264ejb.223.2023.12.06.06.25.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Dec 2023 06:26:00 -0800 (PST)
+Message-ID: <5eaf9e91-0a23-481c-b908-e037420c73ce@linaro.org>
+Date: Wed, 6 Dec 2023 15:25:57 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.70.43.19; envelope-from=edmund.raile@proton.me;
- helo=mail-4319.protonmail.ch
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/11] chardev: force write all when recording replay logs
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+References: <20231205204106.95531-1-alex.bennee@linaro.org>
+ <20231205204106.95531-11-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231205204106.95531-11-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,187 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previous implementation of both functions was blocking and caused guest
-freezes / crashes on host clipboard owner change.
- * use callbacks instead of waiting for GTK to deliver
-   clipboard content type evaluation and contents
- * evaluate a serial in the info struct to discard old events
+On 5/12/23 21:41, Alex Bennée wrote:
+> This is mostly a problem within avocado as serial generally isn't busy
+> enough to overfill pipes. However the consequences of recording a
+> failed write will haunt us on replay when causing the log to go out of
+> sync.
+> 
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2010
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+> ---
+>   chardev/char.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/chardev/char.c b/chardev/char.c
+> index 996a024c7a..6e5b4d7345 100644
+> --- a/chardev/char.c
+> +++ b/chardev/char.c
+> @@ -171,7 +171,8 @@ int qemu_chr_write(Chardev *s, const uint8_t *buf, int len, bool write_all)
+>           return res;
+>       }
 
-Fixes: d11ebe2ca257 ("ui/gtk: add clipboard support")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1150
-Signed-off-by: Edmund Raile <edmund.raile@proton.me>
----
-Gitlab user kolAflash is to credit for determining that the main issue
-of the QEMU-UI-GTK clipboard is the call to the blocking function
-gtk_clipboard_wait_is_text_available in gd_owner_change, causing guests
-to freeze / crash when GTK takes too long.
-Marc-Andr=C3=A9 Lureau suggested:=20
- * gd_clipboard_request might express the same issue due to using
-   gtk_clipboard_wait_for_text
- * the callbacks could use the QemuClipboardInfo struct's serial field
-   to discard old events
- * storing the serial for the owner change callback inside the
-   GtkDisplay struct
+Please add a comment explaining why in the code. Maybe simpler
+using:
 
-This patch implements asynchronous gd_clipboard_request and
-gd_owner_change with serial checking.
+        if (replay_mode == REPLAY_MODE_RECORD) {
+            /* $explanation */
+            write_all = true;
+        }
 
-What I haven't implemented is gd_clipboard_notify's
-QEMU_CLIPBOARD_RESET_SERIAL handling, I don't know how to.
-
-Please help me test this patch.
-The issue mentions the conditions, so far it has been stable.
-Note that you will need to build QEMU with `enable-gtk-clipboard`.
-command line options for qemu-vdagent:
--device virtio-serial,packed=3Don,ioeventfd=3Don \
--device virtserialport,name=3Dcom.redhat.spice.0,chardev=3Dvdagent0 \
--chardev qemu-vdagent,id=3Dvdagent0,name=3Dvdagent,clipboard=3Don,mouse=3Do=
-ff \
-The guests spice-vdagent user service may have to be started manually.
-
-If testing is sufficient and shows no way to break this, we could undo
-or modify 29e0bfffab87d89c65c0890607e203b1579590a3
-to have the GTK UI's clipboard built-in by default again.
-
-Previous threads:
- * https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg06027.html
- * https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg04397.html
- * https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg05755.html
-
- include/ui/gtk.h   |  1 +
- ui/gtk-clipboard.c | 79 ++++++++++++++++++++++++++++++++++++++--------
- 2 files changed, 66 insertions(+), 14 deletions(-)
-
-diff --git a/include/ui/gtk.h b/include/ui/gtk.h
-index aa3d637029..ac44609770 100644
---- a/include/ui/gtk.h
-+++ b/include/ui/gtk.h
-@@ -147,6 +147,7 @@ struct GtkDisplayState {
-     uint32_t cbpending[QEMU_CLIPBOARD_SELECTION__COUNT];
-     GtkClipboard *gtkcb[QEMU_CLIPBOARD_SELECTION__COUNT];
-     bool cbowner[QEMU_CLIPBOARD_SELECTION__COUNT];
-+    uint32_t cb_serial_owner_change;
-=20
-     DisplayOptions *opts;
- };
-diff --git a/ui/gtk-clipboard.c b/ui/gtk-clipboard.c
-index 8d8a636fd1..6b2c32abee 100644
---- a/ui/gtk-clipboard.c
-+++ b/ui/gtk-clipboard.c
-@@ -133,26 +133,81 @@ static void gd_clipboard_notify(Notifier *notifier, v=
-oid *data)
-     }
- }
-=20
-+/*
-+ * asynchronous clipboard text transfer callback
-+ * called when host (gtk) is ready to deliver to guest
-+ */
-+static void gd_clipboard_request_text_callback
-+    (GtkClipboard *clipboard, const gchar *text, gpointer data)
-+{
-+    QemuClipboardInfo *info =3D data;
-+
-+    if (!text || !qemu_clipboard_check_serial(info, true)) {
-+        qemu_clipboard_info_unref(info);
-+        return;
-+    }
-+
-+    qemu_clipboard_set_data(info->owner, info, QEMU_CLIPBOARD_TYPE_TEXT,
-+                            strlen(text), text, true);
-+    qemu_clipboard_info_unref(info);
-+}
-+
-+/*
-+ * asynchronous clipboard data transfer initiator
-+ * guest requests, host delivers when ready
-+ */
- static void gd_clipboard_request(QemuClipboardInfo *info,
-                                  QemuClipboardType type)
- {
-     GtkDisplayState *gd =3D container_of(info->owner, GtkDisplayState, cbp=
-eer);
--    char *text;
-=20
-     switch (type) {
-     case QEMU_CLIPBOARD_TYPE_TEXT:
--        text =3D gtk_clipboard_wait_for_text(gd->gtkcb[info->selection]);
--        if (text) {
--            qemu_clipboard_set_data(&gd->cbpeer, info, type,
--                                    strlen(text), text, true);
--            g_free(text);
--        }
-+        gtk_clipboard_request_text
-+            (gd->gtkcb[info->selection],
-+             gd_clipboard_request_text_callback, info);
-         break;
-     default:
-         break;
-     }
- }
-=20
-+/*
-+ * asynchronous clipboard text availability notification callback
-+ * called when host (gtk) is ready to notify guest
-+ */
-+static void gd_owner_change_text_callback
-+    (GtkClipboard *clipboard, const gchar *text, gpointer data)
-+{
-+    QemuClipboardInfo *info =3D data;
-+    GtkDisplayState *gd =3D container_of(info->owner, GtkDisplayState, cbp=
-eer);
-+
-+    /*
-+     * performing the subtraction of uints as ints
-+     * is a neat trick to guard against rollover issues
-+     */
-+    if (!text ||
-+        (((int32_t)(info->serial - gd->cb_serial_owner_change)) < 0))
-+    {
-+        goto end;
-+    }
-+    gd->cb_serial_owner_change =3D info->serial;
-+
-+    info->types[QEMU_CLIPBOARD_TYPE_TEXT].available =3D true;
-+    qemu_clipboard_update(info);
-+
-+end:
-+    /*
-+     * this notification info struct is temporary
-+     * and can safely be freed after use
-+     */
-+    qemu_clipboard_info_unref(info);
-+}
-+
-+/*
-+ * asynchronous clipboard data availability notification initiator
-+ * host notifies guest when ready
-+ */
- static void gd_owner_change(GtkClipboard *clipboard,
-                             GdkEvent *event,
-                             gpointer data)
-@@ -166,16 +221,12 @@ static void gd_owner_change(GtkClipboard *clipboard,
-         return;
-     }
-=20
--
-     switch (event->owner_change.reason) {
-     case GDK_OWNER_CHANGE_NEW_OWNER:
-         info =3D qemu_clipboard_info_new(&gd->cbpeer, s);
--        if (gtk_clipboard_wait_is_text_available(clipboard)) {
--            info->types[QEMU_CLIPBOARD_TYPE_TEXT].available =3D true;
--        }
--
--        qemu_clipboard_update(info);
--        qemu_clipboard_info_unref(info);
-+        info->serial =3D ++gd->cb_serial_owner_change;
-+        gtk_clipboard_request_text
-+            (clipboard, gd_owner_change_text_callback, info);
-         break;
-     default:
-         qemu_clipboard_peer_release(&gd->cbpeer, s);
---=20
-2.42.0
-
+> -    res = qemu_chr_write_buffer(s, buf, len, &offset, write_all);
+> +    res = qemu_chr_write_buffer(s, buf, len, &offset,
+> +                                replay_mode == REPLAY_MODE_RECORD ? true : write_all);
+With a comment:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
