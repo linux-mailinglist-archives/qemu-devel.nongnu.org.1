@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360EA8063F6
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 02:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29DEE8063FA
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 02:12:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAgLR-0007Cg-Du; Tue, 05 Dec 2023 20:04:57 -0500
+	id 1rAgSH-0000Cw-Ts; Tue, 05 Dec 2023 20:12:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAgLP-0007CT-AJ
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 20:04:56 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1rAgSF-0000Cf-7S; Tue, 05 Dec 2023 20:11:59 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAgLM-0002kb-SH
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 20:04:54 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-54ca339ae7aso4349083a12.3
- for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 17:04:52 -0800 (PST)
+ id 1rAgSD-0004r1-Do; Tue, 05 Dec 2023 20:11:58 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-54c74b3cd4cso758779a12.1; 
+ Tue, 05 Dec 2023 17:11:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701824691; x=1702429491; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701825115; x=1702429915; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MEAbpF2SThmoYW857skSuGD1PSK2La9CB5UpLpPWfhA=;
- b=VFPM14o0Idv+EcWDSG5FGGhLRkU8AwPaKwVN2QitzG7++bXpD4fqX7j3PDpyBxKuqz
- /Wf8jIUM0LOJ9Mffl+Br0OFvW2mjiGeRoV3ajx7+RhusOLdhZTAviksTZZ9KCWvvyp+t
- XzL6cIQC9IUvC5zyPIt3urcWA7oRH8/v5PIjEkqHb3cpEjLtpDPoOgUyUX9gWfMwlswV
- /WvIO2M+twZzRPPo5OObYaJxtDRhp7t7XdlVPG7U9O+suQ123J+yB1/AqixU2Tsa7TvJ
- P6kp1880j0R699SMh45GzN0aPR9rTtoeeHNyArz1JJxuL2WWJjAS3rnnw8QfBdHO+02i
- VsYA==
+ bh=DeTZkrB4DzpusmiLoNjG17PsLusgQKfIxgFTzmgYldg=;
+ b=ctmYuk+0+hi9YmBLvg7M/yTJj356YUdplUDGP+/bGV7/jw0FsAv613Nlv6Zzftp6Ns
+ Ws9lnI0hy8zzx4Fiz9xIJtbiMeRelhMw0iwptpf2srncF1Z03MfOGTJ2PlFnTWCKNwvF
+ tn32TcMa7ojQAMhOvbLYQYJbPbAmzWghxTpCrtdFV2pJ0LY0SKr/WLCW7s17Qz1f3Wp1
+ bnjXPknUhe7v8aypzwGG4jbuoZNa7L4px57dqBPAeV/MY/P2KbyVUuQweGNIsk/SMl8y
+ Mh0WtgL9mEco0Jb+pdH3AL4aEtPSUoJx3Z2wuNQM1B+N/n2NZpKSLxrbsVftpkI2vrxa
+ yQ0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701824691; x=1702429491;
+ d=1e100.net; s=20230601; t=1701825115; x=1702429915;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MEAbpF2SThmoYW857skSuGD1PSK2La9CB5UpLpPWfhA=;
- b=DG8A3dxOUAF9p8Z9flo/ArgAlQUsJin6lIajZcBq7atl1kfmdh0LdpafKOEqYdWCH4
- cDMplKKiAIRRnax/FwlkU6V3ZfINqRc3KEh+SD5I9wEkS2RHu0dvd2BhdlywQm3H6mqY
- /bNu58S6gpt1TTHTxz06hLdPs1mQkpdovwKIStl9uDGbJuj5F7yRTPga5Ko4RoQTuus2
- cUyv6K/xQRAIRna9HtWWiko8ZsgiiD+3LQMSOoEkpoCCRYSV6GRZ2fKl0rKHdImKf/xK
- gpwsrfNrNSfIX1CSga+uqKU18RM6lE8us3pL+wMIWNTWmHwfrmd+qbgmunCf9609mzcI
- CsgA==
-X-Gm-Message-State: AOJu0YxNPQScvkg6IwohBsnZW+uDKor+iCPNkDw4eyPfOfgdVJelc/su
- omPfRJOTGGxo8mW6JlOL6LYVs1k7FdOJytQW46YSoLh47nVH5g==
-X-Google-Smtp-Source: AGHT+IEZnn1ZP878VWdGIQcGdd5atijzEygFW9n03+X9u3rTViMyFwUP8BIUbEz9tJxzTMEcEqRjLL+Kt/l93cc/DwU=
-X-Received: by 2002:a50:8e12:0:b0:54b:1ca8:851e with SMTP id
- 18-20020a508e12000000b0054b1ca8851emr106672edw.2.1701824690805; Tue, 05 Dec
- 2023 17:04:50 -0800 (PST)
+ bh=DeTZkrB4DzpusmiLoNjG17PsLusgQKfIxgFTzmgYldg=;
+ b=sIlO+XEFCpxsnTMO8OaSLQdXq3F4zdo1ua4cNoG3lLUchmA2NNXU/u+aR7+rGJg5Ps
+ FJcmuP9PdIINAdkBpvnzZd8s4AOsgcEgGSNt/R4YpYBpskBP+jOnpGlnkHM3tqZf2/xy
+ mBgkzN1qrIOMZfmxNauxP/r3n/rtTz4eJA1HL8qyPlWwdKqQ/3hzOcSYgcZZMtM3PXF2
+ M2DgPswiG9paLaZtED2WrHZa+PwXbT/ICTs2iSzW8olPliOC9jp+RoG62QvkU25t+jrj
+ uBws1v9b25sX5+S+FZazuYw3ttEy/3jUEtGRtNcDuXJLZKqe85XDUzc+ahx+TUiecBQT
+ E83A==
+X-Gm-Message-State: AOJu0Yx6OD6Ox07SIxClJB5Du9zrXoOGIIKDmcm9UqgKGnIJ3YcYCDgA
+ 50zakOTQQHiVUIMPPgjoDliMRz8/Hmnpd4t13yo=
+X-Google-Smtp-Source: AGHT+IH62ITX39Fb5n/vP5AcIVzY+7K+EiiA7J79pLtvo3cY74bvHNMDK+xmJTNnU2p8poK18wV1pL6W2JE4XHfRAsc=
+X-Received: by 2002:a50:d557:0:b0:54c:bb9c:4b88 with SMTP id
+ f23-20020a50d557000000b0054cbb9c4b88mr128824edj.5.1701825114703; Tue, 05 Dec
+ 2023 17:11:54 -0800 (PST)
 MIME-Version: 1.0
-References: <170152443229.18048.53824064267512246-0@git.sr.ht>
-In-Reply-To: <170152443229.18048.53824064267512246-0@git.sr.ht>
+References: <170171757903.6536.10207274798404158986-0@git.sr.ht>
+In-Reply-To: <170171757903.6536.10207274798404158986-0@git.sr.ht>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 6 Dec 2023 11:04:23 +1000
-Message-ID: <CAKmqyKN2sZhghq0yweD33DwpE=n1-gicZhSU2nL_j1t9OhC4rw@mail.gmail.com>
-Subject: Re: [PATCH qemu v3 00/20] Fix malfunctioning of T2-T5 timers on the
- STM32 platform
-To: "~lbryndza" <lbryndza.oss@icloud.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 6 Dec 2023 11:11:27 +1000
+Message-ID: <CAKmqyKOBjeE68LwisfuYBenKu3vGKHS8SQBeggeLcBrSLYBpJw@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 0/1] Implement STM32L4x5 EXTI
+To: "~inesvarhol" <inesvarhol@proton.me>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, alistair@alistair23.me, 
+ philmd@linaro.org, peter.maydell@linaro.org, ines.varhol@telecom-paris.fr, 
+ arnaud.minier@telecom-paris.fr
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alistair23@gmail.com; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -88,78 +87,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Dec 2, 2023 at 11:40=E2=80=AFPM ~lbryndza <lbryndza@git.sr.ht> wrot=
-e:
+On Tue, Dec 5, 2023 at 5:20=E2=80=AFAM ~inesvarhol <inesvarhol@git.sr.ht> w=
+rote:
 >
-> Current implementation of T2 - T5 times on the STM32 platform does not
-> work properly.
-> After configuring the timer-counter circuit to report interrupts every
-> 10ms, in reality the first interrupt is reported
-> only once after a few seconds, while subsequent interrupts do not come.
-> The current code also does not properly emulate the operation of even
-> the basic functions of the TIME-BASE unit.
-> This patch contains fixes that reimplements the basic functionality
-> of the time base unit such as up-counting down-counting , and alternate-
-> mode up-down counting.
-> The ptimer() API is used to emulate timers.
-> After applying the patch, STM32 timer works correctly in its basic
-> functionality.
-> The ISIX-RTOS test unit was used to test the patch.
-> Links and instructions can be found below:
+> This patch allows to emulate the STM32L4x5 EXTI device.
+> It implements register access and software interruptions.
 >
-> https://github.com/lucckb/isixrtos/blob/master/tests/libisix/01_basic_pri=
-mitives.cpp
-> https://github.com/lucckb/isixrtos/blob/master/extras/doc/unit_test_qemu.=
-md
->
->
-> qemu-system-arm -M olimex-stm32-h405  -kernel
-> build/tests/libisix/isixunittests.binary -nographic
-> unittests_entry.cpp:146|ISIX VERSION pub/ep0319-157-gb239b35f-dirty
-> unittests_entry.cpp:83|Exceptions pretest. OK
-> 51 selected tests
-> [   RUN    ] 01_base_00 TimeBase timer vs systick
-> [  1001ms  ] ...
-> [   RUN    ] 01_base_01 Basic heap allocator
-> [   1ms    ] ...
+> This is RFC because we're new at contributing to QEMU.
 
-Great! This is a good step in the right direction.
+Thanks for the patches!
 
-Each patch needs to have a different title though. The idea is that
-each patch describes what that patch is doing. So each commit will
-have a title and commit message describing that patch. The cover
-letter (this email) will then describe the overarching goal.
+As a general guide, RFCs are for things that you don't think should be
+merged. So for example maybe you have half finished something, but you
+want to get some feedback, you can send an RFC.
+
+You don't have to send an RFC just because you are unsure if you have
+done something correctly. A patch is fine. Although there is no harm
+in sending an RFC, usually you get less eye balls on it because
+everyone is busy.
+
+> We had some difficulties writing qtests and the result might be bizarre.
+>
+> We have some questions about the next steps for our stm32l4x5 project :
+>
+> Should we send a non-RFC patch after this peripheral implementation is
+> reviewed,
+> or should we wait for more peripherals to be implemented?
+
+Yes!
+
+The easiest way to develop upstream is to send your patches as early
+as you can. Obviously you want to test them and make sure they work.
+But you don't have to wait for every single thing to be finished. If
+you have implemented support in a peripheral you can send those
+patches upstream.
+
+Again, as long everything works and is tested it's ready to go. Don't
+wait for a year of development before trying to upstream, as that is
+harder for you and for reviewers. Get feedback early and often :)
+
+> We have syscfg and uart implementations ongoing.
+>
+> Also, should the version numbers restart from 1 when sending a non-RFC
+> tag ?
+
+Yes, it will reset to "PATCH", and then "PATCH v2" and so on
 
 Alistair
 
 >
-> Lucjan Bryndza (20):
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
->   Fixing the basic functionality of STM32 timers
+> Sincerely,
+> In=C3=A8s Varhol
 >
->  hw/arm/stm32f405_soc.c             |   2 +-
->  hw/timer/stm32f2xx_timer.c         | 262 +++++++++++++++++++----------
->  include/hw/timer/stm32f2xx_timer.h |  23 ++-
->  3 files changed, 189 insertions(+), 98 deletions(-)
+>
+> Changes from v2 to v3:
+> - adding more tests writing/reading in exti registers
+> - adding tests checking that interrupt work by reading NVIC registers
+> - correcting exti_write in SWIER (so it sets an irq only when a bit goes
+> from '0' to '1')
+> - correcting exti_set_irq (so it never writes in PR when the relevant
+> bit in IMR is '0')
+>
+> Changes from v1 to v2:
+> - use arrays to deduplicate code and logic
+> - move internal constant EXTI_NUM_GPIO_EVENT_IN_LINES from the header
+> to the .c file
+> - Improve copyright headers
+> - replace static const with #define
+> - use the DEFINE_TYPES macro
+> - fill the impl and valid field of the exti's MemoryRegionOps
+> - fix invalid test caused by a last minute change
+>
+> Based-on: <170049810484.22920.612074576971878323-0@git.sr.ht>
+> ([RFC v3 2/2] hw/arm: Add minimal support for the B-L475E-IOT01A board)
+>
+> In=C3=A8s Varhol (1):
+>   Implement STM32L4x5 EXTI
+>
+>  hw/arm/Kconfig                    |   1 +
+>  hw/arm/stm32l4x5_soc.c            |  65 +++-
+>  hw/misc/Kconfig                   |   3 +
+>  hw/misc/meson.build               |   1 +
+>  hw/misc/stm32l4x5_exti.c          | 306 +++++++++++++++++++
+>  hw/misc/trace-events              |   5 +
+>  include/hw/arm/stm32l4x5_soc.h    |   3 +
+>  include/hw/misc/stm32l4x5_exti.h  |  58 ++++
+>  tests/qtest/meson.build           |   5 +
+>  tests/qtest/stm32l4x5_exti-test.c | 485 ++++++++++++++++++++++++++++++
+>  10 files changed, 930 insertions(+), 2 deletions(-)
+>  create mode 100644 hw/misc/stm32l4x5_exti.c
+>  create mode 100644 include/hw/misc/stm32l4x5_exti.h
+>  create mode 100644 tests/qtest/stm32l4x5_exti-test.c
 >
 > --
 > 2.38.5
+>
 
