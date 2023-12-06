@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390C080755C
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:40:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8D0807563
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:41:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAuwS-0006zm-IC; Wed, 06 Dec 2023 11:40:08 -0500
+	id 1rAux4-000740-7c; Wed, 06 Dec 2023 11:40:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rAuwP-0006zV-Ps
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:40:05 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1rAuwW-00070I-N8
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:40:14 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rAuwO-0003mm-A9
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:40:05 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1d045097b4cso35026425ad.0
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:38:03 -0800 (PST)
+ id 1rAuwS-0003oY-R1
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:40:12 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1d0a7b72203so31270205ad.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:38:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701880683; x=1702485483;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701880687; x=1702485487;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ME+BuRtXMyZoePaH7F1ht47MskX6EGo+OV1KpUXdVVY=;
- b=QEYTVyI9SRJ8Dw0YchCHVYykXFKyDWrnw3DgBOEmY4ypkfPPgbw0U/E2MT4OW5XcxY
- TsDWx+XNAHHBIeOBIXpkMYY9k1xGkYym9Vs1qA1tw4vdSmwf3QjIiOTZrRj0uvXmULue
- 8z/or7DS8TMOXKy7VO+SAHTvkyWjKSdrs342zhUFINWqTJlcOiuA8QtSkl0q6YLr1l+4
- ofXo7nWOQcJSCExCaswAFr6VWxUbHZL+TJa9Q2jT+ObpwNNiIFVakATiq+GMY8cMR2oR
- xyPvaVdAKU/zZ8YWGn5PexBH/nc2jmFumej3RHLFcgigbn952lo7YDmpr+mChubC4ct7
- szAQ==
+ bh=e2TeQm179WJYabh6QIsHuX0i02sIiWoRD0LrOlPmpos=;
+ b=G+QNJgcAo/XLnLtuPFTgMzXb8kd8V+cYq6nv8dWOeG1oXB2LFGJcvI5EnkCnIxd64O
+ rT7Gb9/q18qHXp8IjDi/GsID+FAyCsLyIGeQuTLeXGo072BMWK0rLMANdGGtcfPureNo
+ TtG/lrztcUjBWf989oHV1yaYlHcNFpRshgAJpmCnQS8TcbCacRWnrwUJO+/hieg0MpFT
+ D3i6nerjyW3cPOMnTmfPXhZn4pg8Zbu5yaAHHZa14BNAvhsEno/GhEheSrIlAHy5qnGi
+ lL3F6zhLqFMr00Dw0Oz5eFFao0wrUFTP0X55qiD6bo2/F/eMdbuGZ7TjgDEJr2s4cMSc
+ EexA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701880683; x=1702485483;
+ d=1e100.net; s=20230601; t=1701880687; x=1702485487;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ME+BuRtXMyZoePaH7F1ht47MskX6EGo+OV1KpUXdVVY=;
- b=MIv03xx2OAY8933HIGeA8EA+TLZE5FWCUVdUa+tpimsjyQzRueeU/LcGZyThbQtnzs
- H+KMHiZtG3R7ihoF9aCFoxe+DI3A2U7JB2T01SsA6kczBPdT4yGJqZs8VuZc+le9ePmt
- z5ryMiDLKrNBUnPqBCHK47TpXSC/fw1W8Y9hb8ukyFKUvjjYA0kjQ3jYVuheJze/JvVo
- rWu0JLzdz+6SHPiyAId6FB+G8Wr554T1CBMOL/csMcdG2kMKH5J9tXdr8tEobIz2awdW
- trrgNu0oZkb37iLJUePaFoml/eSvZsMlHSRUf4FYLnZmcVr98oNoPK0GULpoPutqi66L
- ZmoA==
-X-Gm-Message-State: AOJu0Yyslckvlm+6I6rsJpWuPKJKchvWFj+ilHXRTSzIu7yOhegR/Y30
- WxhYf217hIZmi9/zu5vBwkpJO+w8bMF3QzFw42ra1pqj
-X-Google-Smtp-Source: AGHT+IHMpFR9P/twlo67hGfP/nzWKiLqHvGB1PLDWY/gq6iJIgB0srQIvgOsGN5xpRMDIZ99zeDl6w==
-X-Received: by 2002:a17:902:7604:b0:1cf:747e:89c6 with SMTP id
- k4-20020a170902760400b001cf747e89c6mr885872pll.26.1701880682367; 
- Wed, 06 Dec 2023 08:38:02 -0800 (PST)
+ bh=e2TeQm179WJYabh6QIsHuX0i02sIiWoRD0LrOlPmpos=;
+ b=GUcSlNJ/f5sBFzGxnvH2jEMbjbBoo02b9DnvAqJG/fQEdAcNa+2QENDp2+ZCn+48JF
+ 1/oNdIOVFr1ZiVKiUyh93j9DEnS42GK7BDYpDBz7ko6AUXR4I9anJMUQTQxrPob0aPVG
+ Ak1odVgtxU/Ok/dq5cWh4bVZZqyzJHHoKgKLNSsY1Gzf8GhB5O2ofJ9KH9XhmszlTqym
+ 5Fvltlp0mVw9zz9b+mxEtcMcljO6OmAV8Hq+oXlFBNqM4ePJl7+4i2Y/uBJW0+qt2gI2
+ Xe89PtOAcN876SxpsV71OBKBeuWgvPiTpqtC0kZvR2Mr2JF4Z7bfyUQmtCFHUguuZUUr
+ KJjw==
+X-Gm-Message-State: AOJu0Ywj+EmNryy3qYc3FPFBtw84mPIDkIghSlEEozU/W2Whd0lpdAax
+ y73TVB3M6voP5S7BYOcY/PBR5XDWgN+f4TesPlpN5nL3
+X-Google-Smtp-Source: AGHT+IHoEKtpi/q+qffwIGy4ZAt0Z7829OqDaOTFNctp5zoGm/roNr8yFDAFTpj+tmtwMAltuFcyDg==
+X-Received: by 2002:a17:903:32d0:b0:1c9:cc88:502c with SMTP id
+ i16-20020a17090332d000b001c9cc88502cmr1381760plr.69.1701880686716; 
+ Wed, 06 Dec 2023 08:38:06 -0800 (PST)
 Received: from localhost.localdomain ([125.71.95.66])
  by smtp.gmail.com with ESMTPSA id
- m14-20020a170902bb8e00b001d04d730687sm42570pls.103.2023.12.06.08.37.58
+ m14-20020a170902bb8e00b001d04d730687sm42570pls.103.2023.12.06.08.38.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Dec 2023 08:38:02 -0800 (PST)
+ Wed, 06 Dec 2023 08:38:06 -0800 (PST)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  yong.huang@smartx.com
-Subject: [v2 2/4] crypto: Introduce payload offset set function
-Date: Thu,  7 Dec 2023 00:37:43 +0800
-Message-Id: <7130b0b19c38bc4e92071198af54a56f8ba3597c.1701879996.git.yong.huang@smartx.com>
+Subject: [v2 3/4] crypto: Support generic LUKS encryption
+Date: Thu,  7 Dec 2023 00:37:44 +0800
+Message-Id: <910801f303da1601051479d3b7e5c2c6b4e01eb7.1701879996.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1701879996.git.yong.huang@smartx.com>
 References: <cover.1701879996.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::630;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,37 +94,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+By enhancing the LUKS driver, it is possible to enable
+the detachable LUKS header and, as a result, achieve
+general encryption for any disk format that QEMU has
+supported.
+
+Take the qcow2 as an example, the usage of the generic
+LUKS encryption as follows:
+
+1. add a protocol blockdev node of data disk
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+> "arguments":{"node-name":"libvirt-1-storage", "driver":"file",
+> "filename":"/path/to/test_disk.qcow2"}}'
+
+2. add a protocol blockdev node of LUKS header as above.
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+> "arguments":{"node-name":"libvirt-2-storage", "driver":"file",
+> "filename": "/path/to/cipher.gluks" }}'
+
+3. add the secret for decrypting the cipher stored in LUKS
+   header above
+$ virsh qemu-monitor-command vm '{"execute":"object-add",
+> "arguments":{"qom-type":"secret", "id":
+> "libvirt-2-storage-secret0", "data":"abc123"}}'
+
+4. add the qcow2-drived blockdev format node
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+> "arguments":{"node-name":"libvirt-1-format", "driver":"qcow2",
+> "file":"libvirt-1-storage"}}'
+
+5. add the luks-drived blockdev to link the qcow2 disk with
+   LUKS header by specifying the field "header"
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+> "arguments":{"node-name":"libvirt-2-format", "driver":"luks",
+> "file":"libvirt-1-format", "header":"libvirt-2-storage",
+> "key-secret":"libvirt-2-format-secret0"}}'
+
+6. add the virtio-blk device finally
+$ virsh qemu-monitor-command vm '{"execute":"device_add",
+> "arguments": {"num-queues":"1", "driver":"virtio-blk-pci",
+> "drive": "libvirt-2-format", "id":"virtio-disk2"}}'
+
+The generic LUKS encryption method of starting a virtual
+machine (VM) is somewhat similar to hot-plug in that both
+maintaining the same json command while the starting VM
+changes the "blockdev-add/device_add" parameters to
+"blockdev/device".
+
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- crypto/block.c         | 4 ++++
- include/crypto/block.h | 1 +
- 2 files changed, 5 insertions(+)
+ block/crypto.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/block.c b/crypto/block.c
-index 7bb4b74a37..3dcf22a69f 100644
---- a/crypto/block.c
-+++ b/crypto/block.c
-@@ -319,6 +319,10 @@ QCryptoHashAlgorithm qcrypto_block_get_kdf_hash(QCryptoBlock *block)
-     return block->kdfhash;
- }
+diff --git a/block/crypto.c b/block/crypto.c
+index f82b13d32b..7d70349463 100644
+--- a/block/crypto.c
++++ b/block/crypto.c
+@@ -40,6 +40,7 @@ struct BlockCrypto {
+     QCryptoBlock *block;
+     bool updating_keys;
+     BdrvChild *header;  /* Reference to the detached LUKS header */
++    bool detached_mode; /* If true, LUKS plays a detached header role */
+ };
  
-+void qcrypto_block_set_payload_offset(QCryptoBlock *block, uint64_t offset)
-+{
-+    block->payload_offset = offset;
-+}
  
- uint64_t qcrypto_block_get_payload_offset(QCryptoBlock *block)
+@@ -64,12 +65,16 @@ static int block_crypto_read_func(QCryptoBlock *block,
+                                   Error **errp)
  {
-diff --git a/include/crypto/block.h b/include/crypto/block.h
-index 4f63a37872..b47a90c529 100644
---- a/include/crypto/block.h
-+++ b/include/crypto/block.h
-@@ -312,4 +312,5 @@ void qcrypto_block_free(QCryptoBlock *block);
+     BlockDriverState *bs = opaque;
++    BlockCrypto *crypto = bs->opaque;
+     ssize_t ret;
  
- G_DEFINE_AUTOPTR_CLEANUP_FUNC(QCryptoBlock, qcrypto_block_free)
+     GLOBAL_STATE_CODE();
+     GRAPH_RDLOCK_GUARD_MAINLOOP();
  
-+void qcrypto_block_set_payload_offset(QCryptoBlock *block, uint64_t offset);
- #endif /* QCRYPTO_BLOCK_H */
+-    ret = bdrv_pread(bs->file, offset, buflen, buf, 0);
++    if (crypto->detached_mode)
++        ret = bdrv_pread(crypto->header, offset, buflen, buf, 0);
++    else
++        ret = bdrv_pread(bs->file, offset, buflen, buf, 0);
+     if (ret < 0) {
+         error_setg_errno(errp, -ret, "Could not read encryption header");
+         return ret;
+@@ -269,6 +274,8 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
+     QCryptoBlockOpenOptions *open_opts = NULL;
+     unsigned int cflags = 0;
+     QDict *cryptoopts = NULL;
++    const char *header_bdref =
++        qdict_get_try_str(options, "header");
+ 
+     GLOBAL_STATE_CODE();
+ 
+@@ -277,6 +284,16 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
+         return ret;
+     }
+ 
++    if (header_bdref) {
++        crypto->detached_mode = true;
++        crypto->header = bdrv_open_child(NULL, options, "header", bs,
++                                         &child_of_bds, BDRV_CHILD_METADATA,
++                                         false, errp);
++        if (!crypto->header) {
++            return -EINVAL;
++        }
++    }
++
+     GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
+     bs->supported_write_flags = BDRV_REQ_FUA &
+@@ -312,6 +329,14 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
+         goto cleanup;
+     }
+ 
++    if (crypto->detached_mode) {
++        /*
++         * Set payload offset to zero as the file bdref has no LUKS
++         * header under detached mode.
++         */
++        qcrypto_block_set_payload_offset(crypto->block, 0);
++    }
++
+     bs->encrypted = true;
+ 
+     ret = 0;
+@@ -903,6 +928,17 @@ block_crypto_child_perms(BlockDriverState *bs, BdrvChild *c,
+ 
+     BlockCrypto *crypto = bs->opaque;
+ 
++    if (role == (role & BDRV_CHILD_METADATA)) {
++        /* Assign read permission only */
++        perm |= BLK_PERM_CONSISTENT_READ;
++        /* Share all permissions */
++        shared |= BLK_PERM_ALL;
++
++        *nperm = perm;
++        *nshared = shared;
++        return;
++    }
++
+     bdrv_default_perms(bs, c, role, reopen_queue, perm, shared, nperm, nshared);
+ 
+     /*
 -- 
 2.39.1
 
