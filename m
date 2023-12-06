@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C8780768B
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C58807693
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:26:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAvcx-000171-Qb; Wed, 06 Dec 2023 12:24:04 -0500
+	id 1rAvdM-0001PI-VP; Wed, 06 Dec 2023 12:24:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvcw-00016o-4n
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:24:02 -0500
+ id 1rAvdJ-0001Ny-1F
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:24:25 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvcu-0003ce-JK
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:24:01 -0500
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ id 1rAvdF-0003iE-NS
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:24:24 -0500
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B6EYRuM014616; Wed, 6 Dec 2023 17:23:59 GMT
+ 3B6EY31W022603; Wed, 6 Dec 2023 17:24:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=TfGqRUQ0q8zDCC+WzTzXTb6O5FNov+jJS/5zduEeT30=;
- b=m7tq/trsvuxDDgfrPe2C9bT9hJrBHX590yh1HkhB/WMS9inpWZOTJMnGYoSWXalBG9rw
- xiLFLlzq5menDSvDVfKLluZhgQpngyQ6Lqo9ls6bTmc5AVKRZ0U+UkEy41th7Ffkuu4L
- 8vc9coEWjMQD7kRaCIyxAVLm2bhvH+domMCWjG0fPpO+H+OszY1qpX/ld8ntRSas7lyZ
- nmy/26vnvukV14cOCOoUUIhOG1OqAqNXTiNfd0JJkwLU4WltJa7y3oebhBw5p++uIeME
- lb6kWozIqmokTlIQLrVD+m4mofQ6jPDM8u+fh3eglYwq796e9sHyJjtjXI436yVq+GjA XA== 
+ bh=ZT7aZFi5hiX+6FcwJHLVWgrKIok3nx5ofBwRwPQtJy8=;
+ b=ni8RfH947SLmTPodsxZa09B6lLsbr3JDRkTQnc+IYEnkqSJZEP53nqo4K8TEnOQiYS1s
+ dBE7L9pw0//xfz5ZozvFL67/n6ZwRdUyqMLeTGHkKokbCUHWc0MWs2sMgtsGW1XAIzgq
+ OYJUDWrf71srqlA41cxRMeoTg4chKxtZXCugvnN1DPJAFJ5cfCshZ3f0oKWdrz6VvcZL
+ wH0PzvoethZG7cMSVr2XmuSaHQbRcQBkfwdLIMiaqXki1oLN3RsR1fxDd/wbbYpHqrQk
+ Jv/Kdg+FIXVWQFd7LEESvypEVITaGe78KijeZxe53CVBVIQCsz+g7wjuCwKkR87Fl5+G 0w== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utdc19xq2-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utd0mj0k4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:23:59 +0000
+ Wed, 06 Dec 2023 17:24:09 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B6GfrYU038476; Wed, 6 Dec 2023 17:23:57 GMT
+ with ESMTP id 3B6GVbQI037850; Wed, 6 Dec 2023 17:23:59 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3utanc79ym-1
+ 3utanc7a0r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:23:49 +0000
+ Wed, 06 Dec 2023 17:23:58 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HMwkQ002907;
- Wed, 6 Dec 2023 17:23:49 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HMwkS002907;
+ Wed, 6 Dec 2023 17:23:50 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3utanc79rv-5; Wed, 06 Dec 2023 17:23:49 +0000
+ ESMTP id 3utanc79rv-6; Wed, 06 Dec 2023 17:23:50 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -58,22 +58,22 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V7 04/12] cpus: vm_resume
-Date: Wed,  6 Dec 2023 09:23:29 -0800
-Message-Id: <1701883417-356268-5-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V7 05/12] migration: propagate suspended runstate
+Date: Wed,  6 Dec 2023 09:23:30 -0800
+Message-Id: <1701883417-356268-6-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1701883417-356268-1-git-send-email-steven.sistare@oracle.com>
 References: <1701883417-356268-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-06_15,2023-12-06_01,2023-05-22_02
+ definitions=2023-12-06_16,2023-12-06_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  spamscore=0 malwarescore=0
  bulkscore=0 mlxlogscore=999 phishscore=0 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2312060140
-X-Proofpoint-GUID: H5iHZk-p_soBZsclpjwAey_uq4Dh0nQ_
-X-Proofpoint-ORIG-GUID: H5iHZk-p_soBZsclpjwAey_uq4Dh0nQ_
+X-Proofpoint-GUID: r8tHlFWcLlc_GTZlFPOHiOh3qZzoi_uK
+X-Proofpoint-ORIG-GUID: r8tHlFWcLlc_GTZlFPOHiOh3qZzoi_uK
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -99,55 +99,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define the vm_resume helper, for use in subsequent patches.
+If the outgoing machine was previously suspended, propagate that to the
+incoming side via global_state, so a subsequent vm_start restores the
+suspended state.  To maintain backward and forward compatibility, reclaim
+some space from the runstate member.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- include/sysemu/runstate.h | 9 +++++++++
- system/cpus.c             | 9 +++++++++
- 2 files changed, 18 insertions(+)
+ migration/global_state.c | 35 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 867e53c..315046b 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -53,6 +53,15 @@ void vm_start(void);
-  * @step_pending: whether any of the CPUs is about to be single-stepped by gdb
-  */
- int vm_prepare_start(bool step_pending);
+diff --git a/migration/global_state.c b/migration/global_state.c
+index 4e2a9d8..d4f61a1 100644
+--- a/migration/global_state.c
++++ b/migration/global_state.c
+@@ -22,7 +22,16 @@
+ 
+ typedef struct {
+     uint32_t size;
+-    uint8_t runstate[100];
 +
-+/**
-+ * vm_resume: If @state is a live state, start the vm and set the state,
-+ * else just set the state.
-+ *
-+ * @state: the state to restore
-+ */
-+void vm_resume(RunState state);
++    /*
++     * runstate was 100 bytes, zero padded, but we trimmed it to add a
++     * few fields and maintain backwards compatibility.
++     */
++    uint8_t runstate[32];
++    uint8_t has_vm_was_suspended;
++    uint8_t vm_was_suspended;
++    uint8_t unused[66];
 +
- int vm_stop(RunState state);
- int vm_stop_force_state(RunState state);
- int vm_shutdown(void);
-diff --git a/system/cpus.c b/system/cpus.c
-index f162435..7d2c28b 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -748,6 +748,15 @@ void vm_start(void)
-     }
+     RunState state;
+     bool received;
+ } GlobalState;
+@@ -35,6 +44,10 @@ static void global_state_do_store(RunState state)
+     assert(strlen(state_str) < sizeof(global_state.runstate));
+     strpadcpy((char *)global_state.runstate, sizeof(global_state.runstate),
+               state_str, '\0');
++    global_state.has_vm_was_suspended = true;
++    global_state.vm_was_suspended = vm_get_suspended();
++
++    memset(global_state.unused, 0, sizeof(global_state.unused));
  }
  
-+void vm_resume(RunState state)
-+{
-+    if (runstate_is_live(state)) {
-+        vm_start();
-+    } else {
-+        runstate_set(state);
-+    }
-+}
+ void global_state_store(void)
+@@ -68,6 +81,12 @@ static bool global_state_needed(void *opaque)
+         return true;
+     }
+ 
++    /* If the suspended state must be remembered, it is needed */
 +
- /* does a state transition even if the VM is already stopped,
-    current state is forgotten forever */
- int vm_stop_force_state(RunState state)
++    if (vm_get_suspended()) {
++        return true;
++    }
++
+     /* If state is running or paused, it is not needed */
+ 
+     if (strcmp(runstate, "running") == 0 ||
+@@ -85,6 +104,7 @@ static int global_state_post_load(void *opaque, int version_id)
+     Error *local_err = NULL;
+     int r;
+     char *runstate = (char *)s->runstate;
++    bool vm_was_suspended = s->has_vm_was_suspended && s->vm_was_suspended;
+ 
+     s->received = true;
+     trace_migrate_global_state_post_load(runstate);
+@@ -93,7 +113,7 @@ static int global_state_post_load(void *opaque, int version_id)
+                 sizeof(s->runstate)) == sizeof(s->runstate)) {
+         /*
+          * This condition should never happen during migration, because
+-         * all runstate names are shorter than 100 bytes (the size of
++         * all runstate names are shorter than 32 bytes (the size of
+          * s->runstate). However, a malicious stream could overflow
+          * the qapi_enum_parse() call, so we force the last character
+          * to a NUL byte.
+@@ -110,6 +130,14 @@ static int global_state_post_load(void *opaque, int version_id)
+     }
+     s->state = r;
+ 
++    /*
++     * global_state is saved on the outgoing side before forcing a stopped
++     * state, so it may have saved state=suspended and vm_was_suspended=0.
++     * Now we are in a paused state, and when we later call vm_start, it must
++     * restore the suspended state, so we must set vm_was_suspended=1 here.
++     */
++    vm_set_suspended(vm_was_suspended || r == RUN_STATE_SUSPENDED);
++
+     return 0;
+ }
+ 
+@@ -134,6 +162,9 @@ static const VMStateDescription vmstate_globalstate = {
+     .fields = (VMStateField[]) {
+         VMSTATE_UINT32(size, GlobalState),
+         VMSTATE_BUFFER(runstate, GlobalState),
++        VMSTATE_UINT8(has_vm_was_suspended, GlobalState),
++        VMSTATE_UINT8(vm_was_suspended, GlobalState),
++        VMSTATE_BUFFER(unused, GlobalState),
+         VMSTATE_END_OF_LIST()
+     },
+ };
 -- 
 1.8.3.1
 
