@@ -2,86 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FE0807062
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 13:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAB88070B2
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 14:14:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rArSF-0007Dn-Ol; Wed, 06 Dec 2023 07:56:44 -0500
+	id 1rAriY-0003jx-Nj; Wed, 06 Dec 2023 08:13:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <msuchanek@suse.de>) id 1rArS1-0007Bq-ST
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 07:56:33 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <msuchanek@suse.de>) id 1rArRx-0002j0-ET
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 07:56:27 -0500
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 94ADE22035;
- Wed,  6 Dec 2023 12:56:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1701867380; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/Wvhofv+y/lIzbpw4SmcXdrCuPWvfV2hiI2e55Wb8/w=;
- b=jeOPo4z6RlRGqTKl5kVDI2sN3nij16DDzszX2aY88VHbjveQyJn7BlIhPbtOvR4LSRrQyz
- dWcr5hMU81WXOUytEbX5v7rbkZPuKU53N5JyNPKXCB4tGMP4YxVchqaYpYiBxRtwvroENy
- JNsLH0o8osyFS0SjEelKHchkA3FPfhM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1701867380;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/Wvhofv+y/lIzbpw4SmcXdrCuPWvfV2hiI2e55Wb8/w=;
- b=9U3RYB/Y3mxwfIkyNaFZF+ycxbmrdj3YB1HAv9Z4KwhPR1nNY0ShBCpGmjr7KegNDpzii/
- uKFmVMi02ULOqKDQ==
-Date: Wed, 6 Dec 2023 13:56:19 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH-for-8.2?] accel/tcg: Implement tcg_unregister_thread()
-Message-ID: <20231206125619.GH9696@kitsune.suse.cz>
-References: <20231204194039.56169-1-philmd@linaro.org>
- <CAJSP0QUjZQQCk+VSJyxLq2jzuK=nxXDCiBn-r4dVzNPOCgH67w@mail.gmail.com>
- <20231204200937.GA9696@kitsune.suse.cz>
- <caa90c99-aada-467b-a005-84642cd55a86@linaro.org>
- <20231205100959.GB9696@kitsune.suse.cz>
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rAriL-0003ja-81
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 08:13:23 -0500
+Received: from mail-dm6nam12on20601.outbound.protection.outlook.com
+ ([2a01:111:f400:fe59::601]
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rAriI-0006ME-Aj
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 08:13:20 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EmFK/CBzt8RBuZmUWWqnrmjwF0bmBRmNrqCPtXDlDUdbHjAXIO5F2Kd4SpYTL6jakOYYfbdFB1ZuxbeZmm3Sr/gYBdYiahnPR5qSkUi5jCCibqMsAu7nkFRTiMSIV0RN7dqeikdzAM3dA1pvm1EZq0oM+EOcBdz7qxiN24cm0tqwbvcSXfs4GP2irdjIaqVL7rxfCiEQwO41D08t9Pui0GUBf9SMlmzeZr8AH6GSxWmPRbctxOjPNTqhPWRuSCRl4j9+3FUE6DnunpTvW59anulfaLucZFXg73nMa6nxr2Nxkm+UxDChgVaTH4JrhMaVWcrvpYhF9GH81+I7MOd+ZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=izrpnY9xboN00V4Yxi4UM63qCSKWZLZYL4kZX2oa2ZI=;
+ b=Fl0Ta1VeY8r2xvoijbKQuY3BqCO0YqcvqnGK8uVkWjqe2QJ8fQz2W1DZi7f9EevSRFh3g5HM+naCb7rVKMpogB75YVF7PQDc1gautKDBbtqiV7qd3ZCUAC3Tw6YNMfHtJzXLRm71AwLo9AniVddltGq0pr2iicSMBwtgAa9KDKUGidhMWS0yxfcuSqL9ew9+S+whXRAlCoW+pXSS9juVREdweJ+LVjTHHWExQxnLApEdPE858Vpbw6favQG1dab4/K1ZXjS4QM1aIeodeWNjGKOaafg54xJbay2vF1QzGKFFzlg9mLRPA9o48+RnatOiVb8CbP4qPTdcpXr4LaW6ZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=izrpnY9xboN00V4Yxi4UM63qCSKWZLZYL4kZX2oa2ZI=;
+ b=xkuFapufc9cc95BUt4rLY5k6BB9AwC+fUK8GTHDt5cGf4jdRwb2j/GnkXdZYzW21gMbRFjKIG4qcmyi46odBvLGWzg9eESAyi1P+zzs9SXoUY3zxA7Vh0nyveDf5qT6Ixf8kNWyi50N3dZyKAGGNoylfErlKEc1xZOmalO4YOd0=
+Received: from BLAPR03CA0172.namprd03.prod.outlook.com (2603:10b6:208:32f::12)
+ by PH8PR12MB6770.namprd12.prod.outlook.com (2603:10b6:510:1c5::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.25; Wed, 6 Dec
+ 2023 13:13:11 +0000
+Received: from BL6PEPF0001AB56.namprd02.prod.outlook.com
+ (2603:10b6:208:32f:cafe::7a) by BLAPR03CA0172.outlook.office365.com
+ (2603:10b6:208:32f::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34 via Frontend
+ Transport; Wed, 6 Dec 2023 13:13:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL6PEPF0001AB56.mail.protection.outlook.com (10.167.241.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7068.20 via Frontend Transport; Wed, 6 Dec 2023 13:13:10 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 6 Dec
+ 2023 07:13:10 -0600
+Date: Wed, 6 Dec 2023 07:12:48 -0600
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>, "Marcelo
+ Tosatti" <mtosatti@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, <kvm@vger.kernel.org>, Lara Lazier
+ <laramglazier@gmail.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, "Maxim
+ Levitsky" <mlevitsk@redhat.com>
+Subject: Re: [PATCH v2 for-8.2?] i386/sev: Avoid SEV-ES crash due to missing
+ MSR_EFER_LMA bit
+Message-ID: <20231206131248.q2yfrrfpfga7zfie@amd.com>
+References: <20231205222816.1152720-1-michael.roth@amd.com>
+ <4e78f214-43ee-4c3a-ba49-d3b54aff8737@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231205100959.GB9696@kitsune.suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -0.30
-X-Spamd-Result: default: False [-0.30 / 50.00]; ARC_NA(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- FREEMAIL_ENVRCPT(0.00)[gmail.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- RCPT_COUNT_FIVE(0.00)[5];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_ZERO(0.00)[0];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- FREEMAIL_CC(0.00)[gmail.com,linaro.org,nongnu.org,redhat.com];
- BAYES_HAM(-0.00)[15.85%]; SUBJECT_HAS_QUESTION(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=msuchanek@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <4e78f214-43ee-4c3a-ba49-d3b54aff8737@linaro.org>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB56:EE_|PH8PR12MB6770:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7bf95262-8d92-489a-aca8-08dbf65d186e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 5MxkazrhMjvIdQBb91211t7MnLDO1OPk+HgxpWD+2YirLvxvRD/6UZEnWrzIiJe8Tt4l0I7IRtBn9jTuaR0EATWTrxJarUSOC6MbvVEujxe+OcQUag4DWYftxUhSdEUiOHeCayou1FbiqrB2zAiTE6SwaDI8FwyCAaFl1b3K+n0CszW+BZ3QUjH2KBiDsmqLvyG/mSsoECxyvyUDWdF6fh5d/GKaO8V9/ADfe+/i8havGB7wjy2MJXEgG1lcNCJaa+fRC75KZ2wMVJNB/evmiQdsfuwGLt16L+6zoQZIWxwFT+axoN1QMoM67ZJMhnGSP370DSn+iWSihqgz6rgfqwfcgHjQ4V0Fa4Jj9tre1voDq3dWnxamxipAiRFPkwlvKocrQhdmXDgycPCv1dpZhp7Uuw5Zic1Vp4W2eheW/XZCslTOu2poqcgB5Heh0vTH4atXrt4YMnmiFMx/y0BJn6fxo4TfRS9sIv75O0V6gP2NbXzvmY/dDQqQhdFOUqU9RGLIfKlwAbPHFDSL60mzcfbh/Se7aRBBHfXaQ8hp0tlHbhMyKH7Z3jUZh1o4V70dCqGgutG0s/i9FvQzaGiG7GJQW16kS3m6K1BrCOwUBLkNE1pmAvBI/War+LbUBp/g7rBf9+PI7DclELZsL3fRNi4IrwVociXZyVOPQQmHs9h06voDgwb20Kwc5/317ACohuc+v9NbHAfTIq3rx3XKs0GXBN79juiIqHVx2yADytRG/wULvINZUNujRvFW98dhhnDgDtjUNBOv23kSb8n2WQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(39860400002)(376002)(136003)(346002)(396003)(230922051799003)(451199024)(186009)(82310400011)(64100799003)(1800799012)(36840700001)(40470700004)(46966006)(8676002)(8936002)(4326008)(316002)(6916009)(54906003)(40460700003)(83380400001)(36860700001)(5660300002)(47076005)(44832011)(478600001)(966005)(36756003)(40480700001)(2616005)(41300700001)(81166007)(356005)(16526019)(26005)(86362001)(1076003)(82740400003)(53546011)(6666004)(426003)(336012)(70206006)(70586007)(2906002)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 13:13:10.5042 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bf95262-8d92-489a-aca8-08dbf65d186e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB56.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6770
+Received-SPF: softfail client-ip=2a01:111:f400:fe59::601;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,48 +122,88 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Michael Roth <michael.roth@amd.com>
+From:  Michael Roth via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 05, 2023 at 11:09:59AM +0100, Michal Suchánek wrote:
-> On Mon, Dec 04, 2023 at 03:02:45PM -0800, Richard Henderson wrote:
-> > On 12/4/23 12:09, Michal Suchánek wrote:
-> > > On Mon, Dec 04, 2023 at 02:50:17PM -0500, Stefan Hajnoczi wrote:
-> > > > On Mon, 4 Dec 2023 at 14:40, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
-> > > > > +void tcg_unregister_thread(void)
-> > > > > +{
-> > > > > +    unsigned int n;
-> > > > > +
-> > > > > +    n = qatomic_fetch_dec(&tcg_cur_ctxs);
-> > > > > +    g_free(tcg_ctxs[n]);
-> > > > > +    qatomic_set(&tcg_ctxs[n], NULL);
-> > > > > +}
-> > > > 
-> > > > tcg_ctxs[n] may not be our context, so this looks like it could free
-> > > > another thread's context and lead to undefined behavior.
-> > 
-> > Correct.
-> > 
-> > > There is cpu->thread_id so perhaps cpu->thread_ctx could be added as
-> > > well. That would require a bitmap of used threads contexts rather than a
-> > > counter, though.
-> > 
-> > Or don't free the context at all, but re-use it when incrementing and
-> > tcg_ctxs[n] != null (i.e. plugging in a repacement vcpu).  After all, there
-> > can only be tcg_max_ctxs contexts.
+On Wed, Dec 06, 2023 at 12:48:35PM +0100, Philippe Mathieu-Daudé wrote:
+> Hi Michael,
 > 
-> But you would not know which contexts are in use and which aren't without
-> tracking the association of contexts to CPUs.
+> (Cc'ing Lara, Vitaly and Maxim)
 > 
-> Unless there is a cpu array somewhere and you can use the same index for
-> both to create the association.
+> On 5/12/23 23:28, Michael Roth wrote:
+> > Commit 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+> > added error checking for KVM_SET_SREGS/KVM_SET_SREGS2. In doing so, it
+> > exposed a long-running bug in current KVM support for SEV-ES where the
+> > kernel assumes that MSR_EFER_LMA will be set explicitly by the guest
+> > kernel, in which case EFER write traps would result in KVM eventually
+> > seeing MSR_EFER_LMA get set and recording it in such a way that it would
+> > be subsequently visible when accessing it via KVM_GET_SREGS/etc.
+> > 
+> > However, guests kernels currently rely on MSR_EFER_LMA getting set
+> > automatically when MSR_EFER_LME is set and paging is enabled via
+> > CR0_PG_MASK. As a result, the EFER write traps don't actually expose the
+> > MSR_EFER_LMA even though it is set internally, and when QEMU
+> > subsequently tries to pass this EFER value back to KVM via
+> > KVM_SET_SREGS* it will fail various sanity checks and return -EINVAL,
+> > which is now considered fatal due to the aforementioned QEMU commit.
+> > 
+> > This can be addressed by inferring the MSR_EFER_LMA bit being set when
+> > paging is enabled and MSR_EFER_LME is set, and synthesizing it to ensure
+> > the expected bits are all present in subsequent handling on the host
+> > side.
+> > 
+> > Ultimately, this handling will be implemented in the host kernel, but to
+> > avoid breaking QEMU's SEV-ES support when using older host kernels, the
+> > same handling can be done in QEMU just after fetching the register
+> > values via KVM_GET_SREGS*. Implement that here.
+> > 
+> > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > Cc: Marcelo Tosatti <mtosatti@redhat.com>
+> > Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> > Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > Cc: kvm@vger.kernel.org
+> > Fixes: 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+> 
 
-I tried to use cpu_index for correlating the tcg_ctx with cpu. I added
-some asserts that only null contexts are allocated and non-null contexts
-released but qemu crashes somewhere in tcg sometime after the guest gets
-to switch root.
+Hi Philippe,
 
-Thanks
+> This 'Fixes:' tag is misleading, since as you mentioned this commit
+> only exposes the issue.
 
-Michal
+That's true, a "Workaround-for: " tag or something like that might be more
+appropriate. I just wanted to make it clear that SEV-ES support is no longer
+working with that patch applied, so I used Fixes: and elaborated on the
+commit message. I can change it if there's a better way to convey this
+though.
+
+> 
+> Commit d499f196fe ("target/i386: Added consistency checks for EFER")
+> or around it seems more appropriate.
+
+Those checks seem to be more for TCG. The actual bug is in the host
+kernel, and it seems to have been there basically since the original
+SEV-ES host support went in in 2020. I've also sent a patch to address
+this in KVM:
+
+  https://lore.kernel.org/lkml/20231205234956.1156210-1-michael.roth@amd.com/T/#u
+
+but in the meantime it means that QEMU 8.2+ SEV-ES support would no
+longer work for any current/older host kernels, so I'm hoping a targeted
+workaround is warranted to cover that gap.
+
+> 
+> Is this feature easily testable on our CI, on a x86 runner with KVM
+> access?
+
+SEV-ES support was introduced with EPYC Zen2 architecture (EPYC 7002
+series processors, aka "Rome"). If there are any systems in the test pool
+that are Zen2 or greater, then a simple boot of a SEV-ES linux guest would
+be enough to trigger the QEMU crash. I'm not sure if there are any systems
+of that sort in the pool though.
+
+Thanks,
+
+Mike
 
