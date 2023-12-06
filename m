@@ -2,66 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535B0807378
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 16:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6828073AA
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 16:27:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAtZy-0007gv-CC; Wed, 06 Dec 2023 10:12:50 -0500
+	id 1rAtmh-0002jV-Nm; Wed, 06 Dec 2023 10:25:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rAtZw-0007gl-AR
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:12:48 -0500
-Received: from mgamail.intel.com ([198.175.65.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rAtZt-0005Lf-By
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:12:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1701875566; x=1733411566;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=EW+3iSRgcCAkL+OgjpjJk/bJjtNRiBrER+/sUtol6gw=;
- b=HzENtGz3HkExcG15d8HCyLEjeArqDu2pJaHHLuzvZIXjoQ6G9v0tSz99
- /lURAgjeU4bSsI9otNJJqIpj7Uz34tg4nYlpRbjG9B6riCaS74rw2Id+k
- TjTSdbkyOK+TLGcBv1+yQYyoTKGgRa1mILER33R6Ta2ndtuJvHPNg9ObW
- hLZkd1HHQuIiIA8VmMtry6ogVYns6GjVjSTtg0mnLKaF4KTNbLvvKm0r0
- h1SqOdcOGtfCVH/xgduQEpHc2BC4UUaa2SuF1e64InKQlgK00S0CcuCKi
- Ue8lG6CNcOspahDQnMCmgzTAKznNWzBGyBvgi3dG/ulI8B8AN+/10HEow A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="1144037"
-X-IronPort-AV: E=Sophos;i="6.04,255,1695711600"; 
-   d="scan'208";a="1144037"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Dec 2023 07:12:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="800377341"
-X-IronPort-AV: E=Sophos;i="6.04,255,1695711600"; d="scan'208";a="800377341"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga008.jf.intel.com with ESMTP; 06 Dec 2023 07:12:31 -0800
-Date: Wed, 6 Dec 2023 23:24:51 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Tao Su <tao1.su@linux.intel.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, imammedo@redhat.com,
- xiaoyao.li@intel.com
-Subject: Re: [PATCH] target/i386: Add new CPU model SierraForest
-Message-ID: <ZXCSQy6g5kEBu52z@intel.com>
-References: <20231206131923.1192066-1-tao1.su@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <msuchanek@suse.de>) id 1rAtmY-0002ig-36
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:25:51 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <msuchanek@suse.de>) id 1rAtmU-0007Yq-9Y
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:25:48 -0500
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id ACC3D1FD16;
+ Wed,  6 Dec 2023 15:25:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1701876344; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bdzWwIQQjd739v8vrOHVGXEi/TcgW4AJ329yxpeNHU4=;
+ b=WRf+4uXhK8acJg7aJKlhZqavYHvUoAvtrmmGwci3HGa6oaSu1UgJYWI+LO5vx4Z3CkTXGR
+ wjiJaKOkNuuZIntJ+AR/Nf9MZl0AlWV2xQWTk0eIfx8WL9K52o/3vI0YT5ZSLD2SYwcCmj
+ VsoDijbaMNLw+hXutB0ugiISb56ns5A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1701876344;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bdzWwIQQjd739v8vrOHVGXEi/TcgW4AJ329yxpeNHU4=;
+ b=R/iKFj12xksX9nPWA1ljctj9g6o7TFu/OK5hE+b9aHNn1B3C9QbT9ddOmMyg8eobikC0hv
+ SUgKajJLLOTGclCg==
+Date: Wed, 6 Dec 2023 16:25:43 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Miguel Luis <miguel.luis@oracle.com>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
+Subject: Re: [RFC PATCH-for-8.2?] accel/tcg: Implement tcg_unregister_thread()
+Message-ID: <20231206152543.GJ9696@kitsune.suse.cz>
+References: <20231204194039.56169-1-philmd@linaro.org>
+ <4fd5951c-b19a-48fe-bef2-4383fcbbae46@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20231206131923.1192066-1-tao1.su@linux.intel.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4fd5951c-b19a-48fe-bef2-4383fcbbae46@oracle.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -0.10
+X-Spamd-Result: default: False [-0.10 / 50.00]; ARC_NA(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ RCPT_COUNT_FIVE(0.00)[6];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_ZERO(0.00)[0];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ FREEMAIL_CC(0.00)[linaro.org,nongnu.org,redhat.com,gmail.com];
+ SUBJECT_HAS_QUESTION(0.00)[]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=msuchanek@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,69 +93,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 06, 2023 at 09:19:23PM +0800, Tao Su wrote:
-> Date: Wed,  6 Dec 2023 21:19:23 +0800
-> From: Tao Su <tao1.su@linux.intel.com>
-> Subject: [PATCH] target/i386: Add new CPU model SierraForest
-> X-Mailer: git-send-email 2.34.1
+On Wed, Dec 06, 2023 at 01:17:08PM -0100, Miguel Luis wrote:
+> Hi!
 > 
-> SierraForest is Intel's first generation E-core based Xeon server
-> processor, which will be released in the first half of 2024.
+> On 04/12/2023 18:40, Philippe Mathieu-Daudé wrote:
+> > Unplugging vCPU triggers the following assertion in
+> > tcg_register_thread():
+> >
+> >  796 void tcg_register_thread(void)
+> >  797 {
+> >  ...
+> >  812     /* Claim an entry in tcg_ctxs */
+> >  813     n = qatomic_fetch_inc(&tcg_cur_ctxs);
+> >  814     g_assert(n < tcg_max_ctxs);
+> >
+> > Implement and use tcg_unregister_thread() so when a
+> > vCPU is unplugged, the tcg_cur_ctxs refcount is
+> > decremented.
 > 
-> SierraForest mainly adds the following new features based on
-> GraniteRapids:
 > 
-> - CMPCCXADD CPUID.(EAX=7,ECX=1):EAX[bit 7]
-> - AVX-IFMA CPUID.(EAX=7,ECX=1):EAX[bit 23]
-> - AVX-VNNI-INT8 CPUID.(EAX=7,ECX=1):EDX[bit 4]
-> - AVX-NE-CONVERT CPUID.(EAX=7,ECX=1):EDX[bit 5]
-> - LAM CPUID.(EAX=7,ECX=1):EAX[bit 26]
-> - LASS CPUID.(EAX=7,ECX=1):EAX[bit 6]
-> 
-> and removes the following features based on GraniteRapids:
-> 
-> - HLE CPUID.(EAX=7,ECX=0):EBX[bit 4]
-> - RTM CPUID.(EAX=7,ECX=0):EBX[bit 11]
-> - AVX512F CPUID.(EAX=7,ECX=0):EBX[bit 16]
-> - AVX512DQ CPUID.(EAX=7,ECX=0):EBX[bit 17]
-> - AVX512_IFMA CPUID.(EAX=7,ECX=0):EBX[bit 21]
-> - AVX512CD CPUID.(EAX=7,ECX=0):EBX[bit 28]
-> - AVX512BW CPUID.(EAX=7,ECX=0):EBX[bit 30]
-> - AVX512VL CPUID.(EAX=7,ECX=0):EBX[bit 31]
-> - AVX512_VBMI CPUID.(EAX=7,ECX=0):ECX[bit 1]
-> - AVX512_VBMI2 CPUID.(EAX=7,ECX=0):ECX[bit 6]
-> - AVX512_VNNI CPUID.(EAX=7,ECX=0):ECX[bit 11]
-> - AVX512_BITALG CPUID.(EAX=7,ECX=0):ECX[bit 12]
-> - AVX512_VPOPCNTDQ CPUID.(EAX=7,ECX=0):ECX[bit 14]
-> - LA57 CPUID.(EAX=7,ECX=0):ECX[bit 16]
-> - TSXLDTRK CPUID.(EAX=7,ECX=0):EDX[bit 16]
-> - AMX-BF16 CPUID.(EAX=7,ECX=0):EDX[bit 22]
-> - AVX512_FP16 CPUID.(EAX=7,ECX=0):EDX[bit 23]
-> - AMX-TILE CPUID.(EAX=7,ECX=0):EDX[bit 24]
-> - AMX-INT8 CPUID.(EAX=7,ECX=0):EDX[bit 25]
-> - AVX512_BF16 CPUID.(EAX=7,ECX=1):EAX[bit 5]
-> - fast zero-length MOVSB CPUID.(EAX=7,ECX=1):EAX[bit 10]
-> - fast short CMPSB, SCASB CPUID.(EAX=7,ECX=1):EAX[bit 12]
-> - AMX-FP16 CPUID.(EAX=7,ECX=1):EAX[bit 21]
-> - PREFETCHI CPUID.(EAX=7,ECX=1):EDX[bit 14]
-> - XFD CPUID.(EAX=0xD,ECX=1):EAX[bit 4]
-> - EPT_PAGE_WALK_LENGTH_5 VMX_EPT_VPID_CAP(0x48c)[bit 7]
-> 
-> SierraForest doesn't support TSX, so TSX Async Abort(TAA) vulnerabilities
-> don't exist on SierraForest. On KVM side, if host doesn't enumerate RTM
-> or RTM gets disabled, ARCH_CAP_TAA_NO is reported as unsupported. To
-> avoid the confusing warning:
-> warning: host doesn't support requested feature: MSR(10AH).taa-no
->          [bit 8]
-> 
-> just don't include TAA_NO in SierraForest CPU model.
-> 
-> Currently LAM and LASS are not enabled in KVM mainline yet,  will add
-> them after merged.
-> 
-> Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-> ---
+> I've had addressed this issue before (posted at [1]) and had exercised
+> it with vCPU hotplug/unplug patches for ARM although I was not sure about what
+> would be needed to be done regarding plugins on the context of
+> tcg_unregister_thread. I guess they would need to be freed also?
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Doesn't it have the same problem that it will randomly free some context
+which is not necessarily associated with the unplugged CPU?
 
+Consider machine with 4 CPUs, they are likely added in order - cpu0
+getting context0, cpu1 context1, etc.
+
+Unplug CPU 1. Given that context 3 is top the would be unallocated by
+the decrement, or am I missing something?
+
+Thanks
+
+Michal
+
+> 
+> Thank you
+> 
+> Miguel
+> 
+> [1]: https://lore.kernel.org/qemu-devel/20230926103654.34424-5-salil.mehta@huawei.com/
 
