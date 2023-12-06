@@ -2,81 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082F7806346
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 01:14:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35426806347
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 01:15:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAfWz-00028U-G6; Tue, 05 Dec 2023 19:12:49 -0500
+	id 1rAfZ7-0003D6-Ip; Tue, 05 Dec 2023 19:15:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAfWo-00027z-M0; Tue, 05 Dec 2023 19:12:40 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ id 1rAfZ6-0003Cp-A2; Tue, 05 Dec 2023 19:15:00 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAfWm-0005hE-LL; Tue, 05 Dec 2023 19:12:38 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-54cfb03f1a8so2306181a12.2; 
- Tue, 05 Dec 2023 16:12:35 -0800 (PST)
+ id 1rAfZ4-00061J-HY; Tue, 05 Dec 2023 19:15:00 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-54c74b3cd4cso689306a12.1; 
+ Tue, 05 Dec 2023 16:14:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701821552; x=1702426352; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701821696; x=1702426496; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tW6Cd12MXB5PCxO+UaaPdPzClXdA9Q9EfHV9KZoB9+I=;
- b=dROR4/GOWLW4D7bUDvhVerNqymgtGjzGS3izx5OCEm3m4we9f1kkoHMF47rxdTDM5k
- MgF5fM/Rn9WbPmE7gIMVGykfE3PN+rLbG50QBbTJHBsv2m6auVvv4HY+FKXHzT0eLh1r
- z5fGXUIvmH0M5PjjsSWNCdwCCc/lbenswXqr4f27c/671ZuwiX2x9UGo2KLLEx2tCFTd
- ozakrkdlJIKJAwnPFUTi9NRJ2LSh9f5wCsmZddKpd8EcpLcPtIk1GbSTFqygPwUDdEIM
- gsNOCLQfsoFxrpjYhmFl56BmF3LDlZ/dIbWko0W7ag4rKyRxXv97kjVnW16DliEfBSVH
- Z3yg==
+ bh=fdjNmWiuEF9lWxKO+Opvwumv+Sg7nnoZ1YFL1CIw5sY=;
+ b=mmc42XQMDin/FZXjiyEp+C2te2cYHY//l0k5c3G8syEEyY1uzlB51UX5HKbqFhBerP
+ DatKDPPkNLf59w3HfG17hiTutz7HoiGaj5I9Ovhqm9RrvPlC2mgozIVeS0g6v8qhJtec
+ FC8SI72y48egP2CCzHYWpgpuG6vnEnb/kKcuxLrHirO1DgyCHWW/PwD4kQo6A8cy9OUs
+ RAUWBfwd1rQFK6EH4cbXtXnHfwl0MdTmN8t2zJy24a5Zngg2qaKwB5N56xN5dmxJYUDj
+ kgQCb3AyMjHr9mbq017dn3HlAqo7BgpBinM3ygLeeeISzSNobWtxPRGl4pG/NDtFDNJZ
+ 1lGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701821552; x=1702426352;
+ d=1e100.net; s=20230601; t=1701821696; x=1702426496;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tW6Cd12MXB5PCxO+UaaPdPzClXdA9Q9EfHV9KZoB9+I=;
- b=RkL9aOWCE4VXLFp+Pbhtu0qFnAt2G0+CDUqQ9O7ODqPwGKkfxgO2pS9QwJcT1tT+Y9
- u84Mtg9Cm7ZR3p0JTZbu76cpeG9p17RimcT82YPqCVTtxU50CzokG2f2NOfg07vZpUxu
- Fh/Vjx4dMuGyTTl4Cnq/Nq+Anpx/jBYvS4tj8S5nDf4O90tUjU7xm3QQiYTLn1ZudbG6
- f10EfHmPV89cJIqGXmv+EKJEDfvOWYRURXDGc97L3+g1kf3xuF1Tf/Yc1kRs2/K0j8rg
- xGzJc+eXghpnTA4aSpP8QxnYqO/YL1OC4vOO3KMSKOOSwPYwpIfMbM4+roNOOfDHHsDt
- RTng==
-X-Gm-Message-State: AOJu0YwpmMQPtLo5XjmzvQykzNFV6wTIqoOYUdtGANRVwghOpYOxk19I
- qLAYKMGg2uMKlVqMwKSfB8vL4Nfrf6aulGX0pF8=
-X-Google-Smtp-Source: AGHT+IG6V3fUP4vQaxP/tPY+f6H1OrVCh8YJ/nToyjq6ABSs0CB4Ws6FGBPpavoVdqcltY4IXuAgvUXAns2nAqvClOM=
-X-Received: by 2002:a50:d79b:0:b0:54c:6e99:1b27 with SMTP id
- w27-20020a50d79b000000b0054c6e991b27mr66425edi.23.1701821552147; Tue, 05 Dec
- 2023 16:12:32 -0800 (PST)
+ bh=fdjNmWiuEF9lWxKO+Opvwumv+Sg7nnoZ1YFL1CIw5sY=;
+ b=MCUrdvn7vJ6TPY/DyHYifQGf1bix/yKt63AWpxVAV1AMa9pFb3yX4ppkfLXXt7/+77
+ gu0+8VNZPNR9cHzGQuyAaQ01eeC4XspDBBhq+EDydDza0RNej+h8sxGjpEzJl1HohBB2
+ qVt+JnBy1Tamowyms8321xVkbcgu3dxV3zhWk6KgO8D2aDh6x3+gK+cxreRDxOxyyENY
+ mPaC71ZQcNwOPGq1pdYGSm73DxpebqP6dInhMsj/kPzK6ArULIbKEQrbtZBVnx4E5GTe
+ E1E6YgmXmVex/5sCqa0OqDEqlEFo3Xf1yeJFgSkJyeP+UWe1mDmdFsXGwWhQ3rzREaE8
+ gXzA==
+X-Gm-Message-State: AOJu0YzkP3p8gDxdYVMNd2fxnN7cE1hoKqiXkSvuIoqslzsfY0J84WOq
+ CFn18MDEt+jMVcnUYghOfAe6eYkE3DkIrZ+Ovp5H/hxNubn9Zw==
+X-Google-Smtp-Source: AGHT+IFv9wGwhB2SjBDyqbgYFkZBchJODoKLlZ66z5OMza0WGNyNzRYTEigu0cZHcSXyTOSr86KYInYK9TGVNECIuHM=
+X-Received: by 2002:a50:d744:0:b0:54c:b24d:a3bb with SMTP id
+ i4-20020a50d744000000b0054cb24da3bbmr57391edj.1.1701821696046; Tue, 05 Dec
+ 2023 16:14:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20231117071704.35040-1-philmd@linaro.org>
- <20231117071704.35040-3-philmd@linaro.org>
-In-Reply-To: <20231117071704.35040-3-philmd@linaro.org>
+References: <20231124143505.1493184-1-fkonrad@amd.com>
+ <20231124143505.1493184-2-fkonrad@amd.com>
+In-Reply-To: <20231124143505.1493184-2-fkonrad@amd.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 6 Dec 2023 10:12:04 +1000
-Message-ID: <CAKmqyKOkbo7chHmupT+Sp8phJcoLNSTysrbcKarmV0EQX3+nbw@mail.gmail.com>
-Subject: Re: [PATCH-for-8.2? v2 2/4] hw/arm/stm32f405: Report error when
- incorrect CPU is used
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Subbaraya Sundeep <sundeep.lkml@gmail.com>, 
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Igor Mammedov <imammedo@redhat.com>, 
- Laurent Vivier <laurent@vivier.eu>, Tyrone Ting <kfting@nuvoton.com>,
- Hao Wu <wuhaotsh@google.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Felipe Balbi <balbi@kernel.org>,
- qemu-arm@nongnu.org, 
- =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
- Alistair Francis <alistair@alistair23.me>, Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>, 
- Subbaraya Sundeep <sbhatta@marvell.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Gavin Shan <gshan@redhat.com>
+Date: Wed, 6 Dec 2023 10:14:28 +1000
+Message-ID: <CAKmqyKMp8=dZuu0oAn_i5Ye2Hbb4mTLv9GuuxVzyLFfdnVmyMA@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] hw/ssi/xilinx_spips: fix an out of bound access
+To: Frederic Konrad <fkonrad@amd.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, francisco.iglesias@amd.com, 
+ peter.maydell@linaro.org, edgar.iglesias@gmail.com, alistair@alistair23.me, 
+ luc.michel@amd.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alistair23@gmail.com; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,156 +88,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Nov 17, 2023 at 5:18=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
+On Sat, Nov 25, 2023 at 12:38=E2=80=AFAM Frederic Konrad <fkonrad@amd.com> =
+wrote:
 >
-> Both 'netduinoplus2' and 'olimex-stm32-h405' machines ignore the
-> CPU type requested by the command line. This might confuse users,
-> since the following will create a machine with a Cortex-M4 CPU:
+> The spips, qspips, and zynqmp-qspips share the same realize function
+> (xilinx_spips_realize) and initialize their io memory region with differe=
+nt
+> mmio_ops passed through the class.  The size of the memory region is set =
+to
+> the largest area (0x200 bytes for zynqmp-qspips) thus it is possible to w=
+rite
+> out of s->regs[addr] in xilinx_spips_write for spips and qspips.
 >
->   $ qemu-system-aarch64 -M netduinoplus2 -cpu cortex-r5f
+> This fixes that wrong behavior.
 >
-> Set the MachineClass::valid_cpu_types field (introduced in commit
-> c9cf636d48 "machine: Add a valid_cpu_types property").
-> Remove the now unused MachineClass::default_cpu_type field.
->
-> We now get:
->
->   $ qemu-system-aarch64 -M netduinoplus2 -cpu cortex-r5f
->   qemu-system-aarch64: Invalid CPU type: cortex-r5f-arm-cpu
->   The valid types are: cortex-m4-arm-cpu
->
-> Since the SoC family can only use Cortex-M4 CPUs, hard-code the
-> CPU type name at the SoC level, removing the QOM property
-> entirely.
->
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Luc Michel <luc.michel@amd.com>
+> Signed-off-by: Frederic Konrad <fkonrad@amd.com>
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
->  include/hw/arm/stm32f405_soc.h | 4 ----
->  hw/arm/netduinoplus2.c         | 7 ++++++-
->  hw/arm/olimex-stm32-h405.c     | 8 ++++++--
->  hw/arm/stm32f405_soc.c         | 8 +-------
->  4 files changed, 13 insertions(+), 14 deletions(-)
+>  hw/ssi/xilinx_spips.c         | 7 ++++++-
+>  include/hw/ssi/xilinx_spips.h | 3 +++
+>  2 files changed, 9 insertions(+), 1 deletion(-)
 >
-> diff --git a/include/hw/arm/stm32f405_soc.h b/include/hw/arm/stm32f405_so=
-c.h
-> index c968ce3ab2..d15c03c4b5 100644
-> --- a/include/hw/arm/stm32f405_soc.h
-> +++ b/include/hw/arm/stm32f405_soc.h
-> @@ -51,11 +51,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(STM32F405State, STM32F405_S=
-OC)
->  #define CCM_SIZE (64 * 1024)
+> diff --git a/hw/ssi/xilinx_spips.c b/hw/ssi/xilinx_spips.c
+> index a3955c6c50..0bdfad7e2e 100644
+> --- a/hw/ssi/xilinx_spips.c
+> +++ b/hw/ssi/xilinx_spips.c
+> @@ -973,6 +973,8 @@ static void xilinx_spips_write(void *opaque, hwaddr a=
+ddr,
 >
->  struct STM32F405State {
-> -    /*< private >*/
->      SysBusDevice parent_obj;
-> -    /*< public >*/
-> -
-> -    char *cpu_type;
->
->      ARMv7MState armv7m;
->
-> diff --git a/hw/arm/netduinoplus2.c b/hw/arm/netduinoplus2.c
-> index 515c081605..2e58984947 100644
-> --- a/hw/arm/netduinoplus2.c
-> +++ b/hw/arm/netduinoplus2.c
-> @@ -44,7 +44,6 @@ static void netduinoplus2_init(MachineState *machine)
->      clock_set_hz(sysclk, SYSCLK_FRQ);
->
->      dev =3D qdev_new(TYPE_STM32F405_SOC);
-> -    qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4")=
-);
->      qdev_connect_clock_in(dev, "sysclk", sysclk);
->      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->
-> @@ -55,8 +54,14 @@ static void netduinoplus2_init(MachineState *machine)
->
->  static void netduinoplus2_machine_init(MachineClass *mc)
->  {
-> +    static const char * const valid_cpu_types[] =3D {
-> +        ARM_CPU_TYPE_NAME("cortex-m4"),
-> +        NULL
-> +    };
+>      DB_PRINT_L(0, "addr=3D" HWADDR_FMT_plx " =3D %x\n", addr, (unsigned)=
+value);
+>      addr >>=3D 2;
+> +    assert(addr < XLNX_SPIPS_R_MAX);
 > +
->      mc->desc =3D "Netduino Plus 2 Machine (Cortex-M4)";
->      mc->init =3D netduinoplus2_init;
-> +    mc->valid_cpu_types =3D valid_cpu_types;
+>      switch (addr) {
+>      case R_CONFIG:
+>          mask =3D ~(R_CONFIG_RSVD | MAN_START_COM);
+> @@ -1299,7 +1301,7 @@ static void xilinx_spips_realize(DeviceState *dev, =
+Error **errp)
+>      }
+>
+>      memory_region_init_io(&s->iomem, OBJECT(s), xsc->reg_ops, s,
+> -                          "spi", XLNX_ZYNQMP_SPIPS_R_MAX * 4);
+> +                          "spi", xsc->reg_size);
+>      sysbus_init_mmio(sbd, &s->iomem);
+>
+>      s->irqline =3D -1;
+> @@ -1435,6 +1437,7 @@ static void xilinx_qspips_class_init(ObjectClass *k=
+lass, void * data)
+>
+>      dc->realize =3D xilinx_qspips_realize;
+>      xsc->reg_ops =3D &qspips_ops;
+> +    xsc->reg_size =3D XLNX_SPIPS_R_MAX * 4;
+>      xsc->rx_fifo_size =3D RXFF_A_Q;
+>      xsc->tx_fifo_size =3D TXFF_A_Q;
 >  }
+> @@ -1450,6 +1453,7 @@ static void xilinx_spips_class_init(ObjectClass *kl=
+ass, void *data)
+>      dc->vmsd =3D &vmstate_xilinx_spips;
 >
->  DEFINE_MACHINE("netduinoplus2", netduinoplus2_machine_init)
-> diff --git a/hw/arm/olimex-stm32-h405.c b/hw/arm/olimex-stm32-h405.c
-> index 3aa61c91b7..d793de7c97 100644
-> --- a/hw/arm/olimex-stm32-h405.c
-> +++ b/hw/arm/olimex-stm32-h405.c
-> @@ -47,7 +47,6 @@ static void olimex_stm32_h405_init(MachineState *machin=
-e)
->      clock_set_hz(sysclk, SYSCLK_FRQ);
->
->      dev =3D qdev_new(TYPE_STM32F405_SOC);
-> -    qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4")=
-);
->      qdev_connect_clock_in(dev, "sysclk", sysclk);
->      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->
-> @@ -58,9 +57,14 @@ static void olimex_stm32_h405_init(MachineState *machi=
-ne)
->
->  static void olimex_stm32_h405_machine_init(MachineClass *mc)
->  {
-> +    static const char * const valid_cpu_types[] =3D {
-> +        ARM_CPU_TYPE_NAME("cortex-m4"),
-> +        NULL
-> +    };
-> +
->      mc->desc =3D "Olimex STM32-H405 (Cortex-M4)";
->      mc->init =3D olimex_stm32_h405_init;
-> -    mc->default_cpu_type =3D ARM_CPU_TYPE_NAME("cortex-m4");
-> +    mc->valid_cpu_types =3D valid_cpu_types;
->
->      /* SRAM pre-allocated as part of the SoC instantiation */
->      mc->default_ram_size =3D 0;
-> diff --git a/hw/arm/stm32f405_soc.c b/hw/arm/stm32f405_soc.c
-> index cef23d7ee4..a65bbe298d 100644
-> --- a/hw/arm/stm32f405_soc.c
-> +++ b/hw/arm/stm32f405_soc.c
-> @@ -149,7 +149,7 @@ static void stm32f405_soc_realize(DeviceState *dev_so=
-c, Error **errp)
->
->      armv7m =3D DEVICE(&s->armv7m);
->      qdev_prop_set_uint32(armv7m, "num-irq", 96);
-> -    qdev_prop_set_string(armv7m, "cpu-type", s->cpu_type);
-> +    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m=
-4"));
->      qdev_prop_set_bit(armv7m, "enable-bitband", true);
->      qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
->      qdev_connect_clock_in(armv7m, "refclk", s->refclk);
-> @@ -287,17 +287,11 @@ static void stm32f405_soc_realize(DeviceState *dev_=
-soc, Error **errp)
->      create_unimplemented_device("RNG",         0x50060800, 0x400);
+>      xsc->reg_ops =3D &spips_ops;
+> +    xsc->reg_size =3D XLNX_SPIPS_R_MAX * 4;
+>      xsc->rx_fifo_size =3D RXFF_A;
+>      xsc->tx_fifo_size =3D TXFF_A;
 >  }
->
-> -static Property stm32f405_soc_properties[] =3D {
-> -    DEFINE_PROP_STRING("cpu-type", STM32F405State, cpu_type),
-> -    DEFINE_PROP_END_OF_LIST(),
-> -};
-> -
->  static void stm32f405_soc_class_init(ObjectClass *klass, void *data)
->  {
->      DeviceClass *dc =3D DEVICE_CLASS(klass);
->
->      dc->realize =3D stm32f405_soc_realize;
-> -    device_class_set_props(dc, stm32f405_soc_properties);
->      /* No vmstate or reset required: device has no internal state */
+> @@ -1464,6 +1468,7 @@ static void xlnx_zynqmp_qspips_class_init(ObjectCla=
+ss *klass, void * data)
+>      dc->vmsd =3D &vmstate_xlnx_zynqmp_qspips;
+>      device_class_set_props(dc, xilinx_zynqmp_qspips_properties);
+>      xsc->reg_ops =3D &xlnx_zynqmp_qspips_ops;
+> +    xsc->reg_size =3D XLNX_ZYNQMP_SPIPS_R_MAX * 4;
+>      xsc->rx_fifo_size =3D RXFF_A_Q;
+>      xsc->tx_fifo_size =3D TXFF_A_Q;
 >  }
+> diff --git a/include/hw/ssi/xilinx_spips.h b/include/hw/ssi/xilinx_spips.=
+h
+> index 1386d5ac8f..7a754bf67a 100644
+> --- a/include/hw/ssi/xilinx_spips.h
+> +++ b/include/hw/ssi/xilinx_spips.h
+> @@ -33,7 +33,9 @@
 >
+>  typedef struct XilinxSPIPS XilinxSPIPS;
+>
+> +/* For SPIPS, QSPIPS.  */
+>  #define XLNX_SPIPS_R_MAX        (0x100 / 4)
+> +/* For ZYNQMP_QSPIPS.  */
+>  #define XLNX_ZYNQMP_SPIPS_R_MAX (0x200 / 4)
+>
+>  /* Bite off 4k chunks at a time */
+> @@ -125,6 +127,7 @@ struct XilinxSPIPSClass {
+>      SysBusDeviceClass parent_class;
+>
+>      const MemoryRegionOps *reg_ops;
+> +    uint64_t reg_size;
+>
+>      uint32_t rx_fifo_size;
+>      uint32_t tx_fifo_size;
 > --
-> 2.41.0
+> 2.25.1
 >
 >
 
