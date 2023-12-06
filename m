@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD0B806281
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 00:01:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 082F7806346
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 01:14:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAeOZ-00019K-59; Tue, 05 Dec 2023 18:00:03 -0500
+	id 1rAfWz-00028U-G6; Tue, 05 Dec 2023 19:12:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rAeOX-00018F-09
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 18:00:01 -0500
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rAfWo-00027z-M0; Tue, 05 Dec 2023 19:12:40 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rAeOV-0003vZ-2D
- for qemu-devel@nongnu.org; Tue, 05 Dec 2023 18:00:00 -0500
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-6d8750719b6so2801558a34.1
- for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 14:59:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rAfWm-0005hE-LL; Tue, 05 Dec 2023 19:12:38 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-54cfb03f1a8so2306181a12.2; 
+ Tue, 05 Dec 2023 16:12:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701817197; x=1702421997; darn=nongnu.org;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=tmkiRFLdTca3bwPUoPSsY8LTNTo1W/9rmKM9C35NFmQ=;
- b=BAkYIgE9yOrNjHBF4+tzEHeqg5iGkRDwaGKiO3zM6eVaE59QvhcOpUkO1H76zKD0sD
- gcFRh9xzm/F+EeBbrWJ9/iAwQAEs+Xk56Xe3nr0zOtX02TvzfZzqQr1fSaz6/wV9MSq9
- nj0wKE7gcoGN0Px7WFgYA66vl5EQ0MDYznSfKQUyoqPCRQ7gpgGNtEMTAz4QdwVlBy+p
- jNmPXPg/Yee+5zSxOoniI+hpa4yBmvs/s4rTvzVbYqyzVqW7oBY6m0m78BLHT81wV1cm
- osFJy45TU2i1uYtPDTRpcbsnr729jkXsVx8UTrSohhnXAImusV6gKR8YyAQexH+V5BIQ
- Womw==
+ d=gmail.com; s=20230601; t=1701821552; x=1702426352; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tW6Cd12MXB5PCxO+UaaPdPzClXdA9Q9EfHV9KZoB9+I=;
+ b=dROR4/GOWLW4D7bUDvhVerNqymgtGjzGS3izx5OCEm3m4we9f1kkoHMF47rxdTDM5k
+ MgF5fM/Rn9WbPmE7gIMVGykfE3PN+rLbG50QBbTJHBsv2m6auVvv4HY+FKXHzT0eLh1r
+ z5fGXUIvmH0M5PjjsSWNCdwCCc/lbenswXqr4f27c/671ZuwiX2x9UGo2KLLEx2tCFTd
+ ozakrkdlJIKJAwnPFUTi9NRJ2LSh9f5wCsmZddKpd8EcpLcPtIk1GbSTFqygPwUDdEIM
+ gsNOCLQfsoFxrpjYhmFl56BmF3LDlZ/dIbWko0W7ag4rKyRxXv97kjVnW16DliEfBSVH
+ Z3yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701817197; x=1702421997;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tmkiRFLdTca3bwPUoPSsY8LTNTo1W/9rmKM9C35NFmQ=;
- b=XKaPoi/315OTQqC+WFwXeUpvby9iT1tl8Gs9dsMsOWekGH5T/P9MOd/sAyrs4uGZlF
- 7okvtj9Z9W+M1+oYtXf5VVyjMDwqbq0HIhxHJfglBrfUsOvXI8hsxQRXNY8UQ1gRhYfm
- iqCoe55HCvbM1pO5p7mULRDLJxyKktE56lEKjCU09GoNNPXGNfglu9UR5oR25uuAvuw+
- QYKCBdHc8fyqHW04pI8EAnGLbxKxISQacklz1lGAoCmKO/qMpWu07kZt00CjThqm1eaD
- zBaicKUZVtcV6WUt0dHO7VLGOO5kstmfy9f0hxV85nZ1+4lmy07By9LIkecxdc4OEvR4
- /Z9g==
-X-Gm-Message-State: AOJu0Yx82Mp5boBmYwoRUoaD6hwja6BBeiHIGxFWm/67U/LW4NzuF5ev
- G4abQhnZ1ZGG4HwDfcaRbqQ=
-X-Google-Smtp-Source: AGHT+IGTY7bQwbXiO9PknMjEjC0k40B9eqGnq+8EkPiS3sxjxwZieUPB/3dJ0ojyT4wVHHR2CN8yYA==
-X-Received: by 2002:a9d:77c9:0:b0:6d8:74e2:b00a with SMTP id
- w9-20020a9d77c9000000b006d874e2b00amr25329otl.72.1701817197503; 
- Tue, 05 Dec 2023 14:59:57 -0800 (PST)
-Received: from DESKTOPUU50BPD
- (2603-8080-1f00-9c00-d1de-fde2-a957-367e.res6.spectrum.com.
- [2603:8080:1f00:9c00:d1de:fde2:a957:367e])
- by smtp.gmail.com with ESMTPSA id
- v3-20020a9d69c3000000b006c4727812fdsm2363830oto.15.2023.12.05.14.59.56
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 05 Dec 2023 14:59:56 -0800 (PST)
-From: <ltaylorsimpson@gmail.com>
-To: "'Brian Cain'" <bcain@quicinc.com>,
-	<qemu-devel@nongnu.org>
-Cc: "'Matheus Bernardino \(QUIC\)'" <quic_mathbern@quicinc.com>,
- "'Sid Manning'" <sidneym@quicinc.com>,
- "'Marco Liebel \(QUIC\)'" <quic_mliebel@quicinc.com>,
- <richard.henderson@linaro.org>, <philmd@linaro.org>, <ale@rev.ng>,
- <anjo@rev.ng>
-References: <20231205015303.575807-1-ltaylorsimpson@gmail.com>
- <20231205015303.575807-4-ltaylorsimpson@gmail.com>
- <BN7PR02MB41943B67448AAC160D120ED2B885A@BN7PR02MB4194.namprd02.prod.outlook.com>
- <0e5901da279d$a14e8f80$e3ebae80$@gmail.com>
-In-Reply-To: <0e5901da279d$a14e8f80$e3ebae80$@gmail.com>
-Subject: RE: [PATCH 3/9] Hexagon (target/hexagon) Make generators object
- oriented - gen_helper_protos
-Date: Tue, 5 Dec 2023 16:59:55 -0600
-Message-ID: <0f2601da27ce$c41556d0$4c400470$@gmail.com>
+ d=1e100.net; s=20230601; t=1701821552; x=1702426352;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tW6Cd12MXB5PCxO+UaaPdPzClXdA9Q9EfHV9KZoB9+I=;
+ b=RkL9aOWCE4VXLFp+Pbhtu0qFnAt2G0+CDUqQ9O7ODqPwGKkfxgO2pS9QwJcT1tT+Y9
+ u84Mtg9Cm7ZR3p0JTZbu76cpeG9p17RimcT82YPqCVTtxU50CzokG2f2NOfg07vZpUxu
+ Fh/Vjx4dMuGyTTl4Cnq/Nq+Anpx/jBYvS4tj8S5nDf4O90tUjU7xm3QQiYTLn1ZudbG6
+ f10EfHmPV89cJIqGXmv+EKJEDfvOWYRURXDGc97L3+g1kf3xuF1Tf/Yc1kRs2/K0j8rg
+ xGzJc+eXghpnTA4aSpP8QxnYqO/YL1OC4vOO3KMSKOOSwPYwpIfMbM4+roNOOfDHHsDt
+ RTng==
+X-Gm-Message-State: AOJu0YwpmMQPtLo5XjmzvQykzNFV6wTIqoOYUdtGANRVwghOpYOxk19I
+ qLAYKMGg2uMKlVqMwKSfB8vL4Nfrf6aulGX0pF8=
+X-Google-Smtp-Source: AGHT+IG6V3fUP4vQaxP/tPY+f6H1OrVCh8YJ/nToyjq6ABSs0CB4Ws6FGBPpavoVdqcltY4IXuAgvUXAns2nAqvClOM=
+X-Received: by 2002:a50:d79b:0:b0:54c:6e99:1b27 with SMTP id
+ w27-20020a50d79b000000b0054c6e991b27mr66425edi.23.1701821552147; Tue, 05 Dec
+ 2023 16:12:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
+References: <20231117071704.35040-1-philmd@linaro.org>
+ <20231117071704.35040-3-philmd@linaro.org>
+In-Reply-To: <20231117071704.35040-3-philmd@linaro.org>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 6 Dec 2023 10:12:04 +1000
+Message-ID: <CAKmqyKOkbo7chHmupT+Sp8phJcoLNSTysrbcKarmV0EQX3+nbw@mail.gmail.com>
+Subject: Re: [PATCH-for-8.2? v2 2/4] hw/arm/stm32f405: Report error when
+ incorrect CPU is used
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Subbaraya Sundeep <sundeep.lkml@gmail.com>, 
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Igor Mammedov <imammedo@redhat.com>, 
+ Laurent Vivier <laurent@vivier.eu>, Tyrone Ting <kfting@nuvoton.com>,
+ Hao Wu <wuhaotsh@google.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Felipe Balbi <balbi@kernel.org>,
+ qemu-arm@nongnu.org, 
+ =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
+ Alistair Francis <alistair@alistair23.me>, Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>, 
+ Subbaraya Sundeep <sbhatta@marvell.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Gavin Shan <gshan@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQGyQ8bIQqyrR/dhEhhm+TVtuipI8AIeKodrArs1AD0B6TiYKLC09lBA
-Content-Language: en-us
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-ot1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alistair23@gmail.com; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,252 +100,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Nov 17, 2023 at 5:18=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> Both 'netduinoplus2' and 'olimex-stm32-h405' machines ignore the
+> CPU type requested by the command line. This might confuse users,
+> since the following will create a machine with a Cortex-M4 CPU:
+>
+>   $ qemu-system-aarch64 -M netduinoplus2 -cpu cortex-r5f
+>
+> Set the MachineClass::valid_cpu_types field (introduced in commit
+> c9cf636d48 "machine: Add a valid_cpu_types property").
+> Remove the now unused MachineClass::default_cpu_type field.
+>
+> We now get:
+>
+>   $ qemu-system-aarch64 -M netduinoplus2 -cpu cortex-r5f
+>   qemu-system-aarch64: Invalid CPU type: cortex-r5f-arm-cpu
+>   The valid types are: cortex-m4-arm-cpu
+>
+> Since the SoC family can only use Cortex-M4 CPUs, hard-code the
+> CPU type name at the SoC level, removing the QOM property
+> entirely.
+>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-> -----Original Message-----
-> From: ltaylorsimpson@gmail.com <ltaylorsimpson@gmail.com>
-> Sent: Tuesday, December 5, 2023 11:08 AM
-> To: 'Brian Cain' <bcain@quicinc.com>; qemu-devel@nongnu.org
-> Cc: 'Matheus Bernardino (QUIC)' <quic_mathbern@quicinc.com>; 'Sid
-> Manning' <sidneym@quicinc.com>; 'Marco Liebel (QUIC)'
-> <quic_mliebel@quicinc.com>; richard.henderson@linaro.org;
-> philmd@linaro.org; ale@rev.ng; anjo@rev.ng
-> Subject: RE: [PATCH 3/9] Hexagon (target/hexagon) Make generators =
-object
-> oriented - gen_helper_protos
->=20
->=20
->=20
-> > -----Original Message-----
-> > From: Brian Cain <bcain@quicinc.com>
-> > Sent: Monday, December 4, 2023 9:46 PM
-> > To: Taylor Simpson <ltaylorsimpson@gmail.com>; qemu-
-> devel@nongnu.org
-> > Cc: Matheus Bernardino (QUIC) <quic_mathbern@quicinc.com>; Sid
-> Manning
-> > <sidneym@quicinc.com>; Marco Liebel (QUIC)
-> <quic_mliebel@quicinc.com>;
-> > richard.henderson@linaro.org; philmd@linaro.org; ale@rev.ng;
-> > anjo@rev.ng
-> > Subject: RE: [PATCH 3/9] Hexagon (target/hexagon) Make generators
-> > object oriented - gen_helper_protos
-> >
-> >
-> >
-> > > -----Original Message-----
-> > > From: Taylor Simpson <ltaylorsimpson@gmail.com>
-> > > Sent: Monday, December 4, 2023 7:53 PM
-> > > To: qemu-devel@nongnu.org
-> > > Cc: Brian Cain <bcain@quicinc.com>; Matheus Bernardino (QUIC)
-> > > <quic_mathbern@quicinc.com>; Sid Manning <sidneym@quicinc.com>;
-> > Marco
-> > > Liebel (QUIC) <quic_mliebel@quicinc.com>;
-> > > richard.henderson@linaro.org; philmd@linaro.org; ale@rev.ng;
-> > > anjo@rev.ng; ltaylorsimpson@gmail.com
-> > > Subject: [PATCH 3/9] Hexagon (target/hexagon) Make generators =
-object
-> > > oriented - gen_helper_protos
-> > >
-> > > Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
-> > > ---
-> > >  target/hexagon/gen_helper_protos.py | 184 =
-++++++++--------------------
-> > >  target/hexagon/hex_common.py        |  15 +--
-> > >  2 files changed, 55 insertions(+), 144 deletions(-)
-> > >
-> > > diff --git a/target/hexagon/gen_helper_protos.py
-> > > b/target/hexagon/gen_helper_protos.py
-> > > index 131043795a..9277199e1d 100755
-> > > --- a/target/hexagon/gen_helper_protos.py
-> > > +++ b/target/hexagon/gen_helper_protos.py
-> > >  ##
-> > >  ## Generate the DEF_HELPER prototype for an instruction
-> > >  ##     For A2_add: Rd32=3Dadd(Rs32,Rt32)
-> > > @@ -65,116 +32,62 @@ def gen_helper_prototype(f, tag, tagregs,
-> > tagimms):
-> > >      regs =3D tagregs[tag]
-> > >      imms =3D tagimms[tag]
-> > >
-> > > -    numresults =3D 0
-> > > +    ## If there is a scalar result, it is the return type
-> > > +    return_type =3D ""
-> >
-> > Should we use `return_type =3D None` here?
-> >
-> > >      numscalarresults =3D 0
-> > > -    numscalarreadwrite =3D 0
-> > >      for regtype, regid in regs:
-> > > -        if hex_common.is_written(regid):
-> > > -            numresults +=3D 1
-> > > -            if hex_common.is_scalar_reg(regtype):
-> > > +        reg =3D hex_common.get_register(tag, regtype, regid)
-> > > +        if reg.is_written() and reg.is_scalar_reg():
-> > > +                return_type =3D reg.helper_proto_type()
-> > >                  numscalarresults +=3D 1
-> > > -        if hex_common.is_readwrite(regid):
-> > > -            if hex_common.is_scalar_reg(regtype):
-> > > -                numscalarreadwrite +=3D 1
-> > > +    if numscalarresults =3D=3D 0:
-> > > +        return_type =3D "void"
-> >
-> > Should we use `return_type =3D None` here?
->=20
-> I don't see a point of setting it to None.  By the time it gets to the =
-use below,
-> it will definitely have a value.  We could initialize it to void =
-instead of "" and
-> skip this check.
->=20
->=20
-> > > +
-> > > +    ## Other stuff the helper might need
-> > > +    if hex_common.need_pkt_has_multi_cof(tag):
-> > > +        declared.append("i32")
-> > > +    if hex_common.need_pkt_need_commit(tag):
-> > > +        declared.append("i32")
-> > > +    if hex_common.need_PC(tag):
-> > > +        declared.append("i32")
-> > > +    if hex_common.need_next_PC(tag):
-> > > +        declared.append("i32")
-> > > +    if hex_common.need_slot(tag):
-> > > +        declared.append("i32")
-> > > +    if hex_common.need_part1(tag):
-> > > +        declared.append("i32")
-> >
-> > What do you think of this instead?  The delta below is on top of =
-this patch.
-> >
-> > --- a/target/hexagon/gen_helper_protos.py
-> > +++ b/target/hexagon/gen_helper_protos.py
-> > @@ -73,18 +73,9 @@ def gen_helper_prototype(f, tag, tagregs, =
-tagimms):
-> >          declared.append("s32")
-> >
-> >      ## Other stuff the helper might need
-> > -    if hex_common.need_pkt_has_multi_cof(tag):
-> > -        declared.append("i32")
-> > -    if hex_common.need_pkt_need_commit(tag):
-> > -        declared.append("i32")
-> > -    if hex_common.need_PC(tag):
-> > -        declared.append("i32")
-> > -    if hex_common.need_next_PC(tag):
-> > -        declared.append("i32")
-> > -    if hex_common.need_slot(tag):
-> > -        declared.append("i32")
-> > -    if hex_common.need_part1(tag):
-> > -        declared.append("i32")
-> > +    for stuff in hex_common.other_stuff:
-> > +        if stuff(tag):
-> > +            declared.append('i32')
-> >
-> >      arguments =3D ", ".join(declared)
-> >      f.write(f"DEF_HELPER_{len(declared) - 1}({tag}, =
-{arguments})\n")
-> > diff --git a/target/hexagon/gen_tcg_funcs.py
-> > b/target/hexagon/gen_tcg_funcs.py index 8c2bc03c10..cb02d91886 =
-100755
-> > --- a/target/hexagon/gen_tcg_funcs.py
-> > +++ b/target/hexagon/gen_tcg_funcs.py
-> > @@ -109,18 +109,9 @@ def gen_tcg_func(f, tag, regs, imms):
-> >
-> >
-> declared.append(f"tcg_constant_tl({hex_common.imm_name(immlett)})")
-> >
-> >          ## Other stuff the helper might need
-> > -        if hex_common.need_pkt_has_multi_cof(tag):
-> > -            =
-declared.append("tcg_constant_tl(ctx->pkt->pkt_has_multi_cof)")
-> > -        if hex_common.need_pkt_need_commit(tag):
-> > -            declared.append("tcg_constant_tl(ctx->need_commit)")
-> > -        if hex_common.need_PC(tag):
-> > -            declared.append("tcg_constant_tl(ctx->pkt->pc)")
-> > -        if hex_common.need_next_PC(tag):
-> > -            declared.append("tcg_constant_tl(ctx->next_PC)")
-> > -        if hex_common.need_slot(tag):
-> > -            declared.append("gen_slotval(ctx)")
-> > -        if hex_common.need_part1(tag):
-> > -            declared.append("tcg_constant_tl(insn->part1)")
-> > +        for stuff, text in hex_common.other_stuff:
-> > +            if stuff(tag):
-> > +                declared.append(text)
-> >
-> >          arguments =3D ", ".join(declared)
-> >          f.write(f"    gen_helper_{tag}({arguments});\n")
-> > diff --git a/target/hexagon/hex_common.py
-> > b/target/hexagon/hex_common.py index 90d61a1b16..954532921d 100755
-> > --- a/target/hexagon/hex_common.py
-> > +++ b/target/hexagon/hex_common.py
-> > @@ -1028,3 +1028,13 @@ def get_register(tag, regtype, regid):
-> >          return registers[f"{regtype}{regid}"]
-> >      else:
-> >          return new_registers[f"{regtype}{regid}"]
-> > +
-> > +
-> > +other_stuff =3D {
-> > +    need_pkt_has_multi_cof: "tcg_constant_tl(ctx->pkt-
-> > >pkt_has_multi_cof)",
-> > +    need_pkt_need_commit: "tcg_constant_tl(ctx->need_commit)",
-> > +    need_PC: "tcg_constant_tl(ctx->pkt->pc)",
-> > +    need_next_PC: "tcg_constant_tl(ctx->next_PC)",
-> > +    need_slot: "gen_slotval(ctx)",
-> > +    need_part1: "tcg_constant_tl(insn->part1)", }
->=20
-> Great idea to centralize these in hex_common.  There are three parts
-> though.  There's the actual helper argument in gen_hepler_funcs.py.  =
-I'll
-> think about how best to cover the 3 parts.  Let me know if you have =
-ideas as
-> well.
->=20
-> Thanks,
-> Taylor
+Alistair
 
-How about this?
-
-In hex_common.py
-class HelperArg:
-    def __init__(self, proto_arg, call_arg, func_arg):
-        self.proto_arg =3D proto_arg
-        self.call_arg =3D call_arg
-        self.func_arg =3D func_arg
-
-def extra_helper_args(tag):
-    args =3D []
-    if need_pkt_has_multi_cof(tag):
-        args.append(HelperArg(
-            "i32",
-            "tcg_constant_tl(ctx->pkt->pkt_has_multi_cof)",
-            "uint32_t pkt_has_multi_cof"
-        ))
-    if need_pkt_need_commit(tag):
-        args.append(HelperArg(
-            "i32",
-            "tcg_constant_tl(ctx->need_commit)",
-            "uint32_t pkt_need_commit"
-        ))
-    ...
-    return args
-
-In gen_tcg_funcs.py
-        for extra_arg in hex_common.extra_helper_args(tag):
-            declared.append(extra_arg.call_arg)
-
-In gen_helper_protos.py
-    for extra_arg in hex_common.extra_helper_args(tag):
-        declared.append(extra_arg.proto_arg)
-
-In gen_helper_funcs.py
-    for extra_arg in hex_common.extra_helper_args(tag):
-        declared.append(extra_arg.func_arg)
-
-A further refinement would be to have all the registers and immediates =
-create a HelperArg.  Then, we could consolidate the logic to create the =
-argument lists in hex_common.py.  For example, we pass the destination =
-register as an input to the helper for predicated instructions, and the =
-pointer to the destination for HVX.
-
-Thanks,
-Taylor
-
-
+> ---
+>  include/hw/arm/stm32f405_soc.h | 4 ----
+>  hw/arm/netduinoplus2.c         | 7 ++++++-
+>  hw/arm/olimex-stm32-h405.c     | 8 ++++++--
+>  hw/arm/stm32f405_soc.c         | 8 +-------
+>  4 files changed, 13 insertions(+), 14 deletions(-)
+>
+> diff --git a/include/hw/arm/stm32f405_soc.h b/include/hw/arm/stm32f405_so=
+c.h
+> index c968ce3ab2..d15c03c4b5 100644
+> --- a/include/hw/arm/stm32f405_soc.h
+> +++ b/include/hw/arm/stm32f405_soc.h
+> @@ -51,11 +51,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(STM32F405State, STM32F405_S=
+OC)
+>  #define CCM_SIZE (64 * 1024)
+>
+>  struct STM32F405State {
+> -    /*< private >*/
+>      SysBusDevice parent_obj;
+> -    /*< public >*/
+> -
+> -    char *cpu_type;
+>
+>      ARMv7MState armv7m;
+>
+> diff --git a/hw/arm/netduinoplus2.c b/hw/arm/netduinoplus2.c
+> index 515c081605..2e58984947 100644
+> --- a/hw/arm/netduinoplus2.c
+> +++ b/hw/arm/netduinoplus2.c
+> @@ -44,7 +44,6 @@ static void netduinoplus2_init(MachineState *machine)
+>      clock_set_hz(sysclk, SYSCLK_FRQ);
+>
+>      dev =3D qdev_new(TYPE_STM32F405_SOC);
+> -    qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4")=
+);
+>      qdev_connect_clock_in(dev, "sysclk", sysclk);
+>      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>
+> @@ -55,8 +54,14 @@ static void netduinoplus2_init(MachineState *machine)
+>
+>  static void netduinoplus2_machine_init(MachineClass *mc)
+>  {
+> +    static const char * const valid_cpu_types[] =3D {
+> +        ARM_CPU_TYPE_NAME("cortex-m4"),
+> +        NULL
+> +    };
+> +
+>      mc->desc =3D "Netduino Plus 2 Machine (Cortex-M4)";
+>      mc->init =3D netduinoplus2_init;
+> +    mc->valid_cpu_types =3D valid_cpu_types;
+>  }
+>
+>  DEFINE_MACHINE("netduinoplus2", netduinoplus2_machine_init)
+> diff --git a/hw/arm/olimex-stm32-h405.c b/hw/arm/olimex-stm32-h405.c
+> index 3aa61c91b7..d793de7c97 100644
+> --- a/hw/arm/olimex-stm32-h405.c
+> +++ b/hw/arm/olimex-stm32-h405.c
+> @@ -47,7 +47,6 @@ static void olimex_stm32_h405_init(MachineState *machin=
+e)
+>      clock_set_hz(sysclk, SYSCLK_FRQ);
+>
+>      dev =3D qdev_new(TYPE_STM32F405_SOC);
+> -    qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4")=
+);
+>      qdev_connect_clock_in(dev, "sysclk", sysclk);
+>      sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>
+> @@ -58,9 +57,14 @@ static void olimex_stm32_h405_init(MachineState *machi=
+ne)
+>
+>  static void olimex_stm32_h405_machine_init(MachineClass *mc)
+>  {
+> +    static const char * const valid_cpu_types[] =3D {
+> +        ARM_CPU_TYPE_NAME("cortex-m4"),
+> +        NULL
+> +    };
+> +
+>      mc->desc =3D "Olimex STM32-H405 (Cortex-M4)";
+>      mc->init =3D olimex_stm32_h405_init;
+> -    mc->default_cpu_type =3D ARM_CPU_TYPE_NAME("cortex-m4");
+> +    mc->valid_cpu_types =3D valid_cpu_types;
+>
+>      /* SRAM pre-allocated as part of the SoC instantiation */
+>      mc->default_ram_size =3D 0;
+> diff --git a/hw/arm/stm32f405_soc.c b/hw/arm/stm32f405_soc.c
+> index cef23d7ee4..a65bbe298d 100644
+> --- a/hw/arm/stm32f405_soc.c
+> +++ b/hw/arm/stm32f405_soc.c
+> @@ -149,7 +149,7 @@ static void stm32f405_soc_realize(DeviceState *dev_so=
+c, Error **errp)
+>
+>      armv7m =3D DEVICE(&s->armv7m);
+>      qdev_prop_set_uint32(armv7m, "num-irq", 96);
+> -    qdev_prop_set_string(armv7m, "cpu-type", s->cpu_type);
+> +    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m=
+4"));
+>      qdev_prop_set_bit(armv7m, "enable-bitband", true);
+>      qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+>      qdev_connect_clock_in(armv7m, "refclk", s->refclk);
+> @@ -287,17 +287,11 @@ static void stm32f405_soc_realize(DeviceState *dev_=
+soc, Error **errp)
+>      create_unimplemented_device("RNG",         0x50060800, 0x400);
+>  }
+>
+> -static Property stm32f405_soc_properties[] =3D {
+> -    DEFINE_PROP_STRING("cpu-type", STM32F405State, cpu_type),
+> -    DEFINE_PROP_END_OF_LIST(),
+> -};
+> -
+>  static void stm32f405_soc_class_init(ObjectClass *klass, void *data)
+>  {
+>      DeviceClass *dc =3D DEVICE_CLASS(klass);
+>
+>      dc->realize =3D stm32f405_soc_realize;
+> -    device_class_set_props(dc, stm32f405_soc_properties);
+>      /* No vmstate or reset required: device has no internal state */
+>  }
+>
+> --
+> 2.41.0
+>
+>
 
