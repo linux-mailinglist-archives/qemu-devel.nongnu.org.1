@@ -2,113 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822EE80745B
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:00:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59255807483
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:05:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAuIy-0002tD-2r; Wed, 06 Dec 2023 10:59:20 -0500
+	id 1rAuNf-0004K8-5W; Wed, 06 Dec 2023 11:04:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rAuIv-0002sz-Kr
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:59:17 -0500
-Received: from mail-bn8nam12on20626.outbound.protection.outlook.com
- ([2a01:111:f400:fe5b::626]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rAuIl-0004s2-MI
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:59:17 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Grh6tpMUlgfX9Jy7d8sj70YkHCOD6Y3ijp/S9v/bB3wgdA/1+1BG8zhNIg/Jt5klDkFh1IYWFR2iU/A8xKFaZ5ChtGvqtXdrbh5HZ7t2wniW/smyEAko2gGFpurCiMzQ6i4b0QS2ZE0agYqm3mUljhIbhvs/1Gcaa/gZnurLhNnbfg4eigmb901zM0Y0qQxbMvibiTqaeyjVdfyLGxqmtgGtU+Wmj9u+Nssee+BiGBN+SeS5ZdwpMPbn+/cDAbLg95oIM2mLD9spSKAXSVlKeF5ObAjdkgTt1fzMY4M7SkAUjL8jJrMegfq32uRvMAQJziqUY5np78PHZPEdiXn2Iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=80T7DJv+lZOjy9DTWu2VgFrUpT8q2+yxhOI0LNXDF8E=;
- b=ocqfp5DVCKSyFPi/MKB46+AOYhUkGK60CAwZDq76DTeINNKgp3Rk+pg9SW/JRYnMcOcElm5ZnjX+GucYNe2vMPFLNa+lzBI3uAU9Ct3cFjxHdT8e6cB5CBQHX9W/P3xHcJM+TPj7Aie0gmqRN8JF+CGyuD+qo/68NmrJAENU98e1VJf0DqNNJyE3Ka2IVRNVWJcu/Fkt0SMZW+sQkcV/oxpGSPlOJujl41KnXEv0t2t7BVlCCFulDAu0ZQMwCz8MTJtk+quY8/2mPiGdI6HIlAZ/u1csBDY/6Tbtd/SUB5x6kaoCtK39oZQG2VbH2tO8whQ3Pk8wjDqEZhlEteG6xg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=80T7DJv+lZOjy9DTWu2VgFrUpT8q2+yxhOI0LNXDF8E=;
- b=i4W4BKzw8ONhtpBu3WT5lHr5MRa7a69MgIyR0jOu5YjPvz4EfzlDjQ42B5VPZqUafQL0tqW2qVeZSv7R22ATuJzJfyxoOlmBFArRmEKHFPIrPVk6jOsKWkt2j+Hu/ALsd/o+0hEZg+12Yw6VAWNtz+gMkMmk2RQZ1ad6+BH4Pjs=
-Received: from SCZP152CA0010.LAMP152.PROD.OUTLOOK.COM (2603:10d6:300:53::7) by
- DM3PR12MB9433.namprd12.prod.outlook.com (2603:10b6:0:47::11) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7068.25; Wed, 6 Dec 2023 15:59:01 +0000
-Received: from DS3PEPF000099D7.namprd04.prod.outlook.com
- (2603:10d6:300:53:cafe::53) by SCZP152CA0010.outlook.office365.com
- (2603:10d6:300:53::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.32 via Frontend
- Transport; Wed, 6 Dec 2023 15:58:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS3PEPF000099D7.mail.protection.outlook.com (10.167.17.8) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7068.20 via Frontend Transport; Wed, 6 Dec 2023 15:58:59 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 6 Dec
- 2023 09:58:58 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, Akihiko Odaki
- <akihiko.odaki@daynix.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Lara Lazier <laramglazier@gmail.com>, Vitaly Kuznetsov
- <vkuznets@redhat.com>, Maxim Levitsky <mlevitsk@redhat.com>,
- <kvm@vger.kernel.org>
-Subject: [PATCH v3 for-8.2] i386/sev: Avoid SEV-ES crash due to missing
- MSR_EFER_LMA bit
-Date: Wed, 6 Dec 2023 09:58:21 -0600
-Message-ID: <20231206155821.1194551-1-michael.roth@amd.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rAuNd-0004Js-Uh
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:04:09 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rAuNc-00061I-7w
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:04:09 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40c19f5f822so4839735e9.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:04:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701878646; x=1702483446; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VpujQ0DdDu5LXYWtyO5F4pn9sN4LBulnL+9KyD6czsE=;
+ b=j0vRBeqKS+Zu22IQUxWB+9wDQUH+wwtAefUCGf5iksCezEJQ+VOlPzMNajn+FmnwFl
+ wN5K+XvlpBedTLEed6NXhgjPPg7xzBqD2Wx/Bmwr79gq1dH2cqrG7eCfGUo8Qh9Q7E3D
+ mMsvP1rrsnQsdg2HQNjbQeSXUy8OzTWAHrkaEm1uTByyaLHHfZQ3dj+/yir48vKq6Ywk
+ 2isGGxbBoobvsmKC2SZMydZrbS6DCufvv06bzDvWQcBjHLcp4EpRjFCLiGySvpM5prPf
+ uFE5xJcYJ8q2qQKP/qVC+5Qh2JYugiSBXMi1KF+K88cW/0ZIud5NwtlcopP1M8SZuKhZ
+ LexQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701878646; x=1702483446;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=VpujQ0DdDu5LXYWtyO5F4pn9sN4LBulnL+9KyD6czsE=;
+ b=n95/r1DlBvFiJNH92XH4KriG27LAkRegu3vrkoH5aSq/0DbK0kIvv9bWLlag/KDJuC
+ k5QQQZrU1dY/5yx0nJOydVHI/UTP07y1KWi/uz3UpaoPzbQ5sB4eAC4kFv5nRKjGKlHT
+ tY+6Q3byqzQuwzZjQfFzyWWQnDWaUIJzSuGsosGW0PJodR9dAfn/HdC+Ox+O94EbD6EE
+ /qUa9aXdVP/gBCKKdhdwkq/Gs9BWWbMfy2i0gaX4Mga9IS8hLV29rUMG84z/Kt9/GRkH
+ mSeGOp09alyDGqFwnbS/O6xbcYO2ZN/k0qSSbjoZI2gfWJIw5WgT6akWyXo5f/MXmcO5
+ zfsQ==
+X-Gm-Message-State: AOJu0YxoHzHV4SFN46WbMx0GtmiftVo7TWFhDmUiLoCr8S//F1YSbo1d
+ +CVmkv0niNFaPPp9JH+u30cYGw==
+X-Google-Smtp-Source: AGHT+IEMjW9koY71XU6XxiRegKGAEHFWJmIo9V9Vew8uSpNxXUk9rwXpKFIo1PO4HaSf5zxJ0+Zu9Q==
+X-Received: by 2002:a05:600c:2a4a:b0:40c:24af:1fc6 with SMTP id
+ x10-20020a05600c2a4a00b0040c24af1fc6mr361291wme.107.1701878646554; 
+ Wed, 06 Dec 2023 08:04:06 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ he15-20020a05600c540f00b0040c25abd724sm135244wmb.9.2023.12.06.08.04.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Dec 2023 08:04:06 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id D563C5FBC6;
+ Wed,  6 Dec 2023 16:04:05 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: "~inesvarhol" <inesvarhol@proton.me>,  qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org,  alistair@alistair23.me,  philmd@linaro.org,
+ peter.maydell@linaro.org,  ines.varhol@telecom-paris.fr,
+ arnaud.minier@telecom-paris.fr
+Subject: Re: [PATCH qemu 1/2] hw/arm: Add minimal support for the STM32L4x5 SoC
+In-Reply-To: <CAKmqyKM+usN_VwrwCE68yt9nKT-LZoPw2Xgg_sV_5kw38rwjjw@mail.gmail.com>
+ (Alistair Francis's message of "Wed, 6 Dec 2023 11:18:35 +1000")
+References: <170100975340.4879.5844108484092111139-0@git.sr.ht>
+ <170100975340.4879.5844108484092111139-1@git.sr.ht>
+ <CAKmqyKM+usN_VwrwCE68yt9nKT-LZoPw2Xgg_sV_5kw38rwjjw@mail.gmail.com>
+User-Agent: mu4e 1.11.26; emacs 29.1
+Date: Wed, 06 Dec 2023 16:04:05 +0000
+Message-ID: <87r0jzz5ai.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099D7:EE_|DM3PR12MB9433:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79a83fa6-3f35-499c-e9c0-08dbf6744272
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 213xM9hF0vAyrr058KEslyxjfDgp4KGtsvhjowMW6HwXJZD5i3Uu0t8O55XtV7p7lWHg/UwIb3pfgjEgTWJF8xuRKyl9XDpPNCOo/kcsNwndJGJf0MkFAktAp93TR217sC6z5Tzmi6zwPY6zsHDvKlrnhGGH3CirBO1QyFMLfdFDpzfuEuu30J2qdm3SLUsP0DEKzJRlNe7XMruD/sLfsPAt+CMn9l9dUIhqfLyuX9PDiIB6oCK64OjS3iCdssc6dpI4hX/qW8z6MrwiIYose/H61anWEt6cK6uL9fa1SeiryBOV8LPK+TvPJjv2287lpAg6CSWdk1+8x4CMjWNWtnGCrkzcN8t6i1NSDZPBrOL+w9p1D/lbMgLecb/wWHcCVjCLC5NCiqvdodEC/2ml1bG5zrMV9rQGZplNAk24sfiWKEnPQYdI83hX6+kf559x9Ep1d7e/GPeSvFss38Jqhp9TrTODLM6rE/m+GX50RL+XgahmHJX+oOY62QN/LXm2W6bXsYKG05y46jMYpmZq6CV7Fk3qpAtMqbiX7npKDgiGiAJ13+kWkHNLNH5pTtSSNPcr2HuAnMb5ckelFb7etuQRMkosXXiPDgW7aLWmsUPLvi2ILrfx4V3xWaPGd3AaBxTsRRJ7FK37zFCB+vKYYfeOGmnp2DuAbY0RiPQH2dUKeyWTzO7ViPRuYittYX5jJraPxNVt826+n/aLoOoPgWzs+R6z7hDPk056CzGjp9ITWZ1LRqt9p0tGB2gp9YFCjO9M7C6VWj2n3YgWeUmcKw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(346002)(376002)(396003)(136003)(230922051799003)(186009)(82310400011)(64100799003)(451199024)(1800799012)(36840700001)(40470700004)(46966006)(70586007)(70206006)(36860700001)(356005)(83380400001)(82740400003)(426003)(336012)(16526019)(26005)(2616005)(1076003)(6666004)(478600001)(44832011)(316002)(6916009)(54906003)(86362001)(8676002)(4326008)(8936002)(5660300002)(2906002)(40480700001)(36756003)(41300700001)(47076005)(81166007)(40460700003)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 15:58:59.3742 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79a83fa6-3f35-499c-e9c0-08dbf6744272
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099D7.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9433
-Received-SPF: softfail client-ip=2a01:111:f400:fe5b::626;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -125,74 +100,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
-added error checking for KVM_SET_SREGS/KVM_SET_SREGS2. In doing so, it
-exposed a long-running bug in current KVM support for SEV-ES where the
-kernel assumes that MSR_EFER_LMA will be set explicitly by the guest
-kernel, in which case EFER write traps would result in KVM eventually
-seeing MSR_EFER_LMA get set and recording it in such a way that it would
-be subsequently visible when accessing it via KVM_GET_SREGS/etc.
+Alistair Francis <alistair23@gmail.com> writes:
 
-However, guest kernels currently rely on MSR_EFER_LMA getting set
-automatically when MSR_EFER_LME is set and paging is enabled via
-CR0_PG_MASK. As a result, the EFER write traps don't actually expose the
-MSR_EFER_LMA bit, even though it is set internally, and when QEMU
-subsequently tries to pass this EFER value back to KVM via
-KVM_SET_SREGS* it will fail various sanity checks and return -EINVAL,
-which is now considered fatal due to the aforementioned QEMU commit.
+> On Mon, Nov 27, 2023 at 12:44=E2=80=AFAM ~inesvarhol <inesvarhol@git.sr.h=
+t> wrote:
+>>
+>> From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+>>
+>> This patch adds a new STM32L4x5 SoC, it is necessary to add support for
+>> the B-L475E-IOT01A board.
+>> The implementation is derived from the STM32F405 SoC.
+>> The implementation contains no peripherals, only memory regions are
+>> implemented.
+>>
+>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>>
+>> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+>> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+>> ---
+>>  MAINTAINERS                    |   8 +
+>>  hw/arm/Kconfig                 |   5 +
+>>  hw/arm/meson.build             |   1 +
+>>  hw/arm/stm32l4x5_soc.c         | 277 +++++++++++++++++++++++++++++++++
+>>  include/hw/arm/stm32l4x5_soc.h |  68 ++++++++
+>>  5 files changed, 359 insertions(+)
+>>  create mode 100644 hw/arm/stm32l4x5_soc.c
+>>  create mode 100644 include/hw/arm/stm32l4x5_soc.h
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index ff1238bb98..32458d41dd 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -1122,6 +1122,14 @@ L: qemu-arm@nongnu.org
+>>  S: Maintained
+>>  F: hw/arm/olimex-stm32-h405.c
+>>
+>> +STM32L4x5 SoC Family
+>> +M: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+>> +M: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+>> +L: qemu-arm@nongnu.org
+>> +S: Maintained
+>> +F: hw/arm/stm32l4x5_soc.c
+>> +F: include/hw/arm/stm32l4x5_soc.h
+>> +
+>>  SmartFusion2
+>>  M: Subbaraya Sundeep <sundeep.lkml@gmail.com>
+>>  M: Peter Maydell <peter.maydell@linaro.org>
+>> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+>> index 3ada335a24..d2b94d9a47 100644
+>> --- a/hw/arm/Kconfig
+>> +++ b/hw/arm/Kconfig
+>> @@ -448,6 +448,11 @@ config STM32F405_SOC
+>>      select STM32F4XX_SYSCFG
+>>      select STM32F4XX_EXTI
+>>
+>> +config STM32L4X5_SOC
+>> +    bool
+>> +    select ARM_V7M
+>> +    select OR_IRQ
+>> +
+>>  config XLNX_ZYNQMP_ARM
+>>      bool
+>>      default y if PIXMAN
+>> diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+>> index 68245d3ad1..9766da10c4 100644
+>> --- a/hw/arm/meson.build
+>> +++ b/hw/arm/meson.build
+>> @@ -42,6 +42,7 @@ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm28=
+36.c', 'raspi.c'))
+>>  arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.=
+c'))
+>>  arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.=
+c'))
+>>  arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.=
+c'))
+>> +arm_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_soc.=
+c'))
+>>  arm_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp.=
+c', 'xlnx-zcu102.c'))
+>>  arm_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', =
+'xlnx-versal-virt.c'))
+>>  arm_ss.add(when: 'CONFIG_FSL_IMX25', if_true: files('fsl-imx25.c', 'imx=
+25_pdk.c'))
+>> diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+>> new file mode 100644
+>> index 0000000000..f476878b2c
+>> --- /dev/null
+>> +++ b/hw/arm/stm32l4x5_soc.c
+>> @@ -0,0 +1,277 @@
+>> +/*
+>> + * STM32L4x5 SoC family
+>> + *
+>> + * SPDX-License-Identifier: MIT
+>
+> I'm pretty sure this must be GPL to be accepted
 
-This can be addressed by inferring the MSR_EFER_LMA bit being set when
-paging is enabled and MSR_EFER_LME is set, and synthesizing it to ensure
-the expected bits are all present in subsequent handling on the host
-side.
+Does it? A quick grep of the code shows we have quite a lot of hw
+emulation files that are MIT licensed. Although IANAL MIT is very
+permissive and easily combined with GPL as long at the final product is
+under GPL.
 
-Ultimately, this handling will be implemented in the host kernel, but to
-avoid breaking QEMU's SEV-ES support when using older host kernels, the
-same handling can be done in QEMU just after fetching the register
-values via KVM_GET_SREGS*. Implement that here.
+I think there is some LGPL code about for TCG but I'm not sure how well
+tagged that is.
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Cc: Lara Lazier <laramglazier@gmail.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: kvm@vger.kernel.org
-Fixes: 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
-Signed-off-by: Michael Roth <michael.roth@amd.com>
----
- target/i386/kvm/kvm.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 11b8177eff..4ce80555b4 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -3643,6 +3643,10 @@ static int kvm_get_sregs(X86CPU *cpu)
-     env->cr[4] = sregs.cr4;
- 
-     env->efer = sregs.efer;
-+    if (sev_es_enabled() && env->efer & MSR_EFER_LME &&
-+        env->cr[0] & CR0_PG_MASK) {
-+        env->efer |= MSR_EFER_LMA;
-+    }
- 
-     /* changes to apic base and cr8/tpr are read back via kvm_arch_post_run */
-     x86_update_hflags(env);
-@@ -3682,6 +3686,10 @@ static int kvm_get_sregs2(X86CPU *cpu)
-     env->cr[4] = sregs.cr4;
- 
-     env->efer = sregs.efer;
-+    if (sev_es_enabled() && env->efer & MSR_EFER_LME &&
-+        env->cr[0] & CR0_PG_MASK) {
-+        env->efer |= MSR_EFER_LMA;
-+    }
- 
-     env->pdptrs_valid = sregs.flags & KVM_SREGS2_FLAGS_PDPTRS_VALID;
- 
--- 
-2.25.1
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
