@@ -2,73 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4868076CF
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:42:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 866588076D2
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:43:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAvtg-0008JO-Rp; Wed, 06 Dec 2023 12:41:20 -0500
+	id 1rAvvY-0000ia-22; Wed, 06 Dec 2023 12:43:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rAvte-0008JC-1U
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:41:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rAvvV-0000iO-2H
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:43:13 -0500
+Received: from mail-bn8nam04on20627.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8d::627]
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rAvtX-0007WL-B1
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:41:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701884470;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=RjVbYlaJfMj01EmF7wBNfPlhYKkQPcCqb3Va57/keWw=;
- b=aOmXI9fgpmqownkCHSaXr1x0IWZIZjzylnH+tsyXOGzuhG5G5JLpSEGX1+s3afKhw+/sGM
- mZmL1wtkPNhbq+7XSYZP89bKn1IzGUE7gfkUsII5sRYr/jcZvVtl3PlvzHcNgXfp7iIAnd
- Lm1BR9DJ6tgjCW1WNo/3XtY2+Ptyang=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-101-B6aJKpLJNdmKajpYxbX4Zg-1; Wed, 06 Dec 2023 12:41:08 -0500
-X-MC-Unique: B6aJKpLJNdmKajpYxbX4Zg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3BA92101A551;
- Wed,  6 Dec 2023 17:41:08 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.46])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6E49E492BE6;
- Wed,  6 Dec 2023 17:41:06 +0000 (UTC)
-Date: Wed, 6 Dec 2023 17:41:03 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Hyman Huang <yong.huang@smartx.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v3] crypto: Introduce SM4 symmetric cipher algorithm
-Message-ID: <ZXCyL9TDaQXXwaoT@redhat.com>
-References: <3c9608d818225af1e20478f98501594a5fea9353.1701270110.git.yong.huang@smartx.com>
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rAvvQ-0007l5-KR
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:43:12 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RuEN2pKMMkQtL0XoL9+D9d2eaY3uuFkwmXxwAmss3R2XTgCH714JfHSIOvgq1IS5Qk7Vlb3/F8ZKIaOpQpkA6NkUYdx314wObieuDdWmUf/eieR9YwOIw8n9ZBanYo+fBYyKY0NJ5MD8Enr1Qlk0Bt+XqqnMtsWxmRPywfP6I4cpf5fhEtmrT/sJhxBGs2sPHyjrjX8LCceZZXp9/1RAteOPZpD+9NuMM71RHmNlclAjQShVANMewzN3KCXGyA+xk1W+bL99bcpW4YqwH2fVlYYFVPxAeLnPz1cd5rVAcs3rvJ0hOPq5yD3RZ/iGKJmP6IboECwS3s2OE5EicvGl8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hxZO/xiJjij2roiaiMfBBVHXPXh/BGOFsGEPm46RZ6E=;
+ b=jgbm91Y2ocxYvGdEAy84kquEUL2lM0BTVS0rLzDoNkaR6F9ZW4z0mZhZOGucySfT0q5pV37T85ThPzjhCe8uEcBmyuCkrhQ5HOYUdP0Xr0wsjDjbMQXtO5lHI/3mX66RMciKazfeWYvUrMNGwS3m2Ek9GVmsvPl7F6YRgvm9cVawD/d76zsLiTmDVF8KV2UlqnBEWYIOpnnB6k8e5yJ1YVyBya4g8hnJzOk4A31mxUM0exdqUv6Ii4IP+26DM6uHsEe4Gg4GmQpFVnuLt+jBikjt34nW5iakSsPVdOXocSa3p+f2zcXga4qNtZ5It8ZXoNd9CmNPJUXBdVPCwR1/bg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hxZO/xiJjij2roiaiMfBBVHXPXh/BGOFsGEPm46RZ6E=;
+ b=mI6bisCTW1q/IKde67eQRHt7hXAWeXA1m1yVggjPOmsc/LQeYHZwE7gZTVN0fsDgBnQKvgOo1ISwWtLdocTIFa0o1PU9p8jagPNiNFtvSM4TtbWB2wxN/lkMiRTDJM3HLu95X5sx5/X1OoHdNCKZB3W80byuDn6XRSK25twDuiY=
+Received: from CH0PR03CA0026.namprd03.prod.outlook.com (2603:10b6:610:b0::31)
+ by DS7PR12MB5816.namprd12.prod.outlook.com (2603:10b6:8:78::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.25; Wed, 6 Dec
+ 2023 17:42:53 +0000
+Received: from DS3PEPF000099D7.namprd04.prod.outlook.com
+ (2603:10b6:610:b0:cafe::f5) by CH0PR03CA0026.outlook.office365.com
+ (2603:10b6:610:b0::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34 via Frontend
+ Transport; Wed, 6 Dec 2023 17:42:53 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS3PEPF000099D7.mail.protection.outlook.com (10.167.17.8) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7068.20 via Frontend Transport; Wed, 6 Dec 2023 17:42:53 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 6 Dec
+ 2023 11:42:52 -0600
+Date: Wed, 6 Dec 2023 11:42:35 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Maxim Levitsky <mlevitsk@redhat.com>
+CC: <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>, "Marcelo
+ Tosatti" <mtosatti@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, <kvm@vger.kernel.org>
+Subject: Re: [PATCH v2 for-8.2?] i386/sev: Avoid SEV-ES crash due to missing
+ MSR_EFER_LMA bit
+Message-ID: <20231206174235.b7fwrqzko27of7qz@amd.com>
+References: <20231205222816.1152720-1-michael.roth@amd.com>
+ <9eae0513c912faa04a11db378ea3ca176ab45f0d.camel@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <3c9608d818225af1e20478f98501594a5fea9353.1701270110.git.yong.huang@smartx.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <9eae0513c912faa04a11db378ea3ca176ab45f0d.camel@redhat.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099D7:EE_|DS7PR12MB5816:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6662ecdc-f656-4c01-862b-08dbf682c633
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: nEw84czKZIli6Iw6oTePQlhJb1vthjT6h8uPsgNA7pM1obShxu5R+1xk+AJ+QAobOHdvYRnWOcXkpy81Xi5T3vxSEzs1KCaTEmjdCTMfw6sZBepJDM+NPj2vTzpUW15/9f4NY65IusXFM5A78EGn/IsR+f6jhKqSTAy26YZqkL+3YVPV+70qOtuMwLIJEstnABKuqeX34ko5GB0stbSsG9vlla5xuMCIb6EhvTvBJOiw5exzKamHZdUhscU/iOBDcP9lcFo/LV3iGO59oaRBSUUiQABIYfBaZueJLkUfQNCfS1rXKrwWJTl1FFLVOMPg0v6LugX1pdUTgOLg315oGdh6mnv2hXrIBLiQANGzRzS8KnrBI1zcN0zZ1ptg7HqtRMbqVM2r9AqeAK1vlGxQKaf7qJfzyXfcbh8ZKX1mIZnRgQ29LfjA2m4scvuDFu7qwN62Kzh6iawIDjU0+VO6gYha7YuLeNhFvE12FYFH38YweFZz5G022wO0Is1bPCzOrSGwFEr4ouGio/NcEXFDfS6PRDkOf4ajzpShEng0UZ+tf4ZEaYphHS9rgrn/huXUUN6P1Cnb55DkTAJROKT3o/P7IRUFbU4h6A/eiGT+C0fJ7hgQs0Za8WeZdD/AVrFffBz95Z6pvK4ehNpFaer9HvwVcHb95y5SckrOI1JbLtJUrFfRkBMpiWgYLivTh+8LBzDSW6zawWN4s73VW+mSvCQCNqYEi9TOTp7/ca2PCvMwJ/hmxBUgsgm9ETbK85vI
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(136003)(346002)(39860400002)(376002)(396003)(230922051799003)(1800799012)(82310400011)(186009)(451199024)(64100799003)(40470700004)(36840700001)(46966006)(36860700001)(47076005)(44832011)(356005)(81166007)(82740400003)(5660300002)(6666004)(86362001)(36756003)(8676002)(8936002)(4326008)(41300700001)(40480700001)(2906002)(426003)(26005)(40460700003)(83380400001)(1076003)(70206006)(70586007)(2616005)(478600001)(316002)(336012)(16526019)(6916009)(54906003)(966005)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 17:42:53.3722 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6662ecdc-f656-4c01-862b-08dbf682c633
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099D7.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5816
+Received-SPF: softfail client-ip=2a01:111:f400:7e8d::627;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,175 +121,146 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 29, 2023 at 11:17:49PM +0800, Hyman Huang wrote:
-> Introduce the SM4 cipher algorithms (OSCCA GB/T 32907-2016).
+On Wed, Dec 06, 2023 at 07:20:14PM +0200, Maxim Levitsky wrote:
+> On Tue, 2023-12-05 at 16:28 -0600, Michael Roth wrote:
+> > Commit 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+> > added error checking for KVM_SET_SREGS/KVM_SET_SREGS2. In doing so, it
+> > exposed a long-running bug in current KVM support for SEV-ES where the
+> > kernel assumes that MSR_EFER_LMA will be set explicitly by the guest
+> > kernel, in which case EFER write traps would result in KVM eventually
+> > seeing MSR_EFER_LMA get set and recording it in such a way that it would
+> > be subsequently visible when accessing it via KVM_GET_SREGS/etc.
+> > 
+> > However, guests kernels currently rely on MSR_EFER_LMA getting set
+> > automatically when MSR_EFER_LME is set and paging is enabled via
+> > CR0_PG_MASK. As a result, the EFER write traps don't actually expose the
+> > MSR_EFER_LMA even though it is set internally, and when QEMU
+> > subsequently tries to pass this EFER value back to KVM via
+> > KVM_SET_SREGS* it will fail various sanity checks and return -EINVAL,
+> > which is now considered fatal due to the aforementioned QEMU commit.
+> > 
+> > This can be addressed by inferring the MSR_EFER_LMA bit being set when
+> > paging is enabled and MSR_EFER_LME is set, and synthesizing it to ensure
+> > the expected bits are all present in subsequent handling on the host
+> > side.
+> > 
+> > Ultimately, this handling will be implemented in the host kernel, but to
+> > avoid breaking QEMU's SEV-ES support when using older host kernels, the
+> > same handling can be done in QEMU just after fetching the register
+> > values via KVM_GET_SREGS*. Implement that here.
+> > 
+> > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > Cc: Marcelo Tosatti <mtosatti@redhat.com>
+> > Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> > Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > Cc: kvm@vger.kernel.org
+> > Fixes: 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> > v2:
+> >   - Add handling for KVM_GET_SREGS, not just KVM_GET_SREGS2
+> > 
+> >  target/i386/kvm/kvm.c | 14 ++++++++++++++
+> >  1 file changed, 14 insertions(+)
+> > 
+> > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > index 11b8177eff..8721c1bf8f 100644
+> > --- a/target/i386/kvm/kvm.c
+> > +++ b/target/i386/kvm/kvm.c
+> > @@ -3610,6 +3610,7 @@ static int kvm_get_sregs(X86CPU *cpu)
+> >  {
+> >      CPUX86State *env = &cpu->env;
+> >      struct kvm_sregs sregs;
+> > +    target_ulong cr0_old;
+> >      int ret;
+> >  
+> >      ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_SREGS, &sregs);
+> > @@ -3637,12 +3638,18 @@ static int kvm_get_sregs(X86CPU *cpu)
+> >      env->gdt.limit = sregs.gdt.limit;
+> >      env->gdt.base = sregs.gdt.base;
+> >  
+> > +    cr0_old = env->cr[0];
+> >      env->cr[0] = sregs.cr0;
+> >      env->cr[2] = sregs.cr2;
+> >      env->cr[3] = sregs.cr3;
+> >      env->cr[4] = sregs.cr4;
+> >  
+> >      env->efer = sregs.efer;
+> > +    if (sev_es_enabled() && env->efer & MSR_EFER_LME) {
+> > +        if (!(cr0_old & CR0_PG_MASK) && env->cr[0] & CR0_PG_MASK) {
+> > +            env->efer |= MSR_EFER_LMA;
+> > +        }
+> > +    }
 > 
-> SM4 (GBT.32907-2016) is a cryptographic standard issued by the
-> Organization of State Commercial Administration of China (OSCCA)
-> as an authorized cryptographic algorithms for the use within China.
+> I think that we should not check that CR0_PG has changed, and just blindly assume
+> that if EFER.LME is set and CR0.PG is set, then EFER.LMA must be set as defined in x86 spec.
 > 
-> Use the crypto-sm4 meson build option to explicitly control the
-> feature, which would be detected by default.
+> Otherwise, suppose qemu calls kvm_get_sregs twice: First time it will work,
+> but second time CR0.PG will match one that is stored in the env, and thus the workaround
+> will not be executed, and instead we will revert back to wrong EFER value 
+> reported by the kernel.
 > 
-> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
-> ---
->  crypto/block-luks.c             | 11 ++++++++
->  crypto/cipher-gcrypt.c.inc      |  8 ++++++
->  crypto/cipher-nettle.c.inc      | 49 +++++++++++++++++++++++++++++++++
->  crypto/cipher.c                 |  6 ++++
->  meson.build                     | 42 ++++++++++++++++++++++++++++
->  meson_options.txt               |  2 ++
->  qapi/crypto.json                |  5 +++-
->  scripts/meson-buildoptions.sh   |  3 ++
->  tests/unit/test-crypto-cipher.c | 13 +++++++++
->  9 files changed, 138 insertions(+), 1 deletion(-)
+> How about something like that:
 > 
+> 
+> if (sev_es_enabled() && env->efer & MSR_EFER_LME && env->cr[0] & CR0_PG_MASK) {
+> 	/* 
+>          * Workaround KVM bug, because of which KVM might not be aware of the 
+>          * fact that EFER.LMA was toggled by the hardware 
+>          */
+> 	env->efer |= MSR_EFER_LMA;
+> }
 
-> diff --git a/meson.build b/meson.build
-> index ec01f8b138..765f9c9f50 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -1480,6 +1480,7 @@ endif
->  gcrypt = not_found
->  nettle = not_found
->  hogweed = not_found
-> +crypto_sm4 = not_found
->  xts = 'none'
->  
->  if get_option('nettle').enabled() and get_option('gcrypt').enabled()
-> @@ -1505,6 +1506,28 @@ if not gnutls_crypto.found()
->           cc.find_library('gpg-error', required: true)],
->          version: gcrypt.version())
->      endif
-> +    crypto_sm4 = gcrypt
-> +    # SM4 ALG is available in libgcrypt >= 1.9
-> +    if gcrypt.found() and not cc.links('''
-> +      #include <gcrypt.h>
-> +      int main(void) {
-> +        gcry_cipher_hd_t handler;
-> +        gcry_cipher_open(&handler, GCRY_CIPHER_SM4, GCRY_CIPHER_MODE_ECB, 0);
-> +        return 0;
-> +      }''', dependencies: gcrypt)
-> +      crypto_sm4 = not_found
-> +      if get_option('crypto_sm4').enabled()
-> +        error('could not link sm4')
-> +      else
-> +        warning('could not link sm4, disabling')
-> +      endif
+Hi Maxim,
 
-IMHO we don't need to have an option for 'crypto_sm4', just
-silently disable it if not present in the host provideed
-library.
+I'd already sent a v3 based on a similar suggestion from Paolo:
 
-> +    endif
-> +    if crypto_sm4.found() and get_option('prefer_static')
-> +      crypto_sm4 = declare_dependency(dependencies: [
-> +        gcrypt,
-> +        cc.find_library('gpg-error', required: true)],
-> +        version: gcrypt.version())
-> +    endif
+  https://lists.gnu.org/archive/html/qemu-devel/2023-12/msg00751.html
 
-This last if/endif block is redundant. We already have earlier
-logic that detects gpg-error, and we never use the 'crypto_sm4'
-object after this point anyway
+Does that one look okay to you?
 
->    endif
->    if (not get_option('nettle').auto() or have_system) and not gcrypt.found()
->      nettle = dependency('nettle', version: '>=3.4',
-> @@ -1513,6 +1536,23 @@ if not gnutls_crypto.found()
->      if nettle.found() and not cc.has_header('nettle/xts.h', dependencies: nettle)
->        xts = 'private'
->      endif
-> +    crypto_sm4 = nettle
-> +    # SM4 ALG is available in nettle >= 3.9
-> +    if nettle.found() and not cc.links('''
-> +      #include <nettle/sm4.h>
-> +      int main(void) {
-> +        struct sm4_ctx ctx;
-> +        unsigned char key[16] = {0};
-> +        sm4_set_encrypt_key(&ctx, key);
-> +        return 0;
-> +      }''', dependencies: nettle)
-> +      crypto_sm4 = not_found
-> +      if get_option('crypto_sm4').enabled()
-> +        error('could not link sm4')
-> +      else
-> +        warning('could not link sm4, disabling')
-> +      endif
+Thanks,
 
-Likewise no need for an option, just silently disable it.
+Mike
 
-> +    endif
->    endif
->  endif
->  
-> @@ -2199,6 +2239,7 @@ config_host_data.set('CONFIG_GNUTLS_CRYPTO', gnutls_crypto.found())
->  config_host_data.set('CONFIG_TASN1', tasn1.found())
->  config_host_data.set('CONFIG_GCRYPT', gcrypt.found())
->  config_host_data.set('CONFIG_NETTLE', nettle.found())
-> +config_host_data.set('CONFIG_CRYPTO_SM4', crypto_sm4.found())
->  config_host_data.set('CONFIG_HOGWEED', hogweed.found())
->  config_host_data.set('CONFIG_QEMU_PRIVATE_XTS', xts == 'private')
->  config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
-> @@ -4273,6 +4314,7 @@ summary_info += {'nettle':            nettle}
->  if nettle.found()
->     summary_info += {'  XTS':             xts != 'private'}
->  endif
-> +summary_info += {'SM4 ALG support':   crypto_sm4}
->  summary_info += {'AF_ALG support':    have_afalg}
->  summary_info += {'rng-none':          get_option('rng_none')}
->  summary_info += {'Linux keyring':     have_keyring}
-> diff --git a/meson_options.txt b/meson_options.txt
-> index c9baeda639..db8de4ec5b 100644
-> --- a/meson_options.txt
-> +++ b/meson_options.txt
-> @@ -172,6 +172,8 @@ option('nettle', type : 'feature', value : 'auto',
->         description: 'nettle cryptography support')
->  option('gcrypt', type : 'feature', value : 'auto',
->         description: 'libgcrypt cryptography support')
-> +option('crypto_sm4', type : 'feature', value : 'auto',
-> +       description: 'SM4 symmetric cipher algorithm support')
-
-Drop this.
-
->  option('crypto_afalg', type : 'feature', value : 'disabled',
->         description: 'Linux AF_ALG crypto backend driver')
->  option('libdaxctl', type : 'feature', value : 'auto',
-
-> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-> index 680fa3f581..f189f34829 100644
-> --- a/scripts/meson-buildoptions.sh
-> +++ b/scripts/meson-buildoptions.sh
-> @@ -106,6 +106,7 @@ meson_options_help() {
->    printf "%s\n" '  colo-proxy      colo-proxy support'
->    printf "%s\n" '  coreaudio       CoreAudio sound support'
->    printf "%s\n" '  crypto-afalg    Linux AF_ALG crypto backend driver'
-> +  printf "%s\n" '  crypto-sm4      SM4 symmetric cipher algorithm support'
->    printf "%s\n" '  curl            CURL block device driver'
->    printf "%s\n" '  curses          curses UI'
->    printf "%s\n" '  dbus-display    -display dbus support'
-> @@ -282,6 +283,8 @@ _meson_option_parse() {
->      --disable-coroutine-pool) printf "%s" -Dcoroutine_pool=false ;;
->      --enable-crypto-afalg) printf "%s" -Dcrypto_afalg=enabled ;;
->      --disable-crypto-afalg) printf "%s" -Dcrypto_afalg=disabled ;;
-> +    --enable-crypto-sm4) printf "%s" -Dcrypto_sm4=enabled ;;
-> +    --disable-crypto-sm4) printf "%s" -Dcrypto_sm4=disabled ;;
->      --enable-curl) printf "%s" -Dcurl=enabled ;;
->      --disable-curl) printf "%s" -Dcurl=disabled ;;
->      --enable-curses) printf "%s" -Dcurses=enabled ;;
-
-This can go away too
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+> 
+> 
+> Best regards,
+> 	Maxim Levitsky
+> 
+> >  
+> >      /* changes to apic base and cr8/tpr are read back via kvm_arch_post_run */
+> >      x86_update_hflags(env);
+> > @@ -3654,6 +3661,7 @@ static int kvm_get_sregs2(X86CPU *cpu)
+> >  {
+> >      CPUX86State *env = &cpu->env;
+> >      struct kvm_sregs2 sregs;
+> > +    target_ulong cr0_old;
+> >      int i, ret;
+> >  
+> >      ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_SREGS2, &sregs);
+> > @@ -3676,12 +3684,18 @@ static int kvm_get_sregs2(X86CPU *cpu)
+> >      env->gdt.limit = sregs.gdt.limit;
+> >      env->gdt.base = sregs.gdt.base;
+> >  
+> > +    cr0_old = env->cr[0];
+> >      env->cr[0] = sregs.cr0;
+> >      env->cr[2] = sregs.cr2;
+> >      env->cr[3] = sregs.cr3;
+> >      env->cr[4] = sregs.cr4;
+> >  
+> >      env->efer = sregs.efer;
+> > +    if (sev_es_enabled() && env->efer & MSR_EFER_LME) {
+> > +        if (!(cr0_old & CR0_PG_MASK) && env->cr[0] & CR0_PG_MASK) {
+> > +            env->efer |= MSR_EFER_LMA;
+> > +        }
+> > +    }
+> >  
+> >      env->pdptrs_valid = sregs.flags & KVM_SREGS2_FLAGS_PDPTRS_VALID;
+> >  
+> 
+> 
 
