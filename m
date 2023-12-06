@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A22718063C6
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 01:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 360EA8063F6
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 02:05:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAgDp-0005jY-9V; Tue, 05 Dec 2023 19:57:05 -0500
+	id 1rAgLR-0007Cg-Du; Tue, 05 Dec 2023 20:04:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAgDm-0005io-RL; Tue, 05 Dec 2023 19:57:02 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1rAgLP-0007CT-AJ
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 20:04:56 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAgDl-0000tw-A2; Tue, 05 Dec 2023 19:57:02 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-548ce39b101so7842752a12.2; 
- Tue, 05 Dec 2023 16:57:00 -0800 (PST)
+ id 1rAgLM-0002kb-SH
+ for qemu-devel@nongnu.org; Tue, 05 Dec 2023 20:04:54 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-54ca339ae7aso4349083a12.3
+ for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 17:04:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701824219; x=1702429019; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701824691; x=1702429491; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iOrzd1+wCgODobzsxmtV08tAr43Yb62xMT/P7Tl7mKc=;
- b=ILhhWjqLEG5bEAJ9zYVsgiJCO2q2ALWqINEREL6ukoy/Q5QQ1V5caLDcfOxE8bRQp3
- rAuU1D2LtE/sEVkz+Yv5Kgjsa35B6tSr94azFviBhefKCKV35AeupguJnwLRx3MG3KiH
- 1Vr0Fm3iBEoBHHnJ0DIaN20qDp0q4XZ/DZdIkO9sNUEKaj/gDg/zIzsjMpW4vvjL9J5C
- 1BCDrXXb6Usns19jpMY5pfVy3r2J0GfLVkohCX8Guj4qB/e2cvs6T+rzSomUY/0AKqXv
- /rjjAuqvZHIihMY4TCB3MxbPJBHv0VbgSaGuCjPyFDpZJvD188JatjuquUMZS8XOZdQn
- fU/w==
+ bh=MEAbpF2SThmoYW857skSuGD1PSK2La9CB5UpLpPWfhA=;
+ b=VFPM14o0Idv+EcWDSG5FGGhLRkU8AwPaKwVN2QitzG7++bXpD4fqX7j3PDpyBxKuqz
+ /Wf8jIUM0LOJ9Mffl+Br0OFvW2mjiGeRoV3ajx7+RhusOLdhZTAviksTZZ9KCWvvyp+t
+ XzL6cIQC9IUvC5zyPIt3urcWA7oRH8/v5PIjEkqHb3cpEjLtpDPoOgUyUX9gWfMwlswV
+ /WvIO2M+twZzRPPo5OObYaJxtDRhp7t7XdlVPG7U9O+suQ123J+yB1/AqixU2Tsa7TvJ
+ P6kp1880j0R699SMh45GzN0aPR9rTtoeeHNyArz1JJxuL2WWJjAS3rnnw8QfBdHO+02i
+ VsYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701824219; x=1702429019;
+ d=1e100.net; s=20230601; t=1701824691; x=1702429491;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iOrzd1+wCgODobzsxmtV08tAr43Yb62xMT/P7Tl7mKc=;
- b=NoKopv3o3/WAz41Jhut/iWOy6kkczEaCTNNetyw8TKyDJAUQgsKpNT8whL3GqGofiC
- GM1Gz1OIk2mAC6iWcykSMbR4I7iJQOhl+xHFljmgHsc0GGT1HwHpB1w+pKUFLpEvDpHD
- CebKMic2ozAJlIipNw4Z2chN7aiHvnKII3J0kr8rBsr+054AB4j1GEX1jyoYMfeuyfs8
- eAqkQX7pqN/uHopY/o0FlLiw+C1Xj7Z0ybsgoq3jxBMKQxhX+J6nON4wMEnbmHpXFAY2
- v0VOSUShCAySTkfzv+tl2R9DELCzKNTXgdUZ0JzxDPy6GKfI/7K/RVgQhhgXUdPIwkM4
- 0Gaw==
-X-Gm-Message-State: AOJu0YzQZ6miwJReP8lSfPEDF3YsTbtnzrUlh9PyAkiaJxiY0lc2KeIS
- UBSrJrXKT1KThbwZw1hHX3znOO0sYn/DJo4fNHQxh/mBHRmw4A==
-X-Google-Smtp-Source: AGHT+IHLoLKB7RwhsoR0UZleUdy51e5/r8CSYwxlL4PAMRJQHBtwprGneuli0mOT/3q04+NQFnAql5Pa/H5WE8FDPh0=
-X-Received: by 2002:a05:6402:448b:b0:54d:1d9f:5eb2 with SMTP id
- er11-20020a056402448b00b0054d1d9f5eb2mr54591edb.79.1701824219469; Tue, 05 Dec
- 2023 16:56:59 -0800 (PST)
+ bh=MEAbpF2SThmoYW857skSuGD1PSK2La9CB5UpLpPWfhA=;
+ b=DG8A3dxOUAF9p8Z9flo/ArgAlQUsJin6lIajZcBq7atl1kfmdh0LdpafKOEqYdWCH4
+ cDMplKKiAIRRnax/FwlkU6V3ZfINqRc3KEh+SD5I9wEkS2RHu0dvd2BhdlywQm3H6mqY
+ /bNu58S6gpt1TTHTxz06hLdPs1mQkpdovwKIStl9uDGbJuj5F7yRTPga5Ko4RoQTuus2
+ cUyv6K/xQRAIRna9HtWWiko8ZsgiiD+3LQMSOoEkpoCCRYSV6GRZ2fKl0rKHdImKf/xK
+ gpwsrfNrNSfIX1CSga+uqKU18RM6lE8us3pL+wMIWNTWmHwfrmd+qbgmunCf9609mzcI
+ CsgA==
+X-Gm-Message-State: AOJu0YxNPQScvkg6IwohBsnZW+uDKor+iCPNkDw4eyPfOfgdVJelc/su
+ omPfRJOTGGxo8mW6JlOL6LYVs1k7FdOJytQW46YSoLh47nVH5g==
+X-Google-Smtp-Source: AGHT+IEZnn1ZP878VWdGIQcGdd5atijzEygFW9n03+X9u3rTViMyFwUP8BIUbEz9tJxzTMEcEqRjLL+Kt/l93cc/DwU=
+X-Received: by 2002:a50:8e12:0:b0:54b:1ca8:851e with SMTP id
+ 18-20020a508e12000000b0054b1ca8851emr106672edw.2.1701824690805; Tue, 05 Dec
+ 2023 17:04:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20231123181300.2140622-1-christoph.muellner@vrull.eu>
-In-Reply-To: <20231123181300.2140622-1-christoph.muellner@vrull.eu>
+References: <170152443229.18048.53824064267512246-0@git.sr.ht>
+In-Reply-To: <170152443229.18048.53824064267512246-0@git.sr.ht>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 6 Dec 2023 10:56:32 +1000
-Message-ID: <CAKmqyKOoH1+Gc7oUw5-fW5wZX3yiQDWs2xoQQDNyci=W=D0MuQ@mail.gmail.com>
-Subject: Re: [PATCH v2] linux-user/riscv: Add Zicboz extensions to hwprobe
-To: Christoph Muellner <christoph.muellner@vrull.eu>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
+Date: Wed, 6 Dec 2023 11:04:23 +1000
+Message-ID: <CAKmqyKN2sZhghq0yweD33DwpE=n1-gicZhSU2nL_j1t9OhC4rw@mail.gmail.com>
+Subject: Re: [PATCH qemu v3 00/20] Fix malfunctioning of T2-T5 timers on the
+ STM32 platform
+To: "~lbryndza" <lbryndza.oss@icloud.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=alistair23@gmail.com; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,51 +88,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Nov 27, 2023 at 12:37=E2=80=AFAM Christoph Muellner
-<christoph.muellner@vrull.eu> wrote:
+On Sat, Dec 2, 2023 at 11:40=E2=80=AFPM ~lbryndza <lbryndza@git.sr.ht> wrot=
+e:
 >
-> From: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
+> Current implementation of T2 - T5 times on the STM32 platform does not
+> work properly.
+> After configuring the timer-counter circuit to report interrupts every
+> 10ms, in reality the first interrupt is reported
+> only once after a few seconds, while subsequent interrupts do not come.
+> The current code also does not properly emulate the operation of even
+> the basic functions of the TIME-BASE unit.
+> This patch contains fixes that reimplements the basic functionality
+> of the time base unit such as up-counting down-counting , and alternate-
+> mode up-down counting.
+> The ptimer() API is used to emulate timers.
+> After applying the patch, STM32 timer works correctly in its basic
+> functionality.
+> The ISIX-RTOS test unit was used to test the patch.
+> Links and instructions can be found below:
 >
-> Upstream Linux recently added RISC-V Zicboz support to the hwprobe API.
-> This patch introduces this for QEMU's user space emulator.
+> https://github.com/lucckb/isixrtos/blob/master/tests/libisix/01_basic_pri=
+mitives.cpp
+> https://github.com/lucckb/isixrtos/blob/master/extras/doc/unit_test_qemu.=
+md
 >
-> Signed-off-by: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
+>
+> qemu-system-arm -M olimex-stm32-h405  -kernel
+> build/tests/libisix/isixunittests.binary -nographic
+> unittests_entry.cpp:146|ISIX VERSION pub/ep0319-157-gb239b35f-dirty
+> unittests_entry.cpp:83|Exceptions pretest. OK
+> 51 selected tests
+> [   RUN    ] 01_base_00 TimeBase timer vs systick
+> [  1001ms  ] ...
+> [   RUN    ] 01_base_01 Basic heap allocator
+> [   1ms    ] ...
 
-Thanks!
+Great! This is a good step in the right direction.
 
-Applied to riscv-to-apply.next
+Each patch needs to have a different title though. The idea is that
+each patch describes what that patch is doing. So each commit will
+have a title and commit message describing that patch. The cover
+letter (this email) will then describe the overarching goal.
 
 Alistair
 
-> ---
->  linux-user/syscall.c | 3 +++
->  1 file changed, 3 insertions(+)
 >
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 65ac3ac796..2f9a1c5279 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -8799,6 +8799,7 @@ static int do_getdents64(abi_long dirfd, abi_long a=
-rg2, abi_long count)
->  #define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
->  #define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
->  #define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
-> +#define     RISCV_HWPROBE_EXT_ZICBOZ   (1 << 6)
+> Lucjan Bryndza (20):
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
+>   Fixing the basic functionality of STM32 timers
 >
->  #define RISCV_HWPROBE_KEY_CPUPERF_0     5
->  #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
-> @@ -8855,6 +8856,8 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *=
-env,
->                       RISCV_HWPROBE_EXT_ZBB : 0;
->              value |=3D cfg->ext_zbs ?
->                       RISCV_HWPROBE_EXT_ZBS : 0;
-> +            value |=3D cfg->ext_zicboz ?
-> +                     RISCV_HWPROBE_EXT_ZICBOZ : 0;
->              __put_user(value, &pair->value);
->              break;
->          case RISCV_HWPROBE_KEY_CPUPERF_0:
+>  hw/arm/stm32f405_soc.c             |   2 +-
+>  hw/timer/stm32f2xx_timer.c         | 262 +++++++++++++++++++----------
+>  include/hw/timer/stm32f2xx_timer.h |  23 ++-
+>  3 files changed, 189 insertions(+), 98 deletions(-)
+>
 > --
-> 2.41.0
->
->
+> 2.38.5
 
