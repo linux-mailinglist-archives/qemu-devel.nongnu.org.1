@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDFB807658
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:17:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BD680763A
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:15:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAvSN-0006uc-7M; Wed, 06 Dec 2023 12:13:07 -0500
+	id 1rAvSM-0006uV-F4; Wed, 06 Dec 2023 12:13:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvSI-0006tq-KL
+ id 1rAvSI-0006tp-Hn
  for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:13:02 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvSF-0001O3-LS
+ id 1rAvSF-0001O9-F5
  for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:13:02 -0500
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B6EYTYc014679; Wed, 6 Dec 2023 17:12:57 GMT
+ 3B6EY2i6022570; Wed, 6 Dec 2023 17:12:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=54WE3zIc9WakuDR0Wl+eRiPQLJuKyyI4IJzRdInpsHI=;
- b=XRMfXdyDOv60laIFFhLVYddExcoYunRjzu2CzFlh4dPJdN7J72Kb31EjxG/LNxqXYRB1
- ERxIca9MIR+/ZbHd1rq4M4K5imFvvVA0RBHa74cIbewlcAjvaj4tmiGo8Wl8pjHZ6F5/
- ac3h5dmDClh8uob8mnyPwI/o6EF3K/9QR966PBuAMeTyUqxWcrJkU0fptapjlEkIRL5Y
- iEz/hvQLzs/tyXwGaNXJpgLXyJQRyDbirtbg1fOz9+mLLQoK9lSrQonR7+K7Mhap4tDY
- 2IBT5i6F0O33LAWKQtt9fWqjzXlpIvalSO9AGIFYRVibxDbsLBJWVX96OBjTKW+iaADz Jw== 
+ bh=pt4dJuZev2J+ZN1cirWp246MmhUbgBEhWx6J0/Ej1EI=;
+ b=TDlL2mUEApvoGfy590J607D9NTzHEt36+A8QvDYMtWZzqNJ9TcvzzhW0krWjSBDiFeN0
+ E+jAfi4f/vcBuxkNfZhMx+zSTDH/N+nxOLJ6JDSeYXSXUWJp4D36UHk/gKbuQk9Sb6mq
+ WTZ5wYlAiqfOlJGL8z8RlOmNps1HvBSt2ZcwQQn8sLtoicyyE2yRd/13G1fbmWGwwOzb
+ AhxX79lBOuDzEah0rV2o8eUld4BQK0gtRp8b2Q/UURDkJNVNUbJaQrisYqqkraFd2CJ5
+ xi+LtPS7xe/ha04kH2yTIeZl2xooK5fw3Nkz9WJ+6sX55QgTBKQ7o3HEkE1bmFAeUpUV ug== 
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utdc19wus-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utd0mhyqk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:12:56 +0000
+ Wed, 06 Dec 2023 17:12:58 +0000
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B6GkL0j032722; Wed, 6 Dec 2023 17:12:55 GMT
+ with ESMTP id 3B6GRdaE032309; Wed, 6 Dec 2023 17:12:56 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3utan9ex02-1
+ 3utan9ex1a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:12:55 +0000
+ Wed, 06 Dec 2023 17:12:56 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HCrUr024168;
- Wed, 6 Dec 2023 17:12:55 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HCrUt024168;
+ Wed, 6 Dec 2023 17:12:56 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3utan9ewxa-2; Wed, 06 Dec 2023 17:12:54 +0000
+ ESMTP id 3utan9ewxa-3; Wed, 06 Dec 2023 17:12:56 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -58,9 +58,9 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V7 01/12] cpus: vm_was_suspended
-Date: Wed,  6 Dec 2023 09:12:27 -0800
-Message-Id: <1701882772-356078-2-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH 01/14] temporary: define CLONE_NEWCGROUP qemu-8.2.0
+Date: Wed,  6 Dec 2023 09:12:28 -0800
+Message-Id: <1701882772-356078-3-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1701882772-356078-1-git-send-email-steven.sistare@oracle.com>
 References: <1701882772-356078-1-git-send-email-steven.sistare@oracle.com>
@@ -69,11 +69,11 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  definitions=2023-12-06_15,2023-12-06_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  phishscore=0 suspectscore=0
- mlxscore=0 bulkscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=779 adultscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2312060140
-X-Proofpoint-GUID: fo7lcFeFhBmJVw0qWGq8NMt0B1vbaLq3
-X-Proofpoint-ORIG-GUID: fo7lcFeFhBmJVw0qWGq8NMt0B1vbaLq3
+X-Proofpoint-GUID: 8wld5ZJYyuCbQOZim6W3eaMTHbqw-4na
+X-Proofpoint-ORIG-GUID: 8wld5ZJYyuCbQOZim6W3eaMTHbqw-4na
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -99,55 +99,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a state variable to remember if a vm previously transitioned into a
-suspended state.
-
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- include/sysemu/runstate.h |  2 ++
- system/cpus.c             | 15 +++++++++++++++
- 2 files changed, 17 insertions(+)
+ system/qemu-seccomp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index c8c2bd8..88a67e2 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -51,6 +51,8 @@ int vm_prepare_start(bool step_pending);
- int vm_stop(RunState state);
- int vm_stop_force_state(RunState state);
- int vm_shutdown(void);
-+void vm_set_suspended(bool suspended);
-+bool vm_get_suspended(void);
+diff --git a/system/qemu-seccomp.c b/system/qemu-seccomp.c
+index 4d7439e..9e1ff85 100644
+--- a/system/qemu-seccomp.c
++++ b/system/qemu-seccomp.c
+@@ -22,6 +22,7 @@
+ #include <seccomp.h>
+ #include "sysemu/seccomp.h"
+ #include <linux/seccomp.h>
++#define CLONE_NEWCGROUP 0x02000000
  
- typedef enum WakeupReason {
-     /* Always keep QEMU_WAKEUP_REASON_NONE = 0 */
-diff --git a/system/cpus.c b/system/cpus.c
-index a444a74..9f631ab 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -259,6 +259,21 @@ void cpu_interrupt(CPUState *cpu, int mask)
-     }
- }
- 
-+/*
-+ * True if the vm was previously suspended, and has not been woken or reset.
-+ */
-+static int vm_was_suspended;
-+
-+void vm_set_suspended(bool suspended)
-+{
-+    vm_was_suspended = suspended;
-+}
-+
-+bool vm_get_suspended(void)
-+{
-+    return vm_was_suspended;
-+}
-+
- static int do_vm_stop(RunState state, bool send_stop)
- {
-     int ret = 0;
+ /* For some architectures (notably ARM) cacheflush is not supported until
+  * libseccomp 2.2.3, but configure enforces that we are using a more recent
 -- 
 1.8.3.1
 
