@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6581A807639
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D069807655
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:17:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAvSf-00074B-1g; Wed, 06 Dec 2023 12:13:25 -0500
+	id 1rAvSq-0007Bp-Jl; Wed, 06 Dec 2023 12:13:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvSd-00073l-B2
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:13:23 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1rAvSf-00076M-Dk
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:13:25 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvSb-0001YQ-S3
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:13:23 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ id 1rAvSd-0001Ye-9W
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:13:25 -0500
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B6EXxLN030036; Wed, 6 Dec 2023 17:13:20 GMT
+ 3B6EYmwE004969; Wed, 6 Dec 2023 17:13:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=VfilU9EXvgzBKnC2WDqJcbYc/hyaw35v8mMAb/HQTmM=;
- b=k5vc2xJZh7vLdbuVw5NurqXzK7untQamzTIm30aFFbaksXbqWv0Cijsith12EqfKhsGE
- D9Hbjd6hglqL8NM2F6ro3Di/6mA32qGn53iqCycj5a/5zzY5Jr8GeuUHE5ntetWJVAS8
- KP6a85CJOnznoy8gXsObaRTuhHRRL7w0N/iDDXqpve3DkapNii6AO3ojZ1jvKTsUxdUa
- gax5FKTZZeofajWlyPAKG+2oRrZsBuyD0QXaAnmrhuu4yn9AU90QsvRnjYCVw7REHfTU
- VRNiv8jxaEzDCBbJlRtivs2DNdyNdhkN2p0FG6CzX2JklsUVLGMAL/tpGVMy+KfU2L+x Lg== 
+ bh=7eSfxs7j/v/8uF1eJVhEWFbbl0HfYQ8PuywKsoPyzTU=;
+ b=IOibOLrLdPAG4sanfaaIbtP6++ofy6iAPfUEMBnpSaPdw5fxKYH6kJibxltVFtUp7+vn
+ By9TTKNX53qyirspWbJrB93Tya0PXB+154kaHUPZiQ1KhMuxI2obbfIC1Lcgxs9VvYMn
+ KERTSSiqdfkUX9SX3y41xX5Dxgez4GTDIV65/JkMr175btr+n2cSzWR9XGFr2DwMN2M9
+ jtu27MJ919up8A2pjDT5QR5NPjI6jzQ6D/AHfQgMogndSL5Pgc1+SKBRPLkzMsFCZkon
+ +0yHDnaHIFwZWtMr8B87KY25vScd/Z+dqBBxv+TtaGj3zBA1DI3fbRQcklhXg0CCDGx8 3A== 
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utd1ga3ab-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utd0hj00t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:13:19 +0000
+ Wed, 06 Dec 2023 17:13:21 +0000
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B6Gobwd032258; Wed, 6 Dec 2023 17:13:19 GMT
+ with ESMTP id 3B6GikIc032684; Wed, 6 Dec 2023 17:13:20 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3utan9exms-1
+ 3utan9exnr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:13:19 +0000
+ Wed, 06 Dec 2023 17:13:20 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HCrVT024168;
- Wed, 6 Dec 2023 17:13:18 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HCrVV024168;
+ Wed, 6 Dec 2023 17:13:19 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3utan9ewxa-20; Wed, 06 Dec 2023 17:13:18 +0000
+ ESMTP id 3utan9ewxa-21; Wed, 06 Dec 2023 17:13:19 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -58,9 +58,9 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH 10/14] migration: preserve suspended for bg_migration
-Date: Wed,  6 Dec 2023 09:12:45 -0800
-Message-Id: <1701882772-356078-20-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V7 10/12] tests/qtest: option to suspend during migration
+Date: Wed,  6 Dec 2023 09:12:46 -0800
+Message-Id: <1701882772-356078-21-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1701882772-356078-1-git-send-email-steven.sistare@oracle.com>
 References: <1701882772-356078-1-git-send-email-steven.sistare@oracle.com>
@@ -72,10 +72,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  mlxscore=0 bulkscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2312060140
-X-Proofpoint-ORIG-GUID: vM1FJ2qo_dFhURCki2Wp-eZHeMPxYkoV
-X-Proofpoint-GUID: vM1FJ2qo_dFhURCki2Wp-eZHeMPxYkoV
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: hD-ReoIh7g4vPWZIF-nxMIWK4CLFwj4O
+X-Proofpoint-ORIG-GUID: hD-ReoIh7g4vPWZIF-nxMIWK4CLFwj4O
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -99,55 +99,236 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not wake a suspended guest during bg_migration, and restore the prior
-state at finish rather than unconditionally running.  Allow the additional
-state transitions that occur.
+Add an option to suspend the src in a-b-bootblock.S, which puts the guest
+in S3 state after one round of writing to memory.  The option is enabled by
+poking a 1 into the suspend_me word in the boot block prior to starting the
+src vm.  Generate symbol offsets in a-b-bootblock.h so that the suspend_me
+offset is known.  Generate the bootblock for each test, because suspend_me
+may differ for each.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Acked-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 7 +------
- system/runstate.c     | 1 +
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ tests/migration/i386/Makefile        |  5 ++--
+ tests/migration/i386/a-b-bootblock.S | 50 +++++++++++++++++++++++++++++++++---
+ tests/migration/i386/a-b-bootblock.h | 26 +++++++++++++------
+ tests/qtest/migration-test.c         | 12 ++++++---
+ 4 files changed, 77 insertions(+), 16 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 52ba0bc..b30313a 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -3389,7 +3389,7 @@ static void bg_migration_vm_start_bh(void *opaque)
-     qemu_bh_delete(s->vm_start_bh);
-     s->vm_start_bh = NULL;
+diff --git a/tests/migration/i386/Makefile b/tests/migration/i386/Makefile
+index 5c03241..37a72ae 100644
+--- a/tests/migration/i386/Makefile
++++ b/tests/migration/i386/Makefile
+@@ -4,9 +4,10 @@
+ .PHONY: all clean
+ all: a-b-bootblock.h
  
--    vm_start();
-+    vm_resume(s->vm_old_state);
-     migration_downtime_end(s);
- }
+-a-b-bootblock.h: x86.bootsect
++a-b-bootblock.h: x86.bootsect x86.o
+ 	echo "$$__note" > header.tmp
+ 	xxd -i $< | sed -e 's/.*int.*//' >> header.tmp
++	nm x86.o | awk '{print "#define SYM_"$$3" 0x"$$1}' >> header.tmp
+ 	mv header.tmp $@
  
-@@ -3461,11 +3461,6 @@ static void *bg_migration_thread(void *opaque)
+ x86.bootsect: x86.boot
+@@ -16,7 +17,7 @@ x86.boot: x86.o
+ 	$(CROSS_PREFIX)objcopy -O binary $< $@
  
-     qemu_mutex_lock_iothread();
+ x86.o: a-b-bootblock.S
+-	$(CROSS_PREFIX)gcc -m32 -march=i486 -c $< -o $@
++	$(CROSS_PREFIX)gcc -I.. -m32 -march=i486 -c $< -o $@
  
--    /*
--     * If VM is currently in suspended state, then, to make a valid runstate
--     * transition in vm_stop_force_state() we need to wakeup it up.
--     */
--    qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
-     s->vm_old_state = runstate_get();
+ clean:
+ 	@rm -rf *.boot *.o *.bootsect
+diff --git a/tests/migration/i386/a-b-bootblock.S b/tests/migration/i386/a-b-bootblock.S
+index 6bb9999..6f39eb6 100644
+--- a/tests/migration/i386/a-b-bootblock.S
++++ b/tests/migration/i386/a-b-bootblock.S
+@@ -9,6 +9,23 @@
+ #
+ # Author: dgilbert@redhat.com
  
-     global_state_store();
-diff --git a/system/runstate.c b/system/runstate.c
-index ca9eb54..621a023 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -168,6 +168,7 @@ static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE_SUSPENDED, RUN_STATE_PAUSED},
-     { RUN_STATE_SUSPENDED, RUN_STATE_SAVE_VM },
-     { RUN_STATE_SUSPENDED, RUN_STATE_RESTORE_VM },
-+    { RUN_STATE_SUSPENDED, RUN_STATE_SHUTDOWN },
++#include "migration-test.h"
++
++#define ACPI_ENABLE         0xf1
++#define ACPI_PORT_SMI_CMD   0xb2
++#define ACPI_PM_BASE        0x600
++#define PM1A_CNT_OFFSET     4
++
++#define ACPI_SCI_ENABLE     0x0001
++#define ACPI_SLEEP_TYPE     0x0400
++#define ACPI_SLEEP_ENABLE   0x2000
++#define SLEEP (ACPI_SCI_ENABLE + ACPI_SLEEP_TYPE + ACPI_SLEEP_ENABLE)
++
++#define LOW_ADDR            X86_TEST_MEM_START
++#define HIGH_ADDR           X86_TEST_MEM_END
++
++/* Save the suspended status at an address that is not written in the loop. */
++#define suspended           (X86_TEST_MEM_START + 4)
  
-     { RUN_STATE_WATCHDOG, RUN_STATE_RUNNING },
-     { RUN_STATE_WATCHDOG, RUN_STATE_FINISH_MIGRATE },
+ .code16
+ .org 0x7c00
+@@ -35,8 +52,8 @@ start:             # at 0x7c00 ?
+         mov %eax,%ds
+ 
+ # Start from 1MB
+-.set TEST_MEM_START, (1024*1024)
+-.set TEST_MEM_END, (100*1024*1024)
++.set TEST_MEM_START, X86_TEST_MEM_START
++.set TEST_MEM_END, X86_TEST_MEM_END
+ 
+         mov $65,%ax
+         mov $0x3f8,%dx
+@@ -69,7 +86,30 @@ innerloop:
+         mov $0x3f8,%dx
+         outb %al,%dx
+ 
+-        jmp mainloop
++        # should this test suspend?
++        mov (suspend_me),%eax
++        cmp $0,%eax
++        je mainloop
++
++        # are we waking after suspend?  do not suspend again.
++        mov $suspended,%eax
++        mov (%eax),%eax
++        cmp $1,%eax
++        je mainloop
++
++        # enable acpi
++        mov $ACPI_ENABLE,%al
++        outb %al,$ACPI_PORT_SMI_CMD
++
++        # suspend to ram
++        mov $suspended,%eax
++        movl $1,(%eax)
++        mov $SLEEP,%ax
++        mov $(ACPI_PM_BASE + PM1A_CNT_OFFSET),%dx
++        outw %ax,%dx
++        # not reached.  The wakeup causes reset and restart at 0x7c00, and we
++        # do not save and restore registers as a real kernel would do.
++
+ 
+         # GDT magic from old (GPLv2)  Grub startup.S
+         .p2align        2       /* force 4-byte alignment */
+@@ -95,6 +135,10 @@ gdtdesc:
+         .word   0x27                    /* limit */
+         .long   gdt                     /* addr */
+ 
++        /* test launcher can poke a 1 here to exercise suspend */
++suspend_me:
++        .int  0
++
+ /* I'm a bootable disk */
+ .org 0x7dfe
+         .byte 0x55
+diff --git a/tests/migration/i386/a-b-bootblock.h b/tests/migration/i386/a-b-bootblock.h
+index 5b52391..c83f871 100644
+--- a/tests/migration/i386/a-b-bootblock.h
++++ b/tests/migration/i386/a-b-bootblock.h
+@@ -4,7 +4,7 @@
+  * the header and the assembler differences in your patch submission.
+  */
+ unsigned char x86_bootsect[] = {
+-  0xfa, 0x0f, 0x01, 0x16, 0x8c, 0x7c, 0x66, 0xb8, 0x01, 0x00, 0x00, 0x00,
++  0xfa, 0x0f, 0x01, 0x16, 0xb8, 0x7c, 0x66, 0xb8, 0x01, 0x00, 0x00, 0x00,
+   0x0f, 0x22, 0xc0, 0x66, 0xea, 0x20, 0x7c, 0x00, 0x00, 0x08, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe4, 0x92, 0x0c, 0x02,
+   0xe6, 0x92, 0xb8, 0x10, 0x00, 0x00, 0x00, 0x8e, 0xd8, 0x66, 0xb8, 0x41,
+@@ -13,13 +13,13 @@ unsigned char x86_bootsect[] = {
+   0x40, 0x06, 0x7c, 0xf1, 0xb8, 0x00, 0x00, 0x10, 0x00, 0xfe, 0x00, 0x05,
+   0x00, 0x10, 0x00, 0x00, 0x3d, 0x00, 0x00, 0x40, 0x06, 0x7c, 0xf2, 0xfe,
+   0xc3, 0x80, 0xe3, 0x3f, 0x75, 0xe6, 0x66, 0xb8, 0x42, 0x00, 0x66, 0xba,
+-  0xf8, 0x03, 0xee, 0xeb, 0xdb, 0x8d, 0x76, 0x00, 0x00, 0x00, 0x00, 0x00,
+-  0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0xcf, 0x00,
+-  0xff, 0xff, 0x00, 0x00, 0x00, 0x92, 0xcf, 0x00, 0x27, 0x00, 0x74, 0x7c,
+-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++  0xf8, 0x03, 0xee, 0xa1, 0xbe, 0x7c, 0x00, 0x00, 0x83, 0xf8, 0x00, 0x74,
++  0xd3, 0xb8, 0x04, 0x00, 0x10, 0x00, 0x8b, 0x00, 0x83, 0xf8, 0x01, 0x74,
++  0xc7, 0xb0, 0xf1, 0xe6, 0xb2, 0xb8, 0x04, 0x00, 0x10, 0x00, 0xc7, 0x00,
++  0x01, 0x00, 0x00, 0x00, 0x66, 0xb8, 0x01, 0x24, 0x66, 0xba, 0x04, 0x06,
++  0x66, 0xef, 0x66, 0x90, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++  0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0xcf, 0x00, 0xff, 0xff, 0x00, 0x00,
++  0x00, 0x92, 0xcf, 0x00, 0x27, 0x00, 0xa0, 0x7c, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+@@ -49,3 +49,13 @@ unsigned char x86_bootsect[] = {
+   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0xaa
+ };
+ 
++#define SYM_do_zero 0x00007c3d
++#define SYM_gdt 0x00007ca0
++#define SYM_gdtdesc 0x00007cb8
++#define SYM_innerloop 0x00007c51
++#define SYM_mainloop 0x00007c4c
++#define SYM_pre_zero 0x00007c38
++#define SYM_start 0x00007c00
++#define SYM_suspend_me 0x00007cbe
++#define SYM_TEST_MEM_END 0x06400000
++#define SYM_TEST_MEM_START 0x00100000
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 05c0740..e10d5a4 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -133,7 +133,7 @@ static char *bootpath;
+ #include "tests/migration/aarch64/a-b-kernel.h"
+ #include "tests/migration/s390x/a-b-bios.h"
+ 
+-static void bootfile_create(char *dir)
++static void bootfile_create(char *dir, bool suspend_me)
+ {
+     const char *arch = qtest_get_arch();
+     unsigned char *content;
+@@ -143,6 +143,7 @@ static void bootfile_create(char *dir)
+     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
+         /* the assembled x86 boot sector should be exactly one sector large */
+         g_assert(sizeof(x86_bootsect) == 512);
++        x86_bootsect[SYM_suspend_me - SYM_start] = suspend_me;
+         content = x86_bootsect;
+         len = sizeof(x86_bootsect);
+     } else if (g_str_equal(arch, "s390x")) {
+@@ -646,6 +647,8 @@ typedef struct {
+     bool use_dirty_ring;
+     const char *opts_source;
+     const char *opts_target;
++    /* suspend the src before migrating to dest. */
++    bool suspend_me;
+ } MigrateStart;
+ 
+ /*
+@@ -767,6 +770,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+ 
+     dst_state = (QTestMigrationState) { };
+     src_state = (QTestMigrationState) { };
++    bootfile_create(tmpfs, args->suspend_me);
++
+     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
+         memory_size = "150M";
+ 
+@@ -2980,7 +2985,9 @@ static int64_t get_limit_rate(QTestState *who)
+ static QTestState *dirtylimit_start_vm(void)
+ {
+     QTestState *vm = NULL;
+-    g_autofree gchar *
++    g_autofree gchar *cmd = NULL;
++
++    bootfile_create(tmpfs, false);
+     cmd = g_strdup_printf("-accel kvm,dirty-ring-size=4096 "
+                           "-name dirtylimit-test,debug-threads=on "
+                           "-m 150M -smp 1 "
+@@ -3329,7 +3336,6 @@ int main(int argc, char **argv)
+                        g_get_tmp_dir(), err->message);
+     }
+     g_assert(tmpfs);
+-    bootfile_create(tmpfs);
+ 
+     module_call_init(MODULE_INIT_QOM);
+ 
 -- 
 1.8.3.1
 
