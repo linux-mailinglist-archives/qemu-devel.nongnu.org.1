@@ -2,87 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5B28067E8
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 08:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 483DD806881
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 08:37:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAlvP-0005Sk-Hz; Wed, 06 Dec 2023 02:02:27 -0500
+	id 1rAmRY-000379-8j; Wed, 06 Dec 2023 02:35:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rAlvK-0005QI-0f
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 02:02:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@pond.sub.org>)
+ id 1rAmRG-00034q-Tz
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 02:35:23 -0500
+Received: from oxygen.pond.sub.org ([94.130.129.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rAlvI-00004q-7z
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 02:02:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701846138;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+UxEwWFwkon6mvkIKZ+YWK7cKCAhbFqn3cNBkb5KxKA=;
- b=Nf2EHQbSy529vSOVQ5ViyUZJ4764esZsoEPXgophuSr+P0/j/81hf1SfNC4TqLZaQFVPn1
- I9NOdP2gCSjMpTMdJ92aQpZnnBkj3j5HI068oEVMWaAn/B9tEP7ONAcvHIjvc+5MKdOgXX
- Dghk0m+ZczQujo+WFrqmO6NskIZe0nU=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-cqXdouKRPjW0QLQrZ74spA-1; Wed, 06 Dec 2023 02:02:16 -0500
-X-MC-Unique: cqXdouKRPjW0QLQrZ74spA-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-50bf6201648so2368746e87.2
- for <qemu-devel@nongnu.org>; Tue, 05 Dec 2023 23:02:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701846135; x=1702450935;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+UxEwWFwkon6mvkIKZ+YWK7cKCAhbFqn3cNBkb5KxKA=;
- b=JxEkv93RXMwdyW+1I+h87nLTVlFCzyIRac90BsgLoIjUy5jgI3P6Hx8bJy9hkSJhgn
- VGugyW/FlVFPMz3iBjNyLs72XfOU8IbBfupl4m9x44QKUCZvm/FX+YbticTvLsSfUuHm
- n0XC/yqAqxgoQQhZp34GiiAoogbqewOlev19JundP+iHnp8FiA+pkt4ZuU93WQaB4r3p
- kH6UV+1kiGXJMFuWp3Y1W56DtAF+vGDgvY3Iz83exycfbiXbiLoOgWVnRIEgaiRlPxn3
- T5D3axcsuoWn8wWmpz/4WpTeqF/FB4HcIvJ/5yDXcLcj47YqKTW4ez+6xNbmKbIHFcXf
- Qxgw==
-X-Gm-Message-State: AOJu0Yy9tH12YaaKAkM8lKK0m/EqBYUhmop1LPfKB6fN79MDMXuOP1Nk
- M1kT4VtOw2Rs0S5CFHdEfr24tqb56axVDxcDlX5o4vf2yw/WFAmCIFA2hWDjUIZq7APnorbmTcx
- 6vbS/54Te+E23+anHqkJIR18nuFaGQw0=
-X-Received: by 2002:ac2:4a84:0:b0:50b:f303:56cd with SMTP id
- l4-20020ac24a84000000b0050bf30356cdmr177679lfp.15.1701846135498; 
- Tue, 05 Dec 2023 23:02:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IERG9XC3x/ZQJ3kLYN03cFvZ1Ci5Sg8WQ2EeFMe98a9oo5XHcSrHhTLwypzQRCn8P0rNhI/8cI4m2G8HaNRlN0=
-X-Received: by 2002:ac2:4a84:0:b0:50b:f303:56cd with SMTP id
- l4-20020ac24a84000000b0050bf30356cdmr177668lfp.15.1701846135028; Tue, 05 Dec
- 2023 23:02:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <armbru@pond.sub.org>)
+ id 1rAmRD-0005ae-VX
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 02:35:21 -0500
+Received: from blackfin.pond.sub.org
+ (p200300d36f057900e5cb4c6407d058fa.dip0.t-ipconnect.de
+ [IPv6:2003:d3:6f05:7900:e5cb:4c64:7d0:58fa])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by oxygen.pond.sub.org (Postfix) with ESMTPSA id BEE2521285;
+ Wed,  6 Dec 2023 08:53:20 +0100 (CET)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4547821E6A01; Wed,  6 Dec 2023 08:35:11 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Laurent Vivier <lvivier@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,  Yong Huang
+ <yong.huang@smartx.com>,  qemu-devel@nongnu.org,  "Michael S . Tsirkin"
+ <mst@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC 1/2] qapi/virtio: introduce the "show-bits" argument for
+ x-query-virtio-status
+References: <cover.1699793550.git.yong.huang@smartx.com>
+ <2f146005c8573814528f4ffb5a0393eb73b154e3.1699793550.git.yong.huang@smartx.com>
+ <87h6llep0o.fsf@pond.sub.org>
+ <CAK9dgmYTjQRregoseU7S+8WvJsY4R10KP5hVkcEBKBFtHNv0=A@mail.gmail.com>
+ <87v89vleqp.fsf@pond.sub.org>
+ <3d4add1a-2dcf-4a35-a3f6-c7eca0275a35@redhat.com>
+ <87jzpyuewq.fsf@pond.sub.org>
+ <e4f0491e-c915-4d9b-80a5-953e0ad27528@redhat.com>
+Date: Wed, 06 Dec 2023 08:35:11 +0100
+Message-ID: <87cyvj6axc.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20231204184051.16873-1-dongwon.kim@intel.com>
- <CAMxuvaxQc0EM0jPDTgmK+hM9EMjqrY696RzS4NWengbdC5ifpg@mail.gmail.com>
- <PH8PR11MB687919540DE3FAACC35F8CE5FA85A@PH8PR11MB6879.namprd11.prod.outlook.com>
-In-Reply-To: <PH8PR11MB687919540DE3FAACC35F8CE5FA85A@PH8PR11MB6879.namprd11.prod.outlook.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Wed, 6 Dec 2023 11:02:03 +0400
-Message-ID: <CAMxuvay8iFEFRTcKC=6bK_nmMuzG=VDyF0AeMt=i26jA-xT3rQ@mail.gmail.com>
-Subject: Re: [PATCH] ui/gtk: flush display pipeline before saving vmstate when
- blob=true
-To: "Kim, Dongwon" <dongwon.kim@intel.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "Kasireddy,
- Vivek" <vivek.kasireddy@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=94.130.129.15; envelope-from=armbru@pond.sub.org;
+ helo=oxygen.pond.sub.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,94 +72,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Laurent Vivier <lvivier@redhat.com> writes:
 
-On Wed, Dec 6, 2023 at 2:05=E2=80=AFAM Kim, Dongwon <dongwon.kim@intel.com>=
- wrote:
->
-> Hi Marc-Andr=C3=A9,
->
-> > -----Original Message-----
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > Sent: Monday, December 4, 2023 11:15 PM
-> > To: Kim, Dongwon <dongwon.kim@intel.com>
-> > Cc: qemu-devel@nongnu.org; Kasireddy, Vivek <vivek.kasireddy@intel.com>
-> > Subject: Re: [PATCH] ui/gtk: flush display pipeline before saving vmsta=
-te when
-> > blob=3Dtrue
-> >
-> > Hi
-> >
-> > On Tue, Dec 5, 2023 at 6:40=E2=80=AFAM Dongwon Kim <dongwon.kim@intel.c=
-om>
-> > wrote:
-> > >
-> > > If the guest state is paused before it gets a response for the curren=
-t
-> > > scanout frame submission (resource-flush), it won't start submitting
-> > > new frames after being restored as it still waits for the old
-> > > response, which is accepted as a scanout render done signal. So it's
-> > > needed to unblock the current scanout render pipeline before the run
-> > > state is changed to make sure the guest receives the response for the
-> > > current frame submission.
-> > >
-> > > Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > > Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> > > Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-> > > ---
-> > >  ui/gtk.c | 12 ++++++++++++
-> > >  1 file changed, 12 insertions(+)
-> > >
-> > > diff --git a/ui/gtk.c b/ui/gtk.c
-> > > index 810d7fc796..0f6237dd2f 100644
-> > > --- a/ui/gtk.c
-> > > +++ b/ui/gtk.c
-> > > @@ -678,6 +678,18 @@ static const DisplayGLCtxOps egl_ctx_ops =3D {
-> > > static void gd_change_runstate(void *opaque, bool running, RunState
-> > > state)  {
-> > >      GtkDisplayState *s =3D opaque;
-> > > +    int i;
-> > > +
-> > > +    if (state =3D=3D RUN_STATE_SAVE_VM) {
-> > > +        for (i =3D 0; i < s->nb_vcs; i++) {
-> > > +            VirtualConsole *vc =3D &s->vc[i];
-> > > +
-> > > +            if (vc->gfx.guest_fb.dmabuf) {
-> >
-> > && ..dmabuf->fence_fd >=3D 0
-> >
-> > > +                /* force flushing current scanout blob rendering pro=
-cess */
-> > > +                gd_hw_gl_flushed(vc);
-> >
-> > This defeats the purpose of the fence, maybe we should wait for it to b=
-e
-> > signaled first. At worse, I suppose the client can have some glitches. =
-Although
-> > since the guest is stopped, this is unlikely.
-> [Kim, Dongwon]
-> So this is the flow you are referring to?
->
->             if (vc->gfx.guest_fb.dmabuf &&
->                 vc->gfx.guest_fb.dmabuf->fence_fd >=3D 0) {
->                 EGLint ret =3D eglClientWaitSync(qemu_egl_display,
->                                                vc->gfx.guest_fb.dmabuf->s=
-ync,
->                                                EGL_SYNC_FLUSH_COMMANDS_BI=
-T_KHR,
->                                                100000000); /* timeout of =
-100ms */
->
->                 if (ret !=3D EGL_CONDITION_SATISFIED_KHR) {
->                     /* force flushing current scanout blob rendering proc=
-ess */
->                     gd_hw_gl_flushed(vc);
->                 }
->             }
->
-> If yes, I will test this then create v2 based on this flow.
+> On 12/1/23 16:21, Markus Armbruster wrote:
 
-Yes, you may want to call gd_hw_gl_flushed() even on success, to avoid
-waiting for the main loop dispatch.
+[...]
 
+>> Both use cases are valid, but I dislike both the existing and the
+>> proposed interface.
+>>
+>> We can change it: x-query-virtio-status isn't stable (it's for debugging
+>> and testing).  But even unstable interfaces should only be changed for
+>> good, clear reasons.
+>>
+>> I feel the change from "bits encoded as a number" to "bits as list of
+>> descriptive strings plus number for the unknown ones" fell short.  Let
+>> me explain.
+>>
+>> The initial version of the command had "bits encoded as number".  Unless
+>> we understand why that was done, we should assume it was done for a
+>> reason.  We now know it was: Hyman Huang posted a patch to get it back.
+>>
+>> Instead of "bits as list of descriptive strings plus number for the
+>> unknown ones", we could have done "bits encoded as number, plus list of
+>> descriptive strings", or plus some other human-readable encoding.
+>>
+>> QMP output of the form "WELL_KNOWN_SYMBOL: human readable explanation"
+>> smells of encoding structured information in strings, which is a no-no.
+>>
+>> Perhaps we could have added human-readable output just in HMP.  That's
+>> what we normally do.
+>>
+>> Here are a few possible alternatives to Hyman Huang's patch:
+>>
+>> 1. Revert commit f3034ad71fc for QMP, keep it for HMP.
+>>
+>> 2. Replace @unknown-FOO (just the unknown bits) by @FOO-bits (all bits).
+>>
+>> 3. Add @FOO-bits next to @unknown-FOO, deprecate @unknown-FOO.
+>>
+>> 4. Create a QAPI enum for the known bits.  Clients can use introspection
+>>    to learn the mapping between symbols and bits.  Requires dumbing down
+>>    the descriptive strings to just the symbols.  This feels
+>>    both overengineered and cumbersome to use.
+>>
+>> For 2 and 3, I'd prefer to also dumb down the descriptive strings to
+>> just the symbols.
+>>
+>> Thoughts?
+>> 
+>
+> I agree with you. As x-CMD are unstable, perhaps we can go directly to 2?
+
+We can.  It might incovenience existing users of @unknown-FOO.
+
+> (and of course to remove the descriptive strings. Is it easily possible to keep them for the HMP version?)
+
+We could change qmp_virtio_feature_map_t to
+
+    typedef struct {
+        int virtio_bit;
+        const char *feature_name;
+        const char *feature_desc;
+    } qmp_virtio_feature_map_t;
+
+and FEATURE_ENTRY() to
+
+    #define FEATURE_ENTRY(bit, name, desc) (qmp_virtio_feature_map_t) \
+        { .virtio_bit = (bit), .feature_name = (name), .feature_desc = (desc) }
+
+Aside: POSIX reserves names ending with _t.  An actual clash is of
+course vanishingly unlikely.  But avoiding _t suffix is a good habit.
+
+qmp_x_query_virtio_status() could then convert bits to a list of known names
+using .feature_name.
+
+To keep the descriptions in HMP, simply print the bits using
+.feature_name and .feature_desc, ignoring list of known names returned
+by qmp_x_query_virtio_status().
+
+Alternatively, make the code to convert bits to list of strings flexible
+enough to be usable in both places.
+
+If qmp_virtio_feature_map_t is still only used in virtio-qmp.c, move its
+there.
 
