@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BA8807681
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A2D807685
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:25:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAvd4-00018R-96; Wed, 06 Dec 2023 12:24:10 -0500
+	id 1rAvd8-00019j-2g; Wed, 06 Dec 2023 12:24:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvd1-00018G-DD
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:24:07 -0500
+ id 1rAvd5-000193-6B
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:24:11 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvcz-0003ez-Gy
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:24:07 -0500
+ id 1rAvd2-0003gg-6G
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:24:10 -0500
 Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B6EYkJx014763; Wed, 6 Dec 2023 17:24:04 GMT
+ 3B6EYjWJ014754; Wed, 6 Dec 2023 17:24:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=7r47Pue9XL+J9wl9bbIYyHu5FgRAV/eyOGMK/N66L0o=;
- b=oPevSKtDkZWEeI/Dy7wHBNNy2eS1ceqK0Kcd+RSwHSNmN+hLTKbGL4LF56KNkEMBGuZm
- MzgLFBiCeE9cZH9rR8t5dL64xw72mThnkKyvUYbiJCvwAj+OuRtGdLsPQV7fmHnH4TGT
- 7dkCfwfLSaxWGyLATmDV6FEwnZQhHLsp7GEMqKwCwffS9iaBbFA7ArKf4UAyckkqzPcX
- uKJSLTcElH/jy8w8htg2nibUz7iKv3dwFFUMDFSbU9JzquNrbhQ4ybs6yaPVwcWjvysI
- 1U10hZHjvwSqqBM991x1HETcrLN5vn0VvlEz2h6xlbJ/HsKtKsleesGklW9DbU/HDx37 gQ== 
+ bh=16Hz/0QpTsbArtLyqdF3glLAD2N1aY4+squSC785lPc=;
+ b=c0dkXayx/q7VjrIdmU1LW0CxMEMvQF0QYSSYcv/Ju8QyTOFzNqj/eX+Sh9GIBDjEewCT
+ 0LOLM97DDPzgFjaNuRhSRJYfhNlMkmi7hAqp+wpJt47dpIIZuOUwZ7oHPCaqXS0NqLjH
+ qSnpwzCdmfVyz9fmSyX1nCFc8tga2oJKXIyuTSL3c/lVUqrjukaImOnUJtpfCD/o5DZf
+ qKqB/9ZnzNF+/WxWPfaycr6D9OuaaIYY+4GmhhAY7u/K7cG7bn9Fr7aoM33yp/nWkex9
+ h7P3E23JfaPAEBYD0dJHuItPjAqI105qJvNN6882c2HeYv0OR5bWgz3b3HRY46lT+DpN CA== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utdda1y9d-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utdda1y9g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:24:03 +0000
+ Wed, 06 Dec 2023 17:24:06 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B6GiPRF037847; Wed, 6 Dec 2023 17:24:01 GMT
+ with ESMTP id 3B6GVbQS037850; Wed, 6 Dec 2023 17:24:02 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3utanc7a86-1
+ 3utanc7a8y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:24:01 +0000
+ Wed, 06 Dec 2023 17:24:02 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HMwkW002907;
- Wed, 6 Dec 2023 17:24:00 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HMwkY002907;
+ Wed, 6 Dec 2023 17:24:02 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3utanc79rv-8; Wed, 06 Dec 2023 17:24:00 +0000
+ ESMTP id 3utanc79rv-9; Wed, 06 Dec 2023 17:24:01 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -58,9 +58,9 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V7 07/12] migration: preserve suspended for snapshot
-Date: Wed,  6 Dec 2023 09:23:32 -0800
-Message-Id: <1701883417-356268-8-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V7 08/12] migration: preserve suspended for bg_migration
+Date: Wed,  6 Dec 2023 09:23:33 -0800
+Message-Id: <1701883417-356268-9-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1701883417-356268-1-git-send-email-steven.sistare@oracle.com>
 References: <1701883417-356268-1-git-send-email-steven.sistare@oracle.com>
@@ -72,8 +72,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  bulkscore=0 mlxlogscore=999 phishscore=0 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2312060140
-X-Proofpoint-GUID: VWbflXzBkVNoGAChzN6woP40V4SU4YuW
-X-Proofpoint-ORIG-GUID: VWbflXzBkVNoGAChzN6woP40V4SU4YuW
+X-Proofpoint-GUID: ljTOkteSg0UnJO69nWL_DHycDCtuVQUy
+X-Proofpoint-ORIG-GUID: ljTOkteSg0UnJO69nWL_DHycDCtuVQUy
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -99,203 +99,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Restoring a snapshot can break a suspended guest.  Snapshots suffer from
-the same suspended-state issues that affect live migration, plus they must
-handle an additional problematic scenario, which is that a running vm must
-remain running if it loads a suspended snapshot.
-
-To save, the existing vm_stop call now completely stops the suspended
-state.  Finish with vm_resume to leave the vm in the state it had prior
-to the save, correctly restoring the suspended state.
-
-To load, if the snapshot is not suspended, then vm_stop + vm_resume
-correctly handles all states, and leaves the vm in the state it had prior
-to the load.  However, if the snapshot is suspended, restoration is
-trickier.  First, call vm_resume to restore the state to suspended so the
-current state matches the saved state.  Then, if the pre-load state is
-running, call wakeup to resume running.
-
-Prior to these changes, the vm_stop to RUN_STATE_SAVE_VM and
-RUN_STATE_RESTORE_VM did not change runstate if the current state was
-suspended, but now it does, so allow these transitions.
+Do not wake a suspended guest during bg_migration, and restore the prior
+state at finish rather than unconditionally running.  Allow the additional
+state transitions that occur.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- include/migration/snapshot.h   |  7 +++++++
- migration/migration-hmp-cmds.c |  8 +++++---
- migration/savevm.c             | 23 +++++++++++++----------
- system/runstate.c              |  5 +++++
- system/vl.c                    |  2 ++
- 5 files changed, 32 insertions(+), 13 deletions(-)
+ migration/migration.c | 7 +------
+ system/runstate.c     | 1 +
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/include/migration/snapshot.h b/include/migration/snapshot.h
-index e72083b..9e4dcaa 100644
---- a/include/migration/snapshot.h
-+++ b/include/migration/snapshot.h
-@@ -16,6 +16,7 @@
- #define QEMU_MIGRATION_SNAPSHOT_H
+diff --git a/migration/migration.c b/migration/migration.c
+index 8124811..2cc7e2a 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3390,7 +3390,7 @@ static void bg_migration_vm_start_bh(void *opaque)
+     qemu_bh_delete(s->vm_start_bh);
+     s->vm_start_bh = NULL;
  
- #include "qapi/qapi-builtin-types.h"
-+#include "qapi/qapi-types-run-state.h"
- 
- /**
-  * save_snapshot: Save an internal snapshot.
-@@ -61,4 +62,10 @@ bool delete_snapshot(const char *name,
-                     bool has_devices, strList *devices,
-                     Error **errp);
- 
-+/**
-+ * load_snapshot_resume: Restore runstate after loading snapshot.
-+ * @state: state to restore
-+ */
-+void load_snapshot_resume(RunState state);
-+
- #endif
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 86ae832..c8d70bc 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -399,15 +399,17 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
- 
- void hmp_loadvm(Monitor *mon, const QDict *qdict)
- {
--    int saved_vm_running  = runstate_is_running();
-+    RunState saved_state = runstate_get();
-+
-     const char *name = qdict_get_str(qdict, "name");
-     Error *err = NULL;
- 
-     vm_stop(RUN_STATE_RESTORE_VM);
- 
--    if (load_snapshot(name, NULL, false, NULL, &err) && saved_vm_running) {
--        vm_start();
-+    if (load_snapshot(name, NULL, false, NULL, &err)) {
-+        load_snapshot_resume(saved_state);
-     }
-+
-     hmp_handle_error(mon, err);
+-    vm_start();
++    vm_resume(s->vm_old_state);
+     migration_downtime_end(s);
  }
  
-diff --git a/migration/savevm.c b/migration/savevm.c
-index eec5503..26866f0 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -3046,7 +3046,7 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
-     QEMUSnapshotInfo sn1, *sn = &sn1;
-     int ret = -1, ret2;
-     QEMUFile *f;
--    int saved_vm_running;
-+    RunState saved_state = runstate_get();
-     uint64_t vm_state_size;
-     g_autoptr(GDateTime) now = g_date_time_new_now_local();
-     AioContext *aio_context;
-@@ -3094,8 +3094,6 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
-     }
-     aio_context = bdrv_get_aio_context(bs);
+@@ -3462,11 +3462,6 @@ static void *bg_migration_thread(void *opaque)
  
--    saved_vm_running = runstate_is_running();
--
+     qemu_mutex_lock_iothread();
+ 
+-    /*
+-     * If VM is currently in suspended state, then, to make a valid runstate
+-     * transition in vm_stop_force_state() we need to wakeup it up.
+-     */
+-    qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+     s->vm_old_state = runstate_get();
+ 
      global_state_store();
-     vm_stop(RUN_STATE_SAVE_VM);
- 
-@@ -3163,9 +3161,7 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
- 
-     bdrv_drain_all_end();
- 
--    if (saved_vm_running) {
--        vm_start();
--    }
-+    vm_resume(saved_state);
-     return ret == 0;
- }
- 
-@@ -3339,6 +3335,14 @@ err_drain:
-     return false;
- }
- 
-+void load_snapshot_resume(RunState state)
-+{
-+    vm_resume(state);
-+    if (state == RUN_STATE_RUNNING && runstate_get() == RUN_STATE_SUSPENDED) {
-+        qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, &error_abort);
-+    }
-+}
-+
- bool delete_snapshot(const char *name, bool has_devices,
-                      strList *devices, Error **errp)
- {
-@@ -3403,16 +3407,15 @@ static void snapshot_load_job_bh(void *opaque)
- {
-     Job *job = opaque;
-     SnapshotJob *s = container_of(job, SnapshotJob, common);
--    int orig_vm_running;
-+    RunState orig_state = runstate_get();
- 
-     job_progress_set_remaining(&s->common, 1);
- 
--    orig_vm_running = runstate_is_running();
-     vm_stop(RUN_STATE_RESTORE_VM);
- 
-     s->ret = load_snapshot(s->tag, s->vmstate, true, s->devices, s->errp);
--    if (s->ret && orig_vm_running) {
--        vm_start();
-+    if (s->ret) {
-+        load_snapshot_resume(orig_state);
-     }
- 
-     job_progress_update(&s->common, 1);
 diff --git a/system/runstate.c b/system/runstate.c
-index e2fa204..ca9eb54 100644
+index ca9eb54..621a023 100644
 --- a/system/runstate.c
 +++ b/system/runstate.c
-@@ -77,6 +77,7 @@ typedef struct {
- 
- static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE_PRELAUNCH, RUN_STATE_INMIGRATE },
-+    { RUN_STATE_PRELAUNCH, RUN_STATE_SUSPENDED },
- 
-     { RUN_STATE_DEBUG, RUN_STATE_RUNNING },
-     { RUN_STATE_DEBUG, RUN_STATE_FINISH_MIGRATE },
-@@ -132,6 +133,7 @@ static const RunStateTransition runstate_transitions_def[] = {
- 
-     { RUN_STATE_RESTORE_VM, RUN_STATE_RUNNING },
-     { RUN_STATE_RESTORE_VM, RUN_STATE_PRELAUNCH },
-+    { RUN_STATE_RESTORE_VM, RUN_STATE_SUSPENDED },
- 
-     { RUN_STATE_COLO, RUN_STATE_RUNNING },
-     { RUN_STATE_COLO, RUN_STATE_PRELAUNCH },
-@@ -150,6 +152,7 @@ static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE_RUNNING, RUN_STATE_COLO},
- 
-     { RUN_STATE_SAVE_VM, RUN_STATE_RUNNING },
-+    { RUN_STATE_SAVE_VM, RUN_STATE_SUSPENDED },
- 
-     { RUN_STATE_SHUTDOWN, RUN_STATE_PAUSED },
-     { RUN_STATE_SHUTDOWN, RUN_STATE_FINISH_MIGRATE },
-@@ -163,6 +166,8 @@ static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE_SUSPENDED, RUN_STATE_PRELAUNCH },
-     { RUN_STATE_SUSPENDED, RUN_STATE_COLO},
+@@ -168,6 +168,7 @@ static const RunStateTransition runstate_transitions_def[] = {
      { RUN_STATE_SUSPENDED, RUN_STATE_PAUSED},
-+    { RUN_STATE_SUSPENDED, RUN_STATE_SAVE_VM },
-+    { RUN_STATE_SUSPENDED, RUN_STATE_RESTORE_VM },
+     { RUN_STATE_SUSPENDED, RUN_STATE_SAVE_VM },
+     { RUN_STATE_SUSPENDED, RUN_STATE_RESTORE_VM },
++    { RUN_STATE_SUSPENDED, RUN_STATE_SHUTDOWN },
  
      { RUN_STATE_WATCHDOG, RUN_STATE_RUNNING },
      { RUN_STATE_WATCHDOG, RUN_STATE_FINISH_MIGRATE },
-diff --git a/system/vl.c b/system/vl.c
-index 2bcd9ef..2fbbbba 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2706,7 +2706,9 @@ void qmp_x_exit_preconfig(Error **errp)
-     qemu_machine_creation_done();
- 
-     if (loadvm) {
-+        RunState state = autostart ? RUN_STATE_RUNNING : runstate_get();
-         load_snapshot(loadvm, NULL, false, NULL, &error_fatal);
-+        load_snapshot_resume(state);
-     }
-     if (replay_mode != REPLAY_MODE_NONE) {
-         replay_vmstate_init();
 -- 
 1.8.3.1
 
