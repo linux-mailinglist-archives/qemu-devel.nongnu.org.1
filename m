@@ -2,76 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29DEE8063FA
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 02:12:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B780E8063FB
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 02:12:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAgSH-0000Cw-Ts; Tue, 05 Dec 2023 20:12:01 -0500
+	id 1rAgSn-0000NK-M8; Tue, 05 Dec 2023 20:12:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAgSF-0000Cf-7S; Tue, 05 Dec 2023 20:11:59 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <vivahavey@gmail.com>)
+ id 1rAgSj-0000Ie-Le; Tue, 05 Dec 2023 20:12:29 -0500
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAgSD-0004r1-Do; Tue, 05 Dec 2023 20:11:58 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-54c74b3cd4cso758779a12.1; 
- Tue, 05 Dec 2023 17:11:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <vivahavey@gmail.com>)
+ id 1rAgSh-0005Rb-FW; Tue, 05 Dec 2023 20:12:29 -0500
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-28647f4ebd9so4267543a91.3; 
+ Tue, 05 Dec 2023 17:12:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701825115; x=1702429915; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DeTZkrB4DzpusmiLoNjG17PsLusgQKfIxgFTzmgYldg=;
- b=ctmYuk+0+hi9YmBLvg7M/yTJj356YUdplUDGP+/bGV7/jw0FsAv613Nlv6Zzftp6Ns
- Ws9lnI0hy8zzx4Fiz9xIJtbiMeRelhMw0iwptpf2srncF1Z03MfOGTJ2PlFnTWCKNwvF
- tn32TcMa7ojQAMhOvbLYQYJbPbAmzWghxTpCrtdFV2pJ0LY0SKr/WLCW7s17Qz1f3Wp1
- bnjXPknUhe7v8aypzwGG4jbuoZNa7L4px57dqBPAeV/MY/P2KbyVUuQweGNIsk/SMl8y
- Mh0WtgL9mEco0Jb+pdH3AL4aEtPSUoJx3Z2wuNQM1B+N/n2NZpKSLxrbsVftpkI2vrxa
- yQ0w==
+ d=gmail.com; s=20230601; t=1701825143; x=1702429943; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=5LVA5cuiOjLFoog+fIssZrpo7pzh/TQKcRxYcYMMapo=;
+ b=DktUMuDKM4R91Iw9NbtGusAhaNUR2lhwnEzRfY2mY/NURUmrH7feswHJhjZK1RO8xi
+ 6ZqmaBIecx+sWl1suCwrbC8GSVdRL43G41Q/AVG7T253pz773sRKNQDHQ9WvLgsCA8lB
+ wv/MH8tEOk9N4jXmQgWAvF7ChdLC4eDxXyibAmdxzlKH3ifIusai6YaG2nnv/puHjkum
+ RIsnXFHJdb0P4icSz9xL/Pam36H41bDgkvQ+vpdmObpIWPvjblT4EvvBdx2BKPaPG+iJ
+ 09zWSTJUmzSOIuTd9AHstzLM7NfU1j4Yl9lcTKahQRbPcGcY4UgdHLj6bdk6ZT0gfmfZ
+ RgRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701825115; x=1702429915;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DeTZkrB4DzpusmiLoNjG17PsLusgQKfIxgFTzmgYldg=;
- b=sIlO+XEFCpxsnTMO8OaSLQdXq3F4zdo1ua4cNoG3lLUchmA2NNXU/u+aR7+rGJg5Ps
- FJcmuP9PdIINAdkBpvnzZd8s4AOsgcEgGSNt/R4YpYBpskBP+jOnpGlnkHM3tqZf2/xy
- mBgkzN1qrIOMZfmxNauxP/r3n/rtTz4eJA1HL8qyPlWwdKqQ/3hzOcSYgcZZMtM3PXF2
- M2DgPswiG9paLaZtED2WrHZa+PwXbT/ICTs2iSzW8olPliOC9jp+RoG62QvkU25t+jrj
- uBws1v9b25sX5+S+FZazuYw3ttEy/3jUEtGRtNcDuXJLZKqe85XDUzc+ahx+TUiecBQT
- E83A==
-X-Gm-Message-State: AOJu0Yx6OD6Ox07SIxClJB5Du9zrXoOGIIKDmcm9UqgKGnIJ3YcYCDgA
- 50zakOTQQHiVUIMPPgjoDliMRz8/Hmnpd4t13yo=
-X-Google-Smtp-Source: AGHT+IH62ITX39Fb5n/vP5AcIVzY+7K+EiiA7J79pLtvo3cY74bvHNMDK+xmJTNnU2p8poK18wV1pL6W2JE4XHfRAsc=
-X-Received: by 2002:a50:d557:0:b0:54c:bb9c:4b88 with SMTP id
- f23-20020a50d557000000b0054cbb9c4b88mr128824edj.5.1701825114703; Tue, 05 Dec
- 2023 17:11:54 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701825143; x=1702429943;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5LVA5cuiOjLFoog+fIssZrpo7pzh/TQKcRxYcYMMapo=;
+ b=N/SIMHuYpkoxvxw9UmmqV2NWtUUHkXAWgNGli8RMrbrPuXlrdl2sPXAHeDedEVppcr
+ J+P/NNfxLzRGLket5V/itSxBKBrrL2qUnROCBvkP8bj5qFCbVUKPvrliM3lgKkiA8vLm
+ GuJ9v4VFdxAnY74crPvbS/H/mowY9L3lJJgEdiR2Ea6QRPsz5Bs0XYC69b6oaBrYsK4N
+ 4/+OK0r5aD8o7BopU4SPuZUj0QqjC/Vg8p6TyRPHDjoqrVLhTbg3VzRwk7OANja1f6X0
+ zncZaITHPgpMIoLo3Q/oKLmvzxbCY/7tSJNeb7pP1IwZtymdK74YPJvV+T7MAJkygQjR
+ SDKg==
+X-Gm-Message-State: AOJu0YxGER4lzannFWtv1+1P029Qb979ZK4SiX/2lJ+O1EQUHz0inphA
+ P/stMm+CZPWLPQUh3UA+2bfvu8Zv6IQ8F0L7rMCHH9GihyM=
+X-Google-Smtp-Source: AGHT+IEjT1YwKW1CEVSSA0KrPeDdrPJ1NUsve8mDVtzClOUQqYb2nUZoMfUpd0CQZWjBVe0gfnLtCq8CeeRTREFoQc4=
+X-Received: by 2002:a17:90b:3912:b0:286:8672:5199 with SMTP id
+ ob18-20020a17090b391200b0028686725199mr109253pjb.35.1701825143259; Tue, 05
+ Dec 2023 17:12:23 -0800 (PST)
 MIME-Version: 1.0
-References: <170171757903.6536.10207274798404158986-0@git.sr.ht>
-In-Reply-To: <170171757903.6536.10207274798404158986-0@git.sr.ht>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 6 Dec 2023 11:11:27 +1000
-Message-ID: <CAKmqyKOBjeE68LwisfuYBenKu3vGKHS8SQBeggeLcBrSLYBpJw@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 0/1] Implement STM32L4x5 EXTI
-To: "~inesvarhol" <inesvarhol@proton.me>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, alistair@alistair23.me, 
- philmd@linaro.org, peter.maydell@linaro.org, ines.varhol@telecom-paris.fr, 
- arnaud.minier@telecom-paris.fr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: Alvin Chang <vivahavey@gmail.com>
+Date: Wed, 6 Dec 2023 09:12:12 +0800
+Message-ID: <CAEV2DRr8HNQSM=kiv6+Rsaad28rw0eCaPrNeCpEaN8O5LOd5bg@mail.gmail.com>
+Subject: RE: [PATCH v5] target/riscv: update checks on writing pmpcfg for
+ Smepmp to version 1.0
+To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Cc: alistair.francis@wdc.com, Andrew Jones <ajones@ventanamicro.com>,
+ liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com
+Content-Type: multipart/alternative; boundary="000000000000224769060bcd0bf5"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=vivahavey@gmail.com; helo=mail-pj1-x1034.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,99 +81,698 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 5, 2023 at 5:20=E2=80=AFAM ~inesvarhol <inesvarhol@git.sr.ht> w=
-rote:
->
-> This patch allows to emulate the STM32L4x5 EXTI device.
-> It implements register access and software interruptions.
->
-> This is RFC because we're new at contributing to QEMU.
+--000000000000224769060bcd0bf5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the patches!
+Ping for review.
 
-As a general guide, RFCs are for things that you don't think should be
-merged. So for example maybe you have half finished something, but you
-want to get some feedback, you can send an RFC.
 
-You don't have to send an RFC just because you are unsure if you have
-done something correctly. A patch is fine. Although there is no harm
-in sending an RFC, usually you get less eye balls on it because
-everyone is busy.
 
-> We had some difficulties writing qtests and the result might be bizarre.
->
-> We have some questions about the next steps for our stm32l4x5 project :
->
-> Should we send a non-RFC patch after this peripheral implementation is
-> reviewed,
-> or should we wait for more peripherals to be implemented?
+> -----Original Message-----
 
-Yes!
+> From: Alvin Che-Chia Chang(=E5=BC=B5=E5=93=B2=E5=98=89) <alvinga@andestec=
+h.com>
 
-The easiest way to develop upstream is to send your patches as early
-as you can. Obviously you want to test them and make sure they work.
-But you don't have to wait for every single thing to be finished. If
-you have implemented support in a peripheral you can send those
-patches upstream.
+> Sent: Tuesday, November 14, 2023 10:23 AM
 
-Again, as long everything works and is tested it's ready to go. Don't
-wait for a year of development before trying to upstream, as that is
-harder for you and for reviewers. Get feedback early and often :)
+> To: qemu-riscv@nongnu.org; qemu-devel@nongnu.org
 
-> We have syscfg and uart implementations ongoing.
->
-> Also, should the version numbers restart from 1 when sending a non-RFC
-> tag ?
+> Cc: alistair.francis@wdc.com; liweiwei@iscas.ac.cn; Alvin Che-Chia Chang(=
+=E5=BC=B5
 
-Yes, it will reset to "PATCH", and then "PATCH v2" and so on
+> =E5=93=B2=E5=98=89) <alvinga@andestech.com>
 
-Alistair
+> Subject: [PATCH v5] target/riscv: update checks on writing pmpcfg for
+Smepmp
+
+> to version 1.0
 
 >
-> Sincerely,
-> In=C3=A8s Varhol
+
+> Current checks on writing pmpcfg for Smepmp follows Smepmp version 0.9.1.
+
+> However, Smepmp specification has already been ratified, and there are
+some
+
+> differences between version 0.9.1 and 1.0. In this commit we update the
+
+> checks of writing pmpcfg to follow Smepmp version 1.0.
+
 >
+
+> When mseccfg.MML is set, the constraints to modify PMP rules are:
+
+> 1. Locked rules cannot be removed or modified until a PMP reset, unless
+
+>    mseccfg.RLB is set.
+
+> 2. From Smepmp specification version 1.0, chapter 2 section 4b:
+
+>    Adding a rule with executable privileges that either is M-mode-only
+
+>    or a locked Shared-Region is not possible and such pmpcfg writes are
+
+>    ignored, leaving pmpcfg unchanged.
+
 >
-> Changes from v2 to v3:
-> - adding more tests writing/reading in exti registers
-> - adding tests checking that interrupt work by reading NVIC registers
-> - correcting exti_write in SWIER (so it sets an irq only when a bit goes
-> from '0' to '1')
-> - correcting exti_set_irq (so it never writes in PR when the relevant
-> bit in IMR is '0')
+
+> The commit transfers the value of pmpcfg into the index of the Smepmp
+truth
+
+> table, and checks the rules by aforementioned specification changes.
+
 >
-> Changes from v1 to v2:
-> - use arrays to deduplicate code and logic
-> - move internal constant EXTI_NUM_GPIO_EVENT_IN_LINES from the header
-> to the .c file
-> - Improve copyright headers
-> - replace static const with #define
-> - use the DEFINE_TYPES macro
-> - fill the impl and valid field of the exti's MemoryRegionOps
-> - fix invalid test caused by a last minute change
+
+> Signed-off-by: Alvin Chang <alvinga@andestech.com>
+
+> ---
+
+> Changes from v4: Rebase on master.
+
 >
-> Based-on: <170049810484.22920.612074576971878323-0@git.sr.ht>
-> ([RFC v3 2/2] hw/arm: Add minimal support for the B-L475E-IOT01A board)
+
+> Changes from v3: Modify "epmp_operation" to "smepmp_operation".
+
 >
-> In=C3=A8s Varhol (1):
->   Implement STM32L4x5 EXTI
+
+> Changes from v2: Adopt switch case ranges and numerical order.
+
 >
->  hw/arm/Kconfig                    |   1 +
->  hw/arm/stm32l4x5_soc.c            |  65 +++-
->  hw/misc/Kconfig                   |   3 +
->  hw/misc/meson.build               |   1 +
->  hw/misc/stm32l4x5_exti.c          | 306 +++++++++++++++++++
->  hw/misc/trace-events              |   5 +
->  include/hw/arm/stm32l4x5_soc.h    |   3 +
->  include/hw/misc/stm32l4x5_exti.h  |  58 ++++
->  tests/qtest/meson.build           |   5 +
->  tests/qtest/stm32l4x5_exti-test.c | 485 ++++++++++++++++++++++++++++++
->  10 files changed, 930 insertions(+), 2 deletions(-)
->  create mode 100644 hw/misc/stm32l4x5_exti.c
->  create mode 100644 include/hw/misc/stm32l4x5_exti.h
->  create mode 100644 tests/qtest/stm32l4x5_exti-test.c
+
+> Changes from v1: Convert ePMP over to Smepmp.
+
 >
+
+>  target/riscv/pmp.c | 40 ++++++++++++++++++++++++++++++++--------
+
+>  1 file changed, 32 insertions(+), 8 deletions(-)
+
+>
+
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c index
+
+> 162e88a90a..4069514069 100644
+
+> --- a/target/riscv/pmp.c
+
+> +++ b/target/riscv/pmp.c
+
+> @@ -102,16 +102,40 @@ static bool pmp_write_cfg(CPURISCVState *env,
+
+> uint32_t pmp_index, uint8_t val)
+
+>                  locked =3D false;
+
+>              }
+
+>
+
+> -            /* mseccfg.MML is set */
+
+> -            if (MSECCFG_MML_ISSET(env)) {
+
+> -                /* not adding execute bit */
+
+> -                if ((val & PMP_LOCK) !=3D 0 && (val & PMP_EXEC) !=3D
+
+> PMP_EXEC) {
+
+> +            /*
+
+> +             * mseccfg.MML is set. Locked rules cannot be removed or
+
+> modified
+
+> +             * until a PMP reset. Besides, from Smepmp specification
+
+> version 1.0
+
+> +             * , chapter 2 section 4b says:
+
+> +             * Adding a rule with executable privileges that either is
+
+> +             * M-mode-only or a locked Shared-Region is not possible and
+
+> such
+
+> +             * pmpcfg writes are ignored, leaving pmpcfg unchanged.
+
+> +             */
+
+> +            if (MSECCFG_MML_ISSET(env) && !pmp_is_locked(env,
+
+> pmp_index)) {
+
+> +                /*
+
+> +                 * Convert the PMP permissions to match the truth table
+
+> in the
+
+> +                 * Smepmp spec.
+
+> +                 */
+
+> +                const uint8_t smepmp_operation =3D
+
+> +                    ((val & PMP_LOCK) >> 4) | ((val & PMP_READ) << 2)
+
+> |
+
+> +                    (val & PMP_WRITE) | ((val & PMP_EXEC) >> 2);
+
+> +
+
+> +                switch (smepmp_operation) {
+
+> +                case 0 ... 8:
+
+>                      locked =3D false;
+
+> -                }
+
+> -                /* shared region and not adding X bit */
+
+> -                if ((val & PMP_LOCK) !=3D PMP_LOCK &&
+
+> -                    (val & 0x7) !=3D (PMP_WRITE | PMP_EXEC)) {
+
+> +                    break;
+
+> +                case 9 ... 11:
+
+> +                    break;
+
+> +                case 12:
+
+> +                    locked =3D false;
+
+> +                    break;
+
+> +                case 13:
+
+> +                    break;
+
+> +                case 14:
+
+> +                case 15:
+
+>                      locked =3D false;
+
+> +                    break;
+
+> +                default:
+
+> +                    g_assert_not_reached();
+
+>                  }
+
+>              }
+
+>          } else {
+
 > --
-> 2.38.5
->
+
+> 2.34.1
+
+--000000000000224769060bcd0bf5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-s=
+ize:12pt;font-family:Calibri,sans-serif"><span lang=3D"EN-US">Ping for revi=
+ew.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">=C2=A0</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; -----Original Message----=
+-</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; From:
+Alvin Che-Chia Chang(</span><span style=3D"font-family:=E6=96=B0=E7=B4=B0=
+=E6=98=8E=E9=AB=94,serif">=E5=BC=B5=E5=93=B2=E5=98=89</span><span lang=3D"E=
+N-US">) &lt;<a href=3D"mailto:alvinga@andestech.com" style=3D"color:rgb(5,9=
+9,193)">alvinga@andestech.com</a>&gt;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; Sent: Tuesday, November 1=
+4, 2023
+10:23 AM</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; To: <a href=3D"mailto:qem=
+u-riscv@nongnu.org" style=3D"color:rgb(5,99,193)">qemu-riscv@nongnu.org</a>=
+; <a href=3D"mailto:qemu-devel@nongnu.org" style=3D"color:rgb(5,99,193)">qe=
+mu-devel@nongnu.org</a></span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; Cc: <a href=3D"mailto:ali=
+stair.francis@wdc.com" style=3D"color:rgb(5,99,193)">alistair.francis@wdc.c=
+om</a>; <a href=3D"mailto:liweiwei@iscas.ac.cn" style=3D"color:rgb(5,99,193=
+)">liweiwei@iscas.ac.cn</a>; Alvin Che-Chia
+Chang(</span><span style=3D"font-family:=E6=96=B0=E7=B4=B0=E6=98=8E=E9=AB=
+=94,serif">=E5=BC=B5</span><span lang=3D"EN-US"></span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span><span style=3D"fon=
+t-family:=E6=96=B0=E7=B4=B0=E6=98=8E=E9=AB=94,serif">=E5=93=B2=E5=98=89</sp=
+an><span lang=3D"EN-US">) &lt;<a href=3D"mailto:alvinga@andestech.com" styl=
+e=3D"color:rgb(5,99,193)">alvinga@andestech.com</a>&gt;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; Subject: [PATCH v5] targe=
+t/riscv:
+update checks on writing pmpcfg for Smepmp</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; to version 1.0</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; Current checks on writing=
+ pmpcfg
+for Smepmp follows Smepmp version 0.9.1.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; However, Smepmp specifica=
+tion has
+already been ratified, and there are some</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; differences between versi=
+on 0.9.1
+and 1.0. In this commit we update the</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; checks of writing pmpcfg =
+to follow
+Smepmp version 1.0.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; When mseccfg.MML is set, =
+the
+constraints to modify PMP rules are:</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; 1. Locked rules cannot be=
+ removed
+or modified until a PMP reset, unless</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0
+mseccfg.RLB is set.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; 2. From Smepmp specificat=
+ion
+version 1.0, chapter 2 section 4b:</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0
+Adding a rule with executable privileges that either is M-mode-only</span><=
+/p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0
+or a locked Shared-Region is not possible and such pmpcfg writes are</span>=
+</p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0
+ignored, leaving pmpcfg unchanged.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; The commit transfers the =
+value of
+pmpcfg into the index of the Smepmp truth</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; table, and checks the rul=
+es by
+aforementioned specification changes.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; Signed-off-by: Alvin Chan=
+g &lt;<a href=3D"mailto:alvinga@andestech.com" style=3D"color:rgb(5,99,193)=
+">alvinga@andestech.com</a>&gt;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; ---</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; Changes from v4: Rebase o=
+n master.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; Changes from v3: Modify
+&quot;epmp_operation&quot; to &quot;smepmp_operation&quot;.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; Changes from v2: Adopt sw=
+itch case
+ranges and numerical order.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; Changes from v1: Convert =
+ePMP over
+to Smepmp.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0
+target/riscv/pmp.c | 40 ++++++++++++++++++++++++++++++++--------</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0
+1 file changed, 32 insertions(+), 8 deletions(-)</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; diff --git a/target/riscv=
+/pmp.c
+b/target/riscv/pmp.c index</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; 162e88a90a..4069514069 10=
+0644</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; --- a/target/riscv/pmp.c<=
+/span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +++ b/target/riscv/pmp.c<=
+/span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; @@ -102,16 +102,40 @@ sta=
+tic bool
+pmp_write_cfg(CPURISCVState *env,</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; uint32_t pmp_index, uint8=
+_t val)</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 locked =3D false;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; </span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* mseccfg.MML is set */</span><=
+/p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (MSECCFG_MML_ISSET(env)) {</s=
+pan></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* not a=
+dding execute bit */</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ((val=
+ &amp; PMP_LOCK) !=3D 0
+&amp;&amp; (val &amp; PMP_EXEC) !=3D</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; PMP_EXEC) {</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * mseccfg.MML is set. Lock=
+ed rules
+cannot be removed or</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; modified</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * until a PMP reset. Besid=
+es, from
+Smepmp specification</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; version 1.0</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * , chapter 2 section 4b s=
+ays:</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Adding a rule with execu=
+table
+privileges that either is</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * M-mode-only or a locked
+Shared-Region is not possible and</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; such</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * pmpcfg writes are ignore=
+d,
+leaving pmpcfg unchanged.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (MSECCFG_MML_ISSET(env)
+&amp;&amp; !pmp_is_locked(env,</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; pmp_index)) {</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*</span=
+></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
+Convert the PMP permissions
+to match the truth table</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; in the</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
+Smepmp spec.</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */=
+</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const ui=
+nt8_t smepmp_operation
+=3D</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 ((val &amp; PMP_LOCK)
+&gt;&gt; 4) | ((val &amp; PMP_READ) &lt;&lt; 2)</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; |</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 (val &amp; PMP_WRITE) |
+((val &amp; PMP_EXEC) &gt;&gt; 2);</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 switch (=
+smepmp_operation) {</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case 0 .=
+.. 8:</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 locked =3D false;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }</span>=
+</p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* share=
+d region and not adding
+X bit */</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ((val=
+ &amp; PMP_LOCK) !=3D
+PMP_LOCK &amp;&amp;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 (val &amp; 0x7) !=3D
+(PMP_WRITE | PMP_EXEC)) {</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 break;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case 9 .=
+.. 11:</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 break;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case 12:=
+</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 locked =3D false;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 break;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case 13:=
+</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 break;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case 14:=
+</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case 15:=
+</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 locked =3D false;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 break;</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 default:=
+</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 g_assert_not_reached();</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 }</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt;=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; --</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">&gt; 2.34.1</span></p>
+
+<p class=3D"gmail-MsoPlainText" style=3D"margin:0cm;font-size:12pt;font-fam=
+ily:Calibri,sans-serif"><span lang=3D"EN-US">=C2=A0</span></p></div>
+
+--000000000000224769060bcd0bf5--
 
