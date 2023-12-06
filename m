@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19ACF80725A
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 15:26:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECA1807267
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 15:29:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAsqx-0003OS-5t; Wed, 06 Dec 2023 09:26:19 -0500
+	id 1rAstm-0004TB-0F; Wed, 06 Dec 2023 09:29:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAsqu-0003MU-9w
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 09:26:16 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAstk-0004T2-4o
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 09:29:12 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAsqj-0003wH-9E
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 09:26:11 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-54d048550dfso2723855a12.0
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 06:26:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAsti-0004YK-Jf
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 09:29:11 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-54c846da5e9so3904711a12.3
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 06:29:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701872761; x=1702477561; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701872949; x=1702477749; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=969M4ThTsIABLSVj+C+PJad4gKG6kky8YByk7WTveoU=;
- b=QmKfuYE01N1z6i4bbeiL5fhSxmcAw2FYYXCBaMf/G9uSSMVthxmwck0Ip6Btlr6lFv
- SNNS+eSwqN9rYgWaGJ368YGV8N5dgxAI8MBFsPNJB+sSqXOW1EZUjwCZWtylvxPnc6+h
- DrEebbwaoRVdO4pIhcVJCab9vsKBY8BYCKtIdLbPhUv3hvtBCS8JmCXBT1K22M9EouwJ
- KyShiz97EakNXviRMbIfpQDyTR43kXk2yR8g1qVoJPt+nii+lOSWnVIoQ9rK+LjmmcOB
- DM3kQWKXRUfosjoWOAUWywranA/GKCgOKKzhSn3Hck+9Ur5ILwTav3GG4zYej8/o1AA9
- r9kA==
+ bh=QObWIwHoF89N2z5y8HXo20O9jmUqRvelo8TRN0vt2x0=;
+ b=bt64qRBn5HbtiaBWnPdaMbbU6AgpGu0mvKlNW4TWOQH84akUokdxxN5yGLOf98D/fG
+ 2SqZWW3I/tPxEkNYB7mtwTOIFWXMvClcHRLMaKWj2w7uyt55W16If0Wi36pv4sANwTDL
+ KNgOMq6w3cs9mIK+29ts3sstM3FTcanhaoOfjPr1809lrvOwav4gKVxUHACMrSaMab7H
+ yOKK/BmkYGQQB0WOwlc1vwdGYL4/E9UVph3u7w4P3sOl1P9Vdgf0bWaGXNxcZoOFNIou
+ 6jZb1DWvZ3PQ5DmNp2dUIMvSVTF1QBfEEdrlSSBOITrkCHWiFEt2LUbd8K0D8eLwzP21
+ rC7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701872761; x=1702477561;
+ d=1e100.net; s=20230601; t=1701872949; x=1702477749;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=969M4ThTsIABLSVj+C+PJad4gKG6kky8YByk7WTveoU=;
- b=gVEzxNN2q52W1gTqLJgdNG1CIlAy3A73MROwr/F3UNkZSW8UeH4DrbyDJK94CKSBdZ
- lm+ER9sjxX46kj3h9tDCz/zjfKfdLa5LMHHPlZDhImNobz6GyMbSJ3AgCRjI0jqQruV7
- e3AwQ2xT7i68osy+ZSLJRnMq7A0f3V42m9XebFIaELzL0dRN6U+wVcLw1gCGAqHMZfm2
- 2S/mm4eYhs1AP8YOWf0J3bQK6GNxn9NbHAMhTBfxZOkg78duwNwSaTWHsYpQei7qGH0X
- Q3cpl6m7s913O0EqAQTC9Xa93NBaodVCrzVrDytXmuOSf+R4CR+7g3jjgt+rbENZPdBu
- ozeA==
-X-Gm-Message-State: AOJu0Yzf5DukQl7sA6Tx3j60UYemye/M+4uBaQiAdNgH2tS08nYhqtcv
- 9qlaAPhkQZpup5mD5lk4N9ed3g==
-X-Google-Smtp-Source: AGHT+IGoAzq6z6lD5Mpqyv3lJ7rc9v84cYoJYIsbfi/P82fq+CxzhTO04Ex8aI1wj4UV6Td1xXzyPw==
-X-Received: by 2002:a17:906:1b02:b0:a19:a19b:423a with SMTP id
- o2-20020a1709061b0200b00a19a19b423amr501891ejg.165.1701872761126; 
- Wed, 06 Dec 2023 06:26:01 -0800 (PST)
+ bh=QObWIwHoF89N2z5y8HXo20O9jmUqRvelo8TRN0vt2x0=;
+ b=YUMnBSX0m44zFIeJVk3u+CT2kf8opAe0wfcWoCHdHGocrMBATKb/ILp43jmyJ7GKWN
+ A85QOShOrZiyUiwmKc19VrW3myRUwcIO8dU4HikuRolNl8faunWqJG9EIRPQe2U7Kezu
+ Mxieuldrz1UISC9lTq7v/ekMzPNyH5nULPgKjECz8kalO4RO9LaC8tiASGtn0Yugjl+N
+ 7+E7V/zv16goZRGUX3IRKe415ikZk9Y9WC5rB4dPMsJj6QIjJBF/atp0H4Audl/J1GOt
+ ZsvZFh4R1K0IfDWxNOEVeFnZL52B3m+3X8HMyUfZi58RllZ5v+wOvszW9fFRSKMqdBlg
+ CNyQ==
+X-Gm-Message-State: AOJu0Yw4Fvle9Yxogk6TAMsSa8q6NKgQnhyt0O2GUglsFbkt0sCAHS1+
+ 9AMsFzZHSxwAmSzIibEuZpS3nM2yGpRy9vMjABg=
+X-Google-Smtp-Source: AGHT+IFo8G2tjnlTsJw4OYeWlAgWglAQfdSxgQJ9k7uLTtk1S6srclJxbyTYwrxIC3mYuHEpSvM3iw==
+X-Received: by 2002:a05:6402:c02:b0:54c:6fd0:fdea with SMTP id
+ co2-20020a0564020c0200b0054c6fd0fdeamr657747edb.24.1701872948940; 
+ Wed, 06 Dec 2023 06:29:08 -0800 (PST)
 Received: from [192.168.69.100] (tal33-h02-176-184-38-132.dsl.sta.abo.bbox.fr.
  [176.184.38.132]) by smtp.gmail.com with ESMTPSA id
- dk13-20020a170906f0cd00b00a1e04f24df1sm463264ejb.223.2023.12.06.06.25.59
+ l1-20020aa7c301000000b0054ca7afdf35sm23643edq.86.2023.12.06.06.29.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Dec 2023 06:26:00 -0800 (PST)
-Message-ID: <5eaf9e91-0a23-481c-b908-e037420c73ce@linaro.org>
-Date: Wed, 6 Dec 2023 15:25:57 +0100
+ Wed, 06 Dec 2023 06:29:08 -0800 (PST)
+Message-ID: <189df9b0-7271-4463-98e4-e6e938a0cf6f@linaro.org>
+Date: Wed, 6 Dec 2023 15:29:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/11] chardev: force write all when recording replay logs
+Subject: Re: [RFC PATCH-for-8.2?] accel/tcg: Implement tcg_unregister_thread()
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-References: <20231205204106.95531-1-alex.bennee@linaro.org>
- <20231205204106.95531-11-alex.bennee@linaro.org>
+To: =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20231204194039.56169-1-philmd@linaro.org>
+ <CAJSP0QUjZQQCk+VSJyxLq2jzuK=nxXDCiBn-r4dVzNPOCgH67w@mail.gmail.com>
+ <20231204200937.GA9696@kitsune.suse.cz>
+ <caa90c99-aada-467b-a005-84642cd55a86@linaro.org>
+ <20231205100959.GB9696@kitsune.suse.cz>
+ <20231206125619.GH9696@kitsune.suse.cz>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231205204106.95531-11-alex.bennee@linaro.org>
+In-Reply-To: <20231206125619.GH9696@kitsune.suse.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,39 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/12/23 21:41, Alex Bennée wrote:
-> This is mostly a problem within avocado as serial generally isn't busy
-> enough to overfill pipes. However the consequences of recording a
-> failed write will haunt us on replay when causing the log to go out of
-> sync.
+Hi Stefan,
+
+On 6/12/23 13:56, Michal Suchánek wrote:
+> On Tue, Dec 05, 2023 at 11:09:59AM +0100, Michal Suchánek wrote:
+>> On Mon, Dec 04, 2023 at 03:02:45PM -0800, Richard Henderson wrote:
+>>> On 12/4/23 12:09, Michal Suchánek wrote:
+>>>> On Mon, Dec 04, 2023 at 02:50:17PM -0500, Stefan Hajnoczi wrote:
+>>>>> On Mon, 4 Dec 2023 at 14:40, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>>>>> +void tcg_unregister_thread(void)
+>>>>>> +{
+>>>>>> +    unsigned int n;
+>>>>>> +
+>>>>>> +    n = qatomic_fetch_dec(&tcg_cur_ctxs);
+>>>>>> +    g_free(tcg_ctxs[n]);
+>>>>>> +    qatomic_set(&tcg_ctxs[n], NULL);
+>>>>>> +}
+>>>>>
+>>>>> tcg_ctxs[n] may not be our context, so this looks like it could free
+>>>>> another thread's context and lead to undefined behavior.
+>>>
+>>> Correct.
+>>>
+>>>> There is cpu->thread_id so perhaps cpu->thread_ctx could be added as
+>>>> well. That would require a bitmap of used threads contexts rather than a
+>>>> counter, though.
+>>>
+>>> Or don't free the context at all, but re-use it when incrementing and
+>>> tcg_ctxs[n] != null (i.e. plugging in a repacement vcpu).  After all, there
+>>> can only be tcg_max_ctxs contexts.
+>>
+>> But you would not know which contexts are in use and which aren't without
+>> tracking the association of contexts to CPUs.
+>>
+>> Unless there is a cpu array somewhere and you can use the same index for
+>> both to create the association.
 > 
-> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2010
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Cc: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-> ---
->   chardev/char.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/chardev/char.c b/chardev/char.c
-> index 996a024c7a..6e5b4d7345 100644
-> --- a/chardev/char.c
-> +++ b/chardev/char.c
-> @@ -171,7 +171,8 @@ int qemu_chr_write(Chardev *s, const uint8_t *buf, int len, bool write_all)
->           return res;
->       }
+> I tried to use cpu_index for correlating the tcg_ctx with cpu. I added
+> some asserts that only null contexts are allocated and non-null contexts
+> released but qemu crashes somewhere in tcg sometime after the guest gets
+> to switch root.
 
-Please add a comment explaining why in the code. Maybe simpler
-using:
+Since this isn't trivial and is a long standing issue, let's not
+block the 8.2 release with it.
 
-        if (replay_mode == REPLAY_MODE_RECORD) {
-            /* $explanation */
-            write_all = true;
-        }
+Regards,
 
-> -    res = qemu_chr_write_buffer(s, buf, len, &offset, write_all);
-> +    res = qemu_chr_write_buffer(s, buf, len, &offset,
-> +                                replay_mode == REPLAY_MODE_RECORD ? true : write_all);
-With a comment:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+Phil.
 
