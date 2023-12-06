@@ -2,86 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1143A807545
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1230807562
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:41:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAuu6-000546-Tz; Wed, 06 Dec 2023 11:37:42 -0500
+	id 1rAuwO-0006yz-Sx; Wed, 06 Dec 2023 11:40:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <madvenka@linux.microsoft.com>)
- id 1rAuu5-00052y-Gi
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:37:41 -0500
-Received: from linux.microsoft.com ([13.77.154.182])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <madvenka@linux.microsoft.com>) id 1rAuu3-0003kg-PW
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:37:41 -0500
-Received: from [192.168.4.26] (unknown [47.186.13.91])
- by linux.microsoft.com (Postfix) with ESMTPSA id 8823E20B74C0;
- Wed,  6 Dec 2023 08:37:34 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8823E20B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1701880656;
- bh=1wQFnh2bPx3Ra+HT0vuTvJh3mkp2WmHQjZ5XzPfzvKU=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=s6K+9Yl89Z3KgwoiYSQZ2dvP0uHj6IpQUthOWrczE2xRQB83yQa/TT5PF6Hy3U1sa
- 8E05mbqFUb33ePDO+wVm37jwLQyxQau0SjCjOt7vH/QkttsTN3Z9GdmbJ5scmpsxun
- Ibo6TwIr6zVmB49da7xmGxwKzie0382EULwJL3Ko=
-Message-ID: <624a310b-c0d2-406c-a4a7-d851b3cc68f5@linux.microsoft.com>
-Date: Wed, 6 Dec 2023 10:37:33 -0600
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rAuwM-0006yd-FZ
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:40:02 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rAuwJ-0003li-EX
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:40:02 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1d06d42a58aso42437085ad.0
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:37:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701880674; x=1702485474;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=l58I2QJUtWOGWXjRD29t6mmy2AkwM2q8lCd0Wroamoo=;
+ b=K+/K8+ByKK7vtjWQ0vAN5Qa0GAVvf/CbkSGzL+KGA1ergEh/IW2Dnhmo8xT8U0dZB3
+ 2PMM1w89NudTZXmSNEQh/6ZHSLb8Kj57kdLnHVXivGwRZK2lir0saT+CE/QAMSq+dBOr
+ M+eIvMhRS/Phdx9XG5mlr80XZu/FjI2LIJ05UVfPbH9yvqwDjxnq+OBq/6JD7Vt/gihs
+ /ve6hQ0qpqANjodxFMNu9v3vImyV2t0pn6plnyjeNmQtpYDn6pRnHRPoyFgdtLL5xyCH
+ jNs5hPm0ZJgxAjn6JIv/890jxDofmfKtG/+R9PHi/ixih+OwZ5xeyeytWhbAYhdD3SvL
+ Dl3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701880674; x=1702485474;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=l58I2QJUtWOGWXjRD29t6mmy2AkwM2q8lCd0Wroamoo=;
+ b=v6+vwGLxkvHE6Sp+v7ryzZtHSbjW9m2Y4shFkuRHIi15pryEOn1La/ZVPjvvrwzpp7
+ VO5q8lNzo7x1bMRccMhM3VeUfxSdD4/q+M6rImsXbJhG+L/195KW636c+drDun+SkO7F
+ 3GvXz0zdTP2x33xZ4XdbQbtXiCoOHWgMyyql8wEWsO74DLLPlgzn+KPzn8WMULZCHLWG
+ plJa5Xpxuff58rGsnEYFtpmoEBP5cD+ZpyuzDbBrWzMQM9E5T0d/RjE/JSHnjPdOUZMH
+ kVHUuel1hIlYlLBTm8Q4KTHqTfDAg5ifkKKbsXpqN8mxdOy5TMXDnjC63jS7QG2T5zvz
+ sD1A==
+X-Gm-Message-State: AOJu0YyVjb5utQCL5FOI9ZAdupKFtBzfGN1Ef5lwmJndFtrU7ALMbjHA
+ wTKFq9s7wwH+LOpY0NkeUromhxx8SPoDVpilJULfD2xn
+X-Google-Smtp-Source: AGHT+IGHzHphG0QO1qfQONft3dKD7jwIe+H6pUDPQtesMu6g1xP6xpR2gb9lqlJXX80Xi8mOWfuxZg==
+X-Received: by 2002:a17:902:ab98:b0:1d0:6ffd:e2e9 with SMTP id
+ f24-20020a170902ab9800b001d06ffde2e9mr1154316plr.131.1701880673544; 
+ Wed, 06 Dec 2023 08:37:53 -0800 (PST)
+Received: from localhost.localdomain ([125.71.95.66])
+ by smtp.gmail.com with ESMTPSA id
+ m14-20020a170902bb8e00b001d04d730687sm42570pls.103.2023.12.06.08.37.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 Dec 2023 08:37:53 -0800 (PST)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ yong.huang@smartx.com
+Subject: [v2 0/4] Support generic Luks encryption
+Date: Thu,  7 Dec 2023 00:37:41 +0800
+Message-Id: <cover.1701879996.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 17/19] heki: x86: Update permissions counters
- during text patching
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Wanpeng Li <wanpengli@tencent.com>, Alexander Graf <graf@amazon.com>,
- Chao Peng <chao.p.peng@linux.intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- Forrest Yuan Yu <yuanyu@google.com>, James Gowans <jgowans@amazon.com>,
- James Morris <jamorris@linux.microsoft.com>,
- John Andersen <john.s.andersen@intel.com>,
- Marian Rotariu <marian.c.rotariu@gmail.com>,
- =?UTF-8?Q?Mihai_Don=C8=9Bu?= <mdontu@bitdefender.com>,
- =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
- Thara Gopinath <tgopinath@microsoft.com>,
- Trilok Soni <quic_tsoni@quicinc.com>, Wei Liu <wei.liu@kernel.org>,
- Will Deacon <will@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>,
- Zahra Tarkhani <ztarkhani@microsoft.com>,
- =?UTF-8?Q?=C8=98tefan_=C8=98icleru?= <ssicleru@bitdefender.com>,
- dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
- x86@kernel.org, xen-devel@lists.xenproject.org
-References: <20231113022326.24388-1-mic@digikod.net>
- <20231113022326.24388-18-mic@digikod.net>
- <20231113081929.GA16138@noisy.programming.kicks-ass.net>
- <a52d8885-43cc-4a4e-bb47-9a800070779e@linux.microsoft.com>
- <20231127200841.GZ3818@noisy.programming.kicks-ass.net>
- <ea63ae4e-e8ea-4fbf-9383-499e14de2f5e@linux.microsoft.com>
- <20231130113315.GE20191@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
-In-Reply-To: <20231130113315.GE20191@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=13.77.154.182;
- envelope-from=madvenka@linux.microsoft.com; helo=linux.microsoft.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::629;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,75 +91,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v2:
+- Simplify the design by reusing the LUKS driver to implement
+  the generic Luks encryption, thank Daniel for the insightful 
+  advice.
+- rebase on master. 
 
+This functionality was motivated by the following to-do list seen
+in crypto documents:
+https://wiki.qemu.org/Features/Block/Crypto 
 
-On 11/30/23 05:33, Peter Zijlstra wrote:
-> On Wed, Nov 29, 2023 at 03:07:15PM -0600, Madhavan T. Venkataraman wrote:
-> 
->> Kernel Lockdown
->> ---------------
->>
->> But, we must provide at least some security in V2. Otherwise, it is useless.
->>
->> So, we have implemented what we call a kernel lockdown. At the end of kernel
->> boot, Heki establishes permissions in the extended page table as mentioned
->> before. Also, it adds an immutable attribute for kernel text and kernel RO data.
->> Beyond that point, guest requests that attempt to modify permissions on any of
->> the immutable pages will be denied.
->>
->> This means that features like FTrace and KProbes will not work on kernel text
->> in V2. This is a temporary limitation. Once authentication is in place, the
->> limitation will go away.
-> 
-> So either you're saying your patch 17 / text_poke is broken (so why
-> include it ?!?) or your statement above is incorrect. Pick one.
-> 
+The last chapter says we should "separate header volume": 
 
-It has been included so that people can be aware of the changes.
+The LUKS format has ability to store the header in a separate volume
+from the payload. We should extend the LUKS driver in QEMU to support
+this use case.
 
-I will remove the text_poke() changes from the patchset and send it later when
-I have some authentication in place. It will make sense then.
+By enhancing the LUKS driver, it is possible to enable
+the detachable LUKS header and, as a result, achieve
+general encryption for any disk format that QEMU has
+supported.
 
-> 
->> __text_poke()
->> 	This function is called by various features to patch text.
->> 	This calls heki_text_poke_start() and heki_text_poke_end().
->>
->> 	heki_text_poke_start() is called to add write permissions to the
->> 	extended page table so that text can be patched. heki_text_poke_end()
->> 	is called to revert write permissions in the extended page table.
-> 
-> This, if text_poke works, then static_call / jump_label / ftrace and
-> everything else should work, they all rely on this.
-> 
-> 
->> Peter mentioned the following:
->>
->> "if you want to mirror the native PTEs why don't you hook into the
->> paravirt page-table muck and get all that for free?"
->>
->> We did consider using a shadow page table kind of approach so that guest page table
->> modifications can be intercepted and reflected in the page table entry. We did not
->> do this for two reasons:
->>
->> - there are bits in the page table entry that are not permission bits. We would like
->>   the guest kernel to be able to modify them directly.
-> 
-> This statement makes no sense.
-> 
->> - we cannot tell a genuine request from an attack.
-> 
-> Why not? How is an explicit call different from an explicit call in a
-> paravirt hook?
-> 
->>From a maintenance pov we already hate paravirt with a passion, but it
-> is ever so much better than sprinkling yet another pile of crap
-> (heki_*) around.
+Take the qcow2 as an example, the usage of the generic
+LUKS encryption as follows:
 
-I only said that the idea was considered.
+1. add a protocol blockdev node of data disk
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+> "arguments":{"node-name":"libvirt-1-storage", "driver":"file",
+> "filename":"/path/to/test_disk.qcow2"}}'
 
-We can resume the discussion on this topic when I send the text_poke() changes in a later
-version of the Heki patchset.
+2. add a protocol blockdev node of LUKS header as above.
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+> "arguments":{"node-name":"libvirt-2-storage", "driver":"file",
+> "filename": "/path/to/cipher.gluks" }}'
 
-Madhavan
+3. add the secret for decrypting the cipher stored in LUKS
+   header above
+$ virsh qemu-monitor-command vm '{"execute":"object-add",
+> "arguments":{"qom-type":"secret", "id":
+> "libvirt-2-storage-secret0", "data":"abc123"}}'
+
+4. add the qcow2-drived blockdev format node
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+> "arguments":{"node-name":"libvirt-1-format", "driver":"qcow2",
+> "file":"libvirt-1-storage"}}'
+
+5. add the luks-drived blockdev to link the qcow2 disk with
+   LUKS header by specifying the field "header"
+$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+> "arguments":{"node-name":"libvirt-2-format", "driver":"luks",
+> "file":"libvirt-1-format", "header":"libvirt-2-storage",
+> "key-secret":"libvirt-2-format-secret0"}}'
+
+6. add the virtio-blk device finally
+$ virsh qemu-monitor-command vm '{"execute":"device_add",
+> "arguments": {"num-queues":"1", "driver":"virtio-blk-pci",
+> "drive": "libvirt-2-format", "id":"virtio-disk2"}}'
+
+The generic LUKS encryption method of starting a virtual
+machine (VM) is somewhat similar to hot-plug in that both
+maintaining the same json command while the starting VM
+changes the "blockdev-add/device_add" parameters to
+"blockdev/device".
+
+Please review, thanks
+
+Best regared,
+
+Yong
+
+Hyman Huang (4):
+  crypto: Introduce option and structure for detached LUKS header
+  crypto: Introduce payload offset set function
+  crypto: Support generic LUKS encryption
+  block: Support detached LUKS header creation for blockdev-create
+
+ block/crypto.c         | 47 ++++++++++++++++++++++++++++++++++++++++--
+ crypto/block.c         |  4 ++++
+ include/crypto/block.h |  1 +
+ qapi/block-core.json   | 11 ++++++++--
+ 4 files changed, 59 insertions(+), 4 deletions(-)
+
+-- 
+2.39.1
+
 
