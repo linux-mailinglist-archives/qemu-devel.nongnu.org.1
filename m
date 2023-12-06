@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35426806347
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 01:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3C7806348
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 01:16:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAfZ7-0003D6-Ip; Tue, 05 Dec 2023 19:15:01 -0500
+	id 1rAfZk-0003rT-Mj; Tue, 05 Dec 2023 19:15:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAfZ6-0003Cp-A2; Tue, 05 Dec 2023 19:15:00 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1rAfZh-0003ii-VM; Tue, 05 Dec 2023 19:15:37 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAfZ4-00061J-HY; Tue, 05 Dec 2023 19:15:00 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-54c74b3cd4cso689306a12.1; 
- Tue, 05 Dec 2023 16:14:57 -0800 (PST)
+ id 1rAfZf-0006ND-PS; Tue, 05 Dec 2023 19:15:37 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-54c5d041c23so6068382a12.2; 
+ Tue, 05 Dec 2023 16:15:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701821696; x=1702426496; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701821733; x=1702426533; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fdjNmWiuEF9lWxKO+Opvwumv+Sg7nnoZ1YFL1CIw5sY=;
- b=mmc42XQMDin/FZXjiyEp+C2te2cYHY//l0k5c3G8syEEyY1uzlB51UX5HKbqFhBerP
- DatKDPPkNLf59w3HfG17hiTutz7HoiGaj5I9Ovhqm9RrvPlC2mgozIVeS0g6v8qhJtec
- FC8SI72y48egP2CCzHYWpgpuG6vnEnb/kKcuxLrHirO1DgyCHWW/PwD4kQo6A8cy9OUs
- RAUWBfwd1rQFK6EH4cbXtXnHfwl0MdTmN8t2zJy24a5Zngg2qaKwB5N56xN5dmxJYUDj
- kgQCb3AyMjHr9mbq017dn3HlAqo7BgpBinM3ygLeeeISzSNobWtxPRGl4pG/NDtFDNJZ
- 1lGg==
+ bh=mpurPHJIfdPOD6bMn02GtsIkK16hB0NQq2Z0Tl+Odl8=;
+ b=ABvsrZ8nJiCwr4u+gvp8DCqogkfeK2fzODng/nx6ZOvjeyWmR4LStAe9kYzRtQcXv3
+ umdR4poAVNpP8xQ0UCIU3etBFRZNICyf04J9qdnbs0MW4uIFM+XOQHOmzmOHtbb0G3os
+ jVfA8tOezg7XJ7WuevtOeBp88tmX6r/zFDU93i0Z4EilSR5onxC9LZx3BpAIRvYaHCuN
+ bO7CAo+GW2t2uTHGWj6N6yEmp88O3d2aDON2YihjozyKUE272j89vza2LVs6+lPGmur5
+ s96rlAkhMX5sS9+f3xPsrnfZBhppV63FJm3oqsmuG/Uu6YMWReiOW/ILh1OMhBiZd00r
+ pH1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701821696; x=1702426496;
+ d=1e100.net; s=20230601; t=1701821733; x=1702426533;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fdjNmWiuEF9lWxKO+Opvwumv+Sg7nnoZ1YFL1CIw5sY=;
- b=MCUrdvn7vJ6TPY/DyHYifQGf1bix/yKt63AWpxVAV1AMa9pFb3yX4ppkfLXXt7/+77
- gu0+8VNZPNR9cHzGQuyAaQ01eeC4XspDBBhq+EDydDza0RNej+h8sxGjpEzJl1HohBB2
- qVt+JnBy1Tamowyms8321xVkbcgu3dxV3zhWk6KgO8D2aDh6x3+gK+cxreRDxOxyyENY
- mPaC71ZQcNwOPGq1pdYGSm73DxpebqP6dInhMsj/kPzK6ArULIbKEQrbtZBVnx4E5GTe
- E1E6YgmXmVex/5sCqa0OqDEqlEFo3Xf1yeJFgSkJyeP+UWe1mDmdFsXGwWhQ3rzREaE8
- gXzA==
-X-Gm-Message-State: AOJu0YzkP3p8gDxdYVMNd2fxnN7cE1hoKqiXkSvuIoqslzsfY0J84WOq
- CFn18MDEt+jMVcnUYghOfAe6eYkE3DkIrZ+Ovp5H/hxNubn9Zw==
-X-Google-Smtp-Source: AGHT+IFv9wGwhB2SjBDyqbgYFkZBchJODoKLlZ66z5OMza0WGNyNzRYTEigu0cZHcSXyTOSr86KYInYK9TGVNECIuHM=
-X-Received: by 2002:a50:d744:0:b0:54c:b24d:a3bb with SMTP id
- i4-20020a50d744000000b0054cb24da3bbmr57391edj.1.1701821696046; Tue, 05 Dec
- 2023 16:14:56 -0800 (PST)
+ bh=mpurPHJIfdPOD6bMn02GtsIkK16hB0NQq2Z0Tl+Odl8=;
+ b=oys0F1qIBOqizTYIyNHivAnDSs6jKP1IIEb6zZArn/c7dvjkir2vDUvDe/MjkiqZXH
+ hy1ggF1d0fbIyzZ+eMI6/w6+xalU5BexznhI9uMuv2Eg/1ZykFzRu5XKnhS8Jl15Oetb
+ m2ePw4ayqY0IUs7E3RSvCk4fd7fC6dvc7WhEEPldesaU2cPG99U+On479UNuq0K+y32I
+ CQ7zBMwcyQuAoXFIjHn8Q6vI894s9YECwUFsetXOLCfFNjjzll27feHb15ZtyoxrIJjG
+ k1cB22xdJsGuyNPlcKTtayjAb/rsvk1kB781MaTlel8Ga8q+sjiyGueq+z8OTZW56DYF
+ 0rQg==
+X-Gm-Message-State: AOJu0YwcnsvxZA145kFhoaZiKqEm050p6Q4AINiGaP61E6imv8DHh3jO
+ 8Tz6ITtqztDOzBIpa2HjKKdYnTpmqXoideWA9jE=
+X-Google-Smtp-Source: AGHT+IGrF8ERVBU6Y1KId45K0cstoRHm8qwmO9Hiyy7+J6/f55OQ4m1ZA9uCzmuAR0M0gvOXEtQTFFfN88q/kebqgmM=
+X-Received: by 2002:a50:d783:0:b0:54c:e9af:43a7 with SMTP id
+ w3-20020a50d783000000b0054ce9af43a7mr31925edi.99.1701821732899; Tue, 05 Dec
+ 2023 16:15:32 -0800 (PST)
 MIME-Version: 1.0
 References: <20231124143505.1493184-1-fkonrad@amd.com>
- <20231124143505.1493184-2-fkonrad@amd.com>
-In-Reply-To: <20231124143505.1493184-2-fkonrad@amd.com>
+ <20231124143505.1493184-3-fkonrad@amd.com>
+In-Reply-To: <20231124143505.1493184-3-fkonrad@amd.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 6 Dec 2023 10:14:28 +1000
-Message-ID: <CAKmqyKMp8=dZuu0oAn_i5Ye2Hbb4mTLv9GuuxVzyLFfdnVmyMA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] hw/ssi/xilinx_spips: fix an out of bound access
+Date: Wed, 6 Dec 2023 10:15:05 +1000
+Message-ID: <CAKmqyKOCmdEBEgeajm55pr-=YJH-uOu4PXUzBTskO8dozJ6mUg@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] fix some url for amd / xilinx models
 To: Frederic Konrad <fkonrad@amd.com>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, francisco.iglesias@amd.com, 
  peter.maydell@linaro.org, edgar.iglesias@gmail.com, alistair@alistair23.me, 
  luc.michel@amd.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=alistair23@gmail.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -88,107 +88,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Nov 25, 2023 at 12:38=E2=80=AFAM Frederic Konrad <fkonrad@amd.com> =
+On Sat, Nov 25, 2023 at 12:37=E2=80=AFAM Frederic Konrad <fkonrad@amd.com> =
 wrote:
 >
-> The spips, qspips, and zynqmp-qspips share the same realize function
-> (xilinx_spips_realize) and initialize their io memory region with differe=
-nt
-> mmio_ops passed through the class.  The size of the memory region is set =
-to
-> the largest area (0x200 bytes for zynqmp-qspips) thus it is possible to w=
-rite
-> out of s->regs[addr] in xilinx_spips_write for spips and qspips.
+> It seems that the url changed a bit, and it triggers an error.  Fix the U=
+RLs so
+> the documentation can be reached again.
 >
-> This fixes that wrong behavior.
->
-> Reviewed-by: Luc Michel <luc.michel@amd.com>
 > Signed-off-by: Frederic Konrad <fkonrad@amd.com>
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
->  hw/ssi/xilinx_spips.c         | 7 ++++++-
->  include/hw/ssi/xilinx_spips.h | 3 +++
->  2 files changed, 9 insertions(+), 1 deletion(-)
+>  hw/dma/xlnx_csu_dma.c                      | 2 +-
+>  include/hw/misc/xlnx-versal-cframe-reg.h   | 2 +-
+>  include/hw/misc/xlnx-versal-cfu.h          | 2 +-
+>  include/hw/misc/xlnx-versal-pmc-iou-slcr.h | 2 +-
+>  include/hw/ssi/xlnx-versal-ospi.h          | 2 +-
+>  5 files changed, 5 insertions(+), 5 deletions(-)
 >
-> diff --git a/hw/ssi/xilinx_spips.c b/hw/ssi/xilinx_spips.c
-> index a3955c6c50..0bdfad7e2e 100644
-> --- a/hw/ssi/xilinx_spips.c
-> +++ b/hw/ssi/xilinx_spips.c
-> @@ -973,6 +973,8 @@ static void xilinx_spips_write(void *opaque, hwaddr a=
-ddr,
+> diff --git a/hw/dma/xlnx_csu_dma.c b/hw/dma/xlnx_csu_dma.c
+> index e89089821a..531013f35a 100644
+> --- a/hw/dma/xlnx_csu_dma.c
+> +++ b/hw/dma/xlnx_csu_dma.c
+> @@ -33,7 +33,7 @@
 >
->      DB_PRINT_L(0, "addr=3D" HWADDR_FMT_plx " =3D %x\n", addr, (unsigned)=
-value);
->      addr >>=3D 2;
-> +    assert(addr < XLNX_SPIPS_R_MAX);
-> +
->      switch (addr) {
->      case R_CONFIG:
->          mask =3D ~(R_CONFIG_RSVD | MAN_START_COM);
-> @@ -1299,7 +1301,7 @@ static void xilinx_spips_realize(DeviceState *dev, =
-Error **errp)
->      }
->
->      memory_region_init_io(&s->iomem, OBJECT(s), xsc->reg_ops, s,
-> -                          "spi", XLNX_ZYNQMP_SPIPS_R_MAX * 4);
-> +                          "spi", xsc->reg_size);
->      sysbus_init_mmio(sbd, &s->iomem);
->
->      s->irqline =3D -1;
-> @@ -1435,6 +1437,7 @@ static void xilinx_qspips_class_init(ObjectClass *k=
-lass, void * data)
->
->      dc->realize =3D xilinx_qspips_realize;
->      xsc->reg_ops =3D &qspips_ops;
-> +    xsc->reg_size =3D XLNX_SPIPS_R_MAX * 4;
->      xsc->rx_fifo_size =3D RXFF_A_Q;
->      xsc->tx_fifo_size =3D TXFF_A_Q;
->  }
-> @@ -1450,6 +1453,7 @@ static void xilinx_spips_class_init(ObjectClass *kl=
-ass, void *data)
->      dc->vmsd =3D &vmstate_xilinx_spips;
->
->      xsc->reg_ops =3D &spips_ops;
-> +    xsc->reg_size =3D XLNX_SPIPS_R_MAX * 4;
->      xsc->rx_fifo_size =3D RXFF_A;
->      xsc->tx_fifo_size =3D TXFF_A;
->  }
-> @@ -1464,6 +1468,7 @@ static void xlnx_zynqmp_qspips_class_init(ObjectCla=
-ss *klass, void * data)
->      dc->vmsd =3D &vmstate_xlnx_zynqmp_qspips;
->      device_class_set_props(dc, xilinx_zynqmp_qspips_properties);
->      xsc->reg_ops =3D &xlnx_zynqmp_qspips_ops;
-> +    xsc->reg_size =3D XLNX_ZYNQMP_SPIPS_R_MAX * 4;
->      xsc->rx_fifo_size =3D RXFF_A_Q;
->      xsc->tx_fifo_size =3D TXFF_A_Q;
->  }
-> diff --git a/include/hw/ssi/xilinx_spips.h b/include/hw/ssi/xilinx_spips.=
-h
-> index 1386d5ac8f..7a754bf67a 100644
-> --- a/include/hw/ssi/xilinx_spips.h
-> +++ b/include/hw/ssi/xilinx_spips.h
-> @@ -33,7 +33,9 @@
->
->  typedef struct XilinxSPIPS XilinxSPIPS;
->
-> +/* For SPIPS, QSPIPS.  */
->  #define XLNX_SPIPS_R_MAX        (0x100 / 4)
-> +/* For ZYNQMP_QSPIPS.  */
->  #define XLNX_ZYNQMP_SPIPS_R_MAX (0x200 / 4)
->
->  /* Bite off 4k chunks at a time */
-> @@ -125,6 +127,7 @@ struct XilinxSPIPSClass {
->      SysBusDeviceClass parent_class;
->
->      const MemoryRegionOps *reg_ops;
-> +    uint64_t reg_size;
->
->      uint32_t rx_fifo_size;
->      uint32_t tx_fifo_size;
+>  /*
+>   * Ref: UG1087 (v1.7) February 8, 2019
+> - * https://www.xilinx.com/html_docs/registers/ug1087/ug1087-zynq-ultrasc=
+ale-registers.html
+> + * https://www.xilinx.com/html_docs/registers/ug1087/ug1087-zynq-ultrasc=
+ale-registers
+>   * CSUDMA Module section
+>   */
+>  REG32(ADDR, 0x0)
+> diff --git a/include/hw/misc/xlnx-versal-cframe-reg.h b/include/hw/misc/x=
+lnx-versal-cframe-reg.h
+> index a14fbd7fe4..0091505246 100644
+> --- a/include/hw/misc/xlnx-versal-cframe-reg.h
+> +++ b/include/hw/misc/xlnx-versal-cframe-reg.h
+> @@ -12,7 +12,7 @@
+>   *     https://www.xilinx.com/support/documentation/architecture-manuals=
+/am011-versal-acap-trm.pdf
+>   *
+>   * [2] Versal ACAP Register Reference,
+> - *     https://www.xilinx.com/htmldocs/registers/am012/am012-versal-regi=
+ster-reference.html
+> + *     https://docs.xilinx.com/r/en-US/am012-versal-register-reference/C=
+FRAME_REG-Module
+>   */
+>  #ifndef HW_MISC_XLNX_VERSAL_CFRAME_REG_H
+>  #define HW_MISC_XLNX_VERSAL_CFRAME_REG_H
+> diff --git a/include/hw/misc/xlnx-versal-cfu.h b/include/hw/misc/xlnx-ver=
+sal-cfu.h
+> index 86fb841053..be62bab8c8 100644
+> --- a/include/hw/misc/xlnx-versal-cfu.h
+> +++ b/include/hw/misc/xlnx-versal-cfu.h
+> @@ -12,7 +12,7 @@
+>   *     https://www.xilinx.com/support/documentation/architecture-manuals=
+/am011-versal-acap-trm.pdf
+>   *
+>   * [2] Versal ACAP Register Reference,
+> - *     https://www.xilinx.com/htmldocs/registers/am012/am012-versal-regi=
+ster-reference.html
+> + *     https://docs.xilinx.com/r/en-US/am012-versal-register-reference/C=
+FU_CSR-Module
+>   */
+>  #ifndef HW_MISC_XLNX_VERSAL_CFU_APB_H
+>  #define HW_MISC_XLNX_VERSAL_CFU_APB_H
+> diff --git a/include/hw/misc/xlnx-versal-pmc-iou-slcr.h b/include/hw/misc=
+/xlnx-versal-pmc-iou-slcr.h
+> index f7d24c93c4..0c4a4fd66d 100644
+> --- a/include/hw/misc/xlnx-versal-pmc-iou-slcr.h
+> +++ b/include/hw/misc/xlnx-versal-pmc-iou-slcr.h
+> @@ -34,7 +34,7 @@
+>   *     https://www.xilinx.com/support/documentation/architecture-manuals=
+/am011-versal-acap-trm.pdf
+>   *
+>   * [2] Versal ACAP Register Reference,
+> - *     https://www.xilinx.com/html_docs/registers/am012/am012-versal-reg=
+ister-reference.html#mod___pmc_iop_slcr.html
+> + *     https://docs.xilinx.com/r/en-US/am012-versal-register-reference/P=
+MC_IOP_SLCR-Module
+>   *
+>   * QEMU interface:
+>   * + sysbus MMIO region 0: MemoryRegion for the device's registers
+> diff --git a/include/hw/ssi/xlnx-versal-ospi.h b/include/hw/ssi/xlnx-vers=
+al-ospi.h
+> index 5d131d351d..4ac975aa2f 100644
+> --- a/include/hw/ssi/xlnx-versal-ospi.h
+> +++ b/include/hw/ssi/xlnx-versal-ospi.h
+> @@ -34,7 +34,7 @@
+>   *     https://www.xilinx.com/support/documentation/architecture-manuals=
+/am011-versal-acap-trm.pdf
+>   *
+>   * [2] Versal ACAP Register Reference,
+> - *     https://www.xilinx.com/html_docs/registers/am012/am012-versal-reg=
+ister-reference.html#mod___ospi.html
+> + *     https://docs.xilinx.com/r/en-US/am012-versal-register-reference/O=
+SPI-Module
+>   *
+>   *
+>   * QEMU interface:
 > --
 > 2.25.1
 >
