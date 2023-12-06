@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF6E8074FB
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:30:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0BA8074FC
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:30:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAumm-0002cm-Rp; Wed, 06 Dec 2023 11:30:08 -0500
+	id 1rAumr-0002dK-K5; Wed, 06 Dec 2023 11:30:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <msuchanek@suse.de>) id 1rAumY-0002bP-MB
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:29:57 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rAumn-0002d9-K6
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:30:09 -0500
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <msuchanek@suse.de>) id 1rAumS-0001wO-Ex
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:29:52 -0500
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 74D5121EDF;
- Wed,  6 Dec 2023 16:29:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1701880185; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5MPm575FKcK+sSIANjeBYeNaoFrRFssTzYg3QqfqBAM=;
- b=uCf8/qaRFqMqTvzwzZx/c5J0frIOVSceqi3C5Go39JGr56bVEooPH/mupMNVk3YEXv/e8u
- L9d/7lXg64fYMrn5cQDlft8WArebsRm3+dQhgxSjTcOiE53In7sP3pW4o91baeikkT18LG
- 8IHnaHkif6E4cSCjThAfimXBlaRMy8o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1701880185;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5MPm575FKcK+sSIANjeBYeNaoFrRFssTzYg3QqfqBAM=;
- b=m0NeRCWxdPpJ9cnKSs9/i2Qnhs1LHXpF2DknUgwCL+NFwbC8hKEbVrpiLXF0O6xE1O12RM
- meZO/+1zltYgMGAw==
-Date: Wed, 6 Dec 2023 17:29:44 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Miguel Luis <miguel.luis@oracle.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
-Subject: Re: [RFC PATCH-for-8.2?] accel/tcg: Implement tcg_unregister_thread()
-Message-ID: <20231206162944.GK9696@kitsune.suse.cz>
-References: <20231204194039.56169-1-philmd@linaro.org>
- <4fd5951c-b19a-48fe-bef2-4383fcbbae46@oracle.com>
- <20231206152543.GJ9696@kitsune.suse.cz>
- <40492473-0C4F-40E2-A301-7990A4891815@oracle.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rAuml-0001wg-Sz
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:30:09 -0500
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1ce28faa92dso31857385ad.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:30:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701880199; x=1702484999; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6UFz1JkNXPZ+tIthJCg/p38aHK9p+N1Zabi9DfvjqDs=;
+ b=alZ//NoshUBGxsQXhhtPDR0cWjpspYgpsU9IScgo8Dk6aISGla7N82HPlYw0p3tg0K
+ e/KCwa3Qu2DZ6/QzS/hPfzsjkRYMDH6aj7BSIl7HQegIE5rErAqP8sS1Ic51XtVLk/eg
+ 7+Pj4mutnELq3zVgdi8XQc0vS4fWTLEK7dTLkMgwcyebxhgn5ZrIbTFjwPfF9lpXCcbH
+ bB6Jz94AbVCGYgqmLkNMcGwwmsxjnEL1R8YzE8olGqp72VYk2dg+kDJ81rfq85ZBbz0X
+ 9nrigdrUfqy/ARX82n5MhVEO6goAMJmVP4Cx7MR+EuoQ5hVS6dZYtU7Brs3u8pfBgusQ
+ 2+QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701880199; x=1702484999;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6UFz1JkNXPZ+tIthJCg/p38aHK9p+N1Zabi9DfvjqDs=;
+ b=DoCMmUNH4o9yxyBrC2vs1OaAG97kwnoowKA8ahxeso0twU6wZ3l5jwLuCE1Mc/CMCK
+ pvHq/8QLcF12VtLa2KK01CAZx5PQLeWS8VkaByZQ00qUAib/j9m2yVuy7piANIY5tBfJ
+ ZRiqHyytkRczUUxOwjk9NJ0ybTvl6wJ1VuVjz7BPXA89PP00XZJOp6VUSaUimY7Vlu8j
+ rufRwBb/frBfnG6vsFlAWzaGZe9+fX8Pg0dF4jzQ4wGxDbCt6Ptk6YrzpvqgIzBhCFuf
+ D5sVxVy/Cs31czprTMe0ju5seiOs8/HWoVyXky/481h9XdDX6Fk4h0B4+HtIGQcZFoMp
+ fymQ==
+X-Gm-Message-State: AOJu0YzF05HpXlWCOx1T7xaTPL+Xyt7SoBdG1OE112CgQRABm4g5y/z5
+ FKLUCq4Q2AR9/goSbdAEcm1FBA==
+X-Google-Smtp-Source: AGHT+IEzvJ2EcUGH334TlYcHjX7OeBoZ8rawJHiJP0EvlocqthPYhYVkcKON4+IvDNdDnCpWHSsgdg==
+X-Received: by 2002:a17:903:94d:b0:1d1:e0b6:1aac with SMTP id
+ ma13-20020a170903094d00b001d1e0b61aacmr10858plb.19.1701880199118; 
+ Wed, 06 Dec 2023 08:29:59 -0800 (PST)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ iw1-20020a170903044100b001d1cd7e4acfsm23188plb.201.2023.12.06.08.29.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Dec 2023 08:29:58 -0800 (PST)
+Message-ID: <5af59a41-57ae-4fc7-b46a-1dcb8b194a6b@linaro.org>
+Date: Wed, 6 Dec 2023 08:29:56 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/11] scripts/replay-dump: update to latest format
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+References: <20231205204106.95531-1-alex.bennee@linaro.org>
+ <20231205204106.95531-4-alex.bennee@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231205204106.95531-4-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <40492473-0C4F-40E2-A301-7990A4891815@oracle.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -1.30
-X-Spamd-Result: default: False [-1.30 / 50.00]; ARC_NA(0.00)[];
- TO_DN_EQ_ADDR_SOME(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- NEURAL_HAM_LONG(-1.00)[-1.000]; RCPT_COUNT_FIVE(0.00)[6];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_ZERO(0.00)[0];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- FREEMAIL_CC(0.00)[linaro.org,nongnu.org,redhat.com,gmail.com];
- SUBJECT_HAS_QUESTION(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=msuchanek@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,57 +101,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 06, 2023 at 03:49:28PM +0000, Miguel Luis wrote:
-> 
-> 
-> > On 6 Dec 2023, at 14:25, Michal Suchánek <msuchanek@suse.de> wrote:
-> > 
-> > On Wed, Dec 06, 2023 at 01:17:08PM -0100, Miguel Luis wrote:
-> >> Hi!
-> >> 
-> >> On 04/12/2023 18:40, Philippe Mathieu-Daudé wrote:
-> >>> Unplugging vCPU triggers the following assertion in
-> >>> tcg_register_thread():
-> >>> 
-> >>> 796 void tcg_register_thread(void)
-> >>> 797 {
-> >>> ...
-> >>> 812     /* Claim an entry in tcg_ctxs */
-> >>> 813     n = qatomic_fetch_inc(&tcg_cur_ctxs);
-> >>> 814     g_assert(n < tcg_max_ctxs);
-> >>> 
-> >>> Implement and use tcg_unregister_thread() so when a
-> >>> vCPU is unplugged, the tcg_cur_ctxs refcount is
-> >>> decremented.
-> >> 
-> >> 
-> >> I've had addressed this issue before (posted at [1]) and had exercised
-> >> it with vCPU hotplug/unplug patches for ARM although I was not sure about what
-> >> would be needed to be done regarding plugins on the context of
-> >> tcg_unregister_thread. I guess they would need to be freed also?
-> > 
-> > Doesn't it have the same problem that it will randomly free some context
-> > which is not necessarily associated with the unplugged CPU?
-> > 
-> > Consider machine with 4 CPUs, they are likely added in order - cpu0
-> > getting context0, cpu1 context1, etc.
-> > 
-> > Unplug CPU 1. Given that context 3 is top the would be unallocated by
-> > the decrement, or am I missing something?
-> > 
-> 
-> I think you’re right and I share of the same opinion that matching a tcg thread
-> to a vCPU would be handy to solve this and maybe sorting tcg_ctxs after
-> unregistering the thread.
+On 12/5/23 12:40, Alex Bennée wrote:
+> @@ -268,6 +279,49 @@ def decode_clock(eid, name, dumpfile):
+>                     Decoder(28, "EVENT_CP_RESET", decode_checkpoint),
+>   ]
+>   
+> +# Shutdown cause added
+> +v12_event_table = [Decoder(0, "EVENT_INSTRUCTION", decode_instruction),
 
-Tried to apply the patch. It does not crash right away, and due to virsh
-limitation I get only one (8-thread) core to hotplug so it did survive a few
-hotplug cycles. After a while of hotplugging it crashed, anyway.
+This comment applied to the v7 changes.
 
-Given the atomic_dec there is probably no expectation that the
-processing is sequential.
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Thanks
 
-Michal
+r~
 
