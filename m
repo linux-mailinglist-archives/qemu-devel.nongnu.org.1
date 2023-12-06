@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3C7806348
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 01:16:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2DB80634E
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 01:17:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAfZk-0003rT-Mj; Tue, 05 Dec 2023 19:15:40 -0500
+	id 1rAfbG-0004qf-SJ; Tue, 05 Dec 2023 19:17:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAfZh-0003ii-VM; Tue, 05 Dec 2023 19:15:37 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1rAfbE-0004q6-2y; Tue, 05 Dec 2023 19:17:12 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rAfZf-0006ND-PS; Tue, 05 Dec 2023 19:15:37 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-54c5d041c23so6068382a12.2; 
- Tue, 05 Dec 2023 16:15:35 -0800 (PST)
+ id 1rAfb8-0006eH-Ih; Tue, 05 Dec 2023 19:17:11 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-54c74b3cd4cso692137a12.1; 
+ Tue, 05 Dec 2023 16:17:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701821733; x=1702426533; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1701821824; x=1702426624; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mpurPHJIfdPOD6bMn02GtsIkK16hB0NQq2Z0Tl+Odl8=;
- b=ABvsrZ8nJiCwr4u+gvp8DCqogkfeK2fzODng/nx6ZOvjeyWmR4LStAe9kYzRtQcXv3
- umdR4poAVNpP8xQ0UCIU3etBFRZNICyf04J9qdnbs0MW4uIFM+XOQHOmzmOHtbb0G3os
- jVfA8tOezg7XJ7WuevtOeBp88tmX6r/zFDU93i0Z4EilSR5onxC9LZx3BpAIRvYaHCuN
- bO7CAo+GW2t2uTHGWj6N6yEmp88O3d2aDON2YihjozyKUE272j89vza2LVs6+lPGmur5
- s96rlAkhMX5sS9+f3xPsrnfZBhppV63FJm3oqsmuG/Uu6YMWReiOW/ILh1OMhBiZd00r
- pH1g==
+ bh=Oz8vm05NI6Iz3sES+BWF1x9oyxrk0h7YmaWZb+kkWfY=;
+ b=S9Henz9bkC1c8mzqUvPuBhPrnIYAPGd8NUexOvkik4gwZp3/XOTef7yJri8Jqwnbrf
+ D8OVDwBBKug7lXaAUlVB2RuYOi3Fk0NgprDugSO2xeikmt2/XOtu3PDpCtpazRWkORQw
+ 1YfKVny1rw0gVdsok9Kvyw1JkrT/iL1AdEWLgRf08ZyJCZi5m9J5xR0cfFdfX6aRf5AF
+ WwHh7zTqi1B6F1tfi2ZW8pZ/y355ylDFBe9VtzhtKReBiKcz0GEkVo+VnTjIfnwbFR66
+ Q68CPufzLf6FVwhScvjN00zMdNeJT1t0aNALPDrW5Clk/wgqPm7G9zOiX/8BNUDBAhTf
+ 0yPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701821733; x=1702426533;
+ d=1e100.net; s=20230601; t=1701821824; x=1702426624;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mpurPHJIfdPOD6bMn02GtsIkK16hB0NQq2Z0Tl+Odl8=;
- b=oys0F1qIBOqizTYIyNHivAnDSs6jKP1IIEb6zZArn/c7dvjkir2vDUvDe/MjkiqZXH
- hy1ggF1d0fbIyzZ+eMI6/w6+xalU5BexznhI9uMuv2Eg/1ZykFzRu5XKnhS8Jl15Oetb
- m2ePw4ayqY0IUs7E3RSvCk4fd7fC6dvc7WhEEPldesaU2cPG99U+On479UNuq0K+y32I
- CQ7zBMwcyQuAoXFIjHn8Q6vI894s9YECwUFsetXOLCfFNjjzll27feHb15ZtyoxrIJjG
- k1cB22xdJsGuyNPlcKTtayjAb/rsvk1kB781MaTlel8Ga8q+sjiyGueq+z8OTZW56DYF
- 0rQg==
-X-Gm-Message-State: AOJu0YwcnsvxZA145kFhoaZiKqEm050p6Q4AINiGaP61E6imv8DHh3jO
- 8Tz6ITtqztDOzBIpa2HjKKdYnTpmqXoideWA9jE=
-X-Google-Smtp-Source: AGHT+IGrF8ERVBU6Y1KId45K0cstoRHm8qwmO9Hiyy7+J6/f55OQ4m1ZA9uCzmuAR0M0gvOXEtQTFFfN88q/kebqgmM=
-X-Received: by 2002:a50:d783:0:b0:54c:e9af:43a7 with SMTP id
- w3-20020a50d783000000b0054ce9af43a7mr31925edi.99.1701821732899; Tue, 05 Dec
- 2023 16:15:32 -0800 (PST)
+ bh=Oz8vm05NI6Iz3sES+BWF1x9oyxrk0h7YmaWZb+kkWfY=;
+ b=cRr4iJ2aG8PKhR1XfH0LOqB+OWGWCaStydw0WbTiJWrrSl0mEEl9YBUOg5LDjE1Hkr
+ DwJ83k3WSHzKhjYnBPgIu5hIaqKv9XgNoPdTloYyoUxEuc6keQatZwm/b6CmXbmTI/CU
+ ql/381hWMjGXlxyCMH5TaV3L6Mrz6RiKfQtG+3KFUElJp7sBKRAzPfmY/09x0wBR/nkP
+ fp/SgpuWOb0iEx0vD6WLeLZUC61+ehUohCfJoJXbQ8LofT6zn370rIke/DpE76GDSnGY
+ 7qKo8FaFwcJi5/ZhsfC8Cse8CAoy1cW7CaBVj95UwV3zg3P+L1t5LRAJ8BO6s7m5AEgW
+ el2A==
+X-Gm-Message-State: AOJu0YybRS1HZaJPlR8zE8bjyq+pJgRs0i+kGhyL/8HkIdUwY56XKZh3
+ xkm4fFuK94GB4De0sWB74KEp5zqIX78IBUr6W5bD+RHQP7vhoQ==
+X-Google-Smtp-Source: AGHT+IEFhCh9mcbgUluhSmymTTNNBf9CRegc0S2hltWNA5kIDvK5SWUSAGTMcdMR3V3tCTffwqGe6oCtaadcPM6dkQM=
+X-Received: by 2002:a50:8e5c:0:b0:54c:b72b:93 with SMTP id
+ 28-20020a508e5c000000b0054cb72b0093mr40050edx.25.1701821824317; 
+ Tue, 05 Dec 2023 16:17:04 -0800 (PST)
 MIME-Version: 1.0
 References: <20231124143505.1493184-1-fkonrad@amd.com>
- <20231124143505.1493184-3-fkonrad@amd.com>
-In-Reply-To: <20231124143505.1493184-3-fkonrad@amd.com>
+ <20231124143505.1493184-4-fkonrad@amd.com>
+In-Reply-To: <20231124143505.1493184-4-fkonrad@amd.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 6 Dec 2023 10:15:05 +1000
-Message-ID: <CAKmqyKOCmdEBEgeajm55pr-=YJH-uOu4PXUzBTskO8dozJ6mUg@mail.gmail.com>
-Subject: Re: [PATCH v1 2/3] fix some url for amd / xilinx models
+Date: Wed, 6 Dec 2023 10:16:37 +1000
+Message-ID: <CAKmqyKPKwEap=DZEza=GmeVTwoGMDW=CgQeToJUKr4Ny_F03Gg@mail.gmail.com>
+Subject: Re: [PATCH v1 3/3] hw/dma/xlnx_csu_dma: don't throw guest errors when
+ stopping the SRC DMA
 To: Frederic Konrad <fkonrad@amd.com>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, francisco.iglesias@amd.com, 
  peter.maydell@linaro.org, edgar.iglesias@gmail.com, alistair@alistair23.me, 
  luc.michel@amd.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=alistair23@gmail.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -88,12 +89,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Nov 25, 2023 at 12:37=E2=80=AFAM Frederic Konrad <fkonrad@amd.com> =
-wrote:
+On Sat, Nov 25, 2023 at 1:36=E2=80=AFAM Frederic Konrad <fkonrad@amd.com> w=
+rote:
 >
-> It seems that the url changed a bit, and it triggers an error.  Fix the U=
-RLs so
-> the documentation can be reached again.
+> UG1087 states for the source channel that: if SIZE is programmed to 0, an=
+d the
+> DMA is started, the interrupts DONE and MEM_DONE will be asserted.
+>
+> This implies that it is allowed for the guest to stop the source DMA by w=
+riting
+> a size of 0 to the SIZE register, so remove the LOG_GUEST_ERROR in that c=
+ase.
+>
+> While at it remove the comment marking the SIZE register as write-only.
+>
+> See: https://docs.xilinx.com/r/en-US/ug1087-zynq-ultrascale-registers/CSU=
+DMA_SRC_SIZE-CSUDMA-Register
 >
 > Signed-off-by: Frederic Konrad <fkonrad@amd.com>
 
@@ -102,96 +113,51 @@ Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  hw/dma/xlnx_csu_dma.c                      | 2 +-
->  include/hw/misc/xlnx-versal-cframe-reg.h   | 2 +-
->  include/hw/misc/xlnx-versal-cfu.h          | 2 +-
->  include/hw/misc/xlnx-versal-pmc-iou-slcr.h | 2 +-
->  include/hw/ssi/xlnx-versal-ospi.h          | 2 +-
->  5 files changed, 5 insertions(+), 5 deletions(-)
+>  hw/dma/xlnx_csu_dma.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 >
 > diff --git a/hw/dma/xlnx_csu_dma.c b/hw/dma/xlnx_csu_dma.c
-> index e89089821a..531013f35a 100644
+> index 531013f35a..bc1505aade 100644
 > --- a/hw/dma/xlnx_csu_dma.c
 > +++ b/hw/dma/xlnx_csu_dma.c
-> @@ -33,7 +33,7 @@
->
->  /*
->   * Ref: UG1087 (v1.7) February 8, 2019
-> - * https://www.xilinx.com/html_docs/registers/ug1087/ug1087-zynq-ultrasc=
-ale-registers.html
-> + * https://www.xilinx.com/html_docs/registers/ug1087/ug1087-zynq-ultrasc=
-ale-registers
->   * CSUDMA Module section
->   */
+> @@ -39,7 +39,7 @@
 >  REG32(ADDR, 0x0)
-> diff --git a/include/hw/misc/xlnx-versal-cframe-reg.h b/include/hw/misc/x=
-lnx-versal-cframe-reg.h
-> index a14fbd7fe4..0091505246 100644
-> --- a/include/hw/misc/xlnx-versal-cframe-reg.h
-> +++ b/include/hw/misc/xlnx-versal-cframe-reg.h
-> @@ -12,7 +12,7 @@
->   *     https://www.xilinx.com/support/documentation/architecture-manuals=
-/am011-versal-acap-trm.pdf
->   *
->   * [2] Versal ACAP Register Reference,
-> - *     https://www.xilinx.com/htmldocs/registers/am012/am012-versal-regi=
-ster-reference.html
-> + *     https://docs.xilinx.com/r/en-US/am012-versal-register-reference/C=
-FRAME_REG-Module
->   */
->  #ifndef HW_MISC_XLNX_VERSAL_CFRAME_REG_H
->  #define HW_MISC_XLNX_VERSAL_CFRAME_REG_H
-> diff --git a/include/hw/misc/xlnx-versal-cfu.h b/include/hw/misc/xlnx-ver=
-sal-cfu.h
-> index 86fb841053..be62bab8c8 100644
-> --- a/include/hw/misc/xlnx-versal-cfu.h
-> +++ b/include/hw/misc/xlnx-versal-cfu.h
-> @@ -12,7 +12,7 @@
->   *     https://www.xilinx.com/support/documentation/architecture-manuals=
-/am011-versal-acap-trm.pdf
->   *
->   * [2] Versal ACAP Register Reference,
-> - *     https://www.xilinx.com/htmldocs/registers/am012/am012-versal-regi=
-ster-reference.html
-> + *     https://docs.xilinx.com/r/en-US/am012-versal-register-reference/C=
-FU_CSR-Module
->   */
->  #ifndef HW_MISC_XLNX_VERSAL_CFU_APB_H
->  #define HW_MISC_XLNX_VERSAL_CFU_APB_H
-> diff --git a/include/hw/misc/xlnx-versal-pmc-iou-slcr.h b/include/hw/misc=
-/xlnx-versal-pmc-iou-slcr.h
-> index f7d24c93c4..0c4a4fd66d 100644
-> --- a/include/hw/misc/xlnx-versal-pmc-iou-slcr.h
-> +++ b/include/hw/misc/xlnx-versal-pmc-iou-slcr.h
-> @@ -34,7 +34,7 @@
->   *     https://www.xilinx.com/support/documentation/architecture-manuals=
-/am011-versal-acap-trm.pdf
->   *
->   * [2] Versal ACAP Register Reference,
-> - *     https://www.xilinx.com/html_docs/registers/am012/am012-versal-reg=
-ister-reference.html#mod___pmc_iop_slcr.html
-> + *     https://docs.xilinx.com/r/en-US/am012-versal-register-reference/P=
-MC_IOP_SLCR-Module
->   *
->   * QEMU interface:
->   * + sysbus MMIO region 0: MemoryRegion for the device's registers
-> diff --git a/include/hw/ssi/xlnx-versal-ospi.h b/include/hw/ssi/xlnx-vers=
-al-ospi.h
-> index 5d131d351d..4ac975aa2f 100644
-> --- a/include/hw/ssi/xlnx-versal-ospi.h
-> +++ b/include/hw/ssi/xlnx-versal-ospi.h
-> @@ -34,7 +34,7 @@
->   *     https://www.xilinx.com/support/documentation/architecture-manuals=
-/am011-versal-acap-trm.pdf
->   *
->   * [2] Versal ACAP Register Reference,
-> - *     https://www.xilinx.com/html_docs/registers/am012/am012-versal-reg=
-ister-reference.html#mod___ospi.html
-> + *     https://docs.xilinx.com/r/en-US/am012-versal-register-reference/O=
-SPI-Module
->   *
->   *
->   * QEMU interface:
+>      FIELD(ADDR, ADDR, 2, 30) /* wo */
+>  REG32(SIZE, 0x4)
+> -    FIELD(SIZE, SIZE, 2, 27) /* wo */
+> +    FIELD(SIZE, SIZE, 2, 27)
+>      FIELD(SIZE, LAST_WORD, 0, 1) /* rw, only exists in SRC */
+>  REG32(STATUS, 0x8)
+>      FIELD(STATUS, DONE_CNT, 13, 3) /* wtc */
+> @@ -335,10 +335,14 @@ static uint64_t addr_pre_write(RegisterInfo *reg, u=
+int64_t val)
+>  static uint64_t size_pre_write(RegisterInfo *reg, uint64_t val)
+>  {
+>      XlnxCSUDMA *s =3D XLNX_CSU_DMA(reg->opaque);
+> +    uint64_t size =3D val & R_SIZE_SIZE_MASK;
+>
+>      if (s->regs[R_SIZE] !=3D 0) {
+> -        qemu_log_mask(LOG_GUEST_ERROR,
+> -                      "%s: Starting DMA while already running.\n", __fun=
+c__);
+> +        if (size || s->is_dst) {
+> +            qemu_log_mask(LOG_GUEST_ERROR,
+> +                          "%s: Starting DMA while already running.\n",
+> +                          __func__);
+> +        }
+>      }
+>
+>      if (!s->is_dst) {
+> @@ -346,7 +350,7 @@ static uint64_t size_pre_write(RegisterInfo *reg, uin=
+t64_t val)
+>      }
+>
+>      /* Size is word aligned */
+> -    return val & R_SIZE_SIZE_MASK;
+> +    return size;
+>  }
+>
+>  static uint64_t size_post_read(RegisterInfo *reg, uint64_t val)
 > --
 > 2.25.1
 >
