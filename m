@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1230807562
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C99480756C
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:41:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAuwO-0006yz-Sx; Wed, 06 Dec 2023 11:40:04 -0500
+	id 1rAuwO-0006yt-Sw; Wed, 06 Dec 2023 11:40:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rAuwM-0006yd-FZ
+ id 1rAuwM-0006yc-F5
  for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:40:02 -0500
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rAuwJ-0003li-EX
+ id 1rAuwK-0003mY-MF
  for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:40:02 -0500
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1d06d42a58aso42437085ad.0
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:37:56 -0800 (PST)
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1cf7a8ab047so31966325ad.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:38:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701880674; x=1702485474;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1701880679; x=1702485479;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=l58I2QJUtWOGWXjRD29t6mmy2AkwM2q8lCd0Wroamoo=;
- b=K+/K8+ByKK7vtjWQ0vAN5Qa0GAVvf/CbkSGzL+KGA1ergEh/IW2Dnhmo8xT8U0dZB3
- 2PMM1w89NudTZXmSNEQh/6ZHSLb8Kj57kdLnHVXivGwRZK2lir0saT+CE/QAMSq+dBOr
- M+eIvMhRS/Phdx9XG5mlr80XZu/FjI2LIJ05UVfPbH9yvqwDjxnq+OBq/6JD7Vt/gihs
- /ve6hQ0qpqANjodxFMNu9v3vImyV2t0pn6plnyjeNmQtpYDn6pRnHRPoyFgdtLL5xyCH
- jNs5hPm0ZJgxAjn6JIv/890jxDofmfKtG/+R9PHi/ixih+OwZ5xeyeytWhbAYhdD3SvL
- Dl3g==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Lzq/6uBa8Sn9homJ2UmZstCzNIMtGnzp/+bkC0HtRY4=;
+ b=ox3mo8XzQDun9wqMkp03kN3eENdQf52mi5f2FaMNcUq6zgQtCHen00jPCa/p9+EePO
+ y0ySaiGaA9RBld2eZvbruROGdU0L5w+MRS1B0duzNNwzXlKRmIzZqAw98qjT3uWv6+qS
+ NKNbohLkHWV0kwuvxMN76h2D//haMk+GnL7DkiQIPqI5qxnYnZjYWpofb3e051XAgGqI
+ hcorcLXgyK2b1UZOrajw7YL5jN2Qzwxmjdr1bcNteN59/TpWddOwCnYaOCY0cHsaHby1
+ KujlqGDF5CsSuG/Vgau+NS+qA/Id+OsomrsOqqjbREoO3yVdt/2jWofuL3iSkJddkox7
+ iLNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701880674; x=1702485474;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=l58I2QJUtWOGWXjRD29t6mmy2AkwM2q8lCd0Wroamoo=;
- b=v6+vwGLxkvHE6Sp+v7ryzZtHSbjW9m2Y4shFkuRHIi15pryEOn1La/ZVPjvvrwzpp7
- VO5q8lNzo7x1bMRccMhM3VeUfxSdD4/q+M6rImsXbJhG+L/195KW636c+drDun+SkO7F
- 3GvXz0zdTP2x33xZ4XdbQbtXiCoOHWgMyyql8wEWsO74DLLPlgzn+KPzn8WMULZCHLWG
- plJa5Xpxuff58rGsnEYFtpmoEBP5cD+ZpyuzDbBrWzMQM9E5T0d/RjE/JSHnjPdOUZMH
- kVHUuel1hIlYlLBTm8Q4KTHqTfDAg5ifkKKbsXpqN8mxdOy5TMXDnjC63jS7QG2T5zvz
- sD1A==
-X-Gm-Message-State: AOJu0YyVjb5utQCL5FOI9ZAdupKFtBzfGN1Ef5lwmJndFtrU7ALMbjHA
- wTKFq9s7wwH+LOpY0NkeUromhxx8SPoDVpilJULfD2xn
-X-Google-Smtp-Source: AGHT+IGHzHphG0QO1qfQONft3dKD7jwIe+H6pUDPQtesMu6g1xP6xpR2gb9lqlJXX80Xi8mOWfuxZg==
-X-Received: by 2002:a17:902:ab98:b0:1d0:6ffd:e2e9 with SMTP id
- f24-20020a170902ab9800b001d06ffde2e9mr1154316plr.131.1701880673544; 
- Wed, 06 Dec 2023 08:37:53 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701880679; x=1702485479;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Lzq/6uBa8Sn9homJ2UmZstCzNIMtGnzp/+bkC0HtRY4=;
+ b=ifzrmBqA4M6n0G4wfPX4OWSFsuK+uouq76bmvAxk6JhD6g+RbmX9Gt/jryCwAC+hQ2
+ 2CigjNmvswdOHvJyiy2H05G5g5x30baWmoHNpcu0JTfVFeWeM4gZQ3FQPhPg/TFA42L8
+ hXmU/xOlXG/QSE+PgsxWvPl6Le2gmKRzpeOEStc51ycTKiMhhtBmnMBU3cpmhwCHzR9p
+ 4QdfsTXC5lXXW2szrB0jYwsdruhrAL69WkjKEmhx0eYFZQ7oirmv5gFH/0grvjCSr+Rp
+ mQYUCs9g2Qqq8rEdVHbC9Po3UKXFVJhllsEisDqBs9J/FE9+nrmcrDIK/ymy/HQPiy0d
+ gVbg==
+X-Gm-Message-State: AOJu0YxnVe9qRGXzIsElneM3iRY2RdJvTqHKaNXqGZ/sItQOR1ujIMPc
+ Jn47WBIAZ/D8j/R4ZUb3C/63Uh+lm8oIKk9yzlQw2QTr
+X-Google-Smtp-Source: AGHT+IHjYLGSi99NOQjQ64UIfwsdbpbcLEnr0ycFXtwodoGRurjmDFBC0dYb8R1g6qREqDojoi60XQ==
+X-Received: by 2002:a17:902:ef91:b0:1d0:6ffd:8372 with SMTP id
+ iz17-20020a170902ef9100b001d06ffd8372mr729405plb.125.1701880678545; 
+ Wed, 06 Dec 2023 08:37:58 -0800 (PST)
 Received: from localhost.localdomain ([125.71.95.66])
  by smtp.gmail.com with ESMTPSA id
- m14-20020a170902bb8e00b001d04d730687sm42570pls.103.2023.12.06.08.37.50
+ m14-20020a170902bb8e00b001d04d730687sm42570pls.103.2023.12.06.08.37.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Dec 2023 08:37:53 -0800 (PST)
+ Wed, 06 Dec 2023 08:37:58 -0800 (PST)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  yong.huang@smartx.com
-Subject: [v2 0/4] Support generic Luks encryption
-Date: Thu,  7 Dec 2023 00:37:41 +0800
-Message-Id: <cover.1701879996.git.yong.huang@smartx.com>
+Subject: [v2 1/4] crypto: Introduce option and structure for detached LUKS
+ header
+Date: Thu,  7 Dec 2023 00:37:42 +0800
+Message-Id: <5b99f60c7317092a563d7ca3fb4b414197015eb2.1701879996.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <cover.1701879996.git.yong.huang@smartx.com>
+References: <cover.1701879996.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::629;
- envelope-from=yong.huang@smartx.com; helo=mail-pl1-x629.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::632;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,87 +95,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2:
-- Simplify the design by reusing the LUKS driver to implement
-  the generic Luks encryption, thank Daniel for the insightful 
-  advice.
-- rebase on master. 
+Add the "header" option for the LUKS format. This field would be
+used to identify the blockdev's position where a detachable LUKS
+header is stored.
 
-This functionality was motivated by the following to-do list seen
-in crypto documents:
-https://wiki.qemu.org/Features/Block/Crypto 
+In addition, introduce header field in struct BlockCrypto
 
-The last chapter says we should "separate header volume": 
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+---
+ block/crypto.c       | 1 +
+ qapi/block-core.json | 6 +++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-The LUKS format has ability to store the header in a separate volume
-from the payload. We should extend the LUKS driver in QEMU to support
-this use case.
-
-By enhancing the LUKS driver, it is possible to enable
-the detachable LUKS header and, as a result, achieve
-general encryption for any disk format that QEMU has
-supported.
-
-Take the qcow2 as an example, the usage of the generic
-LUKS encryption as follows:
-
-1. add a protocol blockdev node of data disk
-$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> "arguments":{"node-name":"libvirt-1-storage", "driver":"file",
-> "filename":"/path/to/test_disk.qcow2"}}'
-
-2. add a protocol blockdev node of LUKS header as above.
-$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> "arguments":{"node-name":"libvirt-2-storage", "driver":"file",
-> "filename": "/path/to/cipher.gluks" }}'
-
-3. add the secret for decrypting the cipher stored in LUKS
-   header above
-$ virsh qemu-monitor-command vm '{"execute":"object-add",
-> "arguments":{"qom-type":"secret", "id":
-> "libvirt-2-storage-secret0", "data":"abc123"}}'
-
-4. add the qcow2-drived blockdev format node
-$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> "arguments":{"node-name":"libvirt-1-format", "driver":"qcow2",
-> "file":"libvirt-1-storage"}}'
-
-5. add the luks-drived blockdev to link the qcow2 disk with
-   LUKS header by specifying the field "header"
-$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> "arguments":{"node-name":"libvirt-2-format", "driver":"luks",
-> "file":"libvirt-1-format", "header":"libvirt-2-storage",
-> "key-secret":"libvirt-2-format-secret0"}}'
-
-6. add the virtio-blk device finally
-$ virsh qemu-monitor-command vm '{"execute":"device_add",
-> "arguments": {"num-queues":"1", "driver":"virtio-blk-pci",
-> "drive": "libvirt-2-format", "id":"virtio-disk2"}}'
-
-The generic LUKS encryption method of starting a virtual
-machine (VM) is somewhat similar to hot-plug in that both
-maintaining the same json command while the starting VM
-changes the "blockdev-add/device_add" parameters to
-"blockdev/device".
-
-Please review, thanks
-
-Best regared,
-
-Yong
-
-Hyman Huang (4):
-  crypto: Introduce option and structure for detached LUKS header
-  crypto: Introduce payload offset set function
-  crypto: Support generic LUKS encryption
-  block: Support detached LUKS header creation for blockdev-create
-
- block/crypto.c         | 47 ++++++++++++++++++++++++++++++++++++++++--
- crypto/block.c         |  4 ++++
- include/crypto/block.h |  1 +
- qapi/block-core.json   | 11 ++++++++--
- 4 files changed, 59 insertions(+), 4 deletions(-)
-
+diff --git a/block/crypto.c b/block/crypto.c
+index 921933a5e5..f82b13d32b 100644
+--- a/block/crypto.c
++++ b/block/crypto.c
+@@ -39,6 +39,7 @@ typedef struct BlockCrypto BlockCrypto;
+ struct BlockCrypto {
+     QCryptoBlock *block;
+     bool updating_keys;
++    BdrvChild *header;  /* Reference to the detached LUKS header */
+ };
+ 
+ 
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index ca390c5700..10be08d08f 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3352,11 +3352,15 @@
+ #     decryption key (since 2.6). Mandatory except when doing a
+ #     metadata-only probe of the image.
+ #
++# @header: optional reference to the location of a blockdev
++#     storing a detached LUKS header. (since 9.0)
++#
+ # Since: 2.9
+ ##
+ { 'struct': 'BlockdevOptionsLUKS',
+   'base': 'BlockdevOptionsGenericFormat',
+-  'data': { '*key-secret': 'str' } }
++  'data': { '*key-secret': 'str',
++            '*header': 'BlockdevRef'} }
+ 
+ ##
+ # @BlockdevOptionsGenericCOWFormat:
 -- 
 2.39.1
 
