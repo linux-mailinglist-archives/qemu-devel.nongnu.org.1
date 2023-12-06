@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7592280762E
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:14:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E27F280763D
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:15:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAvSw-0007jV-Eg; Wed, 06 Dec 2023 12:13:42 -0500
+	id 1rAvSr-0007N3-VA; Wed, 06 Dec 2023 12:13:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvSg-00076r-FH
+ id 1rAvSg-00076q-FD
  for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:13:29 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvSd-0001Yt-SD
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:13:26 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1rAvSe-0001Yy-BS
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:13:25 -0500
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B6EY6IA006584; Wed, 6 Dec 2023 17:13:23 GMT
+ 3B6EY0Wm030073; Wed, 6 Dec 2023 17:13:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=qIuLkyENmppTBUy5G1oNQe469ZOfdh6px6Dx4aWtG+c=;
- b=jWCK7VeD58USQL2p5lTZh2zzzCkPkaqMIXIjitZIPtUzvPtUgQ2FmSiViXJNKwwmRh6C
- mT3bUEes1c1yYKe7S/NDXuBtvBTr7Vbj8V4Uii7VCMvtz7dGHjYGNj70Wz0z/vc0XFQA
- apXBF2CNbP7dSh65BiTd1t0RNRZyPJz8eCLPVXvxSS8rfo3bmqOmw2KHA+f1ITE5Z0P/
- gVkxuo+N46kBiIMUjjMQ0W0K9TJKyB18dw/WXtVDSstJ1njf+RJAl9NLe6fSUIMCiQIF
- R44rbZhmb4j4FOcLqM+XAo3yBeFJyikaMNdnxcz34vTr/fpaUgNF2bl0ErCf9kOXH6IT fQ== 
+ subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
+ bh=zom+tG6J0O838HphHif5JcfeP8KD7ULmUcrYbqQkIIQ=;
+ b=LlRCUQDO4etpWvo/K2XexsOsXZIO3HJbvZRK1WDdFgY/Y3d8MOvJejoqAuZb3zEeI5GT
+ pIQwgvR6AuMtBHetanVscXGNDMswqDMQVjevcp25FlGu5yexUX9ZWHc9agv1O8L9e4ms
+ tOuP+oORDsyqiPH30RClXFXi7utCsadAZickm0O7Z9boQq/Zdbkesyg6p8EqzcIYk/cs
+ eA0nDVsn+pFzLdwPis+P708kztKavgY2Yi5/dlL4V3ah8vQB7pX9457dQ0cIzRVhguo0
+ Wx9PP5wk6xfBsB6WQ6MIPkJBBBkqGdxRsI7yT1BnuRW9EBjlvD9nYm7o65ikukWlErLe eQ== 
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utdabt0cu-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utd1ga3af-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:13:22 +0000
+ Wed, 06 Dec 2023 17:13:23 +0000
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B6GYP2B032156; Wed, 6 Dec 2023 17:13:21 GMT
+ with ESMTP id 3B6Gf3EZ032250; Wed, 6 Dec 2023 17:13:22 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3utan9exq1-1
+ 3utan9exqy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:13:21 +0000
+ Wed, 06 Dec 2023 17:13:22 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HCrVX024168;
- Wed, 6 Dec 2023 17:13:21 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HCrVZ024168;
+ Wed, 6 Dec 2023 17:13:22 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3utan9ewxa-22; Wed, 06 Dec 2023 17:13:20 +0000
+ ESMTP id 3utan9ewxa-23; Wed, 06 Dec 2023 17:13:22 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -59,15 +58,12 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH 11/14] tests/qtest: migration events
-Date: Wed,  6 Dec 2023 09:12:47 -0800
-Message-Id: <1701882772-356078-22-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V7 11/12] tests/qtest: precopy migration with suspend
+Date: Wed,  6 Dec 2023 09:12:48 -0800
+Message-Id: <1701882772-356078-23-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1701882772-356078-1-git-send-email-steven.sistare@oracle.com>
 References: <1701882772-356078-1-git-send-email-steven.sistare@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-06_15,2023-12-06_01,2023-05-22_02
@@ -76,8 +72,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  mlxscore=0 bulkscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2312060140
-X-Proofpoint-ORIG-GUID: MAZz3LAdqKX7pXY6TMghor1TGOZRfy0y
-X-Proofpoint-GUID: MAZz3LAdqKX7pXY6TMghor1TGOZRfy0y
+X-Proofpoint-ORIG-GUID: PZVD8eeEkBMQn1AgBzNpa_E4XbKBMoYQ
+X-Proofpoint-GUID: PZVD8eeEkBMQn1AgBzNpa_E4XbKBMoYQ
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -103,303 +99,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define a state object to capture events seen by migration tests, to allow
-more events to be captured in a subsequent patch, and simplify event
-checking in wait_for_migration_pass.  No functional change.
+Add a test case to verify that the suspended state is handled correctly
+during live migration precopy.  The test suspends the src, migrates, then
+wakes the dest.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/qtest/migration-helpers.c | 24 ++++-------
- tests/qtest/migration-helpers.h |  9 ++--
- tests/qtest/migration-test.c    | 91 +++++++++++++++++++----------------------
- 3 files changed, 56 insertions(+), 68 deletions(-)
+ tests/qtest/migration-helpers.c |  3 ++
+ tests/qtest/migration-helpers.h |  2 ++
+ tests/qtest/migration-test.c    | 62 +++++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 64 insertions(+), 3 deletions(-)
 
 diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index 24fb7b3..fd3b94e 100644
+index fd3b94e..37e8e81 100644
 --- a/tests/qtest/migration-helpers.c
 +++ b/tests/qtest/migration-helpers.c
-@@ -24,26 +24,16 @@
-  */
- #define MIGRATION_STATUS_WAIT_TIMEOUT 120
- 
--bool migrate_watch_for_stop(QTestState *who, const char *name,
--                            QDict *event, void *opaque)
--{
--    bool *seen = opaque;
--
--    if (g_str_equal(name, "STOP")) {
--        *seen = true;
--        return true;
--    }
--
--    return false;
--}
--
--bool migrate_watch_for_resume(QTestState *who, const char *name,
-+bool migrate_watch_for_events(QTestState *who, const char *name,
-                               QDict *event, void *opaque)
- {
--    bool *seen = opaque;
-+    QTestMigrationState *state = opaque;
- 
--    if (g_str_equal(name, "RESUME")) {
--        *seen = true;
-+    if (g_str_equal(name, "STOP")) {
-+        state->stop_seen = true;
-+        return true;
-+    } else if (g_str_equal(name, "RESUME")) {
-+        state->resume_seen = true;
+@@ -32,6 +32,9 @@ bool migrate_watch_for_events(QTestState *who, const char *name,
+     if (g_str_equal(name, "STOP")) {
+         state->stop_seen = true;
          return true;
-     }
- 
++    } else if (g_str_equal(name, "SUSPEND")) {
++        state->suspend_seen = true;
++        return true;
+     } else if (g_str_equal(name, "RESUME")) {
+         state->resume_seen = true;
+         return true;
 diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
-index e31dc85..3d32699 100644
+index 3d32699..b478549 100644
 --- a/tests/qtest/migration-helpers.h
 +++ b/tests/qtest/migration-helpers.h
-@@ -15,9 +15,12 @@
+@@ -18,6 +18,8 @@
+ typedef struct QTestMigrationState {
+     bool stop_seen;
+     bool resume_seen;
++    bool suspend_seen;
++    bool suspend_me;
+ } QTestMigrationState;
  
- #include "libqtest.h"
- 
--bool migrate_watch_for_stop(QTestState *who, const char *name,
--                            QDict *event, void *opaque);
--bool migrate_watch_for_resume(QTestState *who, const char *name,
-+typedef struct QTestMigrationState {
-+    bool stop_seen;
-+    bool resume_seen;
-+} QTestMigrationState;
-+
-+bool migrate_watch_for_events(QTestState *who, const char *name,
-                               QDict *event, void *opaque);
- 
- G_GNUC_PRINTF(3, 4)
+ bool migrate_watch_for_events(QTestState *who, const char *name,
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 5752412..59fbbef 100644
+index e10d5a4..f57a978 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -43,8 +43,8 @@
- unsigned start_address;
- unsigned end_address;
- static bool uffd_feature_thread_id;
--static bool got_src_stop;
--static bool got_dst_resume;
-+static QTestMigrationState src_state;
-+static QTestMigrationState dst_state;
- 
+@@ -178,7 +178,7 @@ static void bootfile_delete(void)
  /*
-  * An initial 3 MB offset is used as that corresponds
-@@ -230,6 +230,20 @@ static void wait_for_serial(const char *side)
-     } while (true);
+  * Wait for some output in the serial output file,
+  * we get an 'A' followed by an endless string of 'B's
+- * but on the destination we won't have the A.
++ * but on the destination we won't have the A (unless we enabled suspend/resume)
+  */
+ static void wait_for_serial(const char *side)
+ {
+@@ -245,6 +245,13 @@ static void wait_for_resume(QTestState *who, QTestMigrationState *state)
+     }
  }
  
-+static void wait_for_stop(QTestState *who, QTestMigrationState *state)
++static void wait_for_suspend(QTestState *who, QTestMigrationState *state)
 +{
-+    if (!state->stop_seen) {
-+        qtest_qmp_eventwait(who, "STOP");
-+    }
-+}
-+
-+static void wait_for_resume(QTestState *who, QTestMigrationState *state)
-+{
-+    if (!state->resume_seen) {
-+        qtest_qmp_eventwait(who, "RESUME");
++    if (state->suspend_me && !state->suspend_seen) {
++        qtest_qmp_eventwait(who, "SUSPEND");
 +    }
 +}
 +
  /*
   * It's tricky to use qemu's migration event capability with qtest,
   * events suddenly appearing confuse the qmp()/hmp() responses.
-@@ -277,21 +291,19 @@ static void read_blocktime(QTestState *who)
-     qobject_unref(rsp_return);
- }
- 
-+/*
-+ * Wait for two changes in the migration pass count, but bail if we stop.
-+ */
- static void wait_for_migration_pass(QTestState *who)
+@@ -299,7 +306,7 @@ static void wait_for_migration_pass(QTestState *who)
  {
--    uint64_t initial_pass = get_migration_pass(who);
--    uint64_t pass;
-+    uint64_t pass, prev_pass = 0, changes = 0;
+     uint64_t pass, prev_pass = 0, changes = 0;
  
--    /* Wait for the 1st sync */
--    while (!got_src_stop && !initial_pass) {
--        usleep(1000);
--        initial_pass = get_migration_pass(who);
--    }
--
--    do {
-+    while (changes < 2 && !src_state.stop_seen) {
+-    while (changes < 2 && !src_state.stop_seen) {
++    while (changes < 2 && !src_state.stop_seen && !src_state.suspend_seen) {
          usleep(1000);
          pass = get_migration_pass(who);
--    } while (pass == initial_pass && !got_src_stop);
-+        changes += (pass != prev_pass);
-+        prev_pass = pass;
+         changes += (pass != prev_pass);
+@@ -584,6 +591,12 @@ static void migrate_wait_for_dirty_mem(QTestState *from,
+         usleep(1000 * 10);
+     } while (qtest_readq(to, marker_address) != MAGIC_MARKER);
+ 
++
++    /* If suspended, src only iterates once, and watch_byte may never change */
++    if (src_state.suspend_me) {
++        return;
 +    }
- }
++
+     /*
+      * Now ensure that already transferred bytes are
+      * dirty again from the guest workload. Note the
+@@ -771,6 +784,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+     dst_state = (QTestMigrationState) { };
+     src_state = (QTestMigrationState) { };
+     bootfile_create(tmpfs, args->suspend_me);
++    src_state.suspend_me = args->suspend_me;
  
- static void check_guests_ram(QTestState *who)
-@@ -617,10 +629,7 @@ static void migrate_postcopy_start(QTestState *from, QTestState *to)
- {
-     qtest_qmp_assert_success(from, "{ 'execute': 'migrate-start-postcopy' }");
- 
--    if (!got_src_stop) {
--        qtest_qmp_eventwait(from, "STOP");
--    }
--
-+    wait_for_stop(from, &src_state);
-     qtest_qmp_eventwait(to, "RESUME");
- }
- 
-@@ -756,8 +765,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-         }
-     }
- 
--    got_src_stop = false;
--    got_dst_resume = false;
-+    dst_state = (QTestMigrationState) { };
-+    src_state = (QTestMigrationState) { };
      if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
          memory_size = "150M";
- 
-@@ -848,8 +857,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-     if (!args->only_target) {
-         *from = qtest_init_with_env(QEMU_ENV_SRC, cmd_source);
-         qtest_qmp_set_event_callback(*from,
--                                     migrate_watch_for_stop,
--                                     &got_src_stop);
-+                                     migrate_watch_for_events,
-+                                     &src_state);
+@@ -1717,6 +1731,7 @@ static void test_precopy_common(MigrateCommon *args)
+     /* Wait for the first serial output from the source */
+     if (args->result == MIG_TEST_SUCCEED) {
+         wait_for_serial("src_serial");
++        wait_for_suspend(from, &src_state);
      }
  
-     cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
-@@ -869,8 +878,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-                                  ignore_stderr);
-     *to = qtest_init_with_env(QEMU_ENV_DST, cmd_target);
-     qtest_qmp_set_event_callback(*to,
--                                 migrate_watch_for_resume,
--                                 &got_dst_resume);
-+                                 migrate_watch_for_events,
-+                                 &dst_state);
+     if (args->live) {
+@@ -1793,6 +1808,11 @@ static void test_precopy_common(MigrateCommon *args)
  
-     /*
-      * Remove shmem file immediately to avoid memory leak in test failed case.
-@@ -1717,9 +1726,7 @@ static void test_precopy_common(MigrateCommon *args)
-          */
-         if (args->result == MIG_TEST_SUCCEED) {
-             qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
--            if (!got_src_stop) {
--                qtest_qmp_eventwait(from, "STOP");
--            }
-+            wait_for_stop(from, &src_state);
-             migrate_ensure_converge(from);
-         }
-     }
-@@ -1765,9 +1772,8 @@ static void test_precopy_common(MigrateCommon *args)
-              */
-             wait_for_migration_complete(from);
+         wait_for_resume(to, &dst_state);
  
--            if (!got_src_stop) {
--                qtest_qmp_eventwait(from, "STOP");
--            }
-+            wait_for_stop(from, &src_state);
++        if (args->start.suspend_me) {
++            /* wakeup succeeds only if guest is suspended */
++            qtest_qmp_assert_success(to, "{'execute': 'system_wakeup'}");
++        }
 +
-         } else {
-             wait_for_migration_complete(from);
-             /*
-@@ -1780,9 +1786,7 @@ static void test_precopy_common(MigrateCommon *args)
-             qtest_qmp_assert_success(to, "{ 'execute' : 'cont'}");
-         }
- 
--        if (!got_dst_resume) {
--            qtest_qmp_eventwait(to, "RESUME");
--        }
-+        wait_for_resume(to, &dst_state);
- 
          wait_for_serial("dest_serial");
      }
-@@ -1821,9 +1825,7 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
  
-     if (stop_src) {
-         qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
--        if (!got_src_stop) {
--            qtest_qmp_eventwait(from, "STOP");
--        }
-+        wait_for_stop(from, &src_state);
-     }
+@@ -1879,6 +1899,34 @@ static void test_precopy_unix_plain(void)
+     test_precopy_common(&args);
+ }
  
-     if (args->result == MIG_TEST_QMP_ERROR) {
-@@ -1844,10 +1846,7 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
-     if (stop_src) {
-         qtest_qmp_assert_success(to, "{ 'execute' : 'cont'}");
-     }
--
--    if (!got_dst_resume) {
--        qtest_qmp_eventwait(to, "RESUME");
--    }
-+    wait_for_resume(to, &dst_state);
++static void test_precopy_unix_suspend_live(void)
++{
++    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
++    MigrateCommon args = {
++        .listen_uri = uri,
++        .connect_uri = uri,
++        /*
++         * despite being live, the test is fast because the src
++         * suspends immediately.
++         */
++        .live = true,
++        .start.suspend_me = true,
++    };
++
++    test_precopy_common(&args);
++}
++
++static void test_precopy_unix_suspend_notlive(void)
++{
++    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
++    MigrateCommon args = {
++        .listen_uri = uri,
++        .connect_uri = uri,
++        .start.suspend_me = true,
++    };
++
++    test_precopy_common(&args);
++}
  
-     wait_for_serial("dest_serial");
+ static void test_precopy_unix_dirty_ring(void)
+ {
+@@ -3279,7 +3327,7 @@ static bool kvm_dirty_ring_supported(void)
+ int main(int argc, char **argv)
+ {
+     bool has_kvm, has_tcg;
+-    bool has_uffd;
++    bool has_uffd, is_x86;
+     const char *arch;
+     g_autoptr(GError) err = NULL;
+     const char *qemu_src = getenv(QEMU_ENV_SRC);
+@@ -3309,6 +3357,7 @@ int main(int argc, char **argv)
  
-@@ -1966,9 +1965,7 @@ static void test_ignore_shared(void)
- 
-     migrate_wait_for_dirty_mem(from, to);
- 
--    if (!got_src_stop) {
--        qtest_qmp_eventwait(from, "STOP");
--    }
-+    wait_for_stop(from, &src_state);
- 
-     qtest_qmp_eventwait(to, "RESUME");
- 
-@@ -2503,7 +2500,7 @@ static void test_migrate_auto_converge(void)
-             break;
-         }
-         usleep(20);
--        g_assert_false(got_src_stop);
-+        g_assert_false(src_state.stop_seen);
-     } while (true);
-     /* The first percentage of throttling should be at least init_pct */
-     g_assert_cmpint(percentage, >=, init_pct);
-@@ -2842,9 +2839,7 @@ static void test_multifd_tcp_cancel(void)
- 
-     migrate_ensure_converge(from);
- 
--    if (!got_src_stop) {
--        qtest_qmp_eventwait(from, "STOP");
--    }
-+    wait_for_stop(from, &src_state);
-     qtest_qmp_eventwait(to2, "RESUME");
- 
-     wait_for_serial("dest_serial");
-@@ -3177,7 +3172,7 @@ static void test_migrate_dirty_limit(void)
-         throttle_us_per_full =
-         read_migrate_property_int(from, "dirty-limit-throttle-time-per-round");
-         usleep(100);
--        g_assert_false(got_src_stop);
-+        g_assert_false(src_state.stop_seen);
-     }
- 
-     /* Now cancel migrate and wait for dirty limit throttle switch off */
-@@ -3189,7 +3184,7 @@ static void test_migrate_dirty_limit(void)
-         throttle_us_per_full =
-         read_migrate_property_int(from, "dirty-limit-throttle-time-per-round");
-         usleep(100);
--        g_assert_false(got_src_stop);
-+        g_assert_false(src_state.stop_seen);
-     } while (throttle_us_per_full != 0 && --max_try_count);
- 
-     /* Assert dirty limit is not in service */
-@@ -3218,7 +3213,7 @@ static void test_migrate_dirty_limit(void)
-         throttle_us_per_full =
-         read_migrate_property_int(from, "dirty-limit-throttle-time-per-round");
-         usleep(100);
--        g_assert_false(got_src_stop);
-+        g_assert_false(src_state.stop_seen);
-     }
+     has_uffd = ufd_version_check();
+     arch = qtest_get_arch();
++    is_x86 = !strcmp(arch, "i386") || !strcmp(arch, "x86_64");
  
      /*
+      * On ppc64, the test only works with kvm-hv, but not with kvm-pr and TCG
+@@ -3339,6 +3388,13 @@ int main(int argc, char **argv)
+ 
+     module_call_init(MODULE_INIT_QOM);
+ 
++    if (is_x86) {
++        qtest_add_func("/migration/precopy/unix/suspend/live",
++                       test_precopy_unix_suspend_live);
++        qtest_add_func("/migration/precopy/unix/suspend/notlive",
++                       test_precopy_unix_suspend_notlive);
++    }
++
+     if (has_uffd) {
+         qtest_add_func("/migration/postcopy/plain", test_postcopy);
+         qtest_add_func("/migration/postcopy/recovery/plain",
 -- 
 1.8.3.1
 
