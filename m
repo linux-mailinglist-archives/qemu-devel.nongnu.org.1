@@ -2,115 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCF5807390
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 16:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 535B0807378
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 16:14:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAtdk-00011p-SL; Wed, 06 Dec 2023 10:16:44 -0500
+	id 1rAtZy-0007gv-CC; Wed, 06 Dec 2023 10:12:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rAtdi-0000wN-5g
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:16:42 -0500
-Received: from mail-bn7nam10on20617.outbound.protection.outlook.com
- ([2a01:111:f400:7e8a::617]
- helo=NAM10-BN7-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rAtZw-0007gl-AR
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:12:48 -0500
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rAtdf-000614-Cx
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:16:41 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YWIsrZpDs2sqfX51kbJn6FLzQsrjJi5koOTerCi8qAn3i50fwW8KffYA/dn0CXCRCaZTjRZiNwRLjonSnMAifsGlReOz2w2PT81bJ4DuU7rmJbkLlFGb4nqnc+unmB/gMmQrQznA68fRBnsUJjA1JfvLVl6U1Yf1g089DR1k1h7DuXWT31/bLkXvpKRwllM9wjmVNhEAaBp7HAVOnQ5OPTxhk3Iox8mk/t3/qkRJgYWKtvCX6wzMMXpAb3KUEZIolnPpnM/eriwVqRoRMZynb/sLMupU7xdTFjPmtYbn/ah7xjDf6DboXL+0QMKV2zQuqlzp6YCPIyFm6oozuqxv+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+8jZmILvQXNqOKv08St3gFunr4/amTDE7+l9oZXDl3k=;
- b=gONAEYdwTZ93Ol3dd6VI9cHb3KeexxkP7eNvZmXZ4IyIr4cyz6XrvWoyQfYbytlXNi96/kPklw6aQb7DGYE++cVcFtp2vbYai0omDzRHwde4d25+gaWdVAeUdgo2KKnPb9fLOtnSClC5FBE1h0IbKr0hNbYtAWs1u2NlwAbiD4iZu2DA08uQIGojRJsMiQKQnpvnEdn6oPAiHvebvpjsgU8Tw8Jv0Zxmm7U+7goJZMaE+ihlQyQp0NHfnVABDOtBlQRmJ3SLQVxeeMtRsWF41PbwgY/I9GhvHQKMiLLxwRzrbrbe60mOcZgQk2FjnHyD2WV83oc3XKY7oowuZdDHkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+8jZmILvQXNqOKv08St3gFunr4/amTDE7+l9oZXDl3k=;
- b=hs85gJCkpKHuV/785IQftHSuXH1nEPWrVoi//AWj1X2z9E4x3/8HtGsFkwGjDNRhB/QUQb1U3MCMDLedJiy0FfdWM+XHvo88k8P7LLgsiFudK+YZOmhYC/2DO5qCTNgF3E7wiUXRE0wtkvzQ3l4H1ZO107IHBcBiuFTHTnLJew8=
-Received: from CY5PR19CA0022.namprd19.prod.outlook.com (2603:10b6:930:15::33)
- by PH7PR12MB6538.namprd12.prod.outlook.com (2603:10b6:510:1f1::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.25; Wed, 6 Dec
- 2023 15:16:26 +0000
-Received: from CY4PEPF0000E9CF.namprd03.prod.outlook.com
- (2603:10b6:930:15:cafe::c0) by CY5PR19CA0022.outlook.office365.com
- (2603:10b6:930:15::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34 via Frontend
- Transport; Wed, 6 Dec 2023 15:16:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9CF.mail.protection.outlook.com (10.167.241.142) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7068.26 via Frontend Transport; Wed, 6 Dec 2023 15:16:24 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 6 Dec
- 2023 09:16:23 -0600
-Date: Wed, 6 Dec 2023 09:15:15 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-CC: <qemu-devel@nongnu.org>, Marcelo Tosatti <mtosatti@redhat.com>, "Tom
- Lendacky" <thomas.lendacky@amd.com>, Akihiko Odaki
- <akihiko.odaki@daynix.com>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH v2 for-8.2?] i386/sev: Avoid SEV-ES crash due to missing
- MSR_EFER_LMA bit
-Message-ID: <20231206151515.njyp3pwso6m5lkyx@amd.com>
-References: <20231205222816.1152720-1-michael.roth@amd.com>
- <CABgObfb0YmHuw6v9AGK6FpsYA1F3eV2=4RKaxkmVrp97QCDM3A@mail.gmail.com>
- <20231206144605.mwphsaggqumiqh3k@amd.com>
- <CABgObfaF=rJL-V0vBTnNMGFreRD2cJCjkYHxYBFjZktyd+dH8A@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rAtZt-0005Lf-By
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 10:12:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1701875566; x=1733411566;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=EW+3iSRgcCAkL+OgjpjJk/bJjtNRiBrER+/sUtol6gw=;
+ b=HzENtGz3HkExcG15d8HCyLEjeArqDu2pJaHHLuzvZIXjoQ6G9v0tSz99
+ /lURAgjeU4bSsI9otNJJqIpj7Uz34tg4nYlpRbjG9B6riCaS74rw2Id+k
+ TjTSdbkyOK+TLGcBv1+yQYyoTKGgRa1mILER33R6Ta2ndtuJvHPNg9ObW
+ hLZkd1HHQuIiIA8VmMtry6ogVYns6GjVjSTtg0mnLKaF4KTNbLvvKm0r0
+ h1SqOdcOGtfCVH/xgduQEpHc2BC4UUaa2SuF1e64InKQlgK00S0CcuCKi
+ Ue8lG6CNcOspahDQnMCmgzTAKznNWzBGyBvgi3dG/ulI8B8AN+/10HEow A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="1144037"
+X-IronPort-AV: E=Sophos;i="6.04,255,1695711600"; 
+   d="scan'208";a="1144037"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Dec 2023 07:12:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="800377341"
+X-IronPort-AV: E=Sophos;i="6.04,255,1695711600"; d="scan'208";a="800377341"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga008.jf.intel.com with ESMTP; 06 Dec 2023 07:12:31 -0800
+Date: Wed, 6 Dec 2023 23:24:51 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, imammedo@redhat.com,
+ xiaoyao.li@intel.com
+Subject: Re: [PATCH] target/i386: Add new CPU model SierraForest
+Message-ID: <ZXCSQy6g5kEBu52z@intel.com>
+References: <20231206131923.1192066-1-tao1.su@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfaF=rJL-V0vBTnNMGFreRD2cJCjkYHxYBFjZktyd+dH8A@mail.gmail.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9CF:EE_|PH7PR12MB6538:EE_
-X-MS-Office365-Filtering-Correlation-Id: 83885ad8-4af7-4c29-120d-08dbf66e4f9d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bDRWZomav9f1LKyRZvFWmp6lnk7ZY81KCdE2ZOE5kU8XRH6rzudroQ8SKjdMXcrQ0MS8Zc1xS92y28Eq/vDfIX6hmbtgVTqSOV3fAC3ZFsd1QjtelVRgik2uh/KFlGa/5JF5ijpuxUG+tLHQ45aEyMF/GazUkhs/VGAPrewxFLssLqCkHwQqviBSnd5dCXuloeu2cAJ5MXFcRo5rsUj6Cm/dcTqOxsc6XgYUPk6KwAX8IxwpOIot8+ffZmKDt0EpBmf14g+jSzN9T3u5JXc1XejRd/ETaGTOORXgX1XMBjpu23Zchibiw+5qJhe8sd76Jrkq+vVNJHpqqcmOji+9PJvyqny7Ucrx1Z7WMTdvBB7oTdHZWwJ2ujx6llfXlAEqdDFkfl83LpufA29Kw4ayQc+YjFjs5NhDG/vB4+q1KT6t0g6VuHb5w3nBU0S3EoCcUONR9H9X/EFnxrtZD51TAcRr6OkxC9Aki87L8tvzIMjfr+q2/bcbOI6+2aeWDx4DTCDk+Q8TeLNm820u4BEyA0LQkIKmjhyL0pHG+KdMzzQuAxwGJ4H/Rq+frjBT4xw48FM2FTJsnPS5limk0tkwmi/PTBZTKW6VTKSTTgNRcb/zq252/9FVll9qt/JQk+uYf3aOILbfZLlox1zCPSerkcdJGniNfrJoC3fulN9apuW+fz8lErtGBNZK8l7PmaSNCjasVcojjrHSFw1V76HhuhwP2VaPo/E253Q2pSpWWni5lxk17DZHFQen+xd06/YAxqXpXsd9lUUyDpR2GYYPpQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(376002)(39860400002)(396003)(346002)(136003)(230922051799003)(82310400011)(186009)(1800799012)(64100799003)(451199024)(36840700001)(40470700004)(46966006)(2906002)(5660300002)(44832011)(36756003)(41300700001)(86362001)(4326008)(8936002)(8676002)(316002)(70586007)(6916009)(54906003)(70206006)(40480700001)(36860700001)(47076005)(82740400003)(356005)(81166007)(478600001)(1076003)(40460700003)(426003)(83380400001)(6666004)(53546011)(16526019)(336012)(26005)(2616005)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 15:16:24.4492 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83885ad8-4af7-4c29-120d-08dbf66e4f9d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9CF.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6538
-Received-SPF: softfail client-ip=2a01:111:f400:7e8a::617;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM10-BN7-obe.outbound.protection.outlook.com
+In-Reply-To: <20231206131923.1192066-1-tao1.su@linux.intel.com>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -127,60 +78,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 06, 2023 at 04:04:43PM +0100, Paolo Bonzini wrote:
-> On Wed, Dec 6, 2023 at 3:46 PM Michael Roth <michael.roth@amd.com> wrote:
-> > > There is no need to check cr0_old or sev_es_enabled(); EFER.LMA is
-> > > simply EFER.LME && CR0.PG.
-> >
-> > Yah, I originally had it like that, but svm_set_cr0() in the kernel only
-> > sets it in vcpu->arch.efer it when setting CR0.PG, so I thought it might
-> > be safer to be more selective and mirror that handling on the QEMU side
-> > so we can leave as much of any other sanity checks on kernel/QEMU side
-> > intact as possible. E.g., if some other bug in the kernel ends up
-> > unsetting EFER.LMA while paging is still enabled, we'd still notice that
-> > when passing it back in via KVM_SET_SREGS*.
-> >
-> > But agree it's simpler to just always set it based on CR0.PG and EFER.LMA
-> > and can send a v3 if that's preferred.
+On Wed, Dec 06, 2023 at 09:19:23PM +0800, Tao Su wrote:
+> Date: Wed,  6 Dec 2023 21:19:23 +0800
+> From: Tao Su <tao1.su@linux.intel.com>
+> Subject: [PATCH] target/i386: Add new CPU model SierraForest
+> X-Mailer: git-send-email 2.34.1
 > 
-> Yeah, in this case I think the chance of something breaking is really,
-> really small.
+> SierraForest is Intel's first generation E-core based Xeon server
+> processor, which will be released in the first half of 2024.
 > 
-> The behavior of svm_set_cr0() is more due to how the surrounding code
-> looks like, than anything else.
+> SierraForest mainly adds the following new features based on
+> GraniteRapids:
+> 
+> - CMPCCXADD CPUID.(EAX=7,ECX=1):EAX[bit 7]
+> - AVX-IFMA CPUID.(EAX=7,ECX=1):EAX[bit 23]
+> - AVX-VNNI-INT8 CPUID.(EAX=7,ECX=1):EDX[bit 4]
+> - AVX-NE-CONVERT CPUID.(EAX=7,ECX=1):EDX[bit 5]
+> - LAM CPUID.(EAX=7,ECX=1):EAX[bit 26]
+> - LASS CPUID.(EAX=7,ECX=1):EAX[bit 6]
+> 
+> and removes the following features based on GraniteRapids:
+> 
+> - HLE CPUID.(EAX=7,ECX=0):EBX[bit 4]
+> - RTM CPUID.(EAX=7,ECX=0):EBX[bit 11]
+> - AVX512F CPUID.(EAX=7,ECX=0):EBX[bit 16]
+> - AVX512DQ CPUID.(EAX=7,ECX=0):EBX[bit 17]
+> - AVX512_IFMA CPUID.(EAX=7,ECX=0):EBX[bit 21]
+> - AVX512CD CPUID.(EAX=7,ECX=0):EBX[bit 28]
+> - AVX512BW CPUID.(EAX=7,ECX=0):EBX[bit 30]
+> - AVX512VL CPUID.(EAX=7,ECX=0):EBX[bit 31]
+> - AVX512_VBMI CPUID.(EAX=7,ECX=0):ECX[bit 1]
+> - AVX512_VBMI2 CPUID.(EAX=7,ECX=0):ECX[bit 6]
+> - AVX512_VNNI CPUID.(EAX=7,ECX=0):ECX[bit 11]
+> - AVX512_BITALG CPUID.(EAX=7,ECX=0):ECX[bit 12]
+> - AVX512_VPOPCNTDQ CPUID.(EAX=7,ECX=0):ECX[bit 14]
+> - LA57 CPUID.(EAX=7,ECX=0):ECX[bit 16]
+> - TSXLDTRK CPUID.(EAX=7,ECX=0):EDX[bit 16]
+> - AMX-BF16 CPUID.(EAX=7,ECX=0):EDX[bit 22]
+> - AVX512_FP16 CPUID.(EAX=7,ECX=0):EDX[bit 23]
+> - AMX-TILE CPUID.(EAX=7,ECX=0):EDX[bit 24]
+> - AMX-INT8 CPUID.(EAX=7,ECX=0):EDX[bit 25]
+> - AVX512_BF16 CPUID.(EAX=7,ECX=1):EAX[bit 5]
+> - fast zero-length MOVSB CPUID.(EAX=7,ECX=1):EAX[bit 10]
+> - fast short CMPSB, SCASB CPUID.(EAX=7,ECX=1):EAX[bit 12]
+> - AMX-FP16 CPUID.(EAX=7,ECX=1):EAX[bit 21]
+> - PREFETCHI CPUID.(EAX=7,ECX=1):EDX[bit 14]
+> - XFD CPUID.(EAX=0xD,ECX=1):EAX[bit 4]
+> - EPT_PAGE_WALK_LENGTH_5 VMX_EPT_VPID_CAP(0x48c)[bit 7]
+> 
+> SierraForest doesn't support TSX, so TSX Async Abort(TAA) vulnerabilities
+> don't exist on SierraForest. On KVM side, if host doesn't enumerate RTM
+> or RTM gets disabled, ARCH_CAP_TAA_NO is reported as unsupported. To
+> avoid the confusing warning:
+> warning: host doesn't support requested feature: MSR(10AH).taa-no
+>          [bit 8]
+> 
+> just don't include TAA_NO in SierraForest CPU model.
+> 
+> Currently LAM and LASS are not enabled in KVM mainline yet,  will add
+> them after merged.
+> 
+> Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+> ---
 
-Ok, seems reasonable. I'll plan to send a v3 with the old_cr0 stuff
-dropped.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-> 
-> > > Alternatively, sev_es_enabled() could be an assertion, that is:
-> > >
-> > >     if ((env->efer & MSR_EFER_LME) && (env->cr[0] & CR0_PG_MASK) &&
-> > >        !(env->efer & MSR_EFER_LMA)) {
-> > >         /* Workaround for... */
-> > >         assert(sev_es_enabled());
-> > >         env->efer |= MSR_EFER_LMA;
-> > >     }
-> > >
-> > > What do you think?
-> >
-> > I'm a little apprehensive about this approach for similar reasons as
-> > above
-> 
-> I agree on this. I think it's worth in general to have clear
-> expectations, though. If you think it's worrisome, we can commit it
-> without assertion now and add it in 9.0.
-
-I think that seems like a good approach. That would give us more time to
-discuss the fix/handling on the kernel side, and then as a follow-up we
-can tighten down the QEMU handling/expectations based on that.
-
-Thanks,
-
-Mike
-
-> 
-> Paolo
-> 
-> 
 
