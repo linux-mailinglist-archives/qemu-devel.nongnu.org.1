@@ -2,69 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67904806D22
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 12:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3941806DD5
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 12:26:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rApcM-0001CB-GU; Wed, 06 Dec 2023 05:59:02 -0500
+	id 1rAq1F-00046t-LX; Wed, 06 Dec 2023 06:24:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rApcK-0001C0-Fa
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 05:59:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rApcI-0005lU-Id
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 05:59:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701860336;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=9J4qnQfHEtruHeIi2e5+xA0lRlLPKgnWZ6wPkeJ6/1Y=;
- b=VSDvrPgkEKUCN9ZRIzfF72V/4MiS8YQgCneo0PzT6H/x7eY8wd0EpPjG14CFCtOVHRqDWM
- oJ87VRgJD6VwrO6+3Kd31dHH+dsXLS4ufoWBRVKvkBan4LYVvU6qeUSnI/rJo12vdMFgyC
- Y6WWZU3Ny9WVcfv/doAICVcvkmevWcI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-527-rcyRhPatOv6jC21t_7SdXw-1; Wed, 06 Dec 2023 05:58:54 -0500
-X-MC-Unique: rcyRhPatOv6jC21t_7SdXw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3213D881B73;
- Wed,  6 Dec 2023 10:58:54 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.46])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 986ED40C6EB9;
- Wed,  6 Dec 2023 10:58:48 +0000 (UTC)
-Date: Wed, 6 Dec 2023 10:57:44 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: lijiejun <a_lijiejun@163.com>
-Cc: quintela@redhat.com, peterx@redhat.com, farosas@suse.de,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] migration: using qapi_free_SocketAddress instead of g_free
-Message-ID: <ZXBTKs1zBCBq-JlQ@redhat.com>
-References: <20231206100111.2996016-1-a_lijiejun@163.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq1D-000467-RM
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:24:43 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq1C-00027Q-A4
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:24:43 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a06e59384b6so88232966b.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 03:24:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1701861879; x=1702466679; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nO/5hc8upuraU4L0aJsUiwj7hZf9XtPBADLAascHOzU=;
+ b=GdfYrQEHZOhCJlynzUtrmXksFL3+UwP+7ZBjmZsh1wlVwKjngzZFn+EHpIs5DffgIz
+ R7gPjaP9+QS9aswzkCIlJhyTA7zLihg/a45LHxX8H9IMSw7/BDQvY6zTKtZw3B7SCwpK
+ JaymwxCcTHpo/0cntlD2uEaTLjv9goUPhZb7fLJxWhjRmVjRvW7avDsNqK4+PFKSE1Ag
+ ENPkc6d7LmuxQJxUZCPGO72O8r+YheYm9mDH7WghQlZloyOTPuFwupUNoLWh6wxY0YuH
+ jDwFwUkmpZMI9M9vR7ipNfe4MBUot4c4zQZ0pvHKqvQlTi3GrQ2gVN8huDjMILj3ObuM
+ oxpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701861879; x=1702466679;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nO/5hc8upuraU4L0aJsUiwj7hZf9XtPBADLAascHOzU=;
+ b=HSMwN0n8l7N8FzUhpxMDcC2Jvsbz3jwOnZyc1g+aduGxT5MCdRneuiDJTRXpXO9ez8
+ tj38jXhfHzzWWXvmbqrLS7Djs+hY+DTDID0IY3YoXucgETlb7bwFkY8uVq5lvZUUmb8T
+ D94kP47mrkCd+WRyi6iK1ddAjW5KwJEr4u0hgvE37V1vM6T6MD1h+HmnaEE9LxDjYVFq
+ WFeY0BsIvAladfoqzqOxirYAxsSI7GdPA1Fg1IoGsn0Lrey9aKz4s19tUeG4ny0Mci59
+ EQqjTD1S0mxrzG5eOH5piu9coDmfHOs/l+Gj3N68qqcwuuVAnnFgiBxNxSAm/lpBfiMZ
+ 3d+Q==
+X-Gm-Message-State: AOJu0YyH49woLAOEdg5e0v3G+pufcq1sU2pyqK7TFVFete6KMLpllutQ
+ pkBg6ZOgO4ebOsUMK1bSNQ0i1A==
+X-Google-Smtp-Source: AGHT+IFgb2UXUJhzl7skXprLdWRijl/3FkV0Q/H3G/m9G6EDRZp5ScojmwbUYINEbULLG4HjYPwoUQ==
+X-Received: by 2002:a17:906:f34f:b0:a19:7781:3e2a with SMTP id
+ hg15-20020a170906f34f00b00a1977813e2amr427643ejb.23.1701861879214; 
+ Wed, 06 Dec 2023 03:24:39 -0800 (PST)
+Received: from [192.168.69.100] (tal33-h02-176-184-38-132.dsl.sta.abo.bbox.fr.
+ [176.184.38.132]) by smtp.gmail.com with ESMTPSA id
+ l17-20020a1709062a9100b00a1bec12448csm2792866eje.150.2023.12.06.03.24.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Dec 2023 03:24:38 -0800 (PST)
+Message-ID: <8c0add09-101e-4848-915a-829ba0e819d7@linaro.org>
+Date: Wed, 6 Dec 2023 12:24:36 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231206100111.2996016-1-a_lijiejun@163.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/11] tests/avocado: fix typo in replay_linux
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+References: <20231205204106.95531-1-alex.bennee@linaro.org>
+ <20231205204106.95531-3-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231205204106.95531-3-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,46 +96,16 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 06, 2023 at 06:01:11PM +0800, lijiejun wrote:
-> use unified function qapi_free_SocketAddress to free SocketAddress
-> object.
-> 
-> Signed-off-by: lijiejun <a_lijiejun@163.com>
+On 5/12/23 21:40, Alex Bennée wrote:
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->  migration/migration.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 3ce04b2aaf..e78d31bbbf 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -493,7 +493,7 @@ bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
->          addr->u.socket.type = saddr->type;
->          addr->u.socket.u = saddr->u;
->          /* Don't free the objects inside; their ownership moved to "addr" */
-> -        g_free(saddr);
-> +        qapi_free_SocketAddress(saddr);
+>   tests/avocado/replay_linux.py | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-The comment on the line above that explains we only want to free
-'saddr', not its contents.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
->      } else if (strstart(uri, "file:", NULL)) {
->          addr->transport = MIGRATION_ADDRESS_TYPE_FILE;
->          addr->u.file.filename = g_strdup(uri + strlen("file:"));
-> -- 
-> 2.25.1
-> 
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
