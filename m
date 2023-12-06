@@ -2,90 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0BA8074FC
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:30:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1143A807545
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:38:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAumr-0002dK-K5; Wed, 06 Dec 2023 11:30:13 -0500
+	id 1rAuu6-000546-Tz; Wed, 06 Dec 2023 11:37:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rAumn-0002d9-K6
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:30:09 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rAuml-0001wg-Sz
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:30:09 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1ce28faa92dso31857385ad.2
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:30:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701880199; x=1702484999; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6UFz1JkNXPZ+tIthJCg/p38aHK9p+N1Zabi9DfvjqDs=;
- b=alZ//NoshUBGxsQXhhtPDR0cWjpspYgpsU9IScgo8Dk6aISGla7N82HPlYw0p3tg0K
- e/KCwa3Qu2DZ6/QzS/hPfzsjkRYMDH6aj7BSIl7HQegIE5rErAqP8sS1Ic51XtVLk/eg
- 7+Pj4mutnELq3zVgdi8XQc0vS4fWTLEK7dTLkMgwcyebxhgn5ZrIbTFjwPfF9lpXCcbH
- bB6Jz94AbVCGYgqmLkNMcGwwmsxjnEL1R8YzE8olGqp72VYk2dg+kDJ81rfq85ZBbz0X
- 9nrigdrUfqy/ARX82n5MhVEO6goAMJmVP4Cx7MR+EuoQ5hVS6dZYtU7Brs3u8pfBgusQ
- 2+QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701880199; x=1702484999;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6UFz1JkNXPZ+tIthJCg/p38aHK9p+N1Zabi9DfvjqDs=;
- b=DoCMmUNH4o9yxyBrC2vs1OaAG97kwnoowKA8ahxeso0twU6wZ3l5jwLuCE1Mc/CMCK
- pvHq/8QLcF12VtLa2KK01CAZx5PQLeWS8VkaByZQ00qUAib/j9m2yVuy7piANIY5tBfJ
- ZRiqHyytkRczUUxOwjk9NJ0ybTvl6wJ1VuVjz7BPXA89PP00XZJOp6VUSaUimY7Vlu8j
- rufRwBb/frBfnG6vsFlAWzaGZe9+fX8Pg0dF4jzQ4wGxDbCt6Ptk6YrzpvqgIzBhCFuf
- D5sVxVy/Cs31czprTMe0ju5seiOs8/HWoVyXky/481h9XdDX6Fk4h0B4+HtIGQcZFoMp
- fymQ==
-X-Gm-Message-State: AOJu0YzF05HpXlWCOx1T7xaTPL+Xyt7SoBdG1OE112CgQRABm4g5y/z5
- FKLUCq4Q2AR9/goSbdAEcm1FBA==
-X-Google-Smtp-Source: AGHT+IEzvJ2EcUGH334TlYcHjX7OeBoZ8rawJHiJP0EvlocqthPYhYVkcKON4+IvDNdDnCpWHSsgdg==
-X-Received: by 2002:a17:903:94d:b0:1d1:e0b6:1aac with SMTP id
- ma13-20020a170903094d00b001d1e0b61aacmr10858plb.19.1701880199118; 
- Wed, 06 Dec 2023 08:29:59 -0800 (PST)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- iw1-20020a170903044100b001d1cd7e4acfsm23188plb.201.2023.12.06.08.29.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Dec 2023 08:29:58 -0800 (PST)
-Message-ID: <5af59a41-57ae-4fc7-b46a-1dcb8b194a6b@linaro.org>
-Date: Wed, 6 Dec 2023 08:29:56 -0800
+ (Exim 4.90_1) (envelope-from <madvenka@linux.microsoft.com>)
+ id 1rAuu5-00052y-Gi
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:37:41 -0500
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <madvenka@linux.microsoft.com>) id 1rAuu3-0003kg-PW
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:37:41 -0500
+Received: from [192.168.4.26] (unknown [47.186.13.91])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 8823E20B74C0;
+ Wed,  6 Dec 2023 08:37:34 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8823E20B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1701880656;
+ bh=1wQFnh2bPx3Ra+HT0vuTvJh3mkp2WmHQjZ5XzPfzvKU=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=s6K+9Yl89Z3KgwoiYSQZ2dvP0uHj6IpQUthOWrczE2xRQB83yQa/TT5PF6Hy3U1sa
+ 8E05mbqFUb33ePDO+wVm37jwLQyxQau0SjCjOt7vH/QkttsTN3Z9GdmbJ5scmpsxun
+ Ibo6TwIr6zVmB49da7xmGxwKzie0382EULwJL3Ko=
+Message-ID: <624a310b-c0d2-406c-a4a7-d851b3cc68f5@linux.microsoft.com>
+Date: Wed, 6 Dec 2023 10:37:33 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/11] scripts/replay-dump: update to latest format
+Subject: Re: [RFC PATCH v2 17/19] heki: x86: Update permissions counters
+ during text patching
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>, Alexander Graf <graf@amazon.com>,
+ Chao Peng <chao.p.peng@linux.intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Forrest Yuan Yu <yuanyu@google.com>, James Gowans <jgowans@amazon.com>,
+ James Morris <jamorris@linux.microsoft.com>,
+ John Andersen <john.s.andersen@intel.com>,
+ Marian Rotariu <marian.c.rotariu@gmail.com>,
+ =?UTF-8?Q?Mihai_Don=C8=9Bu?= <mdontu@bitdefender.com>,
+ =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Thara Gopinath <tgopinath@microsoft.com>,
+ Trilok Soni <quic_tsoni@quicinc.com>, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?UTF-8?Q?=C8=98tefan_=C8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+References: <20231113022326.24388-1-mic@digikod.net>
+ <20231113022326.24388-18-mic@digikod.net>
+ <20231113081929.GA16138@noisy.programming.kicks-ass.net>
+ <a52d8885-43cc-4a4e-bb47-9a800070779e@linux.microsoft.com>
+ <20231127200841.GZ3818@noisy.programming.kicks-ass.net>
+ <ea63ae4e-e8ea-4fbf-9383-499e14de2f5e@linux.microsoft.com>
+ <20231130113315.GE20191@noisy.programming.kicks-ass.net>
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-References: <20231205204106.95531-1-alex.bennee@linaro.org>
- <20231205204106.95531-4-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231205204106.95531-4-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
+In-Reply-To: <20231130113315.GE20191@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=madvenka@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,19 +97,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/5/23 12:40, Alex Bennée wrote:
-> @@ -268,6 +279,49 @@ def decode_clock(eid, name, dumpfile):
->                     Decoder(28, "EVENT_CP_RESET", decode_checkpoint),
->   ]
->   
-> +# Shutdown cause added
-> +v12_event_table = [Decoder(0, "EVENT_INSTRUCTION", decode_instruction),
-
-This comment applied to the v7 changes.
-
-Otherwise,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
-r~
+On 11/30/23 05:33, Peter Zijlstra wrote:
+> On Wed, Nov 29, 2023 at 03:07:15PM -0600, Madhavan T. Venkataraman wrote:
+> 
+>> Kernel Lockdown
+>> ---------------
+>>
+>> But, we must provide at least some security in V2. Otherwise, it is useless.
+>>
+>> So, we have implemented what we call a kernel lockdown. At the end of kernel
+>> boot, Heki establishes permissions in the extended page table as mentioned
+>> before. Also, it adds an immutable attribute for kernel text and kernel RO data.
+>> Beyond that point, guest requests that attempt to modify permissions on any of
+>> the immutable pages will be denied.
+>>
+>> This means that features like FTrace and KProbes will not work on kernel text
+>> in V2. This is a temporary limitation. Once authentication is in place, the
+>> limitation will go away.
+> 
+> So either you're saying your patch 17 / text_poke is broken (so why
+> include it ?!?) or your statement above is incorrect. Pick one.
+> 
+
+It has been included so that people can be aware of the changes.
+
+I will remove the text_poke() changes from the patchset and send it later when
+I have some authentication in place. It will make sense then.
+
+> 
+>> __text_poke()
+>> 	This function is called by various features to patch text.
+>> 	This calls heki_text_poke_start() and heki_text_poke_end().
+>>
+>> 	heki_text_poke_start() is called to add write permissions to the
+>> 	extended page table so that text can be patched. heki_text_poke_end()
+>> 	is called to revert write permissions in the extended page table.
+> 
+> This, if text_poke works, then static_call / jump_label / ftrace and
+> everything else should work, they all rely on this.
+> 
+> 
+>> Peter mentioned the following:
+>>
+>> "if you want to mirror the native PTEs why don't you hook into the
+>> paravirt page-table muck and get all that for free?"
+>>
+>> We did consider using a shadow page table kind of approach so that guest page table
+>> modifications can be intercepted and reflected in the page table entry. We did not
+>> do this for two reasons:
+>>
+>> - there are bits in the page table entry that are not permission bits. We would like
+>>   the guest kernel to be able to modify them directly.
+> 
+> This statement makes no sense.
+> 
+>> - we cannot tell a genuine request from an attack.
+> 
+> Why not? How is an explicit call different from an explicit call in a
+> paravirt hook?
+> 
+>>From a maintenance pov we already hate paravirt with a passion, but it
+> is ever so much better than sprinkling yet another pile of crap
+> (heki_*) around.
+
+I only said that the idea was considered.
+
+We can resume the discussion on this topic when I send the text_poke() changes in a later
+version of the Heki patchset.
+
+Madhavan
 
