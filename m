@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A1F806E22
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 12:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE2B806EEA
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 12:50:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAqCS-0008IF-J6; Wed, 06 Dec 2023 06:36:20 -0500
+	id 1rAqOZ-0001eM-2U; Wed, 06 Dec 2023 06:48:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAqCN-0008Hl-G7
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:36:16 -0500
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAqOW-0001dz-Ff
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:48:48 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAqCE-00056q-IT
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:36:08 -0500
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a1db99cd1b2so53539366b.2
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 03:36:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAqOU-00074Z-K7
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:48:48 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a00c200782dso95208466b.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 03:48:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701862561; x=1702467361; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701863325; x=1702468125; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JetMu1eKmojHLKs7fkeNOqZDSgikv0xo99+ZiPlcg44=;
- b=UVpg5qkhNVhrFi/rfmQ12puK848TfCMp3ZU6iUnw3DNIP8tAejRKuHDC1pY6wt9pyG
- OMHyOjm7xDnH1jI5ey4gqyf7IxB5bRzyX5vy7GRDieL6zqTqnXHVHqdVi/9dFRZ0ZYOk
- Ga3uvIVTHnRrDC7PrDASOJyzDbK20fEYXD96TuDfzzYJ6692zheirwUlAI/fxSJNag7g
- mA+bTR7C6Fkyk2JYdtdkc8k0zT55AhCSlYN+sqb7a2zk2VMO+HbcECCbYjd8SRz4l+FZ
- jX9s+hPL70fTXRID9i5nLvkZrUWVwckENzcnSPuYCvatD4HMBbeU5Gs/1wUedQ7DWNp6
- PwKA==
+ bh=uaaChIsfdDTa+nGnyTnK4jDGD3vjpPfqxoAIZJ3M9ug=;
+ b=WwRcUzIcr4l5fjscHko+JjQWG8hYFNaF9hnA26M4Gh0uEXU+/YIeoD+muqjc2K5dd7
+ 65wG9VuzEHlEoC2gN4r7IDnH9Bc43lgtZAzZRPpYSrhNTaaIMhPK2xBDSPhH80bGVJ7p
+ M3LhFMhsMiWtJyz4Ey9/6LMmhj0/p8VH8+NOC+P//FjmETaGV5m9U+uD2OfPpYbkPYlh
+ Q8xmrePan/duSCOc+jGmvXW6sU4N/imvGFBXOmb1V9g16LFiRPlHKC42am+IDAOC7HAe
+ rBINTK8Jj0e9hJBRdCz/3fUDbch7EMTlyrLLtjnATJYkGQelq4GC409pDieezGthjJZ5
+ 4qKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701862561; x=1702467361;
+ d=1e100.net; s=20230601; t=1701863325; x=1702468125;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JetMu1eKmojHLKs7fkeNOqZDSgikv0xo99+ZiPlcg44=;
- b=hcQAICI+bLXP2ARelTKzoiGk5bIAHguipFz90b7lhtMkxIEesdtLAU2JNSA4bb3kzr
- ZxV9H/XG/gy3APL+ojzl0Q83qmsbdsSF4hJ6jcVRXzcBNiEl/HggA6+iY4ySAyLn+M4V
- idb+n6C7/kjbZ0JBBvEvhtMa2TqKSTFz8G3owAv0d48rI8Tb5tQyxEnQiljqhyrHM5oo
- 0yHDsOXeJVZVd+o5423wFgmnDNeAhsBny5ucL6HRkDR++CVsRPe9gR6yq8q8FTfNK0+i
- gPK0F+PjBzMmOEbA+ubGuXdzSRa4k4Mzx1CGgR7DdGvdKWdH/XzubWUzrf0LvaiZ0e74
- TTdA==
-X-Gm-Message-State: AOJu0YyzXX3F5Wwkq7PUPFoUbl6IeKThusD3bogQUNbZqGl86fx/QpkC
- yvP3fK+DESmk6HuLj0fxyJmV4w==
-X-Google-Smtp-Source: AGHT+IE2nJLlFN8/VH/ykWgek03OCPSGYmOKKDlAVLBHvGSiY7jlgYGR0jSdxtVkUHHW0ojMTypaIA==
-X-Received: by 2002:a17:906:103:b0:a19:4ce3:dbb3 with SMTP id
- 3-20020a170906010300b00a194ce3dbb3mr411254eje.10.1701862561429; 
- Wed, 06 Dec 2023 03:36:01 -0800 (PST)
+ bh=uaaChIsfdDTa+nGnyTnK4jDGD3vjpPfqxoAIZJ3M9ug=;
+ b=kdPFYZfqO70KHX5j976YauDj5VBuuiFIpCwN+7ajvu4xQBGiUqeFMgE+2CLMwPbIV1
+ QmlNm22LpPTgezYFfO2aVhRkG0IKmLG2zM7ZGlQ1gzkQWsN/uriyGVv/bd0Ty20Q1Ywu
+ 2m/AtnUTxPytabHLk3EoeZ9M8F0u0bVWCY1zlwX/8muF4JxUcLIetD4K+SAdEmvRUlmc
+ sD+Wur5Gw5KxcSMA6rHX8YbM4Qtiw9Z7coI9tX3yGZP+McXY6HzWxO6nWiKQqkTRjqoL
+ ioIiOkx9rV7JVZSdwaepfc9eb4ks+Pmse5eIA4KbwA3gukGyoDbTyUsHJQQ/QYyvUkOj
+ kDFQ==
+X-Gm-Message-State: AOJu0Yzt/x0ZTrO+ft7hR3QvPcPpPgUTkfH/gY67R4zQL7IACObdvNey
+ TNf+uhkIRAdS/dW68zpsMUJWTg==
+X-Google-Smtp-Source: AGHT+IFq73Dx3oTOlnwUtGRWueTbMuTaB87Oif2jdjZeL3l9m8lupjmI3NzFkFWMAmbepPgPxNh7Aw==
+X-Received: by 2002:a17:906:4e18:b0:a19:d40a:d21f with SMTP id
+ z24-20020a1709064e1800b00a19d40ad21fmr246840eju.235.1701863325091; 
+ Wed, 06 Dec 2023 03:48:45 -0800 (PST)
 Received: from [192.168.69.100] (tal33-h02-176-184-38-132.dsl.sta.abo.bbox.fr.
  [176.184.38.132]) by smtp.gmail.com with ESMTPSA id
- u17-20020a170906409100b00a1dd8945d31sm468681ejj.34.2023.12.06.03.35.59
+ ty6-20020a170907c70600b00a1ddb5a2f7esm480249ejc.60.2023.12.06.03.48.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Dec 2023 03:36:01 -0800 (PST)
-Message-ID: <3536aaa0-a6c6-4db0-bf84-3218ee9e22f1@linaro.org>
-Date: Wed, 6 Dec 2023 12:35:58 +0100
+ Wed, 06 Dec 2023 03:48:44 -0800 (PST)
+Message-ID: <4e78f214-43ee-4c3a-ba49-d3b54aff8737@linaro.org>
+Date: Wed, 6 Dec 2023 12:48:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/11] replay: introduce a central report point for sync
- errors
+Subject: Re: [PATCH v2 for-8.2?] i386/sev: Avoid SEV-ES crash due to missing
+ MSR_EFER_LMA bit
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-References: <20231205204106.95531-1-alex.bennee@linaro.org>
- <20231205204106.95531-9-alex.bennee@linaro.org>
+To: Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, kvm@vger.kernel.org,
+ Lara Lazier <laramglazier@gmail.com>, Vitaly Kuznetsov
+ <vkuznets@redhat.com>, Maxim Levitsky <mlevitsk@redhat.com>
+References: <20231205222816.1152720-1-michael.roth@amd.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231205204106.95531-9-alex.bennee@linaro.org>
+In-Reply-To: <20231205222816.1152720-1-michael.roth@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,40 +96,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alex,
+Hi Michael,
 
-On 5/12/23 21:41, Alex Bennée wrote:
-> Figuring out why replay has failed is tricky at the best of times.
-> Lets centralise the reporting of a replay sync error and add a little
-> bit of extra information to help with debugging.
+(Cc'ing Lara, Vitaly and Maxim)
+
+On 5/12/23 23:28, Michael Roth wrote:
+> Commit 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+> added error checking for KVM_SET_SREGS/KVM_SET_SREGS2. In doing so, it
+> exposed a long-running bug in current KVM support for SEV-ES where the
+> kernel assumes that MSR_EFER_LMA will be set explicitly by the guest
+> kernel, in which case EFER write traps would result in KVM eventually
+> seeing MSR_EFER_LMA get set and recording it in such a way that it would
+> be subsequently visible when accessing it via KVM_GET_SREGS/etc.
 > 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> However, guests kernels currently rely on MSR_EFER_LMA getting set
+> automatically when MSR_EFER_LME is set and paging is enabled via
+> CR0_PG_MASK. As a result, the EFER write traps don't actually expose the
+> MSR_EFER_LMA even though it is set internally, and when QEMU
+> subsequently tries to pass this EFER value back to KVM via
+> KVM_SET_SREGS* it will fail various sanity checks and return -EINVAL,
+> which is now considered fatal due to the aforementioned QEMU commit.
+> 
+> This can be addressed by inferring the MSR_EFER_LMA bit being set when
+> paging is enabled and MSR_EFER_LME is set, and synthesizing it to ensure
+> the expected bits are all present in subsequent handling on the host
+> side.
+> 
+> Ultimately, this handling will be implemented in the host kernel, but to
+> avoid breaking QEMU's SEV-ES support when using older host kernels, the
+> same handling can be done in QEMU just after fetching the register
+> values via KVM_GET_SREGS*. Implement that here.
+> 
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Marcelo Tosatti <mtosatti@redhat.com>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Cc: kvm@vger.kernel.org
+> Fixes: 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+
+This 'Fixes:' tag is misleading, since as you mentioned this commit
+only exposes the issue.
+
+Commit d499f196fe ("target/i386: Added consistency checks for EFER")
+or around it seems more appropriate.
+
+Is this feature easily testable on our CI, on a x86 runner with KVM
+access?
+
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 > ---
->   replay/replay-internal.h | 12 ++++++++++++
->   replay/replay-char.c     |  6 ++----
->   replay/replay-internal.c |  1 +
->   replay/replay.c          |  9 +++++++++
->   4 files changed, 24 insertions(+), 4 deletions(-)
+> v2:
+>    - Add handling for KVM_GET_SREGS, not just KVM_GET_SREGS2
 > 
-> diff --git a/replay/replay-internal.h b/replay/replay-internal.h
-> index 1bc8fd5086..709e2eb4cb 100644
-> --- a/replay/replay-internal.h
-> +++ b/replay/replay-internal.h
-> @@ -74,6 +74,7 @@ enum ReplayEvents {
->    * @cached_clock: Cached clocks values
->    * @current_icount: number of processed instructions
->    * @instruction_count: number of instructions until next event
-> + * @current_event: current event index
->    * @data_kind: current event
->    * @has_unread_data: true if event not yet processed
->    * @file_offset: offset into replay log at replay snapshot
-> @@ -84,6 +85,7 @@ typedef struct ReplayState {
->       int64_t cached_clock[REPLAY_CLOCK_COUNT];
->       uint64_t current_icount;
->       int instruction_count;
-> +    unsigned int current_event;
->       unsigned int data_kind;
->       bool has_unread_data;
->       uint64_t file_offset;
-Shouldn't this field be migrated?
+>   target/i386/kvm/kvm.c | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
+> 
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 11b8177eff..8721c1bf8f 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -3610,6 +3610,7 @@ static int kvm_get_sregs(X86CPU *cpu)
+>   {
+>       CPUX86State *env = &cpu->env;
+>       struct kvm_sregs sregs;
+> +    target_ulong cr0_old;
+>       int ret;
+>   
+>       ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_SREGS, &sregs);
+> @@ -3637,12 +3638,18 @@ static int kvm_get_sregs(X86CPU *cpu)
+>       env->gdt.limit = sregs.gdt.limit;
+>       env->gdt.base = sregs.gdt.base;
+>   
+> +    cr0_old = env->cr[0];
+>       env->cr[0] = sregs.cr0;
+>       env->cr[2] = sregs.cr2;
+>       env->cr[3] = sregs.cr3;
+>       env->cr[4] = sregs.cr4;
+>   
+>       env->efer = sregs.efer;
+> +    if (sev_es_enabled() && env->efer & MSR_EFER_LME) {
+> +        if (!(cr0_old & CR0_PG_MASK) && env->cr[0] & CR0_PG_MASK) {
+> +            env->efer |= MSR_EFER_LMA;
+> +        }
+> +    }
+>   
+>       /* changes to apic base and cr8/tpr are read back via kvm_arch_post_run */
+>       x86_update_hflags(env);
+> @@ -3654,6 +3661,7 @@ static int kvm_get_sregs2(X86CPU *cpu)
+>   {
+>       CPUX86State *env = &cpu->env;
+>       struct kvm_sregs2 sregs;
+> +    target_ulong cr0_old;
+>       int i, ret;
+>   
+>       ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_SREGS2, &sregs);
+> @@ -3676,12 +3684,18 @@ static int kvm_get_sregs2(X86CPU *cpu)
+>       env->gdt.limit = sregs.gdt.limit;
+>       env->gdt.base = sregs.gdt.base;
+>   
+> +    cr0_old = env->cr[0];
+>       env->cr[0] = sregs.cr0;
+>       env->cr[2] = sregs.cr2;
+>       env->cr[3] = sregs.cr3;
+>       env->cr[4] = sregs.cr4;
+>   
+>       env->efer = sregs.efer;
+> +    if (sev_es_enabled() && env->efer & MSR_EFER_LME) {
+> +        if (!(cr0_old & CR0_PG_MASK) && env->cr[0] & CR0_PG_MASK) {
+> +            env->efer |= MSR_EFER_LMA;
+> +        }
+> +    }
+>   
+>       env->pdptrs_valid = sregs.flags & KVM_SREGS2_FLAGS_PDPTRS_VALID;
+>   
+
 
