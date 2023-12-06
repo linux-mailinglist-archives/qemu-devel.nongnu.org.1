@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3941806DD5
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 12:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F2B806DDD
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 12:27:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAq1F-00046t-LX; Wed, 06 Dec 2023 06:24:45 -0500
+	id 1rAq39-0004gI-0N; Wed, 06 Dec 2023 06:26:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq1D-000467-RM
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:24:43 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq2M-0004Kj-8O
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:25:56 -0500
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq1C-00027Q-A4
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:24:43 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a06e59384b6so88232966b.1
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 03:24:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq2J-0002qV-Uc
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:25:53 -0500
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-50be3eed85aso6029973e87.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 03:25:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701861879; x=1702466679; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701861948; x=1702466748; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=nO/5hc8upuraU4L0aJsUiwj7hZf9XtPBADLAascHOzU=;
- b=GdfYrQEHZOhCJlynzUtrmXksFL3+UwP+7ZBjmZsh1wlVwKjngzZFn+EHpIs5DffgIz
- R7gPjaP9+QS9aswzkCIlJhyTA7zLihg/a45LHxX8H9IMSw7/BDQvY6zTKtZw3B7SCwpK
- JaymwxCcTHpo/0cntlD2uEaTLjv9goUPhZb7fLJxWhjRmVjRvW7avDsNqK4+PFKSE1Ag
- ENPkc6d7LmuxQJxUZCPGO72O8r+YheYm9mDH7WghQlZloyOTPuFwupUNoLWh6wxY0YuH
- jDwFwUkmpZMI9M9vR7ipNfe4MBUot4c4zQZ0pvHKqvQlTi3GrQ2gVN8huDjMILj3ObuM
- oxpg==
+ bh=APMx+WBrnAyWryP7PvmdjWa+xVGmqloHKsaF7VSyiII=;
+ b=Rom9JLoeoutRmYo9tY3riz12mHdGoX0pq3ds62D1t9xOQiWxL0DnvBTwEIKTTlXI52
+ mbQVRn8uGuel9zhHrwsn8p0IT8VV+Y/AHfSiQ/Gairc9HuQIi+R5grZbhVfjSb5UIIb5
+ noClwrYZ2yXZlgWVVSGjOkm/w+dVWAAhh1b1QC/bMv8+2Jrcg7luOmlQjKG6UGybwuxt
+ wSX6g7ByxLBFNs18DyMF+IRnzCuO2ugqmS6P4RxAF30qR4uIcx+C8E3I5QJKwvGiZbq1
+ eBzUC+f02Wyok5zgMyJ6LgfXgGR1xg+fqOt3P0wkkOiXfffPt0fMYQzrCwFv6zPZU0T0
+ /mFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701861879; x=1702466679;
+ d=1e100.net; s=20230601; t=1701861948; x=1702466748;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nO/5hc8upuraU4L0aJsUiwj7hZf9XtPBADLAascHOzU=;
- b=HSMwN0n8l7N8FzUhpxMDcC2Jvsbz3jwOnZyc1g+aduGxT5MCdRneuiDJTRXpXO9ez8
- tj38jXhfHzzWWXvmbqrLS7Djs+hY+DTDID0IY3YoXucgETlb7bwFkY8uVq5lvZUUmb8T
- D94kP47mrkCd+WRyi6iK1ddAjW5KwJEr4u0hgvE37V1vM6T6MD1h+HmnaEE9LxDjYVFq
- WFeY0BsIvAladfoqzqOxirYAxsSI7GdPA1Fg1IoGsn0Lrey9aKz4s19tUeG4ny0Mci59
- EQqjTD1S0mxrzG5eOH5piu9coDmfHOs/l+Gj3N68qqcwuuVAnnFgiBxNxSAm/lpBfiMZ
- 3d+Q==
-X-Gm-Message-State: AOJu0YyH49woLAOEdg5e0v3G+pufcq1sU2pyqK7TFVFete6KMLpllutQ
- pkBg6ZOgO4ebOsUMK1bSNQ0i1A==
-X-Google-Smtp-Source: AGHT+IFgb2UXUJhzl7skXprLdWRijl/3FkV0Q/H3G/m9G6EDRZp5ScojmwbUYINEbULLG4HjYPwoUQ==
-X-Received: by 2002:a17:906:f34f:b0:a19:7781:3e2a with SMTP id
- hg15-20020a170906f34f00b00a1977813e2amr427643ejb.23.1701861879214; 
- Wed, 06 Dec 2023 03:24:39 -0800 (PST)
+ bh=APMx+WBrnAyWryP7PvmdjWa+xVGmqloHKsaF7VSyiII=;
+ b=wxt2OMdFyeoDkTX2EQYp7Pbv6ajODNBiIHrc1Xza9gv/nMJyg0aBNt6ZAm7NNytJBA
+ bqwF7w2ZBCB+BtpcATLsrq/mMZm2Xmg4r5P4yZy4G39JAdASx/kKC8bRsmQPqGr0poJn
+ 5TW+VUZD+UgbtLWTGPJJOwPr7C4GKu4DbcevYLzUFdWJKxDrlcIXK9czLv8LjFCcW4hR
+ uLykIxkx3fH8mj0bTfd9yas+EvvL9jwDYKcuLOQWXz6AoMItHROGMrrKujyyW+mXIJUs
+ aWPvNozFduYvhkkUGtZgeEipa0oNAszcXoBwGX0CF3tLGPZAwtpgbuOlLayGIWbLhd9D
+ ON7g==
+X-Gm-Message-State: AOJu0Yx4x+zIctI0f4OUxQ2pNaZC2Bv/mCZW8jUSzUR1HqD5MseJ1aQK
+ 31A8hVmdUYp71gIJB4s6ronufQ==
+X-Google-Smtp-Source: AGHT+IGvve6hYYP1D+swRYsw3YrTa2Y4X7jR/MMulFP7pI0mSHnRXdj+jz6FnYGvUx7EBf/QxI9QDg==
+X-Received: by 2002:a05:6512:2316:b0:50b:fadf:9758 with SMTP id
+ o22-20020a056512231600b0050bfadf9758mr656650lfu.115.1701861948171; 
+ Wed, 06 Dec 2023 03:25:48 -0800 (PST)
 Received: from [192.168.69.100] (tal33-h02-176-184-38-132.dsl.sta.abo.bbox.fr.
  [176.184.38.132]) by smtp.gmail.com with ESMTPSA id
- l17-20020a1709062a9100b00a1bec12448csm2792866eje.150.2023.12.06.03.24.37
+ l17-20020a1709062a9100b00a1bec12448csm2792866eje.150.2023.12.06.03.25.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Dec 2023 03:24:38 -0800 (PST)
-Message-ID: <8c0add09-101e-4848-915a-829ba0e819d7@linaro.org>
-Date: Wed, 6 Dec 2023 12:24:36 +0100
+ Wed, 06 Dec 2023 03:25:47 -0800 (PST)
+Message-ID: <6ad5160e-3708-4f69-a7f1-62d592309a46@linaro.org>
+Date: Wed, 6 Dec 2023 12:25:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/11] tests/avocado: fix typo in replay_linux
+Subject: Re: [PATCH 04/11] scripts/replay_dump: track total number of
+ instructions
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -70,13 +71,13 @@ Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 References: <20231205204106.95531-1-alex.bennee@linaro.org>
- <20231205204106.95531-3-alex.bennee@linaro.org>
+ <20231205204106.95531-5-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231205204106.95531-3-alex.bennee@linaro.org>
+In-Reply-To: <20231205204106.95531-5-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,10 +101,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/12/23 21:40, Alex Bennée wrote:
+> This will help in tracking where we are in the stream when debugging.
+> 
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->   tests/avocado/replay_linux.py | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   scripts/replay-dump.py | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
