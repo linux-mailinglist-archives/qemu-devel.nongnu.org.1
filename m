@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFE0807686
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:25:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CBF807682
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 18:24:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAvcs-00016B-5D; Wed, 06 Dec 2023 12:23:58 -0500
+	id 1rAvcs-00016Q-VU; Wed, 06 Dec 2023 12:23:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvcq-00015p-IX
+ id 1rAvcq-00015o-Hl
  for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:23:56 -0500
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rAvco-0003Yx-HV
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:23:56 -0500
+ id 1rAvco-0003Yw-IW
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 12:23:55 -0500
 Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B6EYX4t014719; Wed, 6 Dec 2023 17:23:52 GMT
+ 3B6EYRwR014599; Wed, 6 Dec 2023 17:23:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=corp-2023-11-20;
- bh=XAb3++jepiTKbU7Zn3scZShQCKVMeeNz9WQE9ET0K18=;
- b=LyMR46CePh9hWJx8INBr3803K//jhw50uyRJ7R31avZVn2Ax+kCCTN/ERvqkLRk1rVm8
- AexggQZzpsdfUr/SUSlVPdEJz1gJVY/AlTarOvjwEN2+pWmzocSc2OVhDh4RIdJiSkGK
- JZgHu4caLSyIbqBvHutFClCn5m261SlpU+ahbxZ9/2FXDxGfuscdW4TTl25DgYO3M5po
- 8gFp12AXN4GLjxyfnVP9Je6KRGARWrYOBjPI2zns6OYMkH6hohUdOMm7+CEEpSzgENOY
- +9XlBG0d/3HB05wh854x1oFFxw6BLBJSTR7cvdDe+Rysb5yHRB90BhKRJnS34zbMD82G IQ== 
+ subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
+ bh=54WE3zIc9WakuDR0Wl+eRiPQLJuKyyI4IJzRdInpsHI=;
+ b=hqbw0IvC5pe9eSNtOnkvS77IgkONZobeFOTsJkZKmPqKMJJD5fP+/AgGs7vJ/rzB9rNB
+ uk//AMlk0VGjy8MRDc9JUnCLvjU6Pb/OfTsHUACWQN8AeNMpYIzKYDp2+jAwvzFw11v+
+ TO57rajblvcsGbRxeQq7sGJSe8G0Z54H5iO6VixF7juvPJQ79DZqGS0DGJl1o0SfsxUr
+ jrSalDDofVjN/w0dYfyWFqZtPKceR8a1Dk2U6DGmf1u+LXlwaSdDrBO+C9FFHPZGjzFQ
+ N3sKEg+W6jq/5lGddXzBctk5cXh3B26KuLqdjUdEZDnxMTnFq8dGYoODmK3UmM+kvYis 4A== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utdc19xpt-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utdc19xpu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Wed, 06 Dec 2023 17:23:52 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B6GtlHf037858; Wed, 6 Dec 2023 17:23:51 GMT
+ with ESMTP id 3B6GkgLX037791; Wed, 6 Dec 2023 17:23:51 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3utanc79vg-1
+ 3utanc79w3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 06 Dec 2023 17:23:44 +0000
+ Wed, 06 Dec 2023 17:23:45 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HMwkI002907;
- Wed, 6 Dec 2023 17:23:44 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B6HMwkK002907;
+ Wed, 6 Dec 2023 17:23:45 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3utanc79rv-1; Wed, 06 Dec 2023 17:23:44 +0000
+ ESMTP id 3utanc79rv-2; Wed, 06 Dec 2023 17:23:45 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -59,13 +58,12 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V7 00/12] fix migration of suspended runstate
-Date: Wed,  6 Dec 2023 09:23:25 -0800
-Message-Id: <1701883417-356268-1-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V7 01/12] cpus: vm_was_suspended
+Date: Wed,  6 Dec 2023 09:23:26 -0800
+Message-Id: <1701883417-356268-2-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1701883417-356268-1-git-send-email-steven.sistare@oracle.com>
+References: <1701883417-356268-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-06_15,2023-12-06_01,2023-05-22_02
@@ -74,8 +72,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  bulkscore=0 mlxlogscore=999 phishscore=0 suspectscore=0 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2312060140
-X-Proofpoint-GUID: j3p8Pk1Um8JIVxPGNwCnXc_ZSzck5Qgr
-X-Proofpoint-ORIG-GUID: j3p8Pk1Um8JIVxPGNwCnXc_ZSzck5Qgr
+X-Proofpoint-GUID: tj45wyInZKSCC3ka12a9zDPm6iY9LhMQ
+X-Proofpoint-ORIG-GUID: tj45wyInZKSCC3ka12a9zDPm6iY9LhMQ
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -101,98 +99,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration of a guest in the suspended runstate is broken.  The incoming
-migration code automatically tries to wake the guest, which is wrong;
-the guest should end migration in the same runstate it started.  Further,
-after saving a snapshot in the suspended state and loading it, the vm_start
-fails.  The runstate is RUNNING, but the guest is not.
+Add a state variable to remember if a vm previously transitioned into a
+suspended state.
 
-See the commit messages for the details.
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+---
+ include/sysemu/runstate.h |  2 ++
+ system/cpus.c             | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+)
 
-Changes in V2:
-  * simplify "start on wakeup request"
-  * fix postcopy, snapshot, and background migration
-  * refactor fixes for each type of migration
-  * explicitly handled suspended events and runstate in tests
-  * add test for postcopy and background migration
-
-Changes in V3:
-  * rebase to tip
-  * fix hang in new function migrate_wait_for_dirty_mem
-
-Changes in V4:
-  * rebase to tip
-  * add patch for vm_prepare_start (thanks Peter)
-  * add patch to preserve cpu ticks
-
-Changes in V5:
-  * rebase to tip
-  * added patches to completely stop vm in suspended state:
-      cpus: refactor vm_stop
-      cpus: stop vm in suspended state
-  * added patch to partially resume vm in suspended state:
-      cpus: start vm in suspended state
-  * modified "preserve suspended ..." patches to use the above.
-  * deleted patch "preserve cpu ticks if suspended".  stop ticks in
-    vm_stop_force_state instead.
-  * deleted patch "add runstate function".  defined new helper function
-    migrate_new_runstate in "preserve suspended runstate"
-  * Added some RB's, but removed other RB's because the patches changed.
-
-Changes in V6:
-  * all vm_stop calls completely stop the suspended state
-  * refactored and updated the "cpus" patches
-  * simplified the "preserve suspended" patches
-  * added patch "bootfile per vm"
-
-Changes in V7:
-  * rebase to tip, add RB-s
-  * fix backwards compatibility for global_state.vm_was_suspended
-  * delete vm_prepare_start state argument, and rename patch
-    "pass runstate to vm_prepare_start" to
-    "check running not RUN_STATE_RUNNING"
-  * drop patches:
-      tests/qtest: bootfile per vm
-      tests/qtest: background migration with suspend
-  * rename runstate_is_started to runstate_is_live
-  * move wait_for_suspend in tests
-
-Steve Sistare (12):
-  cpus: vm_was_suspended
-  cpus: stop vm in suspended runstate
-  cpus: check running not RUN_STATE_RUNNING
-  cpus: vm_resume
-  migration: propagate suspended runstate
-  migration: preserve suspended runstate
-  migration: preserve suspended for snapshot
-  migration: preserve suspended for bg_migration
-  tests/qtest: migration events
-  tests/qtest: option to suspend during migration
-  tests/qtest: precopy migration with suspend
-  tests/qtest: postcopy migration with suspend
-
- backends/tpm/tpm_emulator.c          |   2 +-
- hw/usb/hcd-ehci.c                    |   2 +-
- hw/usb/redirect.c                    |   2 +-
- hw/xen/xen-hvm-common.c              |   2 +-
- include/migration/snapshot.h         |   7 ++
- include/sysemu/runstate.h            |  16 ++++
- migration/global_state.c             |  35 ++++++-
- migration/migration-hmp-cmds.c       |   8 +-
- migration/migration.c                |  15 +--
- migration/savevm.c                   |  23 +++--
- qapi/misc.json                       |  10 +-
- system/cpus.c                        |  47 +++++++--
- system/runstate.c                    |   9 ++
- system/vl.c                          |   2 +
- tests/migration/i386/Makefile        |   5 +-
- tests/migration/i386/a-b-bootblock.S |  50 +++++++++-
- tests/migration/i386/a-b-bootblock.h |  26 +++--
- tests/qtest/migration-helpers.c      |  27 ++----
- tests/qtest/migration-helpers.h      |  11 ++-
- tests/qtest/migration-test.c         | 181 +++++++++++++++++++++++++----------
- 20 files changed, 354 insertions(+), 126 deletions(-)
-
+diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
+index c8c2bd8..88a67e2 100644
+--- a/include/sysemu/runstate.h
++++ b/include/sysemu/runstate.h
+@@ -51,6 +51,8 @@ int vm_prepare_start(bool step_pending);
+ int vm_stop(RunState state);
+ int vm_stop_force_state(RunState state);
+ int vm_shutdown(void);
++void vm_set_suspended(bool suspended);
++bool vm_get_suspended(void);
+ 
+ typedef enum WakeupReason {
+     /* Always keep QEMU_WAKEUP_REASON_NONE = 0 */
+diff --git a/system/cpus.c b/system/cpus.c
+index a444a74..9f631ab 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -259,6 +259,21 @@ void cpu_interrupt(CPUState *cpu, int mask)
+     }
+ }
+ 
++/*
++ * True if the vm was previously suspended, and has not been woken or reset.
++ */
++static int vm_was_suspended;
++
++void vm_set_suspended(bool suspended)
++{
++    vm_was_suspended = suspended;
++}
++
++bool vm_get_suspended(void)
++{
++    return vm_was_suspended;
++}
++
+ static int do_vm_stop(RunState state, bool send_stop)
+ {
+     int ret = 0;
 -- 
 1.8.3.1
 
