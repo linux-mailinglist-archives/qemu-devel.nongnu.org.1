@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFC1806E03
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 12:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4310806E11
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 12:33:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAq7h-0006ch-Qu; Wed, 06 Dec 2023 06:31:25 -0500
+	id 1rAq9O-0007Mt-JQ; Wed, 06 Dec 2023 06:33:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq7W-0006cJ-Hx
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:31:15 -0500
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq9M-0007Mk-P8
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:33:08 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq7R-0003nP-LT
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:31:12 -0500
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a186e5d1056so86953866b.0
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 03:31:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rAq9L-000460-6k
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 06:33:08 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a00f67f120aso84808666b.2
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 03:33:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701862268; x=1702467068; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701862385; x=1702467185; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Imppi9Pq8P36kkbfEJTSLR15Ur0J4eec9q/Byc30MdA=;
- b=hzel2SOR8Uv6jxwvFuI2F9GAcTCZEorH097g9tHUUnj0p1j9bNFyBCcAIr6zjNj6ur
- 5Ber3gJK4atlYJqKJEVkcgaZ2qPdv6cjq4Rcy+zVOPVyBXAKXiibWq7cq3b5EoyLS2pK
- i+sWk3CMdeJIPxqJwHIOLtQmTFvE4uS+dS4xH+Fahw8KkLQaYpHIcJ2PL8yHzKU1tz3c
- gsD/8Ggh5C4M8YzajYyX/0vcHTuKfVu7iUSUERJiyFYkf2dhIpKqxLoAL/VKXUGxlIjZ
- uNoPd7NWBQUXD6lE1UdcS7Fo0rn8k5QtSbXeDLFOtT8et/NrB2SnffXvXRkGEv/hMPzx
- PdiA==
+ bh=eJT9168d1mJAQZfh7wlXOwW4BaEOhUyx9yIAXHLyjmA=;
+ b=QmvTEZj3MijKCdI/eKG/f1y+k9/BXjZ4JUgMMRGDpbVAhf6Gzr8sbT65kgyNMchxXk
+ rGrr4mhsmdpWvVB77RE1FWfzN5bXBT1Zk7YN6wYTNfg2ilrAEYsEbvCQGNxlB1GvxxEf
+ ExbvKBnjzqo9K3f274IgdgsAeOQK/BrLvJuvvH1pOYMA72L65l7hbY3zhEJupBN+pAe+
+ 0qxZ5R8HfZPG6U+SVH2hAPUDXMW7Me2BbX3copNtGUnu7PnGxMSoFQgsuniu/O1WwCOF
+ a8VuNAUu1ZWODyazOcUxnRqGJyzSKMXjjHML18ZLT8nWEeQ0uVWb8sMKyu74vlYfhR8u
+ bMMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701862268; x=1702467068;
+ d=1e100.net; s=20230601; t=1701862385; x=1702467185;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Imppi9Pq8P36kkbfEJTSLR15Ur0J4eec9q/Byc30MdA=;
- b=VMB0xnIngJ2XF6pVe/KuhuvAWuZ0WU8y/hiRwWUdSWCiEoXVe3lJKyr86UAuGw2zWm
- uNqUSzISxs0h0/SRtRAh3N9b/C4wkWG8pO9MSD8RsuldjmE6VevkguVcPez3czy2YHSX
- tuHmZUejwIhfAQNnPfMkhiPNq7Sk1fKjAimvwdyXdwkLhBtz91VNHPgk2SRZGKuqXDW+
- U/m9f45gKdJHL0CZv3rthBtesSnAERtfNBQQewV8uFXB4EevAG2D3oVmggofqrXPw7+Q
- KO3gPDA9LQ8NXQPEfnLoPeg1GLfjr+lS6n3T7e2fBGnmzZbtj6Uhf3A8BdrFwubbgRzR
- CFqg==
-X-Gm-Message-State: AOJu0YziWa3eQDg2dIQvq9GjqUHV1FnGWIo8jKkEYthYpU4khcxywACt
- 9XyWDT4RVlnuFqTyFu7NHNDOdgE9fn5kYhKK7qc=
-X-Google-Smtp-Source: AGHT+IFLP0ujosMaiteJ8h42NJCMm59I32hOK1DEBwDJhrZ/rSancnNGXTwdZsKNz769EACrWw4wVQ==
-X-Received: by 2002:a17:906:408e:b0:a11:4dc3:d0ce with SMTP id
- u14-20020a170906408e00b00a114dc3d0cemr392919ejj.63.1701862268107; 
- Wed, 06 Dec 2023 03:31:08 -0800 (PST)
+ bh=eJT9168d1mJAQZfh7wlXOwW4BaEOhUyx9yIAXHLyjmA=;
+ b=GBmQo+p9cyWQrn7K2zn3mkRuXAcd/zmqPh2y+u00UpYuSod2WrH4S0XKWVQihhFKf3
+ MAHDUSBwfMZp1vLspRFnCwyXQw3EgQpIMyQgWsw65S/qTzbWGffaJlV8RsC5k6fnrshE
+ ITVTDu4FzBmIzAtyQeeMIzArSOFL9FM6RC8Uz2GWBIH3tDwgDAkQyZPm/Wq+iz6a7btE
+ 2r7rdQ+C+ou0Vf9oxlAZDB+FNKlq30OHROmNlT6AKTJvyd1mjUAf5u++EVgvSP5/xzF5
+ AwO3AeydBkjQH/TuZuTy2rWCAnONe4nVN/AwTAudP/6h7D1Iyv0MucEZtZDotEQ4ck7/
+ mFqw==
+X-Gm-Message-State: AOJu0YxyvSp5O9vR91apbRBI84pukxDrJJPlRLo1etOV29sPec01e35N
+ pEMlEe5KxDZw9ZDhDd1ZD3wKPQ==
+X-Google-Smtp-Source: AGHT+IEWfIXQbni3e2fqU0TeC+LCkKxpYaqiDq8O99tF9Bn0Nh0xP2U92mlwj9QW//1IE0b0cUH+iA==
+X-Received: by 2002:a17:907:b9c4:b0:a1d:e5a:3045 with SMTP id
+ xa4-20020a170907b9c400b00a1d0e5a3045mr508597ejc.145.1701862385201; 
+ Wed, 06 Dec 2023 03:33:05 -0800 (PST)
 Received: from [192.168.69.100] (tal33-h02-176-184-38-132.dsl.sta.abo.bbox.fr.
  [176.184.38.132]) by smtp.gmail.com with ESMTPSA id
- d15-20020a170906344f00b009eff65e6942sm8139263ejb.197.2023.12.06.03.31.06
+ s22-20020a170906bc5600b00a1e21893a26sm54030ejv.222.2023.12.06.03.33.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Dec 2023 03:31:07 -0800 (PST)
-Message-ID: <500971ca-b373-4d64-99a5-9f8aa218cef2@linaro.org>
-Date: Wed, 6 Dec 2023 12:31:05 +0100
+ Wed, 06 Dec 2023 03:33:04 -0800 (PST)
+Message-ID: <c13a95e6-8ef5-4a65-8963-a8935685b4aa@linaro.org>
+Date: Wed, 6 Dec 2023 12:33:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/11] replay: make has_unread_data a bool
+Subject: Re: [PATCH 05/11] replay: remove host_clock_last
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -70,13 +70,13 @@ Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 References: <20231205204106.95531-1-alex.bennee@linaro.org>
- <20231205204106.95531-8-alex.bennee@linaro.org>
+ <20231205204106.95531-6-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231205204106.95531-8-alex.bennee@linaro.org>
+In-Reply-To: <20231205204106.95531-6-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,16 +100,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/12/23 21:41, Alex Bennée wrote:
-> For clarity given it only has two states.
-> 
+> Fixes: a02fe2ca70 (replay: Remove host_clock_last)
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->   replay/replay-internal.h | 4 ++--
->   replay/replay-internal.c | 4 ++--
->   replay/replay-snapshot.c | 6 +++---
->   replay/replay.c          | 2 +-
->   4 files changed, 8 insertions(+), 8 deletions(-)
+>   replay/replay-internal.h | 2 --
+>   1 file changed, 2 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
 
