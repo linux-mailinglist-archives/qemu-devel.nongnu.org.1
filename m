@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FBC8075AF
-	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:49:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 171978075CC
+	for <lists+qemu-devel@lfdr.de>; Wed,  6 Dec 2023 17:51:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rAv4R-0005FD-GV; Wed, 06 Dec 2023 11:48:23 -0500
+	id 1rAv7J-0006aO-Sc; Wed, 06 Dec 2023 11:51:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rAv4P-0005Ep-RB
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:48:21 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rAv7H-0006Zw-CO
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:51:19 -0500
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rAv4O-0005Nk-4C
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:48:21 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6ce939ecfc2so11847b3a.2
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:48:19 -0800 (PST)
+ id 1rAv7F-0005wo-L2
+ for qemu-devel@nongnu.org; Wed, 06 Dec 2023 11:51:19 -0500
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-286d6c95b8cso31657a91.0
+ for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 08:51:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701881299; x=1702486099; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701881476; x=1702486276; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vWOFMaDd6oLi0Vwgj/NGKj9NcMsrHwtJA26zHK/u/Mg=;
- b=oZEFKNKsiZIzh3W7Ls7XFSblEHETSqI6mWV8S7iKQASOE2LRo+SuBe2gbGXYnT537d
- yl1076sjW4IKzI8AcfX0YH2YVShTq7XGS/fygJMxxxf31SsqzcDs+9aQR0XABn3IXgfo
- bZu6Gk9bGsmz33TPNO9yaAmmNuBjDc1UehQPoMfgSGVP0cfwM+9Dx8Je8ASqI5QqsoMq
- iES49um6drerC4SM5+207QVNPfW4lIqrdLJiXllvG0XqN4Ub0aTBChMf1Az+IkqEkxAO
- HZ79HfKyLl/Ce58qFUjaJJ5QTqRZJqzEujyh42gK8osSX57amaGZm0wnyE8y3+nqmdRa
- WK9w==
+ bh=CH8oEA41sAVJ5h7gwZQoJQL2O2gbtggA96MVAG3tu98=;
+ b=mky3orsJskTAUIJMP0ycpf/hUgBmI6Y92aD6TesYX2S3zWEbhn+gWizH10PuKY3SJI
+ FXFV+HOCAl0whC8oTxfs1HqRiVKRA2sRbYY1WQKQDQz6MCyNDCSBg6dPwLkjJJOsEo7Q
+ OnEfm5uacoC4/JhOz7tF0sGVDUHuUhqXpKKsoof/uQEQELr2oVQnhJlId+OjDJrurlbS
+ G88ryENLhw826n6sU2aAhc6hvkKbOGq2lBOTGGFlNyH+iNFm+S5v3dyHOy0GBmhF8C6U
+ 3yDhSTi3ehbf3ybaHYEQvewteSNh9dHAP7Ir0gQI25kSrvJ/nQBC9G0rhD12hGBj32IR
+ QVAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701881299; x=1702486099;
+ d=1e100.net; s=20230601; t=1701881476; x=1702486276;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vWOFMaDd6oLi0Vwgj/NGKj9NcMsrHwtJA26zHK/u/Mg=;
- b=eFRPmy6RJQWXDdEA3JICR+pV3iHBk+P/kOyqZvQVoE1DpuzBS/bIteWG4FPRV734g+
- DRTPEA7r9qAb6xtxfmi5jQ5oWYaM1HB6Rqb/09MtPMQdx6Dl6wXPdaSfnLOKPUYDvCPa
- fCvUhnFu3H/e2oWZFLYHI3h88lsQh8MmDCQYt3meH4pTBMvq5fH7pZkXVdYsceN88/fF
- OmCQGkHtQ1/t9eq44vrbfX/3movJp1zEZNgDsaULMhelqib/t7ZNnBsY8kjZvUTvniYc
- vYQoOl0IS0n4UO2nXxhkIqik+dHNUfScidQy9fEaOZjTEd4nO0u5k0JQc2GENcftbM8a
- A6aA==
-X-Gm-Message-State: AOJu0Yx4vC02IhFw8PH90UJ/YZxDTrJ+cjmgrIgr3Uvi/VeRKCtaktdx
- wK9JG5nv8o1OMtvU3g+zFUxxTQ==
-X-Google-Smtp-Source: AGHT+IEo7uIOHH3ix0I7E90dTvg1tpiJei2wYAEPleL7Mbcu5lszV4msPpq5hpT0uZ5VXp0OgFv0tg==
-X-Received: by 2002:a05:6a20:d406:b0:18c:43f4:3d44 with SMTP id
- il6-20020a056a20d40600b0018c43f43d44mr1145776pzb.25.1701881298708; 
- Wed, 06 Dec 2023 08:48:18 -0800 (PST)
+ bh=CH8oEA41sAVJ5h7gwZQoJQL2O2gbtggA96MVAG3tu98=;
+ b=px5zKhFGUCmm2IEW/NkQYLBG6lFLQfswpBpP9ZAEUjKK8qkAEsAgCQBoqEFCZQuCqq
+ RzSy5zHol9Y92/w9LR0PwGVArMn2tMhxUV1K1R3pU+xJ9n35wOlvAd8i6GThf0LtWTYH
+ 8JCxGRrsT5VbXu/XEu/c7nNjgBkkALLXp9Irc5t9ZNXalhG6FBgSmR6S1YyGvY3hVV+N
+ Lhwcx7+pxMNq9DGucJAAhBAYcSWvF3n6SSZHhdEfOIN2WujIJiPaBjWwqi7IIzzIav9T
+ K5I4cWms5X16N0d548qofXnWMTWfYfPR3Qm0ng9k5hVnAhKhIVsDfGHOb/pnAK0KUwGa
+ TKJA==
+X-Gm-Message-State: AOJu0YyLq7F13aM//OR2/dVp2W15f6TBXfsEBgM/Cao/rT/Mzbg/2Ad/
+ OPyqAHHvNrF6IIn0zDqGmt3PeQ==
+X-Google-Smtp-Source: AGHT+IE4Ivnm5QAORwr7T44RWfdl8azBjDTsgVh4AYe+qs5e16QwfDcS4BNX0iU8SUSam70TQfaF9g==
+X-Received: by 2002:a17:90b:3812:b0:27c:f309:f381 with SMTP id
+ mq18-20020a17090b381200b0027cf309f381mr1222015pjb.6.1701881476227; 
+ Wed, 06 Dec 2023 08:51:16 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- n33-20020a056a000d6100b006ce65bf5376sm208446pfv.75.2023.12.06.08.48.18
+ gk24-20020a17090b119800b00286d75e10e4sm90829pjb.37.2023.12.06.08.51.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Dec 2023 08:48:18 -0800 (PST)
-Message-ID: <43f2e50a-1d84-4402-b30c-a5b865cd4e49@linaro.org>
-Date: Wed, 6 Dec 2023 08:48:16 -0800
+ Wed, 06 Dec 2023 08:51:15 -0800 (PST)
+Message-ID: <4ba45fcf-12cf-44a1-ba94-b2a8c0c69f5c@linaro.org>
+Date: Wed, 6 Dec 2023 08:51:13 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/11] replay: introduce a central report point for sync
- errors
+Subject: Re: [PATCH 09/11] replay: stop us hanging in rr_wait_io_event
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 References: <20231205204106.95531-1-alex.bennee@linaro.org>
- <20231205204106.95531-9-alex.bennee@linaro.org>
- <3536aaa0-a6c6-4db0-bf84-3218ee9e22f1@linaro.org>
+ <20231205204106.95531-10-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <3536aaa0-a6c6-4db0-bf84-3218ee9e22f1@linaro.org>
+In-Reply-To: <20231205204106.95531-10-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,47 +101,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/6/23 03:35, Philippe Mathieu-Daudé wrote:
-> Hi Alex,
+On 12/5/23 12:41, Alex Bennée wrote:
+> A lot of the hang I see are when we end up spinning in
+> rr_wait_io_event for an event that will never come in playback. As a
+> new check functions which can see if we are in PLAY mode and kick us
+> us the wait function so the event can be processed.
 > 
-> On 5/12/23 21:41, Alex Bennée wrote:
->> Figuring out why replay has failed is tricky at the best of times.
->> Lets centralise the reporting of a replay sync error and add a little
->> bit of extra information to help with debugging.
->>
->> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->> ---
->>   replay/replay-internal.h | 12 ++++++++++++
->>   replay/replay-char.c     |  6 ++----
->>   replay/replay-internal.c |  1 +
->>   replay/replay.c          |  9 +++++++++
->>   4 files changed, 24 insertions(+), 4 deletions(-)
->>
->> diff --git a/replay/replay-internal.h b/replay/replay-internal.h
->> index 1bc8fd5086..709e2eb4cb 100644
->> --- a/replay/replay-internal.h
->> +++ b/replay/replay-internal.h
->> @@ -74,6 +74,7 @@ enum ReplayEvents {
->>    * @cached_clock: Cached clocks values
->>    * @current_icount: number of processed instructions
->>    * @instruction_count: number of instructions until next event
->> + * @current_event: current event index
->>    * @data_kind: current event
->>    * @has_unread_data: true if event not yet processed
->>    * @file_offset: offset into replay log at replay snapshot
->> @@ -84,6 +85,7 @@ typedef struct ReplayState {
->>       int64_t cached_clock[REPLAY_CLOCK_COUNT];
->>       uint64_t current_icount;
->>       int instruction_count;
->> +    unsigned int current_event;
->>       unsigned int data_kind;
->>       bool has_unread_data;
->>       uint64_t file_offset;
-> Shouldn't this field be migrated?
+> This fixes most of the failures in replay_kernel.py
+> 
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2013
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+> ---
+>   include/sysemu/replay.h      |  5 +++++
+>   accel/tcg/tcg-accel-ops-rr.c |  2 +-
+>   replay/replay.c              | 24 ++++++++++++++++++++++++
+>   3 files changed, 30 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
+> index 08aae5869f..83995ae4bd 100644
+> --- a/include/sysemu/replay.h
+> +++ b/include/sysemu/replay.h
+> @@ -70,6 +70,11 @@ int replay_get_instructions(void);
+>   /*! Updates instructions counter in replay mode. */
+>   void replay_account_executed_instructions(void);
+>   
+> +/**
+> + * replay_can_wait: check if we should pause for wait-io
+> + */
+> +bool replay_can_wait(void);
+> +
+>   /* Processing clocks and other time sources */
+>   
+>   /*! Save the specified clock */
+> diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+> index 611932f3c3..825e35b3dc 100644
+> --- a/accel/tcg/tcg-accel-ops-rr.c
+> +++ b/accel/tcg/tcg-accel-ops-rr.c
+> @@ -109,7 +109,7 @@ static void rr_wait_io_event(void)
+>   {
+>       CPUState *cpu;
+>   
+> -    while (all_cpu_threads_idle()) {
+> +    while (all_cpu_threads_idle() && replay_can_wait()) {
+>           rr_stop_kick_timer();
+>           qemu_cond_wait_iothread(first_cpu->halt_cond);
+>       }
+> diff --git a/replay/replay.c b/replay/replay.c
+> index e83c01285c..042a6a9636 100644
+> --- a/replay/replay.c
+> +++ b/replay/replay.c
+> @@ -347,6 +347,30 @@ void replay_start(void)
+>       replay_enable_events();
+>   }
+>   
+> +/*
+> + * For none/record the answer is yes.
+> + */
+> +bool replay_can_wait(void)
+> +{
+> +    if (replay_mode == REPLAY_MODE_PLAY) {
+> +        /*
+> +         * For playback we shouldn't ever be at a point we wait. If
+> +         * the instruction count has reached zero and we have an
+> +         * unconsumed event we should go around again and consume it.
+> +         */
+> +        if (replay_state.instruction_count == 0 && replay_state.has_unread_data) {
+> +            return false;
+> +        } else {
+> +            fprintf(stderr, "Error: Invalid replay state\n");
+> +            fprintf(stderr,"instruction_count = %d, has = %d, event_kind = %d\n",
+> +                    replay_state.instruction_count, replay_state.has_unread_data, replay_state.data_kind);
+> +            abort();
 
-No, it's for diagnostic use only.
+error_report.
 
 
 r~
+
+> +        }
+> +    }
+> +    return true;
+> +}
+> +
+> +
+>   void replay_finish(void)
+>   {
+>       if (replay_mode == REPLAY_MODE_NONE) {
 
 
