@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6902B80EE8E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 15:20:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882FD80943D
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:32:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD3cB-0006U5-D2; Tue, 12 Dec 2023 09:20:03 -0500
+	id 1rBLxn-0007cC-JM; Thu, 07 Dec 2023 16:31:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rD3c5-0006ON-EB; Tue, 12 Dec 2023 09:19:57 -0500
+ id 1rBLx0-0007PS-3S; Thu, 07 Dec 2023 16:30:30 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rD3bx-0001YJ-PS; Tue, 12 Dec 2023 09:19:57 -0500
+ id 1rBLww-0005MJ-SB; Thu, 07 Dec 2023 16:30:29 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 19D1211F1D3;
- Tue, 12 Dec 2023 14:19:48 +0000 (UTC)
+ by mail-b.sr.ht (Postfix) with ESMTPSA id AEE2B11F050;
+ Thu,  7 Dec 2023 21:30:23 +0000 (UTC)
 From: ~inesvarhol <inesvarhol@git.sr.ht>
 Date: Thu, 07 Dec 2023 20:56:51 +0100
-Subject: [PATCH qemu v2 1/3] hw/misc: Implement STM32L4x5 EXTI
+Subject: [PATCH qemu 1/3] hw/arm: Implement STM32L4x5 EXTI
 MIME-Version: 1.0
-Message-ID: <170239078765.13580.4044041320624286270-1@git.sr.ht>
+Message-ID: <170198462199.32162.284497577253427308-1@git.sr.ht>
 X-Mailer: git.sr.ht
-In-Reply-To: <170239078765.13580.4044041320624286270-0@git.sr.ht>
+In-Reply-To: <170198462199.32162.284497577253427308-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
  peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
@@ -35,12 +35,11 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
  helo=mail-b.sr.ht
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
