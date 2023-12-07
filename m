@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8216808563
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CE1808561
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 11:28:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBBaq-0004fp-0x; Thu, 07 Dec 2023 05:26:56 -0500
+	id 1rBBap-0004eR-4e; Thu, 07 Dec 2023 05:26:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBag-0004dq-7u
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:47 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBai-0004e8-0b
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:48 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBaX-0001XS-CI
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:38 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40c236624edso8303435e9.1
- for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:26:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBaf-0001YL-JJ
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:46 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40b27726369so8656595e9.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:26:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701944794; x=1702549594; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2xefmX366fbhfJxsIeFGi91XZmITR9sN6ULSxx36cJM=;
- b=f0i/Ku2loLm3GQSqMEOgFPpaihki9649Qg77gV0rs6i4Uv7mpJhN/IeQFTlx+XoetO
- NzZ76shA0CYdfA64ElSj4Ob/oIM0s3Jmo8MMEfjaq6EqiapEz7c3baqAPI0xKMQyjwkO
- o0jb81S09defIA778jR5vRcWNsd6Qsav75+HMZgYzKfl24JyQrSUghaeKscRI0wjV9vb
- VAe14/LkbxJuv3ICA/iaRwmLeFqmh4Y+FHg+8f4htMrvQZq+lcVrb9YjXboZxe/R4DEL
- FTpSPqX1SLowoVzJ8O+SCMraG9lLokHqsg3RJdh+IScS6qruu4ZNFt6HP69UE/nl9rjO
- 9OWA==
+ d=linaro.org; s=google; t=1701944800; x=1702549600; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZZpBZ1VJe1txisZ3T5aUZfE6odH/PADS2VLpythQ8NQ=;
+ b=djxDQFuHqOCVA49KJ+mdchwsmaUYEGm5f6I/Y5PqdEkyxi7beZwbOHAQn5ls0IseKF
+ V1A8OWih8rj4v+rZLIWl3P9RtOqqEaU9p6lQCbd5cklWnRxeTnkEnL1G1xNIA5mb15pX
+ kBcpCD1xbLdg8TMMXwhK6lucs+1LE9kh8PCDbAVTnXgX2h88OoU+e72I3vIEcZwvEKWg
+ NsFVJojuqbbXaakAvTB3jDiPptQyD+PJ/ICko2XLpPjgL0XWa9uu4gbBF+Rew7cTAcJJ
+ cD+zJA31FPQystfBAtJpKUBc1LzMGZu5ghxFd4BW448MZjl29ctKqvs4h43+DdbXDX0V
+ XrHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701944794; x=1702549594;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2xefmX366fbhfJxsIeFGi91XZmITR9sN6ULSxx36cJM=;
- b=qfq1j40muLYXQG2nb/xEhIV4wHCsLFUDHE2SUUX9YAQdVWzZB43M844qYmty4SamQ9
- XXNbZsJK+cePDwaRzo9npW3l9HYMO5Fq5gYdOAXTmhWFd0LrlVD+LPf4YZXBCKlmWkCH
- 8HIh0o4/3T3dJpZd8A9ixemgoSXYJHeA9G+CEfNBrXChO3kvRGWW0ofvsPn/ZLML+1Ei
- VAa+8QiLEYwSEWUUsZr6Y653QcrHfQUSUSu2VfTe59v6aEByeJSxjbn4Cry6F4sgOTC/
- Jq6lGWyyLwAo+Iy2KNq95Z2bT6f52Qi+G6JnhjhvFERLZrvOu6L8X9aANFsLYb/9Iymr
- wqmg==
-X-Gm-Message-State: AOJu0Ywq7jxWszhi846rUAMOMVa1xkLGfw+clx28YpAebpKLKoJxO1G7
- /tAyP0jqbJ4oJYyACFeEd+VzE1EsWtNTrxzaLlY=
-X-Google-Smtp-Source: AGHT+IH8Rq6Tb0mlVLhKeozUEcWLchIwWQG3Va34wcbBEPgyrZXm/kwtAXv5ndUn3wedm/1Qz60Bmg==
-X-Received: by 2002:a05:600c:5199:b0:40c:2395:1fa7 with SMTP id
- fa25-20020a05600c519900b0040c23951fa7mr1093806wmb.141.1701944794513; 
- Thu, 07 Dec 2023 02:26:34 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701944800; x=1702549600;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZZpBZ1VJe1txisZ3T5aUZfE6odH/PADS2VLpythQ8NQ=;
+ b=Y6g/IQN934FvMyQxTmy/SvFise3TMpqAXpJ7XpTXJPxq3VohZfpCoiABxHM9bmuMkH
+ R1pMurvhO/nJxqgp0xb5LASVLUtFLc7AMVDQ3v+6Unuz65bxRVrbwFmcsild/qdKVoQq
+ ukC5W7KfT51WiHj5xI42WVs/TNPO/Yv9KECXsh+XhWHntha/Vf8GtqsQQO+nvQH7FOMb
+ K8s6XALxAnFr5O8Q1Fjqf9vjAXfPwJIDk+diDNEXm7fLTp423QNJJEeZDljGKRV02Zzc
+ iAly8cHkdTOlH2dy3yAoVDBsx0nN+n7FCBSRPSPgOqd+34oKSTUrH4d6W/UCY41VEwNA
+ +Ocw==
+X-Gm-Message-State: AOJu0YyCOSZmiIY2hBSz+y2ux2gXm9sSLenDdd/uAqpTxBRGy6Nx7JbO
+ AoafXO901WKnEoP9KRl/8T2G+zVI/fslgASB3pc=
+X-Google-Smtp-Source: AGHT+IEjfazqrRKNyZu7f6uIeBimdbMtRgBkS51QYvt4shkhGmTx1gSNS2hfJTdI+NBOJfHN2wbDxA==
+X-Received: by 2002:a05:600c:501e:b0:40b:5e1c:af31 with SMTP id
+ n30-20020a05600c501e00b0040b5e1caf31mr1416336wmr.55.1701944799949; 
+ Thu, 07 Dec 2023 02:26:39 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.202.111])
  by smtp.gmail.com with ESMTPSA id
- h11-20020a05600c350b00b0040b4cb14d40sm1489520wmq.19.2023.12.07.02.26.33
+ q9-20020adff949000000b0033342338a24sm1077287wrr.6.2023.12.07.02.26.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 07 Dec 2023 02:26:34 -0800 (PST)
+ Thu, 07 Dec 2023 02:26:39 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
  qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/3] sysemu/replay: Restrict icount to TCG system emulation
-Date: Thu,  7 Dec 2023 11:26:28 +0100
-Message-ID: <20231207102632.33634-1-philmd@linaro.org>
+Subject: [PATCH 1/3] util/async: Only call icount_notify_exit() if icount is
+ enabled
+Date: Thu,  7 Dec 2023 11:26:29 +0100
+Message-ID: <20231207102632.33634-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231207102632.33634-1-philmd@linaro.org>
+References: <20231207102632.33634-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,20 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Slightly simplify non-TCG and user emulation code.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ stubs/icount.c |  2 +-
+ util/async.c   | 16 +++++++++-------
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-Philippe Mathieu-Daudé (3):
-  util/async: Only call icount_notify_exit() if icount is enabled
-  sysemu/replay: Restrict icount to TCG emulation
-  sysemu/replay: Restrict icount to system emulation
-
- include/sysemu/cpu-timers.h |  2 +-
- include/sysemu/replay.h     | 11 ++++++++---
- stubs/icount.c              | 27 +--------------------------
- system/vl.c                 |  6 +++++-
- util/async.c                | 16 +++++++++-------
- 5 files changed, 24 insertions(+), 38 deletions(-)
-
+diff --git a/stubs/icount.c b/stubs/icount.c
+index 6df8c2bf7d..fc3beac003 100644
+--- a/stubs/icount.c
++++ b/stubs/icount.c
+@@ -43,7 +43,7 @@ void icount_account_warp_timer(void)
+ {
+     abort();
+ }
+-
+ void icount_notify_exit(void)
+ {
++    abort();
+ }
+diff --git a/util/async.c b/util/async.c
+index 8f90ddc304..9007642c27 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -94,13 +94,15 @@ static void aio_bh_enqueue(QEMUBH *bh, unsigned new_flags)
+     }
+ 
+     aio_notify(ctx);
+-    /*
+-     * Workaround for record/replay.
+-     * vCPU execution should be suspended when new BH is set.
+-     * This is needed to avoid guest timeouts caused
+-     * by the long cycles of the execution.
+-     */
+-    icount_notify_exit();
++    if (unlikely(icount_enabled())) {
++        /*
++         * Workaround for record/replay.
++         * vCPU execution should be suspended when new BH is set.
++         * This is needed to avoid guest timeouts caused
++         * by the long cycles of the execution.
++         */
++        icount_notify_exit();
++    }
+ }
+ 
+ /* Only called from aio_bh_poll() and aio_ctx_finalize() */
 -- 
 2.41.0
 
