@@ -2,87 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40E5807E10
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 02:43:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B936807EE5
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 03:45:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rB3P2-0005YO-9v; Wed, 06 Dec 2023 20:42:12 -0500
+	id 1rB4Mm-00067g-1b; Wed, 06 Dec 2023 21:43:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
- id 1rB3Oz-0005Y4-97
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 20:42:09 -0500
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
- id 1rB3Ou-0005Km-Rk
- for qemu-devel@nongnu.org; Wed, 06 Dec 2023 20:42:09 -0500
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-3b9de2332e3so76898b6e.1
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 17:42:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701913323; x=1702518123; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nBxHn8pPY9Z5FdN+k7OtNFF2y23J51ZbRWvqj66+tuw=;
- b=j3Gv+l2n6iMtg9GIEuLFe4HZZ09jgXTAc5yRwW++45g0W1CN7smuCBwEePpUfL2Izd
- UOE4HRQYKOkuFJxYWMKjoA14GAtPCrYZaKhVP2X+Ru84JR1jMw/uWqqpmcLXS1i9W1dQ
- q/sQsb4611Zez6EYB2uzJPC5IxlKeZyFmVUcLZohCLCCQZvsfBPaMVBexmdAJSg3WFcR
- Q3YsqarzcfARh+ib2BmDJeDDdF3YM6YhMhEjDRi/QPWJP3RjquoENfAFxw/Gg2uxLwoT
- 689COsxY6EJhlrMtcJeWxt+hsK6Bwo5vOYf5zZvPfmy01+xksbLFsqKdsm+yvKhUnCtD
- LzAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701913323; x=1702518123;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=nBxHn8pPY9Z5FdN+k7OtNFF2y23J51ZbRWvqj66+tuw=;
- b=wvO8bpWIuHrjKPXCQQ13X9T4/u5Vxh5ujOzFO1v7lYx2y6JBaewJvTLPmvmSlBEEvU
- j3avv2D0JNq7SMW42sWz9DHry7piBFRo1+HLTFX7aZFDHnPySlqpZjfX9s7FsSgatpnf
- +3PevbHvyXM1BhFB6FWdwDtf2y8DMjN8fT7AhJPGltKQ3Avim9Pp937DY3MCCqBxqOz5
- YglYgxX8RqLTXH61QLvm1FOlVO/UH4qwWzY55+GS7WeEha0ttU9FptgLeJhQb4MZV92/
- Uc6vw2C2wBDv9Y38DTBZCMLqCTWX0xMxe16nx/7Y3EstKcp2K8YhTJq6kFMxpFQYtCuM
- +t0Q==
-X-Gm-Message-State: AOJu0YyelVIc50MdZgIL4qKjnfqTNk+T9blcgoaKe4sHWN2Qre5wX4/3
- PzUXIiwLNHH05eoZTY0o+w==
-X-Google-Smtp-Source: AGHT+IECfDKy7qgVt3DrtWqB9mGaRcUWA9H3+6hbTsNc/qT/L9gIimJny/ajs2jYtZClp70dFsBvWQ==
-X-Received: by 2002:a05:6808:3023:b0:3b8:9906:c267 with SMTP id
- ay35-20020a056808302300b003b89906c267mr2182417oib.56.1701913323558; 
- Wed, 06 Dec 2023 17:42:03 -0800 (PST)
-Received: from serve.minyard.net (serve.minyard.net. [2001:470:b8f6:1b::1])
- by smtp.gmail.com with ESMTPSA id
- d16-20020a05680813d000b003b9d00ce109sm57795oiw.34.2023.12.06.17.42.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Dec 2023 17:42:02 -0800 (PST)
-Received: from dell1.minyard.net (unknown
- [IPv6:2001:470:b8f6:1b:8ff4:f8fd:ca3:53c6])
- by serve.minyard.net (Postfix) with ESMTPA id 78CA51800C6;
- Thu,  7 Dec 2023 01:42:02 +0000 (UTC)
-From: minyard@acm.org
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1rB4Mf-000678-VO; Wed, 06 Dec 2023 21:43:50 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1rB4Md-00059t-Gv; Wed, 06 Dec 2023 21:43:49 -0500
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3B72gVdc025175; Thu, 7 Dec 2023 02:43:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=fxOXqxfB6a35FuovK5PsHeYPWDIGhGcYWHwOBXMNufo=;
+ b=s+2P+0e+AGPF2v5BorvZ+YZwOjowwPOm3+Eo36YboAEzTvkLxNfkjxSwoECmPeixVDok
+ aVa3l6aHFrAq3v9xbWIzfrGd4QdpSvd2S+H57r91hgRtdP29WeLsKn2VcWwemAX8zFx3
+ bDgFj9tU3Y2ea1yxyJ4Rc44vsWCneG5HplLSnIAOV3kbnBQhDUEmUSDzuI4RKMqm5BlU
+ FzGyHiDL2tA2yAtg1B9+1qaqTO3s3o4I0jCI/vRhwQQKy9gEg6GbRw2gXqfP8PndSxYD
+ lCHLT/b1SdA9Scv7Bbty4ntDMI7morpIQIZ4IY/M0rRn7gwCD6VB9zRFNGMgd51nOrxG qA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uu5geg0hk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Dec 2023 02:43:41 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B72hfid027274;
+ Thu, 7 Dec 2023 02:43:41 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uu5geg0he-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Dec 2023 02:43:41 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3B7154us001541; Thu, 7 Dec 2023 02:43:40 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3utav2ggj0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Dec 2023 02:43:40 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3B72hbPr17236644
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 7 Dec 2023 02:43:37 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 731432004D;
+ Thu,  7 Dec 2023 02:43:37 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C7DA120040;
+ Thu,  7 Dec 2023 02:43:35 +0000 (GMT)
+Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  7 Dec 2023 02:43:35 +0000 (GMT)
+From: Chalapathi V <chalapathi.v@linux.ibm.com>
 To: qemu-devel@nongnu.org
-Cc: Potin Lai <potin.lai.pt@gmail.com>, Patrick Venture <venture@google.com>,
- Hao Wu <wuhaotsh@google.com>, Titus Rwantare <titusr@google.com>,
- Corey Minyard <minyard@acm.org>
-Subject: [PULL 2/2] hw/i2c: add pca9543 i2c-mux switch
-Date: Wed,  6 Dec 2023 19:41:48 -0600
-Message-Id: <20231207014148.3116889-3-minyard@acm.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231207014148.3116889-1-minyard@acm.org>
-References: <20231207014148.3116889-1-minyard@acm.org>
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
+ chalapathi.v@linux.ibm.com, saif.abrar@linux.vnet.ibm.com
+Subject: [PATCH v7 0/3] pnv N1 chiplet model
+Date: Wed,  6 Dec 2023 20:43:28 -0600
+Message-Id: <20231207024331.5237-1-chalapathi.v@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=tcminyard@gmail.com; helo=mail-oi1-x234.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: CMam-3bgxSODGdBPym064lxWGHcaxNOF
+X-Proofpoint-GUID: cB5WrUiK0g_tQcWkPqvBWxV7lqQKXPhn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-06_22,2023-12-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 spamscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=709 malwarescore=0 impostorscore=0
+ clxscore=1015 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312070020
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,69 +109,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Potin Lai <potin.lai.pt@gmail.com>
+Hello,
 
-Add pca9543 2-channel i2c-mux switch support.
+Thank you for the review and suggestions on V6.
 
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
-Reviewed-by: Patrick Venture <venture@google.com>
-Message-Id: <20231113063156.2264941-1-potin.lai.pt@gmail.com>
-Signed-off-by: Corey Minyard <minyard@acm.org>
----
- hw/i2c/i2c_mux_pca954x.c         | 12 ++++++++++++
- include/hw/i2c/i2c_mux_pca954x.h |  1 +
- 2 files changed, 13 insertions(+)
+The suggestions and changes requested from V6 are addressed in V7.
 
-diff --git a/hw/i2c/i2c_mux_pca954x.c b/hw/i2c/i2c_mux_pca954x.c
-index db5db956a6..6aace0fc47 100644
---- a/hw/i2c/i2c_mux_pca954x.c
-+++ b/hw/i2c/i2c_mux_pca954x.c
-@@ -30,6 +30,7 @@
- 
- #define PCA9548_CHANNEL_COUNT 8
- #define PCA9546_CHANNEL_COUNT 4
-+#define PCA9543_CHANNEL_COUNT 2
- 
- /*
-  * struct Pca954xState - The pca954x state object.
-@@ -172,6 +173,12 @@ I2CBus *pca954x_i2c_get_bus(I2CSlave *mux, uint8_t channel)
-     return pca954x->bus[channel];
- }
- 
-+static void pca9543_class_init(ObjectClass *klass, void *data)
-+{
-+    Pca954xClass *s = PCA954X_CLASS(klass);
-+    s->nchans = PCA9543_CHANNEL_COUNT;
-+}
-+
- static void pca9546_class_init(ObjectClass *klass, void *data)
- {
-     Pca954xClass *s = PCA954X_CLASS(klass);
-@@ -246,6 +253,11 @@ static const TypeInfo pca954x_info[] = {
-         .class_init    = pca954x_class_init,
-         .abstract      = true,
-     },
-+    {
-+        .name          = TYPE_PCA9543,
-+        .parent        = TYPE_PCA954X,
-+        .class_init    = pca9543_class_init,
-+    },
-     {
-         .name          = TYPE_PCA9546,
-         .parent        = TYPE_PCA954X,
-diff --git a/include/hw/i2c/i2c_mux_pca954x.h b/include/hw/i2c/i2c_mux_pca954x.h
-index 3dd25ec983..1da5508ed5 100644
---- a/include/hw/i2c/i2c_mux_pca954x.h
-+++ b/include/hw/i2c/i2c_mux_pca954x.h
-@@ -3,6 +3,7 @@
- 
- #include "hw/i2c/i2c.h"
- 
-+#define TYPE_PCA9543 "pca9543"
- #define TYPE_PCA9546 "pca9546"
- #define TYPE_PCA9548 "pca9548"
- 
+Updates in Version 7 of this series are: 
+There are no major changes done in revision 7 from revision 6. 
+1. The property "parent-obj-name" is removed from nest pervasive chiplet
+   model as it is not required.
+2. nest pervasive chiplet model is initialized from instance_init handler.
+
+The new qom-tree looks like below.
+(qemu) info qom-tree 
+/machine (powernv10-machine)
+  /chip[0] (power10_v2.0-pnv-chip)
+    /n1-chiplet (pnv-N1-chiplet)
+      /nest-pervasive-common (pnv-nest-chiplet-pervasive)
+        /pervasive-control[0] (memory-region)
+      /xscom-n1-chiplet-pb-scom-eq[0] (memory-region)
+      /xscom-n1-chiplet-pb-scom-es[0] (memory-region)
+
+Patches overview in V7.
+PATCH1: Create a common nest pervasive chiplet model with control chiplet scom
+        registers.
+PATCH2: Create a N1 chiplet model and implement powerbus scom registers.
+        Connect common nest pervasive model to N1 chiplet model to define
+        chiplet control scoms for N1 chiplet.
+PATCH3: Connect N1 chiplet model to p10 chip.
+
+Test covered:
+Ran make check && make check-avocado and found no obvious issues.
+
+Thank You,
+Chalapathi
+
+Chalapathi V (3):
+  hw/ppc: Add pnv nest pervasive common chiplet model
+  hw/ppc: Add N1 chiplet model
+  hw/ppc: N1 chiplet wiring
+
+ include/hw/ppc/pnv_chip.h           |   2 +
+ include/hw/ppc/pnv_n1_chiplet.h     |  33 +++++
+ include/hw/ppc/pnv_nest_pervasive.h |  32 +++++
+ include/hw/ppc/pnv_xscom.h          |   9 ++
+ hw/ppc/pnv.c                        |  15 ++
+ hw/ppc/pnv_n1_chiplet.c             | 173 +++++++++++++++++++++++
+ hw/ppc/pnv_nest_pervasive.c         | 208 ++++++++++++++++++++++++++++
+ hw/ppc/meson.build                  |   2 +
+ 8 files changed, 474 insertions(+)
+ create mode 100644 include/hw/ppc/pnv_n1_chiplet.h
+ create mode 100644 include/hw/ppc/pnv_nest_pervasive.h
+ create mode 100644 hw/ppc/pnv_n1_chiplet.c
+ create mode 100644 hw/ppc/pnv_nest_pervasive.c
+
 -- 
-2.34.1
+2.31.1
 
 
