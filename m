@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8783808B39
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 15:59:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8216808563
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 11:28:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBFpo-0003E7-CH; Thu, 07 Dec 2023 09:58:40 -0500
+	id 1rBBaq-0004fp-0x; Thu, 07 Dec 2023 05:26:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <talhak2111@gmail.com>)
- id 1rBBC8-0005wL-Nv
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:01:24 -0500
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBag-0004dq-7u
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:47 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <talhak2111@gmail.com>)
- id 1rBBC7-0000zO-7o
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:01:24 -0500
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-5d226f51f71so5076997b3.3
- for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:01:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBaX-0001XS-CI
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:38 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40c236624edso8303435e9.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:26:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701943276; x=1702548076; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oGpqZnZDjSFzvv3ic0waLr4K/O9G44Bc3lTA7DmFUVY=;
- b=hRXJE1JlLSxXVFx3GAjCd3J8RbpiXnl8hTGItquZlsid1sOkhetrsc+NRNmu3n+Jlq
- LDVmRFMq6nK61wZK0KJ9sv7YJPIb+b/391rq6aR/YowHMIY8MJi1u5Zu+XmRg7nZaLST
- QoyJQJvhmPswDsyvl23WydR5+XZMsCz/IH5Bs2XZ5RoVYi8IcYUuBhxkhO7RcWhybnn8
- ZZLqJggHiAgch0aDn6aDJOvZe58qNDMk3Tjd2U6tCXhJW5UzV2vz4pIVUsJUG3oZi50A
- lv0qYXdXTnD8t813Bq+4bCLhKZywug4QVFyWk/OzvqArAZOiFygtjiaF3PXT1WAg1MmN
- Rgsw==
+ d=linaro.org; s=google; t=1701944794; x=1702549594; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2xefmX366fbhfJxsIeFGi91XZmITR9sN6ULSxx36cJM=;
+ b=f0i/Ku2loLm3GQSqMEOgFPpaihki9649Qg77gV0rs6i4Uv7mpJhN/IeQFTlx+XoetO
+ NzZ76shA0CYdfA64ElSj4Ob/oIM0s3Jmo8MMEfjaq6EqiapEz7c3baqAPI0xKMQyjwkO
+ o0jb81S09defIA778jR5vRcWNsd6Qsav75+HMZgYzKfl24JyQrSUghaeKscRI0wjV9vb
+ VAe14/LkbxJuv3ICA/iaRwmLeFqmh4Y+FHg+8f4htMrvQZq+lcVrb9YjXboZxe/R4DEL
+ FTpSPqX1SLowoVzJ8O+SCMraG9lLokHqsg3RJdh+IScS6qruu4ZNFt6HP69UE/nl9rjO
+ 9OWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701943276; x=1702548076;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oGpqZnZDjSFzvv3ic0waLr4K/O9G44Bc3lTA7DmFUVY=;
- b=ICJX1B+9o/Hd0xnG70UQPoqpf9TNrY1PCK7W/FZTCFa2nIithcjSft499jhbbC2VIP
- rjb6SULqVREnrvrcwR5dOIhtIqVY7UuGhcopt6ESMoTBnJKedsMfQnYDWy6tjzs4wYvP
- A36hjW/Sirsh50XPoD0qOIzZ+cy3yYtYGMEYn3kZzMyRXFg/zhMV7/uQiyS8P6hYCgFx
- GDxgJ1xdYs71qR5HoBe5oKsOs5tOQBw4jsQ3dyLR78HGs0KFzbPpCOSIUg52ierhzK+G
- yFhBM6OM04Gji6LJC7wb3NleX9earm5TXQMGSSNeFwS2CLiXkVgW9qdM7nRXr+kT3xOp
- kJQQ==
-X-Gm-Message-State: AOJu0YxiCwoejidO7Ki+RYS/HKaOgrnBKqw57jAhPXgKZduZLPPSSiba
- UvYpCVvclAaqvlRE5ESZclIH8McWrBiVbvUuYiM675UH
-X-Google-Smtp-Source: AGHT+IF1r5cSLn8YjWNauPlme82cYpN2OQhz3xZsWIt/F/GwfA0JRaRHWmvITQKFbrPRk0dAt6uz5By6xBJYlsuS1XQ=
-X-Received: by 2002:a0d:ccce:0:b0:5a8:960d:e538 with SMTP id
- o197-20020a0dccce000000b005a8960de538mr2292536ywd.47.1701943276060; Thu, 07
- Dec 2023 02:01:16 -0800 (PST)
-MIME-Version: 1.0
-References: <CAMnsxbAr3GyB6bpvrYMt-31Q+ZKuEoLm+i++CWs6thQmQUXtVw@mail.gmail.com>
-In-Reply-To: <CAMnsxbAr3GyB6bpvrYMt-31Q+ZKuEoLm+i++CWs6thQmQUXtVw@mail.gmail.com>
-From: Talha Khan <talhak2111@gmail.com>
-Date: Thu, 7 Dec 2023 15:31:04 +0530
-Message-ID: <CAMnsxbB+yhePg60yd1x0MskJiQ1hBzwKpe94x8XQTDD5Jh2HPg@mail.gmail.com>
-Subject: Re: Build qemu without USB,network devices
+ d=1e100.net; s=20230601; t=1701944794; x=1702549594;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2xefmX366fbhfJxsIeFGi91XZmITR9sN6ULSxx36cJM=;
+ b=qfq1j40muLYXQG2nb/xEhIV4wHCsLFUDHE2SUUX9YAQdVWzZB43M844qYmty4SamQ9
+ XXNbZsJK+cePDwaRzo9npW3l9HYMO5Fq5gYdOAXTmhWFd0LrlVD+LPf4YZXBCKlmWkCH
+ 8HIh0o4/3T3dJpZd8A9ixemgoSXYJHeA9G+CEfNBrXChO3kvRGWW0ofvsPn/ZLML+1Ei
+ VAa+8QiLEYwSEWUUsZr6Y653QcrHfQUSUSu2VfTe59v6aEByeJSxjbn4Cry6F4sgOTC/
+ Jq6lGWyyLwAo+Iy2KNq95Z2bT6f52Qi+G6JnhjhvFERLZrvOu6L8X9aANFsLYb/9Iymr
+ wqmg==
+X-Gm-Message-State: AOJu0Ywq7jxWszhi846rUAMOMVa1xkLGfw+clx28YpAebpKLKoJxO1G7
+ /tAyP0jqbJ4oJYyACFeEd+VzE1EsWtNTrxzaLlY=
+X-Google-Smtp-Source: AGHT+IH8Rq6Tb0mlVLhKeozUEcWLchIwWQG3Va34wcbBEPgyrZXm/kwtAXv5ndUn3wedm/1Qz60Bmg==
+X-Received: by 2002:a05:600c:5199:b0:40c:2395:1fa7 with SMTP id
+ fa25-20020a05600c519900b0040c23951fa7mr1093806wmb.141.1701944794513; 
+ Thu, 07 Dec 2023 02:26:34 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.202.111])
+ by smtp.gmail.com with ESMTPSA id
+ h11-20020a05600c350b00b0040b4cb14d40sm1489520wmq.19.2023.12.07.02.26.33
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 07 Dec 2023 02:26:34 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000065c439060be88c43"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=talhak2111@gmail.com; helo=mail-yw1-x1129.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
+ qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/3] sysemu/replay: Restrict icount to TCG system emulation
+Date: Thu,  7 Dec 2023 11:26:28 +0100
+Message-ID: <20231207102632.33634-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 07 Dec 2023 09:58:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,40 +90,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000065c439060be88c43
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Slightly simplify non-TCG and user emulation code.
 
-And if this is not the right place to ask the question can someone point me
-in the right direction or forum where i should ask this?
+Philippe Mathieu-Daudé (3):
+  util/async: Only call icount_notify_exit() if icount is enabled
+  sysemu/replay: Restrict icount to TCG emulation
+  sysemu/replay: Restrict icount to system emulation
 
-On Thu, Dec 7, 2023 at 1:27=E2=80=AFPM Talha Khan <talhak2111@gmail.com> wr=
-ote:
+ include/sysemu/cpu-timers.h |  2 +-
+ include/sysemu/replay.h     | 11 ++++++++---
+ stubs/icount.c              | 27 +--------------------------
+ system/vl.c                 |  6 +++++-
+ util/async.c                | 16 +++++++++-------
+ 5 files changed, 24 insertions(+), 38 deletions(-)
 
-> Hey all,
-> I want to build qemu without network devices( nic ), usb and vga. So
-> basically a very lightweight emulator without the things i need.
-> Any help and leads would be appreciated.
-> Yours Truly
-> Talha
->
+-- 
+2.41.0
 
---00000000000065c439060be88c43
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">And if this is not the right place to ask the question can=
- someone point me in the right direction or forum where i should ask this?<=
-br></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_att=
-r">On Thu, Dec 7, 2023 at 1:27=E2=80=AFPM Talha Khan &lt;<a href=3D"mailto:=
-talhak2111@gmail.com">talhak2111@gmail.com</a>&gt; wrote:<br></div><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
- solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div>Hey all,</d=
-iv><div>I want to build qemu without network devices( nic ), usb and vga. S=
-o basically a very lightweight emulator without the things i need. <br></di=
-v><div>Any help and leads would be appreciated.</div><div>Yours Truly</div>=
-<div>Talha<br></div></div>
-</blockquote></div>
-
---00000000000065c439060be88c43--
 
