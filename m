@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AF980943F
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:32:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 716B480EE90
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 15:20:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBLxr-0007ei-0O; Thu, 07 Dec 2023 16:31:27 -0500
+	id 1rD3c8-0006Pm-O5; Tue, 12 Dec 2023 09:20:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rBLx1-0007RI-Ag; Thu, 07 Dec 2023 16:30:31 -0500
+ id 1rD3c5-0006OR-JX; Tue, 12 Dec 2023 09:19:57 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rBLwx-0005MO-LX; Thu, 07 Dec 2023 16:30:31 -0500
+ id 1rD3bx-0001YK-Qj; Tue, 12 Dec 2023 09:19:57 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id D97B911F055;
- Thu,  7 Dec 2023 21:30:23 +0000 (UTC)
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 5931811F2F6;
+ Tue, 12 Dec 2023 14:19:48 +0000 (UTC)
 From: ~inesvarhol <inesvarhol@git.sr.ht>
 Date: Thu, 07 Dec 2023 21:12:42 +0100
-Subject: [PATCH qemu 2/3] hw/arm: Add STM32L4x5 EXTI QTest testcase
+Subject: [PATCH qemu v2 2/3] tests/qtest: Add STM32L4x5 EXTI QTest testcase
 MIME-Version: 1.0
-Message-ID: <170198462199.32162.284497577253427308-2@git.sr.ht>
+Message-ID: <170239078765.13580.4044041320624286270-2@git.sr.ht>
 X-Mailer: git.sr.ht
-In-Reply-To: <170198462199.32162.284497577253427308-0@git.sr.ht>
+In-Reply-To: <170239078765.13580.4044041320624286270-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
  peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
@@ -35,11 +35,12 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
  helo=mail-b.sr.ht
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,7 +68,7 @@ Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
  create mode 100644 tests/qtest/stm32l4x5_exti-test.c
 
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index c9945e69b1..bc62f201a8 100644
+index 47dabf91d0..d5126f4d86 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
 @@ -194,6 +194,10 @@ qtests_aspeed =3D \
