@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B8180931A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:08:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4118092F8
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:05:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBLY7-0002mv-KE; Thu, 07 Dec 2023 16:04:47 -0500
+	id 1rBLYB-0002oe-Uf; Thu, 07 Dec 2023 16:04:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rBLY1-0002k9-2X
+ id 1rBLY1-0002kB-5Y
  for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:41 -0500
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rBLXw-0005oz-3B
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:38 -0500
-Received: (qmail 10536 invoked by uid 484); 7 Dec 2023 21:04:21 -0000
+ id 1rBLXw-0005pG-PJ
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:40 -0500
+Received: (qmail 10670 invoked by uid 484); 7 Dec 2023 21:04:24 -0000
 X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
  smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.11.92):. 
- Processed in 0.139927 secs); 07 Dec 2023 21:04:21 -0000
+ Processed in 3e-06 secs); 07 Dec 2023 21:04:24 -0000
 Received: from nedpc1.intern.lauterbach.com
  (Authenticated_SSL:neder@[10.2.11.92])
  (envelope-sender <nicolas.eder@lauterbach.com>)
  by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP for <qemu-devel@nongnu.org>; 7 Dec 2023 21:04:18 -0000
+ encrypted SMTP for <qemu-devel@nongnu.org>; 7 Dec 2023 21:04:21 -0000
 From: Nicolas Eder <nicolas.eder@lauterbach.com>
 To: qemu-devel@nongnu.org
 Cc: "Nicolas Eder" <nicolas.eder@lauterbach.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Christian Boenig" <christian.boenig@lauterbach.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 13/17] mcdstub: go, step and break added
-Date: Thu,  7 Dec 2023 22:03:54 +0100
-Message-Id: <20231207210358.7409-14-nicolas.eder@lauterbach.com>
+Subject: [PATCH v4 14/17] mcdstub: state query added
+Date: Thu,  7 Dec 2023 22:03:55 +0100
+Message-Id: <20231207210358.7409-15-nicolas.eder@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231207210358.7409-1-nicolas.eder@lauterbach.com>
 References: <20231207210358.7409-1-nicolas.eder@lauterbach.com>
@@ -69,261 +69,71 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 ---
- debug/mcdstub/mcdstub.c | 220 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 220 insertions(+)
+ debug/mcdstub/mcdstub.c | 44 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/debug/mcdstub/mcdstub.c b/debug/mcdstub/mcdstub.c
-index a5256eeb56..83582f7fa5 100644
+index 83582f7fa5..794e7d1312 100644
 --- a/debug/mcdstub/mcdstub.c
 +++ b/debug/mcdstub/mcdstub.c
-@@ -28,6 +28,7 @@
- #include "chardev/char-fe.h"
- #include "hw/cpu/cluster.h"
- #include "hw/boards.h"
-+#include "exec/tb-flush.h"
- #include "sysemu/cpus.h"
- #include "sysemu/hw_accel.h"
- #include "sysemu/runstate.h"
-@@ -182,6 +183,96 @@ static CPUState *mcd_get_cpu(uint32_t cpu_index)
-  */
- static void mcd_vm_state_change(void *opaque, bool running, RunState state)
- {
-+    CPUState *cpu = mcdserver_state.c_cpu;
-+
-+    if (mcdserver_state.state == RS_INACTIVE) {
-+        return;
-+    }
-+
-+    if (cpu == NULL) {
-+        if (running) {
-+            /*
-+             * this is the case if qemu starts the vm
-+             * before a mcd client is connected
-+             */
-+            const char *mcd_state;
-+            mcd_state = CORE_STATE_RUNNING;
-+            const char *info_str;
-+            info_str = STATE_STR_INIT_RUNNING;
-+            mcdserver_state.cpu_state.state = mcd_state;
-+            mcdserver_state.cpu_state.info_str = info_str;
-+        }
-+        return;
-+    }
-+
-+    const char *mcd_state;
-+    const char *stop_str;
-+    const char *info_str;
-+    uint32_t bp_type = 0;
-+    uint64_t bp_address = 0;
-+    switch (state) {
-+    case RUN_STATE_RUNNING:
-+        mcd_state = CORE_STATE_RUNNING;
-+        info_str = STATE_STR_RUNNING(cpu->cpu_index);
-+        stop_str = "";
-+        break;
-+    case RUN_STATE_DEBUG:
-+        mcd_state = CORE_STATE_DEBUG;
-+        info_str = STATE_STR_DEBUG(cpu->cpu_index);
-+        if (cpu->watchpoint_hit) {
-+            switch (cpu->watchpoint_hit->flags & BP_MEM_ACCESS) {
-+            case BP_MEM_READ:
-+                bp_type = MCD_BREAKPOINT_READ;
-+                stop_str = STATE_STR_BREAK_READ(cpu->watchpoint_hit->hitaddr);
-+                break;
-+            case BP_MEM_WRITE:
-+                bp_type = MCD_BREAKPOINT_WRITE;
-+                stop_str = STATE_STR_BREAK_WRITE(cpu->watchpoint_hit->hitaddr);
-+                break;
-+            case BP_MEM_ACCESS:
-+                bp_type = MCD_BREAKPOINT_RW;
-+                stop_str = STATE_STR_BREAK_RW(cpu->watchpoint_hit->hitaddr);
-+                break;
-+            default:
-+                stop_str = STATE_STR_BREAK_UNKNOWN;
-+                break;
-+            }
-+            bp_address = cpu->watchpoint_hit->hitaddr;
-+            cpu->watchpoint_hit = NULL;
-+        } else if (cpu->singlestep_enabled) {
-+            /* we land here when a single step is performed */
-+            stop_str = STATE_STEP_PERFORMED;
-+        } else {
-+            bp_type = MCD_BREAKPOINT_HW;
-+            stop_str = STATE_STR_BREAK_HW;
-+            tb_flush(cpu);
-+        }
-+        /* deactivate single step */
-+        cpu_single_step(cpu, 0);
-+        break;
-+    case RUN_STATE_PAUSED:
-+        info_str = STATE_STR_HALTED(cpu->cpu_index);
-+        mcd_state = CORE_STATE_HALTED;
-+        stop_str = "";
-+        break;
-+    case RUN_STATE_WATCHDOG:
-+        info_str = STATE_STR_UNKNOWN(cpu->cpu_index);
-+        mcd_state = CORE_STATE_UNKNOWN;
-+        stop_str = "";
-+        break;
-+    default:
-+        info_str = STATE_STR_UNKNOWN(cpu->cpu_index);
-+        mcd_state = CORE_STATE_UNKNOWN;
-+        stop_str = "";
-+        break;
-+    }
-+
-+    /* set state for c_cpu */
-+    mcdserver_state.cpu_state.state = mcd_state;
-+    mcdserver_state.cpu_state.bp_type = bp_type;
-+    mcdserver_state.cpu_state.bp_address = bp_address;
-+    mcdserver_state.cpu_state.stop_str = stop_str;
-+    mcdserver_state.cpu_state.info_str = info_str;
- }
- 
- /**
-@@ -637,6 +728,104 @@ static void handle_close_core(GArray *params, void *user_ctx)
-     g_array_free(registers, TRUE);
+@@ -1412,6 +1412,43 @@ static void handle_query_regs_c(GArray *params, void *user_ctx)
+     mcd_put_strbuf();
  }
  
 +/**
-+ * mcd_cpu_start() - Starts the selected CPU with the cpu_resume function.
++ * handle_query_state() - Handler for the state query.
 + *
-+ * @cpu: The CPU about to be started.
-+ */
-+static void mcd_cpu_start(CPUState *cpu)
-+{
-+    if (!runstate_needs_reset() && !runstate_is_running() &&
-+        !vm_prepare_start(false)) {
-+        mcdserver_state.c_cpu = cpu;
-+        qemu_clock_enable(QEMU_CLOCK_VIRTUAL, true);
-+        cpu_resume(cpu);
-+    }
-+}
-+
-+/**
-+ * mcd_cpu_sstep() - Performes a step on the selected CPU.
-+ *
-+ * This function first sets the correct single step flags for the CPU with
-+ * cpu_single_step and then starts the CPU with cpu_resume.
-+ * @cpu: The CPU about to be stepped.
-+ */
-+static int mcd_cpu_sstep(CPUState *cpu)
-+{
-+    mcdserver_state.c_cpu = cpu;
-+    cpu_single_step(cpu, mcdserver_state.sstep_flags);
-+    if (!runstate_needs_reset() && !runstate_is_running() &&
-+        !vm_prepare_start(true)) {
-+        qemu_clock_enable(QEMU_CLOCK_VIRTUAL, true);
-+        cpu_resume(cpu);
-+    }
-+    return 0;
-+}
-+
-+/**
-+ * mcd_vm_stop() - Brings all CPUs in debug state with the vm_stop function.
-+ */
-+static void mcd_vm_stop(void)
-+{
-+    if (runstate_is_running()) {
-+        vm_stop(RUN_STATE_DEBUG);
-+    }
-+}
-+
-+/**
-+ * handle_vm_start() - Handler for the VM start TCP packet.
-+ *
-+ * Evaluates whether all cores or just a perticular core should get started and
-+ * calls :c:func:`mcd_vm_start` or :c:func:`mcd_cpu_start` respectively.
++ * This function collects all data stored in the
++ * cpu_state member of the mcdserver_state and formats and sends it to the
++ * library.
 + * @params: GArray with all TCP packet parameters.
 + */
-+static void handle_vm_start(GArray *params, void *user_ctx)
++static void handle_query_state(GArray *params, void *user_ctx)
 +{
-+    uint32_t global = get_param(params, 0)->data_uint32_t;
-+    if (global == 1) {
-+        mcd_vm_start();
-+    } else{
-+        uint32_t cpu_id = get_param(params, 1)->cpu_id;
-+        CPUState *cpu = mcd_get_cpu(cpu_id);
-+        mcd_cpu_start(cpu);
-+    }
-+}
++    /*
++     * TODO: multicore support
++     * get state info
++     */
++    mcd_cpu_state_st state_info = mcdserver_state.cpu_state;
++    /* TODO: add event information */
++    uint32_t event = 0;
++    /* send data */
++    g_string_printf(mcdserver_state.str_buf,
++        "%s=%s.%s=%u.%s=%u.%s=%u.%s=%lu.%s=%s.%s=%s.",
++        TCP_ARGUMENT_STATE, state_info.state,
++        TCP_ARGUMENT_EVENT, event, TCP_ARGUMENT_THREAD, 0,
++        TCP_ARGUMENT_TYPE, state_info.bp_type,
++        TCP_ARGUMENT_ADDRESS, state_info.bp_address,
++        TCP_ARGUMENT_STOP_STRING, state_info.stop_str,
++        TCP_ARGUMENT_INFO_STRING, state_info.info_str);
++    mcd_put_strbuf();
 +
-+/**
-+ * handle_vm_step() - Handler for the VM step TCP packet.
-+ *
-+ * Calls :c:func:`mcd_cpu_sstep` for the CPU which sould be stepped.
-+ * Stepping all CPUs is currently not supported.
-+ * @params: GArray with all TCP packet parameters.
-+ */
-+static void handle_vm_step(GArray *params, void *user_ctx)
-+{
-+    uint32_t global = get_param(params, 0)->data_uint32_t;
-+    if (global == 1) {
-+        /* TODO: add multicore support */
-+    } else{
-+        uint32_t cpu_id = get_param(params, 1)->cpu_id;
-+        CPUState *cpu = mcd_get_cpu(cpu_id);
-+        int return_value = mcd_cpu_sstep(cpu);
-+        if (return_value != 0) {
-+            g_assert_not_reached();
-+        }
++    /* reset debug info after first query */
++    if (strcmp(state_info.state, CORE_STATE_DEBUG) == 0) {
++        mcdserver_state.cpu_state.stop_str = "";
++        mcdserver_state.cpu_state.info_str = "";
++        mcdserver_state.cpu_state.bp_type = 0;
++        mcdserver_state.cpu_state.bp_address = 0;
 +    }
-+}
-+
-+/**
-+ * handle_vm_stop() - Handler for the VM stop TCP packet.
-+ *
-+ * Always calls :c:func:`mcd_vm_stop` and stops all cores. Stopping individual
-+ * cores is currently not supported.
-+ * @params: GArray with all TCP packet parameters.
-+ */
-+static void handle_vm_stop(GArray *params, void *user_ctx)
-+{
-+    /* TODO: add core dependant break option */
-+    mcd_vm_stop();
 +}
 +
  /**
-  * mcd_handle_packet() - Evaluates the type of received packet and chooses the
-  * correct handler.
-@@ -707,6 +896,37 @@ static int mcd_handle_packet(const char *line_buf)
-             cmd_parser = &close_core_cmd_desc;
-         }
-         break;
-+    case TCP_CHAR_GO:
-+        {
-+            static MCDCmdParseEntry go_cmd_desc = {
-+                .handler = handle_vm_start,
-+            };
-+            go_cmd_desc.cmd = (char[2]) { TCP_CHAR_GO, '\0' };
-+            strcpy(go_cmd_desc.schema,
-+                (char[3]) { ARG_SCHEMA_INT, ARG_SCHEMA_CORENUM, '\0' });
-+            cmd_parser = &go_cmd_desc;
-+        }
-+        break;
-+    case TCP_CHAR_STEP:
-+        {
-+            static MCDCmdParseEntry step_cmd_desc = {
-+                .handler = handle_vm_step,
-+            };
-+            step_cmd_desc.cmd = (char[2]) { TCP_CHAR_STEP, '\0' };
-+            strcpy(step_cmd_desc.schema,
-+                (char[3]) { ARG_SCHEMA_INT, ARG_SCHEMA_CORENUM, '\0' });
-+            cmd_parser = &step_cmd_desc;
-+        }
-+        break;
-+    case TCP_CHAR_BREAK:
-+        {
-+            static MCDCmdParseEntry break_cmd_desc = {
-+                .handler = handle_vm_stop,
-+            };
-+            break_cmd_desc.cmd = (char[2]) { TCP_CHAR_BREAK, '\0' };
-+            cmd_parser = &break_cmd_desc;
-+        }
-+        break;
-     default:
-         /* command not supported */
-         mcd_put_packet("");
+  * init_query_cmds_table() - Initializes all query functions.
+  *
+@@ -1507,6 +1544,13 @@ static void init_query_cmds_table(MCDCmdParseEntry *mcd_query_cmds_table)
+     strcpy(query_regs_c.schema, (char[2]) { ARG_SCHEMA_QRYHANDLE, '\0' });
+     mcd_query_cmds_table[cmd_number] = query_regs_c;
+     cmd_number++;
++
++    MCDCmdParseEntry query_state = {
++        .handler = handle_query_state,
++        .cmd = QUERY_ARG_STATE,
++    };
++    strcpy(query_state.schema, (char[2]) { ARG_SCHEMA_CORENUM, '\0' });
++    mcd_query_cmds_table[cmd_number] = query_state;
+ }
+ 
+ /**
 -- 
 2.34.1
 
