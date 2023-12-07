@@ -2,89 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82658084FA
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 10:52:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8783808B39
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 15:59:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBB2h-0004KB-IQ; Thu, 07 Dec 2023 04:51:39 -0500
+	id 1rBFpo-0003E7-CH; Thu, 07 Dec 2023 09:58:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBB2g-0004Jo-4E
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 04:51:38 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <talhak2111@gmail.com>)
+ id 1rBBC8-0005wL-Nv
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:01:24 -0500
+Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBB2e-00065I-Ih
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 04:51:37 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3332ad5b3e3so701145f8f.2
- for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 01:51:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <talhak2111@gmail.com>)
+ id 1rBBC7-0000zO-7o
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:01:24 -0500
+Received: by mail-yw1-x1129.google.com with SMTP id
+ 00721157ae682-5d226f51f71so5076997b3.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:01:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701942695; x=1702547495; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=gmail.com; s=20230601; t=1701943276; x=1702548076; darn=nongnu.org;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
  :from:to:cc:subject:date:message-id:reply-to;
- bh=OMT9mpdp7J8SxTG46vTrcXPkxPvBldEv57N5K/BFzi8=;
- b=dTnPnBNUtlE/HY5YtC6Qs1zW/m28ng1Ho3txobKxtTxw/u1fgivq+36h95td7aPHvb
- dTloDoGz0kapdruFbYaOXqEvW/U+2MpfDAF0RC1EdTYN1WQDZkw0R6lmWfZ9AYdvH/27
- uUetaIdWwhNfzcMZSfOueklliEdBvddQku7bSLw6yYsrMc/+8mZaAU71YMK9feYDlgZY
- xu6L2ifl2NJY04HmKARg2djF+fMs+KVs+8EiON2Nn+gjJB6aA8LjAo3xN9ehOgBFeUiH
- UoU5ucKNEn7i7YA7dsqVTevn48Y49K+9iqbny6ScQfpu9+H8LNdOK6s+idI4sIjZi9xw
- 61pA==
+ bh=oGpqZnZDjSFzvv3ic0waLr4K/O9G44Bc3lTA7DmFUVY=;
+ b=hRXJE1JlLSxXVFx3GAjCd3J8RbpiXnl8hTGItquZlsid1sOkhetrsc+NRNmu3n+Jlq
+ LDVmRFMq6nK61wZK0KJ9sv7YJPIb+b/391rq6aR/YowHMIY8MJi1u5Zu+XmRg7nZaLST
+ QoyJQJvhmPswDsyvl23WydR5+XZMsCz/IH5Bs2XZ5RoVYi8IcYUuBhxkhO7RcWhybnn8
+ ZZLqJggHiAgch0aDn6aDJOvZe58qNDMk3Tjd2U6tCXhJW5UzV2vz4pIVUsJUG3oZi50A
+ lv0qYXdXTnD8t813Bq+4bCLhKZywug4QVFyWk/OzvqArAZOiFygtjiaF3PXT1WAg1MmN
+ Rgsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701942695; x=1702547495;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1701943276; x=1702548076;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OMT9mpdp7J8SxTG46vTrcXPkxPvBldEv57N5K/BFzi8=;
- b=GaDa9MTGfNYKRajSacED2QAWaG/dicnafz5QbPOQHCb115mte28cVJRq0OKArf9VB3
- 8x/Q4gLBs+9qaYg9LhaXgWlHkJEBfYXkVDiWlN54P2EPwg1osaMrgeJ1jJTZZBDjMUXt
- Z26rvRFCU3j5WJPp5ogu9e1MdZ7zYRDQxOF8UmicxiJ/8o6xjG3tORssWwsQRWS/nnXD
- 7FoXHIA/qt1Yb1GUD5yglPy9i+agtXi0k1zRiL+UCVJwgaAm+2L/FJ2HAuzOheSEbjZO
- ZCDYTr/Jippsqag38E/j8Pt7h8geZkyirFC1lWxie1cNAWc3t/FBaXnT4gsrCDQkQ2+3
- t0vA==
-X-Gm-Message-State: AOJu0YyGFryHofu9+e1O8R5vsvAEWdSBVUgnepmC3xtd8dKM+4qJOSlC
- Ie1LUUGlmD/s20QqqHCPJZ3IHw==
-X-Google-Smtp-Source: AGHT+IE0D515kI5UgajXXEKqkREafxovTvsciUZpifTqN0t+BNyUX7bPyKCobK3yBrS2Gpl9O6nk9Q==
-X-Received: by 2002:a5d:456c:0:b0:333:d065:a8bc with SMTP id
- a12-20020a5d456c000000b00333d065a8bcmr1246434wrc.57.1701942694692; 
- Thu, 07 Dec 2023 01:51:34 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.202.111])
- by smtp.gmail.com with ESMTPSA id
- i3-20020adffdc3000000b00333504001acsm994871wrs.15.2023.12.07.01.51.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Dec 2023 01:51:34 -0800 (PST)
-Message-ID: <06ed276a-4e57-49d1-a4e7-7a14d1fbd12a@linaro.org>
-Date: Thu, 7 Dec 2023 10:51:32 +0100
+ bh=oGpqZnZDjSFzvv3ic0waLr4K/O9G44Bc3lTA7DmFUVY=;
+ b=ICJX1B+9o/Hd0xnG70UQPoqpf9TNrY1PCK7W/FZTCFa2nIithcjSft499jhbbC2VIP
+ rjb6SULqVREnrvrcwR5dOIhtIqVY7UuGhcopt6ESMoTBnJKedsMfQnYDWy6tjzs4wYvP
+ A36hjW/Sirsh50XPoD0qOIzZ+cy3yYtYGMEYn3kZzMyRXFg/zhMV7/uQiyS8P6hYCgFx
+ GDxgJ1xdYs71qR5HoBe5oKsOs5tOQBw4jsQ3dyLR78HGs0KFzbPpCOSIUg52ierhzK+G
+ yFhBM6OM04Gji6LJC7wb3NleX9earm5TXQMGSSNeFwS2CLiXkVgW9qdM7nRXr+kT3xOp
+ kJQQ==
+X-Gm-Message-State: AOJu0YxiCwoejidO7Ki+RYS/HKaOgrnBKqw57jAhPXgKZduZLPPSSiba
+ UvYpCVvclAaqvlRE5ESZclIH8McWrBiVbvUuYiM675UH
+X-Google-Smtp-Source: AGHT+IF1r5cSLn8YjWNauPlme82cYpN2OQhz3xZsWIt/F/GwfA0JRaRHWmvITQKFbrPRk0dAt6uz5By6xBJYlsuS1XQ=
+X-Received: by 2002:a0d:ccce:0:b0:5a8:960d:e538 with SMTP id
+ o197-20020a0dccce000000b005a8960de538mr2292536ywd.47.1701943276060; Thu, 07
+ Dec 2023 02:01:16 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 3/5] tcg: add perfmap and jitdump
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
- "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20230116223637.3512814-1-richard.henderson@linaro.org>
- <20230116223637.3512814-4-richard.henderson@linaro.org>
- <e1112615-0e6c-e0ea-aa60-1d94d1da26ea@linaro.org>
- <e122d115-0d0f-59d2-b593-2210ca1118df@linaro.org>
- <9d6b93c20340059f1a2fbea4a7a531e2e35ba34d.camel@linux.ibm.com>
- <018c47b2-6cbe-8aca-2b6d-86541b05194f@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <018c47b2-6cbe-8aca-2b6d-86541b05194f@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <CAMnsxbAr3GyB6bpvrYMt-31Q+ZKuEoLm+i++CWs6thQmQUXtVw@mail.gmail.com>
+In-Reply-To: <CAMnsxbAr3GyB6bpvrYMt-31Q+ZKuEoLm+i++CWs6thQmQUXtVw@mail.gmail.com>
+From: Talha Khan <talhak2111@gmail.com>
+Date: Thu, 7 Dec 2023 15:31:04 +0530
+Message-ID: <CAMnsxbB+yhePg60yd1x0MskJiQ1hBzwKpe94x8XQTDD5Jh2HPg@mail.gmail.com>
+Subject: Re: Build qemu without USB,network devices
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000065c439060be88c43"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
+ envelope-from=talhak2111@gmail.com; helo=mail-yw1-x1129.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 07 Dec 2023 09:58:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,49 +84,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Ilya,
+--00000000000065c439060be88c43
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 30/6/23 15:24, Richard Henderson wrote:
-> On 6/30/23 14:39, Ilya Leoshkevich wrote:
->> On Thu, 2023-06-29 at 14:59 +0200, Richard Henderson wrote:
->>> On 6/29/23 13:31, Philippe Mathieu-Daudé wrote:
->>>>> diff --git a/tcg/tcg.c b/tcg/tcg.c
->>>>> index da91779890..9b7df71e7a 100644
->>>>> --- a/tcg/tcg.c
->>>>> +++ b/tcg/tcg.c
->>>>> @@ -61,6 +61,7 @@
->>>>>    #include "exec/log.h"
->>>>>    #include "tcg/tcg-ldst.h"
->>>>>    #include "tcg-internal.h"
->>>>> +#include "accel/tcg/perf.h"
->>>>
->>>> Is it OK to include an header from QEMU's accel/tcg/ here?
->>>> I thought we wanted to keep tcg/ kinda independant (or maybe
->>>> this is already too late and this isn't a concern anymore).
->>>
->>> It's not ideal, no.  Perf really should live in tcg/.
->>>
->>>
->>> r~
->>
->> This would require to somehow get rid of this:
->>
->> #if defined(TARGET_I386)
->>              q[insn].address -= tb->cs_base;
->> #endif
->>
->> I'll try to come up with a patch.
-> 
-> Just drop it?  Did you really want EIP instead of the full virtual address?
-> It only makes a difference for 16-bit mode anyway.
+And if this is not the right place to ask the question can someone point me
+in the right direction or forum where i should ask this?
 
-Any update here? Have you tried 'perf' on non-x86 hosts?
-There is a "This replicates the restore_state_to_opc() logic"
-comment but only x86 restore_state_to_opc() logic is used,
-so I'm rather confused here.
+On Thu, Dec 7, 2023 at 1:27=E2=80=AFPM Talha Khan <talhak2111@gmail.com> wr=
+ote:
 
-Thanks,
+> Hey all,
+> I want to build qemu without network devices( nic ), usb and vga. So
+> basically a very lightweight emulator without the things i need.
+> Any help and leads would be appreciated.
+> Yours Truly
+> Talha
+>
 
-Phil.
+--00000000000065c439060be88c43
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr">And if this is not the right place to ask the question can=
+ someone point me in the right direction or forum where i should ask this?<=
+br></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_att=
+r">On Thu, Dec 7, 2023 at 1:27=E2=80=AFPM Talha Khan &lt;<a href=3D"mailto:=
+talhak2111@gmail.com">talhak2111@gmail.com</a>&gt; wrote:<br></div><blockqu=
+ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
+ solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div>Hey all,</d=
+iv><div>I want to build qemu without network devices( nic ), usb and vga. S=
+o basically a very lightweight emulator without the things i need. <br></di=
+v><div>Any help and leads would be appreciated.</div><div>Yours Truly</div>=
+<div>Talha<br></div></div>
+</blockquote></div>
+
+--00000000000065c439060be88c43--
 
