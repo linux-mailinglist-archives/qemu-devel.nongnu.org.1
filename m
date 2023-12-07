@@ -2,63 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58778808380
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 09:47:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70972808408
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 10:15:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBA1w-0006cP-AC; Thu, 07 Dec 2023 03:46:48 -0500
+	id 1rBASq-0004qx-1e; Thu, 07 Dec 2023 04:14:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1rBA1v-0006c5-36
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:46:47 -0500
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1rBA1t-0007hT-HZ
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:46:46 -0500
-Received: from [10.12.102.111] (unknown [85.142.117.226])
- by mail.ispras.ru (Postfix) with ESMTPSA id 816BE40737C0;
- Thu,  7 Dec 2023 08:46:43 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 816BE40737C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1701938804;
- bh=KXhb6yk4bTEaDwzE8zGnmGbadO2ro5bGvlDn1K7/lgw=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=ttMWKANLS7S/22wtA1DpIPYM3+w2O37//u+0h94jYMRCieScaG8Wp8fpYxIJAyYn7
- EhyhP7l4zuDwJrIG8xUGN1+HtGybzs/XLROF9z+eLy62wfyy61Ed4DuVoxQUTHjIBJ
- k/DHoV5HGFbAsRKqv82a7KInuI4pRYiaeWQh4ItE=
-Message-ID: <c7a7e13d-1d8a-4737-acad-3c4c5f7d4fac@ispras.ru>
-Date: Thu, 7 Dec 2023 11:46:43 +0300
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rBASn-0004qk-5W
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 04:14:33 -0500
+Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rBASl-0007Dw-D5
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 04:14:32 -0500
+Received: by mail-ot1-x330.google.com with SMTP id
+ 46e09a7af769-6d7fa93afe9so429645a34.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 01:14:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701940470; x=1702545270; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4UGjQCd7LVQJ0VtFzIdDdhxzodi3g57d9KV1C6E0+n8=;
+ b=WOLc+VKoRDTex8bR9RFvvAcxenbAgATjiOL1ce0mo9spE7vDV4lgsneIAjqO9jvF7i
+ HQCB5zO6esRZ085KD7j5eMnmb0wwhOn3YAzUfIj0HcCGC9caHWoLSUDiV1YHQa828Lhs
+ 8TYOtECBFbbriV367JiLBOCWar8Sg6g4+X4kdH555yMTryz05F0D7sTdAu9w30YXmS0U
+ vZSDHOdYSJokbNI3oNALnXcGR3I/0qAfzwWkMxk/ZNmnLxloQ9f9MJTaupEAPJa6Km1A
+ 7qVW3dJnl7xmu8pM+bhaq1zn4i7klweuTK9cTYDAXIGR/Mqtb0qqv1s6PT3cV5UKM215
+ uFEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701940470; x=1702545270;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4UGjQCd7LVQJ0VtFzIdDdhxzodi3g57d9KV1C6E0+n8=;
+ b=kX3bsbHT51Dtgiv7Dhok+FH880229lMROqNfu9AghznBL0uj70rSMo/0DitiVwv6sk
+ R4OiZM4XSlTpMQ1nQNaxTFByNhMiiKJD65c4n4Mxk91dbHrWwmd/89Mvn2XxWITucaeF
+ ppA4WsXlylwPwrFPALnpoJrw6zEqTVOVRk01hohViA+ezmbqZwBTU5Ho52hZyUhqcDUq
+ l3gEW4+W9u/4zInw9csO7O0G6pWQJSG1g2UnzysOnmrZmezYR5hq3WFzpv0S8QmrAV3U
+ RX+/YPii/AzRu45sCoJ5+4oLrFD0bqWUnWUMUpabxzBpynhUy5aYy58e8WttBPSjUJRu
+ PBMA==
+X-Gm-Message-State: AOJu0YwC3G2jKb/kb4bdlxva/yd5jaNS51tIIumWMpBgtZL7g/dShTLk
+ xzX3UYJEde6k16E0bUMzijaCFv0RtKYZ9vX7ylI=
+X-Google-Smtp-Source: AGHT+IFMAgiw3M79ejSrDddrDQo7MF/CVWsVF5aT0rrGGbQnV8/fVx1NkazPHxw78qtagcKmLyS3kLb5SA3+IsDAzw4=
+X-Received: by 2002:a05:6870:3047:b0:1fb:75a:c436 with SMTP id
+ u7-20020a056870304700b001fb075ac436mr2173231oau.95.1701940469762; Thu, 07 Dec
+ 2023 01:14:29 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/11] chardev: force write all when recording replay logs
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-References: <20231205204106.95531-1-alex.bennee@linaro.org>
- <20231205204106.95531-11-alex.bennee@linaro.org>
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20231205204106.95531-11-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
+References: <20231206155821.1194551-1-michael.roth@amd.com>
+In-Reply-To: <20231206155821.1194551-1-michael.roth@amd.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Thu, 7 Dec 2023 04:14:17 -0500
+Message-ID: <CAJSP0QUnqJPTL2W9xknEW7Er0SWCcK1kxST1fCvedmqsics_VA@mail.gmail.com>
+Subject: Re: [PATCH v3 for-8.2] i386/sev: Avoid SEV-ES crash due to missing
+ MSR_EFER_LMA bit
+To: Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Marcelo Tosatti <mtosatti@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Lara Lazier <laramglazier@gmail.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+ Maxim Levitsky <mlevitsk@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
+ envelope-from=stefanha@gmail.com; helo=mail-ot1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,34 +92,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05.12.2023 23:41, Alex Bennée wrote:
-> This is mostly a problem within avocado as serial generally isn't busy
-> enough to overfill pipes. However the consequences of recording a
-> failed write will haunt us on replay when causing the log to go out of
-> sync.
-> 
-> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2010
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Cc: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+On Wed, 6 Dec 2023 at 10:59, Michael Roth <michael.roth@amd.com> wrote:
+>
+> Commit 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+> added error checking for KVM_SET_SREGS/KVM_SET_SREGS2. In doing so, it
+> exposed a long-running bug in current KVM support for SEV-ES where the
+> kernel assumes that MSR_EFER_LMA will be set explicitly by the guest
+> kernel, in which case EFER write traps would result in KVM eventually
+> seeing MSR_EFER_LMA get set and recording it in such a way that it would
+> be subsequently visible when accessing it via KVM_GET_SREGS/etc.
+>
+> However, guest kernels currently rely on MSR_EFER_LMA getting set
+> automatically when MSR_EFER_LME is set and paging is enabled via
+> CR0_PG_MASK. As a result, the EFER write traps don't actually expose the
+> MSR_EFER_LMA bit, even though it is set internally, and when QEMU
+> subsequently tries to pass this EFER value back to KVM via
+> KVM_SET_SREGS* it will fail various sanity checks and return -EINVAL,
+> which is now considered fatal due to the aforementioned QEMU commit.
+>
+> This can be addressed by inferring the MSR_EFER_LMA bit being set when
+> paging is enabled and MSR_EFER_LME is set, and synthesizing it to ensure
+> the expected bits are all present in subsequent handling on the host
+> side.
+>
+> Ultimately, this handling will be implemented in the host kernel, but to
+> avoid breaking QEMU's SEV-ES support when using older host kernels, the
+> same handling can be done in QEMU just after fetching the register
+> values via KVM_GET_SREGS*. Implement that here.
+>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Marcelo Tosatti <mtosatti@redhat.com>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Cc: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Cc: Lara Lazier <laramglazier@gmail.com>
+> Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+> Cc: Maxim Levitsky <mlevitsk@redhat.com>
+> Cc: kvm@vger.kernel.org
+> Fixes: 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 > ---
->   chardev/char.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/chardev/char.c b/chardev/char.c
-> index 996a024c7a..6e5b4d7345 100644
-> --- a/chardev/char.c
-> +++ b/chardev/char.c
-> @@ -171,7 +171,8 @@ int qemu_chr_write(Chardev *s, const uint8_t *buf, int len, bool write_all)
->           return res;
->       }
->   
-> -    res = qemu_chr_write_buffer(s, buf, len, &offset, write_all);
-> +    res = qemu_chr_write_buffer(s, buf, len, &offset,
-> +                                replay_mode == REPLAY_MODE_RECORD ? true : write_all);
->   
->       if (qemu_chr_replay(s) && replay_mode == REPLAY_MODE_RECORD) {
->           replay_char_write_event_save(res, offset);
+>  target/i386/kvm/kvm.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
-Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Applied, thanks!
 
+Stefan
+
+>
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 11b8177eff..4ce80555b4 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -3643,6 +3643,10 @@ static int kvm_get_sregs(X86CPU *cpu)
+>      env->cr[4] =3D sregs.cr4;
+>
+>      env->efer =3D sregs.efer;
+> +    if (sev_es_enabled() && env->efer & MSR_EFER_LME &&
+> +        env->cr[0] & CR0_PG_MASK) {
+> +        env->efer |=3D MSR_EFER_LMA;
+> +    }
+>
+>      /* changes to apic base and cr8/tpr are read back via kvm_arch_post_=
+run */
+>      x86_update_hflags(env);
+> @@ -3682,6 +3686,10 @@ static int kvm_get_sregs2(X86CPU *cpu)
+>      env->cr[4] =3D sregs.cr4;
+>
+>      env->efer =3D sregs.efer;
+> +    if (sev_es_enabled() && env->efer & MSR_EFER_LME &&
+> +        env->cr[0] & CR0_PG_MASK) {
+> +        env->efer |=3D MSR_EFER_LMA;
+> +    }
+>
+>      env->pdptrs_valid =3D sregs.flags & KVM_SREGS2_FLAGS_PDPTRS_VALID;
+>
+> --
+> 2.25.1
+>
+>
 
