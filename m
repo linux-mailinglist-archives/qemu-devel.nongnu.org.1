@@ -2,73 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5249D8085D9
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 11:55:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DD9808671
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 12:12:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBC1m-0006XR-Rx; Thu, 07 Dec 2023 05:54:46 -0500
+	id 1rBCHT-0002fK-ST; Thu, 07 Dec 2023 06:11:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBC1j-0006Wz-Pv
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:54:44 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBCHO-0002et-SA
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 06:10:55 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBC1i-000784-6g
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:54:43 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3332e351670so718068f8f.0
- for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:54:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBCHM-0004fc-DM
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 06:10:54 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-33350fcb2c7so554241f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 03:10:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701946480; x=1702551280; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pzHfNd+5ye/JZZWncMwC1J3XXil2LznVmX5p2wjtceY=;
- b=PLDMXR5J3ceAev10UkWnOYlAei/YBi1z7iOPkTO0FnSPl/ZLaEWVXw2GrqgyHGRf8/
- zQEeTQOr/nmzxrR+aAhwzawRRmrvxevh4FnB9W61wsDz1ms5SD01kSKAdXFMpKFjeaaa
- 6K93ial56Sp1GHx43lzASnoHQSG1SJp/mhGrbzWaZ3cpK+RFyGieDB43jywiutkPaxwv
- oZA40Merptp+0151U/lDr+KGnKFXTh4Bc49N01dfouoTB7wu1nz6+ydbng0OfMsXm4yx
- ZwUIxNOxtPp9Pj65GMHynkoADIrYJUyB6gOO/vegE+/YPbY96NbKgK7jnkvt7PJM1Nir
- ixmg==
+ d=linaro.org; s=google; t=1701947450; x=1702552250; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dXjSCK34R3h3M/dmvhhSfTZBGg4aHS/PwIXNQt3mFHo=;
+ b=xCi6Avti5xKEQm9LD9/SfZn/y2orBbrDkWY8PCl2PyFh+dD01GFD1BMxW0rlc3BVJy
+ NtFMiz5OkmEf6i9rVtX0kZes/PXAdqcG6hkODhDU7bwrQPTc1vRhC99bjnTtv7A3ae3c
+ gAw4Acd8ruucS9yKDlsXfeAVEiTGWkT7PBY7KZxv197oxrMRPWyhcCfvOMJIeU/rbusK
+ /t9hVGqfBQjOQPAhRAL57iOK9/bMvCSfMqHeXpydgXfFOs/uLVI5eXeFBzlMDRJ+YP8x
+ 4jkaY9QLOB+YSMlxOwQGyJenC8nXWx+cNI4xVKWLPllhz0op6J9cuBsqVMdfqDGF/6cb
+ 4S8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701946480; x=1702551280;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pzHfNd+5ye/JZZWncMwC1J3XXil2LznVmX5p2wjtceY=;
- b=hWMd5JkOUOp+KaAn34d5aUEM0jbRi/UFAqC9UXxtbWixm3uqsSSAaDX04UXcGkb8BU
- e6kshADMIJOOC6BKYlTjZlh6Ehz2og9LJpbBMPT8nZB82G+sQ3A4W61gdP7DBawnxL86
- IBHZNSr4oup167dHQjmWLC54BwxH6hzoN98dvEif4iH0X9N+j6Es2NZW1Ss4jVrEK+dm
- ZNlmNLnvl5t9HgmObBmJBZofcwIxF/4k2vw74mnpiBuLU2HZUPYs1ti5y7a/a8v8e2j9
- dtqrB8JYz6PQrsV3KP3BzRKDPoY9jCjG0x1y4jdZ99UaJYmUaaXI04u/KWpZcMZaxZK2
- 6ZXg==
-X-Gm-Message-State: AOJu0YzSxwXyhJXI5CeBb5q0X/SQwqowrH40HzR/slgg+7Bzu9saj1w7
- C8MEo5hoMkbYMyLuj6D1htM8cYqA+TqjmcAYIP4=
-X-Google-Smtp-Source: AGHT+IHma8uKa7BIFYjivlRLJLdj6+Ldk6Mjada5KP63e1mOO1zT+EPnRd8Bz+vbZV1jnRzL6RKCJw==
-X-Received: by 2002:a5d:6306:0:b0:333:130d:4311 with SMTP id
- i6-20020a5d6306000000b00333130d4311mr777394wru.52.1701946480450; 
- Thu, 07 Dec 2023 02:54:40 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701947450; x=1702552250;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dXjSCK34R3h3M/dmvhhSfTZBGg4aHS/PwIXNQt3mFHo=;
+ b=rK4fhlf3OtvwzmAXaOgEAMuGMZCKau8XwPFeDpJOIjlFh7kDj7KUtIxOzVR5Isml7h
+ 9hgrMpUr+GgnJU8PqWOjovALrWCRDCRUVqm6x8y4nw6Y3eWub1w+e0yihlx+PmIT0zzy
+ OIzugZv4bp6fBlUWBf4c/Kw3FPriGb15g44YewU6ICgHupbEAky+r/eJW39G77cQZlZp
+ YLG2PBZ89Ooz6VVRw12W5CXtaO3WnI+LuFe9liNGAAG8CWDoGARWGDCEsW2bdRMDjKeD
+ fYaySyfSBwj0TbeQAcPL3mQ18Cb+nu9QaXFdgB0750XPD2G+DLYXnYrFfSjfYz1vr+xd
+ 8MBA==
+X-Gm-Message-State: AOJu0YzhRhUBtPoHeA8ZFuo4ErXFihpp8sRTFvFA1iOpRgzoQ5coc5tT
+ CGGMHAUmmIAUDPtk8uKr+UeXbE4H0DFnNcRz0Ho=
+X-Google-Smtp-Source: AGHT+IGDzvoxJKYv0VrwfJCWpSQOGCJ1BYf3WcTdNe1ai2rwhhVxV93ov5MtzW7LMftESmmiyTzJ+g==
+X-Received: by 2002:adf:fac2:0:b0:333:2fd2:816a with SMTP id
+ a2-20020adffac2000000b003332fd2816amr1413317wrs.135.1701947450369; 
+ Thu, 07 Dec 2023 03:10:50 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.202.111])
  by smtp.gmail.com with ESMTPSA id
- m12-20020a5d4a0c000000b003333a0da243sm1121730wrq.81.2023.12.07.02.54.39
+ dh8-20020a0560000a8800b00334b3208700sm1163670wrb.49.2023.12.07.03.10.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 07 Dec 2023 02:54:40 -0800 (PST)
+ Thu, 07 Dec 2023 03:10:50 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] target/alpha: Only build sys_helper.c on system emulation
-Date: Thu,  7 Dec 2023 11:54:26 +0100
-Message-ID: <20231207105426.49339-3-philmd@linaro.org>
+Subject: [PATCH] target/arm: Restrict ARM_FEATURE_PMU to system emulation
+Date: Thu,  7 Dec 2023 12:10:48 +0100
+Message-ID: <20231207111048.50568-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231207105426.49339-1-philmd@linaro.org>
-References: <20231207105426.49339-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,52 +88,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+ARM Performance Monitor Unit is not reachable from user
+emulation, restrict it to system emulation.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/alpha/sys_helper.c | 3 ---
- target/alpha/meson.build  | 6 ++++--
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ target/arm/cpu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/target/alpha/sys_helper.c b/target/alpha/sys_helper.c
-index 98d9a0fff7..768116ef32 100644
---- a/target/alpha/sys_helper.c
-+++ b/target/alpha/sys_helper.c
-@@ -28,7 +28,6 @@
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 51f57fd5b4..60cf747fd6 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1410,6 +1410,7 @@ static Property arm_cpu_pmsav7_dregion_property =
+                                            pmsav7_dregion,
+                                            qdev_prop_uint32, uint32_t);
  
- 
- /* PALcode support special instructions */
--#ifndef CONFIG_USER_ONLY
- void helper_tbia(CPUAlphaState *env)
++#ifndef CONFIG_USER_ONLY
+ static bool arm_get_pmu(Object *obj, Error **errp)
  {
-     tlb_flush(env_cpu(env));
-@@ -74,5 +73,3 @@ void helper_set_alarm(CPUAlphaState *env, uint64_t expire)
-         timer_del(cpu->alarm_timer);
+     ARMCPU *cpu = ARM_CPU(obj);
+@@ -1432,6 +1433,7 @@ static void arm_set_pmu(Object *obj, bool value, Error **errp)
      }
+     cpu->has_pmu = value;
  }
--
--#endif /* CONFIG_USER_ONLY */
-diff --git a/target/alpha/meson.build b/target/alpha/meson.build
-index ea252c99a5..7dbbd55717 100644
---- a/target/alpha/meson.build
-+++ b/target/alpha/meson.build
-@@ -7,13 +7,15 @@ alpha_ss.add(files(
-   'clk_helper.c',
-   'int_helper.c',
-   'mem_helper.c',
--  'sys_helper.c',
-   'translate.c',
-   'vax_helper.c',
- ))
++#endif
  
- alpha_system_ss = ss.source_set()
--alpha_system_ss.add(files('machine.c'))
-+alpha_system_ss.add(files(
-+  'machine.c',
-+  'sys_helper.c',
-+))
+ unsigned int gt_cntfrq_period_ns(ARMCPU *cpu)
+ {
+@@ -1592,12 +1594,12 @@ void arm_cpu_post_init(Object *obj)
+     if (arm_feature(&cpu->env, ARM_FEATURE_EL2)) {
+         qdev_property_add_static(DEVICE(obj), &arm_cpu_has_el2_property);
+     }
+-#endif
  
- target_arch += {'alpha': alpha_ss}
- target_system_arch += {'alpha': alpha_system_ss}
+     if (arm_feature(&cpu->env, ARM_FEATURE_PMU)) {
+         cpu->has_pmu = true;
+         object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
+     }
++#endif
+ 
+     /*
+      * Allow user to turn off VFP and Neon support, but only for TCG --
 -- 
 2.41.0
 
