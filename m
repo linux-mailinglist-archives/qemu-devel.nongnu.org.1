@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CAA7808560
+	by mail.lfdr.de (Postfix) with ESMTPS id A040A808562
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 11:28:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBBaq-0004fq-4a; Thu, 07 Dec 2023 05:26:56 -0500
+	id 1rBBat-0004hN-I7; Thu, 07 Dec 2023 05:26:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBaj-0004eV-Tk
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:51 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBar-0004gm-QZ
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:57 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBag-0001Yw-Ti
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:49 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40c09f5a7cfso9051495e9.0
- for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:26:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBBan-0001Zo-DL
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:26:56 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40c2308faedso8173445e9.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:26:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701944805; x=1702549605; darn=nongnu.org;
+ d=linaro.org; s=google; t=1701944810; x=1702549610; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k3NowGfQ+Uh8kFkQHiDEgo2KSzDvk36tqOsqfMg+nHw=;
- b=UHoUid5OxExp9gtgboFVFjy7u1FGS9SNgaEowrG2YGoOMFq7LJdqrvqvauTlcwENoJ
- 1oujlxOmVc+f+5IUOYF8V6Y+rH2Zb+3QoibqRstehXhmwY7pCi/cxWTJml11NR77NbJX
- zs3WgBN8Bfy98X87Z5z87lBP2+YgYQw31Z+aFQO4hcr8AVgoZAVYF9/cykNAyKzZtoQf
- kHt2fQTL5P6nLpqfZhw5MX9Jj9J/00APZVYmBZ+q79on6Nnu2iEPvhtFS9g+gAu6DOjd
- yTwYMuV+Zqj+t8/fRZM+Rs0Nszrg91loWM8ZllbyxjBzXYUQSWHcptXY5b2v0vmqdXyz
- fKgg==
+ bh=BgIxy79UZseNDiD3U1SZgYUkivqTyyMr1op/QHIJsqs=;
+ b=CZ9nnxAB1PxCVyCIfUFYXuO1DiAWPsnNNBoh4BC8+Mz7KWd7PFLD6GaC1Zd0QYuv4r
+ W3fO8fqcwSwkbtbI97/raIMOwwLGhxY0/p1Jv1HQn368EtQ6nq0W5voAfk3QbzJVV4mQ
+ MotgY6Dpng8Uq/dELkCndU+LCscYSTF6D/UmoQNs+OSdrlFT1L+41VNAgIQfvdXyQVdj
+ KVoAG83ikKyqsQD6rrIbKIwUO1xP0OreeS3Er+qu+pDPwiRAxSQ8zxsDw+lANDOzC/PL
+ o0OLmZH2uCuIT9OArV0ZIIE5TPsoX+jf35Nj8/U7A80c2GMNbK6jVNwTTSNfsfb50ZPr
+ 01wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701944805; x=1702549605;
+ d=1e100.net; s=20230601; t=1701944810; x=1702549610;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k3NowGfQ+Uh8kFkQHiDEgo2KSzDvk36tqOsqfMg+nHw=;
- b=KVbsv4jA5O9oZUadxFGqjLCGNL8vjB3maVp5nZkydxm38F683tjMdiX2zph8H2ag8T
- eO1CZP0Tt810ueuERicaoK/Fp39D9tDxqhdoRBlkUGooX9eKC3r1tQLj4CfvfvkrCZL5
- D9lz5NpsGd9uJrwRE76v9XTM6ULTR+YKQR/VMdZK7uhC8qJGEJQXj52W8hy2kG2lylfu
- G5p+DAruTFPzlC/fWNhpcSyFFlOaD40adfw7lsA75dg08l041vrl6upotXv3u3JJ1JLR
- smNGYpcKLoDBmFwtdet+QHUosxan5jQhgiGNKYwJRkfx5truIkD2F0cNsJSe4aSVCL6H
- 25vQ==
-X-Gm-Message-State: AOJu0Yw6hhVsXtOa8fNGUvUd8sMCh+F5tQu563WbJHcu0VjDG8+h0nRy
- Jattft05raVe6zhbsOyMJ7UwUquxjAW7UWjIzJw=
-X-Google-Smtp-Source: AGHT+IFSftCQ1iP3Uhw/vSbJ/eUpyDSByqITy/z+dX4EczDmrMmon7AHlzQh52UxTFVyJrnS4tISBA==
-X-Received: by 2002:a05:600c:4512:b0:40b:383a:ebc7 with SMTP id
- t18-20020a05600c451200b0040b383aebc7mr1351527wmo.34.1701944805241; 
- Thu, 07 Dec 2023 02:26:45 -0800 (PST)
+ bh=BgIxy79UZseNDiD3U1SZgYUkivqTyyMr1op/QHIJsqs=;
+ b=uQ0vIU/nEqkwpPnQnoHGBxo+S/bfgKY3ApExPFoRA4GHb1tVl7w0EvklxPa6xYRG2c
+ 4Ga1A9nRg2aKuOiGDpNhaHBWLCBNg/OZ3d6B/GHnB2pGPXWvdFj6IuXNkG0STymDJSkU
+ wcxGZVniZMRPdeXuScDCvWKsP80DdnBeRGby2XCxUqLPDZwP3ScLPPPITfbZNJT0u24d
+ v76K8W33xzxH1OGJqEA4ohMQryEEfDgif0w5UCYwXiHTk2XPm5vTGhfI4Fx1kZtZ3txn
+ BVI2uCYY2/xPGXG14C8HqVX7oa6W7hXSon55eo5xDrTR5CmLT/yEs/7tIg8phDcXLKGZ
+ OTSw==
+X-Gm-Message-State: AOJu0Yw6ttlh2BUQb6ETND33n50QjuwgsKUZ3vTRqzOPZRKA3v+lKOwS
+ wfuL5gSxxArysMaGGn/D3u1ezJzL5c/tNdPlmxg=
+X-Google-Smtp-Source: AGHT+IFMD9QGCCZ+aQx2wpdruPVnMiBAQQhdXj/4nx5YQo1ZuayqCd/rs6oOWCR92l1VHUlY7bmsVw==
+X-Received: by 2002:a05:600c:4fd5:b0:40b:5e21:d351 with SMTP id
+ o21-20020a05600c4fd500b0040b5e21d351mr1394153wmq.90.1701944810654; 
+ Thu, 07 Dec 2023 02:26:50 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.202.111])
  by smtp.gmail.com with ESMTPSA id
- j15-20020a05600c1c0f00b0040b4c59f133sm1435364wms.1.2023.12.07.02.26.44
+ fa11-20020a05600c518b00b0040b360cc65csm1443849wmb.0.2023.12.07.02.26.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 07 Dec 2023 02:26:44 -0800 (PST)
+ Thu, 07 Dec 2023 02:26:50 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
  qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/3] sysemu/replay: Restrict icount to TCG emulation
-Date: Thu,  7 Dec 2023 11:26:30 +0100
-Message-ID: <20231207102632.33634-3-philmd@linaro.org>
+Subject: [PATCH 3/3] sysemu/replay: Restrict icount to system emulation
+Date: Thu,  7 Dec 2023 11:26:31 +0100
+Message-ID: <20231207102632.33634-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231207102632.33634-1-philmd@linaro.org>
 References: <20231207102632.33634-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,69 +95,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/sysemu/replay.h | 2 ++
- stubs/icount.c          | 6 ------
- system/vl.c             | 6 +++++-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ include/sysemu/cpu-timers.h |  2 +-
+ include/sysemu/replay.h     |  9 ++++++---
+ stubs/icount.c              | 19 -------------------
+ 3 files changed, 7 insertions(+), 23 deletions(-)
 
+diff --git a/include/sysemu/cpu-timers.h b/include/sysemu/cpu-timers.h
+index 2e786fe7fb..188f67ee90 100644
+--- a/include/sysemu/cpu-timers.h
++++ b/include/sysemu/cpu-timers.h
+@@ -24,7 +24,7 @@ void cpu_timers_init(void);
+  * 1 = Enabled - Fixed conversion of insn to ns via "shift" option
+  * 2 = Enabled - Runtime adaptive algorithm to compute shift
+  */
+-#ifdef CONFIG_TCG
++#if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+ extern int use_icount;
+ #define icount_enabled() (use_icount)
+ #else
 diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
-index 08aae5869f..02fa75c783 100644
+index 02fa75c783..8102fa54f0 100644
 --- a/include/sysemu/replay.h
 +++ b/include/sysemu/replay.h
-@@ -79,12 +79,14 @@ int64_t replay_save_clock(ReplayClockKind kind, int64_t clock,
- int64_t replay_read_clock(ReplayClockKind kind, int64_t raw_icount);
- /*! Saves or reads the clock depending on the current replay mode. */
- #define REPLAY_CLOCK(clock, value)                                      \
-+    !icount_enabled() ? (value) :                                       \
-     (replay_mode == REPLAY_MODE_PLAY                                    \
-         ? replay_read_clock((clock), icount_get_raw())                  \
-         : replay_mode == REPLAY_MODE_RECORD                             \
-             ? replay_save_clock((clock), (value), icount_get_raw())     \
-             : (value))
- #define REPLAY_CLOCK_LOCKED(clock, value)                               \
-+    !icount_enabled() ? (value) :                                       \
-     (replay_mode == REPLAY_MODE_PLAY                                    \
-         ? replay_read_clock((clock), icount_get_raw_locked())           \
-         : replay_mode == REPLAY_MODE_RECORD                             \
+@@ -1,6 +1,3 @@
+-#ifndef SYSEMU_REPLAY_H
+-#define SYSEMU_REPLAY_H
+-
+ /*
+  * QEMU replay (system interface)
+  *
+@@ -11,6 +8,12 @@
+  * See the COPYING file in the top-level directory.
+  *
+  */
++#ifndef SYSEMU_REPLAY_H
++#define SYSEMU_REPLAY_H
++
++#ifdef CONFIG_USER_ONLY
++#error Cannot include this header from user emulation
++#endif
+ 
+ #include "exec/replay-core.h"
+ #include "qapi/qapi-types-misc.h"
 diff --git a/stubs/icount.c b/stubs/icount.c
-index fc3beac003..c39a65da92 100644
+index c39a65da92..ec8d150069 100644
 --- a/stubs/icount.c
 +++ b/stubs/icount.c
-@@ -1,5 +1,4 @@
- #include "qemu/osdep.h"
--#include "qapi/error.h"
- #include "sysemu/cpu-timers.h"
+@@ -5,30 +5,11 @@
  
- /* icount - Instruction Counter API */
-@@ -10,11 +9,6 @@ void icount_update(CPUState *cpu)
- {
-     abort();
- }
--void icount_configure(QemuOpts *opts, Error **errp)
+ int use_icount;
+ 
+-void icount_update(CPUState *cpu)
 -{
--    /* signal error */
--    error_setg(errp, "cannot configure icount, TCG support not available");
+-    abort();
 -}
  int64_t icount_get_raw(void)
  {
      abort();
-diff --git a/system/vl.c b/system/vl.c
-index 2bcd9efb9a..8c99c5f681 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2270,7 +2270,11 @@ static void user_register_global_props(void)
- 
- static int do_configure_icount(void *opaque, QemuOpts *opts, Error **errp)
- {
--    icount_configure(opts, errp);
-+    if (tcg_enabled()) {
-+        icount_configure(opts, errp);
-+    } else {
-+        error_setg(errp, "cannot configure icount, TCG support not available");
-+    }
      return 0;
  }
- 
+-int64_t icount_get(void)
+-{
+-    abort();
+-    return 0;
+-}
+-int64_t icount_to_ns(int64_t icount)
+-{
+-    abort();
+-    return 0;
+-}
+-int64_t icount_round(int64_t count)
+-{
+-    abort();
+-    return 0;
+-}
+ void icount_start_warp_timer(void)
+ {
+     abort();
 -- 
 2.41.0
 
