@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58E88092F7
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:05:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55960809305
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:06:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBLXz-0002hl-MG; Thu, 07 Dec 2023 16:04:40 -0500
+	id 1rBLXv-0002cx-2G; Thu, 07 Dec 2023 16:04:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rBLXq-0002bS-Dk
+ id 1rBLXq-0002bK-2v
  for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:30 -0500
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rBLXm-0005n6-9G
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:30 -0500
-Received: (qmail 10238 invoked by uid 484); 7 Dec 2023 21:04:03 -0000
+ id 1rBLXm-0005nB-9G
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:29 -0500
+Received: (qmail 10260 invoked by uid 484); 7 Dec 2023 21:04:04 -0000
 X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
  smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.11.92):. 
- Processed in 0.081391 secs); 07 Dec 2023 21:04:03 -0000
+ Processed in 0.073749 secs); 07 Dec 2023 21:04:04 -0000
 Received: from nedpc1.intern.lauterbach.com
  (Authenticated_SSL:neder@[10.2.11.92])
  (envelope-sender <nicolas.eder@lauterbach.com>)
  by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP for <qemu-devel@nongnu.org>; 7 Dec 2023 21:04:02 -0000
+ encrypted SMTP for <qemu-devel@nongnu.org>; 7 Dec 2023 21:04:03 -0000
 From: Nicolas Eder <nicolas.eder@lauterbach.com>
 To: qemu-devel@nongnu.org
 Cc: "Nicolas Eder" <nicolas.eder@lauterbach.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Christian Boenig" <christian.boenig@lauterbach.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 02/17] gdbstub: hex conversion functions moved to cutils.h
-Date: Thu,  7 Dec 2023 22:03:43 +0100
-Message-Id: <20231207210358.7409-3-nicolas.eder@lauterbach.com>
+Subject: [PATCH v4 03/17] gdbstub: GDBRegisterState moved to gdbstub.h so it
+ can be used outside of the gdbstub
+Date: Thu,  7 Dec 2023 22:03:44 +0100
+Message-Id: <20231207210358.7409-4-nicolas.eder@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231207210358.7409-1-nicolas.eder@lauterbach.com>
 References: <20231207210358.7409-1-nicolas.eder@lauterbach.com>
@@ -69,152 +70,48 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 ---
- debug/gdbstub/gdbstub.c   | 19 ++++++++++---------
- debug/gdbstub/internals.h | 26 --------------------------
- include/qemu/cutils.h     | 30 ++++++++++++++++++++++++++++++
- 3 files changed, 40 insertions(+), 35 deletions(-)
+ debug/gdbstub/gdbstub.c | 8 --------
+ include/exec/gdbstub.h  | 8 ++++++++
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/debug/gdbstub/gdbstub.c b/debug/gdbstub/gdbstub.c
-index 46d752bbc2..f43d4355c0 100644
+index f43d4355c0..5df7841878 100644
 --- a/debug/gdbstub/gdbstub.c
 +++ b/debug/gdbstub/gdbstub.c
-@@ -80,8 +80,8 @@ void gdb_memtohex(GString *buf, const uint8_t *mem, int len)
-     int i, c;
-     for(i = 0; i < len; i++) {
-         c = mem[i];
--        g_string_append_c(buf, tohex(c >> 4));
--        g_string_append_c(buf, tohex(c & 0xf));
-+        g_string_append_c(buf, nibble_to_hexchar(c >> 4));
-+        g_string_append_c(buf, nibble_to_hexchar(c & 0xf));
-     }
-     g_string_append_c(buf, '\0');
- }
-@@ -91,7 +91,8 @@ void gdb_hextomem(GByteArray *mem, const char *buf, int len)
-     int i;
+@@ -45,14 +45,6 @@
  
-     for(i = 0; i < len; i++) {
--        guint8 byte = fromhex(buf[0]) << 4 | fromhex(buf[1]);
-+        guint8 byte = hexchar_to_nibble(buf[0]) << 4 |
-+                      hexchar_to_nibble(buf[1]);
-         g_byte_array_append(mem, &byte, 1);
-         buf += 2;
-     }
-@@ -118,8 +119,8 @@ static void hexdump(const char *buf, int len,
-         if (i < len) {
-             char value = buf[i];
+ #include "internals.h"
  
--            line_buffer[hex_col + 0] = tohex((value >> 4) & 0xF);
--            line_buffer[hex_col + 1] = tohex((value >> 0) & 0xF);
-+            line_buffer[hex_col + 0] = nibble_to_hexchar((value >> 4) & 0xF);
-+            line_buffer[hex_col + 1] = nibble_to_hexchar((value >> 0) & 0xF);
-             line_buffer[txt_col + 0] = (value >= ' ' && value < 127)
-                     ? value
-                     : '.';
-@@ -151,8 +152,8 @@ int gdb_put_packet_binary(const char *buf, int len, bool dump)
-             csum += buf[i];
-         }
-         footer[0] = '#';
--        footer[1] = tohex((csum >> 4) & 0xf);
--        footer[2] = tohex((csum) & 0xf);
-+        footer[1] = nibble_to_hexchar((csum >> 4) & 0xf);
-+        footer[2] = nibble_to_hexchar((csum) & 0xf);
-         g_byte_array_append(gdbserver_state.last_packet, footer, 3);
- 
-         gdb_put_buffer(gdbserver_state.last_packet->data,
-@@ -2267,7 +2268,7 @@ void gdb_read_byte(uint8_t ch)
-                 break;
-             }
-             gdbserver_state.line_buf[gdbserver_state.line_buf_index] = '\0';
--            gdbserver_state.line_csum = fromhex(ch) << 4;
-+            gdbserver_state.line_csum = hexchar_to_nibble(ch) << 4;
-             gdbserver_state.state = RS_CHKSUM2;
-             break;
-         case RS_CHKSUM2:
-@@ -2277,7 +2278,7 @@ void gdb_read_byte(uint8_t ch)
-                 gdbserver_state.state = RS_GETLINE;
-                 break;
-             }
--            gdbserver_state.line_csum |= fromhex(ch);
-+            gdbserver_state.line_csum |= hexchar_to_nibble(ch);
- 
-             if (gdbserver_state.line_csum != (gdbserver_state.line_sum & 0xff)) {
-                 trace_gdbstub_err_checksum_incorrect(gdbserver_state.line_sum, gdbserver_state.line_csum);
-diff --git a/debug/gdbstub/internals.h b/debug/gdbstub/internals.h
-index 5c0c725e54..4b67adfeda 100644
---- a/debug/gdbstub/internals.h
-+++ b/debug/gdbstub/internals.h
-@@ -75,32 +75,6 @@ typedef struct GDBState {
- /* lives in main gdbstub.c */
- extern GDBState gdbserver_state;
- 
--/*
-- * Inline utility function, convert from int to hex and back
-- */
+-typedef struct GDBRegisterState {
+-    int base_reg;
+-    int num_regs;
+-    gdb_get_reg_cb get_reg;
+-    gdb_set_reg_cb set_reg;
+-    const char *xml;
+-} GDBRegisterState;
 -
--static inline int fromhex(int v)
--{
--    if (v >= '0' && v <= '9') {
--        return v - '0';
--    } else if (v >= 'A' && v <= 'F') {
--        return v - 'A' + 10;
--    } else if (v >= 'a' && v <= 'f') {
--        return v - 'a' + 10;
--    } else {
--        return 0;
--    }
--}
--
--static inline int tohex(int v)
--{
--    if (v < 10) {
--        return v + '0';
--    } else {
--        return v - 10 + 'a';
--    }
--}
--
- /*
-  * Connection helpers for both system and user backends
-  */
-diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
-index 92c927a6a3..5ab1a4ffb0 100644
---- a/include/qemu/cutils.h
-+++ b/include/qemu/cutils.h
-@@ -267,4 +267,34 @@ void qemu_hexdump_line(char *line, unsigned int b, const void *bufptr,
- void qemu_hexdump(FILE *fp, const char *prefix,
-                   const void *bufptr, size_t size);
+ GDBState gdbserver_state;
  
+ void gdb_init_gdbserver_state(void)
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index d8a3c56fa2..cdbad65930 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -27,6 +27,14 @@ typedef struct GDBFeatureBuilder {
+ typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int reg);
+ typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
+ 
++typedef struct GDBRegisterState {
++    int base_reg;
++    int num_regs;
++    gdb_get_reg_cb get_reg;
++    gdb_set_reg_cb set_reg;
++    const char *xml;
++} GDBRegisterState;
 +
-+/**
-+ * hexchar_to_nibble() - Converts hex character to nibble.
-+ */
-+static inline int hexchar_to_nibble(int v)
-+{
-+    if (v >= '0' && v <= '9') {
-+        return v - '0';
-+    } else if (v >= 'A' && v <= 'F') {
-+        return v - 'A' + 10;
-+    } else if (v >= 'a' && v <= 'f') {
-+        return v - 'a' + 10;
-+    } else {
-+        g_assert_not_reached();
-+    }
-+}
-+
-+/**
-+ * nibble_to_hexchar() - Converts nibble to hex character.
-+ */
-+static inline int nibble_to_hexchar(int v)
-+{
-+    g_assert(v <= 0xf);
-+    if (v < 10) {
-+        return v + '0';
-+    } else {
-+        return v - 10 + 'a';
-+    }
-+}
-+
- #endif
+ /**
+  * gdb_register_coprocessor() - register a supplemental set of registers
+  * @cpu - the CPU associated with registers
 -- 
 2.34.1
 
