@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E83D80837E
+	by mail.lfdr.de (Postfix) with ESMTPS id 58778808380
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 09:47:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBA1b-0006QP-SG; Thu, 07 Dec 2023 03:46:27 -0500
+	id 1rBA1w-0006cP-AC; Thu, 07 Dec 2023 03:46:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1rBA1W-0006QA-5n
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:46:22 -0500
+ id 1rBA1v-0006c5-36
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:46:47 -0500
 Received: from mail.ispras.ru ([83.149.199.84])
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1rBA1T-0007PW-Gb
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:46:21 -0500
+ id 1rBA1t-0007hT-HZ
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:46:46 -0500
 Received: from [10.12.102.111] (unknown [85.142.117.226])
- by mail.ispras.ru (Postfix) with ESMTPSA id 914A440737C0;
- Thu,  7 Dec 2023 08:46:16 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 914A440737C0
+ by mail.ispras.ru (Postfix) with ESMTPSA id 816BE40737C0;
+ Thu,  7 Dec 2023 08:46:43 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 816BE40737C0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1701938776;
- bh=t32TG1M+T5kiNe/ASa6FYE9OjzjpY9kIwRLzyW1WecY=;
+ s=default; t=1701938804;
+ bh=KXhb6yk4bTEaDwzE8zGnmGbadO2ro5bGvlDn1K7/lgw=;
  h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=qU5KDrqTvXGVEMb4uMNBrIc74e7UwTXQq7gwJdQVMgrpjnTZiZA0m12ULrV8JHb77
- +7v6nZyIhX/wYM5VHZp8oImUXc0rel6VVyS+Wgwnf/tqWkFB0uObQcHCqulU7KotnR
- PVQpeHr3gAXpS5Qwd13p3YevsX4/3EPb9CVnMkM8=
-Message-ID: <f79306bf-33bd-46ed-ba0d-113609b5f5ea@ispras.ru>
-Date: Thu, 7 Dec 2023 11:46:16 +0300
+ b=ttMWKANLS7S/22wtA1DpIPYM3+w2O37//u+0h94jYMRCieScaG8Wp8fpYxIJAyYn7
+ EhyhP7l4zuDwJrIG8xUGN1+HtGybzs/XLROF9z+eLy62wfyy61Ed4DuVoxQUTHjIBJ
+ k/DHoV5HGFbAsRKqv82a7KInuI4pRYiaeWQh4ItE=
+Message-ID: <c7a7e13d-1d8a-4737-acad-3c4c5f7d4fac@ispras.ru>
+Date: Thu, 7 Dec 2023 11:46:43 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/11] tests/avocado: remove skips from replay_kernel
+Subject: Re: [PATCH 10/11] chardev: force write all when recording replay logs
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -46,9 +46,9 @@ Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 References: <20231205204106.95531-1-alex.bennee@linaro.org>
- <20231205204106.95531-12-alex.bennee@linaro.org>
+ <20231205204106.95531-11-alex.bennee@linaro.org>
 From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20231205204106.95531-12-alex.bennee@linaro.org>
+In-Reply-To: <20231205204106.95531-11-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=83.149.199.84;
@@ -75,71 +75,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 05.12.2023 23:41, Alex Bennée wrote:
-> With the latest fixes for #2010 and #2013 these tests look pretty
-> stable now. Of course the only way to be really sure is to run it in
-> the CI infrastructure and see what breaks.
+> This is mostly a problem within avocado as serial generally isn't busy
+> enough to overfill pipes. However the consequences of recording a
+> failed write will haunt us on replay when causing the log to go out of
+> sync.
 > 
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2010
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 > ---
->   tests/avocado/replay_kernel.py | 9 ---------
->   1 file changed, 9 deletions(-)
+>   chardev/char.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-> index 1eaa36444c..c54e96c9ff 100644
-> --- a/tests/avocado/replay_kernel.py
-> +++ b/tests/avocado/replay_kernel.py
-> @@ -98,8 +98,6 @@ def test_i386_pc(self):
+> diff --git a/chardev/char.c b/chardev/char.c
+> index 996a024c7a..6e5b4d7345 100644
+> --- a/chardev/char.c
+> +++ b/chardev/char.c
+> @@ -171,7 +171,8 @@ int qemu_chr_write(Chardev *s, const uint8_t *buf, int len, bool write_all)
+>           return res;
+>       }
 >   
->           self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
+> -    res = qemu_chr_write_buffer(s, buf, len, &offset, write_all);
+> +    res = qemu_chr_write_buffer(s, buf, len, &offset,
+> +                                replay_mode == REPLAY_MODE_RECORD ? true : write_all);
 >   
-> -    # See https://gitlab.com/qemu-project/qemu/-/issues/2010
-> -    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes gets stuck')
->       def test_x86_64_pc(self):
->           """
->           :avocado: tags=arch:x86_64
-> @@ -135,8 +133,6 @@ def test_mips_malta(self):
->   
->           self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
->   
-> -    # See https://gitlab.com/qemu-project/qemu/-/issues/2013
-> -    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
->       def test_mips64el_malta(self):
->           """
->           This test requires the ar tool to extract "data.tar.gz" from
-> @@ -152,7 +148,6 @@ def test_mips64el_malta(self):
->   
->           :avocado: tags=arch:mips64el
->           :avocado: tags=machine:malta
-> -        :avocado: tags=flaky
->           """
->           deb_url = ('http://snapshot.debian.org/archive/debian/'
->                      '20130217T032700Z/pool/main/l/linux-2.6/'
-> @@ -200,8 +195,6 @@ def test_arm_virt(self):
->   
->           self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=1)
->   
-> -    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
-> -
->       def test_arm_cubieboard_initrd(self):
->           """
->           :avocado: tags=arch:arm
-> @@ -354,7 +347,6 @@ def test_m68k_mcf5208evb(self):
->           file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
->           self.do_test_advcal_2018(file_path, 'sanity-clause.elf')
->   
-> -    @skip("Test currently broken") # Console stuck as of 5.2-rc1
->       def test_microblaze_s3adsp1800(self):
->           """
->           :avocado: tags=arch:microblaze
-> @@ -389,7 +381,6 @@ def test_or1k_sim(self):
->           file_path = self.fetch_asset(tar_url, asset_hash=tar_hash)
->           self.do_test_advcal_2018(file_path, 'vmlinux')
->   
-> -    @skip("nios2 emulation is buggy under record/replay")
->       def test_nios2_10m50(self):
->           """
->           :avocado: tags=arch:nios2
-
+>       if (qemu_chr_replay(s) && replay_mode == REPLAY_MODE_RECORD) {
+>           replay_char_write_event_save(res, offset);
 
 Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 
