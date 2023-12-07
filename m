@@ -2,127 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A91E8086F2
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 12:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF26808B3C
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 15:59:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBCoD-000198-NA; Thu, 07 Dec 2023 06:44:49 -0500
+	id 1rBFpn-0003E4-MP; Thu, 07 Dec 2023 09:58:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rBCoA-00017r-GD
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 06:44:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rBCo8-0000kP-0l
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 06:44:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1701949483;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CsscwaTR3+4z+GEJpfoX3rBQXEHIy7L+AXtx2hqmFDs=;
- b=VBES+OG8KCLmSRNXGg0W5D8Ytm00rnccoYVLXVlvWAQWoCrAwCgN99HClgHbI6htLDRrMC
- UjpHojAktGq+I4oAWIuTRNqw7IQZQBXHJ20gxJ/RDUlvbdabkpvDHoEvNPPe1eGrl0LLYK
- FJnsFs8DvzdCReupLBXc0iIs7VMx3l4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-S1U663asNt-wRPjGPfGkaQ-1; Thu,
- 07 Dec 2023 06:44:40 -0500
-X-MC-Unique: S1U663asNt-wRPjGPfGkaQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 71EC9380628D;
- Thu,  7 Dec 2023 11:44:37 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.155])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 46EA7492BC6;
- Thu,  7 Dec 2023 11:44:34 +0000 (UTC)
-Date: Thu, 7 Dec 2023 06:44:32 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Jean-Christophe Dubois <jcd@tribudubois.net>,
- Fabiano Rosas <farosas@suse.de>, qemu-s390x@nongnu.org,
- Song Gao <gaosong@loongson.cn>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Hyman Huang <yong.huang@smartx.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>, Paul Durrant <paul@xen.org>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Juan Quintela <quintela@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Hailiang Zhang <zhanghailiang@xfusion.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Huacai Chen <chenhuacai@kernel.org>, Fam Zheng <fam@euphon.net>,
- Eric Blake <eblake@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
- Alexander Graf <agraf@csgraf.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Weiwei Li <liwei1518@gmail.com>, Eric Farman <farman@linux.ibm.com>,
- Stafford Horne <shorne@gmail.com>, David Hildenbrand <david@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Reinoud Zandijk <reinoud@netbsd.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Cameron Esfahani <dirty@apple.com>, xen-devel@lists.xenproject.org,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-riscv@nongnu.org,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- John Snow <jsnow@redhat.com>, Sunil Muthuswamy <sunilmut@microsoft.com>,
- Michael Roth <michael.roth@amd.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Bin Meng <bin.meng@windriver.com>,
- Stefano Stabellini <sstabellini@kernel.org>, kvm@vger.kernel.org,
- qemu-block@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Peter Xu <peterx@redhat.com>, Anthony Perard <anthony.perard@citrix.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, qemu-ppc@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Leonardo Bras <leobras@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: Re: [PATCH 1/6] system/cpus: rename qemu_mutex_lock_iothread() to
- qemu_bql_lock()
-Message-ID: <20231207114432.GA2137208@fedora>
-References: <20231129212625.1051502-1-stefanha@redhat.com>
- <20231129212625.1051502-2-stefanha@redhat.com>
- <8f89fbbf-454b-c5e5-5e8f-46ea42ec20ed@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <aziztlili2222@gmail.com>)
+ id 1rBDsc-00049w-PD
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 07:53:26 -0500
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <aziztlili2222@gmail.com>)
+ id 1rBDsb-0007yN-00
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 07:53:26 -0500
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-50bffb64178so752412e87.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 04:53:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1701953602; x=1702558402; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=lNURdBONFT3CwFJdUZaeV2hYje4FZUPRgbAMjcAv95E=;
+ b=RhPMoScnNcqI6EtlGrq5v5LgaYOC3nhGTlISFCUdxxC486Ci30+FEa0DIJUzkjoA1I
+ txseZLLolIDpNLkJfE7MaWbIE4DcacbvRyesQMFj2+epFSQS//41o+OSp0A9g6CTPDWD
+ Kgo6ndAOP/mzk6SCWC1BEIer8rErtLi+qxV6JS8pXJhhbk5cPm3IvspMp+D/HEbEHkMk
+ PkWP/aQMhBVryoQlLCJTMHGuxH0ICq1jegwEG9wG4sgwRGfqflkOS6nUkM1Rcc/OqdZy
+ 8xbW3uSbuf1ksABYbQGlL234GmOYBlafvdkGc+36c8cLTbGxGtoZEl83OUg1xjOaxo3Q
+ nFdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701953602; x=1702558402;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lNURdBONFT3CwFJdUZaeV2hYje4FZUPRgbAMjcAv95E=;
+ b=YVwtJHIkfTCuQyEIuZu/M2WUvAzvKCY+afZ7NEkINd9NQF51az4LWzzZ27gveb/nT1
+ nD+r3R18WTIJ2lEyF4/eXla4ox8/CQBv3LZvNInEE7Ct1LzKeBMfy/QNzeiCFhxOKPcd
+ lzFmMMkOMjtQQ14g956LZ90rLxyWZcHFwZFQCsK8bGuo4YWzcxFR7m+zG/5KS0Ovwu5j
+ X9/pV8P1dfMFRjGnalAAjWID+ta3WAktHGeqgsXiDerLiSoCnjXg/kNfAXXXrh0+DWpy
+ I2UDo1nhkrsBmGsWL8YNBW1QfBcCQJboA2bRkvA0ayG2F3T7SFCiXSfiN0qcvT4ly4Bw
+ VogA==
+X-Gm-Message-State: AOJu0Yz2skFikcPVonFrXbIvHPY7oxk91aEyzP+OrUGb7cSbgv8FZjV0
+ F1zFpse2RFSoGMEjK2q21htXlFcBpEYOkjCLD9pTobCn
+X-Google-Smtp-Source: AGHT+IGRV1YL2L70HghkEDEzC6QDDZvT33lGmkehTVBzJi7NVYeB9MySBeqgQbCk1jc926L0K24Gb0e+hyR5FFFzMzY=
+X-Received: by 2002:a05:6512:3703:b0:50b:f07f:5308 with SMTP id
+ z3-20020a056512370300b0050bf07f5308mr1380799lfr.122.1701953602218; Thu, 07
+ Dec 2023 04:53:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="0duhWLao8zUYzEym"
-Content-Disposition: inline
-In-Reply-To: <8f89fbbf-454b-c5e5-5e8f-46ea42ec20ed@linux.ibm.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+From: aziz tlili <aziztlili2222@gmail.com>
+Date: Thu, 7 Dec 2023 13:53:10 +0100
+Message-ID: <CAHwHw5Bk7qbDfTmDpV82xcO+YujeJa09mCgdd7c8oQvNLxVKKA@mail.gmail.com>
+Subject: Request for New PPC Machine Supporting Multiple SMP Cores
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000e26ea5060beaf33c"
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=aziztlili2222@gmail.com; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 07 Dec 2023 09:58:36 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,47 +82,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000e26ea5060beaf33c
+Content-Type: text/plain; charset="UTF-8"
 
---0duhWLao8zUYzEym
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dear QEMU Team,
+
+I hope this message finds you well. I've been a user of QEMU for well
+over a year.
+
+I wanted to share an idea for a potential enhancement that I believe could
+benefit many users, including myself. It would be fantastic to have a new
+PPC machine model similar to the existing mac99, but with support for
+multiple SMP cores.
+
+The ability to simulate multiple SMP cores within a PPC machine environment
+would significantly enhance the capabilities of QEMU for various
+applications, testing scenarios, and development purposes. This addition
+could greatly benefit the community working on PowerPC architecture.
+
+I understand the complexities involved in such developments but wanted to
+express the potential advantages and how this enhancement could contribute
+to expanding QEMU's capabilities.
+
+Thank you for considering my suggestion. I would be more than happy to
+provide further details or collaborate in any way that could assist in
+making this idea a reality.
+
+Best regards,
+Aziz Tlili
+
+--000000000000e26ea5060beaf33c
+Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 01, 2023 at 10:42:43AM +0530, Harsh Prateek Bora wrote:
-> On 11/30/23 02:56, Stefan Hajnoczi wrote:
-> > diff --git a/hw/remote/mpqemu-link.c b/hw/remote/mpqemu-link.c
-> > index 9bd98e8219..ffb2c25145 100644
-> > --- a/hw/remote/mpqemu-link.c
-> > +++ b/hw/remote/mpqemu-link.c
-> > @@ -33,7 +33,7 @@
-> >    */
-> >   bool mpqemu_msg_send(MPQemuMsg *msg, QIOChannel *ioc, Error **errp)
-> >   {
-> > -    bool iolock =3D qemu_mutex_iothread_locked();
-> > +    bool iolock =3D qemu_bql_locked();
->=20
-> Should var name (one more below) be updated to reflect this update ?
+<div dir=3D"auto"><div dir=3D"auto">Dear QEMU Team,<br></div><div dir=3D"au=
+to"><br></div><div dir=3D"auto">I hope this message finds you well. I&#39;v=
+e been a user of QEMU for well over=C2=A0a year.</div><div dir=3D"auto"><br=
+></div><div dir=3D"auto">I wanted to share an idea for a potential enhancem=
+ent that I believe could benefit many users, including myself. It would be =
+fantastic to have a new PPC machine model similar to the existing mac99, bu=
+t with support for multiple SMP cores.</div><div dir=3D"auto"><br></div><di=
+v dir=3D"auto">The ability to simulate multiple SMP cores within a PPC mach=
+ine environment would significantly enhance the capabilities of QEMU for va=
+rious applications, testing scenarios, and development purposes. This addit=
+ion could greatly benefit the community working on PowerPC architecture.</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto">I understand the complexit=
+ies involved in such developments but wanted to express the potential advan=
+tages and how this enhancement could contribute to expanding QEMU&#39;s cap=
+abilities.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Thank you for=
+ considering my suggestion. I would be more than happy to provide further d=
+etails or collaborate in any way that could assist in making this idea a re=
+ality.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Best regards,</di=
+v><div dir=3D"auto">Aziz Tlili</div></div>
 
-Yes. I'll grep for that tree-wide because there might be other
-instances.
-
-Stefan
-
---0duhWLao8zUYzEym
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmVxsCAACgkQnKSrs4Gr
-c8i1rQgAnF5hLI7FnDMNxncR8cyzsclzHlBL3lW0nptTddMxVMVSgpepQqo6yITp
-7C02PzbGoKbRWSa8b95tpYbHeVbakCnrKjMsojhx5N50uYa7odEtNpXrPedhUh4l
-ZcOC1N5E1uU55koqEGYWFSDoEC3BApk9qN0RFngsKFtoTears5RgyhSpuYYrdpyL
-LN15OOQjSBJYsGNtYggDfIyN5hT4H55c8hsQF0b+kw/UwWoNRdjsdyMNelsHheII
-+KODOArdtF9lNCVXL4kbZmuQbwmmHbAdfytMIurhnKWa+ENSZZ42DY9Z+XBIReto
-Fj4JhmDsI3ewnZLjTxZ/jQHHNcV8Ew==
-=KX5N
------END PGP SIGNATURE-----
-
---0duhWLao8zUYzEym--
-
+--000000000000e26ea5060beaf33c--
 
