@@ -2,72 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF26808B3C
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 15:59:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE4B8088E5
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 14:08:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBFpn-0003E4-MP; Thu, 07 Dec 2023 09:58:39 -0500
+	id 1rBE5K-0006MF-Ey; Thu, 07 Dec 2023 08:06:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aziztlili2222@gmail.com>)
- id 1rBDsc-00049w-PD
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 07:53:26 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rBE5I-0006M5-0T
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 08:06:32 -0500
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <aziztlili2222@gmail.com>)
- id 1rBDsb-0007yN-00
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 07:53:26 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-50bffb64178so752412e87.2
- for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 04:53:24 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rBE5F-0003sB-VG
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 08:06:31 -0500
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-33340c50af9so901532f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 05:06:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701953602; x=1702558402; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=lNURdBONFT3CwFJdUZaeV2hYje4FZUPRgbAMjcAv95E=;
- b=RhPMoScnNcqI6EtlGrq5v5LgaYOC3nhGTlISFCUdxxC486Ci30+FEa0DIJUzkjoA1I
- txseZLLolIDpNLkJfE7MaWbIE4DcacbvRyesQMFj2+epFSQS//41o+OSp0A9g6CTPDWD
- Kgo6ndAOP/mzk6SCWC1BEIer8rErtLi+qxV6JS8pXJhhbk5cPm3IvspMp+D/HEbEHkMk
- PkWP/aQMhBVryoQlLCJTMHGuxH0ICq1jegwEG9wG4sgwRGfqflkOS6nUkM1Rcc/OqdZy
- 8xbW3uSbuf1ksABYbQGlL234GmOYBlafvdkGc+36c8cLTbGxGtoZEl83OUg1xjOaxo3Q
- nFdw==
+ d=linaro.org; s=google; t=1701954387; x=1702559187; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vKGjWlnpBVSX7oVDSIBeqFlCx7Twdo+o3crrgns5YSo=;
+ b=hqyk479rEILGMQqy8HkIdh4QBgc37hfHMQiDCbTuYZ8n1yYPPU2BU2E+k5dVaHUSTD
+ iGk4p2FW/g5yDCEKEXep0rDmLwEqFGfYlmouvz0CZrwP5eFSHl5OnKNhYTdZdOFhw6fV
+ SiYTSaLGZRgcAJ4VaAaz1id79U9oyJPgLuoJCtVov89xuhuOVHurR6V+nCu7RHVjQvOh
+ c/tGY2AhIX6PxjVrl9Mk1BKp6XhwfOmxqurayuopchFVSCcDc9HbgTHVjhW0p7aHuLWz
+ SycEd1Ox/mkbm2fTDgflitC7Y1KMnFmq6OjbYu8yduQrKbuj1R7NqOo5p71dVMl5DTYc
+ DJeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701953602; x=1702558402;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lNURdBONFT3CwFJdUZaeV2hYje4FZUPRgbAMjcAv95E=;
- b=YVwtJHIkfTCuQyEIuZu/M2WUvAzvKCY+afZ7NEkINd9NQF51az4LWzzZ27gveb/nT1
- nD+r3R18WTIJ2lEyF4/eXla4ox8/CQBv3LZvNInEE7Ct1LzKeBMfy/QNzeiCFhxOKPcd
- lzFmMMkOMjtQQ14g956LZ90rLxyWZcHFwZFQCsK8bGuo4YWzcxFR7m+zG/5KS0Ovwu5j
- X9/pV8P1dfMFRjGnalAAjWID+ta3WAktHGeqgsXiDerLiSoCnjXg/kNfAXXXrh0+DWpy
- I2UDo1nhkrsBmGsWL8YNBW1QfBcCQJboA2bRkvA0ayG2F3T7SFCiXSfiN0qcvT4ly4Bw
- VogA==
-X-Gm-Message-State: AOJu0Yz2skFikcPVonFrXbIvHPY7oxk91aEyzP+OrUGb7cSbgv8FZjV0
- F1zFpse2RFSoGMEjK2q21htXlFcBpEYOkjCLD9pTobCn
-X-Google-Smtp-Source: AGHT+IGRV1YL2L70HghkEDEzC6QDDZvT33lGmkehTVBzJi7NVYeB9MySBeqgQbCk1jc926L0K24Gb0e+hyR5FFFzMzY=
-X-Received: by 2002:a05:6512:3703:b0:50b:f07f:5308 with SMTP id
- z3-20020a056512370300b0050bf07f5308mr1380799lfr.122.1701953602218; Thu, 07
- Dec 2023 04:53:22 -0800 (PST)
-MIME-Version: 1.0
-From: aziz tlili <aziztlili2222@gmail.com>
-Date: Thu, 7 Dec 2023 13:53:10 +0100
-Message-ID: <CAHwHw5Bk7qbDfTmDpV82xcO+YujeJa09mCgdd7c8oQvNLxVKKA@mail.gmail.com>
-Subject: Request for New PPC Machine Supporting Multiple SMP Cores
+ d=1e100.net; s=20230601; t=1701954387; x=1702559187;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vKGjWlnpBVSX7oVDSIBeqFlCx7Twdo+o3crrgns5YSo=;
+ b=wikSialCIXuVzuiaWVpRALlvXVC0316lal+6waSGn/f/lztTo6kjJrhUNOzFFwEd/A
+ nHXB8F9xa9qO5mLwYIehUikQYIjIHPwPABytxIO8KlWvdOq/jTsrTStOmKZxDLZ5imhE
+ +0et3vCLO0lSExTcutK456iUbHLvlAFK4pPhaD/O6/PmQYKpxQXMbCYcZQgII2loHrhA
+ wreH/Fp8+Xl0m3ql4q0uxHIpBCeFyb0+fWFmmhP3IGJ4FuYv0n1IXRDhm7L8s9eARTPn
+ HtzcOf8Rh6lDIGC3YennMszYnFTDAD5j7G+UlNX6jdCHiM9Fc1kjbyi4MzVXDW2yedj/
+ KgPg==
+X-Gm-Message-State: AOJu0YyIauMsXEJyRAcWAeQ6ZXgPQHIa+l3kb+W2128Qi8KAz4IUdqeW
+ 12Kj1hayaaxmVShQjdewll0Pmg==
+X-Google-Smtp-Source: AGHT+IFkDtqD3bdKSAGNmwxbGnSe0A/1yU1pgeve+KCe948iCUA1CRBni7MR2Wod6bfS1qgBhVot1g==
+X-Received: by 2002:a05:6000:25c:b0:333:3983:61a0 with SMTP id
+ m28-20020a056000025c00b00333398361a0mr987271wrz.4.1701954386829; 
+ Thu, 07 Dec 2023 05:06:26 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ n11-20020adfe78b000000b003332febec90sm1419439wrm.7.2023.12.07.05.06.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Dec 2023 05:06:26 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 02E8B5F7AF;
+ Thu,  7 Dec 2023 13:06:26 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000e26ea5060beaf33c"
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=aziztlili2222@gmail.com; helo=mail-lf1-x136.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Cc: vikram.garhwal@amd.com,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+Subject: [PATCH for 8.2] docs: clean-up the xenpvh documentation
+Date: Thu,  7 Dec 2023 13:06:23 +0000
+Message-Id: <20231207130623.360473-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 07 Dec 2023 09:58:36 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,58 +93,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e26ea5060beaf33c
-Content-Type: text/plain; charset="UTF-8"
+I noticed the code blocks where not rendering properly so thought I'd
+better fix things up. So:
 
-Dear QEMU Team,
+  - Use better title for the machine type
+  - Explain why Xen is a little different
+  - Add a proper anchor to the tpm-device link
+  - add newline so code block properly renders
+  - add some indentation to make continuation clearer
 
-I hope this message finds you well. I've been a user of QEMU for well
-over a year.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ docs/specs/tpm.rst         |  2 ++
+ docs/system/arm/xenpvh.rst | 39 +++++++++++++++++++++-----------------
+ 2 files changed, 24 insertions(+), 17 deletions(-)
 
-I wanted to share an idea for a potential enhancement that I believe could
-benefit many users, including myself. It would be fantastic to have a new
-PPC machine model similar to the existing mac99, but with support for
-multiple SMP cores.
+diff --git a/docs/specs/tpm.rst b/docs/specs/tpm.rst
+index efe124a148..c96776a369 100644
+--- a/docs/specs/tpm.rst
++++ b/docs/specs/tpm.rst
+@@ -1,3 +1,5 @@
++.. _tpm-device:
++
+ ===============
+ QEMU TPM Device
+ ===============
+diff --git a/docs/system/arm/xenpvh.rst b/docs/system/arm/xenpvh.rst
+index e1655c7ab8..430ac2c02e 100644
+--- a/docs/system/arm/xenpvh.rst
++++ b/docs/system/arm/xenpvh.rst
+@@ -1,34 +1,39 @@
+-XENPVH (``xenpvh``)
++Xen Device Emulation Backend (``xenpvh``)
+ =========================================
+-This machine creates a IOREQ server to register/connect with Xen Hypervisor.
+ 
+-When TPM is enabled, this machine also creates a tpm-tis-device at a user input
+-tpm base address, adds a TPM emulator and connects to a swtpm application
+-running on host machine via chardev socket. This enables xenpvh to support TPM
+-functionalities for a guest domain.
++This machine is a little unusual compared to others as QEMU just acts
++as an IOREQ server to register/connect with Xen Hypervisor. Control of
++the VMs themselves is left to the Xen tooling.
+ 
+-More information about TPM use and installing swtpm linux application can be
+-found at: docs/specs/tpm.rst.
++When TPM is enabled, this machine also creates a tpm-tis-device at a
++user input tpm base address, adds a TPM emulator and connects to a
++swtpm application running on host machine via chardev socket. This
++enables xenpvh to support TPM functionalities for a guest domain.
++
++More information about TPM use and installing swtpm linux application
++can be found in the :ref:`tpm-device` section.
+ 
+ Example for starting swtpm on host machine:
++
+ .. code-block:: console
+ 
+     mkdir /tmp/vtpm2
+     swtpm socket --tpmstate dir=/tmp/vtpm2 \
+-    --ctrl type=unixio,path=/tmp/vtpm2/swtpm-sock &
++      --ctrl type=unixio,path=/tmp/vtpm2/swtpm-sock &
+ 
+ Sample QEMU xenpvh commands for running and connecting with Xen:
++
+ .. code-block:: console
+ 
+     qemu-system-aarch64 -xen-domid 1 \
+-    -chardev socket,id=libxl-cmd,path=qmp-libxl-1,server=on,wait=off \
+-    -mon chardev=libxl-cmd,mode=control \
+-    -chardev socket,id=libxenstat-cmd,path=qmp-libxenstat-1,server=on,wait=off \
+-    -mon chardev=libxenstat-cmd,mode=control \
+-    -xen-attach -name guest0 -vnc none -display none -nographic \
+-    -machine xenpvh -m 1301 \
+-    -chardev socket,id=chrtpm,path=tmp/vtpm2/swtpm-sock \
+-    -tpmdev emulator,id=tpm0,chardev=chrtpm -machine tpm-base-addr=0x0C000000
++      -chardev socket,id=libxl-cmd,path=qmp-libxl-1,server=on,wait=off \
++      -mon chardev=libxl-cmd,mode=control \
++      -chardev socket,id=libxenstat-cmd,path=qmp-libxenstat-1,server=on,wait=off \
++      -mon chardev=libxenstat-cmd,mode=control \
++      -xen-attach -name guest0 -vnc none -display none -nographic \
++      -machine xenpvh -m 1301 \
++      -chardev socket,id=chrtpm,path=tmp/vtpm2/swtpm-sock \
++      -tpmdev emulator,id=tpm0,chardev=chrtpm -machine tpm-base-addr=0x0C000000
+ 
+ In above QEMU command, last two lines are for connecting xenpvh QEMU to swtpm
+ via chardev socket.
+-- 
+2.39.2
 
-The ability to simulate multiple SMP cores within a PPC machine environment
-would significantly enhance the capabilities of QEMU for various
-applications, testing scenarios, and development purposes. This addition
-could greatly benefit the community working on PowerPC architecture.
-
-I understand the complexities involved in such developments but wanted to
-express the potential advantages and how this enhancement could contribute
-to expanding QEMU's capabilities.
-
-Thank you for considering my suggestion. I would be more than happy to
-provide further details or collaborate in any way that could assist in
-making this idea a reality.
-
-Best regards,
-Aziz Tlili
-
---000000000000e26ea5060beaf33c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div dir=3D"auto">Dear QEMU Team,<br></div><div dir=3D"au=
-to"><br></div><div dir=3D"auto">I hope this message finds you well. I&#39;v=
-e been a user of QEMU for well over=C2=A0a year.</div><div dir=3D"auto"><br=
-></div><div dir=3D"auto">I wanted to share an idea for a potential enhancem=
-ent that I believe could benefit many users, including myself. It would be =
-fantastic to have a new PPC machine model similar to the existing mac99, bu=
-t with support for multiple SMP cores.</div><div dir=3D"auto"><br></div><di=
-v dir=3D"auto">The ability to simulate multiple SMP cores within a PPC mach=
-ine environment would significantly enhance the capabilities of QEMU for va=
-rious applications, testing scenarios, and development purposes. This addit=
-ion could greatly benefit the community working on PowerPC architecture.</d=
-iv><div dir=3D"auto"><br></div><div dir=3D"auto">I understand the complexit=
-ies involved in such developments but wanted to express the potential advan=
-tages and how this enhancement could contribute to expanding QEMU&#39;s cap=
-abilities.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Thank you for=
- considering my suggestion. I would be more than happy to provide further d=
-etails or collaborate in any way that could assist in making this idea a re=
-ality.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Best regards,</di=
-v><div dir=3D"auto">Aziz Tlili</div></div>
-
---000000000000e26ea5060beaf33c--
 
