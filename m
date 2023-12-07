@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBBFF8085D7
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DFB8085D8
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 11:55:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBC1f-0006WI-02; Thu, 07 Dec 2023 05:54:39 -0500
+	id 1rBC1i-0006Wq-4U; Thu, 07 Dec 2023 05:54:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBC1c-0006Va-5B
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:54:36 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBC1d-0006W2-Ms
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:54:37 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBC1a-00076Y-Gs
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:54:35 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40bda47c489so8289925e9.3
- for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:54:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBC1c-00077E-0L
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 05:54:37 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-332c46d5988so780076f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 02:54:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1701946469; x=1702551269; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VWib7g51s4LqF4o+fXWTb1K6zI11XXQH5HvJiK0NBFM=;
- b=Opx7nHwPHmxfqZaO+khkoN8b0yq5TOJ2reRISZbDrWPt4P2/VhIUTkrVT+LuL3jNqT
- cBVsf/+C2Dw3KbDaMs3NA3mw7AVSvDurYUtAO7RQZJJJcslgSzSx9k58f3H5xjxKxr9q
- TrgsIdjvUhYAMBjept9Bo3O3++7/OZINkD6mEv6t+UO6Tn3yoxoqD3XUTzYqKBUuYz2j
- SdhKOtsFhrTh4qUNpvw0xpME3e43DaJdeYRulYRjl9x9Kp2vNsa7SO2hXnSLK8mTpAtZ
- b22bP5dAI6S+ygfXuodjmvdKWbuT6ZT50oiaX/pjpsYmnutLdvGeY8zcSRaPotifclXX
- +KcQ==
+ d=linaro.org; s=google; t=1701946474; x=1702551274; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uDpYvaGqiktp3pFhh53LjdujAGzRbMJnxoWS82qu+NI=;
+ b=DwrIrN6tr1Bf6AOlgYX5ZmwfK3TGSRy9S33xQZ+Oh91XouiPPyY3pGSIcMfdn7tQ7D
+ ZqAJArNV0rqd7oZkf1CX1dC/koF+i0Qf1yS1xQDjQ9Q5toCsBkmOjg6cdca0b1lmVN3X
+ B09IfTpb7vIfNSNEF5rlXMTHuQReSyrvFhNizIVUSvR1eiLVQENoe3bDib2/JC9wMfQj
+ j4qdseAS8l66+hKlh8L2qvns0Z3MJp+DRpbxi/eRZz7lDeo8bmddqklSaqTa8KlcaaMS
+ N3ev0LeXvuPqLJlAqQFaL3Q5RamDehy6iEXHJ8LWoZP9+lxIzNq8po1eoxeDEpoh5ij6
+ h7Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701946469; x=1702551269;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VWib7g51s4LqF4o+fXWTb1K6zI11XXQH5HvJiK0NBFM=;
- b=csdg1nG2cBo5PO5FwXnl9bvJiZoxEKdwg8XOQ1nrfIoHabwjgiLpHwwrkd3twNmqZA
- ongRWCWyMbfFFg2SREsIpsGjdSFQaeEawsP85LIdKSYkKsKvs8nmjpzDxlj/X/muzGrL
- fpAv+ddAJ+VrGbuLHe4oddj5sUdNQ8MaJjYwJvNxcsGMPZ6n2bE5VUZ+4IPOBOoTXDs+
- RnVXnMNbUipCbObhAyQbaXIvWebMYiYvGrnW9SRAbou+WczpgFxPOY21u774A7q7kIpw
- 4GVntXWsFJBjagGrhecW5nI8pswMFgxG+OocRYcgyzukGT86iK0rOlkBoSiPXGTfhwi3
- B08Q==
-X-Gm-Message-State: AOJu0YyjixiEeoElZkdw0VUR6WoSYex6NDClYFTDZVYjFG28bBrAwGrx
- +EjVpnC1nMumHCV+65kQMiNt+OLPYid1OQ1lDzI=
-X-Google-Smtp-Source: AGHT+IGriYr+FUlOdX6HkEVRWl/3AOswnl0+neJWAjizjyK9ug+vv4vrZBFM3vvWm+Kj45ynUeIFBQ==
-X-Received: by 2002:a05:600c:4b27:b0:40c:22b6:ce9d with SMTP id
- i39-20020a05600c4b2700b0040c22b6ce9dmr1271799wmp.141.1701946469052; 
- Thu, 07 Dec 2023 02:54:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1701946474; x=1702551274;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uDpYvaGqiktp3pFhh53LjdujAGzRbMJnxoWS82qu+NI=;
+ b=tpsOmdUoK0ie/h5zy5dWKSrNVDZ458UAOekAM/hNrdDN2x0svXM9SU4LDIvkD/lE0G
+ 46R0J/v7typJ0m1Q6ljm5e+8ORX4l9JvJVCLumNGbkKPowCmhoFFKy2DsqOPFcpeZExn
+ wh3UMf3eXBGzj+5nKcz6Tjt2tdQxLEWMTmFURyT9BnQvWkC25Rci0zObnyvQp7CFXuol
+ lbMAfYYoLIUfxlofcnXT/YI0tJDnru45J+Ey8Vg28fzCcmQGJcOgObYNpNVz68/eATwD
+ hMFQoyGq5lC07kOWcUxpjMhLRzJ/OsjIdvB04xD7elIeYgYJ2WUcER8lTBgR7A7jDHzO
+ LS0w==
+X-Gm-Message-State: AOJu0YzyLe/jZ2YAfSN2giRLLq9SDiCxNj0t76CzsV9OowK3swwmoyUo
+ M3e4nsjMFnnnZ/UGcf2mWz8OWCtpnZFPd/xBLTc=
+X-Google-Smtp-Source: AGHT+IFhRmHwbUnwOtLZNw0woWZcETXcTnZOByVrU60hf/sg2TCOnmw+TKHKabBFpLB3Q01+WXPhBQ==
+X-Received: by 2002:a5d:4b50:0:b0:333:49a8:73e7 with SMTP id
+ w16-20020a5d4b50000000b0033349a873e7mr1483873wrs.89.1701946474272; 
+ Thu, 07 Dec 2023 02:54:34 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.202.111])
  by smtp.gmail.com with ESMTPSA id
- l15-20020a05600c1d0f00b0040b540ff0a5sm1514033wms.19.2023.12.07.02.54.28
+ r3-20020a5d52c3000000b00333483b468dsm1136211wrv.88.2023.12.07.02.54.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 07 Dec 2023 02:54:28 -0800 (PST)
+ Thu, 07 Dec 2023 02:54:33 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] target/alpha: Only build sys_helper.c on system emulation
-Date: Thu,  7 Dec 2023 11:54:24 +0100
-Message-ID: <20231207105426.49339-1-philmd@linaro.org>
+Subject: [PATCH 1/2] target/alpha: Extract clk_helper.c from sys_helper.c
+Date: Thu,  7 Dec 2023 11:54:25 +0100
+Message-ID: <20231207105426.49339-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231207105426.49339-1-philmd@linaro.org>
+References: <20231207105426.49339-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,19 +91,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract helper_load_pcc() to clk_helper.c so we can
-restrict sys_helper.c to system emulation.
+Except helper_load_pcc(), all helpers from sys_helper.c
+are system-emulation specific. In preparation of restricting
+sys_helper.c to system emulation, extract helper_load_pcc()
+to clk_helper.c.
 
-Philippe Mathieu-Daudé (2):
-  target/alpha: Extract clk_helper.c from sys_helper.c
-  target/alpha: Only build sys_helper.c on system emulation
-
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
  target/alpha/clk_helper.c | 32 ++++++++++++++++++++++++++++++++
- target/alpha/sys_helper.c | 18 ------------------
- target/alpha/meson.build  |  7 +++++--
- 3 files changed, 37 insertions(+), 20 deletions(-)
+ target/alpha/sys_helper.c | 15 ---------------
+ target/alpha/meson.build  |  1 +
+ 3 files changed, 33 insertions(+), 15 deletions(-)
  create mode 100644 target/alpha/clk_helper.c
 
+diff --git a/target/alpha/clk_helper.c b/target/alpha/clk_helper.c
+new file mode 100644
+index 0000000000..26ffc231cd
+--- /dev/null
++++ b/target/alpha/clk_helper.c
+@@ -0,0 +1,32 @@
++/*
++ *  QEMU Alpha clock helpers.
++ *
++ *  Copyright (c) 2007 Jocelyn Mayer
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/timer.h"
++#include "exec/helper-proto.h"
++#include "cpu.h"
++
++uint64_t helper_load_pcc(CPUAlphaState *env)
++{
++#ifndef CONFIG_USER_ONLY
++    /*
++     * In system mode we have access to a decent high-resolution clock.
++     * In order to make OS-level time accounting work with the RPCC,
++     * present it with a well-timed clock fixed at 250MHz.
++     */
++    return (((uint64_t)env->pcc_ofs << 32)
++            | (uint32_t)(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) >> 2));
++#else
++    /*
++     * In user-mode, QEMU_CLOCK_VIRTUAL doesn't exist.  Just pass through
++     * the host cpu clock ticks.  Also, don't bother taking PCC_OFS into
++     * account.
++     */
++    return (uint32_t)cpu_get_host_ticks();
++#endif
++}
+diff --git a/target/alpha/sys_helper.c b/target/alpha/sys_helper.c
+index c83c92dd4c..98d9a0fff7 100644
+--- a/target/alpha/sys_helper.c
++++ b/target/alpha/sys_helper.c
+@@ -27,21 +27,6 @@
+ #include "qemu/timer.h"
+ 
+ 
+-uint64_t helper_load_pcc(CPUAlphaState *env)
+-{
+-#ifndef CONFIG_USER_ONLY
+-    /* In system mode we have access to a decent high-resolution clock.
+-       In order to make OS-level time accounting work with the RPCC,
+-       present it with a well-timed clock fixed at 250MHz.  */
+-    return (((uint64_t)env->pcc_ofs << 32)
+-            | (uint32_t)(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) >> 2));
+-#else
+-    /* In user-mode, QEMU_CLOCK_VIRTUAL doesn't exist.  Just pass through the host cpu
+-       clock ticks.  Also, don't bother taking PCC_OFS into account.  */
+-    return (uint32_t)cpu_get_host_ticks();
+-#endif
+-}
+-
+ /* PALcode support special instructions */
+ #ifndef CONFIG_USER_ONLY
+ void helper_tbia(CPUAlphaState *env)
+diff --git a/target/alpha/meson.build b/target/alpha/meson.build
+index d3502dd823..ea252c99a5 100644
+--- a/target/alpha/meson.build
++++ b/target/alpha/meson.build
+@@ -4,6 +4,7 @@ alpha_ss.add(files(
+   'fpu_helper.c',
+   'gdbstub.c',
+   'helper.c',
++  'clk_helper.c',
+   'int_helper.c',
+   'mem_helper.c',
+   'sys_helper.c',
 -- 
 2.41.0
 
