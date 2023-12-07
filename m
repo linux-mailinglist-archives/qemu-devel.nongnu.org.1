@@ -2,72 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5601D8084AA
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 10:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7DD808243
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 08:59:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBAfR-0008OW-67; Thu, 07 Dec 2023 04:27:37 -0500
+	id 1rB9H9-0008Lt-Fo; Thu, 07 Dec 2023 02:58:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <talhak2111@gmail.com>)
- id 1rB9G8-0007RB-9e
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 02:57:24 -0500
-Received: from mail-yw1-x112f.google.com ([2607:f8b0:4864:20::112f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <talhak2111@gmail.com>)
- id 1rB9G6-00042u-1W
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 02:57:23 -0500
-Received: by mail-yw1-x112f.google.com with SMTP id
- 00721157ae682-5d40c728fc4so2817547b3.1
- for <qemu-devel@nongnu.org>; Wed, 06 Dec 2023 23:57:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701935839; x=1702540639; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=BNATQZzoy2G0Ma5a45TaA2ekc1UO60t8D+n9C8Umc6Y=;
- b=AcBRFnd8uOaUz16E7YaJPkKrKKk+12Yw7KByQdCZX7llFvVXwlGzqQbseNvmaG/b9r
- M7SflZ/KozfCx27ONF4WvHEzQmvL/FJqZF5gpgX4O/YblZ2DttDvAtThLOs9tdAH0ztx
- Is5hT0IFF2whe5JeqCRrB1yMd9GFGyLN08dfCZwjh6MIlQdKk+GQgkQOZvVkjB+qhuk/
- aUdd7SdbROY9DPBtyr3lWFyq5KDRdb28X7snGi9XyBLU6I57yGMiOFcgPMrtPBspiqcy
- l0J5fl/YpUFUpbevFBS7I1RCsJ41KFAkwnLwGSV7WSggHa8YdXqYW09J5huKQaSd9I4z
- /LUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701935839; x=1702540639;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BNATQZzoy2G0Ma5a45TaA2ekc1UO60t8D+n9C8Umc6Y=;
- b=IG14DNRG/ha6fXy7qbaoTn6iSQseQ7i1xJ1e8Y+ePXyY8gsru5EujEenltt1r5oE7z
- 3YsJwULG+ujZy0Kbuhgsdl2VOj687NV2HhYMz69vwgC9dBljCaClZDvDIHMxxvlsmMxL
- 4LQX3i8TLAcrXXjCxsVPL0C2thE9j1TanbMl1aO3O/n5LvoUIZy7MfmzJ296p5FdGDkM
- 3p2LvXhLh1BQXQwhSsThLx0GLpbAyvILcIsSr+k3sL5x5/B1ZwNLgCYPFSpG4RhVIkgh
- 2kLcnEExH00srZTKDeV1Q/gQdLbB2GRNa3CASls05rmDg2V+4t+S7E3LdsASuOjGMKIf
- BPtw==
-X-Gm-Message-State: AOJu0YzRMSY7sppxHtDsEPBc7gkvr5639D810QG3NvzcvwIE0kNk5Pko
- gj3mAEh8rSjz602cfaefjbLct1sHv0jc1uXzKWWZjGwp
-X-Google-Smtp-Source: AGHT+IFKP5zlDfJqZcRW36sgsmyc8C58MXKtefh5XENaoYQNWIVZZlbACM+IeETF/+HNT6rWB01BuHhbUZ4NBPhOF1Q=
-X-Received: by 2002:a81:9845:0:b0:5d6:2ebb:3b5d with SMTP id
- p66-20020a819845000000b005d62ebb3b5dmr3321332ywg.21.1701935838858; Wed, 06
- Dec 2023 23:57:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <SRS0=788X=HS=kaod.org=clg@ozlabs.org>)
+ id 1rB9H6-0008I7-5E; Thu, 07 Dec 2023 02:58:24 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=788X=HS=kaod.org=clg@ozlabs.org>)
+ id 1rB9H1-0004CX-I6; Thu, 07 Dec 2023 02:58:22 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sm68C4678z4x3D;
+ Thu,  7 Dec 2023 18:58:03 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sm6882LkXz4wnv;
+ Thu,  7 Dec 2023 18:57:59 +1100 (AEDT)
+Message-ID: <73e1ea3b-ae2a-41cd-8a00-f018fe0281d4@kaod.org>
+Date: Thu, 7 Dec 2023 08:57:55 +0100
 MIME-Version: 1.0
-From: Talha Khan <talhak2111@gmail.com>
-Date: Thu, 7 Dec 2023 13:27:07 +0530
-Message-ID: <CAMnsxbAr3GyB6bpvrYMt-31Q+ZKuEoLm+i++CWs6thQmQUXtVw@mail.gmail.com>
-Subject: Build qemu without USB,network devices
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000001b1345060be6d19b"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112f;
- envelope-from=talhak2111@gmail.com; helo=mail-yw1-x112f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/3] hw/ppc: Add pnv nest pervasive common chiplet model
+To: Chalapathi V <chalapathi.v@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ calebs@us.ibm.com, chalapathi.v@ibm.com, saif.abrar@linux.vnet.ibm.com
+References: <20231207024331.5237-1-chalapathi.v@linux.ibm.com>
+ <20231207024331.5237-2-chalapathi.v@linux.ibm.com>
+Content-Language: en-US
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20231207024331.5237-2-chalapathi.v@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=788X=HS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 07 Dec 2023 04:27:32 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,24 +63,323 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000001b1345060be6d19b
-Content-Type: text/plain; charset="UTF-8"
+On 12/7/23 03:43, Chalapathi V wrote:
+> A POWER10 chip is divided into logical pieces called chiplets. Chiplets
+> are broadly divided into "core chiplets" (with the processor cores) and
+> "nest chiplets" (with everything else). Each chiplet has an attachment
+> to the pervasive bus (PIB) and with chiplet-specific registers. All nest
+> chiplets have a common basic set of registers and This model will provide
+> the registers functionality for common registers of nest chiplet (Pervasive
+> Chiplet, PB Chiplet, PCI Chiplets, MC Chiplet, PAU Chiplets)
+> 
+> This commit implement the read/write functions of chiplet control registers.
+> 
+> Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
 
-Hey all,
-I want to build qemu without network devices( nic ), usb and vga. So
-basically a very lightweight emulator without the things i need.
-Any help and leads would be appreciated.
-Yours Truly
-Talha
+Some minor comments below which would be nice to fix. Anyhow,
 
---0000000000001b1345060be6d19b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-<div dir=3D"ltr"><div>Hey all,</div><div>I want to build qemu without netwo=
-rk devices( nic ), usb and vga. So basically a very lightweight emulator wi=
-thout the things i need. <br></div><div>Any help and leads would be appreci=
-ated.</div><div>Yours Truly</div><div>Talha<br></div></div>
+Thanks,
 
---0000000000001b1345060be6d19b--
+C.
+
+
+> ---
+>   include/hw/ppc/pnv_nest_pervasive.h |  32 +++++
+>   include/hw/ppc/pnv_xscom.h          |   3 +
+>   hw/ppc/pnv_nest_pervasive.c         | 208 ++++++++++++++++++++++++++++
+>   hw/ppc/meson.build                  |   1 +
+>   4 files changed, 244 insertions(+)
+>   create mode 100644 include/hw/ppc/pnv_nest_pervasive.h
+>   create mode 100644 hw/ppc/pnv_nest_pervasive.c
+> 
+> diff --git a/include/hw/ppc/pnv_nest_pervasive.h b/include/hw/ppc/pnv_nest_pervasive.h
+> new file mode 100644
+> index 0000000000..270d84ff9d
+> --- /dev/null
+> +++ b/include/hw/ppc/pnv_nest_pervasive.h
+> @@ -0,0 +1,32 @@
+> +/*
+> + * QEMU PowerPC nest pervasive common chiplet model
+> + *
+> + * Copyright (c) 2023, IBM Corporation.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef PPC_PNV_NEST_CHIPLET_PERVASIVE_H
+> +#define PPC_PNV_NEST_CHIPLET_PERVASIVE_H
+> +
+> +#define TYPE_PNV_NEST_CHIPLET_PERVASIVE "pnv-nest-chiplet-pervasive"
+> +#define PNV_NEST_CHIPLET_PERVASIVE(obj) OBJECT_CHECK(PnvNestChipletPervasive, (obj), TYPE_PNV_NEST_CHIPLET_PERVASIVE)
+> +
+> +typedef struct PnvPervasiveCtrlRegs {
+> +#define CPLT_CTRL_SIZE 6
+> +    uint64_t cplt_ctrl[CPLT_CTRL_SIZE];
+> +    uint64_t cplt_cfg0;
+> +    uint64_t cplt_cfg1;
+> +    uint64_t cplt_stat0;
+> +    uint64_t cplt_mask0;
+> +    uint64_t ctrl_protect_mode;
+> +    uint64_t ctrl_atomic_lock;
+> +} PnvPervasiveCtrlRegs;
+> +
+> +typedef struct PnvNestChipletPervasive {
+> +    DeviceState             parent;
+> +    MemoryRegion            xscom_ctrl_regs_mr;
+> +    PnvPervasiveCtrlRegs    control_regs;
+> +} PnvNestChipletPervasive;
+> +
+> +#endif /*PPC_PNV_NEST_CHIPLET_PERVASIVE_H */
+> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+> index f5becbab41..3e15706dec 100644
+> --- a/include/hw/ppc/pnv_xscom.h
+> +++ b/include/hw/ppc/pnv_xscom.h
+> @@ -170,6 +170,9 @@ struct PnvXScomInterfaceClass {
+>   #define PNV10_XSCOM_XIVE2_BASE     0x2010800
+>   #define PNV10_XSCOM_XIVE2_SIZE     0x400
+>   
+> +#define PNV10_XSCOM_N1_CHIPLET_CTRL_REGS_BASE      0x3000000
+> +#define PNV10_XSCOM_CHIPLET_CTRL_REGS_SIZE         0x400
+> +
+>   #define PNV10_XSCOM_PEC_NEST_BASE  0x3011800 /* index goes downwards ... */
+>   #define PNV10_XSCOM_PEC_NEST_SIZE  0x100
+>   
+> diff --git a/hw/ppc/pnv_nest_pervasive.c b/hw/ppc/pnv_nest_pervasive.c
+> new file mode 100644
+> index 0000000000..886e0d2491
+> --- /dev/null
+> +++ b/hw/ppc/pnv_nest_pervasive.c
+> @@ -0,0 +1,208 @@
+> +/*
+> + * QEMU PowerPC nest pervasive common chiplet model
+> + *
+> + * Copyright (c) 2023, IBM Corporation.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/log.h"
+> +#include "hw/qdev-properties.h"
+> +#include "hw/ppc/pnv.h"
+> +#include "hw/ppc/pnv_xscom.h"
+> +#include "hw/ppc/pnv_nest_pervasive.h"
+> +
+> +/*
+> + * Status, configuration, and control units in POWER chips is provided
+> + * by the pervasive subsystem, which connects registers to the SCOM bus,
+> + * which can be programmed by processor cores, other units on the chip,
+> + * BMCs, or other POWER chips.
+> + *
+> + * A POWER10 chip is divided into logical pieces called chiplets. Chiplets
+
+pieces -> units ?
+
+> + * are broadly divided into "core chiplets" (with the processor cores) and
+> + * "nest chiplets" (with everything else). Each chiplet has an attachment
+> + * to the nest_pervasiveasive bus (PIB) and with chiplet-specific registers.
+
+nest_pervasive
+
+> + * All nest chiplets have a common basic set of registers.
+> + *
+> + * This model will provide the registers fuctionality for common registers of
+> + * nest unit (PB Chiplet, PCI Chiplets, MC Chiplet, PAU Chiplets)
+> + *
+> + * Currently this model provide the read/write fuctionality of chiplet control
+
+functionality
+
+> + * scom registers.
+> + */
+> +
+> +#define CPLT_CONF0               0x08
+> +#define CPLT_CONF0_OR            0x18
+> +#define CPLT_CONF0_CLEAR         0x28
+> +#define CPLT_CONF1               0x09
+> +#define CPLT_CONF1_OR            0x19
+> +#define CPLT_CONF1_CLEAR         0x29
+> +#define CPLT_STAT0               0x100
+> +#define CPLT_MASK0               0x101
+> +#define CPLT_PROTECT_MODE        0x3FE
+> +#define CPLT_ATOMIC_CLOCK        0x3FF
+> +
+> +static uint64_t pnv_chiplet_ctrl_read(void *opaque, hwaddr addr, unsigned size)
+> +{
+> +    PnvNestChipletPervasive *nest_pervasive = PNV_NEST_CHIPLET_PERVASIVE(
+> +                                              opaque);
+> +    uint32_t reg = addr >> 3;
+> +    uint64_t val = ~0ull;
+> +
+> +    /* CPLT_CTRL0 to CPLT_CTRL5 */
+> +    for (int i = 0; i < CPLT_CTRL_SIZE; i++) {
+> +        if (reg == i) {
+> +            return nest_pervasive->control_regs.cplt_ctrl[i];
+> +        } else if ((reg == (i + 0x10)) || (reg == (i + 0x20))) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "%s: Write only register, ignoring "
+> +                                           "xscom read at 0x%" PRIx32 "\n",
+> +                                           __func__, reg);
+> +            return val;
+> +        }
+> +    }
+> +
+> +    switch (reg) {
+> +    case CPLT_CONF0:
+> +        val = nest_pervasive->control_regs.cplt_cfg0;
+> +        break;
+> +    case CPLT_CONF0_OR:
+> +    case CPLT_CONF0_CLEAR:
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Write only register, ignoring "
+> +                                   "xscom read at 0x%" PRIx32 "\n",
+> +                                   __func__, reg);
+> +        break;
+> +    case CPLT_CONF1:
+> +        val = nest_pervasive->control_regs.cplt_cfg1;
+> +        break;
+> +    case CPLT_CONF1_OR:
+> +    case CPLT_CONF1_CLEAR:
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Write only register, ignoring "
+> +                                   "xscom read at 0x%" PRIx32 "\n",
+> +                                   __func__, reg);
+> +        break;
+> +    case CPLT_STAT0:
+> +        val = nest_pervasive->control_regs.cplt_stat0;
+> +        break;
+> +    case CPLT_MASK0:
+> +        val = nest_pervasive->control_regs.cplt_mask0;
+> +        break;
+> +    case CPLT_PROTECT_MODE:
+> +        val = nest_pervasive->control_regs.ctrl_protect_mode;
+> +        break;
+> +    case CPLT_ATOMIC_CLOCK:
+> +        val = nest_pervasive->control_regs.ctrl_atomic_lock;
+> +        break;
+> +    default:
+> +        qemu_log_mask(LOG_UNIMP, "%s: Chiplet_control_regs: Invalid xscom "
+> +                 "read at 0x%" PRIx32 "\n", __func__, reg);
+> +    }
+> +    return val;
+> +}
+> +
+> +static void pnv_chiplet_ctrl_write(void *opaque, hwaddr addr,
+> +                                 uint64_t val, unsigned size)
+> +{
+> +    PnvNestChipletPervasive *nest_pervasive = PNV_NEST_CHIPLET_PERVASIVE(
+> +                                              opaque);
+> +    uint32_t reg = addr >> 3;
+> +
+> +    /* CPLT_CTRL0 to CPLT_CTRL5 */
+> +    for (int i = 0; i < CPLT_CTRL_SIZE; i++) {
+> +        if (reg == i) {
+> +            nest_pervasive->control_regs.cplt_ctrl[i] = val;
+> +            return;
+> +        } else if (reg == (i + 0x10)) {
+> +            nest_pervasive->control_regs.cplt_ctrl[i] |= val;
+> +            return;
+> +        } else if (reg == (i + 0x20)) {
+> +            nest_pervasive->control_regs.cplt_ctrl[i] &= ~val;
+> +            return;
+> +        }
+> +    }
+> +
+> +    switch (reg) {
+> +    case CPLT_CONF0:
+> +        nest_pervasive->control_regs.cplt_cfg0 = val;
+> +        break;
+> +    case CPLT_CONF0_OR:
+> +        nest_pervasive->control_regs.cplt_cfg0 |= val;
+> +        break;
+> +    case CPLT_CONF0_CLEAR:
+> +        nest_pervasive->control_regs.cplt_cfg0 &= ~val;
+> +        break;
+> +    case CPLT_CONF1:
+> +        nest_pervasive->control_regs.cplt_cfg1 = val;
+> +        break;
+> +    case CPLT_CONF1_OR:
+> +        nest_pervasive->control_regs.cplt_cfg1 |= val;
+> +        break;
+> +    case CPLT_CONF1_CLEAR:
+> +        nest_pervasive->control_regs.cplt_cfg1 &= ~val;
+> +        break;
+> +    case CPLT_STAT0:
+> +        nest_pervasive->control_regs.cplt_stat0 = val;
+> +        break;
+> +    case CPLT_MASK0:
+> +        nest_pervasive->control_regs.cplt_mask0 = val;
+> +        break;
+> +    case CPLT_PROTECT_MODE:
+> +        nest_pervasive->control_regs.ctrl_protect_mode = val;
+> +        break;
+> +    case CPLT_ATOMIC_CLOCK:
+> +        nest_pervasive->control_regs.ctrl_atomic_lock = val;
+> +        break;
+> +    default:
+> +        qemu_log_mask(LOG_UNIMP, "%s: Chiplet_control_regs: Invalid xscom "
+> +                                 "write at 0x%" PRIx32 "\n",
+> +                                 __func__, reg);
+> +    }
+> +}
+> +
+> +static const MemoryRegionOps pnv_nest_pervasive_control_xscom_ops = {
+> +    .read = pnv_chiplet_ctrl_read,
+> +    .write = pnv_chiplet_ctrl_write,
+> +    .valid.min_access_size = 8,
+> +    .valid.max_access_size = 8,
+> +    .impl.min_access_size = 8,
+> +    .impl.max_access_size = 8,
+> +    .endianness = DEVICE_BIG_ENDIAN,
+> +};
+> +
+> +static void pnv_nest_pervasive_realize(DeviceState *dev, Error **errp)
+> +{
+> +    PnvNestChipletPervasive *nest_pervasive = PNV_NEST_CHIPLET_PERVASIVE(dev);
+> +
+> +    /* Chiplet control scoms */
+> +    pnv_xscom_region_init(&nest_pervasive->xscom_ctrl_regs_mr,
+> +                          OBJECT(nest_pervasive),
+> +                          &pnv_nest_pervasive_control_xscom_ops,
+> +                          nest_pervasive, "pervasive-control",
+> +                          PNV10_XSCOM_CHIPLET_CTRL_REGS_SIZE);
+> +}
+> +
+> +static void pnv_nest_pervasive_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +
+> +    dc->desc = "PowerNV nest pervasive chiplet";
+> +    dc->realize = pnv_nest_pervasive_realize;
+> +}
+> +
+> +static const TypeInfo pnv_nest_pervasive_info = {
+> +    .name          = TYPE_PNV_NEST_CHIPLET_PERVASIVE,
+> +    .parent        = TYPE_DEVICE,
+> +    .instance_size = sizeof(PnvNestChipletPervasive),
+> +    .class_init    = pnv_nest_pervasive_class_init,
+> +    .interfaces    = (InterfaceInfo[]) {
+> +        { TYPE_PNV_XSCOM_INTERFACE },
+> +        { }
+> +    }
+> +};
+> +
+> +static void pnv_nest_pervasive_register_types(void)
+> +{
+> +    type_register_static(&pnv_nest_pervasive_info);
+> +}
+> +
+> +type_init(pnv_nest_pervasive_register_types);
+> diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
+> index ea44856d43..d6f6f94fcc 100644
+> --- a/hw/ppc/meson.build
+> +++ b/hw/ppc/meson.build
+> @@ -51,6 +51,7 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
+>     'pnv_bmc.c',
+>     'pnv_homer.c',
+>     'pnv_pnor.c',
+> +  'pnv_nest_pervasive.c',
+>   ))
+>   # PowerPC 4xx boards
+>   ppc_ss.add(when: 'CONFIG_PPC405', if_true: files(
+
 
