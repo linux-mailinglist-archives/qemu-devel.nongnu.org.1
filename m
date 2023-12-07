@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F27D80837F
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 09:47:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0A98083BD
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 10:03:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBA1H-0006M1-0b; Thu, 07 Dec 2023 03:46:07 -0500
+	id 1rBAGz-0002Dp-E8; Thu, 07 Dec 2023 04:02:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1rBA0t-0006LH-9l
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:45:43 -0500
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1rBA0p-0007Lo-LF
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:45:41 -0500
-Received: from [10.12.102.111] (unknown [85.142.117.226])
- by mail.ispras.ru (Postfix) with ESMTPSA id 7221B40737A7;
- Thu,  7 Dec 2023 08:45:34 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 7221B40737A7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1701938736;
- bh=+F8OW+MU1FdUNPQzqm6b/MIgRUByvpc9mpYsD/NJeS4=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=sgl2xDQ000x3rDRhSI+7OqaJj+2+D9mxiXdxONxsiZLN4Q/GRtNk/r8hbRPjE3CgK
- PzivJvWiFplaFYryiCoYDVIBXKIdtKrESmxcY/wVjf3tB/q4ToK6chYP++CKmSmbdi
- xRXue7AMc2SAqotNGIBUDINdZHhvb8gYPRBAMQUI=
-Message-ID: <6c705934-d4b9-45c8-a0cb-ac1b06c26e2e@ispras.ru>
-Date: Thu, 7 Dec 2023 11:45:34 +0300
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1rBAGl-0002Ad-6t
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 04:02:08 -0500
+Received: from mgamail.intel.com ([192.55.52.120])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1rBAGh-00061v-Ac
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 04:02:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1701939723; x=1733475723;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=r7EYI1ufLFFP1XtnWOrwmSb/zRHEopbGjzJeGM0h1CE=;
+ b=OuJl+XjF0Hp1schPIjymH4PEB1MEpq9pkf+ncZdGHRU+b1gajP6xXDfr
+ QMBf4NA0IOtCsxf/cHl4u6mJXtqnEa+uFMRL5J9DafKl6KpcFmNd3LZcB
+ Oul7aNBHKkdLypglWgZMQZHq04E4gSEDUeUXPCzjg4N+d90Gr3DCO/3mt
+ 8/Vq/oRmoO02EOpk1bBzjuFNjxPlEYruO37/dtpxQE7HEKmzK113PREZ2
+ K08Pgh2RA4bTPwbqu0n1Cz7jFxhmSbpzXNEQ7DvEBNRxmRgfdd5yDMZlh
+ 5JbpSVnkw13yraVgon/cf6ZltnVoq3Tuqg0H2QKrYNcRn/1fAG8kjKth7 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="393071087"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; d="scan'208";a="393071087"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Dec 2023 01:01:59 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="775335181"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; d="scan'208";a="775335181"
+Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
+ by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Dec 2023 01:01:58 -0800
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH] system: Fix location print in axexit notifier callback
+Date: Thu,  7 Dec 2023 16:46:09 +0800
+Message-Id: <20231207084609.2288573-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/11] replay: introduce a central report point for sync
- errors
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-References: <20231205204106.95531-1-alex.bennee@linaro.org>
- <20231205204106.95531-9-alex.bennee@linaro.org>
- <3536aaa0-a6c6-4db0-bf84-3218ee9e22f1@linaro.org>
- <43f2e50a-1d84-4402-b30c-a5b865cd4e49@linaro.org>
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <43f2e50a-1d84-4402-b30c-a5b865cd4e49@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.55.52.120;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,52 +75,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06.12.2023 19:48, Richard Henderson wrote:
-> On 12/6/23 03:35, Philippe Mathieu-Daudé wrote:
->> Hi Alex,
->>
->> On 5/12/23 21:41, Alex Bennée wrote:
->>> Figuring out why replay has failed is tricky at the best of times.
->>> Lets centralise the reporting of a replay sync error and add a little
->>> bit of extra information to help with debugging.
->>>
->>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->>> ---
->>>   replay/replay-internal.h | 12 ++++++++++++
->>>   replay/replay-char.c     |  6 ++----
->>>   replay/replay-internal.c |  1 +
->>>   replay/replay.c          |  9 +++++++++
->>>   4 files changed, 24 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/replay/replay-internal.h b/replay/replay-internal.h
->>> index 1bc8fd5086..709e2eb4cb 100644
->>> --- a/replay/replay-internal.h
->>> +++ b/replay/replay-internal.h
->>> @@ -74,6 +74,7 @@ enum ReplayEvents {
->>>    * @cached_clock: Cached clocks values
->>>    * @current_icount: number of processed instructions
->>>    * @instruction_count: number of instructions until next event
->>> + * @current_event: current event index
->>>    * @data_kind: current event
->>>    * @has_unread_data: true if event not yet processed
->>>    * @file_offset: offset into replay log at replay snapshot
->>> @@ -84,6 +85,7 @@ typedef struct ReplayState {
->>>       int64_t cached_clock[REPLAY_CLOCK_COUNT];
->>>       uint64_t current_icount;
->>>       int instruction_count;
->>> +    unsigned int current_event;
->>>       unsigned int data_kind;
->>>       bool has_unread_data;
->>>       uint64_t file_offset;
->> Shouldn't this field be migrated?
-> 
-> No, it's for diagnostic use only.
+Some exit notifier callbacks call error_report_err if it fails
+to do the cleanup. If this happens on QEMU command line parse
+stage, i.e. there is fatal error, the location printed in
+error_report_err is totally unrelated to exit notifier itself.
+Set location to none to avoid such confusing.
 
-It should be migrated, because RR may be started from the snapshot, 
-which references the middle of replayed scenario.
+Before fix:
+qemu-system-x86_64: -device intel-iommu,device-iotlb=on,x-pasid-mode=on: PASID based device IOTLB is not supported
+qemu-system-x86_64: -device intel-iommu,device-iotlb=on,x-pasid-mode=on: network script /root/qemu/build/qemu-bundle/usr/local/etc/qemu-ifdown failed with status 256
 
+After fix:
+qemu-system-x86_64: -device intel-iommu,device-iotlb=on,x-pasid-mode=on: PASID based device IOTLB is not supported
+qemu-system-x86_64: network script /root/qemu/build/qemu-bundle/usr/local/etc/qemu-ifdown failed with status 256
 
-Pavel Dovgalyuk
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ system/runstate.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
+diff --git a/system/runstate.c b/system/runstate.c
+index ea9d6c2a32a4..32e9e9b541aa 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
+@@ -797,6 +797,15 @@ void qemu_remove_exit_notifier(Notifier *notify)
+ 
+ static void qemu_run_exit_notifiers(void)
+ {
++    /*
++     * Some exit notifier callbacks call error_report_err if it fails
++     * to do the cleanup. If this happens on QEMU command line parse
++     * stage, i.e. there is fatal error, the location printed in
++     * error_report_err is totally unrelated to exit notifier itself.
++     * Set location to none to avoid such confusing.
++     */
++    loc_set_none();
++
+     notifier_list_notify(&exit_notifiers, NULL);
+ }
+ 
+-- 
+2.34.1
 
 
