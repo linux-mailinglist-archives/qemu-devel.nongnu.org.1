@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9567808C0A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 16:40:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E29808C24
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 16:47:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBGSq-0005zX-51; Thu, 07 Dec 2023 10:39:00 -0500
+	id 1rBGZu-0000db-LL; Thu, 07 Dec 2023 10:46:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rBGSn-0005yu-UJ
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:38:58 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBGZa-0000cH-49
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:45:58 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rBGSi-00087y-17
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:38:57 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-333536432e0so989567f8f.3
- for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 07:38:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBGZX-000288-82
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:45:57 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a1db6c63028so117604666b.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 07:45:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1701963530; x=1702568330;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fZw+JUiGsn+h8Ah0eCoapNTG4nn0tiSq/PIPn2r1QhI=;
- b=eNxKexhAaD61RhpV5iX/XKY3+lvwnjsJefRzXZT3QQOD9piw5NcWbuwum5TCP7xT0b
- AMOkKYU8yQcB+cJw+OAvyrwy5+KIBFQyWybqWo613L7+eD7nSmctpxti+FV3QGfXWplC
- 6svxbeURx4KT9i4bo475d/xTRUavRxG+qFRxhbq4ZIPiRgeimvTMeFp1Iu5hT/9YJXQJ
- Al7dvQ1QVsCK6apecbzRzUYAJUEJY0xeLP7gQ6KFTowH0pRUUMPWWhr0LdFTeGHqOrsi
- OWOhSrpkNBfaHgOR38chXq1FB6X0hXVmDXmW/zlUcQg4nPiYvbSthbu7I0ZuUJbmHdTg
- df5w==
+ d=linaro.org; s=google; t=1701963953; x=1702568753; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qIgSJSXHt73pYKp369uQ7oGZDAJNmZg50+PsPECtSzM=;
+ b=yPmOcxmtk1uZRWr5zPeO3h132lPrZLZeOyb/rsCEz5o1FWpMqjIG5sSbC4BQgjv8Uf
+ M00QUCIxBUZElgBEiDgoJOxlJLvnsTeltLPYQ6117WFYn0b1PccxkUMwWlgXKrSgQ/VV
+ lQC0ReU0jn0C+5vuS75V9Mk0leu7Fear5HPRmEf4oteeIzDTBnFDa4csdu7MckFIWKyS
+ nMABy5MDbI5GVVX1sHk8ITg4DbNxyb0ceBOTYCO4dNhiR5Q9DDtWal2/xwacAupZ8E/M
+ tPhvklDURjArcv7/2tZKVXgWt8YHTiCgvTAkvo6u5NcISB3gsm3igAgqKSawX76SQLDy
+ UtGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701963530; x=1702568330;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fZw+JUiGsn+h8Ah0eCoapNTG4nn0tiSq/PIPn2r1QhI=;
- b=PX7sjOAjsYUCE8opBDuQRIXsiNWAMgQqxtsCjBK1vxn4805Nbi81S85MIXsz26jR98
- YCcY8i+baGJluKGsiQdQhuOQZW2ga7gjzCFRlzeuyiqAqLX1phBkaQWE8ZMNEzkoG82p
- JQOk6Efsp9NKkWshL8lNzRod3cM5YyDgHDdPGGldLZjKPwJTnVtkWB0SWtRiCn3Pu4gc
- IUV9Hwi9bWXYqnblwUoBl2qvDvsVBmglJ7LjQZDlYeUJ0Pjg7GThc0LQW317gTvB1ZGq
- 035BoZcSzMTxlGmLP53IUbuqJNGqRwxMwMaYFnYhlLnwUPoqUXdcfRcbBbcpeSy2Y5yN
- 0MbQ==
-X-Gm-Message-State: AOJu0YyEVxQo7N2VF2ycAjsscnSmQVgNjTTfp5BE2/CfvBW1dF1yT6AQ
- qJlF3D2JlNepaZUZVrYas2fVG7jIqNQeYS3vrbfDMg==
-X-Google-Smtp-Source: AGHT+IEcWRDde5CeNOytCjA1B141772By2Dy/wAdEiAkT1pYlQr+PtIHoswvHU96QQc/kZI8LqT1ag==
-X-Received: by 2002:adf:f10f:0:b0:333:2fd2:6f74 with SMTP id
- r15-20020adff10f000000b003332fd26f74mr1549114wro.126.1701963530345; 
- Thu, 07 Dec 2023 07:38:50 -0800 (PST)
-Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
- [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
- b16-20020a5d4b90000000b0033339e03a60sm1711399wrt.59.2023.12.07.07.38.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Dec 2023 07:38:49 -0800 (PST)
-From: Rob Bradford <rbradford@rivosinc.com>
+ d=1e100.net; s=20230601; t=1701963953; x=1702568753;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qIgSJSXHt73pYKp369uQ7oGZDAJNmZg50+PsPECtSzM=;
+ b=MP6wzZMMdc9uUoYKfAhfVdsapSCzbXipk573wAP3BRflnEOvzwc3oJv79/VkH4a8tJ
+ j2pHabAAeOqIYCXsyGyvIsUUPIUrAkEL/hEFtEs52cRpuxDyLrxvwMGLJ+Ph+gVinNVd
+ wXzNEuOjxbaM8r5ZX9OUewp3wV7OjGnP/5gx2FeRYzF6nuL9QmVO9cf1FZsnJZcXKxyP
+ t6+y3CxL/9iJODXYjxyv75EyV/jQ3lQEMouztOp6JhrCh5a57jUzO+ENshRm/1BkmfLW
+ cXnEVoHbDDTYqHnccLwv9ACyUbevIIok6WZNeKNYd9yLFk9RyHnEGB8VOLaVxjTpYEwn
+ 4L4Q==
+X-Gm-Message-State: AOJu0YxdVozc13T5UgwXQVDdvIOz45wnCXTaMViVMNssaYccOzQ13jMr
+ atkBmAtPFDzZjlJFySRaOWnrT/mkMUV81Az3mKQ=
+X-Google-Smtp-Source: AGHT+IFH83Qy/3ghBdcE9KWPQ0IKRxxwi5YYmOQ56WyzoWuqUy8pJGx+OImy8G1SwgmXbftLfOnWeA==
+X-Received: by 2002:a17:907:ca1d:b0:9be:7b67:1674 with SMTP id
+ uk29-20020a170907ca1d00b009be7b671674mr1542810ejc.3.1701963953651; 
+ Thu, 07 Dec 2023 07:45:53 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.202.111])
+ by smtp.gmail.com with ESMTPSA id
+ t15-20020a1709066bcf00b00a1b65249053sm969126ejs.128.2023.12.07.07.45.51
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 07 Dec 2023 07:45:53 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- Rob Bradford <rbradford@rivosinc.com>,
- Alistair Francis <Alistair.Francis@wdc.com>
-Subject: [PATCH 2/2] disas/riscv: Add amocas.[w,d,q] instructions
-Date: Thu,  7 Dec 2023 15:32:31 +0000
-Message-ID: <20231207153842.32401-3-rbradford@rivosinc.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231207153842.32401-1-rbradford@rivosinc.com>
-References: <20231207153842.32401-1-rbradford@rivosinc.com>
+Cc: qemu-arm@nongnu.org, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Fam Zheng <fam@euphon.net>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/5] sysemu/replay: Restrict icount to TCG system emulation
+Date: Thu,  7 Dec 2023 16:45:45 +0100
+Message-ID: <20231207154550.65087-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,46 +92,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
----
- disas/riscv.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Slightly simplify non-TCG and user emulation code.
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index e9458e574b..8a546d5ea5 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -903,6 +903,9 @@ typedef enum {
-     rv_op_vwsll_vv = 872,
-     rv_op_vwsll_vx = 873,
-     rv_op_vwsll_vi = 874,
-+    rv_op_amocas_w = 875,
-+    rv_op_amocas_d = 876,
-+    rv_op_amocas_q = 877,
- } rv_op;
- 
- /* register names */
-@@ -2090,6 +2093,9 @@ const rv_opcode_data rvi_opcode_data[] = {
-     { "vwsll.vv", rv_codec_v_r, rv_fmt_vd_vs2_vs1_vm, NULL, 0, 0, 0 },
-     { "vwsll.vx", rv_codec_v_r, rv_fmt_vd_vs2_rs1_vm, NULL, 0, 0, 0 },
-     { "vwsll.vi", rv_codec_v_i, rv_fmt_vd_vs2_uimm_vm, NULL, 0, 0, 0 },
-+    { "amocas.w", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-+    { "amocas.d", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
-+    { "amocas.q", rv_codec_r_a, rv_fmt_aqrl_rd_rs2_rs1, NULL, 0, 0, 0 },
- };
- 
- /* CSR names */
-@@ -2841,6 +2847,9 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-             case 34: op = rv_op_amoxor_w; break;
-             case 35: op = rv_op_amoxor_d; break;
-             case 36: op = rv_op_amoxor_q; break;
-+            case 42: op = rv_op_amocas_w; break;
-+            case 43: op = rv_op_amocas_d; break;
-+            case 44: op = rv_op_amocas_q; break;
-             case 66: op = rv_op_amoor_w; break;
-             case 67: op = rv_op_amoor_d; break;
-             case 68: op = rv_op_amoor_q; break;
+Since v1:
+- Introduce enum of icount modes
+- Fix ARM INST_RETIRED event
+
+Philippe Mathieu-Daudé (5):
+  sysemu/cpu-timers: Introduce ICountMode enumerator
+  target/arm: Ensure icount is enabled when emulating INST_RETIRED
+  util/async: Only call icount_notify_exit() if icount is enabled
+  system/vl: Restrict icount to TCG emulation
+  sysemu/replay: Restrict icount to system emulation
+
+ include/sysemu/cpu-timers.h | 22 ++++++++++++++--------
+ include/sysemu/replay.h     | 11 ++++++++---
+ accel/tcg/icount-common.c   | 16 +++++++---------
+ stubs/icount.c              | 29 ++---------------------------
+ system/cpu-timers.c         |  2 +-
+ system/vl.c                 |  6 +++++-
+ target/arm/helper.c         |  5 ++++-
+ util/async.c                | 16 +++++++++-------
+ 8 files changed, 50 insertions(+), 57 deletions(-)
+
 -- 
-2.43.0
+2.41.0
 
 
