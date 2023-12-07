@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0CC80943E
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38543809501
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:59:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBLxg-0007UO-HK; Thu, 07 Dec 2023 16:31:12 -0500
+	id 1rBMNI-0004sK-Ju; Thu, 07 Dec 2023 16:57:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rBLwz-0007P4-44; Thu, 07 Dec 2023 16:30:29 -0500
+ id 1rBMNF-0004rP-Bj; Thu, 07 Dec 2023 16:57:37 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rBLwx-0005MC-Fd; Thu, 07 Dec 2023 16:30:28 -0500
+ id 1rBMND-0007gh-5J; Thu, 07 Dec 2023 16:57:37 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 235EA11EFF3;
- Thu,  7 Dec 2023 21:30:23 +0000 (UTC)
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 2A03E11EFBC;
+ Thu,  7 Dec 2023 21:57:33 +0000 (UTC)
 From: ~inesvarhol <inesvarhol@git.sr.ht>
-Date: Thu, 07 Dec 2023 21:30:21 +0000
+Date: Thu, 07 Dec 2023 21:57:32 +0000
 MIME-Version: 1.0
-Subject: [PATCH qemu 0/3] hw/arm: Add device STM32L4x5 EXTI
-Message-ID: <170198462199.32162.284497577253427308-0@git.sr.ht>
+Subject: [PATCH qemu v2 0/2] hw/arm: Add minimal support for the
+ B-L475E-IOT01A board
+Message-ID: <170198625302.23093.6056065304261752852-0@git.sr.ht>
 X-Mailer: git.sr.ht
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
- peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
- arnaud.minier@telecom-paris.fr
+ peter.maydell@linaro.org, alex.bennee@linaro.org,
+ ines.varhol@telecom-paris.fr, arnaud.minier@telecom-paris.fr
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
@@ -55,71 +56,36 @@ Reply-To: ~inesvarhol <inesvarhol@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds a new STM32L4x5 EXTI device and is part
-of a series implementing the STM32L4x5 with a few peripherals.
-
-The patch is split up in 3 commits :
-- implementing the EXTI device
-- adding tests (that fail in this commit)
-- connecting the EXTI device to the SoC (the tests pass in this commit)
-
-Thank you Alistair for the review and very helpful answers !
-
-Sincerely,
-Ines Varhol
-
-Changes from v3 to non-RFC v1:
-- separating the patch in 3 commits
-- justifying in the commit message why we implement a new
-model instead of changing the existing stm32f4xx_exti
-- changed irq_raise to irq_pulse in register SWIERx write (in
-stm32l4x5_exti_write)
-to be consistent with the irq_pulse in stm32l4x5_exti_set_irq (and also
-both these interrupts
-are edge-triggered)
-- changed the license to GPL
-
-Changes from v2 to v3:
-- adding more tests writing/reading in exti registers
-- adding tests checking that interrupt work by reading NVIC registers
-- correcting exti_write in SWIER (so it sets an irq only when a bit goes
-from '0' to '1')
-- correcting exti_set_irq (so it never writes in PR when the relevant
-bit in IMR is '0')
+This patch adds a new STM32L4x5 SoC, it is necessary to add support for
+the B-L475E-IOT01A board.
+The implementation is derived from the STM32F405 SoC and NetduinoPlus2
+board.
+The implementation contains no peripherals, only memory regions are
+implemented.
 
 Changes from v1 to v2:
-- use arrays to deduplicate code and logic
-- move internal constant EXTI_NUM_GPIO_EVENT_IN_LINES from the header
-to the .c file
-- Improve copyright headers
-- replace static const with #define
-- use the DEFINE_TYPES macro
-- fill the impl and valid field of the exti's MemoryRegionOps
-- fix invalid test caused by a last minute change
+Thank you Alistair and Alex for your comments on the license.
+Just to be safe I changed the MIT license to GPL.
 
-Based-on: <170100975340.4879.5844108484092111139-0@git.sr.ht>
-([PATCH qemu 0/2] hw/arm: Add minimal support for the B-L475E-IOT01A
-board)
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
-In=C3=A8s Varhol (3):
-  hw/arm: Implement STM32L4x5 EXTI
-  hw/arm: Add STM32L4x5 EXTI QTest testcase
-  hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC
+In=C3=A8s Varhol (2):
+  hw/arm: Add minimal support for the STM32L4x5 SoC
+  hw/arm: Add minimal support for the B-L475E-IOT01A board
 
- hw/arm/Kconfig                    |   1 +
- hw/arm/stm32l4x5_soc.c            |  65 +++-
- hw/misc/Kconfig                   |   3 +
- hw/misc/meson.build               |   1 +
- hw/misc/stm32l4x5_exti.c          | 299 ++++++++++++++++++
- hw/misc/trace-events              |   5 +
- include/hw/arm/stm32l4x5_soc.h    |   3 +
- include/hw/misc/stm32l4x5_exti.h  |  61 ++++
- tests/qtest/meson.build           |   5 +
- tests/qtest/stm32l4x5_exti-test.c | 485 ++++++++++++++++++++++++++++++
- 10 files changed, 926 insertions(+), 2 deletions(-)
- create mode 100644 hw/misc/stm32l4x5_exti.c
- create mode 100644 include/hw/misc/stm32l4x5_exti.h
- create mode 100644 tests/qtest/stm32l4x5_exti-test.c
+ MAINTAINERS                             |  15 ++
+ configs/devices/arm-softmmu/default.mak |   1 +
+ hw/arm/Kconfig                          |  11 +
+ hw/arm/b-l475e-iot01a.c                 |  79 +++++++
+ hw/arm/meson.build                      |   2 +
+ hw/arm/stm32l4x5_soc.c                  | 277 ++++++++++++++++++++++++
+ include/hw/arm/stm32l4x5_soc.h          |  68 ++++++
+ 7 files changed, 453 insertions(+)
+ create mode 100644 hw/arm/b-l475e-iot01a.c
+ create mode 100644 hw/arm/stm32l4x5_soc.c
+ create mode 100644 include/hw/arm/stm32l4x5_soc.h
 
 --=20
 2.38.5
