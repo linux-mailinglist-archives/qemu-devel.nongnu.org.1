@@ -2,68 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2F18090CF
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 19:56:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC728090C5
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 19:56:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBJT3-00047e-8y; Thu, 07 Dec 2023 13:51:25 -0500
+	id 1rBJT3-000486-D6; Thu, 07 Dec 2023 13:51:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rBJT1-000435-5e
+ id 1rBJT0-00041S-Vh
  for qemu-devel@nongnu.org; Thu, 07 Dec 2023 13:51:23 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rBJSq-0007Dc-PQ
+ id 1rBJSr-0007Du-HA
  for qemu-devel@nongnu.org; Thu, 07 Dec 2023 13:51:22 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B7InVX7000548; Thu, 7 Dec 2023 18:51:00 GMT
+ 3B7IJGFg006265; Thu, 7 Dec 2023 18:51:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=kxSpiE8Ke1O5BLHfgTteE8AERnFgFLmrr+RYhHE9PCg=;
- b=jY9g3wdOmkIfelJ/yBFJy6tK7LjF0+RM21dYA4b5YsbYy+EimVg9CzipYKqpE5EkrieX
- I4fBQ6Y0vpYb9rvuvNSsRITClvZMgFBdMi3gDkucu1xSLMEkQUiLgOGO+WjLA6gc3aMC
- EAd3DyFqFOuJHOw9b6Y8TA7vufWz2OYxqTg4YZU7nwBzz10MbNxeelfKGiTlWpNq42Fj
- Pd/Bp6zH8ZAY3e8pNQVkrSumA3mEbDXbRVJCpm+pHJkmMua5WAoO49EqvWwgZtrWAFen
- FO4wFtisG5xMqZ7asT+h1CGn+VUHX7O38Pax7HNu7Q9CjUr/d74FQHW+BGp+dfUKwIsQ Ew== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2023-11-20;
+ bh=wtgVWgrJosAg3FEJdVTyDsO19N6fZxNG0z4YKtYzny0=;
+ b=g+IGzD55rD/wrCswJER52o+ck8aq66lQ4Q0shwUUt6rS8cUbXs2J0Vttqru/BM7iKy2t
+ waMHtL3CtVfnxe75zxhJkBxehjJBSP0BC8w7DeRUwgItZGQXHFsdGIdwZnvjSHn67+UI
+ L7nPq6aoHixssDgexjg9QjZ57AnXXp1b51ECuLJg680ig+6T9IDB6nBRcScO0x5Z/6kq
+ tk/QpX7WANvPZdBx33tClu/rx1XEBrdAKMKAbh2SRtJpcccW7BVzrvhgU/SZ6w3ogOEa
+ VXDA7cotZd1cujH94CtowRm3VXYfhOMickMO4vfIGZKW3xj/jmIfypqW+hVqb0v+Qogr uQ== 
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utd0mmh64-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utdabvgef-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 07 Dec 2023 18:51:00 +0000
+ Thu, 07 Dec 2023 18:51:02 +0000
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B7InFf7039579; Thu, 7 Dec 2023 18:50:59 GMT
+ with ESMTP id 3B7HNN9E039498; Thu, 7 Dec 2023 18:51:01 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3utan7vjct-1
+ 3utan7vjdn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 07 Dec 2023 18:50:59 +0000
+ Thu, 07 Dec 2023 18:51:01 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B7Io90w008067;
- Thu, 7 Dec 2023 18:50:59 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B7Io910008067;
+ Thu, 7 Dec 2023 18:51:00 GMT
 Received: from ban25x6uut24.us.oracle.com (ban25x6uut24.us.oracle.com
  [10.153.73.24])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3utan7vh2k-34; Thu, 07 Dec 2023 18:50:59 +0000
+ 3utan7vh2k-35; Thu, 07 Dec 2023 18:51:00 +0000
 From: Si-Wei Liu <si-wei.liu@oracle.com>
 To: eperezma@redhat.com, jasowang@redhat.com, mst@redhat.com,
  dtatulea@nvidia.com, leiyang@redhat.com, yin31149@gmail.com,
  boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
 Cc: qemu-devel@nongnu.org
-Subject: [PATCH 33/40] vdpa: batch multiple dma_unmap to a single call for vm
- stop
-Date: Thu,  7 Dec 2023 09:39:46 -0800
-Message-Id: <1701970793-6865-34-git-send-email-si-wei.liu@oracle.com>
+Subject: [PATCH 34/40] vdpa: fix network breakage after cancelling migration
+Date: Thu,  7 Dec 2023 09:39:47 -0800
+Message-Id: <1701970793-6865-35-git-send-email-si-wei.liu@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
 References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-07_15,2023-12-07_01,2023-05-22_02
@@ -72,10 +75,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  suspectscore=0 mlxscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2312070156
-X-Proofpoint-GUID: Ok6zt6Qx_oseqpQofEMTPRb2ZoIhLeDE
-X-Proofpoint-ORIG-GUID: Ok6zt6Qx_oseqpQofEMTPRb2ZoIhLeDE
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=si-wei.liu@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: A401oTK9044HLD8zykPrYHl6X1aE1Gvl
+X-Proofpoint-GUID: A401oTK9044HLD8zykPrYHl6X1aE1Gvl
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=si-wei.liu@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -99,241 +102,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Should help live migration downtime on source host. Below are the
-coalesced dma_unmap time series on 2 queue pair config (no
-dedicated descriptor group ASID for SVQ).
+Fix an issue where cancellation of ongoing migration ends up
+with no network connectivity.
 
-109531@1693367276.853503:vhost_vdpa_reset_device dev: 0x55c933926890
-109531@1693367276.853513:vhost_vdpa_add_status dev: 0x55c933926890 status: 0x3
-109531@1693367276.853520:vhost_vdpa_flush_map dev: 0x55c933926890 doit: 1 svq_flush: 0 persist: 1
-109531@1693367276.853524:vhost_vdpa_set_config_call dev: 0x55c933926890 fd: -1
-109531@1693367276.853579:vhost_vdpa_iotlb_begin_batch vdpa:0x7fa2aa895190 fd: 16 msg_type: 2 type: 5
-109531@1693367276.853586:vhost_vdpa_dma_unmap vdpa:0x7fa2aa895190 fd: 16 msg_type: 2 asid: 0 iova: 0x1000 size: 0x2000 type: 3
-109531@1693367276.853600:vhost_vdpa_dma_unmap vdpa:0x7fa2aa895190 fd: 16 msg_type: 2 asid: 0 iova: 0x3000 size: 0x1000 type: 3
-109531@1693367276.853618:vhost_vdpa_dma_unmap vdpa:0x7fa2aa895190 fd: 16 msg_type: 2 asid: 0 iova: 0x4000 size: 0x2000 type: 3
-109531@1693367276.853625:vhost_vdpa_dma_unmap vdpa:0x7fa2aa895190 fd: 16 msg_type: 2 asid: 0 iova: 0x6000 size: 0x1000 type: 3
-109531@1693367276.853630:vhost_vdpa_dma_unmap vdpa:0x7fa2aa84c190 fd: 16 msg_type: 2 asid: 0 iova: 0x7000 size: 0x2000 type: 3
-109531@1693367276.853636:vhost_vdpa_dma_unmap vdpa:0x7fa2aa84c190 fd: 16 msg_type: 2 asid: 0 iova: 0x9000 size: 0x1000 type: 3
-109531@1693367276.853642:vhost_vdpa_dma_unmap vdpa:0x7fa2aa84c190 fd: 16 msg_type: 2 asid: 0 iova: 0xa000 size: 0x2000 type: 3
-109531@1693367276.853648:vhost_vdpa_dma_unmap vdpa:0x7fa2aa84c190 fd: 16 msg_type: 2 asid: 0 iova: 0xc000 size: 0x1000 type: 3
-109531@1693367276.853654:vhost_vdpa_dma_unmap vdpa:0x7fa2aa6b6190 fd: 16 msg_type: 2 asid: 0 iova: 0xf000 size: 0x1000 type: 3
-109531@1693367276.853660:vhost_vdpa_dma_unmap vdpa:0x7fa2aa6b6190 fd: 16 msg_type: 2 asid: 0 iova: 0x10000 size: 0x1000 type: 3
-109531@1693367276.853666:vhost_vdpa_dma_unmap vdpa:0x7fa2aa6b6190 fd: 16 msg_type: 2 asid: 0 iova: 0xd000 size: 0x1000 type: 3
-109531@1693367276.853670:vhost_vdpa_dma_unmap vdpa:0x7fa2aa6b6190 fd: 16 msg_type: 2 asid: 0 iova: 0xe000 size: 0x1000 type: 3
-109531@1693367276.853675:vhost_vdpa_iotlb_end_batch vdpa:0x7fa2aa895190 fd: 16 msg_type: 2 type: 6
-109531@1693367277.014697:vhost_vdpa_get_vq_index dev: 0x55c933925de0 idx: 0 vq idx: 0
-109531@1693367277.014747:vhost_vdpa_get_vq_index dev: 0x55c933925de0 idx: 1 vq idx: 1
-109531@1693367277.014753:vhost_vdpa_get_vq_index dev: 0x55c9339262e0 idx: 2 vq idx: 2
-109531@1693367277.014756:vhost_vdpa_get_vq_index dev: 0x55c9339262e0 idx: 3 vq idx: 3
+When canceling migration, SVQ will be switched back to the
+passthrough mode, but the right call fd is not programed to
+the device and the svq's own call fd is still used. At the
+point of this transitioning period, the shadow_vqs_enabled
+hadn't been set back to false yet, causing the installation
+of call fd inadvertently bypassed.
+
+Fixes: a8ac88585da1 ("vhost: Add Shadow VirtQueue call forwarding capabilities")
+Cc: Eugenio Pérez <eperezma@redhat.com>
 
 Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 ---
- hw/virtio/vhost-vdpa.c         |   7 +--
- include/hw/virtio/vhost-vdpa.h |   3 ++
- net/vhost-vdpa.c               | 112 +++++++++++++++++++++++++++--------------
- 3 files changed, 80 insertions(+), 42 deletions(-)
+ hw/virtio/vhost-vdpa.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index d98704a..4010fd9 100644
+index 4010fd9..8ba390d 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -1162,8 +1162,8 @@ static void vhost_vdpa_svq_unmap_ring(struct vhost_vdpa *v, hwaddr addr)
-     vhost_iova_tree_remove(v->shared->iova_tree, *result);
- }
+@@ -1647,7 +1647,12 @@ static int vhost_vdpa_set_vring_call(struct vhost_dev *dev,
  
--static void vhost_vdpa_svq_unmap_rings(struct vhost_dev *dev,
--                                       const VhostShadowVirtqueue *svq)
-+void vhost_vdpa_svq_unmap_rings(struct vhost_dev *dev,
-+                                const VhostShadowVirtqueue *svq)
- {
-     struct vhost_vdpa *v = dev->opaque;
-     struct vhost_vring_addr svq_addr;
-@@ -1346,17 +1346,14 @@ static void vhost_vdpa_svqs_stop(struct vhost_dev *dev)
-         return;
+     /* Remember last call fd because we can switch to SVQ anytime. */
+     vhost_svq_set_svq_call_fd(svq, file->fd);
+-    if (v->shadow_vqs_enabled) {
++    /*
++     * In the event of SVQ switching to off, shadow_vqs_enabled has
++     * not been set to false yet, but the underlying call fd will
++     * switch back to the guest notifier for passthrough VQs.
++     */
++    if (v->shadow_vqs_enabled && v->shared->svq_switching >= 0) {
+         return 0;
      }
- 
--    vhost_vdpa_dma_batch_begin_once(v->shared, v->address_space_id);
-     for (unsigned i = 0; i < v->shadow_vqs->len; ++i) {
-         VhostShadowVirtqueue *svq = g_ptr_array_index(v->shadow_vqs, i);
- 
-         vhost_svq_stop(svq);
--        vhost_vdpa_svq_unmap_rings(dev, svq);
- 
-         event_notifier_cleanup(&svq->hdev_kick);
-         event_notifier_cleanup(&svq->hdev_call);
-     }
--    vhost_vdpa_dma_batch_end_once(v->shared, v->address_space_id);
- }
- 
- static void vhost_vdpa_suspend(struct vhost_dev *dev)
-diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index aa13679..f426e2c 100644
---- a/include/hw/virtio/vhost-vdpa.h
-+++ b/include/hw/virtio/vhost-vdpa.h
-@@ -112,6 +112,9 @@ int vhost_vdpa_dma_batch_end_once(VhostVDPAShared *s, uint32_t asid);
- int vhost_vdpa_load_setup(VhostVDPAShared *s, AddressSpace *dma_as);
- int vhost_vdpa_load_cleanup(VhostVDPAShared *s, bool vhost_will_start);
- 
-+void vhost_vdpa_svq_unmap_rings(struct vhost_dev *dev,
-+                                const VhostShadowVirtqueue *svq);
-+
- typedef struct vdpa_iommu {
-     VhostVDPAShared *dev_shared;
-     IOMMUMemoryRegion *iommu_mr;
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 683619f..41714d1 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -29,6 +29,7 @@
- #include "migration/migration.h"
- #include "migration/misc.h"
- #include "hw/virtio/vhost.h"
-+#include "hw/virtio/vhost-vdpa.h"
- 
- /* Todo:need to add the multiqueue support here */
- typedef struct VhostVDPAState {
-@@ -467,15 +468,89 @@ static int vhost_vdpa_net_data_load(NetClientState *nc)
-     return 0;
- }
- 
-+static void vhost_vdpa_cvq_unmap_buf(struct vhost_vdpa *v, void *addr)
-+{
-+    VhostIOVATree *tree = v->shared->iova_tree;
-+    DMAMap needle = {
-+        /*
-+         * No need to specify size or to look for more translations since
-+         * this contiguous chunk was allocated by us.
-+         */
-+        .translated_addr = (hwaddr)(uintptr_t)addr,
-+    };
-+    const DMAMap *map = vhost_iova_tree_find_iova(tree, &needle);
-+    int r;
-+
-+    if (unlikely(!map)) {
-+        error_report("Cannot locate expected map");
-+        return;
-+    }
-+
-+    r = vhost_vdpa_dma_unmap(v->shared, v->address_space_id, map->iova,
-+                             map->size + 1);
-+    if (unlikely(r != 0)) {
-+        error_report("Device cannot unmap: %s(%d)", g_strerror(r), r);
-+    }
-+
-+    vhost_iova_tree_remove(tree, *map);
-+}
-+
- static void vhost_vdpa_net_client_stop(NetClientState *nc)
- {
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
-+    struct vhost_vdpa *v = &s->vhost_vdpa;
-+    struct vhost_vdpa *last_vi = NULL;
-+    bool has_cvq = v->dev->vq_index_end % 2;
-+    int nvqp;
- 
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
- 
-     if (s->vhost_vdpa.index == 0) {
-         migration_remove_notifier(&s->migration_state);
-     }
-+
-+    if (v->dev->vq_index + v->dev->nvqs != v->dev->vq_index_end) {
-+        return;
-+    }
-+
-+    nvqp = (v->dev->vq_index_end + 1) / 2;
-+    for (int i = 0; i < nvqp; ++i) {
-+        VhostVDPAState *s_i = vhost_vdpa_net_get_nc_vdpa(s, i);
-+        struct vhost_vdpa *v_i = &s_i->vhost_vdpa;
-+
-+        if (!v_i->shadow_vqs_enabled) {
-+            continue;
-+        }
-+        if (!last_vi) {
-+            vhost_vdpa_dma_batch_begin_once(v_i->shared,
-+                                            v_i->address_space_id);
-+            last_vi = v_i;
-+        } else if (last_vi->address_space_id != v_i->address_space_id) {
-+            vhost_vdpa_dma_batch_end_once(last_vi->shared,
-+                                          last_vi->address_space_id);
-+            vhost_vdpa_dma_batch_begin_once(v_i->shared,
-+                                            v_i->address_space_id);
-+            last_vi = v_i;
-+        }
-+
-+        for (unsigned j = 0; j < v_i->shadow_vqs->len; ++j) {
-+            VhostShadowVirtqueue *svq = g_ptr_array_index(v_i->shadow_vqs, j);
-+
-+            vhost_vdpa_svq_unmap_rings(v_i->dev, svq);
-+        }
-+    }
-+    if (has_cvq) {
-+        if (last_vi) {
-+            assert(last_vi->address_space_id == v->address_space_id);
-+        }
-+        vhost_vdpa_cvq_unmap_buf(&s->vhost_vdpa, s->cvq_cmd_out_buffer);
-+        vhost_vdpa_cvq_unmap_buf(&s->vhost_vdpa, s->status);
-+    }
-+    if (last_vi) {
-+        vhost_vdpa_dma_batch_end_once(last_vi->shared,
-+                                      last_vi->address_space_id);
-+        last_vi = NULL;
-+    }
- }
- 
- static int vhost_vdpa_net_load_setup(NetClientState *nc, NICState *nic)
-@@ -585,33 +660,6 @@ static int64_t vhost_vdpa_get_vring_desc_group(int device_fd,
-     return state.num;
- }
- 
--static void vhost_vdpa_cvq_unmap_buf(struct vhost_vdpa *v, void *addr)
--{
--    VhostIOVATree *tree = v->shared->iova_tree;
--    DMAMap needle = {
--        /*
--         * No need to specify size or to look for more translations since
--         * this contiguous chunk was allocated by us.
--         */
--        .translated_addr = (hwaddr)(uintptr_t)addr,
--    };
--    const DMAMap *map = vhost_iova_tree_find_iova(tree, &needle);
--    int r;
--
--    if (unlikely(!map)) {
--        error_report("Cannot locate expected map");
--        return;
--    }
--
--    r = vhost_vdpa_dma_unmap(v->shared, v->address_space_id, map->iova,
--                             map->size + 1);
--    if (unlikely(r != 0)) {
--        error_report("Device cannot unmap: %s(%d)", g_strerror(r), r);
--    }
--
--    vhost_iova_tree_remove(tree, *map);
--}
--
- /** Map CVQ buffer. */
- static int vhost_vdpa_cvq_map_buf(struct vhost_vdpa *v, void *buf, size_t size,
-                                   bool write)
-@@ -740,18 +788,8 @@ err:
- 
- static void vhost_vdpa_net_cvq_stop(NetClientState *nc)
- {
--    VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
--    struct vhost_vdpa *v = &s->vhost_vdpa;
--
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
- 
--    if (s->vhost_vdpa.shadow_vqs_enabled) {
--        vhost_vdpa_dma_batch_begin_once(v->shared, v->address_space_id);
--        vhost_vdpa_cvq_unmap_buf(&s->vhost_vdpa, s->cvq_cmd_out_buffer);
--        vhost_vdpa_cvq_unmap_buf(&s->vhost_vdpa, s->status);
--        vhost_vdpa_dma_batch_end_once(v->shared, v->address_space_id);
--    }
--
-     vhost_vdpa_net_client_stop(nc);
- }
  
 -- 
 1.8.3.1
