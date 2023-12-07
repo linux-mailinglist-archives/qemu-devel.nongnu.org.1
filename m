@@ -2,72 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45173808B3A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 15:59:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD644808973
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 14:47:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBFpq-0003Ea-2P; Thu, 07 Dec 2023 09:58:42 -0500
+	id 1rBEi1-0004fa-N5; Thu, 07 Dec 2023 08:46:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aziztlili2222@gmail.com>)
- id 1rBEOj-0002O2-1T
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 08:26:37 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBEhz-0004et-OW
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 08:46:31 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <aziztlili2222@gmail.com>)
- id 1rBEOh-0001gq-Cx
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 08:26:36 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c9f9db9567so8072031fa.3
- for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 05:26:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBEhy-0003Ul-1b
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 08:46:31 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-332d5c852a0so965636f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Dec 2023 05:46:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1701955593; x=1702560393; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Meg9AyBn2vmnW8bsUq2FWNQpZANf5/Enrxr3j/GlV9A=;
- b=FMBmrz+CE0OI67DMUJ8/SKYVcU4yeVjx2AvaJF4c4ngk5ejuzq9MF19nFYnwm8cP3q
- xB4mMHmjfsPyicbfx99+1zuv9y6vtuvJerM5eLJ4vlZ3LKieVig9G5Z/ytR10wY4T84s
- knUJaUo0rjONwjBtgpfoVre2swgyXIMJ8L+T2FwdxZOdrnNhuL6HInusFuPbdRl5IJ/w
- v7EHe2OBONhP1Bmtj0nq+8792ApF5US+FPo7QHpfpQqrK5kW83a/Sqmezu3eTH68sGdS
- HW6UlqT0WNCVtACNikjAUAIvwBtFHt1gM1eRx/UAGB481OLNSWT+TFHZlovIBanjjdhN
- ZshA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1701955593; x=1702560393;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ d=linaro.org; s=google; t=1701956788; x=1702561588; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Meg9AyBn2vmnW8bsUq2FWNQpZANf5/Enrxr3j/GlV9A=;
- b=LS9yAdl+ngJi098m4YLnS/f1TfwJyTgzpL+OXGYMki21TcGTWfNdwvDsIe2mnrla8N
- YbL+wSlQqZlLLNzDy7NmwXR3zFUOn2U9kamEpwCnBZ/B/zPhDHg0MWgV0WxzHcWMESCr
- 2Vx0bsZYWin2LIAEBL09DG/nEViRCKt+mSE9rTHlz/2/MOxO/lJG8HwItrLta5BpYn2T
- ymFWXmHlYRcz9b0cRPi1s19O3eo8wgSBT+iUKObfuiUkBs5GxlQdzCVmAD11uONHgPt/
- pAI/mIbIZlOdJkLC5w2t2PsOX21/SlzmWqArnkKPQ3B8S8MCmpvyVBYg3q/3DHymdCkq
- OMvA==
-X-Gm-Message-State: AOJu0YwXlsSNtMOFwdOa2jMW9NExTMWPCwZKFwWoUwT0r/kN2qt49UCA
- yuNb3UcMWTdAXQeYxl9S0ZgI6j/Nf4oLQZj/hVI1qsV1
-X-Google-Smtp-Source: AGHT+IF65U/UD5Ptjt5mCJoFMiExQvvuZY/mfBgyqPq7ZDUrw+gNOLkwosaUIR7tsaECJ5mbPMGLsUi7AvrPYVAQODw=
-X-Received: by 2002:a2e:80c4:0:b0:2ca:1593:6ede with SMTP id
- r4-20020a2e80c4000000b002ca15936edemr1595652ljg.6.1701955592851; Thu, 07 Dec
- 2023 05:26:32 -0800 (PST)
+ bh=oaZ5nDYpjxQtDB/23IKcJrwnii9ylShZs36Zhq2EIRM=;
+ b=AyGjdZ9SAB2Tghmip5ZOsdFL6r4289anQmmRZS58vxIAuyf8pyE7VL58g/Lj9gEJ+Z
+ e+f8Wrdp7WaLpd28aOOnq46TCavbPNhk4eLEDTqfGI2E6GubjLFkFlKjmUUfhu/B+LMR
+ 0i0OxoGoKo+b5BS8HKFQW+SiskvRjVlS2/yMPzahlMLBm9B4+eo7eGPL1fypm7N3lOfA
+ KhVZHKzupssTrRPE5raMmGgL17ZYUgb7V9EHzFqqhgIykZs4IpBO+izLraRYw3W9I10y
+ 2JI5wrcBd3Yg18zJmt2zNHa8aK5VMCIOG7J2peubw/DmwDN3ctWZ31Uv7G7RYVnAbzDn
+ LSJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1701956788; x=1702561588;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oaZ5nDYpjxQtDB/23IKcJrwnii9ylShZs36Zhq2EIRM=;
+ b=Iq9dvgk2q+Lh3Z6v8cBE19Qfcu3aSxqqZRxHKdtnzRPpW9320UJOWMcErB/WNvIDH0
+ Y+BDRbpAWaQflIdViaB7FJHMu7mG+RvptV38HpieVmGyhBufZlC+9Y2T22Zg1i8E5Eb5
+ wjppQ+/DpSpOvJ0OhfWu6ExHqvE9MQ6ri+88zZzpqoX2o3QSJjzVylFQ1P39EmKgXnTm
+ VtgoWn1Tg7M1QsOzMwgYqsudf7SRIkz7X/zDBc6LHBrQmoQyRlUBxDT4lMoIfffX7F7n
+ LtvFJEEgNrFfAUbV6+fNWi94Z35fb1YI7Dxhwkgud2NpxCN2lhFhI21T/wDitzE1gMtC
+ XXBw==
+X-Gm-Message-State: AOJu0Yylb0RECcaTUXQRPSXLDyXM35Y6tGeM6VuMheZVg7NBUmjdaiOX
+ pyfEcvzXimmMavBvUU1faZv5Dbn3WaVA7EvGwv0=
+X-Google-Smtp-Source: AGHT+IHrlN2TGyfudYob+dEdie/FVKpbjtvDbKT1S6gm2463rTk8ZNfoPunGVbry9v7BWhlUNo9Sug==
+X-Received: by 2002:a5d:67c8:0:b0:333:2fd2:5d1c with SMTP id
+ n8-20020a5d67c8000000b003332fd25d1cmr1739050wrw.78.1701956787827; 
+ Thu, 07 Dec 2023 05:46:27 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.202.111])
+ by smtp.gmail.com with ESMTPSA id
+ u8-20020a5d5148000000b0033331f83907sm1480222wrt.65.2023.12.07.05.46.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Dec 2023 05:46:27 -0800 (PST)
+Message-ID: <41f23b62-15ae-4e1e-98ee-a3cbcf0f7789@linaro.org>
+Date: Thu, 7 Dec 2023 14:46:25 +0100
 MIME-Version: 1.0
-From: aziz tlili <aziztlili2222@gmail.com>
-Date: Thu, 7 Dec 2023 14:26:21 +0100
-Message-ID: <CAHwHw5A6g428uTpMEQ=NCkXP7sXVfCWv5QSUw3pHfncmG-2gPA@mail.gmail.com>
-Subject: Request for New PPC Machine Supporting Multiple SMP Cores
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] sysemu/replay: Restrict icount to system emulation
+Content-Language: en-US
 To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000891865060beb6a6f"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=aziztlili2222@gmail.com; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
+ qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+References: <20231207102632.33634-1-philmd@linaro.org>
+ <20231207102632.33634-4-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231207102632.33634-4-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 07 Dec 2023 09:58:37 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,59 +94,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000891865060beb6a6f
-Content-Type: text/plain; charset="UTF-8"
+On 7/12/23 11:26, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/sysemu/cpu-timers.h |  2 +-
+>   include/sysemu/replay.h     |  9 ++++++---
+>   stubs/icount.c              | 19 -------------------
+>   3 files changed, 7 insertions(+), 23 deletions(-)
+> 
+> diff --git a/include/sysemu/cpu-timers.h b/include/sysemu/cpu-timers.h
+> index 2e786fe7fb..188f67ee90 100644
+> --- a/include/sysemu/cpu-timers.h
+> +++ b/include/sysemu/cpu-timers.h
+> @@ -24,7 +24,7 @@ void cpu_timers_init(void);
+>    * 1 = Enabled - Fixed conversion of insn to ns via "shift" option
+>    * 2 = Enabled - Runtime adaptive algorithm to compute shift
+>    */
+> -#ifdef CONFIG_TCG
+> +#if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+>   extern int use_icount;
+>   #define icount_enabled() (use_icount)
+>   #else
+> diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
+> index 02fa75c783..8102fa54f0 100644
+> --- a/include/sysemu/replay.h
+> +++ b/include/sysemu/replay.h
+> @@ -1,6 +1,3 @@
+> -#ifndef SYSEMU_REPLAY_H
+> -#define SYSEMU_REPLAY_H
+> -
+>   /*
+>    * QEMU replay (system interface)
+>    *
+> @@ -11,6 +8,12 @@
+>    * See the COPYING file in the top-level directory.
+>    *
+>    */
+> +#ifndef SYSEMU_REPLAY_H
+> +#define SYSEMU_REPLAY_H
+> +
+> +#ifdef CONFIG_USER_ONLY
+> +#error Cannot include this header from user emulation
+> +#endif
+>   
+>   #include "exec/replay-core.h"
+>   #include "qapi/qapi-types-misc.h"
+> diff --git a/stubs/icount.c b/stubs/icount.c
+> index c39a65da92..ec8d150069 100644
+> --- a/stubs/icount.c
+> +++ b/stubs/icount.c
+> @@ -5,30 +5,11 @@
+>   
+>   int use_icount;
+>   
+> -void icount_update(CPUState *cpu)
+> -{
+> -    abort();
+> -}
+>   int64_t icount_get_raw(void)
+>   {
+>       abort();
+>       return 0;
+>   }
+> -int64_t icount_get(void)
+> -{
+> -    abort();
+> -    return 0;
+> -}
+> -int64_t icount_to_ns(int64_t icount)
+> -{
+> -    abort();
+> -    return 0;
+> -}
 
-Dear QEMU Team,
+Build failure on HVF due to:
 
-I hope this message finds you well. I've been a user of QEMU for well over
-a year.
+   pmu_init()
+    -> pm_events[]
+     -> INST_RETIRED
+      -> instructions_ns_per()
+       -> icount_to_ns()
 
-I wanted to share an idea for a potential enhancement that I believe could
-benefit many users, including myself. It would be fantastic to have a new
-PPC machine model similar to the existing mac99, but with support for
-multiple SMP cores for both qemu-system-ppc and qemu-system-ppc64.
+So we need to keep the icount_to_ns() stub until we restrict
+ARM PMU code to TCG.
 
-The ability to simulate multiple SMP cores within a PPC machine environment
-would significantly enhance the capabilities of QEMU for various
-applications, testing scenarios, and development purposes. This addition
-could greatly benefit the community working on PowerPC architecture.
 
-I understand the complexities involved in such developments but wanted to
-express the potential advantages and how this enhancement could contribute
-to expanding QEMU's capabilities.
-
-Thank you for considering my suggestion. I would be more than happy to
-provide further details or collaborate in any way that could assist in
-making this idea a reality.
-
-Best regards,
-Aziz Tlili
-
---000000000000891865060beb6a6f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">Dear QEMU Team,<div dir=3D"auto"><br></div><div dir=3D"au=
-to">I hope this message finds you well. I&#39;ve been a user of QEMU for we=
-ll over a year.</div><div dir=3D"auto"><br></div><div dir=3D"auto">I wanted=
- to share an idea for a potential enhancement that I believe could benefit =
-many users, including myself. It would be fantastic to have a new PPC machi=
-ne model similar to the existing mac99, but with support for multiple SMP c=
-ores for both qemu-system-ppc and qemu-system-ppc64.</div><div dir=3D"auto"=
-><br></div><div dir=3D"auto">The ability to simulate multiple SMP cores wit=
-hin a PPC machine environment would significantly enhance the capabilities =
-of QEMU for various applications, testing scenarios, and development purpos=
-es. This addition could greatly benefit the community working on PowerPC ar=
-chitecture.</div><div dir=3D"auto"><br></div><div dir=3D"auto">I understand=
- the complexities involved in such developments but wanted to express the p=
-otential advantages and how this enhancement could contribute to expanding =
-QEMU&#39;s capabilities.</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
->Thank you for considering my suggestion. I would be more than happy to pro=
-vide further details or collaborate in any way that could assist in making =
-this idea a reality.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Bes=
-t regards,</div><div dir=3D"auto">Aziz Tlili</div><div dir=3D"auto"><br></d=
-iv></div>
-
---000000000000891865060beb6a6f--
 
