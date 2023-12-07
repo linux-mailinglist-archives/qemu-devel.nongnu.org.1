@@ -2,56 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4B3809303
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:06:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0CC80943E
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:32:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBLYE-0002qG-My; Thu, 07 Dec 2023 16:04:54 -0500
+	id 1rBLxg-0007UO-HK; Thu, 07 Dec 2023 16:31:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rBLYB-0002pR-OS
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:51 -0500
-Received: from smtp1.lauterbach.com ([62.154.241.196])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1rBLwz-0007P4-44; Thu, 07 Dec 2023 16:30:29 -0500
+Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rBLY9-00060e-OD
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:51 -0500
-Received: (qmail 10894 invoked by uid 484); 7 Dec 2023 21:04:35 -0000
-X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
- smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
- uid 484) with qmail-scanner-2.11 
- (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
- Clear:RC:1(10.2.11.92):. 
- Processed in 6e-06 secs); 07 Dec 2023 21:04:35 -0000
-Received: from nedpc1.intern.lauterbach.com
- (Authenticated_SSL:neder@[10.2.11.92])
- (envelope-sender <nicolas.eder@lauterbach.com>)
- by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP for <qemu-devel@nongnu.org>; 7 Dec 2023 21:04:29 -0000
-From: Nicolas Eder <nicolas.eder@lauterbach.com>
-To: qemu-devel@nongnu.org
-Cc: "Nicolas Eder" <nicolas.eder@lauterbach.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Christian Boenig" <christian.boenig@lauterbach.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 17/17] mcdstub: break/watchpoints added
-Date: Thu,  7 Dec 2023 22:03:58 +0100
-Message-Id: <20231207210358.7409-18-nicolas.eder@lauterbach.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231207210358.7409-1-nicolas.eder@lauterbach.com>
-References: <20231207210358.7409-1-nicolas.eder@lauterbach.com>
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1rBLwx-0005MC-Fd; Thu, 07 Dec 2023 16:30:28 -0500
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 235EA11EFF3;
+ Thu,  7 Dec 2023 21:30:23 +0000 (UTC)
+From: ~inesvarhol <inesvarhol@git.sr.ht>
+Date: Thu, 07 Dec 2023 21:30:21 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Qmail-Scanner-2.11: added fake Content-Type header
-Content-Type: text/plain
-Received-SPF: pass client-ip=62.154.241.196;
- envelope-from=nicolas.eder@lauterbach.com; helo=smtp1.lauterbach.com
+Subject: [PATCH qemu 0/3] hw/arm: Add device STM32L4x5 EXTI
+Message-ID: <170198462199.32162.284497577253427308-0@git.sr.ht>
+X-Mailer: git.sr.ht
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
+ peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
+ arnaud.minier@telecom-paris.fr
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,186 +51,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~inesvarhol <inesvarhol@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
----
- debug/mcdstub/mcdstub.c | 154 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 154 insertions(+)
+This patch adds a new STM32L4x5 EXTI device and is part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-diff --git a/debug/mcdstub/mcdstub.c b/debug/mcdstub/mcdstub.c
-index e5fd575834..dadd79034b 100644
---- a/debug/mcdstub/mcdstub.c
-+++ b/debug/mcdstub/mcdstub.c
-@@ -1177,6 +1177,134 @@ static void handle_write_memory(GArray *params, void *user_ctx)
-     mcd_put_packet(TCP_EXECUTION_SUCCESS);
- }
- 
-+/**
-+ * mcd_breakpoint_insert() - Inserts a break- or watchpoint.
-+ *
-+ * This function evaluates the received breakpoint type and translates it
-+ * to a known GDB breakpoint type.
-+ * Then it calls cpu_breakpoint_insert or cpu_watchpoint_insert depending on
-+ * the type.
-+ * @cpu: CPU to which the breakpoint should be added.
-+ * @addr: Address of the breakpoint.
-+ * @type: Breakpoint type.
-+ */
-+static int mcd_breakpoint_insert(CPUState *cpu, int type, vaddr addr)
-+{
-+    /* translate the type to known gdb types and function call*/
-+    int bp_type = 0;
-+    CPUClass *cc = CPU_GET_CLASS(cpu);
-+    if (cc->gdb_stop_before_watchpoint) {
-+        /* bp_type |= BP_STOP_BEFORE_ACCESS; */
-+    }
-+    int return_value = 0;
-+    switch (type) {
-+    case MCD_BREAKPOINT_HW:
-+        return_value = cpu_breakpoint_insert(cpu, addr, BP_GDB, NULL);
-+        return return_value;
-+    case MCD_BREAKPOINT_READ:
-+        bp_type |= BP_GDB | BP_MEM_READ;
-+        return_value = cpu_watchpoint_insert(cpu, addr, 4, bp_type, NULL);
-+        return return_value;
-+    case MCD_BREAKPOINT_WRITE:
-+        bp_type |= BP_GDB | BP_MEM_WRITE;
-+        return_value = cpu_watchpoint_insert(cpu, addr, 4, bp_type, NULL);
-+        return return_value;
-+    case MCD_BREAKPOINT_RW:
-+        bp_type |= BP_GDB | BP_MEM_ACCESS;
-+        return_value = cpu_watchpoint_insert(cpu, addr, 4, bp_type, NULL);
-+        return return_value;
-+    default:
-+        return -ENOSYS;
-+    }
-+}
-+
-+/**
-+ * mcd_breakpoint_remove() - Removes a break- or watchpoint.
-+ *
-+ * This function evaluates the received breakpoint type and translates it
-+ * to a known GDB breakpoint type.
-+ * Then it calls cpu_breakpoint_remove or cpu_watchpoint_remove depending on
-+ * the type.
-+ * @cpu: CPU from which the breakpoint should be removed.
-+ * @addr: Address of the breakpoint.
-+ * @type: Breakpoint type.
-+ */
-+static int mcd_breakpoint_remove(CPUState *cpu, int type, vaddr addr)
-+{
-+    /* translate the type to known gdb types and function call*/
-+    int bp_type = 0;
-+    CPUClass *cc = CPU_GET_CLASS(cpu);
-+    if (cc->gdb_stop_before_watchpoint) {
-+        /* bp_type |= BP_STOP_BEFORE_ACCESS; */
-+    }
-+    int return_value = 0;
-+    switch (type) {
-+    case MCD_BREAKPOINT_HW:
-+        return_value = cpu_breakpoint_remove(cpu, addr, BP_GDB);
-+        return return_value;
-+    case MCD_BREAKPOINT_READ:
-+        bp_type |= BP_GDB | BP_MEM_READ;
-+        return_value = cpu_watchpoint_remove(cpu, addr, 4, bp_type);
-+        return return_value;
-+    case MCD_BREAKPOINT_WRITE:
-+        bp_type |= BP_GDB | BP_MEM_WRITE;
-+        return_value = cpu_watchpoint_remove(cpu, addr, 4, bp_type);
-+        return return_value;
-+    case MCD_BREAKPOINT_RW:
-+        bp_type |= BP_GDB | BP_MEM_ACCESS;
-+        return_value = cpu_watchpoint_remove(cpu, addr, 4, bp_type);
-+        return return_value;
-+    default:
-+        return -ENOSYS;
-+    }
-+}
-+
-+/**
-+ * handle_breakpoint_insert() - Handler for inserting a break- or watchpoint.
-+ *
-+ * This function extracts the CPU, breakpoint type and address from the
-+ * parameters and calls :c:func:`mcd_breakpoint_insert` to insert the
-+ * breakpoint.
-+ * @params: GArray with all TCP packet parameters.
-+ */
-+static void handle_breakpoint_insert(GArray *params, void *user_ctx)
-+{
-+    /* 1. get parameter data */
-+    uint32_t cpu_id = get_param(params, 0)->cpu_id;
-+    uint32_t type = get_param(params, 1)->data_uint32_t;
-+    uint64_t address = get_param(params, 2)->data_uint64_t;
-+    /* 2. insert breakpoint and send reply */
-+    CPUState *cpu = mcd_get_cpu(cpu_id);
-+    if (mcd_breakpoint_insert(cpu, type, address) != 0) {
-+        mcd_put_packet(TCP_EXECUTION_ERROR);
-+    } else {
-+        mcd_put_packet(TCP_EXECUTION_SUCCESS);
-+    }
-+}
-+
-+/**
-+ * handle_breakpoint_remove() - Handler for inserting a break- or watchpoint.
-+ *
-+ * This function extracts the CPU, breakpoint type and address from the
-+ * parameters and calls :c:func:`mcd_breakpoint_remove` to insert the
-+ * breakpoint.
-+ * @params: GArray with all TCP packet parameters.
-+ */
-+static void handle_breakpoint_remove(GArray *params, void *user_ctx)
-+{
-+    /* 1. get parameter data */
-+    uint32_t cpu_id = get_param(params, 0)->cpu_id;
-+    uint32_t type = get_param(params, 1)->data_uint32_t;
-+    uint64_t address = get_param(params, 2)->data_uint64_t;
-+    /* 2. remove breakpoint and send reply */
-+    CPUState *cpu = mcd_get_cpu(cpu_id);
-+    if (mcd_breakpoint_remove(cpu, type, address) != 0) {
-+        mcd_put_packet(TCP_EXECUTION_ERROR);
-+    } else {
-+        mcd_put_packet(TCP_EXECUTION_SUCCESS);
-+    }
-+}
-+
- /**
-  * mcd_handle_packet() - Evaluates the type of received packet and chooses the
-  * correct handler.
-@@ -1342,6 +1470,32 @@ static int mcd_handle_packet(const char *line_buf)
-             cmd_parser = &write_mem_cmd_desc;
-         }
-         break;
-+    case TCP_CHAR_BREAKPOINT_INSERT:
-+        {
-+            static MCDCmdParseEntry handle_breakpoint_insert_cmd_desc = {
-+                .handler = handle_breakpoint_insert,
-+            };
-+            handle_breakpoint_insert_cmd_desc.cmd =
-+                (char[2]) { TCP_CHAR_BREAKPOINT_INSERT, '\0' };
-+            strcpy(handle_breakpoint_insert_cmd_desc.schema,
-+                (char[4]) { ARG_SCHEMA_CORENUM, ARG_SCHEMA_INT,
-+                ARG_SCHEMA_UINT64_T, '\0' });
-+            cmd_parser = &handle_breakpoint_insert_cmd_desc;
-+        }
-+        break;
-+    case TCP_CHAR_BREAKPOINT_REMOVE:
-+        {
-+            static MCDCmdParseEntry handle_breakpoint_remove_cmd_desc = {
-+                .handler = handle_breakpoint_remove,
-+            };
-+            handle_breakpoint_remove_cmd_desc.cmd =
-+                (char[2]) { TCP_CHAR_BREAKPOINT_REMOVE, '\0' };
-+            strcpy(handle_breakpoint_remove_cmd_desc.schema,
-+                (char[4]) { ARG_SCHEMA_CORENUM, ARG_SCHEMA_INT,
-+                ARG_SCHEMA_UINT64_T, '\0' });
-+            cmd_parser = &handle_breakpoint_remove_cmd_desc;
-+        }
-+        break;
-     default:
-         /* command not supported */
-         mcd_put_packet("");
--- 
-2.34.1
+The patch is split up in 3 commits :
+- implementing the EXTI device
+- adding tests (that fail in this commit)
+- connecting the EXTI device to the SoC (the tests pass in this commit)
 
+Thank you Alistair for the review and very helpful answers !
+
+Sincerely,
+Ines Varhol
+
+Changes from v3 to non-RFC v1:
+- separating the patch in 3 commits
+- justifying in the commit message why we implement a new
+model instead of changing the existing stm32f4xx_exti
+- changed irq_raise to irq_pulse in register SWIERx write (in
+stm32l4x5_exti_write)
+to be consistent with the irq_pulse in stm32l4x5_exti_set_irq (and also
+both these interrupts
+are edge-triggered)
+- changed the license to GPL
+
+Changes from v2 to v3:
+- adding more tests writing/reading in exti registers
+- adding tests checking that interrupt work by reading NVIC registers
+- correcting exti_write in SWIER (so it sets an irq only when a bit goes
+from '0' to '1')
+- correcting exti_set_irq (so it never writes in PR when the relevant
+bit in IMR is '0')
+
+Changes from v1 to v2:
+- use arrays to deduplicate code and logic
+- move internal constant EXTI_NUM_GPIO_EVENT_IN_LINES from the header
+to the .c file
+- Improve copyright headers
+- replace static const with #define
+- use the DEFINE_TYPES macro
+- fill the impl and valid field of the exti's MemoryRegionOps
+- fix invalid test caused by a last minute change
+
+Based-on: <170100975340.4879.5844108484092111139-0@git.sr.ht>
+([PATCH qemu 0/2] hw/arm: Add minimal support for the B-L475E-IOT01A
+board)
+
+In=C3=A8s Varhol (3):
+  hw/arm: Implement STM32L4x5 EXTI
+  hw/arm: Add STM32L4x5 EXTI QTest testcase
+  hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC
+
+ hw/arm/Kconfig                    |   1 +
+ hw/arm/stm32l4x5_soc.c            |  65 +++-
+ hw/misc/Kconfig                   |   3 +
+ hw/misc/meson.build               |   1 +
+ hw/misc/stm32l4x5_exti.c          | 299 ++++++++++++++++++
+ hw/misc/trace-events              |   5 +
+ include/hw/arm/stm32l4x5_soc.h    |   3 +
+ include/hw/misc/stm32l4x5_exti.h  |  61 ++++
+ tests/qtest/meson.build           |   5 +
+ tests/qtest/stm32l4x5_exti-test.c | 485 ++++++++++++++++++++++++++++++
+ 10 files changed, 926 insertions(+), 2 deletions(-)
+ create mode 100644 hw/misc/stm32l4x5_exti.c
+ create mode 100644 include/hw/misc/stm32l4x5_exti.h
+ create mode 100644 tests/qtest/stm32l4x5_exti-test.c
+
+--=20
+2.38.5
 
