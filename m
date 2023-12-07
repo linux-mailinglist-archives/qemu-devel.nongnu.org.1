@@ -2,71 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4B6808CCF
+	by mail.lfdr.de (Postfix) with ESMTPS id ED721808CD0
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 16:59:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBGlu-0000Dj-3Z; Thu, 07 Dec 2023 10:58:42 -0500
+	id 1rBGlu-0000Dw-NZ; Thu, 07 Dec 2023 10:58:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBGlZ-0000B3-J0
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:58:21 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBGlb-0000Bl-As
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:58:23 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBGlW-0007Cs-Qf
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:58:21 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBGlZ-0007Ej-FM
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:58:23 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D18D81FB68;
- Thu,  7 Dec 2023 15:58:16 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C9E19220B7;
+ Thu,  7 Dec 2023 15:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1701964696; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1701964699; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GXlVKxAEzxwStXFlgc6yUq0QevzR9UkhEfJIwxqvs5Y=;
- b=Ebk2urIfnyf4JJMaSNte0qh4VduLgNra5aaZ8dQf7reJv7ZSszqtQnh0D0SepvDK36qPuE
- JlbIQ0XW6xX2xzpubjAlHTBMb08IhFzLa7zM3vJkg6MSyUoet/lOGJM4sFbhM8sspKoNv9
- nNs+AP0s9g+d/5PrTLJ25AT0rKyF6JI=
+ bh=T4b3KsoKj14covOlKePkH9uAYMEAWOoAnWXTMbP3a5k=;
+ b=ypttE4sC96bREs7QWPIlHUyz21/vZ4AOlO7w7uYPYyhmJQLwFOx7HTEqfoO5OLSolZOI7s
+ zJhg7tUmA8KO7r9ah76VcR1LGWwihfs+Fug1mOZsx3FZCWVvEJuJs9mmnuZirerxTSvHwn
+ smS1QxRj87pvz2OKS8dhDCvXCPgpZtE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1701964696;
+ s=susede2_ed25519; t=1701964699;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GXlVKxAEzxwStXFlgc6yUq0QevzR9UkhEfJIwxqvs5Y=;
- b=t2PR7f8/wd92BRdZG9xv/ll7VvNtiNFm1DT1ewvQZeYG871X7DsnQg2XH5mwFSidrakrHq
- 1/irYFVCV3cSKnBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1701964696; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GXlVKxAEzxwStXFlgc6yUq0QevzR9UkhEfJIwxqvs5Y=;
- b=Ebk2urIfnyf4JJMaSNte0qh4VduLgNra5aaZ8dQf7reJv7ZSszqtQnh0D0SepvDK36qPuE
- JlbIQ0XW6xX2xzpubjAlHTBMb08IhFzLa7zM3vJkg6MSyUoet/lOGJM4sFbhM8sspKoNv9
- nNs+AP0s9g+d/5PrTLJ25AT0rKyF6JI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1701964696;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GXlVKxAEzxwStXFlgc6yUq0QevzR9UkhEfJIwxqvs5Y=;
- b=t2PR7f8/wd92BRdZG9xv/ll7VvNtiNFm1DT1ewvQZeYG871X7DsnQg2XH5mwFSidrakrHq
- 1/irYFVCV3cSKnBw==
+ bh=T4b3KsoKj14covOlKePkH9uAYMEAWOoAnWXTMbP3a5k=;
+ b=8ei06WNtg2D2EPLKmoI7GNV7wGxqEfElt/XRx1qQ9maf18ptkAK93VeWvEeSkokg6whvJw
+ 0hJ3iCqFGN+NdZCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5390413B6A;
- Thu,  7 Dec 2023 15:58:14 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4F1E813B6A;
+ Thu,  7 Dec 2023 15:58:17 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id OMUAB5brcWXDVgAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 07 Dec 2023 15:58:14 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id KJgHBpnrcWXDVgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 07 Dec 2023 15:58:17 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -75,19 +57,19 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v1 1/5] tests/qtest: Add a helper to query the QEMU version
-Date: Thu,  7 Dec 2023 12:58:05 -0300
-Message-Id: <20231207155809.25673-2-farosas@suse.de>
+Subject: [PATCH v1 2/5] tests/qtest/migration: Add infrastructure to skip
+ tests on older QEMUs
+Date: Thu,  7 Dec 2023 12:58:06 -0300
+Message-Id: <20231207155809.25673-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231207155809.25673-1-farosas@suse.de>
 References: <20231207155809.25673-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: 3.16
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: 1.70
-X-Spamd-Result: default: False [1.70 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: 0.70
+X-Spamd-Result: default: False [0.70 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
@@ -99,9 +81,9 @@ X-Spamd-Result: default: False [1.70 / 50.00]; ARC_NA(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-2.00)[95.07%]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ BAYES_HAM(-3.00)[100.00%]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -124,66 +106,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We can run the migration tests with two different QEMU binaries to
+test migration compatibility between QEMU versions. This means we'll
+be running the tests with an older QEMU in either source or
+destination.
+
+We need to avoid trying to test functionality that is unknown to the
+older QEMU. This could mean new features, bug fixes, error message
+changes, QEMU command line changes, migration API changes, etc.
+
+Add a 'since' argument to the tests that inform when the functionality
+that is being test has been added to QEMU so we can skip the test on
+older versions.
+
+Also add a version comparison function so we can adapt test code
+depending on the QEMU binary version being used.
+
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/libqtest.c | 24 ++++++++++++++++++++++++
- tests/qtest/libqtest.h | 10 ++++++++++
- 2 files changed, 34 insertions(+)
+ tests/qtest/migration-helpers.c | 11 +++++++++++
+ tests/qtest/migration-helpers.h |  1 +
+ tests/qtest/migration-test.c    | 28 ++++++++++++++++++++++++++++
+ 3 files changed, 40 insertions(+)
 
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index f33a210861..7cee68a834 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -337,6 +337,30 @@ void qtest_remove_abrt_handler(void *data)
-     }
+diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+index 24fb7b3525..d21f5cd8c0 100644
+--- a/tests/qtest/migration-helpers.c
++++ b/tests/qtest/migration-helpers.c
+@@ -292,3 +292,14 @@ char *resolve_machine_version(const char *alias, const char *var1,
+ 
+     return find_common_machine_version(machine_name, var1, var2);
  }
- 
-+void qtest_query_version(QTestState *who, int *major, int *minor, int *micro)
++
++int migration_vercmp(QTestState *who, const char *tgt_version)
 +{
-+    QDict *rsp, *version;
++    int major, minor, micro;
++    g_autofree char *version = NULL;
 +
-+    rsp = qtest_qmp_assert_success_ref(who, "{ 'execute': 'query-version' }");
-+    g_assert(rsp);
++    qtest_query_version(who, &major, &minor, &micro);
++    version = g_strdup_printf("%d.%d.%d", major, minor, micro);
 +
-+    version = qdict_get_qdict(rsp, "qemu");
-+
-+    if (major) {
-+        *major = qdict_get_int(version, "major");
-+    }
-+
-+    if (minor) {
-+        *minor = qdict_get_int(version, "minor");
-+    }
-+
-+    if (micro) {
-+        *micro = qdict_get_int(version, "micro");
-+    }
-+
-+    qobject_unref(rsp);
++    return strcmp(version, tgt_version);
 +}
-+
- static const char *qtest_qemu_binary(const char *var)
- {
-     const char *qemu_bin;
-diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index 6e3d3525bf..db7a780d26 100644
---- a/tests/qtest/libqtest.h
-+++ b/tests/qtest/libqtest.h
-@@ -1085,4 +1085,14 @@ bool have_qemu_img(void);
-  */
- bool mkimg(const char *file, const char *fmt, unsigned size_mb);
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index e31dc85cc7..7b4f8e851e 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -47,4 +47,5 @@ char *find_common_machine_version(const char *mtype, const char *var1,
+                                   const char *var2);
+ char *resolve_machine_version(const char *alias, const char *var1,
+                               const char *var2);
++int migration_vercmp(QTestState *who, const char *tgt_version);
+ #endif /* MIGRATION_HELPERS_H */
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 0fbaa6a90f..b3ce288a73 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -637,6 +637,12 @@ typedef struct {
+     bool use_dirty_ring;
+     const char *opts_source;
+     const char *opts_target;
++    /*
++     * If a test checks against new functionality that might not be
++     * present in older QEMUs this needs to be set so we can skip
++     * running it when doing compatibility testing.
++     */
++    const char *since;
+ } MigrateStart;
  
-+/**
-+ * qtest_query_version:
-+ * @who: QTestState instance to operate on
-+ * @major: Pointer to where to store the major version number
-+ * @minor: Pointer to where to store the minor version number
-+ * @micro: Pointer to where to store the micro version number
-+ *
-+ */
-+void qtest_query_version(QTestState *who, int *major, int *minor, int *micro);
+ /*
+@@ -850,6 +856,17 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+         qtest_qmp_set_event_callback(*from,
+                                      migrate_watch_for_stop,
+                                      &got_src_stop);
 +
- #endif
++        if (args->since && migration_vercmp(*from, args->since) < 0) {
++            g_autofree char *msg = NULL;
++
++            msg = g_strdup_printf("Test requires at least QEMU version %s",
++                                  args->since);
++            g_test_skip(msg);
++            qtest_quit(*from);
++
++            return -1;
++        }
+     }
+ 
+     cmd_target = g_strdup_printf("-accel kvm%s -accel tcg "
+@@ -872,6 +889,17 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                  migrate_watch_for_resume,
+                                  &got_dst_resume);
+ 
++    if (args->since && migration_vercmp(*to, args->since) < 0) {
++        g_autofree char *msg = NULL;
++
++        msg = g_strdup_printf("Test requires at least QEMU version %s",
++                              args->since);
++        g_test_skip(msg);
++        qtest_quit(*to);
++
++        return -1;
++    }
++
+     /*
+      * Remove shmem file immediately to avoid memory leak in test failed case.
+      * It's valid because QEMU has already opened this file
 -- 
 2.35.3
 
