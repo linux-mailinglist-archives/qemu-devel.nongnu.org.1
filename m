@@ -2,55 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBE6808257
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 09:01:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96327808295
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 09:12:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rB9Ja-0001KD-SM; Thu, 07 Dec 2023 03:00:58 -0500
+	id 1rB9Tr-0004U6-DJ; Thu, 07 Dec 2023 03:11:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=788X=HS=kaod.org=clg@ozlabs.org>)
- id 1rB9JY-0001Jr-Bk; Thu, 07 Dec 2023 03:00:56 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rB9Tg-0004Th-EE
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:11:25 -0500
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=788X=HS=kaod.org=clg@ozlabs.org>)
- id 1rB9JW-00058n-JG; Thu, 07 Dec 2023 03:00:55 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sm6CS2DZHz4xCp;
- Thu,  7 Dec 2023 19:00:52 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sm6CP2s6Vz4wcj;
- Thu,  7 Dec 2023 19:00:49 +1100 (AEDT)
-Message-ID: <72c33a18-a48e-4f76-b0dc-cbf30de79e4d@kaod.org>
-Date: Thu, 7 Dec 2023 09:00:48 +0100
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rB9Tc-0002l8-BY
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 03:11:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1701936680; x=1733472680;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=ozGjfFWenBxqgP2+d8rZ5ATy8rbjN8S1yBgJ5GIxczM=;
+ b=MShJKkThIHR37MmnEIb/BuruIdLOM8TeEZn7JHnxE/bXlWMMdgfLQ1Rf
+ 9JeX5UwwTUDi3RhjL5WI7I65lO/AgMpnZpp2+R+is+q9yxhqMDhvuiuJI
+ 2zNPOFxsGeO2jHu1s+GVP6nk4+D27UKfid3MVi4r4NCZCTR3F8Tf56htL
+ GtcFORfN2kGF1whHWSinodM5pBm1ibqlJEL5AxhzHlZ6z4SppKi8zEGmT
+ hKTmHoibc8fDC3AyQbOMmf/uftSepiZGtIj05gyxMPgVRVF3kbc56Amvt
+ jZGORgjQHT3482glBog8FouDw0OjEJQrEOcBbFor7EOtQ4KDlmvR8lVFd g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="7504367"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
+   d="scan'208";a="7504367"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Dec 2023 00:11:17 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="862398054"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; d="scan'208";a="862398054"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.29.154])
+ ([10.93.29.154])
+ by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Dec 2023 00:11:11 -0800
+Message-ID: <4f60f482-0910-4a8f-a521-972630c08ad2@intel.com>
+Date: Thu, 7 Dec 2023 16:11:08 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/3] hw/ppc: N1 chiplet wiring
+Subject: Re: [PATCH v3 57/70] i386/tdx: Wire TDX_REPORT_FATAL_ERROR with
+ GuestPanic facility
 Content-Language: en-US
-To: Chalapathi V <chalapathi.v@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- calebs@us.ibm.com, chalapathi.v@ibm.com, saif.abrar@linux.vnet.ibm.com
-References: <20231207024331.5237-1-chalapathi.v@linux.ibm.com>
- <20231207024331.5237-4-chalapathi.v@linux.ibm.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231207024331.5237-4-chalapathi.v@linux.ibm.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2EBerrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-58-xiaoyao.li@intel.com>
+ <87bkbaw51z.fsf@pond.sub.org>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <87bkbaw51z.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=788X=HS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,76 +96,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/7/23 03:43, Chalapathi V wrote:
-> This part of the patchset connects the nest1 chiplet model to p10 chip.
+On 12/1/2023 7:11 PM, Markus Armbruster wrote:
+> Xiaoyao Li <xiaoyao.li@intel.com> writes:
 > 
-> Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
-
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
-> ---
->   include/hw/ppc/pnv_chip.h |  2 ++
->   hw/ppc/pnv.c              | 15 +++++++++++++++
->   2 files changed, 17 insertions(+)
+>> Integrate TDX's TDX_REPORT_FATAL_ERROR into QEMU GuestPanic facility
+>>
+>> Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> ---
+>> Changes from v2:
+>> - Add docmentation of new type and struct (Daniel)
+>> - refine the error message handling (Daniel)
+>> ---
+>>   qapi/run-state.json   | 27 ++++++++++++++++++++--
+>>   system/runstate.c     | 54 +++++++++++++++++++++++++++++++++++++++++++
+>>   target/i386/kvm/tdx.c | 24 +++++++++++++++++--
+>>   3 files changed, 101 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/qapi/run-state.json b/qapi/run-state.json
+>> index f216ba54ec4c..e18f62eaef77 100644
+>> --- a/qapi/run-state.json
+>> +++ b/qapi/run-state.json
+>> @@ -496,10 +496,12 @@
+>>   #
+>>   # @s390: s390 guest panic information type (Since: 2.12)
+>>   #
+>> +# @tdx: tdx guest panic information type (Since: 8.2)
+>> +#
+>>   # Since: 2.9
+>>   ##
+>>   { 'enum': 'GuestPanicInformationType',
+>> -  'data': [ 'hyper-v', 's390' ] }
+>> +  'data': [ 'hyper-v', 's390', 'tdx' ] }
+>>   
+>>   ##
+>>   # @GuestPanicInformation:
+>> @@ -514,7 +516,8 @@
+>>    'base': {'type': 'GuestPanicInformationType'},
+>>    'discriminator': 'type',
+>>    'data': {'hyper-v': 'GuestPanicInformationHyperV',
+>> -          's390': 'GuestPanicInformationS390'}}
+>> +          's390': 'GuestPanicInformationS390',
+>> +          'tdx' : 'GuestPanicInformationTdx'}}
+>>   
+>>   ##
+>>   # @GuestPanicInformationHyperV:
+>> @@ -577,6 +580,26 @@
+>>             'psw-addr': 'uint64',
+>>             'reason': 'S390CrashReason'}}
+>>   
+>> +##
+>> +# @GuestPanicInformationTdx:
+>> +#
+>> +# TDX GHCI TDG.VP.VMCALL<ReportFatalError> specific guest panic information
 > 
-> diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-> index 0ab5c42308..9b06c8d87c 100644
-> --- a/include/hw/ppc/pnv_chip.h
-> +++ b/include/hw/ppc/pnv_chip.h
-> @@ -4,6 +4,7 @@
->   #include "hw/pci-host/pnv_phb4.h"
->   #include "hw/ppc/pnv_core.h"
->   #include "hw/ppc/pnv_homer.h"
-> +#include "hw/ppc/pnv_n1_chiplet.h"
->   #include "hw/ppc/pnv_lpc.h"
->   #include "hw/ppc/pnv_occ.h"
->   #include "hw/ppc/pnv_psi.h"
-> @@ -113,6 +114,7 @@ struct Pnv10Chip {
->       PnvOCC       occ;
->       PnvSBE       sbe;
->       PnvHomer     homer;
-> +    PnvN1Chiplet     n1_chiplet;
->   
->       uint32_t     nr_quads;
->       PnvQuad      *quads;
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index 0297871bdd..be3e922644 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -1680,6 +1680,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
->       object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
->       object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
->       object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
-> +    object_initialize_child(obj, "n1-chiplet", &chip10->n1_chiplet,
-> +                            TYPE_PNV_N1_CHIPLET);
->   
->       chip->num_pecs = pcc->num_pecs;
->   
-> @@ -1849,6 +1851,19 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
->       memory_region_add_subregion(get_system_memory(), PNV10_HOMER_BASE(chip),
->                                   &chip10->homer.regs);
->   
-> +    /* N1 chiplet */
-> +    if (!qdev_realize(DEVICE(&chip10->n1_chiplet), NULL, errp)) {
-> +        return;
-> +    }
-> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_CHIPLET_CTRL_REGS_BASE,
-> +             &chip10->n1_chiplet.nest_pervasive.xscom_ctrl_regs_mr);
-> +
-> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_EQ_BASE,
-> +                           &chip10->n1_chiplet.xscom_pb_eq_mr);
-> +
-> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_ES_BASE,
-> +                           &chip10->n1_chiplet.xscom_pb_es_mr);
-> +
->       /* PHBs */
->       pnv_chip_power10_phb_realize(chip, &local_err);
->       if (local_err) {
+> Long line.  Suggest
+> 
+>     # Guest panic information specific to TDX GHCI
+>     # TDG.VP.VMCALL<ReportFatalError>.
+
+As I asked in patch #52, what's the limitation of one line?
+
+>> +#
+>> +# @error-code: TD-specific error code
+>> +#
+>> +# @gpa: 4KB-aligned guest physical address of the page that containing
+>> +#     additional error data
+> 
+> "address of a page" implies the address is page-aligned.  4KB-aligned
+> feels redundant.  What about
+> 
+>     # @qpa: guest-physical address of a page that contains additional
+>     #     error data.
+> 
+> But in what format is the "additional error data"?
+
+it's expected to hold a zero-terminated string.
+
+>> +#
+>> +# @message: TD guest provided message string.  (It's not so trustable
+>> +#     and cannot be assumed to be well formed because it comes from guest)
+> 
+> guest-provided
+> 
+> For "well-formed" to make sense, we'd need an idea of the form / syntax.
+> 
+> If it's a human-readable error message, we could go with
+> 
+>     # @message: Human-readable error message provided by the guest.  Not
+>     #     to be trusted.
+>
+
+looks good. I will your version.
+
+>> +#
+>> +# Since: 8.2
+>> +##
+>> +{'struct': 'GuestPanicInformationTdx',
+>> + 'data': {'error-code': 'uint64',
+>> +          'gpa': 'uint64',
+>> +          'message': 'str'}}
+>> +
+>>   ##
+>>   # @MEMORY_FAILURE:
+>>   #
+> 
+> [...]
+> 
 
 
