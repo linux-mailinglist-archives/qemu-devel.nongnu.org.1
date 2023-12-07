@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE3980EE8F
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 15:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B42980943C
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:32:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD3c7-0006P8-LG; Tue, 12 Dec 2023 09:19:59 -0500
+	id 1rBLx7-0007RH-9j; Thu, 07 Dec 2023 16:30:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rD3c4-0006O7-PQ; Tue, 12 Dec 2023 09:19:56 -0500
+ id 1rBLwz-0007P6-7v; Thu, 07 Dec 2023 16:30:29 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rD3bx-0001YO-Pl; Tue, 12 Dec 2023 09:19:56 -0500
+ id 1rBLww-0005Md-Tn; Thu, 07 Dec 2023 16:30:28 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 7FA2211F449;
- Tue, 12 Dec 2023 14:19:48 +0000 (UTC)
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 100DB11F060;
+ Thu,  7 Dec 2023 21:30:24 +0000 (UTC)
 From: ~inesvarhol <inesvarhol@git.sr.ht>
 Date: Thu, 07 Dec 2023 21:33:16 +0100
-Subject: [PATCH qemu v2 3/3] hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC
+Subject: [PATCH qemu 3/3] hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC
 MIME-Version: 1.0
-Message-ID: <170239078765.13580.4044041320624286270-3@git.sr.ht>
+Message-ID: <170198462199.32162.284497577253427308-3@git.sr.ht>
 X-Mailer: git.sr.ht
-In-Reply-To: <170239078765.13580.4044041320624286270-0@git.sr.ht>
+In-Reply-To: <170198462199.32162.284497577253427308-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
  peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
@@ -35,12 +35,11 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
  helo=mail-b.sr.ht
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,12 +62,12 @@ Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 ---
  hw/arm/Kconfig                 |  1 +
- hw/arm/stm32l4x5_soc.c         | 56 ++++++++++++++++++++++++++++++++--
+ hw/arm/stm32l4x5_soc.c         | 65 ++++++++++++++++++++++++++++++++--
  include/hw/arm/stm32l4x5_soc.h |  3 ++
- 3 files changed, 58 insertions(+), 2 deletions(-)
+ 3 files changed, 67 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 7520dc5cc0..9c9d5bb541 100644
+index b95576fb0c..28d378ed83 100644
 --- a/hw/arm/Kconfig
 +++ b/hw/arm/Kconfig
 @@ -458,6 +458,7 @@ config STM32L4X5_SOC
@@ -80,7 +79,7 @@ index 7520dc5cc0..9c9d5bb541 100644
  config XLNX_ZYNQMP_ARM
      bool
 diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-index f476878b2c..b07593730f 100644
+index f476878b2c..cf786eac1d 100644
 --- a/hw/arm/stm32l4x5_soc.c
 +++ b/hw/arm/stm32l4x5_soc.c
 @@ -45,10 +45,51 @@
@@ -148,7 +147,7 @@ ror **errp)
      /*
       * We use s->refclk internally and only define it with qdev_init_clock_i=
 n()
-@@ -124,6 +167,16 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, =
+@@ -124,6 +167,25 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, =
 Error **errp)
          return;
      }
@@ -160,13 +159,22 @@ Error **errp)
 +    busdev =3D SYS_BUS_DEVICE(dev);
 +    sysbus_mmio_map(busdev, 0, EXTI_ADDR);
 +    for (i =3D 0; i < NUM_EXTI_IRQ; i++) {
++        /* IRQ seems not to be connected ? */
 +        sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[i]));
 +    }
++
++    /*
++     * Uncomment when Syscfg is implemented
++     * for (i =3D 0; i < 16; i++) {
++     *     qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
++     *                           qdev_get_gpio_in(dev, i));
++     * }
++     */
 +
      /* APB1 BUS */
      create_unimplemented_device("TIM2",      0x40000000, 0x400);
      create_unimplemented_device("TIM3",      0x40000400, 0x400);
-@@ -164,7 +217,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, E=
+@@ -164,7 +226,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc, E=
 rror **errp)
      create_unimplemented_device("SYSCFG",    0x40010000, 0x30);
      create_unimplemented_device("VREFBUF",   0x40010030, 0x1D0);
