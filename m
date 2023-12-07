@@ -2,69 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94037808CCD
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 16:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7988808CD2
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 17:00:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBGlv-0000Dx-0f; Thu, 07 Dec 2023 10:58:43 -0500
+	id 1rBGlv-0000EI-Uj; Thu, 07 Dec 2023 10:58:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBGli-0000CX-Ol
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:58:30 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBGln-0000Cx-6D
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:58:35 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBGlg-0007LW-8O
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:58:30 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBGli-0007PW-C5
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 10:58:31 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id E72F8220B7;
- Thu,  7 Dec 2023 15:58:25 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id DD806220B8;
+ Thu,  7 Dec 2023 15:58:28 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3911213B6A;
- Thu,  7 Dec 2023 15:58:23 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6420D13B6A;
+ Thu,  7 Dec 2023 15:58:26 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id IHChAJ/rcWXDVgAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 07 Dec 2023 15:58:23 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id IFARC6LrcWXDVgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 07 Dec 2023 15:58:26 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH v1 4/5] ci: Add a migration compatibility test job
-Date: Thu,  7 Dec 2023 12:58:08 -0300
-Message-Id: <20231207155809.25673-5-farosas@suse.de>
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v1 5/5] [NOT FOR MERGE] compat hack until 8.2 is out
+Date: Thu,  7 Dec 2023 12:58:09 -0300
+Message-Id: <20231207155809.25673-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231207155809.25673-1-farosas@suse.de>
 References: <20231207155809.25673-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [8.79 / 50.00]; ARC_NA(0.00)[];
+X-Spamd-Result: default: False [11.78 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[];
  RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  R_MISSING_CHARSET(2.50)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  MIME_GOOD(-0.10)[text/plain]; BROKEN_CONTENT_TYPE(1.50)[];
  R_SPF_SOFTFAIL(4.60)[~all:c]; RCVD_COUNT_THREE(0.00)[3];
- MX_GOOD(-0.01)[]; RCPT_COUNT_SEVEN(0.00)[10];
+ MX_GOOD(-0.01)[]; RCPT_COUNT_SEVEN(0.00)[9];
  MID_CONTAINS_FROM(1.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  R_DKIM_NA(2.20)[]; MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-3.00)[100.00%];
+ BAYES_HAM(-0.01)[45.04%];
  DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
-X-Spamd-Bar: ++++++++
+X-Spamd-Bar: +++++++++++
 Authentication-Results: smtp-out1.suse.de; dkim=none;
  dmarc=fail reason="No valid SPF, No valid DKIM" header.from=suse.de
  (policy=none); 
@@ -72,10 +70,10 @@ Authentication-Results: smtp-out1.suse.de; dkim=none;
  permitted nor denied by domain of farosas@suse.de)
  smtp.mailfrom=farosas@suse.de
 X-Rspamd-Server: rspamd1
-X-Rspamd-Queue-Id: E72F8220B7
-X-Spam-Score: 8.79
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Rspamd-Queue-Id: DD806220B8
+X-Spam-Score: 11.78
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -97,88 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The migration tests have support for being passed two QEMU binaries to
-test migration compatibility.
+In the 8.2 development cycle we added a new '-audio' command line
+option to QEMU which breaks the migration compatibility tests because
+older QEMUs don't know the option.
 
-Add a CI job that builds the lastest release of QEMU and another job
-that uses that version plus an already present build of the current
-version and run the migration tests with the two, both as source and
-destination. I.e.:
-
- old QEMU (n-1) -> current QEMU (development tree)
- current QEMU (development tree) -> old QEMU (n-1)
-
-The purpose of this CI job is to ensure the code we're about to merge
-will not cause a migration compatibility problem when migrating the
-next release (which will contain that code) to/from the previous
-release.
-
-I'm leaving the jobs as manual for now because using an older QEMU in
-tests could hit bugs that were already fixed in the current
-development tree and we need to handle those case-by-case.
-
-Note: for user forks, the version tags need to be pushed to gitlab
-otherwise it won't be able to checkout a different version.
+Since we're just testing n vs. n-1 migration, it's easier if we just
+wait until 8.2 is released and it will become our n-1 and the problem
+will go away on its own.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- .gitlab-ci.d/buildtest.yml | 43 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ tests/qtest/libqtest.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 91663946de..9a24eed666 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -167,6 +167,49 @@ build-system-centos:
-       x86_64-softmmu rx-softmmu sh4-softmmu nios2-softmmu
-     MAKE_CHECK_ARGS: check-build
- 
-+build-previous-qemu:
-+  extends: .native_build_job_template
-+  artifacts:
-+    when: on_success
-+    expire_in: 2 days
-+    paths:
-+      - build-previous
-+    exclude:
-+      - build-previous/**/*.p
-+      - build-previous/**/*.a.p
-+      - build-previous/**/*.fa.p
-+      - build-previous/**/*.c.o
-+      - build-previous/**/*.c.o.d
-+      - build-previous/**/*.fa
-+  needs:
-+    job: amd64-opensuse-leap-container
-+  variables:
-+    QEMU_JOB_OPTIONAL: 1
-+    IMAGE: opensuse-leap
-+    TARGETS: x86_64-softmmu
-+  before_script:
-+    - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
-+    - git checkout $QEMU_PREV_VERSION
-+  after_script:
-+    - mv build build-previous
-+
-+check-migration-compat:
-+  extends: .common_test_job_template
-+  needs:
-+    - job: build-previous-qemu
-+    - job: build-system-opensuse
-+  allow_failure: true
-+  variables:
-+    QEMU_JOB_OPTIONAL: 1
-+    IMAGE: opensuse-leap
-+    MAKE_CHECK_ARGS: check-build
-+  script:
-+    - cd build
-+    - QTEST_QEMU_BINARY_SRC=../build-previous/qemu-system-x86_64
-+          QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test
-+    - QTEST_QEMU_BINARY_DST=../build-previous/qemu-system-x86_64
-+          QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test
-+
- check-system-centos:
-   extends: .native_test_job_template
-   needs:
+diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+index 7cee68a834..031316390e 100644
+--- a/tests/qtest/libqtest.c
++++ b/tests/qtest/libqtest.c
+@@ -497,7 +497,6 @@ static QTestState *qtest_init_internal(const char *qemu_bin,
+                          "-chardev socket,path=%s,id=char0 "
+                          "-mon chardev=char0,mode=control "
+                          "-display none "
+-                         "-audio none "
+                          "%s"
+                          " -accel qtest",
+                          socket_path,
 -- 
 2.35.3
 
