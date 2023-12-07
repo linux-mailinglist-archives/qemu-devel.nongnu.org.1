@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4118092F8
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:05:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309C2809306
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 22:06:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBLYB-0002oe-Uf; Thu, 07 Dec 2023 16:04:52 -0500
+	id 1rBLYD-0002pk-0t; Thu, 07 Dec 2023 16:04:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rBLY1-0002kB-5Y
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:41 -0500
+ id 1rBLY2-0002lK-I1
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:42 -0500
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rBLXw-0005pG-PJ
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:40 -0500
-Received: (qmail 10670 invoked by uid 484); 7 Dec 2023 21:04:24 -0000
+ id 1rBLXz-0005ra-Rd
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 16:04:42 -0500
+Received: (qmail 10774 invoked by uid 484); 7 Dec 2023 21:04:27 -0000
 X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
  smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.11.92):. 
- Processed in 3e-06 secs); 07 Dec 2023 21:04:24 -0000
+ Processed in 0.088762 secs); 07 Dec 2023 21:04:27 -0000
 Received: from nedpc1.intern.lauterbach.com
  (Authenticated_SSL:neder@[10.2.11.92])
  (envelope-sender <nicolas.eder@lauterbach.com>)
  by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP for <qemu-devel@nongnu.org>; 7 Dec 2023 21:04:21 -0000
+ encrypted SMTP for <qemu-devel@nongnu.org>; 7 Dec 2023 21:04:24 -0000
 From: Nicolas Eder <nicolas.eder@lauterbach.com>
 To: qemu-devel@nongnu.org
 Cc: "Nicolas Eder" <nicolas.eder@lauterbach.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Christian Boenig" <christian.boenig@lauterbach.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 14/17] mcdstub: state query added
-Date: Thu,  7 Dec 2023 22:03:55 +0100
-Message-Id: <20231207210358.7409-15-nicolas.eder@lauterbach.com>
+Subject: [PATCH v4 15/17] mcdstub: skeleton for reset handling added
+Date: Thu,  7 Dec 2023 22:03:56 +0100
+Message-Id: <20231207210358.7409-16-nicolas.eder@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231207210358.7409-1-nicolas.eder@lauterbach.com>
 References: <20231207210358.7409-1-nicolas.eder@lauterbach.com>
@@ -69,71 +69,73 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 ---
- debug/mcdstub/mcdstub.c | 44 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ debug/mcdstub/mcdstub.c | 46 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
 diff --git a/debug/mcdstub/mcdstub.c b/debug/mcdstub/mcdstub.c
-index 83582f7fa5..794e7d1312 100644
+index 794e7d1312..cc1587396d 100644
 --- a/debug/mcdstub/mcdstub.c
 +++ b/debug/mcdstub/mcdstub.c
-@@ -1412,6 +1412,43 @@ static void handle_query_regs_c(GArray *params, void *user_ctx)
-     mcd_put_strbuf();
+@@ -826,6 +826,37 @@ static void handle_vm_stop(GArray *params, void *user_ctx)
+     mcd_vm_stop();
  }
  
 +/**
-+ * handle_query_state() - Handler for the state query.
++ * mcd_exit() - Terminates QEMU.
 + *
-+ * This function collects all data stored in the
-+ * cpu_state member of the mcdserver_state and formats and sends it to the
-+ * library.
++ * If the mcdserver_state has not been initialized the function exits before
++ * terminating QEMU. Terminting is done with the qemu_chr_fe_deinit function.
++ * @code: An exitcode, which can be used in the future.
++ */
++static void mcd_exit(int code)
++{
++    /* terminate qemu */
++    if (!mcdserver_state.init) {
++        return;
++    }
++
++    qemu_chr_fe_deinit(&mcdserver_system_state.chr, true);
++}
++
++/**
++ * handle_reset() - Handler for performing resets.
++ *
++ * This function is currently not in use.
 + * @params: GArray with all TCP packet parameters.
 + */
-+static void handle_query_state(GArray *params, void *user_ctx)
++static void handle_reset(GArray *params, void *user_ctx)
 +{
 +    /*
-+     * TODO: multicore support
-+     * get state info
++     * int reset_id = get_param(params, 0)->data_int;
++     * TODO: implement resets
 +     */
-+    mcd_cpu_state_st state_info = mcdserver_state.cpu_state;
-+    /* TODO: add event information */
-+    uint32_t event = 0;
-+    /* send data */
-+    g_string_printf(mcdserver_state.str_buf,
-+        "%s=%s.%s=%u.%s=%u.%s=%u.%s=%lu.%s=%s.%s=%s.",
-+        TCP_ARGUMENT_STATE, state_info.state,
-+        TCP_ARGUMENT_EVENT, event, TCP_ARGUMENT_THREAD, 0,
-+        TCP_ARGUMENT_TYPE, state_info.bp_type,
-+        TCP_ARGUMENT_ADDRESS, state_info.bp_address,
-+        TCP_ARGUMENT_STOP_STRING, state_info.stop_str,
-+        TCP_ARGUMENT_INFO_STRING, state_info.info_str);
-+    mcd_put_strbuf();
-+
-+    /* reset debug info after first query */
-+    if (strcmp(state_info.state, CORE_STATE_DEBUG) == 0) {
-+        mcdserver_state.cpu_state.stop_str = "";
-+        mcdserver_state.cpu_state.info_str = "";
-+        mcdserver_state.cpu_state.bp_type = 0;
-+        mcdserver_state.cpu_state.bp_address = 0;
-+    }
 +}
 +
  /**
-  * init_query_cmds_table() - Initializes all query functions.
-  *
-@@ -1507,6 +1544,13 @@ static void init_query_cmds_table(MCDCmdParseEntry *mcd_query_cmds_table)
-     strcpy(query_regs_c.schema, (char[2]) { ARG_SCHEMA_QRYHANDLE, '\0' });
-     mcd_query_cmds_table[cmd_number] = query_regs_c;
-     cmd_number++;
-+
-+    MCDCmdParseEntry query_state = {
-+        .handler = handle_query_state,
-+        .cmd = QUERY_ARG_STATE,
-+    };
-+    strcpy(query_state.schema, (char[2]) { ARG_SCHEMA_CORENUM, '\0' });
-+    mcd_query_cmds_table[cmd_number] = query_state;
- }
- 
- /**
+  * mcd_handle_packet() - Evaluates the type of received packet and chooses the
+  * correct handler.
+@@ -927,6 +958,21 @@ static int mcd_handle_packet(const char *line_buf)
+             cmd_parser = &break_cmd_desc;
+         }
+         break;
++    case TCP_CHAR_KILLQEMU:
++        /* kill qemu completely */
++        error_report("QEMU: Terminated via MCDstub");
++        mcd_exit(0);
++        exit(0);
++    case TCP_CHAR_RESET:
++        {
++            static MCDCmdParseEntry reset_cmd_desc = {
++                .handler = handle_reset,
++            };
++            reset_cmd_desc.cmd = (char[2]) { TCP_CHAR_RESET, '\0' };
++            strcpy(reset_cmd_desc.schema, (char[2]) { ARG_SCHEMA_INT, '\0' });
++            cmd_parser = &reset_cmd_desc;
++        }
++        break;
+     default:
+         /* command not supported */
+         mcd_put_packet("");
 -- 
 2.34.1
 
