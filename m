@@ -2,87 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6388090E8
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 19:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 479B0808EEF
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 18:41:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBJSu-0003yA-5N; Thu, 07 Dec 2023 13:51:16 -0500
+	id 1rBIM2-0008PC-1j; Thu, 07 Dec 2023 12:40:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rBJSa-0003d8-9h
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 13:50:58 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rBILt-0008OL-Od
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 12:39:58 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rBJSW-00076j-6r
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 13:50:53 -0500
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B7GDP6O031570; Thu, 7 Dec 2023 18:50:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=DxpWETRXyV33aWVhz27vZT9JTn25BNRlFUePIY4gwgM=;
- b=Y078tMi9V5gxDYy1HeyHVhgeU/Xa9WL6n8dUqeNWMuDYiQTU0MqKHBJCII4tDEcjJpVg
- GMNGvtRcoW4Ov0LEYXXVQXzcoGtixd1a0AOfMAkGICYR1rkCz+nNbOWFLUG7836A//uo
- XjgJHI8N1GAvRiaUawQl0fNm7I7niCC/RyzPxsJO7HYAFz/YrWCSmkKEwNeaJ32GT63X
- +JqKHJN9Bwg0cc6V+hqYirPxQpw9f74mINBt6xZQdxhRH76ydONttEwjxbOXunkRJ15Y
- 40apCsKFMlYvXNAr2l0d870btKP3rlov5ed37IMwt8AFLDYiB/CczaJLRRCJkwR1H8/0 DA== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utdrvmpfn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 07 Dec 2023 18:50:46 +0000
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B7HNN94039498; Thu, 7 Dec 2023 18:50:45 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3utan7vj30-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 07 Dec 2023 18:50:45 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B7Io90c008067;
- Thu, 7 Dec 2023 18:50:45 GMT
-Received: from ban25x6uut24.us.oracle.com (ban25x6uut24.us.oracle.com
- [10.153.73.24])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3utan7vh2k-24; Thu, 07 Dec 2023 18:50:44 +0000
-From: Si-Wei Liu <si-wei.liu@oracle.com>
-To: eperezma@redhat.com, jasowang@redhat.com, mst@redhat.com,
- dtatulea@nvidia.com, leiyang@redhat.com, yin31149@gmail.com,
- boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH 23/40] vdpa: vhost_vdpa_dma_batch_begin_once rename
-Date: Thu,  7 Dec 2023 09:39:36 -0800
-Message-Id: <1701970793-6865-24-git-send-email-si-wei.liu@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
-References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-07_15,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- spamscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2312070156
-X-Proofpoint-GUID: 7v0XLWao16LyHgiiiQqFsKmf-VmYa7wd
-X-Proofpoint-ORIG-GUID: 7v0XLWao16LyHgiiiQqFsKmf-VmYa7wd
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=si-wei.liu@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rBILq-00078r-3a
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 12:39:57 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A821975A4C2;
+ Thu,  7 Dec 2023 18:39:39 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id McD21M8WIdH2; Thu,  7 Dec 2023 18:39:37 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id C082D75A406; Thu,  7 Dec 2023 18:39:37 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id BEED2756094;
+ Thu,  7 Dec 2023 18:39:37 +0100 (CET)
+Date: Thu, 7 Dec 2023 18:39:37 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: aziz tlili <aziztlili2222@gmail.com>
+cc: qemu-devel@nongnu.org
+Subject: Re: Request for New PPC Machine Supporting Multiple SMP Cores
+In-Reply-To: <CAHwHw5A6g428uTpMEQ=NCkXP7sXVfCWv5QSUw3pHfncmG-2gPA@mail.gmail.com>
+Message-ID: <5f2068a4-955a-9d16-347d-4d2771b78aa8@eik.bme.hu>
+References: <CAHwHw5A6g428uTpMEQ=NCkXP7sXVfCWv5QSUw3pHfncmG-2gPA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,54 +62,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No functional changes. Rename only.
+On Thu, 7 Dec 2023, aziz tlili wrote:
+> Dear QEMU Team,
+>
+> I hope this message finds you well. I've been a user of QEMU for well over
+> a year.
+>
+> I wanted to share an idea for a potential enhancement that I believe could
+> benefit many users, including myself. It would be fantastic to have a new
+> PPC machine model similar to the existing mac99, but with support for
+> multiple SMP cores for both qemu-system-ppc and qemu-system-ppc64.
 
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
----
- hw/virtio/vhost-vdpa.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+There are several machines in qemu-system-ppc64 that support SMP such as 
+pseries and powernv I think. For qemu-system-ppc maybe only ppce500. The 
+mac99 may create multiple CPUs (G4 when ron with qemu-system-ppc or G5 
+with qemu-system-ppc64) but not sure if there's an OS that can actually 
+use that. Linux support for mac99 may not be the best.
 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 7a1b7f4..a6c6fe5 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -186,7 +186,7 @@ static bool vhost_vdpa_map_batch_begin(VhostVDPAShared *s)
-     return true;
- }
- 
--static void vhost_vdpa_iotlb_batch_begin_once(VhostVDPAShared *s)
-+static void vhost_vdpa_dma_batch_begin_once(VhostVDPAShared *s)
- {
-     if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH)) ||
-         s->iotlb_batch_begin_sent) {
-@@ -411,7 +411,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-         iova = mem_region.iova;
-     }
- 
--    vhost_vdpa_iotlb_batch_begin_once(s);
-+    vhost_vdpa_dma_batch_begin_once(s);
-     ret = vhost_vdpa_dma_map(s, VHOST_VDPA_GUEST_PA_ASID, iova,
-                              int128_get64(llsize), vaddr, section->readonly);
-     if (ret) {
-@@ -493,7 +493,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
-         iova = result->iova;
-         vhost_iova_tree_remove(s->iova_tree, *result);
-     }
--    vhost_vdpa_iotlb_batch_begin_once(s);
-+    vhost_vdpa_dma_batch_begin_once(s);
-     /*
-      * The unmap ioctl doesn't accept a full 64-bit. need to check it
-      */
-@@ -1371,7 +1371,7 @@ static void *vhost_vdpa_load_map(void *opaque)
-                                      msg->iotlb.size);
-             break;
-         case VHOST_IOTLB_BATCH_BEGIN:
--            vhost_vdpa_iotlb_batch_begin_once(shared);
-+            vhost_vdpa_dma_batch_begin_once(shared);
-             break;
-         case VHOST_IOTLB_BATCH_END:
-             vhost_vdpa_dma_batch_end_once(shared);
--- 
-1.8.3.1
+> The ability to simulate multiple SMP cores within a PPC machine environment
+> would significantly enhance the capabilities of QEMU for various
+> applications, testing scenarios, and development purposes. This addition
+> could greatly benefit the community working on PowerPC architecture.
 
+Sure. Contributions are welcome.
+
+> I understand the complexities involved in such developments but wanted to
+> express the potential advantages and how this enhancement could contribute
+> to expanding QEMU's capabilities.
+
+Problem is not in understanding the potential advantages but the lack of 
+people interested in working on that so progress depends on somebody doing 
+it and sending patches.
+
+Regards,
+BALATON Zoltan
+
+> Thank you for considering my suggestion. I would be more than happy to
+> provide further details or collaborate in any way that could assist in
+> making this idea a reality.
+>
+> Best regards,
+> Aziz Tlili
+>
 
