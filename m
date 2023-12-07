@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21AD80909A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 19:52:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B3980908F
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Dec 2023 19:51:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBJSJ-0003Ys-Gw; Thu, 07 Dec 2023 13:50:39 -0500
+	id 1rBJSE-0003XO-Jo; Thu, 07 Dec 2023 13:50:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rBJS6-0003U7-JB
- for qemu-devel@nongnu.org; Thu, 07 Dec 2023 13:50:28 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1rBJS5-0003U6-8t
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 13:50:27 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rBJS0-0006Xt-DC
+ id 1rBJS0-0006Z3-DK
  for qemu-devel@nongnu.org; Thu, 07 Dec 2023 13:50:24 -0500
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B7InWTp000621; Thu, 7 Dec 2023 18:50:17 GMT
+ 3B7HY0pW009542; Thu, 7 Dec 2023 18:50:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=BqSj62+diHUsR87x+1wTb6AuDlUE/ZCVpHyqeDC2E4E=;
- b=Ii27jVM2QxmN8r8GV7zmQ12Y8VH6dWmxM+ZrDYAqjRRu+pqkSCmNwW/51VVUhd8AMY2O
- akMycakkvLA9FdZDlF7gxZuwPZQ5f/KjsWJWcRvcNK4nDtr8V6YLvVeU97dnR/UNLvJ/
- LEUpMP6Tm+utEAd9jhtKPCPZCs4PcE8q1N2meerF9IXkMkDJLoFhr92+z030uVv7GZ45
- noRG091o6W5YU91bVyvVO9yY4OqTXX7pZxP5nUAllDpZxMSCW6vaRpzt1gLbWgolc2aH
- NipgGh76FloBYs2164BOY8jIVkMmPIUzzgHCAVvInJItLfZ6FGt59Ey1DND9c7TqB8Lr 6g== 
+ bh=PXaBos3iadjASSJZj10OoTka/EF5tVh7f2/9jG/IaBk=;
+ b=QIomfy/rCMx5KAtw18PQeVo/HP37wR3SPJZ9wAymwaedglXoFqYf+cU5nH+7BTalpuD7
+ hjWwKOSTitIru0/IkRb/85U/1BqHg3PwiGL6XVZgqqs/5/o9Fam43UdmX32/nD6qm2OR
+ zGQSlvScJiHTp8hulAD9vzISn03DBNPREXGIx+RFjRx7ahR56duC3B4WR2lYEHWaF3Xh
+ osHxzhNZ+vrC9oe+hVQZire88BLpjXKMCQ2LmCFVqiW4TcTj9tKwoO9V+ESXu7eakQNd
+ xTr84XVhawd80Nk3r21Bxb593kvbFyQYFtR+033slTYXSum1l/x0uKeWAxOComx7wjfB Ww== 
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utd0mmh4b-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3utd1gcshf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 07 Dec 2023 18:50:16 +0000
+ Thu, 07 Dec 2023 18:50:18 +0000
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3B7IltKg039527; Thu, 7 Dec 2023 18:50:16 GMT
+ with ESMTP id 3B7HQKhr039445; Thu, 7 Dec 2023 18:50:17 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3utan7vh7d-1
+ 3utan7vh90-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 07 Dec 2023 18:50:16 +0000
+ Thu, 07 Dec 2023 18:50:17 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B7Io9xw008067;
- Thu, 7 Dec 2023 18:50:15 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B7Io900008067;
+ Thu, 7 Dec 2023 18:50:17 GMT
 Received: from ban25x6uut24.us.oracle.com (ban25x6uut24.us.oracle.com
  [10.153.73.24])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3utan7vh2k-4; Thu, 07 Dec 2023 18:50:15 +0000
+ 3utan7vh2k-5; Thu, 07 Dec 2023 18:50:17 +0000
 From: Si-Wei Liu <si-wei.liu@oracle.com>
 To: eperezma@redhat.com, jasowang@redhat.com, mst@redhat.com,
  dtatulea@nvidia.com, leiyang@redhat.com, yin31149@gmail.com,
  boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
 Cc: qemu-devel@nongnu.org
-Subject: [PATCH 03/40] vdpa: probe descriptor group index for data vqs
-Date: Thu,  7 Dec 2023 09:39:16 -0800
-Message-Id: <1701970793-6865-4-git-send-email-si-wei.liu@oracle.com>
+Subject: [PATCH 04/40] vdpa: piggyback desc_group index when probing isolated
+ cvq
+Date: Thu,  7 Dec 2023 09:39:17 -0800
+Message-Id: <1701970793-6865-5-git-send-email-si-wei.liu@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
 References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
@@ -71,10 +72,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
  suspectscore=0 mlxscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2312070156
-X-Proofpoint-GUID: sr7q8q4OSq04SprcZhsiDUxgdZbDOoRP
-X-Proofpoint-ORIG-GUID: sr7q8q4OSq04SprcZhsiDUxgdZbDOoRP
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=si-wei.liu@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: h2pRchlMPATXGGR-NWKj99Zcx7z4f-Fx
+X-Proofpoint-GUID: h2pRchlMPATXGGR-NWKj99Zcx7z4f-Fx
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=si-wei.liu@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -98,118 +99,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Getting it ahead at initialization time instead of start time allows
-decision making independent of device status, while reducing failure
-possibility in starting device or during migration.
-
-Adding function vhost_vdpa_probe_desc_group() for that end. This
-function will be used to probe the descriptor group for data vqs.
+Same as the previous commit, but do it for cvq instead of data vqs.
 
 Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 ---
- net/vhost-vdpa.c | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
+ net/vhost-vdpa.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 887c329..0cf3147 100644
+index 0cf3147..cb5705d 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -1688,6 +1688,95 @@ out:
+@@ -1601,16 +1601,19 @@ static const VhostShadowVirtqueueOps vhost_vdpa_net_svq_ops = {
+ };
+ 
+ /**
+- * Probe if CVQ is isolated
++ * Probe if CVQ is isolated, and piggyback its descriptor group
++ * index if supported
+  *
+  * @device_fd         The vdpa device fd
+  * @features          Features offered by the device.
+  * @cvq_index         The control vq pair index
++ * @desc_grpidx       The CVQ's descriptor group index to return
+  *
+- * Returns <0 in case of failure, 0 if false and 1 if true.
++ * Returns <0 in case of failure, 0 if false and 1 if true (isolated).
+  */
+ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
+-                                          int cvq_index, Error **errp)
++                                          int cvq_index, int64_t *desc_grpidx,
++                                          Error **errp)
+ {
+     uint64_t backend_features;
+     int64_t cvq_group;
+@@ -1667,6 +1670,13 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
+         goto out;
+     }
+ 
++    if (backend_features & BIT_ULL(VHOST_BACKEND_F_DESC_ASID)) {
++        int64_t desc_group = vhost_vdpa_get_vring_desc_group(device_fd,
++                                                             cvq_index, errp);
++        if (likely(desc_group >= 0) && desc_group != cvq_group)
++            *desc_grpidx = desc_group;
++    }
++
+     for (int i = 0; i < cvq_index; ++i) {
+         int64_t group = vhost_vdpa_get_vring_group(device_fd, i, errp);
+         if (unlikely(group < 0)) {
+@@ -1685,6 +1695,8 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
+ out:
+     status = 0;
+     ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
++    status = VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRIVER;
++    ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
      return r;
  }
  
-+static int vhost_vdpa_probe_desc_group(int device_fd, uint64_t features,
-+                                       int vq_index, int64_t *desc_grpidx,
-+                                       Error **errp)
-+{
-+    uint64_t backend_features;
-+    int64_t vq_group, desc_group;
-+    uint8_t saved_status = 0;
-+    uint8_t status = 0;
-+    int r;
-+
-+    ERRP_GUARD();
-+
-+    r = ioctl(device_fd, VHOST_GET_BACKEND_FEATURES, &backend_features);
-+    if (unlikely(r < 0)) {
-+        error_setg_errno(errp, errno, "Cannot get vdpa backend_features");
-+        return r;
-+    }
-+
-+    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID))) {
-+        return 0;
-+    }
-+
-+    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_DESC_ASID))) {
-+        return 0;
-+    }
-+
-+    r = ioctl(device_fd, VHOST_VDPA_GET_STATUS, &saved_status);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, -r, "Cannot get device status");
-+        goto out;
-+    }
-+
-+    r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, -r, "Cannot reset device");
-+        goto out;
-+    }
-+
-+    r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, errno, "Cannot set features");
-+    }
-+
-+    status = VIRTIO_CONFIG_S_ACKNOWLEDGE |
-+             VIRTIO_CONFIG_S_DRIVER |
-+             VIRTIO_CONFIG_S_FEATURES_OK;
-+
-+    r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, -r, "Cannot set device status");
-+        goto out;
-+    }
-+
-+    vq_group = vhost_vdpa_get_vring_group(device_fd, vq_index, errp);
-+    if (unlikely(vq_group < 0)) {
-+        if (vq_group != -ENOTSUP) {
-+            r = vq_group;
-+            goto out;
-+        }
-+
-+        /*
-+         * The kernel report VHOST_BACKEND_F_IOTLB_ASID if the vdpa frontend
-+         * support ASID even if the parent driver does not.
-+         */
-+        error_free(*errp);
-+        *errp = NULL;
-+        r = 0;
-+        goto out;
-+    }
-+
-+    desc_group = vhost_vdpa_get_vring_desc_group(device_fd, vq_index,
-+                                                 errp);
-+    if (unlikely(desc_group < 0)) {
-+        r = desc_group;
-+        goto out;
-+    } else if (desc_group != vq_group) {
-+        *desc_grpidx = desc_group;
-+    }
-+    r = 1;
-+
-+out:
-+    status = 0;
-+    ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-+    if (saved_status) {
-+        ioctl(device_fd, VHOST_VDPA_SET_STATUS, &saved_status);
-+    }
-+    return r;
-+}
-+
- static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-                                        const char *device,
-                                        const char *name,
+@@ -1791,6 +1803,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+                                        Error **errp)
+ {
+     NetClientState *nc = NULL;
++    int64_t desc_group = -1;
+     VhostVDPAState *s;
+     int ret = 0;
+     assert(name);
+@@ -1802,7 +1815,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+     } else {
+         cvq_isolated = vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, features,
+                                                       queue_pair_index * 2,
+-                                                      errp);
++                                                      &desc_group, errp);
+         if (unlikely(cvq_isolated < 0)) {
+             return NULL;
+         }
 -- 
 1.8.3.1
 
