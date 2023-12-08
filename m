@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EE080A266
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:38:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8F780A262
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:37:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBZ9G-00049O-Pf; Fri, 08 Dec 2023 06:36:02 -0500
+	id 1rBZ9H-0004CP-59; Fri, 08 Dec 2023 06:36:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ9B-00040l-3R
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:35:57 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ9E-00048Q-CD
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:36:00 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ97-0003xN-Ci
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:35:56 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40a4848c6e1so23637585e9.1
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:35:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ9B-0004A0-Ln
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:36:00 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3331752d2b9so1451381f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:35:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702035350; x=1702640150; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702035356; x=1702640156; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uzEnAxgAgPgAskKIL5lE29mKmqmzfiARuWbhtCikfuI=;
- b=FKIVQFC8wFMkd03omRC6fsPjmQMGrR8U5mT7SDKZC/ZWQXO+zHKgkinPdQtg702yZy
- TvUebPTnurPsFfuBcfY3xsJ8imYYo6TYfpPbl6JbV2fukaaVCoPcFfnavLw2S+loARy8
- 07r9jFHV5yDNzKQOk7nX9BtIKGy8EaWPKUxHMVTid4JwBgU4QMmdSTsk4uDX0ZYK6+ga
- FLWQb1VGsgWa1LjDr9cdj7g7lGcJfSclEk49THY6n3obfVh5tCKMVTU0aK1L/+s8sd/O
- b0RgN00IEorN2Qs+TUWt8tezjvZaSMxR9YGng5UEBhverVMER97xvNtKjcLbs9Og0k0I
- Qusw==
+ bh=OW+X1QC8WatkMetvJ6Ywtj3P4pbS5e79ta84qcwdOpI=;
+ b=MOo0wKrIV2oBZEcjZdCO2bTFejsZ+zzJNlHu/oeGs1tfZtjOTJ2evCCqGbzUJYfddf
+ m0rN4MVlAqBpLMv1Ya1/fLIA4DTbOwcqqF9ppQET4C6LbHKHgx+IZRrsFk3WZYkopgvI
+ 5VwF/nJ2hXrN91NUfxviAUV9nhk18hi2KxXq1E/YRfq8Euh/XWFc/NpDOJ2Vyk4zV1Cf
+ EhWjBZErq5f67cFDfFWW71Kno2RPOEbuRvAEVJyrGSk33olkyDe0T8kOUxvHbRLdtx69
+ Mbp81UI+ccPB92R8dGQPQFV2vqqEIRkWzjN7hZG/WshcrjkDcqTfZwmKY4pG9aGST5IJ
+ PFXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702035350; x=1702640150;
+ d=1e100.net; s=20230601; t=1702035356; x=1702640156;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uzEnAxgAgPgAskKIL5lE29mKmqmzfiARuWbhtCikfuI=;
- b=bUqDfPtprgs4ZkQyIrsPNPk7huSSFgMvi2uknQqXJsXDjnPqwytouZcz55rlg4vVVb
- mbNAfFtNG/HYAbXBHA4WMtIoDDt2V1GBJrwTjIogo4jRhjVFgquW3+jObqCyPCFEgrKp
- 88TYzDXDuKkiLIHgeqY4NZWwLeYTWPgcPcWQvM6QH85pVJNB/8pNxwbOCesj+iyfdQnp
- jDM5gN3p1XkAD1QTntXQoAOLIc0yvhK+rXWGVTroAGYFchHs2gfvsknFDo46WQKwg4sl
- ITAh1pdWUbQcM7flIXKT32OGJhvdZ/2Jl7Ei67yMbU0Dh+unTNVFgmktUZDt7DWnsRsA
- yGow==
-X-Gm-Message-State: AOJu0YzALmaoSMRT2b29mXxkPC9vYb8EiyTtSN+3FOik8yKeijg/Gd4v
- DGmfJL/lnRroTYW2azVUu5bDsXeXUN8i7c3kYQY=
-X-Google-Smtp-Source: AGHT+IFfqDQv0a+i++vl/cts5SbpDyzuVXz4EQl1AhSqM3ZPlDjh5GUnmIch3lFG1heT1njSRmWDaA==
-X-Received: by 2002:a05:600c:6025:b0:40c:2a2a:1169 with SMTP id
- az37-20020a05600c602500b0040c2a2a1169mr1350259wmb.115.1702035350029; 
- Fri, 08 Dec 2023 03:35:50 -0800 (PST)
+ bh=OW+X1QC8WatkMetvJ6Ywtj3P4pbS5e79ta84qcwdOpI=;
+ b=SGYVPngntPY4CvFsQy53od2H5U2B9uBy2iphmwgXipBeFrvxwQXyZmfMoxGnSk2e3q
+ ECAAoCCiY5XpfojKFjams4MRcCcC6ZaKEwfqjC97St514TzxP2fKFn1ymkoBeJyPtTn1
+ D7LM2ZRcxolv22iU8iR/VW/vblLQopcKVijeN8eyN3ibKFNUteglVCldIwO5WCk4IW4X
+ 9VISrHeuhMTk4abZ+56+CyG3FwEndhrlmhmiFv490ornakUGYr8mzz+pDz0zfnCvZTuQ
+ mPP5eWA5V/YnZCdEkecoALPBkzCT9LxoPWkt6XHGu/FVGOKYXAra1CQ3GAinDppWgTx4
+ vQiA==
+X-Gm-Message-State: AOJu0YxznlNIHlD+V02nekUsTNBYaknHc7BHOkeDY7+wLnti0vdcvoOD
+ 33PUFYw79EUKI/IveQFPY+3up8Eid5FzNbbd03s=
+X-Google-Smtp-Source: AGHT+IFjNbv1Y1o8ZfQUkSg5XeXPa+GVIftwfMJwequq8QK7XqtUDO3wUovD8gFNkcLWn+cNxuwW0A==
+X-Received: by 2002:a5d:6311:0:b0:333:2fd2:813d with SMTP id
+ i17-20020a5d6311000000b003332fd2813dmr2679405wru.90.1702035356092; 
+ Fri, 08 Dec 2023 03:35:56 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.146.181])
  by smtp.gmail.com with ESMTPSA id
- n10-20020a5d4c4a000000b003333abf3edfsm1832772wrt.47.2023.12.08.03.35.48
+ b5-20020adff245000000b003332ef77db4sm1840624wrp.44.2023.12.08.03.35.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 08 Dec 2023 03:35:49 -0800 (PST)
+ Fri, 08 Dec 2023 03:35:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
@@ -62,17 +62,18 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 3/6] sysemu/cpu-timers: Introduce ICountMode enumerator
-Date: Fri,  8 Dec 2023 12:35:25 +0100
-Message-ID: <20231208113529.74067-4-philmd@linaro.org>
+Subject: [PATCH v3 4/6] target/arm: Ensure icount is enabled when emulating
+ INST_RETIRED
+Date: Fri,  8 Dec 2023 12:35:26 +0100
+Message-ID: <20231208113529.74067-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231208113529.74067-1-philmd@linaro.org>
 References: <20231208113529.74067-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,135 +96,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than having to lookup for what the 0, 1, 2, ...
-icount values are, use a enum definition.
+pmu_init() register its event checking the pm_event::supported()
+handler. For INST_RETIRED, the event is only registered and the
+bit enabled in the PMU Common Event Identification register when
+icount is enabled as ICOUNT_PRECISE.
+
+PMU events are TCG-only, hardware accelerators handle them
+directly. Unfortunately we register the events in non-TCG builds,
+leading to linking error such:
+
+  ld: Undefined symbols:
+    _icount_to_ns, referenced from:
+      _instructions_ns_per in target_arm_helper.c.o
+  clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+As a kludge, give a hint to the compiler by asserting the
+pm_event::get_count() and pm_event::ns_per_count() handler will
+only be called under this icount mode.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/sysemu/cpu-timers.h | 20 +++++++++++++-------
- accel/tcg/icount-common.c   | 16 +++++++---------
- stubs/icount.c              |  2 +-
- system/cpu-timers.c         |  2 +-
- target/arm/helper.c         |  3 ++-
- 5 files changed, 24 insertions(+), 19 deletions(-)
+As discussed in
+https://lore.kernel.org/qemu-devel/CAFEAcA-HVf8vWLzmdStEo2NrSKQdZV612rBjiaj-gLW4vXyvpA@mail.gmail.com/
+better would be to restrict the PMU events to TCG, but this is
+out of the scope of this series.
+---
+ target/arm/helper.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/sysemu/cpu-timers.h b/include/sysemu/cpu-timers.h
-index b70dc7692d..3f05f29b10 100644
---- a/include/sysemu/cpu-timers.h
-+++ b/include/sysemu/cpu-timers.h
-@@ -17,18 +17,24 @@ void cpu_timers_init(void);
- 
- /* icount - Instruction Counter API */
- 
--/*
-- * icount enablement state:
-+/**
-+ * ICountMode: icount enablement state:
-  *
-- * 0 = Disabled - Do not count executed instructions.
-- * 1 = Enabled - Fixed conversion of insn to ns via "shift" option
-- * 2 = Enabled - Runtime adaptive algorithm to compute shift
-+ * @ICOUNT_DISABLED: Disabled - Do not count executed instructions.
-+ * @ICOUNT_PRECISE: Enabled - Fixed conversion of insn to ns via "shift" option
-+ * @ICOUNT_ADAPTATIVE: Enabled - Runtime adaptive algorithm to compute shift
-  */
-+typedef enum {
-+    ICOUNT_DISABLED = 0,
-+    ICOUNT_PRECISE,
-+    ICOUNT_ADAPTATIVE,
-+} ICountMode;
-+
- #ifdef CONFIG_TCG
--extern int use_icount;
-+extern ICountMode use_icount;
- #define icount_enabled() (use_icount)
- #else
--#define icount_enabled() 0
-+#define icount_enabled() ICOUNT_DISABLED
- #endif
- 
- /*
-diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
-index dc69d6a4c6..f0f8fc7f1c 100644
---- a/accel/tcg/icount-common.c
-+++ b/accel/tcg/icount-common.c
-@@ -49,21 +49,19 @@ static bool icount_sleep = true;
- /* Arbitrarily pick 1MIPS as the minimum allowable speed.  */
- #define MAX_ICOUNT_SHIFT 10
- 
--/*
-- * 0 = Do not count executed instructions.
-- * 1 = Fixed conversion of insn to ns via "shift" option
-- * 2 = Runtime adaptive algorithm to compute shift
-- */
--int use_icount;
-+/* Do not count executed instructions */
-+ICountMode use_icount = ICOUNT_DISABLED;
- 
- static void icount_enable_precise(void)
- {
--    use_icount = 1;
-+    /* Fixed conversion of insn to ns via "shift" option */
-+    use_icount = ICOUNT_PRECISE;
- }
- 
- static void icount_enable_adaptive(void)
- {
--    use_icount = 2;
-+    /* Runtime adaptive algorithm to compute shift */
-+    use_icount = ICOUNT_ADAPTATIVE;
- }
- 
- /*
-@@ -256,7 +254,7 @@ static void icount_warp_rt(void)
-         int64_t warp_delta;
- 
-         warp_delta = clock - timers_state.vm_clock_warp_start;
--        if (icount_enabled() == 2) {
-+        if (icount_enabled() == ICOUNT_ADAPTATIVE) {
-             /*
-              * In adaptive mode, do not let QEMU_CLOCK_VIRTUAL run too far
-              * ahead of real time (it might already be ahead so careful not
-diff --git a/stubs/icount.c b/stubs/icount.c
-index 014ae5d8e4..7055c13725 100644
---- a/stubs/icount.c
-+++ b/stubs/icount.c
-@@ -3,7 +3,7 @@
- 
- /* icount - Instruction Counter API */
- 
--int use_icount;
-+ICountMode use_icount = ICOUNT_DISABLED;
- 
- void icount_update(CPUState *cpu)
- {
-diff --git a/system/cpu-timers.c b/system/cpu-timers.c
-index 7452d97b67..6befb82e48 100644
---- a/system/cpu-timers.c
-+++ b/system/cpu-timers.c
-@@ -154,7 +154,7 @@ static bool adjust_timers_state_needed(void *opaque)
- 
- static bool icount_shift_state_needed(void *opaque)
- {
--    return icount_enabled() == 2;
-+    return icount_enabled() == ICOUNT_ADAPTATIVE;
- }
- 
- /*
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 2746d3fdac..adb0960bba 100644
+index adb0960bba..333fd5f4bf 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -934,7 +934,8 @@ static int64_t cycles_ns_per(uint64_t cycles)
- 
- static bool instructions_supported(CPUARMState *env)
- {
--    return icount_enabled() == 1; /* Precise instruction counting */
-+    /* Precise instruction counting */
-+    return icount_enabled() == ICOUNT_PRECISE;
- }
+@@ -940,11 +940,13 @@ static bool instructions_supported(CPUARMState *env)
  
  static uint64_t instructions_get_count(CPUARMState *env)
+ {
++    assert(icount_enabled() == ICOUNT_PRECISE);
+     return (uint64_t)icount_get_raw();
+ }
+ 
+ static int64_t instructions_ns_per(uint64_t icount)
+ {
++    assert(icount_enabled() == ICOUNT_PRECISE);
+     return icount_to_ns((int64_t)icount);
+ }
+ #endif
 -- 
 2.41.0
 
