@@ -2,92 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61212809EAC
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 09:59:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64199809F0E
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 10:16:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBWgd-0006O8-T6; Fri, 08 Dec 2023 03:58:19 -0500
+	id 1rBWvr-00011v-CJ; Fri, 08 Dec 2023 04:14:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1rBWgY-0006MQ-1N
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:58:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1rBWgW-0007sa-B4
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:58:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702025889;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=daPE9ufOoCbMA2Elth6gqht5LTgge+9KXcX19van4tY=;
- b=RszR/98JfPg4BTPhtOq2pLKcjI5v+3Ly3WCm2Om22ZOeyyDuSY2lafBJoUXqJRy+8YHT0k
- XCYRdnEr/5UfsHjtopRRQOK/39Sdx8NHv5DCQpOTIAoCy7x3KiMCA3y2cwfF1EO3EIE40p
- O106R1frWmoOWN8Xym6RPvhkIFIigcc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-359-Tkt8PamRNDqSVdpvW0p-ZA-1; Fri, 08 Dec 2023 03:58:07 -0500
-X-MC-Unique: Tkt8PamRNDqSVdpvW0p-ZA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33349915da3so1457852f8f.0
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 00:58:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702025886; x=1702630686;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=daPE9ufOoCbMA2Elth6gqht5LTgge+9KXcX19van4tY=;
- b=GR1IlTSP/aSoGdLXqviQmlupzuXK+UpRG06bl1U6RycRIY9SlWCpzHbw2wI3Y5FmEE
- 8032KRoslr6OxRJAWiPGpu0Pn6b/ILFzhWL3RYUSCb5OEuYbh3/g/VH0fBBvl68RpSJr
- R5LpjvA3mS3ozZ471amzuN46RknaQS+GSUkGD4dS/KvRvbkaTRQgKyWaCwyORswQLOWG
- G5ZZfuIl2+Mf+yC3NnDrm2qESPYRSX90LstwkDrvmKIhD1f1MS/oZNQ7FLM/iGe165H1
- gfWVZN7yd6SZTWhvG2ZIiia/aIKavkgSkFHAPi5XuTLsxoD1ypavTM2kxSztY1yYu3vu
- 7YMg==
-X-Gm-Message-State: AOJu0YyoLLhlKvfjTH30LXjbAwjQCRNKlhIb8wJORZADoT5dwYrx9Y9p
- x/U+lrE0p/RGQSCbUCwCir2zc4PryPh2INf7t8I2JCgKvD4/hLg+r4YQIVi03Cy5b5HFjHGzedZ
- 34aAfNtILbkXSLZc=
-X-Received: by 2002:a05:600c:2147:b0:40b:5e1e:fb9c with SMTP id
- v7-20020a05600c214700b0040b5e1efb9cmr1653543wml.81.1702025886398; 
- Fri, 08 Dec 2023 00:58:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEmyk0AaGLsH8iHm6A2T+d4DayhgyoIonmdrDpNPxTJ6t4muHXNPOF5y7QG2eRWGrTqFojVKg==
-X-Received: by 2002:a05:600c:2147:b0:40b:5e1e:fb9c with SMTP id
- v7-20020a05600c214700b0040b5e1efb9cmr1653541wml.81.1702025886067; 
- Fri, 08 Dec 2023 00:58:06 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- n18-20020a05600c501200b0040b37f1079dsm4534205wmr.29.2023.12.08.00.58.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Dec 2023 00:58:05 -0800 (PST)
-Message-ID: <5a58cc19-d73f-4961-8998-a88dea4ece01@redhat.com>
-Date: Fri, 8 Dec 2023 09:58:04 +0100
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rBWvf-00010s-DG
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:13:51 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rBWvb-0008EV-Oz
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:13:51 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxY_BD3nJlo+w_AA--.62235S3;
+ Fri, 08 Dec 2023 17:13:39 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxH91A3nJlrE5YAA--.822S2; 
+ Fri, 08 Dec 2023 17:13:36 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, philmd@linaro.org, peter.maydell@linaro.org,
+ maobibo@loongson.cn
+Subject: [PATCH v1 00/17] Add boot LoongArch elf kernel with FDT
+Date: Fri,  8 Dec 2023 17:00:25 +0800
+Message-Id: <20231208090042.2672425-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Request for New PPC Machine Supporting Multiple SMP Cores
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, aziz tlili <aziztlili2222@gmail.com>
-Cc: qemu-devel@nongnu.org
-References: <CAHwHw5A6g428uTpMEQ=NCkXP7sXVfCWv5QSUw3pHfncmG-2gPA@mail.gmail.com>
- <5f2068a4-955a-9d16-347d-4d2771b78aa8@eik.bme.hu>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <5f2068a4-955a-9d16-347d-4d2771b78aa8@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8AxH91A3nJlrE5YAA--.822S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,59 +61,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/7/23 18:39, BALATON Zoltan wrote:
-> On Thu, 7 Dec 2023, aziz tlili wrote:
->> Dear QEMU Team,
->>
->> I hope this message finds you well. I've been a user of QEMU for well over
->> a year.
->>
->> I wanted to share an idea for a potential enhancement that I believe could
->> benefit many users, including myself. It would be fantastic to have a new
->> PPC machine model similar to the existing mac99, but with support for
->> multiple SMP cores for both qemu-system-ppc and qemu-system-ppc64.
-> 
-> There are several machines in qemu-system-ppc64 that support SMP such as pseries and powernv I think. For qemu-system-ppc maybe only ppce500. The mac99 may create multiple CPUs (G4 when ron with qemu-system-ppc or G5 with qemu-system-ppc64) but not sure if there's an OS that can actually use that. Linux support for mac99 may not be the best.
+Hi, All
 
-64bit :
+We already support boot efi kernel with bios, but not support boot elf kernel. 
+This series adds boot elf kernel with FDT.
 
-pseries machines support SMP and SMT
-powernv machines support SMP, SMT and multisocket.
-ppce500 machines (e6500 and e5500 CPUs) support SMP
+'LoongArch supports ACPI and FDT. The information that needs to be passed
+ to the kernel includes the memmap, the initrd, the command line, optionally
+ the ACPI/FDT tables, and so on'  see [1].
 
-32bit :
+Patch 2-8 : Create efi system table, and three efi configuration table 
+            boot_memmap, initd, FDT. 
+Patch 9-17 : Fixes FDT problems.
 
-ppce500 machines (e500mc) have SMP support but there is an issue when
-bringing up the secondaries.
-It has never been done for the other machines AFAIK
+Test:
+  We can get vmlinux and ramdisk from [2]. or build them with
+cross-tools [3], but build kernel need config 'CONFIG_PCI_HOST_GENERIC=y'.
 
-Thanks,
 
-C.
+Please review! 
 
->> The ability to simulate multiple SMP cores within a PPC machine environment
->> would significantly enhance the capabilities of QEMU for various
->> applications, testing scenarios, and development purposes. This addition
->> could greatly benefit the community working on PowerPC architecture.
-> 
-> Sure. Contributions are welcome.
-> 
->> I understand the complexities involved in such developments but wanted to
->> express the potential advantages and how this enhancement could contribute
->> to expanding QEMU's capabilities.
-> 
-> Problem is not in understanding the potential advantages but the lack of people interested in working on that so progress depends on somebody doing it and sending patches.
-> 
-> Regards,
-> BALATON Zoltan
-> 
->> Thank you for considering my suggestion. I would be more than happy to
->> provide further details or collaborate in any way that could assist in
->> making this idea a reality.
->>
->> Best regards,
->> Aziz Tlili
->>
-> 
+Thanks.
+Song Gao
+
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/arch/loongarch/booting.rst?h=v6.7-rc4
+
+[2]: https://github.com/gaosong-loongson/loongarch-binary
+
+[3]: https://github.com/loongson/build-tools/releases/download/2023.08.08/CLFS-loongarch64-8.1-x86_64-cross-tools-gcc-glibc.tar.xz
+
+Song Gao (17):
+  hw/loongarch: Move boot fucntions to boot.c
+  hw/loongarch: Add load initrd
+  hw/loongarch: Add init_cmdline
+  hw/loongarch: Add slave cpu boot_code
+  hw/loongarch: Init efi_system_table
+  hw/loongarch: Init efi_boot_memmap table
+  hw/loongarch: Init efi_initrd table
+  hw/loongarch: Init efi_fdt table
+  hw/loongarch: Fix fdt memory node wrong 'reg'
+  hw/loongarch: fdt adds cpu interrupt controller node
+  hw/loongarch: fdt adds Extend I/O Interrupt Controller
+  hw/loongarch: fdt adds pch_pic Controller
+  hw/loongarch: fdt adds pch_msi Controller
+  hw/loongarch: fdt adds pcie irq_map node
+  hw/loongarch: fdt remove unused irqchip node
+  hw/loongarch: Add cells missing from uart node
+  hw/loongarch: Add cells missing from rtc node
+
+ hw/loongarch/boot.c                | 354 +++++++++++++++++++++++++++++
+ hw/loongarch/meson.build           |   1 +
+ hw/loongarch/virt.c                | 350 +++++++++++++++-------------
+ include/hw/intc/loongarch_extioi.h |   1 +
+ include/hw/loongarch/boot.h        | 111 +++++++++
+ include/hw/loongarch/virt.h        |  14 ++
+ include/hw/pci-host/ls7a.h         |   2 +
+ target/loongarch/cpu.h             |   2 +
+ 8 files changed, 681 insertions(+), 154 deletions(-)
+ create mode 100644 hw/loongarch/boot.c
+ create mode 100644 include/hw/loongarch/boot.h
+
+-- 
+2.25.1
 
 
