@@ -2,69 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D05180AF92
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 23:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB0480AFCB
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 23:43:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBj8g-0001kG-1r; Fri, 08 Dec 2023 17:16:06 -0500
+	id 1rBjY0-0007W7-Ky; Fri, 08 Dec 2023 17:42:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1rBj8R-0001ih-6E
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 17:15:54 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1rBj8B-0006L1-NZ
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 17:15:43 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id A6E14625E4;
- Fri,  8 Dec 2023 22:15:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F182C433C7;
- Fri,  8 Dec 2023 22:15:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1702073720;
- bh=Ha/wmXPQCbdxxQFnVSlTzopr1J5CWlZTgjxmMqdAYGk=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=LTWrVesl6oX3wVUIhMhp8blfITncMg9ec998Y/6Wlcgz3nuyK8FqBo4Pv1e/Pc+Tl
- Tyt/ol0fpH3mxbZNK5FniW+oh4TRNf7Kel+xsmAJcIe1JtT3Ck1/06Oeg5x2+TJIMo
- pUDqaz3/FWqIy0+XvcYrj//qBDsJH5/4az8QBJN5Fp6QrUw0jN287fB22oX4+sCtjh
- h7ATUeBzPHOdz3Gh+ARUcJxLALv9y0n+oMzGbDfat9SsklaXGP4K7BJdARMTaSWWMl
- ExTFxcJOJfybN4EZzKd6gMpEfj94r5oHipMTjlsFN5LPYUIgNXyrVAB8eLZkM//3I+
- Z1hC1SrOdDG+w==
-Date: Fri, 8 Dec 2023 14:15:16 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Mykyta Poturai <Mykyta_Poturai@epam.com>
-cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- David Woodhouse <dwmw@amazon.co.uk>, 
- "sstabellini@kernel.org" <sstabellini@kernel.org>, 
- "sstabellini@kernel.org" <sstabellini@kernel.org>, 
- Julien Grall <julien@xen.org>, 
- Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>, 
- Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>, 
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
- Vikram Garhwal <vikram.garhwal@amd.com>, 
- Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>, 
- stewart.hildebrand@amd.com
-Subject: Re: Adding MSI support for virtio-pci to QEMU as Xen backend on
- ARM
-In-Reply-To: <PAVPR03MB10102178A70BF72984FFAF8CD848AA@PAVPR03MB10102.eurprd03.prod.outlook.com>
-Message-ID: <alpine.DEB.2.22.394.2312081407250.1703076@ubuntu-linux-20-04-desktop>
-References: <PAVPR03MB10102178A70BF72984FFAF8CD848AA@PAVPR03MB10102.eurprd03.prod.outlook.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Received-SPF: pass client-ip=139.178.84.217;
- envelope-from=sstabellini@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ (Exim 4.90_1) (envelope-from
+ <3wptzZQMKCvktdxhpphmf.dpnrfnv-efwfmopohov.psh@flex--scw.bounces.google.com>)
+ id 1rBjXy-0007Vv-Rp
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 17:42:14 -0500
+Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3wptzZQMKCvktdxhpphmf.dpnrfnv-efwfmopohov.psh@flex--scw.bounces.google.com>)
+ id 1rBjXx-0007eh-Cg
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 17:42:14 -0500
+Received: by mail-yb1-xb49.google.com with SMTP id
+ 3f1490d57ef6-dbc1f00dc35so3354506276.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 14:42:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1702075331; x=1702680131; darn=nongnu.org;
+ h=cc:to:from:subject:mime-version:message-id:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=nR/6Gm4cCsmWGcgeLIo3+sjciyvtVDyTL3CXBtrQfcU=;
+ b=jGHOqovd3dkLeR3ZYenSjT8Vk4D6NKysZNZbSkIUAXGqLl3+o50Bi6KQH5oQxeCXob
+ KDNWdSxbfZiiwcgTnLdNzILyOP6K2fCi4G2Pad73WbqMNvsiVdNCs1OIoMwVBk/lHSPI
+ u+mN+mt6h0hQJ5O8sM+JujhFGwFoESuHnh8FoeGJ+lJ4w2LRfGAx0y4a4fhY87eO3zy5
+ qSv1JFkXIkmEWzoZqxtP29HDrG3kJgH6/BV2v1cXuaCzl9LS5fEo/xApyjb4jNMAtXMY
+ zSrT81FyYeyNM8PLRqQNCFammDCrMX37UkEtR/68XBDbZXg5xhag/d3NFqH9XwXT269J
+ WBDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702075331; x=1702680131;
+ h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nR/6Gm4cCsmWGcgeLIo3+sjciyvtVDyTL3CXBtrQfcU=;
+ b=fmCocyq06Cs9juj7TPJOw8o0bHZU5geFkhLDoWWDJNtcWkAaSFyy+J3stahfKgpH2v
+ Bs2AwmqvkUg1oMp3P704wooZ+Nj3KA9iYU1F3J+mMWXnV9YoDKYJviEzXySEGFH6hXUD
+ BH9cExLf8b04tiRhgnmLUUdo9qsZ3l+xDlzYIVUVSo3aUE+X6Ca6ZQcjmqPoOd9djXEY
+ KueYLf37IMYHjGlaasrGxdPBqD2/I0s3mcIDlzW9jm1eaE9SzoXLVQfoa+27SscBuQl8
+ Gq2gux2sznGR+UViO4B92I8OKFmBDWkmWb5BQ8hNcCnBN4aMgKEnsOFfN0HZQd3gXvwh
+ S9Hg==
+X-Gm-Message-State: AOJu0YxhteYFOqU8H5NaVwXzHbPYMvqYRoXcaOMSbOY9pxiEzmz/X1Ad
+ nP/cY8igfZJhmWp6ctoaub3YuKtPU9pReKVECPFDirSlhliMozmvcqqUvBTGEx7lEH9Qo77R9y3
+ LbmsH7zhZmJQL907aSfbqVtZ2t2cXXwh4uylxaRuNx+K0u0yQmzlM
+X-Google-Smtp-Source: AGHT+IHHbh9AzcpA+cN4CYNJnSXe/4zRr/h6LCxJdE0FK5KNs8N+rNDd5EBlag4733uTvvbuY3m6KPw=
+X-Received: from scw-glinux.svl.corp.google.com
+ ([2620:15c:2d3:205:37bb:5740:1ec:48f2])
+ (user=scw job=sendgmr) by 2002:a25:db94:0:b0:db4:7ac:fea6 with SMTP id
+ g142-20020a25db94000000b00db407acfea6mr5559ybf.7.1702075330740; Fri, 08 Dec
+ 2023 14:42:10 -0800 (PST)
+Date: Fri,  8 Dec 2023 14:42:05 -0800
+Message-Id: <20231208224207.613445-1-scw@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Subject: [PATCH v3 0/2] linux-user: openat() fixes
+From: Shu-Chun Weng <scw@google.com>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Shu-Chun Weng <scw@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
+ envelope-from=3wptzZQMKCvktdxhpphmf.dpnrfnv-efwfmopohov.psh@flex--scw.bounces.google.com;
+ helo=mail-yb1-xb49.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,36 +91,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-+Stewart
+Since v2:
+ - More robust handling of `readlink()`
 
-On Fri, 8 Dec 2023, Mykyta Poturai wrote:
-> Hello everyone,
-> 
-> I am currently working on adding MSI support to virtio-pci on ARM with Xen.
+Since v1:
+ - Eliminate static buffers in do_guest_openat()
 
-Excellent!
+Shu-Chun Weng (2):
+  linux-user: Define TARGET_O_LARGEFILE for aarch64
+  linux-user: Fix openat() emulation to not modify atime
 
+ linux-user/aarch64/target_fcntl.h |  1 +
+ linux-user/syscall.c              | 47 +++++++++++++++++++++++++------
+ 2 files changed, 39 insertions(+), 9 deletions(-)
 
-> As far as I understand QEMU Xen ARM machine that is used for virtio-pci device emulation does not initialize any interrupt controllers. And that makes it somewhat unclear what is the best approach to adding the MSI support. So, I would appreciate some thoughts on this.
-> To trigger the MSI interrupt in Xen guests we basically need to call a single DMOP, which I am also implementing.
-
-You should be able to call xen_inject_msi
-
-
-> So far, I have come up with 3 possible approaches:
-> 1. Hooking up the existing GIC code to the Xen Arm machine and extending it with the DMOP call.
-
-No, I would rather avoid this for a couple of reasons. In reality, the
-GIC is emulated by Xen, not QEMU. So letting QEMU think that QEMU is
-emulating a GIC is more error prone than the alternatives and also it
-would allocate resources needlessly.
-
-
-> 2. Writing some new barebones GIC implementation with only the required methods (something similar to xen_apic.c).
-> 3. Just hooking up the DMOP call to the existing PCI code based on xen_enabled() check.
-
-I would rather not introduce any more if (xen_enabled()) checks beyond
-the ones we already have unless it is the only option. So I would go
-with option 2). Even better if we could reuse xen_apic.c. xen_apic.c is
-just a stub, which is basically the same thing that we need here.
 
