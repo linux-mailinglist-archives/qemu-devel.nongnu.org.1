@@ -2,100 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A1680A739
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 16:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D5880A73F
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 16:22:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBcf0-0003OO-9f; Fri, 08 Dec 2023 10:21:02 -0500
+	id 1rBcf1-0003QH-SW; Fri, 08 Dec 2023 10:21:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1rBceG-0003B0-2q; Fri, 08 Dec 2023 10:20:17 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <mlevitsk@redhat.com>)
+ id 1rBceK-0003C1-Hn
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 10:20:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1rBceA-0003lP-GF; Fri, 08 Dec 2023 10:20:15 -0500
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B8FCbwD020824; Fri, 8 Dec 2023 15:20:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=TvNCP88Wih3iCPLGr0imWZLWfqNMOFk0A6mAUZSumPc=;
- b=sbGoFwn6SwP4Po9t9aADd7fcP9qhEmk8hGV59HwkqL+OkoY69mhNrbUOrOvUejN2UkOQ
- fW9DlQVx1m2oYDdNs5+yZPBIg5NVPYGIMeLVSbNY978bjFfK5NSumapkKDAClvbjviV3
- 2xTOLuPsPl4ANT73TCEOmJEjag13XMLLPPOY04MC1GvwX7au2WQnllUBF3glFleASyuR
- zzSBEKXwJJ7Y4aB6GRTdgU/j3/bh9YzrgXc/oqMXE0bEjQBOjLNwFA8KbFg8OnB3OMDC
- xSpAVNyoBw0e3MI8p0j+ki0E67mGloMqop6FpiLRvhkHu6AjCrmppB8zNjwV1RSMQH+Y zg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uv5k0r5e4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Dec 2023 15:20:06 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B8FDwu0025663;
- Fri, 8 Dec 2023 15:20:06 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uv5k0r5dp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Dec 2023 15:20:06 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3B8DLVmr013743; Fri, 8 Dec 2023 15:20:04 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3utau4j8s5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Dec 2023 15:20:04 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3B8FK1j934144666
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Dec 2023 15:20:01 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5FC4020043;
- Fri,  8 Dec 2023 15:20:01 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BAA6920040;
- Fri,  8 Dec 2023 15:19:59 +0000 (GMT)
-Received: from gfwr516.rchland.ibm.com (unknown [9.10.239.105])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  8 Dec 2023 15:19:59 +0000 (GMT)
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
- chalapathi.v@linux.ibm.com, saif.abrar@linux.vnet.ibm.com
-Subject: [PATCH v8 3/3] hw/ppc: N1 chiplet wiring
-Date: Fri,  8 Dec 2023 09:19:47 -0600
-Message-Id: <20231208151947.26951-4-chalapathi.v@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20231208151947.26951-1-chalapathi.v@linux.ibm.com>
-References: <20231208151947.26951-1-chalapathi.v@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <mlevitsk@redhat.com>)
+ id 1rBceF-0003lt-Ao
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 10:20:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702048813;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gQ5r27WTNi1tlXFNvyLVJ6+tXAR6kKSZwKnBBPrryVU=;
+ b=czmw8vXOm7vEQ/Yfv/ElDRxduV1RR5xRH2SwNyNRXL1oEu00SovTMkfhU2mU83QsxNUqYR
+ MXvRydH/s9kN2Z5sjhbAnrX6ldGwPipzy8YcaqBYFg7o4aBYeLvlnAnq09SB1yLpoGZ1h+
+ AaKgUh4bE0cuVN3KAAYmyRUGifSfwcI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-457-eR3Rwo8MMFquDim-ixzgqA-1; Fri, 08 Dec 2023 10:20:11 -0500
+X-MC-Unique: eR3Rwo8MMFquDim-ixzgqA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40c295f59ceso9124845e9.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 07:20:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702048810; x=1702653610;
+ h=content-transfer-encoding:mime-version:user-agent:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gQ5r27WTNi1tlXFNvyLVJ6+tXAR6kKSZwKnBBPrryVU=;
+ b=bhgU0teauyUysZTvzndx3Idl8uay0jRDKY+K+s5m+u47tYP+Bhpp5putAma3Ym87Sl
+ 2jitFKIZMTPzKN7wnWba6kiiGOrSfVemUClZqSbs/HU5QF/kiTw4BlVywdlORdBbDzH2
+ iMnJihbvUwwBzXFdWza8lmld5lmHosJL+c4jlXlw+UEFxh/nJApgtrYZuL5R7phkvpZS
+ GQp6E9KG+YdgDDiDSV9TjVIMBhOWQ/0Qa+Nd8pgQBeMUtSovA1eOZeYSA1DbTvCfj9+u
+ w3zRSb+cGC7YfuBoY0FkE54QwmqiqGlbEAESyyo6e0Ha4qsliBdrroWFUznGLH+ZrkiH
+ WBBQ==
+X-Gm-Message-State: AOJu0YwD4hqGrQJpO9+fOWt+wLL+5rRJJDj9WFzlLqrX6jv/W66jPgUe
+ JnjQTrV+FgefynIIvfi76APTWesTueCA/NS9aRMU2xli2TyREvsPXBiz8z6qd7VbpOMyWnv9u8h
+ lt6BiH6f2g7wUogo=
+X-Received: by 2002:a05:600c:4e4f:b0:40c:23e0:7dad with SMTP id
+ e15-20020a05600c4e4f00b0040c23e07dadmr158560wmq.168.1702048810532; 
+ Fri, 08 Dec 2023 07:20:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEcPJRbzsB3vyWAQnpo4WFhSNjU+T5FUkhLcEtq0DNBmKLN16Ty0vOof9ojkND/sMr3DezBfw==
+X-Received: by 2002:a05:600c:4e4f:b0:40c:23e0:7dad with SMTP id
+ e15-20020a05600c4e4f00b0040c23e07dadmr158550wmq.168.1702048810172; 
+ Fri, 08 Dec 2023 07:20:10 -0800 (PST)
+Received: from starship ([89.237.98.20]) by smtp.gmail.com with ESMTPSA id
+ o11-20020a05600c510b00b0040a3f9862e3sm1583317wms.1.2023.12.08.07.20.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Dec 2023 07:20:09 -0800 (PST)
+Message-ID: <3663aa04f6c3002d47362f3877d96c0e18bc163e.camel@redhat.com>
+Subject: Re: [PATCH v2 for-8.2?] i386/sev: Avoid SEV-ES crash due to missing
+ MSR_EFER_LMA bit
+From: Maxim Levitsky <mlevitsk@redhat.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Marcelo
+ Tosatti <mtosatti@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, kvm@vger.kernel.org
+Date: Fri, 08 Dec 2023 17:20:08 +0200
+In-Reply-To: <20231206174235.b7fwrqzko27of7qz@amd.com>
+References: <20231205222816.1152720-1-michael.roth@amd.com>
+ <9eae0513c912faa04a11db378ea3ca176ab45f0d.camel@redhat.com>
+ <20231206174235.b7fwrqzko27of7qz@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: MiVPjbdrUOqAQPth90Y_hwhUpsIiAXHv
-X-Proofpoint-ORIG-GUID: dIODPuSekjZqdJsCel-OFx_BXLtxgR2f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-08_10,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- malwarescore=0 suspectscore=0 impostorscore=0 adultscore=0 spamscore=0
- phishscore=0 clxscore=1015 bulkscore=0 mlxlogscore=787 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2312080125
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlevitsk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,68 +104,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This part of the patchset connects the nest1 chiplet model to p10 chip.
+On Wed, 2023-12-06 at 11:42 -0600, Michael Roth wrote:
+> On Wed, Dec 06, 2023 at 07:20:14PM +0200, Maxim Levitsky wrote:
+> > On Tue, 2023-12-05 at 16:28 -0600, Michael Roth wrote:
+> > > Commit 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+> > > added error checking for KVM_SET_SREGS/KVM_SET_SREGS2. In doing so, it
+> > > exposed a long-running bug in current KVM support for SEV-ES where the
+> > > kernel assumes that MSR_EFER_LMA will be set explicitly by the guest
+> > > kernel, in which case EFER write traps would result in KVM eventually
+> > > seeing MSR_EFER_LMA get set and recording it in such a way that it would
+> > > be subsequently visible when accessing it via KVM_GET_SREGS/etc.
+> > > 
+> > > However, guests kernels currently rely on MSR_EFER_LMA getting set
+> > > automatically when MSR_EFER_LME is set and paging is enabled via
+> > > CR0_PG_MASK. As a result, the EFER write traps don't actually expose the
+> > > MSR_EFER_LMA even though it is set internally, and when QEMU
+> > > subsequently tries to pass this EFER value back to KVM via
+> > > KVM_SET_SREGS* it will fail various sanity checks and return -EINVAL,
+> > > which is now considered fatal due to the aforementioned QEMU commit.
+> > > 
+> > > This can be addressed by inferring the MSR_EFER_LMA bit being set when
+> > > paging is enabled and MSR_EFER_LME is set, and synthesizing it to ensure
+> > > the expected bits are all present in subsequent handling on the host
+> > > side.
+> > > 
+> > > Ultimately, this handling will be implemented in the host kernel, but to
+> > > avoid breaking QEMU's SEV-ES support when using older host kernels, the
+> > > same handling can be done in QEMU just after fetching the register
+> > > values via KVM_GET_SREGS*. Implement that here.
+> > > 
+> > > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > > Cc: Marcelo Tosatti <mtosatti@redhat.com>
+> > > Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> > > Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > > Cc: kvm@vger.kernel.org
+> > > Fixes: 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
+> > > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > > ---
+> > > v2:
+> > >   - Add handling for KVM_GET_SREGS, not just KVM_GET_SREGS2
+> > > 
+> > >  target/i386/kvm/kvm.c | 14 ++++++++++++++
+> > >  1 file changed, 14 insertions(+)
+> > > 
+> > > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > > index 11b8177eff..8721c1bf8f 100644
+> > > --- a/target/i386/kvm/kvm.c
+> > > +++ b/target/i386/kvm/kvm.c
+> > > @@ -3610,6 +3610,7 @@ static int kvm_get_sregs(X86CPU *cpu)
+> > >  {
+> > >      CPUX86State *env = &cpu->env;
+> > >      struct kvm_sregs sregs;
+> > > +    target_ulong cr0_old;
+> > >      int ret;
+> > >  
+> > >      ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_SREGS, &sregs);
+> > > @@ -3637,12 +3638,18 @@ static int kvm_get_sregs(X86CPU *cpu)
+> > >      env->gdt.limit = sregs.gdt.limit;
+> > >      env->gdt.base = sregs.gdt.base;
+> > >  
+> > > +    cr0_old = env->cr[0];
+> > >      env->cr[0] = sregs.cr0;
+> > >      env->cr[2] = sregs.cr2;
+> > >      env->cr[3] = sregs.cr3;
+> > >      env->cr[4] = sregs.cr4;
+> > >  
+> > >      env->efer = sregs.efer;
+> > > +    if (sev_es_enabled() && env->efer & MSR_EFER_LME) {
+> > > +        if (!(cr0_old & CR0_PG_MASK) && env->cr[0] & CR0_PG_MASK) {
+> > > +            env->efer |= MSR_EFER_LMA;
+> > > +        }
+> > > +    }
+> > 
+> > I think that we should not check that CR0_PG has changed, and just blindly assume
+> > that if EFER.LME is set and CR0.PG is set, then EFER.LMA must be set as defined in x86 spec.
+> > 
+> > Otherwise, suppose qemu calls kvm_get_sregs twice: First time it will work,
+> > but second time CR0.PG will match one that is stored in the env, and thus the workaround
+> > will not be executed, and instead we will revert back to wrong EFER value 
+> > reported by the kernel.
+> > 
+> > How about something like that:
+> > 
+> > 
+> > if (sev_es_enabled() && env->efer & MSR_EFER_LME && env->cr[0] & CR0_PG_MASK) {
+> > 	/* 
+> >          * Workaround KVM bug, because of which KVM might not be aware of the 
+> >          * fact that EFER.LMA was toggled by the hardware 
+> >          */
+> > 	env->efer |= MSR_EFER_LMA;
+> > }
+> 
+> Hi Maxim,
+> 
+> I'd already sent a v3 based on a similar suggestion from Paolo:
+> 
+>   https://lists.gnu.org/archive/html/qemu-devel/2023-12/msg00751.html
+> 
+> Does that one look okay to you?
 
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
----
- include/hw/ppc/pnv_chip.h |  2 ++
- hw/ppc/pnv.c              | 15 +++++++++++++++
- 2 files changed, 17 insertions(+)
+Yep, thanks!
 
-diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-index 0ab5c42308..9b06c8d87c 100644
---- a/include/hw/ppc/pnv_chip.h
-+++ b/include/hw/ppc/pnv_chip.h
-@@ -4,6 +4,7 @@
- #include "hw/pci-host/pnv_phb4.h"
- #include "hw/ppc/pnv_core.h"
- #include "hw/ppc/pnv_homer.h"
-+#include "hw/ppc/pnv_n1_chiplet.h"
- #include "hw/ppc/pnv_lpc.h"
- #include "hw/ppc/pnv_occ.h"
- #include "hw/ppc/pnv_psi.h"
-@@ -113,6 +114,7 @@ struct Pnv10Chip {
-     PnvOCC       occ;
-     PnvSBE       sbe;
-     PnvHomer     homer;
-+    PnvN1Chiplet     n1_chiplet;
- 
-     uint32_t     nr_quads;
-     PnvQuad      *quads;
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 0297871bdd..be3e922644 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1680,6 +1680,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
-     object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
-     object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
-     object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
-+    object_initialize_child(obj, "n1-chiplet", &chip10->n1_chiplet,
-+                            TYPE_PNV_N1_CHIPLET);
- 
-     chip->num_pecs = pcc->num_pecs;
- 
-@@ -1849,6 +1851,19 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(get_system_memory(), PNV10_HOMER_BASE(chip),
-                                 &chip10->homer.regs);
- 
-+    /* N1 chiplet */
-+    if (!qdev_realize(DEVICE(&chip10->n1_chiplet), NULL, errp)) {
-+        return;
-+    }
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_CHIPLET_CTRL_REGS_BASE,
-+             &chip10->n1_chiplet.nest_pervasive.xscom_ctrl_regs_mr);
-+
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_EQ_BASE,
-+                           &chip10->n1_chiplet.xscom_pb_eq_mr);
-+
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_N1_PB_SCOM_ES_BASE,
-+                           &chip10->n1_chiplet.xscom_pb_es_mr);
-+
-     /* PHBs */
-     pnv_chip_power10_phb_realize(chip, &local_err);
-     if (local_err) {
--- 
-2.31.1
+Best regards,
+	Maxim Levitsky
+> 
+> Thanks,
+> 
+> Mike
+> 
+> > 
+> > Best regards,
+> > 	Maxim Levitsky
+> > 
+> > >  
+> > >      /* changes to apic base and cr8/tpr are read back via kvm_arch_post_run */
+> > >      x86_update_hflags(env);
+> > > @@ -3654,6 +3661,7 @@ static int kvm_get_sregs2(X86CPU *cpu)
+> > >  {
+> > >      CPUX86State *env = &cpu->env;
+> > >      struct kvm_sregs2 sregs;
+> > > +    target_ulong cr0_old;
+> > >      int i, ret;
+> > >  
+> > >      ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_SREGS2, &sregs);
+> > > @@ -3676,12 +3684,18 @@ static int kvm_get_sregs2(X86CPU *cpu)
+> > >      env->gdt.limit = sregs.gdt.limit;
+> > >      env->gdt.base = sregs.gdt.base;
+> > >  
+> > > +    cr0_old = env->cr[0];
+> > >      env->cr[0] = sregs.cr0;
+> > >      env->cr[2] = sregs.cr2;
+> > >      env->cr[3] = sregs.cr3;
+> > >      env->cr[4] = sregs.cr4;
+> > >  
+> > >      env->efer = sregs.efer;
+> > > +    if (sev_es_enabled() && env->efer & MSR_EFER_LME) {
+> > > +        if (!(cr0_old & CR0_PG_MASK) && env->cr[0] & CR0_PG_MASK) {
+> > > +            env->efer |= MSR_EFER_LMA;
+> > > +        }
+> > > +    }
+> > >  
+> > >      env->pdptrs_valid = sregs.flags & KVM_SREGS2_FLAGS_PDPTRS_VALID;
+> > >  
+
 
 
