@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECB580AADA
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 18:35:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 525D980AB05
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 18:43:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBeje-0006FT-SR; Fri, 08 Dec 2023 12:33:58 -0500
+	id 1rBerm-00004s-EZ; Fri, 08 Dec 2023 12:42:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1rBejZ-00068M-0w
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 12:33:56 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rBerk-0008WL-0d
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 12:42:20 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <venture@google.com>)
- id 1rBejX-0003sf-FY
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 12:33:52 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-54744e66d27so63a12.0
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 09:33:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rBerh-0001aE-OL
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 12:42:19 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d1e1edb10bso21818095ad.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 09:42:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1702056827; x=1702661627; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wToyti+9pkrlLVy584lG7SBqjvQA0xI4yh17DSqip9o=;
- b=GSXlkFxYbfD/Fp2cYii2LvLfRGdM9wrwGreNJvsfTnCWVS7whmYXiFRVoJRfx1+N4z
- b+fqlg8V1ENfW80GAEiVYvyeiEaLF1KRp40i3/FWOeFRR4K+GYZv5Mbi7Sd8cNi247Tc
- UMk6S5g9Ag9/R3vNza0Yejk4KT5Xbr9TYJWl6Q3CT/1RiSz5CQxefLz/jcHSOn29jQMi
- TRx29THDTUo61DAS6oZHHnAWfvC4hZ6hB21I/l2OCvZTerr0ESlzKsxh6wXEkBDEWz6w
- BofpjkJHRDatfc5LBx8MUmd9xPqSo2mOC9mNGqXYiPp+mLMLcOEUh9M4eKSDMK7FQbZh
- /wvw==
+ d=linaro.org; s=google; t=1702057336; x=1702662136; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hQm6GvRg7gjuMYZ65RdFwBqlSpxPlfEF2+WBwv7hVbI=;
+ b=Wb92N+eCi2qvo91ZOoVYnY/8dG+Zk1+Wr9aLGn0gj7dIDPGuHIC4LP4JMr6j9Xe/nw
+ vgSs3lQeRiRxr5OyoLotrm/A+HZ7+saAkC2vQfhYjT5m6Oi2/RkBdOnF+ld0CLTo/nb/
+ BlCpV7R+QevZ6dK68t4/SIARGdpkDIbmyadtIU3bwVcoN6HnsMzsPbQI2giuknLE9C0e
+ /kRpPN7N3Uj7XzmROKUsugxn+PdPXJWmfO9lxQ1AQYr2dWmfxT+C1/Yt9HnAHLVqTdFa
+ y3q2ANA4kxk0Rgfh4SLj4oEG0TwJunCtU7UvzbFad08eQ2G7g1ZNTiAO30Pldd0XGKPp
+ 28Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702056827; x=1702661627;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wToyti+9pkrlLVy584lG7SBqjvQA0xI4yh17DSqip9o=;
- b=v1L5t2+wn5jMFd6PdeIZ5/z1mr7zdb/xumyfQNd409g41FQjCtz9+ROwaXlnSNX6jl
- jg5P3twiyhTR3DVheG/b8/WqxIxULvY8Q00bIBPsLmO8VeHJEBoYwdhucCTTTtbm766i
- ue6yuvY9kBgmvjrpABeF5rRSM/Qzb5lh+I0Wan4qqOH0vx+Ih6w7fiibToAWD1OK/jJH
- I6h0AkaQCYROtlbdgAeTRKleSiHnNk2Se0Sl2ob5V6XBmpY/zFHgzUWdBc9wUB5dD5yF
- ue8LX5SoeoEYdaK7HZ1+6r9Nifq2xmPRNyK5yen1iMR3Nlabs3uRoX4z0CdCBRFQsqbS
- qZkg==
-X-Gm-Message-State: AOJu0YyxDuwdd8Qlne2aJHmrhCHUoYESqXXMiplmCoDTOo/TbbYDAMJc
- PiYG8pYNbPytRMT2TVKAkY14+b7dfTa7ziW0b2YIGQ==
-X-Google-Smtp-Source: AGHT+IE39TQwhOwV9V+F93201xyHFRqwophfGljv9V49Lej9ZqNGJKFcr32NX2XqxOJra46Zv8Be56be+SL8GFRW4Bc=
-X-Received: by 2002:a50:c311:0:b0:54c:794b:875b with SMTP id
- a17-20020a50c311000000b0054c794b875bmr79518edb.1.1702056827166; Fri, 08 Dec
- 2023 09:33:47 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702057336; x=1702662136;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hQm6GvRg7gjuMYZ65RdFwBqlSpxPlfEF2+WBwv7hVbI=;
+ b=iYNCeaeYjB2qA+CdrKC8JGctF29eHFZoSXet/T+KdZRVFbqYcU55q8ecbFpPEhYpsN
+ A2SycJ1sFiQ3f0SjRkbf7LaZup+6N2kbiMEVM6pNW7JoyK9EjStXG3rSmFXpYy1PXXyu
+ 3opH4LA1gdziWKwsuJGZ+cmCuuafLL7hjOl9pX/UJhOKS/KkzMIhmK5yg51Qreq7dRLd
+ pYdmJV4o3lKEDcFfXhbv6NimjLL+fTHfJCU7ELUoXPrWifXFdCSrlroGBvyPzIZs9zUc
+ nf1BXXI6AdGuCcfzvhc0bk7NoFr/l1RATO1jCcBgWGpLZRivZs0U4v2gQMWqs3Dhkru/
+ 6Crg==
+X-Gm-Message-State: AOJu0Yy1vjcSmpVp3T5PROpVjG+nhebX1fYadicj5dWZW8TsCBpcjUTM
+ eOcpK1iXlsFaLpdF2cZeFWT4dxvJ3FONEoeE3pS11A==
+X-Google-Smtp-Source: AGHT+IHby3+j58EU8/AtNonTEpyMqq3f2C3HoQTWveLXIWr5oaYdNJmiRkfmuUg7isJI/YcdSviMIA==
+X-Received: by 2002:a17:90a:1f4b:b0:286:77c2:6027 with SMTP id
+ y11-20020a17090a1f4b00b0028677c26027mr503768pjy.36.1702057335888; 
+ Fri, 08 Dec 2023 09:42:15 -0800 (PST)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ ih15-20020a17090b430f00b0028669c66e37sm3607678pjb.21.2023.12.08.09.42.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Dec 2023 09:42:15 -0800 (PST)
+Message-ID: <8a876325-92bb-46e6-8ba5-47405dbb00c7@linaro.org>
+Date: Fri, 8 Dec 2023 09:42:13 -0800
 MIME-Version: 1.0
-References: <CAHdnXhDZMgAKZyhucJ8QsFJHiO5xqdQq9zVn5X2SSL0-Q12-Jg@mail.gmail.com>
-In-Reply-To: <CAHdnXhDZMgAKZyhucJ8QsFJHiO5xqdQq9zVn5X2SSL0-Q12-Jg@mail.gmail.com>
-From: Patrick Venture <venture@google.com>
-Date: Fri, 8 Dec 2023 09:33:34 -0800
-Message-ID: <CAO=notyfoWHWDRBkdMY45_oiifX+t+9hyJfvaMhrAii3yJ7X-g@mail.gmail.com>
-Subject: Re: udp guestfwd
-To: Louai Al-Khanji <louai.khanji@gmail.com>, Felix Wu <flwu@google.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000929eeb060c02fcf9"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=venture@google.com; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for 8.2] accel/tcg/cputlb: Fix iotlb page alignment check
+Content-Language: en-US
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
+Cc: mark.cave-ayland@ilande.co.uk
+References: <20231208020619.117-1-zhiwei_liu@linux.alibaba.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231208020619.117-1-zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,73 +93,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000929eeb060c02fcf9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 12/7/23 18:06, LIU Zhiwei wrote:
+> For ram memory region the iotlb(which will be filled into the xlat_section
+> of CPUTLBEntryFull) is calculated as:
+> 
+> iotlb = memory_region_get_ram_addr(section->mr) + xlat;
+> 
+> 1) xlat here is the offset_within_region of a MemoryRegionSection, which maybe
+> not TARGET_PAGE_BITS aligned.
 
-On Fri, Oct 27, 2023 at 11:44=E2=80=AFPM Louai Al-Khanji <louai.khanji@gmai=
-l.com>
-wrote:
+The reason we require these bits to be zero is because
+(A) The lowest bits must be zero so that we may test alignment,
+(B) The "middle" bits, above alignment and below TARGET_PAGE_BITS,
+     are used for TLB_FLAGS_MASK.
 
-> Hi,
->
-> I'm interested in having the guestfwd option work for udp. My
-> understanding is that currently it's restricted to only tcp.
->
-> I'm not familiar with libslirp internals. What would need to be changed t=
-o
-> implement this? I'm potentially interested in doing the work.
->
-> I did a tiny amount of digging around libslirp and saw this comment in
-> `udp.c':
->
->         /*
->          * XXXXX Here, check if it's in udpexec_list,
->          * and if it is, do the fork_exec() etc.
->          */
->
-> I wonder whether that is related. In any case any help is much appreciate=
-d.
->
+If iotlb has these bits non-zero, the softmmu comparison will not work correctly.
 
-Felix has been working in this space and it may take time to get the CLs
-landed in libslirp and qemu.
+> 2) The ram_addr_t returned by memory_region_get_ram_addr is always
+> HOST PAGE ALIGNED.
 
-Patrick
+RAM blocks can have larger alignment than host page.  See QEMU_VMALLOC_ALIGN and 
+qemu_ram_mmap.
 
->
-> Thanks,
-> Louai Al-Khanji
->
+But I can see a path by which it *is* only host page aligned, which could fail if the 
+guest has larger alignment than the host.  Fortunately, this is rare -- only alpha, cris, 
+openrisc and sparc64 have 8k pages, and tricore has 16k pages, while supporting system 
+mode.  Hexagon has 64k pages but does not yet support system mode.
 
---000000000000929eeb060c02fcf9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+We should fix that, but I don't think it's urgent.
 
-<div dir=3D"ltr"><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"g=
-mail_attr">On Fri, Oct 27, 2023 at 11:44=E2=80=AFPM Louai Al-Khanji &lt;<a =
-href=3D"mailto:louai.khanji@gmail.com">louai.khanji@gmail.com</a>&gt; wrote=
-:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.=
-8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"lt=
-r">Hi,<div><br></div><div>I&#39;m interested in having the guestfwd option =
-work for udp. My understanding is that currently it&#39;s restricted to onl=
-y tcp.</div><div><br></div><div>I&#39;m not familiar with libslirp=C2=A0int=
-ernals. What would need to be changed to implement this? I&#39;m potentiall=
-y interested in doing the work.</div><div><br></div><div>I did a tiny amoun=
-t of digging around libslirp and saw this comment in `udp.c&#39;:<br clear=
-=3D"all"><div><br></div><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>=C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0* XXXXX Here, check if it&#39;s in udpexec_list,<br=
->=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* and if it is, do the fork_exec() etc.<=
-br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br></div><div><br></div><div>I wond=
-er whether that is related. In any case any help is much appreciated.</div>=
-</div></div></blockquote><div><br></div><div dir=3D"ltr">Felix has been wor=
-king=C2=A0in this space and it may take time to get the=C2=A0CLs landed in =
-libslirp and qemu.<div><br></div></div><div>Patrick=C2=A0</div><blockquote =
-class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
-id rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div><div><br></div>=
-<span class=3D"gmail_signature_prefix">Thanks,</span><br><div dir=3D"ltr" c=
-lass=3D"gmail_signature">Louai Al-Khanji<br></div></div></div>
-</blockquote></div></div>
 
---000000000000929eeb060c02fcf9--
+> So we cann't assert the sum of them is TARGET_PAGE_BITS aligend.
+> A fail case has been give by the link:
+> https://lore.kernel.org/all/b68ab7d3-d3d3-9f81-569d-454ae9c11b16@linaro.org/T/
+
+I think the macfb device is at fault here, not your assert.
+
+
+r~
 
