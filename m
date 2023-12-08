@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8F780A262
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:37:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA9F80A264
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:37:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBZ9H-0004CP-59; Fri, 08 Dec 2023 06:36:03 -0500
+	id 1rBZ9N-0004Rw-Ro; Fri, 08 Dec 2023 06:36:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ9E-00048Q-CD
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:36:00 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ9K-0004FM-Q1
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:36:06 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ9B-0004A0-Ln
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:36:00 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3331752d2b9so1451381f8f.3
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:35:57 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ9I-0004U3-7r
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:36:06 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-332fd81fc8dso1879989f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:36:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702035356; x=1702640156; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702035362; x=1702640162; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OW+X1QC8WatkMetvJ6Ywtj3P4pbS5e79ta84qcwdOpI=;
- b=MOo0wKrIV2oBZEcjZdCO2bTFejsZ+zzJNlHu/oeGs1tfZtjOTJ2evCCqGbzUJYfddf
- m0rN4MVlAqBpLMv1Ya1/fLIA4DTbOwcqqF9ppQET4C6LbHKHgx+IZRrsFk3WZYkopgvI
- 5VwF/nJ2hXrN91NUfxviAUV9nhk18hi2KxXq1E/YRfq8Euh/XWFc/NpDOJ2Vyk4zV1Cf
- EhWjBZErq5f67cFDfFWW71Kno2RPOEbuRvAEVJyrGSk33olkyDe0T8kOUxvHbRLdtx69
- Mbp81UI+ccPB92R8dGQPQFV2vqqEIRkWzjN7hZG/WshcrjkDcqTfZwmKY4pG9aGST5IJ
- PFXQ==
+ bh=VVurd634A6d7jfTmu56SsLNYdI1euektVunJFK5bAB4=;
+ b=mETiaTtkWBmuG4oPJMm+dKQt6UqhhzDCzBH/UTajH+ubYJOSDnNHWRkXDJnLCsBhkV
+ My1ILds0NK5V4u3n9Gin+Sk/xzsZ/Bib8zf77cYeg4xofFWzf57TtR0hQz3HY2YyHdeq
+ uhqkR9vbjy6IM/nP2DsQyMcNlad+HksdKCWllIDVM/0mlKeB/lGDtyX0057jCE2+a/Fs
+ iTWINlYhxHW0m2DQilLaOcic+UUt7A5wrkRWNZH3+fGNxkFEomPR5ip/Nxgi7frfI13H
+ SNZwruHuzgqkBDA+J3p8M1KJdDqMeCux6RUgwC5RvE2tk0uz9OihyFWmoYYSxpDBVTQF
+ dkNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702035356; x=1702640156;
+ d=1e100.net; s=20230601; t=1702035362; x=1702640162;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OW+X1QC8WatkMetvJ6Ywtj3P4pbS5e79ta84qcwdOpI=;
- b=SGYVPngntPY4CvFsQy53od2H5U2B9uBy2iphmwgXipBeFrvxwQXyZmfMoxGnSk2e3q
- ECAAoCCiY5XpfojKFjams4MRcCcC6ZaKEwfqjC97St514TzxP2fKFn1ymkoBeJyPtTn1
- D7LM2ZRcxolv22iU8iR/VW/vblLQopcKVijeN8eyN3ibKFNUteglVCldIwO5WCk4IW4X
- 9VISrHeuhMTk4abZ+56+CyG3FwEndhrlmhmiFv490ornakUGYr8mzz+pDz0zfnCvZTuQ
- mPP5eWA5V/YnZCdEkecoALPBkzCT9LxoPWkt6XHGu/FVGOKYXAra1CQ3GAinDppWgTx4
- vQiA==
-X-Gm-Message-State: AOJu0YxznlNIHlD+V02nekUsTNBYaknHc7BHOkeDY7+wLnti0vdcvoOD
- 33PUFYw79EUKI/IveQFPY+3up8Eid5FzNbbd03s=
-X-Google-Smtp-Source: AGHT+IFjNbv1Y1o8ZfQUkSg5XeXPa+GVIftwfMJwequq8QK7XqtUDO3wUovD8gFNkcLWn+cNxuwW0A==
-X-Received: by 2002:a5d:6311:0:b0:333:2fd2:813d with SMTP id
- i17-20020a5d6311000000b003332fd2813dmr2679405wru.90.1702035356092; 
- Fri, 08 Dec 2023 03:35:56 -0800 (PST)
+ bh=VVurd634A6d7jfTmu56SsLNYdI1euektVunJFK5bAB4=;
+ b=pfKQnn3k8y1LZ/elidXSN1uwMkJjw/sDKj9BFgkVkT5J62+cA/k2/rjeyJ7c6saLwY
+ mFyjKj5TY/bmEyPFFcIlqEOroWBPnkgklbphaU5pJVyLJuCmHVmc9OmxcTQv3xpviFlX
+ 4TpE/WfTpAJg3QBY1anyLGHJdQvxp0Sc04NDv/tUJsG5kAYhGJhwQOWBLB2yfLoLNzJ9
+ afrbU2uthbgV3fUh4LUftYO7JlGLnO3o/fVy9Df7RVvNszrS/VOAN2wRIoTKkgaRRbhl
+ tCOYleQ1u8LosnPCjSCTcabSyA/8089YVQdzBsuLpr9xkxGtEOpGzle/3MgTmBOr+Xqj
+ WOlQ==
+X-Gm-Message-State: AOJu0YywOnjf8tzdgX3o0vjwbK52fnO93fgzskqiFiNiLuZy39kU+iWx
+ eCFhZO3exYyIx9BuZxA/ATQwuRgv5gjgj1DORK8=
+X-Google-Smtp-Source: AGHT+IEgxfK4q24frtfMGjLwXczGWe5dnyetb+TjvVWkoaIwEkzO/l9kUNaZnEYCPozoR/waVoXfwg==
+X-Received: by 2002:adf:fc52:0:b0:333:2fd2:68d3 with SMTP id
+ e18-20020adffc52000000b003332fd268d3mr2309689wrs.102.1702035362697; 
+ Fri, 08 Dec 2023 03:36:02 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.146.181])
  by smtp.gmail.com with ESMTPSA id
- b5-20020adff245000000b003332ef77db4sm1840624wrp.44.2023.12.08.03.35.54
+ q18-20020adff952000000b0033609b71825sm1357263wrr.35.2023.12.08.03.36.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 08 Dec 2023 03:35:55 -0800 (PST)
+ Fri, 08 Dec 2023 03:36:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
@@ -62,18 +62,18 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 4/6] target/arm: Ensure icount is enabled when emulating
- INST_RETIRED
-Date: Fri,  8 Dec 2023 12:35:26 +0100
-Message-ID: <20231208113529.74067-5-philmd@linaro.org>
+Subject: [PATCH v3 5/6] util/async: Only call icount_notify_exit() if icount
+ is enabled
+Date: Fri,  8 Dec 2023 12:35:27 +0100
+Message-ID: <20231208113529.74067-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231208113529.74067-1-philmd@linaro.org>
 References: <20231208113529.74067-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,52 +96,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pmu_init() register its event checking the pm_event::supported()
-handler. For INST_RETIRED, the event is only registered and the
-bit enabled in the PMU Common Event Identification register when
-icount is enabled as ICOUNT_PRECISE.
-
-PMU events are TCG-only, hardware accelerators handle them
-directly. Unfortunately we register the events in non-TCG builds,
-leading to linking error such:
-
-  ld: Undefined symbols:
-    _icount_to_ns, referenced from:
-      _instructions_ns_per in target_arm_helper.c.o
-  clang: error: linker command failed with exit code 1 (use -v to see invocation)
-
-As a kludge, give a hint to the compiler by asserting the
-pm_event::get_count() and pm_event::ns_per_count() handler will
-only be called under this icount mode.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-As discussed in
-https://lore.kernel.org/qemu-devel/CAFEAcA-HVf8vWLzmdStEo2NrSKQdZV612rBjiaj-gLW4vXyvpA@mail.gmail.com/
-better would be to restrict the PMU events to TCG, but this is
-out of the scope of this series.
----
- target/arm/helper.c | 2 ++
- 1 file changed, 2 insertions(+)
+ accel/tcg/icount-common.c |  4 +++-
+ stubs/icount.c            |  2 +-
+ util/async.c              | 16 +++++++++-------
+ 3 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index adb0960bba..333fd5f4bf 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -940,11 +940,13 @@ static bool instructions_supported(CPUARMState *env)
+diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
+index f0f8fc7f1c..a4a747d1dc 100644
+--- a/accel/tcg/icount-common.c
++++ b/accel/tcg/icount-common.c
+@@ -495,7 +495,9 @@ bool icount_configure(QemuOpts *opts, Error **errp)
  
- static uint64_t instructions_get_count(CPUARMState *env)
+ void icount_notify_exit(void)
  {
-+    assert(icount_enabled() == ICOUNT_PRECISE);
-     return (uint64_t)icount_get_raw();
+-    if (icount_enabled() && current_cpu) {
++    assert(icount_enabled());
++
++    if (current_cpu) {
+         qemu_cpu_kick(current_cpu);
+         qemu_clock_notify(QEMU_CLOCK_VIRTUAL);
+     }
+diff --git a/stubs/icount.c b/stubs/icount.c
+index 7055c13725..b060b03a73 100644
+--- a/stubs/icount.c
++++ b/stubs/icount.c
+@@ -37,7 +37,7 @@ void icount_account_warp_timer(void)
+ {
+     abort();
+ }
+-
+ void icount_notify_exit(void)
+ {
++    abort();
+ }
+diff --git a/util/async.c b/util/async.c
+index 8f90ddc304..9007642c27 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -94,13 +94,15 @@ static void aio_bh_enqueue(QEMUBH *bh, unsigned new_flags)
+     }
+ 
+     aio_notify(ctx);
+-    /*
+-     * Workaround for record/replay.
+-     * vCPU execution should be suspended when new BH is set.
+-     * This is needed to avoid guest timeouts caused
+-     * by the long cycles of the execution.
+-     */
+-    icount_notify_exit();
++    if (unlikely(icount_enabled())) {
++        /*
++         * Workaround for record/replay.
++         * vCPU execution should be suspended when new BH is set.
++         * This is needed to avoid guest timeouts caused
++         * by the long cycles of the execution.
++         */
++        icount_notify_exit();
++    }
  }
  
- static int64_t instructions_ns_per(uint64_t icount)
- {
-+    assert(icount_enabled() == ICOUNT_PRECISE);
-     return icount_to_ns((int64_t)icount);
- }
- #endif
+ /* Only called from aio_bh_poll() and aio_ctx_finalize() */
 -- 
 2.41.0
 
