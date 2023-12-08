@@ -2,92 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D5880A73F
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 16:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DF480A957
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 17:38:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBcf1-0003QH-SW; Fri, 08 Dec 2023 10:21:03 -0500
+	id 1rBdqt-0000T3-PR; Fri, 08 Dec 2023 11:37:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlevitsk@redhat.com>)
- id 1rBceK-0003C1-Hn
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 10:20:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlevitsk@redhat.com>)
- id 1rBceF-0003lt-Ao
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 10:20:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702048813;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBdqq-0000Qk-1W
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 11:37:20 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBdqo-0004dq-7N
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 11:37:19 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 0E52321C90;
+ Fri,  8 Dec 2023 16:37:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702053435; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gQ5r27WTNi1tlXFNvyLVJ6+tXAR6kKSZwKnBBPrryVU=;
- b=czmw8vXOm7vEQ/Yfv/ElDRxduV1RR5xRH2SwNyNRXL1oEu00SovTMkfhU2mU83QsxNUqYR
- MXvRydH/s9kN2Z5sjhbAnrX6ldGwPipzy8YcaqBYFg7o4aBYeLvlnAnq09SB1yLpoGZ1h+
- AaKgUh4bE0cuVN3KAAYmyRUGifSfwcI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-457-eR3Rwo8MMFquDim-ixzgqA-1; Fri, 08 Dec 2023 10:20:11 -0500
-X-MC-Unique: eR3Rwo8MMFquDim-ixzgqA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40c295f59ceso9124845e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 07:20:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702048810; x=1702653610;
- h=content-transfer-encoding:mime-version:user-agent:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gQ5r27WTNi1tlXFNvyLVJ6+tXAR6kKSZwKnBBPrryVU=;
- b=bhgU0teauyUysZTvzndx3Idl8uay0jRDKY+K+s5m+u47tYP+Bhpp5putAma3Ym87Sl
- 2jitFKIZMTPzKN7wnWba6kiiGOrSfVemUClZqSbs/HU5QF/kiTw4BlVywdlORdBbDzH2
- iMnJihbvUwwBzXFdWza8lmld5lmHosJL+c4jlXlw+UEFxh/nJApgtrYZuL5R7phkvpZS
- GQp6E9KG+YdgDDiDSV9TjVIMBhOWQ/0Qa+Nd8pgQBeMUtSovA1eOZeYSA1DbTvCfj9+u
- w3zRSb+cGC7YfuBoY0FkE54QwmqiqGlbEAESyyo6e0Ha4qsliBdrroWFUznGLH+ZrkiH
- WBBQ==
-X-Gm-Message-State: AOJu0YwD4hqGrQJpO9+fOWt+wLL+5rRJJDj9WFzlLqrX6jv/W66jPgUe
- JnjQTrV+FgefynIIvfi76APTWesTueCA/NS9aRMU2xli2TyREvsPXBiz8z6qd7VbpOMyWnv9u8h
- lt6BiH6f2g7wUogo=
-X-Received: by 2002:a05:600c:4e4f:b0:40c:23e0:7dad with SMTP id
- e15-20020a05600c4e4f00b0040c23e07dadmr158560wmq.168.1702048810532; 
- Fri, 08 Dec 2023 07:20:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEcPJRbzsB3vyWAQnpo4WFhSNjU+T5FUkhLcEtq0DNBmKLN16Ty0vOof9ojkND/sMr3DezBfw==
-X-Received: by 2002:a05:600c:4e4f:b0:40c:23e0:7dad with SMTP id
- e15-20020a05600c4e4f00b0040c23e07dadmr158550wmq.168.1702048810172; 
- Fri, 08 Dec 2023 07:20:10 -0800 (PST)
-Received: from starship ([89.237.98.20]) by smtp.gmail.com with ESMTPSA id
- o11-20020a05600c510b00b0040a3f9862e3sm1583317wms.1.2023.12.08.07.20.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Dec 2023 07:20:09 -0800 (PST)
-Message-ID: <3663aa04f6c3002d47362f3877d96c0e18bc163e.camel@redhat.com>
-Subject: Re: [PATCH v2 for-8.2?] i386/sev: Avoid SEV-ES crash due to missing
- MSR_EFER_LMA bit
-From: Maxim Levitsky <mlevitsk@redhat.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Marcelo
- Tosatti <mtosatti@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, kvm@vger.kernel.org
-Date: Fri, 08 Dec 2023 17:20:08 +0200
-In-Reply-To: <20231206174235.b7fwrqzko27of7qz@amd.com>
-References: <20231205222816.1152720-1-michael.roth@amd.com>
- <9eae0513c912faa04a11db378ea3ca176ab45f0d.camel@redhat.com>
- <20231206174235.b7fwrqzko27of7qz@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+ bh=DasXawo5e673AVjZNF2CiNGwB0hRQYG1MCo80/1KNVY=;
+ b=dqrURRA0xlvHVlo5qC2yguaR+JSBjBRA9a3Gg0iBui2UZXjlQbKboNG/APriFr/BsTg0c2
+ 7SwtcPUkaoXK0suoZq1OhP/+00oEFEonVJDHdEX40aBxEESTjsCeo31ekGVR2+6CwRpO0o
+ wrkJMMk76xiKBqQyp2jKFicClW2EcnE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702053435;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=DasXawo5e673AVjZNF2CiNGwB0hRQYG1MCo80/1KNVY=;
+ b=x0vSPM4gpMvdcQOFzaDEYQ9nv1EzlYsmSucaSHduqLv7yuBKqH+sAJT0p4gXNB9NjmFiW6
+ i8XfKSJ/yjBaHbBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702053435; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=DasXawo5e673AVjZNF2CiNGwB0hRQYG1MCo80/1KNVY=;
+ b=dqrURRA0xlvHVlo5qC2yguaR+JSBjBRA9a3Gg0iBui2UZXjlQbKboNG/APriFr/BsTg0c2
+ 7SwtcPUkaoXK0suoZq1OhP/+00oEFEonVJDHdEX40aBxEESTjsCeo31ekGVR2+6CwRpO0o
+ wrkJMMk76xiKBqQyp2jKFicClW2EcnE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702053435;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=DasXawo5e673AVjZNF2CiNGwB0hRQYG1MCo80/1KNVY=;
+ b=x0vSPM4gpMvdcQOFzaDEYQ9nv1EzlYsmSucaSHduqLv7yuBKqH+sAJT0p4gXNB9NjmFiW6
+ i8XfKSJ/yjBaHbBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D1A512FF7;
+ Fri,  8 Dec 2023 16:37:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id RVI7FTpGc2XaDgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 08 Dec 2023 16:37:14 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Steve Sistare <steven.sistare@oracle.com>
+Subject: Re: [PATCH V7 05/12] migration: propagate suspended runstate
+In-Reply-To: <1701883417-356268-6-git-send-email-steven.sistare@oracle.com>
+References: <1701883417-356268-1-git-send-email-steven.sistare@oracle.com>
+ <1701883417-356268-6-git-send-email-steven.sistare@oracle.com>
+Date: Fri, 08 Dec 2023 13:37:12 -0300
+Message-ID: <87wmtoy7k7.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlevitsk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Spam-Score: -0.30
+X-Spamd-Result: default: False [-0.30 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-0.00)[28.27%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[9];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -0.30
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,148 +115,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2023-12-06 at 11:42 -0600, Michael Roth wrote:
-> On Wed, Dec 06, 2023 at 07:20:14PM +0200, Maxim Levitsky wrote:
-> > On Tue, 2023-12-05 at 16:28 -0600, Michael Roth wrote:
-> > > Commit 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
-> > > added error checking for KVM_SET_SREGS/KVM_SET_SREGS2. In doing so, it
-> > > exposed a long-running bug in current KVM support for SEV-ES where the
-> > > kernel assumes that MSR_EFER_LMA will be set explicitly by the guest
-> > > kernel, in which case EFER write traps would result in KVM eventually
-> > > seeing MSR_EFER_LMA get set and recording it in such a way that it would
-> > > be subsequently visible when accessing it via KVM_GET_SREGS/etc.
-> > > 
-> > > However, guests kernels currently rely on MSR_EFER_LMA getting set
-> > > automatically when MSR_EFER_LME is set and paging is enabled via
-> > > CR0_PG_MASK. As a result, the EFER write traps don't actually expose the
-> > > MSR_EFER_LMA even though it is set internally, and when QEMU
-> > > subsequently tries to pass this EFER value back to KVM via
-> > > KVM_SET_SREGS* it will fail various sanity checks and return -EINVAL,
-> > > which is now considered fatal due to the aforementioned QEMU commit.
-> > > 
-> > > This can be addressed by inferring the MSR_EFER_LMA bit being set when
-> > > paging is enabled and MSR_EFER_LME is set, and synthesizing it to ensure
-> > > the expected bits are all present in subsequent handling on the host
-> > > side.
-> > > 
-> > > Ultimately, this handling will be implemented in the host kernel, but to
-> > > avoid breaking QEMU's SEV-ES support when using older host kernels, the
-> > > same handling can be done in QEMU just after fetching the register
-> > > values via KVM_GET_SREGS*. Implement that here.
-> > > 
-> > > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > > Cc: Marcelo Tosatti <mtosatti@redhat.com>
-> > > Cc: Tom Lendacky <thomas.lendacky@amd.com>
-> > > Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > > Cc: kvm@vger.kernel.org
-> > > Fixes: 7191f24c7fcf ("accel/kvm/kvm-all: Handle register access errors")
-> > > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > > ---
-> > > v2:
-> > >   - Add handling for KVM_GET_SREGS, not just KVM_GET_SREGS2
-> > > 
-> > >  target/i386/kvm/kvm.c | 14 ++++++++++++++
-> > >  1 file changed, 14 insertions(+)
-> > > 
-> > > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> > > index 11b8177eff..8721c1bf8f 100644
-> > > --- a/target/i386/kvm/kvm.c
-> > > +++ b/target/i386/kvm/kvm.c
-> > > @@ -3610,6 +3610,7 @@ static int kvm_get_sregs(X86CPU *cpu)
-> > >  {
-> > >      CPUX86State *env = &cpu->env;
-> > >      struct kvm_sregs sregs;
-> > > +    target_ulong cr0_old;
-> > >      int ret;
-> > >  
-> > >      ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_SREGS, &sregs);
-> > > @@ -3637,12 +3638,18 @@ static int kvm_get_sregs(X86CPU *cpu)
-> > >      env->gdt.limit = sregs.gdt.limit;
-> > >      env->gdt.base = sregs.gdt.base;
-> > >  
-> > > +    cr0_old = env->cr[0];
-> > >      env->cr[0] = sregs.cr0;
-> > >      env->cr[2] = sregs.cr2;
-> > >      env->cr[3] = sregs.cr3;
-> > >      env->cr[4] = sregs.cr4;
-> > >  
-> > >      env->efer = sregs.efer;
-> > > +    if (sev_es_enabled() && env->efer & MSR_EFER_LME) {
-> > > +        if (!(cr0_old & CR0_PG_MASK) && env->cr[0] & CR0_PG_MASK) {
-> > > +            env->efer |= MSR_EFER_LMA;
-> > > +        }
-> > > +    }
-> > 
-> > I think that we should not check that CR0_PG has changed, and just blindly assume
-> > that if EFER.LME is set and CR0.PG is set, then EFER.LMA must be set as defined in x86 spec.
-> > 
-> > Otherwise, suppose qemu calls kvm_get_sregs twice: First time it will work,
-> > but second time CR0.PG will match one that is stored in the env, and thus the workaround
-> > will not be executed, and instead we will revert back to wrong EFER value 
-> > reported by the kernel.
-> > 
-> > How about something like that:
-> > 
-> > 
-> > if (sev_es_enabled() && env->efer & MSR_EFER_LME && env->cr[0] & CR0_PG_MASK) {
-> > 	/* 
-> >          * Workaround KVM bug, because of which KVM might not be aware of the 
-> >          * fact that EFER.LMA was toggled by the hardware 
-> >          */
-> > 	env->efer |= MSR_EFER_LMA;
-> > }
-> 
-> Hi Maxim,
-> 
-> I'd already sent a v3 based on a similar suggestion from Paolo:
-> 
->   https://lists.gnu.org/archive/html/qemu-devel/2023-12/msg00751.html
-> 
-> Does that one look okay to you?
+Steve Sistare <steven.sistare@oracle.com> writes:
 
-Yep, thanks!
+> If the outgoing machine was previously suspended, propagate that to the
+> incoming side via global_state, so a subsequent vm_start restores the
+> suspended state.  To maintain backward and forward compatibility, reclaim
+> some space from the runstate member.
+>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> ---
+>  migration/global_state.c | 35 +++++++++++++++++++++++++++++++++--
+>  1 file changed, 33 insertions(+), 2 deletions(-)
+>
+> diff --git a/migration/global_state.c b/migration/global_state.c
+> index 4e2a9d8..d4f61a1 100644
+> --- a/migration/global_state.c
+> +++ b/migration/global_state.c
+> @@ -22,7 +22,16 @@
+>  
+>  typedef struct {
+>      uint32_t size;
+> -    uint8_t runstate[100];
+> +
+> +    /*
+> +     * runstate was 100 bytes, zero padded, but we trimmed it to add a
+> +     * few fields and maintain backwards compatibility.
+> +     */
+> +    uint8_t runstate[32];
+> +    uint8_t has_vm_was_suspended;
+> +    uint8_t vm_was_suspended;
+> +    uint8_t unused[66];
+> +
+>      RunState state;
+>      bool received;
+>  } GlobalState;
+> @@ -35,6 +44,10 @@ static void global_state_do_store(RunState state)
+>      assert(strlen(state_str) < sizeof(global_state.runstate));
+>      strpadcpy((char *)global_state.runstate, sizeof(global_state.runstate),
+>                state_str, '\0');
+> +    global_state.has_vm_was_suspended = true;
+> +    global_state.vm_was_suspended = vm_get_suspended();
+> +
+> +    memset(global_state.unused, 0, sizeof(global_state.unused));
+>  }
+>  
+>  void global_state_store(void)
+> @@ -68,6 +81,12 @@ static bool global_state_needed(void *opaque)
+>          return true;
+>      }
+>  
+> +    /* If the suspended state must be remembered, it is needed */
+> +
+> +    if (vm_get_suspended()) {
+> +        return true;
+> +    }
+> +
+>      /* If state is running or paused, it is not needed */
+>  
+>      if (strcmp(runstate, "running") == 0 ||
+> @@ -85,6 +104,7 @@ static int global_state_post_load(void *opaque, int version_id)
+>      Error *local_err = NULL;
+>      int r;
+>      char *runstate = (char *)s->runstate;
+> +    bool vm_was_suspended = s->has_vm_was_suspended && s->vm_was_suspended;
 
-Best regards,
-	Maxim Levitsky
-> 
-> Thanks,
-> 
-> Mike
-> 
-> > 
-> > Best regards,
-> > 	Maxim Levitsky
-> > 
-> > >  
-> > >      /* changes to apic base and cr8/tpr are read back via kvm_arch_post_run */
-> > >      x86_update_hflags(env);
-> > > @@ -3654,6 +3661,7 @@ static int kvm_get_sregs2(X86CPU *cpu)
-> > >  {
-> > >      CPUX86State *env = &cpu->env;
-> > >      struct kvm_sregs2 sregs;
-> > > +    target_ulong cr0_old;
-> > >      int i, ret;
-> > >  
-> > >      ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_SREGS2, &sregs);
-> > > @@ -3676,12 +3684,18 @@ static int kvm_get_sregs2(X86CPU *cpu)
-> > >      env->gdt.limit = sregs.gdt.limit;
-> > >      env->gdt.base = sregs.gdt.base;
-> > >  
-> > > +    cr0_old = env->cr[0];
-> > >      env->cr[0] = sregs.cr0;
-> > >      env->cr[2] = sregs.cr2;
-> > >      env->cr[3] = sregs.cr3;
-> > >      env->cr[4] = sregs.cr4;
-> > >  
-> > >      env->efer = sregs.efer;
-> > > +    if (sev_es_enabled() && env->efer & MSR_EFER_LME) {
-> > > +        if (!(cr0_old & CR0_PG_MASK) && env->cr[0] & CR0_PG_MASK) {
-> > > +            env->efer |= MSR_EFER_LMA;
-> > > +        }
-> > > +    }
-> > >  
-> > >      env->pdptrs_valid = sregs.flags & KVM_SREGS2_FLAGS_PDPTRS_VALID;
-> > >  
+Why do you need has_vm_was_suspended? If they're always read like this,
+then one flag should do, no?
 
-
+>  
+>      s->received = true;
+>      trace_migrate_global_state_post_load(runstate);
+> @@ -93,7 +113,7 @@ static int global_state_post_load(void *opaque, int version_id)
+>                  sizeof(s->runstate)) == sizeof(s->runstate)) {
+>          /*
+>           * This condition should never happen during migration, because
+> -         * all runstate names are shorter than 100 bytes (the size of
+> +         * all runstate names are shorter than 32 bytes (the size of
+>           * s->runstate). However, a malicious stream could overflow
+>           * the qapi_enum_parse() call, so we force the last character
+>           * to a NUL byte.
+> @@ -110,6 +130,14 @@ static int global_state_post_load(void *opaque, int version_id)
+>      }
+>      s->state = r;
+>  
+> +    /*
+> +     * global_state is saved on the outgoing side before forcing a stopped
+> +     * state, so it may have saved state=suspended and vm_was_suspended=0.
+> +     * Now we are in a paused state, and when we later call vm_start, it must
+> +     * restore the suspended state, so we must set vm_was_suspended=1 here.
+> +     */
+> +    vm_set_suspended(vm_was_suspended || r == RUN_STATE_SUSPENDED);
+> +
+>      return 0;
+>  }
+>  
+> @@ -134,6 +162,9 @@ static const VMStateDescription vmstate_globalstate = {
+>      .fields = (VMStateField[]) {
+>          VMSTATE_UINT32(size, GlobalState),
+>          VMSTATE_BUFFER(runstate, GlobalState),
+> +        VMSTATE_UINT8(has_vm_was_suspended, GlobalState),
+> +        VMSTATE_UINT8(vm_was_suspended, GlobalState),
+> +        VMSTATE_BUFFER(unused, GlobalState),
+>          VMSTATE_END_OF_LIST()
+>      },
+>  };
 
