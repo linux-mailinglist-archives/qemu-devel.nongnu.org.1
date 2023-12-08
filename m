@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35FEF809F11
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 10:16:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB8D809F05
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 10:15:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBWvw-00015p-KJ; Fri, 08 Dec 2023 04:14:08 -0500
+	id 1rBWvw-00016W-US; Fri, 08 Dec 2023 04:14:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rBWvg-00011m-Gl
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:13:52 -0500
+ id 1rBWvf-00010k-7I
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:13:51 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rBWvc-0008Ed-Ey
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:13:52 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1rBWvb-0008FA-Oz
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:13:50 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxqOhE3nJlqew_AA--.26306S3;
- Fri, 08 Dec 2023 17:13:40 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxjutF3nJlq+w_AA--.59399S3;
+ Fri, 08 Dec 2023 17:13:41 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxH91A3nJlrE5YAA--.822S6; 
- Fri, 08 Dec 2023 17:13:39 +0800 (CST)
+ AQAAf8AxH91A3nJlrE5YAA--.822S7; 
+ Fri, 08 Dec 2023 17:13:40 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, peter.maydell@linaro.org,
  maobibo@loongson.cn
-Subject: [PATCH v1 04/17] hw/loongarch: Add slave cpu boot_code
-Date: Fri,  8 Dec 2023 17:00:29 +0800
-Message-Id: <20231208090042.2672425-5-gaosong@loongson.cn>
+Subject: [PATCH v1 05/17] hw/loongarch: Init efi_system_table
+Date: Fri,  8 Dec 2023 17:00:30 +0800
+Message-Id: <20231208090042.2672425-6-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20231208090042.2672425-1-gaosong@loongson.cn>
 References: <20231208090042.2672425-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxH91A3nJlrE5YAA--.822S6
+X-CM-TRANSID: AQAAf8AxH91A3nJlrE5YAA--.822S7
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,99 +63,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add init_systab and set boot_info->a2
+
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/boot.c | 66 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
+ hw/loongarch/boot.c         | 39 +++++++++++++++++++++++++++++
+ include/hw/loongarch/boot.h | 50 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
 
 diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index b3fbed2ea0..742a70b7f0 100644
+index 742a70b7f0..b9353027b2 100644
 --- a/hw/loongarch/boot.c
 +++ b/hw/loongarch/boot.c
-@@ -14,6 +14,62 @@
- #include "qemu/error-report.h"
- #include "sysemu/reset.h"
+@@ -16,10 +16,14 @@
  
-+enum {
-+    SLAVE_BOOT,
-+};
+ enum {
+     SLAVE_BOOT,
++    EFI_SYSTAB,
++    EFI_TABLES,
+ };
+ 
+ static const MemMapEntry loader_rommap[] = {
+     [SLAVE_BOOT] = {0xf100000, 0x10000},
++    [EFI_SYSTAB] = {0xf200000, 0x10000},
++    [EFI_TABLES] = {0xf300000, 0x10000},
+ };
+ 
+ static unsigned int slave_boot_code[] = {
+@@ -70,6 +74,39 @@ static unsigned int slave_boot_code[] = {
+     0x4c000020,   /* jirl       $r0,$r1,0           */
+ };
+ 
++static void init_systab(struct loongarch_boot_info *info)
++{
++    struct efi_system_table *systab;
++    struct efi_configuration_table *efi_tables;
++    systab = g_malloc0(loader_rommap[EFI_SYSTAB].size);
++    efi_tables = g_malloc0(loader_rommap[EFI_TABLES].size);
 +
-+static const MemMapEntry loader_rommap[] = {
-+    [SLAVE_BOOT] = {0xf100000, 0x10000},
-+};
++    systab->hdr.signature = EFI_SYSTEM_TABLE_SIGNATURE;
++    systab->hdr.revision = EFI_SPECIFICATION_VERSION;
++    systab->hdr.revision = sizeof(struct efi_system_table),
++    systab->fw_revision = FW_VERSION << 16 | FW_PATCHLEVEL << 8;
++    systab->runtime = 0;
++    systab->boottime = 0;
++    systab->nr_tables = 0;
++    systab->tables = efi_tables;
 +
-+static unsigned int slave_boot_code[] = {
-+                  /* Configure reset ebase.         */
-+    0x0400302c,   /* csrwr      $r12,0xc            */
++    rom_add_blob_fixed("tables_rom", efi_tables,
++                       loader_rommap[EFI_TABLES].size,
++                       loader_rommap[EFI_TABLES].base);
 +
-+                  /* Disable interrupt.             */
-+    0x0380100c,   /* ori        $r12,$r0,0x4        */
-+    0x04000180,   /* csrxchg    $r0,$r12,0x0        */
++    systab->tables = (struct efi_configuration_table *)
++                     loader_rommap[EFI_TABLES].base;
 +
-+                  /* Clear mailbox.                 */
-+    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
-+    0x038081ad,   /* ori        $r13,$r13,0x20      */
-+    0x06481da0,   /* iocsrwr.d  $r0,$r13            */
++    rom_add_blob_fixed("systab_rom", systab,
++                       loader_rommap[EFI_SYSTAB].size,
++                       loader_rommap[EFI_SYSTAB].base);
 +
-+                  /* Enable IPI interrupt.          */
-+    0x1400002c,   /* lu12i.w    $r12,1(0x1)         */
-+    0x0400118c,   /* csrxchg    $r12,$r12,0x4       */
-+    0x02fffc0c,   /* addi.d     $r12,$r0,-1(0xfff)  */
-+    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
-+    0x038011ad,   /* ori        $r13,$r13,0x4       */
-+    0x064819ac,   /* iocsrwr.w  $r12,$r13           */
-+    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
-+    0x038081ad,   /* ori        $r13,$r13,0x20      */
++    info->a2 = loader_rommap[EFI_SYSTAB].base;
 +
-+                  /* Wait for wakeup  <.L11>:       */
-+    0x06488000,   /* idle       0x0                 */
-+    0x03400000,   /* andi       $r0,$r0,0x0         */
-+    0x064809ac,   /* iocsrrd.w  $r12,$r13           */
-+    0x43fff59f,   /* beqz       $r12,-12(0x7ffff4) # 48 <.L11> */
-+
-+                  /* Read and clear IPI interrupt.  */
-+    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
-+    0x064809ac,   /* iocsrrd.w  $r12,$r13           */
-+    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
-+    0x038031ad,   /* ori        $r13,$r13,0xc       */
-+    0x064819ac,   /* iocsrwr.w  $r12,$r13           */
-+
-+                  /* Disable  IPI interrupt.        */
-+    0x1400002c,   /* lu12i.w    $r12,1(0x1)         */
-+    0x04001180,   /* csrxchg    $r0,$r12,0x4        */
-+
-+                  /* Read mail buf and jump to specified entry */
-+    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
-+    0x038081ad,   /* ori        $r13,$r13,0x20      */
-+    0x06480dac,   /* iocsrrd.d  $r12,$r13           */
-+    0x00150181,   /* move       $r1,$r12            */
-+    0x4c000020,   /* jirl       $r0,$r1,0           */
-+};
++    g_free(systab);
++    g_free(efi_tables);
++}
 +
  static int init_cmdline(struct loongarch_boot_info *info)
  {
      hwaddr cmdline_addr;
-@@ -136,11 +192,19 @@ static void loongarch_direct_kernel_boot(LoongArchMachineState *lams,
-     int i;
- 
-     kernel_addr = load_kernel_info(info);
-+
-+    rom_add_blob_fixed("slave_boot", slave_boot_code, sizeof(slave_boot_code),
-+                       loader_rommap[SLAVE_BOOT].base);
-+
-     if (!machine->firmware) {
-         for (i = 0; i < machine->smp.cpus; i++) {
-             lacpu = LOONGARCH_CPU(qemu_get_cpu(i));
-             lacpu->env.load_elf = true;
--            lacpu->env.elf_address = kernel_addr;
-+            if (i == 0) {
-+                lacpu->env.elf_address = kernel_addr;
-+            } else {
-+                lacpu->env.elf_address = loader_rommap[SLAVE_BOOT].base;
-+            }
-             lacpu->env.boot_info = info;
-         }
+@@ -131,6 +168,7 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
      }
+ 
+     init_cmdline(info);
++    init_systab(info);
+ 
+     return kernel_entry;
+ }
+@@ -145,6 +183,7 @@ static void reset_load_elf(void *opaque)
+ 	if (cpu == LOONGARCH_CPU(first_cpu)) {
+             env->gpr[4] = env->boot_info->a0;
+             env->gpr[5] = env->boot_info->a1;
++            env->gpr[6] = env->boot_info->a2;
+         }
+         cpu_set_pc(CPU(cpu), env->elf_address);
+     }
+diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
+index 3275c1e295..4ee116b25d 100644
+--- a/include/hw/loongarch/boot.h
++++ b/include/hw/loongarch/boot.h
+@@ -8,6 +8,56 @@
+ #ifndef HW_LOONGARCH_BOOT_H
+ #define HW_LOONGARCH_BOOT_H
+ 
++/* UEFI 2.10 */
++#define EFI_SYSTEM_TABLE_SIGNATURE       0x5453595320494249
++#define EFI_2_100_SYSTEM_TABLE_REVISION  ((2<<16) | (100))
++#define EFI_SPECIFICATION_VERSION        EFI_SYSTEM_TABLE_REVISION
++#define EFI_SYSTEM_TABLE_REVISION        EFI_2_100_SYSTEM_TABLE_REVISION
++
++#define FW_VERSION 0x1
++#define FW_PATCHLEVEL 0x0
++
++#define EFI_MAX_CONFIGURATION_TABLES 16
++
++typedef struct {
++    uint8_t b[16];
++} efi_guid_t __attribute__((aligned(8)));
++
++struct efi_config_table {
++    efi_guid_t guid;
++    uint64_t *ptr;
++    const char name[16];
++};
++
++typedef struct {
++    uint64_t signature;
++    uint32_t revision;
++    uint32_t headersize;
++    uint32_t crc32;
++    uint32_t reserved;
++} efi_table_hdr_t;
++
++struct efi_configuration_table {
++    efi_guid_t guid;
++    void *table;
++};
++
++struct efi_system_table {
++    efi_table_hdr_t hdr;
++    uint64_t fw_vendor;        /* physical addr of CHAR16 vendor string */
++    uint32_t fw_revision;
++    uint64_t con_in_handle;
++    uint64_t *con_in;
++    uint64_t con_out_handle;
++    uint64_t *con_out;
++    uint64_t stderr_handle;
++    uint64_t stderr;
++    uint64_t *runtime;
++    uint64_t *boottime;
++    uint64_t nr_tables;
++    struct efi_configuration_table *tables;
++};
++
+ struct loongarch_boot_info {
+     uint64_t ram_size;
+     const char *kernel_filename;
 -- 
 2.25.1
 
