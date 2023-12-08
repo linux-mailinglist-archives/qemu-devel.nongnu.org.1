@@ -2,80 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F45380996B
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 03:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 057E580997B
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 03:46:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBQhV-0003Dm-Er; Thu, 07 Dec 2023 21:34:49 -0500
+	id 1rBQsI-0004AX-Gk; Thu, 07 Dec 2023 21:45:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rBQhJ-0002dT-0p; Thu, 07 Dec 2023 21:34:40 -0500
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rBQhH-0002uC-HV; Thu, 07 Dec 2023 21:34:36 -0500
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2c9e9c2989dso19467011fa.0; 
- Thu, 07 Dec 2023 18:34:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702002873; x=1702607673; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=igayQuYX/F7iH3RNFaYv1D/3MuPEz8Ua3kpb9vPSfPs=;
- b=ldMnbRvMy2xPbadzRIHH9rqNKFWldjwWNQb4yLT8b04GBedQPUik8LadcmGSpwmp0T
- ddJVXtoppAmwKc5YGlO5U8myDwPIAomgM8yKBh7XfPz4vWVsOMALoMuOBSQnfwclizLD
- hHS6wSpxDzxr9jYK/Kram00SHgynwB7djCVdZHuGRopmj+CiFPscB0kcGLPRkoq1HkyE
- XyKbNacxioEGFc4760mTBh2kZi+Wen6ssDlLzEekvhTrxpIia+3Ic1HPTHpNMdv2BL1N
- txRbnxZvrRcW4+GCSCNrMxUhO02QlSG8Qk/UJT6v+UDdSYgdeNkJVZky83Y90GWsDgcQ
- EKSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702002873; x=1702607673;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=igayQuYX/F7iH3RNFaYv1D/3MuPEz8Ua3kpb9vPSfPs=;
- b=chDT1C3H5i85mjFPldW+c4T8eqNa3DIrEHeOxrjKMWiRt/li+xy+LaeV86IjuHbW63
- khHIptpflu16+lxvHx7xxKdDxCZFrz7sQRkQ+qNgkArWdEBtMd/uS/o8CEFznWG7iHsZ
- Ts1SL8EssobayIVy+1sHJd+0V0nlWj3YGwVJfcvn8qOYMHe5Gf77HHM9O9VddxeD7hGp
- 10G7FB3ezBpYEnZIiXEICazL9EfT3pV6xEFogSIAjWYbmNNZcOOv8h676sZHI6GhmuWb
- Dy+pllDZev7bhgn0ro8tHHnmyItQZ13W0pHGGSzQsBvRwSfMyVMq6y0tKvyVaFCd2txF
- L1sg==
-X-Gm-Message-State: AOJu0YxqN3QbsuC9T5NdAwDV2GL+KaoZB9OQ3KfxChGM0MZ0fQrzff9X
- DJ7+LlbTIy/aigSy6Cc2TtOYe89HWdfzwA==
-X-Google-Smtp-Source: AGHT+IF1j3ekbAelZttIPVfoyZKrF2gFAGVYTRMZKh3a9KWunbkPs0ZLnovvA3+M8zOyW2gIwTWiAA==
-X-Received: by 2002:a2e:a7cf:0:b0:2ca:227a:ebb2 with SMTP id
- x15-20020a2ea7cf000000b002ca227aebb2mr2312302ljp.0.1702002873226; 
- Thu, 07 Dec 2023 18:34:33 -0800 (PST)
-Received: from localhost.localdomain ([185.200.240.39])
- by smtp.gmail.com with ESMTPSA id
- r1-20020a2e94c1000000b002c9e6cbf78esm99062ljh.19.2023.12.07.18.34.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Dec 2023 18:34:32 -0800 (PST)
-From: Sergey Kambalin <serg.oker@gmail.com>
-X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v4 45/45] Add RPi4B to paspi4.rst
-Date: Thu,  7 Dec 2023 20:31:45 -0600
-Message-Id: <20231208023145.1385775-46-sergey.kambalin@auriga.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
-References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1rBQs6-00048t-UC
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 21:45:49 -0500
+Received: from out30-98.freemail.mail.aliyun.com ([115.124.30.98])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1rBQs3-0007C1-KP
+ for qemu-devel@nongnu.org; Thu, 07 Dec 2023 21:45:46 -0500
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R161e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018045176;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=4; SR=0;
+ TI=SMTPD_---0Vy1PYZ1_1702003531; 
+Received: from 30.198.1.84(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0Vy1PYZ1_1702003531) by smtp.aliyun-inc.com;
+ Fri, 08 Dec 2023 10:45:32 +0800
+Message-ID: <a9b9379c-6238-4611-a577-079c31514f76@linux.alibaba.com>
+Date: Fri, 8 Dec 2023 10:44:28 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] accel/tcg: Fix the comment for CPUTLBEntryFull
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, pbonzini@redhat.com
+References: <20230901060118.379-1-zhiwei_liu@linux.alibaba.com>
+ <765b3a0c-05b4-4059-b915-7818099c3743@ilande.co.uk>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <765b3a0c-05b4-4059-b915-7818099c3743@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=serg.oker@gmail.com; helo=mail-lj1-x230.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=115.124.30.98;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-98.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_SPF_WL=-7.5,
+ WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,49 +64,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
----
- docs/system/arm/raspi.rst | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/docs/system/arm/raspi.rst b/docs/system/arm/raspi.rst
-index 922fe375a6..db9e0949ef 100644
---- a/docs/system/arm/raspi.rst
-+++ b/docs/system/arm/raspi.rst
-@@ -1,5 +1,5 @@
--Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``)
--======================================================================================
-+Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``, ``raspi4b-2g``)
-+======================================================================================================
- 
- 
- QEMU provides models of the following Raspberry Pi boards:
-@@ -12,12 +12,13 @@ QEMU provides models of the following Raspberry Pi boards:
-   Cortex-A53 (4 cores), 512 MiB of RAM
- ``raspi3b``
-   Cortex-A53 (4 cores), 1 GiB of RAM
--
-+``raspi4b-2g``
-+  Cortex-A72 (4 cores), 2 GiB of RAM
- 
- Implemented devices
- -------------------
- 
-- * ARM1176JZF-S, Cortex-A7 or Cortex-A53 CPU
-+ * ARM1176JZF-S, Cortex-A7, Cortex-A53 or Cortex-A72 CPU
-  * Interrupt controller
-  * DMA controller
-  * Clock and reset controller (CPRMAN)
-@@ -33,6 +34,8 @@ Implemented devices
-  * USB2 host controller (DWC2 and MPHI)
-  * MailBox controller (MBOX)
-  * VideoCore firmware (property)
-+ * PCIE Root Port (raspi4b-2g)
-+ * GENET Ethernet Controller (raspi4b-2g)
- 
- 
- Missing devices
--- 
-2.34.1
+On 2023/11/28 21:04, Mark Cave-Ayland wrote:
+> On 01/09/2023 07:01, LIU Zhiwei wrote:
+>
+>> When memory region is ram, the lower TARGET_PAGE_BITS is not the
+>> physical section number. Instead, its value is always 0.
+>>
+>> Add comment and assert to make it clear.
+>>
+>> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+>> ---
+>>   accel/tcg/cputlb.c      | 11 +++++++----
+>>   include/exec/cpu-defs.h | 12 ++++++------
+>>   2 files changed, 13 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+>> index d68fa6867c..a1ebf75068 100644
+>> --- a/accel/tcg/cputlb.c
+>> +++ b/accel/tcg/cputlb.c
+>> @@ -1192,6 +1192,7 @@ void tlb_set_page_full(CPUState *cpu, int mmu_idx,
+>>       write_flags = read_flags;
+>>       if (is_ram) {
+>>           iotlb = memory_region_get_ram_addr(section->mr) + xlat;
+>> +        assert(!(iotlb & ~TARGET_PAGE_MASK));
+>>           /*
+>>            * Computing is_clean is expensive; avoid all that unless
+>>            * the page is actually writable.
+>> @@ -1254,10 +1255,12 @@ void tlb_set_page_full(CPUState *cpu, int 
+>> mmu_idx,
+>>         /* refill the tlb */
+>>       /*
+>> -     * At this point iotlb contains a physical section number in the 
+>> lower
+>> -     * TARGET_PAGE_BITS, and either
+>> -     *  + the ram_addr_t of the page base of the target RAM (RAM)
+>> -     *  + the offset within section->mr of the page base (I/O, ROMD)
+>> +     * When memory region is ram, iotlb contains a TARGET_PAGE_BITS
+>> +     * aligned ram_addr_t of the page base of the target RAM.
+>> +     * Otherwise, iotlb contains
+>> +     *  - a physical section number in the lower TARGET_PAGE_BITS
+>> +     *  - the offset within section->mr of the page base (I/O, ROMD) 
+>> with the
+>> +     *    TARGET_PAGE_BITS masked off.
+>>        * We subtract addr_page (which is page aligned and thus won't
+>>        * disturb the low bits) to give an offset which can be added 
+>> to the
+>>        * (non-page-aligned) vaddr of the eventual memory access to get
+>> diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
+>> index fb4c8d480f..350287852e 100644
+>> --- a/include/exec/cpu-defs.h
+>> +++ b/include/exec/cpu-defs.h
+>> @@ -100,12 +100,12 @@
+>>   typedef struct CPUTLBEntryFull {
+>>       /*
+>>        * @xlat_section contains:
+>> -     *  - in the lower TARGET_PAGE_BITS, a physical section number
+>> -     *  - with the lower TARGET_PAGE_BITS masked off, an offset which
+>> -     *    must be added to the virtual address to obtain:
+>> -     *     + the ram_addr_t of the target RAM (if the physical section
+>> -     *       number is PHYS_SECTION_NOTDIRTY or PHYS_SECTION_ROM)
+>> -     *     + the offset within the target MemoryRegion (otherwise)
+>> +     *  - For ram, an offset which must be added to the virtual address
+>> +     *    to obtain the ram_addr_t of the target RAM
+>> +     *  - For other memory regions,
+>> +     *     + in the lower TARGET_PAGE_BITS, the physical section number
+>> +     *     + with the TARGET_PAGE_BITS masked off, the offset within
+>> +     *       the target MemoryRegion
+>>        */
+>>       hwaddr xlat_section;
+>
+> Someone sent me a test case that triggers the assert() introduced by 
+> this commit dff1ab6 ("accel/tcg: Fix the comment for CPUTLBEntryFull") 
+> for qemu-system-m68k which is still present in git master. The 
+> reproducer is easy:
+>
+> 1. Grab the machine ROM file from 
+> https://www.ilande.co.uk/tmp/qemu/tQuadra800.rom
+>
+> 2. Create an empty declaration ROM greater than 4K:
+>
+>    dd if=/dev/zero of=/tmp/badrom bs=512 count=12
+>
+> 3. Start QEMU like this:
+>
+>    qemu-system-m68k -M q800 -bios tQuadra800.rom \
+>        -device nubus-macfb,romfile=/tmp/badrom
+>
+> The QEMU process hits the assert() with the following backtrace:
+>
+> (gdb) bt
+> #0  0x00007ffff58a9d3c in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+> #1  0x00007ffff585af32 in raise () from /lib/x86_64-linux-gnu/libc.so.6
+> #2  0x00007ffff5845472 in abort () from /lib/x86_64-linux-gnu/libc.so.6
+> #3  0x00007ffff5845395 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+> #4  0x00007ffff5853e32 in __assert_fail () from 
+> /lib/x86_64-linux-gnu/libc.so.6
+> #5  0x0000555555942e0a in tlb_set_page_full (cpu=0x55555618d4a0, 
+> mmu_idx=0, addr=4244631552, full=0x7fffe7d7f7c0) at 
+> ../accel/tcg/cputlb.c:1171
+> #6  0x00005555559432a0 in tlb_set_page_with_attrs (cpu=0x55555618d4a0, 
+> addr=4244631552, paddr=4244631552, attrs=..., prot=7, mmu_idx=0, 
+> size=4096) at ../accel/tcg/cputlb.c:1290
+> #7  0x0000555555943305 in tlb_set_page (cpu=0x55555618d4a0, 
+> addr=4244631552, paddr=4244631552, prot=7, mmu_idx=0, size=4096) at 
+> ../accel/tcg/cputlb.c:1297
+> #8  0x000055555588aade in m68k_cpu_tlb_fill (cs=0x55555618d4a0, 
+> address=4244635647, size=1, qemu_access_type=MMU_DATA_LOAD, mmu_idx=0, 
+> probe=false, retaddr=140734805255937) at ../target/m68k/helper.c:1018
+> #9  0x0000555555943367 in tlb_fill (cpu=0x55555618d4a0, 
+> addr=4244635647, size=1, access_type=MMU_DATA_LOAD, mmu_idx=0, 
+> retaddr=140734805255937) at ../accel/tcg/cputlb.c:1315
+> #10 0x0000555555945d78 in mmu_lookup1 (cpu=0x55555618d4a0, 
+> data=0x7fffe7d7fa00, mmu_idx=0, access_type=MMU_DATA_LOAD, 
+> ra=140734805255937) at ../accel/tcg/cputlb.c:1713
+> #11 0x0000555555946081 in mmu_lookup (cpu=0x55555618d4a0, 
+> addr=4244635647, oi=3712, ra=140734805255937, type=MMU_DATA_LOAD, 
+> l=0x7fffe7d7fa00) at ../accel/tcg/cputlb.c:1803
+> #12 0x000055555594742b in do_ld1_mmu (cpu=0x55555618d4a0, 
+> addr=4244635647, oi=3712, ra=140734805255937, 
+> access_type=MMU_DATA_LOAD) at ../accel/tcg/cputlb.c:2377
+> #13 0x0000555555948f17 in helper_ldub_mmu (env=0x55555618fc60, 
+> addr=4244635647, oi=3712, retaddr=140734805255937) at 
+> ../accel/tcg/ldst_common.c.inc:19
+> #14 0x00007fff6013286c in code_gen_buffer ()
+> #15 0x00005555559308ff in cpu_tb_exec (cpu=0x55555618d4a0, 
+> itb=0x7fffa0132480, tb_exit=0x7fffe7d80030) at 
+> ../accel/tcg/cpu-exec.c:458
+> #16 0x000055555593160a in cpu_loop_exec_tb (cpu=0x55555618d4a0, 
+> tb=0x7fffa0132480, pc=1082158370, last_tb=0x7fffe7d80040, 
+> tb_exit=0x7fffe7d80030) at ../accel/tcg/cpu-exec.c:920
+> #17 0x000055555593196a in cpu_exec_loop (cpu=0x55555618d4a0, 
+> sc=0x7fffe7d800c0) at ../accel/tcg/cpu-exec.c:1041
+> #18 0x0000555555931a28 in cpu_exec_setjmp (cpu=0x55555618d4a0, 
+> sc=0x7fffe7d800c0) at ../accel/tcg/cpu-exec.c:1058
+> #19 0x0000555555931aaf in cpu_exec (cpu=0x55555618d4a0) at 
+> ../accel/tcg/cpu-exec.c:1084
+> #20 0x00005555559560ad in tcg_cpus_exec (cpu=0x55555618d4a0) at 
+> ../accel/tcg/tcg-accel-ops.c:76
+> #21 0x00005555559575c2 in rr_cpu_thread_fn (arg=0x55555618d4a0) at 
+> ../accel/tcg/tcg-accel-ops-rr.c:261
+> #22 0x0000555555b61f25 in qemu_thread_start (args=0x555556347a10) at 
+> ../util/qemu-thread-posix.c:541
+> #23 0x00007ffff58a8044 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+> #24 0x00007ffff592861c in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+>
+Hi Mark,
 
+The  nubus-macfb device create a section not aligned to the 
+TARGET_PAGE_BITS. That is the reason why it fails the assert. But that's 
+OK. It is my error. I have sent a patch to de-assert it.  I am not sure 
+whether it can be merged into the 8.2.
+
+Thanks,
+Zhiwei
+
+>
+> ATB,
+>
+> Mark.
 
