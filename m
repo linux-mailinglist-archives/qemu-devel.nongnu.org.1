@@ -2,62 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A9D809E97
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 09:49:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61212809EAC
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 09:59:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBWXY-0004VV-Sb; Fri, 08 Dec 2023 03:48:56 -0500
+	id 1rBWgd-0006O8-T6; Fri, 08 Dec 2023 03:58:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1rBWXW-0004VE-OS
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:48:54 -0500
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1rBWgY-0006MQ-1N
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:58:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1rBWXU-0001Ws-0z
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:48:54 -0500
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1rBWgW-0007sa-B4
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:58:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702025331;
+ s=mimecast20190719; t=1702025889;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VpJIDDxc9S/Oco94xRscgYkswaHQndmc7Po28fvIRaM=;
- b=AgAVonABvWxrqq8qjZQPmD7s8bf+pUpx/+sxBNzi7t6AGKgJE+hrGpbN5wPa+zjsE5dvwA
- Gxel/eFR334YGGxQGH71cChJPcudd8kFSFUWe5EgMPoD3GhdIFetCMjPn5PgIa05whPtug
- yBHMPPPwydXkBzAWPsUlSHMlVcnW5to=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=daPE9ufOoCbMA2Elth6gqht5LTgge+9KXcX19van4tY=;
+ b=RszR/98JfPg4BTPhtOq2pLKcjI5v+3Ly3WCm2Om22ZOeyyDuSY2lafBJoUXqJRy+8YHT0k
+ XCYRdnEr/5UfsHjtopRRQOK/39Sdx8NHv5DCQpOTIAoCy7x3KiMCA3y2cwfF1EO3EIE40p
+ O106R1frWmoOWN8Xym6RPvhkIFIigcc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-Be8SVf9tMhmpLuV9zMNIHQ-1; Fri, 08 Dec 2023 03:47:09 -0500
-X-MC-Unique: Be8SVf9tMhmpLuV9zMNIHQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F0AE985CEE5;
- Fri,  8 Dec 2023 08:47:08 +0000 (UTC)
-Received: from localhost (unknown [10.42.28.15])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AFAE6492BE6;
- Fri,  8 Dec 2023 08:47:08 +0000 (UTC)
-Date: Fri, 8 Dec 2023 08:47:07 +0000
-From: "Richard W.M. Jones" <rjones@redhat.com>
-To: Michael Young <m.a.young@durham.ac.uk>
-Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>,
- Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH] fix qemu build with xen-4.18.0
-Message-ID: <20231208084707.GA23257@redhat.com>
-References: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
+ us-mta-359-Tkt8PamRNDqSVdpvW0p-ZA-1; Fri, 08 Dec 2023 03:58:07 -0500
+X-MC-Unique: Tkt8PamRNDqSVdpvW0p-ZA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-33349915da3so1457852f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 00:58:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702025886; x=1702630686;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=daPE9ufOoCbMA2Elth6gqht5LTgge+9KXcX19van4tY=;
+ b=GR1IlTSP/aSoGdLXqviQmlupzuXK+UpRG06bl1U6RycRIY9SlWCpzHbw2wI3Y5FmEE
+ 8032KRoslr6OxRJAWiPGpu0Pn6b/ILFzhWL3RYUSCb5OEuYbh3/g/VH0fBBvl68RpSJr
+ R5LpjvA3mS3ozZ471amzuN46RknaQS+GSUkGD4dS/KvRvbkaTRQgKyWaCwyORswQLOWG
+ G5ZZfuIl2+Mf+yC3NnDrm2qESPYRSX90LstwkDrvmKIhD1f1MS/oZNQ7FLM/iGe165H1
+ gfWVZN7yd6SZTWhvG2ZIiia/aIKavkgSkFHAPi5XuTLsxoD1ypavTM2kxSztY1yYu3vu
+ 7YMg==
+X-Gm-Message-State: AOJu0YyoLLhlKvfjTH30LXjbAwjQCRNKlhIb8wJORZADoT5dwYrx9Y9p
+ x/U+lrE0p/RGQSCbUCwCir2zc4PryPh2INf7t8I2JCgKvD4/hLg+r4YQIVi03Cy5b5HFjHGzedZ
+ 34aAfNtILbkXSLZc=
+X-Received: by 2002:a05:600c:2147:b0:40b:5e1e:fb9c with SMTP id
+ v7-20020a05600c214700b0040b5e1efb9cmr1653543wml.81.1702025886398; 
+ Fri, 08 Dec 2023 00:58:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEmyk0AaGLsH8iHm6A2T+d4DayhgyoIonmdrDpNPxTJ6t4muHXNPOF5y7QG2eRWGrTqFojVKg==
+X-Received: by 2002:a05:600c:2147:b0:40b:5e1e:fb9c with SMTP id
+ v7-20020a05600c214700b0040b5e1efb9cmr1653541wml.81.1702025886067; 
+ Fri, 08 Dec 2023 00:58:06 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ n18-20020a05600c501200b0040b37f1079dsm4534205wmr.29.2023.12.08.00.58.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Dec 2023 00:58:05 -0800 (PST)
+Message-ID: <5a58cc19-d73f-4961-8998-a88dea4ece01@redhat.com>
+Date: Fri, 8 Dec 2023 09:58:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=rjones@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: Request for New PPC Machine Supporting Multiple SMP Cores
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, aziz tlili <aziztlili2222@gmail.com>
+Cc: qemu-devel@nongnu.org
+References: <CAHwHw5A6g428uTpMEQ=NCkXP7sXVfCWv5QSUw3pHfncmG-2gPA@mail.gmail.com>
+ <5f2068a4-955a-9d16-347d-4d2771b78aa8@eik.bme.hu>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <5f2068a4-955a-9d16-347d-4d2771b78aa8@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,48 +103,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(Adding Xen maintainers)
-
-On Thu, Dec 07, 2023 at 11:12:48PM +0000, Michael Young wrote:
-> Builds of qemu-8.2.0rc2 with xen-4.18.0 are currently failing
-> with errors like
-> ../hw/arm/xen_arm.c:74:5: error: ‘GUEST_VIRTIO_MMIO_SPI_LAST’ undeclared (first use in this function)
->    74 |    (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_FIRST)
->       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+On 12/7/23 18:39, BALATON Zoltan wrote:
+> On Thu, 7 Dec 2023, aziz tlili wrote:
+>> Dear QEMU Team,
+>>
+>> I hope this message finds you well. I've been a user of QEMU for well over
+>> a year.
+>>
+>> I wanted to share an idea for a potential enhancement that I believe could
+>> benefit many users, including myself. It would be fantastic to have a new
+>> PPC machine model similar to the existing mac99, but with support for
+>> multiple SMP cores for both qemu-system-ppc and qemu-system-ppc64.
 > 
-> as there is an incorrect comparision in include/hw/xen/xen_native.h
-> which means that settings like GUEST_VIRTIO_MMIO_SPI_LAST
-> aren't being defined for xen-4.18.0
-> 
-> Signed-off-by: Michael Young <m.a.young@durham.ac.uk>
+> There are several machines in qemu-system-ppc64 that support SMP such as pseries and powernv I think. For qemu-system-ppc maybe only ppce500. The mac99 may create multiple CPUs (G4 when ron with qemu-system-ppc or G5 with qemu-system-ppc64) but not sure if there's an OS that can actually use that. Linux support for mac99 may not be the best.
 
-Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
+64bit :
 
-> ---
->  include/hw/xen/xen_native.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-> index 6f09c48823..04b1ef4d34 100644
-> --- a/include/hw/xen/xen_native.h
-> +++ b/include/hw/xen/xen_native.h
-> @@ -532,7 +532,7 @@ static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
->  }
->  #endif
->  
-> -#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41700
-> +#if CONFIG_XEN_CTRL_INTERFACE_VERSION >= 41700
->  #define GUEST_VIRTIO_MMIO_BASE   xen_mk_ullong(0x02000000)
->  #define GUEST_VIRTIO_MMIO_SIZE   xen_mk_ullong(0x00100000)
->  #define GUEST_VIRTIO_MMIO_SPI_FIRST   33
-> -- 
-> 2.43.0
-> 
+pseries machines support SMP and SMT
+powernv machines support SMP, SMT and multisocket.
+ppce500 machines (e6500 and e5500 CPUs) support SMP
 
--- 
-Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-Read my programming and virtualization blog: http://rwmj.wordpress.com
-libguestfs lets you edit virtual machines.  Supports shell scripting,
-bindings from many languages.  http://libguestfs.org
+32bit :
+
+ppce500 machines (e500mc) have SMP support but there is an issue when
+bringing up the secondaries.
+It has never been done for the other machines AFAIK
+
+Thanks,
+
+C.
+
+>> The ability to simulate multiple SMP cores within a PPC machine environment
+>> would significantly enhance the capabilities of QEMU for various
+>> applications, testing scenarios, and development purposes. This addition
+>> could greatly benefit the community working on PowerPC architecture.
+> 
+> Sure. Contributions are welcome.
+> 
+>> I understand the complexities involved in such developments but wanted to
+>> express the potential advantages and how this enhancement could contribute
+>> to expanding QEMU's capabilities.
+> 
+> Problem is not in understanding the potential advantages but the lack of people interested in working on that so progress depends on somebody doing it and sending patches.
+> 
+> Regards,
+> BALATON Zoltan
+> 
+>> Thank you for considering my suggestion. I would be more than happy to
+>> provide further details or collaborate in any way that could assist in
+>> making this idea a reality.
+>>
+>> Best regards,
+>> Aziz Tlili
+>>
+> 
 
 
