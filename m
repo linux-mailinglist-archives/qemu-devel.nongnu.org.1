@@ -2,67 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9EF80A2D6
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 13:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3F680A331
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 13:28:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBZeW-0006kI-3I; Fri, 08 Dec 2023 07:08:20 -0500
+	id 1rBZwB-0002aQ-RS; Fri, 08 Dec 2023 07:26:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1rBZeH-0006k0-1j; Fri, 08 Dec 2023 07:08:05 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rBZw9-0002aB-9x
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 07:26:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1rBZeA-00047N-5R; Fri, 08 Dec 2023 07:08:00 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 81D2062364;
- Fri,  8 Dec 2023 12:07:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26460C433C7;
- Fri,  8 Dec 2023 12:07:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1702037268;
- bh=VO2CAyyWK+lTU7+41TJKW1+uzk4o614VbtWFasL/Iv8=;
- h=From:To:Cc:Subject:Date:From;
- b=UMUc0GIAbP+inG251WlRIfdV5AvjQgtRZYf30R2WRjXHGclieKdIBUXMkhs7nDsMt
- KPeGyURpxGvwyXoSJJshQyDLiXnhZpTeBkORtBRLBSzuIiN/qBuXCuRQ83DlPBvfYs
- fa57hwPLbAADr5E7AT9VmXYHLdHk85moN7yoECyaQ7oJ08Vp1ISN8tFqZLfyXS7eZm
- 9vgm0ezI19LbmQpzLNP6wXx298ayvksB5GfQbNH6eSAnlcnSFOsU0CWDvdAL+4sk72
- UPS/ZTZahyoOnwCbzvy/2i6kV/PNV7IaS9vqhyCWtQlKqEb2CzNomCrTKltEhyIag5
- 93zA1u/sEqJIQ==
-From: Conor Dooley <conor@kernel.org>
-To: qemu-riscv@nongnu.org
-Cc: conor@kernel.org, Conor Dooley <conor.dooley@microchip.com>,
- Alistair Francis <Alistair.Francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Subject: [PATCH v2] riscv: support new isa extension detection devicetree
- properties
-Date: Fri,  8 Dec 2023 12:07:22 +0000
-Message-Id: <20231208-sponge-thickness-c0e9511b1baf@spud>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rBZw6-0006l5-LD
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 07:26:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702038387;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1YmEDaraCyEw/yn0G1V+MORxmniCMG2G9XqgZ019Nu8=;
+ b=DeSs66pYi7emqMjUJKgsZCLbiW+qO21PwJhJCuen3KdJjMbaLzgxrDS6z/jCCiW9SoTh02
+ Vy1rz1cOjN4O4gaepvDd8qnFqOwocIuanW36ew7Sgk3ynEGBfj4o6k8ip51xrs8+KxffbD
+ Q5yt4vsfABdWF5UKrpqSbJzj14y0i8Y=
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
+ [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-91-h1YO23UZNKG7PClDPrJyoA-1; Fri, 08 Dec 2023 07:26:26 -0500
+X-MC-Unique: h1YO23UZNKG7PClDPrJyoA-1
+Received: by mail-io1-f71.google.com with SMTP id
+ ca18e2360f4ac-7b70c8b7314so97918839f.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 04:26:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702038386; x=1702643186;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1YmEDaraCyEw/yn0G1V+MORxmniCMG2G9XqgZ019Nu8=;
+ b=R3tSzq9GYbFyQ9m5boSR4gox7I6TMWpmAJOTMem4ogCzddnsohLd+ewkjn0s7Jx6ol
+ D/ZwCxzSPgdDQoOAgR0MHUn9Kdm6vuzKq2fBisFks0KCM3bKnGimIs+rXI6HrUzqrPr6
+ ZNHN6BEl80P7pXeHGPdTe+ZbpcAuFTnA5NDoD1UyKh8tN4o6jI+vK73fBExuUp8ZYk5v
+ deCRAiV5V8oAOGDSGoOrQ7Ke9qltjNyizG6aRhzh3dt30F8OqGIVc6UD7YPouRO3DaGD
+ oUKQan9USZqr9o8C+8aJdWPvwLlK0PqcesR8na9TYrbcV+0X6JewdKoMWNMoDn1VVP9W
+ yUlA==
+X-Gm-Message-State: AOJu0YzuQvIK3k4ku60k9QcMKphMyMTpY65kz1wQ+j+uuPGWseWJTA4K
+ IgFm3egMOoVOA9wL/om56eh4nGtZSawUE0aScLUspQMKkGI22hWuVHMQ3dWsybyY5sVwj+5NOpo
+ sCKfsOS4igaZSkso=
+X-Received: by 2002:a05:6e02:1b07:b0:35d:5995:798a with SMTP id
+ i7-20020a056e021b0700b0035d5995798amr48960ilv.36.1702038385878; 
+ Fri, 08 Dec 2023 04:26:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGD2I8Vw7VaYUfGcBy10Wx2++AjGGrJ1VP5DWLcjjBooxIhYVQ6IdDCNnzl6tWffZh6kO1npQ==
+X-Received: by 2002:a05:6e02:1b07:b0:35d:5995:798a with SMTP id
+ i7-20020a056e021b0700b0035d5995798amr48947ilv.36.1702038385522; 
+ Fri, 08 Dec 2023 04:26:25 -0800 (PST)
+Received: from localhost.localdomain ([115.96.133.105])
+ by smtp.googlemail.com with ESMTPSA id
+ x1-20020a63cc01000000b005742092c211sm1387572pgf.64.2023.12.08.04.26.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Dec 2023 04:26:25 -0800 (PST)
+From: Ani Sinha <anisinha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Ani Sinha <anisinha@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Julia Suvorova <jusual@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: [PATCH] pc: q35: Bump max_cpus to 4096
+Date: Fri,  8 Dec 2023 17:56:11 +0530
+Message-ID: <20231208122611.32311-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9673;
- i=conor.dooley@microchip.com; h=from:subject:message-id;
- bh=b9TskK7osol/JpM22uBsKpg7fG01fPE2O9oyQYorem4=;
- b=owGbwMvMwCFWscWwfUFT0iXG02pJDKnFbD8UNhjuuXh99+OHz86LRjtqzI9WUVr8JlJ3XlHCD
- v8NdkkiHaUsDGIcDLJiiiyJt/tapNb/cdnh3PMWZg4rE8gQBi5OAZjIYQGG/y4CL87csbX/naLt
- 5Hd4hsHeWzGKMRKchdPZp7+5xnXJcwvDH74v/uWqcVrdBeVWG9U6vtetu7TI58JHzTnR1/jTl1d
- vZAMA
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp;
- fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,227 +104,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Conor Dooley <conor.dooley@microchip.com>
+Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to allow up to 4096 vCPUs")
+Linux kernel can support upto a maximum number of 4096 vCPUS when MAXSMP is
+enabled in the kernel. So bump up the max_cpus value for q35 machines versions
+8.3 and newer to 4096. Older q35 machines versions 8.2 and older continue to
+support 1024 maximum vcpus as before.
 
-A few months ago I submitted a patch to various lists, deprecating
-"riscv,isa" with a lengthy commit message [0] that is now commit
-aeb71e42caae ("dt-bindings: riscv: deprecate riscv,isa") in the Linux
-kernel tree. Primarily, the goal was to replace "riscv,isa" with a new
-set of properties that allowed for strictly defining the meaning of
-various extensions, where "riscv,isa" was tied to whatever definitions
-inflicted upon us by the ISA manual, which have seen some variance over
-time.
+If KVM is not able to support the specified number of vcpus, QEMU would
+return the following error messages:
 
-Two new properties were introduced: "riscv,isa-base" and
-"riscv,isa-extensions". The former is a simple string to communicate the
-base ISA implemented by a hart and the latter an array of strings used
-to communicate the set of ISA extensions supported, per the definitions
-of each substring in extensions.yaml [1]. A beneficial side effect was
-also the ability to define vendor extensions in a more "official" way,
-as the ISA manual and other RVI specifications only covered the format
-for vendor extensions in the ISA string, but not the meaning of vendor
-extensions, for obvious reasons.
+$ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 4096
+qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested (4096) exceeds the recommended cpus supported by KVM (12)
+Number of SMP cpus requested (4096) exceeds the maximum cpus supported by KVM (1024)
 
-Add support for setting these two new properties in the devicetrees for
-the various devicetree platforms supported by QEMU for RISC-V. The Linux
-kernel already supports parsing ISA extensions from these new
-properties, and documenting them in the dt-binding is a requirement for
-new extension detection being added to the kernel.
-
-A side effect of the implementation is that the meaning for elements in
-"riscv,isa" and in "riscv,isa-extensions" are now tied together as they
-are constructed from the same source. The same applies to the ISA string
-provided in ACPI tables, but there does not appear to be any strict
-definitions of meanings in ACPI land either.
-
-Link: https://lore.kernel.org/qemu-riscv/20230702-eats-scorebook-c951f170d29f@spud/ [0]
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/riscv/extensions.yaml [1]
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Julia Suvorova <jusual@redhat.com>
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
 ---
-Changes in v2:
-- use g_strdup() for multiletter extension string copying
-- wrap stuff in #ifndef to prevent breaking the user mode build
-- rename riscv_isa_set_props() -> riscv_isa_write_fdt()
+ hw/i386/pc_q35.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-CC: Alistair Francis <Alistair.Francis@wdc.com>
-CC: Bin Meng <bin.meng@windriver.com>
-CC: Palmer Dabbelt <palmer@dabbelt.com>
-CC: Weiwei Li <liwei1518@gmail.com>
-CC: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-CC: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-CC: qemu-riscv@nongnu.org
-CC: qemu-devel@nongnu.org
----
- hw/riscv/sifive_u.c |  7 ++-----
- hw/riscv/spike.c    |  6 ++----
- hw/riscv/virt.c     |  6 ++----
- target/riscv/cpu.c  | 50 +++++++++++++++++++++++++++++++++++++++++++++
- target/riscv/cpu.h  |  1 +
- 5 files changed, 57 insertions(+), 13 deletions(-)
-
-diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-index ec76dce6c9..2f227f15bc 100644
---- a/hw/riscv/sifive_u.c
-+++ b/hw/riscv/sifive_u.c
-@@ -171,7 +171,6 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
-         int cpu_phandle = phandle++;
-         nodename = g_strdup_printf("/cpus/cpu@%d", cpu);
-         char *intc = g_strdup_printf("/cpus/cpu@%d/interrupt-controller", cpu);
--        char *isa;
-         qemu_fdt_add_subnode(fdt, nodename);
-         /* cpu 0 is the management hart that does not have mmu */
-         if (cpu != 0) {
-@@ -180,11 +179,10 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
-             } else {
-                 qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv48");
-             }
--            isa = riscv_isa_string(&s->soc.u_cpus.harts[cpu - 1]);
-+            riscv_isa_write_fdt(&s->soc.u_cpus.harts[cpu - 1], fdt, nodename);
-         } else {
--            isa = riscv_isa_string(&s->soc.e_cpus.harts[0]);
-+            riscv_isa_write_fdt(&s->soc.e_cpus.harts[0], fdt, nodename);
-         }
--        qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", isa);
-         qemu_fdt_setprop_string(fdt, nodename, "compatible", "riscv");
-         qemu_fdt_setprop_string(fdt, nodename, "status", "okay");
-         qemu_fdt_setprop_cell(fdt, nodename, "reg", cpu);
-@@ -194,7 +192,6 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
-         qemu_fdt_setprop_string(fdt, intc, "compatible", "riscv,cpu-intc");
-         qemu_fdt_setprop(fdt, intc, "interrupt-controller", NULL, 0);
-         qemu_fdt_setprop_cell(fdt, intc, "#interrupt-cells", 1);
--        g_free(isa);
-         g_free(intc);
-         g_free(nodename);
-     }
-diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
-index 81f7e53aed..64074395bc 100644
---- a/hw/riscv/spike.c
-+++ b/hw/riscv/spike.c
-@@ -59,7 +59,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
-     MachineState *ms = MACHINE(s);
-     uint32_t *clint_cells;
-     uint32_t cpu_phandle, intc_phandle, phandle = 1;
--    char *name, *mem_name, *clint_name, *clust_name;
-+    char *mem_name, *clint_name, *clust_name;
-     char *core_name, *cpu_name, *intc_name;
-     static const char * const clint_compat[2] = {
-         "sifive,clint0", "riscv,clint0"
-@@ -113,9 +113,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
-             } else {
-                 qemu_fdt_setprop_string(fdt, cpu_name, "mmu-type", "riscv,sv48");
-             }
--            name = riscv_isa_string(&s->soc[socket].harts[cpu]);
--            qemu_fdt_setprop_string(fdt, cpu_name, "riscv,isa", name);
--            g_free(name);
-+            riscv_isa_write_fdt(&s->soc[socket].harts[cpu], fdt, cpu_name);
-             qemu_fdt_setprop_string(fdt, cpu_name, "compatible", "riscv");
-             qemu_fdt_setprop_string(fdt, cpu_name, "status", "okay");
-             qemu_fdt_setprop_cell(fdt, cpu_name, "reg",
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index c7fc97e273..05beb0a297 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -238,7 +238,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
-     int cpu;
-     uint32_t cpu_phandle;
-     MachineState *ms = MACHINE(s);
--    char *name, *cpu_name, *core_name, *intc_name, *sv_name;
-+    char *cpu_name, *core_name, *intc_name, *sv_name;
-     bool is_32_bit = riscv_is_32bit(&s->soc[0]);
-     uint8_t satp_mode_max;
- 
-@@ -259,9 +259,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
-             g_free(sv_name);
-         }
- 
--        name = riscv_isa_string(cpu_ptr);
--        qemu_fdt_setprop_string(ms->fdt, cpu_name, "riscv,isa", name);
--        g_free(name);
-+        riscv_isa_write_fdt(cpu_ptr, ms->fdt, cpu_name);
- 
-         if (cpu_ptr->cfg.ext_zicbom) {
-             qemu_fdt_setprop_cell(ms->fdt, cpu_name, "riscv,cbom-block-size",
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 83c7c0cf07..ce413b9f00 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -31,6 +31,7 @@
- #include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
- #include "fpu/softfloat-helpers.h"
-+#include "sysemu/device_tree.h"
- #include "sysemu/kvm.h"
- #include "sysemu/tcg.h"
- #include "kvm/kvm_riscv.h"
-@@ -1735,6 +1736,55 @@ char *riscv_isa_string(RISCVCPU *cpu)
-     return isa_str;
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 4f3e5412f6..2ed57814e1 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -375,7 +375,7 @@ static void pc_q35_machine_options(MachineClass *m)
+     m->default_nic = "e1000e";
+     m->default_kernel_irqchip_split = false;
+     m->no_floppy = 1;
+-    m->max_cpus = 1024;
++    m->max_cpus = 4096;
+     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
+@@ -383,12 +383,22 @@ static void pc_q35_machine_options(MachineClass *m)
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
  }
  
-+#ifndef CONFIG_USER_ONLY
-+static char **riscv_isa_extensions_list(RISCVCPU *cpu, int *count)
-+{
-+    int maxlen = ARRAY_SIZE(riscv_single_letter_exts) + ARRAY_SIZE(isa_edata_arr);
-+    char **extensions = g_new(char *, maxlen);
-+
-+    for (int i = 0; i < sizeof(riscv_single_letter_exts) - 1; i++) {
-+        if (cpu->env.misa_ext & RV(riscv_single_letter_exts[i])) {
-+            extensions[*count] = g_new(char, 2);
-+            snprintf(extensions[*count], 2, "%c",
-+                     qemu_tolower(riscv_single_letter_exts[i]));
-+            (*count)++;
-+        }
-+    }
-+
-+    for (const RISCVIsaExtData *edata = isa_edata_arr; edata && edata->name; edata++) {
-+        if (isa_ext_is_enabled(cpu, edata->ext_enable_offset)) {
-+            extensions[*count] = g_strdup(edata->name);
-+            (*count)++;
-+        }
-+    }
-+
-+    return extensions;
-+}
-+
-+void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename)
-+{
-+    const size_t maxlen = sizeof("rv128i");
-+    g_autofree char *isa_base = g_new(char, maxlen);
-+    g_autofree char *riscv_isa;
-+    char **isa_extensions;
-+    int count = 0;
-+
-+    riscv_isa = riscv_isa_string(cpu);
-+    qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", riscv_isa);
-+
-+    snprintf(isa_base, maxlen, "rv%di", TARGET_LONG_BITS);
-+    qemu_fdt_setprop_string(fdt, nodename, "riscv,isa-base", isa_base);
-+
-+    isa_extensions = riscv_isa_extensions_list(cpu, &count);
-+    qemu_fdt_setprop_string_array(fdt, nodename, "riscv,isa-extensions",
-+                                  isa_extensions, count);
-+
-+    for (int i = 0; i < count; i++) {
-+        g_free(isa_extensions[i]);
-+    }
-+}
-+#endif
-+
- static gint riscv_cpu_list_compare(gconstpointer a, gconstpointer b)
+-static void pc_q35_8_2_machine_options(MachineClass *m)
++static void pc_q35_8_3_machine_options(MachineClass *m)
  {
-     ObjectClass *class_a = (ObjectClass *)a;
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index bf58b0f0b5..5bbce607c4 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -496,6 +496,7 @@ void riscv_cpu_list(void);
- #define cpu_mmu_index riscv_cpu_mmu_index
+     pc_q35_machine_options(m);
+     m->alias = "q35";
+ }
  
- #ifndef CONFIG_USER_ONLY
-+void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt, char *nodename);
- void riscv_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-                                      vaddr addr, unsigned size,
-                                      MMUAccessType access_type,
++DEFINE_Q35_MACHINE(v8_3, "pc-q35-8.3", NULL,
++                   pc_q35_8_3_machine_options);
++
++static void pc_q35_8_2_machine_options(MachineClass *m)
++{
++    pc_q35_8_3_machine_options(m);
++    m->alias = NULL;
++    m->max_cpus = 1024;
++}
++
+ DEFINE_Q35_MACHINE(v8_2, "pc-q35-8.2", NULL,
+                    pc_q35_8_2_machine_options);
+ 
+@@ -396,7 +406,6 @@ static void pc_q35_8_1_machine_options(MachineClass *m)
+ {
+     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+     pc_q35_8_2_machine_options(m);
+-    m->alias = NULL;
+     pcmc->broken_32bit_mem_addr_check = true;
+     compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
+     compat_props_add(m->compat_props, pc_compat_8_1, pc_compat_8_1_len);
 -- 
-2.39.2
+2.42.0
 
 
