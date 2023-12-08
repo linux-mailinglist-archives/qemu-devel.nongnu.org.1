@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B71780A263
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0EE080A266
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:38:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBZ9D-000427-L4; Fri, 08 Dec 2023 06:35:59 -0500
+	id 1rBZ9G-00049O-Pf; Fri, 08 Dec 2023 06:36:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ98-0003xi-TF
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:35:56 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ9B-00040l-3R
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:35:57 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ8z-0003ev-K9
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:35:54 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-332fd78fa9dso1811329f8f.3
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:35:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ97-0003xN-Ci
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:35:56 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40a4848c6e1so23637585e9.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:35:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702035344; x=1702640144; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702035350; x=1702640150; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s3HTu7y4p69f2n52cu7XGIz5WrQJeOViDCPX2rbiUwY=;
- b=zlmfIsMMeXmmS8TZ5O+7xDFNSB4/0E7NKbYmLQ6umARlB2QHplo+fSsjngYPgE9whh
- zM3j9YQcVdMc/Ojwiyyw6zbCOdKkjBaMY49jfT0BJsPZJsBQ69sR/+vofi1+4OP8GViI
- +AX2ZEHVlQL2j2lCwwnNVCxKRMtjXr3fXCQj+tZ5gtNRfcD++KWXt4AIyP7LcPU81Q71
- Hdx42tFQbNPJWCHYp1ovOD8rCh3e00BSizXBD+kLAs/4wEAHatIpirbcbv1JxI+/PSVU
- MLHY1PnkgzMMcICnT0b+KAaSdcbrEOuUvRcupYHS/W/CBIk7HvzpPHjAuzqtgDY78JF3
- LQrw==
+ bh=uzEnAxgAgPgAskKIL5lE29mKmqmzfiARuWbhtCikfuI=;
+ b=FKIVQFC8wFMkd03omRC6fsPjmQMGrR8U5mT7SDKZC/ZWQXO+zHKgkinPdQtg702yZy
+ TvUebPTnurPsFfuBcfY3xsJ8imYYo6TYfpPbl6JbV2fukaaVCoPcFfnavLw2S+loARy8
+ 07r9jFHV5yDNzKQOk7nX9BtIKGy8EaWPKUxHMVTid4JwBgU4QMmdSTsk4uDX0ZYK6+ga
+ FLWQb1VGsgWa1LjDr9cdj7g7lGcJfSclEk49THY6n3obfVh5tCKMVTU0aK1L/+s8sd/O
+ b0RgN00IEorN2Qs+TUWt8tezjvZaSMxR9YGng5UEBhverVMER97xvNtKjcLbs9Og0k0I
+ Qusw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702035344; x=1702640144;
+ d=1e100.net; s=20230601; t=1702035350; x=1702640150;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s3HTu7y4p69f2n52cu7XGIz5WrQJeOViDCPX2rbiUwY=;
- b=TgcLShghgKt3TEQHMkPkNoRw62A9ypmeIFSnKKsg8yRcKb/v/v1l/K4lhSTQFvzsFV
- 23MPcLgYiYCfE7OWoGkdfMJCLiSh/bOFG2utTH6XB6zSQms09jbF9c/vfn6RPy0LqiRV
- KuuLEnLk9tBdClfiVqoXQ8xCcUNTf2sZyyCAcSWMpLq2nu8SJ9p8IMBvdOdGh8Rj3x3M
- mWbveDOVZgX57an2nimy+YR5oLynWv85EB1dLIWDMs6HSmS54imYo/D2+TiGjqmhS/Hj
- eE2Rh+GLilQXDHNFGAr9CinM85heMf8/RNLGnstQfICf7QsUUXK+5MLTG2LT19OVzxSq
- hLuw==
-X-Gm-Message-State: AOJu0Yx5D/sN9v7XMERykQfIg5ViNIrd5oZDFofd9vk1rM5OEOGz1rI+
- CG1yFdtmC8FvNPjwTqRp4ROonYv5InAw69SEO1Y=
-X-Google-Smtp-Source: AGHT+IFI1RCUXTR5X1JOK0VH3vD7ICrsd1aPR09JZHC+3hvkgLHtXtcIISg+2jKzY9B2TVhlqOaM2A==
-X-Received: by 2002:a5d:4e8e:0:b0:333:3117:c475 with SMTP id
- e14-20020a5d4e8e000000b003333117c475mr1155627wru.262.1702035343902; 
- Fri, 08 Dec 2023 03:35:43 -0800 (PST)
+ bh=uzEnAxgAgPgAskKIL5lE29mKmqmzfiARuWbhtCikfuI=;
+ b=bUqDfPtprgs4ZkQyIrsPNPk7huSSFgMvi2uknQqXJsXDjnPqwytouZcz55rlg4vVVb
+ mbNAfFtNG/HYAbXBHA4WMtIoDDt2V1GBJrwTjIogo4jRhjVFgquW3+jObqCyPCFEgrKp
+ 88TYzDXDuKkiLIHgeqY4NZWwLeYTWPgcPcWQvM6QH85pVJNB/8pNxwbOCesj+iyfdQnp
+ jDM5gN3p1XkAD1QTntXQoAOLIc0yvhK+rXWGVTroAGYFchHs2gfvsknFDo46WQKwg4sl
+ ITAh1pdWUbQcM7flIXKT32OGJhvdZ/2Jl7Ei67yMbU0Dh+unTNVFgmktUZDt7DWnsRsA
+ yGow==
+X-Gm-Message-State: AOJu0YzALmaoSMRT2b29mXxkPC9vYb8EiyTtSN+3FOik8yKeijg/Gd4v
+ DGmfJL/lnRroTYW2azVUu5bDsXeXUN8i7c3kYQY=
+X-Google-Smtp-Source: AGHT+IFfqDQv0a+i++vl/cts5SbpDyzuVXz4EQl1AhSqM3ZPlDjh5GUnmIch3lFG1heT1njSRmWDaA==
+X-Received: by 2002:a05:600c:6025:b0:40c:2a2a:1169 with SMTP id
+ az37-20020a05600c602500b0040c2a2a1169mr1350259wmb.115.1702035350029; 
+ Fri, 08 Dec 2023 03:35:50 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.146.181])
  by smtp.gmail.com with ESMTPSA id
- c15-20020adfe74f000000b0033335644478sm1822835wrn.114.2023.12.08.03.35.42
+ n10-20020a5d4c4a000000b003333abf3edfsm1832772wrt.47.2023.12.08.03.35.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 08 Dec 2023 03:35:43 -0800 (PST)
+ Fri, 08 Dec 2023 03:35:49 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
@@ -62,18 +62,17 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 2/6] system/vl: Evaluate icount after accelerator options
- are parsed
-Date: Fri,  8 Dec 2023 12:35:24 +0100
-Message-ID: <20231208113529.74067-3-philmd@linaro.org>
+Subject: [PATCH v3 3/6] sysemu/cpu-timers: Introduce ICountMode enumerator
+Date: Fri,  8 Dec 2023 12:35:25 +0100
+Message-ID: <20231208113529.74067-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231208113529.74067-1-philmd@linaro.org>
 References: <20231208113529.74067-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,85 +95,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need to parse the accelerators first, to be able
-to check whether TCG is enabled or not. Then we can
-parse the -icount option.
+Rather than having to lookup for what the 0, 1, 2, ...
+icount values are, use a enum definition.
 
-This allows removing the icount_configure() stub.
-
-Fixes: 7f8b6126e7 ("vl: move icount configuration earlier")
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- stubs/icount.c |  8 --------
- system/vl.c    | 16 +++++++++-------
- 2 files changed, 9 insertions(+), 15 deletions(-)
+ include/sysemu/cpu-timers.h | 20 +++++++++++++-------
+ accel/tcg/icount-common.c   | 16 +++++++---------
+ stubs/icount.c              |  2 +-
+ system/cpu-timers.c         |  2 +-
+ target/arm/helper.c         |  3 ++-
+ 5 files changed, 24 insertions(+), 19 deletions(-)
 
-diff --git a/stubs/icount.c b/stubs/icount.c
-index 85c381a0ea..014ae5d8e4 100644
---- a/stubs/icount.c
-+++ b/stubs/icount.c
-@@ -1,5 +1,4 @@
- #include "qemu/osdep.h"
--#include "qapi/error.h"
- #include "sysemu/cpu-timers.h"
+diff --git a/include/sysemu/cpu-timers.h b/include/sysemu/cpu-timers.h
+index b70dc7692d..3f05f29b10 100644
+--- a/include/sysemu/cpu-timers.h
++++ b/include/sysemu/cpu-timers.h
+@@ -17,18 +17,24 @@ void cpu_timers_init(void);
  
  /* icount - Instruction Counter API */
-@@ -10,13 +9,6 @@ void icount_update(CPUState *cpu)
- {
-     abort();
- }
--bool icount_configure(QemuOpts *opts, Error **errp)
--{
--    /* signal error */
--    error_setg(errp, "cannot configure icount, TCG support not available");
--
--    return false;
--}
- int64_t icount_get_raw(void)
- {
-     abort();
-diff --git a/system/vl.c b/system/vl.c
-index 17234012d4..af809331bb 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2270,6 +2270,13 @@ static void user_register_global_props(void)
  
- static int do_configure_icount(void *opaque, QemuOpts *opts, Error **errp)
- {
-+    if (!tcg_enabled()) {
-+        error_setg(errp, "cannot configure icount, TCG support not available");
-+        error_append_hint(errp, "-icount is not allowed with"
-+                                " hardware virtualization\n");
-+        return 1;
-+    }
+-/*
+- * icount enablement state:
++/**
++ * ICountMode: icount enablement state:
+  *
+- * 0 = Disabled - Do not count executed instructions.
+- * 1 = Enabled - Fixed conversion of insn to ns via "shift" option
+- * 2 = Enabled - Runtime adaptive algorithm to compute shift
++ * @ICOUNT_DISABLED: Disabled - Do not count executed instructions.
++ * @ICOUNT_PRECISE: Enabled - Fixed conversion of insn to ns via "shift" option
++ * @ICOUNT_ADAPTATIVE: Enabled - Runtime adaptive algorithm to compute shift
+  */
++typedef enum {
++    ICOUNT_DISABLED = 0,
++    ICOUNT_PRECISE,
++    ICOUNT_ADAPTATIVE,
++} ICountMode;
 +
-     return !icount_configure(opts, errp);
- }
+ #ifdef CONFIG_TCG
+-extern int use_icount;
++extern ICountMode use_icount;
+ #define icount_enabled() (use_icount)
+ #else
+-#define icount_enabled() 0
++#define icount_enabled() ICOUNT_DISABLED
+ #endif
  
-@@ -2339,9 +2346,6 @@ static void configure_accelerators(const char *progname)
+ /*
+diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
+index dc69d6a4c6..f0f8fc7f1c 100644
+--- a/accel/tcg/icount-common.c
++++ b/accel/tcg/icount-common.c
+@@ -49,21 +49,19 @@ static bool icount_sleep = true;
+ /* Arbitrarily pick 1MIPS as the minimum allowable speed.  */
+ #define MAX_ICOUNT_SHIFT 10
+ 
+-/*
+- * 0 = Do not count executed instructions.
+- * 1 = Fixed conversion of insn to ns via "shift" option
+- * 2 = Runtime adaptive algorithm to compute shift
+- */
+-int use_icount;
++/* Do not count executed instructions */
++ICountMode use_icount = ICOUNT_DISABLED;
+ 
+ static void icount_enable_precise(void)
  {
-     bool init_failed = false;
- 
--    qemu_opts_foreach(qemu_find_opts("icount"),
--                      do_configure_icount, NULL, &error_fatal);
--
-     if (QTAILQ_EMPTY(&qemu_accel_opts.head)) {
-         char **accel_list, **tmp;
- 
-@@ -2401,10 +2405,8 @@ static void configure_accelerators(const char *progname)
-         error_report("falling back to %s", current_accel_name());
-     }
- 
--    if (icount_enabled() && !tcg_enabled()) {
--        error_report("-icount is not allowed with hardware virtualization");
--        exit(1);
--    }
-+    qemu_opts_foreach(qemu_find_opts("icount"),
-+                      do_configure_icount, NULL, &error_fatal);
+-    use_icount = 1;
++    /* Fixed conversion of insn to ns via "shift" option */
++    use_icount = ICOUNT_PRECISE;
  }
  
- static void qemu_validate_options(const QDict *machine_opts)
+ static void icount_enable_adaptive(void)
+ {
+-    use_icount = 2;
++    /* Runtime adaptive algorithm to compute shift */
++    use_icount = ICOUNT_ADAPTATIVE;
+ }
+ 
+ /*
+@@ -256,7 +254,7 @@ static void icount_warp_rt(void)
+         int64_t warp_delta;
+ 
+         warp_delta = clock - timers_state.vm_clock_warp_start;
+-        if (icount_enabled() == 2) {
++        if (icount_enabled() == ICOUNT_ADAPTATIVE) {
+             /*
+              * In adaptive mode, do not let QEMU_CLOCK_VIRTUAL run too far
+              * ahead of real time (it might already be ahead so careful not
+diff --git a/stubs/icount.c b/stubs/icount.c
+index 014ae5d8e4..7055c13725 100644
+--- a/stubs/icount.c
++++ b/stubs/icount.c
+@@ -3,7 +3,7 @@
+ 
+ /* icount - Instruction Counter API */
+ 
+-int use_icount;
++ICountMode use_icount = ICOUNT_DISABLED;
+ 
+ void icount_update(CPUState *cpu)
+ {
+diff --git a/system/cpu-timers.c b/system/cpu-timers.c
+index 7452d97b67..6befb82e48 100644
+--- a/system/cpu-timers.c
++++ b/system/cpu-timers.c
+@@ -154,7 +154,7 @@ static bool adjust_timers_state_needed(void *opaque)
+ 
+ static bool icount_shift_state_needed(void *opaque)
+ {
+-    return icount_enabled() == 2;
++    return icount_enabled() == ICOUNT_ADAPTATIVE;
+ }
+ 
+ /*
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 2746d3fdac..adb0960bba 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -934,7 +934,8 @@ static int64_t cycles_ns_per(uint64_t cycles)
+ 
+ static bool instructions_supported(CPUARMState *env)
+ {
+-    return icount_enabled() == 1; /* Precise instruction counting */
++    /* Precise instruction counting */
++    return icount_enabled() == ICOUNT_PRECISE;
+ }
+ 
+ static uint64_t instructions_get_count(CPUARMState *env)
 -- 
 2.41.0
 
