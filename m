@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BFA80995E
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 03:40:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F45380996B
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 03:42:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBQhU-00039g-MZ; Thu, 07 Dec 2023 21:34:48 -0500
+	id 1rBQhV-0003Dm-Er; Thu, 07 Dec 2023 21:34:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rBQhH-0002aQ-IW; Thu, 07 Dec 2023 21:34:36 -0500
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ id 1rBQhJ-0002dT-0p; Thu, 07 Dec 2023 21:34:40 -0500
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rBQhF-0002ti-TV; Thu, 07 Dec 2023 21:34:35 -0500
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2ca0c36f5beso20183971fa.1; 
- Thu, 07 Dec 2023 18:34:31 -0800 (PST)
+ id 1rBQhH-0002uC-HV; Thu, 07 Dec 2023 21:34:36 -0500
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2c9e9c2989dso19467011fa.0; 
+ Thu, 07 Dec 2023 18:34:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702002870; x=1702607670; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702002873; x=1702607673; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pjKhO+PzqqrLoVjDzrdEJqubBSeVITy6r+qEgUKg3Ec=;
- b=hah7HyQDA9bh6DYhYsXFkI7TnDjoank+PLHho5qSc0SLcYEov55A5wo8NphQ/L3/HQ
- 5/52CjB1o+8tOpnrhHmugDZx2QjC5cEJjvreIAwfGWss0R/Kb7FL57FFLc3q+OUBp7yT
- nY+JobeDhtga2lk/bpDMtzeVMbpKpRh300j3kALZCQNGb8BuLZGV3g/7nXajnI7SdMfs
- W9X6hlgumDxYkPcQaku3GQJ0DxpzDhehP0dCi7AtBThnSs7MqfAYhsk5dsumVL+disOv
- X16Zv5DCSYycpAvrQANwNb1fqUy86mO2Ca4vu8jy0k4Url3usPk4OzVtC9FYLWTBGnhu
- 1dVA==
+ bh=igayQuYX/F7iH3RNFaYv1D/3MuPEz8Ua3kpb9vPSfPs=;
+ b=ldMnbRvMy2xPbadzRIHH9rqNKFWldjwWNQb4yLT8b04GBedQPUik8LadcmGSpwmp0T
+ ddJVXtoppAmwKc5YGlO5U8myDwPIAomgM8yKBh7XfPz4vWVsOMALoMuOBSQnfwclizLD
+ hHS6wSpxDzxr9jYK/Kram00SHgynwB7djCVdZHuGRopmj+CiFPscB0kcGLPRkoq1HkyE
+ XyKbNacxioEGFc4760mTBh2kZi+Wen6ssDlLzEekvhTrxpIia+3Ic1HPTHpNMdv2BL1N
+ txRbnxZvrRcW4+GCSCNrMxUhO02QlSG8Qk/UJT6v+UDdSYgdeNkJVZky83Y90GWsDgcQ
+ EKSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702002870; x=1702607670;
+ d=1e100.net; s=20230601; t=1702002873; x=1702607673;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pjKhO+PzqqrLoVjDzrdEJqubBSeVITy6r+qEgUKg3Ec=;
- b=BrD8uS1zjVB6X4ed8ZtZkQzyqgChIDzizzzccP7Yb+FTX31dDZJhgZcc6r7OcBgSrL
- WPXa5yJU0GMf/635sTpM6lSOi8wSNg5/tl7MvYScwx69jtpkn+dDNjiGt33H5WtcfOvS
- ygAWOFCUw/D7KSO0xuCMP1NRugA54YBc4eaqtJVbwaBG8FeWlA4GysGFBjVgRG5l+VhB
- yOJglIqdSL5wqsfZkGCNzXmzOYjENfBa5y+dR6j3zU9bTjyeqJdo0hwjEHuipQIJWmc/
- JLUgjBPb9Ihd28jUIC5qJQqzLiVmCZUiV801MJQC2mgv4iEP2/tBHu9uWF4X87oTNW4g
- 7LMA==
-X-Gm-Message-State: AOJu0YzSsdDu/IKlbgx2JjMFNNKchszSIIPRZF6d9jh5T0KGfz2HyuGt
- 17bjVmf75XBLrp+2WWJIuP2E6uDZbEDWwQ==
-X-Google-Smtp-Source: AGHT+IEzEWnYTFKjPgzeN8N7M8cNRow2A0H0W8kIwgYUWutH2BO2EY4RkDFsQxrjRhXe0wycjKLQSA==
-X-Received: by 2002:a2e:99d8:0:b0:2ca:3c4:3443 with SMTP id
- l24-20020a2e99d8000000b002ca03c43443mr2050428ljj.80.1702002870010; 
- Thu, 07 Dec 2023 18:34:30 -0800 (PST)
+ bh=igayQuYX/F7iH3RNFaYv1D/3MuPEz8Ua3kpb9vPSfPs=;
+ b=chDT1C3H5i85mjFPldW+c4T8eqNa3DIrEHeOxrjKMWiRt/li+xy+LaeV86IjuHbW63
+ khHIptpflu16+lxvHx7xxKdDxCZFrz7sQRkQ+qNgkArWdEBtMd/uS/o8CEFznWG7iHsZ
+ Ts1SL8EssobayIVy+1sHJd+0V0nlWj3YGwVJfcvn8qOYMHe5Gf77HHM9O9VddxeD7hGp
+ 10G7FB3ezBpYEnZIiXEICazL9EfT3pV6xEFogSIAjWYbmNNZcOOv8h676sZHI6GhmuWb
+ Dy+pllDZev7bhgn0ro8tHHnmyItQZ13W0pHGGSzQsBvRwSfMyVMq6y0tKvyVaFCd2txF
+ L1sg==
+X-Gm-Message-State: AOJu0YxqN3QbsuC9T5NdAwDV2GL+KaoZB9OQ3KfxChGM0MZ0fQrzff9X
+ DJ7+LlbTIy/aigSy6Cc2TtOYe89HWdfzwA==
+X-Google-Smtp-Source: AGHT+IF1j3ekbAelZttIPVfoyZKrF2gFAGVYTRMZKh3a9KWunbkPs0ZLnovvA3+M8zOyW2gIwTWiAA==
+X-Received: by 2002:a2e:a7cf:0:b0:2ca:227a:ebb2 with SMTP id
+ x15-20020a2ea7cf000000b002ca227aebb2mr2312302ljp.0.1702002873226; 
+ Thu, 07 Dec 2023 18:34:33 -0800 (PST)
 Received: from localhost.localdomain ([185.200.240.39])
  by smtp.gmail.com with ESMTPSA id
- r1-20020a2e94c1000000b002c9e6cbf78esm99062ljh.19.2023.12.07.18.34.26
+ r1-20020a2e94c1000000b002c9e6cbf78esm99062ljh.19.2023.12.07.18.34.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Dec 2023 18:34:29 -0800 (PST)
+ Thu, 07 Dec 2023 18:34:32 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v4 44/45] Append added properties to mailbox test
-Date: Thu,  7 Dec 2023 20:31:44 -0600
-Message-Id: <20231208023145.1385775-45-sergey.kambalin@auriga.com>
+Subject: [PATCH v4 45/45] Add RPi4B to paspi4.rst
+Date: Thu,  7 Dec 2023 20:31:45 -0600
+Message-Id: <20231208023145.1385775-46-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
 References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=serg.oker@gmail.com; helo=mail-lj1-x22e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=serg.oker@gmail.com; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,70 +93,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- tests/qtest/bcm2838-mbox-property-test.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ docs/system/arm/raspi.rst | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qtest/bcm2838-mbox-property-test.c b/tests/qtest/bcm2838-mbox-property-test.c
-index 1b4a2ed9cb..3a2e7f9194 100644
---- a/tests/qtest/bcm2838-mbox-property-test.c
-+++ b/tests/qtest/bcm2838-mbox-property-test.c
-@@ -269,6 +269,12 @@ DECLARE_TEST_CASE_SETUP(GET_MIN_CLOCK_RATE, ANY) {
-     tag->request.value.clock_id = CLOCK_ID_UNDEFINED;
- }
+diff --git a/docs/system/arm/raspi.rst b/docs/system/arm/raspi.rst
+index 922fe375a6..db9e0949ef 100644
+--- a/docs/system/arm/raspi.rst
++++ b/docs/system/arm/raspi.rst
+@@ -1,5 +1,5 @@
+-Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``)
+-======================================================================================
++Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``, ``raspi4b-2g``)
++======================================================================================================
  
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_CLOCKS) {
-+    g_assert_cmphex(tag->response.value.root_clock, ==, CLOCK_ID_ROOT);
-+    g_assert_cmphex(tag->response.value.arm_clock, ==, CLOCK_ID_ARM);
-+}
-+
- /*----------------------------------------------------------------------------*/
- DECLARE_TEST_CASE(GET_TEMPERATURE) {
-     g_assert_cmphex(tag->response.value.temperature_id, ==, TEMPERATURE_ID_SOC);
-@@ -535,17 +541,19 @@ DECLARE_TEST_CASE(GET_COMMANDLINE) {
-     /* No special checks are needed for this test case */
- }
  
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_THROTTLED) {
-+    g_assert_cmpint(tag->response.value.throttled, ==, 0);
-+}
-+
- /*----------------------------------------------------------------------------*/
- DECLARE_TEST_CASE(GET_NUM_DISPLAYS) {
-     g_assert_cmpint(tag->response.value.num_displays, ==, 1);
- }
+ QEMU provides models of the following Raspberry Pi boards:
+@@ -12,12 +12,13 @@ QEMU provides models of the following Raspberry Pi boards:
+   Cortex-A53 (4 cores), 512 MiB of RAM
+ ``raspi3b``
+   Cortex-A53 (4 cores), 1 GiB of RAM
+-
++``raspi4b-2g``
++  Cortex-A72 (4 cores), 2 GiB of RAM
  
- /*----------------------------------------------------------------------------*/
--DECLARE_TEST_CASE(SET_PITCH) {
--    /* No special checks are needed for this test case */
--}
--DECLARE_TEST_CASE_SETUP(SET_PITCH) {
--    tag->request.value.pitch = DUMMY_VALUE;
-+DECLARE_TEST_CASE(INITIALIZE_VCHIQ) {
-+    g_assert_cmpint(tag->response.value.zero, ==, 0);
- }
+ Implemented devices
+ -------------------
  
- /*----------------------------------------------------------------------------*/
-@@ -571,6 +579,7 @@ int main(int argc, char **argv)
-     QTEST_ADD_TEST_CASE(GET_CLOCK_RATE, ANY);
-     QTEST_ADD_TEST_CASE(GET_MAX_CLOCK_RATE, ANY);
-     QTEST_ADD_TEST_CASE(GET_MIN_CLOCK_RATE, ANY);
-+    QTEST_ADD_TEST_CASE(GET_CLOCKS);
-     QTEST_ADD_TEST_CASE(GET_TEMPERATURE);
-     QTEST_ADD_TEST_CASE(GET_MAX_TEMPERATURE);
-     QTEST_ADD_TEST_CASE(ALLOCATE_BUFFER);
-@@ -604,8 +613,9 @@ int main(int argc, char **argv)
-     QTEST_ADD_TEST_CASE(SET_OVERSCAN);
-     QTEST_ADD_TEST_CASE(GET_DMA_CHANNELS);
-     QTEST_ADD_TEST_CASE(GET_COMMANDLINE);
-+    QTEST_ADD_TEST_CASE(GET_THROTTLED);
-     QTEST_ADD_TEST_CASE(GET_NUM_DISPLAYS);
--    QTEST_ADD_TEST_CASE(SET_PITCH);
-+    QTEST_ADD_TEST_CASE(INITIALIZE_VCHIQ);
+- * ARM1176JZF-S, Cortex-A7 or Cortex-A53 CPU
++ * ARM1176JZF-S, Cortex-A7, Cortex-A53 or Cortex-A72 CPU
+  * Interrupt controller
+  * DMA controller
+  * Clock and reset controller (CPRMAN)
+@@ -33,6 +34,8 @@ Implemented devices
+  * USB2 host controller (DWC2 and MPHI)
+  * MailBox controller (MBOX)
+  * VideoCore firmware (property)
++ * PCIE Root Port (raspi4b-2g)
++ * GENET Ethernet Controller (raspi4b-2g)
  
-     return g_test_run();
- }
+ 
+ Missing devices
 -- 
 2.34.1
 
