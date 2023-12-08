@@ -2,87 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7003680A00B
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 10:55:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD84980A023
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 11:00:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBXYX-0004YQ-Uw; Fri, 08 Dec 2023 04:54:01 -0500
+	id 1rBXdx-0005dz-8P; Fri, 08 Dec 2023 04:59:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rBXYU-0004XB-MC
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:53:59 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rBXYT-0002q6-3b
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:53:58 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40b5155e154so22575655e9.3
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 01:53:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702029235; x=1702634035; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=I0ELGUhAy/igS5kZdXJsHK8JqU0OG8UxLp8HJlefHQs=;
- b=A9QldCYs6vpFcruP+Zp+OlxBo/hZ7JQl0ELyOwVIRy0Sw1d5CrseyT5Po6JTivVzfi
- t9R4EOhN+7CdTu+GyPFiR5NiVQ7KUlxIXGqHojIi8xfob5T8lVbqnpTEMjAumDZlflja
- +jbsF/HfDSk3sTVyWzbwO1WtwOLczV/X9pnok1H9BOnbS4rHRQiwgDqQV6jdkt+8Y8UQ
- x2zlcOxpUFGclw38PCH26M8Mzc7DqzFfAZeAHuUC16i9+5uwQnbx86P9Sz9Tm1B2A0PN
- TeV1fAW3+ZpRA51EYwd/iBOEM9LmhPeYQJ6SfDTAu4cxvOVYvCpXWWOyABV9+TU+iTx3
- qNOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702029235; x=1702634035;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=I0ELGUhAy/igS5kZdXJsHK8JqU0OG8UxLp8HJlefHQs=;
- b=aSW7iz7B8IbOtHHLS9aA+kQLxe+y42+IyjbZ+Z3iehhhRrzXoTyrU2y10HYmmOABi1
- QGOybXMtx6LpEtHeNu1fcKuhDS6DHJVbHnmqmmW10BHMyTPGOBewAzI0JQqInk7XO5od
- sMMsL7WeSlLivnQhu9p6r4r+0bl2+MIjO5hHRlCskVFLq9+TIEwjwcEdtkgJbWUi98w8
- t3GxcSepjTxzf0eXTtNAm2USFnnE87qD520aWd5hV4xOca7pnzOtD0ptjhLdj1cA7oGp
- qviZh2QrjhSDYtWAIPWJiCSXuypcllCy9eBDxpk2lLBKIWHC7gaxWqNdwe9JAyTei5V8
- o+yw==
-X-Gm-Message-State: AOJu0YxyPKXYYPfWPV74dTCH+E91smBBsSGvN44T1suQ45adVK7gjQKT
- PPLg815rJhfB7s3zG0JR7rvDig==
-X-Google-Smtp-Source: AGHT+IEq2qAdOSLa3EUo2FUbY3ib8qqQx2MuAH8OBGCT6k6MnwpnFV6aPwsXHh1oZRTnSdtB1AwnFg==
-X-Received: by 2002:a05:600c:4ca5:b0:40c:2630:1743 with SMTP id
- g37-20020a05600c4ca500b0040c26301743mr1639857wmp.84.1702029235348; 
- Fri, 08 Dec 2023 01:53:55 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- b5-20020a5d4d85000000b003333521a1cesm1647636wru.57.2023.12.08.01.53.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Dec 2023 01:53:55 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AC22C5FB61;
- Fri,  8 Dec 2023 09:53:54 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Laurent Vivier <laurent@vivier.eu>,  Peter Xu
- <peterx@redhat.com>,  David Hildenbrand <david@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 3/4] accel/tcg: Remove #ifdef TARGET_I386 from perf.c
-In-Reply-To: <20231208003754.3688038-4-iii@linux.ibm.com> (Ilya Leoshkevich's
- message of "Fri, 8 Dec 2023 01:35:35 +0100")
-References: <20231208003754.3688038-1-iii@linux.ibm.com>
- <20231208003754.3688038-4-iii@linux.ibm.com>
-User-Agent: mu4e 1.11.26; emacs 29.1
-Date: Fri, 08 Dec 2023 09:53:54 +0000
-Message-ID: <87edfxxbnx.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1rBXdv-0005dm-1p
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:59:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1rBXdt-0003vT-78
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:59:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702029572;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=y+KxdY+qCST9E8+OQxXVW2cgeDlhihThVwBNplCEp+Q=;
+ b=AU5eTmDqU/8fUbt+LBmmO9A4qlcUxIKw6LgN64MsWOfTXtF+ifV1Pv1pfXgQfA6A/LA6Qq
+ yhnX3M4crfRaru2dW2DKuyEYnqHL3TRbYB57us043fGvqKPXGoG/I4RbqheCdDB2zekEBP
+ 7LMln0ju4ppkMQ22dEtF5+jijcuP6+o=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-422-WeSCDRK4Ni-DyZOFlBW-_A-1; Fri, 08 Dec 2023 04:59:26 -0500
+X-MC-Unique: WeSCDRK4Ni-DyZOFlBW-_A-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CCAEF83106C;
+ Fri,  8 Dec 2023 09:59:25 +0000 (UTC)
+Received: from localhost (unknown [10.42.28.15])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8CF8C40C6EB9;
+ Fri,  8 Dec 2023 09:59:25 +0000 (UTC)
+Date: Fri, 8 Dec 2023 09:59:24 +0000
+From: "Richard W.M. Jones" <rjones@redhat.com>
+To: Michael Young <m.a.young@durham.ac.uk>
+Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH] fix qemu build with xen-4.18.0
+Message-ID: <20231208095924.GB23257@redhat.com>
+References: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
+ <20231208084707.GA23257@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231208084707.GA23257@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=rjones@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,46 +83,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ilya Leoshkevich <iii@linux.ibm.com> writes:
+On Fri, Dec 08, 2023 at 08:47:07AM +0000, Richard W.M. Jones wrote:
+> (Adding Xen maintainers)
+> 
+> On Thu, Dec 07, 2023 at 11:12:48PM +0000, Michael Young wrote:
+> > Builds of qemu-8.2.0rc2 with xen-4.18.0 are currently failing
+> > with errors like
+> > ../hw/arm/xen_arm.c:74:5: error: ‘GUEST_VIRTIO_MMIO_SPI_LAST’ undeclared (first use in this function)
+> >    74 |    (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_FIRST)
+> >       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> > 
+> > as there is an incorrect comparision in include/hw/xen/xen_native.h
+> > which means that settings like GUEST_VIRTIO_MMIO_SPI_LAST
+> > aren't being defined for xen-4.18.0
+> > 
+> > Signed-off-by: Michael Young <m.a.young@durham.ac.uk>
+> 
+> Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
 
-> Preparation for moving perf.c to tcg/.
->
-> This affects only profiling guest code, which has code in a non-0 based
-> segment, e.g., 16-bit code, which is not particularly important.
+I added this patch to Fedora, which has Xen 4.18 and where
+builds were previously failing, and now it's working:
 
-I have no objection to removing the wart. Is it worth adding a note:: to
-tcg.rst to say that profiles of 16-bit x64 code will be junk?
+https://koji.fedoraproject.org/koji/taskinfo?taskID=110043878
 
-Anyway:
+So also adding:
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Tested-by: Richard W.M. Jones <rjones@redhat.com>
 
->
-> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->  accel/tcg/perf.c | 4 ----
->  1 file changed, 4 deletions(-)
->
-> diff --git a/accel/tcg/perf.c b/accel/tcg/perf.c
-> index ba75c1bbe45..68a46b1b524 100644
-> --- a/accel/tcg/perf.c
-> +++ b/accel/tcg/perf.c
-> @@ -337,10 +337,6 @@ void perf_report_code(uint64_t guest_pc, Translation=
-Block *tb,
->          q[insn].address =3D gen_insn_data[insn * start_words + 0];
->          if (tb_cflags(tb) & CF_PCREL) {
->              q[insn].address |=3D (guest_pc & qemu_target_page_mask());
-> -        } else {
-> -#if defined(TARGET_I386)
-> -            q[insn].address -=3D tb->cs_base;
-> -#endif
->          }
->          q[insn].flags =3D DEBUGINFO_SYMBOL | (jitdump ? DEBUGINFO_LINE :=
- 0);
->      }
+Rich.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> > ---
+> >  include/hw/xen/xen_native.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
+> > index 6f09c48823..04b1ef4d34 100644
+> > --- a/include/hw/xen/xen_native.h
+> > +++ b/include/hw/xen/xen_native.h
+> > @@ -532,7 +532,7 @@ static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
+> >  }
+> >  #endif
+> >  
+> > -#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41700
+> > +#if CONFIG_XEN_CTRL_INTERFACE_VERSION >= 41700
+> >  #define GUEST_VIRTIO_MMIO_BASE   xen_mk_ullong(0x02000000)
+> >  #define GUEST_VIRTIO_MMIO_SIZE   xen_mk_ullong(0x00100000)
+> >  #define GUEST_VIRTIO_MMIO_SPI_FIRST   33
+> > -- 
+> > 2.43.0
+> > 
+> 
+> -- 
+> Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
+> Read my programming and virtualization blog: http://rwmj.wordpress.com
+> libguestfs lets you edit virtual machines.  Supports shell scripting,
+> bindings from many languages.  http://libguestfs.org
+> 
+
+-- 
+Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
+Read my programming and virtualization blog: http://rwmj.wordpress.com
+libguestfs lets you edit virtual machines.  Supports shell scripting,
+bindings from many languages.  http://libguestfs.org
+
 
