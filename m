@@ -2,71 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7BA80A1AB
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:00:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A71E80A1B1
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:01:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBYZm-0002Bj-79; Fri, 08 Dec 2023 05:59:22 -0500
+	id 1rBYbB-0002u6-Bs; Fri, 08 Dec 2023 06:00:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rBYZi-0002BA-TJ
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 05:59:20 -0500
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1rBYaU-0002k7-Ui
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:00:08 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rBYZg-00078f-Tv
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 05:59:18 -0500
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-54bf9a54fe3so2783599a12.3
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 02:59:16 -0800 (PST)
+ id 1rBYaS-0007zR-15
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:00:05 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2cb20c82a79so7923061fa.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:00:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702033155; x=1702637955; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702033202; x=1702638002; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qkjgn4ZvUHpr4/3qC3pPsfAMu7ry/ihF7Qc14QbAkKw=;
- b=VWkPnzkfjbjiv1h9x7yovnB7yA8c508Ku1Ypa9/g2Buv4r8fpLVQaMX2sZuyywzOlj
- vIl5bWqI0FrVBAnXbrSkEHtSu0kuUYo3VQUt0lBRciY9TnmZ/kMULZU7bQ0OqsZNyFPs
- bbvJ3iqf3XNxLgF25MMhxAsIb8jmLZmJZx4UCZ6LnXQUTZqoFFHI3gFEuNEvM/ARpyx8
- 0QihqR+8yrZ52jbbHOA9tA/Z40EuvF831O3sPN2Atskrm8B6assCoo7b29NL09Q3mPy+
- IY5+3Rpa8IDFThGS+VXkL+14DRhW2qdYfy/WmXpQduWLUegxEhBcoEV0hxMZX21lpXoq
- 7F8Q==
+ bh=IgAEyjXcA6+XsFXPCGoIawIS9X69PWGz3B+P/ILXyTA=;
+ b=hGLMt6sU6xpJ1wSTXePmhkWy13gImadNGj2kZ0arm1ZjLPF8uzAaRBoHfSxwRoDc7q
+ Z1n7aNTcq97Gk/UfsVlus4n/UTU3XAF+BjCfVUpLZPaAydFq33HTZD+zfqUuspJvNOrq
+ OJOYAo1vOZMHXTSNo1ZpyeYBrjNc0iUOsyF7hUZ0DIK/trIuBch4/WSLBOrzF5JOQitT
+ azp123V0urumAWQSj/KhW2/W8vya4qjQPi1X2hAbhwdowXiGSBszZ2bpOQEERFYiNHaI
+ mN1zb1cB+2yKVERkRhQCQWMs9JI+884mCi0en2tEWo/cZLe6nfmwg3MT1tmv+W+uo7WI
+ OEJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702033155; x=1702637955;
+ d=1e100.net; s=20230601; t=1702033202; x=1702638002;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qkjgn4ZvUHpr4/3qC3pPsfAMu7ry/ihF7Qc14QbAkKw=;
- b=QMc1gVntlG6KxftbKzquIT1Cri2pOsDA0xbc1ZFUs3uPtRncUWe+Hv4EvurjujgoSJ
- lg5P7PyesLkBFqAApZddKKNCLVicndFZS96iS+zJew1wyV1/f7H8E5iwot5+IgrDBTn7
- IgUwYjrlm5NLINAKMNYPdkXnHVYAhBE/bskq+ivQ2yn7jEVSPiryBkFpYDaiP5174g5B
- 5VE3Bbmo8GtmiYydaBho1vXZMB4em+iZ0xver/vnETY2Wn+vQ8ylv6FRXy4pcBPx5Q0v
- UXoV4IW7TvRcgqX1GaWrEA1eZvmWK/rjJGbCWsuCcAsIC1udWodXwSE20DEEBqPptpha
- nBvQ==
-X-Gm-Message-State: AOJu0YwGV2FAPumQZgcHG+ea+RlWi4n/tvPNW4epB/22Ts8B/NiG+Jks
- s/RC7BFu/fGr2FgsE0LesBjRwHavMwtQbxliMHOsog==
-X-Google-Smtp-Source: AGHT+IHSH2BX+n+iWKMVbpkncXYwy6UARP2osuDuEL9sVT+ph2vIcU9f2ob/uXO3Ixhg1zwGRXAYjDleC/egBFh/nxo=
-X-Received: by 2002:a50:d74f:0:b0:54c:4837:9a8d with SMTP id
- i15-20020a50d74f000000b0054c48379a8dmr2081349edj.52.1702033155357; Fri, 08
- Dec 2023 02:59:15 -0800 (PST)
+ bh=IgAEyjXcA6+XsFXPCGoIawIS9X69PWGz3B+P/ILXyTA=;
+ b=h6j7K9/A/aX8G45FfCNXGAcc49KbvxXcZONBAAGn2ie0OL6oW/TsPOkP/nwrEfdIuQ
+ FDjy7XElGrvvlxhj2u7DZaZSuXkr964Jh5oZSEl3rOW58vc8ipUklXPdKMXjfWs3Vx86
+ tvZKP3gTNH2fOikTq9UM6gPYOmVC7KM5srBSSeqRt+uvT+9u4nP6xrBa+O2X4sHnfeNP
+ h+0uLjBT0pW2Jjfujr3OSmWM0fru2RRZcttawNwcgm2TJalDwkecSRMjosF7tepNNlXY
+ dVY3CTla7DzeFH1fM8qGQC16wSd4j24XqWgNvfnR4E3fBUGcZVewtDHzWm306qvNVMeU
+ mchg==
+X-Gm-Message-State: AOJu0YxGirUIGfjFS5aYd6QKlFWLx6jD+3iE+diJVcylJOAvGuF2rjoZ
+ y4cVFHvTJwkHcm+ORTLhqGwyw0k3uQrkSnLeEpz4sw==
+X-Google-Smtp-Source: AGHT+IH7P2rvcP0+mAak74CNK22ibeT93WwBRQRavQCQSlJAjyqy2ExYXRjgboMJPzh6uyEJOhn11SpFShaC6isc42A=
+X-Received: by 2002:a05:651c:117:b0:2c9:ffd9:3c0a with SMTP id
+ a23-20020a05651c011700b002c9ffd93c0amr2277939ljb.37.1702033201910; Fri, 08
+ Dec 2023 03:00:01 -0800 (PST)
 MIME-Version: 1.0
-References: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
- <ZXLg_YCHM-P6drQV@redhat.com>
-In-Reply-To: <ZXLg_YCHM-P6drQV@redhat.com>
+References: <20231207154550.65087-1-philmd@linaro.org>
+ <20231207154550.65087-3-philmd@linaro.org>
+ <9508bf5e-a554-468f-ba94-4d6f1a5be7bf@linaro.org>
+ <323be810-5f4e-4218-812a-7c0ebc858599@linaro.org>
+In-Reply-To: <323be810-5f4e-4218-812a-7c0ebc858599@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Dec 2023 10:59:03 +0000
-Message-ID: <CAFEAcA8HXWEPbx2fKEg_kscdEnNpGCJVO9jqgD1YDpULYp_yDw@mail.gmail.com>
-Subject: Re: [PATCH] fix qemu build with xen-4.18.0
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Michael Young <m.a.young@durham.ac.uk>, qemu-devel@nongnu.org, 
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>
+Date: Fri, 8 Dec 2023 10:59:51 +0000
+Message-ID: <CAFEAcA-HVf8vWLzmdStEo2NrSKQdZV612rBjiaj-gLW4vXyvpA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] target/arm: Ensure icount is enabled when
+ emulating INST_RETIRED
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Fam Zheng <fam@euphon.net>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,38 +94,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 09:25, Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
-wrote:
+On Fri, 8 Dec 2023 at 10:36, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
 >
-> CC'ing the Xen folks
->
-> On Thu, Dec 07, 2023 at 11:12:48PM +0000, Michael Young wrote:
-> > diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-> > index 6f09c48823..04b1ef4d34 100644
-> > --- a/include/hw/xen/xen_native.h
-> > +++ b/include/hw/xen/xen_native.h
-> > @@ -532,7 +532,7 @@ static inline int xendevicemodel_set_irq_level(xend=
-evicemodel_handle *dmod,
-> >  }
-> >  #endif
+> On 7/12/23 23:12, Richard Henderson wrote:
+> > On 12/7/23 07:45, Philippe Mathieu-Daud=C3=A9 wrote:
+> >> pmu_init() register its event checking the pm_event::supported()
+> >> handler. For INST_RETIRED, the event is only registered and the
+> >> bit enabled in the PMU Common Event Identification register when
+> >> icount is enabled as ICOUNT_PRECISE.
+> >>
+> >> Assert the pm_event::get_count() and pm_event::ns_per_count()
+> >> handler will only be called under this icount mode.
+> >>
+> >> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> >> ---
+> >>   target/arm/helper.c | 2 ++
+> >>   1 file changed, 2 insertions(+)
+> >>
+> >> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> >> index adb0960bba..333fd5f4bf 100644
+> >> --- a/target/arm/helper.c
+> >> +++ b/target/arm/helper.c
+> >> @@ -940,11 +940,13 @@ static bool instructions_supported(CPUARMState
+> >> *env)
+> >>   static uint64_t instructions_get_count(CPUARMState *env)
+> >>   {
+> >> +    assert(icount_enabled() =3D=3D ICOUNT_PRECISE);
+> >>       return (uint64_t)icount_get_raw();
+> >>   }
+> >>   static int64_t instructions_ns_per(uint64_t icount)
+> >>   {
+> >> +    assert(icount_enabled() =3D=3D ICOUNT_PRECISE);
+> >>       return icount_to_ns((int64_t)icount);
+> >>   }
+> >>   #endif
 > >
-> > -#if CONFIG_XEN_CTRL_INTERFACE_VERSION <=3D 41700
-> > +#if CONFIG_XEN_CTRL_INTERFACE_VERSION >=3D 41700
+> > I don't think an assert is required -- that's exactly what the
+> > .supported field is for. If you think this needs additional
+> > clarification, a comment is sufficient.
 >
-> This change is not correct
+> Without this I'm getting this link failure with TCG disabled:
 >
-> We can see the upstream change was introduced in 4.17:
->
->   $ git describe  2128143c114
->   4.16.0-rc4-967-g2128143c11
->
-> IOW, if we have 4.17 or newer these constants already
-> exist. If we have 4.16 or older, then we need to define
-> them to provide back compat.
+> ld: Undefined symbols:
+>    _icount_to_ns, referenced from:
+>        _instructions_ns_per in target_arm_helper.c.o
+> clang: error: linker command failed with exit code 1 (use -v to see
+> invocation)
 
-Wouldn't that suggest we want "< 41700" ? Or did 4.17 have
-some issue that means we need the back-compat there too?
+I think we should fix this earlier by not trying to enable
+these TCG-only PMU event types in a non-TCG config.
 
-thanks
 -- PMM
 
