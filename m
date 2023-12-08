@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC1A80A258
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F063E80A261
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:37:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBZ8G-0003Yw-L9; Fri, 08 Dec 2023 06:35:00 -0500
+	id 1rBZ9D-00041i-ML; Fri, 08 Dec 2023 06:35:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rBZ8E-0003Yn-30
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:34:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rBZ8A-0002fy-Bs
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:34:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702035292;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=r1B1maFPPqFgin+2zCtuv6pVj7mTedmDKhfNu1c8Twc=;
- b=Uv3ztx2xoDFcNKNpGZDDlWAj/JgHuug0DByoxR/dAEb9Kq/0Mo0RoLkA6F1jwV6sxlYPUU
- 4kw4nSSSUqFGJsg7ih/draLL1fvb9KjkkisahYB+/YyIFLUmV08RyXe+sES97s7UCrVfMP
- l3BvasbRV+Dfum+5jn/mp2h+dhkB8jQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-B9NAYgWjPBqo2Zc7OrdLLQ-1; Fri, 08 Dec 2023 06:34:49 -0500
-X-MC-Unique: B9NAYgWjPBqo2Zc7OrdLLQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D2B8885A589;
- Fri,  8 Dec 2023 11:34:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.46])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DA1692166B35;
- Fri,  8 Dec 2023 11:34:47 +0000 (UTC)
-Date: Fri, 8 Dec 2023 11:34:45 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Michael Young <m.a.young@durham.ac.uk>, qemu-devel@nongnu.org,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>
-Subject: Re: [PATCH] fix qemu build with xen-4.18.0
-Message-ID: <ZXL_VWhSsTG8Sugj@redhat.com>
-References: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
- <ZXLg_YCHM-P6drQV@redhat.com>
- <CAFEAcA8HXWEPbx2fKEg_kscdEnNpGCJVO9jqgD1YDpULYp_yDw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ97-0003wr-2T
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:35:54 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBZ8o-0003NX-UM
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:35:51 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-332c46d5988so2074734f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:35:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702035332; x=1702640132; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0bGgQr6byLDy4jY9fxc2ABAiH5gCgejb87jGCILL1Kk=;
+ b=ugonQN7TvEdtddE34ujJPoiukY1xjft7seRajcC9W4ccT8ljOqcKDvGV1hIEup+iWV
+ jQnAcHPVYmAHtzkP8A7gtKCbkOU+Mo12v3yLKNr3FlEq0/tTBssKIVKpvtN1f/RU6Nao
+ J6l3dEkHaHo9mqEs09FkDe+ENRtIwmyxoRh/D5PKXrGI1yaa0BivlurGPEkzpXZXo3nl
+ xca5L/WKrdPsbivYH9OmqjWfFz275eHnQXW5zY230hJ9jNT/sAymh3XlVdYfykvivZqF
+ 1D5/KBQk5y2Obq3LLwsK8kgSDuMRS6kCDkaBuCDofe8Y/+n+g3TRog3ehrkG7GsO8kVh
+ IZbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702035332; x=1702640132;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0bGgQr6byLDy4jY9fxc2ABAiH5gCgejb87jGCILL1Kk=;
+ b=fAhdPkneAOy6xYgbb5RfiUnazyKporhd0VO46BWK5RVJkmCVbQUJSBxBF4JXahyyEz
+ oe3+KK80zIAluZtMoLnmdLgfSazpFm4ZMzHERnWMqeZpX02QT1HmFNI41Dgh5iD/TwWu
+ DJ+DPqQ5Zn5zOPh/YBU9JxlxRdg7REqa0YFeJ6ksRwWgASnnept7ahi6MWgK/Bp2ULoo
+ EBm5fZ8QKUWykreGsFAzTA+gaV9nuUvpK8jWsUrFfQtbRpAis6mwI2w1IfxxYX+1RIK2
+ PQ3lU0F37udXKK08RNcmEuiZWd70qXN5v78CWmxrUTHh8mbgGcjRgvo5zG1gZuIt6Q48
+ pDuw==
+X-Gm-Message-State: AOJu0YyCbQueuuP8N9oALiMgUq0XyP9bER0H28+d200H2HTePtjbgeUL
+ JCGTx2LBR604gUuhh9IEXMVIEndxiaEM+XGIXas=
+X-Google-Smtp-Source: AGHT+IFqwC7Iu5IEcPpgQMc3P3EoveoD8+7iL1/OJPPJ2Z5etkYdrUNsGSsaLW1s+sh6Qj5aIxZbfA==
+X-Received: by 2002:a5d:448a:0:b0:31a:ed75:75df with SMTP id
+ j10-20020a5d448a000000b0031aed7575dfmr2319997wrq.15.1702035331963; 
+ Fri, 08 Dec 2023 03:35:31 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.146.181])
+ by smtp.gmail.com with ESMTPSA id
+ j4-20020a5d4644000000b003333bd63792sm1821183wrs.117.2023.12.08.03.35.30
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 08 Dec 2023 03:35:31 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Fam Zheng <fam@euphon.net>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 0/6] sysemu/replay: Restrict icount to TCG system emulation
+Date: Fri,  8 Dec 2023 12:35:22 +0100
+Message-ID: <20231208113529.74067-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA8HXWEPbx2fKEg_kscdEnNpGCJVO9jqgD1YDpULYp_yDw@mail.gmail.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,52 +89,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 08, 2023 at 10:59:03AM +0000, Peter Maydell wrote:
-> On Fri, 8 Dec 2023 at 09:25, Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > CC'ing the Xen folks
-> >
-> > On Thu, Dec 07, 2023 at 11:12:48PM +0000, Michael Young wrote:
-> > > diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-> > > index 6f09c48823..04b1ef4d34 100644
-> > > --- a/include/hw/xen/xen_native.h
-> > > +++ b/include/hw/xen/xen_native.h
-> > > @@ -532,7 +532,7 @@ static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
-> > >  }
-> > >  #endif
-> > >
-> > > -#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41700
-> > > +#if CONFIG_XEN_CTRL_INTERFACE_VERSION >= 41700
-> >
-> > This change is not correct
-> >
-> > We can see the upstream change was introduced in 4.17:
-> >
-> >   $ git describe  2128143c114
-> >   4.16.0-rc4-967-g2128143c11
-> >
-> > IOW, if we have 4.17 or newer these constants already
-> > exist. If we have 4.16 or older, then we need to define
-> > them to provide back compat.
-> 
-> Wouldn't that suggest we want "< 41700" ? Or did 4.17 have
-> some issue that means we need the back-compat there too?
+Slightly simplify non-TCG and user emulation code.
 
-Oh yes, and if we change it from '<=' to '<', then we get the same
-build problem for  qemu-system-aarch64 on x86_64 host, when built
-against xen-devel 4.17, which is what I'd expect.
+This series still adds assertions in ARM INST_RETIRED
+PMU events, in order to bypass a linking failure. Better
+would be to restrict ARM PMU events to TCG. Left for
+another series.
 
-So our accident <= instead of < has masked the pre-existing flaw.
+Since v2:
+- Have icount_configure() return bool
+- Addressed rth's review comments
 
-With regards,
-Daniel
+Since v1:
+- Introduce enum of icount modes
+- Fix ARM INST_RETIRED event
+
+Philippe Mathieu-Daudé (6):
+  sysemu/cpu-timers: Have icount_configure() return a boolean
+  system/vl: Evaluate icount after accelerator options are parsed
+  sysemu/cpu-timers: Introduce ICountMode enumerator
+  target/arm: Ensure icount is enabled when emulating INST_RETIRED
+  util/async: Only call icount_notify_exit() if icount is enabled
+  sysemu/replay: Restrict icount to system emulation
+
+ include/sysemu/cpu-timers.h | 32 ++++++++++++++++++++++----------
+ include/sysemu/replay.h     | 11 ++++++++---
+ accel/tcg/icount-common.c   | 36 +++++++++++++++++++-----------------
+ stubs/icount.c              | 29 ++---------------------------
+ system/cpu-timers.c         |  2 +-
+ system/vl.c                 | 19 ++++++++++---------
+ target/arm/helper.c         |  5 ++++-
+ util/async.c                | 16 +++++++++-------
+ 8 files changed, 75 insertions(+), 75 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.41.0
 
 
