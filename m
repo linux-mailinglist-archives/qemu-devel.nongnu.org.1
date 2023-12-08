@@ -2,86 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F635809DD0
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 09:01:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1652809E30
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 09:34:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBVm5-00076e-9r; Fri, 08 Dec 2023 02:59:53 -0500
+	id 1rBWIP-00036s-BT; Fri, 08 Dec 2023 03:33:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rBVm3-00076G-4h
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 02:59:51 -0500
-Received: from mgamail.intel.com ([192.198.163.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rBVm0-0006wA-JB
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 02:59:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1702022389; x=1733558389;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=8zmr6aPZHYSB/L5ksIIXnJEgwj/On8DSWj2SW4WXc5g=;
- b=OrOkeT+EXs9YKaW3pvlLN+dz0wY88t4PGs2XSVD5ZJsRcgik9Fjqt94S
- wTM1IhmsGKMOehAFDBw/gYXRTL1bcNL5tB1MHGufQCIaLf5QW6oFEoNyJ
- rKqfIycluDzSkbsIK2A7UtY5XPgNQZLraBJMDK0HwVxjMtyANUNN8jaZu
- 199RyQB8S+AN7PStazxGOC4+ZRk+A5ETx3PB3/VRgLdkNmW4XYDotcnEI
- SgLw+YnGO9ExiNF2OIzFGlPhepjltlyA2g87hrT8ZvrCOSH5dA83uKJ5M
- wiaS7YEi86+IaNrT7msAdcNtLYaBEQF/bgenyN+CArDseUdLqak3YLGbl Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="1478547"
-X-IronPort-AV: E=Sophos;i="6.04,260,1695711600"; 
-   d="scan'208";a="1478547"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Dec 2023 23:59:44 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="1019258894"
-X-IronPort-AV: E=Sophos;i="6.04,260,1695711600"; d="scan'208";a="1019258894"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.29.154])
- ([10.93.29.154])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Dec 2023 23:59:37 -0800
-Message-ID: <8f20d060-38fe-49d7-8fea-fe665c3c6c78@intel.com>
-Date: Fri, 8 Dec 2023 15:59:35 +0800
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1rBWIN-00036i-GB
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:33:15 -0500
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1rBWIK-0001ed-Uy
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:33:15 -0500
+Received: from [10.12.102.111] (unknown [85.142.117.226])
+ by mail.ispras.ru (Postfix) with ESMTPSA id 6B04740F1DF1;
+ Fri,  8 Dec 2023 08:32:47 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6B04740F1DF1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+ s=default; t=1702024367;
+ bh=1HQ/ti44f7IhMh36hnPSfYoTd6+22qLPyTiOGnBu6Q8=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=qHjf5vlRk5DXeKUN+fuSe4/YMJBMK71NzBefD7I2KAZk69S1sqUorifbO+pexBCN7
+ 07jXearCD5U/InUoc1ZrD0l5z/yG4QTn75cUsyEi9kOaxChFd531Fttu8EHeGXxB6Q
+ pakDbkYGydZCMAgGLkpJ3E0fO/Z1jLDwGn9OAEjs=
+Message-ID: <31284d80-cad0-41f4-8f4b-d09f7146df19@ispras.ru>
+Date: Fri, 8 Dec 2023 11:32:47 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/70] physmem: Introduce ram_block_convert_range() for
- page conversion
-To: Isaku Yamahata <isaku.yamahata@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
- <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
- Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
- <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- isaku.yamahata@intel.com
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-10-xiaoyao.li@intel.com>
- <20231117210304.GC1645850@ls.amr.corp.intel.com>
+Subject: Re: [PATCH 09/11] replay: stop us hanging in rr_wait_io_event
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20231117210304.GC1645850@ls.amr.corp.intel.com>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+References: <20231205204106.95531-1-alex.bennee@linaro.org>
+ <20231205204106.95531-10-alex.bennee@linaro.org>
+From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
+In-Reply-To: <20231205204106.95531-10-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=83.149.199.84;
+ envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,116 +74,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/18/2023 5:03 AM, Isaku Yamahata wrote:
-> On Wed, Nov 15, 2023 at 02:14:18AM -0500,
-> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+On 05.12.2023 23:41, Alex Bennée wrote:
+> A lot of the hang I see are when we end up spinning in
+> rr_wait_io_event for an event that will never come in playback. As a
+> new check functions which can see if we are in PLAY mode and kick us
+> us the wait function so the event can be processed.
 > 
->> It's used for discarding opposite memory after memory conversion, for
->> confidential guest.
->>
->> When page is converted from shared to private, the original shared
->> memory can be discarded via ram_block_discard_range();
->>
->> When page is converted from private to shared, the original private
->> memory is back'ed by guest_memfd. Introduce
->> ram_block_discard_guest_memfd_range() for discarding memory in
->> guest_memfd.
->>
->> Originally-from: Isaku Yamahata <isaku.yamahata@intel.com>
->> Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> ---
->>   include/exec/cpu-common.h |  2 ++
->>   system/physmem.c          | 50 +++++++++++++++++++++++++++++++++++++++
->>   2 files changed, 52 insertions(+)
->>
->> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
->> index 41115d891940..de728a18eef2 100644
->> --- a/include/exec/cpu-common.h
->> +++ b/include/exec/cpu-common.h
->> @@ -175,6 +175,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
->>   
->>   int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
->>   int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
->> +int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
->> +                            bool shared_to_private);
->>   
->>   #endif
->>   
->> diff --git a/system/physmem.c b/system/physmem.c
->> index ddfecddefcd6..cd6008fa09ad 100644
->> --- a/system/physmem.c
->> +++ b/system/physmem.c
->> @@ -3641,6 +3641,29 @@ err:
->>       return ret;
->>   }
->>   
->> +static int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
->> +                                               size_t length)
->> +{
->> +    int ret = -1;
->> +
->> +#ifdef CONFIG_FALLOCATE_PUNCH_HOLE
->> +    ret = fallocate(rb->guest_memfd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
->> +                    start, length);
->> +
->> +    if (ret) {
->> +        ret = -errno;
->> +        error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
->> +                     __func__, rb->idstr, start, length, ret);
->> +    }
->> +#else
->> +    ret = -ENOSYS;
->> +    error_report("%s: fallocate not available %s:%" PRIx64 " +%zx (%d)",
->> +                 __func__, rb->idstr, start, length, ret);
->> +#endif
->> +
->> +    return ret;
->> +}
->> +
->>   bool ramblock_is_pmem(RAMBlock *rb)
->>   {
->>       return rb->flags & RAM_PMEM;
->> @@ -3828,3 +3851,30 @@ bool ram_block_discard_is_required(void)
->>       return qatomic_read(&ram_block_discard_required_cnt) ||
->>              qatomic_read(&ram_block_coordinated_discard_required_cnt);
->>   }
->> +
->> +int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
->> +                            bool shared_to_private)
->> +{
->> +    if (!rb || rb->guest_memfd < 0) {
->> +        return -1;
->> +    }
->> +
->> +    if (!QEMU_PTR_IS_ALIGNED(start, qemu_host_page_size) ||
->> +        !QEMU_PTR_IS_ALIGNED(length, qemu_host_page_size)) {
->> +        return -1;
->> +    }
->> +
->> +    if (!length) {
->> +        return -1;
->> +    }
->> +
->> +    if (start + length > rb->max_length) {
->> +        return -1;
->> +    }
->> +
->> +    if (shared_to_private) {
->> +        return ram_block_discard_range(rb, start, length);
->> +    } else {
->> +        return ram_block_discard_guest_memfd_range(rb, start, length);
->> +    }
->> +}
+> This fixes most of the failures in replay_kernel.py
+
+Is there an effect for console QEMU only?
+I've tested this patch on Windows7 boot scenario and replay speed has 
+not changed.
+
 > 
-> Originally this function issued KVM_SET_MEMORY_ATTRIBUTES, the function name
-> mad sense. But now it doesn't, and it issues only punch hole. We should rename
-> it to represent what it actually does. discard_range?
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2013
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
+> ---
+>   include/sysemu/replay.h      |  5 +++++
+>   accel/tcg/tcg-accel-ops-rr.c |  2 +-
+>   replay/replay.c              | 24 ++++++++++++++++++++++++
+>   3 files changed, 30 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
+> index 08aae5869f..83995ae4bd 100644
+> --- a/include/sysemu/replay.h
+> +++ b/include/sysemu/replay.h
+> @@ -70,6 +70,11 @@ int replay_get_instructions(void);
+>   /*! Updates instructions counter in replay mode. */
+>   void replay_account_executed_instructions(void);
+>   
+> +/**
+> + * replay_can_wait: check if we should pause for wait-io
+> + */
+> +bool replay_can_wait(void);
+> +
+>   /* Processing clocks and other time sources */
+>   
+>   /*! Save the specified clock */
+> diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+> index 611932f3c3..825e35b3dc 100644
+> --- a/accel/tcg/tcg-accel-ops-rr.c
+> +++ b/accel/tcg/tcg-accel-ops-rr.c
+> @@ -109,7 +109,7 @@ static void rr_wait_io_event(void)
+>   {
+>       CPUState *cpu;
+>   
+> -    while (all_cpu_threads_idle()) {
+> +    while (all_cpu_threads_idle() && replay_can_wait()) {
+>           rr_stop_kick_timer();
+>           qemu_cond_wait_iothread(first_cpu->halt_cond);
+>       }
+> diff --git a/replay/replay.c b/replay/replay.c
+> index e83c01285c..042a6a9636 100644
+> --- a/replay/replay.c
+> +++ b/replay/replay.c
+> @@ -347,6 +347,30 @@ void replay_start(void)
+>       replay_enable_events();
+>   }
+>   
+> +/*
+> + * For none/record the answer is yes.
+> + */
+> +bool replay_can_wait(void)
+> +{
+> +    if (replay_mode == REPLAY_MODE_PLAY) {
+> +        /*
+> +         * For playback we shouldn't ever be at a point we wait. If
+> +         * the instruction count has reached zero and we have an
+> +         * unconsumed event we should go around again and consume it.
+> +         */
+> +        if (replay_state.instruction_count == 0 && replay_state.has_unread_data) {
+> +            return false;
+> +        } else {
+> +            fprintf(stderr, "Error: Invalid replay state\n");
+> +            fprintf(stderr,"instruction_count = %d, has = %d, event_kind = %d\n",
+> +                    replay_state.instruction_count, replay_state.has_unread_data, replay_state.data_kind);
+> +            abort();
+> +        }
+> +    }
+> +    return true;
+> +}
+> +
+> +
+>   void replay_finish(void)
+>   {
+>       if (replay_mode == REPLAY_MODE_NONE) {
 
-ram_block_discard_range() already exists for non-guest-memfd memory discard.
-
-I cannot come up with a proper name. e.g., 
-ram_block_discard_opposite_range() while *opposite* seems unclear.
-
-Do you have any better idea?
 
