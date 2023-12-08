@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72ED0809F0D
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 10:15:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E718B809F16
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 10:16:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBWwv-0002SS-16; Fri, 08 Dec 2023 04:15:09 -0500
+	id 1rBWvy-00017p-V5; Fri, 08 Dec 2023 04:14:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rBWwr-0002Nn-Dc
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:15:05 -0500
+ id 1rBWvi-000126-NI
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:14:00 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rBWwp-00009h-HI
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:15:05 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1rBWvf-0008LD-Ap
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 04:13:53 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxfOpM3nJlvOw_AA--.35194S3;
- Fri, 08 Dec 2023 17:13:48 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxrutN3nJlvuw_AA--.59502S3;
+ Fri, 08 Dec 2023 17:13:49 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxH91A3nJlrE5YAA--.822S11; 
- Fri, 08 Dec 2023 17:13:47 +0800 (CST)
+ AQAAf8AxH91A3nJlrE5YAA--.822S12; 
+ Fri, 08 Dec 2023 17:13:48 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, peter.maydell@linaro.org,
  maobibo@loongson.cn
-Subject: [PATCH v1 09/17] hw/loongarch: Fix fdt memory node wrong 'reg'
-Date: Fri,  8 Dec 2023 17:00:34 +0800
-Message-Id: <20231208090042.2672425-10-gaosong@loongson.cn>
+Subject: [PATCH v1 10/17] hw/loongarch: fdt adds cpu interrupt controller node
+Date: Fri,  8 Dec 2023 17:00:35 +0800
+Message-Id: <20231208090042.2672425-11-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20231208090042.2672425-1-gaosong@loongson.cn>
 References: <20231208090042.2672425-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxH91A3nJlrE5YAA--.822S11
+X-CM-TRANSID: AQAAf8AxH91A3nJlrE5YAA--.822S12
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,37 +63,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The right fdt memory node like [1], not [2]
+fdt adds cpu interrupt controller node,
+we use 'loongson,cpu-interrupt-controller'.
 
-  [1]
-        memory@0 {
-                device_type = "memory";
-                reg = <0x00 0x00 0x00 0x10000000>;
-        };
-  [2]
-        memory@0 {
-                device_type = "memory";
-                reg = <0x02 0x00 0x02 0x10000000>;
-        };
+See:
+  drivers/irqchip/irq-loongarch-cpu.c
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/virt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/loongarch/virt.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index cbdae3fbbe..a2aa6b68f2 100644
+index a2aa6b68f2..a3414d2179 100644
 --- a/hw/loongarch/virt.c
 +++ b/hw/loongarch/virt.c
-@@ -298,7 +298,7 @@ static void fdt_add_memory_node(MachineState *ms,
-     char *nodename = g_strdup_printf("/memory@%" PRIx64, base);
+@@ -89,7 +89,23 @@ static void virt_flash_map(LoongArchMachineState *lams,
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+     memory_region_add_subregion(sysmem, base,
+                                 sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0));
++}
++
++static void fdt_add_cpuic_node(LoongArchMachineState *lams,
++                               uint32_t *cpuintc_phandle)
++{
++    MachineState *ms = MACHINE(lams);
++    char *nodename;
  
-     qemu_fdt_add_subnode(ms->fdt, nodename);
--    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
-+    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 0, base, 0, size);
-     qemu_fdt_setprop_string(ms->fdt, nodename, "device_type", "memory");
++    *cpuintc_phandle = qemu_fdt_alloc_phandle(ms->fdt);
++    nodename = g_strdup_printf("/cpuic");
++    qemu_fdt_add_subnode(ms->fdt, nodename);
++    qemu_fdt_setprop_cell(ms->fdt, nodename, "phandle", *cpuintc_phandle);
++    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible",
++                            "loongson,cpu-interrupt-controller");
++    qemu_fdt_setprop(ms->fdt, nodename, "interrupt-controller", NULL, 0);
++    qemu_fdt_setprop_cell(ms->fdt, nodename, "#interrupt-cells", 1);
++    g_free(nodename);
+ }
  
-     if (ms->numa_state && ms->numa_state->num_nodes) {
+ static void fdt_add_flash_node(LoongArchMachineState *lams)
+@@ -502,6 +518,7 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
+     CPULoongArchState *env;
+     CPUState *cpu_state;
+     int cpu, pin, i, start, num;
++    uint32_t cpuintc_phandle;
+ 
+     extioi = qdev_new(TYPE_LOONGARCH_EXTIOI);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(extioi), &error_fatal);
+@@ -527,6 +544,10 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
+      * | UARTs  | | Devices | | Devices |
+      * +--------+ +---------+ +---------+
+      */
++
++    /* Add cpu interrupt-controller */
++    fdt_add_cpuic_node(lams, &cpuintc_phandle);
++
+     for (cpu = 0; cpu < ms->smp.cpus; cpu++) {
+         cpu_state = qemu_get_cpu(cpu);
+         cpudev = DEVICE(cpu_state);
 -- 
 2.25.1
 
