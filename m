@@ -2,97 +2,122 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB7180A514
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 15:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C351680A676
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 16:03:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBbS8-00022q-RB; Fri, 08 Dec 2023 09:03:40 -0500
+	id 1rBcN2-0003KX-Br; Fri, 08 Dec 2023 10:02:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rBbS2-0001zi-Hx
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 09:03:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rBbS0-0003Xo-LT
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 09:03:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702044211;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBcN0-0003K5-5d
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 10:02:26 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rBcMy-0000kw-Gm
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 10:02:25 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 7A2DA21C7B;
+ Fri,  8 Dec 2023 15:02:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702047742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=SsVxRfR2DMh+9guKE5k9pCcWDf55/Z0sbHEAOW2diM0=;
- b=NmSt8d7Fc8dZgEf7/XXsiqxjO2LSiOHm/n50ddTTZbtCcS2HtniyJe/o50uIuw+k0UiRsz
- Fyso41UHL7hKiKwW7pEk1OWkmhMdgRDYXUP9GeCSz/Ds5J9mOpZhcBYVhNkSTeD6SSa/Uv
- YzvS4Kr6DSMxDPdZetlzV4Sbbl9ZhlY=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-301-RtAygemUOiSg4oGMBLk40g-1; Fri, 08 Dec 2023 09:03:28 -0500
-X-MC-Unique: RtAygemUOiSg4oGMBLk40g-1
-Received: by mail-pg1-f197.google.com with SMTP id
- 41be03b00d2f7-5c6245bc7caso1438324a12.3
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 06:03:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702044207; x=1702649007;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SsVxRfR2DMh+9guKE5k9pCcWDf55/Z0sbHEAOW2diM0=;
- b=iAzwLvb3vuai4Ka5HiokRL1lL5an6uPnJOvMU3Q415O2Ollmbv7L1NfB45gB5RN2jt
- HQIvXCA+V8p8gpdcsrpKfpsnYRysD+EwDHHQTdURfqHuN+c8dgmF4ELoCJdb1dTNFysJ
- IYnF/98iHBvWX3/hXUL4JpbhCTRxtyDy/8Vip7kmFYnQwUTagpyHvSNznqjtJjWrlKQ7
- 6BC7CLaI3tDgfacequKhR6hj0VFBoExtEVqL1iexOJ1iJRE4daYYkGq9o0CgGZrACSvo
- 4iF2kHlkxpbw9IyiFvStvEtih3hRTTbgfV7j2wzayKKJ3hfjt7nutpCjnBYWtaQRy2sL
- nh5g==
-X-Gm-Message-State: AOJu0YzWAQzkR+S4iSARSzYwpAneYs0oSyhgzjTksE8Ex3m4C4NNJ1cG
- cfizDyRPlB9DBhP7d0l1hYNjrTlOyXv9uFJ5WUMoZ6uimun5pKDea6eWqA9tQsMyWkOKweVujBA
- RsAEez7KRvxS7q70=
-X-Received: by 2002:a17:902:b495:b0:1d0:6785:f1be with SMTP id
- y21-20020a170902b49500b001d06785f1bemr40184plr.36.1702044207634; 
- Fri, 08 Dec 2023 06:03:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHyUrVcwPWco7k8TJK3JIwMzB6/KI7udgzoAViKvHGtmg5CMCXGyaNV54ZZfmml7s6jxaW6ag==
-X-Received: by 2002:a17:902:b495:b0:1d0:6785:f1be with SMTP id
- y21-20020a170902b49500b001d06785f1bemr40168plr.36.1702044207286; 
- Fri, 08 Dec 2023 06:03:27 -0800 (PST)
-Received: from smtpclient.apple ([115.96.133.105])
- by smtp.gmail.com with ESMTPSA id
- b5-20020a170902ed0500b001cf57467ad2sm1728199pld.91.2023.12.08.06.03.24
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 08 Dec 2023 06:03:26 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
-Subject: Re: [PATCH] pc: q35: Bump max_cpus to 4096
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <ZXMS15q8x5-cWPA3@redhat.com>
-Date: Fri, 8 Dec 2023 19:33:11 +0530
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Julia Suvorova <jusual@redhat.com>,
- QEMU Developers <qemu-devel@nongnu.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <934402FC-145A-420E-B344-A4BC469B1A6B@redhat.com>
-References: <20231208122611.32311-1-anisinha@redhat.com>
- <ZXMS15q8x5-cWPA3@redhat.com>
-To: =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>
-X-Mailer: Apple Mail (2.3774.200.91.1.1)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ bh=mDLt1KrLlCAT3fJ10wonFfR5PW07O6DC7/0/anZ3ucY=;
+ b=BxTOhU4j7sroZ0OyZfUyvGyqAcPaU3MoCtTDiYzSzHp/JJx14zlmDCrN2vUJ+7PvtY6L0o
+ iuju2OE5jrAgLR6p/rSc4Ir3oozop9Ouna6uwoNoTYjr9aboLWHZX0h6MJP/1mTJ1ZJfPH
+ 2iawLPk/QzKQczADCxoirOvh+9Xl1fU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702047742;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mDLt1KrLlCAT3fJ10wonFfR5PW07O6DC7/0/anZ3ucY=;
+ b=kBlz+w0KRxkyS+nRbn5SbVIaA//r/8MSr3pke5gAjMsGnoNK7A3h2kdKTgfbLPNLhibUmw
+ +CIeT3DUzhjx0+CA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702047742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mDLt1KrLlCAT3fJ10wonFfR5PW07O6DC7/0/anZ3ucY=;
+ b=BxTOhU4j7sroZ0OyZfUyvGyqAcPaU3MoCtTDiYzSzHp/JJx14zlmDCrN2vUJ+7PvtY6L0o
+ iuju2OE5jrAgLR6p/rSc4Ir3oozop9Ouna6uwoNoTYjr9aboLWHZX0h6MJP/1mTJ1ZJfPH
+ 2iawLPk/QzKQczADCxoirOvh+9Xl1fU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702047742;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mDLt1KrLlCAT3fJ10wonFfR5PW07O6DC7/0/anZ3ucY=;
+ b=kBlz+w0KRxkyS+nRbn5SbVIaA//r/8MSr3pke5gAjMsGnoNK7A3h2kdKTgfbLPNLhibUmw
+ +CIeT3DUzhjx0+CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0455C12FF7;
+ Fri,  8 Dec 2023 15:02:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id mxgBL/0vc2X5cwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 08 Dec 2023 15:02:21 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Thomas
+ Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v1 2/5] tests/qtest/migration: Add infrastructure to
+ skip tests on older QEMUs
+In-Reply-To: <20231207155809.25673-3-farosas@suse.de>
+References: <20231207155809.25673-1-farosas@suse.de>
+ <20231207155809.25673-3-farosas@suse.de>
+Date: Fri, 08 Dec 2023 12:02:19 -0300
+Message-ID: <87zfykybyc.fsf@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Score: 6.48
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BxTOhU4j;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kBlz+w0K;
+ dmarc=pass (policy=none) header.from=suse.de;
+ spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither
+ permitted nor denied by domain of farosas@suse.de)
+ smtp.mailfrom=farosas@suse.de
+X-Rspamd-Server: rspamd2
+X-Spamd-Result: default: False [-14.01 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; R_SPF_SOFTFAIL(0.00)[~all:c];
+ RCVD_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+];
+ DMARC_POLICY_ALLOW(0.00)[suse.de,none];
+ RCPT_COUNT_SEVEN(0.00)[9]; MX_GOOD(-0.01)[];
+ DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; BAYES_HAM(-3.00)[100.00%];
+ MID_RHS_MATCH_FROM(0.00)[]; ARC_NA(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ WHITELIST_DMARC(-7.00)[suse.de:D:+];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -14.01
+X-Rspamd-Queue-Id: 7A2DA21C7B
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,131 +133,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fabiano Rosas <farosas@suse.de> writes:
 
+> We can run the migration tests with two different QEMU binaries to
+> test migration compatibility between QEMU versions. This means we'll
+> be running the tests with an older QEMU in either source or
+> destination.
+>
+> We need to avoid trying to test functionality that is unknown to the
+> older QEMU. This could mean new features, bug fixes, error message
+> changes, QEMU command line changes, migration API changes, etc.
+>
+> Add a 'since' argument to the tests that inform when the functionality
+> that is being test has been added to QEMU so we can skip the test on
+> older versions.
+>
+> Also add a version comparison function so we can adapt test code
+> depending on the QEMU binary version being used.
+>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  tests/qtest/migration-helpers.c | 11 +++++++++++
+>  tests/qtest/migration-helpers.h |  1 +
+>  tests/qtest/migration-test.c    | 28 ++++++++++++++++++++++++++++
+>  3 files changed, 40 insertions(+)
+>
+> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+> index 24fb7b3525..d21f5cd8c0 100644
+> --- a/tests/qtest/migration-helpers.c
+> +++ b/tests/qtest/migration-helpers.c
+> @@ -292,3 +292,14 @@ char *resolve_machine_version(const char *alias, const char *var1,
+>  
+>      return find_common_machine_version(machine_name, var1, var2);
+>  }
+> +
+> +int migration_vercmp(QTestState *who, const char *tgt_version)
+> +{
+> +    int major, minor, micro;
+> +    g_autofree char *version = NULL;
+> +
+> +    qtest_query_version(who, &major, &minor, &micro);
+> +    version = g_strdup_printf("%d.%d.%d", major, minor, micro);
 
-> On 08-Dec-2023, at 6:27=E2=80=AFPM, Daniel P. Berrang=C3=A9 =
-<berrange@redhat.com> wrote:
->=20
-> On Fri, Dec 08, 2023 at 05:56:11PM +0530, Ani Sinha wrote:
->> Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to =
-allow up to 4096 vCPUs")
->> Linux kernel can support upto a maximum number of 4096 vCPUS when =
-MAXSMP is
->> enabled in the kernel. So bump up the max_cpus value for q35 machines =
-versions
->> 8.3 and newer to 4096. Older q35 machines versions 8.2 and older =
-continue to
->> support 1024 maximum vcpus as before.
->>=20
->> If KVM is not able to support the specified number of vcpus, QEMU =
-would
->> return the following error messages:
->>=20
->> $ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 4096
->> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested =
-(4096) exceeds the recommended cpus supported by KVM (12)
->> Number of SMP cpus requested (4096) exceeds the maximum cpus =
-supported by KVM (1024)
->>=20
->> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->> Cc: Igor Mammedov <imammedo@redhat.com>
->> Cc: Michael S. Tsirkin <mst@redhat.com>
->> Cc: Julia Suvorova <jusual@redhat.com>
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> ---
->> hw/i386/pc_q35.c | 15 ++++++++++++---
->> 1 file changed, 12 insertions(+), 3 deletions(-)
->=20
-> What testing has been done to confirm if QEMU is actually capable of
-> booting a guest with this CPU count, either UEFI or SeaBIOS or both ?
+I just noticed this is not right. I need to increment the minor when
+there's a micro to account for the versions in between releases. The
+whole point of this series is to test a X.Y.0 release vs. a X.Y.Z
+development branch.
 
-I admit we did not test this with 4096 cpus.
-
-It was tested downstream with edk2 with modified kernel and increased =
-QEMU limit for=20
-https://bugzilla.redhat.com/show_bug.cgi?id=3D1983086
-
-> We validated a ~48TB, 1728 cores, and 32 socket vm using legacy
-> bios from smbios 3.0, the latest qemu modified with higher vcpu =
-limits, a=3D
-nd
-> modified kernel limits.
-
-I am trying to get some more clarity on the testing front and checking =
-what max values for max_cpu we can test with.
-
->=20
-> Historically every time we wanted to raise max cpus we've seen limits
-> or scalability problems that needed fixing first. The previous bump to
-> 1024 had been implicitly proven via downstream testing we had done in
-> RHEL, and had required the switch to SMBIOS v3 entrypoint.
->=20
->>=20
->> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
->> index 4f3e5412f6..2ed57814e1 100644
->> --- a/hw/i386/pc_q35.c
->> +++ b/hw/i386/pc_q35.c
->> @@ -375,7 +375,7 @@ static void pc_q35_machine_options(MachineClass =
-*m)
->>     m->default_nic =3D "e1000e";
->>     m->default_kernel_irqchip_split =3D false;
->>     m->no_floppy =3D 1;
->> -    m->max_cpus =3D 1024;
->> +    m->max_cpus =3D 4096;
->>     m->no_parallel =3D =
-!module_object_class_by_name(TYPE_ISA_PARALLEL);
->>     machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
->>     machine_class_allow_dynamic_sysbus_dev(m, =
-TYPE_INTEL_IOMMU_DEVICE);
->> @@ -383,12 +383,22 @@ static void pc_q35_machine_options(MachineClass =
-*m)
->>     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
->> }
->>=20
->> -static void pc_q35_8_2_machine_options(MachineClass *m)
->> +static void pc_q35_8_3_machine_options(MachineClass *m)
->> {
->>     pc_q35_machine_options(m);
->>     m->alias =3D "q35";
->> }
->>=20
->> +DEFINE_Q35_MACHINE(v8_3, "pc-q35-8.3", NULL,
->> +                   pc_q35_8_3_machine_options);
->> +
->> +static void pc_q35_8_2_machine_options(MachineClass *m)
->> +{
->> +    pc_q35_8_3_machine_options(m);
->> +    m->alias =3D NULL;
->> +    m->max_cpus =3D 1024;
->> +}
->> +
->> DEFINE_Q35_MACHINE(v8_2, "pc-q35-8.2", NULL,
->>                    pc_q35_8_2_machine_options);
->>=20
->> @@ -396,7 +406,6 @@ static void =
-pc_q35_8_1_machine_options(MachineClass *m)
->> {
->>     PCMachineClass *pcmc =3D PC_MACHINE_CLASS(m);
->>     pc_q35_8_2_machine_options(m);
->> -    m->alias =3D NULL;
->>     pcmc->broken_32bit_mem_addr_check =3D true;
->>     compat_props_add(m->compat_props, hw_compat_8_1, =
-hw_compat_8_1_len);
->>     compat_props_add(m->compat_props, pc_compat_8_1, =
-pc_compat_8_1_len);
->> --=20
->> 2.42.0
->>=20
->=20
-> With regards,
-> Daniel
-> --=20
-> |: https://berrange.com      -o-    =
-https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            =
-https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    =
-https://www.instagram.com/dberrange :|
-
-
+> +
+> +    return strcmp(version, tgt_version);
+> +}
 
