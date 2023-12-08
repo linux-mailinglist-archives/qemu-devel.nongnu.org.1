@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376A380AC41
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 19:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD7480AC50
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 19:41:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBfkf-0006EF-39; Fri, 08 Dec 2023 13:39:05 -0500
+	id 1rBfnE-0002N2-C4; Fri, 08 Dec 2023 13:41:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rBfkd-0006Di-Ao
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 13:39:03 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rBfka-0008Uz-6s
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 13:39:03 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1cfb30ce241so21583725ad.0
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 10:38:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1702060738; x=1702665538; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3JyIYvn4p8JdAgrQKCIVuzNkyuz3/M0LL3H7xDfwCk8=;
- b=U+xDpXGU3Pb+Egbo9hW+mjrjro29lG1OAkefTXeEMkNmSmR/QLfzw+4FAWr/B7Ij8X
- s5l9tYes5jQ+N4apvL2/5at52FQGNp8a4d9GCP+spE8CvolZRljoIyU3M6eD3VdRJg+2
- Q3oDPMK4+4K//Nic3ReRV6uAmOYOElE4Z08ivaWi5wRhEus3Hy52bHnWAl5cmsK05Vg/
- bosa9HZX+qiTLbEz6FgupQLw0F30AcPSWCAVz3WVG0p4GbpTd8LXatHe61ScrmO+KIXW
- Gic/oXrLOl4R3mXPMFaj5qPSeKmkcCV9RcCSOPwUA+umowvpwXX0wtSRa0IyhXb5DKSA
- By9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702060738; x=1702665538;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3JyIYvn4p8JdAgrQKCIVuzNkyuz3/M0LL3H7xDfwCk8=;
- b=d8ocjEMCp0wbcsGxWa5ydZcAGtdtXMAxecedzF0xiD0HfzftFM8xOQJKcOA2TxSJAk
- yHVkUtimRY0jWjfIkMtlqEtK4AAMakqbS1ryv9gbL1Xe20OEyIF9f0qHkwn6JlGi2XkR
- FYjBifEm3ogVvOcqE6qiVcd1zKZPEXdylo0pZBj1VeX7QhqONL9gKsYYZapiCPpM8mLM
- WhbUQLQJX+QdlOcCU2wy8kA+7cK3TTG58p2JuXNJKRNmHxk1LlUXGNNf128bnjnr1zBL
- 0nPmIo2KIx4+6h1beGNqdvhg2OC0Cd6ABUJu10BHUZ//SGWQNVJRPXa4/rPgIf9XzIWu
- y0Ow==
-X-Gm-Message-State: AOJu0YwR0aV4q16F0wtxxgIkpJEnON9shLWeb+2Dev9CdkmCR283bStn
- x8z2g9hYZUSAc6UZ/6WrOpZoVhMDffQJ31e5on4=
-X-Google-Smtp-Source: AGHT+IEyMRi3iIzHH3aoWnmsNGAjG2AFYPHP64TxiSSDk+a/qxINo8w2yNZRA8N1wVL1BbhHS6Uy3w==
-X-Received: by 2002:a17:90b:3591:b0:286:f040:3a13 with SMTP id
- mm17-20020a17090b359100b00286f0403a13mr500454pjb.19.1702060738424; 
- Fri, 08 Dec 2023 10:38:58 -0800 (PST)
-Received: from grind.. ([152.234.124.8]) by smtp.gmail.com with ESMTPSA id
- sk13-20020a17090b2dcd00b002864c14063fsm2190709pjb.20.2023.12.08.10.38.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Dec 2023 10:38:57 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-9.0 5/5] target/riscv/kvm: rename riscv_reg_id() to
- riscv_reg_id_ulong()
-Date: Fri,  8 Dec 2023 15:38:35 -0300
-Message-ID: <20231208183835.2411523-6-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231208183835.2411523-1-dbarboza@ventanamicro.com>
-References: <20231208183835.2411523-1-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <madvenka@linux.microsoft.com>)
+ id 1rBfnD-0002Mh-34
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 13:41:43 -0500
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <madvenka@linux.microsoft.com>) id 1rBfn7-0001Vf-K9
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 13:41:42 -0500
+Received: from [192.168.4.26] (unknown [47.186.13.91])
+ by linux.microsoft.com (Postfix) with ESMTPSA id B588020B74C0;
+ Fri,  8 Dec 2023 10:41:32 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B588020B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1702060894;
+ bh=AnIC6fr2QG8zWjE8bckg2NFATj2evZRXlwuerxjzhrk=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=YFYB3WmwcuV32c52iaz4igd8ovlIWvHBEPQVmbIZEw3i94LbeUVkav4NsxSNfPmIk
+ iUXKkjZRomhyqjplJTf78F4BLpGH4vEdrl44twJ+PBdhRrhrueH+3FqPyjppZtB4ge
+ /VJ2zHgNQUxArYnpRJ/nZXtyaTbYEsmb8Xq9ZQ7A=
+Message-ID: <eb41ec87-8e46-4880-9d94-d86849ddadd2@linux.microsoft.com>
+Date: Fri, 8 Dec 2023 12:41:31 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 17/19] heki: x86: Update permissions counters
+ during text patching
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>, Alexander Graf <graf@amazon.com>,
+ Chao Peng <chao.p.peng@linux.intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Forrest Yuan Yu <yuanyu@google.com>, James Gowans <jgowans@amazon.com>,
+ James Morris <jamorris@linux.microsoft.com>,
+ John Andersen <john.s.andersen@intel.com>,
+ Marian Rotariu <marian.c.rotariu@gmail.com>,
+ =?UTF-8?Q?Mihai_Don=C8=9Bu?= <mdontu@bitdefender.com>,
+ =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Thara Gopinath <tgopinath@microsoft.com>,
+ Trilok Soni <quic_tsoni@quicinc.com>, Wei Liu <wei.liu@kernel.org>,
+ Will Deacon <will@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?UTF-8?Q?=C8=98tefan_=C8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+References: <20231113022326.24388-1-mic@digikod.net>
+ <20231113022326.24388-18-mic@digikod.net>
+ <20231113081929.GA16138@noisy.programming.kicks-ass.net>
+ <a52d8885-43cc-4a4e-bb47-9a800070779e@linux.microsoft.com>
+ <20231127200841.GZ3818@noisy.programming.kicks-ass.net>
+ <ea63ae4e-e8ea-4fbf-9383-499e14de2f5e@linux.microsoft.com>
+ <20231130113315.GE20191@noisy.programming.kicks-ass.net>
+ <624a310b-c0d2-406c-a4a7-d851b3cc68f5@linux.microsoft.com>
+ <20231206185134.GA9899@noisy.programming.kicks-ass.net>
+Content-Language: en-US
+From: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
+In-Reply-To: <20231206185134.GA9899@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=madvenka@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, T_SPF_HELO_TEMPERROR=0.01,
+ USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,128 +99,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-kvm_riscv_reg_id() returns an id encoded with an ulong size, i.e. an u32
-size when running TARGET_RISCV32 and u64 when running TARGET_RISCV64.
 
-Rename it to kvm_riscv_reg_id_ulong() to enhance code readability. It'll
-be in line with the existing kvm_riscv_reg_id_<size>() helpers.
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/kvm/kvm-cpu.c | 40 ++++++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 19 deletions(-)
+On 12/6/23 12:51, Peter Zijlstra wrote:
+> On Wed, Dec 06, 2023 at 10:37:33AM -0600, Madhavan T. Venkataraman wrote:
+>>
+>>
+>> On 11/30/23 05:33, Peter Zijlstra wrote:
+>>> On Wed, Nov 29, 2023 at 03:07:15PM -0600, Madhavan T. Venkataraman wrote:
+>>>
+>>>> Kernel Lockdown
+>>>> ---------------
+>>>>
+>>>> But, we must provide at least some security in V2. Otherwise, it is useless.
+>>>>
+>>>> So, we have implemented what we call a kernel lockdown. At the end of kernel
+>>>> boot, Heki establishes permissions in the extended page table as mentioned
+>>>> before. Also, it adds an immutable attribute for kernel text and kernel RO data.
+>>>> Beyond that point, guest requests that attempt to modify permissions on any of
+>>>> the immutable pages will be denied.
+>>>>
+>>>> This means that features like FTrace and KProbes will not work on kernel text
+>>>> in V2. This is a temporary limitation. Once authentication is in place, the
+>>>> limitation will go away.
+>>>
+>>> So either you're saying your patch 17 / text_poke is broken (so why
+>>> include it ?!?) or your statement above is incorrect. Pick one.
+>>>
+>>
+>> It has been included so that people can be aware of the changes.
+>>
+>> I will remove the text_poke() changes from the patchset and send it later when
+>> I have some authentication in place. It will make sense then.
+> 
+> If you know its broken then fucking say so in the Changelog instead of
+> wasting everybody's time.. OMG.
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 11797338ec..62a1e51f0a 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -54,7 +54,7 @@ void riscv_kvm_aplic_request(void *opaque, int irq, int level)
- 
- static bool cap_has_mp_state;
- 
--static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
-+static uint64_t kvm_riscv_reg_id_ulong(CPURISCVState *env, uint64_t type,
-                                  uint64_t idx)
- {
-     uint64_t id = KVM_REG_RISCV | type | idx;
-@@ -82,15 +82,17 @@ static uint64_t kvm_riscv_reg_id_u64(uint64_t type, uint64_t idx)
-     return KVM_REG_RISCV | KVM_REG_SIZE_U64 | type | idx;
- }
- 
--#define RISCV_CORE_REG(env, name)  kvm_riscv_reg_id(env, KVM_REG_RISCV_CORE, \
--                 KVM_REG_RISCV_CORE_REG(name))
-+#define RISCV_CORE_REG(env, name) \
-+    kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CORE, \
-+                           KVM_REG_RISCV_CORE_REG(name))
- 
--#define RISCV_CSR_REG(env, name)  kvm_riscv_reg_id(env, KVM_REG_RISCV_CSR, \
--                 KVM_REG_RISCV_CSR_REG(name))
-+#define RISCV_CSR_REG(env, name) \
-+    kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CSR, \
-+                           KVM_REG_RISCV_CSR_REG(name))
- 
- #define RISCV_CONFIG_REG(env, name) \
--    kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG, \
--                     KVM_REG_RISCV_CONFIG_REG(name))
-+    kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG, \
-+                           KVM_REG_RISCV_CONFIG_REG(name))
- 
- #define RISCV_TIMER_REG(name)  kvm_riscv_reg_id_u64(KVM_REG_RISCV_TIMER, \
-                  KVM_REG_RISCV_TIMER_REG(name))
-@@ -216,8 +218,8 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
- 
-         /* If we're here we're going to disable the MISA bit */
-         reg = 0;
--        id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
--                              misa_cfg->kvm_reg_id);
-+        id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_ISA_EXT,
-+                                    misa_cfg->kvm_reg_id);
-         ret = kvm_set_one_reg(cs, id, &reg);
-         if (ret != 0) {
-             /*
-@@ -378,8 +380,8 @@ static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
-             continue;
-         }
- 
--        id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
--                              multi_ext_cfg->kvm_reg_id);
-+        id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_ISA_EXT,
-+                                    multi_ext_cfg->kvm_reg_id);
-         reg = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
-         ret = kvm_set_one_reg(cs, id, &reg);
-         if (ret != 0) {
-@@ -509,7 +511,7 @@ static int kvm_riscv_get_regs_core(CPUState *cs)
-     env->pc = reg;
- 
-     for (i = 1; i < 32; i++) {
--        uint64_t id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CORE, i);
-+        uint64_t id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CORE, i);
-         ret = kvm_get_one_reg(cs, id, &reg);
-         if (ret) {
-             return ret;
-@@ -534,7 +536,7 @@ static int kvm_riscv_put_regs_core(CPUState *cs)
-     }
- 
-     for (i = 1; i < 32; i++) {
--        uint64_t id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CORE, i);
-+        uint64_t id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CORE, i);
-         reg = env->gpr[i];
-         ret = kvm_set_one_reg(cs, id, &reg);
-         if (ret) {
-@@ -810,8 +812,8 @@ static void kvm_riscv_read_cbomz_blksize(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
-     struct kvm_one_reg reg;
-     int ret;
- 
--    reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
--                              cbomz_cfg->kvm_reg_id);
-+    reg.id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CONFIG,
-+                                    cbomz_cfg->kvm_reg_id);
-     reg.addr = (uint64_t)kvmconfig_get_cfg_addr(cpu, cbomz_cfg);
-     ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-     if (ret != 0) {
-@@ -832,8 +834,8 @@ static void kvm_riscv_read_multiext_legacy(RISCVCPU *cpu,
-         KVMCPUConfig *multi_ext_cfg = &kvm_multi_ext_cfgs[i];
-         struct kvm_one_reg reg;
- 
--        reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
--                                  multi_ext_cfg->kvm_reg_id);
-+        reg.id = kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_ISA_EXT,
-+                                        multi_ext_cfg->kvm_reg_id);
-         reg.addr = (uint64_t)&val;
-         ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-         if (ret != 0) {
-@@ -925,8 +927,8 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
- 
-     for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
-         multi_ext_cfg = &kvm_multi_ext_cfgs[i];
--        reg_id = kvm_riscv_reg_id(&cpu->env, KVM_REG_RISCV_ISA_EXT,
--                                  multi_ext_cfg->kvm_reg_id);
-+        reg_id = kvm_riscv_reg_id_ulong(&cpu->env, KVM_REG_RISCV_ISA_EXT,
-+                                        multi_ext_cfg->kvm_reg_id);
-         reg_search = bsearch(&reg_id, reglist->reg, reglist->n,
-                              sizeof(uint64_t), uint64_cmp);
-         if (!reg_search) {
--- 
-2.41.0
+It is not broken. It addresses one part of the problem. The other part is WIP.
+
+I am preparing a detailed response to your comments. I ask you to be patient until then. In fact, I would appreciate your input/suggestions on some problems we are trying to solve in this context. I will mention them in my response.
+
+Madhavan
 
 
