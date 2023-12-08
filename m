@@ -2,93 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB7080A4F9
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 15:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB7180A514
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 15:04:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBbPe-0000za-Er; Fri, 08 Dec 2023 09:01:06 -0500
+	id 1rBbS8-00022q-RB; Fri, 08 Dec 2023 09:03:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBbPc-0000zA-4a
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 09:01:04 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBbPT-0003I8-If
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 09:01:03 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3332efd75c9so1958371f8f.2
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 06:00:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702044053; x=1702648853; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6sbieA5Qc2+0DWsbpOrqV4Cag6SkOK2ipyny+MT0vvc=;
- b=iFCpK3Y3lz1w4IEZzTtuTLxYMoaLhrJuYnszeBQE0JlSE3Su2O3d05586TEYZXQmQY
- /1wWL+q7RLLp2k3vA+R+yKTw4ELSoUl8D7Yx6ih8zDND47n2NwfMNdRXXDqAEeaufx0z
- gTk/62ixzEQP966DMv2rXioT1shnNeqZ5AFB641YDuTvRs1R5tgoS5EwDL+LeLENPj4W
- 4gSLujiOOvljmheYSnapsBF/s2maFlU7QGJXw++6jyDuFrH7YdwAdA76tgys/EwwUXu8
- /K2dZp6UqCK3zar0j9p22Gct9OA6KpAjF1L5fCc704+CErRSyR/i4xn96BfAN0/mPrBI
- WGiA==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rBbS2-0001zi-Hx
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 09:03:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rBbS0-0003Xo-LT
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 09:03:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702044211;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SsVxRfR2DMh+9guKE5k9pCcWDf55/Z0sbHEAOW2diM0=;
+ b=NmSt8d7Fc8dZgEf7/XXsiqxjO2LSiOHm/n50ddTTZbtCcS2HtniyJe/o50uIuw+k0UiRsz
+ Fyso41UHL7hKiKwW7pEk1OWkmhMdgRDYXUP9GeCSz/Ds5J9mOpZhcBYVhNkSTeD6SSa/Uv
+ YzvS4Kr6DSMxDPdZetlzV4Sbbl9ZhlY=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-301-RtAygemUOiSg4oGMBLk40g-1; Fri, 08 Dec 2023 09:03:28 -0500
+X-MC-Unique: RtAygemUOiSg4oGMBLk40g-1
+Received: by mail-pg1-f197.google.com with SMTP id
+ 41be03b00d2f7-5c6245bc7caso1438324a12.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 06:03:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702044053; x=1702648853;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6sbieA5Qc2+0DWsbpOrqV4Cag6SkOK2ipyny+MT0vvc=;
- b=pVe0fBGuU2FnWH1f9vVsqdXeu+xcaeqQV89Kf5eLMEjmHEuj2ELWMHQllpqfCqY5FT
- VtRPLZIIkKnygjH1dBObCSHPyvRY1M6OyJrkaMVeUVfsSeKi29x9ykzcu+1R3fdVfYVl
- EyM1h8vaSyJ8zfgUGsHkcMx9DmB0NvAfemhqGd4asFZudLq0h+OEuHUQ5AL1j8T80gIp
- XN6U1GBnWx+h8zEvCTo79PtIWGxU2YJPKsg3FKCX0Xff1lP0/UkxJH1NqB5sLaS8CCK0
- teRYx3VswduFDH+rhxouOWHrbQOcE/lgJeRcEmwufMsBwuD4lSj+1BmEp3bGox/sRn3e
- 02uQ==
-X-Gm-Message-State: AOJu0YwiXMgUvkNmTK2xDRhe992OyIsicD8plg2J5kPkmaCO0XyBvnYc
- gw0PVqV1+cqfcmsyEsKMASPgTA==
-X-Google-Smtp-Source: AGHT+IFeRdN8+YwGS3C/fXLQ/p7CNU7I9tWdbbQYTaNS4jTERa6VFgGPDZDonjezPxZALhU2KiWT1g==
-X-Received: by 2002:adf:ef0f:0:b0:333:f5e:7d58 with SMTP id
- e15-20020adfef0f000000b003330f5e7d58mr17885wro.62.1702044053393; 
- Fri, 08 Dec 2023 06:00:53 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.146.181])
+ d=1e100.net; s=20230601; t=1702044207; x=1702649007;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=SsVxRfR2DMh+9guKE5k9pCcWDf55/Z0sbHEAOW2diM0=;
+ b=iAzwLvb3vuai4Ka5HiokRL1lL5an6uPnJOvMU3Q415O2Ollmbv7L1NfB45gB5RN2jt
+ HQIvXCA+V8p8gpdcsrpKfpsnYRysD+EwDHHQTdURfqHuN+c8dgmF4ELoCJdb1dTNFysJ
+ IYnF/98iHBvWX3/hXUL4JpbhCTRxtyDy/8Vip7kmFYnQwUTagpyHvSNznqjtJjWrlKQ7
+ 6BC7CLaI3tDgfacequKhR6hj0VFBoExtEVqL1iexOJ1iJRE4daYYkGq9o0CgGZrACSvo
+ 4iF2kHlkxpbw9IyiFvStvEtih3hRTTbgfV7j2wzayKKJ3hfjt7nutpCjnBYWtaQRy2sL
+ nh5g==
+X-Gm-Message-State: AOJu0YzWAQzkR+S4iSARSzYwpAneYs0oSyhgzjTksE8Ex3m4C4NNJ1cG
+ cfizDyRPlB9DBhP7d0l1hYNjrTlOyXv9uFJ5WUMoZ6uimun5pKDea6eWqA9tQsMyWkOKweVujBA
+ RsAEez7KRvxS7q70=
+X-Received: by 2002:a17:902:b495:b0:1d0:6785:f1be with SMTP id
+ y21-20020a170902b49500b001d06785f1bemr40184plr.36.1702044207634; 
+ Fri, 08 Dec 2023 06:03:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHyUrVcwPWco7k8TJK3JIwMzB6/KI7udgzoAViKvHGtmg5CMCXGyaNV54ZZfmml7s6jxaW6ag==
+X-Received: by 2002:a17:902:b495:b0:1d0:6785:f1be with SMTP id
+ y21-20020a170902b49500b001d06785f1bemr40168plr.36.1702044207286; 
+ Fri, 08 Dec 2023 06:03:27 -0800 (PST)
+Received: from smtpclient.apple ([115.96.133.105])
  by smtp.gmail.com with ESMTPSA id
- i16-20020adffc10000000b003333fd29854sm2115148wrr.45.2023.12.08.06.00.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Dec 2023 06:00:52 -0800 (PST)
-Message-ID: <debe5041-3a8d-4fc0-a487-059f990aac98@linaro.org>
-Date: Fri, 8 Dec 2023 15:00:50 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] target/arm: Ensure icount is enabled when
- emulating INST_RETIRED
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Alexander Graf <agraf@csgraf.de>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Fam Zheng <fam@euphon.net>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Aaron Lindsay <aaron@os.amperecomputing.com>,
- Andrew Baumann <Andrew.Baumann@microsoft.com>,
- Alistair Francis <alistair@alistair23.me>
-References: <20231207154550.65087-1-philmd@linaro.org>
- <20231207154550.65087-3-philmd@linaro.org>
- <9508bf5e-a554-468f-ba94-4d6f1a5be7bf@linaro.org>
- <323be810-5f4e-4218-812a-7c0ebc858599@linaro.org>
- <CAFEAcA-HVf8vWLzmdStEo2NrSKQdZV612rBjiaj-gLW4vXyvpA@mail.gmail.com>
- <793e3c8f-497f-468e-b6b5-accc79e2bef0@linaro.org>
-In-Reply-To: <793e3c8f-497f-468e-b6b5-accc79e2bef0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ b5-20020a170902ed0500b001cf57467ad2sm1728199pld.91.2023.12.08.06.03.24
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 08 Dec 2023 06:03:26 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+Subject: Re: [PATCH] pc: q35: Bump max_cpus to 4096
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <ZXMS15q8x5-cWPA3@redhat.com>
+Date: Fri, 8 Dec 2023 19:33:11 +0530
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Julia Suvorova <jusual@redhat.com>,
+ QEMU Developers <qemu-devel@nongnu.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <934402FC-145A-420E-B344-A4BC469B1A6B@redhat.com>
+References: <20231208122611.32311-1-anisinha@redhat.com>
+ <ZXMS15q8x5-cWPA3@redhat.com>
+To: =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>
+X-Mailer: Apple Mail (2.3774.200.91.1.1)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,198 +108,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/12/23 12:23, Philippe Mathieu-Daudé wrote:
-> Hi Peter,
-> 
-> On 8/12/23 11:59, Peter Maydell wrote:
->> On Fri, 8 Dec 2023 at 10:36, Philippe Mathieu-Daudé 
->> <philmd@linaro.org> wrote:
->>>
->>> On 7/12/23 23:12, Richard Henderson wrote:
->>>> On 12/7/23 07:45, Philippe Mathieu-Daudé wrote:
->>>>> pmu_init() register its event checking the pm_event::supported()
->>>>> handler. For INST_RETIRED, the event is only registered and the
->>>>> bit enabled in the PMU Common Event Identification register when
->>>>> icount is enabled as ICOUNT_PRECISE.
->>>>>
->>>>> Assert the pm_event::get_count() and pm_event::ns_per_count()
->>>>> handler will only be called under this icount mode.
->>>>>
->>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>> ---
->>>>>    target/arm/helper.c | 2 ++
->>>>>    1 file changed, 2 insertions(+)
->>>>>
->>>>> diff --git a/target/arm/helper.c b/target/arm/helper.c
->>>>> index adb0960bba..333fd5f4bf 100644
->>>>> --- a/target/arm/helper.c
->>>>> +++ b/target/arm/helper.c
->>>>> @@ -940,11 +940,13 @@ static bool instructions_supported(CPUARMState
->>>>> *env)
->>>>>    static uint64_t instructions_get_count(CPUARMState *env)
->>>>>    {
->>>>> +    assert(icount_enabled() == ICOUNT_PRECISE);
->>>>>        return (uint64_t)icount_get_raw();
->>>>>    }
->>>>>    static int64_t instructions_ns_per(uint64_t icount)
->>>>>    {
->>>>> +    assert(icount_enabled() == ICOUNT_PRECISE);
->>>>>        return icount_to_ns((int64_t)icount);
->>>>>    }
->>>>>    #endif
->>>>
->>>> I don't think an assert is required -- that's exactly what the
->>>> .supported field is for. If you think this needs additional
->>>> clarification, a comment is sufficient.
->>>
->>> Without this I'm getting this link failure with TCG disabled:
->>>
->>> ld: Undefined symbols:
->>>     _icount_to_ns, referenced from:
->>>         _instructions_ns_per in target_arm_helper.c.o
->>> clang: error: linker command failed with exit code 1 (use -v to see
->>> invocation)
->>
->> I think we should fix this earlier by not trying to enable
->> these TCG-only PMU event types in a non-TCG config.
-> 
-> I agree... but (as discussed yesterday on IRC), this is a bigger rework.
 
-Giving it a try, I figured HVF emulates PMC (cycle counter) within
-some vPMU, containing "a single event source: the cycle counter"
-(per Alex).
-Some helpers are duplicated, such pmu_update_irq().
 
-pmu_counter_enabled() diff (-KVM +HVF):
+> On 08-Dec-2023, at 6:27=E2=80=AFPM, Daniel P. Berrang=C3=A9 =
+<berrange@redhat.com> wrote:
+>=20
+> On Fri, Dec 08, 2023 at 05:56:11PM +0530, Ani Sinha wrote:
+>> Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to =
+allow up to 4096 vCPUs")
+>> Linux kernel can support upto a maximum number of 4096 vCPUS when =
+MAXSMP is
+>> enabled in the kernel. So bump up the max_cpus value for q35 machines =
+versions
+>> 8.3 and newer to 4096. Older q35 machines versions 8.2 and older =
+continue to
+>> support 1024 maximum vcpus as before.
+>>=20
+>> If KVM is not able to support the specified number of vcpus, QEMU =
+would
+>> return the following error messages:
+>>=20
+>> $ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 4096
+>> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested =
+(4096) exceeds the recommended cpus supported by KVM (12)
+>> Number of SMP cpus requested (4096) exceeds the maximum cpus =
+supported by KVM (1024)
+>>=20
+>> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> Cc: Igor Mammedov <imammedo@redhat.com>
+>> Cc: Michael S. Tsirkin <mst@redhat.com>
+>> Cc: Julia Suvorova <jusual@redhat.com>
+>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>> ---
+>> hw/i386/pc_q35.c | 15 ++++++++++++---
+>> 1 file changed, 12 insertions(+), 3 deletions(-)
+>=20
+> What testing has been done to confirm if QEMU is actually capable of
+> booting a guest with this CPU count, either UEFI or SeaBIOS or both ?
 
-  /*
-   * Returns true if the counter (pass 31 for PMCCNTR) should count 
-events using
-   * the current EL, security state, and register configuration.
-   */
-  static bool pmu_counter_enabled(CPUARMState *env, uint8_t counter)
-  {
-      uint64_t filter;
--    bool e, p, u, nsk, nsu, nsh, m;
--    bool enabled, prohibited = false, filtered;
--    bool secure = arm_is_secure(env);
-+    bool enabled, filtered = true;
-      int el = arm_current_el(env);
--    uint64_t mdcr_el2 = arm_mdcr_el2_eff(env);
--    uint8_t hpmn = mdcr_el2 & MDCR_HPMN;
+I admit we did not test this with 4096 cpus.
 
--    if (!arm_feature(env, ARM_FEATURE_PMU)) {
--        return false;
--    }
--
--    if (!arm_feature(env, ARM_FEATURE_EL2) ||
--            (counter < hpmn || counter == 31)) {
--        e = env->cp15.c9_pmcr & PMCRE;
--    } else {
--        e = mdcr_el2 & MDCR_HPME;
--    }
--    enabled = e && (env->cp15.c9_pmcnten & (1 << counter));
--
--    /* Is event counting prohibited? */
--    if (el == 2 && (counter < hpmn || counter == 31)) {
--        prohibited = mdcr_el2 & MDCR_HPMD;
--    }
--    if (secure) {
--        prohibited = prohibited || !(env->cp15.mdcr_el3 & MDCR_SPME);
--    }
--
--    if (counter == 31) {
--        /*
--         * The cycle counter defaults to running. PMCR.DP says "disable
--         * the cycle counter when event counting is prohibited".
--         * Some MDCR bits disable the cycle counter specifically.
--         */
--        prohibited = prohibited && env->cp15.c9_pmcr & PMCRDP;
--        if (cpu_isar_feature(any_pmuv3p5, env_archcpu(env))) {
--            if (secure) {
--                prohibited = prohibited || (env->cp15.mdcr_el3 & 
-MDCR_SCCD);
--            }
--            if (el == 2) {
--                prohibited = prohibited || (mdcr_el2 & MDCR_HCCD);
--            }
--        }
--    }
-+    enabled = (env->cp15.c9_pmcr & PMCRE) &&
-+              (env->cp15.c9_pmcnten & (1 << counter));
+It was tested downstream with edk2 with modified kernel and increased =
+QEMU limit for=20
+https://bugzilla.redhat.com/show_bug.cgi?id=3D1983086
 
-      if (counter == 31) {
-          filter = env->cp15.pmccfiltr_el0;
-      } else {
-          filter = env->cp15.c14_pmevtyper[counter];
-      }
+> We validated a ~48TB, 1728 cores, and 32 socket vm using legacy
+> bios from smbios 3.0, the latest qemu modified with higher vcpu =
+limits, a=3D
+nd
+> modified kernel limits.
 
--    p   = filter & PMXEVTYPER_P;
--    u   = filter & PMXEVTYPER_U;
--    nsk = arm_feature(env, ARM_FEATURE_EL3) && (filter & PMXEVTYPER_NSK);
--    nsu = arm_feature(env, ARM_FEATURE_EL3) && (filter & PMXEVTYPER_NSU);
--    nsh = arm_feature(env, ARM_FEATURE_EL2) && (filter & PMXEVTYPER_NSH);
--    m   = arm_el_is_aa64(env, 1) &&
--              arm_feature(env, ARM_FEATURE_EL3) && (filter & PMXEVTYPER_M);
--
-      if (el == 0) {
--        filtered = secure ? u : u != nsu;
-+        filtered = filter & PMXEVTYPER_U;
-      } else if (el == 1) {
--        filtered = secure ? p : p != nsk;
--    } else if (el == 2) {
--        filtered = !nsh;
--    } else { /* EL3 */
--        filtered = m != p;
-+        filtered = filter & PMXEVTYPER_P;
-      }
+I am trying to get some more clarity on the testing front and checking =
+what max values for max_cpu we can test with.
 
-      if (counter != 31) {
-          /*
-           * If not checking PMCCNTR, ensure the counter is setup to an 
-event we
-           * support
-           */
-          uint16_t event = filter & PMXEVTYPER_EVTCOUNT;
--        if (!event_supported(event)) {
-+        if (!pmu_event_supported(event)) {
-              return false;
-          }
-      }
+>=20
+> Historically every time we wanted to raise max cpus we've seen limits
+> or scalability problems that needed fixing first. The previous bump to
+> 1024 had been implicitly proven via downstream testing we had done in
+> RHEL, and had required the switch to SMBIOS v3 entrypoint.
+>=20
+>>=20
+>> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+>> index 4f3e5412f6..2ed57814e1 100644
+>> --- a/hw/i386/pc_q35.c
+>> +++ b/hw/i386/pc_q35.c
+>> @@ -375,7 +375,7 @@ static void pc_q35_machine_options(MachineClass =
+*m)
+>>     m->default_nic =3D "e1000e";
+>>     m->default_kernel_irqchip_split =3D false;
+>>     m->no_floppy =3D 1;
+>> -    m->max_cpus =3D 1024;
+>> +    m->max_cpus =3D 4096;
+>>     m->no_parallel =3D =
+!module_object_class_by_name(TYPE_ISA_PARALLEL);
+>>     machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
+>>     machine_class_allow_dynamic_sysbus_dev(m, =
+TYPE_INTEL_IOMMU_DEVICE);
+>> @@ -383,12 +383,22 @@ static void pc_q35_machine_options(MachineClass =
+*m)
+>>     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
+>> }
+>>=20
+>> -static void pc_q35_8_2_machine_options(MachineClass *m)
+>> +static void pc_q35_8_3_machine_options(MachineClass *m)
+>> {
+>>     pc_q35_machine_options(m);
+>>     m->alias =3D "q35";
+>> }
+>>=20
+>> +DEFINE_Q35_MACHINE(v8_3, "pc-q35-8.3", NULL,
+>> +                   pc_q35_8_3_machine_options);
+>> +
+>> +static void pc_q35_8_2_machine_options(MachineClass *m)
+>> +{
+>> +    pc_q35_8_3_machine_options(m);
+>> +    m->alias =3D NULL;
+>> +    m->max_cpus =3D 1024;
+>> +}
+>> +
+>> DEFINE_Q35_MACHINE(v8_2, "pc-q35-8.2", NULL,
+>>                    pc_q35_8_2_machine_options);
+>>=20
+>> @@ -396,7 +406,6 @@ static void =
+pc_q35_8_1_machine_options(MachineClass *m)
+>> {
+>>     PCMachineClass *pcmc =3D PC_MACHINE_CLASS(m);
+>>     pc_q35_8_2_machine_options(m);
+>> -    m->alias =3D NULL;
+>>     pcmc->broken_32bit_mem_addr_check =3D true;
+>>     compat_props_add(m->compat_props, hw_compat_8_1, =
+hw_compat_8_1_len);
+>>     compat_props_add(m->compat_props, pc_compat_8_1, =
+pc_compat_8_1_len);
+>> --=20
+>> 2.42.0
+>>=20
+>=20
+> With regards,
+> Daniel
+> --=20
+> |: https://berrange.com      -o-    =
+https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-            =
+https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-    =
+https://www.instagram.com/dberrange :|
 
--    return enabled && !prohibited && !filtered;
-+    return enabled && !filtered;
-  }
 
-I could link HVF without PMU a few surgery such:
----
-@@ -1493,12 +1486,12 @@ static int hvf_sysreg_write(CPUState *cpu, 
-uint32_t reg, uint64_t val)
-
-      switch (reg) {
-      case SYSREG_PMCCNTR_EL0:
--        pmu_op_start(env);
-+        pmccntr_op_start(env);
-          env->cp15.c15_ccnt = val;
--        pmu_op_finish(env);
-+        pmccntr_op_finish(env);
-          break;
-      case SYSREG_PMCR_EL0:
--        pmu_op_start(env);
-+        pmccntr_op_start(env);
-
----
-
-I'll try to split as:
-
-- target/arm/pmu_common_helper.c (?)
-- target/arm/pmc_helper.c
-- target/arm/tcg/pmu_helper.c
-
-Ideally pmu_counter_enabled() should be unified, but I
-don't feel confident enough to do it.
-
-Regards,
-
-Phil.
 
