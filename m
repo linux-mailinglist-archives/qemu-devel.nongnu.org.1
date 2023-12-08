@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A71E80A1B1
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:01:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E4680A1B6
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 12:02:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBYbB-0002u6-Bs; Fri, 08 Dec 2023 06:00:49 -0500
+	id 1rBYbx-00049D-RT; Fri, 08 Dec 2023 06:01:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rBYaU-0002k7-Ui
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:00:08 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBYbw-00048o-M3
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:01:36 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rBYaS-0007zR-15
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:00:05 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2cb20c82a79so7923061fa.3
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:00:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rBYbu-00027q-Sx
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 06:01:36 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40c19f5f822so11042605e9.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 03:01:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702033202; x=1702638002; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IgAEyjXcA6+XsFXPCGoIawIS9X69PWGz3B+P/ILXyTA=;
- b=hGLMt6sU6xpJ1wSTXePmhkWy13gImadNGj2kZ0arm1ZjLPF8uzAaRBoHfSxwRoDc7q
- Z1n7aNTcq97Gk/UfsVlus4n/UTU3XAF+BjCfVUpLZPaAydFq33HTZD+zfqUuspJvNOrq
- OJOYAo1vOZMHXTSNo1ZpyeYBrjNc0iUOsyF7hUZ0DIK/trIuBch4/WSLBOrzF5JOQitT
- azp123V0urumAWQSj/KhW2/W8vya4qjQPi1X2hAbhwdowXiGSBszZ2bpOQEERFYiNHaI
- mN1zb1cB+2yKVERkRhQCQWMs9JI+884mCi0en2tEWo/cZLe6nfmwg3MT1tmv+W+uo7WI
- OEJA==
+ d=linaro.org; s=google; t=1702033293; x=1702638093; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HsEyCJ3Qz/EwQ3LPrHOOunmMJhnJYVq6PScBSKlDqoQ=;
+ b=Nu3g+JYQtExyoPrz7mfQG+5S3hyJ5VbLcvgDElFTpino2qtQ5BTkBCzkv2IDgwfRK7
+ GD+QHjICy9SNT8Kku75y3WkOFmfhE4ZAtEmsJEuJyxIgXijaRPHpptghjKkvtauCibXr
+ yspVbnogcqDqYXJxYEReBnvxBxLiChM2KpGrbZ53MBaM0q+JaakNC7GIkPkW64vmL1Ah
+ 3xatOQtRI0qC3en1SmmbbBObI9KKDinYSARuAe0aKc9JewFIXJV9PMBP3jLHZdA2pYA9
+ e6OQxnl4sQkuEmwq9iolxK1Ae9i0U4ghftFU7pJZlJkcsHMqkM8ww5YyHKDXs0bb8L7m
+ 1PjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702033202; x=1702638002;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IgAEyjXcA6+XsFXPCGoIawIS9X69PWGz3B+P/ILXyTA=;
- b=h6j7K9/A/aX8G45FfCNXGAcc49KbvxXcZONBAAGn2ie0OL6oW/TsPOkP/nwrEfdIuQ
- FDjy7XElGrvvlxhj2u7DZaZSuXkr964Jh5oZSEl3rOW58vc8ipUklXPdKMXjfWs3Vx86
- tvZKP3gTNH2fOikTq9UM6gPYOmVC7KM5srBSSeqRt+uvT+9u4nP6xrBa+O2X4sHnfeNP
- h+0uLjBT0pW2Jjfujr3OSmWM0fru2RRZcttawNwcgm2TJalDwkecSRMjosF7tepNNlXY
- dVY3CTla7DzeFH1fM8qGQC16wSd4j24XqWgNvfnR4E3fBUGcZVewtDHzWm306qvNVMeU
- mchg==
-X-Gm-Message-State: AOJu0YxGirUIGfjFS5aYd6QKlFWLx6jD+3iE+diJVcylJOAvGuF2rjoZ
- y4cVFHvTJwkHcm+ORTLhqGwyw0k3uQrkSnLeEpz4sw==
-X-Google-Smtp-Source: AGHT+IH7P2rvcP0+mAak74CNK22ibeT93WwBRQRavQCQSlJAjyqy2ExYXRjgboMJPzh6uyEJOhn11SpFShaC6isc42A=
-X-Received: by 2002:a05:651c:117:b0:2c9:ffd9:3c0a with SMTP id
- a23-20020a05651c011700b002c9ffd93c0amr2277939ljb.37.1702033201910; Fri, 08
- Dec 2023 03:00:01 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702033293; x=1702638093;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HsEyCJ3Qz/EwQ3LPrHOOunmMJhnJYVq6PScBSKlDqoQ=;
+ b=cIFlvJDYTUq32SnJApcOp0CFUfEQEOfYQRifOSecuYKGxU/9Ioueyb/PwC4AnIL/Wy
+ EACUzRa258/Xr2gmmi+7fmFs2tKwrAhoVDN0KwNR4jHVoQlhOJvR0HBzCiQLHd1X7Sak
+ QgMt9xoFsij1a64xtg98LUFbKciv3rcRHoGxfK/FOlldxmQJNnQc/DusU4Byl7aoK0Df
+ VNCMZ174BF41SbcwEAODuD/MVyN6z7jnHqJGqO4zigyg1HlbgohEFOuBA3z5QEmAf/9K
+ yIrDyCq5l5dkFhjJnKvrrV+YDLPLCxrNeWCRRlGMyY/BJksqWI9FowHfW9BcY4H8kYap
+ wzhg==
+X-Gm-Message-State: AOJu0YyDD1dMWMmXSjWB2doskHjTx6hy7XM6cNLk155818Hj60h8fRFz
+ tNgyS1KYTIW0NnrkGyKnQjjcwg==
+X-Google-Smtp-Source: AGHT+IE9J7Eh94n4qaxB+OZGd96rjKibcUDDeYknfkQ2DUjnMPAdfwfAAmMLUaOhAIDlx838cY4wOg==
+X-Received: by 2002:a05:600c:a383:b0:40c:2ace:6e58 with SMTP id
+ hn3-20020a05600ca38300b0040c2ace6e58mr391284wmb.182.1702033293289; 
+ Fri, 08 Dec 2023 03:01:33 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.146.181])
+ by smtp.gmail.com with ESMTPSA id
+ g11-20020a05600c310b00b004090798d29csm2492256wmo.15.2023.12.08.03.01.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Dec 2023 03:01:32 -0800 (PST)
+Message-ID: <f833be50-547c-41cc-87b8-85dd18a4a70e@linaro.org>
+Date: Fri, 8 Dec 2023 12:01:31 +0100
 MIME-Version: 1.0
-References: <20231207154550.65087-1-philmd@linaro.org>
- <20231207154550.65087-3-philmd@linaro.org>
- <9508bf5e-a554-468f-ba94-4d6f1a5be7bf@linaro.org>
- <323be810-5f4e-4218-812a-7c0ebc858599@linaro.org>
-In-Reply-To: <323be810-5f4e-4218-812a-7c0ebc858599@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Dec 2023 10:59:51 +0000
-Message-ID: <CAFEAcA-HVf8vWLzmdStEo2NrSKQdZV612rBjiaj-gLW4vXyvpA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] target/arm: Ensure icount is enabled when
- emulating INST_RETIRED
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
- qemu-arm@nongnu.org, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Fam Zheng <fam@euphon.net>, 
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] accel/tcg: Move perf and debuginfo support to tcg
+Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <laurent@vivier.eu>
+References: <20231208003754.3688038-1-iii@linux.ibm.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231208003754.3688038-1-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,56 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 10:36, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> On 7/12/23 23:12, Richard Henderson wrote:
-> > On 12/7/23 07:45, Philippe Mathieu-Daud=C3=A9 wrote:
-> >> pmu_init() register its event checking the pm_event::supported()
-> >> handler. For INST_RETIRED, the event is only registered and the
-> >> bit enabled in the PMU Common Event Identification register when
-> >> icount is enabled as ICOUNT_PRECISE.
-> >>
-> >> Assert the pm_event::get_count() and pm_event::ns_per_count()
-> >> handler will only be called under this icount mode.
-> >>
-> >> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> >> ---
-> >>   target/arm/helper.c | 2 ++
-> >>   1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/target/arm/helper.c b/target/arm/helper.c
-> >> index adb0960bba..333fd5f4bf 100644
-> >> --- a/target/arm/helper.c
-> >> +++ b/target/arm/helper.c
-> >> @@ -940,11 +940,13 @@ static bool instructions_supported(CPUARMState
-> >> *env)
-> >>   static uint64_t instructions_get_count(CPUARMState *env)
-> >>   {
-> >> +    assert(icount_enabled() =3D=3D ICOUNT_PRECISE);
-> >>       return (uint64_t)icount_get_raw();
-> >>   }
-> >>   static int64_t instructions_ns_per(uint64_t icount)
-> >>   {
-> >> +    assert(icount_enabled() =3D=3D ICOUNT_PRECISE);
-> >>       return icount_to_ns((int64_t)icount);
-> >>   }
-> >>   #endif
-> >
-> > I don't think an assert is required -- that's exactly what the
-> > .supported field is for. If you think this needs additional
-> > clarification, a comment is sufficient.
->
-> Without this I'm getting this link failure with TCG disabled:
->
-> ld: Undefined symbols:
->    _icount_to_ns, referenced from:
->        _instructions_ns_per in target_arm_helper.c.o
-> clang: error: linker command failed with exit code 1 (use -v to see
-> invocation)
+Hi Richard,
 
-I think we should fix this earlier by not trying to enable
-these TCG-only PMU event types in a non-TCG config.
+On 8/12/23 01:35, Ilya Leoshkevich wrote:
+> v2: https://patchew.org/QEMU/20230630234230.596193-1-iii@linux.ibm.com/
+> v2 -> v3: Rebased.
+>            This series was lost and forgotten until Philippe reminded me
+>            about it.
+> 
+> v1: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg07037.html
+> v1 -> v2: Move qemu_target_page_mask() hunk to patch 1.
+>            Fix typos.
+> 
+> Hi,
+> 
+> This series is a follow-up to discussion in [1]; the goal is to build
+> perf and debuginfo support only one time.
+> 
+> Best regards,
+> Ilya
+> 
+> [1] https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06510.html
+> 
+> Ilya Leoshkevich (4):
+>    target: Make qemu_target_page_mask() available for *-user
+>    tcg: Make tb_cflags() usable from target-agnostic code
+>    accel/tcg: Remove #ifdef TARGET_I386 from perf.c
+>    accel/tcg: Move perf and debuginfo support to tcg
 
--- PMM
+If you R-b/A-b this series, I'd rather integrate it in my exec/ rework.
+
+Regards,
+
+Phil.
 
