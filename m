@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B155C809E8D
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 09:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F32809E93
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 09:48:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBWVQ-00063X-A2; Fri, 08 Dec 2023 03:46:44 -0500
+	id 1rBWVT-00063i-2f; Fri, 08 Dec 2023 03:46:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7WKM=HT=redhat.com=clg@ozlabs.org>)
- id 1rBWVD-0005r7-5w
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:46:31 -0500
+ id 1rBWVL-0005zS-9l
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:46:39 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7WKM=HT=redhat.com=clg@ozlabs.org>)
- id 1rBWV9-0000kn-2R
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:46:30 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sml9X4rFjz4xCj;
- Fri,  8 Dec 2023 19:46:24 +1100 (AEDT)
+ id 1rBWVE-0000lB-TK
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 03:46:37 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Sml9c0V5Dz4x3G;
+ Fri,  8 Dec 2023 19:46:28 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sml9T6Mnvz4x1v;
- Fri,  8 Dec 2023 19:46:21 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sml9Y24K0z4x1v;
+ Fri,  8 Dec 2023 19:46:24 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
@@ -39,10 +38,10 @@ Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH for-9.0 04/10] vfio/container: Introduce a VFIOIOMMU QOM
- interface
-Date: Fri,  8 Dec 2023 09:45:54 +0100
-Message-ID: <20231208084600.858964-5-clg@redhat.com>
+Subject: [PATCH for-9.0 05/10] vfio/container: Introduce a VFIOIOMMU legacy
+ QOM interface
+Date: Fri,  8 Dec 2023 09:45:55 +0100
+Message-ID: <20231208084600.858964-6-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231208084600.858964-1-clg@redhat.com>
 References: <20231208084600.858964-1-clg@redhat.com>
@@ -73,116 +72,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simply transform the VFIOIOMMUOps struct in an InterfaceClass and do
-some initial name replacements. Next changes will start converting
-VFIOIOMMUOps.
+Convert the legacy VFIOIOMMUOps struct to the new VFIOIOMMU QOM
+interface. The set of of operations for this backend can be referenced
+with a literal typename instead of a C struct. This will simplify
+support of multiple backends.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-container-base.h | 18 ++++++++++++++----
- hw/vfio/common.c                      |  2 +-
- hw/vfio/container-base.c              | 12 +++++++++++-
- hw/vfio/pci.c                         |  2 +-
- 4 files changed, 27 insertions(+), 7 deletions(-)
+ include/hw/vfio/vfio-common.h         |  1 -
+ include/hw/vfio/vfio-container-base.h |  1 +
+ hw/vfio/common.c                      |  6 ++-
+ hw/vfio/container.c                   | 59 +++++++++++++++++++++++----
+ 4 files changed, 56 insertions(+), 11 deletions(-)
 
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index b8aa8a549532442a31c8e85ce385c992d84f6bd5..14c497b6b0a79466e8f567aceed384ec2c75ea90 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -210,7 +210,6 @@ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
+ typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
+ extern VFIOGroupList vfio_group_list;
+ extern VFIODeviceList vfio_device_list;
+-extern const VFIOIOMMUOps vfio_legacy_ops;
+ extern const VFIOIOMMUOps vfio_iommufd_ops;
+ extern const MemoryListener vfio_memory_listener;
+ extern int vfio_kvm_device_fd;
 diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 5c9594b6c77681e5593236e711e7e391e5f2bdff..81d49fe562d3840859096dd8a62ac38d62314939 100644
+index 81d49fe562d3840859096dd8a62ac38d62314939..a31fd9c2e3b9a571083ea8987ac27e91b332c170 100644
 --- a/include/hw/vfio/vfio-container-base.h
 +++ b/include/hw/vfio/vfio-container-base.h
-@@ -16,7 +16,8 @@
- #include "exec/memory.h"
+@@ -95,6 +95,7 @@ void vfio_container_destroy(VFIOContainerBase *bcontainer);
+ typedef struct VFIOIOMMU VFIOIOMMU;
  
- typedef struct VFIODevice VFIODevice;
--typedef struct VFIOIOMMUOps VFIOIOMMUOps;
-+typedef struct VFIOIOMMUClass VFIOIOMMUClass;
-+#define VFIOIOMMUOps VFIOIOMMUClass /* To remove */
+ #define TYPE_VFIO_IOMMU "vfio-iommu"
++#define TYPE_VFIO_IOMMU_LEGACY TYPE_VFIO_IOMMU "-legacy"
  
- typedef struct {
-     unsigned long *bitmap;
-@@ -34,7 +35,7 @@ typedef struct VFIOAddressSpace {
-  * This is the base object for vfio container backends
-  */
- typedef struct VFIOContainerBase {
--    const VFIOIOMMUOps *ops;
-+    const VFIOIOMMUClass *ops;
-     VFIOAddressSpace *space;
-     MemoryListener listener;
-     Error *error;
-@@ -88,10 +89,19 @@ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
- 
- void vfio_container_init(VFIOContainerBase *bcontainer,
-                          VFIOAddressSpace *space,
--                         const VFIOIOMMUOps *ops);
-+                         const VFIOIOMMUClass *ops);
- void vfio_container_destroy(VFIOContainerBase *bcontainer);
- 
--struct VFIOIOMMUOps {
-+typedef struct VFIOIOMMU VFIOIOMMU;
-+
-+#define TYPE_VFIO_IOMMU "vfio-iommu"
-+
-+#define VFIO_IOMMU(obj) INTERFACE_CHECK(VFIOIOMMU, (obj), TYPE_VFIO_IOMMU)
-+DECLARE_CLASS_CHECKERS(VFIOIOMMUClass, VFIO_IOMMU, TYPE_VFIO_IOMMU)
-+
-+struct VFIOIOMMUClass {
-+    InterfaceClass parent_class;
-+
-     /* basic feature */
-     int (*dma_map)(const VFIOContainerBase *bcontainer,
-                    hwaddr iova, ram_addr_t size,
+ #define VFIO_IOMMU(obj) INTERFACE_CHECK(VFIOIOMMU, (obj), TYPE_VFIO_IOMMU)
+ DECLARE_CLASS_CHECKERS(VFIOIOMMUClass, VFIO_IOMMU, TYPE_VFIO_IOMMU)
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 08a3e576725b1fc9f2f7e425375df3b827c4fe56..49dab41566f07ba7be1100fed1973e028d34467c 100644
+index 49dab41566f07ba7be1100fed1973e028d34467c..2329d0efc8c1d617f0bfee5283e82b295d2d477d 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -1503,7 +1503,7 @@ retry:
+@@ -1503,13 +1503,17 @@ retry:
  int vfio_attach_device(char *name, VFIODevice *vbasedev,
                         AddressSpace *as, Error **errp)
  {
--    const VFIOIOMMUOps *ops = &vfio_legacy_ops;
-+    const VFIOIOMMUClass *ops = &vfio_legacy_ops;
+-    const VFIOIOMMUClass *ops = &vfio_legacy_ops;
++    const VFIOIOMMUClass *ops =
++        VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_LEGACY));
  
  #ifdef CONFIG_IOMMUFD
      if (vbasedev->iommufd) {
-diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index 1ffd25bbfa8bd3d404e43b96357273b95f5a0031..913ae49077c4f09b7b27517c1231cfbe4befb7fb 100644
---- a/hw/vfio/container-base.c
-+++ b/hw/vfio/container-base.c
-@@ -72,7 +72,7 @@ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+         ops = &vfio_iommufd_ops;
+     }
+ #endif
++
++    assert(ops);
++
+     return ops->attach_device(name, vbasedev, as, errp);
  }
  
- void vfio_container_init(VFIOContainerBase *bcontainer, VFIOAddressSpace *space,
--                         const VFIOIOMMUOps *ops)
-+                         const VFIOIOMMUClass *ops)
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index f4a0434a5239bfb6a17b91c8879cb98e686afccc..fdf4e116570013732d48071a5122d25b02da715c 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -369,10 +369,30 @@ static int vfio_get_iommu_type(VFIOContainer *container,
+     return -EINVAL;
+ }
+ 
++/*
++ * vfio_get_iommu_ops - get a VFIOIOMMUClass associated with a type
++ */
++static const VFIOIOMMUClass *vfio_get_iommu_class(int iommu_type, Error **errp)
++{
++    ObjectClass *klass = NULL;
++
++    switch (iommu_type) {
++    case VFIO_TYPE1v2_IOMMU:
++    case VFIO_TYPE1_IOMMU:
++        klass = object_class_by_name(TYPE_VFIO_IOMMU_LEGACY);
++        break;
++    default:
++        g_assert_not_reached();
++    };
++
++    return VFIO_IOMMU_CLASS(klass);
++}
++
+ static int vfio_init_container(VFIOContainer *container, int group_fd,
+                                VFIOAddressSpace *space, Error **errp)
  {
-     bcontainer->ops = ops;
-     bcontainer->space = space;
-@@ -99,3 +99,13 @@ void vfio_container_destroy(VFIOContainerBase *bcontainer)
+     int iommu_type, ret;
++    const VFIOIOMMUClass *vioc = NULL;
  
-     g_list_free_full(bcontainer->iova_ranges, g_free);
+     iommu_type = vfio_get_iommu_type(container, errp);
+     if (iommu_type < 0) {
+@@ -401,7 +421,14 @@ static int vfio_init_container(VFIOContainer *container, int group_fd,
+     }
+ 
+     container->iommu_type = iommu_type;
+-    vfio_container_init(&container->bcontainer, space, &vfio_legacy_ops);
++
++    vioc = vfio_get_iommu_class(iommu_type, errp);
++    if (!vioc) {
++        error_setg(errp, "No available IOMMU models");
++        return -EINVAL;
++    }
++
++    vfio_container_init(&container->bcontainer, space, vioc);
+     return 0;
  }
+ 
+@@ -1098,12 +1125,26 @@ out_single:
+     return ret;
+ }
+ 
+-const VFIOIOMMUOps vfio_legacy_ops = {
+-    .dma_map = vfio_legacy_dma_map,
+-    .dma_unmap = vfio_legacy_dma_unmap,
+-    .attach_device = vfio_legacy_attach_device,
+-    .detach_device = vfio_legacy_detach_device,
+-    .set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking,
+-    .query_dirty_bitmap = vfio_legacy_query_dirty_bitmap,
+-    .pci_hot_reset = vfio_legacy_pci_hot_reset,
++static void vfio_iommu_legacy_class_init(ObjectClass *klass, void *data)
++{
++    VFIOIOMMUClass *vioc = VFIO_IOMMU_CLASS(klass);
++
++    vioc->dma_map = vfio_legacy_dma_map;
++    vioc->dma_unmap = vfio_legacy_dma_unmap;
++    vioc->attach_device = vfio_legacy_attach_device;
++    vioc->detach_device = vfio_legacy_detach_device;
++    vioc->set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking;
++    vioc->query_dirty_bitmap = vfio_legacy_query_dirty_bitmap;
++    vioc->pci_hot_reset = vfio_legacy_pci_hot_reset;
+ };
 +
 +static const TypeInfo types[] = {
 +    {
-+        .name = TYPE_VFIO_IOMMU,
-+        .parent = TYPE_INTERFACE,
++        .name = TYPE_VFIO_IOMMU_LEGACY,
++        .parent = TYPE_VFIO_IOMMU,
++        .class_init = vfio_iommu_legacy_class_init,
 +        .class_size = sizeof(VFIOIOMMUClass),
 +    },
 +};
 +
 +DEFINE_TYPES(types)
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 1874ec1aba987cac6cb83f86650e7a5e1968c327..d84a9e73a65de4e4c1cdaf65619a700bd8d6b802 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2488,7 +2488,7 @@ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
- static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
- {
-     VFIODevice *vbasedev = &vdev->vbasedev;
--    const VFIOIOMMUOps *ops = vbasedev->bcontainer->ops;
-+    const VFIOIOMMUClass *ops = vbasedev->bcontainer->ops;
- 
-     return ops->pci_hot_reset(vbasedev, single);
- }
 -- 
 2.43.0
 
