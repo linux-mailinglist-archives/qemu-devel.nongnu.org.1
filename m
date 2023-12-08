@@ -2,80 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF14F80AB93
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 19:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 230B080AC3F
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Dec 2023 19:40:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rBfCk-0007sG-0p; Fri, 08 Dec 2023 13:04:02 -0500
+	id 1rBfkR-00068Y-KS; Fri, 08 Dec 2023 13:38:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rBfCi-0007rp-Hm
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 13:04:00 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rBfkM-00067w-KU
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 13:38:46 -0500
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rBfCh-0003VP-2j
- for qemu-devel@nongnu.org; Fri, 08 Dec 2023 13:04:00 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6cea0fd9b53so1803120b3a.1
- for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 10:03:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rBfkK-0008SO-Vj
+ for qemu-devel@nongnu.org; Fri, 08 Dec 2023 13:38:46 -0500
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-286d8dae2dbso2741382a91.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Dec 2023 10:38:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702058637; x=1702663437; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9Ms4tiPC1ZmN8F70HyZxgZ/fRIv9iz33jofa2pZkHOo=;
- b=Tq/0qDc+htTbtIVJbMiTPreM4dP4I8P8osXh8WAacgaxc2RJFp0qp+7ZJ3FRbda9TP
- Kmy1avuM8IhnN0Jho1E8jwKBUfeXy7f6cvoXr5hLxKEGM1auWW5Ysqe9lj1/xtVh/gIZ
- crJyVh2bIh+fdwVnIAgwkIvKeG8AiArnFuEiDdufnjOHcbbwoEBEKWmiYZVSbld+JYHK
- Dj5U2pOVf9Kuqdk44WmpzS4E8+O951PsI5+kbYlSrfQAAvWno2P/LWYCTJymK6VM0ZRq
- HwomP37P2CzHA5h0NgaP07cpvxsOW1Nx11Aa2Kd4efN6+a3dGS00TrGRrq4JPN8WZjr/
- 9aYg==
+ d=ventanamicro.com; s=google; t=1702060722; x=1702665522; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=oKQSIfEeOv87vk/nwq3R4JWRjgFx7fupjLrhNfyLjg4=;
+ b=mCc8PBWJLdanLuaKtDsuju8WHFqmCGyXXw96J2gocPv+ku4xSLjUOnGv9A9Zoxb6CR
+ nY8QbZ4+Uh1lKqhfI0/Fai9I7tGHm2+l/qxj3wJ70Xp4n9wJmtQMrYpFZImKJBTwP+W/
+ Akl1ky8/d8u+xFxzklH50WjqZ8nT+E5cpKGYjzumrSoL39W16l9feV4JgvWfPJe/5mUe
+ xN60nvbXhZBbl6v6HrhBvogUILFKWcxn4+m/Q/Ou3Qvg9oqXzPZmKuPM/kh+TsnVJkxl
+ 9HMS5he95/0jFBfOVJePeNF/HmmIfmiCATniKW9kbkPUFNA5zD9k9LzLKWLnNEotP+st
+ GFlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702058637; x=1702663437;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9Ms4tiPC1ZmN8F70HyZxgZ/fRIv9iz33jofa2pZkHOo=;
- b=u8zW+5Hjdn0chSlqgKovSJAvN0p+swD1AOXUaepVwL5ZwBirBGne/kmQli2/fueJS9
- 9Ni6n5v349AKb/CjvvSug4rbGT7hu/7pkAIsYAtOUtIZbFr/TBiiZMEbLNCuJqALpad3
- Ddzf57WJBMPOwl+S/7b4nDVTgPVyb1td6kUb3Bx1Da8R5ITL/U+X37VLG0hUKsjuUjGx
- Z4g+emB1rdcUBXRtvN8kta2/ulBHasgeq11wd6vqFrfS+SOBVPv3OMVP+sK6Mj4jYcrs
- 52lb2cB+z7Kbh+4JUezYvsSZWGurCiHdZJLyJQBeCzxg4XM61NAxxfOtOl8UHOrLrv+k
- TYZA==
-X-Gm-Message-State: AOJu0YwDtifRS3clvshtb44cDRQtANZgrciAGyB/5mJkJKQoERDkEIXR
- U5VwUHDSJjv100wBFysRiHzizQ==
-X-Google-Smtp-Source: AGHT+IGtXimq8gzef3Nn4mK57YdtSFt8Ok2ka2KUWFuwinLIFr3rN0dtXkRv4JEKD3ViBf4eElC5CA==
-X-Received: by 2002:a05:6a00:6714:b0:6ce:379c:ced1 with SMTP id
- hm20-20020a056a00671400b006ce379cced1mr356172pfb.59.1702058637479; 
- Fri, 08 Dec 2023 10:03:57 -0800 (PST)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- n24-20020aa78a58000000b006ce4965fdbdsm1867520pfa.116.2023.12.08.10.03.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Dec 2023 10:03:57 -0800 (PST)
-Message-ID: <d728cf97-e2c7-452a-ab32-64c14aef9113@linaro.org>
-Date: Fri, 8 Dec 2023 10:03:55 -0800
+ d=1e100.net; s=20230601; t=1702060722; x=1702665522;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oKQSIfEeOv87vk/nwq3R4JWRjgFx7fupjLrhNfyLjg4=;
+ b=SozLb05p4b/gdMWgn+jFIjkz99X3gCgkfaV7iYdvPZU3HwD3usNmQwtYYtaS1salaR
+ XHY9oHtUNuW6LmJWoi0dh1IcKpTBk6wY1V3Ucsb8fyzcowIdhQFcdgD1dS7tBU/scfYP
+ iYFKBxdCJUohJaGzX48YC2oU/43KD5l1BaZcfytJNyVAloorLBG8L2ZXw18hUtdEpOIR
+ BEXan02f6lGsvEYLTo+Ont74++vZtE8M33sqVRTcmjoowkNJEwa8yIlxiywhx8pdaauy
+ l9htrlh+UYBK+w6vdE82xcTRcybkCVe99gjbr3geaVhsx5x9ITJBcNXk3U7IorXHcVMo
+ 9wJg==
+X-Gm-Message-State: AOJu0YyRGB/CJLzSrlGfb5VUGc+RrHUSGUetY1uzp8NuHylu0vGSqfbQ
+ QPy8RDjY3Ak6JSF1NIrCwmfR24I6BXcisZbld+w=
+X-Google-Smtp-Source: AGHT+IGNEOiYDTi291+6Om8EWUsNpOfA4bL800fCEWUwGGw+Y9whLKksDA3jr24SE8HCAGTemES7og==
+X-Received: by 2002:a17:90a:fd13:b0:286:ec21:f579 with SMTP id
+ cv19-20020a17090afd1300b00286ec21f579mr760387pjb.28.1702060721736; 
+ Fri, 08 Dec 2023 10:38:41 -0800 (PST)
+Received: from grind.. ([152.234.124.8]) by smtp.gmail.com with ESMTPSA id
+ sk13-20020a17090b2dcd00b002864c14063fsm2190709pjb.20.2023.12.08.10.38.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Dec 2023 10:38:41 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH for-9.0 0/5] target/riscv/kvm: fix KVM reg id sizes
+Date: Fri,  8 Dec 2023 15:38:30 -0300
+Message-ID: <20231208183835.2411523-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/6] sysemu/replay: Restrict icount to system emulation
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Fam Zheng <fam@euphon.net>,
- qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-References: <20231208113529.74067-1-philmd@linaro.org>
- <20231208113529.74067-7-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231208113529.74067-7-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,16 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/8/23 03:35, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   include/sysemu/cpu-timers.h |  2 +-
->   include/sysemu/replay.h     | 11 ++++++++---
->   stubs/icount.c              | 19 -------------------
->   3 files changed, 9 insertions(+), 23 deletions(-)
+Hi,
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+While working in a follow-up for the Vector KVM regs, where we would
+read 'vlenb' and then all other vregs [1], Drew noticed that we're using
+kvm_riscv_reg_id() in registers that are u32 and u64.
+
+The helper is returning ulong regs for all cases, meaning that we return
+the wrong size for u32 regs when running 6 in 64 bits (case of FP_F
+regs) and u64 regs when running in 32 bits (case of FP_D and timer
+regs).
+
+It's best to do a quick bug fix round in the KVM reg IDs before adding
+more IDs, so here we are.
+
+This is marked as 9.0 because the fixes aren't critical enough to
+postpone 8.2. Michael, patches 1, 2 and 3 are good candidates for
+8.2-stable.
+
+Alistair, in case these are accepted I'll re-send "[PATCH for-9.0 0/4]
+target/riscv: add RVV CSRs" based on these fixes to avoid conflicts in
+the tree.
 
 
-r~
+[1] this is dependent on kernel side changes that are being discussed
+here: https://lore.kernel.org/kvm/20231205174509.2238870-1-dbarboza@ventanamicro.com/
+("[PATCH v3 0/3] RISC-V, KVM: add 'vlenb' and vector CSRs to get-reg-list")
+
+
+Daniel Henrique Barboza (5):
+  target/riscv/kvm: change KVM_REG_RISCV_FP_F to u32
+  target/riscv/kvm: change KVM_REG_RISCV_FP_D to u64
+  target/riscv/kvm: change timer regs size to u64
+  target/riscv/kvm: add RISCV_CONFIG_REG()
+  target/riscv/kvm: rename riscv_reg_id() to riscv_reg_id_ulong()
+
+ target/riscv/kvm/kvm-cpu.c | 109 ++++++++++++++++++++-----------------
+ 1 file changed, 59 insertions(+), 50 deletions(-)
+
+-- 
+2.41.0
+
 
