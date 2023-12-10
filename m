@@ -2,72 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31AD0816BB1
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 11:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30366816C02
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:17:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFBH8-00032g-J6; Mon, 18 Dec 2023 05:55:06 -0500
+	id 1rFBbD-00072y-Ea; Mon, 18 Dec 2023 06:15:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFBH6-00030j-B8; Mon, 18 Dec 2023 05:55:04 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1rFBb5-00071m-Eu; Mon, 18 Dec 2023 06:15:43 -0500
+Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFBH3-000407-Ms; Mon, 18 Dec 2023 05:55:04 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 63C3B756094;
- Mon, 18 Dec 2023 11:54:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id b6gCvcczglLZ; Mon, 18 Dec 2023 11:54:56 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 21A7B756078; Mon, 18 Dec 2023 11:54:56 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1F4AC756066;
- Mon, 18 Dec 2023 11:54:56 +0100 (CET)
-Date: Mon, 18 Dec 2023 11:54:56 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- Thomas Huth <huth@tuxfamily.org>, 
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
- David Hildenbrand <david@redhat.com>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Kevin Wolf <kwolf@redhat.com>, Peter Xu <peterx@redhat.com>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, 
- Sergio Lopez <slp@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>, Hanna Reitz <hreitz@redhat.com>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
- Nicholas Piggin <npiggin@gmail.com>, Juan Quintela <quintela@redhat.com>, 
- =?ISO-8859-15?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>, 
- qemu-ppc@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
- Leonardo Bras <leobras@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH 04/12] hw/block/fdc: Expose internal header
-In-Reply-To: <91BF37F6-494D-4656-9CE8-7FDA0C3C8F33@gmail.com>
-Message-ID: <26832f40-8202-5f48-a197-ba213d4a0128@eik.bme.hu>
-References: <20231217144148.15511-1-shentey@gmail.com>
- <20231217144148.15511-5-shentey@gmail.com>
- <b4b1d529-f368-4f8f-b357-4ad5177a2951@eik.bme.hu>
- <91BF37F6-494D-4656-9CE8-7FDA0C3C8F33@gmail.com>
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1rFBb2-0008IN-Od; Mon, 18 Dec 2023 06:15:43 -0500
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 12F7A11EFD1;
+ Mon, 18 Dec 2023 11:15:39 +0000 (UTC)
+From: ~inesvarhol <inesvarhol@git.sr.ht>
+Date: Sun, 10 Dec 2023 18:51:08 +0100
+Subject: [PATCH qemu v2 1/3] hw/misc: Implement STM32L4x5 SYSCFG
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-537142648-1702896896=:10312"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Message-ID: <170289813862.19159.2545029501234884208-1@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <170289813862.19159.2545029501234884208-0@git.sr.ht>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
+ peter.maydell@linaro.org, ines.varhol@telecom-paris.fr,
+ arnaud.minier@telecom-paris.fr
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,168 +53,413 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~inesvarhol <inesvarhol@proton.me>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
---3866299591-537142648-1702896896=:10312
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Content-Transfer-Encoding: 8BIT
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+---
+ hw/misc/Kconfig                    |   3 +
+ hw/misc/meson.build                |   1 +
+ hw/misc/stm32l4x5_syscfg.c         | 265 +++++++++++++++++++++++++++++
+ hw/misc/trace-events               |   6 +
+ include/hw/misc/stm32l4x5_syscfg.h |  54 ++++++
+ 5 files changed, 329 insertions(+)
+ create mode 100644 hw/misc/stm32l4x5_syscfg.c
+ create mode 100644 include/hw/misc/stm32l4x5_syscfg.h
 
-On Sun, 17 Dec 2023, Bernhard Beschow wrote:
-> Am 17. Dezember 2023 15:47:33 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
->> On Sun, 17 Dec 2023, Bernhard Beschow wrote:
->>> Exposing the internal header allows for exposing struct FDCtrlISABus which is
->>> encuraged by qdev guidelines.
->>
->> Hopefully the guidelines don't encourage this as object orientation indeed encourages object encapsulation so only the object itseld should poke its internals and other objects should use methods the change object state. In QOM some object states were exposed in public headers to allow embedding those objects in other objects becuase C needs the struct size to allow that. This was to simplify memory management so the embedded objects don't need to be tracked and freed but would be created and freed with the other object embedding it but this does not mean the other object should poke into these object or that this is a general guideline to expose internal object state. I'd say the exposed objects are an exception instead of recommended guideline and only allowed for objects that need to be embeded in others but generally object encapsulation would be better to preserve where possible. This patch exposes objects so others can poke into them which would make those other objects depe
- ndent on the implementation of these objects making these harder to chnage in the future so a better way may be to add methods to fdc and serial to allow changing their base address and map/unmap their ports and keep their internals unexposed.
->
-> Each ISADevice sub class would need concenience methods as well as each 
-> state class. This series touches three of each: fdc, parallel, serial. 
-> And each of those need two convenience methods: set_enabled() and 
-> set_address(). This would add another 12 functions on top of the current 
-> ones.
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 3efe3dc2cc..4fc6b29b43 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -90,6 +90,9 @@ config STM32F4XX_EXTI
+ config STM32L4X5_EXTI
+     bool
+=20
++config STM32L4X5_SYSCFG
++    bool
++
+ config MIPS_ITU
+     bool
+=20
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index 16db6e228d..2ca2ce4b62 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -111,6 +111,7 @@ system_ss.add(when: 'CONFIG_STM32F2XX_SYSCFG', if_true: f=
+iles('stm32f2xx_syscfg.
+ system_ss.add(when: 'CONFIG_STM32F4XX_SYSCFG', if_true: files('stm32f4xx_sys=
+cfg.c'))
+ system_ss.add(when: 'CONFIG_STM32F4XX_EXTI', if_true: files('stm32f4xx_exti.=
+c'))
+ system_ss.add(when: 'CONFIG_STM32L4X5_EXTI', if_true: files('stm32l4x5_exti.=
+c'))
++system_ss.add(when: 'CONFIG_STM32L4X5_SYSCFG', if_true: files('stm32l4x5_sys=
+cfg.c'))
+ system_ss.add(when: 'CONFIG_MPS2_FPGAIO', if_true: files('mps2-fpgaio.c'))
+ system_ss.add(when: 'CONFIG_MPS2_SCC', if_true: files('mps2-scc.c'))
+=20
+diff --git a/hw/misc/stm32l4x5_syscfg.c b/hw/misc/stm32l4x5_syscfg.c
+new file mode 100644
+index 0000000000..3af6bd7942
+--- /dev/null
++++ b/hw/misc/stm32l4x5_syscfg.c
+@@ -0,0 +1,265 @@
++/*
++ * STM32L4x5 SYSCFG (System Configuration Controller)
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ *
++ * This work is based on the stm32f4xx_syscfg by Alistair Francis.
++ * Original code is licensed under the MIT License:
++ *
++ * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
++ */
++
++/*
++ * The reference used is the STMicroElectronics RM0351 Reference manual
++ * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
++ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/document=
+ation.html
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "trace.h"
++#include "hw/irq.h"
++#include "migration/vmstate.h"
++#include "hw/misc/stm32l4x5_syscfg.h"
++
++#define SYSCFG_MEMRMP 0x00
++#define SYSCFG_CFGR1 0x04
++#define SYSCFG_EXTICR1 0x08
++#define SYSCFG_EXTICR2 0x0C
++#define SYSCFG_EXTICR3 0x10
++#define SYSCFG_EXTICR4 0x14
++#define SYSCFG_SCSR 0x18
++#define SYSCFG_CFGR2 0x1C
++#define SYSCFG_SWPR 0x20
++#define SYSCFG_SKR 0x24
++#define SYSCFG_SWPR2 0x28
++
++/* 00000000_00000000_00000001_00000111 */
++#define ACTIVABLE_BITS_MEMRP 0x00000107
++
++/* 11111100_11111111_00000001_00000000 */
++#define ACTIVABLE_BITS_CFGR1 0xFCFF0100
++/* 00000000_00000000_00000000_00000001 */
++#define FIREWALL_DISABLE_CFGR1 0x00000001
++
++/* 00000000_00000000_11111111_11111111 */
++#define ACTIVABLE_BITS_EXTICR 0x0000FFFF
++
++/* 00000000_00000000_00000000_00000011 */
++/* #define ACTIVABLE_BITS_SCSR 0x00000003 */
++
++/* 00000000_00000000_00000000_00001111 */
++#define ECC_LOCK_CFGR2 0x0000000F
++/* 00000000_00000000_00000001_00000000 */
++#define SRAM2_PARITY_ERROR_FLAG_CFGR2 0x00000100
++
++/* 00000000_00000000_00000000_11111111 */
++#define ACTIVABLE_BITS_SKR 0x000000FF
++
++static void stm32l4x5_syscfg_hold_reset(Object *obj)
++{
++    Stm32l4x5SyscfgState *s =3D STM32L4X5_SYSCFG(obj);
++
++    s->memrmp =3D 0x00000000;
++    s->cfgr1 =3D 0x7C000001;
++    s->exticr[0] =3D 0x00000000;
++    s->exticr[1] =3D 0x00000000;
++    s->exticr[2] =3D 0x00000000;
++    s->exticr[3] =3D 0x00000000;
++    s->scsr =3D 0x00000000;
++    s->cfgr2 =3D 0x00000000;
++    s->swpr =3D 0x00000000;
++    s->skr =3D 0x00000000;
++    s->swpr2 =3D 0x00000000;
++}
++
++static void stm32l4x5_syscfg_set_irq(void *opaque, int irq, int level)
++{
++    Stm32l4x5SyscfgState *s =3D opaque;
++    uint8_t gpio =3D irq / GPIO_NUM_PINS;
++    g_assert(gpio < NUM_GPIOS);
++
++    int line =3D irq % GPIO_NUM_PINS;
++    int exticr_reg =3D line / 4;
++    int startbit =3D (irq % 4) * 4;
++
++    trace_stm32l4x5_syscfg_set_irq(gpio, line, level);
++
++    if (extract32(s->exticr[exticr_reg], startbit, 4) =3D=3D gpio) {
++        trace_stm32l4x5_syscfg_pulse_exti(line);
++        qemu_set_irq(s->gpio_out[line], level);
++   }
++}
++
++static uint64_t stm32l4x5_syscfg_read(void *opaque, hwaddr addr,
++                                     unsigned int size)
++{
++    Stm32l4x5SyscfgState *s =3D opaque;
++
++    trace_stm32l4x5_syscfg_read(addr);
++
++    switch (addr) {
++    case SYSCFG_MEMRMP:
++        return s->memrmp;
++    case SYSCFG_CFGR1:
++        return s->cfgr1;
++    case SYSCFG_EXTICR1...SYSCFG_EXTICR4:
++        return s->exticr[(addr - SYSCFG_EXTICR1) / 4];
++    case SYSCFG_SCSR:
++        return s->scsr;
++    case SYSCFG_CFGR2:
++        return s->cfgr2;
++    case SYSCFG_SWPR:
++        return s->swpr;
++    case SYSCFG_SKR:
++        return s->skr;
++    case SYSCFG_SWPR2:
++        return s->swpr2;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Bad offset 0x%"HWADDR_PRIx"\n", __func__, addr);
++        return 0;
++    }
++}
++
++static void stm32l4x5_syscfg_write(void *opaque, hwaddr addr,
++                       uint64_t val64, unsigned int size)
++{
++    Stm32l4x5SyscfgState *s =3D opaque;
++    uint32_t value =3D val64;
++
++    trace_stm32l4x5_syscfg_write(addr, value);
++
++    switch (addr) {
++    case SYSCFG_MEMRMP:
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Changing the memory mapping isn't supported\n",
++                      __func__);
++        s->memrmp =3D value & ACTIVABLE_BITS_MEMRP;
++        return;
++    case SYSCFG_CFGR1:
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Functions in CFGRx aren't supported\n",
++                      __func__);
++        /* bit 0 (firewall dis.) is cleared by software, set only by reset. =
+*/
++        s->cfgr1 =3D (s->cfgr1 & value & FIREWALL_DISABLE_CFGR1) |
++                          (value & ACTIVABLE_BITS_CFGR1);
++        return;
++    case SYSCFG_EXTICR1...SYSCFG_EXTICR4:
++        s->exticr[(addr - SYSCFG_EXTICR1) / 4] =3D
++                (value & ACTIVABLE_BITS_EXTICR);
++        return;
++    case SYSCFG_SCSR:
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Erasing SRAM2 isn't supported\n",
++                      __func__);
++        /*
++         * only non reserved bits are :
++         * bit 0 (write-protected by a passkey), bit 1 (meant to be read)
++         * so it serves no purpose yet to add :
++         * s->scsr =3D value & 0x3;
++         */
++        return;
++    case SYSCFG_CFGR2:
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Functions in CFGRx aren't supported\n",
++                      __func__);
++        /* bit 8 (SRAM2 PEF) is cleared by software by writing a '1'.*/
++        /* bits[3:0] (ECC Lock) are set by software, cleared only by reset.*/
++        s->cfgr2 =3D (s->cfgr2 | (value & ECC_LOCK_CFGR2)) &
++                          ~(value & SRAM2_PARITY_ERROR_FLAG_CFGR2);
++        return;
++    case SYSCFG_SWPR:
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Write protecting SRAM2 isn't supported\n",
++                      __func__);
++        /* These bits are set by software and cleared only by reset.*/
++        s->swpr |=3D value;
++        return;
++    case SYSCFG_SKR:
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Erasing SRAM2 isn't supported\n",
++                      __func__);
++        s->skr =3D value & ACTIVABLE_BITS_SKR;
++        return;
++    case SYSCFG_SWPR2:
++        qemu_log_mask(LOG_UNIMP,
++                      "%s: Write protecting SRAM2 isn't supported\n",
++                      __func__);
++        /* These bits are set by software and cleared only by reset.*/
++        s->swpr2 |=3D value;
++        return;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Bad offset 0x%"HWADDR_PRIx"\n", __func__, addr);
++    }
++}
++
++static const MemoryRegionOps stm32l4x5_syscfg_ops =3D {
++    .read =3D stm32l4x5_syscfg_read,
++    .write =3D stm32l4x5_syscfg_write,
++    .endianness =3D DEVICE_NATIVE_ENDIAN,
++    .impl.min_access_size =3D 4,
++    .impl.max_access_size =3D 4,
++    .impl.unaligned =3D false,
++    .valid.min_access_size =3D 4,
++    .valid.max_access_size =3D 4,
++    .valid.unaligned =3D false,
++};
++
++static void stm32l4x5_syscfg_init(Object *obj)
++{
++    Stm32l4x5SyscfgState *s =3D STM32L4X5_SYSCFG(obj);
++
++    memory_region_init_io(&s->mmio, obj, &stm32l4x5_syscfg_ops, s,
++                          TYPE_STM32L4X5_SYSCFG, 0x400);
++    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++
++    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_syscfg_set_irq, 16 * NUM_GPIOS);
++    qdev_init_gpio_out(DEVICE(obj), s->gpio_out, 16);
++}
++
++static const VMStateDescription vmstate_stm32l4x5_syscfg =3D {
++    .name =3D TYPE_STM32L4X5_SYSCFG,
++    .version_id =3D 1,
++    .minimum_version_id =3D 1,
++    .fields =3D (VMStateField[]) {
++        VMSTATE_UINT32(memrmp, Stm32l4x5SyscfgState),
++        VMSTATE_UINT32(cfgr1, Stm32l4x5SyscfgState),
++        VMSTATE_UINT32_ARRAY(exticr, Stm32l4x5SyscfgState,
++                             SYSCFG_NUM_EXTICR),
++        VMSTATE_UINT32(scsr, Stm32l4x5SyscfgState),
++        VMSTATE_UINT32(cfgr2, Stm32l4x5SyscfgState),
++        VMSTATE_UINT32(swpr, Stm32l4x5SyscfgState),
++        VMSTATE_UINT32(skr, Stm32l4x5SyscfgState),
++        VMSTATE_UINT32(swpr2, Stm32l4x5SyscfgState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static void stm32l4x5_syscfg_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc =3D DEVICE_CLASS(klass);
++    ResettableClass *rc =3D RESETTABLE_CLASS(klass);
++
++    dc->vmsd =3D &vmstate_stm32l4x5_syscfg;
++    rc->phases.hold =3D stm32l4x5_syscfg_hold_reset;
++}
++
++static const TypeInfo stm32l4x5_syscfg_info[] =3D {
++    {
++        .name          =3D TYPE_STM32L4X5_SYSCFG,
++        .parent        =3D TYPE_SYS_BUS_DEVICE,
++        .instance_size =3D sizeof(Stm32l4x5SyscfgState),
++        .instance_init =3D stm32l4x5_syscfg_init,
++        .class_init    =3D stm32l4x5_syscfg_class_init,
++    }
++};
++
++DEFINE_TYPES(stm32l4x5_syscfg_info)
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index 2f01c62c0e..a24d7e1eac 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -163,6 +163,12 @@ stm32f4xx_exti_set_irq(int irq, int level) "Set EXTI: %d=
+ to %d"
+ stm32f4xx_exti_read(uint64_t addr) "reg read: addr: 0x%" PRIx64 " "
+ stm32f4xx_exti_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%" PR=
+Ix64 " val: 0x%" PRIx64 ""
+=20
++# stm32l4x5_syscfg.c
++stm32l4x5_syscfg_set_irq(int gpio, int line, int level) "irq from GPIO: %d, =
+line: %d, level: %d"
++stm32l4x5_syscfg_pulse_exti(int irq) "irq %d forwarded to EXTI"
++stm32l4x5_syscfg_read(uint64_t addr) "reg read: addr: 0x%" PRIx64 " "
++stm32l4x5_syscfg_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%" =
+PRIx64 " val: 0x%" PRIx64 ""
++
+ # stm32l4x5_exti.c
+ stm32l4x5_exti_set_irq(int irq, int level) "Set EXTI: %d to %d"
+ stm32l4x5_exti_read(uint64_t addr, uint64_t data) "reg read: addr: 0x%" PRIx=
+64 " val: 0x%" PRIx64 ""
+diff --git a/include/hw/misc/stm32l4x5_syscfg.h b/include/hw/misc/stm32l4x5_s=
+yscfg.h
+new file mode 100644
+index 0000000000..76bdcf5189
+--- /dev/null
++++ b/include/hw/misc/stm32l4x5_syscfg.h
+@@ -0,0 +1,54 @@
++/*
++ * STM32L4x5 SYSCFG (System Configuration Controller)
++ *
++ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ *
++ * This work is based on the stm32f4xx_syscfg by Alistair Francis.
++ * Original code is licensed under the MIT License:
++ *
++ * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
++ */
++
++/*
++ * The reference used is the STMicroElectronics RM0351 Reference manual
++ * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
++ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/document=
+ation.html
++ */
++
++#ifndef HW_STM32L4X5_SYSCFG_H
++#define HW_STM32L4X5_SYSCFG_H
++
++#include "hw/sysbus.h"
++#include "qom/object.h"
++
++#define TYPE_STM32L4X5_SYSCFG "stm32l4x5-syscfg"
++OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5SyscfgState, STM32L4X5_SYSCFG)
++
++#define NUM_GPIOS 8
++#define GPIO_NUM_PINS 16
++#define SYSCFG_NUM_EXTICR 4
++
++struct Stm32l4x5SyscfgState {
++    SysBusDevice parent_obj;
++
++    MemoryRegion mmio;
++
++    uint32_t memrmp;
++    uint32_t cfgr1;
++    uint32_t exticr[SYSCFG_NUM_EXTICR];
++    uint32_t scsr;
++    uint32_t cfgr2;
++    uint32_t swpr;
++    uint32_t skr;
++    uint32_t swpr2;
++
++    qemu_irq gpio_out[16];
++};
++
++#endif
+--=20
+2.38.5
 
-If all ISA devices need this then these should really be methods of 
-ISADevice but since that's just an empty wrapper over devices each of 
-which handles its own ports, the ISADevice does not know about those and 
-since each device may have different ports and not all of them uses portio 
-lists for this, moving port handling to ISADevice might be too big 
-refactoring to do for this. Keeping these functions with the superio 
-component devices so their implementation is kept private still worth it 
-in my opinion so even if that adds 2 functions to superio component 
-devices (which is not all ISA devices just a limited set) seems to be a 
-better approach to me than breaking encapsulation of objects. These are 
-simple access methods for internal object state which are common in object 
-otiented programming.
-
-> Then ISASuperIODevice would require at least 6 more such methods (not 
-> counting the unneeded ones for IDE which might be desirable for 
-> consistency). So in the end we'd have at least 18 more methods. Is this 
-> really worth it?
-
-We may do without these if we say superio is just a container of 
-components so don't add forwarding methods but we can call the accessor 
-methods of component objects from vt82c686.c. That's still better than 
-reaching into object internals from foreign objects.
-
-Regards,
-BALATON Zoltan
-
-> I didn't feel very comfortable going this route, so ended up with the 
-> current solution poking the states directly. I'm open to different 
-> approaches including the one above but I'd really like to know the 
-> opinion of the maintainers, too.
->
-> Best regards,
-> Bernhard
->
->>
->> Regards,
->> BALATON Zoltan
->>
->>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
->>> ---
->>> MAINTAINERS                                       | 2 +-
->>> hw/block/fdc-internal.h => include/hw/block/fdc.h | 4 ++--
->>> hw/block/fdc-isa.c                                | 2 +-
->>> hw/block/fdc-sysbus.c                             | 2 +-
->>> hw/block/fdc.c                                    | 2 +-
->>> 5 files changed, 6 insertions(+), 6 deletions(-)
->>> rename hw/block/fdc-internal.h => include/hw/block/fdc.h (98%)
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index b4718fcf59..939f518701 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -1945,9 +1945,9 @@ M: John Snow <jsnow@redhat.com>
->>> L: qemu-block@nongnu.org
->>> S: Odd Fixes
->>> F: hw/block/fdc.c
->>> -F: hw/block/fdc-internal.h
->>> F: hw/block/fdc-isa.c
->>> F: hw/block/fdc-sysbus.c
->>> +F: include/hw/block/fdc.h
->>> F: include/hw/block/fdc-isa.h
->>> F: tests/qtest/fdc-test.c
->>> T: git https://gitlab.com/jsnow/qemu.git ide
->>> diff --git a/hw/block/fdc-internal.h b/include/hw/block/fdc.h
->>> similarity index 98%
->>> rename from hw/block/fdc-internal.h
->>> rename to include/hw/block/fdc.h
->>> index 1728231a26..acca7e0d0e 100644
->>> --- a/hw/block/fdc-internal.h
->>> +++ b/include/hw/block/fdc.h
->>> @@ -22,8 +22,8 @@
->>>  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
->>>  * THE SOFTWARE.
->>>  */
->>> -#ifndef HW_BLOCK_FDC_INTERNAL_H
->>> -#define HW_BLOCK_FDC_INTERNAL_H
->>> +#ifndef HW_BLOCK_FDC_H
->>> +#define HW_BLOCK_FDC_H
->>>
->>> #include "exec/memory.h"
->>> #include "exec/ioport.h"
->>> diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
->>> index 6387dc94fa..7058d4118f 100644
->>> --- a/hw/block/fdc-isa.c
->>> +++ b/hw/block/fdc-isa.c
->>> @@ -39,6 +39,7 @@
->>> #include "hw/qdev-properties-system.h"
->>> #include "migration/vmstate.h"
->>> #include "hw/block/block.h"
->>> +#include "hw/block/fdc.h"
->>> #include "sysemu/block-backend.h"
->>> #include "sysemu/blockdev.h"
->>> #include "sysemu/sysemu.h"
->>> @@ -47,7 +48,6 @@
->>> #include "qemu/module.h"
->>> #include "trace.h"
->>> #include "qom/object.h"
->>> -#include "fdc-internal.h"
->>>
->>> OBJECT_DECLARE_SIMPLE_TYPE(FDCtrlISABus, ISA_FDC)
->>>
->>> diff --git a/hw/block/fdc-sysbus.c b/hw/block/fdc-sysbus.c
->>> index f18f0d19b0..cff21c02b3 100644
->>> --- a/hw/block/fdc-sysbus.c
->>> +++ b/hw/block/fdc-sysbus.c
->>> @@ -28,8 +28,8 @@
->>> #include "qom/object.h"
->>> #include "hw/sysbus.h"
->>> #include "hw/block/fdc-isa.h"
->>> +#include "hw/block/fdc.h"
->>> #include "migration/vmstate.h"
->>> -#include "fdc-internal.h"
->>> #include "trace.h"
->>>
->>> #define TYPE_SYSBUS_FDC "base-sysbus-fdc"
->>> diff --git a/hw/block/fdc.c b/hw/block/fdc.c
->>> index 2bd6d925b5..0e2fa527f9 100644
->>> --- a/hw/block/fdc.c
->>> +++ b/hw/block/fdc.c
->>> @@ -39,6 +39,7 @@
->>> #include "hw/qdev-properties-system.h"
->>> #include "migration/vmstate.h"
->>> #include "hw/block/block.h"
->>> +#include "hw/block/fdc.h"
->>> #include "sysemu/block-backend.h"
->>> #include "sysemu/blockdev.h"
->>> #include "sysemu/sysemu.h"
->>> @@ -47,7 +48,6 @@
->>> #include "qemu/module.h"
->>> #include "trace.h"
->>> #include "qom/object.h"
->>> -#include "fdc-internal.h"
->>>
->>> /********************************************************/
->>> /* debug Floppy devices */
->>>
->
->
---3866299591-537142648-1702896896=:10312--
 
