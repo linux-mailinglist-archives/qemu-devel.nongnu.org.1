@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30366816C02
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C29816C04
 	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:17:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFBbD-00072y-Ea; Mon, 18 Dec 2023 06:15:51 -0500
+	id 1rFBbE-00073r-0w; Mon, 18 Dec 2023 06:15:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rFBb5-00071m-Eu; Mon, 18 Dec 2023 06:15:43 -0500
+ id 1rFBb5-00071X-7v; Mon, 18 Dec 2023 06:15:43 -0500
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
- id 1rFBb2-0008IN-Od; Mon, 18 Dec 2023 06:15:43 -0500
+ id 1rFBb2-0008IP-Mc; Mon, 18 Dec 2023 06:15:42 -0500
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 12F7A11EFD1;
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 3BF3011EFD3;
  Mon, 18 Dec 2023 11:15:39 +0000 (UTC)
 From: ~inesvarhol <inesvarhol@git.sr.ht>
-Date: Sun, 10 Dec 2023 18:51:08 +0100
-Subject: [PATCH qemu v2 1/3] hw/misc: Implement STM32L4x5 SYSCFG
+Date: Sun, 10 Dec 2023 18:55:05 +0100
+Subject: [PATCH qemu v2 2/3] tests/qtest: Add STM32L4x5 SYSCFG QTest testcase
 MIME-Version: 1.0
-Message-ID: <170289813862.19159.2545029501234884208-1@git.sr.ht>
+Message-ID: <170289813862.19159.2545029501234884208-2@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <170289813862.19159.2545029501234884208-0@git.sr.ht>
 To: qemu-devel@nongnu.org
@@ -59,86 +59,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+
 Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 ---
- hw/misc/Kconfig                    |   3 +
- hw/misc/meson.build                |   1 +
- hw/misc/stm32l4x5_syscfg.c         | 265 +++++++++++++++++++++++++++++
- hw/misc/trace-events               |   6 +
- include/hw/misc/stm32l4x5_syscfg.h |  54 ++++++
- 5 files changed, 329 insertions(+)
- create mode 100644 hw/misc/stm32l4x5_syscfg.c
- create mode 100644 include/hw/misc/stm32l4x5_syscfg.h
+ tests/qtest/meson.build             |   3 +-
+ tests/qtest/stm32l4x5_syscfg-test.c | 408 ++++++++++++++++++++++++++++
+ 2 files changed, 410 insertions(+), 1 deletion(-)
+ create mode 100644 tests/qtest/stm32l4x5_syscfg-test.c
 
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-index 3efe3dc2cc..4fc6b29b43 100644
---- a/hw/misc/Kconfig
-+++ b/hw/misc/Kconfig
-@@ -90,6 +90,9 @@ config STM32F4XX_EXTI
- config STM32L4X5_EXTI
-     bool
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index d5126f4d86..a2213d60b3 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -196,7 +196,8 @@ qtests_aspeed =3D \
+    'aspeed_gpio-test']
 =20
-+config STM32L4X5_SYSCFG
-+    bool
-+
- config MIPS_ITU
-     bool
+ qtests_stm32l4x5 =3D \
+-  ['stm32l4x5_exti-test']
++  ['stm32l4x5_exti-test',
++   'stm32l4x5_syscfg-test']
 =20
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 16db6e228d..2ca2ce4b62 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -111,6 +111,7 @@ system_ss.add(when: 'CONFIG_STM32F2XX_SYSCFG', if_true: f=
-iles('stm32f2xx_syscfg.
- system_ss.add(when: 'CONFIG_STM32F4XX_SYSCFG', if_true: files('stm32f4xx_sys=
-cfg.c'))
- system_ss.add(when: 'CONFIG_STM32F4XX_EXTI', if_true: files('stm32f4xx_exti.=
-c'))
- system_ss.add(when: 'CONFIG_STM32L4X5_EXTI', if_true: files('stm32l4x5_exti.=
-c'))
-+system_ss.add(when: 'CONFIG_STM32L4X5_SYSCFG', if_true: files('stm32l4x5_sys=
-cfg.c'))
- system_ss.add(when: 'CONFIG_MPS2_FPGAIO', if_true: files('mps2-fpgaio.c'))
- system_ss.add(when: 'CONFIG_MPS2_SCC', if_true: files('mps2-scc.c'))
-=20
-diff --git a/hw/misc/stm32l4x5_syscfg.c b/hw/misc/stm32l4x5_syscfg.c
+ qtests_arm =3D \
+   (config_all_devices.has_key('CONFIG_MPS2') ? ['sse-timer-test'] : []) + \
+diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_sysc=
+fg-test.c
 new file mode 100644
-index 0000000000..3af6bd7942
+index 0000000000..3edd13b222
 --- /dev/null
-+++ b/hw/misc/stm32l4x5_syscfg.c
-@@ -0,0 +1,265 @@
++++ b/tests/qtest/stm32l4x5_syscfg-test.c
+@@ -0,0 +1,408 @@
 +/*
-+ * STM32L4x5 SYSCFG (System Configuration Controller)
++ * QTest testcase for STM32L4x5_SYSCFG
 + *
 + * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
 + * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 + *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
 + * This work is licensed under the terms of the GNU GPL, version 2 or later.
 + * See the COPYING file in the top-level directory.
-+ *
-+ * This work is based on the stm32f4xx_syscfg by Alistair Francis.
-+ * Original code is licensed under the MIT License:
-+ *
-+ * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
-+ */
-+
-+/*
-+ * The reference used is the STMicroElectronics RM0351 Reference manual
-+ * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
-+ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/document=
-ation.html
 + */
 +
 +#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+#include "trace.h"
-+#include "hw/irq.h"
-+#include "migration/vmstate.h"
-+#include "hw/misc/stm32l4x5_syscfg.h"
++#include "libqtest-single.h"
 +
++#define SYSCFG_BASE_ADDR 0x40010000
 +#define SYSCFG_MEMRMP 0x00
 +#define SYSCFG_CFGR1 0x04
 +#define SYSCFG_EXTICR1 0x08
@@ -150,315 +115,392 @@ ation.html
 +#define SYSCFG_SWPR 0x20
 +#define SYSCFG_SKR 0x24
 +#define SYSCFG_SWPR2 0x28
++#define INVALID_ADDR 0x2C
 +
-+/* 00000000_00000000_00000001_00000111 */
-+#define ACTIVABLE_BITS_MEMRP 0x00000107
++#define EXTI_BASE_ADDR 0x40010400
++#define EXTI_IMR1 0x00
++#define EXTI_RTSR1 0x08
++#define EXTI_FTSR1 0x0C
 +
-+/* 11111100_11111111_00000001_00000000 */
-+#define ACTIVABLE_BITS_CFGR1 0xFCFF0100
-+/* 00000000_00000000_00000000_00000001 */
-+#define FIREWALL_DISABLE_CFGR1 0x00000001
-+
-+/* 00000000_00000000_11111111_11111111 */
-+#define ACTIVABLE_BITS_EXTICR 0x0000FFFF
-+
-+/* 00000000_00000000_00000000_00000011 */
-+/* #define ACTIVABLE_BITS_SCSR 0x00000003 */
-+
-+/* 00000000_00000000_00000000_00001111 */
-+#define ECC_LOCK_CFGR2 0x0000000F
-+/* 00000000_00000000_00000001_00000000 */
-+#define SRAM2_PARITY_ERROR_FLAG_CFGR2 0x00000100
-+
-+/* 00000000_00000000_00000000_11111111 */
-+#define ACTIVABLE_BITS_SKR 0x000000FF
-+
-+static void stm32l4x5_syscfg_hold_reset(Object *obj)
++static void syscfg_writel(unsigned int offset, uint32_t value)
 +{
-+    Stm32l4x5SyscfgState *s =3D STM32L4X5_SYSCFG(obj);
-+
-+    s->memrmp =3D 0x00000000;
-+    s->cfgr1 =3D 0x7C000001;
-+    s->exticr[0] =3D 0x00000000;
-+    s->exticr[1] =3D 0x00000000;
-+    s->exticr[2] =3D 0x00000000;
-+    s->exticr[3] =3D 0x00000000;
-+    s->scsr =3D 0x00000000;
-+    s->cfgr2 =3D 0x00000000;
-+    s->swpr =3D 0x00000000;
-+    s->skr =3D 0x00000000;
-+    s->swpr2 =3D 0x00000000;
++    writel(SYSCFG_BASE_ADDR + offset, value);
 +}
 +
-+static void stm32l4x5_syscfg_set_irq(void *opaque, int irq, int level)
++static uint32_t syscfg_readl(unsigned int offset)
 +{
-+    Stm32l4x5SyscfgState *s =3D opaque;
-+    uint8_t gpio =3D irq / GPIO_NUM_PINS;
-+    g_assert(gpio < NUM_GPIOS);
-+
-+    int line =3D irq % GPIO_NUM_PINS;
-+    int exticr_reg =3D line / 4;
-+    int startbit =3D (irq % 4) * 4;
-+
-+    trace_stm32l4x5_syscfg_set_irq(gpio, line, level);
-+
-+    if (extract32(s->exticr[exticr_reg], startbit, 4) =3D=3D gpio) {
-+        trace_stm32l4x5_syscfg_pulse_exti(line);
-+        qemu_set_irq(s->gpio_out[line], level);
-+   }
++    return readl(SYSCFG_BASE_ADDR + offset);
 +}
 +
-+static uint64_t stm32l4x5_syscfg_read(void *opaque, hwaddr addr,
-+                                     unsigned int size)
++static void exti_writel(unsigned int offset, uint32_t value)
 +{
-+    Stm32l4x5SyscfgState *s =3D opaque;
-+
-+    trace_stm32l4x5_syscfg_read(addr);
-+
-+    switch (addr) {
-+    case SYSCFG_MEMRMP:
-+        return s->memrmp;
-+    case SYSCFG_CFGR1:
-+        return s->cfgr1;
-+    case SYSCFG_EXTICR1...SYSCFG_EXTICR4:
-+        return s->exticr[(addr - SYSCFG_EXTICR1) / 4];
-+    case SYSCFG_SCSR:
-+        return s->scsr;
-+    case SYSCFG_CFGR2:
-+        return s->cfgr2;
-+    case SYSCFG_SWPR:
-+        return s->swpr;
-+    case SYSCFG_SKR:
-+        return s->skr;
-+    case SYSCFG_SWPR2:
-+        return s->swpr2;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Bad offset 0x%"HWADDR_PRIx"\n", __func__, addr);
-+        return 0;
-+    }
++    writel(EXTI_BASE_ADDR + offset, value);
 +}
 +
-+static void stm32l4x5_syscfg_write(void *opaque, hwaddr addr,
-+                       uint64_t val64, unsigned int size)
++static void system_reset(void)
 +{
-+    Stm32l4x5SyscfgState *s =3D opaque;
-+    uint32_t value =3D val64;
-+
-+    trace_stm32l4x5_syscfg_write(addr, value);
-+
-+    switch (addr) {
-+    case SYSCFG_MEMRMP:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Changing the memory mapping isn't supported\n",
-+                      __func__);
-+        s->memrmp =3D value & ACTIVABLE_BITS_MEMRP;
-+        return;
-+    case SYSCFG_CFGR1:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Functions in CFGRx aren't supported\n",
-+                      __func__);
-+        /* bit 0 (firewall dis.) is cleared by software, set only by reset. =
-*/
-+        s->cfgr1 =3D (s->cfgr1 & value & FIREWALL_DISABLE_CFGR1) |
-+                          (value & ACTIVABLE_BITS_CFGR1);
-+        return;
-+    case SYSCFG_EXTICR1...SYSCFG_EXTICR4:
-+        s->exticr[(addr - SYSCFG_EXTICR1) / 4] =3D
-+                (value & ACTIVABLE_BITS_EXTICR);
-+        return;
-+    case SYSCFG_SCSR:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Erasing SRAM2 isn't supported\n",
-+                      __func__);
-+        /*
-+         * only non reserved bits are :
-+         * bit 0 (write-protected by a passkey), bit 1 (meant to be read)
-+         * so it serves no purpose yet to add :
-+         * s->scsr =3D value & 0x3;
-+         */
-+        return;
-+    case SYSCFG_CFGR2:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Functions in CFGRx aren't supported\n",
-+                      __func__);
-+        /* bit 8 (SRAM2 PEF) is cleared by software by writing a '1'.*/
-+        /* bits[3:0] (ECC Lock) are set by software, cleared only by reset.*/
-+        s->cfgr2 =3D (s->cfgr2 | (value & ECC_LOCK_CFGR2)) &
-+                          ~(value & SRAM2_PARITY_ERROR_FLAG_CFGR2);
-+        return;
-+    case SYSCFG_SWPR:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Write protecting SRAM2 isn't supported\n",
-+                      __func__);
-+        /* These bits are set by software and cleared only by reset.*/
-+        s->swpr |=3D value;
-+        return;
-+    case SYSCFG_SKR:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Erasing SRAM2 isn't supported\n",
-+                      __func__);
-+        s->skr =3D value & ACTIVABLE_BITS_SKR;
-+        return;
-+    case SYSCFG_SWPR2:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Write protecting SRAM2 isn't supported\n",
-+                      __func__);
-+        /* These bits are set by software and cleared only by reset.*/
-+        s->swpr2 |=3D value;
-+        return;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Bad offset 0x%"HWADDR_PRIx"\n", __func__, addr);
-+    }
++    QDict *response;
++    response =3D qtest_qmp(global_qtest, "{'execute': 'system_reset'}");
++    g_assert(qdict_haskey(response, "return"));
++    qobject_unref(response);
 +}
 +
-+static const MemoryRegionOps stm32l4x5_syscfg_ops =3D {
-+    .read =3D stm32l4x5_syscfg_read,
-+    .write =3D stm32l4x5_syscfg_write,
-+    .endianness =3D DEVICE_NATIVE_ENDIAN,
-+    .impl.min_access_size =3D 4,
-+    .impl.max_access_size =3D 4,
-+    .impl.unaligned =3D false,
-+    .valid.min_access_size =3D 4,
-+    .valid.max_access_size =3D 4,
-+    .valid.unaligned =3D false,
-+};
-+
-+static void stm32l4x5_syscfg_init(Object *obj)
++static void test_reset(void)
 +{
-+    Stm32l4x5SyscfgState *s =3D STM32L4X5_SYSCFG(obj);
++    /*
++     * Test that registers are initialized at the correct values
++     */
++    const uint32_t memrmp =3D syscfg_readl(SYSCFG_MEMRMP);
++    g_assert_cmpuint(memrmp, =3D=3D, 0x00000000);
 +
-+    memory_region_init_io(&s->mmio, obj, &stm32l4x5_syscfg_ops, s,
-+                          TYPE_STM32L4X5_SYSCFG, 0x400);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++    const uint32_t cfgr1 =3D syscfg_readl(SYSCFG_CFGR1);
++    g_assert_cmpuint(cfgr1, =3D=3D, 0x7C000001);
 +
-+    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_syscfg_set_irq, 16 * NUM_GPIOS);
-+    qdev_init_gpio_out(DEVICE(obj), s->gpio_out, 16);
++    const uint32_t exticr1 =3D syscfg_readl(SYSCFG_EXTICR1);
++    g_assert_cmpuint(exticr1, =3D=3D, 0x00000000);
++
++    const uint32_t exticr2 =3D syscfg_readl(SYSCFG_EXTICR2);
++    g_assert_cmpuint(exticr2, =3D=3D, 0x00000000);
++
++    const uint32_t exticr3 =3D syscfg_readl(SYSCFG_EXTICR3);
++    g_assert_cmpuint(exticr3, =3D=3D, 0x00000000);
++
++    const uint32_t exticr4 =3D syscfg_readl(SYSCFG_EXTICR4);
++    g_assert_cmpuint(exticr4, =3D=3D, 0x00000000);
++
++    const uint32_t scsr =3D syscfg_readl(SYSCFG_SCSR);
++    g_assert_cmpuint(scsr, =3D=3D, 0x00000000);
++
++    const uint32_t cfgr2 =3D syscfg_readl(SYSCFG_CFGR2);
++    g_assert_cmpuint(cfgr2, =3D=3D, 0x00000000);
++
++    const uint32_t swpr =3D syscfg_readl(SYSCFG_SWPR);
++    g_assert_cmpuint(swpr, =3D=3D, 0x00000000);
++
++    const uint32_t skr =3D syscfg_readl(SYSCFG_SKR);
++    g_assert_cmpuint(skr, =3D=3D, 0x00000000);
++
++    const uint32_t swpr2 =3D syscfg_readl(SYSCFG_SWPR2);
++    g_assert_cmpuint(swpr2, =3D=3D, 0x00000000);
 +}
 +
-+static const VMStateDescription vmstate_stm32l4x5_syscfg =3D {
-+    .name =3D TYPE_STM32L4X5_SYSCFG,
-+    .version_id =3D 1,
-+    .minimum_version_id =3D 1,
-+    .fields =3D (VMStateField[]) {
-+        VMSTATE_UINT32(memrmp, Stm32l4x5SyscfgState),
-+        VMSTATE_UINT32(cfgr1, Stm32l4x5SyscfgState),
-+        VMSTATE_UINT32_ARRAY(exticr, Stm32l4x5SyscfgState,
-+                             SYSCFG_NUM_EXTICR),
-+        VMSTATE_UINT32(scsr, Stm32l4x5SyscfgState),
-+        VMSTATE_UINT32(cfgr2, Stm32l4x5SyscfgState),
-+        VMSTATE_UINT32(swpr, Stm32l4x5SyscfgState),
-+        VMSTATE_UINT32(skr, Stm32l4x5SyscfgState),
-+        VMSTATE_UINT32(swpr2, Stm32l4x5SyscfgState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void stm32l4x5_syscfg_class_init(ObjectClass *klass, void *data)
++static void test_reserved_bits(void)
 +{
-+    DeviceClass *dc =3D DEVICE_CLASS(klass);
-+    ResettableClass *rc =3D RESETTABLE_CLASS(klass);
++    /*
++     * Test that reserved bits stay at reset value
++     * (which is 0 for all of them) by writing '1'
++     * in all reserved bits (keeping reset value for
++     * other bits) and checking that the
++     * register is still at reset value
++     */
++    syscfg_writel(SYSCFG_MEMRMP, 0xFFFFFEF8);
++    const uint32_t memrmp =3D syscfg_readl(SYSCFG_MEMRMP);
++    g_assert_cmpuint(memrmp, =3D=3D, 0x00000000);
 +
-+    dc->vmsd =3D &vmstate_stm32l4x5_syscfg;
-+    rc->phases.hold =3D stm32l4x5_syscfg_hold_reset;
++    syscfg_writel(SYSCFG_CFGR1, 0x7F00FEFF);
++    const uint32_t cfgr1 =3D syscfg_readl(SYSCFG_CFGR1);
++    g_assert_cmpuint(cfgr1, =3D=3D, 0x7C000001);
++
++    syscfg_writel(SYSCFG_EXTICR1, 0xFFFF0000);
++    const uint32_t exticr1 =3D syscfg_readl(SYSCFG_EXTICR1);
++    g_assert_cmpuint(exticr1, =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_EXTICR2, 0xFFFF0000);
++    const uint32_t exticr2 =3D syscfg_readl(SYSCFG_EXTICR2);
++    g_assert_cmpuint(exticr2, =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_EXTICR3, 0xFFFF0000);
++    const uint32_t exticr3 =3D syscfg_readl(SYSCFG_EXTICR3);
++    g_assert_cmpuint(exticr3, =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_EXTICR4, 0xFFFF0000);
++    const uint32_t exticr4 =3D syscfg_readl(SYSCFG_EXTICR4);
++    g_assert_cmpuint(exticr4, =3D=3D, 0x00000000);
++
++    syscfg_writel(SYSCFG_SKR, 0xFFFFFF00);
++    const uint32_t skr =3D syscfg_readl(SYSCFG_SKR);
++    g_assert_cmpuint(skr, =3D=3D, 0x00000000);
 +}
 +
-+static const TypeInfo stm32l4x5_syscfg_info[] =3D {
-+    {
-+        .name          =3D TYPE_STM32L4X5_SYSCFG,
-+        .parent        =3D TYPE_SYS_BUS_DEVICE,
-+        .instance_size =3D sizeof(Stm32l4x5SyscfgState),
-+        .instance_init =3D stm32l4x5_syscfg_init,
-+        .class_init    =3D stm32l4x5_syscfg_class_init,
-+    }
-+};
++static void test_set_and_clear(void)
++{
++    /*
++     * Test that regular bits can be set and cleared
++     */
++    syscfg_writel(SYSCFG_MEMRMP, 0x00000107);
++    uint32_t memrmp =3D syscfg_readl(SYSCFG_MEMRMP);
++    g_assert_cmpuint(memrmp, =3D=3D, 0x00000107);
++    syscfg_writel(SYSCFG_MEMRMP, 0x00000000);
++    memrmp =3D syscfg_readl(SYSCFG_MEMRMP);
++    g_assert_cmpuint(memrmp, =3D=3D, 0x00000000);
 +
-+DEFINE_TYPES(stm32l4x5_syscfg_info)
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 2f01c62c0e..a24d7e1eac 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -163,6 +163,12 @@ stm32f4xx_exti_set_irq(int irq, int level) "Set EXTI: %d=
- to %d"
- stm32f4xx_exti_read(uint64_t addr) "reg read: addr: 0x%" PRIx64 " "
- stm32f4xx_exti_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%" PR=
-Ix64 " val: 0x%" PRIx64 ""
-=20
-+# stm32l4x5_syscfg.c
-+stm32l4x5_syscfg_set_irq(int gpio, int line, int level) "irq from GPIO: %d, =
-line: %d, level: %d"
-+stm32l4x5_syscfg_pulse_exti(int irq) "irq %d forwarded to EXTI"
-+stm32l4x5_syscfg_read(uint64_t addr) "reg read: addr: 0x%" PRIx64 " "
-+stm32l4x5_syscfg_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%" =
-PRIx64 " val: 0x%" PRIx64 ""
++    /* cfgr1 bit 0 is clear only so we keep it set */
++    syscfg_writel(SYSCFG_CFGR1, 0xFCFF0101);
++    uint32_t cfgr1 =3D syscfg_readl(SYSCFG_CFGR1);
++    g_assert_cmpuint(cfgr1, =3D=3D, 0xFCFF0101);
++    syscfg_writel(SYSCFG_CFGR1, 0x00000001);
++    cfgr1 =3D syscfg_readl(SYSCFG_CFGR1);
++    g_assert_cmpuint(cfgr1, =3D=3D, 0x00000001);
 +
- # stm32l4x5_exti.c
- stm32l4x5_exti_set_irq(int irq, int level) "Set EXTI: %d to %d"
- stm32l4x5_exti_read(uint64_t addr, uint64_t data) "reg read: addr: 0x%" PRIx=
-64 " val: 0x%" PRIx64 ""
-diff --git a/include/hw/misc/stm32l4x5_syscfg.h b/include/hw/misc/stm32l4x5_s=
-yscfg.h
-new file mode 100644
-index 0000000000..76bdcf5189
---- /dev/null
-+++ b/include/hw/misc/stm32l4x5_syscfg.h
-@@ -0,0 +1,54 @@
-+/*
-+ * STM32L4x5 SYSCFG (System Configuration Controller)
-+ *
-+ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ * This work is based on the stm32f4xx_syscfg by Alistair Francis.
-+ * Original code is licensed under the MIT License:
-+ *
-+ * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
-+ */
++    syscfg_writel(SYSCFG_EXTICR1, 0x0000FFFF);
++    uint32_t exticr1 =3D syscfg_readl(SYSCFG_EXTICR1);
++    g_assert_cmpuint(exticr1, =3D=3D, 0x0000FFFF);
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
++    exticr1 =3D syscfg_readl(SYSCFG_EXTICR1);
++    g_assert_cmpuint(exticr1, =3D=3D, 0x00000000);
 +
-+/*
-+ * The reference used is the STMicroElectronics RM0351 Reference manual
-+ * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
-+ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/document=
-ation.html
-+ */
++    syscfg_writel(SYSCFG_EXTICR2, 0x0000FFFF);
++    uint32_t exticr2 =3D syscfg_readl(SYSCFG_EXTICR2);
++    g_assert_cmpuint(exticr2, =3D=3D, 0x0000FFFF);
++    syscfg_writel(SYSCFG_EXTICR2, 0x00000000);
++    exticr2 =3D syscfg_readl(SYSCFG_EXTICR2);
++    g_assert_cmpuint(exticr2, =3D=3D, 0x00000000);
 +
-+#ifndef HW_STM32L4X5_SYSCFG_H
-+#define HW_STM32L4X5_SYSCFG_H
++    syscfg_writel(SYSCFG_EXTICR3, 0x0000FFFF);
++    uint32_t exticr3 =3D syscfg_readl(SYSCFG_EXTICR3);
++    g_assert_cmpuint(exticr3, =3D=3D, 0x0000FFFF);
++    syscfg_writel(SYSCFG_EXTICR3, 0x00000000);
++    exticr3 =3D syscfg_readl(SYSCFG_EXTICR3);
++    g_assert_cmpuint(exticr3, =3D=3D, 0x00000000);
 +
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
++    syscfg_writel(SYSCFG_EXTICR4, 0x0000FFFF);
++    uint32_t exticr4 =3D syscfg_readl(SYSCFG_EXTICR4);
++    g_assert_cmpuint(exticr4, =3D=3D, 0x0000FFFF);
++    syscfg_writel(SYSCFG_EXTICR4, 0x00000000);
++    exticr4 =3D syscfg_readl(SYSCFG_EXTICR4);
++    g_assert_cmpuint(exticr4, =3D=3D, 0x00000000);
 +
-+#define TYPE_STM32L4X5_SYSCFG "stm32l4x5-syscfg"
-+OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5SyscfgState, STM32L4X5_SYSCFG)
++    syscfg_writel(SYSCFG_SKR, 0x000000FF);
++    uint32_t skr =3D syscfg_readl(SYSCFG_SKR);
++    g_assert_cmpuint(skr, =3D=3D, 0x000000FF);
++    syscfg_writel(SYSCFG_SKR, 0x00000000);
++    skr =3D syscfg_readl(SYSCFG_SKR);
++    g_assert_cmpuint(skr, =3D=3D, 0x00000000);
++}
 +
-+#define NUM_GPIOS 8
-+#define GPIO_NUM_PINS 16
-+#define SYSCFG_NUM_EXTICR 4
++static void test_clear_by_writing_1(void)
++{
++    /*
++     * Test that writing '1' doesn't set the bit
++     */
++    syscfg_writel(SYSCFG_CFGR2, 0x00000100);
++    const uint32_t cfgr2 =3D syscfg_readl(SYSCFG_CFGR2);
++    g_assert_cmpuint(cfgr2, =3D=3D, 0x00000000);
++}
 +
-+struct Stm32l4x5SyscfgState {
-+    SysBusDevice parent_obj;
++static void test_set_only_bits(void)
++{
++    /*
++     * Test that set only bits stay can't be cleared
++     */
++    syscfg_writel(SYSCFG_CFGR2, 0x0000000F);
++    syscfg_writel(SYSCFG_CFGR2, 0x00000000);
++    const uint32_t exticr3 =3D syscfg_readl(SYSCFG_CFGR2);
++    g_assert_cmpuint(exticr3, =3D=3D, 0x0000000F);
 +
-+    MemoryRegion mmio;
++    syscfg_writel(SYSCFG_SWPR, 0xFFFFFFFF);
++    syscfg_writel(SYSCFG_SWPR, 0x00000000);
++    const uint32_t swpr =3D syscfg_readl(SYSCFG_SWPR);
++    g_assert_cmpuint(swpr, =3D=3D, 0xFFFFFFFF);
 +
-+    uint32_t memrmp;
-+    uint32_t cfgr1;
-+    uint32_t exticr[SYSCFG_NUM_EXTICR];
-+    uint32_t scsr;
-+    uint32_t cfgr2;
-+    uint32_t swpr;
-+    uint32_t skr;
-+    uint32_t swpr2;
++    syscfg_writel(SYSCFG_SWPR2, 0xFFFFFFFF);
++    syscfg_writel(SYSCFG_SWPR2, 0x00000000);
++    const uint32_t swpr2 =3D syscfg_readl(SYSCFG_SWPR2);
++    g_assert_cmpuint(swpr2, =3D=3D, 0xFFFFFFFF);
 +
-+    qemu_irq gpio_out[16];
-+};
++    system_reset();
++}
 +
-+#endif
++static void test_clear_only_bits(void)
++{
++    /*
++     * Test that clear only bits stay can't be set
++     */
++    syscfg_writel(SYSCFG_CFGR1, 0x00000000);
++    syscfg_writel(SYSCFG_CFGR1, 0x00000001);
++    const uint32_t cfgr1 =3D syscfg_readl(SYSCFG_CFGR1);
++    g_assert_cmpuint(cfgr1, =3D=3D, 0x00000000);
++
++    system_reset();
++}
++
++static void test_interrupt(void)
++{
++    /*
++     * Test that GPIO rising lines result in an irq
++     * with the right configuration
++     */
++    qtest_irq_intercept_in(global_qtest, "/machine/unattached/device[0]/exti=
+");
++    /* Enable interrupt on rising edge of GPIO PA[0] */
++    exti_writel(EXTI_IMR1, 0x00000001);
++    exti_writel(EXTI_RTSR1, 0x00000001);
++
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 0, 1);
++
++    g_assert_true(get_irq(0));
++
++    /* Enable interrupt on rising edge of GPIO PA[15] */
++    exti_writel(EXTI_IMR1, 0x00008000);
++    exti_writel(EXTI_RTSR1, 0x00008000);
++
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 15, 1);
++
++    g_assert_true(get_irq(15));
++
++    /* Enable interrupt on rising edge of GPIO PB[1] */
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000010);
++    exti_writel(EXTI_IMR1, 0x00000002);
++    exti_writel(EXTI_RTSR1, 0x00000002);
++
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 17, 1);
++
++    g_assert_true(get_irq(1));
++
++    /* Clean the test */
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 0, 0);
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 15, 0);
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 17, 0);
++}
++
++static void test_irq_pin_multiplexer(void)
++{
++    /*
++     * Test that syscfg irq sets the right exti irq
++     */
++
++    qtest_irq_intercept_in(global_qtest, "/machine/unattached/device[0]/exti=
+");
++
++    /* Enable interrupt on rising edge of GPIO PA[0] */
++    exti_writel(EXTI_IMR1, 0x00000001);
++    exti_writel(EXTI_RTSR1, 0x00000001);
++
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 0, 1);
++
++    /* Check that irq 0 was set and irq 15 wasn't */
++    g_assert_true(get_irq(0));
++    g_assert_false(get_irq(15));
++
++    /* Clean the test */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 0, 0);
++
++    /* Enable interrupt on rising edge of GPIO PA[15] */
++    exti_writel(EXTI_IMR1, 0x00008000);
++    exti_writel(EXTI_RTSR1, 0x00008000);
++
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 15, 1);
++
++    /* Check that irq 15 was set and irq 0 wasn't */
++    g_assert_true(get_irq(15));
++    g_assert_false(get_irq(0));
++
++    /* Clean the test */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 15, 0);
++}
++
++static void test_irq_gpio_multiplexer(void)
++{
++    /*
++     * Test that an irq is generated only by the right GPIO
++     */
++
++    qtest_irq_intercept_in(global_qtest, "/machine/unattached/device[0]/exti=
+");
++
++    /* Enable interrupt on rising edge of GPIO PA[0] */
++    exti_writel(EXTI_IMR1, 0x00000001);
++    exti_writel(EXTI_RTSR1, 0x00000001);
++
++    /* Check that setting rising pin GPIOA[0] generates an irq */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 0, 1);
++
++    g_assert_true(get_irq(0));
++
++    /* Clean the test */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 0, 0);
++
++    /* Check that setting rising pin GPIOB[0] doesn't generate an irq */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 16, 1);
++
++    g_assert_false(get_irq(0));
++
++    /* Clean the test */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 16, 0);
++
++    /* Enable interrupt on rising edge of GPIO PB[0] */
++    exti_writel(EXTI_IMR1, 0x00000001);
++    exti_writel(EXTI_RTSR1, 0x00000001);
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000001);
++
++    /* Check that setting rising pin GPIOA[0] doesn't generate an irq */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 0, 1);
++
++    g_assert_false(get_irq(0));
++
++    /* Clean the test */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 0, 0);
++
++    /* Check that setting rising pin GPIOB[0] generates an irq */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 16, 1);
++
++    g_assert_true(get_irq(0));
++
++    /* Clean the test */
++    qtest_set_irq_in(global_qtest, "/machine/unattached/device[0]/syscfg",
++                     NULL, 16, 0);
++    syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
++}
++
++int main(int argc, char **argv)
++{
++    int ret;
++
++    g_test_init(&argc, &argv, NULL);
++    g_test_set_nonfatal_assertions();
++
++    qtest_add_func("stm32l4x5/syscfg/test_reset", test_reset);
++    qtest_add_func("stm32l4x5/syscfg/test_reserved_bits",
++                   test_reserved_bits);
++    qtest_add_func("stm32l4x5/syscfg/test_set_and_clear",
++                   test_set_and_clear);
++    qtest_add_func("stm32l4x5/syscfg/test_clear_by_writing_1",
++                   test_clear_by_writing_1);
++    qtest_add_func("stm32l4x5/syscfg/test_set_only_bits",
++                   test_set_only_bits);
++    qtest_add_func("stm32l4x5/syscfg/test_clear_only_bits",
++                   test_clear_only_bits);
++    qtest_add_func("stm32l4x5/syscfg/test_interrupt",
++                   test_interrupt);
++    qtest_add_func("stm32l4x5/syscfg/test_irq_pin_multiplexer",
++                   test_irq_pin_multiplexer);
++    qtest_add_func("stm32l4x5/syscfg/test_irq_gpio_multiplexer",
++                   test_irq_gpio_multiplexer);
++
++    qtest_start("-machine b-l475e-iot01a");
++    ret =3D g_test_run();
++    qtest_end();
++
++    return ret;
++}
 --=20
 2.38.5
 
