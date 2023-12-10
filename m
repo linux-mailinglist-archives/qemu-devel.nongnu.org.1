@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34E480BD81
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Dec 2023 23:08:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8223680BD83
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Dec 2023 23:09:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCRxN-0004w4-KD; Sun, 10 Dec 2023 17:07:25 -0500
+	id 1rCRxQ-0004xE-PW; Sun, 10 Dec 2023 17:07:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rCRxM-0004vm-D1
- for qemu-devel@nongnu.org; Sun, 10 Dec 2023 17:07:24 -0500
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+ id 1rCRxO-0004wL-Jd
+ for qemu-devel@nongnu.org; Sun, 10 Dec 2023 17:07:26 -0500
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rCRxK-0004Ym-9k
- for qemu-devel@nongnu.org; Sun, 10 Dec 2023 17:07:24 -0500
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-590b3337d2bso1045932eaf.2
- for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 14:07:21 -0800 (PST)
+ id 1rCRxL-0004Yt-MN
+ for qemu-devel@nongnu.org; Sun, 10 Dec 2023 17:07:26 -0500
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6d9f7af8918so1546631a34.0
+ for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 14:07:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702246040; x=1702850840; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702246042; x=1702850842; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7INVYMT5r1D4mt+61zSzjBSfhyLG7TlXNfcj/O5bdpo=;
- b=YjYkSXI3kkxqYVRoULPFTMbevAg0HtRQHuYFHqDZjzf04esfqd42pLRa9x6yPXJwcR
- emXXZfR2ZQFCg2kji7YJBospgaXjfa9uNOWuAmg4H6ecd7YRJ8+zB2DYpux6pwf3FJhC
- RiXjmTmDdDE/YLgX28+nBP7+fxVweGMiBFISLlXLTWm89XFnBPvZOfyySAC3HDl2dfo9
- u49BqOGvzvn8BGYx55bJ6bMn4RtD/LkTino7gi4DQrzjm0DpKpsO27ZX7JkTRyTASXm/
- ysfuaOFmHsYWe0WZld4WBqqY3hQcnokQMxbxC4NY4cItl0ExHBV/uwSV4NcI0nPJyL1A
- OfpQ==
+ bh=P4024QTjxEkW25t7YisZgfh1WWvxDhGZu/xSpCDNWDc=;
+ b=kMhp7OKxOj4YZzR7hzDAwzmndyJeoOINAdkp+UPiI+I6ftddtf7olfz4ndMtYM12AR
+ wWAZId/JLiH1ldJtDgi0+tIGqwF8Thsdc6ezkrFv5AZ25zdwhLnEYy9cwpGlLrxeV2Lu
+ QZpG2bJOIhPrhGtZ9vgrdgn7cYdlrFdwyHBBbKb7SorxUNSWgJmYEFOj1k9yX1A4VUr9
+ iD95Ak+DX7rwaDO8T7XrmzveBI/foEojaIZ/ue8/SJQlWyfP1gvjYzZyosMwDgKwP9dv
+ ir1IV/jgJlOt7rzj2kFSbKX8YPX02dPHA/WT0w3m0nb0MxJmohsAvGXW+eh+XVCf7dm7
+ YT0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702246040; x=1702850840;
+ d=1e100.net; s=20230601; t=1702246042; x=1702850842;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7INVYMT5r1D4mt+61zSzjBSfhyLG7TlXNfcj/O5bdpo=;
- b=eRAmUK5v1mL5bvT1ZS/tujYJq4pC1zb2+hB7GfFaNioIF6O0wC9LaG6OfBKdKFgQIj
- TZNGMj6M+Ma360SjkQsDzMIFlVSQlgb93saAjyi5OD/Kc5n8qfCXvEPLeub5qFAHbGnh
- lO/UX4mT+JWVoSpRHpKJNwrE1G8UnXEUcJqQvnVe1nB+2F28V97LgXqQ7R+tzHkO9y5D
- qulUV38PCqT8dxTtB4Q2jR1s0owxbybAr0ovc92xTcf/XOqIx1RuZ4gDwWIuPqXI48YH
- qL9uljNNrYMGSFUrnqHZ+VTczWPolA6RpfEDjUDOOp9S+QESUHx5gu3ON+5yiQxgSbI/
- 3BLQ==
-X-Gm-Message-State: AOJu0Yw2MMz+ALijlwLCJFkhcOCq3atFGxMLUuqKP5LP5dPB3Emd9uG4
- XyTv8m5pVoHR2qFeG+aulZ50St00Xtn99A==
-X-Google-Smtp-Source: AGHT+IG0fQLpAWozUYYYArVxFRqb3a7o7Rejbed/RzVjpDObuw+0uU26FUKz/2MX5gY8l0pDlgRaJQ==
-X-Received: by 2002:a4a:385a:0:b0:58e:2925:cef4 with SMTP id
- o26-20020a4a385a000000b0058e2925cef4mr1900141oof.5.1702246040255; 
- Sun, 10 Dec 2023 14:07:20 -0800 (PST)
+ bh=P4024QTjxEkW25t7YisZgfh1WWvxDhGZu/xSpCDNWDc=;
+ b=BcJL/lpzSngG8YJjOl4wX4GM6zD2a+z4Eyd5DCHfhgjPqUy997DNwR4ZkiQ/m2Gul4
+ 75mOLgCtqBE7M4/HxH4YDwEnJqZRylT+O+sjGt50dKIQebqv0IM0DNG610Sot2iNJe5R
+ Qng5LAyqD+rtUnlhhTmQFhzouWgLvg0qq5Qim5GdvL3HtwaKHNAVmb+yog+OItZNGpY4
+ yUgntl2v45KHCon0cV8Z3Cu7SwfMaV4wWvz3BWpHDnRsz/yAhhpRUG0qKqAEqm7dRQmc
+ w3PFBuXqE5+TZoxmixaFCYQWtxZ/Wch6bcsnWeB2B5Nm1E0xO3CHIRxN9F3uoZHR48MO
+ 2RMQ==
+X-Gm-Message-State: AOJu0YybEKYBleOA1L4YO15Sujggy8Wy1pF4FFmUcgjtTwsM5srhrz5N
+ V64h3Fbi40TeSymLAFe9LNevPOq5I00dAw==
+X-Google-Smtp-Source: AGHT+IEdF57XxbVsv6YCDIO90u+hUtKaqS9Ct9uN10i+/+SYdFRQBu8JvMNhzVV2Ap3BM73W/6/HuA==
+X-Received: by 2002:a9d:734b:0:b0:6d9:f753:efd7 with SMTP id
+ l11-20020a9d734b000000b006d9f753efd7mr3276219otk.71.1702246041694; 
+ Sun, 10 Dec 2023 14:07:21 -0800 (PST)
 Received: from taylor-ubuntu.austin.rr.com (068-203-008-061.res.spectrum.com.
  [68.203.8.61]) by smtp.gmail.com with ESMTPSA id
- q23-20020a4a6c17000000b0058e200a9065sm1588173ooc.29.2023.12.10.14.07.18
+ q23-20020a4a6c17000000b0058e200a9065sm1588173ooc.29.2023.12.10.14.07.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Dec 2023 14:07:19 -0800 (PST)
+ Sun, 10 Dec 2023 14:07:21 -0800 (PST)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
  quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
  ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
-Subject: [PATCH v2 3/9] Hexagon (target/hexagon) Make generators object
- oriented - gen_helper_protos
-Date: Sun, 10 Dec 2023 15:07:06 -0700
-Message-Id: <20231210220712.491494-4-ltaylorsimpson@gmail.com>
+Subject: [PATCH v2 4/9] Hexagon (target/hexagon) Make generators object
+ oriented - gen_helper_funcs
+Date: Sun, 10 Dec 2023 15:07:07 -0700
+Message-Id: <20231210220712.491494-5-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231210220712.491494-1-ltaylorsimpson@gmail.com>
 References: <20231210220712.491494-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-oo1-xc32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,55 +97,197 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 ---
- target/hexagon/gen_helper_protos.py | 149 ++--------------------------
- target/hexagon/hex_common.py        |   7 --
- 2 files changed, 8 insertions(+), 148 deletions(-)
+ target/hexagon/gen_helper_funcs.py | 368 +++++------------------------
+ target/hexagon/hex_common.py       |  48 +++-
+ 2 files changed, 103 insertions(+), 313 deletions(-)
 
-diff --git a/target/hexagon/gen_helper_protos.py b/target/hexagon/gen_helper_protos.py
-index 131043795a..c82b0f54e4 100755
---- a/target/hexagon/gen_helper_protos.py
-+++ b/target/hexagon/gen_helper_protos.py
-@@ -22,39 +22,6 @@
- import string
+diff --git a/target/hexagon/gen_helper_funcs.py b/target/hexagon/gen_helper_funcs.py
+index ce21d3b688..9cc3d69c49 100755
+--- a/target/hexagon/gen_helper_funcs.py
++++ b/target/hexagon/gen_helper_funcs.py
+@@ -23,181 +23,14 @@
  import hex_common
  
+ 
 -##
--## Helpers for gen_helper_prototype
+-## Helpers for gen_helper_function
 -##
--def_helper_types = {
--    "N": "s32",
--    "O": "s32",
--    "P": "s32",
--    "M": "s32",
--    "C": "s32",
--    "R": "s32",
--    "V": "ptr",
--    "Q": "ptr",
--}
--
--def_helper_types_pair = {
--    "R": "s64",
--    "C": "s64",
--    "S": "s64",
--    "G": "s64",
--    "V": "ptr",
--    "Q": "ptr",
--}
+-def gen_decl_ea(f):
+-    f.write("    uint32_t EA;\n")
 -
 -
--def gen_def_helper_opn(f, tag, regtype, regid, i):
+-def gen_helper_return_type(f, regtype, regid, regno):
+-    if regno > 1:
+-        f.write(", ")
+-    f.write("int32_t")
+-
+-
+-def gen_helper_return_type_pair(f, regtype, regid, regno):
+-    if regno > 1:
+-        f.write(", ")
+-    f.write("int64_t")
+-
+-
+-def gen_helper_arg(f, regtype, regid, regno):
+-    if regno > 0:
+-        f.write(", ")
+-    f.write(f"int32_t {regtype}{regid}V")
+-
+-
+-def gen_helper_arg_new(f, regtype, regid, regno):
+-    if regno >= 0:
+-        f.write(", ")
+-    f.write(f"int32_t {regtype}{regid}N")
+-
+-
+-def gen_helper_arg_pair(f, regtype, regid, regno):
+-    if regno >= 0:
+-        f.write(", ")
+-    f.write(f"int64_t {regtype}{regid}V")
+-
+-
+-def gen_helper_arg_ext(f, regtype, regid, regno):
+-    if regno > 0:
+-        f.write(", ")
+-    f.write(f"void *{regtype}{regid}V_void")
+-
+-
+-def gen_helper_arg_ext_pair(f, regtype, regid, regno):
+-    if regno > 0:
+-        f.write(", ")
+-    f.write(f"void *{regtype}{regid}V_void")
+-
+-
+-def gen_helper_arg_opn(f, regtype, regid, i, tag):
 -    if hex_common.is_pair(regid):
--        f.write(f", {def_helper_types_pair[regtype]}")
+-        if hex_common.is_hvx_reg(regtype):
+-            gen_helper_arg_ext_pair(f, regtype, regid, i)
+-        else:
+-            gen_helper_arg_pair(f, regtype, regid, i)
 -    elif hex_common.is_single(regid):
--        f.write(f", {def_helper_types[regtype]}")
+-        if hex_common.is_old_val(regtype, regid, tag):
+-            if hex_common.is_hvx_reg(regtype):
+-                gen_helper_arg_ext(f, regtype, regid, i)
+-            else:
+-                gen_helper_arg(f, regtype, regid, i)
+-        elif hex_common.is_new_val(regtype, regid, tag):
+-            gen_helper_arg_new(f, regtype, regid, i)
+-        else:
+-            hex_common.bad_register(regtype, regid)
+-    else:
+-        hex_common.bad_register(regtype, regid)
+-
+-
+-def gen_helper_arg_imm(f, immlett):
+-    f.write(f", int32_t {hex_common.imm_name(immlett)}")
+-
+-
+-def gen_helper_dest_decl(f, regtype, regid, regno, subfield=""):
+-    f.write(f"    int32_t {regtype}{regid}V{subfield} = 0;\n")
+-
+-
+-def gen_helper_dest_decl_pair(f, regtype, regid, regno, subfield=""):
+-    f.write(f"    int64_t {regtype}{regid}V{subfield} = 0;\n")
+-
+-
+-def gen_helper_dest_decl_ext(f, regtype, regid):
+-    if regtype == "Q":
+-        f.write(
+-            f"    /* {regtype}{regid}V is *(MMQReg *)" f"({regtype}{regid}V_void) */\n"
+-        )
+-    else:
+-        f.write(
+-            f"    /* {regtype}{regid}V is *(MMVector *)"
+-            f"({regtype}{regid}V_void) */\n"
+-        )
+-
+-
+-def gen_helper_dest_decl_ext_pair(f, regtype, regid, regno):
+-    f.write(
+-        f"    /* {regtype}{regid}V is *(MMVectorPair *))"
+-        f"{regtype}{regid}V_void) */\n"
+-    )
+-
+-
+-def gen_helper_dest_decl_opn(f, regtype, regid, i):
+-    if hex_common.is_pair(regid):
+-        if hex_common.is_hvx_reg(regtype):
+-            gen_helper_dest_decl_ext_pair(f, regtype, regid, i)
+-        else:
+-            gen_helper_dest_decl_pair(f, regtype, regid, i)
+-    elif hex_common.is_single(regid):
+-        if hex_common.is_hvx_reg(regtype):
+-            gen_helper_dest_decl_ext(f, regtype, regid)
+-        else:
+-            gen_helper_dest_decl(f, regtype, regid, i)
+-    else:
+-        hex_common.bad_register(regtype, regid)
+-
+-
+-def gen_helper_src_var_ext(f, regtype, regid):
+-    if regtype == "Q":
+-        f.write(
+-            f"    /* {regtype}{regid}V is *(MMQReg *)" f"({regtype}{regid}V_void) */\n"
+-        )
+-    else:
+-        f.write(
+-            f"    /* {regtype}{regid}V is *(MMVector *)"
+-            f"({regtype}{regid}V_void) */\n"
+-        )
+-
+-
+-def gen_helper_src_var_ext_pair(f, regtype, regid, regno):
+-    f.write(
+-        f"    /* {regtype}{regid}V{regno} is *(MMVectorPair *)"
+-        f"({regtype}{regid}V{regno}_void) */\n"
+-    )
+-
+-
+-def gen_helper_return(f, regtype, regid, regno):
+-    f.write(f"    return {regtype}{regid}V;\n")
+-
+-
+-def gen_helper_return_pair(f, regtype, regid, regno):
+-    f.write(f"    return {regtype}{regid}V;\n")
+-
+-
+-def gen_helper_dst_write_ext(f, regtype, regid):
+-    return
+-
+-
+-def gen_helper_dst_write_ext_pair(f, regtype, regid):
+-    return
+-
+-
+-def gen_helper_return_opn(f, regtype, regid, i):
+-    if hex_common.is_pair(regid):
+-        if hex_common.is_hvx_reg(regtype):
+-            gen_helper_dst_write_ext_pair(f, regtype, regid)
+-        else:
+-            gen_helper_return_pair(f, regtype, regid, i)
+-    elif hex_common.is_single(regid):
+-        if hex_common.is_hvx_reg(regtype):
+-            gen_helper_dst_write_ext(f, regtype, regid)
+-        else:
+-            gen_helper_return(f, regtype, regid, i)
 -    else:
 -        hex_common.bad_register(regtype, regid)
 -
 -
  ##
- ## Generate the DEF_HELPER prototype for an instruction
- ##     For A2_add: Rd32=add(Rs32,Rt32)
-@@ -65,116 +32,15 @@ def gen_helper_prototype(f, tag, tagregs, tagimms):
+ ## Generate the TCG code to call the helper
+ ##     For A2_add: Rd32=add(Rs32,Rt32), { RdV=RsV+RtV;}
+ ##     We produce:
+ ##       int32_t HELPER(A2_add)(CPUHexagonState *env, int32_t RsV, int32_t RtV)
+ ##       {
+-##           uint32_t slot __attribute__(unused)) = 4;
+ ##           int32_t RdV = 0;
+ ##           { RdV=RsV+RtV;}
+-##           COUNT_HELPER(A2_add);
+ ##           return RdV;
+ ##       }
+ ##
+@@ -205,151 +38,67 @@ def gen_helper_function(f, tag, tagregs, tagimms):
      regs = tagregs[tag]
      imms = tagimms[tag]
  
@@ -163,67 +305,71 @@ index 131043795a..c82b0f54e4 100755
 -
 -    if numscalarresults > 1:
 -        ## The helper is bogus when there is more than one result
--        f.write(f"DEF_HELPER_1({tag}, void, env)\n")
+-        f.write(
+-            f"void HELPER({tag})(CPUHexagonState *env) " f"{{ BOGUS_HELPER({tag}); }}\n"
+-        )
 -    else:
--        ## Figure out how many arguments the helper will take
--        if numscalarresults == 0:
--            def_helper_size = len(regs) + len(imms) + numscalarreadwrite + 1
--            if hex_common.need_pkt_has_multi_cof(tag):
--                def_helper_size += 1
--            if hex_common.need_pkt_need_commit(tag):
--                def_helper_size += 1
--            if hex_common.need_part1(tag):
--                def_helper_size += 1
--            if hex_common.need_slot(tag):
--                def_helper_size += 1
--            if hex_common.need_PC(tag):
--                def_helper_size += 1
--            if hex_common.helper_needs_next_PC(tag):
--                def_helper_size += 1
--            if hex_common.need_condexec_reg(tag, regs):
--                def_helper_size += 1
--            f.write(f"DEF_HELPER_{def_helper_size}({tag}")
--            ## The return type is void
--            f.write(", void")
--        else:
--            def_helper_size = len(regs) + len(imms) + numscalarreadwrite
--            if hex_common.need_pkt_has_multi_cof(tag):
--                def_helper_size += 1
--            if hex_common.need_pkt_need_commit(tag):
--                def_helper_size += 1
--            if hex_common.need_part1(tag):
--                def_helper_size += 1
--            if hex_common.need_slot(tag):
--                def_helper_size += 1
--            if hex_common.need_PC(tag):
--                def_helper_size += 1
--            if hex_common.need_condexec_reg(tag, regs):
--                def_helper_size += 1
--            if hex_common.helper_needs_next_PC(tag):
--                def_helper_size += 1
--            f.write(f"DEF_HELPER_{def_helper_size}({tag}")
--
--        ## Generate the qemu DEF_HELPER type for each result
--        ## Iterate over this list twice
--        ## - Emit the scalar result
--        ## - Emit the vector result
+-        ## The return type of the function is the type of the destination
+-        ## register (if scalar)
 -        i = 0
++    ret_type = hex_common.helper_ret_type(tag, regs).func_arg
++
++    declared = []
++    for arg in hex_common.helper_args(tag, regs, imms):
++        declared.append(arg.func_arg)
++
++    arguments = ", ".join(declared)
++    f.write(f"{ret_type} HELPER({tag})({arguments})\n")
++    f.write("{\n")
++    if hex_common.need_ea(tag):
++        f.write(hex_common.code_fmt(f"""\
++            uint32_t EA;
++        """))
++    ## Declare the return variable
++    if not hex_common.is_predicated(tag):
+         for regtype, regid in regs:
+-            if hex_common.is_written(regid):
+-                if hex_common.is_pair(regid):
+-                    if hex_common.is_hvx_reg(regtype):
+-                        continue
+-                    else:
+-                        gen_helper_return_type_pair(f, regtype, regid, i)
+-                elif hex_common.is_single(regid):
+-                    if hex_common.is_hvx_reg(regtype):
+-                        continue
+-                    else:
+-                        gen_helper_return_type(f, regtype, regid, i)
+-                else:
+-                    hex_common.bad_register(regtype, regid)
+-            i += 1
++            reg = hex_common.get_register(tag, regtype, regid)
++            if reg.is_writeonly() and not reg.is_hvx_reg():
++                f.write(hex_common.code_fmt(f"""\
++                    {reg.helper_arg_type()} {reg.helper_arg_name()} = 0;
++                """))
+ 
+-        if numscalarresults == 0:
+-            f.write("void")
+-        f.write(f" HELPER({tag})(CPUHexagonState *env")
+-
+-        ## Arguments include the vector destination operands
+-        i = 1
 -        for regtype, regid in regs:
 -            if hex_common.is_written(regid):
--                if not hex_common.is_hvx_reg(regtype):
--                    gen_def_helper_opn(f, tag, regtype, regid, i)
+-                if hex_common.is_pair(regid):
+-                    if hex_common.is_hvx_reg(regtype):
+-                        gen_helper_arg_ext_pair(f, regtype, regid, i)
+-                    else:
+-                        continue
+-                elif hex_common.is_single(regid):
+-                    if hex_common.is_hvx_reg(regtype):
+-                        gen_helper_arg_ext(f, regtype, regid, i)
+-                    else:
+-                        # This is the return value of the function
+-                        continue
+-                else:
+-                    hex_common.bad_register(regtype, regid)
 -                i += 1
--
--        ## Put the env between the outputs and inputs
--        f.write(", env")
--        i += 1
--
--        # Second pass
--        for regtype, regid in regs:
--            if hex_common.is_written(regid):
--                if hex_common.is_hvx_reg(regtype):
--                    gen_def_helper_opn(f, tag, regtype, regid, i)
--                    i += 1
 -
 -        ## For conditional instructions, we pass in the destination register
 -        if "A_CONDEXEC" in hex_common.attribdict[tag]:
@@ -231,45 +377,127 @@ index 131043795a..c82b0f54e4 100755
 -                if hex_common.is_writeonly(regid) and not hex_common.is_hvx_reg(
 -                    regtype
 -                ):
--                    gen_def_helper_opn(f, tag, regtype, regid, i)
+-                    gen_helper_arg_opn(f, regtype, regid, i, tag)
 -                    i += 1
-+    declared = []
-+    ret_type = hex_common.helper_ret_type(tag, regs).proto_arg
-+    declared.append(ret_type)
- 
--        ## Generate the qemu type for each input operand (regs and immediates)
+-
+-        ## Arguments to the helper function are the source regs and immediates
 -        for regtype, regid in regs:
 -            if hex_common.is_read(regid):
 -                if hex_common.is_hvx_reg(regtype) and hex_common.is_readwrite(regid):
 -                    continue
--                gen_def_helper_opn(f, tag, regtype, regid, i)
+-                gen_helper_arg_opn(f, regtype, regid, i, tag)
 -                i += 1
 -        for immlett, bits, immshift in imms:
--            f.write(", s32")
-+    for arg in hex_common.helper_args(tag, regs, imms):
-+        declared.append(arg.proto_arg)
- 
--        ## Add the arguments for the instruction pkt_has_multi_cof,
--        ## pkt_needs_commit, PC, next_PC, slot, and part1 (if needed)
+-            gen_helper_arg_imm(f, immlett)
+-            i += 1
+-
 -        if hex_common.need_pkt_has_multi_cof(tag):
--            f.write(", i32")
--        if hex_common.need_pkt_need_commit(tag):
--            f.write(', i32')
+-            f.write(", uint32_t pkt_has_multi_cof")
+-        if (hex_common.need_pkt_need_commit(tag)):
+-            f.write(", uint32_t pkt_need_commit")
+-
 -        if hex_common.need_PC(tag):
--            f.write(", i32")
+-            if i > 0:
+-                f.write(", ")
+-            f.write("target_ulong PC")
+-            i += 1
 -        if hex_common.helper_needs_next_PC(tag):
--            f.write(", i32")
+-            if i > 0:
+-                f.write(", ")
+-            f.write("target_ulong next_PC")
+-            i += 1
 -        if hex_common.need_slot(tag):
--            f.write(", i32")
+-            if i > 0:
+-                f.write(", ")
+-            f.write("uint32_t slotval")
+-            i += 1
 -        if hex_common.need_part1(tag):
--            f.write(" , i32")
--        f.write(")\n")
-+    arguments = ", ".join(declared)
-+    f.write(f"DEF_HELPER_{len(declared) - 1}({tag}, {arguments})\n")
+-            if i > 0:
+-                f.write(", ")
+-            f.write("uint32_t part1")
+-        f.write(")\n{\n")
+-        if hex_common.need_ea(tag):
+-            gen_decl_ea(f)
+-        ## Declare the return variable
+-        i = 0
+-        if "A_CONDEXEC" not in hex_common.attribdict[tag]:
+-            for regtype, regid in regs:
+-                if hex_common.is_writeonly(regid):
+-                    gen_helper_dest_decl_opn(f, regtype, regid, i)
+-                i += 1
+-
+-        for regtype, regid in regs:
+-            if hex_common.is_read(regid):
+-                if hex_common.is_pair(regid):
+-                    if hex_common.is_hvx_reg(regtype):
+-                        gen_helper_src_var_ext_pair(f, regtype, regid, i)
+-                elif hex_common.is_single(regid):
+-                    if hex_common.is_hvx_reg(regtype):
+-                        gen_helper_src_var_ext(f, regtype, regid)
+-                else:
+-                    hex_common.bad_register(regtype, regid)
+-
+-        if hex_common.need_slot(tag):
+-            if "A_LOAD" in hex_common.attribdict[tag]:
+-                f.write("    bool pkt_has_store_s1 = slotval & 0x1;\n")
+-            f.write("    uint32_t slot = slotval >> 1;\n")
+-
+-        if "A_FPOP" in hex_common.attribdict[tag]:
+-            f.write("    arch_fpop_start(env);\n")
+-
+-        f.write(f"    {hex_common.semdict[tag]}\n")
+-
+-        if "A_FPOP" in hex_common.attribdict[tag]:
+-            f.write("    arch_fpop_end(env);\n")
++    ## Print useful information about HVX registers
++    for regtype, regid in regs:
++        reg = hex_common.get_register(tag, regtype, regid)
++        if reg.is_hvx_reg():
++            reg.helper_hvx_desc(f)
++
++    if hex_common.need_slot(tag):
++        if "A_LOAD" in hex_common.attribdict[tag]:
++            f.write(hex_common.code_fmt(f"""\
++                bool pkt_has_store_s1 = slotval & 0x1;
++            """))
++        f.write(hex_common.code_fmt(f"""\
++            uint32_t slot = slotval >> 1;
++        """))
++
++    if "A_FPOP" in hex_common.attribdict[tag]:
++        f.write(hex_common.code_fmt(f"""\
++            arch_fpop_start(env);
++        """))
++
++    f.write(hex_common.code_fmt(f"""\
++        {hex_common.semdict[tag]}
++    """))
++
++    if "A_FPOP" in hex_common.attribdict[tag]:
++        f.write(hex_common.code_fmt(f"""\
++            arch_fpop_end(env);
++        """))
++
++    ## Return the scalar result
++    for regtype, regid in regs:
++        reg = hex_common.get_register(tag, regtype, regid)
++        if reg.is_written() and not reg.is_hvx_reg():
++            f.write(hex_common.code_fmt(f"""\
++                return {reg.helper_arg_name()};
++            """))
+ 
+-        ## Save/return the return variable
+-        for regtype, regid in regs:
+-            if hex_common.is_written(regid):
+-                gen_helper_return_opn(f, regtype, regid, i)
+-        f.write("}\n\n")
+-        ## End of the helper definition
++    f.write("}\n\n")
++    ## End of the helper definition
  
  
  def main():
-@@ -195,6 +61,7 @@ def main():
+@@ -370,6 +119,7 @@ def main():
      if is_idef_parser_enabled:
          hex_common.read_idef_parser_enabled_file(sys.argv[5])
      hex_common.calculate_attribs()
@@ -278,23 +506,141 @@ index 131043795a..c82b0f54e4 100755
      tagimms = hex_common.get_tagimms()
  
 diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
-index 979f198a30..2abd653e6d 100755
+index 2abd653e6d..fc9ce4e2b0 100755
 --- a/target/hexagon/hex_common.py
 +++ b/target/hexagon/hex_common.py
-@@ -290,13 +290,6 @@ def need_pkt_has_multi_cof(tag):
- def need_pkt_need_commit(tag):
-     return 'A_IMPLICIT_WRITES_USR' in attribdict[tag]
+@@ -275,10 +275,6 @@ def need_PC(tag):
+     return "A_IMPLICIT_READS_PC" in attribdict[tag]
  
--def need_condexec_reg(tag, regs):
--    if "A_CONDEXEC" in attribdict[tag]:
--        for regtype, regid in regs:
--            if is_writeonly(regid) and not is_hvx_reg(regtype):
--                return True
--    return False
+ 
+-def helper_needs_next_PC(tag):
+-    return "A_CALL" in attribdict[tag]
 -
+-
+ def need_next_PC(tag):
+     return "A_CALL" in attribdict[tag]
  
- def skip_qemu_helper(tag):
-     return tag in overrides.keys()
+@@ -680,6 +676,10 @@ def decl_tcg(self, f, tag, regno):
+             """))
+     def log_write(self, f, tag):
+         pass
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg_name()}) */
++        """))
+ 
+ class VRegSource(Register, Hvx, OldSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -692,6 +692,10 @@ def decl_tcg(self, f, tag, regno):
+                 TCGv_ptr {self.reg_tcg()} = tcg_temp_new_ptr();
+                 tcg_gen_addi_ptr({self.reg_tcg()}, tcg_env, {self.hvx_off()});
+             """))
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg_name()}) */
++        """))
+ 
+ class VRegNewSource(Register, Hvx, NewSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -701,6 +705,10 @@ def decl_tcg(self, f, tag, regno):
+                 const intptr_t {self.hvx_off()} =
+                     ctx_future_vreg_off(ctx, {self.reg_num}, 1, true);
+             """))
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg_name()}) */
++        """))
+ 
+ class VRegReadWrite(Register, Hvx, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -719,6 +727,10 @@ def decl_tcg(self, f, tag, regno):
+             """))
+     def log_write(self, f, tag):
+         pass
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg_name()}) */
++        """))
+ 
+ class VRegTmp(Register, Hvx, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -739,6 +751,10 @@ def log_write(self, f, tag):
+             gen_log_vreg_write(ctx, {self.hvx_off()}, {self.reg_num},
+                                {hvx_newv(tag)});
+         """))
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMVector *)({self.helper_arg_name()}) */
++        """))
+ 
+ class VRegPairDest(Register, Hvx, Dest):
+     def decl_tcg(self, f, tag, regno):
+@@ -754,6 +770,10 @@ def decl_tcg(self, f, tag, regno):
+             """))
+     def log_write(self, f, tag):
+         pass
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMVectorPair *)({self.helper_arg_name()}) */
++        """))
+ 
+ class VRegPairSource(Register, Hvx, OldSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -773,6 +793,10 @@ def decl_tcg(self, f, tag, regno):
+                 TCGv_ptr {self.reg_tcg()} = tcg_temp_new_ptr();
+                 tcg_gen_addi_ptr({self.reg_tcg()}, tcg_env, {self.hvx_off()});
+             """))
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMVectorPair *)({self.helper_arg_name()}) */
++        """))
+ 
+ class VRegPairReadWrite(Register, Hvx, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -797,6 +821,10 @@ def log_write(self, f, tag):
+             gen_log_vreg_write_pair(ctx, {self.hvx_off()}, {self.reg_num},
+                                     {hvx_newv(tag)});
+         """))
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMVectorPair *)({self.helper_arg_name()}) */
++        """))
+ 
+ class QRegDest(Register, Hvx, Dest):
+     def decl_tcg(self, f, tag, regno):
+@@ -812,6 +840,10 @@ def decl_tcg(self, f, tag, regno):
+             """))
+     def log_write(self, f, tag):
+         pass
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMQReg *)({self.helper_arg_name()}) */
++        """))
+ 
+ class QRegSource(Register, Hvx, OldSource):
+     def decl_tcg(self, f, tag, regno):
+@@ -825,6 +857,10 @@ def decl_tcg(self, f, tag, regno):
+                 TCGv_ptr {self.reg_tcg()} = tcg_temp_new_ptr();
+                 tcg_gen_addi_ptr({self.reg_tcg()}, tcg_env, {self.hvx_off()});
+             """))
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMQReg *)({self.helper_arg_name()}) */
++        """))
+ 
+ class QRegReadWrite(Register, Hvx, ReadWrite):
+     def decl_tcg(self, f, tag, regno):
+@@ -843,6 +879,10 @@ def decl_tcg(self, f, tag, regno):
+             """))
+     def log_write(self, f, tag):
+         pass
++    def helper_hvx_desc(self, f):
++        f.write(code_fmt(f"""\
++            /* {self.reg_tcg()} is *(MMQReg *)({self.helper_arg_name()}) */
++        """))
+ 
+ def init_registers():
+     regs = {
 -- 
 2.34.1
 
