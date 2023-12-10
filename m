@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADED80B8D2
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Dec 2023 05:09:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0FC80B8C7
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Dec 2023 05:07:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCB5P-0005Qk-8M; Sat, 09 Dec 2023 23:06:35 -0500
+	id 1rCB5Q-0005RH-5z; Sat, 09 Dec 2023 23:06:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rCB5N-0005PW-RV
+ id 1rCB5N-0005PV-RG
  for qemu-devel@nongnu.org; Sat, 09 Dec 2023 23:06:33 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rCB5J-0005AP-VU
+ id 1rCB5M-0005B4-1p
  for qemu-devel@nongnu.org; Sat, 09 Dec 2023 23:06:33 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1d075392ff6so25769395ad.1
- for <qemu-devel@nongnu.org>; Sat, 09 Dec 2023 20:06:26 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3b9e7f4a0d7so1702791b6e.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Dec 2023 20:06:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702181185; x=1702785985;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702181190; x=1702785990;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Iv90WaRou0lXociQaWAWD/OIM+n6G23jcqxCvEIaQPg=;
- b=KYstAUyEECluK2xr2twcCwQcJ2nfkzRmV6nPLzznzT1CZhMoTM15SUG1i1LPTRax9F
- 4fxzf4DK46pZ5XBiyvl1EtqzHfg+R4dNj+1i6K0tAWfUWh5HhSBtVm62apKxpHlrMFEm
- sHEbBd7rvXZygZcfuIRTVKWEuUUd23vWADLbccME1+rqPU45I+avdrn9C2NcEhap5vE8
- XIiVC5F81BoP1h82HH0F35ZUlHqdU3hiykYbeCkifUf9EsFyfRzE8f+QWvpTDvIE1S+j
- BRlDia3c9wv8kxMyPCGSbPfoaNM1GVQRFVN5uFjeT0P/Tu2XakJq+U7zNxo7Yi/Wh97S
- NHig==
+ :reply-to; bh=jULzVKw4jETQdTwVTVbDoDIcPJ/Lkqp7c9I7LEiA14c=;
+ b=15BFI5moSZshIa0O3FsI4C3O2brP8Xm2ivsjL6kI9zR0UhREqlYxjE8K3hR84H2JwV
+ KFLChEDTjhsvvzwLZcRp4USI21ZuAWqQN29w+jZJ4hOYRvQJ/ZP/TNofLKxTrhwDLWWD
+ jiOH2rbhAJITPoZDwfkIJWuVDlOGIcvYw6aYbh6ceNWr60u1mSyl+phzd8P+Xnae4icM
+ f8+IHnsnnjls0kCNonbEd/OeoSEIBZdbk9UZqE6tsdhLbf6IIXIr+DjxemwcpDwsJv1e
+ XLcp+E+J1AAqvpXgyou9xaPm7ZU/mlxQLd2PRNkcDALIWjsTn6JVLeCM8gI6RXvxhBio
+ N33A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702181185; x=1702785985;
+ d=1e100.net; s=20230601; t=1702181190; x=1702785990;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Iv90WaRou0lXociQaWAWD/OIM+n6G23jcqxCvEIaQPg=;
- b=PzrgjkmhypEKlpi5W4woTQ/tMzcgSgdQLMOTPAeBmoMc8i2wyGdO/Jw2PUYotoMhGh
- Pd26yIkvxeBP2iF2ZDIUPtM2TaHtcPgBdrmzbsFeZQWGrz3X+aWsIvIyk9dl2ZCgYVTj
- heWOfly286N0YRsPOzlw8peNodl+btxcKrwYHT9oT28hwvODA+EQZ3aJ2VcNKICE3JXH
- /iK5S2P2Bbc78MrLqFqDTDEANys1K+QIRBIJ82eIum898/ON/gNFzrojz9adxpotDEm4
- Zluuv37a4TzcLnU49lq+sAl5KienLZa8r4MkofXLVYfhd3BU9y8P21CLRiS7zBSMcCyG
- pNKg==
-X-Gm-Message-State: AOJu0Yz88Cox7YegN+QME1y9eO8olrl6QjP/BALnbD9kDk9l+q3KxctG
- wonalpATYv95PqNo6fgd0tarmA==
-X-Google-Smtp-Source: AGHT+IGWvYs4ko5XbnNBhpN9wRXc37oUzw8EsOD/HEcIMy9qbQWZPPOzeLOl8AaWK1XPjc9rLQF3og==
-X-Received: by 2002:a17:902:e849:b0:1d0:6ffd:610e with SMTP id
- t9-20020a170902e84900b001d06ffd610emr3244427plg.48.1702181185163; 
- Sat, 09 Dec 2023 20:06:25 -0800 (PST)
+ bh=jULzVKw4jETQdTwVTVbDoDIcPJ/Lkqp7c9I7LEiA14c=;
+ b=IwyBqiiotN/22a6v2VJN4VTTRn/ZJxCR7EtXVN/ufjcTsbCa4PbsmBUU+fnI7aFgd7
+ yC3WH3W1YtXddWb5rNRA4yq3ne5nhM07Eh+c2sOieADWD4Qpj4hAp/CyGZknIcTE8I/D
+ k76EmjWydt/1SyWQB9jr88gtnxMEPSo4z1fu6uVOCWLvCh1z16NwaSa0+tiS4DbbxzcG
+ kkBG9uiquTbDeSO3QJvlO8FjDhXAUuMAxXTvn4buDp5Vmy1xIRfTtxUZVjM5wYVSHOhZ
+ MyGVUw2qlm2y86RHSdHO4wflY+cCxQSJF3gwjaAlIU7EZQXQc5ubzztRPinO13lBvXlH
+ csTw==
+X-Gm-Message-State: AOJu0YzIJ2tj3noZfnndeFBNjMSDUdLmCJK2+ZG+FmFEPuGOEqpCWWul
+ 0BZxy1BE1qrdZLmjXRbjtjDbwQ==
+X-Google-Smtp-Source: AGHT+IGbnxIS4baOZPGHxd8mgfZL4vUaxcE7xce9Kl6fiitDPlGKE2/Ahd4QNOIUet91DwXf1aI3YQ==
+X-Received: by 2002:aca:f13:0:b0:3b9:e22a:22da with SMTP id
+ 19-20020aca0f13000000b003b9e22a22damr2704507oip.112.1702181189999; 
+ Sat, 09 Dec 2023 20:06:29 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- o12-20020a170902bccc00b001d0696e9237sm4089152pls.118.2023.12.09.20.06.22
+ y14-20020a62ce0e000000b006ce467a2475sm4113695pfg.181.2023.12.09.20.06.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Dec 2023 20:06:24 -0800 (PST)
+ Sat, 09 Dec 2023 20:06:29 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 10 Dec 2023 13:05:46 +0900
-Subject: [PATCH RFC v2 03/12] hw/pci: Do not add ROM BAR for SR-IOV VF
+Date: Sun, 10 Dec 2023 13:05:47 +0900
+Subject: [PATCH RFC v2 04/12] vfio: Avoid inspecting option QDict for
+ rombar
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231210-sriov-v2-3-b959e8a6dfaf@daynix.com>
+Message-Id: <20231210-sriov-v2-4-b959e8a6dfaf@daynix.com>
 References: <20231210-sriov-v2-0-b959e8a6dfaf@daynix.com>
 In-Reply-To: <20231210-sriov-v2-0-b959e8a6dfaf@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -77,8 +78,8 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Yui Washizu <yui.washidu@gmail.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::229;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x229.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,33 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A SR-IOV VF cannot have a ROM BAR.
+Use pci_rom_bar_explicitly_enabled() to determine if rombar is explicitly
+enabled.
 
-Co-developed-by: Yui Washizu <yui.washidu@gmail.com>
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/pci/pci.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ hw/vfio/pci.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 31e8f413a6..5a93cc1681 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2377,6 +2377,14 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-         return;
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index c62c02f7b6..bc29ce9194 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -1008,7 +1008,6 @@ static void vfio_pci_size_rom(VFIOPCIDevice *vdev)
+ {
+     uint32_t orig, size = cpu_to_le32((uint32_t)PCI_ROM_ADDRESS_MASK);
+     off_t offset = vdev->config_offset + PCI_ROM_ADDRESS;
+-    DeviceState *dev = DEVICE(vdev);
+     char *name;
+     int fd = vdev->vbasedev.fd;
+ 
+@@ -1042,7 +1041,7 @@ static void vfio_pci_size_rom(VFIOPCIDevice *vdev)
      }
  
-+    if (pci_is_vf(pdev)) {
-+        if (pdev->rom_bar && pdev->rom_bar != -1) {
-+            error_setg(errp, "ROM BAR cannot be enabled for SR-IOV VF");
-+        }
-+
-+        return;
-+    }
-+
-     if (load_file || pdev->romsize == -1) {
-         path = qemu_find_file(QEMU_FILE_TYPE_BIOS, pdev->romfile);
-         if (path == NULL) {
+     if (vfio_opt_rom_in_denylist(vdev)) {
+-        if (dev->opts && qdict_haskey(dev->opts, "rombar")) {
++        if (pci_rom_bar_explicitly_enabled(&vdev->pdev)) {
+             warn_report("Device at %s is known to cause system instability"
+                         " issues during option rom execution",
+                         vdev->vbasedev.name);
 
 -- 
 2.43.0
