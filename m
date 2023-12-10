@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730F480B8CC
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Dec 2023 05:08:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F55580B8D5
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Dec 2023 05:12:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCB6Y-00061W-3P; Sat, 09 Dec 2023 23:07:47 -0500
+	id 1rCBAN-00062F-KD; Sat, 09 Dec 2023 23:11:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rCB61-0005fF-Vt
- for qemu-devel@nongnu.org; Sat, 09 Dec 2023 23:07:18 -0500
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1rCBAJ-00061N-4P
+ for qemu-devel@nongnu.org; Sat, 09 Dec 2023 23:11:39 -0500
+Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rCB5x-0005tL-EU
- for qemu-devel@nongnu.org; Sat, 09 Dec 2023 23:07:13 -0500
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5c690c3d113so2805239a12.1
- for <qemu-devel@nongnu.org>; Sat, 09 Dec 2023 20:07:08 -0800 (PST)
+ id 1rCBAH-0007A9-I2
+ for qemu-devel@nongnu.org; Sat, 09 Dec 2023 23:11:38 -0500
+Received: by mail-il1-x12d.google.com with SMTP id
+ e9e14a558f8ab-35d4de84195so13987735ab.3
+ for <qemu-devel@nongnu.org>; Sat, 09 Dec 2023 20:11:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702181228; x=1702786028;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702181496; x=1702786296;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xu544O3EFIYwNRJ2cJOKb9/B0TPA8YFLx9eseZtIzOs=;
- b=NR02RYHDW0rSk1/QW6X++tFM8GIVaUyP6gb9xtv1+U8cms/FGEpiIHmx/pmS9r4yNG
- t1qX3UYLvjwzzOQ7S4idGcGV5ABTYE3sqHVXKYShPLO6g7R31aR1qcu7oHtr9HYFlniR
- iVOxNnxFs3uVMnhn8b4gKW8QDHPu1ppQSEi8frrmq9o9CpHaWCQPsJr07Pk5ICMdDQxc
- 27K4Ip12k11CeRpvanXYgjsrRJzOoi/xxJUTjzrmbu7C1CBgZZRTBxtJutfTfop0zt+w
- 9hqGGdcnTtA+xWJ2ryniXm4n6pCSX0s3Q3QV5AP3R/pOVif3XpkriV7xY3J05jqgqyw3
- kpMQ==
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NHiKyIW8CW8KPATS7dT57c/viP6HxCdGRmtk+8noqOo=;
+ b=ZoxwY/Fttft2ZVodekHrKSQEDdJfa3HQwYAxJrPi41GxZyh/vYNURuGqZBGohZ8uAX
+ nwAmZhx8Ev3SyG1Hzl+9LGxkPJoqkrCHjO//7EcvM2xfdnZ0iS9TsVAxcbSYSOpR+wwq
+ W/SdzTv1Pb6AduUYX6Gi874C+QhQIWC+Sli3Jmavu/Yk9APa3unb8C+wLTOmXBN8tsWQ
+ UvbdQNG7N7egq8g/vmK/U7uiPU/Ar2rEE4pR+QCwy40rseMdr4eWNwu0aF4bbYXjGWor
+ 6bGZE3U8OdO4c3BRg4907qgeeGNczNV10NmG1E3veqJK4r9lBO4bchJ4iSK4TSra++i1
+ bc9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702181228; x=1702786028;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xu544O3EFIYwNRJ2cJOKb9/B0TPA8YFLx9eseZtIzOs=;
- b=SbcskKp2HfBGxiesZEZIMtq2XzvM05c+qa2xiPx+QBnd+oa1T++J/pwXA97tSFdkju
- XeuG6BkfdCbUkCtZZ4NvV0fFV/moZioAWvAdoWCJ6+6JQFpYKdo4iWyCq6OtHf5Wd2T0
- uAgiwHZ4kmSfrDdIR4+W4Uaqp54fLPJoI7vUuTOjzIlYDM4YW/nHaOHmP87iMUIyDk07
- ZnO2KzMv966bcUhns00ln8BtTvabVT9wJxeGVeQc/ud22XmHEssgturinTbxLRU5HI1r
- oA6kC/L1NJ4463vxp1JXOIoTPlv+FHNuWMTtR83yN2NZGpAxY70iRcDjDTeafZUrElXb
- ealw==
-X-Gm-Message-State: AOJu0Yw508D8kQ94Wd6jyG4Yjtyagx7CyeM0Rl1cTaLPJdmkmmJRSc/3
- ilzoKVNXv9b4Oa51j/ZBMUFvqw==
-X-Google-Smtp-Source: AGHT+IHsBWil12yImCbrshsSC17Qfia77tREzJCey6r8WLJvcM4JzQyAjfHKUJTnJ7/pz7BoHmgA4g==
-X-Received: by 2002:a17:902:7d8a:b0:1d2:eb05:9d05 with SMTP id
- a10-20020a1709027d8a00b001d2eb059d05mr2193855plm.90.1702181228066; 
- Sat, 09 Dec 2023 20:07:08 -0800 (PST)
-Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- x2-20020a170902ea8200b001d0a0dd7d51sm4143705plb.48.2023.12.09.20.07.05
+ d=1e100.net; s=20230601; t=1702181496; x=1702786296;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NHiKyIW8CW8KPATS7dT57c/viP6HxCdGRmtk+8noqOo=;
+ b=kN12ND2WXCaAFtZDSKf2/h7CZyks/U8RztxzoUw7Ul8ejqQ+57xnWtxhqnUNxSLRQv
+ rir3sqaEztyZfkDa0BcBJr9U2czyd+uTcs0jBlnKQ3Ac6I2EB8FaFUwAzAzlYyM/ztxi
+ tsaXmJo5SZCw9Jo22gWRlQbCd5K+8lGo6TnF136eDXZGWLjO1pPJOoBn9NlKw/gEfNjM
+ zuQJFPFqyUQQYGKHKrWDSLrkRzua67mT1ikOn3fEfcHSZUAzn83oiGbTFC6OZi0/BpFt
+ uNMnp9ghL7jtjhJVNdpHyr/JYGW+TS1pisIwvbp+PNKKD7+jGAluqjSYLDXP8TKKWdgj
+ J2cg==
+X-Gm-Message-State: AOJu0YzrychMRfiLq/WkqwWTu8dKMdbWTiEZILoMbj+GyPAup8VZGsnK
+ LYeHL0ovrks/6HlwcVDH0BKCAA==
+X-Google-Smtp-Source: AGHT+IFYCMkj99QK+5QRZnG+Mwna4RVhNEAb4Bwjmkcesu1zs/Hyw4q9Djvk4LdrPsOGzmBTk8IIDg==
+X-Received: by 2002:a05:6e02:198d:b0:35e:6bbf:4e5a with SMTP id
+ g13-20020a056e02198d00b0035e6bbf4e5amr3032157ilf.44.1702181495955; 
+ Sat, 09 Dec 2023 20:11:35 -0800 (PST)
+Received: from [157.82.205.15] ([157.82.205.15])
+ by smtp.gmail.com with ESMTPSA id
+ u3-20020a631403000000b005c6aa4d4a0dsm3949945pgl.45.2023.12.09.20.11.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Dec 2023 20:07:07 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 10 Dec 2023 13:05:55 +0900
-Subject: [PATCH RFC v2 12/12] virtio-net: Implement SR-IOV VF
+ Sat, 09 Dec 2023 20:11:35 -0800 (PST)
+Message-ID: <8717f71f-5350-45ef-9712-89c1240bc77c@daynix.com>
+Date: Sun, 10 Dec 2023 13:11:31 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/10] tests/avocado: mips: add hint for fetchasset plugin
+To: Cleber Rosa <crosa@redhat.com>, qemu-devel@nongnu.org
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, Paul Durrant <paul@xen.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ David Woodhouse <dwmw2@infradead.org>
+References: <20231208190911.102879-1-crosa@redhat.com>
+ <20231208190911.102879-3-crosa@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20231208190911.102879-3-crosa@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231210-sriov-v2-12-b959e8a6dfaf@daynix.com>
-References: <20231210-sriov-v2-0-b959e8a6dfaf@daynix.com>
-In-Reply-To: <20231210-sriov-v2-0-b959e8a6dfaf@daynix.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>, 
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Yui Washizu <yui.washidu@gmail.com>, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::533;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::12d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-il1-x12d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,28 +105,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A virtio-net device can be added as a SR-IOV VF to another virtio-pci
-device that will be the PF.
+On 2023/12/09 4:09, Cleber Rosa wrote:
+> Avocado's fetchasset plugin runs before the actual Avocado job (and
+> any test).  It analyses the test's code looking for occurrences of
+> "self.fetch_asset()" in the either the actual test or setUp() method.
+> It's not able to fully analyze all code, though.
+> 
+> The way these tests are written, make the fetchasset plugin blind to
+> the assets.  This adds redundant code, true, but one that doesn't hurt
+> the test and aids the fetchasset plugin to download or verify the
+> existence of these assets in advance.
+> 
+> Signed-off-by: Cleber Rosa <crosa@redhat.com>
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- hw/virtio/virtio-net-pci.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/hw/virtio/virtio-net-pci.c b/hw/virtio/virtio-net-pci.c
-index e03543a70a..dba4987d6e 100644
---- a/hw/virtio/virtio-net-pci.c
-+++ b/hw/virtio/virtio-net-pci.c
-@@ -75,6 +75,7 @@ static void virtio_net_pci_class_init(ObjectClass *klass, void *data)
-     k->device_id = PCI_DEVICE_ID_VIRTIO_NET;
-     k->revision = VIRTIO_PCI_ABI_VERSION;
-     k->class_id = PCI_CLASS_NETWORK_ETHERNET;
-+    k->sriov_vf_user_creatable = true;
-     set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
-     device_class_set_props(dc, virtio_net_properties);
-     vpciklass->realize = virtio_net_pci_realize;
-
--- 
-2.43.0
-
+Why not delete fetch_asset() in do_test_mips_malta32el_nanomips()?
 
