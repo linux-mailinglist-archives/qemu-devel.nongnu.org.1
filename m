@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87DD80BD7E
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Dec 2023 23:08:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 963DA80BD80
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Dec 2023 23:08:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCRxJ-0004v1-2D; Sun, 10 Dec 2023 17:07:21 -0500
+	id 1rCRxK-0004vP-2x; Sun, 10 Dec 2023 17:07:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rCRxH-0004ut-It
- for qemu-devel@nongnu.org; Sun, 10 Dec 2023 17:07:19 -0500
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ id 1rCRxI-0004vG-Ud
+ for qemu-devel@nongnu.org; Sun, 10 Dec 2023 17:07:20 -0500
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1rCRxG-0004Y3-34
- for qemu-devel@nongnu.org; Sun, 10 Dec 2023 17:07:19 -0500
-Received: by mail-ot1-x32d.google.com with SMTP id
- 46e09a7af769-6d9f514f796so1688923a34.3
- for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 14:07:17 -0800 (PST)
+ id 1rCRxH-0004YL-5h
+ for qemu-devel@nongnu.org; Sun, 10 Dec 2023 17:07:20 -0500
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6d9ac148ca3so2600895a34.0
+ for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 14:07:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702246035; x=1702850835; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0Y+LNJ6HTs6ANDIoy64EPRLOOumatkpCdJLZ9/sq3Lc=;
- b=XewEE1leeVrd5HQpHtbgoTeGl2ZLbzO5zOpUEelW0uksiRbqpRKJsTuVHxyxB/XdlL
- EPl79P5hpAIDeorthLeIP05KwpV/9vJcYfDCSU+BptV7v2je0VUzZEHVJ2Lu14JwnMcT
- nju7tN3jVMuxZ/qPkruA5Wbd3rmx2Efzk9gylyE90YsesUWc7SpTcgM9cfmLLf5Wk4VY
- CqGOJO44nulBSRiHLUsl/J/kqiTNTceTa5opERx81H6Quhf4nFLyHz4HdguHo/i7R9Ho
- upogZo8ocVHGhmr2IoMx/2c2r18c/fFYXHI1TvBvDzxgJEcbZz+8c4UO2MOReys+P0eu
- eiTw==
+ d=gmail.com; s=20230601; t=1702246037; x=1702850837; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nToee3KpjsUzxDr4LX2hZbylR7YMxRwtPLDN/VMQMvY=;
+ b=GJVnkktcM6klmPNoLz/t6YP05hLi09gU6IrCXp5r3V0aRRJDP/48aqtfLm3vqiL79E
+ UotYxagmHOXprrMJzGdZaET8AMAlQOToSE64P/DCK3fClvKWAKLH/Dsdx7PKHuZkXOrr
+ ZtWfwdYr/w8JT5SYXAEH4Fmg0eIRh+Z3UMme55pc4NzPKbCUBQ3LH/Z3T4lgKHemkSdX
+ 2jvZORwja38qcrTZbGUnD87DQ6XI533OKK+pWW6UuqClbhadJvHR6tPFu9ayOUicr1Kh
+ CLOsupHWPtf82VypcRoV4kCmRswAmoMQ/T1lK5T2rb7/wTwgwKAr6EtnlPjTpYIconf1
+ DR7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702246035; x=1702850835;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0Y+LNJ6HTs6ANDIoy64EPRLOOumatkpCdJLZ9/sq3Lc=;
- b=LaFOJZJ3UxjQosKtul/3XpRaNRbmlDTmfNrUVvSn3UBFp4Xr8zhZn4BKeN06zIg5v5
- l8U2RRWWzYuIoZ0GwXTMtzNcCB8Tz+DZSZ5V5AkEJDHFicqiHLNymJvbAj+Qfrg+VCVo
- UgtNxI1/3zFXivvLDpjeM0JHpkHD/Pg2u0W74pS856ZzVLO1e0BtBQSVGMZvueqTu6Bx
- fMizd8/1LzBAdjYDl9JQ0cu+MIbvoZ18O+Jvt+vC8Affbk9U5vRYz3GAHmnrbjBN3FtL
- C6PhBCfROz/3cRQOhGbiwAXRtazi6d8ngtI8fYHlGfMnHajipzN1B53ae2JIXJNTtAh+
- vcyg==
-X-Gm-Message-State: AOJu0Yz5MXwiyVVpz+b4NR0XFiI5VhEEIb5RunAry4HIyl8YCxDnmqpj
- rguEFkPQu0HtD1RAr8Bj/mYUCwSLpk9Nbw==
-X-Google-Smtp-Source: AGHT+IEbZ9js78tqwogu28yJXWSfPVmjal7IdOkhnmrpG6p8ViBpGG5Lxd/Cund1i851gIWtRgiKJg==
-X-Received: by 2002:a05:6830:1d8b:b0:6d9:e90c:ec64 with SMTP id
- y11-20020a0568301d8b00b006d9e90cec64mr3768575oti.36.1702246035365; 
- Sun, 10 Dec 2023 14:07:15 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702246037; x=1702850837;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nToee3KpjsUzxDr4LX2hZbylR7YMxRwtPLDN/VMQMvY=;
+ b=RcAAZssNJyybveu8rFh9wMIjsgcAs790z7KYnFeEEQ83B9JJW3KP8NXvk+GAlwjvxu
+ NRb5UzyCHYj0iKO8vdmSkKeoLylYHzt+2Spqmsqxy9fDJLZYZD/+G+loRtIn9Pd4mcyx
+ oONO3AkUo2F4tUcTnhtPJYdG3mI7poD290Dlkd0rFZxIR4DEMCcIyOcVrPyqcYKG8uvB
+ c5PXj62Et57rEG5d9KuuzErP0Bgpoel18UELAJHu+VLbmD6tr2LTDNTtejhtmfspGp8H
+ mnSolUfIpb7d894ZsKvwat+d2NZGE2VJZb8X3B/1pbBi2urSscG2D1dYHor1Ok/pVR5l
+ 5eWg==
+X-Gm-Message-State: AOJu0YzwJyUIvCAHPcTVBq973vYMOh5oIw9XZdEC4lzj4BwT+Q8AsUda
+ vbB6aKLRngEEQWiFECyQCTChV1BORuOplA==
+X-Google-Smtp-Source: AGHT+IEcOaZWCpJOmiVvvt0+sVk3RLBakMPgCbEo52guRGzuY1ZkEeoYGH4FxQb23QXwjlyUJ/z8ug==
+X-Received: by 2002:a05:6830:1b72:b0:6d9:dd36:1079 with SMTP id
+ d18-20020a0568301b7200b006d9dd361079mr2617877ote.30.1702246036967; 
+ Sun, 10 Dec 2023 14:07:16 -0800 (PST)
 Received: from taylor-ubuntu.austin.rr.com (068-203-008-061.res.spectrum.com.
  [68.203.8.61]) by smtp.gmail.com with ESMTPSA id
- q23-20020a4a6c17000000b0058e200a9065sm1588173ooc.29.2023.12.10.14.07.13
+ q23-20020a4a6c17000000b0058e200a9065sm1588173ooc.29.2023.12.10.14.07.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Dec 2023 14:07:14 -0800 (PST)
+ Sun, 10 Dec 2023 14:07:16 -0800 (PST)
 From: Taylor Simpson <ltaylorsimpson@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
  quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
  ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
-Subject: [PATCH v2 0/9] Hexagon (target/hexagon) Make generators object
- oriented
-Date: Sun, 10 Dec 2023 15:07:03 -0700
-Message-Id: <20231210220712.491494-1-ltaylorsimpson@gmail.com>
+Subject: [PATCH v2 1/9] Hexagon (target/hexagon) Clean up handling of modifier
+ registers
+Date: Sun, 10 Dec 2023 15:07:04 -0700
+Message-Id: <20231210220712.491494-2-ltaylorsimpson@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231210220712.491494-1-ltaylorsimpson@gmail.com>
+References: <20231210220712.491494-1-ltaylorsimpson@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-ot1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,42 +95,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-See commit message in second patch
+Currently, the register number (MuN) for modifier registers is the
+modifier register number rather than the index into hex_gpr.  This
+patch changes MuN to the hex_gpr index, which is consistent with
+the handling of control registers.
 
-**** Changes in v2 ****
-Address feedback from Brian Cain <bcain@quicinc.com>
-- Consolidate logic to create helper arg lists
+Note that HELPER(fcircadd) needs the CS register corresponding to the
+modifier register specified in the instruction.  We create a TCGv
+variable "CS" to hold the value to pass to the helper.
 
+Reviewed-by: Brian Cain <bcain@quicinc.com>
+Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+---
+ target/hexagon/gen_tcg.h                    |  9 ++++-----
+ target/hexagon/macros.h                     |  3 +--
+ target/hexagon/idef-parser/parser-helpers.c |  8 +++-----
+ target/hexagon/gen_tcg_funcs.py             | 13 +++++++++----
+ 4 files changed, 17 insertions(+), 16 deletions(-)
 
-Taylor Simpson (9):
-  Hexagon (target/hexagon) Clean up handling of modifier registers
-  Hexagon (target/hexagon) Make generators object oriented -
-    gen_tcg_funcs
-  Hexagon (target/hexagon) Make generators object oriented -
-    gen_helper_protos
-  Hexagon (target/hexagon) Make generators object oriented -
-    gen_helper_funcs
-  Hexagon (target/hexagon) Make generators object oriented -
-    gen_idef_parser_funcs
-  Hexagon (target/hexagon) Make generators object oriented - gen_op_regs
-  Hexagon (target/hexagon) Make generators object oriented -
-    gen_analyze_funcs
-  Hexagon (target/hexagon) Remove unused WRITES_PRED_REG attribute
-  Hexagon (target/hexagon) Remove dead functions from hex_common.py
-
- target/hexagon/gen_tcg.h                    |   9 +-
- target/hexagon/macros.h                     |   3 +-
- target/hexagon/attribs_def.h.inc            |   1 -
- target/hexagon/idef-parser/parser-helpers.c |   8 +-
- target/hexagon/gen_analyze_funcs.py         | 163 +---
- target/hexagon/gen_helper_funcs.py          | 368 ++------
- target/hexagon/gen_helper_protos.py         | 149 +---
- target/hexagon/gen_idef_parser_funcs.py     |  20 +-
- target/hexagon/gen_op_regs.py               |   6 +-
- target/hexagon/gen_tcg_funcs.py             | 566 +-----------
- target/hexagon/hex_common.py                | 921 ++++++++++++++++++--
- 11 files changed, 964 insertions(+), 1250 deletions(-)
-
+diff --git a/target/hexagon/gen_tcg.h b/target/hexagon/gen_tcg.h
+index d992059fce..1c4391b415 100644
+--- a/target/hexagon/gen_tcg.h
++++ b/target/hexagon/gen_tcg.h
+@@ -68,15 +68,14 @@
+     do { \
+         TCGv tcgv_siV = tcg_constant_tl(siV); \
+         tcg_gen_mov_tl(EA, RxV); \
+-        gen_helper_fcircadd(RxV, RxV, tcgv_siV, MuV, \
+-                            hex_gpr[HEX_REG_CS0 + MuN]); \
++        gen_helper_fcircadd(RxV, RxV, tcgv_siV, MuV, CS); \
+     } while (0)
+ #define GET_EA_pcr(SHIFT) \
+     do { \
+         TCGv ireg = tcg_temp_new(); \
+         tcg_gen_mov_tl(EA, RxV); \
+         gen_read_ireg(ireg, MuV, (SHIFT)); \
+-        gen_helper_fcircadd(RxV, RxV, ireg, MuV, hex_gpr[HEX_REG_CS0 + MuN]); \
++        gen_helper_fcircadd(RxV, RxV, ireg, MuV, CS); \
+     } while (0)
+ 
+ /* Instructions with multiple definitions */
+@@ -113,7 +112,7 @@
+         TCGv ireg = tcg_temp_new(); \
+         tcg_gen_mov_tl(EA, RxV); \
+         gen_read_ireg(ireg, MuV, SHIFT); \
+-        gen_helper_fcircadd(RxV, RxV, ireg, MuV, hex_gpr[HEX_REG_CS0 + MuN]); \
++        gen_helper_fcircadd(RxV, RxV, ireg, MuV, CS); \
+         LOAD; \
+     } while (0)
+ 
+@@ -427,7 +426,7 @@
+         TCGv BYTE G_GNUC_UNUSED = tcg_temp_new(); \
+         tcg_gen_mov_tl(EA, RxV); \
+         gen_read_ireg(ireg, MuV, SHIFT); \
+-        gen_helper_fcircadd(RxV, RxV, ireg, MuV, hex_gpr[HEX_REG_CS0 + MuN]); \
++        gen_helper_fcircadd(RxV, RxV, ireg, MuV, CS); \
+         STORE; \
+     } while (0)
+ 
+diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
+index 9a51b5709b..939f22e76b 100644
+--- a/target/hexagon/macros.h
++++ b/target/hexagon/macros.h
+@@ -462,8 +462,7 @@ static inline TCGv gen_read_ireg(TCGv result, TCGv val, int shift)
+ #define fPM_CIRI(REG, IMM, MVAL) \
+     do { \
+         TCGv tcgv_siV = tcg_constant_tl(siV); \
+-        gen_helper_fcircadd(REG, REG, tcgv_siV, MuV, \
+-                            hex_gpr[HEX_REG_CS0 + MuN]); \
++        gen_helper_fcircadd(REG, REG, tcgv_siV, MuV, CS); \
+     } while (0)
+ #else
+ #define fEA_IMM(IMM)        do { EA = (IMM); } while (0)
+diff --git a/target/hexagon/idef-parser/parser-helpers.c b/target/hexagon/idef-parser/parser-helpers.c
+index 4af020933a..95f2b43076 100644
+--- a/target/hexagon/idef-parser/parser-helpers.c
++++ b/target/hexagon/idef-parser/parser-helpers.c
+@@ -1541,10 +1541,8 @@ void gen_circ_op(Context *c,
+                  HexValue *increment,
+                  HexValue *modifier)
+ {
+-    HexValue cs = gen_tmp(c, locp, 32, UNSIGNED);
+     HexValue increment_m = *increment;
+     increment_m = rvalue_materialize(c, locp, &increment_m);
+-    OUT(c, locp, "gen_read_reg(", &cs, ", HEX_REG_CS0 + MuN);\n");
+     OUT(c,
+         locp,
+         "gen_helper_fcircadd(",
+@@ -1555,7 +1553,7 @@ void gen_circ_op(Context *c,
+         &increment_m,
+         ", ",
+         modifier);
+-    OUT(c, locp, ", ", &cs, ");\n");
++    OUT(c, locp, ", CS);\n");
+ }
+ 
+ HexValue gen_locnt_op(Context *c, YYLTYPE *locp, HexValue *src)
+@@ -2080,9 +2078,9 @@ void emit_arg(Context *c, YYLTYPE *locp, HexValue *arg)
+             char reg_id[5];
+             reg_compose(c, locp, &(arg->reg), reg_id);
+             EMIT_SIG(c, ", %s %s", type, reg_id);
+-            /* MuV register requires also MuN to provide its index */
++            /* MuV register requires also CS for circular addressing*/
+             if (arg->reg.type == MODIFIER) {
+-                EMIT_SIG(c, ", int MuN");
++                EMIT_SIG(c, ", TCGv CS");
+             }
+         }
+         break;
+diff --git a/target/hexagon/gen_tcg_funcs.py b/target/hexagon/gen_tcg_funcs.py
+index f5246cee6d..02d93bc5ce 100755
+--- a/target/hexagon/gen_tcg_funcs.py
++++ b/target/hexagon/gen_tcg_funcs.py
+@@ -99,10 +99,15 @@ def genptr_decl(f, tag, regtype, regid, regno):
+             hex_common.bad_register(regtype, regid)
+     elif regtype == "M":
+         if regid == "u":
+-            f.write(f"    const int {regtype}{regid}N = " f"insn->regno[{regno}];\n")
+             f.write(
+-                f"    TCGv {regtype}{regid}V = hex_gpr[{regtype}{regid}N + "
+-                "HEX_REG_M0];\n"
++                f"    const int {regN} = insn->regno[{regno}] + HEX_REG_M0;\n"
++            )
++            f.write(
++                f"    TCGv {regtype}{regid}V = hex_gpr[{regN}];\n"
++            )
++            f.write(
++                f"    TCGv CS G_GNUC_UNUSED = "
++                f"hex_gpr[{regN} - HEX_REG_M0 + HEX_REG_CS0];\n"
+             )
+         else:
+             hex_common.bad_register(regtype, regid)
+@@ -528,7 +533,7 @@ def gen_tcg_func(f, tag, regs, imms):
+             ):
+                 declared.append(f"{regtype}{regid}V")
+                 if regtype == "M":
+-                    declared.append(f"{regtype}{regid}N")
++                    declared.append("CS")
+             elif hex_common.is_new_val(regtype, regid, tag):
+                 declared.append(f"{regtype}{regid}N")
+             else:
 -- 
 2.34.1
 
