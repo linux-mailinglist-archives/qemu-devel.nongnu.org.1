@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC8680DD17
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:29:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9485C80DCE5
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:24:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCnjO-0004Cj-Q9; Mon, 11 Dec 2023 16:22:26 -0500
+	id 1rCnjc-0004SK-P8; Mon, 11 Dec 2023 16:22:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnjM-0004Az-8j
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:24 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnjT-0004GW-GM
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:32 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnjK-0005jk-Gn
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:24 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-54dcfca54e0so6339208a12.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:22:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnjR-0005lG-OB
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:31 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-54f4b31494fso7251633a12.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:22:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702329741; x=1702934541; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702329748; x=1702934548; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=31p8j5Jt1hoDV9F+fYTdM7YWxOI6Tic5VBGPVB9TKlo=;
- b=WH1TVbEr7xsnjmJiqykhQC49Z7oj7479RqnoctPft4KZ5ieIJSJVDptDD4Oy9Nub+Y
- l8D6KMjEEBnK7LMqwsefrSPfltObQWVqJ5Jdzy7704J89XP3iIW2CI4c8kuzsur8XJB8
- OsBIXzJeqPfWtfOYQsXjQWg0h2v4uKz42cuMMEHVIre6F2PP3x1jIG6lsgACj+ByR1rH
- f94SyGgI6Ff61zg5c3/D0CzMyw1v5FoU4nAuL9gYtYACkTYxD0gvOUKsdikjT1U2ogWJ
- /n2LNrECUTMlyMPQZOUi5mLfiu+aHIO0hNwNQHc2PpfKpFwnlu23sC9pgKZgho/O7ik8
- sX4A==
+ bh=jCN6XEpRfBzl6QRBVexJQczvz29R6MzglzJSIvh3kCU=;
+ b=j0sybf8R9qPyueRhalbXpgIaMYo2vno4hdHCwJpHMNxt99FgLmy9SeQTKePAWxlp4F
+ 66zZ+jH1SHxOST5xzz1Q6C9Ub0OZrQagpRmBU2Z+gKzh2zVMDU7j7BkFM7Qp8cx2xB7C
+ uuueSOht49EnbcWu6+U4BY2PcJw4ktOARZXvvKh2Oi/Kfu0PmAqdLIdLO4o6AfxleSzC
+ 2TKpcY1dexlULMoUii3UyzoZ1UkBlW0DwAjoc633hJyNn3n1lNLMFST/IvlxVyUkcQXd
+ QOKVO22TdRbccqtQ1m7vgH6Tdi2Mx1r1wNDGEs3qGS1ag9L01aKhn8Oae9G1KOj6msyQ
+ OQ0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702329741; x=1702934541;
+ d=1e100.net; s=20230601; t=1702329748; x=1702934548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=31p8j5Jt1hoDV9F+fYTdM7YWxOI6Tic5VBGPVB9TKlo=;
- b=m6bsxHvAAzvrGU//SYt85Cvm62Uqr4WYL3RHZQBDZ/td659OxjcWO8nNpANou0fhpX
- dVd3vaaPFV41SCQ4Mqof5HhK/bfvmk8Gc1vgnx3M5+S4vLmkBzBSmNryU1UIvU8+JSHU
- Xgrf5qWlCMddzpT5RJSvhql74qgsEwF/SNIElfgrq0/TcPrmZjDvPIm1Np+1ceOrvtJX
- AoutNYFqSUwQH3+MvI9cC+CiAb2Y+oVtZjoKIWT+hIy9WT3PWzF/8kmH6VKyB8YpaMLO
- Gegp+JarhoGSC8wL6ptC4oO6vpGnUuGiSR3BrpvTsn+xuti+timbS8gZJtS+BZMY0Wcv
- XzMw==
-X-Gm-Message-State: AOJu0Yzek/S565NVbYODdWH4cMNfyDNnubWP9EKDVeX/wq0NEuEIhz0w
- gagoFpFXDZLE7P/dRR69ArYD5brzJdyhGDXJTXYEOw==
-X-Google-Smtp-Source: AGHT+IEmyjseetZ6MABzDolM2F1vBB3vF3EY9+Y9NrS2c3NXJni7DdLVf2NG0DPdko7jlFhqGhfwLQ==
-X-Received: by 2002:aa7:c513:0:b0:54c:a689:2d8c with SMTP id
- o19-20020aa7c513000000b0054ca6892d8cmr3367204edq.69.1702329741047; 
- Mon, 11 Dec 2023 13:22:21 -0800 (PST)
+ bh=jCN6XEpRfBzl6QRBVexJQczvz29R6MzglzJSIvh3kCU=;
+ b=TK39clEmnB9su93+aziu+Kyh8Ng1FUOfC+Hd6r9RLMZPMMUlv2vhovYL7WxIgGffV4
+ gVBTqpvqI373lOryyL0C2/8Q2XeW8FZgtg9EFMiUmMTdlewvR0sXNZllDRBxRcP4eTDy
+ dRmCFO241j283JCQxGOletdBfm9So4qQNuJaxsUiJKSdMnziHp9DX2Qd+/gRH0eiER57
+ itbaNZ9M/YrQgPqJ5ZqP/JBUR/6jOVNr4t0mmIMuCAcAqGo62bcLpd7oAkL9WyuoG+4G
+ 5EcaFoNNnDWBRT23QMj7UPmPtPkAwin1ketXPl6gz2RtmJcN2quQxlj7Qru26O37AfQt
+ I/eA==
+X-Gm-Message-State: AOJu0YzqAQ6kRmwZdqAsuJetDlhtAHKl9sbY1BdnbXKUYWpB4bbyBcTY
+ x5M4rj8DN9Kfg8kaOKFnqbdCP4cudtsHiORRpvKLYg==
+X-Google-Smtp-Source: AGHT+IEwqt6eLG4A82nj43gtpanBMrnXiDuQHfBbhdfTI3qN+rGfYQe2+K/0exl5E5chj/jjV3dMSA==
+X-Received: by 2002:a50:c905:0:b0:54f:4f7f:1a57 with SMTP id
+ o5-20020a50c905000000b0054f4f7f1a57mr5170138edh.31.1702329748112; 
+ Mon, 11 Dec 2023 13:22:28 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- l12-20020a056402230c00b0054c7aee67acsm4014017eda.97.2023.12.11.13.22.18
+ dk11-20020a0564021d8b00b0054c8415f834sm4087989edb.34.2023.12.11.13.22.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Dec 2023 13:22:20 -0800 (PST)
+ Mon, 11 Dec 2023 13:22:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
@@ -71,18 +71,21 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 16/24] exec/cpu-all: Reduce 'qemu/rcu.h' header inclusion
-Date: Mon, 11 Dec 2023 22:19:53 +0100
-Message-ID: <20231211212003.21686-17-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH 17/24] target/ppc/excp_helper: Avoid 'abi_ptr' in system
+ emulation
+Date: Mon, 11 Dec 2023 22:19:54 +0100
+Message-ID: <20231211212003.21686-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231211212003.21686-1-philmd@linaro.org>
 References: <20231211212003.21686-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,38 +108,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"exec/cpu-all.h" doesn't need definitions from "qemu/rcu.h",
-however "exec/ram_addr.h" does.
+'abi_ptr' is a user specific type. The system emulation
+equivalent is 'target_ulong'. Use it in ppc_ldl_code()
+to emphasis this is not an user emulation function.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/cpu-all.h  | 1 -
- include/exec/ram_addr.h | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ target/ppc/excp_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index b1e293a08f..2d568ae4f0 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -22,7 +22,6 @@
- #include "exec/cpu-common.h"
- #include "exec/memory.h"
- #include "exec/tswap.h"
--#include "qemu/rcu.h"
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index a42743a3e0..3d7c9bbf1a 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -142,7 +142,7 @@ static inline bool insn_need_byteswap(CPUArchState *env)
+     return !!(env->msr & ((target_ulong)1 << MSR_LE));
+ }
  
- /* some important defines:
-  *
-diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
-index 90676093f5..aab7d6c57c 100644
---- a/include/exec/ram_addr.h
-+++ b/include/exec/ram_addr.h
-@@ -25,6 +25,7 @@
- #include "sysemu/tcg.h"
- #include "exec/ramlist.h"
- #include "exec/ramblock.h"
-+#include "qemu/rcu.h"
- 
- extern uint64_t total_dirty_pages;
+-static uint32_t ppc_ldl_code(CPUArchState *env, abi_ptr addr)
++static uint32_t ppc_ldl_code(CPUArchState *env, target_ulong addr)
+ {
+     uint32_t insn = cpu_ldl_code(env, addr);
  
 -- 
 2.41.0
