@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA5F80DCE8
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5928980DCD5
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:23:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCnjC-0003d8-20; Mon, 11 Dec 2023 16:22:14 -0500
+	id 1rCnjB-0003Xr-0I; Mon, 11 Dec 2023 16:22:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnjA-0003Xw-5L
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:12 -0500
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnj7-0003Iz-KV
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:09 -0500
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCniw-0005ed-Uw
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:11 -0500
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-50be58a751cso5664570e87.2
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:21:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnj5-0005hB-25
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:09 -0500
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a1c8512349dso660401766b.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:22:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702329717; x=1702934517; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702329725; x=1702934525; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Sxk2B1Wo2pXRo42/SYBVVIycoetyzxarj96J9gTlCqc=;
- b=PSIdCiEyGl+JOEJWqcEgbPqXz7U43FDIOWiJ8wNku7wJVrg6+PaFPkTfVB2iV7f0mS
- U/Cumm6EOxRSTkhhJdoIh1PmLaDic5DnNrpiXRYpQ547VbGOZ9KeHzux+xFLx653fSly
- kxISniXZjBYeAghvb01BVnOXsGTJyRp6Sm4b5Awim1NJxAMlGt3VcLz8IEQDCW2Ek/+O
- xVeFd9cj5hpF0YVyAPYUjg0eaov34N5i5W4oBEpmcdAzz5fA359FIYLmpoceCHMXHTGs
- LWhHkHpRrOwiz/WV/Ix4S9tL3cIdWiDczrz61qFmobKpGmWFPUjfEIuxWMy4isFHIQ2b
- LzNg==
+ bh=U3EU22bNfiIc1b+ZyOtnWaIQVzLfNzz6gZyDB25Dnbs=;
+ b=Y3wkVg3XNYjJIvA9dxOqQT23TFfDeKNAX4AYoe6SXSn7gY5l7j8HgGDtYSnBDI7LjY
+ s9k19FUQFLsjKdpkCJ3D0rZs6oPmEZ6DfqijnVSmFxd4pY5K3YGO9eiBoWAvuKR739VY
+ H8pbthaN/4bujicNaAX+iYD2AAGjK7uogsib7NCOpJy4v0AHam1qt9eQbuSxMjXUsIDP
+ JQJSBbUCMg3yCC01DmwAvJITKWXRpsnGxO1uYKntvpgUBDODrjVOJ0rlocVHhr1r4sQW
+ zrm+RFXLaLLWrV5uZkJ6CGN23/+ZtKVAJofbJEWCRNJX1itB1NkePPFgBwewfE1d+GA7
+ ZN1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702329717; x=1702934517;
+ d=1e100.net; s=20230601; t=1702329725; x=1702934525;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Sxk2B1Wo2pXRo42/SYBVVIycoetyzxarj96J9gTlCqc=;
- b=NrAeEmkkzW99be/RvZaIUg+RN6TxInrpBIDUT/JpcF7Tw2h3QWqh0ciH4mPE/xes8v
- 5+cOdktSO7no3JRYi8N84HRR6JofWpc9OQVUrtKaPBsRxSn9jFhtRCVFe993Dldf4ep0
- kL9pw78TcnXpKyG/apSGGusqPFBv8TWSa0D9urMQ7EWpE3jb23lV+P7BqFixwwWTkLdG
- jrnw2Th7nxeblUIna+X5cwWQGyHDtCgvYiuSiRfeRYSOAfPkdCDf9SJjUFVofBsjZmi9
- OuJXvEV0lnj+dYX1QHIP/cD7x1nuFF78YcgFfDVOAt5YMp5jcqqUOi+/OIqIIP5x7pMO
- apvQ==
-X-Gm-Message-State: AOJu0Yxj2CGYTs8EbwA9jV3o0zwe2uh9hBYOlxgTa6qkCvznhMh8/GaV
- cW7i7r+HfgtQwnSfwfEuXftTetvNiz7URr7QxNZ+4w==
-X-Google-Smtp-Source: AGHT+IHDtXevlZvMNcceTNwUeCFzqJEEEwa7JQhvUomywLsfSZUsIRjfVyrIBQtVafs/CsiHw3FjpA==
-X-Received: by 2002:a05:6512:b22:b0:50c:c8b8:6689 with SMTP id
- w34-20020a0565120b2200b0050cc8b86689mr2383978lfu.12.1702329717143; 
- Mon, 11 Dec 2023 13:21:57 -0800 (PST)
+ bh=U3EU22bNfiIc1b+ZyOtnWaIQVzLfNzz6gZyDB25Dnbs=;
+ b=EB497vTZIxT9S0Wubusx0kts01uyqEZ1RpNKcuiZPlC68KGTWPUTOM0GW4g39QbeqS
+ CNooODYCSUwIDyb7PpzLCQraNpU5DLsPRtn2I3SXDEOBz7D7RehOmQ/fmgS9Ao8stxA1
+ 2rYAotED1zp2iLv8wwSq5cINIypMqrVGusRa+qrcNVJw4kI6LVYLxcHPwHyk33sIUDke
+ T36n1B/FLMDINELONOYudoDcshpLZiqtC6HcnWBO1UKTSg58mzpRA0zNkX6JH28LxB00
+ N3iakbTZsZXnq+Sm2uafisNBKm5Ukx/CwxVzyTYfWG8rNdjRRknpDmrqeJmXnfc6ahNV
+ jhlQ==
+X-Gm-Message-State: AOJu0YzBaXZMUQ+vyEEsXvU/YCf/98CFz73qNBU0gqL1eZZzDicxCVeR
+ D1fRJ74p9HxFi+DGGbaMY/7r9e0+fYVSm+04gMZoHA==
+X-Google-Smtp-Source: AGHT+IGzl3xQjm7C+9LNWEf4YaTjOxsCCunkMYfPCy1U1wU+AE7F8A7uN4M+yUT3A/jdokc1MR9z5A==
+X-Received: by 2002:a17:906:c2d6:b0:a1c:1f65:f4b6 with SMTP id
+ ch22-20020a170906c2d600b00a1c1f65f4b6mr3223070ejb.144.1702329725658; 
+ Mon, 11 Dec 2023 13:22:05 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- vh2-20020a170907d38200b00a1be80a0b69sm5333806ejc.58.2023.12.11.13.21.54
+ rm6-20020a1709076b0600b00a1db194b777sm5310183ejc.78.2023.12.11.13.22.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Dec 2023 13:21:56 -0800 (PST)
+ Mon, 11 Dec 2023 13:22:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
@@ -72,17 +72,17 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 13/24] accel/tcg: Include missing 'hw/core/cpu.h' header
-Date: Mon, 11 Dec 2023 22:19:50 +0100
-Message-ID: <20231211212003.21686-14-philmd@linaro.org>
+Subject: [PATCH 14/24] gdbstub: Include missing 'hw/core/cpu.h' header
+Date: Mon, 11 Dec 2023 22:19:51 +0100
+Message-ID: <20231211212003.21686-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231211212003.21686-1-philmd@linaro.org>
 References: <20231211212003.21686-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,27 +105,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tcg_cpu_init_cflags() accesses CPUState fields, so requires
-"hw/core/cpu.h" to get its structure definition.
+Functions such gdb_get_cpu_pid() dereference CPUState so
+require the structure declaration from "hw/core/cpu.h":
+
+  static uint32_t gdb_get_cpu_pid(CPUState *cpu)
+  {
+    ...
+    return cpu->cluster_index + 1;
+  }
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/tcg-accel-ops.c | 2 ++
- 1 file changed, 2 insertions(+)
+ gdbstub/gdbstub.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 1b57290682..58806e2d7f 100644
---- a/accel/tcg/tcg-accel-ops.c
-+++ b/accel/tcg/tcg-accel-ops.c
-@@ -37,6 +37,8 @@
- #include "exec/tb-flush.h"
- #include "exec/gdbstub.h"
- 
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 46d752bbc2..034a4ac211 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -37,6 +37,7 @@
+ #include "hw/cpu/cluster.h"
+ #include "hw/boards.h"
+ #endif
 +#include "hw/core/cpu.h"
-+
- #include "tcg-accel-ops.h"
- #include "tcg-accel-ops-mttcg.h"
- #include "tcg-accel-ops-rr.h"
+ 
+ #include "sysemu/hw_accel.h"
+ #include "sysemu/runstate.h"
 -- 
 2.41.0
 
