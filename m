@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3F980DCD4
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:23:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2D180DD0F
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:28:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCnjI-000451-Gh; Mon, 11 Dec 2023 16:22:20 -0500
+	id 1rCnoQ-0005Rw-HF; Mon, 11 Dec 2023 16:27:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnjH-00040k-01
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:19 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnoB-0005Ad-EV
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:27:25 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnjB-0005i4-Bw
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:22:18 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a1e2ded3d9fso606434366b.0
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:22:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCno7-0006uw-CW
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:27:21 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40c2718a768so51659025e9.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:27:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702329731; x=1702934531; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702330034; x=1702934834; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=pHOOtAnxrumGhcPX3MIHrVqNAKP2pZj98HD0RrLMt7c=;
- b=yz7aW7jimj8KeyvkTy9Qoiag/AV4enzWhRKg0on5bO84ZxkBy7R+Madqsi/7qGC069
- hwoJoiKwQHjJi6CLr7niYQXZ/leUurpgsNbPUxLkyChUeBy2DJyvIJdCHxZf12vBCnt/
- 8+APqd6tyzhm8/us4PIUZxnMvKv2qbpnu972yk8aJf/4HgsOg4QKdVymDPlRMhNxeZ9r
- tMTxrmaLskl4fPQQslz1N7571bSnsJvsLo/fRUsROmPIxm4suEKi810kMOxDpzVkWKmM
- c3xR0PNVaLZBl52YQqfZ1vTfEdscU9hrQ6ShHJQwLl04TS9Gxr8ByqOqUyo/jZZQEs6m
- fpLg==
+ bh=x0MABy7f6s6nfkg9tx/E5imRi0RrJ+X+xKuN/pb7boE=;
+ b=GgKdLLT8EWGTdGbXi9JYV/kSmE1lwh6HEQL+sYsdYJ7cymW2pFN3Xv3r4Dym4yrglR
+ M625BjTnkhQCjJw+cJOur3FlqCHD1jpCx1GvQC3L2lYuZW7PmcLvOitoEILmdukXPUgc
+ lpJLpSwn+Yyl4jWDLjDmFeoI8mrqi5ys+XJA77wlooM5xg0ZhXPGfH8i8ttcc9dxFuT+
+ ioTc8jF39hTiPh7AOxR7o98TBUTtm5/knUDRsBzacWvhxZPX16E0ALGgMX7IZvBVgzDS
+ PNOQnICmNJ/8q18aIYlZSTu95U781QdIpq6GZ96pvaEdE+2lQZe8fojekmhNLaYZPhn6
+ 4wDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702329731; x=1702934531;
+ d=1e100.net; s=20230601; t=1702330034; x=1702934834;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pHOOtAnxrumGhcPX3MIHrVqNAKP2pZj98HD0RrLMt7c=;
- b=lGxyopXIl8ZIQg7VSEpohZpJ7e4AIqUCpTbi7P89TDVS2yOAw+2LN2eOZoFgrLNEg3
- D2s/EMh9xlv+TFKgTD0tAxJyvFo6Wd03QkreCLBLAwkSVn0P4Ie+bv5Ek/jXrrh/ysD5
- 3K11XYi37LK4zB0Be8YhOojw/StCBl6G+kBztoxsCKnkwqZVA8ZpxQOGiXelQ8sAXtpA
- hWTx+Ug3G5BAGgI8iIIr8H6z9Uty4FxtWuCg1Wa6CuyXXzVJmfB8i6hqZod/OaH7LTGq
- 5/674nzviWl7CoXO7r8irqkwxncIPBEKUg8+1G63EGVzwzC5tpetxlxTHDGt3OefI108
- 3svQ==
-X-Gm-Message-State: AOJu0YyMjijUeWgTUw3O2upwWBgnGvMhX0W8YiPrmRDcG5Rvvea6jPD/
- B42id3y+yW/6RxJaYUfBdUWQy8/v0v2nxAcLpgsTag==
-X-Google-Smtp-Source: AGHT+IFfbsKA8wfC8skTB/yoF3/ySzTZdf5W7q0m1rGxxrtoSwlumHzcEZ+qPSObAal65lz1rrWhJg==
-X-Received: by 2002:a17:907:9057:b0:a1f:786c:1b6a with SMTP id
- az23-20020a170907905700b00a1f786c1b6amr2301410ejc.52.1702329731750; 
- Mon, 11 Dec 2023 13:22:11 -0800 (PST)
+ bh=x0MABy7f6s6nfkg9tx/E5imRi0RrJ+X+xKuN/pb7boE=;
+ b=ps63z9tSuK/v86zOfY7O7QtNwlIlzBaApLek8rGjDCx/WAQQdWEqQ0ntaPvqeJRDQz
+ fO0c3XTWo/fFjarwhC9+H6+OYRtZzc1ztuIwNesaaHSl8g4lhlWODvIl26E5q0Vp3fCJ
+ QWlkOXzDo/kDNxMmEj43bOKXaqNYId7FSmYRzI2siPNCsF5bnhLmmjwuEcPqTEGAJkEr
+ CWfGUvpieEvOqeYbYVthktGBpoYZ8XOMUffvptDyZze3Bq8r2sYnVfnONyRSNOxhRoB9
+ mtLj0XZAzVPgrZpw9xx3eramVm+UszUWOsNcCd0+hqWzgMe/vRBrgd0ZtJyCZs1BK9DI
+ qd+Q==
+X-Gm-Message-State: AOJu0Yzdo+aX+uiFfQhFw59pDijSLJt2U5KJo0ICkaPbmk/+JGLFxjSZ
+ ds0PcCioLdmH9j0jfPiRupz1+YFl9ye9j3oIESIuYQ==
+X-Google-Smtp-Source: AGHT+IF2RUm4rR1J5p0UherjELD2fueA9qp0RQ2IsLv7CBC0irs91kbyCCWuAYYmAEyFqTewaqk4gA==
+X-Received: by 2002:a5d:568e:0:b0:333:1a05:31d6 with SMTP id
+ f14-20020a5d568e000000b003331a0531d6mr2749627wrv.44.1702330034421; 
+ Mon, 11 Dec 2023 13:27:14 -0800 (PST)
 Received: from [192.168.69.100] ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- tj7-20020a170907c24700b00a1c522990ccsm5332007ejc.85.2023.12.11.13.22.09
+ d15-20020a056000114f00b0033359ae2d52sm9380197wrx.17.2023.12.11.13.27.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 13:22:11 -0800 (PST)
-Message-ID: <b977d019-52cb-47d3-88c1-b354db8b330d@linaro.org>
-Date: Mon, 11 Dec 2023 22:22:08 +0100
+ Mon, 11 Dec 2023 13:27:14 -0800 (PST)
+Message-ID: <7d8579fa-7796-438d-9bbb-439e06df7550@linaro.org>
+Date: Mon, 11 Dec 2023 22:27:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/24] exec: Rework of various headers (user focused)
+Subject: Re: [PATCH 03/24] target: Define TCG_GUEST_DEFAULT_MO in 'cpu-param.h'
 Content-Language: en-US
-To: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>,
- Alessandro Di Federico <ale@rev.ng>
+To: qemu-devel@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Peter Maydell <peter.maydell@linaro.org>,
@@ -75,14 +74,25 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
  Claudio Fontana <cfontana@suse.de>, Brian Cain <bcain@quicinc.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
+ Thomas Huth <thuth@redhat.com>, Michael Rolnik <mrolnik@gmail.com>,
+ Song Gao <gaosong@loongson.cn>, "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Stafford Horne <shorne@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
 References: <20231211212003.21686-1-philmd@linaro.org>
+ <20231211212003.21686-4-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231211212003.21686-1-philmd@linaro.org>
+In-Reply-To: <20231211212003.21686-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,53 +115,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(Forgot to Cc rev.ng folks)
-
 On 11/12/23 22:19, Philippe Mathieu-Daudé wrote:
-> Hi,
+> accel/tcg/ files requires the following definitions:
 > 
-> These patches are extracted from a bigger work where
-> "exec/{exec,cpu,translate}-all.h" are split in various
-> specific APIs. This helped:
->    - differenciate/build:
->        . user VS system
->        . target-specific VS generic
->      which is necessary for heterogeneous build
->    - reduced header pressure
->    - clarify APIs
+>    - TARGET_LONG_BITS
+>    - TARGET_PAGE_BITS
+>    - TARGET_PHYS_ADDR_SPACE_BITS
+>    - TCG_GUEST_DEFAULT_MO
 > 
-> This series is focused on user (vs system) cleanups.
-> More useful changes will come after.
+> The first 3 are defined in "cpu-param.h". The last one
+> in "cpu.h", with a bunch of definitions irrelevant for
+> TCG. By moving the TCG_GUEST_DEFAULT_MO definition to
+> "cpu-param.h", we can simplify various accel/tcg includes.
 > 
-> Regards,
-> 
-> Phil.
-> 
-> Philippe Mathieu-Daudé (24):
->    exec: Include 'cpu.h' before validating CPUArchState placement
->    exec: Expose 'target_page.h' API to user emulation
->    target: Define TCG_GUEST_DEFAULT_MO in 'cpu-param.h'
->    accel: Include missing 'exec/cpu_ldst.h' header
->    semihosting/uaccess: Avoid including 'cpu.h'
->    semihosting/guestfd: Remove unused 'semihosting/uaccess.h' header
->    host/load-extract: Include missing 'qemu/atomic.h' and 'qemu/int128.h'
->    host/atomic128: Include missing 'qemu/atomic.h' header
->    hw/ppc/spapr_hcall: Remove unused 'exec/exec-all.h' included header
->    hw/misc/mips_itu: Remove unnecessary 'exec/exec-all.h' header
->    hw/s390x/ipl: Remove unused 'exec/exec-all.h' included header
->    target/i386: Include missing 'exec/exec-all.h' header
->    accel/tcg: Include missing 'hw/core/cpu.h' header
->    gdbstub: Include missing 'hw/core/cpu.h' header
->    exec/cpu-all: Remove unused headers
->    exec/cpu-all: Reduce 'qemu/rcu.h' header inclusion
->    target/ppc/excp_helper: Avoid 'abi_ptr' in system emulation
->    accel/tcg: Un-inline retaddr helpers to 'user-retaddr.h'
->    exec/user: Do not include 'cpu.h' in 'abitypes.h'
->    exec: Declare abi_ptr type in its own 'tcg/abi_ptr.h' header
->    exec/cpu_ldst: Avoid including 'cpu.h'
->    exec/cpu-all: Restrict inclusion of 'exec/user/guest-base.h'
->    exec/cpu-all: Extract page-protection definitions to
->      page-prot-common.h
->    target: Restrict 'sysemu/reset.h' to system emulation
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/alpha/cpu-param.h      |  3 +++
+>   target/alpha/cpu.h            |  3 ---
+>   target/arm/cpu-param.h        |  8 +++++---
+>   target/arm/cpu.h              |  3 ---
+>   target/avr/cpu-param.h        |  2 ++
+>   target/avr/cpu.h              |  2 --
+>   target/hppa/cpu-param.h       |  6 ++++++
+>   target/hppa/cpu.h             |  6 ------
+>   target/i386/cpu-param.h       |  3 +++
+>   target/i386/cpu.h             |  3 ---
+>   target/loongarch/cpu-param.h  |  2 ++
+>   target/loongarch/cpu.h        |  2 --
+>   target/microblaze/cpu-param.h |  3 +++
+>   target/microblaze/cpu.h       |  3 ---
+>   target/mips/cpu-param.h       |  2 ++
+>   target/mips/cpu.h             |  2 --
+>   target/openrisc/cpu-param.h   |  2 ++
+>   target/openrisc/cpu.h         |  2 --
+>   target/ppc/cpu-param.h        |  2 ++
+>   target/ppc/cpu.h              |  2 --
+>   target/riscv/cpu-param.h      |  2 ++
+>   target/riscv/cpu.h            |  2 --
+>   target/s390x/cpu-param.h      |  6 ++++++
+>   target/s390x/cpu.h            |  3 ---
+>   target/sparc/cpu-param.h      | 23 +++++++++++++++++++++++
+>   target/sparc/cpu.h            | 23 -----------------------
+>   target/xtensa/cpu-param.h     |  3 +++
+>   target/xtensa/cpu.h           |  3 ---
+>   28 files changed, 64 insertions(+), 62 deletions(-)
+
+
+> diff --git a/target/hppa/cpu-param.h b/target/hppa/cpu-param.h
+> index bb3d7ef6f7..4548103a18 100644
+> --- a/target/hppa/cpu-param.h
+> +++ b/target/hppa/cpu-param.h
+> @@ -21,4 +21,10 @@
+>   
+>   #define TARGET_PAGE_BITS 12
+>   
+> +/* PA-RISC 1.x processors have a strong memory model.  */
+> +/* ??? While we do not yet implement PA-RISC 2.0, those processors have
+> +   a weak memory model, but with TLB bits that force ordering on a per-page
+> +   basis.  It's probably easier to fall back to a strong memory model.  */
+
+Forgot to squash:
+
+-- >8 --
+@@ -24,5 +24,7 @@
+  /* PA-RISC 1.x processors have a strong memory model.  */
+-/* ??? While we do not yet implement PA-RISC 2.0, those processors have
+-   a weak memory model, but with TLB bits that force ordering on a per-page
+-   basis.  It's probably easier to fall back to a strong memory model.  */
++/*
++ * ??? While we do not yet implement PA-RISC 2.0, those processors have
++ * a weak memory model, but with TLB bits that force ordering on a per-page
++ * basis.  It's probably easier to fall back to a strong memory model.
++ */
+---
+
+> +#define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
+> +
+>   #endif
+> diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+> index 8be45c69c9..6b10ab20ba 100644
+> --- a/target/hppa/cpu.h
+> +++ b/target/hppa/cpu.h
+> @@ -25,12 +25,6 @@
+>   #include "qemu/cpu-float.h"
+>   #include "qemu/interval-tree.h"
+>   
+> -/* PA-RISC 1.x processors have a strong memory model.  */
+> -/* ??? While we do not yet implement PA-RISC 2.0, those processors have
+> -   a weak memory model, but with TLB bits that force ordering on a per-page
+> -   basis.  It's probably easier to fall back to a strong memory model.  */
+> -#define TCG_GUEST_DEFAULT_MO        TCG_MO_ALL
+> -
+>   #define MMU_ABS_W_IDX     6
+>   #define MMU_ABS_IDX       7
+>   #define MMU_KERNEL_IDX    8
 
 
