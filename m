@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2CB80D34B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB6680D3A6
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:24:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCjmf-0001gU-83; Mon, 11 Dec 2023 12:09:33 -0500
+	id 1rCjzP-00066m-M0; Mon, 11 Dec 2023 12:22:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rCjme-0001g4-2r
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:09:32 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rCjma-0000UI-53
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:09:29 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6ceb2501f1bso3810266b3a.0
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:09:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702314566; x=1702919366; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sc1qgl70OVlwSYNp8DPvzNbv+pahk/dG2J+Svd8VVm4=;
- b=PmWJ0X4YEpZU37N4vYCBLJmqQFQKBwIU5bg36j/EB2VuPsA82f6RoES3JxLbvm6vYw
- o3RfI41YaCwkpQJh0EdIbipA5mKdjPQqbXAWQiG6L593aD3zHWYvfCD9qHroesx74hhU
- V8ZYO/HJ0+4Mo0To31pGCEMs4AuH70O2cKljUMsGDXXv7T7njiHlvOYd4ijKuZkVWLhe
- s0H4AUTjk6xEA74L0FJv9pWE/31dAwnix5P1PV4h2+kB1LMRePTaWdYIqW4mP6Jakukb
- 5t19icptZ/6oZRQbVijujY4Z4SgbChL4/+T0/8S+7lO18AzsJYQR5pF01jrrAiCHiVYV
- 6Fww==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rCjzM-00063x-UN
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:22:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rCjzE-0002nY-2M
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:22:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702315350;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OMmeZo4jee3JsWbeSe6gT15KUOFOJdwvEYwwetuFxBQ=;
+ b=RQ8joTCyMr8bOKwr0YsHUqm+KWwCHNfg396YTGIMjIrStS+zJRjyUHVgZhKyaGkbMSuHn6
+ 929PSKbU87nwgul77aNVhRdqJb+RrCnAwgOON75ee9/W9q2CMcZV+KTxH2JMDBPaxzUrme
+ Rpolq5DieuTikn3qGQCarJx/YjexU1k=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-9-aPpgBUy9OxiSSfokKf33hQ-1; Mon, 11 Dec 2023 12:22:27 -0500
+X-MC-Unique: aPpgBUy9OxiSSfokKf33hQ-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-db53b5f9b52so4894940276.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:22:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702314566; x=1702919366;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sc1qgl70OVlwSYNp8DPvzNbv+pahk/dG2J+Svd8VVm4=;
- b=pZJ5j+441Am6F9jUN1m7znaTBLPBNA0PKY6q7CQTXzdQr3uIdhggjQzkuPICHlUlYE
- AMEsk3G5UlKQ5B+2Oo4psMpk+cpbTnbq8Hd/d1n6EwZRzZ/Yv28Iimeza47Bjs7wEsdF
- CnW57m/ibGZO51+fZgWhAaPyCHdQRAFkLKeh7E4hT1WkMGNcO1syc/Yush5v7UNxufle
- yMIzR1a2PyGkn+yfxQsENMAr+2lce5z1HpbIjWR+/I+7BkCJi+tUePsrvIoZnbClhd/G
- uOujauRA38qlA2oYqhwwfKnEh7oPxwaFcvBFFw71b/vX/4B/+mAODUFvg7L5zP2qHEGB
- HddA==
-X-Gm-Message-State: AOJu0YyKr18XT+jxd3T0AkojtpyVchlBCOkLaK5NV0klGJztx63GAwAh
- azBiWz/gz3NqezdtiiBzGDmK8A==
-X-Google-Smtp-Source: AGHT+IE4M+DE3hBCkye9F8pHS772vfgtu1FvV1fNroikKiI73F3D1bZd/yUxeYm/Y1Y5O4VNVeF6KQ==
-X-Received: by 2002:a05:6a00:194d:b0:6ce:4927:2811 with SMTP id
- s13-20020a056a00194d00b006ce49272811mr5640987pfk.22.1702314566032; 
- Mon, 11 Dec 2023 09:09:26 -0800 (PST)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- w2-20020a654102000000b005c65ed23b65sm5546397pgp.94.2023.12.11.09.09.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 09:09:25 -0800 (PST)
-Message-ID: <3c2d3736-4cae-4034-973b-568e80cbf0c3@linaro.org>
-Date: Mon, 11 Dec 2023 09:09:23 -0800
+ d=1e100.net; s=20230601; t=1702315347; x=1702920147;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=OMmeZo4jee3JsWbeSe6gT15KUOFOJdwvEYwwetuFxBQ=;
+ b=MiVxLd+9dRNssseKIruSWU7EM/Fe0WJpi3/+CZsDUJhkP92vuFInZNp3EqJolSU72J
+ +DSgFVUF0qwTNaGVe8lyXSzQ00rKeuSjUbo6yy/y/qapBAtx7Wv+/hVD5I4Sa32fX4TJ
+ MNqP98EK1FO4mlteRzgDw75hljTiQB0uC0U6ll2dJM1Hmw6wlIeUVE52XsbJTkMxhDF9
+ ZNbmXg6HYCpm+4t4QZsng6EdUdL+IKolBA9ZLyxE4dupHr/3WuH55QtBvNrfY9cKq1yb
+ M3okYlL5pwHAzz7q0KMxEGkhROvhqwMzVcny+qIXQj86oUvy+g7Et9MUOiC0+lO3XZyl
+ YpFw==
+X-Gm-Message-State: AOJu0YwtcvwB9SvPZG+5aOJwicMygCp9/VzQy9TqEMKW/k8J8hnrml8p
+ 6G5Eq8kLri9zQDud5ljxLeYvHDBKPIfJIVt4Eju+kVP0B19oP+/8Spza1x4d5jCajCoZ/2ySCty
+ cbrZUietzKRed3WRp41TiqmEx43f+Fmg=
+X-Received: by 2002:a25:556:0:b0:db7:dacf:61fd with SMTP id
+ 83-20020a250556000000b00db7dacf61fdmr2808580ybf.79.1702315347123; 
+ Mon, 11 Dec 2023 09:22:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHhjahkFn7Fj83cjtxRt8RAIa/YAbI3vbVsNRI8kWZcJtvXjTSfl4xW/KW2lwpIv+PJ4m5+NSWqsaSnXUfSPac=
+X-Received: by 2002:a25:556:0:b0:db7:dacf:61fd with SMTP id
+ 83-20020a250556000000b00db7dacf61fdmr2808572ybf.79.1702315346846; Mon, 11 Dec
+ 2023 09:22:26 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 18/21] target/arm/kvm: Init cap_has_inject_serror_esr in
- kvm_arch_init
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20231123044219.896776-1-richard.henderson@linaro.org>
- <20231123044219.896776-19-richard.henderson@linaro.org>
- <4889143b-e15e-4834-af2f-ddea2dd63cb6@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <4889143b-e15e-4834-af2f-ddea2dd63cb6@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-15-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-15-git-send-email-si-wei.liu@oracle.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 11 Dec 2023 18:21:50 +0100
+Message-ID: <CAJaqyWcH6V-KdZ+dKoJbAEXgfuHUKp29Gpwb_0WtqzqB-3h2pQ@mail.gmail.com>
+Subject: Re: [PATCH 14/40] vdpa: convert iova_tree to ref count based
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: jasowang@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,55 +96,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/24/23 03:54, Philippe Mathieu-Daudé wrote:
-> On 23/11/23 05:42, Richard Henderson wrote:
->> There is no need to do this in kvm_arch_init_vcpu per vcpu.
->> Inline kvm_arm_init_serror_injection rather than keep separate.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   target/arm/kvm_arm.h |  8 --------
->>   target/arm/kvm.c     | 13 ++++---------
->>   2 files changed, 4 insertions(+), 17 deletions(-)
-> 
-> 
->> @@ -562,6 +556,10 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
->>       cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
->> +    /* Check whether user space can specify guest syndrome value */
->> +    cap_has_inject_serror_esr =
->> +        kvm_check_extension(s, KVM_CAP_ARM_INJECT_SERROR_ESR);
->> +
->>       if (ms->smp.cpus > 256 &&
->>           !kvm_check_extension(s, KVM_CAP_ARM_IRQ_LINE_LAYOUT_2)) {
->>           error_report("Using more than 256 vcpus requires a host kernel "
->> @@ -1948,9 +1946,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
->>       }
->>       cpu->mp_affinity = mpidr & ARM64_AFFINITY_MASK;
->> -    /* Check whether user space can specify guest syndrome value */
->> -    kvm_arm_init_serror_injection(cs);
->> -
->>       return kvm_arm_init_cpreg_list(cpu);
->>   }
-> 
-> 
-> Just checking, in a heterogeneous setup we still want to keep
-> these 2 calls per-vCPU, right?
+On Thu, Dec 7, 2023 at 7:50=E2=80=AFPM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> So that it can be freed from vhost_vdpa_cleanup on
+> the last deref. The next few patches will try to
+> make iova tree life cycle not depend on memory
+> listener, and there's possiblity to keep iova tree
+> around when memory mapping is not changed across
+> device reset.
+>
 
-There is no hetrogeneous kvm -- every vcpu must match the host cpu.
+Title and commit description does not match with the patch, I guess it
+is because the reference count was at iova_tree some time in the past
+but you decided to move to VhostVDPAShared.
 
+But this code should be merged with previous patches, because we have
+an asymmetry here and some bug will arise if the guest reset the
+device: allocating at device start, but freeing at cleanup instead of
+stop.
 
-r~
-
-
->      if (kvm_check_extension(cs->kvm_state, KVM_CAP_ARM_PSCI_0_2)) {
->          cpu->psci_version = QEMU_PSCI_VERSION_0_2;
->          cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_PSCI_0_2;
->      }
-> 
->      if (!kvm_check_extension(cs->kvm_state, KVM_CAP_ARM_PMU_V3)) {
->          cpu->has_pmu = false;
->      }
-
-
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+> ---
+>  net/vhost-vdpa.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index a126e5c..7b8f047 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -238,6 +238,8 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+>      }
+>      if (--s->vhost_vdpa.shared->refcnt =3D=3D 0) {
+>          qemu_close(s->vhost_vdpa.shared->device_fd);
+> +        g_clear_pointer(&s->vhost_vdpa.shared->iova_tree,
+> +                        vhost_iova_tree_delete);
+>          g_free(s->vhost_vdpa.shared);
+>      }
+>      s->vhost_vdpa.shared =3D NULL;
+> @@ -461,19 +463,12 @@ static int vhost_vdpa_net_data_load(NetClientState =
+*nc)
+>  static void vhost_vdpa_net_client_stop(NetClientState *nc)
+>  {
+>      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> -    struct vhost_dev *dev;
+>
+>      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
+>
+>      if (s->vhost_vdpa.index =3D=3D 0) {
+>          migration_remove_notifier(&s->migration_state);
+>      }
+> -
+> -    dev =3D s->vhost_vdpa.dev;
+> -    if (dev->vq_index + dev->nvqs =3D=3D dev->vq_index_end) {
+> -        g_clear_pointer(&s->vhost_vdpa.shared->iova_tree,
+> -                        vhost_iova_tree_delete);
+> -    }
+>  }
+>
+>  static int vhost_vdpa_net_load_setup(NetClientState *nc, NICState *nic)
+> --
+> 1.8.3.1
+>
 
 
