@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB6680D3A6
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:24:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F5780D3D0
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:31:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCjzP-00066m-M0; Mon, 11 Dec 2023 12:22:43 -0500
+	id 1rCk6h-0000Yg-B0; Mon, 11 Dec 2023 12:30:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rCjzM-00063x-UN
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:22:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rCjzE-0002nY-2M
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:22:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702315350;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OMmeZo4jee3JsWbeSe6gT15KUOFOJdwvEYwwetuFxBQ=;
- b=RQ8joTCyMr8bOKwr0YsHUqm+KWwCHNfg396YTGIMjIrStS+zJRjyUHVgZhKyaGkbMSuHn6
- 929PSKbU87nwgul77aNVhRdqJb+RrCnAwgOON75ee9/W9q2CMcZV+KTxH2JMDBPaxzUrme
- Rpolq5DieuTikn3qGQCarJx/YjexU1k=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-9-aPpgBUy9OxiSSfokKf33hQ-1; Mon, 11 Dec 2023 12:22:27 -0500
-X-MC-Unique: aPpgBUy9OxiSSfokKf33hQ-1
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-db53b5f9b52so4894940276.0
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:22:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <3G0d3ZQwKCrglYZgfcqrcdYlemmejc.amkocks-bctcjlmlels.mpe@flex--nabihestefan.bounces.google.com>)
+ id 1rCk6Y-0000Y6-SP
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:30:06 -0500
+Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3G0d3ZQwKCrglYZgfcqrcdYlemmejc.amkocks-bctcjlmlels.mpe@flex--nabihestefan.bounces.google.com>)
+ id 1rCk6X-0004eq-1W
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:30:06 -0500
+Received: by mail-yb1-xb4a.google.com with SMTP id
+ 3f1490d57ef6-d9a541b720aso5152864276.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:30:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1702315803; x=1702920603; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=5JLWmGN1YtJFcZD4A27y487SNCjmUIhzf9njtpghJTk=;
+ b=hv6FjIV7rDPPJBiAFNe5VVD28WSgYmcUTyceSROIQcH4M4Z1gfLrHjRE1mAxvcrjVY
+ U1s5bcHAkaRmEtiK4dzFMEj/nBjsZBdleX9WzU41i51g8fT1gR2xCiW/Fbu/IObedeFR
+ rDroXuyh2gOjYy55XNN3av3/WALrupjnAAlJPDZMGTiyDAayfwBWYZFBA299Fh8wln/q
+ Ubop8AymbuV/59T5s+7pVij4ys8UFDqeAQxuforHh/GYV4VZBdcwccUYeQJzE2CT66v5
+ KT6HUu0jQROnJ7ctSf3Ne/Hmlnu8NFdNISy+lQOqlf5At1hUT8eAZ7w6/0WuSYfuwpR1
+ sM7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702315347; x=1702920147;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OMmeZo4jee3JsWbeSe6gT15KUOFOJdwvEYwwetuFxBQ=;
- b=MiVxLd+9dRNssseKIruSWU7EM/Fe0WJpi3/+CZsDUJhkP92vuFInZNp3EqJolSU72J
- +DSgFVUF0qwTNaGVe8lyXSzQ00rKeuSjUbo6yy/y/qapBAtx7Wv+/hVD5I4Sa32fX4TJ
- MNqP98EK1FO4mlteRzgDw75hljTiQB0uC0U6ll2dJM1Hmw6wlIeUVE52XsbJTkMxhDF9
- ZNbmXg6HYCpm+4t4QZsng6EdUdL+IKolBA9ZLyxE4dupHr/3WuH55QtBvNrfY9cKq1yb
- M3okYlL5pwHAzz7q0KMxEGkhROvhqwMzVcny+qIXQj86oUvy+g7Et9MUOiC0+lO3XZyl
- YpFw==
-X-Gm-Message-State: AOJu0YwtcvwB9SvPZG+5aOJwicMygCp9/VzQy9TqEMKW/k8J8hnrml8p
- 6G5Eq8kLri9zQDud5ljxLeYvHDBKPIfJIVt4Eju+kVP0B19oP+/8Spza1x4d5jCajCoZ/2ySCty
- cbrZUietzKRed3WRp41TiqmEx43f+Fmg=
-X-Received: by 2002:a25:556:0:b0:db7:dacf:61fd with SMTP id
- 83-20020a250556000000b00db7dacf61fdmr2808580ybf.79.1702315347123; 
- Mon, 11 Dec 2023 09:22:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHhjahkFn7Fj83cjtxRt8RAIa/YAbI3vbVsNRI8kWZcJtvXjTSfl4xW/KW2lwpIv+PJ4m5+NSWqsaSnXUfSPac=
-X-Received: by 2002:a25:556:0:b0:db7:dacf:61fd with SMTP id
- 83-20020a250556000000b00db7dacf61fdmr2808572ybf.79.1702315346846; Mon, 11 Dec
- 2023 09:22:26 -0800 (PST)
-MIME-Version: 1.0
-References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-15-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-15-git-send-email-si-wei.liu@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 11 Dec 2023 18:21:50 +0100
-Message-ID: <CAJaqyWcH6V-KdZ+dKoJbAEXgfuHUKp29Gpwb_0WtqzqB-3h2pQ@mail.gmail.com>
-Subject: Re: [PATCH 14/40] vdpa: convert iova_tree to ref count based
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: jasowang@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
- leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
- jonah.palmer@oracle.com, qemu-devel@nongnu.org
+ d=1e100.net; s=20230601; t=1702315803; x=1702920603;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5JLWmGN1YtJFcZD4A27y487SNCjmUIhzf9njtpghJTk=;
+ b=oW5/v6kL1bPafWFXyJHsnMDvXmcmkKgk09iIoyE/HFySmzd3eeWmrKtpptLSsx+QP0
+ l9tz+aoJCn2XPk3ZiaoxKx43PCmQrfuxI7C1B4aoUhetuAN4jVlSP/51ixHzjGybQsgQ
+ xdyweOxGd9ypLxhmZRovp7LhyIJNqaDM1BSlLvju5g3tPiOImKemt8NUgFt9Uv3IYyJz
+ q0iZHNDxnm3qAtdH5jBoucpbMrKx2EPHvqKJDtXBw3Ump+0+xvgXDDBRUUeEIAkb3J0H
+ o96n21pQWqeMgjx1Nh3hwV4YYYF2J5fb5wY7oR0PUoZ4cYy1xQWUBYar4pZ+84UEfgnT
+ IX0w==
+X-Gm-Message-State: AOJu0YxxmtConoqlLBOAw+H4VUfozkqUEfCZFqTvvj/pyxGCNycfZIOQ
+ m8Ynizt5yq9kEVC+MO7K3w0ltfNDtsKiMLhwCPs=
+X-Google-Smtp-Source: AGHT+IHmahHCPsrjoIye8AOz6NC7mlm7SmNK2h1FUFILmSI5X+bpYQ5sRsQsBzAHOiwgITif8xl5tmPXnofs41eKKQk=
+X-Received: from nabihestefan.c.googlers.com
+ ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
+ (user=nabihestefan job=sendgmr) by 2002:a05:6902:9:b0:db5:382f:3997 with SMTP
+ id l9-20020a056902000900b00db5382f3997mr31219ybh.11.1702315803048; Mon, 11
+ Dec 2023 09:30:03 -0800 (PST)
+Date: Mon, 11 Dec 2023 17:29:41 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Message-ID: <20231211172953.3164357-1-nabihestefan@google.com>
+Subject: [PATCH v6 00/11] Implementation of NPI Mailbox and GMAC Networking
+ Module
+From: Nabih Estefan <nabihestefan@google.com>
+To: peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
+ wuhaotsh@google.com, jasonwang@redhat.com, avi.fishman@nuvoton.com, 
+ nabihestefan@google.com, kwliu@nuvoton.com, tomer.maimon@nuvoton.com, 
+ Hila.Miranda-Kuzi@nuvoton.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
+ envelope-from=3G0d3ZQwKCrglYZgfcqrcdYlemmejc.amkocks-bctcjlmlels.mpe@flex--nabihestefan.bounces.google.com;
+ helo=mail-yb1-xb4a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,67 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 7, 2023 at 7:50=E2=80=AFPM Si-Wei Liu <si-wei.liu@oracle.com> w=
-rote:
->
-> So that it can be freed from vhost_vdpa_cleanup on
-> the last deref. The next few patches will try to
-> make iova tree life cycle not depend on memory
-> listener, and there's possiblity to keep iova tree
-> around when memory mapping is not changed across
-> device reset.
->
+From: Nabih Estefan Diaz <nabihestefan@google.com>
 
-Title and commit description does not match with the patch, I guess it
-is because the reference count was at iova_tree some time in the past
-but you decided to move to VhostVDPAShared.
+[Changes since v5]
+Undid remove of some qtests that seem to have been caused by a merge
+conflict.
 
-But this code should be merged with previous patches, because we have
-an asymmetry here and some bug will arise if the guest reset the
-device: allocating at device start, but freeing at cleanup instead of
-stop.
+[Changes since v4]
+Added Signed-off-by tag and fixed patch 4 commit message as suggested by
+Peter Maydell (peter.maydell@linaro.org)
 
-> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-> ---
->  net/vhost-vdpa.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index a126e5c..7b8f047 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -238,6 +238,8 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
->      }
->      if (--s->vhost_vdpa.shared->refcnt =3D=3D 0) {
->          qemu_close(s->vhost_vdpa.shared->device_fd);
-> +        g_clear_pointer(&s->vhost_vdpa.shared->iova_tree,
-> +                        vhost_iova_tree_delete);
->          g_free(s->vhost_vdpa.shared);
->      }
->      s->vhost_vdpa.shared =3D NULL;
-> @@ -461,19 +463,12 @@ static int vhost_vdpa_net_data_load(NetClientState =
-*nc)
->  static void vhost_vdpa_net_client_stop(NetClientState *nc)
->  {
->      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> -    struct vhost_dev *dev;
->
->      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
->
->      if (s->vhost_vdpa.index =3D=3D 0) {
->          migration_remove_notifier(&s->migration_state);
->      }
-> -
-> -    dev =3D s->vhost_vdpa.dev;
-> -    if (dev->vq_index + dev->nvqs =3D=3D dev->vq_index_end) {
-> -        g_clear_pointer(&s->vhost_vdpa.shared->iova_tree,
-> -                        vhost_iova_tree_delete);
-> -    }
->  }
->
->  static int vhost_vdpa_net_load_setup(NetClientState *nc, NICState *nic)
-> --
-> 1.8.3.1
->
+[Changes since v3]
+Fixed comments from Hao Wu (wuhaotsh@google.com)
+
+[Changes since v2]
+Fixed bugs related to the RC functionality of the GMAC. Added and
+squashed patches related to that.
+
+[Changes since v1]
+Fixed some errors in formatting.
+Fixed a merge error that I didn't see in v1.
+Removed Nuvoton 8xx references since that is a separate patch set.
+
+[Original Cover]
+Creates NPI Mailbox Module with data verification for read and write (internal and external),
+wiring to the Nuvoton SoC, and QTests.
+
+Also creates the GMAC Networking Module. Implements read and write functionalities with cooresponding descriptors
+and registers. Also includes QTests for the different functionalities.
+
+Hao Wu (5):
+  hw/misc: Add Nuvoton's PCI Mailbox Module
+  hw/arm: Add PCI mailbox module to Nuvoton SoC
+  hw/misc: Add qtest for NPCM7xx PCI Mailbox
+  hw/net: Add NPCMXXX GMAC device
+  hw/arm: Add GMAC devices to NPCM7XX SoC
+
+Nabih Estefan Diaz (6):
+  tests/qtest: Creating qtest for GMAC Module
+  include/hw/net: Implemented Classes and Masks for GMAC Descriptors
+  hw/net: General GMAC Implementation
+  hw/net: GMAC Rx Implementation
+  hw/net: GMAC Tx Implementation
+  tests/qtest: Adding PCS Module test to GMAC Qtest
+
+ docs/system/arm/nuvoton.rst         |   2 +
+ hw/arm/npcm7xx.c                    |  53 +-
+ hw/misc/meson.build                 |   1 +
+ hw/misc/npcm7xx_pci_mbox.c          | 324 ++++++++++
+ hw/misc/trace-events                |   5 +
+ hw/net/meson.build                  |   2 +-
+ hw/net/npcm_gmac.c                  | 942 ++++++++++++++++++++++++++++
+ hw/net/trace-events                 |  19 +
+ include/hw/arm/npcm7xx.h            |   4 +
+ include/hw/misc/npcm7xx_pci_mbox.h  |  81 +++
+ include/hw/net/npcm_gmac.h          | 340 ++++++++++
+ tests/qtest/meson.build             |   3 +
+ tests/qtest/npcm7xx_pci_mbox-test.c | 238 +++++++
+ tests/qtest/npcm_gmac-test.c        | 341 ++++++++++
+ 14 files changed, 2351 insertions(+), 4 deletions(-)
+ create mode 100644 hw/misc/npcm7xx_pci_mbox.c
+ create mode 100644 hw/net/npcm_gmac.c
+ create mode 100644 include/hw/misc/npcm7xx_pci_mbox.h
+ create mode 100644 include/hw/net/npcm_gmac.h
+ create mode 100644 tests/qtest/npcm7xx_pci_mbox-test.c
+ create mode 100644 tests/qtest/npcm_gmac-test.c
+
+-- 
+2.43.0.472.g3155946c3a-goog
 
 
