@@ -2,89 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E76680D198
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 17:27:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AC780D22F
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 17:39:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCj6X-0001st-WF; Mon, 11 Dec 2023 11:26:02 -0500
+	id 1rCjIg-0006BC-Ob; Mon, 11 Dec 2023 11:38:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rCj6I-0001sJ-JB
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 11:25:48 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rCj62-0008Ml-W8
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 11:25:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1702311931; x=1733847931;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=k9cCYijsvY15fGvmlDQRUUTvWyDTY0KR1Bd4WLeV76k=;
- b=VQgVFUJLSBczPK+k0nxSONQkSSeVppomp/nqEcLAwrIhnuluE0YRApJH
- MysDZwAjezLwuFY9ccszBj1IVFdGmZOSnbCcFKta2p0tFv+XGs9dhQaWO
- HBE8z1sK3SC8cCxUw3YRn8gT+c7B74+u6MuhI0boemBc6lUUeTg8DaiBv
- Q9QL7zDW63e3HlS/fdlqi3+Bmr/TDq9BGUKRPERpTCAI4USiJpZPAUngt
- 46zl1py6Ti56fNGp+DV/03n+E1rQ4iBqk4xWb9NtgaSXv5vC80R/sO+uA
- aaAOXNymRywkAuFqS4NwYeCb0pN02Vkya11K2D7ux4EeJ6qh/at5SbDn0 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="8031967"
-X-IronPort-AV: E=Sophos;i="6.04,268,1695711600"; 
-   d="scan'208";a="8031967"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2023 08:25:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="802063047"
-X-IronPort-AV: E=Sophos;i="6.04,268,1695711600"; d="scan'208";a="802063047"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga008.jf.intel.com with ESMTP; 11 Dec 2023 08:25:17 -0800
-Date: Tue, 12 Dec 2023 00:37:39 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Juan Quintela <juan.quintela@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Cc: afaerber@suse.de, ale@rev.ng, anjo@rev.ng, bbauman@redhat.com,
- chao.p.peng@linux.intel.com, cjia@nvidia.com, cw@f00f.org,
- eblake@redhat.com, edgar.iglesias@gmail.com,
- elena.ufimtseva@oracle.com, eric.auger@redhat.com, f4bug@amsat.org,
- "felipe@nutanix.com" <felipe.franciosi@nutanix.com>,
- "iggy@theiggy.com" <iggy@kws1.com>,
- "imp@bsdimp.com" <wlosh@bsdimp.com>, jan.kiszka@web.de,
- jgg@nvidia.com, jidong.xiao@gmail.com, jjherne@linux.vnet.ibm.com,
- joao.m.martins@oracle.com, konrad.wilk@oracle.com,
- mburton@qti.qualcomm.com, mdean@redhat.com, mimu@linux.vnet.ibm.com,
- peter.maydell@linaro.org, qemu-devel@nongnu.org,
- quintela@redhat.com, richard.henderson@linaro.org,
- shameerali.kolothum.thodi@huawei.com, stefanha@gmail.com,
- wei.w.wang@intel.com, z.huo@139.com, zwu.kernel@gmail.com,
- Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: QEMU developers fortnightly conference call for agenda for
- 2023-12-12
-Message-ID: <ZXc607D/WbupeUV4@intel.com>
-References: <calendar-98548e19-3517-40fa-a2ae-1c384aa3f98f@google.com>
- <ZXcOtAIMqLjOheIa@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCjHx-00069j-E5
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 11:37:50 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCjHv-00024u-Mk
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 11:37:49 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a1e116f2072so965569566b.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 08:37:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702312665; x=1702917465; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aZ9XXmId1yzNKbpMkkoAkMgLTFP9oyzkyWQqbnJsHh8=;
+ b=NmZFQP1JQ6hgzpZYgPp0riPxbIklt0zkQ9Dl6iLaRnNiYGgIoymGWOXaGZZ4elfMzd
+ 0u2yUD/oWF4/kgRugqmxsl2tvrVpceT4vzGlec3T3KoMTIECXrNZe9SYdQfBNehnadet
+ RIkOWItaaEvJDHIoz1GS2oS5Q9nJPKQFFyIBS/r+q6EXB2jOz9Bx0+JuD9qia5ariytu
+ Z9qgFTuock9PiPvAYn/sryLuByo4IAOrBcU5BBwER7KJTkYag/qubiYHLTSMROOSc3+b
+ vEJ6mmQG0+YGLIFe9k72MWKv2V5y9SNZPuLkvjV2uuXGWESbgim6Ytv052Na8B2X+NA8
+ cFHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702312665; x=1702917465;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aZ9XXmId1yzNKbpMkkoAkMgLTFP9oyzkyWQqbnJsHh8=;
+ b=d7a9gdQzKpzloqkY1ICpcMc8hnIBkp8K1XkyYRiHQydliaDUYJs8CnZcQNdcistkWv
+ +KIR56UGvyIA1HDVJcBNpVjc0RyyEkrc6aeDniCMm6b5JvL/ljpTp7xYf/vFQvnPju1h
+ RMJ8NpUXgb2Uro8Yp2q9LJVnw89tTO6k1XHQJwFSom/vP1XzO9pIvji6VlGMdbw0WtGy
+ 8UGYzIr6nMHL4YPDaR6N1Ot1XfJj2YC8NQ52rAmMyqjOP3P8Qh+WNOYW8BY2tYEXcqJQ
+ qyskZ4IfA1Wu6gd5qtUH8BOI7e2GHwYdzEGjDKP6py+h60VmnE6RnS6hUeADG6+opnfQ
+ RXrQ==
+X-Gm-Message-State: AOJu0YyUcvbhxYdsF+LRSbQjGeR1mEhJAdV+e8PjDoBeR+ViR4SuqDqX
+ ukmp7RImFSSgH585FGchW99B5g==
+X-Google-Smtp-Source: AGHT+IGuPhejSEsdQBopcEBi2QQyqELHJP5rBS4xsF9O6h21RXEDalMYKXGwzBhKJWBGWOsAMrAilQ==
+X-Received: by 2002:a17:907:60c7:b0:a1c:4c3e:99e2 with SMTP id
+ hv7-20020a17090760c700b00a1c4c3e99e2mr5132099ejc.22.1702312665779; 
+ Mon, 11 Dec 2023 08:37:45 -0800 (PST)
+Received: from [192.168.69.100] (cor91-h02-176-184-30-150.dsl.sta.abo.bbox.fr.
+ [176.184.30.150]) by smtp.gmail.com with ESMTPSA id
+ rd12-20020a170907a28c00b00a097c5162b0sm4995159ejc.87.2023.12.11.08.37.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Dec 2023 08:37:45 -0800 (PST)
+Message-ID: <fecb9b5d-caa3-438c-aa78-4775c2ef2002@linaro.org>
+Date: Mon, 11 Dec 2023 17:37:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/10] tests/avocado/boot_xen.py: unify tags
+Content-Language: en-US
+To: Cleber Rosa <crosa@redhat.com>, qemu-devel@nongnu.org
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, Paul Durrant <paul@xen.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ David Woodhouse <dwmw2@infradead.org>
+References: <20231208190911.102879-1-crosa@redhat.com>
+ <20231208190911.102879-10-crosa@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231208190911.102879-10-crosa@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZXcOtAIMqLjOheIa@intel.com>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,93 +103,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi maintainers (for QOM and machine core),
+On 8/12/23 20:09, Cleber Rosa wrote:
+> Because all tests share the same tags, it's possible to have all of
+> them at the class level.
+> 
+> Signed-off-by: Cleber Rosa <crosa@redhat.com>
+> ---
+>   tests/avocado/boot_xen.py | 26 +++++---------------------
+>   1 file changed, 5 insertions(+), 21 deletions(-)
 
-Sorry I wasn't familiar with the rules of conference call before, I
-submitted a topic on qom topology (mainly this RFC [1]) without cc you. :-(
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-May I ask if we can briefly discuss some ideas about the direction of
-hybrid topology at tomorrow's conference? Or if time is too tight,
-could we have a chance to discuss this topic at next year's conference?
-
-[1]: https://lore.kernel.org/qemu-devel/20231130144203.2307629-1-zhao1.liu@linux.intel.com/
-
-Thanks and Best Regards,
-Zhao
-
-On Mon, Dec 11, 2023 at 09:29:24PM +0800, Zhao Liu wrote:
-> Date: Mon, 11 Dec 2023 21:29:24 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: Re: QEMU developers fortnightly conference call for agenda for
->  2023-12-12
-> 
-> Hi Juan,
-> 
-> On Tue, Dec 05, 2023 at 01:47:52PM +0000, Juan Quintela wrote:
-> > Date: Tue, 05 Dec 2023 13:47:52 +0000
-> > From: Juan Quintela <juan.quintela@gmail.com>
-> > Subject: QEMU developers fortnightly conference call for agenda for
-> >  2023-12-12
-> > 
-> > Hi If you have any topics for the last qemu conference call of the year,
-> > feel free to answer to this email. Later, Juan.
-> > 
-> > QEMU developers fortnightly conference call
-> > Tuesday 2023-12-12 ⋅ 15:00 – 16:00
-> > Central European Time - Madrid
-> > 
-> > Location
-> > https://meet.jit.si/kvmcallmeeting	
-> > https://www.google.com/url?q=https%3A%2F%2Fmeet.jit.si%2Fkvmcallmeeting&sa=D&ust=1702216020000000&usg=AOvVaw1xrpPSmMRu9niy1trqCKrA
-> > 
-> 
-> I want to talk about the RFC about QOM topology:
-> https://lore.kernel.org/qemu-devel/20231130144203.2307629-1-zhao1.liu@linux.intel.com/
-> 
-> We would like to receive the initial feedback from the community on this
-> direction to see if we are on the right track.
-> 
-> Thanks,
-> Zhao
-> 
-> > 
-> > 
-> > If you need call details, please contact me: quintela@redhat.com
-> > 
-> > Guests
-> > Philippe Mathieu-Daudé
-> > Joao Martins
-> > quintela@redhat.com
-> > mdean@redhat.com
-> > felipe@nutanix.com
-> > afaerber@suse.de
-> > bbauman@redhat.com
-> > cw@f00f.org
-> > eblake@redhat.com
-> > edgar.iglesias@gmail.com
-> > eric.auger@redhat.com
-> > iggy@theiggy.com
-> > jan.kiszka@web.de
-> > jidong.xiao@gmail.com
-> > jjherne@linux.vnet.ibm.com
-> > mimu@linux.vnet.ibm.com
-> > peter.maydell@linaro.org
-> > richard.henderson@linaro.org
-> > stefanha@gmail.com
-> > imp@bsdimp.com
-> > z.huo@139.com
-> > zwu.kernel@gmail.com
-> > jgg@nvidia.com
-> > cjia@nvidia.com
-> > Elena Ufimtseva
-> > konrad.wilk@oracle.com
-> > ale@rev.ng
-> > anjo@rev.ng
-> > Shameerali Kolothum Thodi
-> > wei.w.wang@intel.com
-> > Chao Peng
-> > qemu-devel@nongnu.org
-> > mburton@qti.qualcomm.com
-> > 
-> > 
 
