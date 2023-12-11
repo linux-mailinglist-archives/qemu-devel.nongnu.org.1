@@ -2,98 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1D680DD8B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:51:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE1F380DD9F
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:55:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCoAP-0006h2-HF; Mon, 11 Dec 2023 16:50:21 -0500
+	id 1rCoE6-0007vs-HP; Mon, 11 Dec 2023 16:54:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <casantos@redhat.com>)
- id 1rCoAN-0006gc-70
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:50:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <casantos@redhat.com>)
- id 1rCoAK-0002dB-4f
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:50:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702331414;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Kfby9h2X+ETcxXvZQB4iewUtiQEuEDDiQNei7fOj1mg=;
- b=PXNKtokdLA7lsVKMqS5jPA5S9mdBce8WxsPYb/0QjqC9yKU6vtYxrlEl18NRb+xKIR+CIn
- wjNAGAE3T3Wy1xiIJ86c5ezyUBfReqdp7TIS+dsL29AI81YDzpChnWtB6/eybzcB8mn51j
- YeOtR9ssoZ8cP2eGIhVKQBRirYF0NcI=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-78-oH4Gl4qxMNOyBe5IGIC9Tw-1; Mon, 11 Dec 2023 16:50:12 -0500
-X-MC-Unique: oH4Gl4qxMNOyBe5IGIC9Tw-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-50e032e0012so986572e87.2
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:50:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1rCoE3-0007us-UH
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:54:07 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1rCoE2-00038g-6J
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:54:07 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-54cfb03f1a8so6643847a12.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:54:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1702331644; x=1702936444;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=cxBNCytuKVpcMOMd1uTr/PXu7b7GfNOqYnE6uYYpyN4=;
+ b=D5RhjY77K8unZAAJt/1x+uK1S1DNGuvStAvhzVCJID6ODDNp2BtQZL4ebwD/ayKm8w
+ /JoIEZaP9cq8JBBr7PoLD5VMLjx6BnhQp7CnRvh4rnJrw4AxBJv32kEDNC5a6x3MBi9y
+ FpDXxjYaddni/JR2pFCPZ4N8InAOeKf+udijWTdRbWUwLbLAbW4pA8aumV7YM1pTEJnX
+ OEbxlG+OjQxU6Rk7S/qkrk7N3y/9NvXrxmA24/f2lyiuBX7JxdJILwZ7p5fLcynnizR4
+ OoGYPdfUlKplSs2iLPNhn2M7y51fAiSscREkXOSh4hHtrFl8xbV8jju0votb13u/7pjZ
+ JZ7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702331409; x=1702936209;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Kfby9h2X+ETcxXvZQB4iewUtiQEuEDDiQNei7fOj1mg=;
- b=hiIwVDxljYxN8SAifEulsz11xKIXHdaqZIIsdcvWvFFI3HrrGg/Koza4+WBGCPxM+0
- lv3Evhm62dUMZRmpM5YG26a8A6dnfKsVRrrsI8DsLE7jlU9jJDKXlAXbmo/TsZXM9WhB
- oXYc1DeGoKae5UvsXI56a5p8vpYD+BG5U9gHln+KLcqaMLQp5wPKgKmc7y7cJhgjtAzL
- HTC+7t9iIqXxyUnkfhzma4bNgOkuJ6znzg4y2c6xodtW5cdQany2+1bKZnDRMpHvz6G4
- q6wDEoWF/tBBtpYZDe/vIyJyITuBcqbqkMsKb+XIiSPUSmBmcH9bxrhl5A/5m3pDCORe
- lq0g==
-X-Gm-Message-State: AOJu0YxvvcNpb6TYEBhz1Ea4o4QBvp29Z+gTtKZ1NbUcpxPDhb/upUgj
- INgV0ojvD/IVCwJSpOuqiXZso8tzHyfEX0hRT2dIbsfhUHab8QAx8dUD8yR3MOaoMjRErpDGGN2
- ZXlTZU/VIN0wSpDRhbaU0aB7K1rMCCtc=
-X-Received: by 2002:ac2:5f48:0:b0:50b:f88d:f83b with SMTP id
- 8-20020ac25f48000000b0050bf88df83bmr1296652lfz.78.1702331409041; 
- Mon, 11 Dec 2023 13:50:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IELwYuI9z4Zk30LZyKvnG2Fl3l1hi1+7dZbZc9jqNmcKtEqcNd2qVVuZVPj4FvG18scDcekQF9FmbxlQPn/gME=
-X-Received: by 2002:ac2:5f48:0:b0:50b:f88d:f83b with SMTP id
- 8-20020ac25f48000000b0050bf88df83bmr1296631lfz.78.1702331408742; Mon, 11 Dec
- 2023 13:50:08 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702331644; x=1702936444;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cxBNCytuKVpcMOMd1uTr/PXu7b7GfNOqYnE6uYYpyN4=;
+ b=NqRqjaog2jOYit7hjePAZSLhUgnpu+qa/48brAhStAFnaDgRT/4VKArq+qqY5F5loZ
+ NBTC5O0ONE/ZroCC9Vw827KDF3lCUgIWlAYhSKpe1b/bczAbC48ZqD13pVjKKy6Y9onl
+ LLogGs9h8wK/RPAFhQQKjzMmmF+c9K66qyNeEymsevhN9o4td+RmoySjJUhIsq2/920o
+ n3DGbiKpSACVhWR4af0L9cx8xN0A54d7a8TC4I0m08/ofa2EpBxMUPGUQTQOwYC8dWxQ
+ RMZLmpCSuzZ4XvaSwXaPL0XvxKXsrSUFPtew52xDchSrpnr6a9cO0JK7Oindg9Wg9uOT
+ VZxw==
+X-Gm-Message-State: AOJu0YxNE9goq6j2oCkFrqw1Xp2jE0qsV4jBQ6pANT6itWlSwZlsVYdc
+ cJrQDbJiqmIJOeua/zm1Ap09ggFYVQ5q/Auvt8WOig==
+X-Google-Smtp-Source: AGHT+IH/rFEPQKRev89Ru4IDb6qH9WoAKEry3fvz1dlxm0fD57lBoPZ4WauRolKVGm9zQT6JJAY8/X/Iy9si+eQTElE=
+X-Received: by 2002:a50:f602:0:b0:54d:b2b8:171d with SMTP id
+ c2-20020a50f602000000b0054db2b8171dmr3359635edn.35.1702331643743; Mon, 11 Dec
+ 2023 13:54:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20230420120948.436661-1-stefanha@redhat.com>
- <20230420120948.436661-21-stefanha@redhat.com>
- <CAC1VKkMadcEV4+UwXQQEONTBnw=xfmFC2MeUoruMRNkOLK0+qg@mail.gmail.com>
- <20231207111110.GA2132561@fedora>
-In-Reply-To: <20231207111110.GA2132561@fedora>
-From: Carlos Santos <casantos@redhat.com>
-Date: Mon, 11 Dec 2023 18:49:57 -0300
-Message-ID: <CAC1VKkP8HgFPnMjFYVGgSDCj6rStzMVS7VrD=bs43zddSsMCCw@mail.gmail.com>
-Subject: Re: [PULL 20/20] tracing: install trace events file only if necessary
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Raphael Norwitz <raphael.norwitz@nutanix.com>, 
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Julia Suvorova <jusual@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-block@nongnu.org, Cornelia Huck <cohuck@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>, 
+References: <20231211212003.21686-1-philmd@linaro.org>
+ <20231211212003.21686-2-philmd@linaro.org>
+In-Reply-To: <20231211212003.21686-2-philmd@linaro.org>
+From: Warner Losh <imp@bsdimp.com>
+Date: Mon, 11 Dec 2023 14:53:52 -0700
+Message-ID: <CANCZdfppY0D1HOBN-n1h9ZQUHSK23YVgewn-vcRAQTs6--TCzw@mail.gmail.com>
+Subject: Re: [PATCH 01/24] exec: Include 'cpu.h' before validating
+ CPUArchState placement
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Peter Xu <peterx@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-arm@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>,
- Stefano Garzarella <sgarzare@redhat.com>, kvm@vger.kernel.org, 
- Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>, 
- Aarushi Mehta <mehta.aaru20@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=casantos@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ qemu-riscv@nongnu.org, David Hildenbrand <david@redhat.com>, 
+ Claudio Fontana <cfontana@suse.de>, Brian Cain <bcain@quicinc.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000ea6152060c42f8c0"
+Received-SPF: none client-ip=2a00:1450:4864:20::533;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,64 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 11, 2023 at 4:58=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.co=
-m> wrote:
->
-> On Wed, Dec 06, 2023 at 07:26:01AM -0300, Carlos Santos wrote:
-> > On Thu, Apr 20, 2023 at 9:10=E2=80=AFAM Stefan Hajnoczi <stefanha@redha=
-t.com> wrote:
-> > >
-> > > From: Carlos Santos <casantos@redhat.com>
-> > >
-> > > It is not useful when configuring with --enable-trace-backends=3Dnop.
-> > >
-> > > Signed-off-by: Carlos Santos <casantos@redhat.com>
-> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > > Message-Id: <20230408010410.281263-1-casantos@redhat.com>
-> > > ---
-> > >  trace/meson.build | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/trace/meson.build b/trace/meson.build
-> > > index 8e80be895c..30b1d942eb 100644
-> > > --- a/trace/meson.build
-> > > +++ b/trace/meson.build
-> > > @@ -64,7 +64,7 @@ trace_events_all =3D custom_target('trace-events-al=
-l',
-> > >                                   input: trace_events_files,
-> > >                                   command: [ 'cat', '@INPUT@' ],
-> > >                                   capture: true,
-> > > -                                 install: true,
-> > > +                                 install: get_option('trace_backends=
-') !=3D [ 'nop' ],
-> > >                                   install_dir: qemu_datadir)
-> > >
-> > >  if 'ust' in get_option('trace_backends')
-> > > --
-> > > 2.39.2
-> > >
-> >
-> > Hello,
-> >
-> > I still don't see this in the master branch. Is there something
-> > preventing it from being applied?
->
-> Hi Carlos,
-> Apologies, I dropped this patch when respinning the pull request after
-> the CI test failures caused by the zoned patches.
->
-> Your patch has been merged on my tracing tree again and will make it
-> into qemu.git/master when the development window opens again after the
-> QEMU 8.2.0 release (hopefully next Tuesday).
->
-> Stefan
+--000000000000ea6152060c42f8c0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Great. Thanks!
+On Mon, Dec 11, 2023 at 2:20=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
+@linaro.org>
+wrote:
 
---=20
-Carlos Santos
-Senior Software Maintenance Engineer
-Red Hat
-casantos@redhat.com    T: +55-11-3534-6186
+> CPUArchState 'env' field is defined within the ArchCPU structure,
+> so we need to include each target "cpu.h" header which defines it.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  include/exec/cpu-all.h | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
 
+Signed-off-by: Warner Losh <imp@bsdimp.com>
+
+--000000000000ea6152060c42f8c0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Dec 11, 2023 at 2:20=E2=80=AF=
+PM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">phi=
+lmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">CPUArchState &#39;env&#39; field is defined within the ArchCP=
+U structure,<br>
+so we need to include each target &quot;cpu.h&quot; header which defines it=
+.<br>
+<br>
+Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@lin=
+aro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
+---<br>
+=C2=A0include/exec/cpu-all.h | 9 +++++----<br>
+=C2=A01 file changed, 5 insertions(+), 4 deletions(-)<br></blockquote><div>=
+<br></div><div>Signed-off-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.=
+com">imp@bsdimp.com</a>&gt;</div><div>=C2=A0</div></div></div>
+
+--000000000000ea6152060c42f8c0--
 
