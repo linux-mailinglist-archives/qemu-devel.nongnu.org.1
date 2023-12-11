@@ -2,82 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083C480C1AB
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 08:14:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5EC380C1E3
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 08:28:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCaTY-0007UO-OY; Mon, 11 Dec 2023 02:13:12 -0500
+	id 1rCah8-00047V-5Y; Mon, 11 Dec 2023 02:27:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1rCaTU-0007Ti-7x
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 02:13:08 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1rCaTS-0005Qe-Fb
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 02:13:07 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d053c45897so36329945ad.2
- for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 23:13:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1702278785; x=1702883585;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=n76IMce3vLufNQdY3USLbCOIA4KvM6PYInLd1jOjkBA=;
- b=0I316LdvYl/4r9EgOOKy1W7ultmZ8tGxgyxAEoMyw12d9vzuf1JAbQYv048Ady+eFh
- d0F7Wvdt2hZbLRjqsQCvZeleDMugMtZLt7gAe584K6T8YXoqnaxkSSIAzi/1MIAfESy4
- Luqh0Z5u919lfUixdX/3lzewhP3eDc0XcS2qiDZVwHl2s4MjLPvpbnSvKpMR3YPXXmRD
- z/2Jq+wxzC30HaEyKs2YD8yzslR9M1QbR5oeF2m/K9jQWWKhf4pkinh6dxs9bFpcgPmu
- x+U3t1FoOcelF4tarxO8g00+dMwGXrTnFbsbkUyRrw6lfb0JNyYpOAB2EipKvGp10NJ1
- SMlA==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rCah6-00047D-9Y
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 02:27:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rCah4-0008Dk-AS
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 02:27:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702279629;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Mfzi+TQTEwvVyZuHSDYGZX8ilrRUQY+QwaUGs1w7JA8=;
+ b=YZoen5CSF8sk1yHVSpQGlaSven7iThsF2Mod7t98UoKwPZh8c1S0ql8RY0TxppGJNswfY0
+ 70vOCRHC2vPv7kyxpbG/WbBz9JCaqALyyaU9HUnIODsb0jVvgvTz6TNVSln5UhyiZDJOir
+ BzggHBmKwGK+tOenUyMmgCKX9UKEz+k=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-321-Kga43PgUNQqRZ8cJEi_zVw-1; Mon, 11 Dec 2023 02:27:07 -0500
+X-MC-Unique: Kga43PgUNQqRZ8cJEi_zVw-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-286da86884aso4771961a91.2
+ for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 23:27:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702278785; x=1702883585;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1702279626; x=1702884426;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=n76IMce3vLufNQdY3USLbCOIA4KvM6PYInLd1jOjkBA=;
- b=jvYh7vNJWwF7+Ihfm/LIbnTh8yUA4Dn059NWf/eLFjWjy8MvxhrPLSBLzZWUms69W/
- zf/iGRY+WOi5sVMB+jNp4SNlVJWofVRTkZCWMxEYAmFmcZB0F/WbGwbFFj2RKgRl9dXM
- RmtmGUq4m1BNnSdyrS9MzoVS6fjfDChhsgRiBp6tXMVUSd5YQh6gucZbFGX25j9vU4JJ
- wU8R2Nonj17U6Vt77BA3OPM/EZTVDLF1Z7IMlh8pj2IC+V5fVstI4qs6CIFfEFvVl80e
- D1IOJPJcNpg+iBxuYoSFKs/1zgJrK++lNvPid+wzap1bGcu+GJaIUSMoPRjoyNwa+Mmu
- 5/xA==
-X-Gm-Message-State: AOJu0Yzk1izULQ7gvAMtHoMrluSB1CpOmRh7RiEiHwXFDjP5/+JXxmab
- qZ4If/CPyF0J8UaygVjfaiJ6e9MYgYrYMyl79fM=
-X-Google-Smtp-Source: AGHT+IHxKbI22OS6/KS+W3pnCOoWNzmovNJhK1dCgoQIo9rQoaGdM4sjObX18QVpXhCvSN+7946eQw==
-X-Received: by 2002:a17:902:a517:b0:1d0:6ffd:9e28 with SMTP id
- s23-20020a170902a51700b001d06ffd9e28mr3228380plq.122.1702278784908; 
- Sun, 10 Dec 2023 23:13:04 -0800 (PST)
-Received: from ThinkPad-T14-hirose.hq.igel.co.jp (napt.igel.co.jp.
- [219.106.231.132]) by smtp.gmail.com with ESMTPSA id
- v23-20020a170902e8d700b001d08e080042sm5842150plg.43.2023.12.10.23.13.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Dec 2023 23:13:04 -0800 (PST)
-From: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
-To: qemu-devel@nongnu.org
-Cc: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 2/2] hw/usb/hcd-xhci.c: allow unaligned access to Capability
- Registers
-Date: Mon, 11 Dec 2023 16:12:04 +0900
-Message-Id: <20231211071204.30156-3-tomoyuki.hirose@igel.co.jp>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231211071204.30156-1-tomoyuki.hirose@igel.co.jp>
-References: <20231211071204.30156-1-tomoyuki.hirose@igel.co.jp>
+ bh=Mfzi+TQTEwvVyZuHSDYGZX8ilrRUQY+QwaUGs1w7JA8=;
+ b=p4XkYpsTqikytDf6lat+vK91oS5c42Z2bdPWfQ77Pq/+R7ls0yYqU29HGrueGQsCWF
+ W9r2c44p46Fr7Enjsk29ESJn92DCaEUjV7wFAd8HOm1INHvEmhFU3B5TuBvOi+0/v3dx
+ P+VNeaLumfbLq2k0yFEZCZzn8YqwxqmirqL1yPkUkyaZy3ruAqxbni0VRfxYZ83fmdN2
+ FDTQASULChGqI+nZt5rzTnA4lInX08/23iiSxfJ+3ScLKsSbJnpLhWVwdo4WidV/UlHO
+ gwaWGNH9f1z7ztWgaFPuGI0Tg9vA1+m7eTkcl7upOY3mKxWEJiS8VSvxYtuhO4ApqMK+
+ Xm5Q==
+X-Gm-Message-State: AOJu0YyBAg6udaQTs3580FbckMUow96NkAx9cBA3FWEcX0SPYjQRNX4m
+ tK5bHDrpoAstCCmChAJd+6R1agdODoI86eYckplJ5yUTCFpSS996MwdjkgWktsexdY8JHkW9A4a
+ k3JROrQinCfuoaYDjRnKHWw27RwJUcy64aLZaOZxppg==
+X-Received: by 2002:a17:90a:b288:b0:28a:69fc:b585 with SMTP id
+ c8-20020a17090ab28800b0028a69fcb585mr1836347pjr.20.1702279626454; 
+ Sun, 10 Dec 2023 23:27:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFbgshQvfvVkhuqzhDznYq/CD7PrrioJYSXqL5f/KZHk8NgOAFV2nEHBe8no7boPEYBr3PvE1MNkc+wJNa20dI=
+X-Received: by 2002:a17:90a:b288:b0:28a:69fc:b585 with SMTP id
+ c8-20020a17090ab28800b0028a69fcb585mr1836334pjr.20.1702279626176; Sun, 10 Dec
+ 2023 23:27:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=tomoyuki.hirose@igel.co.jp; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231210-sriov-v2-0-b959e8a6dfaf@daynix.com>
+ <CACGkMEuYa7CUUp6F4D91P0mg=2GadhRESCx2j63P7Fkm42q++w@mail.gmail.com>
+ <dc5bb0f8-3554-40f2-b683-3b5e58377ed3@daynix.com>
+In-Reply-To: <dc5bb0f8-3554-40f2-b683-3b5e58377ed3@daynix.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 11 Dec 2023 15:26:55 +0800
+Message-ID: <CACGkMEtrELfC4iqHv5e9oDD0OzwwiuyEDJWq-O5ocH02YMx9Wg@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 00/12] virtio-net: add support for SR-IOV emulation
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ qemu-devel@nongnu.org, 
+ qemu-block@nongnu.org, Yui Washizu <yui.washidu@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,37 +106,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to xHCI spec rev 1.2, unaligned access to xHCI Host
-Controller Capability Registers is not prohibited. In Addition, the
-limit of access size is also unspecified. Actually, some real devices
-allow unaligned access and 8-byte access to these registers.
-This commit makes it possible to unaligned access and 8-byte access
-to Host Controller Capability Registers.
+On Mon, Dec 11, 2023 at 1:30=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
+.com> wrote:
+>
+> On 2023/12/11 11:52, Jason Wang wrote:
+> > On Sun, Dec 10, 2023 at 12:06=E2=80=AFPM Akihiko Odaki <akihiko.odaki@d=
+aynix.com> wrote:
+> >>
+> >> Introduction
+> >> ------------
+> >>
+> >> This series is based on the RFC series submitted by Yui Washizu[1].
+> >> See also [2] for the context.
+> >>
+> >> This series enables SR-IOV emulation for virtio-net. It is useful
+> >> to test SR-IOV support on the guest, or to expose several vDPA devices
+> >> in a VM. vDPA devices can also provide L2 switching feature for
+> >> offloading though it is out of scope to allow the guest to configure
+> >> such a feature.
+> >>
+> >> The PF side code resides in virtio-pci. The VF side code resides in
+> >> the PCI common infrastructure, but it is restricted to work only for
+> >> virtio-net-pci because of lack of validation.
+> >>
+> >> User Interface
+> >> --------------
+> >>
+> >> A user can configure a SR-IOV capable virtio-net device by adding
+> >> virtio-net-pci functions to a bus. Below is a command line example:
+> >>    -netdev user,id=3Dn -netdev user,id=3Do
+> >>    -netdev user,id=3Dp -netdev user,id=3Dq
+> >>    -device pcie-root-port,id=3Db
+> >>    -device virtio-net-pci,bus=3Db,addr=3D0x0.0x3,netdev=3Dq,sriov-pf=
+=3Df
+> >>    -device virtio-net-pci,bus=3Db,addr=3D0x0.0x2,netdev=3Dp,sriov-pf=
+=3Df
+> >>    -device virtio-net-pci,bus=3Db,addr=3D0x0.0x1,netdev=3Do,sriov-pf=
+=3Df
+> >>    -device virtio-net-pci,bus=3Db,addr=3D0x0.0x0,netdev=3Dn,id=3Df
+> >>
+> >> The VFs specify the paired PF with "sriov-pf" property. The PF must be
+> >> added after all VFs. It is user's responsibility to ensure that VFs ha=
+ve
+> >> function numbers larger than one of the PF, and the function numbers
+> >> have a consistent stride.
+> >
+> > This seems not user friendly. Any reason we can't just allow user to
+> > specify the stride here?
+>
+> It should be possible to assign addr automatically without requiring
+> user to specify the stride. I'll try that in the next version.
+>
+> >
+> > Btw, I vaguely remember qemu allows the params to be accepted as a
+> > list. If this is true, we can accept a list of netdev here?
+>
+> Yes, rocker does that. But the problem is not just about getting
+> parameters needed for VFs, which I forgot to mention in the cover letter
+> and will explain below.
+>
+> >
+> >>
+> >> Keeping VF instances
+> >> --------------------
+> >>
+> >> A problem with SR-IOV emulation is that it needs to hotplug the VFs as
+> >> the guest requests. Previously, this behavior was implemented by
+> >> realizing and unrealizing VFs at runtime. However, this strategy does
+> >> not work well for the proposed virtio-net emulation; in this proposal,
+> >> device options passed in the command line must be maintained as VFs
+> >> are hotplugged, but they are consumed when the machine starts and not
+> >> available after that, which makes realizing VFs at runtime impossible.
+> >
+> > Could we store the device options in the PF?
+>
+> I wrote it's to store the device options, but the problem is actually
+> more about realizing VFs at runtime instead of at the initialization time=
+.
+>
+> Realizing VFs at runtime have two major problems. One is that it delays
+> the validations of options; invalid options will be noticed when the
+> guest requests to realize VFs.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/143
-Signed-off-by: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
----
- hw/usb/hcd-xhci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+If PCI spec allows the failure when creating VF, then it should not be
+a problem.
 
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 4b60114207..41abeb9ac5 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -3181,9 +3181,11 @@ static const MemoryRegionOps xhci_cap_ops = {
-     .read = xhci_cap_read,
-     .write = xhci_cap_write,
-     .valid.min_access_size = 1,
--    .valid.max_access_size = 4,
-+    .valid.max_access_size = 8,
-+    .valid.unaligned = true,
-     .impl.min_access_size = 4,
-     .impl.max_access_size = 4,
-+    .impl.unaligned = false,
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
--- 
-2.39.2
+> netdevs also warn that they are not used
+> at initialization time, not knowing that they will be used by VFs later.
+
+We could invent things to calm down this false positive.
+
+> References to other QEMU objects in the option may also die before VFs
+> are realized.
+
+Is there any other thing than netdev we need to consider?
+
+>
+> The other problem is that QEMU cannot interact with the unrealized VFs.
+> For example, if you type "device_add virtio-net-pci,id=3Dvf,sriov-pf=3Dpf=
+"
+> in HMP, you will expect "device_del vf" works, but it's hard to
+> implement such behaviors with unrealized VFs.
+
+I think hotplug can only be done at PF level if we do that.
+
+>
+> I was first going to compromise and allow such quirky behaviors, but I
+> realized such a compromise is unnecessary if we reuse the PCI power down
+> logic so I wrote v2.
+
+Haven't checked the code, but anything related to the PM here?
+
+Thanks
+
+>
+> Regards,
+> Akihiko Odaki
+>
 
 
