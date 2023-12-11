@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB9680DD09
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E48580DCD7
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:23:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCnil-0002Mc-3W; Mon, 11 Dec 2023 16:21:47 -0500
+	id 1rCniu-0002q2-0X; Mon, 11 Dec 2023 16:21:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnii-0002IL-Ry
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:21:45 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnir-0002iK-FO
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:21:53 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnif-0005cY-Sd
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:21:44 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a1e2f34467aso469890766b.2
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:21:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCnip-0005dg-J4
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:21:53 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-54c70c70952so7067086a12.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:21:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702329700; x=1702934500; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702329710; x=1702934510; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gRG2U+UvZdWTGYdcA/MTX3iesT+e4Kqtp08ALJBiHJ0=;
- b=ssb+pP/0t677mdQx2Yxxfknmk7znc8iJ0s27TcSFW8cJpHSsU0fQbZc6F+fCnlgRo3
- wa5ObS1EAqeH9qIFzu1XhdqIbcciS5BAUHsnqA432ScUYuFHjdHIy93b4HxU6i63EPdA
- f5ErJxN6Z0qfLujHn84mLIfWaXkeezwRd6rmooa9TMmTWffohcz2AWXohjEIyaiquOm2
- 42g6xxG+m20c5UIrG9fRkvKWxjtyeurYyhHVEAvMci/LWYkibwslhTD0PBrCmY2Hg2N2
- EEeyHhG5jCTvwGWJupbAA7RkGdw9KkpaTAYBJeZnGz7IHdlTyDLyjyBZp1phIjqQUMKq
- szrw==
+ bh=ctY48Y/OwHlinQy0HeLOez7IoCqO19a0AzhAC5KFtJo=;
+ b=D5pE47HhTN4G+oeoW2jLbaubLUYS85QF0ZLMYIPk91EJKHyIIy3Et77wqQM0im4W0z
+ +n7H8VSwDCw+oAarXXatujVm9LQQbQ90gVcntBnMmlW5NO9yir+xEmFktDOLJMBZjSvS
+ xJb0gDioMCCuBbAsqjtQoAShTPms2G35OPtOcjDvMmjHb07KuGpg+W9H46se9EeitnAM
+ M0gcTBMB6FOk0o6woN2nLUK7Flf1xyzK5p+awdC3/kKGZFXMRnzF8+UXXTrrRzFAvbAV
+ 6fPJ+qeL453oZzdSKbl+IWridNcZVtOWGsSHotAGP2EilF1LbJGvGBYfIvFZ3bXeTUZo
+ ofaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702329700; x=1702934500;
+ d=1e100.net; s=20230601; t=1702329710; x=1702934510;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gRG2U+UvZdWTGYdcA/MTX3iesT+e4Kqtp08ALJBiHJ0=;
- b=UTMoh1OazljoQNEUfxOZ/WYILA8QGqJqx60HxEy19zDo5jQJLVlWBMx6yrNzPXKmiz
- zsPAovLN5IwblPOoaaP39cQwWD1bBAyPGvJjoojxtVBTY7LK7asxTNc7zK48cs2RHu6U
- aYGuVnv9fffAn5sbxjYoclTFYAkSYrhy9JZbH8eQ9T2v64gqkfT4linozQJtAxR/1npx
- F6bfMf/6P+7RdLi1q0XlxCvmmzbSbNRign1ddh3slXc7OxS/kd+S/oLFckB+ADhU11/6
- fR9tHCTKskbjk6rx74rl0ijF5LxqZKumYSvr7enAI1BaCl/xoG64Cki0VXpstwEh7duw
- 1d0w==
-X-Gm-Message-State: AOJu0Ywt8qRzFmenN3BZEVKzZxcpIpIXBO7YbwFl6tw+FXE07JTLen8d
- CQbhkJn+qppf4NW+qAJo3If6NCzWWreE0sEhJp6cUA==
-X-Google-Smtp-Source: AGHT+IEa3URetu7g5tfPDUGMgSUYvKg8IduDwrwb0TA8kvL1/wJJ22FrnJm8tGba/n12vArKa+29YQ==
-X-Received: by 2002:a17:906:ecf1:b0:a19:4628:1606 with SMTP id
- qt17-20020a170906ecf100b00a1946281606mr2921924ejb.45.1702329700238; 
- Mon, 11 Dec 2023 13:21:40 -0800 (PST)
+ bh=ctY48Y/OwHlinQy0HeLOez7IoCqO19a0AzhAC5KFtJo=;
+ b=ShrRYmOM+E5KoYwYhOEioIVwcpISK5wKDhE/XGp04ZwjY9yx57x/7oTFSp73b9swMG
+ TLY8pzRorvAHY8OCNhpAY5/glMFIcgGQdiqrXR9CsF5NDRjo7aV5OH0R6l6rlQhh1E8i
+ R2gONtSF/I2EPYuQ48K/JjJ/HfTy/Vgnm1rQuex3Hd66QMM2P5AtDAnowgGHXUS0mvO2
+ p1RYqlXoZqxZzdSzrkXVS58Hzq+z1OBXEZaMg9V4f+B4Ce3snZjal79tydFnrLMrTuNy
+ NQPbkv+AXAQiFe544Lwui1F0cxrhT1kgQw33HBTmM0xWXPq7URQaah8mmpetV5Kr9UW8
+ fJ9A==
+X-Gm-Message-State: AOJu0YznvY6ayaEbtJYQL5iI7Ui1FoRaOybbVfwefu0jPeeSOug2s6iw
+ 3+u3jphpEugd4Vv7L28/YCS0dDO2ajQx5phueMXbxg==
+X-Google-Smtp-Source: AGHT+IGCuHPmu7XBcoyZGbS/1vv337vHf9v2rTtqCVC+z2TYZobgtGzbWjHW3TEMn/IMi+AiZLh79Q==
+X-Received: by 2002:a17:907:94d4:b0:a1a:8399:e12d with SMTP id
+ dn20-20020a17090794d400b00a1a8399e12dmr1806037ejc.64.1702329710085; 
+ Mon, 11 Dec 2023 13:21:50 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- jg2-20020a170907970200b00a1db9c0f55esm5287908ejc.198.2023.12.11.13.21.37
+ wb8-20020a170907d50800b00a1cb351dd4fsm5350843ejc.9.2023.12.11.13.21.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Dec 2023 13:21:39 -0800 (PST)
+ Mon, 11 Dec 2023 13:21:49 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
@@ -71,21 +71,18 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH 11/24] hw/s390x/ipl: Remove unused 'exec/exec-all.h' included
- header
-Date: Mon, 11 Dec 2023 22:19:48 +0100
-Message-ID: <20231211212003.21686-12-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 12/24] target/i386: Include missing 'exec/exec-all.h' header
+Date: Mon, 11 Dec 2023 22:19:49 +0100
+Message-ID: <20231211212003.21686-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231211212003.21686-1-philmd@linaro.org>
 References: <20231211212003.21686-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,23 +105,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The XRSTOR instruction ends calling tlb_flush(), declared
+in "exec/exec-all.h".
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/s390x/ipl.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/i386/tcg/fpu_helper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-index 515dcf51b5..62182d81a0 100644
---- a/hw/s390x/ipl.c
-+++ b/hw/s390x/ipl.c
-@@ -35,7 +35,6 @@
- #include "qemu/cutils.h"
- #include "qemu/option.h"
- #include "standard-headers/linux/virtio_ids.h"
--#include "exec/exec-all.h"
- 
- #define KERN_IMAGE_START                0x010000UL
- #define LINUX_MAGIC_ADDR                0x010008UL
+diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
+index 4430d3d380..3bb018fbae 100644
+--- a/target/i386/tcg/fpu_helper.c
++++ b/target/i386/tcg/fpu_helper.c
+@@ -21,6 +21,7 @@
+ #include <math.h>
+ #include "cpu.h"
+ #include "tcg-cpu.h"
++#include "exec/exec-all.h"
+ #include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+ #include "fpu/softfloat.h"
 -- 
 2.41.0
 
