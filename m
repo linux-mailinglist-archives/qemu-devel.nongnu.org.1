@@ -2,84 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0AD380DB23
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 20:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D1480DB2C
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 20:59:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCmKQ-0001jh-8t; Mon, 11 Dec 2023 14:52:34 -0500
+	id 1rCmPe-0003re-PK; Mon, 11 Dec 2023 14:57:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1rCmKN-0001hk-JX
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 14:52:31 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1rCmKL-0004Lb-T6
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 14:52:31 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c9f72176cfso60454281fa.2
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 11:52:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702324347; x=1702929147;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2zFIxvkP4hxs2GTNheY8VbxTVqweL8wZ1UJ5TyovCN0=;
- b=fjqWf4JXk9r7+T4SvCQolzxbBKXbcjwT8F0w7aSicd1G9p22zHKJdISWDAo/q9iO/Q
- PAM8UsemlrNFloseZx61vYnKDODcyK3v+CUCcNpRHP3xJL6KiXlSP233hX/h+A4q7vNJ
- kyn78gJ8En987IqHbo4Dtv+S7yljFhuWX97+Ef5vWgnqlcpiN6x4Rmh5ZZgBxcr8nIB4
- L6WdRm8mUUhJHiaP4h6uiv+p1ytOcTiX+3PMFPAYqhmBisXf+nPMhdCGxBHvDmRKnQyE
- +TJsfu38uijss+PmB/R+V1INX1gTZXRLxQcerhj9BkDX6iyQ9YGT/oX7zXU918MkuyOE
- lPPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702324347; x=1702929147;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2zFIxvkP4hxs2GTNheY8VbxTVqweL8wZ1UJ5TyovCN0=;
- b=tetu/mrbsX4VUBkyTQNemsuwcDLQAA8LPvmggegL+PTXjdLkEf98ZeJx3Y0pf4VgOb
- PFaTu4QplfujaoeI6JJ6zoScyxSrQgOrkHhTwfob4H4lcXMMibbsfyIUrWzgfJEJ9anJ
- n0y+8nK8cUl+7Ku2YEaCdQHTwXeo4IaJYBTtEuuk86XsUNIsLMabjGCL506ys3VvQQ01
- 1UKucXrpKbq/Q2Cr72VHVL5xfqaE2M0qsU/oRZhYtJ1VmWCK8b0fbvuERb/feR/e7ane
- tENLVvi08lZ8Os/hGJtoJPBK+LvizE0ln8Ne1rFLzZN4aXK9xy5CHWC/1isBZYMfgBhU
- FKJQ==
-X-Gm-Message-State: AOJu0YyqsEOUlkY83d37NcbDWE/YrIijwvWhF1UvWd32//gBUA7LL+5P
- C2rK7Dd7H4zEmfS1D1G+cRx1Q0kjXIGi+6/QbRO8Sg==
-X-Google-Smtp-Source: AGHT+IHifw7YAzsSR57/OT2WSpLxgQQ35KmXpVY/TSRBRTCqxIpyGpTiHDr33bhkt3U21v4t/i3/Xf2em/eh2lxpudA=
-X-Received: by 2002:a2e:ab09:0:b0:2cc:1ea3:6855 with SMTP id
- ce9-20020a2eab09000000b002cc1ea36855mr966459ljb.75.1702324347092; Mon, 11 Dec
- 2023 11:52:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rCmPY-0003r7-JK
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 14:57:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rCmPV-0005BF-MR
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 14:57:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702324660;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=lp7K3n/7c/f1iC1ve5tU7YX2KfBbu0xvJng0LTVTzpg=;
+ b=Zoveth1seu0pfdX7mH7iPfR0ns0RAiDnQbxN0NhvtWbMZzRd+40xY63/evfPU2RAJ0I+/a
+ wFyCTc4o0xIU+MZYj5SW93RVSAbB2YHKH1Z2GVeAUmnbVPuOn7sN+QO2FcuWd7yGbPxSrB
+ /nPnFnDHKEIBPubya+uGOqirF7fjOiA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-aGxrM2baOrGOI0MbRrAZ-Q-1; Mon,
+ 11 Dec 2023 14:57:37 -0500
+X-MC-Unique: aGxrM2baOrGOI0MbRrAZ-Q-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1D71A2999B2B;
+ Mon, 11 Dec 2023 19:57:37 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.189])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9F2F63C25;
+ Mon, 11 Dec 2023 19:57:36 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org,
+	armbru@redhat.com
+Cc: Michael Roth <michael.roth@amd.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [RFC] string-output-visitor: show structs as "<omitted>"
+Date: Mon, 11 Dec 2023 14:57:34 -0500
+Message-ID: <20231211195734.425040-1-stefanha@redhat.com>
 MIME-Version: 1.0
-References: <20231210-rss-v8-0-9553ee714d38@daynix.com>
- <CAOEp5Ofj+a2rqGWw=oLXBqrXqUj6XRc=Je3ScaE5sxZFzaAOdA@mail.gmail.com>
- <431e5902-970b-4fd5-8302-dcc9c4c76bd7@daynix.com>
- <CAOEp5OcW1xrr8EVeiRqQ5OnecxB6xtKJt6hLCqz6GgmSg7CctQ@mail.gmail.com>
- <20231211104224-mutt-send-email-mst@kernel.org>
- <CAOEp5OfKnE=qna1FRHqg4y=6Fc=J6U57J3pryV-JBB6TiC-6Hg@mail.gmail.com>
-In-Reply-To: <CAOEp5OfKnE=qna1FRHqg4y=6Fc=J6U57J3pryV-JBB6TiC-6Hg@mail.gmail.com>
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
-Date: Mon, 11 Dec 2023 21:52:15 +0200
-Message-ID: <CAOEp5Oe5sxCzn6XeWSdzYFQbKoh+ey88dA2iu=5DNZA-EZdOiA@mail.gmail.com>
-Subject: Re: [PATCH v8 00/19] virtio-net RSS/hash report fixes and improvements
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
- Luigi Rizzo <rizzo@iet.unipi.it>, Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
- Vincenzo Maffione <v.maffione@gmail.com>,
- Andrew Melnychenko <andrew@daynix.com>, qemu-devel@nongnu.org, 
- "Zhang, Chen" <chen.zhang@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
-Content-Type: multipart/alternative; boundary="000000000000005616060c4146c7"
-Received-SPF: none client-ip=2a00:1450:4864:20::22d;
- envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,80 +77,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000005616060c4146c7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+StringOutputVisitor crashes when it visits a struct because
+->start_struct() is NULL.
 
-I'm adding also Yan
+Show "<omitted>" instead of crashing. This is necessary because the
+virtio-blk-pci iothread-vq-mapping parameter that I'd like to introduce
+soon is a list of IOThreadMapping structs.
 
-On Mon, Dec 11, 2023 at 9:51=E2=80=AFPM Yuri Benditovich <
-yuri.benditovich@daynix.com> wrote:
+Cc: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+Can we do better?
 
-> Hi Michael,
-> Sure, I've reviewed that also, there was a fruitful discussion
-> till the series r=D0=B5=D0=B0ched its final form.
-> At the beginning of September we've got the response from Jason that the
-> series is queued upstream so we were calm and switched to libvirt part ))
->
-> Seems like a misunderstanding, let's wait for Jason response.
->
-> Thanks,
-> Yuri
->
->
->
->
-> On Mon, Dec 11, 2023 at 5:43=E2=80=AFPM Michael S. Tsirkin <mst@redhat.co=
-m> wrote:
->
->> On Mon, Dec 11, 2023 at 02:34:56PM +0200, Yuri Benditovich wrote:
->> > https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg05859.html
->>
->> It's from August, I think it's fair to say it's not going upstream
->> unless there's some activity. Yuri did you review that series then?
->> Care to ack?
->>
->> --
->> MST
->>
->>
+I am unfamiliar with StringOutputVisitor, so I wasn't sure how to
+proceed. Is the format or at least the intended use of
+StringOutputVisitor's output defined somewhere? Does it need to be a
+single line or can the output be multiple lines?
 
---000000000000005616060c4146c7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Or maybe I shouldn't introduce a qdev property with IOThreadMappingList
+as its type in
+https://lore.kernel.org/qemu-devel/ZUoPiFxIIwFq5wMg@redhat.com/?
+---
+ include/qapi/string-output-visitor.h |  6 +++---
+ qapi/string-output-visitor.c         | 14 ++++++++++++++
+ 2 files changed, 17 insertions(+), 3 deletions(-)
 
-<div dir=3D"ltr">I&#39;m adding also Yan</div><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Dec 11, 2023 at 9:51=E2=80=
-=AFPM Yuri Benditovich &lt;<a href=3D"mailto:yuri.benditovich@daynix.com">y=
-uri.benditovich@daynix.com</a>&gt; wrote:<br></div><blockquote class=3D"gma=
-il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
-04,204);padding-left:1ex"><div dir=3D"ltr">Hi=C2=A0Michael,<div>Sure, I&#39=
-;ve reviewed that also, there was a fruitful=C2=A0discussion till=C2=A0the=
-=C2=A0series r=D0=B5=D0=B0ched its final form.</div><div>At the beginning o=
-f September we&#39;ve got the response from Jason that the series is queued=
- upstream so we were calm and switched to libvirt part ))</div><div><br></d=
-iv><div>Seems like a misunderstanding,=C2=A0let&#39;s wait for Jason respon=
-se.</div><div><br></div><div>Thanks,</div><div>Yuri</div><div><br></div><di=
-v><br></div><div><br></div></div><br><div class=3D"gmail_quote"><div dir=3D=
-"ltr" class=3D"gmail_attr">On Mon, Dec 11, 2023 at 5:43=E2=80=AFPM Michael =
-S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com" target=3D"_blank">mst@redh=
-at.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">On Mon, Dec 11, 2023 at 02:34:56PM +0200, Yuri Benditovich wrote:<br>
-&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg05=
-859.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archiv=
-e/html/qemu-devel/2023-08/msg05859.html</a><br>
-<br>
-It&#39;s from August, I think it&#39;s fair to say it&#39;s not going upstr=
-eam<br>
-unless there&#39;s some activity. Yuri did you review that series then?<br>
-Care to ack?<br>
-<br>
--- <br>
-MST<br>
-<br>
-</blockquote></div>
-</blockquote></div>
+diff --git a/include/qapi/string-output-visitor.h b/include/qapi/string-output-visitor.h
+index 268dfe9986..762fe3f705 100644
+--- a/include/qapi/string-output-visitor.h
++++ b/include/qapi/string-output-visitor.h
+@@ -26,9 +26,9 @@ typedef struct StringOutputVisitor StringOutputVisitor;
+  * If everything else succeeds, pass @result to visit_complete() to
+  * collect the result of the visit.
+  *
+- * The string output visitor does not implement support for visiting
+- * QAPI structs, alternates, null, or arbitrary QTypes.  It also
+- * requires a non-null list argument to visit_start_list().
++ * The string output visitor does not implement support for alternates, null,
++ * or arbitrary QTypes.  It also requires a non-null list argument to
++ * visit_start_list().
+  */
+ Visitor *string_output_visitor_new(bool human, char **result);
+ 
+diff --git a/qapi/string-output-visitor.c b/qapi/string-output-visitor.c
+index c0cb72dbe4..363dac00fe 100644
+--- a/qapi/string-output-visitor.c
++++ b/qapi/string-output-visitor.c
+@@ -292,6 +292,18 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
+     return true;
+ }
+ 
++static bool start_struct(Visitor *v, const char *name, void **obj,
++                         size_t size, Error **errp)
++{
++    return true;
++}
++
++static void end_struct(Visitor *v, void **obj)
++{
++    StringOutputVisitor *sov = to_sov(v);
++    string_output_set(sov, g_strdup("<omitted>"));
++}
++
+ static bool
+ start_list(Visitor *v, const char *name, GenericList **list, size_t size,
+            Error **errp)
+@@ -379,6 +391,8 @@ Visitor *string_output_visitor_new(bool human, char **result)
+     v->visitor.type_str = print_type_str;
+     v->visitor.type_number = print_type_number;
+     v->visitor.type_null = print_type_null;
++    v->visitor.start_struct = start_struct;
++    v->visitor.end_struct = end_struct;
+     v->visitor.start_list = start_list;
+     v->visitor.next_list = next_list;
+     v->visitor.end_list = end_list;
+-- 
+2.43.0
 
---000000000000005616060c4146c7--
 
