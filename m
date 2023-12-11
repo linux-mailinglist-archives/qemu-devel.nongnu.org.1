@@ -2,71 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A1E80CEAB
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 15:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63DF380CEDE
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 16:01:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rChaa-0004CT-Cw; Mon, 11 Dec 2023 09:48:56 -0500
+	id 1rChlp-0006wR-Gi; Mon, 11 Dec 2023 10:00:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rChaY-0004C2-DX; Mon, 11 Dec 2023 09:48:54 -0500
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rChlf-0006qe-Rm
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 10:00:29 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rChaW-0002Dm-Ni; Mon, 11 Dec 2023 09:48:54 -0500
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-1fb40253680so3154049fac.0; 
- Mon, 11 Dec 2023 06:48:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rChlQ-0005Ld-7l
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 10:00:19 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-333630e9e43so4722769f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 07:00:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702306130; x=1702910930; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=p7skq2DwBXynv1FCgqXoI7xtYx2ryMZBtvBq+I6+rrM=;
- b=LyKRiWu26+qhB6bRLvPRpDVlkt2JvGYU/zQrJKgh/PS2DOTHAldKGk4okLgVSATAt+
- CgNka8KN3F9fR/XXrYpc6I5VDL6t0dfJJavnNumMhvHOqUxcf5YwAM1cn+jJdxpcH1KP
- GFHEI0owyiXmWD+0NVShfnIHC9y68pgF9sWKAdLrnYvEpc6RzSnWeZWoREQwuA0k17wC
- lJlHNDQ00LT1Xl21TICuh6XtvKkjSAP6ImHey/rCbniDyxKmox9HwDJbeeD/O+dWW22Z
- 6U/+GR0hG+KUtlUzG/OZT9kGUz0VY/axcODpuacPWxTdmvqrAjaAA1DRiNm9Nx4febo4
- MPjQ==
+ d=linaro.org; s=google; t=1702306805; x=1702911605; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gRGCxW6C87fW7k1z6BNfM3iwOvIKvLjOJp9SZ6n603I=;
+ b=psTn2sKAZ8io0Ja3mHR80E3EPHhO3i80JWb/riq/lgAiwNthgZCxzEDDvtBv1G6yVa
+ +VJ0zXbnM2XGDduf5XJtRUQyC0+Zjdi+lSK1dlP/3clmxGjB4oTE/Au7saC/8bfF32f3
+ HEGIv1B91Loti69JYTzDF0/uMH3Fd4LtH3B5+ohDXVwmsVMYWXH1sXOO9QdHXpMrn0jU
+ 9LsZJ8lpQL95H/L+PUip0wqMn13CKDyMg6+vJp2Dy3ImJrE4ppjqGff0qtrx1TsCLukt
+ Vs8fb/si2uV5Yaw2qyNr2eAWdE4VaZ55j89m13XejX0RcMgexYPpcg82fIY6uw/CFpRR
+ 9Jrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702306130; x=1702910930;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1702306805; x=1702911605;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=p7skq2DwBXynv1FCgqXoI7xtYx2ryMZBtvBq+I6+rrM=;
- b=oOWN0ylxCCAoi0qv1RgPAxYDjjHeBkPYbf5OACvAxsVLijCLrh4q+bsWpVHbS8DQwP
- TgFy2DTZ7TxpN4PMgLQBzpa0X6XA88pZg+RsLdMN3uV/x9MESIZsx9vKZDq6xzJr0I3I
- LV1QZgw5fknJ4yOHUZRekXAWQBLTuP+FKOYtl3tTCtLv22RyjGHVokMhpQt/EGNUV6zA
- 48pU7lxygvnd3VPRFDNP8DGR3ar2SEpuYgsjF5HzzlXbVeI5n4hqMHHS6lumfUbQ6waj
- jyMqeWeW378c+ZDRLKGgtwA33ABAk5/3OpNncaBpSf/PtHFdY9jjOZxmxhh7ui2jfz64
- XZzw==
-X-Gm-Message-State: AOJu0YxtvB5l++eNPKpW8q+fD1U/PFVOU61kUxKnYJggUjaupJTb9OOs
- g/2J84jCA61GUBSyWmNwcGfmiGdcY8MUvaUiScqfCbHdx60=
-X-Google-Smtp-Source: AGHT+IGG9+J1Ou/jd3qadshRbBJ/Wp2eKOi/gbRqkQGqDcKBV5sQGzBrbtB5uyoenJd4kWmin0VbIxWxQLXhGJ7RXpY=
-X-Received: by 2002:a05:6870:7027:b0:1fa:a802:5f0d with SMTP id
- u39-20020a056870702700b001faa8025f0dmr4427223oae.35.1702306130239; Mon, 11
- Dec 2023 06:48:50 -0800 (PST)
+ bh=gRGCxW6C87fW7k1z6BNfM3iwOvIKvLjOJp9SZ6n603I=;
+ b=DoApP5amifYrM8+lkHSiZGQtQ3BFBJWmWsfbOWp3tTDA1AQr+PA/rH0WVaRM6k7qyH
+ xCM7/XjiwlAH9NAZL6e6RijGCm8cOVyVMRNY/i7MqA8pHX3m254ucQenIGaL7ylZvahB
+ sKWwygeRET0B/35xer9uNxoya8CUfVHvJAfkoEmbPQUtqSUeKKxT5erJwSh03MPnuAku
+ CJT1TUKe2IWAXi6R/MgxMi9+bvG3+fFKwOShPFieOhq0vwrQlN2889g1b3VoSxkZ9swW
+ Rx6tKStJAJV76ZcNJ5F4vC82ZddYTSZgNNXF7P+5U+CptfyJ2NmFwT6SXR6F5wHYikqG
+ Utbg==
+X-Gm-Message-State: AOJu0YwKlLRCurIONJEy6VHh3sI7ipwRRHX6j7PfSq73MskiNLiXU4vi
+ BRvbI5esOM6QCjdgM/0pFj0XAw==
+X-Google-Smtp-Source: AGHT+IEUUIkKHo/0xFx7yZaTLtZXK4NcxjZWyn9Zw9RScxTNHUHCpuHOgPbH/+1u8t+buIl0fgrtqg==
+X-Received: by 2002:adf:fe04:0:b0:333:2fc4:457 with SMTP id
+ n4-20020adffe04000000b003332fc40457mr1403498wrr.80.1702306805001; 
+ Mon, 11 Dec 2023 07:00:05 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ w13-20020a5d404d000000b003333f9200d8sm8789562wrp.84.2023.12.11.07.00.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Dec 2023 07:00:04 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 1A3C35FBC6;
+ Mon, 11 Dec 2023 15:00:04 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [RFC PATCH] chardev: use bool for fe_open
+Date: Mon, 11 Dec 2023 14:59:59 +0000
+Message-Id: <20231211145959.93759-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20231208124352.30295-1-kwolf@redhat.com>
-In-Reply-To: <20231208124352.30295-1-kwolf@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 11 Dec 2023 09:48:38 -0500
-Message-ID: <CAJSP0QVtEu4gPUi0yf3LTqvA3JbUx-STQGE5LoV+GSpZ=unK+w@mail.gmail.com>
-Subject: Re: [PATCH for-8.2] block: Fix AioContext locking in
- qmp_block_resize()
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, qemu-devel@nongnu.org, 
- qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x31.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,55 +93,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 07:44, Kevin Wolf <kwolf@redhat.com> wrote:
->
-> The AioContext must be unlocked before calling blk_co_unref(), because
-> it takes the AioContext lock internally in blk_unref_bh(), which is
-> scheduled in the main thread. If we don't unlock, the AioContext is
-> locked twice and nested event loops such as in bdrv_graph_wrlock() will
-> deadlock.
->
-> Cc: qemu-stable@nongnu.org
-> Fixes: https://issues.redhat.com/browse/RHEL-15965
-> Fixes: 0c7d204f50c382c6baac8c94bd57af4a022b3888
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->  blockdev.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+The function qemu_chr_fe_init already treats be->fe_open as a bool and
+if it acts like a bool it should be one. While we are at it add some
+kdoc decorations.
 
-From IRC:
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ include/chardev/char-fe.h | 19 ++++++++++++-------
+ chardev/char-fe.c         |  8 ++++----
+ 2 files changed, 16 insertions(+), 11 deletions(-)
 
-09:40 < stefanha> kwolf: "[PATCH for-8.2] block: Fix AioContext
-locking in qmp_block_resize()" fixes QEMU 8.1 bug and is not a
-regression?
-09:41 < stefanha> I'm trying to understand the nature of the issue and
-whether to roll an -rc4 tomorrow and delay the QEMU 8.2 release by a
-week.
-09:41 < kwolf> stefanha: Looks like it, yes
-09:41 < kwolf> stefanha: Probably not worth an -rc4 on its own if
-there are no other fixes
-09:42 < stefanha> Okay, thanks. If nothing else comes up by tomorrow I
-will tag v8.2.0 (final) and we can merge this immediately when the
-development window and -stable tree opens.
+diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
+index 0ff6f87511..87b63f8bc8 100644
+--- a/include/chardev/char-fe.h
++++ b/include/chardev/char-fe.h
+@@ -7,8 +7,12 @@
+ typedef void IOEventHandler(void *opaque, QEMUChrEvent event);
+ typedef int BackendChangeHandler(void *opaque);
+ 
+-/* This is the backend as seen by frontend, the actual backend is
+- * Chardev */
++/**
++ * struct CharBackend - back end as seen by front end
++ * @fe_open: the front end is ready for IO
++ *
++ * The actual backend is Chardev
++ */
+ struct CharBackend {
+     Chardev *chr;
+     IOEventHandler *chr_event;
+@@ -17,7 +21,7 @@ struct CharBackend {
+     BackendChangeHandler *chr_be_change;
+     void *opaque;
+     int tag;
+-    int fe_open;
++    bool fe_open;
+ };
+ 
+ /**
+@@ -156,12 +160,13 @@ void qemu_chr_fe_set_echo(CharBackend *be, bool echo);
+ 
+ /**
+  * qemu_chr_fe_set_open:
++ * @be: a CharBackend
++ * @fe_open: the front end open status
+  *
+- * Set character frontend open status.  This is an indication that the
+- * front end is ready (or not) to begin doing I/O.
+- * Without associated Chardev, do nothing.
++ * This is an indication that the front end is ready (or not) to begin
++ * doing I/O. Without associated Chardev, do nothing.
+  */
+-void qemu_chr_fe_set_open(CharBackend *be, int fe_open);
++void qemu_chr_fe_set_open(CharBackend *be, bool fe_open);
+ 
+ /**
+  * qemu_chr_fe_printf:
+diff --git a/chardev/char-fe.c b/chardev/char-fe.c
+index 7789f7be9c..5a09ef4da7 100644
+--- a/chardev/char-fe.c
++++ b/chardev/char-fe.c
+@@ -257,7 +257,7 @@ void qemu_chr_fe_set_handlers_full(CharBackend *b,
+                                    bool sync_state)
+ {
+     Chardev *s;
+-    int fe_open;
++    bool fe_open;
+ 
+     s = b->chr;
+     if (!s) {
+@@ -265,10 +265,10 @@ void qemu_chr_fe_set_handlers_full(CharBackend *b,
+     }
+ 
+     if (!opaque && !fd_can_read && !fd_read && !fd_event) {
+-        fe_open = 0;
++        fe_open = false;
+         remove_fd_in_watch(s);
+     } else {
+-        fe_open = 1;
++        fe_open = true;
+     }
+     b->chr_can_read = fd_can_read;
+     b->chr_read = fd_read;
+@@ -336,7 +336,7 @@ void qemu_chr_fe_set_echo(CharBackend *be, bool echo)
+     }
+ }
+ 
+-void qemu_chr_fe_set_open(CharBackend *be, int fe_open)
++void qemu_chr_fe_set_open(CharBackend *be, bool fe_open)
+ {
+     Chardev *chr = be->chr;
+ 
+-- 
+2.39.2
 
->
-> diff --git a/blockdev.c b/blockdev.c
-> index 4c1177e8db..c91f49e7b6 100644
-> --- a/blockdev.c
-> +++ b/blockdev.c
-> @@ -2400,8 +2400,9 @@ void coroutine_fn qmp_block_resize(const char *device, const char *node_name,
->
->      bdrv_co_lock(bs);
->      bdrv_drained_end(bs);
-> -    blk_co_unref(blk);
->      bdrv_co_unlock(bs);
-> +
-> +    blk_co_unref(blk);
->  }
->
->  void qmp_block_stream(const char *job_id, const char *device,
-> --
-> 2.43.0
->
->
 
