@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A6F80CA78
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0DD80CA77
 	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 14:05:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCfxa-0005nS-SG; Mon, 11 Dec 2023 08:04:35 -0500
+	id 1rCfxx-0005pW-UU; Mon, 11 Dec 2023 08:04:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCfxZ-0005mx-6q
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:04:33 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCfxw-0005pK-06
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:04:56 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCfxX-00054S-9M
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:04:32 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3333074512bso2861205f8f.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 05:04:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCfxu-00058b-Ho
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:04:55 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-336223afe64so735742f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 05:04:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702299869; x=1702904669; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702299893; x=1702904693; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=kuWaf12YblzXYC4gd29Ng61Snnnq4mLQpk9zoPJBqbU=;
- b=pDqEbHclWBvQ1AOKpRYELrr/ul0dTVHf6GiZyPodWQmedLJ36RtHOV4AreLbadPfe2
- 45Fq2B35seAJjLRqG7CpiNBN7B/idTG8/6Lf6NsDcwCVM4EwdNda3bzLurdg2p85Frnn
- SqWdRv+V6ThkUqNGvwQLQSm4yrIoV6eM1XvDwqcpKJ0S/XdDIhx1yqcg5p/iOxCNXCru
- 4oHtdIacDVmZIwFb2kQRIMMEQgYD7WIVDdez6M1U0oGzQcqNK5xbR3I81QalB8jHwqD+
- SL4F5MaNXqO4/S/2yS3Z+RIjzdsqZz1cnW5DwJduJoNjFCwyoSE+Vye5Lx6TpYQ2jkbG
- rnLg==
+ bh=rVfsDHJ1pNq8aA8tMO2BOG+zyqKJN+Kf6hQsUEHtY18=;
+ b=MGvFXUOF8CkvITsnFrMNnro2F3GN56a1+BgzigYLG4PT1dxotlcSHr2rvUjk5QFvbw
+ 2rbDtM191CaRRCHwur3hTJZG3RprNoq4UwFu6d1UH74EkDjImtD2LRRjncDWRHVDl6P5
+ p37HHczEI0m2LV1WRvcgVNeU/OzZI1eb6Vrf99BWvnb2cgcrq5wN6M+qh7EZ+QjsbJRw
+ uuXjfI97RIddeYLdpj0Z0VihqOg8dj0UNORdtZQY2W08+PSTWcih0MtM33QMGB4t2+sO
+ 4e4qYnd8XeiRIkMZjPWgEeZIqwOs4PM9IwO6KYQcr+KNyU+7MG+BFfdOXLTzQsUkGneN
+ 893A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702299869; x=1702904669;
+ d=1e100.net; s=20230601; t=1702299893; x=1702904693;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kuWaf12YblzXYC4gd29Ng61Snnnq4mLQpk9zoPJBqbU=;
- b=OuFTSkl1Mppzy7/VjTNQ1LcWu5H/N/D1e0mohtujwS2CpylcCpTCf4ZTsbY5QSnbOj
- MA/+bMrdDe8Q0kq61fgp7V7utFH1PYQrkbIPgcXXnKBee6QmTeCi/BsyNsUg0HTmiO3p
- S4Cm0RV5/NrWGOZ9dMF2+wTx69XSwocxilBl60foC79Nq56O/EcKY+3ouW9P5UTQX/cM
- fQXjN/nd69QtIKiON1FK1K94ST556QHw8yvCnN6puzi/gZHJgDzDBqELq44sKpSTrwDS
- Bnp8DOZielDL9mEuNGcfxxAPZdgtJk8qRhPUGbL7gtNjuB21EwLs8grFIP1OLxfAlAEI
- XLSQ==
-X-Gm-Message-State: AOJu0Yx7HbF35e6Rm5jjLRQdfQuxn4yg8ASS3n5SzrKKEuBFwrG4mjZU
- VfjdQMoIZmexxdgFJoweEmTg9Q==
-X-Google-Smtp-Source: AGHT+IFwfnauUt34yGk+J1lPbf4oD8yNDE49fmZ1R2mLCfsXwsnNnw1XMhaQ0kfolHm/fMZD+EFjtw==
-X-Received: by 2002:a05:600c:c0c:b0:40b:5e26:2372 with SMTP id
- fm12-20020a05600c0c0c00b0040b5e262372mr2260526wmb.35.1702299869175; 
- Mon, 11 Dec 2023 05:04:29 -0800 (PST)
+ bh=rVfsDHJ1pNq8aA8tMO2BOG+zyqKJN+Kf6hQsUEHtY18=;
+ b=PFwHHVBNA8nVh9rm//qJPYY91K7iuiqU5Xl4lSnvHFDO6ygVXUiArjzVwxHjzOpWbH
+ ldwaezQjTIverJ7Re8Y8R/OtduyUnY61u18ItYkGUvIbmjYqCERNIF0D39y+wci7hIRW
+ spByr/CYpYYx6JrQcfCCiEQtNSzGP9tG/LYF3/aKclBZ4aTwPlhiFDdQui2bBl0MooMT
+ HapKAn6Kml6AgNf0MVtDq45HJES9eZwI3wvt0x09TF4HwD0TQhCeS4oVvnVuAbyC1Oiq
+ 47+jfOUooBebLvEHFFm+vmGymrpgh5B72dMcjk432M8ikOl4WnW3tVLIj35YuEmnJ6mi
+ gd6g==
+X-Gm-Message-State: AOJu0Yxi8uPY3FSUiRYuDbhf73GPA43pu+QdbUSi0DmqJhIxqtRbOVL3
+ yzwLmgHnZOu2px1QpBmd9Sv/6w==
+X-Google-Smtp-Source: AGHT+IFWGF1UOvlhJkzwcrdJyrgId7x3Ut2UlPMewXPFQM34gYGaZD1oXudFNrVglVoWZJ9TJpHA+g==
+X-Received: by 2002:a05:6000:1b8c:b0:336:1adc:fe09 with SMTP id
+ r12-20020a0560001b8c00b003361adcfe09mr1208860wru.16.1702299893001; 
+ Mon, 11 Dec 2023 05:04:53 -0800 (PST)
 Received: from [192.168.12.175] (61.red-88-29-188.dynamicip.rima-tde.net.
  [88.29.188.61]) by smtp.gmail.com with ESMTPSA id
- b5-20020a5d4d85000000b003333521a1cesm8536424wru.57.2023.12.11.05.04.25
+ b5-20020a5d4d85000000b003333521a1cesm8536424wru.57.2023.12.11.05.04.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 05:04:28 -0800 (PST)
-Message-ID: <a36980fe-c6dc-42cb-8e96-df00438af229@linaro.org>
-Date: Mon, 11 Dec 2023 14:04:23 +0100
+ Mon, 11 Dec 2023 05:04:52 -0800 (PST)
+Message-ID: <0824d2e1-dbc0-435a-93ce-c2cd1d1ed055@linaro.org>
+Date: Mon, 11 Dec 2023 14:04:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/16] accel/tcg: add trace_tlb_resize trace point
+Subject: Re: [PATCH v2 14/16] accel/tcg: define tlb_fill as a trace point
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -71,13 +71,13 @@ Cc: John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 References: <20231211091346.14616-1-alex.bennee@linaro.org>
- <20231211091346.14616-16-alex.bennee@linaro.org>
+ <20231211091346.14616-15-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231211091346.14616-16-alex.bennee@linaro.org>
+In-Reply-To: <20231211091346.14616-15-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,9 +101,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 11/12/23 10:13, Alex Bennée wrote:
-> I wondered if the discrepancy I was seeing in fill patterns was due to
-> some sort of non-deterministic resize being triggered. In theory we
-> could resize away at any point which might account for the difference.
+> While we do have a bunch of debugging we can turn on in cputlb there
+> is an argument for making tlb_fill a generally available trace point.
+> Any fault (via probe or access) will have to be preceded by a tlb_fill
+> for the address in question.
+> 
+> We don't bother logging the return address as that will be a host
+> address associated with translation and therefor can move around with
+> ASLR.
+> 
+> In my particular case I'm trying to track down a difference in memory
+> fault exception patterns between record and replay phases.
 > 
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
