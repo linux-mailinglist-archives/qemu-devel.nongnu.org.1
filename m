@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BD680DCFD
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:26:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A1780DD0A
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:28:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCniO-0001S9-8C; Mon, 11 Dec 2023 16:21:24 -0500
+	id 1rCniQ-0001jJ-8a; Mon, 11 Dec 2023 16:21:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCniD-0001Cf-Sj
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:21:16 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCniL-0001Pd-JW
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:21:23 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCniB-0005RA-F9
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:21:13 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-54cdef4c913so12195497a12.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:21:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCniJ-0005Vi-Ex
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:21:21 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a22deb95d21so42221966b.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:21:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702329670; x=1702934470; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702329677; x=1702934477; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WbDQbeYc3MqbJhEQi67twemcgBt5US82mKEOXjqMt3c=;
- b=bu83fq66c3y8COUJQE/1HYDTWJBAj8oK7R9gJtR8+C1t/KaOAzRszW2erbuUnI6b55
- OFJ6jOSo89aMtGE9T8XQG/X1TcRnS1GHF8o0utDxq3RBraquD4FeP+NewW4NW0NQqe8e
- Cgvehdyxlzfo7igd/CI6mOY42FmBJE0wfMn8dWYMAyLipP1Pl8JyXk4cveJ4kCMoSLnf
- lUyXg6e8WufGTxMWgdahTyUYJqCxAfJD3vzr0nUsA2I78y3ENvkESPDmBqGmvDl29R7w
- wJVzgm6nV3BWFimhaxy2LMbuxgtM828C9/vTPRB1TWQuPQDdj/fhjKN0VsnidOKaL+J3
- kwyw==
+ bh=bTgCkgY7q586A21zu0JSDs5UTTpVyxNoAlIlHHAmSdk=;
+ b=TFOOUYjN78GL+LGHhaxOShD1D6B3VHtjt19UEUabJdYdDe+FABS2z2c49Kubc0aJZM
+ +XeCyNXMGrcmW8T2akELE2WQz8R+SQKxPn7s9N7IHgACW9We52O3fk64pIwqsMM0bZRL
+ Zi7DezW4rsTqQNj66POZs/C9mPRo2r4Be0YOIsbpa1/4mqYXdB9l66izTXeg6jFzRDhq
+ yOUZum7T4HiG6ce4kKp3P2ZnuPOLK4UruFBVoR5Aoz1z181Vq8GbRPbBldWV9KA75gPN
+ 427i5oFhSUxOvCelOulwZAiT7BhZTJPttFOCQFVcBE9uIrratD4eg/WvlyId8WyVhUpe
+ 33qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702329670; x=1702934470;
+ d=1e100.net; s=20230601; t=1702329677; x=1702934477;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WbDQbeYc3MqbJhEQi67twemcgBt5US82mKEOXjqMt3c=;
- b=ZisJOaZsecQ3oqJ0A4ioY1EIhtdw+9QOcl6rDAGaqrl8/cODKJqIOwh6VvJ9k+INRL
- gx5nW9vohw4BfYi+Ijesekgv8glPE4xNkjs6yPfFN2EawduNL6j20gPBjWHx6nmFDnw1
- mb+T4aMh6NkmY2uPehtsyhha8XG3azc1j003Q6QmE/3GRiJJu1xUHG1esx2BopVh9vst
- BIV7gJQO1skqHWGEbpcEEbUMVBcEB3ki6yvj5lmv4pre0JrcMFyrZ9ykjeXCRHjnzYDr
- MDqvDEm2Cgiwe+L7snALynojUaGkCd9rrzb4G2stdJAuSoetk51e2keyi5eDw+KOWe+t
- YGpw==
-X-Gm-Message-State: AOJu0Yyaw5KIpieN3waI20GEdGkTafYw5w/IcgDwaFXct700aN1JiLro
- 2wrP6n40BsCE+tkGOzh5RDzE6OURLitn6jXumQYysw==
-X-Google-Smtp-Source: AGHT+IHqm4UZ94oft03ymzOFSZfr6wL2NQDR25w3u0JiNetMo2FIb4m6lHXBdEO0USlv9SICLLe3wg==
-X-Received: by 2002:a17:907:c08:b0:a1f:9842:5a4b with SMTP id
- ga8-20020a1709070c0800b00a1f98425a4bmr3691271ejc.66.1702329669925; 
- Mon, 11 Dec 2023 13:21:09 -0800 (PST)
+ bh=bTgCkgY7q586A21zu0JSDs5UTTpVyxNoAlIlHHAmSdk=;
+ b=gmhuw8k45Q5XvgV83tTn0uV5nw7TZHXiTkQjJx+9Bs5VPzH4CzniL+qYjE7BsYAYIe
+ fq4iBenjIJH/peidB3rxuGiKKbT2NRW119cMoWxvrHKUgk7cQJOuB3R+5/NtM2zqEyK3
+ gPVlQLejiXBlhN0hVNVd13RLlvJ91pcFJ+QDg+HuuJBV/wV6WmQtleo+bquvdnmZVjXh
+ I5cmbOYyX708QuB74GI/M1QKe9Ez+vjmlNC6pd16qVSQ4P7HyY9I3auiO9iWrtqYSsZJ
+ yIUC3mFCk9Fu2Ca8anYFj2POJdYHMv7jbNedFiqmJle8EMlh8GvOI18NmoYdrinzo62L
+ Uusg==
+X-Gm-Message-State: AOJu0Yx1YAigZkeAaxnuNqEPVWMdiNHlpGPXN8suLbW2WKasCklgSQB3
+ dNEsnGIvv6atsXKNX6KRZM80nYVC6UsURKUPbcS0xQ==
+X-Google-Smtp-Source: AGHT+IE7u8ErDB3qbkoxcWJBZGHg9TNyGS0VK2dx6Y5oKzk/mTl8UNR2B14GFHxyP9kq57rEnK1Ndw==
+X-Received: by 2002:a17:906:738b:b0:a1f:84ea:d8da with SMTP id
+ f11-20020a170906738b00b00a1f84ead8damr2472617ejl.45.1702329677390; 
+ Mon, 11 Dec 2023 13:21:17 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- vh9-20020a170907d38900b00a1d18c142eesm5352528ejc.59.2023.12.11.13.21.07
+ tk3-20020a170907c28300b00a1cd54ec021sm5361923ejc.57.2023.12.11.13.21.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Dec 2023 13:21:09 -0800 (PST)
+ Mon, 11 Dec 2023 13:21:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
@@ -72,18 +72,17 @@ Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 07/24] host/load-extract: Include missing 'qemu/atomic.h' and
- 'qemu/int128.h'
-Date: Mon, 11 Dec 2023 22:19:44 +0100
-Message-ID: <20231211212003.21686-8-philmd@linaro.org>
+Subject: [PATCH 08/24] host/atomic128: Include missing 'qemu/atomic.h' header
+Date: Mon, 11 Dec 2023 22:19:45 +0100
+Message-ID: <20231211212003.21686-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231211212003.21686-1-philmd@linaro.org>
 References: <20231211212003.21686-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,29 +105,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-int128_make128(), int128_getlo() and int128_urshift() are
-declared in "qemu/int128.h". qatomic_read__nocheck() is
-declared in "qemu/atomic.h".
+qatomic_cmpxchg__nocheck(), qatomic_read__nocheck(),
+qatomic_set__nocheck() are defined in "qemu/atomic.h".
+Include it in order to avoid:
+
+  In file included from include/exec/helper-proto.h:10:
+  In file included from include/exec/helper-proto-common.h:10:
+  In file included from include/qemu/atomic128.h:61:
+  In file included from host/include/aarch64/host/atomic128-cas.h:16:
+  host/include/generic/host/atomic128-cas.h:23:11: error: call to undeclared function 'qatomic_cmpxchg__nocheck'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    r.i = qatomic_cmpxchg__nocheck(ptr_align, c.i, n.i);
+          ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- host/include/generic/host/load-extract-al16-al8.h | 3 +++
- 1 file changed, 3 insertions(+)
+ host/include/generic/host/atomic128-cas.h  | 2 ++
+ host/include/generic/host/atomic128-ldst.h | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/host/include/generic/host/load-extract-al16-al8.h b/host/include/generic/host/load-extract-al16-al8.h
-index d95556130f..6b47339b57 100644
---- a/host/include/generic/host/load-extract-al16-al8.h
-+++ b/host/include/generic/host/load-extract-al16-al8.h
-@@ -8,6 +8,9 @@
- #ifndef HOST_LOAD_EXTRACT_AL16_AL8_H
- #define HOST_LOAD_EXTRACT_AL16_AL8_H
+diff --git a/host/include/generic/host/atomic128-cas.h b/host/include/generic/host/atomic128-cas.h
+index 6b40cc2271..4824f14659 100644
+--- a/host/include/generic/host/atomic128-cas.h
++++ b/host/include/generic/host/atomic128-cas.h
+@@ -11,6 +11,8 @@
+ #ifndef HOST_ATOMIC128_CAS_H
+ #define HOST_ATOMIC128_CAS_H
  
 +#include "qemu/atomic.h"
-+#include "qemu/int128.h"
 +
- /**
-  * load_atom_extract_al16_or_al8:
-  * @pv: host address
+ #if defined(CONFIG_ATOMIC128)
+ static inline Int128 ATTRIBUTE_ATOMIC128_OPT
+ atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
+diff --git a/host/include/generic/host/atomic128-ldst.h b/host/include/generic/host/atomic128-ldst.h
+index 691e6a8531..12e4aca2da 100644
+--- a/host/include/generic/host/atomic128-ldst.h
++++ b/host/include/generic/host/atomic128-ldst.h
+@@ -11,6 +11,8 @@
+ #ifndef HOST_ATOMIC128_LDST_H
+ #define HOST_ATOMIC128_LDST_H
+ 
++#include "qemu/atomic.h"
++
+ #if defined(CONFIG_ATOMIC128)
+ # define HAVE_ATOMIC128_RO 1
+ # define HAVE_ATOMIC128_RW 1
 -- 
 2.41.0
 
