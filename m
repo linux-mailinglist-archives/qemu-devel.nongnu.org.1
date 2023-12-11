@@ -2,167 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F95B80C103
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 06:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1E380C10E
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 06:58:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCZEw-0003Kk-J2; Mon, 11 Dec 2023 00:54:02 -0500
+	id 1rCZIo-0004Lr-VX; Mon, 11 Dec 2023 00:58:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rCZEt-0003KL-VX
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 00:53:59 -0500
-Received: from mgamail.intel.com ([134.134.136.24])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rCZIm-0004La-SA
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 00:58:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rCZEs-0004jb-CM
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 00:53:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1702274038; x=1733810038;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=N2I1W2NX5ewesifASoi9A2Pc5OxavWcOIrB0+i0APPY=;
- b=iAr0gjq2QrREnh2/Ud3yICNohfg7PGP4xfCItTtrjSaKZ30IjgiDPUcC
- UiVZuCUBuf8rbDqbEZQMGDJZNAb5VuAnABi6MoP+ikEkFuPpa7j/dYr1N
- KMjQqWMAXzzusMmQCwfWwV0e1BvZjytHYbhNFh8Fj4sdDB3b4IyW1vjDb
- xnS94C2eV3Qgukn2tphi8sAJmkkeBC4q0B123xruYuesvlOUofj3e0GAO
- 1BfxkYCDe4XU9tbhXjekSkN1AROVga330GV4UIUg2lFHE2bpUijn4SuPq
- KBT/zsrnRACGRzNyNMpkftyWGgUCIIjspIoc5sFq1a8pwS8//zJTPCHHV w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="397384940"
-X-IronPort-AV: E=Sophos;i="6.04,267,1695711600"; d="scan'208";a="397384940"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2023 21:53:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="916710571"
-X-IronPort-AV: E=Sophos;i="6.04,267,1695711600"; d="scan'208";a="916710571"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by fmsmga001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 10 Dec 2023 21:53:56 -0800
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 10 Dec 2023 21:53:55 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Sun, 10 Dec 2023 21:53:55 -0800
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sun, 10 Dec 2023 21:53:55 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ot0IDt46waNkdssfuRvNzAlFeVqb7jBcb15l3gXcSzi9Un2C2eBkpaC9/OvKUjNOrAOOEYyAfzHFtDtchcHA1s9B6/kknDGWzHEq3Gi9QYIok4dI7l6tq/kjwXZwkV5ibzznf7TauuC7eCVY/yQWlTywpDdggxr958DdelxPZclZNCWTiHNJSmwDlU5Bym4ncbrZ4HkbtFZxyJXnjLDyHEOy9ZmrQ/516q3yvNDaDe0KvNSCLDRzLsPfB1BrF+uqCruFLk6Aa2S9MutmZb3m1y/WrMq/+dKUUnUvkHLt4TiDtitRNM6FszE6O0/JyMGfl2OWZ0W0GXm0CU6aKwIqVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N2I1W2NX5ewesifASoi9A2Pc5OxavWcOIrB0+i0APPY=;
- b=Y4BEz4jKRcfhQ+sc8+38AGGmcSS2cGLMWWFNc4O0BdWtEvJ1bC+XKUF7c/2386YuMHAeNK8U8IJLMfQQ+Bj7Ji1W3nHkdfEx+zwFWzgqmVudNR5eUcwZuPboLuVGUWXjnOnoDNKWGf5inMii6y0g/TzCFXR12gMI9Fjioxx6vKG+BHyGRDpiBuNMrmG1yAr6EQSNfvcCR9qqlMY7zFEuLIpkskxsFWF8s8457SKG5Yv6UHRYz8Z0ZW6HK6jouT7lzQTjDuCKr/t+w8xYa+76Nyd7hl8oK/qlv6Emexet/XFaFDEk+SFKOKa2SAOdlFHyOO+xJbQ14aXr2Hg+tJuc4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by CY8PR11MB7947.namprd11.prod.outlook.com (2603:10b6:930:7a::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Mon, 11 Dec
- 2023 05:53:48 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.7068.031; Mon, 11 Dec 2023
- 05:53:48 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: Eric Auger <eric.auger@redhat.com>, Alex Williamson
- <alex.williamson@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, "Harsh
- Prateek Bora" <harshpb@linux.ibm.com>
-Subject: RE: [PATCH for-9.0 02/10] vfio/container: Introduce
- vfio_legacy_setup() for further cleanups
-Thread-Topic: [PATCH for-9.0 02/10] vfio/container: Introduce
- vfio_legacy_setup() for further cleanups
-Thread-Index: AQHaKbMn3N6fKcQuhESU0+VQ0D+YBrCjmVBg
-Date: Mon, 11 Dec 2023 05:53:48 +0000
-Message-ID: <SJ0PR11MB6744987774DE324895390D25928FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231208084600.858964-1-clg@redhat.com>
- <20231208084600.858964-3-clg@redhat.com>
-In-Reply-To: <20231208084600.858964-3-clg@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|CY8PR11MB7947:EE_
-x-ms-office365-filtering-correlation-id: 3d643482-3ed0-4660-b12a-08dbfa0d8b4c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: myGNQ4z1ZT0usRxp9vXFwkHw6JS2r7wb0FEQQfSP+xZVDeNY91ygduQUKxGoEt0Ukrb65DVtQ+K2hJCdEcGrtFgDMMG9ihznRyjfkw3yRrJ4bYQCThXC7ZU5GVLusobAFP1v8aNTcW+giH7PiozIPEilw83fytyXKfUFAsrE0R91TS5a8Gsmx1TXvLXwpPlcRvZ1/+sh3AqBpFcq1fUIQ1fZxMd6AWx5CcoSheRXbbBRLtL3/ox+u78I42zGAV43K06lfPC5X1dBBJia0TZ+gINt2W74X72yGRVmS/4fIPcxBG9zu7BBV5ymz5s5TBd3aje1Z+AJ4wydila+Hgyp3LPPlGGPVrC2WPcQRgufDnTQUb0rv2KZmyGOp2i8fGOy5YREzktaObS8Mjm/UIaLMiri8IXJY5d8k49KC6DCK0X8dL0t2TkYuVrJJ7WDklUyEX/6vjSVAomJ52MBYwkt751lIkRFpmZruh0SxJOBh6LWMJasqthf12cqX4JNXFWINg85nX14VRKXwUxkFhyA1aV/Kq96zlTyojJpqovld2kQXsvd2W6+gFZMl8+GIopSi/SEpJTfjvuKNVsXh7+aXowGKSemJoCQDBxt30Zaet/ZEJaOXxnNvuD14hezTe8F
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(366004)(396003)(136003)(376002)(346002)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(9686003)(52536014)(6506007)(5660300002)(26005)(33656002)(55016003)(38070700009)(4744005)(76116006)(54906003)(66446008)(66476007)(66556008)(66946007)(64756008)(2906002)(83380400001)(82960400001)(41300700001)(478600001)(7696005)(86362001)(8676002)(8936002)(4326008)(122000001)(110136005)(316002)(38100700002)(71200400001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eFROK1F5KzNlNW8wUWVUaHVKWFBFUEtmaDR1K0M5dlRORXdxM2lySlJWTW0y?=
- =?utf-8?B?REhvTHlNakl5VTF5b1krVnlSZzNHci8yZGJhR29Gbms4UzFJenJFV0RONG5C?=
- =?utf-8?B?SDhmdXhzWHFhUEZucmxaVkdIb3djTzRqQmNJb3dJTXBNWm5KaE1uR1FaMm45?=
- =?utf-8?B?Y1lkSlcyaWQ5bXQ5eHJHSmo2cEVLR0Njd2dzeGk3UG41UjJCaUd4Q09JVnY4?=
- =?utf-8?B?OENqV0dXa1VhZGJETmpmUEJOM1ZMejBxa25vYUtPeFlFc1NnZjd6N1RwY0Ey?=
- =?utf-8?B?b05GY1ZmNWtwUitzeDJsTlJZZml4NS9ZdE1QQXFxOEloT215TmdNMDgwNFEz?=
- =?utf-8?B?R1RIM3pKd21IUVNBUTVlMEllK1ZYek5wRWhIZEtjQ3VWRFp4UW9jWVc3OStW?=
- =?utf-8?B?a2FQWlQvSnNnVTFubEI4elF2RVhlbGZETVNSbmtFZzRFeTBra2kyN0hzVjU1?=
- =?utf-8?B?dUxNYldFSDVnQytDT291c0RUdjZycFVLalZRMnFRZGhESTNqU0w0bDJndElw?=
- =?utf-8?B?M1dyQ2d6aHlQcllVT0dTL3hlQ1NYMWpNdWVJZ0NKUkhJQ3paejBvZVV0bU10?=
- =?utf-8?B?UUI1WE1hK0ZUOUhSbDdZOU95Z1BodXNHN1hPVkN5bFBaWmxyMVRtNmNwd1da?=
- =?utf-8?B?cDB2UUR1UDh1azF4dE9pa2NQLzQ2c3QwVmpSYkJMZCtVRDlKamhXQjRsclRT?=
- =?utf-8?B?ODBEK2xJbmxmVWdtaHJOdkdOT3JoL2FXZVg2MUQvYWFsY3BkTnZ1NE9ySGsw?=
- =?utf-8?B?U3JRbXA0OHYrTThBMkl6SkpkbUxlK1drZTJiQnlnS0pTNkFuUXg2Ty95STBU?=
- =?utf-8?B?UDhnVUtTZFZvcXZsbXMrcEd0QkV6R2RxS2xYZFpJNkJRTXhObm5Fa1FtVzlB?=
- =?utf-8?B?YnM0TzdsYnF2bnhVTE1SNTl3RzZwMDEyZDdZZzFhdDRLMjBnazFiZ0pyWU0r?=
- =?utf-8?B?OFlzNmhjYmJUNk9rcnBORGJTSlFqM25HWUFUUlpDeEplRTdLc1gvZzE4NnRs?=
- =?utf-8?B?dXhKamJmS2xyUzBKeURDaDZTWnFVVTR3cEJzMlh5ekMwNEVCR3Y2aXo1MDgy?=
- =?utf-8?B?OXRPYnFCM0ZGdkV4dmJDVzhhYVVaTjJMdnllRVlKcHd0L05jZ3FFODc0Y0tL?=
- =?utf-8?B?dGpLalFNVmRCZEZ4cS8vTWxzN2lxbndETmV1cnJRRndVZmREMG50M0pzVndX?=
- =?utf-8?B?bDhiUmpnNmh6UktqR3F6SEhZeUhzWklJZktWSEJaNVMxVHJ1YkFralJVSzZt?=
- =?utf-8?B?elg1bXpwakxmQkVpQ1gxRndLK0VqV1VNN0djaUpHZnZBaS95cEtVY3RoTlJQ?=
- =?utf-8?B?QUc1bnQzWmlKMFRpYUt0YkFWcHg5UlhiWXFOTStrRVhsMzJvTTh4MWdraFlT?=
- =?utf-8?B?Mk9aYmlGQlhDYzNaOVdiMndCUlI3OG9vMXlqWkgrZ0Y0YlRHVkMwL08vdGhL?=
- =?utf-8?B?ZFFOSmZQT2h5SVB3RTBKQmVLaFFhRjg5UGlBcUNUTHVQWGhZVDM4VXdJL2RD?=
- =?utf-8?B?Z0lNbkFwM1JkM0w4SVhqYWZrUWJJVUxSK0tDbHNDRWMrNU9tbUR4RWJ2WEp3?=
- =?utf-8?B?RS9qeVRXS2YwTk9MOE00a05FeVc2UjMwRFJhd0lROWpGWmtVYi9iU0pFaVFK?=
- =?utf-8?B?OGUwSTloa0plRjh1Tm8yU3F6VVkzcHlMaTNCNEF1VHpnMjdjdzJkQXhQUG9a?=
- =?utf-8?B?WWxDc1NOOGl0dEpGUUNQZkZlUUEwbWIxWFVFM0djdzJtQ1hRd0s2TXQwZEdG?=
- =?utf-8?B?SzFUNTVhNmJGS3NiajJTWUl1azhQR3JIVm5BRi8vdDlHUDFGM3Jnb08zMm1v?=
- =?utf-8?B?dFRqdzNrZDJaS01WZTVCRnVKTjd4NlN2cFo5anlYQ3NvZENBSHRNZkEwdmdY?=
- =?utf-8?B?ckdpMWNrMXV5YlkrdGszSEhoNmxDdHA1T2hpRVptSUdSODh2d1ZrUnJlMitJ?=
- =?utf-8?B?bzl2S3kxZ3ZVWWZJRGxzazZBZWhQMG9qTzFXZ1N3MGNJOHAvQU5iUmhGemho?=
- =?utf-8?B?bUhJOHZud1BDeEZ1T0xyNTVMMEdqZlREUmNiQTVMcXNlUmlaT1dleUk5allx?=
- =?utf-8?B?U09aUURPaEkvZHVIRFBxMkdXazVpanFxSitwZTFNVTB5MVljQTdQTWxFOWtr?=
- =?utf-8?Q?OL03KWHZGDpQwwNM0HNIGWqh2?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rCZIk-0005NG-KM
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 00:58:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702274276;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=QiNwGb974ruh+2GcAbgX84yP16N59L8UCN/Mrtrsn1g=;
+ b=fxoZwdO8EyejRjLcksnkH3+6gsdhsyFI7MR7dz+Gpb8781F8JxWHcTK4rpLpFOlQ3hG2Iz
+ Y3J0jgpWz/p3dmMdpDY8+2d/MhxiSE3jRNQpNax+blO9yWXLm8BAJDEU8ECEng8gHr/Cny
+ tJFFa3O9ALj9tKM/+SzNXD7q13ph/4c=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-351-mMjwYXM0OWejgnlT0-fYeQ-1; Mon, 11 Dec 2023 00:57:55 -0500
+X-MC-Unique: mMjwYXM0OWejgnlT0-fYeQ-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-67a93902530so46624826d6.3
+ for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 21:57:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702274274; x=1702879074;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QiNwGb974ruh+2GcAbgX84yP16N59L8UCN/Mrtrsn1g=;
+ b=FsiFdXIDn7NK/fch/0Gr8jeOMgvSjk64/2Rpclxv7xOPp9+yUh7GITro2QhOAK/0le
+ G3u+e7sp9heEYhECowHnz6PPDGJrEIBXgAf77aQDvWt6uyA42yyWrCbo2Ton1uwCTdwx
+ BYEoJBVFSkfoU1Fe5OUIdT+ph+eCQ+smwP3YMjMZ1Qb8/D2qKRMPbfodreSMQpGmnhdd
+ fngIb6nc++7qMnbt373ONQj7ovL76K9F+mcJdOsMt1B9hywxElVQ1CEwb+q8SjwxZo5B
+ jykfqRIKVjzGhf3F29TVsqY0ac078M/cLxpVLlq1yjv6fZrQoOdhy0yUsSVbWnbCHUcW
+ zAOA==
+X-Gm-Message-State: AOJu0YxJHpMM305RP899+nwm8pOS6Jpc+aNfffgKsswOtJeQqJjJsV93
+ p2lKUDbTDYxFteuTgXaV5Wle64KrrjOew1ZH5lETTrtzhah5+hbfUsVyksaw112taNVOoUdlBKw
+ ygxu/mOQlrfh0vSM=
+X-Received: by 2002:ad4:4e2a:0:b0:67a:c733:eba0 with SMTP id
+ dm10-20020ad44e2a000000b0067ac733eba0mr3970526qvb.80.1702274274577; 
+ Sun, 10 Dec 2023 21:57:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEDBQuiW4rA6etOGFznGECQQJLNRojEkrtDpIPzJYOlXvea3y4vUU9VdwVBsCamShqgOJfp6w==
+X-Received: by 2002:ad4:4e2a:0:b0:67a:c733:eba0 with SMTP id
+ dm10-20020ad44e2a000000b0067ac733eba0mr3970520qvb.80.1702274274326; 
+ Sun, 10 Dec 2023 21:57:54 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-178-138.web.vodafone.de.
+ [109.43.178.138]) by smtp.gmail.com with ESMTPSA id
+ i14-20020a0cf38e000000b0067a33133420sm2993424qvk.110.2023.12.10.21.57.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 10 Dec 2023 21:57:53 -0800 (PST)
+Message-ID: <a7863276-f92e-40b1-b894-2cbff7725237@redhat.com>
+Date: Mon, 11 Dec 2023 06:57:49 +0100
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d643482-3ed0-4660-b12a-08dbfa0d8b4c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Dec 2023 05:53:48.1512 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: F70x7vlspUchCpD57IP0xQ8Qpfr2e0kqHA+VvMR9EUTDJlkQ5DEW5HQroFgwooqademGHphCB5EuwEJ+1toBBm3WROEXEkg6MCHRgqWxhJU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7947
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.24;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] pc: q35: Bump max_cpus to 4096
+To: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Julia Suvorova <jusual@redhat.com>,
+ qemu-devel@nongnu.org
+References: <20231208122611.32311-1-anisinha@redhat.com>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231208122611.32311-1-anisinha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -180,13 +147,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
-IDxjbGdAcmVkaGF0LmNvbT4NCj5TZW50OiBGcmlkYXksIERlY2VtYmVyIDgsIDIwMjMgNDo0NiBQ
-TQ0KPlN1YmplY3Q6IFtQQVRDSCBmb3ItOS4wIDAyLzEwXSB2ZmlvL2NvbnRhaW5lcjogSW50cm9k
-dWNlIHZmaW9fbGVnYWN5X3NldHVwKCkNCj5mb3IgZnVydGhlciBjbGVhbnVwcw0KPg0KPlRoaXMg
-d2lsbCBoZWxwIHN1YnNlcXVlbnQgcGF0Y2hlcyB0byB1bmlmeSB0aGUgaW5pdGlhbGl6YXRpb24g
-b2YgdHlwZTENCj5hbmQgc1BBUFIgSU9NTVUgYmFja2VuZHMuDQo+DQo+U2lnbmVkLW9mZi1ieTog
-Q8OpZHJpYyBMZSBHb2F0ZXIgPGNsZ0ByZWRoYXQuY29tPg0KDQpSZXZpZXdlZC1ieTogWmhlbnpo
-b25nIER1YW4gPHpoZW56aG9uZy5kdWFuQGludGVsLmNvbT4NCg0KVGhhbmtzDQpaaGVuemhvbmcN
-Cg0K
+On 08/12/2023 13.26, Ani Sinha wrote:
+> Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to allow up to 4096 vCPUs")
+> Linux kernel can support upto a maximum number of 4096 vCPUS when MAXSMP is
+> enabled in the kernel. So bump up the max_cpus value for q35 machines versions
+> 8.3 and newer to 4096. Older q35 machines versions 8.2 and older continue to
+> support 1024 maximum vcpus as before.
+> 
+> If KVM is not able to support the specified number of vcpus, QEMU would
+> return the following error messages:
+> 
+> $ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 4096
+> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested (4096) exceeds the recommended cpus supported by KVM (12)
+> Number of SMP cpus requested (4096) exceeds the maximum cpus supported by KVM (1024)
+> 
+> Cc: Daniel P. Berrangé <berrange@redhat.com>
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Julia Suvorova <jusual@redhat.com>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>   hw/i386/pc_q35.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+> index 4f3e5412f6..2ed57814e1 100644
+> --- a/hw/i386/pc_q35.c
+> +++ b/hw/i386/pc_q35.c
+> @@ -375,7 +375,7 @@ static void pc_q35_machine_options(MachineClass *m)
+>       m->default_nic = "e1000e";
+>       m->default_kernel_irqchip_split = false;
+>       m->no_floppy = 1;
+> -    m->max_cpus = 1024;
+> +    m->max_cpus = 4096;
+>       m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
+>       machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
+>       machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
+> @@ -383,12 +383,22 @@ static void pc_q35_machine_options(MachineClass *m)
+>       machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
+>   }
+>   
+> -static void pc_q35_8_2_machine_options(MachineClass *m)
+> +static void pc_q35_8_3_machine_options(MachineClass *m)
+
+  Hi Ani!
+
+The next QEMU version after 8.2 is 9.0. Maybe best if you rebase your patch 
+on top of:
+
+  https://lore.kernel.org/qemu-devel/20231120094259.1191804-1-cohuck@redhat.com/
+
+   Thomas
+
 
