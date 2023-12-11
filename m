@@ -2,73 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF35680DD88
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1D680DD8B
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 22:51:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCo8H-0005tR-Cm; Mon, 11 Dec 2023 16:48:09 -0500
+	id 1rCoAP-0006h2-HF; Mon, 11 Dec 2023 16:50:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rCo8D-0005sz-4W
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:48:05 -0500
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rCo81-00023K-1P
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:47:55 -0500
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6d9d2f2b25aso3512684a34.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:47:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702331271; x=1702936071; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=/COn9gkV6weRcdfjom1M/ZiENmELMvaSBzb8U5l0ybA=;
- b=Y4BQe4UjW5VgIghI2vsXO19xxIcgvMXtH7NFQNxT+DKv9yO7a0IaXr/H4Idnn6r8O4
- nWr20rcl7yVQyF+XVwIjjypMwCAmrOuMkgHJ/cjmi2v8QY/AttnXsrtESzgojMGTd9Yx
- KgcQQZgyqYtAsWUDqp/tgW5hctgJ6/5eUm8dZwefexw7WRlBbZM0oPlm/E1QgmlBFAeW
- fGYPHS40yYTrB/jgtli3f/98gjPn92IjyTB8lchAm3qIjjPDBnN67cI5y6wzvl5bbINJ
- WjcJ+Z7lkkdLPfmhv26HCouPqce971qoS5UceMhbA52j3aS5iRAirQv/sZMf9pRibIKV
- GKcw==
+ (Exim 4.90_1) (envelope-from <casantos@redhat.com>)
+ id 1rCoAN-0006gc-70
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:50:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <casantos@redhat.com>)
+ id 1rCoAK-0002dB-4f
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 16:50:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702331414;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Kfby9h2X+ETcxXvZQB4iewUtiQEuEDDiQNei7fOj1mg=;
+ b=PXNKtokdLA7lsVKMqS5jPA5S9mdBce8WxsPYb/0QjqC9yKU6vtYxrlEl18NRb+xKIR+CIn
+ wjNAGAE3T3Wy1xiIJ86c5ezyUBfReqdp7TIS+dsL29AI81YDzpChnWtB6/eybzcB8mn51j
+ YeOtR9ssoZ8cP2eGIhVKQBRirYF0NcI=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-78-oH4Gl4qxMNOyBe5IGIC9Tw-1; Mon, 11 Dec 2023 16:50:12 -0500
+X-MC-Unique: oH4Gl4qxMNOyBe5IGIC9Tw-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-50e032e0012so986572e87.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 13:50:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702331271; x=1702936071;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/COn9gkV6weRcdfjom1M/ZiENmELMvaSBzb8U5l0ybA=;
- b=Jo7NV22L5PstR98wAfmIg28TlOpIxZn0CM+1HvWGFxW/qqqKugAvdjXJqvILWEqiAG
- 2kgP9Q9vXseybV0VYTK2p9IVv89EkII6T3t64jM8KYZ2FgLR37qWwPSESR2mHQ1sZMrV
- JwY6Umkmxamn9qPmMmDcBpQtZI+5yXSnPDYlchgzOf04HePlVXqN1Zvc7OlxFj5voRqQ
- IUuc9Z1jHA0+w920/Ixa+Rmg47hHWXib9d4+MfdgUyk79Do9XFh0eFdlhRyqVnTafZ87
- x7X2KZzXgnttwRB/KAVSuWkKq3bWTIfnhMKxt6SvjXoiAhU3edzWy35s7WLfl0+MLern
- ksIg==
-X-Gm-Message-State: AOJu0Yx3LwP0wVcx86FKMsPjR1NjtIAvuvm1gtsqO8S5REygpEtOgPKF
- rVOVNCaD6+Xx0n6/1HcJ2+9xAP8rJpzbdSUvVmQ=
-X-Google-Smtp-Source: AGHT+IG2TQoL+IUpdo1CSK/EZdnwSvVwoYM8UixD0uf8IigW8GmcksKeLUFwxLMs4aiii7nQmkqhfX5DB0qcxBPoU+k=
-X-Received: by 2002:a05:6870:7ecb:b0:1fb:2e1:bf67 with SMTP id
- wz11-20020a0568707ecb00b001fb02e1bf67mr5851455oab.49.1702331270915; Mon, 11
- Dec 2023 13:47:50 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702331409; x=1702936209;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Kfby9h2X+ETcxXvZQB4iewUtiQEuEDDiQNei7fOj1mg=;
+ b=hiIwVDxljYxN8SAifEulsz11xKIXHdaqZIIsdcvWvFFI3HrrGg/Koza4+WBGCPxM+0
+ lv3Evhm62dUMZRmpM5YG26a8A6dnfKsVRrrsI8DsLE7jlU9jJDKXlAXbmo/TsZXM9WhB
+ oXYc1DeGoKae5UvsXI56a5p8vpYD+BG5U9gHln+KLcqaMLQp5wPKgKmc7y7cJhgjtAzL
+ HTC+7t9iIqXxyUnkfhzma4bNgOkuJ6znzg4y2c6xodtW5cdQany2+1bKZnDRMpHvz6G4
+ q6wDEoWF/tBBtpYZDe/vIyJyITuBcqbqkMsKb+XIiSPUSmBmcH9bxrhl5A/5m3pDCORe
+ lq0g==
+X-Gm-Message-State: AOJu0YxvvcNpb6TYEBhz1Ea4o4QBvp29Z+gTtKZ1NbUcpxPDhb/upUgj
+ INgV0ojvD/IVCwJSpOuqiXZso8tzHyfEX0hRT2dIbsfhUHab8QAx8dUD8yR3MOaoMjRErpDGGN2
+ ZXlTZU/VIN0wSpDRhbaU0aB7K1rMCCtc=
+X-Received: by 2002:ac2:5f48:0:b0:50b:f88d:f83b with SMTP id
+ 8-20020ac25f48000000b0050bf88df83bmr1296652lfz.78.1702331409041; 
+ Mon, 11 Dec 2023 13:50:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IELwYuI9z4Zk30LZyKvnG2Fl3l1hi1+7dZbZc9jqNmcKtEqcNd2qVVuZVPj4FvG18scDcekQF9FmbxlQPn/gME=
+X-Received: by 2002:ac2:5f48:0:b0:50b:f88d:f83b with SMTP id
+ 8-20020ac25f48000000b0050bf88df83bmr1296631lfz.78.1702331408742; Mon, 11 Dec
+ 2023 13:50:08 -0800 (PST)
 MIME-Version: 1.0
-References: <20231207145545.783877-1-aesteve@redhat.com>
-In-Reply-To: <20231207145545.783877-1-aesteve@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 11 Dec 2023 16:47:39 -0500
-Message-ID: <CAJSP0QVGwTOgtRSaN3JbRKs4h2c_wH1WGTDLaBKme+vhTuDQsQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Virtio dmabuf improvements
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, kraxel@redhat.com, 
- "Michael S. Tsirkin" <mst@redhat.com>
+References: <20230420120948.436661-1-stefanha@redhat.com>
+ <20230420120948.436661-21-stefanha@redhat.com>
+ <CAC1VKkMadcEV4+UwXQQEONTBnw=xfmFC2MeUoruMRNkOLK0+qg@mail.gmail.com>
+ <20231207111110.GA2132561@fedora>
+In-Reply-To: <20231207111110.GA2132561@fedora>
+From: Carlos Santos <casantos@redhat.com>
+Date: Mon, 11 Dec 2023 18:49:57 -0300
+Message-ID: <CAC1VKkP8HgFPnMjFYVGgSDCj6rStzMVS7VrD=bs43zddSsMCCw@mail.gmail.com>
+Subject: Re: [PULL 20/20] tracing: install trace events file only if necessary
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Raphael Norwitz <raphael.norwitz@nutanix.com>, 
+ Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, 
+ Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-block@nongnu.org, Cornelia Huck <cohuck@redhat.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>, kvm@vger.kernel.org, 
+ Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>, 
+ Aarushi Mehta <mehta.aaru20@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=stefanha@gmail.com; helo=mail-ot1-x32a.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=casantos@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,44 +110,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 7 Dec 2023 at 09:55, Albert Esteve <aesteve@redhat.com> wrote:
+On Mon, Dec 11, 2023 at 4:58=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.co=
+m> wrote:
 >
-> v1: https://www.mail-archive.com/qemu-devel@nongnu.org/msg1005257.html
-> v1 -> v2:
->   - Solved an unitialized uuid value on vhost-user source
->   - Changed cleanup strategy, and traverse all objects in the
->     table to remove them instead.
+> On Wed, Dec 06, 2023 at 07:26:01AM -0300, Carlos Santos wrote:
+> > On Thu, Apr 20, 2023 at 9:10=E2=80=AFAM Stefan Hajnoczi <stefanha@redha=
+t.com> wrote:
+> > >
+> > > From: Carlos Santos <casantos@redhat.com>
+> > >
+> > > It is not useful when configuring with --enable-trace-backends=3Dnop.
+> > >
+> > > Signed-off-by: Carlos Santos <casantos@redhat.com>
+> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > > Message-Id: <20230408010410.281263-1-casantos@redhat.com>
+> > > ---
+> > >  trace/meson.build | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/trace/meson.build b/trace/meson.build
+> > > index 8e80be895c..30b1d942eb 100644
+> > > --- a/trace/meson.build
+> > > +++ b/trace/meson.build
+> > > @@ -64,7 +64,7 @@ trace_events_all =3D custom_target('trace-events-al=
+l',
+> > >                                   input: trace_events_files,
+> > >                                   command: [ 'cat', '@INPUT@' ],
+> > >                                   capture: true,
+> > > -                                 install: true,
+> > > +                                 install: get_option('trace_backends=
+') !=3D [ 'nop' ],
+> > >                                   install_dir: qemu_datadir)
+> > >
+> > >  if 'ust' in get_option('trace_backends')
+> > > --
+> > > 2.39.2
+> > >
+> >
+> > Hello,
+> >
+> > I still don't see this in the master branch. Is there something
+> > preventing it from being applied?
+>
+> Hi Carlos,
+> Apologies, I dropped this patch when respinning the pull request after
+> the CI test failures caused by the zoned patches.
+>
+> Your patch has been merged on my tracing tree again and will make it
+> into qemu.git/master when the development window opens again after the
+> QEMU 8.2.0 release (hopefully next Tuesday).
+>
+> Stefan
 
-Please update the vhost-user specification
-(docs/interop/vhost-user.rst) so people implementing front-ends and
-back-ends are aware that only the back-end that added a shared
-resource can remove it.
+Great. Thanks!
 
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+--=20
+Carlos Santos
+Senior Software Maintenance Engineer
+Red Hat
+casantos@redhat.com    T: +55-11-3534-6186
 
->
-> Various improvements for the virtio-dmabuf module.
-> This patch includes:
->
-> - Check for ownership before allowing a vhost device
->   to remove an object from the table.
-> - Properly cleanup shared resources if a vhost device
->   object gets cleaned up.
-> - Rename virtio dmabuf functions to `virtio_dmabuf_*`
->
-> Albert Esteve (3):
->   hw/virtio: check owner for removing objects
->   hw/virtio: cleanup shared resources
->   hw/virtio: rename virtio dmabuf API
->
->  hw/display/virtio-dmabuf.c        | 36 ++++++++++++---
->  hw/virtio/vhost-user.c            | 31 ++++++++++---
->  hw/virtio/vhost.c                 |  3 ++
->  include/hw/virtio/virtio-dmabuf.h | 43 ++++++++++-------
->  tests/unit/test-virtio-dmabuf.c   | 77 ++++++++++++++++++++++---------
->  5 files changed, 138 insertions(+), 52 deletions(-)
->
-> --
-> 2.43.0
->
 
