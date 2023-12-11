@@ -2,75 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA80B80CFCC
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 16:42:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB6B80CFD3
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 16:42:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCiPK-00054C-F1; Mon, 11 Dec 2023 10:41:22 -0500
+	id 1rCiPp-00059N-Hs; Mon, 11 Dec 2023 10:41:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rCiPI-00053z-B1
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 10:41:20 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rCiPf-00058h-TG
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 10:41:44 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rCiPE-0007vu-O3
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 10:41:19 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-54cd8f5bb5cso6230224a12.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 07:41:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702309275; x=1702914075; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=jR2GEF0BnAY6HyvVJuXTO6tJSvNHXRwQ8RHT+QBI1Do=;
- b=mbqPT5T0AMbD1V8CWCiis//WEDNedUQ1QSfwK3YFaaDOwZgKp7gG7L7IxPsnxNLYdA
- CoUX3yYcVjYa6xCAf2jDZjSCMPCRPs9XvmDAZlwaVBVjvV+U9DQQM83ajE3V/FApGiT3
- VFyo9d5NmKft4TcYagvlZsYaKZT4edKWs3lSwFFUlJlizGr11IFOl6eoKN3b6BZThLmf
- Qgdzmd+svw3I9kqh7Xoer85IHGDR7CY3R0FMpXCdiF+sPM0/ku/3tlp4tBR1/j61h41a
- ClcbJAZbI8uu/dU6a3reFuBYf76nDkWgulfyGZYaFJPMjyd8ez+pE8A1rJtvCiuVMH04
- zgYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702309275; x=1702914075;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jR2GEF0BnAY6HyvVJuXTO6tJSvNHXRwQ8RHT+QBI1Do=;
- b=c3+FHobE1bdqMkkudTzN4mkLwrKqHK2Jz6/pKie7JjKxdy63dzRyW5JzFzkOwouiJ5
- 18TbRXBDwDrF3vJm75iZzNYx3wDSWqWffzvRHkU0GRjKhlIsLW0EwEhNLW+IgXby2Q17
- r87bnrJJIpsowjGuLcscyGJq/TTn+nZnV79/gNmKuIPtMlNFI2UsRwcH2NMFtI2qJZ0q
- +2g+gTMbg5hwThVSuUXl+Z1iJV0rFlEeNCKC4oUYRdYy+MwDW4ARilK1EzNG+xDAsYCE
- aDqFki/iIH1YnmIRnjAmncjZLdv64A1Ux27NMAqCnCoNn6bSc4z6VvQb7stnEdZIGpDM
- cFNA==
-X-Gm-Message-State: AOJu0YygDdBmuDmi3g9fDpxhZWHsMx23ioze+q511GKx55ABtrlgQwTs
- soeTn3lz7TU+KzgWQF7uFwHW1Pih4NQi5anEQJSSog==
-X-Google-Smtp-Source: AGHT+IF+WG6A6K5DF8cKqjkezBy24cs7zlnAEAbP5lcjwkv7neJn8vdUJgv/xNyngH6EA6X7ZBjhmh9o2ma6zMdWmtw=
-X-Received: by 2002:a50:bb49:0:b0:54b:d16:4c4b with SMTP id
- y67-20020a50bb49000000b0054b0d164c4bmr2678625ede.19.1702309274900; Mon, 11
- Dec 2023 07:41:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rCiPe-0007yO-4r
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 10:41:43 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 68DEC223F9;
+ Mon, 11 Dec 2023 15:41:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702309298; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hN63TjxIwNbmPRp3u5v1W1be4jlMivJah1BTjFYxi/c=;
+ b=pakQ11z2PtVDxgJjGP1Kad5JIzyN6ybFL9EgH96ajsh7zwJQ/hdxOrZ6TPAj+J08sdMNF/
+ BZ0TjM7sQ8vNFV37CiGsRndbzYVXkAWERUFEdTFJhqXlfcJURjU9fCeHKROxoy17M4hfAX
+ elmILkSyszDadwPPsdqAN/EEDxAe3Cc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702309298;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hN63TjxIwNbmPRp3u5v1W1be4jlMivJah1BTjFYxi/c=;
+ b=WaLSlGe/bOAesvNpH7QPnirYyBSaBIAsHuh/PICe9J/GvDgCMpMELNBaOtgNK2QlUFIS+9
+ ER911pO4tJqEBBDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702309298; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hN63TjxIwNbmPRp3u5v1W1be4jlMivJah1BTjFYxi/c=;
+ b=pakQ11z2PtVDxgJjGP1Kad5JIzyN6ybFL9EgH96ajsh7zwJQ/hdxOrZ6TPAj+J08sdMNF/
+ BZ0TjM7sQ8vNFV37CiGsRndbzYVXkAWERUFEdTFJhqXlfcJURjU9fCeHKROxoy17M4hfAX
+ elmILkSyszDadwPPsdqAN/EEDxAe3Cc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702309298;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hN63TjxIwNbmPRp3u5v1W1be4jlMivJah1BTjFYxi/c=;
+ b=WaLSlGe/bOAesvNpH7QPnirYyBSaBIAsHuh/PICe9J/GvDgCMpMELNBaOtgNK2QlUFIS+9
+ ER911pO4tJqEBBDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E88DA132DA;
+ Mon, 11 Dec 2023 15:41:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id ppZxK7Etd2WfPQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 11 Dec 2023 15:41:37 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Hao Xiang <hao.xiang@bytedance.com>, peter.maydell@linaro.org,
+ quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com,
+ bryan.zhang@bytedance.com, qemu-devel@nongnu.org
+Cc: Hao Xiang <hao.xiang@bytedance.com>
+Subject: Re: [PATCH v2 05/20] meson: Introduce new instruction set enqcmd to
+ the build system.
+In-Reply-To: <20231114054032.1192027-6-hao.xiang@bytedance.com>
+References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+ <20231114054032.1192027-6-hao.xiang@bytedance.com>
+Date: Mon, 11 Dec 2023 12:41:35 -0300
+Message-ID: <8734w8n3v4.fsf@suse.de>
 MIME-Version: 1.0
-References: <20231027175532.3601297-1-nabihestefan@google.com>
- <20231027175532.3601297-7-nabihestefan@google.com>
-In-Reply-To: <20231027175532.3601297-7-nabihestefan@google.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 11 Dec 2023 15:41:03 +0000
-Message-ID: <CAFEAcA8ABPROeGEp+eEiBVzDj-NMbX7Extwv=ZAziZygwCYDrw@mail.gmail.com>
-Subject: Re: [PATCH v5 06/11] tests/qtest: Creating qtest for GMAC Module
-To: Nabih Estefan <nabihestefan@google.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
- wuhaotsh@google.com, jasonwang@redhat.com, avi.fishman@nuvoton.com, 
- kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spam-Score: -4.15
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -3.96
+X-Spamd-Result: default: False [-3.96 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.85)[99.36%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.01)[-0.053]; RCPT_COUNT_SEVEN(0.00)[8];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,50 +115,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 27 Oct 2023 at 18:55, Nabih Estefan <nabihestefan@google.com> wrote:
+Hao Xiang <hao.xiang@bytedance.com> writes:
+
+> Enable instruction set enqcmd in build.
 >
-> From: Nabih Estefan Diaz <nabihestefan@google.com>
->
->  - Created qtest to check initialization of registers in GMAC Module.
->  - Implemented test into Build File.
->
-> Change-Id: Ib0e07f6dacc1266b62b4926873ccd912250cf89d
-> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 > ---
->  tests/qtest/meson.build      |   7 +-
->  tests/qtest/npcm_gmac-test.c | 209 +++++++++++++++++++++++++++++++++++
->  2 files changed, 211 insertions(+), 5 deletions(-)
->  create mode 100644 tests/qtest/npcm_gmac-test.c
+>  meson.build                   | 2 ++
+>  meson_options.txt             | 2 ++
+>  scripts/meson-buildoptions.sh | 3 +++
+>  3 files changed, 7 insertions(+)
 >
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index daec219a32..205c60aadc 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -205,9 +205,6 @@ qtests_arm = \
->    (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed : []) + \
->    (config_all_devices.has_key('CONFIG_NPCM7XX') ? qtests_npcm7xx : []) + \
->    (config_all_devices.has_key('CONFIG_GENERIC_LOADER') ? ['hexloader-test'] : []) + \
-> -  (config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-> -  (config_all_devices.has_key('CONFIG_VEXPRESS') ? ['test-arm-mptimer'] : []) + \
-> -  (config_all_devices.has_key('CONFIG_MICROBIT') ? ['microbit-test'] : []) + \
->    ['arm-cpu-features',
->     'boot-serial-test']
->
-> @@ -219,8 +216,8 @@ qtests_aarch64 = \
->    (config_all_devices.has_key('CONFIG_XLNX_ZYNQMP_ARM') ? ['xlnx-can-test', 'fuzz-xlnx-dp-test'] : []) + \
->    (config_all_devices.has_key('CONFIG_XLNX_VERSAL') ? ['xlnx-canfd-test'] : []) + \
->    (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test'] : []) +  \
-> -  (config_all.has_key('CONFIG_TCG') and                                            \
-> -   config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-> +  (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed : []) + \
-> +  (config_all_devices.has_key('CONFIG_NPCM7XX') ? qtests_npcm7xx : []) + \
->    ['arm-cpu-features',
->     'numa-test',
->     'boot-serial-test',
+> diff --git a/meson.build b/meson.build
+> index ec01f8b138..1292ab78a3 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -2708,6 +2708,8 @@ config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
+>      int main(int argc, char *argv[]) { return bar(argv[0]); }
+>    '''), error_message: 'AVX512BW not available').allowed())
+>  
+> +config_host_data.set('CONFIG_DSA_OPT', get_option('enqcmd'))
 
-Why does this patch remove a bunch of existing tests for non-npcm
-board types ?
+We need some sort of detection at configure time whether the feature is
+available. There are different compilers and compiler versions,
+different Intel CPU versions, different CPU vendors, different
+architectures, etc. Not all combinations will support DSA. Check avx512
+above.
 
-thanks
--- PMM
 
