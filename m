@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0DD80CA77
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 14:05:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BABC680CA7C
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 14:06:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCfxx-0005pW-UU; Mon, 11 Dec 2023 08:04:57 -0500
+	id 1rCfz1-0006YV-2C; Mon, 11 Dec 2023 08:06:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCfxw-0005pK-06
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:04:56 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1rCfyo-0006U7-Q9
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:05:52 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rCfxu-00058b-Ho
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:04:55 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-336223afe64so735742f8f.0
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 05:04:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1rCfym-0005Wf-S0
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:05:50 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6ce32821a53so2343863b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 05:05:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702299893; x=1702904693; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702299946; x=1702904746; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rVfsDHJ1pNq8aA8tMO2BOG+zyqKJN+Kf6hQsUEHtY18=;
- b=MGvFXUOF8CkvITsnFrMNnro2F3GN56a1+BgzigYLG4PT1dxotlcSHr2rvUjk5QFvbw
- 2rbDtM191CaRRCHwur3hTJZG3RprNoq4UwFu6d1UH74EkDjImtD2LRRjncDWRHVDl6P5
- p37HHczEI0m2LV1WRvcgVNeU/OzZI1eb6Vrf99BWvnb2cgcrq5wN6M+qh7EZ+QjsbJRw
- uuXjfI97RIddeYLdpj0Z0VihqOg8dj0UNORdtZQY2W08+PSTWcih0MtM33QMGB4t2+sO
- 4e4qYnd8XeiRIkMZjPWgEeZIqwOs4PM9IwO6KYQcr+KNyU+7MG+BFfdOXLTzQsUkGneN
- 893A==
+ bh=KyfnJnZMAUYH1TAl/u+BMIXqStDIALqJoTk2JnRmWBU=;
+ b=GCVREMgj08sz0JuGb6WStAVnwwIdz+iz8zDHzRe2HDsZzZIGiGaY35voF1SeBQgX52
+ cBcDC2cUjCNAz6b4yiTAViEE6N0q4EyzcO6NfkAGi9xOyYg8XpWDzo0i2AzF7eD5z1RO
+ UAL3D+yLm73tDxawjRNPaPz4oaM0xr8er7yFbKpjkvnyYjaYslQ8lUpDsn913c+l9tu5
+ R8FnX3GRewDNcU5sUtW/K4pM+t+BUDxh64n+8+4OvU8H7tNCxX1835JfHAgXyJiXUGL6
+ P1koznbqWGS0wcB7eOB88oGT+KcHUa9Nu6Gjr3TUFj1oUt2J/P05T6y8pNzW+4tzgN8F
+ wgBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702299893; x=1702904693;
+ d=1e100.net; s=20230601; t=1702299946; x=1702904746;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rVfsDHJ1pNq8aA8tMO2BOG+zyqKJN+Kf6hQsUEHtY18=;
- b=PFwHHVBNA8nVh9rm//qJPYY91K7iuiqU5Xl4lSnvHFDO6ygVXUiArjzVwxHjzOpWbH
- ldwaezQjTIverJ7Re8Y8R/OtduyUnY61u18ItYkGUvIbmjYqCERNIF0D39y+wci7hIRW
- spByr/CYpYYx6JrQcfCCiEQtNSzGP9tG/LYF3/aKclBZ4aTwPlhiFDdQui2bBl0MooMT
- HapKAn6Kml6AgNf0MVtDq45HJES9eZwI3wvt0x09TF4HwD0TQhCeS4oVvnVuAbyC1Oiq
- 47+jfOUooBebLvEHFFm+vmGymrpgh5B72dMcjk432M8ikOl4WnW3tVLIj35YuEmnJ6mi
- gd6g==
-X-Gm-Message-State: AOJu0Yxi8uPY3FSUiRYuDbhf73GPA43pu+QdbUSi0DmqJhIxqtRbOVL3
- yzwLmgHnZOu2px1QpBmd9Sv/6w==
-X-Google-Smtp-Source: AGHT+IFWGF1UOvlhJkzwcrdJyrgId7x3Ut2UlPMewXPFQM34gYGaZD1oXudFNrVglVoWZJ9TJpHA+g==
-X-Received: by 2002:a05:6000:1b8c:b0:336:1adc:fe09 with SMTP id
- r12-20020a0560001b8c00b003361adcfe09mr1208860wru.16.1702299893001; 
- Mon, 11 Dec 2023 05:04:53 -0800 (PST)
-Received: from [192.168.12.175] (61.red-88-29-188.dynamicip.rima-tde.net.
- [88.29.188.61]) by smtp.gmail.com with ESMTPSA id
- b5-20020a5d4d85000000b003333521a1cesm8536424wru.57.2023.12.11.05.04.49
+ bh=KyfnJnZMAUYH1TAl/u+BMIXqStDIALqJoTk2JnRmWBU=;
+ b=cCRUzVJHjzirhIVXHVC30WmrANVQQ47wNOIATMmP8mqpw2fhnbh87vRZCwCJW1tTl3
+ iTdsbshm6mfJP/Pj5sl9tUTBRjV3ME9n2WyeOd1thzPNQuA3lsKQEKVY7wCpb5zkJwQi
+ H5tNESJ6iF8/uinXL6FihPHwIlZiK7OItHzarPLP130qomxX3Yc85WXau4MoPtNmBR06
+ nJAqkqbBkTxdl3M9yonsMuHW5nlkrXdzT4OG6HE14Jjon5Qx2ObybxM6hJt/6sURb28L
+ 7JMx6NsV3ilxI9D93uxHd53M3w+jvksDMHuqVd+NpsztXTuzdUELnF3vFzDYvw+WapIz
+ i2gQ==
+X-Gm-Message-State: AOJu0YwcSHfhEKKGBUC3x4cU/9Dyqb3DR/Ja7hh3VpeQru10QiVNGvSz
+ yiSkNLuhil/vc+97BclBUEc=
+X-Google-Smtp-Source: AGHT+IGqEELxA6/iRK8AufoBGk/+CTPC7OK4fyXHO9IKD6wbnvvmsnwtQrhewH/+FEy6MrWwbGTKCA==
+X-Received: by 2002:a05:6a20:6a1f:b0:190:a85:c041 with SMTP id
+ p31-20020a056a206a1f00b001900a85c041mr2074793pzk.61.1702299945966; 
+ Mon, 11 Dec 2023 05:05:45 -0800 (PST)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ t20-20020aa79394000000b006ce7e1c37dasm6130358pfe.80.2023.12.11.05.05.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 05:04:52 -0800 (PST)
-Message-ID: <0824d2e1-dbc0-435a-93ce-c2cd1d1ed055@linaro.org>
-Date: Mon, 11 Dec 2023 14:04:49 +0100
+ Mon, 11 Dec 2023 05:05:45 -0800 (PST)
+Message-ID: <46697e3b-3ec4-4635-97d5-39919068d709@gmail.com>
+Date: Mon, 11 Dec 2023 22:05:42 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/16] accel/tcg: define tlb_fill as a trace point
+Subject: Re: [PATCH v7 1/5] ebpf: Added eBPF map update through mmap.
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
-References: <20231211091346.14616-1-alex.bennee@linaro.org>
- <20231211091346.14616-15-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231211091346.14616-15-alex.bennee@linaro.org>
+To: Andrew Melnychenko <andrew@daynix.com>, jasowang@redhat.com,
+ mst@redhat.com, armbru@redhat.com, eblake@redhat.com, qemu-devel@nongnu.org,
+ berrange@redhat.com
+Cc: yuri.benditovich@daynix.com, yan@daynix.com
+References: <20230831065140.496485-1-andrew@daynix.com>
+ <20230831065140.496485-2-andrew@daynix.com>
+From: Akihiko Odaki <akihiko.odaki@gmail.com>
+In-Reply-To: <20230831065140.496485-2-andrew@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=akihiko.odaki@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,25 +97,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/12/23 10:13, Alex Bennée wrote:
-> While we do have a bunch of debugging we can turn on in cputlb there
-> is an argument for making tlb_fill a generally available trace point.
-> Any fault (via probe or access) will have to be preceded by a tlb_fill
-> for the address in question.
+On 2023/08/31 15:51, Andrew Melnychenko wrote:
+> Changed eBPF map updates through mmaped array.
+> Mmaped arrays provide direct access to map data.
+> It should omit using bpf_map_update_elem() call,
+> which may require capabilities that are not present.
 > 
-> We don't bother logging the return address as that will be a host
-> address associated with translation and therefor can move around with
-> ASLR.
-> 
-> In my particular case I'm trying to track down a difference in memory
-> fault exception patterns between record and replay phases.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
 > ---
->   accel/tcg/cputlb.c     | 2 ++
->   accel/tcg/trace-events | 1 +
->   2 files changed, 3 insertions(+)
+>   ebpf/ebpf_rss.c | 117 ++++++++++++++++++++++++++++++++++++++----------
+>   ebpf/ebpf_rss.h |   5 +++
+>   2 files changed, 99 insertions(+), 23 deletions(-)
+> 
+> diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
+> index cee658c158..247f5eee1b 100644
+> --- a/ebpf/ebpf_rss.c
+> +++ b/ebpf/ebpf_rss.c
+> @@ -27,19 +27,83 @@ void ebpf_rss_init(struct EBPFRSSContext *ctx)
+>   {
+>       if (ctx != NULL) {
+>           ctx->obj = NULL;
+> +        ctx->program_fd = -1;
+> +        ctx->map_configuration = -1;
+> +        ctx->map_toeplitz_key = -1;
+> +        ctx->map_indirections_table = -1;
+> +
+> +        ctx->mmap_configuration = NULL;
+> +        ctx->mmap_toeplitz_key = NULL;
+> +        ctx->mmap_indirections_table = NULL;
+>       }
+>   }
+>   
+>   bool ebpf_rss_is_loaded(struct EBPFRSSContext *ctx)
+>   {
+> -    return ctx != NULL && ctx->obj != NULL;
+> +    return ctx != NULL && (ctx->obj != NULL || ctx->program_fd != -1);
+> +}
+> +
+> +static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx)
+> +{
+> +    if (!ebpf_rss_is_loaded(ctx)) {
+> +        return false;
+> +    }
+> +
+> +    ctx->mmap_configuration = mmap(NULL, qemu_real_host_page_size(),
+> +                                   PROT_READ | PROT_WRITE, MAP_SHARED,
+> +                                   ctx->map_configuration, 0);
+> +    if (ctx->mmap_configuration == MAP_FAILED) {
+> +        trace_ebpf_error("eBPF RSS", "can not mmap eBPF configuration array");
+> +        return false;
+> +    }
+> +    ctx->mmap_toeplitz_key = mmap(NULL, qemu_real_host_page_size(),
+> +                                   PROT_READ | PROT_WRITE, MAP_SHARED,
+> +                                   ctx->map_toeplitz_key, 0);
+> +    if (ctx->mmap_toeplitz_key == MAP_FAILED) {
+> +        trace_ebpf_error("eBPF RSS", "can not mmap eBPF toeplitz key");
+> +        goto toeplitz_fail;
+> +    }
+> +    ctx->mmap_indirections_table = mmap(NULL, qemu_real_host_page_size(),
+> +                                   PROT_READ | PROT_WRITE, MAP_SHARED,
+> +                                   ctx->map_indirections_table, 0);
+> +    if (ctx->mmap_indirections_table == MAP_FAILED) {
+> +        trace_ebpf_error("eBPF RSS", "can not mmap eBPF indirection table");
+> +        goto indirection_fail;
+> +    }
+> +
+> +    return true;
+> +
+> +indirection_fail:
+> +    munmap(ctx->mmap_toeplitz_key, qemu_real_host_page_size());
+> +toeplitz_fail:
+> +    munmap(ctx->mmap_configuration, qemu_real_host_page_size());
+> +
+> +    ctx->mmap_configuration = NULL;
+> +    ctx->mmap_toeplitz_key = NULL;
+> +    ctx->mmap_indirections_table = NULL;
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+What about:
 
+ > +indirection_fail:
+ > +    munmap(ctx->mmap_toeplitz_key, qemu_real_host_page_size());
+ > +    ctx->mmap_toeplitz_key = NULL;
+ > +toeplitz_fail:
+ > +    munmap(ctx->mmap_configuration, qemu_real_host_page_size());
+ > +    ctx->mmap_configuration = NULL;
+
+It will be clearer when the pointer becomes invalid this way.
+
+> +    return false;
+> +}
+> +
+> +static void ebpf_rss_munmap(struct EBPFRSSContext *ctx)
+> +{
+> +    if (!ebpf_rss_is_loaded(ctx)) {
+> +        return;
+> +    }
+> +
+> +    munmap(ctx->mmap_indirections_table, qemu_real_host_page_size());
+> +    munmap(ctx->mmap_toeplitz_key, qemu_real_host_page_size());
+> +    munmap(ctx->mmap_configuration, qemu_real_host_page_size());
+> +
+> +    ctx->mmap_configuration = NULL;
+> +    ctx->mmap_toeplitz_key = NULL;
+> +    ctx->mmap_indirections_table = NULL;
+>   }
+>   
+>   bool ebpf_rss_load(struct EBPFRSSContext *ctx)
+>   {
+>       struct rss_bpf *rss_bpf_ctx;
+>   
+> -    if (ctx == NULL) {
+> +    if (ctx == NULL || ebpf_rss_is_loaded(ctx)) {
+>           return false;
+>       }
+
+You can omit ctx == NULL just as you do for ebpf_rss_munmap().
+
+>   
+> @@ -66,10 +130,18 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx)
+>       ctx->map_toeplitz_key = bpf_map__fd(
+>               rss_bpf_ctx->maps.tap_rss_map_toeplitz_key);
+>   
+> +    if (!ebpf_rss_mmap(ctx)) {
+> +        goto error;
+> +    }
+> +
+>       return true;
+>   error:
+>       rss_bpf__destroy(rss_bpf_ctx);
+>       ctx->obj = NULL;
+> +    ctx->program_fd = -1;
+> +    ctx->map_configuration = -1;
+> +    ctx->map_toeplitz_key = -1;
+> +    ctx->map_indirections_table = -1;
+>   
+>       return false;
+>   }
+> @@ -77,15 +149,11 @@ error:
+>   static bool ebpf_rss_set_config(struct EBPFRSSContext *ctx,
+>                                   struct EBPFRSSConfig *config)
+>   {
+> -    uint32_t map_key = 0;
+> -
+>       if (!ebpf_rss_is_loaded(ctx)) {
+>           return false;
+>       }
+> -    if (bpf_map_update_elem(ctx->map_configuration,
+> -                            &map_key, config, 0) < 0) {
+> -        return false;
+> -    }
+> +
+> +    memcpy(ctx->mmap_configuration, config, sizeof(*config));
+>       return true;
+>   }
+>   
+> @@ -93,27 +161,19 @@ static bool ebpf_rss_set_indirections_table(struct EBPFRSSContext *ctx,
+>                                               uint16_t *indirections_table,
+>                                               size_t len)
+>   {
+> -    uint32_t i = 0;
+> -
+>       if (!ebpf_rss_is_loaded(ctx) || indirections_table == NULL ||
+>          len > VIRTIO_NET_RSS_MAX_TABLE_LEN) {
+>           return false;
+>       }
+>   
+> -    for (; i < len; ++i) {
+> -        if (bpf_map_update_elem(ctx->map_indirections_table, &i,
+> -                                indirections_table + i, 0) < 0) {
+> -            return false;
+> -        }
+> -    }
+> +    memcpy(ctx->mmap_indirections_table, indirections_table,
+> +            sizeof(*indirections_table) * len);
+
+This line is not aligned with the parenthesis on the previous line.
 
