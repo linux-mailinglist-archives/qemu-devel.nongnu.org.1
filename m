@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA3780D8AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 19:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A3F80D905
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 19:50:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rClJU-000779-Fj; Mon, 11 Dec 2023 13:47:32 -0500
+	id 1rClLG-0007sx-Ns; Mon, 11 Dec 2023 13:49:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rClJP-00076o-Dd
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:47:27 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1rClLD-0007s8-S9
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:49:20 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rClJK-0001aA-J6
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:47:23 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6ce7632b032so2576768b3a.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 10:47:22 -0800 (PST)
+ id 1rClLA-0001yG-Re
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:49:19 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1d307cf18fdso7967875ad.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 10:49:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702320441; x=1702925241; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702320551; x=1702925351; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=T4EVXnFmH+Xbs+DTLFROLXN3bytTK3WSKfs9LgFF1vw=;
- b=BmWGxLMCKnU2oww5Bvs1pKVlShxfVOzJWtEulE+CSiGoVG3GzVtB5OqkZnKVNQ/MMj
- PMf5q3qD0V0bhjQ/AfoTHCfP9hAGZP4XyTD20Ee32xgwMxO0vH06S3j8IKs7fd0EG18h
- 7ptZ+usImiC20owphpqmb7rgZOe5y0qXmU2v7PSuxOOxlwpGr/PGu41dJWJUbrmf2WEH
- r3SZ/38j3i2s6Wc8JcijZl9kOhayUTIBhtaruvEUMqKMa9YQ18cUVfbHiFbomZrr4s6Q
- MD7+Bba6GaGEu/Ma1xChhj5XpRhwFDTjHWMsNmKXOjdgDuOaSRVbykAn/Ysl+1NrNWdQ
- luXA==
+ bh=MHZbE015AUtA7YmXpmIoLETCcKzfCXQMdDw/dg4RUec=;
+ b=ZGqi/NDAFTH0pCgCCi3aeqCZ0ipQB2kRkA4kpwzMoy4ukeqAqtZh2LFhcIf3Zq2NiL
+ k8n+Gn5AT8/EgYLYDnCHwwyoZXc9niWXWiZi8RbNcCwZh4nVr6nylw9r9AGG6wbZpbo5
+ VFyXQuYSsb/HikuJLenrmd/1I8IPdL3zEv4nR/tS7bjDPWCdTM5f9Uh3XRqw3Zqcfv2Z
+ xvYfYnDoD0BHXySARVG9CbBDeW6N+7+3v99Iwl49JJfEXd+czbOXWFyhDpmHGjqqZhGH
+ RJ8hu/byyOc4lo/Zle7GmfJ687yxKltOgxtIQ4H02GbNd6xLuxUNRHIJhyQUXxuyctgF
+ 4KPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702320441; x=1702925241;
+ d=1e100.net; s=20230601; t=1702320551; x=1702925351;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=T4EVXnFmH+Xbs+DTLFROLXN3bytTK3WSKfs9LgFF1vw=;
- b=L0Pn+QjD5vQZ6/VYMmSj3Aq0Q6VlLvMfON9iybr0+UwKpwvJ55wlYFPElJSGs11tht
- VPkmaprzw+afwbEKXx+6UsF5QSmP5jWWDinF/bNKuwpSfYZyvy8x8A2Qas61X8wdMSRx
- QJFNGwjn2ebY5/uqrge2qZbnef/c/jvKKFhimi0VBGTQuDjET5DU0LLSXc7+LWlzMIBt
- A3R1QyvdkuDU2BaHID3gXhY4paNEAlfQzE8yOZkzbUBN8E3FtyNGfM+8iZMHh2k9qNQn
- eCRn5168BJ/4A3CBFJLP4+0bd891J5EHrCTNqf7d+RuuvF0bTp400WF6ZSecrrITRSYU
- 6bww==
-X-Gm-Message-State: AOJu0YzS4bYvgdL8gEmcq8MfjGwHJ7jFyqye1MnGPrLcvaW1ieKm+Drq
- JIfHhO8vj4ZESBT/Ed+M3lHiJg==
-X-Google-Smtp-Source: AGHT+IHBhMfGmKLr4tXwhUbEe3Yo08xwKU+IwPsVR9fRfkO2f+DARzLWwYCS6eCQPUeFgyfeTGQa9g==
-X-Received: by 2002:a05:6a20:6a1f:b0:190:fca:72d7 with SMTP id
- p31-20020a056a206a1f00b001900fca72d7mr2390449pzk.90.1702320440972; 
- Mon, 11 Dec 2023 10:47:20 -0800 (PST)
+ bh=MHZbE015AUtA7YmXpmIoLETCcKzfCXQMdDw/dg4RUec=;
+ b=Yh/XTEaxT8qmzfvjUNm0xnZwJykS8Z5b1XtlkBjITPdMEvhKDwrbs66u3nVIJOYMpZ
+ JjpZvCKRlSKMB9RoqXbRGwntLf1U0UuviKmUZXQG0CGFW5PyuFMfhx2RIcwrq8y4dNLC
+ DFkzlz4WmZMoO4hN9C+o9bna+cCnbnvDTeWaSlcUNc+nUuPdHMeWBXau5P7xPSmChQHE
+ 0kMskBcbJtvIjwC+KUoY0W/7JL1vJlecYwaHuSkhxW7pkRdxC75x1m++MNrnNQZtqE97
+ SwA0cpyGCwOJy3/PqKmTe/zN4osw60oyc7/1UAOR9oYqWp2khQIksIzlI6bRcqTeaPFH
+ mL1g==
+X-Gm-Message-State: AOJu0YzCwTOtECDAdkHcOszV29Tie5gOtIatjQ8SbSTjfY+UNe778YmU
+ 4/v8o55UNuvJS6O1Uc/aD+5uUA==
+X-Google-Smtp-Source: AGHT+IGcb1m8MKfZFRbNwziM1V8Amg2Y7JQjNoT3E6FMmH94wWMrizF2PhDan3tZMYvotNGHPw0Dwg==
+X-Received: by 2002:a17:902:680b:b0:1d2:e6ed:934f with SMTP id
+ h11-20020a170902680b00b001d2e6ed934fmr2251380plk.24.1702320551510; 
+ Mon, 11 Dec 2023 10:49:11 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- g4-20020a056a000b8400b006ce5bb61a60sm6582307pfj.35.2023.12.11.10.47.20
+ bh12-20020a170902a98c00b001cfc3f73927sm6963465plb.9.2023.12.11.10.49.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 10:47:20 -0800 (PST)
-Message-ID: <c7189f3b-7ef6-481c-a0ca-4f14f6e0e1ce@linaro.org>
-Date: Mon, 11 Dec 2023 10:47:18 -0800
+ Mon, 11 Dec 2023 10:49:10 -0800 (PST)
+Message-ID: <7dffe9e8-605f-4560-b872-f0783944bb6a@linaro.org>
+Date: Mon, 11 Dec 2023 10:49:09 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] tcg: Make tb_cflags() usable from target-agnostic
- code
+Subject: Re: [PATCH v3 3/4] accel/tcg: Remove #ifdef TARGET_I386 from perf.c
 Content-Language: en-US
 To: Ilya Leoshkevich <iii@linux.ibm.com>, Paolo Bonzini
  <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -69,13 +68,13 @@ To: Ilya Leoshkevich <iii@linux.ibm.com>, Paolo Bonzini
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org
 References: <20231208003754.3688038-1-iii@linux.ibm.com>
- <20231208003754.3688038-3-iii@linux.ibm.com>
+ <20231208003754.3688038-4-iii@linux.ibm.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231208003754.3688038-3-iii@linux.ibm.com>
+In-Reply-To: <20231208003754.3688038-4-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,15 +98,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/7/23 16:35, Ilya Leoshkevich wrote:
-> Currently tb_cflags() is defined in exec-all.h, which is not usable
-> from target-agnostic code. Move it to translation-block.h, which is.
+> Preparation for moving perf.c to tcg/.
 > 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> This affects only profiling guest code, which has code in a non-0 based
+> segment, e.g., 16-bit code, which is not particularly important.
+> 
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 > ---
->   include/exec/exec-all.h          | 6 ------
->   include/exec/translation-block.h | 6 ++++++
->   2 files changed, 6 insertions(+), 6 deletions(-)
+>   accel/tcg/perf.c | 4 ----
+>   1 file changed, 4 deletions(-)
+> 
+
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
