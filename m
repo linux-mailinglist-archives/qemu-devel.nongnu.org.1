@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A456380D424
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:39:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2698E80D425
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:39:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCkF1-00047o-21; Mon, 11 Dec 2023 12:38:51 -0500
+	id 1rCkFW-0004oG-7q; Mon, 11 Dec 2023 12:39:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rCkEx-00045m-ET
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:38:47 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rCkFH-0004am-UT
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:39:09 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rCkEv-0006Sg-GE
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:38:46 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d03bcf27e9so29075265ad.0
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:38:45 -0800 (PST)
+ id 1rCkFF-0006YZ-VG
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:39:07 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1d331f12f45so861855ad.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:39:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702316324; x=1702921124; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702316343; x=1702921143; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=LXqUwWzFsa4vbvwFIV3VDVTGU3qr7PnBexZ0cd83jfM=;
- b=XbLE/Hg4GL+8PTdunW9kwNRP3hiAyP3oxcK+I/DCkkzAJhSbTXog/ivppSCMRmwnOB
- 4O49tx2engfOq5h1bsxNBRqFpJZ50mwkHCKrWIgWSdQqcFQpN6U0eF5M3pksP4+UD3a4
- 9TIpalqq1ZtRBnj3WyP36DDwJQlA4zwFO3ZXoP6TDwJGX16YDv2JDTRZtR7prty/YGgm
- z1ABDnrmJKhR3BfXevwgYhjuJi2wNZe0a4IaJgExz+pOzEGS8h0pbrZoaqj9Po2enfTw
- qapW8rD4HevOLPhvrKdyf4/HRoqaOvsoZVdpuKLTeBrSOQEODMV6TB7WoD3vbzvHYNGV
- 6SCQ==
+ bh=9+IRGE2vb+MUMHJoj2yqYmZwS+dppCVu+JyfGw4/sUU=;
+ b=HHI8q0qcgUL6nx0qf+fBRDnCOBxlpSrcqb3MhQjbW2kulgmm2YznC5PJthXwe3vGTN
+ cK8eTQWmqP52IGSdeW8yerO2SDe2wB/7EHbjndVIUdyCFU31pGDQD/XkbMDDeu/ty3wl
+ SPHrraesaD2cSs4avxAFW/Nz7mTl+GsL3nq7Ns1Qp1tPWJuS03biRy2mWn+9Q1n90aGR
+ w8D7IVk31HXZFfJY/z2rjI305WuZb6OfzccgmEbgV+2lwy+Pp1bdXS+xyXDDux0bG3td
+ a6OqY9EsO1Gx7/MDUCavkEYSig76wguf3UXkmvdu6yscQMjqRvpVez+Il1vbW6eE2FTs
+ o+5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702316324; x=1702921124;
+ d=1e100.net; s=20230601; t=1702316343; x=1702921143;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LXqUwWzFsa4vbvwFIV3VDVTGU3qr7PnBexZ0cd83jfM=;
- b=b2PsUrUzjyJ+ywlCX5uXxiYew2eBIO+t9IcGRq3I2ntwL3FV83z3xXXp9FOsc1bMzt
- IoNuRL6RcF4k9f1pCTOMIHTUr4EIb/x87zMM158XCLbnCVbgWyY/oxgiMqw6gSnbUZ+u
- eelTA2KdGF0wGcs851VUCPC/8LJll+sLsmk1OxNlGcqhZXlRs02fcPO7Q83SMpnwZdPw
- UntUrETYK6r6bx13zoFIYWtFCoF8kuIskqdun8hmGO7ZpZhSwi82vrC5dppyA3KfOHiI
- bnbRNDI/2l/0jdADRR1UTlK0+XqLlgPZhL3TQjeQ9WN89pvmyKy0If0FfFh13wN15VCo
- Dm9A==
-X-Gm-Message-State: AOJu0YyVYiUohCO8ecPFzTIsmKbq5aLK/GHlqbBDZAgU51BwqlDDRUAE
- mLYbRIeuAYbKE39mg8/1eAqrnw==
-X-Google-Smtp-Source: AGHT+IG+P8OdRPyZqRh3O7e6x0Sjd42TjSt0R4YtX6v5FvKJuC1L47wIiMBx60yQbr56aUX1rhNdUA==
-X-Received: by 2002:a17:903:2301:b0:1d0:6ffe:1e91 with SMTP id
- d1-20020a170903230100b001d06ffe1e91mr2499342plh.116.1702316323769; 
- Mon, 11 Dec 2023 09:38:43 -0800 (PST)
+ bh=9+IRGE2vb+MUMHJoj2yqYmZwS+dppCVu+JyfGw4/sUU=;
+ b=HIav1yBCjTIJhJ1lEDt8zv5OTwV90ry7s1YH4I+wHzwgcB6kHk1VScx+DWUAOQDBRT
+ Xe8z34zggj62Hn07SMIuxALeEl8WVDcXVIv1it61QEyI01p8xivTHzKHeKt8M5UIGpRN
+ wUxqt8PPR3PUlDK/v/hmS6UXYXAjNTGLXMueR+W8lsRtsr+1/ruPKcbAz5k3p+iR/mkB
+ 0u+G/9j6Nv1IowgQqXltpYzaAaSL2XrOceJ8UNt7kiPR3UuRRvA58tzPsnxpacGuBwRr
+ S7sP7ReHjz3SnyvBqeRBpXdu+hVNtao2zIOX+nlWrdFvMTrMvr+HUmkGoHcaeMSgqLlF
+ Fw6Q==
+X-Gm-Message-State: AOJu0YyEr7BOZKlWHTuWIFuTUpmiXBvabNmqHOuow8mUqs7zduHyiO2H
+ 0seFS8CL3a03fT2A1+SBlTNAGQ==
+X-Google-Smtp-Source: AGHT+IFCvh1V1KsMrkgplqfDlXajURPBCY8w0PO4FQMiVCFaQUYLlFKbFqoXh1r6t25rRozsRUvASA==
+X-Received: by 2002:a17:902:ba86:b0:1d0:c345:c19b with SMTP id
+ k6-20020a170902ba8600b001d0c345c19bmr2278885pls.30.1702316343504; 
+ Mon, 11 Dec 2023 09:39:03 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- g13-20020a170902d5cd00b001d1d6f6b67dsm6926698plh.147.2023.12.11.09.38.42
+ g13-20020a170902d5cd00b001d1d6f6b67dsm6926698plh.147.2023.12.11.09.39.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 09:38:43 -0800 (PST)
-Message-ID: <96165322-43a7-4bdc-929b-91ccb8dae66e@linaro.org>
-Date: Mon, 11 Dec 2023 09:38:41 -0800
+ Mon, 11 Dec 2023 09:39:03 -0800 (PST)
+Message-ID: <fe6de301-2d5e-4af8-bced-def74bc0e47f@linaro.org>
+Date: Mon, 11 Dec 2023 09:39:01 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/16] replay/replay-char: use report_sync_error
+Subject: Re: [PATCH v2 11/16] replay: stop us hanging in rr_wait_io_event
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -72,13 +72,13 @@ Cc: John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 References: <20231211091346.14616-1-alex.bennee@linaro.org>
- <20231211091346.14616-11-alex.bennee@linaro.org>
+ <20231211091346.14616-12-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231211091346.14616-11-alex.bennee@linaro.org>
+In-Reply-To: <20231211091346.14616-12-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,13 +102,25 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/11/23 01:13, Alex Bennée wrote:
-> Now we have a centralised report function use it for missing character
-> events.
+> A lot of the hang I see are when we end up spinning in
+> rr_wait_io_event for an event that will never come in playback. As a
+> new check functions which can see if we are in PLAY mode and kick us
+> us the wait function so the event can be processed.
 > 
+> This fixes most of the failures in replay_kernel.py
+> 
+> Fixes:https://gitlab.com/qemu-project/qemu/-/issues/2013
 > Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> Cc: Pavel Dovgalyuk<pavel.dovgaluk@ispras.ru>
+> 
 > ---
->   replay/replay-char.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
+> v2
+>    - report failure with replay_sync_error
+> ---
+>   include/sysemu/replay.h      |  5 +++++
+>   accel/tcg/tcg-accel-ops-rr.c |  2 +-
+>   replay/replay.c              | 21 +++++++++++++++++++++
+>   3 files changed, 27 insertions(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
