@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913D980DE0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 23:16:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B98780DE17
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 23:18:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCoYC-0007J0-Mn; Mon, 11 Dec 2023 17:14:56 -0500
+	id 1rCobS-0008Ov-8O; Mon, 11 Dec 2023 17:18:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rCoYB-0007Is-FM
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 17:14:55 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1rCobK-0008OT-Qg
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 17:18:10 -0500
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rCoYA-0007HR-2x
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 17:14:55 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6ceba6c4b8dso3884709b3a.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 14:14:53 -0800 (PST)
+ id 1rCobJ-0008Qa-Bm
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 17:18:10 -0500
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-517ab9a4a13so4167699a12.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 14:18:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702332892; x=1702937692; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702333088; x=1702937888; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VZk9IkZs+BjuAZ1Gv4mVQSmgr3nLuAWALSfjmJ0ISSo=;
- b=oxDIwddM4YVUfiBv7BRhRUbcYCr293XaTt6DYUjrIeo4+wGxWA8UhyDVWvcvlxsqgy
- Os/DiNnM+WG9uP+SqOr6+ucbjFzBmEnkvMCvxB5Uefz389W5fm0PrxU9+Aby1g5pc0k7
- CT7zt+zgMRklIoDihmuGek5Hjl8BCgBUEBvYKG2Urk3atkq44mmwsBvHIk0aIHPKCsnd
- JIaRO2yfFWak6ErqsX/TKhPpedQKTobQibjzKs90wbhC6LJXt/F+JY0KYma3daEmF1yf
- E9jLIAwI7mai4lLs8IyLkNizLv5xqm3/78zyuyjbvLJWWzM5dxRxmbATQVUoz49QS5cu
- nIQw==
+ bh=vfttfDW2o0r3ZHxmhl7mo+KlrcLIFItJRCMpYQaKJ1A=;
+ b=IBmqy+TpF8g09rpdZaWGBz9PZyyyfx4/gQ/OSwd8TtpPfIHLpdRp6oP3EShc+ZNvuq
+ Tg3QZG4mgJ2+Ly1yCQ9Rc73HbGD7LJL0c3St7e4d7uPLXcuoZdVxjMHoZkO7IeYqpU7E
+ EFqFVv9dvphQHGs0u5ux5r9I6NT2c/8T3HxFi4ORs8R1gHfEh1SnnRED7axiVpZRnfyU
+ lr5vO0dKtx5WCzqElqVDY7YEDr7+KizUPXB/LiMJiYSdYwDIjT5SgSr4k5cba8woliQS
+ KKGvRNeYL8ZVE6IEOL+pUoZQ6SrbbSVcknJA4UrUhBledbEh3uYfz8noIPm7Cf2vY0+x
+ ETJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702332892; x=1702937692;
+ d=1e100.net; s=20230601; t=1702333088; x=1702937888;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VZk9IkZs+BjuAZ1Gv4mVQSmgr3nLuAWALSfjmJ0ISSo=;
- b=FK3zCiX/7zCBAtDtuB9qAEpEDcF1EfaFvGt7QIg8CPcdih7kCgGreEIoSf/98zt8r+
- qJag3hofEsoXE3ALOzdYw+mcymEjEru+fFpBHw5uhNg5IqT02DHX3yR/RpbCU9OoPRvY
- RaycBxag0ofzjy7IC1AS5ydkiK7g0AKrQf8OKraZ4I9nCsULaNff01mTpG6RS5gbVfVf
- 66/fBaALrx/OAZKtwc4ZxofbKBq9SfW2Hxvf4Z93webC1a7SSgRATF/GsR+ZtPq39CGy
- 2SK/ZGvqkcqGc23UoSQeTylmCyNTr+OISwUvZRCzCIcXF/h4vpS1U3wIaLszV5YTNekN
- 50cg==
-X-Gm-Message-State: AOJu0Yx3p91/VzPkDrRqTn4tExOZecj8IdTcAa5AQPNaFAXkqoVrcsZf
- /diZv7T6eUZ1/DahIUC9R9r83g==
-X-Google-Smtp-Source: AGHT+IFiNnERPMbuysVQZ2ZV/P9MZLvkIM9pyb5J2pZ9fVFT7AyTRj/2po2H0NUuNCVENc2Hiv88Zg==
-X-Received: by 2002:a05:6a00:194d:b0:6ce:4927:2811 with SMTP id
- s13-20020a056a00194d00b006ce49272811mr6106276pfk.22.1702332892341; 
- Mon, 11 Dec 2023 14:14:52 -0800 (PST)
+ bh=vfttfDW2o0r3ZHxmhl7mo+KlrcLIFItJRCMpYQaKJ1A=;
+ b=hgjYimDnhEKhJkpH2JJpzqJLvm85NTnY0rDW6NEKv30vz8C61uUL7eV+G6Y9roatKo
+ 4Q+N17zqZgYjxU9sgR4IwKkQIqeOPe4AYSVsor1IeRVs/d5ALbK+795ac1hVZwRF3xzP
+ D1OE6ZIHUwCrQgZ17ApbZgN0J0xjVXQ3xkuTOMNxmUlkj4RjjKlUau/ON9l3HI6ElTXS
+ UL324laTX17Aes/HhyjHzq2cVSMj2yDDgcwcKg/U6hjsGOrC11V6KTRdJkT/XhIKk4er
+ HZbhuY9uvNjrBtTW9e0C7xlFgBBpyTQ/Or8vqnMPRFPigdl0g2+Cqw38LjZhgItjB4xu
+ 1BQg==
+X-Gm-Message-State: AOJu0Yx287x+/acI5dqGHep38F0LrygagDO3hWmpVQisLgHF6uslvblo
+ uKvsive172/JSaQUQlw1SfxYfwfIzRvBnXMVrTp1rA==
+X-Google-Smtp-Source: AGHT+IGckpcIP+b2OXkVflxAN+EcKgv9DbTLXZnL1b6itgbUb/KJxsajNbuTsf9KlifIVDwIDvx4UA==
+X-Received: by 2002:a17:90a:9c0e:b0:28a:464d:5ec8 with SMTP id
+ h14-20020a17090a9c0e00b0028a464d5ec8mr3807678pjp.41.1702333087906; 
+ Mon, 11 Dec 2023 14:18:07 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- w2-20020a654102000000b005c65ed23b65sm5754021pgp.94.2023.12.11.14.14.51
+ 27-20020a17090a031b00b00286c1303cdasm8227255pje.45.2023.12.11.14.18.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 14:14:51 -0800 (PST)
-Message-ID: <853fac49-2587-4b29-b852-c85c60af9fb9@linaro.org>
-Date: Mon, 11 Dec 2023 14:14:50 -0800
+ Mon, 11 Dec 2023 14:18:07 -0800 (PST)
+Message-ID: <caadef4b-ea56-4f56-8e06-aa0107886262@linaro.org>
+Date: Mon, 11 Dec 2023 14:18:05 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/24] exec: Expose 'target_page.h' API to user emulation
+Subject: Re: [PATCH 03/24] target: Define TCG_GUEST_DEFAULT_MO in 'cpu-param.h'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20231211212003.21686-1-philmd@linaro.org>
- <20231211212003.21686-3-philmd@linaro.org>
+ <20231211212003.21686-4-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231211212003.21686-3-philmd@linaro.org>
+In-Reply-To: <20231211212003.21686-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,16 +95,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/11/23 13:19, Philippe Mathieu-Daudé wrote:
-> User-only objects might benefit from the "exec/target_page.h"
-> API, which allows to build some objects once for all targets.
+> accel/tcg/ files requires the following definitions:
+> 
+>    - TARGET_LONG_BITS
+>    - TARGET_PAGE_BITS
+>    - TARGET_PHYS_ADDR_SPACE_BITS
+>    - TCG_GUEST_DEFAULT_MO
+> 
+> The first 3 are defined in "cpu-param.h". The last one
+> in "cpu.h", with a bunch of definitions irrelevant for
+> TCG. By moving the TCG_GUEST_DEFAULT_MO definition to
+> "cpu-param.h", we can simplify various accel/tcg includes.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   meson.build      |  2 +-
->   page-target.c    | 43 +++++++++++++++++++++++++++++++++++++++++++
->   system/physmem.c | 35 -----------------------------------
->   3 files changed, 44 insertions(+), 36 deletions(-)
->   create mode 100644 page-target.c
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
