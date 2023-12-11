@@ -2,72 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8CC80D348
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:09:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2CB80D34B
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:10:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCjl1-0000Qv-TI; Mon, 11 Dec 2023 12:07:52 -0500
+	id 1rCjmf-0001gU-83; Mon, 11 Dec 2023 12:09:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rCjky-0000Qi-HU
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:07:49 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rCjme-0001g4-2r
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:09:32 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rCjku-0000Hz-CS
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:07:46 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1d2eb06ab11so17997855ad.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:07:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rCjma-0000UI-53
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:09:29 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6ceb2501f1bso3810266b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:09:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1702314462; x=1702919262; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=su+2FCyrz66PAr2bdXzt4MrXwyJEhravdAvsltVQ32E=;
- b=XPauoGTfG/R47Ootaq0/EUlGUOQ3dfyYTmzfQCsxLxA3LinTDI6enlFDy2lkAA6C2C
- NU6sYm9SP2IfT5tTovaf6mDQmHV40h/z1jxeBp4puaMbgDRLVP9ctr5ObI5mJDSvyE5Q
- 2EAC5Vqbejposo83J2lRmFFQUSw1ngGj7KxpxQPXu6uyugOh/j3a7KhV+GeOA7BZnJpq
- a53sQNHw4CuNkpzbpQfXvFROMAEsxWU3KnJglczZQuOpMkjcf4q8SKfE7pSjVxGHFPRQ
- Ba+cJ8YBySF2yQGTR3ZIHAErabwsPS+ifl1PRWK8rjTzJGSEPRJbrxoNSimMZ3A0oyEN
- vM3w==
+ d=linaro.org; s=google; t=1702314566; x=1702919366; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sc1qgl70OVlwSYNp8DPvzNbv+pahk/dG2J+Svd8VVm4=;
+ b=PmWJ0X4YEpZU37N4vYCBLJmqQFQKBwIU5bg36j/EB2VuPsA82f6RoES3JxLbvm6vYw
+ o3RfI41YaCwkpQJh0EdIbipA5mKdjPQqbXAWQiG6L593aD3zHWYvfCD9qHroesx74hhU
+ V8ZYO/HJ0+4Mo0To31pGCEMs4AuH70O2cKljUMsGDXXv7T7njiHlvOYd4ijKuZkVWLhe
+ s0H4AUTjk6xEA74L0FJv9pWE/31dAwnix5P1PV4h2+kB1LMRePTaWdYIqW4mP6Jakukb
+ 5t19icptZ/6oZRQbVijujY4Z4SgbChL4/+T0/8S+7lO18AzsJYQR5pF01jrrAiCHiVYV
+ 6Fww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702314462; x=1702919262;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=su+2FCyrz66PAr2bdXzt4MrXwyJEhravdAvsltVQ32E=;
- b=nLP7H576ZrzbV8XIVEMl63EX4xzPHn3AIpZ3+J3vkRerEdYrMXiNob4quzgA1dqy7H
- FRegll9xKbvbEcrgeZqH+IkI3XiNWpU2cJnSljsVme2WVMO6Xw+3LP35X0bz+WsrKK/v
- KnfYFLN2/Ttg4xPyehOKcU1QCDqQ+p39DGN1Zm3K4Ne0up290O0i6b99zp79M8pW8DFC
- YVGvs42Dgiz106ZhzqC9QZdT4noJ/hruEPivBL/RxsCpRyxXzoXyullH56nNdc8s5/Cp
- Mj/R2ZwYSIvQXjIZ1Twi5DUxcgVUv0LomnoIEEuh3WebUzATOWsswxVDw1RtfA48jIZI
- IAZw==
-X-Gm-Message-State: AOJu0YzsTbr3Ioe5vz7UWE+eHzAL6Cq8iZNlzZKu+p54BzUPQeFN9+j/
- J9WCh3ZWtaS8NEJWStPRACQ5eU/i5BLuaG+2dbk=
-X-Google-Smtp-Source: AGHT+IEaL6c/4FQIjOs77jAg6M2ZFuhFwoNgj7UGOfM/Xz65hlA2b92rFN7jFPU4RvnO7ynRIq8ZGQ==
-X-Received: by 2002:a17:903:32c5:b0:1cf:c9c3:e79d with SMTP id
- i5-20020a17090332c500b001cfc9c3e79dmr2285242plr.59.1702314462056; 
- Mon, 11 Dec 2023 09:07:42 -0800 (PST)
-Received: from grind.. ([152.234.124.8]) by smtp.gmail.com with ESMTPSA id
- k9-20020a170902c40900b001bc676df6a9sm6901845plk.132.2023.12.11.09.07.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Dec 2023 09:07:38 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-9.0] target/riscv/cpu.c: fix machine IDs getters
-Date: Mon, 11 Dec 2023 14:07:32 -0300
-Message-ID: <20231211170732.2541368-1-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20230601; t=1702314566; x=1702919366;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sc1qgl70OVlwSYNp8DPvzNbv+pahk/dG2J+Svd8VVm4=;
+ b=pZJ5j+441Am6F9jUN1m7znaTBLPBNA0PKY6q7CQTXzdQr3uIdhggjQzkuPICHlUlYE
+ AMEsk3G5UlKQ5B+2Oo4psMpk+cpbTnbq8Hd/d1n6EwZRzZ/Yv28Iimeza47Bjs7wEsdF
+ CnW57m/ibGZO51+fZgWhAaPyCHdQRAFkLKeh7E4hT1WkMGNcO1syc/Yush5v7UNxufle
+ yMIzR1a2PyGkn+yfxQsENMAr+2lce5z1HpbIjWR+/I+7BkCJi+tUePsrvIoZnbClhd/G
+ uOujauRA38qlA2oYqhwwfKnEh7oPxwaFcvBFFw71b/vX/4B/+mAODUFvg7L5zP2qHEGB
+ HddA==
+X-Gm-Message-State: AOJu0YyKr18XT+jxd3T0AkojtpyVchlBCOkLaK5NV0klGJztx63GAwAh
+ azBiWz/gz3NqezdtiiBzGDmK8A==
+X-Google-Smtp-Source: AGHT+IE4M+DE3hBCkye9F8pHS772vfgtu1FvV1fNroikKiI73F3D1bZd/yUxeYm/Y1Y5O4VNVeF6KQ==
+X-Received: by 2002:a05:6a00:194d:b0:6ce:4927:2811 with SMTP id
+ s13-20020a056a00194d00b006ce49272811mr5640987pfk.22.1702314566032; 
+ Mon, 11 Dec 2023 09:09:26 -0800 (PST)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ w2-20020a654102000000b005c65ed23b65sm5546397pgp.94.2023.12.11.09.09.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Dec 2023 09:09:25 -0800 (PST)
+Message-ID: <3c2d3736-4cae-4034-973b-568e80cbf0c3@linaro.org>
+Date: Mon, 11 Dec 2023 09:09:23 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 18/21] target/arm/kvm: Init cap_has_inject_serror_esr in
+ kvm_arch_init
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20231123044219.896776-1-richard.henderson@linaro.org>
+ <20231123044219.896776-19-richard.henderson@linaro.org>
+ <4889143b-e15e-4834-af2f-ddea2dd63cb6@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <4889143b-e15e-4834-af2f-ddea2dd63cb6@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,84 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-mvendorid is an uint32 property, mimpid/marchid are uint64 properties.
-But their getters are returning bools. The reason this went under the
-radar for this long is because we have no code using the getters.
+On 11/24/23 03:54, Philippe Mathieu-Daudé wrote:
+> On 23/11/23 05:42, Richard Henderson wrote:
+>> There is no need to do this in kvm_arch_init_vcpu per vcpu.
+>> Inline kvm_arm_init_serror_injection rather than keep separate.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/arm/kvm_arm.h |  8 --------
+>>   target/arm/kvm.c     | 13 ++++---------
+>>   2 files changed, 4 insertions(+), 17 deletions(-)
+> 
+> 
+>> @@ -562,6 +556,10 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>>       cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
+>> +    /* Check whether user space can specify guest syndrome value */
+>> +    cap_has_inject_serror_esr =
+>> +        kvm_check_extension(s, KVM_CAP_ARM_INJECT_SERROR_ESR);
+>> +
+>>       if (ms->smp.cpus > 256 &&
+>>           !kvm_check_extension(s, KVM_CAP_ARM_IRQ_LINE_LAYOUT_2)) {
+>>           error_report("Using more than 256 vcpus requires a host kernel "
+>> @@ -1948,9 +1946,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
+>>       }
+>>       cpu->mp_affinity = mpidr & ARM64_AFFINITY_MASK;
+>> -    /* Check whether user space can specify guest syndrome value */
+>> -    kvm_arm_init_serror_injection(cs);
+>> -
+>>       return kvm_arm_init_cpreg_list(cpu);
+>>   }
+> 
+> 
+> Just checking, in a heterogeneous setup we still want to keep
+> these 2 calls per-vCPU, right?
 
-The problem can be seem via the 'qom-get' API though. Launching QEMU
-with the 'veyron-v1' CPU, a model with:
+There is no hetrogeneous kvm -- every vcpu must match the host cpu.
 
-VEYRON_V1_MVENDORID: 0x61f (1567)
-VEYRON_V1_MIMPID: 0x111 (273)
-VEYRON_V1_MARCHID: 0x8000000000010000 (9223372036854841344)
 
-This is what the API returns when retrieving these properties:
+r~
 
-(qemu) qom-get /machine/soc0/harts[0] mvendorid
-true
-(qemu) qom-get /machine/soc0/harts[0] mimpid
-true
-(qemu) qom-get /machine/soc0/harts[0] marchid
-true
 
-After this patch:
+>      if (kvm_check_extension(cs->kvm_state, KVM_CAP_ARM_PSCI_0_2)) {
+>          cpu->psci_version = QEMU_PSCI_VERSION_0_2;
+>          cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_PSCI_0_2;
+>      }
+> 
+>      if (!kvm_check_extension(cs->kvm_state, KVM_CAP_ARM_PMU_V3)) {
+>          cpu->has_pmu = false;
+>      }
 
-(qemu) qom-get /machine/soc0/harts[0] mvendorid
-1567
-(qemu) qom-get /machine/soc0/harts[0] mimpid
-273
-(qemu) qom-get /machine/soc0/harts[0] marchid
-9223372036854841344
 
-Fixes: 1e34150045 ("target/riscv/cpu.c: restrict 'mvendorid' value")
-Fixes: a1863ad368 ("target/riscv/cpu.c: restrict 'mimpid' value")
-Fixes: d6a427e2c0 ("target/riscv/cpu.c: restrict 'marchid' value")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 83c7c0cf07..70bf10aa7c 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1573,9 +1573,9 @@ static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
- static void cpu_get_mvendorid(Object *obj, Visitor *v, const char *name,
-                               void *opaque, Error **errp)
- {
--    bool value = RISCV_CPU(obj)->cfg.mvendorid;
-+    uint32_t value = RISCV_CPU(obj)->cfg.mvendorid;
- 
--    visit_type_bool(v, name, &value, errp);
-+    visit_type_uint32(v, name, &value, errp);
- }
- 
- static void cpu_set_mimpid(Object *obj, Visitor *v, const char *name,
-@@ -1602,9 +1602,9 @@ static void cpu_set_mimpid(Object *obj, Visitor *v, const char *name,
- static void cpu_get_mimpid(Object *obj, Visitor *v, const char *name,
-                            void *opaque, Error **errp)
- {
--    bool value = RISCV_CPU(obj)->cfg.mimpid;
-+    uint64_t value = RISCV_CPU(obj)->cfg.mimpid;
- 
--    visit_type_bool(v, name, &value, errp);
-+    visit_type_uint64(v, name, &value, errp);
- }
- 
- static void cpu_set_marchid(Object *obj, Visitor *v, const char *name,
-@@ -1652,9 +1652,9 @@ static void cpu_set_marchid(Object *obj, Visitor *v, const char *name,
- static void cpu_get_marchid(Object *obj, Visitor *v, const char *name,
-                            void *opaque, Error **errp)
- {
--    bool value = RISCV_CPU(obj)->cfg.marchid;
-+    uint64_t value = RISCV_CPU(obj)->cfg.marchid;
- 
--    visit_type_bool(v, name, &value, errp);
-+    visit_type_uint64(v, name, &value, errp);
- }
- 
- static void riscv_cpu_class_init(ObjectClass *c, void *data)
--- 
-2.41.0
 
 
