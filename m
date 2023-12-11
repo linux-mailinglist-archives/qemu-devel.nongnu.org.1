@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E8380C193
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A42380C194
 	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 07:55:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCaBO-0002RK-Uv; Mon, 11 Dec 2023 01:54:26 -0500
+	id 1rCaCA-0002VS-5M; Mon, 11 Dec 2023 01:55:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rCaBJ-0002PZ-Ux
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 01:54:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rCaBc-0002V9-Bj
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 01:54:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rCaBI-0000Pk-HA
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 01:54:21 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rCaBW-0000Sn-Dd
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 01:54:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702277659;
+ s=mimecast20190719; t=1702277673;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=u0qclSomRfJCAUSOx3ArPM4MHRuQOVH8D3zGbL+awwk=;
- b=LpQClI11z+aYaGSvRd0pYCYf4xle8cHyMw4aYI+9Yo5s09bP42dKD3uqa46u8DM5Ne6ghy
- 0LZwZmkda9TDq2QYNkuinMOQ/bP4tW+b+OTb90XurDbRfK6295R8YWEN9YYg68NbCphCki
- zUz+heWNAFKIWUpQ6epIzYFq/AKtAg8=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uFW3jaxWyaHIx48W5dFl2wUi5kqsbu1WbhO84+qj4QA=;
+ b=MYiz6aN2nT3Uv9jzAf60pNhLyz815NA3Z2Wy7+X4GIei3s4eoZL8OhLLXsa2w8Mplr08pv
+ O0wzzXwYraTPUPkIf+StN/xwXGza9NBjFNIl7f1zVJuIUBOy4T053q3rNBy+W6dcPV3mzK
+ jqw4IZVzL3IG9mL9sfHL/JQOpWr5Mfk=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-237-4v5hOFZPP0Gk5n6Fvrpw8A-1; Mon, 11 Dec 2023 01:54:17 -0500
-X-MC-Unique: 4v5hOFZPP0Gk5n6Fvrpw8A-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-286e9b8443fso1516636a91.0
- for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 22:54:17 -0800 (PST)
+ us-mta-496-ymh583dMMPGJQm_t2kjgCw-1; Mon, 11 Dec 2023 01:54:31 -0500
+X-MC-Unique: ymh583dMMPGJQm_t2kjgCw-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-563de65ac5dso391420a12.1
+ for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 22:54:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702277656; x=1702882456;
+ d=1e100.net; s=20230601; t=1702277671; x=1702882471;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u0qclSomRfJCAUSOx3ArPM4MHRuQOVH8D3zGbL+awwk=;
- b=g4hFYuRoKsASpvBlmJaDtwSwPQI7iDVnHdfYTRkLDW9l1Pk/zfCWU6s2YmasW7StVy
- sqk6c0mBpQXknJaXR0lR/h0KYwupWrXiMtnIZfCH5Mcgd1+ubd9sXvzKMI0AdCrgty26
- BKGJT/9ZXAqWJWaGp2+qNHlisKr1A+fXQrh9Xm7IPOexo9f6Y/ImcS3nfOyirdPU+qRu
- qWCEvEWyZL0YhtUQ0wLV8egrkZgOdz69rThrKfyfP7ne8t7Rl9FRUwn/uK7Frp7FbcSZ
- US9KOrbn8RAHLZ59wB8vXI2QSh1ulrozKUAmNsSKJ7V2dXm/f8KBnxlGVdNJTHaNPDFc
- 346g==
-X-Gm-Message-State: AOJu0YxKpP6lYE1NXNaMsIwQnCUJhLdU3sqj7w7eRfKiZ0XnBW/7NZuE
- etUQimECnzcxuNGU9F38UWuPnQ+SuTvTgrVRFD6SwRxbOlrt1Q69gJrgO2cSzisvcWfKG7ZpCfT
- VRGBjp9alzujIkF8=
-X-Received: by 2002:a05:6a20:548f:b0:18d:4821:f75d with SMTP id
- i15-20020a056a20548f00b0018d4821f75dmr9641475pzk.4.1702277656674; 
- Sun, 10 Dec 2023 22:54:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEsyvSNPOYexbV/pTSiNQC/OQJ/gpXomRGmM1sqeHl9KUxkOia9BRg0LQU4ra4G6prMeRSUAA==
-X-Received: by 2002:a05:6a20:548f:b0:18d:4821:f75d with SMTP id
- i15-20020a056a20548f00b0018d4821f75dmr9641467pzk.4.1702277656442; 
- Sun, 10 Dec 2023 22:54:16 -0800 (PST)
+ bh=uFW3jaxWyaHIx48W5dFl2wUi5kqsbu1WbhO84+qj4QA=;
+ b=ldfd09tUU/+Fl/TMAdn7WwX3FgnqjExVrWeL6mQPYMoDxDDlfE94UOWfsspbceAdBS
+ P/YJ9UXxVdaQugp2KcTTc44R+iAMi0yQ9HyezCELwyAoirIgksAUjBoSE1LWK2Gtkbb0
+ Gl/96osECFvAS2TjSuNSzklH5oDgfugq5KJCLe+9p9pjtj7v76ta+O0KvllPG2eSPoXd
+ qwJ1dXA71YbOZpsRxBOqIhlU7/N8r5LokNaBJbYwxl4YRSUnjNoQr9ARbNOdGQJzBaUU
+ ue7kojPSED6v0dGtp83jMlodSSLHOzOHTkbPWfnt95LIvGXlERpuceYrc6VQ/TAncKIT
+ ekVg==
+X-Gm-Message-State: AOJu0YzXj9Nm6g298d+bNVCJgA6Py1/1FGD4WMc96qqtuUllNmDhF8M+
+ sis1vOCB6JEUWyaGQe4pqaQiOyoz/fZgCjpLfd3gCxpiJaUXWtqkM1AoHYB10SFgsPYDFC6jstw
+ ez89/Jpd9R9f0m8c=
+X-Received: by 2002:a05:6a00:2d9e:b0:68e:2fd4:288a with SMTP id
+ fb30-20020a056a002d9e00b0068e2fd4288amr8363622pfb.3.1702277670821; 
+ Sun, 10 Dec 2023 22:54:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFVkxOhZb5/RkWMqcomtXHd0n4TLm23+79J4oZ1laFZBnAphYAZSbSdVcDpbPtMDrvolU5heQ==
+X-Received: by 2002:a05:6a00:2d9e:b0:68e:2fd4:288a with SMTP id
+ fb30-20020a056a002d9e00b0068e2fd4288amr8363606pfb.3.1702277670480; 
+ Sun, 10 Dec 2023 22:54:30 -0800 (PST)
 Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- j4-20020a170902da8400b001d072591d77sm5815839plx.247.2023.12.10.22.54.13
+ ka36-20020a056a0093a400b006ce7f0502f0sm5532056pfb.151.2023.12.10.22.54.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Dec 2023 22:54:16 -0800 (PST)
-Date: Mon, 11 Dec 2023 14:54:08 +0800
+ Sun, 10 Dec 2023 22:54:30 -0800 (PST)
+Date: Mon, 11 Dec 2023 14:54:23 +0800
 From: Peter Xu <peterx@redhat.com>
 To: Steve Sistare <steven.sistare@oracle.com>
 Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH V7 11/12] tests/qtest: precopy migration with suspend
-Message-ID: <ZXayEDwUiMzwM2Ga@x1n>
+Subject: Re: [PATCH V7 12/12] tests/qtest: postcopy migration with suspend
+Message-ID: <ZXayH9Fox8kpCDgo@x1n>
 References: <1701883417-356268-1-git-send-email-steven.sistare@oracle.com>
- <1701883417-356268-12-git-send-email-steven.sistare@oracle.com>
+ <1701883417-356268-13-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1701883417-356268-12-git-send-email-steven.sistare@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <1701883417-356268-13-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,10 +99,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 06, 2023 at 09:23:36AM -0800, Steve Sistare wrote:
-> Add a test case to verify that the suspended state is handled correctly
-> during live migration precopy.  The test suspends the src, migrates, then
-> wakes the dest.
+On Wed, Dec 06, 2023 at 09:23:37AM -0800, Steve Sistare wrote:
+> Add a test case to verify that the suspended state is handled correctly by
+> live migration postcopy.  The test suspends the src, migrates, then wakes
+> the dest.
 > 
 > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
