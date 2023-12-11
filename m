@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA3D80D4B8
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:54:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 658D180D514
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 19:15:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCkTA-00044W-V1; Mon, 11 Dec 2023 12:53:29 -0500
+	id 1rCknN-0001BP-CZ; Mon, 11 Dec 2023 13:14:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3Y0x3ZQwKCgwzmnutq45qrmzs00sxq.o0y2qy6-pq7qxz0zsz6.03s@flex--nabihestefan.bounces.google.com>)
- id 1rCkSY-0003Qd-Nf
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:52:50 -0500
-Received: from mail-yb1-xb4a.google.com ([2607:f8b0:4864:20::b4a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3Y0x3ZQwKCgwzmnutq45qrmzs00sxq.o0y2qy6-pq7qxz0zsz6.03s@flex--nabihestefan.bounces.google.com>)
- id 1rCkSV-0000aA-CL
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:52:49 -0500
-Received: by mail-yb1-xb4a.google.com with SMTP id
- 3f1490d57ef6-db8d6cadc6aso5583191276.3
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:52:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1702317156; x=1702921956; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=J/EBtTACgDU4egzu+G0PoToTOXmaeKx/3uxn3OpBEVE=;
- b=PUzWeOhMds00hqDQPZHjzctXv9itpIw5lQYdrn7EdFQX4kelSABggWPvBGHsjva9dr
- gMfV1/pWY+/8rl74Kb1C6ytstcrlElGLJha/nzAgVIKcp2dMtvd1NbVAX99t18BBOKfL
- +o0fwcDdK3qdttPCPnbumqs+hS53bcMz/vE2jwdUu/DvWzEd/J0xuLSgRb6QPQQsWhl8
- b52bteyyA0tuvLUb2hCCT2Z6eh4JEqeeZ3d33LrCHNjpCYfxULZTRIaiPAUgk7vrdZ/b
- gUThQIr3BZVCeThdPqKWAJVEAWyfnGmTVZvtKGHgN/M/sauJX2BUbVJ0q5dl9GbbNRTj
- nP2w==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rCknM-0001BG-7o
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:14:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rCknK-0004RP-EX
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:14:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702318457;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tJMi8WkdrDBIPtQW5HTJ3Kr78QW2kiqhboqC2TEFo/g=;
+ b=cLqPK1I1V17t74+cV1H4HnDjkvthhuqHaER9DARjuhMOVxK0cSsY6JmXBYcgHGBNsG6H4m
+ c0HnKWmqKk/x1c8FNJmgtW6ngJK2f/SvyAUgngSwkH6/NwiMMY0EESJMevp6VCFJ0v6XGg
+ KpvGF4TYw47CKdeCT5SE1dvYWAVDHjY=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-518-XvPCG9IHOeilG3EGQMy43g-1; Mon, 11 Dec 2023 13:14:15 -0500
+X-MC-Unique: XvPCG9IHOeilG3EGQMy43g-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-db402e6f61dso5188142276.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 10:14:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702317156; x=1702921956;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=J/EBtTACgDU4egzu+G0PoToTOXmaeKx/3uxn3OpBEVE=;
- b=Vc4Dr/cbVUbETDYc/srl7heh/efxxvzgceqpXS3F/0ZllaPAuHdGhEgAmSH/81X95x
- zl2ATCWe0SovUCtz2tz/3bEBAolAaBw/dPlIoQr3aXoBNALSAHCn52tbqEgg/5pbfOVa
- CH0PSpnRW7RGZr9ScnfMsaZyTlxaMKJ8Z+ha6Nca7bUzTzaVgW++QrrS1dbVoXRngYp+
- E/L+WlZmg3gAYAHmCLQiQiRsQYC5b7sRAGCwmV83kXaHbfliVnGteYebUULNNk/9WXYR
- p9znNSygVZLwhnZKlSgObOR4ETZmLC8OKW9O+WtUgf49/haY2/5xOuWlCpWU1eHlyTh7
- cG9g==
-X-Gm-Message-State: AOJu0YyksUcv/bi6T2tg60T0NjBNIO7/av6YVQ4bHfM8xOPhcoEexcR5
- ZMZyO/TR8u5LMAbh8cJ8LKznp2FnN32tQBRh40I=
-X-Google-Smtp-Source: AGHT+IGmp4Ljbcyw4OkqrmafeBjZW9JrmmggNtJ/BePS85LX4gzOYpyOwCBNL7UIxil2uOjfMYkR92iwmvG+1Vbg8ZE=
-X-Received: from nabihestefan.c.googlers.com
- ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
- (user=nabihestefan job=sendgmr) by 2002:a05:6902:cc8:b0:dbc:1b8a:8b7a with
- SMTP id cq8-20020a0569020cc800b00dbc1b8a8b7amr37306ybb.4.1702317155853; Mon,
- 11 Dec 2023 09:52:35 -0800 (PST)
-Date: Mon, 11 Dec 2023 17:52:14 +0000
-In-Reply-To: <20231211175215.3216667-1-nabihestefan@google.com>
-Mime-Version: 1.0
-References: <20231211175215.3216667-1-nabihestefan@google.com>
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231211175215.3216667-12-nabihestefan@google.com>
-Subject: [PATCH v7 11/11] tests/qtest: Adding PCS Module test to GMAC Qtest
-From: Nabih Estefan <nabihestefan@google.com>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
- wuhaotsh@google.com, jasonwang@redhat.com, avi.fishman@nuvoton.com, 
- nabihestefan@google.com, kwliu@nuvoton.com, tomer.maimon@nuvoton.com, 
- Hila.Miranda-Kuzi@nuvoton.com
+ d=1e100.net; s=20230601; t=1702318455; x=1702923255;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tJMi8WkdrDBIPtQW5HTJ3Kr78QW2kiqhboqC2TEFo/g=;
+ b=gCgocD3RRfL3pBLmR7on+ZDDNEJhDyfBjpgDfypT1/e3jRHF+etYOHSqHFaYcm/0uY
+ 4QS5vuJw3xktyaAhq5ep2Eh+WEEPr9cdNht22ANs6i98ZIEOU5k1avU6GZop+MmHhuob
+ XOMYCA3NcRmHb+x1WgJFLkKKoDoj/ihMT1Klt/1rrYw1QG8nUh+LBH0q9uSEzuK81XJM
+ AheLZUQ/0MPOwURx4tuVAe7+nHR6C3BfRkOZH4Fc94PLZQyRuq5vDM+uMGdcUCtY5Tb2
+ /2qdryvUPNyTD3YBgs4/BdCYXUfKuM2KYtt4odGn9Kd+UknuR+hwNMbPtrw3hv9/qI5H
+ r+/g==
+X-Gm-Message-State: AOJu0YxLfuKMYIvz58SQ1/AbrqjgGIW6XHH0OGTILDBuFEhlD1pzAZ2x
+ cIonzphLxorM8fVdVW7HW6X4AnYodzV9xZueha8o3ecJtQ/1kp8bYnv1IFJ0G4qm4rP35JhBl2t
+ Mj3op03TPnaEDt2M+RME70Sstjdx05Dw=
+X-Received: by 2002:a05:6902:e07:b0:db5:5097:69ff with SMTP id
+ df7-20020a0569020e0700b00db5509769ffmr3880539ybb.6.1702318455275; 
+ Mon, 11 Dec 2023 10:14:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGcJUVlu1UXBthTRa1AM3TFgh69FuV5CUdUjStodYvqw0yItew5ZUcTGQArBweenBAV0p1v25/yIh+4EWLYAlc=
+X-Received: by 2002:a05:6902:e07:b0:db5:5097:69ff with SMTP id
+ df7-20020a0569020e0700b00db5509769ffmr3880529ybb.6.1702318455023; Mon, 11 Dec
+ 2023 10:14:15 -0800 (PST)
+MIME-Version: 1.0
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-36-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-36-git-send-email-si-wei.liu@oracle.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 11 Dec 2023 19:13:38 +0100
+Message-ID: <CAJaqyWfSSAX9roge3+dJKM7BckDJoF9b5bA1NgtR_xbO332hxA@mail.gmail.com>
+Subject: Re: [PATCH 35/40] vdpa: add vhost_vdpa_set_address_space_id trace
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: jasowang@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b4a;
- envelope-from=3Y0x3ZQwKCgwzmnutq45qrmzs00sxq.o0y2qy6-pq7qxz0zsz6.03s@flex--nabihestefan.bounces.google.com;
- helo=mail-yb1-xb4a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, UPPERCASE_50_75=0.008,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,191 +97,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan Diaz <nabihestefan@google.com>
+On Thu, Dec 7, 2023 at 7:51=E2=80=AFPM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> For better debuggability and observability.
+>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 
- - Add PCS Register check to npcm_gmac-test
+Reviewed-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-Change-Id: Iddbd17df490004deadeb734a1dd7420a7e6963d5
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
----
- tests/qtest/npcm_gmac-test.c | 134 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 133 insertions(+), 1 deletion(-)
-
-diff --git a/tests/qtest/npcm_gmac-test.c b/tests/qtest/npcm_gmac-test.c
-index 130a1599a8..0958b13814 100644
---- a/tests/qtest/npcm_gmac-test.c
-+++ b/tests/qtest/npcm_gmac-test.c
-@@ -20,6 +20,10 @@
- /* Name of the GMAC Device */
- #define TYPE_NPCM_GMAC "npcm-gmac"
- 
-+/* Address of the PCS Module */
-+#define PCS_BASE_ADDRESS 0xf0780000
-+#define NPCM_PCS_IND_AC_BA 0x1fe
-+
- typedef struct GMACModule {
-     int irq;
-     uint64_t base_addr;
-@@ -111,6 +115,62 @@ typedef enum NPCMRegister {
-     NPCM_GMAC_PTP_STNSUR = 0x714,
-     NPCM_GMAC_PTP_TAR = 0x718,
-     NPCM_GMAC_PTP_TTSR = 0x71c,
-+
-+    /* PCS Registers */
-+    NPCM_PCS_SR_CTL_ID1 = 0x3c0008,
-+    NPCM_PCS_SR_CTL_ID2 = 0x3c000a,
-+    NPCM_PCS_SR_CTL_STS = 0x3c0010,
-+
-+    NPCM_PCS_SR_MII_CTRL = 0x3e0000,
-+    NPCM_PCS_SR_MII_STS = 0x3e0002,
-+    NPCM_PCS_SR_MII_DEV_ID1 = 0x3e0004,
-+    NPCM_PCS_SR_MII_DEV_ID2 = 0x3e0006,
-+    NPCM_PCS_SR_MII_AN_ADV = 0x3e0008,
-+    NPCM_PCS_SR_MII_LP_BABL = 0x3e000a,
-+    NPCM_PCS_SR_MII_AN_EXPN = 0x3e000c,
-+    NPCM_PCS_SR_MII_EXT_STS = 0x3e001e,
-+
-+    NPCM_PCS_SR_TIM_SYNC_ABL = 0x3e0e10,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR = 0x3e0e12,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR = 0x3e0e14,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR = 0x3e0e16,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR = 0x3e0e18,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR = 0x3e0e1a,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR = 0x3e0e1c,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR = 0x3e0e1e,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR = 0x3e0e20,
-+
-+    NPCM_PCS_VR_MII_MMD_DIG_CTRL1 = 0x3f0000,
-+    NPCM_PCS_VR_MII_AN_CTRL = 0x3f0002,
-+    NPCM_PCS_VR_MII_AN_INTR_STS = 0x3f0004,
-+    NPCM_PCS_VR_MII_TC = 0x3f0006,
-+    NPCM_PCS_VR_MII_DBG_CTRL = 0x3f000a,
-+    NPCM_PCS_VR_MII_EEE_MCTRL0 = 0x3f000c,
-+    NPCM_PCS_VR_MII_EEE_TXTIMER = 0x3f0010,
-+    NPCM_PCS_VR_MII_EEE_RXTIMER = 0x3f0012,
-+    NPCM_PCS_VR_MII_LINK_TIMER_CTRL = 0x3f0014,
-+    NPCM_PCS_VR_MII_EEE_MCTRL1 = 0x3f0016,
-+    NPCM_PCS_VR_MII_DIG_STS = 0x3f0020,
-+    NPCM_PCS_VR_MII_ICG_ERRCNT1 = 0x3f0022,
-+    NPCM_PCS_VR_MII_MISC_STS = 0x3f0030,
-+    NPCM_PCS_VR_MII_RX_LSTS = 0x3f0040,
-+    NPCM_PCS_VR_MII_MP_TX_BSTCTRL0 = 0x3f0070,
-+    NPCM_PCS_VR_MII_MP_TX_LVLCTRL0 = 0x3f0074,
-+    NPCM_PCS_VR_MII_MP_TX_GENCTRL0 = 0x3f007a,
-+    NPCM_PCS_VR_MII_MP_TX_GENCTRL1 = 0x3f007c,
-+    NPCM_PCS_VR_MII_MP_TX_STS = 0x3f0090,
-+    NPCM_PCS_VR_MII_MP_RX_GENCTRL0 = 0x3f00b0,
-+    NPCM_PCS_VR_MII_MP_RX_GENCTRL1 = 0x3f00b2,
-+    NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0 = 0x3f00ba,
-+    NPCM_PCS_VR_MII_MP_MPLL_CTRL0 = 0x3f00f0,
-+    NPCM_PCS_VR_MII_MP_MPLL_CTRL1 = 0x3f00f2,
-+    NPCM_PCS_VR_MII_MP_MPLL_STS = 0x3f0110,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL2 = 0x3f0126,
-+    NPCM_PCS_VR_MII_MP_LVL_CTRL = 0x3f0130,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL0 = 0x3f0132,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL1 = 0x3f0134,
-+    NPCM_PCS_VR_MII_DIG_CTRL2 = 0x3f01c2,
-+    NPCM_PCS_VR_MII_DIG_ERRCNT_SEL = 0x3f01c4,
- } NPCMRegister;
- 
- static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-@@ -119,6 +179,15 @@ static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-     return qtest_readl(qts, mod->base_addr + regno);
- }
- 
-+static uint16_t pcs_read(QTestState *qts, const GMACModule *mod,
-+                          NPCMRegister regno)
-+{
-+    uint32_t write_value = (regno & 0x3ffe00) >> 9;
-+    qtest_writel(qts, PCS_BASE_ADDRESS + NPCM_PCS_IND_AC_BA, write_value);
-+    uint32_t read_offset = regno & 0x1ff;
-+    return qtest_readl(qts, PCS_BASE_ADDRESS + read_offset);
-+}
-+
- /* Check that GMAC registers are reset to default value */
- static void test_init(gconstpointer test_data)
- {
-@@ -129,7 +198,12 @@ static void test_init(gconstpointer test_data)
- #define CHECK_REG32(regno, value) \
-     do { \
-         g_assert_cmphex(gmac_read(qts, mod, (regno)), ==, (value)); \
--    } while (0)
-+    } while (0) ;
-+
-+#define CHECK_REG_PCS(regno, value) \
-+    do { \
-+        g_assert_cmphex(pcs_read(qts, mod, (regno)), ==, (value)); \
-+    } while (0) ;
- 
-     CHECK_REG32(NPCM_DMA_BUS_MODE, 0x00020100);
-     CHECK_REG32(NPCM_DMA_XMT_POLL_DEMAND, 0);
-@@ -180,6 +254,64 @@ static void test_init(gconstpointer test_data)
-     CHECK_REG32(NPCM_GMAC_PTP_TAR, 0);
-     CHECK_REG32(NPCM_GMAC_PTP_TTSR, 0);
- 
-+    /* TODO Add registers PCS */
-+    if (mod->base_addr == 0xf0802000) {
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID1, 0x699e)
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID2, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_STS, 0x8000)
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_CTRL, 0x1140)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_STS, 0x0109)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID1, 0x699e)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID2, 0x0ced0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_ADV, 0x0020)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_LP_BABL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_EXPN, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_EXT_STS, 0xc000)
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_ABL, 0x0003)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR, 0x0038)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR, 0x0038)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR, 0x0058)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR, 0x0048)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR, 0)
-+
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MMD_DIG_CTRL1, 0x2400)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_CTRL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_INTR_STS, 0x000a)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_TC, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DBG_CTRL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL0, 0x899c)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_TXTIMER, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_RXTIMER, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_LINK_TIMER_CTRL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_STS, 0x0010)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_ICG_ERRCNT1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MISC_STS, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_RX_LSTS, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_BSTCTRL0, 0x00a)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_LVLCTRL0, 0x007f)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL0, 0x0001)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_STS, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL0, 0x0100)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL1, 0x1100)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0, 0x000e)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL0, 0x0100)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL1, 0x0032)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_STS, 0x0001)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL2, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_LVL_CTRL, 0x0019)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL0, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_CTRL2, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_ERRCNT_SEL, 0)
-+    }
-+
-     qtest_quit(qts);
- }
- 
--- 
-2.43.0.472.g3155946c3a-goog
+> ---
+>  net/trace-events | 3 +++
+>  net/vhost-vdpa.c | 3 +++
+>  2 files changed, 6 insertions(+)
+>
+> diff --git a/net/trace-events b/net/trace-events
+> index 823a071..aab666a 100644
+> --- a/net/trace-events
+> +++ b/net/trace-events
+> @@ -23,3 +23,6 @@ colo_compare_tcp_info(const char *pkt, uint32_t seq, ui=
+nt32_t ack, int hdlen, in
+>  # filter-rewriter.c
+>  colo_filter_rewriter_pkt_info(const char *func, const char *src, const c=
+har *dst, uint32_t seq, uint32_t ack, uint32_t flag) "%s: src/dst: %s/%s p:=
+ seq/ack=3D%u/%u  flags=3D0x%x"
+>  colo_filter_rewriter_conn_offset(uint32_t offset) ": offset=3D%u"
+> +
+> +# vhost-vdpa.c
+> +vhost_vdpa_set_address_space_id(void *v, unsigned vq_group, unsigned asi=
+d_num) "vhost_vdpa: %p vq_group: %u asid: %u"
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 41714d1..84876b0 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -30,6 +30,7 @@
+>  #include "migration/misc.h"
+>  #include "hw/virtio/vhost.h"
+>  #include "hw/virtio/vhost-vdpa.h"
+> +#include "trace.h"
+>
+>  /* Todo:need to add the multiqueue support here */
+>  typedef struct VhostVDPAState {
+> @@ -365,6 +366,8 @@ static int vhost_vdpa_set_address_space_id(struct vho=
+st_vdpa *v,
+>      };
+>      int r;
+>
+> +    trace_vhost_vdpa_set_address_space_id(v, vq_group, asid_num);
+> +
+>      r =3D ioctl(v->shared->device_fd, VHOST_VDPA_SET_GROUP_ASID, &asid);
+>      if (unlikely(r < 0)) {
+>          error_report("Can't set vq group %u asid %u, errno=3D%d (%s)",
+> --
+> 1.8.3.1
+>
 
 
