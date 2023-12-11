@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658D180D514
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 19:15:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A4280D515
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 19:15:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCknN-0001BP-CZ; Mon, 11 Dec 2023 13:14:21 -0500
+	id 1rCkoK-0001OI-Mm; Mon, 11 Dec 2023 13:15:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rCknM-0001BG-7o
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:14:20 -0500
+ id 1rCknx-0001MW-FV
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:14:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rCknK-0004RP-EX
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:14:20 -0500
+ id 1rCknv-0004UY-Sn
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:14:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702318457;
+ s=mimecast20190719; t=1702318495;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tJMi8WkdrDBIPtQW5HTJ3Kr78QW2kiqhboqC2TEFo/g=;
- b=cLqPK1I1V17t74+cV1H4HnDjkvthhuqHaER9DARjuhMOVxK0cSsY6JmXBYcgHGBNsG6H4m
- c0HnKWmqKk/x1c8FNJmgtW6ngJK2f/SvyAUgngSwkH6/NwiMMY0EESJMevp6VCFJ0v6XGg
- KpvGF4TYw47CKdeCT5SE1dvYWAVDHjY=
+ bh=l7Hur+7vxOMfXZB9QP4ksNeQL1NZjIkS+oFsMrXa8yc=;
+ b=BbDHgykN6Qh87E6+icHas+d4Zjs1LmAuGgbEKjkpIpNE76UZ4o5A851vXd6GbKRDrsWHS/
+ lh4uNW6Wf8QPGwfQ9ZOVAGaAjvprF4DNm2XK7L5g4If9MW/roiXc+MPHtC2qm5WBV1+GNB
+ yx0TEtfbrMtugu8nIfHN8vqfGQidGEE=
 Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
  [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-XvPCG9IHOeilG3EGQMy43g-1; Mon, 11 Dec 2023 13:14:15 -0500
-X-MC-Unique: XvPCG9IHOeilG3EGQMy43g-1
+ us-mta-610-Rmg95KE5N2u4aSsjNHY2xQ-1; Mon, 11 Dec 2023 13:14:53 -0500
+X-MC-Unique: Rmg95KE5N2u4aSsjNHY2xQ-1
 Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-db402e6f61dso5188142276.3
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 10:14:15 -0800 (PST)
+ 3f1490d57ef6-daee86e2d70so5323136276.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 10:14:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702318455; x=1702923255;
+ d=1e100.net; s=20230601; t=1702318493; x=1702923293;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tJMi8WkdrDBIPtQW5HTJ3Kr78QW2kiqhboqC2TEFo/g=;
- b=gCgocD3RRfL3pBLmR7on+ZDDNEJhDyfBjpgDfypT1/e3jRHF+etYOHSqHFaYcm/0uY
- 4QS5vuJw3xktyaAhq5ep2Eh+WEEPr9cdNht22ANs6i98ZIEOU5k1avU6GZop+MmHhuob
- XOMYCA3NcRmHb+x1WgJFLkKKoDoj/ihMT1Klt/1rrYw1QG8nUh+LBH0q9uSEzuK81XJM
- AheLZUQ/0MPOwURx4tuVAe7+nHR6C3BfRkOZH4Fc94PLZQyRuq5vDM+uMGdcUCtY5Tb2
- /2qdryvUPNyTD3YBgs4/BdCYXUfKuM2KYtt4odGn9Kd+UknuR+hwNMbPtrw3hv9/qI5H
- r+/g==
-X-Gm-Message-State: AOJu0YxLfuKMYIvz58SQ1/AbrqjgGIW6XHH0OGTILDBuFEhlD1pzAZ2x
- cIonzphLxorM8fVdVW7HW6X4AnYodzV9xZueha8o3ecJtQ/1kp8bYnv1IFJ0G4qm4rP35JhBl2t
- Mj3op03TPnaEDt2M+RME70Sstjdx05Dw=
-X-Received: by 2002:a05:6902:e07:b0:db5:5097:69ff with SMTP id
- df7-20020a0569020e0700b00db5509769ffmr3880539ybb.6.1702318455275; 
- Mon, 11 Dec 2023 10:14:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGcJUVlu1UXBthTRa1AM3TFgh69FuV5CUdUjStodYvqw0yItew5ZUcTGQArBweenBAV0p1v25/yIh+4EWLYAlc=
-X-Received: by 2002:a05:6902:e07:b0:db5:5097:69ff with SMTP id
- df7-20020a0569020e0700b00db5509769ffmr3880529ybb.6.1702318455023; Mon, 11 Dec
- 2023 10:14:15 -0800 (PST)
+ bh=l7Hur+7vxOMfXZB9QP4ksNeQL1NZjIkS+oFsMrXa8yc=;
+ b=FxIL9XRMy7NWVhLIB1/AUME6xiC4jxEJfKSJYBhP+aElrwA8VDyX6z8J8NM7SKw0cb
+ RiPEWLYkVtWlhPg/+jQ2GArWRkorSVZDmmLTxufpNNG4UcZOnzQtAOhgqJTbxs/1B/ze
+ S7OLbcFtcgVqHPk2fpVD16F35T70JcdCYlP3n/iiTedcRbQanbjhcpYs/i4Na6iF9QCw
+ TGSBIW0TdZQGkwP09VjUBdiBD/5V+bwFO+WnNnG3kfyNRIpDmiYQXvijR8GOuvnopFit
+ dZNpnbd+TbctFmMDOusLZZlM31iIvh0NV9RLdt6lY13BlGNcFE3xHjQVH/Slw/w4bP6H
+ WNFA==
+X-Gm-Message-State: AOJu0Yw+eAf6oBWtwgR+sXzpwXtWbDAKHfvbxBbrLs62YkuIUR8vgKmI
+ XPoWrk+qqDczEulq4x65YmRq7ubZTZwXm7nJyuCVgt8asQ8iEgD+5klsyvftvCmrd9l3TDGd7L5
+ jLfMp9taHealUEMjqmG1Be7zab13dkd0=
+X-Received: by 2002:a25:abc4:0:b0:db7:dacf:3fac with SMTP id
+ v62-20020a25abc4000000b00db7dacf3facmr2586371ybi.89.1702318493144; 
+ Mon, 11 Dec 2023 10:14:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHMiE1PFMePry99kS4BEZnxiDcPCo1g57R0uFWf016mkWYDv8J4ib89jXcUhm2JCFY2J1HMON8pSh/CYoAFou4=
+X-Received: by 2002:a25:abc4:0:b0:db7:dacf:3fac with SMTP id
+ v62-20020a25abc4000000b00db7dacf3facmr2586362ybi.89.1702318492873; Mon, 11
+ Dec 2023 10:14:52 -0800 (PST)
 MIME-Version: 1.0
 References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-36-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-36-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-37-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-37-git-send-email-si-wei.liu@oracle.com>
 From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 11 Dec 2023 19:13:38 +0100
-Message-ID: <CAJaqyWfSSAX9roge3+dJKM7BckDJoF9b5bA1NgtR_xbO332hxA@mail.gmail.com>
-Subject: Re: [PATCH 35/40] vdpa: add vhost_vdpa_set_address_space_id trace
+Date: Mon, 11 Dec 2023 19:14:16 +0100
+Message-ID: <CAJaqyWfCmykmS9h1fE52oKC7j1DSPk52O=njVKZ4oyAzMosi6Q@mail.gmail.com>
+Subject: Re: [PATCH 36/40] vdpa: add vhost_vdpa_get_vring_base trace for svq
+ mode
 To: Si-Wei Liu <si-wei.liu@oracle.com>
 Cc: jasowang@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
  leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
@@ -107,47 +108,60 @@ rote:
 Reviewed-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
 > ---
->  net/trace-events | 3 +++
->  net/vhost-vdpa.c | 3 +++
->  2 files changed, 6 insertions(+)
+>  hw/virtio/trace-events | 2 +-
+>  hw/virtio/vhost-vdpa.c | 3 ++-
+>  2 files changed, 3 insertions(+), 2 deletions(-)
 >
-> diff --git a/net/trace-events b/net/trace-events
-> index 823a071..aab666a 100644
-> --- a/net/trace-events
-> +++ b/net/trace-events
-> @@ -23,3 +23,6 @@ colo_compare_tcp_info(const char *pkt, uint32_t seq, ui=
-nt32_t ack, int hdlen, in
->  # filter-rewriter.c
->  colo_filter_rewriter_pkt_info(const char *func, const char *src, const c=
-har *dst, uint32_t seq, uint32_t ack, uint32_t flag) "%s: src/dst: %s/%s p:=
- seq/ack=3D%u/%u  flags=3D0x%x"
->  colo_filter_rewriter_conn_offset(uint32_t offset) ": offset=3D%u"
-> +
-> +# vhost-vdpa.c
-> +vhost_vdpa_set_address_space_id(void *v, unsigned vq_group, unsigned asi=
-d_num) "vhost_vdpa: %p vq_group: %u asid: %u"
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 41714d1..84876b0 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -30,6 +30,7 @@
->  #include "migration/misc.h"
->  #include "hw/virtio/vhost.h"
->  #include "hw/virtio/vhost-vdpa.h"
-> +#include "trace.h"
+> diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+> index 196f32f..a8d3321 100644
+> --- a/hw/virtio/trace-events
+> +++ b/hw/virtio/trace-events
+> @@ -58,7 +58,7 @@ vhost_vdpa_set_log_base(void *dev, uint64_t base, unsig=
+ned long long size, int r
+>  vhost_vdpa_set_vring_addr(void *dev, unsigned int index, unsigned int fl=
+ags, uint64_t desc_user_addr, uint64_t used_user_addr, uint64_t avail_user_=
+addr, uint64_t log_guest_addr) "dev: %p index: %u flags: 0x%x desc_user_add=
+r: 0x%"PRIx64" used_user_addr: 0x%"PRIx64" avail_user_addr: 0x%"PRIx64" log=
+_guest_addr: 0x%"PRIx64
+>  vhost_vdpa_set_vring_num(void *dev, unsigned int index, unsigned int num=
+) "dev: %p index: %u num: %u"
+>  vhost_vdpa_set_vring_base(void *dev, unsigned int index, unsigned int nu=
+m) "dev: %p index: %u num: %u"
+> -vhost_vdpa_get_vring_base(void *dev, unsigned int index, unsigned int nu=
+m) "dev: %p index: %u num: %u"
+> +vhost_vdpa_get_vring_base(void *dev, unsigned int index, unsigned int nu=
+m, bool svq) "dev: %p index: %u num: %u svq: %d"
+>  vhost_vdpa_set_vring_kick(void *dev, unsigned int index, int fd) "dev: %=
+p index: %u fd: %d"
+>  vhost_vdpa_set_vring_call(void *dev, unsigned int index, int fd) "dev: %=
+p index: %u fd: %d"
+>  vhost_vdpa_get_features(void *dev, uint64_t features) "dev: %p features:=
+ 0x%"PRIx64
+> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> index 8ba390d..d66936f 100644
+> --- a/hw/virtio/vhost-vdpa.c
+> +++ b/hw/virtio/vhost-vdpa.c
+> @@ -1607,6 +1607,7 @@ static int vhost_vdpa_get_vring_base(struct vhost_d=
+ev *dev,
 >
->  /* Todo:need to add the multiqueue support here */
->  typedef struct VhostVDPAState {
-> @@ -365,6 +366,8 @@ static int vhost_vdpa_set_address_space_id(struct vho=
-st_vdpa *v,
->      };
->      int r;
+>      if (v->shadow_vqs_enabled) {
+>          ring->num =3D virtio_queue_get_last_avail_idx(dev->vdev, ring->i=
+ndex);
+> +        trace_vhost_vdpa_get_vring_base(dev, ring->index, ring->num, tru=
+e);
+>          return 0;
+>      }
 >
-> +    trace_vhost_vdpa_set_address_space_id(v, vq_group, asid_num);
-> +
->      r =3D ioctl(v->shared->device_fd, VHOST_VDPA_SET_GROUP_ASID, &asid);
->      if (unlikely(r < 0)) {
->          error_report("Can't set vq group %u asid %u, errno=3D%d (%s)",
+> @@ -1619,7 +1620,7 @@ static int vhost_vdpa_get_vring_base(struct vhost_d=
+ev *dev,
+>      }
+>
+>      ret =3D vhost_vdpa_call(dev, VHOST_GET_VRING_BASE, ring);
+> -    trace_vhost_vdpa_get_vring_base(dev, ring->index, ring->num);
+> +    trace_vhost_vdpa_get_vring_base(dev, ring->index, ring->num, false);
+>      return ret;
+>  }
+>
 > --
 > 1.8.3.1
 >
