@@ -2,120 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A378A80DB0A
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 20:45:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B7A80DB1F
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 20:52:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCmCP-0006dT-SU; Mon, 11 Dec 2023 14:44:17 -0500
+	id 1rCmJJ-00013r-RV; Mon, 11 Dec 2023 14:51:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rCmCM-0006dL-5q
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 14:44:14 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1rCmJH-00013h-MU
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 14:51:24 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rCmCJ-0002pu-TY
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 14:44:13 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 812F31FBB3;
- Mon, 11 Dec 2023 19:44:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1702323849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FMFdQ5u+ehE4PH5a78kJqLHJ4ydiE1wfOGrEBtyzHns=;
- b=jvom0vdx/AlF+tyIWJflXeefDl7RRQy6HDOH7pWqNW38hZK0vztnlmhuwelK5A3BqsOnxC
- VH7U7geTe2OmoeIeBr/WKr0GvvC3z4fEKs3+eYMxjY3+3XyTAmKdWpJy5t+uzgTXCQq4Wc
- eFmQufMshRnj+cIrHb7eMQozr1tg45o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1702323849;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FMFdQ5u+ehE4PH5a78kJqLHJ4ydiE1wfOGrEBtyzHns=;
- b=SXjAbkZqZf095okqYptfSmyfoiVR/mLUOPwhVMHU9zO0x3kgbTMmHlJyKzf3asAZHTLidK
- VcoHVdgmEA5IKJAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1702323849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FMFdQ5u+ehE4PH5a78kJqLHJ4ydiE1wfOGrEBtyzHns=;
- b=jvom0vdx/AlF+tyIWJflXeefDl7RRQy6HDOH7pWqNW38hZK0vztnlmhuwelK5A3BqsOnxC
- VH7U7geTe2OmoeIeBr/WKr0GvvC3z4fEKs3+eYMxjY3+3XyTAmKdWpJy5t+uzgTXCQq4Wc
- eFmQufMshRnj+cIrHb7eMQozr1tg45o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1702323849;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FMFdQ5u+ehE4PH5a78kJqLHJ4ydiE1wfOGrEBtyzHns=;
- b=SXjAbkZqZf095okqYptfSmyfoiVR/mLUOPwhVMHU9zO0x3kgbTMmHlJyKzf3asAZHTLidK
- VcoHVdgmEA5IKJAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C48D132DA;
- Mon, 11 Dec 2023 19:44:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id giUKMYhmd2U7DAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 11 Dec 2023 19:44:08 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Hao Xiang <hao.xiang@bytedance.com>, peter.maydell@linaro.org,
- quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com,
- bryan.zhang@bytedance.com, qemu-devel@nongnu.org
-Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: Re: [PATCH v2 12/20] migration/multifd: Add new migration option
- for multifd DSA offloading.
-In-Reply-To: <20231114054032.1192027-13-hao.xiang@bytedance.com>
-References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
- <20231114054032.1192027-13-hao.xiang@bytedance.com>
-Date: Mon, 11 Dec 2023 16:44:06 -0300
-Message-ID: <87wmtkle2h.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1rCmJF-0004AT-HV
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 14:51:23 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2ca0d14976aso65097901fa.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 11:51:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702324279; x=1702929079;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=9zr/nLx3aRKvFmPuAX5LTJ1DjqkENwdmLbfKJwJm4KM=;
+ b=Zpp83zEo+hXTSjV5DUBsi1hC2fCxFt8Divn9QJrfvC2v6IN47SeFFAau89UCxhCJsH
+ I+NKqumeDFKTrKM4JXpS1srYQykxCSysrpLBKQzQN1dI+QT7v3x10UYAnFm88vE6n0gK
+ IaMHCOUuxQJXegURg1cLaOw67Xqlkz+Mx4R1ePm20WtFyYpA2kGcho51vD+T3LLXKw8o
+ MEPi5R6jDdtCBaI9/2eNCqNzPArk+4VMON+ZBItFYu1r4nAVxGge80LQABM3U26lfdOk
+ x9Kdgud7wMAl9TC3NF2/zcH4yftBscJKWxswnGSlXyxxt5t9h6/gvNo4zA1jBovAAvdn
+ kuCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702324279; x=1702929079;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9zr/nLx3aRKvFmPuAX5LTJ1DjqkENwdmLbfKJwJm4KM=;
+ b=eOx0ypacVT3BPKORw2v32Rm0tYu9TEyb/GHx+p2jXdbI7D+X9nhrDdUb/SVWO2xoSJ
+ IWxvECfEDZJLbtrpYmgzC6cBU91XqM4HMnsZpO4sNxSrfEiEC8qe/kSCXcueA31F6S+s
+ 0To5iYxltfsrB+pBrhWZJbFTbAyxCCqGoCtZDz4FziqdRg2n5yfIrrQit/JelFsGeYzK
+ XdtNhzrgr8qqTzJvoecKVZEWnRTJ8Xy6T0odatVSJVw1ea8Hxm968kEb39uaBFkBm1TV
+ LDHsaku8zGewKQkihfTJRASDyKy1sHmMWWsQjzZjkF8L7YbPGpX8RL/fvjyuNyP0zJZv
+ ncnA==
+X-Gm-Message-State: AOJu0Yz1NH+yczImjoWvFESQo3RLd9++o0y50wpVSwPG9zLD9LYbQVJh
+ gmjL3c9p2b0RfmTETp9PZrTSPIfJA1QRZIkhSwnfew==
+X-Google-Smtp-Source: AGHT+IECpVHKH+8L64xCp5nN/0blY/0svWBrq2fonCU0iADKb72hCQ86SUett+1vYh0MCYoQgom2kKeSnln7mwFJs/0=
+X-Received: by 2002:a2e:b88a:0:b0:2cc:1c21:f729 with SMTP id
+ r10-20020a2eb88a000000b002cc1c21f729mr1268278ljp.60.1702324279504; Mon, 11
+ Dec 2023 11:51:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: 7.06
-X-Spamd-Result: default: False [-12.01 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[]; DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
- R_SPF_SOFTFAIL(0.00)[~all:c]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_TRACE(0.00)[suse.de:+];
- DMARC_POLICY_ALLOW(0.00)[suse.de,none];
- RCPT_COUNT_SEVEN(0.00)[8]; MX_GOOD(-0.01)[];
- DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; BAYES_HAM(-3.00)[100.00%];
- MID_RHS_MATCH_FROM(0.00)[]; ARC_NA(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- WHITELIST_DMARC(-7.00)[suse.de:D:+];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Rspamd-Server: rspamd1
-X-Rspamd-Queue-Id: 812F31FBB3
-X-Spam-Score: -12.01
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jvom0vdx;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SXjAbkZq;
- spf=softfail (smtp-out2.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither
- permitted nor denied by domain of farosas@suse.de)
- smtp.mailfrom=farosas@suse.de; 
- dmarc=pass (policy=none) header.from=suse.de
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231210-rss-v8-0-9553ee714d38@daynix.com>
+ <CAOEp5Ofj+a2rqGWw=oLXBqrXqUj6XRc=Je3ScaE5sxZFzaAOdA@mail.gmail.com>
+ <431e5902-970b-4fd5-8302-dcc9c4c76bd7@daynix.com>
+ <CAOEp5OcW1xrr8EVeiRqQ5OnecxB6xtKJt6hLCqz6GgmSg7CctQ@mail.gmail.com>
+ <20231211104224-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231211104224-mutt-send-email-mst@kernel.org>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+Date: Mon, 11 Dec 2023 21:51:07 +0200
+Message-ID: <CAOEp5OfKnE=qna1FRHqg4y=6Fc=J6U57J3pryV-JBB6TiC-6Hg@mail.gmail.com>
+Subject: Re: [PATCH v8 00/19] virtio-net RSS/hash report fixes and improvements
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
+ Luigi Rizzo <rizzo@iet.unipi.it>, Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
+ Vincenzo Maffione <v.maffione@gmail.com>,
+ Andrew Melnychenko <andrew@daynix.com>, qemu-devel@nongnu.org, 
+ "Zhang, Chen" <chen.zhang@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
+Content-Type: multipart/alternative; boundary="000000000000f90967060c414120"
+Received-SPF: none client-ip=2a00:1450:4864:20::22b;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x22b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -132,255 +95,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hao Xiang <hao.xiang@bytedance.com> writes:
+--000000000000f90967060c414120
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Intel DSA offloading is an optional feature that turns on if
-> proper hardware and software stack is available. To turn on
-> DSA offloading in multifd live migration:
+Hi Michael,
+Sure, I've reviewed that also, there was a fruitful discussion
+till the series r=D0=B5=D0=B0ched its final form.
+At the beginning of September we've got the response from Jason that the
+series is queued upstream so we were calm and switched to libvirt part ))
+
+Seems like a misunderstanding, let's wait for Jason response.
+
+Thanks,
+Yuri
+
+
+
+
+On Mon, Dec 11, 2023 at 5:43=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
+
+> On Mon, Dec 11, 2023 at 02:34:56PM +0200, Yuri Benditovich wrote:
+> > https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg05859.html
 >
-> multifd-dsa-accel="[dsa_dev_path1] ] [dsa_dev_path2] ... [dsa_dev_pathX]"
+> It's from August, I think it's fair to say it's not going upstream
+> unless there's some activity. Yuri did you review that series then?
+> Care to ack?
 >
-> This feature is turned off by default.
-
-This patch breaks make check:
-
- 43/357 qemu:qtest+qtest-x86_64 / qtest-x86_64/test-hmp               ERROR           0.52s
- 79/357 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test         ERROR           3.59s
-167/357 qemu:qtest+qtest-x86_64 / qtest-x86_64/qmp-cmd-test ERROR           3.68s
-
-Make sure you run make check before posting. Ideally also run the series
-through the Gitlab CI on your personal fork.
-
-> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-> ---
->  migration/migration-hmp-cmds.c |  8 ++++++++
->  migration/options.c            | 28 ++++++++++++++++++++++++++++
->  migration/options.h            |  1 +
->  qapi/migration.json            | 17 ++++++++++++++---
->  scripts/meson-buildoptions.sh  |  6 +++---
->  5 files changed, 54 insertions(+), 6 deletions(-)
+> --
+> MST
 >
-> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-> index 86ae832176..d9451744dd 100644
-> --- a/migration/migration-hmp-cmds.c
-> +++ b/migration/migration-hmp-cmds.c
-> @@ -353,6 +353,9 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
->          monitor_printf(mon, "%s: '%s'\n",
->              MigrationParameter_str(MIGRATION_PARAMETER_TLS_AUTHZ),
->              params->tls_authz);
-> +        monitor_printf(mon, "%s: %s\n",
+>
 
-Use '%s' here.
+--000000000000f90967060c414120
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +            MigrationParameter_str(MIGRATION_PARAMETER_MULTIFD_DSA_ACCEL),
-> +            params->multifd_dsa_accel);
->  
->          if (params->has_block_bitmap_mapping) {
->              const BitmapMigrationNodeAliasList *bmnal;
-> @@ -615,6 +618,11 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
->          p->has_block_incremental = true;
->          visit_type_bool(v, param, &p->block_incremental, &err);
->          break;
-> +    case MIGRATION_PARAMETER_MULTIFD_DSA_ACCEL:
-> +        p->multifd_dsa_accel = g_new0(StrOrNull, 1);
-> +        p->multifd_dsa_accel->type = QTYPE_QSTRING;
-> +        visit_type_str(v, param, &p->multifd_dsa_accel->u.s, &err);
-> +        break;
->      case MIGRATION_PARAMETER_MULTIFD_CHANNELS:
->          p->has_multifd_channels = true;
->          visit_type_uint8(v, param, &p->multifd_channels, &err);
-> diff --git a/migration/options.c b/migration/options.c
-> index 97d121d4d7..6e424b5d63 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -179,6 +179,8 @@ Property migration_properties[] = {
->      DEFINE_PROP_MIG_MODE("mode", MigrationState,
->                        parameters.mode,
->                        MIG_MODE_NORMAL),
-> +    DEFINE_PROP_STRING("multifd-dsa-accel", MigrationState,
-> +                       parameters.multifd_dsa_accel),
->  
->      /* Migration capabilities */
->      DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
-> @@ -901,6 +903,13 @@ const char *migrate_tls_creds(void)
->      return s->parameters.tls_creds;
->  }
->  
-> +const char *migrate_multifd_dsa_accel(void)
-> +{
-> +    MigrationState *s = migrate_get_current();
-> +
-> +    return s->parameters.multifd_dsa_accel;
-> +}
-> +
->  const char *migrate_tls_hostname(void)
->  {
->      MigrationState *s = migrate_get_current();
-> @@ -1025,6 +1034,7 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
->      params->vcpu_dirty_limit = s->parameters.vcpu_dirty_limit;
->      params->has_mode = true;
->      params->mode = s->parameters.mode;
-> +    params->multifd_dsa_accel = s->parameters.multifd_dsa_accel;
->  
->      return params;
->  }
-> @@ -1033,6 +1043,7 @@ void migrate_params_init(MigrationParameters *params)
->  {
->      params->tls_hostname = g_strdup("");
->      params->tls_creds = g_strdup("");
-> +    params->multifd_dsa_accel = g_strdup("");
->  
->      /* Set has_* up only for parameter checks */
->      params->has_compress_level = true;
-> @@ -1362,6 +1373,11 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
->      if (params->has_mode) {
->          dest->mode = params->mode;
->      }
-> +
-> +    if (params->multifd_dsa_accel) {
-> +        assert(params->multifd_dsa_accel->type == QTYPE_QSTRING);
-> +        dest->multifd_dsa_accel = params->multifd_dsa_accel->u.s;
-> +    }
->  }
->  
->  static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-> @@ -1506,6 +1522,12 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
->      if (params->has_mode) {
->          s->parameters.mode = params->mode;
->      }
-> +
-> +    if (params->multifd_dsa_accel) {
-> +        g_free(s->parameters.multifd_dsa_accel);
-> +        assert(params->multifd_dsa_accel->type == QTYPE_QSTRING);
-> +        s->parameters.multifd_dsa_accel = g_strdup(params->multifd_dsa_accel->u.s);
-> +    }
->  }
->  
->  void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
-> @@ -1531,6 +1553,12 @@ void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
->          params->tls_authz->type = QTYPE_QSTRING;
->          params->tls_authz->u.s = strdup("");
->      }
-> +    if (params->multifd_dsa_accel
-> +        && params->multifd_dsa_accel->type == QTYPE_QNULL) {
-> +        qobject_unref(params->multifd_dsa_accel->u.n);
-> +        params->multifd_dsa_accel->type = QTYPE_QSTRING;
-> +        params->multifd_dsa_accel->u.s = strdup("");
-> +    }
->  
->      migrate_params_test_apply(params, &tmp);
->  
-> diff --git a/migration/options.h b/migration/options.h
-> index c901eb57c6..56100961a9 100644
-> --- a/migration/options.h
-> +++ b/migration/options.h
-> @@ -94,6 +94,7 @@ const char *migrate_tls_authz(void);
->  const char *migrate_tls_creds(void);
->  const char *migrate_tls_hostname(void);
->  uint64_t migrate_xbzrle_cache_size(void);
-> +const char *migrate_multifd_dsa_accel(void);
->  
->  /* parameters setters */
->  
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 9783289bfc..a8e3b66d6f 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -879,6 +879,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @multifd-dsa-accel: If enabled, use DSA accelerator offloading for
-> +#                     certain memory operations. (since 8.2)
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -902,7 +905,7 @@
->             'cpu-throttle-initial', 'cpu-throttle-increment',
->             'cpu-throttle-tailslow',
->             'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
-> -           'avail-switchover-bandwidth', 'downtime-limit',
-> +           'avail-switchover-bandwidth', 'downtime-limit', 'multifd-dsa-accel',
->             { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
->             { 'name': 'block-incremental', 'features': [ 'deprecated' ] },
->             'multifd-channels',
-> @@ -1067,6 +1070,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @multifd-dsa-accel: If enabled, use DSA accelerator offloading for
-> +#                     certain memory operations. (since 8.2)
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -1120,7 +1126,8 @@
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
->                                              'features': [ 'unstable' ] },
->              '*vcpu-dirty-limit': 'uint64',
-> -            '*mode': 'MigMode'} }
-> +            '*mode': 'MigMode',
-> +            '*multifd-dsa-accel': 'StrOrNull'} }
->  
->  ##
->  # @migrate-set-parameters:
-> @@ -1295,6 +1302,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @multifd-dsa-accel: If enabled, use DSA accelerator offloading for
-> +#                     certain memory operations. (since 8.2)
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -1345,7 +1355,8 @@
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
->                                              'features': [ 'unstable' ] },
->              '*vcpu-dirty-limit': 'uint64',
-> -            '*mode': 'MigMode'} }
-> +            '*mode': 'MigMode',
-> +            '*multifd-dsa-accel': 'str'} }
->  
->  ##
->  # @query-migrate-parameters:
-> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-> index bf139e3fb4..35222ab63e 100644
-> --- a/scripts/meson-buildoptions.sh
-> +++ b/scripts/meson-buildoptions.sh
-> @@ -32,6 +32,7 @@ meson_options_help() {
->    printf "%s\n" '  --enable-debug-stack-usage'
->    printf "%s\n" '                           measure coroutine stack usage'
->    printf "%s\n" '  --enable-debug-tcg       TCG debugging'
-> +  printf "%s\n" '  --enable-enqcmd          MENQCMD optimizations'
->    printf "%s\n" '  --enable-fdt[=CHOICE]    Whether and how to find the libfdt library'
->    printf "%s\n" '                           (choices: auto/disabled/enabled/internal/system)'
->    printf "%s\n" '  --enable-fuzzing         build fuzzing targets'
-> @@ -93,7 +94,6 @@ meson_options_help() {
->    printf "%s\n" '  avx2            AVX2 optimizations'
->    printf "%s\n" '  avx512bw        AVX512BW optimizations'
->    printf "%s\n" '  avx512f         AVX512F optimizations'
-> -  printf "%s\n" '  enqcmd          ENQCMD optimizations'
->    printf "%s\n" '  blkio           libblkio block device driver'
->    printf "%s\n" '  bochs           bochs image format support'
->    printf "%s\n" '  bpf             eBPF support'
-> @@ -241,8 +241,6 @@ _meson_option_parse() {
->      --disable-avx512bw) printf "%s" -Davx512bw=disabled ;;
->      --enable-avx512f) printf "%s" -Davx512f=enabled ;;
->      --disable-avx512f) printf "%s" -Davx512f=disabled ;;
-> -    --enable-enqcmd) printf "%s" -Denqcmd=true ;;
-> -    --disable-enqcmd) printf "%s" -Denqcmd=false ;;
->      --enable-gcov) printf "%s" -Db_coverage=true ;;
->      --disable-gcov) printf "%s" -Db_coverage=false ;;
->      --enable-lto) printf "%s" -Db_lto=true ;;
-> @@ -309,6 +307,8 @@ _meson_option_parse() {
->      --disable-docs) printf "%s" -Ddocs=disabled ;;
->      --enable-dsound) printf "%s" -Ddsound=enabled ;;
->      --disable-dsound) printf "%s" -Ddsound=disabled ;;
-> +    --enable-enqcmd) printf "%s" -Denqcmd=true ;;
-> +    --disable-enqcmd) printf "%s" -Denqcmd=false ;;
->      --enable-fdt) printf "%s" -Dfdt=enabled ;;
->      --disable-fdt) printf "%s" -Dfdt=disabled ;;
->      --enable-fdt=*) quote_sh "-Dfdt=$2" ;;
+<div dir=3D"ltr">Hi=C2=A0Michael,<div>Sure, I&#39;ve reviewed that also, th=
+ere was a fruitful=C2=A0discussion till=C2=A0the=C2=A0series r=D0=B5=D0=B0c=
+hed its final form.</div><div>At the beginning of September we&#39;ve got t=
+he response from Jason that the series is queued upstream so we were calm a=
+nd switched to libvirt part ))</div><div><br></div><div>Seems like a misund=
+erstanding,=C2=A0let&#39;s wait for Jason response.</div><div><br></div><di=
+v>Thanks,</div><div>Yuri</div><div><br></div><div><br></div><div><br></div>=
+</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=
+On Mon, Dec 11, 2023 at 5:43=E2=80=AFPM Michael S. Tsirkin &lt;<a href=3D"m=
+ailto:mst@redhat.com">mst@redhat.com</a>&gt; wrote:<br></div><blockquote cl=
+ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
+ rgb(204,204,204);padding-left:1ex">On Mon, Dec 11, 2023 at 02:34:56PM +020=
+0, Yuri Benditovich wrote:<br>
+&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg05=
+859.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archiv=
+e/html/qemu-devel/2023-08/msg05859.html</a><br>
+<br>
+It&#39;s from August, I think it&#39;s fair to say it&#39;s not going upstr=
+eam<br>
+unless there&#39;s some activity. Yuri did you review that series then?<br>
+Care to ack?<br>
+<br>
+-- <br>
+MST<br>
+<br>
+</blockquote></div>
+
+--000000000000f90967060c414120--
 
