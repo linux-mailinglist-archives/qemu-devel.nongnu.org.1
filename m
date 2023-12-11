@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C6080C3A4
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 09:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CCE180C447
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 10:17:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCc0n-0006Z1-UL; Mon, 11 Dec 2023 03:51:37 -0500
+	id 1rCcML-0001Nk-7Q; Mon, 11 Dec 2023 04:13:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rCc0j-0006Yc-5d
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 03:51:33 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rCcMJ-0001NE-9T
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:13:51 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rCc0h-0008NX-7l
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 03:51:32 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-28647f4ebd9so3070379a91.3
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 00:51:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rCcMH-0004KK-5f
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:13:51 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40c3f68b69aso17391845e9.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 01:13:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702284689; x=1702889489;
- darn=nongnu.org; 
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=B/pzIZ3BohsXqpWfmB+fQTt0imLSwJ89JKWtIquebsc=;
- b=IgRBoxfOYRM4ynWmGH7gh3eqIbVqM3RRxyOrZyyvgOoRNnf4mnaoWXfBWLuGpTCmyA
- KV/SRG8Ygf9CpDSzDoevrD6Msq+tsGws1qjvZg9NxRRYgNNjiP4owbYuW5GrPcWmOVMR
- Ip2oCfLBG7Z1NM91lAdtgSieXPOjogEM8ISrEyX0//e7ukdm6mwAv54CavT6EhI7LCbf
- F4LMO245LzYdeVqO7OMz5Nb2KMyxmQAN0lMg6ffqEOOhukDQZ+BZ13bJVUJHW43Guw/D
- iqJHaow6yHfEEj+kl6PURmqZ/Sr/IIu4eHffVXuw4+uzpyyEnnJ70tyn1gPEqLWOUSah
- cn6g==
+ d=linaro.org; s=google; t=1702286027; x=1702890827; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=i1/Dp2Wa4oci+EhSWdiqYLZ0NCdvccY/wB+yXSQ90+Q=;
+ b=vhT5Ig2JjKnA7JQjwVNt0vsfxEYnpq60D3MeHAcZMvPtNzFySGAo2yMsu5U2wvDFPH
+ NtEFgF6S6hz0nsYjtArmZoqRl3hG+EG+RMNz/u6S/R1JDN33jDxRR57iAJNazGitOVAD
+ ZOrPL1hQz1HKW4F/HK2xGIKWe6HSfT+DWCmmIhKc2Dtqxziqlxl6YYYsrG6ws/vYRY+R
+ bw2w6qh/EenoFUNz6NeYY/7YofW2/ita3vJvW3v06d4sv9zrRSroBnGLgTQ8OhdKVX81
+ MyCv4vQXcZO17KHlkLy3bzh9GT4x1e1BrvPuiqBQD3vt4oQzirEHV/ioJByC12D8TagE
+ 9SAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702284689; x=1702889489;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1702286027; x=1702890827;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=B/pzIZ3BohsXqpWfmB+fQTt0imLSwJ89JKWtIquebsc=;
- b=J2dGvfj+KuwqcyZAd/vCg8OVHJ/XD3Bz0m7ktWwMudxsCk/bpXZD6gzj8ADYkfB/hx
- w9JKf9+hzuVSHL4ONj19E00FiJ6A2e1/LXJmOMh/EYGxZfHhYqgAQ2NArVnwjwlozm1H
- kaM1VMNqt9R9lDI+Gbts2CZzqblvsTQZqrfcoHb5HXGGGqrim69VOI6PPFo3vxfqTKZ/
- niMgEyayF4S/oAYpEwLuBOjePVieqYvVD19wx8bRNboVJbIbzQFHRvV6Cmt9eIEjfSnq
- +9qK4AO8b76mcYU3m+XpBF8wufRE0v6ArAUSUaLncSyiFCZ0jKeBXFYI1CUVu8Do/+OL
- uKjg==
-X-Gm-Message-State: AOJu0YxIr2Z+7GSh6dvLBFzjpbcwLccCYpYoBFl5ZeZhzRrdH0B3BFC9
- eV/bLcHK2fKxYYc2q6tS8dqsXDe22TMRkM/f7BsHYw==
-X-Google-Smtp-Source: AGHT+IF6fTpDLcWd1+qyZ/gzgM6+pgczWV1PKDevIEsYywRG+pqVHOSbXUWF/Oq9pjNByKxbGBi1sg==
-X-Received: by 2002:a17:90b:3d8:b0:286:c138:c2a5 with SMTP id
- go24-20020a17090b03d800b00286c138c2a5mr1509903pjb.17.1702284689264; 
- Mon, 11 Dec 2023 00:51:29 -0800 (PST)
-Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- sr6-20020a17090b4e8600b00286d44e0c59sm6445785pjb.36.2023.12.11.00.51.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 00:51:29 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 11 Dec 2023 17:51:20 +0900
-Subject: [PATCH] ui/vnc: Respect bound console
+ bh=i1/Dp2Wa4oci+EhSWdiqYLZ0NCdvccY/wB+yXSQ90+Q=;
+ b=Qhhq8lCyDHurGjGjgtzUcz1xLiy1EzMrMuXHcH7kwkzKSJP49KxS4F10E7FvKJL/DS
+ bYZnbxV8N9/IM5bl3VBo84KJF+8nnUIskZJ2Kzg1tFg49NBC1bjVTjnfV+/Cdvsevm5k
+ 02zx1iXvwsLq4hlzB0UL7euGqzCg3trYxHKYeNNnbnqvi9oEORnlWcAbE+C5sRkgoFfP
+ yB3L1O9Pckci3WYHc9YmANfJWtDA3UuqN6BgLlzp/ADycfO3GT0eueHdPkxTXbSh2LoQ
+ BFurkG64Xc+nl6KGnZqvL2UR9iQhiFMJFsF8BCFHgPT8FztuWZG/ZLisqCkcV3EdJTEO
+ NxHg==
+X-Gm-Message-State: AOJu0YzGhVTir62hOGE1Sx+GstIf4zy9DCFpOg7EMx77rab11w7+PKlA
+ uBVL33QCYpp7gX8zBy59MVUNqg==
+X-Google-Smtp-Source: AGHT+IEBy899S3CbylaZe9E0Nn35hIfdxH5ZQjRxk6bu6uN6TS4QcnWVoIgo6DZzHCNfT/XAIA19DQ==
+X-Received: by 2002:a05:600c:450e:b0:40c:2b4c:ea8 with SMTP id
+ t14-20020a05600c450e00b0040c2b4c0ea8mr2221428wmo.113.1702286026864; 
+ Mon, 11 Dec 2023 01:13:46 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ e12-20020a05600c4e4c00b0040b398f0585sm12484403wmq.9.2023.12.11.01.13.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Dec 2023 01:13:46 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 1A74D5FBC6;
+ Mon, 11 Dec 2023 09:13:46 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 00/16] record/replay fixes: attempting to get avocado green
+Date: Mon, 11 Dec 2023 09:13:29 +0000
+Message-Id: <20231211091346.14616-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231211-vnc-v1-1-a3551d284809@daynix.com>
-X-B4-Tracking: v=1; b=H4sIAIfNdmUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2NDI0ND3bK8ZN00yxTzJAMLC4PE5CQloMqCotS0zAqwKdGxtbUAAswC3VU
- AAAA=
-To: Gerd Hoffmann <kraxel@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::1034;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,161 +100,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ui/vnc may have a bound console so pass it to qemu_console_is_graphic()
-and qemu_text_console_put_keysym().
+As I'm a glutton for punishment I thought I'd have a go at fixing the
+slowly growing number of record/replay bugs. The two fixes are:
 
-Fixes: 1d0d59fe2919 ("vnc: allow binding servers to qemu consoles")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- ui/vnc.c | 59 ++++++++++++++++++++++++++++++-----------------------------
- 1 file changed, 30 insertions(+), 29 deletions(-)
+ replay: stop us hanging in rr_wait_io_event
+ chardev: force write all when recording replay logs
 
-diff --git a/ui/vnc.c b/ui/vnc.c
-index 4f23a0fa79..ddab42346f 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -1931,7 +1931,8 @@ static void do_key_event(VncState *vs, int down, int keycode, int sym)
-     }
- 
-     qkbd_state_key_event(vs->vd->kbd, qcode, down);
--    if (!qemu_console_is_graphic(NULL)) {
-+    if (!qemu_console_is_graphic(vs->vd->dcl.con)) {
-+        QemuTextConsole *con = QEMU_TEXT_CONSOLE(vs->vd->dcl.con);
-         bool numlock = qkbd_state_modifier_get(vs->vd->kbd, QKBD_MOD_NUMLOCK);
-         bool control = qkbd_state_modifier_get(vs->vd->kbd, QKBD_MOD_CTRL);
-         /* QEMU console emulation */
-@@ -1945,88 +1946,88 @@ static void do_key_event(VncState *vs, int down, int keycode, int sym)
-             case 0xb8:                          /* Right ALT */
-                 break;
-             case 0xc8:
--                qemu_text_console_put_keysym(NULL, QEMU_KEY_UP);
-+                qemu_text_console_put_keysym(con, QEMU_KEY_UP);
-                 break;
-             case 0xd0:
--                qemu_text_console_put_keysym(NULL, QEMU_KEY_DOWN);
-+                qemu_text_console_put_keysym(con, QEMU_KEY_DOWN);
-                 break;
-             case 0xcb:
--                qemu_text_console_put_keysym(NULL, QEMU_KEY_LEFT);
-+                qemu_text_console_put_keysym(con, QEMU_KEY_LEFT);
-                 break;
-             case 0xcd:
--                qemu_text_console_put_keysym(NULL, QEMU_KEY_RIGHT);
-+                qemu_text_console_put_keysym(con, QEMU_KEY_RIGHT);
-                 break;
-             case 0xd3:
--                qemu_text_console_put_keysym(NULL, QEMU_KEY_DELETE);
-+                qemu_text_console_put_keysym(con, QEMU_KEY_DELETE);
-                 break;
-             case 0xc7:
--                qemu_text_console_put_keysym(NULL, QEMU_KEY_HOME);
-+                qemu_text_console_put_keysym(con, QEMU_KEY_HOME);
-                 break;
-             case 0xcf:
--                qemu_text_console_put_keysym(NULL, QEMU_KEY_END);
-+                qemu_text_console_put_keysym(con, QEMU_KEY_END);
-                 break;
-             case 0xc9:
--                qemu_text_console_put_keysym(NULL, QEMU_KEY_PAGEUP);
-+                qemu_text_console_put_keysym(con, QEMU_KEY_PAGEUP);
-                 break;
-             case 0xd1:
--                qemu_text_console_put_keysym(NULL, QEMU_KEY_PAGEDOWN);
-+                qemu_text_console_put_keysym(con, QEMU_KEY_PAGEDOWN);
-                 break;
- 
-             case 0x47:
--                qemu_text_console_put_keysym(NULL, numlock ? '7' : QEMU_KEY_HOME);
-+                qemu_text_console_put_keysym(con, numlock ? '7' : QEMU_KEY_HOME);
-                 break;
-             case 0x48:
--                qemu_text_console_put_keysym(NULL, numlock ? '8' : QEMU_KEY_UP);
-+                qemu_text_console_put_keysym(con, numlock ? '8' : QEMU_KEY_UP);
-                 break;
-             case 0x49:
--                qemu_text_console_put_keysym(NULL, numlock ? '9' : QEMU_KEY_PAGEUP);
-+                qemu_text_console_put_keysym(con, numlock ? '9' : QEMU_KEY_PAGEUP);
-                 break;
-             case 0x4b:
--                qemu_text_console_put_keysym(NULL, numlock ? '4' : QEMU_KEY_LEFT);
-+                qemu_text_console_put_keysym(con, numlock ? '4' : QEMU_KEY_LEFT);
-                 break;
-             case 0x4c:
--                qemu_text_console_put_keysym(NULL, '5');
-+                qemu_text_console_put_keysym(con, '5');
-                 break;
-             case 0x4d:
--                qemu_text_console_put_keysym(NULL, numlock ? '6' : QEMU_KEY_RIGHT);
-+                qemu_text_console_put_keysym(con, numlock ? '6' : QEMU_KEY_RIGHT);
-                 break;
-             case 0x4f:
--                qemu_text_console_put_keysym(NULL, numlock ? '1' : QEMU_KEY_END);
-+                qemu_text_console_put_keysym(con, numlock ? '1' : QEMU_KEY_END);
-                 break;
-             case 0x50:
--                qemu_text_console_put_keysym(NULL, numlock ? '2' : QEMU_KEY_DOWN);
-+                qemu_text_console_put_keysym(con, numlock ? '2' : QEMU_KEY_DOWN);
-                 break;
-             case 0x51:
--                qemu_text_console_put_keysym(NULL, numlock ? '3' : QEMU_KEY_PAGEDOWN);
-+                qemu_text_console_put_keysym(con, numlock ? '3' : QEMU_KEY_PAGEDOWN);
-                 break;
-             case 0x52:
--                qemu_text_console_put_keysym(NULL, '0');
-+                qemu_text_console_put_keysym(con, '0');
-                 break;
-             case 0x53:
--                qemu_text_console_put_keysym(NULL, numlock ? '.' : QEMU_KEY_DELETE);
-+                qemu_text_console_put_keysym(con, numlock ? '.' : QEMU_KEY_DELETE);
-                 break;
- 
-             case 0xb5:
--                qemu_text_console_put_keysym(NULL, '/');
-+                qemu_text_console_put_keysym(con, '/');
-                 break;
-             case 0x37:
--                qemu_text_console_put_keysym(NULL, '*');
-+                qemu_text_console_put_keysym(con, '*');
-                 break;
-             case 0x4a:
--                qemu_text_console_put_keysym(NULL, '-');
-+                qemu_text_console_put_keysym(con, '-');
-                 break;
-             case 0x4e:
--                qemu_text_console_put_keysym(NULL, '+');
-+                qemu_text_console_put_keysym(con, '+');
-                 break;
-             case 0x9c:
--                qemu_text_console_put_keysym(NULL, '\n');
-+                qemu_text_console_put_keysym(con, '\n');
-                 break;
- 
-             default:
-                 if (control) {
--                    qemu_text_console_put_keysym(NULL, sym & 0x1f);
-+                    qemu_text_console_put_keysym(con, sym & 0x1f);
-                 } else {
--                    qemu_text_console_put_keysym(NULL, sym);
-+                    qemu_text_console_put_keysym(con, sym);
-                 }
-                 break;
-             }
-@@ -2044,7 +2045,7 @@ static void key_event(VncState *vs, int down, uint32_t sym)
-     int keycode;
-     int lsym = sym;
- 
--    if (lsym >= 'A' && lsym <= 'Z' && qemu_console_is_graphic(NULL)) {
-+    if (lsym >= 'A' && lsym <= 'Z' && qemu_console_is_graphic(vs->vd->dcl.con)) {
-         lsym = lsym - 'A' + 'a';
-     }
- 
+I think we are beyond 8.2 material but it would be nice to get this
+functionality stable again. We have a growing number of bugs under the
+icount label on gitlab:
 
----
-base-commit: 9c74490bff6c8886a922008d0c9ce6cae70dd17e
-change-id: 20231211-vnc-f9d7b0880acb
+  https://gitlab.com/qemu-project/qemu/-/issues/?label_name%5B%5D=icount
 
-Best regards,
+Changes
+-------
+
+v2
+
+Apart from addressing tidy ups and tags I've been investigating the
+failures in replay_linux.py which are the more exhaustive tests which
+boot the kernel and user-space. The "fix":
+
+  replay: report sync error when no exception in log (!DEBUG INVESTIGATION)
+
+triggers around the time of the hang in the logs and despite the
+rather hairy EXCP->INT transitions around cpu_exec_loop() I think
+points to a genuine problem. I added the tracing to cputlb to verify
+the page tables are the same and started detecting divergence between
+record and replay a lot earlier on that when the replay_sync_error()
+catches things. I see patterns like this:
+
+   1878 tlb_fill 0x4770c000/1 1 2                                       tlb_fill 0x4770c000/1 1 2
+   1879 tlb_fill 0x4770d000/1 1 2                                       tlb_fill 0x4770d000/1 1 2
+   1880 tlb_fill 0x59000/1 0 2                                          tlb_fill 0x59000/1 0 2
+   1881                                                               > tlb_fill 0x476dd116/1 0 2
+   1882 tlb_fill 0x4770e000/1 1 2                                       tlb_fill 0x4770e000/1 1 2
+   1883 tlb_fill 0x476dd527/1 0 2                                     | tlb_fill 0x476dfb17/1 0 2
+   1884                                                               > tlb_fill 0x476de0fd/1 0 2
+   1885                                                               > tlb_fill 0x476dce2e/1 0 2
+   1886 tlb_fill 0x4770f000/1 1 2                                       tlb_fill 0x4770f000/1 1 2
+   1887 tlb_fill 0x476df939/1 0 2                                     <
+   1888 tlb_fill 0x47710000/1 1 2                                       tlb_fill 0x47710000/1 1 2
+   1889 tlb_fill 0x47711000/1 1 2                                       tlb_fill 0x47711000/1 1 2
+
+These don't seem to affect the overall program flow but are concerning
+because the memory access patterns should be the same. My
+investigations with rr seem to indicate the difference is due to
+behaviour of the victim_tlb_cache which again AFAICT should be
+deterministic.
+
+Anyway I can't spend any time debugging it this week so I thought I'd
+post the current state in case anyone is curious enough to want to go
+diving into record/replay.
+
+The following need review:
+
+  replay: report sync error when no exception in log (!DEBUG INVESTIGATION)
+  accel/tcg: add trace_tlb_resize trace point
+  accel/tcg: define tlb_fill as a trace point
+  tests/avocado: remove skips from replay_kernel (1 acks, 1 sobs, 0 tbs)
+  replay: stop us hanging in rr_wait_io_event
+  replay/replay-char: use report_sync_error
+  tests/avocado: modernise the drive args for replay_linux
+  tests/avocado: add a simple i386 replay kernel test (2 acks, 1 sobs, 0 tbs)
+
+Alex Bennée (16):
+  tests/avocado: add a simple i386 replay kernel test
+  tests/avocado: fix typo in replay_linux
+  tests/avocado: modernise the drive args for replay_linux
+  scripts/replay-dump: update to latest format
+  scripts/replay_dump: track total number of instructions
+  replay: remove host_clock_last
+  replay: add proper kdoc for ReplayState
+  replay: make has_unread_data a bool
+  replay: introduce a central report point for sync errors
+  replay/replay-char: use report_sync_error
+  replay: stop us hanging in rr_wait_io_event
+  chardev: force write all when recording replay logs
+  tests/avocado: remove skips from replay_kernel
+  accel/tcg: define tlb_fill as a trace point
+  accel/tcg: add trace_tlb_resize trace point
+  replay: report sync error when no exception in log (!DEBUG
+    INVESTIGATION)
+
+ include/sysemu/replay.h        |   5 ++
+ replay/replay-internal.h       |  50 ++++++++----
+ accel/tcg/cputlb.c             |   4 +
+ accel/tcg/tcg-accel-ops-rr.c   |   2 +-
+ chardev/char.c                 |  12 +++
+ replay/replay-char.c           |   6 +-
+ replay/replay-internal.c       |   5 +-
+ replay/replay-snapshot.c       |   7 +-
+ replay/replay.c                | 141 ++++++++++++++++++++++++++++++++-
+ accel/tcg/trace-events         |   2 +
+ scripts/replay-dump.py         |  95 +++++++++++++++++++---
+ tests/avocado/replay_kernel.py |  27 ++++---
+ tests/avocado/replay_linux.py  |   9 ++-
+ 13 files changed, 314 insertions(+), 51 deletions(-)
+
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.39.2
 
 
