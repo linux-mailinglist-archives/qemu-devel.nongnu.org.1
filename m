@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88CA80D945
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 19:52:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2659B80DA39
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 20:00:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rClNw-0001j6-6R; Mon, 11 Dec 2023 13:52:08 -0500
+	id 1rClUd-0004KM-4g; Mon, 11 Dec 2023 13:59:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rClNt-0001ij-Pi
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:52:06 -0500
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1rClUP-0004JM-7m
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:58:49 -0500
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rClNs-0002Qz-6B
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:52:05 -0500
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-5bdbe2de25fso3993694a12.3
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 10:52:03 -0800 (PST)
+ id 1rClUI-0003Ls-Ke
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 13:58:47 -0500
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-289d988a947so3426793a91.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 10:58:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702320722; x=1702925522; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702321121; x=1702925921; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VSHTPrTO1YDu+SYuuwmsfV8T4OVjkfuAl8wEZHyw7yw=;
- b=iI/JEZ+PIsFgHobS53rdvcEV5AA+r7UnfphRMRCi5RUKLZs8n6NCgpOqrPWDE94XlT
- 8yMZUlKlIoW3xb4ubA9q0rVI2LASivxNsHh0tPNsjSJgBYhW3Cecg+kBjxXhLsBYqH7S
- Wib8FegxKOLVC0mwVPmwBXBmawe+kDL9OoNBJVvnglsyOpEZK8XbSaXtUZCPMc7fQo+6
- VL2unIq/kT1NxDb/W8U7IwjMqouMCLDZNT4I6s8IXdU5v+GqPKxPWhOda0hmwv0yc5n0
- QW7lj25Ngux+vq/vYezqOyQvegogdXUXrTqk97a0J4w8fLQFhhoglR9zSc8rYrMBE9yh
- KyfQ==
+ bh=VfcAmP3/dpn9dPyKJHCa9ZOX7l5aia6nLSNaLrDGzBA=;
+ b=MTqKYfsunEEH4HH57MVCp8+0gl6YXmZxqgbBZKEdxrDwmoNMBfjv3ozULyCC4ohuka
+ WCvl5wdBqdErSiAKrlaZP5OeDe7c2s9yAnRQx7j6qpUp+6uXOxZwQZF2Mjd+AkRG9pG5
+ 11WncmigzXzlO/8ODKKJcYsyEddNmw3nv3aL2Ca8X2NDNaryNkt9Wx6Y6dG01tETG3F3
+ war3vSVa3MDzNSaE0YhNIG1YbF8s9mwx5z+rsOLTKJ7+RW/iBLpuqalLbm2+CXQatczr
+ 05joWhXZbcWCD0iZ+qbcnXg7ktY0gZ1RIG6Y+HzOFaXMyOp2dzZXij9VHESb3MQlIjXn
+ DKdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702320722; x=1702925522;
+ d=1e100.net; s=20230601; t=1702321121; x=1702925921;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VSHTPrTO1YDu+SYuuwmsfV8T4OVjkfuAl8wEZHyw7yw=;
- b=P4BFkYWWnTFAP/3rsAThgpQsCdco2gQt1L241Hukp5XLrCvLnmLrAlAfkmxgTYqpoW
- HmY9CedPZZKgrWIbWsSuxsmCSMi1DpJlBUvKoipgdFqencg7Yw1ICx60O1I+XHT53BRu
- ktWoA0BrNCfbI04GQhQvTgmsE6dw5u0KNi4zhgQJW9lbDA76trVv+8OC0M8YT1EcZlF4
- ZsyBkLKQeXo7Y/UQVxYrl/zHJehrtEJ6jc8AAUqzRXudmvT9wLhz4SeouHIFoPYxH7MI
- 1CqnBxyG7EZ1t3OcwhD9PL9nvdqjRVeje6Cbysux+vhEyiu1835rKNS8f2bA2MkezZYj
- tClA==
-X-Gm-Message-State: AOJu0YzouRL5SyrUkFca01qdQyJdgzP+tNhvsCW1q83jcCPnKXD6FEY7
- SMheUe4yQyKfoumenueAfJ54Og==
-X-Google-Smtp-Source: AGHT+IEn3Etw7pjYoyk2Tfp0fMBvM7SB9QF0fFh/TM4dwkDYuPAf2hws9EpvudknDfCCOvBNw1popg==
-X-Received: by 2002:a17:90a:fd03:b0:286:8abe:4d42 with SMTP id
- cv3-20020a17090afd0300b002868abe4d42mr3903399pjb.21.1702320722369; 
- Mon, 11 Dec 2023 10:52:02 -0800 (PST)
+ bh=VfcAmP3/dpn9dPyKJHCa9ZOX7l5aia6nLSNaLrDGzBA=;
+ b=Nf6d3N2eSzmKe8MNBGBLPA3dZlcz6hkNo6+oqhClkgsZwdabBBpglFYncOmFfKbfy9
+ r3EhRmyhwYf41OooSqkV/mHk3d45Gi0TmWLui/gd0FCkAcoq9/YkJf/NXAzV83+gtUpb
+ lVJVeeyyoe7kOy0sdvcfTnNag9Cq7P7h8RJJEgyI5cFb2EuFzEVRezzvkarPXax6tjAM
+ 7+AZfxLzi1VulOMrZnFs93DNhgfR7K96Cl5hvKo4w0N62SemDf3dDaH0TNImFOMaBSJ6
+ 3vGL1Vx2WE20EHUwOZtW8Aec14aGhESPqS8VGKsnlLD1aZDY0YHEFVsOfEZ5SmRscHbr
+ kVTw==
+X-Gm-Message-State: AOJu0YxX7WxLzpnE50fPYARU7IPDG4d352WOCnq2Chaab7SGFZvWoa89
+ LFQHKeQuFUo5ULSncUAN/gU7gw==
+X-Google-Smtp-Source: AGHT+IHdiWg/VjXzzr6OyO95MJvOhoK391e9hy08Rh19BFuKxGYtMgxuAg/aTc0nPV9lVUNJmWUM7Q==
+X-Received: by 2002:a17:90a:8a03:b0:28a:4f78:e316 with SMTP id
+ w3-20020a17090a8a0300b0028a4f78e316mr1991637pjn.53.1702321120858; 
+ Mon, 11 Dec 2023 10:58:40 -0800 (PST)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- k6-20020a17090ad08600b00286117f8c15sm8802731pju.4.2023.12.11.10.52.01
+ pw10-20020a17090b278a00b002867594de40sm8826234pjb.14.2023.12.11.10.58.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 10:52:02 -0800 (PST)
-Message-ID: <689acd01-fbd5-44a2-a1c9-cef4ea2b734d@linaro.org>
-Date: Mon, 11 Dec 2023 10:52:00 -0800
+ Mon, 11 Dec 2023 10:58:40 -0800 (PST)
+Message-ID: <4172e204-b09a-4673-ae8b-4662c3db5fae@linaro.org>
+Date: Mon, 11 Dec 2023 10:58:38 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] accel/tcg: Move perf and debuginfo support to tcg
+Subject: Re: [PATCH 18/21] target/arm/kvm: Init cap_has_inject_serror_esr in
+ kvm_arch_init
 Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20231208003754.3688038-1-iii@linux.ibm.com>
- <20231208003754.3688038-5-iii@linux.ibm.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20231123044219.896776-1-richard.henderson@linaro.org>
+ <20231123044219.896776-19-richard.henderson@linaro.org>
+ <4889143b-e15e-4834-af2f-ddea2dd63cb6@linaro.org>
+ <3c2d3736-4cae-4034-973b-568e80cbf0c3@linaro.org>
+ <8cd2093f-dc74-469b-8bac-d290206af116@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231208003754.3688038-5-iii@linux.ibm.com>
+In-Reply-To: <8cd2093f-dc74-469b-8bac-d290206af116@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,51 +99,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/7/23 16:35, Ilya Leoshkevich wrote:
-> --- a/accel/tcg/translate-all.c
-> +++ b/accel/tcg/translate-all.c
-> @@ -63,7 +63,7 @@
->   #include "tb-context.h"
->   #include "internal-common.h"
->   #include "internal-target.h"
-> -#include "perf.h"
-> +#include "tcg/perf.h"
->   #include "tcg/insn-start-words.h"
+On 12/11/23 10:43, Philippe Mathieu-Daudé wrote:
+> On 11/12/23 18:09, Richard Henderson wrote:
+>> On 11/24/23 03:54, Philippe Mathieu-Daudé wrote:
+>>> On 23/11/23 05:42, Richard Henderson wrote:
+>>>> There is no need to do this in kvm_arch_init_vcpu per vcpu.
+>>>> Inline kvm_arm_init_serror_injection rather than keep separate.
+>>>>
+>>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>>> ---
+>>>>   target/arm/kvm_arm.h |  8 --------
+>>>>   target/arm/kvm.c     | 13 ++++---------
+>>>>   2 files changed, 4 insertions(+), 17 deletions(-)
+>>>
+>>>
+>>>> @@ -562,6 +556,10 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>>>>       cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
+>>>> +    /* Check whether user space can specify guest syndrome value */
+>>>> +    cap_has_inject_serror_esr =
+>>>> +        kvm_check_extension(s, KVM_CAP_ARM_INJECT_SERROR_ESR);
+>>>> +
+>>>>       if (ms->smp.cpus > 256 &&
+>>>>           !kvm_check_extension(s, KVM_CAP_ARM_IRQ_LINE_LAYOUT_2)) {
+>>>>           error_report("Using more than 256 vcpus requires a host kernel "
+>>>> @@ -1948,9 +1946,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
+>>>>       }
+>>>>       cpu->mp_affinity = mpidr & ARM64_AFFINITY_MASK;
+>>>> -    /* Check whether user space can specify guest syndrome value */
+>>>> -    kvm_arm_init_serror_injection(cs);
+>>>> -
+>>>>       return kvm_arm_init_cpreg_list(cpu);
+>>>>   }
+>>>
+>>>
+>>> Just checking, in a heterogeneous setup we still want to keep
+>>> these 2 calls per-vCPU, right?
+>>
+>> There is no hetrogeneous kvm -- every vcpu must match the host cpu.
+> 
+> So big.LITTLE will never be a KVM thing?
 
-Because this header is used outside of tcg/, the header should be include/tcg/perf.h.
+Not as far as I'm aware.  There are even issues *running* on big.LITTLE hosts -- you must 
+use taskset to limit qemu to one cpu type, either big or little.
 
-> diff --git a/hw/core/loader.c b/hw/core/loader.c
-> index e7a9b3775bb..b8e52f3fb0f 100644
-> --- a/hw/core/loader.c
-> +++ b/hw/core/loader.c
-> @@ -62,7 +62,7 @@
->   #include "hw/boards.h"
->   #include "qemu/cutils.h"
->   #include "sysemu/runstate.h"
-> -#include "accel/tcg/debuginfo.h"
-> +#include "tcg/debuginfo.h"
->   
->   #include <zlib.h>
->   
-> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-> index cf9e74468b1..62120c76151 100644
-> --- a/linux-user/elfload.c
-> +++ b/linux-user/elfload.c
-> @@ -21,7 +21,7 @@
->   #include "qapi/error.h"
->   #include "qemu/error-report.h"
->   #include "target_signal.h"
-> -#include "accel/tcg/debuginfo.h"
-> +#include "tcg/debuginfo.h"
->   
->   #ifdef TARGET_ARM
->   #include "target/arm/cpu-features.h"
-
-Likewise.
-
-Otherwise,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
-
 
