@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B2380C45B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 10:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B6880C461
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 10:21:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCcTJ-0000CW-1F; Mon, 11 Dec 2023 04:21:05 -0500
+	id 1rCcTL-0000DX-Bi; Mon, 11 Dec 2023 04:21:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rCcTG-0000C8-PP
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:21:03 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1rCcTI-0000CO-2z
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:21:04 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rCcTE-0005vH-DF
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:21:02 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40c38e292c8so11093435e9.0
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 01:20:58 -0800 (PST)
+ id 1rCcTF-0005vX-4R
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:21:03 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3332f1512e8so4010551f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 01:21:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702286457; x=1702891257; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702286459; x=1702891259; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mSr3GvPnKq8aUa4IaKiJbjvKp2+Gjt/QBooUG8s8u+M=;
- b=xS2jIeZ0ahmKMgrtLAcBPxhDieYM6PBFQ3EeeJ4c4xWyYorUd9SEH/9X3Tw2Cr1cY6
- 0chJuhXDj5v2jX1k8zXYIl0BM8qScaxoRSk9f1RgaHobrBfkCtF0guVHk+U62hwElqAU
- CYfApFhYBV3iAgaxUNpqaKyM8wQf9aQkwAPu6dkXScWJgLG3OvbHuU3eWoQU/RkaAUKa
- 2uitxPfWehJn9l/G2OxhTdUSB8KbdUWXF2bd4UTzWCfrCrkKoQozIlcx8fMar5N6h/y9
- C2AkZWdUZDpPl9vecjRB5sQDcDYLBxSSMbJwkKBd7M9N1YYV0tToSFRKe174NrhXyMxX
- pmmw==
+ bh=ZD5ABaQViFbHONtQO6M9d3Q2YykqwBMH8lb8WaRZX4k=;
+ b=jo6bf3pD2C2c/A6G+jnpG6QujJdX+prBT381+gl93tQFLUaJFS5bB21/MRK6nu+9RS
+ EcIJIjiYF62xsz48ZsVdL9yAHJRoObmrAkBwJrIqFXRNdX0Nzk/CJMeuBcdiaoyZEJwf
+ CzDjjVuUQ2wFm+dVSsa8evzhBCJRRRJs8CokUo4h3TsNa2IbxrBofro7A5P5RjBP38b7
+ SRn33tmvbavCarkmJhikBMnKLFsmYzO1BR3ksf8yf0Dd/Bzv0Nfr4nBJtmsA7xRe1D7P
+ ta4CQFA5+xLBJ41neEjfRbYckmRQV8+TaBaLG1/XuhCRIZv1fhS1SIyIsGTZBmqsNw2n
+ AtbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702286457; x=1702891257;
+ d=1e100.net; s=20230601; t=1702286459; x=1702891259;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mSr3GvPnKq8aUa4IaKiJbjvKp2+Gjt/QBooUG8s8u+M=;
- b=Y8rrIYAAIjqrhCNQYWuVaeqgUp4QfVuWd0srqY3UZ63LlSXET0fxNswrpSsINfeKX5
- jXNtDTahO81TlMdOXrxCiUpgF9WGKazZlAzdf8VY1cNs4utpU0HMBIAqAWZrSREfvmLh
- 3u2LVEvRwibO2yhw6iSmwfKqFQ9OhQAuXa98f7t36fQLa5OT5ha/qJSkutwUXR0PR5Xz
- X79bKQOMDWTwMEOiL9STz14wX9VpT9y9ds04Fz9zp+QB4Al9xHYlawJdW4R6NhSDh/17
- MzERybRIkKgpMt1q095eezwuXZR//1UYqc3HnoNj4JYMxg+dNQijUOSBkUMLE58gHOMN
- QTPA==
-X-Gm-Message-State: AOJu0YwVAcNchEdH7di7URh+sMyNtkqcAbKWaAwfeanqAjOl4S5ur8jo
- 4/4FOQOWHc3UcMDUx3HP2KNpHg==
-X-Google-Smtp-Source: AGHT+IHF6eOIncoPqKfa9MwNZx43hnXJbBj2tSLUkeiOlagE6IX8N15DSWb0UkLX9zshcjX7vDXeQQ==
-X-Received: by 2002:a05:600c:1819:b0:40b:5e4a:2367 with SMTP id
- n25-20020a05600c181900b0040b5e4a2367mr368882wmp.105.1702286457098; 
- Mon, 11 Dec 2023 01:20:57 -0800 (PST)
+ bh=ZD5ABaQViFbHONtQO6M9d3Q2YykqwBMH8lb8WaRZX4k=;
+ b=cNyMkNJRtXP5l72qFHytiXTliQwzywpYb8+z2lOH6aPQgrs1G3EZO5XO9cbHAUoIth
+ xH9Io0+10/RghsDQoV9G5Db0te0QnyJyhEjxXBmb8r7C/tArFk6Oc+1+DkKDRUJP4oYt
+ 8hL0AA9Fr3/+ALd7yipGlMsc4GPeX9WfE/YHud5EVYQm489I+E9lNaGXngVyps6waHg4
+ MIAG6X3naXBJlVHbE4w3GXYVa1ISSWo9hHgq77MD0HL40Eli/l+qpiSojk4KyhEBUqnd
+ WNX912/pGhOWvEL0I2OltfgDNcPUJM8ZT/qpBt6ul7Zy6CzKFLFPEvUx5spa6j2atLJ5
+ nixA==
+X-Gm-Message-State: AOJu0Yzu5ZULPnbnb9YZsUS1SsL7HZ1qQDd6mz1ijEozWIOOvcZ9vRk0
+ P+gkxfa/y7UUbz616Z5C27kV0A==
+X-Google-Smtp-Source: AGHT+IFznid3nOP/6Ynh3vPKKTY8KUjA+eNoYpMQQilGH3fkXiImcueck3amfAAMZv7PXiKvB+Ls1A==
+X-Received: by 2002:a1c:7417:0:b0:40b:5e59:e9ea with SMTP id
+ p23-20020a1c7417000000b0040b5e59e9eamr1966848wmc.137.1702286459320; 
+ Mon, 11 Dec 2023 01:20:59 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p1-20020a05600c1d8100b0040b47c69d08sm14638319wms.18.2023.12.11.01.20.56
+ c15-20020adfe74f000000b0033335644478sm8081493wrn.114.2023.12.11.01.20.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Dec 2023 01:20:56 -0800 (PST)
+ Mon, 11 Dec 2023 01:20:57 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 55D7A5FBF6;
+ by draig.lan (Postfix) with ESMTP id 6A3EC5FBF8;
  Mon, 11 Dec 2023 09:13:47 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -70,17 +70,17 @@ Cc: John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 14/16] accel/tcg: define tlb_fill as a trace point
-Date: Mon, 11 Dec 2023 09:13:43 +0000
-Message-Id: <20231211091346.14616-15-alex.bennee@linaro.org>
+Subject: [PATCH v2 15/16] accel/tcg: add trace_tlb_resize trace point
+Date: Mon, 11 Dec 2023 09:13:44 +0000
+Message-Id: <20231211091346.14616-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231211091346.14616-1-alex.bennee@linaro.org>
 References: <20231211091346.14616-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,17 +103,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we do have a bunch of debugging we can turn on in cputlb there
-is an argument for making tlb_fill a generally available trace point.
-Any fault (via probe or access) will have to be preceded by a tlb_fill
-for the address in question.
-
-We don't bother logging the return address as that will be a host
-address associated with translation and therefor can move around with
-ASLR.
-
-In my particular case I'm trying to track down a difference in memory
-fault exception patterns between record and replay phases.
+I wondered if the discrepancy I was seeing in fill patterns was due to
+some sort of non-deterministic resize being triggered. In theory we
+could resize away at any point which might account for the difference.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
@@ -122,27 +114,27 @@ Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
  2 files changed, 3 insertions(+)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index db3f93fda9..c35df27caf 100644
+index c35df27caf..63f2a23709 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1308,6 +1308,8 @@ static void tlb_fill(CPUState *cpu, vaddr addr, int size,
- {
-     bool ok;
+@@ -201,6 +201,8 @@ static void tlb_mmu_resize_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast,
+         return;
+     }
  
-+    trace_tlb_fill(addr, size, access_type, mmu_idx);
++    trace_tlb_resize(old_size, new_size);
 +
-     /*
-      * This is not a probe, so only valid return is success; failure
-      * should result in exception + longjmp to the cpu loop.
+     g_free(fast->table);
+     g_free(desc->fulltlb);
+ 
 diff --git a/accel/tcg/trace-events b/accel/tcg/trace-events
-index 4e9b450520..31dda01c12 100644
+index 31dda01c12..11b49a63f1 100644
 --- a/accel/tcg/trace-events
 +++ b/accel/tcg/trace-events
-@@ -9,6 +9,7 @@ exec_tb_exit(void *last_tb, unsigned int flags) "tb:%p flags=0x%x"
- # cputlb.c
+@@ -10,6 +10,7 @@ exec_tb_exit(void *last_tb, unsigned int flags) "tb:%p flags=0x%x"
  memory_notdirty_write_access(uint64_t vaddr, uint64_t ram_addr, unsigned size) "0x%" PRIx64 " ram_addr 0x%" PRIx64 " size %u"
  memory_notdirty_set_dirty(uint64_t vaddr) "0x%" PRIx64
-+tlb_fill(uint64_t vaddr, int size, int access_type, int mmu_idx) "0x%" PRIx64 "/%d %d %d"
+ tlb_fill(uint64_t vaddr, int size, int access_type, int mmu_idx) "0x%" PRIx64 "/%d %d %d"
++tlb_resize(size_t old, size_t new) "%zu -> %zu"
  
  # translate-all.c
  translate_block(void *tb, uintptr_t pc, const void *tb_code) "tb:%p, pc:0x%"PRIxPTR", tb_code:%p"
