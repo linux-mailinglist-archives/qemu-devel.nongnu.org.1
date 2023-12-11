@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F49980C428
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 10:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B8480C429
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 10:15:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCcMQ-0001Pc-P2; Mon, 11 Dec 2023 04:13:58 -0500
+	id 1rCcMU-0001Rg-LT; Mon, 11 Dec 2023 04:14:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rCcMO-0001PP-Ab
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:13:56 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1rCcMT-0001R5-1K
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:14:01 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rCcMM-0004LJ-8b
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:13:56 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3332efd75c9so3883228f8f.2
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 01:13:53 -0800 (PST)
+ id 1rCcMR-0004MF-9k
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 04:14:00 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40c29f7b068so40058415e9.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 01:13:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702286032; x=1702890832; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702286036; x=1702890836; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=l1cZ8rGcMVRz/ykfSTmDydjLIdSR950YfUbOQT8uOwo=;
- b=KGgKrk+8Bf+dJFtmWBVg05DLPWCHtxY9yGBJjbllP2Lvb1Wg0lHq/GJwex8pu/V2Af
- FsQbUUqcIburb+I1T0hEKbTVAaL1gbEWPyU9e+drtGMLt/WFaaML334dQOmfJ5jIpaEv
- A1b8QgduwjDegIPPlMsQ9KKxinm9fx5Ia+9To22Xsmv20fbNjqbyPECtAr0AGD3XlCzk
- +dbZWCGsELBT03VGUREWxswvqLFPxQFRdE8MUCM4SJaT8kH6f1kClnDti9P3VuIgmlBz
- YrUI12QtnqN/+kVIvBI615LmBBb9CKBKhsjfb808CN2cM8m3fbjMolf8FSiTxiWP4vj9
- DjnQ==
+ bh=HdDx5EiLjddIKUt2fw45zi8pgfokyd/tBcuj5PJ4A5k=;
+ b=AE4/f/VcVmd7cYxY+SnfA8AGSm3DmSYVkVAnRHqvfdVvkTW/F039zfjqToBvzDTJnt
+ UWw5W+sqkbJOhq/Kb6cbie+feX/qC8PcSGRZldPSHwAtG4ZXeerYLGuL0qJ8CicICEh2
+ 8K7zMpICGX0AmVkHt9e7wemYizxwCtIinpwpm7EVxbMvJP80TCMCh9lD8ZCnD0p6X2n4
+ iCGDeAffyV7tWis1Wsg9joqBjC6CepvCnrmowNWr3amG4t2TFMjWDDzLhgfg+qj5SpfY
+ rHLlgzqGMA6T2iMDmAeqEGy3pMYorXSZK7AhreL9E0EzFW2FWWxZPehHRHvaKawE8vQO
+ E3Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702286032; x=1702890832;
+ d=1e100.net; s=20230601; t=1702286036; x=1702890836;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=l1cZ8rGcMVRz/ykfSTmDydjLIdSR950YfUbOQT8uOwo=;
- b=ZUBpBE6DvzyLmG/0XD6N8sdhpG1FchPKODWrXt6MraQALxKSzmQneECE9uEwEYgHD8
- VA4pgKGCBZAQUq2tiHgPiaqjdJQt2L5LeqWKNyMvMIV0EcbgfUbwS7YAsVnIXa1JusKK
- rqXzHrXAegRwuwEdj4m5ZXX8dzRQzcIdnOCo/2+vLgmN+JGm5sxxRbFAhY4qqqObSnVC
- eFPiGK9C4mjs7QysZM8E6z2IMZu8CPaxxWnYL7UiX3TqC7g9qyEC/8eAIZEywZgEtEur
- JEHsv5AIVh3DuqUjoWIp4gh73Omre+o5Ualps5K4NghxBlHJM9xfkRXQZSWLglTrx9Gw
- 9u2g==
-X-Gm-Message-State: AOJu0Yx27Mfl0nRcFVJ/G2J+xsTFd72lPt7E7qphaL+/XBvvmHT4VVkA
- XHkGvXN0sWxlmtG5tib+pvFCQw==
-X-Google-Smtp-Source: AGHT+IE9FkAOi1dlFQcWo5o/ejYv+LB/AM73V0gU9tJ+X7JrZs4dtGSQDsQB2Ht3vpIuCXHfXc6XWw==
-X-Received: by 2002:a5d:54c4:0:b0:333:49a8:73ea with SMTP id
- x4-20020a5d54c4000000b0033349a873eamr839277wrv.249.1702286032722; 
- Mon, 11 Dec 2023 01:13:52 -0800 (PST)
+ bh=HdDx5EiLjddIKUt2fw45zi8pgfokyd/tBcuj5PJ4A5k=;
+ b=U8/lZ4ugoKPTh2G0SOhD1K5dmlCqDTMxQPvMt7iY3w74kjo8UA1Din9nD6dnRb11Jt
+ W1DwzckbmUA5xe67hdIehKzlY7JdV9+czCC/QsUPp/9pYvIVvHvmMH2Q+Fp/U5x7tJqC
+ P5/tEHwSr7BQTnej8AGdmNA0DyB+JfWaSbs1Lk68OEuu0QoCIQ2LU4t4QO0p9VEQdLjp
+ c7m8xQrNgfi9O0ZoTp+cPmFEvUnk1tpOVZ5/3bqvQQXq39DB186BTiWi53FLFwXjjjDC
+ d0KxnF5Lt+yxACoAbfPWiATisyS3i04l39hIvL3ZXTp0lP4swLlbcZIDXNswtzpWncBh
+ jWZA==
+X-Gm-Message-State: AOJu0YwC0BaGBkh3rVWp/SMnkUtcP8CHxB+sslY6eGOqsP+Bt7N/Q/xE
+ 8A0ti820JONpIoTx4SA7ZtBEyg==
+X-Google-Smtp-Source: AGHT+IEjD4uY8VsRX3UFLnuU7LBSCQRWYoEXQ9InYN+E2Rl0d7R0Cf+OT3fnnTwl9VDU/o7uVGRcig==
+X-Received: by 2002:a05:600c:20e:b0:40c:330f:f2fb with SMTP id
+ 14-20020a05600c020e00b0040c330ff2fbmr1766679wmi.162.1702286036538; 
+ Mon, 11 Dec 2023 01:13:56 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- d16-20020a5d4f90000000b0033349bccac6sm8151663wru.1.2023.12.11.01.13.47
+ t15-20020a05600c198f00b0040c4620b9fasm3864005wmq.11.2023.12.11.01.13.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 11 Dec 2023 01:13:51 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AFD245FBEA;
+ by draig.lan (Postfix) with ESMTP id C60B75FBEC;
  Mon, 11 Dec 2023 09:13:46 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -71,17 +71,17 @@ Cc: John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Subject: [PATCH v2 07/16] replay: add proper kdoc for ReplayState
-Date: Mon, 11 Dec 2023 09:13:36 +0000
-Message-Id: <20231211091346.14616-8-alex.bennee@linaro.org>
+Subject: [PATCH v2 08/16] replay: make has_unread_data a bool
+Date: Mon, 11 Dec 2023 09:13:37 +0000
+Message-Id: <20231211091346.14616-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231211091346.14616-1-alex.bennee@linaro.org>
 References: <20231211091346.14616-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,63 +104,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the non-standard comment formatting and move the descriptions
-into a proper kdoc comment.
+For clarity given it only has two states.
 
-Message-Id: <20231205204106.95531-7-alex.bennee@linaro.org>
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Message-Id: <20231205204106.95531-8-alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- replay/replay-internal.h | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ replay/replay-internal.h | 4 ++--
+ replay/replay-internal.c | 4 ++--
+ replay/replay-snapshot.c | 6 +++---
+ replay/replay.c          | 2 +-
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/replay/replay-internal.h b/replay/replay-internal.h
-index 516147ddbc..98ca3748ed 100644
+index 98ca3748ed..1bc8fd5086 100644
 --- a/replay/replay-internal.h
 +++ b/replay/replay-internal.h
-@@ -63,24 +63,31 @@ enum ReplayEvents {
-     EVENT_COUNT
- };
- 
-+/**
-+ * typedef ReplayState - global tracking Replay state
-+ *
-+ * This structure tracks where we are in the current ReplayState
-+ * including the logged events from the recorded replay stream. Some
-+ * of the data is also stored/restored from VMStateDescription when VM
-+ * save/restore events take place.
-+ *
-+ * @cached_clock: Cached clocks values
-+ * @current_icount: number of processed instructions
-+ * @instruction_count: number of instructions until next event
-+ * @data_kind: current event
-+ * @has_unread_data: 1 if event not yet processed
-+ * @file_offset: offset into replay log at replay snapshot
-+ * @block_request_id: current serialised block request id
-+ * @read_event_id: current async read event id
-+ */
- typedef struct ReplayState {
--    /*! Cached clock values. */
-     int64_t cached_clock[REPLAY_CLOCK_COUNT];
--    /*! Current icount - number of processed instructions. */
+@@ -75,7 +75,7 @@ enum ReplayEvents {
+  * @current_icount: number of processed instructions
+  * @instruction_count: number of instructions until next event
+  * @data_kind: current event
+- * @has_unread_data: 1 if event not yet processed
++ * @has_unread_data: true if event not yet processed
+  * @file_offset: offset into replay log at replay snapshot
+  * @block_request_id: current serialised block request id
+  * @read_event_id: current async read event id
+@@ -85,7 +85,7 @@ typedef struct ReplayState {
      uint64_t current_icount;
--    /*! Number of instructions to be executed before other events happen. */
      int instruction_count;
--    /*! Type of the currently executed event. */
      unsigned int data_kind;
--    /*! Flag which indicates that event is not processed yet. */
-     unsigned int has_unread_data;
--    /*! Temporary variable for saving current log offset. */
+-    unsigned int has_unread_data;
++    bool has_unread_data;
      uint64_t file_offset;
--    /*! Next block operation id.
--        This counter is global, because requests from different
--        block devices should not get overlapping ids. */
      uint64_t block_request_id;
--    /*! Asynchronous event id read from the log */
      uint64_t read_event_id;
- } ReplayState;
- extern ReplayState replay_state;
+diff --git a/replay/replay-internal.c b/replay/replay-internal.c
+index 77d0c82327..634025096e 100644
+--- a/replay/replay-internal.c
++++ b/replay/replay-internal.c
+@@ -179,7 +179,7 @@ void replay_fetch_data_kind(void)
+                 replay_state.instruction_count = replay_get_dword();
+             }
+             replay_check_error();
+-            replay_state.has_unread_data = 1;
++            replay_state.has_unread_data = true;
+             if (replay_state.data_kind >= EVENT_COUNT) {
+                 error_report("Replay: unknown event kind %d",
+                              replay_state.data_kind);
+@@ -191,7 +191,7 @@ void replay_fetch_data_kind(void)
+ 
+ void replay_finish_event(void)
+ {
+-    replay_state.has_unread_data = 0;
++    replay_state.has_unread_data = false;
+     replay_fetch_data_kind();
+ }
+ 
+diff --git a/replay/replay-snapshot.c b/replay/replay-snapshot.c
+index 10a7cf7992..bf75c2ed28 100644
+--- a/replay/replay-snapshot.c
++++ b/replay/replay-snapshot.c
+@@ -47,8 +47,8 @@ static int replay_post_load(void *opaque, int version_id)
+ 
+ static const VMStateDescription vmstate_replay = {
+     .name = "replay",
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
+     .pre_save = replay_pre_save,
+     .post_load = replay_post_load,
+     .fields = (VMStateField[]) {
+@@ -56,7 +56,7 @@ static const VMStateDescription vmstate_replay = {
+         VMSTATE_UINT64(current_icount, ReplayState),
+         VMSTATE_INT32(instruction_count, ReplayState),
+         VMSTATE_UINT32(data_kind, ReplayState),
+-        VMSTATE_UINT32(has_unread_data, ReplayState),
++        VMSTATE_BOOL(has_unread_data, ReplayState),
+         VMSTATE_UINT64(file_offset, ReplayState),
+         VMSTATE_UINT64(block_request_id, ReplayState),
+         VMSTATE_UINT64(read_event_id, ReplayState),
+diff --git a/replay/replay.c b/replay/replay.c
+index 0f7d766efe..d729214197 100644
+--- a/replay/replay.c
++++ b/replay/replay.c
+@@ -258,7 +258,7 @@ static void replay_enable(const char *fname, int mode)
+     replay_state.data_kind = -1;
+     replay_state.instruction_count = 0;
+     replay_state.current_icount = 0;
+-    replay_state.has_unread_data = 0;
++    replay_state.has_unread_data = false;
+ 
+     /* skip file header for RECORD and check it for PLAY */
+     if (replay_mode == REPLAY_MODE_RECORD) {
 -- 
 2.39.2
 
