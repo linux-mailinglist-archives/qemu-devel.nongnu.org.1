@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDB180CC31
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 14:58:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E59680CC3C
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 14:59:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCgnF-00016C-5H; Mon, 11 Dec 2023 08:57:57 -0500
+	id 1rCgoJ-0002RF-SQ; Mon, 11 Dec 2023 08:59:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rCgnD-00015s-6P
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:57:55 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rCgoH-0002R6-Pd
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:59:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rCgnB-0006J6-KB
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:57:54 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rCgoG-0006U5-3p
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 08:59:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702303072;
+ s=mimecast20190719; t=1702303139;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1t80YvjtJh+rZxxzUiNfWsthwZU5XCdMfUX5x5ZBsVs=;
- b=FmxuPLknCA981RLGJez3TZ4W2KzoWj8Z26bQ4sswL2uLOiLhR0lNtBjnMOkqiD+dA6wSQs
- Q2BiwQ0pz5dMj658oJ1pZYRQOG7Jb/AxX/2p+86ZXjt3jDBzI5luadLfwtAGrW9meioS1z
- mV9NGEISalf3ipUkoO0BpoB4mzowbT4=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kCvRAfSZPn5WA3L+WT1Hz5o0ZQN/0uzlFAD3mZFobg4=;
+ b=cgAtMF5obd6p2QLCm5S/EhaSBO4sawLw5EDokAYjA7Xpxz3rXzjFppDITEJ2vBBtDYw9Vs
+ 6GQycv7QvF1314gVI3Sglr2M1a+UGD47mifEFL5Ac4jO8Xdia/GctdOotbgmmiHS5nrK/a
+ rpNTKRlcr+hNE90o/m+JZLYeOoill10=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-_xJBlsSwNjubTcX1bAgQnA-1; Mon, 11 Dec 2023 08:57:51 -0500
-X-MC-Unique: _xJBlsSwNjubTcX1bAgQnA-1
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-5d3911218b3so52225527b3.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 05:57:51 -0800 (PST)
+ us-mta-141-ljlhgiieNDWnnvAdw7CI0A-1; Mon, 11 Dec 2023 08:58:58 -0500
+X-MC-Unique: ljlhgiieNDWnnvAdw7CI0A-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-67aec8cce57so49684956d6.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 05:58:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702303071; x=1702907871;
+ d=1e100.net; s=20230601; t=1702303137; x=1702907937;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1t80YvjtJh+rZxxzUiNfWsthwZU5XCdMfUX5x5ZBsVs=;
- b=B4L1J/hiEJ/bK9OinOZuBcy3l5OhHw3Zjl3UjiPtZ7BijjGbG7gg9kjLkfRlmv+s1s
- pZ8Psqf5HTCTMqYEYw04poGS08XPTYj4HtgJ+Vvnl36uu3POMCC5jZdlenxzdsXagVtk
- xFBOL52ayWUpprQ/zUyQMpIvLoLxdVXF8Kj+zeL84GrLjjlhgwnPZWwnfq5EIdixlMO1
- VtCVNZs9kvtHXo7o4mofJb3GsfEYqJH49loPuWdFafKQLklPJzb96ufkGYBpE8iqZI6R
- St3UK6l4GKkIXLcUUOEKAYpZaey4vmpEovWQFtw8Onkfsd3SLc52NrOoLZMG4A0Mi86l
- fYiA==
-X-Gm-Message-State: AOJu0Yxc93QT7dvDRs37tNDrshDgJaE86CbB9Sw3H0JdsO5HlzHW5vlE
- 7XXRTu+zHGNIfiLx+4c65byANJ8KZP5cyjtCbGbsX+DNU3wcgNoFnVsSCbeEo80lrRwT0zcObmt
- R1nJ0y+JaxA83i3M=
-X-Received: by 2002:a05:6902:2ca:b0:dbc:b01c:6794 with SMTP id
- w10-20020a05690202ca00b00dbcb01c6794mr175252ybh.115.1702303070880; 
- Mon, 11 Dec 2023 05:57:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGmFEhScK25nhHpq5pqsdWHsGE2hrxxEpUbeQY4RnWee5VuabJb8Bqc4lBTG9sogIn8gH1zwA==
-X-Received: by 2002:a05:6902:2ca:b0:dbc:b01c:6794 with SMTP id
- w10-20020a05690202ca00b00dbcb01c6794mr175245ybh.115.1702303070599; 
- Mon, 11 Dec 2023 05:57:50 -0800 (PST)
+ bh=kCvRAfSZPn5WA3L+WT1Hz5o0ZQN/0uzlFAD3mZFobg4=;
+ b=ZYo8iTJYne4UwbcgaoNtUHeJZCTX2u3p56uNZBlojlKyEHRw7BeatGhz/fxkCE3AvF
+ TX9nQojv+l+0tTH4kOafxt55UkLAz7Q1/HxPYlh93v/+NljOzHyPgNavWJ+pv+0EhIgP
+ bxIsVBCI8S8ZUOi7XlJppG34RhKuXEGr220kB/3+OACNE4aN0t68cj7SnZMULevVLEZh
+ RYYLDKROLlRhnPzUf0SHR+IbiH0dUaf0cMIOjssjv7qLKv/y2zbRVxC1iTha8eUOSXAK
+ GImf5WOxfpLuFyRzpHf9xiQt9LyOdcAhWt8mIQoYMzkgN9VjKkKitXRIT5MRy4FtT5mi
+ fzag==
+X-Gm-Message-State: AOJu0YzVo1MHE8yeKmiBV6m6Sd60R/TpveKI11hn6WN9wICdbGp8Ex0s
+ 8roKT3gbJRVyuKGbVQJ/0L0hFIR4addIxM+1JoRhph5ttWiMMqWdIH7jbI8OhM1yxzxywautRO5
+ aYWOZRHKQoe2JuvM=
+X-Received: by 2002:a05:6214:5ec4:b0:67a:a721:9ec2 with SMTP id
+ mn4-20020a0562145ec400b0067aa7219ec2mr5082441qvb.115.1702303137636; 
+ Mon, 11 Dec 2023 05:58:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IElrnoNRfF8zrvVdJVZbUDAwpftDxyZNbLGnvd7ZuHtjtCD26o1XyM6+3orbMYCayW2HrnqQw==
+X-Received: by 2002:a05:6214:5ec4:b0:67a:a721:9ec2 with SMTP id
+ mn4-20020a0562145ec400b0067aa7219ec2mr5082432qvb.115.1702303137406; 
+ Mon, 11 Dec 2023 05:58:57 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:9e2:9000:530f:c053:4ab2:f786?
  ([2a01:e0a:9e2:9000:530f:c053:4ab2:f786])
  by smtp.gmail.com with ESMTPSA id
- e7-20020ad442a7000000b0067cd743328csm3301214qvr.81.2023.12.11.05.57.49
+ e7-20020ad442a7000000b0067cd743328csm3301214qvr.81.2023.12.11.05.58.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 05:57:50 -0800 (PST)
-Message-ID: <a86f5186-9600-4360-8f4d-4133c57ea5cf@redhat.com>
-Date: Mon, 11 Dec 2023 14:57:47 +0100
+ Mon, 11 Dec 2023 05:58:57 -0800 (PST)
+Message-ID: <f0dfddd3-b080-4f59-b92d-8e06c6f3f9cb@redhat.com>
+Date: Mon, 11 Dec 2023 14:58:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.0 03/10] vfio/container: Initialize VFIOIOMMUOps
- under vfio_init_container()
+Subject: Re: [PATCH for-9.0 04/10] vfio/container: Introduce a VFIOIOMMU QOM
+ interface
 Content-Language: en-US
 To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
@@ -76,22 +76,22 @@ Cc: Eric Auger <eric.auger@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
 References: <20231208084600.858964-1-clg@redhat.com>
- <20231208084600.858964-4-clg@redhat.com>
- <SJ0PR11MB6744ADC5CD40D8CF8013EEA8928FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <20231208084600.858964-5-clg@redhat.com>
+ <SJ0PR11MB67447A62DBC85853B6AB4652928FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <SJ0PR11MB6744ADC5CD40D8CF8013EEA8928FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
+In-Reply-To: <SJ0PR11MB67447A62DBC85853B6AB4652928FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,62 +107,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/23 06:59, Duan, Zhenzhong wrote:
+On 12/11/23 07:08, Duan, Zhenzhong wrote:
 > 
 > 
 >> -----Original Message-----
 >> From: Cédric Le Goater <clg@redhat.com>
 >> Sent: Friday, December 8, 2023 4:46 PM
->> Subject: [PATCH for-9.0 03/10] vfio/container: Initialize VFIOIOMMUOps
->> under vfio_init_container()
+>> Subject: [PATCH for-9.0 04/10] vfio/container: Introduce a VFIOIOMMU
+>> QOM interface
 >>
->> vfio_init_container() already defines the IOMMU type of the container.
->> Do the same for the VFIOIOMMUOps struct. This prepares ground for the
->> following patches that will deduce the associated VFIOIOMMUOps struct
->>from the IOMMU type.
+>> Simply transform the VFIOIOMMUOps struct in an InterfaceClass and do
+>> some initial name replacements. Next changes will start converting
+>> VFIOIOMMUOps.
 >>
 >> Signed-off-by: Cédric Le Goater <clg@redhat.com>
 >> ---
->> hw/vfio/container.c | 6 +++---
->> 1 file changed, 3 insertions(+), 3 deletions(-)
+>> include/hw/vfio/vfio-container-base.h | 18 ++++++++++++++----
+>> hw/vfio/common.c                      |  2 +-
+>> hw/vfio/container-base.c              | 12 +++++++++++-
+>> hw/vfio/pci.c                         |  2 +-
+>> 4 files changed, 27 insertions(+), 7 deletions(-)
 >>
->> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+>> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-
+>> container-base.h
 >> index
->> afcfe8048805c58291d1104ff0ef20bdc457f99c..f4a0434a5239bfb6a17b91c8
->> 879cb98e686afccc 100644
->> --- a/hw/vfio/container.c
->> +++ b/hw/vfio/container.c
->> @@ -370,7 +370,7 @@ static int vfio_get_iommu_type(VFIOContainer
->> *container,
->> }
+>> 5c9594b6c77681e5593236e711e7e391e5f2bdff..81d49fe562d3840859096
+>> dd8a62ac38d62314939 100644
+>> --- a/include/hw/vfio/vfio-container-base.h
+>> +++ b/include/hw/vfio/vfio-container-base.h
+>> @@ -16,7 +16,8 @@
+>> #include "exec/memory.h"
 >>
->> static int vfio_init_container(VFIOContainer *container, int group_fd,
->> -                               Error **errp)
->> +                               VFIOAddressSpace *space, Error **errp)
->> {
->>      int iommu_type, ret;
+>> typedef struct VFIODevice VFIODevice;
+>> -typedef struct VFIOIOMMUOps VFIOIOMMUOps;
+>> +typedef struct VFIOIOMMUClass VFIOIOMMUClass;
+>> +#define VFIOIOMMUOps VFIOIOMMUClass /* To remove */
 >>
->> @@ -401,6 +401,7 @@ static int vfio_init_container(VFIOContainer
->> *container, int group_fd,
->>      }
+>> typedef struct {
+>>      unsigned long *bitmap;
+>> @@ -34,7 +35,7 @@ typedef struct VFIOAddressSpace {
+>>   * This is the base object for vfio container backends
+>>   */
+>> typedef struct VFIOContainerBase {
+>> -    const VFIOIOMMUOps *ops;
+>> +    const VFIOIOMMUClass *ops;
+>>      VFIOAddressSpace *space;
+>>      MemoryListener listener;
+>>      Error *error;
+>> @@ -88,10 +89,19 @@ int vfio_container_query_dirty_bitmap(const
+>> VFIOContainerBase *bcontainer,
 >>
->>      container->iommu_type = iommu_type;
->> +    vfio_container_init(&container->bcontainer, space, &vfio_legacy_ops);
+>> void vfio_container_init(VFIOContainerBase *bcontainer,
+>>                           VFIOAddressSpace *space,
+>> -                         const VFIOIOMMUOps *ops);
+>> +                         const VFIOIOMMUClass *ops);
+>> void vfio_container_destroy(VFIOContainerBase *bcontainer);
+>>
+>> -struct VFIOIOMMUOps {
+>> +typedef struct VFIOIOMMU VFIOIOMMU;
+>> +
+>> +#define TYPE_VFIO_IOMMU "vfio-iommu"
+>> +
+>> +#define VFIO_IOMMU(obj) INTERFACE_CHECK(VFIOIOMMU, (obj),
+>> TYPE_VFIO_IOMMU)
 > 
-> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> 
-> Not related to this patch, not clear if it's deserved to rename
-> vfio_container_init as vfio_bcontainer_init to distinguish
-> with vfio_init_container.
+> Maybe this #define can be removed or you have other plans?
 
-I agree, the vfio_container_init() and vfio_init_container() names
-are confusing. I would keep vfio_container_init() because it is
-consistent with all routines handling 'VFIOContainerBase *' ops.
+yes, and we can remove 'struct VFIOIOMMU' also.
 
-I would be tempted to rename vfio_init_container() to vfio_set_iommu() ?
-
-Also, I will introduce a vfio_connect_setup() helper in v2 doing the
-assert as the other routines.
 
 Thanks,
 
@@ -171,26 +183,83 @@ C.
 
 
 
-
+> Otherwise, Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > 
 > Thanks
 > Zhenzhong
 > 
->>      return 0;
+>> +DECLARE_CLASS_CHECKERS(VFIOIOMMUClass, VFIO_IOMMU,
+>> TYPE_VFIO_IOMMU)
+>> +
+>> +struct VFIOIOMMUClass {
+>> +    InterfaceClass parent_class;
+>> +
+>>      /* basic feature */
+>>      int (*dma_map)(const VFIOContainerBase *bcontainer,
+>>                     hwaddr iova, ram_addr_t size,
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index
+>> 08a3e576725b1fc9f2f7e425375df3b827c4fe56..49dab41566f07ba7be1100f
+>> ed1973e028d34467c 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -1503,7 +1503,7 @@ retry:
+>> int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>>                         AddressSpace *as, Error **errp)
+>> {
+>> -    const VFIOIOMMUOps *ops = &vfio_legacy_ops;
+>> +    const VFIOIOMMUClass *ops = &vfio_legacy_ops;
+>>
+>> #ifdef CONFIG_IOMMUFD
+>>      if (vbasedev->iommufd) {
+>> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+>> index
+>> 1ffd25bbfa8bd3d404e43b96357273b95f5a0031..913ae49077c4f09b7b275
+>> 17c1231cfbe4befb7fb 100644
+>> --- a/hw/vfio/container-base.c
+>> +++ b/hw/vfio/container-base.c
+>> @@ -72,7 +72,7 @@ int vfio_container_query_dirty_bitmap(const
+>> VFIOContainerBase *bcontainer,
 >> }
 >>
->> @@ -583,9 +584,8 @@ static int vfio_connect_container(VFIOGroup *group,
->> AddressSpace *as,
->>      container = g_malloc0(sizeof(*container));
->>      container->fd = fd;
->>      bcontainer = &container->bcontainer;
->> -    vfio_container_init(bcontainer, space, &vfio_legacy_ops);
+>> void vfio_container_init(VFIOContainerBase *bcontainer, VFIOAddressSpace
+>> *space,
+>> -                         const VFIOIOMMUOps *ops)
+>> +                         const VFIOIOMMUClass *ops)
+>> {
+>>      bcontainer->ops = ops;
+>>      bcontainer->space = space;
+>> @@ -99,3 +99,13 @@ void vfio_container_destroy(VFIOContainerBase
+>> *bcontainer)
 >>
->> -    ret = vfio_init_container(container, group->fd, errp);
->> +    ret = vfio_init_container(container, group->fd, space, errp);
->>      if (ret) {
->>          goto free_container_exit;
->>      }
+>>      g_list_free_full(bcontainer->iova_ranges, g_free);
+>> }
+>> +
+>> +static const TypeInfo types[] = {
+>> +    {
+>> +        .name = TYPE_VFIO_IOMMU,
+>> +        .parent = TYPE_INTERFACE,
+>> +        .class_size = sizeof(VFIOIOMMUClass),
+>> +    },
+>> +};
+>> +
+>> +DEFINE_TYPES(types)
+>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>> index
+>> 1874ec1aba987cac6cb83f86650e7a5e1968c327..d84a9e73a65de4e4c1cdaf
+>> 65619a700bd8d6b802 100644
+>> --- a/hw/vfio/pci.c
+>> +++ b/hw/vfio/pci.c
+>> @@ -2488,7 +2488,7 @@ int
+>> vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
+>> static int vfio_pci_hot_reset(VFIOPCIDevice *vdev, bool single)
+>> {
+>>      VFIODevice *vbasedev = &vdev->vbasedev;
+>> -    const VFIOIOMMUOps *ops = vbasedev->bcontainer->ops;
+>> +    const VFIOIOMMUClass *ops = vbasedev->bcontainer->ops;
+>>
+>>      return ops->pci_hot_reset(vbasedev, single);
+>> }
 >> --
 >> 2.43.0
 > 
