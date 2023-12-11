@@ -2,94 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B8380D32F
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:04:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8CC80D348
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:09:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCjfr-0004px-MP; Mon, 11 Dec 2023 12:02:31 -0500
+	id 1rCjl1-0000Qv-TI; Mon, 11 Dec 2023 12:07:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rCjfC-0004Og-C2
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:01:53 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rCjky-0000Qi-HU
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:07:49 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rCjf9-0007FJ-Gq
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:01:49 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33622099f23so952663f8f.0
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:01:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rCjku-0000Hz-CS
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:07:46 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d2eb06ab11so17997855ad.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:07:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702314104; x=1702918904; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lWK2LlwCifXuctnRg+xMKHZBJ8byXCXekix4o2vqaXU=;
- b=lwms/ULkeA20/cioCowuUGBIdKab4pRzYLW9q6LbVGvklkoj/NAiErZYGIJqBHBdrC
- uG0OBKYcJpz6UibUDtn+LXIoysC1rAMMhNsKEybIVG01boWA1j3BAIp2Pk4rvs7eAlHZ
- 9ST5ydMdbkuXRW4qsd3hS5fXMn3KvXWAOehDI1SEsyUVtzDYtN+Ec6Xaol7qXUuXiUDQ
- UT9NXdWL0LvFu8aiFgOtIUeU09qceUvizxg63sxnu+aCcmVKnQmLzGEmzHA8o9RLQukk
- U9X2AqUkFOhlNi4kHCnfuvZlr1hOzCoqZaZFnm0+M2z2uLIIVI/lN55I3SXWEA6DDaST
- 1Xow==
+ d=ventanamicro.com; s=google; t=1702314462; x=1702919262; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=su+2FCyrz66PAr2bdXzt4MrXwyJEhravdAvsltVQ32E=;
+ b=XPauoGTfG/R47Ootaq0/EUlGUOQ3dfyYTmzfQCsxLxA3LinTDI6enlFDy2lkAA6C2C
+ NU6sYm9SP2IfT5tTovaf6mDQmHV40h/z1jxeBp4puaMbgDRLVP9ctr5ObI5mJDSvyE5Q
+ 2EAC5Vqbejposo83J2lRmFFQUSw1ngGj7KxpxQPXu6uyugOh/j3a7KhV+GeOA7BZnJpq
+ a53sQNHw4CuNkpzbpQfXvFROMAEsxWU3KnJglczZQuOpMkjcf4q8SKfE7pSjVxGHFPRQ
+ Ba+cJ8YBySF2yQGTR3ZIHAErabwsPS+ifl1PRWK8rjTzJGSEPRJbrxoNSimMZ3A0oyEN
+ vM3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702314104; x=1702918904;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=lWK2LlwCifXuctnRg+xMKHZBJ8byXCXekix4o2vqaXU=;
- b=NH4LsBuxNjk1X48ATPhtbcyoyRtegUbKfG2g/7HkpANeMTUb+OZ7iM847OMWnfKfPj
- sEhfEGWHfzo9u8fMZtdJPOc5uJWH+ufYqdNBKmpiQFKk+bRCfBlkro1vmTu4wkJ7c35l
- uvgHgzyI/Az6BAQQgiYEdtsF2F3qLbyxIwU935AmlqZxe+U87IGTbc/SBwex9XX7qvi/
- lw+UEJomfWPsUuAXE5Q76vRbQbHPH0VECqSz5QERYTqHRg4kirc82Gwp2ldaspEqexMJ
- TVZq2a/KPB/1g9yHqEamVqeaduUrVk3ZWFMDQ86TCpy/tuoeKc3/g+2rNN0OIJVFqq0+
- iLOA==
-X-Gm-Message-State: AOJu0YxHtKxz174kRfK4/WTT46U20E3ptEs93hfnc5Ix8LYhVyzQbPqX
- HNXmQ08QlP/k419kCmyn55DqKw==
-X-Google-Smtp-Source: AGHT+IGUs8y3ooVZf55L1O6rZwWTQHdSQQCj0YIswKwihTIgwU8egbDgviUbCMkajaobuux0v6j7Mg==
-X-Received: by 2002:adf:ef82:0:b0:336:97c:4764 with SMTP id
- d2-20020adfef82000000b00336097c4764mr2178819wro.57.1702314104397; 
- Mon, 11 Dec 2023 09:01:44 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p16-20020a5d48d0000000b0033616ea5a0fsm5974099wrs.45.2023.12.11.09.01.44
+ d=1e100.net; s=20230601; t=1702314462; x=1702919262;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=su+2FCyrz66PAr2bdXzt4MrXwyJEhravdAvsltVQ32E=;
+ b=nLP7H576ZrzbV8XIVEMl63EX4xzPHn3AIpZ3+J3vkRerEdYrMXiNob4quzgA1dqy7H
+ FRegll9xKbvbEcrgeZqH+IkI3XiNWpU2cJnSljsVme2WVMO6Xw+3LP35X0bz+WsrKK/v
+ KnfYFLN2/Ttg4xPyehOKcU1QCDqQ+p39DGN1Zm3K4Ne0up290O0i6b99zp79M8pW8DFC
+ YVGvs42Dgiz106ZhzqC9QZdT4noJ/hruEPivBL/RxsCpRyxXzoXyullH56nNdc8s5/Cp
+ Mj/R2ZwYSIvQXjIZ1Twi5DUxcgVUv0LomnoIEEuh3WebUzATOWsswxVDw1RtfA48jIZI
+ IAZw==
+X-Gm-Message-State: AOJu0YzsTbr3Ioe5vz7UWE+eHzAL6Cq8iZNlzZKu+p54BzUPQeFN9+j/
+ J9WCh3ZWtaS8NEJWStPRACQ5eU/i5BLuaG+2dbk=
+X-Google-Smtp-Source: AGHT+IEaL6c/4FQIjOs77jAg6M2ZFuhFwoNgj7UGOfM/Xz65hlA2b92rFN7jFPU4RvnO7ynRIq8ZGQ==
+X-Received: by 2002:a17:903:32c5:b0:1cf:c9c3:e79d with SMTP id
+ i5-20020a17090332c500b001cfc9c3e79dmr2285242plr.59.1702314462056; 
+ Mon, 11 Dec 2023 09:07:42 -0800 (PST)
+Received: from grind.. ([152.234.124.8]) by smtp.gmail.com with ESMTPSA id
+ k9-20020a170902c40900b001bc676df6a9sm6901845plk.132.2023.12.11.09.07.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Dec 2023 09:01:44 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B29E95FBC6;
- Mon, 11 Dec 2023 17:01:43 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Cleber Rosa <crosa@redhat.com>
-Cc: qemu-devel@nongnu.org,  Jiaxun Yang <jiaxun.yang@flygoat.com>,  Radoslaw
- Biernacki <rad@semihalf.com>,  Paul Durrant <paul@xen.org>,  Akihiko Odaki
- <akihiko.odaki@daynix.com>,  Leif Lindholm <quic_llindhol@quicinc.com>,
- Peter Maydell <peter.maydell@linaro.org>,  Paolo Bonzini
- <pbonzini@redhat.com>,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Beraldo Leal
- <bleal@redhat.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,  Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>,  David Woodhouse <dwmw2@infradead.org>,
- Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH 03/10] tests/avocado/intel_iommu.py: increase timeout
-In-Reply-To: <20231208190911.102879-4-crosa@redhat.com> (Cleber Rosa's message
- of "Fri, 8 Dec 2023 14:09:04 -0500")
-References: <20231208190911.102879-1-crosa@redhat.com>
- <20231208190911.102879-4-crosa@redhat.com>
-User-Agent: mu4e 1.11.26; emacs 29.1
-Date: Mon, 11 Dec 2023 17:01:43 +0000
-Message-ID: <8734w8fzbc.fsf@draig.linaro.org>
+ Mon, 11 Dec 2023 09:07:38 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH for-9.0] target/riscv/cpu.c: fix machine IDs getters
+Date: Mon, 11 Dec 2023 14:07:32 -0300
+Message-ID: <20231211170732.2541368-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,41 +90,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cleber Rosa <crosa@redhat.com> writes:
+mvendorid is an uint32 property, mimpid/marchid are uint64 properties.
+But their getters are returning bools. The reason this went under the
+radar for this long is because we have no code using the getters.
 
-> Based on many runs, the average run time for these 4 tests is around
-> 250 seconds, with 320 seconds being the ceiling.  In any way, the
-> default 120 seconds timeout is inappropriate in my experience.
+The problem can be seem via the 'qom-get' API though. Launching QEMU
+with the 'veyron-v1' CPU, a model with:
 
-I would rather see these tests updated to fix:
+VEYRON_V1_MVENDORID: 0x61f (1567)
+VEYRON_V1_MIMPID: 0x111 (273)
+VEYRON_V1_MARCHID: 0x8000000000010000 (9223372036854841344)
 
- - Don't use such an old Fedora 31 image
- - Avoid updating image packages (when will RH stop serving them?)
- - The "test" is a fairly basic check of dmesg/sysfs output
+This is what the API returns when retrieving these properties:
 
-I think building a buildroot image with the tools pre-installed (with
-perhaps more testing) would be a better use of our limited test time.
+(qemu) qom-get /machine/soc0/harts[0] mvendorid
+true
+(qemu) qom-get /machine/soc0/harts[0] mimpid
+true
+(qemu) qom-get /machine/soc0/harts[0] marchid
+true
 
-FWIW the runtime on my machine is:
+After this patch:
 
-=E2=9E=9C  env QEMU_TEST_FLAKY_TESTS=3D1 ./pyvenv/bin/avocado run ./tests/a=
-vocado/intel_iommu.py
-JOB ID     : 5c582ccf274f3aee279c2208f969a7af8ceb9943
-JOB LOG    : /home/alex/avocado/job-results/job-2023-12-11T16.53-5c582cc/jo=
-b.log
- (1/4) ./tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu: PASS (44=
-.21 s)
- (2/4) ./tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu_strict: P=
-ASS (78.60 s)
- (3/4) ./tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu_strict_cm=
-: PASS (65.57 s)
- (4/4) ./tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu_pt: PASS =
-(66.63 s)
-RESULTS    : PASS 4 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CA=
-NCEL 0
-JOB TIME   : 255.43 s
+(qemu) qom-get /machine/soc0/harts[0] mvendorid
+1567
+(qemu) qom-get /machine/soc0/harts[0] mimpid
+273
+(qemu) qom-get /machine/soc0/harts[0] marchid
+9223372036854841344
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Fixes: 1e34150045 ("target/riscv/cpu.c: restrict 'mvendorid' value")
+Fixes: a1863ad368 ("target/riscv/cpu.c: restrict 'mimpid' value")
+Fixes: d6a427e2c0 ("target/riscv/cpu.c: restrict 'marchid' value")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/cpu.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 83c7c0cf07..70bf10aa7c 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1573,9 +1573,9 @@ static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
+ static void cpu_get_mvendorid(Object *obj, Visitor *v, const char *name,
+                               void *opaque, Error **errp)
+ {
+-    bool value = RISCV_CPU(obj)->cfg.mvendorid;
++    uint32_t value = RISCV_CPU(obj)->cfg.mvendorid;
+ 
+-    visit_type_bool(v, name, &value, errp);
++    visit_type_uint32(v, name, &value, errp);
+ }
+ 
+ static void cpu_set_mimpid(Object *obj, Visitor *v, const char *name,
+@@ -1602,9 +1602,9 @@ static void cpu_set_mimpid(Object *obj, Visitor *v, const char *name,
+ static void cpu_get_mimpid(Object *obj, Visitor *v, const char *name,
+                            void *opaque, Error **errp)
+ {
+-    bool value = RISCV_CPU(obj)->cfg.mimpid;
++    uint64_t value = RISCV_CPU(obj)->cfg.mimpid;
+ 
+-    visit_type_bool(v, name, &value, errp);
++    visit_type_uint64(v, name, &value, errp);
+ }
+ 
+ static void cpu_set_marchid(Object *obj, Visitor *v, const char *name,
+@@ -1652,9 +1652,9 @@ static void cpu_set_marchid(Object *obj, Visitor *v, const char *name,
+ static void cpu_get_marchid(Object *obj, Visitor *v, const char *name,
+                            void *opaque, Error **errp)
+ {
+-    bool value = RISCV_CPU(obj)->cfg.marchid;
++    uint64_t value = RISCV_CPU(obj)->cfg.marchid;
+ 
+-    visit_type_bool(v, name, &value, errp);
++    visit_type_uint64(v, name, &value, errp);
+ }
+ 
+ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+-- 
+2.41.0
+
 
