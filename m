@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDCE80CD4F
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 15:09:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC9080CE80
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 15:36:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCgwq-0005nJ-4U; Mon, 11 Dec 2023 09:07:52 -0500
+	id 1rChMq-00050X-AC; Mon, 11 Dec 2023 09:34:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1rCgwm-0005n4-TQ
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 09:07:49 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rChMo-00050G-3g
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 09:34:42 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1rCgwl-0000d8-83
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 09:07:48 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d0bb7ff86cso40662745ad.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 06:07:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rChMm-00061J-IX
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 09:34:41 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-54d0ae6cf20so6393737a12.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 06:34:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702303666; x=1702908466; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HbikGgeXPXXROHrMpXMsGbkFOHf6Nao8HMqyN+r+WD4=;
- b=fRoDMMkpl1yJi8GfqWECmMs9KUhlsi9xIpfF40GmvjFpgrhyzZSYQXK65OXOkFt2Jp
- SAVOheYUU9I32eXWc3Rf6+wWqxAu3gF543mtiPBRqJsA8XFSRBAb9SYWgonAtXkUdku2
- J2AZp5QQlNxBm0Lkdrp77M4FKM6L0vEYWnqhocQdUa3xet3746mxABVtRWVAC9U49IPR
- ZbZ+Z7lJD38/C4nvfCJRJN3X8dskAqSvbdNOpGHkChMGaXpG6uGv/4cGqcSNjZcLP0Ia
- T7XZA1922A4hKxXXRyu0lgbLTOVrVjo0Wx21F8vSou7DmWntDR9G1BL3Z4BpjYf7P8qA
- 6OhA==
+ d=linaro.org; s=google; t=1702305279; x=1702910079; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5YdnQkh/WCt/AjLL96JsyZ+K8TtN25z/uzpS0acdy7M=;
+ b=OVAXsrKOEBcor/48Aqq5Ub0tY/IjbF9QQSeZKxMRC//oQBwCMtYJqe8wqAsm5103i7
+ t/5riE/EfOEeoFefIXpNC92hjs3OpY8yd586J2rkGXTuUDG9x/0XVRf/IoNdHtHwmagi
+ OZizrAhHzfrOyU0LjTvw9fiQw2ZN4H7P8Kvfn+QyzLbp+EnHo89nJjNwpYWt3ORG+LS9
+ /kdcmX1NnBxhjAkjtdv34Xy4ZFKLKiUypq6dQ7rOqyrFtGzZouO8YV50wLbkSEYRYq5E
+ 1XWiwGbNxeA07N+uAFbB/eMkuyinJA7rdtxdMIIrBNo2dyNZOsFAwqA8P7XA685Be7g3
+ Sp4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702303666; x=1702908466;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HbikGgeXPXXROHrMpXMsGbkFOHf6Nao8HMqyN+r+WD4=;
- b=psxKvrm7IfBrmjRE3eqVcfmIss2qWQenrtsUam8zehFLU7P/rXpb7yMSUCsfP6YCi4
- Od+duIHHJLmmxXznvgs2HKIF7TMdnCW1d7rFbLS2h+/BplkkVeMkGL0+BNUYYPKRx58c
- TPe3nSPtiRSAe7eatKm5TtIZDZNtPpGMtQ+VWPjL4VNZlFdmcJaAA2NdcPsVP2dSsynk
- LiBFw/DW0RaIANryWJuAKsN6NfiXAciU/NeiYQ2eLfX4A+9TeG7RaQrb74/Yg08Q4c6U
- d8Cs4MoVaquNZXk8cTq+FKYUcxeyaYZMHPYVHdYdo4WJu4YiXOhJJPRzGR3ZmYak+eAa
- gO/A==
-X-Gm-Message-State: AOJu0YwiG/S2IFqrtC8IhaiTmlxDrkGP6svpL9AIiJcMtMnTkxE1yUWx
- CVRTbA1ZCHL1TR/02nOOZR8=
-X-Google-Smtp-Source: AGHT+IEJfmi3Qa6LOk8Dzws+eJi93onkY8A+3MM1+4sIgwFXsUZsJtZx2uik8q8cOct9eYtwpgeF7w==
-X-Received: by 2002:a17:902:f550:b0:1cf:e19e:2509 with SMTP id
- h16-20020a170902f55000b001cfe19e2509mr4749062plf.25.1702303665638; 
- Mon, 11 Dec 2023 06:07:45 -0800 (PST)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- c7-20020a170902d48700b001d0c1281ef5sm6654844plg.89.2023.12.11.06.07.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 06:07:45 -0800 (PST)
-Message-ID: <47d40dd5-3a75-4f54-91b7-2f9b073597fe@gmail.com>
-Date: Mon, 11 Dec 2023 23:07:40 +0900
+ d=1e100.net; s=20230601; t=1702305279; x=1702910079;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5YdnQkh/WCt/AjLL96JsyZ+K8TtN25z/uzpS0acdy7M=;
+ b=jOCvvNV4bVaKNOldX0v4CrYWYFI6vPd7XxGpn0yV4g0kxG17Hvb3VgeMn36Bt7xbk/
+ Qb+OsPsbthYtQM54vLqv8d2w3dH2ExS74T1LBHCVxHdmRa5W7tk0b8eRYwKM0lLXXMa5
+ +RpoXEBTK/oOSlqBVO3HW/XHfvAElKuz+ADlWdrA0bdF394jTnmsIrBXtaocbO9i7x7v
+ hpdPWMndEwPajIqzxS7ZfcsxPyRc+4OFYWKAedzMrNXLjkF0LkbWua4SoF/PpSnYNaNI
+ I5m8g9laSR3OWPu0iPsSYPoi8jb337MZA/k5PQ71Nt1CYpjjf7DgP+pEue5DXhl8grP3
+ sn2Q==
+X-Gm-Message-State: AOJu0YwKM0SeEJwj2hd+Y+/pdty+iJ0uQNOKbMgEJnetkVjVYsF7pX5H
+ 0Xo3heYOMxQdvwHa50FYkHcrTDwKVAQ2Wj2Vfwpnrg==
+X-Google-Smtp-Source: AGHT+IGjp6dpy8LTPXiWuX6mQTnt0yt4p7GSkwsFpxDvf/P8cc2V+BVP2s6mzj1OiiFzED208qBSS4UxhFB1Ar0QBTM=
+X-Received: by 2002:a50:9992:0:b0:54d:329a:372b with SMTP id
+ m18-20020a509992000000b0054d329a372bmr2564336edb.23.1702305278758; Mon, 11
+ Dec 2023 06:34:38 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/5] ebpf: Added eBPF map update through mmap.
-Content-Language: en-US
-To: Yuri Benditovich <yuri.benditovich@daynix.com>, jasowang@redhat.com,
- Andrew Melnychenko <andrew@daynix.com>
-Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com,
- qemu-devel@nongnu.org, berrange@redhat.com, yan@daynix.com
-References: <20230831065140.496485-1-andrew@daynix.com>
- <20230831065140.496485-2-andrew@daynix.com>
- <46697e3b-3ec4-4635-97d5-39919068d709@gmail.com>
- <CAOEp5Od+_KHm86L7PLVo22KqLZuBc4dWjh0=4iAvT_zyhSRLMw@mail.gmail.com>
-From: Akihiko Odaki <akihiko.odaki@gmail.com>
-In-Reply-To: <CAOEp5Od+_KHm86L7PLVo22KqLZuBc4dWjh0=4iAvT_zyhSRLMw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@gmail.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_XBL=0.375, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20231123044219.896776-1-richard.henderson@linaro.org>
+ <20231123044219.896776-21-richard.henderson@linaro.org>
+ <db8f1d15-121c-4597-8f04-15661c7eaa3b@linaro.org>
+In-Reply-To: <db8f1d15-121c-4597-8f04-15661c7eaa3b@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 11 Dec 2023 14:34:27 +0000
+Message-ID: <CAFEAcA94EdEEcjvTZLYwnuv=ngQz5sD+ihY7ez+soeJMu=aXow@mail.gmail.com>
+Subject: Re: [PATCH 20/21] target/arm/kvm: Unexport and tidy
+ kvm_arm_sync_mpstate_to_{kvm, qemu}
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,29 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/11 22:48, Yuri Benditovich wrote:
-> Akihiko,
-> This series was already discussed several months ago.
-> I'd suggest to postpone commenting on it and resume them after merging.
+On Fri, 24 Nov 2023 at 12:06, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> On 23/11/23 05:42, Richard Henderson wrote:
+> > Drop fprintfs and actually use the return values in the callers.
+> >
+> > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> > ---
+> >   target/arm/kvm_arm.h | 20 --------------------
+> >   target/arm/kvm.c     | 23 ++++++-----------------
+> >   2 files changed, 6 insertions(+), 37 deletions(-)
+>
+>
+> >   /*
+> >    * Sync the KVM MP_STATE into QEMU
+> >    */
+> > -int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
+> > +static int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
+> >   {
+> >       if (cap_has_mp_state) {
+> >           struct kvm_mp_state mp_state;
+> >           int ret =3D kvm_vcpu_ioctl(CPU(cpu), KVM_GET_MP_STATE, &mp_st=
+ate);
+> >           if (ret) {
+> > -            fprintf(stderr, "%s: failed to get MP_STATE %d/%s\n",
+> > -                    __func__, ret, strerror(-ret));
+> > -            abort();
+>
+> I suppose if this abort() had fired, we'd have reworked that code...
+> Maybe mention its removal? Otherwise,
 
-I found a pull request:
-https://lore.kernel.org/all/20230908064507.14596-14-jasowang@redhat.com/
+Well, it's a "KVM has failed in a way that's fatal for the VM"
+kind of error. It's OK to drop the abort() here because since
+7191f24c7fcf we will catch error returns from these arch-specific
+functions in the accel/kvm generic code. When this was written
+before that commit then if we didn't detect and print something
+here we'd just have silently dropped the error, I think.
 
-Strangely patches from that series seem missed although earlier patches 
-are on the tree. Jason, can you tell what's going on?
+I added a brief note to the commit message to that effect.
 
-In any case, I wrote comments to the patch series. Andrew, can you check 
-them? They are mostly nitpicks, but I think you may have a look at 
-DEFINE_PROP_ARRAY(); it may make it easier to implement the libvirt side.
-
-I also forgot to say that properties should not have underscores; 
-ebpf_rss_fds should be ebpf-rss-fds. See:
-https://gitlab.com/qemu-project/qemu/-/blob/master/include/qom/object.h?ref_type=heads#L1013
-
-The series needs to be rebased too, but probably it's better off to wait 
-Jason to figure out the current situation of the series. Once it gets 
-all sorted out, I'll rebase my series on top of it and ask for review.
-
-Regards,
-Akihiko Odaki
+-- PMM
 
