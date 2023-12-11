@@ -2,86 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B483180C25B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 08:49:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4D580C345
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 09:31:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCb1A-0007XV-Tr; Mon, 11 Dec 2023 02:47:58 -0500
+	id 1rCbff-0003q6-Ed; Mon, 11 Dec 2023 03:29:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rCb12-0007XI-2L
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 02:47:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rCb0y-0003hX-UA
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 02:47:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702280861;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FqDIj9tHqvoHSyk4PARRoIVOk8nDyK5n7cLNYID2aL4=;
- b=AAZRb1vRqdfWsXsW5/mie3W9MNrkoShDLgdWgZy2AfTryaKK+T0LBKQD/MbkUo1/eM0TLE
- euHmQP+1/6SaWtTOr472P9CmrtVit6dU5C/6QAvikEWGu+Lb7t+RkNAiwGoyoZ6KeIPYj/
- tE7osIgq0nGKtVEiCK3Cl0kjD0Z06yY=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-xvb2jATfPpKNC1hk0Yg2Dg-1; Mon, 11 Dec 2023 02:47:39 -0500
-X-MC-Unique: xvb2jATfPpKNC1hk0Yg2Dg-1
-Received: by mail-yw1-f199.google.com with SMTP id
- 00721157ae682-5df9f98994bso8134637b3.0
- for <qemu-devel@nongnu.org>; Sun, 10 Dec 2023 23:47:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rCbfd-0003pp-KS
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 03:29:45 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rCbfb-0003SJ-Ns
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 03:29:45 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6ceb93fb381so2799073b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 00:29:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702283382; x=1702888182;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ZM2woCU5Tf8BVOG7uyTgtypDScEVAEv8Xj9MvdxCWb4=;
+ b=ecGdhfxvCvkhYKVceeTWhmGmyled86XsuooHSja50JOgRT5ogCpW3U0OVZ1LOIhlGw
+ cxFFt+RkdNuiHYKCZAwD2QjAYR6tlMDIlsr2WrspPNITHSMeamqb8miRS2DFiScQ95Rj
+ 64eJuBWvMix/iFusCXfsnEdjq/hY5hqfW8WvOq3ne17Kjie7Gq8BG5AyBChm+j5LFaPe
+ 1QIxbpHzgM3fS4Y9S9vAbEeAzVHi9qut7qs1tbcyhKm18P6ddIT3wu5UVkNueUR04zfw
+ eYOZgjEQmlWjQ9jFGdJosFDZ1rPjNDZbOdhF12h/R3NNhe0AK3pBymQtaGgh1i1B3vn1
+ XeUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702280859; x=1702885659;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FqDIj9tHqvoHSyk4PARRoIVOk8nDyK5n7cLNYID2aL4=;
- b=r6ojOmkReGAHPhDCV+DyQYID6zMfPrfsKFlOg9wdPNWp8Y0ivId4lwICdQUlLS5+om
- CM7ZtWa9SHSe749jO0cqKFlHOFZ55CBaeFn3Lua/EFchyWmYr2x7AYSwyWccfO1J0KQ3
- hfVJ1iEf+SlvgmvXvB7xid2dWqiGHphRyvfp+ifSXKZONAB/drTtJfI3La3uaGnU2PRh
- N20SXRGnh3sQoGhxJVgpGdA7dD/Pvx5FhRrG1UzQMjR9fRuyInxMFKJYtlJCDxudHeSj
- 2mpwqcIOEe90xjOraZP5CjBsn+egTRnbHGMzzmbsd4OPOI0EVVNO9eCeHIQesCIXUIhH
- 9Zmg==
-X-Gm-Message-State: AOJu0YwHw4imWgFbZQio7lfuscJU7rqkKoqOKnWRWKjzAfMxQO4gr9Vr
- BvrYd8KVJjm1KmVmh8GnF1FRQwEUxeTJQ29YFWXFEoSscRVyT2UeXiNCgIaqvYxT9/d6WorDpea
- GGbccAwO+xMnutd6IGiQgatubH0gmNwg=
-X-Received: by 2002:a0d:e2c7:0:b0:5d7:1a33:5ae3 with SMTP id
- l190-20020a0de2c7000000b005d71a335ae3mr2807257ywe.48.1702280859007; 
- Sun, 10 Dec 2023 23:47:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFZOTuYpsHaYOo4dL1CHvE5nCdmiWJDwWUprkY/Z4xHBLfrtBW1bk/HpNAey+Zx1CfAEY8aWQXu5TncA2jy95c=
-X-Received: by 2002:a0d:e2c7:0:b0:5d7:1a33:5ae3 with SMTP id
- l190-20020a0de2c7000000b005d71a335ae3mr2807254ywe.48.1702280858766; Sun, 10
- Dec 2023 23:47:38 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702283382; x=1702888182;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZM2woCU5Tf8BVOG7uyTgtypDScEVAEv8Xj9MvdxCWb4=;
+ b=C4SGsIH5YA05oWxvQhIr6rw2sdWLL4PO+AkiDUQdGGHHTwOSNS0YPBRwz0GuY9oSas
+ FzoBpB0o2i9hk9rrS6IcIxIF6y3PxPmhkWCF1EMSh1FPq1dfZOi4O2VVYx38oD9fGjJb
+ q2JYJGTIHkfkPHWwStJT3oKwpXFC8+8orTQKg6iadO3B03YjVdSaJkk4xGgLSPQL0aso
+ 6OJWT3hvfm11PwhtfcPrY+a0tG2sFfFzQNKyQAM/trCa4qE2V1f7TX+Olj3JKW5O12Zd
+ G//yJv47YwAhyVJ91YaMpk2Q26mBudMHMfglvg+2HA/mIX5N8xjWDquaCBnzhYZMVVUe
+ tvDw==
+X-Gm-Message-State: AOJu0Yz7in24jNNJEh5MGvsiw4FbCZQHQcjKDjQQI76XsGRuZrnEq3op
+ duqkhDABlFOtYmIzbZrjtaFB1g==
+X-Google-Smtp-Source: AGHT+IGy6Y2wHNOQFZsEo6nuYFTELJ1OcnWXY0tvhOaQIaqjPQ3l1WyloIDuKEouGJAKYkonwQntMQ==
+X-Received: by 2002:a05:6a00:cc1:b0:6ce:49a7:1695 with SMTP id
+ b1-20020a056a000cc100b006ce49a71695mr4893309pfv.32.1702283381942; 
+ Mon, 11 Dec 2023 00:29:41 -0800 (PST)
+Received: from [157.82.205.15] ([157.82.205.15])
+ by smtp.gmail.com with ESMTPSA id
+ k13-20020aa792cd000000b006ce273562fasm5712652pfa.40.2023.12.11.00.29.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Dec 2023 00:29:41 -0800 (PST)
+Message-ID: <0a63d0d9-23f7-4303-81e7-00d85fea371b@daynix.com>
+Date: Mon, 11 Dec 2023 17:29:37 +0900
 MIME-Version: 1.0
-References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
- <1701970793-6865-2-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1701970793-6865-2-git-send-email-si-wei.liu@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 11 Dec 2023 08:47:02 +0100
-Message-ID: <CAJaqyWdNygZLus4cPPu+9Pd2cNMC3-fS=yMbV8B-f3XYkCdUbw@mail.gmail.com>
-Subject: Re: [PATCH 01/40] linux-headers: add vhost_types.h and vhost.h
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: jasowang@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
- leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
- jonah.palmer@oracle.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 00/12] virtio-net: add support for SR-IOV emulation
+To: Jason Wang <jasowang@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Yui Washizu <yui.washidu@gmail.com>
+References: <20231210-sriov-v2-0-b959e8a6dfaf@daynix.com>
+ <CACGkMEuYa7CUUp6F4D91P0mg=2GadhRESCx2j63P7Fkm42q++w@mail.gmail.com>
+ <dc5bb0f8-3554-40f2-b683-3b5e58377ed3@daynix.com>
+ <CACGkMEtrELfC4iqHv5e9oDD0OzwwiuyEDJWq-O5ocH02YMx9Wg@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CACGkMEtrELfC4iqHv5e9oDD0OzwwiuyEDJWq-O5ocH02YMx9Wg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::434;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,64 +105,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 7, 2023 at 7:50=E2=80=AFPM Si-Wei Liu <si-wei.liu@oracle.com> w=
-rote:
->
-> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+On 2023/12/11 16:26, Jason Wang wrote:
+> On Mon, Dec 11, 2023 at 1:30 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> On 2023/12/11 11:52, Jason Wang wrote:
+>>> On Sun, Dec 10, 2023 at 12:06 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>>>
+>>>> Introduction
+>>>> ------------
+>>>>
+>>>> This series is based on the RFC series submitted by Yui Washizu[1].
+>>>> See also [2] for the context.
+>>>>
+>>>> This series enables SR-IOV emulation for virtio-net. It is useful
+>>>> to test SR-IOV support on the guest, or to expose several vDPA devices
+>>>> in a VM. vDPA devices can also provide L2 switching feature for
+>>>> offloading though it is out of scope to allow the guest to configure
+>>>> such a feature.
+>>>>
+>>>> The PF side code resides in virtio-pci. The VF side code resides in
+>>>> the PCI common infrastructure, but it is restricted to work only for
+>>>> virtio-net-pci because of lack of validation.
+>>>>
+>>>> User Interface
+>>>> --------------
+>>>>
+>>>> A user can configure a SR-IOV capable virtio-net device by adding
+>>>> virtio-net-pci functions to a bus. Below is a command line example:
+>>>>     -netdev user,id=n -netdev user,id=o
+>>>>     -netdev user,id=p -netdev user,id=q
+>>>>     -device pcie-root-port,id=b
+>>>>     -device virtio-net-pci,bus=b,addr=0x0.0x3,netdev=q,sriov-pf=f
+>>>>     -device virtio-net-pci,bus=b,addr=0x0.0x2,netdev=p,sriov-pf=f
+>>>>     -device virtio-net-pci,bus=b,addr=0x0.0x1,netdev=o,sriov-pf=f
+>>>>     -device virtio-net-pci,bus=b,addr=0x0.0x0,netdev=n,id=f
+>>>>
+>>>> The VFs specify the paired PF with "sriov-pf" property. The PF must be
+>>>> added after all VFs. It is user's responsibility to ensure that VFs have
+>>>> function numbers larger than one of the PF, and the function numbers
+>>>> have a consistent stride.
+>>>
+>>> This seems not user friendly. Any reason we can't just allow user to
+>>> specify the stride here?
+>>
+>> It should be possible to assign addr automatically without requiring
+>> user to specify the stride. I'll try that in the next version.
+>>
+>>>
+>>> Btw, I vaguely remember qemu allows the params to be accepted as a
+>>> list. If this is true, we can accept a list of netdev here?
+>>
+>> Yes, rocker does that. But the problem is not just about getting
+>> parameters needed for VFs, which I forgot to mention in the cover letter
+>> and will explain below.
+>>
+>>>
+>>>>
+>>>> Keeping VF instances
+>>>> --------------------
+>>>>
+>>>> A problem with SR-IOV emulation is that it needs to hotplug the VFs as
+>>>> the guest requests. Previously, this behavior was implemented by
+>>>> realizing and unrealizing VFs at runtime. However, this strategy does
+>>>> not work well for the proposed virtio-net emulation; in this proposal,
+>>>> device options passed in the command line must be maintained as VFs
+>>>> are hotplugged, but they are consumed when the machine starts and not
+>>>> available after that, which makes realizing VFs at runtime impossible.
+>>>
+>>> Could we store the device options in the PF?
+>>
+>> I wrote it's to store the device options, but the problem is actually
+>> more about realizing VFs at runtime instead of at the initialization time.
+>>
+>> Realizing VFs at runtime have two major problems. One is that it delays
+>> the validations of options; invalid options will be noticed when the
+>> guest requests to realize VFs.
+> 
+> If PCI spec allows the failure when creating VF, then it should not be
+> a problem.
 
-This should be updated from scripts/update-linux-headers.sh.
+I doubt the spec cares such a failure at all. VF enablement should 
+always work for a real hardware. It's neither user-friendly to tell 
+configuration errors at runtime.
 
-> ---
->  include/standard-headers/linux/vhost_types.h | 13 +++++++++++++
->  linux-headers/linux/vhost.h                  |  9 +++++++++
->  2 files changed, 22 insertions(+)
->
-> diff --git a/include/standard-headers/linux/vhost_types.h b/include/stand=
-ard-headers/linux/vhost_types.h
-> index 5ad07e1..c39199b 100644
-> --- a/include/standard-headers/linux/vhost_types.h
-> +++ b/include/standard-headers/linux/vhost_types.h
-> @@ -185,5 +185,18 @@ struct vhost_vdpa_iova_range {
->   * DRIVER_OK
->   */
->  #define VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK  0x6
-> +/* Device can be resumed */
-> +#define VHOST_BACKEND_F_RESUME  0x5
-> +/* Device supports the driver enabling virtqueues both before and after
-> + * DRIVER_OK
-> + */
-> +#define VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK  0x6
-> +/* Device may expose the virtqueue's descriptor area, driver area and
-> + * device area to a different group for ASID binding than where its
-> + * buffers may reside. Requires VHOST_BACKEND_F_IOTLB_ASID.
-> + */
-> +#define VHOST_BACKEND_F_DESC_ASID    0x7
-> +/* IOTLB don't flush memory mapping across device reset */
-> +#define VHOST_BACKEND_F_IOTLB_PERSIST  0x8
->
->  #endif
-> diff --git a/linux-headers/linux/vhost.h b/linux-headers/linux/vhost.h
-> index f5c48b6..c61c687 100644
-> --- a/linux-headers/linux/vhost.h
-> +++ b/linux-headers/linux/vhost.h
-> @@ -219,4 +219,13 @@
->   */
->  #define VHOST_VDPA_RESUME              _IO(VHOST_VIRTIO, 0x7E)
->
-> +/* Get the dedicated group for the descriptor table of a virtqueue:
-> + * read index, write group in num.
-> + * The virtqueue index is stored in the index field of vhost_vring_state=
-.
-> + * The group id for the descriptor table of this specific virtqueue
-> + * is returned via num field of vhost_vring_state.
-> + */
-> +#define VHOST_VDPA_GET_VRING_DESC_GROUP        _IOWR(VHOST_VIRTIO, 0x7F,=
-       \
-> +                                             struct vhost_vring_state)
-> +
->  #endif
-> --
-> 1.8.3.1
->
+> 
+>> netdevs also warn that they are not used
+>> at initialization time, not knowing that they will be used by VFs later.
+> 
+> We could invent things to calm down this false positive.
+> 
+>> References to other QEMU objects in the option may also die before VFs
+>> are realized.
+> 
+> Is there any other thing than netdev we need to consider?
 
+You will also want to set a distinct mac for each VF. Other properties 
+does not matter much in my opinion.
+
+> 
+>>
+>> The other problem is that QEMU cannot interact with the unrealized VFs.
+>> For example, if you type "device_add virtio-net-pci,id=vf,sriov-pf=pf"
+>> in HMP, you will expect "device_del vf" works, but it's hard to
+>> implement such behaviors with unrealized VFs.
+> 
+> I think hotplug can only be done at PF level if we do that.
+
+Assuming you mean to let netdev and mac accept arrays, yes.
+
+> 
+>>
+>> I was first going to compromise and allow such quirky behaviors, but I
+>> realized such a compromise is unnecessary if we reuse the PCI power down
+>> logic so I wrote v2.
+> 
+> Haven't checked the code, but anything related to the PM here?
+
+You mean power management? We don't have to care about PCI power down 
+for VFs because powering down a SR-IOV PCI device will reset it and thus 
+disable its VFs.
+
+Regards,
+Akihiko Odaki
 
