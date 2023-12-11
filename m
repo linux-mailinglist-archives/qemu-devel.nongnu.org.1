@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831D580D4A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:53:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A6C80D4B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Dec 2023 18:54:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCkS9-0003C9-QO; Mon, 11 Dec 2023 12:52:25 -0500
+	id 1rCkSG-0003FE-RW; Mon, 11 Dec 2023 12:52:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3VEx3ZQwKCvsqdelkhvwhidqjrrjoh.frpthpx-ghyhoqrqjqx.ruj@flex--nabihestefan.bounces.google.com>)
- id 1rCkS7-0003At-SU
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:52:23 -0500
-Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
+ <3Vkx3ZQwKCv0sfgnmjxyjkfslttlqj.htrvjrz-ij0jqstslsz.twl@flex--nabihestefan.bounces.google.com>)
+ id 1rCkSE-0003Eb-Kz
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:52:30 -0500
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3VEx3ZQwKCvsqdelkhvwhidqjrrjoh.frpthpx-ghyhoqrqjqx.ruj@flex--nabihestefan.bounces.google.com>)
- id 1rCkS6-0000Ww-Ba
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:52:23 -0500
-Received: by mail-yb1-xb49.google.com with SMTP id
- 3f1490d57ef6-db53c05f802so4684382276.0
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:52:21 -0800 (PST)
+ <3Vkx3ZQwKCv0sfgnmjxyjkfslttlqj.htrvjrz-ij0jqstslsz.twl@flex--nabihestefan.bounces.google.com>)
+ id 1rCkSA-0000Xx-O8
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 12:52:29 -0500
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-5d1b2153ba1so41510617b3.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 09:52:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1702317141; x=1702921941; darn=nongnu.org;
+ d=google.com; s=20230601; t=1702317145; x=1702921945; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=gV/TlsuRpJmOMn/Z8XrWKUKCWp3WXIvgILxZ0hGnxKY=;
- b=DQughC9xgUU8yomAYIkB308ISojCkSsp51sWhzsz99X3YxBjddqtcC5pUaOXeb0VPy
- CPuKshQim1q5F8609//T28clTFqnSjevnX1ojMAJ4v7rDT1xc2h3MD6lp+9MGklPXVob
- xcAltPDHvL0Dk55SxWJxoR5ptC8Imgrdpj0QeI2HugXfrd2J9RB7vBt0BGMydvni3+w3
- eB2H52R6ApATkU3xqArljQ5UY4ZZcvyjL4fn2eOyzxJTBxJZaeMcpo5E+kNULK5bb01z
- gsgYmEQqi2h/FwjrGYCJoH7GFYZx4uJ9mbrcypxzrAc4ue0bOFoltk/pqQqqSu9r1BwN
- okaA==
+ bh=gqxsBDqoz9XDs17BoA3JvzrDX8A2CkxcCB14NDOaKvA=;
+ b=U7pXkaBmi4+eMiml7tDbZtGfQj6ikpVMddd3EmUrS7827YYx78QxtMOPziJYxjBHn3
+ P1jRlBDH27/gw9i4tIsWCwjJGx8hg89C4MctcseLQzo43AGfmGmIl0xesOcs4i+hxvsG
+ Eedyeds4GQlplfKHcvW+R2bMLLg0YogbyYnIevJFgFVEveEq7wczsIZg5CTENHm8DQ1d
+ TA5znP5Tuut8E0NPU3PTxncJwXG1pL3PaNGhlo27SjX75IxYoHjcOsovVD+Lrr6+r3gE
+ tqs2iwY/Hq2qhVIoIk3w7H6D0UgSgZs2qx+IjF4NGgqkUreuqaejk/B5QB022R9lolkG
+ BGPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702317141; x=1702921941;
+ d=1e100.net; s=20230601; t=1702317145; x=1702921945;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gV/TlsuRpJmOMn/Z8XrWKUKCWp3WXIvgILxZ0hGnxKY=;
- b=ctz3jwAZjJ3w0ojUBSJWWFijtVN5y7iUoEHg1vpH8UzWApjDEXkkpcCRJMJUVFBgQW
- Z/+L3LQnIHkAzIGqcJQaHcQkbuHFRelnd5MnoExq6Zb4IChMh1mjFIL+WXQqYmBfHzVu
- 3nGJigTNR6HaoNR/nG7QO70cugn5+uA+X6pXBfTJFlkVSY4o9JWA6DyfQ7jKhaC6vCfw
- fsIZXeQfBzXvlU+rqKgQnvkGWqqmSLU+8XApSVnItQyuqOXTeVvSDsAw68IbFw8bBolP
- WDFrAMM4CDacUtlA7dc+PfxH0dYB/yRB/1AlBJ/RP9laFp26dYlVyr/rvb1Phqfe2GKK
- QQAg==
-X-Gm-Message-State: AOJu0YxjHSq8Xy6N8Oy4uuo5k714sFceWTOieWkcuCXTyydvfiaJXsQB
- Lz9t6IraLh4O+TM5Cyi+JUO1Uwr5VsQ/ffzVni4=
-X-Google-Smtp-Source: AGHT+IEozli0Q0A9b4ZRGWBaK3IqRPoe5UugGF5ppERKdGuxwPgU+6klgqa22uSvLlB4oGYZ84hbI2qwKDN8DZh6hs4=
+ bh=gqxsBDqoz9XDs17BoA3JvzrDX8A2CkxcCB14NDOaKvA=;
+ b=Y7rTAZk7vXMSACXEHNACZVB2+clO9/jO87EB9i67KpzeqLmhjHjaPWoUwcXC1SJXHq
+ urSXkASxTBnDRfAnmOChl426v+pDSexGRm7R2Eh6eVhjSmStjE7gHne5JaUzgmHo5+Mw
+ Am4wBkeg0gHCUhU/ry8qK/oxkuCtQmvH9R9jR34C58EKUDKcQizh2EMalZHlSVZ4WBIm
+ RxNISRGdmyiReYSWr9awnvvZyWPstez0ZU1Y/4JEKGLYiaWbV3/oEpnTOB4XPN0iHcAQ
+ r/9Rldwm3pfizO8DKwYWjIGxTOWKuTkyP9uoNBpiWoSyfismi0NW0LS9wKc2bjz+X69u
+ Tk9Q==
+X-Gm-Message-State: AOJu0Yx7mr+tx9iw6phLkqaTxa/CLfjDazbfoMOVPKPVMXZqfIFM0tu+
+ wYKv+Eq5e/eqCP6sDsyBxTrrHKoqkihBJLmluJA=
+X-Google-Smtp-Source: AGHT+IGqRWN1T7ah2fed7gxUfiQ5acbEsFcjo5yT5yFB9M9eiGhapYC4Aa4nUaCG6dJuTNcHj7UzkTGnNEhd7HVLCNM=
 X-Received: from nabihestefan.c.googlers.com
  ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
- (user=nabihestefan job=sendgmr) by 2002:a25:ae11:0:b0:db5:38c8:2b19 with SMTP
- id a17-20020a25ae11000000b00db538c82b19mr66424ybj.5.1702317140923; Mon, 11
- Dec 2023 09:52:20 -0800 (PST)
-Date: Mon, 11 Dec 2023 17:52:05 +0000
+ (user=nabihestefan job=sendgmr) by 2002:a05:690c:1e:b0:5d7:545e:3bd0 with
+ SMTP id bc30-20020a05690c001e00b005d7545e3bd0mr52561ywb.4.1702317142448; Mon,
+ 11 Dec 2023 09:52:22 -0800 (PST)
+Date: Mon, 11 Dec 2023 17:52:06 +0000
 In-Reply-To: <20231211175215.3216667-1-nabihestefan@google.com>
 Mime-Version: 1.0
 References: <20231211175215.3216667-1-nabihestefan@google.com>
 X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231211175215.3216667-3-nabihestefan@google.com>
-Subject: [PATCH v7 02/11] hw/arm: Add PCI mailbox module to Nuvoton SoC
+Message-ID: <20231211175215.3216667-4-nabihestefan@google.com>
+Subject: [PATCH v7 03/11] hw/misc: Add qtest for NPCM7xx PCI Mailbox
 From: Nabih Estefan <nabihestefan@google.com>
 To: peter.maydell@linaro.org
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
@@ -67,9 +67,9 @@ Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com,
  nabihestefan@google.com, kwliu@nuvoton.com, tomer.maimon@nuvoton.com, 
  Hila.Miranda-Kuzi@nuvoton.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
- envelope-from=3VEx3ZQwKCvsqdelkhvwhidqjrrjoh.frpthpx-ghyhoqrqjqx.ruj@flex--nabihestefan.bounces.google.com;
- helo=mail-yb1-xb49.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=3Vkx3ZQwKCv0sfgnmjxyjkfslttlqj.htrvjrz-ij0jqstslsz.twl@flex--nabihestefan.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -95,64 +95,276 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hao Wu <wuhaotsh@google.com>
 
-This patch wires the PCI mailbox module to Nuvoton SoC.
+This patches adds a qtest for NPCM7XX PCI Mailbox module.
+It sends read and write requests to the module, and verifies that
+the module contains the correct data after the requests.
 
-Change-Id: I64ab900bc8bd7c379a11d86f2b8dcfccb49e66ab
+Change-Id: I3948da277fc26352068420a26d8cc7cb2674cf40
 Signed-off-by: Hao Wu <wuhaotsh@google.com>
 Signed-off-by: Nabih Estefan <nabihestefan@google.com>
 Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
 ---
- docs/system/arm/nuvoton.rst | 2 ++
- hw/arm/npcm7xx.c            | 3 ++-
- include/hw/arm/npcm7xx.h    | 1 +
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ tests/qtest/meson.build             |   1 +
+ tests/qtest/npcm7xx_pci_mbox-test.c | 238 ++++++++++++++++++++++++++++
+ 2 files changed, 239 insertions(+)
+ create mode 100644 tests/qtest/npcm7xx_pci_mbox-test.c
 
-diff --git a/docs/system/arm/nuvoton.rst b/docs/system/arm/nuvoton.rst
-index 0424cae4b0..e611099545 100644
---- a/docs/system/arm/nuvoton.rst
-+++ b/docs/system/arm/nuvoton.rst
-@@ -50,6 +50,8 @@ Supported devices
-  * Ethernet controller (EMC)
-  * Tachometer
-  * Peripheral SPI controller (PSPI)
-+ * BIOS POST code FIFO
-+ * PCI Mailbox
- 
- Missing devices
- ---------------
-diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
-index c69e936669..c9e87162cb 100644
---- a/hw/arm/npcm7xx.c
-+++ b/hw/arm/npcm7xx.c
-@@ -86,7 +86,6 @@ enum NPCM7xxInterrupt {
-     NPCM7XX_UART1_IRQ,
-     NPCM7XX_UART2_IRQ,
-     NPCM7XX_UART3_IRQ,
--    NPCM7XX_PECI_IRQ            = 6,
-     NPCM7XX_PCI_MBOX_IRQ        = 8,
-     NPCM7XX_KCS_HIB_IRQ         = 9,
-     NPCM7XX_GMAC1_IRQ           = 14,
-@@ -463,6 +462,8 @@ static void npcm7xx_init(Object *obj)
-         object_initialize_child(obj, "pspi[*]", &s->pspi[i], TYPE_NPCM_PSPI);
-     }
- 
-+    object_initialize_child(obj, "pci-mbox", &s->pci_mbox,
-+                            TYPE_NPCM7XX_PCI_MBOX);
-     object_initialize_child(obj, "mmc", &s->mmc, TYPE_NPCM7XX_SDHCI);
- }
- 
-diff --git a/include/hw/arm/npcm7xx.h b/include/hw/arm/npcm7xx.h
-index 273090ac60..cec3792a2e 100644
---- a/include/hw/arm/npcm7xx.h
-+++ b/include/hw/arm/npcm7xx.h
-@@ -105,6 +105,7 @@ struct NPCM7xxState {
-     OHCISysBusState     ohci;
-     NPCM7xxFIUState     fiu[2];
-     NPCM7xxEMCState     emc[2];
-+    NPCM7xxPCIMBoxState pci_mbox;
-     NPCM7xxSDHCIState   mmc;
-     NPCMPSPIState       pspi[2];
- };
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 47dabf91d0..2ac79925f9 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -183,6 +183,7 @@ qtests_sparc64 = \
+ qtests_npcm7xx = \
+   ['npcm7xx_adc-test',
+    'npcm7xx_gpio-test',
++   'npcm7xx_pci_mbox-test',
+    'npcm7xx_pwm-test',
+    'npcm7xx_rng-test',
+    'npcm7xx_sdhci-test',
+diff --git a/tests/qtest/npcm7xx_pci_mbox-test.c b/tests/qtest/npcm7xx_pci_mbox-test.c
+new file mode 100644
+index 0000000000..24eec18e3c
+--- /dev/null
++++ b/tests/qtest/npcm7xx_pci_mbox-test.c
+@@ -0,0 +1,238 @@
++/*
++ * QTests for Nuvoton NPCM7xx PCI Mailbox Modules.
++ *
++ * Copyright 2021 Google LLC
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
++ * for more details.
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/bitops.h"
++#include "qapi/qmp/qdict.h"
++#include "qapi/qmp/qnum.h"
++#include "libqtest-single.h"
++
++#define PCI_MBOX_BA         0xf0848000
++#define PCI_MBOX_IRQ        8
++
++/* register offset */
++#define PCI_MBOX_STAT       0x00
++#define PCI_MBOX_CTL        0x04
++#define PCI_MBOX_CMD        0x08
++
++#define CODE_OK             0x00
++#define CODE_INVALID_OP     0xa0
++#define CODE_INVALID_SIZE   0xa1
++#define CODE_ERROR          0xff
++
++#define OP_READ             0x01
++#define OP_WRITE            0x02
++#define OP_INVALID          0x41
++
++
++static int sock;
++static int fd;
++
++/*
++ * Create a local TCP socket with any port, then save off the port we got.
++ */
++static in_port_t open_socket(void)
++{
++    struct sockaddr_in myaddr;
++    socklen_t addrlen;
++
++    myaddr.sin_family = AF_INET;
++    myaddr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
++    myaddr.sin_port = 0;
++    sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
++    g_assert(sock != -1);
++    g_assert(bind(sock, (struct sockaddr *) &myaddr, sizeof(myaddr)) != -1);
++    addrlen = sizeof(myaddr);
++    g_assert(getsockname(sock, (struct sockaddr *) &myaddr , &addrlen) != -1);
++    g_assert(listen(sock, 1) != -1);
++    return ntohs(myaddr.sin_port);
++}
++
++static void setup_fd(void)
++{
++    fd_set readfds;
++
++    FD_ZERO(&readfds);
++    FD_SET(sock, &readfds);
++    g_assert(select(sock + 1, &readfds, NULL, NULL, NULL) == 1);
++
++    fd = accept(sock, NULL, 0);
++    g_assert(fd >= 0);
++}
++
++static uint8_t read_response(uint8_t *buf, size_t len)
++{
++    uint8_t code;
++    ssize_t ret = read(fd, &code, 1);
++
++    if (ret == -1) {
++        return CODE_ERROR;
++    }
++    if (code != CODE_OK) {
++        return code;
++    }
++    g_test_message("response code: %x", code);
++    if (len > 0) {
++        ret = read(fd, buf, len);
++        if (ret < len) {
++            return CODE_ERROR;
++        }
++    }
++    return CODE_OK;
++}
++
++static void receive_data(uint64_t offset, uint8_t *buf, size_t len)
++{
++    uint8_t op = OP_READ;
++    uint8_t code;
++    ssize_t rv;
++
++    while (len > 0) {
++        uint8_t size;
++
++        if (len >= 8) {
++            size = 8;
++        } else if (len >= 4) {
++            size = 4;
++        } else if (len >= 2) {
++            size = 2;
++        } else {
++            size = 1;
++        }
++
++        g_test_message("receiving %u bytes", size);
++        /* Write op */
++        rv = write(fd, &op, 1);
++        g_assert_cmpint(rv, ==, 1);
++        /* Write offset */
++        rv = write(fd, (uint8_t *)&offset, sizeof(uint64_t));
++        g_assert_cmpint(rv, ==, sizeof(uint64_t));
++        /* Write size */
++        g_assert_cmpint(write(fd, &size, 1), ==, 1);
++
++        /* Read data and Expect response */
++        code = read_response(buf, size);
++        g_assert_cmphex(code, ==, CODE_OK);
++
++        buf += size;
++        offset += size;
++        len -= size;
++    }
++}
++
++static void send_data(uint64_t offset, const uint8_t *buf, size_t len)
++{
++    uint8_t op = OP_WRITE;
++    uint8_t code;
++    ssize_t rv;
++
++    while (len > 0) {
++        uint8_t size;
++
++        if (len >= 8) {
++            size = 8;
++        } else if (len >= 4) {
++            size = 4;
++        } else if (len >= 2) {
++            size = 2;
++        } else {
++            size = 1;
++        }
++
++        g_test_message("sending %u bytes", size);
++        /* Write op */
++        rv = write(fd, &op, 1);
++        g_assert_cmpint(rv, ==, 1);
++        /* Write offset */
++        rv = write(fd, (uint8_t *)&offset, sizeof(uint64_t));
++        g_assert_cmpint(rv, ==, sizeof(uint64_t));
++        /* Write size */
++        g_assert_cmpint(write(fd, &size, 1), ==, 1);
++        /* Write data */
++        g_assert_cmpint(write(fd, buf, size), ==, size);
++
++        /* Expect response */
++        code = read_response(NULL, 0);
++        g_assert_cmphex(code, ==, CODE_OK);
++
++        buf += size;
++        offset += size;
++        len -= size;
++    }
++}
++
++static void test_invalid_op(void)
++{
++    uint8_t op = OP_INVALID;
++    uint8_t code;
++    uint8_t buf[1];
++
++    g_assert_cmpint(write(fd, &op, 1), ==, 1);
++    code = read_response(buf, 1);
++    g_assert_cmphex(code, ==, CODE_INVALID_OP);
++}
++
++/* Send data via chardev and read them in guest. */
++static void test_guest_read(void)
++{
++    const char *data = "Hello World!";
++    uint64_t offset = 0xa0;
++    char buf[100];
++    size_t len = strlen(data);
++
++    send_data(offset, (uint8_t *)data, len);
++    memread(PCI_MBOX_BA + offset, buf, len);
++    g_assert_cmpint(strncmp(data, buf, len), ==, 0);
++}
++
++/* Write data in guest and read out via chardev. */
++static void test_guest_write(void)
++{
++    const char *data = "Hello World!";
++    uint64_t offset = 0xa0;
++    char buf[100];
++    size_t len = strlen(data);
++
++    memwrite(PCI_MBOX_BA + offset, data, len);
++    receive_data(offset, (uint8_t *)buf, len);
++    g_assert_cmpint(strncmp(data, buf, len), ==, 0);
++}
++
++int main(int argc, char **argv)
++{
++    int ret;
++    int port;
++
++    g_test_init(&argc, &argv, NULL);
++    port = open_socket();
++    g_test_message("port=%d", port);
++    global_qtest = qtest_initf("-machine npcm750-evb "
++        "-chardev socket,id=npcm7xx-pcimbox-chr,host=localhost,"
++        "port=%d,reconnect=10 "
++        "-global driver=npcm7xx-pci-mbox,property=chardev,"
++        "value=npcm7xx-pcimbox-chr",
++        port);
++    setup_fd();
++    qtest_irq_intercept_in(global_qtest, "/machine/soc/a9mpcore/gic");
++
++    qtest_add_func("/npcm7xx_pci_mbox/invalid_op", test_invalid_op);
++    qtest_add_func("/npcm7xx_pci_mbox/read", test_guest_read);
++    qtest_add_func("/npcm7xx_pci_mbox/write", test_guest_write);
++    ret = g_test_run();
++    qtest_quit(global_qtest);
++
++    return ret;
++}
 -- 
 2.43.0.472.g3155946c3a-goog
 
