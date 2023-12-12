@@ -2,94 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F74A80F2D5
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8A080F2B1
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:32:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5hk-0004Ld-2g; Tue, 12 Dec 2023 11:33:56 -0500
+	id 1rD5eO-0000vv-GI; Tue, 12 Dec 2023 11:30:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5hW-0003vr-Mf
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:42 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rD5e8-0000um-OF
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:30:13 -0500
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5hU-00084G-M5
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:42 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40c31f18274so54060365e9.0
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:33:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rD5e1-00077i-5x
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:30:08 -0500
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-5906d0c38c3so3398776eaf.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:30:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398817; x=1703003617; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1702398603; x=1703003403; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=StICgPk89ZsN/BIJTPTbcQmjR7zrsjp+vJLVxNH++7g=;
- b=wW78ArTjZHWQUFImP32sph0nt4Ov1g0D3Vdo+j8086myT0z5mFKRgfQ8Ryi/smS4Tw
- wQy2ezVYacx5Xi52Z6+w2xMJ3aeD4C5KxtpO0k+zJVvt9ydaJvu1m78DrhZQGMfavBmi
- 6/aDKRRZ8D3hpOC0xoI2orghpoiOTf1stOGTv2A1kLWDbARf56ELZPU7+kNNmBuVaFgZ
- x20Pf4AL7Rud8k5SKHxKvYByy2VSUqe7ei4a3PeHVg/+cv0L4vWMVw8onWHqH3wYpvRC
- lbVGFeAoK2LiIh2YhbM/PWqkkdGLjjhjofF6r0fogV7+d7n8zMI7htA35ywv07PMbHnL
- 7hDw==
+ bh=at5EiOX0b+pH+NFntsGsmIwUlK3jTtTR5le1bopqG9U=;
+ b=fvfoNj7ZDeGXF6JALYaAwbpDrg+zwJvi+AI2lKCP9vp3LjnUBuKpCjNH44nbqo5RLy
+ oKpOFRxUrTVVG/GmKDn0FNKdSXRdlDqhmA+XDx42ABeRNNbEoREVJYUCRSLB6/WbVRfC
+ ADi+j/rgTpgJ4/+8a7mPx3lRjkFx+I7w05O59+i0IzEt+5YrwTBLrOkC4ur709YXlIuS
+ TKeZC2EkR0dn7lUmkekD8Pz7KCABghdlrjM+c87U9sJFGVq7/CeUVU2+7ap5tKyD0ANa
+ etoHdR6VtOchOiT3C82uoudKbc+BVZyDrJxTscEmmFpCwcnltfzI72SSe2BYAw2PHIhe
+ HLAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398817; x=1703003617;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1702398603; x=1703003403;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=StICgPk89ZsN/BIJTPTbcQmjR7zrsjp+vJLVxNH++7g=;
- b=xJtc5cQUqkdh/8TklL6aS4ym+jMGndIxg+mPiIGjhs9ncidU8Jd6/WrBz3sSAYsnBA
- gGdohfhp1greYLeTaR++PkGFpC929UnLk5UvsbASjl+Cm2pf1bLx3hk5IqRCLRYfuCWe
- fP4jJanZhlnGz8Zppt157DyvcM0L1v++oOj0ZAwUnJzxS5omUS8gembRurg1zgat6id9
- AHsPTXu/8DKF7QTRfAGehw+5fZyTNOwuj9XbXYJszCqKR6ydux/qmHzdQBqlCsgjNITG
- Wl8drq0ZOd+rY4JLzA3XikVddfMacQ0KjMFfQQBPoEd2SeY1APhlsruGj2UCBuzpNFhR
- Ccuw==
-X-Gm-Message-State: AOJu0Yx7Id8yYSFPvX72zqXWS3dE5VALn5YcGbMZ08XpcIesv9uZpxbD
- ua7VgmZ2u9vK/Irdpf+QmMEJI9BJ5lFrumxHoDo=
-X-Google-Smtp-Source: AGHT+IGNeT48Kv5OY7QRvbn24oJVr916PbbHQ2SV3jm9NH3Q/RLi/FYkalHEG/RHROS8tb+CgG07PQ==
-X-Received: by 2002:a05:600c:2146:b0:40c:2b26:970f with SMTP id
- v6-20020a05600c214600b0040c2b26970fmr3255515wml.198.1702398817653; 
- Tue, 12 Dec 2023 08:33:37 -0800 (PST)
-Received: from m1x-phil.lan ([176.176.175.193])
- by smtp.gmail.com with ESMTPSA id
- v13-20020a5d590d000000b003363469490asm1384996wrd.111.2023.12.12.08.33.35
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:33:37 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 33/33] hw/cpu/arm: Remove use of qemu_get_cpu() in A7/A15
- realize()
-Date: Tue, 12 Dec 2023 17:29:33 +0100
-Message-ID: <20231212162935.42910-34-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
-References: <20231212162935.42910-1-philmd@linaro.org>
+ bh=at5EiOX0b+pH+NFntsGsmIwUlK3jTtTR5le1bopqG9U=;
+ b=VKVSEs8tnf2y8dew7a6ihOcFsrtRSkQps6DBR9znDCryw3KSx/0PikpCS85poI4/5j
+ yP+6Y3/V9GAvWCq2ApXGkJF3BsvCGcx0nknMnLUUnb+PlrMuG3arzuwvB7tTZpP2bpeB
+ q9KaHiuJiRLImZjvCi7j+ibGsk01t86pKeXkknKSwnWEaPudieu9sGuXqLRop8HzYcF+
+ YcebIqbodyMo6pEZRlTu+lTVjmwMr76Hx7DuE2Iexg7fTM2I6G8uIjuR34A1Q3Pyb4/I
+ 2yKM0gM+POfxX/aKH6IGxPcXaPV2lzFqKWtBThf44dXvRbioiqp9s7RQNTsJrI95TR2g
+ N9cQ==
+X-Gm-Message-State: AOJu0YzufCmOzImWVniX0zOpEom/U7HrgZhMVOPislfYTjxyPKp++HUi
+ jM9Fq97KlGBbg7/dGZK6okUdhlZuKhU3NaZK4y8=
+X-Google-Smtp-Source: AGHT+IEu+dOeOt6iU/2HhXno+a9IveRq+bb92faD0+s1kUkqQhA2o1p/AaZw5Szi8AAHXzvr3SjjYymIvolv14ogzp0=
+X-Received: by 2002:a05:6820:820:b0:58d:7171:c27 with SMTP id
+ bg32-20020a056820082000b0058d71710c27mr7315512oob.8.1702398602542; Tue, 12
+ Dec 2023 08:30:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+References: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
+ <ZXLg_YCHM-P6drQV@redhat.com>
+ <alpine.DEB.2.22.394.2312081422490.1703076@ubuntu-linux-20-04-desktop>
+ <8be72952-88b6-4c74-b696-fecfa8313c96@perard> <87wmtj77sl.fsf@epam.com>
+ <CAJSP0QUytnP60HyWwG4AhjMZwCS6b+pJJm7AOWd8P8pu1SqJ=Q@mail.gmail.com>
+ <87plzb76je.fsf@epam.com>
+In-Reply-To: <87plzb76je.fsf@epam.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 12 Dec 2023 11:29:50 -0500
+Message-ID: <CAJSP0QWYH0eh8s9tFOCAf-wJ-iX=4xXgW0HspohtjqhjyMasmA@mail.gmail.com>
+Subject: Re: [PATCH] fix qemu build with xen-4.18.0
+To: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+Cc: Anthony PERARD <anthony.perard@citrix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Oleksandr Tyshchenko <Oleksandr_Tyshchenko@epam.com>,
+ Vikram Garhwal <vikram.garhwal@amd.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Michael Young <m.a.young@durham.ac.uk>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,31 +99,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previous commits (in particular "Create CPUs once in MPCore parent")
-allowed creating the MPCore private container vCPUs within the
-container. We don't need to call qemu_get_cpu(), which is unsafe in
-hegerogeneous context.
-Directly access the CortexMPPrivState::cpu array.
+On Tue, 12 Dec 2023 at 11:02, Volodymyr Babchuk
+<Volodymyr_Babchuk@epam.com> wrote:
+>
+>
+> Hi Stefan,
+>
+> Stefan Hajnoczi <stefanha@gmail.com> writes:
+>
+> > On Tue, 12 Dec 2023 at 10:36, Volodymyr Babchuk
+> > <Volodymyr_Babchuk@epam.com> wrote:
+> >>
+> >> Hi Anthony
+> >>
+> >> Anthony PERARD <anthony.perard@citrix.com> writes:
+> >>
+> >> > On Fri, Dec 08, 2023 at 02:49:27PM -0800, Stefano Stabellini wrote:
+> >> >> On Fri, 8 Dec 2023, Daniel P. Berrang=C3=A9 wrote:
+> >> >> > On Thu, Dec 07, 2023 at 11:12:48PM +0000, Michael Young wrote:
+> >> >> > > Builds of qemu-8.2.0rc2 with xen-4.18.0 are currently failing
+> >> >> > > with errors like
+> >> >> > > ../hw/arm/xen_arm.c:74:5: error: =E2=80=98GUEST_VIRTIO_MMIO_SPI=
+_LAST=E2=80=99 undeclared (first use in this function)
+> >> >> > >    74 |    (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_=
+FIRST)
+> >> >> > >       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> >> >> > >
+> >> >> > > as there is an incorrect comparision in include/hw/xen/xen_nati=
+ve.h
+> >> >> > > which means that settings like GUEST_VIRTIO_MMIO_SPI_LAST
+> >> >> > > aren't being defined for xen-4.18.0
+> >> >> >
+> >> >> > The conditions in arch-arm.h for xen 4.18 show:
+> >> >> >
+> >> >> > $ cppi arch-arm.h | grep -E '(#.*if)|MMIO'
+> >> >> > #ifndef __XEN_PUBLIC_ARCH_ARM_H__
+> >> >> > # if defined(__XEN__) || defined(__XEN_TOOLS__) || defined(__GNUC=
+__)
+> >> >> > # endif
+> >> >> > # ifndef __ASSEMBLY__
+> >> >> > #  if defined(__XEN__) || defined(__XEN_TOOLS__)
+> >> >> > #   if defined(__GNUC__) && !defined(__STRICT_ANSI__)
+> >> >> > #   endif
+> >> >> > #  endif /* __XEN__ || __XEN_TOOLS__ */
+> >> >> > # endif
+> >> >> > # if defined(__XEN__) || defined(__XEN_TOOLS__)
+> >> >> > #  define PSR_MODE_BIT  0x10U /* Set iff AArch32 */
+> >> >> > /* Virtio MMIO mappings */
+> >> >> > #  define GUEST_VIRTIO_MMIO_BASE   xen_mk_ullong(0x02000000)
+> >> >> > #  define GUEST_VIRTIO_MMIO_SIZE   xen_mk_ullong(0x00100000)
+> >> >> > #  define GUEST_VIRTIO_MMIO_SPI_FIRST   33
+> >> >> > #  define GUEST_VIRTIO_MMIO_SPI_LAST    43
+> >> >> > # endif
+> >> >> > # ifndef __ASSEMBLY__
+> >> >> > # endif
+> >> >> > #endif /*  __XEN_PUBLIC_ARCH_ARM_H__ */
+> >> >> >
+> >> >> > So the MMIO constants are available if __XEN__ or __XEN_TOOLS__
+> >> >> > are defined. This is no different to the condition that was
+> >> >> > present in Xen 4.17.
+> >> >> >
+> >> >> > What you didn't mention was that the Fedora build failure is
+> >> >> > seen on an x86_64 host, when building the aarch64 target QEMU,
+> >> >> > and I think this is the key issue.
+> >> >>
+> >> >> Hi Daniel, thanks for looking into it.
+> >> >>
+> >> >> - you are building on a x86_64 host
+> >> >> - the target is aarch64
+> >> >> - the target is the aarch64 Xen PVH machine (xen_arm.c)
+> >> >>
+> >> >> But is the resulting QEMU binary expected to be an x86 binary? Or a=
+re
+> >> >> you cross compiling ARM binaries on a x86 host?
+> >> >>
+> >> >> In other word, is the resulting QEMU binary expected to run on ARM =
+or
+> >> >> x86?
+> >> >>
+> >> >>
+> >> >> > Are we expecting to build Xen support for non-arch native QEMU
+> >> >> > system binaries or not ?
+> >> >>
+> >> >> The ARM xenpvh machine (xen_arm.c) is meant to work with Xen on ARM=
+, not
+> >> >> Xen on x86.  So this is only expected to work if you are
+> >> >> cross-compiling. But you can cross-compile both Xen and QEMU, and I=
+ am
+> >> >> pretty sure that Yocto is able to build Xen, Xen userspace tools, a=
+nd
+> >> >> QEMU for Xen/ARM on an x86 host today.
+> >> >>
+> >> >>
+> >> >> > The constants are defined in arch-arm.h, which is only included
+> >> >> > under:
+> >> >> >
+> >> >> >   #if defined(__i386__) || defined(__x86_64__)
+> >> >> >   #include "arch-x86/xen.h"
+> >> >> >   #elif defined(__arm__) || defined (__aarch64__)
+> >> >> >   #include "arch-arm.h"
+> >> >> >   #else
+> >> >> >   #error "Unsupported architecture"
+> >> >> >   #endif
+> >> >> >
+> >> >> >
+> >> >> > When we are building on an x86_64 host, we not going to get
+> >> >> > arch-arm.h included, even if we're trying to build the aarch64
+> >> >> > system emulator.
+> >> >> >
+> >> >> > I don't know how this is supposed to work ?
+> >> >>
+> >> >> It looks like a host vs. target architecture mismatch: the #if defi=
+ned
+> >> >> (__aarch64__) check should pass I think.
+> >> >
+> >> >
+> >> > Building qemu with something like:
+> >> >     ./configure --enable-xen --cpu=3Dx86_64
+> >> > used to work. Can we fix that? It still works with v8.1.0.
+> >> > At least, it works on x86, I never really try to build qemu for arm.
+> >> > Notice that there's no "--target-list" on the configure command line=
+.
+> >> > I don't know if --cpu is useful here.
+> >> >
+> >> > Looks like the first commit where the build doesn't work is
+> >> > 7899f6589b78 ("xen_arm: Add virtual PCIe host bridge support").
+> >>
+> >> I am currently trying to upstream this patch. It is in the QEMU mailin=
+g
+> >> list but it was never accepted. It is not reviewed in fact. I'll take =
+a
+> >> look at it, but I don't understand how did you get in the first place.
+> >
+> > Hi Volodymyr,
+> > Paolo Bonzini sent a pull request with similar code changes this
+> > morning and I have merged it into the qemu.git/staging branch:
+> > https://urldefense.com/v3/__https://gitlab.com/qemu-project/qemu/-/comm=
+it/eaae59af4035770975b0ce9364b587223a909501__;!!GF_29dbcQIUBPA!yFgSxAEgXPjc=
+kF8piSt0T77bbeggSgwC-6-xDuZmzq4a8U7HEP8XxGnxwIhgA9iyFVie-fdVgAVA5wVipnewbLN=
+p$
+> > [gitlab[.]com]
+> >
+> > If you spot something that is not correct, please reply here.
+> >
+>
+> No, it is all fine in that pull request. I was talking about patch
+> "xen_arm: Add virtual PCIe host bridge support" which is still on
+> review:
+> https://patchwork.kernel.org/project/qemu-devel/patch/20231202014108.2017=
+803-7-volodymyr_babchuk@epam.com/
+>
+> I was surprised when Anthony mentioned that this patch breaks the
+> build, because the patch is not included in QEMU tree.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/cpu/a15mpcore.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ah, I jumped straight to the last email and didn't realize :).
 
-diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
-index 5f28a97adb..8dccf15103 100644
---- a/hw/cpu/a15mpcore.c
-+++ b/hw/cpu/a15mpcore.c
-@@ -44,7 +44,7 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
-      * appropriate GIC PPI inputs
-      */
-     for (i = 0; i < c->num_cores; i++) {
--        DeviceState *cpudev = DEVICE(qemu_get_cpu(i));
-+        DeviceState *cpudev = DEVICE(c->cpu[i]);
-         int ppibase = c->gic_spi_num - 32 + i * 32;
-         int irq;
-         /* Mapping from the output timer irq lines from the CPU to the
--- 
-2.41.0
-
+Stefan
 
