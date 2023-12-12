@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7973180E0F5
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 02:45:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3191380E12D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 03:02:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCroE-0003BL-Gt; Mon, 11 Dec 2023 20:43:42 -0500
+	id 1rCs5K-00073Z-JG; Mon, 11 Dec 2023 21:01:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1rCroA-0003Aa-7e
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 20:43:38 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1rCro6-0001A2-8L
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 20:43:37 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-54cd2281ccbso6825444a12.2
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 17:43:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1702345411; x=1702950211;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dRQdoRkwF8Wc0UNsQmjr2ouiyzqoGdpctCPrsGE4eZk=;
- b=ymH03nq8nQtfRRLZY3AUXnOL0YUoXYwTY19dBBieFFrAcvh8Z2lmWZD1YRnrlL2X5V
- 6y6vz7G5+Uo52r+oukyEkQ6bWxye+niWPLHJWm3WXfYIdIZuaYX77pojDseaJ8iUpOiT
- kBdZSvyxWUjCDqE9yX6dpv7tyIQI/lY/Cg+dEZAEaD9fxZcGQ3J5u2MQvcAWOJR0gpfD
- +3ifUgaClG6vfxUJEcMlw8rCHvcHH54WJdItk3cHIwHRbBNgs0iMcfNcTRwKaT5rUGRL
- odsC7QOS3TSmLx+6NwtezaTMI2+TYk6QoxVi01nnbJI346KxQ/M7tOhJHtNUGc0DVw1w
- WJVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702345411; x=1702950211;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dRQdoRkwF8Wc0UNsQmjr2ouiyzqoGdpctCPrsGE4eZk=;
- b=gBN1pWnK05mnuC8MDjm5OxKakmtV+h9udOu/0tnjwPtS+J4NevdpOv4m6yqQdzgE05
- CdQFCItk/ZteLB9szCFCwAenXeCOBzHtZrRZGsGqjK3FXOAxOpobSjxMiyCfh9VsRCxX
- /BMOcDQd3fIu5kGORLLjgfoNqydYVcCtt3Efvzy8s+QBewe0mZuoY62wsRxYQ6m/bxnf
- fdt/rE/NKU3Eethi2pnxLjs6TqNsfJD03BbUmrYQb85IVBEdBgE7JtJs1hifWrmC59UK
- Y4H2T4YnOKPvy0DIj0oGnXnXxHgRMU6sWcSZ8rEQrOywBCxgs7LqXfTq0F832sbA0sFX
- bOSg==
-X-Gm-Message-State: AOJu0YxTP4anTM0kWLZm2sGg+o7RYLd+V2mSqQoc7jju5RqUdlqHJtGU
- EYsHKYFfbtO+s6USAmArKNzcQ9U54KBQLcZ48NlxzQ==
-X-Google-Smtp-Source: AGHT+IGuXXbUoHZg8oLKWEqXTnHqBDUXL39uyHqzo9JHsRd6q+l44dw+0yYTG7eiwNUkfKUlnJBvY5D2J/OSjYerYzc=
-X-Received: by 2002:a17:907:1c2a:b0:9fc:3aeb:d2b9 with SMTP id
- nc42-20020a1709071c2a00b009fc3aebd2b9mr3476873ejc.71.1702345411024; Mon, 11
- Dec 2023 17:43:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rCs5I-00073R-2M
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 21:01:20 -0500
+Received: from mgamail.intel.com ([198.175.65.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rCs5E-0007M5-GF
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 21:01:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1702346477; x=1733882477;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=U5yaGOik9SkNhLSj5iQvJeloGYyllB618wcvIpW9jEk=;
+ b=FwMLTeqCXwfl94t3N1RTDMW2q80Z+sUtnL+OnFsfkchvknkGQNYK00E2
+ JkBmupz0HV6DiwKy1Zm8haKl7lxGTpFRwpAl61VUIJAhOTa1pbPrbVlZW
+ P+Lrndq2q3m2K5EuDzdHHm/geXJ7Gxh0iUm86TYeYTgDTJV48LVDf3XwX
+ PKQsRRDDfBJCd2IN9O+NkOSVokYGQFSEwlFHezZYTD7Ezm9+WHucD8QoQ
+ 2zGI7la/OcsAPcZekvfj0mckS/FcAZtmyUi67EZyMG3fEEC5j+qOg91n3
+ BmyQojKPAbbkLvhYHfk6vBxCEnbnk31Sb+xwunHKgDOSSD9ZdblaWVre6 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="1816156"
+X-IronPort-AV: E=Sophos;i="6.04,269,1695711600"; 
+   d="scan'208";a="1816156"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2023 18:01:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,269,1695711600"; d="scan'208";a="21322569"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa001.jf.intel.com with ESMTP; 11 Dec 2023 18:01:03 -0800
+Date: Tue, 12 Dec 2023 10:13:25 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Juan Quintela <juan.quintela@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, afaerber@suse.de, ale@rev.ng,
+ anjo@rev.ng, bbauman@redhat.com, chao.p.peng@linux.intel.com,
+ cjia@nvidia.com, cw@f00f.org, eblake@redhat.com,
+ edgar.iglesias@gmail.com, elena.ufimtseva@oracle.com,
+ eric.auger@redhat.com, f4bug@amsat.org,
+ "felipe@nutanix.com" <felipe.franciosi@nutanix.com>,
+ "iggy@theiggy.com" <iggy@kws1.com>,
+ "imp@bsdimp.com" <wlosh@bsdimp.com>, jan.kiszka@web.de,
+ jgg@nvidia.com, jidong.xiao@gmail.com, jjherne@linux.vnet.ibm.com,
+ joao.m.martins@oracle.com, konrad.wilk@oracle.com,
+ mburton@qti.qualcomm.com, mdean@redhat.com, mimu@linux.vnet.ibm.com,
+ peter.maydell@linaro.org, qemu-devel@nongnu.org,
+ quintela@redhat.com, richard.henderson@linaro.org,
+ shameerali.kolothum.thodi@huawei.com, stefanha@gmail.com,
+ wei.w.wang@intel.com, z.huo@139.com, zwu.kernel@gmail.com,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: QEMU developers fortnightly conference call for agenda for
+ 2023-12-12
+Message-ID: <ZXfBxcGGqE0t2SpC@intel.com>
+References: <calendar-98548e19-3517-40fa-a2ae-1c384aa3f98f@google.com>
+ <ZXcOtAIMqLjOheIa@intel.com>
+ <e2462fb5-228a-443d-93ce-7069998128b0@linaro.org>
 MIME-Version: 1.0
-References: <20231211071204.30156-1-tomoyuki.hirose@igel.co.jp>
- <20231211071204.30156-3-tomoyuki.hirose@igel.co.jp>
- <CAFEAcA90fJgPGAjO0c4a=G+ge9bp1piVw40zt_rNHEoCTc_ngg@mail.gmail.com>
-In-Reply-To: <CAFEAcA90fJgPGAjO0c4a=G+ge9bp1piVw40zt_rNHEoCTc_ngg@mail.gmail.com>
-From: Tomoyuki Hirose <tomoyuki.hirose@igel.co.jp>
-Date: Tue, 12 Dec 2023 10:43:15 +0900
-Message-ID: <CAFS=Ec=fNB11TWWoJ847mF8v6=MkEefcMROwEyPQo9pceipNJg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] hw/usb/hcd-xhci.c: allow unaligned access to
- Capability Registers
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=tomoyuki.hirose@igel.co.jp; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e2462fb5-228a-443d-93ce-7069998128b0@linaro.org>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,20 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks for comment.
+Hi Philippe,
 
-On Mon, Dec 11, 2023 at 10:57=E2=80=AFPM Peter Maydell <peter.maydell@linar=
-o.org> wrote:
-> We should definitely look at fixing the unaligned access
-> stuff, but the linked bug report is not trying to do an
-> unaligned access -- it wants to do a 2-byte read from offset 2,
-> which is aligned. The capability registers in the xHCI spec
-> are also all at offsets and sizes that mean that a natural
-> read of them is not unaligned.
+On Mon, Dec 11, 2023 at 08:04:28PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Mon, 11 Dec 2023 20:04:28 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: Re: QEMU developers fortnightly conference call for agenda for
+>  2023-12-12
+> 
+> Hi Zhao,
+> 
 
-Shouldn't I link this bug report?
-Or is it not appropriate to allow unaligned access?
+[snip]
 
-thanks,
-Tomoyuki HIROSE
+> 
+> FYI I have your series tagged for review (for generic QOM /
+> machine [*]) but we need feedback from the x86 maintainers too,
+> and eventually from riscv/arm too, since they might end up
+> using your API.
+> 
+> [*] That said, I unlikely will have time the next 2 weeks.
+
+Thanks for your help!
+
+Best Regards,
+Zhao
+
+> 
+> Regards,
+> 
+> Phil.
+> 
+> > Thanks,
+> > Zhao
+> 
 
