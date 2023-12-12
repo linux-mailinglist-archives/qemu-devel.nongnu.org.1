@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345E080F331
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:36:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD6080F2D2
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:34:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5hK-0002Uh-Ic; Tue, 12 Dec 2023 11:33:30 -0500
+	id 1rD5hh-0003yc-8v; Tue, 12 Dec 2023 11:33:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5hI-0002MY-QW
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:28 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5hO-0003Sx-Vj
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:35 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5hG-00081R-At
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:28 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40c3ceded81so33411585e9.1
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:33:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5hN-00083C-2q
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:34 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40c2db2ee28so61951125e9.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:33:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398803; x=1703003603; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702398811; x=1703003611; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9op8cKrG0JyypF+RCA+q2X8QDxEkarjB/JQ0egU7oTo=;
- b=J57JOCFK0cch4fxeSps1aO/M06dC9nhPOyLiCO7wqAYyfP2B6Rs+pz1mZrYZPj4Z0n
- RrFAHRwMcroWs2S18vPVPHruaUZwTkesC3holntJR7Z0+xvTgRRsLDTajUkSRa9Bm6r5
- ibfEiS+AiZiZAmvkIJhfGvpsoXzq8FXxXPJAK7n5ZB5U+CO7dgXUWkxXHX2E5DCnLwpR
- UjHJ+KaYNLU5jr5K2+l1aahehRLm3cnFd1Dj6aV/4QP8UlrzMYPX97Ejt4taxXTt69o8
- e3mu41Ngcm3phqA7yMZIOhTy9tXlZ11bxII6etj+JZJx5GCU1P5w1l5T1+pJ2IF6sJwi
- TNiA==
+ bh=ejOqBltD1xTQKLI2FwnA20wzkl1UqkA3fAXzw/L3kFk=;
+ b=IaDBbg9eRRzuqcShJfVqlY2iA+2LAv5oaGtY3JT6qqMGCPhQmyhgO5us9FCvDkTUk5
+ yRqxl88LccdB/Z+bgGk1tNp/J9IUE74JJ31tMEe/crVQOosEbVg/k+zJ4TYDcwmDhWxZ
+ rUZ7cOodgJzDiosO1aHu7+5tja+nleu1+IzPfUi7RrhUYti88LpPqmGZzas6hgcyW7q8
+ Ob2LO5RPZnl7MKiMdadYMvwpxilsLmjt0LDHkcsmu7eVtMllHc9Y7tzWfwpDi1Bvw2Pj
+ dFD1775b4ePgl+VDDybV2TDWt+lBCc7jpWibphiczeWHsLu4qX7soZWNaGaIXdHOHyL+
+ WLeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398803; x=1703003603;
+ d=1e100.net; s=20230601; t=1702398811; x=1703003611;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9op8cKrG0JyypF+RCA+q2X8QDxEkarjB/JQ0egU7oTo=;
- b=fDUp9bt+3wQKWoKfanw4Ia+ZTAFFr0Igm2T26PQ5ZROB77Z/UOzVDMOrAOiZgUz57I
- PnsVNX0dBy32gpjw8e+eWBuPaTJRlZUL3uIWE4G24QPX1ngxLBEGhvujAHErJrE+5yr/
- r8vRQ8XD4y3no0LHYUjdmiy5dNa0rLucNsf5kwkJ+jfrnOR7iyfYWPCF4l7xhUtwY8gS
- AgghzB3HshVEUsIdmSmAcw4y8ZV0+2mWHMWtDK5lpQ62KRksYjo+OQl6PsjspfaEgvPL
- EgT/Fbi1sz7SKP0T6LsM1gaaQ59Axo288I836h6OlxjFvuY4LDHO/nHvbNsqoNNMtXGd
- zuhQ==
-X-Gm-Message-State: AOJu0YyytlAdn/jmg2bWbga1regZ4jReVCQkJpA8Tq1EimpvDct2n9kq
- DKbdMhV4l3WOrJ5hE7TN0Z9mZFp/qI09+4dWC3M=
-X-Google-Smtp-Source: AGHT+IFM8sVIxOwsMQed6dWF7GPucchYQXs6EPCRdxoPwVV305JmnfVXkblCQVtRYW4o2yBOYddirg==
-X-Received: by 2002:a7b:c5cc:0:b0:40c:53d1:4c6 with SMTP id
- n12-20020a7bc5cc000000b0040c53d104c6mr474119wmk.166.1702398803479; 
- Tue, 12 Dec 2023 08:33:23 -0800 (PST)
+ bh=ejOqBltD1xTQKLI2FwnA20wzkl1UqkA3fAXzw/L3kFk=;
+ b=KIgXeiZLaLih+aXcUqDUE5ZXpCO4drZMJXdVAGNyYdFvIWSOBm7Z5aJCFscEpplAWp
+ Zi5mb/SrTvyLK5ZUCtWip3adu1WppWJx2/WPB+V0aECjfuDbYBTkNIot8e9DhbeGYkUX
+ rUKnoXAsDvSWbQPQ3XHGw/OoXv0vLTHwBfgKif2u9MPM1D0NmY2bCPqEIHJh4j1Y6Gy9
+ GbXyHv1WpgKnT11biTaiVMmQ3+UCSCN7HCLxwNrMGbwfDkLvJJtjTJFxrs3iyLB1EB4u
+ z2yWhfafE0Js8CvCCdki615btgUn8IQ6cotoSXyPz3ten35DesBw6JQVs9nPqWx5+807
+ owKw==
+X-Gm-Message-State: AOJu0YwouJuC9vJJO7Pd+oDUYb9Ke2ph6j8bVvy1NiP8L/dsviofuj/J
+ xLd9/m/sW0ZEQpSeSAKMGH5UQE/vo1/Mzeo4Kbc=
+X-Google-Smtp-Source: AGHT+IHgkWlki8ql5EojYFYDQS9C+91RboiBl8Qb2//hW6OcAIW62feJ7Uh7gtJVyNUa844MjFzDFQ==
+X-Received: by 2002:a05:600c:3411:b0:40b:5e59:ccb2 with SMTP id
+ y17-20020a05600c341100b0040b5e59ccb2mr3422703wmp.147.1702398811326; 
+ Tue, 12 Dec 2023 08:33:31 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- g12-20020a5d46cc000000b003335c061a2asm11202196wrs.33.2023.12.12.08.33.21
+ k40-20020a05600c1ca800b0040b45356b72sm19317706wms.33.2023.12.12.08.33.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:33:23 -0800 (PST)
+ Tue, 12 Dec 2023 08:33:31 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
@@ -71,17 +71,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 31/33] hw/cpu/a9mpcore: Remove legacy code
-Date: Tue, 12 Dec 2023 17:29:31 +0100
-Message-ID: <20231212162935.42910-32-philmd@linaro.org>
+Subject: [PATCH 32/33] hw/cpu/arm: Remove 'num-cpu' property alias
+Date: Tue, 12 Dec 2023 17:29:32 +0100
+Message-ID: <20231212162935.42910-33-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
 References: <20231212162935.42910-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,60 +104,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all boards set the "cpu-type" property,
-the legacy code can be removed.
+All callers access the 'num-cores' property.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/cpu/a9mpcore.c      | 8 +++-----
- hw/cpu/cortex_mpcore.c | 8 +++++---
- 2 files changed, 8 insertions(+), 8 deletions(-)
+Better to squash earlier and replace in place, so no need for alias?
+---
+ hw/cpu/arm11mpcore.c     | 1 -
+ hw/cpu/cortex_mpcore.c   | 2 --
+ hw/cpu/realview_mpcore.c | 1 -
+ 3 files changed, 4 deletions(-)
 
-diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
-index ffdaf392fc..4e2fdb8321 100644
---- a/hw/cpu/a9mpcore.c
-+++ b/hw/cpu/a9mpcore.c
-@@ -41,12 +41,10 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
-     DeviceState *scudev, *gtimerdev, *mptimerdev, *wdtdev;
-     SysBusDevice *scubusdev, *gtimerbusdev, *mptimerbusdev, *wdtbusdev;
-     Error *local_err = NULL;
--    CPUState *cpu0;
--    Object *cpuobj;
+diff --git a/hw/cpu/arm11mpcore.c b/hw/cpu/arm11mpcore.c
+index 67c96a3a7c..32756e05e9 100644
+--- a/hw/cpu/arm11mpcore.c
++++ b/hw/cpu/arm11mpcore.c
+@@ -133,7 +133,6 @@ static void mpcore_priv_initfn(Object *obj)
  
--    cpu0 = qemu_get_cpu(0);
--    cpuobj = OBJECT(cpu0);
--    if (strcmp(object_get_typename(cpuobj), ARM_CPU_TYPE_NAME("cortex-a9"))) {
-+    if (!c->cpu_type) {
-+        qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-a9"));
-+    } else if (strcmp(c->cpu_type, ARM_CPU_TYPE_NAME("cortex-a9"))) {
-         /* We might allow Cortex-A5 once we model it */
-         error_setg(errp,
-                    "Cortex-A9MPCore peripheral can only use Cortex-A9 CPU");
+ static Property mpcore_priv_properties[] = {
+     DEFINE_PROP_UINT32("num-cores", ARM11MPCorePriveState, num_cpu, 1),
+-    DEFINE_PROP_UINT32("num-cpu", ARM11MPCorePriveState, num_cpu, 1), /* alias */
+     /* The ARM11 MPCORE TRM says the on-chip controller may have
+      * anything from 0 to 224 external interrupt IRQ lines (with another
+      * 32 internal). We default to 32+32, which is the number provided by
 diff --git a/hw/cpu/cortex_mpcore.c b/hw/cpu/cortex_mpcore.c
-index 65309636d7..c5de6c3ae4 100644
+index c5de6c3ae4..3cc9feef16 100644
 --- a/hw/cpu/cortex_mpcore.c
 +++ b/hw/cpu/cortex_mpcore.c
-@@ -57,6 +57,11 @@ static void cortex_mpcore_priv_realize(DeviceState *dev, Error **errp)
-         return;
-     }
+@@ -156,7 +156,6 @@ static void cortex_mpcore_priv_realize(DeviceState *dev, Error **errp)
+ static Property cortex_mpcore_priv_properties[] = {
+     DEFINE_PROP_UINT8("cluster-id", CortexMPPrivState, cluster_id, 0),
+     DEFINE_PROP_UINT32("num-cores", CortexMPPrivState, num_cores, 1),
+-    DEFINE_PROP_UINT32("num-cpu", CortexMPPrivState, num_cores, 1), /* alias */
  
-+    if (!s->cpu_type) {
-+        error_setg(errp, "'cpu-type' property is not set");
-+        return;
-+    }
-+
-     qdev_prop_set_uint32(gicdev, "num-cpu", s->num_cores);
-     qdev_prop_set_uint32(gicdev, "num-irq", s->gic_spi_num);
-     if (k->gic_priority_bits) {
-@@ -85,9 +90,6 @@ static void cortex_mpcore_priv_realize(DeviceState *dev, Error **errp)
+     DEFINE_PROP_STRING("cpu-type", CortexMPPrivState, cpu_type),
+     DEFINE_PROP_BOOL("cpu-has-el3", CortexMPPrivState, cpu_has_el3, true),
+@@ -175,7 +174,6 @@ static Property cortex_mpcore_priv_properties[] = {
+                      TYPE_MEMORY_REGION, MemoryRegion *),
  
+     DEFINE_PROP_UINT32("gic-spi-num", CortexMPPrivState, gic_spi_num, 0),
+-    DEFINE_PROP_UINT32("num-irq", CortexMPPrivState, gic_spi_num, 0), /* alias */
  
-     /* CPU */
--    if (!s->cpu_type) {
--        return;
--    }
-     for (int i = 0; i < s->num_cores; i++) {
-         Object *cpuobj;
+     DEFINE_PROP_END_OF_LIST(),
+ };
+diff --git a/hw/cpu/realview_mpcore.c b/hw/cpu/realview_mpcore.c
+index e985d230e0..4d4965126b 100644
+--- a/hw/cpu/realview_mpcore.c
++++ b/hw/cpu/realview_mpcore.c
+@@ -99,7 +99,6 @@ static void mpcore_rirq_init(Object *obj)
+ 
+     object_initialize_child(obj, "a11priv", &s->priv, TYPE_ARM11MPCORE_PRIV);
+     object_property_add_alias(obj, "num-cores", OBJECT(&s->priv), "num-cores");
+-    object_property_add_alias(obj, "num-cpu", OBJECT(&s->priv), "num-cores");
+     privbusdev = SYS_BUS_DEVICE(&s->priv);
+     sysbus_init_mmio(sbd, sysbus_mmio_get_region(privbusdev, 0));
  
 -- 
 2.41.0
