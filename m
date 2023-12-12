@@ -2,77 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8342A80F265
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:24:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B74E80F289
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:30:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5XV-0007hC-Rf; Tue, 12 Dec 2023 11:23:21 -0500
+	id 1rD5dk-0000om-C8; Tue, 12 Dec 2023 11:29:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD5XU-0007h2-J1
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:23:20 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5dh-0000oC-Sx
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:29:45 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD5XR-0002xj-En
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:23:20 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40c2d50bfbfso28975085e9.0
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:23:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5df-0006vx-Op
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:29:45 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a22f2a28c16so21691966b.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:29:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398195; x=1703002995; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702398581; x=1703003381; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=fCRez/S+3jb3oru71S+0zvbLl9dsCL7HJqTGLOdN3l8=;
- b=hXz2lrwNnblZagAYTZhm2L0fxV0a+a87vlKyUKsG2TjSloUTR4EzN91MplAuyfUttI
- A3T/3o4j04SlaR/y29S0Dn94AaMIjWWB68nybZIZb+lzNoma0hWyRF8+kGmNymEf7GwG
- 2l1P1GAFR8iNt39zSkMS5dW/+dZtgIM8g7zWQREz2ifLxODS/LKfe23WAm7veIWzcXbd
- j9QvS0XrZc+w5DJKYYnCwlvxSMKtrTwmW/6uP6iJpRi39tqE/9EL9VJB0CsUZ6EiDQFL
- b7aIp8Sy9GVQNvG8howGv0b/wfux1CMQae3xs72f04xJkZiigUyt/ssfI1WQCw18vfLH
- 313A==
+ bh=mn32UhI3GcAekEbpxlWbpPxY01K3QFuN0m3na/SgxOo=;
+ b=zyq/5RIBdjdWcddkS4QQceY/1cPJjictJG7iJ6ucI6ZaItSTr8Ofgx9J+jnMUO8Olb
+ Dec0tB7SsXP0YQMvcPbzL+BiuMonAhmCyOncwLii9Sx5RxrX8UZpWo4O3E7DRp5c44bn
+ a857dEWMndyfBnOtaUvy6t1xSqrNHYTyz20cSTiVI9GE7g3JQbUcH+wT+ygbs689ewoK
+ DZgT6YGEZeGHbe8H7+Eqn/bBjXpchHdXmWyIOUdsfVgjLe2FnFiq4odX62KtkCOBu7pP
+ KUyS+7duxAVlLSg8qxveag4Usr83R2+Tz/eIrE0ldWG/jfft4CWgk1LeBRc4arOsKsrh
+ 2WVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398195; x=1703002995;
+ d=1e100.net; s=20230601; t=1702398581; x=1703003381;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=fCRez/S+3jb3oru71S+0zvbLl9dsCL7HJqTGLOdN3l8=;
- b=vAZ8YtIdqK7r5qmfr7kvabvY4vfmPJVW4fxUTd1OqXs5hbxzCLcMVLExvTtnQ2BlgU
- y0bbJkEMNuIHnvEC2zMszk56qmtkcfnpL1Gkbj+D08VJM4EAFHeuBQOji5UIGfStbyUO
- NxwB0nY1SLzS0aYKpoPe5bPmxAskeoZbpl55fG1kDrMOsEUQxBdgq90XOmCxq5wHFFkT
- 4yO8yKzR1Tm57xDhObuf0IWbw0WDcU4ZB//3je14ANAZaofgpu2qrqVl47tgCOFhky/7
- 6+rZAKfDWUuxhAeTauo5W4gg+SSw16Fc0IqCH+n1HOq3zQF3oyH2vrCtySCJ2mJkW8m6
- YqgQ==
-X-Gm-Message-State: AOJu0Yz1aoEFYXzja8V6P6NB8BfpQm2BHyfCfxgA9CaAlKwCDkksoQZ/
- y1J4+L99b4j+VDUfqL2brrpDYN9lgscSKBDDIn8=
-X-Google-Smtp-Source: AGHT+IF7EF/d5MiG47Bm5MX0ovyIqlXVAC6lU+akTSr53KktUgdl07nExxJUlBUoi0T/Q3RPVnHbug==
-X-Received: by 2002:a7b:cb4e:0:b0:40c:4378:f119 with SMTP id
- v14-20020a7bcb4e000000b0040c4378f119mr2172628wmj.157.1702398195648; 
- Tue, 12 Dec 2023 08:23:15 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ bh=mn32UhI3GcAekEbpxlWbpPxY01K3QFuN0m3na/SgxOo=;
+ b=lTPTRbtJAKCGZ0orchtg/h81c5ToOcH5Bcl2CbSbYFiiCEGKgWEzyYYjm162lrulW+
+ bndRo9OTEX7CIsQIQc9zccdSz0+fTVzcWfpBoI4NL/bmMtkXaMW3EDMGcScmoUBnnOS7
+ gZjtrFF8wpKc7y9pjfzUiN3qOLQfChB3Pwr2UIiTmzk00Q7J3sA/GBYu8gVPGM6cfGrn
+ 1TTBWlXj/hIfGNrra9ATDTrGIoUEgxtiTX53d2SL+IBAVxCaAk5M0A9mIXOnFGddpg7R
+ uomNhj3522a5VzBqnYV1wd2Gn0wB8Wx/9aPYR0ILNv7ytID/KnKXjpfFnCnrMmEZJHrG
+ e20w==
+X-Gm-Message-State: AOJu0YzQu40NgAPK6n4pKoZLAEWpWmNubuQ7JPOHEVfXTzxnX4e8BEp3
+ OVzkO8oLZ0GVmxY/0uVOpAfU8CuUN8X/y4HGp1I=
+X-Google-Smtp-Source: AGHT+IHRk+gIjuiFARCTFPKGQm2celLuQGbNlhDK052m2YGVn9t5AwNYdwsDUm5L6tEhCWSqFvk6lw==
+X-Received: by 2002:a17:907:9411:b0:a1d:9697:73a2 with SMTP id
+ dk17-20020a170907941100b00a1d969773a2mr2865365ejc.93.1702398580756; 
+ Tue, 12 Dec 2023 08:29:40 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- p13-20020a5d48cd000000b0033609750752sm10817673wrs.8.2023.12.12.08.23.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Dec 2023 08:23:14 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
+ ul5-20020a170907ca8500b00a1f7b445f5dsm5241984ejc.124.2023.12.12.08.29.36
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 12 Dec 2023 08:29:40 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH for-9.0] docs/devel/docs: Document .hx file syntax
-Date: Tue, 12 Dec 2023 16:23:13 +0000
-Message-Id: <20231212162313.1742462-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Anton Johansson <anjo@rev.ng>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Hao Wu <wuhaotsh@google.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in A7/A15
+ MPCore priv
+Date: Tue, 12 Dec 2023 17:29:00 +0100
+Message-ID: <20231212162935.42910-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,187 +102,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't currently document the syntax of .hx files anywhere
-except in a few comments at the top of individual .hx files.
-We don't even have somewhere in the developer docs where we
-could do this.
+Hi,
 
-Add a new files docs/devel/docs.rst which can be a place to
-document how our docs build process works. For the moment,
-put in only a brief introductory paragraph and the documentation
-of the .hx files. We could later add to this file by for
-example describing how the QAPI-schema-to-docs process works,
-or anything else that developers might need to know about
-how to add documentation.
+When a MPCore cluster is used, the Cortex-A cores belong the the
+cluster container, not to the board/soc layer. This series move
+the creation of vCPUs to the MPCore private container.
 
-Make the .hx files refer to this doc file, and clean
-up their header comments to be more accurate for the
-usage in each file and less cut-n-pasted.
+Doing so we consolidate the QOM model, moving common code in a
+central place (abstract MPCore parent).
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-My motivation here is that we're about to add support for
-extending the SRST directive to specify a label so we
-can hyperlink to a documentation fragment; this gives us
-somewhere we can document the syntax for that.
----
- MAINTAINERS                |  1 +
- docs/devel/docs.rst        | 60 ++++++++++++++++++++++++++++++++++++++
- docs/devel/index-build.rst |  1 +
- hmp-commands-info.hx       | 10 +++----
- hmp-commands.hx            | 10 +++----
- qemu-img-cmds.hx           |  2 ++
- qemu-options.hx            |  2 ++
- 7 files changed, 76 insertions(+), 10 deletions(-)
- create mode 100644 docs/devel/docs.rst
+This eventually allow removing one qemu_get_cpu() use, which we
+want to remove in heterogeneous machines (machines using MPCore
+are candidate for heterogeneous emulation).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 695e0bd34fb..49b8ca9d1a8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4149,6 +4149,7 @@ F: docs/conf.py
- F: docs/*/conf.py
- F: docs/sphinx/
- F: docs/_templates/
-+F: docs/devel/docs.rst
- 
- Miscellaneous
- -------------
-diff --git a/docs/devel/docs.rst b/docs/devel/docs.rst
-new file mode 100644
-index 00000000000..7da067905b8
---- /dev/null
-+++ b/docs/devel/docs.rst
-@@ -0,0 +1,60 @@
-+
-+==================
-+QEMU Documentation
-+==================
-+
-+QEMU's documentation is written in reStructuredText format and
-+built using the Sphinx documentation generator. We generate both
-+the HTML manual and the manpages from the some documentation sources.
-+
-+hxtool and .hx files
-+--------------------
-+
-+The documentation for QEMU command line options and Human Monitor Protocol
-+(HMP) commands is written in files with the ``.hx`` suffix. These
-+are processed in two ways:
-+
-+ * ``scripts/hxtool`` creates C header files from them, which are included
-+   in QEMU to do things like handle the ``--help`` option output
-+ * a Sphinx extension in ``docs/sphinx/hxtool.py`` generates rST output
-+   to be included in the HTML or manpage documentation
-+
-+The syntax of these ``.hx`` files is simple. It is broadly an
-+alternation of C code put into the C output and rST format text
-+put into the documention. A few special directives are recognised;
-+these are all-caps and must be at the beginning of the line.
-+
-+``HXCOMM`` is the comment marker. The line, including any arbitrary
-+text after the marker, is discarded and appears neither in the C output
-+nor the documentation output.
-+
-+``SRST`` starts a reStructuredText section. Following lines
-+are put into the documentation verbatim, and discarded from the C output.
-+
-+``ERST`` ends the documentation section started with ``SRST``,
-+and switches back to a C code section.
-+
-+``DEFHEADING()`` defines a heading that should appear in both the
-+``--help`` output and in the documentation. This directive should
-+be in the C code block. If there is a string inside the brackets,
-+this is the heading to use. If this string is empty, it produces
-+a blank line in the ``--help`` output and is ignored for the rST
-+output.
-+
-+``ARCHHEADING()`` is a variant of ``DEFHEADING()`` which produces
-+the heading only if the specified guest architecture was compiled
-+into QEMU. This should be avoided in new documentation.
-+
-+Within C code sections, you should check the comments at the top
-+of the file to see what the expected usage is, because this
-+varies between files. For instance in ``qemu-options.hx`` we use
-+the ``DEF()`` macro to define each option and specify its ``--help``
-+text, but in ``hmp-commands.hx`` the C code sections are elements
-+of an array of structs of type ``HMPCommand`` which define the
-+name, behaviour and help text for each monitor command.
-+
-+In the file ``qemu-options.hx``, do not try to define a
-+reStructuredText label within a documentation section. This file
-+is included into two separate Sphinx documents, and some
-+versions of Sphinx will complain about the duplicate label
-+that results.
-diff --git a/docs/devel/index-build.rst b/docs/devel/index-build.rst
-index 57e8d39d985..90b406ca0ed 100644
---- a/docs/devel/index-build.rst
-+++ b/docs/devel/index-build.rst
-@@ -10,6 +10,7 @@ the basics if you are adding new files and targets to the build.
- 
-    build-system
-    kconfig
-+   docs
-    testing
-    acpi-bits
-    qtest
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index f5b37eb74ab..da120f82a32 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -1,8 +1,8 @@
--HXCOMM Use DEFHEADING() to define headings in both help text and rST.
--HXCOMM Text between SRST and ERST is copied to the rST version and
--HXCOMM discarded from C version.
--HXCOMM DEF(command, args, callback, arg_string, help) is used to construct
--HXCOMM monitor info commands
-+HXCOMM See docs/devel/docs.rst for the format of this file.
-+HXCOMM
-+HXCOMM This file defines the contents of an array of HMPCommand structs
-+HXCOMM which specify the name, behaviour and help text for HMP commands.
-+HXCOMM Text between SRST and ERST is rST format documentation.
- HXCOMM HXCOMM can be used for comments, discarded from both rST and C.
- HXCOMM
- HXCOMM In this file, generally SRST fragments should have two extra
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index 765349ed149..2db5701d49c 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -1,8 +1,8 @@
--HXCOMM Use DEFHEADING() to define headings in both help text and rST.
--HXCOMM Text between SRST and ERST is copied to the rST version and
--HXCOMM discarded from C version.
--HXCOMM DEF(command, args, callback, arg_string, help) is used to construct
--HXCOMM monitor commands
-+HXCOMM See docs/devel/docs.rst for the format of this file.
-+HXCOMM
-+HXCOMM This file defines the contents of an array of HMPCommand structs
-+HXCOMM which specify the name, behaviour and help text for HMP commands.
-+HXCOMM Text between SRST and ERST is rST format documentation.
- HXCOMM HXCOMM can be used for comments, discarded from both rST and C.
- 
- 
-diff --git a/qemu-img-cmds.hx b/qemu-img-cmds.hx
-index 068692d13eb..c9dd70a8920 100644
---- a/qemu-img-cmds.hx
-+++ b/qemu-img-cmds.hx
-@@ -1,3 +1,5 @@
-+HXCOMM See docs/devel/docs.rst for the format of this file.
-+HXCOMM
- HXCOMM Keep the list of subcommands sorted by name.
- HXCOMM Use DEFHEADING() to define headings in both help text and rST
- HXCOMM Text between SRST and ERST are copied to rST version and
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 42fd09e4de9..d3e31e65c25 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -1,3 +1,5 @@
-+HXCOMM See docs/devel/docs.rst for the format of this file.
-+HXCOMM
- HXCOMM Use DEFHEADING() to define headings in both help text and rST.
- HXCOMM Text between SRST and ERST is copied to the rST version and
- HXCOMM discarded from C version.
+Maybe these hw/cpu/arm/ files belong to hw/arm/...
+
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (33):
+  hw/arm/boot: Propagate vCPU to arm_load_dtb()
+  hw/arm/fsl-imx6: Add a local 'gic' variable
+  hw/arm/fsl-imx6ul: Add a local 'gic' variable
+  hw/arm/fsl-imx7: Add a local 'gic' variable
+  hw/cpu: Remove dead Kconfig
+  hw/cpu/arm: Rename 'busdev' -> 'gicsbd' in a15mp_priv_realize()
+  hw/cpu/arm: Alias 'num-cpu' property on TYPE_REALVIEW_MPCORE
+  hw/cpu/arm: Declare CPU QOM types using DEFINE_TYPES() macro
+  hw/cpu/arm: Merge {a9mpcore.h, a15mpcore.h} as cortex_mpcore.h
+  hw/cpu/arm: Introduce abstract CORTEX_MPCORE_PRIV QOM type
+  hw/cpu/arm: Have A9MPCORE/A15MPCORE inheritate common
+    CORTEX_MPCORE_PRIV
+  hw/cpu/arm: Create MPCore container in QOM parent
+  hw/cpu/arm: Handle 'num_cores' property once in MPCore parent
+  hw/cpu/arm: Handle 'has_el2/3' properties once in MPCore parent
+  hw/cpu/arm: Handle 'gic-irq' property once in MPCore parent
+  hw/cpu/arm: Handle GIC once in MPCore parent
+  hw/cpu/arm: Document more properties of CORTEX_MPCORE_PRIV QOM type
+  hw/cpu/arm: Replace A15MPPrivState by CortexMPPrivState
+  hw/cpu/arm: Introduce TYPE_A7MPCORE_PRIV for Cortex-A7 MPCore
+  hw/cpu/arm: Consolidate check on max GIC spi supported
+  hw/cpu/arm: Create CPUs once in MPCore parent
+  hw/arm/aspeed_ast2600: Let the A7MPcore create/wire the CPU cores
+  hw/arm/exynos4210: Let the A9MPcore create/wire the CPU cores
+  hw/arm/fsl-imx6: Let the A9MPcore create/wire the CPU cores
+  hw/arm/fsl-imx6ul: Let the A7MPcore create/wire the CPU cores
+  hw/arm/fsl-imx7: Let the A7MPcore create/wire the CPU cores
+  hw/arm/highbank: Let the A9/A15MPcore create/wire the CPU cores
+  hw/arm/vexpress: Let the A9/A15MPcore create/wire the CPU cores
+  hw/arm/xilinx_zynq: Let the A9MPcore create/wire the CPU cores
+  hw/arm/npcm7xx: Let the A9MPcore create/wire the CPU cores
+  hw/cpu/a9mpcore: Remove legacy code
+  hw/cpu/arm: Remove 'num-cpu' property alias
+  hw/cpu/arm: Remove use of qemu_get_cpu() in A7/A15 realize()
+
+ MAINTAINERS                    |   3 +-
+ include/hw/arm/aspeed_soc.h    |   5 +-
+ include/hw/arm/boot.h          |   4 +-
+ include/hw/arm/exynos4210.h    |   6 +-
+ include/hw/arm/fsl-imx6.h      |   6 +-
+ include/hw/arm/fsl-imx6ul.h    |   8 +-
+ include/hw/arm/fsl-imx7.h      |   8 +-
+ include/hw/arm/npcm7xx.h       |   3 +-
+ include/hw/cpu/a15mpcore.h     |  44 -------
+ include/hw/cpu/a9mpcore.h      |  39 -------
+ include/hw/cpu/cortex_mpcore.h | 135 ++++++++++++++++++++++
+ hw/arm/aspeed_ast2600.c        |  61 ++++------
+ hw/arm/boot.c                  |  11 +-
+ hw/arm/exynos4210.c            |  60 ++++------
+ hw/arm/exynos4_boards.c        |   6 +-
+ hw/arm/fsl-imx6.c              |  84 ++++----------
+ hw/arm/fsl-imx6ul.c            |  65 ++++-------
+ hw/arm/fsl-imx7.c              | 103 +++++------------
+ hw/arm/highbank.c              |  56 ++-------
+ hw/arm/mcimx6ul-evk.c          |   3 +-
+ hw/arm/mcimx7d-sabre.c         |   3 +-
+ hw/arm/npcm7xx.c               |  48 ++------
+ hw/arm/realview.c              |   4 +-
+ hw/arm/sabrelite.c             |   4 +-
+ hw/arm/vexpress.c              |  60 +++-------
+ hw/arm/virt.c                  |   2 +-
+ hw/arm/xilinx_zynq.c           |  30 ++---
+ hw/cpu/a15mpcore.c             | 179 +++++++++++++----------------
+ hw/cpu/a9mpcore.c              | 138 +++++++++-------------
+ hw/cpu/arm11mpcore.c           |  23 ++--
+ hw/cpu/cortex_mpcore.c         | 202 +++++++++++++++++++++++++++++++++
+ hw/cpu/realview_mpcore.c       |  30 ++---
+ hw/arm/Kconfig                 |   8 +-
+ hw/cpu/Kconfig                 |   8 --
+ hw/cpu/meson.build             |   1 +
+ 35 files changed, 689 insertions(+), 761 deletions(-)
+ delete mode 100644 include/hw/cpu/a15mpcore.h
+ delete mode 100644 include/hw/cpu/a9mpcore.h
+ create mode 100644 include/hw/cpu/cortex_mpcore.h
+ create mode 100644 hw/cpu/cortex_mpcore.c
+ delete mode 100644 hw/cpu/Kconfig
+
 -- 
-2.34.1
+2.41.0
 
 
