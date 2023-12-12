@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6246E80EA68
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:30:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 465A580EA69
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:30:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD0yD-000662-At; Tue, 12 Dec 2023 06:30:37 -0500
+	id 1rD0yG-00068y-E9; Tue, 12 Dec 2023 06:30:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0xz-00064S-S9
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:30:24 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0y9-00067I-N4
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:30:36 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0xx-00045I-28
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:30:22 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-54c7744a93fso7785725a12.2
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 03:30:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0y6-00049w-5n
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:30:32 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a22ed5f0440so50336266b.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 03:30:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702380619; x=1702985419; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ueBqNhx6BK67IUq8z+0/fpvGM9Ts68nyh+e99PjXJLk=;
- b=lPIfvd1OjPdmrD3b8H3rTaR+xR/+OLERjeifhkd2nxV9EiGNYyosLWlSITgip8ZLtn
- uuj55M2EPexfFBmstmcUd5UP+X60VMMP3h0wCCcppd6+eCAg86uIqtUCir+WTtBhV+7A
- IPoHSniYXknqZyb9U/Cv+GaTZyL8YVA2SOtl3fOtuBoA8iyHAWLiZLpjJLSPDXZV9eKF
- 7TCiEGduHUdCdqH6JPGA0OdRfiopPlv4u/i9VnUpaK4xlEJAI1eaMPrUe6AyGRUL7mMj
- csc36sJmiA3mqqq+Q9feHqC/dPkbb6IVyV2s28BFUkmIkesT6tEL/qMajgs2EmxpRcrO
- 06Rg==
+ d=linaro.org; s=google; t=1702380624; x=1702985424; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/fkaQw1wTm7vzI2qvTLdmXvYwQIxTgYgYOSzytSBkrc=;
+ b=iNN0HKL+vIJqzv4LpCcMa7R8Sb++BAMQbxyIUJmV5T0+w1ot7QPHe8a+ZI/AoolMVQ
+ M0SGc51D/lAFhbNKylH17UI3TR15x6nHoAhSUiF6mQWSP9ObcWWizDfHLRzZeC3pqRzI
+ 4D/rMsYjn5QvCK4FkF5L1p8v1tUX3DnBBQR8vIvZxpe2N/YR94NS5MVNJGtMBSwg86ry
+ vq/VFD0OPo5IuInu/a2vB2GrMoCyEa+WhEM9KLG6wOSuDDZyte8vEZV+HfXE5SlnKQhO
+ HdWLnrY41Flgjla0rGD+3C3iqJFw06J+ZFZ+/GFGdibOH2deC8aOv+482P7jzh5tKOMC
+ wZiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702380619; x=1702985419;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ueBqNhx6BK67IUq8z+0/fpvGM9Ts68nyh+e99PjXJLk=;
- b=sl1nGuGkGj1VW4Tov+xzCxzyGBPI25afM8mp+CtYhEKL1ejjoBHl5fDvQ0tVIkDCGi
- y86EM8JGLi5nAMT/lAnpWk5ufp19/KpPwo/JfJ/fnMzkrU5BHHBRLlHT8Ant7jHp7m7Y
- iocx/HCw1Wt8x3xwwyTGgPzfJjV5UWjwnIZfz5Av7mrdLCgaIBpjNXn8alCI+p7HwZQ1
- o2PEFGjra2/aC10Deycey8iAXUmjFRSmjA3gweGLgqG39c7XBRGnJ4GujrCsyFSumwx7
- zvIM6sU3/2qhoZiAQmrfWGuz/kA6jRWeK/Ut6iXaQckq3tickAPCDMXb99OHNG8moABu
- Z0Ew==
-X-Gm-Message-State: AOJu0YwlNMl1lWSTAN+21IyZz5fDfjJlkLn3Ole9eBIR71pCyLi1lkJN
- BK/a74cxmbutAcKzJvRMXqiEWN1Cz7LhDLNzxWSzcg==
-X-Google-Smtp-Source: AGHT+IFpVa+jY5dHAWYQkZqbZQNGk2c0AM8pBfS5cYpjbTd03xzK6EvKo12dv0zn0g6X7a/pfiW2YQ==
-X-Received: by 2002:a05:6402:222b:b0:54a:fe99:105c with SMTP id
- cr11-20020a056402222b00b0054afe99105cmr2783639edb.6.1702380619082; 
- Tue, 12 Dec 2023 03:30:19 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702380624; x=1702985424;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/fkaQw1wTm7vzI2qvTLdmXvYwQIxTgYgYOSzytSBkrc=;
+ b=IzZ7RUC115rLGiDZiGX0/fgGnbcYwvXet9OTL4p0YiT1L/1lr7Gzj3vkFSs8YBAa7k
+ RSAsUttPT3ne8wjKTUO9PfWtfiifZjtZUVmdWekcS5ii2ZitAgpHwoNr7sm9Ezpgl8lQ
+ lbZjl44Qv2hGWQv1VtDm766vSVLHS93FMkFrIMmVOwOVc4NN9BGB2zv5w7CbZ7oXZ1eJ
+ K8ixXUwE6ZcMwXPhrg1ggq/6+KmAOTcnWGD/9YQAjGAaNd5bvEev9EqxTxW72AATesxf
+ yrAhlnjIorHEu2BgdLUi5MkHHOA/vhfxHADGCOrmN7aGFyJQNB59idCERCPH+1zd+tAV
+ 9UQg==
+X-Gm-Message-State: AOJu0YwJUdMAXpFjWmF7Sor/kF6/ednKlaDebKxjtXe9rtnNNFBYt+lK
+ YM+u0Ll+Fw+4Lk42ia9N6GkA/MU7ySTBa8xcgRtT+g==
+X-Google-Smtp-Source: AGHT+IFIx+C0xTXu+zxx3FrDRRVzMU0y+G6DazBAJAo6jeivBp6A8t1MW8bzR/dAEY8zKSAlHQty6w==
+X-Received: by 2002:a17:906:e085:b0:a19:9b79:8b40 with SMTP id
+ gh5-20020a170906e08500b00a199b798b40mr1892770ejb.81.1702380624549; 
+ Tue, 12 Dec 2023 03:30:24 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- u18-20020a50c2d2000000b0055147185e2fsm1488610edf.61.2023.12.12.03.30.18
+ vt4-20020a170907a60400b00a1e1a1dd318sm6174614ejc.137.2023.12.12.03.30.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 03:30:18 -0800 (PST)
+ Tue, 12 Dec 2023 03:30:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] system/qtest: Minor include cleanups
-Date: Tue, 12 Dec 2023 12:30:14 +0100
-Message-ID: <20231212113016.29808-1-philmd@linaro.org>
+Subject: [PATCH 1/2] system/qtest: Include missing 'hw/core/cpu.h' header
+Date: Tue, 12 Dec 2023 12:30:15 +0100
+Message-ID: <20231212113016.29808-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231212113016.29808-1-philmd@linaro.org>
+References: <20231212113016.29808-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,16 +92,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add missing header and restrict to sysemu.
+"hw/core/cpu.h" declares 'first_cpu'. Include it to avoid
+when unrelated headers are refactored:
 
-Philippe Mathieu-Daudé (2):
-  system/qtest: Include missing 'hw/core/cpu.h' header
-  system/qtest: Restrict QTest API to system emulation
+  system/qtest.c:548:33: error: use of undeclared identifier 'first_cpu'
+            address_space_write(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED,
+                                ^
 
- include/sysemu/qtest.h | 2 ++
- system/qtest.c         | 1 +
- 2 files changed, 3 insertions(+)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ system/qtest.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/system/qtest.c b/system/qtest.c
+index 7964f0b248..6da58b3874 100644
+--- a/system/qtest.c
++++ b/system/qtest.c
+@@ -21,6 +21,7 @@
+ #include "exec/tswap.h"
+ #include "hw/qdev-core.h"
+ #include "hw/irq.h"
++#include "hw/core/cpu.h"
+ #include "qemu/accel.h"
+ #include "sysemu/cpu-timers.h"
+ #include "qemu/config-file.h"
 -- 
 2.41.0
 
