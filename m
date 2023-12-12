@@ -2,51 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A537280EB93
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D40D180EB9D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:23:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD1kt-0007yT-RC; Tue, 12 Dec 2023 07:20:56 -0500
+	id 1rD1nM-0006fM-LA; Tue, 12 Dec 2023 07:23:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1ka-0006yG-5D; Tue, 12 Dec 2023 07:20:38 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1kW-0000nx-G6; Tue, 12 Dec 2023 07:20:35 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 81C443AF0B;
- Tue, 12 Dec 2023 15:18:50 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 38BD53B959;
- Tue, 12 Dec 2023 15:18:33 +0300 (MSK)
-Received: (nullmailer pid 1003469 invoked by uid 1000);
- Tue, 12 Dec 2023 12:18:31 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
- M_O_Bz <m_o_bz@163.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.4 23/31] hw/audio/hda-codec: fix multiplication overflow
-Date: Tue, 12 Dec 2023 15:18:11 +0300
-Message-Id: <20231212121831.1003318-23-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
-References: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rD1nI-0006d3-F1
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:23:24 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rD1nG-0001Jn-0M
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:23:23 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40c46d6784eso19763365e9.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 04:23:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702383800; x=1702988600; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2wIIHLGf+FYM8dHAGzRr81fCvwMEpKX7fsSZdSMR2K4=;
+ b=BXHqA2znYBKATPJEvQEnHNjEi3f+1giPi2yUMRVb3tHrRUPebJrnwdsw0EB2NuDdtD
+ SYbNpBAMFUdkxYgmFulufHSk7ZBji8thdk30nJiKxO6Y7q1ODQYv42bAz6Gk8kPLiRje
+ JjHQRpUbwY4/7uFhXJzXKdwwOKagXDtAQTh99QJMfVUIIu2RoCwjcXHGo1aF7ePa7mmU
+ LYN19hiNdpUxxVz/lkaPKj2hH+bVd6fnyziIHH96ReFGLFSsFSjp1i3HGWVHGNcjpM+6
+ 6Blh+/vpv/9P8p4tOaSUh9Wz/VIBW0WV6HcNOK/m4G4q963Hw+H3zFVFl/1q8vOMuAdg
+ LHzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702383800; x=1702988600;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=2wIIHLGf+FYM8dHAGzRr81fCvwMEpKX7fsSZdSMR2K4=;
+ b=vr2GP8AfDv/lZcuXCsmmCIWP3wbL1lMnWLylS2jP9+mrDOvffa5lKG7supdAQewXVw
+ q9SL2qBGS0QG2+TLIcihnoFqilHrSOnSigJuLfb3PNNZINcCOhVY9U5fdJHScqSOg0gw
+ bh9hcgPIW35vafYNtGRkuzPwZ3uQ1SV7yRdQ1VtIDOJHCo9+vvISmUkBcrjnMRs/Z69x
+ gHhxYBpuII/VzRXkFlRRUIcmvJVSPobageThGNyMBuZJ35+gAv3I0Rg7CwPfpJ9QM8C1
+ vRpT2KDdreKXjuTs/Fb/wVsOE9dXyY7AVK8J2D1zuC45mZroKvUfIKoN9sknmTJTbpOS
+ almQ==
+X-Gm-Message-State: AOJu0YxEgAu+9bqpWm+dtolTvxU2kH0ZxKhMmqteFicD+co0WyrU+W8U
+ Y72gB5R/OLGZ0lnYMeR3V7VwPQ==
+X-Google-Smtp-Source: AGHT+IG9pWEldmns9zSLOVeumMNwXdQJJsixpFLGTyOchDzQJZmn/85lob5nBeUcoaV6yM4MJ0482w==
+X-Received: by 2002:a05:600c:46cf:b0:40c:3d90:49f1 with SMTP id
+ q15-20020a05600c46cf00b0040c3d9049f1mr2763360wmo.125.1702383800271; 
+ Tue, 12 Dec 2023 04:23:20 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ bg38-20020a05600c3ca600b0040b540ff0a5sm16218442wmb.19.2023.12.12.04.23.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Dec 2023 04:23:20 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 911D05F7D3;
+ Tue, 12 Dec 2023 12:23:19 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Mikhail Tyutin <m.tyutin@yadro.com>
+Cc: <qemu-devel@nongnu.org>,  <richard.henderson@linaro.org>,
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH] accel/tcg: Expose translation block flags to plugins
+In-Reply-To: <20231122121655.20818-1-m.tyutin@yadro.com> (Mikhail Tyutin's
+ message of "Wed, 22 Nov 2023 15:16:55 +0300")
+References: <20231122121655.20818-1-m.tyutin@yadro.com>
+User-Agent: mu4e 1.11.26; emacs 29.1
+Date: Tue, 12 Dec 2023 12:23:19 +0000
+Message-ID: <87edfrd2yw.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,98 +96,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+Mikhail Tyutin <m.tyutin@yadro.com> writes:
 
-After a relatively short time, there is an multiplication overflow
-when multiplying (now - buft_start) with hda_bytes_per_second().
-While the uptime now - buft_start only overflows after 2**63 ns
-= 292.27 years, this happens hda_bytes_per_second() times faster
-with the multiplication. At 44100 samples/s * 2 channels
-* 2 bytes/channel = 176400 bytes/s that is 14.52 hours. After the
-multiplication overflow the affected audio stream stalls.
+> In system mode emulation, some of translation blocks could be
+> interrupted on memory I/O operation. That leads to artificial
+> construction of another translation block that contains memory
+> operation only. If TCG plugin is not aware of that TB kind, it
+> attempts to insert execution callbacks either on translation
+> block or instruction, which is silently ignored.
 
-Replace the multiplication and following division with muldiv64()
-to prevent a multiplication overflow.
+That was the intention - the instrumented instructions have already been
+executed. The only thing that matters now is the memory access:
 
-Fixes: 280c1e1cdb ("audio/hda: create millisecond timers that handle IO")
-Reported-by: M_O_Bz <m_o_bz@163.com>
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20231105172552.8405-1-vr_qemu@t-online.de>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 74e8593e7e51d6b11ae9c56a3f4e7bb714bac4ec)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+    /*
+     * Exit the loop and potentially generate a new TB executing the
+     * just the I/O insns. We also limit instrumentation to memory
+     * operations only (which execute after completion) so we don't
+     * double instrument the instruction.
+     */
+    cpu->cflags_next_tb =3D curr_cflags(cpu) | CF_MEMI_ONLY | n;
 
-diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-index c51d8ba617..b2d08d8afb 100644
---- a/hw/audio/hda-codec.c
-+++ b/hw/audio/hda-codec.c
-@@ -22,6 +22,7 @@
- #include "hw/qdev-properties.h"
- #include "intel-hda.h"
- #include "migration/vmstate.h"
-+#include "qemu/host-utils.h"
- #include "qemu/module.h"
- #include "intel-hda-defs.h"
- #include "audio/audio.h"
-@@ -189,9 +190,9 @@ struct HDAAudioState {
-     bool     use_timer;
- };
- 
--static inline int64_t hda_bytes_per_second(HDAAudioStream *st)
-+static inline uint32_t hda_bytes_per_second(HDAAudioStream *st)
- {
--    return 2LL * st->as.nchannels * st->as.freq;
-+    return 2 * (uint32_t)st->as.nchannels * (uint32_t)st->as.freq;
- }
- 
- static inline void hda_timer_sync_adjust(HDAAudioStream *st, int64_t target_pos)
-@@ -222,12 +223,18 @@ static void hda_audio_input_timer(void *opaque)
- 
-     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
- 
--    int64_t buft_start = st->buft_start;
-+    int64_t uptime = now - st->buft_start;
-     int64_t wpos = st->wpos;
-     int64_t rpos = st->rpos;
-+    int64_t wanted_rpos;
- 
--    int64_t wanted_rpos = hda_bytes_per_second(st) * (now - buft_start)
--                          / NANOSECONDS_PER_SECOND;
-+    if (uptime <= 0) {
-+        /* wanted_rpos <= 0 */
-+        goto out_timer;
-+    }
-+
-+    wanted_rpos = muldiv64(uptime, hda_bytes_per_second(st),
-+                           NANOSECONDS_PER_SECOND);
-     wanted_rpos &= -4; /* IMPORTANT! clip to frames */
- 
-     if (wanted_rpos <= rpos) {
-@@ -286,12 +293,18 @@ static void hda_audio_output_timer(void *opaque)
- 
-     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
- 
--    int64_t buft_start = st->buft_start;
-+    int64_t uptime = now - st->buft_start;
-     int64_t wpos = st->wpos;
-     int64_t rpos = st->rpos;
-+    int64_t wanted_wpos;
-+
-+    if (uptime <= 0) {
-+        /* wanted_wpos <= 0 */
-+        goto out_timer;
-+    }
- 
--    int64_t wanted_wpos = hda_bytes_per_second(st) * (now - buft_start)
--                          / NANOSECONDS_PER_SECOND;
-+    wanted_wpos = muldiv64(uptime, hda_bytes_per_second(st),
-+                           NANOSECONDS_PER_SECOND);
-     wanted_wpos &= -4; /* IMPORTANT! clip to frames */
- 
-     if (wanted_wpos <= wpos) {
--- 
-2.39.2
 
+> As the result
+> it leads to potentially inconsistent processing of execution and
+> memory callbacks by the plugin.
+> Exposing appropriate translation block flag allows plugins to
+> handle "memory only" blocks in appropriate way.
+
+We don't want to expose internal details to the plugin. It shouldn't
+need to care.
+
+Do you have a test case where you missed counting the execution of the
+instruction?
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
