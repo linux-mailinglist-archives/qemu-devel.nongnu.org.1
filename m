@@ -2,167 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F59F80EE30
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 14:58:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B92980EE89
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 15:20:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD3Fr-0006pA-KN; Tue, 12 Dec 2023 08:56:59 -0500
+	id 1rD3ad-0005fb-Ux; Tue, 12 Dec 2023 09:18:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1rD3Fp-0006ox-AG
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 08:56:57 -0500
-Received: from mgamail.intel.com ([134.134.136.65])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1rD3Fn-0000FD-Bi
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 08:56:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1702389415; x=1733925415;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=hExJO6XFVf2thKrGOpZEs1KBXbhovsfmruHg+sf7uH4=;
- b=HqZlmCvRJNq+jtVvCQ1p62rxRVVIam5OXYBGkYi5roh7Cz+RK88e7Nf4
- b3kEX0sD75FQlyc1bJ/nyDTR1buW/9n1XwXCdzByNVvaH6fP7XqyW32d0
- S/1XOp7bn+wC7GlvxC764OXPYDn2vKHyCOMbxU0UorcKfoQwCxZ8869Et
- 2/+ebgGXvEOO6wz/DLAAvrO3RmqgUFWAxCNh/PKO5vSem73H5+ZjdB8fU
- qsMUl6KJQ/sjXld48NNQYi0snCJvQ2sxMqNRzhAbcJhvHiFDpH/OHl0+x
- WnvrNl+ejQQEPKkwMHwcq7kwDgRVtetsa77WtsByfN92RTxRSS4RWBAr5 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="398652073"
-X-IronPort-AV: E=Sophos;i="6.04,270,1695711600"; d="scan'208";a="398652073"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2023 05:56:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="807776344"
-X-IronPort-AV: E=Sophos;i="6.04,270,1695711600"; d="scan'208";a="807776344"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orsmga001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 12 Dec 2023 05:56:49 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 12 Dec 2023 05:56:47 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 12 Dec 2023 05:56:47 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 12 Dec 2023 05:56:47 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YKqvf0Ggt5otlwLyqQEqLEJHNo76I927Z6nQV10yXkDn/v2nN8+nRAdTq2OCQQ8i9Me4OWIe71h3IF0kdjZxa5hwCnwWBbp1iJO0kkoszdbu3nx32pKBBz2csLI0XchR6KSHmMTVUSggjGJdTzOyk/TVyvJ5SLq/O0AtCEEfaSojYlbQuKp4IbqkSvsbdymLtb7w9D7xuEydT+n0uvSHy1SKld6dnbH4h0kdpjd6qh5LMwM3Q2SCAfotyOJwHm1uLue45HNAsNkpJHQI7t3CMv1pWVRjD1o9+LtrWnSiQTJGuZfIQ+OzMmw5Gn7mYB9o50gD9viaS+lep+ef+gqasw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XRPPZWkLa2vlwdjBFuzYNkow5hJ0wKexRSoEtcPErAA=;
- b=JqG0rQ/Ix9cQ68TOyF5GpYJ/07todIcreD9s8DCpGVq5rGxhryI3b/qhzA1xWWOlAtS5CF7io6Z9uMhZnGGmN+8hF2y6sWUO423v9HJMChhBDRvM6KCCTfYdBDrdYqr5bGsUqdcb4LfBaOd8adHw0Dd5LmVRC9wTEEIU/YTY2HHebRtKmdTJKSPkr/kWtE9R8RUm/yVnCCW8On9EIcM24t8jC/NTx6MS2EUtxjVZOjufX7tKHNSbGuDgMn4xP0iEIDymFeJgUXZFgaIXQoTxmuULxqsIiDoH92SG15t2wWbhA7loqCkfOwXhxrrb3qmds3mPt/Cb35b9RIziRqJkow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS0PR11MB6373.namprd11.prod.outlook.com (2603:10b6:8:cb::20) by
- IA1PR11MB6170.namprd11.prod.outlook.com (2603:10b6:208:3ea::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Tue, 12 Dec
- 2023 13:56:43 +0000
-Received: from DS0PR11MB6373.namprd11.prod.outlook.com
- ([fe80::6a55:3e93:ac5f:7b6d]) by DS0PR11MB6373.namprd11.prod.outlook.com
- ([fe80::6a55:3e93:ac5f:7b6d%4]) with mapi id 15.20.7046.027; Tue, 12 Dec 2023
- 13:56:42 +0000
-From: "Wang, Wei W" <wei.w.wang@intel.com>
-To: "Li, Xiaoyao" <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Richard Henderson
- <richard.henderson@linaro.org>, Peter Xu <peterx@redhat.com>,
- =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, Cornelia Huck
- <cohuck@redhat.com>, =?iso-8859-1?Q?Daniel_P_=2E_Berrang=E9?=
- <berrange@redhat.com>, Eric Blake <eblake@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kvm@vger.kernel.org"
- <kvm@vger.kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, Michael Roth
- <michael.roth@amd.com>, Sean Christopherson <seanjc@google.com>, "Claudio
- Fontana" <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>, "Isaku
- Yamahata" <isaku.yamahata@gmail.com>, "Qiang, Chenyi"
- <chenyi.qiang@intel.com>
-Subject: RE: [PATCH v3 06/70] kvm: Introduce support for memory_attributes
-Thread-Topic: [PATCH v3 06/70] kvm: Introduce support for memory_attributes
-Thread-Index: AQHaF5O24VxNhOyFz0ifdu/xEp7Ej7Cl0dCg
-Date: Tue, 12 Dec 2023 13:56:42 +0000
-Message-ID: <DS0PR11MB6373D69ABBF4BDF7120438ACDC8EA@DS0PR11MB6373.namprd11.prod.outlook.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-7-xiaoyao.li@intel.com>
-In-Reply-To: <20231115071519.2864957-7-xiaoyao.li@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR11MB6373:EE_|IA1PR11MB6170:EE_
-x-ms-office365-filtering-correlation-id: 5968bd74-435f-4ee0-fddc-08dbfb1a2bf4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: lHezIFsiZacSbQ68ctnoIAlKuFKi8owdEfG6xLgN1x8H8MvGAiL6LXAHwTD+lQfmC0xxrR39ndys79oZ9JWnTe789hB/gLkgAV3NM8pE/+6+gLyzDE+rEDy99dxvrd2ptY70dsex3l30Dw6OxvxxSM1laBRUMS9/OfmTvVk0yCXQQqolFJL2OWv5jx7ktYf5UCkdnHj+8pvUEFV+Jbwu5lTgXpzxoyNzWQL3YzB+jbWAfAxj8lN4zVl6vE/+4iHnEX2qOS//ZgqDsYTQlO0uCdOZ5mYY3NjU1QaUvczAhprTBxFe087zEqW+8XoZGrkqRsgR0eFrTcSuWB3utUN98GobQOkY1fpm/AC9aDMVIk0Vz3Zz0xR02WlXFBTxcSsUWfMmP1tFJFvVPbQAXDSL80x13V1YQRJL2hoGfWw66Jvjt/Tqf40G0h/RO2g9jPmNdRnjTJd3UySW1sO14szvRLA1HyLvzEwmd17Qt54hHK89+1PIVhjo3OZWVRTOCuFpXg/ehjVs0Dhjd8CfCT7SySMtCmUJMTBVg/sxxzfzH13QXk5FnoUGAswD83dZLhN4lGxnCuz2rSMizCxYMSDNk/pdn45Zb741i5aHiXJrd806hPMNhmDhXWoyHBoi98f4M7pLYF4CifTkcmGUXXe9ag==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB6373.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(366004)(39860400002)(376002)(396003)(346002)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(71200400001)(9686003)(107886003)(7696005)(6506007)(478600001)(53546011)(26005)(66476007)(7416002)(66946007)(76116006)(2906002)(41300700001)(5660300002)(110136005)(66446008)(8676002)(316002)(54906003)(4326008)(8936002)(52536014)(64756008)(38070700009)(66556008)(122000001)(38100700002)(82960400001)(921008)(86362001)(33656002)(55016003);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Aahcge/Xwo3i/l0iHKQedqNpR4fXM1KAvdfjehRtufG53pwVrjGLZ5GOLT?=
- =?iso-8859-1?Q?U0EKPQHHMdeX/jw13cNP3VHsnDYz9Czbs9ULC+WwIKQtoZKgQq+T5QB3Ce?=
- =?iso-8859-1?Q?6sqbOUtKgGdu7qCm1poq538cpR38USnVFKomOtY1iFhv6QF19YwLZU0Y9T?=
- =?iso-8859-1?Q?g/VpgyzZW6QXxw08bikPqrf/TK8CwX+uvKqNElO3ctifpsufTr4e0b2J9r?=
- =?iso-8859-1?Q?PTXpNmdtNblCrdYd5dFeEgqfW/bZVVqFGwCZbn7WapJXxn821ZkCnU3tuh?=
- =?iso-8859-1?Q?TJzWvZtOHYqwKKlGb/y8orXd25BK7Yhz1qeyhjY51HEJE4b4QYsvSt+xSH?=
- =?iso-8859-1?Q?pX22DPhWqo+/raUnGVIK64yjQqcr1vAYXnJ+BQrF3DazXaG6VqX3ocME/F?=
- =?iso-8859-1?Q?fQRY8bfw/7YdOiXHtxUzGkDM/TAsG1FyY6Nvc3TY/ZYOqKv9vL3316U0x/?=
- =?iso-8859-1?Q?B0LBrl5zKtukvPem0VLTcNgzZkEdIsxhKVT7s0TGBJ4t7YL1J2plY/4CTM?=
- =?iso-8859-1?Q?Zpo3iMLqI1VeamKMsyWxdydbQoYEPzopsi2iaStwA9gmRroyZlKuyHl8Ty?=
- =?iso-8859-1?Q?zuNRETBZIUs5726eZNalNSZtAitby7BPxpV71fTLTc2OyL3ErDhJBedI4Q?=
- =?iso-8859-1?Q?6zrFQjTJ07FR25R+rRDrGZir06SxDoOtBYV8XydwdkmddiiajYrEF0W6oo?=
- =?iso-8859-1?Q?+X4I6DUGdxgN5lNGS5nzRUN0Ig3Nait+6RgxvEEayC7Wd0Y5ITQoI9TCkP?=
- =?iso-8859-1?Q?VQquVSrzNDMP97DNRyCf5ez1RtJaQf+vxekQjOORocrHgQfTLe5mSy3RDS?=
- =?iso-8859-1?Q?X2CJgcJ0utfv9cEisdqLSmmINdy3cUefJCYXXXyUYrVjY9BmO5Pc85DHdJ?=
- =?iso-8859-1?Q?83+wtzCW5meGHOeSUDGYyr/dwEWMDbi+ldhqrDdYiT/2UReDuq/V4fy79X?=
- =?iso-8859-1?Q?Ta0CLD17eqi5dt3xIYr6aJW5/s1bi4404AFlil3eraYwWQlLthV/4y8P9Q?=
- =?iso-8859-1?Q?pHEX80NcdBaYAh2ezfgIMlBIpjbmoodB3A96ZijKRyF1/wQzEysWaF90ZT?=
- =?iso-8859-1?Q?GDlbogtKR+21GRADYVlKUBXkbeYZcMbG1zi7vk5BZ89JQ+oUwCwTTuuU6M?=
- =?iso-8859-1?Q?YLajsaMafZovu5AyeHhvZ/XUwJIN+xBJlwnk04kOPsloBOJfH00BhIMxR/?=
- =?iso-8859-1?Q?SiXmm/o2bXNn1lr3jDkgt5qi56ggLCl8PHpJ8H9sHW5UJY2HIgpCVScnEi?=
- =?iso-8859-1?Q?e5NElQvaqQJAWHwf6Pb/iKbdg6kEGAJQDnLe8Xr81dnxMcj9NgEaAculq/?=
- =?iso-8859-1?Q?xoYFTNmpzNI3odWU8/RL82SW5Ib4FWR34xKeiXxjEBEnka6Xce+NA3UV2s?=
- =?iso-8859-1?Q?0RoTr8Vwl8VogZIH6QpQNLG3OlHPDxaQqQprhyR9Rf7TzFxUsnuRDbMSst?=
- =?iso-8859-1?Q?ncsJMEb8cghdDAfSvx88z+zBNfVPjqPJu9AeBSek/pmATPCtHrBQv7fSfN?=
- =?iso-8859-1?Q?P7CDmTjQuDyhKvdhtyRFGr0OUlZYaYcOH0UPbF99V1z8/B3cGMQWqI038I?=
- =?iso-8859-1?Q?5RAc2ly6S3jM5v8Cp9Oox13plGhKwI7qi+JP/nd08vprAPG4A+3fJzQj/5?=
- =?iso-8859-1?Q?lckOhjkqB2clY95iPDGV8EPbgJfZwjva4O?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rD3ab-0005fI-QK
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 09:18:25 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rD3aZ-0000x1-Tm
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 09:18:25 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-551d5cd1c5fso332908a12.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 06:18:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702390701; x=1702995501; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HuqolziES5/eEvHD2lL+PelglCHWSOQ0N5TngbPuMs8=;
+ b=nfjNFtNaTDse9rJImF2E4ikInyf6MnLB9teSomHEGimX3dh0CCOB5D9SU4UHqcEyvc
+ PXx/vsWw+idjHExdgt3Lxzcr0Px7xRAgEn+iLQmeASZ0C2JNw2MU/9PgvtzomqAVwxpO
+ 1ubg6bHwaxRYsQejXCQB0KjEJIMAbaxZByBFYD7C+oAwA7PqQtizWlq4h7SibvubugCf
+ MvmEfoWqMO9FFcvFyjtU/GgMQ0f7bbiUnT8OR6NedmTLZWaznLgCB3hTB42J5oOntrNc
+ +/pol090ZTWbGAb9AcwS1r2uT4ehWIiCM5RJ5nvkXDqRly8ZMMGtLBGm8ljbtCz078PZ
+ s33A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702390701; x=1702995501;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HuqolziES5/eEvHD2lL+PelglCHWSOQ0N5TngbPuMs8=;
+ b=CFjuyBNA6NY8hSSnRw9bUpo6zO8lDslQx4x4IkL2N6/VSQsrQOxk47jU42oC3uD3js
+ ziSSeK0t/2v+lromYYawdRKbXnccvIH9drzlYrmQUFBCe4rP1FDqY0LxuK79L57Jp1DK
+ /aVybQ/LQ7A6mA8L7U6fka2Ay9YMQNj/x+gRgASw2I2evHNKkWJuhC+4SSHlzLGIGQ3Q
+ TaDhkLD2WcC1dXFn4m7gof+47XnkDQvsNpv9syo3gOGabPJf4tueq0dC3k5TOkG0wz8F
+ fyAWFAbuO3Cw+UaJD6XcvoCP+VgEaOo33sOvT9xTN4iq2NGc6o0km/jAK/97D5JM0C9h
+ mbHQ==
+X-Gm-Message-State: AOJu0YyMhESBaHZGuP8z9AmpnBkA2bNmSqvfMHsh8D/Jykt4nqhzQQmB
+ XLvGVFzyUVrRGcU9xlyKM6Fsf6EQ8QKvK/Mg/v6lZA==
+X-Google-Smtp-Source: AGHT+IExUetmAp3a3Hj00pqdLXF5snBe2labP215ZcsIQE/y8+uVKjFP9ooFiyokIr1ds/GEJX6229CvkPB2eixpSok=
+X-Received: by 2002:a05:6402:2286:b0:54f:8019:fc8a with SMTP id
+ cw6-20020a056402228600b0054f8019fc8amr5846387edb.7.1702390701483; Tue, 12 Dec
+ 2023 06:18:21 -0800 (PST)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB6373.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5968bd74-435f-4ee0-fddc-08dbfb1a2bf4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Dec 2023 13:56:42.6145 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: N2/ngAmHs0ZrxMrdSX3QYyWEANg51IqWsSVnIE0sWEz2ZRVR7cSCJJce6cegC7KiIS/BPa/xmGAiINeAxgRlKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6170
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.65; envelope-from=wei.w.wang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231112092232.131-1-n.ostrenkov@gmail.com>
+In-Reply-To: <20231112092232.131-1-n.ostrenkov@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Dec 2023 14:18:09 +0000
+Message-ID: <CAFEAcA8A8sGjknad1QpeJ8qank-mWWw+gRvR4PVBHk2zAHrEnQ@mail.gmail.com>
+Subject: Re: [PATCH] fsl-imx: Add simple RTC emulation for i.MX6 and i.MX7
+ boards
+To: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ Andrey Smirnov <andrew.smirnov@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -179,75 +86,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wednesday, November 15, 2023 3:14 PM, Xiaoyao Li wrote:
-> Introduce the helper functions to set the attributes of a range of memory=
- to
-> private or shared.
->=20
-> This is necessary to notify KVM the private/shared attribute of each gpa =
-range.
-> KVM needs the information to decide the GPA needs to be mapped at hva-
-> based shared memory or guest_memfd based private memory.
->=20
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+On Sun, 12 Nov 2023 at 09:22, Nikita Ostrenkov <n.ostrenkov@gmail.com> wrote:
+
+Hi; thanks for this patch, and sorry I haven't got round
+to reviewing it earlier.
+
+> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
 > ---
->  accel/kvm/kvm-all.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
->  include/sysemu/kvm.h |  3 +++
->  2 files changed, 45 insertions(+)
->=20
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c index
-> 69afeb47c9c0..76e2404d54d2 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -102,6 +102,7 @@ bool kvm_has_guest_debug;  static int kvm_sstep_flags=
-;
-> static bool kvm_immediate_exit;  static bool kvm_guest_memfd_supported;
-> +static uint64_t kvm_supported_memory_attributes;
->  static hwaddr kvm_max_slot_size =3D ~0;
->=20
->  static const KVMCapabilityInfo kvm_required_capabilites[] =3D { @@ -1305=
-,6
-> +1306,44 @@ void kvm_set_max_memslot_size(hwaddr max_slot_size)
->      kvm_max_slot_size =3D max_slot_size;
->  }
->=20
-> +static int kvm_set_memory_attributes(hwaddr start, hwaddr size,
-> +uint64_t attr) {
-> +    struct kvm_memory_attributes attrs;
-> +    int r;
+>  hw/misc/imx7_snvs.c         | 59 ++++++++++++++++++++++++++++++++-----
+>  hw/misc/trace-events        |  4 +--
+>  include/hw/misc/imx7_snvs.h | 14 ++++++++-
+>  3 files changed, 67 insertions(+), 10 deletions(-)
+>
+> diff --git a/hw/misc/imx7_snvs.c b/hw/misc/imx7_snvs.c
+> index a245f96cd4..7ef3e4901a 100644
+> --- a/hw/misc/imx7_snvs.c
+> +++ b/hw/misc/imx7_snvs.c
+> @@ -13,29 +13,74 @@
+>   */
+>
+>  #include "qemu/osdep.h"
+> +#include "qemu/timer.h"
+>  #include "hw/misc/imx7_snvs.h"
+>  #include "qemu/module.h"
+> +#include "sysemu/sysemu.h"
+>  #include "sysemu/runstate.h"
+>  #include "trace.h"
+>
+> +#define RTC_FREQ    32768ULL
 > +
-> +    attrs.attributes =3D attr;
-> +    attrs.address =3D start;
-> +    attrs.size =3D size;
-> +    attrs.flags =3D 0;
-> +
-> +    r =3D kvm_vm_ioctl(kvm_state, KVM_SET_MEMORY_ATTRIBUTES, &attrs);
-> +    if (r) {
-> +        warn_report("%s: failed to set memory (0x%lx+%#zx) with attr 0x%=
-lx
-> error '%s'",
-> +                     __func__, start, size, attr, strerror(errno));
-> +    }
-> +    return r;
+> +static uint64_t imx7_snvs_get_count(IMX7SNVSState *s)
+> +{
+> +    int64_t now_ms = qemu_clock_get_ns(rtc_clock) / 1000000;
+> +    return s->tick_offset + now_ms * RTC_FREQ / 1000;
+
+This kind of clock-to-ticks calculation should generally
+be done with muldiv64() to avoid possible overflows:
+
+    int64_t ticks = muldiv64(qemu_clock_get_ns(rtc_clock), RTC_FREQ,
+NANOSECONDS_PER_SECOND);
+    return s->tick_offset + ticks;
+
 > +}
 > +
-> +int kvm_set_memory_attributes_private(hwaddr start, hwaddr size) {
-> +    if (!(kvm_supported_memory_attributes &
-> KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-> +        error_report("KVM doesn't support PRIVATE memory attribute\n");
-> +        return -EINVAL;
+>  static uint64_t imx7_snvs_read(void *opaque, hwaddr offset, unsigned size)
+>  {
+> -    trace_imx7_snvs_read(offset, 0);
+> +    IMX7SNVSState *s = opaque;
+> +    uint64_t ret = 0;
+> +
+> +    switch (offset) {
+> +    case SNVS_LPSRTCMR:
+> +        ret = (imx7_snvs_get_count(s) >> 32) & 0x7fffU;
+> +        break;
+> +    case SNVS_LPSRTCLR:
+> +        ret = imx7_snvs_get_count(s) & 0xffffffffU;
+> +        break;
+> +    case SNVS_LPCR:
+> +        ret = s->lpcr;
+> +        break;
 > +    }
 > +
-> +    return kvm_set_memory_attributes(start, size,
-> +KVM_MEMORY_ATTRIBUTE_PRIVATE); }
+> +    trace_imx7_snvs_read(offset, ret, size);
+>
+> -    return 0;
+> +    return ret;
+>  }
+>
+>  static void imx7_snvs_write(void *opaque, hwaddr offset,
+>                              uint64_t v, unsigned size)
+>  {
+> -    const uint32_t value = v;
+> -    const uint32_t mask  = SNVS_LPCR_TOP | SNVS_LPCR_DP_EN;
+> +    trace_imx7_snvs_write(offset, v, size);
+>
+> -    trace_imx7_snvs_write(offset, value);
+> +    IMX7SNVSState *s = opaque;
+>
+> -    if (offset == SNVS_LPCR && ((value & mask) == mask)) {
+> -        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> +    uint64_t new_value = 0;
 > +
-> +int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size) {
-> +    if (!(kvm_supported_memory_attributes &
-> KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-> +        error_report("KVM doesn't support PRIVATE memory attribute\n");
-> +        return -EINVAL;
+> +    switch (offset) {
+> +    case SNVS_LPSRTCMR:
+> +        new_value = (imx7_snvs_get_count(s) & 0xffffffffU) | (v << 32);
+> +        break;
+> +    case SNVS_LPSRTCLR:
+> +        new_value = (imx7_snvs_get_count(s) & 0x7fff00000000ULL) | v;
+> +        break;
+> +    case SNVS_LPCR: {
+> +        s->lpcr = v;
+> +
+> +        const uint32_t value = v;
+> +        const uint32_t mask  = SNVS_LPCR_TOP | SNVS_LPCR_DP_EN;
+> +
+> +        if ((value & mask) == mask)
+> +            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
+> +
+> +        break;
 > +    }
+>      }
+> +
+> +    if (offset == SNVS_LPSRTCMR || offset == SNVS_LPSRTCLR)
+> +        s->tick_offset += new_value - imx7_snvs_get_count(s);
 
-Duplicate code in kvm_set_memory_attributes_shared/private.
-Why not move the check into kvm_set_memory_attributes?
+Our coding standard requires braces on all if() statements,
+even single line ones.
+
+I think for this update-the-count handling we should call
+imx7_snvs_get_count() only once, and then use that value
+both in constructing new_value and also here where we
+calculate the tick_offset.
+
+>  }
+
+I think you need to initialise s->tick_offset in the
+device init routine, similar to what the pl031 device does.
+
+>  static const struct MemoryRegionOps imx7_snvs_ops = {
+> diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+> index 05ff692441..85725506bf 100644
+> --- a/hw/misc/trace-events
+> +++ b/hw/misc/trace-events
+> @@ -116,8 +116,8 @@ imx7_gpr_read(uint64_t offset) "addr 0x%08" PRIx64
+>  imx7_gpr_write(uint64_t offset, uint64_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx64
+>
+>  # imx7_snvs.c
+> -imx7_snvs_read(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
+> -imx7_snvs_write(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
+> +imx7_snvs_read(uint64_t offset, uint64_t value, unsigned size) "i.MX SNVS read: offset 0x%08" PRIx64 " value 0x%08" PRIx64 " size %u"
+> +imx7_snvs_write(uint64_t offset, uint64_t value, unsigned size) "i.MX SNVS write: offset 0x%08" PRIx64 " value 0x%08" PRIx64 " size %u"
+>
+>  # mos6522.c
+>  mos6522_set_counter(int index, unsigned int val) "T%d.counter=%d"
+> diff --git a/include/hw/misc/imx7_snvs.h b/include/hw/misc/imx7_snvs.h
+> index 14a1d6fe6b..406c1fe97f 100644
+> --- a/include/hw/misc/imx7_snvs.h
+> +++ b/include/hw/misc/imx7_snvs.h
+> @@ -20,7 +20,9 @@
+>  enum IMX7SNVSRegisters {
+>      SNVS_LPCR = 0x38,
+>      SNVS_LPCR_TOP   = BIT(6),
+> -    SNVS_LPCR_DP_EN = BIT(5)
+> +    SNVS_LPCR_DP_EN = BIT(5),
+> +    SNVS_LPSRTCMR = 0x050, /* Secure Real Time Counter MSB Register */
+> +    SNVS_LPSRTCLR = 0x054, /* Secure Real Time Counter LSB Register */
+>  };
+>
+>  #define TYPE_IMX7_SNVS "imx7.snvs"
+> @@ -31,6 +33,16 @@ struct IMX7SNVSState {
+>      SysBusDevice parent_obj;
+>
+>      MemoryRegion mmio;
+> +
+> +    /*
+> +     * Needed to preserve the tick_count across migration, even if the
+> +     * absolute value of the rtc_clock is different on the source and
+> +     * destination.
+> +     */
+> +    int64_t tick_offset_vmstate;
+
+You don't need tick_offset_vmstate -- it is only in the p031
+RTC device as a backwards-compatibility thing for older versions
+of QEMU. Migrating tick_offset alone is sufficient in a new
+device. (It seems to have been unfortunately copied-and-pasted
+into the goldfish RTC device; we should probably fix that bug.)
+
+> +    int64_t tick_offset;
+> +
+> +    uint64_t lpcr;
+
+We've now added state to this device, which means that it needs
+a VMState structure to handle migration, and it needs a reset
+function.
+
+>  };
+>
+>  #endif /* IMX7_SNVS_H */
+> --
+
+thanks
+-- PMM
 
