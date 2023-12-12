@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4390980F2B5
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:32:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FC180F326
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:36:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5fj-0005ty-Ev; Tue, 12 Dec 2023 11:31:51 -0500
+	id 1rD5gP-0006xF-IP; Tue, 12 Dec 2023 11:32:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5fh-0005go-Cw
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:31:49 -0500
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5g7-0006XC-1b
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:18 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5ff-0007e0-KJ
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:31:49 -0500
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2cb20b965dbso58321771fa.1
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:31:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5fm-0007gL-1j
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:11 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-551d13f6752so566251a12.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:31:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398705; x=1703003505; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702398712; x=1703003512; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0VzQTFGtBulS+CCTLCLD2ExWe/+5Y5bIpgcbR//mYas=;
- b=TieBIuCx39PZux4zqfCdKwrxtjLu5TMwEn+9bQsLCwKu/6OeyKFQkOJhX6I2zlnmJT
- 69Lz3kIQf9vIuIDo171jcJf7OanjV1YV/5QiptAd26jqhbo0PGgQZAtgxql2xB/ABeM2
- 6DMrJw7awo/ZdsekaSXYGmtQnEsR1pYzVditV1IXkmZR2uaPGgp3nqKdHJe2PxAnqJnF
- tbjsnTnk9vxoG7ICTxp6t1Eg7KdGB2qI4awtctnKQi0R91KWEu5z8X/xMkv08vHlMt8w
- EO+lajLT4RtRUuY1szCci2GXqkjvWwwmky2xX3IzHchg9US4n0HbIISBhitH8eY62zFe
- Wxog==
+ bh=XiepaygppBbcW3Zh+1TG9/b3hf0ew+z06xur2FyhJl8=;
+ b=Dqw7Q3uJoPAZ4v1OJbh1N9hj+Q2bjph7UyX2cqKuUVgvbQ7l99qeYiJzzpIw3DN9QX
+ K5u1u2ZHECbLmucb5uhRSYM/ShNZyM6CrCzXQuPrlimQd+WrfhhUWwhQmV8cPIifASZd
+ exPMeNV8/Pek8dDaWrlfTvz/qZ56rXFp5mpege8KzGFfqsiAH83nvBogLBsDnIApiVUK
+ O3yT0P00Bgw+XyrJQOtOhHRzyK8H5g+uwaRUivGyXvPHgDQQFhPGuH3N/yN3T7XHNEHE
+ 4bB8JXOuSW9616RiKKuB+NXhfracBnoxq+quvkJocnyd62vyNji0qy+Rmz1N7mzmWlQb
+ GeSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398705; x=1703003505;
+ d=1e100.net; s=20230601; t=1702398712; x=1703003512;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0VzQTFGtBulS+CCTLCLD2ExWe/+5Y5bIpgcbR//mYas=;
- b=bXbHswNl6AdUNydVFyWbP0ntnpN3W+oc9i3rnFHD0h3/L6NVDdVj80bq5nCmBAzg4H
- Y5qCK0OxiCf+sGFriprjHUMx62ZJYwZdsaImO6+hpB84zQGXTaYC4afjI2CLWszjgOyh
- LeOgSk4924AL30paIvbPimL0Ahz/JjkJ64tV6njR5CBpsUkykFAHHsD2xIZQXdTH5QoT
- DLEJ1K2PuhGgbIpgjjovsCSq/frN4abp0xYFIQP2co66WKNc1vRrSt8w4pG+7AYG4kX+
- Exe/0dIHiMIwpPSeboDpLHbeDlQ2TlSTPPxvzzvabE/STb1OFwvL6ewNs2aleCldVCaf
- 4kdA==
-X-Gm-Message-State: AOJu0YyrOfTxgDg+C8H2fKjwWS2fiuJAT73XLjz07U5Shf6vrwut4lLN
- R+UpD3hD0NdoW48Mikdh0MmVBGGxaLlMxAZxSZY=
-X-Google-Smtp-Source: AGHT+IFBnm9rAQDi2fs5vLvHFewLB/RO8lqaDp/cJ+jC29KN9FDAkk2MRVDhxXxGADwABnMwfReOcg==
-X-Received: by 2002:a05:651c:231:b0:2ca:cc7:d1d with SMTP id
- z17-20020a05651c023100b002ca0cc70d1dmr1243530ljn.194.1702398704821; 
- Tue, 12 Dec 2023 08:31:44 -0800 (PST)
+ bh=XiepaygppBbcW3Zh+1TG9/b3hf0ew+z06xur2FyhJl8=;
+ b=uXNmM+awAqj0s78xUdEXzPqmH9BDpiJi+926DdoAhqrsE4OD8pNPbLu68exi5Mald6
+ tEDQdywAtMohukjxJApM4nvpZ0SjX16NHRsoKWhqw3xdVN+MlZFepmpLGqh7Xj13Iwfz
+ GCT4PyJ7d4kma7ek+n6ELzTIudUUFNihRuYvUp/N/6Lrh5nIIHO0Lgwiif+xqTjEFVzC
+ 8vauXRFFfLkEfjDpcXRcOAALOlf46aOLe1hl5e1aqwf4+l79OmQxz9CUxA21SGllL8Ux
+ 2YYA6Oi9r6T/B2XhXjEPZi7QXXDgCbWdxk9aIZoHLMzbUzywSuVqjs8mIeUufSIEjEzw
+ qqDA==
+X-Gm-Message-State: AOJu0YwsUNczAjW4nucm+rk2tApoij3GHqgBPq/PD6b9vupWrnLHFkSj
+ PMtJDSqbLDG2e0C7Kbt6uBf43CXCMf+Gg/mq0GY=
+X-Google-Smtp-Source: AGHT+IEGJB1Kg+vrsX7qnSQDbyV5YTp8wo+VFKkjcLN/23vK5gDSX5GaOg4/fO3vujamRqj2ti7JGg==
+X-Received: by 2002:a17:907:7b82:b0:a1a:f475:2ebf with SMTP id
+ ne2-20020a1709077b8200b00a1af4752ebfmr4042581ejc.59.1702398712107; 
+ Tue, 12 Dec 2023 08:31:52 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- dh7-20020a0564021d2700b0054c76d0f755sm4827776edb.42.2023.12.12.08.31.42
+ uv6-20020a170907cf4600b00a1e443bc037sm6569803ejc.147.2023.12.12.08.31.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:31:44 -0800 (PST)
+ Tue, 12 Dec 2023 08:31:51 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
@@ -71,25 +71,23 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 17/33] hw/cpu/arm: Document more properties of
- CORTEX_MPCORE_PRIV QOM type
-Date: Tue, 12 Dec 2023 17:29:17 +0100
-Message-ID: <20231212162935.42910-18-philmd@linaro.org>
+Subject: [PATCH 18/33] hw/cpu/arm: Replace A15MPPrivState by CortexMPPrivState
+Date: Tue, 12 Dec 2023 17:29:18 +0100
+Message-ID: <20231212162935.42910-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
 References: <20231212162935.42910-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,33 +103,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+A15MPPrivState doesn't contain anything else but its parent,
+CortexMPPrivState. Remove it in favor of the parent.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/cpu/cortex_mpcore.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/hw/arm/aspeed_soc.h    | 2 +-
+ include/hw/arm/fsl-imx6ul.h    | 2 +-
+ include/hw/arm/fsl-imx7.h      | 2 +-
+ include/hw/cpu/cortex_mpcore.h | 5 -----
+ hw/cpu/a15mpcore.c             | 2 +-
+ 5 files changed, 4 insertions(+), 9 deletions(-)
 
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index e0663ab50d..2f51d78e22 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -108,7 +108,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(Aspeed2400SoCState, ASPEED2400_SOC)
+ struct Aspeed2600SoCState {
+     AspeedSoCState parent;
+ 
+-    A15MPPrivState a7mpcore;
++    CortexMPPrivState a7mpcore;
+     ARMCPU cpu[ASPEED_CPUS_NUM]; /* XXX belong to a7mpcore */
+ };
+ 
+diff --git a/include/hw/arm/fsl-imx6ul.h b/include/hw/arm/fsl-imx6ul.h
+index 5ed22004d1..b37d544319 100644
+--- a/include/hw/arm/fsl-imx6ul.h
++++ b/include/hw/arm/fsl-imx6ul.h
+@@ -68,7 +68,7 @@ struct FslIMX6ULState {
+ 
+     /*< public >*/
+     ARMCPU             cpu;
+-    A15MPPrivState     a7mpcore;
++    CortexMPPrivState  a7mpcore;
+     IMXGPTState        gpt[FSL_IMX6UL_NUM_GPTS];
+     IMXEPITState       epit[FSL_IMX6UL_NUM_EPITS];
+     IMXGPIOState       gpio[FSL_IMX6UL_NUM_GPIOS];
+diff --git a/include/hw/arm/fsl-imx7.h b/include/hw/arm/fsl-imx7.h
+index 87faee33c2..a6f3a96029 100644
+--- a/include/hw/arm/fsl-imx7.h
++++ b/include/hw/arm/fsl-imx7.h
+@@ -68,7 +68,7 @@ struct FslIMX7State {
+ 
+     /*< public >*/
+     ARMCPU             cpu[FSL_IMX7_NUM_CPUS];
+-    A15MPPrivState     a7mpcore;
++    CortexMPPrivState  a7mpcore;
+     IMXGPTState        gpt[FSL_IMX7_NUM_GPTS];
+     IMXGPIOState       gpio[FSL_IMX7_NUM_GPIOS];
+     IMX7CCMState       ccm;
 diff --git a/include/hw/cpu/cortex_mpcore.h b/include/hw/cpu/cortex_mpcore.h
-index 4697fd47c7..73627bc415 100644
+index 73627bc415..7822d5cbc4 100644
 --- a/include/hw/cpu/cortex_mpcore.h
 +++ b/include/hw/cpu/cortex_mpcore.h
-@@ -28,10 +28,17 @@
-  *  some timers and watchdogs
-  *
-  * QEMU interface:
-+ *  + QOM property "cluster-id" which set the cluster ID and its affinity.
-  *  + QOM property "num-cores" which set the number of cores present in
-  *    the cluster.
-+ *  + QOM property "cpu-type" is the CPU model typename.
-  *  + QOM properties "cpu-has-el3", "cpu-has-el2" which set whether the CPUs
-  *    have the exception level features present.
-+ *  + QOM properties "cpu-has-vfp-d32", "cpu-has-neon" which set whether the
-+ *    CPUs have the FPU features present.
-+ *  + QOM property "cpu-freq-hz" is the frequency of each core
-+ *  + QOM property "cpu-memory" is a MemoryRegion containing the devices
-+ *    provided by the board model.
-  *  + QOM property "gic-spi-num" sets the number of GIC Shared Peripheral
-  *    Interrupts.
-  * QEMU interface forwarded from the GIC:
+@@ -117,10 +117,5 @@ struct A9MPPrivState {
+ };
+ 
+ #define TYPE_A15MPCORE_PRIV "a15mpcore_priv"
+-OBJECT_DECLARE_SIMPLE_TYPE(A15MPPrivState, A15MPCORE_PRIV)
+-
+-struct A15MPPrivState {
+-    CortexMPPrivState parent_obj;
+-};
+ 
+ #endif
+diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
+index ecd04b7af1..87b0786781 100644
+--- a/hw/cpu/a15mpcore.c
++++ b/hw/cpu/a15mpcore.c
+@@ -125,7 +125,7 @@ static const TypeInfo a15mp_types[] = {
+     {
+         .name           = TYPE_A15MPCORE_PRIV,
+         .parent         = TYPE_CORTEX_MPCORE_PRIV,
+-        .instance_size  = sizeof(A15MPPrivState),
++        .instance_size  = sizeof(CortexMPPrivState),
+         .class_init     = a15mp_priv_class_init,
+     },
+ };
 -- 
 2.41.0
 
