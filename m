@@ -2,88 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C1380E369
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 05:41:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 173BF80E37D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 05:57:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCuZn-0005IV-6p; Mon, 11 Dec 2023 23:40:59 -0500
+	id 1rCunr-00078u-5t; Mon, 11 Dec 2023 23:55:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1rCuZl-0005Hv-P7; Mon, 11 Dec 2023 23:40:57 -0500
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1rCuZk-00011y-4r; Mon, 11 Dec 2023 23:40:57 -0500
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6ce72730548so4515237b3a.1; 
- Mon, 11 Dec 2023 20:40:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702356054; x=1702960854; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Ukeq30dZk5R9bWQpYKDnSfpdPGljlsWC2/i6+A/VGcc=;
- b=Uz2MTgBHMGCzrqPw2y7fElLSEIoP6YECCamTDoD3hA/roeatjpaLuZ4yWsQB9Vqtu6
- UWfjaf9T4ac1XEfFxFyPFsuOZ9OiTKqxPtV3yoDkf4Y+jukjNzTAopDOTSMCnwmdChYi
- OCg/ZRbDX7iti08AS5ObmpQZAwST1p0z9ljWK+mdzKmAQFns8UTXgJiuDmJg5fqIH14r
- iQ8wnoR+RTg1kxkwsVOqUIq0lJ9Ol3Tug13cLOuXEziMBwx3Pn65YkrquK/Aw6c1mpMb
- eNW11EbZMB+UbJ5IxkPDEXEt2X3yf6ewopgwduGVXiC4lT8fJqYQjoILJJa86tWCgZ/2
- oNdQ==
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rCunm-00078O-SP
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 23:55:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rCunk-0006NW-Oe
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 23:55:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702356921;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gDEN6IBKCR9SZvy+vP5xMfqISLn2urgiBHY3S8b4Wt0=;
+ b=i1rctoaqK2VXCKM67iVI/sUXTDmNEmL5pF45n4uZSFa49p8jabSjmFBoP2dlQ0hostKN0l
+ 1xr1tW43f8CIYhXWf7c19/vLHbYe08OVPccLcTa/sBMxaY7vHzajqk73nkGtpobUNsGPem
+ GKgwpLnjld74PhiO+xMmzMIuTvkzDeQ=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-492-ibZOL-NRO_yh2oMyf8n9mw-1; Mon, 11 Dec 2023 23:55:19 -0500
+X-MC-Unique: ibZOL-NRO_yh2oMyf8n9mw-1
+Received: by mail-oi1-f198.google.com with SMTP id
+ 5614622812f47-3b9eeff9f7bso6034741b6e.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 20:55:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702356054; x=1702960854;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1702356919; x=1702961719;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ukeq30dZk5R9bWQpYKDnSfpdPGljlsWC2/i6+A/VGcc=;
- b=vDfcnCl0xs+UGFOlZapZyroe1lHptPobf3Fq6Wdl/xUxCKe5XhpWVY5pf5FsflJMfR
- bBocUuGPZTyauz9YOQQrbAYaFDHztwvEhwS3PHcTcuo8P09aGPmEK1qpT0sr6BHRhCBM
- gTWuBPeXJwShVAMwzl5dl8wdYFrg1sBHyX/WyBdowadQmAl70Jh4e2AkzGmYSssExzC+
- Q7BHQaKEghQLDbBhDJh8Fyb7dNorzOVwpnQrwsZDMkF56D0jfjm4fYJyAB9UVynryyay
- k7Xto/SoHT9HrAx2WB26+jp3/9OXL5NKohznxJvpjlb6QeJ6oHyM+PveuEkAHk33FVGf
- q5fA==
-X-Gm-Message-State: AOJu0YwjxfTuojKkd6FdAg/yI/FatyW0xCqpsPEPxEhlDs9nFV67hN3c
- XIHp8EwD7paP7fIePDSGVOY=
-X-Google-Smtp-Source: AGHT+IHOvqATa7YgutVlKgn1hwtt5lHWQ9HsCTLb9m9GlsI9ccLrR1guvc2BjfQgZlvxnMOBwv1Itg==
-X-Received: by 2002:a05:6a00:1307:b0:6ce:2731:e86b with SMTP id
- j7-20020a056a00130700b006ce2731e86bmr6762502pfu.50.1702356054335; 
- Mon, 11 Dec 2023 20:40:54 -0800 (PST)
-Received: from [192.168.0.22] ([210.223.46.112])
+ bh=gDEN6IBKCR9SZvy+vP5xMfqISLn2urgiBHY3S8b4Wt0=;
+ b=SHL46GcRhfAYgM/4EOa/eSghSFhNVsUOwX1bGOgqrEsm0a7Ztb6MdF2kAMGD+DV1Ul
+ XnbwdJkhsnjQFBMof+s30kbXIyMAJtOW14QFfJPBsff2O3TGq8UOVt+s+tN3IN6CxfUD
+ eUrAeQwzN5fMY6rHYpMYotwvp7LxtEKpZu07YtAez7q9QcyhwAvM9d7NOTYSWH5QYLp+
+ Jxw75Kqso/BfJYPqQSZHPmHZ439R/nmZ3m3z0jk1qRnut4sVEzVgSWI8Bd9ybO96FUm3
+ IacwXcEb3lVRNADZsuDf6JVBWUY31CSSWZxPvznai+5A384MQCBpUnnOMx+etOykrh+S
+ frJg==
+X-Gm-Message-State: AOJu0YzX7+cdEcQNeNS4UpVbMlVFiOHSIjx2Ir4hUfXoFM7Vpezfsrrz
+ M+AL3g+yOr4XJHkbDMZ/lxG/DpGZEYepdpRvgMR643lwlkkpO28wWgeXA3IU2Xarlh1hdbDd+PS
+ ezUuVq7iaL/zOJBo=
+X-Received: by 2002:a05:6808:1493:b0:3b9:d4c0:5fac with SMTP id
+ e19-20020a056808149300b003b9d4c05facmr7478783oiw.22.1702356919107; 
+ Mon, 11 Dec 2023 20:55:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF69UM/96uA9+yVDBg06a7ccGQ/ArtwPvz/UiRlwVZ4UPAq2rRgkmD9crHzR3Fux+aWTDQ9Zg==
+X-Received: by 2002:a05:6808:1493:b0:3b9:d4c0:5fac with SMTP id
+ e19-20020a056808149300b003b9d4c05facmr7478776oiw.22.1702356918859; 
+ Mon, 11 Dec 2023 20:55:18 -0800 (PST)
+Received: from [192.168.68.51] ([43.252.115.3])
  by smtp.gmail.com with ESMTPSA id
- q20-20020a656854000000b005b7dd356f75sm6206291pgt.32.2023.12.11.20.40.50
+ c23-20020aa78817000000b006ce358d5d9asm7417601pfo.141.2023.12.11.20.55.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 20:40:53 -0800 (PST)
-Message-ID: <806e361d-e51b-498f-937e-b472191db59e@gmail.com>
-Date: Tue, 12 Dec 2023 13:40:51 +0900
+ Mon, 11 Dec 2023 20:55:18 -0800 (PST)
+Message-ID: <0b2aaedf-7a4c-49f4-b4af-71f9ab693207@redhat.com>
+Date: Tue, 12 Dec 2023 14:55:08 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] Support for Zoned UFS
-Content-Language: ko
-To: daejun7.park@samsung.com, "kwolf@redhat.com" <kwolf@redhat.com>,
- "hreitz@redhat.com" <hreitz@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "fam@euphon.net"
- <fam@euphon.net>, "thuth@redhat.com" <thuth@redhat.com>,
- "lvivier@redhat.com" <lvivier@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>
-Cc: Seokhwan Kim <sukka.kim@samsung.com>,
- Yonggil Song <yonggil.song@samsung.com>, Jeuk Kim <jeuk20.kim@samsung.com>,
- JinHwan Park <jh.i.park@samsung.com>
-References: <CGME20231208060902epcms2p3810b29fefbddaf16a7f3f2758cf218ba@epcms2p3>
- <20231208060902epcms2p3810b29fefbddaf16a7f3f2758cf218ba@epcms2p3>
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-In-Reply-To: <20231208060902epcms2p3810b29fefbddaf16a7f3f2758cf218ba@epcms2p3>
+Subject: Re: [PATCH v9 0/9] Unified CPU type check
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+To: qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
+ b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, imammedo@redhat.com,
+ kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
+ rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ armbru@redhat.com, wangyanan55@huawei.com, vijai@behindbytes.com,
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
+References: <20231204004726.483558-1-gshan@redhat.com>
+In-Reply-To: <20231204004726.483558-1-gshan@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,36 +107,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I've already done all the ufs related review.
+Hi Phil,
 
+On 12/4/23 10:47, Gavin Shan wrote:
+> This series bases on Phil's repository because the prepatory commits
+> have been queued to the branch.
+> 
+>    https://gitlab.com/philmd/qemu.git (branch: cpus-next)
+> 
+> There are two places where the user specified CPU type is checked to see
+> if it's supported or allowed by the board: machine_run_board_init() and
+> mc->init(). We don't have to maintain two duplicate sets of logic. This
+> series intends to move the check to machine_run_board_init() so that we
+> have unified CPU type check.
+> 
+> This series can be checked out from:
+> 
+>    git@github.com:gwshan/qemu.git (branch: kvm/cpu-type)
+> 
+> PATCH[1-4] refactors and improves the logic to validate CPU type in
+>             machine_run_board_init()
+> PATCH[5-9] validates the CPU type in machine_run_board_init() for the
+>             individual boards
+> 
+> v6: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00768.html
+> v7: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg01045.html
+> v8: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg01168.html
+> 
 
-If the SCSI maintainers approve this patchset, I'll put it in my tree 
-and create a pull request.
+Ping to see if there is a chance to queue it up before the Chrismas? :)
 
+Thanks,
+Gavin
 
-Thank you,
-
-Jeuk
-
-
-On 12/8/2023 3:09 PM, Daejun Park wrote:
-> This patch enables zoned support for UFS devices.
-> By applying this patch, a QEMU run can use parameters to configure whether
-> each LU of each UFS is zoned, and the capacity, size, and max open zones.
-> Zoned UFS is implemented by referencing ZBC2.
-> (https://www.t10.org/members/w_zbc2.htm)
->
-> Daejun Park (3):
->    hw/ufs: Support for Zoned UFS
->    hw/scsi: add mode sense support for zbc device
->    tests/qtest: Add tests for Zoned UFS
->
->   hw/scsi/scsi-disk.c    |  13 +-
->   hw/ufs/lu.c            | 616 +++++++++++++++++++++++++++++++++++++++++
->   hw/ufs/ufs.c           |   6 +-
->   hw/ufs/ufs.h           |  32 +++
->   include/block/ufs.h    |  31 +++
->   tests/qtest/ufs-test.c | 178 ++++++++++++
->   6 files changed, 870 insertions(+), 6 deletions(-)
->
 
