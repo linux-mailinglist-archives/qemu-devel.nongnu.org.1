@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDDC980EA65
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6246E80EA68
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:30:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD0wb-0004zS-5D; Tue, 12 Dec 2023 06:28:57 -0500
+	id 1rD0yD-000662-At; Tue, 12 Dec 2023 06:30:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rD0wZ-0004y4-GH
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:28:55 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0xz-00064S-S9
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:30:24 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rD0wX-0003rH-0n
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:28:54 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40c39e936b4so32478865e9.1
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 03:28:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0xx-00045I-28
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:30:22 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-54c7744a93fso7785725a12.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 03:30:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702380531; x=1702985331; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2upU0FcSwAfpQs5BkNAQ22cY9mScW0fT9l3NBdPTmB4=;
- b=ql+Z00did9yELr8sQrOCXddWGm2i7TnGfZkmsyPcD1ezpHqBIsyrudL8DHX0ng8BLz
- Qcwo05eCxGrg+tXMuqXNrfK4BRtS6pKgVODJLBs6VL3+dszuE4dMplA3lFQozfCBwTkD
- e9AKDumfjT03T/Cr/FNLD2IveSh2JFnbtMZgfV+cYE8g2vrUKP+W24BIGZvPpe1t/b74
- YB3DOvP6+Hh+Ru882fPCtwLt4Dx2wavQCjUN4aKQ9S8WbLejuZnixNvFXnCIi+dmAt+H
- hHk4PEA6QJqE/Hkb6abC+JXqgneVRQYNwm1Qwyub0YKy6TxV9nmMXJ5zdunh57NdUxub
- rDFw==
+ d=linaro.org; s=google; t=1702380619; x=1702985419; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ueBqNhx6BK67IUq8z+0/fpvGM9Ts68nyh+e99PjXJLk=;
+ b=lPIfvd1OjPdmrD3b8H3rTaR+xR/+OLERjeifhkd2nxV9EiGNYyosLWlSITgip8ZLtn
+ uuj55M2EPexfFBmstmcUd5UP+X60VMMP3h0wCCcppd6+eCAg86uIqtUCir+WTtBhV+7A
+ IPoHSniYXknqZyb9U/Cv+GaTZyL8YVA2SOtl3fOtuBoA8iyHAWLiZLpjJLSPDXZV9eKF
+ 7TCiEGduHUdCdqH6JPGA0OdRfiopPlv4u/i9VnUpaK4xlEJAI1eaMPrUe6AyGRUL7mMj
+ csc36sJmiA3mqqq+Q9feHqC/dPkbb6IVyV2s28BFUkmIkesT6tEL/qMajgs2EmxpRcrO
+ 06Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702380531; x=1702985331;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=2upU0FcSwAfpQs5BkNAQ22cY9mScW0fT9l3NBdPTmB4=;
- b=SQD5TOSkGO4k1o/Kr7aLjafI5eOeCRxPmGcw8vFyfBNpgOY7S1ylVEZTW95dI1Sfev
- s5s7S3TfzxqgViv6+peN28BYV4aka/U3zTCnsAxEEOle+u0S0hyFUv29D3NDitxGHY1A
- dThB3XI7P7tzjv4TNenUqnu8+HMEdgz6daMHeiNwithmRg92WBP3vZE5P3XKs0gLQwO4
- HMIcKIQHdTs0oU/zkjcvFW31qNJwhlAp/SW8Kg4Bgywvkbv81zgLiWYFuYBzJJ+RMgA5
- Q+bu/GOIG1kXZdO0lUtdr1cdmYxyezE+NBKX3C0xuQ4CHKF/cOcwBIc4082+TYOWkwSI
- vnlg==
-X-Gm-Message-State: AOJu0YzUfwXiBy4YF+B+opOXnk/NSi+DzPxd5MIhkvN9e8gUq8GfdQVk
- 7vMP86BLaoZg6akBGdCyrnomyQ==
-X-Google-Smtp-Source: AGHT+IHsRFUeS1XVov4om+zAK0ylCUp02w/jhj8o7/jlW5RfDJq0LxsBSP5ZOQTd+Ec7Bxlo7Tb1fw==
-X-Received: by 2002:a05:600c:c0c:b0:40c:2b16:1f9 with SMTP id
- fm12-20020a05600c0c0c00b0040c2b1601f9mr1459358wmb.282.1702380531508; 
- Tue, 12 Dec 2023 03:28:51 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- gw18-20020a05600c851200b004063c9f68f2sm15942646wmb.26.2023.12.12.03.28.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Dec 2023 03:28:51 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EB09F5F7D3;
- Tue, 12 Dec 2023 11:28:50 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Laurent Vivier <laurent@vivier.eu>,  Peter Xu
- <peterx@redhat.com>,  David Hildenbrand <david@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 1/4] accel/tcg: Make use of qemu_target_page_mask()
- in perf.c
-In-Reply-To: <20231212003837.64090-2-iii@linux.ibm.com> (Ilya Leoshkevich's
- message of "Tue, 12 Dec 2023 01:34:47 +0100")
-References: <20231212003837.64090-1-iii@linux.ibm.com>
- <20231212003837.64090-2-iii@linux.ibm.com>
-User-Agent: mu4e 1.11.26; emacs 29.1
-Date: Tue, 12 Dec 2023 11:28:50 +0000
-Message-ID: <87y1dzd5hp.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1702380619; x=1702985419;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ueBqNhx6BK67IUq8z+0/fpvGM9Ts68nyh+e99PjXJLk=;
+ b=sl1nGuGkGj1VW4Tov+xzCxzyGBPI25afM8mp+CtYhEKL1ejjoBHl5fDvQ0tVIkDCGi
+ y86EM8JGLi5nAMT/lAnpWk5ufp19/KpPwo/JfJ/fnMzkrU5BHHBRLlHT8Ant7jHp7m7Y
+ iocx/HCw1Wt8x3xwwyTGgPzfJjV5UWjwnIZfz5Av7mrdLCgaIBpjNXn8alCI+p7HwZQ1
+ o2PEFGjra2/aC10Deycey8iAXUmjFRSmjA3gweGLgqG39c7XBRGnJ4GujrCsyFSumwx7
+ zvIM6sU3/2qhoZiAQmrfWGuz/kA6jRWeK/Ut6iXaQckq3tickAPCDMXb99OHNG8moABu
+ Z0Ew==
+X-Gm-Message-State: AOJu0YwlNMl1lWSTAN+21IyZz5fDfjJlkLn3Ole9eBIR71pCyLi1lkJN
+ BK/a74cxmbutAcKzJvRMXqiEWN1Cz7LhDLNzxWSzcg==
+X-Google-Smtp-Source: AGHT+IFpVa+jY5dHAWYQkZqbZQNGk2c0AM8pBfS5cYpjbTd03xzK6EvKo12dv0zn0g6X7a/pfiW2YQ==
+X-Received: by 2002:a05:6402:222b:b0:54a:fe99:105c with SMTP id
+ cr11-20020a056402222b00b0054afe99105cmr2783639edb.6.1702380619082; 
+ Tue, 12 Dec 2023 03:30:19 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.175.193])
+ by smtp.gmail.com with ESMTPSA id
+ u18-20020a50c2d2000000b0055147185e2fsm1488610edf.61.2023.12.12.03.30.18
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 12 Dec 2023 03:30:18 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/2] system/qtest: Minor include cleanups
+Date: Tue, 12 Dec 2023 12:30:14 +0100
+Message-ID: <20231212113016.29808-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,16 +89,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ilya Leoshkevich <iii@linux.ibm.com> writes:
+Add missing header and restrict to sysemu.
 
-> Stop using TARGET_PAGE_MASK in order to make perf.c more
-> target-agnostic.
->
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Philippe Mathieu-Daudé (2):
+  system/qtest: Include missing 'hw/core/cpu.h' header
+  system/qtest: Restrict QTest API to system emulation
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+ include/sysemu/qtest.h | 2 ++
+ system/qtest.c         | 1 +
+ 2 files changed, 3 insertions(+)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+-- 
+2.41.0
+
 
