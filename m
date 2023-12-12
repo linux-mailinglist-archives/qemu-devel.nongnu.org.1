@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904E480E365
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 05:40:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3180080E366
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 05:40:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCuXn-0003zY-CI; Mon, 11 Dec 2023 23:38:55 -0500
+	id 1rCuYT-00044t-HM; Mon, 11 Dec 2023 23:39:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1rCuXm-0003zP-3a
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 23:38:54 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1rCuYR-00044c-7M
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 23:39:35 -0500
+Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1rCuXk-0000CJ-Gl
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 23:38:53 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6d089bc4e1aso1345324b3a.0
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 20:38:51 -0800 (PST)
+ id 1rCuYP-0000bM-Qs
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 23:39:34 -0500
+Received: by mail-oo1-xc2d.google.com with SMTP id
+ 006d021491bc7-58e256505f7so2854010eaf.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 20:39:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702355931; x=1702960731; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702355972; x=1702960772; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=k0BkpYo4LiWPnAd4aId4Wk27+tXLAp0PwmjpZLLLEdU=;
- b=GxYmedFQj1k6GJeYYBJChfwiz/OE6MMoIRlmMsuU2zYG/vkrmvOcOmQ9YTLkNb8Aby
- mzZDAXxFsFWqQ5QRT9ziHQjoJndjeAv6eV2M1lj13lBuCNoISOTaPj6j7nw0/oHFjkpa
- eoKPAJ4Q7m8xUU5ZfFQcf0nWqTVEtTXh5rbpbjxbLiXaH7dPc8MXU3twLFnA9k91WMaG
- boggezv4y96IfJD0gfYgS50gY/i178TnWt1sZjhiOMBHpXFZIP+HgQzefcJ9aEwHB/Ke
- 5cKA2x4unoRttsqJpR9mFmQEuquThK1Y02w8muIsnAORxWVZDQ9OWyabOMjwWRh8qwf7
- 2H1w==
+ bh=7kKjpYgRbPhgH5U+ZaCrjOh/6654v55c2tM22nE+pfo=;
+ b=F0E0VUTwbonvUEQDFUpEIvUvsJhgLlPfoQnO3+b7NGFveGtO/5RVpqGSU8bU0hnU6p
+ l/BbwJ4V7WklaLvaDqzND/8umo7ueIpxbyW0Qyo+PXpmV17nzp1/MtxaR9+wmp+Y/iny
+ Q/ZkKNhzthwfpeQHHXC7q7F/tlnN2m6vKHHb/WiJkB0ziNNWteEDl5fyBbhBUnZWzxy8
+ Q/dwX0p1jhFMtKMYxkhWWIjCNZqxVlxkZFvAJSFOK+jsNSo4hPd2m6I1z5gX5zIMzjhl
+ 2shHYpHqJ+BDUANrJ21lzglYr0qLlUPjihNvynK3z4sqtPxvyIFPjOVIK5coHywipfO+
+ 8oNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702355931; x=1702960731;
+ d=1e100.net; s=20230601; t=1702355972; x=1702960772;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=k0BkpYo4LiWPnAd4aId4Wk27+tXLAp0PwmjpZLLLEdU=;
- b=az8oxxBKFtzvhvY+PabsY3vF5/jf7qZiXgqc1o/27NMpMglume9bkhb9SYKonqHDlG
- Fnuw2eP0xb8HCC7jf6+fIIZnHHyqlU0xMGKJoKOYfve0aEd66WS9Jn1Y/p2auIBPomnH
- 82k8ft+bfAW91cjZGsj7o3jmAXMgGPo6HuYV+OPoq/HHpvqttKdMJ9nptnAvVmdO3fVr
- tGZ9dK4kAtZfLRcqlWxXgAQIBE23Gg2k6DAbnhiR8wwRDCs+50zphE2FanRRj/AZeoCF
- /mG+nnL4KjLu03zNiCJm+NsAAk1aFI1yFbpmUDHkCh6IaCWJ5tQXJZe7JzTfCnp14CRv
- XORQ==
-X-Gm-Message-State: AOJu0Yw3SfiqccuRkXqJ+X4uWpSNYcGJQzSNXee6mnHrlgNpTLxqimxz
- BnALERexBrtQ4YIfkMdLijA=
-X-Google-Smtp-Source: AGHT+IGzaWrRtTYY2kPiwWnCygOykl553sRVt/7vCC0lOVUiuysAkvPa4xKzKg2KOs0m2k1dWfWh+g==
-X-Received: by 2002:a05:6a20:6a08:b0:18b:826d:1e89 with SMTP id
- p8-20020a056a206a0800b0018b826d1e89mr6584231pzk.12.1702355930640; 
- Mon, 11 Dec 2023 20:38:50 -0800 (PST)
+ bh=7kKjpYgRbPhgH5U+ZaCrjOh/6654v55c2tM22nE+pfo=;
+ b=vSxrPdh99gIbra+ZGPiWFWG9nWxApWrJZcALyxqdJgM5IWfv+Oxcwt+SM7TzzdzSDt
+ 0kb2EPHs21lpe4v7dVc1uB5diNX2Tv+GIG4YJbBgMYibDzfgJYeSiaFJ02U2z9JtvRkF
+ qfCow6k7MwbD0NT+5HfJ84QLuiucOTQ6u9Y0Krqn3MbTjh7t1o3BbSM9ZbyR1b/XRcfB
+ fgC+ohthhVaebXPT+WH4wW3C0OtIrhiCR0n1rhaTqWxjRaVoMi8DKnITFToKlpKJsJ1+
+ hp7v3TczIRssdA7FpnFea7exSoGh43DcY2sjtfaj0907KprdgklvDuYULBu4YfLjVDmz
+ Nrkw==
+X-Gm-Message-State: AOJu0YxCKbzB0GSoHgR5HDzBfD0Q4eX72Ntx6R1VIoJvtg5UzbZOm90i
+ 8+UrngpLQ7jRTYMw2GM4zDM=
+X-Google-Smtp-Source: AGHT+IGMY3Om+qfmZNjoV8ZR6yUKkT4JVIHCdNzmI58O97xTxK9UQ+1yJhZgnORDlRYMbYJtcEV2Ow==
+X-Received: by 2002:a05:6808:128b:b0:3b9:dd58:d9d8 with SMTP id
+ a11-20020a056808128b00b003b9dd58d9d8mr7490271oiw.27.1702355972633; 
+ Mon, 11 Dec 2023 20:39:32 -0800 (PST)
 Received: from [192.168.0.22] ([210.223.46.112])
  by smtp.gmail.com with ESMTPSA id
- q20-20020a656854000000b005b7dd356f75sm6206291pgt.32.2023.12.11.20.38.47
+ q20-20020a656854000000b005b7dd356f75sm6206291pgt.32.2023.12.11.20.39.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 20:38:49 -0800 (PST)
-Message-ID: <9c2dc260-8c3a-486f-a70f-b7ee238fe097@gmail.com>
-Date: Tue, 12 Dec 2023 13:38:47 +0900
+ Mon, 11 Dec 2023 20:39:31 -0800 (PST)
+Message-ID: <33544b27-ef02-4270-a35e-9e1149bb2e71@gmail.com>
+Date: Tue, 12 Dec 2023 13:39:30 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] hw/ufs: Support for Zoned UFS
+Subject: Re: [PATCH 3/3] tests/qtest: Add tests for Zoned UFS
 Content-Language: ko
-To: daejun7.park@samsung.com, Jeuk Kim <jeuk20.kim@samsung.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "fam@euphon.net"
- <fam@euphon.net>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: JinHwan Park <jh.i.park@samsung.com>, Seokhwan Kim
- <sukka.kim@samsung.com>, Yonggil Song <yonggil.song@samsung.com>
+To: daejun7.park@samsung.com, "thuth@redhat.com" <thuth@redhat.com>,
+ "lvivier@redhat.com" <lvivier@redhat.com>, Jeuk Kim
+ <jeuk20.kim@samsung.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: Seokhwan Kim <sukka.kim@samsung.com>,
+ Yonggil Song <yonggil.song@samsung.com>, JinHwan Park <jh.i.park@samsung.com>
 References: <20231208060902epcms2p3810b29fefbddaf16a7f3f2758cf218ba@epcms2p3>
- <CGME20231208060902epcms2p3810b29fefbddaf16a7f3f2758cf218ba@epcms2p2>
- <20231208061330epcms2p2f742a2d517b6836eca695a9b59bd109c@epcms2p2>
+ <CGME20231208060902epcms2p3810b29fefbddaf16a7f3f2758cf218ba@epcms2p7>
+ <20231208062200epcms2p7de0f3ab428a85eff0280225dbd1b1f37@epcms2p7>
 From: Jeuk Kim <jeuk20.kim@gmail.com>
-In-Reply-To: <20231208061330epcms2p2f742a2d517b6836eca695a9b59bd109c@epcms2p2>
+In-Reply-To: <20231208062200epcms2p7de0f3ab428a85eff0280225dbd1b1f37@epcms2p7>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-oo1-xc2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,13 +99,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/8/2023 3:13 PM, Daejun Park wrote:
-> This patch enables zoned ufs support.
->
-> By setting the LU parameter, each LU can be a host-managed zoned device.
-> This patch manages the zone condition and write pointer of each zone for
-> a zoned LU. It supports the report zones and reset write pointer commands
-> for Zoned LUs.
+
+On 12/8/2023 3:22 PM, Daejun Park wrote:
+> This patch includes the following tests
+>    Test VPD page and report zones
+>    Test write and unaligned write error
 >
 > Signed-off-by: Daejun Park <daejun7.park@samsung.com>
 
