@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1802280F377
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:45:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C1A80F381
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:47:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5sM-0004CX-Q5; Tue, 12 Dec 2023 11:44:54 -0500
+	id 1rD5ul-0005Wy-JZ; Tue, 12 Dec 2023 11:47:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD5sJ-0004BH-CD
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:44:51 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1rD5uR-0005WM-Kx
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:47:04 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD5sH-0004n5-KR
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:44:51 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-55193d5e8cdso932033a12.1
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:44:49 -0800 (PST)
+ id 1rD5uP-0005Zv-LI
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:47:03 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-54cde11d0f4so8242475a12.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:47:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702399488; x=1703004288; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702399619; x=1703004419; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hOeQ83EtJ3ms2HhHMlNaTSs4RpfIIzAok2S/UMoUDjE=;
- b=hh0CDesy+1vNoXsmS6Uaq02kd+JeqY23T7CDSWWBMteIqhFtp4JeNzXOJJKRHJySFf
- /kTeibyTv1EflNfiNjQ6deU/XL6tcPJ+QKIpuaiwADtqUQQMyDWcgICRklTQMoMfTwWr
- L2Os1QfoKp/T5yGhRo0H7032S8mefvGm+EwGzON0bD6Pxj2aGSo2C+GJh6nTcqq1rN7B
- qwOjLViQrH00GyGgjq/wZWpjAqUVp6RntHz7XAYnjva8d8UIseRLFk+ENd//XXn5fL9H
- qeGuHNf6oo7Aj5a8WINR1TmVtphOubJhhYS1VuB2tg+rwk5cPGZK0IOPXdUrK8NIjzds
- 4BrA==
+ bh=uFzyQFyEoKLJOk8HnGBv3xF46rshezAwR/jjNtDoTVc=;
+ b=VC59p/c2qZ0qqIHEhnmzDEzQ+BT3+S4AG7utsBl1FB+J31+VYiRuc1Df5jlcMQqB88
+ V21wI+qyhcVczvGUanSUnZjrqo3zEntLBvy05o6Oo5D1087Yj/Dlzq9wBgR5iA0uG4SF
+ PfcQbpfkh8StHHpig7mWq/YmYWD4L/YWmMpTqgh0r03L9cHoH53aiUYI8J3s3JRgT4aQ
+ oJ2k/z82gm0R474ixJG1ymH6ejNrjFdOCh8wEvU2IPmIMOKgGGTHow4uoWZfPWrJ30vX
+ Frvbll2i+96CGHs47w3Fd1ijh2lR/7YKxEYZkvSfLqc4lIiLb7rPwLqK5inpQZUtIVx4
+ qRhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702399488; x=1703004288;
+ d=1e100.net; s=20230601; t=1702399619; x=1703004419;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hOeQ83EtJ3ms2HhHMlNaTSs4RpfIIzAok2S/UMoUDjE=;
- b=sRVyUNjYgy/1jV71i/hxzmbzZLLWLaDhc2gjysAN1NpYu/87z/Zmv+/NR83JNe5YrD
- 2lvb744eykpuy9P4ppd9P+DsdqXEsUDhHBg4+Lbr66TitESrJDPYbVm4EqUjrwyvm/ay
- ap8SD2ZoxxnV00v32tcX6haW/UqCSX4R3x8eNQfq+9wxrk0EBwkJI5ukxVj9oyerwWoW
- ZZNEnUALWHycd/SVwaNIHJyVxU1xowtI4hhEPnZxZV5DliuPlX6h4xhVBXJM9vckMOAe
- FUP0jdVWCJaKekCJAon/skDSdD00+j3/sPEhLEhc7geakvdsn3DPqlxP1L1WiDt0REa0
- 6k2g==
-X-Gm-Message-State: AOJu0Yxg8LiwhU4yK4FFhJ9SUcJSbXv9stMX7sfWxfoo5L2OWVGEWfpl
- INHfckeRbVNORKvG6scRmNdeFrIr/mTDBM7qhM7MCg==
-X-Google-Smtp-Source: AGHT+IH/OX91HcKzgIjNipQedBCkTigCwLbtBIsq/6mmfP8OGAmmaYiadrTUv9eTZTdLioWh1gfity9NGVUAFgNAzys=
-X-Received: by 2002:a05:6402:2227:b0:547:9f26:e581 with SMTP id
- cr7-20020a056402222700b005479f26e581mr3153838edb.37.1702399487970; Tue, 12
- Dec 2023 08:44:47 -0800 (PST)
+ bh=uFzyQFyEoKLJOk8HnGBv3xF46rshezAwR/jjNtDoTVc=;
+ b=wmxuXPlp2NRtCXDV0z9ZNXxx1/OnDmo22L/mLAfRuqZxVPMjaGhEhIBmn7UOvjGYoX
+ /vSP0D2DEs6swuyNWxQoOlYdaK0PeqplN8Oe3QSdGX3sbSlkGBPBvFb5q3mskib/qnDA
+ uHdqF4GlCdHl3nzYfPZhqPLYola716UxHFXigIPAhQC+cmXw0h3hqjf8aim7VTYSBeKP
+ 2fPrQ6Yy7ITRNkt3E+ZNX7Qg9Vc3XCqwQ3nu4ewraZp30kwoQGazV3x6OwUBOLLKv1zG
+ Hz2zRQk6Uad4HtAL5GGX4LBqaAejWhZd0ILuPq/cadzNQAX9V2Ei35KdORquuiXRNv6M
+ MBiA==
+X-Gm-Message-State: AOJu0YweCzNwYev+18zGpxcer2MGntk5O639HAzVfjAUFTf3nn6Uz7Qj
+ GAqpL7umn2NskNmj5GlSKchBKV4+APjaPQMTuLi7EQ==
+X-Google-Smtp-Source: AGHT+IEObm5uvR3WtY3ZgyCLjDZ0qjwTJXXyqpV9XJ+bYZhYB2gS3u3kMCAeCImR173Shvj7XAAr7fG8DTEcV9veC3M=
+X-Received: by 2002:a50:cc49:0:b0:54c:87a1:34fe with SMTP id
+ n9-20020a50cc49000000b0054c87a134femr3896078edi.10.1702399619570; Tue, 12 Dec
+ 2023 08:46:59 -0800 (PST)
 MIME-Version: 1.0
 References: <20231123143813.42632-1-philmd@linaro.org>
- <20231123143813.42632-4-philmd@linaro.org>
-In-Reply-To: <20231123143813.42632-4-philmd@linaro.org>
+ <20231123143813.42632-5-philmd@linaro.org>
+In-Reply-To: <20231123143813.42632-5-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 12 Dec 2023 16:44:37 +0000
-Message-ID: <CAFEAcA_wxzio-UDPLzEgMoZoBvQBqjUnHNsF+kYHiBSY-m3jOA@mail.gmail.com>
-Subject: Re: [PATCH-for-9.0 v2 3/8] hw/arm/bcm2836: Use ARM_CPU 'mp-affinity'
- property
+Date: Tue, 12 Dec 2023 16:46:48 +0000
+Message-ID: <CAFEAcA9s31674uBNiSN0tV0geyWdscH-5oT=buWuKmJk3QWLSg@mail.gmail.com>
+Subject: Re: [PATCH-for-9.0 v2 4/8] hw: Simplify accesses to the
+ CPUState::'start-powered-off' property
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, 
@@ -89,8 +89,8 @@ Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,13 +116,16 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, 23 Nov 2023 at 14:38, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
-> The 'mp-affinity' property is present since commit 15a21fe028
-> ("target-arm: Add mp-affinity property for ARM CPU class").
-> Use it and remove a /* TODO */ comment. Since all ARM CPUs
-> have this property, use &error_abort, because this call can
-> not fail.
+> The 'start-powered-off' property has been added to ARM CPUs in
+> commit 5de164304a ("arm: Allow secondary KVM CPUs to be booted
+> via PSCI"), then eventually got generalized to all CPUs in commit
+> c1b701587e ("target/arm: Move start-powered-off property to generic
+> CPUState"). Since all CPUs have it, no need to check whether it is
+> available. Updating this property can't fail, so use &error_abort.
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/arm/armsse.c  | 6 ++----
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
