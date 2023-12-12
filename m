@@ -2,70 +2,148 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F1280E42E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 07:13:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E57AC80E465
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 07:43:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCw08-0001zm-2y; Tue, 12 Dec 2023 01:12:16 -0500
+	id 1rCwT8-0005GJ-Ch; Tue, 12 Dec 2023 01:42:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rCw04-0001zY-HL
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 01:12:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1rCwT2-0005G6-HF
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 01:42:08 -0500
+Received: from mail-dm6nam12on2050.outbound.protection.outlook.com
+ ([40.107.243.50] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rCw02-0003B6-Lj
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 01:12:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702361529;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=n7ZfHi2eNFq/haYA4z4IGXdzsRJRpUkSp7C2bPpTItc=;
- b=WnPBQe2FFShihkwYYtPJJByizfi51ucJO6aaBTRq8D44B7/PMEX5J55DXDQRJTR3zzXMDG
- mkObtxhYQYEMmr1Edm0loCbKxr4dNTxwoj8RcTONBG0/YpOQ+U0obFxzhrZtb7Kxg7L5B+
- 4DFzXQ+4k3qPOJTgi+WW0AuCg/NgXZU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-nDnsO7gMM4mOqkhz0OIBOQ-1; Tue,
- 12 Dec 2023 01:12:05 -0500
-X-MC-Unique: nDnsO7gMM4mOqkhz0OIBOQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E96A2823F6E;
- Tue, 12 Dec 2023 06:12:05 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 35F92492BC6;
- Tue, 12 Dec 2023 06:12:05 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1C3F921E6812; Tue, 12 Dec 2023 07:12:04 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org,  armbru@redhat.com,  Michael Roth
- <michael.roth@amd.com>, Kevin Wolf <kwolf@redhat.com>
-Subject: Re: [RFC] string-output-visitor: show structs as "<omitted>"
-In-Reply-To: <20231211195734.425040-1-stefanha@redhat.com> (Stefan Hajnoczi's
- message of "Mon, 11 Dec 2023 14:57:34 -0500")
-References: <20231211195734.425040-1-stefanha@redhat.com>
-Date: Tue, 12 Dec 2023 07:12:04 +0100
-Message-ID: <87zfyg54qz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1rCwT0-0000P8-CI
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 01:42:08 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=J9JQwd86JFHGZ3pdjeo6wvqVxppE6VBr3vRwvgOcoxVxlqJP1b73osefGA0GzyRUzkv97bRwu6erFLM/xSgULIfFBk4M8znDLSaOXcjmgVmiEyWs6gZ7NKbFsP6kuXkYsVXXIifZmqrI1sdu2bTL49qGN3pgsHl13M6YuS6CpahgGWgm5MtFFykQHA08YBwgTX0whd/8GUqLtFJgCgWO9F5GjUBgAIBLVfo1g6hPAX1qL3vfs6MNEw7qwF0ehmWss0lYWFw8ymR+7pz4+z/JSVLf6zX0aCKx71iXBRqzsV6ZPRR/BmKZxLarEwLeZzp50p56XmAggDkL8pKRzI/xiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GTFN+ZiMS1TahMG+uxs4O2MndfgFHskJy6IFhBP998w=;
+ b=nVBfy8gEH1Mt6+JLTjqs+eIH4NFU+pQYFNrTfoe3F2z+MEmMSxCwVJ1BeDhJozIlwjUER39NO7r1fRqfMOpyZ0fazbEYZ2epl+aLPP8XeE2y4FYqz1bMTujH82dxNyn7vjIMGJRtT/eZVObA1TGVVgsEupfcchlLFijTGOqfD3zAZ/96zyXhQ32RUo2WTN3mRDaUQW+c9kml3ect82bTlDDcoth3fW5GvjUIDC8FlV4uOXOl4GsouiJNEa6zC24czTqogc/Dju4umbZnfMyrer7WaPrp6DPEwjOUR26hQlsjx92AJv68CtGj27gqU4y/rVKD4KfqPHbRIQZgv0pp4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GTFN+ZiMS1TahMG+uxs4O2MndfgFHskJy6IFhBP998w=;
+ b=Aws3PJtUUdkTU5c3iz5JaVF29CK+AJDAVcRaOOXVZveWrizvsYSKHQgYWGF4vZXtpCEmqjRlHCUakf4nDGUhozIBBdxg3SIO2QkayotZF766btM6cPqeZeuyz2Is3zAHZBYqXuEBRogDCFgPAVdmsZM1gYZWd/3h/5XpDJ08Bqw=
+Received: from BL1PR12MB5849.namprd12.prod.outlook.com (2603:10b6:208:384::18)
+ by MN0PR12MB5881.namprd12.prod.outlook.com (2603:10b6:208:379::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Tue, 12 Dec
+ 2023 06:37:00 +0000
+Received: from BL1PR12MB5849.namprd12.prod.outlook.com
+ ([fe80::969f:11b3:5ec2:3aa1]) by BL1PR12MB5849.namprd12.prod.outlook.com
+ ([fe80::969f:11b3:5ec2:3aa1%3]) with mapi id 15.20.7068.033; Tue, 12 Dec 2023
+ 06:37:00 +0000
+From: "Chen, Jiqian" <Jiqian.Chen@amd.com>
+To: =?utf-8?B?Um9nZXIgUGF1IE1vbm7DqQ==?= <roger.pau@citrix.com>
+CC: Stefano Stabellini <sstabellini@kernel.org>, Anthony Perard
+ <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, "Hildebrand, Stewart"
+ <Stewart.Hildebrand@amd.com>, "Deucher, Alexander"
+ <Alexander.Deucher@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>, "Huang,
+ Honglei1" <Honglei1.Huang@amd.com>, "Zhang, Julia" <Julia.Zhang@amd.com>,
+ "Chen, Jiqian" <Jiqian.Chen@amd.com>
+Subject: Re: [RFC QEMU PATCH v3 1/1] xen: Use gsi instead of irq for mapping
+ pirq
+Thread-Topic: [RFC QEMU PATCH v3 1/1] xen: Use gsi instead of irq for mapping
+ pirq
+Thread-Index: AQHaK4lXtH9e9Sdr6Eux87H1RxVtTrCkN9cAgAGB1YA=
+Date: Tue, 12 Dec 2023 06:37:00 +0000
+Message-ID: <BL1PR12MB58495E4207750FFF1C348968E78EA@BL1PR12MB5849.namprd12.prod.outlook.com>
+References: <20231210165240.1551450-1-Jiqian.Chen@amd.com>
+ <20231210165240.1551450-2-Jiqian.Chen@amd.com> <ZXcr5v43dsJAx8aK@macbook>
+In-Reply-To: <ZXcr5v43dsJAx8aK@macbook>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-imapappendstamp: BL1PR12MB5302.namprd12.prod.outlook.com
+ (15.20.7091.000)
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR12MB5849:EE_|MN0PR12MB5881:EE_
+x-ms-office365-filtering-correlation-id: f250ac85-4daf-489d-c2de-08dbfadcbef5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: FcU4raobi3bpDuJqXlAYDldzbbR6onrY/2FmYixh7v/K7u01RKhUg9mwzTBSpgxJrfScbGn44VNwpWhG2LbxgUMVIzoyWSHQlMdFmualjG89cNK9weEru73H+OhBxh6A5AoSNXYGQKTRiPjut3SQdUG/2SevCvDiMYEzVjIhYGCyVJDh8nJ8EcaMZasmY60B8NQbrFrB97N/uvAV5zhKG8qdhURpERDxrTaE8EssVNmJXlr3rAwRW01OV9/EVKnrVvlo5yF0ANCGVYojKQ61Ej9Yc+dxM44baNupwIFgu04VSFRsER7QUhajftrOBC19DRXIG5RGSCDu9F+3LaIiFDaya+Or6MEF7wDhgab5da7hMDQGDInLnVSS4lBbXoS5Fprd95fSEQHx4z5E7JppphSbDPBOG6aApoUGvUIu/FhFQ6fi2O7tiRru7fZBiGTPOhEaMXAsuPW6VRiUthspHOZIw/+0xAtXJj9m2pZmXEuL0ixd1vwAMD7hGgEX8X/xIzBJJGk0q66ZQiwTPy1tA8s50i2eycFGgv/DauworZa91BwpHe6HH6uacF0ysGKPPCoOwvvRX02vquEzH7U7peiu5yjDkQJemlQeziLR25i7OdCd5RVlaWk4xx0DQTSH
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL1PR12MB5849.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(366004)(346002)(376002)(39860400002)(396003)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(41300700001)(83380400001)(26005)(38070700009)(33656002)(122000001)(38100700002)(5660300002)(316002)(8936002)(8676002)(4326008)(2906002)(6506007)(7696005)(53546011)(71200400001)(9686003)(52536014)(66446008)(54906003)(64756008)(6916009)(66946007)(66556008)(66476007)(478600001)(55016003)(76116006);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VUlzb0FCWjRtU3paVlpHdU5Ma1lTYmVDZGhvUEpUMlJFRmQ5K3o4Q2F6dkdj?=
+ =?utf-8?B?U0czUkxaM1pzeWw5ME9HNis4UE85VmVCYkNqRkVZekFVVll6SEZpV2xpNnZH?=
+ =?utf-8?B?Q05TQmhrMXhrSzI0VmpOV0NvcUxQYzV0SGRBVitIT0sxYndUNmRnc2tKdWpT?=
+ =?utf-8?B?M0o5Ykd4ZHFnN24vT2pnRm1ZWTFuZDdIOHZwV0lxRGREVEVjaW1lWXczbkRN?=
+ =?utf-8?B?bVFsYUcrZXRkVnhxdk54bXJaOTZWdkZXSmxiN2lZakR4WVZKWTFwY0MycXAr?=
+ =?utf-8?B?TjBlODM3MjAvNWtKQ29rbWQ1cDlZRm10RmJoVWZRbHpablc4UXVtVWFhbExM?=
+ =?utf-8?B?WmxMV3NBb1I5ZkozaWJyQzVLYkxpWXp4UFpaa25NNU5wTDhaNHNVN1ZWNjJI?=
+ =?utf-8?B?Y0N5QzhHM0xBZGQ5Y2taT2F4eW9sbHdSWlE0bHp4cmtoSmMzNUhlRnM2R09Q?=
+ =?utf-8?B?bnBQVWJ5cGR0Z0pEWWJieVNrTjJRRkJhU0RUdk54NThEMVRGdDA4YTRnb3Q3?=
+ =?utf-8?B?QjJKS0IwYnd1NXNqL1NTNGxlOXFXUy9SZlM4enoxeFV6NDVPN05UNTQwZUxE?=
+ =?utf-8?B?QUF0UDFhMFR6RndRVS9yZzNZdStEcGdOYnA1ankxNjliVVVrM2cyTDhxUFlZ?=
+ =?utf-8?B?NWYyUS9NSGNYV2dFTnYySkh0QWh4dWN0R2cvQzc5UDVQSjNXaW8xaTdIN2Zm?=
+ =?utf-8?B?Ny9iQ2ovQVJhdzhFTktlbmR4MTBBbjlKQ0V4b2VoVjB4M21nL21VdmRVcG1I?=
+ =?utf-8?B?T0pUcEJZaXl4REVEY25qVVNmc2tmQkZJRWZwNXVpeUhXS3JwK2VqOVhJenlk?=
+ =?utf-8?B?dS9HSUlGRit4L1pPSG93S2J6VE5wOEpRN2Fwc0FRZlhwNDJuV2diY2c1M1RJ?=
+ =?utf-8?B?ZFZuUjhqMzVDQ0hmd3dPaEJRRDBIN3hPRE5oUmtXMzFUUEdRQ1Z5dHM0SDJ5?=
+ =?utf-8?B?QlVtem1rYU0vaW1SR3hoTHJpNStNSjR3WTkybzVNSk5KM2FaSkwwWGxPQUl5?=
+ =?utf-8?B?ZzJHLzVJYmt2bEhuVTVIVUV1b0FFRy9WU3lyQ1NIbHBCM09VS0VNTzZ2K3FO?=
+ =?utf-8?B?MDFWak1CZVRzQjhwZkt0N2xzMVhWb2hucm5CM1F4NDdwZmkwcE5TaGYrY1RU?=
+ =?utf-8?B?WktMeXo3U0pyVGh5N1FTYUlEZHg5cnYwZGkzM3NkelVZNmlZNnJKYXdLTDFi?=
+ =?utf-8?B?RE1UaGduc1NGSTd5NzkzWEdkLzA5bUZvams3UDVoSDFnMFFUeTZlcUhWNTRa?=
+ =?utf-8?B?NE9FSmI4L2R0SHdDRGZqQUx1elU1czcxK3lOUHVnWENnOG5FRXhkSTRRaGJw?=
+ =?utf-8?B?dUl1R0JSOVIzT3dUa0ZmdXlLdlpMblRYWEl4UUphdWltMi9MUHpGeVh4U0hE?=
+ =?utf-8?B?L1NTL1lNL20wdmNKM1gwZlh3Z2dPRzJUSTQwbEdjMUpWQ2xjNlRNa3ZZUHNB?=
+ =?utf-8?B?WlpoTWxNNFhCTWdER2FnM1hobDNpRlhRQ203N3NmODUyUmlkbURncGhHS3I3?=
+ =?utf-8?B?ZzNXb1BiNXNYOGttY3Z2WDVTcGZXU1Rub1k0UTl0ZWphMGFRMzFiTnJ3RFJH?=
+ =?utf-8?B?c3lBQ1pTb0pzc04rY3IySjZnQVhCcVBzL25RaSs5bnR0WmtjZmViT0ZjZ0l6?=
+ =?utf-8?B?S291ZDJQblJUWUlmZWJoT3Z2OURiWWZUMEk1NEpqY0oyVE1HWFE1SG9QV3Jn?=
+ =?utf-8?B?NFFweFVvSEwxTkswNnJyL01yaXM2UnExMVRwTEJCQVNjVHpUS2N0TGpCTUNP?=
+ =?utf-8?B?UFEyaGJvbWtYaHNuLzh5RFlndDFMZnpjWnFHL2pOaVdFdTBPb0J4Z2dmbE5B?=
+ =?utf-8?B?ckpPSzhKZWpVbmF5NDZtdEdBQ1VJZFpocGwyMCswZVE0eGg4UXhacnROUCtn?=
+ =?utf-8?B?R0dTeUphVTZNdmdCM0ZPamZnYzh2M2dySnMzUlBwN3A4YlpyQ2E5Zld3VmxF?=
+ =?utf-8?B?b0tkelpDZnpDODVsM1A5aytYOGZEWFJycThBNUdYWEdyQzBEY25ZUTVxcG9P?=
+ =?utf-8?B?ckxsbW1QR3YzQkpqQmN0OHlHZmw4WmozendxYlhYdE5XdURPSjIrMHp3dUFC?=
+ =?utf-8?B?NUxMZW9DdEVuY05TclFnSWprZkh0RkRqZ3ZKKzZnazRNdnNZNTQ4NGhzdmJ6?=
+ =?utf-8?Q?BApQ=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <12E09E1B444C5E4BA400A861241A9156@amdcloud.onmicrosoft.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5849.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f250ac85-4daf-489d-c2de-08dbfadcbef5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Dec 2023 06:37:00.6338 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: naRE17VYtKtjxt3EHLEj2kskswEmEpY7g05FuGm8xu5VScg2FsFL4B+XoGZuA4hWsLd2dqFQVGM519N63ZUlIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5881
+Received-SPF: softfail client-ip=40.107.243.50;
+ envelope-from=Jiqian.Chen@amd.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,110 +159,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Hajnoczi <stefanha@redhat.com> writes:
-
-> StringOutputVisitor crashes when it visits a struct because
-> ->start_struct() is NULL.
->
-> Show "<omitted>" instead of crashing. This is necessary because the
-> virtio-blk-pci iothread-vq-mapping parameter that I'd like to introduce
-> soon is a list of IOThreadMapping structs.
->
-> Cc: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
-> Can we do better?
->
-> I am unfamiliar with StringOutputVisitor, so I wasn't sure how to
-> proceed. Is the format or at least the intended use of
-> StringOutputVisitor's output defined somewhere?
-
-Bwuahahahaha!
-
-SCNR
-
->                                                 Does it need to be a
-> single line or can the output be multiple lines?
-
-I'm afraid we need to review its users to be sure.
-
-> Or maybe I shouldn't introduce a qdev property with IOThreadMappingList
-> as its type in
-> https://lore.kernel.org/qemu-devel/ZUoPiFxIIwFq5wMg@redhat.com/?
-
-QOM initially supported only scalar properties.
-
-I think maintaining this restriction will lead to awkward interfaces.
-Lists are clearly useful.  And then we'll likely want list of struct,
-not multiple lists.
-
-Lifting the restriction will take some work.
-
-On the string visitors, see also my musings in
-
-    Subject: Re: [PATCH v2 1/2] qdev: add IOThreadVirtQueueMappingList property type 
-    Date: Mon, 11 Dec 2023 16:32:06 +0100
-    Message-ID: <87msugah6x.fsf@pond.sub.org>
-
-> ---
->  include/qapi/string-output-visitor.h |  6 +++---
->  qapi/string-output-visitor.c         | 14 ++++++++++++++
->  2 files changed, 17 insertions(+), 3 deletions(-)
->
-> diff --git a/include/qapi/string-output-visitor.h b/include/qapi/string-output-visitor.h
-> index 268dfe9986..762fe3f705 100644
-> --- a/include/qapi/string-output-visitor.h
-> +++ b/include/qapi/string-output-visitor.h
-> @@ -26,9 +26,9 @@ typedef struct StringOutputVisitor StringOutputVisitor;
->   * If everything else succeeds, pass @result to visit_complete() to
->   * collect the result of the visit.
->   *
-> - * The string output visitor does not implement support for visiting
-> - * QAPI structs, alternates, null, or arbitrary QTypes.  It also
-> - * requires a non-null list argument to visit_start_list().
-> + * The string output visitor does not implement support for alternates, null,
-> + * or arbitrary QTypes.  It also requires a non-null list argument to
-> + * visit_start_list().
-
-Mention output for structs is information-free?
-
->   */
->  Visitor *string_output_visitor_new(bool human, char **result);
->  
-> diff --git a/qapi/string-output-visitor.c b/qapi/string-output-visitor.c
-> index c0cb72dbe4..363dac00fe 100644
-> --- a/qapi/string-output-visitor.c
-> +++ b/qapi/string-output-visitor.c
-> @@ -292,6 +292,18 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
->      return true;
->  }
->  
-> +static bool start_struct(Visitor *v, const char *name, void **obj,
-> +                         size_t size, Error **errp)
-> +{
-> +    return true;
-> +}
-> +
-> +static void end_struct(Visitor *v, void **obj)
-> +{
-> +    StringOutputVisitor *sov = to_sov(v);
-> +    string_output_set(sov, g_strdup("<omitted>"));
-
-TODO comment?
-
-> +}
-> +
->  static bool
->  start_list(Visitor *v, const char *name, GenericList **list, size_t size,
->             Error **errp)
-> @@ -379,6 +391,8 @@ Visitor *string_output_visitor_new(bool human, char **result)
->      v->visitor.type_str = print_type_str;
->      v->visitor.type_number = print_type_number;
->      v->visitor.type_null = print_type_null;
-> +    v->visitor.start_struct = start_struct;
-> +    v->visitor.end_struct = end_struct;
->      v->visitor.start_list = start_list;
->      v->visitor.next_list = next_list;
->      v->visitor.end_list = end_list;
-
+T24gMjAyMy8xMi8xMSAyMzozMywgUm9nZXIgUGF1IE1vbm7DqSB3cm90ZToNCj4gT24gTW9uLCBE
+ZWMgMTEsIDIwMjMgYXQgMTI6NTI6NDBBTSArMDgwMCwgSmlxaWFuIENoZW4gd3JvdGU6DQo+PiBJ
+biBQVkggZG9tMCwgaXQgdXNlcyB0aGUgbGludXggbG9jYWwgaW50ZXJydXB0IG1lY2hhbmlzbSwN
+Cj4+IHdoZW4gaXQgYWxsb2NzIGlycSBmb3IgYSBnc2ksIGl0IGlzIGR5bmFtaWMsIGFuZCBmb2xs
+b3cNCj4+IHRoZSBwcmluY2lwbGUgb2YgYXBwbHlpbmcgZmlyc3QsIGRpc3RyaWJ1dGluZyBmaXJz
+dC4gQW5kDQo+PiB0aGUgaXJxIG51bWJlciBpcyBhbGxvY2VkIGZyb20gc21hbGwgdG8gbGFyZ2Us
+IGJ1dCB0aGUNCj4+IGFwcGx5aW5nIGdzaSBudW1iZXIgaXMgbm90LCBtYXkgZ3NpIDM4IGNvbWVz
+IGJlZm9yZSBnc2kNCj4+IDI4LCB0aGF0IGNhdXNlcyB0aGUgaXJxIG51bWJlciBpcyBub3QgZXF1
+YWwgd2l0aCB0aGUgZ3NpDQo+PiBudW1iZXIuIEFuZCB3aGVuIHBhc3N0aHJvdWdoIGEgZGV2aWNl
+LCBxZW11IHdhbnRzIHRvIHVzZQ0KPj4gZ3NpIHRvIG1hcCBwaXJxLCB4ZW5fcHRfcmVhbGl6ZS0+
+eGNfcGh5c2Rldl9tYXBfcGlycSwgYnV0DQo+PiB0aGUgZ3NpIG51bWJlciBpcyBnb3QgZnJvbSBm
+aWxlDQo+PiAvc3lzL2J1cy9wY2kvZGV2aWNlcy88c2JkZj4vaXJxIGluIGN1cnJlbnQgY29kZSwg
+c28gaXQNCj4+IHdpbGwgZmFpbCB3aGVuIG1hcHBpbmcuDQo+Pg0KPj4gVXNlIHJlYWwgZ3NpIG51
+bWJlciByZWFkIGZyb20gZ3NpIHN5c2ZzLg0KPj4NCj4+IENvLWRldmVsb3BlZC1ieTogSHVhbmcg
+UnVpIDxyYXkuaHVhbmdAYW1kLmNvbT4NCj4+IFNpZ25lZC1vZmYtYnk6IEppcWlhbiBDaGVuIDxK
+aXFpYW4uQ2hlbkBhbWQuY29tPg0KPj4gLS0tDQo+PiAgaHcveGVuL3hlbi1ob3N0LXBjaS1kZXZp
+Y2UuYyB8IDIgKy0NCj4+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRp
+b24oLSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvaHcveGVuL3hlbi1ob3N0LXBjaS1kZXZpY2UuYyBi
+L2h3L3hlbi94ZW4taG9zdC1wY2ktZGV2aWNlLmMNCj4+IGluZGV4IDhjNmU5YTE3MTYuLmUyNzBh
+YzI2MzEgMTAwNjQ0DQo+PiAtLS0gYS9ody94ZW4veGVuLWhvc3QtcGNpLWRldmljZS5jDQo+PiAr
+KysgYi9ody94ZW4veGVuLWhvc3QtcGNpLWRldmljZS5jDQo+PiBAQCAtMzY0LDcgKzM2NCw3IEBA
+IHZvaWQgeGVuX2hvc3RfcGNpX2RldmljZV9nZXQoWGVuSG9zdFBDSURldmljZSAqZCwgdWludDE2
+X3QgZG9tYWluLA0KPj4gICAgICB9DQo+PiAgICAgIGQtPmRldmljZV9pZCA9IHY7DQo+PiAgDQo+
+PiAtICAgIHhlbl9ob3N0X3BjaV9nZXRfZGVjX3ZhbHVlKGQsICJpcnEiLCAmdiwgZXJycCk7DQo+
+PiArICAgIHhlbl9ob3N0X3BjaV9nZXRfZGVjX3ZhbHVlKGQsICJnc2kiLCAmdiwgZXJycCk7DQo+
+IA0KPiBEb24ndCB5b3UgbmVlZCB0byBmYWxsdGhyb3VnaCB0byB1c2UgdGhlIGlycSBudW1iZXIg
+b24gZmFpbHVyZT8NCj4gT3RoZXJ3aXNlIHBhc3N0aHJvdWdoIHdvbid0IHdvcmsgb24gb2xkZXIg
+TGludXggdmVyc2lvbnMgdGhhdCBkb24ndA0KPiBleHBvc2UgdGhlIGdzaSBub2RlLg0KWW91IGFy
+ZSByaWdodCwgSSB3aWxsIHVzZSB0aGUgaXJxIGlmIHRoZXJlIGlzbid0IGEgZ3NpIHN5c2ZzLCBp
+biBuZXh0IHZlcnNpb24uIFRoYW5rIHlvdS4NCg0KPiANCj4gVGhhbmtzLCBSb2dlci4NCg0KLS0g
+DQpCZXN0IHJlZ2FyZHMsDQpKaXFpYW4gQ2hlbi4NCg==
 
