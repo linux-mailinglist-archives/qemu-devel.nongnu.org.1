@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7C380EB8D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 649C280EB59
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:20:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD1jY-0005dp-KF; Tue, 12 Dec 2023 07:19:32 -0500
+	id 1rD1ja-0005mS-Sq; Tue, 12 Dec 2023 07:19:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1jW-0005Z5-94; Tue, 12 Dec 2023 07:19:30 -0500
+ id 1rD1jX-0005fc-UD; Tue, 12 Dec 2023 07:19:31 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1jT-0000OB-Kf; Tue, 12 Dec 2023 07:19:30 -0500
+ id 1rD1jW-0000Og-Au; Tue, 12 Dec 2023 07:19:31 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9C2623AF00;
+ by isrv.corpit.ru (Postfix) with ESMTP id AE34F3AF01;
  Tue, 12 Dec 2023 15:18:49 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 608B73B94E;
+ by tsrv.corpit.ru (Postfix) with SMTP id 729E73B94F;
  Tue, 12 Dec 2023 15:18:32 +0300 (MSK)
-Received: (nullmailer pid 1003435 invoked by uid 1000);
+Received: (nullmailer pid 1003438 invoked by uid 1000);
  Tue, 12 Dec 2023 12:18:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,10 +30,9 @@ Cc: qemu-stable@nongnu.org, Ivan Klokov <ivan.klokov@syntacore.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.4 12/31] target/riscv/cpu_helper.c: Invalid exception on
- MMU translation stage
-Date: Tue, 12 Dec 2023 15:18:00 +0300
-Message-Id: <20231212121831.1003318-12-mjt@tls.msk.ru>
+Subject: [Stable-8.1.4 13/31] target/riscv/cpu_helper.c: Fix mxr bit behavior
+Date: Tue, 12 Dec 2023 15:18:01 +0300
+Message-Id: <20231212121831.1003318-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
 References: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
@@ -64,81 +63,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ivan Klokov <ivan.klokov@syntacore.com>
 
-According to RISCV privileged spec sect. 5.3.2 Virtual Address Translation Process
-access-fault exceptions may raise only after PMA/PMP check. Current implementation
-generates an access-fault for mbare mode even if there were no PMA/PMP errors.
-This patch removes the erroneous MMU mode check and generates an access-fault
-exception based on the pmp_violation flag only.
+According to RISCV Specification sect 9.5 on two stage translation when
+V=1 the vsstatus(mstatus in QEMU's terms) field MXR, which makes
+execute-only pages readable, only overrides VS-stage page protection.
+Setting MXR at HS-level(mstatus_hs), however, overrides both VS-stage
+and G-stage execute-only permissions.
 
-Fixes: 1448689c7b ("target/riscv: Allow specifying MMU stage")
+The hypervisor extension changes the behavior of MXR\MPV\MPRV bits.
+Due to RISCV Specification sect. 9.4.1 when MPRV=1, explicit memory
+accesses are translated and protected, and endianness is applied, as
+though the current virtualization mode were set to MPV and the current
+nominal privilege mode were set to MPP. vsstatus.MXR makes readable
+those pages marked executable at the VS translation stage.
+
+Fixes: 36a18664ba ("target/riscv: Implement second stage MMU")
 
 Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20231121071757.7178-2-ivan.klokov@syntacore.com>
+Message-ID: <20231121071757.7178-3-ivan.klokov@syntacore.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 82d53adfbb1aa0dbe7dac09b61ad86014efe81a7)
+(cherry picked from commit 6bca4d7d1ff2b8857486c3ff31f5c6fc3e3984b4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 9f611d89bb..3c482f9fd4 100644
+index 3c482f9fd4..ce10d722f1 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -1100,47 +1100,31 @@ static void raise_mmu_exception(CPURISCVState *env, target_ulong address,
-                                 bool two_stage_indirect)
- {
-     CPUState *cs = env_cpu(env);
--    int page_fault_exceptions, vm;
--    uint64_t stap_mode;
--
--    if (riscv_cpu_mxl(env) == MXL_RV32) {
--        stap_mode = SATP32_MODE;
--    } else {
--        stap_mode = SATP64_MODE;
--    }
--
--    if (first_stage) {
--        vm = get_field(env->satp, stap_mode);
--    } else {
--        vm = get_field(env->hgatp, stap_mode);
--    }
--
--    page_fault_exceptions = vm != VM_1_10_MBARE && !pmp_violation;
+@@ -989,13 +989,29 @@ restart:
+         prot |= PAGE_WRITE;
+     }
+     if (pte & PTE_X) {
+-        bool mxr;
++        bool mxr = false;
  
-     switch (access_type) {
-     case MMU_INST_FETCH:
-         if (env->virt_enabled && !first_stage) {
-             cs->exception_index = RISCV_EXCP_INST_GUEST_PAGE_FAULT;
-         } else {
--            cs->exception_index = page_fault_exceptions ?
--                RISCV_EXCP_INST_PAGE_FAULT : RISCV_EXCP_INST_ACCESS_FAULT;
-+            cs->exception_index = pmp_violation ?
-+                RISCV_EXCP_INST_ACCESS_FAULT : RISCV_EXCP_INST_PAGE_FAULT;
+-        if (first_stage == true) {
++        /*
++         * Use mstatus for first stage or for the second stage without
++         * virt_enabled (MPRV+MPV)
++         */
++        if (first_stage || !env->virt_enabled) {
+             mxr = get_field(env->mstatus, MSTATUS_MXR);
+-        } else {
+-            mxr = get_field(env->vsstatus, MSTATUS_MXR);
          }
-         break;
-     case MMU_DATA_LOAD:
-         if (two_stage && !first_stage) {
-             cs->exception_index = RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT;
-         } else {
--            cs->exception_index = page_fault_exceptions ?
--                RISCV_EXCP_LOAD_PAGE_FAULT : RISCV_EXCP_LOAD_ACCESS_FAULT;
-+            cs->exception_index = pmp_violation ?
-+                RISCV_EXCP_LOAD_ACCESS_FAULT : RISCV_EXCP_LOAD_PAGE_FAULT;
++
++        /* MPRV+MPV case, check VSSTATUS */
++        if (first_stage && two_stage && !env->virt_enabled) {
++            mxr |= get_field(env->vsstatus, MSTATUS_MXR);
++        }
++
++        /*
++         * Setting MXR at HS-level overrides both VS-stage and G-stage
++         * execute-only permissions
++         */
++        if (env->virt_enabled) {
++            mxr |= get_field(env->mstatus_hs, MSTATUS_MXR);
++        }
++
+         if (mxr) {
+             prot |= PAGE_READ;
          }
-         break;
-     case MMU_DATA_STORE:
-         if (two_stage && !first_stage) {
-             cs->exception_index = RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT;
-         } else {
--            cs->exception_index = page_fault_exceptions ?
--                RISCV_EXCP_STORE_PAGE_FAULT :
--                RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
-+            cs->exception_index = pmp_violation ?
-+                RISCV_EXCP_STORE_AMO_ACCESS_FAULT :
-+                RISCV_EXCP_STORE_PAGE_FAULT;
-         }
-         break;
-     default:
 -- 
 2.39.2
 
