@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE0880F2DA
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC62A80F2D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:34:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5gQ-0007D6-Fc; Tue, 12 Dec 2023 11:32:34 -0500
+	id 1rD5gx-0007vB-Jy; Tue, 12 Dec 2023 11:33:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gH-0006l1-KK
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:27 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gS-0007i2-KN
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:39 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gF-0007kK-2h
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:25 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40c2c5a8150so54661705e9.2
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:32:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gL-0007mt-4X
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:36 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40c2308faedso60645465e9.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:32:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398741; x=1703003541; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702398747; x=1703003547; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kzj0QIV76sF9kTXgAEz5Ob/+QDKCBIz99cjFrJTa8Ik=;
- b=qkk9YcAXo3o/ieDCuF6l4aWZxMmmnuHbIiGILKyxbmir3w87CIlc2z5OVO4W4EXYxh
- ie8NT+BOjvszE9VuUQ/Ddak5u+ibsAzh8A9ok+8nX04PpD4ydYKGgscGGv6fNlm1PYVu
- nFokBJNcmhbgmnlUQccgQUFHjwEX+SH3maax9uEbQdxLXe+9KGDyv0VswuX8l4V64n76
- aDD7Ff/Srw8VJeFuAbXOw4aun+xMC/PdxrVJ/XgOcw/O7Qs785m63bq6YCzurvzb7yIP
- iCjWU59dffpYV/odgBGP17+lKmhYW/J32389s14jVRfFE386eLo39/jarzyTlhCR1PNQ
- Ov8Q==
+ bh=vFzkWMG0zGlWXgIPHI7/afHt/cki/WH0MbN3+yHSaoE=;
+ b=w827WYbJT/bwT+5gA5lCtmX9vwmVYKLc9ws4IhrR5E6Fe2MoT86FYLKA/jJ9PCjRnU
+ X/++TcfjnpbfHX3TOx6U0umMwbk/no1mfFB/y0259aD5CQ0ugmE+vGMfgl3Emlbq2asx
+ PVhj0itcjGBrwIz9nmEe49gHivf9Q8yOzkDSUUxmbkR46a5pcyGUd+1Cl3x+m1cQ5a/a
+ 4uk82ADorqw5yu8CIHvEx67vUHh20tQzITSjOLRgJRdZfVklj4zb2TF00BmFmlHVxBUU
+ C7TZQJY/5ElqqrxcV39PvoTTXGdpdFyJoQEsSXraj4MGuLLpHLq0B3zdfuk8P6rjKIKr
+ sZ+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398741; x=1703003541;
+ d=1e100.net; s=20230601; t=1702398747; x=1703003547;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kzj0QIV76sF9kTXgAEz5Ob/+QDKCBIz99cjFrJTa8Ik=;
- b=UGssJEPqyWi+i1OxQ9wnudE3pqqbmiV+8OrGeT2IohxuXH81qKwbaIcABfoz86u/HK
- izqfnCbahbUdyjnbZ6Ss0euKCSWDVmpykB/hZPqiQvgSMO3P0bv6Ezn61pV2/npor14M
- /RYWIUf5nu9liGPxJ7rdv69vvw9LCcdMOBVB9wGQE3TW9It0fq+kZThPsgGGRwDgUORI
- UT9p5tUWn0XulB8dt47Z8Ul5BwS0uSgx/N6T6teLQKsL+kTz2Is6L+Qs7/iS91CeV//P
- hFupnPMKJKH71fOOYubAUreot3Uj6ewauDr/S22M0kS6+/F8Y3qk7wY3MidDY2jvu2AI
- JkjA==
-X-Gm-Message-State: AOJu0YySxDq5AZPARlMutUTW/4uq3XCUsqShdjaZ8CMWIo4EY744sALq
- qDr2yWWZ5x2Pqox4F62e8egeabhRRNaGJ14MAr4=
-X-Google-Smtp-Source: AGHT+IFvh0mZGIpHP1qTEcoTuOmgm6gU4WNQO3j50QB9RftB4/aBhWiHlumMR0/nxRxAF0gdqqmIug==
-X-Received: by 2002:a05:600c:1688:b0:40b:369e:6951 with SMTP id
- k8-20020a05600c168800b0040b369e6951mr3106268wmn.28.1702398740782; 
- Tue, 12 Dec 2023 08:32:20 -0800 (PST)
+ bh=vFzkWMG0zGlWXgIPHI7/afHt/cki/WH0MbN3+yHSaoE=;
+ b=M1XBRIllnhpi68Nwr0mDUk2KEoXc70UJpkUceCf8i1LG/BppcPR/bYd+tS6V8sBYOH
+ u1heRZN76xVhL7G081QBJ4FW4GVY8yMT+ciSC9R1wjzOypnOUDu2uwqvYnA1piS6nRTy
+ eDcfts04WUOQjEzVz5PWDmoHr0n/OcAG5lgOcmmeWFRAjYqUvG+hxBsz+TZXuE3rHeeM
+ F2mJdsnWgqTyDEcLvQldZ8tYqGhUqQuoGoGmrmteSA6zsSlH8VwBpoQlfzOPQyWtPnj4
+ +yTrPy2gcN+fFC6Jhsc9gDuQy99o6Gu5omZEkja2dm2C11yhCEuMcpjEHNE7oRKju1Rb
+ ZlZQ==
+X-Gm-Message-State: AOJu0YwOVRAsHWuXrB5S90Z19giMZpCxIrQ1oVj/0Ht9kxFakaTcMHQQ
+ n6viti/NjuHBSdgkBVc2WEDK8NV7bf8ApxZGuaI=
+X-Google-Smtp-Source: AGHT+IFZd1CMjh6Gzr06q97rlXMejC01TVbKDESXkHnVYzgAhizQSnBEAprdGTA0lpX/odIAhjlgMg==
+X-Received: by 2002:a05:600c:3784:b0:40b:47f0:66b5 with SMTP id
+ o4-20020a05600c378400b0040b47f066b5mr3699516wmr.26.1702398746978; 
+ Tue, 12 Dec 2023 08:32:26 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- t13-20020a05600c450d00b00405c7591b09sm17152033wmo.35.2023.12.12.08.32.18
+ l39-20020a05600c1d2700b0040c2c5f5844sm17191224wms.21.2023.12.12.08.32.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:32:20 -0800 (PST)
+ Tue, 12 Dec 2023 08:32:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
@@ -71,25 +71,25 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 22/33] hw/arm/aspeed_ast2600: Let the A7MPcore create/wire the
- CPU cores
-Date: Tue, 12 Dec 2023 17:29:22 +0100
-Message-ID: <20231212162935.42910-23-philmd@linaro.org>
+Subject: [PATCH 23/33] hw/arm/exynos4210: Let the A9MPcore create/wire the CPU
+ cores
+Date: Tue, 12 Dec 2023 17:29:23 +0100
+Message-ID: <20231212162935.42910-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
 References: <20231212162935.42910-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,130 +105,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the properties on the a7mpcore object to let it create and
+Set the properties on the a9mpcore object to let it create and
 wire the CPU cores. Remove the redundant code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/arm/aspeed_soc.h |  1 -
- hw/arm/aspeed_ast2600.c     | 58 ++++++++++++-------------------------
- 2 files changed, 18 insertions(+), 41 deletions(-)
+ include/hw/arm/exynos4210.h |  4 +--
+ hw/arm/exynos4210.c         | 62 +++++++++++++------------------------
+ hw/arm/exynos4_boards.c     |  6 ++--
+ 3 files changed, 26 insertions(+), 46 deletions(-)
 
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index 2f51d78e22..a824679b1e 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -109,7 +109,6 @@ struct Aspeed2600SoCState {
-     AspeedSoCState parent;
+diff --git a/include/hw/arm/exynos4210.h b/include/hw/arm/exynos4210.h
+index f95e3232c5..28a64f275c 100644
+--- a/include/hw/arm/exynos4210.h
++++ b/include/hw/arm/exynos4210.h
+@@ -83,10 +83,8 @@
+ #define EXYNOS4210_NUM_SPLITTERS (EXYNOS4210_MAX_EXT_COMBINER_IN_IRQ + 38)
  
-     CortexMPPrivState a7mpcore;
--    ARMCPU cpu[ASPEED_CPUS_NUM]; /* XXX belong to a7mpcore */
- };
+ struct Exynos4210State {
+-    /*< private >*/
+     SysBusDevice parent_obj;
+-    /*< public >*/
+-    ARMCPU *cpu[EXYNOS4210_NCPUS];
++
+     qemu_irq irq_table[EXYNOS4210_MAX_INT_COMBINER_IN_IRQ];
  
- #define TYPE_ASPEED2600_SOC "aspeed2600-soc"
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index 88e2a23514..1000fac675 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -156,10 +156,6 @@ static void aspeed_soc_ast2600_init(Object *obj)
-         g_assert_not_reached();
-     }
+     MemoryRegion chipid_mem;
+diff --git a/hw/arm/exynos4210.c b/hw/arm/exynos4210.c
+index 7386a8fe57..c6da908961 100644
+--- a/hw/arm/exynos4210.c
++++ b/hw/arm/exynos4210.c
+@@ -501,12 +501,6 @@ void exynos4210_write_secondary(ARMCPU *cpu,
+                        info->smp_loader_start);
+ }
  
--    for (i = 0; i < sc->num_cpus; i++) {
--        object_initialize_child(obj, "cpu[*]", &a->cpu[i], sc->cpu_type);
--    }
--
-     snprintf(typename, sizeof(typename), "aspeed.scu-%s", socname);
-     object_initialize_child(obj, "scu", &s->scu, typename);
-     qdev_prop_set_uint32(DEVICE(&s->scu), "silicon-rev",
-@@ -270,11 +266,6 @@ static void aspeed_soc_ast2600_init(Object *obj)
-  *
-  * https://developer.arm.com/documentation/ddi0388/e/the-system-control-coprocessors/summary-of-system-control-coprocessor-registers/multiprocessor-affinity-register
-  */
--static uint64_t aspeed_calc_affinity(int cpu)
+-static uint64_t exynos4210_calc_affinity(int cpu)
 -{
--    return (0xf << ARM_AFF1_SHIFT) | cpu;
+-    /* Exynos4210 has 0x9 as cluster ID */
+-    return (0x9 << ARM_AFF1_SHIFT) | cpu;
 -}
 -
- static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+ static DeviceState *pl330_create(uint32_t base, OrIRQState *orgate,
+                                  qemu_irq irq, int nreq, int nevents, int width)
  {
-     int i;
-@@ -284,6 +275,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-     Error *err = NULL;
-     qemu_irq irq;
-     g_autofree char *sram_name = NULL;
-+    DeviceState *mpdev;
-+    CortexMPPrivState *mppriv;
+@@ -549,26 +543,25 @@ static void exynos4210_realize(DeviceState *socdev, Error **errp)
+     MemoryRegion *system_mem = get_system_memory();
+     SysBusDevice *busdev;
+     DeviceState *dev, *mpdev, *uart[4], *pl330[3];
++    CortexMPPrivState *mpcore;
+     int i, n;
  
-     /* Default boot region (SPI memory or ROMs) */
-     memory_region_init(&s->spi_boot_container, OBJECT(s),
-@@ -305,42 +298,26 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-                                   "aspeed.emmc-boot-controller",
-                                   sc->memmap[ASPEED_DEV_EMMC_BC], 0x1000);
+-    for (n = 0; n < EXYNOS4210_NCPUS; n++) {
+-        Object *cpuobj = object_new(ARM_CPU_TYPE_NAME("cortex-a9"));
+-
+-        /* By default A9 CPUs have EL3 enabled.  This board does not currently
+-         * support EL3 so the CPU EL3 property is disabled before realization.
+-         */
+-        if (object_property_find(cpuobj, "has_el3")) {
+-            object_property_set_bool(cpuobj, "has_el3", false, &error_fatal);
+-        }
+-
+-        s->cpu[n] = ARM_CPU(cpuobj);
+-        object_property_set_int(cpuobj, "mp-affinity",
+-                                exynos4210_calc_affinity(n), &error_abort);
+-        object_property_set_int(cpuobj, "reset-cbar",
+-                                EXYNOS4210_SMP_PRIVATE_BASE_ADDR,
+-                                &error_abort);
+-        qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
+-    }
++    /* Private memory region and Internal GIC */
++    mpdev = DEVICE(&s->a9mpcore);
++    mpcore = CORTEX_MPCORE_PRIV(&s->a9mpcore);
++    /* Exynos4210 has 0x9 as cluster ID */
++    qdev_prop_set_uint32(mpdev, "cluster-id", 0x9);
++    qdev_prop_set_uint32(mpdev, "num-cores", EXYNOS4210_NCPUS);
++    /*
++     * By default A9 CPUs have EL3 enabled.  This board does not currently
++     * support EL3 so the CPU EL3 property is disabled before realization.
++     */
++    qdev_prop_set_bit(mpdev, "cpu-has-el3", false);
++    qdev_prop_set_uint64(mpdev, "cpu-reset-cbar",
++                         EXYNOS4210_SMP_PRIVATE_BASE_ADDR);
++    busdev = SYS_BUS_DEVICE(&s->a9mpcore);
++    sysbus_realize(busdev, &error_fatal);
++    sysbus_mmio_map(busdev, 0, EXYNOS4210_SMP_PRIVATE_BASE_ADDR);
  
--    /* CPU */
--    for (i = 0; i < sc->num_cpus; i++) {
--        if (sc->num_cpus > 1) {
--            object_property_set_int(OBJECT(&a->cpu[i]), "reset-cbar",
--                                    ASPEED_A7MPCORE_ADDR, &error_abort);
--        }
--        object_property_set_int(OBJECT(&a->cpu[i]), "mp-affinity",
--                                aspeed_calc_affinity(i), &error_abort);
--
--        object_property_set_int(OBJECT(&a->cpu[i]), "cntfrq", 1125000000,
--                                &error_abort);
--        object_property_set_bool(OBJECT(&a->cpu[i]), "neon", false,
--                                &error_abort);
--        object_property_set_bool(OBJECT(&a->cpu[i]), "vfp-d32", false,
--                                &error_abort);
--        object_property_set_link(OBJECT(&a->cpu[i]), "memory",
--                                 OBJECT(s->memory), &error_abort);
--
--        if (!qdev_realize(DEVICE(&a->cpu[i]), NULL, errp)) {
--            return;
--        }
+     /* IRQ Gate */
+     for (i = 0; i < EXYNOS4210_NCPUS; i++) {
+@@ -578,23 +571,10 @@ static void exynos4210_realize(DeviceState *socdev, Error **errp)
+                                 &error_abort);
+         qdev_realize(orgate, NULL, &error_abort);
+         qdev_connect_gpio_out(orgate, 0,
+-                              qdev_get_gpio_in(DEVICE(s->cpu[i]), ARM_CPU_IRQ));
 -    }
 -
-     /* A7MPCORE */
--    object_property_set_int(OBJECT(&a->a7mpcore), "num-cores", sc->num_cpus,
--                            &error_abort);
--    object_property_set_int(OBJECT(&a->a7mpcore), "num-irq",
--                            ROUND_UP(AST2600_MAX_IRQ + GIC_INTERNAL, 32),
--                            &error_abort);
--
-+    mpdev = DEVICE(&a->a7mpcore);
-+    qdev_prop_set_uint32(mpdev, "cluster-id", 0xf);
-+    qdev_prop_set_uint32(mpdev, "num-cores", sc->num_cpus);
-+    qdev_prop_set_string(mpdev, "cpu-type", sc->cpu_type);
-+    qdev_prop_set_uint64(mpdev, "cpu-freq-hz", 1125000000);
-+    qdev_prop_set_bit(mpdev, "cpu-has-neon", false);
-+    qdev_prop_set_bit(mpdev, "cpu-has-vfp-d32", false);
-+    qdev_prop_set_uint64(mpdev, "cpu-reset-cbar", ASPEED_A7MPCORE_ADDR);
-+    object_property_set_link(OBJECT(&a->a7mpcore), "cpu-memory",
-+                             OBJECT(s->memory), &error_abort);
-+    qdev_prop_set_uint32(mpdev, "gic-spi-num",
-+                         ROUND_UP(AST2600_MAX_IRQ + GIC_INTERNAL, 32));
-     sysbus_realize(SYS_BUS_DEVICE(&a->a7mpcore), &error_abort);
-     aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->a7mpcore), 0, ASPEED_A7MPCORE_ADDR);
-+    mppriv = CORTEX_MPCORE_PRIV(&a->a7mpcore);
- 
-     for (i = 0; i < sc->num_cpus; i++) {
-         SysBusDevice *sbd = SYS_BUS_DEVICE(&a->a7mpcore);
--        DeviceState  *d   = DEVICE(&a->cpu[i]);
-+        DeviceState  *d   = DEVICE(mppriv->cpu[i]);
- 
-         irq = qdev_get_gpio_in(d, ARM_CPU_IRQ);
-         sysbus_connect_irq(sbd, i, irq);
-@@ -353,7 +330,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+-    /* Private memory region and Internal GIC */
+-    mpdev = DEVICE(&s->a9mpcore);
+-    qdev_prop_set_uint32(mpdev, "num-cores", EXYNOS4210_NCPUS);
+-    /*
+-     * By default A9 CPUs have EL3 enabled.  This board does not currently
+-     * support EL3 so the CPU EL3 property is disabled before realization.
+-     */
+-    qdev_prop_set_bit(mpdev, "cpu-has-el3", false);
+-    busdev = SYS_BUS_DEVICE(&s->a9mpcore);
+-    sysbus_realize(busdev, &error_fatal);
+-    sysbus_mmio_map(busdev, 0, EXYNOS4210_SMP_PRIVATE_BASE_ADDR);
+-    for (n = 0; n < EXYNOS4210_NCPUS; n++) {
+-        sysbus_connect_irq(busdev, n,
+-                           qdev_get_gpio_in(DEVICE(&s->cpu_irq_orgate[n]), 0));
++                              qdev_get_gpio_in(DEVICE(mpcore->cpu[i]),
++                                               ARM_CPU_IRQ));
++        sysbus_connect_irq(busdev, i,
++                           qdev_get_gpio_in(DEVICE(&s->cpu_irq_orgate[i]), 0));
      }
  
-     /* SRAM */
--    sram_name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
-+    sram_name = g_strdup_printf("aspeed.sram.%d",
-+                                CPU(mppriv->cpu[0])->cpu_index);
-     memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size, &err);
-     if (err) {
-         error_propagate(errp, err);
+     /* Cache controller */
+diff --git a/hw/arm/exynos4_boards.c b/hw/arm/exynos4_boards.c
+index b0e13eb4f0..7eea66d027 100644
+--- a/hw/arm/exynos4_boards.c
++++ b/hw/arm/exynos4_boards.c
+@@ -136,18 +136,20 @@ static void nuri_init(MachineState *machine)
+ {
+     Exynos4BoardState *s = exynos4_boards_init_common(machine,
+                                                       EXYNOS4_BOARD_NURI);
++    CortexMPPrivState *mp = CORTEX_MPCORE_PRIV(&s->soc.a9mpcore);
+ 
+-    arm_load_kernel(s->soc.cpu[0], machine, &exynos4_board_binfo);
++    arm_load_kernel(mp->cpu[0], machine, &exynos4_board_binfo);
+ }
+ 
+ static void smdkc210_init(MachineState *machine)
+ {
+     Exynos4BoardState *s = exynos4_boards_init_common(machine,
+                                                       EXYNOS4_BOARD_SMDKC210);
++    CortexMPPrivState *mp = CORTEX_MPCORE_PRIV(&s->soc.a9mpcore);
+ 
+     lan9215_init(SMDK_LAN9118_BASE_ADDR,
+             qemu_irq_invert(s->soc.irq_table[exynos4210_get_irq(37, 1)]));
+-    arm_load_kernel(s->soc.cpu[0], machine, &exynos4_board_binfo);
++    arm_load_kernel(mp->cpu[0], machine, &exynos4_board_binfo);
+ }
+ 
+ static void nuri_class_init(ObjectClass *oc, void *data)
 -- 
 2.41.0
 
