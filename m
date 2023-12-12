@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C7F80E5AF
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 09:19:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E54680E626
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 09:30:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCxyR-00020T-PX; Tue, 12 Dec 2023 03:18:39 -0500
+	id 1rCy8K-0003ac-IT; Tue, 12 Dec 2023 03:28:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rCxyP-000204-5X
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 03:18:37 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rCy8E-0003a3-OR
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 03:28:46 -0500
+Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rCxyN-00079n-Fa
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 03:18:36 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d319a7a35bso16774415ad.1
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 00:18:35 -0800 (PST)
+ id 1rCy8B-00031o-QY
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 03:28:45 -0500
+Received: by mail-oi1-x232.google.com with SMTP id
+ 5614622812f47-3b9d8bfe845so4155351b6e.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 00:28:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702369114; x=1702973914;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702369722; x=1702974522;
  darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1T95QWqyyB3QrSdcTdS83OdNBFUN2mcUfmPVVpeEvD8=;
- b=DAstxVOmF87RaaHsfnHXMECjmuPn5IXkbqtBUtN7bICMvI53+0PORDEDX9Vic91Xys
- nEPiHBdguCZnxTvp3kI3ieGX5hhjGYeZto1r8ayWwr3sV+Fc1vjBL35P7/6hulqLViVG
- R4ZXrjArKMJvfhclEC195yiL1SuWGxbHtJPxJ+A/H1MRNUub2d4ww7vOXY+CzdrTguxl
- yzxxfPA0TwD1tHUZjfwHIRQV0q1whjd6DmtLsxiDpl41LjjEVrFxpYQtXFmt5Nz+3eiI
- y/mnIWsbQY0E1OwV0cAfCMYUt7RuGJY/WYwh70C+23Me5XCrKyOuPm97afqXiCPFKOAU
- D+dA==
+ bh=2ZDuJb5o83deCIk398ERTz9rXoxThyM9NCtZqNGkNHE=;
+ b=FAZLHwcQaDYg6rspmbkGpRBlv2/FCE/uZ6qMBGRVb0k9BO+sJNmzla3MqRtFHGOtjB
+ kIXYQfl2iHCxt2RIQaTyq6GLFqbs/N48XS7qlDUE9eO/rveSnuVMkpsP7Pku4ay4bzCG
+ KowZ4nY2wO+hyhdjM8BhP+GMqxDplfPTO+mlz3KsX1k4hr2d5jfI7sUXZ/gE5TxY3AMV
+ uCRJRtoGO89jwhjP3moPA9l5ATZSumvzMLfZdKvpY85tFM0vc0m2/PDTO86MK+CoRR9Z
+ 4Vj9s7kzU/yfREt+u5rSQMM+/bvka07BdeiToMAwfKrAL0H0TvTc1YSl14YVA2/14rBJ
+ mKpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702369114; x=1702973914;
+ d=1e100.net; s=20230601; t=1702369722; x=1702974522;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1T95QWqyyB3QrSdcTdS83OdNBFUN2mcUfmPVVpeEvD8=;
- b=QwyuYZ6QQ/wjs0nScLwqAL+Hr6UUoezDlNF5TGPWqU7XtW2TR49swF/3yL7+POVmjL
- REtoTRf+0BkerUq/Xm/ukzgbKR6i10pUEwZZwTWoHt0Yw3pxZxuYG1cAoNYhzzK0fvy2
- IElDbriEb2Q4Edbbl9wTNPXz5XltNk8yzcIMJkST6xexW5P9M0jUSN4YU3FG4mI9Ua42
- PUnWkEugjMcZkG26b8BDmc3AYwHMMgvmCVvD3SD4OhOGJtlm1z5dUIA+AtQ9znbCMm5q
- Z7JTF3E0gBqOrNBQ9LNixX4g9kQtGfEHxdnMSLz8jPPo6CcSHaQpMyBr3bavDXrHVIEw
- Y9AQ==
-X-Gm-Message-State: AOJu0Ywb/QDOFXciNuDyOu0LY4GjGp+jEqtYGPykWvKENCvj+P8/Ah2d
- to0hD722h2/4wk+N+4i/9UIq/w==
-X-Google-Smtp-Source: AGHT+IECl1GgbPZCq4cTTUNez9QilmNaeqnLGkNCJnpE9EtezYZ99xe6htdNeSY+PPh4Uk+g8xR7bg==
-X-Received: by 2002:a17:902:b683:b0:1d0:6ffd:9e25 with SMTP id
- c3-20020a170902b68300b001d06ffd9e25mr5670806pls.119.1702369113973; 
- Tue, 12 Dec 2023 00:18:33 -0800 (PST)
+ bh=2ZDuJb5o83deCIk398ERTz9rXoxThyM9NCtZqNGkNHE=;
+ b=KYVvLSiTKd5szix0PY+8JR/4w2tWh+Xnouj4FJkgaK2mo7z9jG3CIJhbwF9Rv5iGxI
+ t41dFOJvBeDg2KUZIF4R2yUjXb1WGdNYJF0T0WYEIp6IXXZLbVv9Nk31ZJNIwr+B4GOD
+ 3XvTc77431HMNdKLJmGtpvwJ7Pqk9dCHllBswQPFjzHR2uus8DQLpoGyHWuJwPZz3a78
+ 2tMlnrym6FbetWL9r+P45UbcQeGnVdVlMuNJZpNQoABiS9rizH3qNC5iBW7fEq4IVN1T
+ sxfhy8fJ2qlm/Sn9/hCjjuD11IrucsSytkCF1dDt4YBt6P2nbOk6b2v220gzKVMdOJp7
+ a8Sg==
+X-Gm-Message-State: AOJu0YyeOLPpOXw2rHWD3AKIDSpE1+uSFW1UPBnhLb29CcbQZl4F5VJg
+ mYc06EO85tkx5HuNyBfT4LYjgg==
+X-Google-Smtp-Source: AGHT+IHACAohiWJ6FDAypIz0YYUgTXWNKNNi0cBFK4j4vhbffcFTROVyJXs0XEXQQXTt3xQ2dqT/lA==
+X-Received: by 2002:a05:6808:444a:b0:3ba:4da:89e9 with SMTP id
+ ep10-20020a056808444a00b003ba04da89e9mr4681212oib.11.1702369721890; 
+ Tue, 12 Dec 2023 00:28:41 -0800 (PST)
 Received: from [157.82.205.15] ([157.82.205.15])
  by smtp.gmail.com with ESMTPSA id
- i9-20020a17090332c900b001d07b659f91sm7986764plr.6.2023.12.12.00.18.30
+ s16-20020a62e710000000b006ce3bf7acc7sm7514037pfh.113.2023.12.12.00.28.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Dec 2023 00:18:33 -0800 (PST)
-Message-ID: <947ad8b2-14fe-456b-b914-6e1c86dc27e4@daynix.com>
-Date: Tue, 12 Dec 2023 17:18:29 +0900
+ Tue, 12 Dec 2023 00:28:41 -0800 (PST)
+Message-ID: <3f15630b-4373-4fbc-83cf-ca568341b4d6@daynix.com>
+Date: Tue, 12 Dec 2023 17:28:39 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/10] tests/avocado/intel_iommu.py: increase timeout
+Subject: Re: [PATCH v6] ui/cocoa: Use NSWindow's ability to resize
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>
-Cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Radoslaw Biernacki <rad@semihalf.com>, Paul Durrant <paul@xen.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- David Woodhouse <dwmw2@infradead.org>, Eric Auger <eric.auger@redhat.com>
-References: <20231208190911.102879-1-crosa@redhat.com>
- <20231208190911.102879-4-crosa@redhat.com> <8734w8fzbc.fsf@draig.linaro.org>
+To: Marek Glogowski <smarkusg@gmail.com>
+Cc: qemu-devel@nongnu.org
+References: <20231211-cocoa-v6-1-49f3be0191f2@daynix.com>
+ <CADfA342Dr5troPrjE6Sf2+mMuPL5J1Q_zuXhJxrUnNo9tT6KsQ@mail.gmail.com>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <8734w8fzbc.fsf@draig.linaro.org>
+In-Reply-To: <CADfA342Dr5troPrjE6Sf2+mMuPL5J1Q_zuXhJxrUnNo9tT6KsQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::232;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x232.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,29 +94,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/12 2:01, Alex Bennée wrote:
-> Cleber Rosa <crosa@redhat.com> writes:
+On 2023/12/12 17:04, Marek Glogowski wrote:
+> Hi
 > 
->> Based on many runs, the average run time for these 4 tests is around
->> 250 seconds, with 320 seconds being the ceiling.  In any way, the
->> default 120 seconds timeout is inappropriate in my experience.
+> I checked on the emulation "qemu-system-ppc -machine pegasos".
+> Full-screen seems to work fine. The screen is correctly initialised in 
+> full-screen mode and there are no problems with closing the window when 
+> the session is suspended.
+> With this series of patches, there is also the option "Move to", which 
+> makes it possible to move the screen to an external device such as an IPad.
+> Thank you for the ui/cocoa acumen
 > 
-> I would rather see these tests updated to fix:
+> Additionally, how can I use this message on qemu-devel.
+> It has a post for people who use Macos or Asahi Linux. Verify random 
+> qemu sessions under Macos .Some are faster others are slow.
+> The topic is posted on qemu-discuss@nongnu.org 
+> <mailto:qemu-discuss@nongnu.org> (I don't know if developers look there 
+> often)
 > 
->   - Don't use such an old Fedora 31 image
->   - Avoid updating image packages (when will RH stop serving them?)
->   - The "test" is a fairly basic check of dmesg/sysfs output
+> https://lists.nongnu.org/archive/html/qemu-discuss/2023-12/msg00008.html 
+> <https://lists.nongnu.org/archive/html/qemu-discuss/2023-12/msg00008.html>
 > 
-> I think building a buildroot image with the tools pre-installed (with
-> perhaps more testing) would be a better use of our limited test time.
+> The program posted there was prepared by one of the maintainers of ppc 
+> qemu machines "BALATON Zoltan".
+> We are starting to gather as much information as possible for it.
+> I hope nobody will be offended about this information in this topic. I 
+> do not want to start a topic and litter other lists
+> 
+> Best regards
+> Marek Głogowski
 
-That's what tests/avocado/netdev-ethtool.py does, but I don't like it 
-much because building a buildroot image takes long and results in a 
-somewhat big binary blob.
+Hi,
 
-I rather prefer to have some script that runs mkosi[1] to make an image; 
-it downloads packages from distributor so it will take much less than 
-using buildroot. The CI system can run the script and cache the image.
+I have confirmed the tests run in about 25 seconds for each trial on 
+Asahi Linux (Arch Linux ARM) on M2 MacBook Air so it may be specific to 
+macOS. It needs some serious debugging but I don't have free time to do 
+that these days.
 
-[1] https://github.com/systemd/mkosi
+Regards,
+Akihiko Odaki
 
