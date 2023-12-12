@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DED80F2E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:35:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9811280F2C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:33:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5hB-0000xs-Uk; Tue, 12 Dec 2023 11:33:22 -0500
+	id 1rD5hC-0001Fl-VM; Tue, 12 Dec 2023 11:33:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gq-0000BT-Ft
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:07 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gz-0000FF-1h
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:13 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gm-0007up-Nn
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:00 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3333131e08dso6405422f8f.2
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:32:56 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gv-0007wS-DY
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:33:08 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40c2bb872e2so55198325e9.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:33:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398775; x=1703003575; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702398783; x=1703003583; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=txm7/iHmv0X7jWBggjHofZpA3/2r+gkB1hvwujvQQ8k=;
- b=tJdWbbb4u5oeAeN+MPcKCozrrd7nw6+MRPZ7oW/gMVSEGdbUw/ONYuBXrCqu/XgqZM
- 2x8qffsqnF2zTZ+2IHAi/o/n1v6v8lJGeOcy7VG58AtWFopLtzMJ7WQKoHTOWlWoahc0
- U6HSVXNBeAiqZdYXqwRqyxFIYUZ4yt0djWUbz1azX+9a5C1iIPaNDLWkgney5y5lww1C
- eaH8/KJl9IqZIGkP7ow5SmQ96fWSbsH78NSdTbGOY7vHZiw+HAiiA4HU0AhEEUA8N8LK
- XdTqV9SbBI76DidE2Qx/jjR3vnjxFQvrtTHYAqQQJarp/ZF/EbpsFljNP9ftd9DE04ed
- Ufjw==
+ bh=HtRA1ZcQFW7z3eKOx2yAyRkVJ7SlDZA04aMcZUs1m4I=;
+ b=ZVIFuzmLchDjDB3OkfjbMZXVKMgYwOO0S7whNc7TlESvzffg/pX3xTSev92pWsuFIv
+ R02c9U8UvYwvO7l6tyJUfWr4J4xbO7b6xtrku2REbGptcPu3sWjfXcLHfD+8UtsUq4oH
+ p4Be110cat34XfxwujbHVBGeqtNXtgXezqOFw88PJtEAe+tzdruz/hx5A6dJrD1QDUwF
+ T1yjyA8nGbOzmiHEJCN8j3ALC/SeXV+OjsNkYQYZfqQeTm1CeyDonkKwxuolrIki6isD
+ r46rJlzP5oWhuS2wRnjJNyc7FQD89UFvyWtvdUtmTJ9EyourFloZkWnjOmiWK+WhFBz3
+ IYog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398775; x=1703003575;
+ d=1e100.net; s=20230601; t=1702398783; x=1703003583;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=txm7/iHmv0X7jWBggjHofZpA3/2r+gkB1hvwujvQQ8k=;
- b=ukdyOXk+9gv0+r02xROAVesXTmvI16kaorT5jotDzK+Yc3jnZpRHkCbcRFZmRVoUVn
- kYaHlzAsvcVb92dGPTi2+DL2av71+AmE/Pti8BfKusZ7B2psknE0PhIEzGXEiC9T38QZ
- dQ734Gs8OiK3aXblgR+aOHh70SOPBd7X5N+BlD2QJFA0f7e1j6qK0VLjzcLXGAbcuFaK
- KP+zQUaCCZQ2T5uEdVsaT3rbgoG318b9y/B2S6BgltnS8AG2GaHfDY6+D7wAOBWMP7UZ
- dAEJHGK7aw4+cYKUJ5kdPavjsSXgYHoNQkxnefttVgyqiTPpIAl87zFh6TmBahiRWBub
- gD/A==
-X-Gm-Message-State: AOJu0Ywtpwkq9X4fUwZ3xJp+UNha1FXiWfFFb1nyr87IqhhASm6TxWPQ
- bGkgi+sihbx4X9ouNa/OERQVzzR0hkVXLRTwab8=
-X-Google-Smtp-Source: AGHT+IE0bfcnrZKyfEhNF02tMu/TlCdEaOo1xp30m/2KU7QLmd5GRJV+BDgr/OoDe4TdwAqyB16mVQ==
-X-Received: by 2002:a05:600c:4ca5:b0:40c:2630:1743 with SMTP id
- g37-20020a05600c4ca500b0040c26301743mr3033640wmp.84.1702398775012; 
- Tue, 12 Dec 2023 08:32:55 -0800 (PST)
+ bh=HtRA1ZcQFW7z3eKOx2yAyRkVJ7SlDZA04aMcZUs1m4I=;
+ b=eJUUw4v5l1E+td8KM5SyOr/xGQVWE9Baf8QGnIz9BoIw1H3g7qiyvi6prDoJ3/xDDS
+ Qfmj/Gpk5EzhHE0nA3eFVTnwlbSoVBNulxeKm7aK3ewr5Ow4q0o4olKkzq8JgJ2Kd4RN
+ lq4wyP4J13R3NhzaYVO2o8g5nCMnkzaun6boU7tzfhqgiNGNwtZVRqVoGVaKiXDjt9F2
+ GBYjvjmQsjCQ5TayUPfMm0lyPKCRKtQ+0aoWvDdmo8lBfNkx8rn2Jp7NPYrrbUWewm9+
+ tn/H3m9FgQi00O9M/JVbSKyEsZzcJ8ImMt8D16pc3bRGWTSN0rL7nnLPnl8HZG1Zz4Ha
+ 5fAQ==
+X-Gm-Message-State: AOJu0YzXILDL35+rUk6rR/li9X95Bg1yOmf1iyKAIzfOEx3QTFBsjbCI
+ UPStPmT3LodfPFXt0onH9rYA4XVhWxMPN20A+S0=
+X-Google-Smtp-Source: AGHT+IHmB1gMHyfBTapoK6ubgT1kUI5aeRYDa46oOtCc66PwG5Jhqp1N4vhbcxsCs9bUukgHOyUtsw==
+X-Received: by 2002:a1c:4c07:0:b0:40c:3419:6ed6 with SMTP id
+ z7-20020a1c4c07000000b0040c34196ed6mr1818330wmf.85.1702398783009; 
+ Tue, 12 Dec 2023 08:33:03 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- d13-20020a05600c34cd00b0040c496c64cfsm6831542wmq.12.2023.12.12.08.32.53
+ p1-20020a05600c1d8100b0040b47c69d08sm19472560wms.18.2023.12.12.08.33.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:32:54 -0800 (PST)
+ Tue, 12 Dec 2023 08:33:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
@@ -71,18 +71,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 27/33] hw/arm/highbank: Let the A9/A15MPcore create/wire the
+Subject: [PATCH 28/33] hw/arm/vexpress: Let the A9/A15MPcore create/wire the
  CPU cores
-Date: Tue, 12 Dec 2023 17:29:27 +0100
-Message-ID: <20231212162935.42910-28-philmd@linaro.org>
+Date: Tue, 12 Dec 2023 17:29:28 +0100
+Message-ID: <20231212162935.42910-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
 References: <20231212162935.42910-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,92 +110,88 @@ wire the CPU cores. Remove the redundant code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/highbank.c | 53 +++++++----------------------------------------
- 1 file changed, 8 insertions(+), 45 deletions(-)
+ hw/arm/vexpress.c | 51 ++++++-----------------------------------------
+ 1 file changed, 6 insertions(+), 45 deletions(-)
 
-diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
-index a184bee993..b4f8304146 100644
---- a/hw/arm/highbank.c
-+++ b/hw/arm/highbank.c
-@@ -180,47 +180,10 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
-     SysBusDevice *busdev;
-     qemu_irq pic[128];
-     int n;
--    unsigned int smp_cpus = machine->smp.cpus;
--    qemu_irq cpu_irq[4];
--    qemu_irq cpu_fiq[4];
--    qemu_irq cpu_virq[4];
--    qemu_irq cpu_vfiq[4];
-     MemoryRegion *sysram;
-     MemoryRegion *sysmem;
-     char *sysboot_filename;
+diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
+index 294b6f15f2..c104759588 100644
+--- a/hw/arm/vexpress.c
++++ b/hw/arm/vexpress.c
+@@ -210,45 +210,19 @@ static void init_cpus(MachineState *ms, const char *cpu_type,
+                       qemu_irq *pic, bool secure, bool virt)
+ {
+     DeviceState *dev;
+-    SysBusDevice *busdev;
+-    int n;
+-    unsigned int smp_cpus = ms->smp.cpus;
  
--    switch (machine_id) {
--    case CALXEDA_HIGHBANK:
--        machine->cpu_type = ARM_CPU_TYPE_NAME("cortex-a9");
--        break;
--    case CALXEDA_MIDWAY:
--        machine->cpu_type = ARM_CPU_TYPE_NAME("cortex-a15");
--        break;
--    default:
--        assert(0);
--    }
--
+-    /* Create the actual CPUs */
 -    for (n = 0; n < smp_cpus; n++) {
--        Object *cpuobj;
--        ARMCPU *cpu;
+-        Object *cpuobj = object_new(cpu_type);
 -
--        cpuobj = object_new(machine->cpu_type);
--        cpu = ARM_CPU(cpuobj);
--
--        object_property_set_int(cpuobj, "psci-conduit", QEMU_PSCI_CONDUIT_SMC,
--                                &error_abort);
+-        if (!secure) {
+-            object_property_set_bool(cpuobj, "has_el3", false, NULL);
+-        }
+-        if (!virt) {
+-            if (object_property_find(cpuobj, "has_el2")) {
+-                object_property_set_bool(cpuobj, "has_el2", false, NULL);
+-            }
+-        }
 -
 -        if (object_property_find(cpuobj, "reset-cbar")) {
--            object_property_set_int(cpuobj, "reset-cbar", MPCORE_PERIPHBASE,
+-            object_property_set_int(cpuobj, "reset-cbar", periphbase,
 -                                    &error_abort);
 -        }
 -        qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
--        cpu_irq[n] = qdev_get_gpio_in(DEVICE(cpu), ARM_CPU_IRQ);
--        cpu_fiq[n] = qdev_get_gpio_in(DEVICE(cpu), ARM_CPU_FIQ);
--        cpu_virq[n] = qdev_get_gpio_in(DEVICE(cpu), ARM_CPU_VIRQ);
--        cpu_vfiq[n] = qdev_get_gpio_in(DEVICE(cpu), ARM_CPU_VFIQ);
 -    }
 -
-     sysmem = get_system_memory();
-     /* SDRAM at address zero.  */
-     memory_region_add_subregion(sysmem, 0, machine->ram);
-@@ -251,22 +214,22 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
-         sysbus_mmio_map(busdev, 0, 0xfff12000);
- 
-         dev = qdev_new(TYPE_A9MPCORE_PRIV);
-+        qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-a9"));
-         break;
-     case CALXEDA_MIDWAY:
-         dev = qdev_new(TYPE_A15MPCORE_PRIV);
-+        qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-a15"));
-         break;
-+    default:
-+        g_assert_not_reached();
+-    /* Create the private peripheral devices (including the GIC);
+-     * this must happen after the CPUs are created because a15mpcore_priv
+-     * wires itself up to the CPU's generic_timer gpio out lines.
+-     */
+     dev = qdev_new(privdev);
++    qdev_prop_set_uint32(dev, "num-cores", ms->smp.cpus);
++    qdev_prop_set_string(dev, "cpu-type", cpu_type);
+     if (!secure) {
+         qdev_prop_set_bit(dev, "cpu-has-el3", false);
+     }
+     if (!virt) {
+         qdev_prop_set_bit(dev, "cpu-has-el2", false);
      }
 -    qdev_prop_set_uint32(dev, "num-cpu", smp_cpus);
--    qdev_prop_set_uint32(dev, "num-irq", NIRQ_GIC);
-+    qdev_prop_set_uint32(dev, "num-cores", machine->smp.cpus);
-+    qdev_prop_set_uint32(dev, "cpu-psci-conduit", QEMU_PSCI_CONDUIT_SMC);
-+    qdev_prop_set_uint64(dev, "cpu-reset-cbar", MPCORE_PERIPHBASE);
-+    qdev_prop_set_uint32(dev, "gic-spi-num", NIRQ_GIC);
-     busdev = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(busdev, &error_fatal);
-     sysbus_mmio_map(busdev, 0, MPCORE_PERIPHBASE);
--    for (n = 0; n < smp_cpus; n++) {
--        sysbus_connect_irq(busdev, n, cpu_irq[n]);
--        sysbus_connect_irq(busdev, n + smp_cpus, cpu_fiq[n]);
--        sysbus_connect_irq(busdev, n + 2 * smp_cpus, cpu_virq[n]);
--        sysbus_connect_irq(busdev, n + 3 * smp_cpus, cpu_vfiq[n]);
--    }
+-    busdev = SYS_BUS_DEVICE(dev);
+-    sysbus_realize_and_unref(busdev, &error_fatal);
+-    sysbus_mmio_map(busdev, 0, periphbase);
++    qdev_prop_set_uint64(dev, "cpu-reset-cbar", periphbase);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, periphbase);
  
-     for (n = 0; n < 128; n++) {
+     /* Interrupts [42:0] are from the motherboard;
+      * [47:43] are reserved; [63:48] are daughterboard
+@@ -256,22 +230,9 @@ static void init_cpus(MachineState *ms, const char *cpu_type,
+      * external interrupts starting from 32 (because there
+      * are internal interrupts 0..31).
+      */
+-    for (n = 0; n < 64; n++) {
++    for (int n = 0; n < 64; n++) {
          pic[n] = qdev_get_gpio_in(dev, n);
+     }
+-
+-    /* Connect the CPUs to the GIC */
+-    for (n = 0; n < smp_cpus; n++) {
+-        DeviceState *cpudev = DEVICE(qemu_get_cpu(n));
+-
+-        sysbus_connect_irq(busdev, n, qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
+-        sysbus_connect_irq(busdev, n + smp_cpus,
+-                           qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
+-        sysbus_connect_irq(busdev, n + 2 * smp_cpus,
+-                           qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
+-        sysbus_connect_irq(busdev, n + 3 * smp_cpus,
+-                           qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
+-    }
+ }
+ 
+ static void a9_daughterboard_init(VexpressMachineState *vms,
 -- 
 2.41.0
 
