@@ -2,87 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173BF80E37D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 05:57:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F1280E42E
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 07:13:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCunr-00078u-5t; Mon, 11 Dec 2023 23:55:31 -0500
+	id 1rCw08-0001zm-2y; Tue, 12 Dec 2023 01:12:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rCunm-00078O-SP
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 23:55:26 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rCw04-0001zY-HL
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 01:12:12 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1rCunk-0006NW-Oe
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 23:55:26 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rCw02-0003B6-Lj
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 01:12:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702356921;
+ s=mimecast20190719; t=1702361529;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gDEN6IBKCR9SZvy+vP5xMfqISLn2urgiBHY3S8b4Wt0=;
- b=i1rctoaqK2VXCKM67iVI/sUXTDmNEmL5pF45n4uZSFa49p8jabSjmFBoP2dlQ0hostKN0l
- 1xr1tW43f8CIYhXWf7c19/vLHbYe08OVPccLcTa/sBMxaY7vHzajqk73nkGtpobUNsGPem
- GKgwpLnjld74PhiO+xMmzMIuTvkzDeQ=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-ibZOL-NRO_yh2oMyf8n9mw-1; Mon, 11 Dec 2023 23:55:19 -0500
-X-MC-Unique: ibZOL-NRO_yh2oMyf8n9mw-1
-Received: by mail-oi1-f198.google.com with SMTP id
- 5614622812f47-3b9eeff9f7bso6034741b6e.1
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 20:55:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702356919; x=1702961719;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gDEN6IBKCR9SZvy+vP5xMfqISLn2urgiBHY3S8b4Wt0=;
- b=SHL46GcRhfAYgM/4EOa/eSghSFhNVsUOwX1bGOgqrEsm0a7Ztb6MdF2kAMGD+DV1Ul
- XnbwdJkhsnjQFBMof+s30kbXIyMAJtOW14QFfJPBsff2O3TGq8UOVt+s+tN3IN6CxfUD
- eUrAeQwzN5fMY6rHYpMYotwvp7LxtEKpZu07YtAez7q9QcyhwAvM9d7NOTYSWH5QYLp+
- Jxw75Kqso/BfJYPqQSZHPmHZ439R/nmZ3m3z0jk1qRnut4sVEzVgSWI8Bd9ybO96FUm3
- IacwXcEb3lVRNADZsuDf6JVBWUY31CSSWZxPvznai+5A384MQCBpUnnOMx+etOykrh+S
- frJg==
-X-Gm-Message-State: AOJu0YzX7+cdEcQNeNS4UpVbMlVFiOHSIjx2Ir4hUfXoFM7Vpezfsrrz
- M+AL3g+yOr4XJHkbDMZ/lxG/DpGZEYepdpRvgMR643lwlkkpO28wWgeXA3IU2Xarlh1hdbDd+PS
- ezUuVq7iaL/zOJBo=
-X-Received: by 2002:a05:6808:1493:b0:3b9:d4c0:5fac with SMTP id
- e19-20020a056808149300b003b9d4c05facmr7478783oiw.22.1702356919107; 
- Mon, 11 Dec 2023 20:55:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF69UM/96uA9+yVDBg06a7ccGQ/ArtwPvz/UiRlwVZ4UPAq2rRgkmD9crHzR3Fux+aWTDQ9Zg==
-X-Received: by 2002:a05:6808:1493:b0:3b9:d4c0:5fac with SMTP id
- e19-20020a056808149300b003b9d4c05facmr7478776oiw.22.1702356918859; 
- Mon, 11 Dec 2023 20:55:18 -0800 (PST)
-Received: from [192.168.68.51] ([43.252.115.3])
- by smtp.gmail.com with ESMTPSA id
- c23-20020aa78817000000b006ce358d5d9asm7417601pfo.141.2023.12.11.20.55.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 20:55:18 -0800 (PST)
-Message-ID: <0b2aaedf-7a4c-49f4-b4af-71f9ab693207@redhat.com>
-Date: Tue, 12 Dec 2023 14:55:08 +1000
+ bh=n7ZfHi2eNFq/haYA4z4IGXdzsRJRpUkSp7C2bPpTItc=;
+ b=WnPBQe2FFShihkwYYtPJJByizfi51ucJO6aaBTRq8D44B7/PMEX5J55DXDQRJTR3zzXMDG
+ mkObtxhYQYEMmr1Edm0loCbKxr4dNTxwoj8RcTONBG0/YpOQ+U0obFxzhrZtb7Kxg7L5B+
+ 4DFzXQ+4k3qPOJTgi+WW0AuCg/NgXZU=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-nDnsO7gMM4mOqkhz0OIBOQ-1; Tue,
+ 12 Dec 2023 01:12:05 -0500
+X-MC-Unique: nDnsO7gMM4mOqkhz0OIBOQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E96A2823F6E;
+ Tue, 12 Dec 2023 06:12:05 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 35F92492BC6;
+ Tue, 12 Dec 2023 06:12:05 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1C3F921E6812; Tue, 12 Dec 2023 07:12:04 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org,  armbru@redhat.com,  Michael Roth
+ <michael.roth@amd.com>, Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [RFC] string-output-visitor: show structs as "<omitted>"
+In-Reply-To: <20231211195734.425040-1-stefanha@redhat.com> (Stefan Hajnoczi's
+ message of "Mon, 11 Dec 2023 14:57:34 -0500")
+References: <20231211195734.425040-1-stefanha@redhat.com>
+Date: Tue, 12 Dec 2023 07:12:04 +0100
+Message-ID: <87zfyg54qz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/9] Unified CPU type check
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
- b.galvani@gmail.com, strahinja.p.jankovic@gmail.com, imammedo@redhat.com,
- kfting@nuvoton.com, wuhaotsh@google.com, nieklinnenbank@gmail.com,
- rad@semihalf.com, quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- armbru@redhat.com, wangyanan55@huawei.com, vijai@behindbytes.com,
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, shan.gavin@gmail.com
-References: <20231204004726.483558-1-gshan@redhat.com>
-In-Reply-To: <20231204004726.483558-1-gshan@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,37 +81,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Phil,
+Stefan Hajnoczi <stefanha@redhat.com> writes:
 
-On 12/4/23 10:47, Gavin Shan wrote:
-> This series bases on Phil's repository because the prepatory commits
-> have been queued to the branch.
-> 
->    https://gitlab.com/philmd/qemu.git (branch: cpus-next)
-> 
-> There are two places where the user specified CPU type is checked to see
-> if it's supported or allowed by the board: machine_run_board_init() and
-> mc->init(). We don't have to maintain two duplicate sets of logic. This
-> series intends to move the check to machine_run_board_init() so that we
-> have unified CPU type check.
-> 
-> This series can be checked out from:
-> 
->    git@github.com:gwshan/qemu.git (branch: kvm/cpu-type)
-> 
-> PATCH[1-4] refactors and improves the logic to validate CPU type in
->             machine_run_board_init()
-> PATCH[5-9] validates the CPU type in machine_run_board_init() for the
->             individual boards
-> 
-> v6: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg00768.html
-> v7: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg01045.html
-> v8: https://lists.nongnu.org/archive/html/qemu-arm/2023-11/msg01168.html
-> 
+> StringOutputVisitor crashes when it visits a struct because
+> ->start_struct() is NULL.
+>
+> Show "<omitted>" instead of crashing. This is necessary because the
+> virtio-blk-pci iothread-vq-mapping parameter that I'd like to introduce
+> soon is a list of IOThreadMapping structs.
+>
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+> Can we do better?
+>
+> I am unfamiliar with StringOutputVisitor, so I wasn't sure how to
+> proceed. Is the format or at least the intended use of
+> StringOutputVisitor's output defined somewhere?
 
-Ping to see if there is a chance to queue it up before the Chrismas? :)
+Bwuahahahaha!
 
-Thanks,
-Gavin
+SCNR
+
+>                                                 Does it need to be a
+> single line or can the output be multiple lines?
+
+I'm afraid we need to review its users to be sure.
+
+> Or maybe I shouldn't introduce a qdev property with IOThreadMappingList
+> as its type in
+> https://lore.kernel.org/qemu-devel/ZUoPiFxIIwFq5wMg@redhat.com/?
+
+QOM initially supported only scalar properties.
+
+I think maintaining this restriction will lead to awkward interfaces.
+Lists are clearly useful.  And then we'll likely want list of struct,
+not multiple lists.
+
+Lifting the restriction will take some work.
+
+On the string visitors, see also my musings in
+
+    Subject: Re: [PATCH v2 1/2] qdev: add IOThreadVirtQueueMappingList property type 
+    Date: Mon, 11 Dec 2023 16:32:06 +0100
+    Message-ID: <87msugah6x.fsf@pond.sub.org>
+
+> ---
+>  include/qapi/string-output-visitor.h |  6 +++---
+>  qapi/string-output-visitor.c         | 14 ++++++++++++++
+>  2 files changed, 17 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/qapi/string-output-visitor.h b/include/qapi/string-output-visitor.h
+> index 268dfe9986..762fe3f705 100644
+> --- a/include/qapi/string-output-visitor.h
+> +++ b/include/qapi/string-output-visitor.h
+> @@ -26,9 +26,9 @@ typedef struct StringOutputVisitor StringOutputVisitor;
+>   * If everything else succeeds, pass @result to visit_complete() to
+>   * collect the result of the visit.
+>   *
+> - * The string output visitor does not implement support for visiting
+> - * QAPI structs, alternates, null, or arbitrary QTypes.  It also
+> - * requires a non-null list argument to visit_start_list().
+> + * The string output visitor does not implement support for alternates, null,
+> + * or arbitrary QTypes.  It also requires a non-null list argument to
+> + * visit_start_list().
+
+Mention output for structs is information-free?
+
+>   */
+>  Visitor *string_output_visitor_new(bool human, char **result);
+>  
+> diff --git a/qapi/string-output-visitor.c b/qapi/string-output-visitor.c
+> index c0cb72dbe4..363dac00fe 100644
+> --- a/qapi/string-output-visitor.c
+> +++ b/qapi/string-output-visitor.c
+> @@ -292,6 +292,18 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
+>      return true;
+>  }
+>  
+> +static bool start_struct(Visitor *v, const char *name, void **obj,
+> +                         size_t size, Error **errp)
+> +{
+> +    return true;
+> +}
+> +
+> +static void end_struct(Visitor *v, void **obj)
+> +{
+> +    StringOutputVisitor *sov = to_sov(v);
+> +    string_output_set(sov, g_strdup("<omitted>"));
+
+TODO comment?
+
+> +}
+> +
+>  static bool
+>  start_list(Visitor *v, const char *name, GenericList **list, size_t size,
+>             Error **errp)
+> @@ -379,6 +391,8 @@ Visitor *string_output_visitor_new(bool human, char **result)
+>      v->visitor.type_str = print_type_str;
+>      v->visitor.type_number = print_type_number;
+>      v->visitor.type_null = print_type_null;
+> +    v->visitor.start_struct = start_struct;
+> +    v->visitor.end_struct = end_struct;
+>      v->visitor.start_list = start_list;
+>      v->visitor.next_list = next_list;
+>      v->visitor.end_list = end_list;
 
 
