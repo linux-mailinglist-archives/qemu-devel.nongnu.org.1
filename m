@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DE780EA6A
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE9B80EA81
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:38:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD0yI-00069t-1j; Tue, 12 Dec 2023 06:30:43 -0500
+	id 1rD14R-0000E6-Am; Tue, 12 Dec 2023 06:37:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0yB-00067K-SM
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:30:36 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD14E-0000AV-VJ
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:36:51 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0y9-0004Db-F5
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:30:34 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-54c5d041c23so7613891a12.2
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 03:30:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD149-0006tq-SQ
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:36:50 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-54c671acd2eso7387504a12.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 03:36:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702380631; x=1702985431; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MCdPCnhAmawlvGjzJcBxXQKNZDPrtvUlP4jFKDMYMSc=;
- b=DbYO8TXovEskdgMldCCsIJc9L4kZbBMLf+F+7WRrbcDGqk9kcp1EnD7cJKb4g3isWc
- 9trDnxlMHrDyuu91GzXMqXBKmW3XO0o4YN3ZKqVBxmJPtULfo9+nonRqV/G4LmxyoW++
- kUEePD/x2we6zmdV0gZFkZwJYZKjXEdSE0qRRqiXRIyOt3uVh1pPACbkqQBW+0KDulNo
- jz2/hD4CBfuBjz/SxFO1mcCol1gr02yM02HWTYa4ex67n8+qRzLxWY8h6AvXfe1EABZv
- 79PohnNZ3lCVvVxlIETPUB53MFYy4KCiIlDdUdPOuKkdRBqiNKek06zgtJ0doncIwCo0
- 52Mg==
+ d=linaro.org; s=google; t=1702381004; x=1702985804; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IsM3jluMYG+fGfRQAzPOap3By7YAk7vhZE+TTIaa53Q=;
+ b=zP3C2KMn75Jwm+FnAuzIMz+6UY4CL7JFYEIC52IDC1qArLUOb/7svmp25q+zZkOrRH
+ IqEGxKLjczk+a76AuQ33O1ansQL5cwh88LaV03BjnXOQs4kGGERhdZla9J9EvdKUR20F
+ h+zyJ/V+JfDhrE99eV6bg7Z92KgljfF6Y9EWkcQ0fzXJPfMuY5S58HSorZmI4PZy7NFm
+ DDoK4Zs6IHh/3s2aAijq+Dq8rfLYavB3+88UjDmg+H4q3mUFNbaBxkt+zdfnQGrWKbTZ
+ xZccxzCa6wF5h5YaY4LGtxguEY+slMhoEtIwESzRjkhuY84Xd6NQWQ8ERh1PL2P4575p
+ d49w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702380631; x=1702985431;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MCdPCnhAmawlvGjzJcBxXQKNZDPrtvUlP4jFKDMYMSc=;
- b=V9Eh/YclKgQmU0rD5f4sqGRTBJHZdeC3yAVzYvmKopRT655EFw3aMXA5U8kY0+Vxqq
- afQYvZDJGPn9f2yfM175uXmwqamZC3c/WopAiECz1b+N/oF5DaPdhL0ZN57vsWK863y3
- j8gaDgD7IcqaeTnFeVXRXnErXfbPB0LOOSBC4g5FD3oCOz9NCJw8ojOLaJFpcQ9YDzR5
- mjoGHuzSlB1BdoDqSRDz7lV8jXFhoix5OwIop/B6WuuONB0IzViKyMw7TnzrZF95/9Jq
- yUNj/vAcGjj5O/OP3qEvirRJ4TwKSSlFBZXWDA5ysvcgaaM1vbszysCHvqLf36yPn7Nr
- C/GQ==
-X-Gm-Message-State: AOJu0YytksGY28+Ckp4ebH6s7hwXawioyBer0Y9zNXFxSwSJ9lwMfOdA
- /n4jys/WcRvXKWaHDeUR9cIJql4Aj87mxISUttTuFg==
-X-Google-Smtp-Source: AGHT+IERi3FWynU+KUuYflnt7QPdg89Bev5Aeyg6L7KgrFsZi4fhMECbTiNx13p3yRIL7tcflzxZcw==
-X-Received: by 2002:a17:907:7ea1:b0:a16:88e8:2de7 with SMTP id
- qb33-20020a1709077ea100b00a1688e82de7mr2246852ejc.23.1702380630950; 
- Tue, 12 Dec 2023 03:30:30 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702381004; x=1702985804;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IsM3jluMYG+fGfRQAzPOap3By7YAk7vhZE+TTIaa53Q=;
+ b=Gt8VzWiz1vpbfg7LaM9bDqQmITbHiMM6waFbVQe9usdDRjrPwy9cIaXhSWXE9mE4mJ
+ 7jIUWWz71zQoXOYXkEe/b7DSLKFPU/GJecxHs/91Q1V/iPtzkgInuUw+DG1OQ/Aq6f7O
+ P6YiFlj6sHTvm0mHaQeZ6jqSc8g2PTqlZ7YkSFglPlt6VYxjF0gMfYYqt7JOPlgRV2X3
+ 40drGW5Hn9x75ID77kutZQ7GZwBIhVZpFy4n9N8luVs6N6uOE9ZJMKITUbP4ro9/Cq5K
+ i+AP0GUw8aZquWo7uyg5BFaz2nR9vXLJnUBOPs2UHCfyV4nBjZ4IsidNLnQBiHnT+qUD
+ 8yDw==
+X-Gm-Message-State: AOJu0Yxgxpp+bH9S9HsIP74cOFTAV6685aCisvleJ11KH7c6VhlY1XUE
+ bqezOtIrLaeUC5HNJ4thmplhz7JWI3ME3QHFOGcVOA==
+X-Google-Smtp-Source: AGHT+IHN6EApjDUjIWmoMPIaNO+czOldnp+ADy4usrsTnUzjZ6NLbmnnReb6JUBAZi+jUAP4mw4THw==
+X-Received: by 2002:a50:8581:0:b0:54d:c18a:eed3 with SMTP id
+ a1-20020a508581000000b0054dc18aeed3mr3503870edh.34.1702381003990; 
+ Tue, 12 Dec 2023 03:36:43 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- ll9-20020a170907190900b00a1da2f7c1d8sm6118003ejc.77.2023.12.12.03.30.29
+ q3-20020a5085c3000000b0054ccac03945sm4526361edh.12.2023.12.12.03.36.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 03:30:30 -0800 (PST)
+ Tue, 12 Dec 2023 03:36:43 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] system/qtest: Restrict QTest API to system emulation
-Date: Tue, 12 Dec 2023 12:30:16 +0100
-Message-ID: <20231212113016.29808-3-philmd@linaro.org>
+Subject: [PATCH 0/4] hw: Remove 'exec/exec-all.h' header when unused
+Date: Tue, 12 Dec 2023 12:36:36 +0100
+Message-ID: <20231212113640.30287-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231212113016.29808-1-philmd@linaro.org>
-References: <20231212113016.29808-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,32 +88,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Outside of system emulation, only qtest_enabled() can be used.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/sysemu/qtest.h | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/include/sysemu/qtest.h b/include/sysemu/qtest.h
-index 85f05b0e46..b5d5fd3463 100644
---- a/include/sysemu/qtest.h
-+++ b/include/sysemu/qtest.h
-@@ -23,6 +23,7 @@ static inline bool qtest_enabled(void)
-     return qtest_allowed;
- }
- 
-+#ifndef CONFIG_USER_ONLY
- void qtest_send_prefix(CharBackend *chr);
- void G_GNUC_PRINTF(2, 3) qtest_sendf(CharBackend *chr, const char *fmt, ...);
- void qtest_set_command_cb(bool (*pc_cb)(CharBackend *chr, gchar **words));
-@@ -35,5 +36,6 @@ void qtest_server_set_send_handler(void (*send)(void *, const char *),
- void qtest_server_inproc_recv(void *opaque, const char *buf);
- 
- int64_t qtest_get_virtual_clock(void);
-+#endif
- 
- #endif
+Philippe Mathieu-Daudé (4):
+  hw/ppc/spapr_hcall: Remove unused 'exec/exec-all.h' included header
+  hw/misc/mips_itu: Remove unnecessary 'exec/exec-all.h' header
+  hw/s390x/ipl: Remove unused 'exec/exec-all.h' included header
+  target: Restrict 'sysemu/reset.h' to system emulation
+
+ hw/misc/mips_itu.c     | 3 ++-
+ hw/ppc/spapr_hcall.c   | 1 -
+ hw/s390x/ipl.c         | 1 -
+ target/i386/cpu.c      | 2 +-
+ target/loongarch/cpu.c | 2 ++
+ 5 files changed, 5 insertions(+), 4 deletions(-)
+
 -- 
 2.41.0
 
