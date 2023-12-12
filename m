@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A8A80EB99
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:21:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9C280EBAB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:25:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD1kL-0006Xb-DE; Tue, 12 Dec 2023 07:20:27 -0500
+	id 1rD1kl-0006zM-Qs; Tue, 12 Dec 2023 07:20:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1jy-0006A1-Fe; Tue, 12 Dec 2023 07:19:58 -0500
+ id 1rD1kK-0006kq-Pl; Tue, 12 Dec 2023 07:20:24 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1jw-0000UR-K1; Tue, 12 Dec 2023 07:19:58 -0500
+ id 1rD1kI-0000Uo-LX; Tue, 12 Dec 2023 07:20:20 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0E2DE3AF05;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1F00B3AF06;
  Tue, 12 Dec 2023 15:18:50 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C66293B953;
+ by tsrv.corpit.ru (Postfix) with SMTP id D96C33B954;
  Tue, 12 Dec 2023 15:18:32 +0300 (MSK)
-Received: (nullmailer pid 1003450 invoked by uid 1000);
+Received: (nullmailer pid 1003453 invoked by uid 1000);
  Tue, 12 Dec 2023 12:18:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Auger <eric.auger@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.4 17/31] hw/virtio: Free
- VirtIOIOMMUPCI::vdev.reserved_regions[] on finalize()
-Date: Tue, 12 Dec 2023 15:18:05 +0300
-Message-Id: <20231212121831.1003318-17-mjt@tls.msk.ru>
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.4 18/31] hw/misc/mps2-scc: Free MPS2SCC::oscclk[] array
+ on finalize()
+Date: Tue, 12 Dec 2023 15:18:06 +0300
+Message-Id: <20231212121831.1003318-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
 References: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
@@ -71,49 +70,47 @@ added the DEFINE_PROP_ARRAY() macro with the following comment:
   * It is the responsibility of the device deinit code to free the
   * @_arrayfield memory.
 
-Commit 8077b8e549 added:
+Commit 4fb013afcc added:
 
-  DEFINE_PROP_ARRAY("reserved-regions", VirtIOIOMMUPCI,
-                    vdev.nb_reserved_regions, vdev.reserved_regions,
-                    qdev_prop_reserved_region, ReservedRegion),
+  DEFINE_PROP_ARRAY("oscclk", MPS2SCC, num_oscclk, oscclk_reset,
+                    qdev_prop_uint32, uint32_t),
 
-but forgot to free the 'vdev.reserved_regions' array. Do it in the
+but forgot to free the 'oscclk_reset' array. Do it in the
 instance_finalize() handler.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 8077b8e549 ("virtio-iommu-pci: Add array of Interval properties") # v5.1.0+
+Fixes: 4fb013afcc ("hw/misc/mps2-scc: Support configurable number of OSCCLK values") # v6.0.0+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-id: 20231121174051.63038-3-philmd@linaro.org
+Message-id: 20231121174051.63038-4-philmd@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit c9a4aa06dfce0fde1e279e1ea0c1945582ec0d16)
+(cherry picked from commit 896dd6ff7b9f2575f1a908a07f26a70b58d8b675)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: fixup hw/virtio/virtio-iommu-pci.c for before v8.1.0-2552-g41cc70cdf5,
- "virtio-iommu: Rename reserved_regions into prop_resv_regions" -- so now
- patch subject matches actual change again)
 
-diff --git a/hw/virtio/virtio-iommu-pci.c b/hw/virtio/virtio-iommu-pci.c
-index 7ef2f9dcdb..eab6e1c793 100644
---- a/hw/virtio/virtio-iommu-pci.c
-+++ b/hw/virtio/virtio-iommu-pci.c
-@@ -95,10 +95,18 @@ static void virtio_iommu_pci_instance_init(Object *obj)
-                                 TYPE_VIRTIO_IOMMU);
+diff --git a/hw/misc/mps2-scc.c b/hw/misc/mps2-scc.c
+index b3b42a792c..fe5034db14 100644
+--- a/hw/misc/mps2-scc.c
++++ b/hw/misc/mps2-scc.c
+@@ -329,6 +329,13 @@ static void mps2_scc_realize(DeviceState *dev, Error **errp)
+     s->oscclk = g_new0(uint32_t, s->num_oscclk);
  }
  
-+static void virtio_iommu_pci_instance_finalize(Object *obj)
++static void mps2_scc_finalize(Object *obj)
 +{
-+    VirtIOIOMMUPCI *dev = VIRTIO_IOMMU_PCI(obj);
++    MPS2SCC *s = MPS2_SCC(obj);
 +
-+    g_free(dev->vdev.reserved_regions);
++    g_free(s->oscclk_reset);
 +}
 +
- static const VirtioPCIDeviceTypeInfo virtio_iommu_pci_info = {
-     .generic_name  = TYPE_VIRTIO_IOMMU_PCI,
-     .instance_size = sizeof(VirtIOIOMMUPCI),
-     .instance_init = virtio_iommu_pci_instance_init,
-+    .instance_finalize = virtio_iommu_pci_instance_finalize,
-     .class_init    = virtio_iommu_pci_class_init,
+ static const VMStateDescription mps2_scc_vmstate = {
+     .name = "mps2-scc",
+     .version_id = 3,
+@@ -385,6 +392,7 @@ static const TypeInfo mps2_scc_info = {
+     .parent = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(MPS2SCC),
+     .instance_init = mps2_scc_init,
++    .instance_finalize = mps2_scc_finalize,
+     .class_init = mps2_scc_class_init,
  };
  
 -- 
