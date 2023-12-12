@@ -2,91 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751E480E8FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 11:23:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F7680E910
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 11:26:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCzuI-0006aH-Sx; Tue, 12 Dec 2023 05:22:31 -0500
+	id 1rCzxu-0000QN-6W; Tue, 12 Dec 2023 05:26:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rCzuE-0006Zd-To
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 05:22:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rCzuD-0007qN-Ch
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 05:22:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702376544;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2kEST+MKo6CibOU3iHFI9ZD1Wnt97ACG36waRHtm6p8=;
- b=eMq095ktEvNHVNd9Eq4vU6jCdIdt4ukuYJy2Pq9b9dfO29Kvuh5/IIq6+XfsOlBQ2mFtd9
- Czm6mTssZlRH5gOGAQoQaoylDsvZ8IsDZNKRlLmgE8S7mFMc3zbN4l9xfsLylPKByxNG6h
- T6myn4Euy0FfUr4uGwuR7s2eC+mxuSg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-304-mzm3VUJcOgyhxrPCDM3lmA-1; Tue, 12 Dec 2023 05:22:22 -0500
-X-MC-Unique: mzm3VUJcOgyhxrPCDM3lmA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33608afb161so3749522f8f.0
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 02:22:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rCzxm-0000QB-JD
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 05:26:06 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rCzxj-00010h-ST
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 05:26:06 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-54c671acd2eso7293789a12.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 02:26:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702376761; x=1702981561; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5N+XvE0OAYnHKzLxcb8b/+ggdMaxe5/J5G5uh9SBrOM=;
+ b=kR290JDx3HGiBurYeO0k3PQy7ifxbuurQrIveKOchrVBovshvHfL3AV6JTIsWB0Jan
+ 2rcyUZvpwIRBNZlIo/A3qpTfAPBfvaU2m2ewX97fIfpJyTZqMk3xNwfYaaZxtPg3YUtI
+ GkvnqUKZqg1Ht4rQUufMFlakJGJCtRAXD8e8nAmwDu3874FPCJaUuCzW3YeoiEYYQfLc
+ TVOrTZV1QpNQkd1P0YgnuIcO1Hw5dcoWk8/f3vUeKqyxK1puzSgnfhjqIlgqrUKYfEHm
+ LL2FvU96re1eZ4JGIKjl6W72zB0VX2xskqp+DEzuUoUxnC6gXopzlnLGHC+/QxXNQD41
+ iUPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702376540; x=1702981340;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1702376761; x=1702981561;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2kEST+MKo6CibOU3iHFI9ZD1Wnt97ACG36waRHtm6p8=;
- b=fIscesBiVgdXybPYvfHRWyzDYMY0sXwut8BVpNcARldHbr6l78FfOIPTL8KOU0MJXU
- fP1tjNdB7TngXaMFsmQKkpYOz5QlJijt2GCdkaANDyc7y+ldHGq9+4tt9G+yFMjWlB52
- NdMUZW1YkoIjt/FN9stksfPtUSbISw6g75K5Ek41CvfxKh7IUVzgyUGtMT44q/Rroetp
- su14pBFWOQIqF7Zmo+SjtQ7F8GtYiYX9XzpxePIsyHvIcHWhwlxWHeI+gPQBbrorFBIs
- kLUglttPszNIfSMdRZ9M5SNIcBG1XxmcL+sSM+QgugMoE57MMA2+t5Vy4FzbpCoQcmYL
- L5Fg==
-X-Gm-Message-State: AOJu0Yx/WGv/uOPxiVKYW3z4gLmYKNyzhcSphDnaiIj7srsmhmNK4foT
- isklR9NpnIW5ITY+IKO6UX2UWl/8NfO1tfO61i8MNKNVIsPwMJ0wF14xZrvlKECQ95/ImOOPp3F
- ql2KYX++VIgFLx4GUZuws3BVuqI7D4qbgcDoI2ZbJGTykCv3lZH7nyWZj2b/1E1cfPA2BxXJ4BM
- k=
-X-Received: by 2002:a05:6000:147:b0:333:3c21:822d with SMTP id
- r7-20020a056000014700b003333c21822dmr3656646wrx.1.1702376540769; 
- Tue, 12 Dec 2023 02:22:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEyQ64+BktazHW7LP9E+eXgq2YlVWocmAr0EA6zksGgvrZk50asFLZfDkGteDk0yr9KgkLo8g==
-X-Received: by 2002:a05:6000:147:b0:333:3c21:822d with SMTP id
- r7-20020a056000014700b003333c21822dmr3656637wrx.1.1702376540487; 
- Tue, 12 Dec 2023 02:22:20 -0800 (PST)
-Received: from [10.201.49.8] (nat-pool-mxp-t.redhat.com. [149.6.153.186])
- by smtp.gmail.com with ESMTPSA id
- c1-20020a5d4cc1000000b0033350f5f94dsm10439027wrt.101.2023.12.12.02.22.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Dec 2023 02:22:18 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 2/2] xen: fix condition for skipping virtio-mmio defines
-Date: Tue, 12 Dec 2023 11:22:14 +0100
-Message-ID: <20231212102214.243921-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231212102214.243921-1-pbonzini@redhat.com>
-References: <20231212102214.243921-1-pbonzini@redhat.com>
+ bh=5N+XvE0OAYnHKzLxcb8b/+ggdMaxe5/J5G5uh9SBrOM=;
+ b=vJ5tH5pPHtgpdxsLcu8HMhANoaxl5n6WsDWosTx4NbOqM8X0yl5EcHlijGjF/8Bb7J
+ 7v3/Ef5FYN/CqAgBmt/QHdya/ZoGuTR+oHmD3+WtYC9olt1BrYLN+gT8TnvaU/UiN75y
+ 5ZCVn26p/rsYVvmg1TJdknNAtcUlyNP/2TfIvEbc5iRs2cyEAdDOwKuyXwW0D+AwgmIK
+ j2eR698f1GfsK+/z6pJeE6hhZP6RYJ3nj6pEjw1EBqauUgUGHF6IBQTbWCvtF7nKo2n2
+ vSXEZWrpp3der6VHUUa+I/+d+W2qHiEZp1y0SCNCAQDumIt92xVO0C0EN5fBuvsi2hRv
+ WDAQ==
+X-Gm-Message-State: AOJu0Yy9vuOpKFKn5vPEAXMW0stRieUzhfbsNv+Zli15UjHYiXeQqZW6
+ x+mMjoeEBIUWxvXyRdfZAOmGQOf8de6HTFas7sX9aQ==
+X-Google-Smtp-Source: AGHT+IG8j2fZaxHA52hkab63U/G9ef4nYL5dkjIILBT8ubMGXBFurwqJxgx/c0mtFcNwaehZf0u7jFONzrzoQ0BlSuY=
+X-Received: by 2002:a50:cc0b:0:b0:543:5c2f:e0e6 with SMTP id
+ m11-20020a50cc0b000000b005435c2fe0e6mr3700325edi.17.1702376761055; Tue, 12
+ Dec 2023 02:26:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231211071204.30156-1-tomoyuki.hirose@igel.co.jp>
+ <20231211071204.30156-3-tomoyuki.hirose@igel.co.jp>
+ <CAFEAcA90fJgPGAjO0c4a=G+ge9bp1piVw40zt_rNHEoCTc_ngg@mail.gmail.com>
+ <CAFS=Ec=fNB11TWWoJ847mF8v6=MkEefcMROwEyPQo9pceipNJg@mail.gmail.com>
+In-Reply-To: <CAFS=Ec=fNB11TWWoJ847mF8v6=MkEefcMROwEyPQo9pceipNJg@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Dec 2023 10:25:49 +0000
+Message-ID: <CAFEAcA83J==kC5qUZBw8jE75iy=F0ojUKL2uvonU0RZ7iCqjSQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] hw/usb/hcd-xhci.c: allow unaligned access to
+ Capability Registers
+To: Tomoyuki Hirose <tomoyuki.hirose@igel.co.jp>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,29 +90,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GUEST_VIRTIO_MMIO_* was added in Xen 4.17, so only define them
-for CONFIG_XEN_CTRL_INTERFACE_VERSIONs up to 4.16.
+On Tue, 12 Dec 2023 at 01:43, Tomoyuki Hirose
+<tomoyuki.hirose@igel.co.jp> wrote:
+>
+> Thanks for comment.
+>
+> On Mon, Dec 11, 2023 at 10:57=E2=80=AFPM Peter Maydell <peter.maydell@lin=
+aro.org> wrote:
+> > We should definitely look at fixing the unaligned access
+> > stuff, but the linked bug report is not trying to do an
+> > unaligned access -- it wants to do a 2-byte read from offset 2,
+> > which is aligned. The capability registers in the xHCI spec
+> > are also all at offsets and sizes that mean that a natural
+> > read of them is not unaligned.
+>
+> Shouldn't I link this bug report?
+> Or is it not appropriate to allow unaligned access?
 
-Reported-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- include/hw/xen/xen_native.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The bug report is definitely relevant. But depending
+on how tricky the unaligned access handling turns out to
+be to get right, we might be able to fix the bug by
+permitting aligned-but-not-4-bytes accesses. (I'm
+a bit surprised that doesn't work already, in fact:
+we use it in other devices.)
 
-diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-index 6f09c48823b..1a5ad693a4d 100644
---- a/include/hw/xen/xen_native.h
-+++ b/include/hw/xen/xen_native.h
-@@ -532,7 +532,7 @@ static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
- }
- #endif
- 
--#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41700
-+#if CONFIG_XEN_CTRL_INTERFACE_VERSION < 41700
- #define GUEST_VIRTIO_MMIO_BASE   xen_mk_ullong(0x02000000)
- #define GUEST_VIRTIO_MMIO_SIZE   xen_mk_ullong(0x00100000)
- #define GUEST_VIRTIO_MMIO_SPI_FIRST   33
--- 
-2.43.0
-
+thanks
+-- PMM
 
