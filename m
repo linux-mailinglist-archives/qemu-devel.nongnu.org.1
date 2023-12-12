@@ -2,85 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40D180EB9D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:23:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9B280EBB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:25:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD1nM-0006fM-LA; Tue, 12 Dec 2023 07:23:28 -0500
+	id 1rD1oX-00011K-VK; Tue, 12 Dec 2023 07:24:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rD1nI-0006d3-F1
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:23:24 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1oR-0000wP-Nu
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:24:35 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rD1nG-0001Jn-0M
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:23:23 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40c46d6784eso19763365e9.3
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 04:23:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1oO-0003XR-UD
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:24:35 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a1f47f91fc0so660815866b.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 04:24:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702383800; x=1702988600; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2wIIHLGf+FYM8dHAGzRr81fCvwMEpKX7fsSZdSMR2K4=;
- b=BXHqA2znYBKATPJEvQEnHNjEi3f+1giPi2yUMRVb3tHrRUPebJrnwdsw0EB2NuDdtD
- SYbNpBAMFUdkxYgmFulufHSk7ZBji8thdk30nJiKxO6Y7q1ODQYv42bAz6Gk8kPLiRje
- JjHQRpUbwY4/7uFhXJzXKdwwOKagXDtAQTh99QJMfVUIIu2RoCwjcXHGo1aF7ePa7mmU
- LYN19hiNdpUxxVz/lkaPKj2hH+bVd6fnyziIHH96ReFGLFSsFSjp1i3HGWVHGNcjpM+6
- 6Blh+/vpv/9P8p4tOaSUh9Wz/VIBW0WV6HcNOK/m4G4q963Hw+H3zFVFl/1q8vOMuAdg
- LHzw==
+ d=linaro.org; s=google; t=1702383871; x=1702988671; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lc0kMqhhyTL0/ED+GsijVzAfaP8VzTIUwqo3zggCI8k=;
+ b=KTRzUdwBH2151SVzUUJF559pQtJGhM9l6DFhEsxVxzgUaRCHZV61qId+rLjygN+Vnm
+ ftHFfVuTxAFOX545/JCcmNAr+jiQndphUmWhZ2AYmFPsL3k84dIkmqPP7u+ZBCJMbvZm
+ YqoAuBfIPiqJbTGO5mjQAYcyFmXbT22hX9HC0L/esf5n9wfw/2ueJvOJnWBSnx7lqdog
+ drr9dkNqIe0Am9rcHCjwlpdRR9c0G5yq3dcmcv1u9/e6kEyGXcGmnV4DSb1Byzodh1l/
+ P5gpwHTU+XeqtBJHbLE6TM1SnBe5++u2BTqAw+cDT08blyAyNtAOjJJ4j3q0jt1GaKsS
+ wt0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702383800; x=1702988600;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=2wIIHLGf+FYM8dHAGzRr81fCvwMEpKX7fsSZdSMR2K4=;
- b=vr2GP8AfDv/lZcuXCsmmCIWP3wbL1lMnWLylS2jP9+mrDOvffa5lKG7supdAQewXVw
- q9SL2qBGS0QG2+TLIcihnoFqilHrSOnSigJuLfb3PNNZINcCOhVY9U5fdJHScqSOg0gw
- bh9hcgPIW35vafYNtGRkuzPwZ3uQ1SV7yRdQ1VtIDOJHCo9+vvISmUkBcrjnMRs/Z69x
- gHhxYBpuII/VzRXkFlRRUIcmvJVSPobageThGNyMBuZJ35+gAv3I0Rg7CwPfpJ9QM8C1
- vRpT2KDdreKXjuTs/Fb/wVsOE9dXyY7AVK8J2D1zuC45mZroKvUfIKoN9sknmTJTbpOS
- almQ==
-X-Gm-Message-State: AOJu0YxEgAu+9bqpWm+dtolTvxU2kH0ZxKhMmqteFicD+co0WyrU+W8U
- Y72gB5R/OLGZ0lnYMeR3V7VwPQ==
-X-Google-Smtp-Source: AGHT+IG9pWEldmns9zSLOVeumMNwXdQJJsixpFLGTyOchDzQJZmn/85lob5nBeUcoaV6yM4MJ0482w==
-X-Received: by 2002:a05:600c:46cf:b0:40c:3d90:49f1 with SMTP id
- q15-20020a05600c46cf00b0040c3d9049f1mr2763360wmo.125.1702383800271; 
- Tue, 12 Dec 2023 04:23:20 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- bg38-20020a05600c3ca600b0040b540ff0a5sm16218442wmb.19.2023.12.12.04.23.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Dec 2023 04:23:20 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 911D05F7D3;
- Tue, 12 Dec 2023 12:23:19 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Mikhail Tyutin <m.tyutin@yadro.com>
-Cc: <qemu-devel@nongnu.org>,  <richard.henderson@linaro.org>,
- <pbonzini@redhat.com>
-Subject: Re: [PATCH] accel/tcg: Expose translation block flags to plugins
-In-Reply-To: <20231122121655.20818-1-m.tyutin@yadro.com> (Mikhail Tyutin's
- message of "Wed, 22 Nov 2023 15:16:55 +0300")
-References: <20231122121655.20818-1-m.tyutin@yadro.com>
-User-Agent: mu4e 1.11.26; emacs 29.1
-Date: Tue, 12 Dec 2023 12:23:19 +0000
-Message-ID: <87edfrd2yw.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1702383871; x=1702988671;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lc0kMqhhyTL0/ED+GsijVzAfaP8VzTIUwqo3zggCI8k=;
+ b=YXQbiyffsniPFaBJBoceJ3O69M6qBTpn+NZEEbJ3DBI2YmA0eWj9JIqONm0eKaeHXZ
+ 5Kxl7ms5YDox1f4SWcj8RqwkLjN4yXqVEBHkfAGNenBYi8hU6C2Wf7bMDWXaWV+NgdGV
+ m/TthLiv9INnr63YBf1TmfN5n13wsAsl/6v9c8EJY/IfliP3p1gJwbFUfaSu3XzYZ0wq
+ Iwt5qf46eDh7fPOg0IhdPStFJ1kbcP8yPndz+keL6Ki/t/5XjdswzynmUISeY46eHYX2
+ U198SjFKQNbBp84S828avLNGphIwyvf/sGcfa+PAmOqp0N+d+hB+nbzQrJ3sqh9XQdLG
+ GleQ==
+X-Gm-Message-State: AOJu0YyE/qR0WE/RcZ2ZH7WZdCxFDZsaFNvjPiHAwGUNtTndeTARpltn
+ Z4zyLZ85nBdMRiLezHyT0Tejyg==
+X-Google-Smtp-Source: AGHT+IGOoeb7O8ekBg4UDFmGttrgQBh/uwJUUJ8aZVHDuCegDl1qawbyQj0ZFGDfX6+1yvx0B1N+dA==
+X-Received: by 2002:a17:906:c14e:b0:a19:a19b:5603 with SMTP id
+ dp14-20020a170906c14e00b00a19a19b5603mr3779457ejc.147.1702383871197; 
+ Tue, 12 Dec 2023 04:24:31 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.175.193])
+ by smtp.gmail.com with ESMTPSA id
+ sa16-20020a1709076d1000b00a1da72b8752sm6171897ejc.212.2023.12.12.04.24.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Dec 2023 04:24:30 -0800 (PST)
+Message-ID: <3e62416d-c014-403f-ad51-8fd109821dac@linaro.org>
+Date: Tue, 12 Dec 2023 13:24:26 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 15/24] exec/cpu-all: Remove unused headers
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, qemu-riscv@nongnu.org,
+ David Hildenbrand <david@redhat.com>, Warner Losh <imp@bsdimp.com>,
+ Claudio Fontana <cfontana@suse.de>, Brian Cain <bcain@quicinc.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Thomas Huth <thuth@redhat.com>
+References: <20231211212003.21686-1-philmd@linaro.org>
+ <20231211212003.21686-16-philmd@linaro.org>
+ <488571cb-7770-4183-a760-ae4bd6549531@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <488571cb-7770-4183-a760-ae4bd6549531@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,40 +105,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mikhail Tyutin <m.tyutin@yadro.com> writes:
+On 12/12/23 00:16, Richard Henderson wrote:
+> On 12/11/23 13:19, Philippe Mathieu-Daudé wrote:
+>> Nothing is required from the "qemu/thread.h" and
+>> "hw/core/cpu.h" headers.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   include/exec/cpu-all.h | 2 --
+>>   1 file changed, 2 deletions(-)
+>>
+>> diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+>> index 9a7b5737d3..b1e293a08f 100644
+>> --- a/include/exec/cpu-all.h
+>> +++ b/include/exec/cpu-all.h
+>> @@ -22,8 +22,6 @@
+>>   #include "exec/cpu-common.h"
+>>   #include "exec/memory.h"
+>>   #include "exec/tswap.h"
+>> -#include "qemu/thread.h"
+>> -#include "hw/core/cpu.h"
+> 
+> While thread.h is fine, I'm not sure removing hw/core/cpu.h from 
+> cpu-all.h is a good idea, and would explain the rather surprising 
+> changes to add core/cpu.h to other files.
 
-> In system mode emulation, some of translation blocks could be
-> interrupted on memory I/O operation. That leads to artificial
-> construction of another translation block that contains memory
-> operation only. If TCG plugin is not aware of that TB kind, it
-> attempts to insert execution callbacks either on translation
-> block or instruction, which is silently ignored.
+"hw/core/cpu.h" defines the CPUState structure. Any code that
+deref CPUState needs to include its definition from "hw/core/cpu.h".
 
-That was the intention - the instrumented instructions have already been
-executed. The only thing that matters now is the memory access:
+Similarly, files that don't deref CPUState/CPUClass/cpu_foo methods
+shouldn't be polluted by its declarations.
 
-    /*
-     * Exit the loop and potentially generate a new TB executing the
-     * just the I/O insns. We also limit instrumentation to memory
-     * operations only (which execute after completion) so we don't
-     * double instrument the instruction.
-     */
-    cpu->cflags_next_tb =3D curr_cflags(cpu) | CF_MEMI_ONLY | n;
-
-
-> As the result
-> it leads to potentially inconsistent processing of execution and
-> memory callbacks by the plugin.
-> Exposing appropriate translation block flag allows plugins to
-> handle "memory only" blocks in appropriate way.
-
-We don't want to expose internal details to the plugin. It shouldn't
-need to care.
-
-Do you have a test case where you missed counting the execution of the
-instruction?
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+This series focuses on useremu, next comes sysemu and "exec/cpu-all.h"
+is split. I'll see if I can postpone this change.
 
