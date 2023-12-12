@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA77980F484
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 18:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7CF80F4C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 18:42:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD6Va-0007ke-Nn; Tue, 12 Dec 2023 12:25:26 -0500
+	id 1rD6kW-0005Ua-Is; Tue, 12 Dec 2023 12:40:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rD6VW-0007ih-0b
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 12:25:22 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rD6kU-0005U8-Dx
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 12:40:50 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rD6VP-0005IS-QU
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 12:25:21 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1d0b2752dc6so51779945ad.3
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 09:25:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rD6kS-0004d5-Or
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 12:40:50 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-54c77e0835bso8480708a12.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 09:40:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702401911; x=1703006711; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=63LZ+9XN5pZr3CYY16o4ZrfHWApFRyoEpR5td9MnyJw=;
- b=pT4gNpg91KAU7Q+Zd1gsuFKBP4S5onI0Umq53ah3EJFk9W56ewfA4cUKXCCage6D2h
- ijYxIO7+wlyvEsw0/xTfeCp1tMrGEAgCbJfTH6PlkBDRpuu2rzpTr7cFR0zoxjAx/6vG
- oNj7f1Y9Qr7uuIQvzs4ib/oxhloXUmUloLBxlS7G6f8MXK5xaPMYw+o5jYAdiY/d6Sor
- ii+MScBsFF8v/qQC9iRIGzvwkcGEI3JDKEqMzew1jLSbPgm4t7zxwlBq0wPwM1nATJ7c
- 3K2gpQinenzjjYego5oWVibC7eAN/RQzKFePfuyEhqkIg95yFz4rwNKI616THtSlbQKl
- 3gPQ==
+ d=linaro.org; s=google; t=1702402847; x=1703007647; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=vZpKiARdHIYDUgHMhUJ1oqAMwHYO3JtCcG6S2WzVEG0=;
+ b=yirdfbOapUhRHwbCTDxp9dnR/bQQlGqAt65IrrXH53F0McbbLuFBAEsTy6vzsB/f9B
+ lu25OoOakrvmMIxGgOjg/CqEcUYaK6nDjkG5iDM5J3JzSP3ed+KSO18iSFVBPD1f7f95
+ DRUaM2RVvY139WzDxLKUGke8NzLFZS1YZwy0+CUvYZvHQd53cJCxwh1oguibyx3yvkfb
+ /YEbtlAR8r3jRWwmKKd7V9+vtfT4N8bNThDI8FNl4BgkLyMz2s7AO/esEcWsQjs37LiI
+ Jg1WUUdoc3cmLXBmqrHpeLKyFUiHxSuyZDBMNDR2chkGr/3Ts6CaUy0tKu+QTcOEOvRb
+ NBhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702401911; x=1703006711;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1702402847; x=1703007647;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=63LZ+9XN5pZr3CYY16o4ZrfHWApFRyoEpR5td9MnyJw=;
- b=UlI3jgaEeB/evSO8r+axtyU70CDrNx1VyoWcBlxSDXbVuVMAcf0NJL2z3C9Q7PWllr
- 3XWwc+FUI+ieKO2Pmhb3xOduY6M+jEXWySQr/Pxfg6Bos+Ck9lO9ayRzxNoomVN5wwyI
- pNEsnLh2N+G9ZxJxe/+WAf52NoRWInh16uCh911Vgi2qyuV+TyRZGuSdp7AyX6d/lBTe
- v3WGuvGukLTGC1257yvWRHryfoltrk4IMiv1KZzCfdBaQv8bhW9KAc6c8nxiq2eUbLRx
- /4tWoXrDAUNcqC7PaRGDevx2zYdJ8BqBI3RxOkJgh38BMuCUAl/S3zBUZfwvBSH7/Zky
- 1mCA==
-X-Gm-Message-State: AOJu0Yy7lDfuWnKltlQ2G2KtTlXyQO0ssxwSPCLIK8PF2VaXDhm5uODB
- oDIMsiew1AKO1W/u8QVHUza3nkmUWuaEvM+Er79q8A==
-X-Google-Smtp-Source: AGHT+IGtoiyIjfCgD8iRSVR6ZTBvCrBRmShfF37kNynYJXKoSNMFqN/1OJ4fiUSvPe3oMxop69Bkag==
-X-Received: by 2002:a17:903:124b:b0:1d3:2e0d:cda3 with SMTP id
- u11-20020a170903124b00b001d32e0dcda3mr2282841plh.103.1702401911579; 
- Tue, 12 Dec 2023 09:25:11 -0800 (PST)
-Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- y16-20020a17090322d000b001d09c5424d4sm8852610plg.297.2023.12.12.09.25.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Dec 2023 09:25:11 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-Subject: [PATCH for-8.2?] target/i386: Fix 32-bit wrapping of pc/eip
- computation
-Date: Tue, 12 Dec 2023 09:25:10 -0800
-Message-Id: <20231212172510.103305-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ bh=vZpKiARdHIYDUgHMhUJ1oqAMwHYO3JtCcG6S2WzVEG0=;
+ b=xEecPLnl/7tV3WaH4oc20XxTu3KhPCvBGM9+fAOAckXSQXsgffz0JreIbQv3heB4ag
+ NO/36Z/EG+tbzJP1MbG/RgbnF1m2GgN0sJdHPr6Ym6FucXtKMllSEXhblf1axA3Khvdm
+ zuGBXD/WLp2fXoqqIz6mHaT20ob6/8JfADUXRrvai1o5Pmf8eeQ20UADQaZ+coCpz8YI
+ Gv6Xfpgi6nG0gUJVNyy5lcQo4mt4MQUXXcBJ+6mGyvsathU+Lw+TjYrYwXDoKUU+ZGma
+ QZAx01FlcgKLJ2c1u8SOqgwwueeGfmfMVmJU/Fux2UW2pqAm+5EQk2T2L5Ksb2KjU0NV
+ 8adQ==
+X-Gm-Message-State: AOJu0Yz/d9TliPt6aZoT1C++0ok1Jt+nKAQRnGP4eTqKb0uT15mEdvQX
+ bgBkeFbNlzHfQWyeknyCVufl4FZnCIAH1y/YBDBINA==
+X-Google-Smtp-Source: AGHT+IGaZqy0cMQEfUwytoPCD80pc1YAu4aqBcfNvFUCvidu0SgjFhfPQsKaZJts3xMeVXag6KXm73G+nEb+HR9di0o=
+X-Received: by 2002:a50:9e6d:0:b0:54c:b175:87bf with SMTP id
+ z100-20020a509e6d000000b0054cb17587bfmr3742460ede.2.1702402846936; Tue, 12
+ Dec 2023 09:40:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+References: <20231205095226.2688032-1-sai.pavan.boddu@amd.com>
+ <20231205095226.2688032-3-sai.pavan.boddu@amd.com>
+In-Reply-To: <20231205095226.2688032-3-sai.pavan.boddu@amd.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Dec 2023 17:40:35 +0000
+Message-ID: <CAFEAcA_wLi4A7b3WSbTsd+EgBuTWPL878zQRPqfdgnfKTPVGUg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] arm: xlnx-versal-virt: Add machine property ospi-flash
+To: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org, 
+ Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Kevin Wolf <kwolf@redhat.com>, Francisco Iglesias <frasse.iglesias@gmail.com>,
+ saipavanboddu@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,143 +89,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In 32-bit mode, pc = eip + cs_base is also 32-bit, and must wrap.
-Failure to do so results in incorrect memory exceptions to the guest.
-Before 732d548732ed, this was implicitly done via truncation to
-target_ulong but only in qemu-system-i386, not qemu-system-x86_64.
+On Tue, 5 Dec 2023 at 09:52, Sai Pavan Boddu <sai.pavan.boddu@amd.com> wrote:
+>
+> This property allows users to change flash model on command line as
+> below.
+>
+>    ex: "-M xlnx-versal-virt,ospi-flash=mt35xu02gbba"
+>
+> Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+> ---
+>  hw/arm/xlnx-versal-virt.c | 31 ++++++++++++++++++++++++++++++-
+>  1 file changed, 30 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
+> index 537118224f..c57cff74d8 100644
+> --- a/hw/arm/xlnx-versal-virt.c
+> +++ b/hw/arm/xlnx-versal-virt.c
+> @@ -49,6 +49,7 @@ struct VersalVirt {
+>      struct {
+>          bool secure;
+>      } cfg;
+> +    char *ospi_model;
+>  };
+>
+>  static void fdt_create(VersalVirt *s)
+> @@ -637,6 +638,22 @@ static void sd_plugin_card(SDHCIState *sd, DriveInfo *di)
+>                             &error_fatal);
+>  }
+>
+> +static char *versal_get_ospi_model(Object *obj, Error **errp)
+> +{
+> +    VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
+> +
+> +    return g_strdup(s->ospi_model);
+> +}
+> +
+> +static void versal_set_ospi_model(Object *obj, const char *value, Error **errp)
+> +{
+> +    VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
+> +
+> +    g_free(s->ospi_model);
+> +    s->ospi_model = g_strdup(value);
+> +}
+> +
+> +
+>  static void versal_virt_init(MachineState *machine)
+>  {
+>      VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(machine);
+> @@ -736,7 +753,7 @@ static void versal_virt_init(MachineState *machine)
+>
+>          spi_bus = qdev_get_child_bus(DEVICE(&s->soc.pmc.iou.ospi), "spi0");
+>
+> -        flash_dev = qdev_new("mt35xu01g");
+> +        flash_dev = qdev_new(s->ospi_model ? s->ospi_model : "mt35xu01g");
+>          if (dinfo) {
+>              qdev_prop_set_drive_err(flash_dev, "drive",
+>                                      blk_by_legacy_dinfo(dinfo), &error_fatal);
 
-To fix this, we must add conditional zero-extensions.
-Since we have to test for 32 vs 64-bit anyway, note that cs_base
-is always zero in 64-bit mode.
+This doesn't do any checking of the string the user passes,
+which means the user can make us hit an abort() with a not
+terribly helpful error message:
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2022
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
+$ ./build/arm-clang/qemu-system-aarch64 -M xlnx-versal-virt,ospi-flash=bang
+qemu-system-aarch64: unknown type 'bang'
+Aborted (core dumped)
 
-This may be too late for 8.2; if not, then 8.2.1 and 8.1.next.
-I think I have found all forms of pc <-> eip, but another set
-of eyes would be appreciated.
+or complain about trying to create an abstract type:
+$ ./build/arm-clang/qemu-system-aarch64 -M
+xlnx-versal-virt,ospi-flash=m25p80-generic
+**
+ERROR:../../qom/object.c:525:object_initialize_with_type: assertion
+failed: (type->abstract == false)
+Bail out! ERROR:../../qom/object.c:525:object_initialize_with_type:
+assertion failed: (type->abstract == false)
+Aborted (core dumped)
 
-r~
+or do some weird stuff if you pass it something that isn't a
+flash device type name:
 
----
- target/i386/cpu.h           |  9 +++++++--
- target/i386/tcg/tcg-cpu.c   |  4 +++-
- target/i386/tcg/translate.c | 23 +++++++++++++++++------
- 3 files changed, 27 insertions(+), 9 deletions(-)
+$ ./build/arm-clang/qemu-system-aarch64 -M xlnx-versal-virt,ospi-flash=e1000
+Unexpected error in object_property_find_err() at ../../qom/object.c:1330:
+qemu-system-aarch64: Property 'e1000.cs' not found
+Aborted (core dumped)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index cd2e295bd6..ef987f344c 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2324,10 +2324,15 @@ static inline int cpu_mmu_index_kernel(CPUX86State *env)
- static inline void cpu_get_tb_cpu_state(CPUX86State *env, vaddr *pc,
-                                         uint64_t *cs_base, uint32_t *flags)
- {
--    *cs_base = env->segs[R_CS].base;
--    *pc = *cs_base + env->eip;
-     *flags = env->hflags |
-         (env->eflags & (IOPL_MASK | TF_MASK | RF_MASK | VM_MASK | AC_MASK));
-+    if (env->hflags & HF_CS64_MASK) {
-+        *cs_base = 0;
-+        *pc = env->eip;
-+    } else {
-+        *cs_base = env->segs[R_CS].base;
-+        *pc = (uint32_t)(*cs_base + env->eip);
-+    }
- }
- 
- void do_cpu_init(X86CPU *cpu);
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index 2c6a12c835..eb05a69f79 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -66,8 +66,10 @@ static void x86_restore_state_to_opc(CPUState *cs,
- 
-     if (tb_cflags(tb) & CF_PCREL) {
-         env->eip = (env->eip & TARGET_PAGE_MASK) | data[0];
-+    } else if (tb->flags & HF_CS64_MASK) {
-+        env->eip = data[0];
-     } else {
--        env->eip = data[0] - tb->cs_base;
-+        env->eip = (uint32_t)(data[0] - tb->cs_base);
-     }
-     if (cc_op != CC_OP_DYNAMIC) {
-         env->cc_op = cc_op;
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 587d88692a..037bc47e7c 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -552,8 +552,10 @@ static void gen_update_eip_cur(DisasContext *s)
-     assert(s->pc_save != -1);
-     if (tb_cflags(s->base.tb) & CF_PCREL) {
-         tcg_gen_addi_tl(cpu_eip, cpu_eip, s->base.pc_next - s->pc_save);
-+    } else if (CODE64(s)) {
-+        tcg_gen_movi_tl(cpu_eip, s->base.pc_next);
-     } else {
--        tcg_gen_movi_tl(cpu_eip, s->base.pc_next - s->cs_base);
-+        tcg_gen_movi_tl(cpu_eip, (uint32_t)(s->base.pc_next - s->cs_base));
-     }
-     s->pc_save = s->base.pc_next;
- }
-@@ -563,8 +565,10 @@ static void gen_update_eip_next(DisasContext *s)
-     assert(s->pc_save != -1);
-     if (tb_cflags(s->base.tb) & CF_PCREL) {
-         tcg_gen_addi_tl(cpu_eip, cpu_eip, s->pc - s->pc_save);
-+    } else if (CODE64(s)) {
-+        tcg_gen_movi_tl(cpu_eip, s->base.pc_next);
-     } else {
--        tcg_gen_movi_tl(cpu_eip, s->pc - s->cs_base);
-+        tcg_gen_movi_tl(cpu_eip, (uint32_t)(s->base.pc_next - s->cs_base));
-     }
-     s->pc_save = s->pc;
- }
-@@ -610,8 +614,10 @@ static TCGv eip_next_tl(DisasContext *s)
-         TCGv ret = tcg_temp_new();
-         tcg_gen_addi_tl(ret, cpu_eip, s->pc - s->pc_save);
-         return ret;
-+    } else if (CODE64(s)) {
-+        return tcg_constant_tl(s->pc);
-     } else {
--        return tcg_constant_tl(s->pc - s->cs_base);
-+        return tcg_constant_tl((uint32_t)(s->pc - s->cs_base));
-     }
- }
- 
-@@ -622,8 +628,10 @@ static TCGv eip_cur_tl(DisasContext *s)
-         TCGv ret = tcg_temp_new();
-         tcg_gen_addi_tl(ret, cpu_eip, s->base.pc_next - s->pc_save);
-         return ret;
-+    } else if (CODE64(s)) {
-+        return tcg_constant_tl(s->base.pc_next);
-     } else {
--        return tcg_constant_tl(s->base.pc_next - s->cs_base);
-+        return tcg_constant_tl((uint32_t)(s->base.pc_next - s->cs_base));
-     }
- }
- 
-@@ -2837,6 +2845,10 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
-         }
-     }
-     new_eip &= mask;
-+    new_pc = new_eip + s->cs_base;
-+    if (!CODE64(s)) {
-+        new_pc = (uint32_t)new_pc;
-+    }
- 
-     gen_update_cc_op(s);
-     set_cc_op(s, CC_OP_DYNAMIC);
-@@ -2854,8 +2866,7 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
-         }
-     }
- 
--    if (use_goto_tb &&
--        translator_use_goto_tb(&s->base, new_eip + s->cs_base)) {
-+    if (use_goto_tb && translator_use_goto_tb(&s->base, new_pc)) {
-         /* jump to same page: we can use a direct jump */
-         tcg_gen_goto_tb(tb_num);
-         if (!(tb_cflags(s->base.tb) & CF_PCREL)) {
--- 
-2.34.1
+I think you need to check that the string corresponds
+to a type that actually exists and is a subtype of TYPE_M25P80
+and isn't an abstract type.
 
+thanks
+-- PMM
 
