@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC7980EBA9
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A8A80EB99
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:21:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD1k1-0006At-JN; Tue, 12 Dec 2023 07:20:02 -0500
+	id 1rD1kL-0006Xb-DE; Tue, 12 Dec 2023 07:20:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1jx-00068B-84; Tue, 12 Dec 2023 07:19:57 -0500
+ id 1rD1jy-0006A1-Fe; Tue, 12 Dec 2023 07:19:58 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1jv-0000U8-3U; Tue, 12 Dec 2023 07:19:56 -0500
+ id 1rD1jw-0000UR-K1; Tue, 12 Dec 2023 07:19:58 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F015D3AF04;
- Tue, 12 Dec 2023 15:18:49 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0E2DE3AF05;
+ Tue, 12 Dec 2023 15:18:50 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B25F93B952;
+ by tsrv.corpit.ru (Postfix) with SMTP id C66293B953;
  Tue, 12 Dec 2023 15:18:32 +0300 (MSK)
-Received: (nullmailer pid 1003447 invoked by uid 1000);
+Received: (nullmailer pid 1003450 invoked by uid 1000);
  Tue, 12 Dec 2023 12:18:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.4 16/31] target/arm: Handle overflow in calculation of
- next timer tick
-Date: Tue, 12 Dec 2023 15:18:04 +0300
-Message-Id: <20231212121831.1003318-16-mjt@tls.msk.ru>
+Subject: [Stable-8.1.4 17/31] hw/virtio: Free
+ VirtIOIOMMUPCI::vdev.reserved_regions[] on finalize()
+Date: Tue, 12 Dec 2023 15:18:05 +0300
+Message-Id: <20231212121831.1003318-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
 References: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
@@ -63,157 +63,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-In commit edac4d8a168 back in 2015 when we added support for
-the virtual timer offset CNTVOFF_EL2, we didn't correctly update
-the timer-recalculation code that figures out when the timer
-interrupt is next going to change state. We got it wrong in
-two ways:
- * for the 0->1 transition, we didn't notice that gt->cval + offset
-   can overflow a uint64_t
- * for the 1->0 transition, we didn't notice that the transition
-   might now happen before the count rolls over, if offset > count
+Commit 0be6bfac62 ("qdev: Implement variable length array properties")
+added the DEFINE_PROP_ARRAY() macro with the following comment:
 
-In the former case, we end up trying to set the next interrupt
-for a time in the past, which results in QEMU hanging as the
-timer fires continuously.
+  * It is the responsibility of the device deinit code to free the
+  * @_arrayfield memory.
 
-In the latter case, we would fail to update the interrupt
-status when we are supposed to.
+Commit 8077b8e549 added:
 
-Fix the calculations in both cases.
+  DEFINE_PROP_ARRAY("reserved-regions", VirtIOIOMMUPCI,
+                    vdev.nb_reserved_regions, vdev.reserved_regions,
+                    qdev_prop_reserved_region, ReservedRegion),
 
-The test case is Alex Bennée's from the bug report, and tests
-the 0->1 transition overflow case.
+but forgot to free the 'vdev.reserved_regions' array. Do it in the
+instance_finalize() handler.
 
-Fixes: edac4d8a168 ("target-arm: Add CNTVOFF_EL2")
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/60
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20231120173506.3729884-1-peter.maydell@linaro.org
+Fixes: 8077b8e549 ("virtio-iommu-pci: Add array of Interval properties") # v5.1.0+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Message-id: 20231121174051.63038-3-philmd@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 8d37a1425b9954d7e445615dcad23456515e24c0)
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit c9a4aa06dfce0fde1e279e1ea0c1945582ec0d16)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: fixup hw/virtio/virtio-iommu-pci.c for before v8.1.0-2552-g41cc70cdf5,
+ "virtio-iommu: Rename reserved_regions into prop_resv_regions" -- so now
+ patch subject matches actual change again)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index f66b610bdd..01822b9086 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -2616,11 +2616,28 @@ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
-         qemu_set_irq(cpu->gt_timer_outputs[timeridx], irqstate);
+diff --git a/hw/virtio/virtio-iommu-pci.c b/hw/virtio/virtio-iommu-pci.c
+index 7ef2f9dcdb..eab6e1c793 100644
+--- a/hw/virtio/virtio-iommu-pci.c
++++ b/hw/virtio/virtio-iommu-pci.c
+@@ -95,10 +95,18 @@ static void virtio_iommu_pci_instance_init(Object *obj)
+                                 TYPE_VIRTIO_IOMMU);
+ }
  
-         if (istatus) {
--            /* Next transition is when count rolls back over to zero */
--            nexttick = UINT64_MAX;
-+            /*
-+             * Next transition is when (count - offset) rolls back over to 0.
-+             * If offset > count then this is when count == offset;
-+             * if offset <= count then this is when count == offset + 2^64
-+             * For the latter case we set nexttick to an "as far in future
-+             * as possible" value and let the code below handle it.
-+             */
-+            if (offset > count) {
-+                nexttick = offset;
-+            } else {
-+                nexttick = UINT64_MAX;
-+            }
-         } else {
--            /* Next transition is when we hit cval */
--            nexttick = gt->cval + offset;
-+            /*
-+             * Next transition is when (count - offset) == cval, i.e.
-+             * when count == (cval + offset).
-+             * If that would overflow, then again we set up the next interrupt
-+             * for "as far in the future as possible" for the code below.
-+             */
-+            if (uadd64_overflow(gt->cval, offset, &nexttick)) {
-+                nexttick = UINT64_MAX;
-+            }
-         }
-         /*
-          * Note that the desired next expiry time might be beyond the
-diff --git a/tests/tcg/aarch64/Makefile.softmmu-target b/tests/tcg/aarch64/Makefile.softmmu-target
-index b74a2534e3..d71659cc22 100644
---- a/tests/tcg/aarch64/Makefile.softmmu-target
-+++ b/tests/tcg/aarch64/Makefile.softmmu-target
-@@ -45,7 +45,8 @@ TESTS+=memory-sve
- 
- # Running
- QEMU_BASE_MACHINE=-M virt -cpu max -display none
--QEMU_OPTS+=$(QEMU_BASE_MACHINE) -semihosting-config enable=on,target=native,chardev=output -kernel
-+QEMU_BASE_ARGS=-semihosting-config enable=on,target=native,chardev=output
-+QEMU_OPTS+=$(QEMU_BASE_MACHINE) $(QEMU_BASE_ARGS) -kernel
- 
- # console test is manual only
- QEMU_SEMIHOST=-chardev stdio,mux=on,id=stdio0 -semihosting-config enable=on,chardev=stdio0 -mon chardev=stdio0,mode=readline
-@@ -55,6 +56,10 @@ run-semiconsole: semiconsole
- run-plugin-semiconsole-with-%: semiconsole
- 	$(call skip-test, $<, "MANUAL ONLY")
- 
-+# vtimer test needs EL2
-+QEMU_EL2_MACHINE=-machine virt,virtualization=on,gic-version=2 -cpu cortex-a57 -smp 4
-+run-vtimer: QEMU_OPTS=$(QEMU_EL2_MACHINE) $(QEMU_BASE_ARGS) -kernel
-+
- # Simple Record/Replay Test
- .PHONY: memory-record
- run-memory-record: memory-record memory
-diff --git a/tests/tcg/aarch64/system/vtimer.c b/tests/tcg/aarch64/system/vtimer.c
-new file mode 100644
-index 0000000000..42f2f7796c
---- /dev/null
-+++ b/tests/tcg/aarch64/system/vtimer.c
-@@ -0,0 +1,48 @@
-+/*
-+ * Simple Virtual Timer Test
-+ *
-+ * Copyright (c) 2020 Linaro Ltd
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include <inttypes.h>
-+#include <minilib.h>
-+
-+/* grabbed from Linux */
-+#define __stringify_1(x...) #x
-+#define __stringify(x...)   __stringify_1(x)
-+
-+#define read_sysreg(r) ({                                           \
-+            uint64_t __val;                                         \
-+            asm volatile("mrs %0, " __stringify(r) : "=r" (__val)); \
-+            __val;                                                  \
-+})
-+
-+#define write_sysreg(r, v) do {                     \
-+        uint64_t __val = (uint64_t)(v);             \
-+        asm volatile("msr " __stringify(r) ", %x0"  \
-+                 : : "rZ" (__val));                 \
-+} while (0)
-+
-+int main(void)
++static void virtio_iommu_pci_instance_finalize(Object *obj)
 +{
-+    int i;
++    VirtIOIOMMUPCI *dev = VIRTIO_IOMMU_PCI(obj);
 +
-+    ml_printf("VTimer Test\n");
-+
-+    write_sysreg(cntvoff_el2, 1);
-+    write_sysreg(cntv_cval_el0, -1);
-+    write_sysreg(cntv_ctl_el0, 1);
-+
-+    ml_printf("cntvoff_el2=%lx\n", read_sysreg(cntvoff_el2));
-+    ml_printf("cntv_cval_el0=%lx\n", read_sysreg(cntv_cval_el0));
-+    ml_printf("cntv_ctl_el0=%lx\n", read_sysreg(cntv_ctl_el0));
-+
-+    /* Now read cval a few times */
-+    for (i = 0; i < 10; i++) {
-+        ml_printf("%d: cntv_cval_el0=%lx\n", i, read_sysreg(cntv_cval_el0));
-+    }
-+
-+    return 0;
++    g_free(dev->vdev.reserved_regions);
 +}
++
+ static const VirtioPCIDeviceTypeInfo virtio_iommu_pci_info = {
+     .generic_name  = TYPE_VIRTIO_IOMMU_PCI,
+     .instance_size = sizeof(VirtIOIOMMUPCI),
+     .instance_init = virtio_iommu_pci_instance_init,
++    .instance_finalize = virtio_iommu_pci_instance_finalize,
+     .class_init    = virtio_iommu_pci_class_init,
+ };
+ 
 -- 
 2.39.2
 
