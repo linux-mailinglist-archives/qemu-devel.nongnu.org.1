@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2801D80EBF7
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:37:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2144180EC2E
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:40:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD20E-0003Qc-WE; Tue, 12 Dec 2023 07:36:48 -0500
+	id 1rD20m-0004L5-BM; Tue, 12 Dec 2023 07:37:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1zk-000251-5j
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:36:16 -0500
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1zn-0002ZO-AJ
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:36:19 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1zg-0008Vk-FN
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:36:15 -0500
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2c9f7fe6623so70787411fa.3
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 04:36:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1zi-0000Fr-Tx
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:36:18 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-54f4f7d082cso5919294a12.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 04:36:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702384565; x=1702989365; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702384573; x=1702989373; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jCN6XEpRfBzl6QRBVexJQczvz29R6MzglzJSIvh3kCU=;
- b=aG6/g82XeI6bfBPhwMK6Lzv9kR9aCU7Q7PaSmZGzET8LdmNENBP0karaZnrBkKxab/
- Is3iDFWvfgJqPGwT4i9E6L+iQyO1nKPBT2xppzX+hY9/FzDldX2e6Uo+egq/9KDZYXC3
- mWi+mPIFQRr0hODuk6cIIAx8rBNTNDRJ7ldzOY7q4ISTtCtniGofz8pEOb91RyEPseLV
- xjSxmHJvJez10P/LmlNJU56ZHjW8rjQRyrGqvXOmOi+nYmIGBJd7IsZNR5SegYagDI3z
- at/E2p6Kz3LU3lTyGfkGh8pwJlD+7WSqu+DO0d5tsvKY/XgyW35mhf5FGyd+EcIF/hQY
- jq0w==
+ bh=tD7bO+DUD+k+B6E3Kx/bmS2SAE12lsrmdjyahyo0DL0=;
+ b=IwboWPP1Hz2yzRAXXXxXX+3IrreP6piNjisFppW5+ZsL1zZDCb0NCmgQpnmjdJf3yo
+ ZJ9dAWhZGFFZwFRHuyKfPEit07n4k3+ZrQ+apQQvozvwyBdYChLAaD/yWbrmYuGoCeYV
+ vv8fgc0GmsBZr98O2JqXaDfh05eOdSJO7mTpg5AZGZNFwsed1sKzmB5ps9HWTjO2NEfa
+ p4LMlr1wSyueV4VCyDgrWuo5CpOq3R6tsus9NvNl+o1EVLpAQNiz2Ube2pd5+hmuzs8v
+ 1SmoRzRTRmu5PjME/fqWDbJqPShVw9xqK8umZRSvq+6qK2e3/V/2XdoJ28qrMilLhvVK
+ pAAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702384565; x=1702989365;
+ d=1e100.net; s=20230601; t=1702384573; x=1702989373;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jCN6XEpRfBzl6QRBVexJQczvz29R6MzglzJSIvh3kCU=;
- b=cgZovpJK6O4RWlgvAPnlDSHOcsovyLlniTXmjTVYaA2pwh1hByWIjepA5K1I8nDz2E
- EOoLmsjiTLYckqhnKGGYb5Zu13TMACXMOFKjg6X7u9/hZOdftx09fhk9P+MkbKfmuE8j
- O/OxM4m53sgD0J8huDcAP8DRu0ykNdct8nk/kFeu4OvzIZORcsJzdExCi8R08Oj3yqZn
- fxFEKsP3P0HFPxooQXv1e8A1GmZSOahmoqxbwXhPIceifRfhRP81Kj57eBZs/7yj6i83
- sioJbHOHkyP9IMEwXD/Z4yrVZ2pl9kC8r/+QZZJPr4IY3MCd9Evqrk7956X0/0RUgRu4
- p8GQ==
-X-Gm-Message-State: AOJu0YwpInS40Um6Cg8GOq5+X6/C/RnYhz4I5PAsTYcFc6tXuquLHYzr
- Xrublz6YcEEAG+MNn7CvYrWuq37EgkCMNlaQlmiZSg==
-X-Google-Smtp-Source: AGHT+IFmeBvWgvvBbzYGkF+zYPl5+e01JLIWWNuas4xPI2HT4LsHsl0TWRedv0QHFzvG+nl31n4+yA==
-X-Received: by 2002:a05:6512:281e:b0:50b:f9b2:d00 with SMTP id
- cf30-20020a056512281e00b0050bf9b20d00mr2195977lfb.22.1702384565627; 
- Tue, 12 Dec 2023 04:36:05 -0800 (PST)
+ bh=tD7bO+DUD+k+B6E3Kx/bmS2SAE12lsrmdjyahyo0DL0=;
+ b=Vra4NKxJ2Eh4EVCCRYrM60E4/AqI+aT6VJhCFTRrAAnHQU9c88MCpOXp+lGrV3EOwD
+ LNM9ajrtCCj0KPIWu0Qsol3jfLrQkALonOJfBm7HmkHIlChXPOYwQwdndU200zoghalI
+ AWEMbwcmUvwsesnzIAy1Iw6+MewCnuPGqduM24BVA6KEtMbO9ebGyFerf8JSd5KwtF77
+ 0K/7/nnMs0ZgDVUUp6gJLJrLRBcHPAgWEqrIVw8y7HbnU/tEkZji2NLTRKTpjtAK0EXa
+ Bxg342seQTnFvJYgOtZaFoCtY4e4QJfThVT/aIKcMNONCF/ubdG9y+Jm+CEX0k1YZVeo
+ 8Rng==
+X-Gm-Message-State: AOJu0YyNlgQP+rel2TpqXuYCzmyKq/YBljohPwWmtKfO7mbwX2esKO5/
+ AVZyzB51gZ3LPX8FfDzlCdpGmk8R/I/TeWUwq/iZGw==
+X-Google-Smtp-Source: AGHT+IE/qHb9fNxUNnSXjqWADnF4Tee8OxeD9a0SVcwJqjMerPr0gBSFID/RTiz54qADX6SbJz9OHw==
+X-Received: by 2002:a50:9f0d:0:b0:551:cb5d:da61 with SMTP id
+ b13-20020a509f0d000000b00551cb5dda61mr164867edf.7.1702384573271; 
+ Tue, 12 Dec 2023 04:36:13 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- dn20-20020a05640222f400b0054cc22af09esm4672659edb.46.2023.12.12.04.36.03
+ cy25-20020a0564021c9900b00551cf39a97asm127284edb.56.2023.12.12.04.36.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 04:36:05 -0800 (PST)
+ Tue, 12 Dec 2023 04:36:12 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Claudio Fontana <cfontana@suse.de>, qemu-ppc@nongnu.org,
@@ -64,21 +64,19 @@ Cc: Claudio Fontana <cfontana@suse.de>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anton Johansson <anjo@rev.ng>, Warner Losh <imp@bsdimp.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 17/23] target/ppc/excp_helper: Avoid 'abi_ptr' in system
- emulation
-Date: Tue, 12 Dec 2023 13:33:53 +0100
-Message-ID: <20231212123401.37493-18-philmd@linaro.org>
+ Riku Voipio <riku.voipio@iki.fi>
+Subject: [PATCH v2 18/23] accel/tcg: Un-inline retaddr helpers to
+ 'user-retaddr.h'
+Date: Tue, 12 Dec 2023 13:33:54 +0100
+Message-ID: <20231212123401.37493-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231212123401.37493-1-philmd@linaro.org>
 References: <20231212123401.37493-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,27 +99,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'abi_ptr' is a user specific type. The system emulation
-equivalent is 'target_ulong'. Use it in ppc_ldl_code()
-to emphasis this is not an user emulation function.
+set_helper_retaddr() is only used in accel/tcg/user-exec.c.
+
+clear_helper_retaddr() is only used in accel/tcg/user-exec.c
+and accel/tcg/user-exec.c.
+
+No need to expose their definitions to all user-emulation
+files including "exec/cpu_ldst.h", move them to a new
+"user-retaddr.h" header (restricted to accel/tcg/).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/ppc/excp_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ accel/tcg/user-retaddr.h | 28 ++++++++++++++++++++++++++++
+ include/exec/cpu_ldst.h  | 28 ++--------------------------
+ accel/tcg/cpu-exec.c     |  3 +++
+ accel/tcg/user-exec.c    |  1 +
+ 4 files changed, 34 insertions(+), 26 deletions(-)
+ create mode 100644 accel/tcg/user-retaddr.h
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index a42743a3e0..3d7c9bbf1a 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -142,7 +142,7 @@ static inline bool insn_need_byteswap(CPUArchState *env)
-     return !!(env->msr & ((target_ulong)1 << MSR_LE));
+diff --git a/accel/tcg/user-retaddr.h b/accel/tcg/user-retaddr.h
+new file mode 100644
+index 0000000000..e0f57e1994
+--- /dev/null
++++ b/accel/tcg/user-retaddr.h
+@@ -0,0 +1,28 @@
++#ifndef ACCEL_TCG_USER_RETADDR_H
++#define ACCEL_TCG_USER_RETADDR_H
++
++#include "qemu/atomic.h"
++
++extern __thread uintptr_t helper_retaddr;
++
++static inline void set_helper_retaddr(uintptr_t ra)
++{
++    helper_retaddr = ra;
++    /*
++     * Ensure that this write is visible to the SIGSEGV handler that
++     * may be invoked due to a subsequent invalid memory operation.
++     */
++    signal_barrier();
++}
++
++static inline void clear_helper_retaddr(void)
++{
++    /*
++     * Ensure that previous memory operations have succeeded before
++     * removing the data visible to the signal handler.
++     */
++    signal_barrier();
++    helper_retaddr = 0;
++}
++
++#endif
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 6061e33ac9..25e7239cc5 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -300,31 +300,7 @@ Int128 cpu_atomic_cmpxchgo_be_mmu(CPUArchState *env, abi_ptr addr,
+                                   Int128 cmpv, Int128 newv,
+                                   MemOpIdx oi, uintptr_t retaddr);
+ 
+-#if defined(CONFIG_USER_ONLY)
+-
+-extern __thread uintptr_t helper_retaddr;
+-
+-static inline void set_helper_retaddr(uintptr_t ra)
+-{
+-    helper_retaddr = ra;
+-    /*
+-     * Ensure that this write is visible to the SIGSEGV handler that
+-     * may be invoked due to a subsequent invalid memory operation.
+-     */
+-    signal_barrier();
+-}
+-
+-static inline void clear_helper_retaddr(void)
+-{
+-    /*
+-     * Ensure that previous memory operations have succeeded before
+-     * removing the data visible to the signal handler.
+-     */
+-    signal_barrier();
+-    helper_retaddr = 0;
+-}
+-
+-#else
++#if !defined(CONFIG_USER_ONLY)
+ 
+ #include "tcg/oversized-guest.h"
+ 
+@@ -376,7 +352,7 @@ static inline CPUTLBEntry *tlb_entry(CPUState *cpu, uintptr_t mmu_idx,
+     return &cpu->neg.tlb.f[mmu_idx].table[tlb_index(cpu, mmu_idx, addr)];
  }
  
--static uint32_t ppc_ldl_code(CPUArchState *env, abi_ptr addr)
-+static uint32_t ppc_ldl_code(CPUArchState *env, target_ulong addr)
- {
-     uint32_t insn = cpu_ldl_code(env, addr);
+-#endif /* defined(CONFIG_USER_ONLY) */
++#endif /* !defined(CONFIG_USER_ONLY) */
+ 
+ #if TARGET_BIG_ENDIAN
+ # define cpu_lduw_data        cpu_lduw_be_data
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index c938eb96f8..e591992d0c 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -44,6 +44,9 @@
+ #include "tb-context.h"
+ #include "internal-common.h"
+ #include "internal-target.h"
++#if defined(CONFIG_USER_ONLY)
++#include "user-retaddr.h"
++#endif
+ 
+ /* -icount align implementation. */
+ 
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 68b252cb8e..2575f0842f 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -31,6 +31,7 @@
+ #include "tcg/tcg-ldst.h"
+ #include "internal-common.h"
+ #include "internal-target.h"
++#include "user-retaddr.h"
+ 
+ __thread uintptr_t helper_retaddr;
  
 -- 
 2.41.0
