@@ -2,104 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299FA80E064
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 01:42:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9980080E099
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 02:01:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCqqA-0004aY-Bs; Mon, 11 Dec 2023 19:41:38 -0500
+	id 1rCr7g-0001OW-RX; Mon, 11 Dec 2023 19:59:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rCqq7-0004UI-Ts
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:41:35 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rCqq5-0004ou-21
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:41:35 -0500
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BBN7v7m020381; Tue, 12 Dec 2023 00:41:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=LGHbGpyE5A31bcbyqPw2gIJOGgFg/SayKuTq5gfT81o=;
- b=N0EpwbLJf5aSz2CWxcTJXx3vf9M6D6VLnPl9zT849m3EAxMfWLY0npn8V29PgCmfwss+
- AjqeihioVr4rMhlekQ8V/APsZr6bv2/acySNrWy5+xLuMAptTKrGSaoA+JnJStwjAnxT
- KDa0Dtg4Q/ayWSRsvdqVpWvWNKPvowBmqU9lH/A55Xop6qxYwuY9izlG6L+BBA6EPAIo
- En88CgjEfsdd1dkcfEYQ5TPngRLbis/vdB/2IEAkd67b/PmOSb07ddlNY0m+4UWGKoyh
- 8xl9JfJgGSyPd8Hb6pwan77I05FF522oR4w01pKZ32+rUfHvsvQmdR2QoOEgsk1/OQXw 3g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxbtxhhqd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Dec 2023 00:41:31 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BC0U71g030331;
- Tue, 12 Dec 2023 00:41:31 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxbtxhhq0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Dec 2023 00:41:30 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BBMAh1F004390; Tue, 12 Dec 2023 00:41:29 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uw4sk52g8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Dec 2023 00:41:29 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3BC0fRaX43319806
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Dec 2023 00:41:27 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A75D720043;
- Tue, 12 Dec 2023 00:41:27 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3050F2004F;
- Tue, 12 Dec 2023 00:41:27 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.76.38])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 12 Dec 2023 00:41:27 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v4 4/4] accel/tcg: Move perf and debuginfo support to tcg
-Date: Tue, 12 Dec 2023 01:34:50 +0100
-Message-ID: <20231212003837.64090-5-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <raj.khem@gmail.com>)
+ id 1rCr7b-0001OE-NG
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:59:40 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <raj.khem@gmail.com>)
+ id 1rCr7a-0003Zc-7Y
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:59:39 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1d337dc9697so696675ad.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 16:59:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1702342775; x=1702947575; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=nb6M+eEhAvgXNfVgtl2QDYTwj/tqOTFZP8+wZOidPOM=;
+ b=MKbT2682MUUwVNGUPqRJSDHNl/9H1GDCR+vbwE3ONWJ32N9Y9MQZBtPNV+m+xteXXr
+ 6VKiKyIIFszrTs0K0NVU3Aqqi4o14KzTUPhxfm1EnVo/KGDqxloUx5QeWoult5TJdLx0
+ r1+TGUAVf9N5/TrWzzIGNEXJxy1Z5S7cgShHqufzwKTFFWVSAXpaUWWJFLVEQtrM6eOG
+ QBnyhv+sxLYyH+Sihc07JBqz22r1uMpxNP4ibinltSY8Mss1Oj1FJ7IRwOWlIjW/7jNM
+ q5P4y5IhbEB0jPBkUaJWqkDAUjonk7NFnh+eWDdw516MNPDtP0ZxcIY6Qo+XCeSYFvJ9
+ a6rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702342775; x=1702947575;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nb6M+eEhAvgXNfVgtl2QDYTwj/tqOTFZP8+wZOidPOM=;
+ b=aQ81AdsYlAV/ywiCFD43sDlkEWbx2aI8UvUIV6/J7w3FCZJBr9lBQe4k8SIbZOd5DS
+ BcRM/7MTgL/f560GzEDnmBq9lFbbWoQYQXzCNrpVfN3nD/jkEa7UFDvEoA1ivA5knpod
+ Vg+1AwhE2Ds4KsLIuaO4OQPUsnHQkGUMRAjX9GQTsD6x85ov1URG2mTxOngHWg+nzINp
+ 5V+nVtGnvOpHExRQJgsY+EmZ1HJFWtWVSNge8PEHf6m4m503G61sTC155JhxBfGUsWlt
+ Y7Ew0BIu0WHvtLjShsOz/qyyV/5GTToXtTa/9X0Omk8hpDDHBvH0yvlPwGD1zRycwAnh
+ T7DQ==
+X-Gm-Message-State: AOJu0YziIfteRZfbDcCkueU1NbwueXAtwws0gVC6lXRxlkeG+OtdgAq+
+ YOzKzKf86Fm40vA07NlRdlBRWr233WU=
+X-Google-Smtp-Source: AGHT+IF+dblHPYqpj4DLDgkSbF5/kJXEWRHYR//HmE8c/TgWsSVWNIcwhBI12hOx1yWaMvHE37TEjg==
+X-Received: by 2002:a17:902:ab4e:b0:1d0:8876:7086 with SMTP id
+ ij14-20020a170902ab4e00b001d088767086mr5741009plb.71.1702342775323; 
+ Mon, 11 Dec 2023 16:59:35 -0800 (PST)
+Received: from apollo.hsd1.ca.comcast.net ([2601:646:9d80:4380::4b6f])
+ by smtp.gmail.com with ESMTPSA id
+ r15-20020a170903020f00b001cf5d0e7e05sm7267449plh.109.2023.12.11.16.59.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Dec 2023 16:59:35 -0800 (PST)
+From: Khem Raj <raj.khem@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Khem Raj <raj.khem@gmail.com>
+Subject: [PATCH] vfio: Include libgen.h for basename API
+Date: Mon, 11 Dec 2023 16:59:32 -0800
+Message-ID: <20231212005932.2700725-1-raj.khem@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231212003837.64090-1-iii@linux.ibm.com>
-References: <20231212003837.64090-1-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: miAroKEwjGqMQoJuR94HHyvBUxNRKDEF
-X-Proofpoint-GUID: DI1m90kUrcYtTzeQ26o293SvXfaYdyPu
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-11_11,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 adultscore=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 mlxscore=0 phishscore=0
- suspectscore=0 impostorscore=0 clxscore=1015 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2312120003
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=raj.khem@gmail.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,233 +88,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tcg/ should not depend on accel/tcg/, but perf and debuginfo
-support provided by the latter are being used by tcg/tcg.c.
+Glibc has two implementation one based on POSIX which is used when
+libgen.h is included and second implementation is GNU implementation
+which is used when string.h is included. The functions are no identical
+in behavior. Musl C library does not implement the GNU version, but it
+has provided a declaration in string.h but this has been corrected in
+latest musl [1] which exposes places where it was being used from
+string.h to error out especially when -Wimplicit-function-declaration is
+treated as error.
 
-Since that's the only user, move both to tcg/.
+| ../qemu-8.1.2/hw/vfio/pci.c:3030:18: error: call to undeclared function 'basename'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+|  3030 |     group_name = basename(group_path);
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+clang-17 treats this warning as error by default
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- accel/tcg/meson.build              | 2 --
- accel/tcg/translate-all.c          | 2 +-
- hw/core/loader.c                   | 2 +-
- {accel => include}/tcg/debuginfo.h | 4 ++--
- {accel => include}/tcg/perf.h      | 4 ++--
- linux-user/elfload.c               | 2 +-
- linux-user/exit.c                  | 2 +-
- linux-user/main.c                  | 2 +-
- system/vl.c                        | 2 +-
- {accel/tcg => tcg}/debuginfo.c     | 3 +--
- tcg/meson.build                    | 3 +++
- {accel/tcg => tcg}/perf.c          | 7 +++----
- tcg/tcg.c                          | 2 +-
- 13 files changed, 18 insertions(+), 19 deletions(-)
- rename {accel => include}/tcg/debuginfo.h (96%)
- rename {accel => include}/tcg/perf.h (95%)
- rename {accel/tcg => tcg}/debuginfo.c (98%)
- rename {accel/tcg => tcg}/perf.c (99%)
+ hw/vfio/pci.c      | 1 +
+ hw/vfio/platform.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 8783edd06ee..a7cb724edb2 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -16,8 +16,6 @@ tcg_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
- if get_option('plugins')
-   tcg_ss.add(files('plugin-gen.c'))
- endif
--tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
--tcg_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
- specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
- 
- specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 79a88f5fb75..3c1ce69ff36 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -63,7 +63,7 @@
- #include "tb-context.h"
- #include "internal-common.h"
- #include "internal-target.h"
--#include "perf.h"
-+#include "tcg/perf.h"
- #include "tcg/insn-start-words.h"
- 
- TBContext tb_ctx;
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index e7a9b3775bb..b8e52f3fb0f 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -62,7 +62,7 @@
- #include "hw/boards.h"
- #include "qemu/cutils.h"
- #include "sysemu/runstate.h"
--#include "accel/tcg/debuginfo.h"
-+#include "tcg/debuginfo.h"
- 
- #include <zlib.h>
- 
-diff --git a/accel/tcg/debuginfo.h b/include/tcg/debuginfo.h
-similarity index 96%
-rename from accel/tcg/debuginfo.h
-rename to include/tcg/debuginfo.h
-index f064e1c144b..858535b5da5 100644
---- a/accel/tcg/debuginfo.h
-+++ b/include/tcg/debuginfo.h
-@@ -4,8 +4,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index c62c02f7b6..f043c93b9e 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -19,6 +19,7 @@
   */
  
--#ifndef ACCEL_TCG_DEBUGINFO_H
--#define ACCEL_TCG_DEBUGINFO_H
-+#ifndef TCG_DEBUGINFO_H
-+#define TCG_DEBUGINFO_H
+ #include "qemu/osdep.h"
++#include <libgen.h>
+ #include <linux/vfio.h>
+ #include <sys/ioctl.h>
  
- #include "qemu/bitops.h"
+diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+index 8e3d4ac458..a835ab03be 100644
+--- a/hw/vfio/platform.c
++++ b/hw/vfio/platform.c
+@@ -16,6 +16,7 @@
  
-diff --git a/accel/tcg/perf.h b/include/tcg/perf.h
-similarity index 95%
-rename from accel/tcg/perf.h
-rename to include/tcg/perf.h
-index f92dd52c699..c96b5920a3f 100644
---- a/accel/tcg/perf.h
-+++ b/include/tcg/perf.h
-@@ -4,8 +4,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
--#ifndef ACCEL_TCG_PERF_H
--#define ACCEL_TCG_PERF_H
-+#ifndef TCG_PERF_H
-+#define TCG_PERF_H
- 
- #if defined(CONFIG_TCG) && defined(CONFIG_LINUX)
- /* Start writing perf-<pid>.map. */
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 11c45ab2934..a43e6114ac4 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -23,7 +23,7 @@
+ #include "qemu/osdep.h"
  #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "target_signal.h"
--#include "accel/tcg/debuginfo.h"
-+#include "tcg/debuginfo.h"
++#include <libgen.h>
+ #include <sys/ioctl.h>
+ #include <linux/vfio.h>
  
- #ifdef TARGET_ARM
- #include "target/arm/cpu-features.h"
-diff --git a/linux-user/exit.c b/linux-user/exit.c
-index 50266314e0a..1ff8fe4f072 100644
---- a/linux-user/exit.c
-+++ b/linux-user/exit.c
-@@ -17,7 +17,7 @@
-  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
- #include "qemu/osdep.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #include "gdbstub/syscalls.h"
- #include "qemu.h"
- #include "user-internals.h"
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 84691d707b2..b0b270b8be3 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -55,7 +55,7 @@
- #include "signal-common.h"
- #include "loader.h"
- #include "user-mmap.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- 
- #ifdef CONFIG_SEMIHOSTING
- #include "semihosting/semihost.h"
-diff --git a/system/vl.c b/system/vl.c
-index 2bcd9efb9a6..56baa1c81f2 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -96,7 +96,7 @@
- #endif
- #include "sysemu/qtest.h"
- #ifdef CONFIG_TCG
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #endif
- 
- #include "disas/disas.h"
-diff --git a/accel/tcg/debuginfo.c b/tcg/debuginfo.c
-similarity index 98%
-rename from accel/tcg/debuginfo.c
-rename to tcg/debuginfo.c
-index 71c66d04d12..3753f7ef67c 100644
---- a/accel/tcg/debuginfo.c
-+++ b/tcg/debuginfo.c
-@@ -6,11 +6,10 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/lockable.h"
-+#include "tcg/debuginfo.h"
- 
- #include <elfutils/libdwfl.h>
- 
--#include "debuginfo.h"
--
- static QemuMutex lock;
- static Dwfl *dwfl;
- static const Dwfl_Callbacks dwfl_callbacks = {
-diff --git a/tcg/meson.build b/tcg/meson.build
-index 895a11d3fa2..28a699b4228 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -22,6 +22,9 @@ if get_option('tcg_interpreter')
-   tcg_ss.add(files('tci.c'))
- endif
- 
-+tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
-+tcg_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
-+
- tcg_ss = tcg_ss.apply(config_targetos, strict: false)
- 
- libtcg_user = static_library('tcg_user',
-diff --git a/accel/tcg/perf.c b/tcg/perf.c
-similarity index 99%
-rename from accel/tcg/perf.c
-rename to tcg/perf.c
-index 68a46b1b524..412a987d956 100644
---- a/accel/tcg/perf.c
-+++ b/tcg/perf.c
-@@ -11,13 +11,12 @@
- #include "qemu/osdep.h"
- #include "elf.h"
- #include "exec/target_page.h"
--#include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "qemu/timer.h"
-+#include "tcg/debuginfo.h"
-+#include "tcg/perf.h"
- #include "tcg/tcg.h"
- 
--#include "debuginfo.h"
--#include "perf.h"
--
- static FILE *safe_fopen_w(const char *path)
- {
-     int saved_errno;
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index d2ea22b397f..1a15a2a7c52 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -55,7 +55,7 @@
- #include "tcg/tcg-ldst.h"
- #include "tcg/tcg-temp-internal.h"
- #include "tcg-internal.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #ifdef CONFIG_USER_ONLY
- #include "exec/user/guest-base.h"
- #endif
 -- 
 2.43.0
 
