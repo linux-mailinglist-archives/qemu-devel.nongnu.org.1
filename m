@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F56580EA7F
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:38:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC2780EA96
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:41:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD14a-0000NZ-DE; Tue, 12 Dec 2023 06:37:12 -0500
+	id 1rD18G-0003u7-1c; Tue, 12 Dec 2023 06:41:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD14Y-0000NI-NX
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:37:10 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD18C-0003tv-LB
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:40:56 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD14X-0006xj-6n
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:37:10 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-551437d5344so2330573a12.1
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 03:37:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD189-0008FI-FV
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:40:55 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40b5155e154so64759845e9.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 03:40:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702381027; x=1702985827; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wWiIaEjJAQ5+it/KnfBC9+5RmIMqGqAwUm0O20jJXPQ=;
- b=D5aOZ5jMkZiSdivGk3Ctpvfq+hLfnqh1zUz4EGctBo1glij3JdaMObOo5isweEhmaa
- friO948e36jgF6tG10zmUsXEeaUP71xnTALP8e/NHObJrAK129G2O3viel5GqpNCljoq
- 0KC4PAfiWjpXV2pgqB0YvtqsFwUfKFdsEuyUDI4KbZnOmuLedJFx111lLTaJn4r2pfwE
- VKphMXLeHaHE27BKoHiS5KPcP/VIVczszqvl5ILJXsqKdito3cOy6ZEhOf/xvAtzFLMi
- XRVbUjmJLOoIvGGDhbvK6aE5XrvjIXlj9FbM8NEzNVMZnrtNdF2kpWICMGsiC2YVK0Py
- CS0Q==
+ d=linaro.org; s=google; t=1702381252; x=1702986052; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jIMY6LtMvTcgLw5vqa4Cb0r6j9d3B7301jtwprZxGdQ=;
+ b=ZSlAPmTt0NmrgbfIfaz5qQCXBByFsXyxDYFA8GBC4ubarUlibQzlXWZPXx1595aT3s
+ Iu99YKGrFjvKrDxTCEI1eVhhW4T/Ixs2/7Yn5SwP73DnIHzqKaJ8cWS1FIup0X7JVMVX
+ rffLeqeomVdgVHIBPSe2b+WChVyXogCQbuoUpxBIlAxEub1X+PPMjcVk/7i6RRDf1HLY
+ 8fkiJV8NaGrAzABvLv0664bbsmBQrCYUIqDPAUYsz91g+EkDBaUUz4Xumyo7lWz74sLq
+ MMqZfj5xJok9NCK3MFnrmZ5ItKF+0yzyIqtMrhs/dq7UwbLqr5JLiosKF5gtTcXd26Pf
+ pXrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702381027; x=1702985827;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wWiIaEjJAQ5+it/KnfBC9+5RmIMqGqAwUm0O20jJXPQ=;
- b=H7FFvCnj9+2o9v6G76kdDIiBMHKm4p210IHUF2mbvV0xwJR4ic1Isurk8K3YOhDR9n
- Mu15afdAnFSsicVItipfa0EMk6FAzMxtQttD8oSdwXilzukzx5Xcd0aJbbVYcuuAnB4h
- 4CqVfVE1f7AwxH1Q6jA3YmHWIyY1oT50s0NVwf3/vu8qBgeDlKVuNhZ+0OkeL0TFFrdV
- cOwXTUun2V3xFz4ZGaSg3QLWBn1GoiTe9pZbaJ6MQ+6W18JEthUTeOtvULsIYx3fPjo2
- pC5m2ElMioGHfpexwKyFU1qI9IMVmicKmcJgntDA18tl+9EmNt8JfstR82JF822BvJUH
- yF3A==
-X-Gm-Message-State: AOJu0YybDD5gyXGZyxzS9TwaVpjIwY5GaAuMo4XTKrNZos8oZvUjJMG9
- fppQ0BkRb3m9Zw0OwdlO1m3ahcRWhF02ddLc1487hA==
-X-Google-Smtp-Source: AGHT+IEBlbl8IX7v1RxKCUoYgDHmgThw5XIkV0asWHn7syGLHvnLfzCVGpO20eliMv4XwDnZCH5DOQ==
-X-Received: by 2002:a17:906:d8db:b0:a19:a1ba:8cc2 with SMTP id
- re27-20020a170906d8db00b00a19a1ba8cc2mr1912234ejb.96.1702381027587; 
- Tue, 12 Dec 2023 03:37:07 -0800 (PST)
-Received: from m1x-phil.lan ([176.176.175.193])
+ d=1e100.net; s=20230601; t=1702381252; x=1702986052;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jIMY6LtMvTcgLw5vqa4Cb0r6j9d3B7301jtwprZxGdQ=;
+ b=bXu5546UZtYU9RcJLI45NbxBZw6gfsqnVgCbbvmFMJ3x0BQLsbw3moHzF84Ql2clhy
+ Z965t/1AYrEEK+QB2fESsCMtz0e7x9d/8baAjeD8UXoRvcY/48iXsGOUyOTW6cdINyfl
+ nf0QkPcNTT+FcpCmzU2styFvFhizUafQgRXgifbgY6uMRiNSqvjkTLKI3+dY+jxaZo8T
+ Pq+p2B6LkLeZGeqw01DicocuAZLxzMZIPzQWmI2HSmyVEJGFS1dvwqJQfhH+1Dvjly+j
+ qCjzIAPQqkwb68hgEbVIJop4Ho+clNOHzUGRuMn+P67l2LExu0LWE+j+atREVq/psouy
+ 8Uvg==
+X-Gm-Message-State: AOJu0YyiOU7hGR/2OicGsxUvE2+fUDj7pNyJo35FL7l7Yy28qoEOLwUJ
+ KxkQFIooR0JpzFgUf/hRKvWZtAPGaLDPZJqqro8jzg==
+X-Google-Smtp-Source: AGHT+IEYbh5FGLCXoiGtePFk5H1P9XEDWNPSjqjv7hHnZz+GAGdP0KM4EYFpGRasiZgqINzvAk9dCA==
+X-Received: by 2002:a05:600c:1991:b0:40c:4857:e007 with SMTP id
+ t17-20020a05600c199100b0040c4857e007mr1551723wmq.0.1702381251908; 
+ Tue, 12 Dec 2023 03:40:51 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- tl1-20020a170907c30100b00a1c8d243cf7sm6097107ejc.2.2023.12.12.03.37.06
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 03:37:07 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Warner Losh <imp@bsdimp.com>, Song Gao <gaosong@loongson.cn>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 4/4] target: Restrict 'sysemu/reset.h' to system emulation
-Date: Tue, 12 Dec 2023 12:36:40 +0100
-Message-ID: <20231212113640.30287-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231212113640.30287-1-philmd@linaro.org>
-References: <20231212113640.30287-1-philmd@linaro.org>
+ o5-20020a05600c510500b0040b3e26872dsm18642141wms.8.2023.12.12.03.40.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Dec 2023 03:40:51 -0800 (PST)
+Message-ID: <38286dc4-9810-460e-ae2d-4f28fdbc36a3@linaro.org>
+Date: Tue, 12 Dec 2023 12:40:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/24] semihosting/guestfd: Remove unused
+ 'semihosting/uaccess.h' header
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231211212003.21686-1-philmd@linaro.org>
+ <20231211212003.21686-7-philmd@linaro.org>
+ <02cfd4a9-9d6c-4f61-b25e-deb0cbec2838@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <02cfd4a9-9d6c-4f61-b25e-deb0cbec2838@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,51 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vCPU "reset" is only possible with system emulation.
+On 12/12/23 00:00, Richard Henderson wrote:
+> On 12/11/23 13:19, Philippe Mathieu-Daudé wrote:
+>> Nothing in guestfd.c requires "semihosting/uaccess.h".
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   semihosting/guestfd.c | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/semihosting/guestfd.c b/semihosting/guestfd.c
+>> index 955c2efbd0..fd7e609790 100644
+>> --- a/semihosting/guestfd.c
+>> +++ b/semihosting/guestfd.c
+>> @@ -15,7 +15,6 @@
+>>   #ifdef CONFIG_USER_ONLY
+>>   #include "qemu.h"
+>>   #else
+>> -#include "semihosting/uaccess.h"
+> 
+> Then I would be surprised if qemu.h is required either -- that's where 
+> uaccess is done for user-only.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Warner Losh <imp@bsdimp.com>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
----
- target/i386/cpu.c      | 2 +-
- target/loongarch/cpu.c | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index dfb96217ad..17b6962d43 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -24,7 +24,6 @@
- #include "qemu/hw-version.h"
- #include "cpu.h"
- #include "tcg/helper-tcg.h"
--#include "sysemu/reset.h"
- #include "sysemu/hvf.h"
- #include "hvf/hvf-i386.h"
- #include "kvm/kvm_i386.h"
-@@ -37,6 +36,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/i386/topology.h"
- #ifndef CONFIG_USER_ONLY
-+#include "sysemu/reset.h"
- #include "qapi/qapi-commands-machine-target.h"
- #include "exec/address-spaces.h"
- #include "hw/boards.h"
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index fc075952e6..b26187dfde 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -17,7 +17,9 @@
- #include "internals.h"
- #include "fpu/softfloat-helpers.h"
- #include "cpu-csr.h"
-+#ifndef CONFIG_USER_ONLY
- #include "sysemu/reset.h"
-+#endif
- #include "tcg/tcg.h"
- #include "vec.h"
- 
--- 
-2.41.0
-
+Indeed we can remove it.
 
