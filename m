@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649C280EB59
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4A880EBA3
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:24:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD1ja-0005mS-Sq; Tue, 12 Dec 2023 07:19:35 -0500
+	id 1rD1jy-00066l-AS; Tue, 12 Dec 2023 07:19:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1jX-0005fc-UD; Tue, 12 Dec 2023 07:19:31 -0500
+ id 1rD1jt-00062t-KR; Tue, 12 Dec 2023 07:19:54 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1jW-0000Og-Au; Tue, 12 Dec 2023 07:19:31 -0500
+ id 1rD1jr-0000P1-LR; Tue, 12 Dec 2023 07:19:53 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AE34F3AF01;
+ by isrv.corpit.ru (Postfix) with ESMTP id CBFB13AF02;
  Tue, 12 Dec 2023 15:18:49 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 729E73B94F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 845983B950;
  Tue, 12 Dec 2023 15:18:32 +0300 (MSK)
-Received: (nullmailer pid 1003438 invoked by uid 1000);
+Received: (nullmailer pid 1003441 invoked by uid 1000);
  Tue, 12 Dec 2023 12:18:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ivan Klokov <ivan.klokov@syntacore.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: qemu-stable@nongnu.org, Fam Zheng <fam@euphon.net>,
+ Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.4 13/31] target/riscv/cpu_helper.c: Fix mxr bit behavior
-Date: Tue, 12 Dec 2023 15:18:01 +0300
-Message-Id: <20231212121831.1003318-13-mjt@tls.msk.ru>
+Subject: [Stable-8.1.4 14/31] vmdk: Don't corrupt desc file in vmdk_write_cid
+Date: Tue, 12 Dec 2023 15:18:02 +0300
+Message-Id: <20231212121831.1003318-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
 References: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
@@ -61,69 +60,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ivan Klokov <ivan.klokov@syntacore.com>
+From: Fam Zheng <fam@euphon.net>
 
-According to RISCV Specification sect 9.5 on two stage translation when
-V=1 the vsstatus(mstatus in QEMU's terms) field MXR, which makes
-execute-only pages readable, only overrides VS-stage page protection.
-Setting MXR at HS-level(mstatus_hs), however, overrides both VS-stage
-and G-stage execute-only permissions.
+If the text description file is larger than DESC_SIZE, we force the last
+byte in the buffer to be 0 and write it out.
 
-The hypervisor extension changes the behavior of MXR\MPV\MPRV bits.
-Due to RISCV Specification sect. 9.4.1 when MPRV=1, explicit memory
-accesses are translated and protected, and endianness is applied, as
-though the current virtualization mode were set to MPV and the current
-nominal privilege mode were set to MPP. vsstatus.MXR makes readable
-those pages marked executable at the VS translation stage.
+This results in a corruption.
 
-Fixes: 36a18664ba ("target/riscv: Implement second stage MMU")
+Try to allocate a big buffer in this case.
 
-Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20231121071757.7178-3-ivan.klokov@syntacore.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 6bca4d7d1ff2b8857486c3ff31f5c6fc3e3984b4)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1923
+
+Signed-off-by: Fam Zheng <fam@euphon.net>
+Message-ID: <20231124115654.3239137-1-fam@euphon.net>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 9fb7b350ba9816ebca8a7614fec486fd4269ab2d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 3c482f9fd4..ce10d722f1 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -989,13 +989,29 @@ restart:
-         prot |= PAGE_WRITE;
-     }
-     if (pte & PTE_X) {
--        bool mxr;
-+        bool mxr = false;
+diff --git a/block/vmdk.c b/block/vmdk.c
+index 70066c2b01..58815dcef0 100644
+--- a/block/vmdk.c
++++ b/block/vmdk.c
+@@ -347,29 +347,41 @@ vmdk_write_cid(BlockDriverState *bs, uint32_t cid)
+     BDRVVmdkState *s = bs->opaque;
+     int ret = 0;
  
--        if (first_stage == true) {
-+        /*
-+         * Use mstatus for first stage or for the second stage without
-+         * virt_enabled (MPRV+MPV)
-+         */
-+        if (first_stage || !env->virt_enabled) {
-             mxr = get_field(env->mstatus, MSTATUS_MXR);
--        } else {
--            mxr = get_field(env->vsstatus, MSTATUS_MXR);
-         }
+-    desc = g_malloc0(DESC_SIZE);
+-    tmp_desc = g_malloc0(DESC_SIZE);
+-    ret = bdrv_co_pread(bs->file, s->desc_offset, DESC_SIZE, desc, 0);
++    size_t desc_buf_size;
 +
-+        /* MPRV+MPV case, check VSSTATUS */
-+        if (first_stage && two_stage && !env->virt_enabled) {
-+            mxr |= get_field(env->vsstatus, MSTATUS_MXR);
++    if (s->desc_offset == 0) {
++        desc_buf_size = bdrv_getlength(bs->file->bs);
++        if (desc_buf_size > 16ULL << 20) {
++            error_report("VMDK description file too big");
++            return -EFBIG;
 +        }
++    } else {
++        desc_buf_size = DESC_SIZE;
++    }
 +
-+        /*
-+         * Setting MXR at HS-level overrides both VS-stage and G-stage
-+         * execute-only permissions
-+         */
-+        if (env->virt_enabled) {
-+            mxr |= get_field(env->mstatus_hs, MSTATUS_MXR);
-+        }
-+
-         if (mxr) {
-             prot |= PAGE_READ;
-         }
++    desc = g_malloc0(desc_buf_size);
++    tmp_desc = g_malloc0(desc_buf_size);
++    ret = bdrv_co_pread(bs->file, s->desc_offset, desc_buf_size, desc, 0);
+     if (ret < 0) {
+         goto out;
+     }
+ 
+-    desc[DESC_SIZE - 1] = '\0';
++    desc[desc_buf_size - 1] = '\0';
+     tmp_str = strstr(desc, "parentCID");
+     if (tmp_str == NULL) {
+         ret = -EINVAL;
+         goto out;
+     }
+ 
+-    pstrcpy(tmp_desc, DESC_SIZE, tmp_str);
++    pstrcpy(tmp_desc, desc_buf_size, tmp_str);
+     p_name = strstr(desc, "CID");
+     if (p_name != NULL) {
+         p_name += sizeof("CID");
+-        snprintf(p_name, DESC_SIZE - (p_name - desc), "%" PRIx32 "\n", cid);
+-        pstrcat(desc, DESC_SIZE, tmp_desc);
++        snprintf(p_name, desc_buf_size - (p_name - desc), "%" PRIx32 "\n", cid);
++        pstrcat(desc, desc_buf_size, tmp_desc);
+     }
+ 
+-    ret = bdrv_co_pwrite_sync(bs->file, s->desc_offset, DESC_SIZE, desc, 0);
++    ret = bdrv_co_pwrite_sync(bs->file, s->desc_offset, desc_buf_size, desc, 0);
+ 
+ out:
+     g_free(desc);
+diff --git a/tests/qemu-iotests/059 b/tests/qemu-iotests/059
+index e8be217e1f..9bcf1e7525 100755
+--- a/tests/qemu-iotests/059
++++ b/tests/qemu-iotests/059
+@@ -84,6 +84,8 @@ echo
+ echo "=== Testing big twoGbMaxExtentFlat ==="
+ _make_test_img -o "subformat=twoGbMaxExtentFlat" 1000G
+ _img_info --format-specific | _filter_img_info --format-specific
++$QEMU_IO -c "write 990G 512 -P 89" "$TEST_IMG" | _filter_qemu_io
++$QEMU_IO -c "read 990G 512 -P 89" "$TEST_IMG" | _filter_qemu_io
+ _cleanup_test_img
+ 
+ echo
+diff --git a/tests/qemu-iotests/059.out b/tests/qemu-iotests/059.out
+index 2b83c0c8b6..275ee7c778 100644
+--- a/tests/qemu-iotests/059.out
++++ b/tests/qemu-iotests/059.out
+@@ -2032,6 +2032,10 @@ Format specific information:
+             virtual size: 2147483648
+             filename: TEST_DIR/t-f500.IMGFMT
+             format: FLAT
++wrote 512/512 bytes at offset 1063004405760
++512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 512/512 bytes at offset 1063004405760
++512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ 
+ === Testing malformed VMFS extent description line ===
+ qemu-img: Could not open 'TEST_DIR/t.IMGFMT': Invalid extent line: RW 12582912 VMFS "dummy.IMGFMT" 1
 -- 
 2.39.2
 
