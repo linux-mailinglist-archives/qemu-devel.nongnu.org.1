@@ -2,82 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31B780DF7C
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 00:30:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A968180E056
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 01:35:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCpiH-0003If-Oc; Mon, 11 Dec 2023 18:29:26 -0500
+	id 1rCqjJ-0002J4-Dn; Mon, 11 Dec 2023 19:34:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rCpi9-0003IS-HX
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 18:29:17 -0500
-Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rCpi7-0001T0-MO
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 18:29:17 -0500
-Received: by mail-il1-x135.google.com with SMTP id
- e9e14a558f8ab-35d624b0415so21025795ab.2
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 15:29:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702337354; x=1702942154; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9LAgOCJzV1zKms2/puspUVIUxsQMmV3RKT+mTycpwmE=;
- b=NhRdIUG0HYy3SdfxC6IK/ya+VxfJ5nta/wERW1nho+1aoqEvDfy4oBz1Tnk3ONA1vV
- k25qt6A4u0KSxc+lKvHZq16CaCt9pXs5fvSfbh2/dHRd2/uS8c97QXFSC4H/HTwvdN/l
- QarhaR1i5nsAL7qtLye3o4sLZWcAR6dto3jkqYjyatP1LmXF2NsY1opp+IPPDP+nztQl
- xcMeIwEWnEOqCkXfVEdtbitC9EM3ZdEi7IhgM8Qh+/MQSugVWL3U0rrQIglaZdvetMgA
- IZMwFQmuGlu5a02Nzne6jPpZGBKqWVzhpzfzl8lGUMp0rRbACQcPcjwVwA0LPvafXgWV
- eEjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702337354; x=1702942154;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9LAgOCJzV1zKms2/puspUVIUxsQMmV3RKT+mTycpwmE=;
- b=NDHZee+EjQxTXUdJh5nPwbAbI+Sohcv1QL5ZsOVSDlwUqN9uWT5VhdupbTMnmuUiwl
- 4eZpvrptcitJLVNPl/wZkUlCNmp65mX9O6Dyxb5rNT36yoZY4dIXk0KApLUk5D2CjtrB
- GkFACdRbF3fNI5ykVH9w6hE5rh4Ydym62bHC59KWQmbH9E1xmExFQ5oLaIKPENLmMNJY
- d4ZXctSW5lTw9o7z9bAg1h/P+O3EZ0Buslq0i3s9X0iC5DMYeEYL7AA0LusFDwvGxg4E
- 1f8iiSiEDZAP9BI3CUuoMV/TN7ZC7gJV9BsWewg84A3jCRN2bNeK9+znv1GTF8UoY0n6
- lJ5w==
-X-Gm-Message-State: AOJu0YxcmyVjNm8EuktBM91iKztsY7cp5DNeJfZWMwj1fZBObj61nyUC
- ZkXwXUNydrau9OZ3cAnX8922PQ==
-X-Google-Smtp-Source: AGHT+IF5gkYcZXyrMKC8qrzHP/XworVaf5sW5PaI9Q6S2U3dYap033PJXassQ29prnAnsZsjwXE/Kw==
-X-Received: by 2002:a05:6e02:12ce:b0:35d:689b:de92 with SMTP id
- i14-20020a056e0212ce00b0035d689bde92mr9502289ilm.18.1702337353759; 
- Mon, 11 Dec 2023 15:29:13 -0800 (PST)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- n16-20020a170903111000b001d3320f6143sm365383plh.269.2023.12.11.15.29.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Dec 2023 15:29:13 -0800 (PST)
-Message-ID: <89f702e5-2991-4423-be9e-1630af6c5134@linaro.org>
-Date: Mon, 11 Dec 2023 15:29:11 -0800
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1rCqjH-0002Ht-6u
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:34:31 -0500
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
+ id 1rCqjE-0002UL-VR
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:34:30 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id E21A8CE11BD;
+ Tue, 12 Dec 2023 00:34:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6221BC433C7;
+ Tue, 12 Dec 2023 00:34:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1702341262;
+ bh=gjOcFpvF48FLu7i3ovdS7rvh+edLNdlP1NvuUCiiVkI=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=Nseh3HMoRnLy3WMZ1i5IEgOJJ1XxvKjUUCETVgggSZjxtH2FYDAeN/bdocVTkcy3+
+ aZ1M2o2kBBc572E4b0CtfG2PP2n42/s10XBU545djhnA5rQr5MtOVZtJr47mHx0AXA
+ N2H5tlVFrht9UVK9ivoqrXC7n2wDA7BlK08kLeLuj5uJ5ii423kH7m+/B5H51fBZK3
+ Zzq+eLmzENLSBl47eBlZNu+argzMRk6D81IEd8jdb5iGgFPF8EuPUlgUz56M1JeRCa
+ wYG78ytn7fiGWNHUM53RYfR4+uOF1kGsuwD0logCAUkJ3xu4ppMYHkbOB7OvY3AuQY
+ mpVjrGQcCMWtQ==
+Date: Mon, 11 Dec 2023 16:34:19 -0800 (PST)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: Paolo Bonzini <pbonzini@redhat.com>
+cc: qemu-devel@nongnu.org, Stefano Stabellini <stefano.stabellini@amd.com>, 
+ "Richard W . M . Jones" <rjones@redhat.com>, 
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Michael Young <m.a.young@durham.ac.uk>
+Subject: Re: [PATCH] xen: fix condition for enabling the Xen accelerator
+In-Reply-To: <20231209143222.2916891-1-pbonzini@redhat.com>
+Message-ID: <alpine.DEB.2.22.394.2312111632040.1703076@ubuntu-linux-20-04-desktop>
+References: <20231209143222.2916891-1-pbonzini@redhat.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 19/24] exec/user: Do not include 'cpu.h' in 'abitypes.h'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20231211212003.21686-1-philmd@linaro.org>
- <20231211212003.21686-20-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231211212003.21686-20-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x135.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/mixed;
+ boundary="8323329-1904100162-1702341261=:1703076"
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=sstabellini@kernel.org; helo=sin.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,24 +73,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/11/23 13:19, Philippe Mathieu-Daudé wrote:
-> First, "exec/user/abitypes.h" is missing the following
-> includes (they are included by "cpu.h"):
->   - "exec/target_long.h"
->   - "exec/cpu-all.h"
->   - "exec/tswap.h"
-> Second, it only requires the definitions from "cpu-param.h",
-> not the huge "cpu.h".
-> 
-> In order to avoid "cpu.h", pick the minimum required headers.
-> 
-> Assert this user-specific header is only included from user
-> emulation.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Why is cpu-all.h required?
+--8323329-1904100162-1702341261=:1703076
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+
+On Sat, 9 Dec 2023, Paolo Bonzini wrote:
+> A misspelled condition in xen_native.h is hiding a bug in the enablement of
+> Xen for qemu-system-aarch64.  The bug becomes apparent when building for
+> Xen 4.18.
+> 
+> While the i386 emulator provides the xenpv machine type for multiple architectures,
+> and therefore can be compiled with Xen enabled even when the host is Arm, the
+> opposite is not true: qemu-system-aarch64 can only be compiled with Xen support
+> enabled when the host is Arm.
+> 
+> Expand the computation of accelerator_targets['CONFIG_XEN'] similar to what is
+> already there for KVM, and fix xen_native.h.
+> 
+> Cc: Stefano Stabellini <stefano.stabellini@amd.com>
+> Cc: Richard W.M. Jones <rjones@redhat.com>
+> Cc: Daniel P. Berrangé <berrange@redhat.com>
+> Reported-by: Michael Young <m.a.young@durham.ac.uk>
+> Supersedes: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 
 
-r~
+> ---
+>  include/hw/xen/xen_native.h |  2 +-
+>  meson.build                 | 17 ++++++++++-------
+>  2 files changed, 11 insertions(+), 8 deletions(-)
+> 
+> diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
+> index 6f09c48823b..1a5ad693a4d 100644
+> --- a/include/hw/xen/xen_native.h
+> +++ b/include/hw/xen/xen_native.h
+> @@ -532,7 +532,7 @@ static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
+>  }
+>  #endif
+>  
+> -#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41700
+> +#if CONFIG_XEN_CTRL_INTERFACE_VERSION < 41700
+>  #define GUEST_VIRTIO_MMIO_BASE   xen_mk_ullong(0x02000000)
+>  #define GUEST_VIRTIO_MMIO_SIZE   xen_mk_ullong(0x00100000)
+>  #define GUEST_VIRTIO_MMIO_SPI_FIRST   33
+> diff --git a/meson.build b/meson.build
+> index ec01f8b138a..67f4ede8aea 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -123,21 +123,24 @@ if get_option('kvm').allowed() and targetos == 'linux'
+>    kvm_targets_c = '"' + '" ,"'.join(kvm_targets) + '"'
+>  endif
+>  config_host_data.set('CONFIG_KVM_TARGETS', kvm_targets_c)
+> -
+>  accelerator_targets = { 'CONFIG_KVM': kvm_targets }
+>  
+> +if cpu in ['x86', 'x86_64']
+> +  xen_targets = ['i386-softmmu', 'x86_64-softmmu']
+> +elif cpu in ['arm', 'aarch64']
+> +  # i386 emulator provides xenpv machine type for multiple architectures
+> +  xen_targets = ['i386-softmmu', 'x86_64-softmmu', 'aarch64-softmmu']
+> +else
+> +  xen_targets = []
+> +endif
+> +accelerator_targets += { 'CONFIG_XEN': xen_targets }
+> +
+>  if cpu in ['aarch64']
+>    accelerator_targets += {
+>      'CONFIG_HVF': ['aarch64-softmmu']
+>    }
+>  endif
+>  
+> -if cpu in ['x86', 'x86_64', 'arm', 'aarch64']
+> -  # i386 emulator provides xenpv machine type for multiple architectures
+> -  accelerator_targets += {
+> -    'CONFIG_XEN': ['i386-softmmu', 'x86_64-softmmu', 'aarch64-softmmu'],
+> -  }
+> -endif
+>  if cpu in ['x86', 'x86_64']
+>    accelerator_targets += {
+>      'CONFIG_HVF': ['x86_64-softmmu'],
+> -- 
+> 2.43.0
+> 
+> 
+--8323329-1904100162-1702341261=:1703076--
 
