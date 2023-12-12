@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E763F80F314
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:36:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D86B180F332
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:37:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5h7-0000Qe-PH; Tue, 12 Dec 2023 11:33:18 -0500
+	id 1rD5h9-0000cB-29; Tue, 12 Dec 2023 11:33:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gX-0007qb-3y
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:42 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gb-00083K-Pj
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:46 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gS-0007o9-6q
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:39 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40c1e3ea2f2so59585785e9.2
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:32:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gY-0007pT-PS
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:44 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40c1e3ea2f2so59586865e9.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:32:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398754; x=1703003554; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702398761; x=1703003561; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lnrJeszID6i8q/rfFXlglmf1g+vLhk9+fH8LuiS5wFg=;
- b=BfZgyCHdUtjyJG80e0h5YUm4fviq/L1E8Clu3/CLVncREq8DuKCsGXWpJ9dcK84cEP
- 1475nHpyB3+8JWxOXb5aCtIuwZF0MSa6KzsQTHVfcZwQ0cNtDkIcH88O0zqUA/SK4g8H
- iqlnZdLDA9WfSbiIrZWfDR7n86flgZf3/opj/KdNmkIgWABXLapP3nSIv8pXJZBNO6Y6
- Q+KKCoeBc7sxTEF5g2NoD/ImhbcWYEm+a4Yl8iegHne6LSoxGeOjj9FAS1nC1M/3w8PE
- jaAn7uZyycUCMnGnVHtYeBjZeH/4c/ghA3IYvNvpkO9CtUIQrCHyZ88N13ikWW8eY40n
- pJZg==
+ bh=QBOGPnHHB3911qXPeC7joHkuSv4mKQWNp402DQT8HUM=;
+ b=XrIvR5RVOW1wE7od5xrI9dea0UCa1ShAe32m4CJuIiFcO49+KofkhvdusklXau1DjS
+ DHY8oiLXyDu1qveFiMjp8AfEBF2m9D2Q6yvuvNkEWsjFAt9ovGVv3exomZ7f/LTKH8Vz
+ hxr8SYg16ZQHUmXtM7NGzjJnKf2orga3R7Uw05n/z2ps9B20QFIQNvUPs84PGa1TOM30
+ NSaPE7ip1krVe5ziOA/OaJ1gIVrqX36sk2qovBW4Lw8wJubYd7JBE3ogILR44RZiINYc
+ RP9XPX0e9cBqJBbIjlYdKJEt2CAb6Tv86y0pWHOCK/0W8SvjQYc5M9cBK6+Si5n0v0Sc
+ N1Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398754; x=1703003554;
+ d=1e100.net; s=20230601; t=1702398761; x=1703003561;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lnrJeszID6i8q/rfFXlglmf1g+vLhk9+fH8LuiS5wFg=;
- b=rI+AyxdldKAwbPsaWGES+xxtChe5SXfIb/1L9Omk0rur3c0hhnAUJDXNqrXTz2A1XV
- nXBnZMGIAjtGyNTijkXz90pcq7kuFtcv73JO+z+fuuUBwrjgPKt3Gm+utl/PCql3S550
- fauotpndOxgOU0V3TDCUWQlUdLVMCBdvxT9f27uXWYYRyzy/2elRpm0DGkxXLdTaEWp8
- xWmxmH994iVTTuMWj04LleYwG5H+bt1DaVmZPBGOzPSoPpMzhBFvL1UOfNyFexA8Ss6l
- f8u+zxCYflHaoVU02QApwQpM0M/JjcMMSF/sp2dk3JWiqW76GC7eIwO0E6AvUdu7T59n
- Rw4Q==
-X-Gm-Message-State: AOJu0Yy8ngpYDMWIHK0IvoZS5JRhfFG7AKIXYX1DA/gdRMggyooI4eWZ
- DjZl4OyFsyTZ9khKG5CEodAIexGw9P2+QadlnXk=
-X-Google-Smtp-Source: AGHT+IEhW3hPy0t/OW5VOfIFyP55JLvXgdi7wpqvG7SRznYraFPkiWLXOuJE1nlKRmvwPMhtNIbh8g==
-X-Received: by 2002:a05:600c:3648:b0:40c:2671:1550 with SMTP id
- y8-20020a05600c364800b0040c26711550mr3735117wmq.24.1702398754443; 
- Tue, 12 Dec 2023 08:32:34 -0800 (PST)
+ bh=QBOGPnHHB3911qXPeC7joHkuSv4mKQWNp402DQT8HUM=;
+ b=OYsTZS1JNORg5OnYi8cJMUlKatlrkKqArAxIA5+NA8saURzESe+WfwGGLuuzKlDqsp
+ 7Ucx2pZvcTnxTV7/443EYJW97dHcDC8uCiWSjZVvDPMaeORFuUB6yJmlcmSeden6SbCy
+ UKA1k3i91SyQH8YpECVYNeGzUApGsD7wqAu+B4kogwHySCS+PccrBtAvUZEjsIHk6365
+ t2phsewuvVEzvyv30fZfRHxfh/3jPilSWdMcD/9lFQ3FzAKeWXsaQK5WFESA/P6xTCdV
+ ii6sD7J8sEaYz99oDm7OwyQoMqKxEFW/5wtOQGfzkUJ6G3MTUdoGjC7/8CKyVpfT+BFX
+ VmIQ==
+X-Gm-Message-State: AOJu0YxWmzYErUwlltxd/jKF7V7AKq85X/dPB0Bp9TM5iJS3mt1Mnt62
+ /uzUOVSBQbFA9Yfs2XDoPOgO1p/KicKVtZy7e3E=
+X-Google-Smtp-Source: AGHT+IHdDnlbdk7OHM8tTTeyyle5mW0FYFGDZn5ZKs+vQ26Fe4J2l4AZ68x14i6EIP/rf8xO94PXYg==
+X-Received: by 2002:a05:600c:c8d:b0:40c:2b85:5b87 with SMTP id
+ fj13-20020a05600c0c8d00b0040c2b855b87mr4315249wmb.98.1702398760868; 
+ Tue, 12 Dec 2023 08:32:40 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- m27-20020a05600c3b1b00b0040b38292253sm19428074wms.30.2023.12.12.08.32.32
+ t4-20020adff044000000b0033340937da6sm11071845wro.95.2023.12.12.08.32.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:32:34 -0800 (PST)
+ Tue, 12 Dec 2023 08:32:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
@@ -71,25 +71,25 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 24/33] hw/arm/fsl-imx6: Let the A9MPcore create/wire the CPU
+Subject: [PATCH 25/33] hw/arm/fsl-imx6ul: Let the A7MPcore create/wire the CPU
  cores
-Date: Tue, 12 Dec 2023 17:29:24 +0100
-Message-ID: <20231212162935.42910-25-philmd@linaro.org>
+Date: Tue, 12 Dec 2023 17:29:25 +0100
+Message-ID: <20231212162935.42910-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
 References: <20231212162935.42910-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,133 +105,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the properties on the a9mpcore object to let it create and
+Set the properties on the a7mpcore object to let it create and
 wire the CPU cores. Remove the redundant code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/arm/fsl-imx6.h |  4 ----
- hw/arm/fsl-imx6.c         | 47 +++++++--------------------------------
- hw/arm/sabrelite.c        |  4 +++-
- 3 files changed, 11 insertions(+), 44 deletions(-)
+ include/hw/arm/fsl-imx6ul.h |  4 ----
+ hw/arm/fsl-imx6ul.c         | 24 ++++++------------------
+ hw/arm/mcimx6ul-evk.c       |  3 ++-
+ 3 files changed, 8 insertions(+), 23 deletions(-)
 
-diff --git a/include/hw/arm/fsl-imx6.h b/include/hw/arm/fsl-imx6.h
-index 21a3b035a4..643c3160c7 100644
---- a/include/hw/arm/fsl-imx6.h
-+++ b/include/hw/arm/fsl-imx6.h
-@@ -33,7 +33,6 @@
+diff --git a/include/hw/arm/fsl-imx6ul.h b/include/hw/arm/fsl-imx6ul.h
+index b37d544319..9957ab5be0 100644
+--- a/include/hw/arm/fsl-imx6ul.h
++++ b/include/hw/arm/fsl-imx6ul.h
+@@ -34,7 +34,6 @@
  #include "hw/usb/chipidea.h"
  #include "hw/usb/imx-usb-phy.h"
  #include "exec/memory.h"
 -#include "cpu.h"
  #include "qom/object.h"
+ #include "qemu/units.h"
  
- #define TYPE_FSL_IMX6 "fsl-imx6"
-@@ -51,11 +50,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(FslIMX6State, FSL_IMX6)
- #define FSL_IMX6_NUM_USBS 4
+@@ -63,11 +62,8 @@ enum FslIMX6ULConfiguration {
+ };
  
- struct FslIMX6State {
+ struct FslIMX6ULState {
 -    /*< private >*/
-     DeviceState parent_obj;
+     DeviceState    parent_obj;
  
 -    /*< public >*/
--    ARMCPU         cpu[FSL_IMX6_NUM_CPUS];
-     A9MPPrivState  a9mpcore;
-     IMX6CCMState   ccm;
-     IMX6SRCState   src;
-diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
-index 65c7c1a0f9..f05ea62351 100644
---- a/hw/arm/fsl-imx6.c
-+++ b/hw/arm/fsl-imx6.c
-@@ -29,6 +29,7 @@
- #include "chardev/char.h"
+-    ARMCPU             cpu;
+     CortexMPPrivState  a7mpcore;
+     IMXGPTState        gpt[FSL_IMX6UL_NUM_GPTS];
+     IMXEPITState       epit[FSL_IMX6UL_NUM_EPITS];
+diff --git a/hw/arm/fsl-imx6ul.c b/hw/arm/fsl-imx6ul.c
+index 6e4343efaa..512973e3c1 100644
+--- a/hw/arm/fsl-imx6ul.c
++++ b/hw/arm/fsl-imx6ul.c
+@@ -25,6 +25,7 @@
+ #include "sysemu/sysemu.h"
  #include "qemu/error-report.h"
  #include "qemu/module.h"
-+#include "target/arm/cpu.h"
++#include "target/arm/cpu.h" /* qom */
  
- #define IMX6_ESDHC_CAPABILITIES     0x057834b4
+ #define NAME_SIZE 20
  
-@@ -36,17 +37,10 @@
- 
- static void fsl_imx6_init(Object *obj)
- {
--    MachineState *ms = MACHINE(qdev_get_machine());
-     FslIMX6State *s = FSL_IMX6(obj);
+@@ -34,9 +35,6 @@ static void fsl_imx6ul_init(Object *obj)
      char name[NAME_SIZE];
      int i;
  
--    for (i = 0; i < MIN(ms->smp.cpus, FSL_IMX6_NUM_CPUS); i++) {
--        snprintf(name, NAME_SIZE, "cpu%d", i);
--        object_initialize_child(obj, name, &s->cpu[i],
--                                ARM_CPU_TYPE_NAME("cortex-a9"));
--    }
+-    object_initialize_child(obj, "cpu0", &s->cpu,
+-                            ARM_CPU_TYPE_NAME("cortex-a7"));
 -
-     object_initialize_child(obj, "a9mpcore", &s->a9mpcore, TYPE_A9MPCORE_PRIV);
+     /*
+      * A7MPCORE
+      */
+@@ -158,8 +156,6 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     DeviceState *gic;
+     int i;
+     char name[NAME_SIZE];
+-    SysBusDevice *sbd;
+-    DeviceState *d;
  
-     object_initialize_child(obj, "ccm", &s->ccm, TYPE_IMX6_CCM);
-@@ -119,43 +113,18 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+     if (ms->smp.cpus > 1) {
+         error_setg(errp, "%s: Only a single CPU is supported (%d requested)",
+@@ -167,26 +163,18 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
          return;
      }
  
--    for (i = 0; i < smp_cpus; i++) {
+-    qdev_realize(DEVICE(&s->cpu), NULL, &error_abort);
 -
--        /* On uniprocessor, the CBAR is set to 0 */
--        if (smp_cpus > 1) {
--            object_property_set_int(OBJECT(&s->cpu[i]), "reset-cbar",
--                                    FSL_IMX6_A9MPCORE_ADDR, &error_abort);
--        }
--
--        /* All CPU but CPU 0 start in power off mode */
--        if (i) {
--            object_property_set_bool(OBJECT(&s->cpu[i]), "start-powered-off",
--                                     true, &error_abort);
--        }
--
--        if (!qdev_realize(DEVICE(&s->cpu[i]), NULL, errp)) {
--            return;
--        }
--    }
--
--    object_property_set_int(OBJECT(&s->a9mpcore), "num-cores", smp_cpus,
--                            &error_abort);
--
--    object_property_set_int(OBJECT(&s->a9mpcore), "num-irq",
--                            FSL_IMX6_MAX_IRQ + GIC_INTERNAL, &error_abort);
--
-+    qdev_prop_set_uint32(DEVICE(&s->a9mpcore), "num-cores", smp_cpus);
-+    qdev_prop_set_string(DEVICE(&s->a9mpcore), "cpu-type",
-+                         ARM_CPU_TYPE_NAME("cortex-a9"));
-+    qdev_prop_set_uint64(DEVICE(&s->a9mpcore), "cpu-reset-cbar",
-+                         FSL_IMX6_A9MPCORE_ADDR);
-+    qdev_prop_set_uint32(DEVICE(&s->a9mpcore), "gic-spi-num",
-+                         FSL_IMX6_MAX_IRQ + GIC_INTERNAL);
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->a9mpcore), errp)) {
-         return;
-     }
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->a9mpcore), 0, FSL_IMX6_A9MPCORE_ADDR);
+     /*
+      * A7MPCORE
+      */
+-    object_property_set_int(OBJECT(&s->a7mpcore), "num-cores", 1, &error_abort);
+-    object_property_set_int(OBJECT(&s->a7mpcore), "num-irq",
+-                            FSL_IMX6UL_MAX_IRQ + GIC_INTERNAL, &error_abort);
++    qdev_prop_set_uint32(DEVICE(&s->a7mpcore), "num-cores", 1);
++    qdev_prop_set_string(DEVICE(&s->a7mpcore), "cpu-type",
++                         ARM_CPU_TYPE_NAME("cortex-a7"));
++    qdev_prop_set_uint32(DEVICE(&s->a7mpcore), "gic-spi-num",
++                         FSL_IMX6UL_MAX_IRQ + GIC_INTERNAL);
+     sysbus_realize(SYS_BUS_DEVICE(&s->a7mpcore), &error_abort);
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->a7mpcore), 0, FSL_IMX6UL_A7MPCORE_ADDR);
+     gic = DEVICE(&s->a7mpcore);
  
--    for (i = 0; i < smp_cpus; i++) {
--        sysbus_connect_irq(SYS_BUS_DEVICE(&s->a9mpcore), i,
--                           qdev_get_gpio_in(DEVICE(&s->cpu[i]), ARM_CPU_IRQ));
--        sysbus_connect_irq(SYS_BUS_DEVICE(&s->a9mpcore), i + smp_cpus,
--                           qdev_get_gpio_in(DEVICE(&s->cpu[i]), ARM_CPU_FIQ));
--    }
+-    sbd = SYS_BUS_DEVICE(&s->a7mpcore);
+-    d = DEVICE(&s->cpu);
 -
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->ccm), errp)) {
-         return;
+-    sysbus_connect_irq(sbd, 0, qdev_get_gpio_in(d, ARM_CPU_IRQ));
+-    sysbus_connect_irq(sbd, 1, qdev_get_gpio_in(d, ARM_CPU_FIQ));
+-    sysbus_connect_irq(sbd, 2, qdev_get_gpio_in(d, ARM_CPU_VIRQ));
+-    sysbus_connect_irq(sbd, 3, qdev_get_gpio_in(d, ARM_CPU_VFIQ));
+-
+     /*
+      * A7MPCORE DAP
+      */
+diff --git a/hw/arm/mcimx6ul-evk.c b/hw/arm/mcimx6ul-evk.c
+index 500427e94b..a19834930f 100644
+--- a/hw/arm/mcimx6ul-evk.c
++++ b/hw/arm/mcimx6ul-evk.c
+@@ -18,6 +18,7 @@
+ #include "hw/qdev-properties.h"
+ #include "qemu/error-report.h"
+ #include "sysemu/qtest.h"
++#include "target/arm/cpu.h" /* qom */
+ 
+ static void mcimx6ul_evk_init(MachineState *machine)
+ {
+@@ -64,7 +65,7 @@ static void mcimx6ul_evk_init(MachineState *machine)
      }
-diff --git a/hw/arm/sabrelite.c b/hw/arm/sabrelite.c
-index 56f184b9ae..751053e8e3 100644
---- a/hw/arm/sabrelite.c
-+++ b/hw/arm/sabrelite.c
-@@ -99,7 +99,9 @@ static void sabrelite_init(MachineState *machine)
-     sabrelite_binfo.secondary_cpu_reset_hook = sabrelite_reset_secondary;
  
      if (!qtest_enabled()) {
--        arm_load_kernel(&s->cpu[0], machine, &sabrelite_binfo);
-+        CortexMPPrivState *mp = CORTEX_MPCORE_PRIV(&s->a9mpcore);
-+
-+        arm_load_kernel(mp->cpu[0], machine, &sabrelite_binfo);
+-        arm_load_kernel(&s->cpu, machine, &boot_info);
++        arm_load_kernel(s->a7mpcore.cpu[0], machine, &boot_info);
      }
  }
  
