@@ -2,165 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A5880F1C8
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:03:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEF480F204
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:12:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5E1-0001iR-JR; Tue, 12 Dec 2023 11:03:13 -0500
+	id 1rD5LR-0004Dg-Bz; Tue, 12 Dec 2023 11:10:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=6710380681=volodymyr_babchuk@epam.com>)
- id 1rD5Dy-0001cV-0A
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:03:10 -0500
-Received: from mx0b-0039f301.pphosted.com ([148.163.137.242])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=6710380681=volodymyr_babchuk@epam.com>)
- id 1rD5Du-0002Sp-UX
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:03:09 -0500
-Received: from pps.filterd (m0174682.ppops.net [127.0.0.1])
- by mx0b-0039f301.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 3BCFMiOQ018897; Tue, 12 Dec 2023 16:02:52 GMT
-Received: from eur05-am6-obe.outbound.protection.outlook.com
- (mail-am6eur05lp2104.outbound.protection.outlook.com [104.47.18.104])
- by mx0b-0039f301.pphosted.com (PPS) with ESMTPS id 3uxp2xh3uk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Dec 2023 16:02:50 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ENQJ6cdLi7EGbCFUy0jcHdVyKXf/YBTd9xRDsV9ApOxZ2rAXPkhJJNMEyygmd44VSuaLyxNT2uV/i1/SMAVZ0CTFnOcz1btaj/EB62XRGL7/ppbAzTEWgagT4/iRtOjp8zvatrS5oMhcljxa2lPJtg/+QPgl6ZHcm/kREbubrS2EJdtbLsWoOPaiWLQ3TgcbQ/cSh9SsmQjMKyYiKzaIPnhYrx3FLOn9jx5/tzMiJSoBCb/cs1tYDXd4Qs8AUK6e9NH8nSt6zw/cpSWj6QFZiACnyfIH4bBSEvDo5O3g8Aca1CUf13rgaZEdSM4qCqJ11BbX0FKhyTaHHGFmLbK4Sg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pU1oUH1d8zFL8xmrruy+aPayRsVnL/j6bzG3pXleM2E=;
- b=XMbVT6GnuLi7rInVmblGq5XFFR+ss9oPZ9UgTSJ2XCI+44glFAr6pXjhe6n/ucpkB8jCN34ZbL5GcVmAVWZkbd2cUViKfenmn26JXX5ZiS7XoEw1v5lB6mPl2ULNf9RsEScmLxv/cC0m4hC7RckGiu78HtHxE5B+5KQ5WwLUISSt7bKdJryHm/L8s3GI/ZL11XbHHX8bcg+C0+zdHtujiR9QHMjb8R8bFxd88jEARriLRDWn+k0kXDVoSzL5q2Kenok3Ryr/CgNCXIKXLAqh1ZrLWmo55FH5NkDb4Z9JMhgkvekXXbk7LWy9B5zJcB10zG5BgwChPV4wX79x3vwDMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=epam.com; dmarc=pass action=none header.from=epam.com;
- dkim=pass header.d=epam.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=epam.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pU1oUH1d8zFL8xmrruy+aPayRsVnL/j6bzG3pXleM2E=;
- b=hnCdwMYaWaF6S2MvnfxiuDfHJ2ydfjNqBDzAnf86FkQI/HSMd9hlPZQsmBKeFBLt8uiuYV3SZBA36FQ87TQsFuAS0IV27Vd5OHJQ8qLicwYVacE/wrg1hMj/TEWT54In0rOXFTfNQ6SV4YYczUt1Ks5K8gJTqKy/Ixegz/oarJhGCLi992GVgv5lFThxDzXGZf1Uu6A/TZS64q4N5rU3xGwFqle38dMYrp5houDQ38ZlJ0zWg8LDE3Li0DJd+4szYtHaBUxPN6GJN01Low6mxXejgar4NnEkxwpF3yIQHryBe29qSQUreHnXv6aXbsoRDVwWSrbukZn5NudXj+KJRg==
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com (2603:10a6:803:31::18)
- by DB5PR03MB10049.eurprd03.prod.outlook.com (2603:10a6:10:4a0::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Tue, 12 Dec
- 2023 16:02:46 +0000
-Received: from VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822]) by VI1PR03MB3710.eurprd03.prod.outlook.com
- ([fe80::8e03:368:1fd7:1822%6]) with mapi id 15.20.7068.033; Tue, 12 Dec 2023
- 16:02:46 +0000
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-CC: Anthony PERARD <anthony.perard@citrix.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Oleksandr Tyshchenko
- <Oleksandr_Tyshchenko@epam.com>, Vikram Garhwal <vikram.garhwal@amd.com>,
- =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>,
- Michael Young <m.a.young@durham.ac.uk>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, Paolo
- Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] fix qemu build with xen-4.18.0
-Thread-Topic: [PATCH] fix qemu build with xen-4.18.0
-Thread-Index: AQHaKijL3WADPEA59ECvZnvE/VRP97CluD+AgAAUgoCAAAP2AIAAAvkA
-Date: Tue, 12 Dec 2023 16:02:46 +0000
-Message-ID: <87plzb76je.fsf@epam.com>
-References: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
- <ZXLg_YCHM-P6drQV@redhat.com>
- <alpine.DEB.2.22.394.2312081422490.1703076@ubuntu-linux-20-04-desktop>
- <8be72952-88b6-4c74-b696-fecfa8313c96@perard> <87wmtj77sl.fsf@epam.com>
- <CAJSP0QUytnP60HyWwG4AhjMZwCS6b+pJJm7AOWd8P8pu1SqJ=Q@mail.gmail.com>
-In-Reply-To: <CAJSP0QUytnP60HyWwG4AhjMZwCS6b+pJJm7AOWd8P8pu1SqJ=Q@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: mu4e 1.10.7; emacs 29.1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI1PR03MB3710:EE_|DB5PR03MB10049:EE_
-x-ms-office365-filtering-correlation-id: fe4b8cb4-71df-4818-3316-08dbfb2bc84d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: FQel1a+ZsRTOg4tpoR0+MerGeTlNVqnGCceShmCD6un1sYZFe8v7cZg5b0yOHuJ0pXvLj/VHCWwvIQzlKCI3d9wXqA5hbsQ1UUeQXrmaR8/gI5TOFhtybzPjU1v+hVWwPm4fpppjHlkvlHJxIAvZviT76rmnxU71UO8Kbw5qseP6ZXX1W3cZpzCj/DE6EoT/BiK4wOq5mbaklJrjZWMO2uZbYMO0UAmXgcLhLki3bo7d5yGu8fEx6iSiIQEu2XhEQm6tzSjX3R9hJqOuLC7xSfZqnbPod+/idXG6xOwkPTSh++FCtR0FZnICvei2P3vgE1Uilnn8t8HOlACJOQi1DWKEZWP42YSE9aJfCqokniBdyi+43vw/E7zOgr5aTtcUbgraOsPpvhED4BO62/2tWd9P0EpqiMHmzMMzQQ22tTLccsm01V3LVBrscmcRuXYOWIaelNsjkmxsiVZ7vvJPrBDTYTlr4Bp9y0hnp6XY9jMO1WRNXQirKZRSxzXmtB231fMcCXk1AyBTlHWvAEwlc3Gts0mGamWlSxtxNbe3g9jS6dYXmg+ucDx9YSHNQ0feS/JaRTQ0o05r/GUrsB3ruwhHRUCGewFTWRLbHmnw7EI=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR03MB3710.eurprd03.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(366004)(396003)(376002)(39860400002)(346002)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(84970400001)(26005)(2616005)(38070700009)(36756003)(38100700002)(86362001)(122000001)(6916009)(83380400001)(5660300002)(55236004)(6506007)(6512007)(316002)(76116006)(2906002)(66556008)(41300700001)(91956017)(966005)(66946007)(8936002)(8676002)(66446008)(64756008)(54906003)(6486002)(66476007)(4326008)(478600001)(71200400001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZkIwejFvRmtiQ1gyeFFYdjZRTi93cFY1WVJDb3V1VG1oWklORm05YThjNlhJ?=
- =?utf-8?B?eWJFSFRGY2RZRGwzNzE5OGlmZ0VHcnlyWjQyYzRRVnNYSzdlS0RUellQOG9L?=
- =?utf-8?B?SmwvOEFuNFdxL0xwKzMxRGlTdkhzYTFMK2FyYkNkSWNjYjlVK1VPWjFyL0hY?=
- =?utf-8?B?Rnk1WHVBOWErdlpheGVHeHNBakR4NFdQalJiZHIwMkE4aHlzOGUySERzQ1Aw?=
- =?utf-8?B?cHB1UTI3V1I4QndUVGtDdk4rWmsxSFp4dlFFYWhkcXg1K1VIVlBjN1lBNHJs?=
- =?utf-8?B?ajFIR0dUdSt5ZnBORGdWUlk4dTBoR1hoeGg0SXhRM0VZanhjTFdYMEVlL3J5?=
- =?utf-8?B?Q21CMWNTL3BPRmpqMm1hbWZ1UDhTM0M1cmZyRGxld1UxdTY4UlhwdDNTZUVQ?=
- =?utf-8?B?YjVzalZXR3BzaWVVcW0xQkxFNnhaZmNtakZGNUhKR1FTczZIcmFOMGQ0V2Jo?=
- =?utf-8?B?NjNVMzQ0VG5hTkFrdWRDVVJzZWZWTE1ZTld5RCsyZTY3QVl3MU1XVm9tK3pm?=
- =?utf-8?B?ekRkK3JhYXhMVVQ2RU1CMWhzRkZiMmJqbnBBWTN6MDVyYm1ybnZwR002dU8z?=
- =?utf-8?B?R0VQMmp1QThMZ2lqTjJ0TXlaN0V2NUVZakZ2QjdZeFJ1TXhVbjAxM3BBV2hV?=
- =?utf-8?B?dmRMRWd6Vk9QM0ZpaEVwZSs1S1pXcVE1ZnRhMTUrZzVlTTUzbzlQbGZzZFZ4?=
- =?utf-8?B?S2lSSTFKKzJ0SU5VeWZWS0JVdWVpUlRweVVkaktZRkpEVmYwZjRuQlM3ZUFw?=
- =?utf-8?B?TTZuS054dDFMM2QwRzJUNlFNUmZEZlRVSkJwL0Fjb1ZFUHYzOFF5Yk5rWHBo?=
- =?utf-8?B?ZTlUbVFUeFF0ajdXTUFJWHR2QzJmRDMzaWRRdWhYS0IxZTEySVVKa3dKQjZv?=
- =?utf-8?B?S09CN01RNUwzOVZsbzlFaVoxRkJuRFA0U2FrL3BSeXJDZXJPUWpSQUN6QTV2?=
- =?utf-8?B?dGZPV0xqVUJYVFNMTkhzVHV6NVJWeExScC8vTU1rVVBxTUlOT0l5cjFjZEVK?=
- =?utf-8?B?MnA2RlQyd3BBMEpVT2ptUEhNUGtKZmhvODlySUR1YllkblRuYW55OGZuTzNV?=
- =?utf-8?B?U2ZyV0hGbzh4UEpSVzdxT3NSMW9VbXQvZDNhUTlQV2JkVmt1NGFoeGRhWW1S?=
- =?utf-8?B?TXh6Tk5kdEJvYjZ5ckJMRWI3RVJyenFYRjJoWVBIRWZaMkFIdWR4VU9BUGdv?=
- =?utf-8?B?T3RSWTVIQWJ5eWF5TGtIMUNEWFVROFBVZ3Z3ZXBTMXRsa1dXVC84KzF1M21L?=
- =?utf-8?B?Q1RJbnk5bEREMHZGWkJTOGJLTm9xcjZzcjZYazcwTkhnTDlFQ0tYS0FYQVBP?=
- =?utf-8?B?cjAvRlBjRTZ6WHhuNjVqTFdjdWJqY1NqcUlkZ3NRWnBoUWkvNDBXbmZYcFVm?=
- =?utf-8?B?My9pczNBRDNoWTZlZWpXK0M1MkJCSDJNVzV4b3llZWhoZVMzUzN4RyswWWN3?=
- =?utf-8?B?aklRWVpHOExicCs5ZDQrdFNSS3RkQUc3dGdmeU9kRXFYbEJ1RzRGWGQ2eHNQ?=
- =?utf-8?B?WE5IcXF0NkdpeU4wd2F6U1pRNUt2aXd6RkhkNGZUc0RQbVFvM2Q0V01wdy9X?=
- =?utf-8?B?WGxrRUgwd2FIM2lCdTRDUFkwbTRaZ1RKTDE0SEVIVnVRalpSV28rTTRIMyt3?=
- =?utf-8?B?dCtGaDdGSTVIUHhkVW5hb25ldnJua1JiSW1kM3NnL2lKazBZVXJERWhiTjVh?=
- =?utf-8?B?QnczTGM0aHRabm5kZzBBdHlSL2pERDBLTTU0RDNaRlRTN1hKSVdpWEtCU013?=
- =?utf-8?B?UXFSNzhycGJvUkE1ajVhSlJwSkZaMXJaY2pnQk5BWU96VjRpUHBvNXBsdjJW?=
- =?utf-8?B?TDZoS3pvd0hGVlNGd2VTMkU2akhVVWpwKzlhNHlDM0ZrUjVxVHlUM3lWcm5y?=
- =?utf-8?B?ZlVDcHFDRDJocjBYSVk2Qjgzd2wwNWJwbC9jUnM1NDZGdnI2aHFXOWhSTE1S?=
- =?utf-8?B?WG4zaVBGQVFtQ2FPWFVMUnEzOEJlbTJ4WS9GWWFPZGs4UnNvUlB0aHY4VFJh?=
- =?utf-8?B?U1V6WnVXS1pXWXU2V2s2bnZqcjZTNjV6MFZBU0R4VDRwanF5V1Rxb3AyMUJX?=
- =?utf-8?B?Y1Y0WGJyZFBkTVBaSkp3cHN6MW5nUDBhelVTRlRpZXNLbGhkRFVBSENmMVcv?=
- =?utf-8?B?SG04N1FBYnhxZStMVXFZNzlrNDlKcmQ5TjAycnZjNVc3T3lRYklNUEczTGhK?=
- =?utf-8?B?d1E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <14D114E0AFD6184880F6A445A5B35090@eurprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rD5LP-0004Cx-Kk
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:10:51 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rD5LN-0005ot-Em
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:10:51 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id DA5A12250D;
+ Tue, 12 Dec 2023 16:10:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702397445; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Iru6t63huG2Wws+rvE8ALZuG5c1A1xksKBdDDrmcngs=;
+ b=eiWXCeuIFKQz+VzKqavs/o0v2Yka+J2WksEv1N6ZFJ3QmhQGGYv1/NDLwfqm4iuhZuDE6a
+ Hd/M1B1tjGJaUBKQTpiP5rXTx77PfL0ep2ptCe6YbHcEglk5OrYctgHW7q1bKYJINKfCJX
+ +gmHQJ/nMt3lLRl4EJF+muKP0zOY2zk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702397445;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Iru6t63huG2Wws+rvE8ALZuG5c1A1xksKBdDDrmcngs=;
+ b=efVlEdn76OZBgoQEyOGWDYtDrr3KFwQR69g6LDJhJVdTsHFe7SyRbHvFGzcJqm83etw2tx
+ NfwC0OsTq2LOhdCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702397443; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Iru6t63huG2Wws+rvE8ALZuG5c1A1xksKBdDDrmcngs=;
+ b=j22FGIB08J7JMrGJlGSCAt6ECqOPRzHTRoZrg2kbdeZPao9rinbTk70osRrLnOdzi/p9ht
+ VDTcUTBooElNmBJXmX3LWWcGxJjcG0zLSOBp2aCTf1hLITt/o9+k6UTtlaVgk8DPYMyx/N
+ JfTZ3tJsVKfunaNrVoSVyaPMIoZFtkA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702397443;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Iru6t63huG2Wws+rvE8ALZuG5c1A1xksKBdDDrmcngs=;
+ b=G4B+oEPMHdJmSAY0eP2SfgQJ9xj5A+UxrPfwo1SOm72YCc7NVkRfFVoMXo1N7tuVSdKmWs
+ 7HqsNbechS+frNAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 49B2613725;
+ Tue, 12 Dec 2023 16:10:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id BqT/AQOGeGUWIAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 12 Dec 2023 16:10:43 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Hao Xiang <hao.xiang@bytedance.com>, peter.maydell@linaro.org,
+ quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com,
+ bryan.zhang@bytedance.com, qemu-devel@nongnu.org
+Cc: Hao Xiang <hao.xiang@bytedance.com>
+Subject: Re: [PATCH v2 08/20] util/dsa: Implement DSA task enqueue and dequeue.
+In-Reply-To: <20231114054032.1192027-9-hao.xiang@bytedance.com>
+References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+ <20231114054032.1192027-9-hao.xiang@bytedance.com>
+Date: Tue, 12 Dec 2023 13:10:40 -0300
+Message-ID: <87msufwge7.fsf@suse.de>
 MIME-Version: 1.0
-X-OriginatorOrg: epam.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3710.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe4b8cb4-71df-4818-3316-08dbfb2bc84d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Dec 2023 16:02:46.5370 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b41b72d0-4e9f-4c26-8a69-f949f367c91d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: q8UkzxoPhciN5Ij7b+galhKH7419Ymge4ep6AXCirdDHCllhr/9Pk6Iq5EMozbOYeQwOb2i6vTHmmqV60X5VhV0nWD/b79mL+Xk7zT4wRPE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB5PR03MB10049
-X-Proofpoint-GUID: 4g_17uf2VOTZWJq7LFWGtJFlu-R7_xsK
-X-Proofpoint-ORIG-GUID: 4g_17uf2VOTZWJq7LFWGtJFlu-R7_xsK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- lowpriorityscore=0 mlxscore=0 malwarescore=0 bulkscore=0 adultscore=0
- suspectscore=0 mlxlogscore=999 impostorscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2311290000
- definitions=main-2312120123
-Received-SPF: pass client-ip=148.163.137.242;
- envelope-from=prvs=6710380681=volodymyr_babchuk@epam.com;
- helo=mx0b-0039f301.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spam-Score: 9.78
+X-Rspamd-Server: rspamd1
+X-Rspamd-Queue-Id: DA5A12250D
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=j22FGIB0;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=G4B+oEPM;
+ dmarc=pass (policy=none) header.from=suse.de;
+ spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither
+ permitted nor denied by domain of farosas@suse.de)
+ smtp.mailfrom=farosas@suse.de
+X-Spamd-Result: default: False [-13.31 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; R_SPF_SOFTFAIL(0.00)[~all:c];
+ RCVD_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+];
+ DMARC_POLICY_ALLOW(0.00)[suse.de,none];
+ RCPT_COUNT_SEVEN(0.00)[8]; MX_GOOD(-0.01)[];
+ DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+ FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
+ BAYES_HAM(-3.00)[100.00%]; MID_RHS_MATCH_FROM(0.00)[];
+ ARC_NA(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCVD_DKIM_ARC_DNSWL_HI(-1.00)[]; FROM_HAS_DN(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ WHITELIST_DMARC(-7.00)[suse.de:D:+];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:104:10:150:64:97:from];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -13.31
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -177,104 +131,308 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQpIaSBTdGVmYW4sDQoNClN0ZWZhbiBIYWpub2N6aSA8c3RlZmFuaGFAZ21haWwuY29tPiB3cml0
-ZXM6DQoNCj4gT24gVHVlLCAxMiBEZWMgMjAyMyBhdCAxMDozNiwgVm9sb2R5bXlyIEJhYmNodWsN
-Cj4gPFZvbG9keW15cl9CYWJjaHVrQGVwYW0uY29tPiB3cm90ZToNCj4+DQo+PiBIaSBBbnRob255
-DQo+Pg0KPj4gQW50aG9ueSBQRVJBUkQgPGFudGhvbnkucGVyYXJkQGNpdHJpeC5jb20+IHdyaXRl
-czoNCj4+DQo+PiA+IE9uIEZyaSwgRGVjIDA4LCAyMDIzIGF0IDAyOjQ5OjI3UE0gLTA4MDAsIFN0
-ZWZhbm8gU3RhYmVsbGluaSB3cm90ZToNCj4+ID4+IE9uIEZyaSwgOCBEZWMgMjAyMywgRGFuaWVs
-IFAuIEJlcnJhbmfDqSB3cm90ZToNCj4+ID4+ID4gT24gVGh1LCBEZWMgMDcsIDIwMjMgYXQgMTE6
-MTI6NDhQTSArMDAwMCwgTWljaGFlbCBZb3VuZyB3cm90ZToNCj4+ID4+ID4gPiBCdWlsZHMgb2Yg
-cWVtdS04LjIuMHJjMiB3aXRoIHhlbi00LjE4LjAgYXJlIGN1cnJlbnRseSBmYWlsaW5nDQo+PiA+
-PiA+ID4gd2l0aCBlcnJvcnMgbGlrZQ0KPj4gPj4gPiA+IC4uL2h3L2FybS94ZW5fYXJtLmM6NzQ6
-NTogZXJyb3I6IOKAmEdVRVNUX1ZJUlRJT19NTUlPX1NQSV9MQVNU4oCZIHVuZGVjbGFyZWQgKGZp
-cnN0IHVzZSBpbiB0aGlzIGZ1bmN0aW9uKQ0KPj4gPj4gPiA+ICAgIDc0IHwgICAgKEdVRVNUX1ZJ
-UlRJT19NTUlPX1NQSV9MQVNUIC0gR1VFU1RfVklSVElPX01NSU9fU1BJX0ZJUlNUKQ0KPj4gPj4g
-PiA+ICAgICAgIHwgICAgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+PiA+PiA+ID4NCj4+
-ID4+ID4gPiBhcyB0aGVyZSBpcyBhbiBpbmNvcnJlY3QgY29tcGFyaXNpb24gaW4gaW5jbHVkZS9o
-dy94ZW4veGVuX25hdGl2ZS5oDQo+PiA+PiA+ID4gd2hpY2ggbWVhbnMgdGhhdCBzZXR0aW5ncyBs
-aWtlIEdVRVNUX1ZJUlRJT19NTUlPX1NQSV9MQVNUDQo+PiA+PiA+ID4gYXJlbid0IGJlaW5nIGRl
-ZmluZWQgZm9yIHhlbi00LjE4LjANCj4+ID4+ID4NCj4+ID4+ID4gVGhlIGNvbmRpdGlvbnMgaW4g
-YXJjaC1hcm0uaCBmb3IgeGVuIDQuMTggc2hvdzoNCj4+ID4+ID4NCj4+ID4+ID4gJCBjcHBpIGFy
-Y2gtYXJtLmggfCBncmVwIC1FICcoIy4qaWYpfE1NSU8nDQo+PiA+PiA+ICNpZm5kZWYgX19YRU5f
-UFVCTElDX0FSQ0hfQVJNX0hfXw0KPj4gPj4gPiAjIGlmIGRlZmluZWQoX19YRU5fXykgfHwgZGVm
-aW5lZChfX1hFTl9UT09MU19fKSB8fCBkZWZpbmVkKF9fR05VQ19fKQ0KPj4gPj4gPiAjIGVuZGlm
-DQo+PiA+PiA+ICMgaWZuZGVmIF9fQVNTRU1CTFlfXw0KPj4gPj4gPiAjICBpZiBkZWZpbmVkKF9f
-WEVOX18pIHx8IGRlZmluZWQoX19YRU5fVE9PTFNfXykNCj4+ID4+ID4gIyAgIGlmIGRlZmluZWQo
-X19HTlVDX18pICYmICFkZWZpbmVkKF9fU1RSSUNUX0FOU0lfXykNCj4+ID4+ID4gIyAgIGVuZGlm
-DQo+PiA+PiA+ICMgIGVuZGlmIC8qIF9fWEVOX18gfHwgX19YRU5fVE9PTFNfXyAqLw0KPj4gPj4g
-PiAjIGVuZGlmDQo+PiA+PiA+ICMgaWYgZGVmaW5lZChfX1hFTl9fKSB8fCBkZWZpbmVkKF9fWEVO
-X1RPT0xTX18pDQo+PiA+PiA+ICMgIGRlZmluZSBQU1JfTU9ERV9CSVQgIDB4MTBVIC8qIFNldCBp
-ZmYgQUFyY2gzMiAqLw0KPj4gPj4gPiAvKiBWaXJ0aW8gTU1JTyBtYXBwaW5ncyAqLw0KPj4gPj4g
-PiAjICBkZWZpbmUgR1VFU1RfVklSVElPX01NSU9fQkFTRSAgIHhlbl9ta191bGxvbmcoMHgwMjAw
-MDAwMCkNCj4+ID4+ID4gIyAgZGVmaW5lIEdVRVNUX1ZJUlRJT19NTUlPX1NJWkUgICB4ZW5fbWtf
-dWxsb25nKDB4MDAxMDAwMDApDQo+PiA+PiA+ICMgIGRlZmluZSBHVUVTVF9WSVJUSU9fTU1JT19T
-UElfRklSU1QgICAzMw0KPj4gPj4gPiAjICBkZWZpbmUgR1VFU1RfVklSVElPX01NSU9fU1BJX0xB
-U1QgICAgNDMNCj4+ID4+ID4gIyBlbmRpZg0KPj4gPj4gPiAjIGlmbmRlZiBfX0FTU0VNQkxZX18N
-Cj4+ID4+ID4gIyBlbmRpZg0KPj4gPj4gPiAjZW5kaWYgLyogIF9fWEVOX1BVQkxJQ19BUkNIX0FS
-TV9IX18gKi8NCj4+ID4+ID4NCj4+ID4+ID4gU28gdGhlIE1NSU8gY29uc3RhbnRzIGFyZSBhdmFp
-bGFibGUgaWYgX19YRU5fXyBvciBfX1hFTl9UT09MU19fDQo+PiA+PiA+IGFyZSBkZWZpbmVkLiBU
-aGlzIGlzIG5vIGRpZmZlcmVudCB0byB0aGUgY29uZGl0aW9uIHRoYXQgd2FzDQo+PiA+PiA+IHBy
-ZXNlbnQgaW4gWGVuIDQuMTcuDQo+PiA+PiA+DQo+PiA+PiA+IFdoYXQgeW91IGRpZG4ndCBtZW50
-aW9uIHdhcyB0aGF0IHRoZSBGZWRvcmEgYnVpbGQgZmFpbHVyZSBpcw0KPj4gPj4gPiBzZWVuIG9u
-IGFuIHg4Nl82NCBob3N0LCB3aGVuIGJ1aWxkaW5nIHRoZSBhYXJjaDY0IHRhcmdldCBRRU1VLA0K
-Pj4gPj4gPiBhbmQgSSB0aGluayB0aGlzIGlzIHRoZSBrZXkgaXNzdWUuDQo+PiA+Pg0KPj4gPj4g
-SGkgRGFuaWVsLCB0aGFua3MgZm9yIGxvb2tpbmcgaW50byBpdC4NCj4+ID4+DQo+PiA+PiAtIHlv
-dSBhcmUgYnVpbGRpbmcgb24gYSB4ODZfNjQgaG9zdA0KPj4gPj4gLSB0aGUgdGFyZ2V0IGlzIGFh
-cmNoNjQNCj4+ID4+IC0gdGhlIHRhcmdldCBpcyB0aGUgYWFyY2g2NCBYZW4gUFZIIG1hY2hpbmUg
-KHhlbl9hcm0uYykNCj4+ID4+DQo+PiA+PiBCdXQgaXMgdGhlIHJlc3VsdGluZyBRRU1VIGJpbmFy
-eSBleHBlY3RlZCB0byBiZSBhbiB4ODYgYmluYXJ5PyBPciBhcmUNCj4+ID4+IHlvdSBjcm9zcyBj
-b21waWxpbmcgQVJNIGJpbmFyaWVzIG9uIGEgeDg2IGhvc3Q/DQo+PiA+Pg0KPj4gPj4gSW4gb3Ro
-ZXIgd29yZCwgaXMgdGhlIHJlc3VsdGluZyBRRU1VIGJpbmFyeSBleHBlY3RlZCB0byBydW4gb24g
-QVJNIG9yDQo+PiA+PiB4ODY/DQo+PiA+Pg0KPj4gPj4NCj4+ID4+ID4gQXJlIHdlIGV4cGVjdGlu
-ZyB0byBidWlsZCBYZW4gc3VwcG9ydCBmb3Igbm9uLWFyY2ggbmF0aXZlIFFFTVUNCj4+ID4+ID4g
-c3lzdGVtIGJpbmFyaWVzIG9yIG5vdCA/DQo+PiA+Pg0KPj4gPj4gVGhlIEFSTSB4ZW5wdmggbWFj
-aGluZSAoeGVuX2FybS5jKSBpcyBtZWFudCB0byB3b3JrIHdpdGggWGVuIG9uIEFSTSwgbm90DQo+
-PiA+PiBYZW4gb24geDg2LiAgU28gdGhpcyBpcyBvbmx5IGV4cGVjdGVkIHRvIHdvcmsgaWYgeW91
-IGFyZQ0KPj4gPj4gY3Jvc3MtY29tcGlsaW5nLiBCdXQgeW91IGNhbiBjcm9zcy1jb21waWxlIGJv
-dGggWGVuIGFuZCBRRU1VLCBhbmQgSSBhbQ0KPj4gPj4gcHJldHR5IHN1cmUgdGhhdCBZb2N0byBp
-cyBhYmxlIHRvIGJ1aWxkIFhlbiwgWGVuIHVzZXJzcGFjZSB0b29scywgYW5kDQo+PiA+PiBRRU1V
-IGZvciBYZW4vQVJNIG9uIGFuIHg4NiBob3N0IHRvZGF5Lg0KPj4gPj4NCj4+ID4+DQo+PiA+PiA+
-IFRoZSBjb25zdGFudHMgYXJlIGRlZmluZWQgaW4gYXJjaC1hcm0uaCwgd2hpY2ggaXMgb25seSBp
-bmNsdWRlZA0KPj4gPj4gPiB1bmRlcjoNCj4+ID4+ID4NCj4+ID4+ID4gICAjaWYgZGVmaW5lZChf
-X2kzODZfXykgfHwgZGVmaW5lZChfX3g4Nl82NF9fKQ0KPj4gPj4gPiAgICNpbmNsdWRlICJhcmNo
-LXg4Ni94ZW4uaCINCj4+ID4+ID4gICAjZWxpZiBkZWZpbmVkKF9fYXJtX18pIHx8IGRlZmluZWQg
-KF9fYWFyY2g2NF9fKQ0KPj4gPj4gPiAgICNpbmNsdWRlICJhcmNoLWFybS5oIg0KPj4gPj4gPiAg
-ICNlbHNlDQo+PiA+PiA+ICAgI2Vycm9yICJVbnN1cHBvcnRlZCBhcmNoaXRlY3R1cmUiDQo+PiA+
-PiA+ICAgI2VuZGlmDQo+PiA+PiA+DQo+PiA+PiA+DQo+PiA+PiA+IFdoZW4gd2UgYXJlIGJ1aWxk
-aW5nIG9uIGFuIHg4Nl82NCBob3N0LCB3ZSBub3QgZ29pbmcgdG8gZ2V0DQo+PiA+PiA+IGFyY2gt
-YXJtLmggaW5jbHVkZWQsIGV2ZW4gaWYgd2UncmUgdHJ5aW5nIHRvIGJ1aWxkIHRoZSBhYXJjaDY0
-DQo+PiA+PiA+IHN5c3RlbSBlbXVsYXRvci4NCj4+ID4+ID4NCj4+ID4+ID4gSSBkb24ndCBrbm93
-IGhvdyB0aGlzIGlzIHN1cHBvc2VkIHRvIHdvcmsgPw0KPj4gPj4NCj4+ID4+IEl0IGxvb2tzIGxp
-a2UgYSBob3N0IHZzLiB0YXJnZXQgYXJjaGl0ZWN0dXJlIG1pc21hdGNoOiB0aGUgI2lmIGRlZmlu
-ZWQNCj4+ID4+IChfX2FhcmNoNjRfXykgY2hlY2sgc2hvdWxkIHBhc3MgSSB0aGluay4NCj4+ID4N
-Cj4+ID4NCj4+ID4gQnVpbGRpbmcgcWVtdSB3aXRoIHNvbWV0aGluZyBsaWtlOg0KPj4gPiAgICAg
-Li9jb25maWd1cmUgLS1lbmFibGUteGVuIC0tY3B1PXg4Nl82NA0KPj4gPiB1c2VkIHRvIHdvcmsu
-IENhbiB3ZSBmaXggdGhhdD8gSXQgc3RpbGwgd29ya3Mgd2l0aCB2OC4xLjAuDQo+PiA+IEF0IGxl
-YXN0LCBpdCB3b3JrcyBvbiB4ODYsIEkgbmV2ZXIgcmVhbGx5IHRyeSB0byBidWlsZCBxZW11IGZv
-ciBhcm0uDQo+PiA+IE5vdGljZSB0aGF0IHRoZXJlJ3Mgbm8gIi0tdGFyZ2V0LWxpc3QiIG9uIHRo
-ZSBjb25maWd1cmUgY29tbWFuZCBsaW5lLg0KPj4gPiBJIGRvbid0IGtub3cgaWYgLS1jcHUgaXMg
-dXNlZnVsIGhlcmUuDQo+PiA+DQo+PiA+IExvb2tzIGxpa2UgdGhlIGZpcnN0IGNvbW1pdCB3aGVy
-ZSB0aGUgYnVpbGQgZG9lc24ndCB3b3JrIGlzDQo+PiA+IDc4OTlmNjU4OWI3OCAoInhlbl9hcm06
-IEFkZCB2aXJ0dWFsIFBDSWUgaG9zdCBicmlkZ2Ugc3VwcG9ydCIpLg0KPj4NCj4+IEkgYW0gY3Vy
-cmVudGx5IHRyeWluZyB0byB1cHN0cmVhbSB0aGlzIHBhdGNoLiBJdCBpcyBpbiB0aGUgUUVNVSBt
-YWlsaW5nDQo+PiBsaXN0IGJ1dCBpdCB3YXMgbmV2ZXIgYWNjZXB0ZWQuIEl0IGlzIG5vdCByZXZp
-ZXdlZCBpbiBmYWN0LiBJJ2xsIHRha2UgYQ0KPj4gbG9vayBhdCBpdCwgYnV0IEkgZG9uJ3QgdW5k
-ZXJzdGFuZCBob3cgZGlkIHlvdSBnZXQgaW4gdGhlIGZpcnN0IHBsYWNlLg0KPg0KPiBIaSBWb2xv
-ZHlteXIsDQo+IFBhb2xvIEJvbnppbmkgc2VudCBhIHB1bGwgcmVxdWVzdCB3aXRoIHNpbWlsYXIg
-Y29kZSBjaGFuZ2VzIHRoaXMNCj4gbW9ybmluZyBhbmQgSSBoYXZlIG1lcmdlZCBpdCBpbnRvIHRo
-ZSBxZW11LmdpdC9zdGFnaW5nIGJyYW5jaDoNCj4gaHR0cHM6Ly91cmxkZWZlbnNlLmNvbS92My9f
-X2h0dHBzOi8vZ2l0bGFiLmNvbS9xZW11LXByb2plY3QvcWVtdS8tL2NvbW1pdC9lYWFlNTlhZjQw
-MzU3NzA5NzViMGNlOTM2NGI1ODcyMjNhOTA5NTAxX187ISFHRl8yOWRiY1FJVUJQQSF5RmdTeEFF
-Z1hQamNrRjhwaVN0MFQ3N2JiZWdnU2d3Qy02LXhEdVptenE0YThVN0hFUDhYeEdueHdJaGdBOWl5
-RlZpZS1mZFZnQVZBNXdWaXBuZXdiTE5wJA0KPiBbZ2l0bGFiWy5dY29tXQ0KPg0KPiBJZiB5b3Ug
-c3BvdCBzb21ldGhpbmcgdGhhdCBpcyBub3QgY29ycmVjdCwgcGxlYXNlIHJlcGx5IGhlcmUuDQo+
-DQoNCk5vLCBpdCBpcyBhbGwgZmluZSBpbiB0aGF0IHB1bGwgcmVxdWVzdC4gSSB3YXMgdGFsa2lu
-ZyBhYm91dCBwYXRjaA0KInhlbl9hcm06IEFkZCB2aXJ0dWFsIFBDSWUgaG9zdCBicmlkZ2Ugc3Vw
-cG9ydCIgd2hpY2ggaXMgc3RpbGwgb24NCnJldmlldzoNCmh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5l
-bC5vcmcvcHJvamVjdC9xZW11LWRldmVsL3BhdGNoLzIwMjMxMjAyMDE0MTA4LjIwMTc4MDMtNy12
-b2xvZHlteXJfYmFiY2h1a0BlcGFtLmNvbS8NCg0KSSB3YXMgc3VycHJpc2VkIHdoZW4gQW50aG9u
-eSBtZW50aW9uZWQgdGhhdCB0aGlzIHBhdGNoIGJyZWFrcyB0aGUNCmJ1aWxkLCBiZWNhdXNlIHRo
-ZSBwYXRjaCBpcyBub3QgaW5jbHVkZWQgaW4gUUVNVSB0cmVlLg0KDQotLSANCldCUiwgVm9sb2R5
-bXly
+Hao Xiang <hao.xiang@bytedance.com> writes:
+
+> * Use a safe thread queue for DSA task enqueue/dequeue.
+> * Implement DSA task submission.
+> * Implement DSA batch task submission.
+>
+> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+> ---
+>  include/qemu/dsa.h |  35 ++++++++
+>  util/dsa.c         | 196 +++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 231 insertions(+)
+>
+> diff --git a/include/qemu/dsa.h b/include/qemu/dsa.h
+> index 30246b507e..23f55185be 100644
+> --- a/include/qemu/dsa.h
+> +++ b/include/qemu/dsa.h
+> @@ -12,6 +12,41 @@
+>  #include <linux/idxd.h>
+>  #include "x86intrin.h"
+>  
+> +enum dsa_task_type {
+
+Our coding style requires CamelCase for enums and typedef'ed structures.
+
+> +    DSA_TASK = 0,
+> +    DSA_BATCH_TASK
+> +};
+> +
+> +enum dsa_task_status {
+> +    DSA_TASK_READY = 0,
+> +    DSA_TASK_PROCESSING,
+> +    DSA_TASK_COMPLETION
+> +};
+> +
+> +typedef void (*buffer_zero_dsa_completion_fn)(void *);
+
+We don't really need the "buffer_zero" mention in any of this
+code. Simply dsa_batch_task or batch_task would suffice.
+
+> +
+> +typedef struct buffer_zero_batch_task {
+> +    struct dsa_hw_desc batch_descriptor;
+> +    struct dsa_hw_desc *descriptors;
+> +    struct dsa_completion_record batch_completion __attribute__((aligned(32)));
+> +    struct dsa_completion_record *completions;
+> +    struct dsa_device_group *group;
+> +    struct dsa_device *device;
+> +    buffer_zero_dsa_completion_fn completion_callback;
+> +    QemuSemaphore sem_task_complete;
+> +    enum dsa_task_type task_type;
+> +    enum dsa_task_status status;
+> +    bool *results;
+> +    int batch_size;
+> +    QSIMPLEQ_ENTRY(buffer_zero_batch_task) entry;
+> +} buffer_zero_batch_task;
+
+I see data specific to this implementation and data coming from the
+library, maybe these would be better organized in two separate
+structures with the qemu-specific having a pointer to the generic
+one. Looking ahead in the series, there seems to be migration data
+coming into this as well.
+
+> +
+> +#else
+> +
+> +struct buffer_zero_batch_task {
+> +    bool *results;
+> +};
+> +
+>  #endif
+>  
+>  /**
+> diff --git a/util/dsa.c b/util/dsa.c
+> index 8edaa892ec..f82282ce99 100644
+> --- a/util/dsa.c
+> +++ b/util/dsa.c
+> @@ -245,6 +245,200 @@ dsa_device_group_get_next_device(struct dsa_device_group *group)
+>      return &group->dsa_devices[current];
+>  }
+>  
+> +/**
+> + * @brief Empties out the DSA task queue.
+> + *
+> + * @param group A pointer to the DSA device group.
+> + */
+> +static void
+> +dsa_empty_task_queue(struct dsa_device_group *group)
+> +{
+> +    qemu_mutex_lock(&group->task_queue_lock);
+> +    dsa_task_queue *task_queue = &group->task_queue;
+> +    while (!QSIMPLEQ_EMPTY(task_queue)) {
+> +        QSIMPLEQ_REMOVE_HEAD(task_queue, entry);
+> +    }
+> +    qemu_mutex_unlock(&group->task_queue_lock);
+> +}
+> +
+> +/**
+> + * @brief Adds a task to the DSA task queue.
+> + *
+> + * @param group A pointer to the DSA device group.
+> + * @param context A pointer to the DSA task to enqueue.
+> + *
+> + * @return int Zero if successful, otherwise a proper error code.
+> + */
+> +static int
+> +dsa_task_enqueue(struct dsa_device_group *group,
+> +                 struct buffer_zero_batch_task *task)
+> +{
+> +    dsa_task_queue *task_queue = &group->task_queue;
+> +    QemuMutex *task_queue_lock = &group->task_queue_lock;
+> +    QemuCond *task_queue_cond = &group->task_queue_cond;
+> +
+> +    bool notify = false;
+> +
+> +    qemu_mutex_lock(task_queue_lock);
+> +
+> +    if (!group->running) {
+> +        fprintf(stderr, "DSA: Tried to queue task to stopped device queue\n");
+> +        qemu_mutex_unlock(task_queue_lock);
+> +        return -1;
+> +    }
+> +
+> +    // The queue is empty. This enqueue operation is a 0->1 transition.
+> +    if (QSIMPLEQ_EMPTY(task_queue))
+> +        notify = true;
+> +
+> +    QSIMPLEQ_INSERT_TAIL(task_queue, task, entry);
+> +
+> +    // We need to notify the waiter for 0->1 transitions.
+> +    if (notify)
+> +        qemu_cond_signal(task_queue_cond);
+> +
+> +    qemu_mutex_unlock(task_queue_lock);
+> +
+> +    return 0;
+> +}
+> +
+> +/**
+> + * @brief Takes a DSA task out of the task queue.
+> + *
+> + * @param group A pointer to the DSA device group.
+> + * @return buffer_zero_batch_task* The DSA task being dequeued.
+> + */
+> +__attribute__((unused))
+> +static struct buffer_zero_batch_task *
+> +dsa_task_dequeue(struct dsa_device_group *group)
+> +{
+> +    struct buffer_zero_batch_task *task = NULL;
+> +    dsa_task_queue *task_queue = &group->task_queue;
+> +    QemuMutex *task_queue_lock = &group->task_queue_lock;
+> +    QemuCond *task_queue_cond = &group->task_queue_cond;
+> +
+> +    qemu_mutex_lock(task_queue_lock);
+> +
+> +    while (true) {
+> +        if (!group->running)
+> +            goto exit;
+> +        task = QSIMPLEQ_FIRST(task_queue);
+> +        if (task != NULL) {
+> +            break;
+> +        }
+> +        qemu_cond_wait(task_queue_cond, task_queue_lock);
+> +    }
+> +
+> +    QSIMPLEQ_REMOVE_HEAD(task_queue, entry);
+> +
+> +exit:
+> +    qemu_mutex_unlock(task_queue_lock);
+> +    return task;
+> +}
+> +
+> +/**
+> + * @brief Submits a DSA work item to the device work queue.
+> + *
+> + * @param wq A pointer to the DSA work queue's device memory.
+> + * @param descriptor A pointer to the DSA work item descriptor.
+> + *
+> + * @return Zero if successful, non-zero otherwise.
+> + */
+> +static int
+> +submit_wi_int(void *wq, struct dsa_hw_desc *descriptor)
+> +{
+> +    uint64_t retry = 0;
+> +
+> +    _mm_sfence();
+> +
+> +    while (true) {
+> +        if (_enqcmd(wq, descriptor) == 0) {
+> +            break;
+> +        }
+> +        retry++;
+> +        if (retry > max_retry_count) {
+
+'max_retry_count' is UINT64_MAX so 'retry' will wrap around.
+
+> +            fprintf(stderr, "Submit work retry %lu times.\n", retry);
+> +            exit(1);
+
+Is this not the case where we'd fallback to the CPU?
+
+You should not exit() here, but return non-zero as the documentation
+mentions and the callers expect.
+
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +/**
+> + * @brief Synchronously submits a DSA work item to the
+> + *        device work queue.
+> + *
+> + * @param wq A pointer to the DSA worjk queue's device memory.
+> + * @param descriptor A pointer to the DSA work item descriptor.
+> + *
+> + * @return int Zero if successful, non-zero otherwise.
+> + */
+> +__attribute__((unused))
+> +static int
+> +submit_wi(void *wq, struct dsa_hw_desc *descriptor)
+> +{
+> +    return submit_wi_int(wq, descriptor);
+> +}
+> +
+> +/**
+> + * @brief Asynchronously submits a DSA work item to the
+> + *        device work queue.
+> + *
+> + * @param task A pointer to the buffer zero task.
+> + *
+> + * @return int Zero if successful, non-zero otherwise.
+> + */
+> +__attribute__((unused))
+> +static int
+> +submit_wi_async(struct buffer_zero_batch_task *task)
+> +{
+> +    struct dsa_device_group *device_group = task->group;
+> +    struct dsa_device *device_instance = task->device;
+> +    int ret;
+> +
+> +    assert(task->task_type == DSA_TASK);
+> +
+> +    task->status = DSA_TASK_PROCESSING;
+> +
+> +    ret = submit_wi_int(device_instance->work_queue,
+> +                        &task->descriptors[0]);
+> +    if (ret != 0)
+> +        return ret;
+> +
+> +    return dsa_task_enqueue(device_group, task);
+> +}
+> +
+> +/**
+> + * @brief Asynchronously submits a DSA batch work item to the
+> + *        device work queue.
+> + *
+> + * @param batch_task A pointer to the batch buffer zero task.
+> + *
+> + * @return int Zero if successful, non-zero otherwise.
+> + */
+> +__attribute__((unused))
+> +static int
+> +submit_batch_wi_async(struct buffer_zero_batch_task *batch_task)
+> +{
+> +    struct dsa_device_group *device_group = batch_task->group;
+> +    struct dsa_device *device_instance = batch_task->device;
+> +    int ret;
+> +
+> +    assert(batch_task->task_type == DSA_BATCH_TASK);
+> +    assert(batch_task->batch_descriptor.desc_count <= batch_task->batch_size);
+> +    assert(batch_task->status == DSA_TASK_READY);
+> +
+> +    batch_task->status = DSA_TASK_PROCESSING;
+> +
+> +    ret = submit_wi_int(device_instance->work_queue,
+> +                        &batch_task->batch_descriptor);
+> +    if (ret != 0)
+> +        return ret;
+> +
+> +    return dsa_task_enqueue(device_group, batch_task);
+> +}
+
+At this point in the series submit_wi_async() and
+submit_batch_wi_async() look the same to me without the asserts. Can't
+we consolidate them?
+
+There's also the fact that both functions receive a _batch_ task but one
+is supposed to work in batches and the other is not. That could be
+solved by renaming the structure I guess.
+
+> +
+>  /**
+>   * @brief Check if DSA is running.
+>   *
+> @@ -301,6 +495,8 @@ void dsa_stop(void)
+>      if (!group->running) {
+>          return;
+>      }
+> +
+> +    dsa_empty_task_queue(group);
+>  }
+>  
+>  /**
 
