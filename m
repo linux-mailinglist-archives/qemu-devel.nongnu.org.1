@@ -2,102 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0166780F3F7
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 18:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA77980F484
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 18:26:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD6AX-00069t-F6; Tue, 12 Dec 2023 12:03:41 -0500
+	id 1rD6Va-0007ke-Nn; Tue, 12 Dec 2023 12:25:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD6AG-0005ld-Qi
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 12:03:26 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rD6VW-0007ih-0b
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 12:25:22 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD6AE-0005w2-5q
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 12:03:23 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-54f4b31494fso9036420a12.1
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 09:03:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rD6VP-0005IS-QU
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 12:25:21 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1d0b2752dc6so51779945ad.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 09:25:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702400601; x=1703005401; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Phr6MYUzkA8BOaldnWrA90ueBDuHxuNyYy/7GkyshtY=;
- b=aPxKle1Lga156W3K1CDSuHxQFc+wodIYoaG9lznDHCPzYsaL4rE9hbHLUHQbd+qstp
- gUEWC2oJDwdnAWAcl/iAmrabzFG7wDHrHDSBAN16kZHQ9AWyMV1NG5CLcPr87NVPPAwu
- QN/fE7E94yh9zr10lszmeKD27TQV9oaC0Y3k8rEyjQuTgmK0Wx+5tFRLfZVsJxPVzCrV
- GStXWGRhORt3oxG/49Lh1EcUCr4OVCPBAOwf4W66DBevf7oE2YJ2Sm0jYGXnfWKkgr0L
- 3s4t7VbuQ9g2qye+r3qNkIB1r+Kd8bhz5Pyh+qpYclNM0PFViuqy1VjSO9wmANOL3X7T
- Dxhw==
+ d=linaro.org; s=google; t=1702401911; x=1703006711; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=63LZ+9XN5pZr3CYY16o4ZrfHWApFRyoEpR5td9MnyJw=;
+ b=pT4gNpg91KAU7Q+Zd1gsuFKBP4S5onI0Umq53ah3EJFk9W56ewfA4cUKXCCage6D2h
+ ijYxIO7+wlyvEsw0/xTfeCp1tMrGEAgCbJfTH6PlkBDRpuu2rzpTr7cFR0zoxjAx/6vG
+ oNj7f1Y9Qr7uuIQvzs4ib/oxhloXUmUloLBxlS7G6f8MXK5xaPMYw+o5jYAdiY/d6Sor
+ ii+MScBsFF8v/qQC9iRIGzvwkcGEI3JDKEqMzew1jLSbPgm4t7zxwlBq0wPwM1nATJ7c
+ 3K2gpQinenzjjYego5oWVibC7eAN/RQzKFePfuyEhqkIg95yFz4rwNKI616THtSlbQKl
+ 3gPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702400601; x=1703005401;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Phr6MYUzkA8BOaldnWrA90ueBDuHxuNyYy/7GkyshtY=;
- b=NtlwRygeQBzAJC6W+nMGOIqK4WS3dn11nelPS/J1ZUqETMuWS+F4+YmC2aTf77W71D
- ItJvQBXn29S5WqsyfwYzVSIvsOfqgyt2fmdeMUJorzUHWGncY55ZAFk2vjLyme7SgN23
- R041tHeFv1J1IY6mmUiG0pVNSBNj4dKT0xy5RMYUof5y+FBJzlCXE6HBPh2fYuLBdGqo
- 9pC8xiz/LW23dPTpXunSF6AdYIuQxUBD/L68AkLiuKAb9VIqqXKLQqtDiuihxKTYRBt7
- 5itPH12a+PQxRcM/zsVnARGWveLd7jwsLgo8hwMwhFohJX9tpCxEtP/ucGuNiHNW/rhm
- AZrQ==
-X-Gm-Message-State: AOJu0Yyi4EPwGqi9TitZiSwGwZcnRr0Df8VmoQANL+Ft9LPvZmS6f57m
- l1eQy27JCnyUs2oxAWjK1WUxG0l8kOg2lroF2nwfXA==
-X-Google-Smtp-Source: AGHT+IFAFP1QOH4zficg51TcgEIhM6kgnb8x6HZKVOufew8w7w0OilrhjxQkhONTFQ2YPWG7T1q8WqijqOBahSMVe0c=
-X-Received: by 2002:a50:d541:0:b0:54c:73be:dd98 with SMTP id
- f1-20020a50d541000000b0054c73bedd98mr6936470edj.14.1702400600790; Tue, 12 Dec
- 2023 09:03:20 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702401911; x=1703006711;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=63LZ+9XN5pZr3CYY16o4ZrfHWApFRyoEpR5td9MnyJw=;
+ b=UlI3jgaEeB/evSO8r+axtyU70CDrNx1VyoWcBlxSDXbVuVMAcf0NJL2z3C9Q7PWllr
+ 3XWwc+FUI+ieKO2Pmhb3xOduY6M+jEXWySQr/Pxfg6Bos+Ck9lO9ayRzxNoomVN5wwyI
+ pNEsnLh2N+G9ZxJxe/+WAf52NoRWInh16uCh911Vgi2qyuV+TyRZGuSdp7AyX6d/lBTe
+ v3WGuvGukLTGC1257yvWRHryfoltrk4IMiv1KZzCfdBaQv8bhW9KAc6c8nxiq2eUbLRx
+ /4tWoXrDAUNcqC7PaRGDevx2zYdJ8BqBI3RxOkJgh38BMuCUAl/S3zBUZfwvBSH7/Zky
+ 1mCA==
+X-Gm-Message-State: AOJu0Yy7lDfuWnKltlQ2G2KtTlXyQO0ssxwSPCLIK8PF2VaXDhm5uODB
+ oDIMsiew1AKO1W/u8QVHUza3nkmUWuaEvM+Er79q8A==
+X-Google-Smtp-Source: AGHT+IGtoiyIjfCgD8iRSVR6ZTBvCrBRmShfF37kNynYJXKoSNMFqN/1OJ4fiUSvPe3oMxop69Bkag==
+X-Received: by 2002:a17:903:124b:b0:1d3:2e0d:cda3 with SMTP id
+ u11-20020a170903124b00b001d32e0dcda3mr2282841plh.103.1702401911579; 
+ Tue, 12 Dec 2023 09:25:11 -0800 (PST)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ y16-20020a17090322d000b001d09c5424d4sm8852610plg.297.2023.12.12.09.25.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Dec 2023 09:25:11 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+Subject: [PATCH for-8.2?] target/i386: Fix 32-bit wrapping of pc/eip
+ computation
+Date: Tue, 12 Dec 2023 09:25:10 -0800
+Message-Id: <20231212172510.103305-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20231123143813.42632-1-philmd@linaro.org>
- <20231123143813.42632-9-philmd@linaro.org>
-In-Reply-To: <20231123143813.42632-9-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 12 Dec 2023 17:03:09 +0000
-Message-ID: <CAFEAcA8EegdW0YFsCF1YhypuSMtfRKpJP1HbA6TTJ_OxoLrE=Q@mail.gmail.com>
-Subject: Re: [PATCH-for-9.0 v2 8/8] hw/arm/bcm2836: Add local variable to
- remove various DEVICE() casts
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, 
- Alistair Francis <alistair@alistair23.me>, Joel Stanley <joel@jms.id.au>, 
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
- David Gibson <david@gibson.dropbear.id.au>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Niek Linnenbank <nieklinnenbank@gmail.com>, 
- Andrey Smirnov <andrew.smirnov@gmail.com>, Tyrone Ting <kfting@nuvoton.com>, 
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Aurelien Jarno <aurelien@aurel32.net>, Igor Mammedov <imammedo@redhat.com>,
- qemu-ppc@nongnu.org, 
- Hao Wu <wuhaotsh@google.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Beniamino Galvani <b.galvani@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,15 +88,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 23 Nov 2023 at 14:39, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Cast the CPU to DeviceState once.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+In 32-bit mode, pc = eip + cs_base is also 32-bit, and must wrap.
+Failure to do so results in incorrect memory exceptions to the guest.
+Before 732d548732ed, this was implicitly done via truncation to
+target_ulong but only in qemu-system-i386, not qemu-system-x86_64.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+To fix this, we must add conditional zero-extensions.
+Since we have to test for 32 vs 64-bit anyway, note that cs_base
+is always zero in 64-bit mode.
 
-thanks
--- PMM
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2022
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+
+This may be too late for 8.2; if not, then 8.2.1 and 8.1.next.
+I think I have found all forms of pc <-> eip, but another set
+of eyes would be appreciated.
+
+r~
+
+---
+ target/i386/cpu.h           |  9 +++++++--
+ target/i386/tcg/tcg-cpu.c   |  4 +++-
+ target/i386/tcg/translate.c | 23 +++++++++++++++++------
+ 3 files changed, 27 insertions(+), 9 deletions(-)
+
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index cd2e295bd6..ef987f344c 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2324,10 +2324,15 @@ static inline int cpu_mmu_index_kernel(CPUX86State *env)
+ static inline void cpu_get_tb_cpu_state(CPUX86State *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+-    *cs_base = env->segs[R_CS].base;
+-    *pc = *cs_base + env->eip;
+     *flags = env->hflags |
+         (env->eflags & (IOPL_MASK | TF_MASK | RF_MASK | VM_MASK | AC_MASK));
++    if (env->hflags & HF_CS64_MASK) {
++        *cs_base = 0;
++        *pc = env->eip;
++    } else {
++        *cs_base = env->segs[R_CS].base;
++        *pc = (uint32_t)(*cs_base + env->eip);
++    }
+ }
+ 
+ void do_cpu_init(X86CPU *cpu);
+diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+index 2c6a12c835..eb05a69f79 100644
+--- a/target/i386/tcg/tcg-cpu.c
++++ b/target/i386/tcg/tcg-cpu.c
+@@ -66,8 +66,10 @@ static void x86_restore_state_to_opc(CPUState *cs,
+ 
+     if (tb_cflags(tb) & CF_PCREL) {
+         env->eip = (env->eip & TARGET_PAGE_MASK) | data[0];
++    } else if (tb->flags & HF_CS64_MASK) {
++        env->eip = data[0];
+     } else {
+-        env->eip = data[0] - tb->cs_base;
++        env->eip = (uint32_t)(data[0] - tb->cs_base);
+     }
+     if (cc_op != CC_OP_DYNAMIC) {
+         env->cc_op = cc_op;
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 587d88692a..037bc47e7c 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -552,8 +552,10 @@ static void gen_update_eip_cur(DisasContext *s)
+     assert(s->pc_save != -1);
+     if (tb_cflags(s->base.tb) & CF_PCREL) {
+         tcg_gen_addi_tl(cpu_eip, cpu_eip, s->base.pc_next - s->pc_save);
++    } else if (CODE64(s)) {
++        tcg_gen_movi_tl(cpu_eip, s->base.pc_next);
+     } else {
+-        tcg_gen_movi_tl(cpu_eip, s->base.pc_next - s->cs_base);
++        tcg_gen_movi_tl(cpu_eip, (uint32_t)(s->base.pc_next - s->cs_base));
+     }
+     s->pc_save = s->base.pc_next;
+ }
+@@ -563,8 +565,10 @@ static void gen_update_eip_next(DisasContext *s)
+     assert(s->pc_save != -1);
+     if (tb_cflags(s->base.tb) & CF_PCREL) {
+         tcg_gen_addi_tl(cpu_eip, cpu_eip, s->pc - s->pc_save);
++    } else if (CODE64(s)) {
++        tcg_gen_movi_tl(cpu_eip, s->base.pc_next);
+     } else {
+-        tcg_gen_movi_tl(cpu_eip, s->pc - s->cs_base);
++        tcg_gen_movi_tl(cpu_eip, (uint32_t)(s->base.pc_next - s->cs_base));
+     }
+     s->pc_save = s->pc;
+ }
+@@ -610,8 +614,10 @@ static TCGv eip_next_tl(DisasContext *s)
+         TCGv ret = tcg_temp_new();
+         tcg_gen_addi_tl(ret, cpu_eip, s->pc - s->pc_save);
+         return ret;
++    } else if (CODE64(s)) {
++        return tcg_constant_tl(s->pc);
+     } else {
+-        return tcg_constant_tl(s->pc - s->cs_base);
++        return tcg_constant_tl((uint32_t)(s->pc - s->cs_base));
+     }
+ }
+ 
+@@ -622,8 +628,10 @@ static TCGv eip_cur_tl(DisasContext *s)
+         TCGv ret = tcg_temp_new();
+         tcg_gen_addi_tl(ret, cpu_eip, s->base.pc_next - s->pc_save);
+         return ret;
++    } else if (CODE64(s)) {
++        return tcg_constant_tl(s->base.pc_next);
+     } else {
+-        return tcg_constant_tl(s->base.pc_next - s->cs_base);
++        return tcg_constant_tl((uint32_t)(s->base.pc_next - s->cs_base));
+     }
+ }
+ 
+@@ -2837,6 +2845,10 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
+         }
+     }
+     new_eip &= mask;
++    new_pc = new_eip + s->cs_base;
++    if (!CODE64(s)) {
++        new_pc = (uint32_t)new_pc;
++    }
+ 
+     gen_update_cc_op(s);
+     set_cc_op(s, CC_OP_DYNAMIC);
+@@ -2854,8 +2866,7 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
+         }
+     }
+ 
+-    if (use_goto_tb &&
+-        translator_use_goto_tb(&s->base, new_eip + s->cs_base)) {
++    if (use_goto_tb && translator_use_goto_tb(&s->base, new_pc)) {
+         /* jump to same page: we can use a direct jump */
+         tcg_gen_goto_tb(tb_num);
+         if (!(tb_cflags(s->base.tb) & CF_PCREL)) {
+-- 
+2.34.1
+
 
