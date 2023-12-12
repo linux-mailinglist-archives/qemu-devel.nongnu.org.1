@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B74E80F289
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:30:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0019680F28B
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:30:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5dk-0000om-C8; Tue, 12 Dec 2023 11:29:48 -0500
+	id 1rD5dr-0000qA-Sn; Tue, 12 Dec 2023 11:29:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5dh-0000oC-Sx
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:29:45 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5dn-0000pW-0j
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:29:51 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5df-0006vx-Op
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:29:45 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a22f2a28c16so21691966b.0
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:29:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5dl-0006x6-8M
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:29:50 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a1e35c2807fso782194066b.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:29:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398581; x=1703003381; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mn32UhI3GcAekEbpxlWbpPxY01K3QFuN0m3na/SgxOo=;
- b=zyq/5RIBdjdWcddkS4QQceY/1cPJjictJG7iJ6ucI6ZaItSTr8Ofgx9J+jnMUO8Olb
- Dec0tB7SsXP0YQMvcPbzL+BiuMonAhmCyOncwLii9Sx5RxrX8UZpWo4O3E7DRp5c44bn
- a857dEWMndyfBnOtaUvy6t1xSqrNHYTyz20cSTiVI9GE7g3JQbUcH+wT+ygbs689ewoK
- DZgT6YGEZeGHbe8H7+Eqn/bBjXpchHdXmWyIOUdsfVgjLe2FnFiq4odX62KtkCOBu7pP
- KUyS+7duxAVlLSg8qxveag4Usr83R2+Tz/eIrE0ldWG/jfft4CWgk1LeBRc4arOsKsrh
- 2WVw==
+ d=linaro.org; s=google; t=1702398587; x=1703003387; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5LE88JwgY2y1IWpLN7sGqf0VCLp2wC33lSYw5ePt+UY=;
+ b=b4LlBkNfYNdiIPsSP5DJATsEuaydfYIN6POSs/30b+rNy9NuOy8YbTCXvBxdy9s/rU
+ tg1iDozWceGtVhpnSEk2viHwR+nAkehECChv2pX4G5v0ImA6KidVOiGUwY56C0yq/Cm8
+ vMSwenjzcuDqBJnnISijtUo89/FBUZoie7TqmLVxckVt6iyXSA9pPuXt5g1tFUOLtL8v
+ xju4lDJIAWHsZvSMALuZMqJGQgq59eHyMxMwm9sTMVmgduFuomdoWOHWXaPWiv54imD+
+ IZVgD/+taXt6sRhih3Xxm00eRnqKyK29iXURM1v0I5bnHH9gnjHWunGDRT8eHCwAQ+K3
+ EY4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398581; x=1703003381;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mn32UhI3GcAekEbpxlWbpPxY01K3QFuN0m3na/SgxOo=;
- b=lTPTRbtJAKCGZ0orchtg/h81c5ToOcH5Bcl2CbSbYFiiCEGKgWEzyYYjm162lrulW+
- bndRo9OTEX7CIsQIQc9zccdSz0+fTVzcWfpBoI4NL/bmMtkXaMW3EDMGcScmoUBnnOS7
- gZjtrFF8wpKc7y9pjfzUiN3qOLQfChB3Pwr2UIiTmzk00Q7J3sA/GBYu8gVPGM6cfGrn
- 1TTBWlXj/hIfGNrra9ATDTrGIoUEgxtiTX53d2SL+IBAVxCaAk5M0A9mIXOnFGddpg7R
- uomNhj3522a5VzBqnYV1wd2Gn0wB8Wx/9aPYR0ILNv7ytID/KnKXjpfFnCnrMmEZJHrG
- e20w==
-X-Gm-Message-State: AOJu0YzQu40NgAPK6n4pKoZLAEWpWmNubuQ7JPOHEVfXTzxnX4e8BEp3
- OVzkO8oLZ0GVmxY/0uVOpAfU8CuUN8X/y4HGp1I=
-X-Google-Smtp-Source: AGHT+IHRk+gIjuiFARCTFPKGQm2celLuQGbNlhDK052m2YGVn9t5AwNYdwsDUm5L6tEhCWSqFvk6lw==
-X-Received: by 2002:a17:907:9411:b0:a1d:9697:73a2 with SMTP id
- dk17-20020a170907941100b00a1d969773a2mr2865365ejc.93.1702398580756; 
- Tue, 12 Dec 2023 08:29:40 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702398587; x=1703003387;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5LE88JwgY2y1IWpLN7sGqf0VCLp2wC33lSYw5ePt+UY=;
+ b=OKMfxbXK7sxCgDegu2PwzckJL69go1Yg9ILjcpBscggCCtsS/d6YDDlUGd0yX9sFWs
+ lqkm+f9tCbzx3KdNZU2EuJ0SJ7g+I1QU/ieM9YMbaHyFweIcZv6RlMc+YFEjmSX0mJct
+ k34OyIgCXlR4gzUT9OxzV8vF5St7CUhxnklcM66wRqJkwtN9MoReVjxqrtR23J7l93Sa
+ UNU86AyFpIJSePj7c4EPCUtRZi++FmuFeyuASalfNSfGV7jP2kb5lIsy/z7A1gEVjIUZ
+ 7KUPEbDYSQQ1Fh304RFk5xCbF92szkGauhI3f1lhXBG1E3DMpv6ehZ6r36fhEEOR1cUC
+ ngyw==
+X-Gm-Message-State: AOJu0YxO2EGgM/JI2zDpdCd0X7H9eWEoMKFtVIWs39Ef5DO1jv5Z6Pev
+ lZZZk8bgSZTRW40tklaG8bY++Hsq+gSgfmsWSLA=
+X-Google-Smtp-Source: AGHT+IEOz/3cPUYqj6E9+MY5U0yMjwZ0gN3IV8bI14iEHt40pSfIVR1T2gW74N0fBanDA7gfEviJEA==
+X-Received: by 2002:a17:906:414f:b0:a00:b4ab:cb6d with SMTP id
+ l15-20020a170906414f00b00a00b4abcb6dmr2946269ejk.69.1702398587565; 
+ Tue, 12 Dec 2023 08:29:47 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- ul5-20020a170907ca8500b00a1f7b445f5dsm5241984ejc.124.2023.12.12.08.29.36
+ vs6-20020a170907a58600b00a1f99e749dasm3754142ejc.210.2023.12.12.08.29.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:29:40 -0800 (PST)
+ Tue, 12 Dec 2023 08:29:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
@@ -70,23 +71,24 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/33] hw/cpu/arm: Remove one use of qemu_get_cpu() in A7/A15
- MPCore priv
-Date: Tue, 12 Dec 2023 17:29:00 +0100
-Message-ID: <20231212162935.42910-1-philmd@linaro.org>
+Subject: [PATCH 01/33] hw/arm/boot: Propagate vCPU to arm_load_dtb()
+Date: Tue, 12 Dec 2023 17:29:01 +0100
+Message-ID: <20231212162935.42910-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
+References: <20231212162935.42910-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,103 +104,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+In heterogeneous setup the first vCPU might not be
+the one expected, better pass it explicitly.
 
-When a MPCore cluster is used, the Cortex-A cores belong the the
-cluster container, not to the board/soc layer. This series move
-the creation of vCPUs to the MPCore private container.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/arm/boot.h |  4 +++-
+ hw/arm/boot.c         | 11 ++++++-----
+ hw/arm/virt.c         |  2 +-
+ 3 files changed, 10 insertions(+), 7 deletions(-)
 
-Doing so we consolidate the QOM model, moving common code in a
-central place (abstract MPCore parent).
-
-This eventually allow removing one qemu_get_cpu() use, which we
-want to remove in heterogeneous machines (machines using MPCore
-are candidate for heterogeneous emulation).
-
-Maybe these hw/cpu/arm/ files belong to hw/arm/...
-
-Regards,
-
-Phil.
-
-Philippe Mathieu-Daudé (33):
-  hw/arm/boot: Propagate vCPU to arm_load_dtb()
-  hw/arm/fsl-imx6: Add a local 'gic' variable
-  hw/arm/fsl-imx6ul: Add a local 'gic' variable
-  hw/arm/fsl-imx7: Add a local 'gic' variable
-  hw/cpu: Remove dead Kconfig
-  hw/cpu/arm: Rename 'busdev' -> 'gicsbd' in a15mp_priv_realize()
-  hw/cpu/arm: Alias 'num-cpu' property on TYPE_REALVIEW_MPCORE
-  hw/cpu/arm: Declare CPU QOM types using DEFINE_TYPES() macro
-  hw/cpu/arm: Merge {a9mpcore.h, a15mpcore.h} as cortex_mpcore.h
-  hw/cpu/arm: Introduce abstract CORTEX_MPCORE_PRIV QOM type
-  hw/cpu/arm: Have A9MPCORE/A15MPCORE inheritate common
-    CORTEX_MPCORE_PRIV
-  hw/cpu/arm: Create MPCore container in QOM parent
-  hw/cpu/arm: Handle 'num_cores' property once in MPCore parent
-  hw/cpu/arm: Handle 'has_el2/3' properties once in MPCore parent
-  hw/cpu/arm: Handle 'gic-irq' property once in MPCore parent
-  hw/cpu/arm: Handle GIC once in MPCore parent
-  hw/cpu/arm: Document more properties of CORTEX_MPCORE_PRIV QOM type
-  hw/cpu/arm: Replace A15MPPrivState by CortexMPPrivState
-  hw/cpu/arm: Introduce TYPE_A7MPCORE_PRIV for Cortex-A7 MPCore
-  hw/cpu/arm: Consolidate check on max GIC spi supported
-  hw/cpu/arm: Create CPUs once in MPCore parent
-  hw/arm/aspeed_ast2600: Let the A7MPcore create/wire the CPU cores
-  hw/arm/exynos4210: Let the A9MPcore create/wire the CPU cores
-  hw/arm/fsl-imx6: Let the A9MPcore create/wire the CPU cores
-  hw/arm/fsl-imx6ul: Let the A7MPcore create/wire the CPU cores
-  hw/arm/fsl-imx7: Let the A7MPcore create/wire the CPU cores
-  hw/arm/highbank: Let the A9/A15MPcore create/wire the CPU cores
-  hw/arm/vexpress: Let the A9/A15MPcore create/wire the CPU cores
-  hw/arm/xilinx_zynq: Let the A9MPcore create/wire the CPU cores
-  hw/arm/npcm7xx: Let the A9MPcore create/wire the CPU cores
-  hw/cpu/a9mpcore: Remove legacy code
-  hw/cpu/arm: Remove 'num-cpu' property alias
-  hw/cpu/arm: Remove use of qemu_get_cpu() in A7/A15 realize()
-
- MAINTAINERS                    |   3 +-
- include/hw/arm/aspeed_soc.h    |   5 +-
- include/hw/arm/boot.h          |   4 +-
- include/hw/arm/exynos4210.h    |   6 +-
- include/hw/arm/fsl-imx6.h      |   6 +-
- include/hw/arm/fsl-imx6ul.h    |   8 +-
- include/hw/arm/fsl-imx7.h      |   8 +-
- include/hw/arm/npcm7xx.h       |   3 +-
- include/hw/cpu/a15mpcore.h     |  44 -------
- include/hw/cpu/a9mpcore.h      |  39 -------
- include/hw/cpu/cortex_mpcore.h | 135 ++++++++++++++++++++++
- hw/arm/aspeed_ast2600.c        |  61 ++++------
- hw/arm/boot.c                  |  11 +-
- hw/arm/exynos4210.c            |  60 ++++------
- hw/arm/exynos4_boards.c        |   6 +-
- hw/arm/fsl-imx6.c              |  84 ++++----------
- hw/arm/fsl-imx6ul.c            |  65 ++++-------
- hw/arm/fsl-imx7.c              | 103 +++++------------
- hw/arm/highbank.c              |  56 ++-------
- hw/arm/mcimx6ul-evk.c          |   3 +-
- hw/arm/mcimx7d-sabre.c         |   3 +-
- hw/arm/npcm7xx.c               |  48 ++------
- hw/arm/realview.c              |   4 +-
- hw/arm/sabrelite.c             |   4 +-
- hw/arm/vexpress.c              |  60 +++-------
- hw/arm/virt.c                  |   2 +-
- hw/arm/xilinx_zynq.c           |  30 ++---
- hw/cpu/a15mpcore.c             | 179 +++++++++++++----------------
- hw/cpu/a9mpcore.c              | 138 +++++++++-------------
- hw/cpu/arm11mpcore.c           |  23 ++--
- hw/cpu/cortex_mpcore.c         | 202 +++++++++++++++++++++++++++++++++
- hw/cpu/realview_mpcore.c       |  30 ++---
- hw/arm/Kconfig                 |   8 +-
- hw/cpu/Kconfig                 |   8 --
- hw/cpu/meson.build             |   1 +
- 35 files changed, 689 insertions(+), 761 deletions(-)
- delete mode 100644 include/hw/cpu/a15mpcore.h
- delete mode 100644 include/hw/cpu/a9mpcore.h
- create mode 100644 include/hw/cpu/cortex_mpcore.h
- create mode 100644 hw/cpu/cortex_mpcore.c
- delete mode 100644 hw/cpu/Kconfig
-
+diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
+index 80c492d742..b12bf61ca8 100644
+--- a/include/hw/arm/boot.h
++++ b/include/hw/arm/boot.h
+@@ -160,6 +160,7 @@ AddressSpace *arm_boot_address_space(ARMCPU *cpu,
+  * @binfo:      struct describing the boot environment
+  * @addr_limit: upper limit of the available memory area at @addr
+  * @as:         address space to load image to
++ * @cpu:        ARM CPU object
+  *
+  * Load a device tree supplied by the machine or by the user  with the
+  * '-dtb' command line option, and put it at offset @addr in target
+@@ -176,7 +177,8 @@ AddressSpace *arm_boot_address_space(ARMCPU *cpu,
+  * Note: Must not be called unless have_dtb(binfo) is true.
+  */
+ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
+-                 hwaddr addr_limit, AddressSpace *as, MachineState *ms);
++                 hwaddr addr_limit, AddressSpace *as, MachineState *ms,
++                 ARMCPU *cpu);
+ 
+ /* Write a secure board setup routine with a dummy handler for SMCs */
+ void arm_write_secure_board_setup_dummy_smc(ARMCPU *cpu,
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index 84ea6a807a..334e4640fd 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -432,13 +432,12 @@ out:
+     return ret;
+ }
+ 
+-static void fdt_add_psci_node(void *fdt)
++static void fdt_add_psci_node(void *fdt, ARMCPU *armcpu)
+ {
+     uint32_t cpu_suspend_fn;
+     uint32_t cpu_off_fn;
+     uint32_t cpu_on_fn;
+     uint32_t migrate_fn;
+-    ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(0));
+     const char *psci_method;
+     int64_t psci_conduit;
+     int rc;
+@@ -512,7 +511,8 @@ static void fdt_add_psci_node(void *fdt)
+ }
+ 
+ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
+-                 hwaddr addr_limit, AddressSpace *as, MachineState *ms)
++                 hwaddr addr_limit, AddressSpace *as, MachineState *ms,
++                 ARMCPU *cpu)
+ {
+     void *fdt = NULL;
+     int size, rc, n = 0;
+@@ -655,7 +655,7 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
+         }
+     }
+ 
+-    fdt_add_psci_node(fdt);
++    fdt_add_psci_node(fdt, cpu);
+ 
+     if (binfo->modify_dtb) {
+         binfo->modify_dtb(binfo, fdt);
+@@ -1321,7 +1321,8 @@ void arm_load_kernel(ARMCPU *cpu, MachineState *ms, struct arm_boot_info *info)
+      * decided whether to enable PSCI and set the psci-conduit CPU properties.
+      */
+     if (!info->skip_dtb_autoload && have_dtb(info)) {
+-        if (arm_load_dtb(info->dtb_start, info, info->dtb_limit, as, ms) < 0) {
++        if (arm_load_dtb(info->dtb_start, info, info->dtb_limit,
++                         as, ms, cpu) < 0) {
+             exit(1);
+         }
+     }
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index be2856c018..4a1d1550f5 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1678,7 +1678,7 @@ void virt_machine_done(Notifier *notifier, void *data)
+                                        vms->memmap[VIRT_PLATFORM_BUS].size,
+                                        vms->irqmap[VIRT_PLATFORM_BUS]);
+     }
+-    if (arm_load_dtb(info->dtb_start, info, info->dtb_limit, as, ms) < 0) {
++    if (arm_load_dtb(info->dtb_start, info, info->dtb_limit, as, ms, cpu) < 0) {
+         exit(1);
+     }
+ 
 -- 
 2.41.0
 
