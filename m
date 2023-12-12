@@ -2,73 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F6B80EF9C
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 16:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C829A80F0EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 16:30:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD4Jq-00064b-3n; Tue, 12 Dec 2023 10:05:10 -0500
+	id 1rD4gV-0003PL-2W; Tue, 12 Dec 2023 10:28:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD4Jn-00064M-A7
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 10:05:07 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD4Jl-000327-1l
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 10:05:07 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-548ce39b101so8183871a12.2
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 07:05:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702393499; x=1702998299; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=KyO8UEeQ7SUyGrlIUzp4SC78cjP3zY61TcTVqhdqEnU=;
- b=VFq6Y9AsW684BglQSDu1f3LuXlgwGkxxnLUurD4vH6wGt1t7/CA/GIOmOlogtVQMOM
- 4HtN5zwwB94Yw1RJefB/reyLPXIXVyGaVkxlp7SUmC8Ne/1PlxQ5UeWwP4hMPCNDUDws
- VK4v+obg1LOPvRfGOlEvy++Mv3RD3YP2FgkXaqHE5/+qTOo9fIFjQHhu+q3tQfAW0hhz
- 3gzsiHer3nhPw1EFGzOa4oi3iGMz8lsueybb1mbvuf3zPm94QjFiELrPtFku5UTg6jEF
- orUL4wkgEdjALGvn7qSVCMRuXhxg7Gwlep/VO4eW7x96wgJCHjmeZiEG4vIio0lmUocu
- uM+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702393499; x=1702998299;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KyO8UEeQ7SUyGrlIUzp4SC78cjP3zY61TcTVqhdqEnU=;
- b=CkIJiCdT9Mr9LGD6ISwKcah7vUUM9y7WmZtWQIJ0BpjyK6NJKqi7srIimUCxtDWmW/
- 3o+wpwrb+v8+tiEh4P/66QpOT+AL4Rc/2VctEfIFrhxgQP70spg+Bihjq8qWjmVEbfVe
- 58Cfzti/nUsCu5b6qqUEd56X1jEdB4M6pP8OxvYsXBOPr6q3k21HIgniv3CJxaDgSrGn
- b1AyzH4QlGaDIwsx6pG7/7GwOlURY7RdmRzYFdjVXmonfHBxWOipDnot00GXOMJ34/C6
- gDaOB/0rGZT5FYv6j8sOAhBgD5+iZZ+KFvDJ6m+nCYLBpypS5oVZ1sFzzXjw5V3dOOwy
- 7orA==
-X-Gm-Message-State: AOJu0YzMP/UvlQ/8a/rdKS0L3baZkfTKhdy23i/WlU64F2rkvyHOrUjj
- BbrQM9rUYRszq/XjC5/51nc8xR9bvnQdZjhXkH70mg==
-X-Google-Smtp-Source: AGHT+IHY/0t0+50ic628E7AUgCGoyo3dNCmUNohxWoZzOyU6UgFofjl+Ki7RmM2dERNqtds8uLY6t18VAKnrKCcRH+w=
-X-Received: by 2002:a50:d652:0:b0:551:d98c:1450 with SMTP id
- c18-20020a50d652000000b00551d98c1450mr95838edj.77.1702393499195; Tue, 12 Dec
- 2023 07:04:59 -0800 (PST)
-MIME-Version: 1.0
-References: <7a25bd4ee1f8b06c7a51d20486aaa8bc8e1282ea.camel@amazon.co.uk>
-In-Reply-To: <7a25bd4ee1f8b06c7a51d20486aaa8bc8e1282ea.camel@amazon.co.uk>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 12 Dec 2023 15:04:48 +0000
-Message-ID: <CAFEAcA-LTRnJqVcu=4VpgqjBeoi_ugGRrYOnajCzn49r3ijacw@mail.gmail.com>
-Subject: Re: [PATCH] doc/sphinx/hxtool.py: add optional label argument to SRST
- directive
-To: "Woodhouse, David" <dwmw@amazon.co.uk>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1rD4gN-0003NO-2v; Tue, 12 Dec 2023 10:28:27 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1rD4gK-0003yK-IX; Tue, 12 Dec 2023 10:28:26 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3BCFRr4l013475; Tue, 12 Dec 2023 15:28:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=KP64VobsLdOAuv1AtbTCIgvFchtqQBURHEdfgmIFbms=;
+ b=WHae3OjPfEaw90aOET0I/KdA3jeF7PZwTsFFnhSpHE+aNuzj0g9NyjJB8RlKZCTjW2r2
+ VB2bEqS1rHV6nT18bIN701hdir9yX+xVxRI/yHZrvXJd2VbN2YpkCFav3haDni9DW+al
+ y29NVWLGIqqzWIptCsRiX4lZevgVrWVRk5O7pNFzzlym4sE+8sRdN5RfpkzMHnX1qVQj
+ 2zWK/cV0qSMzi10JnIkNSvaa90iBZNBFetc3V0GOmrTjtGGQ+HLPRkrNERsHCPlcN3Sg
+ TiqJnMIH2pAZjxrpJ1qY5SmPcA8mAzeL1MOS8Vmp+6k5lisO/r3JHFknPdD0pEZboaik xw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxt6480by-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Dec 2023 15:28:17 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BCFSHKu014760;
+ Tue, 12 Dec 2023 15:28:17 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxt6480bk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Dec 2023 15:28:17 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3BCCnNOo014819; Tue, 12 Dec 2023 15:28:15 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uw42kcsk0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Dec 2023 15:28:15 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3BCFSEl212452360
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Dec 2023 15:28:15 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A0BEB58064;
+ Tue, 12 Dec 2023 15:28:14 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D921558062;
+ Tue, 12 Dec 2023 15:28:13 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.80.253]) by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 12 Dec 2023 15:28:13 +0000 (GMT)
+Message-ID: <1b0414d48d1798146f9a07ed1e6afdfbdd39b076.camel@linux.ibm.com>
+Subject: Re: [PATCH 3/4] hw/s390x/ipl: Remove unused 'exec/exec-all.h'
+ included header
+From: Eric Farman <farman@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>
+Date: Tue, 12 Dec 2023 10:28:13 -0500
+In-Reply-To: <a5560c21-658d-436c-a26f-87066b152d0a@linux.ibm.com>
+References: <20231212113640.30287-1-philmd@linaro.org>
+ <20231212113640.30287-4-philmd@linaro.org>
+ <a5560c21-658d-436c-a26f-87066b152d0a@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2-5Ld7sRa9Fn5Wy47lvg7RKpL1NlSYWx
+X-Proofpoint-GUID: iasvVdGlNNbQI9LCQxHzbkhXkmBfeOsP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-12_09,2023-12-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ suspectscore=0 mlxlogscore=968 adultscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 bulkscore=0 clxscore=1015 mlxscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312120118
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,165 +118,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 9 Nov 2023 at 10:33, Woodhouse, David <dwmw@amazon.co.uk> wrote:
->
-> We can't just embed labels directly into files like qemu-options.hx which
-> are included from multiple top-level RST files, because Sphinx sees the
-> labels as duplicate: https://github.com/sphinx-doc/sphinx/issues/9707
->
-> So add an 'emitrefs' option to the Sphinx hxtool-doc directive, which is
-> set only in invocation.rst and not from the HTML rendition of the man
-> page. Along with an argument to the SRST directive which causes a label
-> of the form '.. _LABEL-reference-label:' to be emitted when the emitrefs
-> option is set.
->
-> Now where the Xen PV documentation refers to the documentation for the
-> -initrd command line option, it can emit a link directly to it.
->
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Reviewed-by: Paul Durrant <paul@xen.org>
+On Tue, 2023-12-12 at 14:08 +0100, Christian Borntraeger wrote:
+>=20
+>=20
+> Am 12.12.23 um 12:36 schrieb Philippe Mathieu-Daud=C3=A9:
+> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> > ---
+> > =C2=A0 hw/s390x/ipl.c | 1 -
+> > =C2=A0 1 file changed, 1 deletion(-)
+> >=20
+> > diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+> > index 515dcf51b5..62182d81a0 100644
+> > --- a/hw/s390x/ipl.c
+> > +++ b/hw/s390x/ipl.c
+> > @@ -35,7 +35,6 @@
+> > =C2=A0 #include "qemu/cutils.h"
+> > =C2=A0 #include "qemu/option.h"
+> > =C2=A0 #include "standard-headers/linux/virtio_ids.h"
+> > -#include "exec/exec-all.h"
+>=20
+> Philippe,
+>=20
+> This include came with
+> commit a30fb811cbe940020a498d2cdac9326cac38b4d9
+> Author:=C2=A0=C2=A0=C2=A0=C2=A0 David Hildenbrand <david@redhat.com>
+> AuthorDate: Tue Apr 24 12:18:59 2018 +0200
+> Commit:=C2=A0=C2=A0=C2=A0=C2=A0 Cornelia Huck <cohuck@redhat.com>
+> CommitDate: Mon May 14 17:10:02 2018 +0200
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0 s390x: refactor reset/reipl handling
+>=20
+> And I think one reason was
+>=20
+> cpu_loop_exit
+>=20
+> This is still part of ipl.c
+>=20
+> a30fb811cbe (David Hildenbrand=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 2018-04-24 1=
+2:18:59 +0200
+> 664)=C2=A0=C2=A0=C2=A0=C2=A0 /* as this is triggered by a CPU, make sure =
+to exit the loop
+> */
+> a30fb811cbe (David Hildenbrand=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 2018-04-24 1=
+2:18:59 +0200
+> 665)=C2=A0=C2=A0=C2=A0=C2=A0 if (tcg_enabled()) {
+> a30fb811cbe (David Hildenbrand=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 2018-04-24 1=
+2:18:59 +0200
+> 666)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu_loop_exit(cs);
+> a30fb811cbe (David Hildenbrand=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 2018-04-24 1=
+2:18:59 +0200
+> 667)=C2=A0=C2=A0=C2=A0=C2=A0 }
+>=20
+> So why do you think exec-all.h is unused?
+>=20
+>=20
 
-Thanks for splitting out this patch, and sorry I didn't get to
-reviewing it earlier. The general idea is great, and I have
-a few suggested tweaks below.
+I think because that got moved out of exec-all.h a few months ago, via
 
-Something is weird about how you're sending out patchmails,
-by the way: the patch appears in lore.kernel.org and in patchew,
-but when patchew tries to apply it, or when I do locally, git complains
-that it's empty:
-https://patchew.org/QEMU/7a25bd4ee1f8b06c7a51d20486aaa8bc8e1282ea.camel@amazon.co.uk/
+commit 3549118b498873c84b442bc280a5edafbb61e0a4
+Author: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Date:   Thu Sep 14 20:57:08 2023 +0200
 
-I think this is probably because the patch is a lot of
-base-64-encoded multipart/mime. Sending it as good old
-fashioned plain text will likely work better.
+    exec: Move cpu_loop_foo() target agnostic functions to 'cpu-
+common.h'
+   =20
+    While these functions are not TCG specific, they are not target
+    specific. Move them to "exec/cpu-common.h" so their callers don't
+    have to be tainted as target specific.
 
-> ---
-> https://qemu-project.gitlab.io/qemu/system/i386/xen.html tells the user
-> to "see the command line documentation for the -initrd option". It'd be
-> a whole lot nicer if we could *link* to it. It actually worked on my
-> test box, but only because I'm using an older version of Sphinx which
-> didn't complain about the duplicate refs, and just picked *one* to link
-> to.
->
->  docs/sphinx/hxtool.py      | 18 +++++++++++++++++-
->  docs/system/i386/xen.rst   |  2 +-
->  docs/system/invocation.rst |  1 +
->  qemu-options.hx            |  2 +-
->  4 files changed, 20 insertions(+), 3 deletions(-)
->
-> diff --git a/docs/sphinx/hxtool.py b/docs/sphinx/hxtool.py
-> index 9f6b9d87dc..bfb0929573 100644
-> --- a/docs/sphinx/hxtool.py
-> +++ b/docs/sphinx/hxtool.py
-> @@ -78,18 +78,28 @@ def parse_archheading(file, lnum, line):
->          serror(file, lnum, "Invalid ARCHHEADING line")
->      return match.group(1)
->
-> +def parse_srst(file, lnum, line):
-> +    """Handle an SRST directive"""
-> +    # The input should be "SRST(label)".
-> +    match = re.match(r'SRST\((.*?)\)', line)
-> +    if match is None:
-> +        serror(file, lnum, "Invalid SRST line")
-> +    return match.group(1)
-> +
->  class HxtoolDocDirective(Directive):
->      """Extract rST fragments from the specified .hx file"""
->      required_argument = 1
->      optional_arguments = 1
->      option_spec = {
-> -        'hxfile': directives.unchanged_required
-> +        'hxfile': directives.unchanged_required,
-> +        'emitrefs': directives.flag
->      }
->      has_content = False
->
->      def run(self):
->          env = self.state.document.settings.env
->          hxfile = env.config.hxtool_srctree + '/' + self.arguments[0]
-> +        emitrefs = "emitrefs" in self.options
->
->          # Tell sphinx of the dependency
->          env.note_dependency(os.path.abspath(hxfile))
-> @@ -113,6 +123,12 @@ def run(self):
->                          serror(hxfile, lnum, 'expected ERST, found SRST')
->                      else:
->                          state = HxState.RST
-> +                        if emitrefs and line != "SRST":
-> +                            label = parse_srst(hxfile, lnum, line)
 
-I think that rather than only calling parse_srst() under this
-if(), we should do it always, and have parse_srst() accept
-"SRST" alone as valid (meaning empty label, same as "SRST()").
-Then we can append to the rstlist 'if emitrefs and label != ""'.
-
-> +                            if label != "":
-> +                                rstlist.append("", hxfile, lnum - 1)
-> +                                refline = ".. _" + label + "-reference-label:"
-> +                                rstlist.append(refline, hxfile, lnum - 1)
->                  elif directive == 'ERST':
->                      if state == HxState.CTEXT:
->                          serror(hxfile, lnum, 'expected SRST, found ERST')
-> diff --git a/docs/system/i386/xen.rst b/docs/system/i386/xen.rst
-> index 81898768ba..536dd6a2f9 100644
-> --- a/docs/system/i386/xen.rst
-> +++ b/docs/system/i386/xen.rst
-> @@ -132,7 +132,7 @@ The example above provides the guest kernel command line after a separator
->  (" ``--`` ") on the Xen command line, and does not provide the guest kernel
->  with an actual initramfs, which would need to listed as a second multiboot
->  module. For more complicated alternatives, see the command line
-> -documentation for the ``-initrd`` option.
-> +:ref:`documentation <initrd-reference-label>` for the ``-initrd`` option.
-
-I think we should include the hxfile basename in the label name
-we generate. We also don't need to say "label", it's implicitly a
-label. Then when we refer to things we can say
-   <qemu-options-initrd>
-   <hmp-commands-screendump>
-
-and it's fairly readable what we're referring back to.
-
-(We could alternatively have the emitrefs option take an argument
-for what to use in label names. I don't have a strong view on
-which would be better.)
-
->
->  Host OS requirements
->  --------------------
-> diff --git a/docs/system/invocation.rst b/docs/system/invocation.rst
-> index 4ba38fc23d..ef75dad2e2 100644
-> --- a/docs/system/invocation.rst
-> +++ b/docs/system/invocation.rst
-> @@ -11,6 +11,7 @@ disk_image is a raw hard disk image for IDE hard disk 0. Some targets do
->  not need a disk image.
->
->  .. hxtool-doc:: qemu-options.hx
-> +    :emitrefs:
->
->  Device URL Syntax
->  ~~~~~~~~~~~~~~~~~
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 42fd09e4de..464e7257b0 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -3987,7 +3987,7 @@ ERST
->
->  DEF("initrd", HAS_ARG, QEMU_OPTION_initrd, \
->             "-initrd file    use 'file' as initial ram disk\n", QEMU_ARCH_ALL)
-> -SRST
-> +SRST(initrd)
->
->  ``-initrd file``
->      Use file as initial ram disk.
-> --
-> 2.34.1
-
-We really need to document the .hx file syntax (currently this is
-only in comments at the top of individual .hx files). I'll
-put together a quick patch that does that, which will give us
-somewhere to add the information about how label-generation
-works in this patch.
-
-thanks
--- PMM
 
