@@ -2,72 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70CE80F369
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:43:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 687AC80F36F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:44:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5q2-0002KO-7q; Tue, 12 Dec 2023 11:42:30 -0500
+	id 1rD5rW-0003Kk-3v; Tue, 12 Dec 2023 11:44:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD5px-0002Jq-8T
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:42:26 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1rD5rK-0003Jz-6m
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:43:50 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD5pt-0004MB-JV
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:42:24 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-54dcfca54e0so7634363a12.1
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:42:21 -0800 (PST)
+ id 1rD5rI-0004d4-IQ
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:43:49 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-551d5cd1c5fso654940a12.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:43:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702399340; x=1703004140; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=6V3XEQ7dCz9Oc4xHbCPWCUQ4m1Buvb3dGtaqJs6JjpQ=;
- b=VAmm3vbLMPJggSTX6imGVkE6L8nTck7IBL+T4S/q4VwIvzXd/ZueHh5u62Ex42no1a
- x9+YY/l4yqi6NG0fmjIUMb3GiF9roZkfB5GC92R2UB+hoaVVIcO4a+TxEyBnMAuduvOA
- 6pKZpQodgs2lAVA4euIQmBOZihHQ7QiryTN1rXSNhTnT34rCnvsTSCyE3Rd2/qeWjNcN
- giVFqFpflBO169E0M/oiCh2OMJR8l0qw5GnzLSYJiv+YLl8VK2bWri8giUY/o41RjXLT
- vfSScnyyt3xUai5hJazq1yxp4kB6u8lyjnX/05E9kOJ1ifOmUg2NsNAfb8GPNC4UnSQT
- RZKg==
+ d=linaro.org; s=google; t=1702399426; x=1703004226; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=80mMrq9q6tWkSoQQCypb8VG9fAJ9L8n8T1QsxloxpqA=;
+ b=lOFzVAeZ0OV8Wdbw+3ZnUyjhOF+WXNsyyvfpbfJiwmlVx/HlibcHLHWEROElQju6wj
+ r6XxpBm4lqtson4yolY/Cb+7kBPO2kNrdFWnkFUv8Zm/4l41pQpHh/nQnIjzG+Ow0gwW
+ fiJuHkxd0TeJx9TDWaLnOcoGe59noPtzbB/Tb3XRCb6xPK5rzVdRzVipzOfgwAz4IIkf
+ tZRjQfq/r9+HpVkCzFhfpXC4yESJV2oStznJQqKDkxIFI7K05IQVXbPsTqE130/crCu2
+ E6ybvoYy4WGQx957eHergWGUGpM8ZRsfDHx2CYY7UuWL2wbsjGlF43LvnEadZ9G7PkTp
+ Rv+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702399340; x=1703004140;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6V3XEQ7dCz9Oc4xHbCPWCUQ4m1Buvb3dGtaqJs6JjpQ=;
- b=dP+IwVg9EJz1i2fpyuw+G9y78HTkvkl0q2wMxJFVPz1cLrA6YyjXMJ4Pl4VAbD9GB1
- 94Aei3De+g0TH+U/4dKc3pFdQwzvkfAwwoCCl+ewm3RZ8TtcCUFvu5JExqhVnw4UOLd9
- yr9RUGgNA3lM09bzoEfhZzQ9kHV0qG8P0Ct8SZxnvN3IBpmU7GNG9K10cTQuJX1Cb6o8
- 0UcveXUnTKxX879vboAv/v/x2IJjFeKKLsgMfQECA3FlJLt6x3bQlN7QzT4SeULh0fFV
- NK15wh/ABiQS3SxsE3q2Kg21HFDCV25a2Jkn/d59INJNnEUMWkIWAiioRYEPvTEjJL5m
- Jiwg==
-X-Gm-Message-State: AOJu0Yw+AW8M7k8JBR7gvdMqlkKTtuhRt3Bm/z6rBsfklwVQ2qSaVcv3
- kvp+GU7Zhw3aBqzP4fXkkKkyZPPyPAlYl8AsXJpTag==
-X-Google-Smtp-Source: AGHT+IGy0QlesDTzuSOWTXAzg7CzvMePquzPe1ngvhqUHI/WOr9dSZ91dxOUaTd8ELS0lH71x/9Cc8xVFYWUfjJviTA=
-X-Received: by 2002:a50:c94d:0:b0:54b:fea4:c57f with SMTP id
- p13-20020a50c94d000000b0054bfea4c57fmr3959506edh.25.1702399339992; Tue, 12
- Dec 2023 08:42:19 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702399426; x=1703004226;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=80mMrq9q6tWkSoQQCypb8VG9fAJ9L8n8T1QsxloxpqA=;
+ b=lyrA6XoXT4kvxh2fi99ZQy8XGy+osmC/bkPXqkJJZK6A5wgnf8Q0sktKE5IJKP+N91
+ n54NKdkWh8oYFSoKOEhUxSL/WRCZ/WXzc2vanaU2lZ2Puq9xp605iEu3lMpFIS61S4g7
+ dEJWG6rqEcAJUDZCVf20q+ht9ZDt0uOJo+8ikv4DfwqY++9p1e/gb9g7oJO8UKmJlnw3
+ 0ot23xrU63Rsqh2w7EvJ2CFapV7vsQ26j47TRcCflU94gq8LtPuAVcpD3qt3lxEf2AW7
+ hgBLO5+d6ZGU7N3DyUMSU//ibM1VgUj2ngvBN8KzyvC3hqbeBxMr9RKPyQdLJ9Z6PCjR
+ 11xQ==
+X-Gm-Message-State: AOJu0Yz/fHeVZkO0I2DSWFbJs/enpfQWe8eN5bk8ASv3FADuSgSjpRn4
+ Xvk8qvYdn/YtzucXtpSySmlpf4K8ALMSsG7gCXM+AQ==
+X-Google-Smtp-Source: AGHT+IFL0SNs/udt9ka79UgYlvT4OPMxRFdTEsoyoehQUKhoxM8x2KUsssnJFL8xVPgeflAv6bWoUt12kJIhna93/uU=
+X-Received: by 2002:aa7:c484:0:b0:551:e56b:6e9 with SMTP id
+ m4-20020aa7c484000000b00551e56b06e9mr184050edq.19.1702399425960; Tue, 12 Dec
+ 2023 08:43:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20231205100802.2705561-1-sai.pavan.boddu@amd.com>
- <20231205100802.2705561-2-sai.pavan.boddu@amd.com>
-In-Reply-To: <20231205100802.2705561-2-sai.pavan.boddu@amd.com>
+References: <20231123143813.42632-1-philmd@linaro.org>
+ <20231123143813.42632-3-philmd@linaro.org>
+In-Reply-To: <20231123143813.42632-3-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 12 Dec 2023 16:42:08 +0000
-Message-ID: <CAFEAcA_gyAEs5PmTy6Edfep5HrwG6Prgij18MT1PeysV++=3Tw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] xlnx-versal-ospi: disable reentrancy detection for
- iomem_dac
-To: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org, 
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Kevin Wolf <kwolf@redhat.com>, Francisco Iglesias <frasse.iglesias@gmail.com>,
- saipavanboddu@gmail.com
+Date: Tue, 12 Dec 2023 16:43:35 +0000
+Message-ID: <CAFEAcA8Y30eetSWcQmrEiDS81cGOg3nLqh0DDXXcrjgTrUs8Lg@mail.gmail.com>
+Subject: Re: [PATCH-for-9.0 v2 2/8] hw/arm/bcm2836: Simplify use of
+ 'reset-cbar' property
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, 
+ Alistair Francis <alistair@alistair23.me>, Joel Stanley <joel@jms.id.au>, 
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ David Gibson <david@gibson.dropbear.id.au>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>, 
+ Andrey Smirnov <andrew.smirnov@gmail.com>, Tyrone Ting <kfting@nuvoton.com>, 
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Aurelien Jarno <aurelien@aurel32.net>, Igor Mammedov <imammedo@redhat.com>,
+ qemu-ppc@nongnu.org, 
+ Hao Wu <wuhaotsh@google.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Nicholas Piggin <npiggin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,33 +113,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 5 Dec 2023 at 10:08, Sai Pavan Boddu <sai.pavan.boddu@amd.com> wrote:
+On Thu, 23 Nov 2023 at 14:38, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
 >
-> The OSPI DMA reads flash data through the OSPI linear address space (the
-> iomem_dac region), because of this the reentrancy guard introduced in
-> commit a2e1753b ("memory: prevent dma-reentracy issues") is disabled for
-> the memory region.
+> bcm2836_realize() is called by
 >
-> Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+>  - bcm2836_class_init() which sets:
+>
+>     bc->cpu_type =3D ARM_CPU_TYPE_NAME("cortex-a7")
+>
+>  - bcm2837_class_init() which sets:
+>
+>     bc->cpu_type =3D ARM_CPU_TYPE_NAME("cortex-a53")
+>
+> Both Cortex-A7 / A53 have the ARM_FEATURE_CBAR set. If it isn't,
+> then this is a programming error: use &error_abort.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  hw/ssi/xlnx-versal-ospi.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/hw/ssi/xlnx-versal-ospi.c b/hw/ssi/xlnx-versal-ospi.c
-> index 1a61679c2f..5123e7dde7 100644
-> --- a/hw/ssi/xlnx-versal-ospi.c
-> +++ b/hw/ssi/xlnx-versal-ospi.c
-> @@ -1772,6 +1772,7 @@ static void xlnx_versal_ospi_init(Object *obj)
->      memory_region_init_io(&s->iomem_dac, obj, &ospi_dac_ops, s,
->                            TYPE_XILINX_VERSAL_OSPI "-dac", 0x20000000);
->      sysbus_init_mmio(sbd, &s->iomem_dac);
-> +    s->iomem_dac.disable_reentrancy_guard = true;
 
-Where we set this flag we should have a comment explaining why
-we need to do it, please.
-
-PS: for a single patch you don't need to use a separate cover letter;
-cover letters are only needed for multi-patch series.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
