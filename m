@@ -2,74 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B2D80EC5B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:44:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF70980ECC9
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 14:06:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD27r-0005kI-I1; Tue, 12 Dec 2023 07:44:39 -0500
+	id 1rD2SG-0005ZB-EV; Tue, 12 Dec 2023 08:05:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD27V-0005gb-Ca
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:44:17 -0500
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rD27S-0003bv-9X
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:44:16 -0500
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-551d13f6752so187803a12.0
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 04:44:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702385050; x=1702989850; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=e5iB/PHCoobu7SNfT0J0S59RKmgWVYHc3e45dwNtZ/M=;
- b=wY50PajuDmYLCvJ9d5ixpyvwCfAcV6hqKVE6qyJipRJbnUeW9PQU78OXZafCvBYw+w
- hBdhSr1o+voonJteWSDe7VQjN16RFyAA4kibmBbDvgjHHGwvqLaLYmk1IIKF+Xmma43Y
- PjrTCTTsUf2wDR9hCP8wIl7Wih1VhAkx5fnj5jEXGCZbCtT9+KKKnufKAiNvuIQw7Ln6
- h526qqIMBvBx1emy0r/qoVHZvOfwxHoM6h3lP9f1PeNXYSMjNtyHZYbgDpjreQPo64oS
- rsWVy/JK4FA/CSybbX8ODCCDn4Tm7YWIt3xRcKO/svp86OyM8iprcEMvFtEOfTrLUO6r
- gOow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702385050; x=1702989850;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=e5iB/PHCoobu7SNfT0J0S59RKmgWVYHc3e45dwNtZ/M=;
- b=KvsbBenpHsqho5cA3Qjg3c5CPlHIAN2JBtbXMfkfoyCD5diR3OO++OcyTzmLfXpEBP
- kU7IboGc2wIC87B3T0HbW1FldRFgv2/FnHhIqHdA7QTEukYmk7b31+H6WIe3EJuQIGhs
- abk9wcvuNPeezfgrTIVzvv/jfZQirNr7901wUPWcn5eSn8UJ/j6nLa8OQywNeUEDL4xY
- i8ttjvPCmUz0ILmgqfNsw0AtuSw8mgEX0/BV0sCS3ZZq4q4BnPu8l053q2G9XhUKQSxq
- m2B1a1UTg33zur4MDQknxmNrBRLkxUdYR7Eco6eDynITga2zS0CB4tAUtR56UXXzznJM
- luGQ==
-X-Gm-Message-State: AOJu0YwkKlPlIuxPc/oAuAUJ6zssxGsudXonq5fwj/AYv/1n/hfzFjy2
- ilOkVkY2x9lhVvRsGs7tnrlTk5Lplsvw9hwVosaxbqnWPpeEc0w/
-X-Google-Smtp-Source: AGHT+IFsjWMvk++mX4cEtdUN614qKUryvjPmFfBl32u822cyZoumSjLNC2++ZIaGhCssP8sNrF+YWfDu8mGH3jYadio=
-X-Received: by 2002:a50:a6d7:0:b0:548:e54a:dbdd with SMTP id
- f23-20020a50a6d7000000b00548e54adbddmr3035659edc.37.1702385050647; Tue, 12
- Dec 2023 04:44:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <aminier-21@enst.fr>)
+ id 1rD2Rp-0005Yc-CN
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 08:05:18 -0500
+Received: from zproxy4.enst.fr ([2001:660:330f:2::df])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aminier-21@enst.fr>)
+ id 1rD2Rf-0005Ea-TV
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 08:05:15 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id DD5AB206AB
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 14:05:01 +0100 (CET)
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id Z2qCELAco975 for <qemu-devel@nongnu.org>;
+ Tue, 12 Dec 2023 14:05:00 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id C2DD620705
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 14:05:00 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr C2DD620705
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1702386300;
+ bh=Kb4uZj1RvSZOS+QaL7XcgAwPasfFQIPBGskIvjEHizo=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=tyRfwQSLtkNE7juHnEiN2acF/abQKAc3fgvkYShekvYndXyivqUrUs3FoZ70xTXYR
+ dA8wfm17fYtNVPvgcZMsCTWKp5rzFZEdHotdFRNoklSLbtjNb9ZdEgyfeYGjQHrNKR
+ 57KfWWU4eFYJs30302LDoBF0no/Ddf0SHbsIzcdY=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id GpkCL_6Dp2p9 for <qemu-devel@nongnu.org>;
+ Tue, 12 Dec 2023 14:05:00 +0100 (CET)
+Received: from zmail-tp1.enst.fr (zmail-tp1.enst.fr [137.194.2.198])
+ by zproxy4.enst.fr (Postfix) with ESMTP id A915D20702
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 14:05:00 +0100 (CET)
+Date: Tue, 12 Dec 2023 14:05:00 +0100 (CET)
+From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Message-ID: <1001572703.6422667.1702386300513.JavaMail.zimbra@enst.fr>
+Subject: Questions about clocks emulation
 MIME-Version: 1.0
-References: <20231122121655.20818-1-m.tyutin@yadro.com>
-In-Reply-To: <20231122121655.20818-1-m.tyutin@yadro.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 12 Dec 2023 12:43:59 +0000
-Message-ID: <CAFEAcA-fP0UTaPLHgYcxrS7haXN868tescbnNqgCk-j67AR=Zw@mail.gmail.com>
-Subject: Re: [PATCH] accel/tcg: Expose translation block flags to plugins
-To: Mikhail Tyutin <m.tyutin@yadro.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, pbonzini@redhat.com, 
- alex.bennee@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [::ffff:109.10.162.38]
+X-Mailer: Zimbra 9.0.0_GA_4564 (ZimbraWebClient - FF119 (Linux)/9.0.0_GA_4571)
+Thread-Index: WISEgJdrUvGkU2wfIBilAOtem35T+g==
+Thread-Topic: Questions about clocks emulation
+Received-SPF: pass client-ip=2001:660:330f:2::df;
+ envelope-from=aminier-21@enst.fr; helo=zproxy4.enst.fr
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,68 +80,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 22 Nov 2023 at 12:17, Mikhail Tyutin <m.tyutin@yadro.com> wrote:
->
-> In system mode emulation, some of translation blocks could be
-> interrupted on memory I/O operation. That leads to artificial
-> construction of another translation block that contains memory
-> operation only. If TCG plugin is not aware of that TB kind, it
-> attempts to insert execution callbacks either on translation
-> block or instruction, which is silently ignored. As the result
-> it leads to potentially inconsistent processing of execution and
-> memory callbacks by the plugin.
-> Exposing appropriate translation block flag allows plugins to
-> handle "memory only" blocks in appropriate way.
->
-> Signed-off-by: Mikhail Tyutin <m.tyutin@yadro.com>
-> ---
->  include/qemu/qemu-plugin.h   | 29 ++++++++++++++++++++++++++++-
->  plugins/api.c                | 14 ++++++++++++++
->  plugins/qemu-plugins.symbols |  1 +
->  3 files changed, 43 insertions(+), 1 deletion(-)
->
-> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-> index 4daab6efd2..5f07fa497c 100644
-> --- a/include/qemu/qemu-plugin.h
-> +++ b/include/qemu/qemu-plugin.h
-> @@ -54,7 +54,7 @@ typedef uint64_t qemu_plugin_id_t;
->
->  extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
->
-> -#define QEMU_PLUGIN_VERSION 1
-> +#define QEMU_PLUGIN_VERSION 2
->
->  /**
->   * struct qemu_info_t - system information for plugins
-> @@ -236,6 +236,21 @@ enum qemu_plugin_cb_flags {
->      QEMU_PLUGIN_CB_RW_REGS,
->  };
->
-> +/**
-> + * enum qemu_plugin_tb_flags - type of translation block
-> + *
-> + * @QEMU_PLUGIN_TB_MEM_ONLY:
-> + *  TB is special block to perform memory I/O operation only.
-> + *  Block- and instruction- level callbacks have no effect.
-> + * @QEMU_PLUGIN_TB_MEM_OPS:
-> + *  TB has at least one instruction that access memory.
-> + *  Memory callbacks are applicable to this TB.
-> + */
-> +enum qemu_plugin_tb_flags {
-> +    QEMU_PLUGIN_TB_MEM_ONLY = 0x01,
-> +    QEMU_PLUGIN_TB_MEM_OPS = 0x02
-> +};
->
+Hi all,
 
-If we do go for this, can we pick a different naming
-than "TB flags", please? QEMU already has a "TB flags"
-concept for TCG -- it's the target-specific flags that
-encode bits of the CPU state that we baked into the
-generated code. Those flags are strictly TCG internal
-and we definitely don't want to expose them to a plugin
-because they're not a stable interface. So we should
-call these flags something else so we don't get confused.
+I tried to implement the RCC (Reset and Clock Control) for the STM32L4x5_SoC but ran into some problems regarding clock emulation in Qemu.
+In this SoC, it is possible to change the source of several clocks used for devices like the CPU, the USART, and approximately every other device on the SoC.
+This change can be made at runtime by writing into a specific register.
+I tried to model this by using the clocks in hw/core/clock.c by I noticed that it is not possible to change a clock's source once it has been assigned (see clock_set_source()).
+It prevents me from implementing a clock tree similar to the one on the hardware.
 
-thanks
--- PMM
+Is this limitation there for some reason or has it simply not been implemented?
+
+Thanks,
+Arnaud Minier
 
