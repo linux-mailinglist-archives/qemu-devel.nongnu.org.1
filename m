@@ -2,61 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A968180E056
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 01:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 189C280E061
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 01:42:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCqjJ-0002J4-Dn; Mon, 11 Dec 2023 19:34:33 -0500
+	id 1rCqq7-0004TX-5K; Mon, 11 Dec 2023 19:41:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1rCqjH-0002Ht-6u
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:34:31 -0500
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rCqq3-0004Q3-Ks
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:41:31 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1rCqjE-0002UL-VR
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:34:30 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id E21A8CE11BD;
- Tue, 12 Dec 2023 00:34:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6221BC433C7;
- Tue, 12 Dec 2023 00:34:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1702341262;
- bh=gjOcFpvF48FLu7i3ovdS7rvh+edLNdlP1NvuUCiiVkI=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=Nseh3HMoRnLy3WMZ1i5IEgOJJ1XxvKjUUCETVgggSZjxtH2FYDAeN/bdocVTkcy3+
- aZ1M2o2kBBc572E4b0CtfG2PP2n42/s10XBU545djhnA5rQr5MtOVZtJr47mHx0AXA
- N2H5tlVFrht9UVK9ivoqrXC7n2wDA7BlK08kLeLuj5uJ5ii423kH7m+/B5H51fBZK3
- Zzq+eLmzENLSBl47eBlZNu+argzMRk6D81IEd8jdb5iGgFPF8EuPUlgUz56M1JeRCa
- wYG78ytn7fiGWNHUM53RYfR4+uOF1kGsuwD0logCAUkJ3xu4ppMYHkbOB7OvY3AuQY
- mpVjrGQcCMWtQ==
-Date: Mon, 11 Dec 2023 16:34:19 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Paolo Bonzini <pbonzini@redhat.com>
-cc: qemu-devel@nongnu.org, Stefano Stabellini <stefano.stabellini@amd.com>, 
- "Richard W . M . Jones" <rjones@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Michael Young <m.a.young@durham.ac.uk>
-Subject: Re: [PATCH] xen: fix condition for enabling the Xen accelerator
-In-Reply-To: <20231209143222.2916891-1-pbonzini@redhat.com>
-Message-ID: <alpine.DEB.2.22.394.2312111632040.1703076@ubuntu-linux-20-04-desktop>
-References: <20231209143222.2916891-1-pbonzini@redhat.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rCqq1-0004nw-Ec
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:41:31 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3BC0CtK7012762; Tue, 12 Dec 2023 00:41:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=+AYoWs9d7yxUYlGEUNKNRvC5Fm1ogav81XcM0YPYyMk=;
+ b=CZ3K9jiMC1gly42REede9GYvStFtONMvmohWZ9SgiTWYmK2gwPpFQQASxcCiowB4uSqb
+ 6wRNCO4JoCVbNjVsSrGvvPQRW0sgI3phR7x3D9S1E7lGMsdAf/CO/FMZR7WCoJR4gCr7
+ XtxIV/SGlxAnPT4Uw211Xq5VWyOX59jSJqv6y7AbTvwhSnM6CZ5N1r1pj/xZkES9LuOt
+ yosLf5TCck4GTYyVr+g22PT0pIjgwjRQe0J1gQQ86ZYCptZ6wNBcto84fPz2T9nZk6sC
+ WiLUKrSgIrypNnFBT5gBzO9n7nprf2UO4YPRAfCQrN/Zq/wD6MvSFe0AcMkp6e5J3NF4 WA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxcs98gd6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Dec 2023 00:41:26 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BC0DQbq013730;
+ Tue, 12 Dec 2023 00:41:25 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxcs98gcy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Dec 2023 00:41:25 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3BBGPVHR014813; Tue, 12 Dec 2023 00:41:25 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uw42kbj9r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Dec 2023 00:41:25 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3BC0fNJM43057722
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Dec 2023 00:41:23 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1237020043;
+ Tue, 12 Dec 2023 00:41:23 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8CAE720040;
+ Tue, 12 Dec 2023 00:41:22 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.76.38])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 12 Dec 2023 00:41:22 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <laurent@vivier.eu>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v4 0/4] accel/tcg: Move perf and debuginfo support to tcg
+Date: Tue, 12 Dec 2023 01:34:46 +0100
+Message-ID: <20231212003837.64090-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: bnh5DLzky5U-_5vpJLu93H8i1h88Gvs4
+X-Proofpoint-ORIG-GUID: bZ06WPf9FQkNOBEJY4p0a49KknVI0B7M
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="8323329-1904100162-1702341261=:1703076"
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=sstabellini@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-11_11,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 mlxscore=0 suspectscore=0 clxscore=1015 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=921 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312120003
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,93 +113,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Based-on: 20231211212003.21686-1-philmd@linaro.org
 
---8323329-1904100162-1702341261=:1703076
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+v3 -> v4: Rebase on top of Philippe's series.
+          Move perf.h and debuginfo.h (Richard).
 
-On Sat, 9 Dec 2023, Paolo Bonzini wrote:
-> A misspelled condition in xen_native.h is hiding a bug in the enablement of
-> Xen for qemu-system-aarch64.  The bug becomes apparent when building for
-> Xen 4.18.
-> 
-> While the i386 emulator provides the xenpv machine type for multiple architectures,
-> and therefore can be compiled with Xen enabled even when the host is Arm, the
-> opposite is not true: qemu-system-aarch64 can only be compiled with Xen support
-> enabled when the host is Arm.
-> 
-> Expand the computation of accelerator_targets['CONFIG_XEN'] similar to what is
-> already there for KVM, and fix xen_native.h.
-> 
-> Cc: Stefano Stabellini <stefano.stabellini@amd.com>
-> Cc: Richard W.M. Jones <rjones@redhat.com>
-> Cc: Daniel P. Berrangé <berrange@redhat.com>
-> Reported-by: Michael Young <m.a.young@durham.ac.uk>
-> Supersedes: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+v2: https://patchew.org/QEMU/20230630234230.596193-1-iii@linux.ibm.com/
+v2 -> v3: Rebased.
+          This series was lost and forgotten until Philippe reminded me
+          about it.
 
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+v1: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg07037.html
+v1 -> v2: Move qemu_target_page_mask() hunk to patch 1.
+          Fix typos.
 
+Hi,
 
-> ---
->  include/hw/xen/xen_native.h |  2 +-
->  meson.build                 | 17 ++++++++++-------
->  2 files changed, 11 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-> index 6f09c48823b..1a5ad693a4d 100644
-> --- a/include/hw/xen/xen_native.h
-> +++ b/include/hw/xen/xen_native.h
-> @@ -532,7 +532,7 @@ static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
->  }
->  #endif
->  
-> -#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41700
-> +#if CONFIG_XEN_CTRL_INTERFACE_VERSION < 41700
->  #define GUEST_VIRTIO_MMIO_BASE   xen_mk_ullong(0x02000000)
->  #define GUEST_VIRTIO_MMIO_SIZE   xen_mk_ullong(0x00100000)
->  #define GUEST_VIRTIO_MMIO_SPI_FIRST   33
-> diff --git a/meson.build b/meson.build
-> index ec01f8b138a..67f4ede8aea 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -123,21 +123,24 @@ if get_option('kvm').allowed() and targetos == 'linux'
->    kvm_targets_c = '"' + '" ,"'.join(kvm_targets) + '"'
->  endif
->  config_host_data.set('CONFIG_KVM_TARGETS', kvm_targets_c)
-> -
->  accelerator_targets = { 'CONFIG_KVM': kvm_targets }
->  
-> +if cpu in ['x86', 'x86_64']
-> +  xen_targets = ['i386-softmmu', 'x86_64-softmmu']
-> +elif cpu in ['arm', 'aarch64']
-> +  # i386 emulator provides xenpv machine type for multiple architectures
-> +  xen_targets = ['i386-softmmu', 'x86_64-softmmu', 'aarch64-softmmu']
-> +else
-> +  xen_targets = []
-> +endif
-> +accelerator_targets += { 'CONFIG_XEN': xen_targets }
-> +
->  if cpu in ['aarch64']
->    accelerator_targets += {
->      'CONFIG_HVF': ['aarch64-softmmu']
->    }
->  endif
->  
-> -if cpu in ['x86', 'x86_64', 'arm', 'aarch64']
-> -  # i386 emulator provides xenpv machine type for multiple architectures
-> -  accelerator_targets += {
-> -    'CONFIG_XEN': ['i386-softmmu', 'x86_64-softmmu', 'aarch64-softmmu'],
-> -  }
-> -endif
->  if cpu in ['x86', 'x86_64']
->    accelerator_targets += {
->      'CONFIG_HVF': ['x86_64-softmmu'],
-> -- 
-> 2.43.0
-> 
-> 
---8323329-1904100162-1702341261=:1703076--
+This series is a follow-up to discussion in [1]; the goal is to build
+perf and debuginfo support only one time.
+
+Best regards,
+Ilya
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06510.html
+
+Ilya Leoshkevich (4):
+  accel/tcg: Make use of qemu_target_page_mask() in perf.c
+  tcg: Make tb_cflags() usable from target-agnostic code
+  accel/tcg: Remove #ifdef TARGET_I386 from perf.c
+  accel/tcg: Move perf and debuginfo support to tcg
+
+ accel/tcg/meson.build              |  2 --
+ accel/tcg/translate-all.c          |  2 +-
+ hw/core/loader.c                   |  2 +-
+ include/exec/exec-all.h            |  6 ------
+ include/exec/translation-block.h   |  6 ++++++
+ {accel => include}/tcg/debuginfo.h |  4 ++--
+ {accel => include}/tcg/perf.h      |  4 ++--
+ linux-user/elfload.c               |  2 +-
+ linux-user/exit.c                  |  2 +-
+ linux-user/main.c                  |  2 +-
+ system/vl.c                        |  2 +-
+ {accel/tcg => tcg}/debuginfo.c     |  3 +--
+ tcg/meson.build                    |  3 +++
+ {accel/tcg => tcg}/perf.c          | 14 +++++---------
+ tcg/tcg.c                          |  2 +-
+ 15 files changed, 26 insertions(+), 30 deletions(-)
+ rename {accel => include}/tcg/debuginfo.h (96%)
+ rename {accel => include}/tcg/perf.h (95%)
+ rename {accel/tcg => tcg}/debuginfo.c (98%)
+ rename {accel/tcg => tcg}/perf.c (97%)
+
+-- 
+2.43.0
+
 
