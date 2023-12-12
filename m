@@ -2,55 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1FF80EF50
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 15:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F6B80EF9C
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 16:06:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD45j-0002Jd-5G; Tue, 12 Dec 2023 09:50:36 -0500
+	id 1rD4Jq-00064b-3n; Tue, 12 Dec 2023 10:05:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=DDG+=HX=kaod.org=clg@ozlabs.org>)
- id 1rD45c-0002DK-Np; Tue, 12 Dec 2023 09:50:28 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=DDG+=HX=kaod.org=clg@ozlabs.org>)
- id 1rD45O-0004d2-BZ; Tue, 12 Dec 2023 09:50:27 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SqM3N1wz7z4xQj;
- Wed, 13 Dec 2023 01:50:08 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SqM3D2Rc6z4xS7;
- Wed, 13 Dec 2023 01:49:59 +1100 (AEDT)
-Message-ID: <b4aca87e-dea4-4d7f-af2e-79c856136b3a@kaod.org>
-Date: Tue, 12 Dec 2023 15:49:59 +0100
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rD4Jn-00064M-A7
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 10:05:07 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rD4Jl-000327-1l
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 10:05:07 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-548ce39b101so8183871a12.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 07:05:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702393499; x=1702998299; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=KyO8UEeQ7SUyGrlIUzp4SC78cjP3zY61TcTVqhdqEnU=;
+ b=VFq6Y9AsW684BglQSDu1f3LuXlgwGkxxnLUurD4vH6wGt1t7/CA/GIOmOlogtVQMOM
+ 4HtN5zwwB94Yw1RJefB/reyLPXIXVyGaVkxlp7SUmC8Ne/1PlxQ5UeWwP4hMPCNDUDws
+ VK4v+obg1LOPvRfGOlEvy++Mv3RD3YP2FgkXaqHE5/+qTOo9fIFjQHhu+q3tQfAW0hhz
+ 3gzsiHer3nhPw1EFGzOa4oi3iGMz8lsueybb1mbvuf3zPm94QjFiELrPtFku5UTg6jEF
+ orUL4wkgEdjALGvn7qSVCMRuXhxg7Gwlep/VO4eW7x96wgJCHjmeZiEG4vIio0lmUocu
+ uM+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702393499; x=1702998299;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KyO8UEeQ7SUyGrlIUzp4SC78cjP3zY61TcTVqhdqEnU=;
+ b=CkIJiCdT9Mr9LGD6ISwKcah7vUUM9y7WmZtWQIJ0BpjyK6NJKqi7srIimUCxtDWmW/
+ 3o+wpwrb+v8+tiEh4P/66QpOT+AL4Rc/2VctEfIFrhxgQP70spg+Bihjq8qWjmVEbfVe
+ 58Cfzti/nUsCu5b6qqUEd56X1jEdB4M6pP8OxvYsXBOPr6q3k21HIgniv3CJxaDgSrGn
+ b1AyzH4QlGaDIwsx6pG7/7GwOlURY7RdmRzYFdjVXmonfHBxWOipDnot00GXOMJ34/C6
+ gDaOB/0rGZT5FYv6j8sOAhBgD5+iZZ+KFvDJ6m+nCYLBpypS5oVZ1sFzzXjw5V3dOOwy
+ 7orA==
+X-Gm-Message-State: AOJu0YzMP/UvlQ/8a/rdKS0L3baZkfTKhdy23i/WlU64F2rkvyHOrUjj
+ BbrQM9rUYRszq/XjC5/51nc8xR9bvnQdZjhXkH70mg==
+X-Google-Smtp-Source: AGHT+IHY/0t0+50ic628E7AUgCGoyo3dNCmUNohxWoZzOyU6UgFofjl+Ki7RmM2dERNqtds8uLY6t18VAKnrKCcRH+w=
+X-Received: by 2002:a50:d652:0:b0:551:d98c:1450 with SMTP id
+ c18-20020a50d652000000b00551d98c1450mr95838edj.77.1702393499195; Tue, 12 Dec
+ 2023 07:04:59 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Subject: Re: [PATCH v8 07/10] hw/arm: Hook up FSI module in AST2600
-To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
-References: <20231128235700.599584-1-ninad@linux.ibm.com>
- <20231128235700.599584-8-ninad@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20231128235700.599584-8-ninad@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=DDG+=HX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <7a25bd4ee1f8b06c7a51d20486aaa8bc8e1282ea.camel@amazon.co.uk>
+In-Reply-To: <7a25bd4ee1f8b06c7a51d20486aaa8bc8e1282ea.camel@amazon.co.uk>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Dec 2023 15:04:48 +0000
+Message-ID: <CAFEAcA-LTRnJqVcu=4VpgqjBeoi_ugGRrYOnajCzn49r3ijacw@mail.gmail.com>
+Subject: Re: [PATCH] doc/sphinx/hxtool.py: add optional label argument to SRST
+ directive
+To: "Woodhouse, David" <dwmw@amazon.co.uk>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,205 +85,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/29/23 00:56, Ninad Palsule wrote:
-> This patchset introduces IBM's Flexible Service Interface(FSI).
-> 
-> Time for some fun with inter-processor buses. FSI allows a service
-> processor access to the internal buses of a host POWER processor to
-> perform configuration or debugging.
-> 
-> FSI has long existed in POWER processes and so comes with some baggage,
-> including how it has been integrated into the ASPEED SoC.
-> 
-> Working backwards from the POWER processor, the fundamental pieces of
-> interest for the implementation are:
-> 
-> 1. The Common FRU Access Macro (CFAM), an address space containing
->     various "engines" that drive accesses on buses internal and external
->     to the POWER chip. Examples include the SBEFIFO and I2C masters. The
->     engines hang off of an internal Local Bus (LBUS) which is described
->     by the CFAM configuration block.
-> 
-> 2. The FSI slave: The slave is the terminal point of the FSI bus for
->     FSI symbols addressed to it. Slaves can be cascaded off of one
->     another. The slave's configuration registers appear in address space
->     of the CFAM to which it is attached.
-> 
-> 3. The FSI master: A controller in the platform service processor (e.g.
->     BMC) driving CFAM engine accesses into the POWER chip. At the
->     hardware level FSI is a bit-based protocol supporting synchronous and
->     DMA-driven accesses of engines in a CFAM.
-> 
-> 4. The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
->     POWER processors. This now makes an appearance in the ASPEED SoC due
->     to tight integration of the FSI master IP with the OPB, mainly the
->     existence of an MMIO-mapping of the CFAM address straight onto a
->     sub-region of the OPB address space.
-> 
-> 5. An APB-to-OPB bridge enabling access to the OPB from the ARM core in
->     the AST2600. Hardware limitations prevent the OPB from being directly
->     mapped into APB, so all accesses are indirect through the bridge.
-> 
-> The implementation appears as following in the qemu device tree:
-> 
->      (qemu) info qtree
->      bus: main-system-bus
->        type System
->        ...
->        dev: aspeed.apb2opb, id ""
->          gpio-out "sysbus-irq" 1
->          mmio 000000001e79b000/0000000000001000
->          bus: opb.1
->            type opb
->            dev: fsi.master, id ""
->              bus: fsi.bus.1
->                type fsi.bus
->                dev: cfam.config, id ""
->                dev: cfam, id ""
->                  bus: fsi.lbus.1
->                    type lbus
->                    dev: scratchpad, id ""
->                      address = 0 (0x0)
->          bus: opb.0
->            type opb
->            dev: fsi.master, id ""
->              bus: fsi.bus.0
->                type fsi.bus
->                dev: cfam.config, id ""
->                dev: cfam, id ""
->                  bus: fsi.lbus.0
->                    type lbus
->                    dev: scratchpad, id ""
->                      address = 0 (0x0)
-> 
-> The LBUS is modelled to maintain the qdev bus hierarchy and to take
-> advantage of the object model to automatically generate the CFAM
-> configuration block. The configuration block presents engines in the
-> order they are attached to the CFAM's LBUS. Engine implementations
-> should subclass the LBusDevice and set the 'config' member of
-> LBusDeviceClass to match the engine's type.
-> 
-> CFAM designs offer a lot of flexibility, for instance it is possible for
-> a CFAM to be simultaneously driven from multiple FSI links. The modeling
-> is not so complete; it's assumed that each CFAM is attached to a single
-> FSI slave (as a consequence the CFAM subclasses the FSI slave).
-> 
-> As for FSI, its symbols and wire-protocol are not modelled at all. This
-> is not necessary to get FSI off the ground thanks to the mapping of the
-> CFAM address space onto the OPB address space - the models follow this
-> directly and map the CFAM memory region into the OPB's memory region.
-> Future work includes supporting more advanced accesses that drive the
-> FSI master directly rather than indirectly via the CFAM mapping, which
-> will require implementing the FSI state machine and methods for each of
-> the FSI symbols on the slave. Further down the track we can also look at
-> supporting the bitbanged SoftFSI drivers in Linux by extending the FSI
-> slave model to resolve sequences of GPIO IRQs into FSI symbols, and
-> calling the associated symbol method on the slave to map the access onto
-> the CFAM.
-> 
-> Testing:
->      Tested by reading cfam config address 0 on rainier machine type.
-> 
->      root@p10bmc:~# pdbg -a getcfam 0x0
->      p0: 0x0 = 0xc0022d15
-> 
-> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+On Thu, 9 Nov 2023 at 10:33, Woodhouse, David <dwmw@amazon.co.uk> wrote:
+>
+> We can't just embed labels directly into files like qemu-options.hx which
+> are included from multiple top-level RST files, because Sphinx sees the
+> labels as duplicate: https://github.com/sphinx-doc/sphinx/issues/9707
+>
+> So add an 'emitrefs' option to the Sphinx hxtool-doc directive, which is
+> set only in invocation.rst and not from the HTML rendition of the man
+> page. Along with an argument to the SRST directive which causes a label
+> of the form '.. _LABEL-reference-label:' to be emitted when the emitrefs
+> option is set.
+>
+> Now where the Xen PV documentation refers to the documentation for the
+> -initrd command line option, it can emit a link directly to it.
+>
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Reviewed-by: Paul Durrant <paul@xen.org>
 
+Thanks for splitting out this patch, and sorry I didn't get to
+reviewing it earlier. The general idea is great, and I have
+a few suggested tweaks below.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Something is weird about how you're sending out patchmails,
+by the way: the patch appears in lore.kernel.org and in patchew,
+but when patchew tries to apply it, or when I do locally, git complains
+that it's empty:
+https://patchew.org/QEMU/7a25bd4ee1f8b06c7a51d20486aaa8bc8e1282ea.camel@amazon.co.uk/
 
-Thanks,
-
-C.
-
+I think this is probably because the patch is a lot of
+base-64-encoded multipart/mime. Sending it as good old
+fashioned plain text will likely work better.
 
 > ---
->   include/hw/arm/aspeed_soc.h |  4 ++++
->   hw/arm/aspeed_ast2600.c     | 19 +++++++++++++++++++
->   2 files changed, 23 insertions(+)
-> 
-> diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-> index cb832bc1ee..e452108260 100644
-> --- a/include/hw/arm/aspeed_soc.h
-> +++ b/include/hw/arm/aspeed_soc.h
-> @@ -36,6 +36,7 @@
->   #include "hw/misc/aspeed_lpc.h"
->   #include "hw/misc/unimp.h"
->   #include "hw/misc/aspeed_peci.h"
-> +#include "hw/fsi/aspeed-apb2opb.h"
->   #include "hw/char/serial.h"
->   
->   #define ASPEED_SPIS_NUM  2
-> @@ -90,6 +91,7 @@ struct AspeedSoCState {
->       UnimplementedDeviceState udc;
->       UnimplementedDeviceState sgpiom;
->       UnimplementedDeviceState jtag[ASPEED_JTAG_NUM];
-> +    AspeedAPB2OPBState fsi[2];
->   };
->   
->   #define TYPE_ASPEED_SOC "aspeed-soc"
-> @@ -214,6 +216,8 @@ enum {
->       ASPEED_DEV_SGPIOM,
->       ASPEED_DEV_JTAG0,
->       ASPEED_DEV_JTAG1,
-> +    ASPEED_DEV_FSI1,
-> +    ASPEED_DEV_FSI2,
->   };
->   
->   #define ASPEED_SOC_SPI_BOOT_ADDR 0x0
-> diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-> index b965fbab5e..2273a62426 100644
-> --- a/hw/arm/aspeed_ast2600.c
-> +++ b/hw/arm/aspeed_ast2600.c
-> @@ -75,6 +75,8 @@ static const hwaddr aspeed_soc_ast2600_memmap[] = {
->       [ASPEED_DEV_UART12]    = 0x1E790600,
->       [ASPEED_DEV_UART13]    = 0x1E790700,
->       [ASPEED_DEV_VUART]     = 0x1E787000,
-> +    [ASPEED_DEV_FSI1]      = 0x1E79B000,
-> +    [ASPEED_DEV_FSI2]      = 0x1E79B100,
->       [ASPEED_DEV_I3C]       = 0x1E7A0000,
->       [ASPEED_DEV_SDRAM]     = 0x80000000,
->   };
-> @@ -132,6 +134,8 @@ static const int aspeed_soc_ast2600_irqmap[] = {
->       [ASPEED_DEV_ETH4]      = 33,
->       [ASPEED_DEV_KCS]       = 138,   /* 138 -> 142 */
->       [ASPEED_DEV_DP]        = 62,
-> +    [ASPEED_DEV_FSI1]      = 100,
-> +    [ASPEED_DEV_FSI2]      = 101,
->       [ASPEED_DEV_I3C]       = 102,   /* 102 -> 107 */
->   };
->   
-> @@ -264,6 +268,10 @@ static void aspeed_soc_ast2600_init(Object *obj)
->       object_initialize_child(obj, "emmc-boot-controller",
->                               &s->emmc_boot_controller,
->                               TYPE_UNIMPLEMENTED_DEVICE);
+> https://qemu-project.gitlab.io/qemu/system/i386/xen.html tells the user
+> to "see the command line documentation for the -initrd option". It'd be
+> a whole lot nicer if we could *link* to it. It actually worked on my
+> test box, but only because I'm using an older version of Sphinx which
+> didn't complain about the duplicate refs, and just picked *one* to link
+> to.
+>
+>  docs/sphinx/hxtool.py      | 18 +++++++++++++++++-
+>  docs/system/i386/xen.rst   |  2 +-
+>  docs/system/invocation.rst |  1 +
+>  qemu-options.hx            |  2 +-
+>  4 files changed, 20 insertions(+), 3 deletions(-)
+>
+> diff --git a/docs/sphinx/hxtool.py b/docs/sphinx/hxtool.py
+> index 9f6b9d87dc..bfb0929573 100644
+> --- a/docs/sphinx/hxtool.py
+> +++ b/docs/sphinx/hxtool.py
+> @@ -78,18 +78,28 @@ def parse_archheading(file, lnum, line):
+>          serror(file, lnum, "Invalid ARCHHEADING line")
+>      return match.group(1)
+>
+> +def parse_srst(file, lnum, line):
+> +    """Handle an SRST directive"""
+> +    # The input should be "SRST(label)".
+> +    match = re.match(r'SRST\((.*?)\)', line)
+> +    if match is None:
+> +        serror(file, lnum, "Invalid SRST line")
+> +    return match.group(1)
 > +
-> +    for (i = 0; i < ASPEED_FSI_NUM; i++) {
-> +        object_initialize_child(obj, "fsi[*]", &s->fsi[i], TYPE_ASPEED_APB2OPB);
-> +    }
->   }
->   
->   /*
-> @@ -625,6 +633,17 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
->           return;
->       }
->       aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->sbc), 0, sc->memmap[ASPEED_DEV_SBC]);
-> +
-> +    /* FSI */
-> +    for (i = 0; i < ASPEED_FSI_NUM; i++) {
-> +        if (!sysbus_realize(SYS_BUS_DEVICE(&s->fsi[i]), errp)) {
-> +            return;
-> +        }
-> +        aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->fsi[i]), 0,
-> +                        sc->memmap[ASPEED_DEV_FSI1 + i]);
-> +        sysbus_connect_irq(SYS_BUS_DEVICE(&s->fsi[i]), 0,
-> +                           aspeed_soc_get_irq(s, ASPEED_DEV_FSI1 + i));
-> +    }
->   }
->   
->   static void aspeed_soc_ast2600_class_init(ObjectClass *oc, void *data)
+>  class HxtoolDocDirective(Directive):
+>      """Extract rST fragments from the specified .hx file"""
+>      required_argument = 1
+>      optional_arguments = 1
+>      option_spec = {
+> -        'hxfile': directives.unchanged_required
+> +        'hxfile': directives.unchanged_required,
+> +        'emitrefs': directives.flag
+>      }
+>      has_content = False
+>
+>      def run(self):
+>          env = self.state.document.settings.env
+>          hxfile = env.config.hxtool_srctree + '/' + self.arguments[0]
+> +        emitrefs = "emitrefs" in self.options
+>
+>          # Tell sphinx of the dependency
+>          env.note_dependency(os.path.abspath(hxfile))
+> @@ -113,6 +123,12 @@ def run(self):
+>                          serror(hxfile, lnum, 'expected ERST, found SRST')
+>                      else:
+>                          state = HxState.RST
+> +                        if emitrefs and line != "SRST":
+> +                            label = parse_srst(hxfile, lnum, line)
 
+I think that rather than only calling parse_srst() under this
+if(), we should do it always, and have parse_srst() accept
+"SRST" alone as valid (meaning empty label, same as "SRST()").
+Then we can append to the rstlist 'if emitrefs and label != ""'.
+
+> +                            if label != "":
+> +                                rstlist.append("", hxfile, lnum - 1)
+> +                                refline = ".. _" + label + "-reference-label:"
+> +                                rstlist.append(refline, hxfile, lnum - 1)
+>                  elif directive == 'ERST':
+>                      if state == HxState.CTEXT:
+>                          serror(hxfile, lnum, 'expected SRST, found ERST')
+> diff --git a/docs/system/i386/xen.rst b/docs/system/i386/xen.rst
+> index 81898768ba..536dd6a2f9 100644
+> --- a/docs/system/i386/xen.rst
+> +++ b/docs/system/i386/xen.rst
+> @@ -132,7 +132,7 @@ The example above provides the guest kernel command line after a separator
+>  (" ``--`` ") on the Xen command line, and does not provide the guest kernel
+>  with an actual initramfs, which would need to listed as a second multiboot
+>  module. For more complicated alternatives, see the command line
+> -documentation for the ``-initrd`` option.
+> +:ref:`documentation <initrd-reference-label>` for the ``-initrd`` option.
+
+I think we should include the hxfile basename in the label name
+we generate. We also don't need to say "label", it's implicitly a
+label. Then when we refer to things we can say
+   <qemu-options-initrd>
+   <hmp-commands-screendump>
+
+and it's fairly readable what we're referring back to.
+
+(We could alternatively have the emitrefs option take an argument
+for what to use in label names. I don't have a strong view on
+which would be better.)
+
+>
+>  Host OS requirements
+>  --------------------
+> diff --git a/docs/system/invocation.rst b/docs/system/invocation.rst
+> index 4ba38fc23d..ef75dad2e2 100644
+> --- a/docs/system/invocation.rst
+> +++ b/docs/system/invocation.rst
+> @@ -11,6 +11,7 @@ disk_image is a raw hard disk image for IDE hard disk 0. Some targets do
+>  not need a disk image.
+>
+>  .. hxtool-doc:: qemu-options.hx
+> +    :emitrefs:
+>
+>  Device URL Syntax
+>  ~~~~~~~~~~~~~~~~~
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index 42fd09e4de..464e7257b0 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -3987,7 +3987,7 @@ ERST
+>
+>  DEF("initrd", HAS_ARG, QEMU_OPTION_initrd, \
+>             "-initrd file    use 'file' as initial ram disk\n", QEMU_ARCH_ALL)
+> -SRST
+> +SRST(initrd)
+>
+>  ``-initrd file``
+>      Use file as initial ram disk.
+> --
+> 2.34.1
+
+We really need to document the .hx file syntax (currently this is
+only in comments at the top of individual .hx files). I'll
+put together a quick patch that does that, which will give us
+somewhere to add the information about how label-generation
+works in this patch.
+
+thanks
+-- PMM
 
