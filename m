@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422E280F2AB
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:31:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D97EA80F2BD
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:32:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5en-0001Rm-Mi; Tue, 12 Dec 2023 11:30:53 -0500
+	id 1rD5es-0001nW-Cm; Tue, 12 Dec 2023 11:30:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5eB-0000vl-SE
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:30:16 -0500
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5eG-0000wu-NK
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:30:21 -0500
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5e9-0007Cs-Ow
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:30:15 -0500
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2c9e9c2989dso79323771fa.0
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:30:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5eF-0007EM-0k
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:30:20 -0500
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9fa45e75ed9so674700066b.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:30:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398611; x=1703003411; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702398617; x=1703003417; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ntmhn8CuDxjNGoVZ5yGIEeRznutb1/fx3IdQEKhFga0=;
- b=WzMZ6DQyDgC3e/937XNwSe9dXEys4VG+R2ENy/tbyGl/bDx49hEy9eyjDWyVgZmmlH
- 4s4B6xtrROXPxXQda7IMZTxFd1xBtWjGvLJErYV8FDpa3hFxKJvn/1m3fp+MXRb1ftAk
- G1xUok4fPFH2zVHoZBHW0HgAhrr8nKabNsbx+B8KjgwDxPilpq7DowSlirUzN50pccBW
- EnhsNb3+TmZq5Dv8t3txsnL2LF4NH7a0zUeWA3nAZmIevLg97hWS/b3lBsoZeB6MAAGh
- eRGCCPyPk8QjEZU3CEuC+Ohx7RXCNh+Rmiu4GI13JGZz0TpT665SaKazjfmJusbCj6J7
- 0gIg==
+ bh=0yI/BdK3JpWxvgTmRXK4JG4UZmdLauV/5I5Y5kpQEdc=;
+ b=PW5EzrEJwxAfoumbelhZqSplq2Dr5lIn69M1rsLamM2lYbIW9Rjkj43gbfQ39aIPGF
+ Nvntr2tkwWjlm0Vhlk7DB38AA0GiYa2l7KfT6s0YW/+w+GD7uzlQQogUWD2YjL8Fww8f
+ P4tC6pQGLkCV8MvF9wS1NQgRvEhHogHUPZ+jCschDwu1mtfJarjyDNjdQVOMcfxUDsZH
+ gvg1aat0+xuWtEdD4h5LL7D4O29h2PH0Ly6mWLq0uNsTEpiRFRw35MJ5H8RBO/ITkQwo
+ PIvj22vyKYELZMGopy/INT5MbqmsOp67HXXhBPiTpEI2SlwFJSwzGq2BvbRxSzHKAh6Q
+ oWyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398611; x=1703003411;
+ d=1e100.net; s=20230601; t=1702398617; x=1703003417;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ntmhn8CuDxjNGoVZ5yGIEeRznutb1/fx3IdQEKhFga0=;
- b=TbH/QTZrVJlUStQSaZ3gihfqxW8X9se6jQ5W4OL7HLhmqT9wxCTVnHVzOwHaUr4lGg
- esGNG69tsepzrUsegTzcWixD1jKPPW9GJ72R29JTPPPMmQYnxe90yaN7F2U3itcQPAgu
- R+W7ngORzQyhan7iLYpZuKG8SSpPZWKQp59BHzIzqDZWLEg2OI6GUWbXiFwGen7es7cB
- nvQsHTcWDJ1oim/rw7hPz84dFBuFA0yRbbkf5+XRQd95KY0oxP+4I8RCbyUPd1bx2Y+K
- PdeDBoT1CLtRNL/Cpb74DQYhcAmk4O10D479UAuqrek8Q+YGNU6M4tHvcYgDObr0FCkM
- +fYw==
-X-Gm-Message-State: AOJu0YzKM74SRQpD2lsqf6ptYEKYGxUqZ2jIe77mFtSb+r310fqqKyvC
- BArYXvgMeKZxOVtaFhsPIJAokeEmHNpcxSplfm0=
-X-Google-Smtp-Source: AGHT+IHmcKLv23YcK+tsyfDylj0DqqIiRyVrHKUDnOrMisblwcfnWQWZ8TIDJqz1FNLpYJRB+MzSrA==
-X-Received: by 2002:a05:651c:b0c:b0:2cb:2f4a:4ee1 with SMTP id
- b12-20020a05651c0b0c00b002cb2f4a4ee1mr2683827ljr.11.1702398610911; 
- Tue, 12 Dec 2023 08:30:10 -0800 (PST)
+ bh=0yI/BdK3JpWxvgTmRXK4JG4UZmdLauV/5I5Y5kpQEdc=;
+ b=b0Pi+8rH0qlkrLHYTBTGwahzB2xD15Fw0Yg7jkjPGDuW6shem2RJiGjus1jUz49B8B
+ LJzIFb2QCSPfT+Z1SRMUCRzxq64+yJuohOFqladoA4Gk7Vs8bxafRXnvbNOz1ZWsb+6f
+ dULsWRvBf7R6wXMF5YhBa97YwlRAxsjMinZ4MlDzJff7HbV8cP7hu7BCqNErKuZ0oWGE
+ iokEFWeWB9W1+/UXD4doef8sFnewoeSsU47ywXBiIeUwG00VS3ti1XYZYtIOeKPwJFs9
+ 6j7wIQEGYnXq+LNTFqNbkNMyvVIoIi8uYJKF/wzE+gFE4ocyvkcnDSTM8XN2NOXDta6e
+ +huw==
+X-Gm-Message-State: AOJu0YxWdnCTFJybBrLperyEpOaLyovSZOK+wa+j1lb9MHgsw8KInRdx
+ SkxqdP+/GU7ndZLQcQ0TbKSkvN+eLyS2MuMgbSI=
+X-Google-Smtp-Source: AGHT+IGocN7maPYKtAczqs3qDPil+solm+ZjQNUyQDb7ys0Tbt4YnQ6fpdspbxcOG6FTxMKseOq12Q==
+X-Received: by 2002:a17:906:14d:b0:a1c:837c:e4a0 with SMTP id
+ 13-20020a170906014d00b00a1c837ce4a0mr3925715ejh.29.1702398617418; 
+ Tue, 12 Dec 2023 08:30:17 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- c27-20020a50d65b000000b0054c9bbd07e7sm5049547edj.54.2023.12.12.08.30.07
+ ts7-20020a170907c5c700b00a1dd58874b8sm6477080ejc.119.2023.12.12.08.30.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:30:10 -0800 (PST)
+ Tue, 12 Dec 2023 08:30:17 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
@@ -71,17 +71,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 04/33] hw/arm/fsl-imx7: Add a local 'gic' variable
-Date: Tue, 12 Dec 2023 17:29:04 +0100
-Message-ID: <20231212162935.42910-5-philmd@linaro.org>
+Subject: [PATCH 05/33] hw/cpu: Remove dead Kconfig
+Date: Tue, 12 Dec 2023 17:29:05 +0100
+Message-ID: <20231212162935.42910-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
 References: <20231212162935.42910-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,146 +104,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The A7MPCore forward the IRQs from its internal GIC.
-To make the code clearer, add a 'gic' variable.
+ARM MPCore Kconfig are defined in hw/arm/Kconfig.
+hw/cpu/Kconfig is never used, remove it.
 
+Fixes: 82f5181777 ("kconfig: introduce kconfig files")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/fsl-imx7.c | 38 +++++++++++++++++---------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ hw/cpu/Kconfig | 8 --------
+ 1 file changed, 8 deletions(-)
+ delete mode 100644 hw/cpu/Kconfig
 
-diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
-index 474cfdc87c..a283dcb45f 100644
---- a/hw/arm/fsl-imx7.c
-+++ b/hw/arm/fsl-imx7.c
-@@ -163,6 +163,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
- {
-     MachineState *ms = MACHINE(qdev_get_machine());
-     FslIMX7State *s = FSL_IMX7(dev);
-+    DeviceState *gic;
-     Object *o;
-     int i;
-     qemu_irq irq;
-@@ -209,6 +210,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
- 
-     sysbus_realize(SYS_BUS_DEVICE(&s->a7mpcore), &error_abort);
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->a7mpcore), 0, FSL_IMX7_A7MPCORE_ADDR);
-+    gic = DEVICE(&s->a7mpcore);
- 
-     for (i = 0; i < smp_cpus; i++) {
-         SysBusDevice *sbd = SYS_BUS_DEVICE(&s->a7mpcore);
-@@ -252,8 +254,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_realize(SYS_BUS_DEVICE(&s->gpt[i]), &error_abort);
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->gpt[i]), 0, FSL_IMX7_GPTn_ADDR[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpt[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_GPTn_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_GPTn_IRQ[i]));
-     }
- 
-     /*
-@@ -295,12 +296,10 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-                         FSL_IMX7_GPIOn_ADDR[i]);
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_GPIOn_LOW_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_GPIOn_LOW_IRQ[i]));
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio[i]), 1,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_GPIOn_HIGH_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_GPIOn_HIGH_IRQ[i]));
-     }
- 
-     /*
-@@ -352,8 +351,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->spi[i]), 0,
-                         FSL_IMX7_SPIn_ADDR[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_SPIn_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_SPIn_IRQ[i]));
-     }
- 
-     /*
-@@ -378,8 +376,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->i2c[i]), 0, FSL_IMX7_I2Cn_ADDR[i]);
- 
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_I2Cn_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_I2Cn_IRQ[i]));
-     }
- 
-     /*
-@@ -413,7 +410,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
- 
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->uart[i]), 0, FSL_IMX7_UARTn_ADDR[i]);
- 
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_UARTn_IRQ[i]);
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_UARTn_IRQ[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->uart[i]), 0, irq);
-     }
- 
-@@ -451,9 +448,9 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
- 
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->eth[i]), 0, FSL_IMX7_ENETn_ADDR[i]);
- 
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_ENET_IRQ(i, 0));
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_ENET_IRQ(i, 0));
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->eth[i]), 0, irq);
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_ENET_IRQ(i, 3));
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_ENET_IRQ(i, 3));
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->eth[i]), 1, irq);
-     }
- 
-@@ -480,7 +477,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->usdhc[i]), 0,
-                         FSL_IMX7_USDHCn_ADDR[i]);
- 
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_USDHCn_IRQ[i]);
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_USDHCn_IRQ[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->usdhc[i]), 0, irq);
-     }
- 
-@@ -519,8 +516,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
- 
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->wdt[i]), 0, FSL_IMX7_WDOGn_ADDR[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->wdt[i]), 0,
--                           qdev_get_gpio_in(DEVICE(&s->a7mpcore),
--                                            FSL_IMX7_WDOGn_IRQ[i]));
-+                           qdev_get_gpio_in(gic, FSL_IMX7_WDOGn_IRQ[i]));
-     }
- 
-     /*
-@@ -596,13 +592,13 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-     sysbus_realize(SYS_BUS_DEVICE(&s->pcie), &error_abort);
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->pcie), 0, FSL_IMX7_PCIE_REG_ADDR);
- 
--    irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_PCI_INTA_IRQ);
-+    irq = qdev_get_gpio_in(gic, FSL_IMX7_PCI_INTA_IRQ);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 0, irq);
--    irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_PCI_INTB_IRQ);
-+    irq = qdev_get_gpio_in(gic, FSL_IMX7_PCI_INTB_IRQ);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 1, irq);
--    irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_PCI_INTC_IRQ);
-+    irq = qdev_get_gpio_in(gic, FSL_IMX7_PCI_INTC_IRQ);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 2, irq);
--    irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_PCI_INTD_IRQ);
-+    irq = qdev_get_gpio_in(gic, FSL_IMX7_PCI_INTD_IRQ);
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->pcie), 3, irq);
- 
-     /*
-@@ -631,7 +627,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-         sysbus_mmio_map(SYS_BUS_DEVICE(&s->usb[i]), 0,
-                         FSL_IMX7_USBn_ADDR[i]);
- 
--        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore), FSL_IMX7_USBn_IRQ[i]);
-+        irq = qdev_get_gpio_in(gic, FSL_IMX7_USBn_IRQ[i]);
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->usb[i]), 0, irq);
- 
-         snprintf(name, NAME_SIZE, "usbmisc%d", i);
+diff --git a/hw/cpu/Kconfig b/hw/cpu/Kconfig
+deleted file mode 100644
+index 1767d028ac..0000000000
+--- a/hw/cpu/Kconfig
++++ /dev/null
+@@ -1,8 +0,0 @@
+-config ARM11MPCORE
+-    bool
+-
+-config A9MPCORE
+-    bool
+-
+-config A15MPCORE
+-    bool
 -- 
 2.41.0
 
