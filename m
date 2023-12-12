@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9B280EBB0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:25:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E3A80EBF3
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:36:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD1oX-00011K-VK; Tue, 12 Dec 2023 07:24:41 -0500
+	id 1rD1xp-0007Vo-2c; Tue, 12 Dec 2023 07:34:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1oR-0000wP-Nu
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:24:35 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1xl-0007VD-El
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:34:13 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1oO-0003XR-UD
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:24:35 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a1f47f91fc0so660815866b.0
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 04:24:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD1xf-0006ZO-KX
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 07:34:13 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-54cc60f3613so7263861a12.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 04:34:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702383871; x=1702988671; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lc0kMqhhyTL0/ED+GsijVzAfaP8VzTIUwqo3zggCI8k=;
- b=KTRzUdwBH2151SVzUUJF559pQtJGhM9l6DFhEsxVxzgUaRCHZV61qId+rLjygN+Vnm
- ftHFfVuTxAFOX545/JCcmNAr+jiQndphUmWhZ2AYmFPsL3k84dIkmqPP7u+ZBCJMbvZm
- YqoAuBfIPiqJbTGO5mjQAYcyFmXbT22hX9HC0L/esf5n9wfw/2ueJvOJnWBSnx7lqdog
- drr9dkNqIe0Am9rcHCjwlpdRR9c0G5yq3dcmcv1u9/e6kEyGXcGmnV4DSb1Byzodh1l/
- P5gpwHTU+XeqtBJHbLE6TM1SnBe5++u2BTqAw+cDT08blyAyNtAOjJJ4j3q0jt1GaKsS
- wt0Q==
+ d=linaro.org; s=google; t=1702384445; x=1702989245; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=d9ApWyO7EhxgbNyFRXWeJAkAzhLur71apbGlg0VtMVw=;
+ b=Vl/yD+UAG1OVHCq2Of1NIibmOR9BtGZhk5BEmC5BQ21iFGX7zi2S4HIRpTdxIFE6bF
+ EK5QqIIMrgyRAt/a0x+ZB17zUuofWlrrJruEsbd4bPmNSbxi40YXE+/Fd0vFoT1PMREf
+ WCCBnDv/nK0E28lMURTI2OtT9L/yG4hBvkBwLvsoXEAFWySrbSRrAZ0ER5m0xiUvUkCQ
+ 2K/dlg9Xo2VJfd14IXLe3YjRC5Gya7yJvN7gis59O7j9c8Kg9jGhFBIQfUPMz5JXQNSV
+ /s2S5DVpnChwGhMT9qTHmF6RzbBucds8fLrSOou0njgJpsY84JPaSOFHMTcyLjwGhRz5
+ xzLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702383871; x=1702988671;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lc0kMqhhyTL0/ED+GsijVzAfaP8VzTIUwqo3zggCI8k=;
- b=YXQbiyffsniPFaBJBoceJ3O69M6qBTpn+NZEEbJ3DBI2YmA0eWj9JIqONm0eKaeHXZ
- 5Kxl7ms5YDox1f4SWcj8RqwkLjN4yXqVEBHkfAGNenBYi8hU6C2Wf7bMDWXaWV+NgdGV
- m/TthLiv9INnr63YBf1TmfN5n13wsAsl/6v9c8EJY/IfliP3p1gJwbFUfaSu3XzYZ0wq
- Iwt5qf46eDh7fPOg0IhdPStFJ1kbcP8yPndz+keL6Ki/t/5XjdswzynmUISeY46eHYX2
- U198SjFKQNbBp84S828avLNGphIwyvf/sGcfa+PAmOqp0N+d+hB+nbzQrJ3sqh9XQdLG
- GleQ==
-X-Gm-Message-State: AOJu0YyE/qR0WE/RcZ2ZH7WZdCxFDZsaFNvjPiHAwGUNtTndeTARpltn
- Z4zyLZ85nBdMRiLezHyT0Tejyg==
-X-Google-Smtp-Source: AGHT+IGOoeb7O8ekBg4UDFmGttrgQBh/uwJUUJ8aZVHDuCegDl1qawbyQj0ZFGDfX6+1yvx0B1N+dA==
-X-Received: by 2002:a17:906:c14e:b0:a19:a19b:5603 with SMTP id
- dp14-20020a170906c14e00b00a19a19b5603mr3779457ejc.147.1702383871197; 
- Tue, 12 Dec 2023 04:24:31 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.175.193])
+ d=1e100.net; s=20230601; t=1702384445; x=1702989245;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=d9ApWyO7EhxgbNyFRXWeJAkAzhLur71apbGlg0VtMVw=;
+ b=JzkpL62w1OEyiZicNYPZbSaToBg1PmcP/at1lRz6ugnKPIicBBhEcy3DVMekfM2OOu
+ Ret6gQmcbltSve3gdT93MvrvGnuer/yAdrIYSCo3mFYh8XWtRbK9fsfynjgry7kHHHUx
+ VdCLZJfsdoZeHe0eixaZGcU1jhS2SzccGATUaoB5PaFcq54NdaDwp2X7/AxnXWwNYevE
+ sjt06GKr/niHmFQB7EyNzJKCI8GGWEgcXbBYTPRmnxW9wupwpSXyWoubZgjJkBsL/X5h
+ O4vGIuMCisylDjm7bqPigkWVuRJuYDkeiqvhqiDSTT6nRpgDzpjMjYXMOOfP/ITbXRCh
+ 55oQ==
+X-Gm-Message-State: AOJu0YxRtZc1X9ZJcObBA04SiqsPNMzEA1bfJYNt+FEHBCX36VScE2gk
+ WElbFM6spBVuI3mP07wzqMsszdQWBdeevwelEmPU2Q==
+X-Google-Smtp-Source: AGHT+IEX3TKxES/s8Fqshp5qZHHYjhMiqh1QW2pIMhu8bEDpGj5/3abCpUKZqgThz7RocA+rCG55WA==
+X-Received: by 2002:a17:906:9c47:b0:9e0:5dab:a0f1 with SMTP id
+ fg7-20020a1709069c4700b009e05daba0f1mr2377595ejc.36.1702384445562; 
+ Tue, 12 Dec 2023 04:34:05 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- sa16-20020a1709076d1000b00a1da72b8752sm6171897ejc.212.2023.12.12.04.24.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Dec 2023 04:24:30 -0800 (PST)
-Message-ID: <3e62416d-c014-403f-ad51-8fd109821dac@linaro.org>
-Date: Tue, 12 Dec 2023 13:24:26 +0100
+ tq14-20020a170907c50e00b00a1f83646eb6sm4767092ejc.149.2023.12.12.04.34.03
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 12 Dec 2023 04:34:05 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Claudio Fontana <cfontana@suse.de>, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ qemu-riscv@nongnu.org, Brian Cain <bcain@quicinc.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Anton Johansson <anjo@rev.ng>, Warner Losh <imp@bsdimp.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 00/23] exec: Rework of various headers (user focused)
+Date: Tue, 12 Dec 2023 13:33:36 +0100
+Message-ID: <20231212123401.37493-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/24] exec/cpu-all: Remove unused headers
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, qemu-riscv@nongnu.org,
- David Hildenbrand <david@redhat.com>, Warner Losh <imp@bsdimp.com>,
- Claudio Fontana <cfontana@suse.de>, Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Thomas Huth <thuth@redhat.com>
-References: <20231211212003.21686-1-philmd@linaro.org>
- <20231211212003.21686-16-philmd@linaro.org>
- <488571cb-7770-4183-a760-ae4bd6549531@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <488571cb-7770-4183-a760-ae4bd6549531@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,37 +94,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/12/23 00:16, Richard Henderson wrote:
-> On 12/11/23 13:19, Philippe Mathieu-Daudé wrote:
->> Nothing is required from the "qemu/thread.h" and
->> "hw/core/cpu.h" headers.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   include/exec/cpu-all.h | 2 --
->>   1 file changed, 2 deletions(-)
->>
->> diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
->> index 9a7b5737d3..b1e293a08f 100644
->> --- a/include/exec/cpu-all.h
->> +++ b/include/exec/cpu-all.h
->> @@ -22,8 +22,6 @@
->>   #include "exec/cpu-common.h"
->>   #include "exec/memory.h"
->>   #include "exec/tswap.h"
->> -#include "qemu/thread.h"
->> -#include "hw/core/cpu.h"
-> 
-> While thread.h is fine, I'm not sure removing hw/core/cpu.h from 
-> cpu-all.h is a good idea, and would explain the rather surprising 
-> changes to add core/cpu.h to other files.
+Hi,
 
-"hw/core/cpu.h" defines the CPUState structure. Any code that
-deref CPUState needs to include its definition from "hw/core/cpu.h".
+These patches are extracted from a bigger work where
+"exec/{exec,cpu,translate}-all.h" are split in various
+specific APIs. This helped:
+  - differenciate/build:
+      . user VS system
+      . target-specific VS generic
+    which is necessary for heterogeneous build
+  - reduced header pressure
+  - clarify APIs
 
-Similarly, files that don't deref CPUState/CPUClass/cpu_foo methods
-shouldn't be polluted by its declarations.
+This series is focused on user (vs system) cleanups.
+More useful changes will come after.
 
-This series focuses on useremu, next comes sysemu and "exec/cpu-all.h"
-is split. I'll see if I can postpone this change.
+Since v1:
+- Addressed Richard comments
+- Added R-b tags
+
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (23):
+  exec: Include 'cpu.h' before validating CPUArchState placement
+  exec: Expose 'target_page.h' API to user emulation
+  target: Define TCG_GUEST_DEFAULT_MO in 'cpu-param.h'
+  accel: Include missing 'exec/cpu_ldst.h' header
+  gdbstub: Include missing 'hw/core/cpu.h' header
+  semihosting/uaccess: Avoid including 'cpu.h'
+  semihosting/guestfd: Remove unused 'semihosting/uaccess.h' header
+  host/load-extract: Include missing 'qemu/atomic.h' and 'qemu/int128.h'
+  host/atomic128: Include missing 'qemu/atomic.h' header
+  target/i386: Include missing 'exec/exec-all.h' header
+  accel/tcg: Include missing 'hw/core/cpu.h' header
+  exec/cpu-all: Remove unused 'qemu/thread.h' header
+  exec/cpu-all: Reduce 'qemu/rcu.h' header inclusion
+  exec/cpu-all: Remove unused tswapls() definitions
+  exec: Declare target_words_bigendian() in 'exec/tswap.h'
+  exec: Move [b]tswapl() declarations to 'exec/user/tswap-target.h'
+  target/ppc/excp_helper: Avoid 'abi_ptr' in system emulation
+  accel/tcg: Un-inline retaddr helpers to 'user-retaddr.h'
+  exec/user: Do not include 'cpu.h' in 'abitypes.h'
+  exec: Declare abi_ptr type in its own 'abi_ptr.h' header
+  exec/cpu-all: Restrict inclusion of 'exec/user/guest-base.h'
+  exec/cpu-all: Extract page-protection definitions to
+    page-prot-common.h
+  exec/cpu_ldst: Avoid including 'cpu.h'
+
+ meson.build                                   |  2 +-
+ accel/tcg/user-retaddr.h                      | 28 +++++++++
+ bsd-user/bsd-mem.h                            |  1 +
+ bsd-user/freebsd/target_os_elf.h              |  1 +
+ bsd-user/freebsd/target_os_stack.h            |  1 +
+ bsd-user/netbsd/target_os_elf.h               |  1 +
+ bsd-user/openbsd/target_os_elf.h              |  1 +
+ bsd-user/qemu.h                               |  1 +
+ host/include/generic/host/atomic128-cas.h     |  2 +
+ host/include/generic/host/atomic128-ldst.h    |  2 +
+ .../generic/host/load-extract-al16-al8.h      |  3 +
+ include/exec/abi_ptr.h                        | 33 +++++++++++
+ include/exec/cpu-all.h                        | 59 ++-----------------
+ include/exec/cpu_ldst.h                       | 52 ++++------------
+ include/exec/exec-all.h                       |  1 +
+ include/exec/page-prot-common.h               | 38 ++++++++++++
+ include/exec/ram_addr.h                       |  1 +
+ include/exec/translator.h                     |  5 +-
+ include/exec/tswap.h                          | 12 +++-
+ include/exec/user/abitypes.h                  |  8 ++-
+ include/exec/user/guest-base.h                |  6 ++
+ include/exec/user/tswap-target.h              | 22 +++++++
+ include/hw/core/cpu.h                         | 11 ----
+ include/semihosting/uaccess.h                 |  3 +-
+ target/alpha/cpu-param.h                      |  3 +
+ target/alpha/cpu.h                            |  3 -
+ target/arm/cpu-param.h                        |  8 ++-
+ target/arm/cpu.h                              |  4 +-
+ target/avr/cpu-param.h                        |  2 +
+ target/avr/cpu.h                              |  2 -
+ target/hppa/cpu-param.h                       |  8 +++
+ target/hppa/cpu.h                             |  6 --
+ target/i386/cpu-param.h                       |  3 +
+ target/i386/cpu.h                             |  3 -
+ target/loongarch/cpu-param.h                  |  2 +
+ target/loongarch/cpu.h                        |  2 -
+ target/microblaze/cpu-param.h                 |  3 +
+ target/microblaze/cpu.h                       |  3 -
+ target/mips/cpu-param.h                       |  2 +
+ target/mips/cpu.h                             |  2 -
+ target/openrisc/cpu-param.h                   |  2 +
+ target/openrisc/cpu.h                         |  2 -
+ target/ppc/cpu-param.h                        |  2 +
+ target/ppc/cpu.h                              |  2 -
+ target/ppc/internal.h                         |  1 +
+ target/ppc/mmu-radix64.h                      |  2 +
+ target/riscv/cpu-param.h                      |  2 +
+ target/riscv/cpu.h                            |  2 -
+ target/s390x/cpu-param.h                      |  6 ++
+ target/s390x/cpu.h                            |  3 -
+ target/sparc/cpu-param.h                      | 23 ++++++++
+ target/sparc/cpu.h                            | 23 --------
+ target/xtensa/cpu-param.h                     |  3 +
+ target/xtensa/cpu.h                           |  3 -
+ accel/tcg/cpu-exec.c                          |  3 +
+ accel/tcg/cputlb.c                            |  2 +
+ accel/tcg/tb-maint.c                          |  1 +
+ accel/tcg/tcg-accel-ops.c                     |  2 +
+ accel/tcg/translator.c                        |  1 +
+ accel/tcg/user-exec.c                         |  2 +
+ bsd-user/main.c                               |  1 +
+ bsd-user/mmap.c                               |  1 +
+ bsd-user/signal.c                             |  2 +
+ bsd-user/strace.c                             |  1 +
+ cpu-target.c                                  |  2 +
+ disas/disas.c                                 |  1 +
+ gdbstub/gdbstub.c                             |  1 +
+ hw/audio/virtio-snd.c                         |  2 +-
+ hw/core/cpu-sysemu.c                          |  2 +-
+ hw/core/generic-loader.c                      |  2 +-
+ hw/display/vga.c                              |  2 +-
+ hw/ppc/ppc440_bamboo.c                        |  1 +
+ hw/ppc/sam460ex.c                             |  1 +
+ hw/ppc/virtex_ml507.c                         |  1 +
+ hw/virtio/virtio.c                            |  1 +
+ linux-user/arm/cpu_loop.c                     |  1 +
+ linux-user/elfload.c                          |  3 +
+ linux-user/i386/signal.c                      |  1 +
+ linux-user/main.c                             |  1 +
+ linux-user/mmap.c                             |  1 +
+ linux-user/nios2/cpu_loop.c                   |  1 +
+ linux-user/ppc/signal.c                       |  1 +
+ linux-user/signal.c                           |  1 +
+ linux-user/syscall.c                          |  1 +
+ page-target.c                                 | 43 ++++++++++++++
+ semihosting/guestfd.c                         |  5 +-
+ system/physmem.c                              | 36 +----------
+ target/alpha/helper.c                         |  1 +
+ target/arm/ptw.c                              |  1 +
+ target/arm/tcg/m_helper.c                     |  1 +
+ target/arm/tcg/mte_helper.c                   |  1 +
+ target/arm/tcg/sve_helper.c                   |  1 +
+ target/avr/helper.c                           |  1 +
+ target/cris/mmu.c                             |  1 +
+ target/hexagon/translate.c                    |  1 +
+ target/hppa/mem_helper.c                      |  1 +
+ target/hppa/translate.c                       |  1 +
+ target/i386/tcg/fpu_helper.c                  |  1 +
+ target/i386/tcg/sysemu/excp_helper.c          |  1 +
+ target/loongarch/tlb_helper.c                 |  1 +
+ target/m68k/helper.c                          |  1 +
+ target/microblaze/cpu.c                       |  1 +
+ target/microblaze/helper.c                    |  1 +
+ target/microblaze/mmu.c                       |  1 +
+ target/microblaze/translate.c                 |  1 +
+ target/mips/sysemu/physaddr.c                 |  1 +
+ target/mips/tcg/sysemu/tlb_helper.c           |  1 +
+ target/nios2/helper.c                         |  1 +
+ target/nios2/mmu.c                            |  1 +
+ target/nios2/translate.c                      |  1 +
+ target/openrisc/mmu.c                         |  1 +
+ target/ppc/excp_helper.c                      |  2 +-
+ target/ppc/mmu-hash32.c                       |  1 +
+ target/ppc/mmu-hash64.c                       |  1 +
+ target/ppc/mmu-radix64.c                      |  1 +
+ target/ppc/mmu_common.c                       |  1 +
+ target/ppc/mmu_helper.c                       |  1 +
+ target/riscv/cpu_helper.c                     |  1 +
+ target/riscv/pmp.c                            |  1 +
+ target/riscv/vector_helper.c                  |  1 +
+ target/rx/cpu.c                               |  1 +
+ target/s390x/mmu_helper.c                     |  1 +
+ target/s390x/tcg/mem_helper.c                 |  1 +
+ target/sh4/helper.c                           |  1 +
+ target/sparc/ldst_helper.c                    |  1 +
+ target/sparc/mmu_helper.c                     |  1 +
+ target/tricore/helper.c                       |  1 +
+ target/xtensa/mmu_helper.c                    |  1 +
+ target/xtensa/op_helper.c                     |  1 +
+ 129 files changed, 380 insertions(+), 216 deletions(-)
+ create mode 100644 accel/tcg/user-retaddr.h
+ create mode 100644 include/exec/abi_ptr.h
+ create mode 100644 include/exec/page-prot-common.h
+ create mode 100644 include/exec/user/tswap-target.h
+ create mode 100644 page-target.c
+
+-- 
+2.41.0
+
 
