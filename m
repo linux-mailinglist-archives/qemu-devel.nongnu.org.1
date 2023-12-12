@@ -2,68 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9B380E997
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C47D280E9DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 12:11:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD0Y4-0006w4-Ei; Tue, 12 Dec 2023 06:03:36 -0500
+	id 1rD0eI-0000s1-Eq; Tue, 12 Dec 2023 06:10:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <irina.ryapolova@syntacore.com>)
- id 1rD0Y1-0006vV-QE; Tue, 12 Dec 2023 06:03:33 -0500
-Received: from mta-04.yadro.com ([89.207.88.248])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <irina.ryapolova@syntacore.com>)
- id 1rD0Xx-0001cX-Uz; Tue, 12 Dec 2023 06:03:32 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 236AAC0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1702379005;
- bh=cIz1MYlyL/+t/uoik96OC0Ii1nEqdqMAlTGy5r/LHfw=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=sCUkkQyEgX3nmeWoFyydBvzQ6z28qsgFIzVUioej8jcRlodNVd1CV14yHS9aVJrj0
- BBxMn475wNyKws7Ki9k7PPkmCAiBAbVIMKha7IpOlnPndZXRqCd6e4YyXFMJlMgtDl
- FxteUwdBf660veC385Lta6/pn+WUfKRppFOf/2UlDxQCYGidhw7y4ec04rSH/Yf6mE
- 5Y+0Lf2qM4TPRvj2Glj/xLSEACT214c0M1KYvIgXdbqrrT3x9If1HCUXhOXqfwpIbI
- eN5N8/J1W99oMEUP49qtBDACqEeEGsB1CieBMAnzPv38U6kFiCdaTDj8MsgJIIN68/
- AZN6MfPf9FP2Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1702379005;
- bh=cIz1MYlyL/+t/uoik96OC0Ii1nEqdqMAlTGy5r/LHfw=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=qp7EaF8vuG1tutZG8n2OpJSdToTqhjIpxgSVosKcO55Ig6Rcg/tJLR9F2pD6+FvvT
- xXMb0B3x1HiphDB9M+UH1UyL+UYcIwZKaBrbwj6jwC3TFDFk/7j4CXoTtQU/oWYDCI
- VE32CG/es0x9X0U/zUkzJUYNyM77J7vlN9CCe/wwkLMgxRRl1PjnGQ6+chcEMYs0PK
- 4A5JPlwTGDkHNA6FWfO9b2tWVPtVlQQUR/ya8mJlAtKFWpNIxxvAfdq9MaKJaOld6I
- NvZjMwLvYL/ugaKqFW3K6WxZF5DvNgW+8m59KYF9UjK6Tf++aodLWbNe1Qbmbd6wzS
- psUsRhU/iDIlQ==
-From: Irina Ryapolova <irina.ryapolova@syntacore.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-riscv@nongnu.org>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>, 
- <bin.meng@windriver.com>, <liwei1518@gmail.com>,
- <dbarboza@ventanamicro.com>, 
- <zhiwei_liu@linux.alibaba.com>, Irina Ryapolova
- <irina.ryapolova@syntacore.com>
-Subject: [PATCH v2 2/2] target/riscv: UPDATE xATP write CSR
-Date: Tue, 12 Dec 2023 14:03:05 +0300
-Message-ID: <20231212110305.45443-2-irina.ryapolova@syntacore.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231212110305.45443-1-irina.ryapolova@syntacore.com>
-References: <20231212110305.45443-1-irina.ryapolova@syntacore.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0eC-0000rK-KG
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:09:56 -0500
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD0e9-0002XV-4j
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 06:09:56 -0500
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2c9f099cf3aso83101801fa.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 03:09:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702379390; x=1702984190; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=KNbxQVyn2jk2N+B84Cxn+gXD+XfZeL9bIb/cDyyNmWM=;
+ b=AIDEGvbI6Sx4L1uci0xyLJSV34aqfPCIGj26JY250p/TR5I3aUK12f2amS8c+1fF0T
+ 3Vc4ujjBir0RcG1m7dHzWB0cu83CzHtjprB/XABLvktDkp4uwlPmpRi2z1+Sf0d4UOZl
+ zvfmgixZN7d6kyOvtcC37qca0GpDTWvArcKTHDhTsUbr6fu7jWoGl3tQMJxxr9598F6i
+ cMWm4RLQzLVF97qdauPMhkLstuDcHbd+UeXCR0EXrqbHMhTMWBmiG2+Fv51KY00KA/p0
+ 8gU9YesBeL9MNcQtXYWxygxqxv4KAPCd2WcrzEJwdZyfoE9U4jMv4y0Wyws2BBFeoH/D
+ OmQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702379390; x=1702984190;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KNbxQVyn2jk2N+B84Cxn+gXD+XfZeL9bIb/cDyyNmWM=;
+ b=YuK4gqJ1yq6EKUviVTrjghPQMNJLRgOvded6DlJ8ECYOKC8XZOV/iKWYO384XBcFCu
+ n6wgl00HmLuT8pqzHELoYjBTUsIALBh8yJBqbsQWOC/FQlVHjx/Yi43vJ7twLFCF4Ptm
+ hMN60iKbKDLac1NvDJE489EHWs0WiE1BT4MI4jdlvajRzcyG0YZTevpM6qaXq9mMZQPD
+ kMp/gBhPeCooXeufk1r+O2ioFQMNkNUn6W72ALc8X0NDg4C0FhpR7BivXyWW/9B4nY8U
+ hEBI+6g3yrDq6YnffrF4lOMu0dzL5/1TNSsGX4pD0y7kkYWlPkLWdPpiJ261SVpSzYs3
+ kT6Q==
+X-Gm-Message-State: AOJu0YwTvsQbJ72mbTDMAeqUtNzbRYDOBIrw8MjOTsRQ9jfdfKWSJ8SS
+ 44uIYb60uaTNO/5wawvy5DTw8A==
+X-Google-Smtp-Source: AGHT+IEf+Cnvmwn0GdfrThon8dNN055odG5AEPQ+vegqBm/AMPVYgP60Hkgjt7P744GEiZYQQIrKKg==
+X-Received: by 2002:a05:651c:997:b0:2cc:21cb:4192 with SMTP id
+ b23-20020a05651c099700b002cc21cb4192mr2609179ljq.97.1702379390393; 
+ Tue, 12 Dec 2023 03:09:50 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.175.193])
+ by smtp.gmail.com with ESMTPSA id
+ o20-20020a17090611d400b00a0d02cfa48bsm6089725eja.213.2023.12.12.03.09.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Dec 2023 03:09:50 -0800 (PST)
+Message-ID: <f19ce7e7-9f9a-44f2-b315-5705fe24dbcb@linaro.org>
+Date: Tue, 12 Dec 2023 12:09:47 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] accel/tcg: Make use of qemu_target_page_mask() in
+ perf.c
+Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20231212003837.64090-1-iii@linux.ibm.com>
+ <20231212003837.64090-2-iii@linux.ibm.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231212003837.64090-2-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-Exch-05.corp.yadro.com (172.17.10.109) To
- S-Exch-01.corp.yadro.com (10.78.5.241)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=irina.ryapolova@syntacore.com; helo=mta-04.yadro.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,104 +96,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added xATP_MODE validation for vsatp/hgatp CSRs.
-The xATP register is an SXLEN-bit read/write WARL register, so
-the legal value must be returned (See riscv-privileged-20211203, SATP/VSATP/HGATP CSRs).
+On 12/12/23 01:34, Ilya Leoshkevich wrote:
+> Stop using TARGET_PAGE_MASK in order to make perf.c more
+> target-agnostic.
+> 
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> ---
+>   accel/tcg/perf.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-Signed-off-by: Irina Ryapolova <irina.ryapolova@syntacore.com>
----
- target/riscv/csr.c | 52 ++++++++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 23 deletions(-)
-
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 735fb27be7..6d7a3dd9aa 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1282,6 +1282,32 @@ static bool validate_vm(CPURISCVState *env, target_ulong vm)
-     return get_field(mode_supported, (1 << vm));
- }
- 
-+static target_ulong legalize_xatp(CPURISCVState *env, target_ulong old_xatp,
-+                                  target_ulong val)
-+{
-+    target_ulong mask;
-+    bool vm;
-+    if (riscv_cpu_mxl(env) == MXL_RV32) {
-+        vm = validate_vm(env, get_field(val, SATP32_MODE));
-+        mask = (val ^ old_xatp) & (SATP32_MODE | SATP32_ASID | SATP32_PPN);
-+    } else {
-+        vm = validate_vm(env, get_field(val, SATP64_MODE));
-+        mask = (val ^ old_xatp) & (SATP64_MODE | SATP64_ASID | SATP64_PPN);
-+    }
-+
-+    if (vm && mask) {
-+        /*
-+         * The ISA defines SATP.MODE=Bare as "no translation", but we still
-+         * pass these through QEMU's TLB emulation as it improves
-+         * performance.  Flushing the TLB on SATP writes with paging
-+         * enabled avoids leaking those invalid cached mappings.
-+         */
-+        tlb_flush(env_cpu(env));
-+        return val;
-+    }
-+    return old_xatp;
-+}
-+
- static target_ulong legalize_mpp(CPURISCVState *env, target_ulong old_mpp,
-                                  target_ulong val)
- {
-@@ -2997,31 +3023,11 @@ static RISCVException read_satp(CPURISCVState *env, int csrno,
- static RISCVException write_satp(CPURISCVState *env, int csrno,
-                                  target_ulong val)
- {
--    target_ulong mask;
--    bool vm;
--
-     if (!riscv_cpu_cfg(env)->mmu) {
-         return RISCV_EXCP_NONE;
-     }
- 
--    if (riscv_cpu_mxl(env) == MXL_RV32) {
--        vm = validate_vm(env, get_field(val, SATP32_MODE));
--        mask = (val ^ env->satp) & (SATP32_MODE | SATP32_ASID | SATP32_PPN);
--    } else {
--        vm = validate_vm(env, get_field(val, SATP64_MODE));
--        mask = (val ^ env->satp) & (SATP64_MODE | SATP64_ASID | SATP64_PPN);
--    }
--
--    if (vm && mask) {
--        /*
--         * The ISA defines SATP.MODE=Bare as "no translation", but we still
--         * pass these through QEMU's TLB emulation as it improves
--         * performance.  Flushing the TLB on SATP writes with paging
--         * enabled avoids leaking those invalid cached mappings.
--         */
--        tlb_flush(env_cpu(env));
--        env->satp = val;
--    }
-+    env->satp = legalize_xatp(env, env->satp, val);
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -3506,7 +3512,7 @@ static RISCVException read_hgatp(CPURISCVState *env, int csrno,
- static RISCVException write_hgatp(CPURISCVState *env, int csrno,
-                                   target_ulong val)
- {
--    env->hgatp = val;
-+    env->hgatp = legalize_xatp(env, env->hgatp, val);
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -3772,7 +3778,7 @@ static RISCVException read_vsatp(CPURISCVState *env, int csrno,
- static RISCVException write_vsatp(CPURISCVState *env, int csrno,
-                                   target_ulong val)
- {
--    env->vsatp = val;
-+    env->vsatp = legalize_xatp(env, env->vsatp, val);
-     return RISCV_EXCP_NONE;
- }
- 
--- 
-2.25.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
