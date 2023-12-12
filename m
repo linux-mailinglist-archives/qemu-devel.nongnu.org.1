@@ -2,102 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0159B80F6C4
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 20:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDA980F7D8
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 21:25:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD8YJ-0000yp-2S; Tue, 12 Dec 2023 14:36:23 -0500
+	id 1rD9Ic-0000RM-V8; Tue, 12 Dec 2023 15:24:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rD8YH-0000xH-7J
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 14:36:21 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rD9IX-0000RC-Bm
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 15:24:09 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rD8YF-0006KV-4c
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 14:36:20 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id E642B22511;
- Tue, 12 Dec 2023 19:36:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1702409777; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PFnJwP3Ugti/RdEukI832IQFqi9dqMHITs60i7bRd4s=;
- b=lIszgjagUeeSw4V86Rzud6+7/YI527AMgJTpP0u2kpU0n9Apd8iiTfdA4kHHSyw+1rilYk
- rnC+oKpR3INrYFJUNaedzkaMqKDZDDa3YOHIC5V79750WPiR35SG1TKU5eL9BTPNcChA3M
- wtjLF6dioeJJyzj3Nq6cOeMM5OuX9ds=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1702409777;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PFnJwP3Ugti/RdEukI832IQFqi9dqMHITs60i7bRd4s=;
- b=Zy+YewtAIOrsGnsTq6pb3lw2MHSABKAJehAs4F7j/JTYbGan+bPRdG6cbnivJwOXC3tuWR
- leR88v6cAG3NTLDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1702409776; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PFnJwP3Ugti/RdEukI832IQFqi9dqMHITs60i7bRd4s=;
- b=Lsdm3ZxA3cTfu72EvTUrKvfHVEKUV0SW8czQ4hwxh9EJdIpUTrxdzXDgn9UJig2OpmmjwG
- QJiGtMrENN/84l/clC0eIt31bdT8fjPi/IeghzlWxTvBeuqWciCOKd7eZpfbnNnCpy8xYr
- XmhNlj86X/L0IVdTXFjLXZGwrXU+v2I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1702409776;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PFnJwP3Ugti/RdEukI832IQFqi9dqMHITs60i7bRd4s=;
- b=XgaEe8PhFDCEfzPjx76WNs431+KqGbrHR9MpX8pVsic84kwmq8vKWsEyH1OkKVK4LgrJ5X
- E2WpU36EMTwhHbAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A617136C7;
- Tue, 12 Dec 2023 19:36:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id UkmIBjC2eGXrZAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 12 Dec 2023 19:36:16 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Hao Xiang <hao.xiang@bytedance.com>, peter.maydell@linaro.org,
- quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com,
- bryan.zhang@bytedance.com, qemu-devel@nongnu.org
-Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: Re: [PATCH v2 09/20] util/dsa: Implement DSA task asynchronous
- completion thread model.
-In-Reply-To: <20231114054032.1192027-10-hao.xiang@bytedance.com>
-References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
- <20231114054032.1192027-10-hao.xiang@bytedance.com>
-Date: Tue, 12 Dec 2023 16:36:13 -0300
-Message-ID: <87fs072oya.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rD9IV-0007P7-Hc
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 15:24:09 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-336378d3bfdso145849f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 12:24:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702412645; x=1703017445; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hI6Nmot+bHFjVkyH1gcSXgbNlHSeRJv77/iDwNqsW68=;
+ b=hvxEHXRnbCEctxE9a8hXk1HkuXcWrna3YIYm4OL1iFqx2sI28mh0bXnbzM+NCM1U4A
+ NzYo9Y7RYgE+rbkIdoaJxu0ctynk4yzUApFS6NB6pPr+O0wrx53m3dpQ51d7rX4JBWzb
+ DF9HICgS0Yyz/kGLA9usjZB726zLGDX541lEv9AhJgVqcIhx0Otrx+rWIEmKjdNCVc/G
+ VgC7DTMV3GN0fet+udXp075oXLSslJ6sU7rsdPZ5eFSryWfAeev4gpqarmxdTGsq0oZu
+ ZHr7olOYIBb4IYBdi9ZgP23qFJTerhf+QJypqtwTZJivgsH1YI5BbYby95NuW8laCgda
+ fnsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702412645; x=1703017445;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=hI6Nmot+bHFjVkyH1gcSXgbNlHSeRJv77/iDwNqsW68=;
+ b=teoTZOklPmBgAGTQqHWHi0J/ZwC727R8fOP0043uxf/txUXPYNntaCjhd2BuFua+9N
+ Mu0mKXPyfp9FW70WiUDm9fu08olnKqkM6274brS3+HT87vmXBB8Phpr0kakMmcOKAqP6
+ TvztoLfhePe6+8yohFp9zxDvGxEkmEo+uf7hkny5uHZyMgf0bZ38pGG0Lfmjx/NI3CxV
+ IXqglKhjNBqYwWQY80UCZmgonigkqy4Vfi3RL80kcGplNxYiqcLCgCFF1C3QYso8A3wz
+ 3k3ZqLRHTOT2IOYn/Y5bQFiBmFJzOqnI8y9N93I33v5fcU5rJn+pwtitmhhGeO8BpcJG
+ +a8Q==
+X-Gm-Message-State: AOJu0Yxt+vWjnwgYbChyjoKqonMa13X3zU1FSHgEqKFB5xKznWUkTkyf
+ AMxyDnR1GUlO4pZf0+/fUp0nOg==
+X-Google-Smtp-Source: AGHT+IEcelaSwH7jjS9Sqt6VvR9U2Jvo3tEiYQldvuq3StzkMVATqZIlmrpFuuSgWwBHB8UxTWEYwg==
+X-Received: by 2002:adf:e053:0:b0:333:2fd2:2f08 with SMTP id
+ w19-20020adfe053000000b003332fd22f08mr3081655wrh.129.1702412645560; 
+ Tue, 12 Dec 2023 12:24:05 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ z4-20020adff1c4000000b003333af25cb2sm11531515wro.66.2023.12.12.12.24.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Dec 2023 12:24:05 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id AA6D75F7D3;
+ Tue, 12 Dec 2023 20:24:04 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] tcg: Reduce serial context atomicity earlier
+In-Reply-To: <20231212193542.149117-1-richard.henderson@linaro.org> (Richard
+ Henderson's message of "Tue, 12 Dec 2023 11:35:42 -0800")
+References: <20231212193542.149117-1-richard.henderson@linaro.org>
+User-Agent: mu4e 1.11.26; emacs 29.1
+Date: Tue, 12 Dec 2023 20:24:04 +0000
+Message-ID: <87a5qfb257.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spamd-Result: default: False [-4.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_SEVEN(0.00)[8]; FUZZY_BLOCKED(0.00)[rspamd.com];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -4.10
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,341 +95,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hao Xiang <hao.xiang@bytedance.com> writes:
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-> * Create a dedicated thread for DSA task completion.
-> * DSA completion thread runs a loop and poll for completed tasks.
-> * Start and stop DSA completion thread during DSA device start stop.
+> Reduce atomicity while emitting opcodes, instead of later
+> during code generation.  This ensures that any helper called
+> also sees the reduced atomicity requirement.
 >
-> User space application can directly submit task to Intel DSA
-> accelerator by writing to DSA's device memory (mapped in user space).
-> Once a task is submitted, the device starts processing it and write
-> the completion status back to the task. A user space application can
-> poll the task's completion status to check for completion. This change
-> uses a dedicated thread to perform DSA task completion checking.
->
-> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-> ---
->  util/dsa.c | 243 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 242 insertions(+), 1 deletion(-)
->
-> diff --git a/util/dsa.c b/util/dsa.c
-> index f82282ce99..0e68013ffb 100644
-> --- a/util/dsa.c
-> +++ b/util/dsa.c
-> @@ -44,6 +44,7 @@
->  
->  #define DSA_WQ_SIZE 4096
->  #define MAX_DSA_DEVICES 16
-> +#define DSA_COMPLETION_THREAD "dsa_completion"
->  
->  typedef QSIMPLEQ_HEAD(dsa_task_queue, buffer_zero_batch_task) dsa_task_queue;
->  
-> @@ -61,8 +62,18 @@ struct dsa_device_group {
->      dsa_task_queue task_queue;
->  };
->  
-> +struct dsa_completion_thread {
-> +    bool stopping;
-> +    bool running;
-> +    QemuThread thread;
-> +    int thread_id;
-> +    QemuSemaphore sem_init_done;
-> +    struct dsa_device_group *group;
-> +};
-> +
->  uint64_t max_retry_count;
->  static struct dsa_device_group dsa_group;
-> +static struct dsa_completion_thread completion_thread;
->  
->  
->  /**
-> @@ -439,6 +450,234 @@ submit_batch_wi_async(struct buffer_zero_batch_task *batch_task)
->      return dsa_task_enqueue(device_group, batch_task);
->  }
->  
-> +/**
-> + * @brief Poll for the DSA work item completion.
-> + *
-> + * @param completion A pointer to the DSA work item completion record.
-> + * @param opcode The DSA opcode.
-> + *
-> + * @return Zero if successful, non-zero otherwise.
-> + */
-> +static int
-> +poll_completion(struct dsa_completion_record *completion,
-> +                enum dsa_opcode opcode)
-> +{
-> +    uint8_t status;
-> +    uint64_t retry = 0;
-> +
-> +    while (true) {
-> +        // The DSA operation completes successfully or fails.
-> +        status = completion->status;
-> +        if (status == DSA_COMP_SUCCESS ||
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2034
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Should we read directly from completion->status or is the compiler smart
-enough to not optimize 'status' out?
+Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-> +            status == DSA_COMP_PAGE_FAULT_NOBOF ||
-> +            status == DSA_COMP_BATCH_PAGE_FAULT ||
-> +            status == DSA_COMP_BATCH_FAIL) {
-> +            break;
-> +        } else if (status != DSA_COMP_NONE) {
-> +            /* TODO: Error handling here on unexpected failure. */
-
-Let's make sure this is dealt with before merging.
-
-> +            fprintf(stderr, "DSA opcode %d failed with status = %d.\n",
-> +                    opcode, status);
-> +            exit(1);
-
-return instead of exiting.
-
-> +        }
-> +        retry++;
-> +        if (retry > max_retry_count) {
-> +            fprintf(stderr, "Wait for completion retry %lu times.\n", retry);
-> +            exit(1);
-
-same here
-
-> +        }
-> +        _mm_pause();
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +/**
-> + * @brief Complete a single DSA task in the batch task.
-> + *
-> + * @param task A pointer to the batch task structure.
-> + */
-> +static void
-> +poll_task_completion(struct buffer_zero_batch_task *task)
-> +{
-> +    assert(task->task_type == DSA_TASK);
-> +
-> +    struct dsa_completion_record *completion = &task->completions[0];
-> +    uint8_t status;
-> +
-> +    poll_completion(completion, task->descriptors[0].opcode);
-> +
-> +    status = completion->status;
-> +    if (status == DSA_COMP_SUCCESS) {
-> +        task->results[0] = (completion->result == 0);
-> +        return;
-> +    }
-> +
-> +    assert(status == DSA_COMP_PAGE_FAULT_NOBOF);
-> +}
-> +
-> +/**
-> + * @brief Poll a batch task status until it completes. If DSA task doesn't
-> + *        complete properly, use CPU to complete the task.
-> + *
-> + * @param batch_task A pointer to the DSA batch task.
-> + */
-> +static void
-> +poll_batch_task_completion(struct buffer_zero_batch_task *batch_task)
-> +{
-> +    struct dsa_completion_record *batch_completion = &batch_task->batch_completion;
-> +    struct dsa_completion_record *completion;
-> +    uint8_t batch_status;
-> +    uint8_t status;
-> +    bool *results = batch_task->results;
-> +    uint32_t count = batch_task->batch_descriptor.desc_count;
-> +
-> +    poll_completion(batch_completion,
-> +                    batch_task->batch_descriptor.opcode);
-> +
-> +    batch_status = batch_completion->status;
-> +
-> +    if (batch_status == DSA_COMP_SUCCESS) {
-> +        if (batch_completion->bytes_completed == count) {
-> +            // Let's skip checking for each descriptors' completion status
-> +            // if the batch descriptor says all succedded.
-> +            for (int i = 0; i < count; i++) {
-> +                assert(batch_task->completions[i].status == DSA_COMP_SUCCESS);
-> +                results[i] = (batch_task->completions[i].result == 0);
-> +            }
-> +            return;
-> +        }
-> +    } else {
-> +        assert(batch_status == DSA_COMP_BATCH_FAIL ||
-> +            batch_status == DSA_COMP_BATCH_PAGE_FAULT);
-> +    }
-> +
-> +    for (int i = 0; i < count; i++) {
-> +
-
-extra whitespace
-
-> +        completion = &batch_task->completions[i];
-> +        status = completion->status;
-> +
-> +        if (status == DSA_COMP_SUCCESS) {
-> +            results[i] = (completion->result == 0);
-> +            continue;
-> +        }
-> +
-> +        if (status != DSA_COMP_PAGE_FAULT_NOBOF) {
-> +            fprintf(stderr,
-> +                    "Unexpected completion status = %u.\n", status);
-> +            assert(false);
-
-return here
-
-> +        }
-> +    }
-> +}
-> +
-> +/**
-> + * @brief Handles an asynchronous DSA batch task completion.
-> + *
-> + * @param task A pointer to the batch buffer zero task structure.
-> + */
-> +static void
-> +dsa_batch_task_complete(struct buffer_zero_batch_task *batch_task)
-> +{
-> +    batch_task->status = DSA_TASK_COMPLETION;
-> +    batch_task->completion_callback(batch_task);
-> +}
-> +
-> +/**
-> + * @brief The function entry point called by a dedicated DSA
-> + *        work item completion thread.
-> + *
-> + * @param opaque A pointer to the thread context.
-> + *
-> + * @return void* Not used.
-> + */
-> +static void *
-> +dsa_completion_loop(void *opaque)
-> +{
-> +    struct dsa_completion_thread *thread_context =
-> +        (struct dsa_completion_thread *)opaque;
-> +    struct buffer_zero_batch_task *batch_task;
-> +    struct dsa_device_group *group = thread_context->group;
-> +
-> +    rcu_register_thread();
-> +
-> +    thread_context->thread_id = qemu_get_thread_id();
-> +    qemu_sem_post(&thread_context->sem_init_done);
-> +
-> +    while (thread_context->running) {
-> +        batch_task = dsa_task_dequeue(group);
-> +        assert(batch_task != NULL || !group->running);
-> +        if (!group->running) {
-> +            assert(!thread_context->running);
-
-This is racy if the compiler reorders "thread_context->running = false"
-and "group->running = false". I'd put this under the task_queue_lock or
-add a compiler barrier at dsa_completion_thread_stop().
-
-> +            break;
-> +        }
-> +        if (batch_task->task_type == DSA_TASK) {
-> +            poll_task_completion(batch_task);
-> +        } else {
-> +            assert(batch_task->task_type == DSA_BATCH_TASK);
-> +            poll_batch_task_completion(batch_task);
-> +        }
-> +
-> +        dsa_batch_task_complete(batch_task);
-> +    }
-> +
-> +    rcu_unregister_thread();
-> +    return NULL;
-> +}
-> +
-> +/**
-> + * @brief Initializes a DSA completion thread.
-> + *
-> + * @param completion_thread A pointer to the completion thread context.
-> + * @param group A pointer to the DSA device group.
-> + */
-> +static void
-> +dsa_completion_thread_init(
-> +    struct dsa_completion_thread *completion_thread,
-> +    struct dsa_device_group *group)
-> +{
-> +    completion_thread->stopping = false;
-> +    completion_thread->running = true;
-> +    completion_thread->thread_id = -1;
-> +    qemu_sem_init(&completion_thread->sem_init_done, 0);
-> +    completion_thread->group = group;
-> +
-> +    qemu_thread_create(&completion_thread->thread,
-> +                       DSA_COMPLETION_THREAD,
-> +                       dsa_completion_loop,
-> +                       completion_thread,
-> +                       QEMU_THREAD_JOINABLE);
-> +
-> +    /* Wait for initialization to complete */
-> +    while (completion_thread->thread_id == -1) {
-> +        qemu_sem_wait(&completion_thread->sem_init_done);
-> +    }
-
-This is racy, the thread can set 'thread_id' before this enters the loop
-and the semaphore will be left unmatched. Not a huge deal but it might
-cause confusion when debugging the initialization.
-
-> +}
-> +
-> +/**
-> + * @brief Stops the completion thread (and implicitly, the device group).
-> + *
-> + * @param opaque A pointer to the completion thread.
-> + */
-> +static void dsa_completion_thread_stop(void *opaque)
-> +{
-> +    struct dsa_completion_thread *thread_context =
-> +        (struct dsa_completion_thread *)opaque;
-> +
-> +    struct dsa_device_group *group = thread_context->group;
-> +
-> +    qemu_mutex_lock(&group->task_queue_lock);
-> +
-> +    thread_context->stopping = true;
-> +    thread_context->running = false;
-> +
-> +    dsa_device_group_stop(group);
-> +
-> +    qemu_cond_signal(&group->task_queue_cond);
-> +    qemu_mutex_unlock(&group->task_queue_lock);
-> +
-> +    qemu_thread_join(&thread_context->thread);
-> +
-> +    qemu_sem_destroy(&thread_context->sem_init_done);
-> +}
-> +
->  /**
->   * @brief Check if DSA is running.
->   *
-> @@ -446,7 +685,7 @@ submit_batch_wi_async(struct buffer_zero_batch_task *batch_task)
->   */
->  bool dsa_is_running(void)
->  {
-> -    return false;
-> +    return completion_thread.running;
->  }
->  
->  static void
-> @@ -481,6 +720,7 @@ void dsa_start(void)
->          return;
->      }
->      dsa_device_group_start(&dsa_group);
-> +    dsa_completion_thread_init(&completion_thread, &dsa_group);
->  }
->  
->  /**
-> @@ -496,6 +736,7 @@ void dsa_stop(void)
->          return;
->      }
->  
-> +    dsa_completion_thread_stop(&completion_thread);
->      dsa_empty_task_queue(group);
->  }
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
