@@ -2,43 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874B580EEE4
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 15:34:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7281580EEEC
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 15:37:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD3ow-0003BW-3z; Tue, 12 Dec 2023 09:33:14 -0500
+	id 1rD3sC-00047n-NX; Tue, 12 Dec 2023 09:36:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rD3ot-0003Aw-Ox
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 09:33:11 -0500
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1rD3oq-0006f3-Pf
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 09:33:11 -0500
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id F1CD7468A7;
- Tue, 12 Dec 2023 15:32:57 +0100 (CET)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com,
-	sw@weilnetz.de,
-	t.lamprecht@proxmox.com
-Subject: [PATCH] qemu_init: increase NOFILE soft limit on POSIX
-Date: Tue, 12 Dec 2023 15:32:50 +0100
-Message-Id: <20231212143250.677668-1-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rD3sA-00047V-Jx
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 09:36:34 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rD3s9-0007as-2m
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 09:36:34 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-54f4b31494fso8713980a12.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 06:36:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702391790; x=1702996590; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=jfu+d5q+ATVBjZRGtGSVS6+3GtIPGgV5XHh9rm3Ob0M=;
+ b=I+jL7Sxoqu4zUe2jK8Dkj6/6SfO5/Cx3Xw3X7TGwh3qfVm0CZDxmAo/xkmuLC4HCvW
+ NXelxxLCa//yhOFoEsYWATPQDjx3hxmNUBrW/ZEwU9D+OW8AgwKdmeRkaROibtee+abG
+ 1d2spkLkchWXl2mSJVz4RCg2ljhOgiHBGgY6hbTdrKuth5NRlzyfrRZNyoHS6LpI8pi8
+ EOq+i3S8QpjM5m4wUHx0eop837nYe3vlGdTe9P7IWO+9ab4tbh99D7gzzrhvlfNVuyC5
+ j+r87RJNzIxaZnBUreEPsEn+GCc8WcKO+UxGKDbqtEEXUqU4EynyerpwNx0a8vRgdzZj
+ rrmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702391790; x=1702996590;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jfu+d5q+ATVBjZRGtGSVS6+3GtIPGgV5XHh9rm3Ob0M=;
+ b=xRGHVIshEqHAw0k7ZqX4oS5HW+vXm5aZrpCjNNZPqr76Tg8m2SCbmtFKmYZTeTNAiv
+ EHMGPuRSLxO0YqPx2/RP954uxFhETUMw4bqwDQS1UEuFIpzaSXjc6lxnmq4cW6rtB98d
+ 8FAuLroCQ5liuOYek9miGmZVpP3VQO9RApY5TN90gfivONH8X5RVxqIR9EQoiz4psbUn
+ nq/+50JaKRJ4sVlP7ch/4v5b7Z1cxQ4aZOM+ZrSdPNuq+cwgV8MHsPVVtd0rzMH2lY7t
+ vtcpKYPOyHT6PZ3xaX9qKiRz6clGF0sF9Y7m6EV/7/O3gr0xVQ7KtXTrZW2/UVRYB0J+
+ 4Krg==
+X-Gm-Message-State: AOJu0YyYpjN2cSqXYIWba4G81SwPVnH7ecxHQcdW2Hm1hQ6dft/XApih
+ rnubKEdm2VasuHlECmj0ysj1l6RI+yWaU0CT6uU9nA==
+X-Google-Smtp-Source: AGHT+IGhq9e48cyEEjI8jFQhQfihQASqsNz1kSvcg0h9SepYEIBOPXeynJFJJItwP/dGfKFoACADRfw1c/HXJuBVdNo=
+X-Received: by 2002:a50:d652:0:b0:551:cf4a:7956 with SMTP id
+ c18-20020a50d652000000b00551cf4a7956mr393108edj.19.1702391790190; Tue, 12 Dec
+ 2023 06:36:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <277e21fc78b75ec459efc7f5fde628a0222c63b0.1701989261.git.m.a.young@durham.ac.uk>
+ <ZXLg_YCHM-P6drQV@redhat.com>
+ <alpine.DEB.2.22.394.2312081422490.1703076@ubuntu-linux-20-04-desktop>
+ <8be72952-88b6-4c74-b696-fecfa8313c96@perard>
+In-Reply-To: <8be72952-88b6-4c74-b696-fecfa8313c96@perard>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Dec 2023 14:36:19 +0000
+Message-ID: <CAFEAcA_1cKWJbjbhnX3A0kjzf_qp7A2rVqPZFHo21dVLb9DutQ@mail.gmail.com>
+Subject: Re: [PATCH] fix qemu build with xen-4.18.0
+To: Anthony PERARD <anthony.perard@citrix.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>, 
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Vikram Garhwal <vikram.garhwal@amd.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Michael Young <m.a.young@durham.ac.uk>, qemu-devel@nongnu.org, 
+ xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,109 +92,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In many configurations, e.g. multiple vNICs with multiple queues or
-with many Ceph OSDs, the default soft limit of 1024 is not enough.
-QEMU is supposed to work fine with file descriptors >= 1024 and does
-not use select() on POSIX. Bump the soft limit to the allowed hard
-limit to avoid issues with the aforementioned configurations.
+On Tue, 12 Dec 2023 at 14:20, Anthony PERARD <anthony.perard@citrix.com> wrote:
+> Building qemu with something like:
+>     ./configure --enable-xen --cpu=x86_64
+> used to work. Can we fix that? It still works with v8.1.0.
+> At least, it works on x86, I never really try to build qemu for arm.
+> Notice that there's no "--target-list" on the configure command line.
+> I don't know if --cpu is useful here.
 
-Of course the limit could be raised from the outside, but the man page
-of systemd.exec states about 'LimitNOFILE=':
+You should almost never need to specify --cpu : configure
+will work out your host CPU architecture by looking at what
+the host compiler defines.
 
-> Don't use.
-> [...]
-> Typically applications should increase their soft limit to the hard
-> limit on their own, if they are OK with working with file
-> descriptors above 1023,
-
-Buglink: https://bugzilla.proxmox.com/show_bug.cgi?id=4507
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
----
- include/sysemu/os-posix.h |  1 +
- include/sysemu/os-win32.h |  5 +++++
- os-posix.c                | 18 ++++++++++++++++++
- system/vl.c               |  2 ++
- 4 files changed, 26 insertions(+)
-
-diff --git a/include/sysemu/os-posix.h b/include/sysemu/os-posix.h
-index dff32ae185..b881ac6c6f 100644
---- a/include/sysemu/os-posix.h
-+++ b/include/sysemu/os-posix.h
-@@ -51,6 +51,7 @@ bool is_daemonized(void);
- void os_daemonize(void);
- bool os_set_runas(const char *user_id);
- void os_set_chroot(const char *path);
-+void os_setup_limits(void);
- void os_setup_post(void);
- int os_mlock(void);
- 
-diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h
-index 1047d260cb..106f155037 100644
---- a/include/sysemu/os-win32.h
-+++ b/include/sysemu/os-win32.h
-@@ -128,6 +128,11 @@ static inline int os_mlock(void)
-     return -ENOSYS;
- }
- 
-+void os_setup_limits(void)
-+{
-+    return;
-+}
-+
- #define fsync _commit
- 
- #if !defined(lseek)
-diff --git a/os-posix.c b/os-posix.c
-index 52ef6990ff..eb55473140 100644
---- a/os-posix.c
-+++ b/os-posix.c
-@@ -24,6 +24,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include <sys/resource.h>
- #include <sys/wait.h>
- #include <pwd.h>
- #include <grp.h>
-@@ -256,6 +257,23 @@ void os_daemonize(void)
-     }
- }
- 
-+void os_setup_limits(void)
-+{
-+    struct rlimit nofile;
-+
-+    if (getrlimit(RLIMIT_NOFILE, &nofile) < 0) {
-+        warn_report("unable to query NOFILE limit: %s", strerror(errno));
-+        return;
-+    }
-+
-+    nofile.rlim_cur = nofile.rlim_max;
-+
-+    if (setrlimit(RLIMIT_NOFILE, &nofile) < 0) {
-+        warn_report("unable to set NOFILE limit: %s", strerror(errno));
-+        return;
-+    }
-+}
-+
- void os_setup_post(void)
- {
-     int fd = 0;
-diff --git a/system/vl.c b/system/vl.c
-index 2bcd9efb9a..6f42f37200 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2774,6 +2774,8 @@ void qemu_init(int argc, char **argv)
-     error_init(argv[0]);
-     qemu_init_exec_dir(argv[0]);
- 
-+    os_setup_limits();
-+
-     qemu_init_arch_modules();
- 
-     qemu_init_subsystems();
--- 
-2.39.2
-
-
+thanks
+-- PMM
 
