@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9980080E099
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 02:01:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6711B80E0A7
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 02:03:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rCr7g-0001OW-RX; Mon, 11 Dec 2023 19:59:44 -0500
+	id 1rCrAU-0002Gl-Kv; Mon, 11 Dec 2023 20:02:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <raj.khem@gmail.com>)
- id 1rCr7b-0001OE-NG
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:59:40 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1rCrAR-0002Ga-Uh
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 20:02:35 -0500
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <raj.khem@gmail.com>)
- id 1rCr7a-0003Zc-7Y
- for qemu-devel@nongnu.org; Mon, 11 Dec 2023 19:59:39 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1d337dc9697so696675ad.3
- for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 16:59:36 -0800 (PST)
+ id 1rCrAQ-0005SK-7M
+ for qemu-devel@nongnu.org; Mon, 11 Dec 2023 20:02:35 -0500
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-3b8958b32a2so3975145b6e.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Dec 2023 17:02:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702342775; x=1702947575; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702342952; x=1702947752; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=nb6M+eEhAvgXNfVgtl2QDYTwj/tqOTFZP8+wZOidPOM=;
- b=MKbT2682MUUwVNGUPqRJSDHNl/9H1GDCR+vbwE3ONWJ32N9Y9MQZBtPNV+m+xteXXr
- 6VKiKyIIFszrTs0K0NVU3Aqqi4o14KzTUPhxfm1EnVo/KGDqxloUx5QeWoult5TJdLx0
- r1+TGUAVf9N5/TrWzzIGNEXJxy1Z5S7cgShHqufzwKTFFWVSAXpaUWWJFLVEQtrM6eOG
- QBnyhv+sxLYyH+Sihc07JBqz22r1uMpxNP4ibinltSY8Mss1Oj1FJ7IRwOWlIjW/7jNM
- q5P4y5IhbEB0jPBkUaJWqkDAUjonk7NFnh+eWDdw516MNPDtP0ZxcIY6Qo+XCeSYFvJ9
- a6rQ==
+ bh=KyjKFLTPuXUtwRJxykHJUA/4Z7EQI7jBnbFZmRKB0Rk=;
+ b=hTygUCVAmCYRLS3jLGg61F3Dx6cqjN77T4+fyBBC58sB4fbeslRb9WZxL0VN4L9gE/
+ LAjHGCARsB0JKy8Zg4481+WnSHq8/VWUSGlRiNs9zEPqH0v9FtaLZYA8UaM7C13ERSKG
+ zcB4gy8pECLkaXknx23dsnq60xFvuqe6oMu8KGaBf+Nz5GBKXZ/pgmc2Ht6CFEIn/PA0
+ ykgE7OQ50Laj0b7G2hD/LZ4gX99o1Yn9ivq7YXM1WT3azPjNWyUONYM2RB6N/SMjZf7g
+ 6t4N80a4DJJIKKlNps9goNQswjxh4PkAi0YNX/lJK971oHwmI/J62K7ZCjFyVVous60k
+ xz9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702342775; x=1702947575;
+ d=1e100.net; s=20230601; t=1702342952; x=1702947752;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nb6M+eEhAvgXNfVgtl2QDYTwj/tqOTFZP8+wZOidPOM=;
- b=aQ81AdsYlAV/ywiCFD43sDlkEWbx2aI8UvUIV6/J7w3FCZJBr9lBQe4k8SIbZOd5DS
- BcRM/7MTgL/f560GzEDnmBq9lFbbWoQYQXzCNrpVfN3nD/jkEa7UFDvEoA1ivA5knpod
- Vg+1AwhE2Ds4KsLIuaO4OQPUsnHQkGUMRAjX9GQTsD6x85ov1URG2mTxOngHWg+nzINp
- 5V+nVtGnvOpHExRQJgsY+EmZ1HJFWtWVSNge8PEHf6m4m503G61sTC155JhxBfGUsWlt
- Y7Ew0BIu0WHvtLjShsOz/qyyV/5GTToXtTa/9X0Omk8hpDDHBvH0yvlPwGD1zRycwAnh
- T7DQ==
-X-Gm-Message-State: AOJu0YziIfteRZfbDcCkueU1NbwueXAtwws0gVC6lXRxlkeG+OtdgAq+
- YOzKzKf86Fm40vA07NlRdlBRWr233WU=
-X-Google-Smtp-Source: AGHT+IF+dblHPYqpj4DLDgkSbF5/kJXEWRHYR//HmE8c/TgWsSVWNIcwhBI12hOx1yWaMvHE37TEjg==
-X-Received: by 2002:a17:902:ab4e:b0:1d0:8876:7086 with SMTP id
- ij14-20020a170902ab4e00b001d088767086mr5741009plb.71.1702342775323; 
- Mon, 11 Dec 2023 16:59:35 -0800 (PST)
+ bh=KyjKFLTPuXUtwRJxykHJUA/4Z7EQI7jBnbFZmRKB0Rk=;
+ b=uubpx5xSDP++/537lXMVgsxZCIXpNLetMsbbyoBsjtdN6jKzK7QH8N3yX6csm9zykA
+ H/bsD0mMmP0xbaZy1h/+tamWe2x0MzI+xx1dGoC0PoBS6UYCKmihFhXwThhXkI1gc5t/
+ hLiwBymW04qAccA2vsAntuRvoNXClNxV+QsBYqDBfG9rndBx2RTrB2+8BAeCfrMNZUKn
+ IPXryb0aFVba+PoIvBTbYFI8VmrjW4TlfJNNvze3+Wzg414Fm+rlRMnAj8TIGivwzuC1
+ SY5GJbxPSMAaOEe0N5VR+amW7pdMaBaxVcfptZtUyUecDQUg97TKsV2LdBoO8RA/VkF6
+ PFFg==
+X-Gm-Message-State: AOJu0YxB+IwOMUW/14bK9mjF2sK6la51MRNBYIA3YkAGUz0YJo2AahCe
+ sAs+MtoCKTZlS1yULzGSgsa3skxK8EY=
+X-Google-Smtp-Source: AGHT+IHRR+JuXEWIF25Oas48KJfOmXZG09DS43xRUuiqOIzU3jgjX/UmtkWZMXyYrQnUr/5sV3ZRbw==
+X-Received: by 2002:aca:1109:0:b0:3b8:b063:506e with SMTP id
+ 9-20020aca1109000000b003b8b063506emr5672297oir.111.1702342951638; 
+ Mon, 11 Dec 2023 17:02:31 -0800 (PST)
 Received: from apollo.hsd1.ca.comcast.net ([2601:646:9d80:4380::4b6f])
  by smtp.gmail.com with ESMTPSA id
- r15-20020a170903020f00b001cf5d0e7e05sm7267449plh.109.2023.12.11.16.59.34
+ ey2-20020a056a0038c200b006cbb75d87d2sm6951517pfb.6.2023.12.11.17.02.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Dec 2023 16:59:35 -0800 (PST)
+ Mon, 11 Dec 2023 17:02:31 -0800 (PST)
 From: Khem Raj <raj.khem@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Khem Raj <raj.khem@gmail.com>
-Subject: [PATCH] vfio: Include libgen.h for basename API
-Date: Mon, 11 Dec 2023 16:59:32 -0800
-Message-ID: <20231212005932.2700725-1-raj.khem@gmail.com>
+Subject: [PATCH v2] vfio: Include libgen.h for basename API
+Date: Mon, 11 Dec 2023 17:02:28 -0800
+Message-ID: <20231212010228.2701544-1-raj.khem@gmail.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=raj.khem@gmail.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=raj.khem@gmail.com; helo=mail-oi1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,8 +102,12 @@ treated as error.
 
 clang-17 treats this warning as error by default
 
+[1] https://git.musl-libc.org/cgit/musl/commit/?id=725e17ed6dff4d0cd22487bb64470881e86a92e7
+
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
+v2: Add missing link for [1]
+
  hw/vfio/pci.c      | 1 +
  hw/vfio/platform.c | 1 +
  2 files changed, 2 insertions(+)
