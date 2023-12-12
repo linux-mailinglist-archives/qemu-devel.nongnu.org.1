@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9D580F325
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9A980F2DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:35:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5gP-0006nY-1F; Tue, 12 Dec 2023 11:32:33 -0500
+	id 1rD5ge-0007pP-PX; Tue, 12 Dec 2023 11:32:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5fy-0006Rw-5d
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:09 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5gC-0006cb-PW
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:22 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5fw-0007h1-82
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:05 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a22deb95d21so157565266b.3
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:32:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5g0-0007hx-8V
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:32:20 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40c3f68b79aso37747755e9.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:32:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398719; x=1703003519; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702398726; x=1703003526; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7Pqc0Rrgak/xeltLwYcUfzRxHhc0ewXusv1vEQMSS3M=;
- b=tASjU4XB7PiG3bwiOhAHnlhNPu03UOMbzpMEKrdZ4RK27vWhwV39Ois23sHMwnYyQu
- bbILCoYCx7V3yQ/vbef9mG4i/XkZm2YPKSAN5KgiN6lZr/SwST/ZdFdCOe29Tdu7NbI5
- E0aU9CVLrHPHO/wRlxRg8/UmXlI4rvaYqC1DUzijmdAbFb5FmtisS1gn7Ljrs7Vub5dx
- 3k1i68rkE8n/+pLSA5kdTx75o5NT7fJpH9kMfPTlDREZhh+XBOoF4UmzngpojVSHb6kp
- Qu5LAnOD9ef34/HbxkI/H/8flOtM6S5KpGTm34bJjhKSbJuAEGYpF+Ie8UNLwy8zo7pD
- J1zg==
+ bh=LN5LIzaAXoHQp7eEvorlIZRES+1O6/1DEdlrH2EDvwo=;
+ b=nGEb/ixsUYayrjlw/rxpvax1CMkAzRqKsQmGrG+qqvjALgykOziFSoQy3CtejGPgkz
+ +9fk11KbCkU4KLCeHxjD7UEySHMxDFq51fK34DPosuSeR+stLXw/mpk/V5YPF8vDJb5i
+ 2AbR/Nn4dCOslGNnTx14Mm0uQgziDI/NKpEIfntKhxyHgyNFuY2XLiKz93JNFdjMlWs+
+ Bmr6fkp1gJN9MDxONhD7wtY+F1nSduHE91SCWXk9DEw3xI382oxvzmBIhfZ+R+lMBok3
+ 88XFu/U0ic7PHQiPULL9Ile/jkntpQ09OiH5bZXJTpBma0sRysa6ic1xUbc1AMCyTp//
+ 477Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398719; x=1703003519;
+ d=1e100.net; s=20230601; t=1702398726; x=1703003526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7Pqc0Rrgak/xeltLwYcUfzRxHhc0ewXusv1vEQMSS3M=;
- b=QInOExky7WRpCWxGRQFmjuarFNQTWaiSgDRO5bJr7NqXQwrCEXhjydB37ZT2jxH46J
- YVyiZ+0sb93ichM7m1YKKk2Ne5Uoz3VJ516GcGHOEQymFMuh6myGMBa4slm46O7YVxWy
- fgOpgA5XTiH6GTjSuI6GSBSb86snn468CzgwHjMCPXwCVx8bISAQMbbYb4bXJq6tqaxN
- mBHobOF0VdVxwfdp/ujOnC0jK8uqEOFiS5aKJaY7qKeCsydiJP/R9LG+pj3NsFIU8YTh
- sihsIQIOPygVS5m5+ek3vlxJmS+h09tZPcEraVyHIgY9lBc4JmIKC+ou9nK3Ih423xwf
- y0hg==
-X-Gm-Message-State: AOJu0Yxo+01wYlUyaV+eezV03360OACXpT7lnEirmybuYiYOqNg7Jp1t
- vNgGzLv4wCtIq0TRE0jFNMLRZu0PXpqpWi3vXe8=
-X-Google-Smtp-Source: AGHT+IGAoWsuLGoO9Ag1O8wpNAZ/MH7VoxAIftcwIH/sievxL+UsNifhl17EdIKQcgiBfNJqSqy87A==
-X-Received: by 2002:a17:907:7156:b0:a1e:36e0:1c79 with SMTP id
- zs22-20020a170907715600b00a1e36e01c79mr2869141ejb.89.1702398719059; 
- Tue, 12 Dec 2023 08:31:59 -0800 (PST)
+ bh=LN5LIzaAXoHQp7eEvorlIZRES+1O6/1DEdlrH2EDvwo=;
+ b=GdJ7nJSptswvJl/2rLpxCL/O8fl5TNVjoGmL09+BuNFmKztqcRpAI4ZEOp/k1gF75I
+ rOw/YUYrPXAxeZwtxxpfdb3HUs/V5qlZeoc28v5F8LEs8hX9waDXGwkMkc0uIHqZVL12
+ KVXHeCj7SU0q8xMxUbY4bEteKWNEqrCCmE6zqJnxaKB2KXzBmYdyccUHrU00K9g9XSTL
+ zKuF71MYBR2sisWRcpu9M+qsbQXOBuMxKwELGeu4ec9KPRjEvtTis+xlnU1QvZb2aNJc
+ 6nDFBwIzfKAVkqeAP0C440JF3ChTspMbdWIzsKHbzRNnv6rYNS8zOPLQtzilYQEos65Y
+ cHJg==
+X-Gm-Message-State: AOJu0YxtzNewEGnhyzlDBJGBNiHGstzsQ+AYKfX4AKiwYEMuiT6YGjxD
+ IzbzCBd9K+oOdLfu4H+ujOer5QYr66EkXWqJh5c=
+X-Google-Smtp-Source: AGHT+IGlvAoOiNx8wiI6Rl0Nash3b1odgtW+hNOm4vN5KcMa6y26/s300+JY0XpjXdM68mwgGrLijg==
+X-Received: by 2002:a05:600c:6997:b0:40b:5e59:ccb9 with SMTP id
+ fp23-20020a05600c699700b0040b5e59ccb9mr3593558wmb.154.1702398726582; 
+ Tue, 12 Dec 2023 08:32:06 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- v10-20020a170906564a00b009fea232316bsm6454240ejr.193.2023.12.12.08.31.56
+ uh17-20020a170906b39100b00a1d5063b01csm6483712ejc.190.2023.12.12.08.32.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:31:58 -0800 (PST)
+ Tue, 12 Dec 2023 08:32:06 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
@@ -71,24 +71,23 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 19/33] hw/cpu/arm: Introduce TYPE_A7MPCORE_PRIV for Cortex-A7
- MPCore
-Date: Tue, 12 Dec 2023 17:29:19 +0100
-Message-ID: <20231212162935.42910-20-philmd@linaro.org>
+Subject: [PATCH 20/33] hw/cpu/arm: Consolidate check on max GIC spi supported
+Date: Tue, 12 Dec 2023 17:29:20 +0100
+Message-ID: <20231212162935.42910-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
 References: <20231212162935.42910-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,129 +104,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For QEMU modelling, the only difference between the A15 and A7
-MPCore is the latter can have up to 480 SPIs.
-
-In particular, since commit b151de69f6 ("hw/arm: ast2600: Set
-AST2600_MAX_IRQ to value from datasheet") the AST2600 machine
-initializes its GIC with 256 SPIs, which is more than the 224
-maximum of the A15.
-
-Since the A7 was not available, few boards were using the A15.
-Replace them by a A7 MPCore.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-The comment in a7mp_priv_class_init() is a bit off.
----
- include/hw/cpu/cortex_mpcore.h |  2 ++
- hw/arm/aspeed_ast2600.c        |  3 +--
- hw/arm/fsl-imx6ul.c            |  3 +--
- hw/arm/fsl-imx7.c              |  3 +--
- hw/cpu/a15mpcore.c             | 30 ++++++++++++++++++++++++++++++
- 5 files changed, 35 insertions(+), 6 deletions(-)
+ hw/cpu/cortex_mpcore.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/hw/cpu/cortex_mpcore.h b/include/hw/cpu/cortex_mpcore.h
-index 7822d5cbc4..4e1aa9f7f7 100644
---- a/include/hw/cpu/cortex_mpcore.h
-+++ b/include/hw/cpu/cortex_mpcore.h
-@@ -118,4 +118,6 @@ struct A9MPPrivState {
+diff --git a/hw/cpu/cortex_mpcore.c b/hw/cpu/cortex_mpcore.c
+index c9ba254818..75324268fa 100644
+--- a/hw/cpu/cortex_mpcore.c
++++ b/hw/cpu/cortex_mpcore.c
+@@ -43,6 +43,13 @@ static void cortex_mpcore_priv_realize(DeviceState *dev, Error **errp)
+     CortexMPPrivClass *k = CORTEX_MPCORE_PRIV_GET_CLASS(dev);
+     DeviceState *gicdev = DEVICE(&s->gic);
  
- #define TYPE_A15MPCORE_PRIV "a15mpcore_priv"
- 
-+#define TYPE_A7MPCORE_PRIV "a7mpcore_priv"
++    if (s->gic_spi_num > k->gic_spi_max) {
++        error_setg(errp,
++                   "At most %u GIC SPI are supported (requested %u)",
++                   k->gic_spi_max, s->gic_spi_num);
++        return;
++    }
 +
- #endif
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index ca788e1cf0..88e2a23514 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -171,8 +171,7 @@ static void aspeed_soc_ast2600_init(Object *obj)
-     object_property_add_alias(obj, "hw-prot-key", OBJECT(&s->scu),
-                               "hw-prot-key");
- 
--    object_initialize_child(obj, "a7mpcore", &a->a7mpcore,
--                            TYPE_A15MPCORE_PRIV);
-+    object_initialize_child(obj, "a7mpcore", &a->a7mpcore, TYPE_A7MPCORE_PRIV);
- 
-     object_initialize_child(obj, "rtc", &s->rtc, TYPE_ASPEED_RTC);
- 
-diff --git a/hw/arm/fsl-imx6ul.c b/hw/arm/fsl-imx6ul.c
-index 93908811c5..6e4343efaa 100644
---- a/hw/arm/fsl-imx6ul.c
-+++ b/hw/arm/fsl-imx6ul.c
-@@ -40,8 +40,7 @@ static void fsl_imx6ul_init(Object *obj)
-     /*
-      * A7MPCORE
-      */
--    object_initialize_child(obj, "a7mpcore", &s->a7mpcore,
--                            TYPE_A15MPCORE_PRIV);
-+    object_initialize_child(obj, "a7mpcore", &s->a7mpcore, TYPE_A7MPCORE_PRIV);
- 
-     /*
-      * CCM
-diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
-index 8a3e9933c4..bd9266b8b5 100644
---- a/hw/arm/fsl-imx7.c
-+++ b/hw/arm/fsl-imx7.c
-@@ -48,8 +48,7 @@ static void fsl_imx7_init(Object *obj)
-     /*
-      * A7MPCORE
-      */
--    object_initialize_child(obj, "a7mpcore", &s->a7mpcore,
--                            TYPE_A15MPCORE_PRIV);
-+    object_initialize_child(obj, "a7mpcore", &s->a7mpcore, TYPE_A7MPCORE_PRIV);
- 
-     /*
-      * GPIOs
-diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
-index 87b0786781..5f28a97adb 100644
---- a/hw/cpu/a15mpcore.c
-+++ b/hw/cpu/a15mpcore.c
-@@ -121,6 +121,30 @@ static void a15mp_priv_class_init(ObjectClass *klass, void *data)
-     /* We currently have no saveable state */
- }
- 
-+static void a7mp_priv_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    CortexMPPrivClass *cc = CORTEX_MPCORE_PRIV_CLASS(klass);
-+
-+    cc->container_size = 0x8000;
-+
-+    cc->gic_class_name = gic_class_name();
-+    cc->gic_revision = 2;
-+    /*
-+     * The Cortex-A7MP may have anything from 0 to 480 external interrupt
-+     * IRQ lines (with another 32 internal). We default to 128+32, which
-+     * is the number provided by the Cortex-A15MP test chip in the
-+     * Versatile Express A15 development board.
-+     * Other boards may differ and should set this property appropriately.
-+     */
-+    cc->gic_spi_default = 160;
-+    cc->gic_spi_max = 480;
-+
-+    device_class_set_parent_realize(dc, a15mp_priv_realize,
-+                                    &cc->parent_realize);
-+    /* We currently have no saveable state */
-+}
-+
- static const TypeInfo a15mp_types[] = {
-     {
-         .name           = TYPE_A15MPCORE_PRIV,
-@@ -128,6 +152,12 @@ static const TypeInfo a15mp_types[] = {
-         .instance_size  = sizeof(CortexMPPrivState),
-         .class_init     = a15mp_priv_class_init,
-     },
-+    {
-+        .name           = TYPE_A7MPCORE_PRIV,
-+        .parent         = TYPE_CORTEX_MPCORE_PRIV,
-+        .instance_size  = sizeof(CortexMPPrivState),
-+        .class_init     = a7mp_priv_class_init,
-+    },
- };
- 
- DEFINE_TYPES(a15mp_types)
+     qdev_prop_set_uint32(gicdev, "num-cpu", s->num_cores);
+     qdev_prop_set_uint32(gicdev, "num-irq", s->gic_spi_num);
+     if (k->gic_priority_bits) {
 -- 
 2.41.0
 
