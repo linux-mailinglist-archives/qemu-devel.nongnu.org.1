@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1340780EBA0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:24:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A537280EB93
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 13:21:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD1kv-00087g-18; Tue, 12 Dec 2023 07:20:57 -0500
+	id 1rD1kt-0007yT-RC; Tue, 12 Dec 2023 07:20:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1kW-0006vr-F4; Tue, 12 Dec 2023 07:20:34 -0500
+ id 1rD1ka-0006yG-5D; Tue, 12 Dec 2023 07:20:38 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rD1kT-0000nR-Jp; Tue, 12 Dec 2023 07:20:32 -0500
+ id 1rD1kW-0000nx-G6; Tue, 12 Dec 2023 07:20:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 624853AF0A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 81C443AF0B;
  Tue, 12 Dec 2023 15:18:50 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2819D3B958;
+ by tsrv.corpit.ru (Postfix) with SMTP id 38BD53B959;
  Tue, 12 Dec 2023 15:18:33 +0300 (MSK)
-Received: (nullmailer pid 1003466 invoked by uid 1000);
+Received: (nullmailer pid 1003469 invoked by uid 1000);
  Tue, 12 Dec 2023 12:18:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Gihun Nam <gihun.nam@outlook.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.4 22/31] hw/avr/atmega: Fix wrong initial value of stack
- pointer
-Date: Tue, 12 Dec 2023 15:18:10 +0300
-Message-Id: <20231212121831.1003318-22-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ M_O_Bz <m_o_bz@163.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.4 23/31] hw/audio/hda-codec: fix multiplication overflow
+Date: Tue, 12 Dec 2023 15:18:11 +0300
+Message-Id: <20231212121831.1003318-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
 References: <qemu-stable-8.1.4-20231211211211@cover.tls.msk.ru>
@@ -62,91 +63,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gihun Nam <gihun.nam@outlook.com>
+From: Volker Rümelin <vr_qemu@t-online.de>
 
-The current implementation initializes the stack pointer of AVR devices
-to 0. Although older AVR devices used to be like that, newer ones set
-it to RAMEND.
+After a relatively short time, there is an multiplication overflow
+when multiplying (now - buft_start) with hda_bytes_per_second().
+While the uptime now - buft_start only overflows after 2**63 ns
+= 292.27 years, this happens hda_bytes_per_second() times faster
+with the multiplication. At 44100 samples/s * 2 channels
+* 2 bytes/channel = 176400 bytes/s that is 14.52 hours. After the
+multiplication overflow the affected audio stream stalls.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1525
-Signed-off-by: Gihun Nam <gihun.nam@outlook.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <PH0P222MB0010877445B594724D40C924DEBDA@PH0P222MB0010.NAMP222.PROD.OUTLOOK.COM>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 235948bf53860a1e2df5134eae7b0a30a971a124)
+Replace the multiplication and following division with muldiv64()
+to prevent a multiplication overflow.
+
+Fixes: 280c1e1cdb ("audio/hda: create millisecond timers that handle IO")
+Reported-by: M_O_Bz <m_o_bz@163.com>
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+Message-Id: <20231105172552.8405-1-vr_qemu@t-online.de>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 74e8593e7e51d6b11ae9c56a3f4e7bb714bac4ec)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/avr/atmega.c b/hw/avr/atmega.c
-index a34803e642..31c8992d75 100644
---- a/hw/avr/atmega.c
-+++ b/hw/avr/atmega.c
-@@ -233,6 +233,10 @@ static void atmega_realize(DeviceState *dev, Error **errp)
- 
-     /* CPU */
-     object_initialize_child(OBJECT(dev), "cpu", &s->cpu, mc->cpu_type);
-+
-+    object_property_set_uint(OBJECT(&s->cpu), "init-sp",
-+                             mc->io_size + mc->sram_size - 1, &error_abort);
-+
-     qdev_realize(DEVICE(&s->cpu), NULL, &error_abort);
-     cpudev = DEVICE(&s->cpu);
- 
-diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index 8f741f258c..02d58484bb 100644
---- a/target/avr/cpu.c
-+++ b/target/avr/cpu.c
-@@ -25,6 +25,7 @@
- #include "cpu.h"
- #include "disas/dis-asm.h"
- #include "tcg/debug-assert.h"
-+#include "hw/qdev-properties.h"
- 
- static void avr_cpu_set_pc(CPUState *cs, vaddr value)
- {
-@@ -95,7 +96,7 @@ static void avr_cpu_reset_hold(Object *obj)
-     env->rampY = 0;
-     env->rampZ = 0;
-     env->eind = 0;
--    env->sp = 0;
-+    env->sp = cpu->init_sp;
- 
-     env->skip = 0;
- 
-@@ -154,6 +155,11 @@ static void avr_cpu_initfn(Object *obj)
-                       sizeof(cpu->env.intsrc) * 8);
- }
- 
-+static Property avr_cpu_properties[] = {
-+    DEFINE_PROP_UINT32("init-sp", AVRCPU, init_sp, 0),
-+    DEFINE_PROP_END_OF_LIST()
-+};
-+
- static ObjectClass *avr_cpu_class_by_name(const char *cpu_model)
- {
-     ObjectClass *oc;
-@@ -231,6 +237,8 @@ static void avr_cpu_class_init(ObjectClass *oc, void *data)
- 
-     device_class_set_parent_realize(dc, avr_cpu_realizefn, &mcc->parent_realize);
- 
-+    device_class_set_props(dc, avr_cpu_properties);
-+
-     resettable_class_set_parent_phases(rc, NULL, avr_cpu_reset_hold, NULL,
-                                        &mcc->parent_phases);
- 
-diff --git a/target/avr/cpu.h b/target/avr/cpu.h
-index 7225174668..b73547deb2 100644
---- a/target/avr/cpu.h
-+++ b/target/avr/cpu.h
-@@ -150,6 +150,9 @@ struct ArchCPU {
- 
-     CPUNegativeOffsetState neg;
-     CPUAVRState env;
-+
-+    /* Initial value of stack pointer */
-+    uint32_t init_sp;
+diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
+index c51d8ba617..b2d08d8afb 100644
+--- a/hw/audio/hda-codec.c
++++ b/hw/audio/hda-codec.c
+@@ -22,6 +22,7 @@
+ #include "hw/qdev-properties.h"
+ #include "intel-hda.h"
+ #include "migration/vmstate.h"
++#include "qemu/host-utils.h"
+ #include "qemu/module.h"
+ #include "intel-hda-defs.h"
+ #include "audio/audio.h"
+@@ -189,9 +190,9 @@ struct HDAAudioState {
+     bool     use_timer;
  };
  
- extern const struct VMStateDescription vms_avr_cpu;
+-static inline int64_t hda_bytes_per_second(HDAAudioStream *st)
++static inline uint32_t hda_bytes_per_second(HDAAudioStream *st)
+ {
+-    return 2LL * st->as.nchannels * st->as.freq;
++    return 2 * (uint32_t)st->as.nchannels * (uint32_t)st->as.freq;
+ }
+ 
+ static inline void hda_timer_sync_adjust(HDAAudioStream *st, int64_t target_pos)
+@@ -222,12 +223,18 @@ static void hda_audio_input_timer(void *opaque)
+ 
+     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+ 
+-    int64_t buft_start = st->buft_start;
++    int64_t uptime = now - st->buft_start;
+     int64_t wpos = st->wpos;
+     int64_t rpos = st->rpos;
++    int64_t wanted_rpos;
+ 
+-    int64_t wanted_rpos = hda_bytes_per_second(st) * (now - buft_start)
+-                          / NANOSECONDS_PER_SECOND;
++    if (uptime <= 0) {
++        /* wanted_rpos <= 0 */
++        goto out_timer;
++    }
++
++    wanted_rpos = muldiv64(uptime, hda_bytes_per_second(st),
++                           NANOSECONDS_PER_SECOND);
+     wanted_rpos &= -4; /* IMPORTANT! clip to frames */
+ 
+     if (wanted_rpos <= rpos) {
+@@ -286,12 +293,18 @@ static void hda_audio_output_timer(void *opaque)
+ 
+     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+ 
+-    int64_t buft_start = st->buft_start;
++    int64_t uptime = now - st->buft_start;
+     int64_t wpos = st->wpos;
+     int64_t rpos = st->rpos;
++    int64_t wanted_wpos;
++
++    if (uptime <= 0) {
++        /* wanted_wpos <= 0 */
++        goto out_timer;
++    }
+ 
+-    int64_t wanted_wpos = hda_bytes_per_second(st) * (now - buft_start)
+-                          / NANOSECONDS_PER_SECOND;
++    wanted_wpos = muldiv64(uptime, hda_bytes_per_second(st),
++                           NANOSECONDS_PER_SECOND);
+     wanted_wpos &= -4; /* IMPORTANT! clip to frames */
+ 
+     if (wanted_wpos <= wpos) {
 -- 
 2.39.2
 
