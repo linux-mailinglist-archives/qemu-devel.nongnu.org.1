@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0019680F28B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:30:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9C980F29D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Dec 2023 17:31:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rD5dr-0000qA-Sn; Tue, 12 Dec 2023 11:29:55 -0500
+	id 1rD5eC-0000uM-A8; Tue, 12 Dec 2023 11:30:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5dn-0000pW-0j
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:29:51 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5dv-0000sP-KP
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:30:00 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5dl-0006x6-8M
- for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:29:50 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a1e35c2807fso782194066b.3
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:29:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rD5dt-0006yT-G8
+ for qemu-devel@nongnu.org; Tue, 12 Dec 2023 11:29:59 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a1ceae92ab6so786615966b.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 08:29:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702398587; x=1703003387; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702398596; x=1703003396; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5LE88JwgY2y1IWpLN7sGqf0VCLp2wC33lSYw5ePt+UY=;
- b=b4LlBkNfYNdiIPsSP5DJATsEuaydfYIN6POSs/30b+rNy9NuOy8YbTCXvBxdy9s/rU
- tg1iDozWceGtVhpnSEk2viHwR+nAkehECChv2pX4G5v0ImA6KidVOiGUwY56C0yq/Cm8
- vMSwenjzcuDqBJnnISijtUo89/FBUZoie7TqmLVxckVt6iyXSA9pPuXt5g1tFUOLtL8v
- xju4lDJIAWHsZvSMALuZMqJGQgq59eHyMxMwm9sTMVmgduFuomdoWOHWXaPWiv54imD+
- IZVgD/+taXt6sRhih3Xxm00eRnqKyK29iXURM1v0I5bnHH9gnjHWunGDRT8eHCwAQ+K3
- EY4Q==
+ bh=wkDSJuoxyBvjP1+SfrO4Sh4Op/iARoVIVoTcT3nNpHc=;
+ b=thwcw/xNv6ukhKumJblnlxq/O7OHMzeZXgcTOeY0nsl6qYVCaBHihGCwk33V2Aq0iv
+ KUtBkJslZgdinGnIdNuUMUvijxGT4o81t4e088xaRsVOX2JJduolXFAKmlc46TlMxE2b
+ 0dsGu9OeRoHAt/XBaUfkh7xWhX15fKLTsPhcY1gY8sg9YBo0hRhvh6vFeSMYexQi/Jve
+ 1by6F5ozPrnB6PCrRlo1uDOvMwz2oxM0qQRkcvBHC66XOwAVCVY4hke+5/MMJ54wF+q3
+ TUQv1K4zqQg0oa2eF9vG3XQKEzHYirPPe8p3amOFG7stql3ZEYRfxmPOOwLOD1q2LBi5
+ XYzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702398587; x=1703003387;
+ d=1e100.net; s=20230601; t=1702398596; x=1703003396;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5LE88JwgY2y1IWpLN7sGqf0VCLp2wC33lSYw5ePt+UY=;
- b=OKMfxbXK7sxCgDegu2PwzckJL69go1Yg9ILjcpBscggCCtsS/d6YDDlUGd0yX9sFWs
- lqkm+f9tCbzx3KdNZU2EuJ0SJ7g+I1QU/ieM9YMbaHyFweIcZv6RlMc+YFEjmSX0mJct
- k34OyIgCXlR4gzUT9OxzV8vF5St7CUhxnklcM66wRqJkwtN9MoReVjxqrtR23J7l93Sa
- UNU86AyFpIJSePj7c4EPCUtRZi++FmuFeyuASalfNSfGV7jP2kb5lIsy/z7A1gEVjIUZ
- 7KUPEbDYSQQ1Fh304RFk5xCbF92szkGauhI3f1lhXBG1E3DMpv6ehZ6r36fhEEOR1cUC
- ngyw==
-X-Gm-Message-State: AOJu0YxO2EGgM/JI2zDpdCd0X7H9eWEoMKFtVIWs39Ef5DO1jv5Z6Pev
- lZZZk8bgSZTRW40tklaG8bY++Hsq+gSgfmsWSLA=
-X-Google-Smtp-Source: AGHT+IEOz/3cPUYqj6E9+MY5U0yMjwZ0gN3IV8bI14iEHt40pSfIVR1T2gW74N0fBanDA7gfEviJEA==
-X-Received: by 2002:a17:906:414f:b0:a00:b4ab:cb6d with SMTP id
- l15-20020a170906414f00b00a00b4abcb6dmr2946269ejk.69.1702398587565; 
- Tue, 12 Dec 2023 08:29:47 -0800 (PST)
+ bh=wkDSJuoxyBvjP1+SfrO4Sh4Op/iARoVIVoTcT3nNpHc=;
+ b=IAJwtOQJa57c4AmekVraaryJ5OkjlSpzB+hAe3kqQmXPeoLazdAh2xQnAiHIfc0fBF
+ cF7IddWRmtj6JQUqU4RTEYWuu4gkiDlAld8pJOrYQXfadPmwaG4Z9P2wiuccbL/R02+9
+ E6JwbrKu6Bfwoa4z+oX7Qp6SjDLs+a6DCf/XqM4a+WKeVaTQ6y+UF/Wdh9jdjy/o530+
+ +fSI2IppIqu+Y7Nt2VhbKlu8/vA/hW9WZ+73YaCWTdzr3t160XFzs7pbUhYa1EhxSxR1
+ MzllJIedI0V8gkjjht0kVQdh5EnuvCx903SuxvPPbSHy4Ejmvdet/LaUqNGh+eHR1+CR
+ ctlg==
+X-Gm-Message-State: AOJu0Yyq+2a/ZLG/HHZGrmhrU7NXqUlqW5YbgwLFsSDfSIcCzskmb5QR
+ iK+giaSLIePB8w0K+IWgZhyXSzvwJhA8DhDGDR8=
+X-Google-Smtp-Source: AGHT+IGsFKkYN3lv0vuskgvb8T6VOZUqpgjBDYUxlBVV6cC9UkAdsg4Jarhsh0UTbfBa0oxIEC9ZXg==
+X-Received: by 2002:a17:906:8:b0:a18:8cf8:d632 with SMTP id
+ 8-20020a170906000800b00a188cf8d632mr2786947eja.20.1702398595847; 
+ Tue, 12 Dec 2023 08:29:55 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.175.193])
  by smtp.gmail.com with ESMTPSA id
- vs6-20020a170907a58600b00a1f99e749dasm3754142ejc.210.2023.12.12.08.29.45
+ ss22-20020a170907c01600b00a1d781068e8sm6477375ejc.8.2023.12.12.08.29.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Dec 2023 08:29:47 -0800 (PST)
+ Tue, 12 Dec 2023 08:29:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
@@ -71,17 +71,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Tyrone Ting <kfting@nuvoton.com>,
  Rob Herring <robh@kernel.org>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 01/33] hw/arm/boot: Propagate vCPU to arm_load_dtb()
-Date: Tue, 12 Dec 2023 17:29:01 +0100
-Message-ID: <20231212162935.42910-2-philmd@linaro.org>
+Subject: [PATCH 02/33] hw/arm/fsl-imx6: Add a local 'gic' variable
+Date: Tue, 12 Dec 2023 17:29:02 +0100
+Message-ID: <20231212162935.42910-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231212162935.42910-1-philmd@linaro.org>
 References: <20231212162935.42910-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,99 +104,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In heterogeneous setup the first vCPU might not be
-the one expected, better pass it explicitly.
+The A9MPCore forward the IRQs from its internal GIC.
+To make the code clearer, add a 'gic' variable.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/arm/boot.h |  4 +++-
- hw/arm/boot.c         | 11 ++++++-----
- hw/arm/virt.c         |  2 +-
- 3 files changed, 10 insertions(+), 7 deletions(-)
+ hw/arm/fsl-imx6.c | 37 +++++++++++++------------------------
+ 1 file changed, 13 insertions(+), 24 deletions(-)
 
-diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
-index 80c492d742..b12bf61ca8 100644
---- a/include/hw/arm/boot.h
-+++ b/include/hw/arm/boot.h
-@@ -160,6 +160,7 @@ AddressSpace *arm_boot_address_space(ARMCPU *cpu,
-  * @binfo:      struct describing the boot environment
-  * @addr_limit: upper limit of the available memory area at @addr
-  * @as:         address space to load image to
-+ * @cpu:        ARM CPU object
-  *
-  * Load a device tree supplied by the machine or by the user  with the
-  * '-dtb' command line option, and put it at offset @addr in target
-@@ -176,7 +177,8 @@ AddressSpace *arm_boot_address_space(ARMCPU *cpu,
-  * Note: Must not be called unless have_dtb(binfo) is true.
-  */
- int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
--                 hwaddr addr_limit, AddressSpace *as, MachineState *ms);
-+                 hwaddr addr_limit, AddressSpace *as, MachineState *ms,
-+                 ARMCPU *cpu);
+diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
+index 7dc42cbfe6..f6edbd7465 100644
+--- a/hw/arm/fsl-imx6.c
++++ b/hw/arm/fsl-imx6.c
+@@ -111,6 +111,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+     uint16_t i;
+     Error *err = NULL;
+     unsigned int smp_cpus = ms->smp.cpus;
++    DeviceState *gic = DEVICE(&s->a9mpcore);
  
- /* Write a secure board setup routine with a dummy handler for SMCs */
- void arm_write_secure_board_setup_dummy_smc(ARMCPU *cpu,
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 84ea6a807a..334e4640fd 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -432,13 +432,12 @@ out:
-     return ret;
- }
+     if (smp_cpus > FSL_IMX6_NUM_CPUS) {
+         error_setg(errp, "%s: Only %d CPUs are supported (%d requested)",
+@@ -186,8 +187,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
  
--static void fdt_add_psci_node(void *fdt)
-+static void fdt_add_psci_node(void *fdt, ARMCPU *armcpu)
- {
-     uint32_t cpu_suspend_fn;
-     uint32_t cpu_off_fn;
-     uint32_t cpu_on_fn;
-     uint32_t migrate_fn;
--    ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(0));
-     const char *psci_method;
-     int64_t psci_conduit;
-     int rc;
-@@ -512,7 +511,8 @@ static void fdt_add_psci_node(void *fdt)
- }
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->uart[i]), 0, serial_table[i].addr);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->uart[i]), 0,
+-                           qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                            serial_table[i].irq));
++                           qdev_get_gpio_in(gic, serial_table[i].irq));
+     }
  
- int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
--                 hwaddr addr_limit, AddressSpace *as, MachineState *ms)
-+                 hwaddr addr_limit, AddressSpace *as, MachineState *ms,
-+                 ARMCPU *cpu)
- {
-     void *fdt = NULL;
-     int size, rc, n = 0;
-@@ -655,7 +655,7 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
+     s->gpt.ccm = IMX_CCM(&s->ccm);
+@@ -198,8 +198,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+ 
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->gpt), 0, FSL_IMX6_GPT_ADDR);
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpt), 0,
+-                       qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                        FSL_IMX6_GPT_IRQ));
++                       qdev_get_gpio_in(gic, FSL_IMX6_GPT_IRQ));
+ 
+     /* Initialize all EPIT timers */
+     for (i = 0; i < FSL_IMX6_NUM_EPITS; i++) {
+@@ -219,8 +218,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+ 
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->epit[i]), 0, epit_table[i].addr);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->epit[i]), 0,
+-                           qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                            epit_table[i].irq));
++                           qdev_get_gpio_in(gic, epit_table[i].irq));
+     }
+ 
+     /* Initialize all I2C */
+@@ -240,8 +238,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+ 
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->i2c[i]), 0, i2c_table[i].addr);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c[i]), 0,
+-                           qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                            i2c_table[i].irq));
++                           qdev_get_gpio_in(gic, i2c_table[i].irq));
+     }
+ 
+     /* Initialize all GPIOs */
+@@ -298,11 +295,9 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+ 
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->gpio[i]), 0, gpio_table[i].addr);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio[i]), 0,
+-                           qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                            gpio_table[i].irq_low));
++                           qdev_get_gpio_in(gic, gpio_table[i].irq_low));
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->gpio[i]), 1,
+-                           qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                            gpio_table[i].irq_high));
++                           qdev_get_gpio_in(gic, gpio_table[i].irq_high));
+     }
+ 
+     /* Initialize all SDHC */
+@@ -329,8 +324,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
          }
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->esdhc[i]), 0, esdhc_table[i].addr);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->esdhc[i]), 0,
+-                           qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                            esdhc_table[i].irq));
++                           qdev_get_gpio_in(gic, esdhc_table[i].irq));
      }
  
--    fdt_add_psci_node(fdt);
-+    fdt_add_psci_node(fdt, cpu);
- 
-     if (binfo->modify_dtb) {
-         binfo->modify_dtb(binfo, fdt);
-@@ -1321,7 +1321,8 @@ void arm_load_kernel(ARMCPU *cpu, MachineState *ms, struct arm_boot_info *info)
-      * decided whether to enable PSCI and set the psci-conduit CPU properties.
-      */
-     if (!info->skip_dtb_autoload && have_dtb(info)) {
--        if (arm_load_dtb(info->dtb_start, info, info->dtb_limit, as, ms) < 0) {
-+        if (arm_load_dtb(info->dtb_start, info, info->dtb_limit,
-+                         as, ms, cpu) < 0) {
-             exit(1);
-         }
-     }
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index be2856c018..4a1d1550f5 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1678,7 +1678,7 @@ void virt_machine_done(Notifier *notifier, void *data)
-                                        vms->memmap[VIRT_PLATFORM_BUS].size,
-                                        vms->irqmap[VIRT_PLATFORM_BUS]);
-     }
--    if (arm_load_dtb(info->dtb_start, info, info->dtb_limit, as, ms) < 0) {
-+    if (arm_load_dtb(info->dtb_start, info, info->dtb_limit, as, ms, cpu) < 0) {
-         exit(1);
+     /* USB */
+@@ -351,8 +345,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->usb[i]), 0,
+                         FSL_IMX6_USBOH3_USB_ADDR + i * 0x200);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->usb[i]), 0,
+-                           qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                            FSL_IMX6_USBn_IRQ[i]));
++                           qdev_get_gpio_in(gic, FSL_IMX6_USBn_IRQ[i]));
      }
  
+     /* Initialize all ECSPI */
+@@ -375,8 +368,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+ 
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->spi[i]), 0, spi_table[i].addr);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[i]), 0,
+-                           qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                            spi_table[i].irq));
++                           qdev_get_gpio_in(gic, spi_table[i].irq));
+     }
+ 
+     object_property_set_uint(OBJECT(&s->eth), "phy-num", s->phy_num,
+@@ -387,11 +379,9 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+     }
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->eth), 0, FSL_IMX6_ENET_ADDR);
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->eth), 0,
+-                       qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                        FSL_IMX6_ENET_MAC_IRQ));
++                       qdev_get_gpio_in(gic, FSL_IMX6_ENET_MAC_IRQ));
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->eth), 1,
+-                       qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                        FSL_IMX6_ENET_MAC_1588_IRQ));
++                       qdev_get_gpio_in(gic, FSL_IMX6_ENET_MAC_1588_IRQ));
+ 
+     /*
+      * SNVS
+@@ -418,8 +408,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+ 
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->wdt[i]), 0, FSL_IMX6_WDOGn_ADDR[i]);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->wdt[i]), 0,
+-                           qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+-                                            FSL_IMX6_WDOGn_IRQ[i]));
++                           qdev_get_gpio_in(gic, FSL_IMX6_WDOGn_IRQ[i]));
+     }
+ 
+     /* ROM memory */
 -- 
 2.41.0
 
