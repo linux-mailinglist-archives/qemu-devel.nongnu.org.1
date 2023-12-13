@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A287811272
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:04:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F161B811282
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:06:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDOrv-0008DS-4k; Wed, 13 Dec 2023 08:01:43 -0500
+	id 1rDOtP-0000og-7P; Wed, 13 Dec 2023 08:03:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOrO-00083u-2d; Wed, 13 Dec 2023 08:01:13 -0500
+ id 1rDOrd-00087t-Th; Wed, 13 Dec 2023 08:01:30 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOrL-0006xp-GO; Wed, 13 Dec 2023 08:01:09 -0500
+ id 1rDOrZ-00070W-Lu; Wed, 13 Dec 2023 08:01:23 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F2C243B437;
- Wed, 13 Dec 2023 16:01:00 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 65B393B43D;
+ Wed, 13 Dec 2023 16:01:01 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 969983C8C8;
- Wed, 13 Dec 2023 16:00:41 +0300 (MSK)
-Received: (nullmailer pid 1024705 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0B0613C8CE;
+ Wed, 13 Dec 2023 16:00:42 +0300 (MSK)
+Received: (nullmailer pid 1024724 invoked by uid 1000);
  Wed, 13 Dec 2023 13:00:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Alexander Bulekov <alxndr@bu.edu>, Jason Wang <jasowang@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.8 04/24] net: Update MemReentrancyGuard for NIC
-Date: Wed, 13 Dec 2023 16:00:13 +0300
-Message-Id: <20231213130041.1024630-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.8 10/24] hw/misc/mps2-scc: Free MPS2SCC::oscclk[] array
+ on finalize()
+Date: Wed, 13 Dec 2023 16:00:19 +0300
+Message-Id: <20231213130041.1024630-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
 References: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,83 +62,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Recently MemReentrancyGuard was added to DeviceState to record that the
-device is engaging in I/O. The network device backend needs to update it
-when delivering a packet to a device.
+Commit 0be6bfac62 ("qdev: Implement variable length array properties")
+added the DEFINE_PROP_ARRAY() macro with the following comment:
 
-This implementation follows what bottom half does, but it does not add
-a tracepoint for the case that the network device backend started
-delivering a packet to a device which is already engaging in I/O. This
-is because such reentrancy frequently happens for
-qemu_flush_queued_packets() and is insignificant.
+  * It is the responsibility of the device deinit code to free the
+  * @_arrayfield memory.
 
-Fixes: CVE-2023-3019
-Reported-by: Alexander Bulekov <alxndr@bu.edu>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Alexander Bulekov <alxndr@bu.edu>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 9050f976e447444ea6ee2ba12c9f77e4b0dc54bc)
+Commit 4fb013afcc added:
+
+  DEFINE_PROP_ARRAY("oscclk", MPS2SCC, num_oscclk, oscclk_reset,
+                    qdev_prop_uint32, uint32_t),
+
+but forgot to free the 'oscclk_reset' array. Do it in the
+instance_finalize() handler.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 4fb013afcc ("hw/misc/mps2-scc: Support configurable number of OSCCLK values") # v6.0.0+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20231121174051.63038-4-philmd@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 896dd6ff7b9f2575f1a908a07f26a70b58d8b675)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/net/net.h b/include/net/net.h
-index 4f1b702f00..5a7c0e9ebf 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -118,6 +118,7 @@ struct NetClientState {
- typedef struct NICState {
-     NetClientState *ncs;
-     NICConf *conf;
-+    MemReentrancyGuard *reentrancy_guard;
-     void *opaque;
-     bool peer_deleted;
- } NICState;
-diff --git a/net/net.c b/net/net.c
-index 716a29f5a5..c3391168f6 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -332,6 +332,7 @@ NICState *qemu_new_nic(NetClientInfo *info,
-     nic = g_malloc0(info->size + sizeof(NetClientState) * queues);
-     nic->ncs = (void *)nic + info->size;
-     nic->conf = conf;
-+    nic->reentrancy_guard = reentrancy_guard,
-     nic->opaque = opaque;
+diff --git a/hw/misc/mps2-scc.c b/hw/misc/mps2-scc.c
+index b3b42a792c..fe5034db14 100644
+--- a/hw/misc/mps2-scc.c
++++ b/hw/misc/mps2-scc.c
+@@ -329,6 +329,13 @@ static void mps2_scc_realize(DeviceState *dev, Error **errp)
+     s->oscclk = g_new0(uint32_t, s->num_oscclk);
+ }
  
-     for (i = 0; i < queues; i++) {
-@@ -787,6 +788,7 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
-                                        int iovcnt,
-                                        void *opaque)
- {
-+    MemReentrancyGuard *owned_reentrancy_guard;
-     NetClientState *nc = opaque;
-     int ret;
- 
-@@ -799,12 +801,24 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
-         return 0;
-     }
- 
-+    if (nc->info->type != NET_CLIENT_DRIVER_NIC ||
-+        qemu_get_nic(nc)->reentrancy_guard->engaged_in_io) {
-+        owned_reentrancy_guard = NULL;
-+    } else {
-+        owned_reentrancy_guard = qemu_get_nic(nc)->reentrancy_guard;
-+        owned_reentrancy_guard->engaged_in_io = true;
-+    }
++static void mps2_scc_finalize(Object *obj)
++{
++    MPS2SCC *s = MPS2_SCC(obj);
 +
-     if (nc->info->receive_iov && !(flags & QEMU_NET_PACKET_FLAG_RAW)) {
-         ret = nc->info->receive_iov(nc, iov, iovcnt);
-     } else {
-         ret = nc_sendv_compat(nc, iov, iovcnt, flags);
-     }
- 
-+    if (owned_reentrancy_guard) {
-+        owned_reentrancy_guard->engaged_in_io = false;
-+    }
++    g_free(s->oscclk_reset);
++}
 +
-     if (ret == 0) {
-         nc->receive_disabled = 1;
-     }
+ static const VMStateDescription mps2_scc_vmstate = {
+     .name = "mps2-scc",
+     .version_id = 3,
+@@ -385,6 +392,7 @@ static const TypeInfo mps2_scc_info = {
+     .parent = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(MPS2SCC),
+     .instance_init = mps2_scc_init,
++    .instance_finalize = mps2_scc_finalize,
+     .class_init = mps2_scc_class_init,
+ };
+ 
 -- 
 2.39.2
 
