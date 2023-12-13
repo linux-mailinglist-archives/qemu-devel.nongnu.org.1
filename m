@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60339810EF4
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 11:52:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DA1810EF1
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 11:52:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDMpK-0004wV-2y; Wed, 13 Dec 2023 05:50:54 -0500
+	id 1rDMpG-0004vl-4h; Wed, 13 Dec 2023 05:50:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDMp2-0004q6-8B
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 05:50:36 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDMp8-0004sz-2B
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 05:50:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDMoy-0003zf-3a
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 05:50:34 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDMp1-00040D-JH
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 05:50:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702464630;
+ s=mimecast20190719; t=1702464633;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8bk/t9VNkU7rZeC0VREA4FPTelz+BPTj3ghHXBBeTsU=;
- b=ftCqbn1qttZty7MGIHB6cKO2zl2y8STaqwpr+WRr5iRcs70+tVmmymB/chW/Np3XV0b8dF
- 6BgGUZ7E/2P2aZBqY+K0EC2xPo74ClR2CH82qGlRja+vt4S1HIByWqYK4QG82nMXiabwh5
- wE2KtCwvJt4lzja0p+oyLY99ZzD36Oo=
+ bh=JUcoJmQTo4xIy4UOFNCfKKaqYnuI3yIalIZrxlvpmOg=;
+ b=Rfa9a/e7IN/Akgv10nX6GrybqQYzVxno2bQpHwLSBnAF3eNDaDAuAgKZztbVpcRh9CD+5j
+ 9dECwnK9PEsLEs7ExZCKVAeKhx4NvExmu524g1LoBy3TgcEsKd9wiBl6/wiur0mmx3mJe7
+ qKwTK6VlsgsvBPi0pEaCPC7oy8AXBwU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328-mPhjJjYnPoK8KN_yHw5k-Q-1; Wed, 13 Dec 2023 05:50:28 -0500
-X-MC-Unique: mPhjJjYnPoK8KN_yHw5k-Q-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-372-z9h_6pkGP0i3GY0J9McRVw-1; Wed, 13 Dec 2023 05:50:29 -0500
+X-MC-Unique: z9h_6pkGP0i3GY0J9McRVw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 00147185A785;
- Wed, 13 Dec 2023 10:50:28 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A1C1188F2EB;
+ Wed, 13 Dec 2023 10:50:29 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.193.79])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B7785492BE6;
- Wed, 13 Dec 2023 10:50:27 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5EE002166B31;
+ Wed, 13 Dec 2023 10:50:29 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 5F6871800DC3; Wed, 13 Dec 2023 11:50:26 +0100 (CET)
+ id 6C3F91800DC4; Wed, 13 Dec 2023 11:50:26 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 1/6] tests/acpi: allow tests/data/acpi/virt/SSDT.memhp changes
-Date: Wed, 13 Dec 2023 11:50:13 +0100
-Message-ID: <20231213105026.1944656-2-kraxel@redhat.com>
+Subject: [PULL 2/6] edk2: update to git snapshot
+Date: Wed, 13 Dec 2023 11:50:14 +0100
+Message-ID: <20231213105026.1944656-3-kraxel@redhat.com>
 In-Reply-To: <20231213105026.1944656-1-kraxel@redhat.com>
 References: <20231213105026.1944656-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -81,18 +81,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Want pick up edk2 commit cee7ba349c0c ("ArmVirtQemu: Allow
+EFI memory attributes protocol to be disabled").  Needed to
+fix issue #1990.
+
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 1 +
- 1 file changed, 1 insertion(+)
+ roms/edk2 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8bf4..e569098abddc 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/virt/SSDT.memhp",
+diff --git a/roms/edk2 b/roms/edk2
+index 819cfc6b42a6..b8a3eec88cc7 160000
+--- a/roms/edk2
++++ b/roms/edk2
+@@ -1 +1 @@
+-Subproject commit 819cfc6b42a68790a23509e4fcc58ceb70e1965e
++Subproject commit b8a3eec88cc74bbfe7fb389d026cc7d1d8a989c8
 -- 
 2.43.0
 
