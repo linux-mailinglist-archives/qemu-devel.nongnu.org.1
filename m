@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F83811E73
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 20:15:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9576F811EA8
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 20:17:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDUfv-0005RG-P1; Wed, 13 Dec 2023 14:13:43 -0500
+	id 1rDUiP-0006Dr-LO; Wed, 13 Dec 2023 14:16:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDUfu-0005R7-7Z
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 14:13:42 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDUiL-0006DU-EJ
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 14:16:13 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDUfs-0002IA-Kf
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 14:13:41 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-54c77e0835bso10198902a12.2
- for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 11:13:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDUiJ-0002lS-MX
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 14:16:13 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40c41df5577so41589495e9.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 11:16:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702494818; x=1703099618; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ d=linaro.org; s=google; t=1702494970; x=1703099770; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=i4/jHHl+lbTAM9uhvp49twqWZWtQndlbTIq/tBatWIw=;
- b=K0BM/w4fPGsDoSr+aiWuOaDRdy7KGYMW7Dhyqw5lXybspfngNvDOuYpjpY+Yg/O7V1
- Z07RZUlALGl3SQ0jORDdcjcSqQnXzDlQH+dv2K/IFKas9guu0MJZv5qODY5PoPlUYYRv
- kaazxtDysd+5dWq4d/iMLBzMSzeIivuQtkb1fgh8Ii50NOjzbkBdnyqTux3Hwd7S3A+m
- FlN5wnwWSYX+fzCc3J9YaCw48+RCtFWVfR6sNmVql+k0/+RczVu6+/Jkr0EtPl1T1l0Q
- ii5jkAqVTfxW+TIB9zXjho11j07+lSsFmtURRRg4hHqZCeE2evYJf9XINX6rcLCdKgWc
- fqhw==
+ bh=rLenTaYJHXtibSc66pUowk+tsS9QMOhm/sOD6BaK368=;
+ b=sHs/wabI2WCQ8y48rgwY77qNhdx5L7f5odUqaE1S/GXpMMO4I2Vp6dDhePWb53OstC
+ 0j2iHmAthOFXCQGxyhGnuCe+tv4hto/xHZqagANroa2TbrxghSQEuN2jWJfH9UTO4v+r
+ da7HfgB/rMv8EBK/bCnxyTowjMvy6ybGzooNMR8xfenTIhggmeEdl9dTc9Ex9JqhDsm+
+ z5tZdvZLV/Wc21LTCNCj3sOpkC7dYzCTXJ0PtnL2PBe7B9qugo5mThjNlVYqPGlDEOSC
+ 0nTIgBfdI6mv8R8uaXCoXn55p91YrKQC9oYpst3tXEMejHPpHHlDiCCpkU97IaX1QYBQ
+ 2eVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702494818; x=1703099618;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ d=1e100.net; s=20230601; t=1702494970; x=1703099770;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i4/jHHl+lbTAM9uhvp49twqWZWtQndlbTIq/tBatWIw=;
- b=qavp3bR6ZWIY9sMo5VypeGnOmKStznjKea2vQ2WKGZEPSMdT83qkQR6Z3Ahgfu5Znm
- S2Ta6Ea5FpyD9WugLIbYKoai5lrO2BCTvkODwbVt/0Mkkr90D51SMuDOVV1Bv1QMGNtt
- m4ux0fC1AaFpCXAFg30WPMmPOgptZFlwGuh/Y7duDYjlqJPg+3nVHqm4qKVfmLuB3FTL
- F6OtTlzGMPc3AkCQGiUDoLJNiCBSu2H7uznX/8NdqRmon+Xy+k3hohUxFrfvwvhO2c3g
- EdiFoVDxDoMrUOrgwRLic7qBP6jY/jztzfw8difr2Zp038RPBno3mKPZ1MrJlCvxeLUd
- X5RQ==
-X-Gm-Message-State: AOJu0Yyixk0QSqz9MJ+y7yZJmibIXHl0d5A8aKI2sJ0FZl1WkKr/nVdI
- T8Et7WU/sVR4FTmYa2aT26NhUg==
-X-Google-Smtp-Source: AGHT+IENHKKpAQ45bAde430aSwU4PuRVZbTfBtTDHhrfV+1PbPEDFHYNla2gyKmDXrCifMDglbZaLg==
-X-Received: by 2002:a50:8d8a:0:b0:54c:e28c:2086 with SMTP id
- r10-20020a508d8a000000b0054ce28c2086mr5010253edh.38.1702494818646; 
- Wed, 13 Dec 2023 11:13:38 -0800 (PST)
+ bh=rLenTaYJHXtibSc66pUowk+tsS9QMOhm/sOD6BaK368=;
+ b=ay9cKG4jZjXwEZYEdMPhHTExCILgXCkETIR0ygQKs7sMDEIXjga1DdH/Oj2zeE+vF4
+ Xbt52rS1MJ3sMYLje0jwHBd/SaKYmI92Ri7F5n6F05hAl7EXG8ClWBEKxvkbc+T+wOGo
+ /El5bevSXMZQhtN20IPxI4VGEg41dxbY5U8pxt1SV15Re83Aj4oJwg5eWEZTaUALZSeA
+ CksvIYG/yVDR0lPgsyEJd7QADUcDhA8eF96MJeQrPsT+u693SjGLH20M8Qkk1xxP/EJm
+ bow2+NCt12MJbK6/M2Q+rKB9fuI8XruQ6GEWo8CpU1AYGql/KOaqOOXFvVGQHpyPQuPG
+ Sfrw==
+X-Gm-Message-State: AOJu0YylczV9M3RJS9jdFw9bxbO0NB5AEWl1lwb5H9ct6SNTBh3xlnHR
+ VF9G1gKP8z/CrC3IzXC4zxUXNA==
+X-Google-Smtp-Source: AGHT+IEPdPMv2u/eBPS432P53eksOLrWaXVYL3iVKK10JhxrhGqUkWv1DrBGQ0jTQyt7Aed1EwIPuw==
+X-Received: by 2002:a7b:c7c6:0:b0:40b:5e59:f741 with SMTP id
+ z6-20020a7bc7c6000000b0040b5e59f741mr2416710wmk.179.1702494969713; 
+ Wed, 13 Dec 2023 11:16:09 -0800 (PST)
 Received: from [192.168.1.120] (tmo-066-178.customers.d1-online.com.
  [80.187.66.178]) by smtp.gmail.com with ESMTPSA id
- n8-20020a50cc48000000b0054c9df4317dsm5985262edi.7.2023.12.13.11.13.37
+ fj8-20020a1709069c8800b00a1d5c342674sm8175320ejc.27.2023.12.13.11.16.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Dec 2023 11:13:38 -0800 (PST)
-Message-ID: <9078f5a2-648b-4f83-b2e9-8c9b16b8e0ad@linaro.org>
-Date: Wed, 13 Dec 2023 20:13:36 +0100
+ Wed, 13 Dec 2023 11:16:09 -0800 (PST)
+Message-ID: <e4ce3b41-8a40-4a30-a615-a520ae881121@linaro.org>
+Date: Wed, 13 Dec 2023 20:16:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Questions about clocks emulation
+Subject: Re: [PATCH] fsl-imx: Add simple RTC emulation for i.MX6 and i.MX7
+ boards
 Content-Language: en-US
-To: Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-devel@nongnu.org
-References: <1001572703.6422667.1702386300513.JavaMail.zimbra@enst.fr>
-Cc: Peter Maydell <peter.maydell@linaro.org>, Luc Michel <luc.michel@amd.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Nikita Ostrenkov <n.ostrenkov@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, Andrey Smirnov <andrew.smirnov@gmail.com>
+References: <20231112092232.131-1-n.ostrenkov@gmail.com>
+ <CAFEAcA8A8sGjknad1QpeJ8qank-mWWw+gRvR4PVBHk2zAHrEnQ@mail.gmail.com>
+ <fbab82ef-bb45-417a-932e-99089dd4d4a5@linaro.org>
+ <CAFEAcA-NVrx+q6XLX02vuwD274THh5N7NJExVzvtD5zKaFa4HQ@mail.gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <1001572703.6422667.1702386300513.JavaMail.zimbra@enst.fr>
+In-Reply-To: <CAFEAcA-NVrx+q6XLX02vuwD274THh5N7NJExVzvtD5zKaFa4HQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,35 +96,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Arnaud,
-
-(Cc'ing Peter and Luc)
-
-On 12/12/23 14:05, Arnaud Minier wrote:
-> Hi all,
+On 13/12/23 18:20, Peter Maydell wrote:
+> On Wed, 13 Dec 2023 at 17:17, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Hi Peter,
+>>
+>> On 12/12/23 15:18, Peter Maydell wrote:
+>>> On Sun, 12 Nov 2023 at 09:22, Nikita Ostrenkov <n.ostrenkov@gmail.com> wrote:
+>>>
+>>> Hi; thanks for this patch, and sorry I haven't got round
+>>> to reviewing it earlier.
+>>>
+>>>> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+>>>> ---
+>>>>    hw/misc/imx7_snvs.c         | 59 ++++++++++++++++++++++++++++++++-----
+>>>>    hw/misc/trace-events        |  4 +--
+>>>>    include/hw/misc/imx7_snvs.h | 14 ++++++++-
+>>>>    3 files changed, 67 insertions(+), 10 deletions(-)
+>>
+>>
+>>>> @@ -31,6 +33,16 @@ struct IMX7SNVSState {
+>>>>        SysBusDevice parent_obj;
+>>>>
+>>>>        MemoryRegion mmio;
+>>>> +
+>>>> +    /*
+>>>> +     * Needed to preserve the tick_count across migration, even if the
+>>>> +     * absolute value of the rtc_clock is different on the source and
+>>>> +     * destination.
+>>>> +     */
+>>>> +    int64_t tick_offset_vmstate;
+>>>
+>>> You don't need tick_offset_vmstate -- it is only in the p031
+>>> RTC device as a backwards-compatibility thing for older versions
+>>> of QEMU. Migrating tick_offset alone is sufficient in a new
+>>> device. (It seems to have been unfortunately copied-and-pasted
+>>> into the goldfish RTC device; we should probably fix that bug.)
+>>>
+>>>> +    int64_t tick_offset;
+>>>> +
+>>>> +    uint64_t lpcr;
+>>>
+>>> We've now added state to this device, which means that it needs
+>>> a VMState structure to handle migration, and it needs a reset
+>>> function.
+>>
+>> I just noticed your v1 review after reviewing v2. Indeed
+>> 'tick_offset' need to be migrated. Now about reset(), RTC
+>> are somehow different. When resetting a machine in the same
+>> QEMU process I'd expect the RTC offset to not be reset.
+>>
+>> Could this be clarified by adding a reset handler with no
+>> code but a comment /* RTC state is usually kept by CMOS
+>> battery and is not reset */ maybe?
 > 
-> I tried to implement the RCC (Reset and Clock Control) for the STM32L4x5_SoC but ran into some problems regarding clock emulation in Qemu.
-> In this SoC, it is possible to change the source of several clocks used for devices like the CPU, the USART, and approximately every other device on the SoC.
-> This change can be made at runtime by writing into a specific register.
-> I tried to model this by using the clocks in hw/core/clock.c by I noticed that it is not possible to change a clock's source once it has been assigned (see clock_set_source()).
+> The lpcr register state needs to be reset.
 
-Ouch.
+Oh, I missed its access in imx7_snvs_read().
 
-I thought this was what connect_mux_sources() what doing (see
-hw/misc/bcm2835_cprman.c) but it is only called (along the
-clock_set_source() calls) from the realize() handler.
-
-> It prevents me from implementing a clock tree similar to the one on the hardware.
-> 
-> Is this limitation there for some reason or has it simply not been implemented?
-
-There is a /* changing clock source is not supported */ comment in
-clock_set_source(), so likely not implemented :)
-
-IIUC the only issue is how to update the src->children qlist.
-
-> Thanks,
-> Arnaud Minier
-> 
+> thanks
+> -- PMM
 
 
