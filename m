@@ -2,56 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2936581109E
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 12:57:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A83811260
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:03:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDNqg-0003or-Sk; Wed, 13 Dec 2023 06:56:22 -0500
+	id 1rDOri-00083W-Ta; Wed, 13 Dec 2023 08:01:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
- id 1rDNqe-0003oa-CH; Wed, 13 Dec 2023 06:56:20 -0500
-Received: from rev.ng ([5.9.113.41])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rDOrG-00082T-EZ; Wed, 13 Dec 2023 08:01:02 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
- id 1rDNqc-0001uR-Jt; Wed, 13 Dec 2023 06:56:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=BV6K3Mm3nvgXNQo4BiKorufcdfPdeA72eRuRFOnsb0Y=; b=fChkF+tFvOlznkDok0k5Ld3BIS
- s433J27x0cW1KBIpdSOJTOTPBbZeyiuqvgmWkImHptdUFvmxMPY4p0AISEfivz5VfJDjlTaUT6kVx
- rSMeUJs+IYTG45iye/+aenpwPLkwSN1vGwd+jLWP9uwrxwI81LS/Anym4zIE3zrrx/SQ=;
-Date: Wed, 13 Dec 2023 12:56:06 +0100
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Claudio Fontana <cfontana@suse.de>, 
- qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-riscv@nongnu.org,
- Brian Cain <bcain@quicinc.com>, 
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Warner Losh <imp@bsdimp.com>
-Subject: Re: [PATCH v2 09/23] host/atomic128: Include missing 'qemu/atomic.h'
- header
-Message-ID: <vzzjwfq23lhpukirvss75s5tuu4vn6djbu22mlrgwvha6em4vv@irs5cx6zy674>
-References: <20231212123401.37493-1-philmd@linaro.org>
- <20231212123401.37493-10-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rDOrC-0006sp-UZ; Wed, 13 Dec 2023 08:01:01 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id A9B803B433;
+ Wed, 13 Dec 2023 16:01:00 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 4D2B53C8C4;
+ Wed, 13 Dec 2023 16:00:41 +0300 (MSK)
+Received: (nullmailer pid 1024691 invoked by uid 1000);
+ Wed, 13 Dec 2023 13:00:41 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.8 00/24] Patch Round-up for stable 7.2.8,
+ freeze on 2023-12-23
+Date: Wed, 13 Dec 2023 16:00:09 +0300
+Message-Id: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231212123401.37493-10-philmd@linaro.org>
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,60 +55,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/12/23, Philippe Mathieu-Daudé wrote:
-> qatomic_cmpxchg__nocheck(), qatomic_read__nocheck(),
-> qatomic_set__nocheck() are defined in "qemu/atomic.h".
-> Include it in order to avoid:
-> 
->   In file included from include/exec/helper-proto.h:10:
->   In file included from include/exec/helper-proto-common.h:10:
->   In file included from include/qemu/atomic128.h:61:
->   In file included from host/include/aarch64/host/atomic128-cas.h:16:
->   host/include/generic/host/atomic128-cas.h:23:11: error: call to undeclared function 'qatomic_cmpxchg__nocheck'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
->     r.i = qatomic_cmpxchg__nocheck(ptr_align, c.i, n.i);
->           ^
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  host/include/generic/host/atomic128-cas.h  | 2 ++
->  host/include/generic/host/atomic128-ldst.h | 2 ++
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/host/include/generic/host/atomic128-cas.h b/host/include/generic/host/atomic128-cas.h
-> index 6b40cc2271..4824f14659 100644
-> --- a/host/include/generic/host/atomic128-cas.h
-> +++ b/host/include/generic/host/atomic128-cas.h
-> @@ -11,6 +11,8 @@
->  #ifndef HOST_ATOMIC128_CAS_H
->  #define HOST_ATOMIC128_CAS_H
->  
-> +#include "qemu/atomic.h"
-> +
->  #if defined(CONFIG_ATOMIC128)
->  static inline Int128 ATTRIBUTE_ATOMIC128_OPT
->  atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
-> diff --git a/host/include/generic/host/atomic128-ldst.h b/host/include/generic/host/atomic128-ldst.h
-> index 691e6a8531..12e4aca2da 100644
-> --- a/host/include/generic/host/atomic128-ldst.h
-> +++ b/host/include/generic/host/atomic128-ldst.h
-> @@ -11,6 +11,8 @@
->  #ifndef HOST_ATOMIC128_LDST_H
->  #define HOST_ATOMIC128_LDST_H
->  
-> +#include "qemu/atomic.h"
-> +
->  #if defined(CONFIG_ATOMIC128)
->  # define HAVE_ATOMIC128_RO 1
->  # define HAVE_ATOMIC128_RW 1
-> -- 
-> 2.41.0
-> 
+The following patches are queued for QEMU stable v7.2.8:
 
-What about the int128.h includes? I guess those definitions are acquired 
-from atomic128.h that includes -cas.h/-ldst.h?
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+
+Patch freeze is 2023-12-23, and the release is planned for 2023-12-25:
+
+  https://wiki.qemu.org/Planning/7.2
+
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 3efd8495735c Richard Henderson:
+   target/arm: Fix SME FMOPA (16-bit), BFMOPA
+02 eabb92125066 Niklas Cassel:
+   hw/ide/ahci: fix legacy software reset
+03 7d0fefdf81f5 Akihiko Odaki:
+   net: Provide MemReentrancyGuard * to qemu_new_nic()
+04 9050f976e447 Akihiko Odaki:
+   net: Update MemReentrancyGuard for NIC
+05 82d70a84c8ee Richard Henderson:
+   linux-user: Fix loaddr computation for some elf files
+06 861f724d03e1 Thomas Huth:
+   tests/avocado: Replace assertEquals() for Python 3.12 compatibility
+07 f0a663b4ced2 Philippe Mathieu-Daudé:
+   tests/avocado: Replace assertRegexpMatches() for Python 3.12 compatibility
+08 11a3c4a286d5 Peter Maydell:
+   target/arm: Set IL bit for pauth, SVE access, BTI trap syndromes
+09 c9a4aa06dfce Philippe Mathieu-Daudé:
+   hw/virtio: Free VirtIOIOMMUPCI::vdev.reserved_regions[] on finalize()
+10 896dd6ff7b9f Philippe Mathieu-Daudé:
+   hw/misc/mps2-scc: Free MPS2SCC::oscclk[] array on finalize()
+11 49b3e28b7bdf Philippe Mathieu-Daudé:
+   hw/nvram/xlnx-efuse: Free XlnxEFuse::ro_bits[] array on finalize()
+12 4f10c66077e3 Philippe Mathieu-Daudé:
+   hw/nvram/xlnx-efuse-ctrl: Free XlnxVersalEFuseCtrl[] "pg0-lock" array
+13 837053a7f491 Philippe Mathieu-Daudé:
+   hw/virtio: Add VirtioPCIDeviceTypeInfo::instance_finalize field
+14 9fb7b350ba98 Fam Zheng:
+   vmdk: Don't corrupt desc file in vmdk_write_cid
+15 dc96009afd8c Thomas Huth:
+   hw/mips/malta: Fix the malta machine on big endian hosts
+16 74e8593e7e51 Volker Rümelin:
+   hw/audio/hda-codec: fix multiplication overflow
+17 714a1415d7a6 Akihiko Odaki:
+   pcie_sriov: Remove g_new assertion
+18 20bc50137f3a Philippe Mathieu-Daudé:
+   hw/acpi/erst: Do not ignore Error* in realize handler
+19 2d37fe9e5e61 Robert Hoo:
+   msix: unset PCIDevice::msix_vector_poll_notifier in rollback
+20 6f189a08c1b0 Antonio Caggiano:
+   ui/gtk-egl: Check EGLSurface before doing scanout
+21 53a939f1bf8e Volker Rümelin:
+   ui/gtk-egl: move function calls back to regular code path
+22 ebfbf3946711 Fiona Ebner:
+   ui/vnc-clipboard: fix inflate_buffer
+23 f7767ca30179 Peter Maydell:
+   target/arm: Disable SME if SVE is disabled
+24 2b8fe81b3c2e Patrick Venture:
+   system/memory: use ldn_he_p/stn_he_p
 
