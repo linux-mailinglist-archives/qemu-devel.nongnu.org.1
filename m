@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00DB811262
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:03:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 223BA811274
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:05:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDOs4-0008IU-OP; Wed, 13 Dec 2023 08:01:53 -0500
+	id 1rDOrj-00083H-GU; Wed, 13 Dec 2023 08:01:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOrY-000865-Al; Wed, 13 Dec 2023 08:01:22 -0500
+ id 1rDOrF-00082D-6I; Wed, 13 Dec 2023 08:01:01 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOrV-0006zd-Cm; Wed, 13 Dec 2023 08:01:19 -0500
+ id 1rDOrC-0006so-UZ; Wed, 13 Dec 2023 08:01:00 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 54C683B43C;
- Wed, 13 Dec 2023 16:01:01 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id B83F53B434;
+ Wed, 13 Dec 2023 16:01:00 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id EC9683C8CD;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5B99B3C8C5;
  Wed, 13 Dec 2023 16:00:41 +0300 (MSK)
-Received: (nullmailer pid 1024720 invoked by uid 1000);
+Received: (nullmailer pid 1024696 invoked by uid 1000);
  Wed, 13 Dec 2023 13:00:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Auger <eric.auger@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.8 09/24] hw/virtio: Free
- VirtIOIOMMUPCI::vdev.reserved_regions[] on finalize()
-Date: Wed, 13 Dec 2023 16:00:18 +0300
-Message-Id: <20231213130041.1024630-9-mjt@tls.msk.ru>
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.8 01/24] target/arm: Fix SME FMOPA (16-bit), BFMOPA
+Date: Wed, 13 Dec 2023 16:00:10 +0300
+Message-Id: <20231213130041.1024630-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
 References: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
@@ -63,59 +61,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Commit 0be6bfac62 ("qdev: Implement variable length array properties")
-added the DEFINE_PROP_ARRAY() macro with the following comment:
-
-  * It is the responsibility of the device deinit code to free the
-  * @_arrayfield memory.
-
-Commit 8077b8e549 added:
-
-  DEFINE_PROP_ARRAY("reserved-regions", VirtIOIOMMUPCI,
-                    vdev.nb_reserved_regions, vdev.reserved_regions,
-                    qdev_prop_reserved_region, ReservedRegion),
-
-but forgot to free the 'vdev.reserved_regions' array. Do it in the
-instance_finalize() handler.
+Perform the loop increment unconditionally, not nested
+within the predication.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 8077b8e549 ("virtio-iommu-pci: Add array of Interval properties") # v5.1.0+
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-id: 20231121174051.63038-3-philmd@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 3916841ac75 ("target/arm: Implement FMOPA, FMOPS (widening)")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1985
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20231117193135.1180657-1-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit c9a4aa06dfce0fde1e279e1ea0c1945582ec0d16)
+(cherry picked from commit 3efd8495735c69b863476e9003e624877382a72d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: fixup hw/virtio/virtio-iommu-pci.c for before v8.1.0-2552-g41cc70cdf5,
- "virtio-iommu: Rename reserved_regions into prop_resv_regions" -- so now
- patch subject matches actual change again)
 
-diff --git a/hw/virtio/virtio-iommu-pci.c b/hw/virtio/virtio-iommu-pci.c
-index 7ef2f9dcdb..eab6e1c793 100644
---- a/hw/virtio/virtio-iommu-pci.c
-+++ b/hw/virtio/virtio-iommu-pci.c
-@@ -95,10 +95,18 @@ static void virtio_iommu_pci_instance_init(Object *obj)
-                                 TYPE_VIRTIO_IOMMU);
- }
+diff --git a/target/arm/sme_helper.c b/target/arm/sme_helper.c
+index 73dd838330..8856773635 100644
+--- a/target/arm/sme_helper.c
++++ b/target/arm/sme_helper.c
+@@ -1070,10 +1070,9 @@ void HELPER(sme_fmopa_h)(void *vza, void *vzn, void *vzm, void *vpn,
  
-+static void virtio_iommu_pci_instance_finalize(Object *obj)
-+{
-+    VirtIOIOMMUPCI *dev = VIRTIO_IOMMU_PCI(obj);
-+
-+    g_free(dev->vdev.reserved_regions);
-+}
-+
- static const VirtioPCIDeviceTypeInfo virtio_iommu_pci_info = {
-     .generic_name  = TYPE_VIRTIO_IOMMU_PCI,
-     .instance_size = sizeof(VirtIOIOMMUPCI),
-     .instance_init = virtio_iommu_pci_instance_init,
-+    .instance_finalize = virtio_iommu_pci_instance_finalize,
-     .class_init    = virtio_iommu_pci_class_init,
- };
+                         m = f16mop_adj_pair(m, pcol, 0);
+                         *a = f16_dotadd(*a, n, m, &fpst_std, &fpst_odd);
+-
+-                        col += 4;
+-                        pcol >>= 4;
+                     }
++                    col += 4;
++                    pcol >>= 4;
+                 } while (col & 15);
+             }
+             row += 4;
+@@ -1106,10 +1105,9 @@ void HELPER(sme_bfmopa)(void *vza, void *vzn, void *vzm, void *vpn,
  
+                         m = f16mop_adj_pair(m, pcol, 0);
+                         *a = bfdotadd(*a, n, m);
+-
+-                        col += 4;
+-                        pcol >>= 4;
+                     }
++                    col += 4;
++                    pcol >>= 4;
+                 } while (col & 15);
+             }
+             row += 4;
 -- 
 2.39.2
 
