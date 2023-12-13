@@ -2,52 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9842F810C7D
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 09:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F99810D1F
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 10:15:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDKep-0001jQ-P1; Wed, 13 Dec 2023 03:31:55 -0500
+	id 1rDLJ2-0002rE-7g; Wed, 13 Dec 2023 04:13:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rDKeg-0001i6-Pa
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 03:31:47 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rDKea-0008Dc-GB
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 03:31:46 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxVPDpa3llQJwAAA--.3822S3;
- Wed, 13 Dec 2023 16:31:37 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxguPka3ll6BQCAA--.14323S8; 
- Wed, 13 Dec 2023 16:31:37 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: peter.maydell@linaro.org
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org,
- alex.bennee@linaro.org, philmd@linaro.org, maobibo@loongson.cn
-Subject: [risu PATCH v2 6/6] loongarch: Add LASX instructions
-Date: Wed, 13 Dec 2023 16:18:39 +0800
-Message-Id: <20231213081839.4176614-7-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20231213081839.4176614-1-gaosong@loongson.cn>
-References: <20231213081839.4176614-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDLIz-0002qT-TZ
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 04:13:25 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDLIw-0005jL-HO
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 04:13:25 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40c29f7b068so62598865e9.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 01:13:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702458800; x=1703063600; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3vCRBepvGDIF+h/atkNkxz5l7o+29hEqO81znVRZd54=;
+ b=dQSCjjpAwj4eoiF0kKWS3fOpQmgKOjFKyyd66btMp6g2SoKu2YkinRoahe19KvglfU
+ zi4qxLBO9uoF+UwocEscMrS3JHoacnpGFaeW+QgIixgRHHHkFqRuFzLsmjGgLXXqRbMX
+ 22Mzo93TLwDsQmEWQ3yeYiTGl+CTWAdflCCnmefIwOeB1yd8aQ2UIECCIAbu2HpESrMb
+ K1SedZgAPOby3wAL2vimMBlwjA+wFKzibXXY9eew2JcZ9ufU6YqS41RTOTHbzluSl5Qs
+ h7u6TYC6w9O7WazTw6EyldXIFr+SuidWkdtjh5MUHKjBwT9znnKczGiwL0OdT6buydXD
+ xKcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702458800; x=1703063600;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3vCRBepvGDIF+h/atkNkxz5l7o+29hEqO81znVRZd54=;
+ b=YDkO3MAEKki0yqPjwlOiLG5D3oXk/4qHMn+wtt/wjxPLh+G3fWWxnK+VcOvDlI36tV
+ 0cjkPrFyOSFUlYo0GXSBgO+pinc439fs5+Wt6rQ25tgPsPF81S13XZoK2c7aJqs9RWNC
+ MndzoV7/vOHqA3tfaQfh8xAX8H/M8IrYcowqMIY5RdCt/KOLoJJbZ984LjmY4Phe6LHI
+ lCqSAQkIOVg238WdyPcyQ3EOlryLPE6bLuVgFpnrR7PxVMoQPauiGaci9nImulYUhBpp
+ qnvoScGrHG0G3cGxKYUj4DVDQJryunzFEHSGOYY77UaQ4X8Dp+SkmyrJyn75EOW8DwNt
+ vjhQ==
+X-Gm-Message-State: AOJu0YzIueeA3NcMoJMU9ANq2C8FdlWpaFBh28L77Oiuytn4o2t7GINb
+ LtfvRqBGZ/ZMyM8/v2I1w6fm8g==
+X-Google-Smtp-Source: AGHT+IE9xay8x/YNBjFbm+6BzCl5z3RD+Pky9tTfGzbEVRlsBLYbIRZLUEOA+vH420pZ2xd+I5XBfw==
+X-Received: by 2002:a1c:7919:0:b0:40c:311d:c677 with SMTP id
+ l25-20020a1c7919000000b0040c311dc677mr4091566wme.165.1702458800305; 
+ Wed, 13 Dec 2023 01:13:20 -0800 (PST)
+Received: from [192.168.50.175] (109.red-88-28-22.dynamicip.rima-tde.net.
+ [88.28.22.109]) by smtp.gmail.com with ESMTPSA id
+ jb4-20020a05600c54e400b0040c5cf930e6sm1139226wmb.19.2023.12.13.01.13.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Dec 2023 01:13:19 -0800 (PST)
+Message-ID: <ffc9c69b-f66b-4520-81a3-a2f125a7b7ea@linaro.org>
+Date: Wed, 13 Dec 2023 10:13:14 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-8.2 v4 04/10] hw/char/pl011: Extract
+ pl011_write_txdata() from pl011_write()
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Evgeny Iakovlev <eiakovlev@linux.microsoft.com>, qemu-arm@nongnu.org
+References: <20231109192814.95977-1-philmd@linaro.org>
+ <20231109192814.95977-5-philmd@linaro.org>
+ <e499f176-d882-4727-8caf-268d72e06606@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <e499f176-d882-4727-8caf-268d72e06606@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxguPka3ll6BQCAA--.14323S8
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,835 +99,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- loongarch64.risu | 815 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 815 insertions(+)
+On 10/11/23 00:17, Richard Henderson wrote:
+> On 11/9/23 11:28, Philippe Mathieu-Daudé wrote:
+>> When implementing FIFO, this code will become more complex.
+>> Start by factoring it out to a new pl011_write_txdata() function.
+>> No functional change intended.
+> 
+> ...
+>> @@ -262,19 +273,13 @@ static void pl011_write(void *opaque, hwaddr 
+>> offset,
+>>                           uint64_t value, unsigned size)
+>>   {
+>>       PL011State *s = (PL011State *)opaque;
+>> -    unsigned char ch;
+>>       trace_pl011_write(offset, value, pl011_regname(offset));
+>>       switch (offset >> 2) {
+>>       case 0: /* UARTDR */
+>> -        /* ??? Check if transmitter is enabled.  */
+>> -        ch = value;
+>> -        /* XXX this blocks entire thread. Rewrite to use
+>> -         * qemu_chr_fe_write and background I/O callbacks */
+>> -        qemu_chr_fe_write_all(&s->chr, &ch, 1);
+>> -        s->int_level |= INT_TX;
+>> -        pl011_update(s);
+>> +        s->readbuff = value;
+> 
+> Why the write to readbuff?
 
-diff --git a/loongarch64.risu b/loongarch64.risu
-index 6e8160b..8ee2452 100644
---- a/loongarch64.risu
-+++ b/loongarch64.risu
-@@ -2064,3 +2064,818 @@ vstelm_b LSX 0011 000110     si4:4 si8:8 rj:5 vd:5 \
- vldi LSX 0111 00111110 00 si13:13 vd:5 \
-     !constraints { $si13 >= 0 && $si13 <= 12; } \
-     !post { clean_lsx_result($vd); }
-+
-+#
-+# LASX instructions
-+#
-+
-+xvadd_b LASX 0111 01000000 10100 vk:5 vj:5 vd:5
-+xvadd_h LASX 0111 01000000 10101 vk:5 vj:5 vd:5
-+xvadd_w LASX 0111 01000000 10110 vk:5 vj:5 vd:5
-+xvadd_d LASX 0111 01000000 10111 vk:5 vj:5 vd:5
-+xvadd_q LASX 0111 01010010 11010 vk:5 vj:5 vd:5
-+xvsub_b LASX 0111 01000000 11000 vk:5 vj:5 vd:5
-+xvsub_h LASX 0111 01000000 11001 vk:5 vj:5 vd:5
-+xvsub_w LASX 0111 01000000 11010 vk:5 vj:5 vd:5
-+xvsub_d LASX 0111 01000000 11011 vk:5 vj:5 vd:5
-+xvsub_q LASX 0111 01010010 11011 vk:5 vj:5 vd:5
-+
-+xvaddi_bu LASX 0111 01101000 10100 imm:5 vj:5 vd:5
-+xvaddi_hu LASX 0111 01101000 10101 imm:5 vj:5 vd:5
-+xvaddi_wu LASX 0111 01101000 10110 imm:5 vj:5 vd:5
-+xvaddi_du LASX 0111 01101000 10111 imm:5 vj:5 vd:5
-+xvsubi_bu LASX 0111 01101000 11000 imm:5 vj:5 vd:5
-+xvsubi_hu LASX 0111 01101000 11001 imm:5 vj:5 vd:5
-+xvsubi_wu LASX 0111 01101000 11010 imm:5 vj:5 vd:5
-+xvsubi_du LASX 0111 01101000 11011 imm:5 vj:5 vd:5
-+
-+xvneg_b LASX 0111 01101001 11000 01100 vj:5 vd:5
-+xvneg_h LASX 0111 01101001 11000 01101 vj:5 vd:5
-+xvneg_w LASX 0111 01101001 11000 01110 vj:5 vd:5
-+xvneg_d LASX 0111 01101001 11000 01111 vj:5 vd:5
-+
-+xvsadd_b LASX 0111 01000100 01100 vk:5 vj:5 vd:5
-+xvsadd_h LASX 0111 01000100 01101 vk:5 vj:5 vd:5
-+xvsadd_w LASX 0111 01000100 01110 vk:5 vj:5 vd:5
-+xvsadd_d LASX 0111 01000100 01111 vk:5 vj:5 vd:5
-+xvsadd_bu LASX 0111 01000100 10100 vk:5 vj:5 vd:5
-+xvsadd_hu LASX 0111 01000100 10101 vk:5 vj:5 vd:5
-+xvsadd_wu LASX 0111 01000100 10110 vk:5 vj:5 vd:5
-+xvsadd_du LASX 0111 01000100 10111 vk:5 vj:5 vd:5
-+
-+xvssub_b LASX 0111 01000100 10000 vk:5 vj:5 vd:5
-+xvssub_h LASX 0111 01000100 10001 vk:5 vj:5 vd:5
-+xvssub_w LASX 0111 01000100 10010 vk:5 vj:5 vd:5
-+xvssub_d LASX 0111 01000100 10011 vk:5 vj:5 vd:5
-+xvssub_bu LASX 0111 01000100 11000 vk:5 vj:5 vd:5
-+xvssub_hu LASX 0111 01000100 11001 vk:5 vj:5 vd:5
-+xvssub_wu LASX 0111 01000100 11010 vk:5 vj:5 vd:5
-+xvssub_du LASX 0111 01000100 11011 vk:5 vj:5 vd:5
-+
-+xvhaddw_h_b LASX 0111 01000101 01000 vk:5 vj:5 vd:5
-+xvhaddw_w_h LASX 0111 01000101 01001 vk:5 vj:5 vd:5
-+xvhaddw_d_w LASX 0111 01000101 01010 vk:5 vj:5 vd:5
-+xvhaddw_q_d LASX 0111 01000101 01011 vk:5 vj:5 vd:5
-+xvhaddw_hu_bu LASX 0111 01000101 10000 vk:5 vj:5 vd:5
-+xvhaddw_wu_hu LASX 0111 01000101 10001 vk:5 vj:5 vd:5
-+xvhaddw_du_wu LASX 0111 01000101 10010 vk:5 vj:5 vd:5
-+xvhaddw_qu_du LASX 0111 01000101 10011 vk:5 vj:5 vd:5
-+
-+xvhsubw_h_b LASX 0111 01000101 01100 vk:5 vj:5 vd:5
-+xvhsubw_w_h LASX 0111 01000101 01101 vk:5 vj:5 vd:5
-+xvhsubw_d_w LASX 0111 01000101 01110 vk:5 vj:5 vd:5
-+xvhsubw_q_d LASX 0111 01000101 01111 vk:5 vj:5 vd:5
-+xvhsubw_hu_bu LASX 0111 01000101 10100 vk:5 vj:5 vd:5
-+xvhsubw_wu_hu LASX 0111 01000101 10101 vk:5 vj:5 vd:5
-+xvhsubw_du_wu LASX 0111 01000101 10110 vk:5 vj:5 vd:5
-+xvhsubw_qu_du LASX 0111 01000101 10111 vk:5 vj:5 vd:5
-+
-+xvaddwev_h_b LASX 0111 01000001 11100 vk:5 vj:5 vd:5
-+xvaddwev_w_h LASX 0111 01000001 11101 vk:5 vj:5 vd:5
-+xvaddwev_d_w LASX 0111 01000001 11110 vk:5 vj:5 vd:5
-+xvaddwev_q_d LASX 0111 01000001 11111 vk:5 vj:5 vd:5
-+xvaddwod_h_b LASX 0111 01000010 00100 vk:5 vj:5 vd:5
-+xvaddwod_w_h LASX 0111 01000010 00101 vk:5 vj:5 vd:5
-+xvaddwod_d_w LASX 0111 01000010 00110 vk:5 vj:5 vd:5
-+xvaddwod_q_d LASX 0111 01000010 00111 vk:5 vj:5 vd:5
-+
-+xvsubwev_h_b LASX 0111 01000010 00000 vk:5 vj:5 vd:5
-+xvsubwev_w_h LASX 0111 01000010 00001 vk:5 vj:5 vd:5
-+xvsubwev_d_w LASX 0111 01000010 00010 vk:5 vj:5 vd:5
-+xvsubwev_q_d LASX 0111 01000010 00011 vk:5 vj:5 vd:5
-+xvsubwod_h_b LASX 0111 01000010 01000 vk:5 vj:5 vd:5
-+xvsubwod_w_h LASX 0111 01000010 01001 vk:5 vj:5 vd:5
-+xvsubwod_d_w LASX 0111 01000010 01010 vk:5 vj:5 vd:5
-+xvsubwod_q_d LASX 0111 01000010 01011 vk:5 vj:5 vd:5
-+
-+xvaddwev_h_bu LASX 0111 01000010 11100 vk:5 vj:5 vd:5
-+xvaddwev_w_hu LASX 0111 01000010 11101 vk:5 vj:5 vd:5
-+xvaddwev_d_wu LASX 0111 01000010 11110 vk:5 vj:5 vd:5
-+xvaddwev_q_du LASX 0111 01000010 11111 vk:5 vj:5 vd:5
-+xvaddwod_h_bu LASX 0111 01000011 00100 vk:5 vj:5 vd:5
-+xvaddwod_w_hu LASX 0111 01000011 00101 vk:5 vj:5 vd:5
-+xvaddwod_d_wu LASX 0111 01000011 00110 vk:5 vj:5 vd:5
-+xvaddwod_q_du LASX 0111 01000011 00111 vk:5 vj:5 vd:5
-+
-+xvsubwev_h_bu LASX 0111 01000011 00000 vk:5 vj:5 vd:5
-+xvsubwev_w_hu LASX 0111 01000011 00001 vk:5 vj:5 vd:5
-+xvsubwev_d_wu LASX 0111 01000011 00010 vk:5 vj:5 vd:5
-+xvsubwev_q_du LASX 0111 01000011 00011 vk:5 vj:5 vd:5
-+xvsubwod_h_bu LASX 0111 01000011 01000 vk:5 vj:5 vd:5
-+xvsubwod_w_hu LASX 0111 01000011 01001 vk:5 vj:5 vd:5
-+xvsubwod_d_wu LASX 0111 01000011 01010 vk:5 vj:5 vd:5
-+xvsubwod_q_du LASX 0111 01000011 01011 vk:5 vj:5 vd:5
-+
-+xvaddwev_h_bu_b LASX 0111 01000011 11100 vk:5 vj:5 vd:5
-+xvaddwev_w_hu_h LASX 0111 01000011 11101 vk:5 vj:5 vd:5
-+xvaddwev_d_wu_w LASX 0111 01000011 11110 vk:5 vj:5 vd:5
-+xvaddwev_q_du_d LASX 0111 01000011 11111 vk:5 vj:5 vd:5
-+xvaddwod_h_bu_b LASX 0111 01000100 00000 vk:5 vj:5 vd:5
-+xvaddwod_w_hu_h LASX 0111 01000100 00001 vk:5 vj:5 vd:5
-+xvaddwod_d_wu_w LASX 0111 01000100 00010 vk:5 vj:5 vd:5
-+xvaddwod_q_du_d LASX 0111 01000100 00011 vk:5 vj:5 vd:5
-+
-+xvavg_b LASX 0111 01000110 01000 vk:5 vj:5 vd:5
-+xvavg_h LASX 0111 01000110 01001 vk:5 vj:5 vd:5
-+xvavg_w LASX 0111 01000110 01010 vk:5 vj:5 vd:5
-+xvavg_d LASX 0111 01000110 01011 vk:5 vj:5 vd:5
-+xvavg_bu LASX 0111 01000110 01100 vk:5 vj:5 vd:5
-+xvavg_hu LASX 0111 01000110 01101 vk:5 vj:5 vd:5
-+xvavg_wu LASX 0111 01000110 01110 vk:5 vj:5 vd:5
-+xvavg_du LASX 0111 01000110 01111 vk:5 vj:5 vd:5
-+xvavgr_b LASX 0111 01000110 10000 vk:5 vj:5 vd:5
-+xvavgr_h LASX 0111 01000110 10001 vk:5 vj:5 vd:5
-+xvavgr_w LASX 0111 01000110 10010 vk:5 vj:5 vd:5
-+xvavgr_d LASX 0111 01000110 10011 vk:5 vj:5 vd:5
-+xvavgr_bu LASX 0111 01000110 10100 vk:5 vj:5 vd:5
-+xvavgr_hu LASX 0111 01000110 10101 vk:5 vj:5 vd:5
-+xvavgr_wu LASX 0111 01000110 10110 vk:5 vj:5 vd:5
-+xvavgr_du LASX 0111 01000110 10111 vk:5 vj:5 vd:5
-+
-+xvabsd_b LASX 0111 01000110 00000 vk:5 vj:5 vd:5
-+xvabsd_h LASX 0111 01000110 00001 vk:5 vj:5 vd:5
-+xvabsd_w LASX 0111 01000110 00010 vk:5 vj:5 vd:5
-+xvabsd_d LASX 0111 01000110 00011 vk:5 vj:5 vd:5
-+xvabsd_bu LASX 0111 01000110 00100 vk:5 vj:5 vd:5
-+xvabsd_hu LASX 0111 01000110 00101 vk:5 vj:5 vd:5
-+xvabsd_wu LASX 0111 01000110 00110 vk:5 vj:5 vd:5
-+xvabsd_du LASX 0111 01000110 00111 vk:5 vj:5 vd:5
-+
-+xvadda_b LASX 0111 01000101 11000 vk:5 vj:5 vd:5
-+xvadda_h LASX 0111 01000101 11001 vk:5 vj:5 vd:5
-+xvadda_w LASX 0111 01000101 11010 vk:5 vj:5 vd:5
-+xvadda_d LASX 0111 01000101 11011 vk:5 vj:5 vd:5
-+
-+xvmax_b LASX 0111 01000111 00000 vk:5 vj:5 vd:5
-+xvmax_h LASX 0111 01000111 00001 vk:5 vj:5 vd:5
-+xvmax_w LASX 0111 01000111 00010 vk:5 vj:5 vd:5
-+xvmax_d LASX 0111 01000111 00011 vk:5 vj:5 vd:5
-+xvmax_bu LASX 0111 01000111 01000 vk:5 vj:5 vd:5
-+xvmax_hu LASX 0111 01000111 01001 vk:5 vj:5 vd:5
-+xvmax_wu LASX 0111 01000111 01010 vk:5 vj:5 vd:5
-+xvmax_du LASX 0111 01000111 01011 vk:5 vj:5 vd:5
-+
-+xvmaxi_b LASX 0111 01101001 00000 imm:5 vj:5 vd:5 \
-+    !constraints { $imm = sextract($imm, 5);}
-+xvmaxi_h LASX 0111 01101001 00001 imm:5 vj:5 vd:5 \
-+    !constraints { $imm = sextract($imm, 5);}
-+xvmaxi_w LASX 0111 01101001 00010 imm:5 vj:5 vd:5 \
-+    !constraints { $imm = sextract($imm, 5);}
-+xvmaxi_d LASX 0111 01101001 00011 imm:5 vj:5 vd:5 \
-+    !constraints { $imm = sextract($imm, 5);}
-+xvmaxi_bu LASX  0111 01101001 01000 imm:5 vj:5 vd:5
-+xvmaxi_hu LASX  0111 01101001 01001 imm:5 vj:5 vd:5
-+xvmaxi_wu LASX  0111 01101001 01010 imm:5 vj:5 vd:5
-+xvmaxi_du LASX  0111 01101001 01011 imm:5 vj:5 vd:5
-+
-+xvmin_b LASX 0111 01000111 00100 vk:5 vj:5 vd:5
-+xvmin_h LASX 0111 01000111 00101 vk:5 vj:5 vd:5
-+xvmin_w LASX 0111 01000111 00110 vk:5 vj:5 vd:5
-+xvmin_d LASX 0111 01000111 00111 vk:5 vj:5 vd:5
-+xvmin_bu LASX 0111 01000111 01100 vk:5 vj:5 vd:5
-+xvmin_hu LASX 0111 01000111 01101 vk:5 vj:5 vd:5
-+xvmin_wu LASX 0111 01000111 01110 vk:5 vj:5 vd:5
-+xvmin_du LASX 0111 01000111 01111 vk:5 vj:5 vd:5
-+
-+xvmini_b LASX 0111 01101001 00100 imm:5 vj:5 vd:5 \
-+    !constraints { $imm = sextract($imm, 5);}
-+xvmini_h LASX 0111 01101001 00101 imm:5 vj:5 vd:5 \
-+    !constraints { $imm = sextract($imm, 5);}
-+xvmini_w LASX 0111 01101001 00110 imm:5 vj:5 vd:5 \
-+    !constraints { $imm = sextract($imm, 5);}
-+xvmini_d LASX 0111 01101001 00111 imm:5 vj:5 vd:5 \
-+    !constraints { $imm = sextract($imm, 5);}
-+xvmini_bu LASX 0111 01101001 01100 imm:5 vj:5 vd:5
-+xvmini_hu LASX 0111 01101001 01101 imm:5 vj:5 vd:5
-+xvmini_wu LASX 0111 01101001 01110 imm:5 vj:5 vd:5
-+xvmini_du LASX 0111 01101001 01111 imm:5 vj:5 vd:5
-+
-+xvmul_b LASX 0111 01001000 01000 vk:5 vj:5 vd:5
-+xvmul_h LASX 0111 01001000 01001 vk:5 vj:5 vd:5
-+xvmul_w LASX 0111 01001000 01010 vk:5 vj:5 vd:5
-+xvmul_d LASX 0111 01001000 01011 vk:5 vj:5 vd:5
-+xvmuh_b LASX 0111 01001000 01100 vk:5 vj:5 vd:5
-+xvmuh_h LASX 0111 01001000 01101 vk:5 vj:5 vd:5
-+xvmuh_w LASX 0111 01001000 01110 vk:5 vj:5 vd:5
-+xvmuh_d LASX 0111 01001000 01111 vk:5 vj:5 vd:5
-+xvmuh_bu LASX 0111 01001000 10000 vk:5 vj:5 vd:5
-+xvmuh_hu LASX 0111 01001000 10001 vk:5 vj:5 vd:5
-+xvmuh_wu LASX 0111 01001000 10010 vk:5 vj:5 vd:5
-+xvmuh_du LASX 0111 01001000 10011 vk:5 vj:5 vd:5
-+
-+xvmulwev_h_b LASX 0111 01001001 00000 vk:5 vj:5 vd:5
-+xvmulwev_w_h LASX 0111 01001001 00001 vk:5 vj:5 vd:5
-+xvmulwev_d_w LASX 0111 01001001 00010 vk:5 vj:5 vd:5
-+xvmulwev_q_d LASX 0111 01001001 00011 vk:5 vj:5 vd:5
-+xvmulwod_h_b LASX 0111 01001001 00100 vk:5 vj:5 vd:5
-+xvmulwod_w_h LASX 0111 01001001 00101 vk:5 vj:5 vd:5
-+xvmulwod_d_w LASX 0111 01001001 00110 vk:5 vj:5 vd:5
-+xvmulwod_q_d LASX 0111 01001001 00111 vk:5 vj:5 vd:5
-+xvmulwev_h_bu LASX 0111 01001001 10000 vk:5 vj:5 vd:5
-+xvmulwev_w_hu LASX 0111 01001001 10001 vk:5 vj:5 vd:5
-+xvmulwev_d_wu LASX 0111 01001001 10010 vk:5 vj:5 vd:5
-+xvmulwev_q_du LASX 0111 01001001 10011 vk:5 vj:5 vd:5
-+xvmulwod_h_bu LASX 0111 01001001 10100 vk:5 vj:5 vd:5
-+xvmulwod_w_hu LASX 0111 01001001 10101 vk:5 vj:5 vd:5
-+xvmulwod_d_wu LASX 0111 01001001 10110 vk:5 vj:5 vd:5
-+xvmulwod_q_du LASX 0111 01001001 10111 vk:5 vj:5 vd:5
-+xvmulwev_h_bu_b LASX 0111 01001010 00000 vk:5 vj:5 vd:5
-+xvmulwev_w_hu_h LASX 0111 01001010 00001 vk:5 vj:5 vd:5
-+xvmulwev_d_wu_w LASX 0111 01001010 00010 vk:5 vj:5 vd:5
-+xvmulwev_q_du_d LASX 0111 01001010 00011 vk:5 vj:5 vd:5
-+xvmulwod_h_bu_b LASX 0111 01001010 00100 vk:5 vj:5 vd:5
-+xvmulwod_w_hu_h LASX 0111 01001010 00101 vk:5 vj:5 vd:5
-+xvmulwod_d_wu_w LASX 0111 01001010 00110 vk:5 vj:5 vd:5
-+xvmulwod_q_du_d LASX 0111 01001010 00111 vk:5 vj:5 vd:5
-+
-+xvmadd_b LASX 0111 01001010 10000 vk:5 vj:5 vd:5
-+xvmadd_h LASX 0111 01001010 10001 vk:5 vj:5 vd:5
-+xvmadd_w LASX 0111 01001010 10010 vk:5 vj:5 vd:5
-+xvmadd_d LASX 0111 01001010 10011 vk:5 vj:5 vd:5
-+xvmsub_b LASX 0111 01001010 10100 vk:5 vj:5 vd:5
-+xvmsub_h LASX 0111 01001010 10101 vk:5 vj:5 vd:5
-+xvmsub_w LASX 0111 01001010 10110 vk:5 vj:5 vd:5
-+xvmsub_d LASX 0111 01001010 10111 vk:5 vj:5 vd:5
-+
-+xvmaddwev_h_b LASX 0111 01001010 11000 vk:5 vj:5 vd:5
-+xvmaddwev_w_h LASX 0111 01001010 11001 vk:5 vj:5 vd:5
-+xvmaddwev_d_w LASX 0111 01001010 11010 vk:5 vj:5 vd:5
-+xvmaddwev_q_d LASX 0111 01001010 11011 vk:5 vj:5 vd:5
-+xvmaddwod_h_b LASX 0111 01001010 11100 vk:5 vj:5 vd:5
-+xvmaddwod_w_h LASX 0111 01001010 11101 vk:5 vj:5 vd:5
-+xvmaddwod_d_w LASX 0111 01001010 11110 vk:5 vj:5 vd:5
-+xvmaddwod_q_d LASX 0111 01001010 11111 vk:5 vj:5 vd:5
-+xvmaddwev_h_bu LASX 0111 01001011 01000 vk:5 vj:5 vd:5
-+xvmaddwev_w_hu LASX 0111 01001011 01001 vk:5 vj:5 vd:5
-+xvmaddwev_d_wu LASX 0111 01001011 01010 vk:5 vj:5 vd:5
-+xvmaddwev_q_du LASX 0111 01001011 01011 vk:5 vj:5 vd:5
-+xvmaddwod_h_bu LASX 0111 01001011 01100 vk:5 vj:5 vd:5
-+xvmaddwod_w_hu LASX 0111 01001011 01101 vk:5 vj:5 vd:5
-+xvmaddwod_d_wu LASX 0111 01001011 01110 vk:5 vj:5 vd:5
-+xvmaddwod_q_du LASX 0111 01001011 01111 vk:5 vj:5 vd:5
-+xvmaddwev_h_bu_b LASX 0111 01001011 11000 vk:5 vj:5 vd:5
-+xvmaddwev_w_hu_h LASX 0111 01001011 11001 vk:5 vj:5 vd:5
-+xvmaddwev_d_wu_w LASX 0111 01001011 11010 vk:5 vj:5 vd:5
-+xvmaddwev_q_du_d LASX 0111 01001011 11011 vk:5 vj:5 vd:5
-+xvmaddwod_h_bu_b LASX 0111 01001011 11100 vk:5 vj:5 vd:5
-+xvmaddwod_w_hu_h LASX 0111 01001011 11101 vk:5 vj:5 vd:5
-+xvmaddwod_d_wu_w LASX 0111 01001011 11110 vk:5 vj:5 vd:5
-+xvmaddwod_q_du_d LASX 0111 01001011 11111 vk:5 vj:5 vd:5
-+
-+xvdiv_b LASX 0111 01001110 00000 vk:5 vj:5 vd:5
-+xvdiv_h LASX 0111 01001110 00001 vk:5 vj:5 vd:5
-+xvdiv_w LASX 0111 01001110 00010 vk:5 vj:5 vd:5
-+xvdiv_d LASX 0111 01001110 00011 vk:5 vj:5 vd:5
-+xvmod_b LASX 0111 01001110 00100 vk:5 vj:5 vd:5
-+xvmod_h LASX 0111 01001110 00101 vk:5 vj:5 vd:5
-+xvmod_w LASX 0111 01001110 00110 vk:5 vj:5 vd:5
-+xvmod_d LASX 0111 01001110 00111 vk:5 vj:5 vd:5
-+xvdiv_bu LASX 0111 01001110 01000 vk:5 vj:5 vd:5
-+xvdiv_hu LASX 0111 01001110 01001 vk:5 vj:5 vd:5
-+xvdiv_wu LASX 0111 01001110 01010 vk:5 vj:5 vd:5
-+xvdiv_du LASX 0111 01001110 01011 vk:5 vj:5 vd:5
-+xvmod_bu LASX 0111 01001110 01100 vk:5 vj:5 vd:5
-+xvmod_hu LASX 0111 01001110 01101 vk:5 vj:5 vd:5
-+xvmod_wu LASX 0111 01001110 01110 vk:5 vj:5 vd:5
-+xvmod_du LASX 0111 01001110 01111 vk:5 vj:5 vd:5
-+
-+xvsat_b LASX 0111 01110010 01000 01 imm:3 vj:5 vd:5
-+xvsat_h LASX 0111 01110010 01000 1  imm:4 vj:5 vd:5
-+xvsat_w LASX 0111 01110010 01001    imm:5 vj:5 vd:5
-+xvsat_d LASX 0111 01110010 0101     imm:6 vj:5 vd:5
-+xvsat_bu LASX 0111 01110010 10000 01 imm:3 vj:5 vd:5
-+xvsat_hu LASX 0111 01110010 10000 1  imm:4 vj:5 vd:5
-+xvsat_wu LASX 0111 01110010 10001    imm:5 vj:5 vd:5
-+xvsat_du LASX 0111 01110010 1001     imm:6 vj:5 vd:5
-+
-+xvexth_h_b LASX 0111 01101001 11101 11000 vj:5 vd:5
-+xvexth_w_h LASX 0111 01101001 11101 11001 vj:5 vd:5
-+xvexth_d_w LASX 0111 01101001 11101 11010 vj:5 vd:5
-+xvexth_q_d LASX 0111 01101001 11101 11011 vj:5 vd:5
-+xvexth_hu_bu LASX 0111 01101001 11101 11100 vj:5 vd:5
-+xvexth_wu_hu LASX 0111 01101001 11101 11101 vj:5 vd:5
-+xvexth_du_wu LASX 0111 01101001 11101 11110 vj:5 vd:5
-+xvexth_qu_du LASX 0111 01101001 11101 11111 vj:5 vd:5
-+
-+vext2xv_h_b LASX 0111 01101001 11110 00100 vj:5 vd:5
-+vext2xv_w_b LASX 0111 01101001 11110 00101 vj:5 vd:5
-+vext2xv_d_b LASX 0111 01101001 11110 00110 vj:5 vd:5
-+vext2xv_w_h LASX 0111 01101001 11110 00111 vj:5 vd:5
-+vext2xv_d_h LASX 0111 01101001 11110 01000 vj:5 vd:5
-+vext2xv_d_w LASX 0111 01101001 11110 01001 vj:5 vd:5
-+vext2xv_hu_bu LASX 0111 01101001 11110 01010 vj:5 vd:5
-+vext2xv_wu_bu LASX 0111 01101001 11110 01011 vj:5 vd:5
-+vext2xv_du_bu LASX 0111 01101001 11110 01100 vj:5 vd:5
-+vext2xv_wu_hu LASX 0111 01101001 11110 01101 vj:5 vd:5
-+vext2xv_du_hu LASX 0111 01101001 11110 01110 vj:5 vd:5
-+vext2xv_du_wu LASX 0111 01101001 11110 01111 vj:5 vd:5
-+
-+xvsigncov_b LASX 0111 01010010 11100 vk:5 vj:5 vd:5
-+xvsigncov_h LASX 0111 01010010 11101 vk:5 vj:5 vd:5
-+xvsigncov_w LASX 0111 01010010 11110 vk:5 vj:5 vd:5
-+xvsigncov_d LASX 0111 01010010 11111 vk:5 vj:5 vd:5
-+
-+xvmskltz_b LASX 0111 01101001 11000 10000 vj:5 vd:5
-+xvmskltz_h LASX 0111 01101001 11000 10001 vj:5 vd:5
-+xvmskltz_w LASX 0111 01101001 11000 10010 vj:5 vd:5
-+xvmskltz_d LASX 0111 01101001 11000 10011 vj:5 vd:5
-+xvmskgez_b LASX 0111 01101001 11000 10100 vj:5 vd:5
-+xvmsknz_b LASX 0111 01101001 11000 11000 vj:5 vd:5
-+
-+xvldi LASX 0111 01111110 00 si13:13 vd:5 \
-+     !constraints { $si13 >= 0 && $si13 <= 12; }
-+
-+xvand_v  LASX 0111 01010010 01100 vk:5 vj:5 vd:5
-+xvor_v   LASX 0111 01010010 01101 vk:5 vj:5 vd:5
-+xvxor_v  LASX 0111 01010010 01110 vk:5 vj:5 vd:5
-+xvnor_v  LASX 0111 01010010 01111 vk:5 vj:5 vd:5
-+xvandn_v LASX 0111 01010010 10000 vk:5 vj:5 vd:5
-+xvorn_v  LASX 0111 01010010 10001 vk:5 vj:5 vd:5
-+
-+xvandi_b LASX 0111 01111101 00 imm:8 vj:5 vd:5
-+xvori_b  LASX 0111 01111101 01 imm:8 vj:5 vd:5
-+xvxori_b LASX 0111 01111101 10 imm:8 vj:5 vd:5
-+xvnori_b LASX 0111 01111101 11 imm:8 vj:5 vd:5
-+
-+xvsll_b LASX 0111 01001110 10000 vk:5 vj:5 vd:5
-+xvsll_h LASX 0111 01001110 10001 vk:5 vj:5 vd:5
-+xvsll_w LASX 0111 01001110 10010 vk:5 vj:5 vd:5
-+xvsll_d LASX 0111 01001110 10011 vk:5 vj:5 vd:5
-+xvslli_b LASX 0111 01110010 11000 01 imm:3 vj:5 vd:5
-+xvslli_h LASX 0111 01110010 11000 1  imm:4 vj:5 vd:5
-+xvslli_w LASX 0111 01110010 11001    imm:5 vj:5 vd:5
-+xvslli_d LASX 0111 01110010 1101     imm:6 vj:5 vd:5
-+xvsrl_b LASX 0111 01001110 10100 vk:5 vj:5 vd:5
-+xvsrl_h LASX 0111 01001110 10101 vk:5 vj:5 vd:5
-+xvsrl_w LASX 0111 01001110 10110 vk:5 vj:5 vd:5
-+xvsrl_d LASX 0111 01001110 10111 vk:5 vj:5 vd:5
-+xvsrli_b LASX 0111 01110011 00000 01 imm:3 vj:5 vd:5
-+xvsrli_h LASX 0111 01110011 00000 1  imm:4 vj:5 vd:5
-+xvsrli_w LASX 0111 01110011 00001    imm:5 vj:5 vd:5
-+xvsrli_d LASX 0111 01110011 0001     imm:6 vj:5 vd:5
-+xvsra_b LASX 0111 01001110 11000 vk:5 vj:5 vd:5
-+xvsra_h LASX 0111 01001110 11001 vk:5 vj:5 vd:5
-+xvsra_w LASX 0111 01001110 11010 vk:5 vj:5 vd:5
-+xvsra_d LASX 0111 01001110 11011 vk:5 vj:5 vd:5
-+xvsrai_b LASX 0111 01110011 01000 01 imm:3 vj:5 vd:5
-+xvsrai_h LASX 0111 01110011 01000 1  imm:4 vj:5 vd:5
-+xvsrai_w LASX 0111 01110011 01001    imm:5 vj:5 vd:5
-+xvsrai_d LASX 0111 01110011 0101     imm:6 vj:5 vd:5
-+xvrotr_b LASX 0111 01001110 11100 vk:5 vj:5 vd:5
-+xvrotr_h LASX 0111 01001110 11101 vk:5 vj:5 vd:5
-+xvrotr_w LASX 0111 01001110 11110 vk:5 vj:5 vd:5
-+xvrotr_d LASX 0111 01001110 11111 vk:5 vj:5 vd:5
-+xvrotri_b LASX 0111 01101010 00000 01 imm:3 vj:5 vd:5
-+xvrotri_h LASX 0111 01101010 00000 1  imm:4 vj:5 vd:5
-+xvrotri_w LASX 0111 01101010 00001    imm:5 vj:5 vd:5
-+xvrotri_d LASX 0111 01101010 0001     imm:6 vj:5 vd:5
-+
-+xvsllwil_h_b LASX 0111 01110000 10000 01 imm:3 vj:5 vd:5
-+xvsllwil_w_h LASX 0111 01110000 10000 1  imm:4 vj:5 vd:5
-+xvsllwil_d_w LASX 0111 01110000 10001    imm:5 vj:5 vd:5
-+xvextl_q_d LASX 0111 01110000 10010 00000  vj:5 vd:5
-+xvsllwil_hu_bu LASX 0111 01110000 11000 01 imm:3 vj:5 vd:5
-+xvsllwil_wu_hu LASX 0111 01110000 11000 1  imm:4 vj:5 vd:5
-+xvsllwil_du_wu LASX 0111 01110000 11001    imm:5 vj:5 vd:5
-+xvextl_qu_du LASX 0111 01110000 11010 00000  vj:5 vd:5
-+
-+xvsrlr_b LASX 0111 01001111 00000 vk:5 vj:5 vd:5
-+xvsrlr_h LASX 0111 01001111 00001 vk:5 vj:5 vd:5
-+xvsrlr_w LASX 0111 01001111 00010 vk:5 vj:5 vd:5
-+xvsrlr_d LASX 0111 01001111 00011 vk:5 vj:5 vd:5
-+xvsrlri_b LASX 0111 01101010 01000 01 imm:3 vj:5 vd:5
-+xvsrlri_h LASX 0111 01101010 01000 1  imm:4 vj:5 vd:5
-+xvsrlri_w LASX 0111 01101010 01001    imm:5 vj:5 vd:5
-+xvsrlri_d LASX 0111 01101010 0101     imm:6 vj:5 vd:5
-+xvsrar_b LASX 0111 01001111 00100 vk:5 vj:5 vd:5
-+xvsrar_h LASX 0111 01001111 00101 vk:5 vj:5 vd:5
-+xvsrar_w LASX 0111 01001111 00110 vk:5 vj:5 vd:5
-+xvsrar_d LASX 0111 01001111 00111 vk:5 vj:5 vd:5
-+xvsrari_b LASX 0111 01101010 10000 01 imm:3 vj:5 vd:5
-+xvsrari_h LASX 0111 01101010 10000 1  imm:4 vj:5 vd:5
-+xvsrari_w LASX 0111 01101010 10001    imm:5 vj:5 vd:5
-+xvsrari_d LASX 0111 01101010 1001     imm:6 vj:5 vd:5
-+
-+xvsrln_b_h LASX 0111 01001111 01001 vk:5 vj:5 vd:5
-+xvsrln_h_w LASX 0111 01001111 01010 vk:5 vj:5 vd:5
-+xvsrln_w_d LASX 0111 01001111 01011 vk:5 vj:5 vd:5
-+xvsran_b_h LASX 0111 01001111 01101 vk:5 vj:5 vd:5
-+xvsran_h_w LASX 0111 01001111 01110 vk:5 vj:5 vd:5
-+xvsran_w_d LASX 0111 01001111 01111 vk:5 vj:5 vd:5
-+
-+xvsrlni_b_h LASX 0111 01110100 00000 1 imm:4 vj:5 vd:5
-+xvsrlni_h_w LASX 0111 01110100 00001   imm:5 vj:5 vd:5
-+xvsrlni_w_d LASX 0111 01110100 0001    imm:6 vj:5 vd:5
-+xvsrlni_d_q LASX 0111 01110100 001     imm:7 vj:5 vd:5
-+xvsrani_b_h LASX 0111 01110101 10000 1 imm:4 vj:5 vd:5
-+xvsrani_h_w LASX 0111 01110101 10001   imm:5 vj:5 vd:5
-+xvsrani_w_d LASX 0111 01110101 1001    imm:6 vj:5 vd:5
-+xvsrani_d_q LASX 0111 01110101 101     imm:7 vj:5 vd:5
-+
-+xvsrlrn_b_h LASX 0111 01001111 10001 vk:5 vj:5 vd:5
-+xvsrlrn_h_w LASX 0111 01001111 10010 vk:5 vj:5 vd:5
-+xvsrlrn_w_d LASX 0111 01001111 10011 vk:5 vj:5 vd:5
-+xvsrarn_b_h LASX 0111 01001111 10101 vk:5 vj:5 vd:5
-+xvsrarn_h_w LASX 0111 01001111 10110 vk:5 vj:5 vd:5
-+xvsrarn_w_d LASX 0111 01001111 10111 vk:5 vj:5 vd:5
-+
-+xvsrlrni_b_h LASX 0111 01110100 01000 1 imm:4 vj:5 vd:5
-+xvsrlrni_h_w LASX 0111 01110100 01001   imm:5 vj:5 vd:5
-+xvsrlrni_w_d LASX 0111 01110100 0101    imm:6 vj:5 vd:5
-+xvsrlrni_d_q LASX 0111 01110100 011     imm:7 vj:5 vd:5
-+xvsrarni_b_h LASX 0111 01110101 11000 1 imm:4 vj:5 vd:5
-+xvsrarni_h_w LASX 0111 01110101 11001   imm:5 vj:5 vd:5
-+xvsrarni_w_d LASX 0111 01110101 1101    imm:6 vj:5 vd:5
-+xvsrarni_d_q LASX 0111 01110101 111     imm:7 vj:5 vd:5
-+
-+xvssrln_b_h LASX 0111 01001111 11001 vk:5 vj:5 vd:5
-+xvssrln_h_w LASX 0111 01001111 11010 vk:5 vj:5 vd:5
-+xvssrln_w_d LASX 0111 01001111 11011 vk:5 vj:5 vd:5
-+xvssran_b_h LASX 0111 01001111 11101 vk:5 vj:5 vd:5
-+xvssran_h_w LASX 0111 01001111 11110 vk:5 vj:5 vd:5
-+xvssran_w_d LASX 0111 01001111 11111 vk:5 vj:5 vd:5
-+xvssrln_bu_h LASX 0111 01010000 01001 vk:5 vj:5 vd:5
-+xvssrln_hu_w LASX 0111 01010000 01010 vk:5 vj:5 vd:5
-+xvssrln_wu_d LASX 0111 01010000 01011 vk:5 vj:5 vd:5
-+xvssran_bu_h LASX 0111 01010000 01101 vk:5 vj:5 vd:5
-+xvssran_hu_w LASX 0111 01010000 01110 vk:5 vj:5 vd:5
-+xvssran_wu_d LASX 0111 01010000 01111 vk:5 vj:5 vd:5
-+
-+xvssrlni_b_h LASX 0111 01110100 10000 1 imm:4 vj:5 vd:5
-+xvssrlni_h_w LASX 0111 01110100 10001   imm:5 vj:5 vd:5
-+xvssrlni_w_d LASX 0111 01110100 1001    imm:6 vj:5 vd:5
-+xvssrlni_d_q LASX 0111 01110100 101     imm:7 vj:5 vd:5
-+xvssrani_b_h LASX 0111 01110110 00000 1 imm:4 vj:5 vd:5
-+xvssrani_h_w LASX 0111 01110110 00001   imm:5 vj:5 vd:5
-+xvssrani_w_d LASX 0111 01110110 0001    imm:6 vj:5 vd:5
-+xvssrani_d_q LASX 0111 01110110 001     imm:7 vj:5 vd:5
-+xvssrlni_bu_h LASX 0111 01110100 11000 1 imm:4 vj:5 vd:5
-+xvssrlni_hu_w LASX 0111 01110100 11001   imm:5 vj:5 vd:5
-+xvssrlni_wu_d LASX 0111 01110100 1101    imm:6 vj:5 vd:5
-+xvssrlni_du_q LASX 0111 01110100 111     imm:7 vj:5 vd:5
-+xvssrani_bu_h LASX 0111 01110110 01000 1 imm:4 vj:5 vd:5
-+xvssrani_hu_w LASX 0111 01110110 01001   imm:5 vj:5 vd:5
-+xvssrani_wu_d LASX 0111 01110110 0101    imm:6 vj:5 vd:5
-+xvssrani_du_q LASX 0111 01110110 011     imm:7 vj:5 vd:5
-+
-+xvssrlrn_b_h LASX 0111 01010000 00001 vk:5 vj:5 vd:5
-+xvssrlrn_h_w LASX 0111 01010000 00010 vk:5 vj:5 vd:5
-+xvssrlrn_w_d LASX 0111 01010000 00011 vk:5 vj:5 vd:5
-+xvssrarn_b_h LASX 0111 01010000 00101 vk:5 vj:5 vd:5
-+xvssrarn_h_w LASX 0111 01010000 00110 vk:5 vj:5 vd:5
-+xvssrarn_w_d LASX 0111 01010000 00111 vk:5 vj:5 vd:5
-+xvssrlrn_bu_h LASX 0111 01010000 10001 vk:5 vj:5 vd:5
-+xvssrlrn_hu_w LASX 0111 01010000 10010 vk:5 vj:5 vd:5
-+xvssrlrn_wu_d LASX 0111 01010000 10011 vk:5 vj:5 vd:5
-+xvssrarn_bu_h LASX 0111 01010000 10101 vk:5 vj:5 vd:5
-+xvssrarn_hu_w LASX 0111 01010000 10110 vk:5 vj:5 vd:5
-+xvssrarn_wu_d LASX 0111 01010000 10111 vk:5 vj:5 vd:5
-+
-+xvssrlrni_b_h LASX 0111 01110101 00000 1 imm:4 vj:5 vd:5
-+xvssrlrni_h_w LASX 0111 01110101 00001   imm:5 vj:5 vd:5
-+xvssrlrni_w_d LASX 0111 01110101 0001    imm:6 vj:5 vd:5
-+xvssrlrni_d_q LASX 0111 01110101 001     imm:7 vj:5 vd:5
-+xvssrarni_b_h LASX 0111 01110110 10000 1 imm:4 vj:5 vd:5
-+xvssrarni_h_w LASX 0111 01110110 10001   imm:5 vj:5 vd:5
-+xvssrarni_w_d LASX 0111 01110110 1001    imm:6 vj:5 vd:5
-+xvssrarni_d_q LASX 0111 01110110 101     imm:7 vj:5 vd:5
-+xvssrlrni_bu_h LASX 0111 01110101 01000 1 imm:4 vj:5 vd:5
-+xvssrlrni_hu_w LASX 0111 01110101 01001   imm:5 vj:5 vd:5
-+xvssrlrni_wu_d LASX 0111 01110101 0101    imm:6 vj:5 vd:5
-+xvssrlrni_du_q LASX 0111 01110101 011     imm:7 vj:5 vd:5
-+xvssrarni_bu_h LASX 0111 01110110 11000 1 imm:4 vj:5 vd:5
-+xvssrarni_hu_w LASX 0111 01110110 11001   imm:5 vj:5 vd:5
-+xvssrarni_wu_d LASX 0111 01110110 1101    imm:6 vj:5 vd:5
-+xvssrarni_du_q LASX 0111 01110110 111     imm:7 vj:5 vd:5
-+
-+xvclo_b LASX 0111 01101001 11000 00000 vj:5 vd:5
-+xvclo_h LASX 0111 01101001 11000 00001 vj:5 vd:5
-+xvclo_w LASX 0111 01101001 11000 00010 vj:5 vd:5
-+xvclo_d LASX 0111 01101001 11000 00011 vj:5 vd:5
-+xvclz_b LASX 0111 01101001 11000 00100 vj:5 vd:5
-+xvclz_h LASX 0111 01101001 11000 00101 vj:5 vd:5
-+xvclz_w LASX 0111 01101001 11000 00110 vj:5 vd:5
-+xvclz_d LASX 0111 01101001 11000 00111 vj:5 vd:5
-+
-+xvpcnt_b LASX 0111 01101001 11000 01000 vj:5 vd:5
-+xvpcnt_h LASX 0111 01101001 11000 01001 vj:5 vd:5
-+xvpcnt_w LASX 0111 01101001 11000 01010 vj:5 vd:5
-+xvpcnt_d LASX 0111 01101001 11000 01011 vj:5 vd:5
-+
-+xvbitclr_b LASX 0111 01010000 11000 vk:5 vj:5 vd:5
-+xvbitclr_h LASX 0111 01010000 11001 vk:5 vj:5 vd:5
-+xvbitclr_w LASX 0111 01010000 11010 vk:5 vj:5 vd:5
-+xvbitclr_d LASX 0111 01010000 11011 vk:5 vj:5 vd:5
-+xvbitclri_b LASX 0111 01110001 00000 01 imm:3 vj:5 vd:5
-+xvbitclri_h LASX 0111 01110001 00000 1  imm:4 vj:5 vd:5
-+xvbitclri_w LASX 0111 01110001 00001    imm:5 vj:5 vd:5
-+xvbitclri_d LASX 0111 01110001 0001     imm:6 vj:5 vd:5
-+
-+xvbitset_b LASX 0111 01010000 11100 vk:5 vj:5 vd:5
-+xvbitset_h LASX 0111 01010000 11101 vk:5 vj:5 vd:5
-+xvbitset_w LASX 0111 01010000 11110 vk:5 vj:5 vd:5
-+xvbitset_d LASX 0111 01010000 11111 vk:5 vj:5 vd:5
-+xvbitseti_b LASX 0111 01110001 01000 01 imm:3 vj:5 vd:5
-+xvbitseti_h LASX 0111 01110001 01000 1  imm:4 vj:5 vd:5
-+xvbitseti_w LASX 0111 01110001 01001    imm:5 vj:5 vd:5
-+xvbitseti_d LASX 0111 01110001 0101     imm:6 vj:5 vd:5
-+
-+xvbitrev_b LASX 0111 01010001 00000 vk:5 vj:5 vd:5
-+xvbitrev_h LASX 0111 01010001 00001 vk:5 vj:5 vd:5
-+xvbitrev_w LASX 0111 01010001 00010 vk:5 vj:5 vd:5
-+xvbitrev_d LASX 0111 01010001 00011 vk:5 vj:5 vd:5
-+xvbitrevi_b LASX 0111 01110001 10000 01 imm:3 vj:5 vd:5
-+xvbitrevi_h LASX 0111 01110001 10000 1  imm:4 vj:5 vd:5
-+xvbitrevi_w LASX 0111 01110001 10001    imm:5 vj:5 vd:5
-+xvbitrevi_d LASX 0111 01110001 1001     imm:6 vj:5 vd:5
-+
-+xvfrstp_b LASX 0111 01010010 10110 vk:5 vj:5 vd:5
-+xvfrstp_h LASX 0111 01010010 10111 vk:5 vj:5 vd:5
-+xvfrstpi_b LASX 0111 01101001 10100 imm:5 vj:5 vd:5
-+xvfrstpi_h LASX 0111 01101001 10101 imm:5 vj:5 vd:5
-+
-+xvfadd_s LASX 0111 01010011 00001 vk:5 vj:5 vd:5
-+xvfadd_d LASX 0111 01010011 00010 vk:5 vj:5 vd:5
-+xvfsub_s LASX 0111 01010011 00101 vk:5 vj:5 vd:5
-+xvfsub_d LASX 0111 01010011 00110 vk:5 vj:5 vd:5
-+xvfmul_s LASX 0111 01010011 10001 vk:5 vj:5 vd:5
-+xvfmul_d LASX 0111 01010011 10010 vk:5 vj:5 vd:5
-+xvfdiv_s LASX 0111 01010011 10101 vk:5 vj:5 vd:5
-+xvfdiv_d LASX 0111 01010011 10110 vk:5 vj:5 vd:5
-+
-+xvfmadd_s LASX 0000 10100001 xa:5 vk:5 vj:5 vd:5
-+xvfmadd_d LASX 0000 10100010 xa:5 vk:5 vj:5 vd:5
-+xvfmsub_s LASX 0000 10100101 xa:5 vk:5 vj:5 vd:5
-+xvfmsub_d LASX 0000 10100110 xa:5 vk:5 vj:5 vd:5
-+xvfnmadd_s LASX 0000 10101001 xa:5 vk:5 vj:5 vd:5
-+xvfnmadd_d LASX 0000 10101010 xa:5 vk:5 vj:5 vd:5
-+xvfnmsub_s LASX 0000 10101101 xa:5 vk:5 vj:5 vd:5
-+xvfnmsub_d LASX 0000 10101110 xa:5 vk:5 vj:5 vd:5
-+
-+xvfmax_s LASX 0111 01010011 11001 vk:5 vj:5 vd:5
-+xvfmax_d LASX 0111 01010011 11010 vk:5 vj:5 vd:5
-+xvfmin_s LASX 0111 01010011 11101 vk:5 vj:5 vd:5
-+xvfmin_d LASX 0111 01010011 11110 vk:5 vj:5 vd:5
-+
-+xvfmaxa_s LASX 0111 01010100 00001 vk:5 vj:5 vd:5
-+xvfmaxa_d LASX 0111 01010100 00010 vk:5 vj:5 vd:5
-+xvfmina_s LASX 0111 01010100 00101 vk:5 vj:5 vd:5
-+xvfmina_d LASX 0111 01010100 00110 vk:5 vj:5 vd:5
-+
-+xvflogb_s LASX 0111 01101001 11001 10001 vj:5 vd:5
-+xvflogb_d LASX 0111 01101001 11001 10010 vj:5 vd:5
-+
-+xvfclass_s LASX 0111 01101001 11001 10101 vj:5 vd:5
-+xvfclass_d LASX 0111 01101001 11001 10110 vj:5 vd:5
-+
-+xvfsqrt_s LASX 0111 01101001 11001 11001 vj:5 vd:5
-+xvfsqrt_d LASX 0111 01101001 11001 11010 vj:5 vd:5
-+xvfrecip_s LASX 0111 01101001 11001 11101 vj:5 vd:5
-+xvfrecip_d LASX 0111 01101001 11001 11110 vj:5 vd:5
-+xvfrsqrt_s LASX 0111 01101001 11010 00001 vj:5 vd:5
-+xvfrsqrt_d LASX 0111 01101001 11010 00010 vj:5 vd:5
-+
-+xvfcvtl_s_h LASX 0111 01101001 11011 11010 vj:5 vd:5
-+xvfcvth_s_h LASX 0111 01101001 11011 11011 vj:5 vd:5
-+xvfcvtl_d_s LASX 0111 01101001 11011 11100 vj:5 vd:5
-+xvfcvth_d_s LASX 0111 01101001 11011 11101 vj:5 vd:5
-+xvfcvt_h_s LASX 0111 01010100 01100 vk:5 vj:5 vd:5
-+xvfcvt_s_d LASX 0111 01010100 01101 vk:5 vj:5 vd:5
-+
-+xvfrintrne_s LASX 0111 01101001 11010 11101 vj:5 vd:5
-+xvfrintrne_d LASX 0111 01101001 11010 11110 vj:5 vd:5
-+xvfrintrz_s LASX 0111 01101001 11010 11001 vj:5 vd:5
-+xvfrintrz_d LASX 0111 01101001 11010 11010 vj:5 vd:5
-+xvfrintrp_s LASX 0111 01101001 11010 10101 vj:5 vd:5
-+xvfrintrp_d LASX 0111 01101001 11010 10110 vj:5 vd:5
-+xvfrintrm_s LASX 0111 01101001 11010 10001 vj:5 vd:5
-+xvfrintrm_d LASX 0111 01101001 11010 10010 vj:5 vd:5
-+xvfrint_s LASX 0111 01101001 11010 01101 vj:5 vd:5
-+xvfrint_d LASX 0111 01101001 11010 01110 vj:5 vd:5
-+
-+xvftintrne_w_s LASX 0111 01101001 11100 10100 vj:5 vd:5
-+xvftintrne_l_d LASX 0111 01101001 11100 10101 vj:5 vd:5
-+xvftintrz_w_s LASX 0111 01101001 11100 10010 vj:5 vd:5
-+xvftintrz_l_d LASX 0111 01101001 11100 10011 vj:5 vd:5
-+xvftintrp_w_s LASX 0111 01101001 11100 10000 vj:5 vd:5
-+xvftintrp_l_d LASX 0111 01101001 11100 10001 vj:5 vd:5
-+xvftintrm_w_s LASX 0111 01101001 11100 01110 vj:5 vd:5
-+xvftintrm_l_d LASX 0111 01101001 11100 01111 vj:5 vd:5
-+xvftint_w_s LASX 0111 01101001 11100 01100 vj:5 vd:5
-+xvftint_l_d LASX 0111 01101001 11100 01101 vj:5 vd:5
-+xvftintrz_wu_s LASX 0111 01101001 11100 11100 vj:5 vd:5
-+xvftintrz_lu_d LASX 0111 01101001 11100 11101 vj:5 vd:5
-+xvftint_wu_s LASX 0111 01101001 11100 10110 vj:5 vd:5
-+xvftint_lu_d LASX 0111 01101001 11100 10111 vj:5 vd:5
-+
-+xvftintrne_w_d LASX 0111 01010100 10111 vk:5 vj:5 vd:5
-+xvftintrz_w_d LASX 0111 01010100 10110 vk:5 vj:5 vd:5
-+xvftintrp_w_d LASX 0111 01010100 10101 vk:5 vj:5 vd:5
-+xvftintrm_w_d LASX 0111 01010100 10100 vk:5 vj:5 vd:5
-+xvftint_w_d LASX 0111 01010100 10011 vk:5 vj:5 vd:5
-+
-+xvftintrnel_l_s LASX 0111 01101001 11101 01000 vj:5 vd:5
-+xvftintrneh_l_s LASX 0111 01101001 11101 01001 vj:5 vd:5
-+xvftintrzl_l_s LASX 0111 01101001 11101 00110 vj:5 vd:5
-+xvftintrzh_l_s LASX 0111 01101001 11101 00111 vj:5 vd:5
-+xvftintrpl_l_s LASX 0111 01101001 11101 00100 vj:5 vd:5
-+xvftintrph_l_s LASX 0111 01101001 11101 00101 vj:5 vd:5
-+xvftintrml_l_s LASX 0111 01101001 11101 00010 vj:5 vd:5
-+xvftintrmh_l_s LASX 0111 01101001 11101 00011 vj:5 vd:5
-+xvftintl_l_s LASX 0111 01101001 11101 00000 vj:5 vd:5
-+xvftinth_l_s LASX 0111 01101001 11101 00001 vj:5 vd:5
-+
-+xvffint_s_w LASX 0111 01101001 11100 00000 vj:5 vd:5
-+xvffint_d_l LASX 0111 01101001 11100 00010 vj:5 vd:5
-+xvffint_s_wu LASX 0111 01101001 11100 00001 vj:5 vd:5
-+xvffint_d_lu LASX 0111 01101001 11100 00011 vj:5 vd:5
-+xvffintl_d_w LASX 0111 01101001 11100 00100 vj:5 vd:5
-+xvffinth_d_w LASX 0111 01101001 11100 00101 vj:5 vd:5
-+xvffint_s_l LASX 0111 01010100 10000 vk:5 vj:5 vd:5
-+
-+xvseq_b LASX 0111 01000000 00000 vk:5 vj:5 vd:5
-+xvseq_h LASX 0111 01000000 00001 vk:5 vj:5 vd:5
-+xvseq_w LASX 0111 01000000 00010 vk:5 vj:5 vd:5
-+xvseq_d LASX 0111 01000000 00011 vk:5 vj:5 vd:5
-+xvseqi_b LASX 0111 01101000 00000 si5:5 vj:5 vd:5
-+xvseqi_h LASX 0111 01101000 00001 si5:5 vj:5 vd:5
-+xvseqi_w LASX 0111 01101000 00010 si5:5 vj:5 vd:5
-+xvseqi_d LASX 0111 01101000 00011 si5:5 vj:5 vd:5
-+
-+xvsle_b LASX 0111 01000000 00100 vk:5 vj:5 vd:5
-+xvsle_h LASX 0111 01000000 00101 vk:5 vj:5 vd:5
-+xvsle_w LASX 0111 01000000 00110 vk:5 vj:5 vd:5
-+xvsle_d LASX 0111 01000000 00111 vk:5 vj:5 vd:5
-+xvslei_b LASX 0111 01101000 00100 si5:5 vj:5 vd:5
-+xvslei_h LASX 0111 01101000 00101 si5:5 vj:5 vd:5
-+xvslei_w LASX 0111 01101000 00110 si5:5 vj:5 vd:5
-+xvslei_d LASX 0111 01101000 00111 si5:5 vj:5 vd:5
-+xvsle_bu LASX 0111 01000000 01000 vk:5 vj:5 vd:5
-+xvsle_hu LASX 0111 01000000 01001 vk:5 vj:5 vd:5
-+xvsle_wu LASX 0111 01000000 01010 vk:5 vj:5 vd:5
-+xvsle_du LASX 0111 01000000 01011 vk:5 vj:5 vd:5
-+xvslei_bu LASX 0111 01101000 01000 imm:5 vj:5 vd:5
-+xvslei_hu LASX 0111 01101000 01001 imm:5 vj:5 vd:5
-+xvslei_wu LASX 0111 01101000 01010 imm:5 vj:5 vd:5
-+xvslei_du LASX 0111 01101000 01011 imm:5 vj:5 vd:5
-+
-+xvslt_b LASX 0111 01000000 01100 vk:5 vj:5 vd:5
-+xvslt_h LASX 0111 01000000 01101 vk:5 vj:5 vd:5
-+xvslt_w LASX 0111 01000000 01110 vk:5 vj:5 vd:5
-+xvslt_d LASX 0111 01000000 01111 vk:5 vj:5 vd:5
-+xvslti_b LASX 0111 01101000 01100 si5:5 vj:5 vd:5
-+xvslti_h LASX 0111 01101000 01101 si5:5 vj:5 vd:5
-+xvslti_w LASX 0111 01101000 01110 si5:5 vj:5 vd:5
-+xvslti_d LASX 0111 01101000 01111 si5:5 vj:5 vd:5
-+xvslt_bu LASX 0111 01000000 10000 vk:5 vj:5 vd:5
-+xvslt_hu LASX 0111 01000000 10001 vk:5 vj:5 vd:5
-+xvslt_wu LASX 0111 01000000 10010 vk:5 vj:5 vd:5
-+xvslt_du LASX 0111 01000000 10011 vk:5 vj:5 vd:5
-+xvslti_bu LASX 0111 01101000 10000 imm:5 vj:5 vd:5
-+xvslti_hu LASX 0111 01101000 10001 imm:5 vj:5 vd:5
-+xvslti_wu LASX 0111 01101000 10010 imm:5 vj:5 vd:5
-+xvslti_du LASX 0111 01101000 10011 imm:5 vj:5 vd:5
-+
-+xvfcmp_cond_s LASX 0000 11001001 cond:5 vk:5 vj:5 vd:5 \
-+    !constraints { $cond > 0 && $cond < 0x12; }
-+xvfcmp_cond_d LASX 0000 11001010 cond:5 vk:5 vj:5 vd:5 \
-+    !constraints { $cond > 0 && $cond < 0x12; }
-+
-+xvbitsel_v LASX 0000 11010010  xa:5 vk:5 vj:5 vd:5
-+xvbitseli_b LASX 0111 01111100 01 imm:8 vj:5 vd:5
-+
-+xvseteqz_v LASX 0111 01101001 11001 00110 vj:5 00 cd:3
-+xvsetnez_v LASX 0111 01101001 11001 00111 vj:5 00 cd:3
-+xvsetanyeqz_b LASX 0111 01101001 11001 01000 vj:5 00 cd:3
-+xvsetanyeqz_h LASX 0111 01101001 11001 01001 vj:5 00 cd:3
-+xvsetanyeqz_w LASX 0111 01101001 11001 01010 vj:5 00 cd:3
-+xvsetanyeqz_d LASX 0111 01101001 11001 01011 vj:5 00 cd:3
-+xvsetallnez_b LASX 0111 01101001 11001 01100 vj:5 00 cd:3
-+xvsetallnez_h LASX 0111 01101001 11001 01101 vj:5 00 cd:3
-+xvsetallnez_w LASX 0111 01101001 11001 01110 vj:5 00 cd:3
-+xvsetallnez_d LASX 0111 01101001 11001 01111 vj:5 00 cd:3
-+
-+xvinsgr2vr_w LASX 0111 01101110 10111 10  imm:3 rj:5 vd:5 \
-+    !constraints { $rj != 2 && $rj != 0; }
-+xvinsgr2vr_d LASX 0111 01101110 10111 110 imm:2 rj:5 vd:5 \
-+    !constraints { $rj != 2 && $rj != 0; }
-+xvpickve2gr_w LASX 0111 01101110 11111 10  imm:3 vj:5 rd:5 \
-+    !constraints { $rd != 2 && $rd != 0; }
-+xvpickve2gr_d LASX 0111 01101110 11111 110 imm:2 vj:5 rd:5 \
-+    !constraints { $rd != 2 && $rd != 0; }
-+xvpickve2gr_wu LASX 0111 01101111 00111 10  imm:3 vj:5 rd:5 \
-+    !constraints { $rd != 2 && $rd != 0; }
-+xvpickve2gr_du LASX 0111 01101111 00111 110 imm:2 vj:5 rd:5 \
-+    !constraints { $rd != 2 && $rd != 0; }
-+
-+xvrepl128vei_b LASX 0111 01101111 01111 0    imm:4 vj:5 vd:5
-+xvrepl128vei_h LASX 0111 01101111 01111 10   imm:3 vj:5 vd:5
-+xvrepl128vei_w LASX 0111 01101111 01111 110  imm:2 vj:5 vd:5
-+xvrepl128vei_d LASX 0111 01101111 01111 1110 imm:1 vj:5 vd:5
-+
-+xvreplve_b LASX 0111 01010010 00100 rk:5 vj:5 vd:5
-+xvreplve_h LASX 0111 01010010 00101 rk:5 vj:5 vd:5
-+xvreplve_w LASX 0111 01010010 00110 rk:5 vj:5 vd:5
-+xvreplve_d LASX 0111 01010010 00111 rk:5 vj:5 vd:5
-+
-+xvreplve0_b LASX 0111 01110000 01110 00000 vj:5 vd:5
-+xvreplve0_h LASX 0111 01110000 01111 00000 vj:5 vd:5
-+xvreplve0_w LASX 0111 01110000 01111 10000 vj:5 vd:5
-+xvreplve0_d LASX 0111 01110000 01111 11000 vj:5 vd:5
-+xvreplve0_q LASX 0111 01110000 01111 11100 vj:5 vd:5
-+
-+xvinsve0_w LASX 0111 01101111 11111 10  imm:3 vj:5 vd:5
-+xvinsve0_d LASX 0111 01101111 11111 110 imm:2 vj:5 vd:5
-+
-+xvpickve_w LASX 0111 01110000 00111 10  imm:3 vj:5 vd:5
-+xvpickve_d LASX 0111 01110000 00111 110 imm:2 vj:5 vd:5
-+
-+xvbsll_v LASX 0111 01101000 11100 imm:5 vj:5 vd:5
-+xvbsrl_v LASX 0111 01101000 11101 imm:5 vj:5 vd:5
-+
-+xvpackev_b LASX 0111 01010001 01100 vk:5 vj:5 vd:5
-+xvpackev_h LASX 0111 01010001 01101 vk:5 vj:5 vd:5
-+xvpackev_w LASX 0111 01010001 01110 vk:5 vj:5 vd:5
-+xvpackev_d LASX 0111 01010001 01111 vk:5 vj:5 vd:5
-+xvpackod_b LASX 0111 01010001 10000 vk:5 vj:5 vd:5
-+xvpackod_h LASX 0111 01010001 10001 vk:5 vj:5 vd:5
-+xvpackod_w LASX 0111 01010001 10010 vk:5 vj:5 vd:5
-+xvpackod_d LASX 0111 01010001 10011 vk:5 vj:5 vd:5
-+
-+xvpickev_b LASX 0111 01010001 11100 vk:5 vj:5 vd:5
-+xvpickev_h LASX 0111 01010001 11101 vk:5 vj:5 vd:5
-+xvpickev_w LASX 0111 01010001 11110 vk:5 vj:5 vd:5
-+xvpickev_d LASX 0111 01010001 11111 vk:5 vj:5 vd:5
-+xvpickod_b LASX 0111 01010010 00000 vk:5 vj:5 vd:5
-+xvpickod_h LASX 0111 01010010 00001 vk:5 vj:5 vd:5
-+xvpickod_w LASX 0111 01010010 00010 vk:5 vj:5 vd:5
-+xvpickod_d LASX 0111 01010010 00011 vk:5 vj:5 vd:5
-+
-+xvilvl_b LASX 0111 01010001 10100 vk:5 vj:5 vd:5
-+xvilvl_h LASX 0111 01010001 10101 vk:5 vj:5 vd:5
-+xvilvl_w LASX 0111 01010001 10110 vk:5 vj:5 vd:5
-+xvilvl_d LASX 0111 01010001 10111 vk:5 vj:5 vd:5
-+xvilvh_b LASX 0111 01010001 11000 vk:5 vj:5 vd:5
-+xvilvh_h LASX 0111 01010001 11001 vk:5 vj:5 vd:5
-+xvilvh_w LASX 0111 01010001 11010 vk:5 vj:5 vd:5
-+xvilvh_d LASX 0111 01010001 11011 vk:5 vj:5 vd:5
-+
-+#xvshuf_b LASX 0000 11010110 xa:5 vk:5 vj:5 vd:5
-+#xvshuf_h LASX 0111 01010111 10101 vk:5 vj:5 vd:5
-+#xvshuf_w LASX 0111 01010111 10110 vk:5 vj:5 vd:5
-+#xvshuf_d LASX 0111 01010111 10111 vk:5 vj:5 vd:5
-+
-+xvperm_w LASX 0111 01010111 11010 vk:5 vj:5 vd:5
-+
-+xvshuf4i_b LASX 0111 01111001 00 imm:8 vj:5 vd:5
-+xvshuf4i_h LASX 0111 01111001 01 imm:8 vj:5 vd:5
-+xvshuf4i_w LASX 0111 01111001 10 imm:8 vj:5 vd:5
-+xvshuf4i_d LASX 0111 01111001 11 imm:8 vj:5 vd:5
-+
-+xvpermi_w LASX 0111 01111110 01 imm:8 vj:5 vd:5
-+xvpermi_d LASX 0111 01111110 10 imm:8 vj:5 vd:5
-+#xvpermi_q LASX 0111 01111110 11 imm:8 vj:5 vd:5
-+
-+xvextrins_d LASX 0111 01111000 00 imm:8 vj:5 vd:5
-+xvextrins_w LASX 0111 01111000 01 imm:8 vj:5 vd:5
-+xvextrins_h LASX 0111 01111000 10 imm:8 vj:5 vd:5
-+xvextrins_b LASX 0111 01111000 11 imm:8 vj:5 vd:5
-+
-+xvld LASX 0010 110010 si12:12 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si12, 12)); }
-+xvst LASX 0010 110011 si12:12 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si12, 12)); }
-+xvldx LASX 0011 10000100 10000 rk:5 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != $rk && $rk != 2 && $rj != 2; } \
-+    !memory { reg_plus_reg($rj, $rk); }
-+xvstx LASX 0011 10000100 11000 rk:5 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != $rk && $rk != 2 && $rj != 2; } \
-+    !memory { reg_plus_reg($rj, $rk); }
-+
-+xvldrepl_d LASX 0011 00100001 0 si9:9 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si9, 9) * 8); }
-+xvldrepl_w LASX 0011 00100010   si10:10 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si10, 10) * 4); }
-+xvldrepl_h LASX 0011 0010010    si11:11 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si11, 11) * 2); }
-+xvldrepl_b LASX 0011 001010     si12:12 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si12, 12)); }
-+
-+xvstelm_d LASX 0011 00110001 si2:2 si8:8 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si8, 8) * 8); }
-+xvstelm_w LASX 0011 0011001  si3:3 si8:8 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si8, 8) * 4); }
-+xvstelm_h LASX 0011 001101   si4:4 si8:8 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si8, 8) * 2); }
-+xvstelm_b LASX 0011 00111    si5:5 si8:8 rj:5 vd:5 \
-+    !constraints { $rj != 0 && $rj != 2; } \
-+    !memory { reg_plus_imm($rj, sextract($si8, 8) * 2); }
--- 
-2.25.1
+I think I wanted to use it when FIFO is disabled due to:
+
+https://developer.arm.com/documentation/ddi0183/g/programmers-model/register-descriptions/line-control-register--uartlcr-h?lang=en
+
+UARTLCR_H.FEN:
+
+   Enable FIFOs:
+
+   0 = FIFOs are disabled (character mode) that is, the FIFOs become
+       1-byte-deep holding registers
+
+   1 = transmit and receive FIFO buffers are enabled (FIFO mode).
+
+and we don't have a fifo8_change_capacity() method.
+
+Otherwise, not sure what for is this field... I'll see if we can
+just remove it.
 
 
