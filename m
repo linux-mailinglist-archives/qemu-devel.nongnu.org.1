@@ -2,68 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FDC5811F18
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 20:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 179DA811FB8
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 21:10:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDV50-00022R-NH; Wed, 13 Dec 2023 14:39:38 -0500
+	id 1rDVXJ-0000r0-7Q; Wed, 13 Dec 2023 15:08:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1rDV4y-00021d-9b
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 14:39:36 -0500
+ (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1rDVXH-0000qb-6D
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 15:08:51 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1rDV4w-0000YE-NP
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 14:39:36 -0500
+ (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1rDVXF-0005aA-8C
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 15:08:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702496373;
+ s=mimecast20190719; t=1702498127;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pKJ2gmaWxKAK6Y/wvzA1srhiIXS0NochFPI0HVkNASs=;
- b=ExNXspjhzUkXxtfG8byjZC/KA8KG2duHqAoKMhRawhCvhwyPU9g9NaVOVwIbIqarVy822j
- Heh7W2nh+nIC3Fu6H6TcZ0RrHoSYbP5XnPcQp7HkA0Teisz1/S7OLp7RqMBgo71R7N3MPG
- 2/v0HqGXzodqNSa+w8Z9Wpxtcs2OcIQ=
+ bh=oaPLT/w+GJhxx6euDyuvXTKoL3tEsYpftnOe2O3RcpI=;
+ b=RXGvKdOsk8rYgkVbrtDMAwiFq23FBiYsHfPmnilqmiy+ATcU0L0sZOKJbA7B3X+lDFft3E
+ OQ5wENH7T2pRe9JhM4h3AUoyGu0sGxlgywHixwBsFLyQetdxrCL388WnB3C549J+r5TMlN
+ LpjL04/XxjtQIEIqKlRPduztLt/Ztec=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-HANLME-LOSCusGI_e2kGGg-1; Wed, 13 Dec 2023 14:39:29 -0500
-X-MC-Unique: HANLME-LOSCusGI_e2kGGg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-346-tr7boWT0NyC4lFUxfgo2Cw-1; Wed, 13 Dec 2023 15:08:45 -0500
+X-MC-Unique: tr7boWT0NyC4lFUxfgo2Cw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E444488FC26;
- Wed, 13 Dec 2023 19:39:28 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D00978910C2;
+ Wed, 13 Dec 2023 20:08:44 +0000 (UTC)
 Received: from p1.localdomain.some.host.somewhere.org
  (ovpn-114-21.gru2.redhat.com [10.97.114.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 104BE1121306;
- Wed, 13 Dec 2023 19:39:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1324C3C25;
+ Wed, 13 Dec 2023 20:08:35 +0000 (UTC)
 From: Cleber Rosa <crosa@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, Radoslaw Biernacki
- <rad@semihalf.com>, Paul Durrant <paul@xen.org>, Leif Lindholm
- <quic_llindhol@quicinc.com>, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- kvm@vger.kernel.org, qemu-arm@nongnu.org, Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?=
- <philmd@linaro.org>, Beraldo Leal <bleal@redhat.com>, Wainer dos Santos
- Moschetta <wainersm@redhat.com>, Sriram Yagnaraman
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Eric Auger
+ <eric.auger@redhat.com>
+Cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, Radoslaw
+ Biernacki <rad@semihalf.com>, Paul Durrant <paul@xen.org>, Akihiko Odaki
+ <akihiko.odaki@daynix.com>, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, kvm@vger.kernel.org, qemu-arm@nongnu.org, Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Beraldo Leal
+ <bleal@redhat.com>, Wainer
+ dos Santos Moschetta <wainersm@redhat.com>, Sriram Yagnaraman
  <sriram.yagnaraman@est.tech>, Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>, David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH 02/10] tests/avocado: mips: add hint for fetchasset plugin
-In-Reply-To: <8717f71f-5350-45ef-9712-89c1240bc77c@daynix.com>
+ <marcin.juszkiewicz@linaro.org>, David Woodhouse <dwmw2@infradead.org>,
+ Eric Auger <eric.auger@redhat.com>
+Subject: Re: [PATCH 03/10] tests/avocado/intel_iommu.py: increase timeout
+In-Reply-To: <8734w8fzbc.fsf@draig.linaro.org>
 References: <20231208190911.102879-1-crosa@redhat.com>
- <20231208190911.102879-3-crosa@redhat.com>
- <8717f71f-5350-45ef-9712-89c1240bc77c@daynix.com>
-Date: Wed, 13 Dec 2023 14:39:05 -0500
-Message-ID: <87zfydvqna.fsf@p1.localdomain>
+ <20231208190911.102879-4-crosa@redhat.com>
+ <8734w8fzbc.fsf@draig.linaro.org>
+Date: Wed, 13 Dec 2023 15:08:26 -0500
+Message-ID: <87sf45vpad.fsf@p1.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=crosa@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -89,31 +92,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-> On 2023/12/09 4:09, Cleber Rosa wrote:
->> Avocado's fetchasset plugin runs before the actual Avocado job (and
->> any test).  It analyses the test's code looking for occurrences of
->> "self.fetch_asset()" in the either the actual test or setUp() method.
->> It's not able to fully analyze all code, though.
->> 
->> The way these tests are written, make the fetchasset plugin blind to
->> the assets.  This adds redundant code, true, but one that doesn't hurt
->> the test and aids the fetchasset plugin to download or verify the
->> existence of these assets in advance.
->> 
->> Signed-off-by: Cleber Rosa <crosa@redhat.com>
+> Cleber Rosa <crosa@redhat.com> writes:
 >
-> Why not delete fetch_asset() in do_test_mips_malta32el_nanomips()?
+>> Based on many runs, the average run time for these 4 tests is around
+>> 250 seconds, with 320 seconds being the ceiling.  In any way, the
+>> default 120 seconds timeout is inappropriate in my experience.
+>
+> I would rather see these tests updated to fix:
+>
+>  - Don't use such an old Fedora 31 image
 
-I was trying to preserve do_test_mips_malta32el_nanomips() in such a way
-that with the eventual migration to the "dependency" system in newer
-Avocado, the lines added here could simply be reversed.
+I remember proposing a bump in Fedora version used by default in
+avocado_qemu.LinuxTest (which would propagate to tests such as
+boot_linux.py and others), but that was not well accepted.  I can
+definitely work on such a version bump again.
 
-But, that's not a strong enough reason to justify the duplication.  I'll
-follow your suggestion on v2.
+>  - Avoid updating image packages (when will RH stop serving them?)
 
-Thanks!
-- Cleber.
+IIUC the only reason for updating the packages is to test the network
+from the guest, and could/should be done another way.
+
+Eric, could you confirm this?
+
+>  - The "test" is a fairly basic check of dmesg/sysfs output
+
+Maybe the network is also an implicit check here.  Let's see what Eric
+has to say.
+
+>
+> I think building a buildroot image with the tools pre-installed (with
+> perhaps more testing) would be a better use of our limited test time.
+>
+> FWIW the runtime on my machine is:
+>
+> =E2=9E=9C  env QEMU_TEST_FLAKY_TESTS=3D1 ./pyvenv/bin/avocado run ./tests=
+/avocado/intel_iommu.py
+> JOB ID     : 5c582ccf274f3aee279c2208f969a7af8ceb9943
+> JOB LOG    : /home/alex/avocado/job-results/job-2023-12-11T16.53-5c582cc/=
+job.log
+>  (1/4) ./tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu: PASS (=
+44.21 s)
+>  (2/4) ./tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu_strict:=
+ PASS (78.60 s)
+>  (3/4) ./tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu_strict_=
+cm: PASS (65.57 s)
+>  (4/4) ./tests/avocado/intel_iommu.py:IntelIOMMU.test_intel_iommu_pt: PAS=
+S (66.63 s)
+> RESULTS    : PASS 4 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | =
+CANCEL 0
+> JOB TIME   : 255.43 s
+>
+
+Yes, I've also seen similar runtimes in other environments... so it
+looks like it depends a lot on the "dnf -y install numactl-devel".  If
+that can be removed, the tests would have much more predictable runtimes.
 
 
