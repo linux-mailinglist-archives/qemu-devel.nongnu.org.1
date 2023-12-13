@@ -2,134 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889F981159F
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 16:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D523E8115AA
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 16:05:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDQl9-0008S3-Vh; Wed, 13 Dec 2023 10:02:51 -0500
+	id 1rDQmW-0000gF-M0; Wed, 13 Dec 2023 10:04:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1rDQl7-0008RY-TP
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:02:49 -0500
-Received: from mail-dm6nam10on2080.outbound.protection.outlook.com
- ([40.107.93.80] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rDQmQ-0000fY-JF
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:04:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
- id 1rDQl1-0007gE-CJ
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:02:49 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iSMtdmNWlC2Y6yKwD2e5Lym8KX3o4vNvxgxgCkevYm52M9qhzaef5w4tlEjdsZXHFjrCe5RuvXLG55jIvNLFyIlE5hT3SIzPU/H5fBuqHhe8mZ5s2R8JmOTeOKJ1+uS2rZJ/tvQkzWOQTK5/9+8UXb5B2oHaVRcuIkW+THroc1oG6WPs/cLdWIHN36z1nij6H7y+gmOC3H1HuXJwJGwJwg3qfwg2rj+9e3m5vyD+MwVRUByi41mRz20ZabckzKZ6MWiLdAfSFbAjqj5Goqeupg9mjfFVZrlW1uGWzn0ikQibhJbA3+PJ579DnFPQDJFVD7HraDjxoXH06I08LEHBJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vva8EZox2LwGsBqdhGkUQODDWi/LQ/nWCINiiK7ViD0=;
- b=CKx3Ndvsxy+Bku0splDVjXlJnFvkWgK5edb65/SkYTq9CuCHILvfAzp57KVpDckd61vCVk7CWvWEzPsWrwoZzXHtD9V80hSiuepQdtBImVzgdxk7E+MTj/aU/0A997GcSezOdtbrq1GN6z+GUDgX31vReABE9TjY3mUMF4g4vaLDgVxC0/FW0YzTJXm4giMWK4DJyO2zT7ws9Nd6gZCyn8m5FkKW+y5ops08rrP1QZ4pX3mRdMxvls+WVF15PSh5AjYyDAWU220tGe9sRw0l3ITc7kEEMZbKZSn51z3mJ70x3MQGAxgL5NGgeOc0+dkSoc8BIXDE5NvTEdQp36CMPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vva8EZox2LwGsBqdhGkUQODDWi/LQ/nWCINiiK7ViD0=;
- b=rn6QFcWNTDkVEp9SDp0WHurkfPVmHhMEh7rI+tgTlsfYWd6veAQwuztfKryTr8Snqb9Jla2XfKorgyaQBUSKfe/8FvAf5nyN35mEdlXFsHkeE90wGJac/ev4Ncb7nJRtBXeLhcf9c8U6Iv6zZndw08dasu4bmSgF5o70JFHTa3w=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
- by DM6PR12MB4388.namprd12.prod.outlook.com (2603:10b6:5:2a9::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.26; Wed, 13 Dec
- 2023 14:57:30 +0000
-Received: from MW3PR12MB4553.namprd12.prod.outlook.com
- ([fe80::1549:8c93:8585:ca1b]) by MW3PR12MB4553.namprd12.prod.outlook.com
- ([fe80::1549:8c93:8585:ca1b%5]) with mapi id 15.20.7091.022; Wed, 13 Dec 2023
- 14:57:29 +0000
-Message-ID: <5d1ff42d-60a3-30d3-1599-65503b523895@amd.com>
-Date: Wed, 13 Dec 2023 08:57:27 -0600
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-From: "Moger, Babu" <babu.moger@amd.com>
-Subject: Re: [PATCH] target/i386: Fix CPUID encoding of Fn8000001E_ECX
-To: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net
-Cc: mst@redhat.com, marcel.apfelbaum@gmail.com, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Michael.Roth@amd.com, nikunj.dadhania@amd.com
-References: <20231110170806.70962-1-babu.moger@amd.com>
-Content-Language: en-US
-In-Reply-To: <20231110170806.70962-1-babu.moger@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0155.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c3::25) To MW3PR12MB4553.namprd12.prod.outlook.com
- (2603:10b6:303:2c::19)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rDQmO-0007uX-TA
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:04:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702479847;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ql/h0ik4f5uW1mgj6YsdikjU3OZOIrMOYEuhxdRAz4M=;
+ b=GuRzhwD8KWHDCsEYcIOQPrPa59erLYU3/6lu3M2ZCZ74kQlYSfR40Ohkfx6Y/iOBV9q89k
+ BrveO21nkMRNVx9WW49Sncr0s+7sO9HOb/DRxXSSNbQutzYq99TuYGj6UjTNksfh5NL/tu
+ yWp5s1jgIJY1VfyVWFO5n59O7UCfATE=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-h2pDzb6gMmevgpeXC_t90Q-1; Wed, 13 Dec 2023 10:04:06 -0500
+X-MC-Unique: h2pDzb6gMmevgpeXC_t90Q-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a19725a3a84so414334966b.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 07:04:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702479844; x=1703084644;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ql/h0ik4f5uW1mgj6YsdikjU3OZOIrMOYEuhxdRAz4M=;
+ b=bwtOHC/mGOCLpd+LuytjSxfoIfrrXTmc1GIKK+RH75tyL1RmBzktmoo+yfatMjMNNE
+ Rxe1sjaIBGl6rxlEyq8uJtivCQgej91UJEaH3QW462THyEDgHoLL7EhJnpIfOx0OVV7p
+ IEi2UTK5UrARUNY3IPEn4+0YnPYU8egDboNwuQpR01mHPXg99Acabq2NcNaB0lCK7MF7
+ KZ5L3jH3XH3ItpY2rIm98Pv0ZkZUPyaWsyaXyn2UARsthf5ut9++36dIlfe1kvI3R2b7
+ B9zrCh25YodjnuQTVUVImZB1BiHjkKELV6CnwWou9MmsWQJS2tLHUQvo8Q5HDDCSFnsP
+ vcEw==
+X-Gm-Message-State: AOJu0YxbbTsLam18HeVig7vozur95O7bpMJotE46oAsBiQWTwMg6YABx
+ QaOmWAjQM8toQTriqeLEcRFIDiV444pgdW8iXzl5RHMPkw/jy17SkAOmHtTWA2Ap+w8OatpUltf
+ 2EnrqxrDP7JSd/OA=
+X-Received: by 2002:a17:906:1042:b0:9fe:1681:22c7 with SMTP id
+ j2-20020a170906104200b009fe168122c7mr2437997ejj.26.1702479843861; 
+ Wed, 13 Dec 2023 07:04:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFRtUDB9ZFPFUZmeN60cmJCt1LadiZ/5W8gNAeLtb9kqM3m3DUJr1XzgVfpyZWpXi/TWdxBIw==
+X-Received: by 2002:a17:906:1042:b0:9fe:1681:22c7 with SMTP id
+ j2-20020a170906104200b009fe168122c7mr2437984ejj.26.1702479843474; 
+ Wed, 13 Dec 2023 07:04:03 -0800 (PST)
+Received: from redhat.com ([2a02:14f:16d:d414:dc39:9ae8:919b:572d])
+ by smtp.gmail.com with ESMTPSA id
+ hu18-20020a170907a09200b00a1e081369a9sm7849591ejc.23.2023.12.13.07.04.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Dec 2023 07:04:02 -0800 (PST)
+Date: Wed, 13 Dec 2023 10:03:58 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PULL 6/6] tests/acpi: disallow tests/data/acpi/virt/SSDT.memhp
+ changes
+Message-ID: <20231213100321-mutt-send-email-mst@kernel.org>
+References: <20231213105026.1944656-1-kraxel@redhat.com>
+ <20231213105026.1944656-7-kraxel@redhat.com>
+ <AD96681F-FBF0-4AB9-8F2B-5B6C1FB5A52F@redhat.com>
+ <20231213093242-mutt-send-email-mst@kernel.org>
+ <98BBB08F-31A9-48B8-9DAF-CF32E1F8B742@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|DM6PR12MB4388:EE_
-X-MS-Office365-Filtering-Correlation-Id: e7e4bcfe-801f-4aa4-727a-08dbfbebd3f8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /zZ+4lwolPUEDEQt/mjEfZGjq4CyCE+Ps316zp8AVs0Fk1c5nQC5KtW44m5yuW3xKlCllBQontMFNaX5AjuWILGf+IJoPcVpI0ZBi6w0AjFG9PHNr2m34ceIV7hwjlvEuggTsuMHviq/t1TpWTOCgE6C7su2+Vf4gxAJjb9i6eBOq68botAnzaBkkj6EqMNiHmHQIvwJW/1mbsrajxVRneydQX7fqaE+l+lsanO/HHTNjp4uRTzHjXkSKC9k2/PmzILhkE5bVewq3cNB6JtQvhGTtBXkYWy8eLk6GKAzJ6STFu/iJNahLlSM7rzw19OBnsklIhkF1yI40poADWKSr/vzhZS0Qjq0CAmyWUMX1inVgRZiulrrEVrvKscxPv9Nhjfg5FwfCzUEr4pHNWM6IKq3w6c3RLCfq0utpPAbpEC8SxRcS6LWF/XOSKfn1MvUEhGlN0vJN8vkZJqgxSt1fiXgScriSNJxw/cHmSCRUbc6Ky2zjfsel1fgHnUK36fiuMU+Fgth+7WIcuvlmOfW7UI9WEZKS674H1iviPK2u//P37FMx5+y8gXXP5v4QEvz/kNuOpOZrnbds2K/c+giIeRaUdxRPzNfMwwlHn7LBNvUxC9zZsvyFO2lF5SdLz6w2CyL+QvTdswW2HS+K2M7hQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW3PR12MB4553.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(376002)(136003)(396003)(346002)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(83380400001)(41300700001)(38100700002)(2616005)(8936002)(316002)(8676002)(3450700001)(2906002)(4326008)(5660300002)(66556008)(478600001)(53546011)(6506007)(66476007)(6512007)(66946007)(6486002)(966005)(36756003)(31696002)(86362001)(31686004)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RzBVdEhxcU1aRC9ma0MwYUNtS0loZGZtQ0s1SmhyMTZkV0k0Lzd1eFlQVHo1?=
- =?utf-8?B?MmFXcm9CMFFZM2NzejE3NVFmUDZZZlZ3QmJHL2YzMStuZEFYWnJxQXJtemNJ?=
- =?utf-8?B?OC8zMXBXNzJUZFEyTjZwU1FSOXNXQ1lraXViNDBub01BWVF6b05GNU9KS2Fo?=
- =?utf-8?B?Q1hMVDIxVXhZbmprMDltUGFQcm1Ea3V1cGpvc3BCakt5WTRGV1V3dVdYQit3?=
- =?utf-8?B?OVV2QU90K1JYalMzRnhxQnVxa1A0QVc0VkpGTVRSNVJXaDI0K3hLWFZoTHRa?=
- =?utf-8?B?MWZsMjMvT3JkNlNtSXhQOXhRcFU0c3pJa3NZbzdmaDVNQzFSWHhKOC9rQm52?=
- =?utf-8?B?MTdpckVhdjBZcnBNaFVvN01qcjdTU3ZxenVFTDZCY3QyNFlIVDAwLy95RWs3?=
- =?utf-8?B?a1NDcllTTVVsbDgvYVB0NXJ3VHpwSFZoTk55amRJU0NQY0FRZXM0SitxTkJj?=
- =?utf-8?B?QmJveXNHbHN3NWFEMnVTWDB4RzJPWi9ubXU3b1JOTWJ3dU4wQzdhTEJqdUU0?=
- =?utf-8?B?cmZhRFRvaUp5ZW1vRG4xTDByM0RYSkg1eWU1Y09zTTdQVWR0c0tvcVg0WlI2?=
- =?utf-8?B?RHdRL0J6NzNFQUNHNkpLdHl2eGd1U3JnK2tQWDBOWVo2UXN4dGg3cmprWjhN?=
- =?utf-8?B?ZHZDQlRMMzA5Q3MzLzdERUplYXB3NHg2YlRrTUVQMzl0cWVpaHlzZ3VpWVRQ?=
- =?utf-8?B?ZUZjVEEwdnVYakt5M1E5NUxpUERwYlRPWjZIYUlNcVdxV2dESXJLem5kTFRS?=
- =?utf-8?B?dVJ1Y1VDc3d0ZTNUaXZIeWtjYXdZejZJaUZCK1BGZW1ad1BVZUUwZ3o1RkpO?=
- =?utf-8?B?RzRac0s1U25UcklqMEIyRWVCYUpJNWR0T2hMN2dBeTh6TUliNEdPUkJxL2x6?=
- =?utf-8?B?MUxVc3p4T29TbFcrTTYwMmpWSmtlSlBYZkdZTkYwWi94cUpwZVZsQTBSN1hD?=
- =?utf-8?B?Z2hJd1dyUVhRTHVYRkxtSzRid2ttWWR6NDdhWDBrUDIxbG8xYWVSdVMzY1F3?=
- =?utf-8?B?MktxelUrWWoxNXNYb29FaGFEMlZYb1hBVXZhZldHcjZQTmQ2OFM1blZUaTVi?=
- =?utf-8?B?dkRjRk1NWkZOR0NNT2RxK1Bnb2dlYXJsaVpSQTNXMlNqNDVvVEdlYmFJdVZs?=
- =?utf-8?B?NGhKaGplU0MySDFNRWtYZUxKU2ZnQnl5YVBMRklLU0pKNGxTYWFMU0VGeWtU?=
- =?utf-8?B?bTJXS01ZRS91QkRxZUVQL25tLzVPdXEvZXgrK0xxYTl2NTVybkg2a2JIYkU0?=
- =?utf-8?B?TFNzYkZtSU5HNWN6S1FHSU1OUk9KR3FqL1ltajEwL2hYaWtEZHp0V20rVWhT?=
- =?utf-8?B?ZjU4aW8rQjQzejBxOERqOHd2dHhrbmthTzI3R3hoYnRFdXZ6TWFiUVhKbm9H?=
- =?utf-8?B?aVo3OVR5WmFTWUpLUUw4dnRBVS91R1JlNlZGa3lhSnhzTTJ1SXJCVXpKUHFJ?=
- =?utf-8?B?YXpzN0Vxc0lNVmpmRzVzUGNWL2FDbmlYR2haT0RPYXNqYXJjMGEyRzhSd2I2?=
- =?utf-8?B?dEd5Q29JUlBTNS8vYncrV21UakJnanBwWGJicW8xNzlUNWFtSkorOTF6dFZP?=
- =?utf-8?B?U0JHaXF5KzEwY0JYakwwRmdmSVBzV3Zrcm1Udnk4c2JDZG1GT2dTRmNVdThX?=
- =?utf-8?B?T0ZPMzlNTlpJeGZ1ZjdGY0dPazFvbytsOHNISTZGY1VsczFQRzl2V0dlaEpI?=
- =?utf-8?B?clMrWWxWMHlQV3FHc0pEZzRHZVlXYjh3TWtXL0l3N2hyWE1lUHJ3UmdHcG5C?=
- =?utf-8?B?eUZwRDlyNTN6ZStRamNWeEpCb3ZKbzFTeHlGS1BwbmI4c1BmaFYxN0dEeVJN?=
- =?utf-8?B?Z0xmSkEwUG1KRGE2M2NpWnRNRGVQMktJTXVKM3pqRkhjVEgxeCt5WVByajNl?=
- =?utf-8?B?SFBQTjNJTi9VbENXbTl6OW1OdnFZR2l2dkZ3YkR3THV0Z1o1SEJjWEtVT0p3?=
- =?utf-8?B?MUo1ZUNKYXdUYlRMTElJSmQ4S1F3WFVYMjZPZjJydkhaZGNobHNEMWdUZWNQ?=
- =?utf-8?B?aUVlaG82TGF4eTA3TXcvazlaMmZUT1VLeCtDRGxlY3E4SjByOUNPRmVFMklz?=
- =?utf-8?B?a1Z3S2dKaEVqbXdaQlZkZ2pUVEZSNEM0SlNJYTZBS3I2Q2kwYituYzNCK3RK?=
- =?utf-8?B?YnlPNGFPQ1hZS3FudUthdk5jdHd1ak5ON3ZkUG5hZHZQc3RnYTVZS1FjUnov?=
- =?utf-8?Q?kqHVQVqvBlzezkXifYxEmm+CnPeK78LGytzGXpJTd8FA?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e7e4bcfe-801f-4aa4-727a-08dbfbebd3f8
-X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 14:57:29.6757 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5BUQVNFoPRLCiKwahBmfJg31krPGPWkzh0sNS/EyTqcmwV4CcTU7LDm4XFFPwAEl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4388
-Received-SPF: softfail client-ip=40.107.93.80; envelope-from=Babu.Moger@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <98BBB08F-31A9-48B8-9DAF-CF32E1F8B742@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.702, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -143,152 +102,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: babu.moger@amd.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Gentle reminder. Please let me know if there are any concerns or please
-pull these patches for next update.
-Thanks Babu
+On Wed, Dec 13, 2023 at 08:09:29PM +0530, Ani Sinha wrote:
+> 
+> 
+> > On 13-Dec-2023, at 8:03 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+> > 
+> > On Wed, Dec 13, 2023 at 04:24:24PM +0530, Ani Sinha wrote:
+> >> 
+> >> 
+> >>> On 13-Dec-2023, at 4:20 PM, Gerd Hoffmann <kraxel@redhat.com> wrote:
+> >>> 
+> >>> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> >> 
+> >> Please combine this patch with patch 5. No need to do this separately.
+> > 
+> > 
+> > Yes but since it's done - it's fine either way I think. No?
+> 
+> Yes I did not realise it was a PR and not a review. I thought it was sent for review. If it’s done it’s ok.
+> That being said, I would have preferred that the commit had a description and not completely empty.
 
-On 11/10/23 11:08, Babu Moger wrote:
-> Observed the following failure while booting the SEV-SNP guest and the
-> guest fails to boot with the smp parameters:
-> "-smp 192,sockets=1,dies=12,cores=8,threads=2".
-> 
-> qemu-system-x86_64: sev_snp_launch_update: SNP_LAUNCH_UPDATE ret=-5 fw_error=22 'Invalid parameter'
-> qemu-system-x86_64: SEV-SNP: CPUID validation failed for function 0x8000001e, index: 0x0.
-> provided: eax:0x00000000, ebx: 0x00000100, ecx: 0x00000b00, edx: 0x00000000
-> expected: eax:0x00000000, ebx: 0x00000100, ecx: 0x00000300, edx: 0x00000000
-> qemu-system-x86_64: SEV-SNP: failed update CPUID page
-> 
-> Reason for the failure is due to overflowing of bits used for "Node per
-> processor" in CPUID Fn8000001E_ECX. This field's width is 3 bits wide and
-> can hold maximum value 0x7. With dies=12 (0xB), it overflows and spills
-> over into the reserved bits. In the case of SEV-SNP, this causes CPUID
-> enforcement failure and guest fails to boot.
-> 
-> The PPR documentation for CPUID_Fn8000001E_ECX [Node Identifiers]
-> =================================================================
-> Bits    Description
-> 31:11   Reserved.
-> 
-> 10:8    NodesPerProcessor: Node per processor. Read-only.
->         ValidValues:
->         Value   Description
->         0h      1 node per processor.
->         7h-1h   Reserved.
-> 
-> 7:0     NodeId: Node ID. Read-only. Reset: Fixed,XXh.
-> =================================================================
-> 
-> As in the spec, the valid value for "node per processor" is 0 and rest
-> are reserved.
-> 
-> Looking back at the history of decoding of CPUID_Fn8000001E_ECX, noticed
-> that there were cases where "node per processor" can be more than 1. It
-> is valid only for pre-F17h (pre-EPYC) architectures. For EPYC or later
-> CPUs, the linux kernel does not use this information to build the L3
-> topology.
-> 
-> Also noted that the CPUID Function 0x8000001E_ECX is available only when
-> TOPOEXT feature is enabled. This feature is enabled only for EPYC(F17h)
-> or later processors. So, previous generation of processors do not not
-> enumerate 0x8000001E_ECX leaf.
-> 
-> There could be some corner cases where the older guests could enable the
-> TOPOEXT feature by running with -cpu host, in which case legacy guests
-> might notice the topology change. To address those cases introduced a
-> new CPU property "legacy-multi-node". It will be true for older machine
-> types to maintain compatibility. By default, it will be false, so new
-> decoding will be used going forward.
-> 
-> The documentation is taken from Preliminary Processor Programming
-> Reference (PPR) for AMD Family 19h Model 11h, Revision B1 Processors 55901
-> Rev 0.25 - Oct 6, 2022.
-> 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 31ada106d891 ("Simplify CPUID_8000_001E for AMD")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537
-> Signed-off-by: Babu Moger <babu.moger@amd.com>
-> ---
->  hw/i386/pc.c      |  4 +++-
->  target/i386/cpu.c | 18 ++++++++++--------
->  target/i386/cpu.h |  1 +
->  3 files changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 188bc9d0f8..624d5da146 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -77,7 +77,9 @@
->      { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
->      { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
->  
-> -GlobalProperty pc_compat_8_1[] = {};
-> +GlobalProperty pc_compat_8_1[] = {
-> +    { TYPE_X86_CPU, "legacy-multi-node", "on" },
-> +};
->  const size_t pc_compat_8_1_len = G_N_ELEMENTS(pc_compat_8_1);
->  
->  GlobalProperty pc_compat_8_0[] = {
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 358d9c0a65..baee9394a1 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -398,12 +398,9 @@ static void encode_topo_cpuid8000001e(X86CPU *cpu, X86CPUTopoInfo *topo_info,
->       * 31:11 Reserved.
->       * 10:8 NodesPerProcessor: Node per processor. Read-only. Reset: XXXb.
->       *      ValidValues:
-> -     *      Value Description
-> -     *      000b  1 node per processor.
-> -     *      001b  2 nodes per processor.
-> -     *      010b Reserved.
-> -     *      011b 4 nodes per processor.
-> -     *      111b-100b Reserved.
-> +     *      Value   Description
-> +     *      0h      1 node per processor.
-> +     *      7h-1h   Reserved.
->       *  7:0 NodeId: Node ID. Read-only. Reset: XXh.
->       *
->       * NOTE: Hardware reserves 3 bits for number of nodes per processor.
-> @@ -412,8 +409,12 @@ static void encode_topo_cpuid8000001e(X86CPU *cpu, X86CPUTopoInfo *topo_info,
->       * NodeId is combination of node and socket_id which is already decoded
->       * in apic_id. Just use it by shifting.
->       */
-> -    *ecx = ((topo_info->dies_per_pkg - 1) << 8) |
-> -           ((cpu->apic_id >> apicid_die_offset(topo_info)) & 0xFF);
-> +    if (cpu->legacy_multi_node) {
-> +        *ecx = ((topo_info->dies_per_pkg - 1) << 8) |
-> +               ((cpu->apic_id >> apicid_die_offset(topo_info)) & 0xFF);
-> +    } else {
-> +        *ecx = (cpu->apic_id >> apicid_pkg_offset(topo_info)) & 0xFF;
-> +    }
->  
->      *edx = 0;
->  }
-> @@ -7894,6 +7895,7 @@ static Property x86_cpu_properties[] = {
->       * own cache information (see x86_cpu_load_def()).
->       */
->      DEFINE_PROP_BOOL("legacy-cache", X86CPU, legacy_cache, true),
-> +    DEFINE_PROP_BOOL("legacy-multi-node", X86CPU, legacy_multi_node, false),
->      DEFINE_PROP_BOOL("xen-vapic", X86CPU, xen_vapic, false),
->  
->      /*
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index cd2e295bd6..7b855924d6 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -1988,6 +1988,7 @@ struct ArchCPU {
->       * If true present the old cache topology information
->       */
->      bool legacy_cache;
-> +    bool legacy_multi_node;
->  
->      /* Compatibility bits for old machine types: */
->      bool enable_cpuid_0xb;
 
--- 
-Thanks
-Babu Moger
+I agree, Gerd, going forward please include the diff of the
+disassemled AML.
+
+
+> > 
+> >>> ---
+> >>> tests/qtest/bios-tables-test-allowed-diff.h | 1 -
+> >>> 1 file changed, 1 deletion(-)
+> >>> 
+> >>> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+> >>> index e569098abddc..dfb8523c8bf4 100644
+> >>> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> >>> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+> >>> @@ -1,2 +1 @@
+> >>> /* List of comma-separated changed AML files to ignore */
+> >>> -"tests/data/acpi/virt/SSDT.memhp",
+> >>> -- 
+> >>> 2.43.0
+> >>> 
+> > 
+
 
