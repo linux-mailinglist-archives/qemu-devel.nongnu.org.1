@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F56811285
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:07:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F040E811271
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:04:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDOss-0000QH-U0; Wed, 13 Dec 2023 08:02:43 -0500
+	id 1rDOtg-0001QG-Tf; Wed, 13 Dec 2023 08:03:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOrh-00088d-4E; Wed, 13 Dec 2023 08:01:30 -0500
+ id 1rDOs1-0008Il-Ok; Wed, 13 Dec 2023 08:01:49 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOrf-00071K-BZ; Wed, 13 Dec 2023 08:01:28 -0500
+ id 1rDOrz-00071U-Vc; Wed, 13 Dec 2023 08:01:49 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 875473B43F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 97F8B3B440;
  Wed, 13 Dec 2023 16:01:01 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2CB6A3C8D0;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3D6DB3C8D1;
  Wed, 13 Dec 2023 16:00:42 +0300 (MSK)
-Received: (nullmailer pid 1024730 invoked by uid 1000);
+Received: (nullmailer pid 1024733 invoked by uid 1000);
  Wed, 13 Dec 2023 13:00:41 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.8 12/24] hw/nvram/xlnx-efuse-ctrl: Free
- XlnxVersalEFuseCtrl[] "pg0-lock" array
-Date: Wed, 13 Dec 2023 16:00:21 +0300
-Message-Id: <20231213130041.1024630-12-mjt@tls.msk.ru>
+Subject: [Stable-7.2.8 13/24] hw/virtio: Add
+ VirtioPCIDeviceTypeInfo::instance_finalize field
+Date: Wed, 13 Dec 2023 16:00:22 +0300
+Message-Id: <20231213130041.1024630-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
 References: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
@@ -64,56 +64,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Commit 0be6bfac62 ("qdev: Implement variable length array properties")
-added the DEFINE_PROP_ARRAY() macro with the following comment:
+The VirtioPCIDeviceTypeInfo structure, added in commit a4ee4c8baa
+("virtio: Helper for registering virtio device types") got extended
+in commit 8ea90ee690 ("virtio: add class_size") with the @class_size
+field. Do similarly with the @instance_finalize field.
 
-  * It is the responsibility of the device deinit code to free the
-  * @_arrayfield memory.
-
-Commit 9e4aa1fafe added:
-
-  DEFINE_PROP_ARRAY("pg0-lock",
-                    XlnxVersalEFuseCtrl, extra_pg0_lock_n16,
-                    extra_pg0_lock_spec, qdev_prop_uint16, uint16_t),
-
-but forgot to free the 'extra_pg0_lock_spec' array. Do it in the
-instance_finalize() handler.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 9e4aa1fafe ("hw/nvram: Xilinx Versal eFuse device") # v6.2.0+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20231121174051.63038-6-philmd@linaro.org
+Message-id: 20231121174051.63038-2-philmd@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 4f10c66077e39969940d928077560665e155cac8)
+(cherry picked from commit 837053a7f491b445088eac647abe7f462c50f59a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/nvram/xlnx-versal-efuse-ctrl.c b/hw/nvram/xlnx-versal-efuse-ctrl.c
-index b35ba65ab5..2d2dc09526 100644
---- a/hw/nvram/xlnx-versal-efuse-ctrl.c
-+++ b/hw/nvram/xlnx-versal-efuse-ctrl.c
-@@ -725,6 +725,13 @@ static void efuse_ctrl_init(Object *obj)
-     sysbus_init_irq(sbd, &s->irq_efuse_imr);
- }
- 
-+static void efuse_ctrl_finalize(Object *obj)
-+{
-+    XlnxVersalEFuseCtrl *s = XLNX_VERSAL_EFUSE_CTRL(obj);
-+
-+    g_free(s->extra_pg0_lock_spec);
-+}
-+
- static const VMStateDescription vmstate_efuse_ctrl = {
-     .name = TYPE_XLNX_VERSAL_EFUSE_CTRL,
-     .version_id = 1,
-@@ -762,6 +769,7 @@ static const TypeInfo efuse_ctrl_info = {
-     .instance_size = sizeof(XlnxVersalEFuseCtrl),
-     .class_init    = efuse_ctrl_class_init,
-     .instance_init = efuse_ctrl_init,
-+    .instance_finalize = efuse_ctrl_finalize,
- };
- 
- static void efuse_ctrl_register_types(void)
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 67e771c373..e5e74a7160 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2174,6 +2174,7 @@ void virtio_pci_types_register(const VirtioPCIDeviceTypeInfo *t)
+         .parent        = t->parent ? t->parent : TYPE_VIRTIO_PCI,
+         .instance_size = t->instance_size,
+         .instance_init = t->instance_init,
++        .instance_finalize = t->instance_finalize,
+         .class_size    = t->class_size,
+         .abstract      = true,
+         .interfaces    = t->interfaces,
+diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
+index 938799e8f6..c4676ff4d4 100644
+--- a/include/hw/virtio/virtio-pci.h
++++ b/include/hw/virtio/virtio-pci.h
+@@ -241,6 +241,7 @@ typedef struct VirtioPCIDeviceTypeInfo {
+     size_t instance_size;
+     size_t class_size;
+     void (*instance_init)(Object *obj);
++    void (*instance_finalize)(Object *obj);
+     void (*class_init)(ObjectClass *klass, void *data);
+     InterfaceInfo *interfaces;
+ } VirtioPCIDeviceTypeInfo;
 -- 
 2.39.2
 
