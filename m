@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481B6810DB5
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 10:52:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE00D810DB6
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 10:53:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDLtI-0001Lt-SO; Wed, 13 Dec 2023 04:50:56 -0500
+	id 1rDLux-00028S-7p; Wed, 13 Dec 2023 04:52:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rDLtG-0001Lh-Br
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 04:50:54 -0500
-Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rDLtE-0003RM-D5
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 04:50:54 -0500
-Received: by mail-il1-x12b.google.com with SMTP id
- e9e14a558f8ab-35f72db10f7so1983175ab.2
- for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 01:50:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702461051; x=1703065851;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0GW46pv03PV2MIqMCEOGb53HHQpdFuvgzW+Sz3LKeOE=;
- b=selHIrudxMfXAi0NEbaB6Ab2QoCrBRXI81c39q+5Mdh+9y6InEWC/C5IfMlM5wFCTY
- rBJf27L3Mhvh+HDyvRgCIHImooqCdql3KepQnezAdBmfaN5Qe45EfAMT6wEOIr5ekfOx
- XI5zQ2E3HV+hP3q3oJQd14DRUd8jbTX1n/0aG1gZbuEWsZn42Y/5PvmjjSjJ2YEpwbp2
- 3NludVWSmjSG6CMZmmXebRHCYzQOnDOg6EgHmPFHx4GIfROXLMN+/Ny0fBd/pvmoscSB
- 2YkzzS5VPNl6GRQTbCmrbRbleLA23rLTXNX+7wRA1FuloNy8rd1pL+ucz4KRFlZl0Jwr
- sM4w==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rDLuv-00028J-Rz
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 04:52:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rDLuu-0003fL-69
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 04:52:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702461154;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hfMgkCeCjKv0eBkWl1QtT2Tk9nkU1jlaWkk6MEcr5Bc=;
+ b=VRH2g8urSITHqhjps+n5nn6WdBXnfI3stqR8+6pfnuLSE92LlSdDcKiCf7cs1DcB9HPAJj
+ SsISHccBNZGOh3xYW2SieE2aSN3rlqmrC550eYTA/MT7HtYwQfMqEPVTWls0DB7CuG61IY
+ NHuqD/+6fdej9GSJcoKWblkY49SEU70=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-633-w5cOBx9IOBqtDtvShu8MQg-1; Wed, 13 Dec 2023 04:52:32 -0500
+X-MC-Unique: w5cOBx9IOBqtDtvShu8MQg-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-5e27479b6e2so11315887b3.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 01:52:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702461051; x=1703065851;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0GW46pv03PV2MIqMCEOGb53HHQpdFuvgzW+Sz3LKeOE=;
- b=eJJekX23ATLTfwef1PxajUMBnZVhd6QE4FuXLyw+PYh5yF3Y49kuj6fBppERfH3WBJ
- fFOyhbJ2JHd1DHP7nlkllLAEj/lWrSWSP1T/JmNTsgNCQVQ2/jpjLI7qn52ovCWfsdFQ
- jqh+itEkd+Qv9nLeBwFTzP/YGElv03qfNfjOk6lu7kbqNaVlq5uhcfeUgWmnCzlE7Cbv
- jVDyRF20Tfxcsf+tn11KjjQSEwC2oMeRDHb0d24SF6JRiVidK0FPiu0s5QEjJF2Mvp54
- oUCSdGebpvR9To2vIRG+Hwf2X7nc/EmRUG87AwwtqZSaVR5HKiGObkvuERAgGn9t7Yt0
- z0tw==
-X-Gm-Message-State: AOJu0Yy7EQ/LuVo5snn9QP7AZOuyDXPyRcZsS3pQOdVgqG4ltnEVYLC1
- DvbiqHSra1805W/X0E9jJpYLcw==
-X-Google-Smtp-Source: AGHT+IGqLWUiNmio9OrjiVItp5c9jw+fqlBp3VrBZTDQ1/61pfm/EVFVa6uOQhTnSGd+GF4PDVn3iA==
-X-Received: by 2002:a05:6e02:19ce:b0:35d:59a2:3323 with SMTP id
- r14-20020a056e0219ce00b0035d59a23323mr14013448ill.39.1702461050948; 
- Wed, 13 Dec 2023 01:50:50 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
- by smtp.gmail.com with ESMTPSA id
- d14-20020a170902cece00b001d0cd48e08fsm10216620plg.179.2023.12.13.01.50.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Dec 2023 01:50:50 -0800 (PST)
-Message-ID: <cbda6265-5027-424c-be93-86073d9ad63a@daynix.com>
-Date: Wed, 13 Dec 2023 18:50:47 +0900
+ d=1e100.net; s=20230601; t=1702461152; x=1703065952;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hfMgkCeCjKv0eBkWl1QtT2Tk9nkU1jlaWkk6MEcr5Bc=;
+ b=mh2ka1aKJxAQDhKDhAVb2Lwfs+PnLzXSS2XqiCezh1ECw8dQU+riSdUn0eShJVPXrU
+ BjEnatnx4o+2zN0XeMMxlLr4bLn5EBUAICHXK6WQ8wPpIF38OuH+9jQRz8mu74c05DBf
+ UEQPCu6VNJbdJ2u2SX+Eav2uQgD3f/IwjhUMp3mvIhwyrA25Lyv/0J7JbEH55fcr4NHz
+ IW/PqtJB9Auny2qj5Cz52+P9eITEwBYTKEWWeNeqRGxg3jtc1MUOyF3/X+lHOSvpMoAC
+ RZr+vOHbP8gloBw56EdPfViyRGnxw8PMxqu0DKmNl5VZL4eEcKBOOJ+f384RvBiiGf9/
+ gxUA==
+X-Gm-Message-State: AOJu0YwsZ9s9uugr7w4Ml7mS8hVac/+swFeU0Qa04S45xtDOL46khmQz
+ gNS0LkN6uG8ipL4yVXtBv02C7lfe/UFNqzkp8IrpG/ylNjA+iz+8xXdePg4LMdxfwkmbRK2rfIn
+ Se0/wWYCT7g5V5AKczIe5FkV+ZjGpaPc=
+X-Received: by 2002:a25:dad5:0:b0:dbc:cad1:8706 with SMTP id
+ n204-20020a25dad5000000b00dbccad18706mr663472ybf.28.1702461152259; 
+ Wed, 13 Dec 2023 01:52:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEQy+44UHnte9s+uIJYBB+ETZN+C4pC9hQkcGIl2KzSWVHeGEmdpyOmHK7WON3BssL895KKcnlhjv27fnzM0+g=
+X-Received: by 2002:a25:dad5:0:b0:dbc:cad1:8706 with SMTP id
+ n204-20020a25dad5000000b00dbccad18706mr663465ybf.28.1702461151981; Wed, 13
+ Dec 2023 01:52:31 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] qdev: Report an error for machine without
- HotplugHandler
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-References: <20231210-bus-v2-1-34ebf5726fa0@daynix.com>
- <87h6kpgrl7.fsf@pond.sub.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87h6kpgrl7.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::12b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-il1-x12b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <1701970793-6865-1-git-send-email-si-wei.liu@oracle.com>
+ <1701970793-6865-18-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1701970793-6865-18-git-send-email-si-wei.liu@oracle.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Wed, 13 Dec 2023 10:51:56 +0100
+Message-ID: <CAJaqyWdXYP609879RYo5qA8JNrwFM4H2xT9N7AF_JwQifq5XZA@mail.gmail.com>
+Subject: Re: [PATCH 17/40] vdpa: judge if map can be kept across reset
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: jasowang@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
+ leiyang@redhat.com, yin31149@gmail.com, boris.ostrovsky@oracle.com, 
+ jonah.palmer@oracle.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,80 +97,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/11 15:51, Markus Armbruster wrote:
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
->> The HotplugHandler of the machine will be used when the parent bus does
->> not exist, but the machine may not have one. Report an error in such a
->> case instead of aborting.
->>
->> Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> 
-> Do you have a reproducer for the crash?
-> 
->> ---
->> Changes in v2:
->> - Fixed indention.
->> - Link to v1: https://lore.kernel.org/r/20231202-bus-v1-1-f7540e3a8d62@daynix.com
->> ---
->>   system/qdev-monitor.c | 13 ++++++++++---
->>   1 file changed, 10 insertions(+), 3 deletions(-)
->>
->> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
->> index a13db763e5..5fe5d49c20 100644
->> --- a/system/qdev-monitor.c
->> +++ b/system/qdev-monitor.c
->> @@ -927,9 +927,16 @@ void qdev_unplug(DeviceState *dev, Error **errp)
->     void qdev_unplug(DeviceState *dev, Error **errp)
->     {
->         DeviceClass *dc = DEVICE_GET_CLASS(dev);
->         HotplugHandler *hotplug_ctrl;
->         HotplugHandlerClass *hdc;
->         Error *local_err = NULL;
-> 
->         if (qdev_unplug_blocked(dev, errp)) {
->             return;
->         }
-> 
->         if (dev->parent_bus && !qbus_is_hotpluggable(dev->parent_bus)) {
->             error_setg(errp, QERR_BUS_NO_HOTPLUG, dev->parent_bus->name);
->             return;
->         }
-> 
->         if (!dc->hotpluggable) {
->             error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
->                        object_get_typename(OBJECT(dev)));
->             return;
->         }
-> 
->         if (!migration_is_idle() && !dev->allow_unplug_during_migration) {
->             error_setg(errp, "device_del not allowed while migrating");
->             return;
->         }
-> 
->>       qdev_hot_removed = true;
->>   
->>       hotplug_ctrl = qdev_get_hotplug_handler(dev);
->> -    /* hotpluggable device MUST have HotplugHandler, if it doesn't
->> -     * then something is very wrong with it */
->> -    g_assert(hotplug_ctrl);
->> +    if (!hotplug_ctrl) {
->> +        /*
->> +         * hotpluggable bus MUST have HotplugHandler, if it doesn't
->> +         * then something is very wrong with it
->> +         */
->> +        assert(!dev->parent_bus);
->> +
->> +        error_setg(errp, "The machine does not support hotplugging for a device without parent bus");
->> +        return;
->> +    }
-> 
-> Extended version of my question above: what are the devices where
-> qdev_get_hotplug_handler(dev) returns null here?
+On Thu, Dec 7, 2023 at 7:50=E2=80=AFPM Si-Wei Liu <si-wei.liu@oracle.com> w=
+rote:
+>
+> The descriptor group for SVQ ASID allows the guest memory mapping
+> to retain across SVQ switching, same as how isolated CVQ can do
+> with a different ASID than the guest GPA space. Introduce an
+> evaluation function to judge whether to flush or keep iotlb maps
+> based on virtqueue's descriptor group and cvq isolation capability.
+>
+> Have to hook the evaluation function to NetClient's .poll op as
+> .vhost_reset_status runs ahead of .stop, and .vhost_dev_start
+> don't have access to the vhost-vdpa net's information.
+>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+> ---
+>  net/vhost-vdpa.c | 40 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 40 insertions(+)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 04718b2..e9b96ed 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -504,12 +504,36 @@ static int vhost_vdpa_net_load_cleanup(NetClientSta=
+te *nc, NICState *nic)
+>                               n->parent_obj.status & VIRTIO_CONFIG_S_DRIV=
+ER_OK);
+>  }
+>
+> +static void vhost_vdpa_net_data_eval_flush(NetClientState *nc, bool stop=
+)
+> +{
+> +    VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> +    struct vhost_vdpa *v =3D &s->vhost_vdpa;
+> +
+> +    if (!stop) {
+> +        return;
+> +    }
+> +
+> +    if (s->vhost_vdpa.index =3D=3D 0) {
+> +        if (s->always_svq) {
+> +            v->shared->flush_map =3D true;
 
-Start a VM: qemu-system-aarch64 -M virt -nographic
-Run the following on its HMP: device_del /machine/unattached/device[0]
+Why do we need to reset the map in the case of always_svq?
 
-It tries to unplug cortex-a15-arm-cpu and crashes.
+> +        } else if (!v->shared->svq_switching || v->desc_group >=3D 0) {
+> +            v->shared->flush_map =3D false;
+> +        } else {
+> +            v->shared->flush_map =3D true;
+> +        }
+> +    } else if (!s->always_svq && v->shared->svq_switching &&
+> +               v->desc_group < 0) {
+> +        v->shared->flush_map =3D true;
+> +    }
+> +}
+> +
+
+I'm wondering, since we have the reference count for the memory
+listener already, why not adding one refcnt if _start detect it can
+keep the memory maps?
+
+>  static NetClientInfo net_vhost_vdpa_info =3D {
+>          .type =3D NET_CLIENT_DRIVER_VHOST_VDPA,
+>          .size =3D sizeof(VhostVDPAState),
+>          .receive =3D vhost_vdpa_receive,
+>          .start =3D vhost_vdpa_net_data_start,
+>          .load =3D vhost_vdpa_net_data_load,
+> +        .poll =3D vhost_vdpa_net_data_eval_flush,
+>          .stop =3D vhost_vdpa_net_client_stop,
+>          .cleanup =3D vhost_vdpa_cleanup,
+>          .has_vnet_hdr =3D vhost_vdpa_has_vnet_hdr,
+> @@ -1368,12 +1392,28 @@ static int vhost_vdpa_net_cvq_load(NetClientState=
+ *nc)
+>      return 0;
+>  }
+>
+> +static void vhost_vdpa_net_cvq_eval_flush(NetClientState *nc, bool stop)
+> +{
+> +    VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> +    struct vhost_vdpa *v =3D &s->vhost_vdpa;
+> +
+> +    if (!stop) {
+> +        return;
+> +    }
+> +
+> +    if (!v->shared->flush_map && !v->shared->svq_switching &&
+> +        !s->cvq_isolated && v->desc_group < 0) {
+> +        v->shared->flush_map =3D true;
+> +    }
+> +}
+> +
+>  static NetClientInfo net_vhost_vdpa_cvq_info =3D {
+>      .type =3D NET_CLIENT_DRIVER_VHOST_VDPA,
+>      .size =3D sizeof(VhostVDPAState),
+>      .receive =3D vhost_vdpa_receive,
+>      .start =3D vhost_vdpa_net_cvq_start,
+>      .load =3D vhost_vdpa_net_cvq_load,
+> +    .poll =3D vhost_vdpa_net_cvq_eval_flush,
+>      .stop =3D vhost_vdpa_net_cvq_stop,
+>      .cleanup =3D vhost_vdpa_cleanup,
+>      .has_vnet_hdr =3D vhost_vdpa_has_vnet_hdr,
+> --
+> 1.8.3.1
+>
+
 
