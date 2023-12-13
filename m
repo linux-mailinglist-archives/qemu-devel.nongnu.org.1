@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3033811870
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 16:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB7881188B
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 17:02:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDRYf-00031R-B3; Wed, 13 Dec 2023 10:54:01 -0500
+	id 1rDRfn-0005Wz-CB; Wed, 13 Dec 2023 11:01:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDRYd-00030q-Bp
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:53:59 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDRYb-0004SV-Ah
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:53:59 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40c2c5a8150so64983315e9.2
- for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 07:53:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702482835; x=1703087635; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fVhUaD4LV3xz+Yg868h+s/S8v5llLdsxsR+12GXRwIo=;
- b=wgPGBx8b4gC/3g2j+t5HwoJV2bKNsHYUE9CJN3z72Z6DXrjXcmOBCSjOQj77V1LhtT
- CYFm7bJ3g95kMa1MbJCsHOho2tF0CDK0BPWyQj7BR7qYAxdEIu+wPnuZqZZosfXd9tpF
- btCkbRlJayDZaaqrTvovo1OrPGinZ/2b0+eWIXIQ0miXmrMMmnZbCZodymFVMdtM6gOG
- jLyc9EWn5yIBvDJh30zkE9b/CP+s6KPTMxRSZHSG17dVLGnKWuTeFABFNI9n/Jd5lRXz
- viQ8Rn4CbOYMTR5PAVgxpeqy5uiFhT+Noo7UqSa1ds8a4zfc+Pt2+Enm1VL43GEAo0lX
- hrlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702482835; x=1703087635;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fVhUaD4LV3xz+Yg868h+s/S8v5llLdsxsR+12GXRwIo=;
- b=AFLeVAtZRWtXw7lbuUumCcyKVm+rrvq2f0FsJ1dlEeNnx1/lR4KwrBCHxLgmaRNS7r
- QeeOBZiUFwvFn+dbE4Q4itEC5Q8Bse3cSfKcjXp/krMrr4iEp3DM8ma0jpT5397JBYF5
- tmRDe77BvI52gmjGhEgchzk8gABx1/D7kjjxj3H8WBaDMHHa18hx+FHp58VHUlz7qSCV
- +abA15myp6aJb6YGDyYKTLz64GMaJjjavAKJxnv5YN3VPfuZSy4ubCTJCjEmC9oim8kW
- N8JrWqkufT0LPU8YS6NEvVhot/cq3Gw7I/WC5gkx4ygAySR1dvxoaaPn3EMYZWbZu13i
- NsjQ==
-X-Gm-Message-State: AOJu0YzwgySqsXz+NTQCR4u2PFyhpSCNasRXNBP1ZdQcCFWn0Jqr5OJ6
- p73pVYBQfhtMqY/rtKpatLnLxQ==
-X-Google-Smtp-Source: AGHT+IEbB2agu5TNQ3Dq4S1dwn7bHay6WfxHgXw0zJw4XnUmo864C2iLmR61ZSKS29y6/TBK3c0yOA==
-X-Received: by 2002:a05:600c:1c1c:b0:40c:32d5:18e1 with SMTP id
- j28-20020a05600c1c1c00b0040c32d518e1mr3863088wms.179.1702482835118; 
- Wed, 13 Dec 2023 07:53:55 -0800 (PST)
-Received: from [192.168.71.175] (254.red-88-29-161.dynamicip.rima-tde.net.
- [88.29.161.254]) by smtp.gmail.com with ESMTPSA id
- g12-20020adfa48c000000b003335eded7f5sm13746968wrb.68.2023.12.13.07.53.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Dec 2023 07:53:54 -0800 (PST)
-Message-ID: <2d71f6a9-70c7-42b4-91dd-e5b7fc627fb7@linaro.org>
-Date: Wed, 13 Dec 2023 16:53:52 +0100
+ (Exim 4.90_1) (envelope-from <crobinso@redhat.com>)
+ id 1rDRfl-0005WW-8J
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 11:01:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <crobinso@redhat.com>)
+ id 1rDRfj-0001mU-Mw
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 11:01:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702483275;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=L4o7Rsxoi7EzXnxeiLbfrjZLNLUI/r9IchjR2KTt2v0=;
+ b=OrbyuiDBNW1JtQ6YcrHb6qHr+6dVv89G6oq67A4lt3Y4BdsdGdwPfJ8bIfWySSC1x6w5/T
+ 69v5W3VLG8y3k3wg8MBp7ecgrq/vCi3gJyhXrQ92Ly1hFA3bt+8LhrQBiDCVEMkpc3kI45
+ KLLr8y/MUkY5Trmgylk1a7YcMgYDU0A=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-NN4kD6VTPxKUkJtfZePIEQ-1; Wed,
+ 13 Dec 2023 11:01:13 -0500
+X-MC-Unique: NN4kD6VTPxKUkJtfZePIEQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BC94F2818749;
+ Wed, 13 Dec 2023 16:01:11 +0000 (UTC)
+Received: from [10.22.18.55] (unknown [10.22.18.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 69F562166B31;
+ Wed, 13 Dec 2023 16:01:11 +0000 (UTC)
+Message-ID: <c3532ed6-1006-24f9-ce8f-0dc536166b25@redhat.com>
+Date: Wed, 13 Dec 2023 11:01:10 -0500
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fsl-imx: add simple RTC emulation for i.MX6 and i.MX7
- boards
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [Stable-7.2.8 00/24] Patch Round-up for stable 7.2.8, freeze on
+ 2023-12-23
 Content-Language: en-US
-To: Nikita Ostrenkov <n.ostrenkov@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Andrey Smirnov <andrew.smirnov@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20231213152408.2533-1-n.ostrenkov@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231213152408.2533-1-n.ostrenkov@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
+From: Cole Robinson <crobinso@redhat.com>
+In-Reply-To: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=crobinso@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.702, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,196 +84,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Nikita,
-
-On 13/12/23 16:24, Nikita Ostrenkov wrote:
-> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-> ---
->   hw/misc/imx7_snvs.c         | 70 +++++++++++++++++++++++++++++++++----
->   hw/misc/trace-events        |  4 +--
->   include/hw/misc/imx7_snvs.h |  7 +++-
->   3 files changed, 71 insertions(+), 10 deletions(-)
+On 12/13/23 8:00 AM, Michael Tokarev wrote:
+> The following patches are queued for QEMU stable v7.2.8:
 > 
-> diff --git a/hw/misc/imx7_snvs.c b/hw/misc/imx7_snvs.c
-> index a245f96cd4..98fe51aa66 100644
-> --- a/hw/misc/imx7_snvs.c
-> +++ b/hw/misc/imx7_snvs.c
-> @@ -13,28 +13,79 @@
->    */
->   
->   #include "qemu/osdep.h"
-> +#include "qemu/timer.h"
->   #include "hw/misc/imx7_snvs.h"
->   #include "qemu/module.h"
-> +#include "sysemu/sysemu.h"
->   #include "sysemu/runstate.h"
->   #include "trace.h"
->   
-> +#define RTC_FREQ    32768ULL
-> +
-> +static uint64_t imx7_snvs_get_count(IMX7SNVSState *s)
-> +{
-> +    int64_t ticks = muldiv64(qemu_clock_get_ns(rtc_clock), RTC_FREQ,
-> +                             NANOSECONDS_PER_SECOND);
-> +    return s->tick_offset + ticks;
-> +}
-> +
->   static uint64_t imx7_snvs_read(void *opaque, hwaddr offset, unsigned size)
->   {
-> -    trace_imx7_snvs_read(offset, 0);
-> +    IMX7SNVSState *s = opaque;
-> +    uint64_t ret = 0;
->   
-> -    return 0;
-> +    switch (offset) {
-> +    case SNVS_LPSRTCMR:
-> +        ret = (imx7_snvs_get_count(s) >> 32) & 0x7fffU;
+>   https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+> 
+> Patch freeze is 2023-12-23, and the release is planned for 2023-12-25:
+> 
+>   https://wiki.qemu.org/Planning/7.2
+> 
+> Please respond here or CC qemu-stable@nongnu.org on any additional patches
+> you think should (or shouldn't) be included in the release.
+> 
+> The changes which are staging for inclusion, with the original commit hash
+> from master branch, are given below the bottom line.
+> 
 
-Please have a look at extract64() which might make your code
-easier to read. It is declared in include/qemu/bitops.h.
+We are carrying these 2 patches in fedora to fix test suite failures:
 
-> +        break;
-> +    case SNVS_LPSRTCLR:
-> +        ret = imx7_snvs_get_count(s) & 0xffffffffU;
+commit abe2c4bdb65e8dd9cb2f01c355baa394bf49a8af
+Author: Eric Auger <eric.auger@redhat.com>
+Date:   Tue Feb 28 10:29:44 2023 +0100
 
-Ditto.
+    test-vmstate: fix bad GTree usage, use-after-free
 
-> +        break;
-> +    case SNVS_LPCR:
-> +        ret = s->lpcr;
-> +        break;
-> +    }
-> +
-> +    trace_imx7_snvs_read(offset, ret, size);
-> +
-> +    return ret;
->   }
->   
->   static void imx7_snvs_write(void *opaque, hwaddr offset,
->                               uint64_t v, unsigned size)
->   {
-> -    const uint32_t value = v;
-> -    const uint32_t mask  = SNVS_LPCR_TOP | SNVS_LPCR_DP_EN;
-> +    trace_imx7_snvs_write(offset, v, size);
-> +
-> +    IMX7SNVSState *s = opaque;
->   
-> -    trace_imx7_snvs_write(offset, value);
-> +    uint64_t new_value = 0, snvs_count = 0;
->   
-> -    if (offset == SNVS_LPCR && ((value & mask) == mask)) {
-> -        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> +    if (offset == SNVS_LPSRTCMR || offset == SNVS_LPSRTCLR) {
-> +        snvs_count = imx7_snvs_get_count(s);
-> +    }
-> +
-> +    switch (offset) {
-> +    case SNVS_LPSRTCMR:
-> +        new_value = (snvs_count & 0xffffffffU) | (v << 32);
+commit ae4b01b3497934849278b49f3dfd28420f75e300
+Author: Richard W.M. Jones <rjones@redhat.com>
+Date:   Tue Feb 28 19:06:45 2023 +0000
 
-Here the equivalent is deposit64().
+    tests: Ensure TAP version is printed before other messages
 
-> +        break;
-> +    case SNVS_LPSRTCLR:
-> +        new_value = (snvs_count & 0x7fff00000000ULL) | v;
 
-Ditto.
+Thank you for your work on the stable releases!
 
-> +        break;
-> +    case SNVS_LPCR: {
-> +        s->lpcr = v;
-> +
-> +        const uint32_t value = v;
+- Cole
 
-'value' is not really needed.
-
-> +        const uint32_t mask  = SNVS_LPCR_TOP | SNVS_LPCR_DP_EN;
-> +
-> +        if ((value & mask) == mask) {
-> +            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> +        }
-> +        break;
-> +    }
-> +    }
-> +
-> +    if (offset == SNVS_LPSRTCMR || offset == SNVS_LPSRTCLR) {
-> +        s->tick_offset += new_value - snvs_count;
->       }
->   }
->   
-> @@ -59,11 +110,16 @@ static void imx7_snvs_init(Object *obj)
->   {
->       SysBusDevice *sd = SYS_BUS_DEVICE(obj);
->       IMX7SNVSState *s = IMX7_SNVS(obj);
-> +    struct tm tm;
->   
->       memory_region_init_io(&s->mmio, obj, &imx7_snvs_ops, s,
->                             TYPE_IMX7_SNVS, 0x1000);
->   
->       sysbus_init_mmio(sd, &s->mmio);
-> +
-> +    qemu_get_timedate(&tm, 0);
-> +    s->tick_offset = mktimegm(&tm) -
-> +        qemu_clock_get_ns(rtc_clock) / NANOSECONDS_PER_SECOND;
-
-So 'tick_offset' should be saved for migration. But I wonder
-about replay, do we need this to be a property so user can set
-and offset to emulate a RTC in host past/future? Maybe out of
-scope, but still please add VMSTATE_INT64(tick_offset).
-
->   }
->   
->   static void imx7_snvs_class_init(ObjectClass *klass, void *data)
-> diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-> index 05ff692441..85725506bf 100644
-> --- a/hw/misc/trace-events
-> +++ b/hw/misc/trace-events
-> @@ -116,8 +116,8 @@ imx7_gpr_read(uint64_t offset) "addr 0x%08" PRIx64
->   imx7_gpr_write(uint64_t offset, uint64_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx64
->   
->   # imx7_snvs.c
-> -imx7_snvs_read(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
-> -imx7_snvs_write(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
-> +imx7_snvs_read(uint64_t offset, uint64_t value, unsigned size) "i.MX SNVS read: offset 0x%08" PRIx64 " value 0x%08" PRIx64 " size %u"
-> +imx7_snvs_write(uint64_t offset, uint64_t value, unsigned size) "i.MX SNVS write: offset 0x%08" PRIx64 " value 0x%08" PRIx64 " size %u"
->   
->   # mos6522.c
->   mos6522_set_counter(int index, unsigned int val) "T%d.counter=%d"
-> diff --git a/include/hw/misc/imx7_snvs.h b/include/hw/misc/imx7_snvs.h
-> index 14a1d6fe6b..26c497b8ed 100644
-> --- a/include/hw/misc/imx7_snvs.h
-> +++ b/include/hw/misc/imx7_snvs.h
-> @@ -20,7 +20,9 @@
->   enum IMX7SNVSRegisters {
->       SNVS_LPCR = 0x38,
->       SNVS_LPCR_TOP   = BIT(6),
-> -    SNVS_LPCR_DP_EN = BIT(5)
-> +    SNVS_LPCR_DP_EN = BIT(5),
-
-(FWIW SNVS_LPCR_TOP/SNVS_LPCR_DP_EN aren't IMX7SNVSRegisters enum.)
-
-> +    SNVS_LPSRTCMR = 0x050, /* Secure Real Time Counter MSB Register */
-> +    SNVS_LPSRTCLR = 0x054, /* Secure Real Time Counter LSB Register */
->   };
->   
->   #define TYPE_IMX7_SNVS "imx7.snvs"
-> @@ -31,6 +33,9 @@ struct IMX7SNVSState {
->       SysBusDevice parent_obj;
->   
->       MemoryRegion mmio;
-> +
-> +    int64_t tick_offset;
-> +    uint64_t lpcr;
-
-Why do we need 'lpcr' in the instance state? It doesn't seem used.
-
->   };
->   
->   #endif /* IMX7_SNVS_H */
-
-Modulo few comments, the patch LGTM!
-
-Regards,
-
-Phil.
 
