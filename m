@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01036811ACB
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 18:20:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4CD811AD1
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 18:21:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDSt9-0005EX-Ll; Wed, 13 Dec 2023 12:19:17 -0500
+	id 1rDSuu-00067V-SR; Wed, 13 Dec 2023 12:21:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDSt6-0005EC-20
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 12:19:12 -0500
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rDSut-00066w-51
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 12:21:03 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDSt3-0000ZH-5P
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 12:19:11 -0500
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-50bf37fd2bbso9704729e87.0
- for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 09:19:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rDSur-0000xi-Ej
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 12:21:02 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-551e6b99490so1658339a12.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 09:21:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702487947; x=1703092747; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cUXbJdod+qXiv1eefPiwF2Y2tlliZuou7lqWUhtrrU8=;
- b=WDbuTEoTe76WrM6kYa3gxy9UuygKwSSzWESjlLP214owq5sAUxKItyejelSApGeoUh
- IP52iENeX4hbnp0M1yjGyl+sMyb1CBFEQcxHU0QergN0PKsCsDkD8+KDOas+XwMFkuLA
- 4DMnii7DQdJwWCgGIDuTyT1meWgi19qtA9QC8y0bv6506FUKFDwFIrBEJ3h2fCgSDDSF
- S7xVGL3oTf/GQE1kDChYjQr40G1kLWZVUy4XQoZHyUv3RBmLw7MIASApzPv3Sq83bM9Y
- Uif3QZKCTKjSkzhoVsVo1vDYdRlUqJBLEiqRvSc0B6RSTYwZEetxJV5iF5kSuPoOqKf5
- I04A==
+ d=linaro.org; s=google; t=1702488060; x=1703092860; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M0atWKa26FsGgBVT+MCafJYHimET8lqY3IETPDTAc6Q=;
+ b=vq1ePlrztahqViucHBg/bVirT931k9zBiGcMs8QqnZkCJ3pUXRppiCSMJleMRvlOPV
+ e0lJ3kIX8aTYVAmkW726sz3nN1/xEgFlpv/r30B3CvAeWScjViJlXQ+zwgjy2x5kvSLf
+ nNbYkZxwaym/gu9p5EaKaHe8nCBiw591w9DDTgIufzUbUxmasWN1G485lTmh5Cn9ldCx
+ y1JdzxqpqIOegMNokBQ1GNXHYCXq2ROvMUpsiMbKicH5wkgbno1JyI26mzE3RvWIWjVF
+ MAKTcQ4HH++oIPqtRoWU2/kR28nc5nAP7HmzeMHYppGY2W9VwSoS1JgpKTIgIJfmCbOc
+ rN7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702487947; x=1703092747;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cUXbJdod+qXiv1eefPiwF2Y2tlliZuou7lqWUhtrrU8=;
- b=RevUNjr3J6FCLKefMK5IDIrswGeO77b/c5/2Fftvh5cffGhvK9Dy1hx3KDvRkT4ZBO
- Xq8aZgb3qr4U31IzK9OrF2DjfgdClVRbCE6Vqb2u8OQLelips7Dmj/8947PmcMzOyuT1
- 5pTEk2clMdkv9X+JiyTEAQYNInzl5lljATeuKr9sZ/Hu48DKCMfZDeXPVI0vf8FLkFIT
- o3/sMOh1jA1mQtICCf9WK172FROK93/OhWyTCljHQFRQHXXHXuKm8+EoZ0zTHun8joqi
- jli3JAlhFYyAhZby+cQuADsx6zjZazEdIXhMvv/K0wQgOIriSU1Qw6qJhlOtgW6IzWIi
- vLKA==
-X-Gm-Message-State: AOJu0YyPHb0jfCZjrSCUhQ2HulfvNdtPuHbvoYACE+pBZqlZM/pCBYN2
- 1SLkaZzzztXNNQhMEwtf/V0dAg==
-X-Google-Smtp-Source: AGHT+IGc8zUCrYg/gxXpN+6DAys4IVutjKTyYPW3ZSfPbER5ZmvnopIU1XciDmjz5In6dnHumln3xQ==
-X-Received: by 2002:ac2:5fac:0:b0:50b:efe8:f5e8 with SMTP id
- s12-20020ac25fac000000b0050befe8f5e8mr3562274lfe.88.1702487946985; 
- Wed, 13 Dec 2023 09:19:06 -0800 (PST)
-Received: from [192.168.79.175] ([93.23.251.22])
- by smtp.gmail.com with ESMTPSA id
- vw15-20020a170907a70f00b00a22ff4994e9sm1179986ejc.214.2023.12.13.09.19.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Dec 2023 09:19:06 -0800 (PST)
-Message-ID: <9acdbf95-492d-4cce-98f5-d774a277d214@linaro.org>
-Date: Wed, 13 Dec 2023 18:19:05 +0100
+ d=1e100.net; s=20230601; t=1702488060; x=1703092860;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=M0atWKa26FsGgBVT+MCafJYHimET8lqY3IETPDTAc6Q=;
+ b=uTDg7ICrCfEs6N3gKttlLxVIVas3hAx08IgwiIW6WsCbZmvtX9rC0zwUkDR1Ya/SwA
+ mvbjBMpmqWBS2ow6l9LuJuFAS1uEzaB2toqhhIjvvQK8lv2RMHT7L3BddQtNwZLHBd2l
+ XsKYws+aL9g4YvSFR9vsTy5llMGcCMeFTXZmSpFdTDn5KoJPsZqAu+BIJOMb7kjDI5Sa
+ isIDQB4+I1U9/jG03j/8BACYjsHu7vjSqKYRGddqVBfZZQSac31R6IJeJT9KSbgK3WBE
+ QlOUToJ4U0NY2+W+7OfbawXS9wlyQCBt9arRNqhQ79MUfzLsSWSXzpXvFBHlySYpR1N6
+ m9BQ==
+X-Gm-Message-State: AOJu0YyItyQYAz8YW7ww3uO46CKRkkarvQBuAVkssMNlnTVUc4rAXqLH
+ P+UcH2NYjS0E4JCgbuloWFKzMoU01aIca+H7tevhcQ==
+X-Google-Smtp-Source: AGHT+IFEGYkKZ0Py4tdvaTJXArcAt/M5T9yGAL5nGLhbKjdg69nuEd1Vlo2DyFdNdNvyFxu6bq0R/kL3HyM3LXFhJtg=
+X-Received: by 2002:a50:d71d:0:b0:54b:2894:d1d8 with SMTP id
+ t29-20020a50d71d000000b0054b2894d1d8mr2350738edi.27.1702488059819; Wed, 13
+ Dec 2023 09:20:59 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/sd/pxa2xx_mmci: Disable reentrancy detection
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- Guenter Roeck <linux@roeck-us.net>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20231213014932.1748323-1-linux@roeck-us.net>
- <CAFEAcA9KU855jn8xDQtbf58Byg0NCq-aB3tPcf8sB6YLyLkvWQ@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9KU855jn8xDQtbf58Byg0NCq-aB3tPcf8sB6YLyLkvWQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
+References: <20231112092232.131-1-n.ostrenkov@gmail.com>
+ <CAFEAcA8A8sGjknad1QpeJ8qank-mWWw+gRvR4PVBHk2zAHrEnQ@mail.gmail.com>
+ <fbab82ef-bb45-417a-932e-99089dd4d4a5@linaro.org>
+In-Reply-To: <fbab82ef-bb45-417a-932e-99089dd4d4a5@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 13 Dec 2023 17:20:21 +0000
+Message-ID: <CAFEAcA-NVrx+q6XLX02vuwD274THh5N7NJExVzvtD5zKaFa4HQ@mail.gmail.com>
+Subject: Re: [PATCH] fsl-imx: Add simple RTC emulation for i.MX6 and i.MX7
+ boards
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Nikita Ostrenkov <n.ostrenkov@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, Andrey Smirnov <andrew.smirnov@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,35 +90,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Guenter,
+On Wed, 13 Dec 2023 at 17:17, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> Hi Peter,
+>
+> On 12/12/23 15:18, Peter Maydell wrote:
+> > On Sun, 12 Nov 2023 at 09:22, Nikita Ostrenkov <n.ostrenkov@gmail.com> =
+wrote:
+> >
+> > Hi; thanks for this patch, and sorry I haven't got round
+> > to reviewing it earlier.
+> >
+> >> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+> >> ---
+> >>   hw/misc/imx7_snvs.c         | 59 ++++++++++++++++++++++++++++++++---=
+--
+> >>   hw/misc/trace-events        |  4 +--
+> >>   include/hw/misc/imx7_snvs.h | 14 ++++++++-
+> >>   3 files changed, 67 insertions(+), 10 deletions(-)
+>
+>
+> >> @@ -31,6 +33,16 @@ struct IMX7SNVSState {
+> >>       SysBusDevice parent_obj;
+> >>
+> >>       MemoryRegion mmio;
+> >> +
+> >> +    /*
+> >> +     * Needed to preserve the tick_count across migration, even if th=
+e
+> >> +     * absolute value of the rtc_clock is different on the source and
+> >> +     * destination.
+> >> +     */
+> >> +    int64_t tick_offset_vmstate;
+> >
+> > You don't need tick_offset_vmstate -- it is only in the p031
+> > RTC device as a backwards-compatibility thing for older versions
+> > of QEMU. Migrating tick_offset alone is sufficient in a new
+> > device. (It seems to have been unfortunately copied-and-pasted
+> > into the goldfish RTC device; we should probably fix that bug.)
+> >
+> >> +    int64_t tick_offset;
+> >> +
+> >> +    uint64_t lpcr;
+> >
+> > We've now added state to this device, which means that it needs
+> > a VMState structure to handle migration, and it needs a reset
+> > function.
+>
+> I just noticed your v1 review after reviewing v2. Indeed
+> 'tick_offset' need to be migrated. Now about reset(), RTC
+> are somehow different. When resetting a machine in the same
+> QEMU process I'd expect the RTC offset to not be reset.
+>
+> Could this be clarified by adding a reset handler with no
+> code but a comment /* RTC state is usually kept by CMOS
+> battery and is not reset */ maybe?
 
-On 13/12/23 18:12, Peter Maydell wrote:
-> On Wed, 13 Dec 2023 at 01:49, Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> All tests using pxa2xx_mmc to access mmc cards on pxa2xx platforms
->> such as borzoi fail starting with commit a2e1753b80 ("memory: prevent
->> dma-reentracy issues"). Disable reentrancy guard to fix the problem.
->>
->> Fixes: a2e1753b80 ("memory: prevent dma-reentracy issues")
->> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->> ---
->>   hw/sd/pxa2xx_mmci.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/hw/sd/pxa2xx_mmci.c b/hw/sd/pxa2xx_mmci.c
->> index 5e8ea69188..27ae8f2888 100644
->> --- a/hw/sd/pxa2xx_mmci.c
->> +++ b/hw/sd/pxa2xx_mmci.c
->> @@ -555,6 +555,8 @@ static void pxa2xx_mmci_instance_init(Object *obj)
->>       qdev_init_gpio_out_named(dev, &s->rx_dma, "rx-dma", 1);
->>       qdev_init_gpio_out_named(dev, &s->tx_dma, "tx-dma", 1);
->>
->> +    s->iomem.disable_reentrancy_guard = true;
->> +
-> 
-> All patches that set this flag should include a comment which
-> explains what the device access path that triggers the reentrancy
-> is, please.
+The lpcr register state needs to be reset.
 
-Can we get a reproducer or backtrace please?
+thanks
+-- PMM
 
