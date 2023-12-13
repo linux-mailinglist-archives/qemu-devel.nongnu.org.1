@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2996381127F
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB7811279
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:05:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDOuH-0003vv-8x; Wed, 13 Dec 2023 08:04:09 -0500
+	id 1rDOug-0004Ab-DX; Wed, 13 Dec 2023 08:04:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOsj-0000VG-H1; Wed, 13 Dec 2023 08:02:34 -0500
+ id 1rDOsm-0000cB-L8; Wed, 13 Dec 2023 08:02:37 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOse-0007C0-2P; Wed, 13 Dec 2023 08:02:30 -0500
+ id 1rDOsj-0007Cg-IQ; Wed, 13 Dec 2023 08:02:35 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 04BEC3B449;
+ by isrv.corpit.ru (Postfix) with ESMTP id 15DF73B44A;
  Wed, 13 Dec 2023 16:01:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9CBFE3C8DA;
+ by tsrv.corpit.ru (Postfix) with SMTP id AEE5A3C8DB;
  Wed, 13 Dec 2023 16:00:46 +0300 (MSK)
-Received: (nullmailer pid 1024781 invoked by uid 1000);
+Received: (nullmailer pid 1024784 invoked by uid 1000);
  Wed, 13 Dec 2023 13:00:46 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- Friedrich Weber <f.weber@proxmox.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.8 22/24] ui/vnc-clipboard: fix inflate_buffer
-Date: Wed, 13 Dec 2023 16:00:31 +0300
-Message-Id: <20231213130041.1024630-22-mjt@tls.msk.ru>
+Subject: [Stable-7.2.8 23/24] target/arm: Disable SME if SVE is disabled
+Date: Wed, 13 Dec 2023 16:00:32 +0300
+Message-Id: <20231213130041.1024630-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
 References: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,40 +60,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Commit d921fea338 ("ui/vnc-clipboard: fix infinite loop in
-inflate_buffer (CVE-2023-3255)") removed this hunk, but it is still
-required, because it can happen that stream.avail_in becomes zero
-before coming across a return value of Z_STREAM_END in the loop.
+There is no architectural requirement that SME implies SVE, but
+our implementation currently assumes it. (FEAT_SME_FA64 does
+imply SVE.) So if you try to run a CPU with eg "-cpu max,sve=off"
+you quickly run into an assert when the guest tries to write to
+SMCR_EL1:
 
-This fixes the host->guest direction of the clipboard with noVNC and
-TigerVNC as clients.
+#6  0x00007ffff4b38e96 in __GI___assert_fail
+    (assertion=0x5555566e69cb "sm", file=0x5555566e5b24 "../../target/arm/helper.c", line=6865, function=0x5555566e82f0 <__PRETTY_FUNCTION__.31> "sve_vqm1_for_el_sm") at ./assert/assert.c:101
+#7  0x0000555555ee33aa in sve_vqm1_for_el_sm (env=0x555557d291f0, el=2, sm=false) at ../../target/arm/helper.c:6865
+#8  0x0000555555ee3407 in sve_vqm1_for_el (env=0x555557d291f0, el=2) at ../../target/arm/helper.c:6871
+#9  0x0000555555ee3724 in smcr_write (env=0x555557d291f0, ri=0x555557da23b0, value=2147483663) at ../../target/arm/helper.c:6995
+#10 0x0000555555fd1dba in helper_set_cp_reg64 (env=0x555557d291f0, rip=0x555557da23b0, value=2147483663) at ../../target/arm/tcg/op_helper.c:839
+#11 0x00007fff60056781 in code_gen_buffer ()
 
-Fixes: d921fea338 ("ui/vnc-clipboard: fix infinite loop in inflate_buffer (CVE-2023-3255)")
-Reported-by: Friedrich Weber <f.weber@proxmox.com>
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20231122125826.228189-1-f.ebner@proxmox.com>
-(cherry picked from commit ebfbf394671163c14e2b24d98f3927a3151d1aff)
+Avoid this unsupported and slightly odd combination by
+disabling SME when SVE is not present.
+
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2005
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20231127173318.674758-1-peter.maydell@linaro.org
+(cherry picked from commit f7767ca301796334f74b9b642b395a4bd3e3dbac)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/vnc-clipboard.c b/ui/vnc-clipboard.c
-index c759be3438..124b6fbd9c 100644
---- a/ui/vnc-clipboard.c
-+++ b/ui/vnc-clipboard.c
-@@ -69,6 +69,11 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t in_len, uint32_t *size)
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 38d066c294..6cf7a33591 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1498,6 +1498,16 @@ void arm_cpu_finalize_features(ARMCPU *cpu, Error **errp)
+             return;
          }
-     }
  
-+    *size = stream.total_out;
-+    inflateEnd(&stream);
++        /*
++         * FEAT_SME is not architecturally dependent on FEAT_SVE (unless
++         * FEAT_SME_FA64 is present). However our implementation currently
++         * assumes it, so if the user asked for sve=off then turn off SME also.
++         * (KVM doesn't currently support SME at all.)
++         */
++        if (cpu_isar_feature(aa64_sme, cpu) && !cpu_isar_feature(aa64_sve, cpu)) {
++            object_property_set_bool(OBJECT(cpu), "sme", false, &error_abort);
++        }
 +
-+    return out;
-+
- err_end:
-     inflateEnd(&stream);
- err:
+         arm_cpu_sme_finalize(cpu, &local_err);
+         if (local_err != NULL) {
+             error_propagate(errp, local_err);
 -- 
 2.39.2
 
