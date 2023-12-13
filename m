@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0858681265D
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEF881265E
 	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 05:26:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDdHq-0006Y5-HE; Wed, 13 Dec 2023 23:25:27 -0500
+	id 1rDdHz-0006Zz-Ut; Wed, 13 Dec 2023 23:25:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rDdHV-0006Xw-UG
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 23:25:06 -0500
+ id 1rDdHY-0006YA-4U
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 23:25:11 -0500
 Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rDdHS-00047B-SQ
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 23:25:05 -0500
+ id 1rDdHW-00047B-AY
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 23:25:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1702527902; x=1734063902;
+ t=1702527906; x=1734063906;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6wxqxaULlUE7+5E/y38yXUu9fle7w0xHuXtl3GH8lSA=;
- b=Uanenacu2D8n4mocp9obIA91fOjuiSEJTP7OtVkHJ41dDBQuKY5aCG4Y
- P8h3jog+95zu51FHAReOuanjaULkdQph8djkgznELJcjTx/Z92xOCOnR2
- yh/RcUb+QU+J3E98UOC1MT86lPypIZhp1vaoPvROaUyxb2eSNAIi9S/7D
- m+/jOHwb4T82O2sdm7fp/8jtY4KvoX8fglPqKB0eMb/skkZlxvatg1ujD
- +BDCDY7bu6cVlAcg/jfdE/PCy62MuT6ZeZXcv3cIg1ZWx/UYhkDTrLno3
- aACgQv0B1xIF6lLNo93y1IglZlM6l0C0CCKS1mxaAu9jrIrnemJBTkBW9 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10923"; a="481261834"
-X-IronPort-AV: E=Sophos;i="6.04,274,1695711600"; d="scan'208";a="481261834"
+ bh=GB7Aw2ZUWFlZrpDmc0tXArN8lQPdhA8HuiP+BBWfeHI=;
+ b=lw0dfIOgaK8QpH2HlMA7OQTPhECh/JNbhOOKjB27bx1qVWeNxg4mrVzs
+ SSc346aDS+TSlkZu49LgDh6ftjE1xKza7U8Tmk1kACAGxhhbkQR/4I0F0
+ +hR4TDJkWXS7+5GOOZDpWHrcLxNCXiiRhFyswHmHWUZEpsCjdf61w+uU5
+ YnSb0e536qCUiqvWez07spwXuXwAjiGgACsaCXAMv2vzji7+Pu/jNNI71
+ jR72JqNCshgjqKnEDbTsE9HWq1xmqt2F6ACyEow2PFV7oucLDgBbcYxcB
+ Tw4e9bS6iqUpea9YbYjXpyqQfodRws/u/WhDQDmEmYFrjj1SnqBTQWwRo w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10923"; a="481261836"
+X-IronPort-AV: E=Sophos;i="6.04,274,1695711600"; d="scan'208";a="481261836"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Dec 2023 20:24:58 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10923"; a="803127560"
-X-IronPort-AV: E=Sophos;i="6.04,274,1695711600"; d="scan'208";a="803127560"
+X-IronPort-AV: E=McAfee;i="6600,9927,10923"; a="803127566"
+X-IronPort-AV: E=Sophos;i="6.04,274,1695711600"; d="scan'208";a="803127566"
 Received: from unknown (HELO localhost.fm.intel.com) ([10.105.154.69])
- by orsmga008.jf.intel.com with ESMTP; 13 Dec 2023 20:24:57 -0800
+ by orsmga008.jf.intel.com with ESMTP; 13 Dec 2023 20:24:58 -0800
 From: Dongwon Kim <dongwon.kim@intel.com>
 To: qemu-devel@nongnu.org
 Cc: Dongwon Kim <dongwon.kim@intel.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PATCH 2/3] ui/gtk: unblock pipeline only if fence hasn't been
- signaled yet
-Date: Wed, 13 Dec 2023 20:24:18 +0000
-Message-Id: <20231213202419.15459-2-dongwon.kim@intel.com>
+Subject: [PATCH 3/3] virtio-gpu: first surface update with blob scanout after
+ resumed
+Date: Wed, 13 Dec 2023 20:24:19 +0000
+Message-Id: <20231213202419.15459-3-dongwon.kim@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231213202419.15459-1-dongwon.kim@intel.com>
 References: <20231204184051.16873-1-dongwon.kim@intel.com>
@@ -80,41 +80,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is needed to unblock the pipeline only if there is an active dmabuf
-to be rendered and the fence for it is not yet signaled.
+The guest surface needs to be updated with a blob scanout after resumed
+from saved vm state if blob is enabled.
 
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
 ---
- ui/gtk.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ hw/display/virtio-gpu.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index ea8d07833e..073c9eadb8 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -597,10 +597,16 @@ void gd_hw_gl_flushed(void *vcon)
-     VirtualConsole *vc = vcon;
-     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
- 
--    qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
--    close(dmabuf->fence_fd);
--    dmabuf->fence_fd = -1;
--    graphic_hw_gl_block(vc->gfx.dcl.con, false);
-+    if (!dmabuf) {
-+        return;
-+    }
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index b016d3bac8..34dc0ab9fc 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1417,19 +1417,27 @@ static int virtio_gpu_post_load(void *opaque, int version_id)
+         if (!res) {
+             return -EINVAL;
+         }
+-        scanout->ds = qemu_create_displaysurface_pixman(res->image);
+-        if (!scanout->ds) {
+-            return -EINVAL;
+-        }
 +
-+    if (dmabuf->fence_fd > 0) {
-+        qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
-+        close(dmabuf->fence_fd);
-+        dmabuf->fence_fd = -1;
-+        graphic_hw_gl_block(vc->gfx.dcl.con, false);
-+    }
- }
++        if (res->blob_size) {
++            assert(g->dmabuf.primary[i] != NULL);
++            g->dmabuf.primary[i]->buf.fd = res->dmabuf_fd;
++            dpy_gl_scanout_dmabuf(scanout->con, &g->dmabuf.primary[i]->buf);
++        } else {
++            scanout->ds = qemu_create_displaysurface_pixman(res->image);
++            if (!scanout->ds) {
++                return -EINVAL;
++            }
+ #ifdef WIN32
+-        qemu_displaysurface_win32_set_handle(scanout->ds, res->handle, 0);
++            qemu_displaysurface_win32_set_handle(scanout->ds, res->handle, 0);
+ #endif
++            dpy_gfx_replace_surface(scanout->con, scanout->ds);
++            dpy_gfx_update_full(scanout->con);
++        }
  
- /** DisplayState Callbacks (opengl version) **/
+-        dpy_gfx_replace_surface(scanout->con, scanout->ds);
+-        dpy_gfx_update_full(scanout->con);
+         if (scanout->cursor.resource_id) {
+             update_cursor(g, &scanout->cursor);
+         }
++
+         res->scanout_bitmask |= (1 << i);
+     }
+ 
 -- 
 2.34.1
 
