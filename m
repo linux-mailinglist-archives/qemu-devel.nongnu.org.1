@@ -2,67 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A038115E5
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 16:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9818115F2
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 16:17:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDQwA-0006uv-79; Wed, 13 Dec 2023 10:14:14 -0500
+	id 1rDQzC-00085o-D3; Wed, 13 Dec 2023 10:17:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDQw8-0006un-Aw
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:14:12 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rDQz9-00085I-S7
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:17:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDQw1-0008Fn-Px
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:14:11 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rDQz5-0000qB-RB
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:17:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702480444;
+ s=mimecast20190719; t=1702480633;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ljnQfvRxxLocNeaf/7DTOOUFaN2zR/eiQNKFXZDBMZI=;
- b=I2y3/VY1WiizzV/zuY04Uz/jG1SaGNqkh9cHqr4U2GjH7Vzex5gGLFUFIvoAlwKHpB4a+f
- LQcGzcvCQ9IjNmyvq/QspQmtswKqkjHS0W2bOX2IaIYo6DsGJYy00hkG9Q5wPHgSU5HW+N
- i1XwHbX//h+an3Ul6LcYyJhpIXXUR+I=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wrZcY0kj0f+Jn6ir9oFEXKSCe9ajbByojI6S2iSvNQ0=;
+ b=WFvJdXemG7ETdNijc0hMGwZE+rGVFc7vY1g+ey0djzcmzCaF41AGvlhiDHvzf8DfkHSbAc
+ /R4wuvlVS0bVSmd4egJ38eVxYPM+gmBq/XjGeVqhm6OHK17TDtnPkB6nOavcXqQR2rYgbB
+ zNss3gT7y9TwRz+EykVdA/I5Dif4e30=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-397-g8Y_1uflO_6k7Qo1csFLow-1; Wed, 13 Dec 2023 10:14:02 -0500
-X-MC-Unique: g8Y_1uflO_6k7Qo1csFLow-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3D015185A787;
- Wed, 13 Dec 2023 15:14:02 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.79])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0E9FD492BFA;
- Wed, 13 Dec 2023 15:14:02 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id A69A91800990; Wed, 13 Dec 2023 16:14:00 +0100 (CET)
-Date: Wed, 13 Dec 2023 16:14:00 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, 
- QEMU Developers <qemu-devel@nongnu.org>, Igor Mammedov <imammedo@redhat.com>, 
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ us-mta-9-weE71EFLPu2wgijf0afhdg-1; Wed, 13 Dec 2023 10:17:11 -0500
+X-MC-Unique: weE71EFLPu2wgijf0afhdg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9fffa4c4f28so263433366b.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 07:17:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702480629; x=1703085429;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wrZcY0kj0f+Jn6ir9oFEXKSCe9ajbByojI6S2iSvNQ0=;
+ b=ZcnsNLKZDzNRwaZ4IBAzcwITWa21PC6lhKITt3imabIg1zu4hlKUE+etvq3eLJMpHR
+ /Dj+/ScGzFnaSlUHOlPjGSJDYJug+PZBWz1DTazPacOBMdEK/Bu/ryCv2l+LzjMO6qT6
+ QsY1G7z/5HlVZOytLxEWTuiBaciwRw/7R9jhgfF9PbANFdWpzWrh34W/rzOym0JGzPRj
+ oLC/j4+64bMlPPDGOKNpnfVoRFsavFJdMz11SbKuORb3N64CiQiHgFqolChEEk5F+aeQ
+ yZ3Psm1oFt5QsA/KKS5Pv+Pxp+EcffJfpFnoETzdEsaKwelxIEb4S3krLIW2xQu0x6UK
+ 1Tpg==
+X-Gm-Message-State: AOJu0Yxosb2U5bdqKcIu442BTeiB3oc4H3WSIFx6kvuzD8nk1QYFUYJr
+ g9N3qkXIIKZfFtcD2HNubFYE3lc/+2IrkaD0uCXUlfr6jlSksMDQV4xioYtFA1m9k7RbJxjirun
+ JpFZORxfwnzZKn3o=
+X-Received: by 2002:a17:907:707:b0:a10:c6ab:9cbe with SMTP id
+ xb7-20020a170907070700b00a10c6ab9cbemr5652471ejb.46.1702480629542; 
+ Wed, 13 Dec 2023 07:17:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEiWL2JvxdrKFqyoyXgYEsDhVSS9DcjMSUvEt2IIAlLEgjtS2nDaK3Yi4hUfeqELOCWSJuVRw==
+X-Received: by 2002:a17:907:707:b0:a10:c6ab:9cbe with SMTP id
+ xb7-20020a170907070700b00a10c6ab9cbemr5652461ejb.46.1702480629231; 
+ Wed, 13 Dec 2023 07:17:09 -0800 (PST)
+Received: from redhat.com ([2a02:14f:16d:d414:dc39:9ae8:919b:572d])
+ by smtp.gmail.com with ESMTPSA id
+ ig8-20020a1709072e0800b00a1d754b30a9sm7859919ejc.86.2023.12.13.07.17.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Dec 2023 07:17:07 -0800 (PST)
+Date: Wed, 13 Dec 2023 10:17:02 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Subject: Re: [PULL 6/6] tests/acpi: disallow tests/data/acpi/virt/SSDT.memhp
  changes
-Message-ID: <dr77dip25isnjsfs3llxuxpxnym5dxwovwaruqvnjw5s6ydgou@7sni32qgde44>
+Message-ID: <20231213101629-mutt-send-email-mst@kernel.org>
 References: <20231213105026.1944656-1-kraxel@redhat.com>
  <20231213105026.1944656-7-kraxel@redhat.com>
  <AD96681F-FBF0-4AB9-8F2B-5B6C1FB5A52F@redhat.com>
  <20231213093242-mutt-send-email-mst@kernel.org>
  <98BBB08F-31A9-48B8-9DAF-CF32E1F8B742@redhat.com>
  <20231213100321-mutt-send-email-mst@kernel.org>
+ <dr77dip25isnjsfs3llxuxpxnym5dxwovwaruqvnjw5s6ydgou@7sni32qgde44>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231213100321-mutt-send-email-mst@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+In-Reply-To: <dr77dip25isnjsfs3llxuxpxnym5dxwovwaruqvnjw5s6ydgou@7sni32qgde44>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,14 +105,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+On Wed, Dec 13, 2023 at 04:14:00PM +0100, Gerd Hoffmann wrote:
+>   Hi,
+> 
+> > I agree, Gerd, going forward please include the diff of the
+> > disassemled AML.
+> 
+> That is in patch 5/6 which updates the test data.
+> 
+> take care,
+>   Gerd
 
-> I agree, Gerd, going forward please include the diff of the
-> disassemled AML.
-
-That is in patch 5/6 which updates the test data.
-
-take care,
-  Gerd
+Oh I double checked and you are right, I'm not sure where did I look that I missed it.
+Pls ignore.
 
 
