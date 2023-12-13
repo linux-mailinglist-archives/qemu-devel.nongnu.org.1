@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6DA1810EF1
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 11:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 684A5810EF6
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 11:52:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDMpG-0004vl-4h; Wed, 13 Dec 2023 05:50:50 -0500
+	id 1rDMpK-0004wO-2o; Wed, 13 Dec 2023 05:50:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDMp8-0004sz-2B
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 05:50:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDMp9-0004tJ-B7
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 05:50:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDMp1-00040D-JH
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 05:50:37 -0500
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rDMp0-00040C-Vg
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 05:50:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1702464633;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JUcoJmQTo4xIy4UOFNCfKKaqYnuI3yIalIZrxlvpmOg=;
- b=Rfa9a/e7IN/Akgv10nX6GrybqQYzVxno2bQpHwLSBnAF3eNDaDAuAgKZztbVpcRh9CD+5j
- 9dECwnK9PEsLEs7ExZCKVAeKhx4NvExmu524g1LoBy3TgcEsKd9wiBl6/wiur0mmx3mJe7
- qKwTK6VlsgsvBPi0pEaCPC7oy8AXBwU=
+ bh=UEi2/0WeubXWVQf+1PcLcZDhf0uBkvWNeF6mdtMQYS0=;
+ b=Guq6NdSgElG9hfBSXjbjPY0ZtBE0nROTLUW3j1e4DPl+/2eaCkdOYlLTkMgcerWmQ7QkNs
+ mybfe+B1vJ2bUsNj0PPzgmflwg5nXtgjNrpx2ycua4zyCZjd856+2+QghY+ot+/KR4wsBE
+ 7qm/YuW8M4lxsXYOqPtL2R1Q85alN2g=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-372-z9h_6pkGP0i3GY0J9McRVw-1; Wed, 13 Dec 2023 05:50:29 -0500
-X-MC-Unique: z9h_6pkGP0i3GY0J9McRVw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-393-_EYm9BKMOaS-U4srH5lv4w-1; Wed, 13 Dec 2023 05:50:29 -0500
+X-MC-Unique: _EYm9BKMOaS-U4srH5lv4w-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A1C1188F2EB;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AD35185A783;
  Wed, 13 Dec 2023 10:50:29 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.193.79])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5EE002166B31;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 58E112026D66;
  Wed, 13 Dec 2023 10:50:29 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 6C3F91800DC4; Wed, 13 Dec 2023 11:50:26 +0100 (CET)
+ id 796541800DC6; Wed, 13 Dec 2023 11:50:26 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 2/6] edk2: update to git snapshot
-Date: Wed, 13 Dec 2023 11:50:14 +0100
-Message-ID: <20231213105026.1944656-3-kraxel@redhat.com>
+Subject: [PULL 3/6] edk2: update build config,
+ set PcdUninstallMemAttrProtocol = TRUE.
+Date: Wed, 13 Dec 2023 11:50:15 +0100
+Message-ID: <20231213105026.1944656-4-kraxel@redhat.com>
 In-Reply-To: <20231213105026.1944656-1-kraxel@redhat.com>
 References: <20231213105026.1944656-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,22 +82,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Want pick up edk2 commit cee7ba349c0c ("ArmVirtQemu: Allow
-EFI memory attributes protocol to be disabled").  Needed to
-fix issue #1990.
+Needed to workaround buggy EFI_MEMORY_ATTRIBUTE_PROTOCOL
+usage in shim.efi.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- roms/edk2 | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ roms/edk2-build.config | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/roms/edk2 b/roms/edk2
-index 819cfc6b42a6..b8a3eec88cc7 160000
---- a/roms/edk2
-+++ b/roms/edk2
-@@ -1 +1 @@
--Subproject commit 819cfc6b42a68790a23509e4fcc58ceb70e1965e
-+Subproject commit b8a3eec88cc74bbfe7fb389d026cc7d1d8a989c8
+diff --git a/roms/edk2-build.config b/roms/edk2-build.config
+index bab6a9caebfa..0d367dbdb775 100644
+--- a/roms/edk2-build.config
++++ b/roms/edk2-build.config
+@@ -22,9 +22,15 @@ SMM_REQUIRE              = TRUE
+ [opts.armvirt.silent]
+ DEBUG_PRINT_ERROR_LEVEL  = 0x80000000
+ 
+-[pcds.nx.broken.grub]
++[pcds.nx.strict]
++PcdDxeNxMemoryProtectionPolicy = 0xC000000000007FD5
++PcdUninstallMemAttrProtocol    = FALSE
++
++[pcds.nx.broken.shim.grub]
+ # grub.efi uses EfiLoaderData for code
+ PcdDxeNxMemoryProtectionPolicy = 0xC000000000007FD1
++# shim.efi has broken MemAttr code
++PcdUninstallMemAttrProtocol    = TRUE
+ 
+ [pcds.workaround.202308]
+ PcdFirstTimeWakeUpAPsBySipi = FALSE
+@@ -95,7 +101,7 @@ conf = ArmVirtPkg/ArmVirtQemu.dsc
+ arch = ARM
+ opts = common
+        armvirt.silent
+-pcds = nx.broken.grub
++pcds = nx.broken.shim.grub
+ plat = ArmVirtQemu-ARM
+ dest = ../pc-bios
+ cpy1 = FV/QEMU_EFI.fd    edk2-arm-code.fd
+@@ -112,7 +118,7 @@ conf = ArmVirtPkg/ArmVirtQemu.dsc
+ arch = AARCH64
+ opts = common
+        armvirt.silent
+-pcds = nx.broken.grub
++pcds = nx.broken.shim.grub
+ plat = ArmVirtQemu-AARCH64
+ dest = ../pc-bios
+ cpy1 = FV/QEMU_EFI.fd  edk2-aarch64-code.fd
 -- 
 2.43.0
 
