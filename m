@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1880B8120F6
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 22:54:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD328122AA
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 00:12:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDXAL-000661-IQ; Wed, 13 Dec 2023 16:53:17 -0500
+	id 1rDYNT-0001j8-ID; Wed, 13 Dec 2023 18:10:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rDXAJ-00065T-Jl
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 16:53:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rDYNR-0001ir-J9
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 18:10:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rDXAI-0007HQ-1n
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 16:53:15 -0500
+ id 1rDYNP-0005E4-Pv
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 18:10:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702504392;
+ s=mimecast20190719; t=1702509050;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9WVtzbBSgHDdg8O+fpi7aMJE7g86nkNV+Qgd/TB7Gmo=;
- b=RduBPYOBxsEz9SOZnlvDgegjU3y6DRm9tapKq7o4p1Scz1Kt0j1mzlKriEFlEu5UZELsoP
- DKREtVeZ0FjYyUy8nmT0tSHdbwLCxUtLQTTjxwAW4NQe5EX0kFnW0pRtDTXKtIWR83Dbmy
- NSZ4r834LUgMxfCQWqxG62hPkxzmIsk=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HalX62OhWHGdYyXU2BzEnaXb9F+Bzu3+U2ORmUixNmI=;
+ b=TNAgzyc+Pv2XEZxrbmJXXPE82SoE6sJYiJovxFuF27KcKzeVFcG8BHdL3+Y3xmuXV8Kvmk
+ vIwKjC0B6jT+NKx35XGkLHIoT8l4pQduVgkcT7rU3V9adMIvIM+OtzsrYeLunWBnTwiFVR
+ 5+kh9647ttDogeZ8l8j1z4TUkdoxyug=
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-p2y58jEFNqWJcHNkXsBgmg-1; Wed, 13 Dec 2023 16:53:10 -0500
-X-MC-Unique: p2y58jEFNqWJcHNkXsBgmg-1
-Received: by mail-ua1-f69.google.com with SMTP id
- a1e0cc1a2514c-7cb3b26b84eso432815241.2
- for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 13:53:10 -0800 (PST)
+ us-mta-447-gSYaTo6qOTym0pV1GKRTUw-1; Wed, 13 Dec 2023 18:10:48 -0500
+X-MC-Unique: gSYaTo6qOTym0pV1GKRTUw-1
+Received: by mail-ot1-f69.google.com with SMTP id
+ 46e09a7af769-6d9f6188d3aso7987429a34.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 15:10:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702504390; x=1703109190;
+ d=1e100.net; s=20230601; t=1702509048; x=1703113848;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9WVtzbBSgHDdg8O+fpi7aMJE7g86nkNV+Qgd/TB7Gmo=;
- b=werak5FTE9+pm0O123HNvaK/u/LPfZNNiuPecFpcLovLXqnpmis6d+XVfk3xF7dOkI
- gFgGAz6ZVQtPKN/1sfA1hyfMm6FSfurMgYNY5uSgY1f3syTzbsd22EHLEurNuKpO75GQ
- i4xmxLCNbx0WjQPTxS1OO/kkTInhRplFURH0Uk9AA605HgyAWO/aPWbMf3KmFBMqpZDY
- SALtDYFi6xyOxreVGYdKQtsZAx6lXXQJlvP60flnLF5UdA5KP4TBsvGSEKXgyPiBhkY0
- u3SMWiTiSyhnYNfejQPyeipRJamAh3y9cchFturDP4EYP7cAa+DLFU9zUxJXoMSHfN3a
- QOZQ==
-X-Gm-Message-State: AOJu0YxFiv2Jt82nicBBoDV70+vKr34FChYyF0f3rdmGUD6KYtdWi3lP
- uQWffO7dXsK1Tloywnrw8ZpYj5m39/HpGMA/xV1WlTqXJDbe5I183Yz2BCT3t4VcZx0slFspyki
- LaIczXPjwGQBbG0/oiOy9odjzyd0WwfY=
-X-Received: by 2002:a67:c085:0:b0:464:609d:6636 with SMTP id
- x5-20020a67c085000000b00464609d6636mr4129538vsi.14.1702504390328; 
- Wed, 13 Dec 2023 13:53:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFxGUCMBcPhF1i6mU9L03hMVgZl202KhlaH0o3bQGgzdOgDBsvlSwD/jj1KdcOOJJWtd5Z8lyCH58qid3cGZ8Y=
-X-Received: by 2002:a67:c085:0:b0:464:609d:6636 with SMTP id
- x5-20020a67c085000000b00464609d6636mr4129526vsi.14.1702504390076; Wed, 13 Dec
- 2023 13:53:10 -0800 (PST)
+ bh=HalX62OhWHGdYyXU2BzEnaXb9F+Bzu3+U2ORmUixNmI=;
+ b=ERg88N+LQ/pnIVe4RI3ntlplj++e8ecgxiBG7gPvLlpQX58qXd8eiH6VLnDfVj0fSA
+ vRETxSe1NAHTiyMIVx6QKZR4pe1cPGXFyb0zHhEZR4/U6kav+BsorHYd9KH3i5Ivdrdu
+ XzwkfngxzrCImo7LwjM8BU+aGnYnRJeL8jpIQ6dFK9pXCctYO0ObVocQqr3p8LpzKwJj
+ 5LQQcXQI9fn28TKkizq5+oyxOUKxV7hCU+5oncYALwaBZhhhxGlswPF6Q7k86LfmHTho
+ /ghnxLTgJazblVrNV2i9EO08uhnLxnrC6lmp2R304lELCxcJhxcGt4Qs1Y3VEVOS8gYz
+ FK7w==
+X-Gm-Message-State: AOJu0YxIMOn6YPXhrTFQ4c9i2PCTSYTZOiCi7C7KUMDViglBTpYSTHu7
+ rVCIXDZRT6l8Tjqfvu7dDh8vDfNt09TVoJoT//I0plIIGw0F2JgtHaFULz3bN95GcpYv5MJD6pw
+ gTr2RaMoTgycC0GBLKx6sCf8Wp+Dpv7A=
+X-Received: by 2002:a05:6830:c7:b0:6d8:74e2:7ccc with SMTP id
+ x7-20020a05683000c700b006d874e27cccmr9045856oto.39.1702509047746; 
+ Wed, 13 Dec 2023 15:10:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFAdhqreEmrg3et7vIef2eX12Sj8haC4ot2UclIbTb2LWtza49IG7cVlcMYb7DFLZbscXWYM2/KBTETyxQchsw=
+X-Received: by 2002:a05:6830:c7:b0:6d8:74e2:7ccc with SMTP id
+ x7-20020a05683000c700b006d874e27cccmr9045851oto.39.1702509047477; Wed, 13 Dec
+ 2023 15:10:47 -0800 (PST)
 MIME-Version: 1.0
 References: <20231213211544.1601971-1-stefanha@redhat.com>
- <20231213211544.1601971-4-stefanha@redhat.com>
-In-Reply-To: <20231213211544.1601971-4-stefanha@redhat.com>
+In-Reply-To: <20231213211544.1601971-1-stefanha@redhat.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 13 Dec 2023 22:52:58 +0100
-Message-ID: <CABgObfYWPVFcqa5bBhPMZuS-6hh=nAt=pHztL5YHSAQOwiarig@mail.gmail.com>
-Subject: Re: [RFC 3/3] aio-posix: call ->poll_end() when removing AioHandler
+Date: Thu, 14 Dec 2023 00:10:32 +0100
+Message-ID: <CABgObfaTb8n66wqNxObnvgWdzu2=mgLHjX0fCPH99=-P918Apg@mail.gmail.com>
+Subject: Re: [RFC 0/3] aio-posix: call ->poll_end() when removing AioHandler
 To: Stefan Hajnoczi <stefanha@redhat.com>
 Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
  Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
  Fiona Ebner <f.ebner@proxmox.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,31 +98,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed, Dec 13, 2023 at 10:15=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.c=
 om> wrote:
-> -    /* If a read is in progress, just mark the node as deleted */
-> -    if (ctx->walking_handlers > 0) {
-> -        QLIST_INSERT_HEAD_RCU(&ctx->deleted_aio_handlers, node, node_del=
-eted);
-> -        return false;
-> +    /* If polling was started on the node then end it now */
-> +    if (ctx->poll_started && node->io_poll_end) {
-> +        node->io_poll_end(node->opaque);
-> +
-> +        /* Poll one last time in case ->io_poll_end() raced with the eve=
-nt */
-> +        if (node->io_poll(node->opaque)) {
-> +            poll_ready =3D true;
-> +        }
+> Alternatives welcome! (A cleaner version of this approach might be to for=
+bid
+> cross-thread aio_set_fd_handler() calls and to refactor all
+> aio_set_fd_handler() callers so they come from the AioContext's home thre=
+ad.
+> I'm starting to think that only the aio_notify() and aio_schedule_bh() AP=
+Is
+> should be thread-safe.)
 
-Do you need this at all? If the caller is removing the handlers, they
-should have put themselves in a state where they don't care about the
-file descriptor becoming readable.
+I think that's pretty hard because aio_set_fd_handler() is a pretty
+important part of the handoff from one AioContext to another and also
+of drained_begin()/end(), and both of these things run in the main
+thread.
 
-You still have to be careful because aio_bh_schedule_oneshot() can
-trigger remote nested event loops (which can cause deadlocks and, I am
-especially afraid, can take some time and invalidate the expectation
-that you don't need to drop the BQL). But it does simplify this patch
-quite a bit.
+Regarding how to solve this issue, there is a lot of
+"underdocumenting" of the locking policy in aio-posix.c, and indeed it
+makes running aio_set_fd_handler() in the target AioContext tempting;
+but it is also scary to rely on the iothread being able to react
+quickly. I'm also worried that we're changing the logic just because
+we don't understand the old one, but then we add technical debt.
+
+So, as a first step, I would take inspiration from the block layer
+locking work, and add assertions to functions like poll_set_started()
+or find_aio_handler(). Is the list_lock elevated (nonzero)? Or locked?
+Are we in the iothread? And likewise, for each list, does insertion
+happen from the iothread or with the list_lock taken (and possibly
+elevated)? Does removal happen from the iothread or with list_lock
+zero+taken?
+
+After this step,  we should have a clearer idea of the possible states
+of the node (based on the lists, the state is a subset of
+{poll_started, deleted, ready}) and draw a nice graph of the
+transitions. We should also understand if any calls to
+QLIST_IS_INSERTED() have correctness issues.
+
+Good news, I don't think any memory barriers are needed here. One
+thing that we already do correctly is that, once a node is deleted, we
+try to skip work; see for example poll_set_started(). This also
+provides a good place to do cleanup work for deleted nodes, including
+calling poll_end(): aio_free_deleted_handlers(), because it runs with
+list_lock zero and taken, just like the tail of
+aio_remove_fd_handler(). It's the safest possible place to do cleanup
+and to take a lock. Therefore we have:
+
+- a fast path in the iothread that runs without any concurrence with
+stuff happening in the main thread
+
+- a slow path in the iothread that runs with list_lock zero and taken.
+The slow path shares logic with the main thread, meaning that
+aio_free_deleted_handlers() and aio_remove_fd_handler() should share
+some functions called by both.
+
+If the code is organized this way, any wrong bits should jump out more
+easily. For example, these two lines in aio_remove_fd_handler() are
+clearly misplaced
+
+    node->pfd.revents =3D 0;
+    node->poll_ready =3D false;
+
+because they run in the main thread but they touch iothread data! They
+should be after qemu_lockcnt_count() is checked to be zero.
+
+Regarding the call to io_poll_ready(), I would hope that it is
+unnecessary; in other words, that after drained_end() the virtqueue
+notification would be raised. Yes, virtio_queue_set_notification is
+edge triggered rather than level triggered, so it would be necessary
+to add a check with virtio_queue_host_notifier_aio_poll() and
+virtio_queue_host_notifier_aio_poll_ready() in
+virtio_queue_aio_attach_host_notifier, but that does not seem too bad
+because virtio is the only user of the io_poll_begin and io_poll_end
+callbacks. It would have to be documented though.
 
 Paolo
+
+
+Paolo
+
+>
+> Stefan Hajnoczi (3):
+>   aio-posix: run aio_set_fd_handler() in target AioContext
+>   aio: use counter instead of ctx->list_lock
+>   aio-posix: call ->poll_end() when removing AioHandler
+>
+>  include/block/aio.h |  22 ++---
+>  util/aio-posix.c    | 197 ++++++++++++++++++++++++++++++++------------
+>  util/async.c        |   2 -
+>  util/fdmon-epoll.c  |   6 +-
+>  4 files changed, 152 insertions(+), 75 deletions(-)
+>
+> --
+> 2.43.0
+>
 
 
