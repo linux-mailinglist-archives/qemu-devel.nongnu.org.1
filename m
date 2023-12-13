@@ -2,57 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAB081133B
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:46:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 723DD8113FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 15:02:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDPYi-0004Dq-QH; Wed, 13 Dec 2023 08:45:56 -0500
+	id 1rDPnV-00005F-Rp; Wed, 13 Dec 2023 09:01:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
- id 1rDPYb-00049x-LU; Wed, 13 Dec 2023 08:45:52 -0500
-Received: from rev.ng ([5.9.113.41])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
- id 1rDPYZ-0006xY-NL; Wed, 13 Dec 2023 08:45:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=RQNtx23A0xZ6yY84siI0xv3MruEvbwc7elg0gTVjf1g=; b=TQX2UyhM66VRgwWelyHyiqcBWo
- erepDb7g+bRr/LxftvSJJfVkp01PlG+fU6vMak8oA45KgGnOdFQnBhZofR1Ho01cu7CdBX0AQ6ozl
- 1oKlp1NxnLT3PyiPfK4gN8txaBqnmhE6S2c8NHhkNwUZeFmRCAmxZhGMB95t5VNEk4zM=;
-Date: Wed, 13 Dec 2023 14:45:34 +0100
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Claudio Fontana <cfontana@suse.de>, 
- qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-riscv@nongnu.org,
- Brian Cain <bcain@quicinc.com>, 
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>, 
- Laurent Vivier <laurent@vivier.eu>
-Subject: Re: [PATCH v2 16/23] exec: Move [b]tswapl() declarations to
- 'exec/user/tswap-target.h'
-Message-ID: <vp7ww4t42h2da6pwozr6l4kgsrhslrrlncirb2jnd42mrj2p6c@aua4egifp56j>
-References: <20231212123401.37493-1-philmd@linaro.org>
- <20231212123401.37493-17-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rDPnR-00004q-Mg
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 09:01:10 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rDPnP-0006l1-IA
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 09:01:09 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 15530225AB;
+ Wed, 13 Dec 2023 14:01:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702476064; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MHu2JR56n+MnI6vlxX2NIYdRVk0JnBqUUQif1wojNrw=;
+ b=wREPKYoUQS2yWQiR7UDN8ncQ/4KQiL8jMjS+gg2kR6zneJWLheKXA/mdJF5vBPfaAkk4cL
+ 8h2A6nMhZIYz/skjDZdwPSSmGhMuC6OKoum9T6Pkl0nZ9T5fC8g4U0qD76K8W40XCMUBdI
+ cqkYfJh4E6SHmZHzyARU0GKZ/4QkL2Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702476064;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MHu2JR56n+MnI6vlxX2NIYdRVk0JnBqUUQif1wojNrw=;
+ b=1F9Cb/PXtW1g5QlXfabjMsAmOI2Plgjg2U0JTYZhuzM7q6ZPiPayqVKr9Z5xFxBw0JcREm
+ 6DtaCSeqUm0xxyAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1702476063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MHu2JR56n+MnI6vlxX2NIYdRVk0JnBqUUQif1wojNrw=;
+ b=BBMjBbfR4wQj4gmSWh5ZUi5qSGG5BDbupz6wMxEE9lh9YnQ6X2yt6ANlyv5KcB+d6CCc76
+ UILzRsIDZY/d6W5aNB3S+zcNfM04zGaBCg1DSWVwLLMch4OGUErKBRthK7PuJIZGjXy+io
+ zhIUdC2Le6JASa8h7UjxfJDDnwneIIA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1702476063;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MHu2JR56n+MnI6vlxX2NIYdRVk0JnBqUUQif1wojNrw=;
+ b=UYeYR0FPhbzru53+bXMCTxHrWjDe7a1bHdtqRZRmvzqRc7gNafqqE8twAawTovaWNmeVGa
+ LW3AenuiES0s0MCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 97B131377F;
+ Wed, 13 Dec 2023 14:01:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 0A/vFx65eWUBHQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 13 Dec 2023 14:01:02 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Hao Xiang <hao.xiang@bytedance.com>, peter.maydell@linaro.org,
+ quintela@redhat.com, peterx@redhat.com, marcandre.lureau@redhat.com,
+ bryan.zhang@bytedance.com, qemu-devel@nongnu.org
+Cc: Hao Xiang <hao.xiang@bytedance.com>
+Subject: Re: [PATCH v2 11/20] util/dsa: Implement DSA task asynchronous
+ submission and wait for completion.
+In-Reply-To: <20231114054032.1192027-12-hao.xiang@bytedance.com>
+References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+ <20231114054032.1192027-12-hao.xiang@bytedance.com>
+Date: Wed, 13 Dec 2023 11:01:00 -0300
+Message-ID: <87o7euxkv7.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231212123401.37493-17-philmd@linaro.org>
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Spam-Score: 3.59
+X-Rspamd-Queue-Id: 15530225AB
+X-Rspamd-Server: rspamd1
+X-Spam-Score: -10.81
+X-Spamd-Result: default: False [-10.81 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ MIME_GOOD(-0.10)[text/plain]; R_SPF_SOFTFAIL(0.00)[~all:c];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+];
+ DMARC_POLICY_ALLOW(0.00)[suse.de,none];
+ RCPT_COUNT_SEVEN(0.00)[8]; WHITELIST_DMARC(-7.00)[suse.de:D:+];
+ DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[]; MX_GOOD(-0.01)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BBMjBbfR;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UYeYR0FP;
+ dmarc=pass (policy=none) header.from=suse.de;
+ spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither
+ permitted nor denied by domain of farosas@suse.de)
+ smtp.mailfrom=farosas@suse.de
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,202 +126,264 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/12/23, Philippe Mathieu-Daudé wrote:
-> tswapl() and bswaptls() are target-dependent and only used
-> by user emulation. Move their definitions to a new header:
-> "exec/user/tswap-target.h".
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hao Xiang <hao.xiang@bytedance.com> writes:
+
+> * Add a DSA task completion callback.
+> * DSA completion thread will call the tasks's completion callback
+> on every task/batch task completion.
+> * DSA submission path to wait for completion.
+> * Implement CPU fallback if DSA is not able to complete the task.
+>
+> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+> Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
 > ---
->  bsd-user/freebsd/target_os_elf.h   |  1 +
->  bsd-user/freebsd/target_os_stack.h |  1 +
->  bsd-user/netbsd/target_os_elf.h    |  1 +
->  bsd-user/openbsd/target_os_elf.h   |  1 +
->  include/exec/cpu-all.h             |  8 --------
->  include/exec/user/abitypes.h       |  1 +
->  include/exec/user/tswap-target.h   | 22 ++++++++++++++++++++++
->  bsd-user/signal.c                  |  1 +
->  bsd-user/strace.c                  |  1 +
->  linux-user/elfload.c               |  1 +
->  linux-user/i386/signal.c           |  1 +
->  linux-user/ppc/signal.c            |  1 +
->  12 files changed, 32 insertions(+), 8 deletions(-)
->  create mode 100644 include/exec/user/tswap-target.h
-> 
-> diff --git a/bsd-user/freebsd/target_os_elf.h b/bsd-user/freebsd/target_os_elf.h
-> index 9df17d56d8..27d8ce036c 100644
-> --- a/bsd-user/freebsd/target_os_elf.h
-> +++ b/bsd-user/freebsd/target_os_elf.h
-> @@ -22,6 +22,7 @@
->  
->  #include "target_arch_elf.h"
->  #include "elf.h"
-> +#include "exec/user/tswap-target.h"
->  
->  #define bsd_get_ncpu() 1 /* until we pull in bsd-proc.[hc] */
->  
-> diff --git a/bsd-user/freebsd/target_os_stack.h b/bsd-user/freebsd/target_os_stack.h
-> index d15fc3263f..6125208182 100644
-> --- a/bsd-user/freebsd/target_os_stack.h
-> +++ b/bsd-user/freebsd/target_os_stack.h
-> @@ -23,6 +23,7 @@
->  #include <sys/param.h>
->  #include "target_arch_sigtramp.h"
->  #include "qemu/guest-random.h"
-> +#include "exec/user/tswap-target.h"
->  
->  /*
->   * The initial FreeBSD stack is as follows:
-> diff --git a/bsd-user/netbsd/target_os_elf.h b/bsd-user/netbsd/target_os_elf.h
-> index 2f3cb20871..23b422bfce 100644
-> --- a/bsd-user/netbsd/target_os_elf.h
-> +++ b/bsd-user/netbsd/target_os_elf.h
-> @@ -22,6 +22,7 @@
->  
->  #include "target_arch_elf.h"
->  #include "elf.h"
-> +#include "exec/user/tswap-target.h"
->  
->  /* this flag is uneffective under linux too, should be deleted */
->  #ifndef MAP_DENYWRITE
-> diff --git a/bsd-user/openbsd/target_os_elf.h b/bsd-user/openbsd/target_os_elf.h
-> index 6dca9c5a85..fc1dfa2e49 100644
-> --- a/bsd-user/openbsd/target_os_elf.h
-> +++ b/bsd-user/openbsd/target_os_elf.h
-> @@ -22,6 +22,7 @@
->  
->  #include "target_arch_elf.h"
->  #include "elf.h"
-> +#include "exec/user/tswap-target.h"
->  
->  /* this flag is uneffective under linux too, should be deleted */
->  #ifndef MAP_DENYWRITE
-> diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-> index b042d94892..95af418920 100644
-> --- a/include/exec/cpu-all.h
-> +++ b/include/exec/cpu-all.h
-> @@ -36,14 +36,6 @@
->  #define BSWAP_NEEDED
->  #endif
->  
-> -#if TARGET_LONG_SIZE == 4
-> -#define tswapl(s) tswap32(s)
-> -#define bswaptls(s) bswap32s(s)
-> -#else
-> -#define tswapl(s) tswap64(s)
-> -#define bswaptls(s) bswap64s(s)
-> -#endif
-> -
->  /* Target-endianness CPU memory access functions. These fit into the
->   * {ld,st}{type}{sign}{size}{endian}_p naming scheme described in bswap.h.
+>  include/qemu/dsa.h |  14 +++++
+>  util/dsa.c         | 153 ++++++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 164 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/qemu/dsa.h b/include/qemu/dsa.h
+> index b10e7b8fb7..3f8ee07004 100644
+> --- a/include/qemu/dsa.h
+> +++ b/include/qemu/dsa.h
+> @@ -65,6 +65,20 @@ void buffer_zero_batch_task_init(struct buffer_zero_batch_task *task,
 >   */
-> diff --git a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
-> index 6178453d94..ed10d5fe7e 100644
-> --- a/include/exec/user/abitypes.h
-> +++ b/include/exec/user/abitypes.h
-> @@ -2,6 +2,7 @@
->  #define EXEC_USER_ABITYPES_H
+>  void buffer_zero_batch_task_destroy(struct buffer_zero_batch_task *task);
 >  
->  #include "cpu.h"
-> +#include "exec/user/tswap-target.h"
->  
->  #ifdef TARGET_ABI32
->  #define TARGET_ABI_BITS 32
-> diff --git a/include/exec/user/tswap-target.h b/include/exec/user/tswap-target.h
-> new file mode 100644
-> index 0000000000..ff302436fe
-> --- /dev/null
-> +++ b/include/exec/user/tswap-target.h
-> @@ -0,0 +1,22 @@
-> +/*
-> + * target-specific swap() definitions
+> +/**
+> + * @brief Performs buffer zero comparison on a DSA batch task asynchronously.
 > + *
-> + *  Copyright (c) 2003 Fabrice Bellard
+> + * @param batch_task A pointer to the batch task.
+> + * @param buf An array of memory buffers.
+> + * @param count The number of buffers in the array.
+> + * @param len The buffer length.
 > + *
-> + * SPDX-License-Identifier: LGPL-2.1-or-later
+> + * @return Zero if successful, otherwise non-zero.
 > + */
-> +#ifndef EXEC_USER_TSWAP_H
-> +#define EXEC_USER_TSWAP_H
+> +int
+> +buffer_is_zero_dsa_batch_async(struct buffer_zero_batch_task *batch_task,
+> +                               const void **buf, size_t count, size_t len);
 > +
-> +#include "exec/cpu-defs.h"
-> +#include "exec/tswap.h"
+>  /**
+>   * @brief Initializes DSA devices.
+>   *
+> diff --git a/util/dsa.c b/util/dsa.c
+> index 3cc017b8a0..06c6fbf2ca 100644
+> --- a/util/dsa.c
+> +++ b/util/dsa.c
+> @@ -470,6 +470,41 @@ poll_completion(struct dsa_completion_record *completion,
+>      return 0;
+>  }
+>  
+> +/**
+> + * @brief Use CPU to complete a single zero page checking task.
+> + *
+> + * @param task A pointer to the task.
+> + */
+> +static void
+> +task_cpu_fallback(struct buffer_zero_batch_task *task)
+> +{
+> +    assert(task->task_type == DSA_TASK);
 > +
-> +#if TARGET_LONG_SIZE == 4
-> +#define tswapl(s) tswap32(s)
-> +#define bswaptls(s) bswap32s(s)
-> +#else
-> +#define tswapl(s) tswap64(s)
-> +#define bswaptls(s) bswap64s(s)
-> +#endif
+> +    struct dsa_completion_record *completion = &task->completions[0];
+> +    const uint8_t *buf;
+> +    size_t len;
 > +
-> +#endif
-> diff --git a/bsd-user/signal.c b/bsd-user/signal.c
-> index ca31470772..7b2d25230a 100644
-> --- a/bsd-user/signal.c
-> +++ b/bsd-user/signal.c
-> @@ -21,6 +21,7 @@
->  #include "qemu/osdep.h"
->  #include "qemu/log.h"
->  #include "qemu.h"
-> +#include "exec/user/tswap-target.h"
->  #include "gdbstub/user.h"
->  #include "signal-common.h"
->  #include "trace.h"
-> diff --git a/bsd-user/strace.c b/bsd-user/strace.c
-> index 96499751eb..a1b738e63c 100644
-> --- a/bsd-user/strace.c
-> +++ b/bsd-user/strace.c
-> @@ -22,6 +22,7 @@
->  #include <sys/ioccom.h>
+> +    if (completion->status == DSA_COMP_SUCCESS) {
+> +        return;
+> +    }
+> +
+> +    /*
+> +     * DSA was able to partially complete the operation. Check the
+> +     * result. If we already know this is not a zero page, we can
+> +     * return now.
+> +     */
+> +    if (completion->bytes_completed != 0 && completion->result != 0) {
+> +        task->results[0] = false;
+> +        return;
+> +    }
+> +
+> +    /* Let's fallback to use CPU to complete it. */
+> +    buf = (const uint8_t *)task->descriptors[0].src_addr;
+> +    len = task->descriptors[0].xfer_size;
+> +    task->results[0] = buffer_is_zero(buf + completion->bytes_completed,
+> +                                      len - completion->bytes_completed);
+> +}
+> +
+>  /**
+>   * @brief Complete a single DSA task in the batch task.
+>   *
+> @@ -548,6 +583,62 @@ poll_batch_task_completion(struct buffer_zero_batch_task *batch_task)
+>      }
+>  }
 >  
->  #include "qemu.h"
-> +#include "exec/user/tswap-target.h"
+> +/**
+> + * @brief Use CPU to complete the zero page checking batch task.
+> + *
+> + * @param batch_task A pointer to the batch task.
+> + */
+> +static void
+> +batch_task_cpu_fallback(struct buffer_zero_batch_task *batch_task)
+> +{
+> +    assert(batch_task->task_type == DSA_BATCH_TASK);
+> +
+> +    struct dsa_completion_record *batch_completion =
+> +        &batch_task->batch_completion;
+> +    struct dsa_completion_record *completion;
+> +    uint8_t status;
+> +    const uint8_t *buf;
+> +    size_t len;
+> +    bool *results = batch_task->results;
+> +    uint32_t count = batch_task->batch_descriptor.desc_count;
+> +
+> +    // DSA is able to complete the entire batch task.
+> +    if (batch_completion->status == DSA_COMP_SUCCESS) {
+> +        assert(count == batch_completion->bytes_completed);
+> +        return;
+> +    }
+> +
+> +    /*
+> +     * DSA encounters some error and is not able to complete
+> +     * the entire batch task. Use CPU fallback.
+> +     */
+> +    for (int i = 0; i < count; i++) {
+> +        completion = &batch_task->completions[i];
+> +        status = completion->status;
+> +        if (status == DSA_COMP_SUCCESS) {
+> +            continue;
+> +        }
+> +        assert(status == DSA_COMP_PAGE_FAULT_NOBOF);
+> +
+> +        /*
+> +         * DSA was able to partially complete the operation. Check the
+> +         * result. If we already know this is not a zero page, we can
+> +         * return now.
+> +         */
+> +        if (completion->bytes_completed != 0 && completion->result != 0) {
+> +            results[i] = false;
+> +            continue;
+> +        }
+> +
+> +        /* Let's fallback to use CPU to complete it. */
+> +        buf = (uint8_t *)batch_task->descriptors[i].src_addr;
+> +        len = batch_task->descriptors[i].xfer_size;
+> +        results[i] =
+> +            buffer_is_zero(buf + completion->bytes_completed,
+> +                           len - completion->bytes_completed);
+
+Here the same thing is happening as in other patches, the batch task
+operation is just a repeat of the task operation n times. So this whole
+inner code here could be nicely replaced by task_cpu_fallback() with
+some adjustment of the function arguments. That makes intuitive sense
+and removes code duplication.
+
+> +    }
+> +}
+> +
+>  /**
+>   * @brief Handles an asynchronous DSA batch task completion.
+>   *
+> @@ -825,7 +916,6 @@ buffer_zero_batch_task_set(struct buffer_zero_batch_task *batch_task,
+>   *
+>   * @return int Zero if successful, otherwise an appropriate error code.
+>   */
+> -__attribute__((unused))
+>  static int
+>  buffer_zero_dsa_async(struct buffer_zero_batch_task *task,
+>                        const void *buf, size_t len)
+> @@ -844,7 +934,6 @@ buffer_zero_dsa_async(struct buffer_zero_batch_task *task,
+>   * @param count The number of buffers.
+>   * @param len The buffer length.
+>   */
+> -__attribute__((unused))
+>  static int
+>  buffer_zero_dsa_batch_async(struct buffer_zero_batch_task *batch_task,
+>                              const void **buf, size_t count, size_t len)
+> @@ -876,13 +965,29 @@ buffer_zero_dsa_completion(void *context)
+>   *
+>   * @param batch_task A pointer to the buffer zero comparison batch task.
+>   */
+> -__attribute__((unused))
+>  static void
+>  buffer_zero_dsa_wait(struct buffer_zero_batch_task *batch_task)
+>  {
+>      qemu_sem_wait(&batch_task->sem_task_complete);
+>  }
 >  
->  #include "os-strace.h"  /* OS dependent strace print functions */
+> +/**
+> + * @brief Use CPU to complete the zero page checking task if DSA
+> + *        is not able to complete it.
+> + *
+> + * @param batch_task A pointer to the batch task.
+> + */
+> +static void
+> +buffer_zero_cpu_fallback(struct buffer_zero_batch_task *batch_task)
+> +{
+> +    if (batch_task->task_type == DSA_TASK) {
+> +        task_cpu_fallback(batch_task);
+> +    } else {
+> +        assert(batch_task->task_type == DSA_BATCH_TASK);
+> +        batch_task_cpu_fallback(batch_task);
+> +    }
+> +}
+> +
+>  /**
+>   * @brief Check if DSA is running.
+>   *
+> @@ -956,6 +1061,41 @@ void dsa_cleanup(void)
+>      dsa_device_group_cleanup(&dsa_group);
+>  }
 >  
-> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-> index cf9e74468b..debea5c355 100644
-> --- a/linux-user/elfload.c
-> +++ b/linux-user/elfload.c
-> @@ -6,6 +6,7 @@
->  #include <sys/shm.h>
+> +/**
+> + * @brief Performs buffer zero comparison on a DSA batch task asynchronously.
+> + *
+> + * @param batch_task A pointer to the batch task.
+> + * @param buf An array of memory buffers.
+> + * @param count The number of buffers in the array.
+> + * @param len The buffer length.
+> + *
+> + * @return Zero if successful, otherwise non-zero.
+> + */
+> +int
+> +buffer_is_zero_dsa_batch_async(struct buffer_zero_batch_task *batch_task,
+> +                               const void **buf, size_t count, size_t len)
+> +{
+> +    if (count <= 0 || count > batch_task->batch_size) {
+> +        return -1;
+> +    }
+> +
+> +    assert(batch_task != NULL);
+> +    assert(len != 0);
+> +    assert(buf != NULL);
+> +
+> +    if (count == 1) {
+> +        // DSA doesn't take batch operation with only 1 task.
+> +        buffer_zero_dsa_async(batch_task, buf[0], len);
+> +    } else {
+> +        buffer_zero_dsa_batch_async(batch_task, buf, count, len);
+> +    }
+> +
+> +    buffer_zero_dsa_wait(batch_task);
+> +    buffer_zero_cpu_fallback(batch_task);
+> +
+> +    return 0;
+> +}
+> +
+>  #else
 >  
->  #include "qemu.h"
-> +#include "exec/user/tswap-target.h"
->  #include "user-internals.h"
->  #include "signal-common.h"
->  #include "loader.h"
-> diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
-> index bc5d45302e..eea1fa68c9 100644
-> --- a/linux-user/i386/signal.c
-> +++ b/linux-user/i386/signal.c
-> @@ -21,6 +21,7 @@
->  #include "user-internals.h"
->  #include "signal-common.h"
->  #include "linux-user/trace.h"
-> +#include "exec/user/tswap-target.h"
+>  void buffer_zero_batch_task_init(struct buffer_zero_batch_task *task,
+> @@ -981,5 +1121,12 @@ void dsa_stop(void) {}
 >  
->  /* from the Linux kernel - /arch/x86/include/uapi/asm/sigcontext.h */
+>  void dsa_cleanup(void) {}
 >  
-> diff --git a/linux-user/ppc/signal.c b/linux-user/ppc/signal.c
-> index 7e7302823b..988b59a916 100644
-> --- a/linux-user/ppc/signal.c
-> +++ b/linux-user/ppc/signal.c
-> @@ -21,6 +21,7 @@
->  #include "user-internals.h"
->  #include "signal-common.h"
->  #include "linux-user/trace.h"
-> +#include "exec/user/tswap-target.h"
->  #include "vdso-asmoffset.h"
->  
->  /* See arch/powerpc/include/asm/ucontext.h.  Only used for 32-bit PPC;
-> -- 
-> 2.41.0
-> 
-Reviewed-by: Anton Johansson <anjo@rev.ng>
+> +int
+> +buffer_is_zero_dsa_batch_async(struct buffer_zero_batch_task *batch_task,
+> +                               const void **buf, size_t count, size_t len)
+> +{
+> +    exit(1);
+> +}
+> +
+>  #endif
 
