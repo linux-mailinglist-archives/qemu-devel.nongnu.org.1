@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A632810C79
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 09:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A752E810C7C
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 09:33:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDKek-0001i7-PX; Wed, 13 Dec 2023 03:31:51 -0500
+	id 1rDKeq-0001jk-BW; Wed, 13 Dec 2023 03:31:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rDKed-0001hG-9P
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 03:31:43 -0500
+ id 1rDKee-0001hZ-Rp
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 03:31:46 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rDKea-0008DF-7H
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 03:31:43 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1rDKeb-0008Du-7m
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 03:31:44 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxhfDna3llNZwAAA--.3689S3;
+ by gateway (Coremail) with SMTP id _____8Bx6ujna3llOZwAAA--.3703S3;
  Wed, 13 Dec 2023 16:31:35 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxguPka3ll6BQCAA--.14323S3; 
- Wed, 13 Dec 2023 16:31:34 +0800 (CST)
+ AQAAf8CxguPka3ll6BQCAA--.14323S4; 
+ Wed, 13 Dec 2023 16:31:35 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: peter.maydell@linaro.org
 Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org,
  alex.bennee@linaro.org, philmd@linaro.org, maobibo@loongson.cn
-Subject: [risu PATCH v2 1/6] loongarch: Rename block type 'safefloat' to 'post'
-Date: Wed, 13 Dec 2023 16:18:34 +0800
-Message-Id: <20231213081839.4176614-2-gaosong@loongson.cn>
+Subject: [risu PATCH v2 2/6] loongarch: reginfo suport LSX/LASX
+Date: Wed, 13 Dec 2023 16:18:35 +0800
+Message-Id: <20231213081839.4176614-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20231213081839.4176614-1-gaosong@loongson.cn>
 References: <20231213081839.4176614-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxguPka3ll6BQCAA--.14323S3
+X-CM-TRANSID: AQAAf8CxguPka3ll6BQCAA--.14323S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,244 +63,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename block type 'safefloat' to 'post', it is the hook for doing
-things after emitting the instruction.
-
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- loongarch64.risu       | 78 +++++++++++++++++++++---------------------
- risugen                |  2 +-
- risugen_loongarch64.pm |  9 +++--
- 3 files changed, 44 insertions(+), 45 deletions(-)
+ risu_reginfo_loongarch64.c | 107 +++++++++++++++++++++++++++++++++----
+ risu_reginfo_loongarch64.h |   3 +-
+ 2 files changed, 98 insertions(+), 12 deletions(-)
 
-diff --git a/loongarch64.risu b/loongarch64.risu
-index d625a12..47e22a2 100644
---- a/loongarch64.risu
-+++ b/loongarch64.risu
-@@ -437,67 +437,67 @@ crcc_w_d_w LA64 0000 00000010 01111 rk:5 rj:5 rd:5 \
- # Floating point arithmetic operation instruction
- #
- fadd_s LA64 0000 00010000 00001 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fadd_d LA64 0000 00010000 00010 fk:5 fj:5 fd:5
- fsub_s LA64 0000 00010000 00101 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fsub_d LA64 0000 00010000 00110 fk:5 fj:5 fd:5
- fmul_s LA64 0000 00010000 01001 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fmul_d LA64 0000 00010000 01010 fk:5 fj:5 fd:5
- fdiv_s LA64 0000 00010000 01101 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fdiv_d LA64 0000 00010000 01110 fk:5 fj:5 fd:5
- fmadd_s LA64 0000 10000001 fa:5 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fmadd_d LA64 0000 10000010 fa:5 fk:5 fj:5 fd:5
- fmsub_s LA64 0000 10000101 fa:5 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fmsub_d LA64 0000 10000110 fa:5 fk:5 fj:5 fd:5
- fnmadd_s LA64 0000 10001001 fa:5 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fnmadd_d LA64 0000 10001010 fa:5 fk:5 fj:5 fd:5
- fnmsub_s LA64 0000 10001101 fa:5 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fnmsub_d LA64 0000 10001110 fa:5 fk:5 fj:5 fd:5
- fmax_s LA64 0000 00010000 10001 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fmax_d LA64 0000 00010000 10010 fk:5 fj:5 fd:5
- fmin_s LA64 0000 00010000 10101 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fmin_d LA64 0000 00010000 10110 fk:5 fj:5 fd:5
- fmaxa_s LA64 0000 00010000 11001 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fmaxa_d LA64 0000 00010000 11010 fk:5 fj:5 fd:5
- fmina_s LA64 0000 00010000 11101 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fmina_d LA64 0000 00010000 11110 fk:5 fj:5 fd:5
- fabs_s LA64 0000 00010001 01000 00001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fabs_d LA64 0000 00010001 01000 00010 fj:5 fd:5
- fneg_s LA64 0000 00010001 01000 00101 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fneg_d LA64 0000 00010001 01000 00110 fj:5 fd:5
- fsqrt_s LA64 0000 00010001 01000 10001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fsqrt_d LA64 0000 00010001 01000 10010 fj:5 fd:5
- frecip_s LA64 0000 00010001 01000 10101 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- frecip_d LA64 0000 00010001 01000 10110 fj:5 fd:5
- frsqrt_s LA64 0000 00010001 01000 11001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- frsqrt_d LA64 0000 00010001 01000 11010 fj:5 fd:5
- fscaleb_s LA64 0000 00010001 00001 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fscaleb_d LA64 0000 00010001 00010 fk:5 fj:5 fd:5
- flogb_s LA64 0000 00010001 01000 01001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- flogb_d LA64 0000 00010001 01000 01010 fj:5 fd:5
- fcopysign_s LA64 0000 00010001 00101 fk:5 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fcopysign_d LA64 0000 00010001 00110 fk:5 fj:5 fd:5
- fclass_s LA64 0000 00010001 01000 01101 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fclass_d LA64 0000 00010001 01000 01110 fj:5 fd:5
+diff --git a/risu_reginfo_loongarch64.c b/risu_reginfo_loongarch64.c
+index 16384f1..09a1eb6 100644
+--- a/risu_reginfo_loongarch64.c
++++ b/risu_reginfo_loongarch64.c
+@@ -37,6 +37,8 @@ struct extctx_layout {
+         unsigned long size;
+         unsigned int flags;
+         struct _ctx_layout fpu;
++        struct _ctx_layout lsx;
++        struct _ctx_layout lasx;
+         struct _ctx_layout end;
+ };
  
- #
-@@ -512,58 +512,58 @@ fcmp_cond_d LA64 0000 11000010 cond:5 fk:5 fj:5 00 cd:3 \
- # Floating point conversion instruction
- #
- fcvt_s_d LA64 0000 00010001 10010 00110 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fcvt_d_s LA64 0000 00010001 10010 01001 fj:5 fd:5
- ftintrm_w_s LA64 0000 00010001 10100 00001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftintrm_w_d LA64 0000 00010001 10100 00010 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftintrm_l_s LA64 0000 00010001 10100 01001 fj:5 fd:5
- ftintrm_l_d LA64 0000 00010001 10100 01010 fj:5 fd:5
- ftintrp_w_s LA64 0000 00010001 10100 10001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftintrp_w_d LA64 0000 00010001 10100 10010 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftintrp_l_s LA64 0000 00010001 10100 11001 fj:5 fd:5
- ftintrp_l_d LA64 0000 00010001 10100 11010 fj:5 fd:5
- ftintrz_w_s LA64 0000 00010001 10101 00001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftintrz_w_d LA64 0000 00010001 10101 00010 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftintrz_l_s LA64 0000 00010001 10101 01001 fj:5 fd:5
- ftintrz_l_d LA64 0000 00010001 10101 01010 fj:5 fd:5
- ftintrne_w_s LA64 0000 00010001 10101 10001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftintrne_w_d LA64 0000 00010001 10101 10010 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftintrne_l_s LA64 0000 00010001 10101 11001 fj:5 fd:5
- ftintrne_l_d LA64 0000 00010001 10101 11010 fj:5 fd:5
- ftint_w_s LA64 0000 00010001 10110 00001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftint_w_d LA64 0000 00010001 10110 00010 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ftint_l_s LA64 0000 00010001 10110 01001 fj:5 fd:5
- ftint_l_d LA64 0000 00010001 10110 01010 fj:5 fd:5
- ffint_s_w LA64 0000 00010001 11010 00100 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ffint_s_l LA64 0000 00010001 11010 00110 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- ffint_d_w LA64 0000 00010001 11010 01000 fj:5 fd:5
- ffint_d_l LA64 0000 00010001 11010 01010 fj:5 fd:5
- frint_s LA64 0000 00010001 11100 10001 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- frint_d LA64 0000 00010001 11100 10010 fj:5 fd:5
+@@ -72,6 +74,20 @@ static int parse_extcontext(struct sigcontext *sc, struct extctx_layout *extctx)
+             }
+             extctx->fpu.addr = info;
+             break;
++        case LSX_CTX_MAGIC:
++            if (size < (sizeof(struct sctx_info) +
++                        sizeof(struct lsx_context))) {
++                return -1;
++            }
++            extctx->lsx.addr = info;
++            break;
++        case LASX_CTX_MAGIC:
++            if (size < (sizeof(struct sctx_info) +
++                        sizeof(struct lasx_context))) {
++                return -1;
++            }
++            extctx->lasx.addr = info;
++            break;
+         default:
+             return -1;
+        }
+@@ -100,15 +116,40 @@ void reginfo_init(struct reginfo *ri, ucontext_t *context, void *siaddr)
+     ri->faulting_insn = *(uint32_t *)uc->uc_mcontext.sc_pc;
  
- #
- # Floating point move instruction
- #
- fmov_s LA64 0000 00010001 01001 00101 fj:5 fd:5 \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fmov_d LA64 0000 00010001 01001 00110 fj:5 fd:5
- fsel LA64 0000 11010000 00 ca:3 fk:5 fj:5 fd:5
- movgr2fr_w LA64 0000 00010001 01001 01001 rj:5 fd:5 \
-     !constraints { $rj != 2; } \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- movgr2fr_d LA64 0000 00010001 01001 01010 rj:5 fd:5 \
-     !constraints { $rj != 2; }
- movgr2frh_w LA64 0000 00010001 01001 01011 rj:5 fd:5 \
-@@ -587,7 +587,7 @@ movcf2gr LA64 0000 00010001 01001 10111 00 cj:3 rd:5 \
- fld_s LA64 0010 101100 si12:12 rj:5 fd:5 \
-     !constraints { $rj != 0 && $rj != 2; } \
-     !memory { reg_plus_imm($rj, sextract($si12, 12)); } \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fst_s LA64 0010 101101 si12:12 rj:5 fd:5 \
-     !constraints { $rj != 0 && $rj != 2; } \
-     !memory { reg_plus_imm($rj, sextract($si12, 12)); }
-@@ -600,7 +600,7 @@ fst_d LA64 0010 101111 si12:12 rj:5 fd:5 \
- fldx_s LA64 0011 10000011 00000 rk:5 rj:5 fd:5 \
-     !constraints { $rj != 0 && $rj != $rk && $rk != 2 && $rj != 2; } \
-     !memory { reg_plus_reg($rj, $rk); } \
--    !safefloat { nanbox_s($fd); }
-+    !post { nanbox_s($fd); }
- fldx_d LA64 0011 10000011 01000 rk:5 rj:5 fd:5 \
-     !constraints { $rj != 0 && $rj != $rk && $rk != 2 && $rj != 2; } \
-     !memory { reg_plus_reg($rj, $rk); }
-diff --git a/risugen b/risugen
-index fa94a39..2800b8b 100755
---- a/risugen
-+++ b/risugen
-@@ -43,7 +43,7 @@ my @pattern_re = ();            # include pattern
- my @not_pattern_re = ();        # exclude pattern
- 
- # Valid block names (keys in blocks hash)
--my %valid_blockname = ( constraints => 1, memory => 1, safefloat =>1 );
-+my %valid_blockname = ( constraints => 1, memory => 1, post =>1 );
- 
- sub parse_risu_directive($$@)
- {
-diff --git a/risugen_loongarch64.pm b/risugen_loongarch64.pm
-index 5394fdc..01df1da 100644
---- a/risugen_loongarch64.pm
-+++ b/risugen_loongarch64.pm
-@@ -394,7 +394,7 @@ sub gen_one_insn($$)
-         my $fixedbitmask = $rec->{fixedbitmask};
-         my $constraint = $rec->{blocks}{"constraints"};
-         my $memblock = $rec->{blocks}{"memory"};
--        my $safefloat = $rec->{blocks}{"safefloat"};
-+        my $post = $rec->{blocks}{"post"};
- 
-         $insn &= ~$fixedbitmask;
-         $insn |= $fixedbits;
-@@ -431,11 +431,10 @@ sub gen_one_insn($$)
- 
-         insn32($insn);
- 
--        if (defined $safefloat) {
--            # Some result only care about low 32bit,
--            # so we use nanbox_s() make sure that high 32bit is 0xffffffff;
-+        if (defined $post) {
-+            # The hook for doing things after emitting the instruction.
-             my $resultreg;
--            $resultreg = eval_with_fields($insnname, $insn, $rec, "safefloat", $safefloat);
-+            $resultreg = eval_with_fields($insnname, $insn, $rec, "post", $post);
+     parse_extcontext(&uc->uc_mcontext, &extctx);
+-    if (extctx.fpu.addr) {
++    if (extctx.lasx.addr) {
++        struct sctx_info *info = extctx.lasx.addr;
++        struct lasx_context *lasx_ctx = (struct lasx_context *)((char *)info +
++                                        sizeof(struct sctx_info));
++        for (i = 0; i < 32; i++) {
++            ri->vregs[4 * i] = lasx_ctx->regs[4 * i];
++            ri->vregs[4 * i + 1] = lasx_ctx->regs[4 * i + 1];
++            ri->vregs[4 * i + 2] = lasx_ctx->regs[4 * i + 2];
++            ri->vregs[4 * i + 3] = lasx_ctx->regs[4 * i + 3];
++        }
++        ri->fcsr = lasx_ctx->fcsr;
++        ri->fcc = lasx_ctx->fcc;
++        ri->vl = 256;
++    } else if (extctx.lsx.addr) {
++        struct sctx_info *info = extctx.lsx.addr;
++        struct lsx_context *lsx_ctx = (struct lsx_context *)((char *)info +
++                                      sizeof(struct sctx_info));
++        for (i = 0; i < 32; i++) {
++            ri->vregs[4 * i] = lsx_ctx->regs[4 * i + 1];
++            ri->vregs[4 * i + 1] = lsx_ctx->regs[4 * i + 1];
++        }
++        ri->fcsr = lsx_ctx->fcsr;
++        ri->fcc = lsx_ctx->fcc;
++        ri->vl = 128;
++    } else if (extctx.fpu.addr) {
+         struct sctx_info *info = extctx.fpu.addr;
+         struct fpu_context *fpu_ctx = (struct fpu_context *)((char *)info +
+-                                       sizeof(struct sctx_info));
++                                      sizeof(struct sctx_info));
+         for(i = 0; i < 32; i++) {
+-	    ri->fpregs[i] = fpu_ctx->regs[i];
++	    ri->vregs[4 * i] = fpu_ctx->regs[4 * i];
          }
+-	ri->fcsr = fpu_ctx->fcsr;
+-	ri->fcc = fpu_ctx->fcc;
++        ri->fcsr = fpu_ctx->fcsr;
++        ri->fcc = fpu_ctx->fcc;
++        ri->vl = 64;
+     }
+ }
  
-         if (defined $memblock) {
+@@ -132,9 +173,23 @@ int reginfo_dump(struct reginfo *ri, FILE * f)
+     fprintf(f, "  flags  : %08x\n", ri->flags);
+     fprintf(f, "  fcc    : %016" PRIx64 "\n", ri->fcc);
+     fprintf(f, "  fcsr   : %08x\n", ri->fcsr);
++    fprintf(f, "  vl     : %016" PRIx64 "\n", ri->vl);
+ 
+-    for (i = 0; i < 32; i++) {
+-        fprintf(f, "  f%-2d    : %016lx\n", i, ri->fpregs[i]);
++    if (ri->vl == 256) {
++        for (i = 0; i < 32; i++) {
++            fprintf(f, "  vreg%-2d    : {%016lx, %016lx, %016lx, %016lx}\n", i,
++                    ri->vregs[4 * i + 3], ri->vregs[4 * i + 2],
++                    ri->vregs[4 * i + 1], ri->vregs[4 * i]);
++        }
++    } else if (ri->vl == 128) {
++        for (i = 0; i < 32; i++) {
++            fprintf(f, "  vreg%-2d    : {%016lx, %016lx}\n", i,
++                    ri->vregs[4 * i + 1], ri->vregs[4 * i]);
++        }
++    } else if (ri->vl == 64) {
++        for (i = 0; i < 32; i++) {
++            fprintf(f, "  vreg%-2d    : %016lx\n", i, ri->vregs[4 * i]);
++        }
+     }
+ 
+     return !ferror(f);
+@@ -145,6 +200,11 @@ int reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE * f)
+ {
+     int i;
+     fprintf(f, "mismatch detail (master : apprentice):\n");
++
++    if (m->vl != a->vl) {
++        fprintf(f, "  vl mismatch %08lx vs %08lx\n", m->vl, a->vl);
++    }
++
+     if (m->faulting_insn != a->faulting_insn) {
+         fprintf(f, "  faulting insn mismatch %08x vs %08x\n",
+                 m->faulting_insn, a->faulting_insn);
+@@ -172,10 +232,35 @@ int reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE * f)
+         fprintf(f, "  fcsr   : %08x vs %08x\n", m->fcsr, a->fcsr);
+     }
+ 
+-    for (i = 0; i < 32; i++) {
+-        if (m->fpregs[i]!= a->fpregs[i]) {
+-            fprintf(f, "  f%-2d    : %016lx vs %016lx\n",
+-                    i, m->fpregs[i], a->fpregs[i]);
++    if (m->vl == 256) {
++        for (i = 0; i < 32; i++) {
++            if (m->vregs[4 * i + 3] != a->vregs[4 * i + 3] ||
++                m->vregs[4 * i + 2] != a->vregs[4 * i + 2] ||
++                m->vregs[4 * i + 1] != a->vregs[4 * i + 1] ||
++                m->vregs[4 * i] != a->vregs[4 * i]) {
++                fprintf(f, "  vreg%-2d    : {%016lx, %016lx, %016lx, %016lx} vs"
++                           " {%016lx, %016lx, %016lx, %016lx}\n", i,
++                        m->vregs[4 * i + 3], m->vregs[4 * i + 2],
++                        m->vregs[4 * i + 1], m->vregs[4 * i],
++                        a->vregs[4 * i + 3], a->vregs[4 * i + 2],
++                        a->vregs[4 * i + 1], a->vregs[4 * i]);
++            }
++        }
++    } else if (m->vl == 128) {
++        for (i = 0; i < 32; i++) {
++            if (m->vregs[4 * i + 1] != a->vregs[4 * i + 1] ||
++                m->vregs[4 * i] != a->vregs[4 * i]) {
++                fprintf(f, "  vreg%-2d    : {%016lx, %016lx} vs {%016lx, %016lx}\n",
++                        i, m->vregs[4 * i + 1], m->vregs[4 * i],
++                        a->vregs[4 * i + 1], m->vregs[4 * i]);
++            }
++        }
++    } else if (m->vl == 64) {
++        for (i = 0; i < 32; i++) {
++            if (m->vregs[4 * i]  != a->vregs[4 * i]) {
++                fprintf(f, "  vreg%-2d  : %016lx vs %016lx\n", i,
++                        m->vregs[4 * i], a->vregs[4 * i]);
++            }
+         }
+     }
+ 
+diff --git a/risu_reginfo_loongarch64.h b/risu_reginfo_loongarch64.h
+index b6c5aaa..892b477 100644
+--- a/risu_reginfo_loongarch64.h
++++ b/risu_reginfo_loongarch64.h
+@@ -19,7 +19,8 @@ struct reginfo {
+     uint32_t flags;
+     uint32_t fcsr;
+     uint32_t faulting_insn;
+-    uint64_t fpregs[32];
++    uint64_t vregs[4 * 32];
++    uint64_t vl;
+ };
+ 
+ #endif /* RISU_REGINFO_LOONGARCH64_H */
 -- 
 2.25.1
 
