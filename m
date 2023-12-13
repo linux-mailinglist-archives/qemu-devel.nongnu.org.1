@@ -2,169 +2,168 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DAFC811706
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 16:33:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2CB811737
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 16:35:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDRE8-00007R-SG; Wed, 13 Dec 2023 10:32:48 -0500
+	id 1rDRGz-0004vI-ET; Wed, 13 Dec 2023 10:35:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rDRE6-0008SS-Lk
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:32:46 -0500
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1rDRGx-0004v5-6f
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:35:43 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rDRE2-0007kz-Hg
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:32:45 -0500
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ id 1rDRGv-0000fA-2q
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 10:35:42 -0500
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BDER1gt023845; Wed, 13 Dec 2023 15:32:40 GMT
+ 3BDER9ur021141; Wed, 13 Dec 2023 15:35:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=message-id : date :
  subject : to : cc : references : from : in-reply-to : content-type :
  content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=ZxTSMVXDvYyviT35/EnHuMcbxcCBbQiXg/MBi4NWq9A=;
- b=PFHck+tHDhzmRge8iKtP7FZSinQIHwrBxRxG2oI7cHA1EvoumYEb2xGUF+1aS643O9ql
- 5he19GmW9YUFq52aWktgf/w+i/26eTLKPFvtRP2LnXCBteNxeYAaRuR/tbjo1C5daVpk
- KpJxo65p8iluDFTHWkI7yVVTpI8FtIfe8aRequVql/38C9Vg2K1VOY4nC31cPBwtGKG1
- aOAdXMPwskrXBuzGKWIHLNCWS73UuG0O0mrzRW9b4N56x9JhXZvJ3HV5eliq9e8dtFoW
- CkpZ+BfvpUo17PTIP1iBbn10VauQ5ILleRPGed6RTUUEhOC5ZsCDFzDWuWT+3GYDaDon Lw== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uvf5c8h3f-1
+ bh=EQ9cKhGtkMKKOEVbu9P5IR+GEwq2eIpwxDBZhq+7olk=;
+ b=VZ1Sl42hXq9XGDJy15m0VxqvJ/GWF7C+qRg0Ai97nbXLCYQVsDj2ogo42VzD9B6Bz2AN
+ iCK6r7zfSQbz6YkLcNAEcbKMjeDHe0Wq2SbPjeKNBDSTIRhyaSFojmuP0HUQj0BARumB
+ +MHUPFWz6dgSUbDqlYzkN7a/Asy6VRMfkKw/fpVDedSj4QaUk/eyRMLm2k8XwjJuGdfN
+ FSXewlUy05M+aa/367HMUU7WZkkQJSpMPpuTgmWrykbbjOSRqlhy3w8/LMe0WoVIZ54Q
+ G88oVQkmVMHPa2hZWaSK697mr38RlDF31UF+FrPuTmWe+WY4UoISEuFkV/1PJAqzsJ/j 0g== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uvfuu8grt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 Dec 2023 15:32:39 +0000
+ Wed, 13 Dec 2023 15:35:39 +0000
 Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3BDF6APE003112; Wed, 13 Dec 2023 15:32:38 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3uvep8fbqj-1
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 3BDFHLg9008345; Wed, 13 Dec 2023 15:35:38 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3uvep8ea2r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 Dec 2023 15:32:38 +0000
+ Wed, 13 Dec 2023 15:35:38 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LuzZNSpw8Jx7Fq55R2W2GQs40rEEY3scidWde9EmTY2GHkRlm9k7dJgMm1ruXMiyRl8rkXrzfbWxZvUtq7oI8R9YuwdTgTBIi6Mqf2r7hHwQ4cVfWhr6mXUu9Q+ePuhUv6Zrd/Y9z0zhzflEbeolFiaGUfLpyXJ2h6EX/dXn8F3S6/v3h3AeM+6guWO/1ONaWxyuex3rSg9CGnAToy6bY1gQ/hiVVixo6pzS0W+yAoWeuKO4L9oZ5RF9ETrLTqanttxI4VJEe79j7Cnwl2zYeUiQt/K/uR7da8s/5qU2K4fqCBe0CBd+TvX2IiWz/hP/5q8opAN1tQwux10ZGfDgkw==
+ b=hBeZW4wEuHNyAUKlbnBB11M/AzRvJ7OquVG1T9JVbRSISKxcmvehzZcNQY0pdUa7LFxwF/vtktFjH2uLsWSMbEVRbG6V90Qx4qnQqDp7kP5jMwTTD91Izu3fOEfXGTgqHENP4yY53IhKYezs/jL0gJW0eKe7fnuvPZTH8GXJgd00ibVJoXW9TyRuNgat2tNH4lbYOhuyal0pYA78Y73rXf4oYn4RJ33QctD4oH5EN7bGNwF9qubbaFMxCLgCYNhchEnUOk9TXuhqgL9I75YTDVw2vjpRYyPISzfhWEOZ999mzBCjVBRuWg2lgnijFAc8V+vC9HBYprxhRiGAJ2dpPA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZxTSMVXDvYyviT35/EnHuMcbxcCBbQiXg/MBi4NWq9A=;
- b=TloJ/gJYZ5zMlOc16MClJTq0TGikI0mujsgjDiDJy34wF9kFuAf1Dqj/eTJRgKfPU8xYc8hzDTTVMcPEAC2FmAYco1TXqLcCkHs80ealNAfpfYQZSLlHjahCYu89+BcveieO2C8+mVweQXI0UQPIWPsYb7Q2fp+I5St+k/TWj89NVysHjs8PEDUpMw6ldoXg8++/HZ9YdfWv1shX7yhQtzQRew0+6ljgUzdaCGq4U+smyiFhrzNiuP3Q46pfiENKkgbOeu+IK4FJWw5XlSj0u2CXI1yngj1D4dr9CfeJxnK6j+CPNHw4etYIu4uImaXU4HFY7er92PMEE3ZhvnnL1Q==
+ bh=EQ9cKhGtkMKKOEVbu9P5IR+GEwq2eIpwxDBZhq+7olk=;
+ b=l7TxV2sud1enujirhXXw5rqtaMEXE3wnwLnEHnzdat2EKfQDGtdFwh9wtmzLwaO8mlzEEzZijUg5B3gXRLtgKeGidHbxZL7LSjT+7tdseokyij/049PLREC3zo4COKN3U3gVzrsUcSCt3v/sVGaZeZiyoE3uGijZnyfqdaM8s9s2Gj+yBTlm4xv4hPi+JDPRUvwRhdx2SeYtBEuofNyfqx3IO0u8C1SYdeAXX4cwgvxKKw1WRnx3pQtSlWEJdSKCPOqn91yyqNz1j+gWGr2Y9xd9PNqUIqSFYCum9Q5ukDXRDlL6ZksCJ2bfEooL8jzo+Y/oXf89eXrEVxnODrafbA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZxTSMVXDvYyviT35/EnHuMcbxcCBbQiXg/MBi4NWq9A=;
- b=ACk12h+ZLPimeBMZM/kO7nPLrHcfUwzA4sgHdBUpgf39zIBcrqsLaXsznZsHaC6a1KJDv/8q2tXi1NZIUHPJAkUiADti/yuaw7GVnQ/etnWvZ+xg3b6CZfo51UjFzuvT7QwtaDAoqhSAmVRyoEbtGYm/g2IWHT1kcsb+eBQa7IQ=
+ bh=EQ9cKhGtkMKKOEVbu9P5IR+GEwq2eIpwxDBZhq+7olk=;
+ b=vpbUksMx4jaoXv0XnDx3caK05BpTLttf3LRDbvskNoRVd6bKG2u1muMmrQCFcf464W5db9//9k03LAGZDOtiTtGyl3vzre0SPVS126yh6KmQtDqL88Z3vO5aBkE5LrxEeArhukBb/OSTl5vjd4/V3449sVNnrjMDNiRlqvTg5pc=
 Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
- by SJ0PR10MB5768.namprd10.prod.outlook.com (2603:10b6:a03:421::12)
+ by PH7PR10MB6282.namprd10.prod.outlook.com (2603:10b6:510:1a8::6)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.26; Wed, 13 Dec
- 2023 15:32:35 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.33; Wed, 13 Dec
+ 2023 15:35:36 +0000
 Received: from SA2PR10MB4684.namprd10.prod.outlook.com
  ([fe80::d609:b162:ba7c:4e96]) by SA2PR10MB4684.namprd10.prod.outlook.com
  ([fe80::d609:b162:ba7c:4e96%4]) with mapi id 15.20.7091.022; Wed, 13 Dec 2023
- 15:32:35 +0000
-Message-ID: <a8f3e93f-d74e-4adf-8a71-a85a90930302@oracle.com>
-Date: Wed, 13 Dec 2023 10:32:30 -0500
+ 15:35:36 +0000
+Message-ID: <a9ddc1b2-d4fc-44de-857b-2aeb35fa0925@oracle.com>
+Date: Wed, 13 Dec 2023 10:35:33 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V8 02/12] cpus: stop vm in suspended runstate
+Subject: Re: [PATCH V8 00/12] fix migration of suspended runstate
 Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+To: Peter Xu <peterx@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
  qemu-devel@nongnu.org
 References: <1702481421-375368-1-git-send-email-steven.sistare@oracle.com>
- <1702481421-375368-3-git-send-email-steven.sistare@oracle.com>
 From: Steven Sistare <steven.sistare@oracle.com>
 Organization: Oracle Corporation
-In-Reply-To: <1702481421-375368-3-git-send-email-steven.sistare@oracle.com>
+In-Reply-To: <1702481421-375368-1-git-send-email-steven.sistare@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR21CA0009.namprd21.prod.outlook.com
- (2603:10b6:a03:114::19) To SA2PR10MB4684.namprd10.prod.outlook.com
+X-ClientProxiedBy: BLAPR03CA0002.namprd03.prod.outlook.com
+ (2603:10b6:208:32b::7) To SA2PR10MB4684.namprd10.prod.outlook.com
  (2603:10b6:806:119::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|SJ0PR10MB5768:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0d322a5-2e2d-4b2b-2cdf-08dbfbf0bb1a
+X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|PH7PR10MB6282:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe4e53f8-5bed-4a08-f034-08dbfbf126c7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: x4+D+R4HzsFMY8aFoVU7CyogbE3EM9raCgRIxbwhBatUt1GYrqlmTmgw88L8gk0vgMBzLTJzmPl+UIhSXx3ZExVDFsC+at0RvIJbI2Q6YdLltrZPSKs20CU1SlR4jhLjufs/YgxTupiH+sMkQw3OLpTP3ozoEsFv9J8oR/yx7S0iFbBjr/c2FadBiaKpfGyqyMmt7FD8gs1pMnCSRjJqS8zAromWjBAz5diSQ9jOK17ZiC0lIFyNHqieLIEkJkviPZGFuNFoaCHSZIFHn5mcqzELzyhHrK3NRGJOLgphlekEHTc9AaRFvb9BXeeDFBE8jACFeAL3I1+jqw7f7JPLZRMEL7MhE6a8jIs4FlBlgTpwxxRO2rlVCHOEDjOQ4p6kWGw1R0g7eP0Z+esJZ000mhb5WWbPo1obO+y/Jk6ZeGvWP/+xp1Ura0ko+ZPXYjb7tnDtPoJIR2xUImj6IpFVrW+1tKUsWnGHhbJgHSXQM/PFaWCisOMtaVlz8hta/N9bZk2TchfIUyIxLAaefA8Jxjdyi0WXNrsugUVE3ipursksu8gDEuRzOTNkC9SgHjIdyFkaR0WILZqcDyBQcQVUFOuKTv7fkWOLhtblZTuDkH+M7RQrRDP5XhEMnYMwfpo+wZqRMQjTiJMWoDHHJ50Tbg==
+X-Microsoft-Antispam-Message-Info: yUNpxzpuQIFcvKd1fi2A63kfqxW/pZw/PGiOlvqvtOh7FXKUR9P5Q5eCDeXSUMMeObnFBSvzE8a8VKrjD6JDWlpdA5/CeDoGfLPCaS7Jc3QP5IoWA0J93w+/D9Lt7RAqXgwXw/tpCSYjbRSCKnGmirpSx+bnXBfaPspabEuMVHPUL8ms5UAGV/2Aby/MNa+8uXSaOjcgsXsj2NS7uTjrHzPrqwnWiMe8lEenvRduPbCf2VpbsD2Sdwpnurl+UOZzmGyQldoBqUA2jo1Wte74X+WbcZM+/cPSKMBPdU/yUIjKqlw7g271QoybIDfKhw+6wCN0pIeL0Am1K4IXIJI5Tyfznom3VNZGTTQZzs1Yd2YxEVmGOpwGQwSPJNH37gFHcdL9DJzx5zcsZT+5DmC6p9xN4ohys03/JNCPW+KPj8bR3w9gHXcxTJY9AgmY2fOcdeijkoK/YGsVJJ/S4ayohHofrVfSfeQIo8r9+3eBVLQxZD3tKa62whKTeJriL4zGPXGi61VE0aUOecMM8OuLAaUXCfCdo1mu0uJeFs/hJ+F7jdgLLceCdvFHsq4csQxPaZJDn9CXswuBq9cP5XKulNBLnXF68wGKglxzTmxyYAAXhRWTiEe4mMXqj6h6t+TCbAQBG212/Wuet6Dh8mo6iw==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(366004)(376002)(346002)(39860400002)(396003)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(83380400001)(26005)(6666004)(36916002)(478600001)(6486002)(6512007)(2616005)(6506007)(53546011)(4326008)(41300700001)(8936002)(8676002)(38100700002)(5660300002)(7416002)(15650500001)(31686004)(36756003)(44832011)(2906002)(66476007)(66556008)(31696002)(66946007)(86362001)(316002)(54906003)(110136005)(45980500001)(43740500002);
+ SFS:(13230031)(136003)(366004)(346002)(376002)(396003)(39860400002)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(66946007)(66556008)(54906003)(66476007)(31686004)(5660300002)(15650500001)(2906002)(44832011)(316002)(6506007)(6916009)(6666004)(36916002)(8676002)(8936002)(4326008)(41300700001)(478600001)(38100700002)(31696002)(86362001)(53546011)(83380400001)(6512007)(26005)(2616005)(36756003)(6486002)(45980500001)(43740500002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YjRIWnZkRzh5L3RuUzdHeEI4aVREV25ZS0p1SzZONGswbVlQWFpCamhUNVlC?=
- =?utf-8?B?cStua0Y2Um02ZDgwa3FPckZyZzNFd1ZpcWlCKzJxeW5Md2pCeUgxWmFUWmh0?=
- =?utf-8?B?R3VGZE5INEZ0TG1qRUFLK1d6Vmptb0hGa2FHVUFtbE9EU0tXcndhSEY0OWpU?=
- =?utf-8?B?SzZKa2JMdDdFVmpYNGhQVlVWLzNvRndXTnhmcjhNYmlyd21VL24vZW1VdFhk?=
- =?utf-8?B?WTJiWHFCaEJ3TGovRmN4NDFqLzB2YTlRSVZUdldaalZsczI2clZSSTRtdVR3?=
- =?utf-8?B?WUVxdWpUZnhhTEtNWnk1RUx5ZlpGVE1mZ3Z0NC9vMmJGdU5tcnE3Z0pMMHJ6?=
- =?utf-8?B?bFRZWC9VU2phckU1dm52ekc5K00vTmsxZmVST1lmTzhKTWhjSkkzYnk4cWpM?=
- =?utf-8?B?YWgvUkROVytyVVFBWE1IOFR5NWVncXJ5SGhXRnFBSW92WVg1ZHV2SlFIUkxM?=
- =?utf-8?B?NnQ2OXdiU2FNL1NMZnZiWkR6MmZkajBZei8zYW9JNWFudzNlSW50UitlaUtx?=
- =?utf-8?B?WmxFSTA3UU1GUGlraUtPWE91UHhPS1N1bDVHcGVyc2wzN0xsOEt2WUVMNzhZ?=
- =?utf-8?B?dkFUb3JiUW1OODJod2wwQVlYNGVhWlpPWHk3bnhQVHlSL1loWVVkbXFxYVJH?=
- =?utf-8?B?bVZ6Y1VMQTRYQ01ycUVXa2IyUnRMN3U0Q3pMbUVvVC9MTkFNWE84NWl2TUE2?=
- =?utf-8?B?NWdITUEyS2ErWUFuSzU0SVorM1BTMXphSkNpOXpNRFkvVkdEaUV6WVpocm5R?=
- =?utf-8?B?ZlNla2x5NWFkWDBycG5TOUVXWHltbVdBWWMvSjBDQTFkNFUxcUd0cXFoWHJk?=
- =?utf-8?B?MWYyTldnMjdRTE5SbkpWM2xyRGQwVElDWDREaVQyZG5sMGdEbVQvMElpRmdY?=
- =?utf-8?B?Sjg4dDZqYTVDeEs2bi9vY29mcWxjT3lnbGhvMk9tRHZqYW9GcDc5d1BZUnFx?=
- =?utf-8?B?OW9TNk1tcU13UXpDODRDTElGODdxeFJEM2RHb2pBbnl6TzRic3YwTEdqemE4?=
- =?utf-8?B?blcyMEUrNnplYVVxM25LS1g2YkhOK2JJL1dVVlc3N2VobjVEaDRtOWg1RnN2?=
- =?utf-8?B?UlZNQm41TFhKSyt0c2theXYyZUdrRTQrTDFFUjkzR3V4YUFQU0M0TUtzRW95?=
- =?utf-8?B?WUtDV3BiWnlnMlZPUEhUYVd2MkVwbjRaeTl3T3B3b3NHK2dsdWg3czJ0c0VP?=
- =?utf-8?B?dy9ud0R5eXVjYUt3clhCeS9pWkVVNEYzZjNjK1ZraDNZVGZTWEk3emdYcnRY?=
- =?utf-8?B?SFFSd2NRbTRMK3lkVERBNGJraWZKeXBSL0gzUmZDK25meEd0VzcwRlFzTEJ3?=
- =?utf-8?B?bER4Q0pEMHp1M0wrWFRuVWJUSVdTcTR0c1JlQk1HSnAyOElkM2NsODduTjVV?=
- =?utf-8?B?aGFOVkd4U1B3L0gvbGlJczJPNkRrVWFzNjFTbWdVSnlXMHZ6R2hGZWpLeEE1?=
- =?utf-8?B?dmt2eUZlVkZDNlpKWFRQeFhlSEp0ekdhby9WaHFyRzQ1Qm4wZ3pMSENFRkFj?=
- =?utf-8?B?NnZ2NVRTL3BuOUpLNlFydDFmZ2RlY3QxU1I1V2wydFhmcWxKK0ZGUnR3L1ZN?=
- =?utf-8?B?ZFd4Wi95eWdvd0NEUXpOWTc2SEd6ZElsc253NWQrUFVCcDA4VWlPbU9uTkNo?=
- =?utf-8?B?YStzdk1ENXF3Tk1wcUN5ZHpmSWoxdHJDS0FEb0JITWFvQTZFWHg3NXplVFNx?=
- =?utf-8?B?NEhCNno0UmMyY294ZmdyNVpmWm9lN2g1MGNaZzgxNS9ZM0hKSFE0dXgwYzBT?=
- =?utf-8?B?Tlo3N1crZXdzOGVhUEswWkxLZG5zWjN5NkZIc29LOVRDMUZ1QjRQZ1pWOU1N?=
- =?utf-8?B?Zy9CNmdzdjA3L1l6Y1crbElqWHFGS0FkengwZ1hXbVJmOFoydkN6dnZUV01H?=
- =?utf-8?B?MHJVazQ2MFAyWEJqTkkxMXRmSkFYRld0UWl1YTg1UlNJU2pqTUwzdHBvZkx5?=
- =?utf-8?B?MVdMY3M2bzcrWlFmbVZna1JaVDJkVy9pcHl0QURYUzhDR0JuR0JDVVVmMFRT?=
- =?utf-8?B?UlMrSHB4cU9SZzdsTEVTWlJGV1Fqd0c4bEpKZmg5TGJHVEJsN0RkcnNJKzkx?=
- =?utf-8?B?ZFhyekZSUHAvQXUrM1dYRFQzTGdNcXZ6aHV3TkZ5c2RMUFg3ckg2YlBOYzY5?=
- =?utf-8?B?WEcydEE1bDgxeW1sblNTcysyTXVoaW5raVRLQzUzcVNiK3lLYW5lcEVtY0ds?=
- =?utf-8?B?THc9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b3FUM3JKVFppK3EvK3VUa1MvL2lOU3puM2dhMThFM0pXc2V3citjeXhvYWhN?=
+ =?utf-8?B?d3hkbTd3cyt0OFRBRlc2NTIzQ2JoSThZenRacE5LNUUvUVV3ZEx2Vk1aZ2dR?=
+ =?utf-8?B?VFZZS3JvWHhYWVd6NXJpQUhCK0pvQkxvREtZYkRiaWFPb1pnS2cvbTFwY2d0?=
+ =?utf-8?B?WDJJTWMrZzlvem1BK25hVDlQWisvMEwvYjNLMXczaW4rTlNuZGFVRmhTdUN1?=
+ =?utf-8?B?dTFoOEM3c0kxR2dhcEZHYVA1ckdvTDdIdTFIR0wvK29nbVdBT0lXWmdETGcw?=
+ =?utf-8?B?Z2lxMktOdWs4ZkVrVnlYaXVyQ0F0ajkwQ0E0UzVMTzFFeVhld0l3WUdyd09P?=
+ =?utf-8?B?VXFWMnE2N2wwckNwaXFnYWlDdjJBQlNwWlhYQXYrWWtzdmF5NEg4QXFOT1hB?=
+ =?utf-8?B?cjdZd0pjcWJQaTZvZ0toK0JYWmFObGwwOTRwV1phLzVOamxITHRicVR1WnJ6?=
+ =?utf-8?B?bHNIZmhha0QzbEFTaHF2STZPaGF4SVJsSTYxSFJvc1krd1BRTEJIYmk0WTk5?=
+ =?utf-8?B?UTlNbnF4TFdnR2FmZmQ4QXRDZ25zMEVwSDZrbTdGRHlsRXBxYUd0VDB0NXFZ?=
+ =?utf-8?B?UVh3b0dwL28rNFpuVmJBVjZzWVNhUEtZSWZXclJjNmJtVE43eG15K21kSXEz?=
+ =?utf-8?B?RDQwbDlmcS9CL2FwTmRSTklyZVJHdi9VOXEzaWZPREJZSERQNm5aSVI2VzJO?=
+ =?utf-8?B?QnVjMWRUOGpZNWt6d25GSXZVNHVNc2xJelB4UlRuY3AyUVppb2tGY2Ribk5C?=
+ =?utf-8?B?RkpvV2tLZWFyNnF0bkNuVkttaEl6ZVZPMVR3elVpdUYxRjdRWjFFeWxFZkRt?=
+ =?utf-8?B?ZzNQdzVlejZHNzBiek1FNitYQWlhR0YvK0JzU2tvdEIzcEtUYzY0VFRzc1BX?=
+ =?utf-8?B?aDEwNXBWN3dCMXVteFk1QzdSN09Xc3RYeGdNNzZUQ2FEak9ZWGV5b0tKZ3E2?=
+ =?utf-8?B?dFNtaDU5eTIyUmlPaWpFckFNYXhxeGNZWndsWHV3amt1MlpQZmpzbnlHdTFS?=
+ =?utf-8?B?R1lmQ25OY3kvM3I4S2Z6alhocEdFNVZaVDYxK3NhbVIxbTdML1FtbGlMdEJD?=
+ =?utf-8?B?TkNycjNkZ1JPemtkR0xqRDhQaWN1VE9VUEdCbnBWZEVxU241d1Fha1U0ZVE4?=
+ =?utf-8?B?S3llM3ZQaG54eld2SzRCRUthWWxWSXI1UzdHM2NsNmQvcDhxSWF4alN0RUla?=
+ =?utf-8?B?b3lmdHhGNVJLdVpIOFhjaXJVaFViT1lBZHZIc3RsM1JoN09kbmxLRldmeEUz?=
+ =?utf-8?B?U3pWaW1yVjBTcTJiZnl5cFhVTjNXbXU2WjNXLzdaVXNibUI0a3UrcDFJRHRE?=
+ =?utf-8?B?eUlNcVY3dVdRa29JbVJRdkZrY0wyMk9tdTI5MHo0eUxIUXhRS3c3KzFDcWFO?=
+ =?utf-8?B?bnRmV1g4bHRSSnlJZnl5Yi9zZlBsK0orb1g5VEhNMThFWXdsQnNMeFFNd3RG?=
+ =?utf-8?B?WS91eS8yZTFvWm1DT3BPcE5MY3N3eU0xTjNCZ1dnOFdwaWliT2d1MDA3ZlUz?=
+ =?utf-8?B?bGo4Q1licUFYTFNUK0lCd0JoM2dRU0NUV2N5Y1Y2SUFJMEZYYjdGd2NMV3Vv?=
+ =?utf-8?B?ZG1tTkRLY0xXOXhWY2dMLytFQ2loeVZpSkxqaWtmdi9DYk9OL3FVTDdBOTlj?=
+ =?utf-8?B?SHdJWmdOQlA1anRKT3M2a2pZRzNETExNTFlDbXEzc1RrT1Jmd1BsdTkxczRJ?=
+ =?utf-8?B?cnRoR1VYckxKcFVhc1U2QVV1ZFF2S3ErU1ExK3hRKzkrTm00M0JSVy9sUWJ6?=
+ =?utf-8?B?Q0FHc0ZuVksvekhIZDFVZFQ5SmJjVVZVamtWSlg3cGtQT2cxVFE4NW5CQStD?=
+ =?utf-8?B?czZqL2xadlFVdlY5djAyUEhOOXhwQUxUS09UQ0NBRksyOUhsaTA1Z0lyeXZR?=
+ =?utf-8?B?YjVNcnRydDVzcjZ3d09RUG1RUHlicmxOZjIybjRVUk9BNTBpcFp3ZlZKSFFF?=
+ =?utf-8?B?SGg3R1czT3loMG5HRFZiQiswbmx5bVVaR2k0OW1mQVN6SjZrMDk4a01ETW9r?=
+ =?utf-8?B?SkM5SEo1MTk1RzMrWThDM0QyRDNLc2c5VlYzRVd2eHRoVHlzVldDTTlOOXZL?=
+ =?utf-8?B?UlYxNlBXTWViY241Wnk2a1BQNlBjOHlLNUZxaTRaVkZaM0pLdGRiQi9JOUYz?=
+ =?utf-8?B?UWNXQ2hPb3ZFUzdjbFJ6ZkFDbkV0UGNuYXZzU1JCNERxK0diaEdqb1JvbjhG?=
+ =?utf-8?B?MlE9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: EXtbXMYS20rNpsUEJG5lHfA4RHDB1Nb4Y+kgURpXg2CivbHlqb/wI/CB2UBVwZi7SU71PHLG7TynAXmdt6ap+7DGqP6PRy4pYIqlpRTmOfeGeEwX8s2rjPs21cBeXQow4eriUkOz3agOCbt+ciQ7eJ40W2QAKocEUTA0XFHEC/TotXBIv5u1T0X3r3ZwSkEKmB6RoTF/3INhekJRjLyLtGRyzMGAPe3cn3mdAw7iitiJKYBvRHxjj7tecB8MVz71eV60E2yhk6mKHDmzB9XheDWeE8Mn+cFu/6B0nbzY+f5h+qQ33PDIP4QnQwGXzguS0BXXxpIFZ9ya3dWwqWfKdAkzx4ur6zAusjn34byG9egEpAat8MBGHPB2xxtQfLBR76lGIb46N/5Dkv/6ieqOcQOs7eMOvAHPnFob5mcTbuNk4wGGM7OfI13WHO7XMFhXkIqW/pqk/DOclJHmWv/Ptuaer+XMZHJsq/+LA4sXNFc6WbZdor6PnTrQN4JvweGDg0kvSWA2hIQLZQfuPR1FBKD45/PZRQFraMbgJWMpZPu+t4PBc+kwuGZ9GXOKhFq5yYyNhyGlqmS3WilxJ9FnlZB66oAN4JpI4rMz/zz9cU0=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: kpoh9P7cjVSPMVcrSThp+V5Ct6cRzsYX+2C63958HRmMNpchauEGglzhadMNpjh+HepT56Mz/BEX5TMdwyP9ZBLHcF6OWk6vap9Vdg7AvfopEsLlf0LiF9fdB8HDsvxjj4y71A+ajYmQ1jT2hppy/ZIDJ9/4dBQtGioljQE/tFgE2Nl0+/EQ9GUCFNK7Ad2qF632oLTpPC0jyo8suphVmjoVB3HeRbRCkYe58daVRneVIGT5QpYbl6tHSv4tB2H2tMnfE9s0eaar7Y5PUc/tUu0lpBwlWvbpSwnSoTcUsWCR0gtGqM3ik94mRoaUXsVKybuWzZJBIU1IlpHYIzrQPYNYDLB8138OVLO/TGTR19JfQodeGQ2IUQloWDQnQxBGaCY4wS4p41fpJhxqvymsfb1hTX7PLbU8mhuV29LlGP4Xg84I3vF8gkbxL1/7W1DkI2lzOJxLytUAEaPyYTht11OHvxOMNoHZ8HjMMvVSzNDFnDZel80/E7nP9w2zggRFESO/dlqsDBU0K9RleNGvBk9di6MGRYRl88ywVopy+njjrttuRVZJpftO1UgHVRGRUx24olhIS/g2cSqlcfofJJ+qHm9qIVANC5jjbM4XpyD740EmHRZ843dKWOtoeSTRuWZARzW5wHINmqRwv8nE+hANNwPEo3c2rfTVR4WPAOYeVpWUyuJO+NHD5gfA4+eyJ3OTJZWlx5Coi2iHQOL6nXwaQDdNhFSLyd5fElErXVfC7l+WMS3oQl1z4G6u/361Tnz+uQk9Y55Gjph4gSUEJE3GwE5i7bPHcXwTDxxmhWc=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0d322a5-2e2d-4b2b-2cdf-08dbfbf0bb1a
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe4e53f8-5bed-4a08-f034-08dbfbf126c7
 X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 15:32:35.4391 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 15:35:36.0634 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: THvJbrZwT8mI54LI1WRokhUoiaeiCIrPEP+ZJ7RVkaP6zeCdeR33ASeq+YxAOJpXMFY2W99dL7kPaEoW2rTeOfMd9rORcO2yxTHyzKytV2Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5768
+X-MS-Exchange-CrossTenant-UserPrincipalName: 483j+VsWmlTIH79CW9jEp0z8N1pzoMT9i1LQtm9i/Jium4zl+fwuUPjqhWfNtpmf51D4ltfOdZ/nnzFDiAnpe9laCS1mDRzJHLth+jvADls=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6282
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-13_08,2023-12-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- bulkscore=0 spamscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2312130110
-X-Proofpoint-ORIG-GUID: kUKeaKxJAEip2aBqTvyBUDqTrxaxDIt8
-X-Proofpoint-GUID: kUKeaKxJAEip2aBqTvyBUDqTrxaxDIt8
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ malwarescore=0
+ mlxlogscore=999 adultscore=0 phishscore=0 suspectscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312130110
+X-Proofpoint-GUID: Qo810OnkyIM0Q9wEwR_4dVtWhtPl8_yh
+X-Proofpoint-ORIG-GUID: Qo810OnkyIM0Q9wEwR_4dVtWhtPl8_yh
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -188,202 +187,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FYI for Markus and Blake.  No change since V6 and V7.
-
-- Steve
+Hi Peter, all have RB's, with all i's dotted and t's crossed - steve
 
 On 12/13/2023 10:30 AM, Steve Sistare wrote:
-> Currently, a vm in the suspended state is not completely stopped.  The VCPUs
-> have been paused, but the cpu clock still runs, and runstate notifiers for
-> the transition to stopped have not been called.  This causes problems for
-> live migration.  Stale cpu timers_state is saved to the migration stream,
-> causing time errors in the guest when it wakes from suspend, and state that
-> would have been modified by runstate notifiers is wrong.
+> Migration of a guest in the suspended runstate is broken.  The incoming
+> migration code automatically tries to wake the guest, which is wrong;
+> the guest should end migration in the same runstate it started.  Further,
+> after saving a snapshot in the suspended state and loading it, the vm_start
+> fails.  The runstate is RUNNING, but the guest is not.
 > 
-> Modify vm_stop to completely stop the vm if the current state is suspended,
-> transition to RUN_STATE_PAUSED, and remember that the machine was suspended.
-> Modify vm_start to restore the suspended state.
+> See the commit messages for the details.
 > 
-> This affects all callers of vm_stop and vm_start, notably, the qapi stop and
-> cont commands.  For example:
+> Changes in V2:
+>   * simplify "start on wakeup request"
+>   * fix postcopy, snapshot, and background migration
+>   * refactor fixes for each type of migration
+>   * explicitly handled suspended events and runstate in tests
+>   * add test for postcopy and background migration
 > 
->     (qemu) info status
->     VM status: paused (suspended)
+> Changes in V3:
+>   * rebase to tip
+>   * fix hang in new function migrate_wait_for_dirty_mem
 > 
->     (qemu) stop
->     (qemu) info status
->     VM status: paused
+> Changes in V4:
+>   * rebase to tip
+>   * add patch for vm_prepare_start (thanks Peter)
+>   * add patch to preserve cpu ticks
 > 
->     (qemu) system_wakeup
->     Error: Unable to wake up: guest is not in suspended state
+> Changes in V5:
+>   * rebase to tip
+>   * added patches to completely stop vm in suspended state:
+>       cpus: refactor vm_stop
+>       cpus: stop vm in suspended state
+>   * added patch to partially resume vm in suspended state:
+>       cpus: start vm in suspended state
+>   * modified "preserve suspended ..." patches to use the above.
+>   * deleted patch "preserve cpu ticks if suspended".  stop ticks in
+>     vm_stop_force_state instead.
+>   * deleted patch "add runstate function".  defined new helper function
+>     migrate_new_runstate in "preserve suspended runstate"
+>   * Added some RB's, but removed other RB's because the patches changed.
 > 
->     (qemu) cont
->     (qemu) info status
->     VM status: paused (suspended)
+> Changes in V6:
+>   * all vm_stop calls completely stop the suspended state
+>   * refactored and updated the "cpus" patches
+>   * simplified the "preserve suspended" patches
+>   * added patch "bootfile per vm"
 > 
->     (qemu) system_wakeup
->     (qemu) info status
->     VM status: running
+> Changes in V7:
+>   * rebase to tip, add RB-s
+>   * fix backwards compatibility for global_state.vm_was_suspended
+>   * delete vm_prepare_start state argument, and rename patch
+>     "pass runstate to vm_prepare_start" to
+>     "check running not RUN_STATE_RUNNING"
+>   * drop patches:
+>       tests/qtest: bootfile per vm
+>       tests/qtest: background migration with suspend
+>   * rename runstate_is_started to runstate_is_live
+>   * move wait_for_suspend in tests
 > 
-> Suggested-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> ---
->  include/sysemu/runstate.h |  9 +++++++++
->  qapi/misc.json            | 10 ++++++++--
->  system/cpus.c             | 23 +++++++++++++++--------
->  system/runstate.c         |  3 +++
->  4 files changed, 35 insertions(+), 10 deletions(-)
+> Changes in V8:
+>   * rebase to tip
+>   * add RB's
+>   * add comment for runstate_is_live
+>   * simplify global_state - the needed function, and its use of vm_was_suspended
 > 
-> diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-> index 88a67e2..618eb49 100644
-> --- a/include/sysemu/runstate.h
-> +++ b/include/sysemu/runstate.h
-> @@ -40,6 +40,15 @@ static inline bool shutdown_caused_by_guest(ShutdownCause cause)
->      return cause >= SHUTDOWN_CAUSE_GUEST_SHUTDOWN;
->  }
->  
-> +/*
-> + * In a "live" state, the vcpu clock is ticking, and the runstate notifiers
-> + * think we are running.
-> + */
-> +static inline bool runstate_is_live(RunState state)
-> +{
-> +    return state == RUN_STATE_RUNNING || state == RUN_STATE_SUSPENDED;
-> +}
-> +
->  void vm_start(void);
->  
->  /**
-> diff --git a/qapi/misc.json b/qapi/misc.json
-> index cda2eff..efb8d44 100644
-> --- a/qapi/misc.json
-> +++ b/qapi/misc.json
-> @@ -134,7 +134,7 @@
->  ##
->  # @stop:
->  #
-> -# Stop all guest VCPU execution.
-> +# Stop all guest VCPU and VM execution.
->  #
->  # Since: 0.14
->  #
-> @@ -143,6 +143,9 @@
->  #     the guest remains paused once migration finishes, as if the -S
->  #     option was passed on the command line.
->  #
-> +#     In the "suspended" state, it will completely stop the VM and
-> +#     cause a transition to the "paused" state. (Since 9.0)
-> +#
->  # Example:
->  #
->  # -> { "execute": "stop" }
-> @@ -153,7 +156,7 @@
->  ##
->  # @cont:
->  #
-> -# Resume guest VCPU execution.
-> +# Resume guest VCPU and VM execution.
->  #
->  # Since: 0.14
->  #
-> @@ -165,6 +168,9 @@
->  #     guest starts once migration finishes, removing the effect of the
->  #     -S command line option if it was passed.
->  #
-> +#     If the VM was previously suspended, and not been reset or woken,
-> +#     this command will transition back to the "suspended" state. (Since 9.0)
-> +#
->  # Example:
->  #
->  # -> { "execute": "cont" }
-> diff --git a/system/cpus.c b/system/cpus.c
-> index 9f631ab..f162435 100644
-> --- a/system/cpus.c
-> +++ b/system/cpus.c
-> @@ -277,11 +277,15 @@ bool vm_get_suspended(void)
->  static int do_vm_stop(RunState state, bool send_stop)
->  {
->      int ret = 0;
-> +    RunState oldstate = runstate_get();
->  
-> -    if (runstate_is_running()) {
-> +    if (runstate_is_live(oldstate)) {
-> +        vm_was_suspended = (oldstate == RUN_STATE_SUSPENDED);
->          runstate_set(state);
->          cpu_disable_ticks();
-> -        pause_all_vcpus();
-> +        if (oldstate == RUN_STATE_RUNNING) {
-> +            pause_all_vcpus();
-> +        }
->          vm_state_notify(0, state);
->          if (send_stop) {
->              qapi_event_send_stop();
-> @@ -694,11 +698,13 @@ int vm_stop(RunState state)
->  
->  /**
->   * Prepare for (re)starting the VM.
-> - * Returns -1 if the vCPUs are not to be restarted (e.g. if they are already
-> - * running or in case of an error condition), 0 otherwise.
-> + * Returns 0 if the vCPUs should be restarted, -1 on an error condition,
-> + * and 1 otherwise.
->   */
->  int vm_prepare_start(bool step_pending)
->  {
-> +    int ret = vm_was_suspended ? 1 : 0;
-> +    RunState state = vm_was_suspended ? RUN_STATE_SUSPENDED : RUN_STATE_RUNNING;
->      RunState requested;
->  
->      qemu_vmstop_requested(&requested);
-> @@ -729,9 +735,10 @@ int vm_prepare_start(bool step_pending)
->      qapi_event_send_resume();
->  
->      cpu_enable_ticks();
-> -    runstate_set(RUN_STATE_RUNNING);
-> -    vm_state_notify(1, RUN_STATE_RUNNING);
-> -    return 0;
-> +    runstate_set(state);
-> +    vm_state_notify(1, state);
-> +    vm_was_suspended = false;
-> +    return ret;
->  }
->  
->  void vm_start(void)
-> @@ -745,7 +752,7 @@ void vm_start(void)
->     current state is forgotten forever */
->  int vm_stop_force_state(RunState state)
->  {
-> -    if (runstate_is_running()) {
-> +    if (runstate_is_live(runstate_get())) {
->          return vm_stop(state);
->      } else {
->          int ret;
-> diff --git a/system/runstate.c b/system/runstate.c
-> index ea9d6c2..e2fa204 100644
-> --- a/system/runstate.c
-> +++ b/system/runstate.c
-> @@ -108,6 +108,7 @@ static const RunStateTransition runstate_transitions_def[] = {
->      { RUN_STATE_PAUSED, RUN_STATE_POSTMIGRATE },
->      { RUN_STATE_PAUSED, RUN_STATE_PRELAUNCH },
->      { RUN_STATE_PAUSED, RUN_STATE_COLO},
-> +    { RUN_STATE_PAUSED, RUN_STATE_SUSPENDED},
->  
->      { RUN_STATE_POSTMIGRATE, RUN_STATE_RUNNING },
->      { RUN_STATE_POSTMIGRATE, RUN_STATE_FINISH_MIGRATE },
-> @@ -161,6 +162,7 @@ static const RunStateTransition runstate_transitions_def[] = {
->      { RUN_STATE_SUSPENDED, RUN_STATE_FINISH_MIGRATE },
->      { RUN_STATE_SUSPENDED, RUN_STATE_PRELAUNCH },
->      { RUN_STATE_SUSPENDED, RUN_STATE_COLO},
-> +    { RUN_STATE_SUSPENDED, RUN_STATE_PAUSED},
->  
->      { RUN_STATE_WATCHDOG, RUN_STATE_RUNNING },
->      { RUN_STATE_WATCHDOG, RUN_STATE_FINISH_MIGRATE },
-> @@ -502,6 +504,7 @@ void qemu_system_reset(ShutdownCause reason)
->          qapi_event_send_reset(shutdown_caused_by_guest(reason), reason);
->      }
->      cpu_synchronize_all_post_reset();
-> +    vm_set_suspended(false);
->  }
->  
->  /*
+> Steve Sistare (12):
+>   cpus: vm_was_suspended
+>   cpus: stop vm in suspended runstate
+>   cpus: check running not RUN_STATE_RUNNING
+>   cpus: vm_resume
+>   migration: propagate suspended runstate
+>   migration: preserve suspended runstate
+>   migration: preserve suspended for snapshot
+>   migration: preserve suspended for bg_migration
+>   tests/qtest: migration events
+>   tests/qtest: option to suspend during migration
+>   tests/qtest: precopy migration with suspend
+>   tests/qtest: postcopy migration with suspend
+> 
+>  backends/tpm/tpm_emulator.c          |   2 +-
+>  hw/usb/hcd-ehci.c                    |   2 +-
+>  hw/usb/redirect.c                    |   2 +-
+>  hw/xen/xen-hvm-common.c              |   2 +-
+>  include/migration/snapshot.h         |   7 ++
+>  include/sysemu/runstate.h            |  20 ++++
+>  migration/global_state.c             |  47 +++++----
+>  migration/migration-hmp-cmds.c       |   8 +-
+>  migration/migration.c                |  15 +--
+>  migration/savevm.c                   |  23 +++--
+>  qapi/misc.json                       |  10 +-
+>  system/cpus.c                        |  47 +++++++--
+>  system/runstate.c                    |   9 ++
+>  system/vl.c                          |   2 +
+>  tests/migration/i386/Makefile        |   5 +-
+>  tests/migration/i386/a-b-bootblock.S |  50 +++++++++-
+>  tests/migration/i386/a-b-bootblock.h |  26 +++--
+>  tests/qtest/migration-helpers.c      |  27 ++----
+>  tests/qtest/migration-helpers.h      |  11 ++-
+>  tests/qtest/migration-test.c         | 181 +++++++++++++++++++++++++----------
+>  20 files changed, 352 insertions(+), 144 deletions(-)
+> 
 
