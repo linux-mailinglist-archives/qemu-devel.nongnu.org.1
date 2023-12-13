@@ -2,76 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FD881147A
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 15:19:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8D28114B2
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 15:34:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDQ3i-0005vi-7O; Wed, 13 Dec 2023 09:17:58 -0500
+	id 1rDQIc-00004u-I3; Wed, 13 Dec 2023 09:33:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xun794@gmail.com>)
- id 1rDQ3f-0005v1-I1; Wed, 13 Dec 2023 09:17:55 -0500
-Received: from mail-pg1-x541.google.com ([2607:f8b0:4864:20::541])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xun794@gmail.com>)
- id 1rDQ3d-0005zf-GE; Wed, 13 Dec 2023 09:17:55 -0500
-Received: by mail-pg1-x541.google.com with SMTP id
- 41be03b00d2f7-5c6b9583dcbso5860240a12.2; 
- Wed, 13 Dec 2023 06:17:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702477070; x=1703081870; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lUKBpQvbb/yNq0i9RdFSePX/EMam/n8OGH7BjrR4+o8=;
- b=SlS3C/LvyoYbh3X7ZdnO8IhfOHridUctRjDvlGeHs1Drbhd+NMqNx8xDSClqBBMbL1
- im2nnjGRX2bha7hW7Vxu+MnmeAgGzI9Egd7PlkxcJ2XUNruEmU0SjJZURO4/lHXK1qS4
- zOuCfn02gjYyFnGXuin1QqBUB0XBLIAryr2qiC9RqyckaRrJ56do3ddUPMauKLyTGaR6
- bDrJHYpWfwyX1FNlW0LJxBev/P99w5GPpcPajZgv4oQRhb1ZLYxHGios8rzSPh71RJix
- 8cc5H144xMlWJ1za+aKMZsQTT/hsn7Oc9IDE7Nnm0ahXoibtyhKq58mVkWitBgzHw44F
- Bvww==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rDQIZ-0008WI-GW
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 09:33:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rDQIX-0008QZ-9D
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 09:33:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702477992;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Xck2aJWh555yW0RZMjzwD1pMZqz0dj26lq7MGRksVsE=;
+ b=aguVwLTa+62/KOjbNyLU2YfefLBD3eD5Bf+luqAveP+2RTq879tFYfnrQDSaxyef6TX5KE
+ yK0+AKo2CoRx5vgS75eauBkLQxUEZXARwBTtaqzXHn5vxgcJBmOoRG1pNlq9aJud9JVD2e
+ 0dZDeoWeaY3B2lw7iV0UpmqpQLflvyg=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-358-ZmqaB4uXN9aLjjW4HDKFhQ-1; Wed, 13 Dec 2023 09:33:11 -0500
+X-MC-Unique: ZmqaB4uXN9aLjjW4HDKFhQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a1fa0ed2058so211703466b.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 06:33:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702477070; x=1703081870;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lUKBpQvbb/yNq0i9RdFSePX/EMam/n8OGH7BjrR4+o8=;
- b=lUTxbmK56Y94mHGEAmlk/uI2KdFAv/PLUkGuvgkOjzaSCyv7RW/OQeL+gXZIALmx04
- 4R1pOvOYkQ74i42j0Q7Y5CeKJPly6mSSAOYDXxApek3kyz1vrai+aeVx5+HUBCz3bUAs
- aIEpd1LuK8IP0Mu36HyMlmZfHLuCzSXYQh+6DAjaXdSh4BKl/Fh8Db+MgQUL7ftDQ/H+
- zECdYRzJZFA2NqP8FUeMLHgHHjXmgfgpAZcAPmlEDDP9nghKoJ7wgAgXd+nBA2tYg3eh
- P1IYYyz/3a5hqTsHGz47RUoOhbuwDVDOXZcz3TqotF/TRWXz/Zyd+LumJllWjMnVx/vu
- 6jfg==
-X-Gm-Message-State: AOJu0YxZnA4xzEuvSSFBF1QcKf/MZjQBNzfgGFJkoWRA8Ab/ahwtSZs6
- 49Nhq+ME/KPWXdHgCij9ILgYUpK+HXeZkBzL
-X-Google-Smtp-Source: AGHT+IF5NSOdWJgki6NTNqkOhfabHjltHl66o+7oL8Kt6hWmfCZO7LL4xwJ/XkGxo/N2mz2EaqASIw==
-X-Received: by 2002:a05:6a20:1450:b0:190:1246:7d20 with SMTP id
- a16-20020a056a20145000b0019012467d20mr9781942pzi.87.1702477069696; 
- Wed, 13 Dec 2023 06:17:49 -0800 (PST)
-Received: from localhost ([2409:8a20:bc4:a9a0:40eb:1e14:5537:3084])
+ d=1e100.net; s=20230601; t=1702477990; x=1703082790;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Xck2aJWh555yW0RZMjzwD1pMZqz0dj26lq7MGRksVsE=;
+ b=fnW2FNN1vsj7sLNbvqwvodNxP4fMvXLPadKSPXmTKAK7EMr+mRfcJ/ciuTRcdWj36I
+ lZm2KtO8olOnF3O/RUqgKLAfo0MiuTcgMXWDp7KunoA0SgbVFo9us4blBiDL5EuM2nWF
+ 4e+mLlLJBi5n7XoCKa/j2AryKOqVYkXLsb66Iq0RP5oYeVsdBitIBdfwPvRYftYfmHWK
+ K9qCmuTv5lqadbdfBGs8yAp3cLMXHyjeaZII4I+5asXZ6BbLMKjrxKf5KkYVktoCAI6q
+ KjQ9D54qaV/Kg64Xvf0JP7Hq3gGeoH2C8/Vk1MCG6mQVyX/MbaB/rmiKEOlbg9MRfv8z
+ TMwg==
+X-Gm-Message-State: AOJu0YxBwmu6eAtgHB7pp+J4BQxpbXFXuBxsu3BvTUuL+47O/2SBFNlJ
+ gVKtInv3lvgyuOPPs4Wht3Bg/4xmjF/HmdTNug9+4NOYcaZ9iVTgA4PxyEoXskTWzpTy6EeYoTa
+ vxHBtBThd3Ytyl88=
+X-Received: by 2002:a17:906:dfeb:b0:a19:a19b:4273 with SMTP id
+ lc11-20020a170906dfeb00b00a19a19b4273mr2706179ejc.222.1702477990035; 
+ Wed, 13 Dec 2023 06:33:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEL5l8IjTceiNBmu0iqwWMkzgL3ZWa8Q/zZvleaGSy6AoUTIGD1G6Z+k6HNX0OYz9WewtS9bQ==
+X-Received: by 2002:a17:906:dfeb:b0:a19:a19b:4273 with SMTP id
+ lc11-20020a170906dfeb00b00a19a19b4273mr2706175ejc.222.1702477989708; 
+ Wed, 13 Dec 2023 06:33:09 -0800 (PST)
+Received: from redhat.com ([2a02:14f:16d:d414:dc39:9ae8:919b:572d])
  by smtp.gmail.com with ESMTPSA id
- s16-20020a056a00195000b006cb574445efsm10062993pfk.88.2023.12.13.06.17.48
+ vw18-20020a170907059200b00a1712cbddebsm7831175ejb.187.2023.12.13.06.33.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Dec 2023 06:17:49 -0800 (PST)
-From: Yihuan Pan <xun794@gmail.com>
-To: qemu-trivial@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Yihuan Pan <xun794@gmail.com>
-Subject: [PATCH] qemu-options: Clarify handling of commas in options parameters
-Date: Wed, 13 Dec 2023 22:17:07 +0800
-Message-ID: <20231213141706.629833-2-xun794@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ Wed, 13 Dec 2023 06:33:08 -0800 (PST)
+Date: Wed, 13 Dec 2023 09:33:05 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PULL 6/6] tests/acpi: disallow tests/data/acpi/virt/SSDT.memhp
+ changes
+Message-ID: <20231213093242-mutt-send-email-mst@kernel.org>
+References: <20231213105026.1944656-1-kraxel@redhat.com>
+ <20231213105026.1944656-7-kraxel@redhat.com>
+ <AD96681F-FBF0-4AB9-8F2B-5B6C1FB5A52F@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::541;
- envelope-from=xun794@gmail.com; helo=mail-pg1-x541.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <AD96681F-FBF0-4AB9-8F2B-5B6C1FB5A52F@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,74 +103,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Provide explicit guidance on dealing with option parameters as arbitrary
-strings containing commas, such as in "file=my,file" and "string=a,b". The
-updated documentation emphasizes the need to double commas when they
-appear within such parameters.
+On Wed, Dec 13, 2023 at 04:24:24PM +0530, Ani Sinha wrote:
+> 
+> 
+> > On 13-Dec-2023, at 4:20 PM, Gerd Hoffmann <kraxel@redhat.com> wrote:
+> > 
+> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> 
+> Please combine this patch with patch 5. No need to do this separately.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1839
-Signed-off-by: Yihuan Pan <xun794@gmail.com>
----
- docs/system/invocation.rst   | 5 +++++
- docs/system/qemu-manpage.rst | 5 +++++
- qemu-options.hx              | 4 ++++
- 3 files changed, 14 insertions(+)
 
-Changes since the previous version:
-- Added a generic comment about doubling the commas to the
-  documentation.
+Yes but since it's done - it's fine either way I think. No?
 
-diff --git a/docs/system/invocation.rst b/docs/system/invocation.rst
-index 4ba38fc23d..14b7db1c10 100644
---- a/docs/system/invocation.rst
-+++ b/docs/system/invocation.rst
-@@ -10,6 +10,11 @@ Invocation
- disk_image is a raw hard disk image for IDE hard disk 0. Some targets do
- not need a disk image.
- 
-+When dealing with options parameters as arbitrary strings containing
-+commas, such as in "file=my,file" and "string=a,b", it's necessary to
-+double the commas. For instance,"-fw_cfg name=z,string=a,,b" will be
-+parsed as "-fw_cfg name=z,string=a,b".
-+
- .. hxtool-doc:: qemu-options.hx
- 
- Device URL Syntax
-diff --git a/docs/system/qemu-manpage.rst b/docs/system/qemu-manpage.rst
-index c47a412758..3ade4ee45b 100644
---- a/docs/system/qemu-manpage.rst
-+++ b/docs/system/qemu-manpage.rst
-@@ -31,6 +31,11 @@ Options
- disk_image is a raw hard disk image for IDE hard disk 0. Some targets do
- not need a disk image.
- 
-+When dealing with options parameters as arbitrary strings containing
-+commas, such as in "file=my,file" and "string=a,b", it's necessary to
-+double the commas. For instance,"-fw_cfg name=z,string=a,,b" will be
-+parsed as "-fw_cfg name=z,string=a,b".
-+
- .. hxtool-doc:: qemu-options.hx
- 
- .. include:: keys.rst.inc
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 42fd09e4de..a935aaae44 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4086,9 +4086,13 @@ DEF("fw_cfg", HAS_ARG, QEMU_OPTION_fwcfg,
- SRST
- ``-fw_cfg [name=]name,file=file``
-     Add named fw\_cfg entry with contents from file file.
-+    If the filename contains comma, you must double it (for instance,
-+    "file=my,,file" to use file "my,file").
- 
- ``-fw_cfg [name=]name,string=str``
-     Add named fw\_cfg entry with contents from string str.
-+    If the string contains comma, you must double it (for instance,
-+    "string=my,,string" to use file "my,string").
- 
-     The terminating NUL character of the contents of str will not be
-     included as part of the fw\_cfg item data. To insert contents with
--- 
-2.43.0
+> > ---
+> > tests/qtest/bios-tables-test-allowed-diff.h | 1 -
+> > 1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+> > index e569098abddc..dfb8523c8bf4 100644
+> > --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> > +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+> > @@ -1,2 +1 @@
+> > /* List of comma-separated changed AML files to ignore */
+> > -"tests/data/acpi/virt/SSDT.memhp",
+> > -- 
+> > 2.43.0
+> > 
 
 
