@@ -2,128 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B6E810A79
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 07:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CADA2810A86
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 07:42:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDIrx-0006HV-RE; Wed, 13 Dec 2023 01:37:22 -0500
+	id 1rDIw5-0007Y0-5m; Wed, 13 Dec 2023 01:41:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rDIrw-0006HF-Ed
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 01:37:20 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1rDIvz-0007XB-On
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 01:41:31 -0500
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rDIru-0004TF-Dr
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 01:37:20 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-28ab4348bbcso1326706a91.2
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 22:37:17 -0800 (PST)
+ id 1rDIvu-0005Bo-BO
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 01:41:31 -0500
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-6d84ddd642fso5008255a34.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 22:41:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702449436; x=1703054236;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702449682; x=1703054482;
  darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kMU0hw+gwGczR/gRWRQnDaEoeESPinDQdK01aukaVCQ=;
- b=s+peaJo6EWVTDJBRapFS2fBU40Dk0fE5KGRX3jYux4cZ+3ugPlXJBYLtlEBdwMhDHh
- /t7qMsuDhbNnkYEaijhuvXNuKNMxQRz8NQuNB9ngISfa7/uzC7xTBvokaHe0NvQBLSIj
- ECEBIwKVVKgpJH8kzioqCjbTcOyyhJ5WhfUjXxjLVgkf2GiaBMpIGCVP+x+nPKyHaZ1B
- tftHXdoG0WM3rubkYuIiUxjO2Xt/LoB1owF+1ujXBc8aAHAkIrjRlLxA+tEuxdG9KWgl
- SXwnLbs0Yac2T3Uk5Wavrhh6LH8focAve0wfm1MpFp8QDnM4FYJhDGoRBi/i2CnsfV+j
- 1k8Q==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=L/+A66pL25kn3XYpcz1nOENcvzH/cRI26qShJ+fqNCw=;
+ b=j3ntsE245t9cYS/7qju/FmsS37y28kMjBAtDs39FHAJv8rG631pp3bb8BrVHvlNpFa
+ JmI+Z0E4UQM0uIn4bIYIfb4pAjQMjVJ/SXBsyYOb/qXtPqkXGn55tc0NpGzBGgktVWyx
+ TGZdB42DNVmGyX2fyXi/x+aJoSI8vlhHUup3fHDpl9Y6m6xf6FDrdNnQmrnRa8wHfLMZ
+ DFqnFQT0qAYqscKkNVoW1Y9zIG5sRmvl95m4gXyoIYMy3P7P8xuO0FtgDMOwPyg+3eHu
+ BiOXjAEFJXy1soqx8ugJ+f2ShkP0KdPE+83yV7+MLk1u4BrHS3fkZQvj2liz/ebQNKwV
+ aJ5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702449436; x=1703054236;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kMU0hw+gwGczR/gRWRQnDaEoeESPinDQdK01aukaVCQ=;
- b=Wj5eaihxsKDU4Nbm3baF+q44DPV5+DJeh4diNRoB9By6LtQ91s3t/kr4RFs1cKqbQF
- PN+pyxxm3r8QyMVw0ICVptLxVNm/n3EyPdS/O/6/KWJ4hIAkWaZiJckK3jJhMpc55t4P
- 0a1UMvMYLmwgGGSH95ulqPhnt11jIpOZZks1D0NGkS5Jj4MoMFQOV0YNnKsl3uMHjubU
- t7J/3u2OrE2rU4DXQkhOHTbdt7CnPfiQ7BWjJUs90xfi2ymjxJ/rLr6CgDeip4uloTDT
- TqtN37KU5YYK6eCuAPoSjJTn/XXFVVdvMG6vZS0p0P0/Cbr8Dm0NQJm8LvhhYXMTEGww
- 87nw==
-X-Gm-Message-State: AOJu0Yzy83XBesq7221CjfsCay/PzkbCK/GK1bjPSchtwOkB8YxRBq9g
- jbs8Iegm9BhDQy5vJjnxKOixXg==
-X-Google-Smtp-Source: AGHT+IG5o/HJjzAe1oqBwjDmyKD+jnryCVy/PNKNBzfMqSP/v+UwSWZ7GhdbAoPzo3ay4ybD2HWbEQ==
-X-Received: by 2002:a17:902:eb87:b0:1d0:b944:6344 with SMTP id
- q7-20020a170902eb8700b001d0b9446344mr3145508plg.28.1702449435577; 
- Tue, 12 Dec 2023 22:37:15 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
- by smtp.gmail.com with ESMTPSA id
- u13-20020a170902e5cd00b001cff026df52sm9636038plf.221.2023.12.12.22.37.02
+ d=1e100.net; s=20230601; t=1702449682; x=1703054482;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=L/+A66pL25kn3XYpcz1nOENcvzH/cRI26qShJ+fqNCw=;
+ b=LszN5XQ7ijXU+/UxlaO3ZBpZsE1Pcj1Kria5Iw+F4MeNwG7wuBvG1HVj3J+u86bHmd
+ rVsnhBkjK5B4J5oUKLFF0SjHrUF6NBGpSd13zd8yqDuhzNqylIEpr1NKiiCltarLAS6N
+ f1E6EQaE5Uogr2lMWBCewQMDyQYbxqc/5I0JlUulIhFYpVnILR/4OTupT6WkFcm5vVjg
+ rG1I2Xg4MgOwu9Iz1rJxDDDA2ixYMH6Dxes1EwVpjnOTmf/58kL7pAwd8x9syP/MJ+Iy
+ XePGG+EnooXQ7VgQG+Khw7bYWq5tx6Cnizd67PN61C2WgEXny9hdtaj5yYrpzoBhWUql
+ 0g6g==
+X-Gm-Message-State: AOJu0YyhhT0rcaWmTveyY8d2+7G7/KRcxMgYDQOfAHJ1gzggIUjnax10
+ RmqtzKgt3XWLja7pUNjPNvunJw==
+X-Google-Smtp-Source: AGHT+IH2OTmYiIudtuFvD5Um4b50Ij9KMAYBOovuQxiygKn3tZ2V4jzdlFUgdATkzDUMEeKHUgsMuA==
+X-Received: by 2002:a05:6358:7f13:b0:170:2c2d:9d8f with SMTP id
+ p19-20020a0563587f1300b001702c2d9d8fmr11021942rwn.1.1702449679908; 
+ Tue, 12 Dec 2023 22:41:19 -0800 (PST)
+Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
+ px6-20020a17090b270600b002609cadc56esm10280169pjb.11.2023.12.12.22.41.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Dec 2023 22:37:15 -0800 (PST)
-Message-ID: <389fff8c-9f5d-4b6b-acd2-bc3e2110a9b3@daynix.com>
-Date: Wed, 13 Dec 2023 15:37:00 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] system/cpus: rename qemu_mutex_lock_iothread() to
- bql_lock()
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Paul Durrant <paul@xen.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Alexander Graf <agraf@csgraf.de>, Hailiang Zhang
- <zhanghailiang@xfusion.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Huacai Chen <chenhuacai@kernel.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Hyman Huang <yong.huang@smartx.com>, Fam Zheng <fam@euphon.net>,
- Song Gao <gaosong@loongson.cn>, Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- David Woodhouse <dwmw2@infradead.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Leonardo Bras <leobras@redhat.com>, Jiri Slaby <jslaby@suse.cz>,
- Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Cameron Esfahani <dirty@apple.com>,
- qemu-ppc@nongnu.org, John Snow <jsnow@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Weiwei Li <liwei1518@gmail.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-s390x@nongnu.org, qemu-block@nongnu.org,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, kvm@vger.kernel.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Reinoud Zandijk <reinoud@netbsd.org>, Kevin Wolf <kwolf@redhat.com>,
- Bin Meng <bin.meng@windriver.com>, Sunil Muthuswamy
- <sunilmut@microsoft.com>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-riscv@nongnu.org, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Stafford Horne <shorne@gmail.com>, Fabiano Rosas <farosas@suse.de>,
- Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-arm@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Max Filippov <jcmvbkbc@gmail.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>, Eric Blake
- <eblake@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Halil Pasic <pasic@linux.ibm.com>, xen-devel@lists.xenproject.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Woodhouse <dwmw@amazon.co.uk>
-References: <20231212153905.631119-1-stefanha@redhat.com>
- <20231212153905.631119-2-stefanha@redhat.com>
+ Tue, 12 Dec 2023 22:41:19 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231212153905.631119-2-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: [PATCH v17 00/14] plugins: Allow to read registers
+Date: Wed, 13 Dec 2023 15:40:59 +0900
+Message-Id: <20231213-gdb-v17-0-777047380591@daynix.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1030;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1030.google.com
+X-B4-Tracking: v=1; b=H4sIAPtReWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDM11FJSSM
+ xLz0lN1M1OAAkpGBkbGhkaGxrrpKUm6xiaWKUkGKYmWxmlGSkCVBUWpaZkVYGOiY2trAYTvJsR
+ WAAAA
+To: Peter Maydell <peter.maydell@linaro.org>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>, 
+ Laurent Vivier <laurent@vivier.eu>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
+ Thomas Huth <thuth@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Yanan Wang <wangyanan55@huawei.com>, Michael Rolnik <mrolnik@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>, John Snow <jsnow@redhat.com>, 
+ Cleber Rosa <crosa@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>, 
+ Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ Mikhail Tyutin <m.tyutin@yadro.com>, 
+ Aleksandr Anenkov <a.anenkov@yadro.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, 
+ 20231213-riscv-v7-0-a760156a337f@daynix.com, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.4
+Received-SPF: none client-ip=2607:f8b0:4864:20::333;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -146,201 +119,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/13 0:39, Stefan Hajnoczi wrote:
-> The Big QEMU Lock (BQL) has many names and they are confusing. The
-> actual QemuMutex variable is called qemu_global_mutex but it's commonly
-> referred to as the BQL in discussions and some code comments. The
-> locking APIs, however, are called qemu_mutex_lock_iothread() and
-> qemu_mutex_unlock_iothread().
-> 
-> The "iothread" name is historic and comes from when the main thread was
-> split into into KVM vcpu threads and the "iothread" (now called the main
-> loop thread). I have contributed to the confusion myself by introducing
-> a separate --object iothread, a separate concept unrelated to the BQL.
-> 
-> The "iothread" name is no longer appropriate for the BQL. Rename the
-> locking APIs to:
-> - void bql_lock(void)
-> - void bql_unlock(void)
-> - bool bql_locked(void)
-> 
-> There are more APIs with "iothread" in their names. Subsequent patches
-> will rename them. There are also comments and documentation that will be
-> updated in later patches.
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Reviewed-by: Paul Durrant <paul@xen.org>
-> Acked-by: Fabiano Rosas <farosas@suse.de>
-> Acked-by: David Woodhouse <dwmw@amazon.co.uk>
-> Reviewed-by: Cédric Le Goater <clg@kaod.org>
-> Acked-by: Peter Xu <peterx@redhat.com>
-> Acked-by: Eric Farman <farman@linux.ibm.com>
-> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> ---
->   include/block/aio-wait.h             |   2 +-
->   include/qemu/main-loop.h             |  40 ++++-----
->   include/qemu/thread.h                |   2 +-
->   accel/accel-blocker.c                |  10 +--
->   accel/dummy-cpus.c                   |   8 +-
->   accel/hvf/hvf-accel-ops.c            |   4 +-
->   accel/kvm/kvm-accel-ops.c            |   4 +-
->   accel/kvm/kvm-all.c                  |  22 ++---
->   accel/tcg/cpu-exec.c                 |  26 +++---
->   accel/tcg/cputlb.c                   |  16 ++--
->   accel/tcg/tcg-accel-ops-icount.c     |   4 +-
->   accel/tcg/tcg-accel-ops-mttcg.c      |  12 +--
->   accel/tcg/tcg-accel-ops-rr.c         |  14 ++--
->   accel/tcg/tcg-accel-ops.c            |   2 +-
->   accel/tcg/translate-all.c            |   2 +-
->   cpu-common.c                         |   4 +-
->   dump/dump.c                          |   4 +-
->   hw/core/cpu-common.c                 |   6 +-
->   hw/i386/intel_iommu.c                |   6 +-
->   hw/i386/kvm/xen_evtchn.c             |  16 ++--
->   hw/i386/kvm/xen_overlay.c            |   2 +-
->   hw/i386/kvm/xen_xenstore.c           |   2 +-
->   hw/intc/arm_gicv3_cpuif.c            |   2 +-
->   hw/intc/s390_flic.c                  |  18 ++--
->   hw/misc/edu.c                        |   4 +-
->   hw/misc/imx6_src.c                   |   2 +-
->   hw/misc/imx7_src.c                   |   2 +-
->   hw/net/xen_nic.c                     |   8 +-
->   hw/ppc/pegasos2.c                    |   2 +-
->   hw/ppc/ppc.c                         |   4 +-
->   hw/ppc/spapr.c                       |   2 +-
->   hw/ppc/spapr_rng.c                   |   4 +-
->   hw/ppc/spapr_softmmu.c               |   4 +-
->   hw/remote/mpqemu-link.c              |  20 ++---
->   hw/remote/vfio-user-obj.c            |   2 +-
->   hw/s390x/s390-skeys.c                |   2 +-
->   migration/block-dirty-bitmap.c       |   4 +-
->   migration/block.c                    |  16 ++--
->   migration/colo.c                     |  60 +++++++-------
->   migration/dirtyrate.c                |  12 +--
->   migration/migration.c                |  52 ++++++------
->   migration/ram.c                      |  12 +--
->   replay/replay-internal.c             |   2 +-
->   semihosting/console.c                |   8 +-
->   stubs/iothread-lock.c                |   6 +-
->   system/cpu-throttle.c                |   4 +-
->   system/cpus.c                        |  51 ++++++------
->   system/dirtylimit.c                  |   4 +-
->   system/memory.c                      |   2 +-
->   system/physmem.c                     |   8 +-
->   system/runstate.c                    |   2 +-
->   system/watchpoint.c                  |   4 +-
->   target/arm/arm-powerctl.c            |  14 ++--
->   target/arm/helper.c                  |   4 +-
->   target/arm/hvf/hvf.c                 |   8 +-
->   target/arm/kvm.c                     |   4 +-
->   target/arm/kvm64.c                   |   4 +-
->   target/arm/ptw.c                     |   6 +-
->   target/arm/tcg/helper-a64.c          |   8 +-
->   target/arm/tcg/m_helper.c            |   6 +-
->   target/arm/tcg/op_helper.c           |  24 +++---
->   target/arm/tcg/psci.c                |   2 +-
->   target/hppa/int_helper.c             |   8 +-
->   target/i386/hvf/hvf.c                |   6 +-
->   target/i386/kvm/hyperv.c             |   4 +-
->   target/i386/kvm/kvm.c                |  28 +++----
->   target/i386/kvm/xen-emu.c            |  14 ++--
->   target/i386/nvmm/nvmm-accel-ops.c    |   4 +-
->   target/i386/nvmm/nvmm-all.c          |  20 ++---
->   target/i386/tcg/sysemu/fpu_helper.c  |   6 +-
->   target/i386/tcg/sysemu/misc_helper.c |   4 +-
->   target/i386/whpx/whpx-accel-ops.c    |   4 +-
->   target/i386/whpx/whpx-all.c          |  24 +++---
->   target/loongarch/csr_helper.c        |   4 +-
->   target/mips/kvm.c                    |   4 +-
->   target/mips/tcg/sysemu/cp0_helper.c  |   4 +-
->   target/openrisc/sys_helper.c         |  16 ++--
->   target/ppc/excp_helper.c             |  12 +--
->   target/ppc/kvm.c                     |   4 +-
->   target/ppc/misc_helper.c             |   8 +-
->   target/ppc/timebase_helper.c         |   8 +-
->   target/s390x/kvm/kvm.c               |   4 +-
->   target/s390x/tcg/misc_helper.c       | 118 +++++++++++++--------------
->   target/sparc/int32_helper.c          |   2 +-
->   target/sparc/int64_helper.c          |   6 +-
->   target/sparc/win_helper.c            |  20 ++---
->   target/xtensa/exc_helper.c           |   8 +-
->   ui/spice-core.c                      |   4 +-
->   util/async.c                         |   2 +-
->   util/main-loop.c                     |   8 +-
->   util/qsp.c                           |   6 +-
->   util/rcu.c                           |  14 ++--
->   audio/coreaudio.m                    |   4 +-
->   memory_ldst.c.inc                    |  18 ++--
->   target/i386/hvf/README.md            |   2 +-
->   ui/cocoa.m                           |  50 ++++++------
->   96 files changed, 530 insertions(+), 529 deletions(-)
-> 
-> diff --git a/include/block/aio-wait.h b/include/block/aio-wait.h
-> index 5449b6d742..d22ca24329 100644
-> --- a/include/block/aio-wait.h
-> +++ b/include/block/aio-wait.h
-> @@ -151,7 +151,7 @@ static inline bool in_aio_context_home_thread(AioContext *ctx)
->       }
->   
->       if (ctx == qemu_get_aio_context()) {
-> -        return qemu_mutex_iothread_locked();
-> +        return bql_locked();
->       } else {
->           return false;
->       }
-> diff --git a/include/qemu/main-loop.h b/include/qemu/main-loop.h
-> index 68e70e61aa..596a206acd 100644
-> --- a/include/qemu/main-loop.h
-> +++ b/include/qemu/main-loop.h
-> @@ -248,19 +248,19 @@ GSource *iohandler_get_g_source(void);
->   AioContext *iohandler_get_aio_context(void);
->   
->   /**
-> - * qemu_mutex_iothread_locked: Return lock status of the main loop mutex.
-> + * bql_locked: Return lock status of the Big QEMU Lock (BQL)
->    *
-> - * The main loop mutex is the coarsest lock in QEMU, and as such it
-> + * The Big QEMU Lock (BQL) is the coarsest lock in QEMU, and as such it
->    * must always be taken outside other locks.  This function helps
->    * functions take different paths depending on whether the current
-> - * thread is running within the main loop mutex.
-> + * thread is running within the BQL.
->    *
->    * This function should never be used in the block layer, because
->    * unit tests, block layer tools and qemu-storage-daemon do not
->    * have a BQL.
->    * Please instead refer to qemu_in_main_thread().
->    */
-> -bool qemu_mutex_iothread_locked(void);
-> +bool bql_locked(void);
->   
->   /**
->    * qemu_in_main_thread: return whether it's possible to safely access
-> @@ -312,58 +312,58 @@ bool qemu_in_main_thread(void);
->       } while (0)
->   
->   /**
-> - * qemu_mutex_lock_iothread: Lock the main loop mutex.
-> + * bql_lock: Lock the Big QEMU Lock (BQL).
->    *
-> - * This function locks the main loop mutex.  The mutex is taken by
-> + * This function locks the Big QEMU Lock (BQL).  The lock is taken by
->    * main() in vl.c and always taken except while waiting on
-> - * external events (such as with select).  The mutex should be taken
-> + * external events (such as with select).  The lock should be taken
->    * by threads other than the main loop thread when calling
->    * qemu_bh_new(), qemu_set_fd_handler() and basically all other
->    * functions documented in this file.
->    *
-> - * NOTE: tools currently are single-threaded and qemu_mutex_lock_iothread
-> + * NOTE: tools currently are single-threaded and bql_lock
->    * is a no-op there.
->    */
-> -#define qemu_mutex_lock_iothread()                      \
-> -    qemu_mutex_lock_iothread_impl(__FILE__, __LINE__)
-> -void qemu_mutex_lock_iothread_impl(const char *file, int line);
-> +#define bql_lock()                      \
-> +    bql_lock_impl(__FILE__, __LINE__)
+Based-on: <20231213-riscv-v7-0-a760156a337f@daynix.com>
+("[PATCH v7 0/4] gdbstub and TCG plugin improvements")
 
-This line break is no longer necessary.
+I and other people in the University of Tokyo, where I research
+processor design, found TCG plugins are very useful for processor design
+exploration.
+
+The feature we find missing is the capability to read registers from
+plugins. In this series, I propose to add such a capability by reusing
+gdbstub code.
+
+The reuse of gdbstub code ensures the long-term stability of the TCG
+plugin interface for register access without incurring a burden to
+maintain yet another interface for register access.
+
+This process to add TCG plugin involves four major changes. The first
+one is to add members to GDBFeature necessary for register
+identification.
+
+The second one is to make gdb_read_register/gdb_write_register usable
+outside of gdbstub context.
+
+The third one is to actually make registers readable for plugins.
+
+The execlog plugin will have new options to demonstrate the new feature.
+I also have a plugin that uses this new feature to generate execution
+traces for Sniper processor simulator, which is available at:
+https://github.com/shioya-lab/sniper/tree/akihikodaki/bb
+
+The below is a summary of patches:
+Patch [01, 09] changes to use GDBFeature for dynamic XMLs.
+Patch 10 adds members useful to identify registers to GDBFeature.
+Patch 11 makes registers readable outside of gdbstub context.
+Patch [12, 14] add the feature to read registers from plugins.
+
+V16 -> V17:
+  Rebased.
+
+V15 -> V16:
+  Added new plugin_dyn_cb_subtype and plugin_gen_cb to remove the global
+  translator state change.
+
+V14 -> V15:
+  Added kdoc comments to include/exec/gdbstub.h.
+  Changed to use g_array_append_val() in gdb_register_feature().
+  Separated the CPU flags from event bitmap.
+
+V13 -> V14:
+  Fixed RISC-V CSR register numbers.
+
+V12 -> V13:
+  Rebased to "[PATCH v4 0/5] gdbstub and TCG plugin improvements".
+
+V11 -> V12:
+  Rebased to "[PATCH v2 0/3] gdbstub and TCG plugin improvements".
+
+V10 -> V11:
+  Fixed QEMU_PLUGIN_CB_RW_REGS.
+
+V9 -> V10:
+  Rebased to "[PATCH 0/4] gdbstub and TCG plugin improvements".
+  Dropped patch "plugins: Support C++".
+  Removed the unnecessary QEMU_PLUGIN_VERSION change.
+
+V8 -> V9:
+  Rebased to "[PATCH 00/25] October maintainer omnibus pre-PR (tests,
+  gdbstub, plugins)".
+  Added patch "target/riscv: Move MISA limits to class".
+  Added patch "target/riscv: Remove misa_mxl validation".
+  Added patch "target/riscv: Validate misa_mxl_max only once".
+  Added patch "plugins: Use different helpers when reading".
+  Moved contrib/plugins/cc.cc to tests/plugin/cc.cc.
+
+V7 -> V8:
+  Rebased to "[PATCH v3 00/12] gdbstub and TCG plugin improvements".
+  Clarified that initialization and exit hooks affect TCG state.
+  Simplified by adding the core feature to gdb_regs.
+
+V6 -> V7:
+  Rebased to "[PATCH v2 00/11] gdbstub and TCG plugin improvements".
+  Replaced functions to get register identifiers.
+
+V5 -> V6:
+  Rebased to "[PATCH 0/8] gdbstub and TCG plugin improvements".
+
+V4 -> V5:
+  Corrected g_rw_lock_writer_lock() call. (Richard Henderson)
+  Replaced abort() with g_assert_not_reached(). (Richard Henderson)
+  Fixed CSR name leak in target/riscv. (Richard Henderson)
+  Removed gdb_has_xml variable.
+
+V3 -> V4:
+  Added execlog changes I forgot to include in the last version.
+
+V2 -> V3:
+  Added patch "hw/core/cpu: Return static value with gdb_arch_name()".
+  Added patch "gdbstub: Dynamically allocate target.xml buffer".
+  (Alex Bennée)
+  Added patch "gdbstub: Introduce GDBFeatureBuilder". (Alex Bennée)
+  Dropped Reviewed-by tags for "target/*: Use GDBFeature for dynamic XML".
+  Changed gdb_find_static_feature() to abort on failure. (Alex Bennée)
+  Changed the execlog plugin to log the register value only when changed.
+  (Alex Bennée)
+  Dropped 0x prefixes for register value logs for conciseness.
+
+V1 -> V2:
+  Added SPDX-License-Identifier: GPL-2.0-or-later. (Philippe Mathieu-Daudé)
+  Split long lines. (Philippe Mathieu-Daudé)
+  Renamed gdb_features to gdb_static_features (Philippe Mathieu-Daudé)
+  Dropped RFC.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Akihiko Odaki (14):
+      target/arm: Use GDBFeature for dynamic XML
+      target/ppc: Use GDBFeature for dynamic XML
+      target/riscv: Use GDBFeature for dynamic XML
+      gdbstub: Use GDBFeature for gdb_register_coprocessor
+      gdbstub: Use GDBFeature for GDBRegisterState
+      gdbstub: Change gdb_get_reg_cb and gdb_set_reg_cb
+      gdbstub: Simplify XML lookup
+      gdbstub: Infer number of core registers from XML
+      hw/core/cpu: Remove gdb_get_dynamic_xml member
+      gdbstub: Add members to identify registers to GDBFeature
+      gdbstub: Expose functions to read registers
+      plugins: Use different helpers when reading registers
+      plugins: Allow to read registers
+      contrib/plugins: Allow to log registers
+
+ docs/devel/tcg-plugins.rst   |  10 +-
+ accel/tcg/plugin-helpers.h   |   3 +-
+ include/exec/gdbstub.h       |  44 ++++++++-
+ include/hw/core/cpu.h        |   7 +-
+ include/qemu/plugin.h        |   1 +
+ include/qemu/qemu-plugin.h   |  50 +++++++++-
+ target/arm/cpu.h             |  27 ++---
+ target/arm/internals.h       |  14 +--
+ target/hexagon/internal.h    |   4 +-
+ target/microblaze/cpu.h      |   4 +-
+ target/ppc/cpu-qom.h         |   1 +
+ target/ppc/cpu.h             |   5 +-
+ target/riscv/cpu.h           |   5 +-
+ target/s390x/cpu.h           |   2 -
+ accel/tcg/plugin-gen.c       |  43 +++++++-
+ contrib/plugins/execlog.c    | 120 ++++++++++++++++------
+ gdbstub/gdbstub.c            | 173 +++++++++++++++++++-------------
+ hw/core/cpu-common.c         |   5 +-
+ plugins/api.c                |  32 +++++-
+ target/arm/cpu.c             |   2 -
+ target/arm/cpu64.c           |   1 -
+ target/arm/gdbstub.c         | 230 ++++++++++++++++++++++---------------------
+ target/arm/gdbstub64.c       | 122 ++++++++++++-----------
+ target/avr/cpu.c             |   1 -
+ target/hexagon/cpu.c         |   4 +-
+ target/hexagon/gdbstub.c     |  10 +-
+ target/i386/cpu.c            |   2 -
+ target/loongarch/cpu.c       |   2 -
+ target/loongarch/gdbstub.c   |  13 ++-
+ target/m68k/cpu.c            |   1 -
+ target/m68k/helper.c         |  26 +++--
+ target/microblaze/cpu.c      |   6 +-
+ target/microblaze/gdbstub.c  |   9 +-
+ target/ppc/cpu_init.c        |   7 --
+ target/ppc/gdbstub.c         | 114 ++++++++++-----------
+ target/riscv/cpu.c           |  15 ---
+ target/riscv/gdbstub.c       | 139 ++++++++++++++------------
+ target/rx/cpu.c              |   1 -
+ target/s390x/cpu.c           |   1 -
+ target/s390x/gdbstub.c       | 105 ++++++++++++--------
+ plugins/qemu-plugins.symbols |   3 +
+ scripts/feature_to_c.py      |  14 ++-
+ 42 files changed, 836 insertions(+), 542 deletions(-)
+---
+base-commit: 651f18e5def549b67df934e38c474963b884ccc7
+change-id: 20231213-gdb-349db0da93f2
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
+
 
