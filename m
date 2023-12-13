@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25BF581127D
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:06:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC56F81127B
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 14:05:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDOtP-00010E-It; Wed, 13 Dec 2023 08:03:15 -0500
+	id 1rDOtp-0001kz-5M; Wed, 13 Dec 2023 08:03:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOsA-0008LC-7Y; Wed, 13 Dec 2023 08:01:59 -0500
+ id 1rDOsA-0008LD-MN; Wed, 13 Dec 2023 08:01:59 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rDOs6-00075v-D0; Wed, 13 Dec 2023 08:01:57 -0500
+ id 1rDOs8-00076O-Pl; Wed, 13 Dec 2023 08:01:58 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DB2003B443;
- Wed, 13 Dec 2023 16:01:01 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id B2C503B445;
+ Wed, 13 Dec 2023 16:01:05 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7C2693C8D4;
- Wed, 13 Dec 2023 16:00:42 +0300 (MSK)
-Received: (nullmailer pid 1024742 invoked by uid 1000);
- Wed, 13 Dec 2023 13:00:41 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id 564533C8D6;
+ Wed, 13 Dec 2023 16:00:46 +0300 (MSK)
+Received: (nullmailer pid 1024769 invoked by uid 1000);
+ Wed, 13 Dec 2023 13:00:46 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
- M_O_Bz <m_o_bz@163.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.8 16/24] hw/audio/hda-codec: fix multiplication overflow
-Date: Wed, 13 Dec 2023 16:00:25 +0300
-Message-Id: <20231213130041.1024630-16-mjt@tls.msk.ru>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.8 18/24] hw/acpi/erst: Do not ignore Error* in realize
+ handler
+Date: Wed, 13 Dec 2023 16:00:27 +0300
+Message-Id: <20231213130041.1024630-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
 References: <qemu-stable-7.2.8-20231213160018@cover.tls.msk.ru>
@@ -63,97 +63,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Volker Rümelin <vr_qemu@t-online.de>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-After a relatively short time, there is an multiplication overflow
-when multiplying (now - buft_start) with hda_bytes_per_second().
-While the uptime now - buft_start only overflows after 2**63 ns
-= 292.27 years, this happens hda_bytes_per_second() times faster
-with the multiplication. At 44100 samples/s * 2 channels
-* 2 bytes/channel = 176400 bytes/s that is 14.52 hours. After the
-multiplication overflow the affected audio stream stalls.
+erst_realizefn() passes @errp to functions without checking for
+failure.  If it runs into another failure, it trips error_setv()'s
+assertion.
 
-Replace the multiplication and following division with muldiv64()
-to prevent a multiplication overflow.
+Use the ERRP_GUARD() macro and check *errp, as suggested in commit
+ae7c80a7bd ("error: New macro ERRP_GUARD()").
 
-Fixes: 280c1e1cdb ("audio/hda: create millisecond timers that handle IO")
-Reported-by: M_O_Bz <m_o_bz@163.com>
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20231105172552.8405-1-vr_qemu@t-online.de>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-stable@nongnu.org
+Fixes: f7e26ffa59 ("ACPI ERST: support for ACPI ERST feature")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20231120130017.81286-1-philmd@linaro.org>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 74e8593e7e51d6b11ae9c56a3f4e7bb714bac4ec)
+(cherry picked from commit 20bc50137f3add52eb4788b420d717de27fed14b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-index feb8f9e2bb..0f66754b6a 100644
---- a/hw/audio/hda-codec.c
-+++ b/hw/audio/hda-codec.c
-@@ -22,6 +22,7 @@
- #include "hw/qdev-properties.h"
- #include "intel-hda.h"
- #include "migration/vmstate.h"
-+#include "qemu/host-utils.h"
- #include "qemu/module.h"
- #include "intel-hda-defs.h"
- #include "audio/audio.h"
-@@ -190,9 +191,9 @@ struct HDAAudioState {
-     bool     use_timer;
- };
+diff --git a/hw/acpi/erst.c b/hw/acpi/erst.c
+index aefcc03ad6..2e057b1800 100644
+--- a/hw/acpi/erst.c
++++ b/hw/acpi/erst.c
+@@ -947,6 +947,7 @@ static const VMStateDescription erst_vmstate  = {
  
--static inline int64_t hda_bytes_per_second(HDAAudioStream *st)
-+static inline uint32_t hda_bytes_per_second(HDAAudioStream *st)
+ static void erst_realizefn(PCIDevice *pci_dev, Error **errp)
  {
--    return 2LL * st->as.nchannels * st->as.freq;
-+    return 2 * (uint32_t)st->as.nchannels * (uint32_t)st->as.freq;
- }
++    ERRP_GUARD();
+     ERSTDeviceState *s = ACPIERST(pci_dev);
  
- static inline void hda_timer_sync_adjust(HDAAudioStream *st, int64_t target_pos)
-@@ -223,12 +224,18 @@ static void hda_audio_input_timer(void *opaque)
+     trace_acpi_erst_realizefn_in();
+@@ -964,9 +965,15 @@ static void erst_realizefn(PCIDevice *pci_dev, Error **errp)
  
-     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
- 
--    int64_t buft_start = st->buft_start;
-+    int64_t uptime = now - st->buft_start;
-     int64_t wpos = st->wpos;
-     int64_t rpos = st->rpos;
-+    int64_t wanted_rpos;
- 
--    int64_t wanted_rpos = hda_bytes_per_second(st) * (now - buft_start)
--                          / NANOSECONDS_PER_SECOND;
-+    if (uptime <= 0) {
-+        /* wanted_rpos <= 0 */
-+        goto out_timer;
-+    }
-+
-+    wanted_rpos = muldiv64(uptime, hda_bytes_per_second(st),
-+                           NANOSECONDS_PER_SECOND);
-     wanted_rpos &= -4; /* IMPORTANT! clip to frames */
- 
-     if (wanted_rpos <= rpos) {
-@@ -287,12 +294,18 @@ static void hda_audio_output_timer(void *opaque)
- 
-     int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
- 
--    int64_t buft_start = st->buft_start;
-+    int64_t uptime = now - st->buft_start;
-     int64_t wpos = st->wpos;
-     int64_t rpos = st->rpos;
-+    int64_t wanted_wpos;
-+
-+    if (uptime <= 0) {
-+        /* wanted_wpos <= 0 */
-+        goto out_timer;
+     /* HostMemoryBackend size will be multiple of PAGE_SIZE */
+     s->storage_size = object_property_get_int(OBJECT(s->hostmem), "size", errp);
++    if (*errp) {
++        return;
 +    }
  
--    int64_t wanted_wpos = hda_bytes_per_second(st) * (now - buft_start)
--                          / NANOSECONDS_PER_SECOND;
-+    wanted_wpos = muldiv64(uptime, hda_bytes_per_second(st),
-+                           NANOSECONDS_PER_SECOND);
-     wanted_wpos &= -4; /* IMPORTANT! clip to frames */
+     /* Initialize backend storage and record_count */
+     check_erst_backend_storage(s, errp);
++    if (*errp) {
++        return;
++    }
  
-     if (wanted_wpos <= wpos) {
+     /* BAR 0: Programming registers */
+     memory_region_init_io(&s->iomem_mr, OBJECT(pci_dev), &erst_reg_ops, s,
+@@ -977,6 +984,9 @@ static void erst_realizefn(PCIDevice *pci_dev, Error **errp)
+     memory_region_init_ram(&s->exchange_mr, OBJECT(pci_dev),
+                             "erst.exchange",
+                             le32_to_cpu(s->header->record_size), errp);
++    if (*errp) {
++        return;
++    }
+     pci_register_bar(pci_dev, 1, PCI_BASE_ADDRESS_SPACE_MEMORY,
+                         &s->exchange_mr);
+ 
 -- 
 2.39.2
 
