@@ -2,69 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93345810ACC
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 08:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C92B7810B7D
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Dec 2023 08:29:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDJFa-0006cf-IO; Wed, 13 Dec 2023 02:01:46 -0500
+	id 1rDJfh-0006yq-15; Wed, 13 Dec 2023 02:28:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1rDJFX-0006bt-J0
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 02:01:43 -0500
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDJfc-0006yU-FA
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 02:28:40 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1rDJFV-0007pg-RU
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 02:01:43 -0500
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5c21e185df5so5571305a12.1
- for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 23:01:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDJfZ-0004KB-BD
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 02:28:40 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-33338c47134so6014729f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Dec 2023 23:28:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=vrull.eu; s=google; t=1702450898; x=1703055698; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7ZY+cxXOIdcMkNM2EwN8xLlAGBkPxKBX2VXeH5g07Hk=;
- b=gv87linZEt5fjZ3FLpCmU4jqXcA48nTR0P7xuU3J3iH5jmm4I0cnHzPr2L5LS8HfPt
- Bi1UaV5TnETqJtOapnl0XYqXfTDKFglnglThsjuGGSdJ8ECuTwZAHmOS9DggXKIQ7i6j
- +9wu/eAvf3itd45I67U7Xbz2zAYY8vwyUexLCoSwi8PtCEjIiBvgQESpyQ/rdoY58YUl
- esydQo73Qm3G6hSbdtQ3xoByAE/s8SnR1JQFn0Jd+wRz7ifV8FuETY/9yvSakBz4vtEK
- GXJKRjxxaidDVXQiqtB1i9hsQd/Jwdr4OnY9STVgHxUgnlbqyn2XlBxh/z5ESxId0DQ6
- osTQ==
+ d=linaro.org; s=google; t=1702452514; x=1703057314; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BbgjLAdC3knfth7krAw9mNtV5wog9mfEj+mzI0rGinM=;
+ b=E/WIMYycZs4f4AIqIycX2mJjSsYLzMQ3TkRI8mGjOKeG0o7iDwnwEddBKq1G433mCo
+ O/EbtsvMM4ooFklwCIioVXtshbmEVH75HCD6/INDi6i/OegrOq5KsHNyl/xeBBAmrxrK
+ Tcvep0SIjLSScA81rShOYTwRRsix6z57Mu6rwNDVNQF0Z3nUhkBtJ7EhGfY2iS37NcfC
+ FA7qMlnrEs7hPXQU+KVxw7BUbeMU/3Gs+ncLe9tYtAZuEPoauzfmwFopgS5aczT5OZ/K
+ Hg/jCrrPqY6rh7bMwEaNTCFmmz+RjIDJNmqYuUkM7DrmJDc7HqvjtTi5nFfOto0ErWu2
+ O/GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702450898; x=1703055698;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7ZY+cxXOIdcMkNM2EwN8xLlAGBkPxKBX2VXeH5g07Hk=;
- b=GAW9MiSYQUaQ2j7/mrcZh9WwiDnwAbNadUNs1kCbCDJIpvcg2731fKgPrjRVwQYI0r
- bC0TLxuVPqkrrEX/PXCVFqclxi2ctt6/HDG8ut/ooabICwCx5Lefq5B7XTb5zklnVnSw
- c12WYKRnc93NgmPhIonYeZloOgoRtE4W2i9jfxU/76KPEVH7LFXDZXGGaUyUaCYaMvcA
- U1EajNXWN3fTkpNiKXLKeGmb7G5Qpoijdk2IBjowg77O4sRWmbpKK0lYec0zDG6xh/8m
- myU4zjhiKTphi30yWwdg715cqkXdyBwR6qBO43INYSeoYizTVAdDGxjvBPJIokMoOTvW
- DEkw==
-X-Gm-Message-State: AOJu0YyacedfOPoNaWfKYJlnMc96ELTTxzvtfGDb9zN/w9rVB3/udN3v
- WarTm+gk8XTjI/ddoNeNxFeBgznDjwPYVWm6fbqlwA==
-X-Google-Smtp-Source: AGHT+IHG/f1Bls9uanaI+Bw79CQHLmOOSWYjuKlN7903DWvgd4DId+XpndTVB3m0XjCW5Ui0a0u2DAs9kq1Dnu1tqFA=
-X-Received: by 2002:a05:6a20:8e13:b0:18f:f57a:e761 with SMTP id
- y19-20020a056a208e1300b0018ff57ae761mr10375320pzj.63.1702450898487; Tue, 12
- Dec 2023 23:01:38 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702452514; x=1703057314;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BbgjLAdC3knfth7krAw9mNtV5wog9mfEj+mzI0rGinM=;
+ b=w0rlb47UzBxRsQVdKMjhnWmHpw+W61diwl0CqGQlbPlnZyxejg7Ey7f2nlUbUEfsTn
+ EyaYEawrSvuIjV+9uXO2+I1h5EcK56VG4whls0D63loVkur61H9JicjBwzWXnsausAm6
+ kVrHGKmvoY1KkiiE0D65wF03u/i/sXNTncFZLr65fU0vw3jmFG8kTJP+rhBbCBV3JXNj
+ jJ+C7xCxjrHJFBpvOkF5hEc5YI4X9kiIUEYJJq1RNtUMe1d82D/NplH0SDHFgR/G+dao
+ bbI+gLCZIKMYDZwa/NZFwfO0Vasl2njwhWuklC3wFR+j2PPrR6rssC20uRF8CPC7Su+N
+ iK0Q==
+X-Gm-Message-State: AOJu0Ywrg4kcDFt2LRooXCWYvvpOt32EuRfOUtyezuGqrVGyWwK9n1HO
+ 5JX6gi183XuqXqv/n28C+ck4SA==
+X-Google-Smtp-Source: AGHT+IHZC5gZnc3FWJ01FoolW9TZnJ24DYV/CMdUn1yHqwvUwsj4dwkbVEEtv1BgKKTrKoVZp3jAhg==
+X-Received: by 2002:a5d:48cf:0:b0:333:3d84:cb30 with SMTP id
+ p15-20020a5d48cf000000b003333d84cb30mr3289334wrs.16.1702452513892; 
+ Tue, 12 Dec 2023 23:28:33 -0800 (PST)
+Received: from [192.168.122.175] (4.red-88-28-2.dynamicip.rima-tde.net.
+ [88.28.2.4]) by smtp.gmail.com with ESMTPSA id
+ h3-20020a056000000300b003362ee04e96sm3033913wrx.75.2023.12.12.23.28.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Dec 2023 23:28:33 -0800 (PST)
+Message-ID: <791bac16-523c-41da-a45a-abddec6174ba@linaro.org>
+Date: Wed, 13 Dec 2023 07:43:34 +0100
 MIME-Version: 1.0
-References: <20231208094315.177-1-zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20231208094315.177-1-zhiwei_liu@linux.alibaba.com>
-From: =?UTF-8?Q?Christoph_M=C3=BCllner?= <christoph.muellner@vrull.eu>
-Date: Wed, 13 Dec 2023 08:00:00 +0100
-Message-ID: <CAEg0e7j-+=S__67puJh2KqTkqZeQAShSo4fZAwDN=SLNa8iSHw@mail.gmail.com>
-Subject: Re: [PATCH for 8.2] target/riscv: Fix th.dcache.cval1 priviledge check
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, 
- alistair.francis@wdc.com, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=christoph.muellner@vrull.eu; helo=mail-pg1-x533.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tcg: Reduce serial context atomicity earlier
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org
+References: <20231212193542.149117-1-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231212193542.149117-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,39 +91,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 8, 2023 at 10:44=E2=80=AFAM LIU Zhiwei <zhiwei_liu@linux.alibab=
-a.com> wrote:
->
-> According to the specification, the th.dcache.cvall1 can be executed
-> under all priviledges.
-> The specification about xtheadcmo located in,
-> https://github.com/T-head-Semi/thead-extension-spec/blob/master/xtheadcmo=
-/dcache_cval1.adoc
->
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-
-Reviewed-by: Christoph Muellner <christoph.muellner@vrull.eu>
-
+On 12/12/23 20:35, Richard Henderson wrote:
+> Reduce atomicity while emitting opcodes, instead of later
+> during code generation.  This ensures that any helper called
+> also sees the reduced atomicity requirement.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2034
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/riscv/insn_trans/trans_xthead.c.inc | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/riscv/insn_trans/trans_xthead.c.inc b/target/riscv/in=
-sn_trans/trans_xthead.c.inc
-> index 810d76665a..dbb6411239 100644
-> --- a/target/riscv/insn_trans/trans_xthead.c.inc
-> +++ b/target/riscv/insn_trans/trans_xthead.c.inc
-> @@ -296,7 +296,7 @@ NOP_PRIVCHECK(th_dcache_csw, REQUIRE_XTHEADCMO, REQUI=
-RE_PRIV_MS)
->  NOP_PRIVCHECK(th_dcache_cisw, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
->  NOP_PRIVCHECK(th_dcache_isw, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
->  NOP_PRIVCHECK(th_dcache_cpal1, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
-> -NOP_PRIVCHECK(th_dcache_cval1, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
-> +NOP_PRIVCHECK(th_dcache_cval1, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MSU)
->
->  NOP_PRIVCHECK(th_icache_iall, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
->  NOP_PRIVCHECK(th_icache_ialls, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
-> --
-> 2.17.1
->
+>   tcg/tcg-op-ldst.c | 28 ++++++++++++++++++++++++----
+>   tcg/tcg.c         |  9 +--------
+>   2 files changed, 25 insertions(+), 12 deletions(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
