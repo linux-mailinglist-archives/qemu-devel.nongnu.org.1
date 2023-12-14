@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A347813E44
+	by mail.lfdr.de (Postfix) with ESMTPS id 803B9813E46
 	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 00:32:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDvAY-0007Mx-PE; Thu, 14 Dec 2023 18:31:07 -0500
+	id 1rDvAb-0007NN-3T; Thu, 14 Dec 2023 18:31:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rDvAU-0007MP-F8
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 18:31:02 -0500
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rDvAW-0007Mo-ED
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 18:31:04 -0500
 Received: from zoidberg.rfc1149.net ([195.154.227.159])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rDvAR-0005kK-Vy
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 18:31:02 -0500
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rDvAR-0005kL-Hw
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 18:31:04 -0500
 Received: from buffy.. (buffy [192.168.147.6])
- by zoidberg.rfc1149.net (Postfix) with ESMTP id 4DAF580026;
+ by zoidberg.rfc1149.net (Postfix) with ESMTP id 6728F80027;
  Fri, 15 Dec 2023 00:30:56 +0100 (CET)
 Authentication-Results: zoidberg.rfc1149.net;
  dmarc=fail (p=none dis=none) header.from=rfc1149.net
@@ -27,9 +27,9 @@ From: Samuel Tardieu <sam@rfc1149.net>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Samuel Tardieu <sam@rfc1149.net>
-Subject: [PATCH 1/2] tcg: Remove unreachable code
-Date: Fri, 15 Dec 2023 00:30:54 +0100
-Message-ID: <20231214233055.2505387-2-sam@rfc1149.net>
+Subject: [PATCH 2/2] tcg: Jump after always false condition
+Date: Fri, 15 Dec 2023 00:30:55 +0100
+Message-ID: <20231214233055.2505387-3-sam@rfc1149.net>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231214233055.2505387-1-sam@rfc1149.net>
 References: <20231214233055.2505387-1-sam@rfc1149.net>
@@ -57,29 +57,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The `fail_rx`/`fail` block is only entered while `buf_rx` is equal to
-its initial value `MAP_FAILED`. The `munmap(buf_rx, size);` was never
-executed.
+`buf_rw` is always `NULL` when jumping to the `fail` label. Move the
+label `down` after the `if (buf_rw) { ... }` statement.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2030
 Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
 ---
- tcg/region.c | 3 ---
- 1 file changed, 3 deletions(-)
+ tcg/region.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tcg/region.c b/tcg/region.c
-index 86692455c0..6d657e8c33 100644
+index 6d657e8c33..691a726eae 100644
 --- a/tcg/region.c
 +++ b/tcg/region.c
-@@ -597,9 +597,6 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
+@@ -596,10 +596,10 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
+ 
   fail_rx:
      error_setg_errno(errp, errno, "failed to map shared memory for execute");
-  fail:
--    if (buf_rx != MAP_FAILED) {
--        munmap(buf_rx, size);
--    }
+- fail:
      if (buf_rw) {
          munmap(buf_rw, size);
+     }
++ fail:
+     if (fd >= 0) {
+         close(fd);
      }
 -- 
 2.42.0
