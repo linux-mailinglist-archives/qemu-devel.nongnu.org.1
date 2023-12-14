@@ -2,84 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622F0813A81
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 20:12:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B763813B13
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 20:53:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDr6q-0005WU-Bb; Thu, 14 Dec 2023 14:11:00 -0500
+	id 1rDrl7-0003YX-CW; Thu, 14 Dec 2023 14:52:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rDr6j-0005W1-PT
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 14:10:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rDrl5-0003XD-1U
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 14:52:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rDr6h-0006rP-No
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 14:10:53 -0500
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rDrl2-0006M7-Vg
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 14:52:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702581050;
+ s=mimecast20190719; t=1702583551;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DDK9LbNcwepmCLuQUn7sZNwGzYi5VpWXYAMrSIHovq8=;
- b=RpNjNa9uqy391MoMR/wP34kKctY0Yy36KSqQ22so9eCAM6P+Q8lHmH3dKVVu4UjKxlLWOd
- etbYhbCC+ZHNotqWTA7UdYpfewh6p4EIzoDwSUm6lj3jwIkEDDluNFRX/bW+Vo7VltY1oT
- 5tdHYB0xoV9N0RQ+TYlS3k6S8hDT+JY=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-kDmZJ4ZaPDi-GV4G18Dajw-1; Thu, 14 Dec 2023 14:10:48 -0500
-X-MC-Unique: kDmZJ4ZaPDi-GV4G18Dajw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5528b4ab7bbso227302a12.0
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 11:10:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702581047; x=1703185847;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DDK9LbNcwepmCLuQUn7sZNwGzYi5VpWXYAMrSIHovq8=;
- b=cRg06t5f0cNFPcXqozdLr5ZgeiHFRWm/HC1fDuHh8LFmcGewp4W69XgbQ2ffbSuy4/
- +OcDYt4/veBTe+u4nmdNz9MMgRCMV+QKBhbLK8L+T/YWf/H7xZjj0R+cukQ1GScUTiZe
- i3eZgViJdxxF46XFlHPw2s/gFnmRVQF1ARozGueSjKepLj3G8dt/Ar0DuCqGbYfmmNk6
- HoSwXi4y1FbClTBjBJzqP2UmBwTFFCl+YFenKSY4iiS4taaJmld6afhcTETPnu5uX/Qy
- nO2jutj0pGZwpU2EecC87KEZibeJY3YwqSe/BeF2CcpvKLkWaIRFRccAb7ifhpFmeTMO
- GtSQ==
-X-Gm-Message-State: AOJu0YwgthXs4lqI/ERW33LI2aOmE9HaNEqR2UZuT/b7UQWXct31et6K
- 7hVm2DtawOc+j8tcxDcNdOzS2aUUdyjKvLVr+ZvFVDb6NO7hX1kar0Rc9Dz+HoOl7oJ8af2w4go
- 9sPqI2AvEmCqCMPAZjCDscNkxJEJixcc=
-X-Received: by 2002:a50:99d6:0:b0:552:2086:f1f2 with SMTP id
- n22-20020a5099d6000000b005522086f1f2mr741949edb.83.1702581047000; 
- Thu, 14 Dec 2023 11:10:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFkSA8HuRkepxjXo4uRd9S7nGAsxFiXJbCjTrOKrDyIlM5D46ka2e4IShL39LlyfAP84meNe+gDfotyGTcpcm4=
-X-Received: by 2002:a50:99d6:0:b0:552:2086:f1f2 with SMTP id
- n22-20020a5099d6000000b005522086f1f2mr741947edb.83.1702581046711; Thu, 14 Dec
- 2023 11:10:46 -0800 (PST)
+ bh=OZzAg+k49kXwBjpIiDoDzMNl+j7/tM7DyV3OiTGRaOU=;
+ b=T/rBqucUv/EQkEFaCHD85ATJRpguUNTGFWx/vnilmsOYe7L126jYJbyTAveCq5CC/2eIg1
+ 5A7f/7X628aGCwpy/3aIFLDhSvqNhm0+xDxQpyKiYNuSpRrUzyh8Rm+0iZ8vLVlSoIYCdb
+ uw5oBLNhXDxndhdvykG4gcCLInq9ZPY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-363-X41-Zf1xOl6x0q8eaSM8ag-1; Thu,
+ 14 Dec 2023 14:52:28 -0500
+X-MC-Unique: X41-Zf1xOl6x0q8eaSM8ag-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C95123C0256A;
+ Thu, 14 Dec 2023 19:52:27 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.96])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 89BA12026D66;
+ Thu, 14 Dec 2023 19:52:26 +0000 (UTC)
+Date: Thu, 14 Dec 2023 14:52:25 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Fiona Ebner <f.ebner@proxmox.com>
+Subject: Re: [RFC 0/3] aio-posix: call ->poll_end() when removing AioHandler
+Message-ID: <20231214195225.GA1645604@fedora>
+References: <20231213211544.1601971-1-stefanha@redhat.com>
+ <CABgObfaTb8n66wqNxObnvgWdzu2=mgLHjX0fCPH99=-P918Apg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20231214-help-v1-1-23823ac5a023@daynix.com>
- <9443821d-5eff-46e6-be69-707cca9cd0d0@linaro.org>
-In-Reply-To: <9443821d-5eff-46e6-be69-707cca9cd0d0@linaro.org>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Thu, 14 Dec 2023 23:10:35 +0400
-Message-ID: <CAMxuvaxMUcOgs8KC_6ffh4N3E4A-hnRin5r7Rxbmdv-BPZZgaA@mail.gmail.com>
-Subject: Re: [PATCH] vl: Print display options for -display help
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="0dYIbuZO5ZdhuUmd"
+Content-Disposition: inline
+In-Reply-To: <CABgObfaTb8n66wqNxObnvgWdzu2=mgLHjX0fCPH99=-P918Apg@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,100 +83,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
 
-On Thu, Dec 14, 2023 at 1:29=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> Hi Akihiko,
->
-> On 14/12/23 07:47, Akihiko Odaki wrote:
-> > -display lists display backends, but does not tell their options.
-> > Use the help messages from qemu-options.def, which include the list of
-> > options.
+--0dYIbuZO5ZdhuUmd
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Dec 14, 2023 at 12:10:32AM +0100, Paolo Bonzini wrote:
+> On Wed, Dec 13, 2023 at 10:15=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat=
+=2Ecom> wrote:
+> > Alternatives welcome! (A cleaner version of this approach might be to f=
+orbid
+> > cross-thread aio_set_fd_handler() calls and to refactor all
+> > aio_set_fd_handler() callers so they come from the AioContext's home th=
+read.
+> > I'm starting to think that only the aio_notify() and aio_schedule_bh() =
+APIs
+> > should be thread-safe.)
+>=20
+> I think that's pretty hard because aio_set_fd_handler() is a pretty
+> important part of the handoff from one AioContext to another and also
+> of drained_begin()/end(), and both of these things run in the main
+> thread.
+>=20
+> Regarding how to solve this issue, there is a lot of
+> "underdocumenting" of the locking policy in aio-posix.c, and indeed it
+> makes running aio_set_fd_handler() in the target AioContext tempting;
+> but it is also scary to rely on the iothread being able to react
+> quickly. I'm also worried that we're changing the logic just because
+> we don't understand the old one, but then we add technical debt.
+>=20
+> So, as a first step, I would take inspiration from the block layer
+> locking work, and add assertions to functions like poll_set_started()
+> or find_aio_handler(). Is the list_lock elevated (nonzero)? Or locked?
+> Are we in the iothread? And likewise, for each list, does insertion
+> happen from the iothread or with the list_lock taken (and possibly
+> elevated)? Does removal happen from the iothread or with list_lock
+> zero+taken?
+>=20
+> After this step,  we should have a clearer idea of the possible states
+> of the node (based on the lists, the state is a subset of
+> {poll_started, deleted, ready}) and draw a nice graph of the
+> transitions. We should also understand if any calls to
+> QLIST_IS_INSERTED() have correctness issues.
+>=20
+> Good news, I don't think any memory barriers are needed here. One
+> thing that we already do correctly is that, once a node is deleted, we
+> try to skip work; see for example poll_set_started(). This also
+> provides a good place to do cleanup work for deleted nodes, including
+> calling poll_end(): aio_free_deleted_handlers(), because it runs with
+> list_lock zero and taken, just like the tail of
+> aio_remove_fd_handler(). It's the safest possible place to do cleanup
+> and to take a lock. Therefore we have:
+>=20
+> - a fast path in the iothread that runs without any concurrence with
+> stuff happening in the main thread
+>=20
+> - a slow path in the iothread that runs with list_lock zero and taken.
+> The slow path shares logic with the main thread, meaning that
+> aio_free_deleted_handlers() and aio_remove_fd_handler() should share
+> some functions called by both.
+>=20
+> If the code is organized this way, any wrong bits should jump out more
+> easily. For example, these two lines in aio_remove_fd_handler() are
+> clearly misplaced
+>=20
+>     node->pfd.revents =3D 0;
+>     node->poll_ready =3D false;
+>=20
+> because they run in the main thread but they touch iothread data! They
+> should be after qemu_lockcnt_count() is checked to be zero.
+>=20
+> Regarding the call to io_poll_ready(), I would hope that it is
+> unnecessary; in other words, that after drained_end() the virtqueue
+> notification would be raised. Yes, virtio_queue_set_notification is
+> edge triggered rather than level triggered, so it would be necessary
+> to add a check with virtio_queue_host_notifier_aio_poll() and
+> virtio_queue_host_notifier_aio_poll_ready() in
+> virtio_queue_aio_attach_host_notifier, but that does not seem too bad
+> because virtio is the only user of the io_poll_begin and io_poll_end
+> callbacks. It would have to be documented though.
+
+I think Hanna had the same idea: document that ->io_poll_end() isn't
+called by aio_set_fd_handler() and shift the responsibility onto the
+caller to get back into a state where notifications are enabled before
+they add the fd with aio_set_fd_handler() again.
+
+In a little more detail, the caller needs to do the following before
+adding the fd back with aio_set_fd_handler() again:
+1. Call ->io_poll_end().
+2. Poll one more time in case an event slipped in and write to the
+   eventfd so the fd is immediately readable or call ->io_poll_ready().
+
+I think this is more or less what you described above.
+
+I don't like pushing this responsibility onto the caller, but adding a
+synchronization point in aio_set_fd_handler() is problematic, so let's
+give it a try. I'll try that approach and send a v2.
+
+Stefan
+
+>=20
+> Paolo
+>=20
+>=20
+> Paolo
+>=20
 > >
-> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > ---
-> >   include/ui/console.h |  1 -
-> >   system/vl.c          | 11 ++++++-----
-> >   ui/console.c         | 20 --------------------
-> >   3 files changed, 6 insertions(+), 26 deletions(-)
->
->
-> > diff --git a/ui/console.c b/ui/console.c
-> > index 7db921e3b7d6..6aee5e9a7ffb 100644
-> > --- a/ui/console.c
-> > +++ b/ui/console.c
-> > @@ -1691,23 +1691,3 @@ const char *qemu_display_get_vc(DisplayOptions *=
-opts)
-> >       }
-> >       return vc;
-> >   }
-> > -
-> > -void qemu_display_help(void)
-> > -{
-> > -    int idx;
-> > -
-> > -    printf("Available display backend types:\n");
-> > -    printf("none\n");
-> > -    for (idx =3D DISPLAY_TYPE_NONE; idx < DISPLAY_TYPE__MAX; idx++) {
-> > -        if (!dpys[idx]) {
-> > -            Error *local_err =3D NULL;
-> > -            int rv =3D ui_module_load(DisplayType_str(idx), &local_err=
-);
-> > -            if (rv < 0) {
-> > -                error_report_err(local_err);
-> > -            }
-> > -        }
-> > -        if (dpys[idx]) {
-> > -            printf("%s\n",  DisplayType_str(dpys[idx]->type));
->
-> Is the "qapi/qapi-commands-ui.h" header still necessary?
->
-> > -        }
-> > -    }
-> > -}
->
-> So we go from:
->
-> $ ./qemu-system-aarch64 -display help
-> Available display backend types:
-> none
-> gtk
-> sdl
-> curses
-> cocoa
-> dbus
+> > Stefan Hajnoczi (3):
+> >   aio-posix: run aio_set_fd_handler() in target AioContext
+> >   aio: use counter instead of ctx->list_lock
+> >   aio-posix: call ->poll_end() when removing AioHandler
+> >
+> >  include/block/aio.h |  22 ++---
+> >  util/aio-posix.c    | 197 ++++++++++++++++++++++++++++++++------------
+> >  util/async.c        |   2 -
+> >  util/fdmon-epoll.c  |   6 +-
+> >  4 files changed, 152 insertions(+), 75 deletions(-)
+> >
+> > --
+> > 2.43.0
+> >
+>=20
 
-I think this used to show only the available display/ui modules
+--0dYIbuZO5ZdhuUmd
+Content-Type: application/pgp-signature; name="signature.asc"
 
->
-> to:
->
-> $ ./qemu-system-aarch64 -display help
-> -display sdl[,gl=3Don|core|es|off][,grab-mod=3D<mod>][,show-cursor=3Don|o=
-ff]
->              [,window-close=3Don|off]
-> -display gtk[,full-screen=3Don|off][,gl=3Don|off][,grab-on-hover=3Don|off=
-]
->              [,show-tabs=3Don|off][,show-cursor=3Don|off][,window-close=
-=3Don|off]
->              [,show-menubar=3Don|off]
-> -display vnc=3D<display>[,<optargs>]
-> -display curses[,charset=3D<encoding>]
-> -display cocoa[,full-grab=3Don|off][,swap-opt-cmd=3Don|off]
-> -display dbus[,addr=3D<dbusaddr>]
->               [,gl=3Don|core|es|off][,rendernode=3D<file>]
-> -display cocoa[,show-cursor=3Don|off][,left-command-key=3Don|off]
-> -display none
->                  select display backend type
->                  The default display is equivalent to
->                  "-display gtk"
->
-> The latter is indeed more helpful.
+-----BEGIN PGP SIGNATURE-----
 
-While this will provide help for all the modules built.
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmV7XPkACgkQnKSrs4Gr
+c8h6vQgAhVKAwy5g5DOeOgFUt7uXY86Yw+WaIUK6nfew8C3F9DlgFm6cmxBrVlc0
+LwY+eHnWt87heiS1bw6U0SokcRRta0SYuirmnIMKPMaadCvDMupKChIjX8njLAzG
+vnJqmSvF1yDB3JyKxC2BX3n4fRc2BlYZkH+elEntikws6SlmMd5mb5vkXHYMIyqw
+++CSIYeW4GQT5EqR7CA8HVA1PiHDdhdqz5TH604Dv8OkRGCPAvGgjfhQeOj0AN6V
+3GY+Ne2vCJreRojXtZagmmhkjyX3JkkrjqcCirf1U+ivyB/YlJ5j1FYk4fC/RPvS
+0a3WBx4F83oshKdhlyLVed4irFUKzg==
+=AYHM
+-----END PGP SIGNATURE-----
 
-Not a big deal to me, but probably worth mentioning in the commit message.
+--0dYIbuZO5ZdhuUmd--
 
 
