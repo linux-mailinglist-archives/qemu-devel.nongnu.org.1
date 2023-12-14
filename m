@@ -2,83 +2,157 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD328122AA
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 00:12:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5233F8123FA
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 01:40:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDYNT-0001j8-ID; Wed, 13 Dec 2023 18:10:55 -0500
+	id 1rDZkc-00043z-NN; Wed, 13 Dec 2023 19:38:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rDYNR-0001ir-J9
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 18:10:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1rDZkZ-00043W-Ut
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 19:38:51 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rDYNP-0005E4-Pv
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 18:10:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702509050;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HalX62OhWHGdYyXU2BzEnaXb9F+Bzu3+U2ORmUixNmI=;
- b=TNAgzyc+Pv2XEZxrbmJXXPE82SoE6sJYiJovxFuF27KcKzeVFcG8BHdL3+Y3xmuXV8Kvmk
- vIwKjC0B6jT+NKx35XGkLHIoT8l4pQduVgkcT7rU3V9adMIvIM+OtzsrYeLunWBnTwiFVR
- 5+kh9647ttDogeZ8l8j1z4TUkdoxyug=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-gSYaTo6qOTym0pV1GKRTUw-1; Wed, 13 Dec 2023 18:10:48 -0500
-X-MC-Unique: gSYaTo6qOTym0pV1GKRTUw-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6d9f6188d3aso7987429a34.1
- for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 15:10:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702509048; x=1703113848;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HalX62OhWHGdYyXU2BzEnaXb9F+Bzu3+U2ORmUixNmI=;
- b=ERg88N+LQ/pnIVe4RI3ntlplj++e8ecgxiBG7gPvLlpQX58qXd8eiH6VLnDfVj0fSA
- vRETxSe1NAHTiyMIVx6QKZR4pe1cPGXFyb0zHhEZR4/U6kav+BsorHYd9KH3i5Ivdrdu
- XzwkfngxzrCImo7LwjM8BU+aGnYnRJeL8jpIQ6dFK9pXCctYO0ObVocQqr3p8LpzKwJj
- 5LQQcXQI9fn28TKkizq5+oyxOUKxV7hCU+5oncYALwaBZhhhxGlswPF6Q7k86LfmHTho
- /ghnxLTgJazblVrNV2i9EO08uhnLxnrC6lmp2R304lELCxcJhxcGt4Qs1Y3VEVOS8gYz
- FK7w==
-X-Gm-Message-State: AOJu0YxIMOn6YPXhrTFQ4c9i2PCTSYTZOiCi7C7KUMDViglBTpYSTHu7
- rVCIXDZRT6l8Tjqfvu7dDh8vDfNt09TVoJoT//I0plIIGw0F2JgtHaFULz3bN95GcpYv5MJD6pw
- gTr2RaMoTgycC0GBLKx6sCf8Wp+Dpv7A=
-X-Received: by 2002:a05:6830:c7:b0:6d8:74e2:7ccc with SMTP id
- x7-20020a05683000c700b006d874e27cccmr9045856oto.39.1702509047746; 
- Wed, 13 Dec 2023 15:10:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFAdhqreEmrg3et7vIef2eX12Sj8haC4ot2UclIbTb2LWtza49IG7cVlcMYb7DFLZbscXWYM2/KBTETyxQchsw=
-X-Received: by 2002:a05:6830:c7:b0:6d8:74e2:7ccc with SMTP id
- x7-20020a05683000c700b006d874e27cccmr9045851oto.39.1702509047477; Wed, 13 Dec
- 2023 15:10:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
+ id 1rDZkX-0000DZ-4W
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 19:38:51 -0500
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3BE0TX4R005880; Thu, 14 Dec 2023 00:33:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=corp-2023-11-20;
+ bh=ToxnNuZGy3eTEUeZ5bA5A8Fs0fVTHYueFxXc1VVclVo=;
+ b=V8hjJtd6XsXWaH+7vPklNe5qnF+DzDcLwc1tpNA0eZWlzsb01tDMNEKi76qVX9FvqmDh
+ y7XTzNqGFdUgevSeiISbc05iXdUMEzdHvGi+rFrHLdfIIsYv2HXlvR1eWLg4HHpLqX+0
+ gQ/BOaULoghW8QPsWnWAAV0iSucwR9gNs01XhI5QqH1QYflMG8l61hQ0OCaQnFJ0E1Pn
+ pP+G3niG0Wf68mfMm1v5xZ0U6uKfb5K8tWpoSRk8gB6tIz2zK1EZY87IvGljiTy52r4i
+ /t7KY1RLhdtgz3X8JHw12ZHYwOya3EjvFfwf+8CfOUhWN/U9b7PmqqvhZQxhJtnDy+ih rw== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uvg9d9p3y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 14 Dec 2023 00:33:33 +0000
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 3BDMisD6008434; Thu, 14 Dec 2023 00:33:32 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3uvep979t5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 14 Dec 2023 00:33:32 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HNTk5QfksfZUMEI5aNxxictIvOLuyC03HhGPBUo03Sgba4CTYG4peyjIxvPnz4pukTpbU8epn6evHjT04tGfwmf8FgI14tMmBxm0owyPDB3KsnCGAVMdHCCqKGDUg9y51cxSPVAi6qs1BkdZpZOpmEb8N7GAhrppK3xxgkCN6uXotBFTlJiumrG/AhohObU+cDvvrDz2ccLAiS6jY5tXTMfSiLzDiiBa2lAvt8VHKL2mQQplQ0uZXQTi2y/G96Wq3PyYSTqKhGBGS0U7CwXq9sFufyUurKdQcbSfeeS0jW2LuLGU+UKkeRuQbd9KwTnplN0gEvIFmCdZDi1mXbURfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ToxnNuZGy3eTEUeZ5bA5A8Fs0fVTHYueFxXc1VVclVo=;
+ b=Iga6/A68SzLvW1ZI2aIDM+RDzQVGW1RkeLVIZctBNG/4cZvu5fy7JPy2mMSLtT8SmhyL79dbdYRQIhi4ZCQfx70WeIF8bTEdocH7NEE+hkriT73YpLzH7hLIPAOe6EsWFH8QdxHoUflihaMAVFJvudoHj9Ic6k1q0TTwOwNcoqIfIYkrZ5SKW+DyDQ/gkS/3ISGRK9gYl5ZOGwPujs1B2aHzVAnqkJvdPbCX8VRDjCsIIOdVd4iAfJp56MPcmzGnE9JL8qg1YLfWT4jtEoKoj9Dk82dBKIsq8wKHP+5OrYzMdikEgAFB5PBS9mpnsZZMyShGIg6DGWiE92blYLT7dA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ToxnNuZGy3eTEUeZ5bA5A8Fs0fVTHYueFxXc1VVclVo=;
+ b=l3/xhc7QJUhvTH80XJjJQh42juubivGnLgSZ2pDCDL4oeFd518JCW1KMnGLiuUHmGDuDkNFoLfXF6PKqjXfEqTBhKPI9dYacvOKm2xCNADlp23oFDBRXR+XAc61k1upyWksaANu+vGx0kygzlw+q6gsK8gE5etLxeBGnnBk2M6U=
+Received: from BYAPR10MB2663.namprd10.prod.outlook.com (2603:10b6:a02:a9::20)
+ by BLAPR10MB4868.namprd10.prod.outlook.com (2603:10b6:208:333::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.28; Thu, 14 Dec
+ 2023 00:33:18 +0000
+Received: from BYAPR10MB2663.namprd10.prod.outlook.com
+ ([fe80::dec8:8ef8:62b0:7777]) by BYAPR10MB2663.namprd10.prod.outlook.com
+ ([fe80::dec8:8ef8:62b0:7777%4]) with mapi id 15.20.7091.028; Thu, 14 Dec 2023
+ 00:33:18 +0000
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, pbonzini@redhat.com, fam@euphon.net,
+ raphael.norwitz@nutanix.com, fengli@smartx.com
+Subject: [PATCH 1/1] vhost-scsi: fix usage of error_reportf_err()
+Date: Wed, 13 Dec 2023 16:31:17 -0800
+Message-Id: <20231214003117.43960-1-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0282.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::17) To BYAPR10MB2663.namprd10.prod.outlook.com
+ (2603:10b6:a02:a9::20)
 MIME-Version: 1.0
-References: <20231213211544.1601971-1-stefanha@redhat.com>
-In-Reply-To: <20231213211544.1601971-1-stefanha@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 14 Dec 2023 00:10:32 +0100
-Message-ID: <CABgObfaTb8n66wqNxObnvgWdzu2=mgLHjX0fCPH99=-P918Apg@mail.gmail.com>
-Subject: Re: [RFC 0/3] aio-posix: call ->poll_end() when removing AioHandler
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
- Fiona Ebner <f.ebner@proxmox.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR10MB2663:EE_|BLAPR10MB4868:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44b8d25a-b225-4f04-b7a1-08dbfc3c43ea
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Pnkqfdt+9UtmIHqgQZ3i4CFA1n0+EiNLRHfBvrEnYEFM1CrRA8y+g0mXmH1SuUyUz5jSxU6jfop6NKPOeyriZWpF8CTqtHWRNY0w0xu+G/QuZs1jsshj4+xK6Vvyui6BeopCL4Jno/IKEFwiSDyjx+/tU2skx3A7/XLrn79wGh0XqfQTrKuCl+ApcDtS+E6A6NSjPB1EPdmULdSFd881VFr6uzjYzPNgE68ELSmp+K+NWFI808OEcwHmAM/Z27nN9enVqBi8Yl8vHOsr0S1JlM/+ySDEBAmiQaFaZCLcpEAYGZOu0GNNRIhsEI0OpPkArQEXn1aPN8kofGj5yMi1sgwQvdSZMnNuqF5E1JAgyEQD2JWFJ6eiSXH9fD5TZJXB4IFtE38wFsDlO8Q4ueptAFUhWEazOpVoXB1pHgBqN/5GKsz+QpbPKldteq4mePrcugWAsbw8bvZ0wpC99GELn8RgmGJLYbgHzrasabWcctKEqET710mgm/Ayj7OBVuR9Wxt8HTufU1tLxWlGeS/EYoesmG+ixZ+mDEmtt+WC6Pt5ZR2yk6MAl/Pm5sIfDUcp
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR10MB2663.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(39860400002)(136003)(396003)(346002)(366004)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(83380400001)(2616005)(26005)(38100700002)(8936002)(44832011)(316002)(6916009)(1076003)(8676002)(2906002)(4326008)(5660300002)(66476007)(478600001)(66946007)(41300700001)(6506007)(66556008)(6512007)(6486002)(86362001)(36756003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?drbxIBZabGeSkY8boLRD4R5+OsO2y/1PeAIyRbg/xI6FdFZAxvYV8eiav4So?=
+ =?us-ascii?Q?pSr3I4K1JvAGIk0hefvzWJ5YUqNYyIWiOvtE8m2QvXzkhpi5qC3mCWR6EjN+?=
+ =?us-ascii?Q?oz2Ua46FI9D7g+blkPL/4JUXRjzV1wG19WJ4aFDkJcsDFrWyEqO1D4bwodlA?=
+ =?us-ascii?Q?kwmDHaO7BpcS4qUENs3ttAR8PM3gDoPWQWvUmSL8nnpFdshvsDBEYYImIcbT?=
+ =?us-ascii?Q?tTVhI77iAYgVWUWfr6+Nv5dF8WXbZ6bBvDA4W7NYtb9kdvwFCHzjLY5eDLH/?=
+ =?us-ascii?Q?WZaADa6RgvsFDuXrfP4erf3ZGEbWw0INjmEveYP3CLS2d8tbUjcL2pW5i66P?=
+ =?us-ascii?Q?K95TvRcxc+sYztxpnnEheLg5cR/NA6ZRQdwHS7E8MJz6WNi+D5ItdexRD0qY?=
+ =?us-ascii?Q?PHk5bscUYE86ocySPICvvW3xeZsXMQp5mM3rPKVcWWkjikiTveAv1luwr/Of?=
+ =?us-ascii?Q?9v5R5oZe9asuQlXLoXKdmZuf9dxAqQtcOFCHwlzRjqpLmeX8SjT9oBET0qvk?=
+ =?us-ascii?Q?pyyiIjcnQ4t6lKpMMJ4/Nq5Fq78PbVZy4AFNH0N8QvqxXdWUDMydTqagCwkD?=
+ =?us-ascii?Q?vMvl7AQldpbddi+evdnhtsKD9XyFU8NlrWQMCeTvpGnOUa3KnKTUNyYXZ/Cy?=
+ =?us-ascii?Q?em/IQox16gsNoQkngGEIi6zb2+DVsIzkH2TOEaDlCeuMOiDWJ7MsNpTxHaD2?=
+ =?us-ascii?Q?j3vPISdljvlgE812UHmXXe31gUpaUxb+SR+JIeY+ePsSDcaS1w7J6Ron30hm?=
+ =?us-ascii?Q?3+CCbFA87URz7s05hxVFX2f0Q8YCH4fowqyzshWnVdEZzH32ZD8YmiQlOGzt?=
+ =?us-ascii?Q?p/Ne9rsiyDLnMQSTu4AE//HgvWAGrDmNRVULt2Qk0ehsJiGp4d0dN6ieQKUp?=
+ =?us-ascii?Q?R1Ty8FLyY68Ki0y9c1FL119WjmBNlbsS8lv5d2RM2SeiTWI6Mp6izYo3godj?=
+ =?us-ascii?Q?1LzBkblniPqb4H94rxokjwaxK45m92c4tMSg95NaOm6darzK4tIrPjArKKT3?=
+ =?us-ascii?Q?4ODSMf4z5F0TArPQQEp8pKHgaqx2VEmpfZt5PSbDw2jHPc8/IsBmiglTR0d2?=
+ =?us-ascii?Q?rUoLFCKd5PUPMcRouLSEai10wwAe7lrcJ6sRgL6wTSc47azzTdcwsg2BXNMI?=
+ =?us-ascii?Q?sfpfxzQ3xDX8HHlh2dCjefbSQ+Rp8p+LpffoJZiE2vCI51ufbwOj08wt5d6X?=
+ =?us-ascii?Q?bQr1cBUnQ0rz8/9kuRN1bJ8w0i7JR1CRLtLO/oLBbiLbRCuVc7/fBrV1OP1m?=
+ =?us-ascii?Q?XMw4EZBkKps8yX5kvqI2XIkv7bPsXR71CkM2FYO1UJM+7u9rKGJ4z8q7xTLG?=
+ =?us-ascii?Q?+TxhMj6Cy8wBe2PFQa3xC7rEMAwHWXO/qcq5rOa4J0ONoO9za61jv4cf++38?=
+ =?us-ascii?Q?QcFLdE9vD3S5JihOce/xVxHBWcpfCw/xoQGeBvXTGlhLI4GnFSzp8x9oN1uq?=
+ =?us-ascii?Q?JWzzJpHXhSNjyBOOvznLWnKv1ptWrJ8fQu2lT1xgROKpPfbSIJxm3LOaxCFQ?=
+ =?us-ascii?Q?TfBUrutWOh/aVh+yYvmAG4t9XfYopTgYVZF2ufcjJU5OeDHUzvzshJqLbikh?=
+ =?us-ascii?Q?kBG2JjLGwJ+irxXyYtuPnYIF4QLCkP+1VH4+c7BK?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Zg5ElU5amNf1ZYCOn+TceS2pOktcZJKT3jZGVRofEK7Z8msTPTMamFDkscY+4Bzl20PS5izLOYvtL4rK0Yy/hHgKINnHk8Ze0sgwBESgBUaWGu1I/dufphbWMnPQaFtnuR4m4EOym9xPuZUTQdeN+dQMxj6rIqhO5y3IroK1apN385AY3C6ztrCMLXlEZ7GOrg2IYIaekjf7SeViwfld3MDYHmNfrQ1NThSuWSFCzEA9hXLYnd8LWyMlmjNiWITEuFJX5XPEFuqol11tnkZCg8TaEfC4eeoyVvHksf3QKu83mOCIOyzH45w6BlvI0m0+75tnsXIkCo3kRfSyYqqdoMCUrWoEGaNiYZSgxGG9XeFaKU2voI7xIhYFH+xSLJ/awKAUvkTGhhn1ax1KOt0o/eS5Y3WqrT7Ll8cGlt0r00Lpen7rR0/Ejh75QUbkyVYwFIWmX8MzvLZzoOCZ7VMJ3TtMAPbM66N+FpXPxhlLHBzeErvCH947Vnsn09coWf4uCvHVhzoZcLEOPt24yTdavERLJDwAgRUe4TQP2JGa+p/1V+Wb2AFxPOSRumZNZHSXdusnPm+TZfQhrImkMsv87h14CcvIYbeswHGy4gTX54k=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44b8d25a-b225-4f04-b7a1-08dbfc3c43ea
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2663.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Dec 2023 00:33:17.2575 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XbcNGeu17RsvMwgWaVRYpkVqI1BfpcnBRxcy0G6jgqEb+/fBH3mtm+mDJWoJkhPZo0ag/OucJhHTnPTsSNkDug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB4868
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-13_16,2023-12-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ malwarescore=0
+ mlxlogscore=999 adultscore=0 phishscore=0 suspectscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312140001
+X-Proofpoint-GUID: Jloya3YCw5CWOqogbPpbC7cS28fQxuzQ
+X-Proofpoint-ORIG-GUID: Jloya3YCw5CWOqogbPpbC7cS28fQxuzQ
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,99 +170,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 13, 2023 at 10:15=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.c=
-om> wrote:
-> Alternatives welcome! (A cleaner version of this approach might be to for=
-bid
-> cross-thread aio_set_fd_handler() calls and to refactor all
-> aio_set_fd_handler() callers so they come from the AioContext's home thre=
-ad.
-> I'm starting to think that only the aio_notify() and aio_schedule_bh() AP=
-Is
-> should be thread-safe.)
+It is required to use error_report() instead of error_reportf_err(), if the
+prior function does not take local_err as the argument. As a result, the
+local_err is always NULL and segment fault may happen.
 
-I think that's pretty hard because aio_set_fd_handler() is a pretty
-important part of the handoff from one AioContext to another and also
-of drained_begin()/end(), and both of these things run in the main
-thread.
+vhost_scsi_start()
+-> vhost_scsi_set_endpoint(s) --> does not allocate local_err
+-> error_reportf_err()
+   -> error_vprepend()
+      -> g_string_append(newmsg, (*errp)->msg) --> (*errp) is NULL
 
-Regarding how to solve this issue, there is a lot of
-"underdocumenting" of the locking policy in aio-posix.c, and indeed it
-makes running aio_set_fd_handler() in the target AioContext tempting;
-but it is also scary to rely on the iothread being able to react
-quickly. I'm also worried that we're changing the logic just because
-we don't understand the old one, but then we add technical debt.
+In addition, add ": " at the end of other error_reportf_err() logs.
 
-So, as a first step, I would take inspiration from the block layer
-locking work, and add assertions to functions like poll_set_started()
-or find_aio_handler(). Is the list_lock elevated (nonzero)? Or locked?
-Are we in the iothread? And likewise, for each list, does insertion
-happen from the iothread or with the list_lock taken (and possibly
-elevated)? Does removal happen from the iothread or with list_lock
-zero+taken?
+Fixes: 7962e432b4e4 ("vhost-user-scsi: support reconnect to backend")
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+---
+ hw/scsi/vhost-scsi.c      | 4 ++--
+ hw/scsi/vhost-user-scsi.c | 3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-After this step,  we should have a clearer idea of the possible states
-of the node (based on the lists, the state is a subset of
-{poll_started, deleted, ready}) and draw a nice graph of the
-transitions. We should also understand if any calls to
-QLIST_IS_INSERTED() have correctness issues.
-
-Good news, I don't think any memory barriers are needed here. One
-thing that we already do correctly is that, once a node is deleted, we
-try to skip work; see for example poll_set_started(). This also
-provides a good place to do cleanup work for deleted nodes, including
-calling poll_end(): aio_free_deleted_handlers(), because it runs with
-list_lock zero and taken, just like the tail of
-aio_remove_fd_handler(). It's the safest possible place to do cleanup
-and to take a lock. Therefore we have:
-
-- a fast path in the iothread that runs without any concurrence with
-stuff happening in the main thread
-
-- a slow path in the iothread that runs with list_lock zero and taken.
-The slow path shares logic with the main thread, meaning that
-aio_free_deleted_handlers() and aio_remove_fd_handler() should share
-some functions called by both.
-
-If the code is organized this way, any wrong bits should jump out more
-easily. For example, these two lines in aio_remove_fd_handler() are
-clearly misplaced
-
-    node->pfd.revents =3D 0;
-    node->poll_ready =3D false;
-
-because they run in the main thread but they touch iothread data! They
-should be after qemu_lockcnt_count() is checked to be zero.
-
-Regarding the call to io_poll_ready(), I would hope that it is
-unnecessary; in other words, that after drained_end() the virtqueue
-notification would be raised. Yes, virtio_queue_set_notification is
-edge triggered rather than level triggered, so it would be necessary
-to add a check with virtio_queue_host_notifier_aio_poll() and
-virtio_queue_host_notifier_aio_poll_ready() in
-virtio_queue_aio_attach_host_notifier, but that does not seem too bad
-because virtio is the only user of the io_poll_begin and io_poll_end
-callbacks. It would have to be documented though.
-
-Paolo
-
-
-Paolo
-
->
-> Stefan Hajnoczi (3):
->   aio-posix: run aio_set_fd_handler() in target AioContext
->   aio: use counter instead of ctx->list_lock
->   aio-posix: call ->poll_end() when removing AioHandler
->
->  include/block/aio.h |  22 ++---
->  util/aio-posix.c    | 197 ++++++++++++++++++++++++++++++++------------
->  util/async.c        |   2 -
->  util/fdmon-epoll.c  |   6 +-
->  4 files changed, 152 insertions(+), 75 deletions(-)
->
-> --
-> 2.43.0
->
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index 3126df9e1d..9929c0d14b 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -91,13 +91,13 @@ static int vhost_scsi_start(VHostSCSI *s)
+ 
+     ret = vhost_scsi_common_start(vsc, &local_err);
+     if (ret < 0) {
+-        error_reportf_err(local_err, "Error starting vhost-scsi");
++        error_reportf_err(local_err, "Error starting vhost-scsi: ");
+         return ret;
+     }
+ 
+     ret = vhost_scsi_set_endpoint(s);
+     if (ret < 0) {
+-        error_reportf_err(local_err, "Error setting vhost-scsi endpoint");
++        error_report("Error setting vhost-scsi endpoint");
+         vhost_scsi_common_stop(vsc);
+     }
+ 
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index 780f10559d..af18c4f3d3 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -83,7 +83,8 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
+     if (should_start) {
+         ret = vhost_user_scsi_start(s, &local_err);
+         if (ret < 0) {
+-            error_reportf_err(local_err, "unable to start vhost-user-scsi: %s",
++            error_reportf_err(local_err,
++                              "unable to start vhost-user-scsi: %s: ",
+                               strerror(-ret));
+             qemu_chr_fe_disconnect(&vs->conf.chardev);
+         }
+-- 
+2.34.1
 
 
