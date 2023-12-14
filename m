@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B763813B13
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 20:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BEA813B18
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 20:54:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDrl7-0003YX-CW; Thu, 14 Dec 2023 14:52:37 -0500
+	id 1rDrmV-0004Iz-AV; Thu, 14 Dec 2023 14:54:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rDrl5-0003XD-1U
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 14:52:35 -0500
+ id 1rDrmT-0004ID-1I
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 14:54:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rDrl2-0006M7-Vg
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 14:52:34 -0500
+ id 1rDrmQ-0006Wo-GP
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 14:53:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702583551;
+ s=mimecast20190719; t=1702583637;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=OZzAg+k49kXwBjpIiDoDzMNl+j7/tM7DyV3OiTGRaOU=;
- b=T/rBqucUv/EQkEFaCHD85ATJRpguUNTGFWx/vnilmsOYe7L126jYJbyTAveCq5CC/2eIg1
- 5A7f/7X628aGCwpy/3aIFLDhSvqNhm0+xDxQpyKiYNuSpRrUzyh8Rm+0iZ8vLVlSoIYCdb
- uw5oBLNhXDxndhdvykG4gcCLInq9ZPY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-363-X41-Zf1xOl6x0q8eaSM8ag-1; Thu,
- 14 Dec 2023 14:52:28 -0500
-X-MC-Unique: X41-Zf1xOl6x0q8eaSM8ag-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=PS8/i37/ocK9JcFFcb/PoZPZoz3ZusTkkUb9rbjQNOI=;
+ b=aB7Do6qFfGCFurj/pI782ikPyaekAJVM3dnXK0BcrfxBLJkel7rM/oZpqQazGIIFRtM16P
+ KyQ0/HXMkskUCavJnZsdK7VoDgSBMiX+/uleb4jTkDePqvPFzCj/YIzcO7PhrNWc8ry4ol
+ XHFpHHgFNIcxRSWB1wujD7DkhxIuWPY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-613-HKv8LUnNMpCAfc_TV2K8Nw-1; Thu, 14 Dec 2023 14:53:54 -0500
+X-MC-Unique: HKv8LUnNMpCAfc_TV2K8Nw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C95123C0256A;
- Thu, 14 Dec 2023 19:52:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 852C1881F48;
+ Thu, 14 Dec 2023 19:53:54 +0000 (UTC)
 Received: from localhost (unknown [10.39.195.96])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 89BA12026D66;
- Thu, 14 Dec 2023 19:52:26 +0000 (UTC)
-Date: Thu, 14 Dec 2023 14:52:25 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 03C9D492BF0;
+ Thu, 14 Dec 2023 19:53:53 +0000 (UTC)
+Date: Thu, 14 Dec 2023 14:53:52 -0500
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
 Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Fam Zheng <fam@euphon.net>, Fiona Ebner <f.ebner@proxmox.com>
+ qemu-block@nongnu.org, pbonzini@redhat.com,
+ Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>
 Subject: Re: [RFC 0/3] aio-posix: call ->poll_end() when removing AioHandler
-Message-ID: <20231214195225.GA1645604@fedora>
+Message-ID: <20231214195352.GB1645604@fedora>
 References: <20231213211544.1601971-1-stefanha@redhat.com>
- <CABgObfaTb8n66wqNxObnvgWdzu2=mgLHjX0fCPH99=-P918Apg@mail.gmail.com>
+ <ba257408-5fb2-41d3-8b43-297ebcd312ea@proxmox.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="0dYIbuZO5ZdhuUmd"
+ protocol="application/pgp-signature"; boundary="A+iZ5YIxYQEJFThB"
 Content-Disposition: inline
-In-Reply-To: <CABgObfaTb8n66wqNxObnvgWdzu2=mgLHjX0fCPH99=-P918Apg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+In-Reply-To: <ba257408-5fb2-41d3-8b43-297ebcd312ea@proxmox.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -84,143 +84,49 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---0dYIbuZO5ZdhuUmd
-Content-Type: text/plain; charset=utf-8
+--A+iZ5YIxYQEJFThB
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 14, 2023 at 12:10:32AM +0100, Paolo Bonzini wrote:
-> On Wed, Dec 13, 2023 at 10:15=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat=
-=2Ecom> wrote:
-> > Alternatives welcome! (A cleaner version of this approach might be to f=
-orbid
-> > cross-thread aio_set_fd_handler() calls and to refactor all
-> > aio_set_fd_handler() callers so they come from the AioContext's home th=
-read.
-> > I'm starting to think that only the aio_notify() and aio_schedule_bh() =
-APIs
-> > should be thread-safe.)
+On Thu, Dec 14, 2023 at 02:38:47PM +0100, Fiona Ebner wrote:
+> Am 13.12.23 um 22:15 schrieb Stefan Hajnoczi:
+> > But there you have it. Please let me know what you think and try your
+> > reproducers to see if this fixes the missing io_poll_end() issue. Thank=
+s!
+> >=20
 >=20
-> I think that's pretty hard because aio_set_fd_handler() is a pretty
-> important part of the handoff from one AioContext to another and also
-> of drained_begin()/end(), and both of these things run in the main
-> thread.
+> Thanks to you! I applied the RFC (and the series it depends on) on top
+> of 8.2.0-rc4 and this fixes my reproducer which drains VirtIO SCSI or
+> VirtIO block devices in a loop. Also didn't encounter any other issues
+> while playing around a bit with backup and mirror jobs.
 >=20
-> Regarding how to solve this issue, there is a lot of
-> "underdocumenting" of the locking policy in aio-posix.c, and indeed it
-> makes running aio_set_fd_handler() in the target AioContext tempting;
-> but it is also scary to rely on the iothread being able to react
-> quickly. I'm also worried that we're changing the logic just because
-> we don't understand the old one, but then we add technical debt.
->=20
-> So, as a first step, I would take inspiration from the block layer
-> locking work, and add assertions to functions like poll_set_started()
-> or find_aio_handler(). Is the list_lock elevated (nonzero)? Or locked?
-> Are we in the iothread? And likewise, for each list, does insertion
-> happen from the iothread or with the list_lock taken (and possibly
-> elevated)? Does removal happen from the iothread or with list_lock
-> zero+taken?
->=20
-> After this step,  we should have a clearer idea of the possible states
-> of the node (based on the lists, the state is a subset of
-> {poll_started, deleted, ready}) and draw a nice graph of the
-> transitions. We should also understand if any calls to
-> QLIST_IS_INSERTED() have correctness issues.
->=20
-> Good news, I don't think any memory barriers are needed here. One
-> thing that we already do correctly is that, once a node is deleted, we
-> try to skip work; see for example poll_set_started(). This also
-> provides a good place to do cleanup work for deleted nodes, including
-> calling poll_end(): aio_free_deleted_handlers(), because it runs with
-> list_lock zero and taken, just like the tail of
-> aio_remove_fd_handler(). It's the safest possible place to do cleanup
-> and to take a lock. Therefore we have:
->=20
-> - a fast path in the iothread that runs without any concurrence with
-> stuff happening in the main thread
->=20
-> - a slow path in the iothread that runs with list_lock zero and taken.
-> The slow path shares logic with the main thread, meaning that
-> aio_free_deleted_handlers() and aio_remove_fd_handler() should share
-> some functions called by both.
->=20
-> If the code is organized this way, any wrong bits should jump out more
-> easily. For example, these two lines in aio_remove_fd_handler() are
-> clearly misplaced
->=20
->     node->pfd.revents =3D 0;
->     node->poll_ready =3D false;
->=20
-> because they run in the main thread but they touch iothread data! They
-> should be after qemu_lockcnt_count() is checked to be zero.
->=20
-> Regarding the call to io_poll_ready(), I would hope that it is
-> unnecessary; in other words, that after drained_end() the virtqueue
-> notification would be raised. Yes, virtio_queue_set_notification is
-> edge triggered rather than level triggered, so it would be necessary
-> to add a check with virtio_queue_host_notifier_aio_poll() and
-> virtio_queue_host_notifier_aio_poll_ready() in
-> virtio_queue_aio_attach_host_notifier, but that does not seem too bad
-> because virtio is the only user of the io_poll_begin and io_poll_end
-> callbacks. It would have to be documented though.
+> The changes look fine to me, but this issue is also the first time I
+> came in close contact with this code, so that unfortunately does not say
+> much.
 
-I think Hanna had the same idea: document that ->io_poll_end() isn't
-called by aio_set_fd_handler() and shift the responsibility onto the
-caller to get back into a state where notifications are enabled before
-they add the fd with aio_set_fd_handler() again.
+Great.
 
-In a little more detail, the caller needs to do the following before
-adding the fd back with aio_set_fd_handler() again:
-1. Call ->io_poll_end().
-2. Poll one more time in case an event slipped in and write to the
-   eventfd so the fd is immediately readable or call ->io_poll_ready().
-
-I think this is more or less what you described above.
-
-I don't like pushing this responsibility onto the caller, but adding a
-synchronization point in aio_set_fd_handler() is problematic, so let's
-give it a try. I'll try that approach and send a v2.
+I will still try the other approach that Hanna and Paolo have suggested.
+It seems more palatable. I will send a v2.
 
 Stefan
 
->=20
-> Paolo
->=20
->=20
-> Paolo
->=20
-> >
-> > Stefan Hajnoczi (3):
-> >   aio-posix: run aio_set_fd_handler() in target AioContext
-> >   aio: use counter instead of ctx->list_lock
-> >   aio-posix: call ->poll_end() when removing AioHandler
-> >
-> >  include/block/aio.h |  22 ++---
-> >  util/aio-posix.c    | 197 ++++++++++++++++++++++++++++++++------------
-> >  util/async.c        |   2 -
-> >  util/fdmon-epoll.c  |   6 +-
-> >  4 files changed, 152 insertions(+), 75 deletions(-)
-> >
-> > --
-> > 2.43.0
-> >
->=20
-
---0dYIbuZO5ZdhuUmd
+--A+iZ5YIxYQEJFThB
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmV7XPkACgkQnKSrs4Gr
-c8h6vQgAhVKAwy5g5DOeOgFUt7uXY86Yw+WaIUK6nfew8C3F9DlgFm6cmxBrVlc0
-LwY+eHnWt87heiS1bw6U0SokcRRta0SYuirmnIMKPMaadCvDMupKChIjX8njLAzG
-vnJqmSvF1yDB3JyKxC2BX3n4fRc2BlYZkH+elEntikws6SlmMd5mb5vkXHYMIyqw
-++CSIYeW4GQT5EqR7CA8HVA1PiHDdhdqz5TH604Dv8OkRGCPAvGgjfhQeOj0AN6V
-3GY+Ne2vCJreRojXtZagmmhkjyX3JkkrjqcCirf1U+ivyB/YlJ5j1FYk4fC/RPvS
-0a3WBx4F83oshKdhlyLVed4irFUKzg==
-=AYHM
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmV7XVAACgkQnKSrs4Gr
+c8iT+wgAsbK/2G/lePCREqH06BQnmiDRniQTZeZuGesEHUXDCpGl8e69iGSQYWL/
+0YdU92Zf7WJr7hMEYd55hFldfNTAmLDmrlTEeXKTG3MavNci9169miiD6aOuoTdK
+wQmtiM3wmABLh4S1hFVWS8ldRGHuNzaylZqWT9dVPJkKuxYkyTPYQeHlqywETtU7
+I9KJOEfYq9G79CvttQk7wEuUEN/q4spOvTEEjQ+tFwValO7KqLAY2XTWifXlizT8
+9tdY07fIbM7cgbThR8CAREEPbXg4mxxNPkeUNC5OrlgfYysetQ0vPiXbLCt7o2CE
++eMZSCbuWZQoMkq5760Ojlz/jR6+4g==
+=+3dl
 -----END PGP SIGNATURE-----
 
---0dYIbuZO5ZdhuUmd--
+--A+iZ5YIxYQEJFThB--
 
 
