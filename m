@@ -2,69 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2C781386E
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 18:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 661F9813879
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 18:26:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDpR7-0000dp-6s; Thu, 14 Dec 2023 12:23:49 -0500
+	id 1rDpT7-0001l5-9i; Thu, 14 Dec 2023 12:25:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rDpR5-0000cm-2z
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:23:47 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ id 1rDpT5-0001km-7D
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:25:51 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rDpR3-0004Vp-1m
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:23:46 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-50bf4f97752so10838915e87.1
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 09:23:43 -0800 (PST)
+ id 1rDpT3-000502-Jh
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:25:50 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-54f4f7e88feso9383387a12.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 09:25:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702574622; x=1703179422; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=UKra64iSaSeFV3LQpsosShbMK65VZiJ0KZyiYrlx1b0=;
- b=MxDV3NCEcwzb6BktywdJLNA0HKugMOs3FoaS47ygK/J7eiVj45FYM4PhAsGPtRf5Ei
- v1reNj37T/es7U1JLNB//a6+/7+4sPgXO9oe8fwQ5u2cAWy61Tvzyc9Wunw5YWiKBMAH
- wEVhgAJDSz78yBR19cih+SEivL+jQgwfC5nPyHqVitT6PyXjKOE1Qo9wI8hMa3OrypG4
- 3RgB326xL/1fGQohf6QAXPhM1xA7sw5g+rV7F+x2dkmVCvFmqLwOFiuJJVe+bp9FTVAH
- Q00O2NzNOKnYHPZoffdPpiHDFz9DAOud7Py8PQEjbA/krctJIzB5aFOejy/hHp1/F5F7
- mC6Q==
+ d=linaro.org; s=google; t=1702574747; x=1703179547; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=r6xcYxyGpGh0UMclg4CLI/erDIk3zf90VHoo3HjoFRM=;
+ b=ORU64NgRuxmS1usc+qHkJ8UaDbLquIrCPce5B6b+zYvYf0vFTfXYqJa9dFsAoicinm
+ +OwlFnzYSnwvHx6k96V00Kk9+RvgMNvYboHCWlAodLEfSY/7tBiamHc9kyQ2SoXl42gI
+ JiPB3vf78uKKVQrQm0yiljW52mwSiRQuiYVIePwyNja5XdGRyF3svGjPG5jyHqxPtLx1
+ Qt1COWGAeY/uFAf6I8XEcUeM7TVD1czHpiOQFAJ7GB8kMSctDzF+Q3WYZJvVxMqdEuA7
+ uFGy8+VfRGmBuFZg89tThn8metgNcNifsKsNLWVxuNo9weKFF3d4K+u1LxyM3apOArsq
+ rZqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702574622; x=1703179422;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UKra64iSaSeFV3LQpsosShbMK65VZiJ0KZyiYrlx1b0=;
- b=WOr1kw/ZuyVVU9llejyz86kMCEfZC2Adub8gzSjKxvO3SFHEt3dSy9dmebk0FaCS/1
- hsTxUMvt5+vOmMOYJY2vXjAHVsHYB5J4h5ofa4/F5zTTOYIc+xj36saU6z9YvSa9BQ8v
- I6zoTZQ7IOkKrKKJuL4FBrJEcHTduMcjCtSPuMmP1unvgQ5bhCPiSD161PwF4WDP7Px0
- xQwznDPHVaiHQdFlZk98PP1wEyzt1ZAJaqrVmNh4lq2FyX9UB+zlY8L6UUaHXOuZrrDe
- WQJNDq49HD8koXXMRlHwKRHJaOSJCb+xqJ0PZ6TdLU7w2QLVmU4OxKI5mjST99EHQWVz
- s+RQ==
-X-Gm-Message-State: AOJu0YwyoGXuXNS7CHz/HyDkOPv1gnZoFcTtW/WdAOYWlyQX2oKC7Lvb
- P7wz9+Vn/WFUe2cIG7/A9FC9HGQaOOffgh2RKpse7g==
-X-Google-Smtp-Source: AGHT+IGzVvw9ywImZkoaTXWB20HIYSvHQNWIXhev9TNiZeD436465BNSzA/PDsG7DN4einunfl6SCcsyBxHjyVQXEFE=
-X-Received: by 2002:ac2:5489:0:b0:50b:e454:17b9 with SMTP id
- t9-20020ac25489000000b0050be45417b9mr4957007lfk.84.1702574622124; Thu, 14 Dec
- 2023 09:23:42 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702574747; x=1703179547;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=r6xcYxyGpGh0UMclg4CLI/erDIk3zf90VHoo3HjoFRM=;
+ b=Su8TNpGwF+UxB21IjcJSewPLh4yolEJrq/ylfsglwCcVxsQyLcvAADHFK3cNpTo0Z2
+ NlwQKHsQY9x3GGQYWWE+buRLsQ7Lz7Cjc8g3ezZ+a1ifIsJzBJdQIpD0MS6SIO9liE9U
+ 035K9x6CThDU7o6URnsIyE2vJjN6ybCTwunmgkGIX4hbwdu2ZrM/fhrF+Tt9DlBOu+Wu
+ 9ZYuQ0nJ/6b5aHr/vBfKyM5LO6v5pz2w6PzwezQHAa8tsp1RUDQdP1m+lgWzHBzD+lP1
+ jQs3LAlawxYnkOLNeY3yU0iQ6uL6u/hnU2NRE+CfCr/MnjFIRoE70tOFofXcooRWG2Ll
+ GVUQ==
+X-Gm-Message-State: AOJu0Yzb/5XeQz9oUiHbGsWsQ+P7C9MTmrDtJrueIB5mAitYUFL5C8Oc
+ xXIZBEDsW9dc4UTpIAlW9WQ0Xmj3nO5PNtbEVUiNnA==
+X-Google-Smtp-Source: AGHT+IFHsQ3NpezhHG0l7weiSCOe76IlSSTIMrAVAoZydlTZk6I9gfG9PDZzZd5eHGXEici9Ku4jIeLrsjRCM97ML0k=
+X-Received: by 2002:a50:871b:0:b0:552:7482:ea27 with SMTP id
+ i27-20020a50871b000000b005527482ea27mr1025029edb.34.1702574747100; Thu, 14
+ Dec 2023 09:25:47 -0800 (PST)
 MIME-Version: 1.0
-References: <CAC8KSA16N+DsCzPVE64NvqxQZZfst67prPbu=nzPTfHiFCEgdw@mail.gmail.com>
-In-Reply-To: <CAC8KSA16N+DsCzPVE64NvqxQZZfst67prPbu=nzPTfHiFCEgdw@mail.gmail.com>
+References: <20231214171447.44025-1-philmd@linaro.org>
+In-Reply-To: <20231214171447.44025-1-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 14 Dec 2023 17:23:30 +0000
-Message-ID: <CAFEAcA_1+-AkM3Pt75CM4WVorDrN2btij_Cn2n_aYvKk++PORA@mail.gmail.com>
-Subject: Re: [PATCH v3] fsl-imx: add simple RTC emulation for i.MX6 and i.MX7
- boards
-To: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Date: Thu, 14 Dec 2023 17:25:36 +0000
+Message-ID: <CAFEAcA-Je+_tNCwiL_sQb-tDmCRJ2LWm5mAfuowtxbUBNEWQXQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] hw/arm: Prefer arm_feature() over
+ object_property_find()
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>, 
+ Alistair Francis <alistair@alistair23.me>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,47 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Dec 2023 at 11:49, Nikita Ostrenkov <n.ostrenkov@gmail.com> wrote:
+On Thu, 14 Dec 2023 at 17:14, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
 >
-> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+> QOM properties are added on the ARM vCPU object when a
+> feature is present. Rather than checking the property
+> is present, check the feature.
+>
+> Suggested-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  hw/misc/imx7_snvs.c         | 91 ++++++++++++++++++++++++++++++++++---
->  hw/misc/trace-events        |  4 +-
->  include/hw/misc/imx7_snvs.h |  7 ++-
->  3 files changed, 92 insertions(+), 10 deletions(-)
+> RFC: If there is no objection on this patch, I can split
+>      as a per-feature series if necessary.
+>
+> Based-on: <20231123143813.42632-1-philmd@linaro.org>
+>   "hw: Simplify accesses to CPUState::'start-powered-off' property"
 
-Hi; this doesn't compile for me:
-../../hw/misc/imx7_snvs.c:139:5: error: implicit declaration of
-function 'qemu_get_timedate' is invalid in C99
-[-Werror,-Wimplicit-function-declaration]
-    qemu_get_timedate(&tm, 0);
-    ^
-../../hw/misc/imx7_snvs.c:140:22: error: implicit declaration of
-function 'mktimegm' is invalid in C99
-[-Werror,-Wimplicit-function-declaration]
-    s->tick_offset = mktimegm(&tm) -
-                     ^
-
-How have you been testing it? This looks like a missing
-include line, so I'm wondering if you've been testing it
-against an older version of QEMU rather than the current
-head-of-git? (If I fix that error then there's another
-one after it because the include line to get mktimegm() is
-missing too.)
-
-Also, your email client has unfortunately mangled the patch in
-a couple of ways:
- * it's sent it as combined HTML/text, not as plain text only
- * it has wrapped some long lines
- * it has sent it base64 encoded
-
-If you're planning to submit more QEMU patches in future,
-it would be worth looking at the notes in
-https://www.qemu.org/docs/master/devel/submitting-a-patch.html#submitting-your-patches
-about 'git send-email'. For a single patch, I can fix stuff
-up by hand at this end, but it's a bit awkward.
-
-Other than that, the patch looks good to me.
+I'm not a super-fan of board-level code looking inside
+the QOM object with direct use of arm_feature() when
+it doesn't have to. What's wrong with asking whether
+the property exists before trying to set it?
 
 thanks
 -- PMM
