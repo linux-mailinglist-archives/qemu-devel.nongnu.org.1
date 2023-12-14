@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC27D8139F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 19:29:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6558813A04
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 19:31:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDqRL-0003zj-Ca; Thu, 14 Dec 2023 13:28:07 -0500
+	id 1rDqUE-00057N-Kh; Thu, 14 Dec 2023 13:31:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDqRH-0003yw-IM
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 13:28:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDqTk-00053k-8D
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 13:30:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDqRE-0003LH-S9
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 13:28:03 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDqTc-0004F1-CU
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 13:30:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702578480;
+ s=mimecast20190719; t=1702578623;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=IfFxEBJpKSzArGSrfQowGClxevW3jxANuqbEn+/nZWw=;
- b=eT8KJfn7hjpsoT3EjahMz8Zam0V/X5Ob2N12Ei0NHQlDyt2rxJiqH+eAjGQtKGSnNxCw/v
- QUsCnZjERwI+GuIMMlY9iGCtIaPCViy/YaoO4DFOLtbdjAbAyEpLBKyW72VYfNAV0Ey7qX
- PS+6eD2bSbrAt0VF/Aia2bvgMYDLKuY=
+ bh=CPOZqa0ITrIxh6mhW86wXShisg+TCpntOgzYzAqQqzM=;
+ b=gFEOwJSIx0j/Ax/VeIKQRSYNAL/J9RaNmEwI/lO1+g17bEW+4wLmYlALSmnULyUGpXBL7B
+ o199kP1gp3d1/UKyZ5BO6ec3JiQ2aDdjvgORS9aUGhUrcwARThIBOLN1X9zpJEFUNs7VYU
+ gfuXKqMOAcwb6tZIN/6HQhv4Xnw9kxs=
 Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
  [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-VAFxRWHDMomJ__9HYeu7qQ-1; Thu, 14 Dec 2023 13:27:58 -0500
-X-MC-Unique: VAFxRWHDMomJ__9HYeu7qQ-1
+ us-mta-465-J2mAzF6UOP-HWWIGSg9syQ-1; Thu, 14 Dec 2023 13:30:21 -0500
+X-MC-Unique: J2mAzF6UOP-HWWIGSg9syQ-1
 Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-67ab20f3073so114962746d6.0
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 10:27:58 -0800 (PST)
+ 6a1803df08f44-67abf4618a2so15705586d6.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 10:30:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702578478; x=1703183278;
+ d=1e100.net; s=20230601; t=1702578620; x=1703183420;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IfFxEBJpKSzArGSrfQowGClxevW3jxANuqbEn+/nZWw=;
- b=c17t/Lko+JXzj3EmTekg20IOxbwVDYpaw4MgJqpIjTsKxs69qW9GKfW5MH3NSH+DOI
- qgySwclrH44i/2p7TRg8x1euGH2vHqH58OlWuGOpX2wOfQ9sQf5aP+MIfjlaLthsX9+5
- HJOAyyaGL0e79+CFaxjhqP/Y6D6iON3qG9CqRToM4kYL8G8FCBx1Ci3Nyrm1Y29eW05d
- di5zpCKRyVlq27lRPlvK1rs1zBU3xllQLBgyWtbG+y6GYjGgV/rDZv4pXIJQgHkUDKxq
- HbyUbMm7xTlOS2yF8JQpagk5Z8IjWkqDGPEdkJrSzl7D0mbgXe8w06v9MzX6jWBg+/1/
- /FeQ==
-X-Gm-Message-State: AOJu0Yxn6RVOjkx7fD0GWv/GoKb0OakiqarrbF4VmN6i0psW3pK/P/4b
- 2/9/2jj1vtVmkcrt47h/3P9mYQvQimKA0OpG+f7mVw4QVmBo0OAvch8z9gN75E3tl3J9CeQOn/Z
- Ac/OrREUnHLcplFE=
-X-Received: by 2002:a05:6214:1ec:b0:67e:d89f:e392 with SMTP id
- c12-20020a05621401ec00b0067ed89fe392mr6840790qvu.11.1702578478158; 
- Thu, 14 Dec 2023 10:27:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEFwCZ1a9w7GgKmGMpnm3bpxy8O5QvUJPytEQqplR3bBgt53ZlQovUfX5ep5k0h2opS1xZM7Q==
-X-Received: by 2002:a05:6214:1ec:b0:67e:d89f:e392 with SMTP id
- c12-20020a05621401ec00b0067ed89fe392mr6840774qvu.11.1702578477918; 
- Thu, 14 Dec 2023 10:27:57 -0800 (PST)
+ bh=CPOZqa0ITrIxh6mhW86wXShisg+TCpntOgzYzAqQqzM=;
+ b=n5fDReRD6sR0quRM1QwdKyRLX/iFagsicq/C9H3M/dPGvtiNTRObFB0/37yoBZZtyC
+ 1QLPgQ34MpGpuk76P2aP2YEwkzsF1ZIrNJS2i5f4bC4j2qIlfgmDBmpGXpcvaumgmvKq
+ YL0ij2H/4O+G3f+xxWBxBcxVcr1MLMayXquZLXVLenrj0AJAnYUX8yhMXSiRqP/GjZuk
+ lyNmlXRcNE1qVOIHOR4CZjQ+0GHo9FJX3e13qHBFg/TTNBx6v1VKUPuB16p9Tl93fVDM
+ cvso5/tsqc8XdvCbJLlqaFzjrB+PZ9BtPzRies5DHTYQt+AZC2okRvX+2KdlXulVpzfq
+ J9Aw==
+X-Gm-Message-State: AOJu0Yzj6E3F1qKU/WODvt9Zr6QbZ8eGhNlA/kZ8Y5rxjRWgXKXNZLws
+ o7T7ktRF1WtjnkJpyE37RLPSZeOxkJR3k3hAfwGGQj9vU1E1mb+k3FL7Y6PusnHOQWyZD8OTX8h
+ GVkAgJAh4bJs71tc=
+X-Received: by 2002:ad4:5742:0:b0:67e:b3ac:3c0 with SMTP id
+ q2-20020ad45742000000b0067eb3ac03c0mr20387232qvx.47.1702578620400; 
+ Thu, 14 Dec 2023 10:30:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGg0tahNIRilBU0eGNXdjLT1Ahiq0AWp/UZm5tJnG/IwKaEDnCK/caMNRJNOfLKQm0IEgRVRw==
+X-Received: by 2002:ad4:5742:0:b0:67e:b3ac:3c0 with SMTP id
+ q2-20020ad45742000000b0067eb3ac03c0mr20387210qvx.47.1702578620160; 
+ Thu, 14 Dec 2023 10:30:20 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-178-144.web.vodafone.de.
  [109.43.178.144]) by smtp.gmail.com with ESMTPSA id
- d25-20020a0caa19000000b0067a24f5b432sm1435529qvb.62.2023.12.14.10.27.53
+ oo22-20020a05620a531600b0077703f31496sm5484433qkn.92.2023.12.14.10.30.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Dec 2023 10:27:57 -0800 (PST)
-Message-ID: <1893d0ce-7c98-494f-b296-9b73f0c70a52@redhat.com>
-Date: Thu, 14 Dec 2023 19:27:51 +0100
+ Thu, 14 Dec 2023 10:30:19 -0800 (PST)
+Message-ID: <7b576994-9477-4b84-aa12-7e36d90e7529@redhat.com>
+Date: Thu, 14 Dec 2023 19:30:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 17/23] target/ppc/excp_helper: Avoid 'abi_ptr' in
- system emulation
+Subject: Re: [PATCH v2 19/23] exec/user: Do not include 'cpu.h' in 'abitypes.h'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -76,12 +75,9 @@ Cc: Claudio Fontana <cfontana@suse.de>, qemu-ppc@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Anton Johansson <anjo@rev.ng>, Warner Losh <imp@bsdimp.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+ Anton Johansson <anjo@rev.ng>, Warner Losh <imp@bsdimp.com>
 References: <20231212123401.37493-1-philmd@linaro.org>
- <20231212123401.37493-18-philmd@linaro.org>
+ <20231212123401.37493-20-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -125,17 +121,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231212123401.37493-18-philmd@linaro.org>
+In-Reply-To: <20231212123401.37493-20-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
 X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
@@ -154,29 +150,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/12/2023 13.33, Philippe Mathieu-Daudé wrote:
-> 'abi_ptr' is a user specific type. The system emulation
-> equivalent is 'target_ulong'. Use it in ppc_ldl_code()
-> to emphasis this is not an user emulation function.
+> "exec/user/abitypes.h" requires:
+> 
+>   - "exec/cpu-defs.h"           (TARGET_LONG_BITS)
+>   - "exec/tswap.h"              (tswap32)
+> 
+> In order to avoid "cpu.h", pick the minimum required headers.
+> 
+> Assert this user-specific header is only included from user
+> emulation.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/ppc/excp_helper.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index a42743a3e0..3d7c9bbf1a 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -142,7 +142,7 @@ static inline bool insn_need_byteswap(CPUArchState *env)
->       return !!(env->msr & ((target_ulong)1 << MSR_LE));
->   }
->   
-> -static uint32_t ppc_ldl_code(CPUArchState *env, abi_ptr addr)
-> +static uint32_t ppc_ldl_code(CPUArchState *env, target_ulong addr)
->   {
->       uint32_t insn = cpu_ldl_code(env, addr);
->   
+>   include/exec/user/abitypes.h | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
