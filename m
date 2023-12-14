@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E99B812830
+	by mail.lfdr.de (Postfix) with ESMTPS id 41830812831
 	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 07:33:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDfGp-0001s7-Il; Thu, 14 Dec 2023 01:32:31 -0500
+	id 1rDfGt-0001sa-V8; Thu, 14 Dec 2023 01:32:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rDfGn-0001rs-7W
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 01:32:29 -0500
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ id 1rDfGq-0001sO-Vm
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 01:32:32 -0500
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rDfGl-00045F-Lx
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 01:32:28 -0500
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-28ad7a26f4aso2249000a91.0
- for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 22:32:27 -0800 (PST)
+ id 1rDfGp-00045Y-BE
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 01:32:32 -0500
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6d9f9fbfd11so4079656a34.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 22:32:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702535546; x=1703140346;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702535550; x=1703140350;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=b3CUKeEYm/gOZXVInNJSdSYc1B1o0RTKVcYbhcdNsuM=;
- b=TSEWJgdbDLNuGhj3Wu2TDGdpfVzIN+eiA6gjaVVXB86n4tkvn0cnR8/RTWpdKyZFzu
- MUYv7A3LL/oU1vKzqWHRUeWCxtN/QkmLsQGLwCBUuEUTq+Tdo2PaxBwihfdwo2vg55Jp
- IMsUi6m63SeJ/BraDqdji/SGsW8P/1MYR9SVoaKLuGOhQBi7irWzq4yJSgrPrK+2HSJ9
- XjaP/gElqLlB4TnWo5Otx9BkrC2UNhTuusoZtb8sIArPfjFzVfcgdS1x2sX9LTrqNHsa
- 2RFDtf31xXF5DtzUkNt4BlcKEltEouAFGMUpwZpDVZp6Tea+xJEusnvw5CuHf2CRhT5J
- Vvyg==
+ :reply-to; bh=Ov3rb8PYlRjmKz4KISLbSUYoYrmOEGKl7hkNUEx9++U=;
+ b=OK1a3kHqE0yVsRzEEsP6OGPbQhNcdWFqdcyoJB+/IhHCu89ftodb8QQC93CJBaZYIA
+ UmZ2/8wJdHSTC3SgS86dHClSw/gA1DZWlzvKXGStwBYEs6jkDKWy/pFgCgtoQSdKqJ4R
+ CZqHOWMFTJFahVIxA6V7+pFP++RB4W9BzoAzT14j97QrkVvwrQCXMrae+QKGWAZM0xa+
+ Fsnv1cgE1QfATgKgHEBDpFRwueBQbLo9w/IZu696k1bRKMMVhW0pwOTHd12TP5xYFrDu
+ WrWwJhA+FcmcEDzvwbvGFcaI0eqJ0b9n6C/ciUhtk0uIf6iUX+Lrd66CpnOwOUvLLGWJ
+ WF9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702535546; x=1703140346;
+ d=1e100.net; s=20230601; t=1702535550; x=1703140350;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b3CUKeEYm/gOZXVInNJSdSYc1B1o0RTKVcYbhcdNsuM=;
- b=FOMvCceHRUq1dMn2kVdfUtAFV8xmTx4MJKN53kx/O7pnsWUcYpbokL6HvFbJlOOTHI
- jkLGqGqxDznjWwrDH8MYlgeNYg0UCkDEUcMn4xG/64XDTlFwpa1qW274nutIsE92C3BI
- y6P8P8TYxyOxMnLV14WtpOtPv1mgj9CsgJHjial1dCaHMaCgUCqaARgekHOS7YDbQrxu
- VDJd8zOy1lGohQJ1YDU5qOnGIOHR+fVi5Q/a1sbJ4I6FeN/Nfv6Cd/2/sKfbFXZR/rxQ
- vkdwkRkkNuy8kNe8F/GQy34pM6DYHtEP/WWueX33kIIdzBLfFyqPe+1qCB/iT+zvSz22
- IYvQ==
-X-Gm-Message-State: AOJu0YzK/Pq58YCRV90Rq6DfW84IASHflc5Vo/4dRMriodMCJbmeZZWj
- CitFNiI9ym9QzQdTSRy2Idk2Mg==
-X-Google-Smtp-Source: AGHT+IFDCQ0hjraQ6rxoMypT72B+xk+dXtO8FrckGUVRyh4qOZz6dUA21Mrwez0hFHSCtXjUzKjb+g==
-X-Received: by 2002:a17:902:704c:b0:1d0:ba40:b0e1 with SMTP id
- h12-20020a170902704c00b001d0ba40b0e1mr9379527plt.124.1702535546340; 
- Wed, 13 Dec 2023 22:32:26 -0800 (PST)
+ bh=Ov3rb8PYlRjmKz4KISLbSUYoYrmOEGKl7hkNUEx9++U=;
+ b=jSYDvRbI0LwfLpZska/T8JPONZFAaxguInhIedNVvOTkavmgMIqm5b4IWCEtIZ9/o+
+ QIlMAutXPEteu8wshV+5dWFLkyeUHtq2KHVNJHgMsF5fyD6um1fuW6e5ewEGLqhxmYDB
+ s5MTMt0AduLZ78LT510iv9hKc54hLIORtsV4DBp/wS8uAZ1v6hikJCt6X5gwBybZoKDQ
+ Ckc0dDXOpw+3X/k4YcbsXfqpeTtkeu1L+0bMYjXAqbiaAA0Bz5q9ljposz+2SbFg4sc7
+ 9n3ksISHPwQBkXnbFPOAYsCa2D77Mfi8TVcp0ebZ89TTfIJ5INcmpgG3Bxna1hkNVEYR
+ +D/A==
+X-Gm-Message-State: AOJu0YzBVE2VKMKEtbJ2jkPXUhMwrFKmPnqbHHLXghE/jD3feOAo+hog
+ kqhpPhKVrAdOV4yDCAG3MvKNSQ==
+X-Google-Smtp-Source: AGHT+IHegMoC2sYWv0YqGe/MRoO0MjHdlVbcZMVaIzpwEGadPUnyl8xu/VoAIFQQby7rC9DGXzpDxw==
+X-Received: by 2002:a05:6358:63a2:b0:172:88c9:6743 with SMTP id
+ k34-20020a05635863a200b0017288c96743mr1876578rwh.16.1702535550280; 
+ Wed, 13 Dec 2023 22:32:30 -0800 (PST)
 Received: from localhost ([157.82.200.183])
  by smtp.gmail.com with UTF8SMTPSA id
- z5-20020a170903018500b001cf65844874sm11626412plg.45.2023.12.13.22.32.23
+ g12-20020a170902c38c00b001d053ec1992sm2311697plg.83.2023.12.13.22.32.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Dec 2023 22:32:26 -0800 (PST)
+ Wed, 13 Dec 2023 22:32:29 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Thu, 14 Dec 2023 15:31:35 +0900
-Subject: [PATCH 1/2] qemu-options: Unify the help entries for cocoa
+Date: Thu, 14 Dec 2023 15:31:36 +0900
+Subject: [PATCH 2/2] qemu-options: Tell more for -display cocoa
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231214-options-v1-1-113f347b0e3f@daynix.com>
+Message-Id: <20231214-options-v1-2-113f347b0e3f@daynix.com>
 References: <20231214-options-v1-0-113f347b0e3f@daynix.com>
 In-Reply-To: <20231214-options-v1-0-113f347b0e3f@daynix.com>
 To: Gerd Hoffmann <kraxel@redhat.com>, 
@@ -70,10 +70,11 @@ To: Gerd Hoffmann <kraxel@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>, 
  Peter Maydell <peter.maydell@linaro.org>, 
  Carwyn Ellis <carwynellis@gmail.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ BALATON Zoltan <balaton@eik.bme.hu>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::331;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,36 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Apparently the help entries were not merged when the patches got in.
+Some options for -display cocoa were not described or not listed at all.
 
-Fixes: f844cdb99714 ("ui/cocoa: capture all keys and combos when mouse is grabbed")
+Reported-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- qemu-options.hx | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ qemu-options.hx | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/qemu-options.hx b/qemu-options.hx
-index 42fd09e4de96..28aa26ceb508 100644
+index 28aa26ceb508..13359d12944a 100644
 --- a/qemu-options.hx
 +++ b/qemu-options.hx
-@@ -2087,6 +2087,7 @@ DEF("display", HAS_ARG, QEMU_OPTION_display,
- #endif
+@@ -2088,6 +2088,7 @@ DEF("display", HAS_ARG, QEMU_OPTION_display,
  #if defined(CONFIG_COCOA)
      "-display cocoa[,full-grab=on|off][,swap-opt-cmd=on|off]\n"
-+    "              [,show-cursor=on|off][,left-command-key=on|off]\n"
+     "              [,show-cursor=on|off][,left-command-key=on|off]\n"
++    "              [,full-screen=on|off][,zoom-to-fit=on|off]\n"
  #endif
  #if defined(CONFIG_OPENGL)
      "-display egl-headless[,rendernode=<file>]\n"
-@@ -2094,9 +2095,6 @@ DEF("display", HAS_ARG, QEMU_OPTION_display,
- #if defined(CONFIG_DBUS_DISPLAY)
-     "-display dbus[,addr=<dbusaddr>]\n"
-     "             [,gl=on|core|es|off][,rendernode=<file>]\n"
--#endif
--#if defined(CONFIG_COCOA)
--    "-display cocoa[,show-cursor=on|off][,left-command-key=on|off]\n"
- #endif
-     "-display none\n"
-     "                select display backend type\n"
+@@ -2189,10 +2190,26 @@ SRST
+         provides drop-down menus and other UI elements to configure and
+         control the VM during runtime. Valid parameters are:
+ 
++        ``full-grab=on|off`` : Capture all key presses, including system combos.
++                               This requires accessibility permissions, since it
++                               performs a global grab on key events.
++                               (default: off) See
++                               https://support.apple.com/en-in/guide/mac-help/mh32356/mac
++
++        ``swap-opt-cmd=on|off`` : Swap the Option and Command keys so that their
++                                  key codes match their position on non-Mac
++                                  keyboards and you can use Meta/Super and Alt
++                                  where you expect them.  (default: off)
++
+         ``show-cursor=on|off`` :  Force showing the mouse cursor
+ 
+         ``left-command-key=on|off`` : Disable forwarding left command key to host
+ 
++        ``full-screen=on|off`` : Start in fullscreen mode
++
++        ``zoom-to-fit=on|off`` : Expand video output to the window size,
++                                 defaults to "off"
++
+     ``egl-headless[,rendernode=<file>]``
+         Offload all OpenGL operations to a local DRI device. For any
+         graphical display, this display needs to be paired with either
 
 -- 
 2.43.0
