@@ -2,132 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B806C812CC0
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 11:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 968E6812CC1
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 11:18:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDim7-00037H-NX; Thu, 14 Dec 2023 05:17:03 -0500
+	id 1rDinL-0003Us-9r; Thu, 14 Dec 2023 05:18:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDim5-00036z-C9
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 05:17:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDim3-0002fp-Ld
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 05:17:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702549018;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=eVsxdwSnhSBTVnkRkStkb4tnqQlrdDPUllcCzcZOG50=;
- b=XM4e25+6dzqvxtynA3QXIZF7dJV3jy6OtK+ui6CJhMxCzg07xrSpa3T1/JvUo6ryeW4yY4
- LlA9+GlLgjfudoHtIZGai+Hf5/LXKBu7nExOEtnNjeZcZZ0uy6py11ymc0IaWGhzsdnmtL
- rulCwPQQuvwGb1m0q3lVDJUaHCMZpag=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-397-3Jxa8wC9NHqrppmBq8lzxA-1; Thu, 14 Dec 2023 05:16:54 -0500
-X-MC-Unique: 3Jxa8wC9NHqrppmBq8lzxA-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-77f37b54031so999533585a.2
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 02:16:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1rDinJ-0003T4-Cz
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 05:18:17 -0500
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1rDin8-0002qE-Mq
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 05:18:17 -0500
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2c9f559b82cso91169881fa.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 02:18:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702549084; x=1703153884;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=YXuVJ8iopwawqaabjGPgfitOuptt5U0TaeiTThyJmmM=;
+ b=1JVRmaLULTYGkohXR5eAhtuggjlpr6uQgJuYKN8/K6H5jw04n+DRPOHiDpV9PXFwkY
+ FVYQiESHvFkQ2zhSlzMyNyrlENER4OfQemK/zo+2vq+PsuGRUb7ylsQWEWCFrBuQap12
+ a+ORXvj443+MOEFglBiMB8wP09C2YCGec+q7Rl45vXNOtsJ6AqAnvFj4I6hVMJAuoZTj
+ ay766OCVX2QESCZf6Z5NsW8kecbFewdkb/yXu+IAfz6iZeoJDpLTCQ1owbNbw8Fygu9Z
+ ODr9P0KZiu6lSs2w9CKmISIghiSKO6oOICwJ/+aNrSw3Pg7toOVR/2Srj0omFdh1T4rU
+ BFbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702549014; x=1703153814;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eVsxdwSnhSBTVnkRkStkb4tnqQlrdDPUllcCzcZOG50=;
- b=C3AQx6rqXw8OcjhVhWZoJLB62mGJOiYUe7czyUKvoVlt0ffNwm0YSnLjUS3neeHyBz
- pA5VnTi5biqIbXx7KATGwHOg9jLSL7wPyDRPTnSxspFDRHTP9BXmXOtT5sqoSGxL9xUr
- CN26O/PRwmOpgCThDQdK9EFhee2IvOxI6h16K3Hnmau7tj5PbdzBP4WWytAakPqjhszi
- 5we4b93VsKDxJ3ua0RG8SRaaEOcs67VHMLuBoWpAJWjfduieiVjsJGLa5pKosZK32k//
- 0tPKULsfbPjswtmKrddbYWallVaTEkbFIib6sARPnvUo3/Kz01pE1gkJ/vQpSrO2jG9E
- G8ZQ==
-X-Gm-Message-State: AOJu0YykVEa8l36MukounLhI3E+sVTONBFe9VJqRZPXuFZB531gkVotq
- arS7CoRwnK8XR4FoEB2gi5mjdyCsBHiE4tpBSJTqtdUU82b8eKiG4EPc1CO2wyTjWp/HEpYpJhl
- vXMSetX9PfGjDGKQ=
-X-Received: by 2002:a05:620a:1004:b0:77f:3f0b:219d with SMTP id
- z4-20020a05620a100400b0077f3f0b219dmr9244804qkj.128.1702549014342; 
- Thu, 14 Dec 2023 02:16:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHbKcTJAxkGFBG/AANcU05rTEXnr9LCdxZwiSkHvHvwd24U2jpyZl4gesqUnQ/7b/Xj7+m5gQ==
-X-Received: by 2002:a05:620a:1004:b0:77f:3f0b:219d with SMTP id
- z4-20020a05620a100400b0077f3f0b219dmr9244799qkj.128.1702549014057; 
- Thu, 14 Dec 2023 02:16:54 -0800 (PST)
-Received: from [192.168.0.6] (ip-109-43-178-144.web.vodafone.de.
- [109.43.178.144]) by smtp.gmail.com with ESMTPSA id
- qg1-20020a05620a664100b0077f01c11e3bsm5187655qkn.61.2023.12.14.02.16.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Dec 2023 02:16:53 -0800 (PST)
-Message-ID: <f0fa608f-5420-4438-875c-c65ac0e15e7a@redhat.com>
-Date: Thu, 14 Dec 2023 11:16:49 +0100
+ d=1e100.net; s=20230601; t=1702549084; x=1703153884;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YXuVJ8iopwawqaabjGPgfitOuptt5U0TaeiTThyJmmM=;
+ b=oHdzV1ey3Xa3IUzNW49qI0/5D+634ACn30wRvI8wraMEfh57nwWuFmwPHcbfqu6DyT
+ 8xDMk9kK1Kw5LyMKh3kFhCh5+fDPru3MQukEvLsHkTO7KtzzthRtIve79Fi8n4+A9Bck
+ MKDF+zXfyvbrlau3hmy3f4EKbGoy0zx7rKYAF22tTkBFSYrAU4ECrYaMHbk5c1NoiLJP
+ JLSkA4TR2H2CjrwNwQXepJ5H+9Lt/THMon3AmbiUsZTJkfb4CIV4y6qfeYKYiQqyWylW
+ oZbJYJ/TEmdoBmrDIOhPIMEZiyrWndfGma9uiGt1sXAegLOh9e9xAu+8DpZyV48EWL2E
+ 9bHg==
+X-Gm-Message-State: AOJu0YyzUu5wjK+U2PWMrUWT7BIdPVWSRFLuYFChfVM1V/jmTCVAqVGm
+ CBpxnX39DUYIaw+EMYOJGLWNDaQt9FyujB1m7izC4A==
+X-Google-Smtp-Source: AGHT+IHjR3OnAG6N+ry7jc/txUvO8qBmivWfNV/iW4WEiFsIzPFDA0tfNL3hxeNxGyhpZQMKN9TxJ5C9H8Uet09wGkc=
+X-Received: by 2002:a05:651c:211a:b0:2cb:2bb4:fd4f with SMTP id
+ a26-20020a05651c211a00b002cb2bb4fd4fmr3955935ljq.23.1702549083780; Thu, 14
+ Dec 2023 02:18:03 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qemu-options: Clarify handling of commas in options
- parameters
-To: Yihuan Pan <xun794@gmail.com>, qemu-trivial@nongnu.org
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20231213141706.629833-2-xun794@gmail.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20231213141706.629833-2-xun794@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20230831065140.496485-1-andrew@daynix.com>
+ <20230831065140.496485-6-andrew@daynix.com>
+ <CABcq3pHyiO4AWSzxwWKfUnULfqPGQs1g12MCn14Ms4FqupZAzg@mail.gmail.com>
+ <CACGkMEvBEdV1+uxE00hbXuFWmT2+nqgT9JxBezLXBwEX0b9Vbw@mail.gmail.com>
+ <CAOEp5OcMo+eZ=k4m7ZKvSLWfngzzaZ6eHMLaiTmZ3CQ_yE2aKw@mail.gmail.com>
+ <CACGkMEtFKJovdfi6690uoqH_qJ3mP6K8KDFcOamvC1yOow-Drg@mail.gmail.com>
+ <CAOEp5OfrsExfBF4QvxtP7KCVS9tGQMNxZq5kh4j9bwxqYQmjBw@mail.gmail.com>
+In-Reply-To: <CAOEp5OfrsExfBF4QvxtP7KCVS9tGQMNxZq5kh4j9bwxqYQmjBw@mail.gmail.com>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+Date: Thu, 14 Dec 2023 12:17:52 +0200
+Message-ID: <CAOEp5OchOVu7YSeHG2Au_S4HHf0U0H8Jdit-U+X_VcAP0z=7GA@mail.gmail.com>
+Subject: Re: [PATCH v7 5/5] ebpf: Updated eBPF program and skeleton.
+To: Jason Wang <jasowang@redhat.com>
+Cc: Andrew Melnichenko <andrew@daynix.com>, mst@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, 
+ qemu-devel@nongnu.org, berrange@redhat.com, yan@daynix.com, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Content-Type: multipart/alternative; boundary="0000000000005a0a3f060c7599f7"
+Received-SPF: none client-ip=2a00:1450:4864:20::233;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,81 +94,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/12/2023 15.17, Yihuan Pan wrote:
-> Provide explicit guidance on dealing with option parameters as arbitrary
-> strings containing commas, such as in "file=my,file" and "string=a,b". The
-> updated documentation emphasizes the need to double commas when they
-> appear within such parameters.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1839
-> Signed-off-by: Yihuan Pan <xun794@gmail.com>
-> ---
->   docs/system/invocation.rst   | 5 +++++
->   docs/system/qemu-manpage.rst | 5 +++++
->   qemu-options.hx              | 4 ++++
->   3 files changed, 14 insertions(+)
-> 
-> Changes since the previous version:
-> - Added a generic comment about doubling the commas to the
->    documentation.
-> 
-> diff --git a/docs/system/invocation.rst b/docs/system/invocation.rst
-> index 4ba38fc23d..14b7db1c10 100644
-> --- a/docs/system/invocation.rst
-> +++ b/docs/system/invocation.rst
-> @@ -10,6 +10,11 @@ Invocation
->   disk_image is a raw hard disk image for IDE hard disk 0. Some targets do
->   not need a disk image.
->   
-> +When dealing with options parameters as arbitrary strings containing
-> +commas, such as in "file=my,file" and "string=a,b", it's necessary to
-> +double the commas. For instance,"-fw_cfg name=z,string=a,,b" will be
-> +parsed as "-fw_cfg name=z,string=a,b".
-> +
->   .. hxtool-doc:: qemu-options.hx
->   
->   Device URL Syntax
-> diff --git a/docs/system/qemu-manpage.rst b/docs/system/qemu-manpage.rst
-> index c47a412758..3ade4ee45b 100644
-> --- a/docs/system/qemu-manpage.rst
-> +++ b/docs/system/qemu-manpage.rst
-> @@ -31,6 +31,11 @@ Options
->   disk_image is a raw hard disk image for IDE hard disk 0. Some targets do
->   not need a disk image.
->   
-> +When dealing with options parameters as arbitrary strings containing
-> +commas, such as in "file=my,file" and "string=a,b", it's necessary to
-> +double the commas. For instance,"-fw_cfg name=z,string=a,,b" will be
-> +parsed as "-fw_cfg name=z,string=a,b".
-> +
->   .. hxtool-doc:: qemu-options.hx
->   
->   .. include:: keys.rst.inc
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 42fd09e4de..a935aaae44 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -4086,9 +4086,13 @@ DEF("fw_cfg", HAS_ARG, QEMU_OPTION_fwcfg,
->   SRST
->   ``-fw_cfg [name=]name,file=file``
->       Add named fw\_cfg entry with contents from file file.
-> +    If the filename contains comma, you must double it (for instance,
-> +    "file=my,,file" to use file "my,file").
->   
->   ``-fw_cfg [name=]name,string=str``
->       Add named fw\_cfg entry with contents from string str.
-> +    If the string contains comma, you must double it (for instance,
-> +    "string=my,,string" to use file "my,string").
->   
->       The terminating NUL character of the contents of str will not be
->       included as part of the fw\_cfg item data. To insert contents with
+--0000000000005a0a3f060c7599f7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Looks fine to me, thanks!
+Hi Jason,
+As we anyway missed the timeframe of 8.2 please remove this v7 series from
+the pull, we will send v8 in which we want to take in account most of
+Akihiko comments (especially DEFINE_PROP_ARRAY and naming of the
+properties).
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Thank you very much
 
-If nobody objects, I can queue it for my next pull request.
+Yuri
 
-  Thomas
+On Wed, Dec 13, 2023 at 9:23=E2=80=AFAM Yuri Benditovich <
+yuri.benditovich@daynix.com> wrote:
 
+>
+> On Tue, Dec 12, 2023 at 5:33=E2=80=AFAM Jason Wang <jasowang@redhat.com> =
+wrote:
+>
+>> On Mon, Dec 11, 2023 at 7:51=E2=80=AFPM Yuri Benditovich
+>> <yuri.benditovich@daynix.com> wrote:
+>> >
+>> > Hello Jason,
+>> > Can you please let us know what happens with this series?
+>>
+>> It should be my bad, it is in V1 of the pull request but missed
+>> accidentally in V2 of the pull.
+>>
+>> I've merged it here,
+>>
+>> https://gitlab.com/jasowang/qemu.git
+>
+>
+> Yes, the merged tree is OK. I see you changed the target version to 8.3
+>  It looks like no more changes required for the PULL,
+>  Please let us know if something is needed.
+>
+> Thanks,
+> Yuri
+>
+>
+>
+>>
+>> Please check if it's correct.
+>>
+>> Thanks
+>>
+>> >
+>> > Thanks
+>> > Yuri
+>> >
+>> > On Fri, Sep 8, 2023 at 9:43=E2=80=AFAM Jason Wang <jasowang@redhat.com=
+> wrote:
+>> >>
+>> >> On Mon, Sep 4, 2023 at 7:23=E2=80=AFPM Andrew Melnichenko <andrew@day=
+nix.com>
+>> wrote:
+>> >> >
+>> >> > Hi Jason,
+>> >> > According to our previous conversation, I've added checks to the
+>> meson script.
+>> >> > Please confirm that everything is correct
+>> >>
+>> >> I've queued this series.
+>> >>
+>> >> Thanks
+>> >>
+>>
+>>
+
+--0000000000005a0a3f060c7599f7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi Jason,<div>As we anyway missed the timeframe=C2=A0of 8.=
+2 please remove this v7 series from the pull, we will send v8 in which we w=
+ant to take in account most of Akihiko comments (especially DEFINE_PROP_ARR=
+AY and naming of the properties).</div><div><br></div><div>Thank you very m=
+uch</div><div><br></div><div>Yuri</div></div><br><div class=3D"gmail_quote"=
+><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Dec 13, 2023 at 9:23=E2=80=
+=AFAM Yuri Benditovich &lt;<a href=3D"mailto:yuri.benditovich@daynix.com" t=
+arget=3D"_blank">yuri.benditovich@daynix.com</a>&gt; wrote:<br></div><block=
+quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
+px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div dir=3D"lt=
+r"></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_att=
+r">On Tue, Dec 12, 2023 at 5:33=E2=80=AFAM Jason Wang &lt;<a href=3D"mailto=
+:jasowang@redhat.com" target=3D"_blank">jasowang@redhat.com</a>&gt; wrote:<=
+br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
+x;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Mon, Dec 11, =
+2023 at 7:51=E2=80=AFPM Yuri Benditovich<br>
+&lt;<a href=3D"mailto:yuri.benditovich@daynix.com" target=3D"_blank">yuri.b=
+enditovich@daynix.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Hello Jason,<br>
+&gt; Can you please let us know what happens with this series?<br>
+<br>
+It should be my bad, it is in V1 of the pull request but missed<br>
+accidentally in V2 of the pull.<br>
+<br>
+I&#39;ve merged it here,<br>
+<br>
+<a href=3D"https://gitlab.com/jasowang/qemu.git" rel=3D"noreferrer" target=
+=3D"_blank">https://gitlab.com/jasowang/qemu.git</a></blockquote><div><br><=
+/div><div>Yes, the merged tree is OK. I see you changed the target version =
+to 8.3</div><div>=C2=A0It looks like no more changes required for the PULL,=
+</div><div>=C2=A0Please let us know if something is needed.</div><div><br><=
+/div><div>Thanks,</div><div>Yuri</div><div><br></div><div><br></div><blockq=
+uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
+x solid rgb(204,204,204);padding-left:1ex"><br>
+<br>
+Please check if it&#39;s correct.<br>
+<br>
+Thanks<br>
+<br>
+&gt;<br>
+&gt; Thanks<br>
+&gt; Yuri<br>
+&gt;<br>
+&gt; On Fri, Sep 8, 2023 at 9:43=E2=80=AFAM Jason Wang &lt;<a href=3D"mailt=
+o:jasowang@redhat.com" target=3D"_blank">jasowang@redhat.com</a>&gt; wrote:=
+<br>
+&gt;&gt;<br>
+&gt;&gt; On Mon, Sep 4, 2023 at 7:23=E2=80=AFPM Andrew Melnichenko &lt;<a h=
+ref=3D"mailto:andrew@daynix.com" target=3D"_blank">andrew@daynix.com</a>&gt=
+; wrote:<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; Hi Jason,<br>
+&gt;&gt; &gt; According to our previous conversation, I&#39;ve added checks=
+ to the meson script.<br>
+&gt;&gt; &gt; Please confirm that everything is correct<br>
+&gt;&gt;<br>
+&gt;&gt; I&#39;ve queued this series.<br>
+&gt;&gt;<br>
+&gt;&gt; Thanks<br>
+&gt;&gt;<br>
+<br>
+</blockquote></div></div>
+</blockquote></div>
+
+--0000000000005a0a3f060c7599f7--
 
