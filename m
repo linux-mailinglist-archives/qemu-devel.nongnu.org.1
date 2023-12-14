@@ -2,83 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661F9813879
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 18:26:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6707481390A
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 18:45:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDpT7-0001l5-9i; Thu, 14 Dec 2023 12:25:53 -0500
+	id 1rDpl3-0006Al-FU; Thu, 14 Dec 2023 12:44:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rDpT5-0001km-7D
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:25:51 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rDpT3-000502-Jh
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:25:50 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-54f4f7e88feso9383387a12.3
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 09:25:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702574747; x=1703179547; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=r6xcYxyGpGh0UMclg4CLI/erDIk3zf90VHoo3HjoFRM=;
- b=ORU64NgRuxmS1usc+qHkJ8UaDbLquIrCPce5B6b+zYvYf0vFTfXYqJa9dFsAoicinm
- +OwlFnzYSnwvHx6k96V00Kk9+RvgMNvYboHCWlAodLEfSY/7tBiamHc9kyQ2SoXl42gI
- JiPB3vf78uKKVQrQm0yiljW52mwSiRQuiYVIePwyNja5XdGRyF3svGjPG5jyHqxPtLx1
- Qt1COWGAeY/uFAf6I8XEcUeM7TVD1czHpiOQFAJ7GB8kMSctDzF+Q3WYZJvVxMqdEuA7
- uFGy8+VfRGmBuFZg89tThn8metgNcNifsKsNLWVxuNo9weKFF3d4K+u1LxyM3apOArsq
- rZqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702574747; x=1703179547;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=r6xcYxyGpGh0UMclg4CLI/erDIk3zf90VHoo3HjoFRM=;
- b=Su8TNpGwF+UxB21IjcJSewPLh4yolEJrq/ylfsglwCcVxsQyLcvAADHFK3cNpTo0Z2
- NlwQKHsQY9x3GGQYWWE+buRLsQ7Lz7Cjc8g3ezZ+a1ifIsJzBJdQIpD0MS6SIO9liE9U
- 035K9x6CThDU7o6URnsIyE2vJjN6ybCTwunmgkGIX4hbwdu2ZrM/fhrF+Tt9DlBOu+Wu
- 9ZYuQ0nJ/6b5aHr/vBfKyM5LO6v5pz2w6PzwezQHAa8tsp1RUDQdP1m+lgWzHBzD+lP1
- jQs3LAlawxYnkOLNeY3yU0iQ6uL6u/hnU2NRE+CfCr/MnjFIRoE70tOFofXcooRWG2Ll
- GVUQ==
-X-Gm-Message-State: AOJu0Yzb/5XeQz9oUiHbGsWsQ+P7C9MTmrDtJrueIB5mAitYUFL5C8Oc
- xXIZBEDsW9dc4UTpIAlW9WQ0Xmj3nO5PNtbEVUiNnA==
-X-Google-Smtp-Source: AGHT+IFHsQ3NpezhHG0l7weiSCOe76IlSSTIMrAVAoZydlTZk6I9gfG9PDZzZd5eHGXEici9Ku4jIeLrsjRCM97ML0k=
-X-Received: by 2002:a50:871b:0:b0:552:7482:ea27 with SMTP id
- i27-20020a50871b000000b005527482ea27mr1025029edb.34.1702574747100; Thu, 14
- Dec 2023 09:25:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <SRS0=iKBM=HZ=kaod.org=clg@ozlabs.org>)
+ id 1rDpl0-00066j-ML; Thu, 14 Dec 2023 12:44:22 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=iKBM=HZ=kaod.org=clg@ozlabs.org>)
+ id 1rDpkv-00010n-8v; Thu, 14 Dec 2023 12:44:21 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Srfq91CZXz4xDB;
+ Fri, 15 Dec 2023 04:44:05 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Srfq54ChRz4x1p;
+ Fri, 15 Dec 2023 04:44:00 +1100 (AEDT)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: qemu-devel@nongnu.org,
+	qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH] spapr: Tag pseries-2.1 - 2.11 machines as deprecated
+Date: Thu, 14 Dec 2023 18:43:54 +0100
+Message-ID: <20231214174354.1514320-1-clg@kaod.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20231214171447.44025-1-philmd@linaro.org>
-In-Reply-To: <20231214171447.44025-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 14 Dec 2023 17:25:36 +0000
-Message-ID: <CAFEAcA-Je+_tNCwiL_sQb-tDmCRJ2LWm5mAfuowtxbUBNEWQXQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] hw/arm: Prefer arm_feature() over
- object_property_find()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>, 
- Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
- Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>, 
- Alistair Francis <alistair@alistair23.me>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=iKBM=HZ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,27 +65,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Dec 2023 at 17:14, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> QOM properties are added on the ARM vCPU object when a
-> feature is present. Rather than checking the property
-> is present, check the feature.
->
-> Suggested-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> RFC: If there is no objection on this patch, I can split
->      as a per-feature series if necessary.
->
-> Based-on: <20231123143813.42632-1-philmd@linaro.org>
->   "hw: Simplify accesses to CPUState::'start-powered-off' property"
+pseries machines before version 2.11 have undergone many changes to
+correct issues, mostly regarding migration compatibility. This is
+obfuscating the code uselessly and makes maintenance more difficult.
+Remove them and only keep the last version of the 2.x series, 2.12,
+still in use by old distros.
 
-I'm not a super-fan of board-level code looking inside
-the QOM object with direct use of arm_feature() when
-it doesn't have to. What's wrong with asking whether
-the property exists before trying to set it?
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ docs/about/deprecated.rst | 7 +++++++
+ hw/ppc/spapr.c            | 1 +
+ 2 files changed, 8 insertions(+)
 
-thanks
--- PMM
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 2e1504024658..9ceef6ec2a8d 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -269,6 +269,13 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (since 8.2)
+ 
+ The Nios II architecture is orphan.
+ 
++``pseries-2.1`` up to ``pseries-2.11`` (since 9.0)
++'''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++Older pseries machines before version 2.12 have undergone many changes
++to correct issues, mostly regarding migration compatibility. These are
++no longer maintained and removing them will make the code easier to
++read and maintain. Use versions 2.12 and above as a replacement.
+ 
+ Backend options
+ ---------------
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index df09aa9d6a00..5034461399d2 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -5083,6 +5083,7 @@ static void spapr_machine_2_11_class_options(MachineClass *mc)
+     spapr_machine_2_12_class_options(mc);
+     smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
+     compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
++    mc->deprecation_reason = "old and not maintained - use a 2.12+ version";
+ }
+ 
+ DEFINE_SPAPR_MACHINE(2_11, "2.11", false);
+-- 
+2.43.0
+
 
