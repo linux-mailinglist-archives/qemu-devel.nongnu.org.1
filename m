@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F168B812EE7
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 12:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF0B812F0A
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 12:44:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDk6Q-0004hz-Tk; Thu, 14 Dec 2023 06:42:06 -0500
+	id 1rDk7z-0005RU-MK; Thu, 14 Dec 2023 06:43:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rDk6O-0004hL-Nb
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 06:42:04 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rDk7x-0005R3-Tx
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 06:43:41 -0500
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rDk6E-00043C-WB
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 06:42:04 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d3720f3e18so739145ad.1
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 03:41:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rDk7w-0004Xr-3a
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 06:43:41 -0500
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2ca1e6a94a4so104819501fa.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 03:43:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1702554112; x=1703158912; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vz1xZ+6REjcIuixVy7PR8caf3Kl3SULQaA/vVQxjm74=;
- b=NFHY6EFQd97ZGrSREUyWCQvp1RJ1RyNs0ay7cVdW6UvXvCh9lSL+fxbJUjt9gDUDlb
- 5+EIysrhfaYj55xTDEX+4rDFg7ttmyvMj5gJNBwQBp2I55m4QGGOKwJ/qp4ukqUuh8d3
- pE+2bY/jFSyi+tTa+36jkEyawPPxAahMRKIUHvt/mEGleF1B4dlDDzqlIHHxKeuNX7oc
- bmGed0A7EAmKU6oZ9yAXdtQg0dcyOaNLPlXXk5c3xzOms5nga4LB3knVCVES5JOMrdX5
- aEWTHzf2hbkS9DEzx+slsV+erDMbzIAWHbRQm8CS+Rnynz9GFUxKMOGEy4P9h+2APsQO
- rDSQ==
+ d=linaro.org; s=google; t=1702554218; x=1703159018; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ns/b12vs3meiT2AKsFvlgoRG58Wje041FbFxnxJs0eQ=;
+ b=Iuc8sgSo+N3D52BymWJou56AQgg17uBJ2/y7OrhJYmXavNxPby4jVKFgt4d4kLJn63
+ HAz/ZMD7sfPsLRPXcVVylqYCWWxahcbw7I1JK9YxQhp9cYGDXH6WnYb4EsEXPSh42ejG
+ ceYDQ2Fcga6kovaBUmuQg1xSgAYbbYxg5spDaBn9qCRqqUJ+vMjECCBx9/uYbXTswnKZ
+ nEcu3QRMJfpjOYQCjG51U9cvUTWcOM45ngKLA/gQjjatUJ/nL3AIQJCMPCH4A22yDFq2
+ lwE8nL9ylgLPpjgWNgiTV+Pszi+UW/na/nOVYXPTWjXkCj5D841z3vro8tG7XqjOQ3iU
+ MVPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702554112; x=1703158912;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vz1xZ+6REjcIuixVy7PR8caf3Kl3SULQaA/vVQxjm74=;
- b=YBXFb6jLVCtB1Wm0YiNQMib1dE+VHzW6fV9qUIKiTEWNe31q+K+ArWFc2y92+TP3Z4
- XpVW6YKs1uCbmlYtssqd4PJTXNqRSkFroR5IfvFbLQXerKJBZ7UPDyRkb86ImZaGI1zl
- iLJKUsVOmaPDL/3SLi4omc2KiCWzOLexpdb7+6ckmnSEuDp3e1SljeTAySaupuonZ86u
- pspT0TP2X4+9GC9dh56SVK5LKe8ryjqIMM/eyGMG+x3UXJHMfl6ASifXko294uUTF3US
- A8+AbXwGWimaKMIWPa+r+lMrG2G8Ki2eWAycGaQ7ihFrz9/PQCO7Mjvigq720AKPJqOF
- ujrw==
-X-Gm-Message-State: AOJu0YwGZ2QI+/gRBoFVPuvwS4I4ykZMfRt1MqPeaJUTZlAs+sxSzZp1
- MxIOEWXo3Pc17lLl1VVdbx9xXQ==
-X-Google-Smtp-Source: AGHT+IE2yH2/fhHVANrhhs0iGRjCtgar9Iao4IwASeIFqHpic53sSyqfdCqj31wCTpXeWhfo3ul6yA==
-X-Received: by 2002:a17:902:7845:b0:1d3:529a:83b6 with SMTP id
- e5-20020a170902784500b001d3529a83b6mr1030000pln.17.1702554112433; 
- Thu, 14 Dec 2023 03:41:52 -0800 (PST)
-Received: from ?IPV6:2804:7f0:bcc0:ddec:9d1c:476f:1886:86ae?
- ([2804:7f0:bcc0:ddec:9d1c:476f:1886:86ae])
- by smtp.gmail.com with ESMTPSA id
- jd21-20020a170903261500b001d347c435ffsm3587162plb.36.2023.12.14.03.41.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Dec 2023 03:41:52 -0800 (PST)
-Message-ID: <e94fbd47-6a75-47f6-b585-173151626d56@ventanamicro.com>
-Date: Thu, 14 Dec 2023 08:41:48 -0300
+ d=1e100.net; s=20230601; t=1702554218; x=1703159018;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ns/b12vs3meiT2AKsFvlgoRG58Wje041FbFxnxJs0eQ=;
+ b=D51BU5Nzagv88wdnC8KJjR4iohkzxvIr3dlBu1O7SIQJVWpcVCiaY32C3Qq/XvFQXn
+ N1ZGaPSs5OtDvcDTa0l9donuKwDxSrppTY08gKqWwQCSEShS3/kUHv31XPIDt6Y//lE+
+ riOJXd1Eo04WdWeieIYNO5E3rHxeMwnFah2KeEmL8/5b04HhnadRVqXu7fanU7SaF50f
+ cHfP3+hgBSo1vY8AMTalmha06eGQSjTESIvTjzIrRg8CmFxj7KgqGeGwNWIO2fr82WA3
+ 9KYZTO9qXjsSh5m1n/1q5sZofcdssy0L7Eh1D7CyFI5r6T3lfj2GQI9f4LW4JwBX1/V+
+ +Xcw==
+X-Gm-Message-State: AOJu0YwVW3Ovmr7+2+CQVYKGdAPw5lGLI8WhB6klZBs8W3FKiQQIbmdF
+ 6RsErIiUeYXnGh7pVwsDquTXS4zRlZDDrhPXV+cGlw==
+X-Google-Smtp-Source: AGHT+IHuNrC683VlQ8lLAfm8Kj8cOOEwwA816fIYuv6rCXgNUgzaqnNpAWF9hiGX3Xi/O3hTuAeFGYvQlsBPALAtnWg=
+X-Received: by 2002:a2e:154a:0:b0:2cc:1d28:edd with SMTP id
+ 10-20020a2e154a000000b002cc1d280eddmr3027338ljv.3.1702554217931; Thu, 14 Dec
+ 2023 03:43:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] target/riscv: Clear vstart_qe_zero flag
-Content-Language: en-US
-To: Ivan Klokov <ivan.klokov@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- richard.henderson@linaro.org
-References: <20231214111851.142532-1-ivan.klokov@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231214111851.142532-1-ivan.klokov@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
+References: <20231211175215.3216667-1-nabihestefan@google.com>
+In-Reply-To: <20231211175215.3216667-1-nabihestefan@google.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 14 Dec 2023 11:43:26 +0000
+Message-ID: <CAFEAcA_j21Vbr6viZtNuCymR1eM1J-dn3KxO1qPiQzuVmY4ibg@mail.gmail.com>
+Subject: Re: [PATCH v7 00/11] Implementation of NPI Mailbox and GMAC
+ Networking Module
+To: Nabih Estefan <nabihestefan@google.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
+ wuhaotsh@google.com, jasonwang@redhat.com, avi.fishman@nuvoton.com, 
+ kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,87 +87,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, 11 Dec 2023 at 17:52, Nabih Estefan <nabihestefan@google.com> wrote:
+>
+> From: Nabih Estefan Diaz <nabihestefan@google.com>
+>
+> [Changes since v6]
+> Remove the Change-Ids from the commit messages.
+>
 
+This doesn't compile:
 
-On 12/14/23 08:18, Ivan Klokov wrote:
-> The vstart_qe_zero flag is set at the beginning of the translation
-> phase from the env->vstart variable. During the execution phase, some
-> instructions may change env->vstart, but the flag remains the same as
-> at the start of the block. With some combinations of instructions this
-> causes an illegal instruction exception. This patch simultaneously
-> updates flag and env->vstart and to avoid inconsistency.
-> 
-> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-> ---
->   target/riscv/insn_trans/trans_rvbf16.c.inc |  6 +-
->   target/riscv/insn_trans/trans_rvv.c.inc    | 88 +++++++++++-----------
->   target/riscv/insn_trans/trans_rvvk.c.inc   | 12 +--
->   target/riscv/translate.c                   | 12 ++-
->   4 files changed, 64 insertions(+), 54 deletions(-)
-> 
-> diff --git a/target/riscv/insn_trans/trans_rvbf16.c.inc b/target/riscv/insn_trans/trans_rvbf16.c.inc
-> index 4e39c00884..2867bbc2bb 100644
-> --- a/target/riscv/insn_trans/trans_rvbf16.c.inc
-> +++ b/target/riscv/insn_trans/trans_rvbf16.c.inc
-> @@ -86,7 +86,7 @@ static bool trans_vfncvtbf16_f_f_w(DisasContext *ctx, arg_vfncvtbf16_f_f_w *a)
->                              ctx->cfg_ptr->vlen / 8,
->                              ctx->cfg_ptr->vlen / 8, data,
->                              gen_helper_vfncvtbf16_f_f_w);
-> -        mark_vs_dirty(ctx);
-> +        finalize_rvv_inst(ctx);
+../../hw/net/npcm_gmac.c:889:43: error: too few arguments to function
+call, expected 6, have 5
+                             dev->id, gmac);
+                                          ^
+/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/include/net/net.h:159:11:
+note: 'qemu_new_nic' declared here
+NICState *qemu_new_nic(NetClientInfo *info,
+          ^
+1 error generated.
 
-"finalize_rvv_inst()" is not the best of names in this case. Why aren't we
-"finalizing" all RVV instructions?
+Please make sure you've rebased the series on the most
+recent head-of-git. (In this case you are missing the
+necessary changes to cope with commit 7d0fefdf81f5
+which added an extra argument to this function.)
 
-mark_vs_dirty() is already doing a lot of ctx updates. I would just put any updates
-to ctx->vstart_qe_zero inside of it.
-
-
-> [...]
-
-
-> -        mark_vs_dirty(s);
-> +        finalize_rrv_inst(s);
->           gen_set_label(over);
->           return true;
->       }
-> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> index f0be79bb16..d4147e2dd7 100644
-> --- a/target/riscv/translate.c
-> +++ b/target/riscv/translate.c
-> @@ -670,8 +670,18 @@ static void mark_vs_dirty(DisasContext *ctx)
->           }
->       }
->   }
-> +static void set_vstart_eq_zero(DisasContext *ctx)
-> +{
-> +    ctx->vstart_eq_zero = true;
-> +}
-> +
-> +static void finalize_rvv_inst(DisasContext *ctx)
-> +{
-> +    mark_vs_dirty(ctx);
-> +    set_vstart_eq_zero(ctx);
-> +}
-
-Did you check if every time we're marking VS dirty we're setting env->vstart = 0?
-I was taking a looking into it and so far I'm not to make this assumption.
-
-IMO you'll need to read the current vstart value (probably via cpu_vstart) to see if
-ctx->vstart_eq_zero is true or not. If it's false you can also mark ctx->vl_eq_vmax
-as false since it depends on ctx->vstart_eq_zero.
-
-
-Thanks,
-
-
-Daniel
-
-
->   #else
-> -static inline void mark_vs_dirty(DisasContext *ctx) { }
-> +static inline void finalize_rvv_inst(DisasContext *ctx){ }
->   #endif
->   
->   static void gen_set_rm(DisasContext *ctx, int rm)
+thanks
+-- PMM
 
