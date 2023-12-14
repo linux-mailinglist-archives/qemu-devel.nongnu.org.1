@@ -2,78 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4580E81354A
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 16:52:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFE0813555
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 16:55:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDnzr-0003xp-6I; Thu, 14 Dec 2023 10:51:35 -0500
+	id 1rDo2t-0005GY-4r; Thu, 14 Dec 2023 10:54:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rDnzp-0003xg-6q
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 10:51:33 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rDnzm-0005qZ-Fn
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 10:51:31 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-54c5ed26cf6so10492142a12.3
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 07:51:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702569089; x=1703173889; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CVO1dTWpsQbiPDzKjaeM+Zz+x+K4cGsI499qTDUGVIE=;
- b=v/K3J4ePPbwBqD/ZHgo4xO7DEYhJpK91JqVjhm4UAvKQrYy7apG28cP6uPPkeUZ0G3
- HuI6LPqdqdxlDnZ6oVmAP/1wTaNl4N3mrFvusFZ2SJxW3ZykhKwvPxUfXMS/JMRV6+oL
- KtITnuqVf+WJJPVLU5HyK4jxVFCezPS8TChzBB+4+m5SmHPV9ygzTxJVHOtGwK/XbHEL
- Sm1U7fJvFgePc06rTGUx2qFZusD4RxHMtstTh0Sl06IXgI93SWE8qwBzMHRnYRh0NE3C
- vGNqIzjKfUjiTTl2etlasq0K9Kr60CSRBd6dveA4ivtidav7yDnB0jNRzPZ81Ivp+BHg
- YunQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702569089; x=1703173889;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CVO1dTWpsQbiPDzKjaeM+Zz+x+K4cGsI499qTDUGVIE=;
- b=UoyiSekOEUTBWkSVA1yxufKz1RCAc7uyvvBgiB6HQkA1cNtTpxvUkwjlyCMOViiN5o
- fkQWXZsq/4o5N37YEBuYjAXtdDWuN6+lUN6/GxboKomjvr40MRHpOpgkp5GM4MlCz6ul
- l2JQzmm87wVrMghpkqbErDlug/XBrrj5k+UB9rs8I3zu6P35L9HosB62JEwrtsp5430F
- IRh5vxbze5QbS/8Twd5v64BKW8tgK9niaDJVFwOMbXcT69fJXCHsxywkFfMBO5jNrKN/
- 4VcLA1Qj/Lh44Sh2u65VS2lpfkFSQfLXGu9gpnjjo8i8JAcGdLm0ykvNGVKpH/9CJFHJ
- xolA==
-X-Gm-Message-State: AOJu0Yw64gZoeaeP7PWCP06MNvkaWZR4bGDatEwBP1pCQ0844sgX6jL4
- IaamFeTEUEkrdfMwLJXM9dKs76XtdIbD3wNoQVdc8A==
-X-Google-Smtp-Source: AGHT+IF2OccqX3hjBTKhWhhD04OEfK8d4U6HnXCt0UPgMImfWEBrPpYjv1ZksuIbvPjwTeiBjdfsFZ6j0c7bd7+/wG8=
-X-Received: by 2002:a50:d4de:0:b0:552:231d:ac84 with SMTP id
- e30-20020a50d4de000000b00552231dac84mr1432606edj.79.1702569088889; Thu, 14
- Dec 2023 07:51:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
+ id 1rDo2g-0005Ee-Fy
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 10:54:30 -0500
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
+ id 1rDo2d-0006fU-94
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 10:54:29 -0500
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:29a4:0:640:98d3:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 0184661363;
+ Thu, 14 Dec 2023 18:54:21 +0300 (MSK)
+Received: from davydov-max-nux.yandex-team.ru (unknown
+ [2a02:6b8:b081:1332::1:18])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id XrmSvb0Gf0U0-QEkUCo5N; Thu, 14 Dec 2023 18:54:20 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1702569260;
+ bh=2/T3FKWwsKGuwdqZIKFthLNQ7h7R6hP/vPbzGfBDgss=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=UPqu123RH86ZeZNo4CymdCPsqV0JLcSKoxzKembn9Bzpbl/4TTB/6wa8oCCSxVfJS
+ qDDq2WSCtePiVnrlVWSxDChVvAq+jdUBSDh+Ixm5Hpj0x+K9cStJaRajcyo10IvQn7
+ +FBsWsWhTbkUgEyv/SOZUMmvlQvmiofUWs+mpcpY=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Maksim Davydov <davydov-max@yandex-team.ru>
+To: qemu-devel@nongnu.org
+Cc: davydov-max@yandex-team.ru, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
+ jsnow@redhat.com, crosa@redhat.com, bleal@redhat.com, eblake@redhat.com,
+ armbru@redhat.com, pbonzini@redhat.com, berrange@redhat.com, alxndr@bu.edu,
+ bsd@redhat.com, stefanha@redhat.com, thuth@redhat.com,
+ darren.kenny@oracle.com, Qiuhao.Li@outlook.com, lvivier@redhat.com
+Subject: [PATCH v7 0/4] compare machine type compat_props
+Date: Thu, 14 Dec 2023 18:53:29 +0300
+Message-Id: <20231214155333.35643-1-davydov-max@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20231127170823.589863-1-peter.maydell@linaro.org>
- <20231127170823.589863-3-peter.maydell@linaro.org>
- <ceb50d7c-16ed-41cf-bc51-3a47cb34d348@tls.msk.ru>
-In-Reply-To: <ceb50d7c-16ed-41cf-bc51-3a47cb34d348@tls.msk.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 14 Dec 2023 15:51:18 +0000
-Message-ID: <CAFEAcA9BnxOy0UBhCxBLjxM3BtAuV7j2oK448Vo988REuAAJTg@mail.gmail.com>
-Subject: Re: [PULL 02/13] target/arm: Handle overflow in calculation of next
- timer tick
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=davydov-max@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,52 +77,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Dec 2023 at 08:20, Michael Tokarev <mjt@tls.msk.ru> wrote:
->
-> 27.11.2023 20:08, Peter Maydell:
-> > In commit edac4d8a168 back in 2015 when we added support for
-> > the virtual timer offset CNTVOFF_EL2, we didn't correctly update
-> > the timer-recalculation code that figures out when the timer
-> > interrupt is next going to change state. We got it wrong in
-> > two ways:
-> >   * for the 0->1 transition, we didn't notice that gt->cval + offset
-> >     can overflow a uint64_t
-> >   * for the 1->0 transition, we didn't notice that the transition
-> >     might now happen before the count rolls over, if offset > count
-> >
-> > In the former case, we end up trying to set the next interrupt
-> > for a time in the past, which results in QEMU hanging as the
-> > timer fires continuously.
-> >
-> > In the latter case, we would fail to update the interrupt
-> > status when we are supposed to.
-> >
-> > Fix the calculations in both cases.
-> >
-> > The test case is Alex Benn=C3=A9e's from the bug report, and tests
-> > the 0->1 transition overflow case.
-> >
-> > Fixes: edac4d8a168 ("target-arm: Add CNTVOFF_EL2")
-> > Cc: qemu-stable@nongnu.org
->
-> This change, when applied to 7.2, causes the newly added tests to fail,
-> eg: https://gitlab.com/qemu-project/qemu/-/pipelines/1103065860
-> (timeout running plugin-vtimer-with-libbb.so etc).
->
-> Any hint what can be wrong there?
+This script can be used to choose the best machine type in the
+appropriate cases. Also we have to check compat_props of the old MT
+after changes to be sure that they haven't broken old the MT. For
+example, pc_compat_3_1 of pc-q35-3.1 has Icelake-Client which was
+removed.
 
-The test passes fine as a normal test, it's only failing when
-plugins are enabled; in the job log
-https://gitlab.com/qemu-project/qemu/-/jobs/5727705602
-we can see the
-TEST vtimer on aarch64
-line and that one doesn't time out.  Alex, any ideas?
+v7 -> v6:
+* minor fixes
 
-As a fallback, this isn't really important to backport as far
-as the 7.2 branch I think -- although it's a bug it's one that's
-been present (as the commit message notes) for many years without
-it being a problem in practice.
+v6 -> v5:
+* add ability to compare different QEMU binaries
+* replace abstract drivers by its implementations
+* improve human-readable format
+* code refactoring
 
-thanks
--- PMM
+v5 -> v4:
+* minor fixes
+
+v4 -> v3:
+* increase read buffer limit to limit value in libvirt
+* add caching of qmp requests to speed up the script 
+
+v3 -> v2:
+* simplify adding new methods for getting QEMU default values
+* add typing
+* change concept from fixed dictionaries to classes
+
+v2 -> v1:
+* fix script code style and descriptions
+* reorder patches
+ 
+v1 -> previous iteration:
+* new default value print concept
+* QEMU python library is used to collect qmp data
+* remove auxiliary patches (that was used to fix `->get` sematics)
+* print compat_props in the correct order
+* delete `absract` field to reduce output JSON size
+
+Maksim Davydov (4):
+  qom: qom-list-properties: add default value
+  qmp: add dump machine type compatibility properties
+  python/qemu/machine: add method to retrieve QEMUMachine::binary field
+  scripts: add script to compare compatibility properties
+
+ hw/core/machine-qmp-cmds.c       |  23 +-
+ python/qemu/machine/machine.py   |   5 +
+ qapi/machine.json                |  64 +++-
+ qom/qom-qmp-cmds.c               |   1 +
+ scripts/compare-machine-types.py | 486 +++++++++++++++++++++++++++++++
+ tests/qtest/fuzz/qos_fuzz.c      |   2 +-
+ 6 files changed, 577 insertions(+), 4 deletions(-)
+ create mode 100755 scripts/compare-machine-types.py
+
+-- 
+2.34.1
+
 
