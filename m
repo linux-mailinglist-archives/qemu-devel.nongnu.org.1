@@ -2,54 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6707481390A
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 18:45:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FF7813915
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 18:51:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDpl3-0006Al-FU; Thu, 14 Dec 2023 12:44:25 -0500
+	id 1rDpqt-00086o-FP; Thu, 14 Dec 2023 12:50:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=iKBM=HZ=kaod.org=clg@ozlabs.org>)
- id 1rDpl0-00066j-ML; Thu, 14 Dec 2023 12:44:22 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=iKBM=HZ=kaod.org=clg@ozlabs.org>)
- id 1rDpkv-00010n-8v; Thu, 14 Dec 2023 12:44:21 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Srfq91CZXz4xDB;
- Fri, 15 Dec 2023 04:44:05 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Srfq54ChRz4x1p;
- Fri, 15 Dec 2023 04:44:00 +1100 (AEDT)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: qemu-devel@nongnu.org,
-	qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH] spapr: Tag pseries-2.1 - 2.11 machines as deprecated
-Date: Thu, 14 Dec 2023 18:43:54 +0100
-Message-ID: <20231214174354.1514320-1-clg@kaod.org>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rDpqg-0007uo-ED
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:50:16 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rDpqe-0005mf-Km
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:50:14 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1d03bcf27e9so51351585ad.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 09:50:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702576207; x=1703181007; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=s6KD8LsMZoeYFtHz7aTePhHAJZRXx7LkCTSbIY3dKEI=;
+ b=AFR36Y9e44ezXEJvpexKItYBr25XBkBUyq1roaWxLQnaJva8fIH/+2W7Kzl7slrPeN
+ GjvdmmsfGppOJM707E8kBAbsPLNMJd33eXvyv6XtruURzi525YypItAKzJnxaKW9W+Ba
+ OZTmRVUWGCkYPuW8MYiBgLP2zoacZyALTrAu+Cw0Eha0CnenrCrO9ZqEZXjV1lg9V3yM
+ eFpIei4w9jjTCWFQoPBMion07ufTutDYc8ucm8OW12TyXZdIoKV2o4LBg62vxswMaEm3
+ S5f/3XRTJIwcfofggkRFFu/Gp5LzDbU28zidQx1k8mDtcdYsVMNiep6Y7oQzOPxzBTCg
+ JjEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702576207; x=1703181007;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=s6KD8LsMZoeYFtHz7aTePhHAJZRXx7LkCTSbIY3dKEI=;
+ b=vClT7eEf7Qj8xKnMlEWuHKuJVaY/w46435tdWpBU9lgT/M1dzsfGe0K1h9++FVS4d7
+ 8d8FATPGDfqZeG1zjZZerR3jsOkuFHal88X6af65Lwp5ThgVWeScO3zwkSLJAfsxd6QH
+ FOka4dtud5AVvdf/StfPEwXJVuvEQly+yU+tp68mI7uMTDp5/Zj1BjDlx8yMw1pySMDz
+ HxWq9gnfBHW8UZ0gPuRqVWOtBTka50pKdgaYmu9DG7E0XR5YTeVRpd8K7h1/HIBY3XYT
+ O2Znr4uhIMBehnKB6JH0K8x6TcQPGb1Tev9iRhZfIHltrxucAYE70vZIG69ysfdBgsj8
+ 9HZQ==
+X-Gm-Message-State: AOJu0YytFl/Ii7uMnWgyseP5BmXMKzRAHCXmBKMk4UaUTDqjz41rGp4E
+ mSlSQyXUVhpzrDXTejHO4Ro91w==
+X-Google-Smtp-Source: AGHT+IGRW6+OhC3/QV2kj7AfqXgNczuKJgrUYkRWxS74045K5wPXHq/XDXEyzl8xepSu0Z+tgz1egA==
+X-Received: by 2002:a17:902:cece:b0:1d3:6c64:8352 with SMTP id
+ d14-20020a170902cece00b001d36c648352mr780159plg.29.1702576207252; 
+ Thu, 14 Dec 2023 09:50:07 -0800 (PST)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ a18-20020a170902ecd200b001cfc1b931a9sm12689350plh.249.2023.12.14.09.50.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Dec 2023 09:50:06 -0800 (PST)
+Message-ID: <175531b5-45a7-401f-8e1f-90343fee696e@linaro.org>
+Date: Thu, 14 Dec 2023 09:50:04 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] hw/ppc/spapr_hcall: Remove unused 'exec/exec-all.h'
+ included header
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, Thomas Huth
+ <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20231212113640.30287-1-philmd@linaro.org>
+ <20231212113640.30287-2-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231212113640.30287-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=iKBM=HZ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,49 +101,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pseries machines before version 2.11 have undergone many changes to
-correct issues, mostly regarding migration compatibility. This is
-obfuscating the code uselessly and makes maintenance more difficult.
-Remove them and only keep the last version of the 2.x series, 2.12,
-still in use by old distros.
+On 12/12/23 03:36, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   hw/ppc/spapr_hcall.c | 1 -
+>   1 file changed, 1 deletion(-)
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- docs/about/deprecated.rst | 7 +++++++
- hw/ppc/spapr.c            | 1 +
- 2 files changed, 8 insertions(+)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 2e1504024658..9ceef6ec2a8d 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -269,6 +269,13 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (since 8.2)
- 
- The Nios II architecture is orphan.
- 
-+``pseries-2.1`` up to ``pseries-2.11`` (since 9.0)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+Older pseries machines before version 2.12 have undergone many changes
-+to correct issues, mostly regarding migration compatibility. These are
-+no longer maintained and removing them will make the code easier to
-+read and maintain. Use versions 2.12 and above as a replacement.
- 
- Backend options
- ---------------
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index df09aa9d6a00..5034461399d2 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -5083,6 +5083,7 @@ static void spapr_machine_2_11_class_options(MachineClass *mc)
-     spapr_machine_2_12_class_options(mc);
-     smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
-     compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
-+    mc->deprecation_reason = "old and not maintained - use a 2.12+ version";
- }
- 
- DEFINE_SPAPR_MACHINE(2_11, "2.11", false);
--- 
-2.43.0
-
+r~
 
