@@ -2,106 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE676813619
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 17:23:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFE4813638
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 17:29:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDoTA-0007Ed-9S; Thu, 14 Dec 2023 11:21:52 -0500
+	id 1rDoZF-0008KJ-7A; Thu, 14 Dec 2023 11:28:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1rDoT5-0007EB-Ai; Thu, 14 Dec 2023 11:21:47 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1rDoT2-0001Gt-Om; Thu, 14 Dec 2023 11:21:47 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BEFeEjG014434; Thu, 14 Dec 2023 16:21:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=FCz+REY/8xN1kitc77pbWjVNcpDKglaaZ5wfo7jZhng=;
- b=Ymd2vcHIaWWYVr0fJDCJcah5BfMbOFxRG8kGIzRTutDOmYdeNHPr6IS0IYdkRr8c6Mvz
- qWPwz0DTXWr5/7NyHqOmi9p6QWrMm1gs4gNRkLUN/70VyATCQdFtyoZCTyJr2Mx/ES2a
- QgopgILYChnUZ+E3+RqS6LjPQKADhbXrGZ/N0XY8Lm7qkI1ULed3N9q4f+5XT8ZVLkPB
- GCCH6W97oF4EJRXTOGo1QMpgN2f/QgdcHhf5KPRUzA40ac011GUEMzYT9JHSbSDdQuGw
- DkRE88ihJPBDpgSzqJzK9y9yDBpjmtbd3umh31Z0KvXu/lYsADgnXFg2bxJx4CAixESR TA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v036f4fwv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Dec 2023 16:21:38 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BEFdebb004850;
- Thu, 14 Dec 2023 16:21:37 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v036f4frv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Dec 2023 16:21:37 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BEEFE9A013874; Thu, 14 Dec 2023 16:21:31 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uw592h57u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Dec 2023 16:21:31 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3BEGLU8a52625750
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Dec 2023 16:21:30 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 27F0C58052;
- Thu, 14 Dec 2023 16:21:30 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 57FA25805E;
- Thu, 14 Dec 2023 16:21:29 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.110.228]) by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 14 Dec 2023 16:21:29 +0000 (GMT)
-Message-ID: <35ab8e99aaad4a5be10d84c3bab019c01788d276.camel@linux.ibm.com>
-Subject: Re: [PATCH 3/4] hw/s390x/ipl: Remove unused 'exec/exec-all.h'
- included header
-From: Eric Farman <farman@linux.ibm.com>
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>, David Hildenbrand
- <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Halil Pasic
- <pasic@linux.ibm.com>
-Date: Thu, 14 Dec 2023 11:21:28 -0500
-In-Reply-To: <20231212113640.30287-4-philmd@linaro.org>
-References: <20231212113640.30287-1-philmd@linaro.org>
- <20231212113640.30287-4-philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDoZ8-0008Jl-Ru
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 11:28:03 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDoZ6-0004p3-VH
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 11:28:02 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40c2c65e6aaso86790655e9.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 08:28:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702571279; x=1703176079; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=koRjVWkfmyBElvEJ1hU0wtx+8su1L2WZAzEP4KP5Epc=;
+ b=CeuNP0i/gAVnQpABe/vG7mY8c4rHJFX1h8h7vqBffiBiVKyH+3MXDREIC04bNzAGCB
+ nWtlgaXNjxkpduwK/vcuUorVtvWsCpSw2IAwJ5WkIccDXBast/kNcn5kXE3XWjMyWBnZ
+ OT0iwwu9yE/nQh7pGVluVD7huJZrkw6qxOlIm6k3hH0aKUVhy1T6Jk47f+dC9W7h0D63
+ S6jIN3AvDX0i1BoyoBRbYX3kmF8s3905asdZAr9rhtRkru7riuhoB4C3o6VXbzvevHdI
+ zGck9pcCHVa7z1GYWH2wCzHQDfNhpfzPzU8yg2CMsrMj1A3LqwohbcfY08qTphaWV6PK
+ fr3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702571279; x=1703176079;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=koRjVWkfmyBElvEJ1hU0wtx+8su1L2WZAzEP4KP5Epc=;
+ b=DegjfNHCvnTQOTuqHoRWj/9qyzbQwe28i3HPI5PNYiOdF2CKhP4pngpC0W4VpJehsT
+ hHT0axZpwGqVU3E+bzNw6rbHmRWXZJiIta1TCZVuZ2sgVIMBP2PNR5/h5Cxy065yeUM+
+ 9+BqSJXhwlgszs3/F3LEni/u11ht4SH2qoWyHyX4r2Br5stxqvEUIy0i2LZKG11APZv9
+ Oi8sPoypbh/YhtPXrbYw4piQJr0QEoVCqDNHxHCsvlm5SlgPxpaUgE7MsZaQvLgoJhsU
+ 0561bXkx0LSbloYcfgwWhS7H0AWY6TLnqCQv4ZTL60xQSrXBvpEgynm+cQaabR68cAle
+ 7ZHg==
+X-Gm-Message-State: AOJu0YzBZ/5anwkHsYG8jfkNlt+3jyOuhGAtdALdyNhHnD4Ch1VTSS3I
+ BMglt+8xQEdDmCmqCuy+SdqNlg==
+X-Google-Smtp-Source: AGHT+IHZB2fIC5lg6d4HaVGM+fwNZmLlQPrL/jZS4Y0sMJmnl/2ll8X196dF1U970aQ+XEg8LAVSeA==
+X-Received: by 2002:a05:600c:c1b:b0:40c:2dd8:3a43 with SMTP id
+ fm27-20020a05600c0c1b00b0040c2dd83a43mr4952772wmb.54.1702571278626; 
+ Thu, 14 Dec 2023 08:27:58 -0800 (PST)
+Received: from [192.168.2.234] (p50902f8f.dip0.t-ipconnect.de. [80.144.47.143])
+ by smtp.gmail.com with ESMTPSA id
+ k7-20020adfb347000000b003364b8f86dcsm955938wrd.75.2023.12.14.08.27.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Dec 2023 08:27:58 -0800 (PST)
+Message-ID: <7bb74bc6-8806-4e54-9ccb-7f973e34558b@linaro.org>
+Date: Thu, 14 Dec 2023 17:27:55 +0100
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0gntfXpr7lOHNu3s7Dv9sEmiwjCqelPv
-X-Proofpoint-GUID: on3fS-DEXKos3nsZuFiKfDs35Lb9IVvd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-14_11,2023-12-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- adultscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 phishscore=0
- spamscore=0 mlxlogscore=809 priorityscore=1501 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312140116
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/net/can/sja1000: fix bug for single acceptance filer
+ and standard frame
+Content-Language: en-US
+To: Pavel Pisa <pisa@fel.cvut.cz>, qemu-devel@nongnu.org,
+ Philippe Mathieu-Daude <philmd@redhat.com>,
+ Grant Ramsay <gramsay@enphaseenergy.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Vikram Garhwal <fnu.vikram@xilinx.com>, Jin-Yang <jinyang.sia@gmail.com>,
+ qemu-stable@nongnu.org, Pavel Pisa <pisa@cmp.felk.cvut.cz>
+References: <20231214104623.31147-1-pisa@fel.cvut.cz>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20231214104623.31147-1-pisa@fel.cvut.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,15 +96,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-12-12 at 12:36 +0100, Philippe Mathieu-Daud=C3=A9 wrote:
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> =C2=A0hw/s390x/ipl.c | 1 -
-> =C2=A01 file changed, 1 deletion(-)
->=20
->=20
-Yup, this appears no longer relevant since commit 3549118b4988
+On 14/12/23 11:46, Pavel Pisa wrote:
+> From: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+> 
+> A CAN sja1000 standard frame filter mask has been computed and applied
+> incorrectly for standard frames when single Acceptance Filter Mode
+> (MOD_AFM = 1) has been selected. The problem has not been found
+> by Linux kernel testing because it uses dual filter mode (MOD_AFM = 0)
+> and leaves falters fully open.
+> 
+> The problem has been noticed by Grant Ramsay when testing with Zephyr
+> RTOS which uses single filter mode.
+> 
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2028
+Fixes: 733210e754 ("hw/net/can: SJA1000 chip register level emulation")
+
+> Signed-off-by: Pavel Pisa <pisa@cmp.felk.cvut.cz>
+> Reported-by: Grant Ramsay <gramsay@enphaseenergy.com>
+> ---
+>   hw/net/can/can_sja1000.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/net/can/can_sja1000.c b/hw/net/can/can_sja1000.c
+> index 73201f9139..575df7d2f8 100644
+> --- a/hw/net/can/can_sja1000.c
+> +++ b/hw/net/can/can_sja1000.c
+> @@ -108,7 +108,7 @@ void can_sja_single_filter(struct qemu_can_filter *filter,
+>           }
+>   
+>           filter->can_mask = (uint32_t)amr[0] << 3;
+> -        filter->can_mask |= (uint32_t)amr[1] << 5;
+> +        filter->can_mask |= (uint32_t)amr[1] >> 5;
+>           filter->can_mask = ~filter->can_mask & QEMU_CAN_SFF_MASK;
+>           if (!(amr[1] & 0x10)) {
+>               filter->can_mask |= QEMU_CAN_RTR_FLAG;
 
 
