@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DF8813C7F
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 22:19:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D684E813CE6
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 22:47:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDt41-0002hs-7y; Thu, 14 Dec 2023 16:16:13 -0500
+	id 1rDtX5-0000Bn-GB; Thu, 14 Dec 2023 16:46:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3hHB7ZQwKCoUwjkrqn12nojwpxxpun.lxvznv3-mn4nuwxwpw3.x0p@flex--nabihestefan.bounces.google.com>)
- id 1rDt3o-0002bh-5D
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 16:16:00 -0500
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1rDtWh-0000AU-Cb; Thu, 14 Dec 2023 16:46:00 -0500
+Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3hHB7ZQwKCoUwjkrqn12nojwpxxpun.lxvznv3-mn4nuwxwpw3.x0p@flex--nabihestefan.bounces.google.com>)
- id 1rDt3e-0005xX-Kx
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 16:15:59 -0500
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-5ca2e530041so101061567b3.3
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 13:15:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1rDtWF-0007wV-18; Thu, 14 Dec 2023 16:45:28 -0500
+Received: by mail-yw1-x112d.google.com with SMTP id
+ 00721157ae682-5e25d1d189eso9977137b3.0; 
+ Thu, 14 Dec 2023 13:45:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1702588548; x=1703193348; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=Lo1vB+vQUuCSw6PYQvfs4XlI6Sw1MCeih84R5KkRUZA=;
- b=qXfEMbvL2c4lFd4kciyrxQUm4ofIr/625gjBlK6XcBMbaJc07gcOK2cL2QlmN4RPQo
- 1bebAOplvjeLXPuVaesfLiTGFisEJdWpVPX2o1lbXX3xDYFzMuTiN9Z5X2qEExX8Fal0
- b/9cjMVFddhE1TLZxy1FYtUl8oejjmqMAN6vrSjAL+Dd8n/OE4IoSfIv8szkXww1kABg
- nbZlhaWDAdS3lET5c30WAcfRvNpK0DTAfO6n+fKCBEkMh/nPRueReIYimQzWhKBX718X
- nOpk+2LPrtD6RkVnuU7Xknemv9+o/tyN0mosYpCJEC4WC+6mfkdkGiPxEppELRCQIA0X
- n3RA==
+ d=gmail.com; s=20230601; t=1702590321; x=1703195121; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=SMshgoAxqF79OIgnLbQM869eDwMcKZy7gXmQrxVH0ac=;
+ b=jX5km07hjbxba+WwOzIlz9K/eIlBgN99K5VeKnA9pa1PgmhQOcYqKdmfeuCRfPOZVp
+ DQZ7HZuKv6k3ETbgqpsFSvUnnOiRaOoTzoapVYyxVOz4LG1LNuSgca1nsxPdcHCij43L
+ QOgoSZS9HbYUxoWQbz/mfxugcvAtspyVhPPWLD6RwttdSa06HHU0MyXOhxEjnG6+vec9
+ Z0bRbeZeSNykhxAzLU0ma9DhlIbyZJuqrcozEMDthoQqKo1tHas0zG4ztxtGchge7VXl
+ 1G/LXeXhEvfb/DmolsB44Z94KXXAQbzSj3g25RiOgUECDPjoAfGLV2Y/PNLYtci4D52s
+ bs/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702588548; x=1703193348;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Lo1vB+vQUuCSw6PYQvfs4XlI6Sw1MCeih84R5KkRUZA=;
- b=gfzu1s5Uc2C6UPVS1IF0DZhhM5kyvrqaAH+lDkzqVqIy7cTdPqX8LrjvC1BpuUvxvB
- yJBukC+iz6BA09M/OM5WwJaQ9nv9RyWuyOPjejtS/NirBJV9TwtrDYyQ+hLW6A5kq/LW
- 6OoBL46kpBWtADMex4xs5ykwLOslfZYs1AjCMzmdJ3UdcX08sltYd2LvvilrFHMwyL+S
- QrKMrQU/qtA716cE0tP/zvnL0u1iieyID36YOtqN/RPHHHfyReo0uK7z5pDTP1N0JpGp
- AauQM9jRABHevj0maMAd3VfdoXByB1Q0W1iL3EJxALa4ywGU1lySV0Pk7czevln7dlLX
- iR+Q==
-X-Gm-Message-State: AOJu0YzQ5NThB0JrK7pFYwrKklJO1VR2hKuiBII3xx0SIG5kJYlS+bzw
- wzYadBLUN9L+nhwNUQ6Icipg/nnzTjK6p3x3XTw=
-X-Google-Smtp-Source: AGHT+IGJZOaPqLx8L5Di6IDrCmOYFo4ydHyyZzVzvM4O+lgbzBIfzd3Zhm5PJT4OyDGWBZiGk345EYdX5vwQythCNIU=
-X-Received: from nabihestefan.c.googlers.com
- ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
- (user=nabihestefan job=sendgmr) by 2002:a05:690c:d08:b0:5cd:c47d:d89a with
- SMTP id cn8-20020a05690c0d0800b005cdc47dd89amr122164ywb.2.1702588548102; Thu,
- 14 Dec 2023 13:15:48 -0800 (PST)
-Date: Thu, 14 Dec 2023 21:15:27 +0000
-In-Reply-To: <20231214211527.1946302-1-nabihestefan@google.com>
-Mime-Version: 1.0
-References: <20231214211527.1946302-1-nabihestefan@google.com>
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231214211527.1946302-12-nabihestefan@google.com>
-Subject: [PATCH v8 11/11] tests/qtest: Adding PCS Module test to GMAC Qtest
-From: Nabih Estefan <nabihestefan@google.com>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
- wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
- nabihestefan@google.com, kwliu@nuvoton.com, tomer.maimon@nuvoton.com, 
- Hila.Miranda-Kuzi@nuvoton.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3hHB7ZQwKCoUwjkrqn12nojwpxxpun.lxvznv3-mn4nuwxwpw3.x0p@flex--nabihestefan.bounces.google.com;
- helo=mail-yw1-x114a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, UPPERCASE_50_75=0.008,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=no autolearn_force=no
+ d=1e100.net; s=20230601; t=1702590321; x=1703195121;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SMshgoAxqF79OIgnLbQM869eDwMcKZy7gXmQrxVH0ac=;
+ b=A9lF7m9NGzWEA8SBqCmDJbPb+KFSzP9gskYseyQNjt4nS8Yg4DEo9tzQzmHvYbVxCi
+ wi69QUw0HJG9sox4h1fqrLrl5QUUJolR9K6yY71FVw+C2tXRZ1eisjzvq14OCl2g+TPO
+ MOnoXVvQOzBHWD+PftbsRVn/C+okTS+R4nXz5J8jtdnVNXrOKCTaiSB9v7VCw2ObX2am
+ Cn5o7N0GdiwIqcaQDATdL0ZePJjKsACHlr3sob4iLYHHrrmSbajbVhy2RVIwVWgkRFPC
+ qp6ZdArB1weNv+098l4JQxMDlwv1JNHft29S2pjrsOtUVZwCHxN4GXhLyxQWjr/MaX/u
+ wlSg==
+X-Gm-Message-State: AOJu0Yx8+/7nlfzxuP9nVSKwNAe3nuHHEl1hBxikQCpw4md/0en9Aezr
+ txNut0/nFInt7YGhHFEH+JpdMifkqNlIuKIEkWc=
+X-Google-Smtp-Source: AGHT+IGzQKi6sX9zYE76QV0hgmNEtojS5MzuHMFwZZJPNrYKaunwEbRrRN/97x+xL3l8oiEZNrWtYvWwbT6/yWAaglY=
+X-Received: by 2002:a05:690c:c02:b0:5e1:21b2:ba9b with SMTP id
+ cl2-20020a05690c0c0200b005e121b2ba9bmr5927780ywb.28.1702590321234; Thu, 14
+ Dec 2023 13:45:21 -0800 (PST)
+MIME-Version: 1.0
+References: <CAC8KSA16N+DsCzPVE64NvqxQZZfst67prPbu=nzPTfHiFCEgdw@mail.gmail.com>
+ <CAFEAcA_1+-AkM3Pt75CM4WVorDrN2btij_Cn2n_aYvKk++PORA@mail.gmail.com>
+In-Reply-To: <CAFEAcA_1+-AkM3Pt75CM4WVorDrN2btij_Cn2n_aYvKk++PORA@mail.gmail.com>
+From: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Date: Fri, 15 Dec 2023 00:45:09 +0300
+Message-ID: <CAC8KSA3+Z32v055kjiQ9dK7LgQfcGPuSXvPhZ=sN8tJmZue-Jw@mail.gmail.com>
+Subject: Re: [PATCH v3] fsl-imx: add simple RTC emulation for i.MX6 and i.MX7
+ boards
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="0000000000004b95cc060c7f337c"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
+ envelope-from=n.ostrenkov@gmail.com; helo=mail-yw1-x112d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,190 +86,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan Diaz <nabihestefan@google.com>
+--0000000000004b95cc060c7f337c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
- - Add PCS Register check to npcm_gmac-test
+Sorry again. Honestly, I was in a hurry.
 
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
----
- tests/qtest/npcm_gmac-test.c | 134 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 133 insertions(+), 1 deletion(-)
+Unfortunately, I'm currently using a different PC, and git publish doesn't
+work on it (some issues with SSL certificates). I sent the first and second
+versions of the patch from my main home PC through this way, but,
+regrettably, I had to manually send the third version via the Gmail web
+client.
 
-diff --git a/tests/qtest/npcm_gmac-test.c b/tests/qtest/npcm_gmac-test.c
-index 130a1599a8..0958b13814 100644
---- a/tests/qtest/npcm_gmac-test.c
-+++ b/tests/qtest/npcm_gmac-test.c
-@@ -20,6 +20,10 @@
- /* Name of the GMAC Device */
- #define TYPE_NPCM_GMAC "npcm-gmac"
- 
-+/* Address of the PCS Module */
-+#define PCS_BASE_ADDRESS 0xf0780000
-+#define NPCM_PCS_IND_AC_BA 0x1fe
-+
- typedef struct GMACModule {
-     int irq;
-     uint64_t base_addr;
-@@ -111,6 +115,62 @@ typedef enum NPCMRegister {
-     NPCM_GMAC_PTP_STNSUR = 0x714,
-     NPCM_GMAC_PTP_TAR = 0x718,
-     NPCM_GMAC_PTP_TTSR = 0x71c,
-+
-+    /* PCS Registers */
-+    NPCM_PCS_SR_CTL_ID1 = 0x3c0008,
-+    NPCM_PCS_SR_CTL_ID2 = 0x3c000a,
-+    NPCM_PCS_SR_CTL_STS = 0x3c0010,
-+
-+    NPCM_PCS_SR_MII_CTRL = 0x3e0000,
-+    NPCM_PCS_SR_MII_STS = 0x3e0002,
-+    NPCM_PCS_SR_MII_DEV_ID1 = 0x3e0004,
-+    NPCM_PCS_SR_MII_DEV_ID2 = 0x3e0006,
-+    NPCM_PCS_SR_MII_AN_ADV = 0x3e0008,
-+    NPCM_PCS_SR_MII_LP_BABL = 0x3e000a,
-+    NPCM_PCS_SR_MII_AN_EXPN = 0x3e000c,
-+    NPCM_PCS_SR_MII_EXT_STS = 0x3e001e,
-+
-+    NPCM_PCS_SR_TIM_SYNC_ABL = 0x3e0e10,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR = 0x3e0e12,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR = 0x3e0e14,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR = 0x3e0e16,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR = 0x3e0e18,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR = 0x3e0e1a,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR = 0x3e0e1c,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR = 0x3e0e1e,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR = 0x3e0e20,
-+
-+    NPCM_PCS_VR_MII_MMD_DIG_CTRL1 = 0x3f0000,
-+    NPCM_PCS_VR_MII_AN_CTRL = 0x3f0002,
-+    NPCM_PCS_VR_MII_AN_INTR_STS = 0x3f0004,
-+    NPCM_PCS_VR_MII_TC = 0x3f0006,
-+    NPCM_PCS_VR_MII_DBG_CTRL = 0x3f000a,
-+    NPCM_PCS_VR_MII_EEE_MCTRL0 = 0x3f000c,
-+    NPCM_PCS_VR_MII_EEE_TXTIMER = 0x3f0010,
-+    NPCM_PCS_VR_MII_EEE_RXTIMER = 0x3f0012,
-+    NPCM_PCS_VR_MII_LINK_TIMER_CTRL = 0x3f0014,
-+    NPCM_PCS_VR_MII_EEE_MCTRL1 = 0x3f0016,
-+    NPCM_PCS_VR_MII_DIG_STS = 0x3f0020,
-+    NPCM_PCS_VR_MII_ICG_ERRCNT1 = 0x3f0022,
-+    NPCM_PCS_VR_MII_MISC_STS = 0x3f0030,
-+    NPCM_PCS_VR_MII_RX_LSTS = 0x3f0040,
-+    NPCM_PCS_VR_MII_MP_TX_BSTCTRL0 = 0x3f0070,
-+    NPCM_PCS_VR_MII_MP_TX_LVLCTRL0 = 0x3f0074,
-+    NPCM_PCS_VR_MII_MP_TX_GENCTRL0 = 0x3f007a,
-+    NPCM_PCS_VR_MII_MP_TX_GENCTRL1 = 0x3f007c,
-+    NPCM_PCS_VR_MII_MP_TX_STS = 0x3f0090,
-+    NPCM_PCS_VR_MII_MP_RX_GENCTRL0 = 0x3f00b0,
-+    NPCM_PCS_VR_MII_MP_RX_GENCTRL1 = 0x3f00b2,
-+    NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0 = 0x3f00ba,
-+    NPCM_PCS_VR_MII_MP_MPLL_CTRL0 = 0x3f00f0,
-+    NPCM_PCS_VR_MII_MP_MPLL_CTRL1 = 0x3f00f2,
-+    NPCM_PCS_VR_MII_MP_MPLL_STS = 0x3f0110,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL2 = 0x3f0126,
-+    NPCM_PCS_VR_MII_MP_LVL_CTRL = 0x3f0130,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL0 = 0x3f0132,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL1 = 0x3f0134,
-+    NPCM_PCS_VR_MII_DIG_CTRL2 = 0x3f01c2,
-+    NPCM_PCS_VR_MII_DIG_ERRCNT_SEL = 0x3f01c4,
- } NPCMRegister;
- 
- static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-@@ -119,6 +179,15 @@ static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-     return qtest_readl(qts, mod->base_addr + regno);
- }
- 
-+static uint16_t pcs_read(QTestState *qts, const GMACModule *mod,
-+                          NPCMRegister regno)
-+{
-+    uint32_t write_value = (regno & 0x3ffe00) >> 9;
-+    qtest_writel(qts, PCS_BASE_ADDRESS + NPCM_PCS_IND_AC_BA, write_value);
-+    uint32_t read_offset = regno & 0x1ff;
-+    return qtest_readl(qts, PCS_BASE_ADDRESS + read_offset);
-+}
-+
- /* Check that GMAC registers are reset to default value */
- static void test_init(gconstpointer test_data)
- {
-@@ -129,7 +198,12 @@ static void test_init(gconstpointer test_data)
- #define CHECK_REG32(regno, value) \
-     do { \
-         g_assert_cmphex(gmac_read(qts, mod, (regno)), ==, (value)); \
--    } while (0)
-+    } while (0) ;
-+
-+#define CHECK_REG_PCS(regno, value) \
-+    do { \
-+        g_assert_cmphex(pcs_read(qts, mod, (regno)), ==, (value)); \
-+    } while (0) ;
- 
-     CHECK_REG32(NPCM_DMA_BUS_MODE, 0x00020100);
-     CHECK_REG32(NPCM_DMA_XMT_POLL_DEMAND, 0);
-@@ -180,6 +254,64 @@ static void test_init(gconstpointer test_data)
-     CHECK_REG32(NPCM_GMAC_PTP_TAR, 0);
-     CHECK_REG32(NPCM_GMAC_PTP_TTSR, 0);
- 
-+    /* TODO Add registers PCS */
-+    if (mod->base_addr == 0xf0802000) {
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID1, 0x699e)
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID2, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_STS, 0x8000)
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_CTRL, 0x1140)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_STS, 0x0109)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID1, 0x699e)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID2, 0x0ced0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_ADV, 0x0020)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_LP_BABL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_EXPN, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_EXT_STS, 0xc000)
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_ABL, 0x0003)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR, 0x0038)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR, 0x0038)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR, 0x0058)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR, 0)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR, 0x0048)
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR, 0)
-+
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MMD_DIG_CTRL1, 0x2400)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_CTRL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_INTR_STS, 0x000a)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_TC, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DBG_CTRL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL0, 0x899c)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_TXTIMER, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_RXTIMER, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_LINK_TIMER_CTRL, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_STS, 0x0010)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_ICG_ERRCNT1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MISC_STS, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_RX_LSTS, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_BSTCTRL0, 0x00a)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_LVLCTRL0, 0x007f)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL0, 0x0001)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_STS, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL0, 0x0100)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL1, 0x1100)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0, 0x000e)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL0, 0x0100)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL1, 0x0032)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_STS, 0x0001)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL2, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_LVL_CTRL, 0x0019)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL0, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL1, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_CTRL2, 0)
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_ERRCNT_SEL, 0)
-+    }
-+
-     qtest_quit(qts);
- }
- 
--- 
-2.43.0.472.g3155946c3a-goog
+You're right. I tested the patch on qemu v8.1.3. However, I made the
+changes on the master branch.
 
+Tomorrow, I will definitely test the patch on the master branch and try to
+resolve the issues with git publish. I'll send the fourth version of the
+patch.
+
+Thanks!
+
+=D1=87=D1=82, 14 =D0=B4=D0=B5=D0=BA. 2023=E2=80=AF=D0=B3., 20:23 Peter Mayd=
+ell <peter.maydell@linaro.org>:
+
+> On Thu, 14 Dec 2023 at 11:49, Nikita Ostrenkov <n.ostrenkov@gmail.com>
+> wrote:
+> >
+> > Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+> > ---
+> >  hw/misc/imx7_snvs.c         | 91 ++++++++++++++++++++++++++++++++++---
+> >  hw/misc/trace-events        |  4 +-
+> >  include/hw/misc/imx7_snvs.h |  7 ++-
+> >  3 files changed, 92 insertions(+), 10 deletions(-)
+>
+> Hi; this doesn't compile for me:
+> ../../hw/misc/imx7_snvs.c:139:5: error: implicit declaration of
+> function 'qemu_get_timedate' is invalid in C99
+> [-Werror,-Wimplicit-function-declaration]
+>     qemu_get_timedate(&tm, 0);
+>     ^
+> ../../hw/misc/imx7_snvs.c:140:22: error: implicit declaration of
+> function 'mktimegm' is invalid in C99
+> [-Werror,-Wimplicit-function-declaration]
+>     s->tick_offset =3D mktimegm(&tm) -
+>                      ^
+>
+> How have you been testing it? This looks like a missing
+> include line, so I'm wondering if you've been testing it
+> against an older version of QEMU rather than the current
+> head-of-git? (If I fix that error then there's another
+> one after it because the include line to get mktimegm() is
+> missing too.)
+>
+> Also, your email client has unfortunately mangled the patch in
+> a couple of ways:
+>  * it's sent it as combined HTML/text, not as plain text only
+>  * it has wrapped some long lines
+>  * it has sent it base64 encoded
+>
+> If you're planning to submit more QEMU patches in future,
+> it would be worth looking at the notes in
+>
+> https://www.qemu.org/docs/master/devel/submitting-a-patch.html#submitting=
+-your-patches
+> about 'git send-email'. For a single patch, I can fix stuff
+> up by hand at this end, but it's a bit awkward.
+>
+> Other than that, the patch looks good to me.
+>
+> thanks
+> -- PMM
+>
+
+--0000000000004b95cc060c7f337c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div dir=3D"auto">Sorry again. Honestly, I was in a hurry=
+.<div dir=3D"auto"><br></div><div dir=3D"auto">Unfortunately, I&#39;m curre=
+ntly using a different PC, and git publish doesn&#39;t work on it (some iss=
+ues with SSL certificates). I sent the first and second versions of the pat=
+ch from my main home PC through this way, but, regrettably, I had to manual=
+ly send the third version via the Gmail web client.</div><div dir=3D"auto">=
+<br></div><div dir=3D"auto">You&#39;re right. I tested the patch on qemu v8=
+.1.3. However, I made the changes on the master branch.</div><div dir=3D"au=
+to"><br></div><div dir=3D"auto">Tomorrow, I will definitely test the patch =
+on the master branch and try to resolve the issues with git publish. I&#39;=
+ll send the fourth version of the patch.</div><div dir=3D"auto"><br></div><=
+div dir=3D"auto">Thanks!</div></div><br><div class=3D"gmail_quote"><div dir=
+=3D"ltr" class=3D"gmail_attr">=D1=87=D1=82, 14 =D0=B4=D0=B5=D0=BA. 2023=E2=
+=80=AF=D0=B3., 20:23 Peter Maydell &lt;<a href=3D"mailto:peter.maydell@lina=
+ro.org" target=3D"_blank" rel=3D"noreferrer">peter.maydell@linaro.org</a>&g=
+t;:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;b=
+order-left:1px #ccc solid;padding-left:1ex">On Thu, 14 Dec 2023 at 11:49, N=
+ikita Ostrenkov &lt;<a href=3D"mailto:n.ostrenkov@gmail.com" rel=3D"norefer=
+rer noreferrer" target=3D"_blank">n.ostrenkov@gmail.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Signed-off-by: Nikita Ostrenkov &lt;<a href=3D"mailto:n.ostrenkov@gmai=
+l.com" rel=3D"noreferrer noreferrer" target=3D"_blank">n.ostrenkov@gmail.co=
+m</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 hw/misc/imx7_snvs.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 91 ++++++=
+++++++++++++++++++++++++++++---<br>
+&gt;=C2=A0 hw/misc/trace-events=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 4 +-<br>
+&gt;=C2=A0 include/hw/misc/imx7_snvs.h |=C2=A0 7 ++-<br>
+&gt;=C2=A0 3 files changed, 92 insertions(+), 10 deletions(-)<br>
+<br>
+Hi; this doesn&#39;t compile for me:<br>
+../../hw/misc/imx7_snvs.c:139:5: error: implicit declaration of<br>
+function &#39;qemu_get_timedate&#39; is invalid in C99<br>
+[-Werror,-Wimplicit-function-declaration]<br>
+=C2=A0 =C2=A0 qemu_get_timedate(&amp;tm, 0);<br>
+=C2=A0 =C2=A0 ^<br>
+../../hw/misc/imx7_snvs.c:140:22: error: implicit declaration of<br>
+function &#39;mktimegm&#39; is invalid in C99<br>
+[-Werror,-Wimplicit-function-declaration]<br>
+=C2=A0 =C2=A0 s-&gt;tick_offset =3D mktimegm(&amp;tm) -<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0^<br>
+<br>
+How have you been testing it? This looks like a missing<br>
+include line, so I&#39;m wondering if you&#39;ve been testing it<br>
+against an older version of QEMU rather than the current<br>
+head-of-git? (If I fix that error then there&#39;s another<br>
+one after it because the include line to get mktimegm() is<br>
+missing too.)<br>
+<br>
+Also, your email client has unfortunately mangled the patch in<br>
+a couple of ways:<br>
+=C2=A0* it&#39;s sent it as combined HTML/text, not as plain text only<br>
+=C2=A0* it has wrapped some long lines<br>
+=C2=A0* it has sent it base64 encoded<br>
+<br>
+If you&#39;re planning to submit more QEMU patches in future,<br>
+it would be worth looking at the notes in<br>
+<a href=3D"https://www.qemu.org/docs/master/devel/submitting-a-patch.html#s=
+ubmitting-your-patches" rel=3D"noreferrer noreferrer noreferrer" target=3D"=
+_blank">https://www.qemu.org/docs/master/devel/submitting-a-patch.html#subm=
+itting-your-patches</a><br>
+about &#39;git send-email&#39;. For a single patch, I can fix stuff<br>
+up by hand at this end, but it&#39;s a bit awkward.<br>
+<br>
+Other than that, the patch looks good to me.<br>
+<br>
+thanks<br>
+-- PMM<br>
+</blockquote></div></div>
+
+--0000000000004b95cc060c7f337c--
 
