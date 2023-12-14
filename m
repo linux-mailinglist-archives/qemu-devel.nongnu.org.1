@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5983812E76
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 12:24:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F168B812EE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 12:43:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDjp2-0001Cd-IG; Thu, 14 Dec 2023 06:24:08 -0500
+	id 1rDk6Q-0004hz-Tk; Thu, 14 Dec 2023 06:42:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rDjp1-0001CT-Bt
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 06:24:07 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rDk6O-0004hL-Nb
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 06:42:04 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rDjoz-0006mB-5Y
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 06:24:07 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-54c846da5e9so7496279a12.3
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 03:24:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rDk6E-00043C-WB
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 06:42:04 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1d3720f3e18so739145ad.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 03:41:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702553043; x=1703157843; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=s6GSrMHhCyV9l++DIiKx2H1WRv40mBKulk8S9B3/7L4=;
- b=FwPoAyJQ3Rf+XS1VMP9NKKL81lzuIVTKMMpdV0qnwC5VQAGqqrf6fpQ8EqkwqAv7ip
- QwbAP3tHlAzmLnNcEE2z2jgrHOtwdLz2y0X5KPnEWqlIkUV0hixgpSEj683HiqDi/ogr
- v8Tr5Op5DAkVxformi3zf+EMGMttJnykfBm44pqcT9P3oLYr0C8vngoudH1aiRQVGnF6
- 0SZ5khwTIAUuHYSWLs7l8IGBAEqJOVFdqtnfKoc0aix9JDWGg/bYt0kX41533biRmzml
- d+Gzyd4QNBboKethTU3YBIkOwo+DKtLuqUtuxgneLWO/uKbo0nr55J6ssPYOAX+Cf9R9
- Vj4Q==
+ d=ventanamicro.com; s=google; t=1702554112; x=1703158912; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vz1xZ+6REjcIuixVy7PR8caf3Kl3SULQaA/vVQxjm74=;
+ b=NFHY6EFQd97ZGrSREUyWCQvp1RJ1RyNs0ay7cVdW6UvXvCh9lSL+fxbJUjt9gDUDlb
+ 5+EIysrhfaYj55xTDEX+4rDFg7ttmyvMj5gJNBwQBp2I55m4QGGOKwJ/qp4ukqUuh8d3
+ pE+2bY/jFSyi+tTa+36jkEyawPPxAahMRKIUHvt/mEGleF1B4dlDDzqlIHHxKeuNX7oc
+ bmGed0A7EAmKU6oZ9yAXdtQg0dcyOaNLPlXXk5c3xzOms5nga4LB3knVCVES5JOMrdX5
+ aEWTHzf2hbkS9DEzx+slsV+erDMbzIAWHbRQm8CS+Rnynz9GFUxKMOGEy4P9h+2APsQO
+ rDSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702553043; x=1703157843;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=s6GSrMHhCyV9l++DIiKx2H1WRv40mBKulk8S9B3/7L4=;
- b=XF1Jqqx0NTECs0UktJg7Dp52eyBdLTBJCm8G9PY4ObhJhByRLsW6o+QOkTU5XTzbTs
- t9tEb5Y5+r6rdkaqlS+CZXMGPEhIgK/FRFLWXtOTdNd0crIbX7dgV74fEJGFl8acqBdO
- bEaJqMaa4+moWKDYblani0+zAOnQwrtO1y4khTUErHgo0HzUGTJwEVl00vSFo1Ih04Jq
- SKs9t2i3WrU559QBexYJhEa2WcOfIQ14y8679GfT4zbW9GDdVYcamyAxW/HQlKIdhhsK
- SiFn1Hswp1irA7ohRPt2R70GsytJu70qD2dqxsspCKOM+UkThyhgdqh0akMuhWaF4mBp
- f1kQ==
-X-Gm-Message-State: AOJu0YyEoRDU5Q7GOFjWY5+DFk3FNLnhzXOcbHaLYPUrsqaZxcM7ZBz8
- uGOrHHDaeDthMa49krw6OacUKBihEVhmEt2KkdIV2A==
-X-Google-Smtp-Source: AGHT+IHF2imRye3WUk1lCA5A9KB4VhaBzCydQgDtKEhvOR38AXKOLiQIfTTxk4aNyloAtY9JpjtzF6ltehCWoMyGC7o=
-X-Received: by 2002:a50:d50b:0:b0:552:72cf:1cf6 with SMTP id
- u11-20020a50d50b000000b0055272cf1cf6mr415427edi.27.1702553043096; Thu, 14 Dec
- 2023 03:24:03 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702554112; x=1703158912;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vz1xZ+6REjcIuixVy7PR8caf3Kl3SULQaA/vVQxjm74=;
+ b=YBXFb6jLVCtB1Wm0YiNQMib1dE+VHzW6fV9qUIKiTEWNe31q+K+ArWFc2y92+TP3Z4
+ XpVW6YKs1uCbmlYtssqd4PJTXNqRSkFroR5IfvFbLQXerKJBZ7UPDyRkb86ImZaGI1zl
+ iLJKUsVOmaPDL/3SLi4omc2KiCWzOLexpdb7+6ckmnSEuDp3e1SljeTAySaupuonZ86u
+ pspT0TP2X4+9GC9dh56SVK5LKe8ryjqIMM/eyGMG+x3UXJHMfl6ASifXko294uUTF3US
+ A8+AbXwGWimaKMIWPa+r+lMrG2G8Ki2eWAycGaQ7ihFrz9/PQCO7Mjvigq720AKPJqOF
+ ujrw==
+X-Gm-Message-State: AOJu0YwGZ2QI+/gRBoFVPuvwS4I4ykZMfRt1MqPeaJUTZlAs+sxSzZp1
+ MxIOEWXo3Pc17lLl1VVdbx9xXQ==
+X-Google-Smtp-Source: AGHT+IE2yH2/fhHVANrhhs0iGRjCtgar9Iao4IwASeIFqHpic53sSyqfdCqj31wCTpXeWhfo3ul6yA==
+X-Received: by 2002:a17:902:7845:b0:1d3:529a:83b6 with SMTP id
+ e5-20020a170902784500b001d3529a83b6mr1030000pln.17.1702554112433; 
+ Thu, 14 Dec 2023 03:41:52 -0800 (PST)
+Received: from ?IPV6:2804:7f0:bcc0:ddec:9d1c:476f:1886:86ae?
+ ([2804:7f0:bcc0:ddec:9d1c:476f:1886:86ae])
+ by smtp.gmail.com with ESMTPSA id
+ jd21-20020a170903261500b001d347c435ffsm3587162plb.36.2023.12.14.03.41.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Dec 2023 03:41:52 -0800 (PST)
+Message-ID: <e94fbd47-6a75-47f6-b585-173151626d56@ventanamicro.com>
+Date: Thu, 14 Dec 2023 08:41:48 -0300
 MIME-Version: 1.0
-References: <170198625302.23093.6056065304261752852-0@git.sr.ht>
- <170198625302.23093.6056065304261752852-2@git.sr.ht>
-In-Reply-To: <170198625302.23093.6056065304261752852-2@git.sr.ht>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 14 Dec 2023 11:23:52 +0000
-Message-ID: <CAFEAcA-nLiWq9yZBDx+zGY4JMDE1pZE96v=TwF7V5=cr=3RQ-A@mail.gmail.com>
-Subject: Re: [PATCH qemu v2 2/2] hw/arm: Add minimal support for the
- B-L475E-IOT01A board
-To: "~inesvarhol" <inesvarhol@proton.me>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, alistair@alistair23.me, 
- philmd@linaro.org, alex.bennee@linaro.org, ines.varhol@telecom-paris.fr, 
- arnaud.minier@telecom-paris.fr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] target/riscv: Clear vstart_qe_zero flag
+Content-Language: en-US
+To: Ivan Klokov <ivan.klokov@syntacore.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ richard.henderson@linaro.org
+References: <20231214111851.142532-1-ivan.klokov@syntacore.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231214111851.142532-1-ivan.klokov@syntacore.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,78 +96,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 7 Dec 2023 at 21:57, ~inesvarhol <inesvarhol@git.sr.ht> wrote:
->
-> From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
->
-> This commit adds a new B-L475E-IOT01A board using the STM32L475VG SoC.
-> The implementation is derived from the Netduino Plus 2 machine.
-> There are no peripherals implemented yet, only memory regions.
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
-Hi; thanks for this patch.
 
-> +++ b/hw/arm/b-l475e-iot01a.c
-> @@ -0,0 +1,79 @@
-> +/*
-> + * B-L475E-IOT01A Discovery Kit machine
-> + * (B-L475E-IOT01A IoT Node)
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
+On 12/14/23 08:18, Ivan Klokov wrote:
+> The vstart_qe_zero flag is set at the beginning of the translation
+> phase from the env->vstart variable. During the execution phase, some
+> instructions may change env->vstart, but the flag remains the same as
+> at the start of the block. With some combinations of instructions this
+> causes an illegal instruction exception. This patch simultaneously
+> updates flag and env->vstart and to avoid inconsistency.
+> 
+> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
+> ---
+>   target/riscv/insn_trans/trans_rvbf16.c.inc |  6 +-
+>   target/riscv/insn_trans/trans_rvv.c.inc    | 88 +++++++++++-----------
+>   target/riscv/insn_trans/trans_rvvk.c.inc   | 12 +--
+>   target/riscv/translate.c                   | 12 ++-
+>   4 files changed, 64 insertions(+), 54 deletions(-)
+> 
+> diff --git a/target/riscv/insn_trans/trans_rvbf16.c.inc b/target/riscv/insn_trans/trans_rvbf16.c.inc
+> index 4e39c00884..2867bbc2bb 100644
+> --- a/target/riscv/insn_trans/trans_rvbf16.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvbf16.c.inc
+> @@ -86,7 +86,7 @@ static bool trans_vfncvtbf16_f_f_w(DisasContext *ctx, arg_vfncvtbf16_f_f_w *a)
+>                              ctx->cfg_ptr->vlen / 8,
+>                              ctx->cfg_ptr->vlen / 8, data,
+>                              gen_helper_vfncvtbf16_f_f_w);
+> -        mark_vs_dirty(ctx);
+> +        finalize_rvv_inst(ctx);
 
-This line says "this is under the GPL"...
+"finalize_rvv_inst()" is not the best of names in this case. Why aren't we
+"finalizing" all RVV instructions?
 
-> + *
-> + * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> + * Copyright (c) 2023 Ines Varhol <ines.varhol@telecom-paris.fr>
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a copy
-> + * of this software and associated documentation files (the "Software"),=
- to deal
-> + * in the Software without restriction, including without limitation the=
- rights
-> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or =
-sell
-> + * copies of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be includ=
-ed in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHA=
-LL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG FROM,
-> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALING=
-S IN
-> + * THE SOFTWARE.
+mark_vs_dirty() is already doing a lot of ctx updates. I would just put any updates
+to ctx->vstart_qe_zero inside of it.
 
-...but this text is not the GPL, it is the MIT license.
 
-> + *
-> + * Heavily inspired by the netduinoplus2 by Alistair Francis.
-> + * The reference used is the STMicroElectronics UM2153 User manual
-> + * Discovery kit for IoT node, multi-channel communication with STM32L4.
-> + * https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html#documentat=
-ion
-> + */
+> [...]
+
+
+> -        mark_vs_dirty(s);
+> +        finalize_rrv_inst(s);
+>           gen_set_label(over);
+>           return true;
+>       }
+> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> index f0be79bb16..d4147e2dd7 100644
+> --- a/target/riscv/translate.c
+> +++ b/target/riscv/translate.c
+> @@ -670,8 +670,18 @@ static void mark_vs_dirty(DisasContext *ctx)
+>           }
+>       }
+>   }
+> +static void set_vstart_eq_zero(DisasContext *ctx)
+> +{
+> +    ctx->vstart_eq_zero = true;
+> +}
 > +
+> +static void finalize_rvv_inst(DisasContext *ctx)
+> +{
+> +    mark_vs_dirty(ctx);
+> +    set_vstart_eq_zero(ctx);
+> +}
 
-Can you clarify which license you want to use, please? We can't
-take code that's confused about what license it's under.
+Did you check if every time we're marking VS dirty we're setting env->vstart = 0?
+I was taking a looking into it and so far I'm not to make this assumption.
 
-thanks
--- PMM
+IMO you'll need to read the current vstart value (probably via cpu_vstart) to see if
+ctx->vstart_eq_zero is true or not. If it's false you can also mark ctx->vl_eq_vmax
+as false since it depends on ctx->vstart_eq_zero.
+
+
+Thanks,
+
+
+Daniel
+
+
+>   #else
+> -static inline void mark_vs_dirty(DisasContext *ctx) { }
+> +static inline void finalize_rvv_inst(DisasContext *ctx){ }
+>   #endif
+>   
+>   static void gen_set_rm(DisasContext *ctx, int rm)
 
