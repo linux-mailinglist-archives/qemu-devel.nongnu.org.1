@@ -2,80 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040E68125EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 04:28:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 237CF812694
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 05:31:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDcMy-00008A-0M; Wed, 13 Dec 2023 22:26:40 -0500
+	id 1rDdNf-0000P6-Nq; Wed, 13 Dec 2023 23:31:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1rDcMv-00007r-GF
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 22:26:37 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1rDcMs-0005V4-9a
- for qemu-devel@nongnu.org; Wed, 13 Dec 2023 22:26:37 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6cda22140f2so7214803b3a.1
- for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 19:24:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1702524270; x=1703129070;
- darn=nongnu.org; 
- h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=83IB1V/fMglbfxVwEaWEJCI3uKm+hpL8RGx8YZCl9Vg=;
- b=Oqpz1uYXSnp4tjDB3SerG5v1J7VdFJaZuA5jDqg1u91iAY7mje6i/EMy3VEoPy8UHP
- ywlH7JK6xuk3CN5D4GXq7C0sDrOXidyf9FUE6QRhVffGSqzC8aKCaF/i+TscIp0hGVxS
- bz8F8AnTLzJjiaeB1V/8LJ22a5ryle4dhaGOMI/Hh0xWoBzfewZ0+9rgwQEVHR287aWV
- sAQAYAgKPj6ZerxvIbfqKBGZ3XAs9ZXcokmDKBQt98Q8gmQxpEud8sABRM1lk98fORPQ
- 87dC0NyM7JYumdOOA/SlRMRR8qerlplAGCubPgKsjPUpBS6nbSoPe03t7B0icrIqWx4E
- B7Qg==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rDdNd-0000Ov-UI
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 23:31:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rDdNc-0005qN-5t
+ for qemu-devel@nongnu.org; Wed, 13 Dec 2023 23:31:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702528282;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nslo+29rvQnfTyoDiRESZbY8S1En7SdL2F6UZRW+lHs=;
+ b=YxG/fLGZvO9Ws5iIlxoVZrUdikn8yjybP5W50iAobRPUAvK8AARgfGrj+vb4Y2cT8H57wZ
+ cM3W8SE2MkA9Bn3srTEiv12TKOS+9/il7PY1XBdI0kzKxwWKNfGUhF3CzB3hD/FBqxjDeN
+ rygloNt0fiqgAaicWiBbgcok9OnEoq0=
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
+ [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-426-4LUNnHmmNN-19Z_gO-UsAg-1; Wed, 13 Dec 2023 23:31:20 -0500
+X-MC-Unique: 4LUNnHmmNN-19Z_gO-UsAg-1
+Received: by mail-oo1-f70.google.com with SMTP id
+ 006d021491bc7-591129c72d6so4750624eaf.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 20:31:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702524270; x=1703129070;
- h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=83IB1V/fMglbfxVwEaWEJCI3uKm+hpL8RGx8YZCl9Vg=;
- b=N+tvpgmJ3fX7vrfd42WqGm7KySeoOFyt53mU+NU2Wiy6OcRRtn/LZ6Hg9sRumbCFCA
- JPdz74k0wxA65vCPCqhlLwISfqbsxI5J004tif1WQCCONz7ZBET3j1M9LmHPrDNSnsEy
- tizVM5ZiYB8861zP6Q8Ugp5dKGj4ff7IR2hmwXJrS3VzeoVRlssz7nGF+r63f8MVRL3v
- r8w3RrY8GrFPrTMbC4Hy+YX7aCoJ02jJP6oLG6x8rYi4PvmffU+RqpXcuI60TCc3KW2S
- LK44MRrQyctxYyQXhQ6YP7lJ1Kx9kode4lnUhfdvH960T4V5fmEuZZSCD8gkn0EKfbr0
- cFqg==
-X-Gm-Message-State: AOJu0YykAd2vSkKWTiwSJRkK65KYoWBM45p879T5EBjNK9o0oplW1BD/
- PAEaQ68bkbiHzk3foFFBg0wI1Q==
-X-Google-Smtp-Source: AGHT+IGz4tekgIUaPuOfGQaBhbJ2JnZ9MVsTYzU/QY8Om4wGRlxEVS3ywav911a0zBO47Cs7vLM7cg==
-X-Received: by 2002:a05:6a00:2401:b0:6cd:e8c3:f731 with SMTP id
- z1-20020a056a00240100b006cde8c3f731mr10147228pfh.19.1702524269054; 
- Wed, 13 Dec 2023 19:24:29 -0800 (PST)
-Received: from smtpclient.apple ([103.172.41.203])
+ d=1e100.net; s=20230601; t=1702528280; x=1703133080;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nslo+29rvQnfTyoDiRESZbY8S1En7SdL2F6UZRW+lHs=;
+ b=gtdRGusM+O7Lfcvr2mQDYnRyIFEWitgb2s6amk6OW8Qtdu0IbNCi0eaLecLgiU3Lob
+ m6XF75J9qu3fpbEguwu1G4PWhZDGPAH7fIlujZTA1mUhriDfEzJHYShj+RDtDSWJ3ren
+ BgUr6fiGba0b4GC3wISwdSBEnJEuqRjQDKIOO8dgk3gBC2MDtOAmCWzB9M37D2TQ4jL3
+ BBcVwWKwfjHLCmYz6LIeos/OxMEL4Hpjy4GwbFG2S9lI3Zx+iKgzwhOHaXnaudscQLn9
+ ZWRy3MG1m8Opsq58a5jz262qIdyzWILjz+IxHIq/UoJoAPiW0L+UiTpUFLn8gz8Diw8g
+ pwZQ==
+X-Gm-Message-State: AOJu0YzKMnxrGEU6FHQBXauV4zxCQF/3Jgb8ha0dst6HLLHZUJwPJkSU
+ O9OeUsvRttdbkd9R9h+F+5IdmjOkBn37lcElGItAWafh9BiDn1udZzZEume45Oyo6WWdDsL2LnN
+ LC8lbvBK5GVFf6Uo=
+X-Received: by 2002:a05:6808:1203:b0:3b8:b063:9b5c with SMTP id
+ a3-20020a056808120300b003b8b0639b5cmr11880724oil.78.1702528280269; 
+ Wed, 13 Dec 2023 20:31:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGZ/t2H/utBOALr8hinJKBer7DD8r8yVn8vgK5NP28CauUNoKkXAiuvzFVes8NCYjBSxCP0XA==
+X-Received: by 2002:a05:6808:1203:b0:3b8:b063:9b5c with SMTP id
+ a3-20020a056808120300b003b8b0639b5cmr11880714oil.78.1702528280015; 
+ Wed, 13 Dec 2023 20:31:20 -0800 (PST)
+Received: from smtpclient.apple ([115.96.117.154])
  by smtp.gmail.com with ESMTPSA id
- u23-20020a62d457000000b006ce9e9d27c7sm11121367pfl.129.2023.12.13.19.24.26
+ x3-20020a056a000bc300b006cea17d08ebsm10760601pfu.120.2023.12.13.20.31.16
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 13 Dec 2023 19:24:28 -0800 (PST)
-From: Li Feng <fengli@smartx.com>
-Message-Id: <D52256EA-0E78-4952-BB96-4A3DC1CB648F@smartx.com>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_65D2DA90-CE70-4E8D-AB59-6B22189BD03F"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.100.2.1.4\))
-Subject: Re: [PATCH 1/1] vhost-scsi: fix usage of error_reportf_err()
-Date: Thu, 14 Dec 2023 11:25:35 +0800
-In-Reply-To: <20231214003117.43960-1-dongli.zhang@oracle.com>
-Cc: "open list:All patches CC here" <qemu-devel@nongnu.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>, Raphael Norwitz <raphael.norwitz@nutanix.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-References: <20231214003117.43960-1-dongli.zhang@oracle.com>
-X-Mailer: Apple Mail (2.3774.100.2.1.4)
-Received-SPF: none client-ip=2607:f8b0:4864:20::42e;
- envelope-from=fengli@smartx.com; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: 28
-X-Spam_score: 2.8
-X-Spam_bar: ++
-X-Spam_report: (2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_BL_SPAMCOP_NET=1.347, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ Wed, 13 Dec 2023 20:31:19 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+Subject: Re: [PATCH] pc: q35: Bump max_cpus to 4096
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <a7863276-f92e-40b1-b894-2cbff7725237@redhat.com>
+Date: Thu, 14 Dec 2023 10:01:03 +0530
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?utf-8?Q?=22Daniel_P_=2E_Berrang=C3=A9=22?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Julia Suvorova <jusual@redhat.com>,
+ QEMU Developers <qemu-devel@nongnu.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <AFE93D65-01D3-4E2C-BC7E-43C8430DE9D3@redhat.com>
+References: <20231208122611.32311-1-anisinha@redhat.com>
+ <a7863276-f92e-40b1-b894-2cbff7725237@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+X-Mailer: Apple Mail (2.3774.200.91.1.1)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,159 +110,86 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---Apple-Mail=_65D2DA90-CE70-4E8D-AB59-6B22189BD03F
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
 
-
-> On Dec 14, 2023, at 08:31, Dongli Zhang <dongli.zhang@oracle.com> =
+> On 11-Dec-2023, at 11:27=E2=80=AFAM, Thomas Huth <thuth@redhat.com> =
 wrote:
 >=20
-> It is required to use error_report() instead of error_reportf_err(), =
-if the
-> prior function does not take local_err as the argument. As a result, =
-the
-> local_err is always NULL and segment fault may happen.
+> On 08/12/2023 13.26, Ani Sinha wrote:
+>> Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to =
+allow up to 4096 vCPUs")
+>> Linux kernel can support upto a maximum number of 4096 vCPUS when =
+MAXSMP is
+>> enabled in the kernel. So bump up the max_cpus value for q35 machines =
+versions
+>> 8.3 and newer to 4096. Older q35 machines versions 8.2 and older =
+continue to
+>> support 1024 maximum vcpus as before.
+>> If KVM is not able to support the specified number of vcpus, QEMU =
+would
+>> return the following error messages:
+>> $ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 4096
+>> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested =
+(4096) exceeds the recommended cpus supported by KVM (12)
+>> Number of SMP cpus requested (4096) exceeds the maximum cpus =
+supported by KVM (1024)
+>> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> Cc: Igor Mammedov <imammedo@redhat.com>
+>> Cc: Michael S. Tsirkin <mst@redhat.com>
+>> Cc: Julia Suvorova <jusual@redhat.com>
+>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>> ---
+>>  hw/i386/pc_q35.c | 15 ++++++++++++---
+>>  1 file changed, 12 insertions(+), 3 deletions(-)
+>> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+>> index 4f3e5412f6..2ed57814e1 100644
+>> --- a/hw/i386/pc_q35.c
+>> +++ b/hw/i386/pc_q35.c
+>> @@ -375,7 +375,7 @@ static void pc_q35_machine_options(MachineClass =
+*m)
+>>      m->default_nic =3D "e1000e";
+>>      m->default_kernel_irqchip_split =3D false;
+>>      m->no_floppy =3D 1;
+>> -    m->max_cpus =3D 1024;
+>> +    m->max_cpus =3D 4096;
+>>      m->no_parallel =3D =
+!module_object_class_by_name(TYPE_ISA_PARALLEL);
+>>      machine_class_allow_dynamic_sysbus_dev(m, =
+TYPE_AMD_IOMMU_DEVICE);
+>>      machine_class_allow_dynamic_sysbus_dev(m, =
+TYPE_INTEL_IOMMU_DEVICE);
+>> @@ -383,12 +383,22 @@ static void pc_q35_machine_options(MachineClass =
+*m)
+>>      machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
+>>  }
+>>  -static void pc_q35_8_2_machine_options(MachineClass *m)
+>> +static void pc_q35_8_3_machine_options(MachineClass *m)
 >=20
-> vhost_scsi_start()
-> -> vhost_scsi_set_endpoint(s) --> does not allocate local_err
-> -> error_reportf_err()
->   -> error_vprepend()
->      -> g_string_append(newmsg, (*errp)->msg) --> (*errp) is NULL
+> Hi Ani!
 >=20
-> In addition, add ": " at the end of other error_reportf_err() logs.
->=20
-> Fixes: 7962e432b4e4 ("vhost-user-scsi: support reconnect to backend")
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-> ---
-> hw/scsi/vhost-scsi.c      | 4 ++--
-> hw/scsi/vhost-user-scsi.c | 3 ++-
-> 2 files changed, 4 insertions(+), 3 deletions(-)
->=20
-> diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-> index 3126df9e1d..9929c0d14b 100644
-> --- a/hw/scsi/vhost-scsi.c
-> +++ b/hw/scsi/vhost-scsi.c
-> @@ -91,13 +91,13 @@ static int vhost_scsi_start(VHostSCSI *s)
->=20
->     ret =3D vhost_scsi_common_start(vsc, &local_err);
->     if (ret < 0) {
-> -        error_reportf_err(local_err, "Error starting vhost-scsi");
-> +        error_reportf_err(local_err, "Error starting vhost-scsi: ");
->         return ret;
->     }
->=20
->     ret =3D vhost_scsi_set_endpoint(s);
->     if (ret < 0) {
-> -        error_reportf_err(local_err, "Error setting vhost-scsi =
-endpoint");
-> +        error_report("Error setting vhost-scsi endpoint");
->         vhost_scsi_common_stop(vsc);
->     }
->=20
-> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-> index 780f10559d..af18c4f3d3 100644
-> --- a/hw/scsi/vhost-user-scsi.c
-> +++ b/hw/scsi/vhost-user-scsi.c
-> @@ -83,7 +83,8 @@ static void vhost_user_scsi_set_status(VirtIODevice =
-*vdev, uint8_t status)
->     if (should_start) {
->         ret =3D vhost_user_scsi_start(s, &local_err);
->         if (ret < 0) {
-> -            error_reportf_err(local_err, "unable to start =
-vhost-user-scsi: %s",
-> +            error_reportf_err(local_err,
-> +                              "unable to start vhost-user-scsi: %s: =
-",
->                               strerror(-ret));
->             qemu_chr_fe_disconnect(&vs->conf.chardev);
->         }
-> --=20
-> 2.34.1
->=20
-Looks good.
+> The next QEMU version after 8.2 is 9.0.
 
-Reviewed-by: Feng Li <fengli@smartx.com>
+Ah yes I completely forgot about our versioning scheme.
 
-Thanks.=
 
---Apple-Mail=_65D2DA90-CE70-4E8D-AB59-6B22189BD03F
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=us-ascii
+> Maybe best if you rebase your patch on top of:
+>=20
+> =
+https://lore.kernel.org/qemu-devel/20231120094259.1191804-1-cohuck@redhat.=
+com/
 
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
-charset=3Dus-ascii"></head><body style=3D"overflow-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: =
-after-white-space;"><br><div><blockquote type=3D"cite"><div>On Dec 14, =
-2023, at 08:31, Dongli Zhang &lt;dongli.zhang@oracle.com&gt; =
-wrote:</div><br class=3D"Apple-interchange-newline"><div><div>It is =
-required to use error_report() instead of error_reportf_err(), if =
-the<br>prior function does not take local_err as the argument. As a =
-result, the<br>local_err is always NULL and segment fault may =
-happen.<br><br>vhost_scsi_start()<br>-&gt; vhost_scsi_set_endpoint(s) =
---&gt; does not allocate local_err<br>-&gt; error_reportf_err()<br> =
-&nbsp;&nbsp;-&gt; error_vprepend()<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt; g_string_append(newmsg, =
-(*errp)-&gt;msg) --&gt; (*errp) is NULL<br><br>In addition, add ": " at =
-the end of other error_reportf_err() logs.<br><br>Fixes: 7962e432b4e4 =
-("vhost-user-scsi: support reconnect to backend")<br>Signed-off-by: =
-Dongli Zhang &lt;dongli.zhang@oracle.com&gt;<br>---<br> =
-hw/scsi/vhost-scsi.c &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 4 ++--<br> =
-hw/scsi/vhost-user-scsi.c | 3 ++-<br> 2 files changed, 4 insertions(+), =
-3 deletions(-)<br><br>diff --git a/hw/scsi/vhost-scsi.c =
-b/hw/scsi/vhost-scsi.c<br>index 3126df9e1d..9929c0d14b 100644<br>--- =
-a/hw/scsi/vhost-scsi.c<br>+++ b/hw/scsi/vhost-scsi.c<br>@@ -91,13 +91,13 =
-@@ static int vhost_scsi_start(VHostSCSI *s)<br><br> =
-&nbsp;&nbsp;&nbsp;&nbsp;ret =3D vhost_scsi_common_start(vsc, =
-&amp;local_err);<br> &nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_reportf_err(local_err, =
-"Error starting vhost-scsi");<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_reportf_err(local_err, =
-"Error starting vhost-scsi: ");<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ret;<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;}<br><br> &nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
-vhost_scsi_set_endpoint(s);<br> &nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) =
-{<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_reportf_err(local_err, =
-"Error setting vhost-scsi endpoint");<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error setting =
-vhost-scsi endpoint");<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_scsi_common_stop(vsc=
-);<br> &nbsp;&nbsp;&nbsp;&nbsp;}<br><br>diff --git =
-a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c<br>index =
-780f10559d..af18c4f3d3 100644<br>--- a/hw/scsi/vhost-user-scsi.c<br>+++ =
-b/hw/scsi/vhost-user-scsi.c<br>@@ -83,7 +83,8 @@ static void =
-vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;if (should_start) {<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
-vhost_user_scsi_start(s, &amp;local_err);<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
-portf_err(local_err, "unable to start vhost-user-scsi: %s",<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
-portf_err(local_err,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;"unable to start vhost-user-scsi: %s: ",<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strerror(-ret));<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qe=
-mu_chr_fe_disconnect(&amp;vs-&gt;conf.chardev);<br> =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>-- =
-<br>2.34.1<br><br></div></div></blockquote><pre style=3D"font-size: =
-13px; background: rgb(255, 255, 255); color: rgb(0, 0, 51); text-wrap: =
-wrap; font-variant-ligatures: normal; orphans: 2; widows: 2; =
-text-decoration-thickness: initial; text-decoration-style: initial; =
-text-decoration-color: initial;">Looks good.</pre><pre style=3D"font-size:=
- 13px; background: rgb(255, 255, 255); color: rgb(0, 0, 51); text-wrap: =
-wrap; font-variant-ligatures: normal; orphans: 2; widows: 2; =
-text-decoration-thickness: initial; text-decoration-style: initial; =
-text-decoration-color: initial;">
-Reviewed-by: Feng Li =
-&lt;fengli@smartx.com&gt;</pre></div><br><div>Thanks.</div></body></html>=
+Will do. I am trying to get some data with testing on edk2. It seems on =
+legacy bios, we have done some testing downstream with 4096 vcpus with =
+qemu modifications and patched host kernel [1] and the linux guest boots =
+fine. With edk2 it seems we have tested with 1880 vcpus and it works =
+fine with the patched edk2 [2]. I am working downstream with HPE folks =
+to get some testing done with 4096 vcpus.
 
---Apple-Mail=_65D2DA90-CE70-4E8D-AB59-6B22189BD03F--
+[1] patched with =
+https://github.com/kvm-x86/linux/commit/f10a570b093e60c6bd3f210ae909f014f4=
+21352a .
+[2] =
+https://github.com/tianocore/edk2/pull/4181/commits/03ca8224f995eda75e2769=
+ed9a2fc437e321db8e
+
+
 
