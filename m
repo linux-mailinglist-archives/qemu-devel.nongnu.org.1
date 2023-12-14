@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC5F81282F
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E99B812830
 	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 07:33:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDfGl-0001ra-3U; Thu, 14 Dec 2023 01:32:27 -0500
+	id 1rDfGp-0001s7-Il; Thu, 14 Dec 2023 01:32:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rDfGj-0001rN-5V
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 01:32:25 -0500
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1rDfGn-0001rs-7W
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 01:32:29 -0500
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rDfGh-00044y-5u
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 01:32:24 -0500
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6da3a585c29so846428a34.1
- for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 22:32:22 -0800 (PST)
+ id 1rDfGl-00045F-Lx
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 01:32:28 -0500
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-28ad7a26f4aso2249000a91.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Dec 2023 22:32:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702535542; x=1703140342;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702535546; x=1703140346;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Hu2GriO1MrAnoyhy/5uDQI6ndh4gr9e/XQreypZyRXo=;
- b=QeKS2WHJdc1Dn9+J8Uy4Ga0ZGgvHG1GhIyYcbMjXBEyc4A2ICr/ZMMcQM049HL5fOF
- hOc4TVLDia/qlYLEjpuvst4BIO7jWfQfS997PL3xb8ww+Gj2VzauVJ8ovv2JMMSE7UrQ
- m31ZTmMQP/faLm9qni6wUxz2acPMxQnZswhB43Xi3skBlcGIvaKr7/mS8DbtYS+t3vkv
- IXDYcWyztM1MUCLcqCStteaHdiA0Ss9xOM8DuaNBy0dSF5pC5D75EIvSZPOshmJ6w7Bs
- TLb5q3/RNkVfDleyHtGmxzKYeu2pQh3CJjHZ/WwSmW62ukQauBm/KWKPISbwQmfG/29v
- aupg==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=b3CUKeEYm/gOZXVInNJSdSYc1B1o0RTKVcYbhcdNsuM=;
+ b=TSEWJgdbDLNuGhj3Wu2TDGdpfVzIN+eiA6gjaVVXB86n4tkvn0cnR8/RTWpdKyZFzu
+ MUYv7A3LL/oU1vKzqWHRUeWCxtN/QkmLsQGLwCBUuEUTq+Tdo2PaxBwihfdwo2vg55Jp
+ IMsUi6m63SeJ/BraDqdji/SGsW8P/1MYR9SVoaKLuGOhQBi7irWzq4yJSgrPrK+2HSJ9
+ XjaP/gElqLlB4TnWo5Otx9BkrC2UNhTuusoZtb8sIArPfjFzVfcgdS1x2sX9LTrqNHsa
+ 2RFDtf31xXF5DtzUkNt4BlcKEltEouAFGMUpwZpDVZp6Tea+xJEusnvw5CuHf2CRhT5J
+ Vvyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702535542; x=1703140342;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Hu2GriO1MrAnoyhy/5uDQI6ndh4gr9e/XQreypZyRXo=;
- b=R9cBtm8Q3qB/LIkfP1Or4bDooww8Sxh9jeYxbrDGZEvNO50wwFNefREJIZkUB4n/xF
- H7S7gg45Hz3wETH9d1WcB3kZ4xMqy0KIo7F4B3WI+I/ooWgx6Vw/KwmUcWJby1/zxBWv
- g2ALUBLLauh28zIQuHeTFk+RUWVMLmjU31qjanqAGzQQQv5kL4qguz3PB48Q1FZxRhEy
- bPjmxfVC9dKZuJZOlDmJmcnij4tkTanf3tF1CZrNrBg3ww9Q00vW8RVXizVYvDp/sE2L
- PSDheaFXopN+N+zLOXg1kotcHcRGNdc+6rcNzjnXhbYXIS8+QrAe2uXpZw7R5Uj0Fw1c
- VAcQ==
-X-Gm-Message-State: AOJu0YyIYi1wtvlg3BZnbZL3tO1gue+wzBuvBXatqqAY+JvQhLCIoIij
- Mswya4wArWKXy/wGIzB5TxpA7g==
-X-Google-Smtp-Source: AGHT+IFdW8R8YlGKFD0ANRkqAhkgiASolwGwLfQkrGxSrd/1f1hfQsarh1YbIxHYPHwrCv7xsOT26g==
-X-Received: by 2002:a05:6808:1250:b0:3b8:b063:9b6f with SMTP id
- o16-20020a056808125000b003b8b0639b6fmr10410584oiv.97.1702535541846; 
- Wed, 13 Dec 2023 22:32:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702535546; x=1703140346;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=b3CUKeEYm/gOZXVInNJSdSYc1B1o0RTKVcYbhcdNsuM=;
+ b=FOMvCceHRUq1dMn2kVdfUtAFV8xmTx4MJKN53kx/O7pnsWUcYpbokL6HvFbJlOOTHI
+ jkLGqGqxDznjWwrDH8MYlgeNYg0UCkDEUcMn4xG/64XDTlFwpa1qW274nutIsE92C3BI
+ y6P8P8TYxyOxMnLV14WtpOtPv1mgj9CsgJHjial1dCaHMaCgUCqaARgekHOS7YDbQrxu
+ VDJd8zOy1lGohQJ1YDU5qOnGIOHR+fVi5Q/a1sbJ4I6FeN/Nfv6Cd/2/sKfbFXZR/rxQ
+ vkdwkRkkNuy8kNe8F/GQy34pM6DYHtEP/WWueX33kIIdzBLfFyqPe+1qCB/iT+zvSz22
+ IYvQ==
+X-Gm-Message-State: AOJu0YzK/Pq58YCRV90Rq6DfW84IASHflc5Vo/4dRMriodMCJbmeZZWj
+ CitFNiI9ym9QzQdTSRy2Idk2Mg==
+X-Google-Smtp-Source: AGHT+IFDCQ0hjraQ6rxoMypT72B+xk+dXtO8FrckGUVRyh4qOZz6dUA21Mrwez0hFHSCtXjUzKjb+g==
+X-Received: by 2002:a17:902:704c:b0:1d0:ba40:b0e1 with SMTP id
+ h12-20020a170902704c00b001d0ba40b0e1mr9379527plt.124.1702535546340; 
+ Wed, 13 Dec 2023 22:32:26 -0800 (PST)
 Received: from localhost ([157.82.200.183])
  by smtp.gmail.com with UTF8SMTPSA id
- d15-20020aa7814f000000b006cdd00f91fdsm4719422pfn.185.2023.12.13.22.32.19
+ z5-20020a170903018500b001cf65844874sm11626412plg.45.2023.12.13.22.32.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Dec 2023 22:32:21 -0800 (PST)
+ Wed, 13 Dec 2023 22:32:26 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 0/2] qemu-options: Improve -display cocoa documentation
-Date: Thu, 14 Dec 2023 15:31:34 +0900
-Message-Id: <20231214-options-v1-0-113f347b0e3f@daynix.com>
+Date: Thu, 14 Dec 2023 15:31:35 +0900
+Subject: [PATCH 1/2] qemu-options: Unify the help entries for cocoa
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEahemUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2NDI0MT3fyCEqCSYl1jC7NUE4sks7REk2QloOqCotS0zAqwSdGxtbUAxt3
- IjFkAAAA=
+Message-Id: <20231214-options-v1-1-113f347b0e3f@daynix.com>
+References: <20231214-options-v1-0-113f347b0e3f@daynix.com>
+In-Reply-To: <20231214-options-v1-0-113f347b0e3f@daynix.com>
 To: Gerd Hoffmann <kraxel@redhat.com>, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>, 
  Peter Maydell <peter.maydell@linaro.org>, 
  Carwyn Ellis <carwynellis@gmail.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>, 
- BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::332;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x332.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,23 +95,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the context, see:
-https://lore.kernel.org/all/e3839467-6d4c-e8e6-9247-a71fafe5505e@eik.bme.hu/
+Apparently the help entries were not merged when the patches got in.
 
+Fixes: f844cdb99714 ("ui/cocoa: capture all keys and combos when mouse is grabbed")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Akihiko Odaki (2):
-      qemu-options: Unify the help entries for cocoa
-      qemu-options: Tell more for -display cocoa
+ qemu-options.hx | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
- qemu-options.hx | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
----
-base-commit: 4705fc0c8511d073bee4751c3c974aab2b10a970
-change-id: 20231214-options-386e48b6fa4c
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 42fd09e4de96..28aa26ceb508 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2087,6 +2087,7 @@ DEF("display", HAS_ARG, QEMU_OPTION_display,
+ #endif
+ #if defined(CONFIG_COCOA)
+     "-display cocoa[,full-grab=on|off][,swap-opt-cmd=on|off]\n"
++    "              [,show-cursor=on|off][,left-command-key=on|off]\n"
+ #endif
+ #if defined(CONFIG_OPENGL)
+     "-display egl-headless[,rendernode=<file>]\n"
+@@ -2094,9 +2095,6 @@ DEF("display", HAS_ARG, QEMU_OPTION_display,
+ #if defined(CONFIG_DBUS_DISPLAY)
+     "-display dbus[,addr=<dbusaddr>]\n"
+     "             [,gl=on|core|es|off][,rendernode=<file>]\n"
+-#endif
+-#if defined(CONFIG_COCOA)
+-    "-display cocoa[,show-cursor=on|off][,left-command-key=on|off]\n"
+ #endif
+     "-display none\n"
+     "                select display backend type\n"
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.43.0
 
 
