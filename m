@@ -2,83 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968E6812CC1
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 11:18:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65696812CEE
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 11:31:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDinL-0003Us-9r; Thu, 14 Dec 2023 05:18:19 -0500
+	id 1rDiyt-0005Vj-Fw; Thu, 14 Dec 2023 05:30:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1rDinJ-0003T4-Cz
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 05:18:17 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rDiyq-0005VA-2k
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 05:30:12 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1rDin8-0002qE-Mq
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 05:18:17 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2c9f559b82cso91169881fa.0
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 02:18:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rDiyo-00088Y-5E
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 05:30:11 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40c1e3ea2f2so77418335e9.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 02:30:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702549084; x=1703153884;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=YXuVJ8iopwawqaabjGPgfitOuptt5U0TaeiTThyJmmM=;
- b=1JVRmaLULTYGkohXR5eAhtuggjlpr6uQgJuYKN8/K6H5jw04n+DRPOHiDpV9PXFwkY
- FVYQiESHvFkQ2zhSlzMyNyrlENER4OfQemK/zo+2vq+PsuGRUb7ylsQWEWCFrBuQap12
- a+ORXvj443+MOEFglBiMB8wP09C2YCGec+q7Rl45vXNOtsJ6AqAnvFj4I6hVMJAuoZTj
- ay766OCVX2QESCZf6Z5NsW8kecbFewdkb/yXu+IAfz6iZeoJDpLTCQ1owbNbw8Fygu9Z
- ODr9P0KZiu6lSs2w9CKmISIghiSKO6oOICwJ/+aNrSw3Pg7toOVR/2Srj0omFdh1T4rU
- BFbQ==
+ d=linaro.org; s=google; t=1702549808; x=1703154608; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uOVO+bfnnJKpEsOHryNuWrr2usdamUm/q/5hMMN7t4I=;
+ b=NHxvu6EsC6qnJrBftUulNFXD4Q3sxxoLc7qK0+B6sSNkbMWOGyaV938P98JCO6dyGw
+ I2g3UGWLH7cK2hg3RES52N1PPR8sQaZVSOOQEd3wBAYW/0jVGxk7DQbK8xJI+qzj9Ez/
+ eY7oJZigBbRVKy2Dcl4xRj3em083O4HYqKHVbgwc0pEm26IYmALroVCBgHI1fcVO2IXr
+ l5Izi8VD5tZaJwXNn+/pSZyR7bmDomswewf1E+MK61hCv6qLq16w0xjCEEI/OmpIresl
+ VC7Fgz3Nz/omeSz7qhvx7zxRjXtF7Ix0XZu5YCiaMvDMqzzWRnxGSla6w7osaUGBogLO
+ M4tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702549084; x=1703153884;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YXuVJ8iopwawqaabjGPgfitOuptt5U0TaeiTThyJmmM=;
- b=oHdzV1ey3Xa3IUzNW49qI0/5D+634ACn30wRvI8wraMEfh57nwWuFmwPHcbfqu6DyT
- 8xDMk9kK1Kw5LyMKh3kFhCh5+fDPru3MQukEvLsHkTO7KtzzthRtIve79Fi8n4+A9Bck
- MKDF+zXfyvbrlau3hmy3f4EKbGoy0zx7rKYAF22tTkBFSYrAU4ECrYaMHbk5c1NoiLJP
- JLSkA4TR2H2CjrwNwQXepJ5H+9Lt/THMon3AmbiUsZTJkfb4CIV4y6qfeYKYiQqyWylW
- oZbJYJ/TEmdoBmrDIOhPIMEZiyrWndfGma9uiGt1sXAegLOh9e9xAu+8DpZyV48EWL2E
- 9bHg==
-X-Gm-Message-State: AOJu0YyzUu5wjK+U2PWMrUWT7BIdPVWSRFLuYFChfVM1V/jmTCVAqVGm
- CBpxnX39DUYIaw+EMYOJGLWNDaQt9FyujB1m7izC4A==
-X-Google-Smtp-Source: AGHT+IHjR3OnAG6N+ry7jc/txUvO8qBmivWfNV/iW4WEiFsIzPFDA0tfNL3hxeNxGyhpZQMKN9TxJ5C9H8Uet09wGkc=
-X-Received: by 2002:a05:651c:211a:b0:2cb:2bb4:fd4f with SMTP id
- a26-20020a05651c211a00b002cb2bb4fd4fmr3955935ljq.23.1702549083780; Thu, 14
- Dec 2023 02:18:03 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702549808; x=1703154608;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=uOVO+bfnnJKpEsOHryNuWrr2usdamUm/q/5hMMN7t4I=;
+ b=qXfox8O1oNwnFJ9dctgjYQVx1Ys+XJpJcOGUVkCzUFAMy/ZEqPJAbO6UM/TlkiRY3g
+ V37AxxFUtQj79yguHqvaZdJ6ZYNdILwjb0vF7BbfUsCwvELMkuXNl+imjRQaiap3x+Lh
+ KkCZRsEqrL+xu+KfPVqtop2znq/T0GLqK+734YSEt41K9p0rqtF//2nYjSxazGTkOJZN
+ 7bgXIUZDzJj/j8OgEbFeHGALKd5d7zFTpAerXSHPhDGUZPmz2HPr89lc/FlD3+6r80SH
+ T/vP7TEpq4FOZTVbFvCz5enVINrvVqbADTgyawUImPzE4lsWSjZ9+tsAgrScByyvTh5c
+ 6RWA==
+X-Gm-Message-State: AOJu0YypsThBeKbMCij3qyEpJiGI+GfMjunKZi3LcBSm7ECAXBk4tvkS
+ +QZ2YHeptG9n+FLP+xIfHKJq0w==
+X-Google-Smtp-Source: AGHT+IGfGsKpkGfYhg49s8Yquwu96sYE4oPzI7EF/ZouNO4OCHspwjlC8bcFEg/vs/gJgAL1beDnrQ==
+X-Received: by 2002:a7b:cb95:0:b0:40c:9fa:592f with SMTP id
+ m21-20020a7bcb95000000b0040c09fa592fmr5374387wmi.104.1702549808302; 
+ Thu, 14 Dec 2023 02:30:08 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ m27-20020a05600c3b1b00b0040b38292253sm26513051wms.30.2023.12.14.02.30.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Dec 2023 02:30:07 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 838705F7D3;
+ Thu, 14 Dec 2023 10:30:07 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Cleber Rosa <crosa@redhat.com>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ qemu-devel@nongnu.org,  Jiaxun Yang <jiaxun.yang@flygoat.com>,  Radoslaw
+ Biernacki <rad@semihalf.com>,  Paul Durrant <paul@xen.org>,  Akihiko Odaki
+ <akihiko.odaki@daynix.com>,  Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Beraldo Leal
+ <bleal@redhat.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,  David Woodhouse
+ <dwmw2@infradead.org>
+Subject: Re: [PATCH 04/10] tests/avocado: machine aarch64: standardize
+ location and RO/RW access
+In-Reply-To: <87le9xvmto.fsf@p1.localdomain> (Cleber Rosa's message of "Wed,
+ 13 Dec 2023 16:01:39 -0500")
+References: <20231208190911.102879-1-crosa@redhat.com>
+ <20231208190911.102879-5-crosa@redhat.com>
+ <2972842d-e4bf-49eb-9d72-01b8049f18bf@linaro.org>
+ <87le9xvmto.fsf@p1.localdomain>
+User-Agent: mu4e 1.11.26; emacs 29.1
+Date: Thu, 14 Dec 2023 10:30:07 +0000
+Message-ID: <87r0jp84b4.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <20230831065140.496485-1-andrew@daynix.com>
- <20230831065140.496485-6-andrew@daynix.com>
- <CABcq3pHyiO4AWSzxwWKfUnULfqPGQs1g12MCn14Ms4FqupZAzg@mail.gmail.com>
- <CACGkMEvBEdV1+uxE00hbXuFWmT2+nqgT9JxBezLXBwEX0b9Vbw@mail.gmail.com>
- <CAOEp5OcMo+eZ=k4m7ZKvSLWfngzzaZ6eHMLaiTmZ3CQ_yE2aKw@mail.gmail.com>
- <CACGkMEtFKJovdfi6690uoqH_qJ3mP6K8KDFcOamvC1yOow-Drg@mail.gmail.com>
- <CAOEp5OfrsExfBF4QvxtP7KCVS9tGQMNxZq5kh4j9bwxqYQmjBw@mail.gmail.com>
-In-Reply-To: <CAOEp5OfrsExfBF4QvxtP7KCVS9tGQMNxZq5kh4j9bwxqYQmjBw@mail.gmail.com>
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
-Date: Thu, 14 Dec 2023 12:17:52 +0200
-Message-ID: <CAOEp5OchOVu7YSeHG2Au_S4HHf0U0H8Jdit-U+X_VcAP0z=7GA@mail.gmail.com>
-Subject: Re: [PATCH v7 5/5] ebpf: Updated eBPF program and skeleton.
-To: Jason Wang <jasowang@redhat.com>
-Cc: Andrew Melnichenko <andrew@daynix.com>, mst@redhat.com, armbru@redhat.com,
- eblake@redhat.com, 
- qemu-devel@nongnu.org, berrange@redhat.com, yan@daynix.com, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Content-Type: multipart/alternative; boundary="0000000000005a0a3f060c7599f7"
-Received-SPF: none client-ip=2a00:1450:4864:20::233;
- envelope-from=yuri.benditovich@daynix.com; helo=mail-lj1-x233.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,146 +108,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000005a0a3f060c7599f7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cleber Rosa <crosa@redhat.com> writes:
 
-Hi Jason,
-As we anyway missed the timeframe of 8.2 please remove this v7 series from
-the pull, we will send v8 in which we want to take in account most of
-Akihiko comments (especially DEFINE_PROP_ARRAY and naming of the
-properties).
-
-Thank you very much
-
-Yuri
-
-On Wed, Dec 13, 2023 at 9:23=E2=80=AFAM Yuri Benditovich <
-yuri.benditovich@daynix.com> wrote:
-
+> Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org> writes:
 >
-> On Tue, Dec 12, 2023 at 5:33=E2=80=AFAM Jason Wang <jasowang@redhat.com> =
-wrote:
->
->> On Mon, Dec 11, 2023 at 7:51=E2=80=AFPM Yuri Benditovich
->> <yuri.benditovich@daynix.com> wrote:
->> >
->> > Hello Jason,
->> > Can you please let us know what happens with this series?
+>> W dniu 8.12.2023 o=C2=A020:09, Cleber Rosa pisze:
+>>> The tests under machine_aarch64_virt.py do not need read-write access
+>>> to the ISOs.  The ones under machine_aarch64_sbsaref.py, on the other
+>>> hand, will need read-write access, so let's give each test an unique
+>>> file.
+>>>=20
+>>> And while at it, let's use a single code style and hash for the ISO
+>>> url.
+>>>=20
+>>> Signed-off-by: Cleber Rosa<crosa@redhat.com>
 >>
->> It should be my bad, it is in V1 of the pull request but missed
->> accidentally in V2 of the pull.
+>> It is ISO file, so sbsa-ref tests should be fine with readonly as well.
 >>
->> I've merged it here,
->>
->> https://gitlab.com/jasowang/qemu.git
+>> Nothing gets installed so nothing is written. We only test does boot wor=
+ks.
 >
+> That was my original expectation too.  But, with nothing but the
+> following change:
 >
-> Yes, the merged tree is OK. I see you changed the target version to 8.3
->  It looks like no more changes required for the PULL,
->  Please let us know if something is needed.
+> diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/mac=
+hine_aarch64_sbsaref.py
+> index 528c7d2934..436da4b156 100644
+> --- a/tests/avocado/machine_aarch64_sbsaref.py
+> +++ b/tests/avocado/machine_aarch64_sbsaref.py
+> @@ -129,7 +129,7 @@ def boot_alpine_linux(self, cpu):
+>              "-cpu",
+>              cpu,
+>              "-drive",
+> -            f"file=3D{iso_path},format=3Draw",
+> +            f"file=3D{iso_path},readonly=3Don,format=3Draw",
+
+               f"file=3D{iso_path},readonly=3Don,media=3Dcdrom,format=3Draw=
+",
+
+works (although possible the readonly is redundant in this case).
+
+>              "-device",
+>              "virtio-rng-pci,rng=3Drng0",
+>              "-object",
+>
+> We get:
+>
+> 15:55:10 DEBUG| VM launch command: './qemu-system-aarch64 -display none -=
+vga none -chardev socket,id=3Dmon,fd=3D15 -mon chardev=3Dmon,mode=3Dcontrol=
+ -machine sbsa-ref -
+> chardev socket,id=3Dconsole,fd=3D20 -serial chardev:console -cpu cortex-a=
+57 -drive if=3Dpflash,file=3D/home/cleber/avocado/job-results/job-2023-12-1=
+3T15.55-28ef2b5/test
+> -results/tmp_dirx8p5xzt4/1-tests_avocado_machine_aarch64_sbsaref.py_Aarch=
+64SbsarefMachine.test_sbsaref_alpine_linux_cortex_a57/SBSA_FLASH0.fd,format=
+=3Draw -drive=20
+> if=3Dpflash,file=3D/home/cleber/avocado/job-results/job-2023-12-13T15.55-=
+28ef2b5/test-results/tmp_dirx8p5xzt4/1-tests_avocado_machine_aarch64_sbsare=
+f.py_Aarch64Sbsa
+> refMachine.test_sbsaref_alpine_linux_cortex_a57/SBSA_FLASH1.fd,format=3Dr=
+aw -smp 1 -machine sbsa-ref -cpu cortex-a57 -drive file=3D/home/cleber/avoc=
+ado/data/cache/b
+> y_location/0154b7cd3a4f5e135299060c8cabbeec10b70b6d/alpine-standard-3.17.=
+2-aarch64.iso,readonly=3Don,format=3Draw -device virtio-rng-pci,rng=3Drng0 =
+-object rng-random
+> ,id=3Drng0,filename=3D/dev/urandom'
+>
+> Followed by:
+>
+> 15:55:10 DEBUG| Failed to establish session:
+>   | Traceback (most recent call last):
+>   |   File "/home/cleber/src/qemu/python/qemu/qmp/protocol.py", line 425,=
+ in _session_guard
+>   |     await coro
+>   |   File "/home/cleber/src/qemu/python/qemu/qmp/qmp_client.py", line 25=
+3, in _establish_session
+>   |     await self._negotiate()
+>   |   File "/home/cleber/src/qemu/python/qemu/qmp/qmp_client.py", line 30=
+5, in _negotiate
+>   |     reply =3D await self._recv()
+>   |             ^^^^^^^^^^^^^^^^^^
+>   |   File "/home/cleber/src/qemu/python/qemu/qmp/protocol.py", line 1009=
+, in _recv
+>   |     message =3D await self._do_recv()
+>   |               ^^^^^^^^^^^^^^^^^^^^^
+>   |   File "/home/cleber/src/qemu/python/qemu/qmp/qmp_client.py", line 40=
+2, in _do_recv
+>   |     msg_bytes =3D await self._readline()
+>   |                 ^^^^^^^^^^^^^^^^^^^^^^
+>   |   File "/home/cleber/src/qemu/python/qemu/qmp/protocol.py", line 977,=
+ in _readline
+>   |     raise EOFError
+>   | EOFError
+>
+> With qemu-system-arch producing on stdout:
+>
+>    qemu-system-aarch64: Block node is read-only
+>
+> Any ideas on the reason or cause?
 >
 > Thanks,
-> Yuri
->
->
->
->>
->> Please check if it's correct.
->>
->> Thanks
->>
->> >
->> > Thanks
->> > Yuri
->> >
->> > On Fri, Sep 8, 2023 at 9:43=E2=80=AFAM Jason Wang <jasowang@redhat.com=
-> wrote:
->> >>
->> >> On Mon, Sep 4, 2023 at 7:23=E2=80=AFPM Andrew Melnichenko <andrew@day=
-nix.com>
->> wrote:
->> >> >
->> >> > Hi Jason,
->> >> > According to our previous conversation, I've added checks to the
->> meson script.
->> >> > Please confirm that everything is correct
->> >>
->> >> I've queued this series.
->> >>
->> >> Thanks
->> >>
->>
->>
+> - Cleber.
 
---0000000000005a0a3f060c7599f7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi Jason,<div>As we anyway missed the timeframe=C2=A0of 8.=
-2 please remove this v7 series from the pull, we will send v8 in which we w=
-ant to take in account most of Akihiko comments (especially DEFINE_PROP_ARR=
-AY and naming of the properties).</div><div><br></div><div>Thank you very m=
-uch</div><div><br></div><div>Yuri</div></div><br><div class=3D"gmail_quote"=
-><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Dec 13, 2023 at 9:23=E2=80=
-=AFAM Yuri Benditovich &lt;<a href=3D"mailto:yuri.benditovich@daynix.com" t=
-arget=3D"_blank">yuri.benditovich@daynix.com</a>&gt; wrote:<br></div><block=
-quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
-px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div dir=3D"lt=
-r"></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_att=
-r">On Tue, Dec 12, 2023 at 5:33=E2=80=AFAM Jason Wang &lt;<a href=3D"mailto=
-:jasowang@redhat.com" target=3D"_blank">jasowang@redhat.com</a>&gt; wrote:<=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Mon, Dec 11, =
-2023 at 7:51=E2=80=AFPM Yuri Benditovich<br>
-&lt;<a href=3D"mailto:yuri.benditovich@daynix.com" target=3D"_blank">yuri.b=
-enditovich@daynix.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Hello Jason,<br>
-&gt; Can you please let us know what happens with this series?<br>
-<br>
-It should be my bad, it is in V1 of the pull request but missed<br>
-accidentally in V2 of the pull.<br>
-<br>
-I&#39;ve merged it here,<br>
-<br>
-<a href=3D"https://gitlab.com/jasowang/qemu.git" rel=3D"noreferrer" target=
-=3D"_blank">https://gitlab.com/jasowang/qemu.git</a></blockquote><div><br><=
-/div><div>Yes, the merged tree is OK. I see you changed the target version =
-to 8.3</div><div>=C2=A0It looks like no more changes required for the PULL,=
-</div><div>=C2=A0Please let us know if something is needed.</div><div><br><=
-/div><div>Thanks,</div><div>Yuri</div><div><br></div><div><br></div><blockq=
-uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
-x solid rgb(204,204,204);padding-left:1ex"><br>
-<br>
-Please check if it&#39;s correct.<br>
-<br>
-Thanks<br>
-<br>
-&gt;<br>
-&gt; Thanks<br>
-&gt; Yuri<br>
-&gt;<br>
-&gt; On Fri, Sep 8, 2023 at 9:43=E2=80=AFAM Jason Wang &lt;<a href=3D"mailt=
-o:jasowang@redhat.com" target=3D"_blank">jasowang@redhat.com</a>&gt; wrote:=
-<br>
-&gt;&gt;<br>
-&gt;&gt; On Mon, Sep 4, 2023 at 7:23=E2=80=AFPM Andrew Melnichenko &lt;<a h=
-ref=3D"mailto:andrew@daynix.com" target=3D"_blank">andrew@daynix.com</a>&gt=
-; wrote:<br>
-&gt;&gt; &gt;<br>
-&gt;&gt; &gt; Hi Jason,<br>
-&gt;&gt; &gt; According to our previous conversation, I&#39;ve added checks=
- to the meson script.<br>
-&gt;&gt; &gt; Please confirm that everything is correct<br>
-&gt;&gt;<br>
-&gt;&gt; I&#39;ve queued this series.<br>
-&gt;&gt;<br>
-&gt;&gt; Thanks<br>
-&gt;&gt;<br>
-<br>
-</blockquote></div></div>
-</blockquote></div>
-
---0000000000005a0a3f060c7599f7--
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
