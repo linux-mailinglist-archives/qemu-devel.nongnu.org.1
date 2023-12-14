@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBB0813693
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 17:44:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC69C813695
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 17:44:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDono-0006ab-FT; Thu, 14 Dec 2023 11:43:12 -0500
+	id 1rDooJ-0007dO-FM; Thu, 14 Dec 2023 11:43:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDonl-0006aI-Q3
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 11:43:10 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDooG-0007SO-Hg
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 11:43:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDoni-0003hb-7F
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 11:43:09 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rDooF-0003pD-15
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 11:43:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702572184;
+ s=mimecast20190719; t=1702572218;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=SczLSwxHWdNZeZ3XBWVeynPTGrG2upV6TZaHCZnDOMA=;
- b=YD8/ESU/Kd7cCawqY6JB1vMvfLCFsV3OCwxqz9nugv4BkZZGx0L0nFvpYKPugTLckZscf6
- jUmhqYVDIy78E923kJWvqbElryncN8YOH50z8F0tfaGkzD20EOwX4ylZHx9F4tvdgR/niR
- A76byJ905S9kFzTxA4KQVCXCVkVsn4U=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fli+Pd51Cx9qjpPCfDi/asTE836Pxi7SXcGZUk5C41s=;
+ b=ga1yK1VLH4o5abVkaOiQqFvdZreh3wWbrJU/QAtReUPAbh+92h6Szy8CJfRFwTorZbDnMR
+ yiLDU/tI9tByP327A7oCgB7m3mQjJiIaubGrRx6KLL//YTlAxwOGHVTWg/+zcUGQZuNVRo
+ q7VVosgaPGsXZjRlKcj1u1lEdSAzxxs=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-_vRkdWCWOhadxjvdJVJKbw-1; Thu, 14 Dec 2023 11:43:02 -0500
-X-MC-Unique: _vRkdWCWOhadxjvdJVJKbw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-67ab7e9d393so115671736d6.1
- for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 08:43:02 -0800 (PST)
+ us-mta-682-GFQk-lVlMUG5-zP94Huu2A-1; Thu, 14 Dec 2023 11:43:35 -0500
+X-MC-Unique: GFQk-lVlMUG5-zP94Huu2A-1
+Received: by mail-oo1-f72.google.com with SMTP id
+ 006d021491bc7-591202b7fa3so4467695eaf.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 08:43:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702572182; x=1703176982;
+ d=1e100.net; s=20230601; t=1702572214; x=1703177014;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SczLSwxHWdNZeZ3XBWVeynPTGrG2upV6TZaHCZnDOMA=;
- b=Sgg/ZnA9IVj+gTUo+gtS+S/cMZjKLIgpBj+65WBkyv3Ap0LiL3r63vaD/KcenmLBgu
- ZA1k5vTHCCtydXeYRXHPEjsoZMgVd1qe3brwonxzssCKzcrvIERr33I4Xpyy1Kf6rqk1
- 8t7wnVC19mBau1xbm94X08hIWWAublobyHHDldHFbJcuugRTjTzEV02Xy+cBc14ApVkU
- m7P395WZcawCBaGdO77NeTjt6W116jIeQMSdurWnrvKjyhNhSWo2QLwhbqNJRad8UdCG
- lv97rJEgn/LBu/OgBZ28QQB0YtKKKWZp9jX4ZgLGrRltol9xxgtwbucogf+H4OfrEreU
- 6wOA==
-X-Gm-Message-State: AOJu0YzDrnLkIXR6GrwRNqnbKmUX81wTQsg2jARVXHPNty7rHlMIxdk/
- ypC8N6sR9WS4U1jQ7uEXB1yOzbwzPD8iWvIEjRy07Cpr6wSnrlCz8gydPW8mpEOFlDex+17iloL
- clMNc0JNe3f6aCgA=
-X-Received: by 2002:a0c:ee47:0:b0:67a:8e32:b9f5 with SMTP id
- m7-20020a0cee47000000b0067a8e32b9f5mr9900747qvs.5.1702572181972; 
- Thu, 14 Dec 2023 08:43:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEPR7WNZ1nHy58gS/U5XJcquziuJF0jOKl8jKR0IRI56jb4S4h93nCiTwl0zP4BD+iuBC5xGw==
-X-Received: by 2002:a0c:ee47:0:b0:67a:8e32:b9f5 with SMTP id
- m7-20020a0cee47000000b0067a8e32b9f5mr9900739qvs.5.1702572181756; 
- Thu, 14 Dec 2023 08:43:01 -0800 (PST)
+ bh=fli+Pd51Cx9qjpPCfDi/asTE836Pxi7SXcGZUk5C41s=;
+ b=Efnu0w5lZsPfuNocEU/sk5xAQMBTeWTJCCM1PfN5vRXpV0q8T98cDzlvUBQtSdG0Or
+ M2fhJOda1DSU4OV8rzHos9B+ReSle+4nAcpGIl0gUniCUuHC2ALeI/Xq9fEooBA6l0YX
+ hyhhQte97Ma07//Ir2Zy313doSbrbKmGRLKHLj2Mk1ip3UYAmdsN37FReaYlCpBspW+R
+ Zjtx4NRb9FqZPf9zUwAOhL5b1G7cKCAPaWQ7YG0BDY3ie+7lcy+prDrr/Nh9w2yJKM+3
+ I2G5U9fMQucFmhORv+1xVwv5nzV0Q/4ewsY3fOWd7w71vD2rvxkcgqFEPz8slAnGg9nL
+ yEvA==
+X-Gm-Message-State: AOJu0Yww2qXZuxHg4slR7zIyxeSuNNXBSoNgVtzDh2MOxvug/g6UqRwz
+ L/naP+Oc0TUyjTwIWuwq8rs4b5Ktsr0MD8WDf7zToVbWE0YqQSTe/0/9EKbnUUKjcT7dFkcNsga
+ knUq0080HqCpG1/k=
+X-Received: by 2002:a05:6358:7211:b0:170:204d:49e2 with SMTP id
+ h17-20020a056358721100b00170204d49e2mr6662968rwa.64.1702572214313; 
+ Thu, 14 Dec 2023 08:43:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGTjGZz14NUpnmKpYOV3K2LnFlOJESXljsTZgn/84ICCTA7WDcBh27k5/o3HH1wvQfyv+CZWg==
+X-Received: by 2002:a05:6358:7211:b0:170:204d:49e2 with SMTP id
+ h17-20020a056358721100b00170204d49e2mr6662955rwa.64.1702572214010; 
+ Thu, 14 Dec 2023 08:43:34 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-178-144.web.vodafone.de.
  [109.43.178.144]) by smtp.gmail.com with ESMTPSA id
- pp12-20020a056214138c00b0067f13e3c256sm67377qvb.38.2023.12.14.08.43.00
+ pp12-20020a056214138c00b0067f13e3c256sm67377qvb.38.2023.12.14.08.43.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Dec 2023 08:43:01 -0800 (PST)
-Message-ID: <8ada8156-ebd3-491e-b387-574ca06ec0dc@redhat.com>
-Date: Thu, 14 Dec 2023 17:42:59 +0100
+ Thu, 14 Dec 2023 08:43:33 -0800 (PST)
+Message-ID: <8509e7b6-89a9-49ad-9073-17e15af25c70@redhat.com>
+Date: Thu, 14 Dec 2023 17:43:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] hw/misc/mips_itu: Remove unnecessary
- 'exec/exec-all.h' header
+Subject: Re: [PATCH 4/4] target: Restrict 'sysemu/reset.h' to system emulation
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, Warner Losh <imp@bsdimp.com>, 
+ Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>
 References: <20231212113640.30287-1-philmd@linaro.org>
- <20231212113640.30287-3-philmd@linaro.org>
+ <20231212113640.30287-5-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -117,7 +116,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231212113640.30287-3-philmd@linaro.org>
+In-Reply-To: <20231212113640.30287-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -146,31 +145,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/12/2023 12.36, Philippe Mathieu-Daudé wrote:
-> mips_itu.c only requires declarations from "hw/core/cpu.h"
-> and "cpu.h". Avoid including the huge "exec/exec-all.h" header.
+> vCPU "reset" is only possible with system emulation.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Warner Losh <imp@bsdimp.com>
+> Reviewed-by: Song Gao <gaosong@loongson.cn>
 > ---
->   hw/misc/mips_itu.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/misc/mips_itu.c b/hw/misc/mips_itu.c
-> index 5a83ccc4e8..37aea0e737 100644
-> --- a/hw/misc/mips_itu.c
-> +++ b/hw/misc/mips_itu.c
-> @@ -22,9 +22,10 @@
->   #include "qemu/log.h"
->   #include "qemu/module.h"
->   #include "qapi/error.h"
-> -#include "exec/exec-all.h"
-> +#include "hw/core/cpu.h"
->   #include "hw/misc/mips_itu.h"
->   #include "hw/qdev-properties.h"
-> +#include "target/mips/cpu.h"
->   
->   #define ITC_TAG_ADDRSPACE_SZ (ITC_ADDRESSMAP_NUM * 8)
->   /* Initialize as 4kB area to fit all 32 cells with default 128B grain.
+>   target/i386/cpu.c      | 2 +-
+>   target/loongarch/cpu.c | 2 ++
+>   2 files changed, 3 insertions(+), 1 deletion(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
