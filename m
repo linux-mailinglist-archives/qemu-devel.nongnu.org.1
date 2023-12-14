@@ -2,46 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E3A8136CA
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 17:50:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43264813823
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Dec 2023 18:16:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDotd-00013c-21; Thu, 14 Dec 2023 11:49:13 -0500
+	id 1rDpIa-0006h8-Os; Thu, 14 Dec 2023 12:15:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
- id 1rDotZ-00012t-RH
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 11:49:09 -0500
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
- id 1rDotW-0006ES-Lq
- for qemu-devel@nongnu.org; Thu, 14 Dec 2023 11:49:09 -0500
-Received: from [10.10.3.121] (unknown [10.10.3.121])
- by mail.ispras.ru (Postfix) with ESMTPS id 1F33540F1DC5;
- Thu, 14 Dec 2023 16:48:37 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1F33540F1DC5
-Date: Thu, 14 Dec 2023 19:48:37 +0300 (MSK)
-From: Alexander Monakov <amonakov@ispras.ru>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDpIX-0006gJ-DL
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:14:57 -0500
+Received: from mail-qv1-xf35.google.com ([2607:f8b0:4864:20::f35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rDpIT-0007Me-T1
+ for qemu-devel@nongnu.org; Thu, 14 Dec 2023 12:14:57 -0500
+Received: by mail-qv1-xf35.google.com with SMTP id
+ 6a1803df08f44-67f02843e91so8969366d6.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Dec 2023 09:14:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702574092; x=1703178892; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ybFjpmrQhoMzGt+cU1/IIP+BUJDHHqNKMtENaaJvu/s=;
+ b=bx+6yabwHPDt0FjBzqMtc2klflMG8Ykjs9vbpzloclCZBE72dBzJ+sQ4qBpNJ3q9PR
+ 98mvQ4vxxFtq2iQvPnSbjQpnzEhP5fsUnRK56/o1XAuEsgmVTVayy7F9yslq3MbOmH+W
+ CkTyLVX802xQCmVyLXhjxfHTYsW9DW7Ohtg6asYCc5/+wyTjF1htwtWnSTduY+/7uCwY
+ OEqIJlrpYqo7Osiqv4W/Hx11LpMMo5eayu0KNTCiBU+lPTJ39VYW+VsTGgtR8siw3ZFe
+ ZzrNoFBX6KDUPPzXJGymShFf+oox9BqTQJr5H7t28Zsf9QvGPKrG3CWaNgnbBxdL3fNJ
+ eGCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702574092; x=1703178892;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ybFjpmrQhoMzGt+cU1/IIP+BUJDHHqNKMtENaaJvu/s=;
+ b=pKRyvVD5/70nTPu+qkk6TRj2vVC8F+QNNWdYIUrSH2pKM31p232xFa7W70U9K9jl4r
+ vkvpC6Qv88zOUBrLvmlzwLkDRqKN6RnNp1l3fF8g9E4AAWof6BGGlYZbLftfpkOKn+cG
+ OC0Cn94pu9pEARMaL6cWe6wd+zC3A4RtVDZ9pPUzPEysHadYI7aYcrasRPeDre8TADFE
+ ZL+7EsOLDJlDorhG6entQukFU1svZvJGyPB5uXKstlEqYpLhKcJaKkvwAbtgKagp8d0a
+ DwNe/svPK8rBGIDjchECDKwATlARq5aFbmntx7e0zC4AiZHlF9H39Df/+dJbEQb/6NBQ
+ vW0Q==
+X-Gm-Message-State: AOJu0YzDBSP55k2LwA6XFIMeFBpMLg8HahxXT8jazwSi2sYc7oEBKm4d
+ LCjvlYEzkEEe/mpQyEHq08rhd2N/7h1Q24mG4aqq/w==
+X-Google-Smtp-Source: AGHT+IG2n/mkkrzU6O/7FEa2IagQJ2ZThg/CzYjwQY5mkZy28sYU219Jw2K1kBO+hgF/bpS+R3vJ6w==
+X-Received: by 2002:ad4:5cc1:0:b0:67a:a721:caf6 with SMTP id
+ iu1-20020ad45cc1000000b0067aa721caf6mr13054985qvb.87.1702574092148; 
+ Thu, 14 Dec 2023 09:14:52 -0800 (PST)
+Received: from M1X.pond.sub.org (p50902f8f.dip0.t-ipconnect.de.
+ [80.144.47.143]) by smtp.gmail.com with ESMTPSA id
+ de4-20020ad45844000000b0067a97f6b0c6sm6122862qvb.32.2023.12.14.09.14.49
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 14 Dec 2023 09:14:51 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-cc: Mikhail Romanov <mmromanov@ispras.ru>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2] Optimize buffer_is_zero
-In-Reply-To: <e0ae3a3e-f02c-0031-a85f-5645c7480f8f@ispras.ru>
-Message-ID: <ea568a12-25fe-863e-2ede-82b9085f707a@ispras.ru>
-References: <20231027143704.7060-1-mmromanov@ispras.ru>
- <e0ae3a3e-f02c-0031-a85f-5645c7480f8f@ispras.ru>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org,
+ Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [RFC PATCH] hw/arm: Prefer arm_feature() over object_property_find()
+Date: Thu, 14 Dec 2023 18:14:47 +0100
+Message-ID: <20231214171447.44025-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Received-SPF: pass client-ip=83.149.199.84; envelope-from=amonakov@ispras.ru;
- helo=mail.ispras.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f35;
+ envelope-from=philmd@linaro.org; helo=mail-qv1-xf35.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,475 +96,368 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping^2.
+QOM properties are added on the ARM vCPU object when a
+feature is present. Rather than checking the property
+is present, check the feature.
 
-On Thu, 9 Nov 2023, Alexander Monakov wrote:
+Suggested-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+RFC: If there is no objection on this patch, I can split
+     as a per-feature series if necessary.
 
-> I'd like to ping this patch on behalf of Mikhail.
-> 
->   https://patchew.org/QEMU/20231027143704.7060-1-mmromanov@ispras.ru/
-> 
-> If this needs to be split up a bit to ease review, please let us know.
-> 
-> On Fri, 27 Oct 2023, Mikhail Romanov wrote:
-> 
-> > Improve buffer_is_zero function which is often used in qemu-img utility.
-> > For instance, when converting a 4.4 GiB Windows 10 image to qcow2 it
-> > takes around 40% of qemu-img run time (measured with 'perf record').
-> > 
-> > * The main improvements:
-> > 
-> > 1) Define an inline wrapper for this function in include/qemu/cutils.h.
-> > It checks three bytes from the buffer, avoiding call overhead when
-> > any of those is non-zero.
-> > 
-> > 2) Move the decision between accelerators to the inline wrapper so it
-> > can be optimized out when buffer size is known at compile time.
-> > 
-> > * Cleanups:
-> > 
-> > 3) Delete AVX-512 accelerator, which is now invoked rarely thanks to
-> > inline wrapper, so its speed benefit is neutralized by processor
-> > frequency and voltage transition periods, as described in
-> > https://travisdowns.github.io/blog/2020/01/17/avxfreq1.html
-> > 
-> > 4) Delete SSE4 accelerator because its only difference with the SSE2 one
-> > is using ptest instead of pcmpeq+pmovmsk to compare a vector with 0, but
-> > it gives no perfomance benefit (according to uops.info data).
-> > 
-> > 5) Remove all prefetches because they are done just a few processor
-> > cycles before their target would be loaded.
-> > 
-> > * Improvements for SIMD variants:
-> > 
-> > 6) Double amount of bytes checked in an iteration of the main loop in
-> > both SSE2 and AVX2 accelerators, moving the bottleneck from ALU port
-> > contention to load ports (two loads per cycle on popular x86
-> > implementations). The improvement can be seen on real CPUs as well as
-> > uiCA simulation.
-> > 
-> > 7) Replace unaligned tail checking in AVX2 accelerator with aligned tail
-> > checking similar to SSE2's one because reading unaligned tail gives no
-> > benefit.
-> > 
-> > 8) Move tail checking in both SSE2 and AVX2 accelerators before the main
-> > loop so pcmpeq+pmovmsk checks are spread out more evenly.
-> > 
-> > * Correctness fixes:
-> > 
-> > 9) Add uint64_a type for pointers in integer version so they can alias
-> > with any other type used in the buffer.
-> > 
-> > 10) Adjust loop iterators to avoid incrementing a pointer past the end of
-> > the buffer.
-> > 
-> > * Other improvements:
-> > 
-> > 11) Improve checking buffers with len < 8 in internal integer function
-> > because inline wrapper ensures len >= 4.
-> > 
-> > After these improvements buffer_is_zero works ~40% faster and takes 28%
-> > of qemu-img run time (measured the same way as initial version, inline
-> > wrapper execution included).
-> > 
-> > The test-bufferiszero.c unit test still passes.
-> > 
-> > Signed-off-by: Mikhail Romanov <mmromanov@ispras.ru>
-> > ---
-> > 
-> > v2: reworded the commit message and comments; use casts via 'void *'
-> > 
-> > As buffer_is_zero is now a static inline function, should it be moved into its
-> > own header file?
-> > 
-> >  include/qemu/cutils.h |  25 ++++-
-> >  util/bufferiszero.c   | 249 +++++++++++++++++-------------------------
-> >  2 files changed, 122 insertions(+), 152 deletions(-)
-> > 
-> > diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
-> > index 92c927a6a3..6e35802b5e 100644
-> > --- a/include/qemu/cutils.h
-> > +++ b/include/qemu/cutils.h
-> > @@ -187,7 +187,30 @@ char *freq_to_str(uint64_t freq_hz);
-> >  /* used to print char* safely */
-> >  #define STR_OR_NULL(str) ((str) ? (str) : "null")
-> >  
-> > -bool buffer_is_zero(const void *buf, size_t len);
-> > +bool buffer_is_zero_len_4_plus(const void *buf, size_t len);
-> > +extern bool (*buffer_is_zero_len_256_plus)(const void *, size_t);
-> > +static inline bool buffer_is_zero(const void *vbuf, size_t len)
-> > +{
-> > +    const char *buf = vbuf;
-> > +
-> > +    if (len == 0) {
-> > +        return true;
-> > +    }
-> > +    if (buf[0] || buf[len - 1] || buf[len / 2]) {
-> > +        return false;
-> > +    }
-> > +    /* For len <= 3, all bytes are already tested.  */
-> > +    if (len <= 3) {
-> > +        return true;
-> > +    }
-> > +
-> > +    if (len >= 256) {
-> > +        return buffer_is_zero_len_256_plus(vbuf, len);
-> > +    } else {
-> > +        return buffer_is_zero_len_4_plus(vbuf, len);
-> > +    }
-> > +}
-> > +
-> >  bool test_buffer_is_zero_next_accel(void);
-> >  
-> >  /*
-> > diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-> > index 3e6a5dfd63..3e5a014368 100644
-> > --- a/util/bufferiszero.c
-> > +++ b/util/bufferiszero.c
-> > @@ -26,30 +26,23 @@
-> >  #include "qemu/bswap.h"
-> >  #include "host/cpuinfo.h"
-> >  
-> > -static bool
-> > -buffer_zero_int(const void *buf, size_t len)
-> > +typedef uint64_t uint64_a __attribute__((may_alias));
-> > +
-> > +bool
-> > +buffer_is_zero_len_4_plus(const void *buf, size_t len)
-> >  {
-> >      if (unlikely(len < 8)) {
-> > -        /* For a very small buffer, simply accumulate all the bytes.  */
-> > -        const unsigned char *p = buf;
-> > -        const unsigned char *e = buf + len;
-> > -        unsigned char t = 0;
-> > -
-> > -        do {
-> > -            t |= *p++;
-> > -        } while (p < e);
-> > -
-> > -        return t == 0;
-> > +        /* Inline wrapper ensures len >= 4.  */
-> > +        return (ldl_he_p(buf) | ldl_he_p(buf + len - 4)) == 0;
-> >      } else {
-> > -        /* Otherwise, use the unaligned memory access functions to
-> > -           handle the beginning and end of the buffer, with a couple
-> > +        /* Use unaligned memory access functions to handle
-> > +           the beginning and end of the buffer, with a couple
-> >             of loops handling the middle aligned section.  */
-> > -        uint64_t t = ldq_he_p(buf);
-> > -        const uint64_t *p = (uint64_t *)(((uintptr_t)buf + 8) & -8);
-> > -        const uint64_t *e = (uint64_t *)(((uintptr_t)buf + len) & -8);
-> > +        uint64_t t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
-> > +        const uint64_a *p = (void *)(((uintptr_t)buf + 8) & -8);
-> > +        const uint64_a *e = (void *)(((uintptr_t)buf + len) & -8);
-> >  
-> > -        for (; p + 8 <= e; p += 8) {
-> > -            __builtin_prefetch(p + 8);
-> > +        for (; p < e - 7; p += 8) {
-> >              if (t) {
-> >                  return false;
-> >              }
-> > @@ -58,7 +51,6 @@ buffer_zero_int(const void *buf, size_t len)
-> >          while (p < e) {
-> >              t |= *p++;
-> >          }
-> > -        t |= ldq_he_p(buf + len - 8);
-> >  
-> >          return t == 0;
-> >      }
-> > @@ -67,124 +59,112 @@ buffer_zero_int(const void *buf, size_t len)
-> >  #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
-> >  #include <immintrin.h>
-> >  
-> > -/* Note that each of these vectorized functions require len >= 64.  */
-> > +/* Prevent the compiler from reassociating
-> > +   a chain of similar operations.  */
-> > +#define SSE_REASSOC_BARRIER(a, b) asm("" : "+x"(a), "+x"(b))
-> > +
-> > +/* Note that each of these vectorized functions assume len >= 256.  */
-> >  
-> >  static bool __attribute__((target("sse2")))
-> >  buffer_zero_sse2(const void *buf, size_t len)
-> >  {
-> > -    __m128i t = _mm_loadu_si128(buf);
-> > -    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
-> > -    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
-> > -    __m128i zero = _mm_setzero_si128();
-> > +    /* Begin with an unaligned head and tail of 16 bytes.  */
-> > +    __m128i t = *(__m128i_u *)buf;
-> > +    __m128i t2 = *(__m128i_u *)(buf + len - 16);
-> > +    const __m128i *p = (void *)(((uintptr_t)buf + 16) & -16);
-> > +    const __m128i *e = (void *)(((uintptr_t)buf + len) & -16);
-> > +    __m128i zero = { 0 };
-> >  
-> > -    /* Loop over 16-byte aligned blocks of 64.  */
-> > -    while (likely(p <= e)) {
-> > -        __builtin_prefetch(p);
-> > +    /* Proceed with an aligned tail.  */
-> > +    t2 |= e[-7];
-> > +    t |= e[-6];
-> > +    /* Use the barrier to ensure two independent chains.  */
-> > +    SSE_REASSOC_BARRIER(t, t2);
-> > +    t2 |= e[-5];
-> > +    t |= e[-4];
-> > +    SSE_REASSOC_BARRIER(t, t2);
-> > +    t2 |= e[-3];
-> > +    t |= e[-2];
-> > +    SSE_REASSOC_BARRIER(t, t2);
-> > +    t2 |= e[-1];
-> > +    t |= t2;
-> > +
-> > +    /* Loop over 16-byte aligned blocks of 128.  */
-> > +    while (likely(p < e - 7)) {
-> >          t = _mm_cmpeq_epi8(t, zero);
-> >          if (unlikely(_mm_movemask_epi8(t) != 0xFFFF)) {
-> >              return false;
-> >          }
-> > -        t = p[-4] | p[-3] | p[-2] | p[-1];
-> > -        p += 4;
-> > +        t = p[0];
-> > +        t2 = p[1];
-> > +        SSE_REASSOC_BARRIER(t, t2);
-> > +        t |= p[2];
-> > +        t2 |= p[3];
-> > +        SSE_REASSOC_BARRIER(t, t2);
-> > +        t |= p[4];
-> > +        t2 |= p[5];
-> > +        SSE_REASSOC_BARRIER(t, t2);
-> > +        t |= p[6];
-> > +        t2 |= p[7];
-> > +        SSE_REASSOC_BARRIER(t, t2);
-> > +        t |= t2;
-> > +        p += 8;
-> >      }
-> >  
-> > -    /* Finish the aligned tail.  */
-> > -    t |= e[-3];
-> > -    t |= e[-2];
-> > -    t |= e[-1];
-> > -
-> > -    /* Finish the unaligned tail.  */
-> > -    t |= _mm_loadu_si128(buf + len - 16);
-> > -
-> >      return _mm_movemask_epi8(_mm_cmpeq_epi8(t, zero)) == 0xFFFF;
-> >  }
-> >  
-> >  #ifdef CONFIG_AVX2_OPT
-> > -static bool __attribute__((target("sse4")))
-> > -buffer_zero_sse4(const void *buf, size_t len)
-> > -{
-> > -    __m128i t = _mm_loadu_si128(buf);
-> > -    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
-> > -    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
-> > -
-> > -    /* Loop over 16-byte aligned blocks of 64.  */
-> > -    while (likely(p <= e)) {
-> > -        __builtin_prefetch(p);
-> > -        if (unlikely(!_mm_testz_si128(t, t))) {
-> > -            return false;
-> > -        }
-> > -        t = p[-4] | p[-3] | p[-2] | p[-1];
-> > -        p += 4;
-> > -    }
-> > -
-> > -    /* Finish the aligned tail.  */
-> > -    t |= e[-3];
-> > -    t |= e[-2];
-> > -    t |= e[-1];
-> > -
-> > -    /* Finish the unaligned tail.  */
-> > -    t |= _mm_loadu_si128(buf + len - 16);
-> > -
-> > -    return _mm_testz_si128(t, t);
-> > -}
-> >  
-> >  static bool __attribute__((target("avx2")))
-> >  buffer_zero_avx2(const void *buf, size_t len)
-> >  {
-> >      /* Begin with an unaligned head of 32 bytes.  */
-> > -    __m256i t = _mm256_loadu_si256(buf);
-> > -    __m256i *p = (__m256i *)(((uintptr_t)buf + 5 * 32) & -32);
-> > -    __m256i *e = (__m256i *)(((uintptr_t)buf + len) & -32);
-> > +    __m256i t = *(__m256i_u *)buf;
-> > +    __m256i t2 = *(__m256i_u *)(buf + len - 32);
-> > +    const __m256i *p = (void *)(((uintptr_t)buf + 32) & -32);
-> > +    const __m256i *e = (void *)(((uintptr_t)buf + len) & -32);
-> > +    __m256i zero = { 0 };
-> >  
-> > -    /* Loop over 32-byte aligned blocks of 128.  */
-> > -    while (p <= e) {
-> > -        __builtin_prefetch(p);
-> > -        if (unlikely(!_mm256_testz_si256(t, t))) {
-> > +    /* Proceed with an aligned tail.  */
-> > +    t2 |= e[-7];
-> > +    t |= e[-6];
-> > +    SSE_REASSOC_BARRIER(t, t2);
-> > +    t2 |= e[-5];
-> > +    t |= e[-4];
-> > +    SSE_REASSOC_BARRIER(t, t2);
-> > +    t2 |= e[-3];
-> > +    t |= e[-2];
-> > +    SSE_REASSOC_BARRIER(t, t2);
-> > +    t2 |= e[-1];
-> > +    t |= t2;
-> > +
-> > +    /* Loop over 32-byte aligned blocks of 256.  */
-> > +    while (likely(p < e - 7)) {
-> > +        t = _mm256_cmpeq_epi8(t, zero);
-> > +        if (unlikely(_mm256_movemask_epi8(t) != 0xFFFFFFFF)) {
-> >              return false;
-> >          }
-> > -        t = p[-4] | p[-3] | p[-2] | p[-1];
-> > -        p += 4;
-> > -    } ;
-> > +        t = p[0];
-> > +        t2 = p[1];
-> > +        SSE_REASSOC_BARRIER(t, t2);
-> > +        t |= p[2];
-> > +        t2 |= p[3];
-> > +        SSE_REASSOC_BARRIER(t, t2);
-> > +        t |= p[4];
-> > +        t2 |= p[5];
-> > +        SSE_REASSOC_BARRIER(t, t2);
-> > +        t |= p[6];
-> > +        t2 |= p[7];
-> > +        SSE_REASSOC_BARRIER(t, t2);
-> > +        t |= t2;
-> > +        p += 8;
-> > +    }
-> >  
-> > -    /* Finish the last block of 128 unaligned.  */
-> > -    t |= _mm256_loadu_si256(buf + len - 4 * 32);
-> > -    t |= _mm256_loadu_si256(buf + len - 3 * 32);
-> > -    t |= _mm256_loadu_si256(buf + len - 2 * 32);
-> > -    t |= _mm256_loadu_si256(buf + len - 1 * 32);
-> > -
-> > -    return _mm256_testz_si256(t, t);
-> > +    return _mm256_movemask_epi8(_mm256_cmpeq_epi8(t, zero)) == 0xFFFFFFFF;
-> >  }
-> >  #endif /* CONFIG_AVX2_OPT */
-> >  
-> > -#ifdef CONFIG_AVX512F_OPT
-> > -static bool __attribute__((target("avx512f")))
-> > -buffer_zero_avx512(const void *buf, size_t len)
-> > -{
-> > -    /* Begin with an unaligned head of 64 bytes.  */
-> > -    __m512i t = _mm512_loadu_si512(buf);
-> > -    __m512i *p = (__m512i *)(((uintptr_t)buf + 5 * 64) & -64);
-> > -    __m512i *e = (__m512i *)(((uintptr_t)buf + len) & -64);
-> > -
-> > -    /* Loop over 64-byte aligned blocks of 256.  */
-> > -    while (p <= e) {
-> > -        __builtin_prefetch(p);
-> > -        if (unlikely(_mm512_test_epi64_mask(t, t))) {
-> > -            return false;
-> > -        }
-> > -        t = p[-4] | p[-3] | p[-2] | p[-1];
-> > -        p += 4;
-> > -    }
-> > -
-> > -    t |= _mm512_loadu_si512(buf + len - 4 * 64);
-> > -    t |= _mm512_loadu_si512(buf + len - 3 * 64);
-> > -    t |= _mm512_loadu_si512(buf + len - 2 * 64);
-> > -    t |= _mm512_loadu_si512(buf + len - 1 * 64);
-> > -
-> > -    return !_mm512_test_epi64_mask(t, t);
-> > -
-> > -}
-> > -#endif /* CONFIG_AVX512F_OPT */
-> > -
-> >  /*
-> >   * Make sure that these variables are appropriately initialized when
-> >   * SSE2 is enabled on the compiler command-line, but the compiler is
-> > @@ -192,20 +172,17 @@ buffer_zero_avx512(const void *buf, size_t len)
-> >   */
-> >  #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT)
-> >  # define INIT_USED     0
-> > -# define INIT_LENGTH   0
-> > -# define INIT_ACCEL    buffer_zero_int
-> > +# define INIT_ACCEL    buffer_is_zero_len_4_plus
-> >  #else
-> >  # ifndef __SSE2__
-> >  #  error "ISA selection confusion"
-> >  # endif
-> >  # define INIT_USED     CPUINFO_SSE2
-> > -# define INIT_LENGTH   64
-> >  # define INIT_ACCEL    buffer_zero_sse2
-> >  #endif
-> >  
-> >  static unsigned used_accel = INIT_USED;
-> > -static unsigned length_to_accel = INIT_LENGTH;
-> > -static bool (*buffer_accel)(const void *, size_t) = INIT_ACCEL;
-> > +bool (*buffer_is_zero_len_256_plus)(const void *, size_t) = INIT_ACCEL;
-> >  
-> >  static unsigned __attribute__((noinline))
-> >  select_accel_cpuinfo(unsigned info)
-> > @@ -213,24 +190,18 @@ select_accel_cpuinfo(unsigned info)
-> >      /* Array is sorted in order of algorithm preference. */
-> >      static const struct {
-> >          unsigned bit;
-> > -        unsigned len;
-> >          bool (*fn)(const void *, size_t);
-> >      } all[] = {
-> > -#ifdef CONFIG_AVX512F_OPT
-> > -        { CPUINFO_AVX512F, 256, buffer_zero_avx512 },
-> > -#endif
-> >  #ifdef CONFIG_AVX2_OPT
-> > -        { CPUINFO_AVX2,    128, buffer_zero_avx2 },
-> > -        { CPUINFO_SSE4,     64, buffer_zero_sse4 },
-> > +        { CPUINFO_AVX2,   buffer_zero_avx2 },
-> >  #endif
-> > -        { CPUINFO_SSE2,     64, buffer_zero_sse2 },
-> > -        { CPUINFO_ALWAYS,    0, buffer_zero_int },
-> > +        { CPUINFO_SSE2,   buffer_zero_sse2 },
-> > +        { CPUINFO_ALWAYS, buffer_is_zero_len_4_plus },
-> >      };
-> >  
-> >      for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
-> >          if (info & all[i].bit) {
-> > -            length_to_accel = all[i].len;
-> > -            buffer_accel = all[i].fn;
-> > +            buffer_is_zero_len_256_plus = all[i].fn;
-> >              return all[i].bit;
-> >          }
-> >      }
-> > @@ -256,35 +227,11 @@ bool test_buffer_is_zero_next_accel(void)
-> >      return used;
-> >  }
-> >  
-> > -static bool select_accel_fn(const void *buf, size_t len)
-> > -{
-> > -    if (likely(len >= length_to_accel)) {
-> > -        return buffer_accel(buf, len);
-> > -    }
-> > -    return buffer_zero_int(buf, len);
-> > -}
-> > -
-> >  #else
-> > -#define select_accel_fn  buffer_zero_int
-> > +#define select_accel_fn  buffer_is_zero_len_4_plus
-> >  bool test_buffer_is_zero_next_accel(void)
-> >  {
-> >      return false;
-> >  }
-> >  #endif
-> >  
-> > -/*
-> > - * Checks if a buffer is all zeroes
-> > - */
-> > -bool buffer_is_zero(const void *buf, size_t len)
-> > -{
-> > -    if (unlikely(len == 0)) {
-> > -        return true;
-> > -    }
-> > -
-> > -    /* Fetch the beginning of the buffer while we select the accelerator.  */
-> > -    __builtin_prefetch(buf);
-> > -
-> > -    /* Use an optimized zero check if possible.  Note that this also
-> > -       includes a check for an unrolled loop over 64-bit integers.  */
-> > -    return select_accel_fn(buf, len);
-> > -}
-> > 
-> 
+Based-on: <20231123143813.42632-1-philmd@linaro.org>
+  "hw: Simplify accesses to CPUState::'start-powered-off' property"
+---
+ hw/arm/armv7m.c       | 21 ++++++++++++---------
+ hw/arm/exynos4210.c   |  4 ++--
+ hw/arm/highbank.c     |  3 ++-
+ hw/arm/integratorcp.c |  5 ++---
+ hw/arm/realview.c     |  2 +-
+ hw/arm/sbsa-ref.c     |  3 ++-
+ hw/arm/versatilepb.c  |  5 ++---
+ hw/arm/vexpress.c     |  6 ++++--
+ hw/arm/virt.c         | 27 +++++++++++++++------------
+ hw/arm/xilinx_zynq.c  |  2 +-
+ hw/cpu/a15mpcore.c    | 17 +++++++++++------
+ hw/cpu/a9mpcore.c     |  6 +++---
+ 12 files changed, 57 insertions(+), 44 deletions(-)
+
+diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+index 3a6d72b0f3..932061c11a 100644
+--- a/hw/arm/armv7m.c
++++ b/hw/arm/armv7m.c
+@@ -302,28 +302,29 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
+ 
+     object_property_set_link(OBJECT(s->cpu), "memory", OBJECT(&s->container),
+                              &error_abort);
+-    if (object_property_find(OBJECT(s->cpu), "idau")) {
++    if (arm_feature(&s->cpu->env, ARM_FEATURE_M_SECURITY)) {
+         object_property_set_link(OBJECT(s->cpu), "idau", s->idau,
+                                  &error_abort);
+-    }
+-    if (object_property_find(OBJECT(s->cpu), "init-svtor")) {
+         if (!object_property_set_uint(OBJECT(s->cpu), "init-svtor",
+                                       s->init_svtor, errp)) {
+             return;
+         }
+     }
+-    if (object_property_find(OBJECT(s->cpu), "init-nsvtor")) {
++    if (arm_feature(&s->cpu->env, ARM_FEATURE_M)) {
+         if (!object_property_set_uint(OBJECT(s->cpu), "init-nsvtor",
+                                       s->init_nsvtor, errp)) {
+             return;
+         }
+     }
+-    if (object_property_find(OBJECT(s->cpu), "vfp")) {
+-        if (!object_property_set_bool(OBJECT(s->cpu), "vfp", s->vfp, errp)) {
+-            return;
++    if (arm_feature(&s->cpu->env, ARM_FEATURE_AARCH64)) {
++        if (cpu_isar_feature(aa64_fp_simd, s->cpu)) {
++            if (!object_property_set_bool(OBJECT(s->cpu), "vfp", s->vfp, errp)) {
++                return;
++            }
+         }
+     }
+-    if (object_property_find(OBJECT(s->cpu), "dsp")) {
++    if (arm_feature(&s->cpu->env, ARM_FEATURE_M) &&
++        arm_feature(&s->cpu->env, ARM_FEATURE_THUMB_DSP)) {
+         if (!object_property_set_bool(OBJECT(s->cpu), "dsp", s->dsp, errp)) {
+             return;
+         }
+@@ -342,12 +343,14 @@ static void armv7m_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+     if (s->mpu_ns_regions != UINT_MAX &&
+-        object_property_find(OBJECT(s->cpu), "pmsav7-dregion")) {
++        arm_feature(&s->cpu->env, ARM_FEATURE_PMSA)) {
++        if (arm_feature(&s->cpu->env, ARM_FEATURE_V7)) {
+         if (!object_property_set_uint(OBJECT(s->cpu), "pmsav7-dregion",
+                                       s->mpu_ns_regions, errp)) {
+             return;
+         }
+     }
++    }
+ 
+     /*
+      * Tell the CPU where the NVIC is; it will fail realize if it doesn't
+diff --git a/hw/arm/exynos4210.c b/hw/arm/exynos4210.c
+index de39fb0ece..5efaa538cd 100644
+--- a/hw/arm/exynos4210.c
++++ b/hw/arm/exynos4210.c
+@@ -554,14 +554,14 @@ static void exynos4210_realize(DeviceState *socdev, Error **errp)
+     for (n = 0; n < EXYNOS4210_NCPUS; n++) {
+         Object *cpuobj = object_new(ARM_CPU_TYPE_NAME("cortex-a9"));
+ 
++        s->cpu[n] = ARM_CPU(cpuobj);
+         /* By default A9 CPUs have EL3 enabled.  This board does not currently
+          * support EL3 so the CPU EL3 property is disabled before realization.
+          */
+-        if (object_property_find(cpuobj, "has_el3")) {
++        if (arm_feature(&s->cpu[n]->env, ARM_FEATURE_EL3)) {
+             object_property_set_bool(cpuobj, "has_el3", false, &error_fatal);
+         }
+ 
+-        s->cpu[n] = ARM_CPU(cpuobj);
+         object_property_set_int(cpuobj, "mp-affinity",
+                                 exynos4210_calc_affinity(n), &error_abort);
+         object_property_set_int(cpuobj, "reset-cbar",
+diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
+index f12aacea6b..0b5def8015 100644
+--- a/hw/arm/highbank.c
++++ b/hw/arm/highbank.c
+@@ -211,7 +211,8 @@ static void calxeda_init(MachineState *machine, enum cxmachines machine_id)
+         object_property_set_int(cpuobj, "psci-conduit", QEMU_PSCI_CONDUIT_SMC,
+                                 &error_abort);
+ 
+-        if (object_property_find(cpuobj, "reset-cbar")) {
++        if (arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
++            arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO)) {
+             object_property_set_int(cpuobj, "reset-cbar", MPCORE_PERIPHBASE,
+                                     &error_abort);
+         }
+diff --git a/hw/arm/integratorcp.c b/hw/arm/integratorcp.c
+index d176e9af7e..5ec840ce89 100644
+--- a/hw/arm/integratorcp.c
++++ b/hw/arm/integratorcp.c
+@@ -599,19 +599,18 @@ static void integratorcp_init(MachineState *machine)
+     int i;
+ 
+     cpuobj = object_new(machine->cpu_type);
++    cpu = ARM_CPU(cpuobj);
+ 
+     /* By default ARM1176 CPUs have EL3 enabled.  This board does not
+      * currently support EL3 so the CPU EL3 property is disabled before
+      * realization.
+      */
+-    if (object_property_find(cpuobj, "has_el3")) {
++    if (arm_feature(&cpu->env, ARM_FEATURE_EL3)) {
+         object_property_set_bool(cpuobj, "has_el3", false, &error_fatal);
+     }
+ 
+     qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
+ 
+-    cpu = ARM_CPU(cpuobj);
+-
+     /* ??? On a real system the first 1Mb is mapped as SSRAM or boot flash.  */
+     /* ??? RAM should repeat to fill physical memory space.  */
+     /* SDRAM at address zero*/
+diff --git a/hw/arm/realview.c b/hw/arm/realview.c
+index 132217b2ed..433fe72ced 100644
+--- a/hw/arm/realview.c
++++ b/hw/arm/realview.c
+@@ -123,7 +123,7 @@ static void realview_init(MachineState *machine,
+          * does not currently support EL3 so the CPU EL3 property is disabled
+          * before realization.
+          */
+-        if (object_property_find(cpuobj, "has_el3")) {
++        if (arm_feature(&cpu->env, ARM_FEATURE_EL3)) {
+             object_property_set_bool(cpuobj, "has_el3", false, &error_fatal);
+         }
+ 
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index f3c9704693..ecb05f6007 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -796,7 +796,8 @@ static void sbsa_ref_init(MachineState *machine)
+         numa_cpu_pre_plug(&possible_cpus->cpus[cs->cpu_index], DEVICE(cpuobj),
+                           &error_fatal);
+ 
+-        if (object_property_find(cpuobj, "reset-cbar")) {
++        if (arm_feature(cpu_env(cs), ARM_FEATURE_CBAR) ||
++            arm_feature(cpu_env(cs), ARM_FEATURE_CBAR_RO)) {
+             object_property_set_int(cpuobj, "reset-cbar",
+                                     sbsa_ref_memmap[SBSA_CPUPERIPHS].base,
+                                     &error_abort);
+diff --git a/hw/arm/versatilepb.c b/hw/arm/versatilepb.c
+index 2f22dc890f..addd7a6988 100644
+--- a/hw/arm/versatilepb.c
++++ b/hw/arm/versatilepb.c
+@@ -208,19 +208,18 @@ static void versatile_init(MachineState *machine, int board_id)
+     }
+ 
+     cpuobj = object_new(machine->cpu_type);
++    cpu = ARM_CPU(cpuobj);
+ 
+     /* By default ARM1176 CPUs have EL3 enabled.  This board does not
+      * currently support EL3 so the CPU EL3 property is disabled before
+      * realization.
+      */
+-    if (object_property_find(cpuobj, "has_el3")) {
++    if (arm_feature(&cpu->env, ARM_FEATURE_EL3)) {
+         object_property_set_bool(cpuobj, "has_el3", false, &error_fatal);
+     }
+ 
+     qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
+ 
+-    cpu = ARM_CPU(cpuobj);
+-
+     /* ??? RAM should repeat to fill physical memory space.  */
+     /* SDRAM at address zero.  */
+     memory_region_add_subregion(sysmem, 0, machine->ram);
+diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
+index fd981f4c33..ea3c76f3e1 100644
+--- a/hw/arm/vexpress.c
++++ b/hw/arm/vexpress.c
+@@ -218,17 +218,19 @@ static void init_cpus(MachineState *ms, const char *cpu_type,
+     /* Create the actual CPUs */
+     for (n = 0; n < smp_cpus; n++) {
+         Object *cpuobj = object_new(cpu_type);
++        ARMCPU *cpu = ARM_CPU(cpuobj);
+ 
+         if (!secure) {
+             object_property_set_bool(cpuobj, "has_el3", false, NULL);
+         }
+         if (!virt) {
+-            if (object_property_find(cpuobj, "has_el2")) {
++            if (arm_feature(&cpu->env, ARM_FEATURE_EL2)) {
+                 object_property_set_bool(cpuobj, "has_el2", false, NULL);
+             }
+         }
+ 
+-        if (object_property_find(cpuobj, "reset-cbar")) {
++        if (arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
++            arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO)) {
+             object_property_set_int(cpuobj, "reset-cbar", periphbase,
+                                     &error_abort);
+         }
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index be2856c018..e5d883c4c3 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2182,21 +2182,22 @@ static void machvirt_init(MachineState *machine)
+             object_property_set_bool(cpuobj, "has_el3", false, NULL);
+         }
+ 
+-        if (!vms->virt && object_property_find(cpuobj, "has_el2")) {
++        if (!vms->virt &&  arm_feature(cpu_env(cs), ARM_FEATURE_EL2)) {
+             object_property_set_bool(cpuobj, "has_el2", false, NULL);
+         }
+ 
+-        if (vmc->kvm_no_adjvtime &&
+-            object_property_find(cpuobj, "kvm-no-adjvtime")) {
+-            object_property_set_bool(cpuobj, "kvm-no-adjvtime", true, NULL);
++        if (kvm_enabled()) {
++            if (arm_feature(cpu_env(cs), ARM_FEATURE_GENERIC_TIMER)) {
++                object_property_set_bool(cpuobj, "kvm-no-adjvtime",
++                                         vmc->kvm_no_adjvtime, NULL);
++            }
++
++            if (vmc->no_kvm_steal_time) {
++                object_property_set_bool(cpuobj, "kvm-steal-time", false, NULL);
++            }
+         }
+ 
+-        if (vmc->no_kvm_steal_time &&
+-            object_property_find(cpuobj, "kvm-steal-time")) {
+-            object_property_set_bool(cpuobj, "kvm-steal-time", false, NULL);
+-        }
+-
+-        if (vmc->no_pmu && object_property_find(cpuobj, "pmu")) {
++        if (arm_feature(cpu_env(cs), ARM_FEATURE_PMU) && vmc->no_pmu) {
+             object_property_set_bool(cpuobj, "pmu", false, NULL);
+         }
+ 
+@@ -2204,7 +2205,8 @@ static void machvirt_init(MachineState *machine)
+             object_property_set_bool(cpuobj, "lpa2", false, NULL);
+         }
+ 
+-        if (object_property_find(cpuobj, "reset-cbar")) {
++        if (arm_feature(cpu_env(cs), ARM_FEATURE_CBAR) ||
++            arm_feature(cpu_env(cs), ARM_FEATURE_CBAR_RO)) {
+             object_property_set_int(cpuobj, "reset-cbar",
+                                     vms->memmap[VIRT_CPUPERIPHS].base,
+                                     &error_abort);
+@@ -2224,7 +2226,8 @@ static void machvirt_init(MachineState *machine)
+                  * The property exists only if MemTag is supported.
+                  * If it is, we must allocate the ram to back that up.
+                  */
+-                if (!object_property_find(cpuobj, "tag-memory")) {
++                if (!(arm_feature(cpu_env(cs), ARM_FEATURE_AARCH64)
++                      && cpu_isar_feature(aa64_mte, ARM_CPU(cs)))) {
+                     error_report("MTE requested, but not supported "
+                                  "by the guest CPU");
+                     exit(1);
+diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
+index dbb9793aa1..33e57dceef 100644
+--- a/hw/arm/xilinx_zynq.c
++++ b/hw/arm/xilinx_zynq.c
+@@ -198,7 +198,7 @@ static void zynq_init(MachineState *machine)
+      * currently support EL3 so the CPU EL3 property is disabled before
+      * realization.
+      */
+-    if (object_property_find(OBJECT(cpu), "has_el3")) {
++    if (arm_feature(&cpu->env, ARM_FEATURE_EL3)) {
+         object_property_set_bool(OBJECT(cpu), "has_el3", false, &error_fatal);
+     }
+ 
+diff --git a/hw/cpu/a15mpcore.c b/hw/cpu/a15mpcore.c
+index bfd8aa5644..1fa079b3b8 100644
+--- a/hw/cpu/a15mpcore.c
++++ b/hw/cpu/a15mpcore.c
+@@ -53,7 +53,6 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
+     DeviceState *gicdev;
+     SysBusDevice *busdev;
+     int i;
+-    bool has_el3;
+     bool has_el2 = false;
+     Object *cpuobj;
+ 
+@@ -62,17 +61,23 @@ static void a15mp_priv_realize(DeviceState *dev, Error **errp)
+     qdev_prop_set_uint32(gicdev, "num-irq", s->num_irq);
+ 
+     if (!kvm_irqchip_in_kernel()) {
++        CPUState *cpu;
++
+         /* Make the GIC's TZ support match the CPUs. We assume that
+          * either all the CPUs have TZ, or none do.
+          */
+-        cpuobj = OBJECT(qemu_get_cpu(0));
+-        has_el3 = object_property_find(cpuobj, "has_el3") &&
++        cpu = qemu_get_cpu(0);
++        cpuobj = OBJECT(cpu);
++        if (arm_feature(cpu_env(cpu), ARM_FEATURE_EL3)) {
+             object_property_get_bool(cpuobj, "has_el3", &error_abort);
+-        qdev_prop_set_bit(gicdev, "has-security-extensions", has_el3);
++            qdev_prop_set_bit(gicdev, "has-security-extensions", true);
++        }
+         /* Similarly for virtualization support */
+-        has_el2 = object_property_find(cpuobj, "has_el2") &&
++        has_el2 = arm_feature(cpu_env(cpu), ARM_FEATURE_EL2);
++        if (has_el2) {
+             object_property_get_bool(cpuobj, "has_el2", &error_abort);
+-        qdev_prop_set_bit(gicdev, "has-virtualization-extensions", has_el2);
++            qdev_prop_set_bit(gicdev, "has-virtualization-extensions", true);
++        }
+     }
+ 
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->gic), errp)) {
+diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
+index d03f57e579..9355e8443b 100644
+--- a/hw/cpu/a9mpcore.c
++++ b/hw/cpu/a9mpcore.c
+@@ -52,7 +52,6 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
+     SysBusDevice *scubusdev, *gicbusdev, *gtimerbusdev, *mptimerbusdev,
+                  *wdtbusdev;
+     int i;
+-    bool has_el3;
+     CPUState *cpu0;
+     Object *cpuobj;
+ 
+@@ -81,9 +80,10 @@ static void a9mp_priv_realize(DeviceState *dev, Error **errp)
+     /* Make the GIC's TZ support match the CPUs. We assume that
+      * either all the CPUs have TZ, or none do.
+      */
+-    has_el3 = object_property_find(cpuobj, "has_el3") &&
++    if (arm_feature(cpu_env(cpu0), ARM_FEATURE_EL3)) {
+         object_property_get_bool(cpuobj, "has_el3", &error_abort);
+-    qdev_prop_set_bit(gicdev, "has-security-extensions", has_el3);
++        qdev_prop_set_bit(gicdev, "has-security-extensions", true);
++    }
+ 
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->gic), errp)) {
+         return;
+-- 
+2.41.0
+
 
