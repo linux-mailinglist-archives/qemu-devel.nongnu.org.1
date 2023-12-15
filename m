@@ -2,79 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C748147AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 13:08:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A359C81485C
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 13:45:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE6zN-0004VD-5M; Fri, 15 Dec 2023 07:08:21 -0500
+	id 1rE7Xg-0006S5-W3; Fri, 15 Dec 2023 07:43:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1rE6z7-0004V4-Bc
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:08:05 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1rE6yy-0007p5-Mt
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:08:02 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1d38e5b1783so1206955ad.3
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 04:07:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702642075; x=1703246875; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0Io9EuHyX//wkg+bU4mQ+LQk2gzu1GzwcSlomPKBaPg=;
- b=kALwCdZlstbkyDgJHn4Yw0wP8g7pnV6Qrrr8xXebk98mHcwyK8ZVGi2fClm1xkwyd+
- z4qTKGroDIcm5VscfmM6myXj7JGwyqIufBnFe/hcpXUq78VjaCwh3eCFwAW6uwswzw+R
- 0ZT9NS5eS5a3Pqkn7Y9czcWjDlSmXNbqCACO5qYi7gJjaurmKdt1y8D3IcuO2tXzjJod
- vr1GdoJG8eXD8nM8Jb004263AxYZJJSBljlNB0f8yO0mQk8sxsspZgUOdp4eVOsQnTgu
- E83bVXHMGHei6qJwuQo+TTFMh1ZrqlW5FU6DjGJLYjX1BF0lI6LFDalBKtTcpmh0vIm1
- hdEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702642075; x=1703246875;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0Io9EuHyX//wkg+bU4mQ+LQk2gzu1GzwcSlomPKBaPg=;
- b=TUF1svxVTOpZcW3GSu/H40Cz1o3KmSenoxzexJv6njVttwUgoGF6YBsVxzB67ga0Wk
- l0Exk4YDe66NpxaL8AdlVJ35yW63v+WOw92w2BgBjf8cGp/WoNWQCggRgiFQmnTBgrKv
- ISAh6xzVbiFC30bbE/324UYHkZ1BQktMCu0Z9nQZG1jJV/ekgH/LdrsuU9/m1kAVgjFH
- mR6wKcwXrS9Uc3wZYEPIRn4LTDBXDkMopvl4vXDuxxaDgMfeA2Z/tbQVMcZYNWBooBcy
- gVBAwza2sIYPItFf3UtrGM4YUKKxK0iMwqxKSVEKuapMrFTSEc9xw0L8x3D4wvAAII/x
- J+aQ==
-X-Gm-Message-State: AOJu0YzmwVBbMj7jJIyQIsp5TuxGP0duHw96GOoIfVDFuOP31QhV3Mol
- BDct8xYQFWGVvWe8Yg/c+4OEdrkKyEo=
-X-Google-Smtp-Source: AGHT+IHTk1RawDZUTfF6cGYETnsabSHe0TA0qPTKBUoVHfOEON8+H5s0nCJ4enUQ9q0FtqJ+O1xJOw==
-X-Received: by 2002:a17:902:c950:b0:1d0:6ffd:ae0c with SMTP id
- i16-20020a170902c95000b001d06ffdae0cmr7047675pla.115.1702642074820; 
- Fri, 15 Dec 2023 04:07:54 -0800 (PST)
-Received: from octofox.hsd1.ca.comcast.net
- (c-73-63-239-93.hsd1.ca.comcast.net. [73.63.239.93])
- by smtp.gmail.com with ESMTPSA id
- c3-20020a170902848300b001d33e6521b9sm6610520plo.14.2023.12.15.04.07.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Dec 2023 04:07:53 -0800 (PST)
-From: Max Filippov <jcmvbkbc@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH] tests/tcg/xtensa: add test for OOB TLB reads
-Date: Fri, 15 Dec 2023 04:07:51 -0800
-Message-Id: <20231215120751.545636-1-jcmvbkbc@gmail.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rE7Xe-0006RZ-BG
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:43:46 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rE7Xc-0001pn-7B
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:43:46 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1F5A575A4B9;
+ Fri, 15 Dec 2023 13:43:39 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id K45BhEezhKKo; Fri, 15 Dec 2023 13:43:37 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 3145C75A406; Fri, 15 Dec 2023 13:43:37 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 2F6DD75607B;
+ Fri, 15 Dec 2023 13:43:37 +0100 (CET)
+Date: Fri, 15 Dec 2023 13:43:37 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] vl: Print display options for -display help
+In-Reply-To: <2d1689ea-b0d8-4c74-8101-b90ad626f2a9@daynix.com>
+Message-ID: <d1687e5a-a60e-fda8-5e8c-1ab9adf0e775@eik.bme.hu>
+References: <20231214-help-v1-1-23823ac5a023@daynix.com>
+ <9443821d-5eff-46e6-be69-707cca9cd0d0@linaro.org>
+ <8f8d3317-c28b-3985-89d7-0fbd1ce4b56e@eik.bme.hu>
+ <2d1689ea-b0d8-4c74-8101-b90ad626f2a9@daynix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: multipart/mixed;
+ BOUNDARY="3866299591-1851630701-1702643494=:20721"
+Content-ID: <01acf3fa-e689-3e90-a301-508f725b21d6@eik.bme.hu>
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,36 +70,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test reading *TLB ways 0..15.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
----
- tests/tcg/xtensa/test_mmu.S | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+--3866299591-1851630701-1702643494=:20721
+Content-Type: text/plain; CHARSET=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-ID: <2ec7b0b6-371b-9b0a-a408-6f1a6debde6e@eik.bme.hu>
 
-diff --git a/tests/tcg/xtensa/test_mmu.S b/tests/tcg/xtensa/test_mmu.S
-index 1006c8cf77b2..94cd09563c7a 100644
---- a/tests/tcg/xtensa/test_mmu.S
-+++ b/tests/tcg/xtensa/test_mmu.S
-@@ -43,6 +43,17 @@ test_suite mmu
- #endif
- .endm
- 
-+test tlb_read_ways
-+    movi    a2, 0
-+1:
-+    ritlb0  a3, a2
-+    ritlb1  a3, a2
-+    rdtlb0  a3, a2
-+    rdtlb1  a3, a2
-+    addi    a2, a2, 1
-+    bltui   a2, 16, 1b
-+test_end
-+
- test tlb_group
-     movi    a2, 0x04000002 /* PPN */
-     movi    a3, BASE + 0x01200004 /* VPN */
--- 
-2.39.2
+On Fri, 15 Dec 2023, Akihiko Odaki wrote:
+> On 2023/12/14 22:00, BALATON Zoltan wrote:
+>> On Thu, 14 Dec 2023, Philippe Mathieu-Daudé wrote:
+>>> Hi Akihiko,
+>>> 
+>>> On 14/12/23 07:47, Akihiko Odaki wrote:
+>>>> -display lists display backends, but does not tell their options.
+>>>> Use the help messages from qemu-options.def, which include the list of
+>>>> options.
+>>>> 
+>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>> ---
+>>>>   include/ui/console.h |  1 -
+>>>>   system/vl.c          | 11 ++++++-----
+>>>>   ui/console.c         | 20 --------------------
+>>>>   3 files changed, 6 insertions(+), 26 deletions(-)
+>>> 
+>>> 
+>>>> diff --git a/ui/console.c b/ui/console.c
+>>>> index 7db921e3b7d6..6aee5e9a7ffb 100644
+>>>> --- a/ui/console.c
+>>>> +++ b/ui/console.c
+>>>> @@ -1691,23 +1691,3 @@ const char *qemu_display_get_vc(DisplayOptions 
+>>>> *opts)
+>>>>       }
+>>>>       return vc;
+>>>>   }
+>>>> -
+>>>> -void qemu_display_help(void)
+>>>> -{
+>>>> -    int idx;
+>>>> -
+>>>> -    printf("Available display backend types:\n");
+>>>> -    printf("none\n");
+>>>> -    for (idx = DISPLAY_TYPE_NONE; idx < DISPLAY_TYPE__MAX; idx++) {
+>>>> -        if (!dpys[idx]) {
+>>>> -            Error *local_err = NULL;
+>>>> -            int rv = ui_module_load(DisplayType_str(idx), &local_err);
+>>>> -            if (rv < 0) {
+>>>> -                error_report_err(local_err);
+>>>> -            }
+>>>> -        }
+>>>> -        if (dpys[idx]) {
+>>>> -            printf("%s\n",  DisplayType_str(dpys[idx]->type));
+>>> 
+>>> Is the "qapi/qapi-commands-ui.h" header still necessary?
+>>> 
+>>>> -        }
+>>>> -    }
+>>>> -}
+>>> 
+>>> So we go from:
+>>> 
+>>> $ ./qemu-system-aarch64 -display help
+>>> Available display backend types:
+>>> none
+>>> gtk
+>>> sdl
+>>> curses
+>>> cocoa
+>>> dbus
+>>> 
+>>> to:
+>>> 
+>>> $ ./qemu-system-aarch64 -display help
+>>> -display sdl[,gl=on|core|es|off][,grab-mod=<mod>][,show-cursor=on|off]
+>>>            [,window-close=on|off]
+>>> -display gtk[,full-screen=on|off][,gl=on|off][,grab-on-hover=on|off]
+>>>            [,show-tabs=on|off][,show-cursor=on|off][,window-close=on|off]
+>>>            [,show-menubar=on|off]
+>>> -display vnc=<display>[,<optargs>]
+>>> -display curses[,charset=<encoding>]
+>>> -display cocoa[,full-grab=on|off][,swap-opt-cmd=on|off]
+>>> -display dbus[,addr=<dbusaddr>]
+>>>             [,gl=on|core|es|off][,rendernode=<file>]
+>>> -display cocoa[,show-cursor=on|off][,left-command-key=on|off]
+>>> -display none
+>>>                select display backend type
+>>>                The default display is equivalent to
+>>>                "-display gtk"
+>>> 
+>>> The latter is indeed more helpful.
+>> 
+>> It is more helpful but maybe a bit overwhelming. Would it be possible to 
+>> only print the options with -display cocoa,help similar to how -device help 
+>> lists devices and -device sm501,help lists options for one device? Adding 
+>> info about default to -display help is really helpful though (that could 
+>> also be marked with (default) like in -machine help.
+>
+> It's copied from what qemu-system-aarch64 -h outputs. At least it's less 
+> overwhelming than qemu-system-aarch64 -h.
 
+This changes what -display help does so if some script depends on that it 
+may not be a good idea. Since the same info is already in -help maybe this 
+change to add that to -display help as well is not the best solution so 
+I'd say drop this patch and leave it as it is for now.
+
+Adding (default) to show default as with -machine help would be useful but 
+the default in help seems to be added by preprocessor magic so it's not 
+easy to use that in qemu_display_help(). Maybe if a constant would be 
+defined with the default value instead of adding it directly to help text 
+then that could be used but we have '-vnc some-arguments' as opposed to 
+'-display something' for all other casess so if that -vnc option is 
+correct and it's not like '-display vnc' then that's not trivial either. 
+So I'd say just fotget about this for now as it's not that important so 
+may not worth the effort.
+
+>> I'm not complaining, thanks for taking care of this so quickly but if it's 
+>> not too difficult to add separate -display cocoa,help and not list options 
+>> in -display help maybe that would be better and more consistent with other 
+>> help options.
+>
+> Yes, that will require some major refactoring so I'm not going to do that for 
+> now.
+
+I've also looked at that and concluded the same that it would take some 
+qapi expert to solve this. It seems the options are parsed into some qapi 
+types which may have help to display but I could not find out how that 
+works. For device it may be handled in qdev_device_help() but I don't know 
+if that would be applicable for display backends and if so how. Maybe 
+someone who knows about this could chime in and give some idea how e.g. 
+-display gtk,help could be implemented similar to -device somedevice,help. 
+(Other than passing through the help text as your patch does and rhen cut 
+the relevant part from that with string functions but that's likely not 
+the right way to do this.)
+
+Regards,
+BALATON Zoltan
+--3866299591-1851630701-1702643494=:20721--
 
