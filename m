@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE2381412C
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 06:20:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A3D81413C
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 06:27:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE0av-0005Yd-5h; Fri, 15 Dec 2023 00:18:41 -0500
+	id 1rE0hy-0006iD-84; Fri, 15 Dec 2023 00:25:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rE0at-0005YQ-7Y; Fri, 15 Dec 2023 00:18:39 -0500
-Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
+ id 1rE0hp-0006hf-Pv; Fri, 15 Dec 2023 00:25:49 -0500
+Received: from mail-ua1-x931.google.com ([2607:f8b0:4864:20::931])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rE0ao-0003jp-3F; Fri, 15 Dec 2023 00:18:38 -0500
-Received: by mail-ua1-x932.google.com with SMTP id
- a1e0cc1a2514c-7cad628ad93so102837241.3; 
- Thu, 14 Dec 2023 21:18:33 -0800 (PST)
+ id 1rE0hn-0001ca-Gk; Fri, 15 Dec 2023 00:25:49 -0500
+Received: by mail-ua1-x931.google.com with SMTP id
+ a1e0cc1a2514c-7cb0fdced70so116858241.1; 
+ Thu, 14 Dec 2023 21:25:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702617512; x=1703222312; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702617945; x=1703222745; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XKY/O6KVcNCcF3H3XlB8EWP64PWrdzQ/7w2G0UUtLf4=;
- b=QIPDfvRQxcCj6/V1RwgYfxXVoDigH8WtCHCPJON8+ZWeEnJzyN/YMuryqUGsIdnWdZ
- yPM+bVfrSF6lC/oLgZFkudgjlLUj4iH/hzFkfyhEspFRDyo4oKhDCLtQ7i4SfuKmaShP
- 2Gtf4KKW6fdwW/YmA4F7HkyIbTqIsFtqE1YJtjGcoqs5NfUSiJ+14hv8oAp8RF/nw4XN
- CL6O7WtOp/sG6DIZDMwgf3AA93WdhtpUvkI6G63DYeIL79u9U8mAeLCclZyBkR+cx3OG
- Dk+v3zkDV63G6EZhCeb88gB/Ti2oVtbbo8ffy/pGmtMFzVSacrFMD/uHQWrfXTq3XC5h
- 6LNA==
+ bh=GAbGTrqsBi12JzUlTC3BDFK7dYGpXLIvG0BANQtgKRg=;
+ b=O+f2Xu1RHLHDx4kTQrU70LQSZ8zaRq7yAxRiAMpK1HuZEA6l9KjTG7p/U7et9R0fg6
+ Upxhp5eqgVzHEuhyxDrgvY6LteW94FrGzzHcxqPFoCZz0Q+nMcssLBPHfAau/9GnuSVQ
+ 4EcV8ry7OhdRtR00whbqfWNvJ4l6/WMVxGUjbK7s1lpup0wVT0bFhAvRb+vYbnK8v25g
+ XpG5UNCvKhjE5UfDtpFoQG1wHPkJy6gsFBcp3yXXU1gvbpVpQpsLL3CjWLXumFfkYGl3
+ ff0WcBUmOGJS/KHmYkKpX0Vr1r2iDBzcgepJCBlrEE7xkrKtqtG/yERpwtN2v+zOk8X0
+ 3liQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702617512; x=1703222312;
+ d=1e100.net; s=20230601; t=1702617945; x=1703222745;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XKY/O6KVcNCcF3H3XlB8EWP64PWrdzQ/7w2G0UUtLf4=;
- b=frNFomWZLuBmg6gspZkeO0VDQ1wWfGE7oHRBr/JgQ/h/BUDkU19hNERgYVkVZ6JvMC
- F27bKI6Zfa0QUFc3qhJivqVAM+PKnOcwsh0Swb6qnP601IZfwkOKL1/lsoPXFUAOj792
- nvzxoGzA4fXZCPM4djgKwtgeh6FSqCCWZPM/fXSkvEp6oyIPBFbiKOOooOpJvyHprxfR
- GUbfJh9ceE9GzgTCLI8xsRj722GlUrV1pygZgzrfzopsi2p5JbXDVCIuNLf7QbD8gFv/
- h6Zn7ezfBWwLaLG1jD6/DhqeoyO5udlyaVvQA/vQuciuw6IU51F4pDdFOb0IIpmzA93I
- equg==
-X-Gm-Message-State: AOJu0Yz1bAXw1HdqUZAQI//s7iaNKS3teddQ673QNzQl+11bWyfcVWHZ
- CwD/sO0qVufy04J9uEeHCRqbkqzA5LX0l6h8SHw=
-X-Google-Smtp-Source: AGHT+IFsDDcvUxOE1pQbBqft7IrnydqmNGIvlqnp7T4en2zxpAtlADXKSchkuZruxTOiqUMOrmJ0b47EXNjk00OBUnQ=
-X-Received: by 2002:a67:c091:0:b0:460:7b72:894f with SMTP id
- x17-20020a67c091000000b004607b72894fmr7966806vsi.33.1702617512053; Thu, 14
- Dec 2023 21:18:32 -0800 (PST)
+ bh=GAbGTrqsBi12JzUlTC3BDFK7dYGpXLIvG0BANQtgKRg=;
+ b=mBlX088V0vsiZlIPbj1UnukozjHRuxnrAul0aDAsVfv6bXUhjg/cdo9KTZBHOQ7PQw
+ QJUUGlHgERZD6XdzDwbAy2uSKrBkKeNNGSgV0mElk/YFR325VZyNX/Smrq4rWim/kiBY
+ e3puMmAZX5NUuUS3aBnNbT/SHuAveUopAn3ruHHRlB2uvSogKoCKht4S0PZbJAxOaMND
+ 4hdF8xDpYqkLTLJLLh6MRQ2Z/7YKNx6RmJEUQxNfB1sSK5E/b684lveETyXs1efkiji7
+ W9bXU16zkcVJKhIvBZWV55dkcDquUqho+LZR4/ExRYfQKkMl1GIxhdPZnjwLPDLgI03I
+ DKfA==
+X-Gm-Message-State: AOJu0YyBOF6KtkIPynh6XiL0HgLZwOwxRxJvz1F0Y0opQsnzaP+R0AQ9
+ ZUWOSqw5WDr3/wOo2yOGq29YPiPCuumFWklAzvw=
+X-Google-Smtp-Source: AGHT+IEHOECN7ZxBjOcSoF1xv3qW5HXwuRCzttisv25V+JX+IybJviFWb9zw2cr3Murqd4gPShaNJdi11NvIgHs/5FU=
+X-Received: by 2002:a05:6102:952:b0:464:8360:b520 with SMTP id
+ a18-20020a056102095200b004648360b520mr11172646vsi.10.1702617944975; Thu, 14
+ Dec 2023 21:25:44 -0800 (PST)
 MIME-Version: 1.0
-References: <170100975340.4879.5844108484092111139-0@git.sr.ht>
- <170100975340.4879.5844108484092111139-1@git.sr.ht>
- <CAKmqyKM+usN_VwrwCE68yt9nKT-LZoPw2Xgg_sV_5kw38rwjjw@mail.gmail.com>
- <87r0jzz5ai.fsf@draig.linaro.org>
-In-Reply-To: <87r0jzz5ai.fsf@draig.linaro.org>
+References: <CAEV2DRrg5ekL9MUcO2xOKjKkYtrQYhORQ2n4qO+cxamrw82BGA@mail.gmail.com>
+In-Reply-To: <CAEV2DRrg5ekL9MUcO2xOKjKkYtrQYhORQ2n4qO+cxamrw82BGA@mail.gmail.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 15 Dec 2023 15:18:05 +1000
-Message-ID: <CAKmqyKNEehbEgPXN-c1Bf=aB=974muigx_=yu3=tkijGfHb4+A@mail.gmail.com>
-Subject: Re: [PATCH qemu 1/2] hw/arm: Add minimal support for the STM32L4x5 SoC
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: "~inesvarhol" <inesvarhol@proton.me>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, 
- alistair@alistair23.me, philmd@linaro.org, peter.maydell@linaro.org, 
- ines.varhol@telecom-paris.fr, arnaud.minier@telecom-paris.fr
+Date: Fri, 15 Dec 2023 15:25:18 +1000
+Message-ID: <CAKmqyKPc538OEZUoARsHuRxfqg5LQuXUB7tRkJ-tu6Jujm8bRg@mail.gmail.com>
+Subject: Re: [PATCH v5] target/riscv: update checks on writing pmpcfg for
+ Smepmp to version 1.0
+To: Alvin Chang <vivahavey@gmail.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, alistair.francis@wdc.com, 
+ liweiwei@iscas.ac.cn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::932;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x932.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::931;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x931.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,122 +87,355 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 7, 2023 at 2:04=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@linaro=
-.org> wrote:
+On Wed, Dec 6, 2023 at 3:37=E2=80=AFPM Alvin Chang <vivahavey@gmail.com> wr=
+ote:
 >
-> Alistair Francis <alistair23@gmail.com> writes:
+> > -----Original Message-----
 >
-> > On Mon, Nov 27, 2023 at 12:44=E2=80=AFAM ~inesvarhol <inesvarhol@git.sr=
-.ht> wrote:
-> >>
-> >> From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> >>
-> >> This patch adds a new STM32L4x5 SoC, it is necessary to add support fo=
-r
-> >> the B-L475E-IOT01A board.
-> >> The implementation is derived from the STM32F405 SoC.
-> >> The implementation contains no peripherals, only memory regions are
-> >> implemented.
-> >>
-> >> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> >>
-> >> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> >> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> >> ---
-> >>  MAINTAINERS                    |   8 +
-> >>  hw/arm/Kconfig                 |   5 +
-> >>  hw/arm/meson.build             |   1 +
-> >>  hw/arm/stm32l4x5_soc.c         | 277 ++++++++++++++++++++++++++++++++=
-+
-> >>  include/hw/arm/stm32l4x5_soc.h |  68 ++++++++
-> >>  5 files changed, 359 insertions(+)
-> >>  create mode 100644 hw/arm/stm32l4x5_soc.c
-> >>  create mode 100644 include/hw/arm/stm32l4x5_soc.h
-> >>
-> >> diff --git a/MAINTAINERS b/MAINTAINERS
-> >> index ff1238bb98..32458d41dd 100644
-> >> --- a/MAINTAINERS
-> >> +++ b/MAINTAINERS
-> >> @@ -1122,6 +1122,14 @@ L: qemu-arm@nongnu.org
-> >>  S: Maintained
-> >>  F: hw/arm/olimex-stm32-h405.c
-> >>
-> >> +STM32L4x5 SoC Family
-> >> +M: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> >> +M: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> >> +L: qemu-arm@nongnu.org
-> >> +S: Maintained
-> >> +F: hw/arm/stm32l4x5_soc.c
-> >> +F: include/hw/arm/stm32l4x5_soc.h
-> >> +
-> >>  SmartFusion2
-> >>  M: Subbaraya Sundeep <sundeep.lkml@gmail.com>
-> >>  M: Peter Maydell <peter.maydell@linaro.org>
-> >> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> >> index 3ada335a24..d2b94d9a47 100644
-> >> --- a/hw/arm/Kconfig
-> >> +++ b/hw/arm/Kconfig
-> >> @@ -448,6 +448,11 @@ config STM32F405_SOC
-> >>      select STM32F4XX_SYSCFG
-> >>      select STM32F4XX_EXTI
-> >>
-> >> +config STM32L4X5_SOC
-> >> +    bool
-> >> +    select ARM_V7M
-> >> +    select OR_IRQ
-> >> +
-> >>  config XLNX_ZYNQMP_ARM
-> >>      bool
-> >>      default y if PIXMAN
-> >> diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-> >> index 68245d3ad1..9766da10c4 100644
-> >> --- a/hw/arm/meson.build
-> >> +++ b/hw/arm/meson.build
-> >> @@ -42,6 +42,7 @@ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm=
-2836.c', 'raspi.c'))
-> >>  arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_so=
-c.c'))
-> >>  arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_so=
-c.c'))
-> >>  arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_so=
-c.c'))
-> >> +arm_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_so=
-c.c'))
-> >>  arm_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqm=
-p.c', 'xlnx-zcu102.c'))
-> >>  arm_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c'=
-, 'xlnx-versal-virt.c'))
-> >>  arm_ss.add(when: 'CONFIG_FSL_IMX25', if_true: files('fsl-imx25.c', 'i=
-mx25_pdk.c'))
-> >> diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-> >> new file mode 100644
-> >> index 0000000000..f476878b2c
-> >> --- /dev/null
-> >> +++ b/hw/arm/stm32l4x5_soc.c
-> >> @@ -0,0 +1,277 @@
-> >> +/*
-> >> + * STM32L4x5 SoC family
-> >> + *
-> >> + * SPDX-License-Identifier: MIT
+> > From: Alistair Francis <alistair23@gmail.com>
+>
+> > Sent: Wednesday, December 6, 2023 11:39 AM
+>
+> > To: Alvin Che-Chia Chang(=E5=BC=B5=E5=93=B2=E5=98=89) <alvinga@andestec=
+h.com>
+>
+> > Cc: qemu-riscv@nongnu.org; qemu-devel@nongnu.org;
+>
+> > alistair.francis@wdc.com; liweiwei@iscas.ac.cn
+>
+> > Subject: Re: [PATCH v5] target/riscv: update checks on writing pmpcfg f=
+or
+>
+> > Smepmp to version 1.0
+>
 > >
-> > I'm pretty sure this must be GPL to be accepted
 >
-> Does it? A quick grep of the code shows we have quite a lot of hw
-> emulation files that are MIT licensed. Although IANAL MIT is very
-> permissive and easily combined with GPL as long at the final product is
-> under GPL.
+> > On Tue, Nov 14, 2023 at 12:24=E2=80=AFPM Alvin Chang via <qemu-devel@no=
+ngnu.org>
+>
+> > wrote:
+>
+> > >
+>
+> > > Current checks on writing pmpcfg for Smepmp follows Smepmp version
+>
+> > > 0.9.1. However, Smepmp specification has already been ratified, and
+>
+> > > there are some differences between version 0.9.1 and 1.0. In this
+>
+> > > commit we update the checks of writing pmpcfg to follow Smepmp versio=
+n
+>
+> > > 1.0.
+>
+> > >
+>
+> > > When mseccfg.MML is set, the constraints to modify PMP rules are:
+>
+> > > 1. Locked rules cannot be removed or modified until a PMP reset, unle=
+ss
+>
+> > >    mseccfg.RLB is set.
+>
+> > > 2. From Smepmp specification version 1.0, chapter 2 section 4b:
+>
+> > >    Adding a rule with executable privileges that either is M-mode-onl=
+y
+>
+> > >    or a locked Shared-Region is not possible and such pmpcfg writes a=
+re
+>
+> > >    ignored, leaving pmpcfg unchanged.
+>
+> > >
+>
+> > > The commit transfers the value of pmpcfg into the index of the Smepmp
+>
+> > > truth table, and checks the rules by aforementioned specification
+>
+> > > changes.
+>
+> > >
+>
+> > > Signed-off-by: Alvin Chang <alvinga@andestech.com>
+>
+> > > ---
+>
+> > > Changes from v4: Rebase on master.
+>
+> > >
+>
+> > > Changes from v3: Modify "epmp_operation" to "smepmp_operation".
+>
+> > >
+>
+> > > Changes from v2: Adopt switch case ranges and numerical order.
+>
+> > >
+>
+> > > Changes from v1: Convert ePMP over to Smepmp.
+>
+> > >
+>
+> > >  target/riscv/pmp.c | 40 ++++++++++++++++++++++++++++++++--------
+>
+> > >  1 file changed, 32 insertions(+), 8 deletions(-)
+>
+> > >
+>
+> > > diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c index
+>
+> > > 162e88a90a..4069514069 100644
+>
+> > > --- a/target/riscv/pmp.c
+>
+> > > +++ b/target/riscv/pmp.c
+>
+> > > @@ -102,16 +102,40 @@ static bool pmp_write_cfg(CPURISCVState *env,
+>
+> > uint32_t pmp_index, uint8_t val)
+>
+> > >                  locked =3D false;
+>
+> > >              }
+>
+> > >
+>
+> > > -            /* mseccfg.MML is set */
+>
+> > > -            if (MSECCFG_MML_ISSET(env)) {
+>
+> > > -                /* not adding execute bit */
+>
+> > > -                if ((val & PMP_LOCK) !=3D 0 && (val & PMP_EXEC) !=3D
+>
+> > PMP_EXEC) {
+>
+> > > +            /*
+>
+> > > +             * mseccfg.MML is set. Locked rules cannot be removed or
+>
+> > modified
+>
+> > > +             * until a PMP reset. Besides, from Smepmp specification
+>
+> > version 1.0
+>
+> > > +             * , chapter 2 section 4b says:
+>
+> > > +             * Adding a rule with executable privileges that either =
+is
+>
+> > > +             * M-mode-only or a locked Shared-Region is not possible
+>
+> > and such
+>
+> > > +             * pmpcfg writes are ignored, leaving pmpcfg unchanged.
+>
+> > > +             */
+>
+> > > +            if (MSECCFG_MML_ISSET(env) && !pmp_is_locked(env,
+>
+> > > + pmp_index)) {
+>
+> >
+>
+> > This is tricky and took me a while to get my head around.
+>
+> >
+>
+> > From what I can tell, there is a bug in the spec.
+>
+> >
+>
+> > The spec specifically states that:
+>
+> >
+>
+> > """
+>
+> > The meaning of pmpcfg.L changes: Instead of marking a rule as locked an=
+d
+>
+> > enforced in all modes, it now marks a rule as M-mode-only when set and
+>
+> > S/U-mode-only when unset.
+>
+> > """
+>
+> >
+>
+> > So the check for !pmp_is_locked() sounds correct.
+>
+> >
+>
+> > But then they add:
+>
+> >
+>
+> > """
+>
+> > The formerly reserved encoding of pmpcfg.RW=3D01, and the encoding
+>
+> > pmpcfg.LRWX=3D1111, now encode a Shared-Region.
+>
+> > """
+>
+> >
+>
+> > Which contradicts what they just said.
 
-Ah interesting. I just assumed everything had to be GPL
+In future can you please reply in plain text? Otherwise the formatting
+gets a little funky
 
-Nevermind then!
+>
+>
+> Yes you are right, it seems there are some misleading words.
+>
+>
+> >
+>
+> > I *think* we want to ignore the locked bit here. We don't actually care=
+ if it's
+>
+> > already set, instead we care if the region is an M-mode only region fro=
+m the
+>
+> > 2.1 table
+>
+>
+> The check for !pmp_is_locked() is because spec says (below table 2.1):
+>
+> "*Locked rules cannot be removed or modified until a PMP reset, unless ms=
+eccfg.RLB is set."
+>
+> It is not related to M-mode-only or S/U-mode-only or Shared-Region.
+
+Yes, but when mseccfg.MML is set
+
+"The meaning of pmpcfg.L changes: Instead of marking a rule as locked
+and enforced in all modes, it
+now marks a rule as M-mode-only when set and S/U-mode-only when unset."
+
+So the comment below table 2.1 no longer applies
+
+>
+>
+> In other words, a pmpcfg where the pmpcfg.L bit was set can not be config=
+ured anymore. Therefore, I think we should not ignore it here, since we are=
+ trying to write a new value into the pmpcfg. If we ignore it, the locked p=
+mpcfg will be modified and it would violate the spec.
+>
+>
+> If the pmpcfg was not locked, we also need to check the new value that th=
+e user wants to write. Because chapter 2 section 4b says: "Adding a rule wi=
+th executable privileges that either is M-mode-only or a locked Shared-Regi=
+on is not possible and such pmpcfg writes are ignored, leaving pmpcfg uncha=
+nged". This checking is implemented as that switch-case statement, based on=
+ table 2.1 truth table.
+
+Yeah, that sounds right.
 
 Alistair
 
 >
-> I think there is some LGPL code about for TCG but I'm not sure how well
-> tagged that is.
 >
-> --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
+> Alvin Chang
+>
+>
+> >
+>
+> > I think the best bet here is to create a helper function that takes a p=
+mpcfg
+>
+> > value and returns if it is M-mode only. Then we should check if the cur=
+rent
+>
+> > pmp_index is M-mode only OR if we are adding one and then reject that.
+>
+> >
+>
+> > Does that make sense?
+>
+> >
+>
+> > Alistair
+>
+> >
+>
+> > > +                /*
+>
+> > > +                 * Convert the PMP permissions to match the truth
+>
+> > table in the
+>
+> > > +                 * Smepmp spec.
+>
+> > > +                 */
+>
+> > > +                const uint8_t smepmp_operation =3D
+>
+> > > +                    ((val & PMP_LOCK) >> 4) | ((val & PMP_READ) <<
+>
+> > 2) |
+>
+> > > +                    (val & PMP_WRITE) | ((val & PMP_EXEC) >> 2);
+>
+> > > +
+>
+> > > +                switch (smepmp_operation) {
+>
+> > > +                case 0 ... 8:
+>
+> > >                      locked =3D false;
+>
+> > > -                }
+>
+> > > -                /* shared region and not adding X bit */
+>
+> > > -                if ((val & PMP_LOCK) !=3D PMP_LOCK &&
+>
+> > > -                    (val & 0x7) !=3D (PMP_WRITE | PMP_EXEC)) {
+>
+> > > +                    break;
+>
+> > > +                case 9 ... 11:
+>
+> > > +                    break;
+>
+> > > +                case 12:
+>
+> > > +                    locked =3D false;
+>
+> > > +                    break;
+>
+> > > +                case 13:
+>
+> > > +                    break;
+>
+> > > +                case 14:
+>
+> > > +                case 15:
+>
+> > >                      locked =3D false;
+>
+> > > +                    break;
+>
+> > > +                default:
+>
+> > > +                    g_assert_not_reached();
+>
+> > >                  }
+>
+> > >              }
+>
+> > >          } else {
+>
+> > > --
+>
+> > > 2.34.1
+>
+> > >
+>
+> > >
 
