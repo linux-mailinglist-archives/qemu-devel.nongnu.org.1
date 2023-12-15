@@ -2,48 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0FC9813FD1
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 03:34:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109BB814035
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 03:48:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rDy19-0005YE-7t; Thu, 14 Dec 2023 21:33:35 -0500
+	id 1rDyDw-0000UY-PB; Thu, 14 Dec 2023 21:46:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1rDy16-0005Xw-Cq; Thu, 14 Dec 2023 21:33:32 -0500
-Received: from out30-97.freemail.mail.aliyun.com ([115.124.30.97])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rDyDu-0000U1-9Y; Thu, 14 Dec 2023 21:46:46 -0500
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1rDy13-0006k8-Ti; Thu, 14 Dec 2023 21:33:32 -0500
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046050;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
- TI=SMTPD_---0VyW31ZH_1702607594; 
-Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VyW31ZH_1702607594) by smtp.aliyun-inc.com;
- Fri, 15 Dec 2023 10:33:15 +0800
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: Alistair.Francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com, qemu-riscv@nongnu.org,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 1/1] target/riscv: Not allow write mstatus_vs without RVV
-Date: Fri, 15 Dec 2023 10:33:13 +0800
-Message-Id: <20231215023313.1708-1-zhiwei_liu@linux.alibaba.com>
-X-Mailer: git-send-email 2.23.0
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rDyDs-0001sA-El; Thu, 14 Dec 2023 21:46:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1702608404; x=1734144404;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=PQ4sktM+2+IAI/nSNMnL24ZHpp2LJ6Mxb2DMBxZImFc=;
+ b=lmDorjrIgNeirH3ieb0TFP26q7xdBTEZbBEMFfGibeTLKS4WCoBSQmj8
+ c7D9eidb0047ktDBzFh69JjZavX/srxyNI0M+ORcbdx95PdaJH1R0rbpV
+ q9JnV5nodRu1zt5qgD3OF7PmSxMR4UZfKN/ovKPzowugKZwa7iqZuqxIk
+ cN+O7reQozy6XZFIKk9tFvLpULeCjBpQuLcc+7aI5Ifig+FvMqNjNnddl
+ kQRxdB90jeYLCA8dy2evzwvU8umawcGC9lWbdlbcljzLvqFpt+jMK9GcY
+ bBlufO6v0lZOnzIgsS+0wl8CtW6zr991oR3OouDIap17RYLOGW6GfHfVH g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="2310546"
+X-IronPort-AV: E=Sophos;i="6.04,277,1695711600"; 
+   d="scan'208";a="2310546"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Dec 2023 18:46:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="918277476"
+X-IronPort-AV: E=Sophos;i="6.04,277,1695711600"; d="scan'208";a="918277476"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmsmga001.fm.intel.com with ESMTP; 14 Dec 2023 18:46:36 -0800
+Date: Fri, 15 Dec 2023 10:59:00 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Samuel Tardieu <sam@rfc1149.net>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ qemu-trivial@nongnu.org
+Subject: Re: [PATCH] docs: fix typo
+Message-ID: <ZXvA9IlOEZfVNzuO@intel.com>
+References: <20231214225318.2391800-1-sam@rfc1149.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.97;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-97.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231214225318.2391800-1-sam@rfc1149.net>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,36 +77,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If CPU does not implement the Vector extension, it usually means
-mstatus vs hardwire to zero. So we should not allow write a
-non-zero value to this field.
+On Thu, Dec 14, 2023 at 11:53:18PM +0100, Samuel Tardieu wrote:
+> Date: Thu, 14 Dec 2023 23:53:18 +0100
+> From: Samuel Tardieu <sam@rfc1149.net>
+> Subject: [PATCH] docs: fix typo
+> X-Mailer: git-send-email 2.42.0
+> 
+> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+> ---
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
----
- target/riscv/csr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index fde7ce1a53..d1de6b2390 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1328,11 +1328,14 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
-     mask = MSTATUS_SIE | MSTATUS_SPIE | MSTATUS_MIE | MSTATUS_MPIE |
-         MSTATUS_SPP | MSTATUS_MPRV | MSTATUS_SUM |
-         MSTATUS_MPP | MSTATUS_MXR | MSTATUS_TVM | MSTATUS_TSR |
--        MSTATUS_TW | MSTATUS_VS;
-+        MSTATUS_TW;
- 
-     if (riscv_has_ext(env, RVF)) {
-         mask |= MSTATUS_FS;
-     }
-+    if (riscv_has_ext(env, RVV)) {
-+        mask |= MSTATUS_VS;
-+    }
- 
-     if (xl != MXL_RV32 || env->debugger) {
-         if (riscv_has_ext(env, RVH)) {
--- 
-2.25.1
-
+>  docs/tools/qemu-img.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/docs/tools/qemu-img.rst b/docs/tools/qemu-img.rst
+> index 4459c065f1..3653adb963 100644
+> --- a/docs/tools/qemu-img.rst
+> +++ b/docs/tools/qemu-img.rst
+> @@ -406,7 +406,7 @@ Command description:
+>    Compare exits with ``0`` in case the images are equal and with ``1``
+>    in case the images differ. Other exit codes mean an error occurred during
+>    execution and standard error output should contain an error message.
+> -  The following table sumarizes all exit codes of the compare subcommand:
+> +  The following table summarizes all exit codes of the compare subcommand:
+>  
+>    0
+>      Images are identical (or requested help was printed)
+> -- 
+> 2.42.0
+> 
+> 
 
