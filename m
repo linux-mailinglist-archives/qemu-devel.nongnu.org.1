@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5AA814219
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 08:05:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1E9814224
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 08:06:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE2FU-0003yH-OY; Fri, 15 Dec 2023 02:04:40 -0500
+	id 1rE2FR-0003xE-4s; Fri, 15 Dec 2023 02:04:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rE2FB-0003u3-4S
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rE2FB-0003u4-4N
  for qemu-devel@nongnu.org; Fri, 15 Dec 2023 02:04:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rE2F9-0001AU-LF
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rE2F9-0001Af-MU
  for qemu-devel@nongnu.org; Fri, 15 Dec 2023 02:04:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702623857;
+ s=mimecast20190719; t=1702623859;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XcRnsR5XMyooAnieIXxbI7PFjqOwph3TynJ+ccGtKNY=;
- b=QKfZtqqBxYJG1orBc/Lpkd5leB/pHsYFHSCeHX5s0/nWdREnAXIDkYjYl3gvTA2ZvINukN
- +GAtTl/LDT6EJNrEwai0bzB1WYErUulmdf+hQ6QwMMBIpyO8dFrv1DipgSSSh8xkKHtgAk
- YNAGNtwSx9GDOg0IwFp8W0TsyNCBpBs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-YDdHyxqLOqmhY9UnUgJR1w-1; Fri, 15 Dec 2023 02:04:13 -0500
-X-MC-Unique: YDdHyxqLOqmhY9UnUgJR1w-1
+ bh=9uTh7NLchur/cNBlEP3pqhCE+DFBzJQJ8z7DIGZ1x+w=;
+ b=FWpkb43/hZ1YiBZx8MUHUFZMqgjB6DDEF8qvVCNjSUREht30lSsB/ch5v6K1wXAaVWjspP
+ ozSbPjRBPmaUseS9Uuzzg1uRNkx6mvEvM/Et8ROg5/t9jThLjSzNbPOYX+i+5+OkxChfCn
+ O+wV1WTXZYBxdhofv+sdfPr7e0KeCew=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-gdQh5YKkPoKnPq7HsShJFQ-1; Fri,
+ 15 Dec 2023 02:04:15 -0500
+X-MC-Unique: gdQh5YKkPoKnPq7HsShJFQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 27810185A781;
- Fri, 15 Dec 2023 07:04:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E9FA228AC1E6;
+ Fri, 15 Dec 2023 07:04:14 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.67])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 93B692026D66;
- Fri, 15 Dec 2023 07:04:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A02E52026D66;
+ Fri, 15 Dec 2023 07:04:13 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 06/16] qtest: bump pxe-test timeout to 10 minutes
-Date: Fri, 15 Dec 2023 08:03:47 +0100
-Message-ID: <20231215070357.10888-7-thuth@redhat.com>
+Subject: [PATCH v3 07/16] qtest: bump prom-env-test timeout to 6 minutes
+Date: Fri, 15 Dec 2023 08:03:48 +0100
+Message-ID: <20231215070357.10888-8-thuth@redhat.com>
 In-Reply-To: <20231215070357.10888-1-thuth@redhat.com>
 References: <20231215070357.10888-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,26 +82,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The pxe-test uses the boot_sector_test() function, and that already
-uses a timeout of 600 seconds. So adjust the timeout on the meson
-side accordingly.
+The prom-env-test can take more than 5 minutes in a --enable-debug
+build on a loaded system. Bumping to 6 minutes will give more headroom.
 
 Signed-off-by: "Daniel P. Berrangé" <berrange@redhat.com>
-[thuth: Bump timeout to 600s and adjust commit description]
+[thuth: Bump timeout to 6 minutes instead of 3]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
  tests/qtest/meson.build | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 7a4160df04..ec93d5a384 100644
+index ec93d5a384..c7944e8dbe 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
-@@ -4,6 +4,7 @@ slow_qtests = {
-   'npcm7xx_pwm-test': 300,
+@@ -5,6 +5,7 @@ slow_qtests = {
    'qom-test' : 900,
    'test-hmp' : 240,
-+  'pxe-test': 600,
+   'pxe-test': 600,
++  'prom-env-test': 360,
  }
  
  qtests_generic = [
