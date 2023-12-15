@@ -2,54 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A359C81485C
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 13:45:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB43814868
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 13:50:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE7Xg-0006S5-W3; Fri, 15 Dec 2023 07:43:49 -0500
+	id 1rE7da-0007zG-4L; Fri, 15 Dec 2023 07:49:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rE7Xe-0006RZ-BG
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:43:46 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1rE7dX-0007yt-6L
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:49:51 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rE7Xc-0001pn-7B
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:43:46 -0500
+ id 1rE7dU-0007Xg-Vn
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:49:50 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1F5A575A4B9;
- Fri, 15 Dec 2023 13:43:39 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 839CF75A4BF;
+ Fri, 15 Dec 2023 13:49:45 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id K45BhEezhKKo; Fri, 15 Dec 2023 13:43:37 +0100 (CET)
+ with ESMTP id hhKuVWJreWr1; Fri, 15 Dec 2023 13:49:43 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3145C75A406; Fri, 15 Dec 2023 13:43:37 +0100 (CET)
+ id 9C7EE75A4B9; Fri, 15 Dec 2023 13:49:43 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 2F6DD75607B;
- Fri, 15 Dec 2023 13:43:37 +0100 (CET)
-Date: Fri, 15 Dec 2023 13:43:37 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9AFDB75607B;
+ Fri, 15 Dec 2023 13:49:43 +0100 (CET)
+Date: Fri, 15 Dec 2023 13:49:43 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] vl: Print display options for -display help
-In-Reply-To: <2d1689ea-b0d8-4c74-8101-b90ad626f2a9@daynix.com>
-Message-ID: <d1687e5a-a60e-fda8-5e8c-1ab9adf0e775@eik.bme.hu>
-References: <20231214-help-v1-1-23823ac5a023@daynix.com>
- <9443821d-5eff-46e6-be69-707cca9cd0d0@linaro.org>
- <8f8d3317-c28b-3985-89d7-0fbd1ce4b56e@eik.bme.hu>
- <2d1689ea-b0d8-4c74-8101-b90ad626f2a9@daynix.com>
+To: =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@gmail.com>
+cc: Dongwon Kim <dongwon.kim@intel.com>, qemu-devel@nongnu.org, 
+ Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: Re: [PATCH 2/3] ui/gtk: unblock pipeline only if fence hasn't been
+ signaled yet
+In-Reply-To: <CAJ+F1C+GR7gEO2SktenXpRUHtFAvF-ZrW_QGe0-nSErZESbjtQ@mail.gmail.com>
+Message-ID: <ca6d1673-979b-9a1b-c7cf-9d9a63ac88b1@eik.bme.hu>
+References: <20231204184051.16873-1-dongwon.kim@intel.com>
+ <20231213202419.15459-1-dongwon.kim@intel.com>
+ <20231213202419.15459-2-dongwon.kim@intel.com>
+ <CAJ+F1C+GR7gEO2SktenXpRUHtFAvF-ZrW_QGe0-nSErZESbjtQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/mixed;
- BOUNDARY="3866299591-1851630701-1702643494=:20721"
-Content-ID: <01acf3fa-e689-3e90-a301-508f725b21d6@eik.bme.hu>
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+ boundary="3866299591-449158374-1702644583=:20721"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -73,138 +71,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---3866299591-1851630701-1702643494=:20721
-Content-Type: text/plain; CHARSET=ISO-8859-15; format=flowed
+--3866299591-449158374-1702644583=:20721
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8BIT
-Content-ID: <2ec7b0b6-371b-9b0a-a408-6f1a6debde6e@eik.bme.hu>
 
-On Fri, 15 Dec 2023, Akihiko Odaki wrote:
-> On 2023/12/14 22:00, BALATON Zoltan wrote:
->> On Thu, 14 Dec 2023, Philippe Mathieu-Daudé wrote:
->>> Hi Akihiko,
->>> 
->>> On 14/12/23 07:47, Akihiko Odaki wrote:
->>>> -display lists display backends, but does not tell their options.
->>>> Use the help messages from qemu-options.def, which include the list of
->>>> options.
->>>> 
->>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>> ---
->>>>   include/ui/console.h |  1 -
->>>>   system/vl.c          | 11 ++++++-----
->>>>   ui/console.c         | 20 --------------------
->>>>   3 files changed, 6 insertions(+), 26 deletions(-)
->>> 
->>> 
->>>> diff --git a/ui/console.c b/ui/console.c
->>>> index 7db921e3b7d6..6aee5e9a7ffb 100644
->>>> --- a/ui/console.c
->>>> +++ b/ui/console.c
->>>> @@ -1691,23 +1691,3 @@ const char *qemu_display_get_vc(DisplayOptions 
->>>> *opts)
->>>>       }
->>>>       return vc;
->>>>   }
->>>> -
->>>> -void qemu_display_help(void)
->>>> -{
->>>> -    int idx;
->>>> -
->>>> -    printf("Available display backend types:\n");
->>>> -    printf("none\n");
->>>> -    for (idx = DISPLAY_TYPE_NONE; idx < DISPLAY_TYPE__MAX; idx++) {
->>>> -        if (!dpys[idx]) {
->>>> -            Error *local_err = NULL;
->>>> -            int rv = ui_module_load(DisplayType_str(idx), &local_err);
->>>> -            if (rv < 0) {
->>>> -                error_report_err(local_err);
->>>> -            }
->>>> -        }
->>>> -        if (dpys[idx]) {
->>>> -            printf("%s\n",  DisplayType_str(dpys[idx]->type));
->>> 
->>> Is the "qapi/qapi-commands-ui.h" header still necessary?
->>> 
->>>> -        }
->>>> -    }
->>>> -}
->>> 
->>> So we go from:
->>> 
->>> $ ./qemu-system-aarch64 -display help
->>> Available display backend types:
->>> none
->>> gtk
->>> sdl
->>> curses
->>> cocoa
->>> dbus
->>> 
->>> to:
->>> 
->>> $ ./qemu-system-aarch64 -display help
->>> -display sdl[,gl=on|core|es|off][,grab-mod=<mod>][,show-cursor=on|off]
->>>            [,window-close=on|off]
->>> -display gtk[,full-screen=on|off][,gl=on|off][,grab-on-hover=on|off]
->>>            [,show-tabs=on|off][,show-cursor=on|off][,window-close=on|off]
->>>            [,show-menubar=on|off]
->>> -display vnc=<display>[,<optargs>]
->>> -display curses[,charset=<encoding>]
->>> -display cocoa[,full-grab=on|off][,swap-opt-cmd=on|off]
->>> -display dbus[,addr=<dbusaddr>]
->>>             [,gl=on|core|es|off][,rendernode=<file>]
->>> -display cocoa[,show-cursor=on|off][,left-command-key=on|off]
->>> -display none
->>>                select display backend type
->>>                The default display is equivalent to
->>>                "-display gtk"
->>> 
->>> The latter is indeed more helpful.
->> 
->> It is more helpful but maybe a bit overwhelming. Would it be possible to 
->> only print the options with -display cocoa,help similar to how -device help 
->> lists devices and -device sm501,help lists options for one device? Adding 
->> info about default to -display help is really helpful though (that could 
->> also be marked with (default) like in -machine help.
+On Fri, 15 Dec 2023, Marc-AndrÃ© Lureau wrote:
+> Hi
 >
-> It's copied from what qemu-system-aarch64 -h outputs. At least it's less 
-> overwhelming than qemu-system-aarch64 -h.
-
-This changes what -display help does so if some script depends on that it 
-may not be a good idea. Since the same info is already in -help maybe this 
-change to add that to -display help as well is not the best solution so 
-I'd say drop this patch and leave it as it is for now.
-
-Adding (default) to show default as with -machine help would be useful but 
-the default in help seems to be added by preprocessor magic so it's not 
-easy to use that in qemu_display_help(). Maybe if a constant would be 
-defined with the default value instead of adding it directly to help text 
-then that could be used but we have '-vnc some-arguments' as opposed to 
-'-display something' for all other casess so if that -vnc option is 
-correct and it's not like '-display vnc' then that's not trivial either. 
-So I'd say just fotget about this for now as it's not that important so 
-may not worth the effort.
-
->> I'm not complaining, thanks for taking care of this so quickly but if it's 
->> not too difficult to add separate -display cocoa,help and not list options 
->> in -display help maybe that would be better and more consistent with other 
->> help options.
+> On Thu, Dec 14, 2023 at 8:26â€¯AM Dongwon Kim <dongwon.kim@intel.com> wrote:
+>>
+>> It is needed to unblock the pipeline only if there is an active dmabuf
+>> to be rendered and the fence for it is not yet signaled.
+>>
+>> Cc: Marc-AndrÃ© Lureau <marcandre.lureau@redhat.com>
+>> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+>> Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+>> ---
+>>  ui/gtk.c | 14 ++++++++++----
+>>  1 file changed, 10 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/ui/gtk.c b/ui/gtk.c
+>> index ea8d07833e..073c9eadb8 100644
+>> --- a/ui/gtk.c
+>> +++ b/ui/gtk.c
+>> @@ -597,10 +597,16 @@ void gd_hw_gl_flushed(void *vcon)
+>>      VirtualConsole *vc = vcon;
+>>      QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
+>>
+>> -    qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
+>> -    close(dmabuf->fence_fd);
+>> -    dmabuf->fence_fd = -1;
+>> -    graphic_hw_gl_block(vc->gfx.dcl.con, false);
+>> +    if (!dmabuf) {
+>> +        return;
+>> +    }
 >
-> Yes, that will require some major refactoring so I'm not going to do that for 
-> now.
+> When is this function called with dmabuf == NULL or fence_fd < 0?
+>
+>> +
+>> +    if (dmabuf->fence_fd > 0) {
+>
+> this should be >= 0
 
-I've also looked at that and concluded the same that it would take some 
-qapi expert to solve this. It seems the options are parsed into some qapi 
-types which may have help to display but I could not find out how that 
-works. For device it may be handled in qdev_device_help() but I don't know 
-if that would be applicable for display backends and if so how. Maybe 
-someone who knows about this could chime in and give some idea how e.g. 
--display gtk,help could be implemented similar to -device somedevice,help. 
-(Other than passing through the help text as your patch does and rhen cut 
-the relevant part from that with string functions but that's likely not 
-the right way to do this.)
+There's another in line 102 already and one in gtk-gl-area.c too.
 
 Regards,
 BALATON Zoltan
---3866299591-1851630701-1702643494=:20721--
+
+>> +        qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
+>> +        close(dmabuf->fence_fd);
+>> +        dmabuf->fence_fd = -1;
+>> +        graphic_hw_gl_block(vc->gfx.dcl.con, false);
+>> +    }
+>>  }
+>>
+>>  /** DisplayState Callbacks (opengl version) **/
+>> --
+>> 2.34.1
+>>
+>>
+>
+>
+>
+--3866299591-449158374-1702644583=:20721--
 
