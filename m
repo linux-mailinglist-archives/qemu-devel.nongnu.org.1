@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4D18146E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 12:29:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF05B8146E7
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 12:29:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE6N7-0002l0-Eh; Fri, 15 Dec 2023 06:28:51 -0500
+	id 1rE6NI-0002mS-9b; Fri, 15 Dec 2023 06:29:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rE6My-0002kR-Vu
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:28:41 -0500
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1rE6N2-0002kv-Uk
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:28:46 -0500
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rE6Mx-0007pS-5l
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:28:40 -0500
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-28694702c18so351807a91.3
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 03:28:38 -0800 (PST)
+ id 1rE6N1-0007tx-6N
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:28:44 -0500
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-5c68b5cf14bso249576a12.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 03:28:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702639717; x=1703244517;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702639721; x=1703244521;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=YCELKmQNNfPATvVzKW81YWq5C6cO6b4OovDr9mVveH4=;
- b=W3c5AW6qgFGVv4Kal4YBG61j0Kq4Khe9S/iPXgAEWOjNkuimbuKRCEba3FVKmb74c4
- 8XoS4qdwHZCpmHioCmjQrjZOUQuhzV5Fkfb1JIBbCDJLFy0R0y53grKquBwJUt7Zd1+e
- b5ih9QRiTvFgdzeb4ROPV7I7TzQuZiPOWMTDnYshVv4+qZ9/47x1ODHPY3i4QUtLfWE6
- p0AFydNarh8ODlP5u4ijK05nt/xlJR0GHSbyh10MDmZ8kynGTcHWGm5lARr1v8u9gmZk
- omaKC0HO8AvypGD7qzP9COBsEAlPpGJFF1MBlD71syIFS8Hfgl2kMLPDol7xPjJYhsOE
- LJ6w==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=0i5r57sAw8QjB30mHV+P8fvG850MAvHAx4phnQ8ja8M=;
+ b=LBFFsdqeOYc+CEQjoOmFJ1A2kfeHBWvafONMlp8Q+bVV1ipxqq28rkBAll9micvEV8
+ FLIGUi7rqSw82jwzQ3LYFEDdwOHF1O3QbFzyKJSeOQV2ZB/APXtGNTHxQ3//lh3O7BQE
+ 1PEdLWwyjearujAaSSswuZ3/luZY7lveDE1W9clXcmK2iN2N7DZ4JyyPYcmii+rIq8NS
+ ASJxdcM6YxgHyQ+Z6iVwbdMRkOJ1KvfYwR9RtSrBxjLRd/49pRmEhg5OUL6yz19HLjsM
+ 6K2Fqljvl9uICW0cHGQho9LEPEhzKTurBuUSgT/nt8HeuY0gtbwXS6q65Bbex5zy+t79
+ yM1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702639717; x=1703244517;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YCELKmQNNfPATvVzKW81YWq5C6cO6b4OovDr9mVveH4=;
- b=tmq6rP86HIrBHDEjQFZlIm1QiG+8xnoUe6kEFRr98N2pt9w4WtT/JbxJJoVC3rLlaT
- doN+7PGL4msZbtxHNLsvIVKVT30xzK6hXjxnBgWbUiLnWEDH38uNAfG68AcxdtQXOyAI
- ++/rYna5TFxwLf0xmHB6oWuu8H14epn7IKSFujqFj2h6fWeec/CplMZYWonqJRq+TCBm
- oSe1LL1VnYhbMLBpj7CA1WTn0RDLqIo94QTnLA4Hjs3OAs2lo3GUlpBE+u626zjrrZXq
- K0UhQNzJJEd2aFvtYSu+PrR3m+NfqeYk/13E8MqtkmgK//pZNr32PZMjMN2ihUHB8q35
- IyFg==
-X-Gm-Message-State: AOJu0YwNhxR/OGOAADcz6hWguhIkM8SZkz2A5Tz05ka08uVFpCUazhOJ
- XrQLYe1S+78W4CX8cNra6K8jPw==
-X-Google-Smtp-Source: AGHT+IHKlLKEpGQylsD02HtUk06a3sTCFzTm+ILjIHZu3ZmWWCVQPPP+VBZjl8Ca1WRuuxJ0JAcvzg==
-X-Received: by 2002:a17:90a:5787:b0:286:742e:47b8 with SMTP id
- g7-20020a17090a578700b00286742e47b8mr8476426pji.3.1702639717344; 
- Fri, 15 Dec 2023 03:28:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702639721; x=1703244521;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0i5r57sAw8QjB30mHV+P8fvG850MAvHAx4phnQ8ja8M=;
+ b=WoQ7dVo2xr9YygIGAPtT0updVux9aMxaGXosCAOEziEbP/jJoU26ajmsMLn0X9Yjqt
+ SSWGYEHH3FvCi8rOeIEscfoPhJ+PT5qLKnmBtCN+OoiEqUna5jm4bvU852yPtQZUWMOg
+ ngN5bdbSSynTS47mzP6rqUMPAjS+uH9HxVLGqaZlClytV2ctx0SkBpInA++edpQk2JNl
+ CPHRoKx9yWPcgTfsDI8syPX3w1jsLzMqN+YyWslse/wYTWfVRXzTgSdgZ8Qgm6edt85Q
+ qhuiBFLXYUMaLgTf4WIPdrPSSuX2zoTWn1QFKR2CoXuQ4ozLS+OQV8g0/0KOImmRf456
+ ptZA==
+X-Gm-Message-State: AOJu0YzOTTJ2KNgAY+tGHPDfZWzcGnqm7VoalK+8uYy3mjLmTCFxCQuR
+ wApmdy+Vrszz4IV77wYhwIaU9Q==
+X-Google-Smtp-Source: AGHT+IGcmuqa37VajnEK0afUzLDz5pNgqpmpP4DYBnf7Ql4ajhLd54CIWxYwJQ/U6ojN4s2VJdic3A==
+X-Received: by 2002:a05:6a20:e128:b0:18f:97c:9285 with SMTP id
+ kr40-20020a056a20e12800b0018f097c9285mr8038116pzb.106.1702639721197; 
+ Fri, 15 Dec 2023 03:28:41 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- pq18-20020a17090b3d9200b00286dfa09e7asm14820113pjb.24.2023.12.15.03.28.35
+ w2-20020a1709029a8200b001cfca7b8ee7sm14044087plp.99.2023.12.15.03.28.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Dec 2023 03:28:36 -0800 (PST)
+ Fri, 15 Dec 2023 03:28:40 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 0/4] meson: Fixes for dbus modules
-Date: Fri, 15 Dec 2023 20:28:32 +0900
-Message-Id: <20231215-dbus-v2-0-1e2e6aa02115@daynix.com>
+Date: Fri, 15 Dec 2023 20:28:33 +0900
+Subject: [PATCH v2 1/4] Move dbus-display1 out of ui
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGA4fGUC/13MSw6CMBSF4a2QO7amLRaoI/dhGPRxlTuQklYbC
- OnerQwd/icn3w4JI2GCa7NDxEyJwlxDnhpwk5mfyMjXBsllK6RQzNtPYkM39B0621uuoV6XiA9
- aD+Y+1p4ovUPcDjWL3/oHZME4ay8audLGKStv3mwzrWcXXjCWUr7Toa3PmQAAAA==
+Message-Id: <20231215-dbus-v2-1-1e2e6aa02115@daynix.com>
+References: <20231215-dbus-v2-0-1e2e6aa02115@daynix.com>
+In-Reply-To: <20231215-dbus-v2-0-1e2e6aa02115@daynix.com>
 To: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
  Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
  =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
@@ -73,8 +72,8 @@ To: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::102f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102f.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,38 +95,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I found it was failing to build dbus modules when --enable-dbus so here
-are fixes.
+Despite its name, dbus-display1 does not only provide DBus interfaces
+for the display but also for the audio.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Changes in v2:
-- Updated MAINTAINERS.
-- Link to v1: https://lore.kernel.org/r/20231215-dbus-v1-0-349e059ac5b2@daynix.com
-
----
-Akihiko Odaki (4):
-      Move dbus-display1 out of ui
-      audio: Depend on dbus_display1_dep
-      meson: Explicitly specify dbus-display1.h dependency
-      tests/qtest: Depend on dbus_display1_dep
-
  MAINTAINERS                               |  1 +
  meson.build                               | 21 +++++++++++++++++++++
  ui/dbus.h                                 |  2 +-
  audio/dbusaudio.c                         |  2 +-
  tests/qtest/dbus-display-test.c           |  2 +-
- audio/meson.build                         |  3 ++-
  ui/dbus-display1.xml => dbus-display1.xml |  0
- tests/qtest/meson.build                   |  2 +-
  ui/meson.build                            | 18 ------------------
- 9 files changed, 28 insertions(+), 23 deletions(-)
----
-base-commit: 4705fc0c8511d073bee4751c3c974aab2b10a970
-change-id: 20231215-dbus-86876ecb7b09
+ 7 files changed, 25 insertions(+), 21 deletions(-)
 
-Best regards,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 695e0bd34fbb..0c2630d0e264 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3389,6 +3389,7 @@ F: docs/sphinx/dbus*
+ F: docs/sphinx/fakedbusdoc.py
+ F: tests/qtest/dbus*
+ F: scripts/xml-preprocess*
++F: dbus-display.xml
+ 
+ Seccomp
+ M: Daniel P. Berrange <berrange@redhat.com>
+diff --git a/meson.build b/meson.build
+index ec01f8b138aa..5e1b25a47184 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2014,6 +2014,27 @@ dbus_display = get_option('dbus_display') \
+            error_message: gdbus_codegen_error.format('-display dbus')) \
+   .allowed()
+ 
++if dbus_display
++  env = environment()
++  env.set('TARGETOS', targetos)
++  xml = custom_target('dbus-display preprocess',
++                      input: 'dbus-display1.xml',
++                      output: 'dbus-display1.xml',
++                      env: env,
++                      command: [xml_pp, '@INPUT@', '@OUTPUT@'])
++  dbus_display1 = custom_target('dbus-display gdbus-codegen',
++                                output: ['dbus-display1.h', 'dbus-display1.c'],
++                                input: xml,
++                                command: [gdbus_codegen, '@INPUT@',
++                                          '--glib-min-required', '2.64',
++                                          '--output-directory', meson.current_build_dir(),
++                                          '--interface-prefix', 'org.qemu.',
++                                          '--c-namespace', 'QemuDBus',
++                                          '--generate-c-code', '@BASENAME@'])
++  dbus_display1_lib = static_library('dbus-display1', dbus_display1, dependencies: gio)
++  dbus_display1_dep = declare_dependency(link_with: dbus_display1_lib, include_directories: include_directories('.'))
++endif
++
+ have_virtfs = get_option('virtfs') \
+     .require(targetos == 'linux' or targetos == 'darwin',
+              error_message: 'virtio-9p (virtfs) requires Linux or macOS') \
+diff --git a/ui/dbus.h b/ui/dbus.h
+index 1e8c24a48e32..ba9bab9f84d9 100644
+--- a/ui/dbus.h
++++ b/ui/dbus.h
+@@ -31,7 +31,7 @@
+ #include "ui/console.h"
+ #include "ui/clipboard.h"
+ 
+-#include "ui/dbus-display1.h"
++#include "dbus-display1.h"
+ 
+ typedef struct DBusClipboardRequest {
+     GDBusMethodInvocation *invocation;
+diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
+index 60fcf643ecf8..5222b3c68804 100644
+--- a/audio/dbusaudio.c
++++ b/audio/dbusaudio.c
+@@ -34,7 +34,7 @@
+ #endif
+ 
+ #include "ui/dbus.h"
+-#include "ui/dbus-display1.h"
++#include "dbus-display1.h"
+ 
+ #define AUDIO_CAP "dbus"
+ #include "audio.h"
+diff --git a/tests/qtest/dbus-display-test.c b/tests/qtest/dbus-display-test.c
+index 21edaa1e321f..a15e9c377b08 100644
+--- a/tests/qtest/dbus-display-test.c
++++ b/tests/qtest/dbus-display-test.c
+@@ -5,7 +5,7 @@
+ #include <gio/gio.h>
+ #include <gio/gunixfdlist.h>
+ #include "libqtest.h"
+-#include "ui/dbus-display1.h"
++#include "dbus-display1.h"
+ 
+ static GDBusConnection*
+ test_dbus_p2p_from_fd(int fd)
+diff --git a/ui/dbus-display1.xml b/dbus-display1.xml
+similarity index 100%
+rename from ui/dbus-display1.xml
+rename to dbus-display1.xml
+diff --git a/ui/meson.build b/ui/meson.build
+index 0ccb3387ee6a..bbb7c5242d55 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -75,24 +75,6 @@ endif
+ 
+ if dbus_display
+   dbus_ss = ss.source_set()
+-  env = environment()
+-  env.set('TARGETOS', targetos)
+-  xml = custom_target('dbus-display preprocess',
+-                      input: 'dbus-display1.xml',
+-                      output: 'dbus-display1.xml',
+-                      env: env,
+-                      command: [xml_pp, '@INPUT@', '@OUTPUT@'])
+-  dbus_display1 = custom_target('dbus-display gdbus-codegen',
+-                                output: ['dbus-display1.h', 'dbus-display1.c'],
+-                                input: xml,
+-                                command: [gdbus_codegen, '@INPUT@',
+-                                          '--glib-min-required', '2.64',
+-                                          '--output-directory', meson.current_build_dir(),
+-                                          '--interface-prefix', 'org.qemu.',
+-                                          '--c-namespace', 'QemuDBus',
+-                                          '--generate-c-code', '@BASENAME@'])
+-  dbus_display1_lib = static_library('dbus-display1', dbus_display1, dependencies: gio)
+-  dbus_display1_dep = declare_dependency(link_with: dbus_display1_lib, include_directories: include_directories('.'))
+   dbus_ss.add(when: [gio, dbus_display1_dep],
+               if_true: [files(
+                 'dbus-chardev.c',
+
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.43.0
 
 
