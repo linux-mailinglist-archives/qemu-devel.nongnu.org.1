@@ -2,87 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180E5814E80
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 18:25:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 422F4814EB6
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 18:30:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEBue-0004kT-Pk; Fri, 15 Dec 2023 12:23:48 -0500
+	id 1rEBzR-0005xb-KF; Fri, 15 Dec 2023 12:28:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rEBud-0004hP-7R
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 12:23:47 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rEBub-0005NH-O1
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 12:23:46 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40c236624edso9669505e9.1
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 09:23:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702661024; x=1703265824; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=x7CqrzOT9s+6m9j4ZpH6+UmgxKnXnvpdeOM2h3jJXI0=;
- b=NC0rzC48yP7S3vNaaJM56N3K5rRThzlcx8ATxSKwVEgIlR2PIOPJmvgQj6XpGL+f2r
- wm3t00C+J84yINmz4byv5nHpAdq0nDx94dbulBqhfmdXFaf50h3vQ6osMx4T0P0xddPa
- a1FQmAqwXa9vewlyLO7gp23VUmgXSKME1LtsuvYnQICJ9qAKpEGBW8iPSjeDc2360NUn
- P0HbI/Yok9J3Yhcu3Mtf6+qGo+sgVINcWnIbULMXNW9t8yPtUwqZtxiB8g/xecAvDLCA
- LYtGrTm7lkYxt8bcCubfOSSozrsp0eWTTu+YS0MMCmCMbpjQPpboTIK6+Y6BG8bCRMTB
- vZiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702661024; x=1703265824;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=x7CqrzOT9s+6m9j4ZpH6+UmgxKnXnvpdeOM2h3jJXI0=;
- b=gI77mUxjZKh580ddhv/iwJkmQuV+PAUxpsCl+ZJ254tRLc5dvVRVkeLwiI/tnUF4QU
- a6UFsq7pXJwVtgFbFQ0rnGAfVLWl10ux7Uvwl87CL3+iLm3wwHml5zNG2ZaICV2gjFlE
- kpVsA8wD58I5IVoJtg2zO+9mxQKNqsBgHF31CByJ4xD8c5iyTm/GsO8RDYCN1j2vxoWj
- a/4dXZmdqe4+htuoBoIXERtHFH0V/mUm2X7sQBp3jWw7rvTiHeRuK/NSw42PkzefPVhk
- qkMIP4WV34SzQ8aNeVkIDWe8Zv1KpfxAmmR7su7xD5vu7bmGXdRtl6nSXSLSq7x9qZX+
- WERg==
-X-Gm-Message-State: AOJu0Yyzr120i0OWdqBxby0KXTevDVenBXGMeyvbeiJH1KAlxujcgjPZ
- 1FKthxNqLmWkMonSL0e/TbFHcA==
-X-Google-Smtp-Source: AGHT+IGpcv9bLIDFR6F1q4xJ/k8QzT9ejXClm7Zivg6IS+TPFTrwWSRqJgFMzFoVsfL1wL+WNj0xAg==
-X-Received: by 2002:a05:600c:45cd:b0:40c:271a:e7f7 with SMTP id
- s13-20020a05600c45cd00b0040c271ae7f7mr5673410wmo.145.1702661024051; 
- Fri, 15 Dec 2023 09:23:44 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- u17-20020a05600c19d100b0040c440f9393sm22209836wmq.42.2023.12.15.09.23.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Dec 2023 09:23:43 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 4F0AB5F878;
- Fri, 15 Dec 2023 17:23:43 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,  Cleber Rosa
- <crosa@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Beraldo Leal <bleal@redhat.com>
-Subject: Re: [PATCH] tests/avocado: Add a test for a little-endian
- microblaze machine
-In-Reply-To: <20231215161851.71508-1-thuth@redhat.com> (Thomas Huth's message
- of "Fri, 15 Dec 2023 17:18:51 +0100")
-References: <20231215161851.71508-1-thuth@redhat.com>
-User-Agent: mu4e 1.11.26; emacs 29.1
-Date: Fri, 15 Dec 2023 17:23:43 +0000
-Message-ID: <87y1dv7528.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rEBzP-0005x6-KA
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 12:28:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rEBzM-00011F-Bu
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 12:28:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702661318;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=gRsTFyFns8/cq+LJnN16TSdKAtXCedCKNhD71qVsk4w=;
+ b=WobhfFCVimXXHQnJeJQPq25d/JKtcvLpMyMqt50wmyzo0v2NDtwNIJrT9quLkp6iMTBAcB
+ WBNUuL02fIy1kS3rpRFW593bhxsbe+3OlM5eyJjK1E/zdCuJ/8SrdfJoYsDaCR52ziwVgM
+ y567x/a10emcxdoQDhB6gp6XMx72+9o=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-IQlQWtP9N3-VtTxH1I7elQ-1; Fri, 15 Dec 2023 12:28:34 -0500
+X-MC-Unique: IQlQWtP9N3-VtTxH1I7elQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B7D45185A786;
+ Fri, 15 Dec 2023 17:28:33 +0000 (UTC)
+Received: from eperezma.remote.csb (unknown [10.39.194.2])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1596B40C6EB9;
+ Fri, 15 Dec 2023 17:28:31 +0000 (UTC)
+From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, si-wei.liu@oracle.com,
+ Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>,
+ Zhu Lingshan <lingshan.zhu@intel.com>, Parav Pandit <parav@mellanox.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH for 9.0 00/12] Map memory at destination .load_setup in
+ vDPA-net migration
+Date: Fri, 15 Dec 2023 18:28:18 +0100
+Message-Id: <20231215172830.2540987-1-eperezma@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,21 +83,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+Current memory operations like pinning may take a lot of time at the=0D
+destination.  Currently they are done after the source of the migration is=
+=0D
+stopped, and before the workload is resumed at the destination.  This is a=
+=0D
+period where neigher traffic can flow, nor the VM workload can continue=0D
+(downtime).=0D
+=0D
+We can do better as we know the memory layout of the guest RAM at the=0D
+destination from the moment the migration starts.  Moving that operation al=
+lows=0D
+QEMU to communicate the kernel the maps while the workload is still running=
+ in=0D
+the source, so Linux can start mapping them.=0D
+=0D
+Also, the destination of the guest memory may finish before the destination=
+=0D
+QEMU maps all the memory.  In this case, the rest of the memory will be map=
+ped=0D
+at the same time as before applying this series, when the device is startin=
+g.=0D
+So we're only improving with this series.=0D
+=0D
+If the destination has the switchover_ack capability enabled, the destinati=
+on=0D
+hold the migration until all the memory is mapped.=0D
+=0D
+This needs to be applied on top of [1]. That series performs some code=0D
+reorganization that allows to map the guest memory without knowing the queu=
+e=0D
+layout the guest configure on the device.=0D
+=0D
+This series reduced the downtime in the stop-and-copy phase of the live=0D
+migration from 20s~30s to 5s, with a 128G mem guest and two mlx5_vdpa devic=
+es,=0D
+per [2].=0D
+=0D
+Future directions on top of this series may include:=0D
+* Iterative migration of virtio-net devices, as it may reduce downtime per =
+[3].=0D
+  vhost-vdpa net can apply the configuration through CVQ in the destination=
+=0D
+  while the source is still migrating.=0D
+* Move more things ahead of migration time, like DRIVER_OK.=0D
+* Check that the devices of the destination are valid, and cancel the migra=
+tion=0D
+  in case it is not.=0D
+=0D
+v1 from RFC v2:=0D
+* Hold on migration if memory has not been mapped in full with switchover_a=
+ck.=0D
+* Revert map if the device is not started.=0D
+=0D
+RFC v2:=0D
+* Delegate map to another thread so it does no block QMP.=0D
+* Fix not allocating iova_tree if x-svq=3Don at the destination.=0D
+* Rebased on latest master.=0D
+* More cleanups of current code, that might be split from this series too.=
+=0D
+=0D
+[1] https://lists.nongnu.org/archive/html/qemu-devel/2023-12/msg01986.html=
+=0D
+[2] https://lists.nongnu.org/archive/html/qemu-devel/2023-12/msg00909.html=
+=0D
+[3] https://lore.kernel.org/qemu-devel/6c8ebb97-d546-3f1c-4cdd-54e23a566f61=
+@nvidia.com/T/=0D
+=0D
+Eugenio P=C3=A9rez (12):=0D
+  vdpa: do not set virtio status bits if unneeded=0D
+  vdpa: make batch_begin_once early return=0D
+  vdpa: merge _begin_batch into _batch_begin_once=0D
+  vdpa: extract out _dma_end_batch from _listener_commit=0D
+  vdpa: factor out stop path of vhost_vdpa_dev_start=0D
+  vdpa: check for iova tree initialized at net_client_start=0D
+  vdpa: set backend capabilities at vhost_vdpa_init=0D
+  vdpa: add vhost_vdpa_load_setup=0D
+  vdpa: approve switchover after memory map in the migration destination=0D
+  vdpa: add vhost_vdpa_net_load_setup NetClient callback=0D
+  vdpa: add vhost_vdpa_net_switchover_ack_needed=0D
+  virtio_net: register incremental migration handlers=0D
+=0D
+ include/hw/virtio/vhost-vdpa.h |  32 ++++=0D
+ include/net/net.h              |   8 +=0D
+ hw/net/virtio-net.c            |  48 ++++++=0D
+ hw/virtio/vhost-vdpa.c         | 274 +++++++++++++++++++++++++++------=0D
+ net/vhost-vdpa.c               |  43 +++++-=0D
+ 5 files changed, 357 insertions(+), 48 deletions(-)=0D
+=0D
+-- =0D
+2.39.3=0D
+=0D
 
-> We've already got a test for a big endian microblaze machine, but so
-> far we lack one for a little endian machine. Now that the QEMU advent
-> calendar featured such an image, we can test the little endian mode,
-> too.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-
-Queued to testing/next, thanks.
-
-I'll clean up the gitlab tests to restore the two variants now. Sorry
-about the temporary drop of coverage.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
