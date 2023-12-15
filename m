@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DB3814535
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 11:11:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F5581454D
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 11:18:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE5AG-0007J0-MK; Fri, 15 Dec 2023 05:11:28 -0500
+	id 1rE5GZ-0000kb-R6; Fri, 15 Dec 2023 05:17:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1rE5AD-0007Dm-FY; Fri, 15 Dec 2023 05:11:25 -0500
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1rE5AA-0000Ig-K1; Fri, 15 Dec 2023 05:11:24 -0500
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3b86f3cdca0so423323b6e.3; 
- Fri, 15 Dec 2023 02:11:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702635080; x=1703239880; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fWhQUscuAymJIhY8Rb83R2iKrlj5Jv2iDu22zrRU/3w=;
- b=W1k/YwMnTMUI3rZ3/ZVxP0uEHqzI/ASHdErMIy4Dsx+m45Ay6/L+RFCJc4fgHdcCS7
- 6ARdDyA5KTrH35DnzS3vZuwUhRLrCcRQzwGvHzb4RZQGYy+p0FaEFEccErzM2204nNos
- iPyec2ffQeKRS3dxtdfbRmRn+hyPq3jmGRKZ4UgQgl9UZhd+K/ZIyw7QPlY/nw7xZpQ0
- PNp8Wztto1oUUvH3jWfd4dQ5U5VH2+iTIPkxB7LnkMkqaRfMlyZsiCfx4j4stuTdY4WC
- I77/GfxC1+Y8eTCLmfhzawMNSJiGPQitRJnFVMISSbUemYW5JccQXsmv42S9fRZCckcc
- Vxgg==
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rE5GX-0000k0-Ag
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 05:17:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rE5GV-00068a-KT
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 05:17:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702635474;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=42FJiFvltYp2rdiqySuaRIVVGIjwc6Ht5anz+ABGSo8=;
+ b=HCknJ1SYDuZgbw04xsPJb9DR+08q8GMa4E0MP5EvNoGkkPL5CwRH5ZRvcOGRlZQbHkSyIc
+ qIRZQI/uxnKDSgGlrmSF2QD9w1oAOCf59KOlvZy+hlOV1EjtS2EY7a2SRiFLCQmWjKmE5e
+ xPxD7SJafc8n40U0Ob6oC9bhTPp7VxY=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-22-AwyRqMcJNIGB2hLtJj0bzw-1; Fri, 15 Dec 2023 05:17:53 -0500
+X-MC-Unique: AwyRqMcJNIGB2hLtJj0bzw-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-77dca859cdeso79015585a.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 02:17:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702635080; x=1703239880;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fWhQUscuAymJIhY8Rb83R2iKrlj5Jv2iDu22zrRU/3w=;
- b=E5zRIHY5/2OcD/HwifrvScb36uT/NVC0PNea+bQXi8Wq1nrcnfba8a+vKuwZROOoYb
- 3545rFojaF6v9UMSbWaUp0gMGzVfVfT2cu9pHrD/arB6YGWWKqHWf1NL1IQrq9GC5j4b
- FC0g+uZ9uOIuMdVve/aQR70F0ga4gdjvILiHqVp+csGChD1QSq7yqlb1GO3i4kq6L9je
- b13jPE2NAMD1o2iHv+0B6+XO7P1P8PAJRIQziFqMxI/jfZQQsQSnoMk7ZR0HQ4qP8Qvx
- bTfosxukuX52dWmwNrcgxxvGsVySJP1lGaQgJ8NFYydNBa2SktmH19d0rj0JeC2P/VS7
- JGgA==
-X-Gm-Message-State: AOJu0YzfGzkZwTtcWn7rnmmoiDJosiAUbXrNEQUxcBnXMDbVawyYWIq/
- M8V5D+3gk3dsgw6zAFwS834=
-X-Google-Smtp-Source: AGHT+IFr9lAuy3UDqs/JWc3ZlWSP9s8GgWdGyJebBdazW9/gDgCfiWBTPMgb+qFz79X2uhcpfs5tBg==
-X-Received: by 2002:a05:6358:5e08:b0:172:b6ac:7f87 with SMTP id
- q8-20020a0563585e0800b00172b6ac7f87mr184251rwn.25.1702635080168; 
- Fri, 15 Dec 2023 02:11:20 -0800 (PST)
-Received: from [192.168.68.110] ([179.93.21.205])
+ d=1e100.net; s=20230601; t=1702635472; x=1703240272;
+ h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=42FJiFvltYp2rdiqySuaRIVVGIjwc6Ht5anz+ABGSo8=;
+ b=fbZaOtE71Qh4qx0mVsdXvXWMAsczxMvox/j+uJL7/BfBJ/NZbrCL5MOzeGaqDihBqP
+ 05f4dGpPbxZj5MmOHRGd/2EOz3xvyBois+IxOB/V4pMuqvvFphigAX2aVRIo/x8ovA3I
+ /laazk3UULOBEkfAxxSW23Di47oAxYeMdGqnAu9TMUTH7Fd6YIcufWRWwS/lKYd5EzFh
+ AbGC4YJVku96kU8h5BxYCKgVHV5GwqK5QzcZtwzHDf4dmwcU7Kv9WcL+Jmm+VV3f3Yay
+ FJ5/VRdknq9Omb9dgLi+Z3JcLl+QObpEA2q+bFPLAQwKQXlum4ULpVSxud8cYZIbrrQV
+ V41g==
+X-Gm-Message-State: AOJu0YyyllTu/DwtVxlsntUs47NQ2+0dwYARgBMg42MeV2mYfi6WrUi3
+ pYSf10BfVPu5WMngPLQ6DJjFpd9OEa1SNVbIEdjitcLxq4e1yk/zCecz8l5fz8YHHCkFxTi25eH
+ B5aGNaMuIAPcM428=
+X-Received: by 2002:a05:620a:27cc:b0:77f:1382:e6ee with SMTP id
+ i12-20020a05620a27cc00b0077f1382e6eemr13807782qkp.146.1702635472508; 
+ Fri, 15 Dec 2023 02:17:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGtlgZ6Vf8A9Q7i4kEqb7UmwkpjoJSFeIhKzIWQgD4mRCU4qzjQHbQ3PMKqqff5KX8/dbxwgg==
+X-Received: by 2002:a05:620a:27cc:b0:77f:1382:e6ee with SMTP id
+ i12-20020a05620a27cc00b0077f1382e6eemr13807769qkp.146.1702635472240; 
+ Fri, 15 Dec 2023 02:17:52 -0800 (PST)
+Received: from rh (p200300c93f174f005d25f1299b34cd9e.dip0.t-ipconnect.de.
+ [2003:c9:3f17:4f00:5d25:f129:9b34:cd9e])
  by smtp.gmail.com with ESMTPSA id
- f16-20020a056a001ad000b006cedd530420sm12660389pfv.52.2023.12.15.02.11.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Dec 2023 02:11:19 -0800 (PST)
-Message-ID: <ab5e0141-872f-4e79-8621-4fea4ddfcaf4@gmail.com>
-Date: Fri, 15 Dec 2023 07:11:16 -0300
+ w5-20020a05620a148500b0077d65ef6ca9sm5910268qkj.136.2023.12.15.02.17.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Dec 2023 02:17:52 -0800 (PST)
+Date: Fri, 15 Dec 2023 11:17:47 +0100 (CET)
+From: Sebastian Ott <sebott@redhat.com>
+To: Eric Auger <eauger@redhat.com>
+cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org, 
+ Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org, 
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v4] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
+In-Reply-To: <f1b6dffb-0a23-82d2-7699-67e12691e5c4@redhat.com>
+Message-ID: <80bd3241-f3e2-f5ee-27b9-af5ad76144d4@redhat.com>
+References: <20231207103648.2925112-1-shahuang@redhat.com>
+ <be70b17c-21cf-4f4e-8ec1-62c18ffd4100@redhat.com>
+ <f1b6dffb-0a23-82d2-7699-67e12691e5c4@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] spapr: Tag pseries-2.1 - 2.11 machines as deprecated
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>, Thomas Huth <thuth@redhat.com>
-References: <20231214181723.1520854-1-clg@kaod.org>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20231214181723.1520854-1-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x230.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sebott@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,54 +100,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, 15 Dec 2023, Sebastian Ott wrote:
+> On Thu, 14 Dec 2023, Eric Auger wrote:
+>>  On 12/7/23 11:36, Shaoqin Huang wrote:
+>>>  +    if (kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr)) {
+>>>  +        warn_report("The kernel doesn't support the PMU Event
+>>>  Filter!\n");
+>>>  +        return;
+>>>  +    }
+>>>  +
+>>>  +    /* The filter only needs to be initialized for 1 vcpu. */
+>>  Are you sure? This is a per vcpu device ctrl. Where is it written in the
+>>  doc that this shall not be called for each vcpu
+>
+> The interface is per vcpu but the filters are actually managed per vm
+> (kvm->arch.pmu_filter). From (kernel) commit 6ee7fca2a ("KVM: arm64: Add 
+> KVM_ARM_VCPU_PMU_V3_SET_PMU attribute"):
+>  To ensure that KVM doesn't expose an asymmetric system to the guest, the
+>  PMU set for one VCPU will be used by all other VCPUs. Once a VCPU has run,
+>  the PMU cannot be changed in order to avoid changing the list of available
+>  events for a VCPU, or to change the semantics of existing events.
 
+I've managed to quote the wrong commit. It's that one:
+d7eec2360e3 ("KVM: arm64: Add PMU event filtering infrastructure")
+  Note that although the ioctl is per-vcpu, the map of allowed events is
+  global to the VM (it can be setup from any vcpu until the vcpu PMU is
+  initialized).
 
-On 12/14/23 15:17, Cédric Le Goater wrote:
-> pseries machines before version 2.11 have undergone many changes to
-> correct issues, mostly regarding migration compatibility. This is
-> obfuscating the code uselessly and makes maintenance more difficult.
-> Remove them and only keep the last version of the 2.x series, 2.12,
-> still in use by old distros.
-> 
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
+Sebastian
 
-
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-
->   docs/about/deprecated.rst | 7 +++++++
->   hw/ppc/spapr.c            | 1 +
->   2 files changed, 8 insertions(+)
-> 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 2e1504024658..c0e22b2b568f 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -269,6 +269,13 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (since 8.2)
->   
->   The Nios II architecture is orphan.
->   
-> +``pseries-2.1`` up to ``pseries-2.11`` (since 9.0)
-> +''''''''''''''''''''''''''''''''''''''''''''''''''
-> +
-> +Older pseries machines before version 2.12 have undergone many changes
-> +to correct issues, mostly regarding migration compatibility. These are
-> +no longer maintained and removing them will make the code easier to
-> +read and maintain. Use versions 2.12 and above as a replacement.
->   
->   Backend options
->   ---------------
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index df09aa9d6a00..5034461399d2 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -5083,6 +5083,7 @@ static void spapr_machine_2_11_class_options(MachineClass *mc)
->       spapr_machine_2_12_class_options(mc);
->       smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
->       compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
-> +    mc->deprecation_reason = "old and not maintained - use a 2.12+ version";
->   }
->   
->   DEFINE_SPAPR_MACHINE(2_11, "2.11", false);
 
