@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C450C814EB2
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 18:30:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 422C0814EB5
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 18:30:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEBzS-0005y4-TR; Fri, 15 Dec 2023 12:28:46 -0500
+	id 1rEBzY-00060o-4S; Fri, 15 Dec 2023 12:28:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rEBzR-0005xc-Fo
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 12:28:45 -0500
+ id 1rEBzW-00060J-8B
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 12:28:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rEBzQ-00011x-25
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 12:28:45 -0500
+ id 1rEBzU-00012T-Tx
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 12:28:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702661323;
+ s=mimecast20190719; t=1702661328;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=czRuS48Nn1k6ylS+U5+ONFWw9urqtIfLEQqVSIBrLjc=;
- b=PqpsDcIROmIdTyroSfjrmekUYxBpL/mwCFafdI1UNV8cvYRHnLPg+fzrGbMhtP8YN7cI0e
- poWyCGaxxIIEv5wGD/SbnF8ZZpG7MbtPaV1VteGywq7HOrqW4NhmCPgzO9qWckkuDvBC59
- PRq++iVgFhlklzf8RMkaAwUY0SBn/00=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-451-PVbof7ltPvGRCHTPRctmxA-1; Fri, 15 Dec 2023 12:28:41 -0500
-X-MC-Unique: PVbof7ltPvGRCHTPRctmxA-1
+ bh=A8WueJS/E1fA/bzQAcF/yF24VB8sgCLQokVl1j8eJtk=;
+ b=OEZie9zeBqC5wlOi1RlqhEZ3+RadD5bUUOfpSwfG8brHMwV3+z2lsV5q7aL+HxIaZFefIn
+ FG177o7hpOPvpvYIUelqJ/D+rnEScvwKiIxju0OpBDJeYAVt7Xy86TO3TZXbqapbM5TGRm
+ L+cYujha9FuOux9IUHp13UMSDOa6pMU=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-335-hbd6RSiPO66HHEHjmgzzyw-1; Fri,
+ 15 Dec 2023 12:28:43 -0500
+X-MC-Unique: hbd6RSiPO66HHEHjmgzzyw-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F55286EB20;
- Fri, 15 Dec 2023 17:28:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 32F5D3C00095;
+ Fri, 15 Dec 2023 17:28:43 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.194.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A7C3440C6EB9;
- Fri, 15 Dec 2023 17:28:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8D01340C6EB9;
+ Fri, 15 Dec 2023 17:28:41 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, si-wei.liu@oracle.com,
@@ -51,10 +51,10 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, si-wei.liu@oracle.com,
  Zhu Lingshan <lingshan.zhu@intel.com>, Parav Pandit <parav@mellanox.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH for 9.0 04/12] vdpa: extract out _dma_end_batch from
- _listener_commit
-Date: Fri, 15 Dec 2023 18:28:22 +0100
-Message-Id: <20231215172830.2540987-5-eperezma@redhat.com>
+Subject: [PATCH for 9.0 05/12] vdpa: factor out stop path of
+ vhost_vdpa_dev_start
+Date: Fri, 15 Dec 2023 18:28:23 +0100
+Message-Id: <20231215172830.2540987-6-eperezma@redhat.com>
 In-Reply-To: <20231215172830.2540987-1-eperezma@redhat.com>
 References: <20231215172830.2540987-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -86,43 +86,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So we can call out vhost_vdpa_dma_end_batch out of the listener
-callbacks.
+This makes easier to build an error path in next patches.  No functional
+change.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ hw/virtio/vhost-vdpa.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index a533fc5bc7..57a8043cd4 100644
+index 57a8043cd4..449c3794b2 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -164,9 +164,8 @@ static void vhost_vdpa_iotlb_batch_begin_once(VhostVDPAShared *s)
-     s->iotlb_batch_begin_sent = true;
+@@ -1302,7 +1302,7 @@ static void vhost_vdpa_suspend(struct vhost_dev *dev)
+ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
+ {
+     struct vhost_vdpa *v = dev->opaque;
+-    bool ok;
++    bool ok = true;
+     trace_vhost_vdpa_dev_start(dev, started);
+ 
+     if (started) {
+@@ -1313,8 +1313,7 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
+         }
+     } else {
+         vhost_vdpa_suspend(dev);
+-        vhost_vdpa_svqs_stop(dev);
+-        vhost_vdpa_host_notifiers_uninit(dev, dev->nvqs);
++        goto out_stop;
+     }
+ 
+     if (dev->vq_index + dev->nvqs != dev->vq_index_end) {
+@@ -1333,6 +1332,11 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
+     }
+ 
+     return 0;
++
++out_stop:
++    vhost_vdpa_svqs_stop(dev);
++    vhost_vdpa_host_notifiers_uninit(dev, dev->nvqs);
++    return ok ? 0 : -1;
  }
  
--static void vhost_vdpa_listener_commit(MemoryListener *listener)
-+static void vhost_vdpa_dma_end_batch(VhostVDPAShared *s)
- {
--    VhostVDPAShared *s = container_of(listener, VhostVDPAShared, listener);
-     struct vhost_msg_v2 msg = {};
-     int fd = s->device_fd;
- 
-@@ -190,6 +189,13 @@ static void vhost_vdpa_listener_commit(MemoryListener *listener)
-     s->iotlb_batch_begin_sent = false;
- }
- 
-+static void vhost_vdpa_listener_commit(MemoryListener *listener)
-+{
-+    VhostVDPAShared *s = container_of(listener, VhostVDPAShared, listener);
-+
-+    vhost_vdpa_dma_end_batch(s);
-+}
-+
- static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
- {
-     struct vdpa_iommu *iommu = container_of(n, struct vdpa_iommu, n);
+ static void vhost_vdpa_reset_status(struct vhost_dev *dev)
 -- 
 2.39.3
 
