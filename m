@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DCE98146DB
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 12:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4D18146E5
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 12:29:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE6Km-0001LX-65; Fri, 15 Dec 2023 06:26:24 -0500
+	id 1rE6N7-0002l0-Eh; Fri, 15 Dec 2023 06:28:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rE6Jv-00017I-Fi
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:25:39 -0500
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1rE6My-0002kR-Vu
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:28:41 -0500
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rE6Jm-0005Pw-TZ
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:25:25 -0500
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-3b9f111c114so454778b6e.1
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 03:25:13 -0800 (PST)
+ id 1rE6Mx-0007pS-5l
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:28:40 -0500
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-28694702c18so351807a91.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 03:28:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702639512; x=1703244312;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702639717; x=1703244517;
  darn=nongnu.org; 
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Qoea+tnDyf+aU2FaGJue3niUJANslzwcF0rozYDJiu8=;
- b=18cZwxqe+5l06lpR/wGdVWB9CHg8v0bvzt4elAHzKUJO5Us9rkh6M3/XnE342pCIHn
- /ILT3D+nVxAMZo7dEeTmfusqXD8mskUzdUGX/4NOUp/fgQddcFdzhxGMoEigS3sHCVLt
- /tg6y3EYEMo5Zv3CDyOn3oH60U1KwaX4RcGpeje+1DMG9JmYJ60o68qKJYkb0/qAyjya
- ucoEgQWMnZ2eM7UpybWylfCYD2PfTdcarTpskugNc7hriK0ZVMtG9dxralWO91mpzwhE
- 8EirWJL8oSJr+xzV35LBMHnwGn/mAk1FYHid53lDrZgQnP4gxh16lwrW9iKZq6BECT9Y
- 2xIA==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YCELKmQNNfPATvVzKW81YWq5C6cO6b4OovDr9mVveH4=;
+ b=W3c5AW6qgFGVv4Kal4YBG61j0Kq4Khe9S/iPXgAEWOjNkuimbuKRCEba3FVKmb74c4
+ 8XoS4qdwHZCpmHioCmjQrjZOUQuhzV5Fkfb1JIBbCDJLFy0R0y53grKquBwJUt7Zd1+e
+ b5ih9QRiTvFgdzeb4ROPV7I7TzQuZiPOWMTDnYshVv4+qZ9/47x1ODHPY3i4QUtLfWE6
+ p0AFydNarh8ODlP5u4ijK05nt/xlJR0GHSbyh10MDmZ8kynGTcHWGm5lARr1v8u9gmZk
+ omaKC0HO8AvypGD7qzP9COBsEAlPpGJFF1MBlD71syIFS8Hfgl2kMLPDol7xPjJYhsOE
+ LJ6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702639512; x=1703244312;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1702639717; x=1703244517;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Qoea+tnDyf+aU2FaGJue3niUJANslzwcF0rozYDJiu8=;
- b=l2o3sq9cBVt+26kkkdDK3L1sUmAk4IpuyW+d1XuWgcIDUTV9Snjo8n/Pv7/ex2+3lc
- BW7/BFqaqA2+6/na/dFVFK8suY/fsdzi5pOAeyubmRZ3UW1mgcZqxZ1Wz1dpbXmrZMqY
- wYkRtONCyYxgtvyZbotISpHDs//vW4RkrFsA1y7C3VaOfWXPyAKWNLYYalWeZb7j0gNb
- 5KEAgypQ7X8BVeFT80GPrllE1UJ8IW2Vjqg24KqYgx+TuyRn2Hua9Pb3m7I0l5fSaI2M
- nj5Ps5eV/Xu7xWY8ASANS+5FqSF3See9C3KZj/a7DcYyqzc/XEzEZUAcTnSdhi34leji
- npnQ==
-X-Gm-Message-State: AOJu0YxgNHfeG7WtsLDdokxIyJtTOwnSIpVCgY+9JorlfTeXpu5J6a79
- XBY37OW0N+4JhhugliTHH3cw6qhX6RiegOnRkqrq/g==
-X-Google-Smtp-Source: AGHT+IEGtpAC04XxBo0RSvUwe/jteACnnQuNv6k6R2z0rMwp04FZbz4UwHWLAgZR8dUEuURtPQjVOQ==
-X-Received: by 2002:a05:6808:2e85:b0:3ba:8d5:4009 with SMTP id
- gt5-20020a0568082e8500b003ba08d54009mr15259599oib.110.1702639512611; 
- Fri, 15 Dec 2023 03:25:12 -0800 (PST)
+ bh=YCELKmQNNfPATvVzKW81YWq5C6cO6b4OovDr9mVveH4=;
+ b=tmq6rP86HIrBHDEjQFZlIm1QiG+8xnoUe6kEFRr98N2pt9w4WtT/JbxJJoVC3rLlaT
+ doN+7PGL4msZbtxHNLsvIVKVT30xzK6hXjxnBgWbUiLnWEDH38uNAfG68AcxdtQXOyAI
+ ++/rYna5TFxwLf0xmHB6oWuu8H14epn7IKSFujqFj2h6fWeec/CplMZYWonqJRq+TCBm
+ oSe1LL1VnYhbMLBpj7CA1WTn0RDLqIo94QTnLA4Hjs3OAs2lo3GUlpBE+u626zjrrZXq
+ K0UhQNzJJEd2aFvtYSu+PrR3m+NfqeYk/13E8MqtkmgK//pZNr32PZMjMN2ihUHB8q35
+ IyFg==
+X-Gm-Message-State: AOJu0YwNhxR/OGOAADcz6hWguhIkM8SZkz2A5Tz05ka08uVFpCUazhOJ
+ XrQLYe1S+78W4CX8cNra6K8jPw==
+X-Google-Smtp-Source: AGHT+IHKlLKEpGQylsD02HtUk06a3sTCFzTm+ILjIHZu3ZmWWCVQPPP+VBZjl8Ca1WRuuxJ0JAcvzg==
+X-Received: by 2002:a17:90a:5787:b0:286:742e:47b8 with SMTP id
+ g7-20020a17090a578700b00286742e47b8mr8476426pji.3.1702639717344; 
+ Fri, 15 Dec 2023 03:28:37 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- s9-20020a056a00178900b006ce789d8022sm13213694pfg.59.2023.12.15.03.25.10
+ pq18-20020a17090b3d9200b00286dfa09e7asm14820113pjb.24.2023.12.15.03.28.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Dec 2023 03:25:12 -0800 (PST)
+ Fri, 15 Dec 2023 03:28:36 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 15 Dec 2023 20:25:09 +0900
-Subject: [PATCH v2] vl: Print display options for -display help
+Subject: [PATCH v2 0/4] meson: Fixes for dbus modules
+Date: Fri, 15 Dec 2023 20:28:32 +0900
+Message-Id: <20231215-dbus-v2-0-1e2e6aa02115@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20231215-help-v2-1-3d39b58af520@daynix.com>
-X-B4-Tracking: v=1; b=H4sIAJQ3fGUC/12MQQ6CMBBFr0JmbY0zBSKuvIdh0ZSpnUQLaU0DI
- b27laXL9//L2yFxFE5wa3aInCXJHCrQqQHrTXiykqky0IU0ErbK82tRgzPY9s72PHRQ1SWyk/X
- IPMbKXtJnjttRzfhb/wIZFSrSV9LGdqZe98lsQdaznd8wllK+hW+4LZkAAAA=
-To: Gerd Hoffmann <kraxel@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGA4fGUC/13MSw6CMBSF4a2QO7amLRaoI/dhGPRxlTuQklYbC
+ OnerQwd/icn3w4JI2GCa7NDxEyJwlxDnhpwk5mfyMjXBsllK6RQzNtPYkM39B0621uuoV6XiA9
+ aD+Y+1p4ovUPcDjWL3/oHZME4ay8audLGKStv3mwzrWcXXjCWUr7Toa3PmQAAAA==
+To: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::22c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,115 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
--display lists display backends, but does not tell their options.
-Use the help messages from qemu-options.def, which include the list of
-options.
-
-Note that this change also has an unfortunate side effect that it will
-no longer tell what UI modules are actually available.
+I found it was failing to build dbus modules when --enable-dbus so here
+are fixes.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
 Changes in v2:
-- Noted that it no longer tells the availability of UI modules.
-  (Marc-André Lureau)
-- Link to v1: https://lore.kernel.org/r/20231214-help-v1-1-23823ac5a023@daynix.com
+- Updated MAINTAINERS.
+- Link to v1: https://lore.kernel.org/r/20231215-dbus-v1-0-349e059ac5b2@daynix.com
+
 ---
- include/ui/console.h |  1 -
- system/vl.c          | 11 ++++++-----
- ui/console.c         | 20 --------------------
- 3 files changed, 6 insertions(+), 26 deletions(-)
+Akihiko Odaki (4):
+      Move dbus-display1 out of ui
+      audio: Depend on dbus_display1_dep
+      meson: Explicitly specify dbus-display1.h dependency
+      tests/qtest: Depend on dbus_display1_dep
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index a4a49ffc640c..58f757350647 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -470,7 +470,6 @@ bool qemu_display_find_default(DisplayOptions *opts);
- void qemu_display_early_init(DisplayOptions *opts);
- void qemu_display_init(DisplayState *ds, DisplayOptions *opts);
- const char *qemu_display_get_vc(DisplayOptions *opts);
--void qemu_display_help(void);
- 
- /* vnc.c */
- void vnc_display_init(const char *id, Error **errp);
-diff --git a/system/vl.c b/system/vl.c
-index 2bcd9efb9a64..f9656667ee54 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -915,16 +915,17 @@ enum {
- 
- typedef struct QEMUOption {
-     const char *name;
-+    const char *help;
-     int flags;
-     int index;
-     uint32_t arch_mask;
- } QEMUOption;
- 
- static const QEMUOption qemu_options[] = {
--    { "h", 0, QEMU_OPTION_h, QEMU_ARCH_ALL },
-+    { "h", NULL, 0, QEMU_OPTION_h, QEMU_ARCH_ALL },
- 
- #define DEF(option, opt_arg, opt_enum, opt_help, arch_mask)     \
--    { option, opt_arg, opt_enum, arch_mask },
-+    { option, opt_help, opt_arg, opt_enum, arch_mask },
- #define DEFHEADING(text)
- #define ARCHHEADING(text, arch_mask)
- 
-@@ -1094,10 +1095,10 @@ DisplayOptions *qmp_query_display_options(Error **errp)
-     return QAPI_CLONE(DisplayOptions, &dpy);
- }
- 
--static void parse_display(const char *p)
-+static void parse_display(const char *p, const char *help)
- {
-     if (is_help_option(p)) {
--        qemu_display_help();
-+        fputs(help, stdout);
-         exit(0);
-     }
- 
-@@ -2880,7 +2881,7 @@ void qemu_init(int argc, char **argv)
-                 }
-                 break;
-             case QEMU_OPTION_display:
--                parse_display(optarg);
-+                parse_display(optarg, popt->help);
-                 break;
-             case QEMU_OPTION_nographic:
-                 qdict_put_str(machine_opts_dict, "graphics", "off");
-diff --git a/ui/console.c b/ui/console.c
-index 7db921e3b7d6..6aee5e9a7ffb 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1691,23 +1691,3 @@ const char *qemu_display_get_vc(DisplayOptions *opts)
-     }
-     return vc;
- }
--
--void qemu_display_help(void)
--{
--    int idx;
--
--    printf("Available display backend types:\n");
--    printf("none\n");
--    for (idx = DISPLAY_TYPE_NONE; idx < DISPLAY_TYPE__MAX; idx++) {
--        if (!dpys[idx]) {
--            Error *local_err = NULL;
--            int rv = ui_module_load(DisplayType_str(idx), &local_err);
--            if (rv < 0) {
--                error_report_err(local_err);
--            }
--        }
--        if (dpys[idx]) {
--            printf("%s\n",  DisplayType_str(dpys[idx]->type));
--        }
--    }
--}
-
+ MAINTAINERS                               |  1 +
+ meson.build                               | 21 +++++++++++++++++++++
+ ui/dbus.h                                 |  2 +-
+ audio/dbusaudio.c                         |  2 +-
+ tests/qtest/dbus-display-test.c           |  2 +-
+ audio/meson.build                         |  3 ++-
+ ui/dbus-display1.xml => dbus-display1.xml |  0
+ tests/qtest/meson.build                   |  2 +-
+ ui/meson.build                            | 18 ------------------
+ 9 files changed, 28 insertions(+), 23 deletions(-)
 ---
 base-commit: 4705fc0c8511d073bee4751c3c974aab2b10a970
-change-id: 20231214-help-9fa146fc6e95
+change-id: 20231215-dbus-86876ecb7b09
 
 Best regards,
 -- 
