@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9D48143B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 09:35:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD7C8143C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 09:37:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE3dl-0004vV-4r; Fri, 15 Dec 2023 03:33:49 -0500
+	id 1rE3gg-0006yq-C8; Fri, 15 Dec 2023 03:36:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rE3di-0004tz-1I
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 03:33:46 -0500
-Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
+ id 1rE3ge-0006y4-E3
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 03:36:48 -0500
+Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rE3dg-0004ln-HE
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 03:33:45 -0500
-Received: by mail-qk1-x72f.google.com with SMTP id
- af79cd13be357-77f44cd99c6so31683285a.0
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 00:33:43 -0800 (PST)
+ id 1rE3gc-0006zV-TO
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 03:36:48 -0500
+Received: by mail-qt1-x82d.google.com with SMTP id
+ d75a77b69052e-425c9cd7dd2so2724831cf.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 00:36:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702629223; x=1703234023; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702629405; x=1703234205; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VmusgUkB+qbEBQ60rgdWn4+2k1/GbudE5xV6vfZGh5Q=;
- b=l6QGzzzrQCy2u32fMS6g8ul95Da0bdMgrYwbfgpt550tU6SH35tvNwZM1oyqlqgGPm
- 1p523SThWQVx5lD5Tn14QXfsLMeIBubGQs5+Yc+uypH5WrSoQTrFv6mh6QHsyZxr36Ah
- T7Oov5DrQBfHQXeXOpL7u0k9dLm0KJ6oSWp9ZgRgHLZLVwaZdwdzhNopClHqq+tNCD2Y
- ww2ehzuMju0vipnkf2iTnsJELsxYspWT7jOXjDWSs/xPHMI5L2iK8h3M4Gxb4qDR1hjQ
- YUWkz8nWmaZDWEAw0M7bTEjdBxXEww13LKYklR+8W6DNesvLMbbFcscr6x689qDUh3Jr
- jLNQ==
+ bh=kB/aoezIYMAwWj2scTW4Zfw9R6nH2vO4b8CwbTSDeY0=;
+ b=XzZlBNsMNMTWuryL8gu+wVeIbRxidMSQiSeHZZcLE18KHtnziFOGs8JxIdU8kzBtZa
+ HWryjbblr1q/EBhbuVI/Yq8K9njcgBalugDUEkEa0OuKnE6Wkaqd2j7k1XFovWWhrz2M
+ 1ncB/rCGuIc+c+5JrP9v3gZALGBWhvGh5RX6QQ2fT5jPLf3it8EwyC4vckXIqxQK358a
+ a3Cpx3mK/rYAwvmPH5ab4FDdBzyvcUlo2jR38w7PryJW+eFOXUJK5pXMgpWtBxgC4JWi
+ bfv8nfHe9fe8Kp7+QqLa6KuNtOIYNAZFhlNB5l7AzSfoONZb0h+tBgKT65dBPCwlmTU+
+ wd/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702629223; x=1703234023;
+ d=1e100.net; s=20230601; t=1702629405; x=1703234205;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VmusgUkB+qbEBQ60rgdWn4+2k1/GbudE5xV6vfZGh5Q=;
- b=QrzXw3b28S+IyU/snu+wK/qTzb2ypMi/O/P8eUfYOoCacJthLyqqLhDvGGG4OAtrWP
- Xj2br3LjkhjfJTx1V4vHaXzIpXFqWYchCqP69n/XoQlMphtMJ/kOn3c9SQumKW5kfcP/
- vO4FdiTFskCo3/K0/oMAkIgg+CWcOONCtvn6WMqY3syo/RDGhviYCuFqSpobo5QdRcWH
- HZ39NpRCXnYD1K4YsJT48CNxlLPlfCJgNPQ/LOsxF1vSKklyWB9iTXsIu4YOgV7Sinq8
- I3fU2cXVBSlKj26j+oxNxa2GovCOZXhrrtPomJ3xdkqq6Ylgf9ralazXMzepAA2R52ud
- es1A==
-X-Gm-Message-State: AOJu0YzlLp1Xa9fqemVBfkugqz130AG6f2UJ0hBgxjLbGuvAYYmRT/lL
- NN5jmREerlJYMLcjNr+dY2xKffvNAhAQZTiYO9Q=
-X-Google-Smtp-Source: AGHT+IF83jlRbuSCCR0g6Qs2RlvngreMqPZbeF65dxxyl8A/SL2jfJ5as+s8gpE5NOUrcWgU2YqCCNjDD8JgT//RPh8=
-X-Received: by 2002:a05:620a:4515:b0:77f:65c3:9881 with SMTP id
- t21-20020a05620a451500b0077f65c39881mr15238425qkp.55.1702629223021; Fri, 15
- Dec 2023 00:33:43 -0800 (PST)
+ bh=kB/aoezIYMAwWj2scTW4Zfw9R6nH2vO4b8CwbTSDeY0=;
+ b=h8rfWnca+FCuwwD3DG72U2TOP9n+HoVx7SbfOluci06KiVx45B71UETOjnTpQq8ZbM
+ Byd72bdHuqFY+BFSFgjOiXiSSHd+NO+kgV/6dxZvTDQqBsgjgayKkCKVnSo2/sQOIPPk
+ bX+etVWxbowaqaKtgFOJY0kS3OKsAOoSmcsLHMypCHVYnpNJYU6dFeQ5ofaNoXo9Rv6U
+ Dwgn8TjRpHmMpOyvP7nYw0uRWek9xYBzlPdkH9H8IJ/AokohtNZE+HQAieBiu+XW0Lid
+ +iifG0L5ssv0ocCboM/+sCJQSJ7Rd6Epkccg9AWl64FVix4RSGpd1FcsV6Jw8X4H4eP5
+ 7M6Q==
+X-Gm-Message-State: AOJu0YwYdTzkjgjD5hnJkDy+aINu3v7lR054LUsZ8RpJg1deYIsqV9wf
+ xfiZAVuSjWCmYDw+KSKrdYkCe3xEK8TcROucAUGhSwdN
+X-Google-Smtp-Source: AGHT+IFA8ybi0Bl8K4U0FGnieRhZnJtbIKbPPvGAmzGL0jTRCqK7lo6NxvcqFWtbLS3XjXAoSeXL1hR4EPqv6s6FJZ4=
+X-Received: by 2002:a05:622a:1711:b0:425:4043:8d41 with SMTP id
+ h17-20020a05622a171100b0042540438d41mr9731014qtk.92.1702629405277; Fri, 15
+ Dec 2023 00:36:45 -0800 (PST)
 MIME-Version: 1.0
 References: <20231204184051.16873-1-dongwon.kim@intel.com>
  <20231213202419.15459-1-dongwon.kim@intel.com>
-In-Reply-To: <20231213202419.15459-1-dongwon.kim@intel.com>
+ <20231213202419.15459-2-dongwon.kim@intel.com>
+In-Reply-To: <20231213202419.15459-2-dongwon.kim@intel.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Fri, 15 Dec 2023 12:33:31 +0400
-Message-ID: <CAJ+F1C+-v7ZG5fFxrbcSEVOSrFEYx6dYYV02FraCOvfcG9sC+w@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ui/gtk: flush display pipeline before saving vmstate
- when blob=true
+Date: Fri, 15 Dec 2023 12:36:34 +0400
+Message-ID: <CAJ+F1C+GR7gEO2SktenXpRUHtFAvF-ZrW_QGe0-nSErZESbjtQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ui/gtk: unblock pipeline only if fence hasn't been
+ signaled yet
 To: Dongwon Kim <dongwon.kim@intel.com>
 Cc: qemu-devel@nongnu.org, Vivek Kasireddy <vivek.kasireddy@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x72f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,52 +94,51 @@ Hi
 On Thu, Dec 14, 2023 at 8:26=E2=80=AFAM Dongwon Kim <dongwon.kim@intel.com>=
  wrote:
 >
-> If the guest state is paused before it gets a response for the current
-> scanout frame submission (resource-flush), it won't flush new frames
-> after being restored as it still waits for the old response, which is
-> accepted as a scanout render done signal. So it's needed to unblock
-> the current scanout render pipeline before the run state is changed
-> to make sure the guest receives the response for the current frame
-> submission.
->
-> v2: Giving some time for the fence to be signaled before flushing
->     the pipeline
+> It is needed to unblock the pipeline only if there is an active dmabuf
+> to be rendered and the fence for it is not yet signaled.
 >
 > Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 > Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 > Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
 > ---
->  ui/gtk.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+>  ui/gtk.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
 >
 > diff --git a/ui/gtk.c b/ui/gtk.c
-> index 810d7fc796..ea8d07833e 100644
+> index ea8d07833e..073c9eadb8 100644
 > --- a/ui/gtk.c
 > +++ b/ui/gtk.c
-> @@ -678,6 +678,25 @@ static const DisplayGLCtxOps egl_ctx_ops =3D {
->  static void gd_change_runstate(void *opaque, bool running, RunState stat=
-e)
->  {
->      GtkDisplayState *s =3D opaque;
-> +    int i;
+> @@ -597,10 +597,16 @@ void gd_hw_gl_flushed(void *vcon)
+>      VirtualConsole *vc =3D vcon;
+>      QemuDmaBuf *dmabuf =3D vc->gfx.guest_fb.dmabuf;
+>
+> -    qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
+> -    close(dmabuf->fence_fd);
+> -    dmabuf->fence_fd =3D -1;
+> -    graphic_hw_gl_block(vc->gfx.dcl.con, false);
+> +    if (!dmabuf) {
+> +        return;
+> +    }
+
+When is this function called with dmabuf =3D=3D NULL or fence_fd < 0?
+
 > +
-> +    if (state =3D=3D RUN_STATE_SAVE_VM) {
-> +        for (i =3D 0; i < s->nb_vcs; i++) {
-> +            VirtualConsole *vc =3D &s->vc[i];
-> +
-> +            if (vc->gfx.guest_fb.dmabuf &&
-> +                vc->gfx.guest_fb.dmabuf->fence_fd >=3D 0) {
-> +                eglClientWaitSync(qemu_egl_display,
-> +                                  vc->gfx.guest_fb.dmabuf->sync,
-> +                                  EGL_SYNC_FLUSH_COMMANDS_BIT_KHR,
-> +                                  100000000);
+> +    if (dmabuf->fence_fd > 0) {
 
-This won't work. dmabuf->sync is NULL after egl_dmabuf_create_sync.
+this should be >=3D 0
 
-I will let Vivek, who wrote the sync code, comment.
-
-thanks
-
+> +        qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
+> +        close(dmabuf->fence_fd);
+> +        dmabuf->fence_fd =3D -1;
+> +        graphic_hw_gl_block(vc->gfx.dcl.con, false);
+> +    }
+>  }
+>
+>  /** DisplayState Callbacks (opengl version) **/
+> --
+> 2.34.1
+>
+>
 
 
 --=20
