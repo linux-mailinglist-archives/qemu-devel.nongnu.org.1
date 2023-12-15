@@ -2,86 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB399814F82
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 19:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E46DA815087
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 21:01:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rECdx-0005DG-Hf; Fri, 15 Dec 2023 13:10:37 -0500
+	id 1rEEMX-0005qg-QH; Fri, 15 Dec 2023 15:00:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rECdv-0005Cx-C5
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 13:10:35 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rECdt-0007Pp-Oj
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 13:10:35 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40c3f68b69aso9121685e9.1
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 10:10:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702663831; x=1703268631; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MgZx0E2hy0lO0C1EGEqe/F35glxM/6/BetaSZDfCrnY=;
- b=ytZb/nVYQOWMuYrYQhxMfYNJZPo54KKrU1G5Lad5Czzf/bgDzlH72CrDu/rV6AV7Vx
- xpk6Q7TBhPMQpP0YiUvgfwvvlnQjeFOQuRtWsqKTP71xN8GA01rBr2s852csf6LaFBI+
- tovjw7JW503mbFxzgB2g1LKujkzdGucUcxzPQMxQj7wBgO9DDew2GHISuMCiRBS3PjiI
- ypx7mZDxJY4sSgBhQTcX8yahao0Zr1N+r8DbgWEpgRPQN9D1HLOS2Wb59jGcqFjceGjU
- 1fP5XB16yPORNAYqGHlVTPiRxdLfSCEG+J9XaX0RPUapyHSSuSXlhOLb000XIyXgtg8c
- k7ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702663831; x=1703268631;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=MgZx0E2hy0lO0C1EGEqe/F35glxM/6/BetaSZDfCrnY=;
- b=Da4xyOn3EOHr9oZ5+I1QeI25id3hM6VCzfSlgFYXFsbAAfguR8X9VdfyfYdLe0RKVa
- G24HVfkBOPiR2Vu79gQI4amnd4PbIvq9nltCmbGIcht7VcewoDOp0isPp+WFDIg8utg+
- oqo4URc+Uudro4zaeGYhYvKxlwtgGcxOiV6KAAkUZbrEXvEzpeOwM9F86RGjXsp1Bf2f
- +vXUVuwO5324Wvjt+Mh2jMYF/eNlHypKmn0KHmZdFCtAlTdkXhXwEVBlRwNO6AAhNVvF
- 5iVFN5fKcHKelo5D5skJDIBhswDpdXXCOvlhgZ5BNMsBIoTjiMFKMFqNbcIS1/sMkbik
- xeIQ==
-X-Gm-Message-State: AOJu0YyMsK4LeQ3osrGxR1hrFm2W3UlTZTFsssmT6q5TqVsLHNT9kFdD
- EZ5TUNiHv+qjbl0FM3WoYI+skURerfCmwjrglEM=
-X-Google-Smtp-Source: AGHT+IG5BwmeoPQE2fbARx5dE7i9fis6v56xdwefnOIQHfS2PeZt8XuwHFfX+eQDNItRoi9O/jj83A==
-X-Received: by 2002:a05:600c:198b:b0:40c:5e5f:d3ba with SMTP id
- t11-20020a05600c198b00b0040c5e5fd3bamr2866288wmq.103.1702663830997; 
- Fri, 15 Dec 2023 10:10:30 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- be9-20020a05600c1e8900b0040596352951sm32520118wmb.5.2023.12.15.10.10.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Dec 2023 10:10:30 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 64AE45F878;
- Fri, 15 Dec 2023 18:10:30 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 00/16] tests: enable meson test timeouts to improve
- debuggability
-In-Reply-To: <20231215070357.10888-1-thuth@redhat.com> (Thomas Huth's message
- of "Fri, 15 Dec 2023 08:03:41 +0100")
-References: <20231215070357.10888-1-thuth@redhat.com>
-User-Agent: mu4e 1.11.26; emacs 29.1
-Date: Fri, 15 Dec 2023 18:10:30 +0000
-Message-ID: <87sf4372w9.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rEEME-0005pt-I4
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 15:00:27 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rEEMB-0002Ok-Pf
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 15:00:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=S9LX+lcO3GcXLQav+7INnMvB206DQdZcO5rgeXVevyE=; b=Ezl8hFWUIQylVTj1agB24kbtN6
+ JdU4rZz/9CZFBLm5soz2CA2ZXgcXd8CfGjA1YPbYGIC+F8+ZErsocnsG2doEIg/chkQAfR3Vms2Uo
+ 3x8V6rrlioOKvAdWMxOrTHq1+xqzaw3OoqZqzrV7n+GTnSsMKCVixtnTSsjNOqAiG0XWJBHF0G6bb
+ Hmkp18LvFR2EppWNFPRFhgflVLrntQJCvWHccS55wx0NYog7zoOZhs6vcPUFA1/6woIRRCloredTM
+ zd/q5XBNNUhNNNnN1GeOs7DseMaj4c//qUzlzDIGu6w6Q5zb8NXA//+wx5eqNG1gOAlSE2wCE0Y5a
+ NFH4+LplYFoevkkgJJfgCORxmuLEHiSSyrH9s3kwJgU3QMl75F/Cf7QQokt/0QQw4p+rHQQksxwpy
+ WpvZmR/l27jWQB7VJqjs+IzYqGNrBywnYlxOhLHDNJs6pykoJPBKN7E7mpEist+QeTmv/xNxsR1bj
+ JcMsFh350w6gtvG4JymhCuh3S9aCXtfS55ypZLnrCou1rr9UX3+87jgArhhV4pNfT9Gs0ocFQLy23
+ nfU6dfKabQGPgRBJhrir3qbhgUBzAVL9IxnNaZ+v0/xi60gTSSmVQPlxbrxj4m7/tD9f11dW4AGjb
+ rI+XaADD9An5jBLqqRcPSmfCoL9u6/57eMTK/gUYs=;
+Received: from [2a00:23c4:8bb0:f100:5e2c:460f:a6a7:b066]
+ (helo=localhost.localdomain)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rEELg-000AEs-28; Fri, 15 Dec 2023 19:59:56 +0000
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: huth@tuxfamily.org,
+	qemu-devel@nongnu.org
+Date: Fri, 15 Dec 2023 19:59:57 +0000
+Message-Id: <20231215200009.346212-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:5e2c:460f:a6a7:b066
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH 00/12] next-cube: various tidy-ups and improvements
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,19 +75,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+This series contains some tidy-ups/improvements for the next-cube machine with
+the aim of bringing the code up-to-date with our latest coding guidelines.
 
-> This is a respin of Daniel's series that re-enables the meson test
-> runner timeouts. To make sure that we do not get into trouble on
-> older systems, I ran all the tests with "make check SPEED=3Dslow -j32"
-> on my laptop that has only 16 SMT threads, so each test was running
-> quite a bit slower than with a normal "-j$(nproc)" run. I think
-> that these timeouts should now work in most cases - if not, we still
-> can adjust them easily later.
+The main aim of the series is to bring the memory accessors up-to-date with
+the memory API and improve some of basic machine modelling. There are still
+some future improvements that can be made: for example switching from DPRINTF
+macros to trace events and proper modelling of the DMA controller, however
+I've left these for now since they allow for easier comparison with Bryce's
+original GSoC branch.
 
-Queued to testing/next, thanks.
+This series can be used in conjunction with my upcoming ESP rework series
+which fixes up the ESP emulation enough to allow the next-cube machine to
+load a kernel from disk and start executing it.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+
+Mark Cave-Ayland (12):
+  next-cube.c: add dummy Ethernet register to allow diagnostic to
+    timeout
+  next-cube.c: don't pulse SCSI DMA IRQ upon reception of FLUSH command
+  next-cube.c: update mmio_ops to properly use modern memory API
+  next-cube.c: update scr_ops to properly use modern memory API
+  next-cube.c: update and improve dma_ops
+  next-cube.c: move static led variable to NeXTPC
+  next-cube.c: move static phase variable to NextRtc
+  next-cube.c: move LED logic to new next_scr2_led_update() function
+  next-cube.c: move static old_scr2 variable to NeXTPC
+  next-cube.c: remove val and size arguments from nextscr2_write()
+  next-cube.c: replace sysmem with get_system_memory() in
+    next_cube_init()
+  next-cube.c: move machine MemoryRegions into NeXTState
+
+ hw/m68k/next-cube.c | 531 +++++++++++++++++++-------------------------
+ 1 file changed, 231 insertions(+), 300 deletions(-)
+
+-- 
+2.39.2
+
 
