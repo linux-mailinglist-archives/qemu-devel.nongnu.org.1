@@ -2,68 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2797E81421B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 08:05:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4236A814372
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 09:20:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE2Fm-0004Py-6F; Fri, 15 Dec 2023 02:04:58 -0500
+	id 1rE3Pd-0002v0-AF; Fri, 15 Dec 2023 03:19:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rE2FY-00040j-94
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 02:04:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rE3Pb-0002uk-OZ; Fri, 15 Dec 2023 03:19:11 -0500
+Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rE2FW-0001FO-OJ
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 02:04:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702623882;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=572z+4Qq8uhD98q2Q4tFkD6vEnnsTsCxZv3/4LkxlYc=;
- b=BSJAYFZOqlaaKynDoBx592sw+gQ7FcPJqejGLx5NVDCAq5ugq/lJ00b8uubd1DpacCu19I
- fPXmOxu8LeKLxwU6OPAEjlHVUsdfzheaWAdoVDRhP/WUCs8kOj1FRGgsd9TX6wOyV/rGzo
- 98RWFvd8VCWPhdoWBPSuPoyc1sqITw8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-ZdMm8fCqNfOVMotRJJwvRg-1; Fri, 15 Dec 2023 02:04:37 -0500
-X-MC-Unique: ZdMm8fCqNfOVMotRJJwvRg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 692C38350E3;
- Fri, 15 Dec 2023 07:04:37 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.67])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E1DB92026D66;
- Fri, 15 Dec 2023 07:04:35 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 16/16] mtest2make: stop disabling meson test timeouts
-Date: Fri, 15 Dec 2023 08:03:57 +0100
-Message-ID: <20231215070357.10888-17-thuth@redhat.com>
-In-Reply-To: <20231215070357.10888-1-thuth@redhat.com>
-References: <20231215070357.10888-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rE3PZ-00072d-RK; Fri, 15 Dec 2023 03:19:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1702628349; x=1734164349;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=C+2+GtrS8RUMQktaBRqf5O68yI801370624j2VGpIZI=;
+ b=DTH2PeKmCL9ejbVsjRKKrDG9gGdI0OJMGFckwV1Kl32dWQTTluvvsL3S
+ R2FRJ7oNkHABR1wx1Bzoj9X8QVkZVRbFsbG5SNiRe9bu/3ocqLFt7+NXs
+ m9r96XKOFlUxnsiNQDr5fxQxVXRD1WNyGMq2EhSNagAKgE2fPRW5WP6Uy
+ AelxQ+ALIcXsYK6OZJadtHtaFPPg3F4xTZbhlrU842ZKTJNbkwGhcouTS
+ SXWXx/uc1gfQNBdrF+P6n3Juw9RAsUdg9+7DbH26ILLkasNRupmer6M7C
+ pQX2m7UTV0OpRj0rLglqZCWAT6ktjp/Cjx0zuI25/Dickw/Df1Q7EtbB/ Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="399084149"
+X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; d="scan'208";a="399084149"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Dec 2023 00:19:05 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="892800614"
+X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; d="scan'208";a="892800614"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmsmga002.fm.intel.com with ESMTP; 15 Dec 2023 00:19:02 -0800
+Date: Fri, 15 Dec 2023 16:31:26 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Warner Losh <imp@bsdimp.com>,
+ Song Gao <gaosong@loongson.cn>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 4/4] target: Restrict 'sysemu/reset.h' to system emulation
+Message-ID: <ZXwO3igZsJBXOkZl@intel.com>
+References: <20231212113640.30287-1-philmd@linaro.org>
+ <20231212113640.30287-5-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20231212113640.30287-5-philmd@linaro.org>
+Received-SPF: pass client-ip=134.134.136.65; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,60 +78,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrang√© <berrange@redhat.com>
+On Tue, Dec 12, 2023 at 12:36:40PM +0100, Philippe Mathieu-DaudÈ wrote:
+> Date: Tue, 12 Dec 2023 12:36:40 +0100
+> From: Philippe Mathieu-DaudÈ <philmd@linaro.org>
+> Subject: [PATCH 4/4] target: Restrict 'sysemu/reset.h' to system emulation
+> X-Mailer: git-send-email 2.41.0
+> 
+> vCPU "reset" is only possible with system emulation.
+> 
+> Signed-off-by: Philippe Mathieu-DaudÈ <philmd@linaro.org>
+> Reviewed-by: Warner Losh <imp@bsdimp.com>
+> Reviewed-by: Song Gao <gaosong@loongson.cn>
+> ---
 
-The mtest2make.py script passes the arg '-t 0' to 'meson test' which
-disables all test timeouts. This is a major source of pain when running
-in GitLab CI and a test gets stuck. It will stall until GitLab kills the
-CI job. This leaves us with little easily consumable information about
-the stalled test. The TAP format doesn't show the test name until it is
-completed, and TAP output from multiple tests it interleaved. So we
-have to analyse the log to figure out what tests had un-finished TAP
-output present and thus infer which test case caused the hang. This is
-very time consuming and error prone.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-By allowing meson to kill stalled tests, we get a direct display of what
-test program got stuck, which lets us more directly focus in on what
-specific test case within the test program hung.
-
-The other issue with disabling meson test timeouts by default is that it
-makes it more likely that maintainers inadvertantly introduce slowdowns.
-For example the recent-ish change that accidentally made migrate-test
-take 15-20 minutes instead of around 1 minute.
-
-The main risk of this change is that the individual test timeouts might
-be too short to allow completion in high load scenarios. Thus, there is
-likely to be some short term pain where we have to bump the timeouts for
-certain tests to make them reliable enough. The preceeding few patches
-raised the timeouts for all failures that were immediately apparent
-in GitLab CI.
-
-Even with the possible short term instability, this should still be a
-net win for debuggability of failed CI pipelines over the long term.
-
-Signed-off-by: "Daniel P. Berrang√©" <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
-Message-ID: <20230717182859.707658-13-berrange@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- scripts/mtest2make.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
-index 179dd54871..eb01a05ddb 100644
---- a/scripts/mtest2make.py
-+++ b/scripts/mtest2make.py
-@@ -27,7 +27,8 @@ def names(self, base):
- .speed.slow = $(foreach s,$(sort $(filter-out %-thorough, $1)), --suite $s)
- .speed.thorough = $(foreach s,$(sort $1), --suite $s)
- 
--.mtestargs = --no-rebuild -t 0
-+TIMEOUT_MULTIPLIER = 1
-+.mtestargs = --no-rebuild -t $(TIMEOUT_MULTIPLIER)
- ifneq ($(SPEED), quick)
- .mtestargs += --setup $(SPEED)
- endif
--- 
-2.43.0
-
+>  target/i386/cpu.c      | 2 +-
+>  target/loongarch/cpu.c | 2 ++
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index dfb96217ad..17b6962d43 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -24,7 +24,6 @@
+>  #include "qemu/hw-version.h"
+>  #include "cpu.h"
+>  #include "tcg/helper-tcg.h"
+> -#include "sysemu/reset.h"
+>  #include "sysemu/hvf.h"
+>  #include "hvf/hvf-i386.h"
+>  #include "kvm/kvm_i386.h"
+> @@ -37,6 +36,7 @@
+>  #include "hw/qdev-properties.h"
+>  #include "hw/i386/topology.h"
+>  #ifndef CONFIG_USER_ONLY
+> +#include "sysemu/reset.h"
+>  #include "qapi/qapi-commands-machine-target.h"
+>  #include "exec/address-spaces.h"
+>  #include "hw/boards.h"
+> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+> index fc075952e6..b26187dfde 100644
+> --- a/target/loongarch/cpu.c
+> +++ b/target/loongarch/cpu.c
+> @@ -17,7 +17,9 @@
+>  #include "internals.h"
+>  #include "fpu/softfloat-helpers.h"
+>  #include "cpu-csr.h"
+> +#ifndef CONFIG_USER_ONLY
+>  #include "sysemu/reset.h"
+> +#endif
+>  #include "tcg/tcg.h"
+>  #include "vec.h"
+>  
+> -- 
+> 2.41.0
+> 
+> 
 
