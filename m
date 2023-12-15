@@ -2,88 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953438144F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 10:57:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D8981451D
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 11:04:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE4vL-0006V7-FU; Fri, 15 Dec 2023 04:56:03 -0500
+	id 1rE52u-0003QT-DT; Fri, 15 Dec 2023 05:03:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rE4vJ-0006SJ-UB
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 04:56:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rE4vI-00008b-Cq
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 04:56:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702634159;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XsVx4MsxXeqsM9UmamEQoOhQwuatdwZpdHk8xWe7cXU=;
- b=BhWdUJ/4947x7hKIo0aCfsgf1Dxfl7TXoXvNhNd5NmBgy+BXsBs9qAsu/vfoLcFpmwNc2R
- 7QNxbt9VfV9mY+kU+kC/hym3jlM/+nm4BCPX6JruoyI6ZqPvbn+Xn2+QI+XkOrCK/uYAF6
- rQPZG3I/G6MR39u8JFk/i1GRr1CwB6M=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-536-_Mh_05PnMwy5AbOvvOKW-Q-1; Fri, 15 Dec 2023 04:55:57 -0500
-X-MC-Unique: _Mh_05PnMwy5AbOvvOKW-Q-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-425f0ab06a2so7668751cf.3
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 01:55:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702634157; x=1703238957;
- h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XsVx4MsxXeqsM9UmamEQoOhQwuatdwZpdHk8xWe7cXU=;
- b=iVP3imitkGXz0ewrCh0SY9lzUuS43Vp/6gWApwK0CmA+G41ueUfrahwTJfCrrlS6xB
- w+VklXZtUmOtF4RpqeFQCLgST3ky6d16P61FD2Y1Z+1/xp9Zm6FAv0CIooEItrc/vyZc
- 7LkJVPWE9EvmC4yZYRVHfHKicgusFsH99UXtWQweLssvRpqgn1uyLZUZiuVlcAI/d2W6
- H5kQmuY9wtRG3fE9+NnzpDBHWmmJvhAHGVKqOvuZow14rTs+OQo7G4UQqO8+cfptbKNs
- RKVrv/WGGYFa9eNBksLy5k911Df/azy7xHdl04+QW4KwUrPmuERmh36YlexMj7lcC9LO
- M/bA==
-X-Gm-Message-State: AOJu0YyRxiO74jsx2UQoXt1uih+SgtTw4cPSQL8zWoyWEEr59CN1Q49a
- ylTCt3fmxPVzooHfaNRyGYKGDlTaaQdlOhCn1SeulBR4Kuxh6+B0VECvINpbHs65Zp4G8xJoxNN
- 6j8fvR9OjuRxMuA0=
-X-Received: by 2002:ac8:5d46:0:b0:425:aa00:cdd7 with SMTP id
- g6-20020ac85d46000000b00425aa00cdd7mr16876849qtx.85.1702634156954; 
- Fri, 15 Dec 2023 01:55:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHRNgexYYxGeBYpv2I0o7qP+XF4lN98Nhfdv7ZmdQHRJsJB/kJYReY37LmjQ3BwLt+ONAKnSw==
-X-Received: by 2002:ac8:5d46:0:b0:425:aa00:cdd7 with SMTP id
- g6-20020ac85d46000000b00425aa00cdd7mr16876839qtx.85.1702634156712; 
- Fri, 15 Dec 2023 01:55:56 -0800 (PST)
-Received: from rh (p200300c93f174f005d25f1299b34cd9e.dip0.t-ipconnect.de.
- [2003:c9:3f17:4f00:5d25:f129:9b34:cd9e])
- by smtp.gmail.com with ESMTPSA id
- cd5-20020a05622a418500b004255fd32eeasm6318380qtb.7.2023.12.15.01.55.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Dec 2023 01:55:56 -0800 (PST)
-Date: Fri, 15 Dec 2023 10:55:51 +0100 (CET)
-From: Sebastian Ott <sebott@redhat.com>
-To: Eric Auger <eauger@redhat.com>
-cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org, 
- Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org, 
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v4] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
-In-Reply-To: <be70b17c-21cf-4f4e-8ec1-62c18ffd4100@redhat.com>
-Message-ID: <f1b6dffb-0a23-82d2-7699-67e12691e5c4@redhat.com>
-References: <20231207103648.2925112-1-shahuang@redhat.com>
- <be70b17c-21cf-4f4e-8ec1-62c18ffd4100@redhat.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1rE52p-0003PR-2T
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 05:03:47 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1rE52l-0004uP-HJ
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 05:03:46 -0500
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8AxZfB2JHxlPlABAA--.7477S3;
+ Fri, 15 Dec 2023 18:03:35 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxrnN1JHxldl0FAA--.26862S2; 
+ Fri, 15 Dec 2023 18:03:33 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+Subject: [PATCH v2 0/4] hw/loongarch/virt: Set iocsr address space per-board
+ rather percpu
+Date: Fri, 15 Dec 2023 18:03:29 +0800
+Message-Id: <20231215100333.3933632-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sebott@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8CxrnN1JHxldl0FAA--.26862S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWrKr1Uur18WFy3uF48try7Arc_yoW8JF45pr
+ ZxuwsIgr4kAryavwnxW343Wr98GFn7WF12vF43KryrCr43ZFyj9w18Cas5XFyUG34rJry0
+ qr1Fkw1UWF1UZwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+ Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+ 6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0x
+ vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
+ 42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+ kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j8yCJUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,25 +74,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Dec 2023, Eric Auger wrote:
-> On 12/7/23 11:36, Shaoqin Huang wrote:
->> +    if (kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr)) {
->> +        warn_report("The kernel doesn't support the PMU Event Filter!\n");
->> +        return;
->> +    }
->> +
->> +    /* The filter only needs to be initialized for 1 vcpu. */
-> Are you sure? This is a per vcpu device ctrl. Where is it written in the
-> doc that this shall not be called for each vcpu
+On LoongArch system, there is iocsr address space simliar system io
+address space on x86. And each cpu has its separate iocsr address space now,
+with this patch, iocsr address space is changed with per-board, and
+MemTxAttrs.requester_id is used to differentiate cpu cores.
 
-The interface is per vcpu but the filters are actually managed per vm
-(kvm->arch.pmu_filter). From (kernel) commit 6ee7fca2a ("KVM: arm64: Add 
-KVM_ARM_VCPU_PMU_V3_SET_PMU attribute"):
-  To ensure that KVM doesn't expose an asymmetric system to the guest, the
-  PMU set for one VCPU will be used by all other VCPUs. Once a VCPU has run,
-  the PMU cannot be changed in order to avoid changing the list of available
-  events for a VCPU, or to change the semantics of existing events.
+---
+Changes in v2:
+  1. Add num-cpu property for extioi interrupt controller
+  2. Add post_load support for extioi vmstate to calculate sw_ipmap/sw_coremap info
+---
+Bibo Mao (4):
+  hw/intc/loongarch_ipi: Use MemTxAttrs interface for ipi ops
+  hw/loongarch/virt: Set iocsr address space per-board rather than
+    percpu
+  hw/intc/loongarch_extioi: Add dynamic cpu number support
+  hw/intc/loongarch_extioi: Add vmstate post_load support
 
-Sebastian
+ hw/intc/loongarch_extioi.c         | 230 ++++++++++++++++++-----------
+ hw/intc/loongarch_ipi.c            | 191 +++++++++++++++---------
+ hw/loongarch/virt.c                |  94 ++++++++----
+ include/hw/intc/loongarch_extioi.h |  12 +-
+ include/hw/intc/loongarch_ipi.h    |   3 +-
+ include/hw/loongarch/virt.h        |   3 +
+ target/loongarch/cpu.c             |  48 ------
+ target/loongarch/cpu.h             |   4 +-
+ target/loongarch/iocsr_helper.c    |  16 +-
+ 9 files changed, 358 insertions(+), 243 deletions(-)
+
+
+base-commit: 039afc5ef7367fbc8fb475580c291c2655e856cb
+-- 
+2.39.3
 
 
