@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADFD814888
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 13:54:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3B8814891
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 13:55:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE7h1-0001lX-7L; Fri, 15 Dec 2023 07:53:27 -0500
+	id 1rE7jE-00015C-KW; Fri, 15 Dec 2023 07:55:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rE7gz-0001l0-F2
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:53:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rE7iq-0000wf-II
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:55:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rE7gx-0001Y5-9t
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:53:25 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rE7ie-00045k-Ao
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:55:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702644802;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1702644906;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=slY5zbKCW1R7P3Ze5KLwoUnmTGX5MXsQy2i+k7E0gcc=;
- b=BgMxo75AUlrtl+31TNkv8Wj+U3kccT7p2xC1BszZP1KPVxlUxUUlo8lpiQ9lssBJCi8ZRa
- 3Lus52m4erFcu3LwpaLuUBTZt8+Wv26vkNpYWEKSjZk0Tpz2L/P56/I8gHQR3pNFxWKnhM
- 8vvLftUqjYLAVUSD86V0C3oo9xOQLT8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-44-fQ_dCZsLP0m8icfaIZtGcw-1; Fri,
- 15 Dec 2023 07:53:19 -0500
-X-MC-Unique: fQ_dCZsLP0m8icfaIZtGcw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ bh=qxDggu7BXMs0E8qU7h2Po7QkPeeRBjBHOIDusaHiQHQ=;
+ b=bVNuVj42FnFX3a8kfzB6HXfrxXZI5azKHYZb7j58ZzSndZgvWPT3TaN43pAiEAjDYuqv/R
+ K9GeDoVqVLh79TGW59uTZtqhhuLzZaV1ZVPIwwDuOqXfPSLAOdzg9Rd0K/1jHvFA9n5yQm
+ NI+opfLgWJfbY8U8tGq2e72b7fPA9kg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-241-4IDigRMMMlCTT1nE_ZZmZA-1; Fri, 15 Dec 2023 07:55:03 -0500
+X-MC-Unique: 4IDigRMMMlCTT1nE_ZZmZA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DD7B31C0DB03;
- Fri, 15 Dec 2023 12:53:18 +0000 (UTC)
-Received: from eperezma.remote.csb (unknown [10.39.194.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 432E7492BC6;
- Fri, 15 Dec 2023 12:53:17 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, si-wei.liu@oracle.com,
- Laurent Vivier <lvivier@redhat.com>, Parav Pandit <parav@mellanox.com>,
- Lei Yang <leiyang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- Zhu Lingshan <lingshan.zhu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH 9.0 v2 13/13] vdpa: move memory listener to vhost_vdpa_shared
-Date: Fri, 15 Dec 2023 13:52:50 +0100
-Message-Id: <20231215125250.2483663-14-eperezma@redhat.com>
-In-Reply-To: <20231215125250.2483663-1-eperezma@redhat.com>
-References: <20231215125250.2483663-1-eperezma@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C243F85A588;
+ Fri, 15 Dec 2023 12:55:02 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.132])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A404840C6EB9;
+ Fri, 15 Dec 2023 12:55:01 +0000 (UTC)
+Date: Fri, 15 Dec 2023 12:54:59 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] vl: Print display options for -display help
+Message-ID: <ZXxMow-5UGOSgWo1@redhat.com>
+References: <20231214-help-v1-1-23823ac5a023@daynix.com>
+ <9443821d-5eff-46e6-be69-707cca9cd0d0@linaro.org>
+ <8f8d3317-c28b-3985-89d7-0fbd1ce4b56e@eik.bme.hu>
+ <2d1689ea-b0d8-4c74-8101-b90ad626f2a9@daynix.com>
+ <d1687e5a-a60e-fda8-5e8c-1ab9adf0e775@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+In-Reply-To: <d1687e5a-a60e-fda8-5e8c-1ab9adf0e775@eik.bme.hu>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,335 +88,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Next patches will register the vhost_vdpa memory listener while the VM
-is migrating at the destination, so we can map the memory to the device
-before stopping the VM at the source.  The main goal is to reduce the
-downtime.
+On Fri, Dec 15, 2023 at 01:43:37PM +0100, BALATON Zoltan wrote:
+> On Fri, 15 Dec 2023, Akihiko Odaki wrote:
+> > On 2023/12/14 22:00, BALATON Zoltan wrote:
+> > > > So we go from:
+> > > > 
+> > > > $ ./qemu-system-aarch64 -display help
+> > > > Available display backend types:
+> > > > none
+> > > > gtk
+> > > > sdl
+> > > > curses
+> > > > cocoa
+> > > > dbus
+> > > > 
+> > > > to:
+> > > > 
+> > > > $ ./qemu-system-aarch64 -display help
+> > > > -display sdl[,gl=on|core|es|off][,grab-mod=<mod>][,show-cursor=on|off]
+> > > >            [,window-close=on|off]
+> > > > -display gtk[,full-screen=on|off][,gl=on|off][,grab-on-hover=on|off]
+> > > >            [,show-tabs=on|off][,show-cursor=on|off][,window-close=on|off]
+> > > >            [,show-menubar=on|off]
+> > > > -display vnc=<display>[,<optargs>]
+> > > > -display curses[,charset=<encoding>]
+> > > > -display cocoa[,full-grab=on|off][,swap-opt-cmd=on|off]
+> > > > -display dbus[,addr=<dbusaddr>]
+> > > >             [,gl=on|core|es|off][,rendernode=<file>]
+> > > > -display cocoa[,show-cursor=on|off][,left-command-key=on|off]
+> > > > -display none
+> > > >                select display backend type
+> > > >                The default display is equivalent to
+> > > >                "-display gtk"
+> > > > 
+> > > > The latter is indeed more helpful.
+> > > 
+> > > It is more helpful but maybe a bit overwhelming. Would it be
+> > > possible to only print the options with -display cocoa,help similar
+> > > to how -device help lists devices and -device sm501,help lists
+> > > options for one device? Adding info about default to -display help
+> > > is really helpful though (that could also be marked with (default)
+> > > like in -machine help.
+> > 
+> > It's copied from what qemu-system-aarch64 -h outputs. At least it's less
+> > overwhelming than qemu-system-aarch64 -h.
+> 
+> This changes what -display help does so if some script depends on that it
+> may not be a good idea. Since the same info is already in -help maybe this
+> change to add that to -display help as well is not the best solution so I'd
+> say drop this patch and leave it as it is for now.
 
-However, the destination QEMU is unaware of which vhost_vdpa device will
-register its memory_listener.  If the source guest has CVQ enabled, it
-will be the CVQ device.  Otherwise, it  will be the first one.
+We consider help output to be only for humans.
 
-Move the memory listener to a common place rather than always in the
-first / last vhost_vdpa.
+No scripts should ever be parsing any QEMU output, as we provide
+QMP for automated detection/querying of features.
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
----
- include/hw/virtio/vhost-vdpa.h |  2 +-
- hw/virtio/vhost-vdpa.c         | 84 ++++++++++++++++------------------
- 2 files changed, 40 insertions(+), 46 deletions(-)
+IOW, if some script is parsing help output we are fine to break
+them if it improves QEMU's output for humans in a justiable way.
 
-diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index 2abee2164a..8f54e5edd4 100644
---- a/include/hw/virtio/vhost-vdpa.h
-+++ b/include/hw/virtio/vhost-vdpa.h
-@@ -33,6 +33,7 @@ typedef struct VhostVDPAHostNotifier {
- /* Info shared by all vhost_vdpa device models */
- typedef struct vhost_vdpa_shared {
-     int device_fd;
-+    MemoryListener listener;
-     struct vhost_vdpa_iova_range iova_range;
-     QLIST_HEAD(, vdpa_iommu) iommu_list;
- 
-@@ -51,7 +52,6 @@ typedef struct vhost_vdpa_shared {
- typedef struct vhost_vdpa {
-     int index;
-     uint32_t address_space_id;
--    MemoryListener listener;
-     uint64_t acked_features;
-     bool shadow_vqs_enabled;
-     /* Device suspended successfully */
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 61553ad196..7500c2fc82 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -170,28 +170,28 @@ static void vhost_vdpa_iotlb_batch_begin_once(VhostVDPAShared *s)
- 
- static void vhost_vdpa_listener_commit(MemoryListener *listener)
- {
--    struct vhost_vdpa *v = container_of(listener, struct vhost_vdpa, listener);
-+    VhostVDPAShared *s = container_of(listener, VhostVDPAShared, listener);
-     struct vhost_msg_v2 msg = {};
--    int fd = v->shared->device_fd;
-+    int fd = s->device_fd;
- 
--    if (!(v->shared->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH))) {
-+    if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH))) {
-         return;
-     }
- 
--    if (!v->shared->iotlb_batch_begin_sent) {
-+    if (!s->iotlb_batch_begin_sent) {
-         return;
-     }
- 
-     msg.type = VHOST_IOTLB_MSG_V2;
-     msg.iotlb.type = VHOST_IOTLB_BATCH_END;
- 
--    trace_vhost_vdpa_listener_commit(v->shared, fd, msg.type, msg.iotlb.type);
-+    trace_vhost_vdpa_listener_commit(s, fd, msg.type, msg.iotlb.type);
-     if (write(fd, &msg, sizeof(msg)) != sizeof(msg)) {
-         error_report("failed to write, fd=%d, errno=%d (%s)",
-                      fd, errno, strerror(errno));
-     }
- 
--    v->shared->iotlb_batch_begin_sent = false;
-+    s->iotlb_batch_begin_sent = false;
- }
- 
- static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-@@ -246,7 +246,7 @@ static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
- static void vhost_vdpa_iommu_region_add(MemoryListener *listener,
-                                         MemoryRegionSection *section)
- {
--    struct vhost_vdpa *v = container_of(listener, struct vhost_vdpa, listener);
-+    VhostVDPAShared *s = container_of(listener, VhostVDPAShared, listener);
- 
-     struct vdpa_iommu *iommu;
-     Int128 end;
-@@ -270,7 +270,7 @@ static void vhost_vdpa_iommu_region_add(MemoryListener *listener,
-                         iommu_idx);
-     iommu->iommu_offset = section->offset_within_address_space -
-                           section->offset_within_region;
--    iommu->dev_shared = v->shared;
-+    iommu->dev_shared = s;
- 
-     ret = memory_region_register_iommu_notifier(section->mr, &iommu->n, NULL);
-     if (ret) {
-@@ -278,7 +278,7 @@ static void vhost_vdpa_iommu_region_add(MemoryListener *listener,
-         return;
-     }
- 
--    QLIST_INSERT_HEAD(&v->shared->iommu_list, iommu, iommu_next);
-+    QLIST_INSERT_HEAD(&s->iommu_list, iommu, iommu_next);
-     memory_region_iommu_replay(iommu->iommu_mr, &iommu->n);
- 
-     return;
-@@ -287,11 +287,11 @@ static void vhost_vdpa_iommu_region_add(MemoryListener *listener,
- static void vhost_vdpa_iommu_region_del(MemoryListener *listener,
-                                         MemoryRegionSection *section)
- {
--    struct vhost_vdpa *v = container_of(listener, struct vhost_vdpa, listener);
-+    VhostVDPAShared *s = container_of(listener, VhostVDPAShared, listener);
- 
-     struct vdpa_iommu *iommu;
- 
--    QLIST_FOREACH(iommu, &v->shared->iommu_list, iommu_next)
-+    QLIST_FOREACH(iommu, &s->iommu_list, iommu_next)
-     {
-         if (MEMORY_REGION(iommu->iommu_mr) == section->mr &&
-             iommu->n.start == section->offset_within_region) {
-@@ -307,7 +307,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-                                            MemoryRegionSection *section)
- {
-     DMAMap mem_region = {};
--    struct vhost_vdpa *v = container_of(listener, struct vhost_vdpa, listener);
-+    VhostVDPAShared *s = container_of(listener, VhostVDPAShared, listener);
-     hwaddr iova;
-     Int128 llend, llsize;
-     void *vaddr;
-@@ -315,10 +315,8 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-     int page_size = qemu_target_page_size();
-     int page_mask = -page_size;
- 
--    if (vhost_vdpa_listener_skipped_section(section,
--                                            v->shared->iova_range.first,
--                                            v->shared->iova_range.last,
--                                            page_mask)) {
-+    if (vhost_vdpa_listener_skipped_section(section, s->iova_range.first,
-+                                            s->iova_range.last, page_mask)) {
-         return;
-     }
-     if (memory_region_is_iommu(section->mr)) {
-@@ -328,8 +326,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
- 
-     if (unlikely((section->offset_within_address_space & ~page_mask) !=
-                  (section->offset_within_region & ~page_mask))) {
--        trace_vhost_vdpa_listener_region_add_unaligned(v->shared,
--                       section->mr->name,
-+        trace_vhost_vdpa_listener_region_add_unaligned(s, section->mr->name,
-                        section->offset_within_address_space & ~page_mask,
-                        section->offset_within_region & ~page_mask);
-         return;
-@@ -349,18 +346,18 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-             section->offset_within_region +
-             (iova - section->offset_within_address_space);
- 
--    trace_vhost_vdpa_listener_region_add(v->shared, iova, int128_get64(llend),
-+    trace_vhost_vdpa_listener_region_add(s, iova, int128_get64(llend),
-                                          vaddr, section->readonly);
- 
-     llsize = int128_sub(llend, int128_make64(iova));
--    if (v->shared->shadow_data) {
-+    if (s->shadow_data) {
-         int r;
- 
-         mem_region.translated_addr = (hwaddr)(uintptr_t)vaddr,
-         mem_region.size = int128_get64(llsize) - 1,
-         mem_region.perm = IOMMU_ACCESS_FLAG(true, section->readonly),
- 
--        r = vhost_iova_tree_map_alloc(v->shared->iova_tree, &mem_region);
-+        r = vhost_iova_tree_map_alloc(s->iova_tree, &mem_region);
-         if (unlikely(r != IOVA_OK)) {
-             error_report("Can't allocate a mapping (%d)", r);
-             goto fail;
-@@ -369,8 +366,8 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-         iova = mem_region.iova;
-     }
- 
--    vhost_vdpa_iotlb_batch_begin_once(v->shared);
--    ret = vhost_vdpa_dma_map(v->shared, VHOST_VDPA_GUEST_PA_ASID, iova,
-+    vhost_vdpa_iotlb_batch_begin_once(s);
-+    ret = vhost_vdpa_dma_map(s, VHOST_VDPA_GUEST_PA_ASID, iova,
-                              int128_get64(llsize), vaddr, section->readonly);
-     if (ret) {
-         error_report("vhost vdpa map fail!");
-@@ -380,8 +377,8 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-     return;
- 
- fail_map:
--    if (v->shared->shadow_data) {
--        vhost_iova_tree_remove(v->shared->iova_tree, mem_region);
-+    if (s->shadow_data) {
-+        vhost_iova_tree_remove(s->iova_tree, mem_region);
-     }
- 
- fail:
-@@ -398,17 +395,15 @@ fail:
- static void vhost_vdpa_listener_region_del(MemoryListener *listener,
-                                            MemoryRegionSection *section)
- {
--    struct vhost_vdpa *v = container_of(listener, struct vhost_vdpa, listener);
-+    VhostVDPAShared *s = container_of(listener, VhostVDPAShared, listener);
-     hwaddr iova;
-     Int128 llend, llsize;
-     int ret;
-     int page_size = qemu_target_page_size();
-     int page_mask = -page_size;
- 
--    if (vhost_vdpa_listener_skipped_section(section,
--                                            v->shared->iova_range.first,
--                                            v->shared->iova_range.last,
--                                            page_mask)) {
-+    if (vhost_vdpa_listener_skipped_section(section, s->iova_range.first,
-+                                            s->iova_range.last, page_mask)) {
-         return;
-     }
-     if (memory_region_is_iommu(section->mr)) {
-@@ -417,8 +412,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
- 
-     if (unlikely((section->offset_within_address_space & ~page_mask) !=
-                  (section->offset_within_region & ~page_mask))) {
--        trace_vhost_vdpa_listener_region_del_unaligned(v->shared,
--                       section->mr->name,
-+        trace_vhost_vdpa_listener_region_del_unaligned(s, section->mr->name,
-                        section->offset_within_address_space & ~page_mask,
-                        section->offset_within_region & ~page_mask);
-         return;
-@@ -427,7 +421,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
-     iova = ROUND_UP(section->offset_within_address_space, page_size);
-     llend = vhost_vdpa_section_end(section, page_mask);
- 
--    trace_vhost_vdpa_listener_region_del(v->shared, iova,
-+    trace_vhost_vdpa_listener_region_del(s, iova,
-         int128_get64(int128_sub(llend, int128_one())));
- 
-     if (int128_ge(int128_make64(iova), llend)) {
-@@ -436,7 +430,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
- 
-     llsize = int128_sub(llend, int128_make64(iova));
- 
--    if (v->shared->shadow_data) {
-+    if (s->shadow_data) {
-         const DMAMap *result;
-         const void *vaddr = memory_region_get_ram_ptr(section->mr) +
-             section->offset_within_region +
-@@ -446,37 +440,37 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
-             .size = int128_get64(llsize) - 1,
-         };
- 
--        result = vhost_iova_tree_find_iova(v->shared->iova_tree, &mem_region);
-+        result = vhost_iova_tree_find_iova(s->iova_tree, &mem_region);
-         if (!result) {
-             /* The memory listener map wasn't mapped */
-             return;
-         }
-         iova = result->iova;
--        vhost_iova_tree_remove(v->shared->iova_tree, *result);
-+        vhost_iova_tree_remove(s->iova_tree, *result);
-     }
--    vhost_vdpa_iotlb_batch_begin_once(v->shared);
-+    vhost_vdpa_iotlb_batch_begin_once(s);
-     /*
-      * The unmap ioctl doesn't accept a full 64-bit. need to check it
-      */
-     if (int128_eq(llsize, int128_2_64())) {
-         llsize = int128_rshift(llsize, 1);
--        ret = vhost_vdpa_dma_unmap(v->shared, VHOST_VDPA_GUEST_PA_ASID, iova,
-+        ret = vhost_vdpa_dma_unmap(s, VHOST_VDPA_GUEST_PA_ASID, iova,
-                                    int128_get64(llsize));
- 
-         if (ret) {
-             error_report("vhost_vdpa_dma_unmap(%p, 0x%" HWADDR_PRIx ", "
-                          "0x%" HWADDR_PRIx ") = %d (%m)",
--                         v, iova, int128_get64(llsize), ret);
-+                         s, iova, int128_get64(llsize), ret);
-         }
-         iova += int128_get64(llsize);
-     }
--    ret = vhost_vdpa_dma_unmap(v->shared, VHOST_VDPA_GUEST_PA_ASID, iova,
-+    ret = vhost_vdpa_dma_unmap(s, VHOST_VDPA_GUEST_PA_ASID, iova,
-                                int128_get64(llsize));
- 
-     if (ret) {
-         error_report("vhost_vdpa_dma_unmap(%p, 0x%" HWADDR_PRIx ", "
-                      "0x%" HWADDR_PRIx ") = %d (%m)",
--                     v, iova, int128_get64(llsize), ret);
-+                     s, iova, int128_get64(llsize), ret);
-     }
- 
-     memory_region_unref(section->mr);
-@@ -591,7 +585,7 @@ static int vhost_vdpa_init(struct vhost_dev *dev, void *opaque, Error **errp)
- 
-     v->dev = dev;
-     dev->opaque =  opaque ;
--    v->listener = vhost_vdpa_memory_listener;
-+    v->shared->listener = vhost_vdpa_memory_listener;
-     vhost_vdpa_init_svq(dev, v);
- 
-     error_propagate(&dev->migration_blocker, v->migration_blocker);
-@@ -754,7 +748,7 @@ static int vhost_vdpa_cleanup(struct vhost_dev *dev)
-     }
- 
-     vhost_vdpa_host_notifiers_uninit(dev, dev->nvqs);
--    memory_listener_unregister(&v->listener);
-+    memory_listener_unregister(&v->shared->listener);
-     vhost_vdpa_svq_cleanup(dev);
- 
-     dev->opaque = NULL;
-@@ -1327,7 +1321,7 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
-                          "IOMMU and try again");
-             return -1;
-         }
--        memory_listener_register(&v->listener, dev->vdev->dma_as);
-+        memory_listener_register(&v->shared->listener, dev->vdev->dma_as);
- 
-         return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_DRIVER_OK);
-     }
-@@ -1346,7 +1340,7 @@ static void vhost_vdpa_reset_status(struct vhost_dev *dev)
-     vhost_vdpa_reset_device(dev);
-     vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
-                                VIRTIO_CONFIG_S_DRIVER);
--    memory_listener_unregister(&v->listener);
-+    memory_listener_unregister(&v->shared->listener);
- }
- 
- static int vhost_vdpa_set_log_base(struct vhost_dev *dev, uint64_t base,
+
+With regards,
+Daniel
 -- 
-2.39.3
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
