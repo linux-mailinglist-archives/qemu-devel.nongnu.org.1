@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A3D81413C
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 06:27:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E88814144
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 06:30:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE0hy-0006iD-84; Fri, 15 Dec 2023 00:25:58 -0500
+	id 1rE0lX-0007iN-Mv; Fri, 15 Dec 2023 00:29:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rE0hp-0006hf-Pv; Fri, 15 Dec 2023 00:25:49 -0500
-Received: from mail-ua1-x931.google.com ([2607:f8b0:4864:20::931])
+ id 1rE0lU-0007hb-Qc; Fri, 15 Dec 2023 00:29:36 -0500
+Received: from mail-vk1-xa2d.google.com ([2607:f8b0:4864:20::a2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rE0hn-0001ca-Gk; Fri, 15 Dec 2023 00:25:49 -0500
-Received: by mail-ua1-x931.google.com with SMTP id
- a1e0cc1a2514c-7cb0fdced70so116858241.1; 
- Thu, 14 Dec 2023 21:25:46 -0800 (PST)
+ id 1rE0lS-00027x-CA; Fri, 15 Dec 2023 00:29:36 -0500
+Received: by mail-vk1-xa2d.google.com with SMTP id
+ 71dfb90a1353d-4b2c0ba26f1so158620e0c.0; 
+ Thu, 14 Dec 2023 21:29:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702617945; x=1703222745; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702618173; x=1703222973; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GAbGTrqsBi12JzUlTC3BDFK7dYGpXLIvG0BANQtgKRg=;
- b=O+f2Xu1RHLHDx4kTQrU70LQSZ8zaRq7yAxRiAMpK1HuZEA6l9KjTG7p/U7et9R0fg6
- Upxhp5eqgVzHEuhyxDrgvY6LteW94FrGzzHcxqPFoCZz0Q+nMcssLBPHfAau/9GnuSVQ
- 4EcV8ry7OhdRtR00whbqfWNvJ4l6/WMVxGUjbK7s1lpup0wVT0bFhAvRb+vYbnK8v25g
- XpG5UNCvKhjE5UfDtpFoQG1wHPkJy6gsFBcp3yXXU1gvbpVpQpsLL3CjWLXumFfkYGl3
- ff0WcBUmOGJS/KHmYkKpX0Vr1r2iDBzcgepJCBlrEE7xkrKtqtG/yERpwtN2v+zOk8X0
- 3liQ==
+ bh=w9d0Oi0s1Vy4SCLC8i5XUo6YQJw2+Y8EYRQBf6wOXdI=;
+ b=GZNK9cigh5pyIU5WinWNCH9C8Lg9Irs8uuXhBO4v2EDkj/6H+HvHW5ecg4ONmdaIUk
+ VAtHP9BfhCieJNZ1HWOvjh+zh+M1ZitSgvePmYqAbDURl3DaLUtvRbCgFCGnth104n4z
+ MKDrigHOMy5/VPT8rvnbPXHoCKp50qDpw8iLzn8OR3ZckplFIpB2xqYtoF+gq8SK5Sy8
+ utBzKfwT93qS7kXv5veZxaKU7AhVRQ6KVJuBrBTxr4gKejYkRE0PZy/Ej8JbIMc07P94
+ T0hymmq0p5LCAgfCK+bea79/C+ddra6SrqR7ohH+0cXzAu4tMTnnGLpMYykf27wrP1uE
+ F9Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702617945; x=1703222745;
+ d=1e100.net; s=20230601; t=1702618173; x=1703222973;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GAbGTrqsBi12JzUlTC3BDFK7dYGpXLIvG0BANQtgKRg=;
- b=mBlX088V0vsiZlIPbj1UnukozjHRuxnrAul0aDAsVfv6bXUhjg/cdo9KTZBHOQ7PQw
- QJUUGlHgERZD6XdzDwbAy2uSKrBkKeNNGSgV0mElk/YFR325VZyNX/Smrq4rWim/kiBY
- e3puMmAZX5NUuUS3aBnNbT/SHuAveUopAn3ruHHRlB2uvSogKoCKht4S0PZbJAxOaMND
- 4hdF8xDpYqkLTLJLLh6MRQ2Z/7YKNx6RmJEUQxNfB1sSK5E/b684lveETyXs1efkiji7
- W9bXU16zkcVJKhIvBZWV55dkcDquUqho+LZR4/ExRYfQKkMl1GIxhdPZnjwLPDLgI03I
- DKfA==
-X-Gm-Message-State: AOJu0YyBOF6KtkIPynh6XiL0HgLZwOwxRxJvz1F0Y0opQsnzaP+R0AQ9
- ZUWOSqw5WDr3/wOo2yOGq29YPiPCuumFWklAzvw=
-X-Google-Smtp-Source: AGHT+IEHOECN7ZxBjOcSoF1xv3qW5HXwuRCzttisv25V+JX+IybJviFWb9zw2cr3Murqd4gPShaNJdi11NvIgHs/5FU=
-X-Received: by 2002:a05:6102:952:b0:464:8360:b520 with SMTP id
- a18-20020a056102095200b004648360b520mr11172646vsi.10.1702617944975; Thu, 14
- Dec 2023 21:25:44 -0800 (PST)
+ bh=w9d0Oi0s1Vy4SCLC8i5XUo6YQJw2+Y8EYRQBf6wOXdI=;
+ b=jvKtQvBDxTPgJGq72nhCmI6BxxYot5MMALM6rORqxUmQy+2McccE4lduIBHYW8Td1Y
+ 07lALxkq8RaR/6np8rVFNj1Z04HtFHjbrQzu8UhhlsUHJZ5zzemerd0lQaaVZdApXe44
+ 32k0VQjc62BPARJlvk62Vowrm1NjE3HZTfOtZZ2j8ek2KXtntmOyL3YvISDGR0KBNUbx
+ MPG79JCGNtCDTlwB6r7P9XnQ68EewApHsHayDT4XcrFRtqrAoUh7pV9bb+wNIzWUbFfE
+ 4PBT6xQRjaoAs/EkhXO7P1jXk+VugNfZBJgfhhbHqJxjXBklcUcxHlRJ3R/jT8WTpk8T
+ Uakg==
+X-Gm-Message-State: AOJu0Yw6pzOHqiz7LLitLf6Uv69m1YzT5dzq3WeZB5x+JkIhR00aoSM7
+ LoHNdeLPn2U9wSUEIgFge/AJ7GSSNBNfwxxV6xY=
+X-Google-Smtp-Source: AGHT+IGB4L0ZCZOBc2ZWSlsGq/hOF8XIzLhlgemZur1BmslevwLGjO01IGAi3X1qLulmPH6j5Quc0IjbetbEaI4Ysz8=
+X-Received: by 2002:a05:6122:918:b0:4ab:ebf3:e518 with SMTP id
+ j24-20020a056122091800b004abebf3e518mr10261721vka.1.1702618172619; Thu, 14
+ Dec 2023 21:29:32 -0800 (PST)
 MIME-Version: 1.0
-References: <CAEV2DRrg5ekL9MUcO2xOKjKkYtrQYhORQ2n4qO+cxamrw82BGA@mail.gmail.com>
-In-Reply-To: <CAEV2DRrg5ekL9MUcO2xOKjKkYtrQYhORQ2n4qO+cxamrw82BGA@mail.gmail.com>
+References: <170256739558.25729.14053113716470464567-0@git.sr.ht>
+ <170256739558.25729.14053113716470464567-1@git.sr.ht>
+In-Reply-To: <170256739558.25729.14053113716470464567-1@git.sr.ht>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 15 Dec 2023 15:25:18 +1000
-Message-ID: <CAKmqyKPc538OEZUoARsHuRxfqg5LQuXUB7tRkJ-tu6Jujm8bRg@mail.gmail.com>
-Subject: Re: [PATCH v5] target/riscv: update checks on writing pmpcfg for
- Smepmp to version 1.0
-To: Alvin Chang <vivahavey@gmail.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, alistair.francis@wdc.com, 
- liweiwei@iscas.ac.cn
+Date: Fri, 15 Dec 2023 15:29:06 +1000
+Message-ID: <CAKmqyKM2URQGnXKAyrrisNoC-PGSpeC1xkVAgKrsDYxFEvVdSw@mail.gmail.com>
+Subject: Re: [PATCH qemu v3 1/2] hw/arm: Add minimal support for the STM32L4x5
+ SoC
+To: "~inesvarhol" <inesvarhol@proton.me>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, alistair@alistair23.me, 
+ philmd@linaro.org, peter.maydell@linaro.org, ines.varhol@telecom-paris.fr, 
+ arnaud.minier@telecom-paris.fr
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::931;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x931.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2d;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -87,355 +89,452 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 6, 2023 at 3:37=E2=80=AFPM Alvin Chang <vivahavey@gmail.com> wr=
-ote:
+On Fri, Dec 15, 2023 at 1:24=E2=80=AFAM ~inesvarhol <inesvarhol@git.sr.ht> =
+wrote:
 >
-> > -----Original Message-----
+> From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 >
-> > From: Alistair Francis <alistair23@gmail.com>
+> This patch adds a new STM32L4x5 SoC, it is necessary to add support for
+> the B-L475E-IOT01A board.
+> The implementation is derived from the STM32F405 SoC.
+> The implementation contains no peripherals, only memory regions are
+> implemented.
 >
-> > Sent: Wednesday, December 6, 2023 11:39 AM
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 >
-> > To: Alvin Che-Chia Chang(=E5=BC=B5=E5=93=B2=E5=98=89) <alvinga@andestec=
-h.com>
->
-> > Cc: qemu-riscv@nongnu.org; qemu-devel@nongnu.org;
->
-> > alistair.francis@wdc.com; liweiwei@iscas.ac.cn
->
-> > Subject: Re: [PATCH v5] target/riscv: update checks on writing pmpcfg f=
-or
->
-> > Smepmp to version 1.0
->
-> >
->
-> > On Tue, Nov 14, 2023 at 12:24=E2=80=AFPM Alvin Chang via <qemu-devel@no=
-ngnu.org>
->
-> > wrote:
->
-> > >
->
-> > > Current checks on writing pmpcfg for Smepmp follows Smepmp version
->
-> > > 0.9.1. However, Smepmp specification has already been ratified, and
->
-> > > there are some differences between version 0.9.1 and 1.0. In this
->
-> > > commit we update the checks of writing pmpcfg to follow Smepmp versio=
-n
->
-> > > 1.0.
->
-> > >
->
-> > > When mseccfg.MML is set, the constraints to modify PMP rules are:
->
-> > > 1. Locked rules cannot be removed or modified until a PMP reset, unle=
-ss
->
-> > >    mseccfg.RLB is set.
->
-> > > 2. From Smepmp specification version 1.0, chapter 2 section 4b:
->
-> > >    Adding a rule with executable privileges that either is M-mode-onl=
-y
->
-> > >    or a locked Shared-Region is not possible and such pmpcfg writes a=
-re
->
-> > >    ignored, leaving pmpcfg unchanged.
->
-> > >
->
-> > > The commit transfers the value of pmpcfg into the index of the Smepmp
->
-> > > truth table, and checks the rules by aforementioned specification
->
-> > > changes.
->
-> > >
->
-> > > Signed-off-by: Alvin Chang <alvinga@andestech.com>
->
-> > > ---
->
-> > > Changes from v4: Rebase on master.
->
-> > >
->
-> > > Changes from v3: Modify "epmp_operation" to "smepmp_operation".
->
-> > >
->
-> > > Changes from v2: Adopt switch case ranges and numerical order.
->
-> > >
->
-> > > Changes from v1: Convert ePMP over to Smepmp.
->
-> > >
->
-> > >  target/riscv/pmp.c | 40 ++++++++++++++++++++++++++++++++--------
->
-> > >  1 file changed, 32 insertions(+), 8 deletions(-)
->
-> > >
->
-> > > diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c index
->
-> > > 162e88a90a..4069514069 100644
->
-> > > --- a/target/riscv/pmp.c
->
-> > > +++ b/target/riscv/pmp.c
->
-> > > @@ -102,16 +102,40 @@ static bool pmp_write_cfg(CPURISCVState *env,
->
-> > uint32_t pmp_index, uint8_t val)
->
-> > >                  locked =3D false;
->
-> > >              }
->
-> > >
->
-> > > -            /* mseccfg.MML is set */
->
-> > > -            if (MSECCFG_MML_ISSET(env)) {
->
-> > > -                /* not adding execute bit */
->
-> > > -                if ((val & PMP_LOCK) !=3D 0 && (val & PMP_EXEC) !=3D
->
-> > PMP_EXEC) {
->
-> > > +            /*
->
-> > > +             * mseccfg.MML is set. Locked rules cannot be removed or
->
-> > modified
->
-> > > +             * until a PMP reset. Besides, from Smepmp specification
->
-> > version 1.0
->
-> > > +             * , chapter 2 section 4b says:
->
-> > > +             * Adding a rule with executable privileges that either =
-is
->
-> > > +             * M-mode-only or a locked Shared-Region is not possible
->
-> > and such
->
-> > > +             * pmpcfg writes are ignored, leaving pmpcfg unchanged.
->
-> > > +             */
->
-> > > +            if (MSECCFG_MML_ISSET(env) && !pmp_is_locked(env,
->
-> > > + pmp_index)) {
->
-> >
->
-> > This is tricky and took me a while to get my head around.
->
-> >
->
-> > From what I can tell, there is a bug in the spec.
->
-> >
->
-> > The spec specifically states that:
->
-> >
->
-> > """
->
-> > The meaning of pmpcfg.L changes: Instead of marking a rule as locked an=
-d
->
-> > enforced in all modes, it now marks a rule as M-mode-only when set and
->
-> > S/U-mode-only when unset.
->
-> > """
->
-> >
->
-> > So the check for !pmp_is_locked() sounds correct.
->
-> >
->
-> > But then they add:
->
-> >
->
-> > """
->
-> > The formerly reserved encoding of pmpcfg.RW=3D01, and the encoding
->
-> > pmpcfg.LRWX=3D1111, now encode a Shared-Region.
->
-> > """
->
-> >
->
-> > Which contradicts what they just said.
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
-In future can you please reply in plain text? Otherwise the formatting
-gets a little funky
-
->
->
-> Yes you are right, it seems there are some misleading words.
->
->
-> >
->
-> > I *think* we want to ignore the locked bit here. We don't actually care=
- if it's
->
-> > already set, instead we care if the region is an M-mode only region fro=
-m the
->
-> > 2.1 table
->
->
-> The check for !pmp_is_locked() is because spec says (below table 2.1):
->
-> "*Locked rules cannot be removed or modified until a PMP reset, unless ms=
-eccfg.RLB is set."
->
-> It is not related to M-mode-only or S/U-mode-only or Shared-Region.
-
-Yes, but when mseccfg.MML is set
-
-"The meaning of pmpcfg.L changes: Instead of marking a rule as locked
-and enforced in all modes, it
-now marks a rule as M-mode-only when set and S/U-mode-only when unset."
-
-So the comment below table 2.1 no longer applies
-
->
->
-> In other words, a pmpcfg where the pmpcfg.L bit was set can not be config=
-ured anymore. Therefore, I think we should not ignore it here, since we are=
- trying to write a new value into the pmpcfg. If we ignore it, the locked p=
-mpcfg will be modified and it would violate the spec.
->
->
-> If the pmpcfg was not locked, we also need to check the new value that th=
-e user wants to write. Because chapter 2 section 4b says: "Adding a rule wi=
-th executable privileges that either is M-mode-only or a locked Shared-Regi=
-on is not possible and such pmpcfg writes are ignored, leaving pmpcfg uncha=
-nged". This checking is implemented as that switch-case statement, based on=
- table 2.1 truth table.
-
-Yeah, that sounds right.
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
+> ---
+>  MAINTAINERS                    |   8 +
+>  hw/arm/Kconfig                 |   5 +
+>  hw/arm/meson.build             |   1 +
+>  hw/arm/stm32l4x5_soc.c         | 268 +++++++++++++++++++++++++++++++++
+>  include/hw/arm/stm32l4x5_soc.h |  59 ++++++++
+>  5 files changed, 341 insertions(+)
+>  create mode 100644 hw/arm/stm32l4x5_soc.c
+>  create mode 100644 include/hw/arm/stm32l4x5_soc.h
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 695e0bd34f..e5b28aee28 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1123,6 +1123,14 @@ L: qemu-arm@nongnu.org
+>  S: Maintained
+>  F: hw/arm/olimex-stm32-h405.c
+>
+> +STM32L4x5 SoC Family
+> +M: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> +M: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> +L: qemu-arm@nongnu.org
+> +S: Maintained
+> +F: hw/arm/stm32l4x5_soc.c
+> +F: include/hw/arm/stm32l4x5_soc.h
+> +
+>  SmartFusion2
+>  M: Subbaraya Sundeep <sundeep.lkml@gmail.com>
+>  M: Peter Maydell <peter.maydell@linaro.org>
+> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> index 3ada335a24..d2b94d9a47 100644
+> --- a/hw/arm/Kconfig
+> +++ b/hw/arm/Kconfig
+> @@ -448,6 +448,11 @@ config STM32F405_SOC
+>      select STM32F4XX_SYSCFG
+>      select STM32F4XX_EXTI
+>
+> +config STM32L4X5_SOC
+> +    bool
+> +    select ARM_V7M
+> +    select OR_IRQ
+> +
+>  config XLNX_ZYNQMP_ARM
+>      bool
+>      default y if PIXMAN
+> diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+> index 68245d3ad1..9766da10c4 100644
+> --- a/hw/arm/meson.build
+> +++ b/hw/arm/meson.build
+> @@ -42,6 +42,7 @@ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm283=
+6.c', 'raspi.c'))
+>  arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c=
+'))
+>  arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c=
+'))
+>  arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c=
+'))
+> +arm_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_soc.c=
+'))
+>  arm_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp.c=
+', 'xlnx-zcu102.c'))
+>  arm_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', '=
+xlnx-versal-virt.c'))
+>  arm_ss.add(when: 'CONFIG_FSL_IMX25', if_true: files('fsl-imx25.c', 'imx2=
+5_pdk.c'))
+> diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+> new file mode 100644
+> index 0000000000..7513db0d6a
+> --- /dev/null
+> +++ b/hw/arm/stm32l4x5_soc.c
+> @@ -0,0 +1,268 @@
+> +/*
+> + * STM32L4x5 SoC family
+> + *
+> + * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> + * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or la=
+ter.
+> + * See the COPYING file in the top-level directory.
+> + *
+> + * This work is heavily inspired by the stm32f405_soc by Alistair Franci=
+s.
+> + * Original code is licensed under the MIT License:
+> + *
+> + * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
+> + */
+> +
+> +/*
+> + * The reference used is the STMicroElectronics RM0351 Reference manual
+> + * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
+> + * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/docu=
+mentation.html
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/units.h"
+> +#include "qapi/error.h"
+> +#include "exec/address-spaces.h"
+> +#include "sysemu/sysemu.h"
+> +#include "hw/arm/stm32l4x5_soc.h"
+> +#include "hw/qdev-clock.h"
+> +#include "hw/misc/unimp.h"
+> +
+> +#define FLASH_BASE_ADDRESS 0x08000000
+> +#define SRAM1_BASE_ADDRESS 0x20000000
+> +#define SRAM1_SIZE (96 * KiB)
+> +#define SRAM2_BASE_ADDRESS 0x10000000
+> +#define SRAM2_SIZE (32 * KiB)
+> +
+> +static void stm32l4x5_soc_initfn(Object *obj)
+> +{
+> +    Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
+> +
+> +    s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0)=
+;
+> +    s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0)=
+;
+> +}
+> +
+> +static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
+> +{
+> +    ERRP_GUARD();
+> +    Stm32l4x5SocState *s =3D STM32L4X5_SOC(dev_soc);
+> +    const Stm32l4x5SocClass *sc =3D STM32L4X5_SOC_GET_CLASS(dev_soc);
+> +    MemoryRegion *system_memory =3D get_system_memory();
+> +    DeviceState *armv7m;
+> +
+> +    /*
+> +     * We use s->refclk internally and only define it with qdev_init_clo=
+ck_in()
+> +     * so it is correctly parented and not leaked on an init/deinit; it =
+is not
+> +     * intended as an externally exposed clock.
+> +     */
+> +    if (clock_has_source(s->refclk)) {
+> +        error_setg(errp, "refclk clock must not be wired up by the board=
+ code");
+> +        return;
+> +    }
+> +
+> +    if (!clock_has_source(s->sysclk)) {
+> +        error_setg(errp, "sysclk clock must be wired up by the board cod=
+e");
+> +        return;
+> +    }
+> +
+> +    /*
+> +     * TODO: ideally we should model the SoC RCC and its ability to
+> +     * change the sysclk frequency and define different sysclk sources.
+> +     */
+> +
+> +    /* The refclk always runs at frequency HCLK / 8 */
+> +    clock_set_mul_div(s->refclk, 8, 1);
+> +    clock_set_source(s->refclk, s->sysclk);
+> +
+> +    memory_region_init_rom(&s->flash, OBJECT(dev_soc), "flash",
+> +                           sc->flash_size, errp);
+> +    if (*errp) {
+> +        return;
+> +    }
+> +    memory_region_init_alias(&s->flash_alias, OBJECT(dev_soc),
+> +                             "flash_boot_alias", &s->flash, 0,
+> +                             sc->flash_size);
+> +
+> +    memory_region_add_subregion(system_memory, FLASH_BASE_ADDRESS, &s->f=
+lash);
+> +    memory_region_add_subregion(system_memory, 0, &s->flash_alias);
+> +
+> +    memory_region_init_ram(&s->sram1, OBJECT(dev_soc), "SRAM1", SRAM1_SI=
+ZE,
+> +                           errp);
+> +    if (*errp) {
+> +        return;
+> +    }
+> +    memory_region_add_subregion(system_memory, SRAM1_BASE_ADDRESS, &s->s=
+ram1);
+> +
+> +    memory_region_init_ram(&s->sram2, OBJECT(dev_soc), "SRAM2", SRAM2_SI=
+ZE,
+> +                           errp);
+> +    if (*errp) {
+> +        return;
+> +    }
+> +    memory_region_add_subregion(system_memory, SRAM2_BASE_ADDRESS, &s->s=
+ram2);
+> +
+> +    object_initialize_child(OBJECT(dev_soc), "armv7m", &s->armv7m, TYPE_=
+ARMV7M);
+> +    armv7m =3D DEVICE(&s->armv7m);
+> +    qdev_prop_set_uint32(armv7m, "num-irq", 96);
+> +    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m=
+4"));
+> +    qdev_prop_set_bit(armv7m, "enable-bitband", true);
+> +    qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+> +    qdev_connect_clock_in(armv7m, "refclk", s->refclk);
+> +    object_property_set_link(OBJECT(&s->armv7m), "memory",
+> +                             OBJECT(system_memory), &error_abort);
+> +    if (!sysbus_realize(SYS_BUS_DEVICE(&s->armv7m), errp)) {
+> +        return;
+> +    }
+> +
+> +    /* APB1 BUS */
+> +    create_unimplemented_device("TIM2",      0x40000000, 0x400);
+> +    create_unimplemented_device("TIM3",      0x40000400, 0x400);
+> +    create_unimplemented_device("TIM4",      0x40000800, 0x400);
+> +    create_unimplemented_device("TIM5",      0x40000C00, 0x400);
+> +    create_unimplemented_device("TIM6",      0x40001000, 0x400);
+> +    create_unimplemented_device("TIM7",      0x40001400, 0x400);
+> +    /* RESERVED:    0x40001800, 0x1000 */
+> +    create_unimplemented_device("RTC",       0x40002800, 0x400);
+> +    create_unimplemented_device("WWDG",      0x40002C00, 0x400);
+> +    create_unimplemented_device("IWDG",      0x40003000, 0x400);
+> +    /* RESERVED:    0x40001800, 0x400 */
+> +    create_unimplemented_device("SPI2",      0x40003800, 0x400);
+> +    create_unimplemented_device("SPI3",      0x40003C00, 0x400);
+> +    /* RESERVED:    0x40004000, 0x400 */
+> +    create_unimplemented_device("USART2",    0x40004400, 0x400);
+> +    create_unimplemented_device("USART3",    0x40004800, 0x400);
+> +    create_unimplemented_device("UART4",     0x40004C00, 0x400);
+> +    create_unimplemented_device("UART5",     0x40005000, 0x400);
+> +    create_unimplemented_device("I2C1",      0x40005400, 0x400);
+> +    create_unimplemented_device("I2C2",      0x40005800, 0x400);
+> +    create_unimplemented_device("I2C3",      0x40005C00, 0x400);
+> +    /* RESERVED:    0x40006000, 0x400 */
+> +    create_unimplemented_device("CAN1",      0x40006400, 0x400);
+> +    /* RESERVED:    0x40006800, 0x400 */
+> +    create_unimplemented_device("PWR",       0x40007000, 0x400);
+> +    create_unimplemented_device("DAC1",      0x40007400, 0x400);
+> +    create_unimplemented_device("OPAMP",     0x40007800, 0x400);
+> +    create_unimplemented_device("LPTIM1",    0x40007C00, 0x400);
+> +    create_unimplemented_device("LPUART1",   0x40008000, 0x400);
+> +    /* RESERVED:    0x40008400, 0x400 */
+> +    create_unimplemented_device("SWPMI1",    0x40008800, 0x400);
+> +    /* RESERVED:    0x40008C00, 0x800 */
+> +    create_unimplemented_device("LPTIM2",    0x40009400, 0x400);
+> +    /* RESERVED:    0x40009800, 0x6800 */
+> +
+> +    /* APB2 BUS */
+> +    create_unimplemented_device("SYSCFG",    0x40010000, 0x30);
+> +    create_unimplemented_device("VREFBUF",   0x40010030, 0x1D0);
+> +    create_unimplemented_device("COMP",      0x40010200, 0x200);
+> +    create_unimplemented_device("EXTI",      0x40010400, 0x400);
+> +    /* RESERVED:    0x40010800, 0x1400 */
+> +    create_unimplemented_device("FIREWALL",  0x40011C00, 0x400);
+> +    /* RESERVED:    0x40012000, 0x800 */
+> +    create_unimplemented_device("SDMMC1",    0x40012800, 0x400);
+> +    create_unimplemented_device("TIM1",      0x40012C00, 0x400);
+> +    create_unimplemented_device("SPI1",      0x40013000, 0x400);
+> +    create_unimplemented_device("TIM8",      0x40013400, 0x400);
+> +    create_unimplemented_device("USART1",    0x40013800, 0x400);
+> +    /* RESERVED:    0x40013C00, 0x400 */
+> +    create_unimplemented_device("TIM15",     0x40014000, 0x400);
+> +    create_unimplemented_device("TIM16",     0x40014400, 0x400);
+> +    create_unimplemented_device("TIM17",     0x40014800, 0x400);
+> +    /* RESERVED:    0x40014C00, 0x800 */
+> +    create_unimplemented_device("SAI1",      0x40015400, 0x400);
+> +    create_unimplemented_device("SAI2",      0x40015800, 0x400);
+> +    /* RESERVED:    0x40015C00, 0x400 */
+> +    create_unimplemented_device("DFSDM1",    0x40016000, 0x400);
+> +    /* RESERVED:    0x40016400, 0x9C00 */
+> +
+> +    /* AHB1 BUS */
+> +    create_unimplemented_device("DMA1",      0x40020000, 0x400);
+> +    create_unimplemented_device("DMA2",      0x40020400, 0x400);
+> +    /* RESERVED:    0x40020800, 0x800 */
+> +    create_unimplemented_device("RCC",       0x40021000, 0x400);
+> +    /* RESERVED:    0x40021400, 0xC00 */
+> +    create_unimplemented_device("FLASH",     0x40022000, 0x400);
+> +    /* RESERVED:    0x40022400, 0xC00 */
+> +    create_unimplemented_device("CRC",       0x40023000, 0x400);
+> +    /* RESERVED:    0x40023400, 0x400 */
+> +    create_unimplemented_device("TSC",       0x40024000, 0x400);
+> +
+> +    /* RESERVED:    0x40024400, 0x7FDBC00 */
+> +
+> +    /* AHB2 BUS */
+> +    create_unimplemented_device("GPIOA",     0x48000000, 0x400);
+> +    create_unimplemented_device("GPIOB",     0x48000400, 0x400);
+> +    create_unimplemented_device("GPIOC",     0x48000800, 0x400);
+> +    create_unimplemented_device("GPIOD",     0x48000C00, 0x400);
+> +    create_unimplemented_device("GPIOE",     0x48001000, 0x400);
+> +    create_unimplemented_device("GPIOF",     0x48001400, 0x400);
+> +    create_unimplemented_device("GPIOG",     0x48001800, 0x400);
+> +    create_unimplemented_device("GPIOH",     0x48001C00, 0x400);
+> +    /* RESERVED:    0x48002000, 0x7FDBC00 */
+> +    create_unimplemented_device("OTG_FS",    0x50000000, 0x40000);
+> +    create_unimplemented_device("ADC",       0x50040000, 0x400);
+> +    /* RESERVED:    0x50040400, 0x20400 */
+> +    create_unimplemented_device("RNG",       0x50060800, 0x400);
+> +
+> +    /* AHB3 BUS */
+> +    create_unimplemented_device("FMC",       0xA0000000, 0x1000);
+> +    create_unimplemented_device("QUADSPI",   0xA0001000, 0x400);
+> +}
+> +
+> +static void stm32l4x5_soc_class_init(ObjectClass *klass, void *data)
+> +{
+> +
+> +    DeviceClass *dc =3D DEVICE_CLASS(klass);
+> +
+> +    dc->realize =3D stm32l4x5_soc_realize;
+> +    /* Reason: Mapped at fixed location on the system bus */
+> +    dc->user_creatable =3D false;
+> +    /* No vmstate or reset required: device has no internal state */
+> +}
+> +
+> +static void stm32l4x5xc_soc_class_init(ObjectClass *oc, void *data)
+> +{
+> +    Stm32l4x5SocClass *ssc =3D STM32L4X5_SOC_CLASS(oc);
+> +
+> +    ssc->flash_size =3D 256 * KiB;
+> +}
+> +
+> +static void stm32l4x5xe_soc_class_init(ObjectClass *oc, void *data)
+> +{
+> +    Stm32l4x5SocClass *ssc =3D STM32L4X5_SOC_CLASS(oc);
+> +
+> +    ssc->flash_size =3D 512 * KiB;
+> +}
+> +
+> +static void stm32l4x5xg_soc_class_init(ObjectClass *oc, void *data)
+> +{
+> +    Stm32l4x5SocClass *ssc =3D STM32L4X5_SOC_CLASS(oc);
+> +
+> +    ssc->flash_size =3D 1 * MiB;
+> +}
+> +
+> +static const TypeInfo stm32l4x5_soc_types[] =3D {
+> +    {
+> +        .name           =3D TYPE_STM32L4X5XC_SOC,
+> +        .parent         =3D TYPE_STM32L4X5_SOC,
+> +        .class_init     =3D stm32l4x5xc_soc_class_init,
+> +    }, {
+> +        .name           =3D TYPE_STM32L4X5XE_SOC,
+> +        .parent         =3D TYPE_STM32L4X5_SOC,
+> +        .class_init     =3D stm32l4x5xe_soc_class_init,
+> +    }, {
+> +        .name           =3D TYPE_STM32L4X5XG_SOC,
+> +        .parent         =3D TYPE_STM32L4X5_SOC,
+> +        .class_init     =3D stm32l4x5xg_soc_class_init,
+> +    }, {
+> +        .name           =3D TYPE_STM32L4X5_SOC,
+> +        .parent         =3D TYPE_SYS_BUS_DEVICE,
+> +        .instance_size  =3D sizeof(Stm32l4x5SocState),
+> +        .instance_init  =3D stm32l4x5_soc_initfn,
+> +        .class_size     =3D sizeof(Stm32l4x5SocClass),
+> +        .class_init     =3D stm32l4x5_soc_class_init,
+> +        .abstract       =3D true,
+> +    }
+> +};
+> +
+> +DEFINE_TYPES(stm32l4x5_soc_types)
+> diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_so=
+c.h
+> new file mode 100644
+> index 0000000000..dce13a023d
+> --- /dev/null
+> +++ b/include/hw/arm/stm32l4x5_soc.h
+> @@ -0,0 +1,59 @@
+> +/*
+> + * STM32L4x5 SoC family
+> + *
+> + * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> + * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or la=
+ter.
+> + * See the COPYING file in the top-level directory.
+> + *
+> + * This work is heavily inspired by the stm32f405_soc by Alistair Franci=
+s.
+> + * Original code is licensed under the MIT License:
+> + *
+> + * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
+> + */
+> +
+> +/*
+> + * The reference used is the STMicroElectronics RM0351 Reference manual
+> + * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
+> + * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/docu=
+mentation.html
+> + */
+> +
+> +#ifndef HW_ARM_STM32L4x5_SOC_H
+> +#define HW_ARM_STM32L4x5_SOC_H
+> +
+> +#include "exec/memory.h"
+> +#include "qemu/units.h"
+> +#include "hw/qdev-core.h"
+> +#include "hw/arm/armv7m.h"
+> +#include "qom/object.h"
+> +
+> +#define TYPE_STM32L4X5_SOC "stm32l4x5-soc"
+> +#define TYPE_STM32L4X5XC_SOC "stm32l4x5xc-soc"
+> +#define TYPE_STM32L4X5XE_SOC "stm32l4x5xe-soc"
+> +#define TYPE_STM32L4X5XG_SOC "stm32l4x5xg-soc"
+> +OBJECT_DECLARE_TYPE(Stm32l4x5SocState, Stm32l4x5SocClass, STM32L4X5_SOC)
+> +
+> +struct Stm32l4x5SocState {
+> +    SysBusDevice parent_obj;
+> +
+> +    ARMv7MState armv7m;
+> +
+> +    MemoryRegion sram1;
+> +    MemoryRegion sram2;
+> +    MemoryRegion flash;
+> +    MemoryRegion flash_alias;
+> +
+> +    Clock *sysclk;
+> +    Clock *refclk;
+> +};
+> +
+> +struct Stm32l4x5SocClass {
+> +    SysBusDeviceClass parent_class;
+> +
+> +    size_t flash_size;
+> +};
+> +
+> +#endif
+> --
+> 2.38.5
 >
 >
-> Alvin Chang
->
->
-> >
->
-> > I think the best bet here is to create a helper function that takes a p=
-mpcfg
->
-> > value and returns if it is M-mode only. Then we should check if the cur=
-rent
->
-> > pmp_index is M-mode only OR if we are adding one and then reject that.
->
-> >
->
-> > Does that make sense?
->
-> >
->
-> > Alistair
->
-> >
->
-> > > +                /*
->
-> > > +                 * Convert the PMP permissions to match the truth
->
-> > table in the
->
-> > > +                 * Smepmp spec.
->
-> > > +                 */
->
-> > > +                const uint8_t smepmp_operation =3D
->
-> > > +                    ((val & PMP_LOCK) >> 4) | ((val & PMP_READ) <<
->
-> > 2) |
->
-> > > +                    (val & PMP_WRITE) | ((val & PMP_EXEC) >> 2);
->
-> > > +
->
-> > > +                switch (smepmp_operation) {
->
-> > > +                case 0 ... 8:
->
-> > >                      locked =3D false;
->
-> > > -                }
->
-> > > -                /* shared region and not adding X bit */
->
-> > > -                if ((val & PMP_LOCK) !=3D PMP_LOCK &&
->
-> > > -                    (val & 0x7) !=3D (PMP_WRITE | PMP_EXEC)) {
->
-> > > +                    break;
->
-> > > +                case 9 ... 11:
->
-> > > +                    break;
->
-> > > +                case 12:
->
-> > > +                    locked =3D false;
->
-> > > +                    break;
->
-> > > +                case 13:
->
-> > > +                    break;
->
-> > > +                case 14:
->
-> > > +                case 15:
->
-> > >                      locked =3D false;
->
-> > > +                    break;
->
-> > > +                default:
->
-> > > +                    g_assert_not_reached();
->
-> > >                  }
->
-> > >              }
->
-> > >          } else {
->
-> > > --
->
-> > > 2.34.1
->
-> > >
->
-> > >
 
