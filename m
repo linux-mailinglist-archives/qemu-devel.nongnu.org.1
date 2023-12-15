@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF82C814146
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 06:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9E9814154
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 06:36:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE0n8-0000Ge-TT; Fri, 15 Dec 2023 00:31:18 -0500
+	id 1rE0rM-0001ZX-2D; Fri, 15 Dec 2023 00:35:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rE0n6-00009u-4u; Fri, 15 Dec 2023 00:31:16 -0500
-Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
+ id 1rE0r7-0001Xh-Md; Fri, 15 Dec 2023 00:35:27 -0500
+Received: from mail-vk1-xa2e.google.com ([2607:f8b0:4864:20::a2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rE0n4-0002fS-63; Fri, 15 Dec 2023 00:31:15 -0500
-Received: by mail-ua1-x92c.google.com with SMTP id
- a1e0cc1a2514c-7cb00cc0b5fso33541241.2; 
- Thu, 14 Dec 2023 21:31:13 -0800 (PST)
+ id 1rE0r5-0003MI-8O; Fri, 15 Dec 2023 00:35:25 -0500
+Received: by mail-vk1-xa2e.google.com with SMTP id
+ 71dfb90a1353d-4b2c34bcc1eso107157e0c.3; 
+ Thu, 14 Dec 2023 21:35:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702618271; x=1703223071; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702618522; x=1703223322; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0dBDKhF1rKJO9VmGaHA/tBQURDu+VIWdefPrgCVLbx8=;
- b=Vu1/+STnar8++RfXlsuq7qQZAe6Me67qNtGGntkYEDbIuRhdvTu3FYPFAw6UQrkpQr
- QDuidXRTIhhwI+wj+4x+Vfb6HPbtwP9NGnVppYAQ3EEu8I/RXay6o2GLJGzXsftqgTa9
- zAGMRliEoLCktgkJaQxUVa25qgPVCjnOaQIXDf3bX4bpOXuO7beurBDgDfibrLDhGUrY
- lG6a27l/y2BD8rlri5UsaxzKc31ZxV6/e2tGiWjbYHEkGwJC3TZkQ2SNtBTGfEwSYcKx
- EJoLt40giYf95gh8akWv6etj8e4d4CKw6zzEdFrGsVgtDnjurftWNv/5VCBOVIXegyJ0
- 9MBw==
+ bh=zSsG9xJNygGbLfdWQL0zVatbAIrnp7H+NiOG3cwFmUg=;
+ b=KyURcyZe34FBlv2W6kzoaFKHzQpiGuRj0yOpP8g9hsMxP9/DE02QciD3r8zUp52idE
+ uGgULMFysbL/w+RA+hc9YxD8QlFDX9YQRAnFrhc/xSVs0xtR+3Ju6OQskt6XtONfQiLu
+ NUyuyXng8TdKgXEX80t1BiWTa6hT8EitZyf73IGWDfusqQE7I+Z91W6UKYvbq2h22Gf2
+ uBXbIPB8RK/CAvwX+SDHADaFMulHMYAbJQJls2QEu6DebOYcfFs0M/xS0OoYTCdobS0R
+ AZF7SfcbClVUojSFHfqYRdkAfvOpMfp2o9dIZv0jzzUY5Tu2JqQYl2wLjTDtTyYXenOM
+ T/Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702618271; x=1703223071;
+ d=1e100.net; s=20230601; t=1702618522; x=1703223322;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0dBDKhF1rKJO9VmGaHA/tBQURDu+VIWdefPrgCVLbx8=;
- b=qgN61se7CpncL+cbLxwTyC8vysv3ylWDW5YH/xIJYAXxNrWpKAgd1Q088Szv/7B5d0
- 0JhrrMBx3O23AHsXJ5vMFgCd+WAK6Qkv/tzI/JvqMs5e9GUvOuJuVu34F7DCFIbMSJUQ
- mYvi/O8OsVphUQusufa5RComOMLSrwexjAkwSZ9QCv1hka+vCOptUqs0/M+UXeq0mmXJ
- ZZAL4M2NGEZhKVhk0YlwfiHtcBWfdoDtVBdT+Md9nlMFdy1Un6iPm7Ieg/qNlGT94uWa
- JOMUkyT5YKElyRJrda1wZ3PxJVra3WwO/xfXar4b3+9xPg5m5novIWAgN4314kFk2f5/
- fjIA==
-X-Gm-Message-State: AOJu0Yxh7tgpUNzVMDvRcIGUmgNqj1+TrzzjbwBYkaj+ys6BO9HsuuAt
- uIItjt7J9Rqlmfnh2AvhlH37gzOIiirpdcx5Ai5qbYlcl0c=
-X-Google-Smtp-Source: AGHT+IHuUKRZoc3lTs/1JD8dwSTtTTXKx75cyxPbD88OGrxfkE1AQDXW0KdEjl9z5xHzJk8G3tT/8sVHri8Rsqc3DI8=
-X-Received: by 2002:a05:6102:b08:b0:464:94b1:1119 with SMTP id
- b8-20020a0561020b0800b0046494b11119mr8019028vst.1.1702618271533; Thu, 14 Dec
- 2023 21:31:11 -0800 (PST)
+ bh=zSsG9xJNygGbLfdWQL0zVatbAIrnp7H+NiOG3cwFmUg=;
+ b=L0UzPyG+/SL5gdFlN2uycflZVVc8meTU2R1Q180Z75LqtDxQ0PrGr0qo5am1D5DuSn
+ hxY/COptm3JQ4Sp6Tr0S3GOeLwkUaA9nxfilSkHT8tbem1z4ucig8uyfYCEuHfAKsaEM
+ qN9OH64R924m5xg6IMuwegKePToTJEyRG9VdG+duwASLoa7k+zbau4V9rjZU3svx+7fS
+ IBAV/3iSM9u6AQEwVo/BNPflYMlCbJySAIibn/Qy0WLFdymrJeOalnt4+1TPrTb0D1ca
+ wo9XqJewCW3MNQEz5sRooNr/N/I78p3p1+3cqD5ZqJ9AyhuXU7AyLVAy74PHjqg40KWl
+ bfWw==
+X-Gm-Message-State: AOJu0YwGaDYYI+y+0NmMft9f1TSZcWR9NuMGLX9egyiw+EHtovCtENra
+ +/rQX+ahHVczWnHeTssTLuoCW5TGPBWyMkaMUnw=
+X-Google-Smtp-Source: AGHT+IEWx4UN/IZP43q6F9D7nSMmI7JQePhHQ5sPKIzws6v2P8ikunEhkUlEo0EYkTDjCLKKrFdPpOEgcdsMl6ZzuJI=
+X-Received: by 2002:a05:6122:201e:b0:4b2:c554:dfc2 with SMTP id
+ l30-20020a056122201e00b004b2c554dfc2mr11455141vkd.17.1702618521718; Thu, 14
+ Dec 2023 21:35:21 -0800 (PST)
 MIME-Version: 1.0
-References: <170256739558.25729.14053113716470464567-0@git.sr.ht>
- <170256739558.25729.14053113716470464567-2@git.sr.ht>
-In-Reply-To: <170256739558.25729.14053113716470464567-2@git.sr.ht>
+References: <20231030054834.39145-1-akihiko.odaki@daynix.com>
+ <20231030054834.39145-2-akihiko.odaki@daynix.com>
+ <CAKmqyKMo41GMJ0vVN2_CsfOVrfsz8H9AtxTe6-JbtX+Pi6B3DA@mail.gmail.com>
+ <fcf3a810-7492-4f60-9126-63713d6a30bd@daynix.com>
+In-Reply-To: <fcf3a810-7492-4f60-9126-63713d6a30bd@daynix.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 15 Dec 2023 15:30:45 +1000
-Message-ID: <CAKmqyKMTvUgoA4vmPbMmymH4XyPDYKdnDzhL+ej3MbeiT9+2OQ@mail.gmail.com>
-Subject: Re: [PATCH qemu v3 2/2] hw/arm: Add minimal support for the
- B-L475E-IOT01A board
-To: "~inesvarhol" <inesvarhol@proton.me>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, alistair@alistair23.me, 
- philmd@linaro.org, peter.maydell@linaro.org, ines.varhol@telecom-paris.fr, 
- arnaud.minier@telecom-paris.fr
+Date: Fri, 15 Dec 2023 15:34:55 +1000
+Message-ID: <CAKmqyKOvwZ71+pGz-HSvE29U9a2dbYVPLR0Li2ak5ji+_Ez4-A@mail.gmail.com>
+Subject: Re: [PATCH v6 1/5] hw/riscv: Use misa_mxl instead of misa_mxl_max
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov <a.anenkov@yadro.com>,
+ qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Fabiano Rosas <farosas@suse.de>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2e;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,182 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 15, 2023 at 1:24=E2=80=AFAM ~inesvarhol <inesvarhol@git.sr.ht> =
-wrote:
+On Thu, Nov 23, 2023 at 5:24=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
+.com> wrote:
 >
-> From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> On 2023/11/23 12:04, Alistair Francis wrote:
+> > On Mon, Oct 30, 2023 at 3:50=E2=80=AFPM Akihiko Odaki <akihiko.odaki@da=
+ynix.com> wrote:
+> >>
+> >> The effective MXL value matters when booting.
+> >
+> > This doesn't sound right. Surely the max is what matters here
+> >
+> > Also, this was specifically changed to misa_mxl_max in db23e5d981a
+> > "target/riscv: Replace riscv_cpu_is_32bit with riscv_cpu_mxl".
+> >
+> > This needs a much better description of why this change should be made
+>  >
+>  > Alistair
 >
-> This commit adds a new B-L475E-IOT01A board using the STM32L475VG SoC.
-> The implementation is derived from the Netduino Plus 2 machine.
-> There are no peripherals implemented yet, only memory regions.
+> The kernel will be executed with the current MXL rather than the initial
+> MXL value so the current MXL should be used here.
 >
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> For example, if you are going to emulate a system that has a RV64 CPU
+> and a firmware that sets the MXL to RV32, then mxl_max should be
+> MXL_RV64 and mxl should be MXL_RV32, and the kernel should be assumed as
+> a RV32 binary. Loading a 64-bit kernel will not work in such a case.
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+But this is called before the firmware runs, so it won't be changed by firm=
+ware.
+
+Maybe it's worth putting what this fixes in the commit message?
 
 Alistair
 
-> ---
->  MAINTAINERS                             |  7 +++
->  configs/devices/arm-softmmu/default.mak |  1 +
->  hw/arm/Kconfig                          |  6 +++
->  hw/arm/b-l475e-iot01a.c                 | 70 +++++++++++++++++++++++++
->  hw/arm/meson.build                      |  1 +
->  5 files changed, 85 insertions(+)
->  create mode 100644 hw/arm/b-l475e-iot01a.c
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e5b28aee28..3f3831c92a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1131,6 +1131,13 @@ S: Maintained
->  F: hw/arm/stm32l4x5_soc.c
->  F: include/hw/arm/stm32l4x5_soc.h
+> You can find a similar example in x86_64: x86_64 systems typically
+> starts in 16-bit mode, and the firmware switches to 64-bit mode. When
+> emulating those systems, QEMU switches to 64-bit mode and loads a 64-bit
+> kernel.
 >
-> +B-L475E-IOT01A IoT Node
-> +M: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> +M: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> +L: qemu-arm@nongnu.org
-> +S: Maintained
-> +F: hw/arm/b-l475e-iot01a.c
-> +
->  SmartFusion2
->  M: Subbaraya Sundeep <sundeep.lkml@gmail.com>
->  M: Peter Maydell <peter.maydell@linaro.org>
-> diff --git a/configs/devices/arm-softmmu/default.mak b/configs/devices/ar=
-m-softmmu/default.mak
-> index 980c48a7d9..023faa2f75 100644
-> --- a/configs/devices/arm-softmmu/default.mak
-> +++ b/configs/devices/arm-softmmu/default.mak
-> @@ -19,6 +19,7 @@ CONFIG_ARM_VIRT=3Dy
->  # CONFIG_NSERIES=3Dn
->  # CONFIG_STELLARIS=3Dn
->  # CONFIG_STM32VLDISCOVERY=3Dn
-> +# CONFIG_B_L475E_IOT01A=3Dn
->  # CONFIG_REALVIEW=3Dn
->  # CONFIG_VERSATILE=3Dn
->  # CONFIG_VEXPRESS=3Dn
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index d2b94d9a47..7520dc5cc0 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -448,6 +448,12 @@ config STM32F405_SOC
->      select STM32F4XX_SYSCFG
->      select STM32F4XX_EXTI
->
-> +config B_L475E_IOT01A
-> +    bool
-> +    default y
-> +    depends on TCG && ARM
-> +    select STM32L4X5_SOC
-> +
->  config STM32L4X5_SOC
->      bool
->      select ARM_V7M
-> diff --git a/hw/arm/b-l475e-iot01a.c b/hw/arm/b-l475e-iot01a.c
-> new file mode 100644
-> index 0000000000..c3790e3dc8
-> --- /dev/null
-> +++ b/hw/arm/b-l475e-iot01a.c
-> @@ -0,0 +1,70 @@
-> +/*
-> + * B-L475E-IOT01A Discovery Kit machine
-> + * (B-L475E-IOT01A IoT Node)
-> + *
-> + * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> + * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or la=
-ter.
-> + * See the COPYING file in the top-level directory.
-> + *
-> + * This work is heavily inspired by the netduinoplus2 by Alistair Franci=
-s.
-> + * Original code is licensed under the MIT License:
-> + *
-> + * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
-> + */
-> +
-> +/*
-> + * The reference used is the STMicroElectronics UM2153 User manual
-> + * Discovery kit for IoT node, multi-channel communication with STM32L4.
-> + * https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html#documentat=
-ion
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "hw/boards.h"
-> +#include "hw/qdev-properties.h"
-> +#include "hw/qdev-clock.h"
-> +#include "qemu/error-report.h"
-> +#include "hw/arm/stm32l4x5_soc.h"
-> +#include "hw/arm/boot.h"
-> +
-> +/* Main SYSCLK frequency in Hz (80MHz) */
-> +#define SYSCLK_FRQ 80000000ULL
-> +
-> +static void b_l475e_iot01a_init(MachineState *machine)
-> +{
-> +    const Stm32l4x5SocClass *sc;
-> +    DeviceState *dev;
-> +    Clock *sysclk;
-> +
-> +    /* This clock doesn't need migration because it is fixed-frequency *=
-/
-> +    sysclk =3D clock_new(OBJECT(machine), "SYSCLK");
-> +    clock_set_hz(sysclk, SYSCLK_FRQ);
-> +
-> +    dev =3D qdev_new(TYPE_STM32L4X5XG_SOC);
-> +    sc =3D STM32L4X5_SOC_GET_CLASS(dev);
-> +    qdev_connect_clock_in(dev, "sysclk", sysclk);
-> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-> +
-> +    armv7m_load_kernel(ARM_CPU(first_cpu),
-> +                       machine->kernel_filename,
-> +                       0, sc->flash_size);
-> +}
-> +
-> +static void b_l475e_iot01a_machine_init(MachineClass *mc)
-> +{
-> +    static const char *machine_valid_cpu_types[] =3D {
-> +        ARM_CPU_TYPE_NAME("cortex-m4"),
-> +        NULL};
-> +    mc->desc =3D "B-L475E-IOT01A Discovery Kit (Cortex-M4)";
-> +    mc->init =3D b_l475e_iot01a_init;
-> +    mc->valid_cpu_types =3D machine_valid_cpu_types;
-> +
-> +    /* SRAM pre-allocated as part of the SoC instantiation */
-> +    mc->default_ram_size =3D 0;
-> +}
-> +
-> +DEFINE_MACHINE("b-l475e-iot01a", b_l475e_iot01a_machine_init)
-> diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-> index 9766da10c4..bb92b27db3 100644
-> --- a/hw/arm/meson.build
-> +++ b/hw/arm/meson.build
-> @@ -42,6 +42,7 @@ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm283=
-6.c', 'raspi.c'))
->  arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c=
-'))
->  arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c=
-'))
->  arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c=
-'))
-> +arm_ss.add(when: 'CONFIG_B_L475E_IOT01A', if_true: files('b-l475e-iot01a=
-.c'))
->  arm_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_soc.c=
-'))
->  arm_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp.c=
-', 'xlnx-zcu102.c'))
->  arm_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', '=
-xlnx-versal-virt.c'))
-> --
-> 2.38.5
->
+> Regards,
+> Akihiko Odaki
 
