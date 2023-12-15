@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46296814BA9
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 16:22:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4843814BF6
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 16:40:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEA0F-0004Q5-J5; Fri, 15 Dec 2023 10:21:27 -0500
+	id 1rEAHG-0000Av-I9; Fri, 15 Dec 2023 10:39:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rEA0D-0004Pa-7S
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 10:21:25 -0500
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rEA0A-0008DD-Ds
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 10:21:24 -0500
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-20373729148so344079fac.0
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 07:21:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702653679; x=1703258479; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LXD5d3R2pDUZplxgwvb8awCESXDU0THeugQUdhfINR8=;
- b=VjjYUsOpnhi4RnZyQNsm+Tqonc0QBm54wwN/k9HuJAx0CmrHeCQAlSxK8BBwek2nSq
- xeepw9u+BO8molVn/wxaIgRIK1p84S0jkCscPXqTTgz1bN4fV74QkYkxnC4GqYOqY8Tt
- x2nq4f8zQOHcs3sZMM/o31SYjSXAoEKNhe0605Hfxoft/GK0vJQFvb4wHfPUpg313B4k
- eM+5Vn5BxglI4PRtMjsV0TLjclEQgHj4ael3Psu3dnf2FIOfYCCy5RGwaVeVJbeUCgGK
- ehG7vO7yZwpbq0P9l7qiKPL7BRbUxiMKgnb5xc0ZxEe9+/K8+/EsoYXS66vpxxSQwxEf
- uhcQ==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rEAH7-0000AW-BR
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 10:38:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rEAH5-0007a7-Jd
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 10:38:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702654729;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dStootaGo0hdyo0MQdEBs9nguqkwS0fib79MF49dz24=;
+ b=RuUwdxxcEmvA+7mccd2gVqj0BfIBoStTzVqI7Iv4KGitCU0aDhSVCLJ1zK3yxS2KxyH8iL
+ l+xka7Y5SrJr8gyuBTYVjY2RMRX0WAk9TP1i88YTTZTV3s+CNdWayVfOWV5+Q+RbDd8i3O
+ Rk2Ky1AFxoXDN2WlQ/3K6L5PRjwtvzY=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-597-vbpl8bMzPR2NUifgUcvN5Q-1; Fri, 15 Dec 2023 10:38:48 -0500
+X-MC-Unique: vbpl8bMzPR2NUifgUcvN5Q-1
+Received: by mail-oo1-f72.google.com with SMTP id
+ 006d021491bc7-589ce3eb26cso1052683eaf.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 07:38:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702653679; x=1703258479;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LXD5d3R2pDUZplxgwvb8awCESXDU0THeugQUdhfINR8=;
- b=sukIsaTfK0+PZl56QgrqLy/ZSV7Cja67gYFJu9bRheDy+oLtDwgXZRKwa0KCX832li
- iwVW0NsJpl3ydsxInLYIVzT0x9h1QbZxe1TUD6FLWEQxQ1O17pIz1/bNtFyYluuwXhk+
- QPMk5wuDoZbxBy6bz2KoXrY5VzLPextgXs2FLTbdU/9a/9mU3TbX85LQlXPa7h8o3tkg
- D1dY1G/7EjgT+C9iYMNzk1noSLkBrwULlZFb98cHoRUIz8K9MhvBr5LNH4SZEOxNNIR1
- NHvTrxNgr6dEFMVORYfExqV3qaR+tff2YrVbJ46IxqirZjVH26mQRsA9iuQ+LUWTgof0
- XuJg==
-X-Gm-Message-State: AOJu0YxXzg+6GJMNTn2YRVKuHdVnQRnnrMtiwoVEkFuF7poeMSlTWoXO
- WhZDhodXDHlcv1OQqc1SL6n0ohjH5eNfIYA8o5o=
-X-Google-Smtp-Source: AGHT+IHfdRKaAUY0CZhaBY7Bn9r2+Lv0MtDF745/o6hHQKDtgeBBfxieWSO5W5JrHik5gZuDAP3eva9YbHz2FNOYY7o=
-X-Received: by 2002:a05:6870:610c:b0:203:2225:bab5 with SMTP id
- s12-20020a056870610c00b002032225bab5mr5785701oae.113.1702653678935; Fri, 15
- Dec 2023 07:21:18 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702654727; x=1703259527;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dStootaGo0hdyo0MQdEBs9nguqkwS0fib79MF49dz24=;
+ b=ee2kxbi8TatQ0N6ynCRc4H9qJCT/K4L36ZbRvI7Em9jzulkHUnFuu5f3ETmItPDSY+
+ a4Feut+eKvry3iZxKLPV2uZd/n3VT6QmdYZjXgnUlIILVPJvAF+XDA/JKH88/+VeNk14
+ RE9uMcl/Taj6r33Vdfc6MLyz2LZCqn9+7+2nk2Z28WVwi3OzcXowzZjFNcKXPge9/wcs
+ WGE6vXraG40R6Nh70xV5QFSqJfdouPzWgoLarIbCME48iXjWf//YfRsBcnxvPA/mnJ6Z
+ 1kwuXotq+me6LQfId+vO0ogc/+J7MupeE7O3Zz5yioNYz4nxKiAAL9M/xRcxjwZ3MJfu
+ R/oA==
+X-Gm-Message-State: AOJu0YwptvNAf8OmtLNaCKlF03fEGTXso4H9hlyMMZ7Flj46FZsoMKA+
+ Lm3fxkUjxwcg1dltMujnwLZdh6WfDgC5N6BBtREZLleaPpozQmym4ECm/wTAQKoidcfl2andKJ+
+ JO+oKw9bgSRGLviZcimEveBw=
+X-Received: by 2002:a05:6358:7296:b0:170:17eb:2039 with SMTP id
+ w22-20020a056358729600b0017017eb2039mr15199616rwf.34.1702654726553; 
+ Fri, 15 Dec 2023 07:38:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGKE2zaJpPC9fRN6snwpNkAKR5viXVyMzA7rug54Nlac0m9QNuNujKc0ZutsYeDx575/bPiCQ==
+X-Received: by 2002:a05:6358:7296:b0:170:17eb:2039 with SMTP id
+ w22-20020a056358729600b0017017eb2039mr15199583rwf.34.1702654725763; 
+ Fri, 15 Dec 2023 07:38:45 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:9e2:9000:bed7:42c6:fb19:d12e?
+ ([2a01:e0a:9e2:9000:bed7:42c6:fb19:d12e])
+ by smtp.gmail.com with ESMTPSA id
+ s9-20020a0cf789000000b0067ef5732d09sm2506960qvn.50.2023.12.15.07.38.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Dec 2023 07:38:45 -0800 (PST)
+Message-ID: <a699fa76-a60e-4141-880a-87ca16bcecf9@redhat.com>
+Date: Fri, 15 Dec 2023 16:38:43 +0100
 MIME-Version: 1.0
-References: <9447a47d-751c-4913-a60b-8d92f87f2998@univention.de>
- <CAJSP0QX_7NtrxjYMCXNtHZkGLV7nXRZ8RUK7m4-ypcf9-8Pr_Q@mail.gmail.com>
- <e0454916-9ee9-46b8-9699-4225fa06fa63@univention.de>
-In-Reply-To: <e0454916-9ee9-46b8-9699-4225fa06fa63@univention.de>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 15 Dec 2023 10:21:07 -0500
-Message-ID: <CAJSP0QVkiE_kky47++dHReXbajVeiiJJKcaGfmFHjVjFphK7Yw@mail.gmail.com>
-Subject: Re: "Instant clone" with Qemu?
-To: Philipp Hahn <hahn@univention.de>
-Cc: qemu-devel@nongnu.org, "Daniel P. Berrange" <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x2e.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] vfio: Include libgen.h for basename API
+Content-Language: en-US
+To: Khem Raj <raj.khem@gmail.com>, qemu-devel@nongnu.org
+References: <20231212010228.2701544-1-raj.khem@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231212010228.2701544-1-raj.khem@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,103 +99,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Dec 2023 at 06:01, Philipp Hahn <hahn@univention.de> wrote:
->
-> Hello Stefan,
->
-> thank you for your kind reply.
->
-> Am 05.12.23 um 15:44 schrieb Stefan Hajnoczi:
-> > On Tue, 5 Dec 2023 at 04:53, Philipp Hahn <hahn@univention.de> wrote:
->  >
-> >> by accident I stumbled over "VMware Instant Clone" =C2=B9, which allow=
-s
-> >> cloning of running VMs by copy-on-write-sharing the disk images and
-> >> memory content; the network MAC address gets changed (or a different
-> >> bridge is used?).
-> >> I wonder if something similar can also be done with Qemu? My current
-> >> solution would be to:
-> >> - start and install the VM
-> >> - create a live-snapshot into the qcow2 file
-> >> - clone the disk image, e.g. put a qcow2 overlay on it per clone
-> >> - start and restore the clones from that live-snapshot
-> >> - put the clones in individual bridges and let the host do some networ=
-k
-> >> address translation (NAT) to give each clone a unique external IP addr=
-ess.
-> >>
-> >> Has someone done something similar or is there even a better alternati=
-ve?
-> >>
-> >> Background: our test suite currently provisions a set of multiple VMs,
-> >> which are dependent on each other. Provisioning them takes sometimes
-> >> many hours. After that the test suite runs inside these VMs and again
-> >> takes many hours.
-> >> I'd like to speed that up by parallelizing these tests, e.g.
-> >> 1. setup the VM environment once
-> >> 2. clone the VM environments as the resources allow
-> >> 3. distribute tests over these environments to run in parallel and to
-> >> allow running flaky tests multiple times from a clean clone again
-> >
-> > It would be simplest to use qcow2 backing files and boot each new
-> > instance from scratch. This involves setting up a master image and
-> > then "qemu-img create -f qcow2 -b master.img vm001.qcow2" to create
-> > the instance image. You may be able to use systemd or your distro's
-> > "first boot" functionality to recreate unique IDs and cryptographic
-> > keys when the new instance boots.
->
-> Actually I do not want to modify the clones at all: While the machine ID
-> is probably less interesting to others, I can even live with re-using
-> the SSH keys as this is only for *internal* testing: I can tell `ssh` to
-> not check the keys as I can control all the networking, so security is
-> of little concern here.
->
-> > If you really want to use a RAM snapshot then I suggest creating a
-> > qcow2 master image with the savevm command and using "cp
-> > --reflink=3Dalways master.qcow2 vm001.qcow2" to create an efficient cop=
-y
-> > of the qcow2 file. You'll need some custom scripts to recreate unique
-> > IDs and cryptographic keys inside the new instance after loadvm.
->
-> Is there a major difference between doing a "savevm" to an external file
-> and doing a live snapshot, which stores the "savevm" inside the qcow2
-> file itself. The later has the benefit for me, that I only have to
-> handle one file; I could even store it for later use if needed.
+Hello,
 
-With the reflink approach you still snapshot the VM into the original
-qcow2 file (with the "savevm" command), not into an external file. The
-reflink creates an efficient copy of the file for each instance of the
-VM that you with to clone. But since you've said you don't want to
-modify the clones at all, maybe this approach is overkill because you
-have to manage these new qcow2 files.
+On 12/12/23 02:02, Khem Raj wrote:
+> Glibc has two implementation one based on POSIX which is used when
+> libgen.h is included and second implementation is GNU implementation
+> which is used when string.h is included. The functions are no identical
+> in behavior. Musl C library does not implement the GNU version, but it
+> has provided a declaration in string.h but this has been corrected in
+> latest musl [1] which exposes places where it was being used from
+> string.h to error out especially when -Wimplicit-function-declaration is
+> treated as error.
+> 
+> | ../qemu-8.1.2/hw/vfio/pci.c:3030:18: error: call to undeclared function 'basename'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+> |  3030 |     group_name = basename(group_path);
+> 
+> clang-17 treats this warning as error by default
+> 
+> [1] https://git.musl-libc.org/cgit/musl/commit/?id=725e17ed6dff4d0cd22487bb64470881e86a92e7
+> 
+> Signed-off-by: Khem Raj <raj.khem@gmail.com>
+> ---
+> v2: Add missing link for [1]
 
-Have you tried the -snapshot command-line option? It creates a
-temporary qcow2 overlay that is discarded when QEMU exits. That allows
-the guest to write to the disk but those changes won't be permanent
-and you can run as many guests simultaneously as you want (each has
-its own temporary qcow2 overlay that is managed by QEMU behind the
-scenes).
+Thanks for the fix. The upstream code has changed though and I think we
+should be using g_path_get_basename() instead.
 
->
->
-> My main problem currently is cloning the MAC address: As our product is
-> an operating system the MAC addresses of the involved systems is stored
-> in some databases; while in most cases they are not required, I do not
-> want to hunt for these in all kind of different locations and change
-> them to some cloned MAC address.
-> I already had a look at "Virtual Routing and Forwarding"=C2=B2, which all=
-ows
-> me to resue the same MAC addresses in different network bridge
-> interfaces, but what I did not yet get to work is the "routing" between
-> them. I found some very nice articles=C2=B3=E2=81=B4 on how to do NAT wit=
-h VRF, but
-> it is not yet working.
+Could you please rebase ? Or I will do it in the QEMU 9.0 cycle. This is
+too late for QEMU 8.2 anyhow.
 
-I'm not knowledgeable about VRF. You could also use -netdev
-user,hostfwd=3Dtcp::$VM_SSH_NAT_PORT-:22 where VM_SSH_NAT_PORT is a
-unique port assigned by the script that launches the guest. That way
-each guest can have the same MAC address and IP address but receive
-incoming SSH connections.
+Thanks,
 
-Stefan
+C.
+
+
+
+
+> 
+>   hw/vfio/pci.c      | 1 +
+>   hw/vfio/platform.c | 1 +
+>   2 files changed, 2 insertions(+)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index c62c02f7b6..f043c93b9e 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -19,6 +19,7 @@
+>    */
+>   
+>   #include "qemu/osdep.h"
+> +#include <libgen.h>
+>   #include <linux/vfio.h>
+>   #include <sys/ioctl.h>
+>   
+> diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+> index 8e3d4ac458..a835ab03be 100644
+> --- a/hw/vfio/platform.c
+> +++ b/hw/vfio/platform.c
+> @@ -16,6 +16,7 @@
+>   
+>   #include "qemu/osdep.h"
+>   #include "qapi/error.h"
+> +#include <libgen.h>
+>   #include <sys/ioctl.h>
+>   #include <linux/vfio.h>
+>   
+
 
