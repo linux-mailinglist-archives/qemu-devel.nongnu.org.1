@@ -2,69 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620E3814726
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 12:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1D181478F
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 13:02:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE6Zn-0005wG-TU; Fri, 15 Dec 2023 06:41:55 -0500
+	id 1rE6sa-0000Ze-5q; Fri, 15 Dec 2023 07:01:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rE6Zl-0005w8-N3
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:41:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rE6Zh-0007NF-IS
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 06:41:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702640507;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=RcGT/f4QiVoWjmiqJaWfkSmGZlRLrJpFFrlUYRoeKb8=;
- b=XsZfh61gpHqCFU+kqdOaHbR8ZnODSgBNINP3uW+9wGBXoGMqlducx7RTo5vj0DuRN1wF9v
- tFy5rdqQQz3C/YwTgKqjCYTVkqCyS9MkRGTRPxx+nRzF/00eSSxDJRB2W+1U+aim2ZXbL4
- jQ2uBBICQrceFmt3EkiBLp4pp9dDZZo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-557-0Ix6gEXeMjiaD0piCmJ2Mg-1; Fri,
- 15 Dec 2023 06:41:44 -0500
-X-MC-Unique: 0Ix6gEXeMjiaD0piCmJ2Mg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BC50C280D580;
- Fri, 15 Dec 2023 11:41:43 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.132])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 926BD1C060B1;
- Fri, 15 Dec 2023 11:41:42 +0000 (UTC)
-Date: Fri, 15 Dec 2023 11:41:40 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, sw@weilnetz.de,
- t.lamprecht@proxmox.com
-Subject: Re: [PATCH] qemu_init: increase NOFILE soft limit on POSIX
-Message-ID: <ZXw7dO9U94c82_LW@redhat.com>
-References: <20231212143250.677668-1-f.ebner@proxmox.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rE6sM-0000Yb-Is
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:01:08 -0500
+Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rE6sJ-0002DG-1g
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 07:01:05 -0500
+Received: by mail-qt1-x836.google.com with SMTP id
+ d75a77b69052e-425959f36b0so5059571cf.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 04:01:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1702641660; x=1703246460; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oz69BKEs+xhmhhbGH+/+NJbLNPeOprZVW9G1Y3elaK0=;
+ b=XTZ7CK0L7AwZA35aAouo/h9mctnizHwZeESvCwToaE6ZIKTyI0RDc5n4epc64rI+7Q
+ r5hJf9ZWLwQKr5W9HSOwWAk1gr2AdLHGNdsH8A2uwu8pe7xOlZR/EUdyvhtLUxoS3yLM
+ /dFiaNtWNusoCIIYBkSwN5OZNu/j0MEcfsUmmpc1HPUjq8y9O3+svr/4hfrSeE4xFRwD
+ 3GDBIZNIIZCY6dtnmdTB8oQsX3Tbo8xCdZ76KrMaH85qTdjKsgrk0xKk7wM/FI0JDD9V
+ 3Uz3HcEIVuZXVaBXpqeYalZVWnfv4NTczE3uvzlZUERc3XXuz6/yfLE8U+nGfRezIpcg
+ B7Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702641660; x=1703246460;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oz69BKEs+xhmhhbGH+/+NJbLNPeOprZVW9G1Y3elaK0=;
+ b=pcAcMr3XbWRZEWODlEAgvpIuBxIcHHfRQ1RfvcdIRoaOBDtv1ZzItG5nls7Zs+35zG
+ F2D7Ju8xjEl8Fjtu5mBMmsOvipalWciG4CMs9fwLqjt2peMGxlcO9DmH7fOnkwE6WevG
+ DHcXxvxcHkTO294R09Poe9kGlcoTfrgKkxubjtLoC8jUOm7X7lunaqmL9iCcRPIynGJj
+ Gh2K2SW2Bax35hU6sDYYe1V/l+2xW0akC8Jz08mfD4k9roS1z2ThV60EkOC+ngh5q/i4
+ 5qDDMdQfQXqPzTEoDTqZyfmzUnw33dCm5u274q6g40qZQCUkg4nyukQ0JE+ixTjLh66j
+ Eq5w==
+X-Gm-Message-State: AOJu0YxQW2KdctEbc79RWtgNoXQOlcuCXXbxGZpbNaeVCB1dCZl6vgVF
+ WqWzVZohw7STTuQcy4N94dzJ9l9ygRbnR7CGx68=
+X-Google-Smtp-Source: AGHT+IGqTbFWA5AiU/rqYIR8K5DGMKArBRzdjPNxPsKKF7FFD49lovNXRjn6BDQcI8y62+SZrgocgL+DZqh6C3trzjo=
+X-Received: by 2002:ac8:5ad1:0:b0:425:9d92:821d with SMTP id
+ d17-20020ac85ad1000000b004259d92821dmr18859119qtd.135.1702641660460; Fri, 15
+ Dec 2023 04:01:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231212143250.677668-1-f.ebner@proxmox.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231215-dbus-v2-0-1e2e6aa02115@daynix.com>
+ <20231215-dbus-v2-1-1e2e6aa02115@daynix.com>
+In-Reply-To: <20231215-dbus-v2-1-1e2e6aa02115@daynix.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Fri, 15 Dec 2023 16:00:48 +0400
+Message-ID: <CAJ+F1C+pvRDmZpODinFuSzVYwPdrkar-ceo1aqWwAPtKbQztiw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] Move dbus-display1 out of ui
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x836.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,130 +88,172 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 12, 2023 at 03:32:50PM +0100, Fiona Ebner wrote:
-> In many configurations, e.g. multiple vNICs with multiple queues or
-> with many Ceph OSDs, the default soft limit of 1024 is not enough.
-> QEMU is supposed to work fine with file descriptors >= 1024 and does
-> not use select() on POSIX. Bump the soft limit to the allowed hard
-> limit to avoid issues with the aforementioned configurations.
-> 
-> Of course the limit could be raised from the outside, but the man page
-> of systemd.exec states about 'LimitNOFILE=':
-> 
-> > Don't use.
-> > [...]
-> > Typically applications should increase their soft limit to the hard
-> > limit on their own, if they are OK with working with file
-> > descriptors above 1023,
-> 
-> Buglink: https://bugzilla.proxmox.com/show_bug.cgi?id=4507
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Hi
+
+On Fri, Dec 15, 2023 at 3:29=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
+.com> wrote:
+>
+> Despite its name, dbus-display1 does not only provide DBus interfaces
+> for the display but also for the audio.
+>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+
+It can actually do a lot more, since you can arbitrarily redirect
+chardev devices.. USB, smartcard, QMP and what's not are possible.
+
+Yet, this is a -display module, so we should leave it under ui/ for now imh=
+o
+
 > ---
->  include/sysemu/os-posix.h |  1 +
->  include/sysemu/os-win32.h |  5 +++++
->  os-posix.c                | 18 ++++++++++++++++++
->  system/vl.c               |  2 ++
->  4 files changed, 26 insertions(+)
-> 
-> diff --git a/include/sysemu/os-posix.h b/include/sysemu/os-posix.h
-> index dff32ae185..b881ac6c6f 100644
-> --- a/include/sysemu/os-posix.h
-> +++ b/include/sysemu/os-posix.h
-> @@ -51,6 +51,7 @@ bool is_daemonized(void);
->  void os_daemonize(void);
->  bool os_set_runas(const char *user_id);
->  void os_set_chroot(const char *path);
-> +void os_setup_limits(void);
->  void os_setup_post(void);
->  int os_mlock(void);
->  
-> diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h
-> index 1047d260cb..106f155037 100644
-> --- a/include/sysemu/os-win32.h
-> +++ b/include/sysemu/os-win32.h
-> @@ -128,6 +128,11 @@ static inline int os_mlock(void)
->      return -ENOSYS;
->  }
->  
-> +void os_setup_limits(void)
-> +{
-> +    return;
-> +}
+>  MAINTAINERS                               |  1 +
+>  meson.build                               | 21 +++++++++++++++++++++
+>  ui/dbus.h                                 |  2 +-
+>  audio/dbusaudio.c                         |  2 +-
+>  tests/qtest/dbus-display-test.c           |  2 +-
+>  ui/dbus-display1.xml =3D> dbus-display1.xml |  0
+>  ui/meson.build                            | 18 ------------------
+>  7 files changed, 25 insertions(+), 21 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 695e0bd34fbb..0c2630d0e264 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3389,6 +3389,7 @@ F: docs/sphinx/dbus*
+>  F: docs/sphinx/fakedbusdoc.py
+>  F: tests/qtest/dbus*
+>  F: scripts/xml-preprocess*
+> +F: dbus-display.xml
+>
+>  Seccomp
+>  M: Daniel P. Berrange <berrange@redhat.com>
+> diff --git a/meson.build b/meson.build
+> index ec01f8b138aa..5e1b25a47184 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -2014,6 +2014,27 @@ dbus_display =3D get_option('dbus_display') \
+>             error_message: gdbus_codegen_error.format('-display dbus')) \
+>    .allowed()
+>
+> +if dbus_display
+> +  env =3D environment()
+> +  env.set('TARGETOS', targetos)
+> +  xml =3D custom_target('dbus-display preprocess',
+> +                      input: 'dbus-display1.xml',
+> +                      output: 'dbus-display1.xml',
+> +                      env: env,
+> +                      command: [xml_pp, '@INPUT@', '@OUTPUT@'])
+> +  dbus_display1 =3D custom_target('dbus-display gdbus-codegen',
+> +                                output: ['dbus-display1.h', 'dbus-displa=
+y1.c'],
+> +                                input: xml,
+> +                                command: [gdbus_codegen, '@INPUT@',
+> +                                          '--glib-min-required', '2.64',
+> +                                          '--output-directory', meson.cu=
+rrent_build_dir(),
+> +                                          '--interface-prefix', 'org.qem=
+u.',
+> +                                          '--c-namespace', 'QemuDBus',
+> +                                          '--generate-c-code', '@BASENAM=
+E@'])
+> +  dbus_display1_lib =3D static_library('dbus-display1', dbus_display1, d=
+ependencies: gio)
+> +  dbus_display1_dep =3D declare_dependency(link_with: dbus_display1_lib,=
+ include_directories: include_directories('.'))
+> +endif
 > +
->  #define fsync _commit
->  
->  #if !defined(lseek)
-> diff --git a/os-posix.c b/os-posix.c
-> index 52ef6990ff..eb55473140 100644
-> --- a/os-posix.c
-> +++ b/os-posix.c
-> @@ -24,6 +24,7 @@
->   */
->  
->  #include "qemu/osdep.h"
-> +#include <sys/resource.h>
->  #include <sys/wait.h>
->  #include <pwd.h>
->  #include <grp.h>
-> @@ -256,6 +257,23 @@ void os_daemonize(void)
->      }
->  }
->  
-> +void os_setup_limits(void)
-> +{
-> +    struct rlimit nofile;
-> +
-> +    if (getrlimit(RLIMIT_NOFILE, &nofile) < 0) {
-> +        warn_report("unable to query NOFILE limit: %s", strerror(errno));
-> +        return;
-> +    }
-> +
+>  have_virtfs =3D get_option('virtfs') \
+>      .require(targetos =3D=3D 'linux' or targetos =3D=3D 'darwin',
+>               error_message: 'virtio-9p (virtfs) requires Linux or macOS'=
+) \
+> diff --git a/ui/dbus.h b/ui/dbus.h
+> index 1e8c24a48e32..ba9bab9f84d9 100644
+> --- a/ui/dbus.h
+> +++ b/ui/dbus.h
+> @@ -31,7 +31,7 @@
+>  #include "ui/console.h"
+>  #include "ui/clipboard.h"
+>
+> -#include "ui/dbus-display1.h"
+> +#include "dbus-display1.h"
+>
+>  typedef struct DBusClipboardRequest {
+>      GDBusMethodInvocation *invocation;
+> diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
+> index 60fcf643ecf8..5222b3c68804 100644
+> --- a/audio/dbusaudio.c
+> +++ b/audio/dbusaudio.c
+> @@ -34,7 +34,7 @@
+>  #endif
+>
+>  #include "ui/dbus.h"
+> -#include "ui/dbus-display1.h"
+> +#include "dbus-display1.h"
+>
+>  #define AUDIO_CAP "dbus"
+>  #include "audio.h"
+> diff --git a/tests/qtest/dbus-display-test.c b/tests/qtest/dbus-display-t=
+est.c
+> index 21edaa1e321f..a15e9c377b08 100644
+> --- a/tests/qtest/dbus-display-test.c
+> +++ b/tests/qtest/dbus-display-test.c
+> @@ -5,7 +5,7 @@
+>  #include <gio/gio.h>
+>  #include <gio/gunixfdlist.h>
+>  #include "libqtest.h"
+> -#include "ui/dbus-display1.h"
+> +#include "dbus-display1.h"
+>
+>  static GDBusConnection*
+>  test_dbus_p2p_from_fd(int fd)
+> diff --git a/ui/dbus-display1.xml b/dbus-display1.xml
+> similarity index 100%
+> rename from ui/dbus-display1.xml
+> rename to dbus-display1.xml
+> diff --git a/ui/meson.build b/ui/meson.build
+> index 0ccb3387ee6a..bbb7c5242d55 100644
+> --- a/ui/meson.build
+> +++ b/ui/meson.build
+> @@ -75,24 +75,6 @@ endif
+>
+>  if dbus_display
+>    dbus_ss =3D ss.source_set()
+> -  env =3D environment()
+> -  env.set('TARGETOS', targetos)
+> -  xml =3D custom_target('dbus-display preprocess',
+> -                      input: 'dbus-display1.xml',
+> -                      output: 'dbus-display1.xml',
+> -                      env: env,
+> -                      command: [xml_pp, '@INPUT@', '@OUTPUT@'])
+> -  dbus_display1 =3D custom_target('dbus-display gdbus-codegen',
+> -                                output: ['dbus-display1.h', 'dbus-displa=
+y1.c'],
+> -                                input: xml,
+> -                                command: [gdbus_codegen, '@INPUT@',
+> -                                          '--glib-min-required', '2.64',
+> -                                          '--output-directory', meson.cu=
+rrent_build_dir(),
+> -                                          '--interface-prefix', 'org.qem=
+u.',
+> -                                          '--c-namespace', 'QemuDBus',
+> -                                          '--generate-c-code', '@BASENAM=
+E@'])
+> -  dbus_display1_lib =3D static_library('dbus-display1', dbus_display1, d=
+ependencies: gio)
+> -  dbus_display1_dep =3D declare_dependency(link_with: dbus_display1_lib,=
+ include_directories: include_directories('.'))
+>    dbus_ss.add(when: [gio, dbus_display1_dep],
+>                if_true: [files(
+>                  'dbus-chardev.c',
+>
+> --
+> 2.43.0
+>
+>
 
-I'd suggest to return here, if cur == max, to avoid the
-redundant setrlimit call. This will avoid a needless
-warning message if someone used a strict seccomp filter
-to block setrlimit, and had raisd NOFILE before QEMU was
-execd
 
-> +    nofile.rlim_cur = nofile.rlim_max;
-> +
-> +    if (setrlimit(RLIMIT_NOFILE, &nofile) < 0) {
-> +        warn_report("unable to set NOFILE limit: %s", strerror(errno));
-> +        return;
-> +    }
-> +}
-> +
->  void os_setup_post(void)
->  {
->      int fd = 0;
-> diff --git a/system/vl.c b/system/vl.c
-> index 2bcd9efb9a..6f42f37200 100644
-> --- a/system/vl.c
-> +++ b/system/vl.c
-> @@ -2774,6 +2774,8 @@ void qemu_init(int argc, char **argv)
->      error_init(argv[0]);
->      qemu_init_exec_dir(argv[0]);
->  
-> +    os_setup_limits();
-> +
->      qemu_init_arch_modules();
->  
->      qemu_init_subsystems();
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
