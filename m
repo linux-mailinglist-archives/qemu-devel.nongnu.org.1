@@ -2,79 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5AB38149F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 15:05:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8BB814A17
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 15:09:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE8nF-0000OA-Kr; Fri, 15 Dec 2023 09:03:57 -0500
+	id 1rE8qh-00021M-4R; Fri, 15 Dec 2023 09:07:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
- id 1rE8nD-0000Nx-15; Fri, 15 Dec 2023 09:03:55 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rE8qY-0001vv-GR
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 09:07:23 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
- id 1rE8n9-0005HJ-MM; Fri, 15 Dec 2023 09:03:54 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-50bfd7be487so730049e87.0; 
- Fri, 15 Dec 2023 06:03:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rE8qV-00082c-EW
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 09:07:22 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5522ba3f94aso750085a12.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 06:07:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702649028; x=1703253828; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Og75nzJUqr7aY5MfzChuNtBluhG+w+ZvrmwaurIZwUs=;
- b=lYfz3e23ssjO8bK/loPBoNgAGHGhSWSTrlkDeuKZiVGzSBuVcPJ1oNs10cwtlZvxhk
- K7gwEgbf/kxtpTyksqi8ST1jO1lCJT8m/I3kzoOJT3tQcw5SlOLbyb7k2BabvYrPjOBf
- keo6M7rHaOU7Z60NEj2/NEZaKDcjfOVfNnJryaNsDbG3K/qrUW74OGNug+e1YMr35/7J
- VEDwUlTT9SVWQ293Uy5h3zFn8+9fFJid9x5BJS/kJJQ9BRyEpo548dKV+Cc96dAgEozE
- uv8R35xf3TX6LpM2z2lu74yQNj41eRVdx+IhWfFKK5XdZA8SAfbMNTrW4YdJslYOPHLI
- sq2Q==
+ d=linaro.org; s=google; t=1702649238; x=1703254038; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=c4HT5F+UK7/71bqtR8jPcbK9fR7Z9VZ3+y4MRuMODng=;
+ b=ZBwwgtw5ILQkjAk07Mg39rtdFqqm9nx8jw5SjdqO/FuvvWiRe2ZdUJt5AnO7DvV2q5
+ SL+noiIhwGCxhjdNIjcZyK/N67xDZfn6a1xg8h9GypKRgj9ni1tef/CyfohEKjqL2sHa
+ okxeuCEhAfD2QwoCYE16CeWYl+y+OkyPxcRzX3gl7sbeprPDjTbGt8G/i8OXN8B/0AJx
+ 8Zmx9h/2K1JkSuACgNc2d8/LWOWFp39DkwYR5+Bkplb4JqxzfnqUNcniM6iFKSQKogGe
+ mdqGHKn5pDkTyzkMIVKjVi7gax/Advv01E6RyOadY+TwLkq+RSrWovtrzfz0J7q1LSeD
+ zzaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702649028; x=1703253828;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1702649238; x=1703254038;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Og75nzJUqr7aY5MfzChuNtBluhG+w+ZvrmwaurIZwUs=;
- b=SfQrJnCastRsHZRtlFL0HgyYaEr9Prh/7gx2nbaMyf0zycFCIBGA6P1+wwEVcwCN0r
- D02Tgb0JMswa3Gxss8wLquVC0O1J0wf59Hao9J04PcaRXIdj7Ep7M4kU2LNdlKYGzNu8
- ak0OQrsdJO/u1NgB/UsMwEaT++1LJITs5Q7YBHItZXZr0Tikq5hDl5YuTCNa+dy6TYpC
- zOP/2DmvJGuwy06LH8aGdsAY803EFn28UI2v/KiaFjDgTKdt+AMnmciT4PXks0sWUykp
- 1aUsburLHlqeZtyorFrgBvv+HzM8kOO5XKz9MnsHnjzpvOh3ZzkoknTzQ30Hohk/kBia
- OYXQ==
-X-Gm-Message-State: AOJu0YzJFchkuS47PSrJf6kEYH1gyswsT27gKzsgduyydeYMwQrTqokW
- ZMyeebwrYvU+R+h9dR8XcUlQEcrXi+ZWIiNl8s0=
-X-Google-Smtp-Source: AGHT+IGmcG4UBsx+o6l5hpR6Qy4GPqwruCWSZYrCpxzuZoqezrhjkyX94oSywDON38qAXS5jkUqKlg==
-X-Received: by 2002:a05:6512:3d91:b0:50d:1479:f9db with SMTP id
- k17-20020a0565123d9100b0050d1479f9dbmr7274712lfv.98.1702649027627; 
- Fri, 15 Dec 2023 06:03:47 -0800 (PST)
-Received: from vm579946.eurodir.ru ([95.142.42.61])
- by smtp.gmail.com with ESMTPSA id
- i10-20020a056512340a00b0050be8d89aefsm2153306lfr.309.2023.12.15.06.03.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Dec 2023 06:03:47 -0800 (PST)
-From: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- Nikita Ostrenkov <n.ostrenkov@gmail.com>
-Subject: [PATCH v4] fsl-imx: add simple RTC emulation for i.MX6 and i.MX7
- boards
-Date: Fri, 15 Dec 2023 17:03:46 +0300
-Message-Id: <20231215140346.3858-1-n.ostrenkov@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ bh=c4HT5F+UK7/71bqtR8jPcbK9fR7Z9VZ3+y4MRuMODng=;
+ b=Y54vDoGPdanKUb8dKRcDlZ4I2lWNyHC6dCLg9QaBrxM7SFt/d4/BiNAOx/NIba1+9e
+ J63yTY2fo7j+lf6ZDkLM1u32OQ8UYxjW6oWfdrTaOg2y47hT78ewmEhys+PhQuJGCxYv
+ GQQPDmTZShThJBoF3yx9QhKoTWmwWooxtDBm2MtR+MSDzo/i8ILg96BZvcr2NacatXHc
+ V8mEw4o5d8WFMyyUfQB0obKJPeRG8MGqMt9c5+WE4O0iNvbj9fjKNkc6ofw2X0sXAeF3
+ NMPLnYRTt2tQqI6my08Gnr9KVlRtjlEj08CkSEJyNYx1lvfZPPuWpdThPPtFy0gdpiIS
+ o0zA==
+X-Gm-Message-State: AOJu0YzYWjN/tYzCntbs3sGTe612Bdc/o8bXEK0qkKf5prJEWF3fxLa4
+ rDYyxq7azo0mxb707CCM0eg1CSkPn68yFBNn5Aqe9A==
+X-Google-Smtp-Source: AGHT+IFMxp+k5ylN3JVVL5GUBi5tkgosCGJEdMKthAmgTbkJ+0Y+a/rvaEP2ry9iZCi1tMWRvPEISdOpi2dW84Bsmlo=
+X-Received: by 2002:a50:9b5c:0:b0:551:8766:7296 with SMTP id
+ a28-20020a509b5c000000b0055187667296mr2014998edj.105.1702649237658; Fri, 15
+ Dec 2023 06:07:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=n.ostrenkov@gmail.com; helo=mail-lf1-x132.google.com
+References: <20231103182750.855577-1-peter.maydell@linaro.org>
+In-Reply-To: <20231103182750.855577-1-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 15 Dec 2023 14:07:06 +0000
+Message-ID: <CAFEAcA-QXorAggMFLEknvkrrBtCZSEWpcW_Fx_GTrxD0RfqUFg@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
+To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Cc: Jan Kiszka <jan.kiszka@web.de>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,191 +84,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
----
- hw/misc/imx7_snvs.c         | 93 ++++++++++++++++++++++++++++++++++---
- hw/misc/trace-events        |  4 +-
- include/hw/misc/imx7_snvs.h |  7 ++-
- 3 files changed, 94 insertions(+), 10 deletions(-)
+Ping for code review, since we're approaching the end of the
+8.2 freeze ?
 
-diff --git a/hw/misc/imx7_snvs.c b/hw/misc/imx7_snvs.c
-index a245f96cd4..711879e326 100644
---- a/hw/misc/imx7_snvs.c
-+++ b/hw/misc/imx7_snvs.c
-@@ -13,28 +13,100 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/bitops.h"
-+#include "qemu/timer.h"
-+#include "migration/vmstate.h"
- #include "hw/misc/imx7_snvs.h"
-+#include "qemu/cutils.h"
- #include "qemu/module.h"
-+#include "sysemu/sysemu.h"
-+#include "sysemu/rtc.h"
- #include "sysemu/runstate.h"
- #include "trace.h"
- 
-+#define RTC_FREQ    32768ULL
-+
-+static const VMStateDescription vmstate_imx7_snvs = {
-+    .name = TYPE_IMX7_SNVS,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT64(tick_offset, IMX7SNVSState),
-+        VMSTATE_UINT64(lpcr, IMX7SNVSState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static uint64_t imx7_snvs_get_count(IMX7SNVSState *s)
-+{
-+    int64_t ticks = muldiv64(qemu_clock_get_ns(rtc_clock), RTC_FREQ,
-+                             NANOSECONDS_PER_SECOND);
-+    return s->tick_offset + ticks;
-+}
-+
- static uint64_t imx7_snvs_read(void *opaque, hwaddr offset, unsigned size)
- {
--    trace_imx7_snvs_read(offset, 0);
-+    IMX7SNVSState *s = IMX7_SNVS(opaque);
-+    uint64_t ret = 0;
-+
-+    switch (offset) {
-+    case SNVS_LPSRTCMR:
-+        ret = extract64(imx7_snvs_get_count(s), 32, 15);
-+        break;
-+    case SNVS_LPSRTCLR:
-+        ret = extract64(imx7_snvs_get_count(s), 0, 32);
-+        break;
-+    case SNVS_LPCR:
-+        ret = s->lpcr;
-+        break;
-+    }
- 
--    return 0;
-+    trace_imx7_snvs_read(offset, ret, size);
-+
-+    return ret;
-+}
-+
-+static void imx7_snvs_reset(DeviceState *dev)
-+{
-+    IMX7SNVSState *s = IMX7_SNVS(dev);
-+
-+    s->lpcr = 0;
- }
- 
- static void imx7_snvs_write(void *opaque, hwaddr offset,
-                             uint64_t v, unsigned size)
- {
--    const uint32_t value = v;
--    const uint32_t mask  = SNVS_LPCR_TOP | SNVS_LPCR_DP_EN;
-+    trace_imx7_snvs_write(offset, v, size);
-+
-+    IMX7SNVSState *s = IMX7_SNVS(opaque);
- 
--    trace_imx7_snvs_write(offset, value);
-+    uint64_t new_value = 0, snvs_count = 0;
- 
--    if (offset == SNVS_LPCR && ((value & mask) == mask)) {
--        qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-+    if (offset == SNVS_LPSRTCMR || offset == SNVS_LPSRTCLR) {
-+        snvs_count = imx7_snvs_get_count(s);
-+    }
-+
-+    switch (offset) {
-+    case SNVS_LPSRTCMR:
-+        new_value = deposit64(snvs_count, 32, 32, v);
-+        break;
-+    case SNVS_LPSRTCLR:
-+        new_value = deposit64(snvs_count, 0, 32, v);
-+        break;
-+    case SNVS_LPCR: {
-+        s->lpcr = v;
-+
-+        const uint32_t mask  = SNVS_LPCR_TOP | SNVS_LPCR_DP_EN;
-+
-+        if ((v & mask) == mask) {
-+            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-+        }
-+        break;
-+    }
-+    }
-+
-+    if (offset == SNVS_LPSRTCMR || offset == SNVS_LPSRTCLR) {
-+        s->tick_offset += new_value - snvs_count;
-     }
- }
- 
-@@ -59,17 +131,24 @@ static void imx7_snvs_init(Object *obj)
- {
-     SysBusDevice *sd = SYS_BUS_DEVICE(obj);
-     IMX7SNVSState *s = IMX7_SNVS(obj);
-+    struct tm tm;
- 
-     memory_region_init_io(&s->mmio, obj, &imx7_snvs_ops, s,
-                           TYPE_IMX7_SNVS, 0x1000);
- 
-     sysbus_init_mmio(sd, &s->mmio);
-+
-+    qemu_get_timedate(&tm, 0);
-+    s->tick_offset = mktimegm(&tm) -
-+        qemu_clock_get_ns(rtc_clock) / NANOSECONDS_PER_SECOND;
- }
- 
- static void imx7_snvs_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-+    dc->reset = imx7_snvs_reset;
-+    dc->vmsd = &vmstate_imx7_snvs;
-     dc->desc  = "i.MX7 Secure Non-Volatile Storage Module";
- }
- 
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 05ff692441..85725506bf 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -116,8 +116,8 @@ imx7_gpr_read(uint64_t offset) "addr 0x%08" PRIx64
- imx7_gpr_write(uint64_t offset, uint64_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx64
- 
- # imx7_snvs.c
--imx7_snvs_read(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
--imx7_snvs_write(uint64_t offset, uint32_t value) "addr 0x%08" PRIx64 "value 0x%08" PRIx32
-+imx7_snvs_read(uint64_t offset, uint64_t value, unsigned size) "i.MX SNVS read: offset 0x%08" PRIx64 " value 0x%08" PRIx64 " size %u"
-+imx7_snvs_write(uint64_t offset, uint64_t value, unsigned size) "i.MX SNVS write: offset 0x%08" PRIx64 " value 0x%08" PRIx64 " size %u"
- 
- # mos6522.c
- mos6522_set_counter(int index, unsigned int val) "T%d.counter=%d"
-diff --git a/include/hw/misc/imx7_snvs.h b/include/hw/misc/imx7_snvs.h
-index 14a1d6fe6b..1272076086 100644
---- a/include/hw/misc/imx7_snvs.h
-+++ b/include/hw/misc/imx7_snvs.h
-@@ -20,7 +20,9 @@
- enum IMX7SNVSRegisters {
-     SNVS_LPCR = 0x38,
-     SNVS_LPCR_TOP   = BIT(6),
--    SNVS_LPCR_DP_EN = BIT(5)
-+    SNVS_LPCR_DP_EN = BIT(5),
-+    SNVS_LPSRTCMR = 0x050, /* Secure Real Time Counter MSB Register */
-+    SNVS_LPSRTCLR = 0x054, /* Secure Real Time Counter LSB Register */
- };
- 
- #define TYPE_IMX7_SNVS "imx7.snvs"
-@@ -31,6 +33,9 @@ struct IMX7SNVSState {
-     SysBusDevice parent_obj;
- 
-     MemoryRegion mmio;
-+
-+    uint64_t tick_offset;
-+    uint64_t lpcr;
- };
- 
- #endif /* IMX7_SNVS_H */
--- 
-2.34.1
+thanks
+-- PMM
 
+On Fri, 3 Nov 2023 at 18:27, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> Convert the musicpal key input device to use
+> qemu_add_kbd_event_handler().  This lets us simplify it because we no
+> longer need to track whether we're in the middle of a PS/2 multibyte
+> key sequence.
+>
+> In the conversion we move the keyboard handler registration from init
+> to realize, because devices shouldn't disturb the state of the
+> simulation by doing things like registering input handlers until
+> they're realized, so that device objects can be introspected
+> safely.
+>
+> The behaviour where key-repeat is permitted for the arrow-keys only
+> is intentional (added in commit 7c6ce4baedfcd0c), so we retain it,
+> and add a comment to that effect.
+>
+> This is a migration compatibility break for musicpal.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  hw/arm/musicpal.c | 131 +++++++++++++++++++++-------------------------
+>  1 file changed, 61 insertions(+), 70 deletions(-)
+>
+> diff --git a/hw/arm/musicpal.c b/hw/arm/musicpal.c
+> index 9703bfb97fb..e8c1250ab04 100644
+> --- a/hw/arm/musicpal.c
+> +++ b/hw/arm/musicpal.c
+> @@ -1043,20 +1043,6 @@ static const TypeInfo musicpal_gpio_info = {
+>  };
+>
+>  /* Keyboard codes & masks */
+> -#define KEY_RELEASED            0x80
+> -#define KEY_CODE                0x7f
+> -
+> -#define KEYCODE_TAB             0x0f
+> -#define KEYCODE_ENTER           0x1c
+> -#define KEYCODE_F               0x21
+> -#define KEYCODE_M               0x32
+> -
+> -#define KEYCODE_EXTENDED        0xe0
+> -#define KEYCODE_UP              0x48
+> -#define KEYCODE_DOWN            0x50
+> -#define KEYCODE_LEFT            0x4b
+> -#define KEYCODE_RIGHT           0x4d
+> -
+>  #define MP_KEY_WHEEL_VOL       (1 << 0)
+>  #define MP_KEY_WHEEL_VOL_INV   (1 << 1)
+>  #define MP_KEY_WHEEL_NAV       (1 << 2)
+> @@ -1074,67 +1060,66 @@ struct musicpal_key_state {
+>      SysBusDevice parent_obj;
+>      /*< public >*/
+>
+> -    uint32_t kbd_extended;
+>      uint32_t pressed_keys;
+>      qemu_irq out[8];
+>  };
+>
+> -static void musicpal_key_event(void *opaque, int keycode)
+> +static void musicpal_key_event(DeviceState *dev, QemuConsole *src,
+> +                               InputEvent *evt)
+>  {
+> -    musicpal_key_state *s = opaque;
+> +    musicpal_key_state *s = MUSICPAL_KEY(dev);
+> +    InputKeyEvent *key = evt->u.key.data;
+> +    int qcode = qemu_input_key_value_to_qcode(key->key);
+>      uint32_t event = 0;
+>      int i;
+>
+> -    if (keycode == KEYCODE_EXTENDED) {
+> -        s->kbd_extended = 1;
+> -        return;
+> +    switch (qcode) {
+> +    case Q_KEY_CODE_UP:
+> +        event = MP_KEY_WHEEL_NAV | MP_KEY_WHEEL_NAV_INV;
+> +        break;
+> +
+> +    case Q_KEY_CODE_DOWN:
+> +        event = MP_KEY_WHEEL_NAV;
+> +        break;
+> +
+> +    case Q_KEY_CODE_LEFT:
+> +        event = MP_KEY_WHEEL_VOL | MP_KEY_WHEEL_VOL_INV;
+> +        break;
+> +
+> +    case Q_KEY_CODE_RIGHT:
+> +        event = MP_KEY_WHEEL_VOL;
+> +        break;
+> +
+> +    case Q_KEY_CODE_F:
+> +        event = MP_KEY_BTN_FAVORITS;
+> +        break;
+> +
+> +    case Q_KEY_CODE_TAB:
+> +        event = MP_KEY_BTN_VOLUME;
+> +        break;
+> +
+> +    case Q_KEY_CODE_RET:
+> +        event = MP_KEY_BTN_NAVIGATION;
+> +        break;
+> +
+> +    case Q_KEY_CODE_M:
+> +        event = MP_KEY_BTN_MENU;
+> +        break;
+>      }
+>
+> -    if (s->kbd_extended) {
+> -        switch (keycode & KEY_CODE) {
+> -        case KEYCODE_UP:
+> -            event = MP_KEY_WHEEL_NAV | MP_KEY_WHEEL_NAV_INV;
+> -            break;
+> -
+> -        case KEYCODE_DOWN:
+> -            event = MP_KEY_WHEEL_NAV;
+> -            break;
+> -
+> -        case KEYCODE_LEFT:
+> -            event = MP_KEY_WHEEL_VOL | MP_KEY_WHEEL_VOL_INV;
+> -            break;
+> -
+> -        case KEYCODE_RIGHT:
+> -            event = MP_KEY_WHEEL_VOL;
+> -            break;
+> -        }
+> -    } else {
+> -        switch (keycode & KEY_CODE) {
+> -        case KEYCODE_F:
+> -            event = MP_KEY_BTN_FAVORITS;
+> -            break;
+> -
+> -        case KEYCODE_TAB:
+> -            event = MP_KEY_BTN_VOLUME;
+> -            break;
+> -
+> -        case KEYCODE_ENTER:
+> -            event = MP_KEY_BTN_NAVIGATION;
+> -            break;
+> -
+> -        case KEYCODE_M:
+> -            event = MP_KEY_BTN_MENU;
+> -            break;
+> -        }
+> -        /* Do not repeat already pressed buttons */
+> -        if (!(keycode & KEY_RELEASED) && (s->pressed_keys & event)) {
+> +    /*
+> +     * We allow repeated wheel-events when the arrow keys are held down,
+> +     * but do not repeat already-pressed buttons for the other key inputs.
+> +     */
+> +    if (!(event & (MP_KEY_WHEEL_NAV | MP_KEY_WHEEL_VOL))) {
+> +        if (key->down && (s->pressed_keys & event)) {
+>              event = 0;
+>          }
+>      }
+>
+>      if (event) {
+>          /* Raise GPIO pin first if repeating a key */
+> -        if (!(keycode & KEY_RELEASED) && (s->pressed_keys & event)) {
+> +        if (key->down && (s->pressed_keys & event)) {
+>              for (i = 0; i <= 7; i++) {
+>                  if (event & (1 << i)) {
+>                      qemu_set_irq(s->out[i], 1);
+> @@ -1143,17 +1128,15 @@ static void musicpal_key_event(void *opaque, int keycode)
+>          }
+>          for (i = 0; i <= 7; i++) {
+>              if (event & (1 << i)) {
+> -                qemu_set_irq(s->out[i], !!(keycode & KEY_RELEASED));
+> +                qemu_set_irq(s->out[i], !key->down);
+>              }
+>          }
+> -        if (keycode & KEY_RELEASED) {
+> -            s->pressed_keys &= ~event;
+> -        } else {
+> +        if (key->down) {
+>              s->pressed_keys |= event;
+> +        } else {
+> +            s->pressed_keys &= ~event;
+>          }
+>      }
+> -
+> -    s->kbd_extended = 0;
+>  }
+>
+>  static void musicpal_key_init(Object *obj)
+> @@ -1162,20 +1145,27 @@ static void musicpal_key_init(Object *obj)
+>      DeviceState *dev = DEVICE(sbd);
+>      musicpal_key_state *s = MUSICPAL_KEY(dev);
+>
+> -    s->kbd_extended = 0;
+>      s->pressed_keys = 0;
+>
+>      qdev_init_gpio_out(dev, s->out, ARRAY_SIZE(s->out));
+> +}
+>
+> -    qemu_add_kbd_event_handler(musicpal_key_event, s);
+> +static const QemuInputHandler musicpal_key_handler = {
+> +    .name = "musicpal_key",
+> +    .mask = INPUT_EVENT_MASK_KEY,
+> +    .event = musicpal_key_event,
+> +};
+> +
+> +static void musicpal_key_realize(DeviceState *dev, Error **errp)
+> +{
+> +    qemu_input_handler_register(dev, &musicpal_key_handler);
+>  }
+>
+>  static const VMStateDescription musicpal_key_vmsd = {
+>      .name = "musicpal_key",
+> -    .version_id = 1,
+> -    .minimum_version_id = 1,
+> +    .version_id = 2,
+> +    .minimum_version_id = 2,
+>      .fields = (VMStateField[]) {
+> -        VMSTATE_UINT32(kbd_extended, musicpal_key_state),
+>          VMSTATE_UINT32(pressed_keys, musicpal_key_state),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1186,6 +1176,7 @@ static void musicpal_key_class_init(ObjectClass *klass, void *data)
+>      DeviceClass *dc = DEVICE_CLASS(klass);
+>
+>      dc->vmsd = &musicpal_key_vmsd;
+> +    dc->realize = musicpal_key_realize;
+>  }
+>
+>  static const TypeInfo musicpal_key_info = {
+> --
+> 2.34.1
+>
 
