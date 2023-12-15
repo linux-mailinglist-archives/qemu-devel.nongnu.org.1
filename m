@@ -2,78 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58066814B90
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 16:18:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3334A814B93
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 16:19:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE9vy-0000v6-Lp; Fri, 15 Dec 2023 10:17:02 -0500
+	id 1rE9xk-0002ek-Vu; Fri, 15 Dec 2023 10:18:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1rE9vq-0000iD-9B
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 10:16:56 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rE9x0-0002MF-2e
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 10:18:10 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1rE9vo-0005wU-Jw
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 10:16:53 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40c25973988so8267665e9.2
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 07:16:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rE9wy-0006fB-2O
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 10:18:05 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40c55872d80so11214545e9.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 07:18:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702653410; x=1703258210; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FD5lcscTgLjr7YreIMa4Mn7D9UemU5jzp3PkrPYtuEY=;
- b=h4jtDbjAvllWqGta7svmrLsBF/ex3u43Rqk5VkZfgBq0xJV7mNDC/6tHUgC+TZKfaa
- 1MED4Wz+2xN5hQPd2RYr7AIRjZXj0FkoXH7+xEyb8vpa9uIv9AKi+Yed35iXbdObqt87
- HpRk2+Zx+KLz6thaA5jlCLHYxdtsxqSb82Iwvm8ZiXFQMneS0fQ3gzIK1i19gITWynUI
- Agnm8PDMoBNnmKkHvvV4lGtwjTQ7JJLSyONENjOnuRjFc6Ogc7raANeDmjvn8NQwF2TJ
- vzjBu/WRVetaku725Jq/yMAiYwoWK6aL+v6F6IsiVriC9v+aYm4eo38VXlzy0rAWwSXq
- /bKA==
+ d=linaro.org; s=google; t=1702653481; x=1703258281; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tJMhX72seUmobXUZCtth5wzvy7ZNMZEv4SUoOOPYmWI=;
+ b=Bx21tpicRtMskNtwU5+3VaVEEWYMeUmToBPwotp8m8yymuxcaPsPilxdfQ/zZh6lg/
+ oQJeoyQ8lSIauhW6iOGyAcXKwrapNHLuJ3y7rC7Yl/jMx002FqiB1jxrSYFUbNY3QzJB
+ G7vjSiCxvkIkxDehFexrw6qvpphsJ3FCOb2WvI1LUYqxVSPWQkpokOCe65zF7PcQnJvm
+ wRyTfQ78u1jdZhmyKCmhz8uK3kSlL87YBGbsmjBG55AJ+k2+/Nuk8GJ8mtJGFJ9+c5Kq
+ TuqgGbVKZ2h2NyDYtmUSvpXlHQQFN2TzJdz0zWiuVN75e7oVf/M5X/L0/Ce15hE4Rqez
+ ntEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702653410; x=1703258210;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FD5lcscTgLjr7YreIMa4Mn7D9UemU5jzp3PkrPYtuEY=;
- b=b1SaKenwjfkiAa4LzEtjoKfskOPLKFaKksSZb7Yl39/Bzia2uy4v6Hi0/rwfn2/bPI
- 3NDrmGtObVKTa4gdNs8i6qtn+D3poG0dVa977/tNZZYFlZo7XCB3iMqo6AAh+cmwvZaC
- Z+x3faQqed9QdkqheDhIMfVbcNtzCGy/Zttjp1HkChlTebADDJGKAkevh9UJs+obNtA7
- AjdUwYtfF72QQHplo5IE+42lquIW6Q/rlrNtg0bAo/INRxLtHJCcjXYEJt8L0RZPpHdy
- xeVcueljmQbtWuqYzrqy71GiAA2l0oNiA1TI0UEbWbAK9fCMwVhVIPuYdM+Bm4+mLK/c
- mrxQ==
-X-Gm-Message-State: AOJu0YzeCoSPk3Z3RynOCKXX3HQUqw+G0ThhTjU4MUKQhlZ4xIKFQ4oy
- 5TgOzUvutQ/dLOhNwJnYjyvKQQ==
-X-Google-Smtp-Source: AGHT+IF6B/NQHfSx3vv5vis44rxfzvlf6LPWa2iY5/6n+3xFoDcLlghYgurflBbu27cJe6I9sZcpfA==
-X-Received: by 2002:a05:600c:1c1a:b0:40b:5e1c:af27 with SMTP id
- j26-20020a05600c1c1a00b0040b5e1caf27mr6205148wms.45.1702653410401; 
- Fri, 15 Dec 2023 07:16:50 -0800 (PST)
-Received: from localhost.localdomain ([2.221.137.100])
- by smtp.gmail.com with ESMTPSA id
- i1-20020a05600c354100b0040c411da99csm23981111wmq.48.2023.12.15.07.16.49
+ d=1e100.net; s=20230601; t=1702653481; x=1703258281;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=tJMhX72seUmobXUZCtth5wzvy7ZNMZEv4SUoOOPYmWI=;
+ b=NWmC9zOr2bVPZ9LkAX/1xgavwD7V4UJzgzA2QiZxO//vtn6BPGGtbxtqlfRuVI6ppC
+ pYj7FdPP/tqGsNd6GrOmG1HrECCYqPF29z2n8XCTtWdDF5Jr8Y+Nwit7MC+GswyuD294
+ qQne3w6ChAxL09YS9lbFIL2TkK3W1IsytsqJIHmJ0ggb3ZT+9HOelIAvNBOwjIfHXs+0
+ jqBBnPSQ3N3Ma1mMnc4k2/2piweairAa2gWuw22HIBpFTuZGxeJHVIGlKzRzJcMVDRdC
+ fHPf/YC3gDyRWJEXhMy9FKK/PvdlDvx9Wblh46FFVaerW4uekieg8XS1aNYrrClD+SRl
+ 9ExQ==
+X-Gm-Message-State: AOJu0Yx+EQHXOjnP0PcUH0nXyKgzW3qX4q078dHwZqepXf5g/oVlutR8
+ h2Xy7fz/ncAw9QhJg5tx1HrXfw==
+X-Google-Smtp-Source: AGHT+IEDgXX7B7hyDhy2CHyJ609IiUYB9fl1Fr2Xpwx5YAZtEceIiGWvy0HK3Wi0g/3MpzY1G9+NhA==
+X-Received: by 2002:a05:600c:5117:b0:40c:6939:b470 with SMTP id
+ o23-20020a05600c511700b0040c6939b470mr829271wms.53.1702653481507; 
+ Fri, 15 Dec 2023 07:18:01 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ z11-20020a5d4d0b000000b003365b2047c5sm391485wrt.114.2023.12.15.07.18.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Dec 2023 07:16:50 -0800 (PST)
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH] target/arm/helper: Propagate MDCR_EL2.HPMN into PMCR_EL0.N
-Date: Fri, 15 Dec 2023 14:46:53 +0000
-Message-ID: <20231215144652.4193815-2-jean-philippe@linaro.org>
-X-Mailer: git-send-email 2.43.0
+ Fri, 15 Dec 2023 07:18:01 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id BC2D15F878;
+ Fri, 15 Dec 2023 15:18:00 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,  Alistair Francis
+ <alistair.francis@wdc.com>,  Bin Meng <bin.meng@windriver.com>,  Weiwei Li
+ <liwei1518@gmail.com>,  Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Mikhail Tyutin <m.tyutin@yadro.com>,  Aleksandr Anenkov
+ <a.anenkov@yadro.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>,  qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v7 0/4] gdbstub and TCG plugin improvements
+In-Reply-To: <20231213-riscv-v7-0-a760156a337f@daynix.com> (Akihiko Odaki's
+ message of "Wed, 13 Dec 2023 14:19:28 +0900")
+References: <20231213-riscv-v7-0-a760156a337f@daynix.com>
+User-Agent: mu4e 1.11.26; emacs 29.1
+Date: Fri, 15 Dec 2023 15:18:00 +0000
+Message-ID: <87a5qb8pg7.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x32c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,65 +103,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MDCR_EL2.HPMN allows an hypervisor to limit the number of PMU counters
-available to EL1 and EL0 (to keep the others to itself). QEMU already
-implements this split correctly, except for PMCR_EL0.N reads: the number
-of counters read by EL1 or EL0 should be the one configured in
-MDCR_EL2.HPMN.
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
----
- target/arm/helper.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+> This series extracts fixes and refactorings that can be applied
+> independently from "[PATCH v9 00/23] plugins: Allow to read registers".
+>
+> The patch "target/riscv: Move MISA limits to class" was replaced with
+> patch "target/riscv: Move misa_mxl_max to class" since I found instances
+> may have different misa_ext_mask.
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index ff1970981e..bec293bc93 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -1475,6 +1475,22 @@ static void pmcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     pmu_op_finish(env);
- }
- 
-+static uint64_t pmcr_read(CPUARMState *env, const ARMCPRegInfo *ri)
-+{
-+    uint64_t pmcr = env->cp15.c9_pmcr;
-+
-+    /*
-+     * If EL2 is implemented and enabled for the current security state, reads
-+     * of PMCR.N from EL1 or EL0 return the value of MDCR_EL2.HPMN or HDCR.HPMN.
-+     */
-+    if (arm_current_el(env) <= 1 && arm_is_el2_enabled(env)) {
-+        pmcr &= ~PMCRN_MASK;
-+        pmcr |= (env->cp15.mdcr_el2 & MDCR_HPMN) << PMCRN_SHIFT;
-+    }
-+
-+    return pmcr;
-+}
-+
- static void pmswinc_write(CPUARMState *env, const ARMCPRegInfo *ri,
-                           uint64_t value)
- {
-@@ -7137,8 +7153,9 @@ static void define_pmu_regs(ARMCPU *cpu)
-         .fgt = FGT_PMCR_EL0,
-         .type = ARM_CP_IO | ARM_CP_ALIAS,
-         .fieldoffset = offsetoflow32(CPUARMState, cp15.c9_pmcr),
--        .accessfn = pmreg_access, .writefn = pmcr_write,
--        .raw_writefn = raw_write,
-+        .accessfn = pmreg_access,
-+        .readfn = pmcr_read, .raw_readfn = raw_read,
-+        .writefn = pmcr_write, .raw_writefn = raw_write,
-     };
-     ARMCPRegInfo pmcr64 = {
-         .name = "PMCR_EL0", .state = ARM_CP_STATE_AA64,
-@@ -7148,6 +7165,7 @@ static void define_pmu_regs(ARMCPU *cpu)
-         .type = ARM_CP_IO,
-         .fieldoffset = offsetof(CPUARMState, cp15.c9_pmcr),
-         .resetvalue = cpu->isar.reset_pmcr_el0,
-+        .readfn = pmcr_read, .raw_readfn = raw_read,
-         .writefn = pmcr_write, .raw_writefn = raw_write,
-     };
- 
--- 
-2.43.0
+I'm happy to take this through my tree with the register work if the
+remaining patches get some review from the RiscV maintainers.
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
