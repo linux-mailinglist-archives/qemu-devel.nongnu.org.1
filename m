@@ -2,74 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0448144D0
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 10:45:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 953438144F0
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 10:57:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE4kI-00034R-K6; Fri, 15 Dec 2023 04:44:38 -0500
+	id 1rE4vL-0006V7-FU; Fri, 15 Dec 2023 04:56:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rE4kG-00033U-Gm; Fri, 15 Dec 2023 04:44:36 -0500
-Received: from mail-ua1-x931.google.com ([2607:f8b0:4864:20::931])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rE4kE-0001hS-UQ; Fri, 15 Dec 2023 04:44:36 -0500
-Received: by mail-ua1-x931.google.com with SMTP id
- a1e0cc1a2514c-7cb00cc0b5fso83141241.2; 
- Fri, 15 Dec 2023 01:44:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702633473; x=1703238273; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UaXCiDoYW9a8IRL70XmRVF+7UQr3z0ZCoICLuCY7KtE=;
- b=dwVTliwdfB4NgSqvn0sL+A/F44psfdP9dnLRF+AFOY3/5s1ex45m7FmJxd/vlWlSyR
- RpZD5My6I7vm5eb50yQvuLhPJzfB62OwE+yeIruRyIUR7rtleQ69FjJkxDWQaiqISsq2
- WGMaNZGvxcvXi95nnzmqoEoP0LZNOpiLr/sIeAX86hz+DO+uK6GX41FqCclYjwOrXYK7
- yAP1kS2peUfMyyEyM6Q5VbuPq3DkB8sb3x69hyeh5ynVkN/ZYd0JKajSdIJzIiist8Ww
- Mv1Lj4ib/d+9WGJhBDMjMLwRNdQNTrmRvs2Z7T1ZZriqM0qIcSaaIZ7rkvw7th2WuTIO
- VFkA==
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rE4vJ-0006SJ-UB
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 04:56:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rE4vI-00008b-Cq
+ for qemu-devel@nongnu.org; Fri, 15 Dec 2023 04:56:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702634159;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XsVx4MsxXeqsM9UmamEQoOhQwuatdwZpdHk8xWe7cXU=;
+ b=BhWdUJ/4947x7hKIo0aCfsgf1Dxfl7TXoXvNhNd5NmBgy+BXsBs9qAsu/vfoLcFpmwNc2R
+ 7QNxbt9VfV9mY+kU+kC/hym3jlM/+nm4BCPX6JruoyI6ZqPvbn+Xn2+QI+XkOrCK/uYAF6
+ rQPZG3I/G6MR39u8JFk/i1GRr1CwB6M=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-536-_Mh_05PnMwy5AbOvvOKW-Q-1; Fri, 15 Dec 2023 04:55:57 -0500
+X-MC-Unique: _Mh_05PnMwy5AbOvvOKW-Q-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-425f0ab06a2so7668751cf.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 01:55:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702633473; x=1703238273;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UaXCiDoYW9a8IRL70XmRVF+7UQr3z0ZCoICLuCY7KtE=;
- b=GntqKCQhadvvV8ygy5ddi9ZQqdUE/vcnuJKIb3PlgxFgGDwq0AVx3/gIvt1rO9Ktp5
- ycPQixSTzU+iLmcb7cwczGIABk4lCDqD5ajNMzD9LlxktmhUgvfRQi7/bHNlz2RyiKCh
- uP4LgmhB+aqlNtw8ciyy0gf76uXaRxBreTD+XCG1cuVyzYYV4iw9dN4i2w2W6QduQemF
- KNEg9ckVA0ZtQ4iz2wgowt2xRzH5/To5cQfTGAH30qCa0dMwrxC7D1toOhqTEsEo77UK
- IKNFid3lXsmTcK3wWi46FhO97EV+sOJyZik3O8IkHyYmAsslSfn2QErX8roFWScRmppk
- xb8g==
-X-Gm-Message-State: AOJu0Yzz7zy1pRULCpW3w2OLSFcJNAMDXTRWnRPHX+4uyFipjvbsxmCY
- Euk6hy2SznAASOAGhTqOr6Vme+UqfC3M87rILXY=
-X-Google-Smtp-Source: AGHT+IGh13DQOJk8HTzqOi/z6Kun30KH3nq/uv5Vluple4J7dDIaK1SYB9YKvOMWVXGJLUtaOSTezMnZFiP9FrM1Ktk=
-X-Received: by 2002:a05:6102:1522:b0:464:7969:9634 with SMTP id
- f34-20020a056102152200b0046479699634mr2089897vsv.34.1702633472998; Fri, 15
- Dec 2023 01:44:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702634157; x=1703238957;
+ h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XsVx4MsxXeqsM9UmamEQoOhQwuatdwZpdHk8xWe7cXU=;
+ b=iVP3imitkGXz0ewrCh0SY9lzUuS43Vp/6gWApwK0CmA+G41ueUfrahwTJfCrrlS6xB
+ w+VklXZtUmOtF4RpqeFQCLgST3ky6d16P61FD2Y1Z+1/xp9Zm6FAv0CIooEItrc/vyZc
+ 7LkJVPWE9EvmC4yZYRVHfHKicgusFsH99UXtWQweLssvRpqgn1uyLZUZiuVlcAI/d2W6
+ H5kQmuY9wtRG3fE9+NnzpDBHWmmJvhAHGVKqOvuZow14rTs+OQo7G4UQqO8+cfptbKNs
+ RKVrv/WGGYFa9eNBksLy5k911Df/azy7xHdl04+QW4KwUrPmuERmh36YlexMj7lcC9LO
+ M/bA==
+X-Gm-Message-State: AOJu0YyRxiO74jsx2UQoXt1uih+SgtTw4cPSQL8zWoyWEEr59CN1Q49a
+ ylTCt3fmxPVzooHfaNRyGYKGDlTaaQdlOhCn1SeulBR4Kuxh6+B0VECvINpbHs65Zp4G8xJoxNN
+ 6j8fvR9OjuRxMuA0=
+X-Received: by 2002:ac8:5d46:0:b0:425:aa00:cdd7 with SMTP id
+ g6-20020ac85d46000000b00425aa00cdd7mr16876849qtx.85.1702634156954; 
+ Fri, 15 Dec 2023 01:55:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHRNgexYYxGeBYpv2I0o7qP+XF4lN98Nhfdv7ZmdQHRJsJB/kJYReY37LmjQ3BwLt+ONAKnSw==
+X-Received: by 2002:ac8:5d46:0:b0:425:aa00:cdd7 with SMTP id
+ g6-20020ac85d46000000b00425aa00cdd7mr16876839qtx.85.1702634156712; 
+ Fri, 15 Dec 2023 01:55:56 -0800 (PST)
+Received: from rh (p200300c93f174f005d25f1299b34cd9e.dip0.t-ipconnect.de.
+ [2003:c9:3f17:4f00:5d25:f129:9b34:cd9e])
+ by smtp.gmail.com with ESMTPSA id
+ cd5-20020a05622a418500b004255fd32eeasm6318380qtb.7.2023.12.15.01.55.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Dec 2023 01:55:56 -0800 (PST)
+Date: Fri, 15 Dec 2023 10:55:51 +0100 (CET)
+From: Sebastian Ott <sebott@redhat.com>
+To: Eric Auger <eauger@redhat.com>
+cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org, 
+ Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org, 
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v4] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
+In-Reply-To: <be70b17c-21cf-4f4e-8ec1-62c18ffd4100@redhat.com>
+Message-ID: <f1b6dffb-0a23-82d2-7699-67e12691e5c4@redhat.com>
+References: <20231207103648.2925112-1-shahuang@redhat.com>
+ <be70b17c-21cf-4f4e-8ec1-62c18ffd4100@redhat.com>
 MIME-Version: 1.0
-References: <20231208094315.177-1-zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20231208094315.177-1-zhiwei_liu@linux.alibaba.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 15 Dec 2023 19:44:07 +1000
-Message-ID: <CAKmqyKPVYxVDokSh4wMRY3KyUdYra4Qxqe_W3Mu4THzb654kzQ@mail.gmail.com>
-Subject: Re: [PATCH for 8.2] target/riscv: Fix th.dcache.cval1 priviledge check
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, 
- christoph.muellner@vrull.eu, alistair.francis@wdc.com, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::931;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x931.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sebott@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,44 +99,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Dec 8, 2023 at 7:45=E2=80=AFPM LIU Zhiwei <zhiwei_liu@linux.alibaba=
-.com> wrote:
->
-> According to the specification, the th.dcache.cvall1 can be executed
-> under all priviledges.
-> The specification about xtheadcmo located in,
-> https://github.com/T-head-Semi/thead-extension-spec/blob/master/xtheadcmo=
-/dcache_cval1.adoc
->
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+On Thu, 14 Dec 2023, Eric Auger wrote:
+> On 12/7/23 11:36, Shaoqin Huang wrote:
+>> +    if (kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr)) {
+>> +        warn_report("The kernel doesn't support the PMU Event Filter!\n");
+>> +        return;
+>> +    }
+>> +
+>> +    /* The filter only needs to be initialized for 1 vcpu. */
+> Are you sure? This is a per vcpu device ctrl. Where is it written in the
+> doc that this shall not be called for each vcpu
 
-Thanks!
+The interface is per vcpu but the filters are actually managed per vm
+(kvm->arch.pmu_filter). From (kernel) commit 6ee7fca2a ("KVM: arm64: Add 
+KVM_ARM_VCPU_PMU_V3_SET_PMU attribute"):
+  To ensure that KVM doesn't expose an asymmetric system to the guest, the
+  PMU set for one VCPU will be used by all other VCPUs. Once a VCPU has run,
+  the PMU cannot be changed in order to avoid changing the list of available
+  events for a VCPU, or to change the semantics of existing events.
 
-Applied to riscv-to-apply.next
+Sebastian
 
-Alistair
-
-> ---
->  target/riscv/insn_trans/trans_xthead.c.inc | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/riscv/insn_trans/trans_xthead.c.inc b/target/riscv/in=
-sn_trans/trans_xthead.c.inc
-> index 810d76665a..dbb6411239 100644
-> --- a/target/riscv/insn_trans/trans_xthead.c.inc
-> +++ b/target/riscv/insn_trans/trans_xthead.c.inc
-> @@ -296,7 +296,7 @@ NOP_PRIVCHECK(th_dcache_csw, REQUIRE_XTHEADCMO, REQUI=
-RE_PRIV_MS)
->  NOP_PRIVCHECK(th_dcache_cisw, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
->  NOP_PRIVCHECK(th_dcache_isw, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
->  NOP_PRIVCHECK(th_dcache_cpal1, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
-> -NOP_PRIVCHECK(th_dcache_cval1, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
-> +NOP_PRIVCHECK(th_dcache_cval1, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MSU)
->
->  NOP_PRIVCHECK(th_icache_iall, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
->  NOP_PRIVCHECK(th_icache_ialls, REQUIRE_XTHEADCMO, REQUIRE_PRIV_MS)
-> --
-> 2.17.1
->
->
 
