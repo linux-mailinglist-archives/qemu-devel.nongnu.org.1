@@ -2,89 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F5581454D
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 11:18:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D83C4814574
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 11:23:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE5GZ-0000kb-R6; Fri, 15 Dec 2023 05:17:59 -0500
+	id 1rE5LL-0001kh-4M; Fri, 15 Dec 2023 05:22:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rE5GX-0000k0-Ag
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 05:17:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rE5LD-0001ia-3K; Fri, 15 Dec 2023 05:22:48 -0500
+Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebott@redhat.com>) id 1rE5GV-00068a-KT
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 05:17:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702635474;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=42FJiFvltYp2rdiqySuaRIVVGIjwc6Ht5anz+ABGSo8=;
- b=HCknJ1SYDuZgbw04xsPJb9DR+08q8GMa4E0MP5EvNoGkkPL5CwRH5ZRvcOGRlZQbHkSyIc
- qIRZQI/uxnKDSgGlrmSF2QD9w1oAOCf59KOlvZy+hlOV1EjtS2EY7a2SRiFLCQmWjKmE5e
- xPxD7SJafc8n40U0Ob6oC9bhTPp7VxY=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-AwyRqMcJNIGB2hLtJj0bzw-1; Fri, 15 Dec 2023 05:17:53 -0500
-X-MC-Unique: AwyRqMcJNIGB2hLtJj0bzw-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-77dca859cdeso79015585a.0
- for <qemu-devel@nongnu.org>; Fri, 15 Dec 2023 02:17:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702635472; x=1703240272;
- h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=42FJiFvltYp2rdiqySuaRIVVGIjwc6Ht5anz+ABGSo8=;
- b=fbZaOtE71Qh4qx0mVsdXvXWMAsczxMvox/j+uJL7/BfBJ/NZbrCL5MOzeGaqDihBqP
- 05f4dGpPbxZj5MmOHRGd/2EOz3xvyBois+IxOB/V4pMuqvvFphigAX2aVRIo/x8ovA3I
- /laazk3UULOBEkfAxxSW23Di47oAxYeMdGqnAu9TMUTH7Fd6YIcufWRWwS/lKYd5EzFh
- AbGC4YJVku96kU8h5BxYCKgVHV5GwqK5QzcZtwzHDf4dmwcU7Kv9WcL+Jmm+VV3f3Yay
- FJ5/VRdknq9Omb9dgLi+Z3JcLl+QObpEA2q+bFPLAQwKQXlum4ULpVSxud8cYZIbrrQV
- V41g==
-X-Gm-Message-State: AOJu0YyyllTu/DwtVxlsntUs47NQ2+0dwYARgBMg42MeV2mYfi6WrUi3
- pYSf10BfVPu5WMngPLQ6DJjFpd9OEa1SNVbIEdjitcLxq4e1yk/zCecz8l5fz8YHHCkFxTi25eH
- B5aGNaMuIAPcM428=
-X-Received: by 2002:a05:620a:27cc:b0:77f:1382:e6ee with SMTP id
- i12-20020a05620a27cc00b0077f1382e6eemr13807782qkp.146.1702635472508; 
- Fri, 15 Dec 2023 02:17:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGtlgZ6Vf8A9Q7i4kEqb7UmwkpjoJSFeIhKzIWQgD4mRCU4qzjQHbQ3PMKqqff5KX8/dbxwgg==
-X-Received: by 2002:a05:620a:27cc:b0:77f:1382:e6ee with SMTP id
- i12-20020a05620a27cc00b0077f1382e6eemr13807769qkp.146.1702635472240; 
- Fri, 15 Dec 2023 02:17:52 -0800 (PST)
-Received: from rh (p200300c93f174f005d25f1299b34cd9e.dip0.t-ipconnect.de.
- [2003:c9:3f17:4f00:5d25:f129:9b34:cd9e])
- by smtp.gmail.com with ESMTPSA id
- w5-20020a05620a148500b0077d65ef6ca9sm5910268qkj.136.2023.12.15.02.17.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Dec 2023 02:17:52 -0800 (PST)
-Date: Fri, 15 Dec 2023 11:17:47 +0100 (CET)
-From: Sebastian Ott <sebott@redhat.com>
-To: Eric Auger <eauger@redhat.com>
-cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org, 
- Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org, 
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rE5L9-0007SC-K4; Fri, 15 Dec 2023 05:22:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1702635763; x=1734171763;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cED3omeMfkmtHfI+qqwYCTn77LOOHUcnjKaygmKN5dk=;
+ b=kZshCvA4ZtKHFKEbpksjJHURKBbpViuuVu7ihV+cUFIOlUoZYFXGPVe3
+ hkr4zIz6RE2c+Wuw7F50jGcZetRb10TDHrIOMep9VX9K5Op3AZZFp0IF1
+ v4OOyopFcoqPR2TdxeKi5b8xCPhfY8oofGQzc2LD6RCqPDKlcCOYPT58P
+ 3FitEURXL6R/bvy6aPYK6ub14XYMGCEWN5q0IhfuPUT0BGfu6RXMSkrOh
+ 49I582hyooTdzxKNMeT9ti8frwocKOAxCS6FkqGnVbgmFbhAC8dxv3TlA
+ I21iCzYxJqhTQYPy1XwFOs7ba5X5eCM7Ear3UJxZyxHv8Jf1DVc5MH/2a g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="374761826"
+X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; d="scan'208";a="374761826"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Dec 2023 02:22:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="845079479"
+X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; d="scan'208";a="845079479"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmsmga004.fm.intel.com with ESMTP; 15 Dec 2023 02:22:35 -0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Darren Kenny <darren.kenny@oracle.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
-Subject: Re: [PATCH v4] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
-In-Reply-To: <f1b6dffb-0a23-82d2-7699-67e12691e5c4@redhat.com>
-Message-ID: <80bd3241-f3e2-f5ee-27b9-af5ad76144d4@redhat.com>
-References: <20231207103648.2925112-1-shahuang@redhat.com>
- <be70b17c-21cf-4f4e-8ec1-62c18ffd4100@redhat.com>
- <f1b6dffb-0a23-82d2-7699-67e12691e5c4@redhat.com>
+Cc: qemu-trivial@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: [PATCH v2] scripts/checkpatch: Support codespell checking
+Date: Fri, 15 Dec 2023 18:34:48 +0800
+Message-Id: <20231215103448.3822284-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sebott@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=192.55.52.136;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,33 +78,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Dec 2023, Sebastian Ott wrote:
-> On Thu, 14 Dec 2023, Eric Auger wrote:
->>  On 12/7/23 11:36, Shaoqin Huang wrote:
->>>  +    if (kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr)) {
->>>  +        warn_report("The kernel doesn't support the PMU Event
->>>  Filter!\n");
->>>  +        return;
->>>  +    }
->>>  +
->>>  +    /* The filter only needs to be initialized for 1 vcpu. */
->>  Are you sure? This is a per vcpu device ctrl. Where is it written in the
->>  doc that this shall not be called for each vcpu
->
-> The interface is per vcpu but the filters are actually managed per vm
-> (kvm->arch.pmu_filter). From (kernel) commit 6ee7fca2a ("KVM: arm64: Add 
-> KVM_ARM_VCPU_PMU_V3_SET_PMU attribute"):
->  To ensure that KVM doesn't expose an asymmetric system to the guest, the
->  PMU set for one VCPU will be used by all other VCPUs. Once a VCPU has run,
->  the PMU cannot be changed in order to avoid changing the list of available
->  events for a VCPU, or to change the semantics of existing events.
+From: Zhao Liu <zhao1.liu@intel.com>
 
-I've managed to quote the wrong commit. It's that one:
-d7eec2360e3 ("KVM: arm64: Add PMU event filtering infrastructure")
-  Note that although the ioctl is per-vcpu, the map of allowed events is
-  global to the VM (it can be setup from any vcpu until the vcpu PMU is
-  initialized).
+Add two spelling check options (--codespell and --codespellfile) to
+enhance spelling check through dictionary, which copied the Linux
+kernel's implementation in checkpatch.pl.
 
-Sebastian
+This check uses the dictionary at "/usr/share/codespell/dictionary.txt"
+by default, if there is no dictionary specified under this path, it
+will look for the dictionary of python3's codespell (This requires user
+to add python3's path in environment variable $PATH, and to install
+codespell by "pip install codespell").
+
+Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+---
+Changes since v1:
+* Drop the default dictionary "selling.text" and just support optional
+  spelling check via --codespell and --codespellfile. (Thomas)
+
+v1: https://lore.kernel.org/qemu-devel/20231204082917.2430223-1-zhao1.liu@linux.intel.com/
+
+(CC more maintainers who are suggested by get_maintainer.pl in v2.)
+---
+ scripts/checkpatch.pl | 125 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 105 insertions(+), 20 deletions(-)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 6e4100d2a41c..45a5c66e3eab 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -35,6 +35,9 @@ my $summary_file = 0;
+ my $root;
+ my %debug;
+ my $help = 0;
++my $codespell = 0;
++my $codespellfile = "/usr/share/codespell/dictionary.txt";
++my $user_codespellfile = "";
+ 
+ sub help {
+ 	my ($exitcode) = @_;
+@@ -66,6 +69,9 @@ Options:
+                              is all off)
+   --test-only=WORD           report only warnings/errors containing WORD
+                              literally
++  --codespell                Use the codespell dictionary for spelling/typos
++                             (default:$codespellfile)
++  --codespellfile            Use this codespell dictionary
+   --color[=WHEN]             Use colors 'always', 'never', or only when output
+                              is a terminal ('auto'). Default is 'auto'.
+   -h, --help, --version      display this help and exit
+@@ -85,28 +91,50 @@ foreach (@ARGV) {
+ }
+ 
+ GetOptions(
+-	'q|quiet+'	=> \$quiet,
+-	'tree!'		=> \$tree,
+-	'signoff!'	=> \$chk_signoff,
+-	'patch!'	=> \$chk_patch,
+-	'branch!'	=> \$chk_branch,
+-	'emacs!'	=> \$emacs,
+-	'terse!'	=> \$terse,
+-	'f|file!'	=> \$file,
+-	'strict!'	=> \$no_warnings,
+-	'root=s'	=> \$root,
+-	'summary!'	=> \$summary,
+-	'mailback!'	=> \$mailback,
+-	'summary-file!'	=> \$summary_file,
+-
+-	'debug=s'	=> \%debug,
+-	'test-only=s'	=> \$tst_only,
+-	'color=s'       => \$color,
+-	'no-color'      => sub { $color = 'never'; },
+-	'h|help'	=> \$help,
+-	'version'	=> \$help
++	'q|quiet+'		=> \$quiet,
++	'tree!'			=> \$tree,
++	'signoff!'		=> \$chk_signoff,
++	'patch!'		=> \$chk_patch,
++	'branch!'		=> \$chk_branch,
++	'emacs!'		=> \$emacs,
++	'terse!'		=> \$terse,
++	'f|file!'		=> \$file,
++	'strict!'		=> \$no_warnings,
++	'root=s'		=> \$root,
++	'summary!'		=> \$summary,
++	'mailback!'		=> \$mailback,
++	'summary-file!'		=> \$summary_file,
++	'debug=s'		=> \%debug,
++	'test-only=s'		=> \$tst_only,
++	'codespell!'		=> \$codespell,
++	'codespellfile=s'	=> \$user_codespellfile,
++	'color=s'		=> \$color,
++	'no-color'		=> sub { $color = 'never'; },
++	'h|help'		=> \$help,
++	'version'		=> \$help
+ ) or help(1);
+ 
++if ($user_codespellfile) {
++	# Use the user provided codespell file unconditionally
++	$codespellfile = $user_codespellfile;
++} elsif (!(-f $codespellfile)) {
++	# If /usr/share/codespell/dictionary.txt is not present, try to find it
++	# under codespell's install directory: <codespell_root>/data/dictionary.txt
++	if (($codespell || $help) && which("python3") ne "") {
++		my $python_codespell_dict = << "EOF";
++
++import os.path as op
++import codespell_lib
++codespell_dir = op.dirname(codespell_lib.__file__)
++codespell_file = op.join(codespell_dir, 'data', 'dictionary.txt')
++print(codespell_file, end='')
++EOF
++
++		my $codespell_dict = `python3 -c "$python_codespell_dict" 2> /dev/null`;
++		$codespellfile = $codespell_dict if (-f $codespell_dict);
++	}
++}
++
+ help(0) if ($help);
+ 
+ my $exit = 0;
+@@ -337,6 +365,36 @@ our @typeList = (
+ 	qr{guintptr},
+ );
+ 
++# Load common spelling mistakes and build regular expression list.
++my $misspellings;
++my %spelling_fix;
++
++if ($codespell) {
++	if (open(my $spelling, '<', $codespellfile)) {
++		while (<$spelling>) {
++			my $line = $_;
++
++			$line =~ s/\s*\n?$//g;
++			$line =~ s/^\s*//g;
++
++			next if ($line =~ m/^\s*#/);
++			next if ($line =~ m/^\s*$/);
++			next if ($line =~ m/, disabled/i);
++
++			$line =~ s/,.*$//;
++
++			my ($suspect, $fix) = split(/->/, $line);
++
++			$spelling_fix{$suspect} = $fix;
++		}
++		close($spelling);
++	} else {
++		warn "No codespell typos will be found - file '$codespellfile': $!\n";
++	}
++}
++
++$misspellings = join("|", sort keys %spelling_fix) if keys %spelling_fix;
++
+ # This can be modified by sub possible.  Since it can be empty, be careful
+ # about regexes that always match, because they can cause infinite loops.
+ our @modifierList = (
+@@ -477,6 +535,18 @@ sub top_of_kernel_tree {
+ 	return 1;
+ }
+ 
++sub which {
++	my ($bin) = @_;
++
++	foreach my $path (split(/:/, $ENV{PATH})) {
++		if (-e "$path/$bin") {
++			return "$path/$bin";
++		}
++	}
++
++	return "";
++}
++
+ sub expand_tabs {
+ 	my ($str) = @_;
+ 
+@@ -1585,6 +1655,21 @@ sub process {
+ 			WARN("8-bit UTF-8 used in possible commit log\n" . $herecurr);
+ 		}
+ 
++# Check for various typo / spelling mistakes
++		if (defined($misspellings) &&
++		    ($in_commit_log || $line =~ /^(?:\+|Subject:)/i)) {
++			while ($rawline =~ /(?:^|[^\w\-'`])($misspellings)(?:[^\w\-'`]|$)/gi) {
++				my $typo = $1;
++				my $blank = copy_spacing($rawline);
++				my $ptr = substr($blank, 0, $-[1]) . "^" x length($typo);
++				my $hereptr = "$hereline$ptr\n";
++				my $typo_fix = $spelling_fix{lc($typo)};
++				$typo_fix = ucfirst($typo_fix) if ($typo =~ /^[A-Z]/);
++				$typo_fix = uc($typo_fix) if ($typo =~ /^[A-Z]+$/);
++				WARN("'$typo' may be misspelled - perhaps '$typo_fix'?\n" . $hereptr);
++			}
++		}
++
+ # ignore non-hunk lines and lines being removed
+ 		next if (!$hunk_line || $line =~ /^-/);
+ 
+-- 
+2.34.1
 
 
