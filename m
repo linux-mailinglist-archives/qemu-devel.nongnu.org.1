@@ -2,64 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AB981451E
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 11:04:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22DB3814535
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Dec 2023 11:11:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rE530-0003TK-N1; Fri, 15 Dec 2023 05:03:58 -0500
+	id 1rE5AG-0007J0-MK; Fri, 15 Dec 2023 05:11:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1rE52t-0003Qc-2g
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 05:03:51 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1rE52l-0004tb-U5
- for qemu-devel@nongnu.org; Fri, 15 Dec 2023 05:03:50 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8DxE_B4JHxlQlABAA--.7322S3;
- Fri, 15 Dec 2023 18:03:36 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxrnN1JHxldl0FAA--.26862S6; 
- Fri, 15 Dec 2023 18:03:35 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v2 4/4] hw/intc/loongarch_extioi: Add vmstate post_load support
-Date: Fri, 15 Dec 2023 18:03:33 +0800
-Message-Id: <20231215100333.3933632-5-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20231215100333.3933632-1-maobibo@loongson.cn>
-References: <20231215100333.3933632-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1rE5AD-0007Dm-FY; Fri, 15 Dec 2023 05:11:25 -0500
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1rE5AA-0000Ig-K1; Fri, 15 Dec 2023 05:11:24 -0500
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3b86f3cdca0so423323b6e.3; 
+ Fri, 15 Dec 2023 02:11:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1702635080; x=1703239880; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fWhQUscuAymJIhY8Rb83R2iKrlj5Jv2iDu22zrRU/3w=;
+ b=W1k/YwMnTMUI3rZ3/ZVxP0uEHqzI/ASHdErMIy4Dsx+m45Ay6/L+RFCJc4fgHdcCS7
+ 6ARdDyA5KTrH35DnzS3vZuwUhRLrCcRQzwGvHzb4RZQGYy+p0FaEFEccErzM2204nNos
+ iPyec2ffQeKRS3dxtdfbRmRn+hyPq3jmGRKZ4UgQgl9UZhd+K/ZIyw7QPlY/nw7xZpQ0
+ PNp8Wztto1oUUvH3jWfd4dQ5U5VH2+iTIPkxB7LnkMkqaRfMlyZsiCfx4j4stuTdY4WC
+ I77/GfxC1+Y8eTCLmfhzawMNSJiGPQitRJnFVMISSbUemYW5JccQXsmv42S9fRZCckcc
+ Vxgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702635080; x=1703239880;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fWhQUscuAymJIhY8Rb83R2iKrlj5Jv2iDu22zrRU/3w=;
+ b=E5zRIHY5/2OcD/HwifrvScb36uT/NVC0PNea+bQXi8Wq1nrcnfba8a+vKuwZROOoYb
+ 3545rFojaF6v9UMSbWaUp0gMGzVfVfT2cu9pHrD/arB6YGWWKqHWf1NL1IQrq9GC5j4b
+ FC0g+uZ9uOIuMdVve/aQR70F0ga4gdjvILiHqVp+csGChD1QSq7yqlb1GO3i4kq6L9je
+ b13jPE2NAMD1o2iHv+0B6+XO7P1P8PAJRIQziFqMxI/jfZQQsQSnoMk7ZR0HQ4qP8Qvx
+ bTfosxukuX52dWmwNrcgxxvGsVySJP1lGaQgJ8NFYydNBa2SktmH19d0rj0JeC2P/VS7
+ JGgA==
+X-Gm-Message-State: AOJu0YzfGzkZwTtcWn7rnmmoiDJosiAUbXrNEQUxcBnXMDbVawyYWIq/
+ M8V5D+3gk3dsgw6zAFwS834=
+X-Google-Smtp-Source: AGHT+IFr9lAuy3UDqs/JWc3ZlWSP9s8GgWdGyJebBdazW9/gDgCfiWBTPMgb+qFz79X2uhcpfs5tBg==
+X-Received: by 2002:a05:6358:5e08:b0:172:b6ac:7f87 with SMTP id
+ q8-20020a0563585e0800b00172b6ac7f87mr184251rwn.25.1702635080168; 
+ Fri, 15 Dec 2023 02:11:20 -0800 (PST)
+Received: from [192.168.68.110] ([179.93.21.205])
+ by smtp.gmail.com with ESMTPSA id
+ f16-20020a056a001ad000b006cedd530420sm12660389pfv.52.2023.12.15.02.11.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Dec 2023 02:11:19 -0800 (PST)
+Message-ID: <ab5e0141-872f-4e79-8621-4fea4ddfcaf4@gmail.com>
+Date: Fri, 15 Dec 2023 07:11:16 -0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] spapr: Tag pseries-2.1 - 2.11 machines as deprecated
+Content-Language: en-US
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Thomas Huth <thuth@redhat.com>
+References: <20231214181723.1520854-1-clg@kaod.org>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20231214181723.1520854-1-clg@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxrnN1JHxldl0FAA--.26862S6
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3JF4rKr43WF1DJrWkWr1ktFc_yoW7Gw4Upr
- W3ur98Kry3Wa13WwsrKa4UWFs8Gr4fW3Wavryq9FySkF95CryF9a4vvFZ2qFWkC3sayF90
- 9a4rZ3y7CF4qyrgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
- Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
- 6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0x
- vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
- 42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
- kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j83kZUUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=danielhb413@gmail.com; helo=mail-oi1-x230.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,189 +95,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are elements sw_ipmap and sw_coremap, which is usd to speed
-up irq injection flow. They are saved and restored in vmstate during
-migration, indeed they can calculated from hw registers. Here
-post_load is added for get sw_ipmap and sw_coremap from extioi hw
-state.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- hw/intc/loongarch_extioi.c | 120 +++++++++++++++++++++++--------------
- 1 file changed, 76 insertions(+), 44 deletions(-)
 
-diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-index d9d5066c3f..e0fd57f962 100644
---- a/hw/intc/loongarch_extioi.c
-+++ b/hw/intc/loongarch_extioi.c
-@@ -130,12 +130,66 @@ static inline void extioi_enable_irq(LoongArchExtIOI *s, int index,\
-     }
- }
- 
-+static inline void extioi_update_sw_coremap(LoongArchExtIOI *s, int irq,
-+                                            uint64_t val, bool notify)
-+{
-+    int i, cpu;
-+
-+    /*
-+     * loongarch only support little endian,
-+     * so we paresd the value with little endian.
-+     */
-+    val = cpu_to_le64(val);
-+
-+    for (i = 0; i < 4; i++) {
-+        cpu = val & 0xff;
-+        cpu = ctz32(cpu);
-+        cpu = (cpu >= 4) ? 0 : cpu;
-+        val = val >> 8;
-+
-+        if (s->sw_coremap[irq + i] == cpu) {
-+            continue;
-+        }
-+
-+        if (notify && test_bit(irq, (unsigned long *)s->isr)) {
-+            /*
-+             * lower irq at old cpu and raise irq at new cpu
-+             */
-+            extioi_update_irq(s, irq + i, 0);
-+            s->sw_coremap[irq + i] = cpu;
-+            extioi_update_irq(s, irq + i, 1);
-+        } else {
-+            s->sw_coremap[irq + i] = cpu;
-+        }
-+    }
-+}
-+
-+static inline void extioi_update_sw_ipmap(LoongArchExtIOI *s, int index,
-+                                          uint64_t val)
-+{
-+    int i;
-+    uint8_t ipnum;
-+
-+    /*
-+     * loongarch only support little endian,
-+     * so we paresd the value with little endian.
-+     */
-+    val = cpu_to_le64(val);
-+    for (i = 0; i < 4; i++) {
-+        ipnum = val & 0xff;
-+        ipnum = ctz32(ipnum);
-+        ipnum = (ipnum >= 4) ? 0 : ipnum;
-+        s->sw_ipmap[index * 4 + i] = ipnum;
-+        val = val >> 8;
-+    }
-+}
-+
- static MemTxResult extioi_writew(void *opaque, hwaddr addr,
-                           uint64_t val, unsigned size,
-                           MemTxAttrs attrs)
- {
-     LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
--    int i, cpu, index, old_data, irq;
-+    int cpu, index, old_data, irq;
-     uint32_t offset;
- 
-     trace_loongarch_extioi_writew(addr, val);
-@@ -153,20 +207,7 @@ static MemTxResult extioi_writew(void *opaque, hwaddr addr,
-          */
-         index = (offset - EXTIOI_IPMAP_START) >> 2;
-         s->ipmap[index] = val;
--        /*
--         * loongarch only support little endian,
--         * so we paresd the value with little endian.
--         */
--        val = cpu_to_le64(val);
--        for (i = 0; i < 4; i++) {
--            uint8_t ipnum;
--            ipnum = val & 0xff;
--            ipnum = ctz32(ipnum);
--            ipnum = (ipnum >= 4) ? 0 : ipnum;
--            s->sw_ipmap[index * 4 + i] = ipnum;
--            val = val >> 8;
--        }
--
-+        extioi_update_sw_ipmap(s, index, val);
-         break;
-     case EXTIOI_ENABLE_START ... EXTIOI_ENABLE_END - 1:
-         index = (offset - EXTIOI_ENABLE_START) >> 2;
-@@ -205,33 +246,8 @@ static MemTxResult extioi_writew(void *opaque, hwaddr addr,
-         irq = offset - EXTIOI_COREMAP_START;
-         index = irq / 4;
-         s->coremap[index] = val;
--        /*
--         * loongarch only support little endian,
--         * so we paresd the value with little endian.
--         */
--        val = cpu_to_le64(val);
--
--        for (i = 0; i < 4; i++) {
--            cpu = val & 0xff;
--            cpu = ctz32(cpu);
--            cpu = (cpu >= 4) ? 0 : cpu;
--            val = val >> 8;
--
--            if (s->sw_coremap[irq + i] == cpu) {
--                continue;
--            }
--
--            if (test_bit(irq, (unsigned long *)s->isr)) {
--                /*
--                 * lower irq at old cpu and raise irq at new cpu
--                 */
--                extioi_update_irq(s, irq + i, 0);
--                s->sw_coremap[irq + i] = cpu;
--                extioi_update_irq(s, irq + i, 1);
--            } else {
--                s->sw_coremap[irq + i] = cpu;
--            }
--        }
-+
-+        extioi_update_sw_coremap(s, irq, val, true);
-         break;
-     default:
-         break;
-@@ -288,6 +304,23 @@ static void loongarch_extioi_finalize(Object *obj)
-     g_free(s->cpu);
- }
- 
-+static int vmstate_extioi_post_load(void *opaque, int version_id)
-+{
-+    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+    int i, start_irq;
-+
-+    for (i = 0; i < (EXTIOI_IRQS / 4); i++) {
-+        start_irq = i * 4;
-+        extioi_update_sw_coremap(s, start_irq, s->coremap[i], false);
-+    }
-+
-+    for (i = 0; i < (EXTIOI_IRQS_IPMAP_SIZE / 4); i++) {
-+        extioi_update_sw_ipmap(s, i, s->ipmap[i]);
-+    }
-+
-+    return 0;
-+}
-+
- static const VMStateDescription vmstate_extioi_core = {
-     .name = "extioi-core",
-     .version_id = 1,
-@@ -302,6 +335,7 @@ static const VMStateDescription vmstate_loongarch_extioi = {
-     .name = TYPE_LOONGARCH_EXTIOI,
-     .version_id = 2,
-     .minimum_version_id = 2,
-+    .post_load = vmstate_extioi_post_load,
-     .fields = (VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(bounce, LoongArchExtIOI, EXTIOI_IRQS_GROUP_COUNT),
-         VMSTATE_UINT32_ARRAY(nodetype, LoongArchExtIOI,
-@@ -310,8 +344,6 @@ static const VMStateDescription vmstate_loongarch_extioi = {
-         VMSTATE_UINT32_ARRAY(isr, LoongArchExtIOI, EXTIOI_IRQS / 32),
-         VMSTATE_UINT32_ARRAY(ipmap, LoongArchExtIOI, EXTIOI_IRQS_IPMAP_SIZE / 4),
-         VMSTATE_UINT32_ARRAY(coremap, LoongArchExtIOI, EXTIOI_IRQS / 4),
--        VMSTATE_UINT8_ARRAY(sw_ipmap, LoongArchExtIOI, EXTIOI_IRQS_IPMAP_SIZE),
--        VMSTATE_UINT8_ARRAY(sw_coremap, LoongArchExtIOI, EXTIOI_IRQS),
- 
-         VMSTATE_STRUCT_VARRAY_POINTER_UINT32(cpu, LoongArchExtIOI, num_cpu,
-                          vmstate_extioi_core, ExtIOICore),
--- 
-2.39.3
+On 12/14/23 15:17, Cédric Le Goater wrote:
+> pseries machines before version 2.11 have undergone many changes to
+> correct issues, mostly regarding migration compatibility. This is
+> obfuscating the code uselessly and makes maintenance more difficult.
+> Remove them and only keep the last version of the 2.x series, 2.12,
+> still in use by old distros.
+> 
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
 
+
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+
+>   docs/about/deprecated.rst | 7 +++++++
+>   hw/ppc/spapr.c            | 1 +
+>   2 files changed, 8 insertions(+)
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 2e1504024658..c0e22b2b568f 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -269,6 +269,13 @@ Nios II ``10m50-ghrd`` and ``nios2-generic-nommu`` machines (since 8.2)
+>   
+>   The Nios II architecture is orphan.
+>   
+> +``pseries-2.1`` up to ``pseries-2.11`` (since 9.0)
+> +''''''''''''''''''''''''''''''''''''''''''''''''''
+> +
+> +Older pseries machines before version 2.12 have undergone many changes
+> +to correct issues, mostly regarding migration compatibility. These are
+> +no longer maintained and removing them will make the code easier to
+> +read and maintain. Use versions 2.12 and above as a replacement.
+>   
+>   Backend options
+>   ---------------
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index df09aa9d6a00..5034461399d2 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -5083,6 +5083,7 @@ static void spapr_machine_2_11_class_options(MachineClass *mc)
+>       spapr_machine_2_12_class_options(mc);
+>       smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
+>       compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
+> +    mc->deprecation_reason = "old and not maintained - use a 2.12+ version";
+>   }
+>   
+>   DEFINE_SPAPR_MACHINE(2_11, "2.11", false);
 
