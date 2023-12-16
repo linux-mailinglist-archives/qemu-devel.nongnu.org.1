@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0FA815B7D
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Dec 2023 20:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F5D815B8F
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Dec 2023 21:09:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEan9-0006lb-It; Sat, 16 Dec 2023 14:57:43 -0500
+	id 1rEaxW-0000vJ-Dh; Sat, 16 Dec 2023 15:08:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEan7-0006kd-Op
- for qemu-devel@nongnu.org; Sat, 16 Dec 2023 14:57:41 -0500
-Received: from mail-lj1-f173.google.com ([209.85.208.173])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEaxP-0000ux-Uu
+ for qemu-devel@nongnu.org; Sat, 16 Dec 2023 15:08:19 -0500
+Received: from mail-lj1-f169.google.com ([209.85.208.169])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEan6-00030w-87
- for qemu-devel@nongnu.org; Sat, 16 Dec 2023 14:57:41 -0500
-Received: by mail-lj1-f173.google.com with SMTP id
- 38308e7fff4ca-2cc5c9be934so9134891fa.1
- for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 11:57:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEaxN-0007rW-D7
+ for qemu-devel@nongnu.org; Sat, 16 Dec 2023 15:08:19 -0500
+Received: by mail-lj1-f169.google.com with SMTP id
+ 38308e7fff4ca-2ca208940b3so20924861fa.1
+ for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 12:08:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702756658; x=1703361458;
+ d=1e100.net; s=20230601; t=1702757296; x=1703362096;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wURBnNQqpvVKLDhMi7udNlbodmksItJNZmGIRi6EQyA=;
- b=oSLChsSd7xLC1vefWFJz9eF/yTcB6A77y+mDA5yDcSlACdI7Kl/hXNwdMFtjXlSIal
- Otk3tNOIIAdCcPMj3egKbcPWZLudaUWAw/+Gf11Twwc/zHI9eGwTsOkUWvrpASAMcRHO
- rK2o6LqLeyXCsgfzk3Ne3NBnPjllI2pzFkBRN48PuzeT0vgnuv0Q9o3LlfhDOuUEq2N8
- iHZQaQV3jsZeC0yEtn07Na0md9iT7OXp74VVzbD/EBM+NYg3gxPbfhIVQyXYt/hctio4
- hbhb0p+Cj3ytUJU3+w3Snkui9CRdHR/Z4DpE0qKMUsNkQ+haDWTYZdCdqe1yjrbEkzj4
- rpkQ==
-X-Gm-Message-State: AOJu0YzTwH+QyXS7HFHMZWXNTPjC+F/vTqX1Ur/gdjwkhAPE7d+RTw9x
- 6VIZzH2ND0vT0Jqh6ZSiSVq0notXNTM=
-X-Google-Smtp-Source: AGHT+IGAVhSWy8khUc36dlhhZM5MGu8vDTbU3drLM7Vak2f0vVGfmBvFLZFGA3osXgEv5jQdnlrntQ==
-X-Received: by 2002:a2e:bc29:0:b0:2cc:41b9:697a with SMTP id
- b41-20020a2ebc29000000b002cc41b9697amr3565656ljf.4.1702756657811; 
- Sat, 16 Dec 2023 11:57:37 -0800 (PST)
+ bh=wW4LgyNHmAdgCexAKLTr6w0NP0rhJ/u40FZcWo59P9s=;
+ b=eCI6s9I/VO8AqZCU2b5ruSs/ZVZoETJVXeYqFU70WpJwK5EJe3nZd36Wc7ZwuHfVjY
+ uSHRZc9gaivOH8SJfa2cMWmxGH4gIEaF2uzGSyTe9DoabSkx0C082T8Q62tl9xBMQJkE
+ tIfakgxvu7aVouXWaXUyxAYb+rxt9ixndYTncNi2w6OhH+EnzD9lVFwbmnMlIa6zyAJL
+ wxxz1OI25Gc/Xd7ob+hd4HTFAtmS0JgMH3cfwWDF9GsJ8U3DNiWFfK6Fgs2SsmpKrdJv
+ EvtsGyHuOxy5zOCY5JPjAYQ9H7fu1YQomTJ4G5/x9OA61mGd1bWUcm2ajGOwSmxnfaF3
+ zxkw==
+X-Gm-Message-State: AOJu0YxHEwa8hx7uMGGwbjxS2zNZ+SqLUQkph9kFXBc1/uQTZVzKPpIv
+ MjJ3Ou6P2/87qD6P3DfeXrIVZmKcw8A=
+X-Google-Smtp-Source: AGHT+IGtJ3ATKvYdpAscGOs5PbQ6sNu+1PvlmYLWvLmUYyO9OK4T0AGE3O5JRJlzdsFnQP7Kmjjepg==
+X-Received: by 2002:a05:6512:3c95:b0:50e:20a6:2a36 with SMTP id
+ h21-20020a0565123c9500b0050e20a62a36mr1536654lfv.133.1702757295528; 
+ Sat, 16 Dec 2023 12:08:15 -0800 (PST)
 Received: from fedora (ip-109-43-178-144.web.vodafone.de. [109.43.178.144])
  by smtp.gmail.com with ESMTPSA id
- x27-20020a50d61b000000b0054bcb2b77b3sm9121367edi.70.2023.12.16.11.57.36
+ i8-20020a0565123e0800b0050bfb00108bsm2469447lfv.71.2023.12.16.12.08.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Dec 2023 11:57:37 -0800 (PST)
-Date: Sat, 16 Dec 2023 20:57:36 +0100
+ Sat, 16 Dec 2023 12:08:15 -0800 (PST)
+Date: Sat, 16 Dec 2023 21:08:12 +0100
 From: Thomas Huth <huth@tuxfamily.org>
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 06/12] next-cube.c: move static led variable to NeXTPC
-Message-ID: <20231216205736.230cc1cd@fedora>
-In-Reply-To: <20231215200009.346212-7-mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH 07/12] next-cube.c: move static phase variable to NextRtc
+Message-ID: <20231216210812.22c23f82@fedora>
+In-Reply-To: <20231215200009.346212-8-mark.cave-ayland@ilande.co.uk>
 References: <20231215200009.346212-1-mark.cave-ayland@ilande.co.uk>
- <20231215200009.346212-7-mark.cave-ayland@ilande.co.uk>
+ <20231215200009.346212-8-mark.cave-ayland@ilande.co.uk>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.208.173; envelope-from=th.huth@gmail.com;
- helo=mail-lj1-f173.google.com
+Received-SPF: pass client-ip=209.85.208.169; envelope-from=th.huth@gmail.com;
+ helo=mail-lj1-f169.google.com
 X-Spam_score_int: 19
 X-Spam_score: 1.9
 X-Spam_bar: +
@@ -80,21 +80,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Fri, 15 Dec 2023 20:00:03 +0000
+Am Fri, 15 Dec 2023 20:00:04 +0000
 schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
 
-> The state of the led is stored in the SCR2 register which is part of the NeXTPC
-> device.
+> The phase variable represents part of the state machine used to clock data out
+> of the NextRtc device.
 > 
-> Note that this is a migration break for the NeXTPC device, but as nothing will
+> Note that this is a migration break for the NeXTRtc struct, but as nothing will
 > currently boot then we simply bump the migration version for now.
-
-Ack, that's fine, we don't have to worry about migration here yet.
-
+> 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->  hw/m68k/next-cube.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
+>  hw/m68k/next-cube.c | 31 ++++++++++++++++---------------
+>  1 file changed, 16 insertions(+), 15 deletions(-)
 
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 
