@@ -2,70 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201E1815877
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Dec 2023 10:08:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 487F3815905
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Dec 2023 13:31:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEQeF-0001nB-Q3; Sat, 16 Dec 2023 04:07:51 -0500
+	id 1rEToM-0005ZP-Vg; Sat, 16 Dec 2023 07:30:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEQeC-0001mn-0T
- for qemu-devel@nongnu.org; Sat, 16 Dec 2023 04:07:48 -0500
-Received: from mail-ej1-f45.google.com ([209.85.218.45])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rEToK-0005Z5-4c; Sat, 16 Dec 2023 07:30:28 -0500
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEQeA-0004bF-1a
- for qemu-devel@nongnu.org; Sat, 16 Dec 2023 04:07:47 -0500
-Received: by mail-ej1-f45.google.com with SMTP id
- a640c23a62f3a-a1f47f91fc0so169064466b.0
- for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 01:07:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rEToH-0002sp-Pp; Sat, 16 Dec 2023 07:30:27 -0500
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a1f8f470903so183165666b.1; 
+ Sat, 16 Dec 2023 04:30:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1702729822; x=1703334622; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AFS9iujz41NdKC5CR7zGJgqOPxxqQSCJLa0qqW6ATxI=;
+ b=ewtJfs6nJoKghhPWpS6uzgbn0Q8TIswXYgysrldXHL7cFUgP5Re/YS7ZkaAU3tyj4R
+ g9mOUy6RNrepM148Y7qSDnqNMjKUxmYH1MmmQgqj4h2tll9UAPjAwutIrbeKDWITBHlf
+ 6HH+OOKtfab4PeBN6O35tS1a6DzuewDy5MaYswhc4Kpg5rigDg8XLd8B0wyBeKVc8OfE
+ H/0IiiJKNKu5Q+uHstZ7HWcf2RneZodvSeFAqRuKuooVoxbd26BUMVdgbPQZXA2JAMMJ
+ cryLCLDch/Pg/hfbMH0qYtPIxTFmJCOyxOCu6SuCSIS20V2bk/V0M11CwOHNbEDf/Tkt
+ i5gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702717664; x=1703322464;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cjBwf5YIBGxHWcaArQFrXueP1pyE9pdZV/7Ybdy6yEo=;
- b=JfYoHoEiuYFNsjxAQgeON8LsiafPfStJoysTj5PkL8eRCe/yGBs/OR6I2o2K4z+XKD
- J7apdlxDID4H6/w0ioQJ7gV0L93wEap+82ZXFto0FnyqEY3Md6/L2O6SOkMWDAO89SqA
- KgLFdup3K1TfuqB4Qpb4M0rzJSbtaC9YRjsCGoN3TgnfJbR/ujqkwj5vnoPAJfR7ZUsO
- K3x2Ty151XM2kpA5xTH3iEFBnZZtXayR4kG0G/CBWtXnmEJvyexaxJwKX+jOBVKrYSJK
- W1/31RUaeJMu0v8vBVZw6MtptW6Q2HGeXKsa2lTtmgt3qFWZBlboAHLCF91WK1SbmjCJ
- gI9A==
-X-Gm-Message-State: AOJu0Yzh2tQqq4kPGWE5Y+XReW0d7eb0HYr2G8kEpT3geNEhfTgaXX2S
- MrFK4yy2g56MkL0r8SqMT6k=
-X-Google-Smtp-Source: AGHT+IHbHKUsszTlzjHL60qjtJ+CCeXTY1AtLS74zW1B0lRMKBMolNBXgJCTuEfwFXNMNBJorDXa6A==
-X-Received: by 2002:a17:906:3289:b0:9c4:54c6:8030 with SMTP id
- 9-20020a170906328900b009c454c68030mr6028664ejw.6.1702717664439; 
- Sat, 16 Dec 2023 01:07:44 -0800 (PST)
-Received: from fedora (ip-109-43-178-144.web.vodafone.de. [109.43.178.144])
+ d=1e100.net; s=20230601; t=1702729822; x=1703334622;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AFS9iujz41NdKC5CR7zGJgqOPxxqQSCJLa0qqW6ATxI=;
+ b=Q+aqvHph12DdXzPNgML/m0zRbGQkw3T6laHRNmMcGT+0nA2AhyP1QPHr1tp8YdrWtt
+ t2Qnt630coBhW5bo5RbdIfH0SvNNA6RX/CebLBTPKYlu8HkENUjSb1qPuVeyls8QM+ji
+ ptx1vvAWcYqdjGx8jQRrBerSt+nLtxYIyO9uPL6PBqAYihKL13R5Lg3PNmUZiqSpkrvk
+ iY3OxwVQcIFP1bUojVyrX5pmFOm2azXd6JY8bEbRJP8us5gxwuvcnUiPz6lSYXPcqdQt
+ 7AfE6reLi9M4m8b814kX8KdwcG1BI10Hh//NXgOHHhAliLb19yx8WY1XWhv2YWmyCXSY
+ jaug==
+X-Gm-Message-State: AOJu0YxFb08dvEu3RYze18kCDdzKZtZ5USpjRb3AhWGj02cz1BiC9icY
+ v1GnurhW7MVIVJAdZoYgN5QnV9qq0sQ=
+X-Google-Smtp-Source: AGHT+IFHSufgAhb9luH2C1vE0mJV7Mm1RavzWq/zoF8sg0xo2+h9xI4p3EmKYFwG9ECPC3qAgwguvg==
+X-Received: by 2002:a17:906:ce4e:b0:a23:2cc9:3bde with SMTP id
+ se14-20020a170906ce4e00b00a232cc93bdemr241123ejb.22.1702729821753; 
+ Sat, 16 Dec 2023 04:30:21 -0800 (PST)
+Received: from Provence.localdomain
+ (dynamic-078-054-007-001.78.54.pool.telefonica.de. [78.54.7.1])
  by smtp.gmail.com with ESMTPSA id
- rg14-20020a1709076b8e00b00a23002c8059sm4707771ejc.70.2023.12.16.01.07.43
+ h7-20020a170906530700b00a1b32663d7csm11896102ejo.102.2023.12.16.04.30.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Dec 2023 01:07:43 -0800 (PST)
-Date: Sat, 16 Dec 2023 10:07:42 +0100
-From: Thomas Huth <huth@tuxfamily.org>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 02/12] next-cube.c: don't pulse SCSI DMA IRQ upon
- reception of FLUSH command
-Message-ID: <20231216100742.0de18a1d@fedora>
-In-Reply-To: <20231215200009.346212-3-mark.cave-ayland@ilande.co.uk>
-References: <20231215200009.346212-1-mark.cave-ayland@ilande.co.uk>
- <20231215200009.346212-3-mark.cave-ayland@ilande.co.uk>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ Sat, 16 Dec 2023 04:30:21 -0800 (PST)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH] docs/system: Document running Linux on amigaone machine
+Date: Sat, 16 Dec 2023 13:30:10 +0100
+Message-ID: <20231216123013.67978-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.218.45; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f45.google.com
-X-Spam_score_int: 19
-X-Spam_score: 1.9
-X-Spam_bar: +
-X-Spam_report: (1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,31 +91,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Fri, 15 Dec 2023 19:59:59 +0000
-schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+Documentation on how to run Linux on the amigaone machine is currently burried
+in the depths of the qemu-devel mailing list [1] and in the source code. Let's
+collect the information in the QEMU handbook for a one stop solution.
 
-> Normally a DMA FLUSH command is used to ensure that data is completely written
-> to the device and/or memory, so remove the pulse of the SCSI DMA IRQ if a DMA
-> FLUSH command is received. This enables the NeXT ROM monitor to start to load
-> from a SCSI disk.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->  hw/m68k/next-cube.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-> index feeda23475..87ddaf4329 100644
-> --- a/hw/m68k/next-cube.c
-> +++ b/hw/m68k/next-cube.c
-> @@ -473,7 +473,6 @@ static void scr_writeb(NeXTPC *s, hwaddr addr, uint32_t value)
->              DPRINTF("SCSICSR FIFO Flush\n");
->              /* will have to add another irq to the esp if this is needed */
->              /* esp_puflush_fifo(esp_g); */
-> -            qemu_irq_pulse(s->scsi_dma);
->          }
->  
->          if (value & SCSICSR_ENABLE) {
+[1] https://lore.kernel.org/qemu-devel/dafc407d-3749-e6f4-3a66-750fde8965f9@eik.bme.hu/
 
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Co-authored-by: BALATON Zoltan <balaton@eik.bme.hu>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ MAINTAINERS                  |  1 +
+ docs/system/ppc/amigaone.rst | 53 ++++++++++++++++++++++++++++++++++++
+ docs/system/target-ppc.rst   |  1 +
+ hw/ppc/amigaone.c            |  9 ------
+ 4 files changed, 55 insertions(+), 9 deletions(-)
+ create mode 100644 docs/system/ppc/amigaone.rst
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 695e0bd34f..a2dd1407e2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1560,6 +1560,7 @@ amigaone
+ M: BALATON Zoltan <balaton@eik.bme.hu>
+ L: qemu-ppc@nongnu.org
+ S: Maintained
++F: docs/system/ppc/amigaone.rst
+ F: hw/ppc/amigaone.c
+ F: hw/pci-host/articia.c
+ F: include/hw/pci-host/articia.h
+diff --git a/docs/system/ppc/amigaone.rst b/docs/system/ppc/amigaone.rst
+new file mode 100644
+index 0000000000..c3f11a7bb2
+--- /dev/null
++++ b/docs/system/ppc/amigaone.rst
+@@ -0,0 +1,53 @@
++Eyetech AmigaOne/Mai Logic Teron (``amigaone``)
++===============================================
++
++The ``amigaone`` model emulates an AmigaOne XE mainboard developed by Eyetech. Use
++the executable ``qemu-system-ppc`` to simulate a complete system.
++
++
++Emulated devices
++----------------
++
++ *  PowerPC 7457 v1.2 CPU
++ *  Articia S north bridge
++ *  VT82C686B south bridge
++ *  PCI VGA compatible card
++
++
++Preparation
++-----------
++
++A firmware binary is necessary for the boot process and is available at
++https://www.hyperion-entertainment.com/index.php/downloads?view=files&parent=28.
++It needs to be extracted with the following command:
++
++.. code-block:: bash
++
++  $ tail -c 524288 updater.image > u-boot-amigaone.bin
++
++The firmware binary is unable to run QEMU‘s standard vgabios and
++``VGABIOS-lgpl-latest.bin`` is needed instead. It can be downloaded from
++http://www.nongnu.org/vgabios.
++
++
++Running Linux
++-------------
++
++There are some Linux images under the following link that work on the
++``amigaone`` machine:
++https://sourceforge.net/projects/amigaone-linux/files/debian-installer/. To boot
++the system run:
++
++.. code-block:: bash
++
++  $ qemu-system-ppc -M amigaone -bios u-boot-amigaone.bin \
++                    -cdrom "A1 Linux Net Installer.iso" \
++                    -device ati-vga,model=rv100,romfile=VGABIOS-lgpl-latest.bin
++
++From the firmware menu that appears select ``Boot sequence`` →
++``Amiga Multiboot Options`` and set ``Boot device 1`` to
++``Onboard VIA IDE CDROM``. Then hit escape until the main screen appears again,
++hit escape once more and from the exit menu that appears select either
++``Save settings and exit`` or ``Use settings for this session only``. It may
++take a long time loading the kernel into memory but eventually it boots and the
++installer becomes visible.
+diff --git a/docs/system/target-ppc.rst b/docs/system/target-ppc.rst
+index 4f6eb93b17..c1daa463cf 100644
+--- a/docs/system/target-ppc.rst
++++ b/docs/system/target-ppc.rst
+@@ -18,6 +18,7 @@ help``.
+    :maxdepth: 1
+ 
+    ppc/embedded
++   ppc/amigaone
+    ppc/powermac
+    ppc/powernv
+    ppc/ppce500
+diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
+index ddfa09457a..4f680a5bdd 100644
+--- a/hw/ppc/amigaone.c
++++ b/hw/ppc/amigaone.c
+@@ -27,15 +27,6 @@
+ 
+ #define BUS_FREQ_HZ 100000000
+ 
+-/*
+- * Firmware binary available at
+- * https://www.hyperion-entertainment.com/index.php/downloads?view=files&parent=28
+- * then "tail -c 524288 updater.image >u-boot-amigaone.bin"
+- *
+- * BIOS emulator in firmware cannot run QEMU vgabios and hangs on it, use
+- * -device VGA,romfile=VGABIOS-lgpl-latest.bin
+- * from http://www.nongnu.org/vgabios/ instead.
+- */
+ #define PROM_ADDR 0xfff00000
+ #define PROM_SIZE (512 * KiB)
+ 
+-- 
+2.43.0
+
 
