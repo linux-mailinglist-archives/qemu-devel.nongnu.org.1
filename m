@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F5D815B8F
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Dec 2023 21:09:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E51815B97
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Dec 2023 21:14:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEaxW-0000vJ-Dh; Sat, 16 Dec 2023 15:08:26 -0500
+	id 1rEb2b-00020s-Uj; Sat, 16 Dec 2023 15:13:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEaxP-0000ux-Uu
- for qemu-devel@nongnu.org; Sat, 16 Dec 2023 15:08:19 -0500
-Received: from mail-lj1-f169.google.com ([209.85.208.169])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEb2a-000207-3q
+ for qemu-devel@nongnu.org; Sat, 16 Dec 2023 15:13:40 -0500
+Received: from mail-ej1-f44.google.com ([209.85.218.44])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEaxN-0007rW-D7
- for qemu-devel@nongnu.org; Sat, 16 Dec 2023 15:08:19 -0500
-Received: by mail-lj1-f169.google.com with SMTP id
- 38308e7fff4ca-2ca208940b3so20924861fa.1
- for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 12:08:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEb2Y-0000Wv-J9
+ for qemu-devel@nongnu.org; Sat, 16 Dec 2023 15:13:39 -0500
+Received: by mail-ej1-f44.google.com with SMTP id
+ a640c23a62f3a-a1ec87a7631so145623566b.0
+ for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 12:13:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702757296; x=1703362096;
+ d=1e100.net; s=20230601; t=1702757617; x=1703362417;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wW4LgyNHmAdgCexAKLTr6w0NP0rhJ/u40FZcWo59P9s=;
- b=eCI6s9I/VO8AqZCU2b5ruSs/ZVZoETJVXeYqFU70WpJwK5EJe3nZd36Wc7ZwuHfVjY
- uSHRZc9gaivOH8SJfa2cMWmxGH4gIEaF2uzGSyTe9DoabSkx0C082T8Q62tl9xBMQJkE
- tIfakgxvu7aVouXWaXUyxAYb+rxt9ixndYTncNi2w6OhH+EnzD9lVFwbmnMlIa6zyAJL
- wxxz1OI25Gc/Xd7ob+hd4HTFAtmS0JgMH3cfwWDF9GsJ8U3DNiWFfK6Fgs2SsmpKrdJv
- EvtsGyHuOxy5zOCY5JPjAYQ9H7fu1YQomTJ4G5/x9OA61mGd1bWUcm2ajGOwSmxnfaF3
- zxkw==
-X-Gm-Message-State: AOJu0YxHEwa8hx7uMGGwbjxS2zNZ+SqLUQkph9kFXBc1/uQTZVzKPpIv
- MjJ3Ou6P2/87qD6P3DfeXrIVZmKcw8A=
-X-Google-Smtp-Source: AGHT+IGtJ3ATKvYdpAscGOs5PbQ6sNu+1PvlmYLWvLmUYyO9OK4T0AGE3O5JRJlzdsFnQP7Kmjjepg==
-X-Received: by 2002:a05:6512:3c95:b0:50e:20a6:2a36 with SMTP id
- h21-20020a0565123c9500b0050e20a62a36mr1536654lfv.133.1702757295528; 
- Sat, 16 Dec 2023 12:08:15 -0800 (PST)
+ bh=yF+CkwwFK8Fki1vhgGa9vW1O6nvrVwHJfUHVd8gD0B8=;
+ b=DHWvMqbyQs3Kw3WwSeViVIc+1mQtGcSOKUOc4VV6TgkSUKh4aCWs2ZWu+mfaR9YHt7
+ 9YaGcbtxqW6uACQOP0C8z/7SgHiXl+uqBn9pA31P/pkXNjmk8ShGNSEnZUBysB7qiTVP
+ 5sP3jHI44uYbmP7d8sxrxhwYJ4tAqRCf6sWaNnSr/vfdWeQySVetqHarwBRuq1qCCiF/
+ BGIXipQV/bdMI5FdxJbC0aOSoHNr4rSsd0hEDWBMjgbuaSWL0T39dqi8t13bMQOnbkF9
+ 7XPpqnlDv0w2VXXnblqZVPuc786GHrRWHzEkQABcTPJIXf6jxboFVtZn+zNwmeeUgpKW
+ MNkA==
+X-Gm-Message-State: AOJu0Yz3SSLDTGhAT+V+ptJreLzS6o+jSmCs2U6Ll63x5ah6AmY5wXpY
+ PtWQxwZ1/5N+/D2LzcARm5ejPOPOvF8=
+X-Google-Smtp-Source: AGHT+IEQ5arpO6hVLiK9M+fvZred/xAFN3FD1UUUjskAF8S5ckdc2POJY5hi0mCBYRFR7V9FC5LozQ==
+X-Received: by 2002:a17:906:6d06:b0:9b2:d554:da0e with SMTP id
+ m6-20020a1709066d0600b009b2d554da0emr7314059ejr.69.1702757616799; 
+ Sat, 16 Dec 2023 12:13:36 -0800 (PST)
 Received: from fedora (ip-109-43-178-144.web.vodafone.de. [109.43.178.144])
  by smtp.gmail.com with ESMTPSA id
- i8-20020a0565123e0800b0050bfb00108bsm2469447lfv.71.2023.12.16.12.08.14
+ tx17-20020a1709078e9100b00a1b75e0e061sm12289369ejc.130.2023.12.16.12.13.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Dec 2023 12:08:15 -0800 (PST)
-Date: Sat, 16 Dec 2023 21:08:12 +0100
+ Sat, 16 Dec 2023 12:13:36 -0800 (PST)
+Date: Sat, 16 Dec 2023 21:13:34 +0100
 From: Thomas Huth <huth@tuxfamily.org>
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 07/12] next-cube.c: move static phase variable to NextRtc
-Message-ID: <20231216210812.22c23f82@fedora>
-In-Reply-To: <20231215200009.346212-8-mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH 08/12] next-cube.c: move LED logic to new
+ next_scr2_led_update() function
+Message-ID: <20231216211334.633f7684@fedora>
+In-Reply-To: <20231215200009.346212-9-mark.cave-ayland@ilande.co.uk>
 References: <20231215200009.346212-1-mark.cave-ayland@ilande.co.uk>
- <20231215200009.346212-8-mark.cave-ayland@ilande.co.uk>
+ <20231215200009.346212-9-mark.cave-ayland@ilande.co.uk>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.208.169; envelope-from=th.huth@gmail.com;
- helo=mail-lj1-f169.google.com
+Received-SPF: pass client-ip=209.85.218.44; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f44.google.com
 X-Spam_score_int: 19
 X-Spam_score: 1.9
 X-Spam_bar: +
@@ -80,19 +81,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Fri, 15 Dec 2023 20:00:04 +0000
+Am Fri, 15 Dec 2023 20:00:05 +0000
 schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
 
-> The phase variable represents part of the state machine used to clock data out
-> of the NextRtc device.
-> 
-> Note that this is a migration break for the NeXTRtc struct, but as nothing will
-> currently boot then we simply bump the migration version for now.
+> Ensure that the LED status is updated by calling next_scr2_led_update() whenever
+> the SC2 register is written.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->  hw/m68k/next-cube.c | 31 ++++++++++++++++---------------
->  1 file changed, 16 insertions(+), 15 deletions(-)
+>  hw/m68k/next-cube.c | 22 +++++++++++++---------
+>  1 file changed, 13 insertions(+), 9 deletions(-)
+> 
+> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+> index f2222554fa..7ffd1c412e 100644
+> --- a/hw/m68k/next-cube.c
+> +++ b/hw/m68k/next-cube.c
+> @@ -123,6 +123,18 @@ static const uint8_t rtc_ram2[32] = {
+>  #define SCR2_RTDATA 0x4
+>  #define SCR2_TOBCD(x) (((x / 10) << 4) + (x % 10))
+>  
+> +static void next_scr2_led_update(NeXTPC *s)
+> +{
+> +    if (s->scr2 & 0x1) {
+> +        DPRINTF("fault!\n");
+> +        s->led++;
+> +        if (s->led == 10) {
+> +            DPRINTF("LED flashing, possible fault!\n");
+> +            s->led = 0;
+> +        }
+> +    }
+> +}
 
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+This will now operate on the old value of scr2 ...
+
+>  static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+>  {
+>      static uint8_t old_scr2;
+> @@ -135,15 +147,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+>          scr2_2 = val & 0xFF;
+>      }
+>  
+> -    if (val & 0x1) {
+> -        DPRINTF("fault!\n");
+> -        s->led++;
+> -        if (s->led == 10) {
+> -            DPRINTF("LED flashing, possible fault!\n");
+> -            s->led = 0;
+> -        }
+> -    }
+
+.. while this was using the new value that was just written.
+So this looks wrong to me ... or do I miss something?
+
+ Thomas
+
+
+>      if (scr2_2 & 0x1) {
+>          /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
+>          if (rtc->phase == -1) {
+> @@ -318,6 +321,7 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
+>          break;
+>  
+>      case 0xd000 ... 0xd003:
+> +        next_scr2_led_update(s);
+>          nextscr2_write(s, val, size);
+>          break;
+>  
 
