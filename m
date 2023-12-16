@@ -2,48 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F286A815B0E
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Dec 2023 19:29:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 518DF815B4E
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Dec 2023 20:27:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEZOH-0000Sz-DP; Sat, 16 Dec 2023 13:27:57 -0500
+	id 1rEaIY-0006bQ-Jv; Sat, 16 Dec 2023 14:26:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rEZOE-0000QH-IO; Sat, 16 Dec 2023 13:27:54 -0500
-Received: from zoidberg.rfc1149.net ([195.154.227.159])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>)
- id 1rEZOC-0006XS-O5; Sat, 16 Dec 2023 13:27:54 -0500
-Received: from buffy.. (buffy [192.168.147.6])
- by zoidberg.rfc1149.net (Postfix) with ESMTP id 2D5DD80028;
- Sat, 16 Dec 2023 19:27:47 +0100 (CET)
-Authentication-Results: zoidberg.rfc1149.net;
- dmarc=fail (p=none dis=none) header.from=rfc1149.net
-Authentication-Results: zoidberg.rfc1149.net;
- spf=fail smtp.mailfrom=rfc1149.net
-From: Samuel Tardieu <sam@rfc1149.net>
-To: qemu-devel@nongnu.org
-Cc: Anton Kochkov <anton.kochkov@proton.me>, qemu-arm@nongnu.org,
- Alexandre Iooss <erdnaxe@crans.org>,
- Alistair Francis <alistair@alistair23.me>,
- Peter Maydell <peter.maydell@linaro.org>, Samuel Tardieu <sam@rfc1149.net>
-Subject: [PATCH 3/3] hw/arm/socs: configure priority bits for existing SOCs
-Date: Sat, 16 Dec 2023 19:27:40 +0100
-Message-ID: <20231216182740.3305724-4-sam@rfc1149.net>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231216182740.3305724-1-sam@rfc1149.net>
-References: <20231216182740.3305724-1-sam@rfc1149.net>
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEaIR-0006b0-A0
+ for qemu-devel@nongnu.org; Sat, 16 Dec 2023 14:25:59 -0500
+Received: from mail-ej1-f49.google.com ([209.85.218.49])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rEaIO-0006xr-71
+ for qemu-devel@nongnu.org; Sat, 16 Dec 2023 14:25:58 -0500
+Received: by mail-ej1-f49.google.com with SMTP id
+ a640c23a62f3a-a1f8f470903so209549166b.1
+ for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 11:25:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702754754; x=1703359554;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=OUEJPRrnTXK9AkdPglTkH+ukAqiV9x3V6exp85hPd90=;
+ b=EQNoFdEUxUCANdrP0cdfkE+q6UJGKlH7IMfFFFouu4SVhOeLmv/+XSLDzP4wxzkDO9
+ qk7D8HITNa4bajcsqE9mBbkqELoT5u2SCda7vvVypNK7h+TPrCoQSBHwaKz9litA7bGc
+ dC3iuWBvNwrNhHvqeAe8IVHA/fuw/oR1/cfQn35Rx5K0mDb0/peVJhBig73DhRZyqtRP
+ AoX2xhVG+xvnogxJnrkjv1JiwKL4CU/xW9FLJtWBD64nhqenRcmAhD7JlBAyKfx6BkDh
+ ObDioRS4VPO2JWThi4gm3oLxj2/sc2gbKl1paUJCYQSK6bHGRcMwwdTc436OGCwmclNu
+ W9NQ==
+X-Gm-Message-State: AOJu0YwVRTtfOnhDVxn0T93/0mQkt45Jt8v8inwOJMAhJnp6wQ+H4KmC
+ hcoiiWnlRLp9ajgBpUJvblM=
+X-Google-Smtp-Source: AGHT+IFm/Ois9clZNFMp0+D0RgETTATwneyZTKntPQJppuerA4RJN1P4O9AkFY8BUQKxXBwM6VK/lg==
+X-Received: by 2002:a17:906:c258:b0:a19:a19b:c701 with SMTP id
+ bl24-20020a170906c25800b00a19a19bc701mr6481090ejb.81.1702754754028; 
+ Sat, 16 Dec 2023 11:25:54 -0800 (PST)
+Received: from fedora (ip-109-43-178-144.web.vodafone.de. [109.43.178.144])
+ by smtp.gmail.com with ESMTPSA id
+ vv8-20020a170907a68800b00a1d2b0d4500sm12145888ejc.168.2023.12.16.11.25.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 16 Dec 2023 11:25:53 -0800 (PST)
+Date: Sat, 16 Dec 2023 20:25:51 +0100
+From: Thomas Huth <huth@tuxfamily.org>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 03/12] next-cube.c: update mmio_ops to properly use
+ modern memory API
+Message-ID: <20231216202551.5eb03d57@fedora>
+In-Reply-To: <20231215200009.346212-4-mark.cave-ayland@ilande.co.uk>
+References: <20231215200009.346212-1-mark.cave-ayland@ilande.co.uk>
+ <20231215200009.346212-4-mark.cave-ayland@ilande.co.uk>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
- helo=zoidberg.rfc1149.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=209.85.218.49; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f49.google.com
+X-Spam_score_int: 19
+X-Spam_score: 1.9
+X-Spam_bar: +
+X-Spam_report: (1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.249,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,77 +81,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the number of priority bits for a number of existing
-SOCsaccording to their technical documentation:
+Am Fri, 15 Dec 2023 20:00:00 +0000
+schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
 
-- STM32F100/F205/F405: 4 bits
-- Stellaris (Sandstorm/Fury): 3 bits
+> The old QEMU memory accessors used in the original NextCube patch series had
+> separate functions for 1, 2 and 4 byte accessors. When the series was finally
+> merged a simple wrapper function was written to dispatch the memory accesses
+> using the original functions.
+> 
+> Convert mmio_ops to use the memory API directly renaming it to next_mmio_ops,
+> marking it as DEVICE_BIG_ENDIAN, and handling any unaligned accesses.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>  hw/m68k/next-cube.c | 156 +++++++++++++-------------------------------
+>  1 file changed, 45 insertions(+), 111 deletions(-)
 
-Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
----
- hw/arm/stellaris.c     | 2 ++
- hw/arm/stm32f100_soc.c | 1 +
- hw/arm/stm32f205_soc.c | 1 +
- hw/arm/stm32f405_soc.c | 1 +
- 4 files changed, 5 insertions(+)
-
-diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index dd90f686bf..38981967f3 100644
---- a/hw/arm/stellaris.c
-+++ b/hw/arm/stellaris.c
-@@ -47,6 +47,7 @@
- #define BP_GAMEPAD   0x04
- 
- #define NUM_IRQ_LINES 64
-+#define NUM_PRIO_BITS 3
- 
- typedef const struct {
-     const char *name;
-@@ -1067,6 +1068,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
- 
-     nvic = qdev_new(TYPE_ARMV7M);
-     qdev_prop_set_uint32(nvic, "num-irq", NUM_IRQ_LINES);
-+    qdev_prop_set_uint8(nvic, "num-prio-bits", NUM_PRIO_BITS);
-     qdev_prop_set_string(nvic, "cpu-type", ms->cpu_type);
-     qdev_prop_set_bit(nvic, "enable-bitband", true);
-     qdev_connect_clock_in(nvic, "cpuclk",
-diff --git a/hw/arm/stm32f100_soc.c b/hw/arm/stm32f100_soc.c
-index b90d440d7a..808b783515 100644
---- a/hw/arm/stm32f100_soc.c
-+++ b/hw/arm/stm32f100_soc.c
-@@ -115,6 +115,7 @@ static void stm32f100_soc_realize(DeviceState *dev_soc, Error **errp)
-     /* Init ARMv7m */
-     armv7m = DEVICE(&s->armv7m);
-     qdev_prop_set_uint32(armv7m, "num-irq", 61);
-+    qdev_prop_set_uint8(armv7m, "num-prio-bits", 4);
-     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
-     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
-diff --git a/hw/arm/stm32f205_soc.c b/hw/arm/stm32f205_soc.c
-index 1a548646f6..a451e21f59 100644
---- a/hw/arm/stm32f205_soc.c
-+++ b/hw/arm/stm32f205_soc.c
-@@ -127,6 +127,7 @@ static void stm32f205_soc_realize(DeviceState *dev_soc, Error **errp)
- 
-     armv7m = DEVICE(&s->armv7m);
-     qdev_prop_set_uint32(armv7m, "num-irq", 96);
-+    qdev_prop_set_uint8(armv7m, "num-prio-bits", 4);
-     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
-     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
-diff --git a/hw/arm/stm32f405_soc.c b/hw/arm/stm32f405_soc.c
-index a65bbe298d..2ad5b79a06 100644
---- a/hw/arm/stm32f405_soc.c
-+++ b/hw/arm/stm32f405_soc.c
-@@ -149,6 +149,7 @@ static void stm32f405_soc_realize(DeviceState *dev_soc, Error **errp)
- 
-     armv7m = DEVICE(&s->armv7m);
-     qdev_prop_set_uint32(armv7m, "num-irq", 96);
-+    qdev_prop_set_uint8(armv7m, "num-prio-bits", 4);
-     qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
-     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
--- 
-2.42.0
-
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 
