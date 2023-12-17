@@ -2,57 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19F0815EC6
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 12:41:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D36D815FEA
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 15:43:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEpV8-0004IE-MW; Sun, 17 Dec 2023 06:40:07 -0500
+	id 1rEsLL-0005Lx-Ub; Sun, 17 Dec 2023 09:42:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rEpV6-0004Hl-5T
- for qemu-devel@nongnu.org; Sun, 17 Dec 2023 06:40:04 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rEpV0-0001MX-VR
- for qemu-devel@nongnu.org; Sun, 17 Dec 2023 06:40:02 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 5346075A4C8;
- Sun, 17 Dec 2023 12:39:55 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id S3qFW8lZ7TIQ; Sun, 17 Dec 2023 12:39:53 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 16EF375A4C6; Sun, 17 Dec 2023 12:39:53 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 141E475A4BF;
- Sun, 17 Dec 2023 12:39:53 +0100 (CET)
-Date: Sun, 17 Dec 2023 12:39:53 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-cc: Peter Maydell <peter.maydell@linaro.org>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- Marek Glogowski <smarkusg@gmail.com>, qemu-devel@nongnu.org, 
- Rene Engel <ReneEngel80@emailn.de>
-Subject: Re: [PATCH v7] ui/cocoa: Use NSWindow's ability to resize
-In-Reply-To: <20231217-cocoa-v7-1-6af21ef75680@daynix.com>
-Message-ID: <81d626f7-1fe5-0c74-acaa-4a2a4070a381@eik.bme.hu>
-References: <20231217-cocoa-v7-1-6af21ef75680@daynix.com>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rEsLI-0005Lg-Hn; Sun, 17 Dec 2023 09:42:08 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rEsLG-0003J9-Iw; Sun, 17 Dec 2023 09:42:08 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-54c70c70952so2600241a12.3; 
+ Sun, 17 Dec 2023 06:42:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1702824123; x=1703428923; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ImRdEJ2s1CPU/zja2PDSv05N4zE1GjmhfZzXX0+BJtA=;
+ b=CtIFBOZ516E0NY+Zj8oBM/nQHmTtqOAd3VbhWzNI9ObeH6BtKgy2l4JNExUTgIn7s/
+ 3OGDMWjick0Kta8j41oWE5JSyclmO1lGhSW45z534RfPPQCPILa0gedZ9VsMKo2JsLSt
+ LWcS6f3DUTVBxgRzwooGU9bkynZ2gc3Wcj3Kl9RI41sfaiETCTHn//XgIu2reNCmDIZ3
+ SrGtrT1nv95HplL1b0JMGlnWs4NiH08jr6egsM7j2cHpGr8yWYpoKN1UfQKKxwmsjSTy
+ eyhYZX3ufxdpSRg3xWeJjdO2kair43I+ubkNKmHxg+Rzz6tLNCNQ4zxAPW5H8XWt+edq
+ U6Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702824123; x=1703428923;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ImRdEJ2s1CPU/zja2PDSv05N4zE1GjmhfZzXX0+BJtA=;
+ b=b7U3+iQEno+mDQeeWoN07M4Mr4BFsylxnSVdyjAy/6CsuQMg4FcJoZrCrq0hWkijGu
+ Tm1y5Jz5jljlouM71y6NYrsQI3+f0ofi/SJFtbnoNhGAKddsnD1aT1ZvZnJ8JM26vy++
+ NWNuKsVACFnjRko5qb8Emzfo+EOtTYdQXWKV1CrvnOkaTev8DGJmkjHdiMgjh5dZpT1g
+ dTPuoXFi5/kvJk4+I8m+WskiA7aAZ6Eu7T7Qmy9QTIY/zQRXUmmeLwtXjwhT3VEtbG5o
+ Q5FMz9R+cXrAYi+dSrZ8nRJ/kSFkA/HortuPqHORrU9mIq+/M297QWSXvImmiZi71IYh
+ ByIA==
+X-Gm-Message-State: AOJu0Yy8AXXbA5ZH4lJIWOM3KVfuj7mBK29YucACoOlh8csXu2m8W3Xp
+ FcDNq2kbiqPFiPHmInJ3Lo+Z2sy/qxo=
+X-Google-Smtp-Source: AGHT+IH+QUQfDdlRexe23+jgS8M62pxCiSHHNFSL4w3tCx45xctLo2lt+LHLmCojQPybR27qQ18Shw==
+X-Received: by 2002:a17:906:c44b:b0:a19:720c:ed71 with SMTP id
+ ck11-20020a170906c44b00b00a19720ced71mr4508604ejb.58.1702824122862; 
+ Sun, 17 Dec 2023 06:42:02 -0800 (PST)
+Received: from archlinux.. (dynamic-077-011-162-117.77.11.pool.telefonica.de.
+ [77.11.162.117]) by smtp.gmail.com with ESMTPSA id
+ vv6-20020a170907a68600b00a1dff479037sm12996632ejc.127.2023.12.17.06.42.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 17 Dec 2023 06:42:02 -0800 (PST)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
+ Thomas Huth <huth@tuxfamily.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ David Hildenbrand <david@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Kevin Wolf <kwolf@redhat.com>, Peter Xu <peterx@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sergio Lopez <slp@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Juan Quintela <quintela@redhat.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
+ qemu-ppc@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH 00/12] hw/isa/vt82c686: Implement relocation and toggling of
+ SuperI/O functions
+Date: Sun, 17 Dec 2023 15:41:36 +0100
+Message-ID: <20231217144148.15511-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: 1
-X-Spam_score: 0.1
-X-Spam_bar: /
-X-Spam_report: (0.1 / 5.0 requ) BAYES_00=-1.9, PDS_OTHER_BAD_TLD=1.999,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,918 +109,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 17 Dec 2023, Akihiko Odaki wrote:
-> This change brings two new features:
-> - The window will be resizable if "Zoom To Fit" is eanbled
-> - The window can be made full screen by clicking full screen button
->  provided by the platform. (The left-top green button.)
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Tested-by: Rene Engel <ReneEngel80@emailn.de>
-> ---
-> V5 -> V6:
->  Rebased.
-> ---
-> Changes in v7:
-> - Fixed zoom-to-fit option. (Marek Glogowski)
-> - Link to v6: https://lore.kernel.org/r/20231211-cocoa-v6-1-49f3be0191f2@daynix.com
-> ---
-> ui/cocoa.m | 542 +++++++++++++++++++++++++++++--------------------------------
-> 1 file changed, 258 insertions(+), 284 deletions(-)
-
-Is ir possible to break this patch up into smaller ones for easier review? 
-E.g. separate patch moving mouse event handling out of handleEventLocked, 
-replacing stretch_video flag with NSWindowStyleMaskResizable and whatever 
-else can be done as independent steps? Not sure if that's possible or 
-needs the whole chnage at once but this patch seems to be too big. Some 
-more comments below.
-
-> diff --git a/ui/cocoa.m b/ui/cocoa.m
-> index cd069da6965b..31a2230f55a4 100644
-> --- a/ui/cocoa.m
-> +++ b/ui/cocoa.m
-> @@ -99,12 +99,10 @@ static void cocoa_switch(DisplayChangeListener *dcl,
-> static DisplayChangeListener dcl = {
->     .ops = &dcl_ops,
-> };
-> -static int last_buttons;
-> static int cursor_hide = 1;
-> static int left_command_key_enabled = 1;
-> static bool swap_opt_cmd;
->
-> -static bool stretch_video;
-> static NSTextField *pauseLabel;
->
-> static bool allow_events;
-> @@ -304,20 +302,17 @@ static void handleAnyDeviceErrors(Error * err)
-> */
-> @interface QemuCocoaView : NSView
-> {
-> +    NSTrackingArea *trackingArea;
->     QEMUScreen screen;
-> -    NSWindow *fullScreenWindow;
-> -    float cx,cy,cw,ch,cdx,cdy;
->     pixman_image_t *pixman_image;
->     QKbdState *kbd;
->     BOOL isMouseGrabbed;
-> -    BOOL isFullscreen;
->     BOOL isAbsoluteEnabled;
->     CFMachPortRef eventsTap;
-> }
-> - (void) switchSurface:(pixman_image_t *)image;
-> - (void) grabMouse;
-> - (void) ungrabMouse;
-> -- (void) toggleFullScreen:(id)sender;
-> - (void) setFullGrab:(id)sender;
-> - (void) handleMonitorInput:(NSEvent *)event;
-> - (bool) handleEvent:(NSEvent *)event;
-> @@ -333,8 +328,6 @@ - (void) setAbsoluteEnabled:(BOOL)tIsAbsoluteEnabled;
->  */
-> - (BOOL) isMouseGrabbed;
-> - (BOOL) isAbsoluteEnabled;
-> -- (float) cdx;
-> -- (float) cdy;
-> - (QEMUScreen) gscreen;
-> - (void) raiseAllKeys;
-> @end
-> @@ -392,46 +385,43 @@ - (BOOL) isOpaque
->     return YES;
-> }
->
-> -- (BOOL) screenContainsPoint:(NSPoint) p
-> +- (void) removeTrackingRect
-> {
-> -    return (p.x > -1 && p.x < screen.width && p.y > -1 && p.y < screen.height);
-> +    if (trackingArea) {
-> +        [self removeTrackingArea:trackingArea];
-> +        [trackingArea release];
-> +        trackingArea = nil;
-> +    }
-> }
->
-> -/* Get location of event and convert to virtual screen coordinate */
-> -- (CGPoint) screenLocationOfEvent:(NSEvent *)ev
-> +- (void) frameUpdated
-> {
-> -    NSWindow *eventWindow = [ev window];
-> -    // XXX: Use CGRect and -convertRectFromScreen: to support macOS 10.10
-> -    CGRect r = CGRectZero;
-> -    r.origin = [ev locationInWindow];
-> -    if (!eventWindow) {
-> -        if (!isFullscreen) {
-> -            return [[self window] convertRectFromScreen:r].origin;
-> -        } else {
-> -            CGPoint locationInSelfWindow = [[self window] convertRectFromScreen:r].origin;
-> -            CGPoint loc = [self convertPoint:locationInSelfWindow fromView:nil];
-> -            if (stretch_video) {
-> -                loc.x /= cdx;
-> -                loc.y /= cdy;
-> -            }
-> -            return loc;
-> -        }
-> -    } else if ([[self window] isEqual:eventWindow]) {
-> -        if (!isFullscreen) {
-> -            return r.origin;
-> -        } else {
-> -            CGPoint loc = [self convertPoint:r.origin fromView:nil];
-> -            if (stretch_video) {
-> -                loc.x /= cdx;
-> -                loc.y /= cdy;
-> -            }
-> -            return loc;
-> -        }
-> -    } else {
-> -        return [[self window] convertRectFromScreen:[eventWindow convertRectToScreen:r]].origin;
-> +    [self removeTrackingRect];
-> +
-> +    if ([self window]) {
-> +        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
-> +                                        NSTrackingMouseEnteredAndExited |
-> +                                        NSTrackingMouseMoved;
-> +        trackingArea = [[NSTrackingArea alloc] initWithRect:[self frame]
-> +                                                    options:options
-> +                                                      owner:self
-> +                                                   userInfo:nil];
-> +        [self addTrackingArea:trackingArea];
-> +        [self updateUIInfo];
->     }
-> }
->
-> +- (void) viewDidMoveToWindow
-> +{
-> +    [self resizeWindow];
-> +    [self frameUpdated];
-> +}
-> +
-> +- (void) viewWillMoveToWindow:(NSWindow *)newWindow
-> +{
-> +    [self removeTrackingRect];
-> +}
-> +
-> - (void) hideCursor
-> {
->     if (!cursor_hide) {
-> @@ -494,13 +484,14 @@ - (void) drawRect:(NSRect) rect
->         int i;
->         CGImageRef clipImageRef;
->         CGRect clipRect;
-> +        CGFloat d = (CGFloat)h / [self frame].size.height;
->
->         [self getRectsBeingDrawn:&rectList count:&rectCount];
->         for (i = 0; i < rectCount; i++) {
-> -            clipRect.origin.x = rectList[i].origin.x / cdx;
-> -            clipRect.origin.y = (float)h - (rectList[i].origin.y + rectList[i].size.height) / cdy;
-> -            clipRect.size.width = rectList[i].size.width / cdx;
-> -            clipRect.size.height = rectList[i].size.height / cdy;
-> +            clipRect.origin.x = rectList[i].origin.x * d;
-> +            clipRect.origin.y = (float)h - (rectList[i].origin.y + rectList[i].size.height) * d;
-> +            clipRect.size.width = rectList[i].size.width * d;
-> +            clipRect.size.height = rectList[i].size.height * d;
->             clipImageRef = CGImageCreateWithImageInRect(
->                                                         imageRef,
->                                                         clipRect
-> @@ -513,36 +504,43 @@ - (void) drawRect:(NSRect) rect
->     }
-> }
->
-> -- (void) setContentDimensions
-> +- (NSSize) fixZoomedFullScreenSize:(NSSize)proposedSize
-> {
-> -    COCOA_DEBUG("QemuCocoaView: setContentDimensions\n");
-> +    NSSize size;
->
-> -    if (isFullscreen) {
-> -        cdx = [[NSScreen mainScreen] frame].size.width / (float)screen.width;
-> -        cdy = [[NSScreen mainScreen] frame].size.height / (float)screen.height;
-> +    size.width = (CGFloat)screen.width * proposedSize.height;
-> +    size.height = (CGFloat)screen.height * proposedSize.width;
-
-One of these will be overwritten in the next if below so maybe drop this 
-init and do the calculation in the if legs which is then also clearer to 
-show that this would scale one of these with screen.width/screen.height or 
-the inverse of that.
-
-This also removes stretch_video flag and the calculation to preserve 
-aspect ratio. Is that correct? Would it now distort the image when zooming 
-to full screen if guest resolution is not the same as host screen? Is that 
-how zoom-to-fit should work? At leest with -display sdl going to full 
-screen guest screen is zoomed preserving aspect ratio but maybe sdl does 
-not have zoom-to-fit option. I don't know how it works with other displays 
-such as gtk.
-
-> -        /* stretches video, but keeps same aspect ratio */
-> -        if (stretch_video == true) {
-> -            /* use smallest stretch value - prevents clipping on sides */
-> -            if (MIN(cdx, cdy) == cdx) {
-> -                cdy = cdx;
-> -            } else {
-> -                cdx = cdy;
-> -            }
-> -        } else {  /* No stretching */
-> -            cdx = cdy = 1;
-> -        }
-> -        cw = screen.width * cdx;
-> -        ch = screen.height * cdy;
-> -        cx = ([[NSScreen mainScreen] frame].size.width - cw) / 2.0;
-> -        cy = ([[NSScreen mainScreen] frame].size.height - ch) / 2.0;
-> +    if (size.width < size.height) {
-> +        size.width /= screen.height;
-> +        size.height = proposedSize.height;
->     } else {
-> -        cx = 0;
-> -        cy = 0;
-> -        cw = screen.width;
-> -        ch = screen.height;
-> -        cdx = 1.0;
-> -        cdy = 1.0;
-> +        size.width = proposedSize.width;
-> +        size.height /= screen.width;
-> +    }
-> +
-> +    return size;
-> +}
-> +
-> +- (NSSize) screenSafeAreaSize
-> +{
-> +    NSSize size = [[[self window] screen] frame].size;
-> +    NSEdgeInsets insets = [[[self window] screen] safeAreaInsets];
-> +    size.width -= insets.left + insets.right;
-> +    size.height -= insets.top + insets.bottom;
-> +    return size;
-> +}
-> +
-> +- (void) resizeWindow
-> +{
-> +    [[self window] setContentAspectRatio:NSMakeSize(screen.width, screen.height)];
-> +
-> +    if (([[self window] styleMask] & NSWindowStyleMaskResizable) == 0) {
-> +        [[self window] setContentSize:NSMakeSize(screen.width, screen.height)];
-> +        [[self window] center];
-> +    } else if (([[self window] styleMask] & NSWindowStyleMaskFullScreen) != 0) {
-> +        [[self window] setContentSize:[self fixZoomedFullScreenSize:[self screenSafeAreaSize]]];
-> +        [[self window] center];
->     }
-> }
->
-> @@ -563,7 +561,11 @@ - (void) updateUIInfoLocked
->         CGSize screenPhysicalSize = CGDisplayScreenSize(display);
->         CVDisplayLinkRef displayLink;
->
-> -        frameSize = isFullscreen ? screenSize : [self frame].size;
-> +        if (([[self window] styleMask] & NSWindowStyleMaskFullScreen) == 0) {
-> +            frameSize = [self frame].size;
-> +        } else {
-> +            frameSize = [self screenSafeAreaSize];
-> +        }
-
-In these ifs you seem to test for flag not set with == 0 but maybe 
-swapping the else and then branches and testing for flag set would be 
-clearer than testing for negative condition? I mean:
-
-if (([[self window] styleMask] & NSWindowStyleMaskFullScreen)) {
-     frameSize = [self screenSafeAreaSize];
-} else {
-     frameSize = [self frame].size;
-}
-
->         if (!CVDisplayLinkCreateWithCGDisplay(display, &displayLink)) {
->             CVTime period = CVDisplayLinkGetNominalOutputVideoRefreshPeriod(displayLink);
-> @@ -610,31 +612,19 @@ - (void) updateUIInfo
->     });
-> }
->
-> -- (void)viewDidMoveToWindow
-> -{
-> -    [self updateUIInfo];
-> -}
-> -
-> - (void) switchSurface:(pixman_image_t *)image
-> {
->     COCOA_DEBUG("QemuCocoaView: switchSurface\n");
->
->     int w = pixman_image_get_width(image);
->     int h = pixman_image_get_height(image);
-> -    /* cdx == 0 means this is our very first surface, in which case we need
-> -     * to recalculate the content dimensions even if it happens to be the size
-> -     * of the initial empty window.
-> -     */
-> -    bool isResize = (w != screen.width || h != screen.height || cdx == 0.0);
->
-> -    int oldh = screen.height;
-> -    if (isResize) {
-> +    if (w != screen.width || h != screen.height) {
->         // Resize before we trigger the redraw, or we'll redraw at the wrong size
->         COCOA_DEBUG("switchSurface: new size %d x %d\n", w, h);
->         screen.width = w;
->         screen.height = h;
-> -        [self setContentDimensions];
-> -        [self setFrame:NSMakeRect(cx, cy, cw, ch)];
-> +        [self resizeWindow];
->     }
->
->     // update screenBuffer
-> @@ -643,51 +633,6 @@ - (void) switchSurface:(pixman_image_t *)image
->     }
->
->     pixman_image = image;
-> -
-> -    // update windows
-> -    if (isFullscreen) {
-> -        [[fullScreenWindow contentView] setFrame:[[NSScreen mainScreen] frame]];
-> -        [normalWindow setFrame:NSMakeRect([normalWindow frame].origin.x, [normalWindow frame].origin.y - h + oldh, w, h + [normalWindow frame].size.height - oldh) display:NO animate:NO];
-> -    } else {
-> -        if (qemu_name)
-> -            [normalWindow setTitle:[NSString stringWithFormat:@"QEMU %s", qemu_name]];
-> -        [normalWindow setFrame:NSMakeRect([normalWindow frame].origin.x, [normalWindow frame].origin.y - h + oldh, w, h + [normalWindow frame].size.height - oldh) display:YES animate:NO];
-> -    }
-> -
-> -    if (isResize) {
-> -        [normalWindow center];
-> -    }
-> -}
-> -
-> -- (void) toggleFullScreen:(id)sender
-> -{
-> -    COCOA_DEBUG("QemuCocoaView: toggleFullScreen\n");
-> -
-> -    if (isFullscreen) { // switch from fullscreen to desktop
-> -        isFullscreen = FALSE;
-> -        [self ungrabMouse];
-> -        [self setContentDimensions];
-> -        [fullScreenWindow close];
-> -        [normalWindow setContentView: self];
-> -        [normalWindow makeKeyAndOrderFront: self];
-> -        [NSMenu setMenuBarVisible:YES];
-> -    } else { // switch from desktop to fullscreen
-> -        isFullscreen = TRUE;
-> -        [normalWindow orderOut: nil]; /* Hide the window */
-> -        [self grabMouse];
-> -        [self setContentDimensions];
-> -        [NSMenu setMenuBarVisible:NO];
-> -        fullScreenWindow = [[NSWindow alloc] initWithContentRect:[[NSScreen mainScreen] frame]
-> -            styleMask:NSWindowStyleMaskBorderless
-> -            backing:NSBackingStoreBuffered
-> -            defer:NO];
-> -        [fullScreenWindow setAcceptsMouseMovedEvents: YES];
-> -        [fullScreenWindow setHasShadow:NO];
-> -        [fullScreenWindow setBackgroundColor: [NSColor blackColor]];
-> -        [self setFrame:NSMakeRect(cx, cy, cw, ch)];
-> -        [[fullScreenWindow contentView] addSubview: self];
-> -        [fullScreenWindow makeKeyAndOrderFront:self];
-> -    }
-> }
->
-> - (void) setFullGrab:(id)sender
-> @@ -801,9 +746,6 @@ - (bool) handleEventLocked:(NSEvent *)event
->     COCOA_DEBUG("QemuCocoaView: handleEvent\n");
->     int buttons = 0;
->     int keycode = 0;
-> -    bool mouse_event = false;
-> -    // Location of event in virtual screen coordinates
-> -    NSPoint p = [self screenLocationOfEvent:event];
->     NSUInteger modifiers = [event modifierFlags];
->
->     /*
-> @@ -883,25 +825,25 @@ - (bool) handleEventLocked:(NSEvent *)event
->                     if (!!(modifiers & NSEventModifierFlagShift)) {
->                         [self toggleKey:Q_KEY_CODE_SHIFT];
->                     }
-> -                    break;
-> +                    return true;
->
->                 case kVK_RightShift:
->                     if (!!(modifiers & NSEventModifierFlagShift)) {
->                         [self toggleKey:Q_KEY_CODE_SHIFT_R];
->                     }
-> -                    break;
-> +                    return true;
->
->                 case kVK_Control:
->                     if (!!(modifiers & NSEventModifierFlagControl)) {
->                         [self toggleKey:Q_KEY_CODE_CTRL];
->                     }
-> -                    break;
-> +                    return true;
->
->                 case kVK_RightControl:
->                     if (!!(modifiers & NSEventModifierFlagControl)) {
->                         [self toggleKey:Q_KEY_CODE_CTRL_R];
->                     }
-> -                    break;
-> +                    return true;
->
->                 case kVK_Option:
->                     if (!!(modifiers & NSEventModifierFlagOption)) {
-> @@ -911,7 +853,7 @@ - (bool) handleEventLocked:(NSEvent *)event
->                             [self toggleKey:Q_KEY_CODE_ALT];
->                         }
->                     }
-> -                    break;
-> +                    return true;
->
->                 case kVK_RightOption:
->                     if (!!(modifiers & NSEventModifierFlagOption)) {
-> @@ -921,7 +863,7 @@ - (bool) handleEventLocked:(NSEvent *)event
->                             [self toggleKey:Q_KEY_CODE_ALT_R];
->                         }
->                     }
-> -                    break;
-> +                    return true;
->
->                 /* Don't pass command key changes to guest unless mouse is grabbed */
->                 case kVK_Command:
-> @@ -934,7 +876,7 @@ - (bool) handleEventLocked:(NSEvent *)event
->                             [self toggleKey:Q_KEY_CODE_META_L];
->                         }
->                     }
-> -                    break;
-> +                    return true;
->
->                 case kVK_RightCommand:
->                     if (isMouseGrabbed &&
-> @@ -945,9 +887,11 @@ - (bool) handleEventLocked:(NSEvent *)event
->                             [self toggleKey:Q_KEY_CODE_META_R];
->                         }
->                     }
-> -                    break;
-> +                    return true;
-> +
-> +                default:
-> +                    return true;
->             }
-> -            break;
->         case NSEventTypeKeyDown:
->             keycode = cocoa_keycode_to_qemu([event keyCode]);
->
-> @@ -983,7 +927,7 @@ - (bool) handleEventLocked:(NSEvent *)event
->             } else {
->                 [self handleMonitorInput: event];
->             }
-> -            break;
-> +            return true;
->         case NSEventTypeKeyUp:
->             keycode = cocoa_keycode_to_qemu([event keyCode]);
->
-> @@ -996,67 +940,7 @@ - (bool) handleEventLocked:(NSEvent *)event
->             if (qemu_console_is_graphic(NULL)) {
->                 qkbd_state_key_event(kbd, keycode, false);
->             }
-> -            break;
-> -        case NSEventTypeMouseMoved:
-> -            if (isAbsoluteEnabled) {
-> -                // Cursor re-entered into a window might generate events bound to screen coordinates
-> -                // and `nil` window property, and in full screen mode, current window might not be
-> -                // key window, where event location alone should suffice.
-> -                if (![self screenContainsPoint:p] || !([[self window] isKeyWindow] || isFullscreen)) {
-> -                    if (isMouseGrabbed) {
-> -                        [self ungrabMouse];
-> -                    }
-> -                } else {
-> -                    if (!isMouseGrabbed) {
-> -                        [self grabMouse];
-> -                    }
-> -                }
-> -            }
-> -            mouse_event = true;
-> -            break;
-> -        case NSEventTypeLeftMouseDown:
-> -            buttons |= MOUSE_EVENT_LBUTTON;
-> -            mouse_event = true;
-> -            break;
-> -        case NSEventTypeRightMouseDown:
-> -            buttons |= MOUSE_EVENT_RBUTTON;
-> -            mouse_event = true;
-> -            break;
-> -        case NSEventTypeOtherMouseDown:
-> -            buttons |= MOUSE_EVENT_MBUTTON;
-> -            mouse_event = true;
-> -            break;
-> -        case NSEventTypeLeftMouseDragged:
-> -            buttons |= MOUSE_EVENT_LBUTTON;
-> -            mouse_event = true;
-> -            break;
-> -        case NSEventTypeRightMouseDragged:
-> -            buttons |= MOUSE_EVENT_RBUTTON;
-> -            mouse_event = true;
-> -            break;
-> -        case NSEventTypeOtherMouseDragged:
-> -            buttons |= MOUSE_EVENT_MBUTTON;
-> -            mouse_event = true;
-> -            break;
-> -        case NSEventTypeLeftMouseUp:
-> -            mouse_event = true;
-> -            if (!isMouseGrabbed && [self screenContainsPoint:p]) {
-> -                /*
-> -                 * In fullscreen mode, the window of cocoaView may not be the
-> -                 * key window, therefore the position relative to the virtual
-> -                 * screen alone will be sufficient.
-> -                 */
-> -                if(isFullscreen || [[self window] isKeyWindow]) {
-> -                    [self grabMouse];
-> -                }
-> -            }
-> -            break;
-> -        case NSEventTypeRightMouseUp:
-> -            mouse_event = true;
-> -            break;
-> -        case NSEventTypeOtherMouseUp:
-> -            mouse_event = true;
-> -            break;
-> +            return true;
->         case NSEventTypeScrollWheel:
->             /*
->              * Send wheel events to the guest regardless of window focus.
-> @@ -1087,62 +971,124 @@ - (bool) handleEventLocked:(NSEvent *)event
->              * Since deltaX/deltaY also report scroll wheel events we prevent mouse
->              * movement code from executing.
->              */
-> -            mouse_event = false;
-> -            break;
-> +            return true;
->         default:
->             return false;
->     }
-> +}
->
-> -    if (mouse_event) {
-> -        /* Don't send button events to the guest unless we've got a
-> -         * mouse grab or window focus. If we have neither then this event
-> -         * is the user clicking on the background window to activate and
-> -         * bring us to the front, which will be done by the sendEvent
-> -         * call below. We definitely don't want to pass that click through
-> -         * to the guest.
-> -         */
-> -        if ((isMouseGrabbed || [[self window] isKeyWindow]) &&
-> -            (last_buttons != buttons)) {
-> -            static uint32_t bmap[INPUT_BUTTON__MAX] = {
-> -                [INPUT_BUTTON_LEFT]       = MOUSE_EVENT_LBUTTON,
-> -                [INPUT_BUTTON_MIDDLE]     = MOUSE_EVENT_MBUTTON,
-> -                [INPUT_BUTTON_RIGHT]      = MOUSE_EVENT_RBUTTON
-> -            };
-> -            qemu_input_update_buttons(dcl.con, bmap, last_buttons, buttons);
-> -            last_buttons = buttons;
-> -        }
-> -        if (isMouseGrabbed) {
-> -            if (isAbsoluteEnabled) {
-> -                /* Note that the origin for Cocoa mouse coords is bottom left, not top left.
-> -                 * The check on screenContainsPoint is to avoid sending out of range values for
-> -                 * clicks in the titlebar.
-> -                 */
-> -                if ([self screenContainsPoint:p]) {
-> -                    qemu_input_queue_abs(dcl.con, INPUT_AXIS_X, p.x, 0, screen.width);
-> -                    qemu_input_queue_abs(dcl.con, INPUT_AXIS_Y, screen.height - p.y, 0, screen.height);
-> -                }
-> -            } else {
-> -                qemu_input_queue_rel(dcl.con, INPUT_AXIS_X, (int)[event deltaX]);
-> -                qemu_input_queue_rel(dcl.con, INPUT_AXIS_Y, (int)[event deltaY]);
-> -            }
-> +- (void) handleMouseEvent:(NSEvent *)event
-> +{
-> +    if (!isMouseGrabbed) {
-> +        return;
-> +    }
-> +
-> +    with_iothread_lock(^{
-> +        if (isAbsoluteEnabled) {
-> +            CGFloat d = (CGFloat)screen.height / [self frame].size.height;
-> +            NSPoint p = [event locationInWindow];
-> +            // Note that the origin for Cocoa mouse coords is bottom left, not top left.
-> +            qemu_input_queue_abs(dcl.con, INPUT_AXIS_X, p.x * d, 0, screen.width);
-> +            qemu_input_queue_abs(dcl.con, INPUT_AXIS_Y, screen.height - p.y * d, 0, screen.height);
->         } else {
-> -            return false;
-> +            CGFloat d = (CGFloat)screen.height / [self convertSizeToBacking:[self frame].size].height;
-> +            qemu_input_queue_rel(dcl.con, INPUT_AXIS_X, [event deltaX] * d);
-> +            qemu_input_queue_rel(dcl.con, INPUT_AXIS_Y, [event deltaY] * d);
->         }
-> +
->         qemu_input_event_sync();
-> +    });
-> +}
-> +
-> +- (void) handleMouseEvent:(NSEvent *)event button:(InputButton)button down:(bool)down
-> +{
-> +    if (!isMouseGrabbed) {
-> +        return;
->     }
-> -    return true;
-> +
-> +    with_iothread_lock(^{
-> +        qemu_input_queue_btn(dcl.con, button, down);
-> +    });
-> +
-> +    [self handleMouseEvent:event];
-> +}
-> +
-> +- (void) mouseExited:(NSEvent *)event
-> +{
-> +    if (isAbsoluteEnabled && isMouseGrabbed) {
-> +        [self ungrabMouse];
-> +    }
-> +}
-> +
-> +- (void) mouseEntered:(NSEvent *)event
-> +{
-> +    if (isAbsoluteEnabled && !isMouseGrabbed) {
-> +        [self grabMouse];
-> +    }
-> +}
-> +
-> +- (void) mouseMoved:(NSEvent *)event
-> +{
-> +    [self handleMouseEvent:event];
-> +}
-> +
-> +- (void) mouseDown:(NSEvent *)event
-> +{
-> +    [self handleMouseEvent:event button:INPUT_BUTTON_LEFT down:true];
-> +}
-> +
-> +- (void) rightMouseDown:(NSEvent *)event
-> +{
-> +    [self handleMouseEvent:event button:INPUT_BUTTON_RIGHT down:true];
-> +}
-> +
-> +- (void) otherMouseDown:(NSEvent *)event
-> +{
-> +    [self handleMouseEvent:event button:INPUT_BUTTON_MIDDLE down:true];
-> +}
-> +
-> +- (void) mouseDragged:(NSEvent *)event
-> +{
-> +    [self handleMouseEvent:event];
-> +}
-> +
-> +- (void) rightMouseDragged:(NSEvent *)event
-> +{
-> +    [self handleMouseEvent:event];
-> +}
-> +
-> +- (void) otherMouseDragged:(NSEvent *)event
-> +{
-> +    [self handleMouseEvent:event];
-> +}
-> +
-> +- (void) mouseUp:(NSEvent *)event
-> +{
-> +    if (!isMouseGrabbed) {
-> +        [self grabMouse];
-> +    }
-> +
-> +    [self handleMouseEvent:event button:INPUT_BUTTON_LEFT down:false];
-> +}
-> +
-> +- (void) rightMouseUp:(NSEvent *)event
-> +{
-> +    [self handleMouseEvent:event button:INPUT_BUTTON_RIGHT down:false];
-> +}
-> +
-> +- (void) otherMouseUp:(NSEvent *)event
-> +{
-> +    [self handleMouseEvent:event button:INPUT_BUTTON_MIDDLE down:false];
-> }
->
-> - (void) grabMouse
-> {
->     COCOA_DEBUG("QemuCocoaView: grabMouse\n");
->
-> -    if (!isFullscreen) {
-> -        if (qemu_name)
-> -            [normalWindow setTitle:[NSString stringWithFormat:@"QEMU %s - (Press  " UC_CTRL_KEY " " UC_ALT_KEY " G  to release Mouse)", qemu_name]];
-> -        else
-> -            [normalWindow setTitle:@"QEMU - (Press  " UC_CTRL_KEY " " UC_ALT_KEY " G  to release Mouse)"];
-> -    }
-> +    if (qemu_name)
-> +        [normalWindow setTitle:[NSString stringWithFormat:@"QEMU %s - (Press  " UC_CTRL_KEY " " UC_ALT_KEY " G  to release Mouse)", qemu_name]];
-> +    else
-> +        [normalWindow setTitle:@"QEMU - (Press  " UC_CTRL_KEY " " UC_ALT_KEY " G  to release Mouse)"];
->     [self hideCursor];
->     CGAssociateMouseAndMouseCursorPosition(isAbsoluteEnabled);
->     isMouseGrabbed = TRUE; // while isMouseGrabbed = TRUE, QemuCocoaApp sends all events to [cocoaView handleEvent:]
-> @@ -1152,15 +1098,14 @@ - (void) ungrabMouse
-> {
->     COCOA_DEBUG("QemuCocoaView: ungrabMouse\n");
->
-> -    if (!isFullscreen) {
-> -        if (qemu_name)
-> -            [normalWindow setTitle:[NSString stringWithFormat:@"QEMU %s", qemu_name]];
-> -        else
-> -            [normalWindow setTitle:@"QEMU"];
-> -    }
-> +    if (qemu_name)
-> +        [normalWindow setTitle:[NSString stringWithFormat:@"QEMU %s", qemu_name]];
-> +    else
-> +        [normalWindow setTitle:@"QEMU"];
->     [self unhideCursor];
->     CGAssociateMouseAndMouseCursorPosition(TRUE);
->     isMouseGrabbed = FALSE;
-> +    [self raiseAllButtons];
-> }
->
-> - (void) setAbsoluteEnabled:(BOOL)tIsAbsoluteEnabled {
-> @@ -1171,8 +1116,6 @@ - (void) setAbsoluteEnabled:(BOOL)tIsAbsoluteEnabled {
-> }
-> - (BOOL) isMouseGrabbed {return isMouseGrabbed;}
-> - (BOOL) isAbsoluteEnabled {return isAbsoluteEnabled;}
-> -- (float) cdx {return cdx;}
-> -- (float) cdy {return cdy;}
-> - (QEMUScreen) gscreen {return screen;}
->
-> /*
-> @@ -1186,6 +1129,15 @@ - (void) raiseAllKeys
->         qkbd_state_lift_all_keys(kbd);
->     });
-> }
-> +
-> +- (void) raiseAllButtons
-> +{
-> +    with_iothread_lock(^{
-> +        qemu_input_queue_btn(dcl.con, INPUT_BUTTON_LEFT, false);
-> +        qemu_input_queue_btn(dcl.con, INPUT_BUTTON_RIGHT, false);
-> +        qemu_input_queue_btn(dcl.con, INPUT_BUTTON_MIDDLE, false);
-> +    });
-> +}
-> @end
->
->
-> @@ -1200,7 +1152,6 @@ @interface QemuCocoaAppController : NSObject
-> {
-> }
-> - (void)doToggleFullScreen:(id)sender;
-> -- (void)toggleFullScreen:(id)sender;
-> - (void)showQEMUDoc:(id)sender;
-> - (void)zoomToFit:(id) sender;
-> - (void)displayConsole:(id)sender;
-> @@ -1242,7 +1193,8 @@ - (id) init
->             exit(1);
->         }
->         [normalWindow setAcceptsMouseMovedEvents:YES];
-> -        [normalWindow setTitle:@"QEMU"];
-> +        [normalWindow setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary];
-> +        [normalWindow setTitle:qemu_name ? [NSString stringWithFormat:@"QEMU %s", qemu_name] : @"QEMU"];
->         [normalWindow setContentView:cocoaView];
->         [normalWindow makeKeyAndOrderFront:self];
->         [normalWindow center];
-> @@ -1312,9 +1264,20 @@ - (void)windowDidChangeScreen:(NSNotification *)notification
->     [cocoaView updateUIInfo];
-> }
->
-> +- (void)windowDidEnterFullScreen:(NSNotification *)notification
-> +{
-> +    [cocoaView grabMouse];
-> +}
-> +
-> +- (void)windowDidExitFullScreen:(NSNotification *)notification
-> +{
-> +    [cocoaView resizeWindow];
-> +    [cocoaView ungrabMouse];
-> +}
-> +
-> - (void)windowDidResize:(NSNotification *)notification
-> {
-> -    [cocoaView updateUIInfo];
-> +    [cocoaView frameUpdated];
-> }
->
-> /* Called when the user clicks on a window's close button */
-> @@ -1330,6 +1293,23 @@ - (BOOL)windowShouldClose:(id)sender
->     return NO;
-> }
->
-> +- (NSSize) window:(NSWindow *)window willUseFullScreenContentSize:(NSSize)proposedSize
-> +{
-> +    if (([normalWindow styleMask] & NSWindowStyleMaskResizable) == 0) {
-
-Same as above, testing for flag set and swapping the returns may be 
-simpler to read as you don't have to think in negative condition.
-
-> +        return NSMakeSize([cocoaView gscreen].width, [cocoaView gscreen].height);
-> +    }
-> +
-> +    return [cocoaView fixZoomedFullScreenSize:proposedSize];
-> +}
-> +
-> +- (NSApplicationPresentationOptions) window:(NSWindow *)window
-> +                                     willUseFullScreenPresentationOptions:(NSApplicationPresentationOptions)proposedOptions;
-> +
-> +{
-> +    return (proposedOptions & ~(NSApplicationPresentationAutoHideDock | NSApplicationPresentationAutoHideMenuBar)) |
-> +           NSApplicationPresentationHideDock | NSApplicationPresentationHideMenuBar;
-> +}
-> +
-> /*
->  * Called when QEMU goes into the background. Note that
->  * [-NSWindowDelegate windowDidResignKey:] is used here instead of
-> @@ -1349,14 +1329,7 @@ - (void) windowDidResignKey: (NSNotification *)aNotification
->  */
-> - (void) doToggleFullScreen:(id)sender
-> {
-> -    [self toggleFullScreen:(id)sender];
-> -}
-> -
-> -- (void)toggleFullScreen:(id)sender
-> -{
-> -    COCOA_DEBUG("QemuCocoaAppController: toggleFullScreen\n");
-> -
-> -    [cocoaView toggleFullScreen:sender];
-> +    [normalWindow toggleFullScreen:sender];
-> }
->
-> - (void) setFullGrab:(id)sender
-> @@ -1400,13 +1373,15 @@ - (void)showQEMUDoc:(id)sender
->     [self openDocumentation: @"index.html"];
-> }
->
-> -/* Stretches video to fit host monitor size */
-> +/* Toggles the flag which stretches video to fit host window size */
-> - (void)zoomToFit:(id) sender
-> {
-> -    stretch_video = !stretch_video;
-> -    if (stretch_video == true) {
-> +    if (([normalWindow styleMask] & NSWindowStyleMaskResizable) == 0) {
-
-Here again as above.
-
-Regards,
-BALATON Zoltan
-
-> +        [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
->         [sender setState: NSControlStateValueOn];
->     } else {
-> +        [normalWindow setStyleMask:[normalWindow styleMask] & ~NSWindowStyleMaskResizable];
-> +        [cocoaView resizeWindow];
->         [sender setState: NSControlStateValueOff];
->     }
-> }
-> @@ -1414,7 +1389,9 @@ - (void)zoomToFit:(id) sender
-> /* Displays the console on the screen */
-> - (void)displayConsole:(id)sender
-> {
-> -    console_select([sender tag]);
-> +    with_iothread_lock(^{
-> +        console_select([sender tag]);
-> +    });
-> }
->
-> /* Pause the guest */
-> @@ -1671,7 +1648,7 @@ static void create_initial_menus(void)
->     menu = [[NSMenu alloc] initWithTitle:@"View"];
->     [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(doToggleFullScreen:) keyEquivalent:@"f"] autorelease]]; // Fullscreen
->     menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease];
-> -    [menuItem setState: stretch_video ? NSControlStateValueOn : NSControlStateValueOff];
-> +    [menuItem setState: [normalWindow styleMask] & NSWindowStyleMaskResizable ? NSControlStateValueOn : NSControlStateValueOff];
->     [menu addItem: menuItem];
->     menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
->     [menuItem setSubmenu:menu];
-> @@ -1962,16 +1939,14 @@ static void cocoa_update(DisplayChangeListener *dcl,
->     COCOA_DEBUG("qemu_cocoa: cocoa_update\n");
->
->     dispatch_async(dispatch_get_main_queue(), ^{
-> -        NSRect rect;
-> -        if ([cocoaView cdx] == 1.0) {
-> -            rect = NSMakeRect(x, [cocoaView gscreen].height - y - h, w, h);
-> -        } else {
-> -            rect = NSMakeRect(
-> -                x * [cocoaView cdx],
-> -                ([cocoaView gscreen].height - y - h) * [cocoaView cdy],
-> -                w * [cocoaView cdx],
-> -                h * [cocoaView cdy]);
-> -        }
-> +        CGFloat d = [cocoaView frame].size.height / (CGFloat)[cocoaView gscreen].height;
-> +
-> +        NSRect rect = NSMakeRect(
-> +                x * d,
-> +                ([cocoaView gscreen].height - y - h) * d,
-> +                w * d,
-> +                h * d);
-> +
->         [cocoaView setNeedsDisplayInRect:rect];
->     });
-> }
-> @@ -2048,8 +2023,7 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
->
->     /* if fullscreen mode is to be used */
->     if (opts->has_full_screen && opts->full_screen) {
-> -        [NSApp activateIgnoringOtherApps: YES];
-> -        [controller toggleFullScreen: nil];
-> +        [normalWindow toggleFullScreen: nil];
->     }
->     if (opts->u.cocoa.has_full_grab && opts->u.cocoa.full_grab) {
->         [controller setFullGrab: nil];
-> @@ -2067,7 +2041,7 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
->     }
->
->     if (opts->u.cocoa.has_zoom_to_fit && opts->u.cocoa.zoom_to_fit) {
-> -        stretch_video = true;
-> +        [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
->     }
->
->     create_initial_menus();
->
-> ---
-> base-commit: 9c74490bff6c8886a922008d0c9ce6cae70dd17e
-> change-id: 20231211-cocoa-576b8639e9bd
->
-> Best regards,
->
+This series implements relocation of the SuperI/O functions of the VIA sout=
+h=0D
+bridges which resolves some FIXME's. It is part of my via-apollo-pro-133t=0D
+branch [1] which is an extension of bringing the VIA south bridges to the P=
+C=0D
+machine [2]. This branch is able to run some real-world X86 BIOSes in the h=
+ope=0D
+that it allows us to form a better understanding of the real vt82c686b devi=
+ces.=0D
+Implementing relocation and toggling of the SuperI/O functions is one step =
+to=0D
+make these BIOSes run without error messages, so here we go.=0D
+=0D
+The series is structured as follows: Patches 1-8 export the device structs =
+of=0D
+the ISA serial and FDC devices. This is used later in the series to access =
+the=0D
+I/O regions for relocation and toggling. As part of the exposal the MAINTAI=
+NERS=0D
+file gets a fix for the serial headers.=0D
+=0D
+Inspired by the memory API patches 9-11 add two convenience functions to th=
+e=0D
+portio_list API to toggle and relocate portio lists. Patch 9 is a preparati=
+on=0D
+for that which removes some redundancies which otherwise had to be dealt wi=
+th=0D
+during relocation.=0D
+=0D
+Patch 12 finally implements the main feature which required adaption of the=
+=0D
+pegasos2 sources, otherwise the machine wouldn't boot when given no bios.=0D
+=0D
+Testing done:=0D
+* make check=0D
+* make check-avocado=0D
+* Run MorphOS on pegasos2 with and without pegasos2.rom=0D
+* Run Linux on amigaone=0D
+* Run real-world BIOSes on via-apollo-pro-133t branch=0D
+* Start rescue-yl on fuloong2e=0D
+=0D
+[1] https://github.com/shentok/qemu/tree/via-apollo-pro-133t=0D
+[2] https://github.com/shentok/qemu/tree/pc-via=0D
+=0D
+Bernhard Beschow (12):=0D
+  hw: Remove unused includes of hw/block/fdc.h=0D
+  hw/i386/pc: No need to include hw/block/fdc.h in header=0D
+  hw/block/fdc-isa: Rename header to match source file=0D
+  hw/block/fdc: Expose internal header=0D
+  hw/block/fdc: Move constant #define to where it is imposed=0D
+  hw/block/fdc-isa: Expose struct FDCtrlISABus=0D
+  MAINTAINERS: Add include/hw/char/serial*.h to the "PC Chipset" section=0D
+  hw/char/serial-isa: Export struct ISASerialState=0D
+  exec/ioport: Resolve redundant .base attribute in struct=0D
+    MemoryRegionPortio=0D
+  exec/ioport: Add portio_list_set_address()=0D
+  exec/ioport: Add portio_list_set_enabled()=0D
+  hw/isa/vt82c686: Implement relocation of SuperI/O functions=0D
+=0D
+ MAINTAINERS                  |   3 +-=0D
+ docs/devel/migration.rst     |   2 +=0D
+ hw/block/fdc-internal.h      | 158 ----------------------------------=0D
+ include/exec/ioport.h        |   4 +-=0D
+ include/hw/block/fdc-isa.h   |  32 +++++++=0D
+ include/hw/block/fdc.h       | 161 ++++++++++++++++++++++++++++++++---=0D
+ include/hw/char/serial-isa.h |  50 +++++++++++=0D
+ include/hw/char/serial.h     |   7 --=0D
+ include/hw/i386/pc.h         |   1 -=0D
+ hw/block/fdc-isa.c           |  19 +----=0D
+ hw/block/fdc-sysbus.c        |   2 +-=0D
+ hw/block/fdc.c               |   3 +-=0D
+ hw/char/serial-isa.c         |  14 +--=0D
+ hw/i386/microvm-dt.c         |   2 +-=0D
+ hw/i386/microvm.c            |   2 +-=0D
+ hw/i386/pc.c                 |   4 +-=0D
+ hw/isa/isa-superio.c         |   3 +-=0D
+ hw/isa/vt82c686.c            | 140 +++++++++++++++++++++++-------=0D
+ hw/m68k/next-cube.c          |   1 -=0D
+ hw/mips/jazz.c               |   1 +=0D
+ hw/ppc/pegasos2.c            |  15 ++++=0D
+ hw/ppc/pnv.c                 |   2 +-=0D
+ hw/ppc/prep.c                |   1 -=0D
+ hw/sparc/sun4m.c             |   2 +-=0D
+ hw/sparc64/sun4u.c           |   2 +=0D
+ stubs/cmos.c                 |   2 +-=0D
+ system/ioport.c              |  41 +++++++--=0D
+ 27 files changed, 414 insertions(+), 260 deletions(-)=0D
+ delete mode 100644 hw/block/fdc-internal.h=0D
+ create mode 100644 include/hw/block/fdc-isa.h=0D
+ create mode 100644 include/hw/char/serial-isa.h=0D
+=0D
+-- =0D
+2.43.0=0D
+=0D
 
