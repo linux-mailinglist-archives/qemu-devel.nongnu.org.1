@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB3C815DB6
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 07:07:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C661D815DBB
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 07:13:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEkIO-0007b7-4Y; Sun, 17 Dec 2023 01:06:36 -0500
+	id 1rEkOe-0001e4-8r; Sun, 17 Dec 2023 01:13:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rEkIK-0007ac-0R
- for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:06:32 -0500
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ id 1rEkOb-0001dr-Th
+ for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:13:02 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rEkIH-0004WJ-S5
- for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:06:31 -0500
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-6da3659535fso1898985a34.3
- for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 22:06:28 -0800 (PST)
+ id 1rEkOa-0005QU-3A
+ for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:13:01 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6ceba6c4b8dso1777796b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 22:12:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702793187; x=1703397987;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702793577; x=1703398377;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ROb0jQSi4DUO3b/Z1wZaFg6Gw7cjOddkgnBDUPxnw8s=;
- b=oJuIDi2/xwswS90iqN6GM3mtzvf82hIAHRnb7xQOsYg5NVYyeDW1+jcEMEpLdlBPDl
- /egUpob39Te5ENPF/qjDSrxwbdB9zhX5RMEkDsjFSWJJkFiGzhb3nvv99lqhKEUdGRR7
- 1UfA3S4sh24HIbmrcxYhMjtHKvlnl2+YxqOZQDHcMG+xWYYi1EmCZWEodYjGw6Nn0KGs
- srmSviOtywx2RdE8wR4uh7GxFayi21LdafN70ymzyvoAzT3BtT6u872R84E0WIU7eM9K
- Y9PueOgGTUx/gbVEBqqO6d6oSqxgoYxww/55V3BraVK9d7vlAruNLHUezW3FG6a+BYDI
- 2+BQ==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=h19Wz51S6VFToCO4MpnG/+6wb0DpFvTS19hzP3IEmnY=;
+ b=DjWEyYGWXcg+uhh5uK2J86Nv48oSkgXFzUxQ4acCqAlyQWxSSt7SXG0qswLcb+WAz5
+ qIlTq7V+LSc3PyQVwb4KGcuX4HtwORErIXNl5UhGQVK3+TFBGbWDA/KK80Kh1Z4yHUKA
+ Nx+sdedIfy8QMkIeVT8bP4DOdT9a/z/qTTGI98SAY2GkuYjOGRpiSODyqeoMpqHsT46t
+ vK+cj5vlz+8RcJKWVTBJtZIuk2LUmPN3MMic5OWD2AOnzvp/TWNB9fhskUlIQxKEpy4h
+ r8mQAgCuwRRc6jSBD5P5EOVGcYOGq9Wt2EqEdHkVSoOukw/adc9u3TgMnIpGNqbCILFH
+ XBtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702793187; x=1703397987;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ROb0jQSi4DUO3b/Z1wZaFg6Gw7cjOddkgnBDUPxnw8s=;
- b=KqQIwBG/zaYt2cY5LFGa+kuEOVvXbhGbpwdL63M2dYunIE9sgvIhtaa3byaWqeVw8H
- Ki3XS/5/rIihvLm1MBZRmuAfpy2UBh5evP9bS6SQVY2MCdxt1FmoPdPCFWurvT/Mq20C
- gZ9mjzILzkCBCfokkFdGzv0QiwOhyCek3C9ebD/ZLDBYcmEotWhVYLL1QfqFpfvirXTK
- FS2MpVzih93NRundD7ui90he0qpLWE21+POMD5e54xCPSzIJ8+/BgtS4xMjAH2A6lI0V
- F0luW/q4vfcc4y0gcsFxXo47Nttl3xab5Na3XpyhSP9FpwdoIegUUNuJaQAuEjHH8Jpe
- fHTg==
-X-Gm-Message-State: AOJu0YzYHcYBsjMwica7FEFwHMJPn75yoTFEE/YhSTA8rPZVj22CWhPR
- 09nUU5YH3rpOub86yzKUK0Wt2w==
-X-Google-Smtp-Source: AGHT+IHIcG6v7MJOSm5A0SvKdHGJUlxlLDi2ZEXjqfLrtA5sloy5LYwf6s8L6Txwce2nMRiQ0E6OAw==
-X-Received: by 2002:a05:6830:2012:b0:6d9:f4fc:b86 with SMTP id
- e18-20020a056830201200b006d9f4fc0b86mr14217559otp.25.1702793187615; 
- Sat, 16 Dec 2023 22:06:27 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702793577; x=1703398377;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h19Wz51S6VFToCO4MpnG/+6wb0DpFvTS19hzP3IEmnY=;
+ b=s54YIn5Wkk7GqQ4fNUVAXgCtGCmgNwUs+YBCQC0weD4478t94QZBt9/bHd6iRJhyjn
+ hXQKFa2cUdvPHfQWe9FBjIimiVIMz95G1dRbnXHIc5PGd9aAMMRXlbEyBZOPduXnvnRp
+ jae6ERMAdqzaKHIRsEFx1z5RflbsbRbw2ghYsZB6p8/MpD52uHRdLP99mn8iWdca/jRa
+ 08rvNbaZgYR0HlIjELeINlyj2JPIwKCfbjTkMca9mJxDLH4Igm+5LbjaB8T7KWkCgnPn
+ y6FbfCUxgZp8l745jJyJUPSjOmmLq+oAUlxAfNip0etAJdIVfPozC4eOxZZfZssK3Tu1
+ zdyQ==
+X-Gm-Message-State: AOJu0YxDUdTXmPkwbcHFPaE7wpnrBfwauMdaV9SvmacGaNtfTcIbOPjy
+ bC2jcLZor5ncdD7wqWg5Xos8Cw==
+X-Google-Smtp-Source: AGHT+IG9fri6Qb8vfV/wQa1W88+33Ak5EpByQI62k4P8S403vbFFglZTdwvS6NX7akF6RiU5YtQ6wA==
+X-Received: by 2002:a05:6a00:1789:b0:6ce:6cae:c262 with SMTP id
+ s9-20020a056a00178900b006ce6caec262mr18394710pfg.11.1702793577449; 
+ Sat, 16 Dec 2023 22:12:57 -0800 (PST)
 Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- g16-20020aa78750000000b006c4d47a7668sm15989126pfo.127.2023.12.16.22.06.25
+ r1-20020a62e401000000b006ce91d27c72sm16484055pfh.175.2023.12.16.22.12.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 16 Dec 2023 22:06:27 -0800 (PST)
+ Sat, 16 Dec 2023 22:12:57 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 17 Dec 2023 15:06:16 +0900
-Subject: [PATCH v4 2/2] audio: Do not include ui/dbus.h
+Subject: [PATCH v5 0/2] meson: Fixes for dbus modules
+Date: Sun, 17 Dec 2023 15:12:51 +0900
+Message-Id: <20231217-dbus-v5-0-8122e822a392@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231217-dbus-v4-2-4fd5410bf04f@daynix.com>
-References: <20231217-dbus-v4-0-4fd5410bf04f@daynix.com>
-In-Reply-To: <20231217-dbus-v4-0-4fd5410bf04f@daynix.com>
+X-B4-Tracking: v=1; b=H4sIAGORfmUC/23MSw6CMBSF4a2Yjq3pu+DIfRgHfdxKB4KhSiCEv
+ VsIAxSH5+Z+/4gStBESOh9G1EIXU2zqPOTxgFxl6jvg6PNGjDBOGZXY23fChSq0Ame1JSXKr88
+ WQuyXzPWWdxXTq2mHpdrR+foT6CgmmIsSiCyNk5ZdvBnq2J9c80BzoWP/FMuKAgNlDGGUyp3iW
+ 6VWxbOywjoLXnMtzE6JrdKrElmJ4KWgxAYiwpeapukDZ+nNXDsBAAA=
 To: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
  Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
  =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
@@ -72,8 +74,8 @@ To: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::334;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x334.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::429;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,41 +97,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ui/dbusaudio.c does not depend on ui/dbus.h
+I found it was failing to build dbus modules when --enable-dbus so here
+are fixes.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- audio/dbusaudio.c | 1 -
- audio/meson.build | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+Changes in v5:
+- Fixed docs/interop/dbus-display.rst.
+- Link to v4: https://lore.kernel.org/r/20231217-dbus-v4-0-4fd5410bf04f@daynix.com
 
-diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
-index 2aacdac6715b..3cd8e294501f 100644
---- a/audio/dbusaudio.c
-+++ b/audio/dbusaudio.c
-@@ -33,7 +33,6 @@
- #include <gio/gunixfdlist.h>
- #endif
- 
--#include "ui/dbus.h"
- #include "util/dbus-display1.h"
- 
- #define AUDIO_CAP "dbus"
-diff --git a/audio/meson.build b/audio/meson.build
-index c8f658611f42..8931c1697b4d 100644
---- a/audio/meson.build
-+++ b/audio/meson.build
-@@ -30,7 +30,7 @@ endforeach
- 
- if dbus_display
-     module_ss = ss.source_set()
--    module_ss.add(when: [gio, pixman], if_true: files('dbusaudio.c'))
-+    module_ss.add(when: [gio], if_true: files('dbusaudio.c'))
-     audio_modules += {'dbus': module_ss}
- endif
- 
+Changes in v4:
+- Moved dbus_display1 to util.
+- Link to v3: https://lore.kernel.org/r/20231216-dbus-v3-0-b4bcbed7374a@daynix.com
 
+Changes in v3:
+- Merged dbus_display1_lib into libqemuutil.
+- Added patch "audio: Do not include ui/dbus.h".
+- Link to v2: https://lore.kernel.org/r/20231215-dbus-v2-0-1e2e6aa02115@daynix.com
+
+Changes in v2:
+- Updated MAINTAINERS.
+- Link to v1: https://lore.kernel.org/r/20231215-dbus-v1-0-349e059ac5b2@daynix.com
+
+---
+Akihiko Odaki (2):
+      util: Move dbus_display1 to util
+      audio: Do not include ui/dbus.h
+
+ MAINTAINERS                     |  2 +-
+ docs/interop/dbus-display.rst   |  6 +++---
+ ui/dbus.h                       |  2 +-
+ audio/dbusaudio.c               |  3 +--
+ tests/qtest/dbus-display-test.c |  2 +-
+ audio/meson.build               |  2 +-
+ tests/qtest/meson.build         |  2 +-
+ ui/meson.build                  | 20 +-------------------
+ {ui => util}/dbus-display1.xml  |  0
+ util/meson.build                | 21 +++++++++++++++++++++
+ 10 files changed, 31 insertions(+), 29 deletions(-)
+---
+base-commit: 4705fc0c8511d073bee4751c3c974aab2b10a970
+change-id: 20231215-dbus-86876ecb7b09
+
+Best regards,
 -- 
-2.43.0
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
