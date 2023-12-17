@@ -2,92 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C029D815DC7
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 07:40:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A73815DE1
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 08:18:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEknq-00006f-JV; Sun, 17 Dec 2023 01:39:06 -0500
+	id 1rElOX-0005ue-8N; Sun, 17 Dec 2023 02:17:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rEknp-00006D-7h
- for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:39:05 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rEknn-0007E1-9x
- for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:39:04 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6d6d48354ccso1684b3a.1
- for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 22:39:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702795141; x=1703399941;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0vxGw3rXw36x5NlIc+T8jtNHfvkNgPAmfhWUwI0b7ks=;
- b=zYRhHYLeOZuJVcK9zWYKhrQGiZ29Jp4TZzsd85lmSKngyCjrPHJeXgY4IevK+OdF0L
- mGekXxKGUZkoLS2FSTLQEez8+7VcFBMHw3J/y5ELUTA1NQaGkkTyg9U+v7YLp6I3EMHH
- 5hpOVdYTcIQXQcedAcvTcBXSCECMvAaLiVGV+hGJoA4BRGV6PJQaIu6nNtkN4cE3N9Xw
- WL83oSU7pIsw7VpmSRzgIXI6BC2ximokQDH19b8Gi8Q5a4hkharstmddt8ijDdaV7B2q
- Kn9czbNxIISPaGIxcB21kTOJtDdlo8NyGR21BnpPGOC9UvR2pcuJc1Xg7WTOFOzaerPV
- kbAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702795141; x=1703399941;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0vxGw3rXw36x5NlIc+T8jtNHfvkNgPAmfhWUwI0b7ks=;
- b=aGetAQyiQwFKURrEv/QP/ynW/M0zWvOmsHpP4Ulhsnn6LIfId0eSndzOMt7FCf7fZ2
- VkAlUbITixEb30am7HxexZM9DPT5vIxl2bC3bObpLjhKQBP8JBi01BCGF7sFvx1xTV0t
- XCurPRkRsFt0spXHaiCKJEwMNc1KKxQrYc5f8gmH1H+vhIt9GhzaHv+l/EHVpnJbfv+Z
- /Djn48GByZj/2WFqaSgPtK64C/iu/cb0yx98yjaoZ2Qnu+EzGxNwPalEe06u4caapOsh
- t5HmbAraeXc7GEgjfiLB2gjq1aMYr8xgrhVttv91rdo77PU36u+Gr6F+KX3GS6k2e6XJ
- cm3w==
-X-Gm-Message-State: AOJu0YyIi4aApasZvq+qbXtV1GZUwnM4wx0T3wQwqjtFYQeRv1g4Ey2A
- CJr5B87RcrCPDIeg4MK7sZoTQw==
-X-Google-Smtp-Source: AGHT+IFDLjN9jddEcenvOvFmC3eoBVlqBBFtxWFZd4BMOV328+KiJgeQkBPQ66MnFRUXG5bQxqfZdg==
-X-Received: by 2002:a17:902:7787:b0:1d0:c986:8ac9 with SMTP id
- o7-20020a170902778700b001d0c9868ac9mr6525353pll.22.1702795141478; 
- Sat, 16 Dec 2023 22:39:01 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
- by smtp.gmail.com with ESMTPSA id
- y16-20020a17090322d000b001d09c5424d4sm16695577plg.297.2023.12.16.22.38.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 16 Dec 2023 22:39:01 -0800 (PST)
-Message-ID: <c196096c-171f-40de-8ab5-22fc89fe2856@daynix.com>
-Date: Sun, 17 Dec 2023 15:38:58 +0900
+ (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
+ id 1rElOV-0005uA-ON
+ for qemu-devel@nongnu.org; Sun, 17 Dec 2023 02:16:59 -0500
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
+ id 1rElOT-0003yr-OO
+ for qemu-devel@nongnu.org; Sun, 17 Dec 2023 02:16:59 -0500
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 3BH7GWnF066113;
+ Sun, 17 Dec 2023 15:16:32 +0800 (+08)
+ (envelope-from alvinga@andestech.com)
+Received: from alvinga-VirtualBox.andestech.com (10.0.13.65) by
+ ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
+ Sun, 17 Dec 2023 15:16:33 +0800
+To: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
+CC: <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
+ <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
+ <zhiwei_liu@linux.alibaba.com>, Alvin Chang <alvinga@andestech.com>
+Subject: [PATCH] target/riscv: Implement optional CSR mcontext of debug Sdtrig
+ extension
+Date: Sun, 17 Dec 2023 15:16:28 +0800
+Message-ID: <20231217071628.151599-1-alvinga@andestech.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vl: Print display options for -display help
-To: BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20231214-help-v1-1-23823ac5a023@daynix.com>
- <9443821d-5eff-46e6-be69-707cca9cd0d0@linaro.org>
- <8f8d3317-c28b-3985-89d7-0fbd1ce4b56e@eik.bme.hu>
- <2d1689ea-b0d8-4c74-8101-b90ad626f2a9@daynix.com>
- <d1687e5a-a60e-fda8-5e8c-1ab9adf0e775@eik.bme.hu>
- <ZXxMow-5UGOSgWo1@redhat.com>
- <73d44b18-51e9-23b5-2013-d1cd21b083e7@eik.bme.hu>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <73d44b18-51e9-23b5-2013-d1cd21b083e7@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.0.13.65]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 3BH7GWnF066113
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=alvinga@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,85 +62,163 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alvin Chang <alvinga@andestech.com>
+From:  Alvin Chang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/15 22:07, BALATON Zoltan wrote:
-> On Fri, 15 Dec 2023, Daniel P. Berrangé wrote:
->> On Fri, Dec 15, 2023 at 01:43:37PM +0100, BALATON Zoltan wrote:
->>> On Fri, 15 Dec 2023, Akihiko Odaki wrote:
->>>> On 2023/12/14 22:00, BALATON Zoltan wrote:
->>>>>> So we go from:
->>>>>>
->>>>>> $ ./qemu-system-aarch64 -display help
->>>>>> Available display backend types:
->>>>>> none
->>>>>> gtk
->>>>>> sdl
->>>>>> curses
->>>>>> cocoa
->>>>>> dbus
->>>>>>
->>>>>> to:
->>>>>>
->>>>>> $ ./qemu-system-aarch64 -display help
->>>>>> -display 
->>>>>> sdl[,gl=on|core|es|off][,grab-mod=<mod>][,show-cursor=on|off]
->>>>>>            [,window-close=on|off]
->>>>>> -display gtk[,full-screen=on|off][,gl=on|off][,grab-on-hover=on|off]
->>>>>>            
->>>>>> [,show-tabs=on|off][,show-cursor=on|off][,window-close=on|off]
->>>>>>            [,show-menubar=on|off]
->>>>>> -display vnc=<display>[,<optargs>]
->>>>>> -display curses[,charset=<encoding>]
->>>>>> -display cocoa[,full-grab=on|off][,swap-opt-cmd=on|off]
->>>>>> -display dbus[,addr=<dbusaddr>]
->>>>>>             [,gl=on|core|es|off][,rendernode=<file>]
->>>>>> -display cocoa[,show-cursor=on|off][,left-command-key=on|off]
->>>>>> -display none
->>>>>>                select display backend type
->>>>>>                The default display is equivalent to
->>>>>>                "-display gtk"
->>>>>>
->>>>>> The latter is indeed more helpful.
->>>>>
->>>>> It is more helpful but maybe a bit overwhelming. Would it be
->>>>> possible to only print the options with -display cocoa,help similar
->>>>> to how -device help lists devices and -device sm501,help lists
->>>>> options for one device? Adding info about default to -display help
->>>>> is really helpful though (that could also be marked with (default)
->>>>> like in -machine help.
->>>>
->>>> It's copied from what qemu-system-aarch64 -h outputs. At least it's 
->>>> less
->>>> overwhelming than qemu-system-aarch64 -h.
->>>
->>> This changes what -display help does so if some script depends on 
->>> that it
->>> may not be a good idea. Since the same info is already in -help maybe 
->>> this
->>> change to add that to -display help as well is not the best solution 
->>> so I'd
->>> say drop this patch and leave it as it is for now.
->>
->> We consider help output to be only for humans.
->>
->> No scripts should ever be parsing any QEMU output, as we provide
->> QMP for automated detection/querying of features.
->>
->> IOW, if some script is parsing help output we are fine to break
->> them if it improves QEMU's output for humans in a justiable way.
-> 
-> OK fair enough. I'd still like some more consitency with -cpu help and 
-> -machine help and -device help which all list avalable options and then 
-> can take help for further help for individual items where applicable. So 
-> it would be better if -display and -audio could behave the same. (Are 
-> there any other options that might be missing this?)
-> 
-> Out of curiousicy what's the way to query available display backends for 
-> programs by QMP then?
+The debug Sdtrig extension defines an optional CSR "mcontext". Since it
+is optional, this commit adds new CPU configuration
+"ext_sdtrig_mcontext" and uses property "sdtrig_mcontext" to control
+whether it is implemented or not. Its predicate and read/write
+operations are also implemented into CSR table. Its value is reset as 0
+when the trigger module is reset.
 
-There is no method available as far as I know. All of these quirks are 
-caused by the design of the display infrastructure not integrated well 
-with QOM.
+Signed-off-by: Alvin Chang <alvinga@andestech.com>
+---
+ target/riscv/cpu.c      |  4 ++++
+ target/riscv/cpu.h      |  1 +
+ target/riscv/cpu_bits.h |  7 +++++++
+ target/riscv/cpu_cfg.h  |  1 +
+ target/riscv/csr.c      | 36 ++++++++++++++++++++++++++++++++++++
+ target/riscv/debug.c    |  2 ++
+ 6 files changed, 51 insertions(+)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 83c7c0c..dff757f 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1479,6 +1479,10 @@ Property riscv_cpu_options[] = {
+     DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 64),
+     DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
+ 
++    /* Optional CSR of debug Sdtrig extension */
++    DEFINE_PROP_BOOL("sdtrig_mcontext", RISCVCPU, cfg.ext_sdtrig_mcontext,
++                     false),
++
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index d74b361..e117641 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -345,6 +345,7 @@ struct CPUArchState {
+     target_ulong tdata1[RV_MAX_TRIGGERS];
+     target_ulong tdata2[RV_MAX_TRIGGERS];
+     target_ulong tdata3[RV_MAX_TRIGGERS];
++    target_ulong mcontext;
+     struct CPUBreakpoint *cpu_breakpoint[RV_MAX_TRIGGERS];
+     struct CPUWatchpoint *cpu_watchpoint[RV_MAX_TRIGGERS];
+     QEMUTimer *itrigger_timer[RV_MAX_TRIGGERS];
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index ebd7917..3296648 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -361,6 +361,7 @@
+ #define CSR_TDATA2          0x7a2
+ #define CSR_TDATA3          0x7a3
+ #define CSR_TINFO           0x7a4
++#define CSR_MCONTEXT        0x7a8
+ 
+ /* Debug Mode Registers */
+ #define CSR_DCSR            0x7b0
+@@ -905,4 +906,10 @@ typedef enum RISCVException {
+ /* JVT CSR bits */
+ #define JVT_MODE                           0x3F
+ #define JVT_BASE                           (~0x3F)
++
++/* Debug Sdtrig CSR masks */
++#define MCONTEXT32                         0x0000003F
++#define MCONTEXT64                         0x0000000000001FFFULL
++#define MCONTEXT32_HCONTEXT                0x0000007F
++#define MCONTEXT64_HCONTEXT                0x0000000000003FFFULL
+ #endif
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index f4605fb..4f1cb04 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -147,6 +147,7 @@ struct RISCVCPUConfig {
+     bool pmp;
+     bool debug;
+     bool misa_w;
++    bool ext_sdtrig_mcontext;
+ 
+     bool short_isa_string;
+ 
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index fde7ce1..0b68787 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -549,6 +549,15 @@ static RISCVException debug(CPURISCVState *env, int csrno)
+ 
+     return RISCV_EXCP_ILLEGAL_INST;
+ }
++
++static RISCVException sdtrig_mcontext(CPURISCVState *env, int csrno)
++{
++    if (riscv_cpu_cfg(env)->debug && riscv_cpu_cfg(env)->ext_sdtrig_mcontext) {
++        return RISCV_EXCP_NONE;
++    }
++
++    return RISCV_EXCP_ILLEGAL_INST;
++}
+ #endif
+ 
+ static RISCVException seed(CPURISCVState *env, int csrno)
+@@ -3900,6 +3909,31 @@ static RISCVException read_tinfo(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
+ }
+ 
++static RISCVException read_mcontext(CPURISCVState *env, int csrno,
++                                    target_ulong *val)
++{
++    *val = env->mcontext;
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException write_mcontext(CPURISCVState *env, int csrno,
++                                     target_ulong val)
++{
++    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32 ? true : false;
++    int32_t mask;
++
++    if (riscv_has_ext(env, RVH)) {
++        /* Spec suggest 7-bit for RV32 and 14-bit for RV64 w/ H extension */
++        mask = rv32 ? MCONTEXT32_HCONTEXT : MCONTEXT64_HCONTEXT;
++    } else {
++        /* Spec suggest 6-bit for RV32 and 13-bit for RV64 w/o H extension */
++        mask = rv32 ? MCONTEXT32 : MCONTEXT64;
++    }
++
++    env->mcontext = val & mask;
++    return RISCV_EXCP_NONE;
++}
++
+ /*
+  * Functions to access Pointer Masking feature registers
+  * We have to check if current priv lvl could modify
+@@ -4799,6 +4833,8 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     [CSR_TDATA2]    =  { "tdata2",  debug, read_tdata,   write_tdata   },
+     [CSR_TDATA3]    =  { "tdata3",  debug, read_tdata,   write_tdata   },
+     [CSR_TINFO]     =  { "tinfo",   debug, read_tinfo,   write_ignore  },
++    [CSR_MCONTEXT]  =  { "mcontext", sdtrig_mcontext,    read_mcontext,
++                         write_mcontext                                },
+ 
+     /* User Pointer Masking */
+     [CSR_UMTE]    =    { "umte",    pointer_masking, read_umte,  write_umte },
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 4945d1a..e30d99c 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -940,4 +940,6 @@ void riscv_trigger_reset_hold(CPURISCVState *env)
+         env->cpu_watchpoint[i] = NULL;
+         timer_del(env->itrigger_timer[i]);
+     }
++
++    env->mcontext = 0;
+ }
+-- 
+2.34.1
+
 
