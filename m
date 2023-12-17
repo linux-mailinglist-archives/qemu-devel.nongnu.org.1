@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7912E815DBC
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 07:13:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0400F815DBE
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 07:14:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEkOj-0001fa-OH; Sun, 17 Dec 2023 01:13:09 -0500
+	id 1rEkQ1-0003hf-Ib; Sun, 17 Dec 2023 01:14:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rEkOi-0001fM-HR
- for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:13:08 -0500
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1rEkPz-0003XL-SE
+ for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:14:27 -0500
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rEkOh-0005RO-1J
- for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:13:08 -0500
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-5c66b093b86so2254936a12.0
- for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 22:13:06 -0800 (PST)
+ id 1rEkPx-0005rq-C9
+ for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:14:26 -0500
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6d2ec415bf6so848806b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 22:14:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702793586; x=1703398386;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702793662; x=1703398462;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ROb0jQSi4DUO3b/Z1wZaFg6Gw7cjOddkgnBDUPxnw8s=;
- b=3OYiDUIVJ5HWtixNJRBokcmZcQ4687KyMrVnjVRTuXuxlbqzmz3ltXxMRNjEqd9D4R
- HWndG1r9LYN7T/UunDO1ueLGfw37FcdqFYiW6++neHM54CcuXRY3V1fIzlafQxf97s/1
- W+67vSNCffejfEdUzxb9GIfFIm6fsW5RWjqgT05IVgcZQmetiyBf2btukeTiuWdsm4kH
- XmvBRP5yVXjpRuLvMdFllghGehW6YumV2xstvKJDHv7ncA/h9X5FJUoZoTEPjW3hLjed
- VOeZ71SjIyEKnjBK5SfGJWnIvOYfWZ2URDygPVLecaVFTJTDU+En1l+n/W4bK0KeWgGd
- Kb8w==
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7ZRgmIlGkboAPJmaOxPTJAZbAFGtGdiWl96xOkqW9CI=;
+ b=BFIWJKC4DxHd/kzUl0mGIkJrlJtkZ5+Q/dnWXRQELXPRKOkGsxqQJSD4QhdkERFuhN
+ wsOhmsqTrKbzxUt5qkkesS6SOmTQHIOwFph0GwksA36zKXa/dH9SFogd7q6Uys05hoUO
+ YbNVC9g6MOeEuYT466c1RtdspfhEXuvcqjg0/Z3zyjq4GGKzwDegAmvvvXHQFAPENfFc
+ ulaCddtp+yV9mogZXeteQNR0p5Z7GAieH3YTl3GGhwlq0T6N+KWt1QAzIyBZNsdOhdCk
+ sdXCB+wY1stvlVpmthDiHoxJOOEcp8ZZse94340rHqbPYgqz+oeLqdP6lkizT0GlZZDC
+ XeLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702793586; x=1703398386;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ROb0jQSi4DUO3b/Z1wZaFg6Gw7cjOddkgnBDUPxnw8s=;
- b=g1YCMVsOoUDbsgy9TP0MheqSGVsq44NnPtSvWlMrcWKsx9OrcbKQUk0RUtx/8SoRQQ
- 1Fh7CkPducQ/fITbJFybZ1j2oV0JXVvzVRUj3QaJfIBTEL5S2Z8vRx1p6KCjd2NDzAup
- qer6n6peTjRZwxwn1kGbBC+ZsN+Tzu6AxZHfA+rjlc7RdQlC+yyLT4K+JuHTsm2Y2x5M
- 0/5KJNVTf/dvhlgMBtOcnxfiDPLS3VhT+Qj3vKsafkPW53ygdy7ugUvTl7gtZLSSJR1W
- cjRfeH4OPvdK9jLHciQU3/geMI6sgr8pEzdMoXEyPmkRyXUXbjo/FmVd7fiYvcyEy99g
- 85eg==
-X-Gm-Message-State: AOJu0Ywpcmck5cQvraH5AcrF9T2PYrBns7qzNsdMumtY2C9pZ0uWA/Gl
- o6FdSK235yKwgvcmINNR5cKH7g==
-X-Google-Smtp-Source: AGHT+IGwjBhmxWrp4JHX8i/Lv2pboYlxZ7NamR/kTBQ+PqxuLuIODcI8bXJ55+rCIlcSfalECA83/w==
-X-Received: by 2002:a17:90a:2a07:b0:28b:387c:1ebb with SMTP id
- i7-20020a17090a2a0700b0028b387c1ebbmr3742869pjd.2.1702793585762; 
- Sat, 16 Dec 2023 22:13:05 -0800 (PST)
-Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- lt8-20020a17090b354800b0028b493c8c2esm2248151pjb.22.2023.12.16.22.13.03
+ d=1e100.net; s=20230601; t=1702793662; x=1703398462;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7ZRgmIlGkboAPJmaOxPTJAZbAFGtGdiWl96xOkqW9CI=;
+ b=qevQ+IGVjm2jGFBuX2dNPPpsabbhq9bKTGY7vHDJTeLPTCvyg8xKXNatI+AJsXeZ27
+ MrNf8oeMnc8XcW6TTB0/j0PZHYZrZ03jaO0Onu2pnb2AHv/+5TBDqvmgFAd8Ol6IItlQ
+ Paao6KkSCOtBZY8tCgULCnozt45eFWJKus/8j9WIMNOljivvo6EcB43sm0kfhHdfeF/z
+ pp/SbSDQt1G62Gsjan84CIJoDUJgqpgkEXKwWlyGmXVQa7BBUjypmR51LLz0w7Hv+kg+
+ jaMmRXprlg9QZabdr49D70JelW6r+Luetqp9nv7+AB15LwGV18exZRXPrvLI6dels4sZ
+ yE3A==
+X-Gm-Message-State: AOJu0Ywha3O/pv8JPxpVcydds/qYZ87V6VjaUw5d+vgPtD0GTEbcrVVZ
+ my0jQCtugFPWFxhbpFw17+5NkA==
+X-Google-Smtp-Source: AGHT+IEGGZnKPRCQWeFfcNbnsew2ZxOp/fzD8MsNBAlg7s2/dmcAxTqbJ/n5XGvmjFzBSPuU5GTbmA==
+X-Received: by 2002:a05:6a00:856:b0:6cd:f8cd:528e with SMTP id
+ q22-20020a056a00085600b006cdf8cd528emr18595494pfk.5.1702793662223; 
+ Sat, 16 Dec 2023 22:14:22 -0800 (PST)
+Received: from [157.82.205.15] ([157.82.205.15])
+ by smtp.gmail.com with ESMTPSA id
+ d4-20020a056a0010c400b006ce7344328asm15917307pfu.77.2023.12.16.22.14.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 16 Dec 2023 22:13:05 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 17 Dec 2023 15:12:53 +0900
-Subject: [PATCH v5 2/2] audio: Do not include ui/dbus.h
+ Sat, 16 Dec 2023 22:14:21 -0800 (PST)
+Message-ID: <d6258e35-de10-447a-87be-0a3e5c3055ed@daynix.com>
+Date: Sun, 17 Dec 2023 15:14:18 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231217-dbus-v5-2-8122e822a392@daynix.com>
-References: <20231217-dbus-v5-0-8122e822a392@daynix.com>
-In-Reply-To: <20231217-dbus-v5-0-8122e822a392@daynix.com>
-To: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::52b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52b.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] Move dbus-display1 out of ui
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20231216-dbus-v3-0-b4bcbed7374a@daynix.com>
+ <20231216-dbus-v3-1-b4bcbed7374a@daynix.com>
+ <97f0a23c-dc29-4687-af8d-388d7a63947a@linaro.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <97f0a23c-dc29-4687-af8d-388d7a63947a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,41 +99,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ui/dbusaudio.c does not depend on ui/dbus.h
+On 2023/12/17 1:57, Philippe Mathieu-Daudé wrote:
+> On 16/12/23 08:53, Akihiko Odaki wrote:
+>> Despite its name, dbus-display1 does not only provide DBus interfaces
+>> for the display but also for the audio.
+>>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   MAINTAINERS                               |  1 +
+>>   meson.build                               | 21 +++++++++++++++++++++
+>>   ui/dbus.h                                 |  2 +-
+>>   audio/dbusaudio.c                         |  2 +-
+>>   tests/qtest/dbus-display-test.c           |  2 +-
+>>   ui/dbus-display1.xml => dbus-display1.xml |  0
+> 
+> What about moving it to backends/ instead? Also could be renamed.
+> "ui" means User Interface. Audio is still one. Suggestions:
+> 
+>   ui/dbus-backend, backends/dbus-... ?
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- audio/dbusaudio.c | 1 -
- audio/meson.build | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+Moved to util with v4 as I'm adding it to libqemuutil for 
+dbus-display-test. (And I sent v5 since I missed to update the 
+documentation; sorry for sending changes so frequently.)
 
-diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
-index 2aacdac6715b..3cd8e294501f 100644
---- a/audio/dbusaudio.c
-+++ b/audio/dbusaudio.c
-@@ -33,7 +33,6 @@
- #include <gio/gunixfdlist.h>
- #endif
- 
--#include "ui/dbus.h"
- #include "util/dbus-display1.h"
- 
- #define AUDIO_CAP "dbus"
-diff --git a/audio/meson.build b/audio/meson.build
-index c8f658611f42..8931c1697b4d 100644
---- a/audio/meson.build
-+++ b/audio/meson.build
-@@ -30,7 +30,7 @@ endforeach
- 
- if dbus_display
-     module_ss = ss.source_set()
--    module_ss.add(when: [gio, pixman], if_true: files('dbusaudio.c'))
-+    module_ss.add(when: [gio], if_true: files('dbusaudio.c'))
-     audio_modules += {'dbus': module_ss}
- endif
- 
-
--- 
-2.43.0
-
+The file name represents the D-Bus interface name, and renaming the 
+D-Bus interface name will be a breaking change so I decided not to do 
+that for now.
 
