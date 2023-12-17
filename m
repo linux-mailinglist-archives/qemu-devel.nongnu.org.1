@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781D9815FF5
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 15:45:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE0B815FF4
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 15:45:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEsLO-0005NJ-IU; Sun, 17 Dec 2023 09:42:14 -0500
+	id 1rEsLO-0005O0-T6; Sun, 17 Dec 2023 09:42:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rEsLK-0005MI-PX; Sun, 17 Dec 2023 09:42:10 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ id 1rEsLM-0005Mk-3x; Sun, 17 Dec 2023 09:42:12 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rEsLJ-0003Ji-6b; Sun, 17 Dec 2023 09:42:10 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a234139b725so56985166b.3; 
- Sun, 17 Dec 2023 06:42:08 -0800 (PST)
+ id 1rEsLK-0003K9-Bm; Sun, 17 Dec 2023 09:42:11 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3363aa1b7d2so2004412f8f.0; 
+ Sun, 17 Dec 2023 06:42:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702824125; x=1703428925; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702824127; x=1703428927; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w1SKst0ImDfoCsUqLA/dWpw9JJ48v8UPoTAm8vVkDRQ=;
- b=m53ry6SP4OH9XwhLWFXP8zqLCNLAgJumLwm3md2Jghb19diQDEEfUBgUMCe6R/19vd
- Zamc66uJ3YSdJT2Vy3BB169YANBNrz6qfjJg/NmsIUvagqaT8Z5UP/mcFYD2gHp8diGQ
- LYa99FsXdcljfeVdIW/SqCNFuNZNJbh3anNgVkr9oPnrTEYEa8Mg8AIRGyo8Nt5Sx1DO
- bfvBcfKCpIKJgS1mSXEqrpoTTzh+oESuWsYrpIXhKviC+I4klrNBXZqeup0KT92tVgR/
- /uYzsACxmWgZNAckfSqIoQtvM7LCh+nfG6qgN+apqPCGgK52oiihZ0FcAc0S4It91dnj
- XmOA==
+ bh=+HNw7Ppj1pyazd33OYLXTw6Gr10jgLyGzuUCcv7qrv8=;
+ b=IPVsi/JYeDE7EyjpNsTm9PQWMZCuVDUtZm/u8IdAlmaeum61YcPcc6GtzyvPID9ivn
+ Vaj8SnYbOIF9W24YF7Pn9xJNr59rYB3ora1KDPeBJwhY9nGK1lp09yrwt0osi5UdnYZE
+ IJR5cwsgT3Ct8lFcjICt2XPbEoUwX1dAgIG6yGgmvJNVucuGc7NGPT8Vj++djPW3Oyvc
+ 93dXjIBtGdXaf4iDDENv4LQ6Ml2SJ2ZDV7Z0MZ4wYcUIHyGcP1VCbEGRbdKFx4Eq8qNG
+ X7E43PdIYJh5PyTsUU61MSzNmGrIQz9BkqXkCg9ctc/bc0Dq7igvuoEm3aG4d+MffxkG
+ hn0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702824125; x=1703428925;
+ d=1e100.net; s=20230601; t=1702824127; x=1703428927;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w1SKst0ImDfoCsUqLA/dWpw9JJ48v8UPoTAm8vVkDRQ=;
- b=RN/ZYbB9sdiW6FaCyqFtTPa9IPO8kSQeLk0xI6yr4dY68Hr3YPnuauFKZ4U7ire8b/
- qxaVtc0ZSgZ3Opt/vuopsgBmv0sosvIUHMWJHQhar8H3eWJkxcATTQyGvqZ8W6oCfYDT
- tuaxbCAkTTNRIEC5rF56VTFmyp4MdHZ/NNtCy5qLlmJGIdFHFuO0BN6P2Q73vQ2CIng7
- fULJljPXEGSoFCx+7ZugPwteZqFl8qX9HJcjPAOBRIrlqtElbzvENuYAU8f6uc4FTcvm
- M5Tw1XbJhlfKvZKDqvuBVb5YAIjCvfD3HwwCKRJMxH1wdB4jyTrnb1O1/hbFcX3RuB6y
- rZmw==
-X-Gm-Message-State: AOJu0YxaS28bImLtcFv9DfHRvnzSRIsDqlkHAC0Pc9XL86Hyh9K0F8T4
- J5EYariUBXEhwiqoaLhgKbqmqR60/so=
-X-Google-Smtp-Source: AGHT+IEyo1hmyZ4PFUtiYuxHu2EJOS4rrVbKL6+fDdZEK161NHqk8DOYdcuhI8xE1tA83x5owFg+FA==
-X-Received: by 2002:a17:907:9403:b0:a1f:6707:cffc with SMTP id
- dk3-20020a170907940300b00a1f6707cffcmr4701239ejc.74.1702824125075; 
- Sun, 17 Dec 2023 06:42:05 -0800 (PST)
+ bh=+HNw7Ppj1pyazd33OYLXTw6Gr10jgLyGzuUCcv7qrv8=;
+ b=S0PWV1XtluRSCr4PLoBynD6aXTnab9W+cs3y938gyZ42YzwKCAJPjiUdU/Q9fQ/Fmj
+ 6g1l8lSxFScf+l0ybgG8ZwI++JQqs1h9WqIMxTR6mKRJrAOsY/upExpMBycGx7bK/ZHX
+ 8k5vxD+dUCzq/wVFgoj54+k9q+t1vpkoc5w0U93/9D3eH29HiEyNLMHh/Tt6ond+cx6I
+ ITugfeZV22lo7K+SLYiG34IrN6WjP4BD+fi9UBzf8q0GrYT1H6hs+1iul4ShLl6B1B9c
+ sKYsgJ+uyASCZFdj57qct3XDLEgnNXE8Y9bmRph3qJxFa5TWQjHoplG8mrIz7MpzfL62
+ GRbQ==
+X-Gm-Message-State: AOJu0YwfJus2op2hw1sxvVHNlXl6LYQWQ/fbPcK7Dp9lQ7/IMiePPI2H
+ VGnxbm9mhXnPPYUxAKoG7/sMAIun1NE=
+X-Google-Smtp-Source: AGHT+IGz7VZqldVQXWluuJ0g5lP3e2P1GjNIeOz+D1Z62VGFY2RRLSa+5W3PRSyNVVfOXntsFNxOEA==
+X-Received: by 2002:a7b:c8c8:0:b0:40b:5e59:99b7 with SMTP id
+ f8-20020a7bc8c8000000b0040b5e5999b7mr5370524wml.215.1702824126964; 
+ Sun, 17 Dec 2023 06:42:06 -0800 (PST)
 Received: from archlinux.. (dynamic-077-011-162-117.77.11.pool.telefonica.de.
  [77.11.162.117]) by smtp.gmail.com with ESMTPSA id
- vv6-20020a170907a68600b00a1dff479037sm12996632ejc.127.2023.12.17.06.42.02
+ vv6-20020a170907a68600b00a1dff479037sm12996632ejc.127.2023.12.17.06.42.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Dec 2023 06:42:04 -0800 (PST)
+ Sun, 17 Dec 2023 06:42:06 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
@@ -78,16 +78,16 @@ Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
  Leonardo Bras <leobras@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 01/12] hw: Remove unused includes of hw/block/fdc.h
-Date: Sun, 17 Dec 2023 15:41:37 +0100
-Message-ID: <20231217144148.15511-2-shentey@gmail.com>
+Subject: [PATCH 02/12] hw/i386/pc: No need to include hw/block/fdc.h in header
+Date: Sun, 17 Dec 2023 15:41:38 +0100
+Message-ID: <20231217144148.15511-3-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231217144148.15511-1-shentey@gmail.com>
 References: <20231217144148.15511-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,46 +110,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Results running grep:
-
-  `grep -i -e "fdc" hw/ppc/prep.c`
-  (no output)
-
-  `grep -i -e "fdc" hw/m68k/next-cube.c`
-  DPRINTF("FDCSR Write: %x\n", value);
-
-This indicates that hw/block/fdc.h isn't used there.
+Only the source file uses fdc.h but not the header, so remove it from the public
+interface.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/m68k/next-cube.c | 1 -
- hw/ppc/prep.c       | 1 -
- 2 files changed, 2 deletions(-)
+ include/hw/i386/pc.h | 1 -
+ hw/i386/pc.c         | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index fabd861941..04989c2648 100644
---- a/hw/m68k/next-cube.c
-+++ b/hw/m68k/next-cube.c
-@@ -21,7 +21,6 @@
- #include "hw/sysbus.h"
- #include "qom/object.h"
- #include "hw/char/escc.h" /* ZILOG 8530 Serial Emulation */
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index a10ceeabbf..48097c9124 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -5,7 +5,6 @@
+ #include "qapi/qapi-types-common.h"
+ #include "qemu/uuid.h"
+ #include "hw/boards.h"
 -#include "hw/block/fdc.h"
- #include "hw/qdev-properties.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 137276bcb9..edaed85d95 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -26,7 +26,6 @@
+ #include "hw/block/flash.h"
+ #include "hw/i386/x86.h"
+ 
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 29b9964733..0d732b7530 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -25,6 +25,7 @@
  #include "qemu/osdep.h"
- #include "hw/rtc/m48t59.h"
+ #include "qemu/units.h"
+ #include "hw/i386/pc.h"
++#include "hw/block/fdc.h"
  #include "hw/char/serial.h"
--#include "hw/block/fdc.h"
- #include "net/net.h"
- #include "hw/isa/isa.h"
- #include "hw/pci/pci.h"
+ #include "hw/char/parallel.h"
+ #include "hw/hyperv/hv-balloon.h"
 -- 
 2.43.0
 
