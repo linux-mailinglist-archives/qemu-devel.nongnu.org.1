@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CC6815D05
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 02:24:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC75815DB7
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 07:07:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEfru-0007F1-89; Sat, 16 Dec 2023 20:22:58 -0500
+	id 1rEkIJ-0007a7-P9; Sun, 17 Dec 2023 01:06:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1rEfrs-0007EU-8G; Sat, 16 Dec 2023 20:22:56 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rEkIG-0007Zw-Cm
+ for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:06:28 -0500
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1rEfrq-0008Uz-PW; Sat, 16 Dec 2023 20:22:56 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33660cf2296so469501f8f.3; 
- Sat, 16 Dec 2023 17:22:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rEkIA-0004U2-JY
+ for qemu-devel@nongnu.org; Sun, 17 Dec 2023 01:06:28 -0500
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5906e03a7a4so1469192eaf.1
+ for <qemu-devel@nongnu.org>; Sat, 16 Dec 2023 22:06:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702776173; x=1703380973; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AAyZfDwgssLPIdO80C9/nGxlALQOVBVsLWzgfbzb650=;
- b=P2ioePhRE7bHE/vac2M7YzwvHkEHejUUlUmvyzrCXYzk/tl3tgwSAUd+QjtHZnZmP0
- A9Wl4deYrcZfWw+qDoww0rn60Y8k5kEDZ/m5EcVWShokGSTJSCtPrN6L8GJRn7vY263Z
- bvxL0p0HS+2YewrL+T0WQ6+BfUfxc8ejoHhajFAhJ/dhLm9a2bGO9Kp/NPfzsDBL1uby
- T6U0zT0hjoBACUIj3zaAD/71FsUKLHu2MYPiTeDmEv6FlJpOKNcQ7COCjOX4O3YB8Tc2
- q6KJEw91P4uu75t5jgG3+SBJu3wph/xA3hzB4AfdfN2D6Ah2CJu6GOB7qD5C9ZfFaYuC
- zwFw==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702793180; x=1703397980;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BGT/1EuaWF4IlDkd+WJ9O9HZfmew1ytH9C8ic4i8YpM=;
+ b=WCEwfXvLEqODJb4Rwz4W6tffF0PTg1EaAqsmTvCwmQGHTm+a2frUYplAlJMnh/HG7C
+ XlG6PRrZzshSkdJ95G6xFqKMY+9BsrGj8Kzh8UTI4d1ydKQuOCxrioT9CkHgea/9+Ydj
+ Cpx7BvbK5/jxKqE0FPKB/MMOUwpuv8rHaZAjMyLqvQawYh5imjZtIJiBJbmIW+wR+mLh
+ exZuhGt9NG1Ifsf7AzANKaSu/bra9mhQmFwdiVrpLh9L1YWjyFgL5g3vNiy9nr5M6SKV
+ B7uYentkagd3AGHusjde5XtPx047GXO8ERFl1GWucWHHWz32nxOVxapkJM6cGq1S4t7L
+ HOeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702776173; x=1703380973;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AAyZfDwgssLPIdO80C9/nGxlALQOVBVsLWzgfbzb650=;
- b=Yue389GK5u3jn93rIHMU0pXnnUjB5uDWPT+fDF+vJh+pwq2fh1hChKenyLdCB7C24q
- cYOc/cjKZ+ihzpR9PgyRHGn6vUDVd4KbrGOEs567NwDFqAH6I5y9bBcE4UGhUQDa0Uci
- RTtzISa6Y9zxK/xcUJCJpzJC+sfY4fo5eyhp73nD+slue522qm9I11N9JSxruGj9aPkk
- Ex84g/jQ1HM2dDiCNzDvgrX7sVt6SdpgalQpGveBUddlKSTJm36x7S5ILDzHIq7fqxuh
- wOfD80HccPkNTC4TDE56Pc1HxU/W+VOCp+wyxUmY/XJ5Smt8bK5f6uclULnzB0DGD3Fs
- zYPQ==
-X-Gm-Message-State: AOJu0YyibP+QbcgWqa0whdY0i3Qtv0KLrZBBLYA7eNtgVCFpkNAxfsq1
- qzX3m4ff7YIfogqx4xI8j8m9tKc1LqJSGwyBnfM=
-X-Google-Smtp-Source: AGHT+IF12LnG6vvw2yQsdvvyy177PtzD2THuYS3nu0WgowFbFGXIGRGjNC/2cPCdlnlj+1Npg5Xy96C/lrgu9O+s+5Q=
-X-Received: by 2002:adf:f410:0:b0:336:3674:5001 with SMTP id
- g16-20020adff410000000b0033636745001mr4510879wro.66.1702776172611; Sat, 16
- Dec 2023 17:22:52 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702793180; x=1703397980;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BGT/1EuaWF4IlDkd+WJ9O9HZfmew1ytH9C8ic4i8YpM=;
+ b=XKdcwL1OmvPw0KevD/cWHsglkGirYQwHzU175RZN5A2KddlpZkgb/se8hUeu9B0Ehe
+ 80OoES/nyY2ZTEULkWn9Oyucdsg33rNyofsWIOXEV0D0qtF4g4zrcPcz3TUk0edYjre6
+ pGdOLv766+5xsjxWy+JxwPCn2qrIWcH0/RBuV2bkHaWBtS3C5wRRT4M7ovv0cWXfh9l2
+ 5HGdS8vraHkrxoI1XUU2UEjq8eHnXVOdjf0OHIeVnI4qwtXKkum/2jLlgTMM4YCr61/d
+ ssldbAX2pLWlFtyK1wqfUMJPpSnmUVCjs5UDncK5iwAdIA4dtW1DY5Rw5ZSLsqdvnlbC
+ ulZw==
+X-Gm-Message-State: AOJu0YzBnxYW3GrIrCo1w9mD+ztUgw+dbfyYlrdWsdCrvPbLszlYaouR
+ PKNy6ALzRZsspyNRN+SqpDP8Ew==
+X-Google-Smtp-Source: AGHT+IGa6CU6eTmxrXZH3oKXogr2JbhGKhtLUX7XdeD207COITtBqpzmQqoT50V06s/bm1iXB/NhIg==
+X-Received: by 2002:a05:6808:6490:b0:3b9:f8eb:21ee with SMTP id
+ fh16-20020a056808649000b003b9f8eb21eemr18616924oib.104.1702793180209; 
+ Sat, 16 Dec 2023 22:06:20 -0800 (PST)
+Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
+ x12-20020a17090a970c00b0028649b84907sm18736654pjo.16.2023.12.16.22.06.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 16 Dec 2023 22:06:19 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v4 0/2] meson: Fixes for dbus modules
+Date: Sun, 17 Dec 2023 15:06:14 +0900
+Message-Id: <20231217-dbus-v4-0-4fd5410bf04f@daynix.com>
 MIME-Version: 1.0
-References: <20231127043703.49489-1-faithilikerun@gmail.com>
- <87leafejhf.fsf@pond.sub.org>
-In-Reply-To: <87leafejhf.fsf@pond.sub.org>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Sun, 17 Dec 2023 02:22:26 +0100
-Message-ID: <CAAAx-8L0a1SaGO4YsMm4BT9QiouzUJgJ98juJtgAJP91_3SjNw@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] Add full zoned storage emulation to qcow2 driver
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, dmitry.fomichev@wdc.com, qemu-block@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, dlemoal@kernel.org, hare@suse.de, 
- Hanna Reitz <hreitz@redhat.com>, stefanha@redhat.com,
- Eric Blake <eblake@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=faithilikerun@gmail.com; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANePfmUC/23Myw7CIBCF4VcxrMXAAKV15XsYF1xGy8LWgJI2T
+ d9d2rjwtjyT+f6JJIwBE9lvJhIxhxT6rgy53RDXmu6CNPiyCTAQHLii3j4SrataV+istqwh5fU
+ W8RyGNXM8ld2GdO/juFYzX65fgcwpo0I2yFRjnLJw8GbswrBz/ZUshQz/FBTFEbAyhgHn6keJd
+ 1W9lCjKSussei20NB9qnucnLQxBSgUBAAA=
+To: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.4
+Received-SPF: none client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,30 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> =E4=BA=8E2023=E5=B9=B411=E6=9C=8830=
-=E6=97=A5=E5=91=A8=E5=9B=9B 09:25=E5=86=99=E9=81=93=EF=BC=9A
->
-> Clang reports
->
-> ../block/qcow2.c:4066:5: error: mutex 'graph_lock' is not held on every p=
-ath through here [-Werror,-Wthread-safety-analysis]
->     blk_co_unref(blk);
->     ^
-> ../block/qcow2.c:3928:5: note: mutex acquired here
->     bdrv_graph_co_rdlock();
->     ^
-> ../block/qcow2.c:4066:5: error: mutex 'graph_lock' is not held on every p=
-ath through here [-Werror,-Wthread-safety-analysis]
->     blk_co_unref(blk);
->     ^
-> ../block/qcow2.c:3928:5: note: mutex acquired here
->     bdrv_graph_co_rdlock();
->     ^
-> 2 errors generated.
->
+I found it was failing to build dbus modules when --enable-dbus so here
+are fixes.
 
-Turns out that my gcc 12.0 does not support -Wthread-safety-analysis
-flag. Need to use --cc=3Dclang to reproduce it. Thanks!
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v4:
+- Moved dbus_display1 to util.
+- Link to v3: https://lore.kernel.org/r/20231216-dbus-v3-0-b4bcbed7374a@daynix.com
 
-Sam
+Changes in v3:
+- Merged dbus_display1_lib into libqemuutil.
+- Added patch "audio: Do not include ui/dbus.h".
+- Link to v2: https://lore.kernel.org/r/20231215-dbus-v2-0-1e2e6aa02115@daynix.com
+
+Changes in v2:
+- Updated MAINTAINERS.
+- Link to v1: https://lore.kernel.org/r/20231215-dbus-v1-0-349e059ac5b2@daynix.com
+
+---
+Akihiko Odaki (2):
+      util: Move dbus_display1 to util
+      audio: Do not include ui/dbus.h
+
+ MAINTAINERS                     |  2 +-
+ ui/dbus.h                       |  2 +-
+ audio/dbusaudio.c               |  3 +--
+ tests/qtest/dbus-display-test.c |  2 +-
+ audio/meson.build               |  2 +-
+ tests/qtest/meson.build         |  2 +-
+ ui/meson.build                  | 20 +-------------------
+ {ui => util}/dbus-display1.xml  |  0
+ util/meson.build                | 21 +++++++++++++++++++++
+ 9 files changed, 28 insertions(+), 26 deletions(-)
+---
+base-commit: 4705fc0c8511d073bee4751c3c974aab2b10a970
+change-id: 20231215-dbus-86876ecb7b09
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
+
 
