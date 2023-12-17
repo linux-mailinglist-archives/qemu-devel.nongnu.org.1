@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BD6815CD6
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 01:32:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CC6815D05
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 02:24:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEf3q-0000L3-3N; Sat, 16 Dec 2023 19:31:14 -0500
+	id 1rEfru-0007F1-89; Sat, 16 Dec 2023 20:22:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1rEf3n-0000Km-Au; Sat, 16 Dec 2023 19:31:11 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1rEfrs-0007EU-8G; Sat, 16 Dec 2023 20:22:56 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1rEf3l-0006o7-AB; Sat, 16 Dec 2023 19:31:10 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40c6a71e88cso23678735e9.0; 
- Sat, 16 Dec 2023 16:30:29 -0800 (PST)
+ id 1rEfrq-0008Uz-PW; Sat, 16 Dec 2023 20:22:56 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33660cf2296so469501f8f.3; 
+ Sat, 16 Dec 2023 17:22:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702773028; x=1703377828; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702776173; x=1703380973; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YlK/WE4CmftcJifCxWtg/KO2TCvZZRqHHZWItFqWGEc=;
- b=N31Eo8NeSr0IDX+dRezvz895EgMwnQ7TAtYxFz8V2bAFvyH4efcCUc5iueOzAXkAOU
- mjflhw1hjj6WD9I4mYRjFa26oNnb18NhZyyA/504kqIOlBo7fVTuFXcpX4uWxqSJPHAL
- BFtWfaPKMpaPl+NLqrB4Aoc3wMnp+KY1k5/jvhdBdiY5mv3T4ICr7aw+l4b2SGNh4nXT
- 1cif8WOmNHvRN+hl+zd01YM8RSK9Oq7fiJOX9rY2/RjCX5+IDVVRydNFgeLk6F7JPw1u
- YmHARMJdnbQcbCjMijP8aB3/Fs9ZaA6sflbjZiK9lWoYStgIhX6mpKW2b+C68Phw85fG
- 0fiQ==
+ bh=AAyZfDwgssLPIdO80C9/nGxlALQOVBVsLWzgfbzb650=;
+ b=P2ioePhRE7bHE/vac2M7YzwvHkEHejUUlUmvyzrCXYzk/tl3tgwSAUd+QjtHZnZmP0
+ A9Wl4deYrcZfWw+qDoww0rn60Y8k5kEDZ/m5EcVWShokGSTJSCtPrN6L8GJRn7vY263Z
+ bvxL0p0HS+2YewrL+T0WQ6+BfUfxc8ejoHhajFAhJ/dhLm9a2bGO9Kp/NPfzsDBL1uby
+ T6U0zT0hjoBACUIj3zaAD/71FsUKLHu2MYPiTeDmEv6FlJpOKNcQ7COCjOX4O3YB8Tc2
+ q6KJEw91P4uu75t5jgG3+SBJu3wph/xA3hzB4AfdfN2D6Ah2CJu6GOB7qD5C9ZfFaYuC
+ zwFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702773028; x=1703377828;
+ d=1e100.net; s=20230601; t=1702776173; x=1703380973;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YlK/WE4CmftcJifCxWtg/KO2TCvZZRqHHZWItFqWGEc=;
- b=n4PRgenx3bolgP7tpN0a0Ih37eO6M0//3+QqLd4ym9ATj0U/+hUZBnTLTuMU6N0QdJ
- AgKQWR08iQKwd5WSNa8Twkbv0zrp/N13smVU3TYcHM1Lhy4msWyLrt9jK1iKkq8TQZSm
- QDC0oGGQ+4dZ1G+siGQ2zEzKxH6QvrULJ8024qFr2LiuZEElngVxhCCORBZogfiHZWDf
- LCbEX/iLpZNl14V9DGy/lslZeMvdwvUZZX6AEnlMl+22mT+dNNwdLQJ32S7L+HxURI6T
- KncenMjlr58PurtlLyH0D820YnDs8u67Hnp2Bof6ccdyd/d+HtHOVT0lNDgShV/U2l1S
- EJVA==
-X-Gm-Message-State: AOJu0YwB5UcffY9kfE2HSwdwEqomneD1qac5N5iL9Heg2TeX/fJnmd+A
- fsn/MzhEqFKIErsUPq5mlcy9CHKhcn9wXYRR12M=
-X-Google-Smtp-Source: AGHT+IEQb0Jq89uDYQbhpDVdSeUQYj0x5Id8QaNB6QCTGK1KjFaItSODGQ9wAwun8+uPymKW/kMuvAzyy2TwlMYqmRk=
-X-Received: by 2002:a05:600c:4e0d:b0:40c:3f87:32df with SMTP id
- b13-20020a05600c4e0d00b0040c3f8732dfmr7354716wmq.35.1702773027412; Sat, 16
- Dec 2023 16:30:27 -0800 (PST)
+ bh=AAyZfDwgssLPIdO80C9/nGxlALQOVBVsLWzgfbzb650=;
+ b=Yue389GK5u3jn93rIHMU0pXnnUjB5uDWPT+fDF+vJh+pwq2fh1hChKenyLdCB7C24q
+ cYOc/cjKZ+ihzpR9PgyRHGn6vUDVd4KbrGOEs567NwDFqAH6I5y9bBcE4UGhUQDa0Uci
+ RTtzISa6Y9zxK/xcUJCJpzJC+sfY4fo5eyhp73nD+slue522qm9I11N9JSxruGj9aPkk
+ Ex84g/jQ1HM2dDiCNzDvgrX7sVt6SdpgalQpGveBUddlKSTJm36x7S5ILDzHIq7fqxuh
+ wOfD80HccPkNTC4TDE56Pc1HxU/W+VOCp+wyxUmY/XJ5Smt8bK5f6uclULnzB0DGD3Fs
+ zYPQ==
+X-Gm-Message-State: AOJu0YyibP+QbcgWqa0whdY0i3Qtv0KLrZBBLYA7eNtgVCFpkNAxfsq1
+ qzX3m4ff7YIfogqx4xI8j8m9tKc1LqJSGwyBnfM=
+X-Google-Smtp-Source: AGHT+IF12LnG6vvw2yQsdvvyy177PtzD2THuYS3nu0WgowFbFGXIGRGjNC/2cPCdlnlj+1Npg5Xy96C/lrgu9O+s+5Q=
+X-Received: by 2002:adf:f410:0:b0:336:3674:5001 with SMTP id
+ g16-20020adff410000000b0033636745001mr4510879wro.66.1702776172611; Sat, 16
+ Dec 2023 17:22:52 -0800 (PST)
 MIME-Version: 1.0
 References: <20231127043703.49489-1-faithilikerun@gmail.com>
- <20231127043703.49489-3-faithilikerun@gmail.com> <87bkbbeis6.fsf@pond.sub.org>
-In-Reply-To: <87bkbbeis6.fsf@pond.sub.org>
+ <87leafejhf.fsf@pond.sub.org>
+In-Reply-To: <87leafejhf.fsf@pond.sub.org>
 From: Sam Li <faithilikerun@gmail.com>
-Date: Sun, 17 Dec 2023 01:30:00 +0100
-Message-ID: <CAAAx-8LReW-U5omAzVckymtwNB_sWDMebqJYyDyGm344r9WpcA@mail.gmail.com>
-Subject: Re: [PATCH v6 2/4] qcow2: add configurations for zoned format
- extension
+Date: Sun, 17 Dec 2023 02:22:26 +0100
+Message-ID: <CAAAx-8L0a1SaGO4YsMm4BT9QiouzUJgJ98juJtgAJP91_3SjNw@mail.gmail.com>
+Subject: Re: [PATCH v6 0/4] Add full zoned storage emulation to qcow2 driver
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org, dmitry.fomichev@wdc.com, qemu-block@nongnu.org, 
  Kevin Wolf <kwolf@redhat.com>, dlemoal@kernel.org, hare@suse.de, 
@@ -65,8 +64,8 @@ Cc: qemu-devel@nongnu.org, dmitry.fomichev@wdc.com, qemu-block@nongnu.org,
  Eric Blake <eblake@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=faithilikerun@gmail.com; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=faithilikerun@gmail.com; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,154 +89,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Markus Armbruster <armbru@redhat.com> =E4=BA=8E2023=E5=B9=B411=E6=9C=8830=
-=E6=97=A5=E5=91=A8=E5=9B=9B 09:40=E5=86=99=E9=81=93=EF=BC=9A
+=E6=97=A5=E5=91=A8=E5=9B=9B 09:25=E5=86=99=E9=81=93=EF=BC=9A
 >
-> Sam Li <faithilikerun@gmail.com> writes:
+> Clang reports
 >
-> > To configure the zoned format feature on the qcow2 driver, it
-> > requires settings as: the device size, zone model, zone size,
-> > zone capacity, number of conventional zones, limits on zone
-> > resources (max append bytes, max open zones, and max_active_zones).
-> >
-> > To create a qcow2 image with zoned format feature, use command like
-> > this:
-> > $path/to/qemu-img create -f qcow2 zbc.qcow2 -o size=3D768M
+> ../block/qcow2.c:4066:5: error: mutex 'graph_lock' is not held on every p=
+ath through here [-Werror,-Wthread-safety-analysis]
+>     blk_co_unref(blk);
+>     ^
+> ../block/qcow2.c:3928:5: note: mutex acquired here
+>     bdrv_graph_co_rdlock();
+>     ^
+> ../block/qcow2.c:4066:5: error: mutex 'graph_lock' is not held on every p=
+ath through here [-Werror,-Wthread-safety-analysis]
+>     blk_co_unref(blk);
+>     ^
+> ../block/qcow2.c:3928:5: note: mutex acquired here
+>     bdrv_graph_co_rdlock();
+>     ^
+> 2 errors generated.
 >
-> I'd omit $path/to/
->
-> > -o zone.size=3D64M -o zone.capacity=3D64M -o zone.conventional_zones=3D=
-0
-> > -o zone.max_append_bytes=3D4096 -o zone.max_open_zones=3D10
-> > -o zone.max_active_zones=3D12 -o zone.mode=3Dhost-managed
->
-> Suggest to add \ like this:
->
->   qemu-img create -f qcow2 zbc.qcow2 -o size=3D768M \
->   -o zone.size=3D64M -o zone.capacity=3D64M -o zone.conventional_zones=3D=
-0 \
->   -o zone.max_append_bytes=3D4096 -o zone.max_open_zones=3D10 \
->   -o zone.max_active_zones=3D12 -o zone.mode=3Dhost-managed
->
-> >
-> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
->
-> [...]
->
-> > diff --git a/qapi/block-core.json b/qapi/block-core.json
-> > index ca390c5700..ef98dc83a0 100644
-> > --- a/qapi/block-core.json
-> > +++ b/qapi/block-core.json
-> > @@ -5038,6 +5038,64 @@
-> >  { 'enum': 'Qcow2CompressionType',
-> >    'data': [ 'zlib', { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
-> >
-> > +##
-> > +# @Qcow2ZoneModel:
-> > +#
-> > +# Zoned device model used in qcow2 image file
-> > +#
-> > +# @host-managed: host-managed model only allows sequential write over =
-the
->
-> Suggest "the host-managed model ..."
->
-> > +#     device zones
-> > +#
-> > +# Since 8.2
-> > +##
-> > +{ 'enum': 'Qcow2ZoneModel',
-> > +  'data': [ 'host-managed'] }
-> > +
-> > +##
-> > +# @Qcow2ZoneHostManaged:
-> > +#
-> > +# The host-managed zone model.  It only allows sequential writes.
-> > +#
-> > +# @size: Total number of bytes within zones
-> > +#
-> > +# @capacity: The number of usable logical blocks within zones
-> > +#     in bytes.  A zone capacity is always smaller or equal to the
-> > +#     zone size
-> > +#
-> > +# @conventional-zones: The number of conventional zones of the
-> > +#     zoned device
-> > +#
-> > +# @max-open-zones: The maximal number of open zones
-> > +#
-> > +# @max-active-zones: The maximal number of zones in the implicit
-> > +#     open, explicit open or closed state
-> > +#
-> > +# @max-append-bytes: The maximal number of bytes of a zone
-> > +#     append request that can be issued to the device.  It must be
-> > +#     512-byte aligned
->
-> Missing period at the end.
->
-> For all the optional members: what's the default?
 
-The default for optional members is 0. When max-open-zones and
-max-active-zones are 0, it implies no limit on zone resources.
+Turns out that my gcc 12.0 does not support -Wthread-safety-analysis
+flag. Need to use --cc=3Dclang to reproduce it. Thanks!
 
->
-> > +#
-> > +# Since 8.2
-> > +##
-> > +{ 'struct': 'Qcow2ZoneHostManaged',
-> > +  'data': { '*size':          'size',
-> > +            '*capacity':      'size',
-> > +            '*conventional-zones': 'uint32',
-> > +            '*max-open-zones':     'uint32',
-> > +            '*max-active-zones':   'uint32',
-> > +            '*max-append-bytes':   'uint32' } }
->
-> Why isn't @max-append-bytes 'size'?  It's a byte count...
->
-> > +
-> > +##
-> > +# @Qcow2ZoneCreateOptions:
-> > +#
-> > +# The zone device model for the qcow2 image.
-> > +#
-> > +# Since 8.2
-> > +##
-> > +{ 'union': 'Qcow2ZoneCreateOptions',
-> > +  'base': { 'mode': 'Qcow2ZoneModel' },
-> > +  'discriminator': 'mode',
-> > +  'data': { 'host-managed': 'Qcow2ZoneHostManaged' } }
-> > +
-> >  ##
-> >  # @BlockdevCreateOptionsQcow2:
-> >  #
-> > @@ -5080,6 +5138,8 @@
-> >  # @compression-type: The image cluster compression method
-> >  #     (default: zlib, since 5.1)
-> >  #
-> > +# @zone: @Qcow2ZoneCreateOptions.  The zone device model modes (since =
-8.2)
->
-> Don't put the type into the description like that, because it comes out
-> like
->
->     "zone": "Qcow2ZoneCreateOptions" (optional)
->        "Qcow2ZoneCreateOptions".  The zone device model modes (since 8.2)
->
-> in formatted documentation.
->
-> Let's spell out the default: the device is not zoned.
->
-> > +#
-> >  # Since: 2.12
-> >  ##
-> >  { 'struct': 'BlockdevCreateOptionsQcow2',
-> > @@ -5096,7 +5156,8 @@
-> >              '*preallocation':   'PreallocMode',
-> >              '*lazy-refcounts':  'bool',
-> >              '*refcount-bits':   'int',
-> > -            '*compression-type':'Qcow2CompressionType' } }
-> > +            '*compression-type':'Qcow2CompressionType',
-> > +            '*zone':            'Qcow2ZoneCreateOptions' } }
-> >
-> >  ##
-> >  # @BlockdevCreateOptionsQed:
->
+Sam
 
