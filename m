@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D36D815FEA
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 15:43:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 781D9815FF5
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 15:45:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEsLL-0005Lx-Ub; Sun, 17 Dec 2023 09:42:11 -0500
+	id 1rEsLO-0005NJ-IU; Sun, 17 Dec 2023 09:42:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rEsLI-0005Lg-Hn; Sun, 17 Dec 2023 09:42:08 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1rEsLK-0005MI-PX; Sun, 17 Dec 2023 09:42:10 -0500
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rEsLG-0003J9-Iw; Sun, 17 Dec 2023 09:42:08 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-54c70c70952so2600241a12.3; 
- Sun, 17 Dec 2023 06:42:05 -0800 (PST)
+ id 1rEsLJ-0003Ji-6b; Sun, 17 Dec 2023 09:42:10 -0500
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a234139b725so56985166b.3; 
+ Sun, 17 Dec 2023 06:42:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702824123; x=1703428923; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ImRdEJ2s1CPU/zja2PDSv05N4zE1GjmhfZzXX0+BJtA=;
- b=CtIFBOZ516E0NY+Zj8oBM/nQHmTtqOAd3VbhWzNI9ObeH6BtKgy2l4JNExUTgIn7s/
- 3OGDMWjick0Kta8j41oWE5JSyclmO1lGhSW45z534RfPPQCPILa0gedZ9VsMKo2JsLSt
- LWcS6f3DUTVBxgRzwooGU9bkynZ2gc3Wcj3Kl9RI41sfaiETCTHn//XgIu2reNCmDIZ3
- SrGtrT1nv95HplL1b0JMGlnWs4NiH08jr6egsM7j2cHpGr8yWYpoKN1UfQKKxwmsjSTy
- eyhYZX3ufxdpSRg3xWeJjdO2kair43I+ubkNKmHxg+Rzz6tLNCNQ4zxAPW5H8XWt+edq
- U6Ig==
+ d=gmail.com; s=20230601; t=1702824125; x=1703428925; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=w1SKst0ImDfoCsUqLA/dWpw9JJ48v8UPoTAm8vVkDRQ=;
+ b=m53ry6SP4OH9XwhLWFXP8zqLCNLAgJumLwm3md2Jghb19diQDEEfUBgUMCe6R/19vd
+ Zamc66uJ3YSdJT2Vy3BB169YANBNrz6qfjJg/NmsIUvagqaT8Z5UP/mcFYD2gHp8diGQ
+ LYa99FsXdcljfeVdIW/SqCNFuNZNJbh3anNgVkr9oPnrTEYEa8Mg8AIRGyo8Nt5Sx1DO
+ bfvBcfKCpIKJgS1mSXEqrpoTTzh+oESuWsYrpIXhKviC+I4klrNBXZqeup0KT92tVgR/
+ /uYzsACxmWgZNAckfSqIoQtvM7LCh+nfG6qgN+apqPCGgK52oiihZ0FcAc0S4It91dnj
+ XmOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702824123; x=1703428923;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ImRdEJ2s1CPU/zja2PDSv05N4zE1GjmhfZzXX0+BJtA=;
- b=b7U3+iQEno+mDQeeWoN07M4Mr4BFsylxnSVdyjAy/6CsuQMg4FcJoZrCrq0hWkijGu
- Tm1y5Jz5jljlouM71y6NYrsQI3+f0ofi/SJFtbnoNhGAKddsnD1aT1ZvZnJ8JM26vy++
- NWNuKsVACFnjRko5qb8Emzfo+EOtTYdQXWKV1CrvnOkaTev8DGJmkjHdiMgjh5dZpT1g
- dTPuoXFi5/kvJk4+I8m+WskiA7aAZ6Eu7T7Qmy9QTIY/zQRXUmmeLwtXjwhT3VEtbG5o
- Q5FMz9R+cXrAYi+dSrZ8nRJ/kSFkA/HortuPqHORrU9mIq+/M297QWSXvImmiZi71IYh
- ByIA==
-X-Gm-Message-State: AOJu0Yy8AXXbA5ZH4lJIWOM3KVfuj7mBK29YucACoOlh8csXu2m8W3Xp
- FcDNq2kbiqPFiPHmInJ3Lo+Z2sy/qxo=
-X-Google-Smtp-Source: AGHT+IH+QUQfDdlRexe23+jgS8M62pxCiSHHNFSL4w3tCx45xctLo2lt+LHLmCojQPybR27qQ18Shw==
-X-Received: by 2002:a17:906:c44b:b0:a19:720c:ed71 with SMTP id
- ck11-20020a170906c44b00b00a19720ced71mr4508604ejb.58.1702824122862; 
- Sun, 17 Dec 2023 06:42:02 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702824125; x=1703428925;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=w1SKst0ImDfoCsUqLA/dWpw9JJ48v8UPoTAm8vVkDRQ=;
+ b=RN/ZYbB9sdiW6FaCyqFtTPa9IPO8kSQeLk0xI6yr4dY68Hr3YPnuauFKZ4U7ire8b/
+ qxaVtc0ZSgZ3Opt/vuopsgBmv0sosvIUHMWJHQhar8H3eWJkxcATTQyGvqZ8W6oCfYDT
+ tuaxbCAkTTNRIEC5rF56VTFmyp4MdHZ/NNtCy5qLlmJGIdFHFuO0BN6P2Q73vQ2CIng7
+ fULJljPXEGSoFCx+7ZugPwteZqFl8qX9HJcjPAOBRIrlqtElbzvENuYAU8f6uc4FTcvm
+ M5Tw1XbJhlfKvZKDqvuBVb5YAIjCvfD3HwwCKRJMxH1wdB4jyTrnb1O1/hbFcX3RuB6y
+ rZmw==
+X-Gm-Message-State: AOJu0YxaS28bImLtcFv9DfHRvnzSRIsDqlkHAC0Pc9XL86Hyh9K0F8T4
+ J5EYariUBXEhwiqoaLhgKbqmqR60/so=
+X-Google-Smtp-Source: AGHT+IEyo1hmyZ4PFUtiYuxHu2EJOS4rrVbKL6+fDdZEK161NHqk8DOYdcuhI8xE1tA83x5owFg+FA==
+X-Received: by 2002:a17:907:9403:b0:a1f:6707:cffc with SMTP id
+ dk3-20020a170907940300b00a1f6707cffcmr4701239ejc.74.1702824125075; 
+ Sun, 17 Dec 2023 06:42:05 -0800 (PST)
 Received: from archlinux.. (dynamic-077-011-162-117.77.11.pool.telefonica.de.
  [77.11.162.117]) by smtp.gmail.com with ESMTPSA id
- vv6-20020a170907a68600b00a1dff479037sm12996632ejc.127.2023.12.17.06.42.00
+ vv6-20020a170907a68600b00a1dff479037sm12996632ejc.127.2023.12.17.06.42.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Dec 2023 06:42:02 -0800 (PST)
+ Sun, 17 Dec 2023 06:42:04 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
@@ -77,16 +78,16 @@ Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
  Leonardo Bras <leobras@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 00/12] hw/isa/vt82c686: Implement relocation and toggling of
- SuperI/O functions
-Date: Sun, 17 Dec 2023 15:41:36 +0100
-Message-ID: <20231217144148.15511-1-shentey@gmail.com>
+Subject: [PATCH 01/12] hw: Remove unused includes of hw/block/fdc.h
+Date: Sun, 17 Dec 2023 15:41:37 +0100
+Message-ID: <20231217144148.15511-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20231217144148.15511-1-shentey@gmail.com>
+References: <20231217144148.15511-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,98 +110,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series implements relocation of the SuperI/O functions of the VIA sout=
-h=0D
-bridges which resolves some FIXME's. It is part of my via-apollo-pro-133t=0D
-branch [1] which is an extension of bringing the VIA south bridges to the P=
-C=0D
-machine [2]. This branch is able to run some real-world X86 BIOSes in the h=
-ope=0D
-that it allows us to form a better understanding of the real vt82c686b devi=
-ces.=0D
-Implementing relocation and toggling of the SuperI/O functions is one step =
-to=0D
-make these BIOSes run without error messages, so here we go.=0D
-=0D
-The series is structured as follows: Patches 1-8 export the device structs =
-of=0D
-the ISA serial and FDC devices. This is used later in the series to access =
-the=0D
-I/O regions for relocation and toggling. As part of the exposal the MAINTAI=
-NERS=0D
-file gets a fix for the serial headers.=0D
-=0D
-Inspired by the memory API patches 9-11 add two convenience functions to th=
-e=0D
-portio_list API to toggle and relocate portio lists. Patch 9 is a preparati=
-on=0D
-for that which removes some redundancies which otherwise had to be dealt wi=
-th=0D
-during relocation.=0D
-=0D
-Patch 12 finally implements the main feature which required adaption of the=
-=0D
-pegasos2 sources, otherwise the machine wouldn't boot when given no bios.=0D
-=0D
-Testing done:=0D
-* make check=0D
-* make check-avocado=0D
-* Run MorphOS on pegasos2 with and without pegasos2.rom=0D
-* Run Linux on amigaone=0D
-* Run real-world BIOSes on via-apollo-pro-133t branch=0D
-* Start rescue-yl on fuloong2e=0D
-=0D
-[1] https://github.com/shentok/qemu/tree/via-apollo-pro-133t=0D
-[2] https://github.com/shentok/qemu/tree/pc-via=0D
-=0D
-Bernhard Beschow (12):=0D
-  hw: Remove unused includes of hw/block/fdc.h=0D
-  hw/i386/pc: No need to include hw/block/fdc.h in header=0D
-  hw/block/fdc-isa: Rename header to match source file=0D
-  hw/block/fdc: Expose internal header=0D
-  hw/block/fdc: Move constant #define to where it is imposed=0D
-  hw/block/fdc-isa: Expose struct FDCtrlISABus=0D
-  MAINTAINERS: Add include/hw/char/serial*.h to the "PC Chipset" section=0D
-  hw/char/serial-isa: Export struct ISASerialState=0D
-  exec/ioport: Resolve redundant .base attribute in struct=0D
-    MemoryRegionPortio=0D
-  exec/ioport: Add portio_list_set_address()=0D
-  exec/ioport: Add portio_list_set_enabled()=0D
-  hw/isa/vt82c686: Implement relocation of SuperI/O functions=0D
-=0D
- MAINTAINERS                  |   3 +-=0D
- docs/devel/migration.rst     |   2 +=0D
- hw/block/fdc-internal.h      | 158 ----------------------------------=0D
- include/exec/ioport.h        |   4 +-=0D
- include/hw/block/fdc-isa.h   |  32 +++++++=0D
- include/hw/block/fdc.h       | 161 ++++++++++++++++++++++++++++++++---=0D
- include/hw/char/serial-isa.h |  50 +++++++++++=0D
- include/hw/char/serial.h     |   7 --=0D
- include/hw/i386/pc.h         |   1 -=0D
- hw/block/fdc-isa.c           |  19 +----=0D
- hw/block/fdc-sysbus.c        |   2 +-=0D
- hw/block/fdc.c               |   3 +-=0D
- hw/char/serial-isa.c         |  14 +--=0D
- hw/i386/microvm-dt.c         |   2 +-=0D
- hw/i386/microvm.c            |   2 +-=0D
- hw/i386/pc.c                 |   4 +-=0D
- hw/isa/isa-superio.c         |   3 +-=0D
- hw/isa/vt82c686.c            | 140 +++++++++++++++++++++++-------=0D
- hw/m68k/next-cube.c          |   1 -=0D
- hw/mips/jazz.c               |   1 +=0D
- hw/ppc/pegasos2.c            |  15 ++++=0D
- hw/ppc/pnv.c                 |   2 +-=0D
- hw/ppc/prep.c                |   1 -=0D
- hw/sparc/sun4m.c             |   2 +-=0D
- hw/sparc64/sun4u.c           |   2 +=0D
- stubs/cmos.c                 |   2 +-=0D
- system/ioport.c              |  41 +++++++--=0D
- 27 files changed, 414 insertions(+), 260 deletions(-)=0D
- delete mode 100644 hw/block/fdc-internal.h=0D
- create mode 100644 include/hw/block/fdc-isa.h=0D
- create mode 100644 include/hw/char/serial-isa.h=0D
-=0D
--- =0D
-2.43.0=0D
-=0D
+Results running grep:
+
+  `grep -i -e "fdc" hw/ppc/prep.c`
+  (no output)
+
+  `grep -i -e "fdc" hw/m68k/next-cube.c`
+  DPRINTF("FDCSR Write: %x\n", value);
+
+This indicates that hw/block/fdc.h isn't used there.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/m68k/next-cube.c | 1 -
+ hw/ppc/prep.c       | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+index fabd861941..04989c2648 100644
+--- a/hw/m68k/next-cube.c
++++ b/hw/m68k/next-cube.c
+@@ -21,7 +21,6 @@
+ #include "hw/sysbus.h"
+ #include "qom/object.h"
+ #include "hw/char/escc.h" /* ZILOG 8530 Serial Emulation */
+-#include "hw/block/fdc.h"
+ #include "hw/qdev-properties.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+index 137276bcb9..edaed85d95 100644
+--- a/hw/ppc/prep.c
++++ b/hw/ppc/prep.c
+@@ -26,7 +26,6 @@
+ #include "qemu/osdep.h"
+ #include "hw/rtc/m48t59.h"
+ #include "hw/char/serial.h"
+-#include "hw/block/fdc.h"
+ #include "net/net.h"
+ #include "hw/isa/isa.h"
+ #include "hw/pci/pci.h"
+-- 
+2.43.0
+
 
