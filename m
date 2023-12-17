@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB343815FF0
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 15:44:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28EE2815FF1
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Dec 2023 15:44:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rEsLV-0005Ts-FC; Sun, 17 Dec 2023 09:42:21 -0500
+	id 1rEsLY-0005Uo-7V; Sun, 17 Dec 2023 09:42:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rEsLT-0005TI-GA; Sun, 17 Dec 2023 09:42:19 -0500
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ id 1rEsLU-0005TX-Af; Sun, 17 Dec 2023 09:42:20 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rEsLR-0003Ly-Li; Sun, 17 Dec 2023 09:42:19 -0500
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2ca1e6a94a4so24722471fa.0; 
- Sun, 17 Dec 2023 06:42:16 -0800 (PST)
+ id 1rEsLS-0003ML-OB; Sun, 17 Dec 2023 09:42:20 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-55114c073b8so2612017a12.1; 
+ Sun, 17 Dec 2023 06:42:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702824134; x=1703428934; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702824136; x=1703428936; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=m/yfz/Oz7PgaZpg2L46eI+iLvMEK6kukMkwMnMerSK4=;
- b=Mv2oX/AkBxy3jABEZKtargcgDhn6hmq+TIsEShnB4yp5zQnMSCNuceNUtc7sD+MxI+
- CnjdU8L11WldyxwNg6VwxIEF+/Wxd++3CzQBgSnRyuJAuCSCKk0cakwOLHfwe26s7Ibj
- TMyLvKQCgZqHYHxB8MT3bFJs5snqHwf/6QcyPLasBJGd1EZbmJCMwGYytPnnNtObrnvs
- /9ru4lAF2DjFgwNKFDh4TbaPzVhY1WOTzU7u3RwygDv56qY2AnZIQQlVEJNvfeKQ+HmQ
- h6iniEXL1o0cv+goPO4vDijXi6wK6wS9SELXd28SP7ykwnH77962gRdtpYOR6PqdTFB/
- xqoQ==
+ bh=i7s4/LcmfHKTeKgmtMjwtMN44iUEsLZ+FoJ9PwqvTqU=;
+ b=fydCk1Idx62xOnH+HmBVOErN0OoupQP1vQ8DYgeF236EdJecW/Jj6TIixmUmni3QGj
+ Ehhlx3q4qVKTs7i6OZ2SVAXfzKHsibX2rUcbTbBdYxouKV7a3jGBnlRT4HmUDo+h3ueL
+ 22gRh4ajQH0vAMDDAoFm9pRE4yPeRC8GxuNu9NFhROleNAl9sYICL9JLOnf5OCJDT2Cz
+ 23iM34hp+i8cx5cdUFZtXPzQUXdYh5kfgXL/typhwsFtFujULgOsmqBdg8XHkfv8mi3P
+ tICtYeKTnt71iy0fmWpMS5rJrmgeR8tTg6ZNcrIj01u//52L5jIDtsPKb4pdwHve0te1
+ pbEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702824134; x=1703428934;
+ d=1e100.net; s=20230601; t=1702824136; x=1703428936;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m/yfz/Oz7PgaZpg2L46eI+iLvMEK6kukMkwMnMerSK4=;
- b=BP44yBom9Uq8nopRbATINirxSztcVP/uGe+48bJZaAW60k61Hi1/NTP9oJfUaVJ15x
- IsMXz75G/19cosuXp8LcNUn1c0plO4hnh/3ugR7U4Pip95Zcn6KuDlSSiZFuZAaVfX4M
- J8PqAB3buuWK1esQtAJ1n/GlT9sORsr/wJXhos7kj4e3K4V4acBWpVznpbL0xEyB/RTp
- 006gV5Wvr3lN5gQOZTE5JHfSugSJNQ9LrTosJ6As5QuhYeW49RWCZOTT92wwlOBClUDf
- 4bvzqfyA9vnthIF0OggVfmDbIcB+qBtO+xAPTYJ6EEif8HmcxEyMQzRdTxt+WJ+aTuJ6
- msmg==
-X-Gm-Message-State: AOJu0YwkPZNLLBB3tXMIvN7JJuespGWbISeBXHqAkz946h3HZPC+ykmx
- 6Z9dr7qS0Sw9y6+ourcJmm/xFrh6Amw=
-X-Google-Smtp-Source: AGHT+IGwQFp+2ZoKu1kPsnNFzs6UAXoQ2ya/KiKwWJiOkbc9x7Q8tvkMBb6BvlZMpFFDjp+dureYAQ==
-X-Received: by 2002:a05:6512:3086:b0:50e:1ac0:c97c with SMTP id
- z6-20020a056512308600b0050e1ac0c97cmr3764003lfd.66.1702824133974; 
- Sun, 17 Dec 2023 06:42:13 -0800 (PST)
+ bh=i7s4/LcmfHKTeKgmtMjwtMN44iUEsLZ+FoJ9PwqvTqU=;
+ b=jpQ+sSiYwqehQh1FSuDclQ72a6bin70eS+1rWRUU+hl0tdCvY42rkziJ2sb+uCgMY3
+ AOvE6ZcdmpdpQVPE/MRpaae23UWFTKsCQQBzH5tsvWEtxLUscv6Gwclqk/3pFwBmmhw1
+ JfZvmCnhOXFr7Zfx+XI9xWcAvzudwYbxyn9azjekByddVAMbkad13GEEwLG65bR/r7TC
+ bzaGoGlzzjEclpP1WmSScHySGLs9/d0KRMltOfrnCPbbhMksak9OrEikfqAWxh8YXCko
+ 8kFvBdHGbTqusoaSIXE3EwBpClbr74SL2jcNBA2GJqvNj5tQUE+fHwtjYECa6nxNR+JZ
+ v25g==
+X-Gm-Message-State: AOJu0YwOpxyNx4qukJPQfmSOqXXhzMtPCVlvsrjDcnV8WasH8vgRjia8
+ GHb0mjv62eicm/N0/F7gHJgd7n2IwME=
+X-Google-Smtp-Source: AGHT+IFydhxEyGGWfVgeozALK8n6/hTn/rSiNZnFaKwSQgzLhKR4tBLykuQIGnrAQ3PcW3EKmrP5cA==
+X-Received: by 2002:a17:906:c141:b0:a18:abad:195a with SMTP id
+ dp1-20020a170906c14100b00a18abad195amr5599921ejc.47.1702824136044; 
+ Sun, 17 Dec 2023 06:42:16 -0800 (PST)
 Received: from archlinux.. (dynamic-077-011-162-117.77.11.pool.telefonica.de.
  [77.11.162.117]) by smtp.gmail.com with ESMTPSA id
- vv6-20020a170907a68600b00a1dff479037sm12996632ejc.127.2023.12.17.06.42.11
+ vv6-20020a170907a68600b00a1dff479037sm12996632ejc.127.2023.12.17.06.42.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Dec 2023 06:42:13 -0800 (PST)
+ Sun, 17 Dec 2023 06:42:15 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
@@ -78,17 +78,16 @@ Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
  Leonardo Bras <leobras@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 05/12] hw/block/fdc: Move constant #define to where it is
- imposed
-Date: Sun, 17 Dec 2023 15:41:41 +0100
-Message-ID: <20231217144148.15511-6-shentey@gmail.com>
+Subject: [PATCH 06/12] hw/block/fdc-isa: Expose struct FDCtrlISABus
+Date: Sun, 17 Dec 2023 15:41:42 +0100
+Message-ID: <20231217144148.15511-7-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231217144148.15511-1-shentey@gmail.com>
 References: <20231217144148.15511-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=shentey@gmail.com; helo=mail-lj1-x229.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,110 +110,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MAX_FD is a limitation of struct FDCtrl which is defined in fdc.h. Now that
-this header is exposed the definition can be moved there.
+Exposing device structs in headers is encuraged by qdev guidelines.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/block/fdc-isa.h | 3 ---
- include/hw/block/fdc.h     | 3 ++-
- hw/block/fdc.c             | 1 -
- hw/i386/pc.c               | 1 +
- hw/isa/isa-superio.c       | 1 +
- hw/mips/jazz.c             | 1 +
- hw/sparc64/sun4u.c         | 1 +
- 7 files changed, 6 insertions(+), 5 deletions(-)
+ include/hw/block/fdc-isa.h | 15 +++++++++++++++
+ hw/block/fdc-isa.c         | 17 -----------------
+ 2 files changed, 15 insertions(+), 17 deletions(-)
 
 diff --git a/include/hw/block/fdc-isa.h b/include/hw/block/fdc-isa.h
-index 95807fdc65..42abd001dd 100644
+index 42abd001dd..965c749c96 100644
 --- a/include/hw/block/fdc-isa.h
 +++ b/include/hw/block/fdc-isa.h
-@@ -4,9 +4,6 @@
+@@ -3,9 +3,24 @@
+ 
  #include "exec/hwaddr.h"
  #include "qapi/qapi-types-block.h"
++#include "hw/block/fdc.h"
++#include "hw/isa/isa.h"
  
--/* fdc.c */
--#define MAX_FD 2
--
  #define TYPE_ISA_FDC "isa-fdc"
  
- void isa_fdc_init_drives(ISADevice *fdc, DriveInfo **fds);
-diff --git a/include/hw/block/fdc.h b/include/hw/block/fdc.h
-index acca7e0d0e..0484280939 100644
---- a/include/hw/block/fdc.h
-+++ b/include/hw/block/fdc.h
-@@ -28,9 +28,10 @@
- #include "exec/memory.h"
- #include "exec/ioport.h"
- #include "hw/block/block.h"
--#include "hw/block/fdc-isa.h"
- #include "qapi/qapi-types-block.h"
- 
-+#define MAX_FD 2
++OBJECT_DECLARE_SIMPLE_TYPE(FDCtrlISABus, ISA_FDC)
 +
- typedef struct FDCtrl FDCtrl;
- 
- /* Floppy bus emulation */
-diff --git a/hw/block/fdc.c b/hw/block/fdc.c
-index 0e2fa527f9..7f58cf1c1f 100644
---- a/hw/block/fdc.c
-+++ b/hw/block/fdc.c
-@@ -28,7 +28,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "hw/block/fdc-isa.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
++struct FDCtrlISABus {
++    ISADevice parent_obj;
++
++    uint32_t iobase;
++    uint32_t irq;
++    uint32_t dma;
++    FDCtrl state;
++    int32_t bootindexA;
++    int32_t bootindexB;
++};
++
+ void isa_fdc_init_drives(ISADevice *fdc, DriveInfo **fds);
+ void fdctrl_init_sysbus(qemu_irq irq, hwaddr mmio_base, DriveInfo **fds);
+ void sun4m_fdctrl_init(qemu_irq irq, hwaddr io_base,
+diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
+index 7058d4118f..090dc03381 100644
+--- a/hw/block/fdc-isa.c
++++ b/hw/block/fdc-isa.c
+@@ -34,12 +34,10 @@
  #include "qemu/timer.h"
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index aeecf56e72..a8051feacd 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -25,6 +25,7 @@
- #include "qemu/osdep.h"
- #include "qemu/units.h"
- #include "hw/i386/pc.h"
-+#include "hw/block/fdc.h"
- #include "hw/block/fdc-isa.h"
- #include "hw/char/serial.h"
- #include "hw/char/parallel.h"
-diff --git a/hw/isa/isa-superio.c b/hw/isa/isa-superio.c
-index ea6cb4213f..99d2aa491b 100644
---- a/hw/isa/isa-superio.c
-+++ b/hw/isa/isa-superio.c
-@@ -17,6 +17,7 @@
- #include "sysemu/blockdev.h"
- #include "chardev/char.h"
- #include "hw/char/parallel.h"
-+#include "hw/block/fdc.h"
- #include "hw/block/fdc-isa.h"
- #include "hw/isa/superio.h"
+ #include "hw/acpi/acpi_aml_interface.h"
+ #include "hw/irq.h"
+-#include "hw/isa/isa.h"
  #include "hw/qdev-properties.h"
-diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
-index bc74d1fd96..646b5eb3f1 100644
---- a/hw/mips/jazz.c
-+++ b/hw/mips/jazz.c
-@@ -31,6 +31,7 @@
- #include "hw/char/serial.h"
- #include "hw/char/parallel.h"
- #include "hw/isa/isa.h"
-+#include "hw/block/fdc.h"
- #include "hw/block/fdc-isa.h"
- #include "sysemu/sysemu.h"
- #include "hw/boards.h"
-diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
-index 9a88772f6f..0d7b539ace 100644
---- a/hw/sparc64/sun4u.c
-+++ b/hw/sparc64/sun4u.c
-@@ -39,6 +39,7 @@
- #include "hw/rtc/m48t59.h"
+ #include "hw/qdev-properties-system.h"
  #include "migration/vmstate.h"
- #include "hw/input/i8042.h"
-+#include "hw/block/fdc.h"
- #include "hw/block/fdc-isa.h"
- #include "net/net.h"
- #include "qemu/timer.h"
+ #include "hw/block/block.h"
+-#include "hw/block/fdc.h"
+ #include "sysemu/block-backend.h"
+ #include "sysemu/blockdev.h"
+ #include "sysemu/sysemu.h"
+@@ -49,21 +47,6 @@
+ #include "trace.h"
+ #include "qom/object.h"
+ 
+-OBJECT_DECLARE_SIMPLE_TYPE(FDCtrlISABus, ISA_FDC)
+-
+-struct FDCtrlISABus {
+-    /*< private >*/
+-    ISADevice parent_obj;
+-    /*< public >*/
+-
+-    uint32_t iobase;
+-    uint32_t irq;
+-    uint32_t dma;
+-    struct FDCtrl state;
+-    int32_t bootindexA;
+-    int32_t bootindexB;
+-};
+-
+ static void fdctrl_external_reset_isa(DeviceState *d)
+ {
+     FDCtrlISABus *isa = ISA_FDC(d);
 -- 
 2.43.0
 
