@@ -2,91 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7FC817D16
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 23:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5701A817E40
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 00:46:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFLfU-0007MO-On; Mon, 18 Dec 2023 17:00:56 -0500
+	id 1rFNHy-00061I-BI; Mon, 18 Dec 2023 18:44:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rFLfR-0007M7-St
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 17:00:53 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rFLfP-0005Z7-P1
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 17:00:53 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1d3cfb1568eso7500755ad.1
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 14:00:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1702936850; x=1703541650; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AkqEURBx3aCOt9Pnvek4xVOOVZy2X+5UwM7Trc5uEKw=;
- b=muomVD3AKqII9aBD+oIfr2qOydLVji7H77a8B5QaAAtvlEpcjfO9wcBbUVSWcXTfez
- 4x43+iJUqxo8ZSfaPA1Vo/qY5FgetomPcSsX6Z7bebER114aaHMbtfUQbo1x6EDs09sX
- hJEhILTAiUpVj3lYGxZHZwwTEB3wXasAgYXRKGR7cdUdOLXpSP+Zo9GN9/00hMXZdRRG
- ded8DhdhwCSegFK2nYVavD2Cmo8LrG1N8YmfWpvATLGqUHhAb/UoAZjnKJ3bvtEcu+OR
- UPdVvgcG2VgDlRPHBZvXoCLf83FiToSTTZTNy0zm9s8cMAim/F5QdZnvMzT2/GwH5lnw
- xf1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702936850; x=1703541650;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AkqEURBx3aCOt9Pnvek4xVOOVZy2X+5UwM7Trc5uEKw=;
- b=vsZuBmjtVmdP4qFNjRrPjAfANGJSZZSk6IzTeIxRxpPkatgZp07AZqQr2F5fBfnF1H
- dCYbVZUHSbACdklx7bV7v6GcFIKkRMiSXfTwoOIBqFgeP8JZ0apf4LIJq5OWBitftolC
- 5OOe94nt25sYGzWHWFQBcZfyd0ayi6QABMaL+cdfdkGYoOJLeqSi7FLX7yKsAWPP1rAi
- nqa1wzGZqJsJw5vGbzRwpq2O5OWw4BhK4VYQ/q9NeWj/ld6A/ZzCdrVqFNYopdMp8YR6
- 1e7wtQ5XzUWGHz+37up20e6XQv+ZWkmdRkEadhx4HzwXn5DgyrkAMGgqhcYb6wrbkCkk
- F22Q==
-X-Gm-Message-State: AOJu0YxdNLjDrLWzDpGIIDnAlgFBph968cYPhYddAGimCNorSp+YqKpA
- tJfY1QWiccu9tVVPYHQiFYfniw==
-X-Google-Smtp-Source: AGHT+IE7tYp0hWzxSsI3PxQ8Q5jEl1Tfqkdx6J3KQl0fCyMh0Ahxmn6xVYdXha2KGPwoQhEpYZAUPw==
-X-Received: by 2002:a17:902:ea04:b0:1d3:b4ce:f8d4 with SMTP id
- s4-20020a170902ea0400b001d3b4cef8d4mr2618031plg.54.1702936850199; 
- Mon, 18 Dec 2023 14:00:50 -0800 (PST)
-Received: from [192.168.68.110] ([179.93.21.205])
- by smtp.gmail.com with ESMTPSA id
- t4-20020a170902b20400b001d33a7fd3fcsm12210091plr.16.2023.12.18.14.00.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Dec 2023 14:00:49 -0800 (PST)
-Message-ID: <3ba366c4-3fef-4d4a-bcfb-4cb3dd8e8ea6@ventanamicro.com>
-Date: Mon, 18 Dec 2023 19:00:44 -0300
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rFNHw-00060l-06; Mon, 18 Dec 2023 18:44:44 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rFNHt-0004ER-LU; Mon, 18 Dec 2023 18:44:43 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4005975A4BF;
+ Tue, 19 Dec 2023 00:44:35 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id 6JXcx-S5ZUZC; Tue, 19 Dec 2023 00:44:33 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 4B60975A406; Tue, 19 Dec 2023 00:44:33 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 49019756094;
+ Tue, 19 Dec 2023 00:44:33 +0100 (CET)
+Date: Tue, 19 Dec 2023 00:44:33 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
+ Thomas Huth <huth@tuxfamily.org>, 
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
+ David Hildenbrand <david@redhat.com>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Kevin Wolf <kwolf@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Sergio Lopez <slp@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, Hanna Reitz <hreitz@redhat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
+ Nicholas Piggin <npiggin@gmail.com>, Juan Quintela <quintela@redhat.com>, 
+ =?ISO-8859-15?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>, 
+ qemu-ppc@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Leonardo Bras <leobras@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH 04/12] hw/block/fdc: Expose internal header
+In-Reply-To: <987BBA5E-3A7F-4A3C-B45E-E31183BB5F46@gmail.com>
+Message-ID: <b1cee222-f227-8aa0-a956-61fa6348ae35@eik.bme.hu>
+References: <20231217144148.15511-1-shentey@gmail.com>
+ <20231217144148.15511-5-shentey@gmail.com>
+ <b4b1d529-f368-4f8f-b357-4ad5177a2951@eik.bme.hu>
+ <91BF37F6-494D-4656-9CE8-7FDA0C3C8F33@gmail.com>
+ <26832f40-8202-5f48-a197-ba213d4a0128@eik.bme.hu>
+ <987BBA5E-3A7F-4A3C-B45E-E31183BB5F46@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv/kvm: do not use non-portable
- strerrorname_np()
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, Natanael Copa <ncopa@alpinelinux.org>,
- qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, qemu-trivial@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <20231218162301.14817-1-ncopa@alpinelinux.org>
- <dfb9bf4e-820a-4e7e-b62b-8df952099e7a@ventanamicro.com>
- <3a159117-1f07-4d1d-911f-98e102959dab@tls.msk.ru>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <3a159117-1f07-4d1d-911f-98e102959dab@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-493748696-1702943073=:18131"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,68 +85,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--3866299591-493748696-1702943073=:18131
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-On 12/18/23 18:35, Michael Tokarev wrote:
-> 18.12.2023 20:20, Daniel Henrique Barboza wrote:
->>
->>
->> On 12/18/23 13:22, Natanael Copa wrote:
->>> strerrorname_np is non-portable and breaks building with musl libc.
+On Mon, 18 Dec 2023, Bernhard Beschow wrote:
+> Am 18. Dezember 2023 10:54:56 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> On Sun, 17 Dec 2023, Bernhard Beschow wrote:
+>>> Am 17. Dezember 2023 15:47:33 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>>>> On Sun, 17 Dec 2023, Bernhard Beschow wrote:
+>>>>> Exposing the internal header allows for exposing struct FDCtrlISABus which is
+>>>>> encuraged by qdev guidelines.
+>>>>
+>>>> Hopefully the guidelines don't encourage this as object orientation indeed encourages object encapsulation so only the object itseld should poke its internals and other objects should use methods the change object state. In QOM some object states were exposed in public headers to allow embedding those objects in other objects becuase C needs the struct size to allow that. This was to simplify memory management so the embedded objects don't need to be tracked and freed but would be created and freed with the other object embedding it but this does not mean the other object should poke into these object or that this is a general guideline to expose internal object state. I'd say the exposed objects are an exception instead of recommended guideline and only allowed for objects that need to be embeded in others but generally object encapsulation would be better to preserve where possible. This patch exposes objects so others can poke into them which would make those other objects de
+ pe
+>> ndent on the implementation of these objects making these harder to chnage in the future so a better way may be to add methods to fdc and serial to allow changing their base address and map/unmap their ports and keep their internals unexposed.
 >>>
->>> Use strerror(errno) instead, like we do other places.
->>>
->>> Cc: qemu-stable@nongnu.org
->>> Fixes: commit 082e9e4a58ba (target/riscv/kvm: improve 'init_multiext_cfg' error msg)
->>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2041
->>> Buglink: https://gitlab.alpinelinux.org/alpine/aports/-/issues/15541
->>> Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
->>> ---
->>>   target/riscv/kvm/kvm-cpu.c | 18 ++++++++----------
->>>   1 file changed, 8 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
->>> index 45b6cf1cfa..117e33cf90 100644
->>> --- a/target/riscv/kvm/kvm-cpu.c
->>> +++ b/target/riscv/kvm/kvm-cpu.c
->>> @@ -832,9 +832,8 @@ static void kvm_riscv_read_multiext_legacy(RISCVCPU *cpu,
->>>                   multi_ext_cfg->supported = false;
->>>                   val = false;
->>>               } else {
->>> -                error_report("Unable to read ISA_EXT KVM register %s, "
->>> -                             "error code: %s", multi_ext_cfg->name,
->>> -                             strerrorname_np(errno));
->>> +                error_report("Unable to read ISA_EXT KVM register %s: %s",
->>> +                             multi_ext_cfg->name, strerror(errno));
+>>> Each ISADevice sub class would need concenience methods as well as each state class. This series touches three of each: fdc, parallel, serial. And each of those need two convenience methods: set_enabled() and set_address(). This would add another 12 functions on top of the current ones.
 >>
+>> If all ISA devices need this then these should really be methods of ISADevice but since that's just an empty wrapper over devices each of which handles its own ports, the ISADevice does not know about those and since each device may have different ports and not all of them uses portio lists for this, moving port handling to ISADevice might be too big refactoring to do for this. Keeping these functions with the superio component devices so their implementation is kept private still worth it in my opinion so even if that adds 2 functions to superio component devices (which is not all ISA devices just a limited set) seems to be a better approach to me than breaking encapsulation of objects. These are simple access methods for internal object state which are common in object otiented programming.
 >>
->> The reason I did this change, as described in 082e9e4a58ba mentioned in the commit
->> message, was precisely to avoid things like this:
+>>> Then ISASuperIODevice would require at least 6 more such methods (not counting the unneeded ones for IDE which might be desirable for consistency). So in the end we'd have at least 18 more methods. Is this really worth it?
 >>
->> qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error: no such file or directory
-> 
-> If KVM context puts its own unique meaning for ENOENT, maybe something like
-> 
->   "unable to read KVM register: %s\n", errno == ENOENT ? "no such register" : strerror(errno)
-> 
-> would do it better?
+>> We may do without these if we say superio is just a container of components so don't add forwarding methods but we can call the accessor methods of component objects from vt82c686.c. That's still better than reaching into object internals from foreign objects.
+>
+> Version 2 is out which should address all of your comments.
 
+I think this version looks better. I only have time for somw preliminary 
+comments after a quick look now, I'll plan to give it more testing during 
+Xmas holiday.
 
-A solution like this is something I can go after if I'm bothered enough with how strerror()
-is working in the RISC-V KVM driver.
-
-For now I think we can live with this fix as is since fixing the build is more important
-that aesthetics.
-
-
-Thanks,
-
-Daniel
-
-> 
-> To me, "No such file or directory" already tells everything and does not look
-> weird, but that's because I've seen this error message for all sorts of contexts
-> and got used to this. It is definitely understandable.
-> 
-> /mjt
+Regards,
+BALATON Zoltan
+--3866299591-493748696-1702943073=:18131--
 
