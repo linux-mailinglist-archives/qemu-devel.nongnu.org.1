@@ -2,88 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE81817435
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 15:51:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B43CD81744B
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 15:54:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFEwI-0004pz-E7; Mon, 18 Dec 2023 09:49:50 -0500
+	id 1rFF0G-0006q4-GT; Mon, 18 Dec 2023 09:53:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rFEwC-0004pp-1s
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 09:49:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rFEw9-0004ZK-SC
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 09:49:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702910980;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mrLzWrW4smtE2Hxz/bSsmgYfxashVY6KsR/kYk5revk=;
- b=LET0R40zIogJBCvinUwwbNETi9V8e98lkQ4mj2wSf6X0bVgWrn08f9zVYz0LFwd3aknsCA
- FRsQlRKiDKfMUjeCBmWi3Kt/U1adFRmsWa4russcjNpAm48skX8iPycpw50KgzwnCmMyqs
- MG9ULBfsPNwSo3xjscKGk17FxEPe/iY=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-s3Z84ZYaNSyHa-y600dONQ-1; Mon, 18 Dec 2023 09:49:37 -0500
-X-MC-Unique: s3Z84ZYaNSyHa-y600dONQ-1
-Received: by mail-ua1-f70.google.com with SMTP id
- a1e0cc1a2514c-7cb9fd757adso381199241.2
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 06:49:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFF0F-0006pi-Cj
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 09:53:55 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFF0D-0005PW-NE
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 09:53:55 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-54c77e0835bso3837314a12.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 06:53:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702911232; x=1703516032; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=N0GisI5Cj/+d1y5wO4vQHvEhnw40IXcjJYnIm9AP1y8=;
+ b=ugoJ1A4i+mOkey/KtfYUzRQl6pN7zZq7qIjuyjfp4cKkLRyp9kjDJjVV/Mfkizeufb
+ uRmMQWQx0ZGedStMBmyJPZ4E14Q0XjWfHZCmkD2CVrLhZi3ocpi/TfHrb+2qdRRU1X9+
+ VrziMDLym4SNStv459PxK4cjrNFqFuB4KR5iMDLaPyMXams3jGjD8EgsKKnaiczoXwr0
+ VA6+R6RLvUc97Ei+PYOuaEpmk621lf5nEOi/sJoInkUUNEzGqLe1T7qfNUxO1zUwwS5q
+ UmhnpQdoWYZpOzCnq52GUpYAK6O/1i6eZ4CpdHZhzxy8HWh2cLRHnm06QCVS2MLG6UUV
+ Ngyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702910976; x=1703515776;
+ d=1e100.net; s=20230601; t=1702911232; x=1703516032;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mrLzWrW4smtE2Hxz/bSsmgYfxashVY6KsR/kYk5revk=;
- b=Uw0lBbDUmJq99XcBuIPT5/c3NLYq7y7x51pXX72jKznY9I/65whv4uEvBZara/KIuT
- lQwZLqB+3HQJjucsbEkTTGflwRgl8zfPCdBM3pPBYiZskGS9KbMTBaGZZmhOO4KSZj6M
- 3t3VQagllJdjvsucEU3CInaDxZ/2+jdjhu4ddGMAMjA1sJh3Sb2LJbewd3o/n6A3mT7q
- HTqasJak7Q+5DfJeYOWIBiRUmKe9kH2GWmcQ11t8JprOpb5c4gUEZKdu1YqqQYSyubtu
- FsDP27rPos7ExiewK9WH59L8bPmZ6/8F+7b0kvITvG+NdMTgwEJ5Uu5CVG4WgwJM/MqM
- HUEw==
-X-Gm-Message-State: AOJu0YzjEHkfLSoifT5uu27lMmTMgjmOmW5sHthSwsSG7YWMzaNs6ImL
- /gnGw0dIRTeWpVpNrFD8km9o5ouDJe3q7uIUZ6uPFfsiDUGuhxM9OP5J0hCvr6/68jRTfDujEG2
- MNUXXjYpbq3rF5gajYYboWprG/DqhVEw=
-X-Received: by 2002:a1f:ee8b:0:b0:4b6:c810:ab7e with SMTP id
- m133-20020a1fee8b000000b004b6c810ab7emr748846vkh.28.1702910976672; 
- Mon, 18 Dec 2023 06:49:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFfJnHvV/96Xgiw+KR+im4gh/PAqRWVwYk7RQsfOIJY33xfguch1aazMR6vmeNDBcPABXb6/BklEG3hFMWcHhs=
-X-Received: by 2002:a1f:ee8b:0:b0:4b6:c810:ab7e with SMTP id
- m133-20020a1fee8b000000b004b6c810ab7emr748840vkh.28.1702910976424; Mon, 18
- Dec 2023 06:49:36 -0800 (PST)
+ bh=N0GisI5Cj/+d1y5wO4vQHvEhnw40IXcjJYnIm9AP1y8=;
+ b=VUAR8fFM4G1WqvbG5ectd1wUWSXSr8UQc52RsvODpAeYEBeIBr9fK6iD+xr2xQ9k9n
+ OnYudRF2U0j9CLm71uVnJ/D6xK6DNSSe8XucM2j/K2WZYfMGiIDmY6uVvuif9EG8hj/y
+ +tc51xrI7+OD/E6MfthVYuJ5eCCZBAhRn+R0kn67cnd4wiblLlAnHk8s/gZvDL5X4FSH
+ jPqAqmfbYhn/vM+vYroQXY5WxL1QrZD8+QHR24MqOeWzVVFYwVYno9wmZawVHjBfuN5D
+ m4wH2eDTPoaprswh3CdEx88oSMYef2hRxNao/ZLCW56uoVTSfncadAXzXordMiQxRlpa
+ 7uXw==
+X-Gm-Message-State: AOJu0YwLWQxQPQOaQ93MMLyK0qDNAkaCvNU+JFTeYp/H3MSEBZHRKVxX
+ /jEqQ7C6PARo8OvbNYIaePu+DWsTYvJNzQ5aGPNZfEhE987AAspc
+X-Google-Smtp-Source: AGHT+IHxuUPOuRV/pHNYFIueLTZmiYRhUH2Jgq6Oqn9Y3Um+P/cghrQeUcxfBAXk/GXcG1o5pc5SPszg4ZSVEVs3wWI=
+X-Received: by 2002:a50:85c6:0:b0:54c:7b90:f40a with SMTP id
+ q6-20020a5085c6000000b0054c7b90f40amr10520015edh.4.1702911232016; Mon, 18 Dec
+ 2023 06:53:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20231213211544.1601971-1-stefanha@redhat.com>
- <ba257408-5fb2-41d3-8b43-297ebcd312ea@proxmox.com>
- <20231214195352.GB1645604@fedora>
- <61c149da-ee22-418b-8575-b128b6836e38@proxmox.com>
-In-Reply-To: <61c149da-ee22-418b-8575-b128b6836e38@proxmox.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 18 Dec 2023 15:49:24 +0100
-Message-ID: <CABgObfZn4snAzgPhWV_8tJ8DEU4hw_Hc7EDa9wrPTvqe3+jWyg@mail.gmail.com>
-Subject: Re: [RFC 0/3] aio-posix: call ->poll_end() when removing AioHandler
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>
+References: <170256739558.25729.14053113716470464567-0@git.sr.ht>
+In-Reply-To: <170256739558.25729.14053113716470464567-0@git.sr.ht>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 18 Dec 2023 14:53:39 +0000
+Message-ID: <CAFEAcA_kYruv-b8_FzSTAE+yKh6PTYjHHbFEfiqOVwDR462kpg@mail.gmail.com>
+Subject: Re: [PATCH qemu v3 0/2] Add minimal support for the B-L475E-IOT01A
+ board
+To: "~inesvarhol" <inesvarhol@proton.me>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, alistair@alistair23.me, 
+ philmd@linaro.org, ines.varhol@telecom-paris.fr, 
+ arnaud.minier@telecom-paris.fr
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.083,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,49 +89,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 18, 2023 at 1:41=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
-rote:
-> I think it's because of nested drains, because when additionally
-> checking that the drain count is zero and only executing the loop then,
-> that issue doesn't seem to manifest
-
-But isn't virtio_scsi_drained_end only run if bus->drain_count =3D=3D 0?
-
-    if (bus->drain_count-- =3D=3D 1) {
-        trace_scsi_bus_drained_end(bus, sdev);
-        if (bus->info->drained_end) {
-            bus->info->drained_end(bus);
-        }
-    }
-
-Paolo
-
+On Thu, 14 Dec 2023 at 15:23, ~inesvarhol <inesvarhol@git.sr.ht> wrote:
 >
-> > diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-> > index 9c751bf296..d22c586b38 100644
-> > --- a/hw/scsi/virtio-scsi.c
-> > +++ b/hw/scsi/virtio-scsi.c
-> > @@ -1164,9 +1164,13 @@ static void virtio_scsi_drained_end(SCSIBus *bus=
-)
-> >          return;
-> >      }
-> >
-> > -    for (uint32_t i =3D 0; i < total_queues; i++) {
-> > -        VirtQueue *vq =3D virtio_get_queue(vdev, i);
-> > -        virtio_queue_aio_attach_host_notifier(vq, s->ctx);
-> > +    if (s->bus.drain_count =3D=3D 0) {
-> > +        for (uint32_t i =3D 0; i < total_queues; i++) {
-> > +            VirtQueue *vq =3D virtio_get_queue(vdev, i);
-> > +            virtio_queue_set_notification(vq, 1);
-> > +            virtio_queue_notify(vdev, i);
-> > +            virtio_queue_aio_attach_host_notifier(vq, s->ctx);
-> > +        }
-> >      }
-> >  }
-> >
+> This patch adds a new STM32L4x5 SoC, it is necessary to add support for
+> the B-L475E-IOT01A board.
+> The implementation is derived from the STM32F405 SoC and NetduinoPlus2
+> board.
+> The implementation contains no peripherals, only memory regions are
+> implemented.
 >
-> Best Regards,
-> Fiona
+> Sorry about the inconsistency in licenses in v2, I changed them.
+> Should I clarify anything further? Thank you.
 >
+> Changes from v1 to v3:
+> Changing the MIT license to GPL.
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+>
+> In=C3=A8s Varhol (2):
+>   hw/arm: Add minimal support for the STM32L4x5 SoC
+>   hw/arm: Add minimal support for the B-L475E-IOT01A board
+>
+>  MAINTAINERS                             |  15 ++
+>  configs/devices/arm-softmmu/default.mak |   1 +
+>  hw/arm/Kconfig                          |  11 +
+>  hw/arm/b-l475e-iot01a.c                 |  70 +++++++
+>  hw/arm/meson.build                      |   2 +
+>  hw/arm/stm32l4x5_soc.c                  | 268 ++++++++++++++++++++++++
+>  include/hw/arm/stm32l4x5_soc.h          |  59 ++++++
 
+Can we have some documentation for the new board model, please?
+That should be a new file under docs/system/arm/, that you
+then list in docs/system/target-arm.rst (note the comment there
+about what order the ToC should be in). The docs don't have to
+be super comprehensive, but should at least:
+ * describe what the board is
+ * briefly list the supported devices
+ * list any missing features or other limitations
+ * describe any machine-specific options (you don't have any yet)
+ * if there is an easy open source guest that will run on the board,
+   some instructions for how to do that (this part isn't mandatory)
+
+docs/system/arm/orangepi.rst is a good example of the format/structure.
+
+(If you pass configure '--enable-docs' that will ensure that it
+builds documentation and doesn't skip it because you're missing
+a dependency.)
+
+Then subsequent followon patchsets that update the model to
+add new devices etc will likely also patch the docs to add
+items to the "supported" list.
+
+thanks
+-- PMM
 
