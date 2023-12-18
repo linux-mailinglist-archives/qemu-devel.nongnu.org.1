@@ -2,69 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E7E81657A
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 04:58:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC51881657C
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 05:03:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rF4lN-0003RP-Hy; Sun, 17 Dec 2023 22:57:53 -0500
+	id 1rF4pw-0004Ox-5B; Sun, 17 Dec 2023 23:02:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rF4lL-0003Qt-Dk; Sun, 17 Dec 2023 22:57:51 -0500
-Received: from mail-qk1-x730.google.com ([2607:f8b0:4864:20::730])
+ id 1rF4pr-0004Od-Hu; Sun, 17 Dec 2023 23:02:31 -0500
+Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rF4lJ-0000hy-Ou; Sun, 17 Dec 2023 22:57:51 -0500
-Received: by mail-qk1-x730.google.com with SMTP id
- af79cd13be357-77f957a5ac5so129449585a.3; 
- Sun, 17 Dec 2023 19:57:48 -0800 (PST)
+ id 1rF4pq-0001ib-2w; Sun, 17 Dec 2023 23:02:31 -0500
+Received: by mail-vk1-xa33.google.com with SMTP id
+ 71dfb90a1353d-4b6c3a37ddeso196527e0c.0; 
+ Sun, 17 Dec 2023 20:02:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702871868; x=1703476668; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702872148; x=1703476948; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2y9d+MCu2iNwj8qfDA/f4Nw3tEz5QnJLw9qz8CFKRc8=;
- b=FhXnEAHQMoOwiJQGgPYStr7tVy+xs9x+5+lO6dex4CPIbiYEDMP599BOUIS6NcHzdE
- P4pRGuYfy1WduAZ/RUxZz92U/OfhOw+eD33MTSX387UAPZR2m9tbNVDDucwmqkpoXNeF
- EGDORaArE0Lyl43T889/zM6WMN+lOHcYd/EEgqj1dWGvJ5coeRdsFxHiWaZvqqSKOgti
- PjQz3hg+44X1PS4/tsj0MBXryxeRWAzisV8q97lPCwHlaF5HS5UN/MqSZUSsYrTqLSZd
- SLxn7E7it4J4B+oRBkF06KJ04PfbbeVx606jnpUy8XVfh8QHhDucbCjmWXf7qH1Tjv54
- Wgmg==
+ bh=jvbarZLcf8+hdpbtuI2t6ImhljTfKcEURhaE3dBn6OI=;
+ b=ZRi0Y2cDP7TrTBUZ+cqldWf82b6+Ur8SJj/NzoHGyRsYv/Xr8mO5hSzxNN1eJoE9Wx
+ 45Mn4Bx/rAt5MeDgJBuJrlno5Jxhs3palGF3B4eXgYjg2zKXnT2wyM7Jgkln1j7OWzAc
+ exwGNNY/pg3lJHywwBkzx/00c2mPWwkbhcxaZOvmC9uXa9kdigUfR9y8AeYJoF0aNJo0
+ 9z1UCF+DtCtQy2OEV/xo0oFJ8YvVm0ahAlP9qq1XwoDq8zI962pGBDd8yfzXKiNg+7+7
+ FClWbySy3UnU9tAE/FP1wWEONaUelL0Hx/g/xrDgOF66rPHUkGtVo3xVq49DDxdLBTFL
+ ZPlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702871868; x=1703476668;
+ d=1e100.net; s=20230601; t=1702872148; x=1703476948;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2y9d+MCu2iNwj8qfDA/f4Nw3tEz5QnJLw9qz8CFKRc8=;
- b=hZ1Zus+JS0LlDRZB7ObqwHAtmnAKx9El43CkTpFXEysvkBIwV5K8yGkVeq+/Z/YBd1
- ijlB1eBMiPnAh1z7DJHnoEy5k6abGMuvluXW5xp0sXoneNW/3CbiAZkhfrOsxU7Hoa5g
- 5Cf/oiCulRgUBkHpFQnXkHhQQI7jChOBFlyymWpp+Ju0obme5Q9cJwIYMk7ISHNLjLxy
- th483XmOtpiuekpY7lWJ6EJ7zZiqufG78ykyJwzf4UJmxkaXTBnEVTCPMy/GB/irxQHh
- ICl21PSTgj6CUtNGC88IKx+lbeVnt1RAJmn5kTzfKOzr6esjiGBgChp7Ikl/FJU1bjJq
- BlNA==
-X-Gm-Message-State: AOJu0Ywrh+VRbSQ4O61jPSa3b1X+sPXB2DBwagY6/u/ztSzOdA/GAXS0
- 6U8uIjnv3idJHgH9dpIZDFRwWlkKckus93O9PWQ=
-X-Google-Smtp-Source: AGHT+IG4WUDqVQg/qcGXMi3anzl7dsK/EhcwsF4zIOvrSrPeKd1euu+8toyjn4OtPHS1lk6OyQhG95KZjzB2maXU0WM=
-X-Received: by 2002:a05:620a:c51:b0:77f:dc33:e522 with SMTP id
- u17-20020a05620a0c5100b0077fdc33e522mr1998849qki.37.1702871868236; Sun, 17
- Dec 2023 19:57:48 -0800 (PST)
+ bh=jvbarZLcf8+hdpbtuI2t6ImhljTfKcEURhaE3dBn6OI=;
+ b=qeL7SAW2NPVD4l5/s9clLidzxOw75RFUsOhFgy9hCn7S0aKTMj/z6F+5LsRrbflplI
+ jixh3XMEnh/MnDZ3nR40Z03WTOoNpPC3QFb58Om4CVQTbhBvq2yrSAYMVZJCw6fJy0WG
+ Ndp4Ifj02yM2p3ktRQYXJjluMSf/ll+FIv2crGSAuWSnKjviRBIK+Ms42v6JOebhumot
+ 69FvI9c+hAIE+PWmCLptc3ckISIGK80HmVX45TiI/QrLA58VUsCU3cSgej0SMnPm9tb2
+ wjCV7qAihIDMV1I4bumpnM7fH00n0Pp3OeAjvitC9maSJRBUx7vTUW4Poa0Owl+kUOxn
+ 3n1A==
+X-Gm-Message-State: AOJu0YzQl5U2QpUYJbRJQ5mriz1YJuS7yu/d7I26HSs7trayVl+D43Yg
+ pEoG2vrCeHCu54mn24vA5tR1Qr6MrxolxvA8Sss=
+X-Google-Smtp-Source: AGHT+IE2K/ywxH1dRQAeDXX+FlsN/t80BgvzXrEX+5NxrwPaqNJwqNbV1c1UAbhuV9IC+zZIxZG7t6io8hYxmyVq7s0=
+X-Received: by 2002:a05:6122:2519:b0:4b6:cb66:778c with SMTP id
+ cl25-20020a056122251900b004b6cb66778cmr161888vkb.16.1702872148510; Sun, 17
+ Dec 2023 20:02:28 -0800 (PST)
 MIME-Version: 1.0
-References: <170223510627.13579.3191933474458037037-0@git.sr.ht>
- <170223510627.13579.3191933474458037037-3@git.sr.ht>
-In-Reply-To: <170223510627.13579.3191933474458037037-3@git.sr.ht>
+References: <20231122053251.440723-1-ethan84@andestech.com>
+ <20231122053251.440723-2-ethan84@andestech.com>
+In-Reply-To: <20231122053251.440723-2-ethan84@andestech.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 18 Dec 2023 13:57:22 +1000
-Message-ID: <CAKmqyKOZbYaw9jE+audijuL-cuHhgNh9T3s1rB94DP6CoahZ8Q@mail.gmail.com>
-Subject: Re: [PATCH qemu 3/3] hw/arm: Connect STM32L4xx SYSCFG to STM32L4x5 SoC
-To: "~inesvarhol" <inesvarhol@proton.me>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, alistair@alistair23.me, 
- philmd@linaro.org, peter.maydell@linaro.org, ines.varhol@telecom-paris.fr, 
- arnaud.minier@telecom-paris.fr
+Date: Mon, 18 Dec 2023 14:02:02 +1000
+Message-ID: <CAKmqyKMgxiW5ZK=OmGiDEpTXJN=jyFnzxMzduxkD9Dvn1WDM3w@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] hw/core: Add config stream
+To: Ethan Chen <ethan84@andestech.com>
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, edgar.iglesias@gmail.com, 
+ richard.henderson@linaro.org, pbonzini@redhat.com, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, in.meng@windriver.com, liweiwei@iscas.ac.cn, 
+ dbarboza@ventanamicro.com, hiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, 
+ peterx@redhat.com, david@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::730;
- envelope-from=alistair23@gmail.com; helo=mail-qk1-x730.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a33;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa33.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -88,131 +90,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 11, 2023 at 5:06=E2=80=AFAM ~inesvarhol <inesvarhol@git.sr.ht> =
-wrote:
+On Wed, Nov 22, 2023 at 3:36=E2=80=AFPM Ethan Chen via <qemu-devel@nongnu.o=
+rg> wrote:
 >
-> From: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
->
-> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> ---
->  hw/arm/Kconfig                 |  1 +
->  hw/arm/stm32l4x5_soc.c         | 24 ++++++++++++++++--------
->  include/hw/arm/stm32l4x5_soc.h |  2 ++
->  3 files changed, 19 insertions(+), 8 deletions(-)
->
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index 9c9d5bb541..ea77977d4b 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -458,6 +458,7 @@ config STM32L4X5_SOC
->      bool
->      select ARM_V7M
->      select OR_IRQ
-> +    select STM32L4XX_SYSCFG
->      select STM32L4X5_EXTI
->
->  config XLNX_ZYNQMP_ARM
-> diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-> index cf786eac1d..9b45a9e606 100644
-> --- a/hw/arm/stm32l4x5_soc.c
-> +++ b/hw/arm/stm32l4x5_soc.c
-> @@ -46,6 +46,7 @@
->  #define SRAM2_SIZE (32 * KiB)
->
->  #define EXTI_ADDR 0x40010400
-> +#define SYSCFG_ADDR 0x40010000
->
->  #define NUM_EXTI_IRQ 40
->  /* Match exti line connections with their CPU IRQ number */
-> @@ -90,6 +91,8 @@ static void stm32l4x5_soc_initfn(Object *obj)
->
->      object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
->
-> +    object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4XX_SY=
-SCFG);
-> +
->      s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0)=
-;
->      s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0)=
-;
->  }
-> @@ -167,6 +170,15 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
-oc, Error **errp)
->          return;
->      }
->
-> +    /* System configuration controller */
-> +    dev =3D DEVICE(&s->syscfg);
-> +    if (!sysbus_realize(SYS_BUS_DEVICE(&s->syscfg), errp)) {
-> +        return;
-> +    }
-> +    busdev =3D SYS_BUS_DEVICE(dev);
-> +    sysbus_mmio_map(busdev, 0, SYSCFG_ADDR);
+> Make other device can use /hw/core/stream.c by select this config.
 
-What about the SYSCFG in GPIOs?
+Ensure other devices can use /hw/core/stream.c by selecting this config.
 
-You don't have to connect them now, but it would be worth mentioning
-in the commit message that they aren't connected and why
+>
+> Signed-off-by: Ethan Chen <ethan84@andestech.com>
+
+Otherwise:
+
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
+> ---
+>  hw/Kconfig          | 1 +
+>  hw/core/Kconfig     | 3 +++
+>  hw/core/meson.build | 2 +-
+>  3 files changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/Kconfig b/hw/Kconfig
+> index 9ca7b38c31..e4d153dce7 100644
+> --- a/hw/Kconfig
+> +++ b/hw/Kconfig
+> @@ -79,6 +79,7 @@ config XILINX
+>  config XILINX_AXI
+>      bool
+>      select PTIMER # for hw/dma/xilinx_axidma.c
+> +    select STREAM
+>
+>  config XLNX_ZYNQMP
+>      bool
+> diff --git a/hw/core/Kconfig b/hw/core/Kconfig
+> index 9397503656..e89ffa728b 100644
+> --- a/hw/core/Kconfig
+> +++ b/hw/core/Kconfig
+> @@ -27,3 +27,6 @@ config REGISTER
+>
+>  config SPLIT_IRQ
+>      bool
 > +
-> +    /* EXTI device */
->      dev =3D DEVICE(&s->exti);
->      if (!sysbus_realize(SYS_BUS_DEVICE(&s->exti), errp)) {
->          return;
-> @@ -178,13 +190,10 @@ static void stm32l4x5_soc_realize(DeviceState *dev_=
-soc, Error **errp)
->          sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[=
-i]));
->      }
+> +config STREAM
+> +    bool
+> diff --git a/hw/core/meson.build b/hw/core/meson.build
+> index 67dad04de5..0893917b12 100644
+> --- a/hw/core/meson.build
+> +++ b/hw/core/meson.build
+> @@ -32,8 +32,8 @@ system_ss.add(when: 'CONFIG_PLATFORM_BUS', if_true: fil=
+es('platform-bus.c'))
+>  system_ss.add(when: 'CONFIG_PTIMER', if_true: files('ptimer.c'))
+>  system_ss.add(when: 'CONFIG_REGISTER', if_true: files('register.c'))
+>  system_ss.add(when: 'CONFIG_SPLIT_IRQ', if_true: files('split-irq.c'))
+> -system_ss.add(when: 'CONFIG_XILINX_AXI', if_true: files('stream.c'))
+>  system_ss.add(when: 'CONFIG_PLATFORM_BUS', if_true: files('sysbus-fdt.c'=
+))
+> +system_ss.add(when: 'CONFIG_STREAM', if_true: files('stream.c'))
 >
-> -    /*
-> -     * Uncomment when Syscfg is implemented
-> -     * for (i =3D 0; i < 16; i++) {
-> -     *     qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
-> -     *                           qdev_get_gpio_in(dev, i));
-> -     * }
-> -     */
-> +    for (i =3D 0; i < 16; i++) {
-> +        qdev_connect_gpio_out(DEVICE(&s->syscfg), i,
-> +                              qdev_get_gpio_in(dev, i));
-> +    }
->
->      /* APB1 BUS */
->      create_unimplemented_device("TIM2",      0x40000000, 0x400);
-> @@ -223,7 +232,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_so=
-c, Error **errp)
->      /* RESERVED:    0x40009800, 0x6800 */
->
->      /* APB2 BUS */
-> -    create_unimplemented_device("SYSCFG",    0x40010000, 0x30);
->      create_unimplemented_device("VREFBUF",   0x40010030, 0x1D0);
->      create_unimplemented_device("COMP",      0x40010200, 0x200);
->      /* RESERVED:    0x40010800, 0x1400 */
-> diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_so=
-c.h
-> index ac47158596..5ff757f15b 100644
-> --- a/include/hw/arm/stm32l4x5_soc.h
-> +++ b/include/hw/arm/stm32l4x5_soc.h
-> @@ -37,6 +37,7 @@
->  #include "qemu/units.h"
->  #include "hw/qdev-core.h"
->  #include "hw/arm/armv7m.h"
-> +#include "hw/misc/stm32l4xx_syscfg.h"
->  #include "hw/misc/stm32l4x5_exti.h"
->  #include "qom/object.h"
->
-> @@ -52,6 +53,7 @@ struct Stm32l4x5SocState {
->      ARMv7MState armv7m;
->
->      Stm32l4x5ExtiState exti;
-> +    STM32L4xxSyscfgState syscfg;
->
->      MemoryRegion sram1;
->      MemoryRegion sram2;
+>  system_ss.add(files(
+>    'cpu-sysemu.c',
 > --
-> 2.38.5
+> 2.34.1
+>
 >
 
