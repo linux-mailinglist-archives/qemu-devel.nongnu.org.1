@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33C98169A4
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 10:17:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC79816996
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 10:16:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rF9hQ-0000vq-Lj; Mon, 18 Dec 2023 04:14:08 -0500
+	id 1rF9hR-0000wk-F7; Mon, 18 Dec 2023 04:14:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rF9hO-0000v5-48
+ id 1rF9hO-0000vE-H6
  for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:14:06 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rF9hL-0007TP-PO
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:14:05 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1rF9hL-0007TX-0T
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:14:06 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxVPBUDYBlJf4BAA--.10664S3;
- Mon, 18 Dec 2023 17:13:56 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Ax2uhVDYBlKP4BAA--.10525S3;
+ Mon, 18 Dec 2023 17:13:57 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxXeFRDYBlVfMJAA--.47541S5; 
- Mon, 18 Dec 2023 17:13:55 +0800 (CST)
+ AQAAf8CxXeFRDYBlVfMJAA--.47541S6; 
+ Mon, 18 Dec 2023 17:13:56 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, peter.maydell@linaro.org,
  maobibo@loongson.cn
-Subject: [PATCH v2 03/17] hw/loongarch: Add init_cmdline
-Date: Mon, 18 Dec 2023 17:00:45 +0800
-Message-Id: <20231218090059.2678224-4-gaosong@loongson.cn>
+Subject: [PATCH v2 04/17] hw/loongarch: Add slave cpu boot_code
+Date: Mon, 18 Dec 2023 17:00:46 +0800
+Message-Id: <20231218090059.2678224-5-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20231218090059.2678224-1-gaosong@loongson.cn>
 References: <20231218090059.2678224-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxXeFRDYBlVfMJAA--.47541S5
+X-CM-TRANSID: AQAAf8CxXeFRDYBlVfMJAA--.47541S6
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,94 +63,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add init_cmline and set boot_info->a0, a1
-
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/boot.c         | 21 +++++++++++++++++++++
- include/hw/loongarch/virt.h |  2 ++
- target/loongarch/cpu.h      |  2 ++
- 3 files changed, 25 insertions(+)
+ hw/loongarch/boot.c | 65 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 64 insertions(+), 1 deletion(-)
 
 diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index 2be6dfb037..4bfe24274a 100644
+index 4bfe24274a..076e795714 100644
 --- a/hw/loongarch/boot.c
 +++ b/hw/loongarch/boot.c
-@@ -14,6 +14,20 @@
+@@ -14,6 +14,62 @@
  #include "qemu/error-report.h"
  #include "sysemu/reset.h"
  
-+static int init_cmdline(struct loongarch_boot_info *info)
-+{
-+    hwaddr cmdline_addr;
-+    cmdline_addr = 0xff00000ULL;
++enum {
++    SLAVE_BOOT,
++};
 +
-+    pstrcpy_targphys("cmdline", 0xff00000ULL,
-+                     COMMAND_LINE_SIZE, info->kernel_cmdline);
++static const MemMapEntry loader_rommap[] = {
++    [SLAVE_BOOT] = {0xf100000, 0x10000},
++};
 +
-+    info->a0 = 1;
-+    info->a1 = cmdline_addr;
++static unsigned int slave_boot_code[] = {
++                  /* Configure reset ebase.         */
++    0x0400302c,   /* csrwr      $r12,0xc            */
 +
-+    return 0;
-+}
++                  /* Disable interrupt.             */
++    0x0380100c,   /* ori        $r12,$r0,0x4        */
++    0x04000180,   /* csrxchg    $r0,$r12,0x0        */
 +
- static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
++                  /* Clear mailbox.                 */
++    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
++    0x038081ad,   /* ori        $r13,$r13,0x20      */
++    0x06481da0,   /* iocsrwr.d  $r0,$r13            */
++
++                  /* Enable IPI interrupt.          */
++    0x1400002c,   /* lu12i.w    $r12,1(0x1)         */
++    0x0400118c,   /* csrxchg    $r12,$r12,0x4       */
++    0x02fffc0c,   /* addi.d     $r12,$r0,-1(0xfff)  */
++    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
++    0x038011ad,   /* ori        $r13,$r13,0x4       */
++    0x064819ac,   /* iocsrwr.w  $r12,$r13           */
++    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
++    0x038081ad,   /* ori        $r13,$r13,0x20      */
++
++                  /* Wait for wakeup  <.L11>:       */
++    0x06488000,   /* idle       0x0                 */
++    0x03400000,   /* andi       $r0,$r0,0x0         */
++    0x064809ac,   /* iocsrrd.w  $r12,$r13           */
++    0x43fff59f,   /* beqz       $r12,-12(0x7ffff4) # 48 <.L11> */
++
++                  /* Read and clear IPI interrupt.  */
++    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
++    0x064809ac,   /* iocsrrd.w  $r12,$r13           */
++    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
++    0x038031ad,   /* ori        $r13,$r13,0xc       */
++    0x064819ac,   /* iocsrwr.w  $r12,$r13           */
++
++                  /* Disable  IPI interrupt.        */
++    0x1400002c,   /* lu12i.w    $r12,1(0x1)         */
++    0x04001180,   /* csrxchg    $r0,$r12,0x4        */
++
++                  /* Read mail buf and jump to specified entry */
++    0x1400002d,   /* lu12i.w    $r13,1(0x1)         */
++    0x038081ad,   /* ori        $r13,$r13,0x20      */
++    0x06480dac,   /* iocsrrd.d  $r12,$r13           */
++    0x00150181,   /* move       $r1,$r12            */
++    0x4c000020,   /* jirl       $r0,$r1,0           */
++};
++
+ static int init_cmdline(struct loongarch_boot_info *info)
  {
-     return addr & MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
-@@ -63,6 +77,8 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
+     hwaddr cmdline_addr;
+@@ -145,10 +201,17 @@ static void loongarch_direct_kernel_boot(LoongArchMachineState *lams,
          exit(1);
      }
  
-+    init_cmdline(info);
++    rom_add_blob_fixed("slave_boot", slave_boot_code, sizeof(slave_boot_code),
++                       loader_rommap[SLAVE_BOOT].base);
 +
-     return kernel_entry;
- }
- 
-@@ -73,6 +89,10 @@ static void reset_load_elf(void *opaque)
- 
-     cpu_reset(CPU(cpu));
-     if (env->load_elf) {
-+	if (cpu == LOONGARCH_CPU(first_cpu)) {
-+            env->gpr[4] = env->boot_info->a0;
-+            env->gpr[5] = env->boot_info->a1;
-+        }
-         cpu_set_pc(CPU(cpu), env->elf_address);
-     }
- }
-@@ -129,6 +149,7 @@ static void loongarch_direct_kernel_boot(LoongArchMachineState *lams,
+     for (i = 0; i < machine->smp.cpus; i++) {
          lacpu = LOONGARCH_CPU(qemu_get_cpu(i));
          lacpu->env.load_elf = true;
-         lacpu->env.elf_address = kernel_addr;
-+        lacpu->env.boot_info = info;
+-        lacpu->env.elf_address = kernel_addr;
++        if (i == 0) {
++            lacpu->env.elf_address = kernel_addr;
++        } else {
++            lacpu->env.elf_address = loader_rommap[SLAVE_BOOT].base;
++        }
+         lacpu->env.boot_info = info;
      }
  }
- 
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index e4126dd0e7..d21de2cef4 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -31,6 +31,8 @@
- #define VIRT_GED_MEM_ADDR       (VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN)
- #define VIRT_GED_REG_ADDR       (VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN)
- 
-+#define COMMAND_LINE_SIZE       512
-+
- struct LoongArchMachineState {
-     /*< private >*/
-     MachineState parent_obj;
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 00d1fba597..c7c695138e 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -362,6 +362,8 @@ typedef struct CPUArchState {
-     uint64_t elf_address;
-     /* Store ipistate to access from this struct */
-     DeviceState *ipistate;
-+
-+    struct loongarch_boot_info *boot_info;
- #endif
- } CPULoongArchState;
- 
 -- 
 2.25.1
 
