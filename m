@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BE38177C2
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 17:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 891958177E7
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 17:50:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFGhY-00074n-3H; Mon, 18 Dec 2023 11:42:44 -0500
+	id 1rFGnn-0000vz-0J; Mon, 18 Dec 2023 11:49:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFGhV-0006xO-ER
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:42:41 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1rFGnk-0000vQ-K9
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:49:08 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFGhT-00021s-LD
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:42:40 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-54cb4fa667bso4061807a12.3
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 08:42:39 -0800 (PST)
+ id 1rFGni-0002yv-7S
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:49:08 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-553032f17cfso2526270a12.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 08:49:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702917758; x=1703522558; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702918144; x=1703522944; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kIpi/SFUK7LkV+dbaKMGjtF8g+sGAwH5XPmGl60jN5U=;
- b=RKXyZgJ15QXfbVx8KJTj7w+UH29lhM5yy5Y0zQweTNGqW6UeWsGvN/x4yeiT78ZFJ+
- IdcnXXbzzjUGeudITKpsbI2mrgLIe92pBcE0V3pnCG9YbT8F2BJc+z//C5JPPYbkC558
- V3j8UgyFR9ulQNiG5s8PKTqe6WTZ96eKH/4bvk9fpGwjYVn0JrVl69QtSd1cXfhvH2b7
- 5LgMmUs+Phbe6yqyuAZs/cGgbQ4+/A7Hm7rr09u7gZp70M8txJVrY1PA8BIhhgPGj9V+
- RK80HHJ/1bEr/mU7ju+oetm91PmBd7JSTFsQFhr0oeZicRjS2VIOTNxJz5YagSPcCWIG
- hj+w==
+ bh=pb/IYZRuRvxWme5LBdMifCbl4VpN4Dh2bV6K0o8fkrk=;
+ b=h9czcw7cWn8Ka5kS8TAnOV5BCJXSxzxed/fLh2fCQMwi/pZZxSpe1DXeLspw9Uld4H
+ jl60gIq09jZFV2TxLiRPB7yEwcNHLEwxhj3XHH0e6To7XAokticrYefC0cHcAuUFwTDq
+ NBGg2YcvwoYsdY2xfur58Dn/a8CWQq5usUVElgdzXLoB/C0Ei7lwMFvVEt8RMWDd31WX
+ dbEam+ybwi6eEVLXMKbvFDQS6uqb6wrcMuEKaNDo4TfD+u4JOnX8q4OwWX7HRg1yuA5b
+ /yygogPXK14pOwGMEyFwAD/otPsd2EHhuiH+bVvWPxHCvueXIs0nmhehdWq6A8jYF4Fb
+ SV9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702917758; x=1703522558;
+ d=1e100.net; s=20230601; t=1702918144; x=1703522944;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=kIpi/SFUK7LkV+dbaKMGjtF8g+sGAwH5XPmGl60jN5U=;
- b=QNsxnKaxagXekVQgMEjfZ6B0Q6VCGzgQsnFjdnm7M8cB3gVdWcpMUdBb9uesw8l9I1
- 3x6ik7uMsIC6bRuA4oBaEte7cFTKxSOq0A8RjPhGHMKMhYeabBf5yeOhn3c4J7niLPgK
- rsJ2dEGZGqZCnHPMEPu42JqfmsVrsmvmLQNt32W9PWkyYyS+Z5Hpnpt331+0TMeIOz/K
- 74QKIDfIhcDdeS6NHjNSpV36MLrgiqraPJNAXePjPuDVPyMAkwiur43JIX1K68GXXNxp
- 0YB6MWHSc6k+VaBOWSkF3zhfeNDcX8fB8jDc6wwlW0NnsFTD5T9eeHZt1pl/8OMXlU3X
- 4ixQ==
-X-Gm-Message-State: AOJu0Yzp0rqk85MPTCR8pw0mZ5C+aX02xr9QmMKThOXM0YmKrtoYlggr
- stPN+FuEX0BlVwI9/ZTSoTQFelYnY7KDuED2964f+A==
-X-Google-Smtp-Source: AGHT+IEMKQfSfZULiGLs/SrZ3/PAZgydECSTMXztl7v1EYvWXn2b8CBsMmPYZvCwUPuAAggrR/t1UadUEvZkvlfnymQ=
-X-Received: by 2002:a50:8d15:0:b0:553:55e8:98eb with SMTP id
- s21-20020a508d15000000b0055355e898ebmr999145eds.34.1702917758080; Mon, 18 Dec
- 2023 08:42:38 -0800 (PST)
+ bh=pb/IYZRuRvxWme5LBdMifCbl4VpN4Dh2bV6K0o8fkrk=;
+ b=iHXju36s0SqC/rcspohJy/CNaSbtElgFmbaMO1x088qugjqQ/2XJ1+WM4Bj7LFFsqa
+ sxeQcUGmFM1fKTfQR7Sk0ntnhypE3IU3DsgnB8g/qE0eRc+qOTCsGW8b7GB7cuMH/5qZ
+ mwVluMbeOhEmxl1mIhE3wQmJNAf8RNPBN3mF/E58c1RxityICNuV3pDO7GdjVBzzaIIS
+ xc/r5iA13SlM6kr7fubplptHrH9R3CNasgDvSMp2M0ODt5RvFsq2yfseAJMRIs5xxMEN
+ rwwoE/mZgSnjyFvQTvmHv87IfBaK/5yM55C+oH42ZOqjLDrwxWzan3zO51N4XvMe7FCN
+ BQaw==
+X-Gm-Message-State: AOJu0YzzZrBVWePxvU6WTZOsvX1DOtynw5slri2B+2ldZXuz5WrSGM/8
+ jI3HZp4COGVzY1D40ULAscybZR0lsVBZccMT6y8sfw==
+X-Google-Smtp-Source: AGHT+IGC0DHDVrEljYl5kCTy0XdEH/X06xVYxhuh1W/ZgcdBg++ckNokkzCYGI6pcU6EENN7eZ9Kz1qKRVS6CivKYTM=
+X-Received: by 2002:a50:d51c:0:b0:553:4ec4:6980 with SMTP id
+ u28-20020a50d51c000000b005534ec46980mr1036199edi.80.1702918143848; Mon, 18
+ Dec 2023 08:49:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
- <20231208023145.1385775-11-sergey.kambalin@auriga.com>
-In-Reply-To: <20231208023145.1385775-11-sergey.kambalin@auriga.com>
+References: <20231204002619.1367044-1-sergey.kambalin@auriga.com>
+ <20231204002619.1367044-12-sergey.kambalin@auriga.com>
+In-Reply-To: <20231204002619.1367044-12-sergey.kambalin@auriga.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Dec 2023 16:42:27 +0000
-Message-ID: <CAFEAcA_G-ZFnuZxrXwUEp1pViNHbCN1y8jz9sF12NEsZzYJEmQ@mail.gmail.com>
-Subject: Re: [PATCH v4 10/45] Add BCM2838 checkpoint support
+Date: Mon, 18 Dec 2023 16:48:52 +0000
+Message-ID: <CAFEAcA9V+U_hQ+U_8MqQfG0jEeupBmMFvEAOBygX5haGJ+tH5Q@mail.gmail.com>
+Subject: Re: [PATCH v3 11/45] Introduce Raspberry PI 4 machine
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,31 +86,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 02:33, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Mon, 4 Dec 2023 at 00:27, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
 > Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 > ---
->  hw/arm/bcm2838_peripherals.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/arm/bcm2838_peripherals.c b/hw/arm/bcm2838_peripherals.c
-> index c147b6e453..196fb890a2 100644
-> --- a/hw/arm/bcm2838_peripherals.c
-> +++ b/hw/arm/bcm2838_peripherals.c
-> @@ -22,7 +22,7 @@ static void bcm2838_peripherals_init(Object *obj)
->  {
->      BCM2838PeripheralState *s = BCM2838_PERIPHERALS(obj);
->      BCM2838PeripheralClass *bc = BCM2838_PERIPHERALS_GET_CLASS(obj);
-> -    RaspiPeripheralBaseState *s_base = RASPI_PERIPHERALS_BASE(obj);
-> +    BCMSocPeripheralBaseState *s_base = BCM_SOC_PERIPHERALS_BASE(obj);
->
->      /* Lower memory region for peripheral devices (exported to the Soc) */
->      memory_region_init(&s->peri_low_mr, obj, "bcm2838-peripherals",
-> --
 
-I don't understand the commit message here, and the contents
-of the patch look like something that maybe belongs in a
-different patch?
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
