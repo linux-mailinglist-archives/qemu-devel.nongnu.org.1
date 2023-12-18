@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06AD0816C68
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CDF816C7F
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:39:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFBs8-0006dk-Ok; Mon, 18 Dec 2023 06:33:20 -0500
+	id 1rFBs8-0006e2-Tl; Mon, 18 Dec 2023 06:33:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFBs5-0006av-75
+ id 1rFBs5-0006bB-Hv
  for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:17 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFBrz-0003I4-UK
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:16 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3364c9ff8e1so1715006f8f.0
+ id 1rFBs0-0003IE-81
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:17 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3366af69d4bso374035f8f.0
  for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 03:33:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702899190; x=1703503990; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702899191; x=1703503991; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vlcd/qbLbXETQ3/U+1GQumNLwA1HU2GT417Tgq9g9lY=;
- b=bN9kbCaa1/aBucwLBwkKJj439Dbgg1UeBBPnY19Gc/3QZfqOTDpOGStT60SOg6U9o0
- FHOtTt1doNghavW6KSpb+wTsnN+hcTY+C7IL2P9e24RfPzD+U8a22cGtR+hecz4oB+uq
- ny71nJXzQ64OmnfzgUMj1HsCIE9l7X84I0tBtWz4ZICga/ilXYoPHdHQS8PFkzntWDL6
- Z63Ui1fLjgUvHUOr5iztOb5HKS/0EIdlFhYGl4QEjwdGKTtmoU7hg3wWFHcOosk80lED
- B+rb1r44mbKTmeJuKb0cPTaMTzHsJYjXvyyThCf8XuIzQs1Hi073tXj0KbhnlZKvz2CC
- JaXQ==
+ :reply-to; bh=rIyXbTygsThOVzP4jBkF7Rj3QO0R5JlePmQL1JlO97A=;
+ b=IYkHe442q5CBR70lIuFgjBrYM3Eyrk6VYnWQWYo/+TrH04Ur/fLevm/qM+/Kgc51We
+ Tbm71kJHHw1wx5PtVpPDHykPpKVQEv2WRI0K/QeP7ShJUl7UJycv2doNtrawvEK+ALxO
+ TlemXQopmoAeKVSjQTVZqGCkS5oq5DqscLcK7+SdVsqZ6+DGK24Kl/n0kSznLisGDdqx
+ 0LEQSINn10sSs/mtuCryZX/+xZ2Th5uSBgw6uL3z3S5yrNw2oosoyYp/fnRJIjptta02
+ N+IRUZtEq52eZ/OvI10688pVcohIRDYGclpV210X92uEN//imOZcrRqxkqPDKWPeeNRk
+ WzPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702899190; x=1703503990;
+ d=1e100.net; s=20230601; t=1702899191; x=1703503991;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vlcd/qbLbXETQ3/U+1GQumNLwA1HU2GT417Tgq9g9lY=;
- b=vmkNPFOH5wyiZDKYwbkXNrbGzgghjstrCZ8CIv46dJ7RpZFs1IBusahCGCZ0HIYjhn
- GCy6hgTBS+JYQ0I73SA6VjdULyaQ0ZfnSs5IsbA7AWdVieasHVwXGygw5ZeDuyDit6+O
- q89KAVv8yCC+z6dvpDY/cLusO/2k74ESJrVmed72her3qiYyZDUde8HzKX8aRonfWM0L
- EHAP0vNWIE0Wxx9iuzBkPgpqNxBzcuKQiqyU9SyIXllvCnF3v0b6bQW+HFmSLSIpoZOB
- rTAL9FgCV6WQtwANZO4lw+Aa1L+eZacBktB8n9i1rpG6BUPwr8igtuefp1H/z951z/eZ
- z4+g==
-X-Gm-Message-State: AOJu0YzbDQFPbM46NcMkIJ8gpPZdtRN6uhmVpuNpySmMYD6VXEDkWOJE
- k7/OGRISvU8/OLak8PruSPeMwZ2jcpFhfKkAs0Y=
-X-Google-Smtp-Source: AGHT+IHoe3usxLt0sjiQpNKG64xAQ7Rc7jXrJVyHh9EYzcb8t+Nzge8ejKdfyDWETVSt2zOhWHZ5Pw==
-X-Received: by 2002:adf:ee0e:0:b0:336:5b5e:b586 with SMTP id
- y14-20020adfee0e000000b003365b5eb586mr2292908wrn.28.1702899190540; 
+ bh=rIyXbTygsThOVzP4jBkF7Rj3QO0R5JlePmQL1JlO97A=;
+ b=JkEM1BtnUSZW68/dCRkZu5AbVV1UXo4d1DCKa2zFt5wqogfWfipJD8hkgnMAAMQv3Q
+ zqtnHoAaONg+Glc6FQObrQNH3rVY3XRo//kpHkJW+L5IWiSzD0bultOM/5ArY/uuZF0o
+ c5C5Yl0N23CxJWrToqYnJ6mUadUtHK/hVvhmPM1V+5EAixBstRWDXfXtxRa3DIBX0ZKf
+ 6FdXdONtr5qfpSKKSJT0rLXvJoBfvUdvFyRQd5i5PSr71L6zvo+UZCiyiObwdMK6eWS7
+ GTOL+io9YB8eUuBIWAr1s9izOAsSwzCSP9RYEfzfnLPHGw5+VTCcbVLLd2dUjUh8ipiE
+ PUOg==
+X-Gm-Message-State: AOJu0Yy3d/PjAp5zr9K76e5veKV5N0vK0WoaYmG570OtRi2OhIpHqmqb
+ rY5wk11zgmQhU6Ec5Ik5o/1G72CFbxk0Oae94g0=
+X-Google-Smtp-Source: AGHT+IHrL3DuMNeM6+NhlpvRAEwOiGe3NOI6z9r9YAdenHv7dWSRcWzWhWbFnWrEc6EkL2hGggXEng==
+X-Received: by 2002:a05:6000:889:b0:336:96d:475c with SMTP id
+ cs9-20020a056000088900b00336096d475cmr8115437wrb.5.1702899190943; 
  Mon, 18 Dec 2023 03:33:10 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,16 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 08/35] target/arm: Allow use of upper 32 bits of TBFLAG_A64
-Date: Mon, 18 Dec 2023 11:32:38 +0000
-Message-Id: <20231218113305.2511480-9-peter.maydell@linaro.org>
+Subject: [PATCH 09/35] target/arm: Record correct opcode fields in cpreg for
+ E2H aliases
+Date: Mon, 18 Dec 2023 11:32:39 +0000
+Message-Id: <20231218113305.2511480-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231218113305.2511480-1-peter.maydell@linaro.org>
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,47 +91,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TBFLAG_A64 TB flag bits go in flags2, which for AArch64 guests
-we know is 64 bits. However at the moment we use FIELD_EX32() and
-FIELD_DP32() to read and write these bits, which only works for
-bits 0 to 31. Since we're about to add a flag that uses bit 32,
-switch to FIELD_EX64() and FIELD_DP64() so that this will work.
+For FEAT_VHE, we define a set of register aliases, so that for instance:
+ * the SCTLR_EL1 either accesses the real SCTLR_EL1, or (if E2H is 1)
+   SCTLR_EL2
+ * a new SCTLR_EL12 register accesses SCTLR_EL1 if E2H is 1
+
+However when we create the 'new_reg' cpreg struct for the SCTLR_EL12
+register, we duplicate the information in the SCTLR_EL1 cpreg, which
+means the opcode fields are those of SCTLR_EL1, not SCTLR_EL12.  This
+is a problem for code which looks at the cpreg opcode fields to
+determine behaviour (e.g.  in access_check_cp_reg()). In practice
+the current checks we do there don't intersect with the *_EL12
+registers, but for FEAT_NV this will become a problem.
+
+Write the correct values from the encoding into the new_reg struct.
+This restores the invariant that the cpreg that you get back
+from the hashtable has opcode fields that match the key you used
+to retrieve it.
+
+When we call the readfn or writefn for the target register, we
+pass it the cpreg struct for that target register, not the one
+for the alias, in case the readfn/writefn want to look at the
+opcode fields to determine behaviour. This means we need to
+interpose custom read/writefns for the e12 aliases.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.h | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ target/arm/helper.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 167b3759ac9..91157db85ae 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3240,12 +3240,14 @@ FIELD(TBFLAG_A64, NAA, 30, 1)
- FIELD(TBFLAG_A64, ATA0, 31, 1)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index f1c7fbf319c..c6f069b74cd 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -6506,6 +6506,19 @@ static void el2_e2h_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     writefn(env, ri, value);
+ }
  
- /*
-- * Helpers for using the above.
-+ * Helpers for using the above. Note that only the A64 accessors use
-+ * FIELD_DP64() and FIELD_EX64(), because in the other cases the flags
-+ * word either is or might be 32 bits only.
-  */
- #define DP_TBFLAG_ANY(DST, WHICH, VAL) \
-     (DST.flags = FIELD_DP32(DST.flags, TBFLAG_ANY, WHICH, VAL))
- #define DP_TBFLAG_A64(DST, WHICH, VAL) \
--    (DST.flags2 = FIELD_DP32(DST.flags2, TBFLAG_A64, WHICH, VAL))
-+    (DST.flags2 = FIELD_DP64(DST.flags2, TBFLAG_A64, WHICH, VAL))
- #define DP_TBFLAG_A32(DST, WHICH, VAL) \
-     (DST.flags2 = FIELD_DP32(DST.flags2, TBFLAG_A32, WHICH, VAL))
- #define DP_TBFLAG_M32(DST, WHICH, VAL) \
-@@ -3254,7 +3256,7 @@ FIELD(TBFLAG_A64, ATA0, 31, 1)
-     (DST.flags2 = FIELD_DP32(DST.flags2, TBFLAG_AM32, WHICH, VAL))
++static uint64_t el2_e2h_e12_read(CPUARMState *env, const ARMCPRegInfo *ri)
++{
++    /* Pass the EL1 register accessor its ri, not the EL12 alias ri */
++    return ri->orig_readfn(env, ri->opaque);
++}
++
++static void el2_e2h_e12_write(CPUARMState *env, const ARMCPRegInfo *ri,
++                              uint64_t value)
++{
++    /* Pass the EL1 register accessor its ri, not the EL12 alias ri */
++    return ri->orig_writefn(env, ri->opaque, value);
++}
++
+ static void define_arm_vh_e2h_redirects_aliases(ARMCPU *cpu)
+ {
+     struct E2HAlias {
+@@ -6605,6 +6618,28 @@ static void define_arm_vh_e2h_redirects_aliases(ARMCPU *cpu)
+         new_reg->type |= ARM_CP_ALIAS;
+         /* Remove PL1/PL0 access, leaving PL2/PL3 R/W in place.  */
+         new_reg->access &= PL2_RW | PL3_RW;
++        /* The new_reg op fields are as per new_key, not the target reg */
++        new_reg->crn = (a->new_key & CP_REG_ARM64_SYSREG_CRN_MASK)
++            >> CP_REG_ARM64_SYSREG_CRN_SHIFT;
++        new_reg->crm = (a->new_key & CP_REG_ARM64_SYSREG_CRM_MASK)
++            >> CP_REG_ARM64_SYSREG_CRM_SHIFT;
++        new_reg->opc0 = (a->new_key & CP_REG_ARM64_SYSREG_OP0_MASK)
++            >> CP_REG_ARM64_SYSREG_OP0_SHIFT;
++        new_reg->opc1 = (a->new_key & CP_REG_ARM64_SYSREG_OP1_MASK)
++            >> CP_REG_ARM64_SYSREG_OP1_SHIFT;
++        new_reg->opc2 = (a->new_key & CP_REG_ARM64_SYSREG_OP2_MASK)
++            >> CP_REG_ARM64_SYSREG_OP2_SHIFT;
++        new_reg->opaque = src_reg;
++        new_reg->orig_readfn = src_reg->readfn ?: raw_read;
++        new_reg->orig_writefn = src_reg->writefn ?: raw_write;
++        if (!new_reg->raw_readfn) {
++            new_reg->raw_readfn = raw_read;
++        }
++        if (!new_reg->raw_writefn) {
++            new_reg->raw_writefn = raw_write;
++        }
++        new_reg->readfn = el2_e2h_e12_read;
++        new_reg->writefn = el2_e2h_e12_write;
  
- #define EX_TBFLAG_ANY(IN, WHICH)   FIELD_EX32(IN.flags, TBFLAG_ANY, WHICH)
--#define EX_TBFLAG_A64(IN, WHICH)   FIELD_EX32(IN.flags2, TBFLAG_A64, WHICH)
-+#define EX_TBFLAG_A64(IN, WHICH)   FIELD_EX64(IN.flags2, TBFLAG_A64, WHICH)
- #define EX_TBFLAG_A32(IN, WHICH)   FIELD_EX32(IN.flags2, TBFLAG_A32, WHICH)
- #define EX_TBFLAG_M32(IN, WHICH)   FIELD_EX32(IN.flags2, TBFLAG_M32, WHICH)
- #define EX_TBFLAG_AM32(IN, WHICH)  FIELD_EX32(IN.flags2, TBFLAG_AM32, WHICH)
+         ok = g_hash_table_insert(cpu->cp_regs,
+                                  (gpointer)(uintptr_t)a->new_key, new_reg);
 -- 
 2.34.1
 
