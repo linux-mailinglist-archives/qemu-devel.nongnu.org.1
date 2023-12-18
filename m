@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB8C817573
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:37:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE16817574
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:37:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFFfH-0005UQ-3v; Mon, 18 Dec 2023 10:36:19 -0500
+	id 1rFFfi-000650-NQ; Mon, 18 Dec 2023 10:36:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFf8-0005TO-RF
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:36:11 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFfa-0005lC-29
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:36:40 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFf6-0005oG-F0
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:36:09 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFfU-0005rG-TV
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:36:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702913767;
+ s=mimecast20190719; t=1702913791;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=OfX4u1RD785N6An+qKqIxwNJZ89+Fc/HoH1RtiqPDvM=;
- b=gzixL4LPH6VQBLMuMaN5yI49h4qHZyBlzhLkJWr2XuYfu3J4XZpETbMumyGucq8ILt7I/A
- V35ZGJqOewQHB+Y3XiWACsEimFspV2TR4JKgUVrffSV02KVSLqMNk8IDn8ErDtgFVli45M
- sPZFqS/vmTvLKtRMDya+kSKJT736l0s=
+ bh=4bvx/ZML+G395CK8q8MutVS+t0ZGfK/ntYAEwj/TaGY=;
+ b=AM91Iv0RfVWjoFYaeKIkv0XjUym+zF7w3Tz0IRNFnGGTE4ekujavn8g+NEkqMSao/tE42C
+ 753W4j0goLaBhJsCqdYZI3HXFhIeH/GQIb43s23xLByUXz+MjhTT2F8x5ZD9lQGZ/3Shtw
+ y6vyxL6tfU88g6IvYGdeyeQ72/8jamA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-eE71WITNP2Ch2_m0B0DdKA-1; Mon, 18 Dec 2023 10:36:04 -0500
-X-MC-Unique: eE71WITNP2Ch2_m0B0DdKA-1
+ us-mta-214-YrA_eJyzOHe5pX8xUfYcgw-1; Mon, 18 Dec 2023 10:36:30 -0500
+X-MC-Unique: YrA_eJyzOHe5pX8xUfYcgw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0112D8F7778;
- Mon, 18 Dec 2023 15:36:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 284978F7763;
+ Mon, 18 Dec 2023 15:36:29 +0000 (UTC)
 Received: from redhat.com (unknown [10.39.194.189])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DA9A52166B31;
- Mon, 18 Dec 2023 15:35:58 +0000 (UTC)
-Date: Mon, 18 Dec 2023 16:35:57 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 136572166B31;
+ Mon, 18 Dec 2023 15:36:24 +0000 (UTC)
+Date: Mon, 18 Dec 2023 16:36:23 +0100
 From: Kevin Wolf <kwolf@redhat.com>
 To: Stefan Hajnoczi <stefanha@redhat.com>
 Cc: qemu-devel@nongnu.org,
@@ -64,15 +64,15 @@ Cc: qemu-devel@nongnu.org,
  Fam Zheng <fam@euphon.net>, Leonardo Bras <leobras@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 09/14] aio-wait: draw equivalence between
- AIO_WAIT_WHILE() and AIO_WAIT_WHILE_UNLOCKED()
-Message-ID: <ZYBm3fgtzkh2ke-D@redhat.com>
+Subject: Re: [PATCH v2 10/14] aio: remove
+ aio_context_acquire()/aio_context_release() API
+Message-ID: <ZYBm9_Qpyt1-of30@redhat.com>
 References: <20231205182011.1976568-1-stefanha@redhat.com>
- <20231205182011.1976568-10-stefanha@redhat.com>
+ <20231205182011.1976568-11-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231205182011.1976568-10-stefanha@redhat.com>
+In-Reply-To: <20231205182011.1976568-11-stefanha@redhat.com>
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -100,10 +100,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Am 05.12.2023 um 19:20 hat Stefan Hajnoczi geschrieben:
-> Now that the AioContext lock no longer exists, AIO_WAIT_WHILE() and
-> AIO_WAIT_WHILE_UNLOCKED() are equivalent.
+> Delete these functions because nothing calls these functions anymore.
 > 
-> A future patch will get rid of AIO_WAIT_WHILE_UNLOCKED().
+> I introduced these APIs in commit 98563fc3ec44 ("aio: add
+> aio_context_acquire() and aio_context_release()") in 2014. It's with a
+> sigh of relief that I delete these APIs almost 10 years later.
+> 
+> Thanks to Paolo Bonzini's vision for multi-queue QEMU, we got an
+> understanding of where the code needed to go in order to remove the
+> limitations that the original dataplane and the IOThread/AioContext
+> approach that followed it.
+> 
+> Emanuele Giuseppe Esposito had the splendid determination to convert
+> large parts of the codebase so that they no longer needed the AioContext
+> lock. This was a painstaking process, both in the actual code changes
+> required and the iterations of code review that Emanuele eked out of
+> Kevin and me over many months.
+> 
+> Kevin Wolf tackled multitudes of graph locking conversions to protect
+> in-flight I/O from run-time changes to the block graph as well as the
+> clang Thread Safety Analysis annotations that allow the compiler to
+> check whether the graph lock is being used correctly.
+> 
+> And me, well, I'm just here to add some pizzazz to the QEMU multi-queue
+> block layer :). Thank you to everyone who helped with this effort,
+> including Eric Blake, code reviewer extraordinaire, and others who I've
+> forgotten to mention.
 > 
 > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 > Reviewed-by: Eric Blake <eblake@redhat.com>
