@@ -2,87 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5757381749B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F37BF817499
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:03:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFF8U-0000lr-MS; Mon, 18 Dec 2023 10:02:26 -0500
+	id 1rFF9B-00016X-JO; Mon, 18 Dec 2023 10:03:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rFF8N-0000lG-Qv
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:02:20 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rFF98-0000zj-2u
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:03:06 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rFF8I-0006wj-PE
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:02:19 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40c339d2b88so34928075e9.3
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 07:02:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rFF91-00077l-7M
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:03:05 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6d6d48354ccso430520b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 07:02:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1702911732; x=1703516532;
- darn=nongnu.org; 
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=LvD0DE9NlH/SmgXeqH0Q/2qmdV37fOcKxpbG3fK4nVc=;
- b=p8wTVnVwNX1ygxGNuY+QuYowrC263jUXnTzEog6EeItCvB25zyERDy7gVmfFAoKX82
- UdI6ZeHMrAehAgV+edbZwcJJkeH6CzLIDF3JfeCLZpr7GQBo+GpHr9xHCu+4umCqigRJ
- PDD8KypfGxxwqT4k22uu58CWC2LHk5TfJm9+prK7j6R2mrWs30ba3hsneBGIu9ppF0q2
- Mdv5hDtrWECTlGIjHmHM8wpTDdqQego974LVdy/j10W+m6sN62ymFZhTx/So6XPgbjzN
- FC0V4WftdALnrXYEoKAulUDLx/RgbPw5kh7MqJJdXplam5lWYt2KDhlco7I/aZ5Kh1Lc
- 1PRA==
+ d=ventanamicro.com; s=google; t=1702911777; x=1703516577; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IS1D2FDYimeVTg+BnkZ8lK6JJAp7oUKJVZsCLLH9PCk=;
+ b=cdq8bWb0IJe77a6gsQtq9EMy+lfEsS4eAGxFXPpTPp2i39Jq10tY/NxuIji1Qn6dC5
+ hLpt3jQVaOYc2nvcjxT8ccQosJE5ErT/9QDaV798O+zAK8hgUVWXmdwhXnxUJU20LFMB
+ 06fAWAEKOXxPjLOEJz7jxe9aLbldi5CCUGJU3xqgcD+7FRn7eKwnvAjPc2RDllpKbB6J
+ JcdL/BP4w9KwvPBx0MJPEb/UAOBtHzGS8i39meqDJPGbEgba3m4wxmxBXz6KyH/qx98N
+ btyr4r6L5QM34VWhbWW5xkFlmdzv4HY+FbcU2PphlgSUcKymKf6QD8ZViukHOuEXEBPU
+ lX1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702911732; x=1703516532;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LvD0DE9NlH/SmgXeqH0Q/2qmdV37fOcKxpbG3fK4nVc=;
- b=ESG33Kan3xzT3XxN9umglfKisAZ6aMdGfFsQ/TkZI4YidIHeNg+1q2JIZteccMDXYK
- hop2OxwcFQO23HRy6rG4m0pxmjZIZDjOR4NR24LqX9gjVB9jWrVxtcbbyQuMf7kMppCV
- CGpwCZTSnGz0nhf27WdEAd7pk5WhEQQW+CDmCb8Y1kh2+1qYD2FrdX6F+c0mpE1w+Cl9
- M612yLSrzNkIfJNAwIj+CMvUDsgK9E03O8ZzXsNki00iF8y8B4kB9JcVbBSdu3Vc2IcR
- xDEzXSeaLkHlPglZ2k5yq0vdTOmV8jWCekel4dnm6xO1paswtl4yM0psGMlMSQ8BILNx
- dmuA==
-X-Gm-Message-State: AOJu0YwoDYDdfWsctjsfbfxPi/CZEs8o8Ei0txW1Bea5SqHa6wIl3SWA
- 1y8/adpB2ldZ/f/7xu4d1JG63g==
-X-Google-Smtp-Source: AGHT+IGgKeXSafwYpc//bz06c68INJZUBxklMCDfA599ru96/d9YbJcqkmTlrIEPC8agg8LcRyPSAQ==
-X-Received: by 2002:a1c:6a0a:0:b0:40c:2c40:8c with SMTP id
- f10-20020a1c6a0a000000b0040c2c40008cmr8656554wmc.154.1702911732460; 
- Mon, 18 Dec 2023 07:02:12 -0800 (PST)
-Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
+ d=1e100.net; s=20230601; t=1702911777; x=1703516577;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IS1D2FDYimeVTg+BnkZ8lK6JJAp7oUKJVZsCLLH9PCk=;
+ b=u1hnwTE+aJ2+unPbpfVBREAcI2GKJjPMdkv8XWdLPf8PnLlcz/ooPLcbIGjnWw1YAa
+ qpohDkGsaFqqGDdcy6zKF5N/Zwm5P1o5wcUsFvX+d6ofBBU8TMYOjCzHtJiw1CZsT0nx
+ wt6R32NfGCJ3IpeB94Cw9LDGBDWr6SMTeCwV7QFkA8hjW2JgnIa+yws42AN4nA8n2/ks
+ KqbUXfCGhyo7XAAvtqRdRGK6cqD3Ko0lqgZeE7NQ2zr8jVr/IJ3tfKspxRo/j8qRmTrK
+ NIk74B+N5ggsMcHVQlGh2RDrA/d/jHqdsHVRkRfc4YA+6InlNZO6g3T6PmYS1WxNvLEm
+ 2y4Q==
+X-Gm-Message-State: AOJu0YzW9X2HiTA3t5ki9sKkVxRyIktwx3Eq8J0ro3JaTrYSlncjsOw6
+ 9UILtJkMM4hiAx8MwwApLfPAMw==
+X-Google-Smtp-Source: AGHT+IH7EInAr+EcXwzy9g8j/vhBhXW4lKSsnKIOT7/ZhqJS1WW0EXZw2Ahg7svKe2qYc4xBRyWYBw==
+X-Received: by 2002:a05:6a00:4643:b0:6cb:ccea:e2ed with SMTP id
+ kp3-20020a056a00464300b006cbcceae2edmr8259442pfb.13.1702911776952; 
+ Mon, 18 Dec 2023 07:02:56 -0800 (PST)
+Received: from sunil-pc.Dlink ([106.51.188.200])
  by smtp.gmail.com with ESMTPSA id
- be9-20020a05600c1e8900b0040596352951sm45141923wmb.5.2023.12.18.07.02.11
+ p1-20020a056a000a0100b006c06779e593sm18975505pfh.16.2023.12.18.07.02.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Dec 2023 07:02:12 -0800 (PST)
-Message-ID: <4fe52c34042a219b3fe0140e6ce28578857ddb1a.camel@rivosinc.com>
-Subject: Re: [PATCH 1/2] target/riscv: Add support for Zacas extension
-From: Rob Bradford <rbradford@rivosinc.com>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com,  Weiwei Li <liweiwei@iscas.ac.cn>, Junqiang
- Wang <wangjunqiang@iscas.ac.cn>
-Date: Mon, 18 Dec 2023 15:02:11 +0000
-In-Reply-To: <CAKmqyKN50b9RAqfrMoe9_vZB1PfML+7K7u4=jeSE1Na6PPD3NA@mail.gmail.com>
-References: <20231207153842.32401-1-rbradford@rivosinc.com>
- <20231207153842.32401-2-rbradford@rivosinc.com>
- <CAKmqyKN50b9RAqfrMoe9_vZB1PfML+7K7u4=jeSE1Na6PPD3NA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.module_f38+17164+63eeee4a) 
+ Mon, 18 Dec 2023 07:02:56 -0800 (PST)
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Anup Patel <apatel@ventanamicro.com>,
+ Atish Kumar Patra <atishp@rivosinc.com>, Haibo Xu <haibo1.xu@intel.com>,
+ Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH v8 00/13] RISC-V: ACPI: Enable AIA, PLIC and update RHCT
+Date: Mon, 18 Dec 2023 20:32:34 +0530
+Message-Id: <20231218150247.466427-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,385 +106,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alistair,
+This series primarily enables external interrupt controllers (AIA and PLIC)
+in ACPI tables for RISC-V virt platform. It also updates RHCT with CMO and
+MMU related information.
 
-Thanks for providing some feedback - responses below:
+Below ECRs for these changes are approved by ASWG and will be
+available in next ACPI spec release.
 
-On Mon, 2023-12-18 at 12:54 +1000, Alistair Francis wrote:
-> On Fri, Dec 8, 2023 at 1:40=E2=80=AFAM Rob Bradford <rbradford@rivosinc.c=
-om>
-> wrote:
-> >=20
-> > From: Weiwei Li <liweiwei@iscas.ac.cn>
-> >=20
-> > Add support for amocas.w/d/q instructions which are part of the
-> > ratified
-> > Zacas extension: https://github.com/riscv/riscv-zacas
-> >=20
-> > Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> > Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> > ---
-> > =C2=A0target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +
-> > =C2=A0target/riscv/cpu_cfg.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> > =C2=A0target/riscv/insn32.decode=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
-=A0 6 +
-> > =C2=A0target/riscv/insn_trans/trans_rvzacas.c.inc | 150
-> > ++++++++++++++++++++
-> > =C2=A0target/riscv/tcg/tcg-cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
-=A0 5 +
-> > =C2=A0target/riscv/translate.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- |=C2=A0=C2=A0 1 +
-> > =C2=A06 files changed, 165 insertions(+)
-> > =C2=A0create mode 100644 target/riscv/insn_trans/trans_rvzacas.c.inc
-> >=20
-> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > index 83c7c0cf07..a265833b17 100644
-> > --- a/target/riscv/cpu.c
-> > +++ b/target/riscv/cpu.c
-> > @@ -87,6 +87,7 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1=
-_10_0,
-> > ext_zihintpause),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0,=
- ext_zihpm),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0,=
- ext_zmmul),
-> > +=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_=
-zacas),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0,=
- ext_zawrs),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, e=
-xt_zfa),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_=
-0, ext_zfbfmin),
-> > @@ -1300,6 +1301,7 @@ const RISCVCPUMultiExtConfig
-> > riscv_cpu_extensions[] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl,=
- true),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpa=
-use, true),
-> > +=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zacas", ext_zacas, false),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
-> > diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> > index f4605fb190..d516de4a44 100644
-> > --- a/target/riscv/cpu_cfg.h
-> > +++ b/target/riscv/cpu_cfg.h
-> > @@ -77,6 +77,7 @@ struct RISCVCPUConfig {
-> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_svnapot;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_svpbmt;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zdinx;
-> > +=C2=A0=C2=A0=C2=A0 bool ext_zacas;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zawrs;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfa;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfbfmin;
-> > diff --git a/target/riscv/insn32.decode
-> > b/target/riscv/insn32.decode
-> > index 33597fe2bb..f22df04cfd 100644
-> > --- a/target/riscv/insn32.decode
-> > +++ b/target/riscv/insn32.decode
-> > @@ -1004,3 +1004,9 @@ vgmul_vv=C2=A0=C2=A0=C2=A0 101000 1 ..... 10001 0=
-10 .....
-> > 1110111 @r2_vm_1
-> > =C2=A0vsm4k_vi=C2=A0=C2=A0=C2=A0 100001 1 ..... ..... 010 ..... 1110111=
- @r_vm_1
-> > =C2=A0vsm4r_vv=C2=A0=C2=A0=C2=A0 101000 1 ..... 10000 010 ..... 1110111=
- @r2_vm_1
-> > =C2=A0vsm4r_vs=C2=A0=C2=A0=C2=A0 101001 1 ..... 10000 010 ..... 1110111=
- @r2_vm_1
-> > +
-> > +# *** RV32 Zacas Standard Extension ***
-> > +amocas_w=C2=A0=C2=A0=C2=A0 00101 . . ..... ..... 010 ..... 0101111 @at=
-om_st
-> > +amocas_d=C2=A0=C2=A0=C2=A0 00101 . . ..... ..... 011 ..... 0101111 @at=
-om_st
-> > +# *** RV64 Zacas Standard Extension ***
-> > +amocas_q=C2=A0=C2=A0=C2=A0 00101 . . ..... ..... 100 ..... 0101111 @at=
-om_st
-> > diff --git a/target/riscv/insn_trans/trans_rvzacas.c.inc
-> > b/target/riscv/insn_trans/trans_rvzacas.c.inc
-> > new file mode 100644
-> > index 0000000000..5d274d4c08
-> > --- /dev/null
-> > +++ b/target/riscv/insn_trans/trans_rvzacas.c.inc
-> > @@ -0,0 +1,150 @@
-> > +/*
-> > + * RISC-V translation routines for the RV64 Zacas Standard
-> > Extension.
-> > + *
-> > + * Copyright (c) 2020-2023 PLCT Lab
-> > + *
-> > + * This program is free software; you can redistribute it and/or
-> > modify it
-> > + * under the terms and conditions of the GNU General Public
-> > License,
-> > + * version 2 or later, as published by the Free Software
-> > Foundation.
-> > + *
-> > + * This program is distributed in the hope it will be useful, but
-> > WITHOUT
-> > + * ANY WARRANTY; without even the implied warranty of
-> > MERCHANTABILITY or
-> > + * FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See the GNU General Public
-> > License for
-> > + * more details.
-> > + *
-> > + * You should have received a copy of the GNU General Public
-> > License along with
-> > + * this program.=C2=A0 If not, see <http://www.gnu.org/licenses/>.
-> > + */
-> > +
-> > +#define REQUIRE_ZACAS(ctx) do {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 \
-> > +=C2=A0=C2=A0=C2=A0 if (!ctx->cfg_ptr->ext_zacas) {=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 \
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > +=C2=A0=C2=A0=C2=A0 }=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 \
-> > +} while (0)
-> > +
-> > +static bool gen_cmpxchg(DisasContext *ctx, arg_atomic *a, MemOp
-> > mop)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 TCGv dest =3D get_gpr(ctx, a->rd, EXT_NONE);
-> > +=C2=A0=C2=A0=C2=A0 TCGv src1 =3D get_address(ctx, a->rs1, 0);
-> > +=C2=A0=C2=A0=C2=A0 TCGv src2 =3D get_gpr(ctx, a->rs2, EXT_NONE);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 decode_save_opc(ctx);
-> > +=C2=A0=C2=A0=C2=A0 tcg_gen_atomic_cmpxchg_tl(dest, src1, dest, src2, c=
-tx-
-> > >mem_idx, mop);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd, dest);
-> > +=C2=A0=C2=A0=C2=A0 return true;
-> > +}
-> > +
-> > +static bool trans_amocas_w(DisasContext *ctx, arg_amocas_w *a)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
-> > +=C2=A0=C2=A0=C2=A0 return gen_cmpxchg(ctx, a, MO_ALIGN | MO_TESL);
-> > +}
-> > +
-> > +static TCGv_i64 get_gpr_pair(DisasContext *ctx, int reg_num)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 t;
-> > +
-> > +=C2=A0=C2=A0=C2=A0 assert(get_ol(ctx) =3D=3D MXL_RV32);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 if (reg_num =3D=3D 0) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return tcg_constant_i64(0);
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 t =3D tcg_temp_new_i64();
-> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_tl_i64(t, cpu_gpr[reg_num], cpu_gpr[=
-reg_num +
-> > 1]);
-> > +=C2=A0=C2=A0=C2=A0 return t;
-> > +}
-> > +
-> > +static void gen_set_gpr_pair(DisasContext *ctx, int reg_num,
-> > TCGv_i64 t)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 assert(get_ol(ctx) =3D=3D MXL_RV32);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 if (reg_num !=3D 0) {
-> > +#ifdef TARGET_RISCV32
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_extr_i64_i32(cpu_gp=
-r[reg_num], cpu_gpr[reg_num +
-> > 1], t);
-> > +#else
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_ext32s_i64(cpu_gpr[=
-reg_num], t);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_sari_i64(cpu_gpr[re=
-g_num + 1], t, 32);
-> > +#endif
->=20
-> This should be dynamic based on the MXL.
->=20
+1) MADT (AIA) - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
+2) RHCT - https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view?usp=sharing
 
-This function is already conditional on MXL =3D 32 as it us only called
-from trans_amocas_d() when get_ol() =3D=3D MXL_RV32 (there is an assertion
-at the top to enforce this.) The compile time conditional code is
-required as the cpu_gpr type (TCGv) changes between TCGv_i32 or
-TCGv_i64 at build time - requiring different functions to be called to
-split the value and assign to registers.
+First two patches in this series are to migrate a couple of functions from
+ARM architecture to common code so that RISC-V doesn't need to duplicate
+the same.
 
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (get_xl_max(ctx) =3D=3D =
-MXL_RV128) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg=
-_gen_sari_tl(cpu_gprh[reg_num], cpu_gpr[reg_num],
-> > 63);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg=
-_gen_sari_tl(cpu_gprh[reg_num + 1], cpu_gpr[reg_num
-> > + 1], 63);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +}
-> > +
-> > +static bool gen_cmpxchg64(DisasContext *ctx, arg_atomic *a, MemOp
-> > mop)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 /*
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * Encodings with odd numbered registers speci=
-fied in rs2 and
-> > rd are
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * reserved.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > +=C2=A0=C2=A0=C2=A0 if ((a->rs2 | a->rd) & 1) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 dest =3D get_gpr_pair(ctx, a->rd);
-> > +=C2=A0=C2=A0=C2=A0 TCGv src1 =3D get_address(ctx, a->rs1, 0);
-> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 src2 =3D get_gpr_pair(ctx, a->rs2);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 decode_save_opc(ctx);
-> > +=C2=A0=C2=A0=C2=A0 tcg_gen_atomic_cmpxchg_i64(dest, src1, dest, src2, =
-ctx-
-> > >mem_idx, mop);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 gen_set_gpr_pair(ctx, a->rd, dest);
-> > +=C2=A0=C2=A0=C2=A0 return true;
-> > +}
-> > +
-> > +static bool trans_amocas_d(DisasContext *ctx, arg_amocas_d *a)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
-> > +=C2=A0=C2=A0=C2=A0 switch (get_ol(ctx)) {
-> > +=C2=A0=C2=A0=C2=A0 case MXL_RV32:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return gen_cmpxchg64(ctx, a=
-, MO_ALIGN | MO_TEUQ);
-> > +=C2=A0=C2=A0=C2=A0 case MXL_RV64:
-> > +=C2=A0=C2=A0=C2=A0 case MXL_RV128:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return gen_cmpxchg(ctx, a, =
-MO_ALIGN | MO_TEUQ);
-> > +=C2=A0=C2=A0=C2=A0 default:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_assert_not_reached();
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +}
-> > +
-> > +static bool trans_amocas_q(DisasContext *ctx, arg_amocas_q *a)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
-> > +=C2=A0=C2=A0=C2=A0 REQUIRE_64BIT(ctx);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /*
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * Encodings with odd numbered registers speci=
-fied in rs2 and
-> > rd are
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 * reserved.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > +=C2=A0=C2=A0=C2=A0 if ((a->rs2 | a->rd) & 1) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +#ifdef TARGET_RISCV64
->=20
-> We already have a REQUIRE_64BIT(ctx), do we need this as well?
->=20
+The patch set is based on Alistair's riscv-to-apply.next branch.
 
-Unfortunately yes, because when compiling under TARGET_RISCV32 there is
-a type mismatch error from the get_gpr() method - similar to the
-requirement to have two paths in the gen_cmpxchg64() function: e.g. to
-concatenate the two TGV_i64 to a TGV_i128 the datatype from get_gpr()
-must be TGV_i64.
+These changes are also available in  riscv_acpi_b2_v8 branch at:
+https://github.com/vlsunil/qemu/
 
-The REQUIRE_6BIT() provides the necessary check at runtime to check
-that we are running with MXL =3D 64.
+Changes since v7:
+	1) Prefixed gpex property names with "x-" as per feedback from Michael Tsirkin.
+	2) Rebased to latest riscv-to-apply.next.
 
-Cheers,
+Changes since v6:
+	1) Fixed the qtest failure issue reported by Daniel in PATCH 2.
 
-Rob
+Changes since v5:
+	1) Fixed the issue in PATCH 2 reported by Daniel found when built with
+	   clang + --enable-debug.
 
-> Alistair
->=20
-> > +=C2=A0=C2=A0=C2=A0 TCGv_i128 dest =3D tcg_temp_new_i128();
-> > +=C2=A0=C2=A0=C2=A0 TCGv src1 =3D get_address(ctx, a->rs1, 0);
-> > +=C2=A0=C2=A0=C2=A0 TCGv_i128 src2 =3D tcg_temp_new_i128();
-> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 src2l =3D get_gpr(ctx, a->rs2, EXT_NONE);
-> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 src2h =3D get_gpr(ctx, a->rs2 =3D=3D 0 ? 0=
- : a->rs2 + 1,
-> > EXT_NONE);
-> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 destl =3D get_gpr(ctx, a->rd, EXT_NONE);
-> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 desth =3D get_gpr(ctx, a->rd =3D=3D 0 ? 0 =
-: a->rd + 1,
-> > EXT_NONE);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_i64_i128(src2, src2l, src2h);
-> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_i64_i128(dest, destl, desth);
-> > +=C2=A0=C2=A0=C2=A0 decode_save_opc(ctx);
-> > +=C2=A0=C2=A0=C2=A0 tcg_gen_atomic_cmpxchg_i128(dest, src1, dest, src2,=
- ctx-
-> > >mem_idx,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (MO_ALIGN | MO_TEUO));
-> > +
-> > +=C2=A0=C2=A0=C2=A0 tcg_gen_extr_i128_i64(destl, desth, dest);
-> > +
-> > +=C2=A0=C2=A0=C2=A0 if (a->rd !=3D 0) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd, des=
-tl);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd + 1,=
- desth);
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +#endif
-> > +
-> > +=C2=A0=C2=A0=C2=A0 return true;
-> > +}
-> > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-
-> > cpu.c
-> > index 8a35683a34..29b5a88931 100644
-> > --- a/target/riscv/tcg/tcg-cpu.c
-> > +++ b/target/riscv/tcg/tcg-cpu.c
-> > @@ -343,6 +343,11 @@ void
-> > riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 }
-> >=20
-> > +=C2=A0=C2=A0=C2=A0 if ((cpu->cfg.ext_zacas) && !riscv_has_ext(env, RVA=
-)) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zacas ext=
-ension requires A extension");
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > =C2=A0=C2=A0=C2=A0=C2=A0 if ((cpu->cfg.ext_zawrs) && !riscv_has_ext(env=
-, RVA)) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zawr=
-s extension requires A extension");
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> > index f0be79bb16..071fbad7ef 100644
-> > --- a/target/riscv/translate.c
-> > +++ b/target/riscv/translate.c
-> > @@ -1089,6 +1089,7 @@ static uint32_t opcode_at(DisasContextBase
-> > *dcbase, target_ulong pc)
-> > =C2=A0#include "insn_trans/trans_rvv.c.inc"
-> > =C2=A0#include "insn_trans/trans_rvb.c.inc"
-> > =C2=A0#include "insn_trans/trans_rvzicond.c.inc"
-> > +#include "insn_trans/trans_rvzacas.c.inc"
-> > =C2=A0#include "insn_trans/trans_rvzawrs.c.inc"
-> > =C2=A0#include "insn_trans/trans_rvzicbo.c.inc"
-> > =C2=A0#include "insn_trans/trans_rvzfa.c.inc"
-> > --
-> > 2.43.0
-> >=20
-> >=20
+Changes since v4:
+	1) Updated copyright for new files as per SPDX format suggested by Drew.
+	2) Updated RINTC patch to avoid code duplication as suggested by Drew.
+	3) Moved mmu offset below cmo in MMU patch as suggested by Drew.
+	4) Updated tags.
+
+Changes since v3:
+	1) Addressed comments from Daniel and Drew.
+	2) Added a new patch in microvm to use common function for virtio in DSDT.
+	3) Rebased to latest riscv-to-apply.next branch and added tags.
+
+Changes since v2:
+        1) Rebased to latest riscv-to-apply.next branch which needed
+           changing ext_icboz to ext_zicboz in CMO patch.
+        2) Fixed node type in MMU node.
+        3) Added latest tags.
+
+Changes since v1:
+        1) As per Igor's suggestion, migrated fw_cfg and virtio creation
+           functions to device specific file instead of generic aml-build.c.
+           Since ACPI is optional, new files are created and enabled for
+           build only when CONFIG_ACPI is enabled.
+        2) As per Igor's suggestion, properties are added to the GPEX PCI
+           host to indicate MMIO ranges. The platform fw can initialize
+           these to appropriate values and the DSDT generator can fetch
+           the information from the host bus itself. This makes the code
+           generic instead of machine specific.
+        3) Added PLIC patch from Haibo.
+        4) Rebased to latest riscv-to-apply.next and added RB tags as
+           appropriate.
+
+Sunil V L (13):
+  hw/arm/virt-acpi-build.c: Migrate fw_cfg creation to common location
+  hw/arm/virt-acpi-build.c: Migrate virtio creation to common location
+  hw/i386/acpi-microvm.c: Use common function to add virtio in DSDT
+  hw/riscv: virt: Make few IMSIC macros and functions public
+  hw/riscv/virt-acpi-build.c: Add AIA support in RINTC
+  hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
+  hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
+  hw/riscv/virt-acpi-build.c: Add CMO information in RHCT
+  hw/riscv/virt-acpi-build.c: Add MMU node in RHCT
+  hw/pci-host/gpex: Define properties for MMIO ranges
+  hw/riscv/virt: Update GPEX MMIO related properties
+  hw/riscv/virt-acpi-build.c: Add IO controllers and devices
+  hw/riscv/virt-acpi-build.c: Add PLIC in MADT
+
+ hw/arm/virt-acpi-build.c        |  51 +----
+ hw/i386/acpi-microvm.c          |  15 +-
+ hw/nvram/fw_cfg-acpi.c          |  23 +++
+ hw/nvram/meson.build            |   1 +
+ hw/pci-host/gpex-acpi.c         |  13 ++
+ hw/pci-host/gpex.c              |  12 ++
+ hw/riscv/Kconfig                |   1 +
+ hw/riscv/virt-acpi-build.c      | 323 +++++++++++++++++++++++++++++---
+ hw/riscv/virt.c                 |  72 ++++---
+ hw/virtio/meson.build           |   1 +
+ hw/virtio/virtio-acpi.c         |  33 ++++
+ include/hw/nvram/fw_cfg_acpi.h  |  15 ++
+ include/hw/pci-host/gpex.h      |  28 ++-
+ include/hw/riscv/virt.h         |  26 +++
+ include/hw/virtio/virtio-acpi.h |  16 ++
+ 15 files changed, 499 insertions(+), 131 deletions(-)
+ create mode 100644 hw/nvram/fw_cfg-acpi.c
+ create mode 100644 hw/virtio/virtio-acpi.c
+ create mode 100644 include/hw/nvram/fw_cfg_acpi.h
+ create mode 100644 include/hw/virtio/virtio-acpi.h
+
+-- 
+2.39.2
 
 
