@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4828181756F
+	by mail.lfdr.de (Postfix) with ESMTPS id CA839817570
 	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:36:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFFeQ-00055X-PR; Mon, 18 Dec 2023 10:35:26 -0500
+	id 1rFFeg-0005AO-KU; Mon, 18 Dec 2023 10:35:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFeM-00055E-2F
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:35:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFee-00059w-BR
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:35:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFeK-0005cZ-ET
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:35:21 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFea-0005lo-Tu
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:35:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702913719;
+ s=mimecast20190719; t=1702913735;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=PDubdz9qL49hAN39OYCPIe6uR/1A8jW1md3mHWy8lFM=;
- b=OoDIpUd90tk6NcKV2wTIrgXIUdIzvN4uHimzq3vT9BgA6eFbleSL9scwmhVppC3IT3CMwr
- Zqh6fIHsvnw2f0o8KJEyX2iX7wXWmRLq2BKQ4GBvtfAwDN00P2wshdJyzS4jpOZFEPaXFr
- YLf4cqoE7ATFdO/JOBf8CJygCIWTaQ0=
+ bh=zgWkI9GAtyASOU/mBRpzeMpBDbcuSNrKPkr2ApgRSj0=;
+ b=SWO4MlDw5SHi/eqepOlyGskI53lB1TArzfurvPlfmYiFWQC6uHYuWy0g7eUsAguuzwT0hN
+ vUL106HUiGxUUP9QXecI1m/dRps/FjxFfpVe9NHxwN+YMAuK1PFBB/MTYQItz5eC4kFgRQ
+ n0fuhpH2NBB0v+wkp1rXWHh0gSgoFsg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-139-m3kEV4ygO-CxGpJECnICkg-1; Mon, 18 Dec 2023 10:35:15 -0500
-X-MC-Unique: m3kEV4ygO-CxGpJECnICkg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-646-Z6mJD_OXNHGJP7Uu4lO-AA-1; Mon, 18 Dec 2023 10:35:32 -0500
+X-MC-Unique: Z6mJD_OXNHGJP7Uu4lO-AA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5611B101A555;
- Mon, 18 Dec 2023 15:35:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 422C0845E38;
+ Mon, 18 Dec 2023 15:35:31 +0000 (UTC)
 Received: from redhat.com (unknown [10.39.194.189])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AE2A21121313;
- Mon, 18 Dec 2023 15:35:09 +0000 (UTC)
-Date: Mon, 18 Dec 2023 16:35:08 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 130142166B31;
+ Mon, 18 Dec 2023 15:35:26 +0000 (UTC)
+Date: Mon, 18 Dec 2023 16:35:25 +0100
 From: Kevin Wolf <kwolf@redhat.com>
 To: Stefan Hajnoczi <stefanha@redhat.com>
 Cc: qemu-devel@nongnu.org,
@@ -64,24 +64,23 @@ Cc: qemu-devel@nongnu.org,
  Fam Zheng <fam@euphon.net>, Leonardo Bras <leobras@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Li Zhijian <lizhijian@fujitsu.com>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 02/14] scsi: assert that callbacks run in the correct
- AioContext
-Message-ID: <ZYBmrC6NB1thDiRA@redhat.com>
+Subject: Re: [PATCH v2 07/14] block: remove bdrv_co_lock()
+Message-ID: <ZYBmvd88icCxOEBz@redhat.com>
 References: <20231205182011.1976568-1-stefanha@redhat.com>
- <20231205182011.1976568-3-stefanha@redhat.com>
+ <20231205182011.1976568-8-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231205182011.1976568-3-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+In-Reply-To: <20231205182011.1976568-8-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.083,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,12 +98,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 05.12.2023 um 19:19 hat Stefan Hajnoczi geschrieben:
-> Since the removal of AioContext locking, the correctness of the code
-> relies on running requests from a single AioContext at any given time.
-> 
-> Add assertions that verify that callbacks are invoked in the correct
-> AioContext.
+Am 05.12.2023 um 19:20 hat Stefan Hajnoczi geschrieben:
+> The bdrv_co_lock() and bdrv_co_unlock() functions are already no-ops.
+> Remove them.
 > 
 > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
