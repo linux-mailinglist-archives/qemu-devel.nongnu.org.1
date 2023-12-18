@@ -2,75 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B33A8176ED
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 17:07:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E05B481775F
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 17:24:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFG9d-0001Sw-CZ; Mon, 18 Dec 2023 11:07:41 -0500
+	id 1rFGOz-00079d-0i; Mon, 18 Dec 2023 11:23:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFG9Y-0001Lh-WD
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:07:37 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFG9W-0003Ho-Qb
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:07:36 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5537dd673e5so370259a12.0
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 08:07:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702915653; x=1703520453; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=4j9uNOAYPUO7RjRQoH27bZind2Y6RSmwAQWuWRBnXjI=;
- b=YGtnABIs+gKR5wh9vRRFVX3GvIH31fjEXuNDDzGf0H9YUmtNM8U+VdsivrYWOwDG4/
- mNwFc9RgZlRc4QV61S7uNFOHGejUbVCBP5NiDNdadg+UpuXcy2H8QgXM8YdppPiDSVI0
- tuNAnoS1bbSJPOo3RzZekXz3jPnf3CkPpBcBq79cOcbRnBylOEHt1VUJAG06lG7iSOcK
- CGyij+RS/fpY+x9l5qwSU7WxiKSLFPsRf3UuL2jfO3xqjB+0wQE32o3UooVoH8IxWN4q
- UbaBQtJNNf67KDQCDtIlrGW6faKiX3sqkNfI6nBUiORDVKZONiM3AjjK79REoYqH06Pj
- jtHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702915653; x=1703520453;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4j9uNOAYPUO7RjRQoH27bZind2Y6RSmwAQWuWRBnXjI=;
- b=BiXNv3UkOwvgEnZ2i5he/vgL5vkZgdARFDdKiVGwSJ819uLwyKcJIVyNPmFzQdsEU/
- SsY1HKasYEODvrPkh6W7De6SMvTzYNjOqAPGlMVTEqhmzP3PWVoWj36AEddSwQTaY6sF
- PSitAIiQ8f/pXX7fm5byRkYDJSlxNe7au77DHWvRYw5HZddO+cTrKDsgq3ZFiuR+RUeD
- ybMX/TkDojF4MegCORow9LihLBC0N6iEApPeacWl27oI1yMeCaPpLuYWoT/aKz4HrrwJ
- FR/U52LHhfSdbmRnI8RW9oCyo5yjp/u+0W9QXDE8winejdV2h1ub/1iLygtfqIpntC+b
- jn7Q==
-X-Gm-Message-State: AOJu0YzbWMJ0qiBLjtfwhD4oGPVd25ZephBmzciVHSqMcLKduy0jJMpu
- uohGxq/8bgNnoTGRTYhwEaTMS9M8IR7vfmEI+HfPAQ==
-X-Google-Smtp-Source: AGHT+IGlSrQ5rHy6+kDLA9DyRPk12m7dRWsyUWM848k9yxdUaugkBdQDNdcM3bWhZO5Hy0HmVoZOlogcpcpRuSHaw4A=
-X-Received: by 2002:a50:aac2:0:b0:552:87c1:38fe with SMTP id
- r2-20020a50aac2000000b0055287c138femr4169309edc.0.1702915653117; Mon, 18 Dec
- 2023 08:07:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ncopa@alpinelinux.org>)
+ id 1rFGOn-00078t-DV; Mon, 18 Dec 2023 11:23:22 -0500
+Received: from gbr-app-1.alpinelinux.org ([213.219.36.190])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ncopa@alpinelinux.org>)
+ id 1rFGOk-0005sD-TC; Mon, 18 Dec 2023 11:23:20 -0500
+Received: from ncopa-desktop.lan (ti0056a400-5190.bb.online.no [85.167.243.86])
+ (Authenticated sender: ncopa@alpinelinux.org)
+ by gbr-app-1.alpinelinux.org (Postfix) with ESMTPSA id E162B22597C;
+ Mon, 18 Dec 2023 16:23:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alpinelinux.org;
+ s=smtp; t=1702916592;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=0FWL/8idHPFO9kfCetgnotzl224SvDQDNj5iKEvReqs=;
+ b=y+6rJ1W5Jn2PBD9jOtN6DJj+cZeZcNI7BIKUBXz7L060DZ+lRukWerQXtyR6igOOrKO3Mt
+ IcHgk6Hn4AbATuEYeke0InYZMUiu1SmC08h3yNUMZNdw9j6vETy+sxFqVzl7TpbnX3PsZE
+ JxMnEnasHUA662MiJ9UmdHoiQKO7EuY=
+From: Natanael Copa <ncopa@alpinelinux.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, qemu-trivial@nongnu.org,
+ Natanael Copa <ncopa@alpinelinux.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
+Subject: [PATCH] target/riscv/kvm: do not use non-portable strerrorname_np()
+Date: Mon, 18 Dec 2023 17:22:44 +0100
+Message-ID: <20231218162301.14817-1-ncopa@alpinelinux.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
- <20231208023145.1385775-5-sergey.kambalin@auriga.com>
-In-Reply-To: <20231208023145.1385775-5-sergey.kambalin@auriga.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Dec 2023 16:07:22 +0000
-Message-ID: <CAFEAcA_TDtzaiC0axEGtOPRJgfzq2Hokbb4U23EOM2KK8ZDf5w@mail.gmail.com>
-Subject: Re: [PATCH v4 04/45] Introduce BCM2838 SoC
-To: Sergey Kambalin <serg.oker@gmail.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Sergey Kambalin <sergey.kambalin@auriga.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=213.219.36.190;
+ envelope-from=ncopa@alpinelinux.org; helo=gbr-app-1.alpinelinux.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,119 +67,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 02:33, Sergey Kambalin <serg.oker@gmail.com> wrote:
->
-> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-> ---
->  hw/arm/bcm2838.c                     | 100 +++++++++++++++++++++++++++
->  hw/arm/bcm2838_peripherals.c         |  72 +++++++++++++++++++
->  hw/arm/meson.build                   |   2 +
->  include/hw/arm/bcm2838.h             |  29 ++++++++
->  include/hw/arm/bcm2838_peripherals.h |  36 ++++++++++
->  5 files changed, 239 insertions(+)
->  create mode 100644 hw/arm/bcm2838.c
->  create mode 100644 hw/arm/bcm2838_peripherals.c
->  create mode 100644 include/hw/arm/bcm2838.h
->  create mode 100644 include/hw/arm/bcm2838_peripherals.h
->
-> diff --git a/hw/arm/bcm2838.c b/hw/arm/bcm2838.c
-> new file mode 100644
-> index 0000000000..c61c59661b
-> --- /dev/null
-> +++ b/hw/arm/bcm2838.c
-> @@ -0,0 +1,100 @@
-> +/*
-> + * BCM2838 SoC emulation
-> + *
-> + * Copyright (C) 2022 Ovchinnikov Vitalii <vitalii.ovchinnikov@auriga.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "qemu/module.h"
-> +#include "hw/arm/raspi_platform.h"
-> +#include "hw/sysbus.h"
-> +#include "hw/arm/bcm2838.h"
-> +#include "trace.h"
-> +
-> +#define VIRTUAL_PMU_IRQ 7
-> +
-> +static void bcm2838_init(Object *obj)
-> +{
-> +    BCM2838State *s = BCM2838(obj);
-> +
-> +    object_initialize_child(obj, "peripherals", &s->peripherals,
-> +                            TYPE_BCM2838_PERIPHERALS);
-> +    object_property_add_alias(obj, "board-rev", OBJECT(&s->peripherals),
-> +                              "board-rev");
-> +    object_property_add_alias(obj, "vcram-size", OBJECT(&s->peripherals),
-> +                              "vcram-size");
-> +    object_property_add_alias(obj, "command-line", OBJECT(&s->peripherals),
-> +                              "command-line");
-> +}
-> +
-> +static void bcm2838_realize(DeviceState *dev, Error **errp)
-> +{
-> +    int n;
-> +    BCM2838State *s = BCM2838(dev);
-> +    BCM283XBaseState *s_base = BCM283X_BASE(dev);
-> +    BCM283XBaseClass *bc_base = BCM283X_BASE_GET_CLASS(dev);
-> +    BCM2838PeripheralState *ps = BCM2838_PERIPHERALS(&s->peripherals);
-> +    BCMSocPeripheralBaseState *ps_base =
-> +        BCM_SOC_PERIPHERALS_BASE(&s->peripherals);
-> +
-> +    if (!bcm283x_common_realize(dev, ps_base, errp)) {
-> +        return;
-> +    }
-> +    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(ps), 1, BCM2838_PERI_LOW_BASE, 1);
-> +
-> +    /* bcm2836 interrupt controller (and mailboxes, etc.) */
-> +    if (!sysbus_realize(SYS_BUS_DEVICE(&s_base->control), errp)) {
-> +        return;
-> +    }
-> +    sysbus_mmio_map(SYS_BUS_DEVICE(&s_base->control), 0, bc_base->ctrl_base);
-> +
-> +    /* Create cores */
-> +    for (n = 0; n < bc_base->core_count; n++) {
-> +        /* TODO: this should be converted to a property of ARM_CPU */
-> +        s_base->cpu[n].core.mp_affinity = (bc_base->clusterid << 8) | n;
+strerrorname_np is non-portable and breaks building with musl libc.
 
-We have a property now, so we can do:
+Use strerror(errno) instead, like we do other places.
 
-    object_property_set_int(OBJECT(&s->cpu[n].core), "mp-affinity",
-                            (bc->clusterid << 8) | n, &error_abort);
+Cc: qemu-stable@nongnu.org
+Fixes: commit 082e9e4a58ba (target/riscv/kvm: improve 'init_multiext_cfg' error msg)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2041
+Buglink: https://gitlab.alpinelinux.org/alpine/aports/-/issues/15541
+Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
+---
+ target/riscv/kvm/kvm-cpu.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-rather than propagating a TODO item.
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 45b6cf1cfa..117e33cf90 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -832,9 +832,8 @@ static void kvm_riscv_read_multiext_legacy(RISCVCPU *cpu,
+                 multi_ext_cfg->supported = false;
+                 val = false;
+             } else {
+-                error_report("Unable to read ISA_EXT KVM register %s, "
+-                             "error code: %s", multi_ext_cfg->name,
+-                             strerrorname_np(errno));
++                error_report("Unable to read ISA_EXT KVM register %s: %s",
++                             multi_ext_cfg->name, strerror(errno));
+                 exit(EXIT_FAILURE);
+             }
+         } else {
+@@ -895,8 +894,8 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+          *
+          * Error out if we get any other errno.
+          */
+-        error_report("Error when accessing get-reg-list, code: %s",
+-                     strerrorname_np(errno));
++        error_report("Error when accessing get-reg-list: %s",
++                     strerror(errno));
+         exit(EXIT_FAILURE);
+     }
+ 
+@@ -905,8 +904,8 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+     reglist->n = rl_struct.n;
+     ret = ioctl(kvmcpu->cpufd, KVM_GET_REG_LIST, reglist);
+     if (ret) {
+-        error_report("Error when reading KVM_GET_REG_LIST, code %s ",
+-                     strerrorname_np(errno));
++        error_report("Error when reading KVM_GET_REG_LIST: %s",
++                     strerror(errno));
+         exit(EXIT_FAILURE);
+     }
+ 
+@@ -927,9 +926,8 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+         reg.addr = (uint64_t)&val;
+         ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
+         if (ret != 0) {
+-            error_report("Unable to read ISA_EXT KVM register %s, "
+-                         "error code: %s", multi_ext_cfg->name,
+-                         strerrorname_np(errno));
++            error_report("Unable to read ISA_EXT KVM register %s: %s",
++                         multi_ext_cfg->name, strerror(errno));
+             exit(EXIT_FAILURE);
+         }
+ 
+-- 
+2.43.0
 
-https://lore.kernel.org/qemu-devel/20231123143813.42632-4-philmd@linaro.org/
-is the patch (still pending) that does this in the existing rpi code.
-
-> +
-> +        /* start powered off if not enabled */
-> +        if (!object_property_set_bool(OBJECT(&s_base->cpu[n].core),
-> +                                      "start-powered-off",
-> +                                      n >= s_base->enabled_cpus,
-> +                                      errp)) {
-> +            return;
-> +        }
-
-Trying to set start-powered-off can never fail, so we don't need
-to error-check it, but can just error_abort.
-https://lore.kernel.org/qemu-devel/20231123143813.42632-5-philmd@linaro.org/
-is the patch which does that for the existing uses.
-
-> +
-> +        if (!qdev_realize(DEVICE(&s_base->cpu[n].core), NULL, errp)) {
-> +            return;
-> +        }
-> +    }
-> +}
-
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-
-thanks
--- PMM
 
