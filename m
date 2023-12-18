@@ -2,96 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82538165F6
+	by mail.lfdr.de (Postfix) with ESMTPS id A65198165F5
 	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 06:16:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rF5yK-0006vd-IX; Mon, 18 Dec 2023 00:15:20 -0500
+	id 1rF5zB-0007BZ-Fy; Mon, 18 Dec 2023 00:16:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rF5yF-0006vB-MA
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 00:15:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rF5yB-0003DB-67
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 00:15:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702876508;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=us3d4nmHk3sAoZXoQzVjlol7teSSMXKMmltMJechvww=;
- b=GyhVXPcOMD2t1dNLv5mDM7HCXC/4CzeYXVDlidjbeMnJHEC4AYlVCt1TZ40DquFaL4PZ5r
- qtYmYWRb7MOU4MBGI/4Fytw+7V65FiI8gWnNyNlQIISbgeuY6MEFZQqt251QGWgDrzIk/I
- MpGkvwa/OKcu6tsYperdoFwu4k8lQkw=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-DTDpr0zcMdagBd5D6O6maQ-1; Mon, 18 Dec 2023 00:15:06 -0500
-X-MC-Unique: DTDpr0zcMdagBd5D6O6maQ-1
-Received: by mail-ot1-f70.google.com with SMTP id
- 46e09a7af769-6d9f55f4765so987234a34.0
- for <qemu-devel@nongnu.org>; Sun, 17 Dec 2023 21:15:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rF5z3-00076U-FV
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 00:16:05 -0500
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rF5z0-0003Mi-3l
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 00:16:05 -0500
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-3b9f8c9307dso2841671b6e.0
+ for <qemu-devel@nongnu.org>; Sun, 17 Dec 2023 21:16:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702876560; x=1703481360;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=MQkvW1tOkRiSsEaCXa+9cOAdN1s3DAxZ9i2ytKg37Fk=;
+ b=y5fpeYhAxH4Q5v77gMirg5OIDvHznMHpyITeYjQk3slB17aAfHpgyJzVkIVX1BRrGD
+ FztDcqGSQZaaaEEtpRTubFyoHObXhGd30ZnlnHGh9U50CRoRabzhMq8tgoMHRXVP9vbR
+ Q3nHL1skDpDgJHrhAsdiYQ3SIpVeFq9aQslGtflwWAQ/UQhwIePZVaOdXG0HAmTowrv+
+ fB5avf7HDNV4rvXJbQY9IKpZpkE+7ZW50lmYB8Eyg/CeW0MP5518cCdKfSpKQLsVSCze
+ ORmmrinLYFriGg6O7xkuz5/uDU9/sYs+Tt8cxsgnzqmOTci0Qwn2DmZj8FYk+uV5Vty/
+ Ziiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702876506; x=1703481306;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=us3d4nmHk3sAoZXoQzVjlol7teSSMXKMmltMJechvww=;
- b=jxN/zMNA0WnFi2Dm2nBW7YSKOWRGnxsS29E4R6R7Bi/s5wqp0a0NRIqrda4FirMNbF
- IkPJkryML/TS2tq6/huuE3vsznZ9/j6796cGwikE6na/YPp0XyuXh0U11CsGHXeKwN0Z
- pxi1/oM1FUM3CxWRiRReJmpYtfeMiTwDcZaerMDRlAldcxg+ljMEiTWdWu23NFReANsQ
- P/sAvyXpMbrb0+R4qo2oBmsYSm7TYaOWNJNUqGGqhu4lfnDKJsCNF2V4DQgcYXmdgJcl
- rXxu5wxstoS6a0iim7R9y96796cA7wY1WeNmL9K9gLLorpa+Ts3Ya3xcH0HRMm37QMgd
- i1Wg==
-X-Gm-Message-State: AOJu0YwFLdGEyK4SgssgkYAgHGzRayHQe+jsQyN5WbUL7xS9h0eHwSrU
- 2avPZAgOL5Fbi/qb2T2LRlyySqgpMkxbP74Jn0yT48GBiqBrw59CLEKI6FaA2CLn+KweNeCraKt
- XJTvRh+qd7+Xuk6E=
-X-Received: by 2002:a05:6830:907:b0:6d9:d486:be6b with SMTP id
- v7-20020a056830090700b006d9d486be6bmr30313469ott.2.1702876505820; 
- Sun, 17 Dec 2023 21:15:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG4QA9KxY4Fn4YCPnsyU89ZFiETt7gugueZXTi477MfazzAvRiHFwSBh2R0w1CA/5uU2dzxlA==
-X-Received: by 2002:a05:6830:907:b0:6d9:d486:be6b with SMTP id
- v7-20020a056830090700b006d9d486be6bmr30313443ott.2.1702876505570; 
- Sun, 17 Dec 2023 21:15:05 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- l2-20020a6542c2000000b005c621e0de25sm14460466pgp.71.2023.12.17.21.14.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Dec 2023 21:15:05 -0800 (PST)
-Date: Mon, 18 Dec 2023 13:14:51 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>,
- Paul Durrant <paul@xen.org>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH V8 00/12] fix migration of suspended runstate
-Message-ID: <ZX_VS_KDsoiL9T2X@x1n>
-References: <1702481421-375368-1-git-send-email-steven.sistare@oracle.com>
- <a9ddc1b2-d4fc-44de-857b-2aeb35fa0925@oracle.com>
+ d=1e100.net; s=20230601; t=1702876560; x=1703481360;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MQkvW1tOkRiSsEaCXa+9cOAdN1s3DAxZ9i2ytKg37Fk=;
+ b=ca7aQ4U4PKCgcFLiMcwZU4roi2XRNiBJxNgG8B/xkfusv8Dt/I6MB5v99yufL54p75
+ a0LiWUKPFhsU/nXbTGKeIE3LPH2sbK17aRn7MqMpngssW1K+/GLNfGRyRAT0rBYExvU1
+ dE+/2CFVMLX3bjQhS7Xy0Kgl0aXGhwL+bbpvvxO0gn6VZrkI15XlN1Bu3BzLnPpKPutl
+ EgbbdFInLvrOE5uqXRXTfVheQPKDWeQpOzcZExgABvmf6RChR2s/mUyrAmi7lg+bCZpo
+ GerQoNXvrkdzsW2g+AWNkheZ4sKSs3jsPT1+REYm6l6tpK4Z0u+6DvDwD2re3/OlIPH8
+ mWVA==
+X-Gm-Message-State: AOJu0Yw4kngjKDEQwm8XfrEBXqb4fxukJLy5KkMs0I71kM6sa2lUsz8K
+ h41dB0ltM4GddyX0CprMKA8xiQ==
+X-Google-Smtp-Source: AGHT+IH8TIipWnM2uwo+RFKvJcOws+ASY+Jtgk9ng5YvdTI/PSy8+U2PAsDpTb4vbdV/zDh3bxr2+A==
+X-Received: by 2002:a05:6808:228b:b0:3ba:175:f195 with SMTP id
+ bo11-20020a056808228b00b003ba0175f195mr17253567oib.94.1702876560272; 
+ Sun, 17 Dec 2023 21:16:00 -0800 (PST)
+Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
+ a5-20020aa78645000000b006d6bd97ba73sm1390888pfo.159.2023.12.17.21.15.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 17 Dec 2023 21:15:59 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v8 0/4] gdbstub and TCG plugin improvements
+Date: Mon, 18 Dec 2023 14:15:46 +0900
+Message-Id: <20231218-riscv-v8-0-c9bf2b1582d7@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a9ddc1b2-d4fc-44de-857b-2aeb35fa0925@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -6
-X-Spam_score: -0.7
-X-Spam_bar: /
-X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.086,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAILVf2UC/13MSw6DIBSF4a2YOy4Njxa0o+6jcUCuUO+g0EBDN
+ Ia9iw47/E9Ovg2yS+QyPLoNkiuUKYYW/aUDnG14O0ZTa5BcKiGFYokyFuYRB33jQ6/RQ/t+k/O
+ 0nM5rbD1T/sW0nmwxx/ovFMM4s0ZzcddWKeOfk10DLVeMHxhrrTvLfc7umwAAAA==
+To: Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Mikhail Tyutin <m.tyutin@yadro.com>, 
+ Aleksandr Anenkov <a.anenkov@yadro.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Fabiano Rosas <farosas@suse.de>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.4
+Received-SPF: none client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,19 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 13, 2023 at 10:35:33AM -0500, Steven Sistare wrote:
-> Hi Peter, all have RB's, with all i's dotted and t's crossed - steve
+This series extracts fixes and refactorings that can be applied
+independently from "[PATCH v9 00/23] plugins: Allow to read registers".
 
-Yes this seems to be more migration related so maybe good candidate for a
-pull from migration submodule.
+The patch "target/riscv: Move MISA limits to class" was replaced with
+patch "target/riscv: Move misa_mxl_max to class" since I found instances
+may have different misa_ext_mask.
 
-But since this is still solving a generic issue, I'm copying a few more
-people from get_maintainers.pl that this series touches, just in case
-they'll have something to say before dev cycle starts.
+V6 -> V7:
+  Rebased.
 
-Thanks,
+V5 -> V6:
+  Added patch "default-configs: Add TARGET_XML_FILES definition".
+  Rebased.
 
+V4 -> V5:
+  Added patch "hw/riscv: Use misa_mxl instead of misa_mxl_max".
+
+V3 -> V4:
+  Added patch "gdbstub: Check if gdb_regs is NULL".
+
+V2 -> V3:
+  Restored patch sets from the previous version.
+  Rebased to commit 800485762e6564e04e2ab315132d477069562d91.
+
+V1 -> V2:
+  Added patch "target/riscv: Do not allow MXL_RV32 for TARGET_RISCV64".
+  Added patch "target/riscv: Initialize gdb_core_xml_file only once".
+  Dropped patch "target/riscv: Remove misa_mxl validation".
+  Dropped patch "target/riscv: Move misa_mxl_max to class".
+  Dropped patch "target/riscv: Validate misa_mxl_max only once".
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v8:
+- Added a more detailed explanation for patch "hw/riscv: Use misa_mxl
+  instead of misa_mxl_max". (Alistair Francis)
+- Link to v7: https://lore.kernel.org/r/20231213-riscv-v7-0-a760156a337f@daynix.com
+
+---
+Akihiko Odaki (4):
+      hw/riscv: Use misa_mxl instead of misa_mxl_max
+      target/riscv: Remove misa_mxl validation
+      target/riscv: Move misa_mxl_max to class
+      target/riscv: Validate misa_mxl_max only once
+
+ target/riscv/cpu.h         |   4 +-
+ hw/riscv/boot.c            |   2 +-
+ target/riscv/cpu.c         | 139 ++++++++++++++++++++++++++-------------------
+ target/riscv/gdbstub.c     |  12 ++--
+ target/riscv/kvm/kvm-cpu.c |  10 ++--
+ target/riscv/machine.c     |   7 +--
+ target/riscv/tcg/tcg-cpu.c |  44 ++------------
+ target/riscv/translate.c   |   3 +-
+ 8 files changed, 109 insertions(+), 112 deletions(-)
+---
+base-commit: 9c74490bff6c8886a922008d0c9ce6cae70dd17e
+change-id: 20231213-riscv-fcc9640986cf
+
+Best regards,
 -- 
-Peter Xu
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
