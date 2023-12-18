@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4817817782
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 17:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 854C78177A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 17:37:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFGUA-0000ip-2J; Mon, 18 Dec 2023 11:28:54 -0500
+	id 1rFGau-00031Q-CZ; Mon, 18 Dec 2023 11:35:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFGU7-0000iH-7s
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:28:51 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1rFGas-000315-Ur
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:35:50 -0500
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFGU4-0006oG-QG
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:28:50 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5534abbc637so1614806a12.0
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 08:28:44 -0800 (PST)
+ id 1rFGar-0000We-2B
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:35:50 -0500
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-50e3c6f1c10so1307390e87.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 08:35:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702916924; x=1703521724; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702917347; x=1703522147; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=25IIXBonTjtNAAdtpKjGM3WakvUkpmjdYpaZ1WQD5GY=;
- b=h6cbRAI1TmAq2erk7lMS/u9zNwCVr9BJHSuqvqzcdhCL5tk01/kYwIycX0UmFxaIGA
- 6p9rDdz3a3uea87eTHgU4o505DQWbRb/8X+Dsm6/Qjb1r50SpwTo0fLVCkM+rZDnzbcZ
- HOZO/KXUBuZo9C/6XPPcqJwi5dAKVJk2WetfSRhM8VbIQrKnOhb4pRTHLB43us36XdU3
- fG2BROZ6mEvzBD3cd37ylsgnbjP0/NTW7dW4FZSLKShS0PZlFSpC9CJtZ0X/BIkUrhr0
- kG2QOdnhXjuIgJ3Gc3iHCMoXJACuedITRpUa7Hq7JUuRdPp/sF1a4YubKr+l8kqzXQ0h
- 4+5w==
+ bh=kIO0Il9LLINrqLrssLbrvYj3RvRqz983KtfXAKLTwXA=;
+ b=LF23XuqGeoo/MK5+l58siFMosZF+v3aXgOSe73Hs6WLWRXOw3IjlA7G+HcnQTNGktz
+ IsDLrBbvdfL4q3+wpZrZ9IEeGp2hyG8fxPRsyL6fa79a/bPGrr3h5SMyH4nmUE76Pl4r
+ zKnO+ISO5DIh0ATKA7KmTuoc1jGaVjw9VXnnnWoVP6kebLgC4eQLm6Bp4l3GvHMeVrZV
+ nzoC+xFlsBFYt7tw6oOiOG9s43IdL8MfOHwnZV+vU465W5ZZqBJzcteDQ/N3Je/nITE/
+ u7zkwOmtQC1rTvF8T+6iAM9Ut3iDRYyT55fwFRPo3A36QPN7sZP2pB1q4zDjBaDt5Y59
+ xc5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702916924; x=1703521724;
+ d=1e100.net; s=20230601; t=1702917347; x=1703522147;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=25IIXBonTjtNAAdtpKjGM3WakvUkpmjdYpaZ1WQD5GY=;
- b=OvSaC0glLrxLJxNt+qnyCpcQudILE4H3a8h1FGBq5ozwpmzJAE+yFzyUhGr3zvzfxu
- ZxJXm1GCjgpmEgCzLoHEe4opgbQB+I/NGqpAeLAyqkIi4VY8DUw5l7u/Sjptbpk8z8i4
- fMA1hPlRse1v8Dzqb1NpFCYNHko9sN/mTHVnCud6+71Pdq6VMfC8+BT0WNnB03a+PS2g
- Q1SVae1eimAN/VTygiWdZyVoEtDXtRphEMI3A1nM0kGDU1yszoP/mTYOiOoShKe0b8o0
- Hefutsed7YXAvM1Q2u//Bww6TPE7yxDC1Hf7fXdFs/NkF8zxrBWJ3g+NM5rqGdRb+98a
- kg6Q==
-X-Gm-Message-State: AOJu0YyFXKHNohR65BBNZ830aHS7cRaJXSPNxQG4p3R4F2VF/lKCH47U
- ctvyy2/t7Tp7YWApmZWahEx84i3UxfWnQ6BciePOCAGSgr54xDIP
-X-Google-Smtp-Source: AGHT+IGpH8u79MJCEJHcN5VHFdhEUxbYS8/NMj2iK1Xgi49ITnGvvRiyDDrO/SeHa5SDL295AWDJ3YGXa9S0QDjjdOI=
-X-Received: by 2002:a50:cdcd:0:b0:54c:5d36:42e6 with SMTP id
- h13-20020a50cdcd000000b0054c5d3642e6mr8695603edj.81.1702916923721; Mon, 18
- Dec 2023 08:28:43 -0800 (PST)
+ bh=kIO0Il9LLINrqLrssLbrvYj3RvRqz983KtfXAKLTwXA=;
+ b=jCqMQcCIZrMoOwjhno5qZa1tmitTGg4CrPJgnxvJHh+Ynxh+inh0onmXaWzs+0E44q
+ KWvhgkJIeheTL9RXYpn6zpsXFDSUiOx3LI/h9pk5Qd54AC4S6wYK6FjqHHTnxKv/DVlE
+ BtoL19u2fETp0lcZxzzCEM81aHBt4YMfOIjxzQfPyXl6sqBzP0O5fmc+sUIx8wk2lmaI
+ bLmOJ4rMWf0M6/fS3uQOcGH7TC13NQfw5N5WDoHtHyq1FkpmR5Kem6DpBQDJRKfH9z1f
+ psnoceMT1V6ry3JYNEEbUiGm3cxdSEDJIrIfeUD+m5O0Z1yNDChTeOjITzYtuuv5O0UI
+ pE7Q==
+X-Gm-Message-State: AOJu0YxHHkPMtxee/da1Nj3QO3s5QIlctBbphtUt6zgB+cIBstwqGPac
+ HhzO4C9u//+9KjFUTIi/mrCj32jlOYjeGxVaC9RHmg==
+X-Google-Smtp-Source: AGHT+IEUh68S1jDgPNIRmce7+G3hSAv6Fsp6arq1dUUI/lYQgsY1LhHnt/14HFBpne8TLSr1Wku4H6xfHpF8xwS6JGk=
+X-Received: by 2002:ac2:4892:0:b0:50e:297b:ed0a with SMTP id
+ x18-20020ac24892000000b0050e297bed0amr717395lfc.132.1702917346876; Mon, 18
+ Dec 2023 08:35:46 -0800 (PST)
 MIME-Version: 1.0
 References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
- <20231208023145.1385775-7-sergey.kambalin@auriga.com>
-In-Reply-To: <20231208023145.1385775-7-sergey.kambalin@auriga.com>
+ <20231208023145.1385775-8-sergey.kambalin@auriga.com>
+In-Reply-To: <20231208023145.1385775-8-sergey.kambalin@auriga.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Dec 2023 16:28:32 +0000
-Message-ID: <CAFEAcA_fFXV9zfsYYzowxrcHQT4e4mSLr-55MLp85b0J=AVJ+g@mail.gmail.com>
-Subject: Re: [PATCH v4 06/45] Add BCM2838 GPIO stub
+Date: Mon, 18 Dec 2023 16:35:36 +0000
+Message-ID: <CAFEAcA812WHybPZCw5vY_=ODgErU4+FzJoKPy7gPSwQQ-e4czw@mail.gmail.com>
+Subject: Re: [PATCH v4 07/45] Implement BCM2838 GPIO functionality
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,109 +86,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 02:39, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Fri, 8 Dec 2023 at 02:33, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
 > Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 > ---
->  hw/arm/bcm2838.c                     |   4 +-
->  hw/gpio/bcm2838_gpio.c               | 152 +++++++++++++++++++++++++++
->  hw/gpio/meson.build                  |   5 +-
->  include/hw/arm/bcm2838_peripherals.h |   2 -
->  include/hw/gpio/bcm2838_gpio.h       |  40 +++++++
->  5 files changed, 198 insertions(+), 5 deletions(-)
->  create mode 100644 hw/gpio/bcm2838_gpio.c
->  create mode 100644 include/hw/gpio/bcm2838_gpio.h
+>  hw/gpio/bcm2838_gpio.c | 192 ++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 189 insertions(+), 3 deletions(-)
+
+>  static uint64_t bcm2838_gpio_read(void *opaque, hwaddr offset, unsigned size)
+>  {
+> +    BCM2838GpioState *s = (BCM2838GpioState *)opaque;
+>      uint64_t value = 0;
 >
-> diff --git a/hw/arm/bcm2838.c b/hw/arm/bcm2838.c
-> index 042e543006..8925957c6c 100644
-> --- a/hw/arm/bcm2838.c
-> +++ b/hw/arm/bcm2838.c
-> @@ -14,7 +14,7 @@
->  #include "hw/arm/bcm2838.h"
->  #include "trace.h"
+> -    qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
+> -                  TYPE_BCM2838_GPIO, __func__, offset);
+> +    switch (offset) {
+> +    case GPFSEL0:
+> +    case GPFSEL1:
+> +    case GPFSEL2:
+> +    case GPFSEL3:
+> +    case GPFSEL4:
+> +    case GPFSEL5:
+> +        value = gpfsel_get(s, offset / BYTES_IN_WORD);
+> +        break;
+> +    case GPSET0:
+> +    case GPSET1:
+> +    case GPCLR0:
+> +    case GPCLR1:
+> +        /* Write Only */
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s: Attempt reading from write only"
+> +                      " register. %lu will be returned. Address 0x%"HWADDR_PRIx
+> +                      ", size %u\n", TYPE_BCM2838_GPIO, __func__, value, offset,
+> +                      size);
+
+'value' is a uint64_t, but you try to print it with a %lu format
+string here. This won't compile on 32-bit machines. (In general
+watch out for %lu %lx etc and don't use them unless the type
+really is "long".)
+
+You can get the compiler to tell you about these format issues by
+any of the following options:
+ * building for a 32-bit host (eg i386)
+ * building for macos (the macos clang is stricter about these even
+   when building for a 64-bit)
+ * running your patches through the gitlab CI setup: fork the QEMU
+   project on gitlab as an ordinary gitlab user; then push your
+   branch to your fork of the repo with some environment variables
+   set to trigger a CI pipeline run:
+   https://www.qemu.org/docs/master/devel/ci.html#custom-ci-cd-variables
+
+
+>  static void bcm2838_gpio_reset(DeviceState *dev)
+>  {
+>      BCM2838GpioState *s = BCM2838_GPIO(dev);
 >
-> -#define GIC400_MAINTAINANCE_IRQ      9
-> +#define GIC400_MAINTENANCE_IRQ      9
->  #define GIC400_TIMER_NS_EL2_IRQ     10
->  #define GIC400_TIMER_VIRT_IRQ       11
->  #define GIC400_LEGACY_FIQ           12
-> @@ -163,7 +163,7 @@ static void bcm2838_realize(DeviceState *dev, Error **errp)
->
->          sysbus_connect_irq(SYS_BUS_DEVICE(&s->gic), n + 4 * BCM283X_NCPUS,
->                             qdev_get_gpio_in(gicdev,
-> -                                            PPI(n, GIC400_MAINTAINANCE_IRQ)));
-> +                                            PPI(n, GIC400_MAINTENANCE_IRQ)));
->
->          /* Connect timers from the CPU to the interrupt controller */
->          qdev_connect_gpio_out(cpudev, GTIMER_PHYS,
-
-Squash these changes into the previous patch :-)
-
-> diff --git a/hw/gpio/bcm2838_gpio.c b/hw/gpio/bcm2838_gpio.c
-> new file mode 100644
-> index 0000000000..15b66cb559
-> --- /dev/null
-> +++ b/hw/gpio/bcm2838_gpio.c
-> @@ -0,0 +1,152 @@
-> +/*
-> + * Raspberry Pi (BCM2838) GPIO Controller
-> + * This implementation is based on bcm2835_gpio (hw/gpio/bcm2835_gpio.c)
-> + *
-> + * Copyright (c) 2022 Auriga LLC
-> + *
-> + * Authors:
-> + *  Lotosh, Aleksey <aleksey.lotosh@auriga.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-
-It would be nice to be consistent about whether you want to use
-SPDX-License-Identifier tags or not in the new files you're adding.
-(Patch 4's bcm2838.c uses it; this one doesn't.)
-
-> + */
-
-> +#define RESET_VAL_CNTRL_REG0 0xAAA95555;
-> +#define RESET_VAL_CNTRL_REG1 0xA0AAAAAA;
-> +#define RESET_VAL_CNTRL_REG2 0x50AAA95A;
-> +#define RESET_VAL_CNTRL_REG3 0x00055555;
-
-These shouldn't have trailing semicolons.
-
+> +    memset(s->fsel, 0, sizeof(s->fsel));
 > +
-> +#define BYTES_IN_WORD        4
+>      s->lev0 = 0;
+>      s->lev1 = 0;
 
-> diff --git a/hw/gpio/meson.build b/hw/gpio/meson.build
-> index 066ea96480..8a8d03d885 100644
-> --- a/hw/gpio/meson.build
-> +++ b/hw/gpio/meson.build
-> @@ -9,6 +9,9 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files('imx_gpio.c'))
->  system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_gpio.c'))
->  system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_gpio.c'))
->  system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_gpio.c'))
-> -system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_gpio.c'))
-> +system_ss.add(when: 'CONFIG_RASPI', if_true: files(
-> +    'bcm2835_gpio.c',
-> +    'bcm2838_gpio.c'
-> +))
->  system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_gpio.c'))
->  system_ss.add(when: 'CONFIG_SIFIVE_GPIO', if_true: files('sifive_gpio.c'))
-> diff --git a/include/hw/arm/bcm2838_peripherals.h b/include/hw/arm/bcm2838_peripherals.h
-> index 5a72355183..d07831753a 100644
-> --- a/include/hw/arm/bcm2838_peripherals.h
-> +++ b/include/hw/arm/bcm2838_peripherals.h
-> @@ -11,8 +11,6 @@
->
->  #include "hw/arm/bcm2835_peripherals.h"
->
-> -#define GENET_OFFSET            0x1580000
-> -
+I think this bit should go in the previous patch since we added
+s->fsel there and do the other reset code there already.
 
-Why does this line get deleted ?
-
->  /* SPI */
->  #define GIC_SPI_INTERRUPT_MBOX         33
->  #define GIC_SPI_INTERRUPT_MPHI         40
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
