@@ -2,82 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C134816F34
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 14:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 165B6816F3D
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 14:01:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFD9O-0003mG-Qw; Mon, 18 Dec 2023 07:55:14 -0500
+	id 1rFD8O-0002fF-UK; Mon, 18 Dec 2023 07:54:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rFD9N-0003iL-56
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 07:55:13 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rFD9J-0005Eh-HT
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 07:55:11 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1d337dc9697so25125125ad.3
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 04:55:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1702904105; x=1703508905; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=g03lZDc12seGiVgZq3tCtdjLnA9oKi81LqdCJ6mMy1c=;
- b=JdRpzON3ehGTN31nzaJ0lrtQYTEFrlSnsd4QOG8VyruFmSTVissboVcQ1J3hA4CdXH
- soO8eIvfevoDOd3vUlwF4z3cMQ6pzdfhqFhXRNUJHuy66fnvoobvneQeLHlRVlzcnkXp
- 8Hpebx16c1P9/XjzaT4cMiSiYx0DTwHXdevRW90+HdVKufJX79Bbvgfwcshb5UtrtZqM
- SNv1Y7dk2yaquvDjcNCLbjaCfYURK0oM5blQhXhQ5mz2A0nFPK+OnpQJUnW3ws9TrlAh
- kLOvRyZ6hVnPjC600LaxtbEQVDHe5sdSeyRbdTXq+nLzc6i4f/0+kUs1zI8fFzfWLd/M
- 5cqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702904105; x=1703508905;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=g03lZDc12seGiVgZq3tCtdjLnA9oKi81LqdCJ6mMy1c=;
- b=R8OWErlPpARoc4sKqmqX6m9bgphggda+Trczff0sHbGTWM9Zbq2Fw1OqobeKhmxup9
- awnKZMEoPxcu9av6nVeIBa5yV0OD70O0bftQcv/8B0iz87QsL8iKF6M6Vywzn7EgHspB
- j56PE0UvrgqHM4xGiofow1DMqz3DHfgeZN9FvDUXWmClUKuVNuyKUEjA9C62rQTvk3kq
- rxwiDAMB+R+s89nOmNgThJykprzMwc2RftNnrm8raDCuIa3aL/0VCn89tfBuoRvNE/W1
- IrsKePv3OXSozUZYObi36SVKSHaDvG0W5n7sTSiucotC/Vur4SGM+zIsKx9fIpUrDNYh
- Gikg==
-X-Gm-Message-State: AOJu0Yx7RHKhBaoPAWBJISiZ69a5FTFJPGDojnKfoky7V3jYAo5My/3P
- K9X4eYR7Wn6nzYRx0sRf9xPTiaGvQwTg+RrQHQU=
-X-Google-Smtp-Source: AGHT+IGd1HarlvwvgvjMC7styw8wDyRrR+cPIDynUW9kqFKFCqWDzDE+NSVpOtNS31YjBvSiNpaadA==
-X-Received: by 2002:a17:903:32ce:b0:1d3:bedd:ad with SMTP id
- i14-20020a17090332ce00b001d3bedd00admr1458354plr.35.1702904105537; 
- Mon, 18 Dec 2023 04:55:05 -0800 (PST)
-Received: from grind.. ([179.93.21.205]) by smtp.gmail.com with ESMTPSA id
- c2-20020a170902848200b001d09c539c96sm7494897plo.229.2023.12.18.04.55.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Dec 2023 04:55:05 -0800 (PST)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v13 26/26] target/riscv: add rva22s64 cpu
-Date: Mon, 18 Dec 2023 09:53:34 -0300
-Message-ID: <20231218125334.37184-27-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218125334.37184-1-dbarboza@ventanamicro.com>
-References: <20231218125334.37184-1-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFD8N-0002ej-9E
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 07:54:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFD8K-0004ra-Ok
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 07:54:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702904047;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=IFIJ+RPzZkqaRY6iZci9OyAj1dWWVEMhl2Ha4XXbRMw=;
+ b=aA1SpIX99gFu4iEVDzWke0NHqwbVKaPbZD4KF77FbhCF1Zmbx69jPgBIs2fnY8hVsFRAaC
+ hw+4TUW7x16RV8cdR8o0UKlol2g1rQR3IbdaYjs2syDVYDI/78NPM0H8Mh4fc9x2ZktXBa
+ 9M/0CiG80wnxbkBkxdX2pLrGTwloRMM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-Y3ffz6cwOyG1s-zkD-9iZQ-1; Mon,
+ 18 Dec 2023 07:54:05 -0500
+X-MC-Unique: Y3ffz6cwOyG1s-zkD-9iZQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4AEB938562C6;
+ Mon, 18 Dec 2023 12:54:05 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0E9B42026D66;
+ Mon, 18 Dec 2023 12:54:05 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0813221E6920; Mon, 18 Dec 2023 13:54:04 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Andrew Melnychenko <andrew@daynix.com>
+Cc: jasowang@redhat.com,  mst@redhat.com,  armbru@redhat.com,
+ eblake@redhat.com,  qemu-devel@nongnu.org,  berrange@redhat.com,
+ yuri.benditovich@daynix.com,  yan@daynix.com
+Subject: Re: [PATCH v7 4/5] qmp: Added new command to retrieve eBPF blob.
+In-Reply-To: <20230831065140.496485-5-andrew@daynix.com> (Andrew Melnychenko's
+ message of "Thu, 31 Aug 2023 09:51:39 +0300")
+References: <20230831065140.496485-1-andrew@daynix.com>
+ <20230831065140.496485-5-andrew@daynix.com>
+Date: Mon, 18 Dec 2023 13:54:04 +0100
+Message-ID: <874jgfu0wj.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.083,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,58 +83,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new profile CPU 'rva22s64' to work as an alias of
+Uh, I missed this one, my apologies!  Let me have a quick look...
 
--cpu rv64i,rva22s64
+Commit message style nitpick:
 
-Like the existing rva22u64 CPU already does with the RVA22U64 profile.
+    qmp: Add command to retrieve eBPF blob
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
----
- target/riscv/cpu-qom.h | 1 +
- target/riscv/cpu.c     | 8 ++++++++
- 2 files changed, 9 insertions(+)
+or
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 12fe78fc52..9219c2fcc3 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -36,6 +36,7 @@
- #define TYPE_RISCV_CPU_BASE128          RISCV_CPU_TYPE_NAME("x-rv128")
- #define TYPE_RISCV_CPU_RV64I            RISCV_CPU_TYPE_NAME("rv64i")
- #define TYPE_RISCV_CPU_RVA22U64         RISCV_CPU_TYPE_NAME("rva22u64")
-+#define TYPE_RISCV_CPU_RVA22S64         RISCV_CPU_TYPE_NAME("rva22s64")
- #define TYPE_RISCV_CPU_IBEX             RISCV_CPU_TYPE_NAME("lowrisc-ibex")
- #define TYPE_RISCV_CPU_SHAKTI_C         RISCV_CPU_TYPE_NAME("shakti-c")
- #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f57a9ee298..959c97c869 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1624,6 +1624,13 @@ static void rva22u64_profile_cpu_init(Object *obj)
- 
-     RVA22U64.enabled = true;
- }
-+
-+static void rva22s64_profile_cpu_init(Object *obj)
-+{
-+    rv64i_bare_cpu_init(obj);
-+
-+    RVA22S64.enabled = true;
-+}
- #endif
- 
- static const gchar *riscv_gdb_arch_name(CPUState *cs)
-@@ -1968,6 +1975,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,  rv128_base_cpu_init),
-     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I, rv64i_bare_cpu_init),
-     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64, rva22u64_profile_cpu_init),
-+    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64, rva22s64_profile_cpu_init),
- #endif
- };
- 
--- 
-2.43.0
+    qmp: New command to retrieve eBPF blob
+
+It's a title, not a sentence.
+
+Andrew Melnychenko <andrew@daynix.com> writes:
+
+> Now, the binary objects may be retrieved by id.
+> It would require for future qmp commands that may require specific
+> eBPF blob.
+>
+> Added command "request-ebpf". This command returns
+> eBPF program encoded base64. The program taken from the
+> skeleton and essentially is an ELF object that can be
+> loaded in the future with libbpf.
+>
+> The reason to use the command to provide the eBPF object
+> instead of a separate artifact was to avoid issues related
+> to finding the eBPF itself. eBPF object is an ELF binary
+> that contains the eBPF program and eBPF map description(BTF).
+> Overall, eBPF object should contain the program and enough
+> metadata to create/load eBPF with libbpf. As the eBPF
+> maps/program should correspond to QEMU, the eBPF can't
+> be used from different QEMU build.
+>
+> The first solution was a helper that comes with QEMU
+> and loads appropriate eBPF objects. And the issue is
+> to find a proper helper if the system has several
+> different QEMUs installed and/or built from the source,
+> which helpers may not be compatible.
+>
+> Another issue is QEMU updating while there is a running
+> QEMU instance. With an updated helper, it may not be
+> possible to hotplug virtio-net device to the already
+> running QEMU. Overall, requesting the eBPF object from
+> QEMU itself solves possible failures with acceptable effort.
+>
+> Links:
+> [PATCH 3/5] qmp: Added the helper stamp check.
+> https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
+>
+> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+
+[...]
+
+> diff --git a/qapi/ebpf.json b/qapi/ebpf.json
+> new file mode 100644
+> index 0000000000..ba78407148
+> --- /dev/null
+> +++ b/qapi/ebpf.json
+> @@ -0,0 +1,66 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
+> +# See the COPYING file in the top-level directory.
+> +
+> +##
+> +# = eBPF Objects
+> +#
+> +# eBPF object is an ELF binary that contains the eBPF
+> +# program and eBPF map description(BTF). Overall, eBPF
+> +# object should contain the program and enough metadata
+> +# to create/load eBPF with libbpf. As the eBPF maps/program
+> +# should correspond to QEMU, the eBPF can't be used from
+> +# different QEMU build.
+
+An introduction, nice!
+
+Two spaces between sentences for consistency, please.
+
+Wrap comment lines at column 70, like this:
+
+   # eBPF object is an ELF binary that contains the eBPF program and eBPF
+   # map description(BTF).  Overall, eBPF object should contain the
+   # program and enough metadata to create/load eBPF with libbpf.  As the
+   # eBPF maps/program should correspond to QEMU, the eBPF can't be used
+   # from different QEMU build.
+
+> +#
+> +# Currently, there is a possible eBPF for receive-side scaling (RSS).
+> +#
+> +##
+> +
+> +##
+> +# @EbpfObject:
+> +#
+> +# An eBPF ELF object.
+> +#
+> +# @object: the eBPF object encoded in base64
+> +#
+> +# Since: 8.2
+
+Won't make 8.2, so bump to 9.0.  More of the same below, not noting it
+again.
+
+> +##
+> +{ 'struct': 'EbpfObject',
+> +  'data': {'object': 'str'},
+> +  'if': 'CONFIG_EBPF' }
+> +
+> +##
+> +# @EbpfProgramID:
+> +#
+> +# The eBPF programs that can be gotten with request-ebpf.
+> +#
+> +# @rss: Receive side scaling, technology that allows steering traffic
+> +#     between queues by calculation hash.  Users may set up
+> +#     indirection table and hash/packet types configurations.  Used
+> +#     with virtio-net.
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'enum': 'EbpfProgramID',
+> +  'if': 'CONFIG_EBPF',
+> +  'data': [ { 'name': 'rss' } ] }
+> +
+> +##
+> +# @request-ebpf:
+> +#
+> +# Retrieve an eBPF object that can be loaded with libbpf.  Management
+> +# applications (g.e. libvirt) may load it and pass file descriptors to
+> +# QEMU, so they can run running QEMU without BPF capabilities.
+> +#
+> +# @id: The ID of the program to return.
+> +#
+> +# Returns: eBPF object encoded in base64.
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'command': 'request-ebpf',
+> +  'data': { 'id': 'EbpfProgramID' },
+> +  'returns': 'EbpfObject',
+> +  'if': 'CONFIG_EBPF' }
+> diff --git a/qapi/meson.build b/qapi/meson.build
+> index 60a668b343..90047dae1c 100644
+> --- a/qapi/meson.build
+> +++ b/qapi/meson.build
+> @@ -33,6 +33,7 @@ qapi_all_modules = [
+>    'crypto',
+>    'cxl',
+>    'dump',
+> +  'ebpf',
+>    'error',
+>    'introspect',
+>    'job',
+> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+> index 6594afba31..2c82a49bae 100644
+> --- a/qapi/qapi-schema.json
+> +++ b/qapi/qapi-schema.json
+> @@ -53,6 +53,7 @@
+>  { 'include': 'char.json' }
+>  { 'include': 'dump.json' }
+>  { 'include': 'net.json' }
+> +{ 'include': 'ebpf.json' }
+>  { 'include': 'rdma.json' }
+>  { 'include': 'rocker.json' }
+>  { 'include': 'tpm.json' }
+
+With the (minor) doc comment fixes:
+Acked-by: Markus Armbruster <armbru@redhat.com>
 
 
