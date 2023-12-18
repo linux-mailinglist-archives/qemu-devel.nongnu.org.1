@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2EC2817E47
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 00:56:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF7E817E4B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 00:59:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFNSl-0008JZ-Ay; Mon, 18 Dec 2023 18:55:55 -0500
+	id 1rFNVb-0001LK-9t; Mon, 18 Dec 2023 18:58:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNSf-0008EZ-UW; Mon, 18 Dec 2023 18:55:49 -0500
+ id 1rFNVY-0001Km-Bv; Mon, 18 Dec 2023 18:58:48 -0500
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNSd-00066Q-DR; Mon, 18 Dec 2023 18:55:48 -0500
+ id 1rFNVV-0006M5-Ra; Mon, 18 Dec 2023 18:58:47 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9E5DB75A4BF;
- Tue, 19 Dec 2023 00:55:42 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0481875A4C2;
+ Tue, 19 Dec 2023 00:58:44 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id t5hi1Xbfw0b4; Tue, 19 Dec 2023 00:55:40 +0100 (CET)
+ with ESMTP id cvNvI9QiM3Rk; Tue, 19 Dec 2023 00:58:42 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id B16EB75A406; Tue, 19 Dec 2023 00:55:40 +0100 (CET)
+ id 1548175A406; Tue, 19 Dec 2023 00:58:42 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id AF7CF756094;
- Tue, 19 Dec 2023 00:55:40 +0100 (CET)
-Date: Tue, 19 Dec 2023 00:55:40 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 13682756094;
+ Tue, 19 Dec 2023 00:58:42 +0100 (CET)
+Date: Tue, 19 Dec 2023 00:58:42 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Bernhard Beschow <shentey@gmail.com>
 cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
@@ -41,12 +41,12 @@ cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>, 
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>, 
  qemu-block@nongnu.org
-Subject: Re: [PATCH v2 02/12] hw/block/fdc-sysbus: Free struct FDCtrl from
+Subject: Re: [PATCH v2 03/12] hw/char/serial: Free struct SerialState from
  MemoryRegion
-In-Reply-To: <20231218185114.119736-3-shentey@gmail.com>
-Message-ID: <36503e51-cd87-e80f-b9e5-faecbd19d03e@eik.bme.hu>
+In-Reply-To: <20231218185114.119736-4-shentey@gmail.com>
+Message-ID: <97d32fb0-a36d-fe2b-c6bf-c774d82d142c@eik.bme.hu>
 References: <20231218185114.119736-1-shentey@gmail.com>
- <20231218185114.119736-3-shentey@gmail.com>
+ <20231218185114.119736-4-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
@@ -72,72 +72,159 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Mon, 18 Dec 2023, Bernhard Beschow wrote:
-> FDCtrl::iomem isn't used inside FDCtrl context but only inside FDCtrlSysBus
-> context, so more it there.
+> SerialState::io isn't used within TYPE_SERIAL directly. Push it to its users to
+> make them the owner of the MemoryRegion.
 
-Same comments as for patch 1 otherwise
+I'm not sure this patch is needed. The users already own the SerialState 
+so can use its memory region so they don't need their own. Since all of 
+these need this io region putting it in SerialState saves some 
+duplication. Unless I've missed some reason this might be needed.
 
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Regards,
+BALATON Zoltan
 
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
-> hw/block/fdc-internal.h | 2 --
-> hw/block/fdc-sysbus.c   | 6 ++++--
-> 2 files changed, 4 insertions(+), 4 deletions(-)
+> include/hw/char/serial.h   | 2 +-
+> hw/char/serial-isa.c       | 7 +++++--
+> hw/char/serial-pci-multi.c | 7 ++++---
+> hw/char/serial-pci.c       | 7 +++++--
+> hw/char/serial.c           | 4 ++--
+> 5 files changed, 17 insertions(+), 10 deletions(-)
 >
-> diff --git a/hw/block/fdc-internal.h b/hw/block/fdc-internal.h
-> index fef2bfbbf5..e219623dc7 100644
-> --- a/hw/block/fdc-internal.h
-> +++ b/hw/block/fdc-internal.h
-> @@ -25,7 +25,6 @@
-> #ifndef HW_BLOCK_FDC_INTERNAL_H
-> #define HW_BLOCK_FDC_INTERNAL_H
+> diff --git a/include/hw/char/serial.h b/include/hw/char/serial.h
+> index 8ba7eca3d6..eb4254edde 100644
+> --- a/include/hw/char/serial.h
+> +++ b/include/hw/char/serial.h
+> @@ -77,7 +77,6 @@ struct SerialState {
+>     int poll_msl;
 >
-> -#include "exec/memory.h"
-> #include "hw/block/block.h"
-> #include "hw/block/fdc.h"
-> #include "qapi/qapi-types-block.h"
-> @@ -91,7 +90,6 @@ typedef struct FDrive {
-> } FDrive;
+>     QEMUTimer *modem_status_poll;
+> -    MemoryRegion io;
+> };
+> typedef struct SerialState SerialState;
 >
-> struct FDCtrl {
-> -    MemoryRegion iomem;
->     qemu_irq irq;
->     /* Controller state */
->     QEMUTimer *result_timer;
-> diff --git a/hw/block/fdc-sysbus.c b/hw/block/fdc-sysbus.c
-> index 86ea51d003..e197b97262 100644
-> --- a/hw/block/fdc-sysbus.c
-> +++ b/hw/block/fdc-sysbus.c
+> @@ -85,6 +84,7 @@ struct SerialMM {
+>     SysBusDevice parent;
+>
+>     SerialState serial;
+> +    MemoryRegion io;
+>
+>     uint8_t regshift;
+>     uint8_t endianness;
+> diff --git a/hw/char/serial-isa.c b/hw/char/serial-isa.c
+> index 141a6cb168..2be8be980b 100644
+> --- a/hw/char/serial-isa.c
+> +++ b/hw/char/serial-isa.c
 > @@ -26,6 +26,7 @@
 > #include "qemu/osdep.h"
 > #include "qapi/error.h"
-> #include "qom/object.h"
+> #include "qemu/module.h"
 > +#include "exec/memory.h"
-> #include "hw/sysbus.h"
-> #include "hw/block/fdc.h"
-> #include "migration/vmstate.h"
-> @@ -52,6 +53,7 @@ struct FDCtrlSysBus {
->     /*< public >*/
->
->     struct FDCtrl state;
-> +    MemoryRegion iomem;
+> #include "sysemu/sysemu.h"
+> #include "hw/acpi/acpi_aml_interface.h"
+> #include "hw/char/serial.h"
+> @@ -43,6 +44,7 @@ struct ISASerialState {
+>     uint32_t iobase;
+>     uint32_t isairq;
+>     SerialState state;
+> +    MemoryRegion io;
 > };
 >
-> static uint64_t fdctrl_read_mem(void *opaque, hwaddr reg, unsigned ize)
-> @@ -146,11 +148,11 @@ static void sysbus_fdc_common_instance_init(Object *obj)
+> static const int isa_serial_io[MAX_ISA_SERIAL_PORTS] = {
+> @@ -79,8 +81,9 @@ static void serial_isa_realizefn(DeviceState *dev, Error **errp)
+>     qdev_realize(DEVICE(s), NULL, errp);
+>     qdev_set_legacy_instance_id(dev, isa->iobase, 3);
 >
->     qdev_set_legacy_instance_id(dev, 0 /* io */, 2); /* FIXME */
+> -    memory_region_init_io(&s->io, OBJECT(isa), &serial_io_ops, s, "serial", 8);
+> -    isa_register_ioport(isadev, &s->io, isa->iobase);
+> +    memory_region_init_io(&isa->io, OBJECT(isa), &serial_io_ops, s, "serial",
+> +                          8);
+> +    isa_register_ioport(isadev, &isa->io, isa->iobase);
+> }
 >
-> -    memory_region_init_io(&fdctrl->iomem, obj,
-> +    memory_region_init_io(&sys->iomem, obj,
->                           sbdc->use_strict_io ? &fdctrl_mem_strict_ops
->                                               : &fdctrl_mem_ops,
->                           fdctrl, "fdc", 0x08);
-> -    sysbus_init_mmio(sbd, &fdctrl->iomem);
-> +    sysbus_init_mmio(sbd, &sys->iomem);
+> static void serial_isa_build_aml(AcpiDevAmlIf *adev, Aml *scope)
+> diff --git a/hw/char/serial-pci-multi.c b/hw/char/serial-pci-multi.c
+> index 5d65c534cb..16cb2faad7 100644
+> --- a/hw/char/serial-pci-multi.c
+> +++ b/hw/char/serial-pci-multi.c
+> @@ -44,6 +44,7 @@ typedef struct PCIMultiSerialState {
+>     uint32_t     ports;
+>     char         *name[PCI_SERIAL_MAX_PORTS];
+>     SerialState  state[PCI_SERIAL_MAX_PORTS];
+> +    MemoryRegion io[PCI_SERIAL_MAX_PORTS];
+>     uint32_t     level[PCI_SERIAL_MAX_PORTS];
+>     qemu_irq     *irqs;
+>     uint8_t      prog_if;
+> @@ -58,7 +59,7 @@ static void multi_serial_pci_exit(PCIDevice *dev)
+>     for (i = 0; i < pci->ports; i++) {
+>         s = pci->state + i;
+>         qdev_unrealize(DEVICE(s));
+> -        memory_region_del_subregion(&pci->iobar, &s->io);
+> +        memory_region_del_subregion(&pci->iobar, &pci->io[i]);
+>         g_free(pci->name[i]);
+>     }
+>     qemu_free_irqs(pci->irqs, pci->ports);
+> @@ -112,9 +113,9 @@ static void multi_serial_pci_realize(PCIDevice *dev, Error **errp)
+>         }
+>         s->irq = pci->irqs[i];
+>         pci->name[i] = g_strdup_printf("uart #%zu", i + 1);
+> -        memory_region_init_io(&s->io, OBJECT(pci), &serial_io_ops, s,
+> +        memory_region_init_io(&pci->io[i], OBJECT(pci), &serial_io_ops, s,
+>                               pci->name[i], 8);
+> -        memory_region_add_subregion(&pci->iobar, 8 * i, &s->io);
+> +        memory_region_add_subregion(&pci->iobar, 8 * i, &pci->io[i]);
+>         pci->ports++;
+>     }
+> }
+> diff --git a/hw/char/serial-pci.c b/hw/char/serial-pci.c
+> index 087da3059a..ab3d0e56b5 100644
+> --- a/hw/char/serial-pci.c
+> +++ b/hw/char/serial-pci.c
+> @@ -28,6 +28,7 @@
+> #include "qemu/osdep.h"
+> #include "qapi/error.h"
+> #include "qemu/module.h"
+> +#include "exec/memory.h"
+> #include "hw/char/serial.h"
+> #include "hw/irq.h"
+> #include "hw/pci/pci_device.h"
+> @@ -38,6 +39,7 @@
+> struct PCISerialState {
+>     PCIDevice dev;
+>     SerialState state;
+> +    MemoryRegion io;
+>     uint8_t prog_if;
+> };
 >
->     sysbus_init_irq(sbd, &fdctrl->irq);
->     qdev_init_gpio_in(dev, fdctrl_handle_tc, 1);
+> @@ -57,8 +59,9 @@ static void serial_pci_realize(PCIDevice *dev, Error **errp)
+>     pci->dev.config[PCI_INTERRUPT_PIN] = 0x01;
+>     s->irq = pci_allocate_irq(&pci->dev);
+>
+> -    memory_region_init_io(&s->io, OBJECT(pci), &serial_io_ops, s, "serial", 8);
+> -    pci_register_bar(&pci->dev, 0, PCI_BASE_ADDRESS_SPACE_IO, &s->io);
+> +    memory_region_init_io(&pci->io, OBJECT(pci), &serial_io_ops, s, "serial",
+> +                          8);
+> +    pci_register_bar(&pci->dev, 0, PCI_BASE_ADDRESS_SPACE_IO, &pci->io);
+> }
+>
+> static void serial_pci_exit(PCIDevice *dev)
+> diff --git a/hw/char/serial.c b/hw/char/serial.c
+> index a32eb25f58..83b642aec3 100644
+> --- a/hw/char/serial.c
+> +++ b/hw/char/serial.c
+> @@ -1045,10 +1045,10 @@ static void serial_mm_realize(DeviceState *dev, Error **errp)
+>         return;
+>     }
+>
+> -    memory_region_init_io(&s->io, OBJECT(dev),
+> +    memory_region_init_io(&smm->io, OBJECT(dev),
+>                           &serial_mm_ops[smm->endianness], smm, "serial",
+>                           8 << smm->regshift);
+> -    sysbus_init_mmio(SYS_BUS_DEVICE(smm), &s->io);
+> +    sysbus_init_mmio(SYS_BUS_DEVICE(smm), &smm->io);
+>     sysbus_init_irq(SYS_BUS_DEVICE(smm), &smm->serial.irq);
+> }
+>
 >
 
