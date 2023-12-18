@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6808E816A34
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 10:51:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF16816A45
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 10:55:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFAGs-00050x-Rf; Mon, 18 Dec 2023 04:50:46 -0500
+	id 1rFAKX-0005oJ-TT; Mon, 18 Dec 2023 04:54:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1rFAGp-00050P-G1
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:50:43 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFAKV-0005nu-Ol
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:54:31 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1rFAGk-0006uH-A2
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:50:42 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9fa2714e828so323284766b.1
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 01:50:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFAKK-0007hn-CS
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:54:31 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2cc2238f597so29767721fa.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 01:54:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1702893034; x=1703497834;
- darn=nongnu.org; 
+ d=linaro.org; s=google; t=1702893258; x=1703498058; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oQ1Q2t0RwPtu0bFelHIi3HIMqk3CpxWdHNbgZvgQC3o=;
- b=ZxQx0YCDVcSgSuZ1fo9FeEhu4k+D9FUEx2L4Ap+TN5BmvdFm1tVokmVaUOZW/xNd8Z
- /EllVtf0MtnYzQUlUKAa+cY/BnVMY7I46dm5UUJfqVwkQ2Z1l1pBUwQS494LXkX+gfTm
- Ip0wsDLedQgc8DoITzU4JhwPqjJzLFok9mFK6JaNIVIvm7WVyrv8Oh8SNEyHmlmILUmg
- UHijr/nqkCUzPVYnagekTJKN1RCet+6dNNHA5CMM6+KSnPMoLvrr7fWxdRRx1enhXPUx
- 88cSKKD1GWnODA/PHFVE7MumJm9HwGo+b3O8AeliXB4a9B/Pd1YoyWf/rGra2Iwtu295
- 0p9A==
+ bh=22XHa7TU2HAZhqIoLxu+1GCExXKqhDp67R/omYu6sKM=;
+ b=FxsHh5TB6MwlX6x2NhiwLPK8Z/tcBdjX3/YtmS9R2awy/v28fFwMsVJMBMnnVS3Z+X
+ RpBsWQFRBEzuzTDqoS4GUpggBhcpHWDagNgd5UwPS81TQqk2NU8D4CmkcUqNhyo/4En9
+ mp6iEDli3R+yOnPT9pzZlZWKxLgmj6lJ3QrRBvp0VSiDcEcG50Z8N6hCZKWj/7ylaWw4
+ h9PqYo6uazYv6eJHEPxyzF7Go7mL0egMoZ37TEo5zXkllORiIdyHlwy92D96l1PzCLzA
+ 7ymhvavDqs6KiGjtUtRKUypA+j0sXUZaxXmFZvMRKVEWRJFgndrgqYtO20tMaIOeUAvN
+ xkIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702893034; x=1703497834;
+ d=1e100.net; s=20230601; t=1702893258; x=1703498058;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oQ1Q2t0RwPtu0bFelHIi3HIMqk3CpxWdHNbgZvgQC3o=;
- b=NvxMs3qwNV7lv3fxH3B9GS1qzLbMuYky2ZBcIcPevrz1/wWNLi9C7zozLjwou2f1KR
- VHyNh4+HvnwIX/5WLaZ4gFAUxiVYJGTZNOgTMRNDPr9YRrSfRpDJjbnPS7KvPyMp6SAV
- a3N40/6ev4rAJ3SdfzJxHcYwQAtcTPmt3Hvi4im6GirMo0V5sYh7M+W7KNk1cSFGrVGx
- kpajz51RJnkeVWmzj+dchN4ekHk2fYeEgVPNuhrJ2ltbHW5kfLwOn05wPn2kGth+K/SK
- Qz2MyibTnB+KpOKqrU9KtNDin6n7dTy5bl6C5FlWZXUVwvTCp3Wk27nleHdpD8C+pt02
- YvhQ==
-X-Gm-Message-State: AOJu0YyJWlXKqtMru9lZZ038O528TpFezRcRwHejDjnyuUGtvX1Udz6L
- IhqUOvhvd6BqQw5Gv2Aton2i2Qed9yyeEPc6PeymhRWLAPuF7m4ZQoY=
-X-Google-Smtp-Source: AGHT+IEkwNnM51fIly3/TOxHNTcUrg/ASt3NK+KsNuYq6G9TYrM2sEhoM2TELIlWa5KkdAbtQserkv9wwhimyUTzwxg=
-X-Received: by 2002:a17:907:7288:b0:a02:2177:ad14 with SMTP id
- dt8-20020a170907728800b00a022177ad14mr8930996ejc.73.1702893034519; Mon, 18
- Dec 2023 01:50:34 -0800 (PST)
+ bh=22XHa7TU2HAZhqIoLxu+1GCExXKqhDp67R/omYu6sKM=;
+ b=VL5mt64rPjL/uvG+cIrL2QeIo8T0FtNM6SKngozj8qWXdueAmLApgpC9lZwkVAMVRs
+ fvlgcD7mvw5oRKnMweMaiPUySaVkwoQRbs7si+QwlX3ent0m5lVAJZRWyr6aEwu2cjGT
+ wx0ZiV9n543sdviaIvGi0UAay4eDNMZhGLkdUT56vkMulWiKQ9z8v3cuk8jFdUm6X0kp
+ 603G4kWjLo8nqRgrTMq3efWDKc+paEWl+gukbsbtpGne/ZE4w4nxH779O4JZHe1pZRdb
+ K6B96fs1+cYiMoTFof8gZZf8KXGMV3iZVy8EQYgonyfTD5qL2xDMv6EimqoswdJwrxOb
+ ztqw==
+X-Gm-Message-State: AOJu0YzapRFCxO3xhFrSL4/xlsL5bYfh0PEXArBd2kqBccF4W+q2Qyvx
+ 9bpp0+i4NVnQvbf/aaPk+WCyVv/JIBAYKFjLdqziQg==
+X-Google-Smtp-Source: AGHT+IG8OYz2pq+QHf1MF7BM0rOkxLAelM2wX2KQDjadCOgPquG+JTMBma3kcPkXa0doXhtS2mks+vCRtXDZtTwFiE0=
+X-Received: by 2002:a2e:8608:0:b0:2cc:652b:9fd4 with SMTP id
+ a8-20020a2e8608000000b002cc652b9fd4mr450177lji.79.1702893258257; Mon, 18 Dec
+ 2023 01:54:18 -0800 (PST)
 MIME-Version: 1.0
-References: <20231211071204.30156-1-tomoyuki.hirose@igel.co.jp>
- <20231211071204.30156-3-tomoyuki.hirose@igel.co.jp>
- <CAFEAcA90fJgPGAjO0c4a=G+ge9bp1piVw40zt_rNHEoCTc_ngg@mail.gmail.com>
- <CAFS=Ec=fNB11TWWoJ847mF8v6=MkEefcMROwEyPQo9pceipNJg@mail.gmail.com>
- <CAFEAcA83J==kC5qUZBw8jE75iy=F0ojUKL2uvonU0RZ7iCqjSQ@mail.gmail.com>
-In-Reply-To: <CAFEAcA83J==kC5qUZBw8jE75iy=F0ojUKL2uvonU0RZ7iCqjSQ@mail.gmail.com>
-From: Tomoyuki Hirose <tomoyuki.hirose@igel.co.jp>
-Date: Mon, 18 Dec 2023 18:50:18 +0900
-Message-ID: <CAFS=EcndyH6cDr7EntmWdrWU6kgKXsK94vTWeTyJ71dhd0sZ4g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] hw/usb/hcd-xhci.c: allow unaligned access to
- Capability Registers
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+References: <20231214171447.44025-1-philmd@linaro.org>
+In-Reply-To: <20231214171447.44025-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 18 Dec 2023 09:54:07 +0000
+Message-ID: <CAFEAcA8fmzv6qkN=N9TZoYVox+uQ0m5iLkGPQpcRDVA8eDEujg@mail.gmail.com>
+Subject: Re: [RFC PATCH] hw/arm: Prefer arm_feature() over
+ object_property_find()
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>, 
+ Alistair Francis <alistair@alistair23.me>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=tomoyuki.hirose@igel.co.jp; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,43 +95,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 12, 2023 at 7:26=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
+On Thu, 14 Dec 2023 at 17:14, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
 >
-> On Tue, 12 Dec 2023 at 01:43, Tomoyuki Hirose
-> <tomoyuki.hirose@igel.co.jp> wrote:
-> >
-> > Thanks for comment.
-> >
-> > On Mon, Dec 11, 2023 at 10:57=E2=80=AFPM Peter Maydell <peter.maydell@l=
-inaro.org> wrote:
-> > > We should definitely look at fixing the unaligned access
-> > > stuff, but the linked bug report is not trying to do an
-> > > unaligned access -- it wants to do a 2-byte read from offset 2,
-> > > which is aligned. The capability registers in the xHCI spec
-> > > are also all at offsets and sizes that mean that a natural
-> > > read of them is not unaligned.
-> >
-> > Shouldn't I link this bug report?
-> > Or is it not appropriate to allow unaligned access?
+> QOM properties are added on the ARM vCPU object when a
+> feature is present. Rather than checking the property
+> is present, check the feature.
 >
-> The bug report is definitely relevant. But depending
-> on how tricky the unaligned access handling turns out to
-> be to get right, we might be able to fix the bug by
-> permitting aligned-but-not-4-bytes accesses. (I'm
-> a bit surprised that doesn't work already, in fact:
-> we use it in other devices.)
+> Suggested-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> RFC: If there is no objection on this patch, I can split
+>      as a per-feature series if necessary.
 >
-> thanks
-> -- PMM
+> Based-on: <20231123143813.42632-1-philmd@linaro.org>
+>   "hw: Simplify accesses to CPUState::'start-powered-off' property"
+> ---
+>  hw/arm/armv7m.c       | 21 ++++++++++++---------
+>  hw/arm/exynos4210.c   |  4 ++--
+>  hw/arm/highbank.c     |  3 ++-
+>  hw/arm/integratorcp.c |  5 ++---
+>  hw/arm/realview.c     |  2 +-
+>  hw/arm/sbsa-ref.c     |  3 ++-
+>  hw/arm/versatilepb.c  |  5 ++---
+>  hw/arm/vexpress.c     |  6 ++++--
+>  hw/arm/virt.c         | 27 +++++++++++++++------------
+>  hw/arm/xilinx_zynq.c  |  2 +-
+>  hw/cpu/a15mpcore.c    | 17 +++++++++++------
+>  hw/cpu/a9mpcore.c     |  6 +++---
+>  12 files changed, 57 insertions(+), 44 deletions(-)
+>
+> diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+> index 3a6d72b0f3..932061c11a 100644
+> --- a/hw/arm/armv7m.c
+> +++ b/hw/arm/armv7m.c
+> @@ -302,28 +302,29 @@ static void armv7m_realize(DeviceState *dev, Error =
+**errp)
+>
+>      object_property_set_link(OBJECT(s->cpu), "memory", OBJECT(&s->contai=
+ner),
+>                               &error_abort);
+> -    if (object_property_find(OBJECT(s->cpu), "idau")) {
+> +    if (arm_feature(&s->cpu->env, ARM_FEATURE_M_SECURITY)) {
+>          object_property_set_link(OBJECT(s->cpu), "idau", s->idau,
+>                                   &error_abort);
+> -    }
+> -    if (object_property_find(OBJECT(s->cpu), "init-svtor")) {
+>          if (!object_property_set_uint(OBJECT(s->cpu), "init-svtor",
+>                                        s->init_svtor, errp)) {
+>              return;
+>          }
+>      }
+> -    if (object_property_find(OBJECT(s->cpu), "init-nsvtor")) {
+> +    if (arm_feature(&s->cpu->env, ARM_FEATURE_M)) {
 
-Thank you for answering my question.
-The unaligned access handling of my patch is not so tricky.
-If the access is unaligned, just correct the access size
-and address and read the value as before.
-Also, it is allowed by the specifications, and byte access
-was possible even on real devices.
+This doesn't make sense as a check -- we shouldn't be able to get
+here if the CPU isn't M-profile.
 
-Regards,
-Tomoyuki HIROSE
+>          if (!object_property_set_uint(OBJECT(s->cpu), "init-nsvtor",
+>                                        s->init_nsvtor, errp)) {
+>              return;
+>          }
+>      }
+> -    if (object_property_find(OBJECT(s->cpu), "vfp")) {
+> -        if (!object_property_set_bool(OBJECT(s->cpu), "vfp", s->vfp, err=
+p)) {
+> -            return;
+> +    if (arm_feature(&s->cpu->env, ARM_FEATURE_AARCH64)) {
+
+Similarly this can't possibly be an AArch64 CPU, so this is
+not the correct condition to check.
+
+> +        if (cpu_isar_feature(aa64_fp_simd, s->cpu)) {
+> +            if (!object_property_set_bool(OBJECT(s->cpu), "vfp", s->vfp,=
+ errp)) {
+> +                return;
+> +            }
+>          }
+>      }
+> -    if (object_property_find(OBJECT(s->cpu), "dsp")) {
+> +    if (arm_feature(&s->cpu->env, ARM_FEATURE_M) &&
+> +        arm_feature(&s->cpu->env, ARM_FEATURE_THUMB_DSP)) {
+>          if (!object_property_set_bool(OBJECT(s->cpu), "dsp", s->dsp, err=
+p)) {
+
+Another unnecessary "is this M-profile?" check. This also is
+introducing a point of potential future failure because now
+we have the condition for "do we have a dsp property" in two
+places: in the CPU object where we add it, and then again here
+when we set it. Now they can get out of sync.
+
+Most of the others are similar. There might be places where we're
+using the "does property X check" to do something more than just
+guard "now set property X"; those are probably worth looking at
+to see if they should be checking something else.
+
+thanks
+-- PMM
 
