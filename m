@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CACA816C44
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:34:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC912816C50
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:35:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFBs2-0006Xt-JH; Mon, 18 Dec 2023 06:33:14 -0500
+	id 1rFBs5-0006aD-Cp; Mon, 18 Dec 2023 06:33:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFBs0-0006Wa-SD
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:12 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1rFBs3-0006Yr-5t
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:15 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFBrx-0003H2-9N
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:12 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40c31f18274so35454445e9.0
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 03:33:08 -0800 (PST)
+ id 1rFBrx-0003H6-IK
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:14 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40c3ceded81so27666515e9.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 03:33:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702899187; x=1703503987; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702899188; x=1703503988; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SnG0PeEkl3mljhE/7fINvl5kXhOpcofwqugvUBbBLDU=;
- b=nLwdacvJD3ViFui3Bhc7gb8IepM/Ydj8Hm1btqwLHLpzAhfG54CB/xmgZZM6wB5oDh
- mXfXuqrD3jrENeoyWEMFUerWxx8EQNRISGy3t7t7g02Fj4NQ3cG0nuCDmTNrFJ8o0bgl
- i5MGWe85zHK3kYU01odw2xOFwGuvxoYxw0xemEuQbzVZ78lxEjC9LgzJcfdwOhHfBN9T
- Ecbjf/DHHQCzr9o5vpbzEluKqNnFaJXj3sH3sPwRfpegGE75x1rcpCxZAplnZ2XHIcv9
- oe8+InSQRdHuiNq1jTr0tRzWf2/NtDsxu21m/Vt99seR6Pbf4gPzp5wHNNA9j7Ipj6VZ
- s9Rg==
+ :reply-to; bh=lyw7hmYvfBAXpzd5WD7qyMRqQcXNy82umQs3WP8yG8E=;
+ b=Qp7W+1Ix6hRVgAink4bdpuBVLo6iIuHxSVu0ab6AItvUAzlAO0aaPWy9Zp0PvD07zj
+ SQgBtgE/72ww03OGu73qRi0j5//7mcgRL5nvPzdvKZ3ENHgPQQW3wm3JFrHaTMeN81i7
+ 8cgSS7/ir9Jln1AbDbaQjOBcVaTr7Ek/rTK4GOp9dfxKDLiTP+IGtA3vC+LYCtSkpP+x
+ +8r56bnuYvnuMqyrnJTsuBYSTCe0vP2/S2I0gXVGSuMENZN66ibi9RcOwmQSM85SqbHf
+ U0iHvCMYwG8x+sXCtDmbS00l3EaiJ/oOBYzSVCkB0WBz1J2ZL9HZPtrUg6AmS98h5zHT
+ F2Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702899187; x=1703503987;
+ d=1e100.net; s=20230601; t=1702899188; x=1703503988;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SnG0PeEkl3mljhE/7fINvl5kXhOpcofwqugvUBbBLDU=;
- b=uAnDokMVNKKyQZsAdlPS0XQ/Iwu0NRIxJWnBLw1n3SbAXno9TmKvDpR3p+4hi5g4aT
- 2wlw8kpPY5njmNlEO2XUONZ0WSIvHkV1zKLBEFif9UqRoyZiBsO2OBWT7rNT1mpe6WGB
- R33BfY71f0FO/+kHAJaghh8lrba0JBhwZ61QT7+Dlk7XTJFDW8GA7pdwsy3N1RH/JZKB
- 2Q5pgUceKJqRKZpLLyOOsDCFzZsZT/p9Y0BF6xG+JeEGNhcTY7R9OtROQztgCZSdOc7r
- 4hoiTF9b6HRx+kMhgZfLLfJx1yhupPUoCbQJpvrwlwBJqES2rXwEsK1AA7u0Wtk5uJ0J
- gBwA==
-X-Gm-Message-State: AOJu0Ywl2gDDPNu/A5femF9XqXse9JAUF4k+y18DhxA27yRWY5+K+UTH
- QrKC/b0+61qUysO75Mafokmmldj/3nYYXgGU1Bo=
-X-Google-Smtp-Source: AGHT+IH6sWkNc8hPtCbdMxaC4lS5UCL05lpagr7wtJwl1zgAfysMmx/0XrEqERBnKGyyUo6AGdNTzg==
-X-Received: by 2002:a05:600c:181b:b0:40c:3dce:b02c with SMTP id
- n27-20020a05600c181b00b0040c3dceb02cmr7678930wmp.156.1702899187245; 
+ bh=lyw7hmYvfBAXpzd5WD7qyMRqQcXNy82umQs3WP8yG8E=;
+ b=tMQKSC+IRf+5rSSR/jasqHjH5ouS7EYoe9yPpvZrEBOGwb4F61IoGDgi7wq8H74Eiy
+ NcVhRQFOW/vwkBRHsX8uiTz1BcuZvGMezKPWD8urn21nCdcYs6ErhqG3FltdBuxl2vVY
+ 5hgydLHLm2TbQsuo6cD7U2clPc0CkI0QG0QOo6w8gm0eu9lsB6QtHAh6IpcGyi9C1Srz
+ gS04djNuV2YLc3iz5WAcvryosvxVWX+rliJfSSmSZoDYFeq+WGPHCGEnDPvoLHgN9ZCy
+ PQPiptLtkIzUlCkPBHXEsNB1ml0O3FIZHQ+4oI6DUjKv3uZXtVvrjaix2i0WbyT4GguA
+ 3Vuw==
+X-Gm-Message-State: AOJu0Yzd2fiTt6kJoVN3LosvIBo2qMa23mD8MoRKxlon9iQIOdec3xGz
+ sv/g9NgYjT0r1PBzBi0RWjkqtysBSmmJokwckIw=
+X-Google-Smtp-Source: AGHT+IGyZ2fTBElYgVezfiU9CASG0tWr0DwP2NrgGrS0QZzJp9RZUvnMaSwFzi7dvkZyk5uQoHU+uw==
+X-Received: by 2002:a05:600c:1c93:b0:40b:5e59:e9f8 with SMTP id
+ k19-20020a05600c1c9300b0040b5e59e9f8mr7900441wms.151.1702899187687; 
  Mon, 18 Dec 2023 03:33:07 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- j18-20020adff012000000b003366da509ecsm671193wro.85.2023.12.18.03.33.06
+ j18-20020adff012000000b003366da509ecsm671193wro.85.2023.12.18.03.33.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Dec 2023 03:33:06 -0800 (PST)
+ Mon, 18 Dec 2023 03:33:07 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 01/35] target/arm: Don't implement *32_EL2 registers when EL1
- is AArch64 only
-Date: Mon, 18 Dec 2023 11:32:31 +0000
-Message-Id: <20231218113305.2511480-2-peter.maydell@linaro.org>
+Subject: [PATCH 02/35] target/arm: Set CTR_EL0.{IDC,DIC} for the 'max' CPU
+Date: Mon, 18 Dec 2023 11:32:32 +0000
+Message-Id: <20231218113305.2511480-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231218113305.2511480-1-peter.maydell@linaro.org>
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,137 +90,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The system registers DBGVCR32_EL2, FPEXC32_EL2, DACR32_EL2 and
-IFSR32_EL2 are present only to allow an AArch64 EL2 or EL3 to read
-and write the contents of an AArch32-only system register.  The
-architecture requires that they are present only when EL1 can be
-AArch32, but we implement them unconditionally. This was OK when
-all our CPUs supported AArch32 EL1, but we have quite a lot of
-CPU models now which only support AArch64 at EL1:
- a64fx
- cortex-a76
- cortex-a710
- neoverse-n1
- neoverse-n2
- neoverse-v1
+The CTR_EL0 register has some bits which allow the implementation to
+tell the guest that it does not need to do cache maintenance for
+data-to-instruction coherence and instruction-to-data coherence.
+QEMU doesn't emulate caches and so our cache maintenance insns are
+all NOPs.
 
-Only define these registers for CPUs which allow AArch32 EL1.
+We already have some models of specific CPUs where we set these bits
+(e.g.  the Neoverse V1), but the 'max' CPU still uses the settings it
+inherits from Cortex-A57.  Set the bits for 'max' as well, so the
+guest doesn't need to do unnecessary work.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/debug_helper.c | 23 +++++++++++++++--------
- target/arm/helper.c       | 35 +++++++++++++++++++++--------------
- 2 files changed, 36 insertions(+), 22 deletions(-)
+This is worthwhile anyway; it also works around what Marc Z
+and I think is a KVM bug where booting the L2 guest hangs
+if L0 thinks it needs to do cache maintenance ops, when
+running all this under QEMU's FEAT_NV/FEAT_NV2 emulation.
+---
+ target/arm/tcg/cpu64.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
-index cbfba532f50..83d2619080f 100644
---- a/target/arm/debug_helper.c
-+++ b/target/arm/debug_helper.c
-@@ -1026,14 +1026,6 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
-       .cp = 14, .opc1 = 0, .crn = 0, .crm = 7, .opc2 = 0,
-       .access = PL1_RW, .accessfn = access_tda,
-       .type = ARM_CP_NOP },
--    /*
--     * Dummy DBGVCR32_EL2 (which is only for a 64-bit hypervisor
--     * to save and restore a 32-bit guest's DBGVCR)
--     */
--    { .name = "DBGVCR32_EL2", .state = ARM_CP_STATE_AA64,
--      .opc0 = 2, .opc1 = 4, .crn = 0, .crm = 7, .opc2 = 0,
--      .access = PL2_RW, .accessfn = access_tda,
--      .type = ARM_CP_NOP | ARM_CP_EL3_NO_EL2_KEEP },
-     /*
-      * Dummy MDCCINT_EL1, since we don't implement the Debug Communications
-      * Channel but Linux may try to access this register. The 32-bit
-@@ -1062,6 +1054,18 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
-       .fieldoffset = offsetof(CPUARMState, cp15.dbgclaim) },
- };
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index fcda99e1583..40e7a45166f 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1105,6 +1105,16 @@ void aarch64_max_tcg_initfn(Object *obj)
+     u = FIELD_DP32(u, CLIDR_EL1, LOUU, 0);
+     cpu->clidr = u;
  
-+/* These are present only when EL1 supports AArch32 */
-+static const ARMCPRegInfo debug_aa32_el1_reginfo[] = {
 +    /*
-+     * Dummy DBGVCR32_EL2 (which is only for a 64-bit hypervisor
-+     * to save and restore a 32-bit guest's DBGVCR)
++     * Set CTR_EL0.DIC and IDC to tell the guest it doesnt' need to
++     * do any cache maintenance for data-to-instruction or
++     * instruction-to-guest coherence. (Our cache ops are nops.)
 +     */
-+    { .name = "DBGVCR32_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 2, .opc1 = 4, .crn = 0, .crm = 7, .opc2 = 0,
-+      .access = PL2_RW, .accessfn = access_tda,
-+      .type = ARM_CP_NOP | ARM_CP_EL3_NO_EL2_KEEP },
-+};
++    t = cpu->ctr;
++    t = FIELD_DP64(t, CTR_EL0, IDC, 1);
++    t = FIELD_DP64(t, CTR_EL0, DIC, 1);
++    cpu->ctr = t;
 +
- static const ARMCPRegInfo debug_lpae_cp_reginfo[] = {
-     /* 64 bit access versions of the (dummy) debug registers */
-     { .name = "DBGDRAR", .cp = 14, .crm = 1, .opc1 = 0,
-@@ -1207,6 +1211,9 @@ void define_debug_regs(ARMCPU *cpu)
-     assert(ctx_cmps <= brps);
- 
-     define_arm_cp_regs(cpu, debug_cp_reginfo);
-+    if (cpu_isar_feature(aa64_aa32_el1, cpu)) {
-+        define_arm_cp_regs(cpu, debug_aa32_el1_reginfo);
-+    }
- 
-     if (arm_feature(&cpu->env, ARM_FEATURE_LPAE)) {
-         define_arm_cp_regs(cpu, debug_lpae_cp_reginfo);
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 2746d3fdac8..39830c7f948 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5698,20 +5698,6 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
-       .opc0 = 3, .opc1 = 0, .crn = 4, .crm = 2, .opc2 = 0,
-       .type = ARM_CP_NO_RAW,
-       .access = PL1_RW, .readfn = spsel_read, .writefn = spsel_write },
--    { .name = "FPEXC32_EL2", .state = ARM_CP_STATE_AA64,
--      .opc0 = 3, .opc1 = 4, .crn = 5, .crm = 3, .opc2 = 0,
--      .access = PL2_RW,
--      .type = ARM_CP_ALIAS | ARM_CP_FPU | ARM_CP_EL3_NO_EL2_KEEP,
--      .fieldoffset = offsetof(CPUARMState, vfp.xregs[ARM_VFP_FPEXC]) },
--    { .name = "DACR32_EL2", .state = ARM_CP_STATE_AA64,
--      .opc0 = 3, .opc1 = 4, .crn = 3, .crm = 0, .opc2 = 0,
--      .access = PL2_RW, .resetvalue = 0, .type = ARM_CP_EL3_NO_EL2_KEEP,
--      .writefn = dacr_write, .raw_writefn = raw_write,
--      .fieldoffset = offsetof(CPUARMState, cp15.dacr32_el2) },
--    { .name = "IFSR32_EL2", .state = ARM_CP_STATE_AA64,
--      .opc0 = 3, .opc1 = 4, .crn = 5, .crm = 0, .opc2 = 1,
--      .access = PL2_RW, .resetvalue = 0, .type = ARM_CP_EL3_NO_EL2_KEEP,
--      .fieldoffset = offsetof(CPUARMState, cp15.ifsr32_el2) },
-     { .name = "SPSR_IRQ", .state = ARM_CP_STATE_AA64,
-       .type = ARM_CP_ALIAS,
-       .opc0 = 3, .opc1 = 4, .crn = 4, .crm = 3, .opc2 = 0,
-@@ -5746,6 +5732,24 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
-       .fieldoffset = offsetoflow32(CPUARMState, cp15.mdcr_el3) },
- };
- 
-+/* These are present only when EL1 supports AArch32 */
-+static const ARMCPRegInfo v8_aa32_el1_reginfo[] = {
-+    { .name = "FPEXC32_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .crn = 5, .crm = 3, .opc2 = 0,
-+      .access = PL2_RW,
-+      .type = ARM_CP_ALIAS | ARM_CP_FPU | ARM_CP_EL3_NO_EL2_KEEP,
-+      .fieldoffset = offsetof(CPUARMState, vfp.xregs[ARM_VFP_FPEXC]) },
-+    { .name = "DACR32_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .crn = 3, .crm = 0, .opc2 = 0,
-+      .access = PL2_RW, .resetvalue = 0, .type = ARM_CP_EL3_NO_EL2_KEEP,
-+      .writefn = dacr_write, .raw_writefn = raw_write,
-+      .fieldoffset = offsetof(CPUARMState, cp15.dacr32_el2) },
-+    { .name = "IFSR32_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .crn = 5, .crm = 0, .opc2 = 1,
-+      .access = PL2_RW, .resetvalue = 0, .type = ARM_CP_EL3_NO_EL2_KEEP,
-+      .fieldoffset = offsetof(CPUARMState, cp15.ifsr32_el2) },
-+};
-+
- static void do_hcr_write(CPUARMState *env, uint64_t value, uint64_t valid_mask)
- {
-     ARMCPU *cpu = env_archcpu(env);
-@@ -8716,6 +8720,9 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-         }
-         define_arm_cp_regs(cpu, v8_idregs);
-         define_arm_cp_regs(cpu, v8_cp_reginfo);
-+        if (cpu_isar_feature(aa64_aa32_el1, cpu)) {
-+            define_arm_cp_regs(cpu, v8_aa32_el1_reginfo);
-+        }
- 
-         for (i = 4; i < 16; i++) {
-             /*
+     t = cpu->isar.id_aa64isar0;
+     t = FIELD_DP64(t, ID_AA64ISAR0, AES, 2);      /* FEAT_PMULL */
+     t = FIELD_DP64(t, ID_AA64ISAR0, SHA1, 1);     /* FEAT_SHA1 */
 -- 
 2.34.1
 
