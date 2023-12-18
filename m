@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA71816C81
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:39:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E3F816C6E
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:38:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFBsE-0006wZ-NS; Mon, 18 Dec 2023 06:33:26 -0500
+	id 1rFBsE-0006wF-CC; Mon, 18 Dec 2023 06:33:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFBsB-0006lm-RK
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:23 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1rFBsC-0006oF-58
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:24 -0500
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFBs4-0003Kt-KZ
+ id 1rFBs5-0003LD-Cx
  for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:23 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3363eba94ebso2484308f8f.3
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-50e18689828so3145735e87.2
  for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 03:33:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702899195; x=1703503995; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702899196; x=1703503996; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=mkTOIRduoSdRtphW6RjCDGLMfyZbHjtFmslD+S81oCE=;
- b=xzxyt8e2t4rJH4QokNFN8DBDkcXjpYEdquDrg4v3K7Qk+4arRJqjkKGWpzkqLRGPSy
- n1g8LUFSGRTmhFwuDp/jVXkJU07wJYbcCNcVUeZ12xcSRHro3cHqmnZWSyYsG/cWTMFr
- 8pSjGks7RDTekmYefU0Yq/n+UP9/vVh3kr65yNg6qOPwq3fOv82gpj2Kpq11wGLHQw7y
- 8f282A6hq7IHoZEaEmGdtDEbksMgRexzuAEpvjzchkZcDmIDnI/EHv4uvVr6Ccj29HJd
- oBpxOiCquzlD3qwgwDUhSZMehBzDImjOEtmb6W+6+Mnb97IO/jjk4r7NiGjYUKlY8lYy
- Y0Sg==
+ :reply-to; bh=FKQWnVGTfCUqUnya6YglJqR9o+KGIz1GEUxpR9ir3P8=;
+ b=yAa54sD4mV/esqaB0EVo0XkRsHlH7MKK+GIquhlyRJoXN0ZEfVZnL+0p8OSahbrk4W
+ euhpalCPIP1cHte6k0G6g+UwDg6IUYLL8C1/bR8WWYQRwYJ1ZoOFkepGKlBlIluGcOtF
+ YMBLly98VV5veupRtbuYcqZYxmXfF4Jp8wHQOXSOwO2tqUyQelNWyiakaZxsWNuzXV/5
+ 7y7o3iEjGTKylsXwOfLl1d9uokwoVJgYslVAhIeHbDPIvh+MHnIgo9QW/NV61pzSyjyy
+ CG4cM2n1V7AFYnPuuOLh4zeV0frVd4ayI+yI4fQ2Epvsr4kr2yG/mBWpDTHUDkVbGMmO
+ 649A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702899195; x=1703503995;
+ d=1e100.net; s=20230601; t=1702899196; x=1703503996;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mkTOIRduoSdRtphW6RjCDGLMfyZbHjtFmslD+S81oCE=;
- b=c484F0UZteEN1CizhT7JoSsbwFGKw5bah4jo4PNG9I5JMGXPbxhR9dSkaWa7b12CnZ
- v7LJOr864DkFZZudMEiafycjP/i85ujwEGlNZiLjPhhjJtj6iDt2SKXCCVjJKyiG8CL6
- o4Koe6hC7yxq1h7/3AiK7B9oe5O3YNss5cWsEa8qUVla4I6YQYq2FElsM44PMBXyAEDd
- /rlpPkDf+ojaqu7AyJn5LXjU8uhIUFWdTd8EFGGHXyQf7C34kd29JGJ395nG6g2fjSQy
- Aeu88KLgZhqm/yxIave9VZqmxL42sDam4HuPnmMh6Tcz0BphHJT1UxgTPjcRl7pPRHe7
- iDlA==
-X-Gm-Message-State: AOJu0YxTJlYez8jEUkmGvxiPRtEVDX5ODsmtjJEOg0Hr+JcOfcNny5m0
- uBN0CYADR7Y3haWXmdYwpdVPqA==
-X-Google-Smtp-Source: AGHT+IG28aGVZ24IRYz84xmrMbpkQRim8bVpDOFi2Ape20G3ApqwDAPVuRhGYkOcuUsxIDhAJaZV2Q==
-X-Received: by 2002:a5d:484d:0:b0:336:67eb:ad7b with SMTP id
- n13-20020a5d484d000000b0033667ebad7bmr371013wrs.4.1702899195267; 
+ bh=FKQWnVGTfCUqUnya6YglJqR9o+KGIz1GEUxpR9ir3P8=;
+ b=WERXvtvOgs9lDtRmupSNqEhuG+yCVUYqGqcObf77DL0EYClm3l+BeCCCUcktMdjGWR
+ 1Y5n+nobP9KNOP4laz4QkQ3fzo92DsVediuBqLLtyWM2amDSPZe1Oo/aqWpLajKA/fK1
+ zdF2+Zjn557DiCNkRL3ta5EKrnXpsfp4IaKGaP1A7o1Pj7omCfhSUTNtrBCOLQOvBOo9
+ vJTfPBh4cKfdBNMctLvCXLU3WxAMJFEGS3hQIA4hNj/cIpFah/qzoOYVSMMq/WOB4JaQ
+ KFcKVDLMZNthqrmiQJPlXUo5ZeCNw6Dxy48QHCDADBvF14sgXIZWBOnUpYH9xnF9loUa
+ iTLQ==
+X-Gm-Message-State: AOJu0Yzf7nj1d7I7jtjP9mB9RhlgcrXpsatNLz6KFgVEC5M51P/dObhc
+ N4U1QZR7kSLTnRhEuoYHfr31ng==
+X-Google-Smtp-Source: AGHT+IFOby4gC+qR5etJF+mOaXmC7WhEgDFClsSNUt0u4QHDWAINhza6Xii05DuXJksnV+G4RjB1iA==
+X-Received: by 2002:a05:6512:2210:b0:50b:f1b2:3881 with SMTP id
+ h16-20020a056512221000b0050bf1b23881mr9102789lfu.8.1702899195822; 
  Mon, 18 Dec 2023 03:33:15 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- j18-20020adff012000000b003366da509ecsm671193wro.85.2023.12.18.03.33.14
+ j18-20020adff012000000b003366da509ecsm671193wro.85.2023.12.18.03.33.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Dec 2023 03:33:14 -0800 (PST)
+ Mon, 18 Dec 2023 03:33:15 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 18/35] target/arm: Don't honour PSTATE.PAN when HCR_EL2.{NV,
- NV1} == {1, 1}
-Date: Mon, 18 Dec 2023 11:32:48 +0000
-Message-Id: <20231218113305.2511480-19-peter.maydell@linaro.org>
+Subject: [PATCH 19/35] target/arm: Treat LDTR* and STTR* as LDR/STR when NV,
+ NV1 is 1, 1
+Date: Mon, 18 Dec 2023 11:32:49 +0000
+Message-Id: <20231218113305.2511480-20-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231218113305.2511480-1-peter.maydell@linaro.org>
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,29 +91,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For FEAT_NV, when HCR_EL2.{NV,NV1} is {1,1} PAN is always disabled
-even when the PSTATE.PAN bit is set. Implement this by having
-arm_pan_enabled() return false in this situation.
+FEAT_NV requires (per I_JKLJK) that when HCR_EL2.{NV,NV1} is {1,1} the
+unprivileged-access instructions LDTR, STTR etc behave as normal
+loads and stores. Implement the check that handles this.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/arm/tcg/hflags.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 4b0e46cfaae..28448624c36 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -266,6 +266,9 @@ void init_cpreg_list(ARMCPU *cpu)
- static bool arm_pan_enabled(CPUARMState *env)
- {
-     if (is_a64(env)) {
-+        if ((arm_hcr_el2_eff(env) & (HCR_NV | HCR_NV1)) == (HCR_NV | HCR_NV1)) {
-+            return false;
-+        }
-         return env->pstate & PSTATE_PAN;
-     } else {
-         return env->uncached_cpsr & CPSR_PAN;
+diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+index f33c0a12741..8f254bf9ccb 100644
+--- a/target/arm/tcg/hflags.c
++++ b/target/arm/tcg/hflags.c
+@@ -261,8 +261,10 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+         switch (mmu_idx) {
+         case ARMMMUIdx_E10_1:
+         case ARMMMUIdx_E10_1_PAN:
+-            /* TODO: ARMv8.3-NV */
+-            DP_TBFLAG_A64(flags, UNPRIV, 1);
++            /* FEAT_NV: NV,NV1 == 1,1 means we don't do UNPRIV accesses */
++            if ((hcr & (HCR_NV | HCR_NV1)) != (HCR_NV | HCR_NV1)) {
++                DP_TBFLAG_A64(flags, UNPRIV, 1);
++            }
+             break;
+         case ARMMMUIdx_E20_2:
+         case ARMMMUIdx_E20_2_PAN:
 -- 
 2.34.1
 
