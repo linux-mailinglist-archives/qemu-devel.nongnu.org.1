@@ -2,70 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA365816C18
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:21:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 160D4816C43
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:34:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFBgV-0004oH-H6; Mon, 18 Dec 2023 06:21:19 -0500
+	id 1rFBs1-0006WG-0L; Mon, 18 Dec 2023 06:33:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rFBgR-0004nw-7J
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:21:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rFBgP-0000u9-Go
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:21:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702898471;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=FWGUcgtyk7kVsXwcvvF6e/jv36Dz7X41j3bTOxY8ADA=;
- b=SZxIwv49S3ugJ7QWx88Sug3pORjznLbOHiG7qnV9A15KgLFlyw9UtKYCZIVrmrZoRtGc5k
- Xf5F4wxV/Z/cIJqF1KPD5IyrX/bP5BJ3X+bF5W+RCIg35Y/ecRz207cbQjvuYaYigZq0OS
- RlQRsSYRz7y7pNluCG+KqvLU7GDpLNs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-7YJjaQnvO9ikfNVQAdW17A-1; Mon, 18 Dec 2023 06:21:10 -0500
-X-MC-Unique: 7YJjaQnvO9ikfNVQAdW17A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0FC318966A3;
- Mon, 18 Dec 2023 11:21:10 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2B6CB2166B31;
- Mon, 18 Dec 2023 11:21:09 +0000 (UTC)
-Date: Mon, 18 Dec 2023 11:21:07 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Hyman Huang <yong.huang@smartx.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [v2 0/4] Support generic Luks encryption
-Message-ID: <ZYArI__TwpzTb0xp@redhat.com>
-References: <cover.1701879996.git.yong.huang@smartx.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFBrz-0006Vr-BR
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:11 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFBrw-0003Gw-TI
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:11 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-336607f4d05so759406f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 03:33:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702899187; x=1703503987; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ccFOH05Cbw63Xbc7/WOKzLyjuXWoZ8HlICGnlISMfys=;
+ b=ptlCBnBrQE8iK3dzQ6Vy4vUEgM6a2DfMAheuD/Xcmq38BGpilpTcqLnko+iu4rsCCs
+ hh7e5NEWJ/9SLfeRPEyjRGDSqkjUAQd2gKmkvt/U5iSXlw7tZqRVWzyi7alGRBzfeRi+
+ g84qLlKR6H5dtwCQXTRYqc3VbT0iID1Xgc0bK2jZavmE4uOc6DHRAw41gCu1PZO1llC9
+ cgftxlGDOITD8ArvyX/7RF3OXogRJOnCZHgyEr28RH23VQhdvqidsGA3XeBAUVfoMd8c
+ yDwTlhjYA7vBFQyXji+XU6dYruNtDfVrG6YrgikarlVL2oBR6uAb+4pFGQjljOj+GJtj
+ fqrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702899187; x=1703503987;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ccFOH05Cbw63Xbc7/WOKzLyjuXWoZ8HlICGnlISMfys=;
+ b=ebFFCIbo8K72SltH4tnyAD1hHBfzhQHHKsZZKpVMhlhWdCXxj0xlK4T4CGtsZAysle
+ 2hO6mdV1OCuldxnzz9YpNICoYSj6NUaNmjsy8gEENW32y5YQgH1yDxGFYuYkramfx+L1
+ r+CG/KWp5yaaYQiiRMBsy8pl7OjYPlpk4jJKb4aLLc/dPAT4gWgHJi6AXY8m3/Nf0Qgb
+ 6jA85Od6AY7bAE/Le/blF0Q/4G9r0p9UHb7P72hFWFL0eOOVpIB8OEBT4si0gMT1EurH
+ gQiQ6RUpGFopyr2aT7We1WeUBO5AXTpMq8d27f8ElWsoYTZRcJ+UwmY9a4OX059a33ov
+ 05eA==
+X-Gm-Message-State: AOJu0Yx3k3SUaONATedyUOh2sqEWmKhY9kSN2l8P9DOGD9zIXc7AgAv1
+ miLMyxmla0o9JLclSpT6KRB9rg==
+X-Google-Smtp-Source: AGHT+IHOf3EEU+AFFfOA/lk8NFdSRykXTFpc5fkLPo0Ksp2n+GISijoE1Xk9sZuH1PFkpRMAjKd2kw==
+X-Received: by 2002:a05:6000:124e:b0:336:5bb0:2f55 with SMTP id
+ j14-20020a056000124e00b003365bb02f55mr1733973wrx.5.1702899186692; 
+ Mon, 18 Dec 2023 03:33:06 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ j18-20020adff012000000b003366da509ecsm671193wro.85.2023.12.18.03.33.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 18 Dec 2023 03:33:06 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH 00/35] target/arm: Implement emulation of nested virtualization
+Date: Mon, 18 Dec 2023 11:32:30 +0000
+Message-Id: <20231218113305.2511480-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1701879996.git.yong.huang@smartx.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.086,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,38 +84,129 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 07, 2023 at 12:37:41AM +0800, Hyman Huang wrote:
-> v2:
-> - Simplify the design by reusing the LUKS driver to implement
->   the generic Luks encryption, thank Daniel for the insightful 
->   advice.
-> - rebase on master. 
-> 
+This patchset adds support for emulating the Arm architectural features
+FEAT_NV and FEAT_NV2 which allow nested virtualization, i.e. where a
+hypervisor can run a guest which thinks it is running at EL2.
 
-> Hyman Huang (4):
->   crypto: Introduce option and structure for detached LUKS header
->   crypto: Introduce payload offset set function
->   crypto: Support generic LUKS encryption
->   block: Support detached LUKS header creation for blockdev-create
-> 
->  block/crypto.c         | 47 ++++++++++++++++++++++++++++++++++++++++--
->  crypto/block.c         |  4 ++++
->  include/crypto/block.h |  1 +
->  qapi/block-core.json   | 11 ++++++++--
->  4 files changed, 59 insertions(+), 4 deletions(-)
+Nominally FEAT_NV is sufficient for this and FEAT_NV2 merely improves
+the performance in the nested-virt setup, but in practice hypervisors
+such as KVM are going to require FEAT_NV2 and not bother to support
+the FEAT_NV-only case, so I have implemented them one after the other
+in this single patchset.
 
-Could you add a scenario tests/qemu-iotests/tests/luks-detached-header
-to provide coverage of this method feature.
+The feature is essentially a collection of changes that allow the
+hypervisor to lie to the guest so that it thinks it is running in EL2
+when it's really at EL1. The best summary of what all the changes are
+is in section D8.11 "Nested virtualization" in the Arm ARM, but the
+short summary is:
+ * EL2 system registers etc trap to EL2 rather than UNDEFing
+ * ERET traps to EL2
+ * the CurrentEL register reports "EL2" when NV is enabled
+ * on exception entry, SPSR_EL1.M may report "EL2" as the EL the
+   exception was taken from
+ * when HCR_EL1.NV1 is also set, then there are some extra tweaks
+   (NV1 == 1 means "guest thinks it is running with HCR_EL2.E2H == 0")
+ * some AT S1 address translation insns can be trapped to EL2
+and FEAT_NV2 adds:
+ * accesses to some system registers are transformed into memory
+   accesses instead of trapping to EL2
+ * accesses to a few EL2 system registers are redirected to the
+   equivalent EL1 registers
 
-With regards,
-Daniel
+This patchset is sufficient that you can run an L0 guest kernel that
+has support for FEAT_NV/FEAT_NV2 in its KVM code, and then
+inside that start a nested L1 guest that thinks it has EL2 access,
+and then run an inner-nested L2 guest under that that can get
+to running userspace code. To do that you'll need some not-yet-upstream
+patches for both Linux and kvmtool:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git/log/?h=kvm-arm64/nv-6.8-nv2-only
+https://gitlab.arm.com/linux-arm/kvmtool/-/commits/nv-v6.6
+
+You'll also want to turn off SVE and SME emulation in QEMU
+(-cpu max,sve=off,sme=off) because at the moment the KVM patchset
+doesn't handle SVE and nested-virt together (the other option
+is to hack kvmtool to make it not ask for both at once, but this
+is easier).
+
+(kvmtool is needed here to run the L1 because QEMU itself as a VMM
+doesn't yet support asking KVM for an EL2 guest.)
+
+The first three patches in the series aren't strictly part of FEAT_NV:
+ * patch 1 is already reviewed; I put it here to avoid having
+   to deal with textual conflicts between it and this series
+ * patch 2 sets CTR_EL0.{IDC,DIC} for '-cpu max', which is a good
+   idea anyway and also works around what Marc Z and I think is
+   a KVM bug that otherwise causes boot of the L2 kernel to hang
+ * patch 3 is a GIC bug which is not FEAT_NV specific but for
+   some reason only manifests when booting an L1 kernel under NV
+
+thanks
+-- PMM
+
+Peter Maydell (35):
+  target/arm: Don't implement *32_EL2 registers when EL1 is AArch64 only
+  target/arm: Set CTR_EL0.{IDC,DIC} for the 'max' CPU
+  hw/intc/arm_gicv3_cpuif: handle LPIs in in the list registers
+  target/arm: Handle HCR_EL2 accesses for bits introduced with FEAT_NV
+  target/arm: Implement HCR_EL2.AT handling
+  target/arm: Enable trapping of ERET for FEAT_NV
+  target/arm: Always honour HCR_EL2.TSC when HCR_EL2.NV is set
+  target/arm: Allow use of upper 32 bits of TBFLAG_A64
+  target/arm: Record correct opcode fields in cpreg for E2H aliases
+  target/arm: *_EL12 registers should UNDEF when HCR_EL2.E2H is 0
+  target/arm: Make EL2 cpreg accessfns safe for FEAT_NV EL1 accesses
+  target/arm: Move FPU/SVE/SME access checks up above
+    ARM_CP_SPECIAL_MASK check
+  target/arm: Trap sysreg accesses for FEAT_NV
+  target/arm: Make NV reads of CurrentEL return EL2
+  target/arm: Set SPSR_EL1.M correctly when nested virt is enabled
+  target/arm: Trap registers when HCR_EL2.{NV,NV1} == {1,1}
+  target/arm: Always use arm_pan_enabled() when checking if PAN is
+    enabled
+  target/arm: Don't honour PSTATE.PAN when HCR_EL2.{NV,NV1} == {1,1}
+  target/arm: Treat LDTR* and STTR* as LDR/STR when NV,NV1 is 1,1
+  target/arm: Handle FEAT_NV page table attribute changes
+  target/arm: Add FEAT_NV to max, neoverse-n2, neoverse-v1 CPUs
+  target/arm: Handle HCR_EL2 accesses for FEAT_NV2 bits
+  target/arm: Implement VNCR_EL2 register
+  target/arm: Handle FEAT_NV2 changes to when SPSR_EL1.M reports EL2
+  target/arm: Handle FEAT_NV2 redirection of SPSR_EL2, ELR_EL2, ESR_EL2,
+    FAR_EL2
+  target/arm: Implement FEAT_NV2 redirection of sysregs to RAM
+  target/arm: Report VNCR_EL2 based faults correctly
+  target/arm: Mark up VNCR offsets (offsets 0x0..0xff)
+  target/arm: Mark up VNCR offsets (offsets 0x100..0x160)
+  target/arm: Mark up VNCR offsets (offsets 0x168..0x1f8)
+  target/arm: Mark up VNCR offsets (offsets >= 0x200, except GIC)
+  hw/intc/arm_gicv3_cpuif: Mark up VNCR offsets for GIC CPU registers
+  target/arm: Report HCR_EL2.{NV,NV1,NV2} in cpu dumps
+  target/arm: Enhance CPU_LOG_INT to show SPSR on AArch64
+    exception-entry
+  target/arm: Add FEAT_NV2 to max, neoverse-n2, neoverse-v1 CPUs
+
+ docs/system/arm/emulation.rst  |   2 +
+ target/arm/cpregs.h            |  54 ++++-
+ target/arm/cpu-features.h      |  10 +
+ target/arm/cpu.h               |  24 ++-
+ target/arm/syndrome.h          |  20 +-
+ target/arm/tcg/translate.h     |  16 +-
+ hw/intc/arm_gicv3_cpuif.c      |  28 ++-
+ target/arm/cpu.c               |   8 +-
+ target/arm/debug_helper.c      |  34 +++-
+ target/arm/helper.c            | 360 ++++++++++++++++++++++++++++-----
+ target/arm/ptw.c               |  21 ++
+ target/arm/tcg/cpu64.c         |  11 +
+ target/arm/tcg/hflags.c        |  30 ++-
+ target/arm/tcg/op_helper.c     |  16 +-
+ target/arm/tcg/tlb_helper.c    |  27 ++-
+ target/arm/tcg/translate-a64.c | 162 +++++++++++++--
+ 16 files changed, 725 insertions(+), 98 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
