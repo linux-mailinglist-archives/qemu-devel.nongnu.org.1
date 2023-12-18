@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09ABD8167D0
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 09:00:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 803138168B1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 09:51:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rF8XX-00035a-5f; Mon, 18 Dec 2023 02:59:51 -0500
+	id 1rF9KI-0003Zp-Qc; Mon, 18 Dec 2023 03:50:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rF8XS-00034e-N3
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 02:59:46 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rF9KG-0003ZF-7U
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 03:50:12 -0500
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rF8XR-0007k8-6k
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 02:59:46 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d3b81d9719so1972455ad.2
- for <qemu-devel@nongnu.org>; Sun, 17 Dec 2023 23:59:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rF9KD-000203-S9
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 03:50:11 -0500
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6cebbf51742so2054092b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 00:50:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702886383; x=1703491183;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pZ2y68uFhYg6GIRxy2xbsRrto6o/nzarZQX+b4vK17E=;
- b=mzz5C8uLkNyjyxsZLEKMfIxx2AMcBGybWyom0HvVw7/+I0y65VYdSDPcQ7K1eYLlfC
- BbvXqVWJy/D5Y+iJGYaOe0YDhwrqobuXVAOPPDTL4tXS+Wq1TZbZhPhGGvonLgpZmnzJ
- mWFITccbR4TOTNEixQ4Rn38EadM8Qz+wQyDK0DBpPZEqxTtfbgqkXK0iw7QOJHbzOZec
- tV/Ex3vrB1CjRf7OrcpzWZd+uzl/m/WXPX26n4QK7X0TY+YmE2gh4SWUPb4rPsoP8Mry
- dUgnbzcqYzMMA2RTCq4Onm44j61MCVPzTyexK3YyggaFUG1Ab6QfvMjeiJd7tqarMq8b
- +wuQ==
+ d=ventanamicro.com; s=google; t=1702889405; x=1703494205; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=DbHH/pxeL/8H/oditovSN1+fXKRH7AmKIzQ/zPGXxlM=;
+ b=kgKG0AgPbJUXnel1aZxAr+j2/TxZcdkNk6ytItOYGjEh8y3GnDzGI9j5Yh/Q5bz9CK
+ eI4i4OkQZ9Pikm641A6veDlWxSlU5as2NSR44WPcghD5ghsYjWWwOOthQ6Uyr6QnyC/n
+ oCtfj/EW2l7NyipnEbcwhB510qVhh7p1V9BQBUOGi08q36mIOFDeNrnqod7CFKf+/Q+n
+ hdZKr5pywFj7J8CN50qNhNeinpBlKCzM5XQB5DZxDPnrhp6ZM2zHSsTja1QuJZQKOEwo
+ UbZIPZjGoi5oxRYN9pYGVwLlf4U1xrB1UKZsy6g9MA3lTgnc8tuP9/coXskcc+S19KDo
+ gNSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702886383; x=1703491183;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pZ2y68uFhYg6GIRxy2xbsRrto6o/nzarZQX+b4vK17E=;
- b=M7WB0lBhSyWEUG4pOYcn5KjzI45LKRqouiMVMKbjxAEUKGtAvV+FTk0uBtL9Q4S6Au
- 3nsEavCRglYAmd5ndDlCb4Hm+g89FRnUf262y1WiJVFxF85HxiCpS065o9klzNE3r4qH
- FNsVBeZ4vShPr0+4ZHSs31HixwPwYcDPZJeHoSSp9ZXZyCx67yt7yzE2a2ZWRt8PaTMp
- rq7azKbJb2DCXXmQTmekDQavC+celEzbZPR5JnxuJpWliSl7P0IKSRXKv/3yaKoSoJJH
- JrIeWJPBfWm0/XviHEYgtlMKj+LhBX8yq5gCjcX+QpzVU8u/swtjkbf1NBLrqUZ7A+c3
- 7V0A==
-X-Gm-Message-State: AOJu0Ywa9NVREOt+VmsRLQAZBllXwcZQOW7/14hOWtDGQmhRO0WQFUkc
- D73ASts35kdv85YOuG2no844dA==
-X-Google-Smtp-Source: AGHT+IFSOlGBvwbNcmspHfdtxsUAA8GxcJVPWyzSGZfoXBL62JqJtybOtXhJTV5Dv3mQVR5sIRo4xA==
-X-Received: by 2002:a17:902:e80f:b0:1d3:a9e2:b7b with SMTP id
- u15-20020a170902e80f00b001d3a9e20b7bmr471541plg.16.1702886383640; 
- Sun, 17 Dec 2023 23:59:43 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
+ d=1e100.net; s=20230601; t=1702889405; x=1703494205;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DbHH/pxeL/8H/oditovSN1+fXKRH7AmKIzQ/zPGXxlM=;
+ b=kWBOOXw7obB7RgKmWW7YRrKpKmDVARz8LUX8cCq/7vtT933BmTWirJVpdEzrRzyJh+
+ AtFgsZ3oNulsHsMDZyByjB+KMgJaUuu5v8pRfiRqdDZW8SxJoxukdwhNxKTod5cLtmq1
+ Zyl/59Pi8eEy8oI81Rw2XXiZYYjL1kGxb8SexEqiPhXB1VNeZExcN1RY1fTmvjHvowTn
+ LZv9lq8zUwUQpEykNOOEgpb0op4w3ioE9/VGM14jhtD62AdK/KoV1w0zsLWy5LsgmhTl
+ 5Md1cSDfjGv5vz8f85J4yGffijtHFgTjjBtZThQT0HIVTjXoDLxBl7kJy/bHBq/2VT55
+ SEcA==
+X-Gm-Message-State: AOJu0Yz1/vkDguJrPUWtYwW2zV6uqXwuevwxIrOllipbT+sGOHtBcpot
+ ZM4glpr648MjJFY5KyBiSVopVA==
+X-Google-Smtp-Source: AGHT+IGP2qnLa1xmTeAB5IgJ454dt8nScw+At2MNLxSoZ5In2j2Ka86nXYHcQGRsD/O6rh+jO2kC3Q==
+X-Received: by 2002:a05:6a00:6ca0:b0:6d8:3c6f:f3bf with SMTP id
+ jc32-20020a056a006ca000b006d83c6ff3bfmr806658pfb.15.1702889405047; 
+ Mon, 18 Dec 2023 00:50:05 -0800 (PST)
+Received: from sunil-laptop ([106.51.188.200])
  by smtp.gmail.com with ESMTPSA id
- v4-20020a170902b7c400b001cfd35ec1d7sm3958461plz.243.2023.12.17.23.59.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 17 Dec 2023 23:59:43 -0800 (PST)
-Message-ID: <d73b8c8e-fde3-49e6-88b8-8f9bfa248509@daynix.com>
-Date: Mon, 18 Dec 2023 16:59:41 +0900
+ p2-20020aa78602000000b006d626f91d38sm2061466pfn.9.2023.12.18.00.50.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 18 Dec 2023 00:50:04 -0800 (PST)
+Date: Mon, 18 Dec 2023 14:19:58 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/1] target/riscv: SMBIOS support for RISC-V virt machine
+Message-ID: <ZYAHtq1HozBOZZrJ@sunil-laptop>
+References: <20231218074018.66134-1-heinrich.schuchardt@canonical.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7] ui/cocoa: Use NSWindow's ability to resize
-Content-Language: en-US
-To: Rene Engel <ReneEngel80@emailn.de>
-Cc: peter.maydell@linaro.org, philmd@linaro.org, kraxel@redhat.com,
- marcandre.lureau@redhat.com, smarkusg@gmail.com, qemu-devel@nongnu.org
-References: <20231217-cocoa-v7-1-6af21ef75680@daynix.com>
- <ad45a3b3201a6c9b24138abf2174946b@mail.emailn.de>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <ad45a3b3201a6c9b24138abf2174946b@mail.emailn.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231218074018.66134-1-heinrich.schuchardt@canonical.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,20 +95,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/17 18:46, Rene Engel wrote:
-> 
-> --- Ursprüngliche Nachricht ---
-> Von: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Datum: 17.12.2023 07:25:52
-> An: Peter Maydell <peter.maydell@linaro.org>,  Philippe Mathieu-Daudé <philmd@linaro.org>,  Gerd Hoffmann <kraxel@redhat.com>,  Marc-André Lureau <marcandre.lureau@redhat.com>,  Marek Glogowski <smarkusg@gmail.com>
-> Betreff: [PATCH v7] ui/cocoa: Use NSWindow's ability to resize
-> 
-> Tested-by: Rene Engel <ReneEngel80@emailn.de>
-> 
-> This patch now works with the "option zoom-to-fit=on/off" thank you very much.
-> 
-> But there is severe mouse lag within Cocoa output in full screen. You can reproduce the problem by using the mouse very slowly inside the machine where the mouse pointer no longer moves (guest). This issue only occurs with Cocoa edition SDL/GTK works without mouse lag within the machine.
+Hi Heinrich,
 
-I can't reproduce the issue. Is it a regression caused by this change or 
-an existing bug?
+Thanks for the patch!.
+
+On Mon, Dec 18, 2023 at 08:40:18AM +0100, Heinrich Schuchardt wrote:
+> Generate SMBIOS tables for the RISC-V mach-virt.
+> Add CONFIG_SMBIOS=y to the RISC-V default config.
+> 
+> The implementation is based on the corresponding ARM and Loongson code.
+> 
+> With the patch the following firmware tables are provided:
+> 
+>     etc/smbios/smbios-anchor
+>     etc/smbios/smbios-tables
+> 
+> Booting Ubuntu 23.10 via EDK II allowed displaying the SMBIOS table using
+> the dmidecode command:
+> 
+>     Handle 0x0100, DMI type 1, 27 bytes
+>     System Information
+>         Manufacturer: QEMU
+>         Product Name: QEMU Virtual Machine
+>         Version: virt
+>     ...
+> 
+> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> ---
+>  hw/riscv/Kconfig |  1 +
+>  hw/riscv/virt.c  | 36 ++++++++++++++++++++++++++++++++++++
+>  2 files changed, 37 insertions(+)
+> 
+> diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
+> index b6a5eb4452..1e11ac9432 100644
+> --- a/hw/riscv/Kconfig
+> +++ b/hw/riscv/Kconfig
+> @@ -41,6 +41,7 @@ config RISCV_VIRT
+>      select RISCV_IMSIC
+>      select SIFIVE_PLIC
+>      select SIFIVE_TEST
+> +    select SMBIOS
+>      select VIRTIO_MMIO
+>      select FW_CFG_DMA
+>      select PLATFORM_BUS
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index d2eac24156..6c27cb5330 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -36,6 +36,7 @@
+>  #include "hw/riscv/boot.h"
+>  #include "hw/riscv/numa.h"
+>  #include "kvm/kvm_riscv.h"
+> +#include "hw/firmware/smbios.h"
+>  #include "hw/intc/riscv_aclint.h"
+>  #include "hw/intc/riscv_aplic.h"
+>  #include "hw/intc/riscv_imsic.h"
+> @@ -1249,6 +1250,39 @@ static void create_platform_bus(RISCVVirtState *s, DeviceState *irqchip)
+>                                  sysbus_mmio_get_region(sysbus, 0));
+>  }
+>  
+> +static void virt_build_smbios(RISCVVirtState *s)
+> +{
+Can we avoid duplicating this function which exists in other
+architectures? 
+
+Thanks,
+Sunil
 
