@@ -2,72 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165B6816F3D
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 14:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B1C816F0B
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 13:58:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFD8O-0002fF-UK; Mon, 18 Dec 2023 07:54:12 -0500
+	id 1rFDBC-0001qe-Mn; Mon, 18 Dec 2023 07:57:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFD8N-0002ej-9E
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 07:54:11 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFD8K-0004ra-Ok
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 07:54:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702904047;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=IFIJ+RPzZkqaRY6iZci9OyAj1dWWVEMhl2Ha4XXbRMw=;
- b=aA1SpIX99gFu4iEVDzWke0NHqwbVKaPbZD4KF77FbhCF1Zmbx69jPgBIs2fnY8hVsFRAaC
- hw+4TUW7x16RV8cdR8o0UKlol2g1rQR3IbdaYjs2syDVYDI/78NPM0H8Mh4fc9x2ZktXBa
- 9M/0CiG80wnxbkBkxdX2pLrGTwloRMM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-Y3ffz6cwOyG1s-zkD-9iZQ-1; Mon,
- 18 Dec 2023 07:54:05 -0500
-X-MC-Unique: Y3ffz6cwOyG1s-zkD-9iZQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4AEB938562C6;
- Mon, 18 Dec 2023 12:54:05 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0E9B42026D66;
- Mon, 18 Dec 2023 12:54:05 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0813221E6920; Mon, 18 Dec 2023 13:54:04 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Andrew Melnychenko <andrew@daynix.com>
-Cc: jasowang@redhat.com,  mst@redhat.com,  armbru@redhat.com,
- eblake@redhat.com,  qemu-devel@nongnu.org,  berrange@redhat.com,
- yuri.benditovich@daynix.com,  yan@daynix.com
-Subject: Re: [PATCH v7 4/5] qmp: Added new command to retrieve eBPF blob.
-In-Reply-To: <20230831065140.496485-5-andrew@daynix.com> (Andrew Melnychenko's
- message of "Thu, 31 Aug 2023 09:51:39 +0300")
-References: <20230831065140.496485-1-andrew@daynix.com>
- <20230831065140.496485-5-andrew@daynix.com>
-Date: Mon, 18 Dec 2023 13:54:04 +0100
-Message-ID: <874jgfu0wj.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from
+ <0102018c7d0026c1-fd5f0b50-48fd-4552-be0a-cbb6070b5e14-000000@eu-west-1.amazonses.com>)
+ id 1rFDB7-0001D8-8A; Mon, 18 Dec 2023 07:57:01 -0500
+Received: from a7-12.smtp-out.eu-west-1.amazonses.com ([54.240.7.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.90_1) (envelope-from
+ <0102018c7d0026c1-fd5f0b50-48fd-4552-be0a-cbb6070b5e14-000000@eu-west-1.amazonses.com>)
+ id 1rFDB4-0005ZA-7a; Mon, 18 Dec 2023 07:57:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+ s=we7ia3fxgawvchs62qr3tqnz7sf6mlor; d=ipxe.org; t=1702904211;
+ h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Transfer-Encoding;
+ bh=c4pv0S6+ZnrrN0Bf1oFCunpKh6ehbM0Y+HfBKgavp7A=;
+ b=YZYzZBkgY3V92N4N/CRbj6B9HlV8tygPU0e0+k2xI1VNYBMJuyltzvzgt5OwVbrp
+ 8mk5eYFQ+9IRhLKVRHjRewW55gv4j4BT1mISunCynrw2r8H3cJn7h8rW3nMFBCLBThG
+ z3LzQLEUmPjSg6oGsBrgH3NdVyhhkr3QqFKiAwmQB2Yg4MhNojNB6MJWgPIxvoui1+c
+ 45QNUNX3LbbGoxf0WKCB7TUEYyvfX1Nz6PQKlDRgyoffmPUkhiyfANcozMLyyepsB3i
+ 3E2oi/soGZMzg4TwFVzIPKceDJYDDe8npXKft1Dp/MnBLVpfCREKQNlMzEGiJKknIr6
+ rHWmTGPn9g==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+ s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1702904211;
+ h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
+ bh=c4pv0S6+ZnrrN0Bf1oFCunpKh6ehbM0Y+HfBKgavp7A=;
+ b=fTFaCAJvhQKnDXoWLChknkEJ/fbWB7UDnXnSLHFJYYB9IxCnGFP/N3eix7XDW6QI
+ 6yI3K29QT+EIsSXG2Pu1h+DVhfBVWJpg6f6fiblfr+DYQ3t58tG/1GTLyRqjDkh2nZw
+ UVrL/D1e6O+62N5TOsCPRTsu9XqgeY+h5YYpXVzc=
+From: Michael Brown <mcb30@ipxe.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Brown <mcb30@ipxe.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH] target/i386: Fix physical address truncation when PAE is
+ enabled
+Date: Mon, 18 Dec 2023 12:56:51 +0000
+Message-ID: <0102018c7d0026c1-fd5f0b50-48fd-4552-be0a-cbb6070b5e14-000000@eu-west-1.amazonses.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.083,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Feedback-ID: 1.eu-west-1.fspj4M/5bzJ9NLRzJP0PaxRwxrpZqiDQJ1IF94CF2TA=:AmazonSES
+X-SES-Outgoing: 2023.12.18-54.240.7.12
+Received-SPF: pass client-ip=54.240.7.12;
+ envelope-from=0102018c7d0026c1-fd5f0b50-48fd-4552-be0a-cbb6070b5e14-000000@eu-west-1.amazonses.com;
+ helo=a7-12.smtp-out.eu-west-1.amazonses.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,173 +76,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Uh, I missed this one, my apologies!  Let me have a quick look...
+The address translation logic in get_physical_address() will currently
+truncate physical addresses to 32 bits unless long mode is enabled.
+This is incorrect when using physical address extensions (PAE) outside
+of long mode, with the result that a 32-bit operating system using PAE
+to access memory above 4G will experience undefined behaviour.
 
-Commit message style nitpick:
+The truncation code was originally introduced in commit 33dfdb5 ("x86:
+only allow real mode to access 32bit without LMA"), where it applied
+only to translations performed while paging is disabled (and so cannot
+affect guests using PAE).
 
-    qmp: Add command to retrieve eBPF blob
+Commit 9828198 ("target/i386: Add MMU_PHYS_IDX and MMU_NESTED_IDX")
+rearranged the code such that the truncation also applied to the use
+of MMU_PHYS_IDX and MMU_NESTED_IDX.  Commit 4a1e9d4 ("target/i386: Use
+atomic operations for pte updates") brought this truncation into scope
+for page table entry accesses, and is the first commit for which a
+Windows 10 32-bit guest will reliably fail to boot if memory above 4G
+is present.
 
-or
+Fix by testing for PAE being enabled via the relevant bit in CR4,
+instead of testing for long mode being enabled.  PAE must be enabled
+as a prerequisite of long mode, and so this is a generalisation of the
+current test.
 
-    qmp: New command to retrieve eBPF blob
+Remove the #ifdef TARGET_X86_64 check since PAE exists in both 32-bit
+and 64-bit processors, and both should exhibit the same truncation
+behaviour when PAE is disabled.
 
-It's a title, not a sentence.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2040
+Signed-off-by: Michael Brown <mcb30@ipxe.org>
+---
+ target/i386/tcg/sysemu/excp_helper.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Andrew Melnychenko <andrew@daynix.com> writes:
-
-> Now, the binary objects may be retrieved by id.
-> It would require for future qmp commands that may require specific
-> eBPF blob.
->
-> Added command "request-ebpf". This command returns
-> eBPF program encoded base64. The program taken from the
-> skeleton and essentially is an ELF object that can be
-> loaded in the future with libbpf.
->
-> The reason to use the command to provide the eBPF object
-> instead of a separate artifact was to avoid issues related
-> to finding the eBPF itself. eBPF object is an ELF binary
-> that contains the eBPF program and eBPF map description(BTF).
-> Overall, eBPF object should contain the program and enough
-> metadata to create/load eBPF with libbpf. As the eBPF
-> maps/program should correspond to QEMU, the eBPF can't
-> be used from different QEMU build.
->
-> The first solution was a helper that comes with QEMU
-> and loads appropriate eBPF objects. And the issue is
-> to find a proper helper if the system has several
-> different QEMUs installed and/or built from the source,
-> which helpers may not be compatible.
->
-> Another issue is QEMU updating while there is a running
-> QEMU instance. With an updated helper, it may not be
-> possible to hotplug virtio-net device to the already
-> running QEMU. Overall, requesting the eBPF object from
-> QEMU itself solves possible failures with acceptable effort.
->
-> Links:
-> [PATCH 3/5] qmp: Added the helper stamp check.
-> https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
->
-> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
-
-[...]
-
-> diff --git a/qapi/ebpf.json b/qapi/ebpf.json
-> new file mode 100644
-> index 0000000000..ba78407148
-> --- /dev/null
-> +++ b/qapi/ebpf.json
-> @@ -0,0 +1,66 @@
-> +# -*- Mode: Python -*-
-> +# vim: filetype=python
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
-> +# See the COPYING file in the top-level directory.
-> +
-> +##
-> +# = eBPF Objects
-> +#
-> +# eBPF object is an ELF binary that contains the eBPF
-> +# program and eBPF map description(BTF). Overall, eBPF
-> +# object should contain the program and enough metadata
-> +# to create/load eBPF with libbpf. As the eBPF maps/program
-> +# should correspond to QEMU, the eBPF can't be used from
-> +# different QEMU build.
-
-An introduction, nice!
-
-Two spaces between sentences for consistency, please.
-
-Wrap comment lines at column 70, like this:
-
-   # eBPF object is an ELF binary that contains the eBPF program and eBPF
-   # map description(BTF).  Overall, eBPF object should contain the
-   # program and enough metadata to create/load eBPF with libbpf.  As the
-   # eBPF maps/program should correspond to QEMU, the eBPF can't be used
-   # from different QEMU build.
-
-> +#
-> +# Currently, there is a possible eBPF for receive-side scaling (RSS).
-> +#
-> +##
-> +
-> +##
-> +# @EbpfObject:
-> +#
-> +# An eBPF ELF object.
-> +#
-> +# @object: the eBPF object encoded in base64
-> +#
-> +# Since: 8.2
-
-Won't make 8.2, so bump to 9.0.  More of the same below, not noting it
-again.
-
-> +##
-> +{ 'struct': 'EbpfObject',
-> +  'data': {'object': 'str'},
-> +  'if': 'CONFIG_EBPF' }
-> +
-> +##
-> +# @EbpfProgramID:
-> +#
-> +# The eBPF programs that can be gotten with request-ebpf.
-> +#
-> +# @rss: Receive side scaling, technology that allows steering traffic
-> +#     between queues by calculation hash.  Users may set up
-> +#     indirection table and hash/packet types configurations.  Used
-> +#     with virtio-net.
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'enum': 'EbpfProgramID',
-> +  'if': 'CONFIG_EBPF',
-> +  'data': [ { 'name': 'rss' } ] }
-> +
-> +##
-> +# @request-ebpf:
-> +#
-> +# Retrieve an eBPF object that can be loaded with libbpf.  Management
-> +# applications (g.e. libvirt) may load it and pass file descriptors to
-> +# QEMU, so they can run running QEMU without BPF capabilities.
-> +#
-> +# @id: The ID of the program to return.
-> +#
-> +# Returns: eBPF object encoded in base64.
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'command': 'request-ebpf',
-> +  'data': { 'id': 'EbpfProgramID' },
-> +  'returns': 'EbpfObject',
-> +  'if': 'CONFIG_EBPF' }
-> diff --git a/qapi/meson.build b/qapi/meson.build
-> index 60a668b343..90047dae1c 100644
-> --- a/qapi/meson.build
-> +++ b/qapi/meson.build
-> @@ -33,6 +33,7 @@ qapi_all_modules = [
->    'crypto',
->    'cxl',
->    'dump',
-> +  'ebpf',
->    'error',
->    'introspect',
->    'job',
-> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-> index 6594afba31..2c82a49bae 100644
-> --- a/qapi/qapi-schema.json
-> +++ b/qapi/qapi-schema.json
-> @@ -53,6 +53,7 @@
->  { 'include': 'char.json' }
->  { 'include': 'dump.json' }
->  { 'include': 'net.json' }
-> +{ 'include': 'ebpf.json' }
->  { 'include': 'rdma.json' }
->  { 'include': 'rocker.json' }
->  { 'include': 'tpm.json' }
-
-With the (minor) doc comment fixes:
-Acked-by: Markus Armbruster <armbru@redhat.com>
+diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+index 5b86f439ad..3d0d0d78d7 100644
+--- a/target/i386/tcg/sysemu/excp_helper.c
++++ b/target/i386/tcg/sysemu/excp_helper.c
+@@ -582,12 +582,10 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
+ 
+     /* Translation disabled. */
+     out->paddr = addr & x86_get_a20_mask(env);
+-#ifdef TARGET_X86_64
+-    if (!(env->hflags & HF_LMA_MASK)) {
+-        /* Without long mode we can only address 32bits in real mode */
++    if (!(env->cr[4] & CR4_PAE_MASK)) {
++        /* Without PAE we can address only 32 bits */
+         out->paddr = (uint32_t)out->paddr;
+     }
+-#endif
+     out->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+     out->page_size = TARGET_PAGE_SIZE;
+     return true;
+-- 
+2.43.0
 
 
