@@ -2,66 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9868174C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB138174EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:14:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFFBz-0001U4-K1; Mon, 18 Dec 2023 10:06:04 -0500
+	id 1rFFIt-0006F9-Li; Mon, 18 Dec 2023 10:13:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFFBx-00019J-93
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:06:01 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1rFFIr-0006Eq-Ov
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:13:09 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFFBv-0007sU-ON
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:06:01 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-54cd2281ccbso3737948a12.2
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 07:05:58 -0800 (PST)
+ id 1rFFIp-0000mg-Lo
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:13:08 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-55333eb0312so1276036a12.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 07:13:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702911958; x=1703516758; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702912386; x=1703517186; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=LhwjoR/tWxGmpkzjzIicb0CMliaNwYjF8VhrxdPu3b0=;
- b=dEVHuMkYkIQ0DcvHBNt/BO+vBisq4dcXW0eCn9PzPbuM3zbMNE/IkmhhYV9D4p2JZi
- eimfTQrSjK1re1Zta8Uc6o2/9Q7JEs7FAGMHnqJEoH45HqZiWlNPkJCFkLfEsGYJgeEU
- uF5EKtYh/4P1HiV3oHz0tLnRTj9ACV+hf+uJy2brnk8qNL0cF9s3xKKQ1ro8tcmbScIr
- 8VlOyGprqkTIbo8m/ZaRnf7HZ4mcTdH1GPjRq6V3/+YZB/fFk89l7h3EDRtUDgjiTJ0x
- 03aUykx+YJhaJCjgdgiCvG04LjQkOnHzSB6xH9tEevyH3DIS0ly2n+Mjtu4A7qVsaTtw
- n1BA==
+ bh=bYeSHm4wswRJn6b/WQ53Z7Dgquy+ccBZWzRwub9ZcOE=;
+ b=Yt0cPCs8FlbEVM+0VX0O6+q3RbKZedRzNg573ylnxB2AnXEX+uF4K0o1N6Q7K1umN4
+ wilNP3QbHg9DWeTS5uWm1faIbDywe/yG6Q9aV/7S5utZj+d6UuZ1JH5XuXHcSjMAwpNh
+ WHUD1xb/ewmRLHwTPDF54yppQt1McpGDvBxWWao7UKIEKYt0T6ooX+gnIrqEDs17iuwx
+ kRSazLIV/pWA/sS+QG9sLN5YicIcgDnVU0VfPuj2gxtwswD+tziijK7lNDqVLltRKr3r
+ Yqkt/l7DkLyPeXAG3R0MlSyv5KSKJbrbUPjNYYiGqkkByNfiIi/Br07sacGjlXjrt/ET
+ r2Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702911958; x=1703516758;
+ d=1e100.net; s=20230601; t=1702912386; x=1703517186;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=LhwjoR/tWxGmpkzjzIicb0CMliaNwYjF8VhrxdPu3b0=;
- b=RqXRe4t8Qg4xsqxkJgBe1NJwOEgocUL1kWvQ41xPJoSr/fn/4hI86HHynshWPM/Q1V
- 6hRDOZocpvtmZ10jbGPauKwKiVN/osr/fruEYpvirbZd2jOQTJkcrCmCyxaOikQX6sGb
- qPArjBVTvENLo43kcOL6JMmn/oeY9FUJ/ORq/XIL6AcY2t/+pPzX5+7DkTFcEh6XC1HO
- /Yas9egzQ2lc8Re+P8S3X91RwM4B6R9hykqsLIR7UBYLPsqVVk1lk2OjfGm+lgu0PvfE
- m6yZgq5hArbYnD2Tgy45I03v8PIpDXC+VjfGXeb3XLNfFHQplo1o3Q3jc3lDN7Ubddel
- mV9A==
-X-Gm-Message-State: AOJu0Yw4ZJqpZoh6mCDe5l1R0hoqWKdYmtvpBD7kASabLt0knxPl7jnT
- E13VtIoCNjZDKGb7egEvqFoKJ4U0rVPjL7JH4XKg2w==
-X-Google-Smtp-Source: AGHT+IFLTUL1H9vDBJjw0vuJhzA1iEYDqrtztZgJsOYH/g0ZmX0ldRyjeq9fZx/XfQuc6DzKwjtjNNUzNnWnkDkzJlo=
-X-Received: by 2002:a50:ccd1:0:b0:551:656:d48b with SMTP id
- b17-20020a50ccd1000000b005510656d48bmr419283edj.71.1702911957751; Mon, 18 Dec
- 2023 07:05:57 -0800 (PST)
+ bh=bYeSHm4wswRJn6b/WQ53Z7Dgquy+ccBZWzRwub9ZcOE=;
+ b=ghMHn3yoQG5rA9O7rfElye2VgQ8bT/Hy/OXkLTbyl78Pn4NnDyEOZWBV8rVaBwe+9C
+ WKH1kRbyth7/KC7oKV+InznHcZfH1pkjaXvwxMVVxbaFna5lJf/KyNTNX50+2HCWMm2a
+ amltXXbGfHWQJ2k6DmXOrJME9GPtq0PaMGhYkZoGMw0zOX0RO9OGW0ydi30ITfKC2tfT
+ UVt4J9vKl1x0cNm+j7tkw2ARjR2lO6/AJDDuj553UX7VvpX5LWCu24i8HcdRCh3NfQ3s
+ bzkvDkrVnN+1S9lwt30gkmX9ry7wSBA4wxtFF5WS6A9ekfIvLtYBTBfv+8tgalmfJJHi
+ iyWg==
+X-Gm-Message-State: AOJu0Yw3dvNtd3HQuMua6VPTsNQhnejuP+O/362lsaA59HbtM8TD5n0N
+ UD2zk7oRLYa1h9EP1poIJegf/SRdSStFKA+IGkbwZ9gXt99w3v/A
+X-Google-Smtp-Source: AGHT+IHuGiraBWoVPJT5ZmWIsIFe9PjAbBdIfmRKCUJhK709SGJ/iQwx9iq1mgsjv08FlkxKXgfbd7rQ/OyWAukvHl0=
+X-Received: by 2002:a50:d095:0:b0:553:6692:db67 with SMTP id
+ v21-20020a50d095000000b005536692db67mr815664edd.12.1702912386045; Mon, 18 Dec
+ 2023 07:13:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20231215144652.4193815-2-jean-philippe@linaro.org>
-In-Reply-To: <20231215144652.4193815-2-jean-philippe@linaro.org>
+References: <20231216133408.2884-1-n.ostrenkov@gmail.com>
+In-Reply-To: <20231216133408.2884-1-n.ostrenkov@gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Dec 2023 15:05:46 +0000
-Message-ID: <CAFEAcA9-hDs_zG=jGXLbSgPkyX-AMUfAJLTk5end9neSPwyq1g@mail.gmail.com>
-Subject: Re: [PATCH] target/arm/helper: Propagate MDCR_EL2.HPMN into PMCR_EL0.N
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Date: Mon, 18 Dec 2023 15:12:55 +0000
+Message-ID: <CAFEAcA_yXDfq8Q=374dtbWz=-SeioF7gxVFqtGuteTLZQgjZ5g@mail.gmail.com>
+Subject: Re: [PATCH v5] fsl-imx: add simple RTC emulation for i.MX6 and i.MX7
+ boards
+To: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Andrey Smirnov <andrew.smirnov@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,20 +87,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Dec 2023 at 15:16, Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
+On Sat, 16 Dec 2023 at 13:34, Nikita Ostrenkov <n.ostrenkov@gmail.com> wrote:
 >
-> MDCR_EL2.HPMN allows an hypervisor to limit the number of PMU counters
-> available to EL1 and EL0 (to keep the others to itself). QEMU already
-> implements this split correctly, except for PMCR_EL0.N reads: the number
-> of counters read by EL1 or EL0 should be the one configured in
-> MDCR_EL2.HPMN.
->
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+> ---
+>  hw/misc/imx7_snvs.c         | 93 ++++++++++++++++++++++++++++++++++---
+>  hw/misc/trace-events        |  4 +-
+>  include/hw/misc/imx7_snvs.h |  7 ++-
+>  3 files changed, 94 insertions(+), 10 deletions(-)
 
-Applied to target-arm.next for 9.0, thanks. I've added a
-Cc: qemu-stable@nongnu.org because it seems a fix worth
-backporting.
+
+
+Applied to target-arm.next for 9.0, thanks.
 
 -- PMM
 
