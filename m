@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB138174EB
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4828181756F
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:36:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFFIt-0006F9-Li; Mon, 18 Dec 2023 10:13:11 -0500
+	id 1rFFeQ-00055X-PR; Mon, 18 Dec 2023 10:35:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFFIr-0006Eq-Ov
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:13:09 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFFIp-0000mg-Lo
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:13:08 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-55333eb0312so1276036a12.1
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 07:13:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702912386; x=1703517186; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bYeSHm4wswRJn6b/WQ53Z7Dgquy+ccBZWzRwub9ZcOE=;
- b=Yt0cPCs8FlbEVM+0VX0O6+q3RbKZedRzNg573ylnxB2AnXEX+uF4K0o1N6Q7K1umN4
- wilNP3QbHg9DWeTS5uWm1faIbDywe/yG6Q9aV/7S5utZj+d6UuZ1JH5XuXHcSjMAwpNh
- WHUD1xb/ewmRLHwTPDF54yppQt1McpGDvBxWWao7UKIEKYt0T6ooX+gnIrqEDs17iuwx
- kRSazLIV/pWA/sS+QG9sLN5YicIcgDnVU0VfPuj2gxtwswD+tziijK7lNDqVLltRKr3r
- Yqkt/l7DkLyPeXAG3R0MlSyv5KSKJbrbUPjNYYiGqkkByNfiIi/Br07sacGjlXjrt/ET
- r2Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702912386; x=1703517186;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bYeSHm4wswRJn6b/WQ53Z7Dgquy+ccBZWzRwub9ZcOE=;
- b=ghMHn3yoQG5rA9O7rfElye2VgQ8bT/Hy/OXkLTbyl78Pn4NnDyEOZWBV8rVaBwe+9C
- WKH1kRbyth7/KC7oKV+InznHcZfH1pkjaXvwxMVVxbaFna5lJf/KyNTNX50+2HCWMm2a
- amltXXbGfHWQJ2k6DmXOrJME9GPtq0PaMGhYkZoGMw0zOX0RO9OGW0ydi30ITfKC2tfT
- UVt4J9vKl1x0cNm+j7tkw2ARjR2lO6/AJDDuj553UX7VvpX5LWCu24i8HcdRCh3NfQ3s
- bzkvDkrVnN+1S9lwt30gkmX9ry7wSBA4wxtFF5WS6A9ekfIvLtYBTBfv+8tgalmfJJHi
- iyWg==
-X-Gm-Message-State: AOJu0Yw3dvNtd3HQuMua6VPTsNQhnejuP+O/362lsaA59HbtM8TD5n0N
- UD2zk7oRLYa1h9EP1poIJegf/SRdSStFKA+IGkbwZ9gXt99w3v/A
-X-Google-Smtp-Source: AGHT+IHuGiraBWoVPJT5ZmWIsIFe9PjAbBdIfmRKCUJhK709SGJ/iQwx9iq1mgsjv08FlkxKXgfbd7rQ/OyWAukvHl0=
-X-Received: by 2002:a50:d095:0:b0:553:6692:db67 with SMTP id
- v21-20020a50d095000000b005536692db67mr815664edd.12.1702912386045; Mon, 18 Dec
- 2023 07:13:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFeM-00055E-2F
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:35:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFFeK-0005cZ-ET
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:35:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702913719;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PDubdz9qL49hAN39OYCPIe6uR/1A8jW1md3mHWy8lFM=;
+ b=OoDIpUd90tk6NcKV2wTIrgXIUdIzvN4uHimzq3vT9BgA6eFbleSL9scwmhVppC3IT3CMwr
+ Zqh6fIHsvnw2f0o8KJEyX2iX7wXWmRLq2BKQ4GBvtfAwDN00P2wshdJyzS4jpOZFEPaXFr
+ YLf4cqoE7ATFdO/JOBf8CJygCIWTaQ0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-139-m3kEV4ygO-CxGpJECnICkg-1; Mon, 18 Dec 2023 10:35:15 -0500
+X-MC-Unique: m3kEV4ygO-CxGpJECnICkg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5611B101A555;
+ Mon, 18 Dec 2023 15:35:14 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.189])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AE2A21121313;
+ Mon, 18 Dec 2023 15:35:09 +0000 (UTC)
+Date: Mon, 18 Dec 2023 16:35:08 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Cleber Rosa <crosa@redhat.com>, Xie Changlong <xiechanglong.d@gmail.com>,
+ Paul Durrant <paul@xen.org>, Ari Sundholm <ari@tuxera.com>,
+ Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>,
+ John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Wen Congyang <wencongyang2@huawei.com>, Alberto Garcia <berto@igalia.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
+ Juan Quintela <quintela@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
+ Fabiano Rosas <farosas@suse.de>, Hanna Reitz <hreitz@redhat.com>,
+ Zhang Chen <chen.zhang@intel.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Peter Xu <peterx@redhat.com>,
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Leonardo Bras <leobras@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Li Zhijian <lizhijian@fujitsu.com>, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 02/14] scsi: assert that callbacks run in the correct
+ AioContext
+Message-ID: <ZYBmrC6NB1thDiRA@redhat.com>
+References: <20231205182011.1976568-1-stefanha@redhat.com>
+ <20231205182011.1976568-3-stefanha@redhat.com>
 MIME-Version: 1.0
-References: <20231216133408.2884-1-n.ostrenkov@gmail.com>
-In-Reply-To: <20231216133408.2884-1-n.ostrenkov@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Dec 2023 15:12:55 +0000
-Message-ID: <CAFEAcA_yXDfq8Q=374dtbWz=-SeioF7gxVFqtGuteTLZQgjZ5g@mail.gmail.com>
-Subject: Re: [PATCH v5] fsl-imx: add simple RTC emulation for i.MX6 and i.MX7
- boards
-To: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Andrey Smirnov <andrew.smirnov@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231205182011.1976568-3-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.083,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,18 +99,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 16 Dec 2023 at 13:34, Nikita Ostrenkov <n.ostrenkov@gmail.com> wrote:
->
-> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-> ---
->  hw/misc/imx7_snvs.c         | 93 ++++++++++++++++++++++++++++++++++---
->  hw/misc/trace-events        |  4 +-
->  include/hw/misc/imx7_snvs.h |  7 ++-
->  3 files changed, 94 insertions(+), 10 deletions(-)
+Am 05.12.2023 um 19:19 hat Stefan Hajnoczi geschrieben:
+> Since the removal of AioContext locking, the correctness of the code
+> relies on running requests from a single AioContext at any given time.
+> 
+> Add assertions that verify that callbacks are invoked in the correct
+> AioContext.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 
-
-Applied to target-arm.next for 9.0, thanks.
-
--- PMM
 
