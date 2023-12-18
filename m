@@ -2,66 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10798169D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 10:25:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1D7816A33
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 10:50:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rF9qq-0007X8-Lj; Mon, 18 Dec 2023 04:23:52 -0500
+	id 1rFAFC-00040D-FV; Mon, 18 Dec 2023 04:49:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rF9qo-0007WP-Bm; Mon, 18 Dec 2023 04:23:50 -0500
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rF9qk-00015q-27; Mon, 18 Dec 2023 04:23:48 -0500
-Received: from [192.168.123.94] (ip-178-202-040-247.um47.pools.vodafone-ip.de
- [178.202.40.247])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id B39313F5F0; 
- Mon, 18 Dec 2023 09:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1702891423;
- bh=Bg3qYfFFd8H2aGlw08bBTiuD/yZJ1rWQm8HJE2Q0BsI=;
- h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
- In-Reply-To:Content-Type;
- b=AKB60Xbhf/2AIZtmPJ33TwtwGGuszRqSF4EX4oDJBJr9FXKFUcYjLB+q9q1dOdbeZ
- wXUE0ioG+v9PSt7rH7x7rnbltpam/4NK2j/kX78b9rUVglLGjLJeLz1lfv3rO2+kbo
- E+8XwVyltJ8Xrjt6hgXhHsodRCaEbM04pMNov/90qrmvOQjuJQZbwRtDydt339NnI7
- JxLG+oJ/eK0/yJHFrfzVW1XtUTu5CYVXVdrNMIKRnHPeLBHv0yS2/Q1ifp13Q2L4iP
- 8ERVfGtRlerYszDgmRWVJvIsfNDmzvlRG+3tqhqPvs6kiaVLy+zJKhth0JxgP0SaPb
- lzpx8X8+5zXpA==
-Message-ID: <9183a3fb-b9f7-470c-b9a6-8d8cc6dce7c3@canonical.com>
-Date: Mon, 18 Dec 2023 10:23:40 +0100
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFAFA-0003zS-MA
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:49:00 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFAF8-0006BB-VE
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:49:00 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5534abbc637so854058a12.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 01:48:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702892937; x=1703497737; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/rzm0E835i0JWDe+HCQaZ1ik9yylUdADi+Oh0GkKdvQ=;
+ b=LYcsqDY1XYpLQrDV7H66TEtKVq9d7qzsSV+Ut96H9GbFj1e6gz4WS0YmUDL8ysWyF+
+ 7OtuCVH8AWLrj5gbx3kYZa2LFgZ7snwyfQPUsRelXsAmcUltYlY96Vj56ana6b67jOEj
+ DRrxo0gvczGNHWYtmsADgQEKar9p5+zW4Th6O2sg1byVbocQEFLywrjwPRogwTDoxyNy
+ 3B7k/A35WfcT54LAw8CDu4RavkNy/sg6fWpwSc3d/c5vxRAHCfRn3SGwS8F0rApb+VSb
+ OgpkRwjr9dyl828oUs/vr8/10kkInWlZzvMK1EV8uBgYkZkWHjZzb3TP5vkhWFXMiYcq
+ n5lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702892937; x=1703497737;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/rzm0E835i0JWDe+HCQaZ1ik9yylUdADi+Oh0GkKdvQ=;
+ b=iglEI6jhro2xWvHCHqgZ0nfUpmIlIU1YaLtPorwfD827vQ9ztrqvUDJgrHCSwJKsqD
+ +trwK5fuvTH3qkgNibRizzFI2hyDh8sC+bJ+ROrAKIX7PbGfn0A+HbY50MO8xPwH0t0F
+ 8ZV5dzYyj4j5DyjFtu+l9vnJ3jacYqEutlMzOyuWwBhxI/xnBIiap2x8TOyPMR6K4oga
+ W01vQDhqm8mYuZ7bJkNOB7Y6BA3HL0RDZEPBOBlU/tDiAxxcJbwoQHaDDoPqxpCSfiNV
+ bnjdMjs9CzuOx/g2aqgKCi7S/B66MNlGnXXzlI7izQ71jlwj9T0ZjVwtqj4Zx/B1CFPo
+ Ij3A==
+X-Gm-Message-State: AOJu0YyU1S+AoEFGdF6dyOf88mXwO/3VMfq+cr/GJWXbNQBSzrUfyqvW
+ mzb8Va+N0CMF5DxHULRRwWmKAURhn3Ti7hCirhMMiQ==
+X-Google-Smtp-Source: AGHT+IFJWliWDFQ7yEBF2WnXbPX+wma1ojFtmH+69LkCl7i7E2SDJTpqLA8dyC5YRvmUNLgU5V6Mn5iJofSTZ0jJpcQ=
+X-Received: by 2002:a50:ccdd:0:b0:553:5077:213c with SMTP id
+ b29-20020a50ccdd000000b005535077213cmr583762edj.71.1702892936802; Mon, 18 Dec
+ 2023 01:48:56 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] target/riscv: SMBIOS support for RISC-V virt machine
-Content-Language: en-US, de-DE
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-References: <20231218074018.66134-1-heinrich.schuchardt@canonical.com>
- <ZYAHtq1HozBOZZrJ@sunil-laptop>
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <ZYAHtq1HozBOZZrJ@sunil-laptop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=185.125.188.121;
- envelope-from=heinrich.schuchardt@canonical.com;
- helo=smtp-relay-canonical-1.canonical.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.086,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231214171447.44025-1-philmd@linaro.org>
+ <CAFEAcA-Je+_tNCwiL_sQb-tDmCRJ2LWm5mAfuowtxbUBNEWQXQ@mail.gmail.com>
+ <871qbkug24.fsf@pond.sub.org>
+In-Reply-To: <871qbkug24.fsf@pond.sub.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 18 Dec 2023 09:48:45 +0000
+Message-ID: <CAFEAcA9vEvOeTseaC27hz9RKe13zs_2oPGjK-bLs8VL1wQF2jw@mail.gmail.com>
+Subject: Re: [RFC PATCH] hw/arm: Prefer arm_feature() over
+ object_property_find()
+To: Markus Armbruster <armbru@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>, 
+ Alistair Francis <alistair@alistair23.me>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,91 +96,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/18/23 09:49, Sunil V L wrote:
-> Hi Heinrich,
-> 
-> Thanks for the patch!.
-> 
-> On Mon, Dec 18, 2023 at 08:40:18AM +0100, Heinrich Schuchardt wrote:
->> Generate SMBIOS tables for the RISC-V mach-virt.
->> Add CONFIG_SMBIOS=y to the RISC-V default config.
->>
->> The implementation is based on the corresponding ARM and Loongson code.
->>
->> With the patch the following firmware tables are provided:
->>
->>      etc/smbios/smbios-anchor
->>      etc/smbios/smbios-tables
->>
->> Booting Ubuntu 23.10 via EDK II allowed displaying the SMBIOS table using
->> the dmidecode command:
->>
->>      Handle 0x0100, DMI type 1, 27 bytes
->>      System Information
->>          Manufacturer: QEMU
->>          Product Name: QEMU Virtual Machine
->>          Version: virt
->>      ...
->>
->> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
->> ---
->>   hw/riscv/Kconfig |  1 +
->>   hw/riscv/virt.c  | 36 ++++++++++++++++++++++++++++++++++++
->>   2 files changed, 37 insertions(+)
->>
->> diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
->> index b6a5eb4452..1e11ac9432 100644
->> --- a/hw/riscv/Kconfig
->> +++ b/hw/riscv/Kconfig
->> @@ -41,6 +41,7 @@ config RISCV_VIRT
->>       select RISCV_IMSIC
->>       select SIFIVE_PLIC
->>       select SIFIVE_TEST
->> +    select SMBIOS
->>       select VIRTIO_MMIO
->>       select FW_CFG_DMA
->>       select PLATFORM_BUS
->> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
->> index d2eac24156..6c27cb5330 100644
->> --- a/hw/riscv/virt.c
->> +++ b/hw/riscv/virt.c
->> @@ -36,6 +36,7 @@
->>   #include "hw/riscv/boot.h"
->>   #include "hw/riscv/numa.h"
->>   #include "kvm/kvm_riscv.h"
->> +#include "hw/firmware/smbios.h"
->>   #include "hw/intc/riscv_aclint.h"
->>   #include "hw/intc/riscv_aplic.h"
->>   #include "hw/intc/riscv_imsic.h"
->> @@ -1249,6 +1250,39 @@ static void create_platform_bus(RISCVVirtState *s, DeviceState *irqchip)
->>                                   sysbus_mmio_get_region(sysbus, 0));
->>   }
->>   
->> +static void virt_build_smbios(RISCVVirtState *s)
->> +{
-> Can we avoid duplicating this function which exists in other
-> architectures?
-> 
+On Mon, 18 Dec 2023 at 07:26, Markus Armbruster <armbru@redhat.com> wrote:
+>
+> Peter Maydell <peter.maydell@linaro.org> writes:
+>
+> > On Thu, 14 Dec 2023 at 17:14, Philippe Mathieu-Daud=C3=A9 <philmd@linar=
+o.org> wrote:
+> >>
+> >> QOM properties are added on the ARM vCPU object when a
+> >> feature is present. Rather than checking the property
+> >> is present, check the feature.
+> >>
+> >> Suggested-by: Markus Armbruster <armbru@redhat.com>
+> >> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> >> ---
+> >> RFC: If there is no objection on this patch, I can split
+> >>      as a per-feature series if necessary.
+> >>
+> >> Based-on: <20231123143813.42632-1-philmd@linaro.org>
+> >>   "hw: Simplify accesses to CPUState::'start-powered-off' property"
+> >
+> > I'm not a super-fan of board-level code looking inside
+> > the QOM object with direct use of arm_feature() when
+> > it doesn't have to. What's wrong with asking whether
+> > the property exists before trying to set it?
+>
+> I'm not a fan of using QOM instead of the native C interface.
+>
+> The native C interface is CPUArmState method arm_feature().
 
-Every architecture uses it own structures (e.g. RISCVVirtState) and 
-constants (e.g VIRT_DRAM). As long as this is not addressed we will have 
-to live with this piece of code duplication.
+But we don't in most of these cases really want to know "is this
+a CPU with feature foo?". What we're asking is "does this
+QOM property exist so it won't blow up if I set/get it?".
 
-After this patch is accepted we will have to work on improving SMBIOS 
-3.7.0 compliance:
+> Attempts to use it on anything but a CPUArmState * will be caught by the
+> compiler.  object_property_find() will happily take any Object.
+>
+> Likewise, typos in its second argument will be caught by the compiler.
+> object_property_find() will happily return NULL then.
+>
+>
+> I also don't like adding QOM properties to instances.
+> arm_cpu_post_init() seems to do that.  I feel it's best to stick to
+> class properties whenever practical.
 
-* Table 22
-* * field Processor Family should contain a RISC-V specfic value. Maybe 
-derived from TARGET_RISCV##.
-* * field Processor ID should contain the value of mvendorid of hart 0 
-(i.e. cpu->cfg.mvendorid).
+I agree, and the Arm CPU is a bit of an outlier in what it's
+doing, for reasons that are largely I think historical. I'd
+be happy to review patches that change these to class properties
+where applicable, but I suspect that might be tricky...
 
-* Table 44
-
-The required contents of this table are provided in 
-https://github.com/riscv/riscv-smbios .
-
-Best regards
-
-Heinrich
+thanks
+-- PMM
 
