@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 676D9816666
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 07:16:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11331816708
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 08:08:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rF6tY-0005RL-Ru; Mon, 18 Dec 2023 01:14:28 -0500
+	id 1rF7iJ-0006KQ-H6; Mon, 18 Dec 2023 02:06:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rF6tV-0005R1-UN
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 01:14:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rF6tU-0007HW-56
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 01:14:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702880062;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bWvvNtDXuZtoAOIP+V5siuKIKQoPv9QOBorUbvVLIU4=;
- b=fac31RAhiEyQCiaxxCtbnxTewciorp26xhmMPNsa5lXabmu+/bwAe3XG6AntWbgv3EI/x3
- 1Gmt9VakNPvNg0nqNL06s590WwZPUa4PfFvhKkWV0pjTfa7OkMEjNppQpQHGmCxg81/9+T
- 13r7GoEWbGiIQNyuHE0j6FH9UDFOFpA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-dE3LwbdBO_OeHG28_GsIjw-1; Mon, 18 Dec 2023 01:14:19 -0500
-X-MC-Unique: dE3LwbdBO_OeHG28_GsIjw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C948885A589;
- Mon, 18 Dec 2023 06:14:18 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8318C492BF0;
- Mon, 18 Dec 2023 06:14:18 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8F20F21E6920; Mon, 18 Dec 2023 07:14:17 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?=
- <philmd@linaro.org>,  Eric Blake <eblake@redhat.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  Carwyn Ellis <carwynellis@gmail.com>,
- qemu-devel@nongnu.org,  BALATON Zoltan <balaton@eik.bme.hu>,
- qemu-trivial@nongnu.org
-Subject: Re: [PATCH 0/2] qemu-options: Improve -display cocoa documentation
-In-Reply-To: <20231214-options-v1-0-113f347b0e3f@daynix.com> (Akihiko Odaki's
- message of "Thu, 14 Dec 2023 15:31:34 +0900")
-References: <20231214-options-v1-0-113f347b0e3f@daynix.com>
-Date: Mon, 18 Dec 2023 07:14:17 +0100
-Message-ID: <877clcujeu.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rF7iG-0006KD-LW
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 02:06:52 -0500
+Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rF7iF-00039d-6y
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 02:06:52 -0500
+Received: by mail-qt1-x82f.google.com with SMTP id
+ d75a77b69052e-425c54f5842so28679901cf.2
+ for <qemu-devel@nongnu.org>; Sun, 17 Dec 2023 23:06:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1702883210; x=1703488010; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hgzz9c3uSeYRxGVR8sHxPatlE80PwA0vJumlwB4wMBo=;
+ b=VhjvuCnFb3Rc6dCiFN+dUagqnhTCMTVxJFaYmgvv0SS/IBt/o7mdnWCRfsbqR+7bS3
+ b8qtGl4K2EB6EOetwhLidMbHSNHr0xVX2p2BkVdPC+hYuC5aGPsXeee0NGHeUqkiSoob
+ +kn7GqMAT0F+7++ELpoKQB9Z7OVp58DUsAtj75QpdKdh8MNRscspI02/yLv+Q9OTVQiY
+ eOQbclTNFPCIgKj8xGpmFEj5hAvKjNOOpBjEfzMCOWEcllx6bT32zvCNeXRyXnBfpfxv
+ k80EMO+8nWK3kSyfBAzeJTrulOpGQ0IAikb2ki3oC06cO919GxxLzODA6+8FzL5By7ax
+ dsOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702883210; x=1703488010;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hgzz9c3uSeYRxGVR8sHxPatlE80PwA0vJumlwB4wMBo=;
+ b=RvbP8BletLKP6jvcG5m/KIDwgH2xbQkSRjqFK8b1Xy0G6VePTtS56NvXJP6bXzMylZ
+ k3vpP4EzcFu2X2bL9/wTKcYINjMhhvdf4wfBXGcH9lLmPe//w10BrY8aX/3BWC7VUjHR
+ cNofdJIEAT9GTktFtG77DElcE9W71L7962pK40hZTLA4NOblW0MrqeDCmr+vuIuN0GKT
+ Pz0UYubub5DQfZAY0M+wT9luOFSGCZXPXALciw2X8lYwmCmGXvadUyMb0pvuIZuP3Oyd
+ Xf6/yXdgPxDi861Zn8aRVXWi0pcn5g2zP8nQhbB1aYTGI/qNdNLidjj00IHxDMrkN/DW
+ Qu0A==
+X-Gm-Message-State: AOJu0YzjntuVVg4DtRtbiSvVnTKXASGBPng+JhtdfTe5mFmFTYRHY1M+
+ ktxv1TdpZZs/D0xIFtXYRshpLrPzAdCJH7yP/k0=
+X-Google-Smtp-Source: AGHT+IFFI2J5Tq5GxNl7na9sxLNr7vnGvaFOPPUr8gyCCtogO9+RB/EwV+5YDx866TEoufWcheJ/BkoFtOhQ/aWoXBY=
+X-Received: by 2002:a05:622a:144e:b0:425:aa00:cdd9 with SMTP id
+ v14-20020a05622a144e00b00425aa00cdd9mr22405048qtx.16.1702883209791; Sun, 17
+ Dec 2023 23:06:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20231217-dbus-v5-0-8122e822a392@daynix.com>
+ <20231217-dbus-v5-2-8122e822a392@daynix.com>
+In-Reply-To: <20231217-dbus-v5-2-8122e822a392@daynix.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 18 Dec 2023 11:06:38 +0400
+Message-ID: <CAJ+F1C+MSBdmtebUiiHZVMAxsT6e=diU5_c97u_hgbxON6a4Ng@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] audio: Do not include ui/dbus.h
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.086,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,25 +91,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Could this go via qemu-trivial?
+Hi
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-
-> For the context, see:
-> https://lore.kernel.org/all/e3839467-6d4c-e8e6-9247-a71fafe5505e@eik.bme.hu/
+On Sun, Dec 17, 2023 at 10:14=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
+x.com> wrote:
 >
+> ui/dbusaudio.c does not depend on ui/dbus.h
+>
+
+It uses dbus_win32_import_socket()
+
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
-> Akihiko Odaki (2):
->       qemu-options: Unify the help entries for cocoa
->       qemu-options: Tell more for -display cocoa
+>  audio/dbusaudio.c | 1 -
+>  audio/meson.build | 2 +-
+>  2 files changed, 1 insertion(+), 2 deletions(-)
 >
->  qemu-options.hx | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
-> ---
-> base-commit: 4705fc0c8511d073bee4751c3c974aab2b10a970
-> change-id: 20231214-options-386e48b6fa4c
+> diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
+> index 2aacdac6715b..3cd8e294501f 100644
+> --- a/audio/dbusaudio.c
+> +++ b/audio/dbusaudio.c
+> @@ -33,7 +33,6 @@
+>  #include <gio/gunixfdlist.h>
+>  #endif
 >
-> Best regards,
+> -#include "ui/dbus.h"
+>  #include "util/dbus-display1.h"
+>
+>  #define AUDIO_CAP "dbus"
+> diff --git a/audio/meson.build b/audio/meson.build
+> index c8f658611f42..8931c1697b4d 100644
+> --- a/audio/meson.build
+> +++ b/audio/meson.build
+> @@ -30,7 +30,7 @@ endforeach
+>
+>  if dbus_display
+>      module_ss =3D ss.source_set()
+> -    module_ss.add(when: [gio, pixman], if_true: files('dbusaudio.c'))
+> +    module_ss.add(when: [gio], if_true: files('dbusaudio.c'))
+>      audio_modules +=3D {'dbus': module_ss}
+>  endif
+>
+>
+> --
+> 2.43.0
+>
+>
 
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
