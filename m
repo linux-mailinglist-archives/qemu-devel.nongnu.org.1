@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5128177BC
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 17:42:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4BE38177C2
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 17:43:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFGgW-00065o-Kq; Mon, 18 Dec 2023 11:41:40 -0500
+	id 1rFGhY-00074n-3H; Mon, 18 Dec 2023 11:42:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFGgU-00065T-Be
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:41:38 -0500
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1rFGhV-0006xO-ER
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:42:41 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFGgS-0001vv-Qr
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:41:38 -0500
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-54c5d041c23so3978726a12.2
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 08:41:36 -0800 (PST)
+ id 1rFGhT-00021s-LD
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 11:42:40 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-54cb4fa667bso4061807a12.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 08:42:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702917695; x=1703522495; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702917758; x=1703522558; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=DnRd5fNcsD03vuFGrT23ASKpRhWRVtXIKT5M3YKw78I=;
- b=VW3ssgUwvF9wmX322i96XKfeTjIs1du3BuDs8laFac8YjQ2lQhL9PZZ8eoaE4ZfVqF
- NqBq64gsmaE/cKwBnqUHjBd+RMQJ6OvKgjFN8/zpB7U3qNHS+kiBnsSFOkILgxp2bmRF
- zXiWgiXBsNRRgE1oCo0z0pZ5zjLaHFHWkxDLRV61hgMueyJGCerSsMXLavIkFyYG+D1I
- 4t6TmqRPZMIMSD73fBgvqIWeiG0XnuxP60YVBiWnENT6mLG4mB9JDXQ+Uw9w/oyNPil3
- zraKfgNNadSXKClMJoxB+25CRKh8nZ6TiOkVVsbjsxNdeF7+7upgdFxfQX6YeQhVexbP
- c4NA==
+ bh=kIpi/SFUK7LkV+dbaKMGjtF8g+sGAwH5XPmGl60jN5U=;
+ b=RKXyZgJ15QXfbVx8KJTj7w+UH29lhM5yy5Y0zQweTNGqW6UeWsGvN/x4yeiT78ZFJ+
+ IdcnXXbzzjUGeudITKpsbI2mrgLIe92pBcE0V3pnCG9YbT8F2BJc+z//C5JPPYbkC558
+ V3j8UgyFR9ulQNiG5s8PKTqe6WTZ96eKH/4bvk9fpGwjYVn0JrVl69QtSd1cXfhvH2b7
+ 5LgMmUs+Phbe6yqyuAZs/cGgbQ4+/A7Hm7rr09u7gZp70M8txJVrY1PA8BIhhgPGj9V+
+ RK80HHJ/1bEr/mU7ju+oetm91PmBd7JSTFsQFhr0oeZicRjS2VIOTNxJz5YagSPcCWIG
+ hj+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702917695; x=1703522495;
+ d=1e100.net; s=20230601; t=1702917758; x=1703522558;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=DnRd5fNcsD03vuFGrT23ASKpRhWRVtXIKT5M3YKw78I=;
- b=YDiaejNV9tKyQpwRdYRwW5ES+9TPElJR42FdCsXly9sTTv5MmM1xi6BNppDsOsvLsR
- InTyo/QhufYETPp6ukQCFi60im0ELKuq2CtC+sXdIxg9WS/8eumT/cMk1uDuCYh2/JAQ
- LggdoiTrCFWSvzFCGMfSKbfe5SpFGNz0YHdirBAPcI+wuhXlF2viAfFL4z7YJ/2V+iaA
- pfEhEPglHJZ1cvvcXaly6YDsctC+Fssm2baYFubLGXPLxGu+6u/8NYRyi47OhxaWG8W3
- cNu2o2JWg7Ywpes6P3fKw/T4EtFExxMicvvDVDm2sFjtPWa8e5ZsjugrLdZHFfsfhFDn
- pmTg==
-X-Gm-Message-State: AOJu0YyP4xEo34ZtzScvQndc/8y7wytBzY2hLiFhLpG+qsimzQVj7CjY
- dLnA5m6INV7QoTJR1afNaOBuu02YrcL2+3I6Ba7f4w==
-X-Google-Smtp-Source: AGHT+IFN1NUT0RvUZeqCSWVOzarxWdFq04jbIp2E/+EBO3XND0x3Cb01Jho9+jtUY8Bvjc4pO42FHwzZgz0LeO/YgLM=
-X-Received: by 2002:a50:e60b:0:b0:54c:4fec:11a with SMTP id
- y11-20020a50e60b000000b0054c4fec011amr4927814edm.169.1702917695279; Mon, 18
- Dec 2023 08:41:35 -0800 (PST)
+ bh=kIpi/SFUK7LkV+dbaKMGjtF8g+sGAwH5XPmGl60jN5U=;
+ b=QNsxnKaxagXekVQgMEjfZ6B0Q6VCGzgQsnFjdnm7M8cB3gVdWcpMUdBb9uesw8l9I1
+ 3x6ik7uMsIC6bRuA4oBaEte7cFTKxSOq0A8RjPhGHMKMhYeabBf5yeOhn3c4J7niLPgK
+ rsJ2dEGZGqZCnHPMEPu42JqfmsVrsmvmLQNt32W9PWkyYyS+Z5Hpnpt331+0TMeIOz/K
+ 74QKIDfIhcDdeS6NHjNSpV36MLrgiqraPJNAXePjPuDVPyMAkwiur43JIX1K68GXXNxp
+ 0YB6MWHSc6k+VaBOWSkF3zhfeNDcX8fB8jDc6wwlW0NnsFTD5T9eeHZt1pl/8OMXlU3X
+ 4ixQ==
+X-Gm-Message-State: AOJu0Yzp0rqk85MPTCR8pw0mZ5C+aX02xr9QmMKThOXM0YmKrtoYlggr
+ stPN+FuEX0BlVwI9/ZTSoTQFelYnY7KDuED2964f+A==
+X-Google-Smtp-Source: AGHT+IEMKQfSfZULiGLs/SrZ3/PAZgydECSTMXztl7v1EYvWXn2b8CBsMmPYZvCwUPuAAggrR/t1UadUEvZkvlfnymQ=
+X-Received: by 2002:a50:8d15:0:b0:553:55e8:98eb with SMTP id
+ s21-20020a508d15000000b0055355e898ebmr999145eds.34.1702917758080; Mon, 18 Dec
+ 2023 08:42:38 -0800 (PST)
 MIME-Version: 1.0
 References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
- <20231208023145.1385775-10-sergey.kambalin@auriga.com>
-In-Reply-To: <20231208023145.1385775-10-sergey.kambalin@auriga.com>
+ <20231208023145.1385775-11-sergey.kambalin@auriga.com>
+In-Reply-To: <20231208023145.1385775-11-sergey.kambalin@auriga.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Dec 2023 16:41:24 +0000
-Message-ID: <CAFEAcA9HM14SO_eA+5RdpxABTk0M82+e625feJCuZBafA+sdUg@mail.gmail.com>
-Subject: Re: [PATCH v4 09/45] Add GPIO and SD to BCM2838 periph
+Date: Mon, 18 Dec 2023 16:42:27 +0000
+Message-ID: <CAFEAcA_G-ZFnuZxrXwUEp1pViNHbCN1y8jz9sF12NEsZzYJEmQ@mail.gmail.com>
+Subject: Re: [PATCH v4 10/45] Add BCM2838 checkpoint support
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,77 +86,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Dec 2023 at 02:37, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Fri, 8 Dec 2023 at 02:33, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
 > Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 > ---
->  hw/arm/bcm2838_peripherals.c         | 140 +++++++++++++++++++++++++++
->  include/hw/arm/bcm2838_peripherals.h |   9 ++
->  2 files changed, 149 insertions(+)
-
-
-> @@ -42,6 +73,115 @@ static void bcm2838_peripherals_realize(DeviceState *dev, Error **errp)
->                                          BCM2838_VC_PERI_LOW_BASE,
->                                          &s->peri_low_mr_alias, 1);
+>  hw/arm/bcm2838_peripherals.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> +    /* Extended Mass Media Controller 2 */
-> +    object_property_set_uint(OBJECT(&s->emmc2), "sd-spec-version", 3,
-> +                             &error_abort);
-> +    object_property_set_uint(OBJECT(&s->emmc2), "capareg",
-> +                             BCM2835_SDHC_CAPAREG, &error_abort);
-> +    object_property_set_bool(OBJECT(&s->emmc2), "pending-insert-quirk", true,
-> +                             &error_abort);
-> +    if (!sysbus_realize(SYS_BUS_DEVICE(&s->emmc2), errp)) {
-> +        return;
-> +    }
-> +
-> +    memory_region_add_subregion(
-> +        &s_base->peri_mr, EMMC2_OFFSET,
-> +        sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->emmc2), 0));
+> diff --git a/hw/arm/bcm2838_peripherals.c b/hw/arm/bcm2838_peripherals.c
+> index c147b6e453..196fb890a2 100644
+> --- a/hw/arm/bcm2838_peripherals.c
+> +++ b/hw/arm/bcm2838_peripherals.c
+> @@ -22,7 +22,7 @@ static void bcm2838_peripherals_init(Object *obj)
+>  {
+>      BCM2838PeripheralState *s = BCM2838_PERIPHERALS(obj);
+>      BCM2838PeripheralClass *bc = BCM2838_PERIPHERALS_GET_CLASS(obj);
+> -    RaspiPeripheralBaseState *s_base = RASPI_PERIPHERALS_BASE(obj);
+> +    BCMSocPeripheralBaseState *s_base = BCM_SOC_PERIPHERALS_BASE(obj);
+>
+>      /* Lower memory region for peripheral devices (exported to the Soc) */
+>      memory_region_init(&s->peri_low_mr, obj, "bcm2838-peripherals",
+> --
 
-Odd indent again here...
-
-> +
-> +    /* According to DTS, EMMC and EMMC2 share one irq */
-> +    if (!qdev_realize(DEVICE(&s->mmc_irq_orgate), NULL, errp)) {
-> +        return;
-> +    }
-> +
-> +    DeviceState *mmc_irq_orgate = DEVICE(&s->mmc_irq_orgate);
-> +    sysbus_connect_irq(SYS_BUS_DEVICE(&s->emmc2), 0,
-> +                        qdev_get_gpio_in(mmc_irq_orgate, 0));
-> +
-> +    sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->sdhci), 0,
-> +                        qdev_get_gpio_in(mmc_irq_orgate, 1));
-
-...and here.
-
-> +
-> +   /* Connect EMMC and EMMC2 to the interrupt controller */
-> +    qdev_connect_gpio_out(mmc_irq_orgate, 0,
-> +                          qdev_get_gpio_in_named(DEVICE(&s_base->ic),
-> +                                                 BCM2835_IC_GPU_IRQ,
-> +                                                 INTERRUPT_ARASANSDIO));
-> +
-> +    /* Connect DMA 0-6 to the interrupt controller */
-> +    for (n = 0; n < 7; n++) {
-> +        sysbus_connect_irq(SYS_BUS_DEVICE(&s_base->dma), n,
-> +                           qdev_get_gpio_in_named(DEVICE(&s_base->ic),
-> +                                                  BCM2835_IC_GPU_IRQ,
-> +                                                  GPU_INTERRUPT_DMA0 + n));
-> +    }
-> +
-> +   /* According to DTS, DMA 7 and 8 share one irq */
-> +    if (!qdev_realize(DEVICE(&s->dma_7_8_irq_orgate), NULL, errp)) {
-> +        return;
-> +    }
-> +    DeviceState *dma_7_8_irq_orgate = DEVICE(&s->dma_7_8_irq_orgate);
-
-Declaration not at top of code block (here and below).
-
-
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+I don't understand the commit message here, and the contents
+of the patch look like something that maybe belongs in a
+different patch?
 
 thanks
 -- PMM
