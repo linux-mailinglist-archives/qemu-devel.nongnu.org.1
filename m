@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5EDD817A1B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 19:52:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0720817A1C
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 19:52:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFIiX-00068t-7d; Mon, 18 Dec 2023 13:51:53 -0500
+	id 1rFIid-0006DR-9Q; Mon, 18 Dec 2023 13:51:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rFIiE-00067l-Pw; Mon, 18 Dec 2023 13:51:35 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1rFIiO-00068j-Ih; Mon, 18 Dec 2023 13:51:44 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rFIiD-0008P9-1l; Mon, 18 Dec 2023 13:51:34 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40c60dfa5bfso43413675e9.0; 
- Mon, 18 Dec 2023 10:51:32 -0800 (PST)
+ id 1rFIiF-0008PI-R3; Mon, 18 Dec 2023 13:51:38 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40d1bcd93b0so9035365e9.0; 
+ Mon, 18 Dec 2023 10:51:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702925490; x=1703530290; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1702925492; x=1703530292; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h3iaY6aUrLWJnbiEuFPEJDzWzkJTCJ7nk9T2FrK86B4=;
- b=MMTA4uYA6Fx0VA3r8ogRW7hBh4DFtQgr3e0vX9BlfjaX1Dig4mS5Tlskma5yR4PD2+
- StI8ZlFaZpDn9PKzFP7G5Gxrvt44xNsv8nFirATd6GZbJg8T+B5uVhttEhn+9KSaoTZL
- YYvDPOCMvsWZl+AoiadOxYIaCntpsCILsp58Muu6I6Kv0xAM/DCrhTqjUFY3huW66ZS0
- PopI3BWJp3osnh+dmYPLTtALt+bLLc+IuDKm55FMQQ1hnh3in6rpSUhykLA3UDYEr3pH
- qMbkq3W+x5iSoyJnALGvA/hdHCIzody98Lrv2X/00r376ci2Kp5EbxBfhBS0VyU+ZCyi
- S/xQ==
+ bh=zIi8YOFzybKW8Rq5OqDlw4D+FmT1OGY+fsh09ZFmm7A=;
+ b=ghQyLiENFHrYnOx8Ude08DhBkjseivWv1+KjrDOp0vy3eRp0RjVx6ne8ZWQjfxa4Yy
+ I0KkPFWakihjpPhnqV/40ZSW+asM05mCugd+Q25CgTTL2b3gRQpp4buXvb/xAEwQxX+C
+ 5McOJc4RNIqhrRi/acXacVEZ9sdgURSuyU5AZfFYp9tA/ELHzJZTlVE8ZYqWzAMzv8F5
+ R7hBZDswEgVO7ui2M7TDKAdYQfTleyJOh95E05v3CuybhgLzJxqymp41AhI8FRV9B4MU
+ KlHKRIOAt1hMCB06T1PV//M9TROeoZ7YmN/JGrSidEAhCuCIlfe9cPL5L4VtRy+oCCht
+ y6Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702925490; x=1703530290;
+ d=1e100.net; s=20230601; t=1702925492; x=1703530292;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h3iaY6aUrLWJnbiEuFPEJDzWzkJTCJ7nk9T2FrK86B4=;
- b=oXirGqHhNHblpuERhPv3hDobMQwjrozIlDsCzWdgW1gMX2Vsnym/LA3820aXs5zlOU
- L43GZxf/pWJkN5OzrIzW0KibtIwaOM58n8awFpyilhmzTLkIhYoItNcOSOROy0GrZOMb
- QMCf4XlkasYJlXwwcBitvzXgRb/KWKXKaDYhNT3o7Syv9RrWh7oiaR2Ae5OTKHP5sOa5
- F1cwzXEjfTScLXyGMo0XxPTYkTXPwgrJjdYhimSMOu/CPX7//HhiIV2RKqPxBz6Xw6m2
- h065J4IFRF1N3ofq3vwEiC9Z8YUBuErkscMYypHlke7K/9olM4nKx0N/x/E6zIo8PsTS
- twyg==
-X-Gm-Message-State: AOJu0Yz9Kw6s8xrX+qdo1QakMxUY5bNEsmvF5GKjsFb1YSC9WkMBag0i
- S+nTvHMIeoIyOrwf6D5PuAF9Eq3l5LE=
-X-Google-Smtp-Source: AGHT+IEQoXW8mJA/XHXJVcdsWPvExsVqWGecHBQ1PCU9T5HPJ+LUqgasnKnpmYpHCtd8jLwaIrMBqw==
-X-Received: by 2002:a05:600c:4690:b0:40c:6c81:e6d with SMTP id
- p16-20020a05600c469000b0040c6c810e6dmr3061774wmo.6.1702925485603; 
- Mon, 18 Dec 2023 10:51:25 -0800 (PST)
+ bh=zIi8YOFzybKW8Rq5OqDlw4D+FmT1OGY+fsh09ZFmm7A=;
+ b=mbo2o2wG26s5YDBZfz6MSMoourqX1YD9GcHIK0lDY/qemdCkZa9QyNnHBp795r1Ge+
+ 2h1Vehb9xeqaFc3Z+3gHPqWWx0G84kNAngKSW0t/Dlahz2FKz8qt/sNgFPpDJu/7qfO6
+ HfJwdKEp0ravbTyUJrl4WgOTmIA7imzyekfi6UbLm88f3U4Xhk1tf7YSxmIoyGLZ2PuS
+ ZxT81Zf6tuJyA+ejkMbYsAvpjYUKcbkNev8/xUOWngByWSHwN9v1rEgbsRM1VultjeW1
+ Z4mFd5hCocUQqXEIJCncCm1/Va8/zz8jCwu8RmdU/WUNAQULFB3b2tWngj22Oo4V1pOq
+ ALAg==
+X-Gm-Message-State: AOJu0Yxc5oaripNzpve58WhSvv2gGxObHimrVUY8IGWi13v1DWnHpfEl
+ bI/7IhRmISUEZX/rdw2hQCjDMbNSBgc=
+X-Google-Smtp-Source: AGHT+IG4kTMbTvX7SAcHRZnFfXBmGHBRdvlT6YE0D9Zb7OmxK2sxnmL8IKnopkXipSQ99wVPdKXpxg==
+X-Received: by 2002:a05:600c:458d:b0:40b:33c0:a22 with SMTP id
+ r13-20020a05600c458d00b0040b33c00a22mr10089084wmo.28.1702925491867; 
+ Mon, 18 Dec 2023 10:51:31 -0800 (PST)
 Received: from Provence.localdomain
  (dynamic-092-224-039-156.92.224.pool.telefonica.de. [92.224.39.156])
  by smtp.gmail.com with ESMTPSA id
- s7-20020a05600c45c700b0040c45071c18sm35134091wmo.39.2023.12.18.10.51.24
+ s7-20020a05600c45c700b0040c45071c18sm35134091wmo.39.2023.12.18.10.51.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Dec 2023 10:51:25 -0800 (PST)
+ Mon, 18 Dec 2023 10:51:30 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -67,17 +67,17 @@ Cc: Fabiano Rosas <farosas@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 02/12] hw/block/fdc-sysbus: Free struct FDCtrl from
+Subject: [PATCH v2 03/12] hw/char/serial: Free struct SerialState from
  MemoryRegion
-Date: Mon, 18 Dec 2023 19:51:04 +0100
-Message-ID: <20231218185114.119736-3-shentey@gmail.com>
+Date: Mon, 18 Dec 2023 19:51:05 +0100
+Message-ID: <20231218185114.119736-4-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231218185114.119736-1-shentey@gmail.com>
 References: <20231218185114.119736-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,69 +100,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FDCtrl::iomem isn't used inside FDCtrl context but only inside FDCtrlSysBus
-context, so more it there.
+SerialState::io isn't used within TYPE_SERIAL directly. Push it to its users to
+make them the owner of the MemoryRegion.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/block/fdc-internal.h | 2 --
- hw/block/fdc-sysbus.c   | 6 ++++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ include/hw/char/serial.h   | 2 +-
+ hw/char/serial-isa.c       | 7 +++++--
+ hw/char/serial-pci-multi.c | 7 ++++---
+ hw/char/serial-pci.c       | 7 +++++--
+ hw/char/serial.c           | 4 ++--
+ 5 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/hw/block/fdc-internal.h b/hw/block/fdc-internal.h
-index fef2bfbbf5..e219623dc7 100644
---- a/hw/block/fdc-internal.h
-+++ b/hw/block/fdc-internal.h
-@@ -25,7 +25,6 @@
- #ifndef HW_BLOCK_FDC_INTERNAL_H
- #define HW_BLOCK_FDC_INTERNAL_H
+diff --git a/include/hw/char/serial.h b/include/hw/char/serial.h
+index 8ba7eca3d6..eb4254edde 100644
+--- a/include/hw/char/serial.h
++++ b/include/hw/char/serial.h
+@@ -77,7 +77,6 @@ struct SerialState {
+     int poll_msl;
  
--#include "exec/memory.h"
- #include "hw/block/block.h"
- #include "hw/block/fdc.h"
- #include "qapi/qapi-types-block.h"
-@@ -91,7 +90,6 @@ typedef struct FDrive {
- } FDrive;
+     QEMUTimer *modem_status_poll;
+-    MemoryRegion io;
+ };
+ typedef struct SerialState SerialState;
  
- struct FDCtrl {
--    MemoryRegion iomem;
-     qemu_irq irq;
-     /* Controller state */
-     QEMUTimer *result_timer;
-diff --git a/hw/block/fdc-sysbus.c b/hw/block/fdc-sysbus.c
-index 86ea51d003..e197b97262 100644
---- a/hw/block/fdc-sysbus.c
-+++ b/hw/block/fdc-sysbus.c
+@@ -85,6 +84,7 @@ struct SerialMM {
+     SysBusDevice parent;
+ 
+     SerialState serial;
++    MemoryRegion io;
+ 
+     uint8_t regshift;
+     uint8_t endianness;
+diff --git a/hw/char/serial-isa.c b/hw/char/serial-isa.c
+index 141a6cb168..2be8be980b 100644
+--- a/hw/char/serial-isa.c
++++ b/hw/char/serial-isa.c
 @@ -26,6 +26,7 @@
  #include "qemu/osdep.h"
  #include "qapi/error.h"
- #include "qom/object.h"
+ #include "qemu/module.h"
 +#include "exec/memory.h"
- #include "hw/sysbus.h"
- #include "hw/block/fdc.h"
- #include "migration/vmstate.h"
-@@ -52,6 +53,7 @@ struct FDCtrlSysBus {
-     /*< public >*/
- 
-     struct FDCtrl state;
-+    MemoryRegion iomem;
+ #include "sysemu/sysemu.h"
+ #include "hw/acpi/acpi_aml_interface.h"
+ #include "hw/char/serial.h"
+@@ -43,6 +44,7 @@ struct ISASerialState {
+     uint32_t iobase;
+     uint32_t isairq;
+     SerialState state;
++    MemoryRegion io;
  };
  
- static uint64_t fdctrl_read_mem(void *opaque, hwaddr reg, unsigned ize)
-@@ -146,11 +148,11 @@ static void sysbus_fdc_common_instance_init(Object *obj)
+ static const int isa_serial_io[MAX_ISA_SERIAL_PORTS] = {
+@@ -79,8 +81,9 @@ static void serial_isa_realizefn(DeviceState *dev, Error **errp)
+     qdev_realize(DEVICE(s), NULL, errp);
+     qdev_set_legacy_instance_id(dev, isa->iobase, 3);
  
-     qdev_set_legacy_instance_id(dev, 0 /* io */, 2); /* FIXME */
+-    memory_region_init_io(&s->io, OBJECT(isa), &serial_io_ops, s, "serial", 8);
+-    isa_register_ioport(isadev, &s->io, isa->iobase);
++    memory_region_init_io(&isa->io, OBJECT(isa), &serial_io_ops, s, "serial",
++                          8);
++    isa_register_ioport(isadev, &isa->io, isa->iobase);
+ }
  
--    memory_region_init_io(&fdctrl->iomem, obj,
-+    memory_region_init_io(&sys->iomem, obj,
-                           sbdc->use_strict_io ? &fdctrl_mem_strict_ops
-                                               : &fdctrl_mem_ops,
-                           fdctrl, "fdc", 0x08);
--    sysbus_init_mmio(sbd, &fdctrl->iomem);
-+    sysbus_init_mmio(sbd, &sys->iomem);
+ static void serial_isa_build_aml(AcpiDevAmlIf *adev, Aml *scope)
+diff --git a/hw/char/serial-pci-multi.c b/hw/char/serial-pci-multi.c
+index 5d65c534cb..16cb2faad7 100644
+--- a/hw/char/serial-pci-multi.c
++++ b/hw/char/serial-pci-multi.c
+@@ -44,6 +44,7 @@ typedef struct PCIMultiSerialState {
+     uint32_t     ports;
+     char         *name[PCI_SERIAL_MAX_PORTS];
+     SerialState  state[PCI_SERIAL_MAX_PORTS];
++    MemoryRegion io[PCI_SERIAL_MAX_PORTS];
+     uint32_t     level[PCI_SERIAL_MAX_PORTS];
+     qemu_irq     *irqs;
+     uint8_t      prog_if;
+@@ -58,7 +59,7 @@ static void multi_serial_pci_exit(PCIDevice *dev)
+     for (i = 0; i < pci->ports; i++) {
+         s = pci->state + i;
+         qdev_unrealize(DEVICE(s));
+-        memory_region_del_subregion(&pci->iobar, &s->io);
++        memory_region_del_subregion(&pci->iobar, &pci->io[i]);
+         g_free(pci->name[i]);
+     }
+     qemu_free_irqs(pci->irqs, pci->ports);
+@@ -112,9 +113,9 @@ static void multi_serial_pci_realize(PCIDevice *dev, Error **errp)
+         }
+         s->irq = pci->irqs[i];
+         pci->name[i] = g_strdup_printf("uart #%zu", i + 1);
+-        memory_region_init_io(&s->io, OBJECT(pci), &serial_io_ops, s,
++        memory_region_init_io(&pci->io[i], OBJECT(pci), &serial_io_ops, s,
+                               pci->name[i], 8);
+-        memory_region_add_subregion(&pci->iobar, 8 * i, &s->io);
++        memory_region_add_subregion(&pci->iobar, 8 * i, &pci->io[i]);
+         pci->ports++;
+     }
+ }
+diff --git a/hw/char/serial-pci.c b/hw/char/serial-pci.c
+index 087da3059a..ab3d0e56b5 100644
+--- a/hw/char/serial-pci.c
++++ b/hw/char/serial-pci.c
+@@ -28,6 +28,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qemu/module.h"
++#include "exec/memory.h"
+ #include "hw/char/serial.h"
+ #include "hw/irq.h"
+ #include "hw/pci/pci_device.h"
+@@ -38,6 +39,7 @@
+ struct PCISerialState {
+     PCIDevice dev;
+     SerialState state;
++    MemoryRegion io;
+     uint8_t prog_if;
+ };
  
-     sysbus_init_irq(sbd, &fdctrl->irq);
-     qdev_init_gpio_in(dev, fdctrl_handle_tc, 1);
+@@ -57,8 +59,9 @@ static void serial_pci_realize(PCIDevice *dev, Error **errp)
+     pci->dev.config[PCI_INTERRUPT_PIN] = 0x01;
+     s->irq = pci_allocate_irq(&pci->dev);
+ 
+-    memory_region_init_io(&s->io, OBJECT(pci), &serial_io_ops, s, "serial", 8);
+-    pci_register_bar(&pci->dev, 0, PCI_BASE_ADDRESS_SPACE_IO, &s->io);
++    memory_region_init_io(&pci->io, OBJECT(pci), &serial_io_ops, s, "serial",
++                          8);
++    pci_register_bar(&pci->dev, 0, PCI_BASE_ADDRESS_SPACE_IO, &pci->io);
+ }
+ 
+ static void serial_pci_exit(PCIDevice *dev)
+diff --git a/hw/char/serial.c b/hw/char/serial.c
+index a32eb25f58..83b642aec3 100644
+--- a/hw/char/serial.c
++++ b/hw/char/serial.c
+@@ -1045,10 +1045,10 @@ static void serial_mm_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    memory_region_init_io(&s->io, OBJECT(dev),
++    memory_region_init_io(&smm->io, OBJECT(dev),
+                           &serial_mm_ops[smm->endianness], smm, "serial",
+                           8 << smm->regshift);
+-    sysbus_init_mmio(SYS_BUS_DEVICE(smm), &s->io);
++    sysbus_init_mmio(SYS_BUS_DEVICE(smm), &smm->io);
+     sysbus_init_irq(SYS_BUS_DEVICE(smm), &smm->serial.irq);
+ }
+ 
 -- 
 2.43.0
 
