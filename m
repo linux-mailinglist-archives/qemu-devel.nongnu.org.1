@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46F4816C0A
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:17:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C29A816C17
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:20:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFBcg-0000QB-6z; Mon, 18 Dec 2023 06:17:22 -0500
+	id 1rFBfO-0004Bm-AT; Mon, 18 Dec 2023 06:20:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rFBcc-0008V1-TT
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:17:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rFBfL-0004BY-VB
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:20:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rFBcL-00009X-HF
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:17:18 -0500
+ id 1rFBfA-0000US-8q
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:20:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702898220;
+ s=mimecast20190719; t=1702898395;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2+NP5l9lD00PRE1fUwUY0UjTW4fPOnATX1+rUMdFJ34=;
- b=RptTh2WQw1BlR+al3WRnx5/gpHR9Qu9VPspC27Wgb99FvYmv/dgRsqwjRx2Mz94N3qA35o
- /eD00ZDrcKFNKw8r6IswiDKaeJzbexG77TrrXoRYaVRFwYNzr8q2mSd7kJYbCL2zERS1IC
- WHMs8sIIGMmpKL4kFP/siEbHrnjsVLU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-eZ_AZN35P2S1zWftSXP0QQ-1; Mon, 18 Dec 2023 06:16:56 -0500
-X-MC-Unique: eZ_AZN35P2S1zWftSXP0QQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=kdxl5+xTgjLclwvRVUeXv9iq5GtNxWfeQOHn0FZd+zw=;
+ b=ESG4diIQJl++KAD5I0cAE8U33jv4KuM+X8pwcuZzaHQ3lLXhAT3JbZTlk8d/ZCcUvKEdUi
+ F3+PwgcJY/Jh6IGralkFCxTTmJ6Nu6GkBXKkfgjagdoYRu1lOZCL6qFEnYT1SQACy/H/RY
+ i4juN6s+NArwtKzSe96KdMsD8at1KU4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-L_yWCNq2McCVi2DkdPGO8w-1; Mon,
+ 18 Dec 2023 06:19:53 -0500
+X-MC-Unique: L_yWCNq2McCVi2DkdPGO8w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 85FE0185A7A7;
- Mon, 18 Dec 2023 11:16:56 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 84F7529AA384;
+ Mon, 18 Dec 2023 11:19:53 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A4D4D1C0652C;
- Mon, 18 Dec 2023 11:16:55 +0000 (UTC)
-Date: Mon, 18 Dec 2023 11:16:53 +0000
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 83E52C15968;
+ Mon, 18 Dec 2023 11:19:52 +0000 (UTC)
+Date: Mon, 18 Dec 2023 11:19:50 +0000
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Hyman Huang <yong.huang@smartx.com>
 Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: Re: [v2 2/4] crypto: Introduce payload offset set function
-Message-ID: <ZYAqJREQ5DVVXkfM@redhat.com>
+Subject: Re: [v2 4/4] block: Support detached LUKS header creation for
+ blockdev-create
+Message-ID: <ZYAq1kre1cEH5YOD@redhat.com>
 References: <cover.1701879996.git.yong.huang@smartx.com>
- <7130b0b19c38bc4e92071198af54a56f8ba3597c.1701879996.git.yong.huang@smartx.com>
+ <5ca4a43ea0795d9fb6ea3649eead10017df69b1c.1701879996.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7130b0b19c38bc4e92071198af54a56f8ba3597c.1701879996.git.yong.huang@smartx.com>
+In-Reply-To: <5ca4a43ea0795d9fb6ea3649eead10017df69b1c.1701879996.git.yong.huang@smartx.com>
 User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.086,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,47 +85,104 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 07, 2023 at 12:37:43AM +0800, Hyman Huang wrote:
+On Thu, Dec 07, 2023 at 12:37:45AM +0800, Hyman Huang wrote:
+> Provide the "detached-mode" option for detached LUKS header
+> formatting.
+> 
+> To format the LUKS header on the pre-creating disk, example
+> as follows:
+> 
+> 1. add a protocol blockdev node of LUKS header
+> $ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+> > "arguments":{"node-name":"libvirt-1-storage", "driver":"file",
+> > "filename":"/path/to/cipher.gluks" }}'
+> 
+> 2. add the secret for encrypting the cipher stored in LUKS
+>    header above
+> $ virsh qemu-monitor-command vm '{"execute":"object-add",
+> > "arguments":{"qom-type": "secret", "id":
+> > "libvirt-1-storage-secret0", "data": "abc123"}}'
+> 
+> 3. format the disk node
+> $ virsh qemu-monitor-command vm '{"execute":"blockdev-create",
+> > "arguments":{"job-id":"job0", "options":{"driver":"luks",
+> > "size":0, "file":"libvirt-1-storage", "detached-mode":true,
+> > "cipher-alg":"aes-256",
+> > "key-secret":"libvirt-3-storage-encryption-secret0"}}}'
+> 
 > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 > ---
->  crypto/block.c         | 4 ++++
->  include/crypto/block.h | 1 +
->  2 files changed, 5 insertions(+)
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
-however, based on my comment in patch #3, I'm not convinced this method
-is needed
-
+>  block/crypto.c       | 8 +++++++-
+>  qapi/block-core.json | 5 ++++-
+>  2 files changed, 11 insertions(+), 2 deletions(-)
 > 
-> diff --git a/crypto/block.c b/crypto/block.c
-> index 7bb4b74a37..3dcf22a69f 100644
-> --- a/crypto/block.c
-> +++ b/crypto/block.c
-> @@ -319,6 +319,10 @@ QCryptoHashAlgorithm qcrypto_block_get_kdf_hash(QCryptoBlock *block)
->      return block->kdfhash;
->  }
+> diff --git a/block/crypto.c b/block/crypto.c
+> index 7d70349463..e77c49bd0c 100644
+> --- a/block/crypto.c
+> +++ b/block/crypto.c
+> @@ -667,10 +667,12 @@ block_crypto_co_create_luks(BlockdevCreateOptions *create_options, Error **errp)
+>      BlockDriverState *bs = NULL;
+>      QCryptoBlockCreateOptions create_opts;
+>      PreallocMode preallocation = PREALLOC_MODE_OFF;
+> +    int64_t size;
+>      int ret;
 >  
-> +void qcrypto_block_set_payload_offset(QCryptoBlock *block, uint64_t offset)
-> +{
-> +    block->payload_offset = offset;
-> +}
+>      assert(create_options->driver == BLOCKDEV_DRIVER_LUKS);
+>      luks_opts = &create_options->u.luks;
+> +    size = luks_opts->size;
 >  
->  uint64_t qcrypto_block_get_payload_offset(QCryptoBlock *block)
->  {
-> diff --git a/include/crypto/block.h b/include/crypto/block.h
-> index 4f63a37872..b47a90c529 100644
-> --- a/include/crypto/block.h
-> +++ b/include/crypto/block.h
-> @@ -312,4 +312,5 @@ void qcrypto_block_free(QCryptoBlock *block);
+>      bs = bdrv_co_open_blockdev_ref(luks_opts->file, errp);
+>      if (bs == NULL) {
+> @@ -686,7 +688,11 @@ block_crypto_co_create_luks(BlockdevCreateOptions *create_options, Error **errp)
+>          preallocation = luks_opts->preallocation;
+>      }
 >  
->  G_DEFINE_AUTOPTR_CLEANUP_FUNC(QCryptoBlock, qcrypto_block_free)
->  
-> +void qcrypto_block_set_payload_offset(QCryptoBlock *block, uint64_t offset);
->  #endif /* QCRYPTO_BLOCK_H */
-> -- 
-> 2.39.1
-> 
+> -    ret = block_crypto_co_create_generic(bs, luks_opts->size, &create_opts,
+> +    if (luks_opts->detached_mode) {
+> +        size = 0;
+> +    }
+> +
+> +    ret = block_crypto_co_create_generic(bs, size, &create_opts,
+>                                           preallocation, errp);
+>      if (ret < 0) {
+>          goto fail;
+> diff --git a/qapi/block-core.json b/qapi/block-core.json
+> index 10be08d08f..1e7a7e1b05 100644
+> --- a/qapi/block-core.json
+> +++ b/qapi/block-core.json
+> @@ -4952,13 +4952,16 @@
+>  # @preallocation: Preallocation mode for the new image (since: 4.2)
+>  #     (default: off; allowed values: off, metadata, falloc, full)
+>  #
+> +# @detached-mode: create a detached LUKS header. (since 9.0)
+> +#
+>  # Since: 2.12
+>  ##
+>  { 'struct': 'BlockdevCreateOptionsLUKS',
+>    'base': 'QCryptoBlockCreateOptionsLUKS',
+>    'data': { 'file':             'BlockdevRef',
+>              'size':             'size',
+> -            '*preallocation':   'PreallocMode' } }
+> +            '*preallocation':   'PreallocMode',
+> +            '*detached-mode':   'bool'}}
+
+Using a bool flag here is insufficiently flexible. We need to be able to
+honour preallocation of the payload device, while using a separate
+header.
+
+You need to make the existing 'file' optional, while also adding an
+extra optional 'header' field. ie
+
+  { 'struct': 'BlockdevCreateOptionsLUKS',
+    'base': 'QCryptoBlockCreateOptionsLUKS',
+    'data': { '*file':            'BlockdevRef',
+              '*header':          'BlockdevRef',
+              'size':             'size',
+              '*preallocation':   'PreallocMode' } }
+
+
+If 'preallocation' is requested, then we must enforce that 'file' is
+non-NULL in the code.
 
 With regards,
 Daniel
