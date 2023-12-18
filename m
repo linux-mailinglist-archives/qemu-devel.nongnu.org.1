@@ -2,99 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E69817A23
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 19:54:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC69817A3E
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 19:58:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFIkb-00037f-8p; Mon, 18 Dec 2023 13:54:01 -0500
+	id 1rFIoC-00082f-0p; Mon, 18 Dec 2023 13:57:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rFIjy-0002qq-3Q; Mon, 18 Dec 2023 13:53:23 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rFIo9-00081t-OL
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 13:57:41 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rFIjv-0000D8-S9; Mon, 18 Dec 2023 13:53:21 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a233a60f8feso237416566b.0; 
- Mon, 18 Dec 2023 10:53:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rFIo7-0000l3-10
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 13:57:41 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-54c77e0835bso4332655a12.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 10:57:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702925597; x=1703530397; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ d=bytedance.com; s=google; t=1702925857; x=1703530657; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3LXUiSHNk6IH0G7+C1olfxGi/mVy7xyPXmSVgDEQyEU=;
- b=SHj2x8555bPh9x1tcnEURntwducZg28T/D+vm7QqQZUBqIPADBP9frCzWwYzQtOVUO
- MWgjqh2E5hB5mHvjtFsrdUcnifqfQEixK9Y6C9qPh6+kwiqbkBS+OgB9qoLZCG7yJxrS
- 3c4XKgzr59lAYFR48CTZwB2lmA/juBjzr/gKvBGgfx5YC3mvaKZGnjE3DyprmLL7tbtj
- YWascN1pwGMUIFqJ+0vWp6pCxY3AdF7JrXbvQeyrVLbWpc5Kf35HGcjjkMO+HuSwJ1Ba
- yHneKjAVyMzbl0/qKL7eg/MNXOffKymlpMb0Dhed/6j9Mleo6N/uL2p09Pw8oVsccdGy
- 1zqw==
+ bh=SiBgI8mbD9ydyoUYvjFmAISZqtaAA416yKQoSAftD30=;
+ b=O71XdosXYknS1/C/weQPsgJAFyapu2WSEOBFEGvp3zR/g/UqWvS2oel6ainjQRqmaq
+ VxLCOlxJ+6dyBHmPA48sEYF4JGY9C1g6K2QMHV5v2dNTcWH7Lh84Awpym+0+hBkhKAQJ
+ hs0jf7N9s1uuNe7eX11x1yu5GEmsk3vlXi4DLwXBmTXLIx4bLP2YSIqgrLky/cP4axBk
+ mZasWOOE1b9ctWWZKMBSDku6l8T8BHwe+rN7S6u91lJVxpPCVWSSZIK4Wem4hWjy4qnc
+ LucXUd55hssm81DY4rOl2qE+k9c7JEN0Ct+3yx7DSPeUBNiwdUtndPFVa5WjRNskNx07
+ QNKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702925597; x=1703530397;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1702925857; x=1703530657;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3LXUiSHNk6IH0G7+C1olfxGi/mVy7xyPXmSVgDEQyEU=;
- b=F+LwtyHuTUNlh6mhWGLaPkImWTMaxPZWuZW7yoBXlUOKS48bISCMne64AANQbwWF4x
- 9iPo77D5RaeF9yCpYN5g5162mnh/DxviTICVYuSG4pTtGM4frr5vy4gnMM+oXNnX2adK
- 0BwTXgaS6nKzHnUB9xLXSotbHQj9mEN3S+ntdSpIh0logqZQKMPycyoIrWzn/iEc45FZ
- FwNUk12lGrUErohSkLepsGWBO0a4NgC6i3oexwrueOep51yTXg1kV/cS/+TZeLBa4rhZ
- +ngst5TONDuqyKqrwWYM27j/tuIdi/r0jELpotIXAgen0clXgLo9XI9iwgeKwe1ZIMt6
- wc8w==
-X-Gm-Message-State: AOJu0YzU6+QlLSp1byIZxqhdMJEjvAjZEnxbwea+K1YlUWKrT8ke1PlB
- 8XPG54XCO+ZF8sKzMTDsD10=
-X-Google-Smtp-Source: AGHT+IGLc+8HG008XRrUI48JYtCbVZMC0aVZGKgh1pUueSuVLG+sBjs0dT+YmEoRzyriVN+iBOHRGA==
-X-Received: by 2002:a17:906:5352:b0:a1f:9617:99a with SMTP id
- j18-20020a170906535200b00a1f9617099amr5947460ejo.94.1702925597476; 
- Mon, 18 Dec 2023 10:53:17 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-092-224-039-156.92.224.pool.telefonica.de.
- [92.224.39.156]) by smtp.gmail.com with ESMTPSA id
- rd12-20020a170907a28c00b00a097c5162b0sm14328402ejc.87.2023.12.18.10.53.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Dec 2023 10:53:17 -0800 (PST)
-Date: Mon, 18 Dec 2023 18:53:09 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- Thomas Huth <huth@tuxfamily.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Kevin Wolf <kwolf@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Sergio Lopez <slp@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Hanna Reitz <hreitz@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- =?ISO-8859-1?Q?C=E9dric_Le_Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Juan Quintela <quintela@redhat.com>,
- =?ISO-8859-1?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>,
- qemu-ppc@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH 04/12] hw/block/fdc: Expose internal header
-In-Reply-To: <26832f40-8202-5f48-a197-ba213d4a0128@eik.bme.hu>
-References: <20231217144148.15511-1-shentey@gmail.com>
- <20231217144148.15511-5-shentey@gmail.com>
- <b4b1d529-f368-4f8f-b357-4ad5177a2951@eik.bme.hu>
- <91BF37F6-494D-4656-9CE8-7FDA0C3C8F33@gmail.com>
- <26832f40-8202-5f48-a197-ba213d4a0128@eik.bme.hu>
-Message-ID: <987BBA5E-3A7F-4A3C-B45E-E31183BB5F46@gmail.com>
+ bh=SiBgI8mbD9ydyoUYvjFmAISZqtaAA416yKQoSAftD30=;
+ b=ClwAHnggewtgi6vBVjuXYtPfmDT9Y2IE4ovcDb/o7lj4TXWCOOZVBG7JzeLKlEVJkP
+ sqmS7EWI+wH/OFhnhoUEkhlj5R65Z+EhNBRflY2QRd1eKcR+3dLlsHyLm+H6XGCEFumH
+ MGGcx65OlRXqL06Hyg/SS1z6U2A44ijs/3NLWNDHGPPNlw5jF1xr9+kjAOOw820Bw9SO
+ 0cBbuNc780GMGvXK4IO7S6KZdC1Wzev+B+MayaZ6Yc/Duczgcy9qwjN58zEJC3oUPA9g
+ Q3aj1AnxACnnqpkA0xqBpklGw3AwmwvQh/T9dNYX3HATUNoe3aHXlf+VufcTEeJ6Gf0M
+ YtmQ==
+X-Gm-Message-State: AOJu0YwX7HzP8T1GaYKG9fmGjmBPLtGt0AOBNJFpc4ix4ngGIcSlIOxb
+ hyaFpJ7Ljt74TTM6MY51QQgms4Vwcn71cTFecgKOfQ==
+X-Google-Smtp-Source: AGHT+IGDSyYJPy8PLkQoS6cPDfuYJVxAViqSd1QgfIFDEjfAeBzKBgvqTr5AuVq6ILHzRgXfT6wDi5ryTff8uRytqMk=
+X-Received: by 2002:a17:906:208d:b0:a23:3753:c64c with SMTP id
+ 13-20020a170906208d00b00a233753c64cmr1902452ejq.57.1702925856846; Mon, 18 Dec
+ 2023 10:57:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+ <20231114054032.1192027-10-hao.xiang@bytedance.com>
+ <543e9270-4ab7-4096-bda7-187dd9be47ef@intel.com>
+In-Reply-To: <543e9270-4ab7-4096-bda7-187dd9be47ef@intel.com>
+From: Hao Xiang <hao.xiang@bytedance.com>
+Date: Mon, 18 Dec 2023 10:57:25 -0800
+Message-ID: <CAAYibXh4YeePb4rZNxLjo+UAed51cV+0zE7pxaS9zGn2=aDXOw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v2 09/20] util/dsa: Implement DSA task
+ asynchronous completion thread model.
+To: "Wang, Lei" <lei4.wang@intel.com>
+Cc: farosas@suse.de, peter.maydell@linaro.org, quintela@redhat.com, 
+ peterx@redhat.com, marcandre.lureau@redhat.com, bryan.zhang@bytedance.com, 
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -112,184 +91,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 18=2E Dezember 2023 10:54:56 UTC schrieb BALATON Zoltan <balaton@eik=2E=
-bme=2Ehu>:
->On Sun, 17 Dec 2023, Bernhard Beschow wrote:
->> Am 17=2E Dezember 2023 15:47:33 UTC schrieb BALATON Zoltan <balaton@eik=
-=2Ebme=2Ehu>:
->>> On Sun, 17 Dec 2023, Bernhard Beschow wrote:
->>>> Exposing the internal header allows for exposing struct FDCtrlISABus =
-which is
->>>> encuraged by qdev guidelines=2E
->>>=20
->>> Hopefully the guidelines don't encourage this as object orientation in=
-deed encourages object encapsulation so only the object itseld should poke =
-its internals and other objects should use methods the change object state=
-=2E In QOM some object states were exposed in public headers to allow embed=
-ding those objects in other objects becuase C needs the struct size to allo=
-w that=2E This was to simplify memory management so the embedded objects do=
-n't need to be tracked and freed but would be created and freed with the ot=
-her object embedding it but this does not mean the other object should poke=
- into these object or that this is a general guideline to expose internal o=
-bject state=2E I'd say the exposed objects are an exception instead of reco=
-mmended guideline and only allowed for objects that need to be embeded in o=
-thers but generally object encapsulation would be better to preserve where =
-possible=2E This patch exposes objects so others can poke into them which w=
-ould make those other objects depe
->ndent on the implementation of these objects making these harder to chnag=
-e in the future so a better way may be to add methods to fdc and serial to =
-allow changing their base address and map/unmap their ports and keep their =
-internals unexposed=2E
->>=20
->> Each ISADevice sub class would need concenience methods as well as each=
- state class=2E This series touches three of each: fdc, parallel, serial=2E=
- And each of those need two convenience methods: set_enabled() and set_addr=
-ess()=2E This would add another 12 functions on top of the current ones=2E
+On Sun, Dec 17, 2023 at 7:11=E2=80=AFPM Wang, Lei <lei4.wang@intel.com> wro=
+te:
 >
->If all ISA devices need this then these should really be methods of ISADe=
-vice but since that's just an empty wrapper over devices each of which hand=
-les its own ports, the ISADevice does not know about those and since each d=
-evice may have different ports and not all of them uses portio lists for th=
-is, moving port handling to ISADevice might be too big refactoring to do fo=
-r this=2E Keeping these functions with the superio component devices so the=
-ir implementation is kept private still worth it in my opinion so even if t=
-hat adds 2 functions to superio component devices (which is not all ISA dev=
-ices just a limited set) seems to be a better approach to me than breaking =
-encapsulation of objects=2E These are simple access methods for internal ob=
-ject state which are common in object otiented programming=2E
+> On 11/14/2023 13:40, Hao Xiang wrote:> * Create a dedicated thread for DS=
+A task
+> completion.
+> > * DSA completion thread runs a loop and poll for completed tasks.
+> > * Start and stop DSA completion thread during DSA device start stop.
+> >
+> > User space application can directly submit task to Intel DSA
+> > accelerator by writing to DSA's device memory (mapped in user space).
 >
->> Then ISASuperIODevice would require at least 6 more such methods (not c=
-ounting the unneeded ones for IDE which might be desirable for consistency)=
-=2E So in the end we'd have at least 18 more methods=2E Is this really wort=
-h it?
+> > +            }
+> > +            return;
+> > +        }
+> > +    } else {
+> > +        assert(batch_status =3D=3D DSA_COMP_BATCH_FAIL ||
+> > +            batch_status =3D=3D DSA_COMP_BATCH_PAGE_FAULT);
 >
->We may do without these if we say superio is just a container of componen=
-ts so don't add forwarding methods but we can call the accessor methods of =
-component objects from vt82c686=2Ec=2E That's still better than reaching in=
-to object internals from foreign objects=2E
+> Nit: indentation is broken here.
+>
+> > +    }
+> > +
+> > +    for (int i =3D 0; i < count; i++) {
+> > +
+> > +        completion =3D &batch_task->completions[i];
+> > +        status =3D completion->status;
+> > +
+> > +        if (status =3D=3D DSA_COMP_SUCCESS) {
+> > +            results[i] =3D (completion->result =3D=3D 0);
+> > +            continue;
+> > +        }
+> > +
+> > +        if (status !=3D DSA_COMP_PAGE_FAULT_NOBOF) {
+> > +            fprintf(stderr,
+> > +                    "Unexpected completion status =3D %u.\n", status);
+> > +            assert(false);
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +/**
+> > + * @brief Handles an asynchronous DSA batch task completion.
+> > + *
+> > + * @param task A pointer to the batch buffer zero task structure.
+> > + */
+> > +static void
+> > +dsa_batch_task_complete(struct buffer_zero_batch_task *batch_task)
+> > +{
+> > +    batch_task->status =3D DSA_TASK_COMPLETION;
+> > +    batch_task->completion_callback(batch_task);
+> > +}
+> > +
+> > +/**
+> > + * @brief The function entry point called by a dedicated DSA
+> > + *        work item completion thread.
+> > + *
+> > + * @param opaque A pointer to the thread context.
+> > + *
+> > + * @return void* Not used.
+> > + */
+> > +static void *
+> > +dsa_completion_loop(void *opaque)
+>
+> Per my understanding, if a multifd sending thread corresponds to a DSA de=
+vice,
+> then the batch tasks are executed in parallel which means a task may be
+> completed slower than another even if this task is enqueued earlier than =
+it. If
+> we poll on the slower task first it will block the handling of the faster=
+ one,
+> even if the zero checking task for that thread is finished and it can go =
+ahead
+> and send the data to the wire, this may lower the network resource utiliz=
+ation.
+>
 
-Version 2 is out which should address all of your comments=2E
+Hi Lei, thanks for reviewing. You are correct that we can keep pulling
+a task enqueued first while others in the queue have already been
+completed. In fact, only one DSA completion thread (pulling thread) is
+used here even when multiple DSA devices are used. The pulling loop is
+the most CPU intensive activity in the DSA workflow and that acts
+directly against the goal of saving CPU usage. The trade-off I want to
+take here is a slightly higher latency on DSA task completion but more
+CPU savings. A single DSA engine can reach 30 GB/s throughput on
+memory comparison operation. We use kernel tcp stack for network
+transfer. The best I see is around 10GB/s throughput.  RDMA can
+potentially go higher but I am not sure if it can go higher than 30
+GB/s throughput anytime soon.
 
-Best regards,
-Bernhard
-
->
->Regards,
->BALATON Zoltan
->
->> I didn't feel very comfortable going this route, so ended up with the c=
-urrent solution poking the states directly=2E I'm open to different approac=
-hes including the one above but I'd really like to know the opinion of the =
-maintainers, too=2E
->>=20
->> Best regards,
->> Bernhard
->>=20
->>>=20
->>> Regards,
->>> BALATON Zoltan
->>>=20
->>>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->>>> ---
->>>> MAINTAINERS                                       | 2 +-
->>>> hw/block/fdc-internal=2Eh =3D> include/hw/block/fdc=2Eh | 4 ++--
->>>> hw/block/fdc-isa=2Ec                                | 2 +-
->>>> hw/block/fdc-sysbus=2Ec                             | 2 +-
->>>> hw/block/fdc=2Ec                                    | 2 +-
->>>> 5 files changed, 6 insertions(+), 6 deletions(-)
->>>> rename hw/block/fdc-internal=2Eh =3D> include/hw/block/fdc=2Eh (98%)
->>>>=20
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index b4718fcf59=2E=2E939f518701 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -1945,9 +1945,9 @@ M: John Snow <jsnow@redhat=2Ecom>
->>>> L: qemu-block@nongnu=2Eorg
->>>> S: Odd Fixes
->>>> F: hw/block/fdc=2Ec
->>>> -F: hw/block/fdc-internal=2Eh
->>>> F: hw/block/fdc-isa=2Ec
->>>> F: hw/block/fdc-sysbus=2Ec
->>>> +F: include/hw/block/fdc=2Eh
->>>> F: include/hw/block/fdc-isa=2Eh
->>>> F: tests/qtest/fdc-test=2Ec
->>>> T: git https://gitlab=2Ecom/jsnow/qemu=2Egit ide
->>>> diff --git a/hw/block/fdc-internal=2Eh b/include/hw/block/fdc=2Eh
->>>> similarity index 98%
->>>> rename from hw/block/fdc-internal=2Eh
->>>> rename to include/hw/block/fdc=2Eh
->>>> index 1728231a26=2E=2Eacca7e0d0e 100644
->>>> --- a/hw/block/fdc-internal=2Eh
->>>> +++ b/include/hw/block/fdc=2Eh
->>>> @@ -22,8 +22,8 @@
->>>>  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL=
-INGS IN
->>>>  * THE SOFTWARE=2E
->>>>  */
->>>> -#ifndef HW_BLOCK_FDC_INTERNAL_H
->>>> -#define HW_BLOCK_FDC_INTERNAL_H
->>>> +#ifndef HW_BLOCK_FDC_H
->>>> +#define HW_BLOCK_FDC_H
->>>>=20
->>>> #include "exec/memory=2Eh"
->>>> #include "exec/ioport=2Eh"
->>>> diff --git a/hw/block/fdc-isa=2Ec b/hw/block/fdc-isa=2Ec
->>>> index 6387dc94fa=2E=2E7058d4118f 100644
->>>> --- a/hw/block/fdc-isa=2Ec
->>>> +++ b/hw/block/fdc-isa=2Ec
->>>> @@ -39,6 +39,7 @@
->>>> #include "hw/qdev-properties-system=2Eh"
->>>> #include "migration/vmstate=2Eh"
->>>> #include "hw/block/block=2Eh"
->>>> +#include "hw/block/fdc=2Eh"
->>>> #include "sysemu/block-backend=2Eh"
->>>> #include "sysemu/blockdev=2Eh"
->>>> #include "sysemu/sysemu=2Eh"
->>>> @@ -47,7 +48,6 @@
->>>> #include "qemu/module=2Eh"
->>>> #include "trace=2Eh"
->>>> #include "qom/object=2Eh"
->>>> -#include "fdc-internal=2Eh"
->>>>=20
->>>> OBJECT_DECLARE_SIMPLE_TYPE(FDCtrlISABus, ISA_FDC)
->>>>=20
->>>> diff --git a/hw/block/fdc-sysbus=2Ec b/hw/block/fdc-sysbus=2Ec
->>>> index f18f0d19b0=2E=2Ecff21c02b3 100644
->>>> --- a/hw/block/fdc-sysbus=2Ec
->>>> +++ b/hw/block/fdc-sysbus=2Ec
->>>> @@ -28,8 +28,8 @@
->>>> #include "qom/object=2Eh"
->>>> #include "hw/sysbus=2Eh"
->>>> #include "hw/block/fdc-isa=2Eh"
->>>> +#include "hw/block/fdc=2Eh"
->>>> #include "migration/vmstate=2Eh"
->>>> -#include "fdc-internal=2Eh"
->>>> #include "trace=2Eh"
->>>>=20
->>>> #define TYPE_SYSBUS_FDC "base-sysbus-fdc"
->>>> diff --git a/hw/block/fdc=2Ec b/hw/block/fdc=2Ec
->>>> index 2bd6d925b5=2E=2E0e2fa527f9 100644
->>>> --- a/hw/block/fdc=2Ec
->>>> +++ b/hw/block/fdc=2Ec
->>>> @@ -39,6 +39,7 @@
->>>> #include "hw/qdev-properties-system=2Eh"
->>>> #include "migration/vmstate=2Eh"
->>>> #include "hw/block/block=2Eh"
->>>> +#include "hw/block/fdc=2Eh"
->>>> #include "sysemu/block-backend=2Eh"
->>>> #include "sysemu/blockdev=2Eh"
->>>> #include "sysemu/sysemu=2Eh"
->>>> @@ -47,7 +48,6 @@
->>>> #include "qemu/module=2Eh"
->>>> #include "trace=2Eh"
->>>> #include "qom/object=2Eh"
->>>> -#include "fdc-internal=2Eh"
->>>>=20
->>>> /********************************************************/
->>>> /* debug Floppy devices */
->>>>=20
->>=20
->> 
+> > +{
+> > +    struct dsa_completion_thread *thread_context =3D
+> > +        (struct dsa_completion_thread *)opaque;
+> > +    struct buffer_zero_batch_task *batch_task;
+> > +    struct dsa_device_group *group =3D thread_context->group;
+> > +
+> > +    rcu_register_thread();
+> > +
+> > +    thread_context->thread_id =3D qemu_get_thread_id();
+> > +    qemu_sem_post(&thread_context->sem_init_done);
+> > +
+> > +    while (thread_context->running) {
+> > +        batch_task =3D dsa_task_dequeue(group);
+> > +        assert(batch_task !=3D NULL || !group->running);
+> > +        if (!group->running) {
+> > +            assert(!thread_context->running);
+> > +            break;
+> > +        }
+> > +        if (batch_task->task_type =3D=3D DSA_TASK) {
+> > +            poll_task_completion(batch_task);
+> > +        } else {
+> > +            assert(batch_task->task_type =3D=3D DSA_BATCH_TASK);
+> > +            poll_batch_task_completion(batch_task);
+> > +        }
+> > +
+> > +        dsa_batch_task_complete(batch_task);
+> > +    }
+> > +
+> > +    rcu_unregister_thread();
+> > +    return NULL;
+> > +}
+> > +
+> > +/**
+> > + * @brief Initializes a DSA completion thread.
+> > + *
+> > + * @param completion_thread A pointer to the completion thread context=
+.
+> > + * @param group A pointer to the DSA device group.
+> > + */
+> > +static void
+> > +dsa_completion_thread_init(
+> > +    struct dsa_completion_thread *completion_thread,
+> > +    struct dsa_device_group *group)
+> > +{
+> > +    completion_thread->stopping =3D false;
+> > +    completion_thread->running =3D true;
+> > +    completion_thread->thread_id =3D -1;
+> > +    qemu_sem_init(&completion_thread->sem_init_done, 0);
+> > +    completion_thread->group =3D group;
+> > +
+> > +    qemu_thread_create(&completion_thread->thread,
+> > +                       DSA_COMPLETION_THREAD,
+> > +                       dsa_completion_loop,
+> > +                       completion_thread,
+> > +                       QEMU_THREAD_JOINABLE);
+> > +
+> > +    /* Wait for initialization to complete */
+> > +    while (completion_thread->thread_id =3D=3D -1) {
+> > +        qemu_sem_wait(&completion_thread->sem_init_done);
+> > +    }
+> > +}
+> > +
+> > +/**
+> > + * @brief Stops the completion thread (and implicitly, the device grou=
+p).
+> > + *
+> > + * @param opaque A pointer to the completion thread.
+> > + */
+> > +static void dsa_completion_thread_stop(void *opaque)
+> > +{
+> > +    struct dsa_completion_thread *thread_context =3D
+> > +        (struct dsa_completion_thread *)opaque;
+> > +
+> > +    struct dsa_device_group *group =3D thread_context->group;
+> > +
+> > +    qemu_mutex_lock(&group->task_queue_lock);
+> > +
+> > +    thread_context->stopping =3D true;
+> > +    thread_context->running =3D false;
+> > +
+> > +    dsa_device_group_stop(group);
+> > +
+> > +    qemu_cond_signal(&group->task_queue_cond);
+> > +    qemu_mutex_unlock(&group->task_queue_lock);
+> > +
+> > +    qemu_thread_join(&thread_context->thread);
+> > +
+> > +    qemu_sem_destroy(&thread_context->sem_init_done);
+> > +}
+> > +
+> >  /**
+> >   * @brief Check if DSA is running.
+> >   *
+> > @@ -446,7 +685,7 @@ submit_batch_wi_async(struct buffer_zero_batch_task=
+ *batch_task)
+> >   */
+> >  bool dsa_is_running(void)
+> >  {
+> > -    return false;
+> > +    return completion_thread.running;
+> >  }
+> >
+> >  static void
+> > @@ -481,6 +720,7 @@ void dsa_start(void)
+> >          return;
+> >      }
+> >      dsa_device_group_start(&dsa_group);
+> > +    dsa_completion_thread_init(&completion_thread, &dsa_group);
+> >  }
+> >
+> >  /**
+> > @@ -496,6 +736,7 @@ void dsa_stop(void)
+> >          return;
+> >      }
+> >
+> > +    dsa_completion_thread_stop(&completion_thread);
+> >      dsa_empty_task_queue(group);
+> >  }
+> >
 
