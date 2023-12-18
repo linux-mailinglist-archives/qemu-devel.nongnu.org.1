@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076C88167AC
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 08:48:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D818167CF
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 09:00:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rF8Ld-00082o-Jr; Mon, 18 Dec 2023 02:47:33 -0500
+	id 1rF8Wf-0002p0-EX; Mon, 18 Dec 2023 02:58:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rF8LX-00082D-FI
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 02:47:27 -0500
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1rF8Wd-0002op-Mk
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 02:58:55 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rF8LV-00054W-Ul
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 02:47:27 -0500
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-3b9dbbaa9a9so2890340b6e.2
- for <qemu-devel@nongnu.org>; Sun, 17 Dec 2023 23:47:25 -0800 (PST)
+ id 1rF8Wb-0007Qt-B7
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 02:58:55 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1d075392ff6so19996835ad.1
+ for <qemu-devel@nongnu.org>; Sun, 17 Dec 2023 23:58:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702885644; x=1703490444;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702886332; x=1703491132;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=jucccWgk/Kxq2dFCJ5wbzgrcreNTTg8rBfXRP/FGVIo=;
- b=0BlYzSYWdrDISe4qnf8PBS51GHfyQzVvGJK88yTqE808CXmxSEuMLg+amAu0a5IHMt
- ZseMDxBzptOwx2S4Kffl9J882XOeDl0ysrtJZxuvqCpyVZOxpn8R2VHKcmUgquIQp8ar
- WYBH4it6Y/QCSltnEP+5V/I249E1870YemOLrzJC3R5KrrNysvEKesysSTiYR+O/1115
- FVFtAyimaPtKw4/xSZwpSHFEQygD1QaZcjAzJ2fh+QDYQuJNsGEyQze46JrgixwJZ7xr
- 7jttqV1tGhXAVu27WPcoWvoDoJabfFsygpFdgUClVaJAaPepfkLu2yQHZAuELrVkByMT
- BkLw==
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GCcy8hl6yoo+cgAVUMb/j41Lisc08fACVndcXGTVSbw=;
+ b=YKM9YJl7I7N/8Y92fc7zfbvPm44GEeQb/M9OaUqDgk57soikKIaP234btKfgZ2PCD7
+ kIT0l+Shxv4pcM1xCs5s6YpxiZV65IEW3MxmiBDXo1Qd6QXI8NAonxMXhiHvTnxTv8aD
+ iJ/Yb6UrUsUD6Y/rjnt2RT3Hb+EswE+6HBoG5iDx5C3ikU30hc5+dLSHEyaxlgtPYBAo
+ t12Wd9TgBEsPsOu/f5lSmmnJG/iH3KAdiBfl5XmHynYFIGjTjC8CE+d1cHq2iC+huIqy
+ 76j3LVIZPse5tNBaHaQilj0RPOGt8SNyZUNiW2IoQeMUUG6f8G4Pfetld6wxZ9d/pPHV
+ 5OPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702885644; x=1703490444;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jucccWgk/Kxq2dFCJ5wbzgrcreNTTg8rBfXRP/FGVIo=;
- b=SUVH1jxfGtQ3P5p+c/SFRm8fIPsqHwsQq8I4zTSiU+2k2qsgEJtm4IYWfQa3LNNvo6
- NHfjxQ1drU6eI9DTIfLeK0FAHKnadrBPN83Fh4MHx4K09c7loeX9sSzhAZZd01CsIype
- aVeL34nd7oDK5bKekVNSBEb2ge1wyxRMtRuFQiLPkKMx7fd48JgrrX7gVHVhf7vnZF7S
- YFa6xQEXCV6xg/7bJuD5wMCltYe3GDDYZj3RNnxyt+wxA9e6ZUAtr4jrEau6QUKuVUDm
- sS2/YSrlL/0CrN0CUrn4HpMCeCxop1I6Fw+/x8a8gfFwDW2LG5UuZTNY/TUEO9vb8CZq
- shGw==
-X-Gm-Message-State: AOJu0YwmVlyCMgxvWzsuOjJw9mUUACoP6GJD4tTtNtMbwvnMMBlGLcpr
- JLUUk8PEbRkpgDICa3xD3bAG1A==
-X-Google-Smtp-Source: AGHT+IEOW7bxlPrkAFna65Hm0qUKW2CUqWQ66zMHq68bjVUKCDd0VRX6O5IH9VmOsPcJYSH53XY5ZQ==
-X-Received: by 2002:a05:6808:1509:b0:3b8:5fec:5d6 with SMTP id
- u9-20020a056808150900b003b85fec05d6mr21142581oiw.27.1702885644702; 
- Sun, 17 Dec 2023 23:47:24 -0800 (PST)
-Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- m18-20020a62f212000000b006ce2e77ec4csm301145pfh.193.2023.12.17.23.47.22
+ d=1e100.net; s=20230601; t=1702886332; x=1703491132;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GCcy8hl6yoo+cgAVUMb/j41Lisc08fACVndcXGTVSbw=;
+ b=gMuR47vXgm07TX78muX6QmAyUS9GVvsSBFSw4zjsC+FEMRSf43sNnhw6Ptqv3G659i
+ VTR8FZpU0MujmO0Xp853ftWKN8Kg5QNxiUZgWHOajIh8ngJ9BW5PtbkKgkImX6uOfpXA
+ npadRaNR4FC3o6ycbx2XQsJxuKatLdEJoIRbT3vjvsmRIDQNmEpAmBWG3X+weeOWMLZL
+ 37RnCKozDUKxzY6nXslsrbYAHmvtbTfhmwqRVs2kh94mFJUEaurfFEwsDtgiH2nOiizc
+ 2JMWXCGw8/BS3b+o7ebl9EYECQPcuzCLpmgZdbbN+y+MrzMfgZc5p4z5VmVQNu+t5UI5
+ iLfA==
+X-Gm-Message-State: AOJu0YwHuXeORqMleq8Ztv6utTkBlcQU6xCGjGXJcYFUOoA544HgLQRa
+ bG6sc6B6ymQFESCWwpMKRRlxSw==
+X-Google-Smtp-Source: AGHT+IGUAEgUjAAFN44C6E09vznkHWyhv4rgn48oU1EAIasBS3i2vyzQzpF6A0ingLslnAzH4r6yAg==
+X-Received: by 2002:a17:902:ced2:b0:1d3:67a9:d2a with SMTP id
+ d18-20020a170902ced200b001d367a90d2amr9006782plg.11.1702886331735; 
+ Sun, 17 Dec 2023 23:58:51 -0800 (PST)
+Received: from [157.82.205.15] ([157.82.205.15])
+ by smtp.gmail.com with ESMTPSA id
+ v4-20020a170902b7c400b001cfd35ec1d7sm3958461plz.243.2023.12.17.23.58.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 17 Dec 2023 23:47:24 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 18 Dec 2023 16:47:03 +0900
-Subject: [PATCH v8 3/3] ui/cocoa: Remove stretch_video flag
+ Sun, 17 Dec 2023 23:58:51 -0800 (PST)
+Message-ID: <d889c324-c758-4a7a-9d7c-c3cfde926bac@daynix.com>
+Date: Mon, 18 Dec 2023 16:58:48 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231218-cocoa-v8-3-d7fad80c7ef6@daynix.com>
-References: <20231218-cocoa-v8-0-d7fad80c7ef6@daynix.com>
-In-Reply-To: <20231218-cocoa-v8-0-d7fad80c7ef6@daynix.com>
-To: Peter Maydell <peter.maydell@linaro.org>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Marek Glogowski <smarkusg@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7] ui/cocoa: Use NSWindow's ability to resize
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Marek Glogowski <smarkusg@gmail.com>, qemu-devel@nongnu.org,
  Rene Engel <ReneEngel80@emailn.de>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::22c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20231217-cocoa-v7-1-6af21ef75680@daynix.com>
+ <81d626f7-1fe5-0c74-acaa-4a2a4070a381@eik.bme.hu>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <81d626f7-1fe5-0c74-acaa-4a2a4070a381@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::632;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: 1
+X-Spam_score: 0.1
+X-Spam_bar: /
+X-Spam_report: (0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ PDS_OTHER_BAD_TLD=1.999, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,54 +99,313 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Evaluate [normalWindow styleMask] & NSWindowStyleMaskResizable instead.
+On 2023/12/17 20:39, BALATON Zoltan wrote:
+> On Sun, 17 Dec 2023, Akihiko Odaki wrote:
+>> This change brings two new features:
+>> - The window will be resizable if "Zoom To Fit" is eanbled
+>> - The window can be made full screen by clicking full screen button
+>>  provided by the platform. (The left-top green button.)
+>>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> Tested-by: Rene Engel <ReneEngel80@emailn.de>
+>> ---
+>> V5 -> V6:
+>>  Rebased.
+>> ---
+>> Changes in v7:
+>> - Fixed zoom-to-fit option. (Marek Glogowski)
+>> - Link to v6: 
+>> https://lore.kernel.org/r/20231211-cocoa-v6-1-49f3be0191f2@daynix.com
+>> ---
+>> ui/cocoa.m | 542 
+>> +++++++++++++++++++++++++++++--------------------------------
+>> 1 file changed, 258 insertions(+), 284 deletions(-)
+> 
+> Is ir possible to break this patch up into smaller ones for easier 
+> review? E.g. separate patch moving mouse event handling out of 
+> handleEventLocked, replacing stretch_video flag with 
+> NSWindowStyleMaskResizable and whatever else can be done as independent 
+> steps? Not sure if that's possible or needs the whole chnage at once but 
+> this patch seems to be too big. Some more comments below.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- ui/cocoa.m | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+I split it into three patches with v8, but most changes are still in one 
+patch because they depend on the change to unify the full screen window 
+and normal window and vice-versa.
 
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 1357690e50ca..05f7854f9819 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -103,7 +103,6 @@ static void cocoa_switch(DisplayChangeListener *dcl,
- static int left_command_key_enabled = 1;
- static bool swap_opt_cmd;
- 
--static bool stretch_video;
- static NSTextField *pauseLabel;
- 
- static bool allow_events;
-@@ -1374,8 +1373,7 @@ - (void)showQEMUDoc:(id)sender
- /* Stretches video to fit host monitor size */
- - (void)zoomToFit:(id) sender
- {
--    stretch_video = !stretch_video;
--    if (stretch_video == true) {
-+    if (([normalWindow styleMask] & NSWindowStyleMaskResizable) == 0) {
-         [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
-         [sender setState: NSControlStateValueOn];
-     } else {
-@@ -1647,7 +1645,7 @@ static void create_initial_menus(void)
-     menu = [[NSMenu alloc] initWithTitle:@"View"];
-     [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(doToggleFullScreen:) keyEquivalent:@"f"] autorelease]]; // Fullscreen
-     menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease];
--    [menuItem setState: stretch_video ? NSControlStateValueOn : NSControlStateValueOff];
-+    [menuItem setState: [normalWindow styleMask] & NSWindowStyleMaskResizable ? NSControlStateValueOn : NSControlStateValueOff];
-     [menu addItem: menuItem];
-     menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
-     [menuItem setSubmenu:menu];
-@@ -2040,7 +2038,6 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
-     }
- 
-     if (opts->u.cocoa.has_zoom_to_fit && opts->u.cocoa.zoom_to_fit) {
--        stretch_video = true;
-         [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
-     }
- 
+> 
+>> diff --git a/ui/cocoa.m b/ui/cocoa.m
+>> index cd069da6965b..31a2230f55a4 100644
+>> --- a/ui/cocoa.m
+>> +++ b/ui/cocoa.m
+>> @@ -99,12 +99,10 @@ static void cocoa_switch(DisplayChangeListener *dcl,
+>> static DisplayChangeListener dcl = {
+>>     .ops = &dcl_ops,
+>> };
+>> -static int last_buttons;
+>> static int cursor_hide = 1;
+>> static int left_command_key_enabled = 1;
+>> static bool swap_opt_cmd;
+>>
+>> -static bool stretch_video;
+>> static NSTextField *pauseLabel;
+>>
+>> static bool allow_events;
+>> @@ -304,20 +302,17 @@ static void handleAnyDeviceErrors(Error * err)
+>> */
+>> @interface QemuCocoaView : NSView
+>> {
+>> +    NSTrackingArea *trackingArea;
+>>     QEMUScreen screen;
+>> -    NSWindow *fullScreenWindow;
+>> -    float cx,cy,cw,ch,cdx,cdy;
+>>     pixman_image_t *pixman_image;
+>>     QKbdState *kbd;
+>>     BOOL isMouseGrabbed;
+>> -    BOOL isFullscreen;
+>>     BOOL isAbsoluteEnabled;
+>>     CFMachPortRef eventsTap;
+>> }
+>> - (void) switchSurface:(pixman_image_t *)image;
+>> - (void) grabMouse;
+>> - (void) ungrabMouse;
+>> -- (void) toggleFullScreen:(id)sender;
+>> - (void) setFullGrab:(id)sender;
+>> - (void) handleMonitorInput:(NSEvent *)event;
+>> - (bool) handleEvent:(NSEvent *)event;
+>> @@ -333,8 +328,6 @@ - (void) setAbsoluteEnabled:(BOOL)tIsAbsoluteEnabled;
+>>  */
+>> - (BOOL) isMouseGrabbed;
+>> - (BOOL) isAbsoluteEnabled;
+>> -- (float) cdx;
+>> -- (float) cdy;
+>> - (QEMUScreen) gscreen;
+>> - (void) raiseAllKeys;
+>> @end
+>> @@ -392,46 +385,43 @@ - (BOOL) isOpaque
+>>     return YES;
+>> }
+>>
+>> -- (BOOL) screenContainsPoint:(NSPoint) p
+>> +- (void) removeTrackingRect
+>> {
+>> -    return (p.x > -1 && p.x < screen.width && p.y > -1 && p.y < 
+>> screen.height);
+>> +    if (trackingArea) {
+>> +        [self removeTrackingArea:trackingArea];
+>> +        [trackingArea release];
+>> +        trackingArea = nil;
+>> +    }
+>> }
+>>
+>> -/* Get location of event and convert to virtual screen coordinate */
+>> -- (CGPoint) screenLocationOfEvent:(NSEvent *)ev
+>> +- (void) frameUpdated
+>> {
+>> -    NSWindow *eventWindow = [ev window];
+>> -    // XXX: Use CGRect and -convertRectFromScreen: to support macOS 
+>> 10.10
+>> -    CGRect r = CGRectZero;
+>> -    r.origin = [ev locationInWindow];
+>> -    if (!eventWindow) {
+>> -        if (!isFullscreen) {
+>> -            return [[self window] convertRectFromScreen:r].origin;
+>> -        } else {
+>> -            CGPoint locationInSelfWindow = [[self window] 
+>> convertRectFromScreen:r].origin;
+>> -            CGPoint loc = [self convertPoint:locationInSelfWindow 
+>> fromView:nil];
+>> -            if (stretch_video) {
+>> -                loc.x /= cdx;
+>> -                loc.y /= cdy;
+>> -            }
+>> -            return loc;
+>> -        }
+>> -    } else if ([[self window] isEqual:eventWindow]) {
+>> -        if (!isFullscreen) {
+>> -            return r.origin;
+>> -        } else {
+>> -            CGPoint loc = [self convertPoint:r.origin fromView:nil];
+>> -            if (stretch_video) {
+>> -                loc.x /= cdx;
+>> -                loc.y /= cdy;
+>> -            }
+>> -            return loc;
+>> -        }
+>> -    } else {
+>> -        return [[self window] convertRectFromScreen:[eventWindow 
+>> convertRectToScreen:r]].origin;
+>> +    [self removeTrackingRect];
+>> +
+>> +    if ([self window]) {
+>> +        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
+>> +                                        
+>> NSTrackingMouseEnteredAndExited |
+>> +                                        NSTrackingMouseMoved;
+>> +        trackingArea = [[NSTrackingArea alloc] initWithRect:[self frame]
+>> +                                                    options:options
+>> +                                                      owner:self
+>> +                                                   userInfo:nil];
+>> +        [self addTrackingArea:trackingArea];
+>> +        [self updateUIInfo];
+>>     }
+>> }
+>>
+>> +- (void) viewDidMoveToWindow
+>> +{
+>> +    [self resizeWindow];
+>> +    [self frameUpdated];
+>> +}
+>> +
+>> +- (void) viewWillMoveToWindow:(NSWindow *)newWindow
+>> +{
+>> +    [self removeTrackingRect];
+>> +}
+>> +
+>> - (void) hideCursor
+>> {
+>>     if (!cursor_hide) {
+>> @@ -494,13 +484,14 @@ - (void) drawRect:(NSRect) rect
+>>         int i;
+>>         CGImageRef clipImageRef;
+>>         CGRect clipRect;
+>> +        CGFloat d = (CGFloat)h / [self frame].size.height;
+>>
+>>         [self getRectsBeingDrawn:&rectList count:&rectCount];
+>>         for (i = 0; i < rectCount; i++) {
+>> -            clipRect.origin.x = rectList[i].origin.x / cdx;
+>> -            clipRect.origin.y = (float)h - (rectList[i].origin.y + 
+>> rectList[i].size.height) / cdy;
+>> -            clipRect.size.width = rectList[i].size.width / cdx;
+>> -            clipRect.size.height = rectList[i].size.height / cdy;
+>> +            clipRect.origin.x = rectList[i].origin.x * d;
+>> +            clipRect.origin.y = (float)h - (rectList[i].origin.y + 
+>> rectList[i].size.height) * d;
+>> +            clipRect.size.width = rectList[i].size.width * d;
+>> +            clipRect.size.height = rectList[i].size.height * d;
+>>             clipImageRef = CGImageCreateWithImageInRect(
+>>                                                         imageRef,
+>>                                                         clipRect
+>> @@ -513,36 +504,43 @@ - (void) drawRect:(NSRect) rect
+>>     }
+>> }
+>>
+>> -- (void) setContentDimensions
+>> +- (NSSize) fixZoomedFullScreenSize:(NSSize)proposedSize
+>> {
+>> -    COCOA_DEBUG("QemuCocoaView: setContentDimensions\n");
+>> +    NSSize size;
+>>
+>> -    if (isFullscreen) {
+>> -        cdx = [[NSScreen mainScreen] frame].size.width / 
+>> (float)screen.width;
+>> -        cdy = [[NSScreen mainScreen] frame].size.height / 
+>> (float)screen.height;
+>> +    size.width = (CGFloat)screen.width * proposedSize.height;
+>> +    size.height = (CGFloat)screen.height * proposedSize.width;
+> 
+> One of these will be overwritten in the next if below so maybe drop this 
+> init and do the calculation in the if legs which is then also clearer to 
+> show that this would scale one of these with screen.width/screen.height 
+> or the inverse of that.
+> 
+> This also removes stretch_video flag and the calculation to preserve 
+> aspect ratio. Is that correct? Would it now distort the image when 
+> zooming to full screen if guest resolution is not the same as host 
+> screen? Is that how zoom-to-fit should work? At leest with -display sdl 
+> going to full screen guest screen is zoomed preserving aspect ratio but 
+> maybe sdl does not have zoom-to-fit option. I don't know how it works 
+> with other displays such as gtk.
 
--- 
-2.43.0
+The purpose of this method is to fix the aspect ratio for zoom-to-fit by 
+shrinking width or height. It operates in the three steps:
+1. Compute the values necessary either for shrinking width or height.
+2. Decide which of width or height to shrink.
+3. Compute the final values.
 
+> 
+>> -        /* stretches video, but keeps same aspect ratio */
+>> -        if (stretch_video == true) {
+>> -            /* use smallest stretch value - prevents clipping on 
+>> sides */
+>> -            if (MIN(cdx, cdy) == cdx) {
+>> -                cdy = cdx;
+>> -            } else {
+>> -                cdx = cdy;
+>> -            }
+>> -        } else {  /* No stretching */
+>> -            cdx = cdy = 1;
+>> -        }
+>> -        cw = screen.width * cdx;
+>> -        ch = screen.height * cdy;
+>> -        cx = ([[NSScreen mainScreen] frame].size.width - cw) / 2.0;
+>> -        cy = ([[NSScreen mainScreen] frame].size.height - ch) / 2.0;
+>> +    if (size.width < size.height) {
+>> +        size.width /= screen.height;
+>> +        size.height = proposedSize.height;
+>>     } else {
+>> -        cx = 0;
+>> -        cy = 0;
+>> -        cw = screen.width;
+>> -        ch = screen.height;
+>> -        cdx = 1.0;
+>> -        cdy = 1.0;
+>> +        size.width = proposedSize.width;
+>> +        size.height /= screen.width;
+>> +    }
+>> +
+>> +    return size;
+>> +}
+>> +
+>> +- (NSSize) screenSafeAreaSize
+>> +{
+>> +    NSSize size = [[[self window] screen] frame].size;
+>> +    NSEdgeInsets insets = [[[self window] screen] safeAreaInsets];
+>> +    size.width -= insets.left + insets.right;
+>> +    size.height -= insets.top + insets.bottom;
+>> +    return size;
+>> +}
+>> +
+>> +- (void) resizeWindow
+>> +{
+>> +    [[self window] setContentAspectRatio:NSMakeSize(screen.width, 
+>> screen.height)];
+>> +
+>> +    if (([[self window] styleMask] & NSWindowStyleMaskResizable) == 0) {
+>> +        [[self window] setContentSize:NSMakeSize(screen.width, 
+>> screen.height)];
+>> +        [[self window] center];
+>> +    } else if (([[self window] styleMask] & 
+>> NSWindowStyleMaskFullScreen) != 0) {
+>> +        [[self window] setContentSize:[self 
+>> fixZoomedFullScreenSize:[self screenSafeAreaSize]]];
+>> +        [[self window] center];
+>>     }
+>> }
+>>
+>> @@ -563,7 +561,11 @@ - (void) updateUIInfoLocked
+>>         CGSize screenPhysicalSize = CGDisplayScreenSize(display);
+>>         CVDisplayLinkRef displayLink;
+>>
+>> -        frameSize = isFullscreen ? screenSize : [self frame].size;
+>> +        if (([[self window] styleMask] & NSWindowStyleMaskFullScreen) 
+>> == 0) {
+>> +            frameSize = [self frame].size;
+>> +        } else {
+>> +            frameSize = [self screenSafeAreaSize];
+>> +        }
+> 
+> In these ifs you seem to test for flag not set with == 0 but maybe 
+> swapping the else and then branches and testing for flag set would be 
+> clearer than testing for negative condition? I mean:
+> 
+> if (([[self window] styleMask] & NSWindowStyleMaskFullScreen)) {
+>      frameSize = [self screenSafeAreaSize];
+> } else {
+>      frameSize = [self frame].size;
+> }
+
+Fixed with v8.
+
+Regards,
+Akihiko Odaki
 
