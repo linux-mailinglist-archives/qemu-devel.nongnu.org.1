@@ -2,73 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748D7817485
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:00:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5757381749B
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 16:03:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFF5I-00089i-7f; Mon, 18 Dec 2023 09:59:08 -0500
+	id 1rFF8U-0000lr-MS; Mon, 18 Dec 2023 10:02:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFF5A-00089J-H1
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 09:59:00 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rFF8N-0000lG-Qv
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:02:20 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFF58-00069M-Nw
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 09:59:00 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-55114c073b8so3924813a12.1
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 06:58:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1rFF8I-0006wj-PE
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 10:02:19 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40c339d2b88so34928075e9.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 07:02:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702911537; x=1703516337; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=QzLnCTVfaMX3GmaeHQ5NuJy/QO3103fDAV+f6peyJ54=;
- b=CMIZ14nPlswpTUhAebWkl9FD571QFaKpV8Rq9On1nvlTIOTwknfFFKhYNIqu4pfxJ5
- 9jBCfrsDgF9POAN/Xq2QKEyKpLBMfE6fLfo3hTh54H7TqYmLW/O2XMRSBKzt9WpgT/Z4
- Tn8ajkWuYCLNwibMorP2T0b2uB9ds1/CUt3b8cksnESll/f06FQwL51JC/DuCFnEquav
- xRNSp6mHllgmhBgHKS/4GVO4ckIjZDVb42FChM8dKDjJH4hfLFqfBFtJDnZ2CrDR5Ht+
- 27stZ6rdRTlRqomegaQqnXqYe7I97oc41crv2zMMlPDOtTK08TUENCIQ/moFVRyZEjCa
- 9rJw==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1702911732; x=1703516532;
+ darn=nongnu.org; 
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=LvD0DE9NlH/SmgXeqH0Q/2qmdV37fOcKxpbG3fK4nVc=;
+ b=p8wTVnVwNX1ygxGNuY+QuYowrC263jUXnTzEog6EeItCvB25zyERDy7gVmfFAoKX82
+ UdI6ZeHMrAehAgV+edbZwcJJkeH6CzLIDF3JfeCLZpr7GQBo+GpHr9xHCu+4umCqigRJ
+ PDD8KypfGxxwqT4k22uu58CWC2LHk5TfJm9+prK7j6R2mrWs30ba3hsneBGIu9ppF0q2
+ Mdv5hDtrWECTlGIjHmHM8wpTDdqQego974LVdy/j10W+m6sN62ymFZhTx/So6XPgbjzN
+ FC0V4WftdALnrXYEoKAulUDLx/RgbPw5kh7MqJJdXplam5lWYt2KDhlco7I/aZ5Kh1Lc
+ 1PRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702911537; x=1703516337;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QzLnCTVfaMX3GmaeHQ5NuJy/QO3103fDAV+f6peyJ54=;
- b=MKPDx9SeCd6RLMYxR8VPK642VPK4xrxyaH7OrUfLjI7s2LCJpy5kKas2OWYwQY3kmU
- btAwOnF1+XILXLnuW7hnMUPThouDwpx/t21kQvyGlxV0kCWdK78hKZVEL4a4mk02hLZy
- e8qBi39UI8b8nsf/iltN6GO5nHolQQg5vekfkYheJfa0NJ4hmLIlh3AKSpbvIoJLO4/p
- VV9Nu7zuzlOJrZJzmlgX54NGngHIzoY11bU3gYnl70IbTBFdZSHR8q1bVfHKW2FJb3tG
- opB1vcIVEYjvKvE5NhynO0B6K7IS1LcQdbiHD084eJrp/o0bEcHxNbREP8TELsotLE4u
- sbUg==
-X-Gm-Message-State: AOJu0YzYlHE2uaeIZJa1X2tJz17AP5MprLRlw7oaEFCxNWBvNbI7bl3x
- +tmSMkEn2mY888xKTe2qSseqiTD5sCCF46vD37dM3w==
-X-Google-Smtp-Source: AGHT+IFPrRVwUTSFl1mqwbh2O6In61HzCykLHddoO/koIgIIaug3jE/nXUKgXr5Z/Wzw9Yew2zzzkaEKgDZ+pV3b4/8=
-X-Received: by 2002:a05:6402:2152:b0:54c:4837:7d0a with SMTP id
- bq18-20020a056402215200b0054c48377d0amr5751385edb.73.1702911537068; Mon, 18
- Dec 2023 06:58:57 -0800 (PST)
-MIME-Version: 1.0
-References: <20231215120307.545381-1-jcmvbkbc@gmail.com>
-In-Reply-To: <20231215120307.545381-1-jcmvbkbc@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Dec 2023 14:58:45 +0000
-Message-ID: <CAFEAcA_ONSsjp8oRHyq1T53tmcc=kW5axAFh25JX1fM6R6prog@mail.gmail.com>
-Subject: Re: [PATCH] target/xtensa: fix OOB TLB entry access
-To: Max Filippov <jcmvbkbc@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org
+ d=1e100.net; s=20230601; t=1702911732; x=1703516532;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=LvD0DE9NlH/SmgXeqH0Q/2qmdV37fOcKxpbG3fK4nVc=;
+ b=ESG33Kan3xzT3XxN9umglfKisAZ6aMdGfFsQ/TkZI4YidIHeNg+1q2JIZteccMDXYK
+ hop2OxwcFQO23HRy6rG4m0pxmjZIZDjOR4NR24LqX9gjVB9jWrVxtcbbyQuMf7kMppCV
+ CGpwCZTSnGz0nhf27WdEAd7pk5WhEQQW+CDmCb8Y1kh2+1qYD2FrdX6F+c0mpE1w+Cl9
+ M612yLSrzNkIfJNAwIj+CMvUDsgK9E03O8ZzXsNki00iF8y8B4kB9JcVbBSdu3Vc2IcR
+ xDEzXSeaLkHlPglZ2k5yq0vdTOmV8jWCekel4dnm6xO1paswtl4yM0psGMlMSQ8BILNx
+ dmuA==
+X-Gm-Message-State: AOJu0YwoDYDdfWsctjsfbfxPi/CZEs8o8Ei0txW1Bea5SqHa6wIl3SWA
+ 1y8/adpB2ldZ/f/7xu4d1JG63g==
+X-Google-Smtp-Source: AGHT+IGgKeXSafwYpc//bz06c68INJZUBxklMCDfA599ru96/d9YbJcqkmTlrIEPC8agg8LcRyPSAQ==
+X-Received: by 2002:a1c:6a0a:0:b0:40c:2c40:8c with SMTP id
+ f10-20020a1c6a0a000000b0040c2c40008cmr8656554wmc.154.1702911732460; 
+ Mon, 18 Dec 2023 07:02:12 -0800 (PST)
+Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
+ by smtp.gmail.com with ESMTPSA id
+ be9-20020a05600c1e8900b0040596352951sm45141923wmb.5.2023.12.18.07.02.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 18 Dec 2023 07:02:12 -0800 (PST)
+Message-ID: <4fe52c34042a219b3fe0140e6ce28578857ddb1a.camel@rivosinc.com>
+Subject: Re: [PATCH 1/2] target/riscv: Add support for Zacas extension
+From: Rob Bradford <rbradford@rivosinc.com>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com,  Weiwei Li <liweiwei@iscas.ac.cn>, Junqiang
+ Wang <wangjunqiang@iscas.ac.cn>
+Date: Mon, 18 Dec 2023 15:02:11 +0000
+In-Reply-To: <CAKmqyKN50b9RAqfrMoe9_vZB1PfML+7K7u4=jeSE1Na6PPD3NA@mail.gmail.com>
+References: <20231207153842.32401-1-rbradford@rivosinc.com>
+ <20231207153842.32401-2-rbradford@rivosinc.com>
+ <CAKmqyKN50b9RAqfrMoe9_vZB1PfML+7K7u4=jeSE1Na6PPD3NA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.module_f38+17164+63eeee4a) 
+MIME-Version: 1.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,28 +99,385 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Dec 2023 at 12:05, Max Filippov <jcmvbkbc@gmail.com> wrote:
->
-> r[id]tlb[01], [iw][id]tlb opcodes use TLB way index passed in a register
-> by the guest. The host uses 3 bits of the index for ITLB indexing and 4
-> bits for DTLB, but there's only 7 entries in the ITLB array and 10 in
-> the DTLB array, so a malicious guest may trigger out-of-bound access to
-> these arrays.
->
-> Change split_tlb_entry_spec return type to bool to indicate whether TLB
-> way passed to it is valid. Change get_tlb_entry to return NULL in case
-> invalid TLB way is requested. Add assertion to xtensa_tlb_get_entry that
-> requested TLB way and entry indices are valid. Add checks to the
-> [rwi]tlb helpers that requested TLB way is valid and return 0 or do
-> nothing when it's not.
->
-> Cc: qemu-stable@nongnu.org
-> Fixes: b67ea0cd7441 ("target-xtensa: implement memory protection options")
-> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-> ---
+Hi Alistair,
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Thanks for providing some feedback - responses below:
 
-thanks
--- PMM
+On Mon, 2023-12-18 at 12:54 +1000, Alistair Francis wrote:
+> On Fri, Dec 8, 2023 at 1:40=E2=80=AFAM Rob Bradford <rbradford@rivosinc.c=
+om>
+> wrote:
+> >=20
+> > From: Weiwei Li <liweiwei@iscas.ac.cn>
+> >=20
+> > Add support for amocas.w/d/q instructions which are part of the
+> > ratified
+> > Zacas extension: https://github.com/riscv/riscv-zacas
+> >=20
+> > Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> > Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> > ---
+> > =C2=A0target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +
+> > =C2=A0target/riscv/cpu_cfg.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> > =C2=A0target/riscv/insn32.decode=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
+=A0 6 +
+> > =C2=A0target/riscv/insn_trans/trans_rvzacas.c.inc | 150
+> > ++++++++++++++++++++
+> > =C2=A0target/riscv/tcg/tcg-cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
+=A0 5 +
+> > =C2=A0target/riscv/translate.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ |=C2=A0=C2=A0 1 +
+> > =C2=A06 files changed, 165 insertions(+)
+> > =C2=A0create mode 100644 target/riscv/insn_trans/trans_rvzacas.c.inc
+> >=20
+> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> > index 83c7c0cf07..a265833b17 100644
+> > --- a/target/riscv/cpu.c
+> > +++ b/target/riscv/cpu.c
+> > @@ -87,6 +87,7 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1=
+_10_0,
+> > ext_zihintpause),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0,=
+ ext_zihpm),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0,=
+ ext_zmmul),
+> > +=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_=
+zacas),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0,=
+ ext_zawrs),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, e=
+xt_zfa),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_=
+0, ext_zfbfmin),
+> > @@ -1300,6 +1301,7 @@ const RISCVCPUMultiExtConfig
+> > riscv_cpu_extensions[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl,=
+ true),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpa=
+use, true),
+> > +=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zacas", ext_zacas, false),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
+> > =C2=A0=C2=A0=C2=A0=C2=A0 MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
+> > diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> > index f4605fb190..d516de4a44 100644
+> > --- a/target/riscv/cpu_cfg.h
+> > +++ b/target/riscv/cpu_cfg.h
+> > @@ -77,6 +77,7 @@ struct RISCVCPUConfig {
+> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_svnapot;
+> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_svpbmt;
+> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zdinx;
+> > +=C2=A0=C2=A0=C2=A0 bool ext_zacas;
+> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zawrs;
+> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfa;
+> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_zfbfmin;
+> > diff --git a/target/riscv/insn32.decode
+> > b/target/riscv/insn32.decode
+> > index 33597fe2bb..f22df04cfd 100644
+> > --- a/target/riscv/insn32.decode
+> > +++ b/target/riscv/insn32.decode
+> > @@ -1004,3 +1004,9 @@ vgmul_vv=C2=A0=C2=A0=C2=A0 101000 1 ..... 10001 0=
+10 .....
+> > 1110111 @r2_vm_1
+> > =C2=A0vsm4k_vi=C2=A0=C2=A0=C2=A0 100001 1 ..... ..... 010 ..... 1110111=
+ @r_vm_1
+> > =C2=A0vsm4r_vv=C2=A0=C2=A0=C2=A0 101000 1 ..... 10000 010 ..... 1110111=
+ @r2_vm_1
+> > =C2=A0vsm4r_vs=C2=A0=C2=A0=C2=A0 101001 1 ..... 10000 010 ..... 1110111=
+ @r2_vm_1
+> > +
+> > +# *** RV32 Zacas Standard Extension ***
+> > +amocas_w=C2=A0=C2=A0=C2=A0 00101 . . ..... ..... 010 ..... 0101111 @at=
+om_st
+> > +amocas_d=C2=A0=C2=A0=C2=A0 00101 . . ..... ..... 011 ..... 0101111 @at=
+om_st
+> > +# *** RV64 Zacas Standard Extension ***
+> > +amocas_q=C2=A0=C2=A0=C2=A0 00101 . . ..... ..... 100 ..... 0101111 @at=
+om_st
+> > diff --git a/target/riscv/insn_trans/trans_rvzacas.c.inc
+> > b/target/riscv/insn_trans/trans_rvzacas.c.inc
+> > new file mode 100644
+> > index 0000000000..5d274d4c08
+> > --- /dev/null
+> > +++ b/target/riscv/insn_trans/trans_rvzacas.c.inc
+> > @@ -0,0 +1,150 @@
+> > +/*
+> > + * RISC-V translation routines for the RV64 Zacas Standard
+> > Extension.
+> > + *
+> > + * Copyright (c) 2020-2023 PLCT Lab
+> > + *
+> > + * This program is free software; you can redistribute it and/or
+> > modify it
+> > + * under the terms and conditions of the GNU General Public
+> > License,
+> > + * version 2 or later, as published by the Free Software
+> > Foundation.
+> > + *
+> > + * This program is distributed in the hope it will be useful, but
+> > WITHOUT
+> > + * ANY WARRANTY; without even the implied warranty of
+> > MERCHANTABILITY or
+> > + * FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See the GNU General Public
+> > License for
+> > + * more details.
+> > + *
+> > + * You should have received a copy of the GNU General Public
+> > License along with
+> > + * this program.=C2=A0 If not, see <http://www.gnu.org/licenses/>.
+> > + */
+> > +
+> > +#define REQUIRE_ZACAS(ctx) do {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 \
+> > +=C2=A0=C2=A0=C2=A0 if (!ctx->cfg_ptr->ext_zacas) {=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 \
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
+> > +=C2=A0=C2=A0=C2=A0 }=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 \
+> > +} while (0)
+> > +
+> > +static bool gen_cmpxchg(DisasContext *ctx, arg_atomic *a, MemOp
+> > mop)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 TCGv dest =3D get_gpr(ctx, a->rd, EXT_NONE);
+> > +=C2=A0=C2=A0=C2=A0 TCGv src1 =3D get_address(ctx, a->rs1, 0);
+> > +=C2=A0=C2=A0=C2=A0 TCGv src2 =3D get_gpr(ctx, a->rs2, EXT_NONE);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 decode_save_opc(ctx);
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_atomic_cmpxchg_tl(dest, src1, dest, src2, c=
+tx-
+> > >mem_idx, mop);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd, dest);
+> > +=C2=A0=C2=A0=C2=A0 return true;
+> > +}
+> > +
+> > +static bool trans_amocas_w(DisasContext *ctx, arg_amocas_w *a)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
+> > +=C2=A0=C2=A0=C2=A0 return gen_cmpxchg(ctx, a, MO_ALIGN | MO_TESL);
+> > +}
+> > +
+> > +static TCGv_i64 get_gpr_pair(DisasContext *ctx, int reg_num)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 t;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 assert(get_ol(ctx) =3D=3D MXL_RV32);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (reg_num =3D=3D 0) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return tcg_constant_i64(0);
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 t =3D tcg_temp_new_i64();
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_tl_i64(t, cpu_gpr[reg_num], cpu_gpr[=
+reg_num +
+> > 1]);
+> > +=C2=A0=C2=A0=C2=A0 return t;
+> > +}
+> > +
+> > +static void gen_set_gpr_pair(DisasContext *ctx, int reg_num,
+> > TCGv_i64 t)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 assert(get_ol(ctx) =3D=3D MXL_RV32);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (reg_num !=3D 0) {
+> > +#ifdef TARGET_RISCV32
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_extr_i64_i32(cpu_gp=
+r[reg_num], cpu_gpr[reg_num +
+> > 1], t);
+> > +#else
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_ext32s_i64(cpu_gpr[=
+reg_num], t);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_sari_i64(cpu_gpr[re=
+g_num + 1], t, 32);
+> > +#endif
+>=20
+> This should be dynamic based on the MXL.
+>=20
+
+This function is already conditional on MXL =3D 32 as it us only called
+from trans_amocas_d() when get_ol() =3D=3D MXL_RV32 (there is an assertion
+at the top to enforce this.) The compile time conditional code is
+required as the cpu_gpr type (TCGv) changes between TCGv_i32 or
+TCGv_i64 at build time - requiring different functions to be called to
+split the value and assign to registers.
+
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (get_xl_max(ctx) =3D=3D =
+MXL_RV128) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg=
+_gen_sari_tl(cpu_gprh[reg_num], cpu_gpr[reg_num],
+> > 63);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg=
+_gen_sari_tl(cpu_gprh[reg_num + 1], cpu_gpr[reg_num
+> > + 1], 63);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +}
+> > +
+> > +static bool gen_cmpxchg64(DisasContext *ctx, arg_atomic *a, MemOp
+> > mop)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 /*
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 * Encodings with odd numbered registers speci=
+fied in rs2 and
+> > rd are
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 * reserved.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > +=C2=A0=C2=A0=C2=A0 if ((a->rs2 | a->rd) & 1) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 dest =3D get_gpr_pair(ctx, a->rd);
+> > +=C2=A0=C2=A0=C2=A0 TCGv src1 =3D get_address(ctx, a->rs1, 0);
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 src2 =3D get_gpr_pair(ctx, a->rs2);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 decode_save_opc(ctx);
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_atomic_cmpxchg_i64(dest, src1, dest, src2, =
+ctx-
+> > >mem_idx, mop);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 gen_set_gpr_pair(ctx, a->rd, dest);
+> > +=C2=A0=C2=A0=C2=A0 return true;
+> > +}
+> > +
+> > +static bool trans_amocas_d(DisasContext *ctx, arg_amocas_d *a)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
+> > +=C2=A0=C2=A0=C2=A0 switch (get_ol(ctx)) {
+> > +=C2=A0=C2=A0=C2=A0 case MXL_RV32:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return gen_cmpxchg64(ctx, a=
+, MO_ALIGN | MO_TEUQ);
+> > +=C2=A0=C2=A0=C2=A0 case MXL_RV64:
+> > +=C2=A0=C2=A0=C2=A0 case MXL_RV128:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return gen_cmpxchg(ctx, a, =
+MO_ALIGN | MO_TEUQ);
+> > +=C2=A0=C2=A0=C2=A0 default:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_assert_not_reached();
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +}
+> > +
+> > +static bool trans_amocas_q(DisasContext *ctx, arg_amocas_q *a)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_ZACAS(ctx);
+> > +=C2=A0=C2=A0=C2=A0 REQUIRE_64BIT(ctx);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 /*
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 * Encodings with odd numbered registers speci=
+fied in rs2 and
+> > rd are
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 * reserved.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > +=C2=A0=C2=A0=C2=A0 if ((a->rs2 | a->rd) & 1) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +#ifdef TARGET_RISCV64
+>=20
+> We already have a REQUIRE_64BIT(ctx), do we need this as well?
+>=20
+
+Unfortunately yes, because when compiling under TARGET_RISCV32 there is
+a type mismatch error from the get_gpr() method - similar to the
+requirement to have two paths in the gen_cmpxchg64() function: e.g. to
+concatenate the two TGV_i64 to a TGV_i128 the datatype from get_gpr()
+must be TGV_i64.
+
+The REQUIRE_6BIT() provides the necessary check at runtime to check
+that we are running with MXL =3D 64.
+
+Cheers,
+
+Rob
+
+> Alistair
+>=20
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i128 dest =3D tcg_temp_new_i128();
+> > +=C2=A0=C2=A0=C2=A0 TCGv src1 =3D get_address(ctx, a->rs1, 0);
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i128 src2 =3D tcg_temp_new_i128();
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 src2l =3D get_gpr(ctx, a->rs2, EXT_NONE);
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 src2h =3D get_gpr(ctx, a->rs2 =3D=3D 0 ? 0=
+ : a->rs2 + 1,
+> > EXT_NONE);
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 destl =3D get_gpr(ctx, a->rd, EXT_NONE);
+> > +=C2=A0=C2=A0=C2=A0 TCGv_i64 desth =3D get_gpr(ctx, a->rd =3D=3D 0 ? 0 =
+: a->rd + 1,
+> > EXT_NONE);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_i64_i128(src2, src2l, src2h);
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_concat_i64_i128(dest, destl, desth);
+> > +=C2=A0=C2=A0=C2=A0 decode_save_opc(ctx);
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_atomic_cmpxchg_i128(dest, src1, dest, src2,=
+ ctx-
+> > >mem_idx,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (MO_ALIGN | MO_TEUO));
+> > +
+> > +=C2=A0=C2=A0=C2=A0 tcg_gen_extr_i128_i64(destl, desth, dest);
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (a->rd !=3D 0) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd, des=
+tl);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gen_set_gpr(ctx, a->rd + 1,=
+ desth);
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +#endif
+> > +
+> > +=C2=A0=C2=A0=C2=A0 return true;
+> > +}
+> > diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-
+> > cpu.c
+> > index 8a35683a34..29b5a88931 100644
+> > --- a/target/riscv/tcg/tcg-cpu.c
+> > +++ b/target/riscv/tcg/tcg-cpu.c
+> > @@ -343,6 +343,11 @@ void
+> > riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > =C2=A0=C2=A0=C2=A0=C2=A0 }
+> >=20
+> > +=C2=A0=C2=A0=C2=A0 if ((cpu->cfg.ext_zacas) && !riscv_has_ext(env, RVA=
+)) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zacas ext=
+ension requires A extension");
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > =C2=A0=C2=A0=C2=A0=C2=A0 if ((cpu->cfg.ext_zawrs) && !riscv_has_ext(env=
+, RVA)) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Zawr=
+s extension requires A extension");
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+> > index f0be79bb16..071fbad7ef 100644
+> > --- a/target/riscv/translate.c
+> > +++ b/target/riscv/translate.c
+> > @@ -1089,6 +1089,7 @@ static uint32_t opcode_at(DisasContextBase
+> > *dcbase, target_ulong pc)
+> > =C2=A0#include "insn_trans/trans_rvv.c.inc"
+> > =C2=A0#include "insn_trans/trans_rvb.c.inc"
+> > =C2=A0#include "insn_trans/trans_rvzicond.c.inc"
+> > +#include "insn_trans/trans_rvzacas.c.inc"
+> > =C2=A0#include "insn_trans/trans_rvzawrs.c.inc"
+> > =C2=A0#include "insn_trans/trans_rvzicbo.c.inc"
+> > =C2=A0#include "insn_trans/trans_rvzfa.c.inc"
+> > --
+> > 2.43.0
+> >=20
+> >=20
+
 
