@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5964816B57
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 11:42:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AD0816BB1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 11:56:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFB3Z-0000Lu-JP; Mon, 18 Dec 2023 05:41:05 -0500
+	id 1rFBH8-00032g-J6; Mon, 18 Dec 2023 05:55:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
- id 1rFB3X-0000JB-Pf
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 05:41:03 -0500
-Received: from mail-yw1-x112a.google.com ([2607:f8b0:4864:20::112a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
- id 1rFB3W-0000qY-17
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 05:41:03 -0500
-Received: by mail-yw1-x112a.google.com with SMTP id
- 00721157ae682-5e4ee907295so14859397b3.3
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 02:41:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702896060; x=1703500860; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Raru0pnZo5Gy/exbxe4Of++plFGtxd5H0q972+tj32Y=;
- b=ICsdBH7BKc/bEk8ZkJi7XrFDN3dj5unFIgdtCZEAj0DNJG0yAk4pY8Fcq/Aw/dyiRH
- ma67cdOZUPbmmaOevec23SA+Iyr12xJvHWSnU9ulWEZg3kyUOFzOipQFhYN9SqRy3WUV
- zgaWcCvv6ETWhuMxypMJXs5x3A2F84NNV7IrWZiEASEH1G8J2zkqp5uFqg6tjlxCQofh
- riG92J4V8dl7WHvud3Jxc4oW3yxENTfphOMzSD0R2rUJN0JVYQehtU0rt5zzifsX9EHG
- PF9g0GGsm0xRVPh1LWmDHrHStwsLoT5RhmXEIWRVeDB6xcTc5MBcA4EYoPjwf6e0VsVl
- 27OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702896060; x=1703500860;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Raru0pnZo5Gy/exbxe4Of++plFGtxd5H0q972+tj32Y=;
- b=cNz4Okw8HuzWaIhQD6VwS5v9ieJzy+y5AmGCEDnnJPjyC9WDCfNlg+auHqVp4kHPl3
- ZhS/n0Y1pNWAuJuARG/j+AXipka0/mMykv44yyNu/3q+ktVaF+MRg43hTgm7Ajai9bbE
- wYUyezfeEeOdsh484zJb4krXvGmnW2TE9RO9A7TrtFFgN39Q9fe5Qtn8WyUpx9xrZkk1
- ogneoGPKXXbzwXGBVgYPyasFUzEtX+XZm6jUylbIyVjtd4VA3NJKKgsuQARlzQ47aS7f
- LvY9drLf/bXb/h8a/fbH0Rv2l9xdvrD2nwlFBIw0usHT7aEdWDjEUpkw9CGfvPgzaLQJ
- rZrA==
-X-Gm-Message-State: AOJu0YzuKE4yft2FiYb7khB0wBUiKxYF7VtjYcI2rAfaEOnvxf1NwKQc
- yHQrdtfAgZOoMj37LbXTmlVCNUmIw0zwltAJd/SVOitHwyY=
-X-Google-Smtp-Source: AGHT+IEeVdughzZ5UiaJyqB3tMDPhXJApzfjCuUUBSI28ellESMNQbQDFxAJm/Bl98z9dWeFenQWDaILOCJlOVtHdpE=
-X-Received: by 2002:a0d:dd89:0:b0:5e3:7ce6:5269 with SMTP id
- g131-20020a0ddd89000000b005e37ce65269mr5289684ywe.28.1702896060101; Mon, 18
- Dec 2023 02:41:00 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rFBH6-00030j-B8; Mon, 18 Dec 2023 05:55:04 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rFBH3-000407-Ms; Mon, 18 Dec 2023 05:55:04 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 63C3B756094;
+ Mon, 18 Dec 2023 11:54:58 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id b6gCvcczglLZ; Mon, 18 Dec 2023 11:54:56 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 21A7B756078; Mon, 18 Dec 2023 11:54:56 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1F4AC756066;
+ Mon, 18 Dec 2023 11:54:56 +0100 (CET)
+Date: Mon, 18 Dec 2023 11:54:56 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
+ Thomas Huth <huth@tuxfamily.org>, 
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
+ David Hildenbrand <david@redhat.com>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Kevin Wolf <kwolf@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Sergio Lopez <slp@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, Hanna Reitz <hreitz@redhat.com>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
+ Nicholas Piggin <npiggin@gmail.com>, Juan Quintela <quintela@redhat.com>, 
+ =?ISO-8859-15?Q?Fr=E9d=E9ric_Barrat?= <fbarrat@linux.ibm.com>, 
+ qemu-ppc@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Leonardo Bras <leobras@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH 04/12] hw/block/fdc: Expose internal header
+In-Reply-To: <91BF37F6-494D-4656-9CE8-7FDA0C3C8F33@gmail.com>
+Message-ID: <26832f40-8202-5f48-a197-ba213d4a0128@eik.bme.hu>
+References: <20231217144148.15511-1-shentey@gmail.com>
+ <20231217144148.15511-5-shentey@gmail.com>
+ <b4b1d529-f368-4f8f-b357-4ad5177a2951@eik.bme.hu>
+ <91BF37F6-494D-4656-9CE8-7FDA0C3C8F33@gmail.com>
 MIME-Version: 1.0
-References: <20231117173916.3658-1-n.ostrenkov@gmail.com>
-In-Reply-To: <20231117173916.3658-1-n.ostrenkov@gmail.com>
-From: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-Date: Mon, 18 Dec 2023 13:40:49 +0300
-Message-ID: <CAC8KSA1SydreP4hT+3bJS-tZeeFH5_ZWbHCMCAMedM1pYjMP-w@mail.gmail.com>
-Subject: Re: [PATCH v3] hw/usb: fix xhci port notify
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000c07e4e060cc662b0"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112a;
- envelope-from=n.ostrenkov@gmail.com; helo=mail-yw1-x112a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-537142648-1702896896=:10312"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,92 +83,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000c07e4e060cc662b0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-ping
-https://patchew.org/QEMU/20231117173916.3658-1-n.ostrenkov@gmail.com/
+--3866299591-537142648-1702896896=:10312
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-=D0=BF=D1=82, 17 =D0=BD=D0=BE=D1=8F=D0=B1. 2023=E2=80=AF=D0=B3., 20:39 Niki=
-ta Ostrenkov <n.ostrenkov@gmail.com>:
+On Sun, 17 Dec 2023, Bernhard Beschow wrote:
+> Am 17. Dezember 2023 15:47:33 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> On Sun, 17 Dec 2023, Bernhard Beschow wrote:
+>>> Exposing the internal header allows for exposing struct FDCtrlISABus which is
+>>> encuraged by qdev guidelines.
+>>
+>> Hopefully the guidelines don't encourage this as object orientation indeed encourages object encapsulation so only the object itseld should poke its internals and other objects should use methods the change object state. In QOM some object states were exposed in public headers to allow embedding those objects in other objects becuase C needs the struct size to allow that. This was to simplify memory management so the embedded objects don't need to be tracked and freed but would be created and freed with the other object embedding it but this does not mean the other object should poke into these object or that this is a general guideline to expose internal object state. I'd say the exposed objects are an exception instead of recommended guideline and only allowed for objects that need to be embeded in others but generally object encapsulation would be better to preserve where possible. This patch exposes objects so others can poke into them which would make those other objects depe
+ ndent on the implementation of these objects making these harder to chnage in the future so a better way may be to add methods to fdc and serial to allow changing their base address and map/unmap their ports and keep their internals unexposed.
+>
+> Each ISADevice sub class would need concenience methods as well as each 
+> state class. This series touches three of each: fdc, parallel, serial. 
+> And each of those need two convenience methods: set_enabled() and 
+> set_address(). This would add another 12 functions on top of the current 
+> ones.
 
-> From MCF5253 Reference manual
-> https://www.nxp.com/docs/en/reference-manual/MCF5253RM.pdf
->
-> Host mode: Port Change Detect. The controller sets this bit to a one when
-> on any port a Connect Status occurs, a PortEnable/Disable Change occurs, =
-an
-> Over Current Change occurs, or the Force Port Resume bit is set as
-> theresult of a J-K transition on the suspended port.
->
-> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-> ---
->  hw/usb/hcd-xhci.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-> index 4b60114207..1b2f4ac721 100644
-> --- a/hw/usb/hcd-xhci.c
-> +++ b/hw/usb/hcd-xhci.c
-> @@ -2627,6 +2627,7 @@ static void xhci_port_notify(XHCIPort *port,
-> uint32_t bits)
->      if (!xhci_running(port->xhci)) {
->          return;
->      }
-> +    port->xhci->usbsts |=3D USBSTS_PCD;
->      xhci_event(port->xhci, &ev, 0);
->  }
->
-> --
-> 2.34.1
->
->
+If all ISA devices need this then these should really be methods of 
+ISADevice but since that's just an empty wrapper over devices each of 
+which handles its own ports, the ISADevice does not know about those and 
+since each device may have different ports and not all of them uses portio 
+lists for this, moving port handling to ISADevice might be too big 
+refactoring to do for this. Keeping these functions with the superio 
+component devices so their implementation is kept private still worth it 
+in my opinion so even if that adds 2 functions to superio component 
+devices (which is not all ISA devices just a limited set) seems to be a 
+better approach to me than breaking encapsulation of objects. These are 
+simple access methods for internal object state which are common in object 
+otiented programming.
 
---000000000000c07e4e060cc662b0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> Then ISASuperIODevice would require at least 6 more such methods (not 
+> counting the unneeded ones for IDE which might be desirable for 
+> consistency). So in the end we'd have at least 18 more methods. Is this 
+> really worth it?
 
-<div dir=3D"auto">ping<div dir=3D"auto"><a href=3D"https://patchew.org/QEMU=
-/20231117173916.3658-1-n.ostrenkov@gmail.com/">https://patchew.org/QEMU/202=
-31117173916.3658-1-n.ostrenkov@gmail.com/</a><br></div></div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=D0=BF=D1=82, 17 =D0=
-=BD=D0=BE=D1=8F=D0=B1. 2023=E2=80=AF=D0=B3., 20:39 Nikita Ostrenkov &lt;<a =
-href=3D"mailto:n.ostrenkov@gmail.com">n.ostrenkov@gmail.com</a>&gt;:<br></d=
-iv><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left=
-:1px #ccc solid;padding-left:1ex">From MCF5253 Reference manual <a href=3D"=
-https://www.nxp.com/docs/en/reference-manual/MCF5253RM.pdf" rel=3D"noreferr=
-er noreferrer" target=3D"_blank">https://www.nxp.com/docs/en/reference-manu=
-al/MCF5253RM.pdf</a><br>
-<br>
-Host mode: Port Change Detect. The controller sets this bit to a one when o=
-n any port a Connect Status occurs, a PortEnable/Disable Change occurs, an =
-Over Current Change occurs, or the Force Port Resume bit is set as theresul=
-t of a J-K transition on the suspended port.<br>
-<br>
-Signed-off-by: Nikita Ostrenkov &lt;<a href=3D"mailto:n.ostrenkov@gmail.com=
-" target=3D"_blank" rel=3D"noreferrer">n.ostrenkov@gmail.com</a>&gt;<br>
----<br>
-=C2=A0hw/usb/hcd-xhci.c | 1 +<br>
-=C2=A01 file changed, 1 insertion(+)<br>
-<br>
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c<br>
-index 4b60114207..1b2f4ac721 100644<br>
---- a/hw/usb/hcd-xhci.c<br>
-+++ b/hw/usb/hcd-xhci.c<br>
-@@ -2627,6 +2627,7 @@ static void xhci_port_notify(XHCIPort *port, uint32_t=
- bits)<br>
-=C2=A0 =C2=A0 =C2=A0if (!xhci_running(port-&gt;xhci)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-+=C2=A0 =C2=A0 port-&gt;xhci-&gt;usbsts |=3D USBSTS_PCD;<br>
-=C2=A0 =C2=A0 =C2=A0xhci_event(port-&gt;xhci, &amp;ev, 0);<br>
-=C2=A0}<br>
-<br>
--- <br>
-2.34.1<br>
-<br>
-</blockquote></div>
+We may do without these if we say superio is just a container of 
+components so don't add forwarding methods but we can call the accessor 
+methods of component objects from vt82c686.c. That's still better than 
+reaching into object internals from foreign objects.
 
---000000000000c07e4e060cc662b0--
+Regards,
+BALATON Zoltan
+
+> I didn't feel very comfortable going this route, so ended up with the 
+> current solution poking the states directly. I'm open to different 
+> approaches including the one above but I'd really like to know the 
+> opinion of the maintainers, too.
+>
+> Best regards,
+> Bernhard
+>
+>>
+>> Regards,
+>> BALATON Zoltan
+>>
+>>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+>>> ---
+>>> MAINTAINERS                                       | 2 +-
+>>> hw/block/fdc-internal.h => include/hw/block/fdc.h | 4 ++--
+>>> hw/block/fdc-isa.c                                | 2 +-
+>>> hw/block/fdc-sysbus.c                             | 2 +-
+>>> hw/block/fdc.c                                    | 2 +-
+>>> 5 files changed, 6 insertions(+), 6 deletions(-)
+>>> rename hw/block/fdc-internal.h => include/hw/block/fdc.h (98%)
+>>>
+>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>> index b4718fcf59..939f518701 100644
+>>> --- a/MAINTAINERS
+>>> +++ b/MAINTAINERS
+>>> @@ -1945,9 +1945,9 @@ M: John Snow <jsnow@redhat.com>
+>>> L: qemu-block@nongnu.org
+>>> S: Odd Fixes
+>>> F: hw/block/fdc.c
+>>> -F: hw/block/fdc-internal.h
+>>> F: hw/block/fdc-isa.c
+>>> F: hw/block/fdc-sysbus.c
+>>> +F: include/hw/block/fdc.h
+>>> F: include/hw/block/fdc-isa.h
+>>> F: tests/qtest/fdc-test.c
+>>> T: git https://gitlab.com/jsnow/qemu.git ide
+>>> diff --git a/hw/block/fdc-internal.h b/include/hw/block/fdc.h
+>>> similarity index 98%
+>>> rename from hw/block/fdc-internal.h
+>>> rename to include/hw/block/fdc.h
+>>> index 1728231a26..acca7e0d0e 100644
+>>> --- a/hw/block/fdc-internal.h
+>>> +++ b/include/hw/block/fdc.h
+>>> @@ -22,8 +22,8 @@
+>>>  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+>>>  * THE SOFTWARE.
+>>>  */
+>>> -#ifndef HW_BLOCK_FDC_INTERNAL_H
+>>> -#define HW_BLOCK_FDC_INTERNAL_H
+>>> +#ifndef HW_BLOCK_FDC_H
+>>> +#define HW_BLOCK_FDC_H
+>>>
+>>> #include "exec/memory.h"
+>>> #include "exec/ioport.h"
+>>> diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
+>>> index 6387dc94fa..7058d4118f 100644
+>>> --- a/hw/block/fdc-isa.c
+>>> +++ b/hw/block/fdc-isa.c
+>>> @@ -39,6 +39,7 @@
+>>> #include "hw/qdev-properties-system.h"
+>>> #include "migration/vmstate.h"
+>>> #include "hw/block/block.h"
+>>> +#include "hw/block/fdc.h"
+>>> #include "sysemu/block-backend.h"
+>>> #include "sysemu/blockdev.h"
+>>> #include "sysemu/sysemu.h"
+>>> @@ -47,7 +48,6 @@
+>>> #include "qemu/module.h"
+>>> #include "trace.h"
+>>> #include "qom/object.h"
+>>> -#include "fdc-internal.h"
+>>>
+>>> OBJECT_DECLARE_SIMPLE_TYPE(FDCtrlISABus, ISA_FDC)
+>>>
+>>> diff --git a/hw/block/fdc-sysbus.c b/hw/block/fdc-sysbus.c
+>>> index f18f0d19b0..cff21c02b3 100644
+>>> --- a/hw/block/fdc-sysbus.c
+>>> +++ b/hw/block/fdc-sysbus.c
+>>> @@ -28,8 +28,8 @@
+>>> #include "qom/object.h"
+>>> #include "hw/sysbus.h"
+>>> #include "hw/block/fdc-isa.h"
+>>> +#include "hw/block/fdc.h"
+>>> #include "migration/vmstate.h"
+>>> -#include "fdc-internal.h"
+>>> #include "trace.h"
+>>>
+>>> #define TYPE_SYSBUS_FDC "base-sysbus-fdc"
+>>> diff --git a/hw/block/fdc.c b/hw/block/fdc.c
+>>> index 2bd6d925b5..0e2fa527f9 100644
+>>> --- a/hw/block/fdc.c
+>>> +++ b/hw/block/fdc.c
+>>> @@ -39,6 +39,7 @@
+>>> #include "hw/qdev-properties-system.h"
+>>> #include "migration/vmstate.h"
+>>> #include "hw/block/block.h"
+>>> +#include "hw/block/fdc.h"
+>>> #include "sysemu/block-backend.h"
+>>> #include "sysemu/blockdev.h"
+>>> #include "sysemu/sysemu.h"
+>>> @@ -47,7 +48,6 @@
+>>> #include "qemu/module.h"
+>>> #include "trace.h"
+>>> #include "qom/object.h"
+>>> -#include "fdc-internal.h"
+>>>
+>>> /********************************************************/
+>>> /* debug Floppy devices */
+>>>
+>
+>
+--3866299591-537142648-1702896896=:10312--
 
