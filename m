@@ -2,84 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF16816A45
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 10:55:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 332D7816AB9
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 11:14:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFAKX-0005oJ-TT; Mon, 18 Dec 2023 04:54:33 -0500
+	id 1rFAdW-0003n6-Vv; Mon, 18 Dec 2023 05:14:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFAKV-0005nu-Ol
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:54:31 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFAKK-0007hn-CS
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 04:54:31 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2cc2238f597so29767721fa.3
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 01:54:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702893258; x=1703498058; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=22XHa7TU2HAZhqIoLxu+1GCExXKqhDp67R/omYu6sKM=;
- b=FxsHh5TB6MwlX6x2NhiwLPK8Z/tcBdjX3/YtmS9R2awy/v28fFwMsVJMBMnnVS3Z+X
- RpBsWQFRBEzuzTDqoS4GUpggBhcpHWDagNgd5UwPS81TQqk2NU8D4CmkcUqNhyo/4En9
- mp6iEDli3R+yOnPT9pzZlZWKxLgmj6lJ3QrRBvp0VSiDcEcG50Z8N6hCZKWj/7ylaWw4
- h9PqYo6uazYv6eJHEPxyzF7Go7mL0egMoZ37TEo5zXkllORiIdyHlwy92D96l1PzCLzA
- 7ymhvavDqs6KiGjtUtRKUypA+j0sXUZaxXmFZvMRKVEWRJFgndrgqYtO20tMaIOeUAvN
- xkIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702893258; x=1703498058;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=22XHa7TU2HAZhqIoLxu+1GCExXKqhDp67R/omYu6sKM=;
- b=VL5mt64rPjL/uvG+cIrL2QeIo8T0FtNM6SKngozj8qWXdueAmLApgpC9lZwkVAMVRs
- fvlgcD7mvw5oRKnMweMaiPUySaVkwoQRbs7si+QwlX3ent0m5lVAJZRWyr6aEwu2cjGT
- wx0ZiV9n543sdviaIvGi0UAay4eDNMZhGLkdUT56vkMulWiKQ9z8v3cuk8jFdUm6X0kp
- 603G4kWjLo8nqRgrTMq3efWDKc+paEWl+gukbsbtpGne/ZE4w4nxH779O4JZHe1pZRdb
- K6B96fs1+cYiMoTFof8gZZf8KXGMV3iZVy8EQYgonyfTD5qL2xDMv6EimqoswdJwrxOb
- ztqw==
-X-Gm-Message-State: AOJu0YzapRFCxO3xhFrSL4/xlsL5bYfh0PEXArBd2kqBccF4W+q2Qyvx
- 9bpp0+i4NVnQvbf/aaPk+WCyVv/JIBAYKFjLdqziQg==
-X-Google-Smtp-Source: AGHT+IG8OYz2pq+QHf1MF7BM0rOkxLAelM2wX2KQDjadCOgPquG+JTMBma3kcPkXa0doXhtS2mks+vCRtXDZtTwFiE0=
-X-Received: by 2002:a2e:8608:0:b0:2cc:652b:9fd4 with SMTP id
- a8-20020a2e8608000000b002cc652b9fd4mr450177lji.79.1702893258257; Mon, 18 Dec
- 2023 01:54:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rFAdV-0003ms-2p
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 05:14:09 -0500
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rFAdI-0004K2-V4
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 05:14:08 -0500
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 8E964482EE;
+ Mon, 18 Dec 2023 11:13:46 +0100 (CET)
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, sw@weilnetz.de, t.lamprecht@proxmox.com,
+ berrange@redhat.com
+Subject: [PATCH v2] qemu_init: increase NOFILE soft limit on POSIX
+Date: Mon, 18 Dec 2023 11:13:40 +0100
+Message-Id: <20231218101340.35053-1-f.ebner@proxmox.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20231214171447.44025-1-philmd@linaro.org>
-In-Reply-To: <20231214171447.44025-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Dec 2023 09:54:07 +0000
-Message-ID: <CAFEAcA8fmzv6qkN=N9TZoYVox+uQ0m5iLkGPQpcRDVA8eDEujg@mail.gmail.com>
-Subject: Re: [RFC PATCH] hw/arm: Prefer arm_feature() over
- object_property_find()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>, 
- Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org, 
- Leif Lindholm <quic_llindhol@quicinc.com>, Rob Herring <robh@kernel.org>, 
- Alistair Francis <alistair@alistair23.me>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,101 +53,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Dec 2023 at 17:14, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> QOM properties are added on the ARM vCPU object when a
-> feature is present. Rather than checking the property
-> is present, check the feature.
->
-> Suggested-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> RFC: If there is no objection on this patch, I can split
->      as a per-feature series if necessary.
->
-> Based-on: <20231123143813.42632-1-philmd@linaro.org>
->   "hw: Simplify accesses to CPUState::'start-powered-off' property"
-> ---
->  hw/arm/armv7m.c       | 21 ++++++++++++---------
->  hw/arm/exynos4210.c   |  4 ++--
->  hw/arm/highbank.c     |  3 ++-
->  hw/arm/integratorcp.c |  5 ++---
->  hw/arm/realview.c     |  2 +-
->  hw/arm/sbsa-ref.c     |  3 ++-
->  hw/arm/versatilepb.c  |  5 ++---
->  hw/arm/vexpress.c     |  6 ++++--
->  hw/arm/virt.c         | 27 +++++++++++++++------------
->  hw/arm/xilinx_zynq.c  |  2 +-
->  hw/cpu/a15mpcore.c    | 17 +++++++++++------
->  hw/cpu/a9mpcore.c     |  6 +++---
->  12 files changed, 57 insertions(+), 44 deletions(-)
->
-> diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
-> index 3a6d72b0f3..932061c11a 100644
-> --- a/hw/arm/armv7m.c
-> +++ b/hw/arm/armv7m.c
-> @@ -302,28 +302,29 @@ static void armv7m_realize(DeviceState *dev, Error =
-**errp)
->
->      object_property_set_link(OBJECT(s->cpu), "memory", OBJECT(&s->contai=
-ner),
->                               &error_abort);
-> -    if (object_property_find(OBJECT(s->cpu), "idau")) {
-> +    if (arm_feature(&s->cpu->env, ARM_FEATURE_M_SECURITY)) {
->          object_property_set_link(OBJECT(s->cpu), "idau", s->idau,
->                                   &error_abort);
-> -    }
-> -    if (object_property_find(OBJECT(s->cpu), "init-svtor")) {
->          if (!object_property_set_uint(OBJECT(s->cpu), "init-svtor",
->                                        s->init_svtor, errp)) {
->              return;
->          }
->      }
-> -    if (object_property_find(OBJECT(s->cpu), "init-nsvtor")) {
-> +    if (arm_feature(&s->cpu->env, ARM_FEATURE_M)) {
+In many configurations, e.g. multiple vNICs with multiple queues or
+with many Ceph OSDs, the default soft limit of 1024 is not enough.
+QEMU is supposed to work fine with file descriptors >= 1024 and does
+not use select() on POSIX. Bump the soft limit to the allowed hard
+limit to avoid issues with the aforementioned configurations.
 
-This doesn't make sense as a check -- we shouldn't be able to get
-here if the CPU isn't M-profile.
+Of course the limit could be raised from the outside, but the man page
+of systemd.exec states about 'LimitNOFILE=':
 
->          if (!object_property_set_uint(OBJECT(s->cpu), "init-nsvtor",
->                                        s->init_nsvtor, errp)) {
->              return;
->          }
->      }
-> -    if (object_property_find(OBJECT(s->cpu), "vfp")) {
-> -        if (!object_property_set_bool(OBJECT(s->cpu), "vfp", s->vfp, err=
-p)) {
-> -            return;
-> +    if (arm_feature(&s->cpu->env, ARM_FEATURE_AARCH64)) {
+> Don't use.
+> [...]
+> Typically applications should increase their soft limit to the hard
+> limit on their own, if they are OK with working with file
+> descriptors above 1023,
 
-Similarly this can't possibly be an AArch64 CPU, so this is
-not the correct condition to check.
+If the soft limit is already the same as the hard limit, avoid the
+superfluous setrlimit call. This can avoid a warning with a strict
+seccomp filter blocking setrlimit if NOFILE was already raised before
+executing QEMU.
 
-> +        if (cpu_isar_feature(aa64_fp_simd, s->cpu)) {
-> +            if (!object_property_set_bool(OBJECT(s->cpu), "vfp", s->vfp,=
- errp)) {
-> +                return;
-> +            }
->          }
->      }
-> -    if (object_property_find(OBJECT(s->cpu), "dsp")) {
-> +    if (arm_feature(&s->cpu->env, ARM_FEATURE_M) &&
-> +        arm_feature(&s->cpu->env, ARM_FEATURE_THUMB_DSP)) {
->          if (!object_property_set_bool(OBJECT(s->cpu), "dsp", s->dsp, err=
-p)) {
+Buglink: https://bugzilla.proxmox.com/show_bug.cgi?id=4507
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+---
 
-Another unnecessary "is this M-profile?" check. This also is
-introducing a point of potential future failure because now
-we have the condition for "do we have a dsp property" in two
-places: in the CPU object where we add it, and then again here
-when we set it. Now they can get out of sync.
+Changes in v2:
+    * avoid the redundant setrlimit call when cur == max
 
-Most of the others are similar. There might be places where we're
-using the "does property X check" to do something more than just
-guard "now set property X"; those are probably worth looking at
-to see if they should be checking something else.
+ include/sysemu/os-posix.h |  1 +
+ include/sysemu/os-win32.h |  5 +++++
+ os-posix.c                | 22 ++++++++++++++++++++++
+ system/vl.c               |  2 ++
+ 4 files changed, 30 insertions(+)
 
-thanks
--- PMM
+diff --git a/include/sysemu/os-posix.h b/include/sysemu/os-posix.h
+index dff32ae185..b881ac6c6f 100644
+--- a/include/sysemu/os-posix.h
++++ b/include/sysemu/os-posix.h
+@@ -51,6 +51,7 @@ bool is_daemonized(void);
+ void os_daemonize(void);
+ bool os_set_runas(const char *user_id);
+ void os_set_chroot(const char *path);
++void os_setup_limits(void);
+ void os_setup_post(void);
+ int os_mlock(void);
+ 
+diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h
+index 1047d260cb..106f155037 100644
+--- a/include/sysemu/os-win32.h
++++ b/include/sysemu/os-win32.h
+@@ -128,6 +128,11 @@ static inline int os_mlock(void)
+     return -ENOSYS;
+ }
+ 
++void os_setup_limits(void)
++{
++    return;
++}
++
+ #define fsync _commit
+ 
+ #if !defined(lseek)
+diff --git a/os-posix.c b/os-posix.c
+index 52ef6990ff..a4284e2c07 100644
+--- a/os-posix.c
++++ b/os-posix.c
+@@ -24,6 +24,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include <sys/resource.h>
+ #include <sys/wait.h>
+ #include <pwd.h>
+ #include <grp.h>
+@@ -256,6 +257,27 @@ void os_daemonize(void)
+     }
+ }
+ 
++void os_setup_limits(void)
++{
++    struct rlimit nofile;
++
++    if (getrlimit(RLIMIT_NOFILE, &nofile) < 0) {
++        warn_report("unable to query NOFILE limit: %s", strerror(errno));
++        return;
++    }
++
++    if (nofile.rlim_cur == nofile.rlim_max) {
++        return;
++    }
++
++    nofile.rlim_cur = nofile.rlim_max;
++
++    if (setrlimit(RLIMIT_NOFILE, &nofile) < 0) {
++        warn_report("unable to set NOFILE limit: %s", strerror(errno));
++        return;
++    }
++}
++
+ void os_setup_post(void)
+ {
+     int fd = 0;
+diff --git a/system/vl.c b/system/vl.c
+index 2bcd9efb9a..6f42f37200 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2774,6 +2774,8 @@ void qemu_init(int argc, char **argv)
+     error_init(argv[0]);
+     qemu_init_exec_dir(argv[0]);
+ 
++    os_setup_limits();
++
+     qemu_init_arch_modules();
+ 
+     qemu_init_subsystems();
+-- 
+2.39.2
+
+
 
