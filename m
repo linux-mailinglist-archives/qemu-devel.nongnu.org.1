@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463D3816C60
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD791816C6A
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Dec 2023 12:38:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFBsY-0007ED-Jz; Mon, 18 Dec 2023 06:33:46 -0500
+	id 1rFBsG-00071b-At; Mon, 18 Dec 2023 06:33:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFBsM-00077t-4P
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:35 -0500
+ id 1rFBsD-0006wN-Uo
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:25 -0500
 Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFBs5-0003Lj-Vi
- for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:33 -0500
+ id 1rFBs6-0003M1-Hu
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 06:33:25 -0500
 Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3365f09de18so1649466f8f.2
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 03:33:17 -0800 (PST)
+ ffacd0b85a97d-33664b6d6abso898445f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 03:33:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702899196; x=1703503996; darn=nongnu.org;
+ d=linaro.org; s=google; t=1702899197; x=1703503997; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=XBGAau5xQawMv1TIkYCOIFZhD76YOOoYpu6Y5VQfn/w=;
- b=p1nx/xizLrpkfy5i/rxVvJxdN22v/GAJQne56MBnSRuBZvZOtlKlgmp4NT0TKUnBQn
- JuqdXo/XhaL82QhWyrStx4rIZkv9SdNo/90lEM2lkluZqhglRLK+25rg1f0vknL8ci6X
- x68X9dXwgkUNgiRINGOmYrqMI/e3AwRt9J44UnhJoSW+GgP4CcfJHvueR8pTAY13IsJ7
- MatwDNAI0Yy/16z6BNtzBSoraupwFANvxKXXszfYMdF3Zf2jzFBb07zFxx9XMklNq9fu
- z03IJFoPm2LRruqhJRXfiqFyrp8KoPZUz1B+SMGhe/rvFDEJ5PqYbmPYq98nlJa0Tz3T
- GUhg==
+ :reply-to; bh=dQNFeem1A7Gkll9ZhccsIPpsQeRDUIGH2XBhKC8Oc8w=;
+ b=lp9KWJ/0pY9uKOWFI+v9QXn9bk9Ux+m8B5sMBr8TOhfq1fTNiu2dXi9F0neTXfbypQ
+ P6i/Dqqp2dEofEwIIw4g/pL12G5qzW/Ww4RwuHP64dx//vlb548X6WB0+7BSMZ3V7Eeh
+ mpEo++nKhrArV2mmuj0cLYdTS+cdIJaanyZHSvEFE5yP8yn5TzSppaI7W9dugosuWVA5
+ uH4WfQOLCklbTq49x7IhZkCyKFb3nDeekAxyTsk+4u8iUPxpocJCELPC9Z2dtJAcuGCT
+ NBaIniTPMigL+Ee6H5/hCt/8VM5IjmxC2B8cXxg+5S5yZT5mllKI2qBorKMqQF1Z5l8j
+ SoDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702899196; x=1703503996;
+ d=1e100.net; s=20230601; t=1702899197; x=1703503997;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XBGAau5xQawMv1TIkYCOIFZhD76YOOoYpu6Y5VQfn/w=;
- b=CFEXyo6/hPNxPjNPaQNthVsvqLr0NQ73h5rmS3Utk/85aTmeKsxwu8sviz4sK/Z+yj
- fxnXrVOZR3lEvypze+8YhJzjXrqf+aH9IsUhWDOo586IuIKtLES01wcnYcvOLsvtlFIf
- vnmQHUi39smPOBND8ktJQ3zWFtElAqA+8kNsZGomuA3aLr1yeAEPdDjfYhNEV+4hvIYx
- 5y5qwken+KUDgWd7LPwM0kVkJeUvjErOWoRdUqy9LXJajVjyiz+9BO36/14u3NQ+y1qC
- ho1+sFvKMGMO+jAjfoyFrTgHbON0+1uT2PyDd2AYgqBqmxPXeT1587BhSBBvO/MIo7x4
- Zf9w==
-X-Gm-Message-State: AOJu0YxvLVfSrIDtorkD1Mp4RrUaWU8y5c+rfbmJzQwyHdaW+uael1QW
- ZJfEpjbkZf1wZfoOLYHNt92yhA==
-X-Google-Smtp-Source: AGHT+IH6YyUH3goIYwZEZhFPpr5OuSYWhdhC+56tdjrA7IBU0mK4BCTamQ0oeWeeBBG3PmIOnBaHjg==
-X-Received: by 2002:adf:e2c2:0:b0:332:eaa7:56b0 with SMTP id
- d2-20020adfe2c2000000b00332eaa756b0mr7873228wrj.14.1702899196728; 
- Mon, 18 Dec 2023 03:33:16 -0800 (PST)
+ bh=dQNFeem1A7Gkll9ZhccsIPpsQeRDUIGH2XBhKC8Oc8w=;
+ b=ujnqMv8nM3Hndzim/NZ6OffR1xxyj1ueyR66Xv9QAILfiXA/csYkv7TTwL4ClSowwL
+ FXqWuIVoR+7DYrqjnqDBAFrBzP10KmXVpE34scHtEugVogEHJzuMRL7RZWN0/pYaMKPS
+ 6cFwl92r3QJUWPfReNQ88NCa5b3ofwkeGWV7DLIy90ldX4zxWhSIgQ3l0NknDqTgLklC
+ sePPSVw32PJNwmw2GWfsPBXrkiomVSylDNiL/kqJeICMQeWzFvV/53hZ0dRchaDALWxY
+ PMon5SVSfjeNb6cU0mqlAZ67ZJup3a+6Pdkhwa+XHNSlpLFb4/qwNA8dBkh9q6SSW+sH
+ VoEQ==
+X-Gm-Message-State: AOJu0YyZ8N9KhCwX+x9Dz3tw/b3hLyfdHn102+CCDSnJjUGqy7zKYGNt
+ gkKDlUM2rIRjCzV+8RIVMjTu3A==
+X-Google-Smtp-Source: AGHT+IGaPyArKlF4fq+zPUeiAeBebbqK11AeCEOQMyMznT90bgVJ4BWC5pImLHzJp2fWuEjHMSC3dQ==
+X-Received: by 2002:a5d:4004:0:b0:336:6665:d99f with SMTP id
+ n4-20020a5d4004000000b003366665d99fmr912531wrp.138.1702899197213; 
+ Mon, 18 Dec 2023 03:33:17 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  j18-20020adff012000000b003366da509ecsm671193wro.85.2023.12.18.03.33.16
@@ -58,10 +58,9 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 21/35] target/arm: Add FEAT_NV to max, neoverse-n2,
- neoverse-v1 CPUs
-Date: Mon, 18 Dec 2023 11:32:51 +0000
-Message-Id: <20231218113305.2511480-22-peter.maydell@linaro.org>
+Subject: [PATCH 22/35] target/arm: Handle HCR_EL2 accesses for FEAT_NV2 bits
+Date: Mon, 18 Dec 2023 11:32:52 +0000
+Message-Id: <20231218113305.2511480-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231218113305.2511480-1-peter.maydell@linaro.org>
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
@@ -73,9 +72,9 @@ X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,60 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable FEAT_NV on the 'max' CPU, and stop filtering it out for the
-Neoverse N2 and Neoverse V1 CPUs.  We continue to downgrade FEAT_NV2
-support to FEAT_NV for the latter two CPU types.
+FEAT_NV2 defines another new bit in HCR_EL2: NV2. When the
+feature is enabled, allow this bit to be written in HCR_EL2.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/emulation.rst | 1 +
- target/arm/cpu.c              | 8 +++++---
- target/arm/tcg/cpu64.c        | 1 +
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ target/arm/cpu-features.h | 5 +++++
+ target/arm/helper.c       | 3 +++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 0b604f90059..d827b42de79 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -63,6 +63,7 @@ the following architecture extensions:
- - FEAT_MTE (Memory Tagging Extension)
- - FEAT_MTE2 (Memory Tagging Extension)
- - FEAT_MTE3 (MTE Asymmetric Fault Handling)
-+- FEAT_NV (Nested Virtualization)
- - FEAT_PACIMP (Pointer authentication - IMPLEMENTATION DEFINED algorithm)
- - FEAT_PACQARMA3 (Pointer authentication - QARMA3 algorithm)
- - FEAT_PACQARMA5 (Pointer authentication - QARMA5 algorithm)
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index efb22a87f9e..da0c02f850b 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2238,9 +2238,11 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-         /* FEAT_MPAM (Memory Partitioning and Monitoring Extension) */
-         cpu->isar.id_aa64pfr0 =
-             FIELD_DP64(cpu->isar.id_aa64pfr0, ID_AA64PFR0, MPAM, 0);
--        /* FEAT_NV (Nested Virtualization) */
--        cpu->isar.id_aa64mmfr2 =
--            FIELD_DP64(cpu->isar.id_aa64mmfr2, ID_AA64MMFR2, NV, 0);
-+        /* FEAT_NV2 (Enhanced Nested Virtualization support) */
-+        if (FIELD_EX64(cpu->isar.id_aa64mmfr2, ID_AA64MMFR2, NV) > 1) {
-+            cpu->isar.id_aa64mmfr2 =
-+                FIELD_DP64(cpu->isar.id_aa64mmfr2, ID_AA64MMFR2, NV, 1);
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 3a43c328d9e..7a590c824cf 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -844,6 +844,11 @@ static inline bool isar_feature_aa64_nv(const ARMISARegisters *id)
+     return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR2, NV) != 0;
+ }
+ 
++static inline bool isar_feature_aa64_nv2(const ARMISARegisters *id)
++{
++    return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR2, NV) >= 2;
++}
++
+ static inline bool isar_feature_aa64_pmuv3p1(const ARMISARegisters *id)
+ {
+     return FIELD_EX64(id->id_aa64dfr0, ID_AA64DFR0, PMUVER) >= 4 &&
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 28448624c36..afed58b6f7f 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -5841,6 +5841,9 @@ static void do_hcr_write(CPUARMState *env, uint64_t value, uint64_t valid_mask)
+         if (cpu_isar_feature(aa64_nv, cpu)) {
+             valid_mask |= HCR_NV | HCR_NV1 | HCR_AT;
+         }
++        if (cpu_isar_feature(aa64_nv2, cpu)) {
++            valid_mask |= HCR_NV2;
 +        }
      }
  
-     /* MPU can be configured out of a PMSA CPU either by setting has-mpu
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 40e7a45166f..93f040e6e96 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1204,6 +1204,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64MMFR2, UAO, 1);      /* FEAT_UAO */
-     t = FIELD_DP64(t, ID_AA64MMFR2, IESB, 1);     /* FEAT_IESB */
-     t = FIELD_DP64(t, ID_AA64MMFR2, VARANGE, 1);  /* FEAT_LVA */
-+    t = FIELD_DP64(t, ID_AA64MMFR2, NV, 1);       /* FEAT_NV */
-     t = FIELD_DP64(t, ID_AA64MMFR2, ST, 1);       /* FEAT_TTST */
-     t = FIELD_DP64(t, ID_AA64MMFR2, AT, 1);       /* FEAT_LSE2 */
-     t = FIELD_DP64(t, ID_AA64MMFR2, IDS, 1);      /* FEAT_IDST */
+     if (cpu_isar_feature(any_evt, cpu)) {
 -- 
 2.34.1
 
