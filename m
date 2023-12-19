@@ -2,104 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C517F81874A
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 13:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB127818788
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 13:34:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFZ5P-00089B-Ua; Tue, 19 Dec 2023 07:20:35 -0500
+	id 1rFZHp-000207-Lv; Tue, 19 Dec 2023 07:33:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rFZ5M-000893-6x
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:20:32 -0500
-Received: from mail-io1-xd30.google.com ([2607:f8b0:4864:20::d30])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rFZ5K-0000nT-Cn
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:20:31 -0500
-Received: by mail-io1-xd30.google.com with SMTP id
- ca18e2360f4ac-7b71e389fb2so225141239f.3
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 04:20:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702988429; x=1703593229;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wQA0RlwSqqyN9Wcw543mwNNgu5OHdx84OKgHRedGrS8=;
- b=htFxD65gqzkeahKkBFl3uRf5Eo361+m2HuuvNF2EJtnUgmrUXTBKZQXcTU3DKDgE9q
- /Bl3MHvW5N74mIpVd5hT15PRWE4/hJ0rC+6X8rBVQmHhOKgJlhzwXUvqitVr0WEVEbw2
- k2Dfaw2ULaVXfv25SBkuxg777PRSVlX9dQJp48q5ozfJkAfr4NtuDmxWFi6b+vdTWACw
- YXOIARpka5VswcrySrxkll8W6GsXNpyIUt2xV3avdPu3kEYVKbL8dJqcp5Bpunvq1xbi
- Sts0JhAxVycbAjAwfQuS581WrHqioo0toMBvdYqj8WLxIOBthAE5sxDWO1SZLyNePeVR
- p1lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702988429; x=1703593229;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wQA0RlwSqqyN9Wcw543mwNNgu5OHdx84OKgHRedGrS8=;
- b=r1Ngaex8ojfNfWdOnijxFX5LsVDfdhXBwEjY0uCSeTq9Q3iwFGdybuejA4JDDbc3Vq
- VCXrSjmrSmmalEEOyPsNoT0K2wv0ybl69c7tESqVwms6QDn/eAmQJLOLZ3RzZx0gagvK
- OCB7FfXtbzJFN/HBojXdbjvh3bm3M4y6AT3saCBe69wjkv0NYi18GfvkmGbKl54ljEc9
- QGNBzvZct5hrdI9QYKJfKY7K5cZJriCkEp68SYLq2gBUvwzWRFfJ784eddLvL/0ASmad
- Kflw1oxJ1JPkMYxnMcCLSr1w8sqDnTqs/FxOlp3SdSiptyGvxmeqTGuScqhG7zYfAP1Z
- b1Qg==
-X-Gm-Message-State: AOJu0YycJuWxde0f0I5aqoZx0p/27Kiv5Slo5lT+HHiIPdEY21iZk1fg
- vWJFqMDX7L7hqtW4GIaZirrv3A==
-X-Google-Smtp-Source: AGHT+IFKfEaAOkSPqk6IsZ6SDxRqyf21egeIRYzz8LW68SmNcxq3Kf4hF2brQKO78npgJtIpDnKX/Q==
-X-Received: by 2002:a6b:6105:0:b0:7b6:fc48:46d1 with SMTP id
- v5-20020a6b6105000000b007b6fc4846d1mr21755028iob.12.1702988429230; 
- Tue, 19 Dec 2023 04:20:29 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
- by smtp.gmail.com with ESMTPSA id
- b31-20020a631b5f000000b005bdf59618f9sm19014375pgm.69.2023.12.19.04.20.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Dec 2023 04:20:28 -0800 (PST)
-Message-ID: <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com>
-Date: Tue, 19 Dec 2023 21:20:22 +0900
+ (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
+ id 1rFZHk-0001zU-30
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:33:20 -0500
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
+ id 1rFZHi-00038a-5X
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:33:19 -0500
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 3BJCWnbx055594;
+ Tue, 19 Dec 2023 20:32:49 +0800 (+08)
+ (envelope-from alvinga@andestech.com)
+Received: from alvinga-VirtualBox.andestech.com (10.0.13.65) by
+ ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
+ Tue, 19 Dec 2023 20:32:49 +0800
+To: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
+CC: <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
+ <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
+ <zhiwei_liu@linux.alibaba.com>, Alvin Chang <alvinga@andestech.com>
+Subject: [PATCH v2] target/riscv: Implement optional CSR mcontext of debug
+ Sdtrig extension
+Date: Tue, 19 Dec 2023 20:32:44 +0800
+Message-ID: <20231219123244.290935-1-alvinga@andestech.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/11] linux-headers: Update to kernel headers to add
- venus capset
-Content-Language: en-US
-To: Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-2-ray.huang@amd.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231219075320.165227-2-ray.huang@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d30;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-io1-xd30.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.0.13.65]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 3BJCWnbx055594
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=alvinga@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,23 +62,126 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Alvin Chang <alvinga@andestech.com>
+From:  Alvin Chang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/19 16:53, Huang Rui wrote:
-> Sync up kernel headers to update venus macro till they are merged into
-> mainline.
+The debug Sdtrig extension defines an CSR "mcontext". This commit
+implements its predicate and read/write operations into CSR table.
+Its value is reset as 0 when the trigger module is reset.
 
-Thanks for sorting things out with the kernel and spec.
+Signed-off-by: Alvin Chang <alvinga@andestech.com>
+---
+Changes from v1: Remove dedicated cfg, always implement mcontext.
 
-> 
-> Signed-off-by: Huang Rui <ray.huang@amd.com>
-> ---
-> 
-> Changes in v6:
-> - Venus capset is applied in kernel, so update it in qemu for future use.
-> 
-> https://lore.kernel.org/lkml/b79dcf75-c9e8-490e-644f-3b97d95f7397@collabora.com/
-> https://cgit.freedesktop.org/drm-misc/commit/?id=216d86b9a430f3280e5b631c51e6fd1a7774cfa0
-Please include the link to the upstream commit in the commit message.
+ target/riscv/cpu.h      |  1 +
+ target/riscv/cpu_bits.h |  7 +++++++
+ target/riscv/csr.c      | 36 +++++++++++++++++++++++++++++++-----
+ target/riscv/debug.c    |  2 ++
+ 4 files changed, 41 insertions(+), 5 deletions(-)
+
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index d74b361..e117641 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -345,6 +345,7 @@ struct CPUArchState {
+     target_ulong tdata1[RV_MAX_TRIGGERS];
+     target_ulong tdata2[RV_MAX_TRIGGERS];
+     target_ulong tdata3[RV_MAX_TRIGGERS];
++    target_ulong mcontext;
+     struct CPUBreakpoint *cpu_breakpoint[RV_MAX_TRIGGERS];
+     struct CPUWatchpoint *cpu_watchpoint[RV_MAX_TRIGGERS];
+     QEMUTimer *itrigger_timer[RV_MAX_TRIGGERS];
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index ebd7917..3296648 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -361,6 +361,7 @@
+ #define CSR_TDATA2          0x7a2
+ #define CSR_TDATA3          0x7a3
+ #define CSR_TINFO           0x7a4
++#define CSR_MCONTEXT        0x7a8
+ 
+ /* Debug Mode Registers */
+ #define CSR_DCSR            0x7b0
+@@ -905,4 +906,10 @@ typedef enum RISCVException {
+ /* JVT CSR bits */
+ #define JVT_MODE                           0x3F
+ #define JVT_BASE                           (~0x3F)
++
++/* Debug Sdtrig CSR masks */
++#define MCONTEXT32                         0x0000003F
++#define MCONTEXT64                         0x0000000000001FFFULL
++#define MCONTEXT32_HCONTEXT                0x0000007F
++#define MCONTEXT64_HCONTEXT                0x0000000000003FFFULL
+ #endif
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index fde7ce1..ff1e128 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -3900,6 +3900,31 @@ static RISCVException read_tinfo(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
+ }
+ 
++static RISCVException read_mcontext(CPURISCVState *env, int csrno,
++                                    target_ulong *val)
++{
++    *val = env->mcontext;
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException write_mcontext(CPURISCVState *env, int csrno,
++                                     target_ulong val)
++{
++    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32 ? true : false;
++    int32_t mask;
++
++    if (riscv_has_ext(env, RVH)) {
++        /* Spec suggest 7-bit for RV32 and 14-bit for RV64 w/ H extension */
++        mask = rv32 ? MCONTEXT32_HCONTEXT : MCONTEXT64_HCONTEXT;
++    } else {
++        /* Spec suggest 6-bit for RV32 and 13-bit for RV64 w/o H extension */
++        mask = rv32 ? MCONTEXT32 : MCONTEXT64;
++    }
++
++    env->mcontext = val & mask;
++    return RISCV_EXCP_NONE;
++}
++
+ /*
+  * Functions to access Pointer Masking feature registers
+  * We have to check if current priv lvl could modify
+@@ -4794,11 +4819,12 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     [CSR_PMPADDR15] =  { "pmpaddr15", pmp, read_pmpaddr, write_pmpaddr },
+ 
+     /* Debug CSRs */
+-    [CSR_TSELECT]   =  { "tselect", debug, read_tselect, write_tselect },
+-    [CSR_TDATA1]    =  { "tdata1",  debug, read_tdata,   write_tdata   },
+-    [CSR_TDATA2]    =  { "tdata2",  debug, read_tdata,   write_tdata   },
+-    [CSR_TDATA3]    =  { "tdata3",  debug, read_tdata,   write_tdata   },
+-    [CSR_TINFO]     =  { "tinfo",   debug, read_tinfo,   write_ignore  },
++    [CSR_TSELECT]   =  { "tselect",  debug, read_tselect,  write_tselect  },
++    [CSR_TDATA1]    =  { "tdata1",   debug, read_tdata,    write_tdata    },
++    [CSR_TDATA2]    =  { "tdata2",   debug, read_tdata,    write_tdata    },
++    [CSR_TDATA3]    =  { "tdata3",   debug, read_tdata,    write_tdata    },
++    [CSR_TINFO]     =  { "tinfo",    debug, read_tinfo,    write_ignore   },
++    [CSR_MCONTEXT]  =  { "mcontext", debug, read_mcontext, write_mcontext },
+ 
+     /* User Pointer Masking */
+     [CSR_UMTE]    =    { "umte",    pointer_masking, read_umte,  write_umte },
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 4945d1a..e30d99c 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -940,4 +940,6 @@ void riscv_trigger_reset_hold(CPURISCVState *env)
+         env->cpu_watchpoint[i] = NULL;
+         timer_del(env->itrigger_timer[i]);
+     }
++
++    env->mcontext = 0;
+ }
+-- 
+2.34.1
+
 
