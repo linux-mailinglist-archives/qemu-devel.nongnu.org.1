@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46318185C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 11:56:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF8581864C
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 12:26:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFXlL-0003dr-H4; Tue, 19 Dec 2023 05:55:47 -0500
+	id 1rFYDv-0000Dw-O7; Tue, 19 Dec 2023 06:25:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
- id 1rFXlE-0003dC-1q; Tue, 19 Dec 2023 05:55:40 -0500
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFYDr-0000CX-OR
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 06:25:16 -0500
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
- id 1rFXl8-00082J-Ld; Tue, 19 Dec 2023 05:55:38 -0500
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-50e384cd6ebso2547621e87.3; 
- Tue, 19 Dec 2023 02:55:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFYDl-0005Id-IW
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 06:25:13 -0500
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-50e23c620e8so4175821e87.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 03:25:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702983326; x=1703588126; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lIRbGwXO6TvwI0IntgDTvlax6D6vei+jQDLXSTHmwHI=;
- b=KlP51azAP9zkUsdVrHvTf6KJHwzHTMu5C5ccWZAqmVG9UarVsr3v2icwr5abhyfRbt
- ABOx6W0lURqUs2KX+HzDKereY+c7WgBp1i1m0Q86zU+ODwc9YNnWUIOagOzfU6MAYjsK
- XqIIuXRsQ7LTpCFdqpH1z9wagkhLLmQ83IiDDu47HFm5xjuPiuLCBU1Lqs43UCI9MXZl
- ODHkynIyTa+rzhTq6wNbk3OjYZmhN9PM1LCdyKBdi4/cluPxP5TW8B42Gt1yawFghqau
- T1CmAW3RemNA5RAsJObwVw8PVPgwinYzxVxz5ge1XDmQ5G17QI6nDIKz3/yfdI5kMnZG
- Jm1A==
+ d=linaro.org; s=google; t=1702985106; x=1703589906; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5SaXnUXmMqvm0EDM8x1yH11gCRyWV5uAr8hLy1MvP4A=;
+ b=cKWoKZKTpSOSKVxhRSn9uc3v903KjaRRf45wsizh0kF6lbClr1KxvWS2t9GCg94+9r
+ V9ae1cDevAMcQpQCCUDcPSOI3SsvcNwcoRnGrYP/EEBBlah3l6mMQQgy/d+HRgmtZF3T
+ fjFBZ9148c4eWoU5UNtkpb0s366G71sTF1J942Y/s0SqAvwdccYtZug0RXux+gTtdpxS
+ ABR8VHed9uWthwVZfoqNrMFwiniMwrxUIkPBWlJeVHek+XHihIo0xJTMke2JS7BqV+3T
+ 5KIayA/5n61Ztzlu4PkpwfCETpSSDnmC7rmBpbmgEU6zbq+1gfFFTo9zp/083H0vNmka
+ XUfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702983326; x=1703588126;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1702985106; x=1703589906;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=lIRbGwXO6TvwI0IntgDTvlax6D6vei+jQDLXSTHmwHI=;
- b=I3oI066zDk9n1p+ZqOkIqaHSGXY4IhASzm5jrT3k0SI5y1GK8Mk+XdhOcWWl/bsARb
- HRR3ZT+2mdRDkFdAdVjjxnxvR6Sbd+T3rTlTWLDx1UmQVIKEkDkOav1F5EKbKOwyyVJ+
- s+6Gf+5HyeIfbMQiiz0BhOLfwqkpG5CrxZDfInX61WxJ+1VWSeOHB7L0iZmSM4FwD9jR
- v9esxUXHDq29bIUgTETJeNkxIg2Hr/JqFmCmW27UWom7JYa+UHDJuzbyH1AfjuchpNcY
- QutKiyo76pt/DA5ZiOx5fLI6IyEgOHvHbm4g18tfp1T8L82JCjRrBblzYNQkudvGyMuy
- axdg==
-X-Gm-Message-State: AOJu0YyspiTMXVdDtbnUweGgQrItR2vCIf6nnwplwGAhfwlH6RPW30uO
- +5NZkcrYHhvM9qknuiIdCC4vaR3ecBSld8/7
-X-Google-Smtp-Source: AGHT+IFFi/e3Zzvnn4+eFMNZ5d0PpDrkkXc0bafZ/R0cwMa2fmre68LGvu8KzAIV5FjPLAnyY8ChSA==
-X-Received: by 2002:a05:6512:4024:b0:50e:4444:b94b with SMTP id
- br36-20020a056512402400b0050e4444b94bmr504873lfb.101.1702983325684; 
- Tue, 19 Dec 2023 02:55:25 -0800 (PST)
-Received: from localhost.localdomain ([176.120.189.69])
- by smtp.gmail.com with ESMTPSA id
- s16-20020a056512215000b0050be73a1c27sm3163749lfr.258.2023.12.19.02.55.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Dec 2023 02:55:25 -0800 (PST)
-From: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org,
- Nikita Ostrenkov <n.ostrenkov@gmail.com>
-Subject: [PATCH] hw/arm: add cache controller for Freescale i.MX6
-Date: Tue, 19 Dec 2023 10:55:10 +0000
-Message-Id: <20231219105510.4907-1-n.ostrenkov@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ bh=5SaXnUXmMqvm0EDM8x1yH11gCRyWV5uAr8hLy1MvP4A=;
+ b=GYuJVA4NTWvgMnDyK3rUebVRooYg4Nk3ZfH9cG6tvdrKozb2gIiK90vggPVG3A0H7P
+ NnowPwNcy9TuZMagEdbdKWvTvTVbmNveVZJOaD1wZyuobV+6ANGSKZ6SF0VRQ3ni0EbV
+ 7UX8f1ldSAA+bpLdqYTsVPtzQMFiIBNGy0OoicyQGueL9gvMONIeeUXvI32OJENM0aFC
+ HWkrVZj7kxB6P2chDgiMIxLkbt+ChzYa+RZoAts8bA7NlGXN53zN96MDqjhxggy7FAaP
+ 45pydj+QES7KJZLoixU0IXzt/ksws6dZnFtwfJm/yDZ+wB3xE2h6KkAhfPtILIkmSbu9
+ bMFg==
+X-Gm-Message-State: AOJu0YzLjtaBsxJgPeBs4WU2FAz+HkFpL+qNNSX6xdhv0sVjAkjsD4Rz
+ Ho2oMOagKvnM5Ydedi4Gz3h9Ugq3UjK4e4pYwFoZkQ==
+X-Google-Smtp-Source: AGHT+IHwOXRUzIuYEGCfhaj34x2jg/GeFRrqT1dJ7w4B8muWlNh0l8OR2Blf2DRFrKVLau2sfgkDefRQtRqGiRJOwUg=
+X-Received: by 2002:a05:6512:2386:b0:50b:e995:d9e6 with SMTP id
+ c6-20020a056512238600b0050be995d9e6mr10571413lfv.93.1702985105799; Tue, 19
+ Dec 2023 03:25:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=n.ostrenkov@gmail.com; helo=mail-lf1-x131.google.com
+References: <20231218162301.14817-1-ncopa@alpinelinux.org>
+ <dfb9bf4e-820a-4e7e-b62b-8df952099e7a@ventanamicro.com>
+ <CAFEAcA_znj3yGXYB6OsTAwg5dT8kE154ZS=YRtye6dmy0TeKDQ@mail.gmail.com>
+ <941c9369-3cee-459b-ac28-4b5f1aecbe82@ventanamicro.com>
+In-Reply-To: <941c9369-3cee-459b-ac28-4b5f1aecbe82@ventanamicro.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 19 Dec 2023 11:24:53 +0000
+Message-ID: <CAFEAcA_EgQ1a9DGgFXoJ0AW2=51ECOR9juTB+S3v=xa0sMXNGw@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv/kvm: do not use non-portable
+ strerrorname_np()
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Natanael Copa <ncopa@alpinelinux.org>, qemu-devel@nongnu.org,
+ qemu-stable@nongnu.org, 
+ qemu-trivial@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,39 +93,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
----
- hw/arm/Kconfig    | 1 +
- hw/arm/fsl-imx6.c | 3 +++
- 2 files changed, 4 insertions(+)
+On Mon, 18 Dec 2023 at 18:34, Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+> On 12/18/23 14:53, Peter Maydell wrote:
+> > On Mon, 18 Dec 2023 at 17:22, Daniel Henrique Barboza
+> > <dbarboza@ventanamicro.com> wrote:
+> > We don't seem to worry about that in any of the other
+> > KVM code -- accel/kvm/ has lots of places that
+> > use strerror() or error_setg_errno().
+>
+> I don't know how this is being used in other parts of accel/kvm, but in this particular
+> instance we're handling the errors from get_one_reg.
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 3ada335a24..386f06840c 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -536,6 +536,7 @@ config FSL_IMX6
-     select IMX_I2C
-     select IMX_USBPHY
-     select WDT_IMX2
-+    select PL310  # cache controller
-     select SDHCI
- 
- config ASPEED_SOC
-diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
-index 7dc42cbfe6..f56130a7a7 100644
---- a/hw/arm/fsl-imx6.c
-+++ b/hw/arm/fsl-imx6.c
-@@ -154,6 +154,9 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->a9mpcore), i + smp_cpus,
-                            qdev_get_gpio_in(DEVICE(&s->cpu[i]), ARM_CPU_FIQ));
-     }
-+    
-+    /* L2 cache controller */
-+    sysbus_create_simple("l2x0", FSL_IMX6_PL310_ADDR, NULL);
- 
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->ccm), errp)) {
-         return;
--- 
-2.34.1
+Yep; compare accel/kvm/kvm-all.c:kvm_get_one_reg(), which does:
 
+    r = kvm_vcpu_ioctl(cs, KVM_GET_ONE_REG, &reg);
+    if (r) {
+        trace_kvm_failed_reg_get(id, strerror(-r));
+    }
+
+-- PMM
 
