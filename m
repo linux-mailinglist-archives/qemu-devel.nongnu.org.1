@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D37D81906F
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A68081909E
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:21:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfXN-0002FE-At; Tue, 19 Dec 2023 14:13:53 -0500
+	id 1rFfX6-00020q-ES; Tue, 19 Dec 2023 14:13:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfX4-0001zY-2d
+ id 1rFfX4-0001zS-2U
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:34 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWx-0001sA-EU
+ id 1rFfWy-0001sG-AX
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:30 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-33678aeda3fso62945f8f.3
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40c29f7b068so54206185e9.0
  for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1703013206; x=1703618006; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=mV1FstJ24t/zgC1MccTigP3pcwPlKu6JPGqh4aMLl+Y=;
- b=HSBpxcnkmyTbOdmUQln6188XXPSyqQ+CHpalRvB+U6gLMcQLDapAe1c+msanSmVXT5
- kdyJcciSkwfJ/IPop4CQC53QwP85SjXbIpsIWbEq0DPRHfxapT6PJJghFxTOsg332iKK
- i/7O0ResTrXdJVDfP0RpsPZKd7GWETOQXDu1GvuM+hf1z7SyCXzZ7GWqkboVdnFvAQDb
- 1hKN5bealGE27DKrzw08wQ54JSlSbXzmf+ctMhB1yJF6ZpGf7dABpqqrYO1pjGQtZhU5
- qEzHuAuI93ft5pFoi7Uyd4ieY91kJIp/JT1+2SH7jP5478s1ql53j6pEcUMPg+6P0yAT
- 8IgQ==
+ :reply-to; bh=hXHi71kEAlJCpqi9ahK7azGhnduyvRCji9I/qeZQJBk=;
+ b=Vsd3gANflFneGA+YS05TmFSkGLznOeWxai9npqf6DHkqce9qKikWJ//prVPC5LPabI
+ 8M8uHZNNSyAUEC+VBaFkJpjBMn/1O8mkO1/+OMJ3Kg+W0Gbxoe672YK8zFhEWJDBBDdO
+ t+kwtXuFETAsiSjUFAUhyCYxkj7gLEBUmb09Gm8JFk1D1f0orR90bf+Aj3Oeepnp4ePs
+ 8Ro92KGKS7pNwZSG2blKNN4BbUqq/TUUFMLtUN4gzhTFg538b80xSQAg6QuWlypMbxpx
+ +VJtAnPhlYhAxttgr0hMZP0bTOTnIYIkJfCp+YYinwZotuWb16UuBTmF6oxIN5lTVxJJ
+ Knxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1703013206; x=1703618006;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mV1FstJ24t/zgC1MccTigP3pcwPlKu6JPGqh4aMLl+Y=;
- b=SoYFlBiapuSRjLEBq9TdsA4aWfodG6nbo9S9abzIVl36Vs0cyy/+KwAUcVantXqYDQ
- G4PYnlUZTqD7aJghxKuwrUG66LKwGDlLiYmI47fkVyq61Yhtvr6HPg/wUfk8Okf/KILI
- TakCDUGoTSscxr8J9wxBq95O2D/zkKh/3mU5CaDdxdoq6HNIOZLzTOJHmcsriE5j/YqH
- l9FPBnKDaqyVXrb9+CaMZvX+jNjcMNRiaEO1F1StJui6FuLVQJXUht4EuQYl1uWNH3d7
- p4fPths/ClfHu3hnK7MHmQBdt5hRJ7/C6RNhACpHYtFg8SwaTKFyxKIQaixUjbDhZatK
- afpQ==
-X-Gm-Message-State: AOJu0Yzk6nx92NeeqnBghBH9kJwM8mUqLC5HbVwUNoyjU8iWaYVyWKnV
- f2e4AchunDRcT0+UOYXdCSHbzxNFZbdiMdzgrDs=
-X-Google-Smtp-Source: AGHT+IHmb9G6NaboR28VNtAHRvWPXbu14TTMDuSKBtU0p/rPdlmE+mulVpSab+9yqGSGYTSgijAWNw==
-X-Received: by 2002:a5d:6641:0:b0:336:5be9:adfd with SMTP id
- f1-20020a5d6641000000b003365be9adfdmr3515616wrw.68.1703013206162; 
+ bh=hXHi71kEAlJCpqi9ahK7azGhnduyvRCji9I/qeZQJBk=;
+ b=JCNIiTDnEU49F+SEV33uTckiiT9YwBmLz02PFQc2yPGLXXj3GXXAoyOAD1bgSe7aaE
+ 09wUKyosvS75sK9WgIm3KTeBXtlzv4yHo5vDuGlihpV47T+bxRbkGyr0Sae48kK3KSNV
+ rfg+w9N32/zTb7+7B6zFbF8p3CbTg7Z/AtcT0V7+LvpHcBObuX2Qb4WWgSKm7MFHtXoq
+ plzm/W90o3j52kJzoWPEujYb6ie/JrW/TEQAfQo+Hphp1UI2jfwmpG2S+DLHckhkbg2N
+ Dqb1P5A+vxcZmVCycAh2HGDbrQ6fN8kyCft6ICij68+7+eOMI/o7fm1auFfnHJGFBIEM
+ ersg==
+X-Gm-Message-State: AOJu0Yw9TaqQh0uRNNoLgYlObGvN4QLO0+MmUckszOLx2i2YvGtzbC9P
+ JAwO2+8BmNItNywivSU2NxTgLUMHeq5ncrYU3d8=
+X-Google-Smtp-Source: AGHT+IHhJkObBwTfqbB8lly4Y+6IpViaKxTymtwvfRuUSdZETZMTe28oyFikr2m8OXAmAhZn414MIg==
+X-Received: by 2002:a05:600c:450e:b0:40c:2b2b:6414 with SMTP id
+ t14-20020a05600c450e00b0040c2b2b6414mr8710138wmo.100.1703013206646; 
  Tue, 19 Dec 2023 11:13:26 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- f5-20020a5d5685000000b0033657376b62sm12007754wrv.105.2023.12.19.11.13.25
+ f5-20020a5d5685000000b0033657376b62sm12007754wrv.105.2023.12.19.11.13.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Dec 2023 11:13:25 -0800 (PST)
+ Tue, 19 Dec 2023 11:13:26 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 35/43] target/arm/kvm: Have kvm_arm_handle_dabt_nisv take a
- ARMCPU argument
-Date: Tue, 19 Dec 2023 19:12:59 +0000
-Message-Id: <20231219191307.2895919-36-peter.maydell@linaro.org>
+Subject: [PULL 36/43] target/arm/kvm: Have kvm_arm_handle_debug take a ARMCPU
+ argument
+Date: Tue, 19 Dec 2023 19:13:00 +0000
+Message-Id: <20231219191307.2895919-37-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231219191307.2895919-1-peter.maydell@linaro.org>
 References: <20231219191307.2895919-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,62 +101,48 @@ calling the generic vCPU API from "sysemu/kvm.h".
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
-Message-id: 20231123183518.64569-15-philmd@linaro.org
+Message-id: 20231123183518.64569-16-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/arm/kvm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index e4cd21caefc..075487e62f1 100644
+index 075487e62f1..6794dc8ad61 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -1302,17 +1302,16 @@ static void kvm_arm_vm_state_change(void *opaque, bool running, RunState state)
+@@ -1342,7 +1342,7 @@ static int kvm_arm_handle_dabt_nisv(ARMCPU *cpu, uint64_t esr_iss,
  
  /**
-  * kvm_arm_handle_dabt_nisv:
+  * kvm_arm_handle_debug:
 - * @cs: CPUState
 + * @cpu: ARMCPU
-  * @esr_iss: ISS encoding (limited) for the exception from Data Abort
-  *           ISV bit set to '0b0' -> no valid instruction syndrome
-  * @fault_ipa: faulting address for the synchronous data abort
+  * @debug_exit: debug part of the KVM exit structure
   *
-  * Returns: 0 if the exception has been handled, < 0 otherwise
+  * Returns: TRUE if the debug exception was handled.
+@@ -1353,11 +1353,11 @@ static int kvm_arm_handle_dabt_nisv(ARMCPU *cpu, uint64_t esr_iss,
+  * ABI just provides user-space with the full exception syndrome
+  * register value to be decoded in QEMU.
   */
--static int kvm_arm_handle_dabt_nisv(CPUState *cs, uint64_t esr_iss,
-+static int kvm_arm_handle_dabt_nisv(ARMCPU *cpu, uint64_t esr_iss,
-                                     uint64_t fault_ipa)
+-static bool kvm_arm_handle_debug(CPUState *cs,
++static bool kvm_arm_handle_debug(ARMCPU *cpu,
+                                  struct kvm_debug_exit_arch *debug_exit)
  {
+     int hsr_ec = syn_get_ec(debug_exit->hsr);
 -    ARMCPU *cpu = ARM_CPU(cs);
++    CPUState *cs = CPU(cpu);
      CPUARMState *env = &cpu->env;
-     /*
-      * Request KVM to inject the external data abort into the guest
-@@ -1328,7 +1327,7 @@ static int kvm_arm_handle_dabt_nisv(CPUState *cs, uint64_t esr_iss,
-          */
-         events.exception.ext_dabt_pending = 1;
-         /* KVM_CAP_ARM_INJECT_EXT_DABT implies KVM_CAP_VCPU_EVENTS */
--        if (!kvm_vcpu_ioctl(cs, KVM_SET_VCPU_EVENTS, &events)) {
-+        if (!kvm_vcpu_ioctl(CPU(cpu), KVM_SET_VCPU_EVENTS, &events)) {
-             env->ext_dabt_raised = 1;
-             return 0;
-         }
-@@ -1420,6 +1419,7 @@ static bool kvm_arm_handle_debug(CPUState *cs,
  
- int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
- {
-+    ARMCPU *cpu = ARM_CPU(cs);
-     int ret = 0;
+     /* Ensure PC is synchronised */
+@@ -1424,7 +1424,7 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
  
      switch (run->exit_reason) {
-@@ -1430,7 +1430,7 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+     case KVM_EXIT_DEBUG:
+-        if (kvm_arm_handle_debug(cs, &run->debug.arch)) {
++        if (kvm_arm_handle_debug(cpu, &run->debug.arch)) {
+             ret = EXCP_DEBUG;
+         } /* otherwise return to guest */
          break;
-     case KVM_EXIT_ARM_NISV:
-         /* External DABT with no valid iss to decode */
--        ret = kvm_arm_handle_dabt_nisv(cs, run->arm_nisv.esr_iss,
-+        ret = kvm_arm_handle_dabt_nisv(cpu, run->arm_nisv.esr_iss,
-                                        run->arm_nisv.fault_ipa);
-         break;
-     default:
 -- 
 2.34.1
 
