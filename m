@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7869C819088
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E83819099
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:21:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfWt-0001ta-BP; Tue, 19 Dec 2023 14:13:23 -0500
+	id 1rFfX4-0001y7-BO; Tue, 19 Dec 2023 14:13:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWq-0001pU-Ix
+ id 1rFfWq-0001pV-MJ
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:20 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWo-0001nF-BN
+ id 1rFfWo-0001nj-L6
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:20 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40c339d2b88so52874785e9.3
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:17 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-33664b6d6d5so2378554f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1703013197; x=1703617997; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=CIBsZGE1WWySZas0ZHGeHbBmxpd7vxCJhDZi0elDoIo=;
- b=kIE+YcBmHSpeDyjtS9H99Zm48fZ+dgOMkMK2HXb/6kNqJStUm9d55N76shaYDI53lK
- HvnrUVWAzouGBeqb7umnWmRNUARbuN+d8H1ycsnfYIVY4u4lejOM0FQGq8bqNSgvha5i
- ZbbzVEL45AAbbhi7pliPwAesBXNu+x0NWKrnk2ruhbIVdXi3QM7EZnlze1TLvLj1u04H
- t1/qT/hbRekI57o0yO8L3e3ZTa0eBLyiI7Fn5WtP8p5JtL/H8zJYs/LXXn7vezAJL2UZ
- 9KE1uCmLQs8+J5I6AuMS93cc2hNGqRq5EHSdILCHxvQuzoFJX+AeoW5qASkNs6T1n21f
- e+ig==
+ :reply-to; bh=Lk12mN4qFsWUyce/FrUNcsWdUn084yu7ANskjsNphT8=;
+ b=V0DnHg+Jy9iND0/rFUNj2Y4D1Py1ILfzZOCZwwwqMr7bM0Biw5M6693PNeO+Kjcx14
+ fZBLM7s/bH7TQwKNMnRQkNmLS8C275ZtiIjfJfo14qZvSd+e587T+X8SSWpKfrd11AD8
+ vpR7jKq6xuGxWutWluyMlfn/wMaUcIYupcEbt1tJ4jazBOgg3BPKzoETwONp1qK/nd/d
+ rWcN9d3MBIcmaoimLhW0P9V+9HkdChCLX+GavI9G4cGNimX33MhApeTz10tSV5dDeTMd
+ +2BqlOM0hrSPCoGVmKMrjNWq1q5iDuhwUQie14h5bZlzhU8UE/pu8f3giKO9wCVVXmBa
+ /Vrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1703013197; x=1703617997;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CIBsZGE1WWySZas0ZHGeHbBmxpd7vxCJhDZi0elDoIo=;
- b=VWxEYPuOocdrhaQnSei+0hRpr5Sn7Z05jveWHESJDUJJTstVceEMWc8zEqAb/Rb3PI
- CGolNup2YaJJKQQ4zjrZ8moBt7/z1/RKscKfTgllacmGdNZ08fnXoIlqouIl5V8HGIbf
- 7+rEW0NOOYsd3JKA55CWlDxcxgyVKpu7IlLL8m+XxQkrhMjnvc34oy48dPgQQ0Vz4w0I
- QUeDZJiu4JENquR6M+aj7yVSabXDb3YyOb27KgQHRB33HSe0wGlVQBafNbyzHaWDSshA
- jeS/8PJj0uNEpULOgvssGjrR4yX0/JMT+dD1FQ4kjH/g9U8kXsW3p3erMFy8rdR+Yih2
- 1W2g==
-X-Gm-Message-State: AOJu0YxMGAwEhTClBTP30fDrVpp57z4g+arsFKpm6Gu0Z6/8LF8QAnBs
- AC9PrN1hcL0XBBsjZUAwJZ/V56hQ0+FdKZU4vgo=
-X-Google-Smtp-Source: AGHT+IH1s3rwCgebzrd0mCNYjNTwaHkU/Y5O1Zlh+NcZWb7O8ChBtcLshyV/EZ9RaxhOCHVndN4k1A==
-X-Received: by 2002:a05:600c:4e8d:b0:40c:2cc5:4539 with SMTP id
- f13-20020a05600c4e8d00b0040c2cc54539mr9211627wmq.23.1703013196764; 
- Tue, 19 Dec 2023 11:13:16 -0800 (PST)
+ bh=Lk12mN4qFsWUyce/FrUNcsWdUn084yu7ANskjsNphT8=;
+ b=uSOeMDbIs3bFtR7jU1GMfHwdMxfM7l1jqDjU87To95kORv50MxPkH2dx1WbvU1WWzX
+ IOa8lm8uqVYzFaotENcoha2bFGoA2D7eIirNLIly0yWVwJwUmaO1DopFHwFfc/5NQe9i
+ mIqU36oj7P+0eT7Dk19dvmzrQUN2v0Zcu5daMtplfSfp1WZm/HEqo1sE//rhel0C5nl7
+ fnykdvnYJMBmsse6fsiU/TMt515SQixXirAnoEQKiKJSs1b9z7scLunorqN/Ib9bwYYM
+ RVsB84j2/tIg7UOeNI35ga9xJ09A5/3lmcxjZaRPmO1PG56zuqYrhyBqpfOhYEzphxzv
+ C8nQ==
+X-Gm-Message-State: AOJu0YySbKFpVxo/215p+PBoAhBwFvXBJoMxLmhVkHeejikPxu8QazJh
+ PM1HcazHiYm4xj0KEUNThPK/Vm6csAq1hOtnQ60=
+X-Google-Smtp-Source: AGHT+IFFUnLZ9e2q7kZDom7bEi4VdGXaEnYMWxap9mqr8peJzQQJJ29UdpT10uRNbvRO+z4gi+uTSQ==
+X-Received: by 2002:adf:f708:0:b0:336:780e:b2e3 with SMTP id
+ r8-20020adff708000000b00336780eb2e3mr187503wrp.38.1703013197183; 
+ Tue, 19 Dec 2023 11:13:17 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  f5-20020a5d5685000000b0033657376b62sm12007754wrv.105.2023.12.19.11.13.16
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 19 Dec 2023 11:13:16 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/43] target/arm/kvm: Unexport kvm_arm_vcpu_init
-Date: Tue, 19 Dec 2023 19:12:39 +0000
-Message-Id: <20231219191307.2895919-16-peter.maydell@linaro.org>
+Subject: [PULL 16/43] target/arm/kvm: Unexport kvm_arm_vcpu_finalize
+Date: Tue, 19 Dec 2023 19:12:40 +0000
+Message-Id: <20231219191307.2895919-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231219191307.2895919-1-peter.maydell@linaro.org>
 References: <20231219191307.2895919-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,56 +99,60 @@ Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm_arm.h | 12 ------------
- target/arm/kvm.c     | 12 +++++++++++-
- 2 files changed, 11 insertions(+), 13 deletions(-)
+ target/arm/kvm_arm.h | 14 --------------
+ target/arm/kvm.c     | 14 +++++++++++++-
+ 2 files changed, 13 insertions(+), 15 deletions(-)
 
 diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 1043123cc7a..b96ff35e34a 100644
+index b96ff35e34a..9b630a1631e 100644
 --- a/target/arm/kvm_arm.h
 +++ b/target/arm/kvm_arm.h
-@@ -18,18 +18,6 @@
+@@ -18,20 +18,6 @@
  #define KVM_ARM_VGIC_V2   (1 << 0)
  #define KVM_ARM_VGIC_V3   (1 << 1)
  
 -/**
-- * kvm_arm_vcpu_init:
+- * kvm_arm_vcpu_finalize:
 - * @cs: CPUState
+- * @feature: feature to finalize
 - *
-- * Initialize (or reinitialize) the VCPU by invoking the
-- * KVM_ARM_VCPU_INIT ioctl with the CPU type and feature
-- * bitmask specified in the CPUState.
+- * Finalizes the configuration of the specified VCPU feature by
+- * invoking the KVM_ARM_VCPU_FINALIZE ioctl. Features requiring
+- * this are documented in the "KVM_ARM_VCPU_FINALIZE" section of
+- * KVM's API documentation.
 - *
 - * Returns: 0 if success else < 0 error code
 - */
--int kvm_arm_vcpu_init(CPUState *cs);
+-int kvm_arm_vcpu_finalize(CPUState *cs, int feature);
 -
  /**
-  * kvm_arm_vcpu_finalize:
-  * @cs: CPUState
+  * kvm_arm_register_device:
+  * @mr: memory region for this device
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index ab797409f13..d1edb9bd67c 100644
+index d1edb9bd67c..5bc96f469e1 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -60,7 +60,17 @@ typedef struct ARMHostCPUFeatures {
+@@ -81,7 +81,19 @@ static int kvm_arm_vcpu_init(CPUState *cs)
+     return kvm_vcpu_ioctl(cs, KVM_ARM_VCPU_INIT, &init);
+ }
  
- static ARMHostCPUFeatures arm_host_cpu_features;
- 
--int kvm_arm_vcpu_init(CPUState *cs)
+-int kvm_arm_vcpu_finalize(CPUState *cs, int feature)
 +/**
-+ * kvm_arm_vcpu_init:
++ * kvm_arm_vcpu_finalize:
 + * @cs: CPUState
++ * @feature: feature to finalize
 + *
-+ * Initialize (or reinitialize) the VCPU by invoking the
-+ * KVM_ARM_VCPU_INIT ioctl with the CPU type and feature
-+ * bitmask specified in the CPUState.
++ * Finalizes the configuration of the specified VCPU feature by
++ * invoking the KVM_ARM_VCPU_FINALIZE ioctl. Features requiring
++ * this are documented in the "KVM_ARM_VCPU_FINALIZE" section of
++ * KVM's API documentation.
 + *
 + * Returns: 0 if success else < 0 error code
 + */
-+static int kvm_arm_vcpu_init(CPUState *cs)
++static int kvm_arm_vcpu_finalize(CPUState *cs, int feature)
  {
-     ARMCPU *cpu = ARM_CPU(cs);
-     struct kvm_vcpu_init init;
+     return kvm_vcpu_ioctl(cs, KVM_ARM_VCPU_FINALIZE, &feature);
+ }
 -- 
 2.34.1
 
