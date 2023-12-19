@@ -2,74 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEB28186D1
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 13:00:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49CE8818716
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 13:10:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFYkp-0007kF-77; Tue, 19 Dec 2023 06:59:19 -0500
+	id 1rFYuH-0003MM-CT; Tue, 19 Dec 2023 07:09:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rFYkn-0007k3-CL
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 06:59:17 -0500
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1rFYuE-0003Km-Ky
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:09:02 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rFYkl-000414-Qb
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 06:59:17 -0500
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-5c21e185df5so3430061a12.1
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 03:59:15 -0800 (PST)
+ id 1rFYuB-0006Nc-O2
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:09:02 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6ce934e9d51so2267844b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 04:08:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702987154; x=1703591954;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702987738; x=1703592538;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wnvoaJ05iUVI4cxPBT0lgJ+VNNp+z7LyrvWY81Ab8HQ=;
- b=vq4dr7OiGWJBvAiut6/AaF20YnAYsWU/BE9u2vw4ZyRVG2seKb/uTX96YCLLONpv1D
- bbe2ViXdWrkA8zRGzKywaHV6czTywu4IM5W/7Mb9t13MV/ZXr8IZM4AjOKeqPHaP8k1A
- TNGqdfMbhVu7GPnFFG4Iwntrv86djXt3c5RMNrTgj0IuzCggbmK0S4ran5aUpuf3Z2C4
- UmvD5nvGb9GLtMj04XVO7RzeBlsfECeYerU3O56qrBeCO7/hXw/XvNkZ8nK3ETsSm7Dr
- mw/bOPqiMvyPqGZkscZBvkkfAlVcIfs1esg7XVDuWunJQDyKh16SMq45tSsmcmCVXJC9
- an/w==
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wxsjwpH1JV73RfMCcGzcn4dvmAF+Npb9UCHvc+CDUG0=;
+ b=N7Ld/Q/NpR6qe/8eukYMjBcAtdE+CbHEpRUVCm7CImzJEmGh0bHedsnv27Zp6+p2fe
+ 7YSIXsVLijJNHCitxcTNnJpMOyf+qCAlJv9fmfKleWsO3ThBerF7dd0p//d6Za43/31o
+ Yn/EgJs0wpSEHiRpQPtc6YWClYAn3hwWskfrUuOta9V2cgppJmpN+T5Ti6U0vMPRjtZC
+ WvTlVRW1QJ5FSeowYZauUCvPqKGqTiSO20UeaKhgVm3J4ce3W0zzxy1lkpFL5fypgAIz
+ cuKJjvaHCnnz3SwftCyT+0z0ExZYtoKbcQadbgfV5hXXkwEOEVNDwG77vR/+3ZoJ71N3
+ 9aXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702987154; x=1703591954;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wnvoaJ05iUVI4cxPBT0lgJ+VNNp+z7LyrvWY81Ab8HQ=;
- b=GpbWKHnlwMfvn9GYeXcG8JAJHzV+R5TX5hy9CV2QIiFZ+0Y+GxbiHBQaXLz07d/B8A
- RbhKvjfrqvZJmDUE4qvnLOJ9cxv6aIcQyl+c0JYGpiW2D3A67XBYA/F/eKCUnnmD2Bm1
- 4Fc1AhoklB2TdlXeUJrqVOpFiXY9O5d6QaB1GvNUc8wMDzXx8z3s5Yxyjivd3VcXLRQv
- veMmUybL+glUaTDtJeCtexL0Ack+ETSrv8RZd6WGih/OiTzS9yVhoQBGf+3yJuB8vNTU
- 1xgDeEdavvqvKG+oGQfaHZeSoiz1LQ+VRcDnL+3NCu5SmGJ6pEFg9EsKAPmWyHW4EAKB
- Y0Og==
-X-Gm-Message-State: AOJu0YxLrVihFJ1mIywI7E9wnVKSGnJZigjb+jwg7WhxxAMW3bLRhawA
- eskXb1tGrD4Xg5OY7Q4ouDg1VA1PdGQUT+t0M/tJqg==
-X-Google-Smtp-Source: AGHT+IGggdKzxpbiWnsV82alJP9/yEtY6fTSq1sGA8Wxxvga3sx4xLKDeHBCbknrNsxSvUf1O1jsVQ==
-X-Received: by 2002:a05:6a20:158b:b0:190:3295:e1a2 with SMTP id
- h11-20020a056a20158b00b001903295e1a2mr24691439pzj.90.1702987154324; 
- Tue, 19 Dec 2023 03:59:14 -0800 (PST)
-Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
- gw24-20020a17090b0a5800b00286ed94466dsm1346791pjb.32.2023.12.19.03.59.13
+ d=1e100.net; s=20230601; t=1702987738; x=1703592538;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wxsjwpH1JV73RfMCcGzcn4dvmAF+Npb9UCHvc+CDUG0=;
+ b=FSJ5oOYfuZY2MfUTdb3DYoQrAJ7+HT0jKEdatIo2eQK0oq5FS9tbliSR9CuwK24M1Z
+ mm3xqDl1dSZLonjpNYOC4WxHZaDXwlOqr9KSG+V+gw3V6lai8TCGelrK9pWYkwqpT4ah
+ k9d+bxO6kVUypJTmkpujGZV++uGUAWh/Cz4XUfzabk9HUpxKuA6WrFk5TwXRDuttyH/Z
+ qPfCYQG49sLZhz0oulbOLqi+d/QLu9tKYYIbxjTxthd+IMP39DuJP9O77Q5UnMn0KdbQ
+ +p+/qcmTFK5eyyyez2tqMCcBT8YqclK2O9HYOTuExcaGjSNjXX2fwXMVL5+QbyyM4i+Z
+ z7Sg==
+X-Gm-Message-State: AOJu0YztMhhhfwQIdxzCN+vDPnSbIk8C0xcyEQBJZoWYgLxnc7e1xpHP
+ jex0ppGhN/HHLaTM1HSlzRLdBw==
+X-Google-Smtp-Source: AGHT+IHoCTvbUVyr9d1n0NlfQG5j2blxhwuI6rq61fn5Aa2lno0l96XIwakmfMtw6588e3BOet7+Pg==
+X-Received: by 2002:a05:6a20:a11f:b0:190:4c11:28a3 with SMTP id
+ q31-20020a056a20a11f00b001904c1128a3mr10664334pzk.6.1702987738360; 
+ Tue, 19 Dec 2023 04:08:58 -0800 (PST)
+Received: from [157.82.205.15] ([157.82.205.15])
+ by smtp.gmail.com with ESMTPSA id
+ g22-20020a62e316000000b006d273997cd5sm6249019pfh.91.2023.12.19.04.08.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Dec 2023 03:59:14 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 19 Dec 2023 20:58:58 +0900
-Subject: [PATCH 2/2] tap: Use g_spawn_sync() and
- g_spawn_check_wait_status()
+ Tue, 19 Dec 2023 04:08:58 -0800 (PST)
+Message-ID: <ff212914-32b5-442e-8f67-4f01a7208a0c@daynix.com>
+Date: Tue, 19 Dec 2023 21:08:45 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] qdev: Report an error for machine without
+ HotplugHandler
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
+References: <20231210-bus-v2-1-34ebf5726fa0@daynix.com>
+ <87h6kpgrl7.fsf@pond.sub.org>
+ <cbda6265-5027-424c-be93-86073d9ad63a@daynix.com>
+ <8734vzsj6k.fsf@pond.sub.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <8734vzsj6k.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231219-glib-v1-2-1b040d286b91@daynix.com>
-References: <20231219-glib-v1-0-1b040d286b91@daynix.com>
-In-Reply-To: <20231219-glib-v1-0-1b040d286b91@daynix.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.4
-Received-SPF: none client-ip=2607:f8b0:4864:20::52c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::433;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,90 +99,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-g_spawn_sync() gives an informative message if it fails to execute
-the script instead of reporting exiting status 1.
+On 2023/12/18 23:02, Markus Armbruster wrote:
+> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+> 
+>> On 2023/12/11 15:51, Markus Armbruster wrote:
+>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+>>>
+>>>> The HotplugHandler of the machine will be used when the parent bus does
+>>>> not exist, but the machine may not have one. Report an error in such a
+>>>> case instead of aborting.
+>>>>
+>>>> Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
+>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>
+>>> Do you have a reproducer for the crash?
+>>>
+>>>> ---
+>>>> Changes in v2:
+>>>> - Fixed indention.
+>>>> - Link to v1: https://lore.kernel.org/r/20231202-bus-v1-1-f7540e3a8d62@daynix.com
+>>>> ---
+>>>>    system/qdev-monitor.c | 13 ++++++++++---
+>>>>    1 file changed, 10 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+>>>> index a13db763e5..5fe5d49c20 100644
+>>>> --- a/system/qdev-monitor.c
+>>>> +++ b/system/qdev-monitor.c
+>>>> @@ -927,9 +927,16 @@ void qdev_unplug(DeviceState *dev, Error **errp)
+>>>    void qdev_unplug(DeviceState *dev, Error **errp)
+>>>    {
+>>>        DeviceClass *dc = DEVICE_GET_CLASS(dev);
+>>>        HotplugHandler *hotplug_ctrl;
+>>>        HotplugHandlerClass *hdc;
+>>>        Error *local_err = NULL;
+>>>        if (qdev_unplug_blocked(dev, errp)) {
+>>>            return;
+>>>        }
+>>>        if (dev->parent_bus && !qbus_is_hotpluggable(dev->parent_bus)) {
+>>>            error_setg(errp, QERR_BUS_NO_HOTPLUG, dev->parent_bus->name);
+>>>            return;
+>>>        }
+>>>        if (!dc->hotpluggable) {
+>>>            error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
+>>>                       object_get_typename(OBJECT(dev)));
+>>>            return;
+>>>        }
+>>>        if (!migration_is_idle() && !dev->allow_unplug_during_migration) {
+>>>            error_setg(errp, "device_del not allowed while migrating");
+>>>            return;
+>>>        }
+>>>
+>>>>       qdev_hot_removed = true;
+>>>>          hotplug_ctrl = qdev_get_hotplug_handler(dev);
+>>>> -    /* hotpluggable device MUST have HotplugHandler, if it doesn't
+>>>> -     * then something is very wrong with it */
+>>>> -    g_assert(hotplug_ctrl);
+>>>> +    if (!hotplug_ctrl) {
+>>>> +        /*
+>>>> +         * hotpluggable bus MUST have HotplugHandler, if it doesn't
+>>>> +         * then something is very wrong with it
+>>>> +         */
+>>>> +        assert(!dev->parent_bus);
+>>>> +
+>>>> +        error_setg(errp, "The machine does not support hotplugging for a device without parent bus");
+>>>> +        return;
+>>>> +    }
+>>>
+>>> Extended version of my question above: what are the devices where
+>>> qdev_get_hotplug_handler(dev) returns null here?
+>>
+>> Start a VM: qemu-system-aarch64 -M virt -nographic
+>> Run the following on its HMP: device_del /machine/unattached/device[0]
+>>
+>> It tries to unplug cortex-a15-arm-cpu and crashes.
+> 
+> This device has no parent bus (dev->parent_bus is null), but is marked
+> hot-pluggable (dc->hotpluggable is true).  Question for somebody
+> familiar with the hot-plug machinery: is this sane?
 
-g_spawn_check_wait_status() also gives an message easier to understand
-than the raw value returned by waitpid().
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- net/tap.c | 52 ++++++++++++++++++++++------------------------------
- 1 file changed, 22 insertions(+), 30 deletions(-)
-
-diff --git a/net/tap.c b/net/tap.c
-index c23d0323c2ae..74f718613009 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -444,44 +444,36 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
-     return s;
- }
- 
-+static void close_fds_except(gpointer data)
-+{
-+    int open_max = sysconf(_SC_OPEN_MAX), i;
-+
-+    for (i = 3; i < open_max; i++) {
-+        if (i != (intptr_t)data) {
-+            close(i);
-+        }
-+    }
-+}
-+
- static void launch_script(const char *setup_script, const char *ifname,
-                           int fd, Error **errp)
- {
--    int pid, status;
--    char *args[3];
--    char **parg;
-+    gint status;
-+    gchar *argv[] = { (gchar *)setup_script, (gchar *)ifname, NULL };
-+    g_autoptr(GError) error = NULL;
- 
-     /* try to launch network script */
--    pid = fork();
--    if (pid < 0) {
--        error_setg_errno(errp, errno, "could not launch network script %s",
--                         setup_script);
-+    if (!g_spawn_sync(NULL, argv, NULL, G_SPAWN_LEAVE_DESCRIPTORS_OPEN,
-+                      close_fds_except, (gpointer)(intptr_t)fd, NULL, NULL,
-+                      &status, &error)) {
-+        error_setg(errp, "could not launch network script %s: %s",
-+                   setup_script, error->message);
-         return;
-     }
--    if (pid == 0) {
--        int open_max = sysconf(_SC_OPEN_MAX), i;
- 
--        for (i = 3; i < open_max; i++) {
--            if (i != fd) {
--                close(i);
--            }
--        }
--        parg = args;
--        *parg++ = (char *)setup_script;
--        *parg++ = (char *)ifname;
--        *parg = NULL;
--        execv(setup_script, args);
--        _exit(1);
--    } else {
--        while (waitpid(pid, &status, 0) != pid) {
--            /* loop */
--        }
--
--        if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
--            return;
--        }
--        error_setg(errp, "network script %s failed with status %d",
--                   setup_script, status);
-+    if (!g_spawn_check_wait_status(status, &error)) {
-+        error_setg(errp, "network script %s failed: %s",
-+                   setup_script, error->message);
-     }
- }
- 
-
--- 
-2.43.0
-
+Setting hotpluggable false for each device without bus_type gives the 
+same effect, but is error-prone.
 
