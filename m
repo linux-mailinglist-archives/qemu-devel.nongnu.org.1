@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1F4819274
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 22:42:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0DA81927A
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 22:44:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFhqU-0008Fe-Cu; Tue, 19 Dec 2023 16:41:46 -0500
+	id 1rFhsB-0001Jq-47; Tue, 19 Dec 2023 16:43:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFhqS-0008FR-Mj
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:41:44 -0500
+ id 1rFhs5-0001IG-0T
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:43:25 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFhqR-0007BX-3Z
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:41:44 -0500
+ id 1rFhs2-0007fY-4s
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:43:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=EdKenI8/uOltJbWxLIZ+Wq4Jj0SNCdHbJH9zR8j+wYA=; b=1rxgTkCLq1Dh0zmF+/nxV04n0s
- yO/Lr6zMn2wQ7sX6l4GSvL73y4fNEDeNiyP12rMWmfsUbaWu8uVHrr5Tjf8rOdho4/Kh+t/jqWl5L
- sTZWkImZnNg0aTCG7Ag+TAtpz0LUn6UYityz/6OKr86KeUx3+ja0usu6JQBs/SptQUL3zShtZv1+c
- CK2zRlsafCAS7bKknI6MdhrCWbYuS7EhsLnDkPyLhDEOOHJxyTy1gm4e1lVYrdgj24XKHuBJB7eqr
- xyy7CQAYBKg7g/NEuh+QcNJsxubSXgfg206FIb//CzvTzIcz+bfGvS8QP0WjXaDCRBACMhZJQ8ceV
- jZ7B6lAc4/I33DUN9D7CxObzX/r34B3BQaMkpcP0qvQ56reZKbuTHiQwLwu051tNK7CkaVrCmHbmr
- MPp415nT9O7GqnLe/104GTxMMJbG5j+2kqedvV2nzaUYJmsR71Hvhw31VYW3S4INvvS4Qr4xJKSq3
- pHyinlimGptgQMeNvIQScB+sE8Yp6IsR+wh4+MVLp7QNMiJ2t5VK5GcF2+ClKLFbsXG/venE8LIu7
- LEW7aMHqF71IyT02N37cwkLzJqhJWdc+CQb9z2sv0WRKdcyCHf37Se4D2PkUjCKW8oBGIBcv8R1uH
- HIkZdMJZnMsrQSu382fC4lK10wpLoS6wW1x6fTGk4=;
+ bh=ZPr/+WmT9d7t+72gfk2VSkToDSg2EF0vbUdMh0U21IM=; b=qiXQ/eaM8HgSOyrYhVh2JfiSWl
+ s7afXV4ymImxYfzvL+S537oIrzxCM5q7bJwauRQqYF4UsVZMht4BlxAIsIlwNZgm6TVVM5dYcc6u8
+ e3IjtrzFkawk+kQCU6/CvGeUrBN3BcUEM/rlj1ewrG536pr3rYGK0Dk8JLXR2khraufyVx2sThP9G
+ hs+6Daxavjt9u/AH7xjFMjsHS2yQyrQv5Psh36cICo0a31Ov3c63xfLLklyGBq7dqtjuWg1st09Bl
+ bBmC8OqjybupKQbWaJiNP7NRjSspGNh78OT6nAI7sUusxuYG00/xHP+L6ZbCk1ogCmFw+zL95creW
+ +CqW38tbh9MUnWSWj89RxdvLrXTPclf4G0I3sibfW95VuxmuDxC1AbhCoa/BIGOnhq4MdkSK/fSsU
+ l9Bv2GkRVg4CTOEVluCgaHUYcx4q7IKdk54dnrdaJi4p5KCzCQRZFPQ2h5eUp/rZp5nVudDyuOjmD
+ 8Sv1Dth30CdDcQjDK1GFZ+pdZCSVyNigyincQ3YPWBl9UdFjXxyobewYATOPaev0XEKvbXbqEpGL2
+ mk84twYCDULlyMy7G8WkGvyFadalag5Hk0GeYZYwMnX+snIMcLfSTTDG3/6c7cTHo9jE5wA8zOJI4
+ R1HODdwBEtyi3PLJ9iKmzY3uGM4RNhxGJ05O+gO/E=;
 Received: from [2a00:23c4:8bb0:f100:795a:8119:c46d:d080]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFhpy-0008V5-4q; Tue, 19 Dec 2023 21:41:18 +0000
-Message-ID: <7f5576fe-d495-4cd6-ab29-da7c889153c9@ilande.co.uk>
-Date: Tue, 19 Dec 2023 21:41:36 +0000
+ id 1rFhrZ-0008V5-J6; Tue, 19 Dec 2023 21:42:57 +0000
+Message-ID: <00eff588-2ac3-4203-a7f6-e7a7edcbae83@ilande.co.uk>
+Date: Tue, 19 Dec 2023 21:43:16 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
 To: Thomas Huth <huth@tuxfamily.org>
 Cc: qemu-devel@nongnu.org
 References: <20231215200009.346212-1-mark.cave-ayland@ilande.co.uk>
- <20231215200009.346212-10-mark.cave-ayland@ilande.co.uk>
- <20231216211848.2d9af1c9@fedora>
+ <20231215200009.346212-12-mark.cave-ayland@ilande.co.uk>
+ <20231216212038.45ece9fb@fedora>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -73,12 +73,13 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <20231216211848.2d9af1c9@fedora>
+In-Reply-To: <20231216212038.45ece9fb@fedora>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:795a:8119:c46d:d080
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 09/12] next-cube.c: move static old_scr2 variable to NeXTPC
+Subject: Re: [PATCH 11/12] next-cube.c: replace sysmem with
+ get_system_memory() in next_cube_init()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -104,79 +105,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/12/2023 20:18, Thomas Huth wrote:
+On 16/12/2023 20:20, Thomas Huth wrote:
 
-> Am Fri, 15 Dec 2023 20:00:06 +0000
+> Am Fri, 15 Dec 2023 20:00:08 +0000
 > schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
 > 
->> Move the old_scr2 variable to NeXTPC so that the old SCR2 register state is
->> stored along with the current SCR2 state.
->>
->> Since the SCR2 register is 32-bits wide, convert old_scr2 to uint32_t and
->> update the SCR2 register access code to allow unaligned writes.
->>
->> Note that this is a migration break, but as nothing will currently boot then
->> we do not need to worry about this now.
+>> Removing the intermediate variable helps simplify the code in next_cube_init().
 >>
 >> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 >> ---
->>   hw/m68k/next-cube.c | 12 +++++++++---
->>   1 file changed, 9 insertions(+), 3 deletions(-)
+>>   hw/m68k/next-cube.c | 14 +++++++-------
+>>   1 file changed, 7 insertions(+), 7 deletions(-)
 >>
 >> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
->> index 7ffd1c412e..fd707b4b54 100644
+>> index d9a1f234ec..73deef25ca 100644
 >> --- a/hw/m68k/next-cube.c
 >> +++ b/hw/m68k/next-cube.c
->> @@ -91,6 +91,7 @@ struct NeXTPC {
+>> @@ -974,7 +974,6 @@ static void next_cube_init(MachineState *machine)
+>>       MemoryRegion *dmamem = g_new(MemoryRegion, 1);
+>>       MemoryRegion *bmapm1 = g_new(MemoryRegion, 1);
+>>       MemoryRegion *bmapm2 = g_new(MemoryRegion, 1);
+>> -    MemoryRegion *sysmem = get_system_memory();
+>>       const char *bios_name = machine->firmware ?: ROM_FILE;
+>>       DeviceState *pcdev;
 >>   
->>       uint32_t scr1;
->>       uint32_t scr2;
->> +    uint32_t old_scr2;
->>       uint32_t int_mask;
->>       uint32_t int_status;
->>       uint32_t led;
->> @@ -137,8 +138,7 @@ static void next_scr2_led_update(NeXTPC *s)
+>> @@ -996,7 +995,8 @@ static void next_cube_init(MachineState *machine)
+>>       sysbus_realize_and_unref(SYS_BUS_DEVICE(pcdev), &error_fatal);
 >>   
->>   static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
->>   {
->> -    static uint8_t old_scr2;
->> -    uint8_t scr2_2;
->> +    uint8_t old_scr2, scr2_2;
->>       NextRtc *rtc = &s->rtc;
+>>       /* 64MB RAM starting at 0x04000000  */
+>> -    memory_region_add_subregion(sysmem, 0x04000000, machine->ram);
+>> +    memory_region_add_subregion(get_system_memory(), 0x04000000,
+>> +                                machine->ram);
 >>   
->>       if (size == 4) {
->> @@ -147,6 +147,8 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
->>           scr2_2 = val & 0xFF;
->>       }
+>>       /* Framebuffer */
+>>       sysbus_create_simple(TYPE_NEXTFB, 0x0B000000, NULL);
+>> @@ -1010,19 +1010,19 @@ static void next_cube_init(MachineState *machine)
+>>       /* BMAP memory */
+>>       memory_region_init_ram_flags_nomigrate(bmapm1, NULL, "next.bmapmem", 64,
+>>                                              RAM_SHARED, &error_fatal);
+>> -    memory_region_add_subregion(sysmem, 0x020c0000, bmapm1);
+>> +    memory_region_add_subregion(get_system_memory(), 0x020c0000, bmapm1);
+>>       /* The Rev_2.5_v66.bin firmware accesses it at 0x820c0020, too */
+>>       memory_region_init_alias(bmapm2, NULL, "next.bmapmem2", bmapm1, 0x0, 64);
+>> -    memory_region_add_subregion(sysmem, 0x820c0000, bmapm2);
+>> +    memory_region_add_subregion(get_system_memory(), 0x820c0000, bmapm2);
 >>   
->> +    old_scr2 = (s->old_scr2 >> 8) & 0xff;
->> +
->>       if (scr2_2 & 0x1) {
->>           /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
->>           if (rtc->phase == -1) {
->> @@ -255,7 +257,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
->>       }
->>       s->scr2 = val & 0xFFFF00FF;
->>       s->scr2 |= scr2_2 << 8;
->> -    old_scr2 = scr2_2;
+>>       /* KBD */
+>>       sysbus_create_simple(TYPE_NEXTKBD, 0x0200e000, NULL);
+>>   
+>>       /* Load ROM here */
+>>       memory_region_init_rom(rom, NULL, "next.rom", 0x20000, &error_fatal);
+>> -    memory_region_add_subregion(sysmem, 0x01000000, rom);
+>> +    memory_region_add_subregion(get_system_memory(), 0x01000000, rom);
+>>       memory_region_init_alias(rom2, NULL, "next.rom2", rom, 0x0, 0x20000);
+>> -    memory_region_add_subregion(sysmem, 0x0, rom2);
+>> +    memory_region_add_subregion(get_system_memory(), 0x0, rom2);
+>>       if (load_image_targphys(bios_name, 0x01000000, 0x20000) < 8) {
+>>           if (!qtest_enabled()) {
+>>               error_report("Failed to load firmware '%s'.", bios_name);
+>> @@ -1051,7 +1051,7 @@ static void next_cube_init(MachineState *machine)
+>>       /* DMA */
+>>       memory_region_init_io(dmamem, NULL, &next_dma_ops, machine, "next.dma",
+>>                             0x5000);
+>> -    memory_region_add_subregion(sysmem, 0x02000000, dmamem);
+>> +    memory_region_add_subregion(get_system_memory(), 0x02000000, dmamem);
 >>   }
->>   
->>   static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
->> @@ -321,8 +322,11 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
->>           break;
->>   
->>       case 0xd000 ... 0xd003:
->> +        s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
->> +                            size << 3, val);
->>           next_scr2_led_update(s);
->>           nextscr2_write(s, val, size);
->> +        s->old_scr2 = s->scr2;
->>           break;
 > 
-> Ah, I see, now you set s->scr2 here already ... I think you should swap the
-> order of the patches 08 and 09...?
+> Mostly a matter of taste, but I'd prefer to keep it like it was before - I
+> dislike calling functions multiple times if one time is sufficient.
 
-Yeah I think that would work, I'll give it a go.
+No problem, I can drop this patch from the series.
 
 
 ATB,
