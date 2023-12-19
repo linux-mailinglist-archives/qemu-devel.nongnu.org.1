@@ -2,60 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8061A818A34
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 15:39:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04844818A70
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 15:49:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFbFA-0001Ub-23; Tue, 19 Dec 2023 09:38:48 -0500
+	id 1rFbOo-0006MY-98; Tue, 19 Dec 2023 09:48:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rFbF6-0001UI-L9
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:38:45 -0500
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFbOm-0006MP-2A
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:48:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rFbF3-0003GZ-HW
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:38:43 -0500
-Received: from LT2ubnt.fritz.box (ip-178-202-040-247.um47.pools.vodafone-ip.de
- [178.202.40.247])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFbOk-0004uS-6q
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:48:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702997320;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+OcpiBrmgEFvDovVZChCfn6JOg6YSq7f1XgsHSsKhtM=;
+ b=Qr8evyAWPzxRg0AeDi2M+NKRlxT2fGsk+mCOJtkytHc7iCu9PjvPKNZGgE3Xqq7iMfWcQI
+ krw2w99z6QeDUVhfzds4yN61o+Ix99hyDusXkgYy7H7gyPIeaXWD5odAeAUER86LGM92RD
+ XQluhnmmFrRkBXBxFXYUihzDV9n/sOY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-544-gJpK_QACMeOgcVo8z_3VFQ-1; Tue, 19 Dec 2023 09:48:37 -0500
+X-MC-Unique: gJpK_QACMeOgcVo8z_3VFQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id DF6F6413DC; 
- Tue, 19 Dec 2023 14:38:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1702996717;
- bh=p1IdFuEAUEZ1YIId+u6eiQDrO9JcR8wROnGqDi+YRdc=;
- h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
- b=E9wS29QStZXefRQRjdc1peDyPNkAwmiTryOwY7Yywbr8LhZ1FWUUbVrrW2iTUEPDM
- Cs1r90UFhekyZ7YXgsVUJPTPtaMvLtCNBvzDPg7JbbnWeV/X+fWXT2gBzc0frXesqX
- k1yE1GpxXLDmmR9bGPen45nw0ejYcBG5FgVuVgGTkXIEGl7HTklvKvyBNm2EB/HNt7
- 3r/HLLEo7Q8qF9wnqVZKfwTQIfapY2o2IlV63cHOeHP57GnrxGfe94irBUrEnx2g/E
- fmoM4hpYXDYEyyUCQjV7gjAUQqCL4o7h+nRd8sbGwPJ6N+9SIoojca5B5E5zlA7jXn
- 7AGuEYTcNOdBg==
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-To: Alistair Francis <alistair.francis@wdc.com>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org,
- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Subject: [PATCH 1/1] docs/system/riscv: document acpi parameter of virt machine
-Date: Tue, 19 Dec 2023 15:38:29 +0100
-Message-Id: <20231219143829.8961-1-heinrich.schuchardt@canonical.com>
-X-Mailer: git-send-email 2.40.1
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3004C101A555;
+ Tue, 19 Dec 2023 14:48:37 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 100751C060AF;
+ Tue, 19 Dec 2023 14:48:37 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 22E1721E6920; Tue, 19 Dec 2023 15:48:36 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org,  Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH v2] string-output-visitor: show structs as "<omitted>"
+In-Reply-To: <20231212134934.500289-1-stefanha@redhat.com> (Stefan Hajnoczi's
+ message of "Tue, 12 Dec 2023 08:49:34 -0500")
+References: <20231212134934.500289-1-stefanha@redhat.com>
+Date: Tue, 19 Dec 2023 15:48:36 +0100
+Message-ID: <87v88ujliz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.125.188.120;
- envelope-from=heinrich.schuchardt@canonical.com;
- helo=smtp-relay-canonical-0.canonical.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,32 +80,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since QEMU v8.0.0 the RISC-V virt machine has a switch to disable ACPI
-table generation. Add it to the documentation.
+Stefan Hajnoczi <stefanha@redhat.com> writes:
 
-Fixes: 168b8c29cedb ("hw/riscv/virt: Add a switch to disable ACPI")
-Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
----
- docs/system/riscv/virt.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+> StringOutputVisitor crashes when it visits a struct because
+> ->start_struct() is NULL.
+>
+> Show "<omitted>" instead of crashing. This is necessary because the
+> virtio-blk-pci iothread-vq-mapping parameter that I'd like to introduce
+> soon is a list of IOThreadMapping structs.
+>
+> This patch is a quick fix to solve the crash, but the long-term solution
+> is replacing StringOutputVisitor with something that can handle the full
+> gamut of values in QEMU.
+>
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-index f5fa7b8b29..4e134ff2ac 100644
---- a/docs/system/riscv/virt.rst
-+++ b/docs/system/riscv/virt.rst
-@@ -95,6 +95,11 @@ The following machine-specific options are supported:
-   SiFive CLINT. When not specified, this option is assumed to be "off".
-   This option is restricted to the TCG accelerator.
- 
-+- acpi=[on|off|auto]
-+
-+  When this option is "on", ACPI tables are generated and exposed as firmware
-+  tables etc/acpi/rsdp and etc/acpi/tables.
-+
- - aia=[none|aplic|aplic-imsic]
- 
-   This option allows selecting interrupt controller defined by the AIA
--- 
-2.40.1
+Okay as a stopgap to unblock your virtio-blk-pci work.  Suggest you
+merge this patch together with the patch that needs it.
+
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
 
