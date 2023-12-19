@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC236818BDA
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 17:09:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01563818BDB
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 17:09:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFce1-0003iz-U6; Tue, 19 Dec 2023 11:08:33 -0500
+	id 1rFceV-0004Iz-3v; Tue, 19 Dec 2023 11:09:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFcdz-0003iF-CF
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:08:31 -0500
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFcdw-0002oX-Ik
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:08:31 -0500
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-552fba34d69so4359698a12.3
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 08:08:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703002106; x=1703606906; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=4N2fo9k+Y0Kfq2cFNWNz3ppIkZmhmegkgvOQe8zaU88=;
- b=aTWCQhMqK7qRDeb4tU8mSi3HMBlPAJ8RJU+THSNeMGtpYpebVfJi1Kx7b5OLxRkmXd
- org6Bm3WgmScR+C6jaoPpbAyTWi9xtVgKjDRcFN1s3S6zlIJK7wtqy6+6gOZZNTIiOh4
- srqRPR97Sxg9TjpRlG8+UpE1H05tnRKavOHHhl3Wkqrl3dqJ6NKvOiWj30N4AMHZCwk0
- Svdo/nTSxqt4JZ8EQPPiDoQQQWfJtiUkwR87E266WNkErOFfsTx8gstYyZfgJyNifknu
- 1OgTyoXnuP0nziPGmIuMkJfs/GK0rmryVTz+1aYjbRshO/EhcvjGShOBgyMx0RfgakTW
- s1sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703002106; x=1703606906;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4N2fo9k+Y0Kfq2cFNWNz3ppIkZmhmegkgvOQe8zaU88=;
- b=L05SzYTg6HGexmQ5Sv9a3zs1eIlcdr0DfDvAnN+yYchfakGQqg7huiUF0ehouMhfLT
- gs2j+p4Q62MknILaMdqrxG1rnDBsv0OKX5HlOXbpKkLqOBs+wLgeIsGmIgyFIJGSbqTi
- FesiiAahS3mtye1ufioH4RiHN88rPRKmKWZfgXfdzHkyvmNN+A6auqAgANVI0WAyGV0Y
- +gKcuCbYI9fFgl8t/GTwjoIKVmDaCpQo73dLhtlyz0YRkW/RJikwig0T/jh7WfJO+b54
- Km1ZaHZOt/oaTNgmZItL/nXyur4+E04itUNPOtCRvqpP+43Icyxl2ONjDCGWi069qvAP
- bVwQ==
-X-Gm-Message-State: AOJu0YyuNuFaShCzkM13UxbkfNRqIVKq7TNM2frIub+yZiAXjXVQTLJf
- hrxvishtDrukhl6+bSFLSxolOk5pYk5z3qPFiQ6hjw==
-X-Google-Smtp-Source: AGHT+IGa4MTLKi8gWOoniKi1faoCgnwMb3abaZxgLle+i3a25uJ62FhvZN2xmtGUn654pleHpg0rlSt8bexMQDXXaeY=
-X-Received: by 2002:a50:ccd1:0:b0:551:656:d48b with SMTP id
- b17-20020a50ccd1000000b005510656d48bmr1406490edj.71.1703002105965; Tue, 19
- Dec 2023 08:08:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFceS-0004Ht-Nw
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:09:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFceH-0002t4-0g
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:09:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703002128;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=nehSg1qUG4FPwQIICtA8a7u9BTZLf4UhxolRehZbvbc=;
+ b=Ng6K6Q4jaqbxFvq4rusKTnei+/VzmkiX2ZxBqx0rAxLYmsAnoKh4rLVwCuBMwtuccdmlNG
+ /a1mKNL6jeOv9LhPFjAH6HIQvEse2AIJBOwLctW3qqmqIiw6xRXYXVo2eu92f+h10y+pXw
+ 8rj5YF1zFm06U9QU4WVT0dmg+j7U4KE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-OT2NU8FwNk-5Eb8LC-2Wuw-1; Tue,
+ 19 Dec 2023 11:08:44 -0500
+X-MC-Unique: OT2NU8FwNk-5Eb8LC-2Wuw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ACD7D280BC41;
+ Tue, 19 Dec 2023 16:08:43 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.175])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1CD40492BC6;
+ Tue, 19 Dec 2023 16:08:41 +0000 (UTC)
+Date: Tue, 19 Dec 2023 17:08:40 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ Michal Privoznik <mprivozn@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-block@nongnu.org,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH v2 1/2] qdev: add IOThreadVirtQueueMappingList property
+ type
+Message-ID: <ZYHACN3AEV_TW0iZ@redhat.com>
+References: <20230918161604.1400051-1-stefanha@redhat.com>
+ <20230918161604.1400051-2-stefanha@redhat.com>
+ <877cnpsll9.fsf@pond.sub.org> <20231219151328.GA219161@fedora>
 MIME-Version: 1.0
-References: <20231219105510.4907-1-n.ostrenkov@gmail.com>
-In-Reply-To: <20231219105510.4907-1-n.ostrenkov@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 19 Dec 2023 16:08:15 +0000
-Message-ID: <CAFEAcA-Gp-8ooEhHazJg5Q-xyQ5xB2ox2+fU_tNBYV0HTkwg6A@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm: add cache controller for Freescale i.MX6
-To: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="uKF9U+XoWI36t1e7"
+Content-Disposition: inline
+In-Reply-To: <20231219151328.GA219161@fedora>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,18 +87,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 19 Dec 2023 at 10:55, Nikita Ostrenkov <n.ostrenkov@gmail.com> wrote:
->
-> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
-> ---
->  hw/arm/Kconfig    | 1 +
->  hw/arm/fsl-imx6.c | 3 +++
->  2 files changed, 4 insertions(+)
 
-Thanks for this patch; it looks fairly obviously right,
-but I wanted to let you know I won't be able to do proper patch
-review and take it into the arm queue until I get back from holidays
-in January.
+--uKF9U+XoWI36t1e7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- PMM
+Am 19.12.2023 um 16:13 hat Stefan Hajnoczi geschrieben:
+> On Sat, Oct 14, 2023 at 09:35:14AM +0200, Markus Armbruster wrote:
+> > Stefan Hajnoczi <stefanha@redhat.com> writes:
+> > > +##
+> > > +# @IOThreadVirtQueueMappings:
+> > > +#
+> > > +# IOThreadVirtQueueMapping list. This struct is not actually used bu=
+t the
+> > > +# IOThreadVirtQueueMappingList type it generates is!
+> >=20
+> > Two spaces between sentences for consistency, please.
+> >=20
+> > Doc comments are QMP reference documentation for users.  Does this
+> > paragraph belong there?
+>=20
+> Someone might wonder why a type exists that is never used, so I think
+> including this in the documentation is acceptable.
+
+I seem to remember that we had a similar remark elsewhere, but maybe it
+doesn't exist any more today?
+
+> My comment is mostly intended to stop someone from removing this
+> "unused" type from the schema though. If there is a better way to do
+> that I can do that instead.
+
+Won't the QAPI generator or the compiler stop them soon enough?
+
+Kevin
+
+--uKF9U+XoWI36t1e7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmWBwAgACgkQfwmycsiP
+L9YrWg/+L+1dhk2MFsIBSwIdCIY4bIbVpHzZwPCuPppfIlUTvIMUiUo5QIChD2vM
+dZozKKk+Qp8XfRyyv1ffTqpnzMhXqhSCNgsnsD5iNNrHH8poNWW54SsyDbueVT7r
+I2SIwjlye2I7rjX9E3+ZHhjcjch6bXY0/ul73cazc9fdYTdb40sKdqUPr7sh05tM
+ZStRKXIIN0y0hn8ukN05f8AXcFXutNS79DPnEiuyKOSAQf8qALtdh5CPGb7+acgD
+qGOGwfPYM3pfNnEBXs5Paw6rtwBU1MPKPnk3sFUzzDR+T6X25jDad3YCO1bXn72R
+Yrx72s9psslcGCwqp9oq2x72hSO6CenHJFj6Ne+HzK4CbQZL8Yn0239KDQYW2faK
+SbAXCEQl4JfF0VbOKqRyOEx1hCCFAX/r9B3WQ6kbjIOYB/nsrbkQZp2xfUTKB0KA
+eLOdtjPNTIvCjbv8lZZZCyP+YzGKfoYTUcPOHh3dpppb6Rhhv9mNX2YVhLvWuAND
+Lj5WBmnClgyuONjNY7qNWXmW4b8nbrzHdcjdifwnsc1jFXM6PWoDEZ5gloRy4TV5
+LJsnsFak1Vsm3WdPWABRbnjRXJvp+IdWgg9FWYWS+Eo7IkHbYax6joiYlzOF9uaV
+StUd3PbFC7WpOgFFkhZLweVJnAdPbZO8wu60Hj4LTwalDfFr38Y=
+=2IzM
+-----END PGP SIGNATURE-----
+
+--uKF9U+XoWI36t1e7--
+
 
