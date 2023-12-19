@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7A581871F
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 13:12:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC00581872A
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 13:13:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFYwZ-00052O-DR; Tue, 19 Dec 2023 07:11:27 -0500
+	id 1rFYy9-0005sd-Uo; Tue, 19 Dec 2023 07:13:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFYwW-00050Y-JK
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:11:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFYwU-00079I-FX
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:11:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702987880;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uFGTvwjTibbXIkFU0K/fvsttgEJQFViTyB28RDyjN+I=;
- b=c3GzohodoLgz2wQ2sQdCnUbCo72JhQ+QvNfW71pKwnxXyC5ltCx2rl+rW0Rcijpgi/nMCN
- QpVpHeFYWbAgUYV/0cCgZhxdn3b3WZiXafjEvjH2NBYhTtBoO2s++fW1eDkU0KZ+soroKw
- NBQScCgxJeHOvCoqIL/FFZ+YiTFKA9w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-10-ToXj3wYvNs6LWgQVbZTQgw-1; Tue, 19 Dec 2023 07:11:17 -0500
-X-MC-Unique: ToXj3wYvNs6LWgQVbZTQgw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CB07485A58C;
- Tue, 19 Dec 2023 12:11:16 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.175])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A9161C060AF;
- Tue, 19 Dec 2023 12:11:11 +0000 (UTC)
-Date: Tue, 19 Dec 2023 13:11:10 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Cleber Rosa <crosa@redhat.com>, Xie Changlong <xiechanglong.d@gmail.com>,
- Paul Durrant <paul@xen.org>, Ari Sundholm <ari@tuxera.com>,
- Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>,
- John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Wen Congyang <wencongyang2@huawei.com>, Alberto Garcia <berto@igalia.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
- Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
- Fabiano Rosas <farosas@suse.de>, Hanna Reitz <hreitz@redhat.com>,
- Zhang Chen <chen.zhang@intel.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Peter Xu <peterx@redhat.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>,
- Fam Zheng <fam@euphon.net>, Leonardo Bras <leobras@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Li Zhijian <lizhijian@fujitsu.com>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 14/14] block: remove outdated AioContext locking
- comments
-Message-ID: <ZYGIXhUVKjSqDeZT@redhat.com>
-References: <20231205182011.1976568-1-stefanha@redhat.com>
- <20231205182011.1976568-15-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rFYy6-0005sS-JC
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:13:02 -0500
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rFYy3-0007hm-9f
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 07:13:01 -0500
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-5cda3e35b26so970420a12.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 04:12:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702987974; x=1703592774;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=b1HHz7qj+W79M1M+maoUYoLIYJEA2glgon4UobUhGys=;
+ b=K1ftGMCVVY0cfFQvUIMOKzNcC5JMixm0v89MMQcp6bMihC2LGGC+U4J2nXOjyUFETe
+ 7uBbxqHdObtaLiazCZpz//c5B/8f5ilHbJGgWWepz7wNtegj5OqiuAQTl9wZtrM+gDJU
+ ECWCFtLK43QntCtqcigs1KVHItbFElYyKq7HQZ+aeqOSl1MprTCcsa8yun0QfiKKg2rT
+ NFmCY1PyzcG/YyCrLnL0hyCEHahnHAyl4NKNieExQvDkNBzoIdXE7NfuynnIPUPCrz6v
+ VQzTDPxvvAs/3SAalRDcllmG0FQIHuQF2yhaDGMMAq+sFOOLFGDs4V9GlawfpKrcv7ze
+ 8EFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702987974; x=1703592774;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=b1HHz7qj+W79M1M+maoUYoLIYJEA2glgon4UobUhGys=;
+ b=X93kUL9tQAkCoYC5/diKWRlOL1e1ZuH1XOdwpUGjcxm0vU7800da4WfGTnM+mpQQmS
+ f3nP98rjPlHhc2K6CVrckSM8w4QZb3UIPJKfO+KtClN2CvPTHaLEg86fgRcqJcdW/1qp
+ DPqJJMi3ySuBflMrpPbCZnsJcsXQ/+u+dt+tqcPzYq0f6hlyxbNj8reOTqgG4oxNm8cQ
+ PlkVFcQ+5lfRDNDLLwmxsO49k+ER2lgD95v4g6YPYyw4qoFM5r2omZ9jKZN052RHGAXT
+ HOBp7JSJuseOYXsk+PXVC0D44BH8b1MTKtv+sgTnAl42Rkf8VEK9DO0GcXwXnZUPaHzG
+ nOLg==
+X-Gm-Message-State: AOJu0YxAUvNmRk18uMC0lu0GYAo2Nbfm3WKDXUz6TGn/OH5Ep0xefaTE
+ 0cT6EYzcBI5+Kipxzfuga0OPRA==
+X-Google-Smtp-Source: AGHT+IFwol6gHtAaAVcgXdnJD6JCc5H3/v3uqRi5pz9Ydq1LySrj+IGP5qn+PsT9yZy78wInbLb9aw==
+X-Received: by 2002:a05:6a21:350d:b0:18c:570d:c5b4 with SMTP id
+ zc13-20020a056a21350d00b0018c570dc5b4mr13230126pzb.35.1702987974303; 
+ Tue, 19 Dec 2023 04:12:54 -0800 (PST)
+Received: from [157.82.205.15] ([157.82.205.15])
+ by smtp.gmail.com with ESMTPSA id
+ x16-20020aa784d0000000b006ce5bb61a60sm3214382pfn.35.2023.12.19.04.12.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Dec 2023 04:12:53 -0800 (PST)
+Message-ID: <2a775be4-363a-4e85-ae32-97ceb5927e11@daynix.com>
+Date: Tue, 19 Dec 2023 21:12:51 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231205182011.1976568-15-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7] ui/cocoa: Use NSWindow's ability to resize
+Content-Language: en-US
+To: Rene Engel <ReneEngel80@emailn.de>
+Cc: peter.maydell@linaro.org, philmd@linaro.org, kraxel@redhat.com,
+ marcandre.lureau@redhat.com, smarkusg@gmail.com, qemu-devel@nongnu.org
+References: <20231217-cocoa-v7-1-6af21ef75680@daynix.com>
+ <ad45a3b3201a6c9b24138abf2174946b@mail.emailn.de>
+ <d73b8c8e-fde3-49e6-88b8-8f9bfa248509@daynix.com>
+ <71895f08af8ba9f01dd78da158005229@mail.emailn.de>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <71895f08af8ba9f01dd78da158005229@mail.emailn.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::530;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,34 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 05.12.2023 um 19:20 hat Stefan Hajnoczi geschrieben:
-> The AioContext lock no longer exists.
+On 2023/12/19 0:07, Rene Engel wrote:
 > 
-> There is one noteworthy change:
+> --- Ursprüngliche Nachricht ---
+> Von: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Datum: 18.12.2023 08:59:41
+> An: Rene Engel <ReneEngel80@emailn.de>
+> Betreff: Re: [PATCH v7] ui/cocoa: Use NSWindow's ability to resize
 > 
->   - * More specifically, these functions use BDRV_POLL_WHILE(bs), which
->   - * requires the caller to be either in the main thread and hold
->   - * the BlockdriverState (bs) AioContext lock, or directly in the
->   - * home thread that runs the bs AioContext. Calling them from
->   - * another thread in another AioContext would cause deadlocks.
->   + * More specifically, these functions use BDRV_POLL_WHILE(bs), which requires
->   + * the caller to be either in the main thread or directly in the home thread
->   + * that runs the bs AioContext. Calling them from another thread in another
->   + * AioContext would cause deadlocks.
+>> On 2023/12/17 18:46, Rene Engel wrote:
+>>>
+>>> --- Ursprüngliche Nachricht ---
+>>> Von: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> Datum: 17.12.2023 07:25:52
+>>> An: Peter Maydell <peter.maydell@linaro.org>,  Philippe Mathieu-Daudé
+>> <philmd@linaro.org>,  Gerd Hoffmann <kraxel@redhat.com>,  Marc-André
+>> Lureau <marcandre.lureau@redhat.com>,  Marek Glogowski <smarkusg@gmail.com>
+>>
+>>> Betreff: [PATCH v7] ui/cocoa: Use NSWindow's ability to resize
+>>>
+>>> Tested-by: Rene Engel <ReneEngel80@emailn.de>
+>>>
+>>> This patch now works with the "option zoom-to-fit=on/off"
+>> thank you very much.
+>>>
+>>> But there is severe mouse lag within Cocoa output in full screen. You
+>> can reproduce the problem by using the mouse very slowly inside the machine
+>> where the mouse pointer no longer moves (guest). This issue only occurs with
+>> Cocoa edition SDL/GTK works without mouse lag within the machine.
+>>
+>> I can't reproduce the issue. Is it a regression caused by this change or
+>>
+>> an existing bug?
+>>
 > 
-> I am not sure whether deadlocks are still possible. Maybe they have just
-> moved to the fine-grained locks that have replaced the AioContext. Since
-> I am not sure if the deadlocks are gone, I have kept the substance
-> unchanged and just removed mention of the AioContext.
+> I'm not sure how to reproduce it, but when I compile Qemu from master source, zoom-to-fit for cocoa output is always active without using your patch and cannot be enabled or disabled in full screen. Here the mouse speed is about the same as under the MacOs host system.
 > 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Reviewed-by: Eric Blake <eblake@redhat.com>
+> When using their latest patch series v8 for cocoa I can enable and disable zoom-to-fit with "-display cocoa,zoom-to-fit=on/off -full-screen" but the mouse speed then becomes slower. I'm not sure what changes there were from Qemu Master where part of their patch must be included, unless someone else has added something similar for Qemu Master.
 
-I think the deadlock the comment refers to is that AIO_WAIT_WHILE() sits
-in a blocking aio_poll() and nobody wakes it up because aio_wait_kick()
-only wakes up the main thread. This deadlock still exists after removing
-the AioContext lock, so the comment after your change looks right to me.
+Can you tell me your whole command line and guest operating system?
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-
+Regards,
+Akihiko Odaki
 
