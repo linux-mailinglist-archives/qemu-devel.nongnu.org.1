@@ -2,69 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DE5818BCE
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 17:06:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC236818BDA
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 17:09:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFcbH-0002Oo-Va; Tue, 19 Dec 2023 11:05:43 -0500
+	id 1rFce1-0003iz-U6; Tue, 19 Dec 2023 11:08:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFcb4-0002M3-Ub
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:05:31 -0500
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1rFcdz-0003iF-CF
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:08:31 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFcb0-0002S6-A2
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:05:28 -0500
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-550dd0e3304so5830202a12.1
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 08:05:25 -0800 (PST)
+ id 1rFcdw-0002oX-Ik
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:08:31 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-552fba34d69so4359698a12.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 08:08:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703001924; x=1703606724; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703002106; x=1703606906; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=fOKdS/r03mPWw+5f0KyqZFD6OmzNmBSvAaVBFMMXsTA=;
- b=vHDjRkD98UAgdCEfCcnFLk1CHlna6dgqejKgc80mk7oWNXzQpiexDyqwjPh+pyrM5K
- 2ZztMSEHOCKLdCCpayW4vMIbyByhynZRhaxhQzB8MZivG5d1w/RC05pl/tS0Xei/tz9J
- a4EA3IGS3u7yKQRcew7ditZ8ysu7O138J7yBD6gXR76x5lj8wpytzHpWoXyzLicgDx5g
- bafyzjH8tRpRUTgPVdSEGDJtVPBrWeynn4oZLexbA6PS/f7DwMAdTdhnLOCTq3DSachC
- kw3JO2mFak9Z4f68LioY4qxsIZdOJ4qBt0Y5APEqiKZhicYNAGq0ZwE8WjIP+nada5z1
- Kchg==
+ bh=4N2fo9k+Y0Kfq2cFNWNz3ppIkZmhmegkgvOQe8zaU88=;
+ b=aTWCQhMqK7qRDeb4tU8mSi3HMBlPAJ8RJU+THSNeMGtpYpebVfJi1Kx7b5OLxRkmXd
+ org6Bm3WgmScR+C6jaoPpbAyTWi9xtVgKjDRcFN1s3S6zlIJK7wtqy6+6gOZZNTIiOh4
+ srqRPR97Sxg9TjpRlG8+UpE1H05tnRKavOHHhl3Wkqrl3dqJ6NKvOiWj30N4AMHZCwk0
+ Svdo/nTSxqt4JZ8EQPPiDoQQQWfJtiUkwR87E266WNkErOFfsTx8gstYyZfgJyNifknu
+ 1OgTyoXnuP0nziPGmIuMkJfs/GK0rmryVTz+1aYjbRshO/EhcvjGShOBgyMx0RfgakTW
+ s1sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703001924; x=1703606724;
+ d=1e100.net; s=20230601; t=1703002106; x=1703606906;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=fOKdS/r03mPWw+5f0KyqZFD6OmzNmBSvAaVBFMMXsTA=;
- b=QqnE4EE0o6W5TGmObov9Acm9mb2dvE8r+0kM/8n46HONeVfDNlRUcssEgz/JQpbFKp
- YUVcjf0oi51+2U7qxK8UGh9V4OBEgVw9m/+WP+M8KE8PJ3mWI2FAgnCL2u94cJq274t8
- HbxoUZaKAJzAsB/iIay08hURjd94PCdEmkv0ZvojaOUy/YsK01T1bZ/5KRy9cDoF4kds
- Tszb6Kkutc1ICuq8TJjOmCl4k0AR+7GiAoaqIlOA6BKPBqSF9r4m/crdBN1itVJ0k4SP
- i7TaZNNfEaisEEG+keVPUNmTWJZYYo4bryz6Z1Dew945HZBJXf4aHhNR/2Kese6oVpCT
- K7Eg==
-X-Gm-Message-State: AOJu0Yx+16Tj+P/0fJ6GDEIopovtqD9ZGWOwgZda5xhg8v30zpCYlKvS
- +ibMMWMesfL47YVeAJS3BMA4iUngz7/l5Ij5FlA5KQ==
-X-Google-Smtp-Source: AGHT+IEIIW1rKyC+4AtYBqibyqnSo2P6bmujuM3wkdT1p+liMEM25fKspf0baCeZdL1OFSxhKtglLedUKqz6pxhxPXk=
-X-Received: by 2002:a05:6402:604:b0:553:b3ee:5840 with SMTP id
- n4-20020a056402060400b00553b3ee5840mr159074edv.79.1703001924393; Tue, 19 Dec
- 2023 08:05:24 -0800 (PST)
+ bh=4N2fo9k+Y0Kfq2cFNWNz3ppIkZmhmegkgvOQe8zaU88=;
+ b=L05SzYTg6HGexmQ5Sv9a3zs1eIlcdr0DfDvAnN+yYchfakGQqg7huiUF0ehouMhfLT
+ gs2j+p4Q62MknILaMdqrxG1rnDBsv0OKX5HlOXbpKkLqOBs+wLgeIsGmIgyFIJGSbqTi
+ FesiiAahS3mtye1ufioH4RiHN88rPRKmKWZfgXfdzHkyvmNN+A6auqAgANVI0WAyGV0Y
+ +gKcuCbYI9fFgl8t/GTwjoIKVmDaCpQo73dLhtlyz0YRkW/RJikwig0T/jh7WfJO+b54
+ Km1ZaHZOt/oaTNgmZItL/nXyur4+E04itUNPOtCRvqpP+43Icyxl2ONjDCGWi069qvAP
+ bVwQ==
+X-Gm-Message-State: AOJu0YyuNuFaShCzkM13UxbkfNRqIVKq7TNM2frIub+yZiAXjXVQTLJf
+ hrxvishtDrukhl6+bSFLSxolOk5pYk5z3qPFiQ6hjw==
+X-Google-Smtp-Source: AGHT+IGa4MTLKi8gWOoniKi1faoCgnwMb3abaZxgLle+i3a25uJ62FhvZN2xmtGUn654pleHpg0rlSt8bexMQDXXaeY=
+X-Received: by 2002:a50:ccd1:0:b0:551:656:d48b with SMTP id
+ b17-20020a50ccd1000000b005510656d48bmr1406490edj.71.1703002105965; Tue, 19
+ Dec 2023 08:08:25 -0800 (PST)
 MIME-Version: 1.0
-References: <20231216182740.3305724-1-sam@rfc1149.net>
- <878r5tqnyu.fsf@rfc1149.net>
-In-Reply-To: <878r5tqnyu.fsf@rfc1149.net>
+References: <20231219105510.4907-1-n.ostrenkov@gmail.com>
+In-Reply-To: <20231219105510.4907-1-n.ostrenkov@gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 19 Dec 2023 16:05:12 +0000
-Message-ID: <CAFEAcA8sTLZSQdqZmNGSv4yp3TZvq86kwbhU8gFmK2=j8vVZhQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Add "num-prio-bits" property for Cortex-M devices
-To: Samuel Tardieu <sam@rfc1149.net>
-Cc: qemu-devel@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>,
- qemu-arm@nongnu.org, 
- Alexandre Iooss <erdnaxe@crans.org>, Alistair Francis <alistair@alistair23.me>
+Date: Tue, 19 Dec 2023 16:08:15 +0000
+Message-ID: <CAFEAcA-Gp-8ooEhHazJg5Q-xyQ5xB2ox2+fU_tNBYV0HTkwg6A@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm: add cache controller for Freescale i.MX6
+To: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,30 +85,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 17 Dec 2023 at 07:37, Samuel Tardieu <sam@rfc1149.net> wrote:
+On Tue, 19 Dec 2023 at 10:55, Nikita Ostrenkov <n.ostrenkov@gmail.com> wrote:
 >
->
-> > Samuel Tardieu (3):
-> >   hw/intc/armv7m_nvic: add "num-prio-bits" property
-> >   hw/arm/armv7m: alias the NVIC "num-prio-bits" property
-> >   hw/arm/socs: configure priority bits for existing SOCs
->
-> Any idea to why patchew fails to apply thoses patches? The mbox at
-> <https://patchew.org/QEMU/20231216182740.3305724-1-sam@rfc1149.net/>
-> applies cleanly on master AFAICS.
+> Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+> ---
+>  hw/arm/Kconfig    | 1 +
+>  hw/arm/fsl-imx6.c | 3 +++
+>  2 files changed, 4 insertions(+)
 
-This is because you put a Based-on: tag in the cover letter.
-Based-on: means "please apply this other patch first before this
-series, because there is a dependency" (we use it for things
-like "this patchset has to sit on top of some other cleanup
-patchset I sent last week and which hasn't got into git yet").
-So patchew applied Anton's original patch from 2022, and then tried
-to apply your three patches on top of that, which caused a conflict.
-
-Anyway, I just wanted to say that this patchset is on my
-todo list to review but I'm not going to be able to get to
-it before I break for Christmas, so I'll get back to it
-in January. Thanks for the contribution!
+Thanks for this patch; it looks fairly obviously right,
+but I wanted to let you know I won't be able to do proper patch
+review and take it into the arm queue until I get back from holidays
+in January.
 
 -- PMM
 
