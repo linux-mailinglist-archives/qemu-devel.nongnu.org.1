@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0105819039
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C30E819015
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 19:58:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfHZ-0001ye-78; Tue, 19 Dec 2023 13:57:33 -0500
+	id 1rFfHe-0001zf-QY; Tue, 19 Dec 2023 13:57:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfHW-0001yS-Vv
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:31 -0500
+ id 1rFfHa-0001zD-UY
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:34 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfHU-0006zr-OJ
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:30 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmCT3sXNz4wcJ;
- Wed, 20 Dec 2023 05:57:25 +1100 (AEDT)
+ id 1rFfHY-00070N-Ny
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:34 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmCZ5Ldmz4xCj;
+ Wed, 20 Dec 2023 05:57:30 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmCN6SRSz4wx5;
- Wed, 20 Dec 2023 05:57:20 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmCV0sdVz4wx5;
+ Wed, 20 Dec 2023 05:57:25 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
@@ -42,9 +43,9 @@ Cc: Eric Auger <eric.auger@redhat.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>, Yi Liu <yi.l.liu@intel.com>,
  Yi Sun <yi.y.sun@linux.intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 05/47] vfio/common: Move giommu_list in base container
-Date: Tue, 19 Dec 2023 19:56:01 +0100
-Message-ID: <20231219185643.725448-6-clg@redhat.com>
+Subject: [PULL 06/47] vfio/container: Move space field to base container
+Date: Tue, 19 Dec 2023 19:56:02 +0100
+Message-ID: <20231219185643.725448-7-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231219185643.725448-1-clg@redhat.com>
 References: <20231219185643.725448-1-clg@redhat.com>
@@ -76,8 +77,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-Move the giommu_list field in the base container and store
-the base container in the VFIOGuestIOMMU.
+Move the space field to the base object. Also the VFIOAddressSpace
+now contains a list of base containers.
 
 No functional change intended.
 
@@ -88,195 +89,239 @@ Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h         |  9 ---------
+ include/hw/vfio/vfio-common.h         |  8 --------
  include/hw/vfio/vfio-container-base.h |  9 +++++++++
- hw/vfio/common.c                      | 17 +++++++++++------
- hw/vfio/container-base.c              |  9 +++++++++
- hw/vfio/container.c                   |  8 --------
- 5 files changed, 29 insertions(+), 23 deletions(-)
+ hw/ppc/spapr_pci_vfio.c               | 10 +++++-----
+ hw/vfio/common.c                      |  4 ++--
+ hw/vfio/container-base.c              |  6 +++++-
+ hw/vfio/container.c                   | 18 ++++++++----------
+ 6 files changed, 29 insertions(+), 26 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 24a26345e5aa6094706dcf1301eeaf44ac91840d..6be082b8f20c2dfa28dbed85c343667ea20e2b73 100644
+index 6be082b8f20c2dfa28dbed85c343667ea20e2b73..bd4de6cb3aff7cb85e34960fe4238d82b30867cd 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -95,7 +95,6 @@ typedef struct VFIOContainer {
-     uint64_t max_dirty_bitmap_size;
-     unsigned long pgsizes;
-     unsigned int dma_max_mappings;
--    QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
+@@ -73,17 +73,10 @@ typedef struct VFIOMigration {
+     bool initial_data_sent;
+ } VFIOMigration;
+ 
+-typedef struct VFIOAddressSpace {
+-    AddressSpace *as;
+-    QLIST_HEAD(, VFIOContainer) containers;
+-    QLIST_ENTRY(VFIOAddressSpace) list;
+-} VFIOAddressSpace;
+-
+ struct VFIOGroup;
+ 
+ typedef struct VFIOContainer {
+     VFIOContainerBase bcontainer;
+-    VFIOAddressSpace *space;
+     int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+     MemoryListener listener;
+     MemoryListener prereg_listener;
+@@ -98,7 +91,6 @@ typedef struct VFIOContainer {
      QLIST_HEAD(, VFIOHostDMAWindow) hostwin_list;
      QLIST_HEAD(, VFIOGroup) group_list;
      QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
-@@ -104,14 +103,6 @@ typedef struct VFIOContainer {
+-    QLIST_ENTRY(VFIOContainer) next;
+     QLIST_HEAD(, VFIODevice) device_list;
      GList *iova_ranges;
  } VFIOContainer;
- 
--typedef struct VFIOGuestIOMMU {
--    VFIOContainer *container;
--    IOMMUMemoryRegion *iommu_mr;
--    hwaddr iommu_offset;
--    IOMMUNotifier n;
--    QLIST_ENTRY(VFIOGuestIOMMU) giommu_next;
--} VFIOGuestIOMMU;
--
- typedef struct VFIORamDiscardListener {
-     VFIOContainer *container;
-     MemoryRegion *mr;
 diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 577f52ccbc0e6d3b48d733c3bec0c1a2435d3e32..a11aec575544d7a4f29c0e33200ed962568372cf 100644
+index a11aec575544d7a4f29c0e33200ed962568372cf..c7cc6ec9c55e93e4f7c6be5576ed59b5dea58b1e 100644
 --- a/include/hw/vfio/vfio-container-base.h
 +++ b/include/hw/vfio/vfio-container-base.h
-@@ -29,8 +29,17 @@ typedef struct {
+@@ -24,12 +24,20 @@ typedef struct {
+     hwaddr pages;
+ } VFIOBitmap;
+ 
++typedef struct VFIOAddressSpace {
++    AddressSpace *as;
++    QLIST_HEAD(, VFIOContainerBase) containers;
++    QLIST_ENTRY(VFIOAddressSpace) list;
++} VFIOAddressSpace;
++
+ /*
+  * This is the base object for vfio container backends
   */
  typedef struct VFIOContainerBase {
      const VFIOIOMMUOps *ops;
-+    QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
++    VFIOAddressSpace *space;
+     QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
++    QLIST_ENTRY(VFIOContainerBase) next;
  } VFIOContainerBase;
  
-+typedef struct VFIOGuestIOMMU {
-+    VFIOContainerBase *bcontainer;
-+    IOMMUMemoryRegion *iommu_mr;
-+    hwaddr iommu_offset;
-+    IOMMUNotifier n;
-+    QLIST_ENTRY(VFIOGuestIOMMU) giommu_next;
-+} VFIOGuestIOMMU;
-+
- int vfio_container_dma_map(VFIOContainerBase *bcontainer,
-                            hwaddr iova, ram_addr_t size,
-                            void *vaddr, bool readonly);
+ typedef struct VFIOGuestIOMMU {
+@@ -48,6 +56,7 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+                              IOMMUTLBEntry *iotlb);
+ 
+ void vfio_container_init(VFIOContainerBase *bcontainer,
++                         VFIOAddressSpace *space,
+                          const VFIOIOMMUOps *ops);
+ void vfio_container_destroy(VFIOContainerBase *bcontainer);
+ 
+diff --git a/hw/ppc/spapr_pci_vfio.c b/hw/ppc/spapr_pci_vfio.c
+index f283f7e38d619fd65985146b5e1572c221f95c53..d1d07bec4644da4ae6a99d3357d6d17ff66264de 100644
+--- a/hw/ppc/spapr_pci_vfio.c
++++ b/hw/ppc/spapr_pci_vfio.c
+@@ -84,27 +84,27 @@ static int vfio_eeh_container_op(VFIOContainer *container, uint32_t op)
+ static VFIOContainer *vfio_eeh_as_container(AddressSpace *as)
+ {
+     VFIOAddressSpace *space = vfio_get_address_space(as);
+-    VFIOContainer *container = NULL;
++    VFIOContainerBase *bcontainer = NULL;
+ 
+     if (QLIST_EMPTY(&space->containers)) {
+         /* No containers to act on */
+         goto out;
+     }
+ 
+-    container = QLIST_FIRST(&space->containers);
++    bcontainer = QLIST_FIRST(&space->containers);
+ 
+-    if (QLIST_NEXT(container, next)) {
++    if (QLIST_NEXT(bcontainer, next)) {
+         /*
+          * We don't yet have logic to synchronize EEH state across
+          * multiple containers
+          */
+-        container = NULL;
++        bcontainer = NULL;
+         goto out;
+     }
+ 
+ out:
+     vfio_put_address_space(space);
+-    return container;
++    return container_of(bcontainer, VFIOContainer, bcontainer);
+ }
+ 
+ static bool vfio_eeh_as_ok(AddressSpace *as)
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index e610771888491c8cd19883cdf91ad1589c843e27..43580bcc43c72336a50b002e17f4415035aa8798 100644
+index 43580bcc43c72336a50b002e17f4415035aa8798..1d8202537ea4f27f49f2d477537d6c7c557bd61f 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -292,7 +292,7 @@ static bool vfio_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
- static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
- {
-     VFIOGuestIOMMU *giommu = container_of(n, VFIOGuestIOMMU, n);
--    VFIOContainerBase *bcontainer = &giommu->container->bcontainer;
-+    VFIOContainerBase *bcontainer = giommu->bcontainer;
-     hwaddr iova = iotlb->iova + giommu->iommu_offset;
-     void *vaddr;
-     int ret;
-@@ -569,6 +569,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
-                                      MemoryRegionSection *section)
- {
-     VFIOContainer *container = container_of(listener, VFIOContainer, listener);
-+    VFIOContainerBase *bcontainer = &container->bcontainer;
-     hwaddr iova, end;
-     Int128 llend, llsize;
-     void *vaddr;
-@@ -612,7 +613,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
-         giommu->iommu_mr = iommu_mr;
-         giommu->iommu_offset = section->offset_within_address_space -
-                                section->offset_within_region;
--        giommu->container = container;
-+        giommu->bcontainer = bcontainer;
-         llend = int128_add(int128_make64(section->offset_within_region),
-                            section->size);
-         llend = int128_sub(llend, int128_one());
-@@ -647,7 +648,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
-             g_free(giommu);
-             goto fail;
-         }
--        QLIST_INSERT_HEAD(&container->giommu_list, giommu, giommu_next);
-+        QLIST_INSERT_HEAD(&bcontainer->giommu_list, giommu, giommu_next);
-         memory_region_iommu_replay(giommu->iommu_mr, &giommu->n);
+@@ -145,7 +145,7 @@ void vfio_unblock_multiple_devices_migration(void)
  
-         return;
-@@ -732,6 +733,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
-                                      MemoryRegionSection *section)
+ bool vfio_viommu_preset(VFIODevice *vbasedev)
  {
-     VFIOContainer *container = container_of(listener, VFIOContainer, listener);
-+    VFIOContainerBase *bcontainer = &container->bcontainer;
-     hwaddr iova, end;
-     Int128 llend, llsize;
-     int ret;
-@@ -744,7 +746,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
-     if (memory_region_is_iommu(section->mr)) {
-         VFIOGuestIOMMU *giommu;
+-    return vbasedev->container->space->as != &address_space_memory;
++    return vbasedev->container->bcontainer.space->as != &address_space_memory;
+ }
  
--        QLIST_FOREACH(giommu, &container->giommu_list, giommu_next) {
-+        QLIST_FOREACH(giommu, &bcontainer->giommu_list, giommu_next) {
-             if (MEMORY_REGION(giommu->iommu_mr) == section->mr &&
-                 giommu->n.start == section->offset_within_region) {
-                 memory_region_unregister_iommu_notifier(section->mr,
-@@ -1206,7 +1208,9 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-     vfio_giommu_dirty_notifier *gdn = container_of(n,
-                                                 vfio_giommu_dirty_notifier, n);
-     VFIOGuestIOMMU *giommu = gdn->giommu;
--    VFIOContainer *container = giommu->container;
-+    VFIOContainerBase *bcontainer = giommu->bcontainer;
-+    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-+                                            bcontainer);
-     hwaddr iova = iotlb->iova + giommu->iommu_offset;
-     ram_addr_t translated_addr;
-     int ret = -EINVAL;
-@@ -1284,12 +1288,13 @@ static int vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainer *container,
- static int vfio_sync_dirty_bitmap(VFIOContainer *container,
-                                   MemoryRegionSection *section)
- {
-+    VFIOContainerBase *bcontainer = &container->bcontainer;
-     ram_addr_t ram_addr;
+ static void vfio_set_migration_error(int err)
+@@ -922,7 +922,7 @@ static void vfio_dirty_tracking_init(VFIOContainer *container,
+     dirty.container = container;
  
-     if (memory_region_is_iommu(section->mr)) {
-         VFIOGuestIOMMU *giommu;
+     memory_listener_register(&dirty.listener,
+-                             container->space->as);
++                             container->bcontainer.space->as);
  
--        QLIST_FOREACH(giommu, &container->giommu_list, giommu_next) {
-+        QLIST_FOREACH(giommu, &bcontainer->giommu_list, giommu_next) {
-             if (MEMORY_REGION(giommu->iommu_mr) == section->mr &&
-                 giommu->n.start == section->offset_within_region) {
-                 Int128 llend;
+     *ranges = dirty.ranges;
+ 
 diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index e929435751d3bef179218f667f48e0419c352df4..20bcb9669a6122f951119c025b9950854c53f88e 100644
+index 20bcb9669a6122f951119c025b9950854c53f88e..3933391e0db26116401509c5917eaceabcd98443 100644
 --- a/hw/vfio/container-base.c
 +++ b/hw/vfio/container-base.c
-@@ -34,8 +34,17 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
- void vfio_container_init(VFIOContainerBase *bcontainer, const VFIOIOMMUOps *ops)
+@@ -31,9 +31,11 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+     return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
+ }
+ 
+-void vfio_container_init(VFIOContainerBase *bcontainer, const VFIOIOMMUOps *ops)
++void vfio_container_init(VFIOContainerBase *bcontainer, VFIOAddressSpace *space,
++                         const VFIOIOMMUOps *ops)
  {
      bcontainer->ops = ops;
-+    QLIST_INIT(&bcontainer->giommu_list);
++    bcontainer->space = space;
+     QLIST_INIT(&bcontainer->giommu_list);
  }
  
- void vfio_container_destroy(VFIOContainerBase *bcontainer)
+@@ -41,6 +43,8 @@ void vfio_container_destroy(VFIOContainerBase *bcontainer)
  {
-+    VFIOGuestIOMMU *giommu, *tmp;
+     VFIOGuestIOMMU *giommu, *tmp;
+ 
++    QLIST_REMOVE(bcontainer, next);
 +
-+    QLIST_FOREACH_SAFE(giommu, &bcontainer->giommu_list, giommu_next, tmp) {
-+        memory_region_unregister_iommu_notifier(
-+                MEMORY_REGION(giommu->iommu_mr), &giommu->n);
-+        QLIST_REMOVE(giommu, giommu_next);
-+        g_free(giommu);
-+    }
- }
+     QLIST_FOREACH_SAFE(giommu, &bcontainer->giommu_list, giommu_next, tmp) {
+         memory_region_unregister_iommu_notifier(
+                 MEMORY_REGION(giommu->iommu_mr), &giommu->n);
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 32a0251dd1673ef9f47f8a0db9f7dd113841b7d8..133d3c8f5c08e6476cebb3c707ebd115a068af2d 100644
+index 133d3c8f5c08e6476cebb3c707ebd115a068af2d..f12fcb6fe11d578838b1052f70ee5099b9018e94 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -556,7 +556,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+@@ -514,7 +514,8 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+      * details once we know which type of IOMMU we are using.
+      */
+ 
+-    QLIST_FOREACH(container, &space->containers, next) {
++    QLIST_FOREACH(bcontainer, &space->containers, next) {
++        container = container_of(bcontainer, VFIOContainer, bcontainer);
+         if (!ioctl(group->fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
+             ret = vfio_ram_block_discard_disable(container, true);
+             if (ret) {
+@@ -550,7 +551,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     }
+ 
+     container = g_malloc0(sizeof(*container));
+-    container->space = space;
+     container->fd = fd;
+     container->error = NULL;
      container->dirty_pages_supported = false;
-     container->dma_max_mappings = 0;
+@@ -558,7 +558,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
      container->iova_ranges = NULL;
--    QLIST_INIT(&container->giommu_list);
      QLIST_INIT(&container->vrdl_list);
      bcontainer = &container->bcontainer;
-     vfio_container_init(bcontainer, &vfio_legacy_ops);
-@@ -686,16 +685,9 @@ static void vfio_disconnect_container(VFIOGroup *group)
+-    vfio_container_init(bcontainer, &vfio_legacy_ops);
++    vfio_container_init(bcontainer, space, &vfio_legacy_ops);
+ 
+     ret = vfio_init_container(container, group->fd, errp);
+     if (ret) {
+@@ -613,14 +613,14 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     vfio_kvm_device_add_group(group);
+ 
+     QLIST_INIT(&container->group_list);
+-    QLIST_INSERT_HEAD(&space->containers, container, next);
++    QLIST_INSERT_HEAD(&space->containers, bcontainer, next);
+ 
+     group->container = container;
+     QLIST_INSERT_HEAD(&container->group_list, group, container_next);
+ 
+     container->listener = vfio_memory_listener;
+ 
+-    memory_listener_register(&container->listener, container->space->as);
++    memory_listener_register(&container->listener, bcontainer->space->as);
+ 
+     if (container->error) {
+         ret = -1;
+@@ -634,7 +634,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+     return 0;
+ listener_release_exit:
+     QLIST_REMOVE(group, container_next);
+-    QLIST_REMOVE(container, next);
++    QLIST_REMOVE(bcontainer, next);
+     vfio_kvm_device_del_group(group);
+     memory_listener_unregister(&container->listener);
+     if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU ||
+@@ -684,9 +684,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
+     }
  
      if (QLIST_EMPTY(&container->group_list)) {
-         VFIOAddressSpace *space = container->space;
--        VFIOGuestIOMMU *giommu, *tmp;
+-        VFIOAddressSpace *space = container->space;
+-
+-        QLIST_REMOVE(container, next);
++        VFIOAddressSpace *space = bcontainer->space;
  
-         QLIST_REMOVE(container, next);
- 
--        QLIST_FOREACH_SAFE(giommu, &container->giommu_list, giommu_next, tmp) {
--            memory_region_unregister_iommu_notifier(
--                    MEMORY_REGION(giommu->iommu_mr), &giommu->n);
--            QLIST_REMOVE(giommu, giommu_next);
--            g_free(giommu);
--        }
          vfio_container_destroy(bcontainer);
  
-         trace_vfio_disconnect_container(container->fd);
+@@ -707,7 +705,7 @@ static VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
+     QLIST_FOREACH(group, &vfio_group_list, next) {
+         if (group->groupid == groupid) {
+             /* Found it.  Now is it already in the right context? */
+-            if (group->container->space->as == as) {
++            if (group->container->bcontainer.space->as == as) {
+                 return group;
+             } else {
+                 error_setg(errp, "group %d used in multiple address spaces",
 -- 
 2.43.0
 
