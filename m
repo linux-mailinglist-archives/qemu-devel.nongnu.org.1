@@ -2,105 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56846818D5F
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 18:03:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB29C818D91
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 18:09:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFdUK-00012S-VK; Tue, 19 Dec 2023 12:02:36 -0500
+	id 1rFdZX-0003K8-U9; Tue, 19 Dec 2023 12:07:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rFdUI-00011X-UW
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 12:02:34 -0500
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rFdUH-00054N-9P
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 12:02:34 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id B6F9021EBE;
- Tue, 19 Dec 2023 17:02:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1703005351; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SH/8Z2zcb5HeIBmB4d+wkVrdFhVLjxFshXeJ+N6jtVk=;
- b=AJuLIite3v4WHtJYEhbbuzrDgc8Z7pdKIo7rKVq8Cb4FsXD5DUqWdRHa6RMOkmHp25x9HH
- 6Ja4T2Gtx8xIy7cKTPdmPaixmTGNXo64apJ8aHDXZEBWW/fcVFix0vYPqGa2Nw65IBQY6V
- sYjjHeczMtSG6QBXxepemYpkdG8KwqM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1703005351;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SH/8Z2zcb5HeIBmB4d+wkVrdFhVLjxFshXeJ+N6jtVk=;
- b=JwvPpkZCNYiIiWu0jz+87KTvuH5fi+9Sk+SVWfDYBmoWn5LXD8mtbwViHFP8TBGOAVPlFO
- VPMJqEg2yso03mAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1703005351; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SH/8Z2zcb5HeIBmB4d+wkVrdFhVLjxFshXeJ+N6jtVk=;
- b=AJuLIite3v4WHtJYEhbbuzrDgc8Z7pdKIo7rKVq8Cb4FsXD5DUqWdRHa6RMOkmHp25x9HH
- 6Ja4T2Gtx8xIy7cKTPdmPaixmTGNXo64apJ8aHDXZEBWW/fcVFix0vYPqGa2Nw65IBQY6V
- sYjjHeczMtSG6QBXxepemYpkdG8KwqM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1703005351;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SH/8Z2zcb5HeIBmB4d+wkVrdFhVLjxFshXeJ+N6jtVk=;
- b=JwvPpkZCNYiIiWu0jz+87KTvuH5fi+9Sk+SVWfDYBmoWn5LXD8mtbwViHFP8TBGOAVPlFO
- VPMJqEg2yso03mAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 23913136A5;
- Tue, 19 Dec 2023 17:02:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id BBKnEKbMgWU2CwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 19 Dec 2023 17:02:30 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, Juan Quintela
- <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
- <leobras@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Laurent
- Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v1 2/5] tests/qtest/migration: Add infrastructure to
- skip tests on older QEMUs
-In-Reply-To: <260ff019-3bd9-49b1-a364-d0b713372713@redhat.com>
-References: <20231207155809.25673-1-farosas@suse.de>
- <20231207155809.25673-3-farosas@suse.de> <87zfykybyc.fsf@suse.de>
- <260ff019-3bd9-49b1-a364-d0b713372713@redhat.com>
-Date: Tue, 19 Dec 2023 14:02:27 -0300
-Message-ID: <874jgef7mk.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1rFdZR-0003Gj-KE; Tue, 19 Dec 2023 12:07:55 -0500
+Received: from hq-ms.auriga.com ([82.97.202.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1rFdZK-0005w1-SZ; Tue, 19 Dec 2023 12:07:49 -0500
+Received: from HQ-MS1.office.auriga.msk (82.97.202.32) by
+ hq-ms1.office.auriga.msk (82.97.202.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 19 Dec 2023 20:07:41 +0300
+Received: from HQ-MS1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f]) by
+ hq-ms1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f%7]) with mapi id
+ 15.02.1258.028; Tue, 19 Dec 2023 20:07:41 +0300
+From: "Kambalin, Sergey" <sergey.kambalin@auriga.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: Sergey Kambalin <serg.oker@gmail.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v4 00/45] Raspberry Pi 4B machine
+Thread-Topic: [PATCH v4 00/45] Raspberry Pi 4B machine
+Thread-Index: AQHaMpYOsuJlg29jO0iqHAIolkCXkrCwx99y///UdoCAADdowQ==
+Date: Tue, 19 Dec 2023 17:07:41 +0000
+Message-ID: <1af36710e4ca4aefaced4ceadbdc8b4c@auriga.com>
+References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
+ <CAFEAcA_9yO8kY=fnT8+vn2AFtjyoJN25B4o2tcegaOxS41qhmg@mail.gmail.com>
+ <431b825b51524907a3168007fada20e1@auriga.com>,
+ <CAFEAcA8QHVy2xYYMxxO3TzLeUWk5AGcq4y6mKvXun02UayBzpw@mail.gmail.com>
+In-Reply-To: <CAFEAcA8QHVy2xYYMxxO3TzLeUWk5AGcq4y6mKvXun02UayBzpw@mail.gmail.com>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [192.55.54.51]
+x-tm-as-product-ver: SMEX-14.0.0.1158-9.0.1002-28068.000
+x-tm-as-result: No-10--23.181900-8.000000
+x-tmase-matchedrid: Eu85Zv5f5g+JVA+ukO+5MWg4D2QV/2zL6r3HCixfuKcc4ri4RJV/1W/R
+ DAZTdSI3QnEYvg6//klFmXhQ6rgRVOyDy8V8lTWUzH6d90mb4+Ih6cl1707zKlZxVB3B2qbP6Xk
+ ezPna397QLE3MitZAfl9/IWsrV5Ek1LFdtmiebE5itzfafzhYerzutTz14s8pB4N9b2b2Ot5xyX
+ VTGcOrS/vQDBFftKziA4mVc9r+gVK6S8yZYvyqCYwtGLqJlyGHMrX+p1uNztChUWS5fneQuc78u
+ XuPefQ4+C1dPcxvQJQdQi9i5PHk84Z/aEcxwP1kXrumkbea2Mmok0CD5UnL6ySb8v8wgv7yUvT+
+ tdwmjxujyxd4SkAxQQin6k0GuLUFShs77ng+LAb/McoAQhls9JsK0f4SCTIrctDr7iGkSem7FY/
+ sCUPw065vHGdEqVSnybKVm4so6PpXF87GmHX6tK5i3jK3KDOopR+m8tBi6ZK+y4Y487IcASPFyc
+ xHTa2P1NrRPJ9vJ8FO9mtymj1NEjsbw8P6b6JX8Jb881FGn9mfmd9HsjZ0UzIFcYKjRuw1Pkqrm
+ 3IbK/OBzTY3o0ZQBV36oV2qtCy5319rGX8jiaGrm7DrUlmNkF+24nCsUSFNjaPj0W1qn0Q152Le
+ cOHHI9aiM9dBaGPewe4JFZ+3aAe05QJn1VX1Bm0+ji1vmQW1Oy2/l7y7Tbw=
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--23.181900-8.000000
+x-tmase-version: SMEX-14.0.0.1158-9.0.1002-28068.000
+x-tm-snts-smtp: AFCCC313E2AAF2ABEDE0D36BC1790D21BFD9E3D039366EEF9970B5293A6608112000:8
+Content-Type: multipart/alternative;
+ boundary="_000_1af36710e4ca4aefaced4ceadbdc8b4caurigacom_"
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[9];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=82.97.202.32;
+ envelope-from=sergey.kambalin@auriga.com; helo=hq-ms.auriga.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,62 +85,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+--_000_1af36710e4ca4aefaced4ceadbdc8b4caurigacom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-> On 08/12/2023 16.02, Fabiano Rosas wrote:
->> Fabiano Rosas <farosas@suse.de> writes:
->> 
->>> We can run the migration tests with two different QEMU binaries to
->>> test migration compatibility between QEMU versions. This means we'll
->>> be running the tests with an older QEMU in either source or
->>> destination.
->>>
->>> We need to avoid trying to test functionality that is unknown to the
->>> older QEMU. This could mean new features, bug fixes, error message
->>> changes, QEMU command line changes, migration API changes, etc.
->>>
->>> Add a 'since' argument to the tests that inform when the functionality
->>> that is being test has been added to QEMU so we can skip the test on
->>> older versions.
->>>
->>> Also add a version comparison function so we can adapt test code
->>> depending on the QEMU binary version being used.
->>>
->>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>> ---
->>>   tests/qtest/migration-helpers.c | 11 +++++++++++
->>>   tests/qtest/migration-helpers.h |  1 +
->>>   tests/qtest/migration-test.c    | 28 ++++++++++++++++++++++++++++
->>>   3 files changed, 40 insertions(+)
->>>
->>> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
->>> index 24fb7b3525..d21f5cd8c0 100644
->>> --- a/tests/qtest/migration-helpers.c
->>> +++ b/tests/qtest/migration-helpers.c
->>> @@ -292,3 +292,14 @@ char *resolve_machine_version(const char *alias, const char *var1,
->>>   
->>>       return find_common_machine_version(machine_name, var1, var2);
->>>   }
->>> +
->>> +int migration_vercmp(QTestState *who, const char *tgt_version)
->>> +{
->>> +    int major, minor, micro;
->>> +    g_autofree char *version = NULL;
->>> +
->>> +    qtest_query_version(who, &major, &minor, &micro);
->>> +    version = g_strdup_printf("%d.%d.%d", major, minor, micro);
->> 
->> I just noticed this is not right. I need to increment the minor when
->> there's a micro to account for the versions in between releases. The
->> whole point of this series is to test a X.Y.0 release vs. a X.Y.Z
->> development branch.
->
-> Also this looks like it cannot deal with two-digit minor versions ... we 
-> still have machine types for QEMU 2.12.0 around ... do we care here?
->
+VGhhbmtzIQ0KDQpJIGtub3cgYWJvdXQgdGhlICdvZmZzZXQnIHBhcmFtZXRlciwgYnV0IGluIHRo
+aXMgcGFydGljdWxhciBjYXNlIEkgdXNlIHRoZXNlIHN0cnVjdHVyZXMgYXMgbGF5b3V0cyBvbmx5
+IGFuZCBkb24ndCAnc3dpdGNoJyBvdmVyIHRoZW0uIFNvIEkgZGVjaWRlZCB0byBzZXQgdGhlIG9m
+ZnNldHMgdG8gMCBpbiBvcmRlciB0byBzaW1wbGlmeSB0aGUgY29kZS4NCg0KDQpBbmQgZXh0cmEg
+dGhhbmtzIGZvciBoaWdobGlnaHRpbmcgdGhlIHBvdGVudGlhbCBpc3N1ZSB3aXRoIG1lbWNweSgp
+IPCfmIouIEknbGwgZml4IGl0IGluIFt2NV0gYXMgd2VsbCBhcyB0aGUgY29tbWVudHMgdG8gZmly
+c3QgMTAgcGF0Y2hlcy4NCg0KDQpIYXZlIGEgbmljZSBob2xpZGF5cyENCg0KDQoNClNlcmdleSBL
+YW1iYWxpbg0KU29mdHdhcmUgRGV2ZWxvcGVyLA0KQXVyaWdhIEluYy4NCg0KDQpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXw0K0J7RgjogUGV0ZXIgTWF5ZGVsbCA8cGV0ZXIubWF5ZGVs
+bEBsaW5hcm8ub3JnPg0K0J7RgtC/0YDQsNCy0LvQtdC90L46IDE5INC00LXQutCw0LHRgNGPIDIw
+MjMg0LMuIDEwOjM5OjEzDQrQmtC+0LzRgzogS2FtYmFsaW4sIFNlcmdleQ0K0JrQvtC/0LjRjzog
+U2VyZ2V5IEthbWJhbGluOyBxZW11LWFybUBub25nbnUub3JnOyBxZW11LWRldmVsQG5vbmdudS5v
+cmcNCtCi0LXQvNCwOiBSZTogW1BBVENIIHY0IDAwLzQ1XSBSYXNwYmVycnkgUGkgNEIgbWFjaGlu
+ZQ0KDQpPbiBUdWUsIDE5IERlYyAyMDIzIGF0IDE2OjE4LCBLYW1iYWxpbiwgU2VyZ2V5DQo8c2Vy
+Z2V5LmthbWJhbGluQGF1cmlnYS5jb20+IHdyb3RlOg0KPg0KPiBUaGFuayB5b3UgYSBsb3QgZm9y
+IHRoZSByZXZpZXcgUGV0ZXIhDQo+DQo+DQo+IE1heSBJIGtpbmRseSBhc2sgeW91IHRvIHRha2Ug
+anVzdCBhIGJyaWVmIGxvb2sgYXQgdGhlIGZpcnN0IHBhdGNoZXMgb2YgR0VORVQ/IEknZCBsaWtl
+IHRvIGtub3cgaWYgSSd2ZSBjaG9zZW4gdGhlIHJpZ2h0IHdheSB0byByZXBsYWNlIGJpdGZpZWxk
+cyB3aXRoICBRRU1VIFJFRzMyL0ZJRUxEMzIgbWFjcm9zLg0KDQpUaGUgRklFTEQgYW5kIFJFRzMy
+IHVzZXMgbG9vayBtb3N0bHkgT0ssIGJ1dCB0aGUNCnNlY29uZCBhcmd1bWVudCB0byBSRUczMigp
+IHNob3VsZCBub3QgYmUgMCBlYWNoIHRpbWU6DQoNClJFRzMyKEdFTkVUX1NZU19SRVZfQ1RSTCwg
+ICAgICAgICAgICAgIDApDQpSRUczMihHRU5FVF9JTlRSTF8wLCAgICAgICAgICAgICAgICAwKQ0K
+DQpldGMuIFRoZSBpZGVhIGlzIHRoYXQgdGhhdCBzZWNvbmQgYXJndW1lbnQgaXMgdGhlIG9mZnNl
+dA0KaW4gdGhlIHJlZ2lzdGVyIGZpbGUgb2YgdGhlIHJlZ2lzdGVyOyB0aGVuIHRoZSBtYWNybw0K
+ZGVmaW5lcyB5b3UgYW4gQV9HRU5FVF9TWVNfUkVWX0NUUkwgd2hpY2ggaXMgdGhhdCB2YWx1ZSwN
+CmFuZCB5b3UgY2FuIHVzZSBpdCBhcyBhIGNhc2UgbGFiZWwgaW4gdGhlICJzd2l0Y2ggKG9mZnNl
+dCkgeyINCmluIHRoZSByZWFkL3dyaXRlIGZ1bmN0aW9uLg0KDQpJJ20gYSBhbHNvIGEgYml0IGNv
+bmZ1c2VkIGFib3V0IHRoZSB1c2Ugb2Ygb2Zmc2V0b2YoKSBpbiBwYXRjaCAyNy4NCg0KSW4gcGF0
+Y2ggMjggdGhlIGltcGxlbWVudGF0aW9uIG9mIGJjbTI4MzhfZ2VuZXRfcmVhZCgpIGFuZA0KYmNt
+MjgzOF9nZW5ldF93cml0ZSgpIHVzZSBhIG1lbWNweSgpIGJldHdlZW4gYSBsb2NhbCB2YXJpYWJs
+ZQ0KYW5kIG1lbW9yeSB3aGljaCBJJ20gYXNzdW1pbmcgaXMgYW4gaW5kZXggaW50byBvbmUgb2Yg
+dGhlc2UNCnJlZ2lzdGVyIHN0cnVjdHMsIHdoaWNoIHdvbid0IGRvIHRoZSByaWdodCB0aGluZyBp
+ZiB0aGUgaG9zdA0KaXMgYmlnLWVuZGlhbi4gSWYgeW91IG5lZWQgYSAibG9hZC9zdG9yZSBOIGJ5
+dGVzIHRvIG1lbW9yeSBpbg0KaG9zdCBvcmRlciIsIHdlIGhhdmUgbGRuX2hlX3AoKSBhbmQgc3Ru
+X2hlX3AoKTsgYWxzbyBhdmFpbGFibGUNCmluIF9sZV8gYW5kIF9iZV8gZmxhdm91cnMgZm9yIGxv
+YWQvc3RvcmUgaW4gc3BlY2lmaWMgZW5kaWFubmVzcy4NCg0KdGhhbmtzDQotLSBQTU0NCg==
 
-I particularly don't. I suspect any issues this series would have caught
-would have already been spotted in the wild. This is all about catching
-compatibility issues during the development cycle, so not very useful
-for older QEMUs and distro versions.
+--_000_1af36710e4ca4aefaced4ceadbdc8b4caurigacom_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
+
+PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
+dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRvciIgY29udGVu
+dD0iTWljcm9zb2Z0IEV4Y2hhbmdlIFNlcnZlciI+DQo8IS0tIGNvbnZlcnRlZCBmcm9tIHRleHQg
+LS0+PHN0eWxlPjwhLS0gLkVtYWlsUXVvdGUgeyBtYXJnaW4tbGVmdDogMXB0OyBwYWRkaW5nLWxl
+ZnQ6IDRwdDsgYm9yZGVyLWxlZnQ6ICM4MDAwMDAgMnB4IHNvbGlkOyB9IC0tPjwvc3R5bGU+DQo8
+L2hlYWQ+DQo8Ym9keT4NCjxtZXRhIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1VVEYtOCI+
+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiIHN0eWxlPSIiPg0KPCEtLQ0KcA0KCXttYXJnaW4tdG9w
+OjA7DQoJbWFyZ2luLWJvdHRvbTowfQ0KLS0+DQo8L3N0eWxlPg0KPGRpdiBkaXI9Imx0ciI+DQo8
+ZGl2IGlkPSJ4X2RpdnRhZ2RlZmF1bHR3cmFwcGVyIiBkaXI9Imx0ciIgc3R5bGU9ImZvbnQtc2l6
+ZToxMnB0OyBjb2xvcjojMDAwMDAwOyBmb250LWZhbWlseTpDYWxpYnJpLEhlbHZldGljYSxzYW5z
+LXNlcmlmIj4NCjxwPlRoYW5rcyE8YnI+DQo8YnI+DQpJIGtub3cgYWJvdXQgdGhlICdvZmZzZXQn
+IHBhcmFtZXRlciwgYnV0IGluIHRoaXMgcGFydGljdWxhciBjYXNlIEkgdXNlIHRoZXNlIHN0cnVj
+dHVyZXMgYXMgbGF5b3V0cyBvbmx5IGFuZCBkb24ndCAnc3dpdGNoJyBvdmVyIHRoZW0uIFNvIEkg
+ZGVjaWRlZCB0byBzZXQgdGhlIG9mZnNldHMgdG8gMCBpbiBvcmRlciB0byBzaW1wbGlmeSB0aGUg
+Y29kZS48L3A+DQo8cD48YnI+DQo8L3A+DQo8cD5BbmQgZXh0cmEgdGhhbmtzIGZvciBoaWdobGln
+aHRpbmcgdGhlIHBvdGVudGlhbCBpc3N1ZSB3aXRoJm5ic3A7PHNwYW4+bWVtY3B5KCkgPHNwYW4+
+DQrwn5iKLiBJJ2xsIGZpeCBpdCBpbiBbdjVdIGFzIHdlbGwgYXMgdGhlIGNvbW1lbnRzIHRvIGZp
+cnN0IDEwIHBhdGNoZXMuPGJyPg0KPGJyPg0KPGJyPg0KSGF2ZSBhIG5pY2UgaG9saWRheXMhPC9z
+cGFuPjwvc3Bhbj48L3A+DQo8cD48YnI+DQo8L3A+DQo8cD48YnI+DQo8L3A+DQo8ZGl2IGlkPSJ4
+X1NpZ25hdHVyZSI+DQo8ZGl2IGlkPSJ4X2RpdnRhZ2RlZmF1bHR3cmFwcGVyIiBkaXI9Imx0ciIg
+c3R5bGU9ImZvbnQtc2l6ZToxMnB0OyBjb2xvcjpyZ2IoMCwwLDApOyBmb250LWZhbWlseTpDYWxp
+YnJpLEhlbHZldGljYSxzYW5zLXNlcmlmLEVtb2ppRm9udCwmcXVvdDtBcHBsZSBDb2xvciBFbW9q
+aSZxdW90OywmcXVvdDtTZWdvZSBVSSBFbW9qaSZxdW90OyxOb3RvQ29sb3JFbW9qaSwmcXVvdDtT
+ZWdvZSBVSSBTeW1ib2wmcXVvdDssJnF1b3Q7QW5kcm9pZCBFbW9qaSZxdW90OyxFbW9qaVN5bWJv
+bHMiPg0KPGZvbnQgc2l6ZT0iMyIgZmFjZT0iQ2FsaWJyaSxIZWx2ZXRpY2Esc2Fucy1zZXJpZiIg
+Y29sb3I9ImJsYWNrIiBzdHlsZT0iZm9udC1mYW1pbHk6Q2FsaWJyaSxIZWx2ZXRpY2Esc2Fucy1z
+ZXJpZixzZXJpZiwmcXVvdDtFbW9qaUZvbnQmcXVvdDsiPjxmb250IHNpemU9IjMiIGZhY2U9IkNh
+bGlicmksSGVsdmV0aWNhLHNhbnMtc2VyaWYsRW1vamlGb250LEFwcGxlIENvbG9yIEVtb2ppLFNl
+Z29lIFVJIEVtb2ppLE5vdG9Db2xvckVtb2ppLFNlZ29lIFVJIFN5bWJvbCxBbmRyb2lkIEVtb2pp
+LEVtb2ppU3ltYm9scyIgY29sb3I9ImJsYWNrIj48aT48c3BhbiBzdHlsZT0iZm9udC1zaXplOjEw
+cHQiPjwvc3Bhbj48L2k+DQo8ZGl2IHN0eWxlPSJtYXJnaW4tdG9wOjA7IG1hcmdpbi1ib3R0b206
+MCI+PGk+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZToxMHB0Ij5TZXJnZXkgS2FtYmFsaW48L3NwYW4+
+PC9pPjxpPjxicj4NCjwvaT48L2Rpdj4NCjxpPjxzcGFuIHN0eWxlPSJmb250LXNpemU6MTBwdCI+
+PC9zcGFuPjwvaT4NCjxkaXYgc3R5bGU9Im1hcmdpbi10b3A6MDsgbWFyZ2luLWJvdHRvbTowIj48
+aT48c3BhbiBzdHlsZT0iZm9udC1zaXplOjEwcHQiPlNvZnR3YXJlIERldmVsb3Blciw8L3NwYW4+
+PC9pPjwvZGl2Pg0KPGRpdiBzdHlsZT0ibWFyZ2luLXRvcDowOyBtYXJnaW4tYm90dG9tOjAiPjxp
+PjxzcGFuIHN0eWxlPSJmb250LXNpemU6MTBwdCI+PHNwYW4+QXVyaWdhIEluYy48L3NwYW4+PGJy
+Pg0KPC9zcGFuPjwvaT48L2Rpdj4NCjwvZm9udD48L2ZvbnQ+PGJyPg0KPHA+PC9wPg0KPC9kaXY+
+DQo8L2Rpdj4NCjwvZGl2Pg0KPGhyIHRhYmluZGV4PSItMSIgc3R5bGU9ImRpc3BsYXk6aW5saW5l
+LWJsb2NrOyB3aWR0aDo5OCUiPg0KPGRpdiBpZD0ieF9kaXZScGx5RndkTXNnIiBkaXI9Imx0ciI+
+PGZvbnQgZmFjZT0iQ2FsaWJyaSwgc2Fucy1zZXJpZiIgY29sb3I9IiMwMDAwMDAiIHN0eWxlPSJm
+b250LXNpemU6MTFwdCI+PGI+0J7Rgjo8L2I+IFBldGVyIE1heWRlbGwgJmx0O3BldGVyLm1heWRl
+bGxAbGluYXJvLm9yZyZndDs8YnI+DQo8Yj7QntGC0L/RgNCw0LLQu9C10L3Qvjo8L2I+IDE5INC0
+0LXQutCw0LHRgNGPIDIwMjMg0LMuIDEwOjM5OjEzPGJyPg0KPGI+0JrQvtC80YM6PC9iPiBLYW1i
+YWxpbiwgU2VyZ2V5PGJyPg0KPGI+0JrQvtC/0LjRjzo8L2I+IFNlcmdleSBLYW1iYWxpbjsgcWVt
+dS1hcm1Abm9uZ251Lm9yZzsgcWVtdS1kZXZlbEBub25nbnUub3JnPGJyPg0KPGI+0KLQtdC80LA6
+PC9iPiBSZTogW1BBVENIIHY0IDAwLzQ1XSBSYXNwYmVycnkgUGkgNEIgbWFjaGluZTwvZm9udD4N
+CjxkaXY+Jm5ic3A7PC9kaXY+DQo8L2Rpdj4NCjwvZGl2Pg0KPGZvbnQgc2l6ZT0iMiI+PHNwYW4g
+c3R5bGU9ImZvbnQtc2l6ZToxMHB0OyI+DQo8ZGl2IGNsYXNzPSJQbGFpblRleHQiPk9uIFR1ZSwg
+MTkgRGVjIDIwMjMgYXQgMTY6MTgsIEthbWJhbGluLCBTZXJnZXk8YnI+DQombHQ7c2VyZ2V5Lmth
+bWJhbGluQGF1cmlnYS5jb20mZ3Q7IHdyb3RlOjxicj4NCiZndDs8YnI+DQomZ3Q7IFRoYW5rIHlv
+dSBhIGxvdCBmb3IgdGhlIHJldmlldyBQZXRlciE8YnI+DQomZ3Q7PGJyPg0KJmd0Ozxicj4NCiZn
+dDsgTWF5IEkga2luZGx5IGFzayB5b3UgdG8gdGFrZSBqdXN0IGEgYnJpZWYgbG9vayBhdCB0aGUg
+Zmlyc3QgcGF0Y2hlcyBvZiBHRU5FVD8gSSdkIGxpa2UgdG8ga25vdyBpZiBJJ3ZlIGNob3NlbiB0
+aGUgcmlnaHQgd2F5IHRvIHJlcGxhY2UgYml0ZmllbGRzIHdpdGgmbmJzcDsgUUVNVSBSRUczMi9G
+SUVMRDMyIG1hY3Jvcy48YnI+DQo8YnI+DQpUaGUgRklFTEQgYW5kIFJFRzMyIHVzZXMgbG9vayBt
+b3N0bHkgT0ssIGJ1dCB0aGU8YnI+DQpzZWNvbmQgYXJndW1lbnQgdG8gUkVHMzIoKSBzaG91bGQg
+bm90IGJlIDAgZWFjaCB0aW1lOjxicj4NCjxicj4NClJFRzMyKEdFTkVUX1NZU19SRVZfQ1RSTCwm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsgMCk8YnI+DQpSRUczMihHRU5FVF9JTlRSTF8wLCZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyAwKTxicj4NCjxicj4NCmV0Yy4gVGhlIGlkZWEgaXMg
+dGhhdCB0aGF0IHNlY29uZCBhcmd1bWVudCBpcyB0aGUgb2Zmc2V0PGJyPg0KaW4gdGhlIHJlZ2lz
+dGVyIGZpbGUgb2YgdGhlIHJlZ2lzdGVyOyB0aGVuIHRoZSBtYWNybzxicj4NCmRlZmluZXMgeW91
+IGFuIEFfR0VORVRfU1lTX1JFVl9DVFJMIHdoaWNoIGlzIHRoYXQgdmFsdWUsPGJyPg0KYW5kIHlv
+dSBjYW4gdXNlIGl0IGFzIGEgY2FzZSBsYWJlbCBpbiB0aGUgJnF1b3Q7c3dpdGNoIChvZmZzZXQp
+IHsmcXVvdDs8YnI+DQppbiB0aGUgcmVhZC93cml0ZSBmdW5jdGlvbi48YnI+DQo8YnI+DQpJJ20g
+YSBhbHNvIGEgYml0IGNvbmZ1c2VkIGFib3V0IHRoZSB1c2Ugb2Ygb2Zmc2V0b2YoKSBpbiBwYXRj
+aCAyNy48YnI+DQo8YnI+DQpJbiBwYXRjaCAyOCB0aGUgaW1wbGVtZW50YXRpb24gb2YgYmNtMjgz
+OF9nZW5ldF9yZWFkKCkgYW5kPGJyPg0KYmNtMjgzOF9nZW5ldF93cml0ZSgpIHVzZSBhIG1lbWNw
+eSgpIGJldHdlZW4gYSBsb2NhbCB2YXJpYWJsZTxicj4NCmFuZCBtZW1vcnkgd2hpY2ggSSdtIGFz
+c3VtaW5nIGlzIGFuIGluZGV4IGludG8gb25lIG9mIHRoZXNlPGJyPg0KcmVnaXN0ZXIgc3RydWN0
+cywgd2hpY2ggd29uJ3QgZG8gdGhlIHJpZ2h0IHRoaW5nIGlmIHRoZSBob3N0PGJyPg0KaXMgYmln
+LWVuZGlhbi4gSWYgeW91IG5lZWQgYSAmcXVvdDtsb2FkL3N0b3JlIE4gYnl0ZXMgdG8gbWVtb3J5
+IGluPGJyPg0KaG9zdCBvcmRlciZxdW90Oywgd2UgaGF2ZSBsZG5faGVfcCgpIGFuZCBzdG5faGVf
+cCgpOyBhbHNvIGF2YWlsYWJsZTxicj4NCmluIF9sZV8gYW5kIF9iZV8gZmxhdm91cnMgZm9yIGxv
+YWQvc3RvcmUgaW4gc3BlY2lmaWMgZW5kaWFubmVzcy48YnI+DQo8YnI+DQp0aGFua3M8YnI+DQot
+LSBQTU08YnI+DQo8L2Rpdj4NCjwvc3Bhbj48L2ZvbnQ+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
+
+--_000_1af36710e4ca4aefaced4ceadbdc8b4caurigacom_--
 
