@@ -2,74 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0508E81920A
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 22:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E95F681923B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 22:25:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFhGw-0001M0-If; Tue, 19 Dec 2023 16:05:02 -0500
+	id 1rFhZ4-0005Y2-L4; Tue, 19 Dec 2023 16:23:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1rFhGe-0001LT-6m
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:04:46 -0500
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rFhYz-0005Xj-Ku; Tue, 19 Dec 2023 16:23:41 -0500
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1rFhGa-0004BS-GA
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:04:42 -0500
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a265d4f78bfso81953866b.0
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 13:04:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rFhYw-0000Wm-VB; Tue, 19 Dec 2023 16:23:40 -0500
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-594015ee9e6so78994eaf.1; 
+ Tue, 19 Dec 2023 13:23:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1703019877; x=1703624677;
- darn=nongnu.org; 
+ d=gmail.com; s=20230601; t=1703021017; x=1703625817; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3Ddt+4BUG81GQftfDLv9WS5F8tOZLI/o5Hu4dbsCS50=;
- b=XIuw8jeI8/+cqSu0YQ6p4cBluGnn3Rtr/3RfhE6iiQVKbd03Lzp8MDJUrd7wXNoGHV
- kA92TbGXjev/ExJsUS0rXQbPk1kGX3sLjcC+I4OhZL7CtUXjZk6pmqt30Nuu0T8pqHwH
- z8JJGw1Oqe5EFnywIcPQlrVRz2slmldHxfhKhkZimesF1mbqSxVJTmkFd96OazEfkY3+
- LZdn2REpEDfaNGXbO3xhwdIIn8fj7D0MerYLO8p6ihlU+Z0FTgidDiaxVGYgIb81C7rF
- H3d3CrhifPcKKqF8VnqUaklspRqOs+fdxVRkbH5SJblDAh2iL4bhErsrZEssOlzQwqhd
- X86A==
+ bh=nICuEkfj3PLAPb4crBPZRGpg1B1vpuOWK3zadnS8iKQ=;
+ b=bgo0+yuzJCyMypv/CrS0i2X/t8w5hluq4U2hnGu5vljX2mPwL2LdvHC+rQAm+mS4s0
+ B5zoNk7uKj035fjTXkB6aj5E4aV4bcmUFtfZBpBE7YFgqmih1xFWD0mk6OWVsPbmM5N4
+ DuxIN0S0YQnMGl3LTl74mST3d9Q49T8kxd8dcNlg0BQlIT+4ak6kDVLoMy7zVgen1H0H
+ QaOz1hcQEuTnEg+bmyaMZKVuaYPfPqUb3r65OfoLkp2WjWYywH9dSHf2agaPW8AVojFi
+ vrGZPUi39aKeqR3qlh57LzFl3zIo6BJPZPlPlweGygvFbGkCpwleGuzwInRBTQ+aTubd
+ 9XkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703019877; x=1703624677;
+ d=1e100.net; s=20230601; t=1703021017; x=1703625817;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=3Ddt+4BUG81GQftfDLv9WS5F8tOZLI/o5Hu4dbsCS50=;
- b=PcTGjnAXF92e/a65Tb/bxx1k0krHU67g2HFUs8k2LhLmbnSmP+KdYbVVEP4JhAGGpy
- 1Tw0uR5kgGrfT0b2cNY6zjLVByfKkRdSL9/4rnvm1jOX3i8e0BEcCFyaghHa/vqcySGS
- W3EGhzg+YoRtX2zFgo/TxJrvpu0bfoLfsxhC8U2y27jWIzpo8uxBbY5qaIf265WkUm5/
- 6cA+wtPnAToU8LY/gPa8l7/25U4oim42N6auG3sM64OWYG2mZfaIUajDtkCmYGrXYU6m
- lt3XQXm1EnDOhxfXuyYstNcZW++l6lFTFsxQktF2sNXFglHeY8NX578xsKD/8oW5Wz95
- +c/A==
-X-Gm-Message-State: AOJu0Yw6cBURgeFGmK9h1iguZidWoiOSsxmaTBo45925yNApPWOpNbAn
- S96AO8M/mfjpND/qAoIxSQNa9GHMDrrIfMQGCLYTCsd9Ko4QPiKfuo0=
-X-Google-Smtp-Source: AGHT+IFAgrqCJMQhpvehcXmV1EZcLs0mf34/C05ZgT/NC4xRQTX0dDznNUtZZx9ILcosPBExOo+kRxLq9Gw/gHSyWEc=
-X-Received: by 2002:a17:906:270a:b0:a23:54a3:696e with SMTP id
- z10-20020a170906270a00b00a2354a3696emr2453766ejc.13.1703019876980; Tue, 19
- Dec 2023 13:04:36 -0800 (PST)
+ bh=nICuEkfj3PLAPb4crBPZRGpg1B1vpuOWK3zadnS8iKQ=;
+ b=pteKZ2OMkUpi/Lf+7YoQEBbR7FvkJaQWQquoflRbDAS5hLGKCYBTlLR/ce0LmBF5sI
+ e0vC68t7u8Lvte0EdeTCPYYB2U8MCPt8Qqbd0WydRymh1EWlVU+OdN5OAiALTqsLhx5y
+ T42PnZhw5ljKkcK43tPrDMCe8nBjsKdXyUD5yUN0N44IB4xTuvxgalQ6cVjx+2kx7n6d
+ 4TyEthmPNHy3OlQtWK+H4KH7mOhwQ3RMAblaMjZLcizv8r7fCbBEwBw/Af0jiI+qC9X3
+ PO6wirXztfog52hrHIMQJYpwneT1SVKKHJ+muI1RRbJRO9fehsvL1pM0Vx8wfaG7XDWt
+ WM6Q==
+X-Gm-Message-State: AOJu0YyvyLhbgDx2BNgF32fyNiDLRHYWgzulnyxtwtkLFXFhACJx2CgP
+ tIIgbrlqvlIujb+qUIeS2YJJFnbw5gWyoGQeX44=
+X-Google-Smtp-Source: AGHT+IHVIv/bhibWf/9XrrtIyC0FAx9t0SjtZNCD+Hdo7m5wJu+F4HtlpD8Eqdypy7Sair+AhRUzUIcHjZxF9HQZERU=
+X-Received: by 2002:a4a:aac4:0:b0:593:f907:68ec with SMTP id
+ e4-20020a4aaac4000000b00593f90768ecmr686837oon.14.1703021017426; Tue, 19 Dec
+ 2023 13:23:37 -0800 (PST)
 MIME-Version: 1.0
-References: <20231219132135.c4bff4807c9d7215b179f240@killthe.net>
- <87plz22d9r.fsf@suse.de>
- <CAFEAcA-RJUUZo0KYujQskkAim_qXkJxtuSb9wtgxoP0XSEtKYQ@mail.gmail.com>
-In-Reply-To: <CAFEAcA-RJUUZo0KYujQskkAim_qXkJxtuSb9wtgxoP0XSEtKYQ@mail.gmail.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Tue, 19 Dec 2023 14:04:25 -0700
-Message-ID: <CANCZdfqX=URh2C+upKQPF9sg9TX6oZpHfrYF6rGRNz-6SdbhLw@mail.gmail.com>
-Subject: Re: Qemu resets terminal to crazy defaults
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Fabiano Rosas <farosas@suse.de>, Dave Blanchard <dave@killthe.net>, 
- QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="000000000000d02ed2060ce3362a"
-Received-SPF: none client-ip=2a00:1450:4864:20::632;
- envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+References: <20231205182011.1976568-1-stefanha@redhat.com>
+ <20231205182011.1976568-5-stefanha@redhat.com>
+ <ZYG2mSe1JWnC0tq_@redhat.com> <ZYHew2poxuJJRyhC@redhat.com>
+In-Reply-To: <ZYHew2poxuJJRyhC@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 19 Dec 2023 16:23:25 -0500
+Message-ID: <CAJSP0QX0fg0TGWuveJz6+QbF9EmY=vPiU-c99fHZMN=1jAnXkw@mail.gmail.com>
+Subject: Re: [PATCH v2 04/14] aio: make
+ aio_context_acquire()/aio_context_release() a no-op
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Cleber Rosa <crosa@redhat.com>, 
+ Xie Changlong <xiechanglong.d@gmail.com>, Paul Durrant <paul@xen.org>,
+ Ari Sundholm <ari@tuxera.com>, 
+ Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>,
+ John Snow <jsnow@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Wen Congyang <wencongyang2@huawei.com>, 
+ Alberto Garcia <berto@igalia.com>, Anthony Perard <anthony.perard@citrix.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org, 
+ Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Coiby Xu <Coiby.Xu@gmail.com>, 
+ Fabiano Rosas <farosas@suse.de>, Hanna Reitz <hreitz@redhat.com>,
+ Zhang Chen <chen.zhang@intel.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Peter Xu <peterx@redhat.com>, 
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Leonardo Bras <leobras@redhat.com>, 
+ David Hildenbrand <david@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc35.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,157 +106,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000d02ed2060ce3362a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The following hack makes the test pass but there are larger safety
+issues that I'll need to look at on Wednesday:
 
-On Tue, Dec 19, 2023, 1:55=E2=80=AFPM Peter Maydell <peter.maydell@linaro.o=
-rg>
-wrote:
+diff --git a/nbd/server.c b/nbd/server.c
+index 895cf0a752..cf4b7d5c6d 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -1617,7 +1617,7 @@ static void nbd_drained_begin(void *opaque)
+     }
+ }
 
-> On Tue, 19 Dec 2023 at 19:40, Fabiano Rosas <farosas@suse.de> wrote:
-> >
-> > Dave Blanchard <dave@killthe.net> writes:
-> >
-> > > Hello all, can you please help me to understand what Qemu is doing
-> here?
-> > >
-> > > When connecting to the guest for example using a serial/tcp/telnet
-> link, some kind of code is being immediately transmitted over the link
-> which screws up my Xterm terminal settings, including changing the text
-> cursor shape and most notably, disabling wraparound of long lines, so tha=
-t
-> they get truncated at the edge of the window instead.
-> > >
-> > > Can this behavior be disabled by command line, and if not, what is th=
-e
-> code doing exactly so I can know where to disable it? I tried disabling a=
-ll
-> calls to tcsetattr() but that had no effect.
->
-> > I looked into the automatic margins issue a long time ago and I seem to
-> > remember it was caused by the firmware (SeaBIOS) configuring the
-> > terminal and QEMU just never returning it to the original state. I
-> > eventually gave up trying to fix it because I was having trouble findin=
-g
-> > a reliable point in QEMU shutdown sequence to enable the capability
-> > back. Nowadays I just run 'tput smam' after quitting QEMU.
->
-> To check whether this is happening because of the BIOS (or other
-> guest code) vs QEMU itself, you can try running QEMU in a configuration
-> where it doesn't run any BIOS code. One I happen to know offhand
-> is an arm one:
->
->    qemu-system-aarch64 -M virt -serial stdio
->
-> This won't print anything, because we haven't loaded any guest
-> code at all and there's no default BIOS on this machine type.
-> (The emulated CPU is sat in effectively a tight loop taking
-> exceptions.) If that messes up the terminal settings, then it's
-> likely being done by something inside QEMU. If it doesn't, then
-> it sounds like as you say it'll be because of the SeaBIOS
-> firmware writing stuff to the terminal.
->
-> (There might be a way to run the x86 PC machine without it
-> running a BIOS, for a similar test, but I don't know if there
-> is or how to do it off the top of my head.)
->
-> I do know that QEMU doesn't clean up things the guest does
-> to the terminal, because for instance if you have a serial
-> terminal and the guest puts it into "emit boldface/bright",
-> that doesn't go back to normal non-bold text when QEMU exits.
-> (It would be nice if it did do that...)
->
+-static void nbd_drained_end(void *opaque)
++static void nbd_resume_clients(void *opaque)
+ {
+     NBDExport *exp = opaque;
+     NBDClient *client;
+@@ -1628,6 +1628,15 @@ static void nbd_drained_end(void *opaque)
+     }
+ }
 
-It would be nice indeed. Trouble is quarrying the state beforehand to know
-what to reset by random software producing effectively random bytes..
-
-ESC c
-
-is the reset sequence as well...but that's likely too big a hammer.
-
-Warner
-
-thanks
-> -- PMM
->
->
-
---000000000000d02ed2060ce3362a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Tue, Dec 19, 2023, 1:55=E2=80=AFPM Peter Maydell &l=
-t;<a href=3D"mailto:peter.maydell@linaro.org">peter.maydell@linaro.org</a>&=
-gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0=
- .8ex;border-left:1px #ccc solid;padding-left:1ex">On Tue, 19 Dec 2023 at 1=
-9:40, Fabiano Rosas &lt;<a href=3D"mailto:farosas@suse.de" target=3D"_blank=
-" rel=3D"noreferrer">farosas@suse.de</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Dave Blanchard &lt;<a href=3D"mailto:dave@killthe.net" target=3D"_blan=
-k" rel=3D"noreferrer">dave@killthe.net</a>&gt; writes:<br>
-&gt;<br>
-&gt; &gt; Hello all, can you please help me to understand what Qemu is doin=
-g here?<br>
-&gt; &gt;<br>
-&gt; &gt; When connecting to the guest for example using a serial/tcp/telne=
-t link, some kind of code is being immediately transmitted over the link wh=
-ich screws up my Xterm terminal settings, including changing the text curso=
-r shape and most notably, disabling wraparound of long lines, so that they =
-get truncated at the edge of the window instead.<br>
-&gt; &gt;<br>
-&gt; &gt; Can this behavior be disabled by command line, and if not, what i=
-s the code doing exactly so I can know where to disable it? I tried disabli=
-ng all calls to tcsetattr() but that had no effect.<br>
-<br>
-&gt; I looked into the automatic margins issue a long time ago and I seem t=
-o<br>
-&gt; remember it was caused by the firmware (SeaBIOS) configuring the<br>
-&gt; terminal and QEMU just never returning it to the original state. I<br>
-&gt; eventually gave up trying to fix it because I was having trouble findi=
-ng<br>
-&gt; a reliable point in QEMU shutdown sequence to enable the capability<br=
->
-&gt; back. Nowadays I just run &#39;tput smam&#39; after quitting QEMU.<br>
-<br>
-To check whether this is happening because of the BIOS (or other<br>
-guest code) vs QEMU itself, you can try running QEMU in a configuration<br>
-where it doesn&#39;t run any BIOS code. One I happen to know offhand<br>
-is an arm one:<br>
-<br>
-=C2=A0 =C2=A0qemu-system-aarch64 -M virt -serial stdio<br>
-<br>
-This won&#39;t print anything, because we haven&#39;t loaded any guest<br>
-code at all and there&#39;s no default BIOS on this machine type.<br>
-(The emulated CPU is sat in effectively a tight loop taking<br>
-exceptions.) If that messes up the terminal settings, then it&#39;s<br>
-likely being done by something inside QEMU. If it doesn&#39;t, then<br>
-it sounds like as you say it&#39;ll be because of the SeaBIOS<br>
-firmware writing stuff to the terminal.<br>
-<br>
-(There might be a way to run the x86 PC machine without it<br>
-running a BIOS, for a similar test, but I don&#39;t know if there<br>
-is or how to do it off the top of my head.)<br>
-<br>
-I do know that QEMU doesn&#39;t clean up things the guest does<br>
-to the terminal, because for instance if you have a serial<br>
-terminal and the guest puts it into &quot;emit boldface/bright&quot;,<br>
-that doesn&#39;t go back to normal non-bold text when QEMU exits.<br>
-(It would be nice if it did do that...)<br></blockquote></div></div><div di=
-r=3D"auto"><br></div><div dir=3D"auto">It would be nice indeed. Trouble is =
-quarrying the state beforehand to know what to reset by random software pro=
-ducing effectively random bytes..=C2=A0</div><div dir=3D"auto"><br></div><d=
-iv dir=3D"auto">ESC c</div><div dir=3D"auto"><br></div><div dir=3D"auto">is=
- the reset sequence as well...but that&#39;s likely too big a hammer.</div>=
-<div dir=3D"auto"><br></div><div dir=3D"auto">Warner</div><div dir=3D"auto"=
-><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=
-=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padd=
-ing-left:1ex">
-thanks<br>
--- PMM<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000d02ed2060ce3362a--
++static void nbd_drained_end(void *opaque)
++{
++    NBDExport *exp = opaque;
++
++    /* TODO how to make sure exp doesn't go away? */
++    /* TODO what if AioContext changes before this runs? */
++    aio_bh_schedule_oneshot(nbd_export_aio_context(exp),
+nbd_resume_clients, exp);
++}
++
+ static bool nbd_drained_poll(void *opaque)
+ {
+     NBDExport *exp = opaque;
 
