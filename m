@@ -2,60 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C94817ECC
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 01:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B99817F4C
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 02:35:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFNwI-0000EI-6m; Mon, 18 Dec 2023 19:26:26 -0500
+	id 1rFOzT-0008CM-MN; Mon, 18 Dec 2023 20:33:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNwF-0000Dx-Tv; Mon, 18 Dec 2023 19:26:23 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
+ id 1rFOzP-0008C7-In
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 20:33:43 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNwD-00038G-AE; Mon, 18 Dec 2023 19:26:23 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 0C6B475A406;
- Tue, 19 Dec 2023 01:26:17 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id eg03cLwxoqoS; Tue, 19 Dec 2023 01:26:15 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 1BF63756094; Tue, 19 Dec 2023 01:26:15 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 19F5F756066;
- Tue, 19 Dec 2023 01:26:15 +0100 (CET)
-Date: Tue, 19 Dec 2023 01:26:15 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Leonardo Bras <leobras@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>, 
- qemu-block@nongnu.org
-Subject: Re: [PATCH v2 12/12] hw/isa/vt82c686: Implement relocation and
- toggling of SuperI/O functions
-In-Reply-To: <20231218185114.119736-13-shentey@gmail.com>
-Message-ID: <9c472e25-506f-fbd5-6d72-00be078bb15c@eik.bme.hu>
-References: <20231218185114.119736-1-shentey@gmail.com>
- <20231218185114.119736-13-shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
+ id 1rFOzM-0005hX-Ss
+ for qemu-devel@nongnu.org; Mon, 18 Dec 2023 20:33:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1702949621; x=1734485621;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=lrMlTGx84nAza5b7Oa9KxSKj8I36gG22SE7M9wsUauU=;
+ b=R2xqDZIRmVkdmWYHsdvGVlIV4NWH6NKKfdRlsQuGcDecTbX/zkKrfcBo
+ 4LBiB6CkwGqPcNrcfnVrRJHQkc37HhLHsL5UgWoN3VPfVP/FKAKx+trIm
+ D8J7nu8eaonKUFRYeIW4bLTToVacce3ME4TTf/BzusODp09pB9yFnmtgD
+ FHz6NmmjGlONBKQmsRs/MMRFcDL3k0U4D1pTdn0jXZN8e5PP19dFVQwkm
+ kl7bt0N1pkjLVCa6Nm2EzJC3bJE6+F8PC4sHdVmYwNIu+ZBGE2w4ZC9bq
+ bpqN/r3mXsBztjTLSD0cr11b9yr/e26ixRX7F4bznliTi5xZqwpPCyQPF w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="2805139"
+X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; 
+   d="scan'208";a="2805139"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2023 17:33:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10928"; a="804717185"
+X-IronPort-AV: E=Sophos;i="6.04,287,1695711600"; d="scan'208";a="804717185"
+Received: from leiwang7-mobl.ccr.corp.intel.com (HELO [10.93.5.108])
+ ([10.93.5.108])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2023 17:33:34 -0800
+Message-ID: <6ec82a24-f040-43a9-a81d-b5dad0e07a22@intel.com>
+Date: Tue, 19 Dec 2023 09:33:29 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [External] Re: [PATCH v2 09/20] util/dsa: Implement DSA task
+ asynchronous completion thread model.
+Content-Language: en-US
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: farosas@suse.de, peter.maydell@linaro.org, quintela@redhat.com,
+ peterx@redhat.com, marcandre.lureau@redhat.com, bryan.zhang@bytedance.com,
+ qemu-devel@nongnu.org
+References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+ <20231114054032.1192027-10-hao.xiang@bytedance.com>
+ <543e9270-4ab7-4096-bda7-187dd9be47ef@intel.com>
+ <CAAYibXh4YeePb4rZNxLjo+UAed51cV+0zE7pxaS9zGn2=aDXOw@mail.gmail.com>
+From: "Wang, Lei" <lei4.wang@intel.com>
+In-Reply-To: <CAAYibXh4YeePb4rZNxLjo+UAed51cV+0zE7pxaS9zGn2=aDXOw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=lei4.wang@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.083,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,260 +86,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 18 Dec 2023, Bernhard Beschow wrote:
-> The VIA south bridges are able to relocate and toggle (enable or disable) their
-> SuperI/O functions. So far this is hardcoded such that all functions are always
-> enabled and are located at fixed addresses.
->
-> Some PC BIOSes seem to probe for I/O occupancy before activating such a function
-> and issue an error in case of a conflict. Since the functions are enabled on
-> reset, conflicts are always detected. Prevent that by implementing relocation
-> and toggling of the SuperI/O functions.
->
-> Note that all SuperI/O functions are now deactivated upon reset (except for
-> VT82C686B's serial ports where Fuloong 2e's rescue-yl seems to expect them to be
-> enabled by default). Rely on firmware -- or in case of pegasos2 on board code if
-> no -bios is given -- to configure the functions accordingly.
+On 12/19/2023 2:57, Hao Xiang wrote:> On Sun, Dec 17, 2023 at 7:11 PM Wang, Lei
+<lei4.wang@intel.com> wrote:
+>>
+>> On 11/14/2023 13:40, Hao Xiang wrote:> * Create a dedicated thread for DSA task
+>> completion.
+>>> * DSA completion thread runs a loop and poll for completed tasks.
+>>> * Start and stop DSA completion thread during DSA device start stop.
+>>>
+>>> User space application can directly submit task to Intel DSA
+>>> accelerator by writing to DSA's device memory (mapped in user space).
+>>
+>>> +            }
+>>> +            return;
+>>> +        }
+>>> +    } else {
+>>> +        assert(batch_status == DSA_COMP_BATCH_FAIL ||
+>>> +            batch_status == DSA_COMP_BATCH_PAGE_FAULT);
+>>
+>> Nit: indentation is broken here.
+>>
+>>> +    }
+>>> +
+>>> +    for (int i = 0; i < count; i++) {
+>>> +
+>>> +        completion = &batch_task->completions[i];
+>>> +        status = completion->status;
+>>> +
+>>> +        if (status == DSA_COMP_SUCCESS) {
+>>> +            results[i] = (completion->result == 0);
+>>> +            continue;
+>>> +        }
+>>> +
+>>> +        if (status != DSA_COMP_PAGE_FAULT_NOBOF) {
+>>> +            fprintf(stderr,
+>>> +                    "Unexpected completion status = %u.\n", status);
+>>> +            assert(false);
+>>> +        }
+>>> +    }
+>>> +}
+>>> +
+>>> +/**
+>>> + * @brief Handles an asynchronous DSA batch task completion.
+>>> + *
+>>> + * @param task A pointer to the batch buffer zero task structure.
+>>> + */
+>>> +static void
+>>> +dsa_batch_task_complete(struct buffer_zero_batch_task *batch_task)
+>>> +{
+>>> +    batch_task->status = DSA_TASK_COMPLETION;
+>>> +    batch_task->completion_callback(batch_task);
+>>> +}
+>>> +
+>>> +/**
+>>> + * @brief The function entry point called by a dedicated DSA
+>>> + *        work item completion thread.
+>>> + *
+>>> + * @param opaque A pointer to the thread context.
+>>> + *
+>>> + * @return void* Not used.
+>>> + */
+>>> +static void *
+>>> +dsa_completion_loop(void *opaque)
+>>
+>> Per my understanding, if a multifd sending thread corresponds to a DSA device,
+>> then the batch tasks are executed in parallel which means a task may be
+>> completed slower than another even if this task is enqueued earlier than it. If
+>> we poll on the slower task first it will block the handling of the faster one,
+>> even if the zero checking task for that thread is finished and it can go ahead
+>> and send the data to the wire, this may lower the network resource utilization.
+>>
+> 
+> Hi Lei, thanks for reviewing. You are correct that we can keep pulling
+> a task enqueued first while others in the queue have already been
+> completed. In fact, only one DSA completion thread (pulling thread) is
+> used here even when multiple DSA devices are used. The pulling loop is
+> the most CPU intensive activity in the DSA workflow and that acts
+> directly against the goal of saving CPU usage. The trade-off I want to
+> take here is a slightly higher latency on DSA task completion but more
+> CPU savings. A single DSA engine can reach 30 GB/s throughput on
+> memory comparison operation. We use kernel tcp stack for network
+> transfer. The best I see is around 10GB/s throughput.  RDMA can
+> potentially go higher but I am not sure if it can go higher than 30
+> GB/s throughput anytime soon.
 
-Pegasos2 emulates firmware when no -bios is given, this was explained in 
-previos commit so maybe not needed to be explained it here again so you 
-could drop the comment between -- -- but I don't mind.
+Hi Hao, that makes sense, if the DSA is faster than the network, then a little
+bit of latency in DSA checking is tolerable. In the long term, I think the best
+form of the DSA task checking thread is to use an fd or such sort of thing that
+can multiplex the checking of different DSA devices, then we can serve the DSA
+task in the order they complete rather than FCFS.
 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> ---
-> hw/isa/vt82c686.c | 121 ++++++++++++++++++++++++++++++++++------------
-> 1 file changed, 90 insertions(+), 31 deletions(-)
->
-> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-> index 9c2333a277..be202d23cf 100644
-> --- a/hw/isa/vt82c686.c
-> +++ b/hw/isa/vt82c686.c
-> @@ -15,6 +15,9 @@
->
-> #include "qemu/osdep.h"
-> #include "hw/isa/vt82c686.h"
-> +#include "hw/block/fdc.h"
-> +#include "hw/char/parallel-isa.h"
-> +#include "hw/char/serial.h"
-> #include "hw/pci/pci.h"
-> #include "hw/qdev-properties.h"
-> #include "hw/ide/pci.h"
-> @@ -343,6 +346,35 @@ static const TypeInfo via_superio_info = {
->
-> #define TYPE_VT82C686B_SUPERIO "vt82c686b-superio"
->
-> +static void vt82c686b_superio_update(ViaSuperIOState *s)
-> +{
-> +    isa_parallel_set_enabled(s->superio.parallel[0],
-> +                             (s->regs[0xe2] & 0x3) != 3);
-> +    isa_serial_set_enabled(s->superio.serial[0], s->regs[0xe2] & BIT(2));
-> +    isa_serial_set_enabled(s->superio.serial[1], s->regs[0xe2] & BIT(3));
-> +    isa_fdc_set_enabled(s->superio.floppy, s->regs[0xe2] & BIT(4));
-> +
-> +    isa_fdc_set_iobase(s->superio.floppy, (s->regs[0xe3] & 0xfc) << 2);
-> +    isa_parallel_set_iobase(s->superio.parallel[0], s->regs[0xe6] << 2);
-> +    isa_serial_set_iobase(s->superio.serial[0], (s->regs[0xe7] & 0xfe) << 2);
-> +    isa_serial_set_iobase(s->superio.serial[1], (s->regs[0xe8] & 0xfe) << 2);
-> +}
-
-I wonder if some code duplication could be saved by adding a shared 
-via_superio_update() for this further up in the abstract via-superio class 
-instead of this method and vt8231_superio_update() below. This common 
-method in abstract class would need to handle the differences which seem 
-to be reg addresses offset by 0x10 and VT8231 having only 1 serial port. 
-These could either be handled by adding function parameters or fields to 
-ViaSuperIOState for this that the subclasses can set and the method check. 
-(Such as reg base=0xe2 for vt82c686 and 0xf2 for vt8231 and num_serial or 
-similar for how many ports are there then can have a for loop for those 
-that would only run once for vt8231).
-
-> +static int vmstate_vt82c686b_superio_post_load(void *opaque, int version_id)
-> +{
-> +    ViaSuperIOState *s = opaque;
-> +
-> +    vt82c686b_superio_update(s);
-> +
-> +    return 0;
-
-You could lose some blank lines here. You seem to love them, half of your 
-cover letter is just blank lines :-) but I'm the opposite and like more 
-code to fit in one screen even on todays displays that are wider than 
-tall. So this funciton would take less space without blank lines. (Even 
-the local variable may not be necessary as you don't access any fields 
-within and void * should just cast without a warning but for spelling out 
-the desired type as a reminder I'm ok with leaving that but no excessive 
-blank lines please if you don't mind that much.)
-
-Regards,
-BALATON Zoltan
-
-> +}
-> +
-> +static const VMStateDescription vmstate_vt82c686b_superio = {
-> +    .name = "vt82c686b_superio",
-> +    .version_id = 1,
-> +    .post_load = vmstate_vt82c686b_superio_post_load,
-> +};
-> +
-> static void vt82c686b_superio_cfg_write(void *opaque, hwaddr addr,
->                                         uint64_t data, unsigned size)
-> {
-> @@ -368,7 +400,11 @@ static void vt82c686b_superio_cfg_write(void *opaque, hwaddr addr,
->     case 0xfd ... 0xff:
->         /* ignore write to read only registers */
->         return;
-> -    /* case 0xe6 ... 0xe8: Should set base port of parallel and serial */
-> +    case 0xe2 ... 0xe3:
-> +    case 0xe6 ... 0xe8:
-> +        sc->regs[idx] = data;
-> +        vt82c686b_superio_update(sc);
-> +        return;
->     default:
->         qemu_log_mask(LOG_UNIMP,
->                       "via_superio_cfg: unimplemented register 0x%x\n", idx);
-> @@ -393,25 +429,24 @@ static void vt82c686b_superio_reset(DeviceState *dev)
->
->     memset(s->regs, 0, sizeof(s->regs));
->     /* Device ID */
-> -    vt82c686b_superio_cfg_write(s, 0, 0xe0, 1);
-> -    vt82c686b_superio_cfg_write(s, 1, 0x3c, 1);
-> -    /* Function select - all disabled */
-> -    vt82c686b_superio_cfg_write(s, 0, 0xe2, 1);
-> -    vt82c686b_superio_cfg_write(s, 1, 0x03, 1);
-> +    s->regs[0xe0] = 0x3c;
-> +    /*
-> +     * Function select - only serial enabled
-> +     * Fuloong 2e's rescue-yl prints to the serial console w/o enabling it. This
-> +     * suggests that the serial ports are enabled by default, so override the
-> +     * datasheet.
-> +     */
-> +    s->regs[0xe2] = 0x0f;
->     /* Floppy ctrl base addr 0x3f0-7 */
-> -    vt82c686b_superio_cfg_write(s, 0, 0xe3, 1);
-> -    vt82c686b_superio_cfg_write(s, 1, 0xfc, 1);
-> +    s->regs[0xe3] = 0xfc;
->     /* Parallel port base addr 0x378-f */
-> -    vt82c686b_superio_cfg_write(s, 0, 0xe6, 1);
-> -    vt82c686b_superio_cfg_write(s, 1, 0xde, 1);
-> +    s->regs[0xe6] = 0xde;
->     /* Serial port 1 base addr 0x3f8-f */
-> -    vt82c686b_superio_cfg_write(s, 0, 0xe7, 1);
-> -    vt82c686b_superio_cfg_write(s, 1, 0xfe, 1);
-> +    s->regs[0xe7] = 0xfe;
->     /* Serial port 2 base addr 0x2f8-f */
-> -    vt82c686b_superio_cfg_write(s, 0, 0xe8, 1);
-> -    vt82c686b_superio_cfg_write(s, 1, 0xbe, 1);
-> +    s->regs[0xe8] = 0xbe;
->
-> -    vt82c686b_superio_cfg_write(s, 0, 0, 1);
-> +    vt82c686b_superio_update(s);
-> }
->
-> static void vt82c686b_superio_init(Object *obj)
-> @@ -429,6 +464,7 @@ static void vt82c686b_superio_class_init(ObjectClass *klass, void *data)
->     sc->parallel.count = 1;
->     sc->ide.count = 0; /* emulated by via-ide */
->     sc->floppy.count = 1;
-> +    dc->vmsd = &vmstate_vt82c686b_superio;
-> }
->
-> static const TypeInfo vt82c686b_superio_info = {
-> @@ -443,6 +479,33 @@ static const TypeInfo vt82c686b_superio_info = {
->
-> #define TYPE_VT8231_SUPERIO "vt8231-superio"
->
-> +static void vt8231_superio_update(ViaSuperIOState *s)
-> +{
-> +    isa_parallel_set_enabled(s->superio.parallel[0],
-> +                             (s->regs[0xf2] & 0x3) != 3);
-> +    isa_serial_set_enabled(s->superio.serial[0], s->regs[0xf2] & BIT(2));
-> +    isa_fdc_set_enabled(s->superio.floppy, s->regs[0xf2] & BIT(4));
-> +
-> +    isa_serial_set_iobase(s->superio.serial[0], (s->regs[0xf4] & 0xfe) << 2);
-> +    isa_parallel_set_iobase(s->superio.parallel[0], s->regs[0xf6] << 2);
-> +    isa_fdc_set_iobase(s->superio.floppy, (s->regs[0xf7] & 0xfc) << 2);
-> +}
-> +
-> +static int vmstate_vt8231_superio_post_load(void *opaque, int version_id)
-> +{
-> +    ViaSuperIOState *s = opaque;
-> +
-> +    vt8231_superio_update(s);
-> +
-> +    return 0;
-> +}
-> +
-> +static const VMStateDescription vmstate_vt8231_superio = {
-> +    .name = "vt8231_superio",
-> +    .version_id = 1,
-> +    .post_load = vmstate_vt8231_superio_post_load,
-> +};
-> +
-> static void vt8231_superio_cfg_write(void *opaque, hwaddr addr,
->                                      uint64_t data, unsigned size)
-> {
-> @@ -465,6 +528,12 @@ static void vt8231_superio_cfg_write(void *opaque, hwaddr addr,
->     case 0xfd:
->         /* ignore write to read only registers */
->         return;
-> +    case 0xf2:
-> +    case 0xf4:
-> +    case 0xf6 ... 0xf7:
-> +        sc->regs[idx] = data;
-> +        vt8231_superio_update(sc);
-> +        return;
->     default:
->         qemu_log_mask(LOG_UNIMP,
->                       "via_superio_cfg: unimplemented register 0x%x\n", idx);
-> @@ -493,19 +562,15 @@ static void vt8231_superio_reset(DeviceState *dev)
->     /* Device revision */
->     s->regs[0xf1] = 0x01;
->     /* Function select - all disabled */
-> -    vt8231_superio_cfg_write(s, 0, 0xf2, 1);
-> -    vt8231_superio_cfg_write(s, 1, 0x03, 1);
-> +    s->regs[0xf2] = 0x03;
->     /* Serial port base addr */
-> -    vt8231_superio_cfg_write(s, 0, 0xf4, 1);
-> -    vt8231_superio_cfg_write(s, 1, 0xfe, 1);
-> +    s->regs[0xf4] = 0xfe;
->     /* Parallel port base addr */
-> -    vt8231_superio_cfg_write(s, 0, 0xf6, 1);
-> -    vt8231_superio_cfg_write(s, 1, 0xde, 1);
-> +    s->regs[0xf6] = 0xde;
->     /* Floppy ctrl base addr */
-> -    vt8231_superio_cfg_write(s, 0, 0xf7, 1);
-> -    vt8231_superio_cfg_write(s, 1, 0xfc, 1);
-> +    s->regs[0xf7] = 0xfc;
->
-> -    vt8231_superio_cfg_write(s, 0, 0, 1);
-> +    vt8231_superio_update(s);
-> }
->
-> static void vt8231_superio_init(Object *obj)
-> @@ -513,12 +578,6 @@ static void vt8231_superio_init(Object *obj)
->     VIA_SUPERIO(obj)->io_ops = &vt8231_superio_cfg_ops;
-> }
->
-> -static uint16_t vt8231_superio_serial_iobase(ISASuperIODevice *sio,
-> -                                             uint8_t index)
-> -{
-> -        return 0x2f8; /* FIXME: This should be settable via registers f2-f4 */
-> -}
-> -
-> static void vt8231_superio_class_init(ObjectClass *klass, void *data)
-> {
->     DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -526,10 +585,10 @@ static void vt8231_superio_class_init(ObjectClass *klass, void *data)
->
->     dc->reset = vt8231_superio_reset;
->     sc->serial.count = 1;
-> -    sc->serial.get_iobase = vt8231_superio_serial_iobase;
->     sc->parallel.count = 1;
->     sc->ide.count = 0; /* emulated by via-ide */
->     sc->floppy.count = 1;
-> +    dc->vmsd = &vmstate_vt8231_superio;
-> }
->
-> static const TypeInfo vt8231_superio_info = {
->
+> 
+>>> +{
+>>> +    struct dsa_completion_thread *thread_context =
+>>> +        (struct dsa_completion_thread *)opaque;
+>>> +    struct buffer_zero_batch_task *batch_task;
+>>> +    struct dsa_device_group *group = thread_context->group;
+>>> +
+>>> +    rcu_register_thread();
+>>> +
+>>> +    thread_context->thread_id = qemu_get_thread_id();
+>>> +    qemu_sem_post(&thread_context->sem_init_done);
+>>> +
+>>> +    while (thread_context->running) {
+>>> +        batch_task = dsa_task_dequeue(group);
+>>> +        assert(batch_task != NULL || !group->running);
+>>> +        if (!group->running) {
+>>> +            assert(!thread_context->running);
+>>> +            break;
+>>> +        }
+>>> +        if (batch_task->task_type == DSA_TASK) {
+>>> +            poll_task_completion(batch_task);
+>>> +        } else {
+>>> +            assert(batch_task->task_type == DSA_BATCH_TASK);
+>>> +            poll_batch_task_completion(batch_task);
+>>> +        }
+>>> +
+>>> +        dsa_batch_task_complete(batch_task);
+>>> +    }
+>>> +
+>>> +    rcu_unregister_thread();
+>>> +    return NULL;
+>>> +}
+>>> +
+>>> +/**
+>>> + * @brief Initializes a DSA completion thread.
+>>> + *
+>>> + * @param completion_thread A pointer to the completion thread context.
+>>> + * @param group A pointer to the DSA device group.
+>>> + */
+>>> +static void
+>>> +dsa_completion_thread_init(
+>>> +    struct dsa_completion_thread *completion_thread,
+>>> +    struct dsa_device_group *group)
+>>> +{
+>>> +    completion_thread->stopping = false;
+>>> +    completion_thread->running = true;
+>>> +    completion_thread->thread_id = -1;
+>>> +    qemu_sem_init(&completion_thread->sem_init_done, 0);
+>>> +    completion_thread->group = group;
+>>> +
+>>> +    qemu_thread_create(&completion_thread->thread,
+>>> +                       DSA_COMPLETION_THREAD,
+>>> +                       dsa_completion_loop,
+>>> +                       completion_thread,
+>>> +                       QEMU_THREAD_JOINABLE);
+>>> +
+>>> +    /* Wait for initialization to complete */
+>>> +    while (completion_thread->thread_id == -1) {
+>>> +        qemu_sem_wait(&completion_thread->sem_init_done);
+>>> +    }
+>>> +}
+>>> +
+>>> +/**
+>>> + * @brief Stops the completion thread (and implicitly, the device group).
+>>> + *
+>>> + * @param opaque A pointer to the completion thread.
+>>> + */
+>>> +static void dsa_completion_thread_stop(void *opaque)
+>>> +{
+>>> +    struct dsa_completion_thread *thread_context =
+>>> +        (struct dsa_completion_thread *)opaque;
+>>> +
+>>> +    struct dsa_device_group *group = thread_context->group;
+>>> +
+>>> +    qemu_mutex_lock(&group->task_queue_lock);
+>>> +
+>>> +    thread_context->stopping = true;
+>>> +    thread_context->running = false;
+>>> +
+>>> +    dsa_device_group_stop(group);
+>>> +
+>>> +    qemu_cond_signal(&group->task_queue_cond);
+>>> +    qemu_mutex_unlock(&group->task_queue_lock);
+>>> +
+>>> +    qemu_thread_join(&thread_context->thread);
+>>> +
+>>> +    qemu_sem_destroy(&thread_context->sem_init_done);
+>>> +}
+>>> +
+>>>  /**
+>>>   * @brief Check if DSA is running.
+>>>   *
+>>> @@ -446,7 +685,7 @@ submit_batch_wi_async(struct buffer_zero_batch_task *batch_task)
+>>>   */
+>>>  bool dsa_is_running(void)
+>>>  {
+>>> -    return false;
+>>> +    return completion_thread.running;
+>>>  }
+>>>
+>>>  static void
+>>> @@ -481,6 +720,7 @@ void dsa_start(void)
+>>>          return;
+>>>      }
+>>>      dsa_device_group_start(&dsa_group);
+>>> +    dsa_completion_thread_init(&completion_thread, &dsa_group);
+>>>  }
+>>>
+>>>  /**
+>>> @@ -496,6 +736,7 @@ void dsa_stop(void)
+>>>          return;
+>>>      }
+>>>
+>>> +    dsa_completion_thread_stop(&completion_thread);
+>>>      dsa_empty_task_queue(group);
+>>>  }
+>>>
 
