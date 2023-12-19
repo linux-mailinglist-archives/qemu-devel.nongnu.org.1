@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86784818AFE
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 16:16:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A26C818B00
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 16:17:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFbpU-0006O0-U8; Tue, 19 Dec 2023 10:16:20 -0500
+	id 1rFbpW-0006SQ-FD; Tue, 19 Dec 2023 10:16:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rFbpM-0006AE-9G
+ id 1rFbpO-0006AX-4P
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:16:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rFbpH-0002B0-Hi
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:16:10 -0500
+ id 1rFbpI-0002BE-4y
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:16:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1702998958;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=5xw7A1XKMUjdmB/9WndsfiguXhlbtnJE7+pJRM9nELs=;
- b=ewyXA1rHqDnQc7eW9eLVTn/xOMtxRostqDyxTMX6GSBpB/2YioJUD0VVpmIIFfyQdpKETp
- U/aRc+enc0WY27QTxWZHY5KVpKi+xw5pBCO4JQ/pZfw1a+gtbM9XCm9B52QPyF3cKanNtT
- TFTBmmAScJO7uP6Kxj4L8Q8AdhRkIJk=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=aJp28RWD0Bmd2/0WGTsegmzATzRz3IZpSu80iClxoG4=;
+ b=RHCWrnR9/eIk5kWrUqrr0MJLIyA1umkfNFoHPEm88Yr9BE6S01jOrm9QKlc942Uc2uaiN0
+ gfISRvi8lbuAFiamskSzSPoBwL3/B+Lk7HcrYkt4n1Gn/Sdthv/H9XgjGWaKfnLSMgnIzD
+ 4S7KKc8tsLI4eVzXNTjSdWPUB5THidA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-83-SAUPi0xiNaGf4qdi3wST1w-1; Tue,
- 19 Dec 2023 10:15:53 -0500
-X-MC-Unique: SAUPi0xiNaGf4qdi3wST1w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-SVOUB7bUOjSokU8jsMrTow-1; Tue,
+ 19 Dec 2023 10:15:56 -0500
+X-MC-Unique: SVOUB7bUOjSokU8jsMrTow-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4481A29AA39A;
- Tue, 19 Dec 2023 15:15:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9CE6D3813BC3;
+ Tue, 19 Dec 2023 15:15:55 +0000 (UTC)
 Received: from localhost (unknown [10.39.194.138])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B93271C060AF;
- Tue, 19 Dec 2023 15:15:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 15A03492BF0;
+ Tue, 19 Dec 2023 15:15:54 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michal Privoznik <mprivozn@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
@@ -51,21 +52,22 @@ Cc: Michal Privoznik <mprivozn@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH v3 0/4] virtio-blk: add iothread-vq-mapping parameter
-Date: Tue, 19 Dec 2023 10:15:46 -0500
-Message-ID: <20231219151550.223303-1-stefanha@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v3 1/4] qdev-properties: alias all object class properties
+Date: Tue, 19 Dec 2023 10:15:47 -0500
+Message-ID: <20231219151550.223303-2-stefanha@redhat.com>
+In-Reply-To: <20231219151550.223303-1-stefanha@redhat.com>
+References: <20231219151550.223303-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -83,59 +85,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v3:
-- Rebased onto Kevin's block branch
-- Add StringOutputVisitor "<omitted>" patch to fix "info qtree" crash
-- Fix QAPI schema formatting [Markus]
-- Eliminate unnecessary local variable in get_iothread_vq_mapping_list() [Markus]
+qdev_alias_all_properties() aliases a DeviceState's qdev properties onto
+an Object. This is used for VirtioPCIProxy types so that --device
+virtio-blk-pci has properties of its embedded --device virtio-blk-device
+object.
 
-virtio-blk and virtio-scsi devices need a way to specify the mapping between
-IOThreads and virtqueues. At the moment all virtqueues are assigned to a single
-IOThread or the main loop. This single thread can be a CPU bottleneck, so it is
-necessary to allow finer-grained assignment to spread the load. With this
-series applied, "pidstat -t 1" shows that guests with -smp 2 or higher are able
-to exploit multiple IOThreads.
+Currently this function is implemented using qdev properties. Change the
+function to use QOM object class properties instead. This works because
+qdev properties create QOM object class properties, but it also catches
+any QOM object class-only properties that have no qdev properties.
 
-This series introduces command-line syntax for the new iothread-vq-mapping
-property is as follows:
+This change ensures that properties of devices are shown with --device
+foo,\? even if they are QOM object class properties.
 
-  --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0","vqs":[0,1,2]},...]},...'
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ hw/core/qdev-properties.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-IOThreads are specified by name and virtqueues are specified by 0-based
-index.
-
-It will be common to simply assign virtqueues round-robin across a set
-of IOThreads. A convenient syntax that does not require specifying
-individual virtqueue indices is available:
-
-  --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"},...]},...'
-
-There is no way to reassign virtqueues at runtime and I expect that to be a
-very rare requirement.
-
-Note that JSON --device syntax is required for the iothread-vq-mapping
-parameter because it's non-scalar.
-
-Based-on: 81e69329d6a4018f4b37d15b6fc845fbe585a93b (https://repo.or.cz/qemu/kevin.git block)
-
-Stefan Hajnoczi (4):
-  qdev-properties: alias all object class properties
-  string-output-visitor: show structs as "<omitted>"
-  qdev: add IOThreadVirtQueueMappingList property type
-  virtio-blk: add iothread-vq-mapping parameter
-
- qapi/virtio.json                     |  30 ++++++
- hw/block/dataplane/virtio-blk.h      |   3 +
- include/hw/qdev-properties-system.h  |   5 +
- include/hw/virtio/virtio-blk.h       |   2 +
- include/qapi/string-output-visitor.h |   6 +-
- hw/block/dataplane/virtio-blk.c      | 155 ++++++++++++++++++++-------
- hw/block/virtio-blk.c                |  92 +++++++++++++---
- hw/core/qdev-properties-system.c     |  46 ++++++++
- hw/core/qdev-properties.c            |  18 ++--
- qapi/string-output-visitor.c         |  16 +++
- 10 files changed, 312 insertions(+), 61 deletions(-)
-
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 840006e953..7d6fa726fd 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -1076,16 +1076,18 @@ void device_class_set_props(DeviceClass *dc, Property *props)
+ void qdev_alias_all_properties(DeviceState *target, Object *source)
+ {
+     ObjectClass *class;
+-    Property *prop;
++    ObjectPropertyIterator iter;
++    ObjectProperty *prop;
+ 
+     class = object_get_class(OBJECT(target));
+-    do {
+-        DeviceClass *dc = DEVICE_CLASS(class);
+ 
+-        for (prop = dc->props_; prop && prop->name; prop++) {
+-            object_property_add_alias(source, prop->name,
+-                                      OBJECT(target), prop->name);
++    object_class_property_iter_init(&iter, class);
++    while ((prop = object_property_iter_next(&iter))) {
++        if (object_property_find(source, prop->name)) {
++            continue; /* skip duplicate properties */
+         }
+-        class = object_class_get_parent(class);
+-    } while (class != object_class_by_name(TYPE_DEVICE));
++
++        object_property_add_alias(source, prop->name,
++                                  OBJECT(target), prop->name);
++    }
+ }
 -- 
 2.43.0
 
