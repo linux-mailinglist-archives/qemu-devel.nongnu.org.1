@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F5281903A
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC8681903F
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:03:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfKp-00076Y-4w; Tue, 19 Dec 2023 14:00:55 -0500
+	id 1rFfLW-0008SC-HR; Tue, 19 Dec 2023 14:01:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfJk-0005LD-1m
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:59:49 -0500
+ id 1rFfJz-0005mg-MU
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:00:04 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfJi-0007Vz-EY
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:59:47 -0500
+ id 1rFfJx-0007Yo-8Z
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:00:03 -0500
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmG83BTlz4xCp;
- Wed, 20 Dec 2023 05:59:44 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmGR1X8Dz4xCp;
+ Wed, 20 Dec 2023 05:59:59 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmG40p2yz4xR5;
- Wed, 20 Dec 2023 05:59:39 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmGL655tz4xQj;
+ Wed, 20 Dec 2023 05:59:54 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
@@ -43,9 +43,10 @@ Cc: Eric Auger <eric.auger@redhat.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PULL 33/47] vfio/ap: Allow the selection of a given iommu backend
-Date: Tue, 19 Dec 2023 19:56:29 +0100
-Message-ID: <20231219185643.725448-34-clg@redhat.com>
+Subject: [PULL 36/47] vfio/ccw: Make vfio cdev pre-openable by passing a file
+ handle
+Date: Tue, 19 Dec 2023 19:56:32 +0100
+Message-ID: <20231219185643.725448-37-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231219185643.725448-1-clg@redhat.com>
 References: <20231219185643.725448-1-clg@redhat.com>
@@ -78,59 +79,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Now we support two types of iommu backends, let's add the capability
-to select one of them. This depends on whether an iommufd object has
-been linked with the vfio-ap device:
+This gives management tools like libvirt a chance to open the vfio
+cdev with privilege and pass FD to qemu. This way qemu never needs
+to have privilege to open a VFIO or iommu cdev node.
 
-if the user wants to use the legacy backend, it shall not
-link the vfio-ap device with any iommufd object:
-
- -device vfio-ap,sysfsdev=/sys/bus/mdev/devices/XXX
-
-This is called the legacy mode/backend.
-
-If the user wants to use the iommufd backend (/dev/iommu) it
-shall pass an iommufd object id in the vfio-ap device options:
-
- -object iommufd,id=iommufd0
- -device vfio-ap,sysfsdev=/sys/bus/mdev/devices/XXX,iommufd=iommufd0
-
-Suggested-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
 Tested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/ap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/vfio/ccw.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index bbf69ff55ae8a922d0ab6d6f966a9a2283cdd2a3..80629609aebbff9156f78c9bbde5dc6c293ac84e 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -11,10 +11,12 @@
-  */
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index d2d58bb677cfad38a6965ea6a43783256407207b..2afdf17dbe1e09dbb2f4f2d3d3b34f2a3d32dc5c 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -590,11 +590,12 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
+         }
+     }
  
- #include "qemu/osdep.h"
-+#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
- #include <linux/vfio.h>
- #include <sys/ioctl.h>
- #include "qapi/error.h"
- #include "hw/vfio/vfio-common.h"
-+#include "sysemu/iommufd.h"
- #include "hw/s390x/ap-device.h"
- #include "qemu/error-report.h"
- #include "qemu/event_notifier.h"
-@@ -204,6 +206,10 @@ static void vfio_ap_unrealize(DeviceState *dev)
++    if (vfio_device_get_name(vbasedev, errp) < 0) {
++        return;
++    }
++
+     vbasedev->ops = &vfio_ccw_ops;
+     vbasedev->type = VFIO_DEVICE_TYPE_CCW;
+-    vbasedev->name = g_strdup_printf("%x.%x.%04x", vcdev->cdev.hostid.cssid,
+-                           vcdev->cdev.hostid.ssid,
+-                           vcdev->cdev.hostid.devid);
+     vbasedev->dev = dev;
  
- static Property vfio_ap_properties[] = {
-     DEFINE_PROP_STRING("sysfsdev", VFIOAPDevice, vdev.sysfsdev),
+     /*
+@@ -691,12 +692,29 @@ static const VMStateDescription vfio_ccw_vmstate = {
+     .unmigratable = 1,
+ };
+ 
++static void vfio_ccw_instance_init(Object *obj)
++{
++    VFIOCCWDevice *vcdev = VFIO_CCW(obj);
++
++    vcdev->vdev.fd = -1;
++}
++
 +#ifdef CONFIG_IOMMUFD
-+    DEFINE_PROP_LINK("iommufd", VFIOAPDevice, vdev.iommufd,
-+                     TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
++static void vfio_ccw_set_fd(Object *obj, const char *str, Error **errp)
++{
++    vfio_device_set_fd(&VFIO_CCW(obj)->vdev, str, errp);
++}
 +#endif
-     DEFINE_PROP_END_OF_LIST(),
++
+ static void vfio_ccw_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     S390CCWDeviceClass *cdc = S390_CCW_DEVICE_CLASS(klass);
+ 
+     device_class_set_props(dc, vfio_ccw_properties);
++#ifdef CONFIG_IOMMUFD
++    object_class_property_add_str(klass, "fd", NULL, vfio_ccw_set_fd);
++#endif
+     dc->vmsd = &vfio_ccw_vmstate;
+     dc->desc = "VFIO-based subchannel assignment";
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+@@ -714,6 +732,7 @@ static const TypeInfo vfio_ccw_info = {
+     .name = TYPE_VFIO_CCW,
+     .parent = TYPE_S390_CCW,
+     .instance_size = sizeof(VFIOCCWDevice),
++    .instance_init = vfio_ccw_instance_init,
+     .class_init = vfio_ccw_class_init,
  };
  
 -- 
