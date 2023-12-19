@@ -2,146 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12AAC81868C
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 12:43:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 623528186CF
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 13:00:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFYU3-0004Go-7z; Tue, 19 Dec 2023 06:41:59 -0500
+	id 1rFYkj-0007jB-Um; Tue, 19 Dec 2023 06:59:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rFYU1-00048k-0K
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 06:41:57 -0500
-Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2412::601]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rFYTy-0000SH-7W
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 06:41:56 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gwG9zx/Hycxz0pvU1GzzS8pZrNyCkZ7vJ6c3JymcINy03Lvu5zAprLDR46QR1y3HDs0NO1XpP58RhesHhGRgGmRs+Mv8FbJi9wwnuxMOCAfMpBFtwm84srTvicMKAfwuUsvuzeKtvY7dAesb6vZJIMmSNUOPSzANMwzwmtoghORDIGmOgu4oSnjj4TOAvpnWcBDhbDE2URAhDSsWuCLbxpKMKqUs6r2E2iICvGtUktCa/ZYd0kM9zigh/fOQ+c9no1tOc3U0qsb5ySOPLDawXd3ofv+I/IW/4NJVlnA7kRQDZgh9eSHY0jTJ0FnoD1N+WnjGt+Awaludxs8IkpNdKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U77njlRnreXjZvF3+32EEl747QWWVKdmYWzGOSPb/f8=;
- b=XE4GBrmcOgHqii+H61xALw0PYwk1g3P5bzOOpGwXICrNyEpZ6ZZxxJcuN9DtcZf0BoQZkezFU1eA5s9FA+eA61alwRPwlvojDGSjTGplqNlY94pwr+DTmYhFcSGulrqebXsPFnY3jQepVpW4M8HvJIJ1grJGYh+5qiUR+lLvZ0tpJjqBRtvsRfkEHP424dStxJbEJrAZKeGyyrA0TxjgimTvU+dZY3vX6mbGBomhMJTH047wmurha/rt1G7Ssp25uySUwPBtvw0SxBoLy0NbNcTBT8eoWyzyMdWHIlkLjfvWOIUBaPwggUBt0RpwHfQUzapb5HwQvF+d2QNTUpSTAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=U77njlRnreXjZvF3+32EEl747QWWVKdmYWzGOSPb/f8=;
- b=XSpa6a8t0dB6Z3Xk3msSm2hD83Lb9drdyZTm6RNvragi3a74Rx9b8yw/CE/o4PJV0rgq25lZ+6yVZenaUZojOmkWV7ICEnPnrRfUFYcL7+G0JlaR3XXwHht5O3PyaxXC69lG8V6bhuk+FZbpZi+C+bK/JzOl887t5UJnfFY4guU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
- by MN0PR12MB5833.namprd12.prod.outlook.com (2603:10b6:208:378::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.38; Tue, 19 Dec
- 2023 11:41:36 +0000
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::87d4:680b:51ef:181]) by SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::87d4:680b:51ef:181%7]) with mapi id 15.20.7091.034; Tue, 19 Dec 2023
- 11:41:35 +0000
-Date: Tue, 19 Dec 2023 19:41:08 +0800
-From: Huang Rui <ray.huang@amd.com>
-To: Antonio Caggiano <quic_acaggian@quicinc.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Stabellini, Stefano" <stefano.stabellini@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-Subject: Re: [PATCH v6 02/11] virtio-gpu: Configure new feature flag
- context_create_with_flags for virglrenderer
-Message-ID: <ZYGBVM7DNRuwQEDh@amd.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-3-ray.huang@amd.com>
- <dbb37337-1552-410e-8231-7619aacbf887@quicinc.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dbb37337-1552-410e-8231-7619aacbf887@quicinc.com>
-X-ClientProxiedBy: SG2PR02CA0099.apcprd02.prod.outlook.com
- (2603:1096:4:92::15) To SJ2PR12MB8690.namprd12.prod.outlook.com
- (2603:10b6:a03:540::10)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rFYkh-0007j2-8y
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 06:59:11 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rFYkf-00040F-GD
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 06:59:11 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6d741fb7c8eso2113566b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 03:59:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1702987148; x=1703591948;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QBCmXlcPQLnvzfr7BErdsRGIOlx39GK74XQfC7yhRPA=;
+ b=BwGW0m+uaaVOwLK10PExtiY6MpeRxohjENUgfWrAEdICax3P7ta1DP1IGg7QTHHcHf
+ Rukl/0NNTEUcXoTybjg4l7aVj2gR8NSjar/7DwrRfYc8nS9CV44p7uEfbO+lbvUqmtR3
+ 5aZYrht058B7xF4rC7xJBdIFuBA2ifiD/Mxdcyfwp/+k5Vw45mFvlUXx5vLBANjVY9o/
+ nNo67AsHZwztqFYNPbXfclVgvOlbxovjZAheQ8BCv2gfedxbV792TiZymNxO6TJ2XUmh
+ XB+ExvEoWVr1qWdW91EJdPXjo/t4TvQ+Fwq0BlKfW8zX+mbVXSgnm9+bxF7dEZgrYrSM
+ VGsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702987148; x=1703591948;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QBCmXlcPQLnvzfr7BErdsRGIOlx39GK74XQfC7yhRPA=;
+ b=Y7KsnTIXrgqRb7vV28wrHoM+UgfGvbujVcISpwJ8q/Sz32jYVkwe91emh6hW0qkvR4
+ 1p17op0kCQ7XouiZmCsTWDkMd+6IFzPY7LZ6zv0hirDiZ3UWLIFGsxySURiunLwifslE
+ KroTg3rCnC0OCW/X/sW1TPLpaFO+sK7mDoIpvH1iOwPYX6uuw9hCfxFUWxWMTWRziQhf
+ qn3J9LAJ4llSHMRy/4NqBsXix9eQUX3S7r5hROuL90b595xViDC1NoD0U8zI6WaAnFYj
+ sv6TwN+hKkiAPm/81zQv077LlXW4xx0pCa54SFnAEP5amwQr9x1Wl8ZAXK8jCJ8Q0O3I
+ LKLw==
+X-Gm-Message-State: AOJu0Yxr2SMBAFPKDmnPVB1snOkb3DbE/1hs699QbpkOWZ18+PSk0tGI
+ rCvnSWVzH3URqcKi3VsfLwLTaw==
+X-Google-Smtp-Source: AGHT+IF+txC8DqatBGA36KgNCzFDOAs3WSN79XlOg3N+e6UtKeNHtQZccnuFCVldD01fvjUBUBDwzg==
+X-Received: by 2002:a05:6a20:8f2a:b0:191:618a:6146 with SMTP id
+ b42-20020a056a208f2a00b00191618a6146mr17594052pzk.40.1702987147759; 
+ Tue, 19 Dec 2023 03:59:07 -0800 (PST)
+Received: from localhost ([157.82.205.15]) by smtp.gmail.com with UTF8SMTPSA id
+ r9-20020a17090a0ac900b0028ae54d988esm1456953pje.48.2023.12.19.03.59.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Dec 2023 03:59:07 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 0/2] tap: Use g_spawn_sync() and
+ g_spawn_check_wait_status()
+Date: Tue, 19 Dec 2023 20:58:56 +0900
+Message-Id: <20231219-glib-v1-0-1b040d286b91@daynix.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|MN0PR12MB5833:EE_
-X-MS-Office365-Filtering-Correlation-Id: ec05e7d6-5847-4117-b5e3-08dc0087745c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: yvsrAdUU3ubx+Yw+JvfqszeZjRdzE0Zgzc19AflHYHKSmAowx/gL/DmKUFfK93sK2LNG0RJaxKSARb3q3yy6RuBdGmsYQkirRCNMM9IeE1kCDVmZVSs5gjIoaaYbf64bEkVDIfid0va3QOmZ4U8aN7sdZnjzTYvrTTVLqYlSXinM0+USbX4m3WTnUGD+AFe3FIyE7c8q0ohdRg449YfukVSeN84VR4EJPFK2CS/CD1PkTUKGxz9zt8lfmK/UJnCheuY5CSjtwGUlYiDVjyM9c1ALK5j7Q5LhL4Rmrll45y1Vaiu8ZNecuulpXVGhvlnzEuUxWatYg80OxC6GT1cVD81TUmC6FHE9yLwnyQVddRbuT8Xysmx/i0PdOzFLDSMTFe6Dtev4DeX7d9pZqdLix844g3pfpzvRPEDp4JPOFOazxMPRxb7QIT4nwaOUrrdz/yTeq57G2zurpZ3kAR3t25GE4n3e9I+mMh5KJbT15+uH97SZ7Lulsr16NxD1N3fgBhDCm1owHQ4KV+EcOzU1qVqDELXMgvGBRXv7b2KvokGD9i2hiAYVIz+YGONpBSlI
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(376002)(366004)(39860400002)(396003)(136003)(230922051799003)(186009)(451199024)(1800799012)(64100799003)(53546011)(2616005)(26005)(38100700002)(4326008)(5660300002)(41300700001)(7416002)(8936002)(2906002)(478600001)(66556008)(6486002)(66476007)(6506007)(6512007)(6666004)(54906003)(66946007)(8676002)(316002)(6916009)(36756003)(86362001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xev2fzVNP+Vreoeq+zPjW2Ig2crhSo6kheo4ErG6gz0fX+G/jrxJEuqOfXp0?=
- =?us-ascii?Q?zcKq92lJ32mvKXLxs2xouYBnrAf2V2OF8oqmeeG11f+9CM8waoWkYS8qiPHK?=
- =?us-ascii?Q?G3SXLBzVmf97BRnEXoBW9l1sdLVN3f0YBxWR3VRKpTSXejIzEu6dnHngD0Jf?=
- =?us-ascii?Q?JChuj8ACQNoedObtROXEq7qw/YMdypq4qKpI9isHTJ2CaYDi+o3MYhoV/1De?=
- =?us-ascii?Q?3T7oxqY+2bj0NFIhjHlXz/VQe4jbMxYgrdwf71ddoYk5uwM1qQr/NdFfAZTv?=
- =?us-ascii?Q?0hVq+gbHHKXWOLkeuaZ26fQYzCpuGDeqFk4XFwtxmsXeL85BsfeEmgPHSg9S?=
- =?us-ascii?Q?Eo8JRxJ2hVE8JzX2O3Z6doPIq6DMl3z7RASiUmYZ7/KFMYtSTEImZi21gUpq?=
- =?us-ascii?Q?uCLt2CGrJpPCGunn8f7bqsUrBHC3pMeDjZs4SMWoIQpTgN+dCWCO1mBUUGYv?=
- =?us-ascii?Q?mPGIta7bXANAlSBN1hObjmxAlldyG8T9tboHdCDMTqZES27sc5z8HBhRojEs?=
- =?us-ascii?Q?uo5YpKSpTQn88ydq57M4hOK6OkpBIIKNSNiShuTIvB0zHPuN5KWwYavEG8oN?=
- =?us-ascii?Q?8rPirA+NwFqdqIzGsXvu+sPkEcfBsPYzcBU7lcvYJxXs9KJSj3lEUhQliP8f?=
- =?us-ascii?Q?MJh6/zqY0E7bozIn/298QC/EAobieSsffkdKVgAvZBlX0m8DfICTF2TLrhm7?=
- =?us-ascii?Q?IitBujNeXwqJsLYt6qHV293WvleREAk0+9HqT4AzJoAV13ekLnUVqOVAgUxE?=
- =?us-ascii?Q?+2d7olf+EqKupogcfNnj7WJycrLSfwx9Ee7smtwJeihdy5kxtVP6GxxU6PSu?=
- =?us-ascii?Q?4XD9jIoeLMNzpyZfSX8j26HzbTwuX3jqajPd02s//CYu3A4kut8uAIr1nK0y?=
- =?us-ascii?Q?5s5KotqoZODsZlsF5ZdiMoin+ZW+1Ll1vaIAPtbf+x2cXXJHIQAXj+DMDoXi?=
- =?us-ascii?Q?7hKppOaeXXIpSGAgfg5pksXrWx8ODUKnrIf6KttP1OxovAYLal49dkBskCjK?=
- =?us-ascii?Q?ZzGQXfy6gWHsbPuvc3y9DQ9i74tD/iLV7T40YWjV2BrWs9HhcHBodo0OT62U?=
- =?us-ascii?Q?cFFyVRn/zT72UmudC7wDR3JvCl+zwxBdnKRX2/NKJBS1SSpS5OTpgDGFMIUL?=
- =?us-ascii?Q?rbuLLiAXfOwQgqmz3bQNg+WLkRtb7zyvQ1GNNupn675NodQOMwNBWitM2Cg2?=
- =?us-ascii?Q?8NAyeeKZXcxJUChfr5fvw8DfGfdd2p35t0uFhdfWoT6MBAQMJXQjMY0rWDNP?=
- =?us-ascii?Q?gAbMZd3GN59hJad4Ir3E+1LaUP4yux+9R40WpWgcB+ZKEX4zhO34QSjTTWzG?=
- =?us-ascii?Q?Rr5cYl/8j2BHvvG/iC2AnHOlolWZzFIwg69wHVo7K1pJNGdJ+9gos2j+ynSu?=
- =?us-ascii?Q?LZ62DiPxSPqSA1fu9sHCxvXqzhp0qgS5xPZAfrh4unZI66Py+p0E0aZOEcab?=
- =?us-ascii?Q?uiLl3cxgi75v4P33C2XSuaX8TF1bKMqty+hlIdubY+vy0X6LqTRXboRJ3tse?=
- =?us-ascii?Q?UaSM1wAKYJ/BMYObcf/Ba9eGHasBHk//2F6kQc/X48/oE/Lrh0VXo11aaanb?=
- =?us-ascii?Q?DbVGt1dEjBQXzpkl+kR8xMd1mDXbR3V559H163+e?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec05e7d6-5847-4117-b5e3-08dc0087745c
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2023 11:41:35.6013 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A37/ug81Jsdfkgd7tdzem530iaGXTiEkxEmkzrXWp+80Ai1lwuybMRgSJr4DnfgAb3v2LslRNU/rJV6RiOeQtQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5833
-Received-SPF: softfail client-ip=2a01:111:f403:2412::601;
- envelope-from=Ray.Huang@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAICFgWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDI0NL3fSczCRdA2OTRGOTpCQD0xQLJaDSgqLUtMwKsDHRsbW1ACsk2Xd
+ WAAAA
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.4
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,50 +92,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Dec 19, 2023 at 05:09:27PM +0800, Antonio Caggiano wrote:
-> Hi Huang Rui,
-> 
-> Thank you for this new version.
-> 
-> All patches which I did not sign off are reviewed by me :)
+g_spawn_sync() gives an informative message if it fails to execute
+the script instead of reporting exiting status 1.
 
-Thanks Antonio! May I have your RB in next version?
+g_spawn_check_wait_status() also gives an message easier to understand
+than the raw value returned by waitpid().
 
-Best Regards,
-Ray
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Akihiko Odaki (2):
+      glib-compat: Define g_spawn_check_wait_status()
+      tap: Use g_spawn_sync() and g_spawn_check_wait_status()
 
-> 
-> Cheers,
-> Antonio Caggiano
-> 
-> On 19/12/2023 08:53, Huang Rui wrote:
-> > Configure a new feature flag (context_create_with_flags) for
-> > virglrenderer.
-> > 
-> > Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> > Signed-off-by: Huang Rui <ray.huang@amd.com>
-> > ---
-> > 
-> > Changes in v6:
-> > - Move macros configurations under virgl.found() and rename
-> >    HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS.
-> > 
-> >   meson.build | 4 ++++
-> >   1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/meson.build b/meson.build
-> > index ec01f8b138..ea52ef1b9c 100644
-> > --- a/meson.build
-> > +++ b/meson.build
-> > @@ -1050,6 +1050,10 @@ if not get_option('virglrenderer').auto() or have_system or have_vhost_user_gpu
-> >                            cc.has_member('struct virgl_renderer_resource_info_ext', 'd3d_tex2d',
-> >                                          prefix: '#include <virglrenderer.h>',
-> >                                          dependencies: virgl))
-> > +    config_host_data.set('HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS',
-> > +                         cc.has_function('virgl_renderer_context_create_with_flags',
-> > +                                         prefix: '#include <virglrenderer.h>',
-> > +                                         dependencies: virgl))
-> >     endif
-> >   endif
-> >   rutabaga = not_found
+ include/glib-compat.h |  2 ++
+ net/tap.c             | 52 ++++++++++++++++++++++-----------------------------
+ 2 files changed, 24 insertions(+), 30 deletions(-)
+---
+base-commit: 9c74490bff6c8886a922008d0c9ce6cae70dd17e
+change-id: 20231219-glib-034a34bb05d8
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
+
 
