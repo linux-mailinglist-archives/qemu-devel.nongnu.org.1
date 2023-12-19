@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A26981904B
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:05:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09021819056
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:06:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfLg-0000Tx-Jy; Tue, 19 Dec 2023 14:01:48 -0500
+	id 1rFfLc-0000Na-EY; Tue, 19 Dec 2023 14:01:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfLE-0007rg-0I
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:01:24 -0500
+ id 1rFfLF-0007t3-Q9
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:01:25 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfKh-0007uM-0P
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:00:49 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmHJ6fTSz4xSQ;
- Wed, 20 Dec 2023 06:00:44 +1100 (AEDT)
+ id 1rFfKm-0007ux-6w
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:00:54 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmHQ11CMz4x2V;
+ Wed, 20 Dec 2023 06:00:50 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmHD4DNSz4wc3;
- Wed, 20 Dec 2023 06:00:40 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmHK3fhsz4xS7;
+ Wed, 20 Dec 2023 06:00:45 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
@@ -43,11 +42,10 @@ Cc: Eric Auger <eric.auger@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PULL 45/47] vfio: Introduce a helper function to initialize
- VFIODevice
-Date: Tue, 19 Dec 2023 19:56:41 +0100
-Message-ID: <20231219185643.725448-46-clg@redhat.com>
+ Yi Liu <yi.l.liu@intel.com>, Nicolin Chen <nicolinc@nvidia.com>
+Subject: [PULL 46/47] docs/devel: Add VFIO iommufd backend documentation
+Date: Tue, 19 Dec 2023 19:56:42 +0100
+Message-ID: <20231219185643.725448-47-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231219185643.725448-1-clg@redhat.com>
 References: <20231219185643.725448-1-clg@redhat.com>
@@ -80,139 +78,214 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Introduce a helper function to replace the common code to initialize
-VFIODevice in pci, platform, ap and ccw VFIO device.
-
-No functional change intended.
-
 Suggested-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Tested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h |  2 ++
- hw/vfio/ap.c                  |  8 ++------
- hw/vfio/ccw.c                 |  8 ++------
- hw/vfio/helpers.c             | 11 +++++++++++
- hw/vfio/pci.c                 |  6 ++----
- hw/vfio/platform.c            |  6 ++----
- 6 files changed, 21 insertions(+), 20 deletions(-)
+ MAINTAINERS                    |   1 +
+ docs/devel/index-internals.rst |   1 +
+ docs/devel/vfio-iommufd.rst    | 166 +++++++++++++++++++++++++++++++++
+ 3 files changed, 168 insertions(+)
+ create mode 100644 docs/devel/vfio-iommufd.rst
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index efcba19f6663af28bffacf954469a9986b8ae8f0..b8aa8a549532442a31c8e85ce385c992d84f6bd5 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -257,4 +257,6 @@ int vfio_get_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
- /* Returns 0 on success, or a negative errno. */
- int vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
- void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp);
-+void vfio_device_init(VFIODevice *vbasedev, int type, VFIODeviceOps *ops,
-+                      DeviceState *dev, bool ram_discard);
- #endif /* HW_VFIO_VFIO_COMMON_H */
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 95fe7cd98b6fdad5d8ca12a798f9aff91ca5b3f4..e157aa1ff79c1ad96b9102d54d4c11da1bd719ba 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -226,18 +226,14 @@ static void vfio_ap_instance_init(Object *obj)
-     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(obj);
-     VFIODevice *vbasedev = &vapdev->vdev;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ca70bb4e6415fc3af110cc7fd37ac67be5ab8c9d..0ddb20a35f205dba3b437c33bf489a53ecfc36b0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2176,6 +2176,7 @@ F: backends/iommufd.c
+ F: include/sysemu/iommufd.h
+ F: include/qemu/chardev_open.h
+ F: util/chardev_open.c
++F: docs/devel/vfio-iommufd.rst
  
--    vbasedev->type = VFIO_DEVICE_TYPE_AP;
--    vbasedev->ops = &vfio_ap_ops;
--    vbasedev->dev = DEVICE(vapdev);
--    vbasedev->fd = -1;
--
-     /*
-      * vfio-ap devices operate in a way compatible with discarding of
-      * memory in RAM blocks, as no pages are pinned in the host.
-      * This needs to be set before vfio_get_device() for vfio common to
-      * handle ram_block_discard_disable().
-      */
--    vbasedev->ram_block_discard_allowed = true;
-+    vfio_device_init(vbasedev, VFIO_DEVICE_TYPE_AP, &vfio_ap_ops,
-+                     DEVICE(vapdev), true);
- }
- 
- #ifdef CONFIG_IOMMUFD
-diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index 6305a4c1b86412c9706027939460176b62a6345d..90e4a534371684c08e112364e1537eb8979f73f4 100644
---- a/hw/vfio/ccw.c
-+++ b/hw/vfio/ccw.c
-@@ -683,11 +683,6 @@ static void vfio_ccw_instance_init(Object *obj)
-     VFIOCCWDevice *vcdev = VFIO_CCW(obj);
-     VFIODevice *vbasedev = &vcdev->vdev;
- 
--    vbasedev->type = VFIO_DEVICE_TYPE_CCW;
--    vbasedev->ops = &vfio_ccw_ops;
--    vbasedev->dev = DEVICE(vcdev);
--    vbasedev->fd = -1;
--
-     /*
-      * All vfio-ccw devices are believed to operate in a way compatible with
-      * discarding of memory in RAM blocks, ie. pages pinned in the host are
-@@ -696,7 +691,8 @@ static void vfio_ccw_instance_init(Object *obj)
-      * needs to be set before vfio_get_device() for vfio common to handle
-      * ram_block_discard_disable().
-      */
--    vbasedev->ram_block_discard_allowed = true;
-+    vfio_device_init(vbasedev, VFIO_DEVICE_TYPE_CCW, &vfio_ccw_ops,
-+                     DEVICE(vcdev), true);
- }
- 
- #ifdef CONFIG_IOMMUFD
-diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-index 3592c3d54ecd68d4bfd23d4c3402a393fb1f2eb0..678987080228e9f69890bd955de452fe7ec06cca 100644
---- a/hw/vfio/helpers.c
-+++ b/hw/vfio/helpers.c
-@@ -652,3 +652,14 @@ void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
-     }
-     vbasedev->fd = fd;
- }
+ vhost
+ M: Michael S. Tsirkin <mst@redhat.com>
+diff --git a/docs/devel/index-internals.rst b/docs/devel/index-internals.rst
+index 6f81df92bcaba790477aff1ccb51048409331950..3def4a138bae5eca5b564e0044c1c2e80b5bc07a 100644
+--- a/docs/devel/index-internals.rst
++++ b/docs/devel/index-internals.rst
+@@ -18,5 +18,6 @@ Details about QEMU's various subsystems including how to add features to them.
+    s390-dasd-ipl
+    tracing
+    vfio-migration
++   vfio-iommufd
+    writing-monitor-commands
+    virtio-backends
+diff --git a/docs/devel/vfio-iommufd.rst b/docs/devel/vfio-iommufd.rst
+new file mode 100644
+index 0000000000000000000000000000000000000000..3d1c11f175e5968e9f1519da70c9a0a6ced03995
+--- /dev/null
++++ b/docs/devel/vfio-iommufd.rst
+@@ -0,0 +1,166 @@
++===============================
++IOMMUFD BACKEND usage with VFIO
++===============================
 +
-+void vfio_device_init(VFIODevice *vbasedev, int type, VFIODeviceOps *ops,
-+                      DeviceState *dev, bool ram_discard)
-+{
-+    vbasedev->type = type;
-+    vbasedev->ops = ops;
-+    vbasedev->dev = dev;
-+    vbasedev->fd = -1;
++(Same meaning for backend/container/BE)
 +
-+    vbasedev->ram_block_discard_allowed = ram_discard;
-+}
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 87405584d774810c8349825fafec34945a915121..1874ec1aba987cac6cb83f86650e7a5e1968c327 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3327,10 +3327,8 @@ static void vfio_instance_init(Object *obj)
-     vdev->host.slot = ~0U;
-     vdev->host.function = ~0U;
- 
--    vbasedev->type = VFIO_DEVICE_TYPE_PCI;
--    vbasedev->ops = &vfio_pci_ops;
--    vbasedev->dev = DEVICE(vdev);
--    vbasedev->fd = -1;
-+    vfio_device_init(vbasedev, VFIO_DEVICE_TYPE_PCI, &vfio_pci_ops,
-+                     DEVICE(vdev), false);
- 
-     vdev->nv_gpudirect_clique = 0xFF;
- 
-diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-index 506eb8193f2b047bc810e50236ae82fb7dfc7693..a8d9b7da633e0717421acbe9a951334b074b6607 100644
---- a/hw/vfio/platform.c
-+++ b/hw/vfio/platform.c
-@@ -657,10 +657,8 @@ static void vfio_platform_instance_init(Object *obj)
-     VFIOPlatformDevice *vdev = VFIO_PLATFORM_DEVICE(obj);
-     VFIODevice *vbasedev = &vdev->vbasedev;
- 
--    vbasedev->type = VFIO_DEVICE_TYPE_PLATFORM;
--    vbasedev->ops = &vfio_platform_ops;
--    vbasedev->dev = DEVICE(vdev);
--    vbasedev->fd = -1;
-+    vfio_device_init(vbasedev, VFIO_DEVICE_TYPE_PLATFORM, &vfio_platform_ops,
-+                     DEVICE(vdev), false);
- }
- 
- #ifdef CONFIG_IOMMUFD
++With the introduction of iommufd, the Linux kernel provides a generic
++interface for user space drivers to propagate their DMA mappings to kernel
++for assigned devices. While the legacy kernel interface is group-centric,
++the new iommufd interface is device-centric, relying on device fd and iommufd.
++
++To support both interfaces in the QEMU VFIO device, introduce a base container
++to abstract the common part of VFIO legacy and iommufd container. So that the
++generic VFIO code can use either container.
++
++The base container implements generic functions such as memory_listener and
++address space management whereas the derived container implements callbacks
++specific to either legacy or iommufd. Each container has its own way to setup
++secure context and dma management interface. The below diagram shows how it
++looks like with both containers.
++
++::
++
++                      VFIO                           AddressSpace/Memory
++      +-------+  +----------+  +-----+  +-----+
++      |  pci  |  | platform |  |  ap |  | ccw |
++      +---+---+  +----+-----+  +--+--+  +--+--+     +----------------------+
++          |           |           |        |        |   AddressSpace       |
++          |           |           |        |        +------------+---------+
++      +---V-----------V-----------V--------V----+               /
++      |           VFIOAddressSpace              | <------------+
++      |                  |                      |  MemoryListener
++      |        VFIOContainerBase list           |
++      +-------+----------------------------+----+
++              |                            |
++              |                            |
++      +-------V------+            +--------V----------+
++      |   iommufd    |            |    vfio legacy    |
++      |  container   |            |     container     |
++      +-------+------+            +--------+----------+
++              |                            |
++              | /dev/iommu                 | /dev/vfio/vfio
++              | /dev/vfio/devices/vfioX    | /dev/vfio/$group_id
++  Userspace   |                            |
++  ============+============================+===========================
++  Kernel      |  device fd                 |
++              +---------------+            | group/container fd
++              | (BIND_IOMMUFD |            | (SET_CONTAINER/SET_IOMMU)
++              |  ATTACH_IOAS) |            | device fd
++              |               |            |
++              |       +-------V------------V-----------------+
++      iommufd |       |                vfio                  |
++  (map/unmap  |       +---------+--------------------+-------+
++  ioas_copy)  |                 |                    | map/unmap
++              |                 |                    |
++       +------V------+    +-----V------+      +------V--------+
++       | iommfd core |    |  device    |      |  vfio iommu   |
++       +-------------+    +------------+      +---------------+
++
++* Secure Context setup
++
++  - iommufd BE: uses device fd and iommufd to setup secure context
++    (bind_iommufd, attach_ioas)
++  - vfio legacy BE: uses group fd and container fd to setup secure context
++    (set_container, set_iommu)
++
++* Device access
++
++  - iommufd BE: device fd is opened through ``/dev/vfio/devices/vfioX``
++  - vfio legacy BE: device fd is retrieved from group fd ioctl
++
++* DMA Mapping flow
++
++  1. VFIOAddressSpace receives MemoryRegion add/del via MemoryListener
++  2. VFIO populates DMA map/unmap via the container BEs
++     * iommufd BE: uses iommufd
++     * vfio legacy BE: uses container fd
++
++Example configuration
++=====================
++
++Step 1: configure the host device
++---------------------------------
++
++It's exactly same as the VFIO device with legacy VFIO container.
++
++Step 2: configure QEMU
++----------------------
++
++Interactions with the ``/dev/iommu`` are abstracted by a new iommufd
++object (compiled in with the ``CONFIG_IOMMUFD`` option).
++
++Any QEMU device (e.g. VFIO device) wishing to use ``/dev/iommu`` must
++be linked with an iommufd object. It gets a new optional property
++named iommufd which allows to pass an iommufd object. Take ``vfio-pci``
++device for example:
++
++.. code-block:: bash
++
++    -object iommufd,id=iommufd0
++    -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0
++
++Note the ``/dev/iommu`` and VFIO cdev can be externally opened by a
++management layer. In such a case the fd is passed, the fd supports a
++string naming the fd or a number, for example:
++
++.. code-block:: bash
++
++    -object iommufd,id=iommufd0,fd=22
++    -device vfio-pci,iommufd=iommufd0,fd=23
++
++If the ``fd`` property is not passed, the fd is opened by QEMU.
++
++If no ``iommufd`` object is passed to the ``vfio-pci`` device, iommufd
++is not used and the user gets the behavior based on the legacy VFIO
++container:
++
++.. code-block:: bash
++
++    -device vfio-pci,host=0000:02:00.0
++
++Supported platform
++==================
++
++Supports x86, ARM and s390x currently.
++
++Caveats
++=======
++
++Dirty page sync
++---------------
++
++Dirty page sync with iommufd backend is unsupported yet, live migration is
++disabled by default. But it can be force enabled like below, low efficient
++though.
++
++.. code-block:: bash
++
++    -object iommufd,id=iommufd0
++    -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0,enable-migration=on
++
++P2P DMA
++-------
++
++PCI p2p DMA is unsupported as IOMMUFD doesn't support mapping hardware PCI
++BAR region yet. Below warning shows for assigned PCI device, it's not a bug.
++
++.. code-block:: none
++
++    qemu-system-x86_64: warning: IOMMU_IOAS_MAP failed: Bad address, PCI BAR?
++    qemu-system-x86_64: vfio_container_dma_map(0x560cb6cb1620, 0xe000000021000, 0x3000, 0x7f32ed55c000) = -14 (Bad address)
++
++FD passing with mdev
++--------------------
++
++``vfio-pci`` device checks sysfsdev property to decide if backend is a mdev.
++If FD passing is used, there is no way to know that and the mdev is treated
++like a real PCI device. There is an error as below if user wants to enable
++RAM discarding for mdev.
++
++.. code-block:: none
++
++    qemu-system-x86_64: -device vfio-pci,iommufd=iommufd0,x-balloon-allowed=on,fd=9: vfio VFIO_FD9: x-balloon-allowed only potentially compatible with mdev devices
++
++``vfio-ap`` and ``vfio-ccw`` devices don't have same issue as their backend
++devices are always mdev and RAM discarding is force enabled.
 -- 
 2.43.0
 
