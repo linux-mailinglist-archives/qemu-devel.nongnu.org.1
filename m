@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38886819020
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 19:59:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1FC819026
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 19:59:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfHJ-0001vR-7p; Tue, 19 Dec 2023 13:57:17 -0500
+	id 1rFfHS-0001xh-U0; Tue, 19 Dec 2023 13:57:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfHG-0001vI-Bh
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:14 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1rFfHQ-0001xY-Tn
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:24 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfHE-0006xO-ID
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:13 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmCB3MT2z4wcX;
- Wed, 20 Dec 2023 05:57:10 +1100 (AEDT)
+ id 1rFfHP-0006y0-1f
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:24 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmCN2Lfxz4x5q;
+ Wed, 20 Dec 2023 05:57:20 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmC62vTVz4wcJ;
- Wed, 20 Dec 2023 05:57:06 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmCJ1yplz4wx5;
+ Wed, 20 Dec 2023 05:57:15 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
@@ -42,23 +42,24 @@ Cc: Eric Auger <eric.auger@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 02/47] vfio/container: Introduce a empty VFIOIOMMUOps
-Date: Tue, 19 Dec 2023 19:55:58 +0100
-Message-ID: <20231219185643.725448-3-clg@redhat.com>
+Subject: [PULL 04/47] vfio/common: Introduce vfio_container_init/destroy helper
+Date: Tue, 19 Dec 2023 19:56:00 +0100
+Message-ID: <20231219185643.725448-5-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231219185643.725448-1-clg@redhat.com>
 References: <20231219185643.725448-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=7/MV=H6=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,57 +77,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-This empty VFIOIOMMUOps named vfio_legacy_ops will hold all general
-IOMMU ops of legacy container.
+This adds two helper functions vfio_container_init/destroy which will be
+used by both legacy and iommufd containers to do base container specific
+initialization and release.
 
+No functional change intended.
+
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h | 2 +-
- hw/vfio/container.c           | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ include/hw/vfio/vfio-container-base.h | 4 ++++
+ hw/vfio/container-base.c              | 9 +++++++++
+ hw/vfio/container.c                   | 4 +++-
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 586d153c12b58f5eaabe8e36ad91fad6abd4af10..678161f2079b20aae9317d67e5a94696ea269248 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -255,7 +255,7 @@ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
- typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
- extern VFIOGroupList vfio_group_list;
- extern VFIODeviceList vfio_device_list;
--
-+extern const VFIOIOMMUOps vfio_legacy_ops;
- extern const MemoryListener vfio_memory_listener;
- extern int vfio_kvm_device_fd;
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 56b033f59f13684a56824929c16d9445a6efc5ff..577f52ccbc0e6d3b48d733c3bec0c1a2435d3e32 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -38,6 +38,10 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+                              hwaddr iova, ram_addr_t size,
+                              IOMMUTLBEntry *iotlb);
  
++void vfio_container_init(VFIOContainerBase *bcontainer,
++                         const VFIOIOMMUOps *ops);
++void vfio_container_destroy(VFIOContainerBase *bcontainer);
++
+ struct VFIOIOMMUOps {
+     /* basic feature */
+     int (*dma_map)(VFIOContainerBase *bcontainer,
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index 55d3a35fa42b66e6590da8d699e60850c88ed74d..e929435751d3bef179218f667f48e0419c352df4 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -30,3 +30,12 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+     g_assert(bcontainer->ops->dma_unmap);
+     return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
+ }
++
++void vfio_container_init(VFIOContainerBase *bcontainer, const VFIOIOMMUOps *ops)
++{
++    bcontainer->ops = ops;
++}
++
++void vfio_container_destroy(VFIOContainerBase *bcontainer)
++{
++}
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 242010036af33faa325a34008af40c2cc67a02ea..4bc43ddfa4441dc76950203903f22e5475574a47 100644
+index c04df26323bd115af67ec10f851d61bf686534c2..32a0251dd1673ef9f47f8a0db9f7dd113841b7d8 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -472,6 +472,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-                                   Error **errp)
- {
-     VFIOContainer *container;
-+    VFIOContainerBase *bcontainer;
-     int ret, fd;
-     VFIOAddressSpace *space;
- 
-@@ -552,6 +553,8 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-     container->iova_ranges = NULL;
+@@ -559,7 +559,7 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
      QLIST_INIT(&container->giommu_list);
      QLIST_INIT(&container->vrdl_list);
-+    bcontainer = &container->bcontainer;
-+    bcontainer->ops = &vfio_legacy_ops;
+     bcontainer = &container->bcontainer;
+-    bcontainer->ops = &vfio_legacy_ops;
++    vfio_container_init(bcontainer, &vfio_legacy_ops);
  
      ret = vfio_init_container(container, group->fd, errp);
      if (ret) {
-@@ -933,3 +936,5 @@ void vfio_detach_device(VFIODevice *vbasedev)
-     vfio_put_base_device(vbasedev);
-     vfio_put_group(group);
- }
-+
-+const VFIOIOMMUOps vfio_legacy_ops;
+@@ -661,6 +661,7 @@ put_space_exit:
+ static void vfio_disconnect_container(VFIOGroup *group)
+ {
+     VFIOContainer *container = group->container;
++    VFIOContainerBase *bcontainer = &container->bcontainer;
+ 
+     QLIST_REMOVE(group, container_next);
+     group->container = NULL;
+@@ -695,6 +696,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
+             QLIST_REMOVE(giommu, giommu_next);
+             g_free(giommu);
+         }
++        vfio_container_destroy(bcontainer);
+ 
+         trace_vfio_disconnect_container(container->fd);
+         close(container->fd);
 -- 
 2.43.0
 
