@@ -2,63 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8A281904E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5C3819051
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:06:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfLj-0000dY-7Z; Tue, 19 Dec 2023 14:01:51 -0500
+	id 1rFfPk-0005bd-6g; Tue, 19 Dec 2023 14:06:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfLG-0007tM-0I
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:01:25 -0500
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfKr-0007vB-5C
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:00:58 -0500
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmHW0Vdkz4xS9;
- Wed, 20 Dec 2023 06:00:55 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmHQ56C9z4xS7;
- Wed, 20 Dec 2023 06:00:50 +1100 (AEDT)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Eric Farman <farman@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 47/47] hw/ppc/Kconfig: Imply VFIO_PCI
-Date: Tue, 19 Dec 2023 19:56:43 +0100
-Message-ID: <20231219185643.725448-48-clg@redhat.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231219185643.725448-1-clg@redhat.com>
-References: <20231219185643.725448-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1rFfPO-0005Rr-AM; Tue, 19 Dec 2023 14:05:40 -0500
+Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <n.ostrenkov@gmail.com>)
+ id 1rFfPL-0000DE-Ms; Tue, 19 Dec 2023 14:05:38 -0500
+Received: by mail-yb1-xb34.google.com with SMTP id
+ 3f1490d57ef6-dbd04e7d183so3168401276.1; 
+ Tue, 19 Dec 2023 11:05:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1703012734; x=1703617534; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=o1gkDaoRWnuKADigBfLJemgjsZtPwZTBeG2A0bj8Ekw=;
+ b=D7LJyZPDYd315bBmxEGlRGrmPYfOyIm7fl6SFSNpvDuERW8xtYqMo46EquWSpvoRvW
+ WRPZoBe1fX3TpPcpt2URsKpZ4LRWXWyhZDCwXLIt72bsDa/Mch5eybcZKFpKaEW5OZr9
+ U7kAn/tzMVT8BLA/9jyGYwpzAq2DogkikguL/gYCnWls3a5CBEnJa0banZLGdRNei011
+ w3n5tXKvTxWYDKaXH8jf9+Z/h64sO751LJTqmf9mwvc/3hXSf4YeI1y+krA7/h7svxoh
+ YvURoqneb+AO1jmN4arVSFCmz1kd6ZDV9mP4R/jpUFK1vZnzYda2dJI4PZ+IFkJzK/cw
+ +j4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703012734; x=1703617534;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=o1gkDaoRWnuKADigBfLJemgjsZtPwZTBeG2A0bj8Ekw=;
+ b=ksjjJ0bdzU2zhl05m/pfFB3ALAMA45n/Seh9xLOZGr5W/vT3wYiQIrAYati4xYebra
+ tAC4gNgVAIKeu/Mzjr2n+nYEsMrobqoWXjWVgf1/yPx0lG3ipkkF0/e8FAxDdNH2FtJD
+ 2uNCCKlGhyiTEYuS37Wb3RkZWkqjRORMCN56oiZjhn2qFJzUX0E2J2aGaZa/tq3I4ILz
+ 2F5T1vrfYiVcV1xntIwBralib0K6J9kHzoP0VB3j01FVzgrYBpBI4YUcB8FBZQmOsIni
+ W4ILAYbH6wSbCmk5QkmjPc9ZZRxiGaA+L8TxwTovgA3++wOFxnl0sK5TzFYd6GP2iGsA
+ gk8Q==
+X-Gm-Message-State: AOJu0Yxk2K+m0dNDnI2XjVcbKCAosA40oXEbLysaTH+81rR7sfCiGh8j
+ hx5bvgJUyKsKoZDQnzjzcfI6o36A/Xd42mw5YQU=
+X-Google-Smtp-Source: AGHT+IGtrHqBQBZ0t145CgYT0nzCA1SitvjG9jnWdv7R7cMUUYXGNCG98K+3tICnop82SRb9bytBE8nKlEThpC7H6MI=
+X-Received: by 2002:a25:83cf:0:b0:dbd:4a26:957d with SMTP id
+ v15-20020a2583cf000000b00dbd4a26957dmr1718559ybm.85.1703012734354; Tue, 19
+ Dec 2023 11:05:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=7/MV=H6=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20231219105510.4907-1-n.ostrenkov@gmail.com>
+ <CAFEAcA-Gp-8ooEhHazJg5Q-xyQ5xB2ox2+fU_tNBYV0HTkwg6A@mail.gmail.com>
+In-Reply-To: <CAFEAcA-Gp-8ooEhHazJg5Q-xyQ5xB2ox2+fU_tNBYV0HTkwg6A@mail.gmail.com>
+From: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+Date: Tue, 19 Dec 2023 22:05:23 +0300
+Message-ID: <CAC8KSA0F-QtkS5T7fcEM=+iuVCNAk88SYUUcVaTKG2hXNn2Uhw@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm: add cache controller for Freescale i.MX6
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000144bae060ce18d1f"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
+ envelope-from=n.ostrenkov@gmail.com; helo=mail-yb1-xb34.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,103 +84,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the legacy and iommufd backends were introduced, a set of common
-vfio-pci routines were exported in pci.c for both backends to use :
+--000000000000144bae060ce18d1f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-  vfio_pci_pre_reset
-  vfio_pci_get_pci_hot_reset_info
-  vfio_pci_host_match
-  vfio_pci_post_reset
+thanks for letting me know! Enjoy your holidays.
 
-This introduced a build failure on PPC when --without-default-devices
-is use because VFIO is always selected in ppc/Kconfig but VFIO_PCI is
-not.
+=D0=B2=D1=82, 19 =D0=B4=D0=B5=D0=BA. 2023=E2=80=AF=D0=B3., 19:08 Peter Mayd=
+ell <peter.maydell@linaro.org>:
 
-Use an 'imply VFIO_PCI' in ppc/Kconfig and bypass compilation of the
-VFIO EEH hooks routines defined in hw/ppc/spapr_pci_vfio.c with
-CONFIG_VFIO_PCI.
+> On Tue, 19 Dec 2023 at 10:55, Nikita Ostrenkov <n.ostrenkov@gmail.com>
+> wrote:
+> >
+> > Signed-off-by: Nikita Ostrenkov <n.ostrenkov@gmail.com>
+> > ---
+> >  hw/arm/Kconfig    | 1 +
+> >  hw/arm/fsl-imx6.c | 3 +++
+> >  2 files changed, 4 insertions(+)
+>
+> Thanks for this patch; it looks fairly obviously right,
+> but I wanted to let you know I won't be able to do proper patch
+> review and take it into the arm queue until I get back from holidays
+> in January.
+>
+> -- PMM
+>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/ppc/spapr_pci_vfio.c | 36 ++++++++++++++++++++++++++++++++++++
- hw/ppc/Kconfig          |  2 +-
- 2 files changed, 37 insertions(+), 1 deletion(-)
+--000000000000144bae060ce18d1f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/hw/ppc/spapr_pci_vfio.c b/hw/ppc/spapr_pci_vfio.c
-index d1d07bec4644da4ae6a99d3357d6d17ff66264de..76b2a3487b5d6f21528e9c301341eb27bc8fec1d 100644
---- a/hw/ppc/spapr_pci_vfio.c
-+++ b/hw/ppc/spapr_pci_vfio.c
-@@ -26,10 +26,12 @@
- #include "hw/pci/pci_device.h"
- #include "hw/vfio/vfio-common.h"
- #include "qemu/error-report.h"
-+#include CONFIG_DEVICES /* CONFIG_VFIO_PCI */
- 
- /*
-  * Interfaces for IBM EEH (Enhanced Error Handling)
-  */
-+#ifdef CONFIG_VFIO_PCI
- static bool vfio_eeh_container_ok(VFIOContainer *container)
- {
-     /*
-@@ -314,3 +316,37 @@ int spapr_phb_vfio_eeh_configure(SpaprPhbState *sphb)
- 
-     return RTAS_OUT_SUCCESS;
- }
-+
-+#else
-+
-+bool spapr_phb_eeh_available(SpaprPhbState *sphb)
-+{
-+    return false;
-+}
-+
-+void spapr_phb_vfio_reset(DeviceState *qdev)
-+{
-+}
-+
-+int spapr_phb_vfio_eeh_set_option(SpaprPhbState *sphb,
-+                                  unsigned int addr, int option)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+int spapr_phb_vfio_eeh_get_state(SpaprPhbState *sphb, int *state)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+int spapr_phb_vfio_eeh_reset(SpaprPhbState *sphb, int option)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+int spapr_phb_vfio_eeh_configure(SpaprPhbState *sphb)
-+{
-+    return RTAS_OUT_NOT_SUPPORTED;
-+}
-+
-+#endif /* CONFIG_VFIO_PCI */
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index 56f0475a8e2e46e433d9df02460aec65e26d77a5..44263a58c4d3202afbe8bb44c67701bded855a57 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -3,11 +3,11 @@ config PSERIES
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     imply VIRTIO_VGA
-+    imply VFIO_PCI if LINUX   # needed by spapr_pci_vfio.c
-     select NVDIMM
-     select DIMM
-     select PCI
-     select SPAPR_VSCSI
--    select VFIO if LINUX   # needed by spapr_pci_vfio.c
-     select XICS
-     select XIVE
-     select MSI_NONBROKEN
--- 
-2.43.0
+<div dir=3D"auto">thanks for letting me know! Enjoy your holidays.</div><br=
+><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=D0=B2=D1=
+=82, 19 =D0=B4=D0=B5=D0=BA. 2023=E2=80=AF=D0=B3., 19:08 Peter Maydell &lt;<=
+a href=3D"mailto:peter.maydell@linaro.org">peter.maydell@linaro.org</a>&gt;=
+:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bor=
+der-left:1px #ccc solid;padding-left:1ex">On Tue, 19 Dec 2023 at 10:55, Nik=
+ita Ostrenkov &lt;<a href=3D"mailto:n.ostrenkov@gmail.com" target=3D"_blank=
+" rel=3D"noreferrer">n.ostrenkov@gmail.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Signed-off-by: Nikita Ostrenkov &lt;<a href=3D"mailto:n.ostrenkov@gmai=
+l.com" target=3D"_blank" rel=3D"noreferrer">n.ostrenkov@gmail.com</a>&gt;<b=
+r>
+&gt; ---<br>
+&gt;=C2=A0 hw/arm/Kconfig=C2=A0 =C2=A0 | 1 +<br>
+&gt;=C2=A0 hw/arm/fsl-imx6.c | 3 +++<br>
+&gt;=C2=A0 2 files changed, 4 insertions(+)<br>
+<br>
+Thanks for this patch; it looks fairly obviously right,<br>
+but I wanted to let you know I won&#39;t be able to do proper patch<br>
+review and take it into the arm queue until I get back from holidays<br>
+in January.<br>
+<br>
+-- PMM<br>
+</blockquote></div>
 
+--000000000000144bae060ce18d1f--
 
