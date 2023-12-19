@@ -2,74 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F708188C2
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 14:38:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEA28188DD
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 14:49:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFaHL-0004Pc-Fj; Tue, 19 Dec 2023 08:36:59 -0500
+	id 1rFaS2-00080P-2E; Tue, 19 Dec 2023 08:48:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFaHJ-0004P2-D8
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 08:36:57 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFaHH-0007RD-Ow
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 08:36:57 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-50e2d00f99cso3626606e87.0
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 05:36:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702993013; x=1703597813; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=QbJ3kv/f9Zy4T+D0KV+GQ//dY218+CcYZA6RqEYrMoc=;
- b=qgNef5Y72HwpE1Oolf6xMKHEiShwDs2Cjaa+fjamhEplk532vUY7FyPy6vKEhjY7q7
- AV/5fx/GOlWv7CUseN3NneQx+WVKHDbR4GPTy6GiigSQhK6tu1RhwMo04NJRgdj0Z0sh
- Xnfq3JqpmXlWah8CJ98GkRfIYss4etTo6eRaCq7vivgyTGt0v0ucQmZ2eTKeRBus95S3
- rKc8LhD33dfAHVJUY3Bh6rXesSjIgdw2UuUdXJeuVvpclJ36PpU0JQRz5E4nqBPCZao1
- 6QvbuBGdFNudwvRWifJ4Q9uyWGs9zNslUK7IRdjIsgUn9FMP7JUPDsL+M3VenEgqr55N
- daQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702993013; x=1703597813;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QbJ3kv/f9Zy4T+D0KV+GQ//dY218+CcYZA6RqEYrMoc=;
- b=aw21m1ZG4/PKyisVHvtE3tr7CQ/27ic4/O2UyoiXwRK7KbPysLed0pvxwwzszO/bk8
- mHN4YxhDjfsl2tnzxSUX1BSUWhnAYjsitsbOxGOGL3tmaj6hLshPYpHsDQmjLnXS6wIj
- RRVCD3Y5FiqNdtZYmZdhb0QAR5e7cyyZYMI98HVMpS3ZzmJ+XviNS2qxWI+5dklQ4+Wc
- DBg4VgQsoySm1FadPViI3x/8OSdLii2Pi3mtM/E+Jnu2piOXmLHPaD9kQsFKQHV3yJuF
- aqIOl2bWPxJXloVhPbOageWhoJwE7k8YZHYzjTQkn85dovQGP3h5T5xVAfK2FR11rsqT
- anbg==
-X-Gm-Message-State: AOJu0YzWGi9ZosshqCiMw4OjPZJ1zhos9LQ5HJX3W5ozwrQ+hEaLYzj2
- kmOsbDXKrS3l8TjvRE9P7zRRfVgFCz1wLmIPuyNJIg==
-X-Google-Smtp-Source: AGHT+IHlQ29hWaYx0J2zx0bKj7CxQEUECr9bmDcjgM8MNuYNdRsmG2dHV1ISNuX/KCEkm16PGd7027Gx1l+Qc7+hKfI=
-X-Received: by 2002:a19:8c4b:0:b0:50e:30b3:b905 with SMTP id
- i11-20020a198c4b000000b0050e30b3b905mr2212845lfj.44.1702993013263; Tue, 19
- Dec 2023 05:36:53 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rFaRw-000807-6z
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 08:47:56 -0500
+Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2412::601]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rFaRj-0000xw-OY
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 08:47:55 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CSssbbDFK/RcCK+wIKzd9DL8Jf1/ShKy1lmnwo7dKsTbYjeiJPx4nGqQOnNhzqQEhDGO8ZR6wDQSX+4vT1yfUCJm2/eHwtVMOOJFjYcgydoIJLRJqaIVMb2YjXF2INyp8rkfancyc/d/zdN7YvkGbVqD4gzw7AnDqFXYsJx7li/mR3+BNn9ThaNS7Ld9FNKPF+hOiUkDMCj9LfyZQ1+AgiWmmFtB05DedBrmJgiZscnnF25zI083F5GOLAqyVeNpm8uQg3f2+GgX69dl80w90Nl8dYIwHfJ0FnisAD30dqwvJAH9vXtwb2aaTEYnSYCqWqvDdS5Q0F86PxbhYmtCZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uu9qE1fckvSHFFmwWket4wpttfMg/+RXOEm8NUjf+/A=;
+ b=Fe6Jf1oEHb227n3/VRIK2aLh5F8qSXXzQ1/BHD8qOw+vnA5xKRb8lpQcl+w7C9S8lWZqLXc+i8pGthac1dWrzSzBskGL5e93mnfy7TAVaC0jpfgHAiomKPO85/pt6bJdEZJk9gVzP8CM15m5c87g+6qVNIbYW7rVFrAhb35La6/66eIW1Vk/YiicTRajSYzZSx6Z8SfS0HwCBW+m4fRLKq0D5XYt99h7XzNmBIpqKsOSRdm6WcpiMlmVRdHkNd+C+6ovZllMN+xLJ+4Coiuwj2vWcp8S+dU0MlKaEqOPgyOk/2XXurCkqgSaincWqDst5H8BdQZ3wGOqnWFUwIiEJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uu9qE1fckvSHFFmwWket4wpttfMg/+RXOEm8NUjf+/A=;
+ b=TcoxYuUJQ1bfr9vxj202x0M9M5DnmR1mknmhlWi/hJInhwxj6xPNSsy2KKw0EukqHT/tIq+f32t25EJmd8ht7Ry+NPRTKuZC+dkLDrhHMaI0P1bQbenE3HS+NkaelwNBUDo7U5aFWFQmJ4zuTHbYcWnyEAB2C7PrqCw2Obp2aOQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
+ by DS7PR12MB6286.namprd12.prod.outlook.com (2603:10b6:8:95::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.38; Tue, 19 Dec
+ 2023 13:47:37 +0000
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::87d4:680b:51ef:181]) by SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::87d4:680b:51ef:181%7]) with mapi id 15.20.7091.034; Tue, 19 Dec 2023
+ 13:47:37 +0000
+Date: Tue, 19 Dec 2023 21:47:12 +0800
+From: Huang Rui <ray.huang@amd.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Gert Wollny <gert.wollny@collabora.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
+ Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Stabellini, Stefano" <stefano.stabellini@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
+Subject: Re: [PATCH v6 01/11] linux-headers: Update to kernel headers to add
+ venus capset
+Message-ID: <ZYGe4GcFPt0k5PTM@amd.com>
+References: <20231219075320.165227-1-ray.huang@amd.com>
+ <20231219075320.165227-2-ray.huang@amd.com>
+ <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com>
+X-ClientProxiedBy: SGXP274CA0018.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::30)
+ To SJ2PR12MB8690.namprd12.prod.outlook.com
+ (2603:10b6:a03:540::10)
 MIME-Version: 1.0
-References: <20230302123029.153265-1-pbonzini@redhat.com>
- <20230302123029.153265-58-pbonzini@redhat.com>
-In-Reply-To: <20230302123029.153265-58-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 19 Dec 2023 13:36:41 +0000
-Message-ID: <CAFEAcA92Rd7f3Ngn8_nYZCxJptAD2DcP+oHCiXii6vTHMCUamQ@mail.gmail.com>
-Subject: Re: [PULL 57/62] hw/xen: Support MSI mapping to PIRQ
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>,
- Paul Durrant <paul@xen.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|DS7PR12MB6286:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37c1e39c-24e5-4b3f-74b9-08dc00990fc1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: SgZuP7XyijEisodHE6/WXOtJGKsMicbbyh8+yzbelB5P0m2sax+TP+f/oKWDjZ6Eiu9we2pZYd3FZGp2YNv8nl+aJUe/uOd67dwK122Bz6upIhJiiffmte4ImZXRGyd7nwNV4yFDiCzNz07hQw16RKlwMuOASMVY3KqBbLs5UA9V8jv5Kj8pMBOinw2eSA0KcPeU3jQY8AEo8x1A2phwwhqNlqXABHwsxG57UK5jdSH3W79fPZTJcnjbFJSL0kntRMV1tcQJlbrfSyebZUN6IuOhCHIi8hR3PCU+JxC+AqRH62kL7BDWw1KyTi8FoqpsYmqqzJ+roxDkssgCAqJEZDYHHrsYlslORkpyj8W5Z/fWILU/O+UbvkX8ZfsfpJqUIa+kxjF+fp3ZDnIGfXM7C9eDWF/E7eiuOBza8PHhwsSLmjDnP8+jsOjddOUXEg03td6Nvqap44WG5Ken/Nh5Iy1mbwcVnMt8yFjTvoTS2fJxVP2Gs3LtNz2RI6YaQsWAmdR76ohX4orL/iS0ZC1Oh2q7ZgoJ5CZs4gh4QpdCINY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(376002)(39860400002)(136003)(396003)(346002)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(66556008)(83380400001)(2616005)(6916009)(54906003)(66476007)(316002)(478600001)(38100700002)(966005)(6486002)(26005)(66946007)(4326008)(8936002)(8676002)(6506007)(53546011)(6666004)(6512007)(7416002)(5660300002)(15650500001)(4744005)(2906002)(86362001)(36756003)(41300700001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?YIBPlg5agvbhdMzPKay9nnA5BhmcTutkEadnJEv88GWTFAphN1o0EKYcIUDO?=
+ =?us-ascii?Q?MKU7WlLWm2evSnjy/8liOj/CABCCylLIbevVNnP5SP3DtMtMGN4hnqNUC5Gw?=
+ =?us-ascii?Q?FRDEPp7LsgI7vuYp930KN/ArCliZTHqOL6RLtYufPpdU7CqgF18QfIA/1MNy?=
+ =?us-ascii?Q?MDkUOcIJc1UTYhUYNoxwfmHaPIuT0paFE6IvWGRfcRI7e4IC233N3qD6pPXu?=
+ =?us-ascii?Q?eRDHGZYEWJ4vy7hY9egMQHcTi3O/maq2nfX5l27VPR0SkNJwnsGtpZg+tWiQ?=
+ =?us-ascii?Q?m16B8TjCg9S3m1GmDf5dnfr3Z1pLZKxhbvrUEQSWfL3LhDEW71rCE3ZmJNVv?=
+ =?us-ascii?Q?/huNzKS40SUtdqkYvortzz1ueJPj9uSkqvcAuFrLeWw9Ci/RD4mAQ3iwRkN3?=
+ =?us-ascii?Q?pO3JIc/2Pqc5ysfTyJtD2h4K6oDSpmTLN0fh2+R4Ctw9KoVMVFCDel0+7xKp?=
+ =?us-ascii?Q?ErFtRV+Eyi6+16KF614f8qTGBkU5ejBN673v9Y4niGBtVCpbQBQQfP19z9P9?=
+ =?us-ascii?Q?Wey75c7VyfQkcnH7nzCEhv65zE81PbANF3oMO+jyDc41YRzlu595CGVH4NoR?=
+ =?us-ascii?Q?w4tNItEZ0SzzHvm30jXTM2C1y6fyEKnx/h9G0Rf1m3lnXpIEAHP4TXZDh81A?=
+ =?us-ascii?Q?ZRHWMULLJrDDTPGI2QYv6ILZyfuhxN63bdDkrgc0Up9gP2nNBLASOYq2huCl?=
+ =?us-ascii?Q?RJ/2eUeyWy1zTlx5VqdJoeW42KU74ehlvofSKIO4qgBYuTnrG4a8d1aXXEGT?=
+ =?us-ascii?Q?qJTSLRPq6371wtmh3j3QjB3RgJga+QKr5jLibulkKfROC4tyQbVY3XTQghDa?=
+ =?us-ascii?Q?9KBhl1LlE93uSejmoFtBUUlAa/5HNsXwkNOUr2/M82HO7DJAVaF29AcBEsEB?=
+ =?us-ascii?Q?cAAiha5ozssQtNWgKBGklHQRCJN6E97hULYfu2km4faT+JuMNl9iPlxFJbmk?=
+ =?us-ascii?Q?7qnrsdwNAYGrPysnJbIZirQCcmuA+7klWzMcAWSPIwFHc5eKDyzDe5hgqkZf?=
+ =?us-ascii?Q?EOrodiIRm50bO3R2WGQeIkKKRHj4eYJh+w1o5NPCSCJASn6K+NUb8/WfjDRP?=
+ =?us-ascii?Q?sgw8yrm8ObHbBUB4fAsLg3Z/pt8srUkN7XiMkbMCU55NTOE/64k3C7j4nPwz?=
+ =?us-ascii?Q?HZ/PTB94j2gOVdczdCd/h22zLFV3QMzp57mgyWkpkIMev+6hVKmszlOuun1Q?=
+ =?us-ascii?Q?6cZn84ih4vlqTgawdQWi5BXAkXSaJc4rKd50hgpL2zSpWlBnINM2JCFRX/Gj?=
+ =?us-ascii?Q?zqaiiaZ8u/OMP0rCGpMeiGLVe92Bp2xfwomELrpc/c4fcJqbtEuOFCgbAVVk?=
+ =?us-ascii?Q?+CNIrQtsZ0UYZvNnMCHC+TI9kgFKjJO65ssZzEz81jmohFxzxUHc0EZfduHv?=
+ =?us-ascii?Q?s80fk+ihXwHqfl6JtrIA+Sf60mk3JoxBjsR+f4sgbcVhuqqH7SLrrtJXoq9k?=
+ =?us-ascii?Q?1j07IskCps4vySxRsV4BJHBqtPoNIbjYy2vRBniNXmydiBWWFbMoAkrxDqvg?=
+ =?us-ascii?Q?qcs1uCUZ+0i3fBwyn0PoKEgiP8DgszfWdwUYv78vfAb4dCFRzfm5spphdpXe?=
+ =?us-ascii?Q?d+C4YfJAfoRAQTrx/Yckx5IWhZiQCnGufgoPdMkw?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37c1e39c-24e5-4b3f-74b9-08dc00990fc1
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2023 13:47:37.5381 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uNKWHTpzH+Kg7oGuW9VkLkNBxiWSNnBU/DcmrPZbQ9Yg0fQdtTAUkfyr9nY1JYOLCBU985iLJMIUYKgfNNpaOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6286
+Received-SPF: softfail client-ip=2a01:111:f403:2412::601;
+ envelope-from=Ray.Huang@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,61 +156,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2 Mar 2023 at 12:37, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> From: David Woodhouse <dwmw@amazon.co.uk>
->
-> The way that Xen handles MSI PIRQs is kind of awful.
->
-> There is a special MSI message which targets a PIRQ. The vector in the
-> low bits of data must be zero. The low 8 bits of the PIRQ# are in the
-> destination ID field, the extended destination ID field is unused, and
-> instead the high bits of the PIRQ# are in the high 32 bits of the address.
+On Tue, Dec 19, 2023 at 08:20:22PM +0800, Akihiko Odaki wrote:
+> On 2023/12/19 16:53, Huang Rui wrote:
+> > Sync up kernel headers to update venus macro till they are merged into
+> > mainline.
+> 
+> Thanks for sorting things out with the kernel and spec.
+> 
+> > 
+> > Signed-off-by: Huang Rui <ray.huang@amd.com>
+> > ---
+> > 
+> > Changes in v6:
+> > - Venus capset is applied in kernel, so update it in qemu for future use.
+> > 
+> > https://lore.kernel.org/lkml/b79dcf75-c9e8-490e-644f-3b97d95f7397@collabora.com/
+> > https://cgit.freedesktop.org/drm-misc/commit/?id=216d86b9a430f3280e5b631c51e6fd1a7774cfa0
+> Please include the link to the upstream commit in the commit message.
 
-Hi; Coverity thinks this change introduced a locking error
-(CID 1527403):
+So far, it's in drm maintainers' branch not in kernel mainline yet. Do I
+need to wait it to be merged into kernel mainline?
 
-
-> @@ -1226,21 +1256,54 @@ int xen_evtchn_bind_pirq_op(struct evtchn_bind_pirq *pirq)
->          return -EINVAL;
->      }
->
-> -    QEMU_LOCK_GUARD(&s->port_lock);
-> +    QEMU_IOTHREAD_LOCK_GUARD();
-
-We used to take the port_lock before looking at s->pirq[pirq->pirq].port,
-but now we don't...
-
->      if (s->pirq[pirq->pirq].port) {
->          return -EBUSY;
->      }
->
-> +    qemu_mutex_lock(&s->port_lock);
-
-...until down here after that "exit if already allocated" check.
-So Coverity thinks that two threads might both get into
-the "take the lock, allocate a port, set the port field in the
-struct" codepath simultaneously.
-
-> +
->      ret = allocate_port(s, 0, EVTCHNSTAT_pirq, pirq->pirq,
->                          &pirq->port);
->      if (ret) {
-> +        qemu_mutex_unlock(&s->port_lock);
->          return ret;
->      }
->
->      s->pirq[pirq->pirq].port = pirq->port;
->      trace_kvm_xen_bind_pirq(pirq->pirq, pirq->port);
->
-> +    qemu_mutex_unlock(&s->port_lock);
-> +
-
-I think in practice the iothread-lock guard will prevent this,
-but it does look rather odd. Is there a reason not to have
-the port lock for the whole stretch of "check whether we've
-already allocated this, and if not then allocate it" code ?
-
-thanks
--- PMM
+Thanks,
+Ray
 
