@@ -2,98 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112BB81898F
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 15:16:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D29818A0F
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 15:34:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFarx-0003je-VD; Tue, 19 Dec 2023 09:14:49 -0500
+	id 1rFb9C-0006pS-Kw; Tue, 19 Dec 2023 09:32:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFars-0003jM-Bv
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:14:45 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFarp-00077w-V3
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:14:43 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-553a45208ffso801212a12.3
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 06:14:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1702995280; x=1703600080; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=TZrVQU/xjd9KQVh7NuWIHyvOYXWE/j1hmbmx4pHhV9I=;
- b=dnOK+kaamu9rM1Q4obd0iLmm5lWROklu3FBOaOs6+X6PM4vAp2iRpRFY8LR/ZNL2FR
- JtgawlG8oEbkVLlxTdd0JfAzouA5Tmr33k8w/hlySytjZNtUR2/n8IVeBg3KAPmuBv/e
- /rXi/8FHp9S+zeM+DdTSZSlt2cGLbcJZsXqgXMJqrarGvBDB0sAyJwKNemRF5b3eFr4U
- 8YRA6lj2qqknZs181kOoYvgBsuhlNLfj8vAoIDeSjkDnbCK4fgRqbIfpiwgjSILEwOpR
- twlnXIYbIyugwFhrnltu7dzZDGJHwgVeR+3yUhoEJUPTPEDee/fhSamm2qlO/4T7tXgB
- dERg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rFb97-0006pD-6r
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:32:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rFb94-0001qt-Tj
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:32:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702996347;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=pTrQ/+pnsueCKSsoG4BNUCIVeEpWZVlmEuUFOQXuLzo=;
+ b=C7vgxH/vVHH8MW391no5XiDWgD6e8aC5JGUb2wePcSAGyn5g/pOsdVtiV/PIdaHE52lCyY
+ at438qwYvgD4hL3m0SJvfgS0YuVtj6UYAkB5LbIOeb1v3C4uZz3Uem7VbNWkNX7aJ4iyAn
+ 5r0j43+JJLLmMWko7AiYTRh5LqmttL8=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-7lN3Atb7N6CDbrvbpyjQiw-1; Tue, 19 Dec 2023 09:32:21 -0500
+X-MC-Unique: 7lN3Atb7N6CDbrvbpyjQiw-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4261cc37508so45404021cf.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 06:32:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702995280; x=1703600080;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TZrVQU/xjd9KQVh7NuWIHyvOYXWE/j1hmbmx4pHhV9I=;
- b=ivHfGHZP1yswZ8+UcZxv1feY6FLDIVOLCg42Rr3ejVuKlm1jr8Z4Bjkp/wxJWJngF5
- m20LqYtWajqETMaVFioVrhz3N5qWlUeENSFSqHCs06ZeocNzoN8uHDGgV+Mjg4uTqX2y
- TsVjCt30Wcf+GRlzqySFPlrvRtpRQJMSyxwI/KF1QBKkNSxsMKzgLBlXBbzEcDAOs1XR
- /vy4mx5a/8B5dS81scAK4qTxqL0xyfnl2gsYYoQN3AR78tR7UBwUNiFpZu0UrgSiSgK/
- Xx9uLrlbasC61GROZ0VNCkxp0ZO53q7I5dZg8Lgpl3KTT2ua0cMj+y1vHn5G5KeO36sT
- dBRg==
-X-Gm-Message-State: AOJu0YyzNEcqMoOizqVV093yUXe1xb/nzX1RF8NsRCPBRzlPAQAbqSRH
- qudryB3ScX1jkQVMakUdA2K+vOs9OlGbO/ybyBfxWA==
-X-Google-Smtp-Source: AGHT+IFoIAEbqofqhy4721zESdE0+CFNnJQliL+b/I13sftgzhzrNkoJ6Q+Mhi/PaWdAQPcN0Xxyu+UY1l2GSHt5eBE=
-X-Received: by 2002:a50:c082:0:b0:552:e74b:6412 with SMTP id
- k2-20020a50c082000000b00552e74b6412mr1850187edf.10.1702995280123; Tue, 19 Dec
- 2023 06:14:40 -0800 (PST)
+ d=1e100.net; s=20230601; t=1702996340; x=1703601140;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pTrQ/+pnsueCKSsoG4BNUCIVeEpWZVlmEuUFOQXuLzo=;
+ b=IFIU8JL/9NermI2QMlhmER9Xzyt35SLJZAQceKGvOpHlK7b6op/EXxgD65/MwNS+wL
+ EGbFtD64E4SXH6r7iEIK9Pjquv+kp27Sixyf7wZAFxaoixqs9ENUw/Cd/W310gTtBnME
+ edWbpoEhKhWOjXpW3CmwW+YOkqgC9ei8HD7pWP1fdma9e1bggdY2VssRF/jIyYdAW/rE
+ HubkF82c8EaqZkp6iltFk/vztJrZh5IeM6WoNsISAgNhmovwWviFdyqU92KyToSoaHHJ
+ zTGLp4tCAonBwdADZBOoXLU+qo6ubZ/JA8fZ13qgtrlTTQRB3PloOd+uXGHjZmmDT0qa
+ 3dkQ==
+X-Gm-Message-State: AOJu0YxHtCEa+67QJFEAfAt97BBeafkYdqjMIamCqX5lQnFZmAnJiHam
+ lcmNLRiKBI4n8MkocGbc5pHfkochW9HPbDPSQor09P7PADH+/Hf3m9XEyXR4Gzi16DtPtiGWaWy
+ RXpMcW2cTH1jkAbc=
+X-Received: by 2002:ad4:5685:0:b0:67a:db18:10e2 with SMTP id
+ bd5-20020ad45685000000b0067adb1810e2mr16325695qvb.37.1702996340306; 
+ Tue, 19 Dec 2023 06:32:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEvtblUlQXQwAK5tLaG90q/1rhTrFg+B3w7SRfEJ4MywaP5m/a8KBGcLVe4b21xTi/53kt7LA==
+X-Received: by 2002:ad4:5685:0:b0:67a:db18:10e2 with SMTP id
+ bd5-20020ad45685000000b0067adb1810e2mr16325688qvb.37.1702996340078; 
+ Tue, 19 Dec 2023 06:32:20 -0800 (PST)
+Received: from [192.168.0.6] (ip-109-43-177-45.web.vodafone.de.
+ [109.43.177.45]) by smtp.gmail.com with ESMTPSA id
+ i11-20020ad44bab000000b0067f626a5b2esm420677qvw.74.2023.12.19.06.32.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Dec 2023 06:32:19 -0800 (PST)
+Message-ID: <16f68c89-dcf4-4da7-bfa1-c64db0754bca@redhat.com>
+Date: Tue, 19 Dec 2023 15:32:16 +0100
 MIME-Version: 1.0
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-2-ray.huang@amd.com>
- <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com> <ZYGe4GcFPt0k5PTM@amd.com>
-In-Reply-To: <ZYGe4GcFPt0k5PTM@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 19 Dec 2023 14:14:28 +0000
-Message-ID: <CAFEAcA_=iedJw4BbNHrDALC4mL4g3ZEihsDbLkEzsy-1zAWFWw@mail.gmail.com>
-Subject: Re: [PATCH v6 01/11] linux-headers: Update to kernel headers to add
- venus capset
-To: Huang Rui <ray.huang@amd.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>, 
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
- "Deucher, Alexander" <Alexander.Deucher@amd.com>, 
- "Stabellini, Stefano" <stefano.stabellini@amd.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>, 
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, 
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>, 
- "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang,
- Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/5] tests/qtest: Add a helper to query the QEMU version
+Content-Language: en-US
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231207155809.25673-1-farosas@suse.de>
+ <20231207155809.25673-2-farosas@suse.de>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20231207155809.25673-2-farosas@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,35 +146,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 19 Dec 2023 at 13:49, Huang Rui <ray.huang@amd.com> wrote:
->
-> On Tue, Dec 19, 2023 at 08:20:22PM +0800, Akihiko Odaki wrote:
-> > On 2023/12/19 16:53, Huang Rui wrote:
-> > > Sync up kernel headers to update venus macro till they are merged into
-> > > mainline.
-> >
-> > Thanks for sorting things out with the kernel and spec.
-> >
-> > >
-> > > Signed-off-by: Huang Rui <ray.huang@amd.com>
-> > > ---
-> > >
-> > > Changes in v6:
-> > > - Venus capset is applied in kernel, so update it in qemu for future use.
-> > >
-> > > https://lore.kernel.org/lkml/b79dcf75-c9e8-490e-644f-3b97d95f7397@collabora.com/
-> > > https://cgit.freedesktop.org/drm-misc/commit/?id=216d86b9a430f3280e5b631c51e6fd1a7774cfa0
-> > Please include the link to the upstream commit in the commit message.
->
-> So far, it's in drm maintainers' branch not in kernel mainline yet. Do I
-> need to wait it to be merged into kernel mainline?
+On 07/12/2023 16.58, Fabiano Rosas wrote:
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>   tests/qtest/libqtest.c | 24 ++++++++++++++++++++++++
+>   tests/qtest/libqtest.h | 10 ++++++++++
+>   2 files changed, 34 insertions(+)
+> 
+> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+> index f33a210861..7cee68a834 100644
+> --- a/tests/qtest/libqtest.c
+> +++ b/tests/qtest/libqtest.c
+> @@ -337,6 +337,30 @@ void qtest_remove_abrt_handler(void *data)
+>       }
+>   }
+>   
+> +void qtest_query_version(QTestState *who, int *major, int *minor, int *micro)
 
-For an RFC patchset, no. For patches to be merged into QEMU
-the headers change must be in the kernel mainline, and the
-QEMU commit that updates our copy of the headers must be a
-full-sync done with scripts/update-linux-headers.sh, not a
-manual edit.
+I'd prefer "qts" instead of "who" ... but that's bikeshedding, so:
 
-thanks
--- PMM
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
