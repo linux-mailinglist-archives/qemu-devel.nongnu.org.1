@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE33C818C11
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 17:23:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47473818C76
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 17:40:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFcqw-0007di-GJ; Tue, 19 Dec 2023 11:21:54 -0500
+	id 1rFd7z-00043U-NH; Tue, 19 Dec 2023 11:39:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rFcqu-0007dV-N3
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:21:52 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFd7x-000419-3p
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:39:29 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rFcqs-0005nS-Sg
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:21:52 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-33621d443a7so4880351f8f.3
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 08:21:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFd7v-0000xD-LI
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 11:39:28 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5533ca9cc00so3928930a12.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 08:39:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703002908; x=1703607708; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LzEqL5EZIBStiIFrRoObSoP8Upcv1qQm1hH7gUkqSWo=;
- b=ZTdk3plAasWW9pvMdztftPYgwHrAApLBeMxvXRcHLbN3w7HfKk9Rtw1p+b6bkuuG6t
- 0TMcDH8d5ycwauAydJL8oQdn61F00LKrhRCoJBVOG5u7Uk4eYnCLhTeWixOOD6WT64Mj
- D4BjLg6MjBdo7bIzpicpjYUxiYO20NR4JwyE3vNr5k7uWvg2D1uPEKJlYhBE5/AHtn1w
- qTl9tVqe1z3A5b7qz0t1pU1GvYsSM3NNXwRiOVnisDqTc9JCMdAe3u+xnQyE3a97Kspa
- 6uQMFibB3E4f2TO6SajXcFpkvIJDyyDCjefpLCMTetu/YUZUnDIQOffwMwPM4s6Gwgl6
- Tl+w==
+ d=linaro.org; s=google; t=1703003965; x=1703608765; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=zNyVUwo9s2DMl7y4XkvCvSPyuJ1m5Py0Vme19chLdcw=;
+ b=qFzyF6/85dnfs2CL/+E7h89CO4kV+O1HFdjBPEEYqan3U6ilRivexzLULUMYWl5YCr
+ +UX8x1jUigPpiBvARXFka6QDfykqtycPLXFWYDPwsfKJS6Y3jcoUb0kVfFkkDeDuEJbp
+ Qm1BdkMMjdvG5qOFayFrIlKCY1EdXnY+3EAhvJynL3AHoZdEMy7QzJSrFnD6EOkaTGKd
+ 1LG4V5QsFdRuzz9s1nEFzkDbz2xG0kGnSyjqDBOz9jIrendVhWQ6Jomobx8nWzKmE3Ur
+ 6dXJuXv3w9TpnNvsrshJpIBvE7VMQwe58yT07XFSTjhOBRZTlHmJbiDCsfdGHa2CD6la
+ D00Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703002908; x=1703607708;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=LzEqL5EZIBStiIFrRoObSoP8Upcv1qQm1hH7gUkqSWo=;
- b=ESP5IZ2GPNfkJ1TNUUWo2rMr6kTWx/x48muPCSz0Vtfm7y3dLpCgbhnMjaayBowgOJ
- SHaXOtC/eWCEDNADYNJaKH6XReMEL18gxuprRsR1EjR6QjTNFEXBK6p7SPcs89XOGoyo
- vyGOkzdjSLiEti6sTOAs8A+B+fdn07XoWRbC2KaONXIcSKmCU2fMJH2FIL4bCOj/jIIg
- HgdLv05l+XU1vbobVTU+vz9ykYgd/3bvJAGf6GBgpwf2ClHDdrxFI1E5r7wgDZ2Z7E3k
- 4jUWFPjBxnFrqxq6dLGqPy6u02KgaDRgC2dMla+dmoHLov8Yo/MlQrS76TDTCknOrojy
- Z4NA==
-X-Gm-Message-State: AOJu0YzS32tmMuf/qUg7Sz/Q/d2CIgua3Vf9oRNQ+O902vK7POfkHhKP
- jQZSqYJqwxpEEcbg4wE93HZ/sA==
-X-Google-Smtp-Source: AGHT+IEZk5qq3zL/wmcWrKcrS1zWndzHgID2ZQBjIdtQ9Rj2aV1Z4atP5u3wUwkthzML/YS0MiO7cA==
-X-Received: by 2002:a5d:5043:0:b0:336:578e:2bd0 with SMTP id
- h3-20020a5d5043000000b00336578e2bd0mr3249830wrt.124.1703002908439; 
- Tue, 19 Dec 2023 08:21:48 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p4-20020a5d4e04000000b0033671a467adsm2176579wrt.44.2023.12.19.08.21.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Dec 2023 08:21:48 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7FBAB5F8B9;
- Tue, 19 Dec 2023 16:21:47 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Gustavo Romero <gustavo.romero@linaro.org>
-Cc: qemu-devel@nongnu.org,  philmd@linaro.org,  peter.maydell@linaro.org,
- richard.henderson@linaro.org,  thuth@redhat.com
-Subject: Re: [PATCH 0/4] Add ivshmem-flat device
-In-Reply-To: <20231127052024.435743-1-gustavo.romero@linaro.org> (Gustavo
- Romero's message of "Mon, 27 Nov 2023 05:20:20 +0000")
-References: <20231127052024.435743-1-gustavo.romero@linaro.org>
-User-Agent: mu4e 1.11.26; emacs 29.1
-Date: Tue, 19 Dec 2023 16:21:47 +0000
-Message-ID: <87wmta2mec.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1703003965; x=1703608765;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zNyVUwo9s2DMl7y4XkvCvSPyuJ1m5Py0Vme19chLdcw=;
+ b=psJIrz8BrKWubKr3PJidhdSRG3V9MEum/QK9heMCLdy3Jvb0zwNXEHxKxeFzeqGVpL
+ AHctOcA5PIVdQDBZt0Z3nr+1EPXfrpPHe/JUKr5H9bZ2UjH4aHN/tKmGT34xY9n6KXrn
+ hkTGp5FuMcOUvz9n1klx/bnLcXsaOD/X5fsCAj+KY0Kh8MO971chShRN+nnADxqxADm7
+ m9JI7kmnuFaPyulkBtuiqSp0LtKEpbgmQJh7Qr/wRHiQLT4LWBtXaqRluLt54HX4mclQ
+ /2ld5b6sVA+0KDr6oDQfO3mrwVivh7aIF0SN1IomAQWnMIeZaOT6hdiskwcnqh0troNg
+ /VSg==
+X-Gm-Message-State: AOJu0YytMirvm/P7KHjN0BQRikkrzFpXiNC2JIzNgZKPuDetrpmZ/2yG
+ EW03Z2u60k4kGDnZWgR3T1k7l1aLbPrX+wYB76xCUA==
+X-Google-Smtp-Source: AGHT+IHCyrbCO5m8k6rvvaaz5BC6j/n4dlzgbpnnCJnrJnYkJGBBZNR4BTBcuzYEDwrUG9PX5CfYtreZpWa0OtH/SKg=
+X-Received: by 2002:a50:d6d8:0:b0:553:37e1:a5a with SMTP id
+ l24-20020a50d6d8000000b0055337e10a5amr2527035edj.40.1703003964875; Tue, 19
+ Dec 2023 08:39:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+References: <20231208023145.1385775-1-sergey.kambalin@auriga.com>
+ <CAFEAcA_9yO8kY=fnT8+vn2AFtjyoJN25B4o2tcegaOxS41qhmg@mail.gmail.com>
+ <431b825b51524907a3168007fada20e1@auriga.com>
+In-Reply-To: <431b825b51524907a3168007fada20e1@auriga.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 19 Dec 2023 16:39:13 +0000
+Message-ID: <CAFEAcA8QHVy2xYYMxxO3TzLeUWk5AGcq4y6mKvXun02UayBzpw@mail.gmail.com>
+Subject: Re: [PATCH v4 00/45] Raspberry Pi 4B machine
+To: "Kambalin, Sergey" <sergey.kambalin@auriga.com>
+Cc: Sergey Kambalin <serg.oker@gmail.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,55 +88,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Gustavo Romero <gustavo.romero@linaro.org> writes:
+On Tue, 19 Dec 2023 at 16:18, Kambalin, Sergey
+<sergey.kambalin@auriga.com> wrote:
+>
+> Thank you a lot for the review Peter!
+>
+>
+> May I kindly ask you to take just a brief look at the first patches of GENET? I'd like to know if I've chosen the right way to replace bitfields with  QEMU REG32/FIELD32 macros.
 
-> This patchset introduces a new device, ivshmem-flat, which is similar to =
-the
-> current ivshmem device but does not require a PCI bus. It implements the =
-ivshmem
-> status and control registers as MMRs and the shared memory as a directly
-> accessible memory region in the VM memory layout. It's meant to be used on
-> machines like those with Cortex-M MCUs, which usually lack a PCI bus, e.g=
-.,
-> lm3s6965evb and mps2-an385. Additionally, it has the benefit of requiring=
- a tiny
-> 'device driver,' which is helpful on some RTOSes, like Zephyr, that run on
-> memory-constrained resource targets.
->
-> The patchset includes a QTest for the ivshmem-flat device, however, it's =
-also
-> possible to experiment with it in two ways:
->
-> (a) using two Cortex-M VMs running Zephyr; or
-> (b) using one aarch64 VM running Linux with the ivshmem PCI device and an=
-other
->     arm (Cortex-M) VM running Zephyr with the new ivshmem-flat device.
->
-> Please note that for running the ivshmem-flat QTests the following patch,=
- which
-> is not committed to the tree yet, must be applied:
->
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg03176.html
->
-> --
->
-> To experiment with (a), clone this Zephyr repo [0], set the Zephyr build
-> environment [1], and follow the instructions in the 'ivshmem' sample main=
-.c [2].
->
-> [0] https://github.com/gromero/zephyr/tree/ivshmem
-> [1] https://docs.zephyrproject.org/latest/develop/getting_started/index.h=
-tml
-> [2] https://github.com/gromero/zephyr/commit/73fbd481e352b25ae5483ba5048a=
-2182b90b7f00#diff-16fa1f481a49b995d0d1a62da37b9f33033f5ee477035e73465e72085=
-21ddbe0R9-R70
->
-> To experiment with (b):
+The FIELD and REG32 uses look mostly OK, but the
+second argument to REG32() should not be 0 each time:
 
-If you could put these blobs up on fileserver.linaro.org you could add
-an avocado test to compliment the qtest.
+REG32(GENET_SYS_REV_CTRL,              0)
+REG32(GENET_INTRL_0,                0)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+etc. The idea is that that second argument is the offset
+in the register file of the register; then the macro
+defines you an A_GENET_SYS_REV_CTRL which is that value,
+and you can use it as a case label in the "switch (offset) {"
+in the read/write function.
+
+I'm a also a bit confused about the use of offsetof() in patch 27.
+
+In patch 28 the implementation of bcm2838_genet_read() and
+bcm2838_genet_write() use a memcpy() between a local variable
+and memory which I'm assuming is an index into one of these
+register structs, which won't do the right thing if the host
+is big-endian. If you need a "load/store N bytes to memory in
+host order", we have ldn_he_p() and stn_he_p(); also available
+in _le_ and _be_ flavours for load/store in specific endianness.
+
+thanks
+-- PMM
 
