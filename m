@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD3181907D
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71901819096
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:20:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfWr-0001qP-R8; Tue, 19 Dec 2023 14:13:21 -0500
+	id 1rFfWs-0001tH-Qc; Tue, 19 Dec 2023 14:13:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWn-0001mm-RI
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:17 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1rFfWp-0001oS-3P
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:19 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWm-0001mV-4T
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:17 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3365752934bso3970994f8f.2
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:15 -0800 (PST)
+ id 1rFfWn-0001me-Dp
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:18 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40c2bb872e2so56131095e9.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1703013195; x=1703617995; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8U4Zs7qJxd6knz6FwIYeN/wpMsd6G/tgH0Hh4NzLuf8=;
- b=hFRYK+EZzJlMEj1vJrSHIrtegxjCqDKtl6c0uvqwddXz/q1ktdKV8VWbH3Ip3vC15d
- uGV8lVfcoeG4O66uVIiyyYXjdEmA64db/JRidmZ5PZzlrpSnCvQ5MFYEkJGOaCLwcPHG
- Gqz6t6K6y9qz4DIdiIxOdtuayLO600pLzjNCMTt3arFxr67++8VLAK8eTVbBSuZQi8aY
- syvUIAXsM7Yb5Eqk/xnxMyxDSumTnq/4oCkZ+6BT6LJqbDuu1FD6emHkkZZYMpIybmD0
- N9TptXU+xeOmtQ8/8EZtnDTlHMZ9ad/qLLSGIsQseGJA+RGZu73x0ikdE+LRsy0kVJ0V
- 7KUA==
+ :reply-to; bh=DVfybjnXHAr4/V+3lIJ59fueYndSiVdNpHGHcmYVDg8=;
+ b=NVHbqSqQ1yjGgRAgwvsIeaYyrQR4hjWsMna0yYbWCFopYFWmn9OFanluPKo3AKS7LO
+ 3td7NwJ4jwuR5GNJli5ovPJELgTwBrzq2Yir6lRFc1oP9pfuN9SeaseL63gNpRc0hMGq
+ 2Rw41t2a01S0U3x+uVqCS6OYSicYBipxNMzVQcaWg5cRFpa/zQm1ucFqoCtwxj34/4sb
+ PdTWtOvQSI96+O+xp+CIarVmyRQU8QCgjZJ6kRILp7YSejA5WAbEfFkCxadu6yALy52d
+ 8+wQ/W4wxFtvPE7Rp1AV/h8M+Od2IbfeW94mq1nT7+sCmu59/v40lRY92f/xyr5y5/18
+ EpSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1703013195; x=1703617995;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8U4Zs7qJxd6knz6FwIYeN/wpMsd6G/tgH0Hh4NzLuf8=;
- b=XkzaPZFgN2lY+S2qwPDbpRruXB7SwIWoZCZR41eOqCYVy5orWPXgHfsNq8K4rh9oUa
- +JKZy/TrWMn02yYvffiOp2nTow28yu/aF6dGHXxxBcZh2heAkwKGxM2+J1BmzVXzMbFc
- V74s9NQPWnk8g152eEKUsxWGoPpg0lH6az534otr+auu/3VFnQsJKUyMkYAJEcDH3GFF
- ktcDBs8PKnm/RLV0A5t/PZmzrHyrl9L/fasOBf+ZhJaIGnJg8oR8Fza3a1C02dhono5P
- IeVFJj4NoXLD4Kaypm98sbq5pVvCWRE3ZyXfJ8n3sMYh7MDQDMfEawr4RWA5QKeLjbyE
- ihsw==
-X-Gm-Message-State: AOJu0Yy1g7f8qJmfhRxRJH8/FamPCrXkDb1QgvpVc+1F016bz5Z7V9tR
- 8d9oQQ8y3FYXpYcP+aRyTaPi/v/gqbEI1eN+H1U=
-X-Google-Smtp-Source: AGHT+IH1/cCtSrt/d+C0VIqOntWMnfw5yxhYE4kNINzg+jk1tFk4qMwl8c8YTfYhk+axkaG+yExtOg==
-X-Received: by 2002:a5d:4c4a:0:b0:336:7793:6ab2 with SMTP id
- n10-20020a5d4c4a000000b0033677936ab2mr297538wrt.143.1703013194661; 
- Tue, 19 Dec 2023 11:13:14 -0800 (PST)
+ bh=DVfybjnXHAr4/V+3lIJ59fueYndSiVdNpHGHcmYVDg8=;
+ b=iC/TKz4T44JRGCevDNQB16vlDFJgzHIenCN72LpuUjAFqwWO86FFgVssNOcSwEIPI6
+ OduiU6klcrwBz6J7FtRT/4R+vDWMAVdrgwOnG4h+C+zug4Ykg1R01181faAFqk8GhFmQ
+ XUdpfgfaZ5kdft01UUMk9yGPbmuPdgHBInZ2Lpzg4391P32LSQygSHnF8BL1Z1kuvyQo
+ Uv09QPFVYRefW9oDOcJO8V/NHLP+Hael3NdyT1dPMhdZE4mo4xvow/1msoLZ5gVnzhMq
+ sgVSlXkeVmxY8TcGUdq5ymA8YL0fHn7lozr2kWu0sfXPtOU9orGzS1dEm4RRJXkGy5qc
+ pDRA==
+X-Gm-Message-State: AOJu0Yx2l+dZeDSBUmWwzMkVy8NMsAlBq0W1gu5bBTo9bVGmJoR1Iofq
+ vxrGRm0eAWV4X+USVBptfgvIqPoa73PKtWTI4mE=
+X-Google-Smtp-Source: AGHT+IFVWFG9+0vDERMRUWb/dIgkuf6FvVWzqcCize+W73dPTLroIamKGCOZ3kddeWTw8wxLtI9q+Q==
+X-Received: by 2002:a05:600c:ac6:b0:40c:310b:b694 with SMTP id
+ c6-20020a05600c0ac600b0040c310bb694mr4338989wmr.333.1703013195040; 
+ Tue, 19 Dec 2023 11:13:15 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  f5-20020a5d5685000000b0033657376b62sm12007754wrv.105.2023.12.19.11.13.14
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 19 Dec 2023 11:13:14 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/43] target/arm/kvm: Use a switch for kvm_arm_cpreg_level
-Date: Tue, 19 Dec 2023 19:12:35 +0000
-Message-Id: <20231219191307.2895919-12-peter.maydell@linaro.org>
+Subject: [PULL 12/43] target/arm/kvm: Move kvm_arm_cpreg_level and unexport
+Date: Tue, 19 Dec 2023 19:12:36 +0000
+Message-Id: <20231219191307.2895919-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231219191307.2895919-1-peter.maydell@linaro.org>
 References: <20231219191307.2895919-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,48 +93,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Use a switch instead of a linear search through data.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm64.c | 32 +++++++++-----------------------
- 1 file changed, 9 insertions(+), 23 deletions(-)
+ target/arm/kvm_arm.h |  9 ---------
+ target/arm/kvm.c     | 22 ++++++++++++++++++++++
+ target/arm/kvm64.c   | 15 ---------------
+ 3 files changed, 22 insertions(+), 24 deletions(-)
 
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 504526b24c9..61fb9dbde0e 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -361,32 +361,18 @@ bool kvm_arm_reg_syncs_via_cpreg_list(uint64_t regidx)
-     }
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index e59d713973c..2755ee83666 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -87,15 +87,6 @@ int kvm_arm_init_cpreg_list(ARMCPU *cpu);
+  */
+ bool kvm_arm_reg_syncs_via_cpreg_list(uint64_t regidx);
+ 
+-/**
+- * kvm_arm_cpreg_level:
+- * @regidx: KVM register index
+- *
+- * Return the level of this coprocessor/system register.  Return value is
+- * either KVM_PUT_RUNTIME_STATE, KVM_PUT_RESET_STATE, or KVM_PUT_FULL_STATE.
+- */
+-int kvm_arm_cpreg_level(uint64_t regidx);
+-
+ /**
+  * write_list_to_kvmstate:
+  * @cpu: ARMCPU
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index ffe0db42933..dadc3fd7552 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -817,6 +817,28 @@ out:
+     return ret;
  }
  
--typedef struct CPRegStateLevel {
--    uint64_t regidx;
--    int level;
--} CPRegStateLevel;
--
--/* All system registers not listed in the following table are assumed to be
-- * of the level KVM_PUT_RUNTIME_STATE. If a register should be written less
-- * often, you must add it to this table with a state of either
-- * KVM_PUT_RESET_STATE or KVM_PUT_FULL_STATE.
-- */
--static const CPRegStateLevel non_runtime_cpregs[] = {
--    { KVM_REG_ARM_TIMER_CNT, KVM_PUT_FULL_STATE },
--    { KVM_REG_ARM_PTIMER_CNT, KVM_PUT_FULL_STATE },
--};
--
- int kvm_arm_cpreg_level(uint64_t regidx)
- {
--    int i;
--
--    for (i = 0; i < ARRAY_SIZE(non_runtime_cpregs); i++) {
--        const CPRegStateLevel *l = &non_runtime_cpregs[i];
--        if (l->regidx == regidx) {
--            return l->level;
--        }
++/**
++ * kvm_arm_cpreg_level:
++ * @regidx: KVM register index
++ *
++ * Return the level of this coprocessor/system register.  Return value is
++ * either KVM_PUT_RUNTIME_STATE, KVM_PUT_RESET_STATE, or KVM_PUT_FULL_STATE.
++ */
++static int kvm_arm_cpreg_level(uint64_t regidx)
++{
 +    /*
 +     * All system registers are assumed to be level KVM_PUT_RUNTIME_STATE.
 +     * If a register should be written less often, you must add it here
@@ -144,11 +150,39 @@ index 504526b24c9..61fb9dbde0e 100644
 +    case KVM_REG_ARM_TIMER_CNT:
 +    case KVM_REG_ARM_PTIMER_CNT:
 +        return KVM_PUT_FULL_STATE;
++    }
++    return KVM_PUT_RUNTIME_STATE;
++}
++
+ bool write_kvmstate_to_list(ARMCPU *cpu)
+ {
+     CPUState *cs = CPU(cpu);
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index 61fb9dbde0e..a184cca4dc8 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -361,21 +361,6 @@ bool kvm_arm_reg_syncs_via_cpreg_list(uint64_t regidx)
      }
--
-     return KVM_PUT_RUNTIME_STATE;
  }
  
+-int kvm_arm_cpreg_level(uint64_t regidx)
+-{
+-    /*
+-     * All system registers are assumed to be level KVM_PUT_RUNTIME_STATE.
+-     * If a register should be written less often, you must add it here
+-     * with a state of either KVM_PUT_RESET_STATE or KVM_PUT_FULL_STATE.
+-     */
+-    switch (regidx) {
+-    case KVM_REG_ARM_TIMER_CNT:
+-    case KVM_REG_ARM_PTIMER_CNT:
+-        return KVM_PUT_FULL_STATE;
+-    }
+-    return KVM_PUT_RUNTIME_STATE;
+-}
+-
+ /* Callers must hold the iothread mutex lock */
+ static void kvm_inject_arm_sea(CPUState *c)
+ {
 -- 
 2.34.1
 
