@@ -2,74 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE13818AD4
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 16:08:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4006818AEA
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 16:13:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFbhI-0002db-UZ; Tue, 19 Dec 2023 10:07:52 -0500
+	id 1rFblZ-00043m-PY; Tue, 19 Dec 2023 10:12:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rFbhF-0002dF-0T
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:07:49 -0500
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rFbhD-0008Ud-Ge
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:07:48 -0500
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-58e256505f7so3079527eaf.3
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 07:07:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1702998465; x=1703603265; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=GQIQQ82DMyJbTIVDnVWkhN5Cr1ubb7YiSidj76amkew=;
- b=NVTcvDDU5rXQ+ozDKxkKoiNHe9YGCnCSoV1C4po5ftvqcNtqqt/8Uh76P3+GV795d/
- 88pfdLtPtCT9DXJH1ybNlZb92za9TA7V4tvVq2fK3YQWkm8JYkk2iPX+NIPYgotKsdRX
- Y/Sb+gowvrFwtGmEp0ozh0mEeSjabtmOleElXv52666tifQMWMRtqLrpapgUMHkh2WRq
- E2rBk0Nn37B79R/ovVhXlOanJRjoRVfErzeQBLfzWb2xJtf1tqyXntPmUhsAx9EW/Upa
- I7YBHjPRSXM0NIr742g/2VcpY/sQ35z93IkGy36cXNQF65MDQl5YhRsb7K1G93EebXd0
- U6iQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702998465; x=1703603265;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GQIQQ82DMyJbTIVDnVWkhN5Cr1ubb7YiSidj76amkew=;
- b=bt3AQ/rUppkIsqycO7yF4JilDz2pcFgWJumqtGedEKjUbCiGMBBCkg1ubUozM0bTQq
- LywsVtGi4a0yKs/WrfIWotnYj6w72xcCMZVm68I57o6j4MIq/gn/ixiDLUQ5aA05C3UX
- aow5w5m8+UqUcqPkH6W2Jwwf7K+FhFwdF6aqmVGO2mqr30qB5Ia/4H6PFjR/UI2tRtkl
- Htva66kFchNyOUyzufPSyhdbddy7Dxqi0awKI0xup88/IOhBs52ZuJhYRDACCRkzQMKG
- C6S6UIrCycwjBZs6nFRzAyj5U6A74CggposvzS4qMB/Dz6YrWbgvdSagcYm2sLTdZ20d
- KGCg==
-X-Gm-Message-State: AOJu0YwPqX23ThypG9Uvz0wpvYVrOnb03W492olyq+84Gl47nIoaF28h
- Vu+vlJ0Y1CKrlc1SKQ+1eT9VdXSvD005mvYvAN8=
-X-Google-Smtp-Source: AGHT+IEutFwGDzkTUqy/tzCh02AGQR/Ok4L/b4PYtyQMKtzE1Caf33ModVjv0YbLl//DDWqk0MAhTIqqgZyRiltiEUk=
-X-Received: by 2002:a05:6820:22a4:b0:58e:30f0:54f3 with SMTP id
- ck36-20020a05682022a400b0058e30f054f3mr14212988oob.4.1702998465641; Tue, 19
- Dec 2023 07:07:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFblW-00043Y-C0
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:12:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFblI-0001Qh-Ox
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:12:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702998719;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KQQvgGmKkHjIMgJTYI8r7fpnUXAzuKXK7BJPy4aM7Bg=;
+ b=RUfmRz/G2H3iBLvCbqHJrmJVwK4XmKw5BRMXvIk8bk7qcRjmljQf/qtUbWY/6fPYUe6cmc
+ R9KtECsAKH/2rd/k/LoMos0FSAk50TGU0//azxhix7X67y12j7f18ZigI/on0f3fh9tzPD
+ jecE/dccEAPyoVoLc63JNFcPnTIeDCE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-339-YAvM-_oYMX6h2BDYcODUkw-1; Tue, 19 Dec 2023 10:11:54 -0500
+X-MC-Unique: YAvM-_oYMX6h2BDYcODUkw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DBC0A8489E2;
+ Tue, 19 Dec 2023 15:11:53 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.175])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8759D40C6EBA;
+ Tue, 19 Dec 2023 15:11:52 +0000 (UTC)
+Date: Tue, 19 Dec 2023 16:11:51 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 1/4] scsi: only access SCSIDevice->requests from one
+ thread
+Message-ID: <ZYGyty5gxE_1caoX@redhat.com>
+References: <20231204164259.1515217-1-stefanha@redhat.com>
+ <20231204164259.1515217-2-stefanha@redhat.com>
 MIME-Version: 1.0
-References: <20231212134934.500289-1-stefanha@redhat.com>
- <87v88ujliz.fsf@pond.sub.org>
-In-Reply-To: <87v88ujliz.fsf@pond.sub.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 19 Dec 2023 10:07:33 -0500
-Message-ID: <CAJSP0QWLWLOegwsZMcufG0R4mgoVys8E=n9uVotM0Fk5bj+bPw@mail.gmail.com>
-Subject: Re: [PATCH v2] string-output-visitor: show structs as "<omitted>"
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- Michael Roth <michael.roth@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc32.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231204164259.1515217-2-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,28 +83,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 19 Dec 2023 at 09:49, Markus Armbruster <armbru@redhat.com> wrote:
->
-> Stefan Hajnoczi <stefanha@redhat.com> writes:
->
-> > StringOutputVisitor crashes when it visits a struct because
-> > ->start_struct() is NULL.
-> >
-> > Show "<omitted>" instead of crashing. This is necessary because the
-> > virtio-blk-pci iothread-vq-mapping parameter that I'd like to introduce
-> > soon is a list of IOThreadMapping structs.
-> >
-> > This patch is a quick fix to solve the crash, but the long-term solution
-> > is replacing StringOutputVisitor with something that can handle the full
-> > gamut of values in QEMU.
-> >
-> > Cc: Markus Armbruster <armbru@redhat.com>
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->
-> Okay as a stopgap to unblock your virtio-blk-pci work.  Suggest you
-> merge this patch together with the patch that needs it.
+Am 04.12.2023 um 17:42 hat Stefan Hajnoczi geschrieben:
+> Stop depending on the AioContext lock and instead access
+> SCSIDevice->requests from only one thread at a time:
+> - When the VM is running only the BlockBackend's AioContext may access
+>   the requests list.
+> - When the VM is stopped only the main loop may access the requests
+>   list.
+> 
+> These constraints protect the requests list without the need for locking
+> in the I/O code path.
+> 
+> Note that multiple IOThreads are not supported yet because the code
+> assumes all SCSIRequests are executed from a single AioContext. Leave
+> that as future work.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Reviewed-by: Eric Blake <eblake@redhat.com>
 
-Thanks!
+This makes qemu-iotests 238 240 245 307 fail for me (tested with qcow2).
 
-Stefan
+The crashes are segfaults and look like below. Maybe the device has gone
+away before the BH was executed? Though in theory we still hold a
+reference to the object.
+
+Kevin
+
+
+(gdb) bt
+#0  scsi_device_for_each_req_async_bh (opaque=0x558b4a2f6e90) at ../hw/scsi/scsi-bus.c:128
+#1  0x0000558b47e1c8e6 in aio_bh_poll (ctx=ctx@entry=0x558b4a518ef0) at ../util/async.c:216
+#2  0x0000558b47e0764a in aio_poll (ctx=0x558b4a518ef0, blocking=blocking@entry=true) at ../util/aio-posix.c:722
+#3  0x0000558b47cb1cd6 in iothread_run (opaque=opaque@entry=0x558b49822a60) at ../iothread.c:63
+#4  0x0000558b47e0a6e8 in qemu_thread_start (args=0x558b4a58d5b0) at ../util/qemu-thread-posix.c:541
+#5  0x00007f992f0ae947 in start_thread () at /lib64/libc.so.6
+#6  0x00007f992f134860 in clone3 () at /lib64/libc.so.6
+(gdb) l
+123          * If the AioContext changed before this BH was called then reschedule into
+124          * the new AioContext before accessing ->requests. This can happen when
+125          * scsi_device_for_each_req_async() is called and then the AioContext is
+126          * changed before BHs are run.
+127          */
+128         ctx = blk_get_aio_context(s->conf.blk);
+129         if (ctx != qemu_get_current_aio_context()) {
+130             aio_bh_schedule_oneshot(ctx, scsi_device_for_each_req_async_bh, data);
+131             return;
+132         }
+(gdb) p s
+$1 = (SCSIDevice *) 0x558b4a2f6
+(gdb) p *s
+Cannot access memory at address 0x558b4a2f6
+
 
