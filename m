@@ -2,85 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A21818AF6
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 16:15:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86784818AFE
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 16:16:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFbny-0005Zg-Ty; Tue, 19 Dec 2023 10:14:46 -0500
+	id 1rFbpU-0006O0-U8; Tue, 19 Dec 2023 10:16:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rFbnw-0005ZI-TW
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:14:44 -0500
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rFbnv-0001qC-Bi
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:14:44 -0500
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5cd82917ecfso2457306a12.0
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 07:14:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1702998881; x=1703603681; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QKozxVtLxp2LOE0IA7OsfMhVxm8SuAfFJLKlnZyENIg=;
- b=eTqqMRgyXqH6tOUm//sLwQVCBawQ8xjoxC3gmWyr3Zw6gRVgqf2MSoJl7529DYc87S
- AD5E1nkaSYFyAaHvp0f0kZi4wO5cz6Fyu4YdWeG0xIMOGnW3M8fCkrqJXPrUnHMjftHm
- KmqMZt0fJ3YWXm3Bcn2jq8wHvPzxPOjkX6FAqXKAfCzWoVP+3IJ8ccH191I24/PHmHXo
- SZeuM/nllPrtHnmhvIWeCw8XxcmuBckevdL0bBO+3vsRFQGL4/p8lg77B0JeTyu8lP+u
- Ihm6fFNabh8HlasuoRTNCxiji6dCJJxX7qtY8ISgtopKaEICFJ7RutIkxRp3f+PWNJib
- hEow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702998881; x=1703603681;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QKozxVtLxp2LOE0IA7OsfMhVxm8SuAfFJLKlnZyENIg=;
- b=L1FMLkgKS+1n6WivjdlMMKD1X/qUeymy7UllCVNSvip7r6+Sp40E1BjG/KSQF4/oXW
- ugxZPFhFJ29p+C6tuMhIHkLemYrVsurNyzCYNKXHd030Y9OAQbXAqwUbploFIf6w9sKN
- lgT95q1Na47YwGR+MuqenYnZeRTCl5HjbcD2tP6ahaK7Yu1TUaLXGoQsRYC8N3w6IH2C
- 5TdJzsmfAHTvAve7EnRYjv4KJ+c3OxLOwFQJjsylmqQ8cNk/qoKRXK5taRaRr5DDQA0w
- wibqHfpFtXZ0GWTtTM8DKAt7Az5nKPl1RN50CGS+yw0Xp/yEJ6NvoAaHnlC57Rb1og7J
- Cp3w==
-X-Gm-Message-State: AOJu0YxrQm668M2JD5OVNkGDFJOizUYDtIwzwBlmSVobjqEm/aHo2XrC
- CXQRDaqWoL1pfYxLy+3pdZpI6g==
-X-Google-Smtp-Source: AGHT+IEPxbUazkkY8lc2PgyN6A/tegAqAJExVYyHhkCXORCcylDyn/MPmHDL8IvC34Y0svNjhL1wMQ==
-X-Received: by 2002:a17:90b:17c3:b0:286:cc3d:9df8 with SMTP id
- me3-20020a17090b17c300b00286cc3d9df8mr11706789pjb.16.1702998880979; 
- Tue, 19 Dec 2023 07:14:40 -0800 (PST)
-Received: from [192.168.68.110] ([179.93.21.205])
- by smtp.gmail.com with ESMTPSA id
- s11-20020a17090b070b00b0028b338470a0sm1691944pjz.3.2023.12.19.07.14.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Dec 2023 07:14:40 -0800 (PST)
-Message-ID: <359a0622-2c0e-4f97-904f-290d87538613@ventanamicro.com>
-Date: Tue, 19 Dec 2023 12:14:36 -0300
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rFbpM-0006AE-9G
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:16:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rFbpH-0002B0-Hi
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 10:16:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1702998958;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5xw7A1XKMUjdmB/9WndsfiguXhlbtnJE7+pJRM9nELs=;
+ b=ewyXA1rHqDnQc7eW9eLVTn/xOMtxRostqDyxTMX6GSBpB/2YioJUD0VVpmIIFfyQdpKETp
+ U/aRc+enc0WY27QTxWZHY5KVpKi+xw5pBCO4JQ/pZfw1a+gtbM9XCm9B52QPyF3cKanNtT
+ TFTBmmAScJO7uP6Kxj4L8Q8AdhRkIJk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-83-SAUPi0xiNaGf4qdi3wST1w-1; Tue,
+ 19 Dec 2023 10:15:53 -0500
+X-MC-Unique: SAUPi0xiNaGf4qdi3wST1w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4481A29AA39A;
+ Tue, 19 Dec 2023 15:15:53 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.138])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B93271C060AF;
+ Tue, 19 Dec 2023 15:15:52 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Michal Privoznik <mprivozn@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH v3 0/4] virtio-blk: add iothread-vq-mapping parameter
+Date: Tue, 19 Dec 2023 10:15:46 -0500
+Message-ID: <20231219151550.223303-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] docs/system/riscv: document acpi parameter of virt
- machine
-Content-Language: en-US
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org
-References: <20231219143829.8961-1-heinrich.schuchardt@canonical.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231219143829.8961-1-heinrich.schuchardt@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,35 +83,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v3:
+- Rebased onto Kevin's block branch
+- Add StringOutputVisitor "<omitted>" patch to fix "info qtree" crash
+- Fix QAPI schema formatting [Markus]
+- Eliminate unnecessary local variable in get_iothread_vq_mapping_list() [Markus]
 
+virtio-blk and virtio-scsi devices need a way to specify the mapping between
+IOThreads and virtqueues. At the moment all virtqueues are assigned to a single
+IOThread or the main loop. This single thread can be a CPU bottleneck, so it is
+necessary to allow finer-grained assignment to spread the load. With this
+series applied, "pidstat -t 1" shows that guests with -smp 2 or higher are able
+to exploit multiple IOThreads.
 
-On 12/19/23 11:38, Heinrich Schuchardt wrote:
-> Since QEMU v8.0.0 the RISC-V virt machine has a switch to disable ACPI
-> table generation. Add it to the documentation.
-> 
-> Fixes: 168b8c29cedb ("hw/riscv/virt: Add a switch to disable ACPI")
-> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> ---
+This series introduces command-line syntax for the new iothread-vq-mapping
+property is as follows:
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+  --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0","vqs":[0,1,2]},...]},...'
 
->   docs/system/riscv/virt.rst | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-> index f5fa7b8b29..4e134ff2ac 100644
-> --- a/docs/system/riscv/virt.rst
-> +++ b/docs/system/riscv/virt.rst
-> @@ -95,6 +95,11 @@ The following machine-specific options are supported:
->     SiFive CLINT. When not specified, this option is assumed to be "off".
->     This option is restricted to the TCG accelerator.
->   
-> +- acpi=[on|off|auto]
-> +
-> +  When this option is "on", ACPI tables are generated and exposed as firmware
-> +  tables etc/acpi/rsdp and etc/acpi/tables.
-> +
->   - aia=[none|aplic|aplic-imsic]
->   
->     This option allows selecting interrupt controller defined by the AIA
+IOThreads are specified by name and virtqueues are specified by 0-based
+index.
+
+It will be common to simply assign virtqueues round-robin across a set
+of IOThreads. A convenient syntax that does not require specifying
+individual virtqueue indices is available:
+
+  --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"},...]},...'
+
+There is no way to reassign virtqueues at runtime and I expect that to be a
+very rare requirement.
+
+Note that JSON --device syntax is required for the iothread-vq-mapping
+parameter because it's non-scalar.
+
+Based-on: 81e69329d6a4018f4b37d15b6fc845fbe585a93b (https://repo.or.cz/qemu/kevin.git block)
+
+Stefan Hajnoczi (4):
+  qdev-properties: alias all object class properties
+  string-output-visitor: show structs as "<omitted>"
+  qdev: add IOThreadVirtQueueMappingList property type
+  virtio-blk: add iothread-vq-mapping parameter
+
+ qapi/virtio.json                     |  30 ++++++
+ hw/block/dataplane/virtio-blk.h      |   3 +
+ include/hw/qdev-properties-system.h  |   5 +
+ include/hw/virtio/virtio-blk.h       |   2 +
+ include/qapi/string-output-visitor.h |   6 +-
+ hw/block/dataplane/virtio-blk.c      | 155 ++++++++++++++++++++-------
+ hw/block/virtio-blk.c                |  92 +++++++++++++---
+ hw/core/qdev-properties-system.c     |  46 ++++++++
+ hw/core/qdev-properties.c            |  18 ++--
+ qapi/string-output-visitor.c         |  16 +++
+ 10 files changed, 312 insertions(+), 61 deletions(-)
+
+-- 
+2.43.0
+
 
