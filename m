@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B406819083
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:17:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66084819079
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:16:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfXB-00022x-OP; Tue, 19 Dec 2023 14:13:41 -0500
+	id 1rFfXC-00023h-Nk; Tue, 19 Dec 2023 14:13:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWy-0001yG-Hy
+ id 1rFfWz-0001yS-NB
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:33 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWu-0001re-SU
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:28 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40c2308faedso58238635e9.1
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:24 -0800 (PST)
+ id 1rFfWw-0001ro-8z
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:29 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40c39e936b4so56217315e9.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703013203; x=1703618003; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703013205; x=1703618005; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WTa4ndbkRJ7n5XD1OTvmDhz9DP3vcZ/79akTztoRHzs=;
- b=sGbsg/U7pvR9aNO1v4Rh0A0wMYw2MqtTLlTka/yk3/wC2I1aTYTOvHgKnni1tsiJ7M
- PBqbKK6AsmhBv6xub4jJu62Nu7sQ9ubXp/U9mx7DP9MCwGK1/hyrGbKIv5MzQ+A7ac6N
- 4c6ya0tXFTJeKF0WNIrKmDBzESzwz71eJr+ZqU5Xjqt64KW1xQib2yWA3QBSg4mFGa+h
- 7gccOqvMl6K9mTlaU6lFv03gH+nbvxgSIkan9QLS3sHcxtZxN4wyoQHyGgXnIwrId2GE
- mtJlfsxLS5t9hFlswpD6Ch0oSyUJRNu2USzgWFwILbD1IukwQrRknE7E+hOfPnqYq5A2
- SlLw==
+ :reply-to; bh=u7RSwDz13+9sv6W+3QlIzSQPKzKTiI3ycp67owFhcNM=;
+ b=gA5uj+lX9sLkqTI3YNNrGi64fk2YQ/9jDP1QBYootLkNsStg1ikhUilbkFOXE+Qqwe
+ ZUOsSb+aqAPT1R0sFP1QWmNJBlD4lqTOovM3uQLjyhRjqmbYDyvpd5uscsj+wQ6anj32
+ pPh0xfVbWFBNp+HcIN74sG7arMcXULuMVfgFh1nBs0bHSYlV6rEzzjvcxTqXysUNccGv
+ 4VmE7VLfhEjQbvvWnXJmphuDN1BaV0edrkKXspYOMRvro8XWuBsjVyV8hMqCSduCA5g5
+ /7ekFOS2MjvDEWDifewRTUboLvVyIY6vaGWrrzsfdCtQsGf5NTGMXRFYAql2uiG/nwiK
+ jdVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703013203; x=1703618003;
+ d=1e100.net; s=20230601; t=1703013205; x=1703618005;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WTa4ndbkRJ7n5XD1OTvmDhz9DP3vcZ/79akTztoRHzs=;
- b=of0/NW8gJGWyKEc5FWb2qaMI9fkEmFolSg0WOKC38tfGP1bcRxzQJkqVRSldRxRG5k
- FE8gSQiiPmYe7OPCvYefi/soVrGnJj98ug8tjtJwkuNVS0EKHf1w8gs6d8daV8R7YhsS
- atnLvqkRQU5W4ECMJK9RC+d7BJDHQhS9PdsFJoxizRaRMpLcIKH99F3WOvho1yehm9UF
- PGrpHXwgc1I3UrBQkcK0qGJbBQebZdBV27vAwH3pG0vRqWYy1mOSTPiThoaUt96pVmoA
- 5PzNrXIb+6UkYU+mu+r2gNn+v5kJae9WPTaidNxENd+M0LynmdIAxQyhPsmwM5uGpVLb
- h24Q==
-X-Gm-Message-State: AOJu0YyaGw9UqdIef0IsZUlvHLGMhEi8MOkxr7OQmwQBIpgqi8PGrURG
- JQE6/kWZLBQxC961MeCm5+NzCu2qpipa9eKP+SI=
-X-Google-Smtp-Source: AGHT+IG3jkrLOBKv6FCgqWGtd5k5HaiMPcVFx7t/M42lS6WakImqEMo3vUWYya+NO/rmB4k8h6NtNw==
-X-Received: by 2002:a05:600c:2296:b0:40c:3103:2ecb with SMTP id
- 22-20020a05600c229600b0040c31032ecbmr10220394wmf.43.1703013203534; 
- Tue, 19 Dec 2023 11:13:23 -0800 (PST)
+ bh=u7RSwDz13+9sv6W+3QlIzSQPKzKTiI3ycp67owFhcNM=;
+ b=r/5YU8xB+VNCTzKjGY+wSPQ12zEkFZD2BI4tV/1fmiOUfX8e38OAcHjUV0eMezvBCZ
+ 1kKoBlczzgkTefboCVFexNM9+tdNSw7Rqed+9xJlCyCkK7bsT7h0T4FFdrkEH8jPaUn+
+ cWjC03qDsHfQAEASNLAUECV6tiHwNhe0i/xN9pW+1eavCCTB59tbJukRkZC8iP+6ZbNl
+ JV/dnA54j4HY6HtzJiQhI6HYVdwrNfl5LuMNDJbck1ropnMBGCjMcye8pnaCB1CDiwR8
+ v0IEBIz5eL8U9/laiz6izOiMMZNTNFEHbR3vJxLEwkj3+qt3NVyfGhhymcC904jNG/jO
+ aHyQ==
+X-Gm-Message-State: AOJu0YwQ8c/jl/ZYsToCNtC7xQN+8F/aKv4Qga81PNi8CtoWYw8f7Q4A
+ dA76/MKbXPMByLRG360fa18I4vxPGDTY9ffCnt0=
+X-Google-Smtp-Source: AGHT+IHZNn6/HaDsLqGPgMwa7K1LQ9FCrHo2foMkvozzOwSBF8Kvo5j05ahsAImOt8iaXHNdYxUxIA==
+X-Received: by 2002:a05:600c:16c4:b0:40c:3133:6f02 with SMTP id
+ l4-20020a05600c16c400b0040c31336f02mr5045282wmn.342.1703013204803; 
+ Tue, 19 Dec 2023 11:13:24 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  f5-20020a5d5685000000b0033657376b62sm12007754wrv.105.2023.12.19.11.13.23
@@ -58,18 +58,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 19 Dec 2023 11:13:23 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 31/43] target/arm/kvm: Have kvm_arm_vcpu_init take a ARMCPU
+Subject: [PULL 32/43] target/arm/kvm: Have kvm_arm_vcpu_finalize take a ARMCPU
  argument
-Date: Tue, 19 Dec 2023 19:12:55 +0000
-Message-Id: <20231219191307.2895919-32-peter.maydell@linaro.org>
+Date: Tue, 19 Dec 2023 19:12:56 +0000
+Message-Id: <20231219191307.2895919-33-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231219191307.2895919-1-peter.maydell@linaro.org>
 References: <20231219191307.2895919-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,61 +101,46 @@ calling the generic vCPU API from "sysemu/kvm.h".
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
-Message-id: 20231123183518.64569-11-philmd@linaro.org
+Message-id: 20231123183518.64569-12-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ target/arm/kvm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 45ee491a56b..9540d3cb618 100644
+index 9540d3cb618..a2370bc5747 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -62,7 +62,7 @@ static ARMHostCPUFeatures arm_host_cpu_features;
+@@ -82,7 +82,7 @@ static int kvm_arm_vcpu_init(ARMCPU *cpu)
  
  /**
-  * kvm_arm_vcpu_init:
+  * kvm_arm_vcpu_finalize:
 - * @cs: CPUState
 + * @cpu: ARMCPU
+  * @feature: feature to finalize
   *
-  * Initialize (or reinitialize) the VCPU by invoking the
-  * KVM_ARM_VCPU_INIT ioctl with the CPU type and feature
-@@ -70,15 +70,14 @@ static ARMHostCPUFeatures arm_host_cpu_features;
+  * Finalizes the configuration of the specified VCPU feature by
+@@ -92,9 +92,9 @@ static int kvm_arm_vcpu_init(ARMCPU *cpu)
   *
   * Returns: 0 if success else < 0 error code
   */
--static int kvm_arm_vcpu_init(CPUState *cs)
-+static int kvm_arm_vcpu_init(ARMCPU *cpu)
+-static int kvm_arm_vcpu_finalize(CPUState *cs, int feature)
++static int kvm_arm_vcpu_finalize(ARMCPU *cpu, int feature)
  {
--    ARMCPU *cpu = ARM_CPU(cs);
-     struct kvm_vcpu_init init;
- 
-     init.target = cpu->kvm_target;
-     memcpy(init.features, cpu->kvm_init_features, sizeof(init.features));
- 
--    return kvm_vcpu_ioctl(cs, KVM_ARM_VCPU_INIT, &init);
-+    return kvm_vcpu_ioctl(CPU(cpu), KVM_ARM_VCPU_INIT, &init);
+-    return kvm_vcpu_ioctl(cs, KVM_ARM_VCPU_FINALIZE, &feature);
++    return kvm_vcpu_ioctl(CPU(cpu), KVM_ARM_VCPU_FINALIZE, &feature);
  }
  
- /**
-@@ -982,7 +981,7 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
-     /* Re-init VCPU so that all registers are set to
-      * their respective reset values.
-      */
--    ret = kvm_arm_vcpu_init(CPU(cpu));
-+    ret = kvm_arm_vcpu_init(cpu);
-     if (ret < 0) {
-         fprintf(stderr, "kvm_arm_vcpu_init failed: %s\n", strerror(-ret));
-         abort();
-@@ -1912,7 +1911,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
-     }
- 
-     /* Do KVM_ARM_VCPU_INIT ioctl */
--    ret = kvm_arm_vcpu_init(cs);
-+    ret = kvm_arm_vcpu_init(cpu);
-     if (ret) {
-         return ret;
-     }
+ bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
+@@ -1921,7 +1921,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+         if (ret) {
+             return ret;
+         }
+-        ret = kvm_arm_vcpu_finalize(cs, KVM_ARM_VCPU_SVE);
++        ret = kvm_arm_vcpu_finalize(cpu, KVM_ARM_VCPU_SVE);
+         if (ret) {
+             return ret;
+         }
 -- 
 2.34.1
 
