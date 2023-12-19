@@ -2,74 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61837818E0E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 18:27:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDDF818F86
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 19:17:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFdrS-0008Ow-AJ; Tue, 19 Dec 2023 12:26:30 -0500
+	id 1rFedA-0008JD-86; Tue, 19 Dec 2023 13:15:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFdrQ-0008OQ-Gn
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 12:26:28 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFdrO-0000iL-K4
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 12:26:27 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-552ff8d681aso6920844a12.1
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 09:26:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703006783; x=1703611583; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=GNaJALPMR4T06Fy70/m7M5bP77I6oDiHT8BINT3X6l4=;
- b=gz/iyzNlsugk+rSYaFTms/KYe3pZ7Ayl0ClWeDc/wi8le9qlVYP2vEu7R9qFTwoS0l
- foF3ZvAlY0HShjnC8XpxnXPqqvrYp5ajHN6uoc52Rk+CJaWU3NdU57/MUYz2oCG39dRm
- LIRjhI7Cybms1knRjUHO2nWafoHlgEwY591UFwxR6LIj4y5Um3oagInrQRjS3fXfBuWx
- a3hum+lRoAQy+q3Oj/ePmzw5TMR6RlNZTSeuykcgolLWKF8uw+n/OO3G/H+ipmoCDLPf
- +nyF+0oRF7TBWd7peWAC30iRV4I4T+4z3k4z8jxErxGJLqE/N6XidhWI89xczZA/Q4Be
- XwZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703006783; x=1703611583;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GNaJALPMR4T06Fy70/m7M5bP77I6oDiHT8BINT3X6l4=;
- b=HljJOJhQgvxClUbFReqHJ01xckSc8shL3Hxka07l53wVoKYStPXnYGR5Cwmh7JpCfi
- OcCOT3XJcZd2uYdWVebW/DukOAy7JCC1JamsDo3eGSaOCdPwSu/tut7VL0fWGy4a8kke
- tJ8g+bfMN0MZrXEjuO7T55jM7THL6Qcvl1cOw3uB2dpRgplrt+JyX68aPBRxKJqOFco9
- yGjOIJq49nvTV+TnqdGq3L6NUO0LiuKoaJMsZdMi7JNdTX67lVkUilLGXLLPHiUF5g/m
- mtVIB/a/tYMzzclvSQzpr+dc0/MBhl+NnGl1oJFSEF/pcMfoQa+A0NKB6+65w+Lo1Rmi
- 71AQ==
-X-Gm-Message-State: AOJu0YwCQvBTZCjYziQbapWWTuqGYtNDz0x8CPGPCgyBDokhN8MYTA2O
- tJjSdC44IRAiw7YvOR9wvyY7D+guU3RUQbl+6lUxcoWEoEzyRATB
-X-Google-Smtp-Source: AGHT+IGd+qdqJCkofiTlAmqRPLfRsc2IUd2HvynWCMqrzcuJIsw+gybhx9tzoId7TpAIuDYoSuFLct3rTbgpqDjFooQ=
-X-Received: by 2002:a50:d756:0:b0:553:3c89:bc19 with SMTP id
- i22-20020a50d756000000b005533c89bc19mr1664401edj.20.1703006783202; Tue, 19
- Dec 2023 09:26:23 -0800 (PST)
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rFed7-0008Iy-H6
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:15:45 -0500
+Received: from zoidberg.rfc1149.net ([195.154.227.159])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rFed4-00008w-Sc
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:15:45 -0500
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits)
+ server-digest SHA256) (Client did not present a certificate)
+ by zoidberg.rfc1149.net (Postfix) with ESMTPSA id 7BD3E80024;
+ Tue, 19 Dec 2023 19:15:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
+ t=1703009736; bh=7jEVjjfiachAnB1fvZMhQgp8cq+B+fv3/JDDOi/FxAE=;
+ h=References:From:To:Cc:Subject:Date:In-reply-to;
+ b=DFganMiKesLuF6XA9CP8PLEZnWHeq/vKRJKRsMXE+3hJQux+4chd6hqlUMOIlwZn8
+ yDvKzJpojRoWyGPqvB8uXA3uKW3NKQOAN9TVnf+T/gpMB6zo/muAFiuGOrL7SluB2c
+ SHYfX39EODqlH0bou8D8cPDklkTUVGhv+lpmtfRUJ7qu01cekiv4MngnUSBIBh12Is
+ zSTPaDqKzSugGLVqPf6nwv0jpYFCMGqDMQT0MRmOSoGEDIQ4j8DNWOYks2nPIP4IuJ
+ MOfRAg238ne5p/0jRRfxFS+vF5jd2qZ1Z4QFgM5E71Qa6+a1uTz/D5qlOLjLSk1jo7
+ UM1UzuWry5e2w==
 References: <20231214233055.2505387-1-sam@rfc1149.net>
  <20231214233055.2505387-3-sam@rfc1149.net>
-In-Reply-To: <20231214233055.2505387-3-sam@rfc1149.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 19 Dec 2023 17:26:11 +0000
-Message-ID: <CAFEAcA_f93-Siwmc_5hVrz=A5Rva_d6bWFXYoRcb90AXZXJhmg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] tcg: Jump after always false condition
-To: Samuel Tardieu <sam@rfc1149.net>
+ <CAFEAcA_f93-Siwmc_5hVrz=A5Rva_d6bWFXYoRcb90AXZXJhmg@mail.gmail.com>
+User-agent: mu4e 1.10.8; emacs 29.1
+From: Samuel Tardieu <sam@rfc1149.net>
+To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Subject: Re: [PATCH 2/2] tcg: Jump after always false condition
+Date: Tue, 19 Dec 2023 18:55:59 +0100
+In-reply-to: <CAFEAcA_f93-Siwmc_5hVrz=A5Rva_d6bWFXYoRcb90AXZXJhmg@mail.gmail.com>
+Message-ID: <871qbiys6w.fsf@rfc1149.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
+ helo=zoidberg.rfc1149.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,62 +68,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Dec 2023 at 23:32, Samuel Tardieu <sam@rfc1149.net> wrote:
->
-> `buf_rw` is always `NULL` when jumping to the `fail` label. Move the
-> label `down` after the `if (buf_rw) { ... }` statement.
->
-> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
-> ---
->  tcg/region.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tcg/region.c b/tcg/region.c
-> index 6d657e8c33..691a726eae 100644
-> --- a/tcg/region.c
-> +++ b/tcg/region.c
-> @@ -596,10 +596,10 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
->
->   fail_rx:
->      error_setg_errno(errp, errno, "failed to map shared memory for execute");
-> - fail:
->      if (buf_rw) {
->          munmap(buf_rw, size);
->      }
-> + fail:
->      if (fd >= 0) {
->          close(fd);
->      }
 
-It's also the case that fd is always -1 when we jump
-to the 'fail' label, so if we're moving it down then
-we should move it past that as well.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-At this point you might as well make the check after
-qemu_memfd_alloc() just be
-   if (buf_rw == NULL) {
-       return -1;
-   }
+> So, well, all of this is definitely removing dead
+> code, but on the other hand it's also moving away
+> from the coding-style pattern the function has at
+> the moment, which is "there is a fail-and-exit
+> codepath which is robust against wherever you might
+> choose to jump to it, and so if we need to add new
+> code to this function then it also can jump to 'fail'
+> without any further updates to that error-exit path".
+> Instead we end up with an "every error-exit check
+> does its own tidyup" idiom. For the sake of not having
+> a static checker say "this is technically dead code",
+> is that worth doing, or does it make the code a little
+> less readable and less amenable to future modification?
+> I'm not sure...
 
-and drop the 'fail:' label entirely. And then we
-know that in this code path buf_rw must be non-NULL
-and fd must be >= 0, so the fail_rx: codepath doesn't
-need to explicitly test those.
+Hi Peter.
 
-So, well, all of this is definitely removing dead
-code, but on the other hand it's also moving away
-from the coding-style pattern the function has at
-the moment, which is "there is a fail-and-exit
-codepath which is robust against wherever you might
-choose to jump to it, and so if we need to add new
-code to this function then it also can jump to 'fail'
-without any further updates to that error-exit path".
-Instead we end up with an "every error-exit check
-does its own tidyup" idiom. For the sake of not having
-a static checker say "this is technically dead code",
-is that worth doing, or does it make the code a little
-less readable and less amenable to future modification?
-I'm not sure...
+I see your point and I agree with you. Perhaps we could get the=20
+best of both worlds by:
 
--- PMM
+- renaming `fail_rx` as `fail`, so that we get a unique exit block=20
+  =E2=80=94 not only will the compiler optimize the jump if it can, and=20
+  this is the slow path anyway
+- adding a one-line comment saying that `buf_rx` is always=20
+  `MAP_FAILED` =E2=80=93 that will let people know that they might need to=
+=20
+  add a cleanup if they add another jump to `fail`
+- calling `error_setg_errno()` at the right place before jumping=20
+  to `fail`
+
+I will produce a v2 to make this proposal clearer.
+
+  Sam
+--=20
+Samuel Tardieu
 
