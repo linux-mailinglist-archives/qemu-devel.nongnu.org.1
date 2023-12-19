@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE82817E86
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 01:09:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F215C817EA3
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 01:12:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFNfv-0005m7-Qf; Mon, 18 Dec 2023 19:09:31 -0500
+	id 1rFNi5-0006hb-Pz; Mon, 18 Dec 2023 19:11:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNft-0005kW-1S; Mon, 18 Dec 2023 19:09:29 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1rFNi2-0006hF-Ol; Mon, 18 Dec 2023 19:11:42 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNfr-0008ID-FR; Mon, 18 Dec 2023 19:09:28 -0500
+ id 1rFNi1-0000W8-7O; Mon, 18 Dec 2023 19:11:42 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B46F775A4BF;
- Tue, 19 Dec 2023 01:09:25 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0286475A4C2;
+ Tue, 19 Dec 2023 01:11:39 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id xDilfp289RKs; Tue, 19 Dec 2023 01:09:23 +0100 (CET)
+ with ESMTP id S29TuSnDrEii; Tue, 19 Dec 2023 01:11:37 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id CA68375A406; Tue, 19 Dec 2023 01:09:23 +0100 (CET)
+ id 1B7C575A406; Tue, 19 Dec 2023 01:11:37 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C84C9756094;
- Tue, 19 Dec 2023 01:09:23 +0100 (CET)
-Date: Tue, 19 Dec 2023 01:09:23 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 19072756094;
+ Tue, 19 Dec 2023 01:11:37 +0100 (CET)
+Date: Tue, 19 Dec 2023 01:11:37 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Bernhard Beschow <shentey@gmail.com>
 cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
@@ -41,16 +41,16 @@ cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>, 
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>, 
  qemu-block@nongnu.org
-Subject: Re: [PATCH v2 08/12] hw/block/fdc-isa: Implement relocation and
- toggling for TYPE_ISA_FDC
-In-Reply-To: <20231218185114.119736-9-shentey@gmail.com>
-Message-ID: <42552a96-7db9-50a0-6a4c-76ecae98df35@eik.bme.hu>
+Subject: Re: [PATCH v2 11/12] hw/ppc/pegasos2: Let pegasos2 machine configure
+ SuperI/O functions
+In-Reply-To: <20231218185114.119736-12-shentey@gmail.com>
+Message-ID: <9ccd94d1-130f-b009-cd25-f32122c78908@eik.bme.hu>
 References: <20231218185114.119736-1-shentey@gmail.com>
- <20231218185114.119736-9-shentey@gmail.com>
+ <20231218185114.119736-12-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -72,63 +72,57 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Mon, 18 Dec 2023, Bernhard Beschow wrote:
-> Implement isa_fdc_set_{enabled,iobase} in order to implement relocation and
-> toggling of SuperI/O functions in the VIA south bridges without breaking
-> encapsulation.
+> This is a preparation for implementing relocation and toggling of SuperI/O
+> functions in the VT8231 device model. Upon reset, all SuperI/O functions will be
+> deactivated, so in case if no -bios is given, let the machine configure those
+> functions the same way pegasos2.rom would do. For now the meantime this will be
 
-You may want to revise these commit messages. What toggling means is only 
-defined in the last patch but I can't think of a better name for it other 
-than spelling out enable/disable. It's probably also not relevant in this 
-commit message to mention VIA south bridges as this is a generic function 
-not specific to that usage only.
+"same way pegasos2 firmware would do". You can drop the last sentence 
+about no-op as it does not make much sense as it is or reword it if you 
+want to keep it.
 
 Regards,
 BALATON Zoltan
 
+> a no-op.
+>
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
-> include/hw/block/fdc.h |  3 +++
-> hw/block/fdc-isa.c     | 14 ++++++++++++++
-> 2 files changed, 17 insertions(+)
+> hw/ppc/pegasos2.c | 15 +++++++++++++++
+> 1 file changed, 15 insertions(+)
 >
-> diff --git a/include/hw/block/fdc.h b/include/hw/block/fdc.h
-> index 35248c0837..c367c5efea 100644
-> --- a/include/hw/block/fdc.h
-> +++ b/include/hw/block/fdc.h
-> @@ -14,6 +14,9 @@ void fdctrl_init_sysbus(qemu_irq irq, hwaddr mmio_base, DriveInfo **fds);
-> void sun4m_fdctrl_init(qemu_irq irq, hwaddr io_base,
->                        DriveInfo **fds, qemu_irq *fdc_tc);
->
-> +void isa_fdc_set_iobase(ISADevice *fdc, hwaddr iobase);
-> +void isa_fdc_set_enabled(ISADevice *fdc, bool enabled);
-> +
-> FloppyDriveType isa_fdc_get_drive_type(ISADevice *fdc, int i);
-> int cmos_get_fd_drive_type(FloppyDriveType fd0);
->
-> diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
-> index b4c92b40b3..c989325de3 100644
-> --- a/hw/block/fdc-isa.c
-> +++ b/hw/block/fdc-isa.c
-> @@ -192,6 +192,20 @@ static Aml *build_fdinfo_aml(int idx, FloppyDriveType type)
->     return dev;
+> diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+> index 3203a4a728..0a40ebd542 100644
+> --- a/hw/ppc/pegasos2.c
+> +++ b/hw/ppc/pegasos2.c
+> @@ -285,6 +285,15 @@ static void pegasos2_pci_config_write(Pegasos2MachineState *pm, int bus,
+>     pegasos2_mv_reg_write(pm, pcicfg + 4, len, val);
 > }
 >
-> +void isa_fdc_set_iobase(ISADevice *fdc, hwaddr iobase)
+> +static void pegasos2_superio_write(Pegasos2MachineState *pm, uint32_t addr,
+> +                                   uint32_t val)
 > +{
-> +    FDCtrlISABus *isa = ISA_FDC(fdc);
+> +    AddressSpace *as = CPU(pm->cpu)->as;
 > +
-> +    fdc->ioport_id = iobase;
-> +    isa->iobase = iobase;
-> +    portio_list_set_address(&isa->portio_list, isa->iobase);
+> +    stb_phys(as, PCI1_IO_BASE + 0x3f0, addr);
+> +    stb_phys(as, PCI1_IO_BASE + 0x3f1, val);
 > +}
 > +
-> +void isa_fdc_set_enabled(ISADevice *fdc, bool enabled)
-> +{
-> +    portio_list_set_enabled(&ISA_FDC(fdc)->portio_list, enabled);
-> +}
-> +
-> int cmos_get_fd_drive_type(FloppyDriveType fd0)
+> static void pegasos2_machine_reset(MachineState *machine, ShutdownCause reason)
 > {
->     int val;
+>     Pegasos2MachineState *pm = PEGASOS2_MACHINE(machine);
+> @@ -310,6 +319,12 @@ static void pegasos2_machine_reset(MachineState *machine, ShutdownCause reason)
+>
+>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+>                               PCI_INTERRUPT_LINE, 2, 0x9);
+> +    pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+> +                              0x50, 1, 0x6);
+> +    pegasos2_superio_write(pm, 0xf4, 0xbe);
+> +    pegasos2_superio_write(pm, 0xf6, 0xef);
+> +    pegasos2_superio_write(pm, 0xf7, 0xfc);
+> +    pegasos2_superio_write(pm, 0xf2, 0x14);
+>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+>                               0x50, 1, 0x2);
+>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
 >
 
