@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A1D81908E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:18:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC11819098
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:21:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfX7-00021Q-GD; Tue, 19 Dec 2023 14:13:37 -0500
+	id 1rFfX6-000215-Ve; Tue, 19 Dec 2023 14:13:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfX4-0001zb-4S
+ id 1rFfX4-0001zd-40
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:34 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWy-0001sX-Sp
+ id 1rFfWz-0001sl-B9
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:32 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-33660cf2296so3956139f8f.3
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-336417c565eso4661219f8f.3
  for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703013207; x=1703618007; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703013208; x=1703618008; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0gBHCNexdbG+zEv+b4Ytrqor1JdvLFRCIBJ8HsM7maA=;
- b=xLsc6S/akiQ/dmQtKHUjcn4qHhHW3FjifaO2eaS4zaocJOm8bWj/oT7+Ogz3Zz2qi0
- mm6CddeSsJr3u2tCn3Ne8XHOWTKs5UnPJ5JmRsXLIdINK2LAA1BGgCcK2nL8JwS7S8Q8
- bxkISKoeAogZjTD2GthMzMElQzDPZFjvPM44fcnu8Y7k0/wddvcwyjeYyzNTxKNIQMiF
- z1gAYKfU1P+kMVeJyt3aeVPQXmuSi1DYUMdsjUiNeHcBfRuWiiBqELkZFniB95MzkdGL
- LWsi2xYPPEBLHGPMizw/7R7dsssfQ+ShWaOnXAtuKwYgVfEJ8Z3iNPa5qMCSvOnCfqOT
- FZoA==
+ :reply-to; bh=Ku+7zxeUKUJMUxVPqQDK2gFDtGrYkzffZzuDnYb6rLU=;
+ b=iDK1gF4jGdB5k6JhJOxN5/TF156oA8Z6XE24HLxIydKmuLCpsb2rstxORr+qM3vtKg
+ 17TOAChFMCfX9oCfQECrAJEg6Azf6VdID6mDS5iPcBEYyBKVlzt5c2eCFYqhPI736qmr
+ z825Be4G9pNGweMgAyz9+ZEUk9UWwQedHJWMI5gjrDLzojPMEE33qBHWkk4GgjPmDd7x
+ 7zR7b5ebFfkC+tJGM4beo7u/BZI6XBqta9NkHHAWDqpzISd27gjIEitwo9yVpO1PTljr
+ mOTYaQOlmZpY3VbhlpWPOL6VsUMQsx4LjhB0zvVIwr01a10kCGnnkxZDUOMaMtWtEufs
+ QCmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703013207; x=1703618007;
+ d=1e100.net; s=20230601; t=1703013208; x=1703618008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0gBHCNexdbG+zEv+b4Ytrqor1JdvLFRCIBJ8HsM7maA=;
- b=H7f4CbNoewuoQbcV4zPwS2D47CpyTlU9RtF44QXaAuqwKB1igozjTLmQuZSRgT4xwQ
- JL6YORyYcqLmoipfqoeyaq6CIZZlSgRP9xLhx1kCLVMlnTUKzFH+qIjMCFClqMhWn7sS
- OO7Sjw+gYsnCNFFpW4pJGLMNSDkk0Yc0TC1i9PUz4wWFk9yDfOIIoAJmzwt3J1Pw1ZtR
- bFFaFs2r7xMOP2TZ6Jdl4MBziPJcKSMjm4EAcuRKBiLeP1uHZUEk+02q8wkG7O573VM6
- neNmXhXc6tWdVOyYiEWmQ1Dcry+LVK/baOvNwITLu0m+2GA43YCRVl2y9fwsSwpNZoBV
- 85NQ==
-X-Gm-Message-State: AOJu0Yx/2vW8rpHw+2qoY1bfV0t4YKH2QKknFnv3C17xHwlx3Uul2V1m
- yJNIlhj/vg19P1/jGTRP1HtuQ++DNR/9INZcuHk=
-X-Google-Smtp-Source: AGHT+IHF536noumzaQyVsy1+bksZIMp16F47IX/DvFW1Km/8kz7wHqERIRQv0cVqMaVWzSWSkf0sJg==
-X-Received: by 2002:adf:f5c6:0:b0:336:7197:56e6 with SMTP id
- k6-20020adff5c6000000b00336719756e6mr1149861wrp.136.1703013207615; 
- Tue, 19 Dec 2023 11:13:27 -0800 (PST)
+ bh=Ku+7zxeUKUJMUxVPqQDK2gFDtGrYkzffZzuDnYb6rLU=;
+ b=SFwVlv6MqNRbjPNCwx6EJ5hbT/KP3Kqq4rBYVTVojD7E8Gjy1xFjvrRZ3vYwJ6UsSf
+ fxxHDp48zdJUI1oxwaUc3EH4U/njb/kSTeVb5yAT6kjy9dQFYjFSQ9H3tmYrJFRgZbM3
+ 3xxzHg++NXV6I/o3qbXSamWvStDq6Lt7BycTNiePiL64zE24XkyBu8yKOZSQNM4q/Qem
+ TOsaeMVEQxacnGJP68zQd/fmszuuyHCgLs6yIK+Ds4BNGX94lw0F7DqKpKhV5x633Cfq
+ CWeZvWfpger7aqmlw1u7aDIU6HBPZ31XufmENVm9rW+zr4xnSE4ywtzPl8hAi0DL4GCZ
+ g6sg==
+X-Gm-Message-State: AOJu0YzPLCATRGBHPGSNn151GcAYHY9CmhaEIVx3WeTHCWRgLO9Lnd9I
+ bPf9jwY/ZnwHNPXK9cH8bcZQ0Jd8dpUjQmy92a8=
+X-Google-Smtp-Source: AGHT+IElnIP5Id16grkP17VHgilK0qg5TH9wnMC2m/E5OIi9DIMGcM52SECJ8yT3fJsjCznt6GBMJA==
+X-Received: by 2002:a5d:588a:0:b0:336:6b74:87e9 with SMTP id
+ n10-20020a5d588a000000b003366b7487e9mr1335492wrf.14.1703013208003; 
+ Tue, 19 Dec 2023 11:13:28 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  f5-20020a5d5685000000b0033657376b62sm12007754wrv.105.2023.12.19.11.13.27
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 19 Dec 2023 11:13:27 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 38/43] target/arm: Don't implement *32_EL2 registers when EL1
- is AArch64 only
-Date: Tue, 19 Dec 2023 19:13:02 +0000
-Message-Id: <20231219191307.2895919-39-peter.maydell@linaro.org>
+Subject: [PULL 39/43] target/arm: Restrict TCG specific helpers
+Date: Tue, 19 Dec 2023 19:13:03 +0000
+Message-Id: <20231219191307.2895919-40-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231219191307.2895919-1-peter.maydell@linaro.org>
 References: <20231219191307.2895919-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,138 +91,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The system registers DBGVCR32_EL2, FPEXC32_EL2, DACR32_EL2 and
-IFSR32_EL2 are present only to allow an AArch64 EL2 or EL3 to read
-and write the contents of an AArch32-only system register.  The
-architecture requires that they are present only when EL1 can be
-AArch32, but we implement them unconditionally.  This was OK when all
-our CPUs supported AArch32 EL1, but we have quite a lot of CPU models
-now which only support AArch64 at EL1:
- a64fx
- cortex-a76
- cortex-a710
- neoverse-n1
- neoverse-n2
- neoverse-v1
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Only define these registers for CPUs which allow AArch32 EL1.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20231121144605.3980419-1-peter.maydell@linaro.org
+Message-id: 20231130142519.28417-2-philmd@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/debug_helper.c | 23 +++++++++++++++--------
- target/arm/helper.c       | 35 +++++++++++++++++++++--------------
- 2 files changed, 36 insertions(+), 22 deletions(-)
+ target/arm/helper.c        | 55 --------------------------------------
+ target/arm/tcg/op_helper.c | 55 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+), 55 deletions(-)
 
-diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
-index cbfba532f50..83d2619080f 100644
---- a/target/arm/debug_helper.c
-+++ b/target/arm/debug_helper.c
-@@ -1026,14 +1026,6 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
-       .cp = 14, .opc1 = 0, .crn = 0, .crm = 7, .opc2 = 0,
-       .access = PL1_RW, .accessfn = access_tda,
-       .type = ARM_CP_NOP },
--    /*
--     * Dummy DBGVCR32_EL2 (which is only for a 64-bit hypervisor
--     * to save and restore a 32-bit guest's DBGVCR)
--     */
--    { .name = "DBGVCR32_EL2", .state = ARM_CP_STATE_AA64,
--      .opc0 = 2, .opc1 = 4, .crn = 0, .crm = 7, .opc2 = 0,
--      .access = PL2_RW, .accessfn = access_tda,
--      .type = ARM_CP_NOP | ARM_CP_EL3_NO_EL2_KEEP },
-     /*
-      * Dummy MDCCINT_EL1, since we don't implement the Debug Communications
-      * Channel but Linux may try to access this register. The 32-bit
-@@ -1062,6 +1054,18 @@ static const ARMCPRegInfo debug_cp_reginfo[] = {
-       .fieldoffset = offsetof(CPUARMState, cp15.dbgclaim) },
- };
- 
-+/* These are present only when EL1 supports AArch32 */
-+static const ARMCPRegInfo debug_aa32_el1_reginfo[] = {
-+    /*
-+     * Dummy DBGVCR32_EL2 (which is only for a 64-bit hypervisor
-+     * to save and restore a 32-bit guest's DBGVCR)
-+     */
-+    { .name = "DBGVCR32_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 2, .opc1 = 4, .crn = 0, .crm = 7, .opc2 = 0,
-+      .access = PL2_RW, .accessfn = access_tda,
-+      .type = ARM_CP_NOP | ARM_CP_EL3_NO_EL2_KEEP },
-+};
-+
- static const ARMCPRegInfo debug_lpae_cp_reginfo[] = {
-     /* 64 bit access versions of the (dummy) debug registers */
-     { .name = "DBGDRAR", .cp = 14, .crm = 1, .opc1 = 0,
-@@ -1207,6 +1211,9 @@ void define_debug_regs(ARMCPU *cpu)
-     assert(ctx_cmps <= brps);
- 
-     define_arm_cp_regs(cpu, debug_cp_reginfo);
-+    if (cpu_isar_feature(aa64_aa32_el1, cpu)) {
-+        define_arm_cp_regs(cpu, debug_aa32_el1_reginfo);
-+    }
- 
-     if (arm_feature(&cpu->env, ARM_FEATURE_LPAE)) {
-         define_arm_cp_regs(cpu, debug_lpae_cp_reginfo);
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 2746d3fdac8..39830c7f948 100644
+index 39830c7f948..5d4796b99a8 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -5698,20 +5698,6 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
-       .opc0 = 3, .opc1 = 0, .crn = 4, .crm = 2, .opc2 = 0,
-       .type = ARM_CP_NO_RAW,
-       .access = PL1_RW, .readfn = spsel_read, .writefn = spsel_write },
--    { .name = "FPEXC32_EL2", .state = ARM_CP_STATE_AA64,
--      .opc0 = 3, .opc1 = 4, .crn = 5, .crm = 3, .opc2 = 0,
--      .access = PL2_RW,
--      .type = ARM_CP_ALIAS | ARM_CP_FPU | ARM_CP_EL3_NO_EL2_KEEP,
--      .fieldoffset = offsetof(CPUARMState, vfp.xregs[ARM_VFP_FPEXC]) },
--    { .name = "DACR32_EL2", .state = ARM_CP_STATE_AA64,
--      .opc0 = 3, .opc1 = 4, .crn = 3, .crm = 0, .opc2 = 0,
--      .access = PL2_RW, .resetvalue = 0, .type = ARM_CP_EL3_NO_EL2_KEEP,
--      .writefn = dacr_write, .raw_writefn = raw_write,
--      .fieldoffset = offsetof(CPUARMState, cp15.dacr32_el2) },
--    { .name = "IFSR32_EL2", .state = ARM_CP_STATE_AA64,
--      .opc0 = 3, .opc1 = 4, .crn = 5, .crm = 0, .opc2 = 1,
--      .access = PL2_RW, .resetvalue = 0, .type = ARM_CP_EL3_NO_EL2_KEEP,
--      .fieldoffset = offsetof(CPUARMState, cp15.ifsr32_el2) },
-     { .name = "SPSR_IRQ", .state = ARM_CP_STATE_AA64,
-       .type = ARM_CP_ALIAS,
-       .opc0 = 3, .opc1 = 4, .crn = 4, .crm = 3, .opc2 = 0,
-@@ -5746,6 +5732,24 @@ static const ARMCPRegInfo v8_cp_reginfo[] = {
-       .fieldoffset = offsetoflow32(CPUARMState, cp15.mdcr_el3) },
- };
+@@ -10142,61 +10142,6 @@ void cpsr_write(CPUARMState *env, uint32_t val, uint32_t mask,
+     }
+ }
  
-+/* These are present only when EL1 supports AArch32 */
-+static const ARMCPRegInfo v8_aa32_el1_reginfo[] = {
-+    { .name = "FPEXC32_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .crn = 5, .crm = 3, .opc2 = 0,
-+      .access = PL2_RW,
-+      .type = ARM_CP_ALIAS | ARM_CP_FPU | ARM_CP_EL3_NO_EL2_KEEP,
-+      .fieldoffset = offsetof(CPUARMState, vfp.xregs[ARM_VFP_FPEXC]) },
-+    { .name = "DACR32_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .crn = 3, .crm = 0, .opc2 = 0,
-+      .access = PL2_RW, .resetvalue = 0, .type = ARM_CP_EL3_NO_EL2_KEEP,
-+      .writefn = dacr_write, .raw_writefn = raw_write,
-+      .fieldoffset = offsetof(CPUARMState, cp15.dacr32_el2) },
-+    { .name = "IFSR32_EL2", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 4, .crn = 5, .crm = 0, .opc2 = 1,
-+      .access = PL2_RW, .resetvalue = 0, .type = ARM_CP_EL3_NO_EL2_KEEP,
-+      .fieldoffset = offsetof(CPUARMState, cp15.ifsr32_el2) },
-+};
+-/* Sign/zero extend */
+-uint32_t HELPER(sxtb16)(uint32_t x)
+-{
+-    uint32_t res;
+-    res = (uint16_t)(int8_t)x;
+-    res |= (uint32_t)(int8_t)(x >> 16) << 16;
+-    return res;
+-}
+-
+-static void handle_possible_div0_trap(CPUARMState *env, uintptr_t ra)
+-{
+-    /*
+-     * Take a division-by-zero exception if necessary; otherwise return
+-     * to get the usual non-trapping division behaviour (result of 0)
+-     */
+-    if (arm_feature(env, ARM_FEATURE_M)
+-        && (env->v7m.ccr[env->v7m.secure] & R_V7M_CCR_DIV_0_TRP_MASK)) {
+-        raise_exception_ra(env, EXCP_DIVBYZERO, 0, 1, ra);
+-    }
+-}
+-
+-uint32_t HELPER(uxtb16)(uint32_t x)
+-{
+-    uint32_t res;
+-    res = (uint16_t)(uint8_t)x;
+-    res |= (uint32_t)(uint8_t)(x >> 16) << 16;
+-    return res;
+-}
+-
+-int32_t HELPER(sdiv)(CPUARMState *env, int32_t num, int32_t den)
+-{
+-    if (den == 0) {
+-        handle_possible_div0_trap(env, GETPC());
+-        return 0;
+-    }
+-    if (num == INT_MIN && den == -1) {
+-        return INT_MIN;
+-    }
+-    return num / den;
+-}
+-
+-uint32_t HELPER(udiv)(CPUARMState *env, uint32_t num, uint32_t den)
+-{
+-    if (den == 0) {
+-        handle_possible_div0_trap(env, GETPC());
+-        return 0;
+-    }
+-    return num / den;
+-}
+-
+-uint32_t HELPER(rbit)(uint32_t x)
+-{
+-    return revbit32(x);
+-}
+-
+ #ifdef CONFIG_USER_ONLY
+ 
+ static void switch_mode(CPUARMState *env, int mode)
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index ea08936a852..9de0fa2d1f6 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -121,6 +121,61 @@ void HELPER(v8m_stackcheck)(CPUARMState *env, uint32_t newvalue)
+     }
+ }
+ 
++/* Sign/zero extend */
++uint32_t HELPER(sxtb16)(uint32_t x)
++{
++    uint32_t res;
++    res = (uint16_t)(int8_t)x;
++    res |= (uint32_t)(int8_t)(x >> 16) << 16;
++    return res;
++}
 +
- static void do_hcr_write(CPUARMState *env, uint64_t value, uint64_t valid_mask)
++static void handle_possible_div0_trap(CPUARMState *env, uintptr_t ra)
++{
++    /*
++     * Take a division-by-zero exception if necessary; otherwise return
++     * to get the usual non-trapping division behaviour (result of 0)
++     */
++    if (arm_feature(env, ARM_FEATURE_M)
++        && (env->v7m.ccr[env->v7m.secure] & R_V7M_CCR_DIV_0_TRP_MASK)) {
++        raise_exception_ra(env, EXCP_DIVBYZERO, 0, 1, ra);
++    }
++}
++
++uint32_t HELPER(uxtb16)(uint32_t x)
++{
++    uint32_t res;
++    res = (uint16_t)(uint8_t)x;
++    res |= (uint32_t)(uint8_t)(x >> 16) << 16;
++    return res;
++}
++
++int32_t HELPER(sdiv)(CPUARMState *env, int32_t num, int32_t den)
++{
++    if (den == 0) {
++        handle_possible_div0_trap(env, GETPC());
++        return 0;
++    }
++    if (num == INT_MIN && den == -1) {
++        return INT_MIN;
++    }
++    return num / den;
++}
++
++uint32_t HELPER(udiv)(CPUARMState *env, uint32_t num, uint32_t den)
++{
++    if (den == 0) {
++        handle_possible_div0_trap(env, GETPC());
++        return 0;
++    }
++    return num / den;
++}
++
++uint32_t HELPER(rbit)(uint32_t x)
++{
++    return revbit32(x);
++}
++
+ uint32_t HELPER(add_setq)(CPUARMState *env, uint32_t a, uint32_t b)
  {
-     ARMCPU *cpu = env_archcpu(env);
-@@ -8716,6 +8720,9 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-         }
-         define_arm_cp_regs(cpu, v8_idregs);
-         define_arm_cp_regs(cpu, v8_cp_reginfo);
-+        if (cpu_isar_feature(aa64_aa32_el1, cpu)) {
-+            define_arm_cp_regs(cpu, v8_aa32_el1_reginfo);
-+        }
- 
-         for (i = 4; i < 16; i++) {
-             /*
+     uint32_t res = a + b;
 -- 
 2.34.1
 
