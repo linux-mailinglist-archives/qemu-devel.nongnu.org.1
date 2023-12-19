@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5508C81906D
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:14:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13BB5819072
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:15:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfWr-0001pS-0N; Tue, 19 Dec 2023 14:13:21 -0500
+	id 1rFfWq-0001od-2g; Tue, 19 Dec 2023 14:13:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWm-0001l2-Kd
+ id 1rFfWm-0001ku-Ee
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:16 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFfWk-0001lh-Bl
+ id 1rFfWk-0001lu-Lx
  for qemu-devel@nongnu.org; Tue, 19 Dec 2023 14:13:16 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-33664b6d6abso2681152f8f.2
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:13 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-33678156e27so178356f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 11:13:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1703013193; x=1703617993; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Kbhem3ByWXGPCcp4ptdyGn3hPusC0kTAklpx1zGjXBg=;
- b=a2zHQWdVEUVfhGl2q7FP7dqEXSQ9suFyA1blgea3uo0yB0XGDuqek7K+cc/jObi/MT
- jlkod3uAqbKSigdpTkL5wEEoXCyV0m4IlUHt9kibQZTYE/zVKgpea9iLT+M7KwKRyYbH
- JDeDtR9VUJznFui+frBuml9U66Al06seS+GevG0Midd5AYpU7vwwTlQ28FuPyIPwWpvL
- YAKFles3cGrJnkslN3cgPuCBFjgIRZ6A08v6yoGA7tr0bsSzSRRZlFo3jTf2g5VM4J9m
- QImGR4RIxepriGSbIwj7mzeKeSAsX8r/8RpEk0PNlK8LfudKV/rWuAkB06AJEPRho+Zy
- Nr8g==
+ :reply-to; bh=r1J7gC45bfq/FYNHKEltq/v3bAcoJrpQOGvO+cx208c=;
+ b=Vm0feBfwVIXtrOhMLpXxPKgaDRaE/xqHDXvEyTKnz2XQwR24sMdIx0wNPMFDgbjT77
+ 5hr8vqQj3A0olwiUzUps+ZHiz2cSMuRxXv1AKxhh2IRGJuB8MMqpvNPK3WkJdCSuxEuC
+ xrnFmgeFTKPOIVMtbkBKbgcZlAJJgSEcJIKbMo+F9iBr7yJr9B9vs2T60pBI4JZUXhfx
+ dWYW0XguOqhbRip+ckNN3V+MQQ1xYg8zQspdTPQJbzCOD69a/JrKK7VlhhiH8GccBiVc
+ Xda0lUTG6a/Lc0bIPTnKoLijj2k3+UMK939Lt55/sB44LxcOYuGNi/9eQkVf254ygksx
+ +8Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1703013193; x=1703617993;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Kbhem3ByWXGPCcp4ptdyGn3hPusC0kTAklpx1zGjXBg=;
- b=qD0sMcdcn0Yi4iFfPPihygXrDBEq6fGWpEXvuG67d+JFMCImZxyOdc3ovfvPPYhzVi
- aKADx4mczLvBf9B8sFowjoldNUm9rD44SGRz3yvvNBimBkN6PBMG1tnIwVUY7v18LK82
- r8JdZPk4mP2K7Y5I4RZLV50Orj0Y4wApE6pqFgPTUtg0XlUPBkwqg8YqquSpLROdJpbF
- yuXyg7hJzauqJYoegw3o/3xwE7iO94NVugkT9Q+MButI8RNYwjkhT4Zn5rSc88YABgG5
- ahMrV08MygFPZ4N/Z2diSgKzVcPFwFB9ZteuECGGJ4BpNjMR9azlQ/8Uf4XAyWqWSErt
- 07EQ==
-X-Gm-Message-State: AOJu0Yx3ZtaKmkfDe5m/7zNyGmr239C7zMJr+5kbVYSqZedqyaJUe9LG
- ZFpjroIJ6EnLc3lBl0VM5vUwx50AOtBKArGMolI=
-X-Google-Smtp-Source: AGHT+IFRDiBIV8xXuIOGD9E1Q9j0YpP7EbkKGPkZnY098FrXkSqYChZ33s/puv7C7k6DBWh899KKbQ==
-X-Received: by 2002:adf:ef0a:0:b0:336:77a8:3e40 with SMTP id
- e10-20020adfef0a000000b0033677a83e40mr242400wro.103.1703013192843; 
- Tue, 19 Dec 2023 11:13:12 -0800 (PST)
+ bh=r1J7gC45bfq/FYNHKEltq/v3bAcoJrpQOGvO+cx208c=;
+ b=fX/RdNsMag8n44HQ8korg/SktbUIYTZot2CWOe6U1vzlH0hpQ98q/lWrJkbJbizaaJ
+ 9SCaWLUoLpi8gfi3CxbNCZApsW6YfaGN1lsx65MWQPl+MBnELRHtY39kc4FpEvytWzXu
+ xuGBkucUo/obJzvnzqwWlunEHOonwn4hE9Lh8Old0K0Bgiufh6TlV2qLtZJgY4kBnOOU
+ RbbdbbwX1E69I5kN/oRJRf+85XDfV7qzSJ8q1udwoVwHM6QDOO9vZVE77JkEesV9PM79
+ ActbyDOuvBKfhVIRwzRj7J+jbnDBD0eonKjb9sCRgMDZXXESH2ng/gD5JfuW+rhuxSC2
+ gPFg==
+X-Gm-Message-State: AOJu0Ywv6fv7hubgd8y792XyIuO5enqrleXMc1x3ujCVCSbxVHU50MDO
+ Q4F787izVeUVb9Ey6EjjoHyrscq0DsqlijgJsL0=
+X-Google-Smtp-Source: AGHT+IEpBcr0dhyAJQ0rA+r5U3PJy+ggBC+fhjrTX+v5P12hw4FEbpdRDW4QHikzX/Hn7A/jJKSb0Q==
+X-Received: by 2002:adf:e547:0:b0:336:779e:7a2a with SMTP id
+ z7-20020adfe547000000b00336779e7a2amr215281wrm.94.1703013193360; 
+ Tue, 19 Dec 2023 11:13:13 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  f5-20020a5d5685000000b0033657376b62sm12007754wrv.105.2023.12.19.11.13.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Dec 2023 11:13:12 -0800 (PST)
+ Tue, 19 Dec 2023 11:13:13 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/43] target/arm/kvm: Move kvm_arm_handle_debug and unexport
-Date: Tue, 19 Dec 2023 19:12:31 +0000
-Message-Id: <20231219191307.2895919-8-peter.maydell@linaro.org>
+Subject: [PULL 08/43] target/arm/kvm: Unexport kvm_arm_{get, put}_virtual_time
+Date: Tue, 19 Dec 2023 19:12:32 +0000
+Message-Id: <20231219191307.2895919-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231219191307.2895919-1-peter.maydell@linaro.org>
 References: <20231219191307.2895919-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,195 +99,71 @@ Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm_arm.h |  9 ------
- target/arm/kvm.c     | 77 ++++++++++++++++++++++++++++++++++++++++++++
- target/arm/kvm64.c   | 70 ----------------------------------------
- 3 files changed, 77 insertions(+), 79 deletions(-)
+ target/arm/kvm_arm.h | 16 ----------------
+ target/arm/kvm.c     | 16 ++++++++++++++--
+ 2 files changed, 14 insertions(+), 18 deletions(-)
 
 diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index ac4856cb46e..9fa9cb7f767 100644
+index 9fa9cb7f767..e7c32f6ed07 100644
 --- a/target/arm/kvm_arm.h
 +++ b/target/arm/kvm_arm.h
-@@ -445,13 +445,4 @@ static inline uint32_t kvm_arm_sve_get_vls(CPUState *cs)
- 
- #endif
+@@ -335,22 +335,6 @@ int kvm_arm_sync_mpstate_to_kvm(ARMCPU *cpu);
+  */
+ int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu);
  
 -/**
-- * kvm_arm_handle_debug:
+- * kvm_arm_get_virtual_time:
 - * @cs: CPUState
-- * @debug_exit: debug part of the KVM exit structure
 - *
-- * Returns: TRUE if the debug exception was handled.
+- * Gets the VCPU's virtual counter and stores it in the KVM CPU state.
 - */
--bool kvm_arm_handle_debug(CPUState *cs, struct kvm_debug_exit_arch *debug_exit);
+-void kvm_arm_get_virtual_time(CPUState *cs);
 -
- #endif
+-/**
+- * kvm_arm_put_virtual_time:
+- * @cs: CPUState
+- *
+- * Sets the VCPU's virtual counter to the value stored in the KVM CPU state.
+- */
+-void kvm_arm_put_virtual_time(CPUState *cs);
+-
+ void kvm_arm_vm_state_change(void *opaque, bool running, RunState state);
+ 
+ int kvm_arm_vgic_probe(void);
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 4608bea7df4..55e1b4f26e9 100644
+index 55e1b4f26e9..84f300c602b 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -988,6 +988,83 @@ static int kvm_arm_handle_dabt_nisv(CPUState *cs, uint64_t esr_iss,
-     return -1;
- }
- 
-+/**
-+ * kvm_arm_handle_debug:
-+ * @cs: CPUState
-+ * @debug_exit: debug part of the KVM exit structure
-+ *
-+ * Returns: TRUE if the debug exception was handled.
-+ *
-+ * See v8 ARM ARM D7.2.27 ESR_ELx, Exception Syndrome Register
-+ *
-+ * To minimise translating between kernel and user-space the kernel
-+ * ABI just provides user-space with the full exception syndrome
-+ * register value to be decoded in QEMU.
-+ */
-+static bool kvm_arm_handle_debug(CPUState *cs,
-+                                 struct kvm_debug_exit_arch *debug_exit)
-+{
-+    int hsr_ec = syn_get_ec(debug_exit->hsr);
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+
-+    /* Ensure PC is synchronised */
-+    kvm_cpu_synchronize_state(cs);
-+
-+    switch (hsr_ec) {
-+    case EC_SOFTWARESTEP:
-+        if (cs->singlestep_enabled) {
-+            return true;
-+        } else {
-+            /*
-+             * The kernel should have suppressed the guest's ability to
-+             * single step at this point so something has gone wrong.
-+             */
-+            error_report("%s: guest single-step while debugging unsupported"
-+                         " (%"PRIx64", %"PRIx32")",
-+                         __func__, env->pc, debug_exit->hsr);
-+            return false;
-+        }
-+        break;
-+    case EC_AA64_BKPT:
-+        if (kvm_find_sw_breakpoint(cs, env->pc)) {
-+            return true;
-+        }
-+        break;
-+    case EC_BREAKPOINT:
-+        if (find_hw_breakpoint(cs, env->pc)) {
-+            return true;
-+        }
-+        break;
-+    case EC_WATCHPOINT:
-+    {
-+        CPUWatchpoint *wp = find_hw_watchpoint(cs, debug_exit->far);
-+        if (wp) {
-+            cs->watchpoint_hit = wp;
-+            return true;
-+        }
-+        break;
-+    }
-+    default:
-+        error_report("%s: unhandled debug exit (%"PRIx32", %"PRIx64")",
-+                     __func__, debug_exit->hsr, env->pc);
-+    }
-+
-+    /* If we are not handling the debug exception it must belong to
-+     * the guest. Let's re-use the existing TCG interrupt code to set
-+     * everything up properly.
-+     */
-+    cs->exception_index = EXCP_BKPT;
-+    env->exception.syndrome = debug_exit->hsr;
-+    env->exception.vaddress = debug_exit->far;
-+    env->exception.target_el = 1;
-+    qemu_mutex_lock_iothread();
-+    arm_cpu_do_interrupt(cs);
-+    qemu_mutex_unlock_iothread();
-+
-+    return false;
-+}
-+
- int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
- {
-     int ret = 0;
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 352643e0665..6b6db9374c6 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -1121,73 +1121,3 @@ int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
-     }
+@@ -704,7 +704,13 @@ int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
      return 0;
  }
--
--/* See v8 ARM ARM D7.2.27 ESR_ELx, Exception Syndrome Register
-- *
-- * To minimise translating between kernel and user-space the kernel
-- * ABI just provides user-space with the full exception syndrome
-- * register value to be decoded in QEMU.
-- */
--
--bool kvm_arm_handle_debug(CPUState *cs, struct kvm_debug_exit_arch *debug_exit)
--{
--    int hsr_ec = syn_get_ec(debug_exit->hsr);
--    ARMCPU *cpu = ARM_CPU(cs);
--    CPUARMState *env = &cpu->env;
--
--    /* Ensure PC is synchronised */
--    kvm_cpu_synchronize_state(cs);
--
--    switch (hsr_ec) {
--    case EC_SOFTWARESTEP:
--        if (cs->singlestep_enabled) {
--            return true;
--        } else {
--            /*
--             * The kernel should have suppressed the guest's ability to
--             * single step at this point so something has gone wrong.
--             */
--            error_report("%s: guest single-step while debugging unsupported"
--                         " (%"PRIx64", %"PRIx32")",
--                         __func__, env->pc, debug_exit->hsr);
--            return false;
--        }
--        break;
--    case EC_AA64_BKPT:
--        if (kvm_find_sw_breakpoint(cs, env->pc)) {
--            return true;
--        }
--        break;
--    case EC_BREAKPOINT:
--        if (find_hw_breakpoint(cs, env->pc)) {
--            return true;
--        }
--        break;
--    case EC_WATCHPOINT:
--    {
--        CPUWatchpoint *wp = find_hw_watchpoint(cs, debug_exit->far);
--        if (wp) {
--            cs->watchpoint_hit = wp;
--            return true;
--        }
--        break;
--    }
--    default:
--        error_report("%s: unhandled debug exit (%"PRIx32", %"PRIx64")",
--                     __func__, debug_exit->hsr, env->pc);
--    }
--
--    /* If we are not handling the debug exception it must belong to
--     * the guest. Let's re-use the existing TCG interrupt code to set
--     * everything up properly.
--     */
--    cs->exception_index = EXCP_BKPT;
--    env->exception.syndrome = debug_exit->hsr;
--    env->exception.vaddress = debug_exit->far;
--    env->exception.target_el = 1;
--    qemu_mutex_lock_iothread();
--    arm_cpu_do_interrupt(cs);
--    qemu_mutex_unlock_iothread();
--
--    return false;
--}
+ 
+-void kvm_arm_get_virtual_time(CPUState *cs)
++/**
++ * kvm_arm_get_virtual_time:
++ * @cs: CPUState
++ *
++ * Gets the VCPU's virtual counter and stores it in the KVM CPU state.
++ */
++static void kvm_arm_get_virtual_time(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     int ret;
+@@ -722,7 +728,13 @@ void kvm_arm_get_virtual_time(CPUState *cs)
+     cpu->kvm_vtime_dirty = true;
+ }
+ 
+-void kvm_arm_put_virtual_time(CPUState *cs)
++/**
++ * kvm_arm_put_virtual_time:
++ * @cs: CPUState
++ *
++ * Sets the VCPU's virtual counter to the value stored in the KVM CPU state.
++ */
++static void kvm_arm_put_virtual_time(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     int ret;
 -- 
 2.34.1
 
