@@ -2,75 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C53F8180DC
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 06:13:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E3D8181A4
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 07:43:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFSPG-0005pb-5d; Tue, 19 Dec 2023 00:12:38 -0500
+	id 1rFTo0-0005Xf-Gj; Tue, 19 Dec 2023 01:42:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rFSPC-0005pP-RI
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 00:12:35 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1rFTny-0005XX-KJ
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 01:42:14 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rFSP9-0006RL-Aa
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 00:12:34 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3363aa1b7d2so3896849f8f.0
- for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 21:12:28 -0800 (PST)
+ id 1rFTnv-0006h1-T0
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 01:42:14 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a2358a75b69so397893866b.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Dec 2023 22:42:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1702962747; x=1703567547; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1702968128; x=1703572928; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ibGzIztVP9yqVAYiX+TQfgyRlHGzOUCLw+bvzmfw9s0=;
- b=aAi0K5kRijOEpkr2fmUTbe+Uz28iHIgjrdBZjTCF9YpNJn0yAmYy46obfKq08l903r
- 8bqj614yPLQ4GkNl1T6a5AYTkGqIzacMwe2DHpvG3NMJRMisRWklnmL7AQag++eR+hmr
- l+5yPsY8KDaMJQ3yvq+Y4Z/za119Zu11ZPZYym/0xrI7O9F/8+MLY6MFoyzZKdLhMcS6
- LP+45Q91TMj/25a2wQ/OAdpXmBj/rOVjxBkHBMeQquOpuS8WbTq/3nzaDUVPW0Xr86Zf
- X4gK9VyUTVZlD9J5uOdAmvKR0Rl91XCHs2ra1gPXxf0lGljqM8GT69Mag9eP3uushKKE
- Cbrg==
+ bh=KSeXWF3JK1MBTamzTQqVoPrjkM2nLy96fpWvOyqr8ls=;
+ b=CfeFNTsFDqbF0wXNyUyK+FnpzVf+3E+4Pvy/H7OsutkgC3GYMh71VLFqIg3ILmcZIg
+ 4DIPiQK2gBphkN0ydf5vb7faZB+hOIZHB3UxhnvwbEnQ3FCj5xjiYitg/zzyZ53+5WEs
+ K/Ve9DNPax9oe2IRSCBUkcRFwa+HtkBsjQiwl5QagB/4BmIDIjTVDu/EJ7YdJSs7NtXI
+ iOygGjVVBoSGHRmtD7mQ+0p0jzmEblFQCE+FtUh/ECA8sxDM5iU1bkokJAaiMqDXsCUy
+ c6GpkjV635aMSAYfhvFLCtPkqu2P6Vu33Wmb04Ed34EC21gh1JmnNQoxvOCRDE9O9TxP
+ 2Axg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702962747; x=1703567547;
+ d=1e100.net; s=20230601; t=1702968128; x=1703572928;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ibGzIztVP9yqVAYiX+TQfgyRlHGzOUCLw+bvzmfw9s0=;
- b=Aoo+DIzUZBL+sIQ53ORuSsYaG7kyIYeZXFNfLaq2W6Q834Ri8YKDPP754oxnusFBJ8
- VPimZlC0F34UkrNZc874JwLrJQNO76/7dmtHpAaxVUvNHyhL7dZrme66seElOIKWh4cF
- q82hEm8Otk5BkmC96ZRnUTEH1xETEuQEzDai+WVCQQ2SaTUZymRNwiN7F+BBIAZ4VrhQ
- 2DvaxBtQM7H+uK4ISWI7cfdEIlLDElvCCqLzh/EM+HrOwOMhuV/H8YrgcPN0XJCD1X/E
- z52oe3sEPkeSc8LKsJnMxym8MySnF112QSrr5ObhqpF+AJea8GP68D+50a65OTel+lB3
- Wfig==
-X-Gm-Message-State: AOJu0Yym6bYBajm0re12B11FF+31DrqyVJCvZdr6AYBJGgLztL4DcZR5
- HKDI1zeaH+7lymE4PqRNtneIGNR6JQZH3MBcFriIuQ==
-X-Google-Smtp-Source: AGHT+IE1feEKD8H64AcOMRCN3mKbbRHRj/dgRvlQzz7dTDlUoziu/GsJCznHTwVpqNGKZPhyhB+21yNZTtYQRZU0Xqs=
-X-Received: by 2002:a05:6000:4e8:b0:332:fe7e:2a36 with SMTP id
- cr8-20020a05600004e800b00332fe7e2a36mr5698812wrb.30.1702962747343; Mon, 18
- Dec 2023 21:12:27 -0800 (PST)
+ bh=KSeXWF3JK1MBTamzTQqVoPrjkM2nLy96fpWvOyqr8ls=;
+ b=oqakGD5Sf4+kbf6iqC1T4ywVKwb9CNxImbr3uXnTaAi2SvRftsYpYWigcJzwoAXLry
+ zPnUYcZLglxOpXnq3rj2r46/QfxtBnPNrcklUqofSAdpQ/NI8Z86ymjencZD7MaiwdEF
+ umm3C00DvablwC7r+wndN9jjKmHUkjaVWBAykPcqswdBFJtNEo4VaMB4Q7w87QjOzWbS
+ ELwSWTK9x+5MpclElcSV5ALPQI7fzUwKz3V4CZBw7+DVxGwzUeGI6KAS2p8QXE6zWjHk
+ BrIdidXr4I16REQiQzQJvMPOvaKrk5yZ2+LceDzTPLVhdz6X97TDoknUV3JuNJbFZTrD
+ 9KPw==
+X-Gm-Message-State: AOJu0YyWd5eUr0+kLDGHCCrNWAj6y/6GPlDD14leICA3ozrGMFkEMi7Z
+ 1aTqt6rkldMTr5q3EfkkIMeIz4++yNdNRP4fL+r+7R5LdActWLAjSI/685yec5k=
+X-Google-Smtp-Source: AGHT+IFlg0Xi+lY2QNemUzuedjNiaxavuRoACSoSc9FNInVEQINJtqolBTL3hBQjVBj4dybY9AZvfjoYMMaaPRxKbX4=
+X-Received: by 2002:a17:907:7634:b0:a23:49c4:3e89 with SMTP id
+ jy20-20020a170907763400b00a2349c43e89mr512319ejc.10.1702968127573; Mon, 18
+ Dec 2023 22:42:07 -0800 (PST)
 MIME-Version: 1.0
 References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
- <20231114054032.1192027-10-hao.xiang@bytedance.com>
- <543e9270-4ab7-4096-bda7-187dd9be47ef@intel.com>
- <CAAYibXh4YeePb4rZNxLjo+UAed51cV+0zE7pxaS9zGn2=aDXOw@mail.gmail.com>
- <6ec82a24-f040-43a9-a81d-b5dad0e07a22@intel.com>
-In-Reply-To: <6ec82a24-f040-43a9-a81d-b5dad0e07a22@intel.com>
+ <20231114054032.1192027-8-hao.xiang@bytedance.com> <87h6koh1is.fsf@suse.de>
+In-Reply-To: <87h6koh1is.fsf@suse.de>
 From: Hao Xiang <hao.xiang@bytedance.com>
-Date: Mon, 18 Dec 2023 21:12:15 -0800
-Message-ID: <CAAYibXiiP1g5s=wRnOMn8KMpUptPRoGMr8RzgHWNPqOaAoC52g@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v2 09/20] util/dsa: Implement DSA task
- asynchronous completion thread model.
-To: "Wang, Lei" <lei4.wang@intel.com>
-Cc: farosas@suse.de, peter.maydell@linaro.org, quintela@redhat.com, 
- peterx@redhat.com, marcandre.lureau@redhat.com, bryan.zhang@bytedance.com, 
- qemu-devel@nongnu.org
+Date: Mon, 18 Dec 2023 22:41:56 -0800
+Message-ID: <CAAYibXhX1Rw++m47SgOtd3B1zC3fOGCqBuMRTMihPJgm=ZQF1A@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v2 07/20] util/dsa: Implement DSA device
+ start and stop logic.
+To: Fabiano Rosas <farosas@suse.de>
+Cc: peter.maydell@linaro.org, quintela@redhat.com, peterx@redhat.com, 
+ marcandre.lureau@redhat.com, bryan.zhang@bytedance.com, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=hao.xiang@bytedance.com; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,234 +89,556 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 18, 2023 at 5:34=E2=80=AFPM Wang, Lei <lei4.wang@intel.com> wro=
+On Mon, Dec 11, 2023 at 1:28=E2=80=AFPM Fabiano Rosas <farosas@suse.de> wro=
 te:
 >
-> On 12/19/2023 2:57, Hao Xiang wrote:> On Sun, Dec 17, 2023 at 7:11=E2=80=
-=AFPM Wang, Lei
-> <lei4.wang@intel.com> wrote:
-> >>
-> >> On 11/14/2023 13:40, Hao Xiang wrote:> * Create a dedicated thread for=
- DSA task
-> >> completion.
-> >>> * DSA completion thread runs a loop and poll for completed tasks.
-> >>> * Start and stop DSA completion thread during DSA device start stop.
-> >>>
-> >>> User space application can directly submit task to Intel DSA
-> >>> accelerator by writing to DSA's device memory (mapped in user space).
-> >>
-> >>> +            }
-> >>> +            return;
-> >>> +        }
-> >>> +    } else {
-> >>> +        assert(batch_status =3D=3D DSA_COMP_BATCH_FAIL ||
-> >>> +            batch_status =3D=3D DSA_COMP_BATCH_PAGE_FAULT);
-> >>
-> >> Nit: indentation is broken here.
-> >>
-> >>> +    }
-> >>> +
-> >>> +    for (int i =3D 0; i < count; i++) {
-> >>> +
-> >>> +        completion =3D &batch_task->completions[i];
-> >>> +        status =3D completion->status;
-> >>> +
-> >>> +        if (status =3D=3D DSA_COMP_SUCCESS) {
-> >>> +            results[i] =3D (completion->result =3D=3D 0);
-> >>> +            continue;
-> >>> +        }
-> >>> +
-> >>> +        if (status !=3D DSA_COMP_PAGE_FAULT_NOBOF) {
-> >>> +            fprintf(stderr,
-> >>> +                    "Unexpected completion status =3D %u.\n", status=
-);
-> >>> +            assert(false);
-> >>> +        }
-> >>> +    }
-> >>> +}
-> >>> +
-> >>> +/**
-> >>> + * @brief Handles an asynchronous DSA batch task completion.
-> >>> + *
-> >>> + * @param task A pointer to the batch buffer zero task structure.
-> >>> + */
-> >>> +static void
-> >>> +dsa_batch_task_complete(struct buffer_zero_batch_task *batch_task)
-> >>> +{
-> >>> +    batch_task->status =3D DSA_TASK_COMPLETION;
-> >>> +    batch_task->completion_callback(batch_task);
-> >>> +}
-> >>> +
-> >>> +/**
-> >>> + * @brief The function entry point called by a dedicated DSA
-> >>> + *        work item completion thread.
-> >>> + *
-> >>> + * @param opaque A pointer to the thread context.
-> >>> + *
-> >>> + * @return void* Not used.
-> >>> + */
-> >>> +static void *
-> >>> +dsa_completion_loop(void *opaque)
-> >>
-> >> Per my understanding, if a multifd sending thread corresponds to a DSA=
- device,
-> >> then the batch tasks are executed in parallel which means a task may b=
-e
-> >> completed slower than another even if this task is enqueued earlier th=
-an it. If
-> >> we poll on the slower task first it will block the handling of the fas=
-ter one,
-> >> even if the zero checking task for that thread is finished and it can =
-go ahead
-> >> and send the data to the wire, this may lower the network resource uti=
-lization.
-> >>
-> >
-> > Hi Lei, thanks for reviewing. You are correct that we can keep pulling
-> > a task enqueued first while others in the queue have already been
-> > completed. In fact, only one DSA completion thread (pulling thread) is
-> > used here even when multiple DSA devices are used. The pulling loop is
-> > the most CPU intensive activity in the DSA workflow and that acts
-> > directly against the goal of saving CPU usage. The trade-off I want to
-> > take here is a slightly higher latency on DSA task completion but more
-> > CPU savings. A single DSA engine can reach 30 GB/s throughput on
-> > memory comparison operation. We use kernel tcp stack for network
-> > transfer. The best I see is around 10GB/s throughput.  RDMA can
-> > potentially go higher but I am not sure if it can go higher than 30
-> > GB/s throughput anytime soon.
+> Hao Xiang <hao.xiang@bytedance.com> writes:
 >
-> Hi Hao, that makes sense, if the DSA is faster than the network, then a l=
-ittle
-> bit of latency in DSA checking is tolerable. In the long term, I think th=
-e best
-> form of the DSA task checking thread is to use an fd or such sort of thin=
-g that
-> can multiplex the checking of different DSA devices, then we can serve th=
-e DSA
-> task in the order they complete rather than FCFS.
->
-I have experimented using N completion threads and each thread pulls
-tasks submitted to a particular DSA device. That approach uses too
-many CPU cycles. If Intel can come up with a better workflow for DSA
-completion, there is definitely space for improvement here.
+> > * DSA device open and close.
+> > * DSA group contains multiple DSA devices.
+> > * DSA group configure/start/stop/clean.
 > >
-> >>> +{
-> >>> +    struct dsa_completion_thread *thread_context =3D
-> >>> +        (struct dsa_completion_thread *)opaque;
-> >>> +    struct buffer_zero_batch_task *batch_task;
-> >>> +    struct dsa_device_group *group =3D thread_context->group;
-> >>> +
-> >>> +    rcu_register_thread();
-> >>> +
-> >>> +    thread_context->thread_id =3D qemu_get_thread_id();
-> >>> +    qemu_sem_post(&thread_context->sem_init_done);
-> >>> +
-> >>> +    while (thread_context->running) {
-> >>> +        batch_task =3D dsa_task_dequeue(group);
-> >>> +        assert(batch_task !=3D NULL || !group->running);
-> >>> +        if (!group->running) {
-> >>> +            assert(!thread_context->running);
-> >>> +            break;
-> >>> +        }
-> >>> +        if (batch_task->task_type =3D=3D DSA_TASK) {
-> >>> +            poll_task_completion(batch_task);
-> >>> +        } else {
-> >>> +            assert(batch_task->task_type =3D=3D DSA_BATCH_TASK);
-> >>> +            poll_batch_task_completion(batch_task);
-> >>> +        }
-> >>> +
-> >>> +        dsa_batch_task_complete(batch_task);
-> >>> +    }
-> >>> +
-> >>> +    rcu_unregister_thread();
-> >>> +    return NULL;
-> >>> +}
-> >>> +
-> >>> +/**
-> >>> + * @brief Initializes a DSA completion thread.
-> >>> + *
-> >>> + * @param completion_thread A pointer to the completion thread conte=
-xt.
-> >>> + * @param group A pointer to the DSA device group.
-> >>> + */
-> >>> +static void
-> >>> +dsa_completion_thread_init(
-> >>> +    struct dsa_completion_thread *completion_thread,
-> >>> +    struct dsa_device_group *group)
-> >>> +{
-> >>> +    completion_thread->stopping =3D false;
-> >>> +    completion_thread->running =3D true;
-> >>> +    completion_thread->thread_id =3D -1;
-> >>> +    qemu_sem_init(&completion_thread->sem_init_done, 0);
-> >>> +    completion_thread->group =3D group;
-> >>> +
-> >>> +    qemu_thread_create(&completion_thread->thread,
-> >>> +                       DSA_COMPLETION_THREAD,
-> >>> +                       dsa_completion_loop,
-> >>> +                       completion_thread,
-> >>> +                       QEMU_THREAD_JOINABLE);
-> >>> +
-> >>> +    /* Wait for initialization to complete */
-> >>> +    while (completion_thread->thread_id =3D=3D -1) {
-> >>> +        qemu_sem_wait(&completion_thread->sem_init_done);
-> >>> +    }
-> >>> +}
-> >>> +
-> >>> +/**
-> >>> + * @brief Stops the completion thread (and implicitly, the device gr=
-oup).
-> >>> + *
-> >>> + * @param opaque A pointer to the completion thread.
-> >>> + */
-> >>> +static void dsa_completion_thread_stop(void *opaque)
-> >>> +{
-> >>> +    struct dsa_completion_thread *thread_context =3D
-> >>> +        (struct dsa_completion_thread *)opaque;
-> >>> +
-> >>> +    struct dsa_device_group *group =3D thread_context->group;
-> >>> +
-> >>> +    qemu_mutex_lock(&group->task_queue_lock);
-> >>> +
-> >>> +    thread_context->stopping =3D true;
-> >>> +    thread_context->running =3D false;
-> >>> +
-> >>> +    dsa_device_group_stop(group);
-> >>> +
-> >>> +    qemu_cond_signal(&group->task_queue_cond);
-> >>> +    qemu_mutex_unlock(&group->task_queue_lock);
-> >>> +
-> >>> +    qemu_thread_join(&thread_context->thread);
-> >>> +
-> >>> +    qemu_sem_destroy(&thread_context->sem_init_done);
-> >>> +}
-> >>> +
-> >>>  /**
-> >>>   * @brief Check if DSA is running.
-> >>>   *
-> >>> @@ -446,7 +685,7 @@ submit_batch_wi_async(struct buffer_zero_batch_ta=
-sk *batch_task)
-> >>>   */
-> >>>  bool dsa_is_running(void)
-> >>>  {
-> >>> -    return false;
-> >>> +    return completion_thread.running;
-> >>>  }
-> >>>
-> >>>  static void
-> >>> @@ -481,6 +720,7 @@ void dsa_start(void)
-> >>>          return;
-> >>>      }
-> >>>      dsa_device_group_start(&dsa_group);
-> >>> +    dsa_completion_thread_init(&completion_thread, &dsa_group);
-> >>>  }
-> >>>
-> >>>  /**
-> >>> @@ -496,6 +736,7 @@ void dsa_stop(void)
-> >>>          return;
-> >>>      }
-> >>>
-> >>> +    dsa_completion_thread_stop(&completion_thread);
-> >>>      dsa_empty_task_queue(group);
-> >>>  }
-> >>>
+> > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+> > Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
+> > ---
+> >  include/qemu/dsa.h |  49 +++++++
+> >  util/dsa.c         | 338 +++++++++++++++++++++++++++++++++++++++++++++
+> >  util/meson.build   |   1 +
+> >  3 files changed, 388 insertions(+)
+> >  create mode 100644 include/qemu/dsa.h
+> >  create mode 100644 util/dsa.c
+> >
+> > diff --git a/include/qemu/dsa.h b/include/qemu/dsa.h
+> > new file mode 100644
+> > index 0000000000..30246b507e
+> > --- /dev/null
+> > +++ b/include/qemu/dsa.h
+> > @@ -0,0 +1,49 @@
+> > +#ifndef QEMU_DSA_H
+> > +#define QEMU_DSA_H
+> > +
+> > +#include "qemu/thread.h"
+> > +#include "qemu/queue.h"
+> > +
+> > +#ifdef CONFIG_DSA_OPT
+> > +
+> > +#pragma GCC push_options
+> > +#pragma GCC target("enqcmd")
+> > +
+> > +#include <linux/idxd.h>
+> > +#include "x86intrin.h"
+> > +
+> > +#endif
+> > +
+> > +/**
+> > + * @brief Initializes DSA devices.
+> > + *
+> > + * @param dsa_parameter A list of DSA device path from migration param=
+eter.
+>
+> This code seems pretty generic, let's decouple this doc from migration.
+>
+> > + * @return int Zero if successful, otherwise non zero.
+> > + */
+> > +int dsa_init(const char *dsa_parameter);
+> > +
+> > +/**
+> > + * @brief Start logic to enable using DSA.
+> > + */
+> > +void dsa_start(void);
+> > +
+> > +/**
+> > + * @brief Stop logic to clean up DSA by halting the device group and c=
+leaning up
+> > + * the completion thread.
+>
+> "Stop the device group and the completion thread"
+>
+> The mention of "clean/cleaning up" makes this confusing because of
+> dsa_cleanup() below.
+
+Fixed.
+
+>
+> > + */
+> > +void dsa_stop(void);
+> > +
+> > +/**
+> > + * @brief Clean up system resources created for DSA offloading.
+> > + *        This function is called during QEMU process teardown.
+>
+> This is not called during QEMU process teardown. It's called at the end
+> of migration AFAICS. Maybe just leave this sentence out.
+
+Fixed.
+
+>
+> > + */
+> > +void dsa_cleanup(void);
+> > +
+> > +/**
+> > + * @brief Check if DSA is running.
+> > + *
+> > + * @return True if DSA is running, otherwise false.
+> > + */
+> > +bool dsa_is_running(void);
+> > +
+> > +#endif
+> > \ No newline at end of file
+> > diff --git a/util/dsa.c b/util/dsa.c
+> > new file mode 100644
+> > index 0000000000..8edaa892ec
+> > --- /dev/null
+> > +++ b/util/dsa.c
+> > @@ -0,0 +1,338 @@
+> > +/*
+> > + * Use Intel Data Streaming Accelerator to offload certain background
+> > + * operations.
+> > + *
+> > + * Copyright (c) 2023 Hao Xiang <hao.xiang@bytedance.com>
+> > + *                    Bryan Zhang <bryan.zhang@bytedance.com>
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaini=
+ng a copy
+> > + * of this software and associated documentation files (the "Software"=
+), to deal
+> > + * in the Software without restriction, including without limitation t=
+he rights
+> > + * to use, copy, modify, merge, publish, distribute, sublicense, and/o=
+r sell
+> > + * copies of the Software, and to permit persons to whom the Software =
+is
+> > + * furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice shall be incl=
+uded in
+> > + * all copies or substantial portions of the Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXP=
+RESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABI=
+LITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT S=
+HALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES O=
+R OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARI=
+SING FROM,
+> > + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALI=
+NGS IN
+> > + * THE SOFTWARE.
+> > + */
+> > +
+> > +#include "qemu/osdep.h"
+> > +#include "qemu/queue.h"
+> > +#include "qemu/memalign.h"
+> > +#include "qemu/lockable.h"
+> > +#include "qemu/cutils.h"
+> > +#include "qemu/dsa.h"
+> > +#include "qemu/bswap.h"
+> > +#include "qemu/error-report.h"
+> > +#include "qemu/rcu.h"
+> > +
+> > +#ifdef CONFIG_DSA_OPT
+> > +
+> > +#pragma GCC push_options
+> > +#pragma GCC target("enqcmd")
+> > +
+> > +#include <linux/idxd.h>
+> > +#include "x86intrin.h"
+> > +
+> > +#define DSA_WQ_SIZE 4096
+> > +#define MAX_DSA_DEVICES 16
+> > +
+> > +typedef QSIMPLEQ_HEAD(dsa_task_queue, buffer_zero_batch_task) dsa_task=
+_queue;
+> > +
+> > +struct dsa_device {
+> > +    void *work_queue;
+> > +};
+> > +
+> > +struct dsa_device_group {
+> > +    struct dsa_device *dsa_devices;
+> > +    int num_dsa_devices;
+> > +    uint32_t index;
+> > +    bool running;
+> > +    QemuMutex task_queue_lock;
+> > +    QemuCond task_queue_cond;
+> > +    dsa_task_queue task_queue;
+> > +};
+> > +
+> > +uint64_t max_retry_count;
+> > +static struct dsa_device_group dsa_group;
+> > +
+> > +
+> > +/**
+> > + * @brief This function opens a DSA device's work queue and
+> > + *        maps the DSA device memory into the current process.
+> > + *
+> > + * @param dsa_wq_path A pointer to the DSA device work queue's file pa=
+th.
+> > + * @return A pointer to the mapped memory.
+> > + */
+> > +static void *
+> > +map_dsa_device(const char *dsa_wq_path)
+> > +{
+> > +    void *dsa_device;
+> > +    int fd;
+> > +
+> > +    fd =3D open(dsa_wq_path, O_RDWR);
+> > +    if (fd < 0) {
+> > +        fprintf(stderr, "open %s failed with errno =3D %d.\n",
+> > +                dsa_wq_path, errno);
+>
+> Use error_report and error_setg* for these. Throughout the series.
+
+All converted to using error_report.
+
+>
+> > +        return MAP_FAILED;
+> > +    }
+> > +    dsa_device =3D mmap(NULL, DSA_WQ_SIZE, PROT_WRITE,
+> > +                      MAP_SHARED | MAP_POPULATE, fd, 0);
+> > +    close(fd);
+> > +    if (dsa_device =3D=3D MAP_FAILED) {
+> > +        fprintf(stderr, "mmap failed with errno =3D %d.\n", errno);
+> > +        return MAP_FAILED;
+> > +    }
+> > +    return dsa_device;
+> > +}
+> > +
+> > +/**
+> > + * @brief Initializes a DSA device structure.
+> > + *
+> > + * @param instance A pointer to the DSA device.
+> > + * @param work_queue  A pointer to the DSA work queue.
+> > + */
+> > +static void
+> > +dsa_device_init(struct dsa_device *instance,
+> > +                void *dsa_work_queue)
+> > +{
+> > +    instance->work_queue =3D dsa_work_queue;
+> > +}
+> > +
+> > +/**
+> > + * @brief Cleans up a DSA device structure.
+> > + *
+> > + * @param instance A pointer to the DSA device to cleanup.
+> > + */
+> > +static void
+> > +dsa_device_cleanup(struct dsa_device *instance)
+> > +{
+> > +    if (instance->work_queue !=3D MAP_FAILED) {
+> > +        munmap(instance->work_queue, DSA_WQ_SIZE);
+> > +    }
+> > +}
+> > +
+> > +/**
+> > + * @brief Initializes a DSA device group.
+> > + *
+> > + * @param group A pointer to the DSA device group.
+> > + * @param num_dsa_devices The number of DSA devices this group will ha=
+ve.
+> > + *
+> > + * @return Zero if successful, non-zero otherwise.
+> > + */
+> > +static int
+> > +dsa_device_group_init(struct dsa_device_group *group,
+> > +                      const char *dsa_parameter)
+>
+> The documentation doesn't match the signature. This happens in other
+> places as well, please review all of them.
+>
+Fixed all cases.
+
+> > +{
+> > +    if (dsa_parameter =3D=3D NULL || strlen(dsa_parameter) =3D=3D 0) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    int ret =3D 0;
+> > +    char *local_dsa_parameter =3D g_strdup(dsa_parameter);
+> > +    const char *dsa_path[MAX_DSA_DEVICES];
+> > +    int num_dsa_devices =3D 0;
+> > +    char delim[2] =3D " ";
+>
+> So we're using space separated strings. Let's document this in this file
+> and also on the migration parameter documentation.
+
+Fixed.
+
+>
+> > +
+> > +    char *current_dsa_path =3D strtok(local_dsa_parameter, delim);
+> > +
+> > +    while (current_dsa_path !=3D NULL) {
+> > +        dsa_path[num_dsa_devices++] =3D current_dsa_path;
+> > +        if (num_dsa_devices =3D=3D MAX_DSA_DEVICES) {
+> > +            break;
+> > +        }
+> > +        current_dsa_path =3D strtok(NULL, delim);
+> > +    }
+> > +
+> > +    group->dsa_devices =3D
+> > +        malloc(sizeof(struct dsa_device) * num_dsa_devices);
+>
+> Use g_new0() here.
+
+Converted to use g_new0 and g_free accordingly.
+
+>
+> > +    group->num_dsa_devices =3D num_dsa_devices;
+> > +    group->index =3D 0;
+> > +
+> > +    group->running =3D false;
+> > +    qemu_mutex_init(&group->task_queue_lock);
+> > +    qemu_cond_init(&group->task_queue_cond);
+> > +    QSIMPLEQ_INIT(&group->task_queue);
+> > +
+> > +    void *dsa_wq =3D MAP_FAILED;
+> > +    for (int i =3D 0; i < num_dsa_devices; i++) {
+> > +        dsa_wq =3D map_dsa_device(dsa_path[i]);
+> > +        if (dsa_wq =3D=3D MAP_FAILED) {
+> > +            fprintf(stderr, "map_dsa_device failed MAP_FAILED, "
+> > +                    "using simulation.\n");
+>
+> What does "using simulation" means? And how are doing it by returning -1
+> from this function?
+
+* "using simulation" was a copy and paste mistake. Removed that.
+* -1 is an error code and will be propagated from
+dsa_device_group_init to dsa_init and eventually to
+multifd_load_setup/multifd_save_setup.
+multifd_load_setup/multifd_save_setup now checks the return code from
+dsa_init and aborts the migration if dsa_init fails.
+
+>
+> > +            ret =3D -1;
+>
+> What about the memory for group->dsa_devices in the failure case? We
+> should either free it here or make sure the client code calls the
+> cleanup routines.
+
+In the failure case, dsa_device_group_cleanup will free the
+group->dsa_devices memory allocation. dsa_device_group_cleanup is
+called by dsa_cleanup. multifd_load_cleanup/multifd_save_cleanup will
+call the cleanup routines.
+
+>
+> > +            goto exit;
+> > +        }
+> > +        dsa_device_init(&dsa_group.dsa_devices[i], dsa_wq);
+> > +    }
+> > +
+> > +exit:
+> > +    g_free(local_dsa_parameter);
+> > +    return ret;
+> > +}
+> > +
+> > +/**
+> > + * @brief Starts a DSA device group.
+> > + *
+> > + * @param group A pointer to the DSA device group.
+> > + * @param dsa_path An array of DSA device path.
+> > + * @param num_dsa_devices The number of DSA devices in the device grou=
+p.
+> > + */
+> > +static void
+> > +dsa_device_group_start(struct dsa_device_group *group)
+> > +{
+> > +    group->running =3D true;
+> > +}
+> > +
+> > +/**
+> > + * @brief Stops a DSA device group.
+> > + *
+> > + * @param group A pointer to the DSA device group.
+> > + */
+> > +__attribute__((unused))
+> > +static void
+> > +dsa_device_group_stop(struct dsa_device_group *group)
+> > +{
+> > +    group->running =3D false;
+> > +}
+> > +
+> > +/**
+> > + * @brief Cleans up a DSA device group.
+> > + *
+> > + * @param group A pointer to the DSA device group.
+> > + */
+> > +static void
+> > +dsa_device_group_cleanup(struct dsa_device_group *group)
+> > +{
+> > +    if (!group->dsa_devices) {
+> > +        return;
+> > +    }
+> > +    for (int i =3D 0; i < group->num_dsa_devices; i++) {
+> > +        dsa_device_cleanup(&group->dsa_devices[i]);
+> > +    }
+> > +    free(group->dsa_devices);
+> > +    group->dsa_devices =3D NULL;
+> > +
+> > +    qemu_mutex_destroy(&group->task_queue_lock);
+> > +    qemu_cond_destroy(&group->task_queue_cond);
+> > +}
+> > +
+> > +/**
+> > + * @brief Returns the next available DSA device in the group.
+> > + *
+> > + * @param group A pointer to the DSA device group.
+> > + *
+> > + * @return struct dsa_device* A pointer to the next available DSA devi=
+ce
+> > + *         in the group.
+> > + */
+> > +__attribute__((unused))
+> > +static struct dsa_device *
+> > +dsa_device_group_get_next_device(struct dsa_device_group *group)
+> > +{
+> > +    if (group->num_dsa_devices =3D=3D 0) {
+> > +        return NULL;
+> > +    }
+> > +    uint32_t current =3D qatomic_fetch_inc(&group->index);
+>
+> The name "index" alone feels a bit opaque. Is there a more
+> representative name we could give it?
+
+I renamed it to device_allocator_index and added a comment to explain the f=
+ield.
+
+>
+> > +    current %=3D group->num_dsa_devices;
+> > +    return &group->dsa_devices[current];
+> > +}
+> > +
+> > +/**
+> > + * @brief Check if DSA is running.
+> > + *
+> > + * @return True if DSA is running, otherwise false.
+> > + */
+> > +bool dsa_is_running(void)
+> > +{
+> > +    return false;
+> > +}
+> > +
+> > +static void
+> > +dsa_globals_init(void)
+> > +{
+> > +    max_retry_count =3D UINT64_MAX;
+> > +}
+> > +
+> > +/**
+> > + * @brief Initializes DSA devices.
+> > + *
+> > + * @param dsa_parameter A list of DSA device path from migration param=
+eter.
+> > + * @return int Zero if successful, otherwise non zero.
+> > + */
+> > +int dsa_init(const char *dsa_parameter)
+> > +{
+> > +    dsa_globals_init();
+> > +
+> > +    return dsa_device_group_init(&dsa_group, dsa_parameter);
+> > +}
+> > +
+> > +/**
+> > + * @brief Start logic to enable using DSA.
+> > + *
+> > + */
+> > +void dsa_start(void)
+> > +{
+> > +    if (dsa_group.num_dsa_devices =3D=3D 0) {
+> > +        return;
+> > +    }
+> > +    if (dsa_group.running) {
+> > +        return;
+> > +    }
+> > +    dsa_device_group_start(&dsa_group);
+> > +}
+> > +
+> > +/**
+> > + * @brief Stop logic to clean up DSA by halting the device group and c=
+leaning up
+> > + * the completion thread.
+> > + *
+> > + */
+> > +void dsa_stop(void)
+> > +{
+> > +    struct dsa_device_group *group =3D &dsa_group;
+> > +
+> > +    if (!group->running) {
+> > +        return;
+> > +    }
+> > +}
+> > +
+> > +/**
+> > + * @brief Clean up system resources created for DSA offloading.
+> > + *        This function is called during QEMU process teardown.
+> > + *
+> > + */
+> > +void dsa_cleanup(void)
+> > +{
+> > +    dsa_stop();
+> > +    dsa_device_group_cleanup(&dsa_group);
+> > +}
+> > +
+> > +#else
+> > +
+> > +bool dsa_is_running(void)
+> > +{
+> > +    return false;
+> > +}
+> > +
+> > +int dsa_init(const char *dsa_parameter)
+> > +{
+> > +    fprintf(stderr, "Intel Data Streaming Accelerator is not supported=
+ "
+> > +                    "on this platform.\n");
+> > +    return -1;
+>
+> Nothing checks this later in the series and we end up trying to start a
+> migration when we shouldn't. Fixing the configure step would already
+> stop this happening, but make sure you check this anyway and abort the
+> migration.
+
+multifd_load_setup/multifd_save_setup now checks the return code from
+dsa_init and aborts the migration if dsa_init fails. The
+non-CONFIG_DSA_OPT version of dsa_init should really just be a no-op.
+Changed that.
+
+>
+> > +}
+> > +
+> > +void dsa_start(void) {}
+> > +
+> > +void dsa_stop(void) {}
+> > +
+> > +void dsa_cleanup(void) {}
+> > +
+> > +#endif
+>
+> These could all be in the header.
+
+The function definitions are already in dsa.h Do you mean moving the
+function implementations to the header as well?
+
+>
+> > +
+> > diff --git a/util/meson.build b/util/meson.build
+> > index c2322ef6e7..f7277c5e9b 100644
+> > --- a/util/meson.build
+> > +++ b/util/meson.build
+> > @@ -85,6 +85,7 @@ if have_block or have_ga
+> >  endif
+> >  if have_block
+> >    util_ss.add(files('aio-wait.c'))
+> > +  util_ss.add(files('dsa.c'))
+>
+> I find it clearer to add the file conditionally under CONFIG_DSA_OPT
+> here and remove the ifdef from the C file. I'm not sure if we have any
+> guidelines for this, so up to you.
+>
+> >    util_ss.add(files('buffer.c'))
+> >    util_ss.add(files('bufferiszero.c'))
+> >    util_ss.add(files('hbitmap.c'))
 
