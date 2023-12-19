@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA86819058
+	by mail.lfdr.de (Postfix) with ESMTPS id 7174C819059
 	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:07:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfKD-0006CD-TN; Tue, 19 Dec 2023 14:00:18 -0500
+	id 1rFfL4-0007pG-37; Tue, 19 Dec 2023 14:01:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfJr-0005bi-H6
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:59:58 -0500
+ id 1rFfJt-0005cg-UC
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:59:59 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfJn-0007Xp-Ne
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:59:53 -0500
+ id 1rFfJs-0007YI-AU
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:59:57 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmGF2b4vz4xR5;
- Wed, 20 Dec 2023 05:59:49 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmGL1zSwz4xCp;
+ Wed, 20 Dec 2023 05:59:54 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmG909ptz4xQj;
- Wed, 20 Dec 2023 05:59:44 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmGF6gStz4xQj;
+ Wed, 20 Dec 2023 05:59:49 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
@@ -43,10 +43,9 @@ Cc: Eric Auger <eric.auger@redhat.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Nicolin Chen <nicolinc@nvidia.com>
-Subject: [PULL 34/47] vfio/ap: Make vfio cdev pre-openable by passing a file
- handle
-Date: Tue, 19 Dec 2023 19:56:30 +0100
-Message-ID: <20231219185643.725448-35-clg@redhat.com>
+Subject: [PULL 35/47] vfio/ccw: Allow the selection of a given iommu backend
+Date: Tue, 19 Dec 2023 19:56:31 +0100
+Message-ID: <20231219185643.725448-36-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231219185643.725448-1-clg@redhat.com>
 References: <20231219185643.725448-1-clg@redhat.com>
@@ -78,70 +77,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-This gives management tools like libvirt a chance to open the vfio
-cdev with privilege and pass FD to qemu. This way qemu never needs
-to have privilege to open a VFIO or iommu cdev node.
+Now we support two types of iommu backends, let's add the capability
+to select one of them. This depends on whether an iommufd object has
+been linked with the vfio-ccw device:
 
+If the user wants to use the legacy backend, it shall not
+link the vfio-ccw device with any iommufd object:
+
+ -device vfio-ccw,sysfsdev=/sys/bus/mdev/devices/XXX
+
+This is called the legacy mode/backend.
+
+If the user wants to use the iommufd backend (/dev/iommu) it
+shall pass an iommufd object id in the vfio-ccw device options:
+
+ -object iommufd,id=iommufd0
+ -device vfio-ccw,sysfsdev=/sys/bus/mdev/devices/XXX,iommufd=iommufd0
+
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
 Tested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/ap.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ hw/vfio/ccw.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 80629609aebbff9156f78c9bbde5dc6c293ac84e..f180e4a32aa00f391f02e49b6c1bc2e8ebd2fecb 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -160,7 +160,10 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
-     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
-     VFIODevice *vbasedev = &vapdev->vdev;
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index d857bb8d0fe4ff71b3cf635d6da43eccbe593d5f..d2d58bb677cfad38a6965ea6a43783256407207b 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -15,12 +15,14 @@
+  */
  
--    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
-+    if (vfio_device_get_name(vbasedev, errp) < 0) {
-+        return;
-+    }
-+
-     vbasedev->ops = &vfio_ap_ops;
-     vbasedev->type = VFIO_DEVICE_TYPE_AP;
-     vbasedev->dev = dev;
-@@ -230,11 +233,28 @@ static const VMStateDescription vfio_ap_vmstate = {
-     .unmigratable = 1,
- };
+ #include "qemu/osdep.h"
++#include CONFIG_DEVICES /* CONFIG_IOMMUFD */
+ #include <linux/vfio.h>
+ #include <linux/vfio_ccw.h>
+ #include <sys/ioctl.h>
  
-+static void vfio_ap_instance_init(Object *obj)
-+{
-+    VFIOAPDevice *vapdev = VFIO_AP_DEVICE(obj);
-+
-+    vapdev->vdev.fd = -1;
-+}
-+
+ #include "qapi/error.h"
+ #include "hw/vfio/vfio-common.h"
++#include "sysemu/iommufd.h"
+ #include "hw/s390x/s390-ccw.h"
+ #include "hw/s390x/vfio-ccw.h"
+ #include "hw/qdev-properties.h"
+@@ -677,6 +679,10 @@ static void vfio_ccw_unrealize(DeviceState *dev)
+ static Property vfio_ccw_properties[] = {
+     DEFINE_PROP_STRING("sysfsdev", VFIOCCWDevice, vdev.sysfsdev),
+     DEFINE_PROP_BOOL("force-orb-pfch", VFIOCCWDevice, force_orb_pfch, false),
 +#ifdef CONFIG_IOMMUFD
-+static void vfio_ap_set_fd(Object *obj, const char *str, Error **errp)
-+{
-+    vfio_device_set_fd(&VFIO_AP_DEVICE(obj)->vdev, str, errp);
-+}
++    DEFINE_PROP_LINK("iommufd", VFIOCCWDevice, vdev.iommufd,
++                     TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
 +#endif
-+
- static void vfio_ap_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     device_class_set_props(dc, vfio_ap_properties);
-+#ifdef CONFIG_IOMMUFD
-+    object_class_property_add_str(klass, "fd", NULL, vfio_ap_set_fd);
-+#endif
-     dc->vmsd = &vfio_ap_vmstate;
-     dc->desc = "VFIO-based AP device assignment";
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-@@ -249,6 +269,7 @@ static const TypeInfo vfio_ap_info = {
-     .name = TYPE_VFIO_AP_DEVICE,
-     .parent = TYPE_AP_DEVICE,
-     .instance_size = sizeof(VFIOAPDevice),
-+    .instance_init = vfio_ap_instance_init,
-     .class_init = vfio_ap_class_init,
+     DEFINE_PROP_END_OF_LIST(),
  };
  
 -- 
