@@ -2,82 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3EC5819258
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 22:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A70819275
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 22:42:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFhiy-0007is-1u; Tue, 19 Dec 2023 16:34:00 -0500
+	id 1rFhpg-0007XG-Mi; Tue, 19 Dec 2023 16:40:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3JwyCZQwKCnolYZgfcqrcdYlemmejc.amkocks-bctcjlmlels.mpe@flex--nabihestefan.bounces.google.com>)
- id 1rFhiZ-0007Wf-Gz
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:33:36 -0500
-Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3JwyCZQwKCnolYZgfcqrcdYlemmejc.amkocks-bctcjlmlels.mpe@flex--nabihestefan.bounces.google.com>)
- id 1rFhiV-00040I-1t
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:33:32 -0500
-Received: by mail-yw1-x1149.google.com with SMTP id
- 00721157ae682-5deda822167so65947257b3.1
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 13:33:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1703021608; x=1703626408; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=+lWoGpo1oLYE7/5Q46jEt74hjsq+GFB4f4I8LiyJIn0=;
- b=hc8Fx/zXERsAo6uFE6W+OLDXzxSVPQ3iBY807qAnwtWdVKlVIikOs5vr8zkfy4C293
- yZ6H6EL96BYYmPK0nSDEBaVSWCci26jBos6EXtTJpboU+8aCDfM4/4MUNjUu8Rl0XD18
- sL3whqMwgWi0oYHa50AEABs1vSq2g43qgR9KEYCtNG5Yk00M7VPijN0XTIusXNwmEQ9L
- W10AlYzvbkhIKfZDNrLYYSApoxfrTctmvWFDgMXwPj4oPsrLe5liwwUvJDxmggFaFTXp
- wYVutXEIDbZDhASaDJK87RjmbbM6dreo/gOjsmR0irK11oUhgxCX2S4BAtF0skkjDpQ9
- D12g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703021608; x=1703626408;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+lWoGpo1oLYE7/5Q46jEt74hjsq+GFB4f4I8LiyJIn0=;
- b=xITjFqWo5jnjeYytko+b9RDh3jG9/6oQXuP0GoBSLbNgvWCnjqIkjVS9ASGtIGgpc2
- NJyn+SCX2CK+OHSDFafaj40kY0rSud29DxInc077L3S+PF8zxCY6niVlze6kleXBEFV8
- 0F2pHOYNp4pXVUxbDRRZaeEZqCfv9ug4rSYtYtjyU2q4gjiMpF45U1dhBHFseFzLQzDj
- +irqMEMPnJq35HTLI0OlMxVXV1HSN/dS9mrrxGqXx5ZnIURQ7JqRU1sCXCepPAfZjEX+
- p/fJ23l1ww+jCVzaxWwi1d1FEV59ow5SoB+kQ9zfquirPUPcmTlPp+4QnLT772W8ek9M
- z0Kw==
-X-Gm-Message-State: AOJu0YwPuIS5uWJA0+P4e21coXyeuqJgUy1MBEoHfgL/lb3u/4WZlwVR
- ZrZawysls9eFnMpza2bdMBP5DQOXseqb3kgfXPo=
-X-Google-Smtp-Source: AGHT+IHpAr7gcblrc5V2VCZSSAT6JBrKBX1wexBnXW5Birco2rXpa5asqNnNdUIvH8FK8qBL7siz3IUxpjO4D5kyZhg=
-X-Received: from nabihestefan.c.googlers.com
- ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
- (user=nabihestefan job=sendgmr) by 2002:a05:690c:891:b0:5d3:40f3:56bf with
- SMTP id cd17-20020a05690c089100b005d340f356bfmr3557950ywb.1.1703021607865;
- Tue, 19 Dec 2023 13:33:27 -0800 (PST)
-Date: Tue, 19 Dec 2023 21:32:55 +0000
-In-Reply-To: <20231219213255.604535-1-nabihestefan@google.com>
-Mime-Version: 1.0
-References: <20231219213255.604535-1-nabihestefan@google.com>
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231219213255.604535-11-nabihestefan@google.com>
-Subject: [PATCH v9 10/10] tests/qtest: Adding PCS Module test to GMAC Qtest
-From: Nabih Estefan <nabihestefan@google.com>
-To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
- wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
- nabihestefan@google.com, kwliu@nuvoton.com, tomer.maimon@nuvoton.com, 
- Hila.Miranda-Kuzi@nuvoton.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
- envelope-from=3JwyCZQwKCnolYZgfcqrcdYlemmejc.amkocks-bctcjlmlels.mpe@flex--nabihestefan.bounces.google.com;
- helo=mail-yw1-x1149.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, UPPERCASE_50_75=0.008,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=no autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rFhpX-0007Vm-Vs
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:40:48 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rFhpV-0006uJ-Jh
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 16:40:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=OSPNM977gvGXUy+xVdjzJ+rfzwRPvMdhabAiWq66Lq0=; b=RVJ+kthLfJ84Ww1YhBQf9BYyyl
+ T9Z53wTm46paApb950RnJuhoUlzOjuJ/wVLb+6j/3WFfVb8WgGi/ER48esD78dFas3ea+6fxK9uWo
+ cMchqTabnRhkpA347iI23LeD6zOfzHrQH+uYlcQOYCiTo0j3A+DCqunllkJibKNRmWvVSv/qZ/9Eq
+ z2U5UEMn0hCTjm60eUUFQpCU+jYF9pwnezOLlKEq8OxHb5J8piOnL7T9Uaqok7cn4929Y/bxdk3OF
+ wX9+qzbRpeVSRYh/a9t2gD43+ZJJbYuoW/OUgJ9pl7twrwTaQ0XcYOqEHLFcCZbVNbvIfON4M4Yci
+ OkGatnNgxrT9qAf8F/JrOnrdR9k5Zw/KhWs7j4SNJ0M1PgVEDXviYHG+k2G+DViJ5DCcCGS3TpQBa
+ idWVYe5UvOpfVRroG9gbj8SzT3l0mxQhUi4m2hXflR2s7xzz+g4c0uZ2CHp/Vg48eOZ0Ah8ZgwqhV
+ COwfdr533aPck89ldry8ByRF64FF4KIWLpm3Udw+D4As9VE1XXAv8lt1GpFLJfhuVILoE+cB6Ypxn
+ GzDjHBp3KXwQTVELVGpTxTBlMY6VjiuFL7CTERK2xoOUJ8Eiq4wGis9t/RIT27MbwMRhKrt7uG+15
+ W6qi1xLZ6j/X3POQAcoUnZgyeA7+agJ8dS7pSeSZ0=;
+Received: from [2a00:23c4:8bb0:f100:795a:8119:c46d:d080]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rFhp0-0008V5-PE; Tue, 19 Dec 2023 21:40:18 +0000
+Message-ID: <7f262038-d0cb-4496-802d-3cf238c0ea03@ilande.co.uk>
+Date: Tue, 19 Dec 2023 21:40:33 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Thomas Huth <huth@tuxfamily.org>
+Cc: qemu-devel@nongnu.org
+References: <20231215200009.346212-1-mark.cave-ayland@ilande.co.uk>
+ <20231215200009.346212-9-mark.cave-ayland@ilande.co.uk>
+ <20231216211334.633f7684@fedora>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20231216211334.633f7684@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:795a:8119:c46d:d080
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 08/12] next-cube.c: move LED logic to new
+ next_scr2_led_update() function
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,188 +105,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan Diaz <nabihestefan@google.com>
+On 16/12/2023 20:13, Thomas Huth wrote:
 
- - Add PCS Register check to npcm_gmac-test
+> Am Fri, 15 Dec 2023 20:00:05 +0000
+> schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+> 
+>> Ensure that the LED status is updated by calling next_scr2_led_update() whenever
+>> the SC2 register is written.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> ---
+>>   hw/m68k/next-cube.c | 22 +++++++++++++---------
+>>   1 file changed, 13 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+>> index f2222554fa..7ffd1c412e 100644
+>> --- a/hw/m68k/next-cube.c
+>> +++ b/hw/m68k/next-cube.c
+>> @@ -123,6 +123,18 @@ static const uint8_t rtc_ram2[32] = {
+>>   #define SCR2_RTDATA 0x4
+>>   #define SCR2_TOBCD(x) (((x / 10) << 4) + (x % 10))
+>>   
+>> +static void next_scr2_led_update(NeXTPC *s)
+>> +{
+>> +    if (s->scr2 & 0x1) {
+>> +        DPRINTF("fault!\n");
+>> +        s->led++;
+>> +        if (s->led == 10) {
+>> +            DPRINTF("LED flashing, possible fault!\n");
+>> +            s->led = 0;
+>> +        }
+>> +    }
+>> +}
+> 
+> This will now operate on the old value of scr2 ...
+> 
+>>   static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+>>   {
+>>       static uint8_t old_scr2;
+>> @@ -135,15 +147,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+>>           scr2_2 = val & 0xFF;
+>>       }
+>>   
+>> -    if (val & 0x1) {
+>> -        DPRINTF("fault!\n");
+>> -        s->led++;
+>> -        if (s->led == 10) {
+>> -            DPRINTF("LED flashing, possible fault!\n");
+>> -            s->led = 0;
+>> -        }
+>> -    }
+> 
+> .. while this was using the new value that was just written.
+> So this looks wrong to me ... or do I miss something?
 
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
-Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
----
- tests/qtest/npcm_gmac-test.c | 132 +++++++++++++++++++++++++++++++++++
- 1 file changed, 132 insertions(+)
+Oops no, I think you're right and it's an unintended change. I'll fix this before 
+sending a v2 series.
 
-diff --git a/tests/qtest/npcm_gmac-test.c b/tests/qtest/npcm_gmac-test.c
-index 130a1599a8..b64515794b 100644
---- a/tests/qtest/npcm_gmac-test.c
-+++ b/tests/qtest/npcm_gmac-test.c
-@@ -20,6 +20,10 @@
- /* Name of the GMAC Device */
- #define TYPE_NPCM_GMAC "npcm-gmac"
- 
-+/* Address of the PCS Module */
-+#define PCS_BASE_ADDRESS 0xf0780000
-+#define NPCM_PCS_IND_AC_BA 0x1fe
-+
- typedef struct GMACModule {
-     int irq;
-     uint64_t base_addr;
-@@ -111,6 +115,62 @@ typedef enum NPCMRegister {
-     NPCM_GMAC_PTP_STNSUR = 0x714,
-     NPCM_GMAC_PTP_TAR = 0x718,
-     NPCM_GMAC_PTP_TTSR = 0x71c,
-+
-+    /* PCS Registers */
-+    NPCM_PCS_SR_CTL_ID1 = 0x3c0008,
-+    NPCM_PCS_SR_CTL_ID2 = 0x3c000a,
-+    NPCM_PCS_SR_CTL_STS = 0x3c0010,
-+
-+    NPCM_PCS_SR_MII_CTRL = 0x3e0000,
-+    NPCM_PCS_SR_MII_STS = 0x3e0002,
-+    NPCM_PCS_SR_MII_DEV_ID1 = 0x3e0004,
-+    NPCM_PCS_SR_MII_DEV_ID2 = 0x3e0006,
-+    NPCM_PCS_SR_MII_AN_ADV = 0x3e0008,
-+    NPCM_PCS_SR_MII_LP_BABL = 0x3e000a,
-+    NPCM_PCS_SR_MII_AN_EXPN = 0x3e000c,
-+    NPCM_PCS_SR_MII_EXT_STS = 0x3e001e,
-+
-+    NPCM_PCS_SR_TIM_SYNC_ABL = 0x3e0e10,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR = 0x3e0e12,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR = 0x3e0e14,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR = 0x3e0e16,
-+    NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR = 0x3e0e18,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR = 0x3e0e1a,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR = 0x3e0e1c,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR = 0x3e0e1e,
-+    NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR = 0x3e0e20,
-+
-+    NPCM_PCS_VR_MII_MMD_DIG_CTRL1 = 0x3f0000,
-+    NPCM_PCS_VR_MII_AN_CTRL = 0x3f0002,
-+    NPCM_PCS_VR_MII_AN_INTR_STS = 0x3f0004,
-+    NPCM_PCS_VR_MII_TC = 0x3f0006,
-+    NPCM_PCS_VR_MII_DBG_CTRL = 0x3f000a,
-+    NPCM_PCS_VR_MII_EEE_MCTRL0 = 0x3f000c,
-+    NPCM_PCS_VR_MII_EEE_TXTIMER = 0x3f0010,
-+    NPCM_PCS_VR_MII_EEE_RXTIMER = 0x3f0012,
-+    NPCM_PCS_VR_MII_LINK_TIMER_CTRL = 0x3f0014,
-+    NPCM_PCS_VR_MII_EEE_MCTRL1 = 0x3f0016,
-+    NPCM_PCS_VR_MII_DIG_STS = 0x3f0020,
-+    NPCM_PCS_VR_MII_ICG_ERRCNT1 = 0x3f0022,
-+    NPCM_PCS_VR_MII_MISC_STS = 0x3f0030,
-+    NPCM_PCS_VR_MII_RX_LSTS = 0x3f0040,
-+    NPCM_PCS_VR_MII_MP_TX_BSTCTRL0 = 0x3f0070,
-+    NPCM_PCS_VR_MII_MP_TX_LVLCTRL0 = 0x3f0074,
-+    NPCM_PCS_VR_MII_MP_TX_GENCTRL0 = 0x3f007a,
-+    NPCM_PCS_VR_MII_MP_TX_GENCTRL1 = 0x3f007c,
-+    NPCM_PCS_VR_MII_MP_TX_STS = 0x3f0090,
-+    NPCM_PCS_VR_MII_MP_RX_GENCTRL0 = 0x3f00b0,
-+    NPCM_PCS_VR_MII_MP_RX_GENCTRL1 = 0x3f00b2,
-+    NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0 = 0x3f00ba,
-+    NPCM_PCS_VR_MII_MP_MPLL_CTRL0 = 0x3f00f0,
-+    NPCM_PCS_VR_MII_MP_MPLL_CTRL1 = 0x3f00f2,
-+    NPCM_PCS_VR_MII_MP_MPLL_STS = 0x3f0110,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL2 = 0x3f0126,
-+    NPCM_PCS_VR_MII_MP_LVL_CTRL = 0x3f0130,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL0 = 0x3f0132,
-+    NPCM_PCS_VR_MII_MP_MISC_CTRL1 = 0x3f0134,
-+    NPCM_PCS_VR_MII_DIG_CTRL2 = 0x3f01c2,
-+    NPCM_PCS_VR_MII_DIG_ERRCNT_SEL = 0x3f01c4,
- } NPCMRegister;
- 
- static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-@@ -119,6 +179,15 @@ static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-     return qtest_readl(qts, mod->base_addr + regno);
- }
- 
-+static uint16_t pcs_read(QTestState *qts, const GMACModule *mod,
-+                          NPCMRegister regno)
-+{
-+    uint32_t write_value = (regno & 0x3ffe00) >> 9;
-+    qtest_writel(qts, PCS_BASE_ADDRESS + NPCM_PCS_IND_AC_BA, write_value);
-+    uint32_t read_offset = regno & 0x1ff;
-+    return qtest_readl(qts, PCS_BASE_ADDRESS + read_offset);
-+}
-+
- /* Check that GMAC registers are reset to default value */
- static void test_init(gconstpointer test_data)
- {
-@@ -131,6 +200,11 @@ static void test_init(gconstpointer test_data)
-         g_assert_cmphex(gmac_read(qts, mod, (regno)), ==, (value)); \
-     } while (0)
- 
-+#define CHECK_REG_PCS(regno, value) \
-+    do { \
-+        g_assert_cmphex(pcs_read(qts, mod, (regno)), ==, (value)); \
-+    } while (0)
-+
-     CHECK_REG32(NPCM_DMA_BUS_MODE, 0x00020100);
-     CHECK_REG32(NPCM_DMA_XMT_POLL_DEMAND, 0);
-     CHECK_REG32(NPCM_DMA_RCV_POLL_DEMAND, 0);
-@@ -180,6 +254,64 @@ static void test_init(gconstpointer test_data)
-     CHECK_REG32(NPCM_GMAC_PTP_TAR, 0);
-     CHECK_REG32(NPCM_GMAC_PTP_TTSR, 0);
- 
-+    /* TODO Add registers PCS */
-+    if (mod->base_addr == 0xf0802000) {
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID1, 0x699e);
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID2, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_CTL_STS, 0x8000);
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_CTRL, 0x1140);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_STS, 0x0109);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID1, 0x699e);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID2, 0x0ced0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_ADV, 0x0020);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_LP_BABL, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_EXPN, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_MII_EXT_STS, 0xc000);
-+
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_ABL, 0x0003);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR, 0x0038);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR, 0x0038);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR, 0x0058);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR, 0);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR, 0x0048);
-+        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR, 0);
-+
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MMD_DIG_CTRL1, 0x2400);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_CTRL, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_INTR_STS, 0x000a);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_TC, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DBG_CTRL, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL0, 0x899c);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_TXTIMER, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_RXTIMER, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_LINK_TIMER_CTRL, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL1, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_STS, 0x0010);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_ICG_ERRCNT1, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MISC_STS, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_RX_LSTS, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_BSTCTRL0, 0x00a);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_LVLCTRL0, 0x007f);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL0, 0x0001);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL1, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_STS, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL0, 0x0100);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL1, 0x1100);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0, 0x000e);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL0, 0x0100);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL1, 0x0032);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_STS, 0x0001);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL2, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_LVL_CTRL, 0x0019);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL0, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL1, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_CTRL2, 0);
-+        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_ERRCNT_SEL, 0);
-+    }
-+
-     qtest_quit(qts);
- }
- 
--- 
-2.43.0.472.g3155946c3a-goog
+>   Thomas
+> 
+> 
+>>       if (scr2_2 & 0x1) {
+>>           /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
+>>           if (rtc->phase == -1) {
+>> @@ -318,6 +321,7 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
+>>           break;
+>>   
+>>       case 0xd000 ... 0xd003:
+>> +        next_scr2_led_update(s);
+>>           nextscr2_write(s, val, size);
+>>           break;
+
+
+ATB,
+
+Mark.
 
 
