@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AEE581902C
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5707B819029
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 20:00:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFfHj-00020h-Gf; Tue, 19 Dec 2023 13:57:43 -0500
+	id 1rFfHr-00022M-Lj; Tue, 19 Dec 2023 13:57:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfHh-000201-0C
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:41 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1rFfHq-00021r-9l
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:50 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
- id 1rFfHe-00070j-Dg
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:40 -0500
+ id 1rFfHn-00071d-Ux
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:49 -0500
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmCh0GP0z4xLy;
- Wed, 20 Dec 2023 05:57:36 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmCs28f9z4wx5;
+ Wed, 20 Dec 2023 05:57:45 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmCb2K8tz4xCp;
- Wed, 20 Dec 2023 05:57:31 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmCn1n0kz4xCp;
+ Wed, 20 Dec 2023 05:57:40 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
@@ -40,28 +39,25 @@ Cc: Eric Auger <eric.auger@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  Eric Farman <farman@linux.ibm.com>,
  Alex Williamson <alex.williamson@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Yi Liu <yi.l.liu@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 07/47] vfio/container: Switch to IOMMU BE
- set_dirty_page_tracking/query_dirty_bitmap API
-Date: Tue, 19 Dec 2023 19:56:03 +0100
-Message-ID: <20231219185643.725448-8-clg@redhat.com>
+Subject: [PULL 09/47] vfio/container: Convert functions to base container
+Date: Tue, 19 Dec 2023 19:56:05 +0100
+Message-ID: <20231219185643.725448-10-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231219185643.725448-1-clg@redhat.com>
 References: <20231219185643.725448-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=7/MV=H6=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,220 +75,243 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-dirty_pages_supported field is also moved to the base container
+In the prospect to get rid of VFIOContainer refs
+in common.c lets convert misc functions to use the base
+container object instead:
 
-No functional change intended.
+vfio_devices_all_dirty_tracking
+vfio_devices_all_device_dirty_tracking
+vfio_devices_all_running_and_mig_active
+vfio_devices_query_dirty_bitmap
+vfio_get_dirty_bitmap
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h         |  6 ------
- include/hw/vfio/vfio-container-base.h |  6 ++++++
- hw/vfio/common.c                      | 12 ++++++++----
- hw/vfio/container-base.c              | 16 ++++++++++++++++
- hw/vfio/container.c                   | 21 ++++++++++++++-------
- 5 files changed, 44 insertions(+), 17 deletions(-)
+ include/hw/vfio/vfio-common.h |  9 ++++----
+ hw/vfio/common.c              | 42 +++++++++++++++--------------------
+ hw/vfio/container.c           |  6 ++---
+ hw/vfio/trace-events          |  2 +-
+ 4 files changed, 26 insertions(+), 33 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index bd4de6cb3aff7cb85e34960fe4238d82b30867cd..60f2785fe07cf71e3c65e85d933536c09170f4c6 100644
+index 9740cf9fbc65831647b30dcc415d3d1db5835661..bc67e1316ceeaf4439aa9dd71d8c35cc5f34366c 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -83,7 +83,6 @@ typedef struct VFIOContainer {
-     unsigned iommu_type;
-     Error *error;
-     bool initialized;
--    bool dirty_pages_supported;
-     uint64_t dirty_pgsizes;
-     uint64_t max_dirty_bitmap_size;
-     unsigned long pgsizes;
-@@ -190,11 +189,6 @@ VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
- void vfio_put_address_space(VFIOAddressSpace *space);
- bool vfio_devices_all_running_and_saving(VFIOContainer *container);
+@@ -186,7 +186,6 @@ typedef struct VFIODisplay {
  
--/* container->fd */
--int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start);
--int vfio_query_dirty_bitmap(VFIOContainer *container, VFIOBitmap *vbmap,
--                            hwaddr iova, hwaddr size);
--
+ VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
+ void vfio_put_address_space(VFIOAddressSpace *space);
+-bool vfio_devices_all_running_and_saving(VFIOContainer *container);
+ 
  /* SPAPR specific */
  int vfio_container_add_section_window(VFIOContainer *container,
-                                       MemoryRegionSection *section,
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index c7cc6ec9c55e93e4f7c6be5576ed59b5dea58b1e..f244f003d080a30e95b6daa97a132eeb5a271ae4 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -36,6 +36,7 @@ typedef struct VFIOAddressSpace {
- typedef struct VFIOContainerBase {
-     const VFIOIOMMUOps *ops;
-     VFIOAddressSpace *space;
-+    bool dirty_pages_supported;
-     QLIST_HEAD(, VFIOGuestIOMMU) giommu_list;
-     QLIST_ENTRY(VFIOContainerBase) next;
- } VFIOContainerBase;
-@@ -54,6 +55,11 @@ int vfio_container_dma_map(VFIOContainerBase *bcontainer,
- int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
-                              hwaddr iova, ram_addr_t size,
-                              IOMMUTLBEntry *iotlb);
-+int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-+                                           bool start);
-+int vfio_container_query_dirty_bitmap(VFIOContainerBase *bcontainer,
-+                                      VFIOBitmap *vbmap,
-+                                      hwaddr iova, hwaddr size);
+@@ -260,11 +259,11 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
+ void vfio_migration_exit(VFIODevice *vbasedev);
  
- void vfio_container_init(VFIOContainerBase *bcontainer,
-                          VFIOAddressSpace *space,
+ int vfio_bitmap_alloc(VFIOBitmap *vbmap, hwaddr size);
+-bool vfio_devices_all_running_and_mig_active(VFIOContainer *container);
+-bool vfio_devices_all_device_dirty_tracking(VFIOContainer *container);
+-int vfio_devices_query_dirty_bitmap(VFIOContainer *container,
++bool vfio_devices_all_running_and_mig_active(VFIOContainerBase *bcontainer);
++bool vfio_devices_all_device_dirty_tracking(VFIOContainerBase *bcontainer);
++int vfio_devices_query_dirty_bitmap(VFIOContainerBase *bcontainer,
+                                     VFIOBitmap *vbmap, hwaddr iova,
+                                     hwaddr size);
+-int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
++int vfio_get_dirty_bitmap(VFIOContainerBase *bcontainer, uint64_t iova,
+                                  uint64_t size, ram_addr_t ram_addr);
+ #endif /* HW_VFIO_VFIO_COMMON_H */
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 1d8202537ea4f27f49f2d477537d6c7c557bd61f..b1a875ca93a44347f3652298995b89b5d9aed045 100644
+index 9415395ed9becc337cf25c5714c6b3c4c452c81b..cf6618f6ed3d16a4c76d641d7bdb4958dd2bd8ef 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -1079,7 +1079,8 @@ static void vfio_listener_log_global_start(MemoryListener *listener)
-     if (vfio_devices_all_device_dirty_tracking(container)) {
+@@ -177,9 +177,8 @@ bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
+            migration->device_state == VFIO_DEVICE_STATE_PRE_COPY_P2P;
+ }
+ 
+-static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
++static bool vfio_devices_all_dirty_tracking(VFIOContainerBase *bcontainer)
+ {
+-    VFIOContainerBase *bcontainer = &container->bcontainer;
+     VFIODevice *vbasedev;
+     MigrationState *ms = migrate_get_current();
+ 
+@@ -204,9 +203,8 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
+     return true;
+ }
+ 
+-bool vfio_devices_all_device_dirty_tracking(VFIOContainer *container)
++bool vfio_devices_all_device_dirty_tracking(VFIOContainerBase *bcontainer)
+ {
+-    VFIOContainerBase *bcontainer = &container->bcontainer;
+     VFIODevice *vbasedev;
+ 
+     QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
+@@ -222,9 +220,8 @@ bool vfio_devices_all_device_dirty_tracking(VFIOContainer *container)
+  * Check if all VFIO devices are running and migration is active, which is
+  * essentially equivalent to the migration being in pre-copy phase.
+  */
+-bool vfio_devices_all_running_and_mig_active(VFIOContainer *container)
++bool vfio_devices_all_running_and_mig_active(VFIOContainerBase *bcontainer)
+ {
+-    VFIOContainerBase *bcontainer = &container->bcontainer;
+     VFIODevice *vbasedev;
+ 
+     if (!migration_is_active(migrate_get_current())) {
+@@ -1082,7 +1079,7 @@ static void vfio_listener_log_global_start(MemoryListener *listener)
+     VFIOContainer *container = container_of(listener, VFIOContainer, listener);
+     int ret;
+ 
+-    if (vfio_devices_all_device_dirty_tracking(container)) {
++    if (vfio_devices_all_device_dirty_tracking(&container->bcontainer)) {
          ret = vfio_devices_dma_logging_start(container);
      } else {
--        ret = vfio_set_dirty_page_tracking(container, true);
-+        ret = vfio_container_set_dirty_page_tracking(&container->bcontainer,
-+                                                     true);
-     }
+         ret = vfio_container_set_dirty_page_tracking(&container->bcontainer,
+@@ -1101,7 +1098,7 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
+     VFIOContainer *container = container_of(listener, VFIOContainer, listener);
+     int ret = 0;
  
-     if (ret) {
-@@ -1097,7 +1098,8 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
-     if (vfio_devices_all_device_dirty_tracking(container)) {
+-    if (vfio_devices_all_device_dirty_tracking(container)) {
++    if (vfio_devices_all_device_dirty_tracking(&container->bcontainer)) {
          vfio_devices_dma_logging_stop(container);
      } else {
--        ret = vfio_set_dirty_page_tracking(container, false);
-+        ret = vfio_container_set_dirty_page_tracking(&container->bcontainer,
-+                                                     false);
-     }
+         ret = vfio_container_set_dirty_page_tracking(&container->bcontainer,
+@@ -1141,11 +1138,10 @@ static int vfio_device_dma_logging_report(VFIODevice *vbasedev, hwaddr iova,
+     return 0;
+ }
  
-     if (ret) {
-@@ -1165,7 +1167,8 @@ int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
+-int vfio_devices_query_dirty_bitmap(VFIOContainer *container,
++int vfio_devices_query_dirty_bitmap(VFIOContainerBase *bcontainer,
+                                     VFIOBitmap *vbmap, hwaddr iova,
+                                     hwaddr size)
+ {
+-    VFIOContainerBase *bcontainer = &container->bcontainer;
+     VFIODevice *vbasedev;
+     int ret;
+ 
+@@ -1165,17 +1161,16 @@ int vfio_devices_query_dirty_bitmap(VFIOContainer *container,
+     return 0;
+ }
+ 
+-int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
++int vfio_get_dirty_bitmap(VFIOContainerBase *bcontainer, uint64_t iova,
+                           uint64_t size, ram_addr_t ram_addr)
+ {
+     bool all_device_dirty_tracking =
+-        vfio_devices_all_device_dirty_tracking(container);
++        vfio_devices_all_device_dirty_tracking(bcontainer);
+     uint64_t dirty_pages;
      VFIOBitmap vbmap;
      int ret;
  
--    if (!container->dirty_pages_supported && !all_device_dirty_tracking) {
-+    if (!container->bcontainer.dirty_pages_supported &&
-+        !all_device_dirty_tracking) {
+-    if (!container->bcontainer.dirty_pages_supported &&
+-        !all_device_dirty_tracking) {
++    if (!bcontainer->dirty_pages_supported && !all_device_dirty_tracking) {
          cpu_physical_memory_set_dirty_range(ram_addr, size,
                                              tcg_enabled() ? DIRTY_CLIENTS_ALL :
                                              DIRTY_CLIENTS_NOCODE);
-@@ -1180,7 +1183,8 @@ int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
+@@ -1188,10 +1183,9 @@ int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
+     }
+ 
      if (all_device_dirty_tracking) {
-         ret = vfio_devices_query_dirty_bitmap(container, &vbmap, iova, size);
+-        ret = vfio_devices_query_dirty_bitmap(container, &vbmap, iova, size);
++        ret = vfio_devices_query_dirty_bitmap(bcontainer, &vbmap, iova, size);
      } else {
--        ret = vfio_query_dirty_bitmap(container, &vbmap, iova, size);
-+        ret = vfio_container_query_dirty_bitmap(&container->bcontainer, &vbmap,
-+                                                iova, size);
+-        ret = vfio_container_query_dirty_bitmap(&container->bcontainer, &vbmap,
+-                                                iova, size);
++        ret = vfio_container_query_dirty_bitmap(bcontainer, &vbmap, iova, size);
      }
  
      if (ret) {
-diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index 3933391e0db26116401509c5917eaceabcd98443..5d654ae17233fe06c235d33d981eb8fa92128536 100644
---- a/hw/vfio/container-base.c
-+++ b/hw/vfio/container-base.c
-@@ -31,11 +31,27 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
-     return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
+@@ -1201,8 +1195,7 @@ int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
+     dirty_pages = cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
+                                                          vbmap.pages);
+ 
+-    trace_vfio_get_dirty_bitmap(container->fd, iova, size, vbmap.size,
+-                                ram_addr, dirty_pages);
++    trace_vfio_get_dirty_bitmap(iova, size, vbmap.size, ram_addr, dirty_pages);
+ out:
+     g_free(vbmap.bitmap);
+ 
+@@ -1236,8 +1229,8 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+ 
+     rcu_read_lock();
+     if (vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL)) {
+-        ret = vfio_get_dirty_bitmap(container, iova, iotlb->addr_mask + 1,
+-                                    translated_addr);
++        ret = vfio_get_dirty_bitmap(&container->bcontainer, iova,
++                                    iotlb->addr_mask + 1, translated_addr);
+         if (ret) {
+             error_report("vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
+                          "0x%"HWADDR_PRIx") = %d (%s)",
+@@ -1266,7 +1259,8 @@ static int vfio_ram_discard_get_dirty_bitmap(MemoryRegionSection *section,
+      * Sync the whole mapped region (spanning multiple individual mappings)
+      * in one go.
+      */
+-    return vfio_get_dirty_bitmap(vrdl->container, iova, size, ram_addr);
++    return vfio_get_dirty_bitmap(&vrdl->container->bcontainer, iova, size,
++                                 ram_addr);
  }
  
-+int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-+                                           bool start)
-+{
-+    g_assert(bcontainer->ops->set_dirty_page_tracking);
-+    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
-+}
-+
-+int vfio_container_query_dirty_bitmap(VFIOContainerBase *bcontainer,
-+                                      VFIOBitmap *vbmap,
-+                                      hwaddr iova, hwaddr size)
-+{
-+    g_assert(bcontainer->ops->query_dirty_bitmap);
-+    return bcontainer->ops->query_dirty_bitmap(bcontainer, vbmap, iova, size);
-+}
-+
- void vfio_container_init(VFIOContainerBase *bcontainer, VFIOAddressSpace *space,
-                          const VFIOIOMMUOps *ops)
- {
-     bcontainer->ops = ops;
-     bcontainer->space = space;
-+    bcontainer->dirty_pages_supported = false;
-     QLIST_INIT(&bcontainer->giommu_list);
- }
+ static int vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainer *container,
+@@ -1335,7 +1329,7 @@ static int vfio_sync_dirty_bitmap(VFIOContainer *container,
+     ram_addr = memory_region_get_ram_addr(section->mr) +
+                section->offset_within_region;
  
+-    return vfio_get_dirty_bitmap(container,
++    return vfio_get_dirty_bitmap(&container->bcontainer,
+                    REAL_HOST_PAGE_ALIGN(section->offset_within_address_space),
+                    int128_get64(section->size), ram_addr);
+ }
+@@ -1350,7 +1344,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
+         return;
+     }
+ 
+-    if (vfio_devices_all_dirty_tracking(container)) {
++    if (vfio_devices_all_dirty_tracking(&container->bcontainer)) {
+         ret = vfio_sync_dirty_bitmap(container, section);
+         if (ret) {
+             error_report("vfio: Failed to sync dirty bitmap, err: %d (%s)", ret,
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index f12fcb6fe11d578838b1052f70ee5099b9018e94..3ab74e26151efd7ae4027ed3b4cf04a835083ccc 100644
+index 63a906de933574706beddf54b78885e9a6c659df..7bd81eab09008530294757a81429bfea1b147815 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -131,7 +131,7 @@ static int vfio_legacy_dma_unmap(VFIOContainerBase *bcontainer, hwaddr iova,
+@@ -129,8 +129,8 @@ static int vfio_legacy_dma_unmap(VFIOContainerBase *bcontainer, hwaddr iova,
+     bool need_dirty_sync = false;
+     int ret;
  
-     if (iotlb && vfio_devices_all_running_and_mig_active(container)) {
-         if (!vfio_devices_all_device_dirty_tracking(container) &&
--            container->dirty_pages_supported) {
-+            container->bcontainer.dirty_pages_supported) {
+-    if (iotlb && vfio_devices_all_running_and_mig_active(container)) {
+-        if (!vfio_devices_all_device_dirty_tracking(container) &&
++    if (iotlb && vfio_devices_all_running_and_mig_active(bcontainer)) {
++        if (!vfio_devices_all_device_dirty_tracking(bcontainer) &&
+             container->bcontainer.dirty_pages_supported) {
              return vfio_dma_unmap_bitmap(container, iova, size, iotlb);
          }
- 
-@@ -205,14 +205,17 @@ static int vfio_legacy_dma_map(VFIOContainerBase *bcontainer, hwaddr iova,
-     return -errno;
- }
- 
--int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start)
-+static int vfio_legacy_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-+                                               bool start)
- {
-+    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-+                                            bcontainer);
-     int ret;
-     struct vfio_iommu_type1_dirty_bitmap dirty = {
-         .argsz = sizeof(dirty),
-     };
- 
--    if (!container->dirty_pages_supported) {
-+    if (!bcontainer->dirty_pages_supported) {
-         return 0;
+@@ -162,7 +162,7 @@ static int vfio_legacy_dma_unmap(VFIOContainerBase *bcontainer, hwaddr iova,
      }
  
-@@ -232,9 +235,12 @@ int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start)
-     return ret;
- }
+     if (need_dirty_sync) {
+-        ret = vfio_get_dirty_bitmap(container, iova, size,
++        ret = vfio_get_dirty_bitmap(bcontainer, iova, size,
+                                     iotlb->translated_addr);
+         if (ret) {
+             return ret;
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index 9f7fedee986de18d3f97f86bfb5db21b77175573..08a1f9dfa4508b8378a41c35feed67123ba4b942 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -117,7 +117,7 @@ vfio_region_sparse_mmap_header(const char *name, int index, int nr_areas) "Devic
+ vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long end) "sparse entry %d [0x%lx - 0x%lx]"
+ vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
+ vfio_legacy_dma_unmap_overflow_workaround(void) ""
+-vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty_pages) "container fd=%d, iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
++vfio_get_dirty_bitmap(uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty_pages) "iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
+ vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
  
--int vfio_query_dirty_bitmap(VFIOContainer *container, VFIOBitmap *vbmap,
--                            hwaddr iova, hwaddr size)
-+static int vfio_legacy_query_dirty_bitmap(VFIOContainerBase *bcontainer,
-+                                          VFIOBitmap *vbmap,
-+                                          hwaddr iova, hwaddr size)
- {
-+    VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-+                                            bcontainer);
-     struct vfio_iommu_type1_dirty_bitmap *dbitmap;
-     struct vfio_iommu_type1_dirty_bitmap_get *range;
-     int ret;
-@@ -461,7 +467,7 @@ static void vfio_get_iommu_info_migration(VFIOContainer *container,
-      * qemu_real_host_page_size to mark those dirty.
-      */
-     if (cap_mig->pgsize_bitmap & qemu_real_host_page_size()) {
--        container->dirty_pages_supported = true;
-+        container->bcontainer.dirty_pages_supported = true;
-         container->max_dirty_bitmap_size = cap_mig->max_dirty_bitmap_size;
-         container->dirty_pgsizes = cap_mig->pgsize_bitmap;
-     }
-@@ -553,7 +559,6 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-     container = g_malloc0(sizeof(*container));
-     container->fd = fd;
-     container->error = NULL;
--    container->dirty_pages_supported = false;
-     container->dma_max_mappings = 0;
-     container->iova_ranges = NULL;
-     QLIST_INIT(&container->vrdl_list);
-@@ -937,4 +942,6 @@ void vfio_detach_device(VFIODevice *vbasedev)
- const VFIOIOMMUOps vfio_legacy_ops = {
-     .dma_map = vfio_legacy_dma_map,
-     .dma_unmap = vfio_legacy_dma_unmap,
-+    .set_dirty_page_tracking = vfio_legacy_set_dirty_page_tracking,
-+    .query_dirty_bitmap = vfio_legacy_query_dirty_bitmap,
- };
+ # platform.c
 -- 
 2.43.0
 
