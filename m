@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24BB818DBD
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 18:15:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61837818E0E
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 18:27:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFdfw-0006BI-EX; Tue, 19 Dec 2023 12:14:36 -0500
+	id 1rFdrS-0008Ow-AJ; Tue, 19 Dec 2023 12:26:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFdfu-0006Aw-HQ
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 12:14:34 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ id 1rFdrQ-0008OQ-Gn
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 12:26:28 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rFdfq-0007HE-DD
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 12:14:34 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2cc6ea4452cso33823001fa.1
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 09:14:29 -0800 (PST)
+ id 1rFdrO-0000iL-K4
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 12:26:27 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-552ff8d681aso6920844a12.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 09:26:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703006068; x=1703610868; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703006783; x=1703611583; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Ts0K1jX1SAV6ijWm6zAsLA8MOZ7qGrV3QSqUYBJW3pU=;
- b=JmSYAY4xopJ3nI6qEORuQmDBokpL1P1fG9gVLpZTSddNKLjKumRJPQQ6BkxX33KmAL
- Rr0jMEVJnBxvcWnqVjX054S/DGKjU+as3VjY70GXMAU9sS3CWHvBG9mmzFae9x8EvgXG
- FuMBUUtoXpf409OR2+VEtFyBYSr79gKnE4f1HPzilgvK9waIHHYjwYmSNdKuVmLDsjyv
- X5XW82wXuiCmjboCa1g8lSvhiJfmAQOtxn0Gb30VCzE+4a70y4bPCGeo/eWleziKJYmK
- xvyo6Edqcj0WApu+gNmbsX0Ky/r3kKOjgc9jNBEQsqZ4DTJ2s8fFebsexh962uHXr4yn
- HMkg==
+ bh=GNaJALPMR4T06Fy70/m7M5bP77I6oDiHT8BINT3X6l4=;
+ b=gz/iyzNlsugk+rSYaFTms/KYe3pZ7Ayl0ClWeDc/wi8le9qlVYP2vEu7R9qFTwoS0l
+ foF3ZvAlY0HShjnC8XpxnXPqqvrYp5ajHN6uoc52Rk+CJaWU3NdU57/MUYz2oCG39dRm
+ LIRjhI7Cybms1knRjUHO2nWafoHlgEwY591UFwxR6LIj4y5Um3oagInrQRjS3fXfBuWx
+ a3hum+lRoAQy+q3Oj/ePmzw5TMR6RlNZTSeuykcgolLWKF8uw+n/OO3G/H+ipmoCDLPf
+ +nyF+0oRF7TBWd7peWAC30iRV4I4T+4z3k4z8jxErxGJLqE/N6XidhWI89xczZA/Q4Be
+ XwZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703006068; x=1703610868;
+ d=1e100.net; s=20230601; t=1703006783; x=1703611583;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Ts0K1jX1SAV6ijWm6zAsLA8MOZ7qGrV3QSqUYBJW3pU=;
- b=TYpkQLE2X9Me2FSXUEcOxm3X3RFlq4XP0iv3uS49+oQclK9Km3ylH9TnwvI9piE1TQ
- hvLvJmMbmhiq3gKj5nqgvhQMwJrmgz2LKdn0LvTLPJ7ZlOkDpP34khodaYe3K+jZ5ARb
- E8UdQpqro81iz0bgS/l39i4nWOceCJySb+k6SuZxIrS7i/UfyDqIrAsHPeKoXOfTQ3Uu
- HTAieZRJX5O1mcty76yB+x7wlAmPVOOSlCpQrfc7F4rN4qC5yXbUr6FSRNuKUkQcFWv9
- y/LDLd3iQxfozirj6Y59HL2xx41XfS+yie2Bkg1ETLOPRyenDvISEL597JsgjCM4fLej
- dKFA==
-X-Gm-Message-State: AOJu0YwTV1N0c5aFppeXrPlivKi6ty5e2WGK5lIPMNk0GExr+KUd6Y78
- RR8lSZvCYLC99okX/o1TfPr3lWlwt3wknpJ8ntMlGQ==
-X-Google-Smtp-Source: AGHT+IESeB84CyG+EvDS1UqFeNDQyXWZWdRKpZi2V515kzUDKLqrVMELupAiaUMfa7nz8f9QjlcTx6Ijf6v+TvvyZHE=
-X-Received: by 2002:a2e:a54b:0:b0:2cc:6ca3:2477 with SMTP id
- e11-20020a2ea54b000000b002cc6ca32477mr2530218ljn.80.1703006068267; Tue, 19
- Dec 2023 09:14:28 -0800 (PST)
+ bh=GNaJALPMR4T06Fy70/m7M5bP77I6oDiHT8BINT3X6l4=;
+ b=HljJOJhQgvxClUbFReqHJ01xckSc8shL3Hxka07l53wVoKYStPXnYGR5Cwmh7JpCfi
+ OcCOT3XJcZd2uYdWVebW/DukOAy7JCC1JamsDo3eGSaOCdPwSu/tut7VL0fWGy4a8kke
+ tJ8g+bfMN0MZrXEjuO7T55jM7THL6Qcvl1cOw3uB2dpRgplrt+JyX68aPBRxKJqOFco9
+ yGjOIJq49nvTV+TnqdGq3L6NUO0LiuKoaJMsZdMi7JNdTX67lVkUilLGXLLPHiUF5g/m
+ mtVIB/a/tYMzzclvSQzpr+dc0/MBhl+NnGl1oJFSEF/pcMfoQa+A0NKB6+65w+Lo1Rmi
+ 71AQ==
+X-Gm-Message-State: AOJu0YwCQvBTZCjYziQbapWWTuqGYtNDz0x8CPGPCgyBDokhN8MYTA2O
+ tJjSdC44IRAiw7YvOR9wvyY7D+guU3RUQbl+6lUxcoWEoEzyRATB
+X-Google-Smtp-Source: AGHT+IGd+qdqJCkofiTlAmqRPLfRsc2IUd2HvynWCMqrzcuJIsw+gybhx9tzoId7TpAIuDYoSuFLct3rTbgpqDjFooQ=
+X-Received: by 2002:a50:d756:0:b0:553:3c89:bc19 with SMTP id
+ i22-20020a50d756000000b005533c89bc19mr1664401edj.20.1703006783202; Tue, 19
+ Dec 2023 09:26:23 -0800 (PST)
 MIME-Version: 1.0
 References: <20231214233055.2505387-1-sam@rfc1149.net>
- <20231214233055.2505387-2-sam@rfc1149.net>
-In-Reply-To: <20231214233055.2505387-2-sam@rfc1149.net>
+ <20231214233055.2505387-3-sam@rfc1149.net>
+In-Reply-To: <20231214233055.2505387-3-sam@rfc1149.net>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 19 Dec 2023 17:14:16 +0000
-Message-ID: <CAFEAcA826_XkijfuL0V-2jziuVGd0yDwLcOS0DJcXyWEOcFZuw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] tcg: Remove unreachable code
+Date: Tue, 19 Dec 2023 17:26:11 +0000
+Message-ID: <CAFEAcA_f93-Siwmc_5hVrz=A5Rva_d6bWFXYoRcb90AXZXJhmg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] tcg: Jump after always false condition
 To: Samuel Tardieu <sam@rfc1149.net>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,16 +87,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Thu, 14 Dec 2023 at 23:32, Samuel Tardieu <sam@rfc1149.net> wrote:
 >
-> The `fail_rx`/`fail` block is only entered while `buf_rx` is equal to
-> its initial value `MAP_FAILED`. The `munmap(buf_rx, size);` was never
-> executed.
+> `buf_rw` is always `NULL` when jumping to the `fail` label. Move the
+> label `down` after the `if (buf_rw) { ... }` statement.
 >
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2030
 > Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
 > ---
+>  tcg/region.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tcg/region.c b/tcg/region.c
+> index 6d657e8c33..691a726eae 100644
+> --- a/tcg/region.c
+> +++ b/tcg/region.c
+> @@ -596,10 +596,10 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
+>
+>   fail_rx:
+>      error_setg_errno(errp, errno, "failed to map shared memory for execute");
+> - fail:
+>      if (buf_rw) {
+>          munmap(buf_rw, size);
+>      }
+> + fail:
+>      if (fd >= 0) {
+>          close(fd);
+>      }
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+It's also the case that fd is always -1 when we jump
+to the 'fail' label, so if we're moving it down then
+we should move it past that as well.
 
-thanks
+At this point you might as well make the check after
+qemu_memfd_alloc() just be
+   if (buf_rw == NULL) {
+       return -1;
+   }
+
+and drop the 'fail:' label entirely. And then we
+know that in this code path buf_rw must be non-NULL
+and fd must be >= 0, so the fail_rx: codepath doesn't
+need to explicitly test those.
+
+So, well, all of this is definitely removing dead
+code, but on the other hand it's also moving away
+from the coding-style pattern the function has at
+the moment, which is "there is a fail-and-exit
+codepath which is robust against wherever you might
+choose to jump to it, and so if we need to add new
+code to this function then it also can jump to 'fail'
+without any further updates to that error-exit path".
+Instead we end up with an "every error-exit check
+does its own tidyup" idiom. For the sake of not having
+a static checker say "this is technically dead code",
+is that worth doing, or does it make the code a little
+less readable and less amenable to future modification?
+I'm not sure...
+
 -- PMM
 
