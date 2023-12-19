@@ -2,46 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC552818FBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 19:23:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF54819016
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 19:58:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFejZ-0001pV-Ho; Tue, 19 Dec 2023 13:22:25 -0500
+	id 1rFfHH-0001vC-6t; Tue, 19 Dec 2023 13:57:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rFejX-0001p3-JU
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:22:23 -0500
-Received: from zoidberg.rfc1149.net ([195.154.227.159])
+ (Exim 4.90_1)
+ (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
+ id 1rFfHC-0001uL-Sl
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:10 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rFejW-0001Ao-1o
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:22:23 -0500
-Received: from buffy.. (buffy [192.168.147.6])
- by zoidberg.rfc1149.net (Postfix) with ESMTP id CE1B380026;
- Tue, 19 Dec 2023 19:22:19 +0100 (CET)
-Authentication-Results: zoidberg.rfc1149.net;
- dmarc=fail (p=none dis=none) header.from=rfc1149.net
-Authentication-Results: zoidberg.rfc1149.net;
- spf=fail smtp.mailfrom=rfc1149.net
-From: Samuel Tardieu <sam@rfc1149.net>
+ (Exim 4.90_1)
+ (envelope-from <SRS0=7/MV=H6=redhat.com=clg@ozlabs.org>)
+ id 1rFfHB-0006wo-00
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 13:57:10 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4SvmC55vGYz4x7q;
+ Wed, 20 Dec 2023 05:57:05 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4SvmC06Ff9z4wcJ;
+ Wed, 20 Dec 2023 05:57:00 +1100 (AEDT)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Samuel Tardieu <sam@rfc1149.net>
-Subject: [PATCH v2 2/2] tcg: Make the cleanup-on-error path unique
-Date: Tue, 19 Dec 2023 19:22:12 +0100
-Message-ID: <20231219182212.455952-3-sam@rfc1149.net>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231219182212.455952-1-sam@rfc1149.net>
-References: <20231219182212.455952-1-sam@rfc1149.net>
+Cc: Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Yi Liu <yi.l.liu@intel.com>,
+ Yi Sun <yi.y.sun@linux.intel.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 01/47] vfio: Introduce base object for VFIOContainer and
+ targeted interface
+Date: Tue, 19 Dec 2023 19:55:57 +0100
+Message-ID: <20231219185643.725448-2-clg@redhat.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231219185643.725448-1-clg@redhat.com>
+References: <20231219185643.725448-1-clg@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
- helo=zoidberg.rfc1149.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=7/MV=H6=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,39 +75,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By calling `error_setg_errno()` before jumping to the cleanup-on-error
-path at the `fail` label, the cleanup path is clearer.
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+Introduce a dumb VFIOContainerBase object and its targeted interface.
+This is willingly not a QOM object because we don't want it to be
+visible from the user interface. The VFIOContainerBase will be
+smoothly populated in subsequent patches as well as interfaces.
+
+No functional change intended.
+
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tcg/region.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/hw/vfio/vfio-common.h         |  8 ++---
+ include/hw/vfio/vfio-container-base.h | 50 +++++++++++++++++++++++++++
+ 2 files changed, 52 insertions(+), 6 deletions(-)
+ create mode 100644 include/hw/vfio/vfio-container-base.h
 
-diff --git a/tcg/region.c b/tcg/region.c
-index 467e51cf6f..478ec051c4 100644
---- a/tcg/region.c
-+++ b/tcg/region.c
-@@ -584,7 +584,9 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index a4a22accb9434c5d04bef73172a0ccbe182405cb..586d153c12b58f5eaabe8e36ad91fad6abd4af10 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -30,6 +30,7 @@
+ #include <linux/vfio.h>
+ #endif
+ #include "sysemu/sysemu.h"
++#include "hw/vfio/vfio-container-base.h"
  
-     buf_rx = mmap(NULL, size, host_prot_read_exec(), MAP_SHARED, fd, 0);
-     if (buf_rx == MAP_FAILED) {
--        goto fail_rx;
-+        error_setg_errno(errp, errno,
-+                         "failed to map shared memory for execute");
-+        goto fail;
-     }
+ #define VFIO_MSG_PREFIX "vfio %s: "
  
-     close(fd);
-@@ -594,8 +596,6 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
+@@ -81,6 +82,7 @@ typedef struct VFIOAddressSpace {
+ struct VFIOGroup;
  
-     return PROT_READ | PROT_WRITE;
+ typedef struct VFIOContainer {
++    VFIOContainerBase bcontainer;
+     VFIOAddressSpace *space;
+     int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+     MemoryListener listener;
+@@ -201,12 +203,6 @@ typedef struct VFIODisplay {
+     } dmabuf;
+ } VFIODisplay;
  
-- fail_rx:
--    error_setg_errno(errp, errno, "failed to map shared memory for execute");
-  fail:
-     /* buf_rx is always equal to MAP_FAILED here and does not require cleanup */
-     if (buf_rw) {
+-typedef struct {
+-    unsigned long *bitmap;
+-    hwaddr size;
+-    hwaddr pages;
+-} VFIOBitmap;
+-
+ VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
+ void vfio_put_address_space(VFIOAddressSpace *space);
+ bool vfio_devices_all_running_and_saving(VFIOContainer *container);
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d6daaea5d54775221d36bff98590472e0cf25e2
+--- /dev/null
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -0,0 +1,50 @@
++/*
++ * VFIO BASE CONTAINER
++ *
++ * Copyright (C) 2023 Intel Corporation.
++ * Copyright Red Hat, Inc. 2023
++ *
++ * Authors: Yi Liu <yi.l.liu@intel.com>
++ *          Eric Auger <eric.auger@redhat.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef HW_VFIO_VFIO_CONTAINER_BASE_H
++#define HW_VFIO_VFIO_CONTAINER_BASE_H
++
++#include "exec/memory.h"
++
++typedef struct VFIODevice VFIODevice;
++typedef struct VFIOIOMMUOps VFIOIOMMUOps;
++
++typedef struct {
++    unsigned long *bitmap;
++    hwaddr size;
++    hwaddr pages;
++} VFIOBitmap;
++
++/*
++ * This is the base object for vfio container backends
++ */
++typedef struct VFIOContainerBase {
++    const VFIOIOMMUOps *ops;
++} VFIOContainerBase;
++
++struct VFIOIOMMUOps {
++    /* basic feature */
++    int (*dma_map)(VFIOContainerBase *bcontainer,
++                   hwaddr iova, ram_addr_t size,
++                   void *vaddr, bool readonly);
++    int (*dma_unmap)(VFIOContainerBase *bcontainer,
++                     hwaddr iova, ram_addr_t size,
++                     IOMMUTLBEntry *iotlb);
++    int (*attach_device)(const char *name, VFIODevice *vbasedev,
++                         AddressSpace *as, Error **errp);
++    void (*detach_device)(VFIODevice *vbasedev);
++    /* migration feature */
++    int (*set_dirty_page_tracking)(VFIOContainerBase *bcontainer, bool start);
++    int (*query_dirty_bitmap)(VFIOContainerBase *bcontainer, VFIOBitmap *vbmap,
++                              hwaddr iova, hwaddr size);
++};
++#endif /* HW_VFIO_VFIO_CONTAINER_BASE_H */
 -- 
-2.42.0
+2.43.0
 
 
