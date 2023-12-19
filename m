@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F270817E65
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 01:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE82817E86
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 01:09:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFNd4-0004Mz-Rh; Mon, 18 Dec 2023 19:06:34 -0500
+	id 1rFNfv-0005m7-Qf; Mon, 18 Dec 2023 19:09:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNd2-0004MQ-Hq; Mon, 18 Dec 2023 19:06:32 -0500
+ id 1rFNft-0005kW-1S; Mon, 18 Dec 2023 19:09:29 -0500
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNd0-0007tu-J0; Mon, 18 Dec 2023 19:06:32 -0500
+ id 1rFNfr-0008ID-FR; Mon, 18 Dec 2023 19:09:28 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A066E75A4BF;
- Tue, 19 Dec 2023 01:06:28 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id B46F775A4BF;
+ Tue, 19 Dec 2023 01:09:25 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id f64Lk_f6Er3p; Tue, 19 Dec 2023 01:06:26 +0100 (CET)
+ with ESMTP id xDilfp289RKs; Tue, 19 Dec 2023 01:09:23 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id B372875A406; Tue, 19 Dec 2023 01:06:26 +0100 (CET)
+ id CA68375A406; Tue, 19 Dec 2023 01:09:23 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id AEC49756094;
- Tue, 19 Dec 2023 01:06:26 +0100 (CET)
-Date: Tue, 19 Dec 2023 01:06:26 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id C84C9756094;
+ Tue, 19 Dec 2023 01:09:23 +0100 (CET)
+Date: Tue, 19 Dec 2023 01:09:23 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Bernhard Beschow <shentey@gmail.com>
 cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
@@ -41,11 +41,12 @@ cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>, 
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>, 
  qemu-block@nongnu.org
-Subject: Re: [PATCH v2 06/12] exec/ioport: Add portio_list_set_address()
-In-Reply-To: <20231218185114.119736-7-shentey@gmail.com>
-Message-ID: <ec4652f1-f47f-62bc-d0ac-9c709453288f@eik.bme.hu>
+Subject: Re: [PATCH v2 08/12] hw/block/fdc-isa: Implement relocation and
+ toggling for TYPE_ISA_FDC
+In-Reply-To: <20231218185114.119736-9-shentey@gmail.com>
+Message-ID: <42552a96-7db9-50a0-6a4c-76ecae98df35@eik.bme.hu>
 References: <20231218185114.119736-1-shentey@gmail.com>
- <20231218185114.119736-7-shentey@gmail.com>
+ <20231218185114.119736-9-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
@@ -71,33 +72,63 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Mon, 18 Dec 2023, Bernhard Beschow wrote:
-> Some SuperI/O devices such as the VIA south bridges or the PC87312 controller
-> are able to relocate their SuperI/O functions. Add a convenience function for
-> implementing this in the VIA south bridges.
->
-> This convenience function relies on previous simplifications in exec/ioport
-> which avoids some duplicate synchronization of I/O port base addresses. The
-> naming of the function is inspired by its memory_region_set_address() pendant.
->
+> Implement isa_fdc_set_{enabled,iobase} in order to implement relocation and
+> toggling of SuperI/O functions in the VIA south bridges without breaking
+> encapsulation.
+
+You may want to revise these commit messages. What toggling means is only 
+defined in the last patch but I can't think of a better name for it other 
+than spelling out enable/disable. It's probably also not relevant in this 
+commit message to mention VIA south bridges as this is a generic function 
+not specific to that usage only.
+
+Regards,
+BALATON Zoltan
+
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
-> docs/devel/migration.rst |  1 +
-> include/exec/ioport.h    |  2 ++
-> system/ioport.c          | 19 +++++++++++++++++++
-> 3 files changed, 22 insertions(+)
+> include/hw/block/fdc.h |  3 +++
+> hw/block/fdc-isa.c     | 14 ++++++++++++++
+> 2 files changed, 17 insertions(+)
 >
-> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-> index ec55089b25..389fa24bde 100644
-> --- a/docs/devel/migration.rst
-> +++ b/docs/devel/migration.rst
-> @@ -464,6 +464,7 @@ Examples of such memory API functions are:
->   - memory_region_set_enabled()
->   - memory_region_set_address()
->   - memory_region_set_alias_offset()
-
-These added here aren't memory API functions so maybe make them a separate 
-list with some rewording so that this is not specific to memory API but 
-whatever changes memory regions such as memory API or these portio_list 
-functions.
-
+> diff --git a/include/hw/block/fdc.h b/include/hw/block/fdc.h
+> index 35248c0837..c367c5efea 100644
+> --- a/include/hw/block/fdc.h
+> +++ b/include/hw/block/fdc.h
+> @@ -14,6 +14,9 @@ void fdctrl_init_sysbus(qemu_irq irq, hwaddr mmio_base, DriveInfo **fds);
+> void sun4m_fdctrl_init(qemu_irq irq, hwaddr io_base,
+>                        DriveInfo **fds, qemu_irq *fdc_tc);
+>
+> +void isa_fdc_set_iobase(ISADevice *fdc, hwaddr iobase);
+> +void isa_fdc_set_enabled(ISADevice *fdc, bool enabled);
+> +
+> FloppyDriveType isa_fdc_get_drive_type(ISADevice *fdc, int i);
+> int cmos_get_fd_drive_type(FloppyDriveType fd0);
+>
+> diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
+> index b4c92b40b3..c989325de3 100644
+> --- a/hw/block/fdc-isa.c
+> +++ b/hw/block/fdc-isa.c
+> @@ -192,6 +192,20 @@ static Aml *build_fdinfo_aml(int idx, FloppyDriveType type)
+>     return dev;
+> }
+>
+> +void isa_fdc_set_iobase(ISADevice *fdc, hwaddr iobase)
+> +{
+> +    FDCtrlISABus *isa = ISA_FDC(fdc);
+> +
+> +    fdc->ioport_id = iobase;
+> +    isa->iobase = iobase;
+> +    portio_list_set_address(&isa->portio_list, isa->iobase);
+> +}
+> +
+> +void isa_fdc_set_enabled(ISADevice *fdc, bool enabled)
+> +{
+> +    portio_list_set_enabled(&ISA_FDC(fdc)->portio_list, enabled);
+> +}
+> +
+> int cmos_get_fd_drive_type(FloppyDriveType fd0)
+> {
+>     int val;
+>
 
