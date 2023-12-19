@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B98E817E57
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 01:03:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F270817E65
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 01:07:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFNYe-0002XH-8K; Mon, 18 Dec 2023 19:02:00 -0500
+	id 1rFNd4-0004Mz-Rh; Mon, 18 Dec 2023 19:06:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNYY-0002WW-09; Mon, 18 Dec 2023 19:01:55 -0500
+ id 1rFNd2-0004MQ-Hq; Mon, 18 Dec 2023 19:06:32 -0500
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rFNYK-0006wE-Pm; Mon, 18 Dec 2023 19:01:53 -0500
+ id 1rFNd0-0007tu-J0; Mon, 18 Dec 2023 19:06:32 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 17B7375A4BF;
- Tue, 19 Dec 2023 01:01:36 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id A066E75A4BF;
+ Tue, 19 Dec 2023 01:06:28 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id GHhDkfgTMe3p; Tue, 19 Dec 2023 01:01:34 +0100 (CET)
+ with ESMTP id f64Lk_f6Er3p; Tue, 19 Dec 2023 01:06:26 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 2855275A406; Tue, 19 Dec 2023 01:01:34 +0100 (CET)
+ id B372875A406; Tue, 19 Dec 2023 01:06:26 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 26119756094;
- Tue, 19 Dec 2023 01:01:34 +0100 (CET)
-Date: Tue, 19 Dec 2023 01:01:34 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id AEC49756094;
+ Tue, 19 Dec 2023 01:06:26 +0100 (CET)
+Date: Tue, 19 Dec 2023 01:06:26 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Bernhard Beschow <shentey@gmail.com>
 cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
@@ -41,12 +41,11 @@ cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>, 
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>, 
  qemu-block@nongnu.org
-Subject: Re: [PATCH v2 04/12] hw/char/parallel: Free struct ParallelState
- from PortioList
-In-Reply-To: <20231218185114.119736-5-shentey@gmail.com>
-Message-ID: <dbb6af24-9aa0-bf40-38fe-74fec945ab05@eik.bme.hu>
+Subject: Re: [PATCH v2 06/12] exec/ioport: Add portio_list_set_address()
+In-Reply-To: <20231218185114.119736-7-shentey@gmail.com>
+Message-ID: <ec4652f1-f47f-62bc-d0ac-9c709453288f@eik.bme.hu>
 References: <20231218185114.119736-1-shentey@gmail.com>
- <20231218185114.119736-5-shentey@gmail.com>
+ <20231218185114.119736-7-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
@@ -72,72 +71,33 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Mon, 18 Dec 2023, Bernhard Beschow wrote:
-> ParallelState::portio_list isn't used inside ParallelState context but only
-> inside ISAParallelState context, so more it there.
-
-Same comments as for patch 1 otherwise
-
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-
+> Some SuperI/O devices such as the VIA south bridges or the PC87312 controller
+> are able to relocate their SuperI/O functions. Add a convenience function for
+> implementing this in the VIA south bridges.
+>
+> This convenience function relies on previous simplifications in exec/ioport
+> which avoids some duplicate synchronization of I/O port base addresses. The
+> naming of the function is inspired by its memory_region_set_address() pendant.
+>
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
-> include/hw/char/parallel-isa.h | 2 ++
-> include/hw/char/parallel.h     | 2 --
-> hw/char/parallel.c             | 2 +-
-> 3 files changed, 3 insertions(+), 3 deletions(-)
+> docs/devel/migration.rst |  1 +
+> include/exec/ioport.h    |  2 ++
+> system/ioport.c          | 19 +++++++++++++++++++
+> 3 files changed, 22 insertions(+)
 >
-> diff --git a/include/hw/char/parallel-isa.h b/include/hw/char/parallel-isa.h
-> index d24ccecf05..3b783bd08d 100644
-> --- a/include/hw/char/parallel-isa.h
-> +++ b/include/hw/char/parallel-isa.h
-> @@ -12,6 +12,7 @@
->
-> #include "parallel.h"
->
-> +#include "exec/ioport.h"
-> #include "hw/isa/isa.h"
-> #include "qom/object.h"
->
-> @@ -25,6 +26,7 @@ struct ISAParallelState {
->     uint32_t iobase;
->     uint32_t isairq;
->     ParallelState state;
-> +    PortioList portio_list;
-> };
->
-> #endif /* HW_PARALLEL_ISA_H */
-> diff --git a/include/hw/char/parallel.h b/include/hw/char/parallel.h
-> index 7b5a309a03..cfb97cc7cc 100644
-> --- a/include/hw/char/parallel.h
-> +++ b/include/hw/char/parallel.h
-> @@ -1,7 +1,6 @@
-> #ifndef HW_PARALLEL_H
-> #define HW_PARALLEL_H
->
-> -#include "exec/ioport.h"
-> #include "exec/memory.h"
-> #include "hw/isa/isa.h"
-> #include "hw/irq.h"
-> @@ -22,7 +21,6 @@ typedef struct ParallelState {
->     uint32_t last_read_offset; /* For debugging */
->     /* Memory-mapped interface */
->     int it_shift;
-> -    PortioList portio_list;
-> } ParallelState;
->
-> void parallel_hds_isa_init(ISABus *bus, int n);
-> diff --git a/hw/char/parallel.c b/hw/char/parallel.c
-> index 147c900f0d..c1747cbb75 100644
-> --- a/hw/char/parallel.c
-> +++ b/hw/char/parallel.c
-> @@ -532,7 +532,7 @@ static void parallel_isa_realizefn(DeviceState *dev, Error **errp)
->         s->status = dummy;
->     }
->
-> -    isa_register_portio_list(isadev, &s->portio_list, base,
-> +    isa_register_portio_list(isadev, &isa->portio_list, base,
->                              (s->hw_driver
->                               ? &isa_parallel_portio_hw_list[0]
->                               : &isa_parallel_portio_sw_list[0]),
->
+> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+> index ec55089b25..389fa24bde 100644
+> --- a/docs/devel/migration.rst
+> +++ b/docs/devel/migration.rst
+> @@ -464,6 +464,7 @@ Examples of such memory API functions are:
+>   - memory_region_set_enabled()
+>   - memory_region_set_address()
+>   - memory_region_set_alias_offset()
+
+These added here aren't memory API functions so maybe make them a separate 
+list with some rewording so that this is not specific to memory API but 
+whatever changes memory regions such as memory API or these portio_list 
+functions.
+
 
