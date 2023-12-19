@@ -2,67 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA03818971
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 15:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 112BB81898F
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 15:16:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFani-0004cy-O0; Tue, 19 Dec 2023 09:10:26 -0500
+	id 1rFarx-0003je-VD; Tue, 19 Dec 2023 09:14:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFanU-0004aA-Bh
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:10:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFanJ-00053R-TY
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:10:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702995000;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=C/M+fq/M+aW2mQvLAXyCZuqg9Xt/VZvvHXvwXnIgth4=;
- b=edgvgnXFd/2MQhtZadCP7eGLqE1qy5SLYLYXz2knYJ0isFpWOlexL2o6DBXYGf2ugfXXPT
- +CNAZImOfP1vq2jyIK4XInQARUD4ldcPfR+DRACAQ6FCxvpbld/oMqDh/DSWx/DfiV63lR
- oQTaFcYOfLiKR+tgZvsmepun4Sw/QJY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-508-sS7upHjfN1yRC7legS8w8A-1; Tue,
- 19 Dec 2023 09:09:59 -0500
-X-MC-Unique: sS7upHjfN1yRC7legS8w8A-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 036D22818763;
- Tue, 19 Dec 2023 14:09:59 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.175])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2468051D5;
- Tue, 19 Dec 2023 14:09:57 +0000 (UTC)
-Date: Tue, 19 Dec 2023 15:09:56 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH 0/4] virtio-blk: prepare for the multi-queue block layer
-Message-ID: <ZYGkNO0RThjhOPGv@redhat.com>
-References: <20230914140101.1065008-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFars-0003jM-Bv
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:14:45 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rFarp-00077w-V3
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:14:43 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-553a45208ffso801212a12.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 06:14:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1702995280; x=1703600080; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=TZrVQU/xjd9KQVh7NuWIHyvOYXWE/j1hmbmx4pHhV9I=;
+ b=dnOK+kaamu9rM1Q4obd0iLmm5lWROklu3FBOaOs6+X6PM4vAp2iRpRFY8LR/ZNL2FR
+ JtgawlG8oEbkVLlxTdd0JfAzouA5Tmr33k8w/hlySytjZNtUR2/n8IVeBg3KAPmuBv/e
+ /rXi/8FHp9S+zeM+DdTSZSlt2cGLbcJZsXqgXMJqrarGvBDB0sAyJwKNemRF5b3eFr4U
+ 8YRA6lj2qqknZs181kOoYvgBsuhlNLfj8vAoIDeSjkDnbCK4fgRqbIfpiwgjSILEwOpR
+ twlnXIYbIyugwFhrnltu7dzZDGJHwgVeR+3yUhoEJUPTPEDee/fhSamm2qlO/4T7tXgB
+ dERg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1702995280; x=1703600080;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TZrVQU/xjd9KQVh7NuWIHyvOYXWE/j1hmbmx4pHhV9I=;
+ b=ivHfGHZP1yswZ8+UcZxv1feY6FLDIVOLCg42Rr3ejVuKlm1jr8Z4Bjkp/wxJWJngF5
+ m20LqYtWajqETMaVFioVrhz3N5qWlUeENSFSqHCs06ZeocNzoN8uHDGgV+Mjg4uTqX2y
+ TsVjCt30Wcf+GRlzqySFPlrvRtpRQJMSyxwI/KF1QBKkNSxsMKzgLBlXBbzEcDAOs1XR
+ /vy4mx5a/8B5dS81scAK4qTxqL0xyfnl2gsYYoQN3AR78tR7UBwUNiFpZu0UrgSiSgK/
+ Xx9uLrlbasC61GROZ0VNCkxp0ZO53q7I5dZg8Lgpl3KTT2ua0cMj+y1vHn5G5KeO36sT
+ dBRg==
+X-Gm-Message-State: AOJu0YyzNEcqMoOizqVV093yUXe1xb/nzX1RF8NsRCPBRzlPAQAbqSRH
+ qudryB3ScX1jkQVMakUdA2K+vOs9OlGbO/ybyBfxWA==
+X-Google-Smtp-Source: AGHT+IFoIAEbqofqhy4721zESdE0+CFNnJQliL+b/I13sftgzhzrNkoJ6Q+Mhi/PaWdAQPcN0Xxyu+UY1l2GSHt5eBE=
+X-Received: by 2002:a50:c082:0:b0:552:e74b:6412 with SMTP id
+ k2-20020a50c082000000b00552e74b6412mr1850187edf.10.1702995280123; Tue, 19 Dec
+ 2023 06:14:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230914140101.1065008-1-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20231219075320.165227-1-ray.huang@amd.com>
+ <20231219075320.165227-2-ray.huang@amd.com>
+ <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com> <ZYGe4GcFPt0k5PTM@amd.com>
+In-Reply-To: <ZYGe4GcFPt0k5PTM@amd.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 19 Dec 2023 14:14:28 +0000
+Message-ID: <CAFEAcA_=iedJw4BbNHrDALC4mL4g3ZEihsDbLkEzsy-1zAWFWw@mail.gmail.com>
+Subject: Re: [PATCH v6 01/11] linux-headers: Update to kernel headers to add
+ venus capset
+To: Huang Rui <ray.huang@amd.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>, 
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ Gert Wollny <gert.wollny@collabora.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>, 
+ "Stabellini, Stefano" <stefano.stabellini@amd.com>, "Koenig,
+ Christian" <Christian.Koenig@amd.com>, 
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, 
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>, 
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang,
+ Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,28 +110,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 14.09.2023 um 16:00 hat Stefan Hajnoczi geschrieben:
-> The virtio-blk device will soon be able to assign virtqueues to IOThreads,
-> eliminating the single IOThread bottleneck. In order to do that, the I/O code
-> path must support running in multiple threads.
-> 
-> This patch series removes the AioContext lock from the virtio-blk I/O code
-> path, adds thread-safety where it is required, and ensures that Linux AIO and
-> io_uring are available regardless of which thread calls into the block driver.
-> With these changes virtio-blk is ready for the iothread-vq-mapping feature,
-> which will be introduced in the next patch series.
-> 
-> Based-on: 20230913200045.1024233-1-stefanha@redhat.com ("[PATCH v3 0/4] virtio-blk: use blk_io_plug_call() instead of notification BH")
-> Based-on: 20230912231037.826804-1-stefanha@redhat.com ("[PATCH v3 0/5] block-backend: process I/O in the current AioContext")
-> 
-> Stefan Hajnoczi (4):
->   block/file-posix: set up Linux AIO and io_uring in the current thread
->   virtio-blk: add lock to protect s->rq
->   virtio-blk: don't lock AioContext in the completion code path
->   virtio-blk: don't lock AioContext in the submission code path
+On Tue, 19 Dec 2023 at 13:49, Huang Rui <ray.huang@amd.com> wrote:
+>
+> On Tue, Dec 19, 2023 at 08:20:22PM +0800, Akihiko Odaki wrote:
+> > On 2023/12/19 16:53, Huang Rui wrote:
+> > > Sync up kernel headers to update venus macro till they are merged into
+> > > mainline.
+> >
+> > Thanks for sorting things out with the kernel and spec.
+> >
+> > >
+> > > Signed-off-by: Huang Rui <ray.huang@amd.com>
+> > > ---
+> > >
+> > > Changes in v6:
+> > > - Venus capset is applied in kernel, so update it in qemu for future use.
+> > >
+> > > https://lore.kernel.org/lkml/b79dcf75-c9e8-490e-644f-3b97d95f7397@collabora.com/
+> > > https://cgit.freedesktop.org/drm-misc/commit/?id=216d86b9a430f3280e5b631c51e6fd1a7774cfa0
+> > Please include the link to the upstream commit in the commit message.
+>
+> So far, it's in drm maintainers' branch not in kernel mainline yet. Do I
+> need to wait it to be merged into kernel mainline?
 
-Thanks, applied to the block branch.
+For an RFC patchset, no. For patches to be merged into QEMU
+the headers change must be in the kernel mainline, and the
+QEMU commit that updates our copy of the headers must be a
+full-sync done with scripts/update-linux-headers.sh, not a
+manual edit.
 
-Kevin
-
+thanks
+-- PMM
 
