@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D29818A0F
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 15:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA3C818A24
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 15:37:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFb9C-0006pS-Kw; Tue, 19 Dec 2023 09:32:38 -0500
+	id 1rFbDC-0000LX-5B; Tue, 19 Dec 2023 09:36:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rFb97-0006pD-6r
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:32:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rFbDA-0000LM-Lm
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:36:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rFb94-0001qt-Tj
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:32:32 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rFbD9-0002wD-4Q
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 09:36:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702996347;
+ s=mimecast20190719; t=1702996601;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=pTrQ/+pnsueCKSsoG4BNUCIVeEpWZVlmEuUFOQXuLzo=;
- b=C7vgxH/vVHH8MW391no5XiDWgD6e8aC5JGUb2wePcSAGyn5g/pOsdVtiV/PIdaHE52lCyY
- at438qwYvgD4hL3m0SJvfgS0YuVtj6UYAkB5LbIOeb1v3C4uZz3Uem7VbNWkNX7aJ4iyAn
- 5r0j43+JJLLmMWko7AiYTRh5LqmttL8=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qPDP3v3xfFn6Dv+TZsgwkZwhJP+S8y+bclKo7Dv6sdQ=;
+ b=IATKb7GABRTpVmeInSxMBi6rCucNlXR0H7+a2hupTxv/+ZckB3Qt7JJQLstyxNYFJV+WQU
+ AwQ6j4XKCgvldxOz4UEp/CZsPUmNit05ycYLASDtm3Fl9NXoQhBnJ7bncI5iarq6TkYRNp
+ V6InCZIlZSLPZlnccnZcjgtfPXmA6q0=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-7lN3Atb7N6CDbrvbpyjQiw-1; Tue, 19 Dec 2023 09:32:21 -0500
-X-MC-Unique: 7lN3Atb7N6CDbrvbpyjQiw-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4261cc37508so45404021cf.2
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 06:32:20 -0800 (PST)
+ us-mta-230-0Kf2CJ6VOfKysSYuFHnK7A-1; Tue, 19 Dec 2023 09:36:38 -0500
+X-MC-Unique: 0Kf2CJ6VOfKysSYuFHnK7A-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-77f4fd94d77so694840385a.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 06:36:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1702996340; x=1703601140;
+ d=1e100.net; s=20230601; t=1702996598; x=1703601398;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pTrQ/+pnsueCKSsoG4BNUCIVeEpWZVlmEuUFOQXuLzo=;
- b=IFIU8JL/9NermI2QMlhmER9Xzyt35SLJZAQceKGvOpHlK7b6op/EXxgD65/MwNS+wL
- EGbFtD64E4SXH6r7iEIK9Pjquv+kp27Sixyf7wZAFxaoixqs9ENUw/Cd/W310gTtBnME
- edWbpoEhKhWOjXpW3CmwW+YOkqgC9ei8HD7pWP1fdma9e1bggdY2VssRF/jIyYdAW/rE
- HubkF82c8EaqZkp6iltFk/vztJrZh5IeM6WoNsISAgNhmovwWviFdyqU92KyToSoaHHJ
- zTGLp4tCAonBwdADZBOoXLU+qo6ubZ/JA8fZ13qgtrlTTQRB3PloOd+uXGHjZmmDT0qa
- 3dkQ==
-X-Gm-Message-State: AOJu0YxHtCEa+67QJFEAfAt97BBeafkYdqjMIamCqX5lQnFZmAnJiHam
- lcmNLRiKBI4n8MkocGbc5pHfkochW9HPbDPSQor09P7PADH+/Hf3m9XEyXR4Gzi16DtPtiGWaWy
- RXpMcW2cTH1jkAbc=
-X-Received: by 2002:ad4:5685:0:b0:67a:db18:10e2 with SMTP id
- bd5-20020ad45685000000b0067adb1810e2mr16325695qvb.37.1702996340306; 
- Tue, 19 Dec 2023 06:32:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEvtblUlQXQwAK5tLaG90q/1rhTrFg+B3w7SRfEJ4MywaP5m/a8KBGcLVe4b21xTi/53kt7LA==
-X-Received: by 2002:ad4:5685:0:b0:67a:db18:10e2 with SMTP id
- bd5-20020ad45685000000b0067adb1810e2mr16325688qvb.37.1702996340078; 
- Tue, 19 Dec 2023 06:32:20 -0800 (PST)
+ bh=qPDP3v3xfFn6Dv+TZsgwkZwhJP+S8y+bclKo7Dv6sdQ=;
+ b=aO1oUWl7dm5at8oC1yoRgvZYIqynjvgC4aTEOAqLa5gaIdDU2jTRMsLA53awp+dIlR
+ o1I7YJntRQksdZm+BkMfEK1I7Tcdsr0o7KDA0faoPYup3gbmSvnnZvSvBk5QNmiV3DAl
+ aCViiUNSwvZ/8EMRdoSgyptIgWFlRjPEfdpOgPZo7H7xB0ygbzTs4RhWB+/SOXOdWg90
+ uCdSLl0U7RgOpyy8hkiY+us35tinrpm3VfuF2f8C73NFxgnp2BTaYpYYcx4BPd4d7FAx
+ xu+MqghyxLHG97n+QFOZcGQz0b31aPxuyRamn9B6Zgdo0sfy+lCNIHMCacQosC2juT02
+ Okyw==
+X-Gm-Message-State: AOJu0YwbK7Wfz7SIPRBqgOeGE1OWCGTfUe6IRe/GNaiCghggBzlkAL4o
+ lXJBc8IY1U3epBJG+wV3uXsAVMHnT2AyjJxJVVjf9GlWKCZZZ6TW+HW5rC9ZI6sBdCz+YWsV4jj
+ nueltDt2rSJB4D8U=
+X-Received: by 2002:a05:620a:22c9:b0:773:a9f7:eaf1 with SMTP id
+ o9-20020a05620a22c900b00773a9f7eaf1mr18505163qki.21.1702996598523; 
+ Tue, 19 Dec 2023 06:36:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEsQH9dYjZbAlDGMm308vm/FnVW5eq4tBeJU1DyLbanAWrZhVOBZxDnTVFGH4xjP5nk92bGZA==
+X-Received: by 2002:a05:620a:22c9:b0:773:a9f7:eaf1 with SMTP id
+ o9-20020a05620a22c900b00773a9f7eaf1mr18505149qki.21.1702996598286; 
+ Tue, 19 Dec 2023 06:36:38 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-45.web.vodafone.de.
  [109.43.177.45]) by smtp.gmail.com with ESMTPSA id
- i11-20020ad44bab000000b0067f626a5b2esm420677qvw.74.2023.12.19.06.32.17
+ z28-20020a05620a101c00b0077d8dbfd1c3sm9110902qkj.79.2023.12.19.06.36.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Dec 2023 06:32:19 -0800 (PST)
-Message-ID: <16f68c89-dcf4-4da7-bfa1-c64db0754bca@redhat.com>
-Date: Tue, 19 Dec 2023 15:32:16 +0100
+ Tue, 19 Dec 2023 06:36:38 -0800 (PST)
+Message-ID: <260ff019-3bd9-49b1-a364-d0b713372713@redhat.com>
+Date: Tue, 19 Dec 2023 15:36:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/5] tests/qtest: Add a helper to query the QEMU version
+Subject: Re: [PATCH v1 2/5] tests/qtest/migration: Add infrastructure to skip
+ tests on older QEMUs
 Content-Language: en-US
 To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
@@ -74,7 +75,7 @@ Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
 References: <20231207155809.25673-1-farosas@suse.de>
- <20231207155809.25673-2-farosas@suse.de>
+ <20231207155809.25673-3-farosas@suse.de> <87zfykybyc.fsf@suse.de>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -118,17 +119,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231207155809.25673-2-farosas@suse.de>
+In-Reply-To: <87zfykybyc.fsf@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -146,25 +147,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07/12/2023 16.58, Fabiano Rosas wrote:
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->   tests/qtest/libqtest.c | 24 ++++++++++++++++++++++++
->   tests/qtest/libqtest.h | 10 ++++++++++
->   2 files changed, 34 insertions(+)
+On 08/12/2023 16.02, Fabiano Rosas wrote:
+> Fabiano Rosas <farosas@suse.de> writes:
 > 
-> diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-> index f33a210861..7cee68a834 100644
-> --- a/tests/qtest/libqtest.c
-> +++ b/tests/qtest/libqtest.c
-> @@ -337,6 +337,30 @@ void qtest_remove_abrt_handler(void *data)
->       }
->   }
->   
-> +void qtest_query_version(QTestState *who, int *major, int *minor, int *micro)
+>> We can run the migration tests with two different QEMU binaries to
+>> test migration compatibility between QEMU versions. This means we'll
+>> be running the tests with an older QEMU in either source or
+>> destination.
+>>
+>> We need to avoid trying to test functionality that is unknown to the
+>> older QEMU. This could mean new features, bug fixes, error message
+>> changes, QEMU command line changes, migration API changes, etc.
+>>
+>> Add a 'since' argument to the tests that inform when the functionality
+>> that is being test has been added to QEMU so we can skip the test on
+>> older versions.
+>>
+>> Also add a version comparison function so we can adapt test code
+>> depending on the QEMU binary version being used.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>   tests/qtest/migration-helpers.c | 11 +++++++++++
+>>   tests/qtest/migration-helpers.h |  1 +
+>>   tests/qtest/migration-test.c    | 28 ++++++++++++++++++++++++++++
+>>   3 files changed, 40 insertions(+)
+>>
+>> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+>> index 24fb7b3525..d21f5cd8c0 100644
+>> --- a/tests/qtest/migration-helpers.c
+>> +++ b/tests/qtest/migration-helpers.c
+>> @@ -292,3 +292,14 @@ char *resolve_machine_version(const char *alias, const char *var1,
+>>   
+>>       return find_common_machine_version(machine_name, var1, var2);
+>>   }
+>> +
+>> +int migration_vercmp(QTestState *who, const char *tgt_version)
+>> +{
+>> +    int major, minor, micro;
+>> +    g_autofree char *version = NULL;
+>> +
+>> +    qtest_query_version(who, &major, &minor, &micro);
+>> +    version = g_strdup_printf("%d.%d.%d", major, minor, micro);
+> 
+> I just noticed this is not right. I need to increment the minor when
+> there's a micro to account for the versions in between releases. The
+> whole point of this series is to test a X.Y.0 release vs. a X.Y.Z
+> development branch.
 
-I'd prefer "qts" instead of "who" ... but that's bikeshedding, so:
+Also this looks like it cannot deal with two-digit minor versions ... we 
+still have machine types for QEMU 2.12.0 around ... do we care here?
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+  Thomas
+
 
 
