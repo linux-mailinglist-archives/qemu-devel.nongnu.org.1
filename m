@@ -2,79 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1CB818283
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 08:45:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 455B98182CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Dec 2023 08:59:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFUlT-0005PS-9u; Tue, 19 Dec 2023 02:43:43 -0500
+	id 1rFV0U-0005fU-DJ; Tue, 19 Dec 2023 02:59:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFUlR-0005P5-VD
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 02:43:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rFV0R-0005f8-Qt
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 02:59:11 -0500
+Received: from mail-dm6nam04on2041.outbound.protection.outlook.com
+ ([40.107.102.41] helo=NAM04-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFUlP-0008Mm-Pt
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 02:43:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1702971817;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1BQ3vPTm/FhEek/HD2X3vWKjVSt5DMIxRYkMxJUkbjg=;
- b=SbAMZo69wyRV7o+HiWTl9Ty0o18pHSO2CXjGxylJxP3sq5KmReF8xZIZa+pzR3th3Q6GaO
- tAQtvx1uVvPVw1TskbbCAfQijJ+PCP+OGmvtK8oMcgcUJ0waZAhJMwoRjUj7pu5OcipQ3p
- ZMtXng5vwVtHQC7QxZ/JP2h+vyUYd4M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-426-3gfWJVJFM2OuV5WgpkP9NQ-1; Tue, 19 Dec 2023 02:43:35 -0500
-X-MC-Unique: 3gfWJVJFM2OuV5WgpkP9NQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C9D2F85A59D;
- Tue, 19 Dec 2023 07:43:34 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 84D981121306;
- Tue, 19 Dec 2023 07:43:34 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7C81621E6920; Tue, 19 Dec 2023 08:43:33 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Kevin Wolf <kwolf@redhat.com>,  qemu-devel@nongnu.org,  Michal Privoznik
- <mprivozn@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Eduardo
- Habkost <eduardo@habkost.net>,  qemu-block@nongnu.org,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Eric Blake <eblake@redhat.com>,  "Michael S.
- Tsirkin" <mst@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,
- aliang@redhat.com,  qinwang@redhat.com
-Subject: Re: [PATCH v2 1/2] qdev: add IOThreadVirtQueueMappingList property
- type
-In-Reply-To: <20231211211502.GA431872@fedora> (Stefan Hajnoczi's message of
- "Mon, 11 Dec 2023 16:15:02 -0500")
-References: <20230918161604.1400051-1-stefanha@redhat.com>
- <20230918161604.1400051-2-stefanha@redhat.com>
- <ZXcVCMU7hYZ6jhp3@redhat.com> <87msugah6x.fsf@pond.sub.org>
- <20231211211502.GA431872@fedora>
-Date: Tue, 19 Dec 2023 08:43:33 +0100
-Message-ID: <87zfy6myca.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1rFV0P-0002nc-Hr
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 02:59:11 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=m4jjzSp5CORZxOiLFa7sgcHfUSZ00JRpONjH1wadXk1rvsAb6MWHPAIOAqeB8TBXzoYElRkDzaeORhs9Fx7/XanQcP56h426YlK0fp8iFACHbxh810sCaMBhAC0oPbEU3qWTJGNHM9YK4Uk+oYooKDEQn8C10EKVoXhxoDDI00RoL9Jm3MPK3v7azCU+mlzSZm6HE+Py/+DPopk/eMc0D8elbrhUDuUpbovTNtzHS6YyOVU3EpPcGZr/LP4LCjU93yWPJtPutMIT0Nsccemkquj7t1S25Rva0/ydSMgv6ndI2j8UXWibxUVs+PK0hlZkzmFJ/1Knu/TxvZVk4ES1ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZEpDTPDC3Kfcz8yPuGr2A70VZPsz3Bi/fF3kLhNqez4=;
+ b=CZoYqZxtADrWs/Vw3l8LPo07M5OmxIlRLmKCD3pn4hsnj3M5f3vbCBmi2Jz7PfDNuYJor4RI1AVIZF5cFSWyZqKY3dn7VcBegW1zyK3031SJt2464r8ZPiGz4tEBcHtB7CSFj9nTgTLVqsmWqFgiWbb05FQcMEnML3Gf4FY9wFYOV2ihlBzrLZbYsz+8jS4TEdQ6xUhRm+1QOWyVJpmwcU8t7poM7GhAmsPtX0hX5DARfatJ/a9XFUMZiwi1eszEOT4sTRDRR0RJJdWD426TcOvoARTWTWOkKnuj1moEtt09Oq6P7qxZfBoFy6wFppmnb6YFtByh3FW1ASR//m7WKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=daynix.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZEpDTPDC3Kfcz8yPuGr2A70VZPsz3Bi/fF3kLhNqez4=;
+ b=eO3aka846iI8bYCGSmvBBWS8vWJaColZ5xgN352HWxtRJTMXasKSudbTAeyZKsSel+Cx8SUmrJ6sjuLmIsc1OGSlETRHgxFuhJfuMzMYQPJl4Zwu4tlwO65328Du6sVgILSxHlI7phv67wWeS+TdiHNosZ1xC1rAs6UHfGShvFc=
+Received: from MW3PR06CA0016.namprd06.prod.outlook.com (2603:10b6:303:2a::21)
+ by SJ0PR12MB8165.namprd12.prod.outlook.com (2603:10b6:a03:4e4::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.37; Tue, 19 Dec
+ 2023 07:54:03 +0000
+Received: from CO1PEPF000044FB.namprd21.prod.outlook.com
+ (2603:10b6:303:2a:cafe::66) by MW3PR06CA0016.outlook.office365.com
+ (2603:10b6:303:2a::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.38 via Frontend
+ Transport; Tue, 19 Dec 2023 07:54:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044FB.mail.protection.outlook.com (10.167.241.201) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7113.8 via Frontend Transport; Tue, 19 Dec 2023 07:54:03 +0000
+Received: from hr-amd.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Tue, 19 Dec
+ 2023 01:53:41 -0600
+From: Huang Rui <ray.huang@amd.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Gerd Hoffmann
+ <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Stefano
+ Stabellini" <sstabellini@kernel.org>, Anthony PERARD
+ <anthony.perard@citrix.com>, Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>, Robert Beckett
+ <bob.beckett@collabora.com>, Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?q?Alex=20Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, <qemu-devel@nongnu.org>
+CC: <xen-devel@lists.xenproject.org>, Gurchetan Singh
+ <gurchetansingh@chromium.org>, <ernunes@redhat.com>, Alyssa Ross
+ <hi@alyssa.is>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Stefano Stabellini
+ <stefano.stabellini@amd.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
+ <christian.koenig@amd.com>, Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>, "Honglei
+ Huang" <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>, "Chen
+ Jiqian" <Jiqian.Chen@amd.com>, Huang Rui <ray.huang@amd.com>
+Subject: [PATCH v6 00/11] Support blob memory and venus on qemu
+Date: Tue, 19 Dec 2023 15:53:09 +0800
+Message-ID: <20231219075320.165227-1-ray.huang@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044FB:EE_|SJ0PR12MB8165:EE_
+X-MS-Office365-Filtering-Correlation-Id: b58abd96-5405-4ae2-2027-08dc0067ab28
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Twi+h+gqFA9D1QnLqZxF9JvJ1kGp5fzvryg/sTF1XZlkQ1DUggu3WnkkrEIiL+YnKABEC/aI4nYfk/pUYcswGmO4P4b9T8ST/fPPWHcXb4c2mvvNrE6Yb/B/+1s8uXp95XMi2fH7K7Lmk56A9FKB1GfVUd9imSPZe6vxLlAzQp/5IVc+I1ylQ28anKALEcGsDfHPB7KVgInFUFxqhj5++oSz9byn5eYR7exYn+2+Kv2XC9No+WtVflEjxk8zPXABMOcVT24BIe+M6MW4b4VYEo9wfWbXi2vHNxgX3l7XFrePG+Zd/dH0/hIWOoGg3E8gTldQNQ8KmSQYASg0ZvpcZUQN+66lIbm3QahJJ5gFvOGnd/XCDqXX5EHFUVBzUFf6/219eEZaNlTsBiKcDAYyS4u0N9Fzxx+XXM6TE7wKahyHKwzQmfrFzxQ/gIPct0Hfoz3YZ7GqYd+EmlZqvT9aY6347d3+TNLe96RMl1mw+V272PDG5hRlxp1wKuFi/p2pOSIXn+Pb14H0KR29VMZSbQN12PXRna7G4P8fF/Zc4nfP89WelzZVTzJ6vwKXq0A+pMVDMRTI8eEiLy1/q26eRd9CnfYWDgme1YZIkOlZvFZXps1ubZPNpRWs1OvrkgzfL34NluUFlZY86rapy16uO5L5mR2I1XkGqEY3PXOpvJnOzy5SJcISRNSWXgzFsu58TXuQZCTEfCl7W2+M67nVuGJa9QbprHTcm8wbIGrnKi8AMbeNjUPnqpOC6biZTRncYHo2gx3N/n1tg8aFi09UgLxZhHfBp40qqQICrWmrs/i1d+i8+cgVzq+RgsJ1Zebb
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(376002)(346002)(136003)(39860400002)(396003)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(82310400011)(46966006)(36840700001)(40470700004)(40480700001)(966005)(70206006)(478600001)(2616005)(1076003)(54906003)(426003)(336012)(6666004)(83380400001)(316002)(70586007)(110136005)(5660300002)(8676002)(7696005)(47076005)(8936002)(4326008)(26005)(36860700001)(16526019)(40460700003)(81166007)(66899024)(2906002)(356005)(7416002)(82740400003)(921008)(86362001)(41300700001)(36756003)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2023 07:54:03.1370 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b58abd96-5405-4ae2-2027-08dc0067ab28
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044FB.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8165
+Received-SPF: softfail client-ip=40.107.102.41; envelope-from=Ray.Huang@amd.com;
+ helo=NAM04-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.083,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,181 +132,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan Hajnoczi <stefanha@redhat.com> writes:
+Hi all,
 
-> On Mon, Dec 11, 2023 at 04:32:06PM +0100, Markus Armbruster wrote:
->> Kevin Wolf <kwolf@redhat.com> writes:
->> 
->> > Am 18.09.2023 um 18:16 hat Stefan Hajnoczi geschrieben:
->> >> virtio-blk and virtio-scsi devices will need a way to specify the
->> >> mapping between IOThreads and virtqueues. At the moment all virtqueues
->> >> are assigned to a single IOThread or the main loop. This single thread
->> >> can be a CPU bottleneck, so it is necessary to allow finer-grained
->> >> assignment to spread the load.
->> >> 
->> >> Introduce DEFINE_PROP_IOTHREAD_VQ_MAPPING_LIST() so devices can take a
->> >> parameter that maps virtqueues to IOThreads. The command-line syntax for
->> >> this new property is as follows:
->> >> 
->> >>   --device '{"driver":"foo","iothread-vq-mapping":[{"iothread":"iothread0","vqs":[0,1,2]},...]}'
->> >> 
->> >> IOThreads are specified by name and virtqueues are specified by 0-based
->> >> index.
->> >> 
->> >> It will be common to simply assign virtqueues round-robin across a set
->> >> of IOThreads. A convenient syntax that does not require specifying
->> >> individual virtqueue indices is available:
->> >> 
->> >>   --device '{"driver":"foo","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"},...]}'
->> >> 
->> >> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->> >
->> > When testing this, Qing Wang noticed that "info qtree" crashes. This is
->> > because the string output visitor doesn't support structs. I suppose
->> > IOThreadVirtQueueMapping is the first struct type that is used in a qdev
->> > property type.
->> >
->> > So we'll probably have to add some kind of struct support to the string
->> > output visitor before we can apply this. Even if it's as stupid as just
->> > printing "<struct IOThreadVirtQueueMapping>" without actually displaying
->> > the value.
->> 
->> The string visitors have been nothing but trouble.
->> 
->> For input, we can now use keyval_parse() and the QObject input visitor
->> instead.  Comes with restrictions, but I'd argue it's a more solid base
->> than the string input visitor.
->> 
->> Perhaps we can do something similar for output: create a suitable
->> formatter for use it with the QObject output visitor, replacing the
->> string output visitor.
->
-> I sent an initial patch that just shows "<omitted>" but would like to
-> work on a proper solution with your input.
->
-> From what I've seen StringOutputVisitor is used in several places in
-> QEMU. "info qtree" calls it through object_property_print() to print
-> individual qdev properties. I don't understand the requirements of the
-> other callers, but object_property_print() wants to return a single
-> string without newlines.
+Sorry to late for V6, I was occupied by other stuff last two months, and
+right now resume the submission.
 
-string_output_visitor_new():
+Antonio Caggiano made the venus with QEMU on KVM platform last
+September[1]. This series are inherited from his original work to support
+the features of context init, hostmem, resource uuid, and blob resources
+for venus.
+At March of this year, we sent out the V1 version[2] for the review. But
+those series are included both xen and virtio gpu. Right now, we would like
+to divide into two parts, one is to continue the Antonio's work to upstream
+virtio-gpu support for blob memory and venus, and another is to upstream
+xen specific patches. This series is focusing on virtio-gpu, so we are
+marking as V4 version here to continue Antonio's patches[1]. And we will
+send xen specific patches separately, because they are hypervisor specific.
+Besides of QEMU, these supports also included virglrenderer[3][4] and
+mesa[5][6] as well. Right now, virglrenderer and mesa parts are all
+accepted by upstream. In this qemu version, we try to address the concerns
+around not proper cleanup during blob resource unmap and unref. Appreciate
+it if you have any commments.
 
-* hmp_info_migrate(): format a list of integers, then print it like
+[1] https://lore.kernel.org/qemu-devel/20220926142422.22325-1-antonio.caggiano@collabora.com/
+[2] V1: https://lore.kernel.org/qemu-devel/20230312092244.451465-1-ray.huang@amd.com
+[3] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1068
+[4] https://gitlab.freedesktop.org/virgl/virglrenderer/-/merge_requests/1180
+[5] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/22108
+[6] https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/23680
 
-        monitor_printf(mon, "postcopy vcpu blocktime: %s\n", str);
+Please note the first 4 patches 1 -> 4 are inlcuded in these series because
+the series depends on them and not because we want them to be reviewed
+since they are already in the process of review through the "rutabaga_gfx +
+gfxstream" series.
+- https://lore.kernel.org/qemu-devel/20230829003629.410-1-gurchetansingh@chromium.org/
 
-  One element per vCPU; can produce a long line.
+V4: https://lore.kernel.org/qemu-devel/20230831093252.2461282-1-ray.huang@amd.com
+V5: https://lore.kernel.org/qemu-devel/20230915111130.24064-1-ray.huang@amd.com
 
-* netfilter_print_info(): format the property values of a
-  NetFilterState, then print each like
+Changes from V5 to V6
 
-        monitor_printf(mon, ",%s=%s", prop->name, str);
+- Move macros configurations under virgl.found() and rename
+  HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS.
 
-* object_property_print(): format a property value of an object, return
-  the string.
+- Handle the case while context_init is disabled.
 
-  Function is misnamed.  object_property_format() or
-  object_property_to_string() would be better.
+- Enable context_init by default.
 
-  Just one caller: qdev_print_props(), helper for hmp_info_qtree().
-  Prints the string like
+- Move virtio_gpu_virgl_resource_unmap() into
+  virgl_cmd_resource_unmap_blob().
 
-        qdev_printf("%s = %s\n", props->name,
-                    *value ? value : "<null>");
+- Introduce new struct virgl_gpu_resource to store virgl specific members.
 
-  where qdev_printf() is a macro wrapping monitor_printf().
+- Remove erro handling of g_new0, because glib will abort() on OOM.
 
-  This one passes human=true, unlike the others.  More on that below.
+- Set resource uuid as option.
 
-* hmp_info_memdev(): format a list of integers, then print it like
+- Implement optional subsection of vmstate_virtio_gpu_resource_uuid_state
+  for virtio live migration.
 
-        monitor_printf(mon, "  policy: %s\n",
-                       HostMemPolicy_str(m->value->policy));
+- Use g_int_hash/g_int_equal instead of the default
 
-  One element per "host node", whatever that may be; might produce a
-  long line.
+- Add scanout_blob function for virtio-gpu-virgl
 
-* Tests; not relevant here.
+- Resolve the memory leak on virtio-gpu-virgl
 
-hmp_info_migrate() and hmp_info_memdev() use the visitor as a (somewhat
-cumbersome) helper for printing uint32List and uint16List, respectively.
-Could do without.
+- Remove the unstable API flags check because virglrenderer is already 1.0
 
-The other two display all properties in HMP.  Both kind of assume the
-string visitor produces no newlines.  I think we could instead use the
-QObject output visitor, then format the QObject in human-readable form.
-Might be less efficient, because we create a temporary QObject.  Perhaps
-factor out a single helper first.
+- Squash the render server flag support into "Initialize Venus"
 
-string_input_visitor_new(), for good measure:
+Changes from V4 (virtio gpu V4) to V5
 
-* hmp_migrate_set_parameter(): parse an uint8_t, uint32, size_t, bool,
-  str, or QAPI enum from a string.
+- Inverted patch 5 and 6 because we should configure
+  HAVE_VIRGL_CONTEXT_INIT firstly.
 
-* object_property_parse(): parse a property value from a string, and
-  assign it to the property.
+- Validate owner of memory region to avoid slowing down DMA.
 
-  Calling this object_property_set_from_string() would be better.
+- Use memory_region_init_ram_ptr() instead of
+  memory_region_init_ram_device_ptr().
 
-  Callers:
+- Adjust sequence to allocate gpu resource before virglrender resource
+  creation
 
-  - object_apply_global_props(): applying compatibility properties
-    (defined in C) and defauls set with -global (given by user).
+- Add virtio migration handling for uuid.
 
-  - object_set_propv(): helper for convenience functions to set multiple
-    properties in C.
+- Send kernel patch to define VIRTIO_GPU_CAPSET_VENUS.
+  https://lore.kernel.org/lkml/20230915105918.3763061-1-ray.huang@amd.com/
 
-  - hmp_qom_set(): set the property value when not JSON (-j is off).
+- Add meson check to make sure unstable APIs defined from 0.9.0.
 
-  - object_parse_property_opt(), for accelerator_set_property(), which
-    processes the argument of -accel.
+Changes from V1 to V2 (virtio gpu V4)
 
-  - x86_cpu_apply_props() and x86_cpu_apply_version_props(): apply
-    properties defined in C.
+- Remove unused #include "hw/virtio/virtio-iommu.h"
 
-  The property settings defined in C could just as well use QObject
-  input visitor instead.  Might be less efficient, because we create a
-  temporary QObject.
+- Add a local function, called virgl_resource_destroy(), that is used
+  to release a vgpu resource on error paths and in resource_unref.
 
-  The property settings that come from the user are ABI.
+- Remove virtio_gpu_virgl_resource_unmap from
+  virtio_gpu_cleanup_mapping(),
+  since this function won't be called on blob resources and also because
+  blob resources are unmapped via virgl_cmd_resource_unmap_blob().
 
-  Reminder: supports only scalars and lists of small integers.
-  Supporting structured values containing strings would involve creating
-  syntax that's basically reinventing JSON.
+- In virgl_cmd_resource_create_blob(), do proper cleanup in error paths
+  and move QTAILQ_INSERT_HEAD(&g->reslist, res, next) after the resource
+  has been fully initialized.
 
-  I think qom-set demonstrates how to support structured values: just
-  use JSON.
+- Memory region has a different life-cycle from virtio gpu resources
+  i.e. cannot be released synchronously along with the vgpu resource.
+  So, here the field "region" was changed to a pointer and is allocated
+  dynamically when the blob is mapped.
+  Also, since the pointer can be used to indicate whether the blob
+  is mapped, the explicite field "mapped" was removed.
 
-> QObjectOutputVisitor produces a QObject. That could be formatted as
-> JSON using qobject_to_json_pretty()?
->
-> The pretty JSON would contain newlines and existing callers such as
-> "info qtree" may need to scan the output and insert indentation.
+- In virgl_cmd_resource_map_blob(), add check on the value of
+  res->region, to prevent beeing called twice on the same resource.
 
-With pretty=false, the JSON formatter produces a string without
-newlines.  With pretty=true, it adds newlines and indentation.
+- Add a patch to enable automatic deallocation of memory regions to resolve
+  use-after-free memory corruption with a reference.
 
-Instead of scanning the formatted string to change its indentation, we
-could perhaps pass indentation instructions to the JSON formatter.
+References
 
-> The goal would be to keep the output unchanged as far as possible and to
-> emit JSON for structs and lists.
+Demo with Venus:
+- https://static.sched.com/hosted_files/xen2023/3f/xen_summit_2023_virtgpu_demo.mp4
+QEMU repository:
+- https://gitlab.freedesktop.org/rui/qemu-xen/-/commits/upstream-for-virtio-gpu
 
-That's basically JSON, except we print 'str' values without quotes and
-escapes (resulting in ambiguity when they contain {[]}, and even more
-fun when they contain control characters), plus a few more largely
-gratuitous differences.
+Thanks,
+Ray
 
-With human=true (advertized as "a bit easier for humans to read"), we
-get strings with quotes (still no escapes), and a tweaked set of
-gratuitous differences.
+Antonio Caggiano (4):
+  virtio-gpu: Handle resource blob commands
+  virtio-gpu: Resource UUID
+  virtio-gpu: Support Venus capset
+  virtio-gpu: Initialize Venus
 
-> What do you think about this approach?
+Dmitry Osipenko (1):
+  virtio-gpu: Don't require udmabuf when blobs and virgl are enabled
 
-Format as JSON and call it a day?
+Huang Rui (4):
+  linux-headers: Update to kernel headers to add venus capset
+  virtio-gpu: Configure new feature flag context_create_with_flags for
+    virglrenderer
+  virtio-gpu: Support context init feature with virglrenderer
+  virtio-gpu: Introduce virgl_gpu_resource structure
 
-I figure the only thing of value we'd lose is displaying integers both
-decimal and hex.  In some, but not all places.
+Robert Beckett (1):
+  virtio-gpu: make blob scanout use dmabuf fd
+
+Xenia Ragiadakou (1):
+  softmmu/memory: enable automatic deallocation of memory regions
+
+ hw/display/trace-events                     |   1 +
+ hw/display/virtio-gpu-base.c                |   4 +
+ hw/display/virtio-gpu-virgl.c               | 495 ++++++++++++++++++--
+ hw/display/virtio-gpu.c                     | 132 +++++-
+ include/hw/virtio/virtio-gpu.h              |  13 +
+ include/standard-headers/linux/virtio_gpu.h |   2 +
+ meson.build                                 |   8 +
+ system/memory.c                             |   2 +
+ 8 files changed, 627 insertions(+), 30 deletions(-)
+
+-- 
+2.25.1
 
 
