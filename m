@@ -2,111 +2,128 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDEE819D9E
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 12:04:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C627819EBD
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 13:13:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFuMN-0001im-6G; Wed, 20 Dec 2023 06:03:31 -0500
+	id 1rFvQO-0004Sx-4x; Wed, 20 Dec 2023 07:11:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <0102018c86e4f17c-5e356421-08c8-4d3a-a149-5897437892ac-000000@eu-west-1.amazonses.com>)
- id 1rFuMI-0001hX-Ov; Wed, 20 Dec 2023 06:03:26 -0500
-Received: from a7-20.smtp-out.eu-west-1.amazonses.com ([54.240.7.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
- (Exim 4.90_1) (envelope-from
- <0102018c86e4f17c-5e356421-08c8-4d3a-a149-5897437892ac-000000@eu-west-1.amazonses.com>)
- id 1rFuMG-0003r4-OP; Wed, 20 Dec 2023 06:03:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
- s=we7ia3fxgawvchs62qr3tqnz7sf6mlor; d=ipxe.org; t=1703070200;
- h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
- bh=/S5IxSNo/STUwHaa992Wg78ISppaaE8THtFotJP01zY=;
- b=kQ9QatNIt61YAUcXQDpNuYM4aPRSiZUtxBq1CQUlVUul35L05xfCocANibx5cVyD
- pG75ymPg7pvJppFzkYgdmIerz5ZcOtn3edwX/lOwPBa8nX39WEjFaDT+RoEylgWH95s
- nKwcHln/0w7Qnl7HgqFNPs92jZ5CFfD8qjcg22pqwsm7Zz5GcIZB/L3IB2GQSl6I85R
- gkDosFeQW9z+T6JjbVWamL/nqq8cgZ3wQWzCp1Bf4TB0XZ0xd7srQGlES5I+PkjN1U/
- sv7sL+IYAtzEB8yF+TyBVQNMfpiS9SuV9utdJ9VKWs/+fsKZC+uhRPUUbDSWpZqn3TD
- Pfu51VYVJg==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
- s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1703070200;
- h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID;
- bh=/S5IxSNo/STUwHaa992Wg78ISppaaE8THtFotJP01zY=;
- b=hZcmQklb6Zg68BdGYBu8C3RSD8pV9W7QqbRNl7bWEWtGKUNzon/Zf9OHPx3l1qZ2
- qVmLCQu3Xo5DealEFsNJrENHrle9ko6ORGu6hDhd/GotepncP0mYRUE/oaPJScC1htR
- mr6vdILMWXSrPcYJ+ODM14ZATAtE5Z7188r4w0E0=
-Message-ID: <0102018c86e4f17c-5e356421-08c8-4d3a-a149-5897437892ac-000000@eu-west-1.amazonses.com>
-Date: Wed, 20 Dec 2023 11:03:20 +0000
+ (Exim 4.90_1) (envelope-from <j.granados@samsung.com>)
+ id 1rFvQJ-0004RF-A1
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 07:11:40 -0500
+Received: from mailout2.w1.samsung.com ([210.118.77.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <j.granados@samsung.com>)
+ id 1rFvQC-0005hU-UN
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 07:11:39 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+ by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id
+ 20231220121122euoutp0255cdefe3ca7b74a749b4bdcd7adceb38~iiQlQwqX62062720627euoutp02S;
+ Wed, 20 Dec 2023 12:11:22 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com
+ 20231220121122euoutp0255cdefe3ca7b74a749b4bdcd7adceb38~iiQlQwqX62062720627euoutp02S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1703074282;
+ bh=jf1itoqnSCWQMxKRVYJ4rtcdQPWS4NrHF1qWX0SmDUo=;
+ h=Date:From:To:CC:Subject:References:From;
+ b=IYxi+r2hS4Hjm5mmrwkYGRpWqHgwKIjZHKWrV9W0NIroMPmdeRNopeVdcVxhozmR3
+ HJWRNBpcdwtMSyUrjAVWTxugEQhaAAWsNT3oXFSAs4nifZAcCgoFSxP410VQAeuMfe
+ twFXmIMgmMVaY4F/IhCwWgaPFUby/vHfFaxtD1W4=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+ eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20231220121122eucas1p12840e769a683eb008ad90af7d21e44aa~iiQlHfGzk2300623006eucas1p1M;
+ Wed, 20 Dec 2023 12:11:22 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+ eusmges1new.samsung.com (EUCPMTA) with SMTP id 10.C7.09539.9E9D2856; Wed, 20
+ Dec 2023 12:11:21 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+ eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+ 20231220121121eucas1p23ee600a82137ce935bf182e0e8ce76fe~iiQkuXusW2418924189eucas1p2W;
+ Wed, 20 Dec 2023 12:11:21 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+ eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20231220121121eusmtrp2d5ef8e4b2750f071e43cf72a873436f5~iiQktwDj62112121121eusmtrp2i;
+ Wed, 20 Dec 2023 12:11:21 +0000 (GMT)
+X-AuditID: cbfec7f2-515ff70000002543-d3-6582d9e9889d
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+ eusmgms2.samsung.com (EUCPMTA) with SMTP id F6.1D.09274.9E9D2856; Wed, 20
+ Dec 2023 12:11:21 +0000 (GMT)
+Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
+ eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+ 20231220121121eusmtip1fd0d5baae3a102c2baa0723573a39480~iiQkfpCll2683726837eusmtip1R;
+ Wed, 20 Dec 2023 12:11:21 +0000 (GMT)
+Received: from localhost (106.210.248.220) by CAMSVWEXC02.scsc.local
+ (2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
+ Wed, 20 Dec 2023 12:11:20 +0000
+Date: Wed, 20 Dec 2023 13:11:16 +0100
+From: Joel Granados <j.granados@samsung.com>
+To: Yi Liu <yi.l.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>
+CC: Alex Williamson <alex.williamson@redhat.com>, Eric Auger
+ <eric.auger@redhat.com>, Nicolin Chen <nicolinc@nvidia.com>, Kevin Tian
+ <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, qemu-devel
+ <qemu-devel@nongnu.org>
+Subject: Questions regarding the still unpublished qemu series
+ https://github.com/yiliu1765/qemu/tree/zhenzhong/wip/iommufd_nesting_rfcv1
+Message-ID: <20231220121116.hjfl7zkcm2q74aco@localhost>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/i386: Fix physical address truncation when PAE is
- enabled
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>
-References: <0102018c7d0026c1-fd5f0b50-48fd-4552-be0a-cbb6070b5e14-000000@eu-west-1.amazonses.com>
- <49047cf7-de12-4761-9082-dc5638d249a2@linaro.org>
-Content-Language: en-US
-From: Michael Brown <mcb30@ipxe.org>
-Autocrypt: addr=mcb30@ipxe.org; keydata=
- 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
-In-Reply-To: <49047cf7-de12-4761-9082-dc5638d249a2@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Feedback-ID: 1.eu-west-1.fspj4M/5bzJ9NLRzJP0PaxRwxrpZqiDQJ1IF94CF2TA=:AmazonSES
-X-SES-Outgoing: 2023.12.20-54.240.7.20
-Received-SPF: pass client-ip=54.240.7.20;
- envelope-from=0102018c86e4f17c-5e356421-08c8-4d3a-a149-5897437892ac-000000@eu-west-1.amazonses.com;
- helo=a7-20.smtp-out.eu-west-1.amazonses.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_MUA_MOZILLA=2.309,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: multipart/signed; micalg="pgp-sha512";
+ protocol="application/pgp-signature"; boundary="qinsnkny4rlrrm76"
+Content-Disposition: inline
+X-Originating-IP: [106.210.248.220]
+X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
+ CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrEKsWRmVeSWpSXmKPExsWy7djP87ovbzalGkz8ZWXx7X8Pm8WdS4oW
+ M2ecYLRY+nYru8Xep4/ZLI737mCxmPvzGovF4lvnGR04PBbvecnk8eTaZiaP3uZ3bB7v911l
+ 89j6+TZLAGsUl01Kak5mWWqRvl0CV8b569+ZC+7xVvxuy25gnM7TxcjJISFgIrH3wTWWLkYu
+ DiGBFYwSt1+8Z4JwvjBKNLddZgepEhL4zCjR2uYP0/H52iRmiKLljBIrZx1ghHCAim5N3Q+V
+ 2cooMfvYATaQFhYBVYkPl16DjWIT0JE4/+YOM4gtIuAl8fdPJytIA7PAU0aJdc8ugC0XFuhm
+ lLhx8iAjSBWvgLnEk73trBC2oMTJmU9YQGxmgQqJx++nAm3gALKlJZb/44C4T1li/sRj7BB2
+ rcSpLbfAZkoIdHNKXOl4wAiRcJH4+vc7E4QtLPHq+BaoBhmJ/zvnQzVMZpTY/+8DO4SzmlFi
+ WeNXqA5riZYrT9hBNksIOErsmJgFYfJJ3HgrCHEbn8SkbdOZIcK8Eh1tQhCNahKr771hgQjL
+ SJz7xDeBUWkWksdmIXlsFsJjEGEdiQW7P2EKa0ssW/iaGcK2lVi37j3LAkb2VYziqaXFuemp
+ xYZ5qeV6xYm5xaV56XrJ+bmbGIFJ7fS/4592MM599VHvECMTB+MhRhWg5kcbVl9glGLJy89L
+ VRLh3dvZlCrEm5JYWZValB9fVJqTWnyIUZqDRUmcVzVFPlVIID2xJDU7NbUgtQgmy8TBKdXA
+ 5HDYtbHWw+1sS9Zdm33CDqc1pIUmyi+tmXjkkvpMmz1z7kac/n10yUyVfU1xCadXi1q8VufK
+ Trx4YLbdBefWixPZfX5OXOirfWDNB/+LB//VeKmtP7pRam9lzeIH/+uDG+o///nvsa8+o2km
+ 8+bL9014HT6aRzO16kSvFg3OYQ2cV/+VKZK/2KM1PVWHzbNk2dJ/XsWLj0kwZi5Ucvsz4+AK
+ T88pCoE/p5sclu5Zus/zzHvBnO97v3/bNX3l1/w7e3+e0kwKqT1hJGkcUyuifqU4pL4xJvrC
+ gma/nN6uJ7+PFClOKN4cI37Nf76Z9KFSb76Zx3XiTFXWzFPM6J69K9f3ZqC8/b4K24yfB2a+
+ VGIpzkg01GIuKk4EAGicb3rlAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrBIsWRmVeSWpSXmKPExsVy+t/xu7ovbzalGmxYKWfx7X8Pm8WdS4oW
+ M2ecYLRY+nYru8Xep4/ZLI737mCxmPvzGovF4lvnGR04PBbvecnk8eTaZiaP3uZ3bB7v911l
+ 89j6+TZLAGuUnk1RfmlJqkJGfnGJrVK0oYWRnqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5mWWqR
+ vl2CXsaczQfYC+7wVuzr+cHSwDiVp4uRk0NCwETi87VJzF2MXBxCAksZJZa93MMOkZCR2Pjl
+ KiuELSzx51oXG0TRR0aJDadXMoMkhAS2Mkp8WVYIYrMIqEp8uPQarJlNQEfi/Js7YDUiAl4S
+ f/90soI0Mws8ZZRY9+wCE4gjLNDNKHHj5EFGkCpeAXOJJ3vbWSFsQYmTM5+wgNjMAmUSl/Z1
+ AU3lALKlJZb/44C4SFli/sRjUJfWSnz++4xxAqPgLCTds5B0z0LohghrSdz495IJQ1hbYtnC
+ 18wQtq3EunXvWRYwsq9iFEktLc5Nzy020itOzC0uzUvXS87P3cQIjNZtx35u2cG48tVHvUOM
+ TByMhxhVgDofbVh9gVGKJS8/L1VJhHdvZ1OqEG9KYmVValF+fFFpTmrxIUZTYHBNZJYSTc4H
+ ppG8knhDMwNTQxMzSwNTSzNjJXFez4KORCGB9MSS1OzU1ILUIpg+Jg5OqQamwq/p790NrvN7
+ m8zbX3NXreKY9+dlXbP/eTbwTJ61+MCxN50VXo2hF9Puvl5U+ffw/NTy7Ts092j4cDu9fba9
+ dn/5KRP5k35tNfc/LynavHTr/bfK9X5JJd+9peZ9PflSf929OMU3068c3p6bcrdG8fEM9zcy
+ ldE1lVGFapURvmoMt+TdzPO82hdFGhnrSfBfF3auVw0XOMa1W9Z7+wmfX66VrVv9tScyLNOp
+ kdF6ceNfy/f3q2+EOB974LbSqWW6rUkN1+W3a957qnCenfEz/eRlD6H1XQWSEw9zqB6t7OfN
+ fXaZ5xzv2tLjaTFLlyn7Zqy71Ta9oT2tLXHxt7zZesyeMrFb5l6ZGaHrvjxOiaU4I9FQi7mo
+ OBEAD40PIGsDAAA=
+X-CMS-MailID: 20231220121121eucas1p23ee600a82137ce935bf182e0e8ce76fe
+X-Msg-Generator: CA
+X-RootMTR: 20231220121121eucas1p23ee600a82137ce935bf182e0e8ce76fe
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20231220121121eucas1p23ee600a82137ce935bf182e0e8ce76fe
+References: <CGME20231220121121eucas1p23ee600a82137ce935bf182e0e8ce76fe@eucas1p2.samsung.com>
+Received-SPF: pass client-ip=210.118.77.12;
+ envelope-from=j.granados@samsung.com; helo=mailout2.w1.samsung.com
+X-Spam_score_int: -71
+X-Spam_score: -7.2
+X-Spam_bar: -------
+X-Spam_report: (-7.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,58 +139,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/12/2023 04:22, Richard Henderson wrote:
-> On 12/18/23 23:56, Michael Brown wrote:
->> The address translation logic in get_physical_address() will currently
->> truncate physical addresses to 32 bits unless long mode is enabled.
->> This is incorrect when using physical address extensions (PAE) outside
->> of long mode, with the result that a 32-bit operating system using PAE
->> to access memory above 4G will experience undefined behaviour.
- >>
- >> <snip>
->>
->> --- a/target/i386/tcg/sysemu/excp_helper.c
->> +++ b/target/i386/tcg/sysemu/excp_helper.c
->> @@ -582,12 +582,10 @@ static bool get_physical_address(CPUX86State 
->> *env, vaddr addr,
->>       /* Translation disabled. */
->>       out->paddr = addr & x86_get_a20_mask(env);
->> -#ifdef TARGET_X86_64
->> -    if (!(env->hflags & HF_LMA_MASK)) {
->> -        /* Without long mode we can only address 32bits in real mode */
->> +    if (!(env->cr[4] & CR4_PAE_MASK)) {
->> +        /* Without PAE we can address only 32 bits */
->>           out->paddr = (uint32_t)out->paddr;
->>       }
->> -#endif
-> 
-> This is not the correct refactoring.
-> 
-> I agree that what we're currently doing is wrong, esp for MMU_PHYS_IDX, 
-> but for the default case, if CR0.PG == 0, then CR4.PAE is ignored (vol 
-> 3, section 4.1.1).
-> 
-> I suspect the correct fix is to have MMU_PHYS_IDX pass through the input 
-> address unchanged, and it is the responsibility of the higher level 
-> paging mmu_idx to truncate physical addresses per PG_MODE_* before 
-> recursing.
+--qinsnkny4rlrrm76
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for reviewing, and for confirming the bug.
+Hello Everyone
 
-For the MMU_PHYS_IDX case, I agree that it makes sense for the address 
-to be passed through unchanged.
+While running https://github.com/yiliu1765/qemu/tree/zhenzhong/wip/iommufd_=
+nesting_rfcv1
+I have come across particular code path that seems odd:
 
-For the default case, I think it would make sense to unconditionally 
-truncate the address to 32 bits if paging is disabled.  (I am not sure 
-why the original commit 33dfdb5 included a test for long mode, since I 
-do not see how it is possible to get the CPU into long mode with paging 
-disabled.)
+I'm hitting an assert in softmmu/memory.c:1994 after calling a
+notification from vtd_flt_page_walk_level. The code in memory.c:1994
+makes sure that when type=3D=3DIOMMU_NOTIFIER_UNMAP, the permissions are
+IOMMU_NONE. But the code in vtd_flt_page_walk_level sets the
+permissions to read|write. This is part of the "intel_iommu: piotlb
+invalidation should notify unmap" commit in the iommufd_nesting_rfcv1
+series.
 
-I do not know what ought to be done in the MMU_NESTED_IDX case, and 
-would appreciate your input on this.
+Question is: Why assert on the permissions being NONE if they might be
+read|write?
 
-Thanks,
+Hope this makes sense. Don't hesitate to get back to me if you see that
+there is something missing in my explanation.
 
-Michael
+Best
 
+--=20
+
+Joel Granados
+
+--qinsnkny4rlrrm76
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmWC2dIACgkQupfNUreW
+QU+5fAwAgXb3egb+27OTfORRnfXqfr5ZRvlhBUaybTB6z4uciKyeUdO4Zxqhcz7N
+8vTqHvOYcs03iMDe+jakgJqlMAZYFJdtO63qBcDkpRCzgpCwM2iDVCuy7E+Na0eE
+raN7QSnh09AQDg8EesuJoBXfRnNjTPCh2Prjy/9EZv2Vp7gHwfXHAMKwc4KBC9of
+/zkvVymUe5xi4gNNmJlpkbvivq0BgNlZkDYuE1440eRg8iEDvjeHrffqvWwtpLBZ
+k7YfouwC3VveygMhdC/E1wURxbwWXclOR62eU8/2tq5lDH9pmcfTk4A+y8yDEnx4
+9sxFUWY/2+834VRhByk9BBUjkVkqXNDaYwSMF5hjb3oAmVXIhH/NKndaZrBZ/VKd
+7cq4l2mHdJKkhwfbIt42jO084a6z6X7deeap9nznGVp4LLz+LqKyJyubJPMdh1S+
+WdND/ArB+GWqLv56PVH35nNFdMqgJTpTD1OeC0dK4tsTUFvMHH5hmo6VZMengqa7
+Av9lk8Y1
+=cata
+-----END PGP SIGNATURE-----
+
+--qinsnkny4rlrrm76--
 
