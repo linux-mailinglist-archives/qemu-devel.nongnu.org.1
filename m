@@ -2,75 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D510D81A649
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 18:27:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF9E81A73A
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 20:21:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG0LX-0002rO-1d; Wed, 20 Dec 2023 12:27:03 -0500
+	id 1rG27C-0002xC-D2; Wed, 20 Dec 2023 14:20:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rG0LT-0002rG-Sa
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 12:26:59 -0500
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rG278-0002x3-Pt
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:20:18 -0500
+Received: from mail-wm1-f41.google.com ([209.85.128.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rG0LS-0000X8-AH
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 12:26:59 -0500
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-1efabc436e4so3759017fac.1
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 09:26:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1703093217; x=1703698017; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=zAiF5hYSs3F8RSRZwP6gTZyy98v0WJH72DlAju5SHk4=;
- b=LSpdat0fTp0YNMlQi5ZXn1QfkEAbheDapPjenYxLD9ogzFuh4Ty7rPX2nIZfnNkqBS
- UYYEBxtYMsl8hEW+UJqb0y+RyaZe3mH9Wy3Jf/f9ajmWp/phaD6dLCm+qRIo2DltdiY4
- S76vOeXtWrM1l4TCsJW4c91yKPQsMxWCsxtMKHK1APWARbRGHS2OcRqTRCtq00ZhrqEB
- kFZ3htYjdmgMr8k3oy9CPUqdcCZE9Bry+sFHDJ+lQ02vmD07gNmf/XZBWj//bfy+owFv
- cebaO3tfmDLiYalafxEeYwuCCfC7j2R7hKPnZsOVqAWcoWioUb0MkqbTiFzjchxrQnrz
- xjXg==
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rG276-0008RN-Mq
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:20:18 -0500
+Received: by mail-wm1-f41.google.com with SMTP id
+ 5b1f17b1804b1-40d3c4bfe45so203535e9.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 11:20:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703093217; x=1703698017;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zAiF5hYSs3F8RSRZwP6gTZyy98v0WJH72DlAju5SHk4=;
- b=luTrR67OyD4Y+L+wbUW//9afqBN5iNztSwWGVeqzOsbbDNy2+v++MwXUnfzPPoXHTY
- /431k4dq5Rt5FZPTloSrRma4UeotxyIVIYhkNSp2XGsQv0Eb0Mzix3psTw405snex4BT
- ZIRM3CYssEp4sExNL61yR8oSvA42TvCI1wsoHA7uB8Pn6Gvkt0mwC5iWyOCT7u1CrPA4
- UjZQsL9PrvrqhetMNolfBIaKYd3m14pykf6xRGkdQ/DGO3K5Lss437E4f9h/nzECK8I9
- xTYMSJhwR/R6Gtr440ZB/pi/3UZFm4xw2Lk8DZH0vZjCymkSiyCTx7FfYLfhAO2zkPKR
- IGhA==
-X-Gm-Message-State: AOJu0Yxi9p3wcJ2kxxHs1oNoYbWXPD79rzHPQng1jSVUTr6ual+3/DbE
- eWLXJR5C+Jgl9DYhYrEUN7xB0sjEgO2oy3LJyG8=
-X-Google-Smtp-Source: AGHT+IH7p6r8CD0HX4pikL4GOuArHyOjYhm79wYE1NgpbI62zx1tmhSg0YNKsPCGTlKdMOBf9m/Hz2mvrkExCtcdmmQ=
-X-Received: by 2002:a05:6870:8a09:b0:1fa:1d14:2a43 with SMTP id
- p9-20020a0568708a0900b001fa1d142a43mr76857oaq.24.1703093216912; Wed, 20 Dec
- 2023 09:26:56 -0800 (PST)
+ d=1e100.net; s=20230601; t=1703100014; x=1703704814;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dNNerW0A0Y78SzfMPQfK84H4hlnaldHQC8UNOdUG2QQ=;
+ b=p828LbOm/qNok9kD6uixYa4JTme3XTFf75ASe8Tv4pqAyt9r+hJv8Xc80R/uMbMt5T
+ tNQg0Y2fDj2gStIOI8ddzPQH5k/Ykqw65mCAULqDSsrWhOe7+bjhwPegG7JPz3ZIbsIt
+ eYX0XHYOXzPm9IeX9+ezBNBVpn94LWcYjEz6H+Km+vzFky08FXa+8Xcjf4CNwjTsK/0+
+ Ojc/5hFbl9ME6lUMOPg0Eg9jzK+Z+f4OvMQSzvnSqz2JHw4YWQgKw7xDfGGOifhnkCS9
+ hYLHzfH0Sn48IpNUv9XyuzVnml+3Zknonxo7HHRtQ6igBRcTRQIrlz9MxtuVXsHBf1Uy
+ oRJQ==
+X-Gm-Message-State: AOJu0Yw3ESJoZh5a1N5/NJgSqO0c8bEkHEXg8iZNez1sReU1EsBAYogz
+ 7bHDwT3hf7eZRHAB0+riJ3o=
+X-Google-Smtp-Source: AGHT+IHWnFIOHz3mG3trsJ5I9UCViJOy8BnwPraGog3OQrQmBvG5TbxQiaO+SX2g0bQrWJKkxQNNTw==
+X-Received: by 2002:a05:600c:1c12:b0:40d:2df3:fe2 with SMTP id
+ j18-20020a05600c1c1200b0040d2df30fe2mr47052wms.272.1703100014292; 
+ Wed, 20 Dec 2023 11:20:14 -0800 (PST)
+Received: from fedora (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
+ by smtp.gmail.com with ESMTPSA id
+ iv11-20020a05600c548b00b0040b4b2a15ebsm586159wmb.28.2023.12.20.11.20.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Dec 2023 11:20:13 -0800 (PST)
+Date: Wed, 20 Dec 2023 20:20:12 +0100
+From: Thomas Huth <huth@tuxfamily.org>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 08/11] next-cube.c: move static old_scr2 variable to
+ NeXTPC
+Message-ID: <20231220202012.34ce2b0a@fedora>
+In-Reply-To: <20231220131641.592826-9-mark.cave-ayland@ilande.co.uk>
+References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
+ <20231220131641.592826-9-mark.cave-ayland@ilande.co.uk>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20231219191307.2895919-1-peter.maydell@linaro.org>
- <20231220160340.GA843272@fedora>
- <CAFEAcA8+Cw5NcH36GSydLyYf9_=CmP5qeyRsTHYyxYXKLEth_A@mail.gmail.com>
-In-Reply-To: <CAFEAcA8+Cw5NcH36GSydLyYf9_=CmP5qeyRsTHYyxYXKLEth_A@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 20 Dec 2023 12:26:45 -0500
-Message-ID: <CAJSP0QVT=euMVjU4eF+3XmkX+1XBPTUCBAypqyRDL+B-51nO9w@mail.gmail.com>
-Subject: Re: [PULL 00/43] target-arm queue
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x2b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=209.85.128.41; envelope-from=th.huth@gmail.com;
+ helo=mail-wm1-f41.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,19 +80,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 20 Dec 2023 at 12:24, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Wed, 20 Dec 2023 at 16:03, Stefan Hajnoczi <stefanha@redhat.com> wrote:
-> >
-> > Applied, thanks.
-> >
-> > Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
->
-> Should be https://wiki.qemu.org/ChangeLog/9.0 :-)
->
-> (I have just created that page and the accompanying gitlab milestone.)
+Am Wed, 20 Dec 2023 13:16:38 +0000
+schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
 
-Thanks, I'll update my reply script :).
+> Move the old_scr2 variable to NeXTPC so that the old SCR2 register state is
+> stored along with the current SCR2 state.
+> 
+> Since the SCR2 register is 32-bits wide, convert old_scr2 to uint32_t and
+> update the SCR2 register access code to allow unaligned writes.
+> 
+> Note that this is a migration break, but as nothing will currently boot then
+> we do not need to worry about this now.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>  hw/m68k/next-cube.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+> index f2222554fa..d53f73fb8b 100644
+> --- a/hw/m68k/next-cube.c
+> +++ b/hw/m68k/next-cube.c
+> @@ -91,6 +91,7 @@ struct NeXTPC {
+>  
+>      uint32_t scr1;
+>      uint32_t scr2;
+> +    uint32_t old_scr2;
+>      uint32_t int_mask;
+>      uint32_t int_status;
+>      uint32_t led;
+> @@ -125,8 +126,7 @@ static const uint8_t rtc_ram2[32] = {
+>  
+>  static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+>  {
+> -    static uint8_t old_scr2;
+> -    uint8_t scr2_2;
+> +    uint8_t old_scr2, scr2_2;
+>      NextRtc *rtc = &s->rtc;
+>  
+>      if (size == 4) {
+> @@ -144,6 +144,8 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+>          }
+>      }
+>  
+> +    old_scr2 = (s->old_scr2 >> 8) & 0xff;
+> +
+>      if (scr2_2 & 0x1) {
+>          /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
+>          if (rtc->phase == -1) {
+> @@ -252,7 +254,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+>      }
+>      s->scr2 = val & 0xFFFF00FF;
+>      s->scr2 |= scr2_2 << 8;
 
-Stefan
+So s->scr2 is updated with the "val" at the end of nextscr2_write() ... 
+
+> -    old_scr2 = scr2_2;
+>  }
+>  
+>  static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
+> @@ -318,7 +319,10 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
+>          break;
+>  
+>      case 0xd000 ... 0xd003:
+> +        s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
+> +                            size << 3, val);
+
+... but here it is also updated before nextscr2_write() ? Looks somewhat
+strange. Though I have to admit that I don't fully understand the logic
+here anyway... Maybe we could peek at Previous to see how this register is
+supposed to behave?
+
+ Thomas
 
