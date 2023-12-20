@@ -2,107 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC87781A51D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 17:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCEA981A53E
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 17:34:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFzR1-0004Vi-C3; Wed, 20 Dec 2023 11:28:39 -0500
+	id 1rFzVj-0004yJ-QP; Wed, 20 Dec 2023 11:33:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rFzQy-0004Km-Vn
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:28:37 -0500
-Received: from mail-bn8nam11on20601.outbound.protection.outlook.com
- ([2a01:111:f400:7eae::601]
- helo=NAM11-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rFzQw-0005BR-1P
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:28:36 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WnK08CuWmnn3UnTmQXbPkpPqSme3KyST2u5Ydu/07LE0Upu70Jfee6HYHttnGmQKFlo1DehQUBcOW630OpB+Oiu938m67VG7eiVNpO+gq48cN5DHytBE2irVa+hxUey/DE/NumnNAunUKoZWwrZaJRHRPYr1MymJHJzG4eTXjf+1sKXJUpwSyZmVKGm+UCr56FeBT5O1SEFHwG0KBI1AwF4QYgCRTAxo4FBRYdaeDvkdkZLDnb2gWjGEiG38KG8/ubUZ7yEchZcvKLTzEB5ltCZFfsU6qRfaiwlW9Vu5D17y0e/EzJtOm2ADifhMT68IFXna620Fl6/SIAuMY43N5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Apg5JLVzQ3OS3boX+9pEsRmgrC3kmqNXhFRIaWwu0Rc=;
- b=kjwTfWfQXv2HJv8+J5gJOKDE46A0jZSGOVXxqtS+oKUnnRe7HIeYcjHIItBWA5vNJi4fFMnky+e9SR2/JuJC2Shu/nUaWt1Q8HWSfk2ygrmofpjJ9HDlVfYazSLTYpgAHIQWedBuCxweXuFdAJKt7kWOAqPS8EibBbCY6LXno2yKVB2OJ3iV8u92AOgjCWucKDHba3d/+X4vznbC2QOpVxH0ypCggF4guhuTndmLZHR8Mh7FyCKLfIHbRpgJpwXXmN63S44T5swV+hvpT83WuQ5aqLiXpPhAKrb2mPFF/c6FyORs/JDVX2IG1YUaoPy20SjLWoUSDIo28yke0yZwKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Apg5JLVzQ3OS3boX+9pEsRmgrC3kmqNXhFRIaWwu0Rc=;
- b=rROqA65sE1nHLZKlCP3ZizjfX+XnUr8+UttSO+snZjbz7kqdOVvv7onK11GwtZv/cyOgnHdIp4ZCpGs4/oqbXKELRCs95xHWzzLU0RZrFDESXLdHF7nYT2XdkeXw4YOIG4c1u+aWKokDmVe/STT6FC/VxpArwvO5rON2kt2M8XU=
-Received: from MW4PR04CA0381.namprd04.prod.outlook.com (2603:10b6:303:81::26)
- by BY5PR12MB4305.namprd12.prod.outlook.com (2603:10b6:a03:213::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.19; Wed, 20 Dec
- 2023 16:28:26 +0000
-Received: from CO1PEPF000044F7.namprd21.prod.outlook.com
- (2603:10b6:303:81:cafe::2b) by MW4PR04CA0381.outlook.office365.com
- (2603:10b6:303:81::26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18 via Frontend
- Transport; Wed, 20 Dec 2023 16:28:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044F7.mail.protection.outlook.com (10.167.241.197) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7113.18 via Frontend Transport; Wed, 20 Dec 2023 16:28:25 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 20 Dec
- 2023 10:28:18 -0600
-Content-Type: text/plain; charset="utf-8"
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rFzVO-0004vy-96
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:33:11 -0500
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rFzVL-0006Z0-Rb
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:33:10 -0500
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3ba53596119so1569501b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 08:33:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1703089986; x=1703694786; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hzBM5PUnKq4RzpN7brysqbSbKojs8/MC5lfccwuTVBw=;
+ b=M/lZXZy0BShaz9+3xzYzDqXA2unNoNQNohXfKZcDTwyJGEqV5D5LBIg0QnYLKtKrC7
+ zqctM+CBVyGP5Xt+dIbmzaoDJs8WT/M9x593wXV3O7cZimruDM/IIxcFnT6sX19nS/cv
+ RkdtWA70at9LutdsNplLqPAXe0vChtNlAXltrWEtQ19DgFlb1dV+lZUElQtYUwN+iuWb
+ hlpnH3uWGTXUERnAkmEzB0pmnyNE1imyJr3eWdG64Xw+6bMzgBWSDlnxNoBPe53spTXq
+ Yp2HaHgVPrOCeTlLYTgxG87I85CSwub/0xhjnuF/aKhWGOZVeXoN5dnRJTlJx47iZ7MC
+ 4LUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703089986; x=1703694786;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hzBM5PUnKq4RzpN7brysqbSbKojs8/MC5lfccwuTVBw=;
+ b=fyABn8yTwWA+UiIBO1Yy9XkaQJIkqwqffms9h6zWOV3hNMW5BuC12PNZJ27hwXMmO2
+ KWYWI8qEYBrvx52G+yvwnIEpHgkO7l0T3FvrAlxgfYGGCT/OwiMBM6gKIGNcyw97cdNC
+ J9T+I/9Md2QjRmqXWXeOd3Gi5M0Lwb6bdHe/vkWPEof2JL6IVYodHx/xe7fFU+hNviI6
+ AM3thgupF7fw2ufUkuk06eVEufk0SKUqcGdZOtG5VyJWp/hvPHoKZGPKaXrM30DeJjcv
+ 2BHik2xBR5ksbSUx2my2h6Sq72AlzdYWTp54+5fLgWB1gCBkHDFHGOcAF/OcjmlWWsEl
+ vY7Q==
+X-Gm-Message-State: AOJu0YyZz6JeWialGfmIeZDv1KONDedfkD5GibfUrJPP2VnUuCqJno4g
+ Snw1bGDQqtjz0aT2LSNiXCT74+e9HT6SdZNUhKw=
+X-Google-Smtp-Source: AGHT+IGXmFzJ8g7QpzKcoRTbgvywbDK8jgEwvWmqZSsff2Zg8sQtwfV1MCyXmRtqjxok7X0M8+8FDtgCe/GoLR18LA4=
+X-Received: by 2002:a05:6808:13ce:b0:3b9:de4e:222f with SMTP id
+ d14-20020a05680813ce00b003b9de4e222fmr14944205oiw.4.1703089986101; Wed, 20
+ Dec 2023 08:33:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: [ANNOUNCE] QEMU 8.2.0 is now available
-From: Michael Roth <michael.roth@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: Stefan Hajnoczi <stefanha@redhat.com>
-Date: Wed, 20 Dec 2023 10:28:04 -0600
-Message-ID: <170308968490.45831.9473692593401759350@amd.com>
-User-Agent: alot/0.9
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044F7:EE_|BY5PR12MB4305:EE_
-X-MS-Office365-Filtering-Correlation-Id: b20008cc-2be3-417f-4254-08dc0178b111
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UsgsQecRNY4slR2S9JywYrwOByQe6KXi53EvseARCfuN9hhdvEWnbjiaHbxbD1uVLTUaxXL/wuZ9mRQWlhqzPMwHgO6LJIrOGyQao84mx5YXvFslpDuLiYsy78+5Lw4y7dKjWyGrqQm8mOYxpQ6T/H/r1aOw3BHDQa1XPaY412LVSub9ENVvSEDN6OApLIB55+3olPsDNAtIT7yQPq2lTeTZDvS/yJ7yHt8O5PwfwA1TiT1C+8mSlkDh5Qr9TimjLehPo1pFXoLbAnrFkb9SKyOiBlKTB/04o/4rUYOURN2phnDI/UklOESS6VWrstk5sV0sN46VUdshWjaTyHApmtYdIBne9jBEJwDdWvWYko6c14UxiwmY6LHx2ACxXGnzoBuB+QeCtK1br4UocutDruXjZ80vIK7NwZC45FOaHnTdemmy4vrblARTqD5LhIlljpWoj2MpOK+KMkzjP24/AYNrFirW2TdT3OZ46accc68al5DWKyeJ42xjP51RLkgV3+ikHmk2bfrLcUuGpsRboCwca/+Rtm+A1krwRrxToJYOrDJOzapg5QhZYjT/fvjU2/IbRHvlUZELp8LYsMIwI7xhgDpRZYR2lQlaRfDVwIv0wNb0zMN7aSMRqlgo9FcC96tmIBxmWYP572kq0qZG76LznuZteO8Um1Sm+kCvQA8YAkmVMi+C+dAsYCd8zgNelskUaYqJDlaAu9GWNaXUZA/7EiQyIWhYou1q2ai8r/RgxZOlWb8ot2fWHTxsgFqK
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(376002)(136003)(346002)(39860400002)(396003)(230922051799003)(451199024)(64100799003)(1800799012)(82310400011)(186009)(46966006)(40470700004)(36840700001)(40460700003)(40480700001)(478600001)(6666004)(8676002)(8936002)(966005)(4326008)(356005)(26005)(16526019)(2616005)(70586007)(6916009)(316002)(70206006)(426003)(83380400001)(336012)(36756003)(86362001)(41300700001)(81166007)(82740400003)(44832011)(36860700001)(2906002)(47076005)(5660300002)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 16:28:25.6763 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b20008cc-2be3-417f-4254-08dc0178b111
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F7.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4305
-Received-SPF: softfail client-ip=2a01:111:f400:7eae::601;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20231220160237.843113-1-stefanha@redhat.com>
+ <170308870249.47564.2031507210923112269@amd.com>
+In-Reply-To: <170308870249.47564.2031507210923112269@amd.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 20 Dec 2023 11:32:53 -0500
+Message-ID: <CAJSP0QX8GHtwRta9KP2NakMQ68-pCutO0KQNjpfhgMo9NWEE-Q@mail.gmail.com>
+Subject: Re: [qemu-web PATCH] Add QEMU 8.2.0 release announcement
+To: Michael Roth <michael.roth@amd.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=stefanha@gmail.com; helo=mail-oi1-x22b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,48 +86,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+On Wed, 20 Dec 2023 at 11:18, Michael Roth <michael.roth@amd.com> wrote:
+>
+> Quoting Stefan Hajnoczi (2023-12-20 10:02:37)
+> > Cc: Michael Roth <michael.roth@amd.com>
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > ---
+> >  _posts/2023-12-20-qemu-8-2-0.md | 29 +++++++++++++++++++++++++++++
+> >  1 file changed, 29 insertions(+)
+> >  create mode 100644 _posts/2023-12-20-qemu-8-2-0.md
+> >
+> > diff --git a/_posts/2023-12-20-qemu-8-2-0.md b/_posts/2023-12-20-qemu-8-2-0.md
+> > new file mode 100644
+> > index 0000000..c7cdd8b
+> > --- /dev/null
+> > +++ b/_posts/2023-12-20-qemu-8-2-0.md
+> > @@ -0,0 +1,29 @@
+> > +---
+> > +layout: post
+> > +title:  "QEMU version 8.3.0 released"
+>
+> 8.2? :)
 
-On behalf of the QEMU Team, I'd like to announce the availability of
-the QEMU 8.2.0 release. This release contains 3200+ commits from 238
-authors.
+Oops! Please touch it up when merging.
 
-You can grab the tarball from our download page here:
+> > +date:   2023-12-20 10:00:00 -0600
+> > +categories: [releases, 'qemu 8.2']
+> > +---
+> > +We'd like to announce the availability of the QEMU 8.2.0 release. This release contains 3200+ commits from 231 authors.
+> > +
+> > +You can grab the tarball from our [download page](https://www.qemu.org/download/#source). The full list of changes are available [in the changelog](https://wiki.qemu.org/ChangeLog/8.2).
+> > +
+> > +Highlights include:
+> > +
+> > + * Arm: New CPU types cortex-a710 and neoverse-n2
+> > + * RISC-V: KVM AIA Support, Virtual IRQs and IRQ filtering support, and vector cryptographic instruction set support
+> > + * 68k: The Macintosh Quadra 800 (q800) emulation now can boot MacOS 7.1-8.1, A/UX 3.0.1, NetBSD 9.3, and Linux
+> > + * HPPA: New HP C3700 machine emulation and 64-bit PA-RISC 2.0 CPU emulation
+> > + * LoongArch: New CPU type la132 (LoongArch32)
+> > + * Tricore: New CPU type TC37x (ISA v1.6.2)
+> > + * New virtio-sound device emulation
+> > + * New virtio-gpu rutabaga device emulation used by Android emulator
+> > + * New hv-balloon for dynamic memory protocol device for Hyper-V guests
+> > + * New Universal Flash Storage device emulation
+> > + * New Xen PV console and network device emulation
+> > + * Network Block Device (NBD) 64-bit offsets for improved performance
+> > + * dump-guest-memory now supports the standard kdump format
+> > + * and lots more...
+> > +
+> > +Thank you to everybody who contributed to this release, whether that was by writing code, reporting bugs, improving documentation, testing, or providing the project with CI resources. We couldn't do these without you!
+>
+> Thanks for writing this up. I ran out of time yesterday and am working
+> on the announcement email now. I'll plan to merge your summary into the
+> email and then push the resulting highlights to qemu-web if that sounds
+> okay to you.
 
-  https://www.qemu.org/download/#source
+Yes, that would be great. Thanks!
 
-The full list of changes are available at:
-
-  https://wiki.qemu.org/ChangeLog/8.2
-
-Highlights include:
-
- * New virtio-sound device emulation
- * New virtio-gpu rutabaga device emulation used by Android emulator
- * New hv-balloon for dynamic memory protocol device for Hyper-V guests
- * New Universal Flash Storage device emulation
- * Network Block Device (NBD) 64-bit offsets for improved performance
- * dump-guest-memory now supports the standard kdump format
-
- * ARM: Xilinx Versal board now models the CFU/CFI, and the TRNG device
- * ARM: CPU emulation support for cortex-a710 and neoverse-n2
- * ARM: architectural feature support for PACQARMA3, EPAC, Pauth2, FPAC,
-   FPACCOMBINE, TIDCP1, MOPS, HBC, and HPMN0
- * HPPA: CPU emulation support for 64-bit PA-RISC 2.0
- * HPPA: machine emulation support for C3700, including Astro memory
-   controller and four Elroy PCI bridges
- * LoongArch: ISA support for LASX extension and PRELDX instruction
- * LoongArch: CPU emulation support for la132
- * RISC-V: ISA/extension support for AIA virtualization support via KVM,=20
-   and vector cryptographic instructions
- * RISC-V: Numerous extension/instruction cleanups, fixes, and reworks
- * s390x: support for vfio-ap passthrough of crypto adapter for protected
-   virtualization guests
- * Tricore: support for TC37x CPU which implements ISA v1.6.2
- * Tricore: support for CRCN, FTOU, FTOHP, and HPTOF instructions
- * x86: Zen support for PV console and network devices
-
- * and lots more...
-
-Thank you to everyone involved!
+Stefan
 
