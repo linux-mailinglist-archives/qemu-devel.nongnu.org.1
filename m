@@ -2,55 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D1881969B
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 03:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E869A81967C
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 02:47:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFlrn-0004E5-En; Tue, 19 Dec 2023 20:59:23 -0500
+	id 1rFlf3-0001cE-Jj; Tue, 19 Dec 2023 20:46:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
- id 1rFlrP-0004AP-E8
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 20:59:02 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <zhaotianrui@loongson.cn>) id 1rFlrJ-0000UT-Kp
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 20:58:57 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxCulbSoJlhtACAA--.14110S3;
- Wed, 20 Dec 2023 09:58:51 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxIL9OSoJljk8BAA--.8666S11; 
- Wed, 20 Dec 2023 09:58:51 +0800 (CST)
-From: Tianrui Zhao <zhaotianrui@loongson.cn>
-To: qemu-devel@nongnu.org, gaosong@loongson.cn, philmd@linaro.org,
- richard.henderson@linaro.org, peter.maydell@linaro.org
-Cc: maobibo@loongson.cn, zhaotianrui@loongson.cn, mst@redhat.com,
- cohuck@redhat.com, pbonzini@redhat.com, marcandre.lureau@redhat.com,
- berrange@redhat.com, thuth@redhat.com, yangxiaojuan@loongson.cn,
- xianglai li <lixianglai@loongson.cn>
-Subject: [PATCH v2 9/9] target/loongarch: Add loongarch kvm into meson build
-Date: Wed, 20 Dec 2023 09:45:45 +0800
-Message-Id: <20231220014545.2889155-10-zhaotianrui@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20231220014545.2889155-1-zhaotianrui@loongson.cn>
-References: <20231220014545.2889155-1-zhaotianrui@loongson.cn>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rFlf0-0001bY-Ip
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 20:46:10 -0500
+Received: from mail-qv1-xf2b.google.com ([2607:f8b0:4864:20::f2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rFley-0005zd-BX
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 20:46:10 -0500
+Received: by mail-qv1-xf2b.google.com with SMTP id
+ 6a1803df08f44-67ab5e015aaso38569086d6.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 17:46:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1703036766; x=1703641566; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kqn3KMJ5g/VK+CZXLjmrErjc7rLMnYIMFlq297CCPAM=;
+ b=hD4Y/+Wi38SgJrX/MQlyBMdRwKv25UdWqWnRZaULB6mOHM0Z5H0Z+awn7jAB0iH6bJ
+ 0ISR1l6AQOX1ZjxEO6nNbldiNA1KhZlXxrXrF/bvQloSF0KD0PPNDd1cLMAKa45plE+L
+ WFsYHXEFQ+npLzAhV3SvFIRJJiMqlmUfgND6C1mUyIfpg4g9Sh+6gTrk+AYrFQAU9Rgd
+ IlChozXuaupgte9/0Wt54zaWY1TIM2ul9E4ca9BhAlFsDbOKwpXgkPsOWrWZy0UCzzrC
+ xS312iyZ9WvSnrEIFlxkqgsIlL3nKUgPlSXSIkDVKYpuIm2FfedNZOrQQ1OBI/8pBvO1
+ 3oGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703036767; x=1703641567;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kqn3KMJ5g/VK+CZXLjmrErjc7rLMnYIMFlq297CCPAM=;
+ b=AR41npLTemaQzBJ8+6xb2gyxiOxLZqlGhTgZdPMCpa9I/NoB2QAElhTfmIzM47qb+r
+ ja3jUl9Ek+/znr7TQ8TG9yz6W4L++VhL2MzNuim/V/TQQzru0L9R/aWiu+hW1yZbUTS4
+ NYBbAeBFwXs5WvI0UqLvhGo76ZzNYkdT7q7DcmVVswUhFnxVGrwf44V9YhZ3lOTO5GD8
+ M6pnDSRZzIHfhfhv7SKzr9WCgmWgRiJEnF/hWTHWOwdTe7A3aZER1pIkG6H49jQ63Mau
+ e/upxzRFyx9UL6ThJ91Sxf5ZGKMQFp1lcDlIR9NOqOKYj3touLjxFv6QrGqFxapXvdzV
+ cmWw==
+X-Gm-Message-State: AOJu0YztWdQ0Met6iy8xCyhJlD+QT2Moe4Eh3f3K0iOImDg//wC9HHps
+ 2Sa/gX7voGA5Yotd0CtVej7V6w==
+X-Google-Smtp-Source: AGHT+IHlgBpPcwiizwD2l5zncernGUmljdLJcxnwmopKyCq41nlbCQnUyzFY+Dthlix4Qs3JMg95DA==
+X-Received: by 2002:a05:6214:2686:b0:67f:38c0:e97c with SMTP id
+ gm6-20020a056214268600b0067f38c0e97cmr7515004qvb.72.1703036766684; 
+ Tue, 19 Dec 2023 17:46:06 -0800 (PST)
+Received: from [192.168.44.231] ([172.58.160.19])
+ by smtp.gmail.com with ESMTPSA id
+ jx13-20020a0562142b0d00b0067f4f07587csm1725740qvb.69.2023.12.19.17.46.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Dec 2023 17:46:05 -0800 (PST)
+Message-ID: <1c5f886a-821e-46ff-bcea-045b07ebf809@linaro.org>
+Date: Tue, 19 Dec 2023 17:45:53 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxIL9OSoJljk8BAA--.8666S11
-X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ppc/spapr: Fix ubsan warning with unaligned pointer access
+To: Daniel Hoffman <dhoff749@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ "open list:Virtual Open Firm..." <qemu-ppc@nongnu.org>
+References: <20231217001441.146344-1-dhoff749@gmail.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231217001441.146344-1-dhoff749@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,45 +95,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add kvm.c into meson.build to compile it when kvm
-is configed. Meanwhile in meson.build, we set the
-kvm_targets to loongarch64-softmmu when the cpu is
-loongarch.
+On 12/16/23 16:14, Daniel Hoffman wrote:
+> Found while running QTest with UBsan. Unaligned pointers appear to be
+> valid, so moving the read to an explicit memcpy to an intermediate.
+> ---
+>   hw/ppc/vof.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
+> index e3b430a81f4..609a51c645d 100644
+> --- a/hw/ppc/vof.c
+> +++ b/hw/ppc/vof.c
+> @@ -646,7 +646,10 @@ static void vof_dt_memory_available(void *fdt, GArray *claimed, uint64_t base)
+>       mem0_reg = fdt_getprop(fdt, offset, "reg", &proplen);
+>       g_assert(mem0_reg && proplen == sizeof(uint32_t) * (ac + sc));
+>       if (sc == 2) {
+> -        mem0_end = be64_to_cpu(*(uint64_t *)(mem0_reg + sizeof(uint32_t) * ac));
+> +        /* Pointer may be unaligned */
+> +        uint64_t mem0_end_copy;
+> +        memcpy(&mem0_end_copy, mem0_reg + sizeof(uint32_t) * ac, sizeof(mem0_end_copy));
+> +        mem0_end = be64_to_cpu(mem0_end_copy);
 
-Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
-Signed-off-by: xianglai li <lixianglai@loongson.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- meson.build                  | 2 ++
- target/loongarch/meson.build | 1 +
- 2 files changed, 3 insertions(+)
+mem0_end = ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
 
-diff --git a/meson.build b/meson.build
-index 445f2b7c2b..0c62b4156d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -114,6 +114,8 @@ elif cpu in ['riscv32']
-   kvm_targets = ['riscv32-softmmu']
- elif cpu in ['riscv64']
-   kvm_targets = ['riscv64-softmmu']
-+elif cpu in ['loongarch64']
-+  kvm_targets = ['loongarch64-softmmu']
- else
-   kvm_targets = []
- endif
-diff --git a/target/loongarch/meson.build b/target/loongarch/meson.build
-index 18e8191e2b..1b21c51e22 100644
---- a/target/loongarch/meson.build
-+++ b/target/loongarch/meson.build
-@@ -27,6 +27,7 @@ loongarch_system_ss.add(files(
- 
- common_ss.add(when: 'CONFIG_LOONGARCH_DIS', if_true: [files('disas.c'), gen])
- 
-+loongarch_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'))
- loongarch_ss.add_all(when: 'CONFIG_TCG', if_true: [loongarch_tcg_ss])
- 
- target_arch += {'loongarch': loongarch_ss}
--- 
-2.39.1
 
+r~
 
