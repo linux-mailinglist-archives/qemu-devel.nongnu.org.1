@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A9381A25A
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 16:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F49E81A269
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 16:28:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFySm-0002PF-2S; Wed, 20 Dec 2023 10:26:24 -0500
+	id 1rFyTq-00035K-Ml; Wed, 20 Dec 2023 10:27:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@killthe.net>) id 1rFySh-0002Nj-71
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:26:22 -0500
+ (Exim 4.90_1) (envelope-from <dave@killthe.net>) id 1rFyTm-00034h-OV
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:27:28 -0500
 Received: from mail.killthe.net ([207.126.114.3])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <dave@killthe.net>) id 1rFySb-0000M3-Vq
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:26:15 -0500
+ (envelope-from <dave@killthe.net>) id 1rFyTk-0000VI-6z
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:27:26 -0500
 Received: from magic (unknown [166.199.184.161])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.killthe.net (Postfix) with ESMTPSA id 0175E12001C;
- Wed, 20 Dec 2023 10:26:07 -0500 (EST)
-Date: Wed, 20 Dec 2023 09:29:22 -0600
+ by mail.killthe.net (Postfix) with ESMTPSA id 1815412001C;
+ Wed, 20 Dec 2023 10:27:12 -0500 (EST)
+Date: Wed, 20 Dec 2023 09:30:26 -0600
 From: Dave Blanchard <dave@killthe.net>
-To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+To: Michael Tokarev <mjt@tls.msk.ru>
 Cc: qemu-devel@nongnu.org
 Subject: Re: TCP/telnet serial port not working in QEMU 8.1.3
-Message-Id: <20231220092922.8bc260a4d8447163b1dae23e@killthe.net>
-In-Reply-To: <87le9p2oi1.fsf@draig.linaro.org>
+Message-Id: <20231220093026.5f272e1ca5466b15b26a5e83@killthe.net>
+In-Reply-To: <6a6668da-300c-44fe-b16c-df1eea620061@tls.msk.ru>
 References: <20231219164443.a644c86555f55e694563dbaa@killthe.net>
- <87le9p2oi1.fsf@draig.linaro.org>
+ <6a6668da-300c-44fe-b16c-df1eea620061@tls.msk.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -55,5 +55,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Doesn't work for me. Fixed by "downgrading" to the 7.x series.
+Fixed by "downgrading" to 7.x series.
+
+Something has changed in 8.x.
 
