@@ -2,87 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4678381980E
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 06:23:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F528198E2
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 07:59:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFp22-0008VR-OU; Wed, 20 Dec 2023 00:22:11 -0500
+	id 1rFqWx-0000xS-FI; Wed, 20 Dec 2023 01:58:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rFp1y-0008VD-Pr
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 00:22:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rFp1x-00016X-5E
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 00:22:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703049720;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YeAkY1VMqQaEmKJg848iL3fYCjmz/WeZLG6+9g1/6xk=;
- b=hhadnVBCkeaIZfsnjf1RQNHwJjJ3GEQxLucPmJ8ynjSF7w5+cMDOfHkMUc7JagykZzNn+W
- zV/q0rgugFqjyHuAGN+m0H6NaCHsg2PwbN6t5n8ExeDk/s3SBYwN3AcNca5CrqXfxixwEs
- KefV7obTERFvXhW/uU6uNXxcd7d/EeY=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-413-TXIEqQrbM_eifl_jw_Evtg-1; Wed, 20 Dec 2023 00:21:17 -0500
-X-MC-Unique: TXIEqQrbM_eifl_jw_Evtg-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-6d5c594f63aso310701b3a.1
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 21:21:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rFqWu-0000uk-F9
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 01:58:08 -0500
+Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rFqWs-0004w7-92
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 01:58:07 -0500
+Received: by mail-il1-x12f.google.com with SMTP id
+ e9e14a558f8ab-35da160de2bso27266875ab.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 22:58:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1703055484; x=1703660284; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=psqPCC8h54CzisIAHj4NkflMiXSHDKgv1e9aseOcz80=;
+ b=J7+bAjJ8S2DDWhRi64txD1rThoS9gUXXcBawkNLuzZ70l2k/B+oWrkYK7IonAWX7OQ
+ iQQbyab2hR5uOWAPiga3SeLuO/uypPNX4Zuq5MlKmgClYo52o9CrO3PV85v3/iRtjbVk
+ +VHvmePjz6zLdHddc5zhj9vzLVfgF0wTMJstVi72+uN2onmAjVv4USpjox5p1P0IQK8w
+ z2emi51tNsYlfLZVmMQj5td6bfOUGGMifhaCs8+BtNqAMa1qCSz+wZg2UeiXo4cUt/Lj
+ VtA0r1Vf6NzYOXKqdRYXLpsn7Vh13MQm0dAoyvpz+l+euczlU+RLKjhVD3pX4Kbt1RHj
+ FWpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703049677; x=1703654477;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YeAkY1VMqQaEmKJg848iL3fYCjmz/WeZLG6+9g1/6xk=;
- b=w+7dSf2aQWHFGaZK/yGei0MNlOS57BaNTyH5Vgj9TVWhy4bEXmx0fbUGESksBE1Mqy
- 0Kc4gUY3JUaIualvcsZpYg9rAL9dWZ8DObAFxjS56C07aLXPz9yXMNZg8q2bAnGSu5eg
- bi3JtWDX2OKS7CreqEa2/iUN4HNAXZ2QdQcXBdU7NvhaDCf0DoewKJM/4P0PXmao8YIe
- 1LQtxXsL2gjlfbwxOegrEJpGUS5RoKQmvyidnSUbnf6DSA0145mgHoxwTEO6gZilgJkx
- b4vWzhpjaM4cAKfheQt5pSXfEPc4rIldtZHYJ/qHK6pAdjSAx5Gn0m1kYPfigtbTr+J4
- jDBw==
-X-Gm-Message-State: AOJu0YyORLxf8SudMcXoGG16nhscANVgwAe2xAskyVZy+7B/4V1fie0G
- KcWWz7YYerc376Q4i89hDD6Z+j25XYG/+hMTO8UGYgU7eSAuezeZcWxuX1F/EEsrzuQQmyXaV8E
- sZmoDVXIJ3gWxLIfWUm7dvLOeHyBgmNE=
-X-Received: by 2002:a05:6a20:371c:b0:18f:97c:3849 with SMTP id
- t28-20020a056a20371c00b0018f097c3849mr2138948pze.35.1703049676943; 
- Tue, 19 Dec 2023 21:21:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEg4rDG92n0ed6w17AQEBIJS0VzdqJE37JA/GbyNey+J5MpkysyCPdLtJPod8MH152bW10WzSH2orgXV/EUK3Y=
-X-Received: by 2002:a05:6a20:371c:b0:18f:97c:3849 with SMTP id
- t28-20020a056a20371c00b0018f097c3849mr2138942pze.35.1703049676674; Tue, 19
- Dec 2023 21:21:16 -0800 (PST)
+ d=1e100.net; s=20230601; t=1703055484; x=1703660284;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=psqPCC8h54CzisIAHj4NkflMiXSHDKgv1e9aseOcz80=;
+ b=fhUnuG7htsFdJuydIB4gOTVM8S6A4hJXuvecTh47AxVd+f0CwfqS+prp020XTEx/RI
+ wJ3mVSlAyq4Zmv9Mep/JAuHhbCynIebel08whw5VefchmRAUHAQ/qY3qj/P5CeXRzhpT
+ jB9s0vkmHYhWLi0aBh4R3j3bmd7e1IyyPgItUNXv5Ye7KVWPrwA3l+vW/GcHXq+NAu8f
+ kK1xYKOMHJ5ZrRY8wRp/PniU5Jqvlsi7t1T/tZdaA54ivfsrYNwjW6JG+jz72RFCOwSv
+ MDGN+O7c10c9L5HaROVxmVKkWzhrqN7vF3Nccz8TmgMkjDcHlbBRB8wO21645880UQaW
+ TtJg==
+X-Gm-Message-State: AOJu0YzSjB+1Fm3XfGozNU7KjjkTrWtcTut2yhXUEwiRqBt7AMBAxHRw
+ 40f6lyjCHtHUjWhtfCqNkXjmQg==
+X-Google-Smtp-Source: AGHT+IGwDPNU9H8hukzO1e2rbaENWYLGjWnu+MJy//vNZhuhkicRzEgbYCoL6uURjt2kG+RjQGvOuA==
+X-Received: by 2002:a92:d07:0:b0:35d:59a2:128b with SMTP id
+ 7-20020a920d07000000b0035d59a2128bmr22051019iln.55.1703055484300; 
+ Tue, 19 Dec 2023 22:58:04 -0800 (PST)
+Received: from sunil-laptop ([106.51.83.242]) by smtp.gmail.com with ESMTPSA id
+ t10-20020a92c90a000000b0035fac895f48sm1984715ilp.29.2023.12.19.22.58.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Dec 2023 22:58:03 -0800 (PST)
+Date: Wed, 20 Dec 2023 12:27:57 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/1] docs/system/riscv: document acpi parameter of virt
+ machine
+Message-ID: <ZYKQdb0xYGVezoqS@sunil-laptop>
+References: <20231219143829.8961-1-heinrich.schuchardt@canonical.com>
 MIME-Version: 1.0
-References: <20231215172830.2540987-1-eperezma@redhat.com>
- <20231215172830.2540987-9-eperezma@redhat.com>
-In-Reply-To: <20231215172830.2540987-9-eperezma@redhat.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 20 Dec 2023 13:21:05 +0800
-Message-ID: <CACGkMEvH=uU4QxMHVHTo5tQiuML2+NTE3gZssfz84-+4kGHa1Q@mail.gmail.com>
-Subject: Re: [PATCH for 9.0 08/12] vdpa: add vhost_vdpa_load_setup
-To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- si-wei.liu@oracle.com, 
- Lei Yang <leiyang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>, 
- Zhu Lingshan <lingshan.zhu@intel.com>, Parav Pandit <parav@mellanox.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231219143829.8961-1-heinrich.schuchardt@canonical.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-il1-x12f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,57 +92,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Dec 16, 2023 at 1:28=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redhat=
-.com> wrote:
->
-> Callers can use this function to setup the incoming migration thread.
->
-> This thread is able to map the guest memory while the migration is
-> ongoing, without blocking QMP or other important tasks. While this
-> allows the destination QEMU not to block, it expands the mapping time
-> during migration instead of making it pre-migration.
-
-If it's just QMP, can we simply use bh with a quota here?
-
-Btw, have you measured the hotspot that causes such slowness? Is it
-pinning or vendor specific mapping that slows down the progress? Or if
-VFIO has a similar issue?
-
->
-> This thread joins at vdpa backend device start, so it could happen that
-> the guest memory is so large that we still have guest memory to map
-> before this time.
-
-So we would still hit the QMP stall in this case?
-
-> This can be improved in later iterations, when the
-> destination device can inform QEMU that it is not ready to complete the
-> migration.
->
-> If the device is not started, the clean of the mapped memory is done at
-> .load_cleanup.  This is far from ideal, as the destination machine has
-> mapped all the guest ram for nothing, and now it needs to unmap it.
-> However, we don't have information about the state of the device so its
-> the best we can do.  Once iterative migration is supported, this will be
-> improved as we know the virtio state of the device.
->
-> If the VM migrates before finishing all the maps, the source will stop
-> but the destination is still not ready to continue, and it will wait
-> until all guest RAM is mapped.  It is still an improvement over doing
-> all the map when the migration finish, but next patches use the
-> switchover_ack method to prevent source to stop until all the memory is
-> mapped at the destination.
->
-> The memory unmapping if the device is not started is weird
-> too, as ideally nothing would be mapped.  This can be fixed when we
-> migrate the device state iteratively, and we know for sure if the device
-> is started or not.  At this moment we don't have such information so
-> there is no better alternative.
->
-> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
->
+On Tue, Dec 19, 2023 at 03:38:29PM +0100, Heinrich Schuchardt wrote:
+> Since QEMU v8.0.0 the RISC-V virt machine has a switch to disable ACPI
+> table generation. Add it to the documentation.
+> 
+> Fixes: 168b8c29cedb ("hw/riscv/virt: Add a switch to disable ACPI")
+> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 > ---
+>  docs/system/riscv/virt.rst | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+> index f5fa7b8b29..4e134ff2ac 100644
+> --- a/docs/system/riscv/virt.rst
+> +++ b/docs/system/riscv/virt.rst
+> @@ -95,6 +95,11 @@ The following machine-specific options are supported:
+>    SiFive CLINT. When not specified, this option is assumed to be "off".
+>    This option is restricted to the TCG accelerator.
+>  
+> +- acpi=[on|off|auto]
+> +
+> +  When this option is "on", ACPI tables are generated and exposed as firmware
+> +  tables etc/acpi/rsdp and etc/acpi/tables.
+> +
+Hi Heinrich,
 
-Thanks
+Should we add, When not specified or set to auto, this option is assumed
+to be "on"?
 
+Thanks,
+Sunil
 
