@@ -2,81 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC481819B72
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 10:34:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40166819B8B
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 10:42:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFswg-0000qC-0L; Wed, 20 Dec 2023 04:32:54 -0500
+	id 1rFt4u-0002Ss-DH; Wed, 20 Dec 2023 04:41:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFswU-0000pW-PI
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 04:32:46 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rFt4m-0002S0-Pr
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 04:41:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFswQ-0001Ob-Vi
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 04:32:41 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rFt4g-0005gN-QT
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 04:41:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703064757;
+ s=mimecast20190719; t=1703065269;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2Qcrw39oMMwhNCMv0Cz5DsDKDZMtBJxelltXBxM9QUo=;
- b=ixbvDyS5RVRcE1oY4uqk7MNnq47XtacoyrAU7q3l3No2DFyGwudDzB98SRj258Aj169VqD
- cCOxIIg9mNFEbvilRpJ2xlMZ8UTAVUBUpF2WVUkcoiM7SVFsKjRCAAl1k1ATyIKh51ftbb
- B7NNsdZ3VRkdim3qC7bg0/PiIZLRcHI=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ARCSmU4XprD3GK1uyFnS9MnGkBpFlMml12BMyxdEzus=;
+ b=S0mA64OM63SQuAactWeICUSyFpZtu95Rs8WA6IKeTdo8BmHZvvTgDhKKVo1rAIckjIlc8I
+ mD0HV+KRM5d0FbP+1zY9Ko5Vvq85y8szdgi84wMo5Ab686JiNN9zHlhGAsM1iOrGT9V7xX
+ 1FLTh+YcTVH9t5qfwxmrzsmGYNJibH0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-179-n_RmENl5NdCMHivcy7hjVQ-1; Wed,
- 20 Dec 2023 04:32:31 -0500
-X-MC-Unique: n_RmENl5NdCMHivcy7hjVQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-567-_reMSGISMfCCNe72w6Ik6g-1; Wed,
+ 20 Dec 2023 04:41:07 -0500
+X-MC-Unique: _reMSGISMfCCNe72w6Ik6g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C4651C0515D;
- Wed, 20 Dec 2023 09:32:30 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.255])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 91B0B51D5;
- Wed, 20 Dec 2023 09:32:25 +0000 (UTC)
-Date: Wed, 20 Dec 2023 10:32:21 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Cleber Rosa <crosa@redhat.com>, Xie Changlong <xiechanglong.d@gmail.com>,
- Paul Durrant <paul@xen.org>, Ari Sundholm <ari@tuxera.com>,
- Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>,
- John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Wen Congyang <wencongyang2@huawei.com>, Alberto Garcia <berto@igalia.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
- Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
- Fabiano Rosas <farosas@suse.de>, Hanna Reitz <hreitz@redhat.com>,
- Zhang Chen <chen.zhang@intel.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Peter Xu <peterx@redhat.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>,
- Fam Zheng <fam@euphon.net>, Leonardo Bras <leobras@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Li Zhijian <lizhijian@fujitsu.com>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 04/14] aio: make
- aio_context_acquire()/aio_context_release() a no-op
-Message-ID: <ZYK0pUSPFQiU4Qs_@redhat.com>
-References: <20231205182011.1976568-1-stefanha@redhat.com>
- <20231205182011.1976568-5-stefanha@redhat.com>
- <ZYG2mSe1JWnC0tq_@redhat.com> <ZYHew2poxuJJRyhC@redhat.com>
- <CAJSP0QX0fg0TGWuveJz6+QbF9EmY=vPiU-c99fHZMN=1jAnXkw@mail.gmail.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 673AD2825E83;
+ Wed, 20 Dec 2023 09:41:07 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.194.167])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 53AB52166B31;
+ Wed, 20 Dec 2023 09:41:06 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 00/19] First batch of misc patches for QEMU 9.0
+Date: Wed, 20 Dec 2023 10:40:46 +0100
+Message-ID: <20231220094105.6588-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJSP0QX0fg0TGWuveJz6+QbF9EmY=vPiU-c99fHZMN=1jAnXkw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -101,54 +76,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 19.12.2023 um 22:23 hat Stefan Hajnoczi geschrieben:
-> The following hack makes the test pass but there are larger safety
-> issues that I'll need to look at on Wednesday:
+ Hi!
 
-I see, you're taking the same approach as in the SCSI layer: Don't make
-things thread-safe, but just always access them from the same thread.
+The following changes since commit bd00730ec0f621706d0179768436f82c39048499:
 
-In theory this should be okay, but I'm almost sure that at least
-nbd_drained_poll() must then run in the same AioContext, too.
+  Open 9.0 development tree (2023-12-19 09:46:22 -0500)
 
-> diff --git a/nbd/server.c b/nbd/server.c
-> index 895cf0a752..cf4b7d5c6d 100644
-> --- a/nbd/server.c
-> +++ b/nbd/server.c
-> @@ -1617,7 +1617,7 @@ static void nbd_drained_begin(void *opaque)
->      }
->  }
-> 
-> -static void nbd_drained_end(void *opaque)
-> +static void nbd_resume_clients(void *opaque)
->  {
->      NBDExport *exp = opaque;
->      NBDClient *client;
-> @@ -1628,6 +1628,15 @@ static void nbd_drained_end(void *opaque)
->      }
->  }
-> 
-> +static void nbd_drained_end(void *opaque)
-> +{
-> +    NBDExport *exp = opaque;
-> +
-> +    /* TODO how to make sure exp doesn't go away? */
+are available in the Git repository at:
 
-blk_exp_ref()?
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-12-20
 
-> +    /* TODO what if AioContext changes before this runs? */
-> +    aio_bh_schedule_oneshot(nbd_export_aio_context(exp),
-> nbd_resume_clients, exp);
+for you to fetch changes up to 17b2ecc331eab274d448446aa51883040f9185ed:
 
-We could increase client->nb_requests if we change it to be accessed
-atomically. Then nbd_drained_poll() will make any AioContext change wait
-for the BH.
+  tests/unit/test-qmp-event: Replace fixture by global variables (2023-12-20 10:29:23 +0100)
 
-Or maybe aio_wait_bh_oneshot() would already solve both problems?
+----------------------------------------------------------------
+* Add compat machines for QEMU 9.0
+* Some header clean-ups by Philippe
+* Restrict type names to alphanumerical range (and a few special characters)
+* Fix analyze-migration.py script on s390x
+* Clean up and improve some tests
+* Document handling of commas in CLI options parameters
 
-> +}
-> +
+----------------------------------------------------------------
+Cornelia Huck (1):
+      hw: Add compat machines for 9.0
 
-Kevin
+Markus Armbruster (5):
+      docs/system/arm: Fix for rename of type "xlnx.bbram-ctrl"
+      hw: Replace anti-social QOM type names (again)
+      tests/unit/test-qmp-event: Drop superfluous mutex
+      tests/unit/test-qmp-event: Simplify event emission check
+      tests/unit/test-qmp-event: Replace fixture by global variables
+
+Philippe Mathieu-Daudé (6):
+      system/qtest: Include missing 'hw/core/cpu.h' header
+      system/qtest: Restrict QTest API to system emulation
+      hw/ppc/spapr_hcall: Remove unused 'exec/exec-all.h' included header
+      hw/misc/mips_itu: Remove unnecessary 'exec/exec-all.h' header
+      hw/s390x/ipl: Remove unused 'exec/exec-all.h' included header
+      target: Restrict 'sysemu/reset.h' to system emulation
+
+Thomas Huth (6):
+      MAINTAINERS: Add some more vmware-related files to the corresponding section
+      memory: Remove "qemu:" prefix from the "qemu:ram-discard-manager" type name
+      tests/unit/test-io-task: Rename "qemu:dummy" to avoid colon in the name
+      qom/object: Limit type names to alphanumerical and some few special characters
+      tests/qtest/migration-test: Fix analyze-migration.py for s390x
+      tests/qtest/npcm7xx_pwm-test: Only do full testing in slow mode
+
+Yihuan Pan (1):
+      qemu-options: Clarify handling of commas in options parameters
+
+ MAINTAINERS                              |   5 ++
+ docs/system/arm/xlnx-versal-virt.rst     |   4 +-
+ docs/system/invocation.rst               |   5 ++
+ docs/system/qemu-manpage.rst             |   5 ++
+ include/exec/memory.h                    |   2 +-
+ include/hw/boards.h                      |   3 +
+ include/hw/i386/pc.h                     |   3 +
+ include/hw/misc/xlnx-versal-cframe-reg.h |   2 +-
+ include/hw/misc/xlnx-versal-cfu.h        |   6 +-
+ include/hw/misc/xlnx-versal-crl.h        |   2 +-
+ include/hw/nvram/xlnx-efuse.h            |   2 +-
+ include/hw/nvram/xlnx-versal-efuse.h     |   4 +-
+ include/hw/nvram/xlnx-zynqmp-efuse.h     |   2 +-
+ include/sysemu/qtest.h                   |   2 +
+ hw/arm/virt.c                            |   9 ++-
+ hw/core/machine.c                        |   3 +
+ hw/i386/pc.c                             |   3 +
+ hw/i386/pc_piix.c                        |  17 ++++-
+ hw/i386/pc_q35.c                         |  13 +++-
+ hw/m68k/virt.c                           |   9 ++-
+ hw/misc/mips_itu.c                       |   3 +-
+ hw/ppc/spapr.c                           |  15 ++++-
+ hw/ppc/spapr_hcall.c                     |   1 -
+ hw/s390x/ipl.c                           |   1 -
+ hw/s390x/s390-virtio-ccw.c               |  14 +++-
+ qom/object.c                             |  41 ++++++++++++
+ system/qtest.c                           |   1 +
+ target/i386/cpu.c                        |   2 +-
+ target/loongarch/cpu.c                   |   2 +
+ tests/qtest/migration-test.c             |   4 +-
+ tests/qtest/npcm7xx_pwm-test.c           |  13 +++-
+ tests/unit/test-io-task.c                |   2 +-
+ tests/unit/test-qmp-event.c              | 108 +++++++++----------------------
+ qemu-options.hx                          |   4 ++
+ scripts/analyze-migration.py             |  35 +++++++++-
+ 35 files changed, 236 insertions(+), 111 deletions(-)
 
 
