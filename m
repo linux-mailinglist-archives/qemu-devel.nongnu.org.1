@@ -2,68 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F128199E2
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 08:55:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F49819B45
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 10:21:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFrOj-0004iB-Dj; Wed, 20 Dec 2023 02:53:45 -0500
+	id 1rFsjs-00072E-Vr; Wed, 20 Dec 2023 04:19:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFrOY-0004gO-Oj
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:53:35 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFsja-00071m-D0
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 04:19:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFrOU-0005x5-M8
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:53:32 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rFsjY-00044U-Hc
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 04:19:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703058806;
+ s=mimecast20190719; t=1703063958;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+PBX4G9iHIKLgigmXNC+ZfT9BGo2GdbXEndjPZvY/Ek=;
- b=MsHI9nqspWbDl6WLGnbh0HMbdG0rArZOAGbwFjudDUTi5phkpvDY+R7K4L8aK2xgwujBy4
- 6XJVFHjHHOiKaLfLETQk5CCHHeMLL5pSaqRK+GAheQ/wIYtD24w5RQ5UOlhbSpe4+Qu4v5
- /Dt7EVz4IVQRT+Fh3ARjqqoXV1uObf8=
+ bh=UngDFToyqNF/6MoK7OZO0S5i3zyyTqX7vjrNH0WFOzo=;
+ b=N5787dn5vjbHmxnGe8aZvB+9i+4pF19ogTOxf2roWo1mYfwSvayKmlfsDa9ey7uIMjGvIy
+ mjVGUeS/3iFALduxpVSV2edb+zc9cn2atTQgbBOF5/eAXSCWmX5UxRdpvpeNNRhgxPhZZG
+ PVkx2GqYOS7mI1EFs/3f7jKDgXe2+tE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-XNqedwWFPYaOQlJODXHgxA-1; Wed, 20 Dec 2023 02:53:23 -0500
-X-MC-Unique: XNqedwWFPYaOQlJODXHgxA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-437-rhgm_6Z8O4KoMdp8y2-Fxg-1; Wed, 20 Dec 2023 04:19:12 -0500
+X-MC-Unique: rhgm_6Z8O4KoMdp8y2-Fxg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B64A48B0D61;
- Wed, 20 Dec 2023 07:53:22 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 77BAC2166B31;
- Wed, 20 Dec 2023 07:53:22 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 56E5421E6920; Wed, 20 Dec 2023 08:53:21 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9?=
- <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] qdev: Report an error for machine without
- HotplugHandler
-In-Reply-To: <ff212914-32b5-442e-8f67-4f01a7208a0c@daynix.com> (Akihiko
- Odaki's message of "Tue, 19 Dec 2023 21:08:45 +0900")
-References: <20231210-bus-v2-1-34ebf5726fa0@daynix.com>
- <87h6kpgrl7.fsf@pond.sub.org>
- <cbda6265-5027-424c-be93-86073d9ad63a@daynix.com>
- <8734vzsj6k.fsf@pond.sub.org>
- <ff212914-32b5-442e-8f67-4f01a7208a0c@daynix.com>
-Date: Wed, 20 Dec 2023 08:53:21 +0100
-Message-ID: <87y1dpgvim.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7DB0C85A588;
+ Wed, 20 Dec 2023 09:19:11 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.255])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5C6801121313;
+ Wed, 20 Dec 2023 09:19:05 +0000 (UTC)
+Date: Wed, 20 Dec 2023 10:19:04 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Cleber Rosa <crosa@redhat.com>, Xie Changlong <xiechanglong.d@gmail.com>,
+ Paul Durrant <paul@xen.org>, Ari Sundholm <ari@tuxera.com>,
+ Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>,
+ John Snow <jsnow@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Wen Congyang <wencongyang2@huawei.com>, Alberto Garcia <berto@igalia.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org,
+ Juan Quintela <quintela@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
+ Fabiano Rosas <farosas@suse.de>, Hanna Reitz <hreitz@redhat.com>,
+ Zhang Chen <chen.zhang@intel.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Peter Xu <peterx@redhat.com>,
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Leonardo Bras <leobras@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Li Zhijian <lizhijian@fujitsu.com>, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 06/14] block: remove AioContext locking
+Message-ID: <ZYKxiP1S-HSkyjj6@redhat.com>
+References: <20231205182011.1976568-1-stefanha@redhat.com>
+ <20231205182011.1976568-7-stefanha@redhat.com>
+ <ZYG9orsog3Pm675J@redhat.com>
+ <CAJSP0QV1MD-U5f1NkgL13CEm6-rCcGGPNhRyE2jwTKz+22rrzA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJSP0QV1MD-U5f1NkgL13CEm6-rCcGGPNhRyE2jwTKz+22rrzA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -88,101 +100,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+Am 19.12.2023 um 21:04 hat Stefan Hajnoczi geschrieben:
+> On Tue, 19 Dec 2023 at 10:59, Kevin Wolf <kwolf@redhat.com> wrote:
+> >
+> > Am 05.12.2023 um 19:20 hat Stefan Hajnoczi geschrieben:
+> > > This is the big patch that removes
+> > > aio_context_acquire()/aio_context_release() from the block layer and
+> > > affected block layer users.
+> > >
+> > > There isn't a clean way to split this patch and the reviewers are likely
+> > > the same group of people, so I decided to do it in one patch.
+> > >
+> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > > Reviewed-by: Eric Blake <eblake@redhat.com>
+> > > Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+> > > Reviewed-by: Paul Durrant <paul@xen.org>
+> >
+> > > diff --git a/migration/block.c b/migration/block.c
+> > > index a15f9bddcb..2bcfcbfdf6 100644
+> > > --- a/migration/block.c
+> > > +++ b/migration/block.c
+> > > @@ -313,22 +311,10 @@ static int mig_save_device_bulk(QEMUFile *f, BlkMigDevState *bmds)
+> > >      block_mig_state.submitted++;
+> > >      blk_mig_unlock();
+> > >
+> > > -    /* We do not know if bs is under the main thread (and thus does
+> > > -     * not acquire the AioContext when doing AIO) or rather under
+> > > -     * dataplane.  Thus acquire both the iothread mutex and the
+> > > -     * AioContext.
+> > > -     *
+> > > -     * This is ugly and will disappear when we make bdrv_* thread-safe,
+> > > -     * without the need to acquire the AioContext.
+> > > -     */
+> > > -    qemu_mutex_lock_iothread();
+> > > -    aio_context_acquire(blk_get_aio_context(bmds->blk));
+> > >      bdrv_reset_dirty_bitmap(bmds->dirty_bitmap, cur_sector * BDRV_SECTOR_SIZE,
+> > >                              nr_sectors * BDRV_SECTOR_SIZE);
+> > >      blk->aiocb = blk_aio_preadv(bb, cur_sector * BDRV_SECTOR_SIZE, &blk->qiov,
+> > >                                  0, blk_mig_read_cb, blk);
+> > > -    aio_context_release(blk_get_aio_context(bmds->blk));
+> > > -    qemu_mutex_unlock_iothread();
+> > >
+> > >      bmds->cur_sector = cur_sector + nr_sectors;
+> > >      return (bmds->cur_sector >= total_sectors);
+> >
+> > With this hunk applied, qemu-iotests 183 fails:
+> >
+> > (gdb) bt
+> > #0  0x000055aaa7d47c09 in bdrv_graph_co_rdlock () at ../block/graph-lock.c:176
+> > #1  0x000055aaa7d3de2e in graph_lockable_auto_lock (x=<optimized out>) at /home/kwolf/source/qemu/include/block/graph-lock.h:215
+> > #2  blk_co_do_preadv_part (blk=0x7f38a4000f30, offset=0, bytes=1048576, qiov=0x7f38a40250f0, qiov_offset=qiov_offset@entry=0, flags=0) at ../block/block-backend.c:1340
+> > #3  0x000055aaa7d3e006 in blk_aio_read_entry (opaque=0x7f38a4025140) at ../block/block-backend.c:1620
+> > #4  0x000055aaa7e7aa5b in coroutine_trampoline (i0=<optimized out>, i1=<optimized out>) at ../util/coroutine-ucontext.c:177
+> > #5  0x00007f38d14dbe90 in __start_context () at /lib64/libc.so.6
+> > #6  0x00007f38b3dfa060 in  ()
+> > #7  0x0000000000000000 in  ()
+> >
+> > qemu_get_current_aio_context() returns NULL now. I don't completely
+> > understand why it depends on the BQL, but adding the BQL locking back
+> > fixes it.
+> 
+> Thanks for letting me know. I have reviewed migration/block.c and
+> agree that taking the BQL is correct.
+> 
+> I have inlined the fix below and will resend this patch.
 
-> On 2023/12/18 23:02, Markus Armbruster wrote:
->> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
->> 
->>> On 2023/12/11 15:51, Markus Armbruster wrote:
->>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
->>>>
->>>>> The HotplugHandler of the machine will be used when the parent bus does
->>>>> not exist, but the machine may not have one. Report an error in such a
->>>>> case instead of aborting.
->>>>>
->>>>> Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
->>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>>
->>>> Do you have a reproducer for the crash?
->>>>
->>>>> ---
->>>>> Changes in v2:
->>>>> - Fixed indention.
->>>>> - Link to v1: https://lore.kernel.org/r/20231202-bus-v1-1-f7540e3a8d62@daynix.com
->>>>> ---
->>>>>    system/qdev-monitor.c | 13 ++++++++++---
->>>>>    1 file changed, 10 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
->>>>> index a13db763e5..5fe5d49c20 100644
->>>>> --- a/system/qdev-monitor.c
->>>>> +++ b/system/qdev-monitor.c
->>>>> @@ -927,9 +927,16 @@ void qdev_unplug(DeviceState *dev, Error **errp)
->>>>    void qdev_unplug(DeviceState *dev, Error **errp)
->>>>    {
->>>>        DeviceClass *dc = DEVICE_GET_CLASS(dev);
->>>>        HotplugHandler *hotplug_ctrl;
->>>>        HotplugHandlerClass *hdc;
->>>>        Error *local_err = NULL;
->>>>        if (qdev_unplug_blocked(dev, errp)) {
->>>>            return;
->>>>        }
->>>>        if (dev->parent_bus && !qbus_is_hotpluggable(dev->parent_bus)) {
->>>>            error_setg(errp, QERR_BUS_NO_HOTPLUG, dev->parent_bus->name);
->>>>            return;
->>>>        }
->>>>        if (!dc->hotpluggable) {
->>>>            error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
->>>>                       object_get_typename(OBJECT(dev)));
->>>>            return;
->>>>        }
->>>>        if (!migration_is_idle() && !dev->allow_unplug_during_migration) {
->>>>            error_setg(errp, "device_del not allowed while migrating");
->>>>            return;
->>>>        }
->>>>
->>>>>       qdev_hot_removed = true;
->>>>>          hotplug_ctrl = qdev_get_hotplug_handler(dev);
->>>>> -    /* hotpluggable device MUST have HotplugHandler, if it doesn't
->>>>> -     * then something is very wrong with it */
->>>>> -    g_assert(hotplug_ctrl);
->>>>> +    if (!hotplug_ctrl) {
->>>>> +        /*
->>>>> +         * hotpluggable bus MUST have HotplugHandler, if it doesn't
->>>>> +         * then something is very wrong with it
->>>>> +         */
->>>>> +        assert(!dev->parent_bus);
->>>>> +
->>>>> +        error_setg(errp, "The machine does not support hotplugging for a device without parent bus");
->>>>> +        return;
->>>>> +    }
->>>>
->>>> Extended version of my question above: what are the devices where
->>>> qdev_get_hotplug_handler(dev) returns null here?
->>>
->>> Start a VM: qemu-system-aarch64 -M virt -nographic
->>> Run the following on its HMP: device_del /machine/unattached/device[0]
->>>
->>> It tries to unplug cortex-a15-arm-cpu and crashes.
->>
->> This device has no parent bus (dev->parent_bus is null), but is marked
->> hot-pluggable (dc->hotpluggable is true).  Question for somebody
->> familiar with the hot-plug machinery: is this sane?
->
-> Setting hotpluggable false for each device without bus_type gives the same effect, but is error-prone.
+Thanks, I'll squash this into the queued patch. No need to resend, as
+far as I am concerned.
 
-Having hotpluggable = true when the device cannot be hot-plugged is
-*wrong*.  You might be able to paper over the wrongness so the code
-works anyway, but nothing good can come out of lying to developers
-trying to understand how the code works.
-
-Three ideas to avoid the lying:
-
-1. default hotpluggable to bus_type != NULL.
-
-2. assert(dc->bus_type || !dc->hotpluggable) in a suitable spot.
-
-3. Change the meaning of hotpluggable, and rename it to reflect its new
-meaning.  Requires a careful reading of its uses.  I wouldn't go there.
+Kevin
 
 
