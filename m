@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB57E819FAB
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:18:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E55819FBD
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:21:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFwRk-0007o9-Q1; Wed, 20 Dec 2023 08:17:12 -0500
+	id 1rFwRl-0007oE-1o; Wed, 20 Dec 2023 08:17:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRa-0007nI-FL
+ id 1rFwRa-0007nJ-L3
  for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:06 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRW-0002IG-5j
+ id 1rFwRW-0002Id-R9
  for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
@@ -24,26 +24,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Pk2e4vQ6ZQ/yBkKcQXjFvAd/v4jSvfkOMv4I/0gFjig=; b=WTP2BLBwkE9bPqmxXUBI976530
- qMAcuqeIY0+CsxmW620OIiqdYiPbViJYn+Wbe02WWOfrKuXvUOIgyBFg1FYz18NqAhSlVGjcGgICk
- sMFJAsawUiqjHBgTK9x5feuQlZfgq1mb/ipueaZO1F/qy8uOLa49wis4KrD3Hoc9NvSXef8pH0rIT
- qVo5dbiyvR5YF7ZNO+2Lg+Y6r3b/DHv0KZ6dI5lNI1k57zkvoC7cY9S+93GkcixrO2dbG0GMMxV/1
- 3l2KpbuOf37704Zak8O1q0QNdQ8vx17P03xpFca1A+CuxHwrNJ4Mi9Ee2YrxPXb4JgwQUlMMyo+KG
- mOTKqPUBDbLknE5eCzoZLq3Y0dfA7Rlmado6qbY04GAsnLwNwd4E71dAsWS8pScgCxYcTd7aztcgL
- WwY3WjcDKCyh2maKJRM6IhAGqvsGhqDYi/AJp/3neyOV2G8yWmLp7xTK4xX4t6DHrjCNJHV2H0HZ/
- B+O26ABtYGxwmQYRy9z6R6TEuQovfqhJbp2/QYwZu/Pddj2iI4hLKoC2Z9XzMLskLXInBHqyAf2dE
- KHfV+HX4YPE7CXWD/a/OXI+VJ+HTyUAb/ZSiYeMp0/lQio7MrUiYfgOPQ8pNaJzH9hQirvci0dVHS
- 3jz4aE7Z4MhKrlrIcmjEniLk5pKob7svkcU8yEMDo=;
+ bh=Wzqnhyv3COdgO/NEYFsdz6hQl8rrCxjqD6H/LIgLX2o=; b=jZNxPpfENbRufKTPw2Qw62D1E0
+ ltMy+6eGBtbUT2thvXoEQ3M//XZWMLb5r7h8KAq6pmSevY9c1owd2yiNHKobEiL6g9+r7NOOF1byi
+ RqYLlYy05IIUmo1UqysVejQVOaYyY6SUi19YmsptubC00UeWuy9cPepg/qm9+URJwETOAwQNyCiuM
+ +aJ9rgnFGCfPCgv6rPxfP52k87xqhmKE0nfgrTJSFJDqGT1heUPSYVRuCEsQ7OuAY4qFL7G6V6BkN
+ nNURZb01TA/NrUNLC8UkdFucgTCiWO8gnPB/FY+Cqy0GoHWQOfi21TAZ0w7oKh6KFlyYCWdYfzMVr
+ zd2/RXnKgc81byNRFhFR/mBUG1wi81plgS3Bs/d4wt8I/oUaOP1qHolJtrss/DbKG69Pxnaj/jFE7
+ SmRVzerKYKLQBAjjFacGOMd5qI/KsBWMbvuIJiN+YAjkZx7899Sg5//+PBzxUPuFNpvl/oZZwPIhP
+ sJBVG10gS7HW6jDIt5fUNT4nXQedpRv/Xl6h0sRDJTWC+zlboOfcsMo0VmKLpfZrmdp6RIpd4Ze6Q
+ Jl4Z3vCKgrNJTp1BMWt2BKDFdD4JBo8oPkmDk4+2hDosARZLiHuJLBirwyK5/C1UP0hRDxXJDYe5O
+ pY6fHf97mti6dWOQEcs4GqJUiZyFYGafaP60A+6bE=;
 Received: from host86-147-134-9.range86-147.btcentralplus.com ([86.147.134.9]
  helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwQz-0001qt-U7; Wed, 20 Dec 2023 13:16:30 +0000
+ id 1rFwR4-0001qt-7f; Wed, 20 Dec 2023 13:16:34 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Wed, 20 Dec 2023 13:16:31 +0000
-Message-Id: <20231220131641.592826-2-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 20 Dec 2023 13:16:32 +0000
+Message-Id: <20231220131641.592826-3-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
 References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.147.134.9
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 01/11] next-cube.c: add dummy Ethernet register to allow
- diagnostic to timeout
+Subject: [PATCH v2 02/11] next-cube.c: don't pulse SCSI DMA IRQ upon reception
+ of FLUSH command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,31 +78,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a dummy register at address 0x6000 in the MMIO memory region to allow the
-initial diagnostic test to timeout rather than getting stuck in a loop
-continuously writing "en_write: tx not ready" to the console.
+Normally a DMA FLUSH command is used to ensure that data is completely written
+to the device and/or memory, so remove the pulse of the SCSI DMA IRQ if a DMA
+FLUSH command is received. This enables the NeXT ROM monitor to start to load
+from a SCSI disk.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Tested-by: Thomas Huth <huth@tuxfamily.org>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/m68k/next-cube.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index fabd861941..feeda23475 100644
+index feeda23475..87ddaf4329 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -429,6 +429,10 @@ static uint32_t scr_readb(NeXTPC *s, hwaddr addr)
-         /* Hack: We need to have this change consistently to make it work */
-         return 0xFF & clock();
+@@ -473,7 +473,6 @@ static void scr_writeb(NeXTPC *s, hwaddr addr, uint32_t value)
+             DPRINTF("SCSICSR FIFO Flush\n");
+             /* will have to add another irq to the esp if this is needed */
+             /* esp_puflush_fifo(esp_g); */
+-            qemu_irq_pulse(s->scsi_dma);
+         }
  
-+    /* For now return dummy byte to allow the Ethernet test to timeout */
-+    case 0x6000:
-+        return 0xff;
-+
-     default:
-         DPRINTF("BMAP Read B @ %x\n", (unsigned int)addr);
-         return 0;
+         if (value & SCSICSR_ENABLE) {
 -- 
 2.39.2
 
