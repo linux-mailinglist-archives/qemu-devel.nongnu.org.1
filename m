@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5734981A51F
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 17:30:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E2D81A51E
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 17:30:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFzP6-0000R9-5P; Wed, 20 Dec 2023 11:26:40 -0500
+	id 1rFzP8-0000TC-Lh; Wed, 20 Dec 2023 11:26:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rFzP4-0000Qc-Bf
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:26:38 -0500
+ id 1rFzP5-0000Qz-4u
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:26:39 -0500
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rFzOz-0004iX-B9
+ id 1rFzP3-0004j1-8v
  for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:26:38 -0500
-Received: (qmail 15224 invoked by uid 484); 20 Dec 2023 16:26:12 -0000
+Received: (qmail 15252 invoked by uid 484); 20 Dec 2023 16:26:15 -0000
 X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
  smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.11.92):. 
- Processed in 0.071925 secs); 20 Dec 2023 16:26:12 -0000
+ Processed in 0.180907 secs); 20 Dec 2023 16:26:15 -0000
 Received: from nedpc1.intern.lauterbach.com
  (Authenticated_SSL:neder@[10.2.11.92])
  (envelope-sender <nicolas.eder@lauterbach.com>)
  by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
  encrypted SMTP
- for <qemu-devel@nongnu.org>; 20 Dec 2023 16:26:10 -0000
+ for <qemu-devel@nongnu.org>; 20 Dec 2023 16:26:12 -0000
 From: Nicolas Eder <nicolas.eder@lauterbach.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Christian Boenig" <christian.boenig@lauterbach.com>,
  "Nicolas Eder" <nicolas.eder@lauterbach.com>
-Subject: [PATCH v5 07/18] mcdstub: mcdserver initialization functions added
-Date: Wed, 20 Dec 2023 17:25:44 +0100
-Message-Id: <20231220162555.19545-8-nicolas.eder@lauterbach.com>
+Subject: [PATCH v5 08/18] cutils: qemu_strtou32 function added
+Date: Wed, 20 Dec 2023 17:25:45 +0100
+Message-Id: <20231220162555.19545-9-nicolas.eder@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231220162555.19545-1-nicolas.eder@lauterbach.com>
 References: <20231220162555.19545-1-nicolas.eder@lauterbach.com>
@@ -70,205 +70,64 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 ---
- debug/mcdstub/mcdstub.c | 154 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 154 insertions(+)
+ include/qemu/cutils.h |  2 ++
+ util/cutils.c         | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/debug/mcdstub/mcdstub.c b/debug/mcdstub/mcdstub.c
-index 4d8d5d956a..0df436719e 100644
---- a/debug/mcdstub/mcdstub.c
-+++ b/debug/mcdstub/mcdstub.c
-@@ -22,9 +22,12 @@
- #include "qemu/cutils.h"
- #include "qemu/module.h"
- #include "qemu/error-report.h"
-+#include "qemu/debug.h"
- #include "qapi/error.h"
- #include "chardev/char.h"
- #include "chardev/char-fe.h"
-+#include "hw/cpu/cluster.h"
-+#include "hw/boards.h"
- #include "sysemu/cpus.h"
- #include "sysemu/hw_accel.h"
- #include "sysemu/runstate.h"
-@@ -109,6 +112,39 @@ static void mcd_chr_event(void *opaque, QEMUChrEvent event)
- {
+diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
+index 5ab1a4ffb0..14f492ba61 100644
+--- a/include/qemu/cutils.h
++++ b/include/qemu/cutils.h
+@@ -158,6 +158,8 @@ int qemu_strtoul(const char *nptr, const char **endptr, int base,
+                  unsigned long *result);
+ int qemu_strtoi64(const char *nptr, const char **endptr, int base,
+                   int64_t *result);
++int qemu_strtou32(const char *nptr, const char **endptr, int base,
++                  uint32_t *result);
+ int qemu_strtou64(const char *nptr, const char **endptr, int base,
+                   uint64_t *result);
+ int qemu_strtod(const char *nptr, const char **endptr, double *result);
+diff --git a/util/cutils.c b/util/cutils.c
+index 42364039a5..5e00a4ec14 100644
+--- a/util/cutils.c
++++ b/util/cutils.c
+@@ -665,6 +665,36 @@ int qemu_strtoi64(const char *nptr, const char **endptr, int base,
+     return check_strtox_error(nptr, ep, endptr, *result == 0, errno);
  }
  
 +/**
-+ * init_query_cmds_table() - Initializes all query functions.
++ * Convert string @nptr to an uint32_t.
 + *
-+ * This function adds all query functions to the mcd_query_cmds_table. This
-+ * includes their command string, handler function and parameter schema.
-+ * @mcd_query_cmds_table: Lookup table with all query commands.
++ * Works like qemu_strtoul(), except it stores UINT32_MAX on overflow.
++ * (If you want to prohibit negative numbers that wrap around to
++ * positive, use parse_uint()).
 + */
-+static void init_query_cmds_table(MCDCmdParseEntry *mcd_query_cmds_table)
-+{}
-+
-+/**
-+ * mcd_set_stop_cpu() - Sets c_cpu to the just stopped CPU.
-+ *
-+ * @cpu: The CPU state.
-+ */
-+static void mcd_set_stop_cpu(CPUState *cpu)
++int qemu_strtou32(const char *nptr, const char **endptr, int base,
++                  uint32_t *result)
 +{
-+    mcdserver_state.c_cpu = cpu;
-+}
++    char *ep;
 +
-+/**
-+ * mcd_init_debug_class() - initialize mcd-specific DebugClass
-+ */
-+static void mcd_init_debug_class(void){
-+    Object *obj;
-+    obj = object_new(TYPE_DEBUG);
-+    DebugState *ds = DEBUG(obj);
-+    DebugClass *dc = DEBUG_GET_CLASS(ds);
-+    dc->set_stop_cpu = mcd_set_stop_cpu;
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    ms->debug_state = ds;
++    assert((unsigned) base <= 36 && base != 1);
++    if (!nptr) {
++        *result = 0;
++        if (endptr) {
++            *endptr = nptr;
++        }
++        return -EINVAL;
++    }
++
++    errno = 0;
++    *result = strtoul(nptr, &ep, base);
++    /* Windows returns 1 for negative out-of-range values.  */
++    if (errno == ERANGE) {
++        *result = -1;
++    }
++    return check_strtox_error(nptr, ep, endptr, *result == 0, errno);
 +}
 +
  /**
-  * mcd_init_mcdserver_state() - Initializes the mcdserver_state struct.
+  * Convert string @nptr to an uint64_t.
   *
-@@ -119,6 +155,35 @@ static void mcd_chr_event(void *opaque, QEMUChrEvent event)
-  */
- static void mcd_init_mcdserver_state(void)
- {
-+    g_assert(!mcdserver_state.init);
-+    memset(&mcdserver_state, 0, sizeof(MCDState));
-+    mcdserver_state.init = true;
-+    mcdserver_state.str_buf = g_string_new(NULL);
-+    mcdserver_state.mem_buf = g_byte_array_sized_new(MAX_PACKET_LENGTH);
-+    mcdserver_state.last_packet = g_byte_array_sized_new(MAX_PACKET_LENGTH + 4);
-+
-+    /*
-+     * What single-step modes are supported is accelerator dependent.
-+     * By default try to use no IRQs and no timers while single
-+     * stepping so as to make single stepping like a typical ICE HW step.
-+     */
-+    mcdserver_state.supported_sstep_flags =
-+        accel_supported_gdbstub_sstep_flags();
-+    mcdserver_state.sstep_flags = SSTEP_ENABLE | SSTEP_NOIRQ | SSTEP_NOTIMER;
-+    mcdserver_state.sstep_flags &= mcdserver_state.supported_sstep_flags;
-+
-+    /* init query table */
-+    init_query_cmds_table(mcdserver_state.mcd_query_cmds_table);
-+
-+    /* at this time the cpu hans't been started! -> set cpu_state */
-+    mcd_cpu_state_st cpu_state =  {
-+            .state = CORE_STATE_HALTED,
-+            .info_str = STATE_STR_INIT_HALTED,
-+    };
-+    mcdserver_state.cpu_state = cpu_state;
-+
-+    /* create new debug object */
-+    mcd_init_debug_class();
- }
- 
- /**
-@@ -128,6 +193,84 @@ static void mcd_init_mcdserver_state(void)
-  */
- static void reset_mcdserver_state(void)
- {
-+    g_free(mcdserver_state.processes);
-+    mcdserver_state.processes = NULL;
-+    mcdserver_state.process_num = 0;
-+}
-+
-+/**
-+ * mcd_create_default_process() - Creates a default process for debugging.
-+ *
-+ * This function creates a new, not yet attached, process with an ID one above
-+ * the previous maximum ID.
-+ * @s: A MCDState object.
-+ */
-+static void mcd_create_default_process(MCDState *s)
-+{
-+    MCDProcess *process;
-+    int max_pid = 0;
-+
-+    if (mcdserver_state.process_num) {
-+        max_pid = s->processes[s->process_num - 1].pid;
-+    }
-+
-+    s->processes = g_renew(MCDProcess, s->processes, ++s->process_num);
-+    process = &s->processes[s->process_num - 1];
-+
-+    /* We need an available PID slot for this process */
-+    assert(max_pid < UINT32_MAX);
-+
-+    process->pid = max_pid + 1;
-+    process->attached = false;
-+}
-+
-+/**
-+ * find_cpu_clusters() - Returns the CPU cluster of the child object.
-+ *
-+ * @param[in] child Object with unknown CPU cluster.
-+ * @param[in] opaque Pointer to an MCDState object.
-+ */
-+static int find_cpu_clusters(Object *child, void *opaque)
-+{
-+    if (object_dynamic_cast(child, TYPE_CPU_CLUSTER)) {
-+        MCDState *s = (MCDState *) opaque;
-+        CPUClusterState *cluster = CPU_CLUSTER(child);
-+        MCDProcess *process;
-+
-+        s->processes = g_renew(MCDProcess, s->processes, ++s->process_num);
-+
-+        process = &s->processes[s->process_num - 1];
-+        assert(cluster->cluster_id != UINT32_MAX);
-+        process->pid = cluster->cluster_id + 1;
-+        process->attached = false;
-+
-+        return 0;
-+    }
-+
-+    return object_child_foreach(child, find_cpu_clusters, opaque);
-+}
-+
-+/**
-+ * pid_order() - Compares process IDs.
-+ *
-+ * This function returns -1 if process "a" has a ower process ID than "b".
-+ * If "b" has a lower ID than "a" 1 is returned and if they are qual 0 is
-+ * returned.
-+ * @a: Process a.
-+ * @b: Process b.
-+ */
-+static int pid_order(const void *a, const void *b)
-+{
-+    MCDProcess *pa = (MCDProcess *) a;
-+    MCDProcess *pb = (MCDProcess *) b;
-+
-+    if (pa->pid < pb->pid) {
-+        return -1;
-+    } else if (pa->pid > pb->pid) {
-+        return 1;
-+    } else {
-+        return 0;
-+    }
- }
- 
- /**
-@@ -141,6 +284,17 @@ static void reset_mcdserver_state(void)
-  */
- static void create_processes(MCDState *s)
- {
-+    object_child_foreach(object_get_root(), find_cpu_clusters, s);
-+
-+    if (mcdserver_state.processes) {
-+        /* Sort by PID */
-+        qsort(mcdserver_state.processes,
-+              mcdserver_state.process_num,
-+              sizeof(mcdserver_state.processes[0]),
-+              pid_order);
-+    }
-+
-+    mcd_create_default_process(s);
- }
- 
- int mcdserver_start(const char *device)
 -- 
 2.34.1
 
