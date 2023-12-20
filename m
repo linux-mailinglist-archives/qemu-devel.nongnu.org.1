@@ -2,69 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF9E81A73A
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 20:21:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D273081A73D
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 20:24:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG27C-0002xC-D2; Wed, 20 Dec 2023 14:20:22 -0500
+	id 1rG2AK-0003tO-Tt; Wed, 20 Dec 2023 14:23:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rG278-0002x3-Pt
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:20:18 -0500
-Received: from mail-wm1-f41.google.com ([209.85.128.41])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rG276-0008RN-Mq
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:20:18 -0500
-Received: by mail-wm1-f41.google.com with SMTP id
- 5b1f17b1804b1-40d3c4bfe45so203535e9.1
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 11:20:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1rG2AH-0003tD-Aw
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:23:33 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1rG2A3-0000rv-UH
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:23:33 -0500
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id AF8CB3F73B
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:23:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1703100196;
+ bh=js4pgbMeLleNUdg6ReN6OPIZX8bPhOiScNdH+ifeyhI=;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+ In-Reply-To:Content-Type;
+ b=eqicBLGhpiP8rHwTX9ZL3i9WJYcxa7TSrT2m6wtP7MoK9Yx1eAScr5NA5KIRX5zRm
+ xXRj/XAvBrQ4CudA2XSuyR2TQ7zvG0fLNkAecSXqtrC3VwHhn1lD14QFEeUs05s+X1
+ NEoUml2B7Ny3aRumGosNAhdiww6f97SqhMs/Ne+4vCYp1TKcU+iGRO4Jd4Akwf1xV8
+ 5H2BgKLyP1c3guLTMEKVcJIzXdiCtXytDQQAcOWjndfiJUJH1JR2WsUHy34iI7Pc0D
+ 15KZjUtNibUpgpTInaT/c6j/uAlTPphVjbwep/bddMRhHlTtegabq3Op/pLd9yY0wn
+ DAr0piAnIuYhQ==
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-40c495a9c7cso172415e9.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 11:23:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703100014; x=1703704814;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dNNerW0A0Y78SzfMPQfK84H4hlnaldHQC8UNOdUG2QQ=;
- b=p828LbOm/qNok9kD6uixYa4JTme3XTFf75ASe8Tv4pqAyt9r+hJv8Xc80R/uMbMt5T
- tNQg0Y2fDj2gStIOI8ddzPQH5k/Ykqw65mCAULqDSsrWhOe7+bjhwPegG7JPz3ZIbsIt
- eYX0XHYOXzPm9IeX9+ezBNBVpn94LWcYjEz6H+Km+vzFky08FXa+8Xcjf4CNwjTsK/0+
- Ojc/5hFbl9ME6lUMOPg0Eg9jzK+Z+f4OvMQSzvnSqz2JHw4YWQgKw7xDfGGOifhnkCS9
- hYLHzfH0Sn48IpNUv9XyuzVnml+3Zknonxo7HHRtQ6igBRcTRQIrlz9MxtuVXsHBf1Uy
- oRJQ==
-X-Gm-Message-State: AOJu0Yw3ESJoZh5a1N5/NJgSqO0c8bEkHEXg8iZNez1sReU1EsBAYogz
- 7bHDwT3hf7eZRHAB0+riJ3o=
-X-Google-Smtp-Source: AGHT+IHWnFIOHz3mG3trsJ5I9UCViJOy8BnwPraGog3OQrQmBvG5TbxQiaO+SX2g0bQrWJKkxQNNTw==
-X-Received: by 2002:a05:600c:1c12:b0:40d:2df3:fe2 with SMTP id
- j18-20020a05600c1c1200b0040d2df30fe2mr47052wms.272.1703100014292; 
- Wed, 20 Dec 2023 11:20:14 -0800 (PST)
-Received: from fedora (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
- by smtp.gmail.com with ESMTPSA id
- iv11-20020a05600c548b00b0040b4b2a15ebsm586159wmb.28.2023.12.20.11.20.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Dec 2023 11:20:13 -0800 (PST)
-Date: Wed, 20 Dec 2023 20:20:12 +0100
-From: Thomas Huth <huth@tuxfamily.org>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 08/11] next-cube.c: move static old_scr2 variable to
- NeXTPC
-Message-ID: <20231220202012.34ce2b0a@fedora>
-In-Reply-To: <20231220131641.592826-9-mark.cave-ayland@ilande.co.uk>
-References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
- <20231220131641.592826-9-mark.cave-ayland@ilande.co.uk>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1703100196; x=1703704996;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=js4pgbMeLleNUdg6ReN6OPIZX8bPhOiScNdH+ifeyhI=;
+ b=JlvRxIqsslUDwPrzxXSgmCl6EGecA+g/EB1H9HOdAYWYmADnFTCaQJturPPhcXvlqA
+ toRnbFgyEnmWSzuIQsLPOu5msurFfUK0b7KhCIA3h9WFkeu6QeWNeCQzxTbNolIU3SwF
+ cHPeCNuFM36av54K1NVTDaO1oN5h1YqFhPqBgZG2duRLgUpX7oVd0zDwM4Uu4/00FKkt
+ jho45oOny5nn3NdnONdarMXR3CtTaeq6wpYaZWaNd2o30MfDC99KKs3RDjK+EnUM7N2f
+ rtSmKG+918xr9z5ZkRRvKd0qyfTabeKaxDxcONkBnI/gH4dX5ciNAA/aCstkNpA81joW
+ 2htg==
+X-Gm-Message-State: AOJu0Yx47arJopRKIre3MegxH3JFwwL7H9xUtBcrIvNVZTxuEodCiwXl
+ Vag6WCIwJfXcPjfc8qekWHUSl67AjPQF5yWEOGjiBpALfBHJ5PFzIC3xWBP3x5ws3yaOCzI0zsg
+ ZnG0p/9r1/G4MjVctefqm8ZCubSXqHYJj
+X-Received: by 2002:a05:600c:3488:b0:40d:2a2a:c0f3 with SMTP id
+ a8-20020a05600c348800b0040d2a2ac0f3mr99201wmq.34.1703100196386; 
+ Wed, 20 Dec 2023 11:23:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHLCkfHdLgDqAxOpoAAeqZR0yS/9woQAXLoS95ZRMvZCJ9js0eM2dxKiaZ85cTiFhoTeJb4LA==
+X-Received: by 2002:a05:600c:3488:b0:40d:2a2a:c0f3 with SMTP id
+ a8-20020a05600c348800b0040d2a2ac0f3mr99190wmq.34.1703100196033; 
+ Wed, 20 Dec 2023 11:23:16 -0800 (PST)
+Received: from [192.168.123.67] (ip-178-202-040-247.um47.pools.vodafone-ip.de.
+ [178.202.40.247]) by smtp.gmail.com with ESMTPSA id
+ dx18-20020a05600c63d200b0040c61ee0816sm1190216wmb.0.2023.12.20.11.23.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Dec 2023 11:23:15 -0800 (PST)
+Message-ID: <f0299e4a-ca4e-41fe-9475-b06db1bc80c5@canonical.com>
+Date: Wed, 20 Dec 2023 20:23:14 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] docs/system/riscv: document acpi parameter of virt
+ machine
+Content-Language: en-US
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+References: <20231219143829.8961-1-heinrich.schuchardt@canonical.com>
+ <ZYKQdb0xYGVezoqS@sunil-laptop>
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <ZYKQdb0xYGVezoqS@sunil-laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.128.41; envelope-from=th.huth@gmail.com;
- helo=mail-wm1-f41.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=185.125.188.123;
+ envelope-from=heinrich.schuchardt@canonical.com;
+ helo=smtp-relay-internal-1.canonical.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,76 +108,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Wed, 20 Dec 2023 13:16:38 +0000
-schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
-
-> Move the old_scr2 variable to NeXTPC so that the old SCR2 register state is
-> stored along with the current SCR2 state.
+On 20.12.23 07:57, Sunil V L wrote:
+> On Tue, Dec 19, 2023 at 03:38:29PM +0100, Heinrich Schuchardt wrote:
+>> Since QEMU v8.0.0 the RISC-V virt machine has a switch to disable ACPI
+>> table generation. Add it to the documentation.
+>>
+>> Fixes: 168b8c29cedb ("hw/riscv/virt: Add a switch to disable ACPI")
+>> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+>> ---
+>>   docs/system/riscv/virt.rst | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+>> index f5fa7b8b29..4e134ff2ac 100644
+>> --- a/docs/system/riscv/virt.rst
+>> +++ b/docs/system/riscv/virt.rst
+>> @@ -95,6 +95,11 @@ The following machine-specific options are supported:
+>>     SiFive CLINT. When not specified, this option is assumed to be "off".
+>>     This option is restricted to the TCG accelerator.
+>>   
+>> +- acpi=[on|off|auto]
+>> +
+>> +  When this option is "on", ACPI tables are generated and exposed as firmware
+>> +  tables etc/acpi/rsdp and etc/acpi/tables.
+>> +
+> Hi Heinrich,
 > 
-> Since the SCR2 register is 32-bits wide, convert old_scr2 to uint32_t and
-> update the SCR2 register access code to allow unaligned writes.
-> 
-> Note that this is a migration break, but as nothing will currently boot then
-> we do not need to worry about this now.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->  hw/m68k/next-cube.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-> index f2222554fa..d53f73fb8b 100644
-> --- a/hw/m68k/next-cube.c
-> +++ b/hw/m68k/next-cube.c
-> @@ -91,6 +91,7 @@ struct NeXTPC {
->  
->      uint32_t scr1;
->      uint32_t scr2;
-> +    uint32_t old_scr2;
->      uint32_t int_mask;
->      uint32_t int_status;
->      uint32_t led;
-> @@ -125,8 +126,7 @@ static const uint8_t rtc_ram2[32] = {
->  
->  static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
->  {
-> -    static uint8_t old_scr2;
-> -    uint8_t scr2_2;
-> +    uint8_t old_scr2, scr2_2;
->      NextRtc *rtc = &s->rtc;
->  
->      if (size == 4) {
-> @@ -144,6 +144,8 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
->          }
->      }
->  
-> +    old_scr2 = (s->old_scr2 >> 8) & 0xff;
-> +
->      if (scr2_2 & 0x1) {
->          /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
->          if (rtc->phase == -1) {
-> @@ -252,7 +254,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
->      }
->      s->scr2 = val & 0xFFFF00FF;
->      s->scr2 |= scr2_2 << 8;
+> Should we add, When not specified or set to auto, this option is assumed
+> to be "on"?
 
-So s->scr2 is updated with the "val" at the end of nextscr2_write() ... 
+Sure.
 
-> -    old_scr2 = scr2_2;
->  }
->  
->  static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
-> @@ -318,7 +319,10 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
->          break;
->  
->      case 0xd000 ... 0xd003:
-> +        s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
-> +                            size << 3, val);
+Best regards
 
-... but here it is also updated before nextscr2_write() ? Looks somewhat
-strange. Though I have to admit that I don't fully understand the logic
-here anyway... Maybe we could peek at Previous to see how this register is
-supposed to behave?
-
- Thomas
+Heinrich
 
