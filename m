@@ -2,183 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5629A81A20A
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 16:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9C981A241
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 16:24:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFyJV-0008JQ-83; Wed, 20 Dec 2023 10:16:49 -0500
+	id 1rFyQ4-0001QF-2Q; Wed, 20 Dec 2023 10:23:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rFyJS-0008Iy-BI
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:16:46 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rFyJQ-0004t8-C8
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:16:46 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BKDxBqS032707; Wed, 20 Dec 2023 15:15:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=rO0bjcNUvu0X4fhCXYG3Kn4mXdmlpL3Fu9nqhDgTOR4=;
- b=ktFn9fgv0JDP6L7z5rIra75uQl+choMYVlwjgWSIPP9Ibeh1BXZ0jZlwc4B2AB1QAdmr
- WAEcnDKE75juyhFa8YAlI01nirSqYU938WqAzuItbnzORpjqmFEa9flYTAIgxAtkuqlH
- S6fNM9F4xBl4TIsjWDn9hRve0lHZDb/RFpciIO2irpsaA85x4vr7TQQDb1pf/fmoHKTO
- iHLE8hp6xonoXcupZaOnUkox/Wgx8pL99P+FbxZIqCnkcuvFEyAfzT1IR5+O6qheVy3H
- ZB3ZxHXQviKd0dt6hLNIKPSEk8HIlvi/8rduyXBKGd1OyR9SCp7v+C9jqflWfyaD+XwW uw== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3v12p48s8g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 20 Dec 2023 15:15:52 +0000
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3BKEWpX8022325; Wed, 20 Dec 2023 15:15:51 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com
- (mail-dm3nam02lp2041.outbound.protection.outlook.com [104.47.56.41])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3v12b8wnp3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 20 Dec 2023 15:15:51 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UNQidqn76BTAN6Y2VRxc+Er8eiORIf8p1P6wQyIhLa1mGTpmMnd4ZcLLEIxh5NRQ2LsGFJLrHTteM0p3sXU5IxJAr4MdIQU3F0h6SEndY1yQ2QUBJ+8CVACfGFjPbFfpxF+TyjS7VZoefxvy2VZgDntSB0TAwlY5vuHfoYXnEawkQ2B/zQvFNNlMySgWLTHEJo+SsyJPx+C1My1kTkXEy30+iBs9YekYyj3czQTBOZUc6f7FWGfbmxMWNMycmRka2ZRe/mqlbs1SosiP8yj+lVJhuRrqEvAATAXeIP2P+MM5TWDfv3akkB1hptiodb6N/NNVlx2Bbp7SNGz+tL6vDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rO0bjcNUvu0X4fhCXYG3Kn4mXdmlpL3Fu9nqhDgTOR4=;
- b=Qaa7JA6GQsjW9naQp5Rk+LuOFn7qdfqNBAT0v6xmcbUZ/jWzhFE3k5/k4POkhdEV0NSNWVi6S+by1q0duIz9PMTb16I2X/hl8vYpOSUeS+BhbxOqCCjeOYNnItc7wwDUaU1R00ny56+iNkKBw9YPgwwMgypNDIuK3H+o2Rusjnnx+MmYF4HTww6bQofMSn6nPoCnmkh1Puo6d8x6EQZ2cs/nXHgSC7anHDwXPFks71FIAc5X31odaAucGALuLIY8sBf2U7zIGIz2L3CoHi1qRSKl1vkp+6xoQEIhVfVMX6uw42JVEmsTDa5NgcKTvxGq8EY1u7TJcDqkdtaVgvHhaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rO0bjcNUvu0X4fhCXYG3Kn4mXdmlpL3Fu9nqhDgTOR4=;
- b=TZfk/5SiQv/moAQz8XcBhLBNSX0+QbyFwX72GfroT1sXLMKO8j3xWk7Vd2XD1Lr9UERi6EwcALngxpeb9e5Bh5uggOP1giyBGelvLrgqUZDie1Vzq7y8qJKYm5tc2CIm1WFMZc8w0wHTgMcyCSmfrmgMgNU7X5l0PvsfFUdfqRs=
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
- by PH7PR10MB5830.namprd10.prod.outlook.com (2603:10b6:510:127::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Wed, 20 Dec
- 2023 15:15:48 +0000
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::d609:b162:ba7c:4e96]) by SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::d609:b162:ba7c:4e96%4]) with mapi id 15.20.7113.016; Wed, 20 Dec 2023
- 15:15:48 +0000
-Message-ID: <f4497a5a-cb84-4c0a-8e45-567d53f45fe1@oracle.com>
-Date: Wed, 20 Dec 2023 10:15:43 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V8 00/12] fix migration of suspended runstate
-Content-Language: en-US
-To: Anthony PERARD <anthony.perard@citrix.com>, Peter Xu <peterx@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Paul Durrant <paul@xen.org>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, xen-devel@lists.xenproject.org
-References: <1702481421-375368-1-git-send-email-steven.sistare@oracle.com>
- <a9ddc1b2-d4fc-44de-857b-2aeb35fa0925@oracle.com> <ZX_VS_KDsoiL9T2X@x1n>
- <04583cf1-8172-49be-81b0-adb88d6f9808@perard>
-From: Steven Sistare <steven.sistare@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <04583cf1-8172-49be-81b0-adb88d6f9808@perard>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ2PR07CA0008.namprd07.prod.outlook.com
- (2603:10b6:a03:505::8) To SA2PR10MB4684.namprd10.prod.outlook.com
- (2603:10b6:806:119::14)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rFyPp-0001Pi-3h
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:23:22 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rFyPk-0007jX-Eu
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:23:19 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 0ECAC21FD5;
+ Wed, 20 Dec 2023 15:23:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1703085792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LyPuH2Bg1VeqgV8UgY2s+ld3VbZzKdq+8S8lWDrxbtI=;
+ b=KNvWRvG2dTtxeTD9AAWRc0H5D4xSDYCITFJoot0jy2zXVMxWhyE8Q9d7qYQyQAHNYDNkAQ
+ YIum0dUB3YyV92HjeBczT9ZJw3nUu5FZ/xAqNVGRreJ1Zlq6yA22PtgY1roIVOT7buPRtJ
+ k91juVoWROCUdmd8u2wzYU3hXY2g46w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1703085792;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LyPuH2Bg1VeqgV8UgY2s+ld3VbZzKdq+8S8lWDrxbtI=;
+ b=NseXL3tAA8lovLBYNipQCKnF4gyWyaICrtcJrId5phSk2Lq+rak3zztRIMKbTXjl5UsWi2
+ 3CVgHQBOvNIJ8gDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1703085792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LyPuH2Bg1VeqgV8UgY2s+ld3VbZzKdq+8S8lWDrxbtI=;
+ b=KNvWRvG2dTtxeTD9AAWRc0H5D4xSDYCITFJoot0jy2zXVMxWhyE8Q9d7qYQyQAHNYDNkAQ
+ YIum0dUB3YyV92HjeBczT9ZJw3nUu5FZ/xAqNVGRreJ1Zlq6yA22PtgY1roIVOT7buPRtJ
+ k91juVoWROCUdmd8u2wzYU3hXY2g46w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1703085792;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LyPuH2Bg1VeqgV8UgY2s+ld3VbZzKdq+8S8lWDrxbtI=;
+ b=NseXL3tAA8lovLBYNipQCKnF4gyWyaICrtcJrId5phSk2Lq+rak3zztRIMKbTXjl5UsWi2
+ 3CVgHQBOvNIJ8gDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 82CBB136A5;
+ Wed, 20 Dec 2023 15:23:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id FsqEEt8Gg2VvMAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 20 Dec 2023 15:23:11 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Warner Losh <imp@bsdimp.com>, Peter Maydell <peter.maydell@linaro.org>
+Cc: Dave Blanchard <dave@killthe.net>, QEMU Developers <qemu-devel@nongnu.org>
+Subject: Re: Qemu resets terminal to crazy defaults
+In-Reply-To: <CANCZdfqX=URh2C+upKQPF9sg9TX6oZpHfrYF6rGRNz-6SdbhLw@mail.gmail.com>
+References: <20231219132135.c4bff4807c9d7215b179f240@killthe.net>
+ <87plz22d9r.fsf@suse.de>
+ <CAFEAcA-RJUUZo0KYujQskkAim_qXkJxtuSb9wtgxoP0XSEtKYQ@mail.gmail.com>
+ <CANCZdfqX=URh2C+upKQPF9sg9TX6oZpHfrYF6rGRNz-6SdbhLw@mail.gmail.com>
+Date: Wed, 20 Dec 2023 12:23:08 -0300
+Message-ID: <87a5q4rj8j.fsf@suse.de>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|PH7PR10MB5830:EE_
-X-MS-Office365-Filtering-Correlation-Id: b6dee6d6-1b70-49c2-c06c-08dc016e8bae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Hr85CEYbfGHxclv/2G7XR/SHodh1AYwGZB5Ry9j8RmheauaNdpfFc8puPVqnDNgUekpKNjl3zI3eaayJoBiJEgFSArH74RlxomOf8n1syDPdWQftg9lzbvffiGVOBOAmSgzRX/busY9V86XCO8bM0f5JLCp7EgrBsxNRkZgi7QJXJLvx0N4ckWe3NfQy9tCkXEurcSh4SvgXFV155XOOjr13KM9kSZoRHBb+0mJiMSMYaaJXd99yJk0AW54gJORrvlc/HBP0USo9yq7h+oue2mNeE4ONURkjz1Jy0WooAoKcEDLUo5jKp9QWpEthobyx3JZrpT4Jsx9EsSGW7r3bHbRC8jVmHOunAsQ7FhldQ3g3CFQbhDBCo+0bZ9GdPhhp2JsOzIxVDSukdxZ/3pVSSpV6/mM2UnYr71urNUv3b6bEa+MEqm6XBHSIcNB0YmX2ruqS32jxh4Qhw8WKm3kxoJI869zd/rxHI98i8wHgOohk9MYx+DUC2QZ3CU60vkbyqUT88A3e1idMyAugUZEYvTbGnaRGum+/I0QLBO/fEmdHcieCoMSkuiKGbWbW4kYDeH6G12qnq9ZVe7Wn1jlSvKWhFcVRsgjUbrRxP+GALo6ULQ7eFpUdi0AwL+Pf3AR+o5vVxfOdmrSc7Mu4ih2gXg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(366004)(39860400002)(136003)(396003)(376002)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(8676002)(5660300002)(4326008)(8936002)(66946007)(44832011)(2906002)(7416002)(478600001)(86362001)(38100700002)(6486002)(36756003)(2616005)(41300700001)(53546011)(36916002)(26005)(6512007)(6506007)(6666004)(66556008)(316002)(66476007)(54906003)(31696002)(4744005)(110136005)(31686004)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T2JiVXlPT2E0TUNwWnZlYWVWN2RYUFFIKytUdUFBR0lHNElNcUdSV21mckd3?=
- =?utf-8?B?dlcwL29oYStRYnhWVVh5RDJrdG9XYVY5cU5aSFJJWFJ6aHNiY1c4NUxHR0dC?=
- =?utf-8?B?MkxwYW14eDVVcTI4a3M3T00zVkt4NmJTZXkrWUd2TFlFSmJMYTBuRUU2REZR?=
- =?utf-8?B?bTlDa3FBbjc2TlJzM0Rnb2lINXg5S3dqK3h2blZhTjhvNXI4bllGb3ZPYXlL?=
- =?utf-8?B?U3ZibUN3dU00UFhQOFIyLzZ4MGlrMllrdWh2bStGdlVoYUV5dmorejlPdTA5?=
- =?utf-8?B?bnRtTTNzcXlhQzltbnlhZlZFS2RnWGhocDIybVB4Z1pVRml0T2FtdURHN1Ry?=
- =?utf-8?B?Z28yT0EzcVVEMnM5UUNZZnZoUXBpM25FOVgvaStSNkkzc2Y5SGpBTmJCYUZP?=
- =?utf-8?B?OVphYUExRkFVZUtMWTRXS2JmSnRqSXJKS3lUbUM0NUgwN1VMY2xseEVUVlcr?=
- =?utf-8?B?YW9IM2tjZ2RYMW5sSDIzQ24zdUZ5RzUxUCs0SUM1ei91aUpOZ2pTVEI0R0RG?=
- =?utf-8?B?NS9qcUxEZDJGcTNUaHUyMWVaUkV4OC9VdWZZaWVpaEdmejNhUjFwVkZwQWJE?=
- =?utf-8?B?YkxnRXJBVUttdWhUWXJlRUlITDA4aE1DOEROZUkzNmcvWFNWYUxYSEhUUTQz?=
- =?utf-8?B?TlhlZnlEYlY2c0MvcVBtR1l2K0FOS1E0YmRPZ2JaNE1tMlpCZ0tCdUF2WkRl?=
- =?utf-8?B?ZVpTZVhOY0JleUtIQW0yL1hBK2FvdDdRWTB4aVlxODhuY1pOaDYzQ1FRL0lH?=
- =?utf-8?B?N083cjBSbFc5NjJDRGU3TXNlUkxTSWxRdHJ3TXB5MXBuMllLeG50WTBxdkJC?=
- =?utf-8?B?RzNqVnVMNVB0UHlacXZuOHBLcjJpbUJ3ZGRxWW1Ubk9JdzFrMkEyUU10V3lN?=
- =?utf-8?B?Yzh6RkdvSkFpd1Q3djZ6enpJd3ZxY2I2RTFYdXVpd0hlTDBJZHhWbUg4ZFlV?=
- =?utf-8?B?Y29UaWk3VVkwUlJUWUJMSVBvRXJ1clh1MTEwQ3FJUHJXTGJTbVhGeGRnSCtx?=
- =?utf-8?B?VkhWeDVuYmo1MnIvRm04SmtIVk90NktrQnk4dTQwT2piVThFaTdWbkxkbnlO?=
- =?utf-8?B?c1hSOUlNTkM4TG4rN3NOMnJvUUJxUHJCejNVMmsxb1hVWHJKZ3RrNHdLZ2hM?=
- =?utf-8?B?dFV3OHB0dHhUbzViZHNHQ3dIeFpLSDBMd3hFdU1DejcyN0JJYk83MVdWMXNx?=
- =?utf-8?B?bGg1RE42c0g5Wm1hcmJ0WHVMdEwxSml2bkhvWisrMFBqZnN3MWZaenNmQnU5?=
- =?utf-8?B?V1dwNWdvZW1YaDVWVjB3K3BJMkZ0Z0NGKy94ck1QZGF2aGJFUDhibzdiaThG?=
- =?utf-8?B?Q3Rwam1HSHM3U0lWMzFHd3REN1UzMjhBQk1CQ0d5VEFVa1hsUk03aXdlSkdh?=
- =?utf-8?B?WE5nM1ZESldjSnlWUElRN2hnZE9ZK2RaZXZPQ2N4MHNXZlFQbjVFUXRaQzJl?=
- =?utf-8?B?MjVhYXJub3I0RldyUWpNWmxQMTFJb1lIU0V4b0RES1ZTY1ZkNDh6NVdBVEJW?=
- =?utf-8?B?TWdvSC9oY05FTHpOcTRzV2NNTitEeEU0aW5HWitnajZHSE9kcUc2OGZpaXl2?=
- =?utf-8?B?VGx2ZnFLcENGZXhFK0RQUlJYamxPaUwrS282VkpJSmZXc01ISVFaNENlWVBG?=
- =?utf-8?B?OFN1dHovN3YyN2dNMUV1ZjJCcDdlRzdRWjFDNXk3T1h0TWdJODB1Mm1ERXgv?=
- =?utf-8?B?ZU9tRWdWbXIwaVZEUmhCZm1sZmdjbFExSkVhVWlxTmNKemdBMUhWQTRhMWU2?=
- =?utf-8?B?WEJUZFN5eUNUd1BISURSSitWeGlyVlp2Y3hnTU02YUozOWJVRnptaFFxalVz?=
- =?utf-8?B?cHA2M3ZkTnVkdHZWWWRIdlZFMnYxNUxxaU1MZHZ6dXFWZjhSeUM3eDg4T0xZ?=
- =?utf-8?B?QzY0SjZYOVpPbER1N3QzS213M2RBdHVCODlLS2JacHNzN0l0NGhlTHVxZzJX?=
- =?utf-8?B?ZkFiWW9BcXVha2NOTzB0cXhpTHJrWmpPYnliamF0UkZKV1JrOXljdWRUYjI4?=
- =?utf-8?B?MzZRWVZtbVhUK3VYZG5vTGE2QkhNNUVQVDI2NXhkN0RRdWxuY0ZtNmZlaklW?=
- =?utf-8?B?TkIwNjZXbFAvelNnQzJiUXExR0hQdllvcW1BdGFhTC9pNVNXRkdlWnBOWGEx?=
- =?utf-8?B?MzV4ZnJOSjVvUzBFL1JLeG4yYmpYSTZSU0IrWWQwZWpWcG00d0ZqbHI1VTY3?=
- =?utf-8?B?Rmc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: f8T1z/ZKXc2VF7sm34iA3KsWrsm8Q+b5WeM8uk4oJUs7A3BubSuizk1z5SgALhuYHxWmQG3EkL+aS6pymDD8sYuxvZgC10vSseUjimdJfYnOcaXqoduNC3CUq51Hz65NvhQ5h0++WMTnjlyvgqJL3BZwxcMlwuXoa6yD9AsnWYPK2BZP3DMIMquRMDl5VAUfNHJJ60kOHjmhwYKfyabPzXoAOQACRtr1qWVOLpY+rDYcZHv+oSxhW5l3GaXuWyLMP4tVKCQ0BCA84p/KytAWreAQuf+0HGR5usSMgKLS6QLE6Ra7iYPmVSTYaWGkKw/R/x5qtxjWTD1eYmz2IAgvceitbxVkQxbrnX/8vwIzY8IwnQPCTMakefUCthzPrOF3m6gJbLXNd2Hy0b0NS+avdZDhsHIT8Mu8W+I3U8ZAu9GmPjoI/taPApyqtrRAwQ+wcsMnog4N8rXn/vm0Z1aNW4ydjN9GeE78nkGVkDhqOiZVwp2sKv2sTk71v3orNgakMPA7HV1pE9mPWoBbMU8a9DalINprTL7JX+jCPv5vgL3cnJfH3m3/Dzj5TiDotIa5UxmrX6DLpQlmt193LDXC6+4FI4C85QJ0snMJwJ8Revk=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6dee6d6-1b70-49c2-c06c-08dc016e8bae
-X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 15:15:48.2950 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: heFhPV4BF0VnP8jNtMrkBuWge3nR11+b/wXy/Sw5gcD/qiCgXw9aZTDM4b9tvJRhbD/eVPgXEi7i+G8U8wMjf8GTEqWrqXO++eHjpeNHwxo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB5830
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-20_09,2023-12-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- malwarescore=0 spamscore=0
- mlxlogscore=999 adultscore=0 suspectscore=0 mlxscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2312200109
-X-Proofpoint-GUID: 1D9z49OOA-J1uSB78w3Fdm6J63CgD6ss
-X-Proofpoint-ORIG-GUID: 1D9z49OOA-J1uSB78w3Fdm6J63CgD6ss
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -4.29
+X-Spamd-Result: default: False [-4.29 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ TO_DN_ALL(0.00)[]; NEURAL_HAM_SHORT(-0.19)[-0.960];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linaro.org:email,qemu.org:url];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -195,19 +119,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/20/2023 9:52 AM, Anthony PERARD wrote:
-> On Mon, Dec 18, 2023 at 01:14:51PM +0800, Peter Xu wrote:
->> On Wed, Dec 13, 2023 at 10:35:33AM -0500, Steven Sistare wrote:
->>> Hi Peter, all have RB's, with all i's dotted and t's crossed - steve
->>
->> Yes this seems to be more migration related so maybe good candidate for a
->> pull from migration submodule.
->>
->> But since this is still solving a generic issue, I'm copying a few more
->> people from get_maintainers.pl that this series touches, just in case
->> they'll have something to say before dev cycle starts.
-> 
-> I did a quick smoke test of migrating a Xen guest. It works fine for me.
+Warner Losh <imp@bsdimp.com> writes:
 
-Thanks very much, I appreciate it - steve
+> On Tue, Dec 19, 2023, 1:55=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
+.org>
+> wrote:
+>
+>> On Tue, 19 Dec 2023 at 19:40, Fabiano Rosas <farosas@suse.de> wrote:
+>> >
+>> > Dave Blanchard <dave@killthe.net> writes:
+>> >
+>> > > Hello all, can you please help me to understand what Qemu is doing
+>> here?
+>> > >
+>> > > When connecting to the guest for example using a serial/tcp/telnet
+>> link, some kind of code is being immediately transmitted over the link
+>> which screws up my Xterm terminal settings, including changing the text
+>> cursor shape and most notably, disabling wraparound of long lines, so th=
+at
+>> they get truncated at the edge of the window instead.
+>> > >
+>> > > Can this behavior be disabled by command line, and if not, what is t=
+he
+>> code doing exactly so I can know where to disable it? I tried disabling =
+all
+>> calls to tcsetattr() but that had no effect.
+>>
+>> > I looked into the automatic margins issue a long time ago and I seem to
+>> > remember it was caused by the firmware (SeaBIOS) configuring the
+>> > terminal and QEMU just never returning it to the original state. I
+>> > eventually gave up trying to fix it because I was having trouble findi=
+ng
+>> > a reliable point in QEMU shutdown sequence to enable the capability
+>> > back. Nowadays I just run 'tput smam' after quitting QEMU.
+>>
+>> To check whether this is happening because of the BIOS (or other
+>> guest code) vs QEMU itself, you can try running QEMU in a configuration
+>> where it doesn't run any BIOS code. One I happen to know offhand
+>> is an arm one:
+>>
+>>    qemu-system-aarch64 -M virt -serial stdio
+>>
+>> This won't print anything, because we haven't loaded any guest
+>> code at all and there's no default BIOS on this machine type.
+>> (The emulated CPU is sat in effectively a tight loop taking
+>> exceptions.) If that messes up the terminal settings, then it's
+>> likely being done by something inside QEMU. If it doesn't, then
+>> it sounds like as you say it'll be because of the SeaBIOS
+>> firmware writing stuff to the terminal.
+>>
+>> (There might be a way to run the x86 PC machine without it
+>> running a BIOS, for a similar test, but I don't know if there
+>> is or how to do it off the top of my head.)
+>>
+
+I tried using an empty bios file. I see with 'info registers' that the
+vcpu is spinning. After quitting QEMU, the terminal state is unchanged:
+
+$ dd if=3D/dev/zero of=3Ddummy-bios.bin count=3D256 bs=3D1k
+$ qemu-system-x86_64 -nographic -bios ./dummy-bios.bin
+$ <line wrap preserved>
+
+With SeaBIOS, the issue manifests:
+
+$ qemu-system-x86_64 -nographic
+SeaBIOS (version rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org)
+<bunch of boot and iPXE messages>
+...
+$ <line wrap disabled>
+
+>> I do know that QEMU doesn't clean up things the guest does
+>> to the terminal, because for instance if you have a serial
+>> terminal and the guest puts it into "emit boldface/bright",
+>> that doesn't go back to normal non-bold text when QEMU exits.
+>> (It would be nice if it did do that...)
+>>
+>
+> It would be nice indeed. Trouble is quarrying the state beforehand to know
+> what to reset by random software producing effectively random bytes..
+>
+
+Maybe we could focus on the more annoying/obvious state? The line wrap
+issue is a very salient one, specially since QEMU command lines
+themselves tend to take more than one line.
+
+> ESC c
+>
+> is the reset sequence as well...but that's likely too big a hammer.
+>
+> Warner
+>
+> thanks
+>> -- PMM
+>>
+>>
 
