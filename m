@@ -2,68 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CB78199A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 08:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B82AE8199C0
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 08:41:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFr89-0001Ui-Ct; Wed, 20 Dec 2023 02:36:37 -0500
+	id 1rFrBq-0002Vb-S6; Wed, 20 Dec 2023 02:40:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rFr81-0001UO-Kh
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:36:29 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFrBl-0002VB-NV
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:40:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rFr7z-0002L0-Sg
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:36:29 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BC5E33D42A;
- Wed, 20 Dec 2023 10:36:29 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id CC1504EC58;
- Wed, 20 Dec 2023 10:36:15 +0300 (MSK)
-Message-ID: <6a6668da-300c-44fe-b16c-df1eea620061@tls.msk.ru>
-Date: Wed, 20 Dec 2023 10:36:15 +0300
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFrBR-0002jS-Fy
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:40:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703057998;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=u6gWhBszD3k++MKC+egdUcqtYzodgj1osZ5tVxXteDg=;
+ b=iPcUclCnOyIfajZLW7b9KsHwXDrYajWJ0vFcNieDIq+f5lr0XnHSjqK5QA4XY2BuLEZXDk
+ nACOSkTA74cf7uehwVOxotHVXhPv9i81lTZOeMr0mF4sDZ3FuGQvpsKLfN2LDOUIF00SRU
+ W83ENLflhgcJmGa6rJto9TB2jtNmBus=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-512-s-CCbkqxOJu_h3G2MSR2Lw-1; Wed, 20 Dec 2023 02:39:57 -0500
+X-MC-Unique: s-CCbkqxOJu_h3G2MSR2Lw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2559A88D70C;
+ Wed, 20 Dec 2023 07:39:57 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 04C621C060AF;
+ Wed, 20 Dec 2023 07:39:57 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id DC02521E6920; Wed, 20 Dec 2023 08:39:55 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,  qemu-devel@nongnu.org,  Michal
+ Privoznik <mprivozn@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,  qemu-block@nongnu.org,  Daniel P.
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  "Michael
+ S. Tsirkin" <mst@redhat.com>,  Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH v2 1/2] qdev: add IOThreadVirtQueueMappingList property
+ type
+In-Reply-To: <ZYHACN3AEV_TW0iZ@redhat.com> (Kevin Wolf's message of "Tue, 19
+ Dec 2023 17:08:40 +0100")
+References: <20230918161604.1400051-1-stefanha@redhat.com>
+ <20230918161604.1400051-2-stefanha@redhat.com>
+ <877cnpsll9.fsf@pond.sub.org> <20231219151328.GA219161@fedora>
+ <ZYHACN3AEV_TW0iZ@redhat.com>
+Date: Wed, 20 Dec 2023 08:39:55 +0100
+Message-ID: <8734vxiapg.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: TCP/telnet serial port not working in QEMU 8.1.3
-Content-Language: en-US
-To: Dave Blanchard <dave@killthe.net>, qemu-devel@nongnu.org
-References: <20231219164443.a644c86555f55e694563dbaa@killthe.net>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231219164443.a644c86555f55e694563dbaa@killthe.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,18 +89,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-20.12.2023 01:44, Dave Blanchard :
-> I just "upgraded" from QEMU 6.1.0 to 8.1.3 only to find that the -serial telnet/tcp option is no longer working. The following message is printed, and there's a 'connection refused' with the telnet program. Nmap shows no ports open.
-> 
-> qemu-system-x86_64: -serial telnet:127.0.0.1:1800,server=on:
-> info: QEMU waiting for connection on: disconnected:telnet:127.0.0.1:1800,server=on
-> 
-> What gives?
+Kevin Wolf <kwolf@redhat.com> writes:
 
-man qemu-system-x86_64, search for "wait".
+> Am 19.12.2023 um 16:13 hat Stefan Hajnoczi geschrieben:
+>> On Sat, Oct 14, 2023 at 09:35:14AM +0200, Markus Armbruster wrote:
+>> > Stefan Hajnoczi <stefanha@redhat.com> writes:
+>> > > +##
+>> > > +# @IOThreadVirtQueueMappings:
+>> > > +#
+>> > > +# IOThreadVirtQueueMapping list. This struct is not actually used but the
+>> > > +# IOThreadVirtQueueMappingList type it generates is!
+>> > 
+>> > Two spaces between sentences for consistency, please.
+>> > 
+>> > Doc comments are QMP reference documentation for users.  Does this
+>> > paragraph belong there?
+>> 
+>> Someone might wonder why a type exists that is never used, so I think
+>> including this in the documentation is acceptable.
+>
+> I seem to remember that we had a similar remark elsewhere, but maybe it
+> doesn't exist any more today?
 
-It's been the case since the day one.
+Working up more context...  alright, now I see.
 
-/mjt
+When the QAPI schema defines a type 'T', the QAPI generator generates
+code and documentation for it whether it is used in the schema or not.
+We occasionally use this to generate types with QAPI goodies for purely
+internal use.  In other words, the generator assumes there is a use of T
+in C code.
+
+However, the QAPI generator generates code for ['T'] only if there's a
+use of ['T'] in the schema.  This is because it's actually needed only
+for about one in seven types.  See commit 9f08c8ec738 (qapi: Lazy
+creation of array types).
+
+Once in a blue moon, ['T'] is only used in C code.  The QAPI generator
+won't generate code for it then, and the C code won't compile.  Then we
+have to add a dummy use to the schema to force the array into existence.
+Not exactly elegant, but it works.
+
+I can see two blue moons in the schema before this patch.
+
+In qapi/block-core.json:
+
+    ##
+    # @DummyBlockCoreForceArrays:
+    #
+    # Not used by QMP; hack to let us use BlockGraphInfoList internally
+    #
+    # Since: 8.0
+    ##
+    { 'struct': 'DummyBlockCoreForceArrays',
+      'data': { 'unused-block-graph-info': ['BlockGraphInfo'] } }
+
+It's called Dummy<NameOfModule>ForceArrays, it's at the end of the file,
+and it collects all the arrays being forced into existence.
+
+In qapi/machine.json:
+
+    ##
+    # @DummyForceArrays:
+    #
+    # Not used by QMP; hack to let us use X86CPUFeatureWordInfoList
+    # internally
+    #
+    # Since: 2.5
+    ##
+    { 'struct': 'DummyForceArrays',
+      'data': { 'unused': ['X86CPUFeatureWordInfo'] } }
+
+Less good: it has a clash-prone name, and it's not at the end of the
+file.  It was the first use of this trick, and we still had a single
+schema file back then.
+
+I recommend you do yours just like the first one.
+
+>> My comment is mostly intended to stop someone from removing this
+>> "unused" type from the schema though. If there is a better way to do
+>> that I can do that instead.
+>
+> Won't the QAPI generator or the compiler stop them soon enough?
+
+The compiler would.
 
 
