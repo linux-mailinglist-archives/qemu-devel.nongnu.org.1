@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D273081A73D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 20:24:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6891281A751
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 20:37:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG2AK-0003tO-Tt; Wed, 20 Dec 2023 14:23:36 -0500
+	id 1rG2LN-00065O-Cm; Wed, 20 Dec 2023 14:35:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rG2AH-0003tD-Aw
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:23:33 -0500
+ id 1rG2LK-000659-Ng
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:34:58 -0500
 Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rG2A3-0000rv-UH
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:23:33 -0500
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71])
+ id 1rG2L5-0007F9-RW
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:34:56 -0500
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id AF8CB3F73B
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:23:16 +0000 (UTC)
+ by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 5EC433F73A
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1703100196;
- bh=js4pgbMeLleNUdg6ReN6OPIZX8bPhOiScNdH+ifeyhI=;
- h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
- In-Reply-To:Content-Type;
- b=eqicBLGhpiP8rHwTX9ZL3i9WJYcxa7TSrT2m6wtP7MoK9Yx1eAScr5NA5KIRX5zRm
- xXRj/XAvBrQ4CudA2XSuyR2TQ7zvG0fLNkAecSXqtrC3VwHhn1lD14QFEeUs05s+X1
- NEoUml2B7Ny3aRumGosNAhdiww6f97SqhMs/Ne+4vCYp1TKcU+iGRO4Jd4Akwf1xV8
- 5H2BgKLyP1c3guLTMEKVcJIzXdiCtXytDQQAcOWjndfiJUJH1JR2WsUHy34iI7Pc0D
- 15KZjUtNibUpgpTInaT/c6j/uAlTPphVjbwep/bddMRhHlTtegabq3Op/pLd9yY0wn
- DAr0piAnIuYhQ==
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-40c495a9c7cso172415e9.3
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 11:23:16 -0800 (PST)
+ s=20210705; t=1703100880;
+ bh=H0RRbTcKaeWKE1hA53+QvcUAt3UfEevyITYiG9oz65E=;
+ h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+ b=By67V81YZVyGRLgYRrUvJUllEl3t4UpGxU7ClDeqipJo4FcoJpKTuSF4Fc4pqKLEp
+ FubJ9yihjM/bhn3g0ul6PhUgy+FcX/sCZonJ5WZ28+tcQ/c5v3wj0mSfRMSm+wO1vN
+ k3ln390S4PPiUYSWyvXIrwNqwfVrJ+vRgpK6ujuxphXgp/aO/v1Oj9RTtY7+SHfALj
+ EHGoiuD7bpcpXPcpYELGfz/W3z0oga/1C5dRZLdIzNEL49aDcqUZhYte++o/MX0R5D
+ RwNVKjUlWvnT4gyKTKFQJOpbz3NheqB+7Cfopy0oCFWBEPpSc4/ZRAhDsBjqU70ByW
+ usTWbenANCUoQ==
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40d2fa6b23eso429245e9.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 11:34:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703100196; x=1703704996;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=js4pgbMeLleNUdg6ReN6OPIZX8bPhOiScNdH+ifeyhI=;
- b=JlvRxIqsslUDwPrzxXSgmCl6EGecA+g/EB1H9HOdAYWYmADnFTCaQJturPPhcXvlqA
- toRnbFgyEnmWSzuIQsLPOu5msurFfUK0b7KhCIA3h9WFkeu6QeWNeCQzxTbNolIU3SwF
- cHPeCNuFM36av54K1NVTDaO1oN5h1YqFhPqBgZG2duRLgUpX7oVd0zDwM4Uu4/00FKkt
- jho45oOny5nn3NdnONdarMXR3CtTaeq6wpYaZWaNd2o30MfDC99KKs3RDjK+EnUM7N2f
- rtSmKG+918xr9z5ZkRRvKd0qyfTabeKaxDxcONkBnI/gH4dX5ciNAA/aCstkNpA81joW
- 2htg==
-X-Gm-Message-State: AOJu0Yx47arJopRKIre3MegxH3JFwwL7H9xUtBcrIvNVZTxuEodCiwXl
- Vag6WCIwJfXcPjfc8qekWHUSl67AjPQF5yWEOGjiBpALfBHJ5PFzIC3xWBP3x5ws3yaOCzI0zsg
- ZnG0p/9r1/G4MjVctefqm8ZCubSXqHYJj
-X-Received: by 2002:a05:600c:3488:b0:40d:2a2a:c0f3 with SMTP id
- a8-20020a05600c348800b0040d2a2ac0f3mr99201wmq.34.1703100196386; 
- Wed, 20 Dec 2023 11:23:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHLCkfHdLgDqAxOpoAAeqZR0yS/9woQAXLoS95ZRMvZCJ9js0eM2dxKiaZ85cTiFhoTeJb4LA==
-X-Received: by 2002:a05:600c:3488:b0:40d:2a2a:c0f3 with SMTP id
- a8-20020a05600c348800b0040d2a2ac0f3mr99190wmq.34.1703100196033; 
- Wed, 20 Dec 2023 11:23:16 -0800 (PST)
-Received: from [192.168.123.67] (ip-178-202-040-247.um47.pools.vodafone-ip.de.
- [178.202.40.247]) by smtp.gmail.com with ESMTPSA id
- dx18-20020a05600c63d200b0040c61ee0816sm1190216wmb.0.2023.12.20.11.23.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Dec 2023 11:23:15 -0800 (PST)
-Message-ID: <f0299e4a-ca4e-41fe-9475-b06db1bc80c5@canonical.com>
-Date: Wed, 20 Dec 2023 20:23:14 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] docs/system/riscv: document acpi parameter of virt
- machine
-Content-Language: en-US
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-References: <20231219143829.8961-1-heinrich.schuchardt@canonical.com>
- <ZYKQdb0xYGVezoqS@sunil-laptop>
+ d=1e100.net; s=20230601; t=1703100880; x=1703705680;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=H0RRbTcKaeWKE1hA53+QvcUAt3UfEevyITYiG9oz65E=;
+ b=Lz3RTI/XSuyfgAAw0xU3jpw1i3YJ4Ry/buVc9SuJXFBldW5kvZZUz/4g3gPGN5+ctU
+ SwPRiBwqhl0MGt5t/4Y7L6IFYfzrkI+EeiyreW4/fF0Q8Cua6ip8YqyBAZSpnMr5VLIe
+ rxP5+C5yTg5UrOExOOEk3GikJv6CdgdbEzzzFRMMy8HVZtogjOq039BX3pWXawiqA1qn
+ UwEt3UZLwX2n8D09LxL04fQ7/9IgeMOj7k+0NOhO8VyOR88JzuWQZ9H++h7iyzsZMvlP
+ VenE73aRuqYZRP6bL5TKHnmOF9dZQ5ozuR16+mLJistlMovrXgKoaoHpPCpEa/g3qYRY
+ Wakg==
+X-Gm-Message-State: AOJu0YyiG7zkrYXE95J1HxyCTRoPQuomVAR/D1v0UCTsxsYrJtLQCLpZ
+ WVt6kk5+u28NZDoYZ67/aBbtkcxGlpzrTqd4+a7AgFM41JhEOpOJ1rJfTfKVnhQQTGInX8SrJwE
+ lMlK2Br7i+/GBGUz0gK/eD8wUynjVY70h
+X-Received: by 2002:a05:600c:314f:b0:40b:5e21:c59c with SMTP id
+ h15-20020a05600c314f00b0040b5e21c59cmr85961wmo.106.1703100880027; 
+ Wed, 20 Dec 2023 11:34:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGWbqteo31hk3yr18ML8EIVbkJPoYP0EUY4SQjbnaIEYw4Gr7lIduQsj0f1x0N4N1RZc5p9Ug==
+X-Received: by 2002:a05:600c:314f:b0:40b:5e21:c59c with SMTP id
+ h15-20020a05600c314f00b0040b5e21c59cmr85955wmo.106.1703100879597; 
+ Wed, 20 Dec 2023 11:34:39 -0800 (PST)
+Received: from workstation5.fritz.box
+ (ip-178-202-040-247.um47.pools.vodafone-ip.de. [178.202.40.247])
+ by smtp.gmail.com with ESMTPSA id
+ q11-20020a05600c46cb00b0040d2d33312csm627638wmo.2.2023.12.20.11.34.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Dec 2023 11:34:39 -0800 (PST)
 From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <ZYKQdb0xYGVezoqS@sunil-laptop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Alistair Francis <alistair.francis@wdc.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Subject: [PATCH v2 1/1] docs/system/riscv: document acpi parameter of virt
+ machine
+Date: Wed, 20 Dec 2023 20:34:36 +0100
+Message-Id: <20231220193436.25909-1-heinrich.schuchardt@canonical.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=185.125.188.123;
  envelope-from=heinrich.schuchardt@canonical.com;
  helo=smtp-relay-internal-1.canonical.com
@@ -108,38 +104,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20.12.23 07:57, Sunil V L wrote:
-> On Tue, Dec 19, 2023 at 03:38:29PM +0100, Heinrich Schuchardt wrote:
->> Since QEMU v8.0.0 the RISC-V virt machine has a switch to disable ACPI
->> table generation. Add it to the documentation.
->>
->> Fixes: 168b8c29cedb ("hw/riscv/virt: Add a switch to disable ACPI")
->> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
->> ---
->>   docs/system/riscv/virt.rst | 5 +++++
->>   1 file changed, 5 insertions(+)
->>
->> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
->> index f5fa7b8b29..4e134ff2ac 100644
->> --- a/docs/system/riscv/virt.rst
->> +++ b/docs/system/riscv/virt.rst
->> @@ -95,6 +95,11 @@ The following machine-specific options are supported:
->>     SiFive CLINT. When not specified, this option is assumed to be "off".
->>     This option is restricted to the TCG accelerator.
->>   
->> +- acpi=[on|off|auto]
->> +
->> +  When this option is "on", ACPI tables are generated and exposed as firmware
->> +  tables etc/acpi/rsdp and etc/acpi/tables.
->> +
-> Hi Heinrich,
-> 
-> Should we add, When not specified or set to auto, this option is assumed
-> to be "on"?
+Since QEMU v8.0.0 the RISC-V virt machine has a switch to disable ACPI
+table generation. Add it to the documentation.
 
-Sure.
+Fixes: 168b8c29cedb ("hw/riscv/virt: Add a switch to disable ACPI")
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+---
+v2:
+	mention that acpi=on is the default
+---
+ docs/system/riscv/virt.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Best regards
+diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+index f5fa7b8b29..9a06f95a34 100644
+--- a/docs/system/riscv/virt.rst
++++ b/docs/system/riscv/virt.rst
+@@ -95,6 +95,11 @@ The following machine-specific options are supported:
+   SiFive CLINT. When not specified, this option is assumed to be "off".
+   This option is restricted to the TCG accelerator.
+ 
++- acpi=[on|off|auto]
++
++  When this option is "on" (which is the default), ACPI tables are generated and
++  exposed as firmware tables etc/acpi/rsdp and etc/acpi/tables.
++
+ - aia=[none|aplic|aplic-imsic]
+ 
+   This option allows selecting interrupt controller defined by the AIA
+-- 
+2.40.1
 
-Heinrich
 
