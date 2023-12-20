@@ -2,73 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ADA81A2E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 16:42:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8E881A2E4
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 16:42:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFygj-0006pk-EZ; Wed, 20 Dec 2023 10:40:49 -0500
+	id 1rFyi0-0007h1-Dr; Wed, 20 Dec 2023 10:42:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rFygg-0006pD-3D
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:40:46 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rFygd-0008Ct-RV
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:40:45 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 80B493D725;
- Wed, 20 Dec 2023 18:40:54 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id ADC024F099;
- Wed, 20 Dec 2023 18:40:38 +0300 (MSK)
-Message-ID: <31c4af89-dd31-4757-bfe1-115238c4e456@tls.msk.ru>
-Date: Wed, 20 Dec 2023 18:40:38 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: TCP/telnet serial port not working in QEMU 8.1.3
-Content-Language: en-US
-To: Dave Blanchard <dave@killthe.net>
+ (Exim 4.90_1) (envelope-from <dave@killthe.net>) id 1rFyhy-0007fN-B7
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:42:06 -0500
+Received: from mail.killthe.net ([207.126.114.3])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <dave@killthe.net>) id 1rFyhv-0000G2-BF
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 10:42:06 -0500
+Received: from magic (unknown [166.199.184.161])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.killthe.net (Postfix) with ESMTPSA id C0D8A12001C;
+ Wed, 20 Dec 2023 10:41:59 -0500 (EST)
+Date: Wed, 20 Dec 2023 09:45:15 -0600
+From: Dave Blanchard <dave@killthe.net>
+To: Michael Tokarev <mjt@tls.msk.ru>
 Cc: qemu-devel@nongnu.org
+Subject: Re: TCP/telnet serial port not working in QEMU 8.1.3
+Message-Id: <20231220094515.d7e45d324724ef9e08aed727@killthe.net>
+In-Reply-To: <31c4af89-dd31-4757-bfe1-115238c4e456@tls.msk.ru>
 References: <20231219164443.a644c86555f55e694563dbaa@killthe.net>
  <6a6668da-300c-44fe-b16c-df1eea620061@tls.msk.ru>
  <20231220093026.5f272e1ca5466b15b26a5e83@killthe.net>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231220093026.5f272e1ca5466b15b26a5e83@killthe.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <31c4af89-dd31-4757-bfe1-115238c4e456@tls.msk.ru>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=207.126.114.3; envelope-from=dave@killthe.net;
+ helo=mail.killthe.net
+X-Spam_score_int: -4
+X-Spam_score: -0.5
+X-Spam_bar: /
+X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, BODY_SINGLE_WORD=0.001,
+ PYZOR_CHECK=1.392, SCC_BODY_SINGLE_WORD=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,13 +58,5 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-20.12.2023 18:30, Dave Blanchard wrote:
-> Fixed by "downgrading" to 7.x series.
-> 
-> Something has changed in 8.x.
-
-Works for me exactly the same in 6.0, 7.2, 8.1[.3], and 8.2.0.
-
-/mjt
-
+Congratulations!
 
