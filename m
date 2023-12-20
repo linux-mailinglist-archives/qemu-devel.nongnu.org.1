@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FBC819FBA
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9880819FAD
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:18:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFwSM-00082K-Dv; Wed, 20 Dec 2023 08:17:50 -0500
+	id 1rFwSL-00082M-W3; Wed, 20 Dec 2023 08:17:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRr-0007qo-8h
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:24 -0500
+ id 1rFwRs-0007qq-IL
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:28 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRp-0002OS-8N
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:18 -0500
+ id 1rFwRr-0002Ov-0C
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=hQ4xxkUoF0gRlwRP5BMMLG1h9NyuKv9JzvYoNlqaVng=; b=s8RMzvcvx/PA/JLUzx+ULKkKO6
- HHPQDlKWdA8dPSioyNjoXXZGSRpFxD+HBTH43BARFu2ug6CaOHNlj0oTe42cxILVa5vk3eEQ/lhPu
- CYGX/j/EZuBek/SIyI4EA12i8EjHpAEFe8LuYVsSxjxPCcvji5O5+urjHdOMlhKCzUEfHm3jRtNEg
- PuTfY8L5X0OmEDu98amHuKVKLeO1tTpbqn0lxlyoKYN17cyLQ6UC89yLKM1O5+b3fy2GPc7PdMXll
- 70zljzBtxRdzp7MGt45oZroDWAYU/K9idiubMmKMgLIEnZItapE/aJz9CSjthhbYsDGWQ2wN/pH5z
- /bt8ahvcTcwVd3JiZQfedfmVemQDcJakG0s0t3HI/UFjkFwGmQxkm/ytFA7NMZtw2L6WTq4TR0I9v
- RKGOsPCFuBfuEM6Oa5eLHEOOVL8puDkhi5S7QrUsfunIaaf4mQlttMSTjA3MF8BT/WHHp0OLpgYQz
- jUU3GEuwgW4LRXNbQfAFQP0qRzJ8hIuc1fS2/Ubu7oy0G6s3DDH7qxJNQS+tZhYJUpONClmokWOkg
- Pmbw6wHGqlfj8vOFBt0HbnKEzx45miGYGi3rIDtfKfrG85jqhjTn/Dld1lSac8DnI3hZEEOPiFTVt
- BbwlF7rKopL9cFTwOnivFww25FnPxeW86QG8Bg/wQ=;
+ bh=s/6gk4s1JWMZwKvEQoHfCZZjfLVJj0fsDht8jOp+RaA=; b=eM8kAfbgkb7ZVhnZyIrQX35zoY
+ 0kodOcSUp4qh7RmOwzLtPFOZ9hpUG1JHOmdrSUOOU3bx/92/w6vpkTcOkfQgWEYjutqdR89+yqJAn
+ pfJ4pvasc1CNC1VqGR2YnbgZUNj5gk/CVKAjfBmbFocUqFt6KeAwX7UdLqvmt83KGyDQPZAkOWr+2
+ EnxIaVMQAg0nsLRJ/psJIFMwFL+hhw+NidJjY19hgvbEVD1tY2KgIQ1ExpLxAmeZSbpUT8Jqdwrrs
+ 4+RqxKJJG5cwf7iNcC+qXIb2DRY50BiZjflvSWqzcHsVMWzXR8kCpngEzaHOf7Utw1RQJDnalGkFU
+ Xjgoqh7MVvzZopxRd1LlQq5mxsKFXwdZLWdbDufzD3qmkA2td+Z3l2608w9F7nhZ4957U1JG4oFq2
+ dTRch8flcWdR9v7RNsbR/oKgLxuFTnEAtxS79Tc6gMAzSBXtcFmCNcLgEbOktl5Ff/4UYSXxJfRt5
+ cH3dJsMj88a7PXK84eucXbM3adCUy4f13XUM5dnFz4oErWKCShJMlObbnlYQXZ+9q7RRufleRXSND
+ kRNNWTW9OfQdF92cunPChEs0RumS3L7eWbAJgmJZVHZKqc8G8mGt8tbz1DFTiz4K40gzwU/hBxsKu
+ rgZfdL22fclzmxCUFiCbssnEX1xn+YFfEA1+Mk7bk=;
 Received: from host86-147-134-9.range86-147.btcentralplus.com ([86.147.134.9]
  helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRM-0001qt-Ov; Wed, 20 Dec 2023 13:16:52 +0000
+ id 1rFwRR-0001qt-2H; Wed, 20 Dec 2023 13:16:54 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Wed, 20 Dec 2023 13:16:38 +0000
-Message-Id: <20231220131641.592826-9-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 20 Dec 2023 13:16:39 +0000
+Message-Id: <20231220131641.592826-10-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
 References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.147.134.9
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 08/11] next-cube.c: move static old_scr2 variable to NeXTPC
+Subject: [PATCH v2 09/11] next-cube.c: move LED logic to new
+ next_scr2_led_update() function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,86 +78,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the old_scr2 variable to NeXTPC so that the old SCR2 register state is
-stored along with the current SCR2 state.
-
-Since the SCR2 register is 32-bits wide, convert old_scr2 to uint32_t and
-update the SCR2 register access code to allow unaligned writes.
-
-Note that this is a migration break, but as nothing will currently boot then
-we do not need to worry about this now.
+Ensure that the LED status is updated by calling next_scr2_led_update() whenever
+the SC2 register is written.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/m68k/next-cube.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ hw/m68k/next-cube.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index f2222554fa..d53f73fb8b 100644
+index d53f73fb8b..fd707b4b54 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -91,6 +91,7 @@ struct NeXTPC {
+@@ -124,6 +124,18 @@ static const uint8_t rtc_ram2[32] = {
+ #define SCR2_RTDATA 0x4
+ #define SCR2_TOBCD(x) (((x / 10) << 4) + (x % 10))
  
-     uint32_t scr1;
-     uint32_t scr2;
-+    uint32_t old_scr2;
-     uint32_t int_mask;
-     uint32_t int_status;
-     uint32_t led;
-@@ -125,8 +126,7 @@ static const uint8_t rtc_ram2[32] = {
- 
++static void next_scr2_led_update(NeXTPC *s)
++{
++    if (s->scr2 & 0x1) {
++        DPRINTF("fault!\n");
++        s->led++;
++        if (s->led == 10) {
++            DPRINTF("LED flashing, possible fault!\n");
++            s->led = 0;
++        }
++    }
++}
++
  static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
  {
--    static uint8_t old_scr2;
--    uint8_t scr2_2;
-+    uint8_t old_scr2, scr2_2;
-     NextRtc *rtc = &s->rtc;
- 
-     if (size == 4) {
-@@ -144,6 +144,8 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
-         }
+     uint8_t old_scr2, scr2_2;
+@@ -135,15 +147,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+         scr2_2 = val & 0xFF;
      }
  
-+    old_scr2 = (s->old_scr2 >> 8) & 0xff;
-+
+-    if (val & 0x1) {
+-        DPRINTF("fault!\n");
+-        s->led++;
+-        if (s->led == 10) {
+-            DPRINTF("LED flashing, possible fault!\n");
+-            s->led = 0;
+-        }
+-    }
+-
+     old_scr2 = (s->old_scr2 >> 8) & 0xff;
+ 
      if (scr2_2 & 0x1) {
-         /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
-         if (rtc->phase == -1) {
-@@ -252,7 +254,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
-     }
-     s->scr2 = val & 0xFFFF00FF;
-     s->scr2 |= scr2_2 << 8;
--    old_scr2 = scr2_2;
- }
- 
- static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
-@@ -318,7 +319,10 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
-         break;
- 
+@@ -321,6 +324,7 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
      case 0xd000 ... 0xd003:
-+        s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
-+                            size << 3, val);
+         s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
+                             size << 3, val);
++        next_scr2_led_update(s);
          nextscr2_write(s, val, size);
-+        s->old_scr2 = s->scr2;
+         s->old_scr2 = s->scr2;
          break;
- 
-     default:
-@@ -876,6 +880,7 @@ static void next_pc_reset(DeviceState *dev)
-     /*     0x0000XX00 << vital bits */
-     s->scr1 = 0x00011102;
-     s->scr2 = 0x00ff0c80;
-+    s->old_scr2 = s->scr2;
- 
-     s->rtc.status = 0x90;
- 
-@@ -932,6 +937,7 @@ static const VMStateDescription next_pc_vmstate = {
-     .fields = (VMStateField[]) {
-         VMSTATE_UINT32(scr1, NeXTPC),
-         VMSTATE_UINT32(scr2, NeXTPC),
-+        VMSTATE_UINT32(old_scr2, NeXTPC),
-         VMSTATE_UINT32(int_mask, NeXTPC),
-         VMSTATE_UINT32(int_status, NeXTPC),
-         VMSTATE_UINT32(led, NeXTPC),
 -- 
 2.39.2
 
