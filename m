@@ -2,45 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A520981A503
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 17:28:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5734981A51F
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 17:30:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFzPE-0000Ty-0f; Wed, 20 Dec 2023 11:26:48 -0500
+	id 1rFzP6-0000R9-5P; Wed, 20 Dec 2023 11:26:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rFzP5-0000Qy-3j
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:26:39 -0500
+ id 1rFzP4-0000Qc-Bf
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:26:38 -0500
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1rFzOz-0004i9-BB
+ id 1rFzOz-0004iX-B9
  for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:26:38 -0500
-Received: (qmail 15190 invoked by uid 484); 20 Dec 2023 16:26:10 -0000
+Received: (qmail 15224 invoked by uid 484); 20 Dec 2023 16:26:12 -0000
 X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
  smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.11.92):. 
- Processed in 0.153183 secs); 20 Dec 2023 16:26:10 -0000
+ Processed in 0.071925 secs); 20 Dec 2023 16:26:12 -0000
 Received: from nedpc1.intern.lauterbach.com
  (Authenticated_SSL:neder@[10.2.11.92])
  (envelope-sender <nicolas.eder@lauterbach.com>)
  by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
  encrypted SMTP
- for <qemu-devel@nongnu.org>; 20 Dec 2023 16:26:09 -0000
+ for <qemu-devel@nongnu.org>; 20 Dec 2023 16:26:10 -0000
 From: Nicolas Eder <nicolas.eder@lauterbach.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Christian Boenig" <christian.boenig@lauterbach.com>,
  "Nicolas Eder" <nicolas.eder@lauterbach.com>
-Subject: [PATCH v5 06/18] mcdstub: -mcd start option added,
- mcd specific defines added
-Date: Wed, 20 Dec 2023 17:25:43 +0100
-Message-Id: <20231220162555.19545-7-nicolas.eder@lauterbach.com>
+Subject: [PATCH v5 07/18] mcdstub: mcdserver initialization functions added
+Date: Wed, 20 Dec 2023 17:25:44 +0100
+Message-Id: <20231220162555.19545-8-nicolas.eder@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231220162555.19545-1-nicolas.eder@lauterbach.com>
 References: <20231220162555.19545-1-nicolas.eder@lauterbach.com>
@@ -71,539 +70,205 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 ---
- debug/mcdstub/mcdstub.c          | 203 +++++++++++++++++++++++++++++++
- debug/mcdstub/meson.build        |  12 ++
- debug/meson.build                |   1 +
- include/mcdstub/mcdstub.h        | 152 +++++++++++++++++++++++
- include/mcdstub/mcdstub_common.h |  46 +++++++
- qemu-options.hx                  |  18 +++
- system/vl.c                      |  13 ++
- 7 files changed, 445 insertions(+)
+ debug/mcdstub/mcdstub.c | 154 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 154 insertions(+)
 
 diff --git a/debug/mcdstub/mcdstub.c b/debug/mcdstub/mcdstub.c
-index c24aaf1202..4d8d5d956a 100644
+index 4d8d5d956a..0df436719e 100644
 --- a/debug/mcdstub/mcdstub.c
 +++ b/debug/mcdstub/mcdstub.c
-@@ -16,3 +16,206 @@
+@@ -22,9 +22,12 @@
+ #include "qemu/cutils.h"
+ #include "qemu/module.h"
+ #include "qemu/error-report.h"
++#include "qemu/debug.h"
+ #include "qapi/error.h"
+ #include "chardev/char.h"
+ #include "chardev/char-fe.h"
++#include "hw/cpu/cluster.h"
++#include "hw/boards.h"
+ #include "sysemu/cpus.h"
+ #include "sysemu/hw_accel.h"
+ #include "sysemu/runstate.h"
+@@ -109,6 +112,39 @@ static void mcd_chr_event(void *opaque, QEMUChrEvent event)
+ {
+ }
+ 
++/**
++ * init_query_cmds_table() - Initializes all query functions.
++ *
++ * This function adds all query functions to the mcd_query_cmds_table. This
++ * includes their command string, handler function and parameter schema.
++ * @mcd_query_cmds_table: Lookup table with all query commands.
++ */
++static void init_query_cmds_table(MCDCmdParseEntry *mcd_query_cmds_table)
++{}
++
++/**
++ * mcd_set_stop_cpu() - Sets c_cpu to the just stopped CPU.
++ *
++ * @cpu: The CPU state.
++ */
++static void mcd_set_stop_cpu(CPUState *cpu)
++{
++    mcdserver_state.c_cpu = cpu;
++}
++
++/**
++ * mcd_init_debug_class() - initialize mcd-specific DebugClass
++ */
++static void mcd_init_debug_class(void){
++    Object *obj;
++    obj = object_new(TYPE_DEBUG);
++    DebugState *ds = DEBUG(obj);
++    DebugClass *dc = DEBUG_GET_CLASS(ds);
++    dc->set_stop_cpu = mcd_set_stop_cpu;
++    MachineState *ms = MACHINE(qdev_get_machine());
++    ms->debug_state = ds;
++}
++
+ /**
+  * mcd_init_mcdserver_state() - Initializes the mcdserver_state struct.
   *
-  * SPDX-License-Identifier: LGPL-2.0+
+@@ -119,6 +155,35 @@ static void mcd_chr_event(void *opaque, QEMUChrEvent event)
   */
+ static void mcd_init_mcdserver_state(void)
+ {
++    g_assert(!mcdserver_state.init);
++    memset(&mcdserver_state, 0, sizeof(MCDState));
++    mcdserver_state.init = true;
++    mcdserver_state.str_buf = g_string_new(NULL);
++    mcdserver_state.mem_buf = g_byte_array_sized_new(MAX_PACKET_LENGTH);
++    mcdserver_state.last_packet = g_byte_array_sized_new(MAX_PACKET_LENGTH + 4);
 +
-+#include "qemu/osdep.h"
-+#include "qemu/ctype.h"
-+#include "qemu/cutils.h"
-+#include "qemu/module.h"
-+#include "qemu/error-report.h"
-+#include "qapi/error.h"
-+#include "chardev/char.h"
-+#include "chardev/char-fe.h"
-+#include "sysemu/cpus.h"
-+#include "sysemu/hw_accel.h"
-+#include "sysemu/runstate.h"
++    /*
++     * What single-step modes are supported is accelerator dependent.
++     * By default try to use no IRQs and no timers while single
++     * stepping so as to make single stepping like a typical ICE HW step.
++     */
++    mcdserver_state.supported_sstep_flags =
++        accel_supported_gdbstub_sstep_flags();
++    mcdserver_state.sstep_flags = SSTEP_ENABLE | SSTEP_NOIRQ | SSTEP_NOTIMER;
++    mcdserver_state.sstep_flags &= mcdserver_state.supported_sstep_flags;
 +
-+#include "mcdstub/mcd_shared_defines.h"
-+#include "mcdstub/mcdstub.h"
++    /* init query table */
++    init_query_cmds_table(mcdserver_state.mcd_query_cmds_table);
 +
-+typedef struct {
-+    CharBackend chr;
-+} MCDSystemState;
++    /* at this time the cpu hans't been started! -> set cpu_state */
++    mcd_cpu_state_st cpu_state =  {
++            .state = CORE_STATE_HALTED,
++            .info_str = STATE_STR_INIT_HALTED,
++    };
++    mcdserver_state.cpu_state = cpu_state;
 +
-+MCDSystemState mcdserver_system_state;
-+
-+MCDState mcdserver_state;
-+
-+/**
-+ * mcd_supports_guest_debug() - Returns true if debugging the selected
-+ * accelerator is supported.
-+ */
-+static bool mcd_supports_guest_debug(void)
-+{
-+    const AccelOpsClass *ops = cpus_get_accel();
-+    if (ops->supports_guest_debug) {
-+        return ops->supports_guest_debug();
-+    }
-+    return false;
++    /* create new debug object */
++    mcd_init_debug_class();
+ }
+ 
+ /**
+@@ -128,6 +193,84 @@ static void mcd_init_mcdserver_state(void)
+  */
+ static void reset_mcdserver_state(void)
+ {
++    g_free(mcdserver_state.processes);
++    mcdserver_state.processes = NULL;
++    mcdserver_state.process_num = 0;
 +}
 +
-+#ifndef _WIN32
-+static void mcd_sigterm_handler(int signal)
-+{
-+    if (runstate_is_running()) {
-+        vm_stop(RUN_STATE_PAUSED);
-+    }
-+}
-+#endif
-+
 +/**
-+ * mcd_vm_state_change() - Handles a state change of the QEMU VM.
++ * mcd_create_default_process() - Creates a default process for debugging.
 + *
-+ * This function is called when the QEMU VM goes through a state transition.
-+ * It stores the runstate the CPU is in to the cpu_state and when in
-+ * RUN_STATE_DEBUG it collects additional data on what watchpoint was hit.
-+ * This function also resets the singlestep behavior.
-+ * @running: True if he VM is running.
-+ * @state: The new (and active) VM run state.
-+ */
-+static void mcd_vm_state_change(void *opaque, bool running, RunState state)
-+{
-+}
-+
-+/**
-+ * mcd_chr_can_receive() - Returns the maximum packet length of a TCP packet.
-+ */
-+static int mcd_chr_can_receive(void *opaque)
-+{
-+    return MAX_PACKET_LENGTH;
-+}
-+
-+/**
-+ * mcd_chr_receive() - Handles receiving a TCP packet.
-+ *
-+ * This function gets called by QEMU when a TCP packet is received.
-+ * It iterates over that packet an calls :c:func:`mcd_read_byte` for each char
-+ * of the packet.
-+ * @buf: Content of the packet.
-+ * @size: Length of the packet.
-+ */
-+static void mcd_chr_receive(void *opaque, const uint8_t *buf, int size)
-+{
-+}
-+
-+/**
-+ * mcd_chr_event() - Handles a TCP client connect.
-+ *
-+ * This function gets called by QEMU when a TCP cliet connects to the opened
-+ * TCP port. It attaches the first process. From here on TCP packets can be
-+ * exchanged.
-+ * @event: Type of event.
-+ */
-+static void mcd_chr_event(void *opaque, QEMUChrEvent event)
-+{
-+}
-+
-+/**
-+ * mcd_init_mcdserver_state() - Initializes the mcdserver_state struct.
-+ *
-+ * This function allocates memory for the mcdserver_state struct and sets
-+ * all of its members to their inital values. This includes setting the
-+ * cpu_state to halted and initializing the query functions with
-+ * :c:func:`init_query_cmds_table`.
-+ */
-+static void mcd_init_mcdserver_state(void)
-+{
-+}
-+
-+/**
-+ * reset_mcdserver_state() - Resets the mcdserver_state struct.
-+ *
-+ * This function deletes all processes connected to the mcdserver_state.
-+ */
-+static void reset_mcdserver_state(void)
-+{
-+}
-+
-+/**
-+ * create_processes() - Sorts all processes and calls
-+ * :c:func:`mcd_create_default_process`.
-+ *
-+ * This function sorts all connected processes with the qsort function.
-+ * Afterwards, it creates a new process with
-+ * :c:func:`mcd_create_default_process`.
++ * This function creates a new, not yet attached, process with an ID one above
++ * the previous maximum ID.
 + * @s: A MCDState object.
 + */
-+static void create_processes(MCDState *s)
++static void mcd_create_default_process(MCDState *s)
 +{
++    MCDProcess *process;
++    int max_pid = 0;
++
++    if (mcdserver_state.process_num) {
++        max_pid = s->processes[s->process_num - 1].pid;
++    }
++
++    s->processes = g_renew(MCDProcess, s->processes, ++s->process_num);
++    process = &s->processes[s->process_num - 1];
++
++    /* We need an available PID slot for this process */
++    assert(max_pid < UINT32_MAX);
++
++    process->pid = max_pid + 1;
++    process->attached = false;
 +}
-+
-+int mcdserver_start(const char *device)
-+{
-+    char mcd_device_config[TCP_CONFIG_STRING_LENGTH];
-+    char mcd_tcp_port[TCP_CONFIG_STRING_LENGTH];
-+    Chardev *chr = NULL;
-+
-+    if (!first_cpu) {
-+        error_report("mcdstub: meaningless to attach to a "
-+                     "machine without any CPU.");
-+        return -1;
-+    }
-+
-+    if (!mcd_supports_guest_debug()) {
-+        error_report("mcdstub: current accelerator doesn't "
-+                     "support guest debugging");
-+        return -1;
-+    }
-+
-+    if (!device) {
-+        return -1;
-+    }
-+
-+    /* if device == default -> set tcp_port = tcp::<MCD_DEFAULT_TCP_PORT> */
-+    if (strcmp(device, "default") == 0) {
-+        snprintf(mcd_tcp_port, sizeof(mcd_tcp_port), "tcp::%s",
-+            MCD_DEFAULT_TCP_PORT);
-+        device = mcd_tcp_port;
-+    }
-+
-+    if (strcmp(device, "none") != 0) {
-+        if (strstart(device, "tcp:", NULL)) {
-+            /* enforce required TCP attributes */
-+            if (snprintf(mcd_device_config, sizeof(mcd_device_config),
-+                     "%s,wait=off,nodelay=on,server=on", device) < 0) {
-+                g_assert_not_reached();
-+            }
-+            device = mcd_device_config;
-+        }
-+#ifndef _WIN32
-+        else if (strcmp(device, "stdio") == 0) {
-+            struct sigaction act;
-+
-+            memset(&act, 0, sizeof(act));
-+            act.sa_handler = mcd_sigterm_handler;
-+            sigaction(SIGINT, &act, NULL);
-+            strcpy(mcd_device_config, device);
-+        }
-+#endif
-+        chr = qemu_chr_new_noreplay("mcd", device, true, NULL);
-+        if (!chr) {
-+            return -1;
-+        }
-+    }
-+
-+    if (!mcdserver_state.init) {
-+        mcd_init_mcdserver_state();
-+
-+        qemu_add_vm_change_state_handler(mcd_vm_state_change, NULL);
-+    } else {
-+        qemu_chr_fe_deinit(&mcdserver_system_state.chr, true);
-+        reset_mcdserver_state();
-+    }
-+
-+    create_processes(&mcdserver_state);
-+
-+    if (chr) {
-+        qemu_chr_fe_init(&mcdserver_system_state.chr, chr, &error_abort);
-+        qemu_chr_fe_set_handlers(&mcdserver_system_state.chr,
-+                                 mcd_chr_can_receive,
-+                                 mcd_chr_receive, mcd_chr_event,
-+                                 NULL, &mcdserver_state, NULL, true);
-+    }
-+    mcdserver_state.state = chr ? RS_IDLE : RS_INACTIVE;
-+
-+    return 0;
-+}
-diff --git a/debug/mcdstub/meson.build b/debug/mcdstub/meson.build
-index e69de29bb2..7e5ae878b0 100644
---- a/debug/mcdstub/meson.build
-+++ b/debug/mcdstub/meson.build
-@@ -0,0 +1,12 @@
-+# only system emulation is supported over mcd
-+mcd_system_ss = ss.source_set()
-+mcd_system_ss.add(files('mcdstub.c'))
-+mcd_system_ss = mcd_system_ss.apply(config_host, strict: false)
-+
-+libmcd_system = static_library('mcd_system',
-+                                mcd_system_ss.sources() + genh,
-+                                name_suffix: 'fa',
-+                                build_by_default: have_system)
-+
-+mcd_system = declare_dependency(link_whole: libmcd_system)
-+system_ss.add(mcd_system)
-diff --git a/debug/meson.build b/debug/meson.build
-index f46ab14af9..97c80d7406 100644
---- a/debug/meson.build
-+++ b/debug/meson.build
-@@ -1,2 +1,3 @@
- subdir('common')
- subdir('gdbstub')
-+subdir('mcdstub')
-diff --git a/include/mcdstub/mcdstub.h b/include/mcdstub/mcdstub.h
-index c24aaf1202..26aa33c0e3 100644
---- a/include/mcdstub/mcdstub.h
-+++ b/include/mcdstub/mcdstub.h
-@@ -16,3 +16,155 @@
-  *
-  * SPDX-License-Identifier: LGPL-2.0+
-  */
-+
-+#ifndef MCDSTUB_H
-+#define MCDSTUB_H
-+
-+#include "mcdstub_common.h"
-+
-+#define MAX_PACKET_LENGTH 1024
-+
-+/* trigger defines */
-+#define MCD_TRIG_OPT_DATA_IS_CONDITION 0x00000008
-+#define MCD_TRIG_ACTION_DBG_DEBUG 0x00000001
-+
-+/* schema defines */
-+#define ARG_SCHEMA_QRYHANDLE 'q'
-+#define ARG_SCHEMA_STRING 's'
-+#define ARG_SCHEMA_INT 'd'
-+#define ARG_SCHEMA_UINT64_T 'l'
-+#define ARG_SCHEMA_CORENUM 'c'
-+#define ARG_SCHEMA_HEXDATA 'h'
-+
-+/* resets */
-+#define RESET_SYSTEM "full_system_reset"
-+#define RESET_GPR "gpr_reset"
-+#define RESET_MEMORY "memory_reset"
-+
-+/* misc */
-+#define QUERY_TOTAL_NUMBER 12
-+#define CMD_SCHEMA_LENGTH 6
-+#define MCD_SYSTEM_NAME "qemu-system"
-+
-+/* supported architectures */
-+#define MCDSTUB_ARCH_ARM "arm"
-+
-+/* tcp query packet values templates */
-+#define DEVICE_NAME_TEMPLATE(s) "qemu-" #s "-device"
-+
-+/* state strings */
-+#define STATE_STR_UNKNOWN(d) "cpu " #d " in unknown state"
-+#define STATE_STR_DEBUG(d) "cpu " #d " in debug state"
-+#define STATE_STR_RUNNING(d) "cpu " #d " running"
-+#define STATE_STR_HALTED(d) "cpu " #d " currently halted"
-+#define STATE_STR_INIT_HALTED "vm halted since boot"
-+#define STATE_STR_INIT_RUNNING "vm running since boot"
-+#define STATE_STR_BREAK_HW "stopped beacuse of HW breakpoint"
-+#define STATE_STEP_PERFORMED "stopped beacuse of single step"
-+#define STATE_STR_BREAK_READ(d) "stopped beacuse of read access at " #d
-+#define STATE_STR_BREAK_WRITE(d) "stopped beacuse of write access at " #d
-+#define STATE_STR_BREAK_RW(d) "stopped beacuse of read or write access at " #d
-+#define STATE_STR_BREAK_UNKNOWN "stopped for unknown reason"
-+
-+typedef struct MCDProcess {
-+    uint32_t pid;
-+    bool attached;
-+} MCDProcess;
-+
-+typedef void (*MCDCmdHandler)(GArray *params, void *user_ctx);
-+typedef struct MCDCmdParseEntry {
-+    MCDCmdHandler handler;
-+    char cmd[ARGUMENT_STRING_LENGTH];
-+    char schema[CMD_SCHEMA_LENGTH];
-+} MCDCmdParseEntry;
-+
-+typedef union MCDCmdVariant {
-+    const char *data;
-+    uint32_t data_uint32_t;
-+    uint64_t data_uint64_t;
-+    uint32_t query_handle;
-+    uint32_t cpu_id;
-+} MCDCmdVariant;
-+
-+#define get_param(p, i)    (&g_array_index(p, MCDCmdVariant, i))
-+
-+enum RSState {
-+    RS_INACTIVE,
-+    RS_IDLE,
-+    RS_GETLINE,
-+    RS_DATAEND,
-+};
-+
-+typedef struct breakpoint_st {
-+    uint32_t type;
-+    uint64_t address;
-+    uint32_t id;
-+} breakpoint_st;
-+
-+typedef struct mcd_trigger_into_st {
-+    char type[ARGUMENT_STRING_LENGTH];
-+    char option[ARGUMENT_STRING_LENGTH];
-+    char action[ARGUMENT_STRING_LENGTH];
-+    uint32_t nr_trigger;
-+} mcd_trigger_into_st;
-+
-+typedef struct mcd_cpu_state_st {
-+    const char *state;
-+    bool memory_changed;
-+    bool registers_changed;
-+    bool target_was_stopped;
-+    uint32_t bp_type;
-+    uint64_t bp_address;
-+    const char *stop_str;
-+    const char *info_str;
-+} mcd_cpu_state_st;
-+
-+typedef struct MCDState {
-+    bool init;
-+    CPUState *c_cpu;
-+    enum RSState state;
-+    char line_buf[MAX_PACKET_LENGTH];
-+    int line_buf_index;
-+    int line_sum;
-+    int line_csum;
-+    GByteArray *last_packet;
-+    int signal;
-+
-+    MCDProcess *processes;
-+    int process_num;
-+    GString *str_buf;
-+    GByteArray *mem_buf;
-+    int sstep_flags;
-+    int supported_sstep_flags;
-+
-+    uint32_t query_cpu_id;
-+    GList *all_memspaces;
-+    GList *all_reggroups;
-+    GList *all_registers;
-+    GList *all_breakpoints;
-+    GArray *resets;
-+    mcd_trigger_into_st trigger;
-+    mcd_cpu_state_st cpu_state;
-+    MCDCmdParseEntry mcd_query_cmds_table[QUERY_TOTAL_NUMBER];
-+} MCDState;
-+
-+/* lives in mcdstub.c */
-+extern MCDState mcdserver_state;
-+
-+typedef struct xml_attrib {
-+    char argument[ARGUMENT_STRING_LENGTH];
-+    char value[ARGUMENT_STRING_LENGTH];
-+} xml_attrib;
-+
-+typedef struct mcd_reset_st {
-+    const char *name;
-+    uint8_t id;
-+} mcd_reset_st;
 +
 +/**
-+ * mcdserver_start() - initializes the mcdstub and opens a TCP port
-+ * @device: TCP port (e.g. tcp::1235)
++ * find_cpu_clusters() - Returns the CPU cluster of the child object.
++ *
++ * @param[in] child Object with unknown CPU cluster.
++ * @param[in] opaque Pointer to an MCDState object.
 + */
-+int mcdserver_start(const char *device);
++static int find_cpu_clusters(Object *child, void *opaque)
++{
++    if (object_dynamic_cast(child, TYPE_CPU_CLUSTER)) {
++        MCDState *s = (MCDState *) opaque;
++        CPUClusterState *cluster = CPU_CLUSTER(child);
++        MCDProcess *process;
 +
-+#endif /* MCDSTUB_H */
-diff --git a/include/mcdstub/mcdstub_common.h b/include/mcdstub/mcdstub_common.h
-index c24aaf1202..b64748c080 100644
---- a/include/mcdstub/mcdstub_common.h
-+++ b/include/mcdstub/mcdstub_common.h
-@@ -16,3 +16,49 @@
-  *
-  * SPDX-License-Identifier: LGPL-2.0+
-  */
++        s->processes = g_renew(MCDProcess, s->processes, ++s->process_num);
 +
-+#ifndef MCDSTUB_COMMON_H
-+#define MCDSTUB_COMMON_H
++        process = &s->processes[s->process_num - 1];
++        assert(cluster->cluster_id != UINT32_MAX);
++        process->pid = cluster->cluster_id + 1;
++        process->attached = false;
 +
-+#define ARGUMENT_STRING_LENGTH 64
-+#define TCP_CONFIG_STRING_LENGTH 128
-+
-+typedef struct mcd_mem_space_st {
-+    const char *name;
-+    uint32_t id;
-+    uint32_t type;
-+    uint32_t bits_per_mau;
-+    uint8_t invariance;
-+    uint32_t endian;
-+    uint64_t min_addr;
-+    uint64_t max_addr;
-+    uint32_t supported_access_options;
-+    /* internal */
-+    bool is_secure;
-+    bool is_physical;
-+} mcd_mem_space_st;
-+
-+typedef struct mcd_reg_st {
-+    /* xml info */
-+    char name[ARGUMENT_STRING_LENGTH];
-+    char group[ARGUMENT_STRING_LENGTH];
-+    char type[ARGUMENT_STRING_LENGTH];
-+    uint32_t bitsize;
-+    uint32_t id; /* id used by the mcd interface */
-+    uint32_t internal_id; /* id inside reg type */
-+    uint8_t reg_type;
-+    /* mcd metadata */
-+    uint32_t mcd_reg_group_id;
-+    uint32_t mcd_mem_space_id;
-+    uint32_t mcd_reg_type;
-+    uint32_t mcd_hw_thread_id;
-+    /* data for op-code */
-+    uint32_t opcode;
-+} mcd_reg_st;
-+
-+typedef struct mcd_reg_group_st {
-+    const char *name;
-+    uint32_t id;
-+} mcd_reg_group_st;
-+
-+#endif /* MCDSTUB_COMMON_H */
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 42fd09e4de..b60df3463c 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4444,6 +4444,24 @@ SRST
-     (see the :ref:`GDB usage` chapter in the System Emulation Users Guide).
- ERST
- 
-+DEF("mcd", HAS_ARG, QEMU_OPTION_mcd, \
-+    "-mcd dev        accept mcd connection on 'dev'. (QEMU defaults to starting\n"
-+    "                the guest without waiting for a mcd client to connect; use -S too\n"
-+    "                if you want it to not start execution.)\n"
-+    "                To use the default Port write '-mcd default'\n",
-+    QEMU_ARCH_ALL)
-+SRST
-+``-mcd dev``
-+    Accept a mcd connection on device dev. Note that this option does not pause QEMU
-+    execution -- if you want QEMU to not start the guest until you
-+    connect with mcd and issue a ``run`` command, you will need to
-+    also pass the ``-S`` option to QEMU.
-+
-+    The most usual configuration is to listen on a local TCP socket::
-+
-+        -mcd tcp::1235
-+ERST
-+
- DEF("d", HAS_ARG, QEMU_OPTION_d, \
-     "-d item1,...    enable logging of specified items (use '-d help' for a list of log items)\n",
-     QEMU_ARCH_ALL)
-diff --git a/system/vl.c b/system/vl.c
-index 2bcd9efb9a..2c4610c19f 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -68,6 +68,7 @@
- #include "sysemu/numa.h"
- #include "sysemu/hostmem.h"
- #include "exec/gdbstub.h"
-+#include "mcdstub/mcdstub.h"
- #include "qemu/timer.h"
- #include "chardev/char.h"
- #include "qemu/bitmap.h"
-@@ -1271,6 +1272,7 @@ struct device_config {
-         DEV_PARALLEL,  /* -parallel      */
-         DEV_DEBUGCON,  /* -debugcon */
-         DEV_GDB,       /* -gdb, -s */
-+        DEV_MCD,       /* -mcd */
-         DEV_SCLP,      /* s390 sclp */
-     } type;
-     const char *cmdline;
-@@ -2686,6 +2688,12 @@ static void qemu_machine_creation_done(void)
-     if (foreach_device_config(DEV_GDB, gdbserver_start) < 0) {
-         exit(1);
-     }
-+    if (foreach_device_config(DEV_MCD, mcdserver_start) < 0) {
-+        /*
-+         * starts the mcdserver if the mcd option was set
-+         */
-+        exit(1);
++        return 0;
 +    }
-     if (!vga_interface_created && !default_vga &&
-         vga_interface_type != VGA_NONE) {
-         warn_report("A -vga option was passed but this machine "
-@@ -3041,6 +3049,11 @@ void qemu_init(int argc, char **argv)
-             case QEMU_OPTION_gdb:
-                 add_device_config(DEV_GDB, optarg);
-                 break;
-+#if !defined(CONFIG_USER_ONLY)
-+            case QEMU_OPTION_mcd:
-+                add_device_config(DEV_MCD, optarg);
-+                break;
-+#endif
-             case QEMU_OPTION_L:
-                 if (is_help_option(optarg)) {
-                     list_data_dirs = true;
++
++    return object_child_foreach(child, find_cpu_clusters, opaque);
++}
++
++/**
++ * pid_order() - Compares process IDs.
++ *
++ * This function returns -1 if process "a" has a ower process ID than "b".
++ * If "b" has a lower ID than "a" 1 is returned and if they are qual 0 is
++ * returned.
++ * @a: Process a.
++ * @b: Process b.
++ */
++static int pid_order(const void *a, const void *b)
++{
++    MCDProcess *pa = (MCDProcess *) a;
++    MCDProcess *pb = (MCDProcess *) b;
++
++    if (pa->pid < pb->pid) {
++        return -1;
++    } else if (pa->pid > pb->pid) {
++        return 1;
++    } else {
++        return 0;
++    }
+ }
+ 
+ /**
+@@ -141,6 +284,17 @@ static void reset_mcdserver_state(void)
+  */
+ static void create_processes(MCDState *s)
+ {
++    object_child_foreach(object_get_root(), find_cpu_clusters, s);
++
++    if (mcdserver_state.processes) {
++        /* Sort by PID */
++        qsort(mcdserver_state.processes,
++              mcdserver_state.process_num,
++              sizeof(mcdserver_state.processes[0]),
++              pid_order);
++    }
++
++    mcd_create_default_process(s);
+ }
+ 
+ int mcdserver_start(const char *device)
 -- 
 2.34.1
 
