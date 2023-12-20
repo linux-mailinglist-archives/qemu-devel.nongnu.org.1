@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9880819FAD
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:18:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2732819FAC
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:18:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFwSL-00082M-W3; Wed, 20 Dec 2023 08:17:50 -0500
+	id 1rFwSU-00082k-1w; Wed, 20 Dec 2023 08:17:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRs-0007qq-IL
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:28 -0500
+ id 1rFwRy-0007rG-Jl
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:32 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRr-0002Ov-0C
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:20 -0500
+ id 1rFwRw-0002PC-56
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=s/6gk4s1JWMZwKvEQoHfCZZjfLVJj0fsDht8jOp+RaA=; b=eM8kAfbgkb7ZVhnZyIrQX35zoY
- 0kodOcSUp4qh7RmOwzLtPFOZ9hpUG1JHOmdrSUOOU3bx/92/w6vpkTcOkfQgWEYjutqdR89+yqJAn
- pfJ4pvasc1CNC1VqGR2YnbgZUNj5gk/CVKAjfBmbFocUqFt6KeAwX7UdLqvmt83KGyDQPZAkOWr+2
- EnxIaVMQAg0nsLRJ/psJIFMwFL+hhw+NidJjY19hgvbEVD1tY2KgIQ1ExpLxAmeZSbpUT8Jqdwrrs
- 4+RqxKJJG5cwf7iNcC+qXIb2DRY50BiZjflvSWqzcHsVMWzXR8kCpngEzaHOf7Utw1RQJDnalGkFU
- Xjgoqh7MVvzZopxRd1LlQq5mxsKFXwdZLWdbDufzD3qmkA2td+Z3l2608w9F7nhZ4957U1JG4oFq2
- dTRch8flcWdR9v7RNsbR/oKgLxuFTnEAtxS79Tc6gMAzSBXtcFmCNcLgEbOktl5Ff/4UYSXxJfRt5
- cH3dJsMj88a7PXK84eucXbM3adCUy4f13XUM5dnFz4oErWKCShJMlObbnlYQXZ+9q7RRufleRXSND
- kRNNWTW9OfQdF92cunPChEs0RumS3L7eWbAJgmJZVHZKqc8G8mGt8tbz1DFTiz4K40gzwU/hBxsKu
- rgZfdL22fclzmxCUFiCbssnEX1xn+YFfEA1+Mk7bk=;
+ bh=lXFMb7KhM9WRQ3q++nVdmfUoYoeUwX0EEcDeNQeZ9AA=; b=NqCYmEnXE7G2NLZW3fiH+yrksE
+ E3GWaI7jE/TE6A1sI6x5SotNAO4NzpF2P6zJmM+3UhkvFscF0HjnpB5fgAHiYVIjxJqLYycRdsBFX
+ EWbtEjCs7zmXbxHaK3yURgcfGUZlG5+2vTckqnWWy+Tj5tqF7x597xDi/8eV1Fsj8b38/coyFqEfo
+ l2tRouqXGApiFAoIbrG49w60VX54P6vwiZPoVECPED1savK5kMKAHJu9yQE9vx0RqO67oh38RJnAH
+ kOvECKJv3SBIeXkafQo0pmfsCQCdvfeA/te3IPwNC68x6lP+z/wamEliVjh/ji/zhoxmmaevqFkf3
+ +oyP3ZoiRJKULjgvGeTd5astq1xFJ+CoGAIza6EQj6t8GivXTkvOPXS2cJ+sZLIIuXGP3iD7Oo2BV
+ 9tiqbmliJH/adDXCGMlj85jDB30ElPgQhkfhL6a2OKFDmISVnF4FaoN3o1qeLSPdrejPBUgETwTd6
+ MfiaedR6qylNJk8yFpq0+/k7gfLtMSQtDRjnCvcaf9R2365oD/GyhwVaDNLdkhwmWbrddQ23jFo3q
+ D3z1apApIz2pyE6c1ao7GBmM+g9LfTPPgJ2Sl74s2w8cnoj5KlEUP7ObDzsxn98solcbiRB9DB7uR
+ Er9AnfmUk4mMRqjrWqVMk04WisQQkwaQOgb71d6bw=;
 Received: from host86-147-134-9.range86-147.btcentralplus.com ([86.147.134.9]
  helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRR-0001qt-2H; Wed, 20 Dec 2023 13:16:54 +0000
+ id 1rFwRS-0001qt-TT; Wed, 20 Dec 2023 13:16:59 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Wed, 20 Dec 2023 13:16:39 +0000
-Message-Id: <20231220131641.592826-10-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 20 Dec 2023 13:16:40 +0000
+Message-Id: <20231220131641.592826-11-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
 References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.147.134.9
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 09/11] next-cube.c: move LED logic to new
- next_scr2_led_update() function
+Subject: [PATCH v2 10/11] next-cube.c: remove val and size arguments from
+ nextscr2_write()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,61 +78,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure that the LED status is updated by calling next_scr2_led_update() whenever
-the SC2 register is written.
+These are now redundant with the scr2 and old_scr2 fields in NeXTPC. Rename
+the function from nextscr2_write() to next_scr2_rtc_update() to better
+reflect its purpose. At the same time replace the manual bit manipulation with
+the extract32() and deposit32() functions.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/m68k/next-cube.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ hw/m68k/next-cube.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index d53f73fb8b..fd707b4b54 100644
+index fd707b4b54..d9a1f234ec 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -124,6 +124,18 @@ static const uint8_t rtc_ram2[32] = {
- #define SCR2_RTDATA 0x4
- #define SCR2_TOBCD(x) (((x / 10) << 4) + (x % 10))
+@@ -136,18 +136,13 @@ static void next_scr2_led_update(NeXTPC *s)
+     }
+ }
  
-+static void next_scr2_led_update(NeXTPC *s)
-+{
-+    if (s->scr2 & 0x1) {
-+        DPRINTF("fault!\n");
-+        s->led++;
-+        if (s->led == 10) {
-+            DPRINTF("LED flashing, possible fault!\n");
-+            s->led = 0;
-+        }
-+    }
-+}
-+
- static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+-static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
++static void next_scr2_rtc_update(NeXTPC *s)
  {
      uint8_t old_scr2, scr2_2;
-@@ -135,15 +147,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
-         scr2_2 = val & 0xFF;
-     }
+     NextRtc *rtc = &s->rtc;
  
--    if (val & 0x1) {
--        DPRINTF("fault!\n");
--        s->led++;
--        if (s->led == 10) {
--            DPRINTF("LED flashing, possible fault!\n");
--            s->led = 0;
--        }
+-    if (size == 4) {
+-        scr2_2 = (val >> 8) & 0xFF;
+-    } else {
+-        scr2_2 = val & 0xFF;
 -    }
 -
-     old_scr2 = (s->old_scr2 >> 8) & 0xff;
+-    old_scr2 = (s->old_scr2 >> 8) & 0xff;
++    old_scr2 = extract32(s->old_scr2, 8, 8);
++    scr2_2 = extract32(s->scr2, 8, 8);
  
      if (scr2_2 & 0x1) {
-@@ -321,6 +324,7 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
-     case 0xd000 ... 0xd003:
+         /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
+@@ -255,8 +250,8 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+         rtc->command = 0;
+         rtc->value = 0;
+     }
+-    s->scr2 = val & 0xFFFF00FF;
+-    s->scr2 |= scr2_2 << 8;
++
++    s->scr2 = deposit32(s->scr2, 8, 8, scr2_2);
+ }
+ 
+ static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
+@@ -325,7 +320,7 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
          s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
                              size << 3, val);
-+        next_scr2_led_update(s);
-         nextscr2_write(s, val, size);
+         next_scr2_led_update(s);
+-        nextscr2_write(s, val, size);
++        next_scr2_rtc_update(s);
          s->old_scr2 = s->scr2;
          break;
+ 
 -- 
 2.39.2
 
