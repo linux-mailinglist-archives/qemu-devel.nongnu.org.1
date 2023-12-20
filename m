@@ -2,67 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35FC819FA9
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:18:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4422181A004
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:41:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFwSU-00082l-N9; Wed, 20 Dec 2023 08:17:59 -0500
+	id 1rFwoW-00027d-GD; Wed, 20 Dec 2023 08:40:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwS1-0007rR-Bz
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:32 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRz-0002PT-Ll
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=zKHhExBrhQhDtz+bMd3ZGiF02kmYBxElgg/wkqmyApA=; b=USrABwp0KMXlUI6d/sCrAJ2fS9
- 01jvbACnnPk9hNILXYpSC5d+2HdNUWdiy8asH3wkk4Ra7Wi0Yxgk/8OOyv+mpBO3MjU6dFjYiKdHR
- oDgnclWM/rozxClfKKE5YljsFt+nYIoZUnSJzuCCR0aY2bsqkW2SMUruD2FOSOskrctSoBS5HTvny
- 1qFPt/hPm8FsSYjlWNNocfhW9F6JFdhuA63587As1v6GBLr82GEcJjq4+H+c7n2aSqrbR7N8ceBEC
- fl3nfVsh6BvxvRwKdoDc5EHr3VAV0iqTiSNAJssPE3BJ2wuSeUiUPvAbocYB8VcOinqU7xv1P8hPv
- gGVJ7fdDouv5lW9eC6YKy6iSa+owDmGB9nav1PMqY6a2bIJ7KBuH3BS/++o/lPvySqg68n9VIUQxT
- 8zR6KHdJz0qLCp3mL5kci+UJnk4+MsymbEUwh4Q3k1e13rRfCjwGtfTqiu7Lh9Xis7ccOQ1myH+oX
- 3FFzLMqNCOHZ04TyNGKsTozaLmHpCoJ7lYV/SCtRRnceWOOANDlVxaBTuXWWiQiBNFM1RW51+0Oyg
- G3TFcHAb/ZdYeKPmuCgSrJXo2MoZ+9wW5om7SQzSNsqqZR/YySvpy47Y+dEupTXBjUCu1ESQSSFr5
- vCuLooga/OSVaVk6xRJYhtgnOuKPpsjR5fErU/vLg=;
-Received: from host86-147-134-9.range86-147.btcentralplus.com ([86.147.134.9]
- helo=localhost.localdomain)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRX-0001qt-4G; Wed, 20 Dec 2023 13:17:03 +0000
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: huth@tuxfamily.org,
-	qemu-devel@nongnu.org
-Date: Wed, 20 Dec 2023 13:16:41 +0000
-Message-Id: <20231220131641.592826-12-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
-References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rFwoB-00022H-4S; Wed, 20 Dec 2023 08:40:26 -0500
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1rFwo8-000274-Qc; Wed, 20 Dec 2023 08:40:22 -0500
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-594178b3959so24167eaf.0; 
+ Wed, 20 Dec 2023 05:40:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1703079617; x=1703684417; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=uMd4ADOFvkzah5me9T/+HHhJ6VCiXe+Wthd/vIvVj/o=;
+ b=EYpBd9JHL2yu4ekCZO++nADn+1yCqzL2rFRdRUiExnMUUTCsvztRKH03PdXW4w826u
+ f2jXb6HhB0y8fB2ipteuJRaAr1NSJuEEW4LuhSv1gzTb+3go9/KXX560u3Q3PtuPXEZ4
+ JmnZLWTT9YnQ24tXMut2NnIiZnmykWGE72Lnv9tEKZ+cmJ+9KaLq3NGxC/vrndrGFgrQ
+ U/WiYNBfD2TXt6tbdudmfLXpDflvSG7qglm4CoomcQerW/vjvh8HXjz7EoS3zYrP8/KL
+ RS2UuJt8KjFihEzesqOp0M4hAsAiSK4rmIUWDzLTkbZWOu1lguXWuECckzBlt/PwJnBM
+ ariQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703079617; x=1703684417;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uMd4ADOFvkzah5me9T/+HHhJ6VCiXe+Wthd/vIvVj/o=;
+ b=VJA5Y8qR9k2rcUmBEKjs5uSV9+MZMYNePCkXltPWQhVu8MePxYEDW9L4J9OTFDp4tM
+ 6K2EiLtgh/hhvgsrtMf0/1Gl99ibu/tXDoyfhOkBgpkp36c5v64PQDdSCmflni5w7ur2
+ sKz60tMWLJOWM2wmbEPcyGqFro4n0z4lR6calQw61xthLWrMvCHDbGbrTmsbzOCEPnzr
+ 4ctvpBWmOf4zHQ1EHGCwjPqmBT2eUe8OO1PmPkcEUnmWiIqszizeoTfn3hNfGA05UJ9/
+ kSqDOrwquMXXuU8ThWPm+GjXBI+nBSVHcqac15DKCqI0hYrSjbecaKO2nsDSHkFE4k5r
+ MoaQ==
+X-Gm-Message-State: AOJu0YxNus9xXg0k/NQAtikoy2ekWLYTry0t4g+Y91MG85yx/9VAvtSF
+ w7GpEUzrJ8mGxUoc4U5fSC+wMDcSOGI0kUSqVhs=
+X-Google-Smtp-Source: AGHT+IG4wiFT4rUzLfQAVpvMwGvhbloaVAniWXFbzQNYl02YYRfoCtVhV2QvGtYv0LsqGi1jEHbDB4q4s7vK0gg2PG4=
+X-Received: by 2002:a4a:8c26:0:b0:593:e06a:5ade with SMTP id
+ u35-20020a4a8c26000000b00593e06a5ademr2000642ooj.14.1703079616936; Wed, 20
+ Dec 2023 05:40:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.147.134.9
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 11/11] next-cube.c: move machine MemoryRegions into
- NeXTState
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+References: <20231205182011.1976568-1-stefanha@redhat.com>
+ <20231205182011.1976568-5-stefanha@redhat.com>
+ <ZYG2mSe1JWnC0tq_@redhat.com> <ZYHew2poxuJJRyhC@redhat.com>
+ <CAJSP0QX0fg0TGWuveJz6+QbF9EmY=vPiU-c99fHZMN=1jAnXkw@mail.gmail.com>
+ <ZYK0pUSPFQiU4Qs_@redhat.com>
+In-Reply-To: <ZYK0pUSPFQiU4Qs_@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 20 Dec 2023 08:40:04 -0500
+Message-ID: <CAJSP0QXc2RVDHC_-CxbB_rvKOR36Q_wz5wWgCgaFtYt37oE6XA@mail.gmail.com>
+Subject: Re: [PATCH v2 04/14] aio: make
+ aio_context_acquire()/aio_context_release() a no-op
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Cleber Rosa <crosa@redhat.com>, 
+ Xie Changlong <xiechanglong.d@gmail.com>, Paul Durrant <paul@xen.org>,
+ Ari Sundholm <ari@tuxera.com>, 
+ Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>,
+ John Snow <jsnow@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Wen Congyang <wencongyang2@huawei.com>, 
+ Alberto Garcia <berto@igalia.com>, Anthony Perard <anthony.perard@citrix.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org, 
+ Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Coiby Xu <Coiby.Xu@gmail.com>, 
+ Fabiano Rosas <farosas@suse.de>, Hanna Reitz <hreitz@redhat.com>,
+ Zhang Chen <chen.zhang@intel.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Peter Xu <peterx@redhat.com>, 
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Leonardo Bras <leobras@redhat.com>, 
+ David Hildenbrand <david@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,94 +108,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These static memory regions are contained within the machine and do not need to
-be dynamically allocated.
+On Wed, 20 Dec 2023 at 04:32, Kevin Wolf <kwolf@redhat.com> wrote:
+>
+> Am 19.12.2023 um 22:23 hat Stefan Hajnoczi geschrieben:
+> > The following hack makes the test pass but there are larger safety
+> > issues that I'll need to look at on Wednesday:
+>
+> I see, you're taking the same approach as in the SCSI layer: Don't make
+> things thread-safe, but just always access them from the same thread.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
----
- hw/m68k/next-cube.c | 38 +++++++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+Yes, but it feels like a hack to me. You pointed out that other parts
+also don't look thread-safe (e.g. the clients list) and I agree. I've
+started annotating the code and will try to come up with a full fix
+today.
 
-diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index d9a1f234ec..292f13defb 100644
---- a/hw/m68k/next-cube.c
-+++ b/hw/m68k/next-cube.c
-@@ -74,6 +74,12 @@ typedef struct NextRtc {
- struct NeXTState {
-     MachineState parent;
- 
-+    MemoryRegion rom;
-+    MemoryRegion rom2;
-+    MemoryRegion dmamem;
-+    MemoryRegion bmapm1;
-+    MemoryRegion bmapm2;
-+
-     next_dma dma[10];
- };
- 
-@@ -967,13 +973,9 @@ static const TypeInfo next_pc_info = {
- 
- static void next_cube_init(MachineState *machine)
- {
-+    NeXTState *m = NEXT_MACHINE(machine);
-     M68kCPU *cpu;
-     CPUM68KState *env;
--    MemoryRegion *rom = g_new(MemoryRegion, 1);
--    MemoryRegion *rom2 = g_new(MemoryRegion, 1);
--    MemoryRegion *dmamem = g_new(MemoryRegion, 1);
--    MemoryRegion *bmapm1 = g_new(MemoryRegion, 1);
--    MemoryRegion *bmapm2 = g_new(MemoryRegion, 1);
-     MemoryRegion *sysmem = get_system_memory();
-     const char *bios_name = machine->firmware ?: ROM_FILE;
-     DeviceState *pcdev;
-@@ -1008,21 +1010,23 @@ static void next_cube_init(MachineState *machine)
-     sysbus_mmio_map(SYS_BUS_DEVICE(pcdev), 1, 0x02100000);
- 
-     /* BMAP memory */
--    memory_region_init_ram_flags_nomigrate(bmapm1, NULL, "next.bmapmem", 64,
--                                           RAM_SHARED, &error_fatal);
--    memory_region_add_subregion(sysmem, 0x020c0000, bmapm1);
-+    memory_region_init_ram_flags_nomigrate(&m->bmapm1, NULL, "next.bmapmem",
-+                                           64, RAM_SHARED, &error_fatal);
-+    memory_region_add_subregion(sysmem, 0x020c0000, &m->bmapm1);
-     /* The Rev_2.5_v66.bin firmware accesses it at 0x820c0020, too */
--    memory_region_init_alias(bmapm2, NULL, "next.bmapmem2", bmapm1, 0x0, 64);
--    memory_region_add_subregion(sysmem, 0x820c0000, bmapm2);
-+    memory_region_init_alias(&m->bmapm2, NULL, "next.bmapmem2", &m->bmapm1,
-+                             0x0, 64);
-+    memory_region_add_subregion(sysmem, 0x820c0000, &m->bmapm2);
- 
-     /* KBD */
-     sysbus_create_simple(TYPE_NEXTKBD, 0x0200e000, NULL);
- 
-     /* Load ROM here */
--    memory_region_init_rom(rom, NULL, "next.rom", 0x20000, &error_fatal);
--    memory_region_add_subregion(sysmem, 0x01000000, rom);
--    memory_region_init_alias(rom2, NULL, "next.rom2", rom, 0x0, 0x20000);
--    memory_region_add_subregion(sysmem, 0x0, rom2);
-+    memory_region_init_rom(&m->rom, NULL, "next.rom", 0x20000, &error_fatal);
-+    memory_region_add_subregion(sysmem, 0x01000000, &m->rom);
-+    memory_region_init_alias(&m->rom2, NULL, "next.rom2", &m->rom, 0x0,
-+                             0x20000);
-+    memory_region_add_subregion(sysmem, 0x0, &m->rom2);
-     if (load_image_targphys(bios_name, 0x01000000, 0x20000) < 8) {
-         if (!qtest_enabled()) {
-             error_report("Failed to load firmware '%s'.", bios_name);
-@@ -1049,9 +1053,9 @@ static void next_cube_init(MachineState *machine)
-     next_scsi_init(pcdev, cpu);
- 
-     /* DMA */
--    memory_region_init_io(dmamem, NULL, &next_dma_ops, machine, "next.dma",
--                          0x5000);
--    memory_region_add_subregion(sysmem, 0x02000000, dmamem);
-+    memory_region_init_io(&m->dmamem, NULL, &next_dma_ops, machine,
-+                          "next.dma", 0x5000);
-+    memory_region_add_subregion(sysmem, 0x02000000, &m->dmamem);
- }
- 
- static void next_machine_class_init(ObjectClass *oc, void *data)
--- 
-2.39.2
-
+Stefan
 
