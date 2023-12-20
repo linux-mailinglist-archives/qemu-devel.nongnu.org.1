@@ -2,75 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E2181A53D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 17:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B888D81A5CF
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 17:59:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFzVs-00055I-Tf; Wed, 20 Dec 2023 11:33:41 -0500
+	id 1rFztC-0001Lh-Et; Wed, 20 Dec 2023 11:57:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rFzVi-00052H-7A
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:33:31 -0500
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rFzt9-0001LS-Rd
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:57:43 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rFzVe-0006dr-7d
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:33:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1703090006; x=1734626006;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=sCKGWzuiKAuB607fgbj5++IPYoLBkWQCAgNuWkeqyd8=;
- b=B92FxQ0bmc8pmRyUUCe9MPuAJZpuXvxelwHAUFeG3H6ZQB7vHBMk3CfB
- tvLjBe7hvRgKhBh00E81+jOtKvdoLCphnRDVmcJeUUhF5Tdmu559MAJBR
- lJNLuWrYzkxjdrco3Wt7ofZzqem3Vx6CcUjnJDmMqczWvIcAR7OB1Vyfo
- DKxquZD+uZyBI1V2uAK62eFjKHj+Anqyr14oAfYxGu3PyMq7C5lAc0ZH9
- eQJXvnstY8JJholKuo5Kbp0NjsZk0k/ZIDzM17S8scj1vOniRHTmCFzTh
- NlC/MJ91rOKeMANcQW3V5KVLr6DYQjMKXVAqyo0s4DN4r2a11HDMGKPgB g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="2667185"
-X-IronPort-AV: E=Sophos;i="6.04,291,1695711600"; 
-   d="scan'208";a="2667185"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2023 08:33:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="726131820"
-X-IronPort-AV: E=Sophos;i="6.04,291,1695711600"; d="scan'208";a="726131820"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga003.jf.intel.com with ESMTP; 20 Dec 2023 08:33:18 -0800
-Date: Thu, 21 Dec 2023 00:46:03 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] qdev: Report an error for machine without
- HotplugHandler
-Message-ID: <ZYMaS8v8sIWhteFm@intel.com>
-References: <20231210-bus-v2-1-34ebf5726fa0@daynix.com>
- <87h6kpgrl7.fsf@pond.sub.org>
- <cbda6265-5027-424c-be93-86073d9ad63a@daynix.com>
- <8734vzsj6k.fsf@pond.sub.org>
- <ff212914-32b5-442e-8f67-4f01a7208a0c@daynix.com>
- <87y1dpgvim.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rFzt7-00028A-HL
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 11:57:43 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0709875A4D7;
+ Wed, 20 Dec 2023 17:57:35 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id N5KMEDMOsExu; Wed, 20 Dec 2023 17:57:33 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 1AE6C75A4BC; Wed, 20 Dec 2023 17:57:33 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 18353756066;
+ Wed, 20 Dec 2023 17:57:33 +0100 (CET)
+Date: Wed, 20 Dec 2023 17:57:33 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Fabiano Rosas <farosas@suse.de>
+cc: Warner Losh <imp@bsdimp.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ Dave Blanchard <dave@killthe.net>, QEMU Developers <qemu-devel@nongnu.org>
+Subject: Re: Qemu resets terminal to crazy defaults
+In-Reply-To: <87a5q4rj8j.fsf@suse.de>
+Message-ID: <c76b134d-bab8-fea2-6df2-bd9baaa80771@eik.bme.hu>
+References: <20231219132135.c4bff4807c9d7215b179f240@killthe.net>
+ <87plz22d9r.fsf@suse.de>
+ <CAFEAcA-RJUUZo0KYujQskkAim_qXkJxtuSb9wtgxoP0XSEtKYQ@mail.gmail.com>
+ <CANCZdfqX=URh2C+upKQPF9sg9TX6oZpHfrYF6rGRNz-6SdbhLw@mail.gmail.com>
+ <87a5q4rj8j.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y1dpgvim.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-2058111875-1703091453=:72834"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,137 +68,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On Wed, Dec 20, 2023 at 08:53:21AM +0100, Markus Armbruster wrote:
-> Date: Wed, 20 Dec 2023 08:53:21 +0100
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH v2] qdev: Report an error for machine without
->  HotplugHandler
-> 
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
-> > On 2023/12/18 23:02, Markus Armbruster wrote:
-> >> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> >> 
-> >>> On 2023/12/11 15:51, Markus Armbruster wrote:
-> >>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> >>>>
-> >>>>> The HotplugHandler of the machine will be used when the parent bus does
-> >>>>> not exist, but the machine may not have one. Report an error in such a
-> >>>>> case instead of aborting.
-> >>>>>
-> >>>>> Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
-> >>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> >>>>
-> >>>> Do you have a reproducer for the crash?
-> >>>>
-> >>>>> ---
-> >>>>> Changes in v2:
-> >>>>> - Fixed indention.
-> >>>>> - Link to v1: https://lore.kernel.org/r/20231202-bus-v1-1-f7540e3a8d62@daynix.com
-> >>>>> ---
-> >>>>>    system/qdev-monitor.c | 13 ++++++++++---
-> >>>>>    1 file changed, 10 insertions(+), 3 deletions(-)
-> >>>>>
-> >>>>> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-> >>>>> index a13db763e5..5fe5d49c20 100644
-> >>>>> --- a/system/qdev-monitor.c
-> >>>>> +++ b/system/qdev-monitor.c
-> >>>>> @@ -927,9 +927,16 @@ void qdev_unplug(DeviceState *dev, Error **errp)
-> >>>>    void qdev_unplug(DeviceState *dev, Error **errp)
-> >>>>    {
-> >>>>        DeviceClass *dc = DEVICE_GET_CLASS(dev);
-> >>>>        HotplugHandler *hotplug_ctrl;
-> >>>>        HotplugHandlerClass *hdc;
-> >>>>        Error *local_err = NULL;
-> >>>>        if (qdev_unplug_blocked(dev, errp)) {
-> >>>>            return;
-> >>>>        }
-> >>>>        if (dev->parent_bus && !qbus_is_hotpluggable(dev->parent_bus)) {
-> >>>>            error_setg(errp, QERR_BUS_NO_HOTPLUG, dev->parent_bus->name);
-> >>>>            return;
-> >>>>        }
-> >>>>        if (!dc->hotpluggable) {
-> >>>>            error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
-> >>>>                       object_get_typename(OBJECT(dev)));
-> >>>>            return;
-> >>>>        }
-> >>>>        if (!migration_is_idle() && !dev->allow_unplug_during_migration) {
-> >>>>            error_setg(errp, "device_del not allowed while migrating");
-> >>>>            return;
-> >>>>        }
-> >>>>
-> >>>>>       qdev_hot_removed = true;
-> >>>>>          hotplug_ctrl = qdev_get_hotplug_handler(dev);
-> >>>>> -    /* hotpluggable device MUST have HotplugHandler, if it doesn't
-> >>>>> -     * then something is very wrong with it */
-> >>>>> -    g_assert(hotplug_ctrl);
-> >>>>> +    if (!hotplug_ctrl) {
-> >>>>> +        /*
-> >>>>> +         * hotpluggable bus MUST have HotplugHandler, if it doesn't
-> >>>>> +         * then something is very wrong with it
-> >>>>> +         */
-> >>>>> +        assert(!dev->parent_bus);
-> >>>>> +
-> >>>>> +        error_setg(errp, "The machine does not support hotplugging for a device without parent bus");
-> >>>>> +        return;
-> >>>>> +    }
-> >>>>
-> >>>> Extended version of my question above: what are the devices where
-> >>>> qdev_get_hotplug_handler(dev) returns null here?
-> >>>
-> >>> Start a VM: qemu-system-aarch64 -M virt -nographic
-> >>> Run the following on its HMP: device_del /machine/unattached/device[0]
-> >>>
-> >>> It tries to unplug cortex-a15-arm-cpu and crashes.
-> >>
-> >> This device has no parent bus (dev->parent_bus is null), but is marked
-> >> hot-pluggable (dc->hotpluggable is true).  Question for somebody
-> >> familiar with the hot-plug machinery: is this sane?
-> >
-> > Setting hotpluggable false for each device without bus_type gives the same effect, but is error-prone.
-> 
-> Having hotpluggable = true when the device cannot be hot-plugged is
-> *wrong*.  You might be able to paper over the wrongness so the code
-> works anyway, but nothing good can come out of lying to developers
-> trying to understand how the code works.
-> 
-> Three ideas to avoid the lying:
-> 
-> 1. default hotpluggable to bus_type != NULL.
-> 
-> 2. assert(dc->bus_type || !dc->hotpluggable) in a suitable spot.
-> 
-> 3. Change the meaning of hotpluggable, and rename it to reflect its new
-> meaning.  Requires a careful reading of its uses.  I wouldn't go there.
-> 
+--3866299591-2058111875-1703091453=:72834
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-What about 4 (or maybe 3.1) - droping this hotpluggable flag and just use a
-helper (like qbus) to check if device is hotpluggable?
+On Wed, 20 Dec 2023, Fabiano Rosas wrote:
+> Warner Losh <imp@bsdimp.com> writes:
+>
+>> On Tue, Dec 19, 2023, 1:55 PM Peter Maydell <peter.maydell@linaro.org>
+>> wrote:
+>>
+>>> On Tue, 19 Dec 2023 at 19:40, Fabiano Rosas <farosas@suse.de> wrote:
+>>>>
+>>>> Dave Blanchard <dave@killthe.net> writes:
+>>>>
+>>>>> Hello all, can you please help me to understand what Qemu is doing
+>>> here?
+>>>>>
+>>>>> When connecting to the guest for example using a serial/tcp/telnet
+>>> link, some kind of code is being immediately transmitted over the link
+>>> which screws up my Xterm terminal settings, including changing the text
+>>> cursor shape and most notably, disabling wraparound of long lines, so that
+>>> they get truncated at the edge of the window instead.
+>>>>>
+>>>>> Can this behavior be disabled by command line, and if not, what is the
+>>> code doing exactly so I can know where to disable it? I tried disabling all
+>>> calls to tcsetattr() but that had no effect.
+>>>
+>>>> I looked into the automatic margins issue a long time ago and I seem to
+>>>> remember it was caused by the firmware (SeaBIOS) configuring the
+>>>> terminal and QEMU just never returning it to the original state. I
+>>>> eventually gave up trying to fix it because I was having trouble finding
+>>>> a reliable point in QEMU shutdown sequence to enable the capability
+>>>> back. Nowadays I just run 'tput smam' after quitting QEMU.
+>>>
+>>> To check whether this is happening because of the BIOS (or other
+>>> guest code) vs QEMU itself, you can try running QEMU in a configuration
+>>> where it doesn't run any BIOS code. One I happen to know offhand
+>>> is an arm one:
+>>>
+>>>    qemu-system-aarch64 -M virt -serial stdio
+>>>
+>>> This won't print anything, because we haven't loaded any guest
+>>> code at all and there's no default BIOS on this machine type.
+>>> (The emulated CPU is sat in effectively a tight loop taking
+>>> exceptions.) If that messes up the terminal settings, then it's
+>>> likely being done by something inside QEMU. If it doesn't, then
+>>> it sounds like as you say it'll be because of the SeaBIOS
+>>> firmware writing stuff to the terminal.
+>>>
+>>> (There might be a way to run the x86 PC machine without it
+>>> running a BIOS, for a similar test, but I don't know if there
+>>> is or how to do it off the top of my head.)
+>>>
+>
+> I tried using an empty bios file. I see with 'info registers' that the
+> vcpu is spinning. After quitting QEMU, the terminal state is unchanged:
+>
+> $ dd if=/dev/zero of=dummy-bios.bin count=256 bs=1k
+> $ qemu-system-x86_64 -nographic -bios ./dummy-bios.bin
+> $ <line wrap preserved>
+>
+> With SeaBIOS, the issue manifests:
+>
+> $ qemu-system-x86_64 -nographic
+> SeaBIOS (version rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org)
+> <bunch of boot and iPXE messages>
+> ...
+> $ <line wrap disabled>
+>
+>>> I do know that QEMU doesn't clean up things the guest does
+>>> to the terminal, because for instance if you have a serial
+>>> terminal and the guest puts it into "emit boldface/bright",
+>>> that doesn't go back to normal non-bold text when QEMU exits.
+>>> (It would be nice if it did do that...)
+>>>
+>>
+>> It would be nice indeed. Trouble is quarrying the state beforehand to know
+>> what to reset by random software producing effectively random bytes..
+>>
+>
+> Maybe we could focus on the more annoying/obvious state? The line wrap
+> issue is a very salient one, specially since QEMU command lines
+> themselves tend to take more than one line.
+>
+>> ESC c
+>>
+>> is the reset sequence as well...but that's likely too big a hammer.
 
-This removes the confusion of that flag and also reduces the number of
-configuration items for DeviceState that require developer attention.
-A simple helper is as follows:
+There's 'stty sane' which is supposed to reset to reasonable values, maybe 
+that could be used but I'm not sure it could fix all strange states. It's 
+better than reset as reset also drops scrollback history.
 
-static inline bool qdev_is_hotpluggable(DeviceState *dev)
-{
-    /*
-     * Many Machines don't implement qdev_hotplug_allowed().
-     *
-     * TODO: Once all of them complete missing qdev_hotplug_allowed(),
-     *       use qdev_hotplug_allowed() here.
-     */
-    bool hotpluggable = !!qdev_get_machine_hotplug_handler(dev);
-
-    if (!hotpluggable && dev->parent_bus) {
-        hotpluggable = qbus_is_hotpluggable(dev->parent_bus);
-    }
-
-    return hotpluggable;
-}
-
-Thanks,
-Zhao
-
+Regards,
+BALATON Zoltan
+--3866299591-2058111875-1703091453=:72834--
 
