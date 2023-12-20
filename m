@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F7381A5E4
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 18:03:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5ECE81A5F8
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 18:07:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFzxQ-0003Cw-Ak; Wed, 20 Dec 2023 12:02:08 -0500
+	id 1rG019-0006RW-QT; Wed, 20 Dec 2023 12:05:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rFzwy-00031m-U9
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 12:01:42 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rG013-0006RE-75
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 12:05:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rFzws-0004nT-Il
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 12:01:40 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rG010-0006in-N3
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 12:05:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703091684;
+ s=mimecast20190719; t=1703091948;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R/5POCAtg47nzQUQRrkRHrtQ1PNbAQBl2558GYwjRjw=;
- b=fc1BfsDOXCsvdRnrf1UL7pfC35PXR0pI3NltenfcX+0oZTyVekhIMSNRcaUzTYESum9hLg
- 2vaQ1HfQzITxjNjiWG6lztdarcGoGGy1zScqvJkVIHTIwQUVBDutZsOyvOOElGpTgY3B7Y
- ebi5ZXQhSMqu+ynqxu29+s3kHt1ur90=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6YZXWLC5YVAhjkCeMUHf0nK8vpBx7qJqtNMEiGY1mzQ=;
+ b=GuXthl5N/zCQD5IOGQqlC1tTwxU9J0DLSlnbcf2DY/50M1jZ/7vcHlmmlsW1SCHbSxe8jF
+ Z4IO7HTNSkBycsB9ribd3I4nth1OIJypHeuyyLta8uzCEOvrHk/kcFN1ivxOsPwN5dOodd
+ Zb1tTm/9x33TS8K2ETuqectK8UB7uSU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-522-BVL9AOIvNWK0460OciGQBw-1; Wed, 20 Dec 2023 12:01:23 -0500
-X-MC-Unique: BVL9AOIvNWK0460OciGQBw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-40c3f0f88e3so45277045e9.0
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 09:01:22 -0800 (PST)
+ us-mta-624-keXKBsFOMRWzJvGXetau8A-1; Wed, 20 Dec 2023 12:05:47 -0500
+X-MC-Unique: keXKBsFOMRWzJvGXetau8A-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-33677bbd570so937091f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 09:05:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703091681; x=1703696481;
+ d=1e100.net; s=20230601; t=1703091946; x=1703696746;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R/5POCAtg47nzQUQRrkRHrtQ1PNbAQBl2558GYwjRjw=;
- b=QtROdT6FxpN0uWisXEMinR+AqskSK0ijvnJITZPL3q8/YADhMQo9BKrPxKgRAXpw+B
- Ob1t1MtMDsTUsC7edkqjIyUFMeOBAY38ODA1Xq5rrVHM2xOl5gpNYmJSyko7VNH96nnn
- UMnBrn9vdqgWLLkF6UT1iBVaDc8mBwb9MXZVS0pBjY5DpwMiaFQQLoLKcp76gtV7oa+M
- QIRwbuFijfx0cSbhw6ntEoGyceCKgu5iL3ZmkwMhi1np6owfleVcOK9g6Er810Da2/+h
- et7caM+Kb2sVgyPRL49JcPhhk28YHbjB4AJW/Z6uJWL2q+YTvsXrodG3lup5QxqtNw5E
- 3uaA==
-X-Gm-Message-State: AOJu0YxTt50oaNmRSfZbYPw7XyeG7DR7S7TsY0D0M8sC/jsVynq9iIEB
- /+TWN+ff3KSPvNhHRsa+FQQpXdDKo8C+lOkjUS9qpxCyLU1IwFDhNE3QXkeUbx7hApACd3jZLUS
- IJCOKZs1Y18wQqd+iqS4NPmwrU5wzf8j53d8qkvWnmPZd+GqB6RFI+wpSqw3KJ9VlOVW1
-X-Received: by 2002:a05:600c:511e:b0:40d:3712:2d2e with SMTP id
- o30-20020a05600c511e00b0040d37122d2emr650969wms.170.1703091681449; 
- Wed, 20 Dec 2023 09:01:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGN4qhCKG5wfpHSVzjpLirf064AHqdb3KfUzDnFIGiB3qWLPS3/urozyoEYb1rrwfff0sDFWQ==
-X-Received: by 2002:a05:600c:511e:b0:40d:3712:2d2e with SMTP id
- o30-20020a05600c511e00b0040d37122d2emr650943wms.170.1703091680825; 
- Wed, 20 Dec 2023 09:01:20 -0800 (PST)
+ bh=6YZXWLC5YVAhjkCeMUHf0nK8vpBx7qJqtNMEiGY1mzQ=;
+ b=AoF4v+VarMJpzkql3IBfGLCFPHhf2rIYBLcBtnTyjan0wLhRXqRmNB90hQSFUbCF4F
+ 0uSUOhhmq0AhXyHMZPAYuzJny4jkQDg0GjuhjbatubMuZLjm/VtREkZ2SrevH3fTQAUl
+ 7ps8TncjOkzlNT0WenwH1yhBSqgZZs0IvFExRdMzamwQCpBW2oD8rHJTZZfNJbW0NSV9
+ uefeM79mGndmApPJwuUw5KImc1EKvAYdc0DkGP/AdNWgYO4R/6WkAxG7iV5Fl8MMyvA8
+ 9PI6xW9kY5bl8irQ4J+GDddPOpDeA0TBMD4Bg+ybPUmMymvz88Mxyq5R/Zu3MPK6Ly+A
+ 4G1w==
+X-Gm-Message-State: AOJu0YzlWBZDu2AVHBmY27XnLuAuRfCxyDpS4Q6VEVs4iw4QLvYPXzj4
+ ScrhQmjjq8nAMhle+GSZpGpeWkch9zAaWtWPNmqIbpCLFlIRJp5zaBtMOYl0t4yDJ4uPvkXG3ub
+ DgviDXJpgXIiKUCc=
+X-Received: by 2002:adf:f1d0:0:b0:336:62cb:669 with SMTP id
+ z16-20020adff1d0000000b0033662cb0669mr15479wro.53.1703091946193; 
+ Wed, 20 Dec 2023 09:05:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPKv9p87Hi1gXc1O3F8Rc4tUhiFjTI3+/gu6wj9xqyOHLtKn6pYgiu1f7MO+62pSatp9YF8Q==
+X-Received: by 2002:adf:f1d0:0:b0:336:62cb:669 with SMTP id
+ z16-20020adff1d0000000b0033662cb0669mr15467wro.53.1703091945904; 
+ Wed, 20 Dec 2023 09:05:45 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
  ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
  by smtp.gmail.com with ESMTPSA id
- be8-20020a05600c1e8800b0040b397787d3sm8439587wmb.24.2023.12.20.09.01.20
+ k2-20020adfb342000000b0033678e0c99bsm26584wrd.96.2023.12.20.09.05.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Dec 2023 09:01:20 -0800 (PST)
-Message-ID: <4f953afd-07be-483a-b50d-31aac5ff2743@redhat.com>
-Date: Wed, 20 Dec 2023 18:01:19 +0100
+ Wed, 20 Dec 2023 09:05:45 -0800 (PST)
+Message-ID: <747c261d-f915-4cd6-8fb8-32ec667732c7@redhat.com>
+Date: Wed, 20 Dec 2023 18:05:44 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] vfio/container: Replace basename with g_path_get_basename
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Eric Auger <eric.auger@redhat.com>,
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Alex Williamson <alex.williamson@redhat.com>, Khem Raj <raj.khem@gmail.com>
 References: <20231220135302.932039-1-clg@redhat.com>
+ <ZYMDmBbIua253Xf8@intel.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231220135302.932039-1-clg@redhat.com>
+In-Reply-To: <ZYMDmBbIua253Xf8@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -102,50 +103,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/20/23 14:53, Cédric Le Goater wrote:
-> g_path_get_basename() is a portable utility function that has the
-> advantage of not modifing the string argument. It also fixes a compile
-> breakage with the Musl C library reported in [1].
-> 
-> [1] https://lore.kernel.org/all/20231212010228.2701544-1-raj.khem@gmail.com/
-> 
-> Reported-by: Khem Raj <raj.khem@gmail.com>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Hello,
 
+On 12/20/23 16:09, Zhao Liu wrote:
+> Hi Cédric,
+> 
+> On Wed, Dec 20, 2023 at 02:53:02PM +0100, Cédric Le Goater wrote:
+>> Date: Wed, 20 Dec 2023 14:53:02 +0100
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Subject: [PATCH] vfio/container: Replace basename with g_path_get_basename
+>> X-Mailer: git-send-email 2.43.0
+>>
+>> g_path_get_basename() is a portable utility function that has the
+>> advantage of not modifing the string argument. It also fixes a compile
+>> breakage with the Musl C library reported in [1].
+>>
+>> [1] https://lore.kernel.org/all/20231212010228.2701544-1-raj.khem@gmail.com/
+>>
+>> Reported-by: Khem Raj <raj.khem@gmail.com>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+> 
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Just one additional question, I understand that QEMU should replace all
+> basename() with g_path_get_basename(), right?
+> 
+> I find hw/s390x/s390-ccw.c also uses basename(). Maybe I can clean it up
+> to avoid potentially similar issue.
 
-Applied to vfio-next.
+I guess so and I wonder why 3e015d815b3f didn't do the change.
+Anyhow, please cc me, I can give it a try.
 
 Thanks,
 
 C.
 
 
-> ---
->   hw/vfio/container.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+
 > 
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index 688cf23bab88f85246378bc5a7da3c51ea6b79d9..8d334f52f2438d05f632502e07ffd4dc2ec76cb5 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -869,7 +869,8 @@ static void vfio_put_base_device(VFIODevice *vbasedev)
->   
->   static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
->   {
-> -    char *tmp, group_path[PATH_MAX], *group_name;
-> +    char *tmp, group_path[PATH_MAX];
-> +    g_autofree char *group_name = NULL;
->       int ret, groupid;
->       ssize_t len;
->   
-> @@ -885,7 +886,7 @@ static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
->   
->       group_path[len] = 0;
->   
-> -    group_name = basename(group_path);
-> +    group_name = g_path_get_basename(group_path);
->       if (sscanf(group_name, "%d", &groupid) != 1) {
->           error_setg_errno(errp, errno, "failed to read %s", group_path);
->           return -errno;
+> Thanks,
+> Zhao
+> 
+>>   hw/vfio/container.c | 5 +++--
+>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+>> index 688cf23bab88f85246378bc5a7da3c51ea6b79d9..8d334f52f2438d05f632502e07ffd4dc2ec76cb5 100644
+>> --- a/hw/vfio/container.c
+>> +++ b/hw/vfio/container.c
+>> @@ -869,7 +869,8 @@ static void vfio_put_base_device(VFIODevice *vbasedev)
+>>   
+>>   static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+>>   {
+>> -    char *tmp, group_path[PATH_MAX], *group_name;
+>> +    char *tmp, group_path[PATH_MAX];
+>> +    g_autofree char *group_name = NULL;
+>>       int ret, groupid;
+>>       ssize_t len;
+>>   
+>> @@ -885,7 +886,7 @@ static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+>>   
+>>       group_path[len] = 0;
+>>   
+>> -    group_name = basename(group_path);
+>> +    group_name = g_path_get_basename(group_path);
+>>       if (sscanf(group_name, "%d", &groupid) != 1) {
+>>           error_setg_errno(errp, errno, "failed to read %s", group_path);
+>>           return -errno;
+>> -- 
+>> 2.43.0
+>>
+>>
+> 
 
 
