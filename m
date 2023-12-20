@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C90F819FAE
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:18:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9455819FAA
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:18:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFwSI-0007yG-K5; Wed, 20 Dec 2023 08:17:47 -0500
+	id 1rFwSH-0007ql-Sb; Wed, 20 Dec 2023 08:17:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRh-0007oD-Ff
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:09 -0500
+ id 1rFwRi-0007oH-Kr
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:10 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRf-0002MD-Fm
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:09 -0500
+ id 1rFwRf-0002MN-Vo
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=zHQc7MpTe38WYcKVMtTi+B9+NqJxQtns6H2CrAk5GKw=; b=oCD292QdVTda8UptvuZWgvull4
- jPyNk0GLQgYyeLrfgtHEm2VpMoGhQTDvK+EbE0JlIWEgIBwdA4F6ItuxaC+GRQS40oASR0Udaxrcy
- sQpQ/vWjHMFc9tvLnwIK64M4/Y6E0po50ym/k90JSgTKqQqAA4LVjw/EK1t4jAooLqXOYdoAcF4Qs
- C0rvnGJVqV2stFy6tqfgncvAPhJkxAKHbD4JQvidJJxh+i0ClnH7aR5CWUSZ9P9Yf4uNKEztyzc7m
- 8pd/8ejPm6pCB3ohB5uU8PdI1wX5wkXhBRGDDPLv7nCk3eAfY1PGb3RGAhVGdou0wqA7okPltCXCt
- NxAN6Ev4nTrWCF9tNRIHdzrCwuCjAu/w/CK6d0apCq0bxrJRQ7uCEs7nnb7hmvA4lALTHRvs6oIgz
- LEpPrZx90HjILa/ZUNMKzWB4HdKrAD4g3gKLFmfGwsgS+VxFXzf+pf/eQzxhpUh33te3mQLe4LNQB
- QkSgkQ6cBZLdLO6bfBWifqxTc5Tg4F+Adx3MsDFSoADiB2Rzv502inTueKIOspsV/vfv1kLZr7T7c
- tnMOL+tVLgSiRm5nlSYGF1KgY253x6KxyyVUMxmVNIEfsU/kq1AdhkBQuWpFBHNBJIDGFO2bTWP2k
- 3koaJODJqBm5ehf3mgYnu3I9wUic20S2CGuVhAuF8=;
+ bh=HTGeNDp6XMMBKf/2pbtpwhQy6zMd8BzI4nhaucjvvGA=; b=FRhC/v+MjoToCWLTKXe9IPIIGj
+ lKO5UfG1YXw5jcEdzB6e+dithsnHyrgE5keV0I6HAJJ913DYAQZJG/SM0lbfrNyObEr/CwmMn66fr
+ 1LHU2lrBooSakDD+UokoGkXOtja6ZsYwcHqLj/rtTXzrM0gLk43PiLHZmeQgwsdglzY1J4CuKuvdh
+ lqTrw4+/5ypxJdFwJkNTKkpbJzOoB7FH77r/CN9SKymKz+zukAmMVsbDfYwjid5G2FI/LnEZ5TsZu
+ uN+jjjJsiBDlofJZu39hIQ/nlmE+jSTobZd5hERi2hdisf2M9MsaOlocCmPmhSLb/oD9BpRPBzIw1
+ bLiw7JADfCaCcfPJIy2SCWFmps108a30AQzBdUs1HKGhPGiG5s3H6jEgN2IOoxd8EPyb06T7r6meY
+ uFXymvTyN5uXfyHFqSAfwJ+RnKN8k10EmsYtKXB3wbvnKEFVc2mjG+oJP0WqL8qWKES9tiMAWy76f
+ mrHObzRPY/Fq34EqRXhTep4S5wAMER+/SBITCGd8aqYcrKHUrkqakLVWI6NNd+KWvu11wJbKeiHBh
+ sDhs3iq+rAL0yG98fI0Gw7XGlFFmFMjYgFCAiOiTighsDJZDYRtUeIBVm5SBw3kwqZ9vNuNL1cgB7
+ VANOerFD9BIKT3zzs2mqfBO8Naqajx86Qq2t6lonk=;
 Received: from host86-147-134-9.range86-147.btcentralplus.com ([86.147.134.9]
  helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRD-0001qt-5g; Wed, 20 Dec 2023 13:16:43 +0000
+ id 1rFwRH-0001qt-DN; Wed, 20 Dec 2023 13:16:43 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Wed, 20 Dec 2023 13:16:34 +0000
-Message-Id: <20231220131641.592826-5-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 20 Dec 2023 13:16:35 +0000
+Message-Id: <20231220131641.592826-6-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
 References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.147.134.9
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 04/11] next-cube.c: update scr_ops to properly use modern
- memory API
+Subject: [PATCH v2 05/11] next-cube.c: update and improve dma_ops
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,272 +77,229 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The old QEMU memory accessors used in the original NextCube patch series had
-separate functions for 1, 2 and 4 byte accessors. When the series was finally
-merged a simple wrapper function was written to dispatch the memory accesses
-using the original functions.
-
-Convert scr_ops to use the memory API directly renaming it to next_scr_ops,
-marking it as DEVICE_BIG_ENDIAN, and handling any unaligned accesses.
+Rename dma_ops to next_dma_ops and the read/write functions to next_dma_read()
+and next_dma_write() respectively, mark next_dma_ops as DEVICE_BIG_ENDIAN and
+also improve the consistency of the val variable in next_dma_read() and
+next_dma_write().
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 155 ++++++++++++++++----------------------------
- 1 file changed, 55 insertions(+), 100 deletions(-)
+ hw/m68k/next-cube.c | 100 ++++++++++++++++++++++++++++----------------
+ 1 file changed, 63 insertions(+), 37 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index f73f563ac1..8ed9bac26d 100644
+index 8ed9bac26d..be4091ffd7 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -335,81 +335,80 @@ static const MemoryRegionOps next_mmio_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
+@@ -491,59 +491,63 @@ static const MemoryRegionOps next_scr_ops = {
+ #define NEXTDMA_NEXT_INIT    0x4200
+ #define NEXTDMA_SIZE         0x4204
  
--static uint32_t scr_readb(NeXTPC *s, hwaddr addr)
-+#define SCSICSR_ENABLE  0x01
-+#define SCSICSR_RESET   0x02  /* reset scsi dma */
-+#define SCSICSR_FIFOFL  0x04
-+#define SCSICSR_DMADIR  0x08  /* if set, scsi to mem */
-+#define SCSICSR_CPUDMA  0x10  /* if set, dma enabled */
-+#define SCSICSR_INTMASK 0x20  /* if set, interrupt enabled */
-+
-+static uint64_t next_scr_readfn(void *opaque, hwaddr addr, unsigned size)
+-static void dma_writel(void *opaque, hwaddr addr, uint64_t value,
+-                       unsigned int size)
++static void next_dma_write(void *opaque, hwaddr addr, uint64_t val,
++                           unsigned int size)
  {
-+    NeXTPC *s = NEXT_PC(opaque);
-+    uint64_t val;
-+
+     NeXTState *next_state = NEXT_MACHINE(opaque);
+ 
      switch (addr) {
-     case 0x14108:
-         DPRINTF("FD read @ %x\n", (unsigned int)addr);
--        return 0x40 | 0x04 | 0x2 | 0x1;
-+        val = 0x40 | 0x04 | 0x2 | 0x1;
+     case NEXTDMA_ENRX(NEXTDMA_CSR):
+-        if (value & DMA_DEV2M) {
++        if (val & DMA_DEV2M) {
+             next_state->dma[NEXTDMA_ENRX].csr |= DMA_DEV2M;
+         }
+ 
+-        if (value & DMA_SETENABLE) {
++        if (val & DMA_SETENABLE) {
+             /* DPRINTF("SCSI DMA ENABLE\n"); */
+             next_state->dma[NEXTDMA_ENRX].csr |= DMA_ENABLE;
+         }
+-        if (value & DMA_SETSUPDATE) {
++        if (val & DMA_SETSUPDATE) {
+             next_state->dma[NEXTDMA_ENRX].csr |= DMA_SUPDATE;
+         }
+-        if (value & DMA_CLRCOMPLETE) {
++        if (val & DMA_CLRCOMPLETE) {
+             next_state->dma[NEXTDMA_ENRX].csr &= ~DMA_COMPLETE;
+         }
+ 
+-        if (value & DMA_RESET) {
++        if (val & DMA_RESET) {
+             next_state->dma[NEXTDMA_ENRX].csr &= ~(DMA_COMPLETE | DMA_SUPDATE |
+                                                   DMA_ENABLE | DMA_DEV2M);
+         }
+         /* DPRINTF("RXCSR \tWrite: %x\n",value); */
+         break;
++
+     case NEXTDMA_ENRX(NEXTDMA_NEXT_INIT):
+-        next_state->dma[NEXTDMA_ENRX].next_initbuf = value;
++        next_state->dma[NEXTDMA_ENRX].next_initbuf = val;
+         break;
++
+     case NEXTDMA_ENRX(NEXTDMA_NEXT):
+-        next_state->dma[NEXTDMA_ENRX].next = value;
++        next_state->dma[NEXTDMA_ENRX].next = val;
+         break;
++
+     case NEXTDMA_ENRX(NEXTDMA_LIMIT):
+-        next_state->dma[NEXTDMA_ENRX].limit = value;
++        next_state->dma[NEXTDMA_ENRX].limit = val;
+         break;
++
+     case NEXTDMA_SCSI(NEXTDMA_CSR):
+-        if (value & DMA_DEV2M) {
++        if (val & DMA_DEV2M) {
+             next_state->dma[NEXTDMA_SCSI].csr |= DMA_DEV2M;
+         }
+-        if (value & DMA_SETENABLE) {
++        if (val & DMA_SETENABLE) {
+             /* DPRINTF("SCSI DMA ENABLE\n"); */
+             next_state->dma[NEXTDMA_SCSI].csr |= DMA_ENABLE;
+         }
+-        if (value & DMA_SETSUPDATE) {
++        if (val & DMA_SETSUPDATE) {
+             next_state->dma[NEXTDMA_SCSI].csr |= DMA_SUPDATE;
+         }
+-        if (value & DMA_CLRCOMPLETE) {
++        if (val & DMA_CLRCOMPLETE) {
+             next_state->dma[NEXTDMA_SCSI].csr &= ~DMA_COMPLETE;
+         }
+ 
+-        if (value & DMA_RESET) {
++        if (val & DMA_RESET) {
+             next_state->dma[NEXTDMA_SCSI].csr &= ~(DMA_COMPLETE | DMA_SUPDATE |
+                                                   DMA_ENABLE | DMA_DEV2M);
+             /* DPRINTF("SCSI DMA RESET\n"); */
+@@ -552,23 +556,23 @@ static void dma_writel(void *opaque, hwaddr addr, uint64_t value,
+         break;
+ 
+     case NEXTDMA_SCSI(NEXTDMA_NEXT):
+-        next_state->dma[NEXTDMA_SCSI].next = value;
++        next_state->dma[NEXTDMA_SCSI].next = val;
+         break;
+ 
+     case NEXTDMA_SCSI(NEXTDMA_LIMIT):
+-        next_state->dma[NEXTDMA_SCSI].limit = value;
++        next_state->dma[NEXTDMA_SCSI].limit = val;
+         break;
+ 
+     case NEXTDMA_SCSI(NEXTDMA_START):
+-        next_state->dma[NEXTDMA_SCSI].start = value;
++        next_state->dma[NEXTDMA_SCSI].start = val;
+         break;
+ 
+     case NEXTDMA_SCSI(NEXTDMA_STOP):
+-        next_state->dma[NEXTDMA_SCSI].stop = value;
++        next_state->dma[NEXTDMA_SCSI].stop = val;
+         break;
+ 
+     case NEXTDMA_SCSI(NEXTDMA_NEXT_INIT):
+-        next_state->dma[NEXTDMA_SCSI].next_initbuf = value;
++        next_state->dma[NEXTDMA_SCSI].next_initbuf = val;
+         break;
+ 
+     default:
+@@ -576,52 +580,73 @@ static void dma_writel(void *opaque, hwaddr addr, uint64_t value,
+     }
+ }
+ 
+-static uint64_t dma_readl(void *opaque, hwaddr addr, unsigned int size)
++static uint64_t next_dma_read(void *opaque, hwaddr addr, unsigned int size)
+ {
+     NeXTState *next_state = NEXT_MACHINE(opaque);
++    uint64_t val;
+ 
+     switch (addr) {
+     case NEXTDMA_SCSI(NEXTDMA_CSR):
+         DPRINTF("SCSI DMA CSR READ\n");
+-        return next_state->dma[NEXTDMA_SCSI].csr;
++        val = next_state->dma[NEXTDMA_SCSI].csr;
 +        break;
 +
-     case 0x14020:
-         DPRINTF("SCSI 4020  STATUS READ %X\n", s->scsi_csr_1);
--        return s->scsi_csr_1;
-+        val = s->scsi_csr_1;
+     case NEXTDMA_ENRX(NEXTDMA_CSR):
+-        return next_state->dma[NEXTDMA_ENRX].csr;
++        val = next_state->dma[NEXTDMA_ENRX].csr;
++        break;
++
+     case NEXTDMA_ENRX(NEXTDMA_NEXT_INIT):
+-        return next_state->dma[NEXTDMA_ENRX].next_initbuf;
++        val = next_state->dma[NEXTDMA_ENRX].next_initbuf;
++        break;
++
+     case NEXTDMA_ENRX(NEXTDMA_NEXT):
+-        return next_state->dma[NEXTDMA_ENRX].next;
++        val = next_state->dma[NEXTDMA_ENRX].next;
++        break;
++
+     case NEXTDMA_ENRX(NEXTDMA_LIMIT):
+-        return next_state->dma[NEXTDMA_ENRX].limit;
++        val = next_state->dma[NEXTDMA_ENRX].limit;
 +        break;
  
-     case 0x14021:
-         DPRINTF("SCSI 4021 STATUS READ %X\n", s->scsi_csr_2);
--        return 0x40;
-+        val = 0x40;
+     case NEXTDMA_SCSI(NEXTDMA_NEXT):
+-        return next_state->dma[NEXTDMA_SCSI].next;
++        val = next_state->dma[NEXTDMA_SCSI].next;
 +        break;
- 
-     /*
-      * These 4 registers are the hardware timer, not sure which register
--     * is the latch instead of data, but no problems so far
-+     * is the latch instead of data, but no problems so far.
-+     *
-+     * Hack: We need to have the LSB change consistently to make it work
-      */
--    case 0x1a000:
--        return 0xff & (clock() >> 24);
--    case 0x1a001:
--        return 0xff & (clock() >> 16);
--    case 0x1a002:
--        return 0xff & (clock() >> 8);
--    case 0x1a003:
--        /* Hack: We need to have this change consistently to make it work */
--        return 0xFF & clock();
-+    case 0x1a000 ... 0x1a003:
-+        val = extract32(clock(), (4 - (addr - 0x1a000) - size) << 3,
-+                        size << 3);
++
+     case NEXTDMA_SCSI(NEXTDMA_NEXT_INIT):
+-        return next_state->dma[NEXTDMA_SCSI].next_initbuf;
++        val = next_state->dma[NEXTDMA_SCSI].next_initbuf;
 +        break;
- 
-     /* For now return dummy byte to allow the Ethernet test to timeout */
-     case 0x6000:
--        return 0xff;
-+        val = 0xff;
++
+     case NEXTDMA_SCSI(NEXTDMA_LIMIT):
+-        return next_state->dma[NEXTDMA_SCSI].limit;
++        val = next_state->dma[NEXTDMA_SCSI].limit;
++        break;
++
+     case NEXTDMA_SCSI(NEXTDMA_START):
+-        return next_state->dma[NEXTDMA_SCSI].start;
++        val = next_state->dma[NEXTDMA_SCSI].start;
++        break;
++
+     case NEXTDMA_SCSI(NEXTDMA_STOP):
+-        return next_state->dma[NEXTDMA_SCSI].stop;
++        val = next_state->dma[NEXTDMA_SCSI].stop;
 +        break;
  
      default:
--        DPRINTF("BMAP Read B @ %x\n", (unsigned int)addr);
+         DPRINTF("DMA read @ %x\n", (unsigned int)addr);
 -        return 0;
-+        DPRINTF("BMAP Read @ 0x%x size %u\n", (unsigned int)addr, size);
 +        val = 0;
-+        break;
      }
--}
  
--static uint32_t scr_readw(NeXTPC *s, hwaddr addr)
--{
--    DPRINTF("BMAP Read W @ %x\n", (unsigned int)addr);
--    return 0;
+     /*
+      * once the csr's are done, subtract 0x3FEC from the addr, and that will
+      * normalize the upper registers
+      */
++
 +    return val;
  }
  
--static uint32_t scr_readl(NeXTPC *s, hwaddr addr)
-+static void next_scr_writefn(void *opaque, hwaddr addr, uint64_t val,
-+                             unsigned size)
- {
--    DPRINTF("BMAP Read L @ %x\n", (unsigned int)addr);
--    return 0;
--}
--
--#define SCSICSR_ENABLE  0x01
--#define SCSICSR_RESET   0x02  /* reset scsi dma */
--#define SCSICSR_FIFOFL  0x04
--#define SCSICSR_DMADIR  0x08  /* if set, scsi to mem */
--#define SCSICSR_CPUDMA  0x10  /* if set, dma enabled */
--#define SCSICSR_INTMASK 0x20  /* if set, interrupt enabled */
-+    NeXTPC *s = NEXT_PC(opaque);
- 
--static void scr_writeb(NeXTPC *s, hwaddr addr, uint32_t value)
--{
-     switch (addr) {
-     case 0x14108:
-         DPRINTF("FDCSR Write: %x\n", value);
--
--        if (value == 0x0) {
-+        if (val == 0x0) {
-             /* qemu_irq_raise(s->fd_irq[0]); */
-         }
-         break;
-+
-     case 0x14020: /* SCSI Control Register */
--        if (value & SCSICSR_FIFOFL) {
-+        if (val & SCSICSR_FIFOFL) {
-             DPRINTF("SCSICSR FIFO Flush\n");
-             /* will have to add another irq to the esp if this is needed */
-             /* esp_puflush_fifo(esp_g); */
-         }
- 
--        if (value & SCSICSR_ENABLE) {
-+        if (val & SCSICSR_ENABLE) {
-             DPRINTF("SCSICSR Enable\n");
-             /*
-              * qemu_irq_raise(s->scsi_dma);
-@@ -423,17 +422,17 @@ static void scr_writeb(NeXTPC *s, hwaddr addr, uint32_t value)
-          *     s->scsi_csr_1 &= ~SCSICSR_ENABLE;
-          */
- 
--        if (value & SCSICSR_RESET) {
-+        if (val & SCSICSR_RESET) {
-             DPRINTF("SCSICSR Reset\n");
-             /* I think this should set DMADIR. CPUDMA and INTMASK to 0 */
-             qemu_irq_raise(s->scsi_reset);
-             s->scsi_csr_1 &= ~(SCSICSR_INTMASK | 0x80 | 0x1);
-             qemu_irq_lower(s->scsi_reset);
-         }
--        if (value & SCSICSR_DMADIR) {
-+        if (val & SCSICSR_DMADIR) {
-             DPRINTF("SCSICSR DMAdir\n");
-         }
--        if (value & SCSICSR_CPUDMA) {
-+        if (val & SCSICSR_CPUDMA) {
-             DPRINTF("SCSICSR CPUDMA\n");
-             /* qemu_irq_raise(s->scsi_dma); */
-             s->int_status |= 0x4000000;
-@@ -442,11 +441,11 @@ static void scr_writeb(NeXTPC *s, hwaddr addr, uint32_t value)
-             s->int_status &= ~(0x4000000);
-             /* qemu_irq_lower(s->scsi_dma); */
-         }
--        if (value & SCSICSR_INTMASK) {
-+        if (val & SCSICSR_INTMASK) {
-             DPRINTF("SCSICSR INTMASK\n");
-             /*
-              * int_mask &= ~0x1000;
--             * s->scsi_csr_1 |= value;
-+             * s->scsi_csr_1 |= val;
-              * s->scsi_csr_1 &= ~SCSICSR_INTMASK;
-              * if (s->scsi_queued) {
-              *     s->scsi_queued = 0;
-@@ -456,72 +455,28 @@ static void scr_writeb(NeXTPC *s, hwaddr addr, uint32_t value)
-         } else {
-             /* int_mask |= 0x1000; */
-         }
--        if (value & 0x80) {
-+        if (val & 0x80) {
-             /* int_mask |= 0x1000; */
-             /* s->scsi_csr_1 |= 0x80; */
-         }
--        DPRINTF("SCSICSR Write: %x\n", value);
--        /* s->scsi_csr_1 = value; */
--        return;
-+        DPRINTF("SCSICSR Write: %x\n", val);
-+        /* s->scsi_csr_1 = val; */
-+        break;
-+
-     /* Hardware timer latch - not implemented yet */
-     case 0x1a000:
-     default:
--        DPRINTF("BMAP Write B @ %x with %x\n", (unsigned int)addr, value);
-+        DPRINTF("BMAP Write @ 0x%x with 0x%x size %u\n", (unsigned int)addr,
-+                val, size);
-     }
- }
- 
--static void scr_writew(NeXTPC *s, hwaddr addr, uint32_t value)
--{
--    DPRINTF("BMAP Write W @ %x with %x\n", (unsigned int)addr, value);
--}
--
--static void scr_writel(NeXTPC *s, hwaddr addr, uint32_t value)
--{
--    DPRINTF("BMAP Write L @ %x with %x\n", (unsigned int)addr, value);
--}
--
--static uint64_t scr_readfn(void *opaque, hwaddr addr, unsigned size)
--{
--    NeXTPC *s = NEXT_PC(opaque);
--
--    switch (size) {
--    case 1:
--        return scr_readb(s, addr);
--    case 2:
--        return scr_readw(s, addr);
--    case 4:
--        return scr_readl(s, addr);
--    default:
--        g_assert_not_reached();
--    }
--}
--
--static void scr_writefn(void *opaque, hwaddr addr, uint64_t value,
--                        unsigned size)
--{
--    NeXTPC *s = NEXT_PC(opaque);
--
--    switch (size) {
--    case 1:
--        scr_writeb(s, addr, value);
--        break;
--    case 2:
--        scr_writew(s, addr, value);
--        break;
--    case 4:
--        scr_writel(s, addr, value);
--        break;
--    default:
--        g_assert_not_reached();
--    }
--}
--
--static const MemoryRegionOps scr_ops = {
--    .read = scr_readfn,
--    .write = scr_writefn,
-+static const MemoryRegionOps next_scr_ops = {
-+    .read = next_scr_readfn,
-+    .write = next_scr_writefn,
-     .valid.min_access_size = 1,
+-static const MemoryRegionOps dma_ops = {
+-    .read = dma_readl,
+-    .write = dma_writel,
++static const MemoryRegionOps next_dma_ops = {
++    .read = next_dma_read,
++    .write = next_dma_write,
+     .impl.min_access_size = 4,
+     .valid.min_access_size = 4,
      .valid.max_access_size = 4,
 -    .endianness = DEVICE_NATIVE_ENDIAN,
 +    .endianness = DEVICE_BIG_ENDIAN,
  };
  
- #define NEXTDMA_SCSI(x)      (0x10 + x)
-@@ -912,7 +867,7 @@ static void next_pc_realize(DeviceState *dev, Error **errp)
+ static void next_irq(void *opaque, int number, int level)
+@@ -1017,7 +1042,8 @@ static void next_cube_init(MachineState *machine)
+     next_scsi_init(pcdev, cpu);
  
-     memory_region_init_io(&s->mmiomem, OBJECT(s), &next_mmio_ops, s,
-                           "next.mmio", 0xd0000);
--    memory_region_init_io(&s->scrmem, OBJECT(s), &scr_ops, s,
-+    memory_region_init_io(&s->scrmem, OBJECT(s), &next_scr_ops, s,
-                           "next.scr", 0x20000);
-     sysbus_init_mmio(sbd, &s->mmiomem);
-     sysbus_init_mmio(sbd, &s->scrmem);
+     /* DMA */
+-    memory_region_init_io(dmamem, NULL, &dma_ops, machine, "next.dma", 0x5000);
++    memory_region_init_io(dmamem, NULL, &next_dma_ops, machine, "next.dma",
++                          0x5000);
+     memory_region_add_subregion(sysmem, 0x02000000, dmamem);
+ }
+ 
 -- 
 2.39.2
 
