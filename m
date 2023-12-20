@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CA88197D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 05:34:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F4B8197E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 05:56:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFoHw-0002Yb-1k; Tue, 19 Dec 2023 23:34:32 -0500
+	id 1rFobn-0004uA-64; Tue, 19 Dec 2023 23:55:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rFoHt-0002Y0-9F
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:34:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rFoHr-0004Xo-On
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:34:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703046867;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ALTLsslK8lMKWesJtzG2JrAdmTxHKDzRf4Ycs/rpBvM=;
- b=crNEep6TEP8xK2L+Wqd1eAHfpfEDhTNXoE26KAT7zzYBM6wBb+9jBtMJEZk+AyVqmd+OwV
- pu0IPZKZgda66SeCjL9sWmljDheqX3F5/16tLFwmFkHQWgkIAQwvQ9LUJBA9S/jrTtbrB8
- fvjqaittD9LdWdmnCrlK+LZQJwvd2Ko=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-H7mTodYzNSmC-1YJ_eKgVA-1; Tue, 19 Dec 2023 23:34:25 -0500
-X-MC-Unique: H7mTodYzNSmC-1YJ_eKgVA-1
-Received: by mail-ot1-f70.google.com with SMTP id
- 46e09a7af769-6d9feae8dfdso7020021a34.2
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 20:34:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rFobk-0004tt-9f
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:55:00 -0500
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rFobi-0001fC-F4
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:54:59 -0500
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-5cd86e3a9afso263073a12.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 20:54:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1703048097; x=1703652897; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pNzKABZbnaK/uthynYntCMPgX5leSiv7mSYezkrPudA=;
+ b=ZPNbONlyblZlWuES2ivHn6XXOe7B4YMsfzcGVeFBMFSrPN0FfdjWjXllQZVGb1NJIM
+ AnPXJE9KqbP9yCkryFSX5RuYBz9GMf1MplqioB6CKxlGMGJL4dnuRViONnIp9d6amn/N
+ VxH4HrEuNHng6VXstSwExgL4sjk0Ojf2qIszxhx5YCPNnkuhEUAIeZrANJcAhSh4LL8V
+ QaCDxiCMhtWJvL45XXuQnyTqmWqK6WyfQAOSkyqzkB4Nxz7Xnwa/96bkOMSP/WLb7ZwP
+ 7KxuNojfdFqnK5C1Z0nobCvTenKLzJupp9gpv7hJ1jvi//dJAQHPucoPE8uwiYDNJ2el
+ SBlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703046864; x=1703651664;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ALTLsslK8lMKWesJtzG2JrAdmTxHKDzRf4Ycs/rpBvM=;
- b=Ywh+hMpWADbsbxpr8Mq/UHk4CcU99OXiNA3vn5+ZPlRR5H71hNy+nHuV+ylXSIL4Q+
- xQoUQFRQ6U+TYJi9HXd4yt9nyMGqRE3AkSAl97oPnOpG5gVh1l2GkUGbJgKCwEtoYSeU
- OdeHc1ivULZaxeVLzVm1Isvjb6YCMyfdWXbJfEnEOsGn2HbErHn0hN2eazOk+bdoYk/J
- wvqqehkvOuhjufuKBjvhieAlvb2pm/iw6WOJJqXZkzOnkBHuCkUrYm/JTJQHqvMXUHkM
- 9m0qMp26tvjhhvvsQVv4/QlQ8R6nMSLik+TVA/vyuah1ixff/PGheY3A2a0DQgtxkwSA
- wIcQ==
-X-Gm-Message-State: AOJu0Yzm9XcGVsDAz+zZBMu01RrtFnhR6IGt72+vzF8QnlxC69LJ/q8R
- YdvJ2Txb1yFR4Y/ne6uwCvBqOphN2PeYfOeymoHVEgSRur3NGdJPJsX94r3ckGfa/0xeZpKaoaN
- e78FhxsT9MHQnMY0kif5Ey2ovXFrtNeM=
-X-Received: by 2002:a9d:7a89:0:b0:6d9:d817:c1a with SMTP id
- l9-20020a9d7a89000000b006d9d8170c1amr19532177otn.46.1703046864600; 
- Tue, 19 Dec 2023 20:34:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGLfnv/QtMFyKs67xwykivZROiJXKBE+/IpOArbbCPF5sPFu9FkEWegjJFU8fsJGqU87na50WVzZr9f26nYK2U=
-X-Received: by 2002:a9d:7a89:0:b0:6d9:d817:c1a with SMTP id
- l9-20020a9d7a89000000b006d9d8170c1amr19532164otn.46.1703046864386; Tue, 19
- Dec 2023 20:34:24 -0800 (PST)
+ d=1e100.net; s=20230601; t=1703048097; x=1703652897;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pNzKABZbnaK/uthynYntCMPgX5leSiv7mSYezkrPudA=;
+ b=QuzAbown0JOguFjoOHl8aVe6kUVKXuufsKnuXQIrqwW9Md6EBcRue9ZVjSJzd2D6v8
+ 6niDcG6PQTaC7sbh3OnReEznK/wOmDDtwN0EdszKg2pUnGpaRHuKeX6MkunqDEfityj5
+ 7OtC+Sam61mSfLjxni0bbc/9ojsWle5QJ82hArKtCKXDZ96KbYTPMmO4z0iDaf+c7LE3
+ /VdBHIR4dJPSwQ8lhdVBa9kksaXWGx+5ypYCHXprhR6uk9yzxkOOZugjLijjjmMu4CKr
+ kHm+wIfXIxXIaWqAuonaaBxm7Fu29mtU2+Y+npe3+9O444U79jkwGllDChe8VvZagChb
+ cmUw==
+X-Gm-Message-State: AOJu0YyReT3ecv5dooKU+YEY/J6oQYCMq7jKFDNh0mxI+3nY+RdIsWjl
+ rcqQdGYO3JVjnaG7NvE0nS/1zw==
+X-Google-Smtp-Source: AGHT+IEIGeoPLowjgZ52vhLG/Psii+05Tfm3Jz3P2owm6JPGwS30CGq+syZFWHkt+D6+4Hwl0rH9Cg==
+X-Received: by 2002:a05:6a20:40a0:b0:194:9898:17f8 with SMTP id
+ a32-20020a056a2040a000b00194989817f8mr1634557pzf.31.1703048096624; 
+ Tue, 19 Dec 2023 20:54:56 -0800 (PST)
+Received: from [192.168.1.13] ([43.252.112.169])
+ by smtp.gmail.com with ESMTPSA id
+ f12-20020aa78b0c000000b006d095553f2asm16080853pfd.81.2023.12.19.20.54.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Dec 2023 20:54:56 -0800 (PST)
+Message-ID: <8c168040-f357-4f6a-aece-dd4ecfa39cab@linaro.org>
+Date: Wed, 20 Dec 2023 15:54:51 +1100
 MIME-Version: 1.0
-References: <20231215172830.2540987-1-eperezma@redhat.com>
- <20231215172830.2540987-8-eperezma@redhat.com>
-In-Reply-To: <20231215172830.2540987-8-eperezma@redhat.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 20 Dec 2023 12:34:13 +0800
-Message-ID: <CACGkMEtoVLthML2SauX_Ptwdw6KMbtK1EY6BGD=E3mqN01x5hA@mail.gmail.com>
-Subject: Re: [PATCH for 9.0 07/12] vdpa: set backend capabilities at
- vhost_vdpa_init
-To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- si-wei.liu@oracle.com, 
- Lei Yang <leiyang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>, 
- Zhu Lingshan <lingshan.zhu@intel.com>, Parav Pandit <parav@mellanox.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -6
-X-Spam_score: -0.7
-X-Spam_bar: /
-X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/i386: Give IRQs a chance when resetting
+ HF_INHIBIT_IRQ_MASK
+Content-Language: en-US
+To: Ruihan Li <lrh2000@pku.edu.cn>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+References: <20231210190147.129734-2-lrh2000@pku.edu.cn>
+ <vtru73lhzn24ue6dlx3hbqm4y4dcqvrx2nvjnbbwozfix5h5wa@63tiijodka5c>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <vtru73lhzn24ue6dlx3hbqm4y4dcqvrx2nvjnbbwozfix5h5wa@63tiijodka5c>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,79 +95,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Dec 16, 2023 at 1:28=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redhat=
-.com> wrote:
->
-> The backend does not reset them until the vdpa file descriptor is closed
-> so there is no harm in doing it only once.
->
-> This allows the destination of a live migration to premap memory in
-> batches, using VHOST_BACKEND_F_IOTLB_BATCH.
->
-> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> ---
->  hw/virtio/vhost-vdpa.c | 50 ++++++++++++++++--------------------------
->  1 file changed, 19 insertions(+), 31 deletions(-)
->
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index 449c3794b2..43f7c382b1 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -587,11 +587,25 @@ static int vhost_vdpa_init(struct vhost_dev *dev, v=
-oid *opaque, Error **errp)
->      struct vhost_vdpa *v =3D opaque;
->      assert(dev->vhost_ops->backend_type =3D=3D VHOST_BACKEND_TYPE_VDPA);
->      trace_vhost_vdpa_init(dev, v->shared, opaque);
-> +    uint64_t backend_features;
-> +    uint64_t qemu_backend_features =3D 0x1ULL << VHOST_BACKEND_F_IOTLB_M=
-SG_V2 |
-> +                                     0x1ULL << VHOST_BACKEND_F_IOTLB_BAT=
-CH |
-> +                                     0x1ULL << VHOST_BACKEND_F_IOTLB_ASI=
-D |
-> +                                     0x1ULL << VHOST_BACKEND_F_SUSPEND;
->      int ret;
->
->      v->dev =3D dev;
->      dev->opaque =3D  opaque ;
->      v->shared->listener =3D vhost_vdpa_memory_listener;
-> +
-> +    if (vhost_vdpa_call(dev, VHOST_GET_BACKEND_FEATURES, &backend_featur=
-es)) {
-> +        return -EFAULT;
-> +    }
-> +
-> +    backend_features &=3D qemu_backend_features;
-> +
-> +    dev->backend_cap =3D backend_features;
-> +    v->shared->backend_cap =3D backend_features;
->      vhost_vdpa_init_svq(dev, v);
->
->      error_propagate(&dev->migration_blocker, v->migration_blocker);
-> @@ -599,6 +613,11 @@ static int vhost_vdpa_init(struct vhost_dev *dev, vo=
-id *opaque, Error **errp)
->          return 0;
->      }
->
-> +    ret =3D vhost_vdpa_call(dev, VHOST_SET_BACKEND_FEATURES, &backend_fe=
-atures);
-> +    if (ret) {
-> +        return -EFAULT;
-> +    }
-> +
->      /*
->       * If dev->shadow_vqs_enabled at initialization that means the devic=
-e has
->       * been started with x-svq=3Don, so don't block migration
-> @@ -829,36 +848,6 @@ static int vhost_vdpa_set_features(struct vhost_dev =
-*dev,
->      return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_FEATURES_OK);
->  }
->
-> -static int vhost_vdpa_set_backend_cap(struct vhost_dev *dev)
+On 12/20/23 02:04, Ruihan Li wrote:
+> Hi all,
+> 
+> On Mon, Dec 11, 2023 at 03:01:48AM +0800, Ruihan Li wrote:
+>> When emulated with QEMU, interrupts will never come in the following
+>> loop. However, if the NOP instruction is uncommented, interrupts will
+>> fire as normal.
+>>
+>> 	loop:
+>> 		cli
+>>      		call do_sti
+>> 		jmp loop
+>>
+>> 	do_sti:
+>> 		sti
+>> 		# nop
+>> 		ret
+>>
+>> This behavior is different from that of a real processor. For example,
+>> if KVM is enabled, interrupts will always fire regardless of whether the
+>> NOP instruction is commented or not. Also, the Intel Software Developer
+>> Manual states that after the STI instruction is executed, the interrupt
+>> inhibit should end as soon as the next instruction (e.g., the RET
+>> instruction if the NOP instruction is commented) is executed.
+>>
+>> This problem is caused because the previous code may choose not to end
+>> the TB even if the HF_INHIBIT_IRQ_MASK has just been reset (e.g., in the
+>> case where the RET instruction is immediately followed by the STI
+>> instruction), so that IRQs may not have a change to trigger. This commit
+>> fixes the problem by always terminating the current TB to give IRQs a
+>> chance to trigger when HF_INHIBIT_IRQ_MASK is reset.
+>>
+>> Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+>> ---
+>> The same problem was discovered two years ago, see [StackOverflow][so].
+>>
+>>   [so]: https://stackoverflow.com/questions/68135305/executing-ret-after-sti-doesnt-start-interrupts
+>>
+>>   target/i386/tcg/translate.c | 12 ++++++++++--
+>>   1 file changed, 10 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+>> index 587d886..6b7deb5 100644
+>> --- a/target/i386/tcg/translate.c
+>> +++ b/target/i386/tcg/translate.c
+>> @@ -2767,13 +2767,19 @@ static void gen_bnd_jmp(DisasContext *s)
+>>   static void
+>>   do_gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf, bool jr)
+>>   {
+>> +    bool inhibit_reset;
+>> +
+>>       gen_update_cc_op(s);
+>>   
+>>       /* If several instructions disable interrupts, only the first does it.  */
+>>       if (inhibit && !(s->flags & HF_INHIBIT_IRQ_MASK)) {
+>>           gen_set_hflag(s, HF_INHIBIT_IRQ_MASK);
+>> -    } else {
+>> +        inhibit_reset = false;
+>> +    } else if (!inhibit && (s->flags & HF_INHIBIT_IRQ_MASK)) {
+>>           gen_reset_hflag(s, HF_INHIBIT_IRQ_MASK);
+>> +        inhibit_reset = true;
+>> +    } else {
+>> +        inhibit_reset = false;
+>>       }
+>>   
+>>       if (s->base.tb->flags & HF_RF_MASK) {
+>> @@ -2784,7 +2790,9 @@ do_gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf, bool jr)
+>>           tcg_gen_exit_tb(NULL, 0);
+>>       } else if (s->flags & HF_TF_MASK) {
+>>           gen_helper_single_step(tcg_env);
+>> -    } else if (jr) {
+>> +    } else if (jr &&
+>> +               /* give irqs a chance to happen */
+>> +               !inhibit_reset) {
+>>           tcg_gen_lookup_and_goto_ptr();
+>>       } else {
+>>           tcg_gen_exit_tb(NULL, 0);
+>> -- 
+>> 2.43.0
+> 
+> A friendly ping.
+> 
+> Anyone here to confirm this BUG and/or comment on the patch?
 
-How about keeping this function but just calling it in vhost_vdpa_init()?
+Looks correct.
 
-Thanks
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
 
