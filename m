@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AA28197CD
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 05:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C9A8197D1
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 05:31:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFoBJ-0007VC-9U; Tue, 19 Dec 2023 23:27:41 -0500
+	id 1rFoEI-0008KS-FM; Tue, 19 Dec 2023 23:30:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rFoBH-0007Ul-JH
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:27:39 -0500
+ id 1rFoE0-0008K7-RX
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:30:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rFoBG-0002jL-10
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:27:39 -0500
+ id 1rFoDw-0003mj-Er
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:30:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703046456;
+ s=mimecast20190719; t=1703046618;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xKNdW7amYtQ9aevrvhmoNntr92LvC661LzOWUcY5o5o=;
- b=UeUKoF/yP1OEnMuNaqJODSS5jprIGohcWnr6PLwbp8Cwywb9408ySR0+xpHTk3HqRciE9t
- bDu+c4m4/6To+3Czo29N0RXgD+ucUsrbI4uPb3NfVwrgX9rst7PiTrEQDleKpDAq9TeUX2
- MNCyyKODZb76MYF/O3WXWH8o8NMC4Vw=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bVthK6+0CHN0/vzRY3sXTm6opundFyZmmQX0W6Rp6Bc=;
+ b=d9lxpHKD0sIly591YVdIVFEvFkz13UWDfaC8UklNql3s2KX+xLY2Q+fwwlbqIPer2QzqYQ
+ G+xHYiyZN6w3kwatVUtI9SaPgURGfPlhXQZjRO1gd3r4yerClVjb2p+JdxczoK56Lo9ylQ
+ 7FpWhO5GCufKH1klWdsd20k9yaVOjCQ=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-p_tNpe-XNO6NeB49E4OVYw-1; Tue, 19 Dec 2023 23:27:34 -0500
-X-MC-Unique: p_tNpe-XNO6NeB49E4OVYw-1
-Received: by mail-oi1-f198.google.com with SMTP id
- 5614622812f47-3b9eeff9f7bso7289236b6e.1
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 20:27:34 -0800 (PST)
+ us-mta-299-bVxfvHRcMl-PY8i7ARgYRw-1; Tue, 19 Dec 2023 23:30:16 -0500
+X-MC-Unique: bVxfvHRcMl-PY8i7ARgYRw-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-6d0908565f8so6365533b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 20:30:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703046454; x=1703651254;
+ d=1e100.net; s=20230601; t=1703046615; x=1703651415;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xKNdW7amYtQ9aevrvhmoNntr92LvC661LzOWUcY5o5o=;
- b=wK4Ct2p+FWAoqWrDaLTxTiv9tXTUcxcTgp8V3Ybm1RNihftoLSU0v0DcZbffk0Krju
- pcOM+L5pd5d0PqwLSIPQYKRKVMvKEdDxqlPCt5jrFBvGOkBOdvqAQmRFOW5UPFarHCtR
- 9aqj9kWpuAq86s1m+MQReXsDdKiiWCbNj0GMnmmjz6fAd0zEsHHddkVbeA66wJvBH43Z
- e5zR2kMVpBV+84kMWGihtUmys2MyfgFovjYy9X/n4RgujpiwB7aCVFM2muFQUjAoGBqe
- iAoBexBudkQw+Gdnvxg51WLjAkpg8ZVSGaWdzFj3tF8CjYNxQnij5VjN2adIBDvhGe5L
- 8kLg==
-X-Gm-Message-State: AOJu0YyrUeApl8yq94/92puJD+1Qu/317rYyHta7g3lL/6SVagc+51+I
- zwNcDTeFjPLM8jxO4ZbTQKxkGL3z6V1VxTm+LjIEPirbEsX/WyLmvnhj6JcZ2rkntT1MJEUNwUF
- l5fwHoIJK3NLkIEB7mLrwzrgDLencmvs=
-X-Received: by 2002:a05:6808:1312:b0:3b9:da28:fed6 with SMTP id
- y18-20020a056808131200b003b9da28fed6mr23909836oiv.71.1703046454083; 
- Tue, 19 Dec 2023 20:27:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHW0ATmpuGbqNa/VQ0FnG6KYx/T4xOGUYE/T5NlGlCZto5/ZrrRt2oNmJ/y8khwXJfCJAEph5KmTvmyNGPULMU=
-X-Received: by 2002:a05:6808:1312:b0:3b9:da28:fed6 with SMTP id
- y18-20020a056808131200b003b9da28fed6mr23909815oiv.71.1703046453856; Tue, 19
- Dec 2023 20:27:33 -0800 (PST)
+ bh=bVthK6+0CHN0/vzRY3sXTm6opundFyZmmQX0W6Rp6Bc=;
+ b=rHmtPmcuuuqqtnCU/kHoEwh6Dii9izH6BTm3AnDt4DO8KbLDMf7pLtpVV4Pe8RswWo
+ S2BUwShtFTnxILVC2KfQB4oUvurGEOjoRw8LmlXeahksp46JfVOFS01axpyWHN6m74gi
+ q814tyJD3J8bA+gY5cspSMObWeYKG9MNTVaPdwSRrcMvYxUdAwAT1iJa/Ze3xCvQz4f3
+ pgX0MzAAONHUdTJV1UC33+hv0KPfV2xoUxgl1Md+6jokRMxa9eaTRR8s3ZgcQZLciG+0
+ 6lclux5NU4FvVE3e8z070kOKMZsFqFjPzwLXYTbxIVCNZMETmTbt5G08Uocb3DHQ7oup
+ 8OUA==
+X-Gm-Message-State: AOJu0YzfR0utg+PBjmJx0zKayRcb8+QmUEDAOcxi3VhoZMRNRncegRJ2
+ 6Izv6ieu/sLwvrbr1RfIzBB5m/l5BCUMi4y5njE7AenCUqxPeBK+m2mWmFjAh/hALaJh5NaTAGx
+ OSzl0cleUTCAFJh3Bmug2AzyJSu0CwAY=
+X-Received: by 2002:a05:6a00:1889:b0:6d5:c4cb:860b with SMTP id
+ x9-20020a056a00188900b006d5c4cb860bmr6196822pfh.65.1703046615130; 
+ Tue, 19 Dec 2023 20:30:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGV4fBO8B0cBC1EHgsOnvFzm50iCQqUcuOOGixG+BrXPJWZeEbRhRrYRI6mY+msJ5h5pvGymnKreGTLGMJOiLI=
+X-Received: by 2002:a05:6a00:1889:b0:6d5:c4cb:860b with SMTP id
+ x9-20020a056a00188900b006d5c4cb860bmr6196810pfh.65.1703046614846; Tue, 19 Dec
+ 2023 20:30:14 -0800 (PST)
 MIME-Version: 1.0
 References: <20231215172830.2540987-1-eperezma@redhat.com>
- <20231215172830.2540987-3-eperezma@redhat.com>
-In-Reply-To: <20231215172830.2540987-3-eperezma@redhat.com>
+ <20231215172830.2540987-4-eperezma@redhat.com>
+In-Reply-To: <20231215172830.2540987-4-eperezma@redhat.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 20 Dec 2023 12:27:22 +0800
-Message-ID: <CACGkMEsGcQ4OGY6iOBL4AEDyfF02t4weA1Y65jT0GZRmEnzAuw@mail.gmail.com>
-Subject: Re: [PATCH for 9.0 02/12] vdpa: make batch_begin_once early return
+Date: Wed, 20 Dec 2023 12:30:03 +0800
+Message-ID: <CACGkMEvWuii90xHsvn23JQuRfS7LZSZPBorYkuYtNib5JcCunw@mail.gmail.com>
+Subject: Re: [PATCH for 9.0 03/12] vdpa: merge _begin_batch into
+ _batch_begin_once
 To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
 Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  si-wei.liu@oracle.com, 
@@ -102,43 +103,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Sat, Dec 16, 2023 at 1:28=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redhat=
 .com> wrote:
 >
-> Prefer early return so it is easier to merge
-> vhost_vdpa_listener_begin_batch here and make iotlb baches begin and end
-> symmetrical.
+> There was only one call.  This way we can make the begin and end of the
+> batch symmetrical.
 >
 > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
 Acked-by: Jason Wang <jasowang@redhat.com>
 
 Thanks
-
-> ---
->  hw/virtio/vhost-vdpa.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index cc252fc2d8..bf9771870a 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -160,11 +160,12 @@ static void vhost_vdpa_listener_begin_batch(VhostVD=
-PAShared *s)
->
->  static void vhost_vdpa_iotlb_batch_begin_once(VhostVDPAShared *s)
->  {
-> -    if (s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH) &&
-> -        !s->iotlb_batch_begin_sent) {
-> -        vhost_vdpa_listener_begin_batch(s);
-> +    if (!(s->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH)) ||
-> +        s->iotlb_batch_begin_sent) {
-> +        return;
->      }
->
-> +    vhost_vdpa_listener_begin_batch(s);
->      s->iotlb_batch_begin_sent =3D true;
->  }
->
-> --
-> 2.39.3
->
 
 
