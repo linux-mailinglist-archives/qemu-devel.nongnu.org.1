@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82AE8199C0
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 08:41:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F128199E2
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 08:55:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFrBq-0002Vb-S6; Wed, 20 Dec 2023 02:40:26 -0500
+	id 1rFrOj-0004iB-Dj; Wed, 20 Dec 2023 02:53:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFrBl-0002VB-NV
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:40:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFrOY-0004gO-Oj
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:53:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFrBR-0002jS-Fy
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:40:03 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rFrOU-0005x5-M8
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:53:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703057998;
+ s=mimecast20190719; t=1703058806;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=u6gWhBszD3k++MKC+egdUcqtYzodgj1osZ5tVxXteDg=;
- b=iPcUclCnOyIfajZLW7b9KsHwXDrYajWJ0vFcNieDIq+f5lr0XnHSjqK5QA4XY2BuLEZXDk
- nACOSkTA74cf7uehwVOxotHVXhPv9i81lTZOeMr0mF4sDZ3FuGQvpsKLfN2LDOUIF00SRU
- W83ENLflhgcJmGa6rJto9TB2jtNmBus=
+ bh=+PBX4G9iHIKLgigmXNC+ZfT9BGo2GdbXEndjPZvY/Ek=;
+ b=MsHI9nqspWbDl6WLGnbh0HMbdG0rArZOAGbwFjudDUTi5phkpvDY+R7K4L8aK2xgwujBy4
+ 6XJVFHjHHOiKaLfLETQk5CCHHeMLL5pSaqRK+GAheQ/wIYtD24w5RQ5UOlhbSpe4+Qu4v5
+ /Dt7EVz4IVQRT+Fh3ARjqqoXV1uObf8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-s-CCbkqxOJu_h3G2MSR2Lw-1; Wed, 20 Dec 2023 02:39:57 -0500
-X-MC-Unique: s-CCbkqxOJu_h3G2MSR2Lw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-515-XNqedwWFPYaOQlJODXHgxA-1; Wed, 20 Dec 2023 02:53:23 -0500
+X-MC-Unique: XNqedwWFPYaOQlJODXHgxA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2559A88D70C;
- Wed, 20 Dec 2023 07:39:57 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B64A48B0D61;
+ Wed, 20 Dec 2023 07:53:22 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 04C621C060AF;
- Wed, 20 Dec 2023 07:39:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 77BAC2166B31;
+ Wed, 20 Dec 2023 07:53:22 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DC02521E6920; Wed, 20 Dec 2023 08:39:55 +0100 (CET)
+ id 56E5421E6920; Wed, 20 Dec 2023 08:53:21 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,  qemu-devel@nongnu.org,  Michal
- Privoznik <mprivozn@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,  qemu-block@nongnu.org,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  "Michael
- S. Tsirkin" <mst@redhat.com>,  Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v2 1/2] qdev: add IOThreadVirtQueueMappingList property
- type
-In-Reply-To: <ZYHACN3AEV_TW0iZ@redhat.com> (Kevin Wolf's message of "Tue, 19
- Dec 2023 17:08:40 +0100")
-References: <20230918161604.1400051-1-stefanha@redhat.com>
- <20230918161604.1400051-2-stefanha@redhat.com>
- <877cnpsll9.fsf@pond.sub.org> <20231219151328.GA219161@fedora>
- <ZYHACN3AEV_TW0iZ@redhat.com>
-Date: Wed, 20 Dec 2023 08:39:55 +0100
-Message-ID: <8734vxiapg.fsf@pond.sub.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9?=
+ <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] qdev: Report an error for machine without
+ HotplugHandler
+In-Reply-To: <ff212914-32b5-442e-8f67-4f01a7208a0c@daynix.com> (Akihiko
+ Odaki's message of "Tue, 19 Dec 2023 21:08:45 +0900")
+References: <20231210-bus-v2-1-34ebf5726fa0@daynix.com>
+ <87h6kpgrl7.fsf@pond.sub.org>
+ <cbda6265-5027-424c-be93-86073d9ad63a@daynix.com>
+ <8734vzsj6k.fsf@pond.sub.org>
+ <ff212914-32b5-442e-8f67-4f01a7208a0c@daynix.com>
+Date: Wed, 20 Dec 2023 08:53:21 +0100
+Message-ID: <87y1dpgvim.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,88 +88,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kevin Wolf <kwolf@redhat.com> writes:
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-> Am 19.12.2023 um 16:13 hat Stefan Hajnoczi geschrieben:
->> On Sat, Oct 14, 2023 at 09:35:14AM +0200, Markus Armbruster wrote:
->> > Stefan Hajnoczi <stefanha@redhat.com> writes:
->> > > +##
->> > > +# @IOThreadVirtQueueMappings:
->> > > +#
->> > > +# IOThreadVirtQueueMapping list. This struct is not actually used but the
->> > > +# IOThreadVirtQueueMappingList type it generates is!
->> > 
->> > Two spaces between sentences for consistency, please.
->> > 
->> > Doc comments are QMP reference documentation for users.  Does this
->> > paragraph belong there?
+> On 2023/12/18 23:02, Markus Armbruster wrote:
+>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 >> 
->> Someone might wonder why a type exists that is never used, so I think
->> including this in the documentation is acceptable.
+>>> On 2023/12/11 15:51, Markus Armbruster wrote:
+>>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+>>>>
+>>>>> The HotplugHandler of the machine will be used when the parent bus does
+>>>>> not exist, but the machine may not have one. Report an error in such a
+>>>>> case instead of aborting.
+>>>>>
+>>>>> Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
+>>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>>
+>>>> Do you have a reproducer for the crash?
+>>>>
+>>>>> ---
+>>>>> Changes in v2:
+>>>>> - Fixed indention.
+>>>>> - Link to v1: https://lore.kernel.org/r/20231202-bus-v1-1-f7540e3a8d62@daynix.com
+>>>>> ---
+>>>>>    system/qdev-monitor.c | 13 ++++++++++---
+>>>>>    1 file changed, 10 insertions(+), 3 deletions(-)
+>>>>>
+>>>>> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+>>>>> index a13db763e5..5fe5d49c20 100644
+>>>>> --- a/system/qdev-monitor.c
+>>>>> +++ b/system/qdev-monitor.c
+>>>>> @@ -927,9 +927,16 @@ void qdev_unplug(DeviceState *dev, Error **errp)
+>>>>    void qdev_unplug(DeviceState *dev, Error **errp)
+>>>>    {
+>>>>        DeviceClass *dc = DEVICE_GET_CLASS(dev);
+>>>>        HotplugHandler *hotplug_ctrl;
+>>>>        HotplugHandlerClass *hdc;
+>>>>        Error *local_err = NULL;
+>>>>        if (qdev_unplug_blocked(dev, errp)) {
+>>>>            return;
+>>>>        }
+>>>>        if (dev->parent_bus && !qbus_is_hotpluggable(dev->parent_bus)) {
+>>>>            error_setg(errp, QERR_BUS_NO_HOTPLUG, dev->parent_bus->name);
+>>>>            return;
+>>>>        }
+>>>>        if (!dc->hotpluggable) {
+>>>>            error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
+>>>>                       object_get_typename(OBJECT(dev)));
+>>>>            return;
+>>>>        }
+>>>>        if (!migration_is_idle() && !dev->allow_unplug_during_migration) {
+>>>>            error_setg(errp, "device_del not allowed while migrating");
+>>>>            return;
+>>>>        }
+>>>>
+>>>>>       qdev_hot_removed = true;
+>>>>>          hotplug_ctrl = qdev_get_hotplug_handler(dev);
+>>>>> -    /* hotpluggable device MUST have HotplugHandler, if it doesn't
+>>>>> -     * then something is very wrong with it */
+>>>>> -    g_assert(hotplug_ctrl);
+>>>>> +    if (!hotplug_ctrl) {
+>>>>> +        /*
+>>>>> +         * hotpluggable bus MUST have HotplugHandler, if it doesn't
+>>>>> +         * then something is very wrong with it
+>>>>> +         */
+>>>>> +        assert(!dev->parent_bus);
+>>>>> +
+>>>>> +        error_setg(errp, "The machine does not support hotplugging for a device without parent bus");
+>>>>> +        return;
+>>>>> +    }
+>>>>
+>>>> Extended version of my question above: what are the devices where
+>>>> qdev_get_hotplug_handler(dev) returns null here?
+>>>
+>>> Start a VM: qemu-system-aarch64 -M virt -nographic
+>>> Run the following on its HMP: device_del /machine/unattached/device[0]
+>>>
+>>> It tries to unplug cortex-a15-arm-cpu and crashes.
+>>
+>> This device has no parent bus (dev->parent_bus is null), but is marked
+>> hot-pluggable (dc->hotpluggable is true).  Question for somebody
+>> familiar with the hot-plug machinery: is this sane?
 >
-> I seem to remember that we had a similar remark elsewhere, but maybe it
-> doesn't exist any more today?
+> Setting hotpluggable false for each device without bus_type gives the same effect, but is error-prone.
 
-Working up more context...  alright, now I see.
+Having hotpluggable = true when the device cannot be hot-plugged is
+*wrong*.  You might be able to paper over the wrongness so the code
+works anyway, but nothing good can come out of lying to developers
+trying to understand how the code works.
 
-When the QAPI schema defines a type 'T', the QAPI generator generates
-code and documentation for it whether it is used in the schema or not.
-We occasionally use this to generate types with QAPI goodies for purely
-internal use.  In other words, the generator assumes there is a use of T
-in C code.
+Three ideas to avoid the lying:
 
-However, the QAPI generator generates code for ['T'] only if there's a
-use of ['T'] in the schema.  This is because it's actually needed only
-for about one in seven types.  See commit 9f08c8ec738 (qapi: Lazy
-creation of array types).
+1. default hotpluggable to bus_type != NULL.
 
-Once in a blue moon, ['T'] is only used in C code.  The QAPI generator
-won't generate code for it then, and the C code won't compile.  Then we
-have to add a dummy use to the schema to force the array into existence.
-Not exactly elegant, but it works.
+2. assert(dc->bus_type || !dc->hotpluggable) in a suitable spot.
 
-I can see two blue moons in the schema before this patch.
-
-In qapi/block-core.json:
-
-    ##
-    # @DummyBlockCoreForceArrays:
-    #
-    # Not used by QMP; hack to let us use BlockGraphInfoList internally
-    #
-    # Since: 8.0
-    ##
-    { 'struct': 'DummyBlockCoreForceArrays',
-      'data': { 'unused-block-graph-info': ['BlockGraphInfo'] } }
-
-It's called Dummy<NameOfModule>ForceArrays, it's at the end of the file,
-and it collects all the arrays being forced into existence.
-
-In qapi/machine.json:
-
-    ##
-    # @DummyForceArrays:
-    #
-    # Not used by QMP; hack to let us use X86CPUFeatureWordInfoList
-    # internally
-    #
-    # Since: 2.5
-    ##
-    { 'struct': 'DummyForceArrays',
-      'data': { 'unused': ['X86CPUFeatureWordInfo'] } }
-
-Less good: it has a clash-prone name, and it's not at the end of the
-file.  It was the first use of this trick, and we still had a single
-schema file back then.
-
-I recommend you do yours just like the first one.
-
->> My comment is mostly intended to stop someone from removing this
->> "unused" type from the schema though. If there is a better way to do
->> that I can do that instead.
->
-> Won't the QAPI generator or the compiler stop them soon enough?
-
-The compiler would.
+3. Change the meaning of hotpluggable, and rename it to reflect its new
+meaning.  Requires a careful reading of its uses.  I wouldn't go there.
 
 
