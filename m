@@ -2,94 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0907B81A752
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 20:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDF081A758
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 20:40:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG2N4-0006RG-FE; Wed, 20 Dec 2023 14:36:46 -0500
+	id 1rG2Q5-0007j8-G2; Wed, 20 Dec 2023 14:39:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rG2Mz-0006Qv-E8
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:36:41 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rG2Mw-0001Ts-SI
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:36:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=gS7Qa7U7BIHgMzueSA/FZ5ZYpQMKx2yrfbMlNjMUEjw=; b=tzBRlaAhqmxg/MVgFSMZfOGucC
- oVDHjaWSI7xHAvdw0bZobn0kW3pHJTuH21SZDNFE6C5d1xVzldN7PbuY5QPlcy3QCvFXdPnODCqxF
- sLCW+sSpVkp5CYOfM924x1azglLJuAqmR2ELp3IGTNFTOF0eT0QN1q/jId9Iy4Dfo7+gcCalj1HWT
- n5yzxcvesUkMSS5Z4fXOjDZDxG2k93apcF8ZDnW5Lvs8+5s1VspAteDdC4TGLeL02ti0FMD6Ocpbt
- dckr6EpUIRIZwhTVnnSqqz1PHhMsI+CQkn3RmYx6Xx7yVBnFyG7rhr8yQse4j7i5I6cC8LD5XOmgc
- gp29HdyVm0Off9x1QrwXx+Pq1ETzSDLe0fOnkepscZPZlnd3ZoE81XpFwCMsIon7Xfd7HB2afvxQo
- TPJoChzbSsEmfdcnKO9+n0AquFDpEZFvF0uMb4LjYQ/GAgJxAVgI7qOiB6JfBzGZCOtuYAhj6JHsH
- Jy8gZUy7+PTT5AqMv/tZ51w0KWt6snei9Uxm8Sa1otTSuYnzqV53JTZcGKxaw7/6dgyL2H3sq0pGK
- PHXP6HyCmT234FQS+UtAvPrylW8ythVIpH70Wgh61aJ5QQI8Y1o4aJvAMWU1uPC5WKnrAEd5eFcPu
- otyp5BW6pDKljXXraKBn5J1I3EIYhlj2KSquVLpy8=;
-Received: from [2a00:23c4:8bb0:f100:5056:7a9a:2d6c:4a1d]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rG2MS-0004RD-9U; Wed, 20 Dec 2023 19:36:12 +0000
-Message-ID: <843e4a2f-ebf6-4d4f-857e-1ecfe82625ce@ilande.co.uk>
-Date: Wed, 20 Dec 2023 19:36:27 +0000
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rG2Q3-0007ir-A5
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:39:51 -0500
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rG2Q1-0003EJ-PZ
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:39:51 -0500
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-28bc8540299so13864a91.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 11:39:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1703101187; x=1703705987; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fzbFaEy/KGm9WK3voBtagHjtNo8g1rpCrqKZeZHhuxI=;
+ b=gpodAaETZPi2m56l9ykP+3Dn7x9WTq66dfAqlYt2biIsZR0tdgGTZlACI+EJDeD3yY
+ aWQ1sYMbp/24lNHpFxqnksEoVnTF2uvsEcc+HCMZ+aep0HtDEth1g6uK/gsFvWkLSZ4+
+ B4cjM89XgBV/N6+UVVP1Kuy5bijXnnaqQRPjrVDEOgVBxcpNPDmF1xd603n20+OXQRzx
+ sLVuNayx4BBV8wMZw4WFpYElJsAgIaGU1P/uEaddDIwlIdRSEn3QcaZJikL5XZSgojRi
+ nJMJASkA8A1itLFmnspz9e208vPKnkCmvSxUAUrjtE8e6UoWMX7ydWvdTqqt8ypzUAf3
+ jRTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703101187; x=1703705987;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fzbFaEy/KGm9WK3voBtagHjtNo8g1rpCrqKZeZHhuxI=;
+ b=jLPjuMM+7HxHMRJ1uluVcl3vyjVEsFRSgxyH3WIVKEGs0i4n1lNQPntn9AKruGLK+x
+ CM5QwbbaXEokorgJt+cR0KVdsqkWat0o3k2ozSYrIBut8LeNSHxUTda60r6KE1FwW4tv
+ oDZTqaCmCExVHaiUAjjAWKlxhgHMq5hH+qH9+qk4HOnFaVbOizlxEIBAn4Eupr7H+TXZ
+ 8UwcM2YLUwqDA5OoXtU47J00N3yL7MVfZpcm9LgLBdCNOEz7wjRrZbQbDtyp/l8u8o9Y
+ GHPjWWI223USeY36yayAkK0zB09pemNPQo9hhyqczSxQo8jW/2KDclS/sVJy+2J3BHXy
+ Xcxw==
+X-Gm-Message-State: AOJu0Yzsml2YqbTwF/ZwSSt3gjV249VwsCbRXNhwNwhQC+YWEcw8N6iT
+ DNLRQU1lTTRJPEz5L8VLF0JSIQ==
+X-Google-Smtp-Source: AGHT+IGeAtYoWLNeKSH5deICY6gph4R7zylyhXczg8e7t0UeEKlDPjSh5xjeriS9+q3i5PUvaNVjow==
+X-Received: by 2002:a17:90a:da05:b0:28b:894b:4494 with SMTP id
+ e5-20020a17090ada0500b0028b894b4494mr3071960pjv.55.1703101187634; 
+ Wed, 20 Dec 2023 11:39:47 -0800 (PST)
+Received: from [192.168.68.110] ([179.93.21.205])
+ by smtp.gmail.com with ESMTPSA id
+ 68-20020a17090a09ca00b0028bdd7b50b6sm256090pjo.42.2023.12.20.11.39.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Dec 2023 11:39:47 -0800 (PST)
+Message-ID: <f5f2d12d-a444-49f6-8fc3-00f582b87799@ventanamicro.com>
+Date: Wed, 20 Dec 2023 16:39:43 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Thomas Huth <huth@tuxfamily.org>
-Cc: qemu-devel@nongnu.org
-References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
- <20231220131641.592826-9-mark.cave-ayland@ilande.co.uk>
- <20231220202012.34ce2b0a@fedora>
+Subject: Re: [PATCH v2 1/1] docs/system/riscv: document acpi parameter of virt
+ machine
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org
+References: <20231220193436.25909-1-heinrich.schuchardt@canonical.com>
 Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20231220202012.34ce2b0a@fedora>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231220193436.25909-1-heinrich.schuchardt@canonical.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:5056:7a9a:2d6c:4a1d
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 08/11] next-cube.c: move static old_scr2 variable to
- NeXTPC
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,93 +96,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/12/2023 19:20, Thomas Huth wrote:
 
-> Am Wed, 20 Dec 2023 13:16:38 +0000
-> schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+
+On 12/20/23 16:34, Heinrich Schuchardt wrote:
+> Since QEMU v8.0.0 the RISC-V virt machine has a switch to disable ACPI
+> table generation. Add it to the documentation.
 > 
->> Move the old_scr2 variable to NeXTPC so that the old SCR2 register state is
->> stored along with the current SCR2 state.
->>
->> Since the SCR2 register is 32-bits wide, convert old_scr2 to uint32_t and
->> update the SCR2 register access code to allow unaligned writes.
->>
->> Note that this is a migration break, but as nothing will currently boot then
->> we do not need to worry about this now.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   hw/m68k/next-cube.c | 12 +++++++++---
->>   1 file changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
->> index f2222554fa..d53f73fb8b 100644
->> --- a/hw/m68k/next-cube.c
->> +++ b/hw/m68k/next-cube.c
->> @@ -91,6 +91,7 @@ struct NeXTPC {
->>   
->>       uint32_t scr1;
->>       uint32_t scr2;
->> +    uint32_t old_scr2;
->>       uint32_t int_mask;
->>       uint32_t int_status;
->>       uint32_t led;
->> @@ -125,8 +126,7 @@ static const uint8_t rtc_ram2[32] = {
->>   
->>   static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
->>   {
->> -    static uint8_t old_scr2;
->> -    uint8_t scr2_2;
->> +    uint8_t old_scr2, scr2_2;
->>       NextRtc *rtc = &s->rtc;
->>   
->>       if (size == 4) {
->> @@ -144,6 +144,8 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
->>           }
->>       }
->>   
->> +    old_scr2 = (s->old_scr2 >> 8) & 0xff;
->> +
->>       if (scr2_2 & 0x1) {
->>           /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
->>           if (rtc->phase == -1) {
->> @@ -252,7 +254,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
->>       }
->>       s->scr2 = val & 0xFFFF00FF;
->>       s->scr2 |= scr2_2 << 8;
+> Fixes: 168b8c29cedb ("hw/riscv/virt: Add a switch to disable ACPI")
+> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> ---
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+> v2:
+> 	mention that acpi=on is the default
+> ---
+>   docs/system/riscv/virt.rst | 5 +++++
+>   1 file changed, 5 insertions(+)
 > 
-> So s->scr2 is updated with the "val" at the end of nextscr2_write() ...
-> 
->> -    old_scr2 = scr2_2;
->>   }
->>   
->>   static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
->> @@ -318,7 +319,10 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
->>           break;
->>   
->>       case 0xd000 ... 0xd003:
->> +        s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
->> +                            size << 3, val);
-> 
-> ... but here it is also updated before nextscr2_write() ? Looks somewhat
-> strange. Though I have to admit that I don't fully understand the logic
-> here anyway... Maybe we could peek at Previous to see how this register is
-> supposed to behave?
-
-I'm fairly sure what's supposed to happen is that bits 8-15 of SCR2 are used to 
-bit-bang the RTC and all the other values are preserved, hence the logic at the end 
-of nextscr2_write(). What makes it slightly more confusing is that scr2_2 and 
-old_scr2 in the current version of nextscr2_write() represent just bits 8-15 of SCR2 
-and not the entire register.
-
-This is something I tried to improve in the following 2 commits by splitting out the 
-LED logic into its own function, and then finally updating old_scr2 to a 32-bit value 
-to match scr2 and using extract32()/deposit32() in next_scr2_rtc_update() to make 
-this process clearer.
-
-
-ATB,
-
-Mark.
-
+> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+> index f5fa7b8b29..9a06f95a34 100644
+> --- a/docs/system/riscv/virt.rst
+> +++ b/docs/system/riscv/virt.rst
+> @@ -95,6 +95,11 @@ The following machine-specific options are supported:
+>     SiFive CLINT. When not specified, this option is assumed to be "off".
+>     This option is restricted to the TCG accelerator.
+>   
+> +- acpi=[on|off|auto]
+> +
+> +  When this option is "on" (which is the default), ACPI tables are generated and
+> +  exposed as firmware tables etc/acpi/rsdp and etc/acpi/tables.
+> +
+>   - aia=[none|aplic|aplic-imsic]
+>   
+>     This option allows selecting interrupt controller defined by the AIA
 
