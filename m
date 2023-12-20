@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2732819FAC
+	by mail.lfdr.de (Postfix) with ESMTPS id A35FC819FA9
 	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 14:18:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFwSU-00082k-1w; Wed, 20 Dec 2023 08:17:58 -0500
+	id 1rFwSU-00082l-N9; Wed, 20 Dec 2023 08:17:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRy-0007rG-Jl
+ id 1rFwS1-0007rR-Bz
  for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:32 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRw-0002PC-56
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:25 -0500
+ id 1rFwRz-0002PT-Ll
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 08:17:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=lXFMb7KhM9WRQ3q++nVdmfUoYoeUwX0EEcDeNQeZ9AA=; b=NqCYmEnXE7G2NLZW3fiH+yrksE
- E3GWaI7jE/TE6A1sI6x5SotNAO4NzpF2P6zJmM+3UhkvFscF0HjnpB5fgAHiYVIjxJqLYycRdsBFX
- EWbtEjCs7zmXbxHaK3yURgcfGUZlG5+2vTckqnWWy+Tj5tqF7x597xDi/8eV1Fsj8b38/coyFqEfo
- l2tRouqXGApiFAoIbrG49w60VX54P6vwiZPoVECPED1savK5kMKAHJu9yQE9vx0RqO67oh38RJnAH
- kOvECKJv3SBIeXkafQo0pmfsCQCdvfeA/te3IPwNC68x6lP+z/wamEliVjh/ji/zhoxmmaevqFkf3
- +oyP3ZoiRJKULjgvGeTd5astq1xFJ+CoGAIza6EQj6t8GivXTkvOPXS2cJ+sZLIIuXGP3iD7Oo2BV
- 9tiqbmliJH/adDXCGMlj85jDB30ElPgQhkfhL6a2OKFDmISVnF4FaoN3o1qeLSPdrejPBUgETwTd6
- MfiaedR6qylNJk8yFpq0+/k7gfLtMSQtDRjnCvcaf9R2365oD/GyhwVaDNLdkhwmWbrddQ23jFo3q
- D3z1apApIz2pyE6c1ao7GBmM+g9LfTPPgJ2Sl74s2w8cnoj5KlEUP7ObDzsxn98solcbiRB9DB7uR
- Er9AnfmUk4mMRqjrWqVMk04WisQQkwaQOgb71d6bw=;
+ bh=zKHhExBrhQhDtz+bMd3ZGiF02kmYBxElgg/wkqmyApA=; b=USrABwp0KMXlUI6d/sCrAJ2fS9
+ 01jvbACnnPk9hNILXYpSC5d+2HdNUWdiy8asH3wkk4Ra7Wi0Yxgk/8OOyv+mpBO3MjU6dFjYiKdHR
+ oDgnclWM/rozxClfKKE5YljsFt+nYIoZUnSJzuCCR0aY2bsqkW2SMUruD2FOSOskrctSoBS5HTvny
+ 1qFPt/hPm8FsSYjlWNNocfhW9F6JFdhuA63587As1v6GBLr82GEcJjq4+H+c7n2aSqrbR7N8ceBEC
+ fl3nfVsh6BvxvRwKdoDc5EHr3VAV0iqTiSNAJssPE3BJ2wuSeUiUPvAbocYB8VcOinqU7xv1P8hPv
+ gGVJ7fdDouv5lW9eC6YKy6iSa+owDmGB9nav1PMqY6a2bIJ7KBuH3BS/++o/lPvySqg68n9VIUQxT
+ 8zR6KHdJz0qLCp3mL5kci+UJnk4+MsymbEUwh4Q3k1e13rRfCjwGtfTqiu7Lh9Xis7ccOQ1myH+oX
+ 3FFzLMqNCOHZ04TyNGKsTozaLmHpCoJ7lYV/SCtRRnceWOOANDlVxaBTuXWWiQiBNFM1RW51+0Oyg
+ G3TFcHAb/ZdYeKPmuCgSrJXo2MoZ+9wW5om7SQzSNsqqZR/YySvpy47Y+dEupTXBjUCu1ESQSSFr5
+ vCuLooga/OSVaVk6xRJYhtgnOuKPpsjR5fErU/vLg=;
 Received: from host86-147-134-9.range86-147.btcentralplus.com ([86.147.134.9]
  helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rFwRS-0001qt-TT; Wed, 20 Dec 2023 13:16:59 +0000
+ id 1rFwRX-0001qt-4G; Wed, 20 Dec 2023 13:17:03 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: huth@tuxfamily.org,
 	qemu-devel@nongnu.org
-Date: Wed, 20 Dec 2023 13:16:40 +0000
-Message-Id: <20231220131641.592826-11-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 20 Dec 2023 13:16:41 +0000
+Message-Id: <20231220131641.592826-12-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
 References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.147.134.9
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 10/11] next-cube.c: remove val and size arguments from
- nextscr2_write()
+Subject: [PATCH v2 11/11] next-cube.c: move machine MemoryRegions into
+ NeXTState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,62 +78,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are now redundant with the scr2 and old_scr2 fields in NeXTPC. Rename
-the function from nextscr2_write() to next_scr2_rtc_update() to better
-reflect its purpose. At the same time replace the manual bit manipulation with
-the extract32() and deposit32() functions.
+These static memory regions are contained within the machine and do not need to
+be dynamically allocated.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/m68k/next-cube.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ hw/m68k/next-cube.c | 38 +++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
 diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index fd707b4b54..d9a1f234ec 100644
+index d9a1f234ec..292f13defb 100644
 --- a/hw/m68k/next-cube.c
 +++ b/hw/m68k/next-cube.c
-@@ -136,18 +136,13 @@ static void next_scr2_led_update(NeXTPC *s)
-     }
- }
+@@ -74,6 +74,12 @@ typedef struct NextRtc {
+ struct NeXTState {
+     MachineState parent;
  
--static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
-+static void next_scr2_rtc_update(NeXTPC *s)
- {
-     uint8_t old_scr2, scr2_2;
-     NextRtc *rtc = &s->rtc;
- 
--    if (size == 4) {
--        scr2_2 = (val >> 8) & 0xFF;
--    } else {
--        scr2_2 = val & 0xFF;
--    }
--
--    old_scr2 = (s->old_scr2 >> 8) & 0xff;
-+    old_scr2 = extract32(s->old_scr2, 8, 8);
-+    scr2_2 = extract32(s->scr2, 8, 8);
- 
-     if (scr2_2 & 0x1) {
-         /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
-@@ -255,8 +250,8 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
-         rtc->command = 0;
-         rtc->value = 0;
-     }
--    s->scr2 = val & 0xFFFF00FF;
--    s->scr2 |= scr2_2 << 8;
++    MemoryRegion rom;
++    MemoryRegion rom2;
++    MemoryRegion dmamem;
++    MemoryRegion bmapm1;
++    MemoryRegion bmapm2;
 +
-+    s->scr2 = deposit32(s->scr2, 8, 8, scr2_2);
+     next_dma dma[10];
+ };
+ 
+@@ -967,13 +973,9 @@ static const TypeInfo next_pc_info = {
+ 
+ static void next_cube_init(MachineState *machine)
+ {
++    NeXTState *m = NEXT_MACHINE(machine);
+     M68kCPU *cpu;
+     CPUM68KState *env;
+-    MemoryRegion *rom = g_new(MemoryRegion, 1);
+-    MemoryRegion *rom2 = g_new(MemoryRegion, 1);
+-    MemoryRegion *dmamem = g_new(MemoryRegion, 1);
+-    MemoryRegion *bmapm1 = g_new(MemoryRegion, 1);
+-    MemoryRegion *bmapm2 = g_new(MemoryRegion, 1);
+     MemoryRegion *sysmem = get_system_memory();
+     const char *bios_name = machine->firmware ?: ROM_FILE;
+     DeviceState *pcdev;
+@@ -1008,21 +1010,23 @@ static void next_cube_init(MachineState *machine)
+     sysbus_mmio_map(SYS_BUS_DEVICE(pcdev), 1, 0x02100000);
+ 
+     /* BMAP memory */
+-    memory_region_init_ram_flags_nomigrate(bmapm1, NULL, "next.bmapmem", 64,
+-                                           RAM_SHARED, &error_fatal);
+-    memory_region_add_subregion(sysmem, 0x020c0000, bmapm1);
++    memory_region_init_ram_flags_nomigrate(&m->bmapm1, NULL, "next.bmapmem",
++                                           64, RAM_SHARED, &error_fatal);
++    memory_region_add_subregion(sysmem, 0x020c0000, &m->bmapm1);
+     /* The Rev_2.5_v66.bin firmware accesses it at 0x820c0020, too */
+-    memory_region_init_alias(bmapm2, NULL, "next.bmapmem2", bmapm1, 0x0, 64);
+-    memory_region_add_subregion(sysmem, 0x820c0000, bmapm2);
++    memory_region_init_alias(&m->bmapm2, NULL, "next.bmapmem2", &m->bmapm1,
++                             0x0, 64);
++    memory_region_add_subregion(sysmem, 0x820c0000, &m->bmapm2);
+ 
+     /* KBD */
+     sysbus_create_simple(TYPE_NEXTKBD, 0x0200e000, NULL);
+ 
+     /* Load ROM here */
+-    memory_region_init_rom(rom, NULL, "next.rom", 0x20000, &error_fatal);
+-    memory_region_add_subregion(sysmem, 0x01000000, rom);
+-    memory_region_init_alias(rom2, NULL, "next.rom2", rom, 0x0, 0x20000);
+-    memory_region_add_subregion(sysmem, 0x0, rom2);
++    memory_region_init_rom(&m->rom, NULL, "next.rom", 0x20000, &error_fatal);
++    memory_region_add_subregion(sysmem, 0x01000000, &m->rom);
++    memory_region_init_alias(&m->rom2, NULL, "next.rom2", &m->rom, 0x0,
++                             0x20000);
++    memory_region_add_subregion(sysmem, 0x0, &m->rom2);
+     if (load_image_targphys(bios_name, 0x01000000, 0x20000) < 8) {
+         if (!qtest_enabled()) {
+             error_report("Failed to load firmware '%s'.", bios_name);
+@@ -1049,9 +1053,9 @@ static void next_cube_init(MachineState *machine)
+     next_scsi_init(pcdev, cpu);
+ 
+     /* DMA */
+-    memory_region_init_io(dmamem, NULL, &next_dma_ops, machine, "next.dma",
+-                          0x5000);
+-    memory_region_add_subregion(sysmem, 0x02000000, dmamem);
++    memory_region_init_io(&m->dmamem, NULL, &next_dma_ops, machine,
++                          "next.dma", 0x5000);
++    memory_region_add_subregion(sysmem, 0x02000000, &m->dmamem);
  }
  
- static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
-@@ -325,7 +320,7 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
-         s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
-                             size << 3, val);
-         next_scr2_led_update(s);
--        nextscr2_write(s, val, size);
-+        next_scr2_rtc_update(s);
-         s->old_scr2 = s->scr2;
-         break;
- 
+ static void next_machine_class_init(ObjectClass *oc, void *data)
 -- 
 2.39.2
 
