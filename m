@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0B08197BF
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 05:24:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741DE8197C3
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 05:26:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFo6y-0005ev-Tf; Tue, 19 Dec 2023 23:23:12 -0500
+	id 1rFo9S-0006jx-Bz; Tue, 19 Dec 2023 23:25:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rFo6p-0005eQ-Pf
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:23:04 -0500
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rFo6n-0001bJ-2y
- for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:23:03 -0500
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6d9f7af8918so4503119a34.0
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 20:23:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703046180; x=1703650980; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=w1Q1idOu3jJk0c815k5YX9I+4Fbw8G70RZvfaSmXaQI=;
- b=Vc86uawqOXbxoEeHeLRbwJlBABVr2JZmLIRRVJyuTuzHyWHxq/MeRMnokbmCr7EWVE
- FYw9FEdMJejuPWn6lVlfFT9QYKKNu41cZLTfU0NhBtQGXhkyujWMH51OeeDHjGQ1BUyk
- tlmFMQZhNt/ndlKgT6jbdswBh9CEs3wE78KXExKQ1lDlKP2jOfXek53CbHh/5X7yqnQu
- WltbDZbJI2fqRnstOkVMCgbLF761WjJIEJxlv6NQ1UT0iPCKGXHr1VEcgwWtBKRBYAmM
- OPylf6ErxbcTZzLDRjYRyuq9UNKXllgWbX0MzKIhRcrcN9t0UaEl08Vb1TOHJfAK4acJ
- z9KQ==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rFo99-0006jS-Ns
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:25:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rFo96-0002N8-Qu
+ for qemu-devel@nongnu.org; Tue, 19 Dec 2023 23:25:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703046321;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=l6tcioI9vASLrfBRGoA6/zkTh4WmOO18ucvOqcV6zg0=;
+ b=TLdn6bNED2phl4zMaYR/NJGXpxSstDHghCqgasiKOJgxmAhfzIamH50BazmDZue1salXjH
+ M/CZL3Tb8oZZRjSctkAbHoylZ3IUaAVGjCZeI2WH/sBFj1j8nXX3E29pcwnUaY7ZAtyenf
+ B9L1lRY8pJF8kAxuXLxUKsxSBF6g0VA=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-446-ccurwzYLN36DPf7oI56VkA-1; Tue, 19 Dec 2023 23:25:19 -0500
+X-MC-Unique: ccurwzYLN36DPf7oI56VkA-1
+Received: by mail-ot1-f72.google.com with SMTP id
+ 46e09a7af769-6da6041afddso4717520a34.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 20:25:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703046180; x=1703650980;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w1Q1idOu3jJk0c815k5YX9I+4Fbw8G70RZvfaSmXaQI=;
- b=SR8cYjcHD09sKp62LFUH7fA+DL44PSV2VjyIZx4j9znkqdsZDC36j2fnr4wb8OaOO4
- OlzxrB7t1qQXmhJtPJOkyjFH+YzaJMTTW9qgHDv6CMOGqG8Unmg53FqvZyz9592XtNZ+
- 2FoQURncrRCL9OvnaIu3PUxrvL+zqnzokjqx3EbuRnoxDRzdS0Y9O0/YJOAlR2oMkY1J
- oc0k0ksC/OB9tj9gMjR3ppYgtsp2nVk7KeyrqaZarsIqUxzXTQJsijfEjdJ4A26E84Cw
- 1wNXKjAFffXlDubA18pEPLG3xk7wwEzX/NSq+j1lYHTIoU5H/an5aJLVBBtclzctoLby
- 8rtw==
-X-Gm-Message-State: AOJu0YxdMsr/i/zQlQDrrwqd7mLwHaukAaHhNq6LRn/3q9hpkq4W7KrY
- zyK4v3bkZke31lqSve06kXlVrA==
-X-Google-Smtp-Source: AGHT+IHdGv192kcmjYQhK6eoSLu37VdhMPt9TG7vS/H35isApmDuKwi/1oo5N/svlfHHhDXzVdK2NQ==
-X-Received: by 2002:a05:6830:143:b0:6d9:bc86:d02 with SMTP id
- j3-20020a056830014300b006d9bc860d02mr18036001otp.23.1703046179802; 
- Tue, 19 Dec 2023 20:22:59 -0800 (PST)
-Received: from [192.168.1.13] ([43.252.112.169])
- by smtp.gmail.com with ESMTPSA id
- d6-20020aa78146000000b006d945660076sm496427pfn.59.2023.12.19.20.22.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Dec 2023 20:22:59 -0800 (PST)
-Message-ID: <49047cf7-de12-4761-9082-dc5638d249a2@linaro.org>
-Date: Wed, 20 Dec 2023 15:22:53 +1100
+ d=1e100.net; s=20230601; t=1703046319; x=1703651119;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=l6tcioI9vASLrfBRGoA6/zkTh4WmOO18ucvOqcV6zg0=;
+ b=tV82sFD9tCk9n/TylCM4Vk+WcofR8Gu2OlnYyrQXO4guusc0CX887Vz4r/gMiF6nyY
+ OPZqClFZX37U+wrqyBXtmx+/mjF7+igSsYMHwYeO0VxRmx4v3OdSGh2b+p1V/ie3emSK
+ SLzehM655k/Y2n3Pm8NGgyTrZ0+za4Y5d8aszqrxF0e5JrHHBGx+rCk4vnywmiAZe+dI
+ EgJXXtwEqn1xxBjrAFNkYZ0jvwYYWGIUknvHQZO4IXH3oMMs4DqVPUj5degSbubyDHM8
+ lZINMypQdeWzsalV4EcX7iaPg+6zrJ3aZnbUE/R/mEUSGbUMIXAcBOF9mGxTIZVNXdn5
+ 3fGQ==
+X-Gm-Message-State: AOJu0YwRSjEzXQx3ywLqmlFwY/Z45zoOuI4MpQFAiVB5zpy6LeFDiyrs
+ TRtt1DZeOuC258jaGud/LXedPuPGGaOwp2DRHTvfUKYLpX8jp49LyZ5r9zF1c/CrgBmDMFgKjc5
+ ilNnwVPqq1OqRZqJFedmmap8UxnRCpa4=
+X-Received: by 2002:a9d:7444:0:b0:6db:ab21:d005 with SMTP id
+ p4-20020a9d7444000000b006dbab21d005mr716278otk.69.1703046318967; 
+ Tue, 19 Dec 2023 20:25:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE1a7JAP5UvduIjOxYlMCF7zIAXI0hbXqxKLEUFjpdxDjR002xbza+lr4ietseFvT79+T1N3Ms+6MjZhxMRUh8=
+X-Received: by 2002:a9d:7444:0:b0:6db:ab21:d005 with SMTP id
+ p4-20020a9d7444000000b006dbab21d005mr716273otk.69.1703046318780; Tue, 19 Dec
+ 2023 20:25:18 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/i386: Fix physical address truncation when PAE is
- enabled
-Content-Language: en-US
-To: Michael Brown <mcb30@ipxe.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <0102018c7d0026c1-fd5f0b50-48fd-4552-be0a-cbb6070b5e14-000000@eu-west-1.amazonses.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <0102018c7d0026c1-fd5f0b50-48fd-4552-be0a-cbb6070b5e14-000000@eu-west-1.amazonses.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+References: <20231215172830.2540987-1-eperezma@redhat.com>
+ <20231215172830.2540987-2-eperezma@redhat.com>
+In-Reply-To: <20231215172830.2540987-2-eperezma@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 20 Dec 2023 12:25:07 +0800
+Message-ID: <CACGkMEtxq=GZMHkaY61uucyRfUmnB7ZJu9B5U=bJ0p4ekxf81w@mail.gmail.com>
+Subject: Re: [PATCH for 9.0 01/12] vdpa: do not set virtio status bits if
+ unneeded
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ si-wei.liu@oracle.com, 
+ Lei Yang <leiyang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, Parav Pandit <parav@mellanox.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.066,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,75 +100,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/18/23 23:56, Michael Brown wrote:
-> The address translation logic in get_physical_address() will currently
-> truncate physical addresses to 32 bits unless long mode is enabled.
-> This is incorrect when using physical address extensions (PAE) outside
-> of long mode, with the result that a 32-bit operating system using PAE
-> to access memory above 4G will experience undefined behaviour.
-> 
-> The truncation code was originally introduced in commit 33dfdb5 ("x86:
-> only allow real mode to access 32bit without LMA"), where it applied
-> only to translations performed while paging is disabled (and so cannot
-> affect guests using PAE).
-> 
-> Commit 9828198 ("target/i386: Add MMU_PHYS_IDX and MMU_NESTED_IDX")
-> rearranged the code such that the truncation also applied to the use
-> of MMU_PHYS_IDX and MMU_NESTED_IDX.  Commit 4a1e9d4 ("target/i386: Use
-> atomic operations for pte updates") brought this truncation into scope
-> for page table entry accesses, and is the first commit for which a
-> Windows 10 32-bit guest will reliably fail to boot if memory above 4G
-> is present.
-> 
-> Fix by testing for PAE being enabled via the relevant bit in CR4,
-> instead of testing for long mode being enabled.  PAE must be enabled
-> as a prerequisite of long mode, and so this is a generalisation of the
-> current test.
-> 
-> Remove the #ifdef TARGET_X86_64 check since PAE exists in both 32-bit
-> and 64-bit processors, and both should exhibit the same truncation
-> behaviour when PAE is disabled.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2040
-> Signed-off-by: Michael Brown <mcb30@ipxe.org>
+On Sat, Dec 16, 2023 at 1:28=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redhat=
+.com> wrote:
+>
+> Next commits will set DRIVER and ACKNOWLEDGE flags repeatedly in the
+> case of a migration destination.  Let's save ioctls with this.
+>
+> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+
+Acked-by: Jason Wang <jasowang@redhat.com>
+
+Thanks
+
 > ---
->   target/i386/tcg/sysemu/excp_helper.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-> index 5b86f439ad..3d0d0d78d7 100644
-> --- a/target/i386/tcg/sysemu/excp_helper.c
-> +++ b/target/i386/tcg/sysemu/excp_helper.c
-> @@ -582,12 +582,10 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
->   
->       /* Translation disabled. */
->       out->paddr = addr & x86_get_a20_mask(env);
-> -#ifdef TARGET_X86_64
-> -    if (!(env->hflags & HF_LMA_MASK)) {
-> -        /* Without long mode we can only address 32bits in real mode */
-> +    if (!(env->cr[4] & CR4_PAE_MASK)) {
-> +        /* Without PAE we can address only 32 bits */
->           out->paddr = (uint32_t)out->paddr;
->       }
-> -#endif
-
-This is not the correct refactoring.
-
-I agree that what we're currently doing is wrong, esp for MMU_PHYS_IDX, but for the 
-default case, if CR0.PG == 0, then CR4.PAE is ignored (vol 3, section 4.1.1).
-
-I suspect the correct fix is to have MMU_PHYS_IDX pass through the input address 
-unchanged, and it is the responsibility of the higher level paging mmu_idx to truncate 
-physical addresses per PG_MODE_* before recursing.
-
-
-r~
-
-r~
-
-
->       out->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
->       out->page_size = TARGET_PAGE_SIZE;
->       return true;
+>  hw/virtio/vhost-vdpa.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> index 7500c2fc82..cc252fc2d8 100644
+> --- a/hw/virtio/vhost-vdpa.c
+> +++ b/hw/virtio/vhost-vdpa.c
+> @@ -510,6 +510,10 @@ static int vhost_vdpa_add_status(struct vhost_dev *d=
+ev, uint8_t status)
+>      if (ret < 0) {
+>          return ret;
+>      }
+> +    if ((s & status) =3D=3D status) {
+> +        /* Don't set bits already set */
+> +        return 0;
+> +    }
+>
+>      s |=3D status;
+>
+> --
+> 2.39.3
+>
 
 
