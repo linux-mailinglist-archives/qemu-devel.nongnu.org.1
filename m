@@ -2,84 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDF081A758
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 20:40:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F216681A7AD
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 21:36:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG2Q5-0007j8-G2; Wed, 20 Dec 2023 14:39:53 -0500
+	id 1rG3Hp-0006fM-3h; Wed, 20 Dec 2023 15:35:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rG2Q3-0007ir-A5
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:39:51 -0500
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rG2Q1-0003EJ-PZ
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 14:39:51 -0500
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-28bc8540299so13864a91.0
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 11:39:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1703101187; x=1703705987; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fzbFaEy/KGm9WK3voBtagHjtNo8g1rpCrqKZeZHhuxI=;
- b=gpodAaETZPi2m56l9ykP+3Dn7x9WTq66dfAqlYt2biIsZR0tdgGTZlACI+EJDeD3yY
- aWQ1sYMbp/24lNHpFxqnksEoVnTF2uvsEcc+HCMZ+aep0HtDEth1g6uK/gsFvWkLSZ4+
- B4cjM89XgBV/N6+UVVP1Kuy5bijXnnaqQRPjrVDEOgVBxcpNPDmF1xd603n20+OXQRzx
- sLVuNayx4BBV8wMZw4WFpYElJsAgIaGU1P/uEaddDIwlIdRSEn3QcaZJikL5XZSgojRi
- nJMJASkA8A1itLFmnspz9e208vPKnkCmvSxUAUrjtE8e6UoWMX7ydWvdTqqt8ypzUAf3
- jRTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703101187; x=1703705987;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fzbFaEy/KGm9WK3voBtagHjtNo8g1rpCrqKZeZHhuxI=;
- b=jLPjuMM+7HxHMRJ1uluVcl3vyjVEsFRSgxyH3WIVKEGs0i4n1lNQPntn9AKruGLK+x
- CM5QwbbaXEokorgJt+cR0KVdsqkWat0o3k2ozSYrIBut8LeNSHxUTda60r6KE1FwW4tv
- oDZTqaCmCExVHaiUAjjAWKlxhgHMq5hH+qH9+qk4HOnFaVbOizlxEIBAn4Eupr7H+TXZ
- 8UwcM2YLUwqDA5OoXtU47J00N3yL7MVfZpcm9LgLBdCNOEz7wjRrZbQbDtyp/l8u8o9Y
- GHPjWWI223USeY36yayAkK0zB09pemNPQo9hhyqczSxQo8jW/2KDclS/sVJy+2J3BHXy
- Xcxw==
-X-Gm-Message-State: AOJu0Yzsml2YqbTwF/ZwSSt3gjV249VwsCbRXNhwNwhQC+YWEcw8N6iT
- DNLRQU1lTTRJPEz5L8VLF0JSIQ==
-X-Google-Smtp-Source: AGHT+IGeAtYoWLNeKSH5deICY6gph4R7zylyhXczg8e7t0UeEKlDPjSh5xjeriS9+q3i5PUvaNVjow==
-X-Received: by 2002:a17:90a:da05:b0:28b:894b:4494 with SMTP id
- e5-20020a17090ada0500b0028b894b4494mr3071960pjv.55.1703101187634; 
- Wed, 20 Dec 2023 11:39:47 -0800 (PST)
-Received: from [192.168.68.110] ([179.93.21.205])
- by smtp.gmail.com with ESMTPSA id
- 68-20020a17090a09ca00b0028bdd7b50b6sm256090pjo.42.2023.12.20.11.39.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Dec 2023 11:39:47 -0800 (PST)
-Message-ID: <f5f2d12d-a444-49f6-8fc3-00f582b87799@ventanamicro.com>
-Date: Wed, 20 Dec 2023 16:39:43 -0300
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1rG3Hm-0006ei-Fw
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 15:35:22 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1rG3Hj-0000sO-W3
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 15:35:21 -0500
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3BKIh61u020723; Wed, 20 Dec 2023 20:35:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=lBJlpVgNToI26OCunKq7frZYXv/k1icd9/gmlQduOvg=;
+ b=mdaw14HJsYRo1mw2YbGQx62zfgEMZbsDws6ms2l54rmtt9JgG/RZsWcaDT+JOrXAOtQK
+ 7iRLJWlCBjT58/HjKnY0jQ/AylssCgvmFG41F/M7DzgUH78F+WtBSrAODlsv6XkdKe3m
+ VYpvx/4oDQbNEH3eBGUPa2NiTuw1Yc6l7GzlpQ9V5IJ2Xq7ul9yvGIWtVuToeofW1WsC
+ NMgPsSqFW/Z8S3oGW4yDG7fx0sB0D3Dlj+4JTOUFiEPQVzGzXXsxxE0FRxJA9Xt0OTd8
+ nYnh73hdfurRH6cY8bMlxqVd/OvXO02z1TfWIVo1Ez6KF+DthtE+r+ujHcZrdbgC9AIX xw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v441rx58q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Dec 2023 20:35:15 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BKKL2BN012321;
+ Wed, 20 Dec 2023 20:35:15 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v441rx583-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Dec 2023 20:35:14 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3BKJOvSG010870; Wed, 20 Dec 2023 20:35:14 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3v1q7nrrxk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Dec 2023 20:35:14 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3BKKZErh55116094
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 20 Dec 2023 20:35:14 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE57358054;
+ Wed, 20 Dec 2023 20:35:13 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0679C58045;
+ Wed, 20 Dec 2023 20:35:13 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.50.137]) by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 20 Dec 2023 20:35:12 +0000 (GMT)
+Message-ID: <e215169f5504649cd3b8ec5ce66c988a8b5ba439.camel@linux.ibm.com>
+Subject: Re: [PATCH for-9.0 v2 00/10] vfio: Introduce a VFIOIOMMUClass
+From: Eric Farman <farman@linux.ibm.com>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, Eric Auger
+ <eric.auger@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Harsh Prateek Bora
+ <harshpb@linux.ibm.com>
+Date: Wed, 20 Dec 2023 15:35:12 -0500
+In-Reply-To: <20231219065825.613767-1-clg@redhat.com>
+References: <20231219065825.613767-1-clg@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] docs/system/riscv: document acpi parameter of virt
- machine
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org
-References: <20231220193436.25909-1-heinrich.schuchardt@canonical.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231220193436.25909-1-heinrich.schuchardt@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7DC4Wu5OdMqFl5ulFX7oDin5ZfCoPc9i
+X-Proofpoint-ORIG-GUID: eTwR90l8oMFPI7n4NqZWYkxynhCIcEfM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-20_13,2023-12-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0
+ adultscore=0 bulkscore=0 lowpriorityscore=0 spamscore=0 phishscore=0
+ malwarescore=0 priorityscore=1501 mlxlogscore=776 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312200145
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,38 +116,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 2023-12-19 at 07:58 +0100, C=C3=A9dric Le Goater wrote:
+> Hello,
+>=20
+> The VFIO object hierarchy has some constraints because each VFIO type
+> has a dual nature: a VFIO nature for passthrough support and a bus
+> nature (PCI, AP, CCW, Platform) for its initial presentation.
 
+The above caught my attention, so I kicked the tires on this series a
+little bit both with an iommufd-enabled host kernel and without, so I
+don't lose track of it over the holidays.
 
-On 12/20/23 16:34, Heinrich Schuchardt wrote:
-> Since QEMU v8.0.0 the RISC-V virt machine has a switch to disable ACPI
-> table generation. Add it to the documentation.
-> 
-> Fixes: 168b8c29cedb ("hw/riscv/virt: Add a switch to disable ACPI")
-> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
-> v2:
-> 	mention that acpi=on is the default
-> ---
->   docs/system/riscv/virt.rst | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-> index f5fa7b8b29..9a06f95a34 100644
-> --- a/docs/system/riscv/virt.rst
-> +++ b/docs/system/riscv/virt.rst
-> @@ -95,6 +95,11 @@ The following machine-specific options are supported:
->     SiFive CLINT. When not specified, this option is assumed to be "off".
->     This option is restricted to the TCG accelerator.
->   
-> +- acpi=[on|off|auto]
-> +
-> +  When this option is "on" (which is the default), ACPI tables are generated and
-> +  exposed as firmware tables etc/acpi/rsdp and etc/acpi/tables.
-> +
->   - aia=[none|aplic|aplic-imsic]
->   
->     This option allows selecting interrupt controller defined by the AIA
+Tested-by: Eric Farman <farman@linux.ibm.com>
 
