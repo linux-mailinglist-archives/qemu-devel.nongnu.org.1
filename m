@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9B8819915
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 08:08:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB3F81991B
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Dec 2023 08:09:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rFqfe-0002Ue-6I; Wed, 20 Dec 2023 02:07:10 -0500
+	id 1rFqgx-00032o-VD; Wed, 20 Dec 2023 02:08:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rFqfZ-0002UQ-UH
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:07:06 -0500
+ id 1rFqgt-0002zI-Pp
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:08:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rFqfY-0008Pq-9B
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:07:05 -0500
+ id 1rFqgr-00005f-34
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 02:08:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703056022;
+ s=mimecast20190719; t=1703056104;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vU71ZLfxlsohIkhrtgBvhuo9DsXGIpOZ9dLpvd5tp4g=;
- b=NoT2TRhiNAx/Em7q9kyPQzPw+vV41RInKiI3LGUT7h9dOkAvUSpTBXlX6lwkOuC7a2Eq1u
- gEGhM9mjQMIkQ0Z+22NFz/z+Wy5cB+nkEW4/oW+r54CO2Sxsj3vks9KgLQuGagoLRBy9JW
- H5P+B4fqN1B93/UakifMW/k84xf2t/o=
-Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
- [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tShi8pokjXmzopuoTKTFXjF8ChuaMwwbKRcVsNdAtrE=;
+ b=e/9y3k9eMfFsrSTWMqX0hxmNCqVGPIOeT0aqOPvWImh/B8X1nJ8TAx7AT3ccNwgyGOf113
+ E1nmHpKtce3VfXB/ATwi2EqB3dcefpsgdI4LfqEx5Ty7QHibQ7l67/Zgy2gSznVODYUcaf
+ 4qIhDjhU0FAoBgQ3s6mbI59WPi7lTnY=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-a3JLoyfCMD6xb9USBgpg2g-1; Wed, 20 Dec 2023 02:06:59 -0500
-X-MC-Unique: a3JLoyfCMD6xb9USBgpg2g-1
-Received: by mail-yb1-f200.google.com with SMTP id
- 3f1490d57ef6-dbd4db03bd4so1528612276.1
- for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 23:06:59 -0800 (PST)
+ us-mta-630-RSUzW7WxMQW2gnq4z8JJ2A-1; Wed, 20 Dec 2023 02:08:22 -0500
+X-MC-Unique: RSUzW7WxMQW2gnq4z8JJ2A-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-5e617562a65so48477557b3.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Dec 2023 23:08:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703056019; x=1703660819;
+ d=1e100.net; s=20230601; t=1703056102; x=1703660902;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vU71ZLfxlsohIkhrtgBvhuo9DsXGIpOZ9dLpvd5tp4g=;
- b=XkjcC0Q8ZXaSruHEu0KKLxpLPUVUBoN1qmja6pAlq5W0sYRD1KaRH/x3FT0m/ao88x
- w/oL/fXXAxZPnVnHbKmWsL0bbppAhjtc1UXvRF6kDdSNccsoFCJQXRTsRFKfaAwmLzew
- PYpVVTD/wGWE0zC1mZYFzlwg9BEYBcEDlicfzdvBATu0qRNtg3AnaQokcXfhNkbWFbg9
- 47bB5Li6eyseWw1vPR28YA1GTAqIcmAHt0lDx8cgsMe1CaQfCdtzYLdzowEgS2Cw4v2I
- 8PkIkVseWI7Uey1LeaHxl1LqDd+jI5U+WIZ/Z577ZmNvZzCFfMm34RGbuRWxCOgyfU1m
- 2Vug==
-X-Gm-Message-State: AOJu0Yx5IhZziKO+NnEd7CGlHR1I77LRdgWB4Kp46yR+TIb4VHun2B9X
- kA6n1O7K2Nf7Hc8snHk5moTxbJOSNLh8D2zn7RBzLdgOwrZwXAxhAMEJprk52JHnF3Htel5t/B/
- BQcydj9tAnphGmRVFsTs7DfH2nkkWtTQ=
-X-Received: by 2002:a25:ef45:0:b0:dbd:5253:c3af with SMTP id
- w5-20020a25ef45000000b00dbd5253c3afmr1247582ybm.1.1703056018778; 
- Tue, 19 Dec 2023 23:06:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGZ5FkQdJF510QePLlozDyv9mgxSZyLCCBRqDD/VXOjKkTnvW74uPi22Pv9ZJ0wH3HyMeFjJJgBnoloAHdt980=
-X-Received: by 2002:a25:ef45:0:b0:dbd:5253:c3af with SMTP id
- w5-20020a25ef45000000b00dbd5253c3afmr1247575ybm.1.1703056018416; Tue, 19 Dec
- 2023 23:06:58 -0800 (PST)
+ bh=tShi8pokjXmzopuoTKTFXjF8ChuaMwwbKRcVsNdAtrE=;
+ b=ShW2tgUKceuilLMemkjHP/VsdqyneDeREGhDAx6lVL0XE/SuwDjDenGK9rHpzAMmGV
+ TpARgsWfddIgZCjeOOknNVJ1lBghTIvuPvLXpnrqtf1Ei63kKN1mmqTzXJDhvlWMJwXo
+ ZQ4qJ1QD7nqpakJ1BfVmrWhs/N8HAN/3cDCy/BY6YJcrZKb0t3sXxJkOr8EFNdmkOgWC
+ zY1wHf9n1qhyykglPL5KOqCuj7rDJLurjbkXl92F/oUa8LUoBJUvCwUMWoj5qQXfePID
+ 7G94vthjVtEMXaE4V50hnJ0M6njl9U1IkCa4QEv7TW8gQucSptb8sQJNbD7XpsQVVCfB
+ sIgQ==
+X-Gm-Message-State: AOJu0YxecYILSTbkl1iDEYU+LDSEirdhyCG6vYmfCOgJxoV0FM5JX07e
+ 548v5FMky3Nd/4imbI37ZylI7YuYMpyCeczI6jL+tzf9IXvykBYyo7kTXZFhMpHvDbskHkdR3Rp
+ 3ocxhy7XkkUVXg98W6EqpvXWOlHWdppQ=
+X-Received: by 2002:a25:8f8f:0:b0:db5:4b23:534 with SMTP id
+ u15-20020a258f8f000000b00db54b230534mr10802064ybl.17.1703056101913; 
+ Tue, 19 Dec 2023 23:08:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHqOqbAYj44UCT1/uy6gm+Snvi/Qx8DKs4zdaHlyB8YUoK2dJHBkSZNy6gyc7ZJNsTb8j4ZQOgw/CsZGahoTJI=
+X-Received: by 2002:a25:8f8f:0:b0:db5:4b23:534 with SMTP id
+ u15-20020a258f8f000000b00db54b230534mr10802053ybl.17.1703056101633; Tue, 19
+ Dec 2023 23:08:21 -0800 (PST)
 MIME-Version: 1.0
 References: <20231215172830.2540987-1-eperezma@redhat.com>
- <20231215172830.2540987-9-eperezma@redhat.com>
- <CACGkMEvH=uU4QxMHVHTo5tQiuML2+NTE3gZssfz84-+4kGHa1Q@mail.gmail.com>
-In-Reply-To: <CACGkMEvH=uU4QxMHVHTo5tQiuML2+NTE3gZssfz84-+4kGHa1Q@mail.gmail.com>
+ <20231215172830.2540987-8-eperezma@redhat.com>
+ <CACGkMEtoVLthML2SauX_Ptwdw6KMbtK1EY6BGD=E3mqN01x5hA@mail.gmail.com>
+In-Reply-To: <CACGkMEtoVLthML2SauX_Ptwdw6KMbtK1EY6BGD=E3mqN01x5hA@mail.gmail.com>
 From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 20 Dec 2023 08:06:22 +0100
-Message-ID: <CAJaqyWczW+uwYBsWas97JY6OgiSurnvNQnnTYPFWv5La55GOOg@mail.gmail.com>
-Subject: Re: [PATCH for 9.0 08/12] vdpa: add vhost_vdpa_load_setup
+Date: Wed, 20 Dec 2023 08:07:45 +0100
+Message-ID: <CAJaqyWdFgqeVBEng_i1FDFr9cg6-s8FCAS77tKRnWz3d02tgLQ@mail.gmail.com>
+Subject: Re: [PATCH for 9.0 07/12] vdpa: set backend capabilities at
+ vhost_vdpa_init
 To: Jason Wang <jasowang@redhat.com>
 Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  si-wei.liu@oracle.com, 
@@ -100,97 +101,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Dec 20, 2023 at 6:22=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+On Wed, Dec 20, 2023 at 5:34=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
 ote:
 >
 > On Sat, Dec 16, 2023 at 1:28=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redh=
 at.com> wrote:
 > >
-> > Callers can use this function to setup the incoming migration thread.
+> > The backend does not reset them until the vdpa file descriptor is close=
+d
+> > so there is no harm in doing it only once.
 > >
-> > This thread is able to map the guest memory while the migration is
-> > ongoing, without blocking QMP or other important tasks. While this
-> > allows the destination QEMU not to block, it expands the mapping time
-> > during migration instead of making it pre-migration.
->
-> If it's just QMP, can we simply use bh with a quota here?
->
-
-Because QEMU cannot guarantee the quota at write(fd,
-VHOST_IOTLB_UPDATE, ...). Also, synchronization with
-vhost_vdpa_dev_start would complicate as it would need to be
-re-scheduled too.
-
-As a half-baked idea, we can split the mapping chunks in manageable
-sizes, but I don't like that idea a lot.
-
-> Btw, have you measured the hotspot that causes such slowness? Is it
-> pinning or vendor specific mapping that slows down the progress? Or if
-> VFIO has a similar issue?
->
-
-Si-Wei did the actual profiling as he is the one with the 128G guests,
-but most of the time was spent in the memory pinning. Si-Wei, please
-correct me if I'm wrong.
-
-I didn't check VFIO, but I think it just maps at realize phase with
-vfio_realize -> vfio_attach_device -> vfio_connect_container(). In
-previous testings, this delayed the VM initialization by a lot, as
-we're moving that 20s of blocking to every VM start.
-
-Investigating a way to do it only in the case of being the destination
-of a live migration, I think the right place is .load_setup migration
-handler. But I'm ok to move it for sure.
-
-> >
-> > This thread joins at vdpa backend device start, so it could happen that
-> > the guest memory is so large that we still have guest memory to map
-> > before this time.
->
-> So we would still hit the QMP stall in this case?
->
-
-This paragraph is kind of outdated, sorry. I can only cause this if I
-don't enable switchover_ack migration capability and if I artificially
-make memory pinning in the kernel artificially slow. But I didn't
-check QMP to be honest, so I can try to test it, yes.
-
-If QMP is not responsive, that means QMP is not responsive in QEMU
-master in that period actually. So we're only improving anyway.
-
-Thanks!
-
-> > This can be improved in later iterations, when the
-> > destination device can inform QEMU that it is not ready to complete the
-> > migration.
-> >
-> > If the device is not started, the clean of the mapped memory is done at
-> > .load_cleanup.  This is far from ideal, as the destination machine has
-> > mapped all the guest ram for nothing, and now it needs to unmap it.
-> > However, we don't have information about the state of the device so its
-> > the best we can do.  Once iterative migration is supported, this will b=
-e
-> > improved as we know the virtio state of the device.
-> >
-> > If the VM migrates before finishing all the maps, the source will stop
-> > but the destination is still not ready to continue, and it will wait
-> > until all guest RAM is mapped.  It is still an improvement over doing
-> > all the map when the migration finish, but next patches use the
-> > switchover_ack method to prevent source to stop until all the memory is
-> > mapped at the destination.
-> >
-> > The memory unmapping if the device is not started is weird
-> > too, as ideally nothing would be mapped.  This can be fixed when we
-> > migrate the device state iteratively, and we know for sure if the devic=
-e
-> > is started or not.  At this moment we don't have such information so
-> > there is no better alternative.
+> > This allows the destination of a live migration to premap memory in
+> > batches, using VHOST_BACKEND_F_IOTLB_BATCH.
 > >
 > > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> >
 > > ---
+> >  hw/virtio/vhost-vdpa.c | 50 ++++++++++++++++--------------------------
+> >  1 file changed, 19 insertions(+), 31 deletions(-)
+> >
+> > diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> > index 449c3794b2..43f7c382b1 100644
+> > --- a/hw/virtio/vhost-vdpa.c
+> > +++ b/hw/virtio/vhost-vdpa.c
+> > @@ -587,11 +587,25 @@ static int vhost_vdpa_init(struct vhost_dev *dev,=
+ void *opaque, Error **errp)
+> >      struct vhost_vdpa *v =3D opaque;
+> >      assert(dev->vhost_ops->backend_type =3D=3D VHOST_BACKEND_TYPE_VDPA=
+);
+> >      trace_vhost_vdpa_init(dev, v->shared, opaque);
+> > +    uint64_t backend_features;
+> > +    uint64_t qemu_backend_features =3D 0x1ULL << VHOST_BACKEND_F_IOTLB=
+_MSG_V2 |
+> > +                                     0x1ULL << VHOST_BACKEND_F_IOTLB_B=
+ATCH |
+> > +                                     0x1ULL << VHOST_BACKEND_F_IOTLB_A=
+SID |
+> > +                                     0x1ULL << VHOST_BACKEND_F_SUSPEND=
+;
+> >      int ret;
+> >
+> >      v->dev =3D dev;
+> >      dev->opaque =3D  opaque ;
+> >      v->shared->listener =3D vhost_vdpa_memory_listener;
+> > +
+> > +    if (vhost_vdpa_call(dev, VHOST_GET_BACKEND_FEATURES, &backend_feat=
+ures)) {
+> > +        return -EFAULT;
+> > +    }
+> > +
+> > +    backend_features &=3D qemu_backend_features;
+> > +
+> > +    dev->backend_cap =3D backend_features;
+> > +    v->shared->backend_cap =3D backend_features;
+> >      vhost_vdpa_init_svq(dev, v);
+> >
+> >      error_propagate(&dev->migration_blocker, v->migration_blocker);
+> > @@ -599,6 +613,11 @@ static int vhost_vdpa_init(struct vhost_dev *dev, =
+void *opaque, Error **errp)
+> >          return 0;
+> >      }
+> >
+> > +    ret =3D vhost_vdpa_call(dev, VHOST_SET_BACKEND_FEATURES, &backend_=
+features);
+> > +    if (ret) {
+> > +        return -EFAULT;
+> > +    }
+> > +
+> >      /*
+> >       * If dev->shadow_vqs_enabled at initialization that means the dev=
+ice has
+> >       * been started with x-svq=3Don, so don't block migration
+> > @@ -829,36 +848,6 @@ static int vhost_vdpa_set_features(struct vhost_de=
+v *dev,
+> >      return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_FEATURES_OK);
+> >  }
+> >
+> > -static int vhost_vdpa_set_backend_cap(struct vhost_dev *dev)
 >
-> Thanks
+> How about keeping this function but just calling it in vhost_vdpa_init()?
 >
+
+Sure, that is possible. I need to remove the VhostOps
+vhost_set_backend_cap =3D vhost_vdpa_set_backend_cap, anyway, is that ok
+for you?
+
+Thanks!
 
 
