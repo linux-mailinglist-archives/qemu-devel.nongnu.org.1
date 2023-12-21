@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE8E81AE80
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 06:46:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A13A381AE93
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 06:59:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGBsU-0002XI-Gp; Thu, 21 Dec 2023 00:45:50 -0500
+	id 1rGC41-0004Fa-OJ; Thu, 21 Dec 2023 00:57:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGBsP-0002WK-Jr
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 00:45:47 -0500
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ id 1rGC3z-0004FA-9d
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 00:57:43 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGBsL-0006Ep-Kh
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 00:45:45 -0500
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-59091e4a0f9so161853eaf.1
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 21:45:37 -0800 (PST)
+ id 1rGC3w-0003sB-QZ
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 00:57:43 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1d3f2985425so2155745ad.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 21:57:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703137536; x=1703742336;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703138259; x=1703743059;
  darn=nongnu.org; 
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=pYgbZX5oCxCQw3VEkezO/vga4YX/OVJ5osQ8+MorHmg=;
- b=E0N6BGWPeRY6vo3L+hLnxa6TKa4AygtKwW/FjscvBUQg6TUcxtiowI5OdJmkzuej7v
- pqwphOeDlaIIOCNkE0x0+H6WP4iNsk/Yj6ui1NNlWE/v8yoMKRY3FFn3qRhvwPFvojJ6
- HwpLpJ5en5M8XZdpl7h2MactoEi1rW8jjjwDMgo8tyJofMVlQuZkQRti0SSpEwsxU8Lb
- dM5A98OnHTVtYRQFKMzDtsZ1CzM5vvfw7w66RQ3jackgq1q0qZ1cbvL5x6F0nKOpwI3v
- TIXE8EhIC+n50cZXYBllvId0eV7DYZVsevXmeJm18TaPev2JR0bNPytZ4vg+zmkRvIff
- P56g==
+ bh=7Rcc45KsdcmjGxxLc8UIdrrEhZeaVWgm/MkKyVTozcM=;
+ b=mxPapRtTmGe03fkIlKhlj0mGsijZ1O/p9nKW5yeYcFb2qMuVB7c2vcaMaoO47sl3CQ
+ 09/hnyaqYCtw+Pc8CE/rUWX5bO78Xy3NoP446WtSqmmzF2YzXB+qkKHHoMtqJFl7VL+s
+ uCMnBQTdwzL2oIYHRAi1OJl0Ox5xJxbtoFgDpCwCGxwpoFLanztvCGDRHiQ6R8YRr4xu
+ OiLdAbufHD9xPB/FdrhDUgsuU+CVSUeh2OZWyobeV5dC7GYu4TKPFH3H9JIQC3p1n81R
+ lQ60M9skP8kbCGU7WLa06NHyTahQ3/bNEcPT5hTmYuDDqM4QFiigkYd3AQ7wuL9+POmd
+ GNbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703137536; x=1703742336;
+ d=1e100.net; s=20230601; t=1703138259; x=1703743059;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pYgbZX5oCxCQw3VEkezO/vga4YX/OVJ5osQ8+MorHmg=;
- b=eUmVR4cq08vq2aKj/RXR7Nk4zW0oAR2725YyxVKl7vIT1I2f23OcR0UMNdv2VKZB8j
- zeySa21YPnbxBSqbAv3InRJ05biqGQzN1QVBQLnCVkU9T+/eJvWNQIBnwlsstQNlZIKS
- c7awBOtHYS4QgHGw97bYHm+sNG3rhtwfwBzj1aKt7Ux5lU8Vb2dY9U+15ec7M5+NiKnh
- sdq8jokzy+br/kypP2zSXQraOojQRTbrm0THBHz/al5m5oyKfEACVjcr2hgn72Ng2Ni7
- z0zG1jrvGFAGSqHOJiQ3FQWlUN+vEOPCSZChNXfDkwxP884BJNS1gsx6Z1ovxJdTAsPk
- s2rQ==
-X-Gm-Message-State: AOJu0YwfIP2VXg3MgnnU605EMIZ4X0JdD5wZ8WtvTxxRbZ/XzQFs5Iyn
- uVyLPKx5LrKV19Z9pox2d5yIsA==
-X-Google-Smtp-Source: AGHT+IE01jjYRJY2nG5j+/EQsT2ho4uIRHCQQSrz97BxpLgOmSpO+kuxuXOUcaUgxjTijO+11eelNA==
-X-Received: by 2002:a05:6808:2e4c:b0:3ba:205d:452 with SMTP id
- gp12-20020a0568082e4c00b003ba205d0452mr13773760oib.92.1703137536578; 
- Wed, 20 Dec 2023 21:45:36 -0800 (PST)
+ bh=7Rcc45KsdcmjGxxLc8UIdrrEhZeaVWgm/MkKyVTozcM=;
+ b=e/wyFOTaivLxgSaGeoRBParAN+Ru+Mi2ufpwTBV6fnOs32yzdK6mCiLpAoib8I0FDZ
+ SclcL6fIExsj/TlY38phd24rRReFt4AtO5AgLVfXSXvGA85q13S3bEgX9SAdYb+O6fr+
+ MdoznadlyeMwKRZh85wFIVIbhY1HG/HjHcKQGEgbSD6LzyK2zS9tPJRZHCa5aoQIUXGD
+ dYs+lTcOgNhmD40b1U1oNAc/6X3CaJZjTEKx/dF57NIMfTwTMhSSWDaeHg6CJFDmyugo
+ SFPaow+5deUiHkhiEqtDs0l3EvFt4oo5jrAWbZa1c5Y69fY8FLG72oUnyB6XCrT8WZal
+ pwIw==
+X-Gm-Message-State: AOJu0Yx+orYqe6cddYutsiAovfQwW3ltp2dVFj78XPC2+BacuUhEQthE
+ ZG127+UncvTOz7BvgaEyPIOsvA==
+X-Google-Smtp-Source: AGHT+IHGw0/xJGMfpNai3w9B7992IeeEENPNFYUbvUzBvYTZo9zWw6/R2YYwCA50v8JBAqb4YhbKsw==
+X-Received: by 2002:a17:902:c451:b0:1d3:e9f5:d3aa with SMTP id
+ m17-20020a170902c45100b001d3e9f5d3aamr1549392plm.45.1703138259056; 
+ Wed, 20 Dec 2023 21:57:39 -0800 (PST)
 Received: from [157.82.205.15] ([157.82.205.15])
  by smtp.gmail.com with ESMTPSA id
- q34-20020a63f962000000b0059b2316be86sm713948pgk.46.2023.12.20.21.45.31
+ d11-20020a170902c18b00b001d3f056bd65sm706571pld.191.2023.12.20.21.57.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Dec 2023 21:45:36 -0800 (PST)
-Message-ID: <a88696bc-2ffe-442a-a171-50e6120bbf97@daynix.com>
-Date: Thu, 21 Dec 2023 14:45:29 +0900
+ Wed, 20 Dec 2023 21:57:38 -0800 (PST)
+Message-ID: <9ee393a7-283c-41b2-a7bb-5e3306c0257e@daynix.com>
+Date: Thu, 21 Dec 2023 14:57:32 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/11] softmmu/memory: enable automatic deallocation of
- memory regions
+Subject: Re: [PATCH v6 07/11] virtio-gpu: Handle resource blob commands
 Content-Language: en-US
 To: Huang Rui <ray.huang@amd.com>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
@@ -85,15 +84,16 @@ Cc: xen-devel@lists.xenproject.org,
  Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>
+ Chen Jiqian <Jiqian.Chen@amd.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>
 References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-7-ray.huang@amd.com>
+ <20231219075320.165227-8-ray.huang@amd.com>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231219075320.165227-7-ray.huang@amd.com>
+In-Reply-To: <20231219075320.165227-8-ray.huang@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c29;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc29.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -116,27 +116,153 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2023/12/19 16:53, Huang Rui wrote:
-> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+> From: Antonio Caggiano <antonio.caggiano@collabora.com>
 > 
-> When the memory region has a different life-cycle from that of her parent,
-> could be automatically released, once has been unparent and once all of her
-> references have gone away, via the object's free callback.
+> Support BLOB resources creation, mapping and unmapping by calling the
+> new stable virglrenderer 0.10 interface. Only enabled when available and
+> via the blob config. E.g. -device virtio-vga-gl,blob=true
 > 
-> However, currently, the address space subsystem keeps references to the
-> memory region without first incrementing its object's reference count.
-> As a result, the automatic deallocation of the object, not taking into
-> account those references, results in use-after-free memory corruption.
+> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> ---
 > 
-> More specifically, reference to the memory region is kept in flatview
-> ranges. If the reference count of the memory region is not incremented,
-> flatview_destroy(), that is asynchronous, may be called after memory
-> region's destruction. If the reference count of the memory region is
-> incremented, memory region's destruction will take place after
-> flatview_destroy() has released its references.
+> Changes in v6:
+> - Use new struct virgl_gpu_resource.
+> - Unmap, unref and destroy the resource only after the memory region
+>    has been completely removed.
+> - In unref check whether the resource is still mapped.
+> - In unmap_blob check whether the resource has been already unmapped.
+> - Fix coding style
 > 
-> This patch increases the reference count of an owned memory region object
-> on each memory_region_ref() and decreases it on each memory_region_unref().
+>   hw/display/virtio-gpu-virgl.c | 274 +++++++++++++++++++++++++++++++++-
+>   hw/display/virtio-gpu.c       |   4 +-
+>   meson.build                   |   4 +
+>   3 files changed, 276 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> index faab374336..5a3a292f79 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -17,6 +17,7 @@
+>   #include "trace.h"
+>   #include "hw/virtio/virtio.h"
+>   #include "hw/virtio/virtio-gpu.h"
+> +#include "hw/virtio/virtio-gpu-bswap.h"
+>   
+>   #include "ui/egl-helpers.h"
+>   
+> @@ -24,8 +25,62 @@
+>   
+>   struct virgl_gpu_resource {
+>       struct virtio_gpu_simple_resource res;
+> +    uint32_t ref;
+> +    VirtIOGPU *g;
+> +
+> +#ifdef HAVE_VIRGL_RESOURCE_BLOB
+> +    /* only blob resource needs this region to be mapped as guest mmio */
+> +    MemoryRegion *region;
 
-Why not pass the memory region itself as the owner parameter of 
-memory_region_init_ram_ptr()?
+Why not just embed MemoryRegion into struct virgl_gpu_resource instead 
+of having a pointer?
+
+> +#endif
+>   };
+>   
+> +static void vres_get_ref(struct virgl_gpu_resource *vres)
+> +{
+> +    uint32_t ref;
+> +
+> +    ref = qatomic_fetch_inc(&vres->ref);
+> +    g_assert(ref < INT_MAX);
+> +}
+> +
+> +static void virgl_resource_destroy(struct virgl_gpu_resource *vres)
+> +{
+> +    struct virtio_gpu_simple_resource *res;
+> +    VirtIOGPU *g;
+> +
+> +    if (!vres) {
+> +        return;
+> +    }
+> +
+> +    g = vres->g;
+> +    res = &vres->res;
+> +    QTAILQ_REMOVE(&g->reslist, res, next);
+> +    virtio_gpu_cleanup_mapping(g, res);
+> +    g_free(vres);
+> +}
+> +
+> +static void virgl_resource_unref(struct virgl_gpu_resource *vres)
+> +{
+> +    struct virtio_gpu_simple_resource *res;
+> +
+> +    if (!vres) {
+> +        return;
+> +    }
+> +
+> +    res = &vres->res;
+> +    virgl_renderer_resource_detach_iov(res->resource_id, NULL, NULL);
+> +    virgl_renderer_resource_unref(res->resource_id);
+> +}
+> +
+> +static void vres_put_ref(struct virgl_gpu_resource *vres)
+> +{
+> +    g_assert(vres->ref > 0);
+> +
+> +    if (qatomic_fetch_dec(&vres->ref) == 1) {
+> +        virgl_resource_unref(vres);
+> +        virgl_resource_destroy(vres);
+> +    }
+> +}
+> +
+>   static struct virgl_gpu_resource *
+>   virgl_gpu_find_resource(VirtIOGPU *g, uint32_t resource_id)
+>   {
+> @@ -59,6 +114,8 @@ static void virgl_cmd_create_resource_2d(VirtIOGPU *g,
+>                                          c2d.width, c2d.height);
+>   
+>       vres = g_new0(struct virgl_gpu_resource, 1);
+> +    vres_get_ref(vres);
+> +    vres->g = g;
+>       vres->res.width = c2d.width;
+>       vres->res.height = c2d.height;
+>       vres->res.format = c2d.format;
+> @@ -91,6 +148,8 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
+>                                          c3d.width, c3d.height, c3d.depth);
+>   
+>       vres = g_new0(struct virgl_gpu_resource, 1);
+> +    vres_get_ref(vres);
+> +    vres->g = g;
+>       vres->res.width = c3d.width;
+>       vres->res.height = c3d.height;
+>       vres->res.format = c3d.format;
+> @@ -126,12 +185,21 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,
+>           return;
+>       }
+>   
+> -    virgl_renderer_resource_detach_iov(unref.resource_id, NULL, NULL);
+> -    virgl_renderer_resource_unref(unref.resource_id);
+> +#ifdef HAVE_VIRGL_RESOURCE_BLOB
+> +    if (vres->region) {
+> +        VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
+> +        MemoryRegion *mr = vres->region;
+> +
+> +        warn_report("%s: blob resource %d not unmapped",
+> +                    __func__, unref.resource_id);
+> +        vres->region = NULL;
+> +        memory_region_set_enabled(mr, false);
+> +        memory_region_del_subregion(&b->hostmem, mr);
+> +        object_unparent(OBJECT(mr));
+> +    }
+> +#endif /* HAVE_VIRGL_RESOURCE_BLOB */
+>   
+> -    QTAILQ_REMOVE(&g->reslist, &vres->res, next);
+> -    virtio_gpu_cleanup_mapping(g, &vres->res);
+> -    g_free(vres);
+> +    vres_put_ref(vres);
+
+What will happen if the guest consecutively requests 
+VIRTIO_GPU_CMD_RESOURCE_UNREF twice for a mapped resource?
 
