@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A0A81AD78
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:27:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0213281AD6A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:25:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG9fr-0002aR-P8; Wed, 20 Dec 2023 22:24:39 -0500
+	id 1rG9g6-0004w2-M8; Wed, 20 Dec 2023 22:24:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9fp-0002Le-CX
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:24:37 -0500
-Received: from mail-qv1-xf35.google.com ([2607:f8b0:4864:20::f35])
+ id 1rG9g3-0004bQ-2X
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:24:51 -0500
+Received: from mail-qv1-xf36.google.com ([2607:f8b0:4864:20::f36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9fn-00010k-MT
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:24:37 -0500
-Received: by mail-qv1-xf35.google.com with SMTP id
- 6a1803df08f44-67f147c04b7so1909856d6.2
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:24:35 -0800 (PST)
+ id 1rG9fr-000110-Sv
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:24:50 -0500
+Received: by mail-qv1-xf36.google.com with SMTP id
+ 6a1803df08f44-67f0cfd3650so1900496d6.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:24:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703129074; x=1703733874; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703129079; x=1703733879; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iAff7NfKLGsZIuLEI++nBQMcWTneKvjKIjS8kdqu5s0=;
- b=eXaAbXjU1rRjWFOPTFYOeAQiKWC2eVC94Trhbu00oRCYErtxvxMifuiJWA5SlQ0ON2
- Kr/rVMiJ6PTzsGnIAdnT/KiqCCyRXm4sPNqBVOjDPFY7H4G551vYhOkQDUE+n4l9B5wR
- yaxGZ9YKGPC2FPb3eQJHg30x2MCKcddjbRm0mK+YXhhR1qpAsvBBfB32FWn0rcojah7g
- wO6NgLHQKp+5qmZrdwt6IfobBQd9MG27PO6edbr3d2CMyUdZS2ggLpT5WcJBmX52meTb
- b7Zn2WY8Xrmte59DljxabD5v/1ZQnhdpQdunhmoV8IXO+rflHC8TWf41wdS6hetmHBa8
- ytcQ==
+ bh=UF6RByRWB5kknZ5Gye+CLok3Pr4ZHRs2xTICvgnggfc=;
+ b=bB13eB+qS3DtjIFItSsmsiPIdfm2IlIf4i1jIvNve9s4+h0uFu5r+K0bTA2WohMHqm
+ dgWrfeZlIdv0txFcQd+klk3aHTgHNxj6bnlTsnI+FNz5A5RK1Rqd9FGmCDvwpmNoS8LX
+ 2uiKB5mOdl92+s8XB5DucGQwRMxH96LBztjCUMEHh5sk88c7AN4Io9rxbhE7+5A/Imv7
+ 9BOynqvQuvP+F+t3SyHXT+EL3j6/MwUdAgdSszCBX5eN85PFEiHXWK/hFKTIt4VgdC48
+ Ac6Sd8P2SBN4tdG+J4NjJupJxIeSXjiuYVyHnSh3+IHCJKYmuXh10eKWIKilu1OtZedM
+ o/AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703129074; x=1703733874;
+ d=1e100.net; s=20230601; t=1703129079; x=1703733879;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iAff7NfKLGsZIuLEI++nBQMcWTneKvjKIjS8kdqu5s0=;
- b=j13Q9xJb2zNPTWfhvluTR2JFVeXUHGJ2xZdbhg7QznReOCQ0R6JNmF51jM7RiWg3OY
- 94vFYrYy5is93zx11bBb4gtOaFF0lNGJpd0Ie7RwUKwgFdH7hoEYIVILFI1S1rhOzvLO
- VZXBFypNXLIhSg6EFw0q4itsik2yzVvb3GlFYnobqNMsyGvJwQubVQHJaTJQb9UiyFPU
- Cd7Cmbk7J3eV1VpB2JdHJZzCIVWDfwDUq+sLait2fIfKDYlUOav4Vwl19Ah5ebrAgAB2
- eL2cmlvjFpxlG2ypIt2KeY389BrST97MTmt3hHzYQX6SN0KrmAoVvmLzajud2o84X46u
- 2yOA==
-X-Gm-Message-State: AOJu0Yx9AukVwJ5UP/Dw9CEnFeXa+WmpabZZ3s+ZOT+KEhHqFg5lazJ2
- EdY7V82t2MjgzjEAZU6NZB5mGz9vkbVKlLWIrPKqUtQJ
-X-Google-Smtp-Source: AGHT+IGJfdLQi/JlcR0yUq2wvZMxkAzUCadmxTljvMPOS4rLLRfqZnP/1T/Hdkl4uprKM01+ZpXghA==
-X-Received: by 2002:a05:6214:20ad:b0:67f:808f:d30e with SMTP id
- 13-20020a05621420ad00b0067f808fd30emr805328qvd.32.1703129074735; 
- Wed, 20 Dec 2023 19:24:34 -0800 (PST)
+ bh=UF6RByRWB5kknZ5Gye+CLok3Pr4ZHRs2xTICvgnggfc=;
+ b=BHiBREzF1Ut9BV4mJCjyAkT9YW9qhxWMj5/T/+SyP4nOSbdZMFFIkPn8W9KpZo1qTR
+ HITXMV0CxbRSLLTvBFFtEBESbeljMCBqY4ZN0QUg126DoAKLhPh1kZeue/+NPoGon7rT
+ ZhaUXbf4uz6l/K7z1nA/TYiL9ysNhKJZfLodKV2rqMuETRdJvi7oQ4knpzNa1DWjw0Nc
+ rScuKCMKiaKfzaVoY9Vp2oGI5ciGKD+Mxx+j/OZVyRG6oBqvtQQRRf3Y4YTjxKcUTxph
+ db7LreL+ssxG46TveyDbTUmWgZ18wMBzIB32kksnX5Otf0cJjicL6E6+22eNbHjtAWbj
+ Vu3w==
+X-Gm-Message-State: AOJu0YxgiCK/D3s6s4GrezoBJXmRvjMWzb/dN3GJWmd4vThJGRnJbFQS
+ C5kTHELtPiJHsPrwJN5kB8DHUI6p8SLPlwF16xJap7VX
+X-Google-Smtp-Source: AGHT+IGHQY7ZsTPSM03qJMs6gceCrF/opN8ZJFf9d1Ub+tUxlBJ+bmi7ZH5VVH3zz2Xcc79YaP1b5w==
+X-Received: by 2002:a05:6214:2603:b0:67f:6a10:aa1a with SMTP id
+ gu3-20020a056214260300b0067f6a10aa1amr3577581qvb.86.1703129079020; 
+ Wed, 20 Dec 2023 19:24:39 -0800 (PST)
 Received: from stoup.. ([172.58.139.164]) by smtp.gmail.com with ESMTPSA id
- l16-20020ad44d10000000b0067f7b6318b9sm347257qvl.10.2023.12.20.19.24.31
+ l16-20020ad44d10000000b0067f7b6318b9sm347257qvl.10.2023.12.20.19.24.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Dec 2023 19:24:34 -0800 (PST)
+ Wed, 20 Dec 2023 19:24:38 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>
-Subject: [PATCH v2 66/71] migration: Constify VMState
-Date: Thu, 21 Dec 2023 14:16:47 +1100
-Message-Id: <20231221031652.119827-67-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 67/71] system: Constify VMState
+Date: Thu, 21 Dec 2023 14:16:48 +1100
+Message-Id: <20231221031652.119827-68-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231221031652.119827-1-richard.henderson@linaro.org>
 References: <20231221031652.119827-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f35;
- envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,72 +90,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- migration/global_state.c |  2 +-
- migration/savevm.c       | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ system/cpu-timers.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/migration/global_state.c b/migration/global_state.c
-index 4e2a9d8ec0..8ee15dbb06 100644
---- a/migration/global_state.c
-+++ b/migration/global_state.c
-@@ -131,7 +131,7 @@ static const VMStateDescription vmstate_globalstate = {
-     .post_load = global_state_post_load,
-     .pre_save = global_state_pre_save,
-     .needed = global_state_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(size, GlobalState),
-         VMSTATE_BUFFER(runstate, GlobalState),
-         VMSTATE_END_OF_LIST()
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 39148636cc..3d0f459389 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -438,7 +438,7 @@ static const VMStateDescription vmstate_target_page_bits = {
+diff --git a/system/cpu-timers.c b/system/cpu-timers.c
+index 7452d97b67..bdf3a41dcb 100644
+--- a/system/cpu-timers.c
++++ b/system/cpu-timers.c
+@@ -165,7 +165,7 @@ static const VMStateDescription icount_vmstate_warp_timer = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = vmstate_target_page_bits_needed,
+     .needed = warp_timer_state_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(target_page_bits, SaveState),
+         VMSTATE_INT64(vm_clock_warp_start, TimersState),
+         VMSTATE_TIMER_PTR(icount_warp_timer, TimersState),
          VMSTATE_END_OF_LIST()
-     }
-@@ -454,7 +454,7 @@ static const VMStateDescription vmstate_capabilites = {
+@@ -177,7 +177,7 @@ static const VMStateDescription icount_vmstate_adjust_timers = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = vmstate_capabilites_needed,
+     .needed = adjust_timers_state_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_V(caps_count, SaveState, 1),
-         VMSTATE_VARRAY_UINT32_ALLOC(capabilities, SaveState, caps_count, 1,
-                                     vmstate_info_capability,
-@@ -499,7 +499,7 @@ static const VMStateDescription vmstate_uuid = {
-     .minimum_version_id = 1,
-     .needed = vmstate_uuid_needed,
-     .post_load = vmstate_uuid_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8_ARRAY_V(uuid.data, SaveState, sizeof(QemuUUID), 1),
+         VMSTATE_TIMER_PTR(icount_rt_timer, TimersState),
+         VMSTATE_TIMER_PTR(icount_vm_timer, TimersState),
          VMSTATE_END_OF_LIST()
-     }
-@@ -512,12 +512,12 @@ static const VMStateDescription vmstate_configuration = {
-     .post_load = configuration_post_load,
-     .pre_save = configuration_pre_save,
-     .post_save = configuration_post_save,
+@@ -189,7 +189,7 @@ static const VMStateDescription icount_vmstate_shift = {
+     .version_id = 2,
+     .minimum_version_id = 2,
+     .needed = icount_shift_state_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(len, SaveState),
-         VMSTATE_VBUFFER_ALLOC_UINT32(name, SaveState, 0, NULL, len),
+         VMSTATE_INT16(icount_time_shift, TimersState),
+         VMSTATE_INT64(last_delta, TimersState),
+         VMSTATE_END_OF_LIST()
+@@ -204,12 +204,12 @@ static const VMStateDescription icount_vmstate_timers = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = icount_state_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT64(qemu_icount_bias, TimersState),
+         VMSTATE_INT64(qemu_icount, TimersState),
          VMSTATE_END_OF_LIST()
      },
--    .subsections = (const VMStateDescription *[]) {
+-    .subsections = (const VMStateDescription * []) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_target_page_bits,
-         &vmstate_capabilites,
-         &vmstate_uuid,
+         &icount_vmstate_warp_timer,
+         &icount_vmstate_adjust_timers,
+         &icount_vmstate_shift,
+@@ -221,13 +221,13 @@ static const VMStateDescription vmstate_timers = {
+     .name = "timer",
+     .version_id = 2,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT64(cpu_ticks_offset, TimersState),
+         VMSTATE_UNUSED(8),
+         VMSTATE_INT64_V(cpu_clock_offset, TimersState, 2),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription * []) {
++    .subsections = (const VMStateDescription * const []) {
+         &icount_vmstate_timers,
+         NULL
+     }
 -- 
 2.34.1
 
