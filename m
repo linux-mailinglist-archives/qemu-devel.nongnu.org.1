@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559CB81AD4D
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:24:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA5A81AD6F
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:25:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG9ag-0004lD-Kf; Wed, 20 Dec 2023 22:19:18 -0500
+	id 1rG9ai-0004z5-Gp; Wed, 20 Dec 2023 22:19:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9ac-0004bc-3Y
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:19:14 -0500
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
+ id 1rG9af-0004lB-SG
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:19:18 -0500
+Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9aZ-00044E-T3
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:19:13 -0500
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-78106c385a1so20254485a.0
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:19:11 -0800 (PST)
+ id 1rG9ad-00044q-N6
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:19:17 -0500
+Received: by mail-qk1-x733.google.com with SMTP id
+ af79cd13be357-77faf967e65so16861485a.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:19:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703128751; x=1703733551; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703128754; x=1703733554; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TwTu2uwZKwQsQgRXhNqghxLsmgTtqvnKVK7hajFstQ8=;
- b=DmGtFkiM/PO43XMiRyCKd6SF2kULlpAo8zvqIMLvFm+GvRUGNRtBiYML8tlbB5PkRj
- /t4qCpKaUgjbTFWHKTl2hEE/g39DgI3vRsl+ltc4PXxL8MRoNlIYRp2PhylaMQDHyA6S
- 77l6kOXdHcbhlB+KMXPUEm/b9Lh1lZ61bRQt45vYyGmVu/ZCzCKwNn0jkja/I3yRIAoC
- CHTJkyfkKqM5yqentbn+1SKWQavezn6wbbMv9g+BAjWR+BbW2ag4T2Dwzqgd3mn7aWBQ
- JXDe+pNXclWGM549frK9Pm6yIzjWshShzxG3ahsaXPuV3DNvHxnTEyqm/mqn7QbbyerY
- m82Q==
+ :reply-to; bh=fZ8h1c3gtJ/W/0w62JFRmJxc3CQvuvRWvCdaYK3fLog=;
+ b=W8KdoBdh33HH70UbhvU71qxbpff0xhHUWgg2bRT1yTkQkOeUv9rpobh0GsLW9tKlIN
+ 2W6bUgzblvtMZO+MZOOaA5LbJmJeXqQW/EYNC4WOq+8SC9y1OoOxchwdFd8ms3sDpBjV
+ 7t4dWzxhY3tLquqNGQg94HX7Kx4lzM0l1FuW1uIhpkvEu+IVR3BlMlkjRX1XKM4jmjZO
+ vpEbOQbuYRkQEbEIy5dsGzanxbLh1ZV10I+NYZfkgyNWbI+CtXI1h9QixhfIXYL1SHBS
+ BfdvQWY5rcWnAHtDZpGxnJTCY6bNJSpCHTy0xT2dzZb9nDCfGfjpRxhbiHhIXW3LRFKq
+ Z12g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703128751; x=1703733551;
+ d=1e100.net; s=20230601; t=1703128754; x=1703733554;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TwTu2uwZKwQsQgRXhNqghxLsmgTtqvnKVK7hajFstQ8=;
- b=Vhly/rzVMMhyRTYKt1dOvjF5f1Wo0iKMZy8gyVVLZztQQ8BhvrfjNhsJEauryqZJFn
- tRS1diD1U6t+CvD5AHiDuFTz7SPLk8NCuffb9uev6jvWq5D9PcPlESBbM5VrGH2bT7f+
- OE7ZXOrqG2avkewGreqBTSMoq2HHffmISMF5pwPYNoiXRResSVMcXqC3W2fejw+mSc2q
- 2q6oO/mpr179wk/uW+2kyhizP3eAuj52w87vgo+EHHDOnR+yzbp80BAJ3Unh3HZbMxgF
- qvvZdf7GL/wC7x4UpD1mkkj0ZrzWFWRwb035IlDtPa2xSZiPRVlC+ba3QERCEZSi1Bnm
- ffmA==
-X-Gm-Message-State: AOJu0Yz2IEMDdb9lZwfeqj63XUolluVUSvtox8PfzGaVSCqB8cuFJS9u
- qST4SfzJuhounJPbUjEl+aCfn97Yh9950EmFfnmkvAdZ
-X-Google-Smtp-Source: AGHT+IFqKLzqaj1Ytx9vwFdyedo9PUGC4jhX2lTXrOXttjq3+pdt2vPPG2ST6LcGNF50azUsOYtOqg==
-X-Received: by 2002:a37:ad03:0:b0:77f:64b:4b1d with SMTP id
- f3-20020a37ad03000000b0077f064b4b1dmr23307442qkm.115.1703128750974; 
- Wed, 20 Dec 2023 19:19:10 -0800 (PST)
+ bh=fZ8h1c3gtJ/W/0w62JFRmJxc3CQvuvRWvCdaYK3fLog=;
+ b=mwSSXncXiPvuxvyJA574ilnyefbKs0j7OLsrNRnwcS2caZZM2UFOLeKX1o/CP8yLzz
+ HympXC+6wVPN7KjiI9CBcTHMDde0MRs8RNZNMNfaekdNOUC2u4GYAOReBBIJXUwomPD0
+ telZ+haCLOxdtt1NZCc6KUc5W0VcPLiDwA6BY9yIKJq15p1DgbupUWDfl/zkivvIpCqM
+ rls8MhpoQ/OOnpUXILk35iGpoX9usfdL0yd8HrzAQ7HBG6N8nyl7cxqwyYJPaOIgKay/
+ 8WHSoIu81/Uw0sX7SenH/2SW7KOOzbyhSuNcGcsQKT3iGal+q2Jp5HIfzd7K4UOKq8HX
+ O0kA==
+X-Gm-Message-State: AOJu0Yxlat2il4BBXiPEUNwD0hZgVY2mvihpkeISSx5dgitsEcy3Btjj
+ D9k2zVEqXF8r+wTFkQX3fHXQ8oppTWK2GOvfGKhb5tJR
+X-Google-Smtp-Source: AGHT+IGsvKPJ5d2f8AXylsGqFGB1BVkSdtloUtain7DpHRvxFPJrm3Q50egS7oRSVqUCViIGuZibsA==
+X-Received: by 2002:a05:620a:15ab:b0:781:15ef:69d2 with SMTP id
+ f11-20020a05620a15ab00b0078115ef69d2mr1729693qkk.132.1703128754441; 
+ Wed, 20 Dec 2023 19:19:14 -0800 (PST)
 Received: from stoup.. ([172.58.139.164]) by smtp.gmail.com with ESMTPSA id
- n8-20020a05620a294800b0078116d55191sm360808qkp.130.2023.12.20.19.19.08
+ n8-20020a05620a294800b0078116d55191sm360808qkp.130.2023.12.20.19.19.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Dec 2023 19:19:10 -0800 (PST)
+ Wed, 20 Dec 2023 19:19:14 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 32/71] hw/ide: Constify VMState
-Date: Thu, 21 Dec 2023 14:16:13 +1100
-Message-Id: <20231221031652.119827-33-richard.henderson@linaro.org>
+Subject: [PATCH v2 33/71] hw/input: Constify VMState
+Date: Thu, 21 Dec 2023 14:16:14 +1100
+Message-Id: <20231221031652.119827-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231221031652.119827-1-richard.henderson@linaro.org>
 References: <20231221031652.119827-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x731.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x733.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,257 +91,352 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/ide/ahci-allwinner.c |  2 +-
- hw/ide/ahci.c           |  8 ++++----
- hw/ide/core.c           | 16 ++++++++--------
- hw/ide/ich.c            |  2 +-
- hw/ide/isa.c            |  2 +-
- hw/ide/macio.c          |  2 +-
- hw/ide/microdrive.c     |  2 +-
- hw/ide/mmio.c           |  2 +-
- hw/ide/pci.c            | 10 +++++-----
- 9 files changed, 23 insertions(+), 23 deletions(-)
+ hw/input/adb-kbd.c           |  2 +-
+ hw/input/adb-mouse.c         |  2 +-
+ hw/input/adb.c               |  4 ++--
+ hw/input/ads7846.c           |  2 +-
+ hw/input/hid.c               |  6 +++---
+ hw/input/lasips2.c           |  4 ++--
+ hw/input/lm832x.c            |  2 +-
+ hw/input/pckbd.c             | 12 ++++++------
+ hw/input/pl050.c             |  2 +-
+ hw/input/ps2.c               | 14 +++++++-------
+ hw/input/pxa2xx_keypad.c     |  2 +-
+ hw/input/stellaris_gamepad.c |  2 +-
+ hw/input/tsc2005.c           |  2 +-
+ hw/input/tsc210x.c           |  2 +-
+ hw/input/virtio-input.c      |  2 +-
+ 15 files changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/hw/ide/ahci-allwinner.c b/hw/ide/ahci-allwinner.c
-index 227e747ba7..b173121006 100644
---- a/hw/ide/ahci-allwinner.c
-+++ b/hw/ide/ahci-allwinner.c
-@@ -97,7 +97,7 @@ static const VMStateDescription vmstate_allwinner_ahci = {
-     .name = "allwinner-ahci",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, AllwinnerAHCIState,
-                              ALLWINNER_AHCI_MMIO_SIZE / 4),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index afdc44b8e0..0eb83a6d46 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -1685,7 +1685,7 @@ void ahci_reset(AHCIState *s)
- static const VMStateDescription vmstate_ncq_tfs = {
-     .name = "ncq state",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(sector_count, NCQTransferState),
-         VMSTATE_UINT64(lba, NCQTransferState),
-         VMSTATE_UINT8(tag, NCQTransferState),
-@@ -1700,7 +1700,7 @@ static const VMStateDescription vmstate_ncq_tfs = {
- static const VMStateDescription vmstate_ahci_device = {
-     .name = "ahci port",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_IDE_BUS(port, AHCIDevice),
-         VMSTATE_IDE_DRIVE(port.ifs[0], AHCIDevice),
-         VMSTATE_UINT32(port_state, AHCIDevice),
-@@ -1817,7 +1817,7 @@ const VMStateDescription vmstate_ahci = {
-     .name = "ahci",
-     .version_id = 1,
-     .post_load = ahci_state_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_VARRAY_POINTER_INT32(dev, AHCIState, ports,
-                                      vmstate_ahci_device, AHCIDevice),
-         VMSTATE_UINT32(control_regs.cap, AHCIState),
-@@ -1833,7 +1833,7 @@ const VMStateDescription vmstate_ahci = {
- 
- static const VMStateDescription vmstate_sysbus_ahci = {
-     .name = "sysbus-ahci",
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_AHCI(ahci, SysbusAHCIState),
-         VMSTATE_END_OF_LIST()
-     },
-diff --git a/hw/ide/core.c b/hw/ide/core.c
-index 8a0579bff4..9c4a812902 100644
---- a/hw/ide/core.c
-+++ b/hw/ide/core.c
-@@ -2918,7 +2918,7 @@ static const VMStateDescription vmstate_ide_atapi_gesn_state = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = ide_atapi_gesn_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(events.new_media, IDEState),
-         VMSTATE_BOOL(events.eject_request, IDEState),
-         VMSTATE_END_OF_LIST()
-@@ -2930,7 +2930,7 @@ static const VMStateDescription vmstate_ide_tray_state = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = ide_tray_state_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(tray_open, IDEState),
-         VMSTATE_BOOL(tray_locked, IDEState),
-         VMSTATE_END_OF_LIST()
-@@ -2944,7 +2944,7 @@ static const VMStateDescription vmstate_ide_drive_pio_state = {
-     .pre_save = ide_drive_pio_pre_save,
-     .post_load = ide_drive_pio_post_load,
-     .needed = ide_drive_pio_state_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(req_nb_sectors, IDEState),
-         VMSTATE_VARRAY_INT32(io_buffer, IDEState, io_buffer_total_len, 1,
-                              vmstate_info_uint8, uint8_t),
-@@ -2962,7 +2962,7 @@ const VMStateDescription vmstate_ide_drive = {
-     .version_id = 3,
-     .minimum_version_id = 0,
-     .post_load = ide_drive_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(mult_sectors, IDEState),
-         VMSTATE_INT32(identify_set, IDEState),
-         VMSTATE_BUFFER_TEST(identify_data, IDEState, is_identify_set),
-@@ -2985,7 +2985,7 @@ const VMStateDescription vmstate_ide_drive = {
-         VMSTATE_UINT8_V(cdrom_changed, IDEState, 3),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_ide_drive_pio_state,
-         &vmstate_ide_tray_state,
-         &vmstate_ide_atapi_gesn_state,
-@@ -2998,7 +2998,7 @@ static const VMStateDescription vmstate_ide_error_status = {
+diff --git a/hw/input/adb-kbd.c b/hw/input/adb-kbd.c
+index e21edf9acd..758fa6d267 100644
+--- a/hw/input/adb-kbd.c
++++ b/hw/input/adb-kbd.c
+@@ -332,7 +332,7 @@ static const VMStateDescription vmstate_adb_kbd = {
+     .name = "adb_kbd",
      .version_id = 2,
-     .minimum_version_id = 1,
-     .needed = ide_error_needed,
+     .minimum_version_id = 2,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32(error_status, IDEBus),
-         VMSTATE_INT64_V(retry_sector_num, IDEBus, 2),
-         VMSTATE_UINT32_V(retry_nsector, IDEBus, 2),
-@@ -3011,12 +3011,12 @@ const VMStateDescription vmstate_ide_bus = {
-     .name = "ide_bus",
+         VMSTATE_STRUCT(parent_obj, KBDState, 0, vmstate_adb_device, ADBDevice),
+         VMSTATE_BUFFER(data, KBDState),
+         VMSTATE_INT32(rptr, KBDState),
+diff --git a/hw/input/adb-mouse.c b/hw/input/adb-mouse.c
+index e6b341f028..144a0ccce7 100644
+--- a/hw/input/adb-mouse.c
++++ b/hw/input/adb-mouse.c
+@@ -217,7 +217,7 @@ static const VMStateDescription vmstate_adb_mouse = {
+     .name = "adb_mouse",
+     .version_id = 2,
+     .minimum_version_id = 2,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_STRUCT(parent_obj, MouseState, 0, vmstate_adb_device,
+                        ADBDevice),
+         VMSTATE_INT32(buttons_state, MouseState),
+diff --git a/hw/input/adb.c b/hw/input/adb.c
+index 8aed0da2cd..0f3c73d6d0 100644
+--- a/hw/input/adb.c
++++ b/hw/input/adb.c
+@@ -221,7 +221,7 @@ static const VMStateDescription vmstate_adb_bus = {
+     .name = "adb_bus",
+     .version_id = 0,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_TIMER_PTR(autopoll_timer, ADBBusState),
+         VMSTATE_BOOL(autopoll_enabled, ADBBusState),
+         VMSTATE_UINT8(autopoll_rate_ms, ADBBusState),
+@@ -279,7 +279,7 @@ const VMStateDescription vmstate_adb_device = {
+     .name = "adb_device",
+     .version_id = 0,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT32(devaddr, ADBDevice),
+         VMSTATE_INT32(handler, ADBDevice),
+         VMSTATE_END_OF_LIST()
+diff --git a/hw/input/ads7846.c b/hw/input/ads7846.c
+index 91116c6bdb..cde3892216 100644
+--- a/hw/input/ads7846.c
++++ b/hw/input/ads7846.c
+@@ -130,7 +130,7 @@ static const VMStateDescription vmstate_ads7846 = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .post_load = ads7856_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_SSI_PERIPHERAL(ssidev, ADS7846State),
+         VMSTATE_INT32_ARRAY(input, ADS7846State, 8),
+         VMSTATE_INT32(noise, ADS7846State),
+diff --git a/hw/input/hid.c b/hw/input/hid.c
+index b8e85374ca..76bedc1844 100644
+--- a/hw/input/hid.c
++++ b/hw/input/hid.c
+@@ -581,7 +581,7 @@ static const VMStateDescription vmstate_hid_ptr_queue = {
+     .name = "HIDPointerEventQueue",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(cmd, IDEBus),
-         VMSTATE_UINT8(unit, IDEBus),
+         VMSTATE_INT32(xdx, HIDPointerEvent),
+         VMSTATE_INT32(ydy, HIDPointerEvent),
+         VMSTATE_INT32(dz, HIDPointerEvent),
+@@ -595,7 +595,7 @@ const VMStateDescription vmstate_hid_ptr_device = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .post_load = hid_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_STRUCT_ARRAY(ptr.queue, HIDState, QUEUE_LENGTH, 0,
+                              vmstate_hid_ptr_queue, HIDPointerEvent),
+         VMSTATE_UINT32(head, HIDState),
+@@ -611,7 +611,7 @@ const VMStateDescription vmstate_hid_keyboard_device = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .post_load = hid_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(kbd.keycodes, HIDState, QUEUE_LENGTH),
+         VMSTATE_UINT32(head, HIDState),
+         VMSTATE_UINT32(n, HIDState),
+diff --git a/hw/input/lasips2.c b/hw/input/lasips2.c
+index 6075121b72..d9f8c36778 100644
+--- a/hw/input/lasips2.c
++++ b/hw/input/lasips2.c
+@@ -39,7 +39,7 @@ static const VMStateDescription vmstate_lasips2_port = {
+     .name = "lasips2-port",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(control, LASIPS2Port),
+         VMSTATE_UINT8(buf, LASIPS2Port),
+         VMSTATE_BOOL(loopback_rbne, LASIPS2Port),
+@@ -51,7 +51,7 @@ static const VMStateDescription vmstate_lasips2 = {
+     .name = "lasips2",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(int_status, LASIPS2State),
+         VMSTATE_STRUCT(kbd_port.parent_obj, LASIPS2State, 1,
+                        vmstate_lasips2_port, LASIPS2Port),
+diff --git a/hw/input/lm832x.c b/hw/input/lm832x.c
+index 19a646d9bb..59e5567afd 100644
+--- a/hw/input/lm832x.c
++++ b/hw/input/lm832x.c
+@@ -441,7 +441,7 @@ static const VMStateDescription vmstate_lm_kbd = {
+     .version_id = 0,
+     .minimum_version_id = 0,
+     .post_load = lm_kbd_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_I2C_SLAVE(parent_obj, LM823KbdState),
+         VMSTATE_UINT8(i2c_dir, LM823KbdState),
+         VMSTATE_UINT8(i2c_cycle, LM823KbdState),
+diff --git a/hw/input/pckbd.c b/hw/input/pckbd.c
+index b92b63bedc..90a4d9eb40 100644
+--- a/hw/input/pckbd.c
++++ b/hw/input/pckbd.c
+@@ -510,7 +510,7 @@ static const VMStateDescription vmstate_kbd_outport = {
+     .minimum_version_id = 1,
+     .post_load = kbd_outport_post_load,
+     .needed = kbd_outport_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(outport, KBDState),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -552,7 +552,7 @@ static const VMStateDescription vmstate_kbd_extended_state = {
+     .post_load = kbd_extended_state_post_load,
+     .pre_save = kbd_extended_state_pre_save,
+     .needed = kbd_extended_state_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(migration_flags, KBDState),
+         VMSTATE_UINT32(obsrc, KBDState),
+         VMSTATE_UINT8(obdata, KBDState),
+@@ -619,14 +619,14 @@ static const VMStateDescription vmstate_kbd = {
+     .pre_load = kbd_pre_load,
+     .post_load = kbd_post_load,
+     .pre_save = kbd_pre_save,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT8(write_cmd, KBDState),
+         VMSTATE_UINT8(status, KBDState),
+         VMSTATE_UINT8(mode, KBDState),
+         VMSTATE_UINT8(pending_tmp, KBDState),
          VMSTATE_END_OF_LIST()
      },
--    .subsections = (const VMStateDescription*[]) {
+-    .subsections = (const VMStateDescription * []) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_ide_error_status,
+         &vmstate_kbd_outport,
+         &vmstate_kbd_extended_state,
          NULL
-     }
-diff --git a/hw/ide/ich.c b/hw/ide/ich.c
-index d61faab532..49f8eb8a7d 100644
---- a/hw/ide/ich.c
-+++ b/hw/ide/ich.c
-@@ -83,7 +83,7 @@
- static const VMStateDescription vmstate_ich9_ahci = {
-     .name = "ich9_ahci",
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, AHCIPCIState),
-         VMSTATE_AHCI(ahci, AHCIPCIState),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/ide/isa.c b/hw/ide/isa.c
-index ea60c08116..cc865c83dc 100644
---- a/hw/ide/isa.c
-+++ b/hw/ide/isa.c
-@@ -58,7 +58,7 @@ static const VMStateDescription vmstate_ide_isa = {
-     .name = "isa-ide",
-     .version_id = 3,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_IDE_BUS(bus, ISAIDEState),
-         VMSTATE_IDE_DRIVES(bus.ifs, ISAIDEState),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/ide/macio.c b/hw/ide/macio.c
-index dca1cc9efc..0d2c6ba910 100644
---- a/hw/ide/macio.c
-+++ b/hw/ide/macio.c
-@@ -361,7 +361,7 @@ static const VMStateDescription vmstate_pmac = {
-     .name = "ide",
-     .version_id = 5,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_IDE_BUS(bus, MACIOIDEState),
-         VMSTATE_IDE_DRIVES(bus.ifs, MACIOIDEState),
-         VMSTATE_BOOL(dma_active, MACIOIDEState),
-diff --git a/hw/ide/microdrive.c b/hw/ide/microdrive.c
-index 981cfbd97f..a7f415f0fc 100644
---- a/hw/ide/microdrive.c
-+++ b/hw/ide/microdrive.c
-@@ -336,7 +336,7 @@ static const VMStateDescription vmstate_microdrive = {
-     .name = "microdrive",
-     .version_id = 3,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(opt, MicroDriveState),
-         VMSTATE_UINT8(stat, MicroDriveState),
-         VMSTATE_UINT8(pins, MicroDriveState),
-diff --git a/hw/ide/mmio.c b/hw/ide/mmio.c
-index 3aeacab3bb..e8f41c0610 100644
---- a/hw/ide/mmio.c
-+++ b/hw/ide/mmio.c
-@@ -110,7 +110,7 @@ static const VMStateDescription vmstate_ide_mmio = {
-     .name = "mmio-ide",
-     .version_id = 3,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_IDE_BUS(bus, MMIOIDEState),
-         VMSTATE_IDE_DRIVES(bus.ifs, MMIOIDEState),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-index 810c6b6d98..ca85d8474c 100644
---- a/hw/ide/pci.c
-+++ b/hw/ide/pci.c
-@@ -501,7 +501,7 @@ static const VMStateDescription vmstate_bmdma_current = {
+@@ -745,7 +745,7 @@ static const VMStateDescription vmstate_kbd_mmio = {
+     .name = "pckbd-mmio",
      .version_id = 1,
      .minimum_version_id = 1,
-     .needed = ide_bmdma_current_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(cur_addr, BMDMAState),
-         VMSTATE_UINT32(cur_prd_last, BMDMAState),
-         VMSTATE_UINT32(cur_prd_addr, BMDMAState),
-@@ -515,7 +515,7 @@ static const VMStateDescription vmstate_bmdma_status = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = ide_bmdma_status_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(status, BMDMAState),
+         VMSTATE_STRUCT(kbd, MMIOKBDState, 0, vmstate_kbd, KBDState),
          VMSTATE_END_OF_LIST()
      }
-@@ -526,7 +526,7 @@ static const VMStateDescription vmstate_bmdma = {
+@@ -786,7 +786,7 @@ static const VMStateDescription vmstate_kbd_isa = {
+     .name = "pckbd",
      .version_id = 3,
-     .minimum_version_id = 0,
-     .pre_save  = ide_bmdma_pre_save,
+     .minimum_version_id = 3,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(cmd, BMDMAState),
-         VMSTATE_UINT8(migration_compat_status, BMDMAState),
-         VMSTATE_UINT32(addr, BMDMAState),
-@@ -535,7 +535,7 @@ static const VMStateDescription vmstate_bmdma = {
-         VMSTATE_UINT8(migration_retry_unit, BMDMAState),
+         VMSTATE_STRUCT(kbd, ISAKBDState, 0, vmstate_kbd, KBDState),
+         VMSTATE_END_OF_LIST()
+     }
+diff --git a/hw/input/pl050.c b/hw/input/pl050.c
+index ec5e19285e..6519e260ed 100644
+--- a/hw/input/pl050.c
++++ b/hw/input/pl050.c
+@@ -30,7 +30,7 @@ static const VMStateDescription vmstate_pl050 = {
+     .name = "pl050",
+     .version_id = 2,
+     .minimum_version_id = 2,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(cr, PL050State),
+         VMSTATE_UINT32(clk, PL050State),
+         VMSTATE_UINT32(last, PL050State),
+diff --git a/hw/input/ps2.c b/hw/input/ps2.c
+index c8fd23cf36..00b695a0b9 100644
+--- a/hw/input/ps2.c
++++ b/hw/input/ps2.c
+@@ -1093,7 +1093,7 @@ static const VMStateDescription vmstate_ps2_common = {
+     .name = "PS2 Common State",
+     .version_id = 3,
+     .minimum_version_id = 2,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT32(write_cmd, PS2State),
+         VMSTATE_INT32(queue.rptr, PS2State),
+         VMSTATE_INT32(queue.wptr, PS2State),
+@@ -1124,7 +1124,7 @@ static const VMStateDescription vmstate_ps2_keyboard_ledstate = {
+     .minimum_version_id = 2,
+     .post_load = ps2_kbd_ledstate_post_load,
+     .needed = ps2_keyboard_ledstate_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT32(ledstate, PS2KbdState),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -1141,7 +1141,7 @@ static const VMStateDescription vmstate_ps2_keyboard_need_high_bit = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = ps2_keyboard_need_high_bit_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_BOOL(need_high_bit, PS2KbdState),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -1158,7 +1158,7 @@ static bool ps2_keyboard_cqueue_needed(void *opaque)
+ static const VMStateDescription vmstate_ps2_keyboard_cqueue = {
+     .name = "ps2kbd/command_reply_queue",
+     .needed = ps2_keyboard_cqueue_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT32(parent_obj.queue.cwptr, PS2KbdState),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -1183,7 +1183,7 @@ static const VMStateDescription vmstate_ps2_keyboard = {
+     .version_id = 3,
+     .minimum_version_id = 2,
+     .post_load = ps2_kbd_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_STRUCT(parent_obj, PS2KbdState, 0, vmstate_ps2_common,
+                        PS2State),
+         VMSTATE_INT32(scan_enabled, PS2KbdState),
+@@ -1191,7 +1191,7 @@ static const VMStateDescription vmstate_ps2_keyboard = {
+         VMSTATE_INT32_V(scancode_set, PS2KbdState, 3),
          VMSTATE_END_OF_LIST()
      },
--    .subsections = (const VMStateDescription*[]) {
+-    .subsections = (const VMStateDescription * []) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_bmdma_current,
-         &vmstate_bmdma_status,
-         NULL
-@@ -562,7 +562,7 @@ const VMStateDescription vmstate_ide_pci = {
-     .version_id = 3,
-     .minimum_version_id = 0,
-     .post_load = ide_pci_post_load,
+         &vmstate_ps2_keyboard_ledstate,
+         &vmstate_ps2_keyboard_need_high_bit,
+         &vmstate_ps2_keyboard_cqueue,
+@@ -1214,7 +1214,7 @@ static const VMStateDescription vmstate_ps2_mouse = {
+     .version_id = 2,
+     .minimum_version_id = 2,
+     .post_load = ps2_mouse_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, PCIIDEState),
-         VMSTATE_STRUCT_ARRAY(bmdma, PCIIDEState, 2, 0,
-                              vmstate_bmdma, BMDMAState),
+         VMSTATE_STRUCT(parent_obj, PS2MouseState, 0, vmstate_ps2_common,
+                        PS2State),
+         VMSTATE_UINT8(mouse_status, PS2MouseState),
+diff --git a/hw/input/pxa2xx_keypad.c b/hw/input/pxa2xx_keypad.c
+index 3dd03e8c9f..3858648d9f 100644
+--- a/hw/input/pxa2xx_keypad.c
++++ b/hw/input/pxa2xx_keypad.c
+@@ -288,7 +288,7 @@ static const VMStateDescription vmstate_pxa2xx_keypad = {
+     .name = "pxa2xx_keypad",
+     .version_id = 0,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(kpc, PXA2xxKeyPadState),
+         VMSTATE_UINT32(kpdk, PXA2xxKeyPadState),
+         VMSTATE_UINT32(kprec, PXA2xxKeyPadState),
+diff --git a/hw/input/stellaris_gamepad.c b/hw/input/stellaris_gamepad.c
+index 9dfa620e29..17ee42b9fc 100644
+--- a/hw/input/stellaris_gamepad.c
++++ b/hw/input/stellaris_gamepad.c
+@@ -35,7 +35,7 @@ static const VMStateDescription vmstate_stellaris_gamepad = {
+     .name = "stellaris_gamepad",
+     .version_id = 4,
+     .minimum_version_id = 4,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_VARRAY_UINT32(pressed, StellarisGamepad, num_buttons,
+                               0, vmstate_info_uint8, uint8_t),
+         VMSTATE_END_OF_LIST()
+diff --git a/hw/input/tsc2005.c b/hw/input/tsc2005.c
+index db2b80e35f..941f163d36 100644
+--- a/hw/input/tsc2005.c
++++ b/hw/input/tsc2005.c
+@@ -454,7 +454,7 @@ static const VMStateDescription vmstate_tsc2005 = {
+     .version_id = 2,
+     .minimum_version_id = 2,
+     .post_load = tsc2005_post_load,
+-    .fields      = (VMStateField []) {
++    .fields = (const VMStateField []) {
+         VMSTATE_BOOL(pressure, TSC2005State),
+         VMSTATE_BOOL(irq, TSC2005State),
+         VMSTATE_BOOL(command, TSC2005State),
+diff --git a/hw/input/tsc210x.c b/hw/input/tsc210x.c
+index 950506fb38..c4e32c7a42 100644
+--- a/hw/input/tsc210x.c
++++ b/hw/input/tsc210x.c
+@@ -1017,7 +1017,7 @@ static int tsc210x_post_load(void *opaque, int version_id)
+     return 0;
+ }
+ 
+-static VMStateField vmstatefields_tsc210x[] = {
++static const VMStateField vmstatefields_tsc210x[] = {
+     VMSTATE_BOOL(enabled, TSC210xState),
+     VMSTATE_BOOL(host_mode, TSC210xState),
+     VMSTATE_BOOL(irq, TSC210xState),
+diff --git a/hw/input/virtio-input.c b/hw/input/virtio-input.c
+index 5b5398b3ca..3bcdae41b2 100644
+--- a/hw/input/virtio-input.c
++++ b/hw/input/virtio-input.c
+@@ -293,7 +293,7 @@ static const VMStateDescription vmstate_virtio_input = {
+     .name = "virtio-input",
+     .minimum_version_id = VIRTIO_INPUT_VM_VERSION,
+     .version_id = VIRTIO_INPUT_VM_VERSION,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_VIRTIO_DEVICE,
+         VMSTATE_END_OF_LIST()
+     },
 -- 
 2.34.1
 
