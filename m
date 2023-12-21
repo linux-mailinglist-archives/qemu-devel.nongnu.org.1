@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF79081BA39
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 16:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 034CD81BA3B
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 16:10:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGKeo-0008Ag-Pw; Thu, 21 Dec 2023 10:08:19 -0500
+	id 1rGKey-0008ED-61; Thu, 21 Dec 2023 10:08:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rGKel-00089K-75; Thu, 21 Dec 2023 10:08:15 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ id 1rGKel-00089U-NX; Thu, 21 Dec 2023 10:08:15 -0500
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rGKei-0004JW-21; Thu, 21 Dec 2023 10:08:13 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2cc6c028229so9855181fa.2; 
- Thu, 21 Dec 2023 07:08:09 -0800 (PST)
+ id 1rGKej-0004Jo-CH; Thu, 21 Dec 2023 10:08:15 -0500
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2cc9fa5e8e1so7889071fa.3; 
+ Thu, 21 Dec 2023 07:08:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1703171288; x=1703776088; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1703171289; x=1703776089; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LzCBxca0nCRHR665JCCwURJqMXPSu7RYmWln7L2TOQo=;
- b=JKxZYdui59DdItgYhwY8P7dMQ9OsiuU8NmSo6YpUBCZdfXpNlNkt/RRMOOwgqDJUMc
- VU9SUomlYKJDj20iGtTY9gKgijecGsrdipO/EOkIlFnzrgYJlKvomS5dhqJzmm6BBMbq
- wkn3INitpN/PCBOb8PJe/Z3fUOma6WkRdlJXN0/7BqkRVaEnXtSpu/r8UTwXZjgunMju
- rGsvcBed6I5att+0XqbdhxR/QMzERo76w+trMbjHhDhvzgEV8RKfXwmswsAUkAuVj4LN
- GYNz6Mtbkba+d4lUMlxBtFK9evksPJZWxiXM/OSl6rkvL0BgfRsq9TNuyPgoXZlPHNlc
- mUiA==
+ bh=dAVGWN1SPHpUXrz0I2hkwmpe5VJKf6+xuSizlPV5vEs=;
+ b=TeQUi0l6j0JNx+ANpnCGILCWpASNwEfDLvW4hib0BdT6Vm/38pDP3EoXAkWvylhNnz
+ otFHR9br5UBdoO70aUK2BpSAwUytXlLecnUbGbDDYvF0vfoeIsqDMD3mG29Yu04DKFMB
+ J4DHqri3rnUNmQIkIDYCldC4sY5rqTENVqV09JAJwCaZqycGlHWhNqkLz/ZRA5AKD1d8
+ nqKQhHETOTMJM5ZjN4+A0klIF3TDKM8cCgTM2GK6lD0USxuxy56dLvjefKopQupwJjgW
+ 06bYJ8zMSph9SPOGCHcbXI54OmU7xCm0aOgDqmAEn817xt91mxPgZXIYwmxPfwstU24Z
+ UY7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703171288; x=1703776088;
+ d=1e100.net; s=20230601; t=1703171289; x=1703776089;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LzCBxca0nCRHR665JCCwURJqMXPSu7RYmWln7L2TOQo=;
- b=gUCgLeDCVShWCnMR3v/XN/c5O4buUGQ7tFe1Nz3ecwiPPVaxOhlAU85ks/kC7xCSkM
- P2g6ouyghD6IMM6taz26Yp38XulX5bWbWcqRyzasH/cbfNWN0xPPAHeQaHrVNTftJnHH
- 1UOdy4cx9U7DcWRUvEpBGfv3ezEGvsyihyBCcfwytrWX17273b6EF2kXt5PhXoqjYYvc
- dFz+cdLzmxN/1sjmcZo2BAXBpmlIm/yUy9GeC588oPoFM8UvTJm1Ig3ivYV0MWp3E7OF
- RefR47cdnuewQdqbf/kZOEN5v6VJpWLoZAfGz11adOQOmSjwAE4XvBIUCxwV8mhcKpIU
- STNQ==
-X-Gm-Message-State: AOJu0YwfagY2t7S3eumgOSd3S6hMk6hDYt+8DtV5YnmoqArWFKgLytCo
- DaJBGXK7TzU/AnVu0TxPf5Vyz+uQAMoO8w==
-X-Google-Smtp-Source: AGHT+IGogPbot+5m01Kk0sVdVFgQ2NLvxnk+ZqKclIUOMLRrZpPgMazyd3DjXbdpEWzls++vQVJhQQ==
-X-Received: by 2002:a2e:b60b:0:b0:2cc:6b59:d346 with SMTP id
- r11-20020a2eb60b000000b002cc6b59d346mr3671549ljn.17.1703171287564; 
- Thu, 21 Dec 2023 07:08:07 -0800 (PST)
+ bh=dAVGWN1SPHpUXrz0I2hkwmpe5VJKf6+xuSizlPV5vEs=;
+ b=ac/crxK9DVeJyovnXpuCoPNzJrZ8lXd0loBQg20P4s9BA5XjAIKLKKaYDlcj3cRrMv
+ MGAK/0aVfglCwWMuc39jX8Kexwy6olgJ6xjIJROjYpb/9yVuJqfOY/oOi+Lu8HRxgZW3
+ 8dEYngRDYnZbSt8f9Gvq9ToVkMHojaMYGW5QYafEPWPgzEIxGDrd7rNvr+3XrH3fnn1m
+ CEVblcbT504/+G33/zQBNxB8dVVVLmaPeMd8s/ZjclN2MhLMI2PnFDO2kS2aJLYfKV0W
+ xHMfCgkB2+1pkZw1IBznXmTaWCtav11n2vNLhdpqWull22pvTFMJtcgCx/5jt39PTvN5
+ IaQA==
+X-Gm-Message-State: AOJu0YwVu3ohKAmpdgIfl9avZyStMHg9q5fOm+2LFzeZsJ3jpJiRmI6v
+ oG0n8jxXkzN1MqcpS6tBGmq76mptXRTHFQ==
+X-Google-Smtp-Source: AGHT+IEvcAepzDsO8kCQXktjHwLw4/SeO8b/S8khq2eD+cbrZU3Mab6MkOeCa3RZZFwurjmKLnjh9w==
+X-Received: by 2002:a2e:9e0f:0:b0:2cc:9506:9bb with SMTP id
+ e15-20020a2e9e0f000000b002cc950609bbmr1324792ljk.97.1703171289237; 
+ Thu, 21 Dec 2023 07:08:09 -0800 (PST)
 Received: from archlinux.. (pd95ed842.dip0.t-ipconnect.de. [217.94.216.66])
  by smtp.gmail.com with ESMTPSA id
- t25-20020a056402241900b00553b6b5bb44sm1264264eda.67.2023.12.21.07.08.06
+ t25-20020a056402241900b00553b6b5bb44sm1264264eda.67.2023.12.21.07.08.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 07:08:07 -0800 (PST)
+ Thu, 21 Dec 2023 07:08:08 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>,
@@ -77,17 +77,16 @@ Cc: Juan Quintela <quintela@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Leonardo Bras <leobras@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 04/11] exec/ioport: Resolve redundant .base attribute in
- struct MemoryRegionPortio
-Date: Thu, 21 Dec 2023 16:07:43 +0100
-Message-ID: <20231221150750.5435-5-shentey@gmail.com>
+Subject: [PATCH v3 05/11] exec/ioport: Add portio_list_set_address()
+Date: Thu, 21 Dec 2023 16:07:44 +0100
+Message-ID: <20231221150750.5435-6-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231221150750.5435-1-shentey@gmail.com>
 References: <20231221150750.5435-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=shentey@gmail.com; helo=mail-lj1-x233.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=shentey@gmail.com; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,87 +109,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-portio_list_add_1() creates a MemoryRegionPortioList instance which holds a
-MemoryRegion `mr` and an array of MemoryRegionPortio elements named `ports`.
-Each element in the array gets assigned the same value for its .base attribute.
-The same value also ends up as the .addr attribute of `mr` due to the
-memory_region_add_subregion() call. This means that all .base attributes are
-the same as `mr.addr`.
+Some SuperI/O devices such as the VIA south bridges or the PC87312 controller
+are able to relocate their SuperI/O functions. Add a convenience function for
+implementing this in the VIA south bridges.
 
-The only usages of MemoryRegionPortio::base were in portio_read() and
-portio_write(). Both functions get above MemoryRegionPortioList as their
-opaque parameter. In both cases find_portio() can only return one of the
-MemoryRegionPortio elements of the `ports` array. Due to above observation any
-element will have the same .base value equal to `mr.addr` which is also
-accessible.
-
-Hence, `mrpio->mr.addr` is equivalent to `mrp->base` and
-MemoryRegionPortio::base is redundant and can be removed.
+This convenience function relies on previous simplifications in exec/ioport
+which avoids some duplicate synchronization of I/O port base addresses. The
+naming of the function is inspired by its memory_region_set_address() pendant.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/exec/ioport.h |  1 -
- system/ioport.c       | 13 ++++++-------
- 2 files changed, 6 insertions(+), 8 deletions(-)
+ docs/devel/migration.rst |  5 +++--
+ include/exec/ioport.h    |  2 ++
+ system/ioport.c          | 19 +++++++++++++++++++
+ 3 files changed, 24 insertions(+), 2 deletions(-)
 
+diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+index ec55089b25..dc35a17461 100644
+--- a/docs/devel/migration.rst
++++ b/docs/devel/migration.rst
+@@ -452,10 +452,10 @@ data doesn't match the stored device data well; it allows an
+ intermediate temporary structure to be populated with migration
+ data and then transferred to the main structure.
+ 
+-If you use memory API functions that update memory layout outside
++If you use memory or portio_list API functions that update memory layout outside
+ initialization (i.e., in response to a guest action), this is a strong
+ indication that you need to call these functions in a ``post_load`` callback.
+-Examples of such memory API functions are:
++Examples of such API functions are:
+ 
+   - memory_region_add_subregion()
+   - memory_region_del_subregion()
+@@ -464,6 +464,7 @@ Examples of such memory API functions are:
+   - memory_region_set_enabled()
+   - memory_region_set_address()
+   - memory_region_set_alias_offset()
++  - portio_list_set_address()
+ 
+ Iterative device migration
+ --------------------------
 diff --git a/include/exec/ioport.h b/include/exec/ioport.h
-index e34f668998..95f1dc30d0 100644
+index 95f1dc30d0..96858e5ac3 100644
 --- a/include/exec/ioport.h
 +++ b/include/exec/ioport.h
-@@ -35,7 +35,6 @@ typedef struct MemoryRegionPortio {
-     unsigned size;
-     uint32_t (*read)(void *opaque, uint32_t address);
-     void (*write)(void *opaque, uint32_t address, uint32_t data);
--    uint32_t base; /* private field */
- } MemoryRegionPortio;
+@@ -54,6 +54,7 @@ typedef struct PortioList {
+     const struct MemoryRegionPortio *ports;
+     Object *owner;
+     struct MemoryRegion *address_space;
++    uint32_t addr;
+     unsigned nr;
+     struct MemoryRegion **regions;
+     void *opaque;
+@@ -70,5 +71,6 @@ void portio_list_add(PortioList *piolist,
+                      struct MemoryRegion *address_space,
+                      uint32_t addr);
+ void portio_list_del(PortioList *piolist);
++void portio_list_set_address(PortioList *piolist, uint32_t addr);
  
- #define PORTIO_END_OF_LIST() { }
+ #endif /* IOPORT_H */
 diff --git a/system/ioport.c b/system/ioport.c
-index 1824aa808c..a59e58b716 100644
+index a59e58b716..000e0ee1af 100644
 --- a/system/ioport.c
 +++ b/system/ioport.c
-@@ -181,13 +181,13 @@ static uint64_t portio_read(void *opaque, hwaddr addr, unsigned size)
+@@ -133,6 +133,7 @@ void portio_list_init(PortioList *piolist,
+     piolist->nr = 0;
+     piolist->regions = g_new0(MemoryRegion *, n);
+     piolist->address_space = NULL;
++    piolist->addr = 0;
+     piolist->opaque = opaque;
+     piolist->owner = owner;
+     piolist->name = name;
+@@ -282,6 +283,7 @@ void portio_list_add(PortioList *piolist,
+     unsigned int off_low, off_high, off_last, count;
  
-     data = ((uint64_t)1 << (size * 8)) - 1;
-     if (mrp) {
--        data = mrp->read(mrpio->portio_opaque, mrp->base + addr);
-+        data = mrp->read(mrpio->portio_opaque, mrpio->mr.addr + addr);
-     } else if (size == 2) {
-         mrp = find_portio(mrpio, addr, 1, false);
-         if (mrp) {
--            data = mrp->read(mrpio->portio_opaque, mrp->base + addr);
-+            data = mrp->read(mrpio->portio_opaque, mrpio->mr.addr + addr);
-             if (addr + 1 < mrp->offset + mrp->len) {
--                data |= mrp->read(mrpio->portio_opaque, mrp->base + addr + 1) << 8;
-+                data |= mrp->read(mrpio->portio_opaque, mrpio->mr.addr + addr + 1) << 8;
-             } else {
-                 data |= 0xff00;
-             }
-@@ -203,13 +203,13 @@ static void portio_write(void *opaque, hwaddr addr, uint64_t data,
-     const MemoryRegionPortio *mrp = find_portio(mrpio, addr, size, true);
+     piolist->address_space = address_space;
++    piolist->addr = start;
  
-     if (mrp) {
--        mrp->write(mrpio->portio_opaque, mrp->base + addr, data);
-+        mrp->write(mrpio->portio_opaque, mrpio->mr.addr + addr, data);
-     } else if (size == 2) {
-         mrp = find_portio(mrpio, addr, 1, true);
-         if (mrp) {
--            mrp->write(mrpio->portio_opaque, mrp->base + addr, data & 0xff);
-+            mrp->write(mrpio->portio_opaque, mrpio->mr.addr + addr, data & 0xff);
-             if (addr + 1 < mrp->offset + mrp->len) {
--                mrp->write(mrpio->portio_opaque, mrp->base + addr + 1, data >> 8);
-+                mrp->write(mrpio->portio_opaque, mrpio->mr.addr + addr + 1, data >> 8);
-             }
-         }
+     /* Handle the first entry specially.  */
+     off_last = off_low = pio_start->offset;
+@@ -322,6 +324,23 @@ void portio_list_del(PortioList *piolist)
      }
-@@ -244,7 +244,6 @@ static void portio_list_add_1(PortioList *piolist,
-     /* Adjust the offsets to all be zero-based for the region.  */
-     for (i = 0; i < count; ++i) {
-         mrpio->ports[i].offset -= off_low;
--        mrpio->ports[i].base = start + off_low;
-     }
+ }
  
-     /*
++void portio_list_set_address(PortioList *piolist, uint32_t addr)
++{
++    MemoryRegionPortioList *mrpio;
++    unsigned i, j;
++
++    for (i = 0; i < piolist->nr; ++i) {
++        mrpio = container_of(piolist->regions[i], MemoryRegionPortioList, mr);
++        memory_region_set_address(&mrpio->mr,
++                                  mrpio->mr.addr - piolist->addr + addr);
++        for (j = 0; mrpio->ports[j].size; ++j) {
++            mrpio->ports[j].offset += addr - piolist->addr;
++        }
++    }
++
++    piolist->addr = addr;
++}
++
+ static void memory_region_portio_list_finalize(Object *obj)
+ {
+     MemoryRegionPortioList *mrpio = MEMORY_REGION_PORTIO_LIST(obj);
 -- 
 2.43.0
 
