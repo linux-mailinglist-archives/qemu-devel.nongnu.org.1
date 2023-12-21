@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F7F81B87A
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 14:47:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9114481B70C
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 14:12:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGJNA-00077J-7m; Thu, 21 Dec 2023 08:46:00 -0500
+	id 1rGIor-0002Qd-8D; Thu, 21 Dec 2023 08:10:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vadim.shakirov@syntacore.com>)
- id 1rGHMu-0001Je-E8; Thu, 21 Dec 2023 06:37:36 -0500
-Received: from mta-04.yadro.com ([89.207.88.248])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGIoo-0002Py-SK
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 08:10:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vadim.shakirov@syntacore.com>)
- id 1rGHMs-0001gj-LR; Thu, 21 Dec 2023 06:37:36 -0500
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 015F1C000F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1703158653;
- bh=WoCK26ww3cdf2Ruo0rnmxhslHFYOzy6Fn+U8lOlc6O0=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=ikPDChghS/W4P15g0z0JXi6ATjWEQWs/bp2Zgf0gqkMX8VvKXavpxSONmdJW3SjZb
- 5yA4ClLeCiHQ5hrUGJwZ3ZidqlbJ5PdyJON7Io1hrMTvlthI6rQuCdrnkh1VreI6Zh
- ZNhQBhf8ln/HGbtHvSKykxYB3ztXhmJTA0emeHEd6G+d4A1VH3xxxCHcOSmrYhesw9
- HbQ165qg4YklyWbgwhyVVq9qcXCaxs+1qFvEsIxmB/TUbj5pkQiNlY7V87fJtAdK9o
- YLlBrAYcNMEM2pdqK2XC/0wBs1jZS0ubHmNoS1jRdEfUZevieqFolM4+YmqHZ4yeOs
- rE5wTaU/nuRLQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1703158653;
- bh=WoCK26ww3cdf2Ruo0rnmxhslHFYOzy6Fn+U8lOlc6O0=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=Dqx9EShnB5md/tuxoQqnIXsiBbgURbNe7mAfl7g5AL/4w6d5v+lAORI+yvTI+sFFb
- gYGt4eAogxOcfI0aRdRn55C6hXefSGS3DDpS8BUuHNUTGgBIW4xlP0nVauxwCP63/N
- erDgMVwwyjhgD9tKsdJI6CV2xdj9YxAp3GWnx7/6ltQLB2ZpMTZasvJ5s9sekOcDKi
- EutHwZDYIPam85FVMLmRJAPv5JryfC3m+8wxFHJgEyRcxHgkG1qUBmYu1jFSteqUuW
- ZuyXIz/vaa1z4IPYpuYlasn/wdNH1d9jf3L3ZYOZgA0JWM7Ewl/wNUCIOqMaYUMoZ/
- Wjz8NKDzmKUKA==
-From: Vadim Shakirov <vadim.shakirov@syntacore.com>
-To: <qemu-devel@nongnu.org>
-CC: Vadim Shakirov <vadim.shakirov@syntacore.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin Meng
- <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, "Daniel Henrique
- Barboza" <dbarboza@ventanamicro.com>, Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>, <qemu-riscv@nongnu.org>
-Subject: [PATCH 2/2] target/riscv/csr: Added the ability to delegate LCOFI to
- VS
-Date: Thu, 21 Dec 2023 14:36:28 +0300
-Message-ID: <20231221113628.41038-3-vadim.shakirov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231221113628.41038-1-vadim.shakirov@syntacore.com>
-References: <20231221113628.41038-1-vadim.shakirov@syntacore.com>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGIom-0001xY-2s
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 08:10:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703164226;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=C2n6/LqPToUDoHG2jqnpIGxXfglDKQqagu4ErA6ZLTE=;
+ b=aMGoV3XrsY4roFa9DB7ZWV9gftV6fbKLh32puYrljf2VOISYTMp2jb2nJ5VFJdWziQpUXH
+ KipKRXbC+nzWEIuiZAFitD3kbKjHAqt947lIj0ZL1oCNw7ZCO9NlMwn/lq4puJxjCBuCpR
+ SlF7F6sRp98Z8Bh/0QnmQUE3N76C3D4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-167-zNunH4miMOa_G341CDxYXA-1; Thu, 21 Dec 2023 08:10:23 -0500
+X-MC-Unique: zNunH4miMOa_G341CDxYXA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 657A985CDFC;
+ Thu, 21 Dec 2023 13:10:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.128])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B29F12026D66;
+ Thu, 21 Dec 2023 13:10:21 +0000 (UTC)
+Date: Thu, 21 Dec 2023 14:10:20 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Michal Privoznik <mprivozn@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 4/4] virtio-blk: add iothread-vq-mapping parameter
+Message-ID: <ZYQ5PM8Hak2xDpIj@redhat.com>
+References: <20231220134755.814917-1-stefanha@redhat.com>
+ <20231220134755.814917-5-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-07.corp.yadro.com (172.17.11.57) To
- S-Exch-01.corp.yadro.com (10.78.5.241)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=vadim.shakirov@syntacore.com; helo=mta-04.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231220134755.814917-5-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 21 Dec 2023 08:45:53 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,100 +84,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the AIA specification in the paragraph "Virtual interrupts for VS level"
-it is indicated for interrupts 13-63: if the bit in hideleg is enabled,
-then the corresponding vsip and vsie bits are aliases to sip and sie
+Am 20.12.2023 um 14:47 hat Stefan Hajnoczi geschrieben:
+> Add the iothread-vq-mapping parameter to assign virtqueues to IOThreads.
+> Store the vq:AioContext mapping in the new struct
+> VirtIOBlockDataPlane->vq_aio_context[] field and refactor the code to
+> use the per-vq AioContext instead of the BlockDriverState's AioContext.
+> 
+> Reimplement --device virtio-blk-pci,iothread= and non-IOThread mode by
+> assigning all virtqueues to the IOThread and main loop's AioContext in
+> vq_aio_context[], respectively.
+> 
+> The comment in struct VirtIOBlockDataPlane about EventNotifiers is
+> stale. Remove it.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Signed-off-by: Vadim Shakirov <vadim.shakirov@syntacore.com>
----
- target/riscv/csr.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+I'm looking at virtio_blk_dma_restart_cb/bh(). It seems to run all
+queued requests in the iothread of the first vq, but when the requests
+complete, they will push the result to their original vq.
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 36f807d5f6..46a5d0c69a 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1129,7 +1129,7 @@ static RISCVException write_stimecmph(CPURISCVState *env, int csrno,
- 
- static const uint64_t delegable_ints = S_MODE_INTERRUPTS |
-                                       VS_MODE_INTERRUPTS | LOCAL_INTERRUPTS;
--static const uint64_t vs_delegable_ints = VS_MODE_INTERRUPTS;
-+static const uint64_t vs_delegable_ints = VS_MODE_INTERRUPTS | LOCAL_INTERRUPTS;
- static const uint64_t all_ints = M_MODE_INTERRUPTS | S_MODE_INTERRUPTS |
-                                 HS_MODE_INTERRUPTS | LOCAL_INTERRUPTS;
- #define DELEGABLE_EXCPS ((1ULL << (RISCV_EXCP_INST_ADDR_MIS)) | \
-@@ -1167,7 +1167,7 @@ static const target_ulong sip_writable_mask = SIP_SSIP | MIP_USIP | MIP_UEIP |
- static const target_ulong hip_writable_mask = MIP_VSSIP;
- static const target_ulong hvip_writable_mask = MIP_VSSIP | MIP_VSTIP |
-                                                MIP_VSEIP;
--static const target_ulong vsip_writable_mask = MIP_VSSIP;
-+static const target_ulong vsip_writable_mask = MIP_VSSIP | LOCAL_INTERRUPTS;
- 
- const bool valid_vm_1_10_32[16] = {
-     [VM_1_10_MBARE] = true,
-@@ -2416,20 +2416,34 @@ static RISCVException write_sstatus(CPURISCVState *env, int csrno,
-     return write_mstatus(env, CSR_MSTATUS, newval);
- }
- 
-+
-+static uint64_t vsi_to_mi(uint64_t vsi)
-+{
-+    uint64_t mi;
-+
-+    mi = (vsi & (VS_MODE_INTERRUPTS >> 1)) << 1;
-+    mi |= vsi & LOCAL_INTERRUPTS;
-+
-+    return mi;
-+}
-+
- static RISCVException rmw_vsie64(CPURISCVState *env, int csrno,
-                                  uint64_t *ret_val,
-                                  uint64_t new_val, uint64_t wr_mask)
- {
-     RISCVException ret;
--    uint64_t rval, mask = env->hideleg & VS_MODE_INTERRUPTS;
-+    uint64_t rval, mask = env->hideleg & (VS_MODE_INTERRUPTS |
-+                                                        LOCAL_INTERRUPTS);
- 
-     /* Bring VS-level bits to correct position */
--    new_val = (new_val & (VS_MODE_INTERRUPTS >> 1)) << 1;
--    wr_mask = (wr_mask & (VS_MODE_INTERRUPTS >> 1)) << 1;
-+    new_val = vsi_to_mi(new_val);
-+    wr_mask = vsi_to_mi(wr_mask);
- 
-     ret = rmw_mie64(env, csrno, &rval, new_val, wr_mask & mask);
-+
-     if (ret_val) {
--        *ret_val = (rval & mask) >> 1;
-+        *ret_val = (rval & (env->hideleg & VS_MODE_INTERRUPTS)) >> 1;
-+        *ret_val |= rval & (env->hideleg & LOCAL_INTERRUPTS);
-     }
- 
-     return ret;
-@@ -2630,16 +2644,18 @@ static RISCVException rmw_vsip64(CPURISCVState *env, int csrno,
-                                  uint64_t new_val, uint64_t wr_mask)
- {
-     RISCVException ret;
--    uint64_t rval, mask = env->hideleg & VS_MODE_INTERRUPTS;
-+    uint64_t rval, mask = env->hideleg & (VS_MODE_INTERRUPTS |
-+                                                        LOCAL_INTERRUPTS);
- 
-     /* Bring VS-level bits to correct position */
--    new_val = (new_val & (VS_MODE_INTERRUPTS >> 1)) << 1;
--    wr_mask = (wr_mask & (VS_MODE_INTERRUPTS >> 1)) << 1;
-+    new_val = vsi_to_mi(new_val);
-+    wr_mask = vsi_to_mi(wr_mask);
- 
-     ret = rmw_mip64(env, csrno, &rval, new_val,
-                     wr_mask & mask & vsip_writable_mask);
-     if (ret_val) {
--        *ret_val = (rval & mask) >> 1;
-+        *ret_val = (rval & (env->hideleg & VS_MODE_INTERRUPTS)) >> 1;
-+        *ret_val |= rval & (env->hideleg & LOCAL_INTERRUPTS);
-     }
- 
-     return ret;
--- 
-2.34.1
+Do we know that the dataplane isn't started and won't be started until
+the requests complete? (I wouldn't expect so, because then moving to the
+AioContext of the BlockBackend wouldn't have been necessary either.) Or
+is there another reason why this is safe?
+
+Kevin
 
 
