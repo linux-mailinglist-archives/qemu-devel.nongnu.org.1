@@ -2,77 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8507381BB4B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 16:49:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9C481BB52
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 16:50:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGLHG-0004XV-Il; Thu, 21 Dec 2023 10:48:03 -0500
+	id 1rGLJ4-0005Kw-N6; Thu, 21 Dec 2023 10:49:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rGLH7-0004X5-5y
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 10:47:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rGLH4-00013g-PP
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 10:47:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703173669;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=AWMPIrR/6nIccvBOle12qEJfCLazPZquf9BKJkqWcxc=;
- b=KJaXIvjgYENl5LFddd03VF+uTbQOV2T2wp8iFqwrftaUfUpkP2ELApLoXByELhLpPDUr2P
- ceWsuVGlTd2LS7kfcEbzImrFP2x00LjwPH1AU6/danxNEYnB+cFwLOQm136VaSA2wS8Q91
- UZkbU0ArgaYEjmuTQHRGbf1nnWN815U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-531-Smngvow7MnWVticM9hNBIQ-1; Thu, 21 Dec 2023 10:47:46 -0500
-X-MC-Unique: Smngvow7MnWVticM9hNBIQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CC5DF83BA86;
- Thu, 21 Dec 2023 15:47:45 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.145])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3F67C40C6EB9;
- Thu, 21 Dec 2023 15:47:45 +0000 (UTC)
-Date: Thu, 21 Dec 2023 10:47:43 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, Michal Privoznik <mprivozn@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Eduardo Habkost <eduardo@habkost.net>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 1/4] qdev-properties: alias all object class properties
-Message-ID: <20231221154743.GA1754997@fedora>
-References: <20231220134755.814917-1-stefanha@redhat.com>
- <20231220134755.814917-2-stefanha@redhat.com>
- <ZYQyFLfsOvUmeuco@redhat.com>
+ (Exim 4.90_1) (envelope-from
+ <0102018c8d11471f-9a6d73eb-0c34-4f61-8d37-5a4418f9e0d7-000000@eu-west-1.amazonses.com>)
+ id 1rGLIl-0005Fm-AV; Thu, 21 Dec 2023 10:49:35 -0500
+Received: from a7-18.smtp-out.eu-west-1.amazonses.com ([54.240.7.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.90_1) (envelope-from
+ <0102018c8d11471f-9a6d73eb-0c34-4f61-8d37-5a4418f9e0d7-000000@eu-west-1.amazonses.com>)
+ id 1rGLIi-0001NN-Qj; Thu, 21 Dec 2023 10:49:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+ s=we7ia3fxgawvchs62qr3tqnz7sf6mlor; d=ipxe.org; t=1703173769;
+ h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+ bh=/7EqWffgjDz3wjDvQr/YUcPA/PtuSbw8QfNks2xe3Bo=;
+ b=Uk5vxuwtFqHUEjy/9w9w8P13sf3j8S8iA3FWWLtx2iyb7kSz+It/P5hrJHQR+cMq
+ 4ZWLqGHGXIgJm51WGGpkvgZNYpS3iROofhQG4cZHC2FE7bGeyjJPk4R1oGe5DjmAy/A
+ PFlZc7QmRtDE/fmdDMqck/ZeMj0KqqbN2Eh5o6uUjcJsTTYUFmADQbA9nVkrIk7Uy7s
+ yZGGJ7pMx8YE1cZJZM4Mvcnr6gfg+NrE9UrsPxNI9dIelpX954GHTWFM8LtXzCQsY7l
+ 4VkQOswvb9oB2d99Sm7n43Uqhnj3MT6w3DbunSix/T5Kjf7SAD6dwqhFK91A7Q/P+nv
+ F0juKPLepw==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+ s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1703173769;
+ h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
+ bh=/7EqWffgjDz3wjDvQr/YUcPA/PtuSbw8QfNks2xe3Bo=;
+ b=tk7rakoxIQBkBF4B6BFXPIzT8EHTKwYVHJcgrXJ4byvqGJc7a5pV6sys49kgp+6l
+ KsmABfP3g5pbRcByQQ975wV7QhRuulYXD+5Jaz2H1DVRu9vWugoMzO+vuIcndXRGCnw
+ B/xMKtm7mkBul4UBsgsqXer1ofWesaGEK/GaFLyU=
+From: Michael Brown <mcb30@ipxe.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Brown <mcb30@ipxe.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v2] target/i386: Fix physical address truncation
+Date: Thu, 21 Dec 2023 15:49:29 +0000
+Message-ID: <0102018c8d11471f-9a6d73eb-0c34-4f61-8d37-5a4418f9e0d7-000000@eu-west-1.amazonses.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <25995a01-720e-485a-b7c2-36ec612a888b@ipxe.org>
+References: <25995a01-720e-485a-b7c2-36ec612a888b@ipxe.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="SQsE9g+xhDgz8VZu"
-Content-Disposition: inline
-In-Reply-To: <ZYQyFLfsOvUmeuco@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Feedback-ID: 1.eu-west-1.fspj4M/5bzJ9NLRzJP0PaxRwxrpZqiDQJ1IF94CF2TA=:AmazonSES
+X-SES-Outgoing: 2023.12.21-54.240.7.18
+Received-SPF: pass client-ip=54.240.7.18;
+ envelope-from=0102018c8d11471f-9a6d73eb-0c34-4f61-8d37-5a4418f9e0d7-000000@eu-west-1.amazonses.com;
+ helo=a7-18.smtp-out.eu-west-1.amazonses.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,72 +77,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The address translation logic in get_physical_address() will currently
+truncate physical addresses to 32 bits unless long mode is enabled.
+This is incorrect when using physical address extensions (PAE) outside
+of long mode, with the result that a 32-bit operating system using PAE
+to access memory above 4G will experience undefined behaviour.
 
---SQsE9g+xhDgz8VZu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The truncation code was originally introduced in commit 33dfdb5 ("x86:
+only allow real mode to access 32bit without LMA"), where it applied
+only to translations performed while paging is disabled (and so cannot
+affect guests using PAE).
 
-On Thu, Dec 21, 2023 at 01:39:48PM +0100, Kevin Wolf wrote:
-> Am 20.12.2023 um 14:47 hat Stefan Hajnoczi geschrieben:
-> > qdev_alias_all_properties() aliases a DeviceState's qdev properties onto
-> > an Object. This is used for VirtioPCIProxy types so that --device
-> > virtio-blk-pci has properties of its embedded --device virtio-blk-device
-> > object.
-> >=20
-> > Currently this function is implemented using qdev properties. Change the
-> > function to use QOM object class properties instead. This works because
-> > qdev properties create QOM object class properties, but it also catches
-> > any QOM object class-only properties that have no qdev properties.
-> >=20
-> > This change ensures that properties of devices are shown with --device
-> > foo,\? even if they are QOM object class properties.
-> >=20
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->=20
-> Reviewed-by: Kevin Wolf <kwolf@redhat.com>
->=20
-> We should also update the comment to refer to properties in general
-> rather than just qdev properties. I can squash in the following hunk.
+Commit 9828198 ("target/i386: Add MMU_PHYS_IDX and MMU_NESTED_IDX")
+rearranged the code such that the truncation also applied to the use
+of MMU_PHYS_IDX and MMU_NESTED_IDX.  Commit 4a1e9d4 ("target/i386: Use
+atomic operations for pte updates") brought this truncation into scope
+for page table entry accesses, and is the first commit for which a
+Windows 10 32-bit guest will reliably fail to boot if memory above 4G
+is present.
 
-Please go ahead. Thank you!
+The original truncation code (now ten years old) appears to be wholly
+redundant in the current codebase.  With paging disabled, the CPU
+cannot be in long mode and so the maximum address size for any
+executed instruction is 32 bits.  This will already cause the linear
+address to be truncated to 32 bits, and there is therefore no way for
+get_physical_address() to be asked to translate an address outside of
+the 32-bit range.
 
-Stefan
+Fix by removing the address truncation in get_physical_address().
 
-> diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-> index 25743a29a0..09aa04ca1e 100644
-> --- a/include/hw/qdev-properties.h
-> +++ b/include/hw/qdev-properties.h
-> @@ -230,8 +230,8 @@ void qdev_property_add_static(DeviceState *dev, Prope=
-rty *prop);
->   * @target: Device which has properties to be aliased
->   * @source: Object to add alias properties to
->   *
-> - * Add alias properties to the @source object for all qdev properties on
-> - * the @target DeviceState.
-> + * Add alias properties to the @source object for all properties on the =
-@target
-> + * DeviceState.
->   *
->   * This is useful when @target is an internal implementation object
->   * owned by @source, and you want to expose all the properties of that
->=20
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2040
+Signed-off-by: Michael Brown <mcb30@ipxe.org>
+---
+ target/i386/tcg/sysemu/excp_helper.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
---SQsE9g+xhDgz8VZu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWEXh8ACgkQnKSrs4Gr
-c8jLVggAsf77uJ0b94YoH0EDMmsQMh89dMISXHs7ZGw13plTELDOTCXeonbVXxE1
-GpwVwsxQwa+U1SwnOrzr207Ttxw4yxEAJDl5TSNUa/fFx3IhVynR2bltNEp5h874
-8rJJfQTGqGM+zR1TJYHxyyQm3XKM331i0SimGIVltvbg5L16JsvToQDPLQLNGbWR
-AzaD/lCsW+yeKF0dLkC67W52iitO5vJRb0/Ho6pGfp4c+6YPorgfTHbfwoIcj4sR
-BNaNBpIkFWZoHNXtepH9y1hkLevLtFktkh32jfi9+8SBwBn90LO56lg0tkRMKTVd
-e8RqMNeuNyZYIFTqzDW3U9muoeuuCA==
-=bKTf
------END PGP SIGNATURE-----
-
---SQsE9g+xhDgz8VZu--
+diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+index 5b86f439ad..707f7326d4 100644
+--- a/target/i386/tcg/sysemu/excp_helper.c
++++ b/target/i386/tcg/sysemu/excp_helper.c
+@@ -582,12 +582,6 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
+ 
+     /* Translation disabled. */
+     out->paddr = addr & x86_get_a20_mask(env);
+-#ifdef TARGET_X86_64
+-    if (!(env->hflags & HF_LMA_MASK)) {
+-        /* Without long mode we can only address 32bits in real mode */
+-        out->paddr = (uint32_t)out->paddr;
+-    }
+-#endif
+     out->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
+     out->page_size = TARGET_PAGE_SIZE;
+     return true;
+-- 
+2.43.0
 
 
