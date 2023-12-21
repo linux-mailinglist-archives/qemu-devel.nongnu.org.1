@@ -2,134 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D061781AF70
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 08:30:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA26781AFA3
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 08:41:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGDV7-0007w4-4Z; Thu, 21 Dec 2023 02:29:49 -0500
+	id 1rGDfi-0003ku-Nd; Thu, 21 Dec 2023 02:40:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGDV5-0007vh-Im
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:29:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Xenia.Ragiadakou@amd.com>)
+ id 1rGDfg-0003kY-TG
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:40:44 -0500
+Received: from mail-mw2nam04on2050.outbound.protection.outlook.com
+ ([40.107.101.50] helo=NAM04-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGDV1-0006ZZ-6z
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:29:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703143782;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=eOl9pQiiXKZaxt3jQWUXr4LZzemhJ56QorqIDGR1iMU=;
- b=AO6P9VX+8V/L6hV5XdMVGsD+0/dFADPC9h9/07xVRYCGbw4Qq0a6L40CwcnDueeSvMik+z
- w4l7IptZtSKYbidxoiE/g9eK2vTRmybwq5GvBC0IN4nt62eic7+1H8dOb8GgjFeIEUEt6p
- F7v0keI5VfHokrKEALEA2lcZ33rXyiU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-391-MK7v1yp1NwSc_LyFKnjtRQ-1; Thu, 21 Dec 2023 02:29:40 -0500
-X-MC-Unique: MK7v1yp1NwSc_LyFKnjtRQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33689c90957so172895f8f.2
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 23:29:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703143779; x=1703748579;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eOl9pQiiXKZaxt3jQWUXr4LZzemhJ56QorqIDGR1iMU=;
- b=ne7NxahBPZnrJsIZlpdGLS2PH5RXVhwOGT8M8J2DDNUGrsyFtN+El7Pa/3p0Stoe5A
- EITsge3cZ1PEY16WV3qXMEtZ9o36arGXqb7o5aYGrlPstnocDWFMFR5Wjafnt8lY6E/E
- NOqDXKJBPOG7fMhswB7r/NbXmZtL4EiFeCLQket9v6fpOO5rPFh8UGypbz2GzTgFJ4+J
- L6IjcBp/h76/Jz11HWvU+sPXYtfowIJnfH/CLfWmTL1YFO6ITHmNvaz9QwRUHsqlxu2C
- J36/fK7h+tONP9WrpiMCqqfLrnf1aOb/p2EnB/yiWLHnhaUFv043QSz01+fztxLSxWKC
- R/ww==
-X-Gm-Message-State: AOJu0YxoDJTIfIcpZJz6U44xlVhZQqll+JGrhHtTG3N+mRkdiSXHSwFD
- rCBdnC2V+gocA4sUSs1UulJVq30fquoVLJ1EFml5/4DXwqrBQQ3/XiOaDHmFGmoJ3Pn9aIBMchw
- 3/JwlJMBg0rvnt6A=
-X-Received: by 2002:a05:600c:3d93:b0:40b:5e1c:5c21 with SMTP id
- bi19-20020a05600c3d9300b0040b5e1c5c21mr448232wmb.54.1703143779609; 
- Wed, 20 Dec 2023 23:29:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFRT+lKDJYnrT+xZwQZ1fbVBlrU9dSlbN6/RL84UeHtsu4RdZtnnCsHHbqD4g6YnwQNcGxO3Q==
-X-Received: by 2002:a05:600c:3d93:b0:40b:5e1c:5c21 with SMTP id
- bi19-20020a05600c3d9300b0040b5e1c5c21mr448221wmb.54.1703143779270; 
- Wed, 20 Dec 2023 23:29:39 -0800 (PST)
-Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045?
- ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
- by smtp.googlemail.com with ESMTPSA id
- b22-20020a05600c4a9600b0040d37e97393sm915439wmp.1.2023.12.20.23.29.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Dec 2023 23:29:38 -0800 (PST)
-Message-ID: <aa009a56-a268-4a6f-9975-a8293b8adb08@redhat.com>
-Date: Thu, 21 Dec 2023 08:29:37 +0100
+ (Exim 4.90_1) (envelope-from <Xenia.Ragiadakou@amd.com>)
+ id 1rGDfe-0000rs-K0
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:40:44 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jWcVoAVW8DLaqU8FyaTyLSh6UoAuTzmG/szsqxoYO93JVyhk4qvN/5jG66jZwHIejWU3TsAbj+eu+TgA0ow049i1pS102t7OyxzzHtqdCHrFza9OM9JHPdf04WDMP8+O0hrVsiWLBIOOPCV4TbABxGEBjBsaNcIHfvlL0ZggPrt7s2UOL7/vXG/uBgFenKRq/Wy0JQYqJKqfHLKLpiPpoMW8RumBONwOBOP4t/hn9n8Jx6tbs7crgHK4o097qJGd5cb3hfgVyDswove4opldXQuEuEV5ogPv19bPO2lksEpGOd+0551bNYtUc7L0t58Y/REBa9I9pdz9su4cUIkfTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cBg1RFKwfCltc2bAsEKH1SzSEPwyga35JcWmW9EZVVw=;
+ b=ON3dX1aVTWQu482p++VHBa/nqV3wwMKNC03wFLhkkhUDPfhkBMqRUDeH++mcO021FylWzaVX1ic63GHwRAvmgF7YEwKTQgs1HnGzFEGRW5Fz2j16Q+BVkuXE0mDLBVoGX9PPvrqvZVCjW1ECDc2HdfHrgPFGM7ieA5ZyEROS2PWUa7Z3W9/7Eqz9B8PYXyE+denpu3QaI9NRKlaStdtH172YE/xu9Dof+cbp5twj3Nmd00LYvjd/lJwwcDYa0N73pjYbOs3LMKYM5je2q/GCI6/pQicD3ObKT3OARafkq4CIEE9gG8EKftC+FGhWvMmW1sUycNnAM/ypxI9LMGI9Qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=daynix.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cBg1RFKwfCltc2bAsEKH1SzSEPwyga35JcWmW9EZVVw=;
+ b=EERJN2skj91UegvEegAmuYTn7XYJgLD7WYVAQK2kc1XoWOstLSusGdtyrrgAWjv7uDNL/H6hvU6zE2hgHxGWKGJ3Bg5wpfm7NPMorSgbpYZZdppOnYY1ZW3r+1oYau1tXhtFUF2732HB6jANdhrkWwjLI3y/vUo7d5P9GlI8Xo0=
+Received: from CYZPR10CA0019.namprd10.prod.outlook.com (2603:10b6:930:8a::28)
+ by PH7PR12MB7796.namprd12.prod.outlook.com (2603:10b6:510:275::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Thu, 21 Dec
+ 2023 07:35:34 +0000
+Received: from CY4PEPF0000EE3E.namprd03.prod.outlook.com
+ (2603:10b6:930:8a:cafe::fd) by CYZPR10CA0019.outlook.office365.com
+ (2603:10b6:930:8a::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.19 via Frontend
+ Transport; Thu, 21 Dec 2023 07:35:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE3E.mail.protection.outlook.com (10.167.242.18) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7113.14 via Frontend Transport; Thu, 21 Dec 2023 07:35:34 +0000
+Received: from [10.0.2.15] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 21 Dec
+ 2023 01:35:28 -0600
+Message-ID: <5dd37851-0b68-45ae-9843-9c1d6dc078f9@amd.com>
+Date: Thu, 21 Dec 2023 09:35:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] fixup scsi: only access SCSIDevice->requests from one
- thread
+Subject: Re: [PATCH v6 06/11] softmmu/memory: enable automatic deallocation of
+ memory regions
 Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Leonardo Bras <leobras@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>
-References: <20231221014903.1537962-1-stefanha@redhat.com>
- <20231221014903.1537962-4-stefanha@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
- CxXPkIBTvYY+ZPkoTh5xF9oS1jqI8iRLzouzF8yXs3QjQIZ2SfuCxSVwlV65jotcjD2FTN04
- hVopm9llFijNZpVIOGUTqzM4U55sdsCcZUluWM6x4HSOdw5F5Utxfp1wOjD/v92Lrax0hjiX
- DResHSt48q+8FrZzY+AUbkUS+Jm34qjswdrgsC5uxeVcLkBgWLmov2kMaMROT0YmFY6A3m1S
- P/kXmHDXxhe23gKb3dgwxUTpENDBGcfEzrzilWueOeUWiOcWuFOed/C3SyijBx3Av/lbCsHU
- Vx6pMycNTdzU1BuAroB+Y3mNEuW56Yd44jlInzG2UOwt9XjjdKkJZ1g0P9dwptwLEgTEd3Fo
- UdhAQyRXGYO8oROiuh+RZ1lXp6AQ4ZjoyH8WLfTLf5g1EKCTc4C1sy1vQSdzIRu3rBIjAvnC
- tGZADei1IExLqB3uzXKzZ1BZ+Z8hnt2og9hb7H0y8diYfEk2w3R7wEr+Ehk5NQsT2MPI2QBd
- wEv1/Aj1DgUHZAHzG1QN9S8wNWQ6K9DqHZTBnI1hUlkp22zCSHK/6FwUCuYp1zcAEQEAAc0j
- UGFvbG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT7CwU0EEwECACMFAlRCcBICGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRB+FRAMzTZpsbceDp9IIN6BIA0Ol7MoB15E
- 11kRz/ewzryFY54tQlMnd4xxfH8MTQ/mm9I482YoSwPMdcWFAKnUX6Yo30tbLiNB8hzaHeRj
- jx12K+ptqYbg+cevgOtbLAlL9kNgLLcsGqC2829jBCUTVeMSZDrzS97ole/YEez2qFpPnTV0
- VrRWClWVfYh+JfzpXmgyhbkuwUxNFk421s4Ajp3d8nPPFUGgBG5HOxzkAm7xb1cjAuJ+oi/K
- CHfkuN+fLZl/u3E/fw7vvOESApLU5o0icVXeakfSz0LsygEnekDbxPnE5af/9FEkXJD5EoYG
- SEahaEtgNrR4qsyxyAGYgZlS70vkSSYJ+iT2rrwEiDlo31MzRo6Ba2FfHBSJ7lcYdPT7bbk9
- AO3hlNMhNdUhoQv7M5HsnqZ6unvSHOKmReNaS9egAGdRN0/GPDWr9wroyJ65ZNQsHl9nXBqE
- AukZNr5oJO5vxrYiAuuTSd6UI/xFkjtkzltG3mw5ao2bBpk/V/YuePrJsnPFHG7NhizrxttB
- nTuOSCMo45pfHQ+XYd5K1+Cv/NzZFNWscm5htJ0HznY+oOsZvHTyGz3v91pn51dkRYN0otqr
- bQ4tlFFuVjArBZcapSIe6NV8C4cEiSTOwE0EVEJx7gEIAMeHcVzuv2bp9HlWDp6+RkZe+vtl
- KwAHplb/WH59j2wyG8V6i33+6MlSSJMOFnYUCCL77bucx9uImI5nX24PIlqT+zasVEEVGSRF
- m8dgkcJDB7Tps0IkNrUi4yof3B3shR+vMY3i3Ip0e41zKx0CvlAhMOo6otaHmcxr35sWq1Jk
- tLkbn3wG+fPQCVudJJECvVQ//UAthSSEklA50QtD2sBkmQ14ZryEyTHQ+E42K3j2IUmOLriF
- dNr9NvE1QGmGyIcbw2NIVEBOK/GWxkS5+dmxM2iD4Jdaf2nSn3jlHjEXoPwpMs0KZsgdU0pP
- JQzMUMwmB1wM8JxovFlPYrhNT9MAEQEAAcLBMwQYAQIACQUCVEJx7gIbDAAKCRB+FRAMzTZp
- sadRDqCctLmYICZu4GSnie4lKXl+HqlLanpVMOoFNnWs9oRP47MbE2wv8OaYh5pNR9VVgyhD
- OG0AU7oidG36OeUlrFDTfnPYYSF/mPCxHttosyt8O5kabxnIPv2URuAxDByz+iVbL+RjKaGM
- GDph56ZTswlx75nZVtIukqzLAQ5fa8OALSGum0cFi4ptZUOhDNz1onz61klD6z3MODi0sBZN
- Aj6guB2L/+2ZwElZEeRBERRd/uommlYuToAXfNRdUwrwl9gRMiA0WSyTb190zneRRDfpSK5d
- usXnM/O+kr3Dm+Ui+UioPf6wgbn3T0o6I5BhVhs4h4hWmIW7iNhPjX1iybXfmb1gAFfjtHfL
- xRUr64svXpyfJMScIQtBAm0ihWPltXkyITA92ngCmPdHa6M1hMh4RDX+Jf1fiWubzp1voAg0
- JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
- dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
- b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20231221014903.1537962-4-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Gerd Hoffmann
+ <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Stefano
+ Stabellini" <sstabellini@kernel.org>, Anthony PERARD
+ <anthony.perard@citrix.com>, Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>, Robert Beckett
+ <bob.beckett@collabora.com>, Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, <qemu-devel@nongnu.org>
+CC: <xen-devel@lists.xenproject.org>, Gurchetan Singh
+ <gurchetansingh@chromium.org>, <ernunes@redhat.com>, Alyssa Ross
+ <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ "Alex Deucher" <alexander.deucher@amd.com>, Stefano Stabellini
+ <stefano.stabellini@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Pierre-Eric Pelloux-Prayer
+ <pierre-eric.pelloux-prayer@amd.com>, Honglei Huang <honglei1.huang@amd.com>, 
+ Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>
+References: <20231219075320.165227-1-ray.huang@amd.com>
+ <20231219075320.165227-7-ray.huang@amd.com>
+ <a88696bc-2ffe-442a-a171-50e6120bbf97@daynix.com>
+From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+In-Reply-To: <a88696bc-2ffe-442a-a171-50e6120bbf97@daynix.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3E:EE_|PH7PR12MB7796:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc70750b-89d2-4d28-4840-08dc01f76b0a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 5o0qTgmFvqpSsdy/FoJQMINwFegtSY0KEdezvo8bv5vcCRtp5nQoofRAyoQmIj/Vl2MfxHVig4+ojZ4Tyu1pJTvTKTnu14h3GE0iENPJ//n62+mUOPfMe6OgJ/DUVuHNHnJTB9Uyb0paO3Mszuxl4Mpyqnibya6napdxQN+Mu7j9drtv2XE0P/ZcqFnRNYKRp9pfFGNsXJgwZ4UikfqoSbSDr0GuXUKaS8uUhXpqZnoirEIpJTY6tGMA34V0KHVYRWmfVNj7N3vX2Nys2e8fXJjxKOTJpLwxuygVvXfPeEyqelUb0bU7h49CCtk6zGDpzMvOpUPVXadsB3xzYeQ2FN7CEJRzExh789SwM6vM3H8P+LO2b64LlCJc0u/Fh9s159hHYaogG3W7gfLiAGgQyjjffzYiNixPzVLXyucgJYYB74zA9SwGWDMQ1ctcbXr++dE+X0xderr7FSsnR2AwJoDsTg9Jen+vDXgOR41x1iOV34dbjVxKVmcLiyQnuzzbUuq1FGLA4YNEXs0+BaWGjsYInTBWBcju31Wm6vYjisVOcb0RbSU/aoe2CDGUyCDvTDXM0/qafc4lR9+cbv4lByWdS51BU8d9djNa6l7tIl4AQr+pOJh6e6t7dQK+vSkDY2ZKYsaTBEdX9h4oUtd0liKuNprkKDsFgZq0Lk45mAtNaEMVMpzez+PcbUzKywXVTM5IuPQkgpFtGzPAOV//MMz6DKXe86y/MY5yrp6KmlAsEzqRKuojOoGmedX1i8MmbMzOIvsRxdfrgyFwwsPalXBjw6jhrEJG72bCskh4hw007+A4wvhSi1/MVshNByUO3ahRjhqU4saoDI/TsJKyOQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(376002)(346002)(396003)(136003)(39860400002)(230922051799003)(186009)(1800799012)(64100799003)(82310400011)(451199024)(36840700001)(46966006)(40470700004)(83380400001)(81166007)(47076005)(16576012)(40480700001)(41300700001)(2616005)(44832011)(54906003)(36860700001)(316002)(478600001)(336012)(40460700003)(426003)(356005)(82740400003)(31686004)(70586007)(70206006)(110136005)(8676002)(8936002)(4326008)(16526019)(26005)(2906002)(31696002)(6666004)(86362001)(66899024)(53546011)(5660300002)(7416002)(36756003)(921008)(43740500002)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Dec 2023 07:35:34.3059 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc70750b-89d2-4d28-4840-08dc01f76b0a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3E.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7796
+Received-SPF: softfail client-ip=40.107.101.50;
+ envelope-from=Xenia.Ragiadakou@amd.com;
+ helo=NAM04-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,27 +140,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/21/23 02:49, Stefan Hajnoczi wrote:
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->   hw/scsi/scsi-bus.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+
+On 21/12/23 07:45, Akihiko Odaki wrote:
+> On 2023/12/19 16:53, Huang Rui wrote:
+>> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+>>
+>> When the memory region has a different life-cycle from that of her 
+>> parent,
+>> could be automatically released, once has been unparent and once all 
+>> of her
+>> references have gone away, via the object's free callback.
+>>
+>> However, currently, the address space subsystem keeps references to the
+>> memory region without first incrementing its object's reference count.
+>> As a result, the automatic deallocation of the object, not taking into
+>> account those references, results in use-after-free memory corruption.
+>>
+>> More specifically, reference to the memory region is kept in flatview
+>> ranges. If the reference count of the memory region is not incremented,
+>> flatview_destroy(), that is asynchronous, may be called after memory
+>> region's destruction. If the reference count of the memory region is
+>> incremented, memory region's destruction will take place after
+>> flatview_destroy() has released its references.
+>>
+>> This patch increases the reference count of an owned memory region object
+>> on each memory_region_ref() and decreases it on each 
+>> memory_region_unref().
 > 
-> diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-> index df68a44b6a..5b08cbf60a 100644
-> --- a/hw/scsi/scsi-bus.c
-> +++ b/hw/scsi/scsi-bus.c
-> @@ -127,7 +127,8 @@ static void scsi_device_for_each_req_async_bh(void *opaque)
->        */
->       ctx = blk_get_aio_context(s->conf.blk);
->       if (ctx != qemu_get_current_aio_context()) {
-> -        aio_bh_schedule_oneshot(ctx, scsi_device_for_each_req_async_bh, data);
-> +        aio_bh_schedule_oneshot(ctx, scsi_device_for_each_req_async_bh,
-> +                                g_steal_pointer(&data));
->           return;
->       }
->   
+> Why not pass the memory region itself as the owner parameter of 
+> memory_region_init_ram_ptr()?
 
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-
+Hmm, in that case, how will it be guaranteed that the VirtIOGPU won't 
+disappear while the memory region is still in use?
 
