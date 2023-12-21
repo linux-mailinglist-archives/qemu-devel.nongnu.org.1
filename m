@@ -2,77 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DC981B563
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 12:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 880F081B5BF
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 13:27:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGHfM-0000wk-PT; Thu, 21 Dec 2023 06:56:40 -0500
+	id 1rGI89-0002Ey-Cq; Thu, 21 Dec 2023 07:26:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rGHf3-0000kj-IN
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 06:56:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rGI85-0002En-Oy
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 07:26:22 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rGHez-0000F8-Hp
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 06:56:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703159776;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=IxgDrtkuBD3kbWVyFWeuiGkTn/+hcIuj77sfxXIAB0o=;
- b=TCyKoScZcNXDMwGSdUp30vAkR50ueo38F2AWUPovwc8la7IUCbYl5AhFVpm0gPicCGRImn
- 5a8pElMGQKA0SzfN584QUybTzA8e7A3c8PsNfKMekUkNOvLEMw2qClMpBm4HzU5tIG92vu
- CTLR0BnTOEITDiRGitYzzlvNOGIUWmk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-efjxJOdpN-KItxGeZzTR3A-1; Thu, 21 Dec 2023 06:56:14 -0500
-X-MC-Unique: efjxJOdpN-KItxGeZzTR3A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4306E8F5DA0;
- Thu, 21 Dec 2023 11:56:14 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.145])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 839292166B33;
- Thu, 21 Dec 2023 11:56:13 +0000 (UTC)
-Date: Thu, 21 Dec 2023 06:56:11 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-devel@nongnu.org,
- Leonardo Bras <leobras@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 6/6] nbd/server: introduce NBDClient->lock to protect
- fields
-Message-ID: <20231221115611.GA1578764@fedora>
-References: <20231221014903.1537962-1-stefanha@redhat.com>
- <20231221014903.1537962-7-stefanha@redhat.com>
- <da5f4630-b09b-49d0-9457-4fc71d43a682@redhat.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rGI83-0005I9-Pk
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 07:26:21 -0500
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3BLAP7cS017952; Thu, 21 Dec 2023 12:26:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=Kl3ttf8yuqZXtX2OSK2olNV7DSU+opMQw56qByuiubc=;
+ b=DCj8mAIG+UKD4WvzlEakVwP0LMMQh/MmX7Ne+amhEXMIMmv4pLxNn8ZyATU8mk6QmXna
+ rdwhFSosp3g1bsJVWdDeiu7+mQK2JNcOa1RvEktKYfZCKdeCseQO6aeGQkYW0T8xEaQb
+ WbUkhV7dQGefvTZIiHYCVhjEvgKFU+veMF2040SejyNrAy+burZdjjNMAXagS2zv/IW6
+ C8Q1X/NtHZQ7rnjmNtfPC+le5UnxtsAffu2wXf7qqlWvBuiHaWu3YZuGgxZHZaBQtKhK
+ ZrZbKhfIk1Ci8iVQEuu//uFa5SAsoZxgN4qqZz187gTQTSxj/i8gf3RaZ06eVQhdlICA XQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v4h2cjcq9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Dec 2023 12:26:14 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BLC8qhB017686;
+ Thu, 21 Dec 2023 12:26:14 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v4h2cjcpm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Dec 2023 12:26:14 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3BL9UArr010885; Thu, 21 Dec 2023 12:26:13 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3v1q7nvts4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 Dec 2023 12:26:12 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3BLCQAFS27656704
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 21 Dec 2023 12:26:11 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D495020040;
+ Thu, 21 Dec 2023 12:26:10 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 74D8720043;
+ Thu, 21 Dec 2023 12:26:10 +0000 (GMT)
+Received: from heavy (unknown [9.171.70.156])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Thu, 21 Dec 2023 12:26:10 +0000 (GMT)
+Date: Thu, 21 Dec 2023 13:26:08 +0100
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, philmd@linaro.org
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH RFC] linux-user: Allow gdbstub to ignore page protection
+Message-ID: <w2uzdrhr6orfaauxtpqbg4o4z4fewkdfnze5zqoybzwdcc2z5t@fkpxdn7vmaeg>
+References: <20231215232908.1040209-1-iii@linux.ibm.com>
+ <7f2c38bc-d3d8-4d22-867e-74330dcb2ab8@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="xcBAHf+FqD7GuuEI"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <da5f4630-b09b-49d0-9457-4fc71d43a682@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <7f2c38bc-d3d8-4d22-867e-74330dcb2ab8@linaro.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: N160Z-5TnxJmh8HcyhG49hcn3WQc1AFP
+X-Proofpoint-GUID: 0_56T9G1SLJeqS5XBBDO88aGUeke2s4o
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-21_05,2023-12-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ suspectscore=0 spamscore=0 adultscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=999 priorityscore=1501 bulkscore=0 impostorscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312210093
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,45 +112,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Dec 21, 2023 at 10:33:51AM +1100, Richard Henderson wrote:
+> On 12/16/23 10:24, Ilya Leoshkevich wrote:
+> > @@ -377,22 +379,42 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+> >           flags = page_get_flags(page);
+> >           if (!(flags & PAGE_VALID))
+> >               return -1;
+> > +        prot = ((flags & PAGE_READ) ? PROT_READ : 0) |
+> > +               ((flags & PAGE_WRITE) ? PROT_WRITE : 0) |
+> > +               ((flags & PAGE_EXEC) ? PROT_EXEC : 0);
+> 
+> See target_to_host_prot where guest PROT_EXEC is mapped to host PROT_READ.
+> This should be
+> 
+> 	flags & (PAGE_READ | PAGE_EXEC) ? PROT_READ
 
---xcBAHf+FqD7GuuEI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh, right. PROT_EXEC is rather set on code_gen_buffer.
 
-On Thu, Dec 21, 2023 at 08:26:58AM +0100, Paolo Bonzini wrote:
-> On 12/21/23 02:49, Stefan Hajnoczi wrote:
-> >       nbd_client_receive_next_request(client);
-> > +
-> > +    qemu_mutex_unlock(&client->lock);
-> > +
-> >       if (ret =3D=3D -EIO) {
-> >           goto disconnect;
-> >       }
->=20
-> I think I slightly prefer if disconnect is reached with lock taken, for
-> consistency with the "done" label.  It does not complicate the code,
-> because you can just move qio_channel_set_cork() and replace:
+> > +            if (!(prot & PROT_WRITE)) {
+> > +                if (target_mprotect(page, TARGET_PAGE_SIZE,
+> > +                                    prot | PROT_WRITE)) {
+> > +                    return -1;
+> > +                }
+> > +            }
+> >              /* XXX: this code should not depend on lock_user */
+> > -            if (!(p = lock_user(VERIFY_WRITE, addr, l, 0)))
+> > +            if (!(p = lock_user(VERIFY_NONE, addr, l, 0)))
+> >                  return -1;
+> >              memcpy(p, buf, l);
+> >              unlock_user(p, addr, l);
+> > +            if (!(prot & PROT_WRITE)) {
+> > +                if (target_mprotect(page, TARGET_PAGE_SIZE, prot)) {
+> > +                    return -1;
+> > +                }
+> > +            }
+> 
+> Is the mmap lock held here?  You're opening up a window in which a page may
+> be modified but we don't catch the modification to translation blocks.
 
-Yes, that makes the code easier to follow. Will fix in v2.
+I don't think so, I'll need to add it.
 
-Stefan
+> > +            if (!(prot & PROT_READ)) {
+> > +                if (target_mprotect(page, TARGET_PAGE_SIZE, prot | PROT_READ)) {
+> > +                    return -1;
+> > +                }
+> > +            }
+> 
+> I really really doubt you need to do this.  The page is not accessible, so
+> why expose it at all?  If you want to do this, I wonder if we should instead
+> be interacting with ptrace?
 
---xcBAHf+FqD7GuuEI
-Content-Type: application/pgp-signature; name="signature.asc"
+Wouldn't this break when QEMU itself is being debugged? We would also
+need mounted /proc or a lot of peek calls. So I thought that if we
+could transparently remove and restore protection, it would be better.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWEJ9sACgkQnKSrs4Gr
-c8iIhAf/UtX+Oh1/ofZ8w6kMpFIrrT/FFOOc2+P1R/aIY2Mz/b5JXwMpew4Xpett
-r3Xxtb/c5ob7dDGaq0xvl1ArPGLDyVhACKdFnUbMFMkZxZ9NYPIfa5qB76Izv0Mh
-bbrtvG0FT33qzsbM3B06eEhX5VuFnlpkFsCUjjmxyZCXvt7KeVlIORjf/rtxnXeY
-qm1f+G5yak4pETmCkvxQ9z2F7rDJjoPpFP9/o/rzE6/xh7H4d22E/lcVu1H2wqls
-1IfiK7bxuixMRr2Ub/XWfZKYNG7o3/sT8iVZBeZgI4NA4OqJeEHjCZEBRY1ec8lC
-yZKFmc7P+AKXeXkRhPMtkfdoA1hvsQ==
-=qZRA
------END PGP SIGNATURE-----
-
---xcBAHf+FqD7GuuEI--
-
+> r~
 
