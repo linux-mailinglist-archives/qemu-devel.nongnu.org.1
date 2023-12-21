@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 227E181BD28
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:24:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3825D81BD21
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:23:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGMia-0007X9-08; Thu, 21 Dec 2023 12:20:20 -0500
+	id 1rGMia-0007YA-KB; Thu, 21 Dec 2023 12:20:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMiU-0007WI-FJ
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:14 -0500
+ id 1rGMiW-0007WV-8k
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMiT-0004T3-1F
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:14 -0500
+ id 1rGMiU-0004TM-Md
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703179211;
+ s=mimecast20190719; t=1703179214;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cw7+dRbN4+JtYElIwq4s0tub6i06l9lq5JRTHfcReyg=;
- b=X3tE/L58b7hElqBUWk4X3Ba7FF9Z7UaR09fWHFZyhCL9191OWU7G+DLYyeFCIKbujaeNjT
- n4BZvyfXArXo2AJPaGyuo6CaUgvmWiCdLe2ISacl2gwAid1lBrCqlTDvDUstsrfu9j5yet
- e94rCKEr2XIgs44QW31r9+KOlqLrczI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=c5AFEUYZiaGJSifWk7hneOWRmCiS1T4SWFJVU19lhvA=;
+ b=VP9nJvLRYqe7Skf/qmqMvj9D1f0OiXAA0hf14v/g4695CyJ+lWRZ1tV5i+rd8uALRr4+Kw
+ RIWpn2uWGEOyDOmbl+wE65benQy69GAQBN3qjOoZwDL1K1T10dvRr/cWEhZQq78efeQVlf
+ +34D1nt+889mfiaWUbhMK/BRX/C4EkA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-470-ANH_Ne4_Mf2BgYMD8cPjxQ-1; Thu, 21 Dec 2023 12:20:10 -0500
-X-MC-Unique: ANH_Ne4_Mf2BgYMD8cPjxQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-40c495a9c7cso7814335e9.3
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:09 -0800 (PST)
+ us-mta-64-jY0M5jrQOoS8TctKjfggZA-1; Thu, 21 Dec 2023 12:20:11 -0500
+X-MC-Unique: jY0M5jrQOoS8TctKjfggZA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40c3f0f88e3so7922795e9.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703179208; x=1703784008;
+ d=1e100.net; s=20230601; t=1703179210; x=1703784010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cw7+dRbN4+JtYElIwq4s0tub6i06l9lq5JRTHfcReyg=;
- b=QzugXZdDA1//dld0orfDvVDVkGXn0pZ2B8n4rsGIDmwUvQpUC2mGBP/YBnucUcjQF0
- iJInuaaQWccHhiL0Po3tyOx8hCqASsLKxggQvVxnVw1buwo3foQnJPE+LOISWBFGu17j
- s0V8XHbMK/wyXqGsZ9V7EjxBwGCypwuK/J8d41xyuHaLfUu7OimucZrwMIyNMczNAVQb
- XAfGDT2EosUcMTKd3qv3KphSnnvVJ/gc9DmFm83De48RVD+8Bc6ePZ2UG4/GgGg1jNTv
- MbVCI95ROspiflbr2OZ0rgVIemlxFFPBkO9d/PArC7ltv/hCbu6/mGjttFP+EW/Uq+C0
- akEA==
-X-Gm-Message-State: AOJu0YyXtLv79AC87kzvQN3GZoL+C/u0dkZsU8n0KVxIaNMfMRvc9S8S
- SbNcOu0MWyLRsZF9dXzPOggBzaZIMWgaq7zMi2tlvZghHEE0ArrYkJfWUQ0aueYjCGiq/RP34Dh
- 9QX6izvYHbo84OvCqvPsUPYAZvqYlMuEw0LidKP+uo8WFn7+smxJcnTNRIuQ54Uyj6akb8yux+W
- 2i0hF3epw=
-X-Received: by 2002:a05:600c:1c06:b0:40c:2cc5:4541 with SMTP id
- j6-20020a05600c1c0600b0040c2cc54541mr39746wms.39.1703179208341; 
- Thu, 21 Dec 2023 09:20:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFXdf2aVsrhHizYJoSs1xE2QKtSHXHp+yZzu9TJtHcL6INqqcpw/mTm4rmYiYStx6+omo/Pdg==
-X-Received: by 2002:a05:600c:1c06:b0:40c:2cc5:4541 with SMTP id
- j6-20020a05600c1c0600b0040c2cc54541mr39738wms.39.1703179207940; 
- Thu, 21 Dec 2023 09:20:07 -0800 (PST)
+ bh=c5AFEUYZiaGJSifWk7hneOWRmCiS1T4SWFJVU19lhvA=;
+ b=i95QaZzgMAtQVD8vt7KL8J4eSxLB0B0hKo2Vzb8jj79zw5k2KEJfruLcOEZ7Hhaegz
+ 1L30nSgBDBHAqFXQYqTscy2pQpwWcE8Uwmdin4PMc29JEMyspXay6s7fuHX5NrP4rws1
+ NT8nSQk1T//gdBP9E9F2ytz/IbsMx7FXrFrQ3LayTn6UlEWma9Qygt9Dn0qGPC83vAim
+ Hh8n4JGEiBh38scseTpZUp6M5uS4TokTjb1L6Pjf3iPr6UnIhS4BI0vGs6njb4QFdFHa
+ RCFJkX9ahiMAzfW7P/Ed1erEwfrrxQmIFVWxSHphDKOXoqpUOa1Nwwdbrd6YvJCa67dp
+ a9+w==
+X-Gm-Message-State: AOJu0YxX/jKi6NNpBu4VtIZ6OcLRIDoit3jzc2kJu4uuhL9QYgDlBANa
+ qxIgePH40I4UTQVFl9dCcig02QeHtnXH4xO5u82SoD8Ty75fr3yleRpgOy6Fxs7ht6DSza3ObIm
+ alhVW/QppTO58aYL6caT+DvXaGvAalITlDLteDkW4S3e8CR3/zQctEzwZnMG7gB+MW9qO8Zqipy
+ n+1i0cuFQ=
+X-Received: by 2002:a05:600c:a083:b0:40c:4ef8:a9eb with SMTP id
+ jh3-20020a05600ca08300b0040c4ef8a9ebmr19829wmb.176.1703179210339; 
+ Thu, 21 Dec 2023 09:20:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFfRsjT+pOYb2E78Zi5b6/1UPsa+viPSqNFC/DYXb6sbBPDTd8d7BURdDbA3DhwuqY2XXsF2Q==
+X-Received: by 2002:a05:600c:a083:b0:40c:4ef8:a9eb with SMTP id
+ jh3-20020a05600ca08300b0040c4ef8a9ebmr19819wmb.176.1703179209999; 
+ Thu, 21 Dec 2023 09:20:09 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- f12-20020a05600c4e8c00b0040d3db8186fsm3023463wmq.5.2023.12.21.09.20.06
+ c18-20020a5d4f12000000b00336788c812fsm2455444wru.88.2023.12.21.09.20.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 09:20:06 -0800 (PST)
+ Thu, 21 Dec 2023 09:20:08 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 04/21] Makefile: clean qemu-iotests output
-Date: Thu, 21 Dec 2023 18:19:41 +0100
-Message-ID: <20231221171958.59350-5-pbonzini@redhat.com>
+Subject: [PATCH 05/21] configure: remove unnecessary subshell
+Date: Thu, 21 Dec 2023 18:19:42 +0100
+Message-ID: <20231221171958.59350-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231221171958.59350-1-pbonzini@redhat.com>
 References: <20231221171958.59350-1-pbonzini@redhat.com>
@@ -101,37 +101,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Do not use a subshell to hide the shadowing of $config_host_mak.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- Makefile  | 1 +
- configure | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ configure | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 676a4a54f48..8f369903356 100644
---- a/Makefile
-+++ b/Makefile
-@@ -202,6 +202,7 @@ clean: recurse-clean
- 		! -path ./roms/edk2/ArmPkg/Library/GccLto/liblto-arm.a \
- 		-exec rm {} +
- 	rm -f TAGS cscope.* *~ */*~
-+	@$(MAKE) -Ctests/qemu-iotests clean
- 
- VERSION = $(shell cat $(SRC_PATH)/VERSION)
- 
 diff --git a/configure b/configure
-index bdda912f362..6ea8f53310e 100755
+index 6ea8f53310e..c634948051b 100755
 --- a/configure
 +++ b/configure
-@@ -1559,7 +1559,7 @@ LINKS="$LINKS pc-bios/s390-ccw/Makefile"
- LINKS="$LINKS pc-bios/vof/Makefile"
- LINKS="$LINKS .gdbinit scripts" # scripts needed by relative path in .gdbinit
- LINKS="$LINKS tests/avocado tests/data"
--LINKS="$LINKS tests/qemu-iotests/check"
-+LINKS="$LINKS tests/qemu-iotests/check tests/qemu-iotests/Makefile"
- LINKS="$LINKS python"
- LINKS="$LINKS contrib/plugins/Makefile "
- for f in $LINKS ; do
+@@ -1671,10 +1671,9 @@ if test "$targetos" = windows; then
+ fi
+ 
+ # tests/tcg configuration
+-(config_host_mak=tests/tcg/config-host.mak
+ mkdir -p tests/tcg
+-echo "# Automatically generated by configure - do not modify" > $config_host_mak
+-echo "SRC_PATH=$source_path" >> $config_host_mak
++echo "# Automatically generated by configure - do not modify" > tests/tcg/$config_host_mak
++echo "SRC_PATH=$source_path" >> tests/tcg/$config_host_mak
+ 
+ tcg_tests_targets=
+ for target in $target_list; do
+@@ -1717,9 +1716,8 @@ for target in $target_list; do
+ done
+ 
+ if test "$tcg" = "enabled"; then
+-    echo "TCG_TESTS_TARGETS=$tcg_tests_targets" >> config-host.mak
++    echo "TCG_TESTS_TARGETS=$tcg_tests_targets" >> $config_host_mak
+ fi
+-)
+ 
+ if test "$skip_meson" = no; then
+   cross="config-meson.cross.new"
 -- 
 2.43.0
 
