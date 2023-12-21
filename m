@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81C781AD5B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:24:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A61A81AD7C
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:28:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG9eS-0006s1-Pr; Wed, 20 Dec 2023 22:23:12 -0500
+	id 1rG9eV-0006w0-Dt; Wed, 20 Dec 2023 22:23:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9eR-0006qs-0p
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:11 -0500
-Received: from mail-qv1-xf2f.google.com ([2607:f8b0:4864:20::f2f])
+ id 1rG9eT-0006sO-DU
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:13 -0500
+Received: from mail-qv1-xf29.google.com ([2607:f8b0:4864:20::f29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9eP-0006kn-AA
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:10 -0500
-Received: by mail-qv1-xf2f.google.com with SMTP id
- 6a1803df08f44-67ad5b37147so1785056d6.2
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:23:08 -0800 (PST)
+ id 1rG9eR-0006lO-Pj
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:13 -0500
+Received: by mail-qv1-xf29.google.com with SMTP id
+ 6a1803df08f44-67f848f38c4so302506d6.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:23:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703128988; x=1703733788; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703128991; x=1703733791; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=V73BMfzgyXEUt2jqLmMUXNz57NIwYNMPMceTH2XummA=;
- b=JPtchPTvGZOeA0Unk2PQ3I7DB46rSm1dA8Le0q7g+DtKM2tQQGuvkhopdlcBGtrIQJ
- jcHAawpgyrwxDICPkiLZhXtMiMnSIcU/RdGpz/iiYVCLzLGG3P1s6Wuie+IdY+aKYiQb
- XX4s2pLL9GJbaadLJdavFTgMbJroooUSYLiUCbMdHErZtEhMdCsDjkG3bPfi8Gac8Htw
- RvQ/CXuQROSpzquv1h1H8ac089mLb9Wy0Tx8spO/c2KeKIjYQVFD114o0wgKKPrR7FNV
- i47sgTXgQKjW9ngZFa17o8H38lV5G+3xtBVaMQZXdDTBmc4T6qb4LrjbUS1T/XJGfgHi
- 12aw==
+ :reply-to; bh=b7C4/d8fDEdrKWlLr9VF5qAiWuBRzxgxj3sP1Qs1vds=;
+ b=b5yEAEdIOdnL5vP/5DTUNPfm4q/edcZK2qUbYlqFJeTWiP0P3EdahIsPvwDkxb/WRb
+ tkN+D8SBFO7bzAtoK7lMMxy/L4cfR6rZvx6Nvyvwl5Aj+eboJQHqQZ9vrH5m4PVdDEKj
+ UOlMk/yzt+PWAYCgTdtlod7WNNTFCXr5CIciqJhW6wNLouaiKWDff2c99LANDnHe/oA+
+ BBns+MLmSY9qzPkdGJJR9UR5sY0PqL23UQx3R6AvYGiV+kvM3hPn4hVnkgILep44Cfpn
+ EMEgDu7Yo/qaIhqbktcvaXfCHWcgjD8IHuUoWKJIvnn5Ta7Xks8PFHogbSGhPsGqHULP
+ 98qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703128988; x=1703733788;
+ d=1e100.net; s=20230601; t=1703128991; x=1703733791;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V73BMfzgyXEUt2jqLmMUXNz57NIwYNMPMceTH2XummA=;
- b=N3YcHkoZNPDzyQXborvGqI8O7c/6aGRUM/cRocpn2QGx1TpFVF0OotkorryLKYS1eD
- SVmQu1Dhi1Qhd5tmkPkDhoAGTSTF5n9/NHoKrRwhCbuX2nKqzyDe9Qbdxj01/5O0vw3K
- 224+odVXZnfruf/L5pIVnPX7OkHkq4TgNu+fRvitDPsVy43ClwYu10K2/z0GUsouY3Gw
- HvOHsrDs57d+3lWVjNphmTI6Ppv8WwQP9k6YzYjhN3OiIsSwaKBpQ2h6B3dreuAp3JBC
- 5aLHbS/OZdiqdwqnPlLytccM02HWV6STMkm8x9Qx1Cy2bLKqZ9JRsvr5Mp2KtdfI3uhz
- UPYg==
-X-Gm-Message-State: AOJu0YwtfUTLVQzRkbo1YeztRwb/WO2EbK375JS8lvj+0+7l6FBMWtwe
- JJi0bnggn5tvbEPYiTXz/5ybFwr4g5tO/GLXLHzbn9hT
-X-Google-Smtp-Source: AGHT+IGZX0OuesUU9idklCKN9a8/jhvClpIHX+VtuqwXsTax9fZP3/Zef897OfRILkEmhveamhvX4g==
-X-Received: by 2002:a05:6214:20ca:b0:67f:8273:978c with SMTP id
- 10-20020a05621420ca00b0067f8273978cmr426357qve.10.1703128987726; 
- Wed, 20 Dec 2023 19:23:07 -0800 (PST)
+ bh=b7C4/d8fDEdrKWlLr9VF5qAiWuBRzxgxj3sP1Qs1vds=;
+ b=I40XUaq3DWVPWSne/YSWrLFJ6Qz7hA5z3/zinR2ldD/fuB9ug0VRA/rgK9GfmxxeFs
+ sOjynANgWyH/6c9CFzLv4Jh2xM8I36hQvtvXEtApDevJ8w+BfYW33970+C7uScWcl6ci
+ hue0Arsro7d3n+oyc0mDyVVD2kPqLcsVkJXofLHZCZoyK5b1MG/xhDFZs43mcev2wY+P
+ t00Ls5uw9rCeVD8C+ARFoPJeLZTpbfJaJM92JpSzmXLib7M1HY00/2lc4t3TnzIVx49Q
+ u5reop5Re3UpqDYsS7FiD03HjOcpr4wg1x6Wo0hACwFDp83zUO20CkvaIBxNf926oXGZ
+ 17NA==
+X-Gm-Message-State: AOJu0YyNXSSsoabC2avtP0PRs2etQ2gkWSFfvyQdbd89dR3glzykR97W
+ MNbgFPibGO4HHczRr2VVSgjVCkUXXNPPLxJQd97wta9w
+X-Google-Smtp-Source: AGHT+IGy8WqDoEdkgtbFGr2SPWBEna7Y9Wij7D0a0NWKdHafzKzHRcxk3Uykp3kmcC0cf2zsOlWnEw==
+X-Received: by 2002:ad4:4eef:0:b0:67f:8226:a793 with SMTP id
+ dv15-20020ad44eef000000b0067f8226a793mr436154qvb.119.1703128990763; 
+ Wed, 20 Dec 2023 19:23:10 -0800 (PST)
 Received: from stoup.. ([172.58.139.164]) by smtp.gmail.com with ESMTPSA id
- l16-20020ad44d10000000b0067f7b6318b9sm347257qvl.10.2023.12.20.19.23.05
+ l16-20020ad44d10000000b0067f7b6318b9sm347257qvl.10.2023.12.20.19.23.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Dec 2023 19:23:07 -0800 (PST)
+ Wed, 20 Dec 2023 19:23:10 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 44/71] hw/pci: Constify VMState
-Date: Thu, 21 Dec 2023 14:16:25 +1100
-Message-Id: <20231221031652.119827-45-richard.henderson@linaro.org>
+Subject: [PATCH v2 45/71] hw/pci-bridge: Constify VMState
+Date: Thu, 21 Dec 2023 14:16:26 +1100
+Message-Id: <20231221031652.119827-46-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231221031652.119827-1-richard.henderson@linaro.org>
 References: <20231221031652.119827-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f29;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf29.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,137 +91,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/pci/shpc.h | 2 +-
- hw/pci/msix.c         | 4 ++--
- hw/pci/pci.c          | 8 ++++----
- hw/pci/pci_host.c     | 2 +-
- hw/pci/pcie_aer.c     | 4 ++--
- hw/pci/shpc.c         | 2 +-
- 6 files changed, 11 insertions(+), 11 deletions(-)
+ hw/pci-bridge/gen_pcie_root_port.c | 2 +-
+ hw/pci-bridge/i82801b11.c          | 2 +-
+ hw/pci-bridge/ioh3420.c            | 2 +-
+ hw/pci-bridge/pci_bridge_dev.c     | 2 +-
+ hw/pci-bridge/pcie_pci_bridge.c    | 2 +-
+ hw/pci-bridge/xio3130_downstream.c | 2 +-
+ hw/pci-bridge/xio3130_upstream.c   | 2 +-
+ 7 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/hw/pci/shpc.h b/include/hw/pci/shpc.h
-index 89c7a3b7fa..a0789df153 100644
---- a/include/hw/pci/shpc.h
-+++ b/include/hw/pci/shpc.h
-@@ -52,7 +52,7 @@ void shpc_device_unplug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
- void shpc_device_unplug_request_cb(HotplugHandler *hotplug_dev,
-                                    DeviceState *dev, Error **errp);
- 
--extern VMStateInfo shpc_vmstate_info;
-+extern const VMStateInfo shpc_vmstate_info;
- #define SHPC_VMSTATE(_field, _type,  _test) \
-     VMSTATE_BUFFER_UNSAFE_INFO_TEST(_field, _type, _test, 0, \
-                                     shpc_vmstate_info, 0)
-diff --git a/hw/pci/msix.c b/hw/pci/msix.c
-index cd817f4ca8..487e49834e 100644
---- a/hw/pci/msix.c
-+++ b/hw/pci/msix.c
-@@ -685,7 +685,7 @@ static int get_msix_state(QEMUFile *f, void *pv, size_t size,
-     return 0;
- }
- 
--static VMStateInfo vmstate_info_msix = {
-+static const VMStateInfo vmstate_info_msix = {
-     .name = "msix state",
-     .get  = get_msix_state,
-     .put  = put_msix_state,
-@@ -693,7 +693,7 @@ static VMStateInfo vmstate_info_msix = {
- 
- const VMStateDescription vmstate_msix = {
-     .name = "msix",
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         {
-             .name         = "msix",
-             .version_id   = 0,
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index c49417abb2..76080af580 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -92,7 +92,7 @@ static const VMStateDescription vmstate_pcibus = {
-     .name = "PCIBUS",
+diff --git a/hw/pci-bridge/gen_pcie_root_port.c b/hw/pci-bridge/gen_pcie_root_port.c
+index 1ce4e7beba..784507c826 100644
+--- a/hw/pci-bridge/gen_pcie_root_port.c
++++ b/hw/pci-bridge/gen_pcie_root_port.c
+@@ -117,7 +117,7 @@ static const VMStateDescription vmstate_rp_dev = {
      .version_id = 1,
      .minimum_version_id = 1,
+     .post_load = pcie_cap_slot_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32_EQUAL(nirq, PCIBus, NULL),
-         VMSTATE_VARRAY_INT32(irq_count, PCIBus,
-                              nirq, 0, vmstate_info_int32,
-@@ -673,7 +673,7 @@ static int put_pci_config_device(QEMUFile *f, void *pv, size_t size,
-     return 0;
- }
- 
--static VMStateInfo vmstate_info_pci_config = {
-+static const VMStateInfo vmstate_info_pci_config = {
-     .name = "pci config",
-     .get  = get_pci_config_device,
-     .put  = put_pci_config_device,
-@@ -714,7 +714,7 @@ static int put_pci_irq_state(QEMUFile *f, void *pv, size_t size,
-     return 0;
- }
- 
--static VMStateInfo vmstate_info_pci_irq_state = {
-+static const VMStateInfo vmstate_info_pci_irq_state = {
-     .name = "pci irq state",
-     .get  = get_pci_irq_state,
-     .put  = put_pci_irq_state,
-@@ -734,7 +734,7 @@ const VMStateDescription vmstate_pci_device = {
-     .name = "PCIDevice",
-     .version_id = 2,
-     .minimum_version_id = 1,
+         VMSTATE_PCI_DEVICE(parent_obj.parent_obj.parent_obj, PCIESlot),
+         VMSTATE_STRUCT(parent_obj.parent_obj.parent_obj.exp.aer_log,
+                        PCIESlot, 0, vmstate_pcie_aer_log, PCIEAERLog),
+diff --git a/hw/pci-bridge/i82801b11.c b/hw/pci-bridge/i82801b11.c
+index 0e83cd11b2..c140919cbc 100644
+--- a/hw/pci-bridge/i82801b11.c
++++ b/hw/pci-bridge/i82801b11.c
+@@ -81,7 +81,7 @@ err_bridge:
+ static const VMStateDescription i82801b11_bridge_dev_vmstate = {
+     .name = "i82801b11_bridge",
+     .priority = MIG_PRI_PCI_BUS,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_INT32_POSITIVE_LE(version_id, PCIDevice),
-         VMSTATE_BUFFER_UNSAFE_INFO_TEST(config, PCIDevice,
-                                    migrate_is_not_pcie,
-diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
-index a18aa0a8d4..dfe6fe6184 100644
---- a/hw/pci/pci_host.c
-+++ b/hw/pci/pci_host.c
-@@ -234,7 +234,7 @@ const VMStateDescription vmstate_pcihost = {
-     .needed = pci_host_needed,
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(config_reg, PCIHostState),
+         VMSTATE_PCI_DEVICE(parent_obj, PCIBridge),
          VMSTATE_END_OF_LIST()
      }
-diff --git a/hw/pci/pcie_aer.c b/hw/pci/pcie_aer.c
-index b68c7ecb49..2c85a78fcd 100644
---- a/hw/pci/pcie_aer.c
-+++ b/hw/pci/pcie_aer.c
-@@ -797,7 +797,7 @@ static const VMStateDescription vmstate_pcie_aer_err = {
-     .name = "PCIE_AER_ERROR",
+diff --git a/hw/pci-bridge/ioh3420.c b/hw/pci-bridge/ioh3420.c
+index f1e16135a3..be752a4bda 100644
+--- a/hw/pci-bridge/ioh3420.c
++++ b/hw/pci-bridge/ioh3420.c
+@@ -88,7 +88,7 @@ static const VMStateDescription vmstate_ioh3420 = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .post_load = pcie_cap_slot_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_PCI_DEVICE(parent_obj.parent_obj.parent_obj, PCIESlot),
+         VMSTATE_STRUCT(parent_obj.parent_obj.parent_obj.exp.aer_log,
+                        PCIESlot, 0, vmstate_pcie_aer_log, PCIEAERLog),
+diff --git a/hw/pci-bridge/pci_bridge_dev.c b/hw/pci-bridge/pci_bridge_dev.c
+index 4b2696ea7f..089f91efed 100644
+--- a/hw/pci-bridge/pci_bridge_dev.c
++++ b/hw/pci-bridge/pci_bridge_dev.c
+@@ -199,7 +199,7 @@ static bool pci_device_shpc_present(void *opaque, int version_id)
+ static const VMStateDescription pci_bridge_dev_vmstate = {
+     .name = "pci_bridge",
+     .priority = MIG_PRI_PCI_BUS,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_PCI_DEVICE(parent_obj, PCIBridge),
+         SHPC_VMSTATE(shpc, PCIDevice, pci_device_shpc_present),
+         VMSTATE_END_OF_LIST()
+diff --git a/hw/pci-bridge/pcie_pci_bridge.c b/hw/pci-bridge/pcie_pci_bridge.c
+index 2301b2ca0b..7646ac2397 100644
+--- a/hw/pci-bridge/pcie_pci_bridge.c
++++ b/hw/pci-bridge/pcie_pci_bridge.c
+@@ -132,7 +132,7 @@ static Property pcie_pci_bridge_dev_properties[] = {
+ static const VMStateDescription pcie_pci_bridge_dev_vmstate = {
+         .name = TYPE_PCIE_PCI_BRIDGE_DEV,
+         .priority = MIG_PRI_PCI_BUS,
+-        .fields = (VMStateField[]) {
++        .fields = (const VMStateField[]) {
+             VMSTATE_PCI_DEVICE(parent_obj, PCIBridge),
+             SHPC_VMSTATE(shpc, PCIDevice, NULL),
+             VMSTATE_END_OF_LIST()
+diff --git a/hw/pci-bridge/xio3130_downstream.c b/hw/pci-bridge/xio3130_downstream.c
+index 38a2361fa2..907d5105b0 100644
+--- a/hw/pci-bridge/xio3130_downstream.c
++++ b/hw/pci-bridge/xio3130_downstream.c
+@@ -146,7 +146,7 @@ static const VMStateDescription vmstate_xio3130_downstream = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .post_load = pcie_cap_slot_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_PCI_DEVICE(parent_obj.parent_obj.parent_obj, PCIESlot),
+         VMSTATE_STRUCT(parent_obj.parent_obj.parent_obj.exp.aer_log,
+                        PCIESlot, 0, vmstate_pcie_aer_log, PCIEAERLog),
+diff --git a/hw/pci-bridge/xio3130_upstream.c b/hw/pci-bridge/xio3130_upstream.c
+index a48bfe3bc5..2a6cff6e03 100644
+--- a/hw/pci-bridge/xio3130_upstream.c
++++ b/hw/pci-bridge/xio3130_upstream.c
+@@ -115,7 +115,7 @@ static const VMStateDescription vmstate_xio3130_upstream = {
+     .priority = MIG_PRI_PCI_BUS,
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(status, PCIEAERErr),
-         VMSTATE_UINT16(source_id, PCIEAERErr),
-         VMSTATE_UINT16(flags, PCIEAERErr),
-@@ -818,7 +818,7 @@ const VMStateDescription vmstate_pcie_aer_log = {
-     .name = "PCIE_AER_ERROR_LOG",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(log_num, PCIEAERLog),
-         VMSTATE_UINT16_EQUAL(log_max, PCIEAERLog, NULL),
-         VMSTATE_VALIDATE("log_num <= log_max", pcie_aer_state_log_num_valid),
-diff --git a/hw/pci/shpc.c b/hw/pci/shpc.c
-index df7f370111..d2a5eea69e 100644
---- a/hw/pci/shpc.c
-+++ b/hw/pci/shpc.c
-@@ -736,7 +736,7 @@ static int shpc_load(QEMUFile *f, void *pv, size_t size,
-     return 0;
- }
- 
--VMStateInfo shpc_vmstate_info = {
-+const VMStateInfo shpc_vmstate_info = {
-     .name = "shpc",
-     .get  = shpc_load,
-     .put  = shpc_save,
+         VMSTATE_PCI_DEVICE(parent_obj.parent_obj, PCIEPort),
+         VMSTATE_STRUCT(parent_obj.parent_obj.exp.aer_log, PCIEPort, 0,
+                        vmstate_pcie_aer_log, PCIEAERLog),
 -- 
 2.34.1
 
