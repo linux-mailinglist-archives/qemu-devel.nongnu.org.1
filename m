@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E997C81AD2A
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:19:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8B081AD56
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:24:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG9a4-0000p8-N2; Wed, 20 Dec 2023 22:18:40 -0500
+	id 1rG9a6-00011j-4s; Wed, 20 Dec 2023 22:18:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9a1-0000V6-AN
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:18:37 -0500
-Received: from mail-qt1-x82a.google.com ([2607:f8b0:4864:20::82a])
+ id 1rG9a3-0000oK-In
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:18:39 -0500
+Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9Zy-0003wW-Ue
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:18:37 -0500
-Received: by mail-qt1-x82a.google.com with SMTP id
- d75a77b69052e-427941528d8so2050901cf.2
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:18:34 -0800 (PST)
+ id 1rG9a1-0003xH-SE
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:18:39 -0500
+Received: by mail-qk1-x72f.google.com with SMTP id
+ af79cd13be357-7810827e54eso19198585a.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:18:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703128712; x=1703733512; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703128717; x=1703733517; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HHtqRh/yqpnSTBilqX+vZa9SgAziNL3gM8RxmaDLmfA=;
- b=IiWMTLp8C7TwTbwdMZfYUfvEPAXoFNBEuRwqe6cg/7Oh/rcSFCJQ/al7faolAeIs9v
- F23Z9p81N2byt8ioXx4mmE+VzqZJ+bICFY3Er5r/KGkflhm5gtHXNgda9KvWsf1Nlf4j
- qerCjz6h44Vf6RcasG6lAoiQXxSRinfWDKEwJPYe+aByaJbehJs5kVPDviNYN0wYQE+y
- SwboqTR5vW9m2a600+qv2Qzcoc/IduHTprGiFHrUpP/XBo7X931Lhm4TDwkfUIZJgqFo
- mJxE/K+IDV5jXyXmw7MxldQ4ZBpUu1sNRwl39RbU9ufBVFCxR58ukSKPVPxxvobXKBS+
- rznQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=apdBW8u4RJGdPS0f4s0stukFnKbHgrmeOG3RpFod6gE=;
+ b=K+2oHDwk0lagyxeAJGxxjBYG3ZNguofsq1hKEXU6+qFXBPh2avJ1kLg7oX/xfiXr4W
+ HYK1IFJF9jIHhFkdzhKDyM9FDjpQSibu8Bga9hPfPwo31Iaq2/UK08Iw59v/YfI6AdK8
+ g91gMsUoYHWJdqzPG0g2KvMAmmICMIzDXSKCxFCllcqi+UuSFGI8+cgnwzhPWNqBEg5Q
+ ExSTyXQT38MaxVNLx2kOA5NoHRB9f/q56FvLbWKm4+Laf0xbKF8SIq67nOj4G45CwZ0a
+ iK4cLyzzTKRyZbjN15+nzSQIpj4Gqg1L36SGSmCo+ObLg2XxzgyXbw1PznvYEbaxWsPd
+ I+Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703128712; x=1703733512;
+ d=1e100.net; s=20230601; t=1703128717; x=1703733517;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HHtqRh/yqpnSTBilqX+vZa9SgAziNL3gM8RxmaDLmfA=;
- b=ajEAGMfHebdnvZfZDzwXiV448/RK3LB7NGdiN9gAUveFhhYOICkFrI/YACiG8UTNam
- KBMr2CG3AYru0+1ejWVboLFeWKKGw6XRwl1iiez80Le5ABDdQ43bcC8mWKEe6lRVRU42
- MdUODH7tLLLvEqYLXfryPdyOszHSOU4IIQ/iL0wefTla5b3ERpXeelCDH1gY5cEyXNkt
- U4nTZnvgRZJfCU/30SaH09DwiIfgnZBwcuUs4XCqOxKhPpCxY3TTJbp1LnmvcwE1C0lO
- 7oRwdfGgIo4P9D5SdQdy29jcvHRF7hhondLpDkms3NEfcrPvi5oP8pVwzir6xQ5DtIJV
- xUdw==
-X-Gm-Message-State: AOJu0YxyJ3M4ffeCeN4v2akw+AGwEwuH3al54iLQ9SKkjHv6Ba18azLP
- 09FIa+Y/iHBW8Wk2imhxmi82TTo5oDg4/Kyz51sGEKaQ
-X-Google-Smtp-Source: AGHT+IHJQcicL0vvWYz3CXwMI35RFe3rqs5sf9OtXtwWrGYq0+yvXENgEs87/QKbeiI98JJAgk7reA==
-X-Received: by 2002:a05:620a:6284:b0:77f:9e21:f5c with SMTP id
- ov4-20020a05620a628400b0077f9e210f5cmr15349759qkn.145.1703128712662; 
- Wed, 20 Dec 2023 19:18:32 -0800 (PST)
+ bh=apdBW8u4RJGdPS0f4s0stukFnKbHgrmeOG3RpFod6gE=;
+ b=BUDk+OH+rl6AflatjFn2YXCcTprvf1v5OdYapmlKNVtD0DaEreE9naX3Pr4okOYcJH
+ gz6QWDLZcCsRNWDYmHmS89FGBqu06L2yMBjdVlt7DOnDZ9M7StvFVY2zCWMoo1wyVfBh
+ VAvBFD5UoyxRKKjKZP9w8/FSabFlieWkiWcFLl5VVKsFsIVayHoOzYi4Po2oHnNkA4SM
+ GSYEFXBFcauFTVy9rucNVjSk3jyXLIQ80liE4UCixaDGj6IaPF903+fWjP6XcU2exkME
+ sAhMdfGnE0o5VTQtuGvSDEQDS/hWtTV/M7z7wSxNbSEdYtRVTglhQ7vkOvrz3K+47D2r
+ o11Q==
+X-Gm-Message-State: AOJu0YwYkXrzg8+YYpZizPvslxrlcWuCJHwdx/Q95UI+4J7c5+UryYN3
+ A8xdEJtmxDaXQWGfJQ/Yb/VRYkNR1sKaYeTDEue21xXn
+X-Google-Smtp-Source: AGHT+IEfRiXLtzTJKLve4dE+iOBOjfClpXkRC/rSf38T1dXgeqS7WMsUK11f+u00cn+RV3snCMSesA==
+X-Received: by 2002:a05:620a:b44:b0:77f:3d4a:6dcd with SMTP id
+ x4-20020a05620a0b4400b0077f3d4a6dcdmr22548552qkg.27.1703128716982; 
+ Wed, 20 Dec 2023 19:18:36 -0800 (PST)
 Received: from stoup.. ([172.58.139.164]) by smtp.gmail.com with ESMTPSA id
- n8-20020a05620a294800b0078116d55191sm360808qkp.130.2023.12.20.19.18.29
- for <qemu-devel@nongnu.org>
+ n8-20020a05620a294800b0078116d55191sm360808qkp.130.2023.12.20.19.18.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Dec 2023 19:18:32 -0800 (PST)
+ Wed, 20 Dec 2023 19:18:36 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 21/71] hw/acpi: Constify VMState
-Date: Thu, 21 Dec 2023 14:16:02 +1100
-Message-Id: <20231221031652.119827-22-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 22/71] hw/adc: Constify VMState
+Date: Thu, 21 Dec 2023 14:16:03 +1100
+Message-Id: <20231221031652.119827-23-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231221031652.119827-1-richard.henderson@linaro.org>
 References: <20231221031652.119827-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82a;
- envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x82a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,285 +91,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/acpi/cpu.c                  |  4 ++--
- hw/acpi/erst.c                 |  2 +-
- hw/acpi/generic_event_device.c | 12 ++++++------
- hw/acpi/ich9.c                 | 12 ++++++------
- hw/acpi/ich9_tco.c             |  2 +-
- hw/acpi/memory_hotplug.c       |  4 ++--
- hw/acpi/pcihp.c                |  2 +-
- hw/acpi/piix4.c                | 12 ++++++------
- hw/acpi/vmgenid.c              |  2 +-
- 9 files changed, 26 insertions(+), 26 deletions(-)
+ hw/adc/aspeed_adc.c    | 2 +-
+ hw/adc/max111x.c       | 2 +-
+ hw/adc/npcm7xx_adc.c   | 2 +-
+ hw/adc/stm32f2xx_adc.c | 2 +-
+ hw/adc/zynq-xadc.c     | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 011d2c6c2d..2d81c1e790 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -297,7 +297,7 @@ static const VMStateDescription vmstate_cpuhp_sts = {
-     .name = "CPU hotplug device state",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(is_inserting, AcpiCpuStatus),
-         VMSTATE_BOOL(is_removing, AcpiCpuStatus),
-         VMSTATE_UINT32(ost_event, AcpiCpuStatus),
-@@ -310,7 +310,7 @@ const VMStateDescription vmstate_cpu_hotplug = {
-     .name = "CPU hotplug state",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(selector, CPUHotplugState),
-         VMSTATE_UINT8(command, CPUHotplugState),
-         VMSTATE_STRUCT_VARRAY_POINTER_UINT32(devs, CPUHotplugState, dev_count,
-diff --git a/hw/acpi/erst.c b/hw/acpi/erst.c
-index ba751dc60e..b2f1b13630 100644
---- a/hw/acpi/erst.c
-+++ b/hw/acpi/erst.c
-@@ -932,7 +932,7 @@ static const VMStateDescription erst_vmstate  = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .post_load = erst_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(operation, ERSTDeviceState),
-         VMSTATE_UINT8(busy_status, ERSTDeviceState),
-         VMSTATE_UINT8(command_status, ERSTDeviceState),
-diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index a3d31631fe..2d6e91b124 100644
---- a/hw/acpi/generic_event_device.c
-+++ b/hw/acpi/generic_event_device.c
-@@ -312,7 +312,7 @@ static const VMStateDescription vmstate_memhp_state = {
-     .name = "acpi-ged/memhp",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_MEMORY_HOTPLUG(memhp_state, AcpiGedState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -322,7 +322,7 @@ static const VMStateDescription vmstate_ged_state = {
-     .name = "acpi-ged-state",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(sel, GEDState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -332,7 +332,7 @@ static const VMStateDescription vmstate_ghes = {
-     .name = "acpi-ghes",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields     = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(ghes_addr_le, AcpiGhesState),
-         VMSTATE_END_OF_LIST()
-     },
-@@ -349,7 +349,7 @@ static const VMStateDescription vmstate_ghes_state = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = ghes_needed,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(ghes_state, AcpiGedState, 1,
-                        vmstate_ghes, AcpiGhesState),
-         VMSTATE_END_OF_LIST()
-@@ -360,11 +360,11 @@ static const VMStateDescription vmstate_acpi_ged = {
-     .name = "acpi-ged",
+diff --git a/hw/adc/aspeed_adc.c b/hw/adc/aspeed_adc.c
+index 0d29663129..68bdbc73b0 100644
+--- a/hw/adc/aspeed_adc.c
++++ b/hw/adc/aspeed_adc.c
+@@ -280,7 +280,7 @@ static const VMStateDescription vmstate_aspeed_adc_engine = {
+     .name = TYPE_ASPEED_ADC,
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(ged_state, AcpiGedState, 1, vmstate_ged_state, GEDState),
+         VMSTATE_UINT32_ARRAY(regs, AspeedADCEngineState, ASPEED_ADC_NR_REGS),
          VMSTATE_END_OF_LIST(),
-     },
--    .subsections = (const VMStateDescription * []) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_memhp_state,
-         &vmstate_ghes_state,
-         NULL
-diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-index 25e2c7243e..573d032e8e 100644
---- a/hw/acpi/ich9.c
-+++ b/hw/acpi/ich9.c
-@@ -164,7 +164,7 @@ static const VMStateDescription vmstate_memhp_state = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = vmstate_test_use_memhp,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_MEMORY_HOTPLUG(acpi_memory_hotplug, ICH9LPCPMRegs),
-         VMSTATE_END_OF_LIST()
      }
-@@ -181,7 +181,7 @@ static const VMStateDescription vmstate_tco_io_state = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = vmstate_test_use_tco,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(tco_regs, ICH9LPCPMRegs, 1, vmstate_tco_io_sts,
-                        TCOIORegs),
-         VMSTATE_END_OF_LIST()
-@@ -208,7 +208,7 @@ static const VMStateDescription vmstate_cpuhp_state = {
-     .minimum_version_id = 1,
-     .needed = vmstate_test_use_cpuhp,
-     .pre_load = vmstate_cpuhp_pre_load,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_CPU_HOTPLUG(cpuhp_state, ICH9LPCPMRegs),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -226,7 +226,7 @@ static const VMStateDescription vmstate_pcihp_state = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = vmstate_test_use_pcihp,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_HOTPLUG(acpi_pci_hotplug,
-                             ICH9LPCPMRegs,
-                             NULL, NULL),
-@@ -239,7 +239,7 @@ const VMStateDescription vmstate_ich9_pm = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .post_load = ich9_pm_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(acpi_regs.pm1.evt.sts, ICH9LPCPMRegs),
-         VMSTATE_UINT16(acpi_regs.pm1.evt.en, ICH9LPCPMRegs),
-         VMSTATE_UINT16(acpi_regs.pm1.cnt.cnt, ICH9LPCPMRegs),
-@@ -251,7 +251,7 @@ const VMStateDescription vmstate_ich9_pm = {
-         VMSTATE_UINT32(smi_sts, ICH9LPCPMRegs),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_memhp_state,
-         &vmstate_tco_io_state,
-         &vmstate_cpuhp_state,
-diff --git a/hw/acpi/ich9_tco.c b/hw/acpi/ich9_tco.c
-index 1540f4fd46..81606219f7 100644
---- a/hw/acpi/ich9_tco.c
-+++ b/hw/acpi/ich9_tco.c
-@@ -254,7 +254,7 @@ const VMStateDescription vmstate_tco_io_sts = {
-     .name = "tco io device status",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT16(tco.rld, TCOIORegs),
-         VMSTATE_UINT8(tco.din, TCOIORegs),
-         VMSTATE_UINT8(tco.dout, TCOIORegs),
-diff --git a/hw/acpi/memory_hotplug.c b/hw/acpi/memory_hotplug.c
-index 0b883df813..de6f974ebb 100644
---- a/hw/acpi/memory_hotplug.c
-+++ b/hw/acpi/memory_hotplug.c
-@@ -317,7 +317,7 @@ static const VMStateDescription vmstate_memhp_sts = {
-     .name = "memory hotplug device state",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BOOL(is_enabled, MemStatus),
-         VMSTATE_BOOL(is_inserting, MemStatus),
-         VMSTATE_UINT32(ost_event, MemStatus),
-@@ -330,7 +330,7 @@ const VMStateDescription vmstate_memory_hotplug = {
-     .name = "memory hotplug state",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(selector, MemHotplugState),
-         VMSTATE_STRUCT_VARRAY_POINTER_UINT32(devs, MemHotplugState, dev_count,
-                                              vmstate_memhp_sts, MemStatus),
-diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-index 4f75c873e2..5f79c9016b 100644
---- a/hw/acpi/pcihp.c
-+++ b/hw/acpi/pcihp.c
-@@ -517,7 +517,7 @@ const VMStateDescription vmstate_acpi_pcihp_pci_status = {
-     .name = "acpi_pcihp_pci_status",
+diff --git a/hw/adc/max111x.c b/hw/adc/max111x.c
+index e8bf4cccd4..957d177e1c 100644
+--- a/hw/adc/max111x.c
++++ b/hw/adc/max111x.c
+@@ -96,7 +96,7 @@ static const VMStateDescription vmstate_max111x = {
+     .name = "max111x",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(up, AcpiPciHpPciStatus),
-         VMSTATE_UINT32(down, AcpiPciHpPciStatus),
-         VMSTATE_END_OF_LIST()
-diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
-index dd523d2e4c..debe1adb84 100644
---- a/hw/acpi/piix4.c
-+++ b/hw/acpi/piix4.c
-@@ -147,7 +147,7 @@ static const VMStateDescription vmstate_gpe = {
-     .name = "gpe",
+         VMSTATE_SSI_PERIPHERAL(parent_obj, MAX111xState),
+         VMSTATE_UINT8(tb1, MAX111xState),
+         VMSTATE_UINT8(rb2, MAX111xState),
+diff --git a/hw/adc/npcm7xx_adc.c b/hw/adc/npcm7xx_adc.c
+index bc6f3f55e6..c6647eec6d 100644
+--- a/hw/adc/npcm7xx_adc.c
++++ b/hw/adc/npcm7xx_adc.c
+@@ -253,7 +253,7 @@ static const VMStateDescription vmstate_npcm7xx_adc = {
+     .name = "npcm7xx-adc",
+     .version_id = 0,
+     .minimum_version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_TIMER(conv_timer, NPCM7xxADCState),
+         VMSTATE_UINT32(con, NPCM7xxADCState),
+         VMSTATE_UINT32(data, NPCM7xxADCState),
+diff --git a/hw/adc/stm32f2xx_adc.c b/hw/adc/stm32f2xx_adc.c
+index 01a0b14e69..e9df6ea53f 100644
+--- a/hw/adc/stm32f2xx_adc.c
++++ b/hw/adc/stm32f2xx_adc.c
+@@ -254,7 +254,7 @@ static const VMStateDescription vmstate_stm32f2xx_adc = {
+     .name = TYPE_STM32F2XX_ADC,
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_GPE_ARRAY(sts, ACPIGPE),
-         VMSTATE_GPE_ARRAY(en, ACPIGPE),
-         VMSTATE_END_OF_LIST()
-@@ -158,7 +158,7 @@ static const VMStateDescription vmstate_pci_status = {
-     .name = "pci_status",
+         VMSTATE_UINT32(adc_sr, STM32F2XXADCState),
+         VMSTATE_UINT32(adc_cr1, STM32F2XXADCState),
+         VMSTATE_UINT32(adc_cr2, STM32F2XXADCState),
+diff --git a/hw/adc/zynq-xadc.c b/hw/adc/zynq-xadc.c
+index 032e19cbd0..34268319a4 100644
+--- a/hw/adc/zynq-xadc.c
++++ b/hw/adc/zynq-xadc.c
+@@ -269,7 +269,7 @@ static const VMStateDescription vmstate_zynq_xadc = {
+     .name = "zynq-xadc",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(up, struct AcpiPciHpPciStatus),
-         VMSTATE_UINT32(down, struct AcpiPciHpPciStatus),
-         VMSTATE_END_OF_LIST()
-@@ -189,7 +189,7 @@ static const VMStateDescription vmstate_memhp_state = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = vmstate_test_use_memhp,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_MEMORY_HOTPLUG(acpi_memory_hotplug, PIIX4PMState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -214,7 +214,7 @@ static const VMStateDescription vmstate_cpuhp_state = {
-     .minimum_version_id = 1,
-     .needed = vmstate_test_use_cpuhp,
-     .pre_load = vmstate_cpuhp_pre_load,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_CPU_HOTPLUG(cpuhp_state, PIIX4PMState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -247,7 +247,7 @@ static const VMStateDescription vmstate_acpi = {
-     .version_id = 3,
-     .minimum_version_id = 3,
-     .post_load = vmstate_acpi_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, PIIX4PMState),
-         VMSTATE_UINT16(ar.pm1.evt.sts, PIIX4PMState),
-         VMSTATE_UINT16(ar.pm1.evt.en, PIIX4PMState),
-@@ -269,7 +269,7 @@ static const VMStateDescription vmstate_acpi = {
-                             vmstate_test_migrate_acpi_index),
-         VMSTATE_END_OF_LIST()
-     },
--    .subsections = (const VMStateDescription*[]) {
-+    .subsections = (const VMStateDescription * const []) {
-          &vmstate_memhp_state,
-          &vmstate_cpuhp_state,
-          NULL
-diff --git a/hw/acpi/vmgenid.c b/hw/acpi/vmgenid.c
-index a39315c1b3..e63c8af4c3 100644
---- a/hw/acpi/vmgenid.c
-+++ b/hw/acpi/vmgenid.c
-@@ -178,7 +178,7 @@ static const VMStateDescription vmstate_vmgenid = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .post_load = vmgenid_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8_ARRAY(vmgenid_addr_le, VmGenIdState, sizeof(uint64_t)),
-         VMSTATE_END_OF_LIST()
-     },
+         VMSTATE_UINT32_ARRAY(regs, ZynqXADCState, ZYNQ_XADC_NUM_IO_REGS),
+         VMSTATE_UINT16_ARRAY(xadc_regs, ZynqXADCState,
+                              ZYNQ_XADC_NUM_ADC_REGS),
 -- 
 2.34.1
 
