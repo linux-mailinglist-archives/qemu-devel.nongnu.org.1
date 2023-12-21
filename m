@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76FF81BD17
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:22:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A08981BCFB
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:21:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGMif-0007Zs-5v; Thu, 21 Dec 2023 12:20:25 -0500
+	id 1rGMih-0007ac-RO; Thu, 21 Dec 2023 12:20:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMid-0007Zi-Ve
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:23 -0500
+ id 1rGMif-0007aO-EB
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:25 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMic-0004Uv-08
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:23 -0500
+ id 1rGMid-0004V1-HR
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703179221;
+ s=mimecast20190719; t=1703179222;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kWX1izeVukWi7Nfv8LDo3lFb0JpfVrIp/K6uYQjHhN0=;
- b=eMB4BlirkE0pHZ1+Wn7lssVnl4D07W0T4HTffKb/UIRvJjU35vx+utkHfcoEqra/RkHZgi
- PTGlNww3bP/GcHqZV6P3+Bbu76fWYaR5diUsNeJZ/GKeApu/6A+O56uIo7vcZCHJHHp5Gm
- Ot1K7FQH1IEMmxmlwmNlFcq6WTc4O/U=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gTLf0x62GiI5BxwPBdezIXmvFXtexutkeWtRBMmG4JA=;
+ b=IJN4zIxeNpbyGTa3XDckYNfjBeaewjvVkmZt1YW3qRztrdZ1T11pnNs9G5PyX3vvQEBh8E
+ 2DlfdGb9vGELrFZ6pLNqV0ACVZmdeyXLjVqcezxEfGaN1BVXyE/UaJOSJ5jxOvlRQ4bs/K
+ uUS7/XFDRjFs7O06UR9WSzt8fWUCw6U=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-348-MeJzScT_PPCiFME36pyhWw-1; Thu, 21 Dec 2023 12:20:19 -0500
-X-MC-Unique: MeJzScT_PPCiFME36pyhWw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3368250f2a3so664078f8f.3
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:19 -0800 (PST)
+ us-mta-634-iZ0TaIJMPtOgwaxiEoSUNA-1; Thu, 21 Dec 2023 12:20:21 -0500
+X-MC-Unique: iZ0TaIJMPtOgwaxiEoSUNA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3368abe10c5so474613f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703179217; x=1703784017;
+ d=1e100.net; s=20230601; t=1703179219; x=1703784019;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kWX1izeVukWi7Nfv8LDo3lFb0JpfVrIp/K6uYQjHhN0=;
- b=cMif+rOxm8NfaVu/s5a3nlImtYVVpIcR+VcXj2uiNcvTgNFCIN0kjSRtthjxwYliYI
- vAw6Yg545Oh56x+ofX7ZTxMzDWn/eLXQaWHE9cQRFKIQ3CsDnmfJFYv5PxzAPlAq9j1O
- RwTUw/v7umUK/tMExod9yHtOUjM9AaFaaa7WsTdspVNOvMY0wpLTNoJhi2rf4VLSsygz
- eNlaGcBI1ifxoIFn8V6mzta3Ip0akjVCEH4LCSHTObUB2i5sC7p+QRRwmraEWcNaM/Em
- 4GB8PmsbSFACxNceNO9LqIvIIL5kubjx5dI/ePbuVOykiU1hJNWRTir58VAY9g4rWkW9
- VUlA==
-X-Gm-Message-State: AOJu0Ywx+DpecFSPYWJyBOuyI1lJ5dp58sbJUpHgybHM1WQzBRGXEzma
- UQVv+dJ8+p0+tUCxmR+f6P4r2RfYFCLKzxNuIBoafPXtwj4hZ55ommwxZzpuQY0mYYT+p6jp+NQ
- QBE5dIcSd2jwao18pvFe/z8bO8Xy8Bf4/tPEVf5QQrl8TlQpH3BFoTyVZMgQijsSAcipbrTVXps
- gPPQZ/lOk=
-X-Received: by 2002:a5d:5692:0:b0:336:71a7:cdf with SMTP id
- f18-20020a5d5692000000b0033671a70cdfmr28699wrv.229.1703179217548; 
- Thu, 21 Dec 2023 09:20:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHVVs81izvpIuP/zeHPKruwEBPm76BIR9pXjOqjORH8U8Ert9dY4+xQm4I9tPTVKLS7sUaLnw==
-X-Received: by 2002:a5d:5692:0:b0:336:71a7:cdf with SMTP id
- f18-20020a5d5692000000b0033671a70cdfmr28695wrv.229.1703179217075; 
- Thu, 21 Dec 2023 09:20:17 -0800 (PST)
+ bh=gTLf0x62GiI5BxwPBdezIXmvFXtexutkeWtRBMmG4JA=;
+ b=BgzK33imWZ25QQHK9Sv4RUI7giQLqbdwxyk07EIURQYScAfqYGqc2cM266Aw4LANWS
+ 3tH2nrG4bQ57XnmaOxGmoUSEghytaVCRluDj9d/O8nmm01lqhbm0+lvd/k8GoC+xWkxT
+ T3JaUQ/0i1HU5i4r50jQdMdqKoTWVDEQMRYvuKulAE0PkxUO8JYTE2nmbCgxaPUslh3h
+ K1Aamgqk6UdjRwi7HavLbgAbn4VXbgwZJ6oBmnldpF7YWA2wbBAXC3zbvMSTua4SE/MC
+ rmMKOf25X47gHIaMtmCHpqcGlcghPRHdULYxwGYJY7j9Ev6P436Bm8OK7a3RBfiwn+Wh
+ 9r1Q==
+X-Gm-Message-State: AOJu0YywL+yhn5BjaMoZTfWxDnGbXIwNOr5LpSmjhtGjp14UTJBgt5kZ
+ 37h5+UJWfyaOGWSq8NpWiefodHA+4DREo/3lV7Fa9siRWgaMtZC0+GSnFyGYdkw2u8ZGODOLbCS
+ VeW6wlPnvEnpZWtDYu09FcuX/7IcbHEvyd0K4l/PzuVpWGe3GBROw/4zC6B+SfyFBt5WGNxydLo
+ WSGmV1T3M=
+X-Received: by 2002:adf:ed46:0:b0:336:841c:c358 with SMTP id
+ u6-20020adfed46000000b00336841cc358mr42785wro.155.1703179219535; 
+ Thu, 21 Dec 2023 09:20:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHE/LMW6oTzMZc1EnwJMYW/1RsxXDrQE+LEM6s4PDlQ846WtjBU2cKdo3ZW7n2HcFRQ7aJx9g==
+X-Received: by 2002:adf:ed46:0:b0:336:841c:c358 with SMTP id
+ u6-20020adfed46000000b00336841cc358mr42778wro.155.1703179219138; 
+ Thu, 21 Dec 2023 09:20:19 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- c18-20020a5d4f12000000b00336788c812fsm2455678wru.88.2023.12.21.09.20.16
+ e4-20020a5d6d04000000b003367433118bsm2474452wrq.78.2023.12.21.09.20.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 09:20:16 -0800 (PST)
+ Thu, 21 Dec 2023 09:20:17 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 09/21] meson: remove CONFIG_POSIX and CONFIG_WIN32 from
- config_targetos
-Date: Thu, 21 Dec 2023 18:19:46 +0100
-Message-ID: <20231221171958.59350-10-pbonzini@redhat.com>
+Subject: [PATCH 10/21] meson: remove config_targetos
+Date: Thu, 21 Dec 2023 18:19:47 +0100
+Message-ID: <20231221171958.59350-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231221171958.59350-1-pbonzini@redhat.com>
 References: <20231221171958.59350-1-pbonzini@redhat.com>
@@ -102,274 +101,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For consistency with other OSes, use if...endif for rules that are
-target-independent.
+config_targetos is now empty and can be removed; its use in sourcesets
+that do not involve target-specific files can be replaced with an empty
+dictionary.
+
+In fact, at this point *all* sourcesets that do not involve
+target-specific files are just glorified mutable arrays.  Enforce that
+they never test for symbols in "when:" by computing the set of files
+without "strict: false".
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- backends/meson.build |  6 ++++--
- block/meson.build    |  7 +++++--
- chardev/meson.build  | 26 ++++++++++++++------------
- hw/usb/meson.build   |  4 +++-
- meson.build          | 11 ++++++-----
- qga/meson.build      | 33 ++++++++++++++++++---------------
- ui/meson.build       |  8 ++++++--
- util/meson.build     | 44 +++++++++++++++++++++++---------------------
- 8 files changed, 79 insertions(+), 60 deletions(-)
+ chardev/meson.build        |  2 +-
+ gdbstub/meson.build        |  4 ++--
+ meson.build                | 24 ++++++++++--------------
+ qga/meson.build            |  2 +-
+ storage-daemon/meson.build |  2 +-
+ tcg/meson.build            |  2 +-
+ tests/qtest/meson.build    |  2 +-
+ 7 files changed, 17 insertions(+), 21 deletions(-)
 
-diff --git a/backends/meson.build b/backends/meson.build
-index 248ce4923c6..6dee4e9203b 100644
---- a/backends/meson.build
-+++ b/backends/meson.build
-@@ -10,8 +10,10 @@ system_ss.add([files(
-   'confidential-guest-support.c',
- ), numa])
- 
--system_ss.add(when: 'CONFIG_POSIX', if_true: files('rng-random.c'))
--system_ss.add(when: 'CONFIG_POSIX', if_true: files('hostmem-file.c'))
-+if targetos != 'windows'
-+  system_ss.add(files('rng-random.c'))
-+  system_ss.add(files('hostmem-file.c'))
-+endif
- if targetos == 'linux'
-   system_ss.add(files('hostmem-memfd.c'))
- endif
-diff --git a/block/meson.build b/block/meson.build
-index 7faed96c1e7..ddea1e40070 100644
---- a/block/meson.build
-+++ b/block/meson.build
-@@ -88,8 +88,11 @@ if get_option('parallels').allowed()
-   block_ss.add(files('parallels.c', 'parallels-ext.c'))
- endif
- 
--block_ss.add(when: 'CONFIG_WIN32', if_true: files('file-win32.c', 'win32-aio.c'))
--block_ss.add(when: 'CONFIG_POSIX', if_true: [files('file-posix.c'), coref, iokit])
-+if targetos == 'windows'
-+  block_ss.add(files('file-win32.c', 'win32-aio.c'))
-+else
-+  block_ss.add(files('file-posix.c'), coref, iokit)
-+endif
- block_ss.add(when: libiscsi, if_true: files('iscsi-opts.c'))
- if targetos == 'linux'
-   block_ss.add(files('nvme.c'))
 diff --git a/chardev/meson.build b/chardev/meson.build
-index 6d56ad32fdb..9564ace868b 100644
+index 9564ace868b..db6840b71af 100644
 --- a/chardev/meson.build
 +++ b/chardev/meson.build
-@@ -12,20 +12,22 @@ chardev_ss.add(files(
-   'char-udp.c',
-   'char.c',
- ))
--chardev_ss.add(when: 'CONFIG_POSIX', if_true: [files(
--  'char-fd.c',
--  'char-pty.c',
--), util])
--if targetos in ['linux', 'gnu/kfreebsd', 'freebsd', 'dragonfly']
--  chardev_ss.add(files('char-parallel.c'))
-+if targetos == 'windows'
-+  chardev_ss.add(files(
-+    'char-console.c',
-+    'char-win-stdio.c',
-+    'char-win.c',
-+  ))
-+else
-+  chardev_ss.add(files(
-+      'char-fd.c',
-+      'char-pty.c',
-+    ), util)
-+  if targetos in ['linux', 'gnu/kfreebsd', 'freebsd', 'dragonfly']
-+    chardev_ss.add(files('char-parallel.c'))
-+  endif
+@@ -28,7 +28,7 @@ else
+   endif
  endif
  
--chardev_ss.add(when: 'CONFIG_WIN32', if_true: files(
--  'char-console.c',
--  'char-win-stdio.c',
--  'char-win.c',
--))
--
- chardev_ss = chardev_ss.apply(config_targetos, strict: false)
+-chardev_ss = chardev_ss.apply(config_targetos, strict: false)
++chardev_ss = chardev_ss.apply({})
  
  system_ss.add(files(
-diff --git a/hw/usb/meson.build b/hw/usb/meson.build
-index 4b44db39cd3..b7755b638fc 100644
---- a/hw/usb/meson.build
-+++ b/hw/usb/meson.build
-@@ -44,7 +44,9 @@ system_ss.add(when: 'CONFIG_USB_STORAGE_UAS', if_true: files('dev-uas.c'))
- system_ss.add(when: 'CONFIG_USB_AUDIO', if_true: files('dev-audio.c'))
- system_ss.add(when: 'CONFIG_USB_SERIAL', if_true: files('dev-serial.c'))
- system_ss.add(when: 'CONFIG_USB_NETWORK', if_true: files('dev-network.c'))
--system_ss.add(when: ['CONFIG_POSIX', 'CONFIG_USB_STORAGE_MTP'], if_true: files('dev-mtp.c'))
-+if targetos != 'windows'
-+  system_ss.add(when: 'CONFIG_USB_STORAGE_MTP', if_true: files('dev-mtp.c'))
-+endif
+     'char-hmp-cmds.c',
+diff --git a/gdbstub/meson.build b/gdbstub/meson.build
+index e5bccba34e5..da5721d8452 100644
+--- a/gdbstub/meson.build
++++ b/gdbstub/meson.build
+@@ -14,8 +14,8 @@ gdb_system_ss = ss.source_set()
+ gdb_user_ss.add(files('gdbstub.c', 'user.c'))
+ gdb_system_ss.add(files('gdbstub.c', 'system.c'))
  
- # smartcard
- system_ss.add(when: 'CONFIG_USB_SMARTCARD', if_true: files('dev-smartcard-reader.c'))
+-gdb_user_ss = gdb_user_ss.apply(config_targetos, strict: false)
+-gdb_system_ss = gdb_system_ss.apply(config_targetos, strict: false)
++gdb_user_ss = gdb_user_ss.apply({})
++gdb_system_ss = gdb_system_ss.apply({})
+ 
+ libgdb_user = static_library('gdb_user',
+                              gdb_user_ss.sources() + genh,
 diff --git a/meson.build b/meson.build
-index ac11adc6c13..0a0c68050e7 100644
+index 0a0c68050e7..48d619e0611 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2840,9 +2840,7 @@ endif
+@@ -2840,7 +2840,6 @@ endif
  ########################
  
  minikconf = find_program('scripts/minikconf.py')
--config_targetos = {
--  (targetos == 'windows' ? 'CONFIG_WIN32' : 'CONFIG_POSIX'): 'y'
--}
-+config_targetos = {}
+-config_targetos = {}
  
  config_all = {}
  config_all_devices = {}
-@@ -3456,8 +3454,11 @@ if have_block
+@@ -3039,7 +3038,6 @@ target_dirs = actual_target_dirs
+ # pseudo symbol replaces it.
  
-   # os-posix.c contains POSIX-specific functions used by qemu-storage-daemon,
-   # os-win32.c does not
--  blockdev_ss.add(when: 'CONFIG_POSIX', if_true: files('os-posix.c'))
--  system_ss.add(when: 'CONFIG_WIN32', if_true: [files('os-win32.c')])
-+  if targetos == 'windows'
-+    system_ss.add(files('os-win32.c'))
-+  else
-+    blockdev_ss.add(files('os-posix.c'))
-+  endif
+ config_all += config_all_devices
+-config_all += config_targetos
+ config_all += config_all_disas
+ config_all += {
+   'CONFIG_XEN': xen.found(),
+@@ -3389,7 +3387,7 @@ if enable_modules
+   modulecommon = declare_dependency(link_whole: libmodulecommon, compile_args: '-DBUILD_DSO')
  endif
  
- common_ss.add(files('cpu-common.c'))
+-qom_ss = qom_ss.apply(config_targetos, strict: false)
++qom_ss = qom_ss.apply({})
+ libqom = static_library('qom', qom_ss.sources() + genh,
+                         dependencies: [qom_ss.dependencies()],
+                         name_suffix: 'fa',
+@@ -3404,10 +3402,10 @@ event_loop_base = static_library('event-loop-base',
+ event_loop_base = declare_dependency(link_whole: event_loop_base,
+                                      dependencies: [qom])
+ 
+-stub_ss = stub_ss.apply(config_all, strict: false)
++stub_ss = stub_ss.apply({})
+ 
+ util_ss.add_all(trace_ss)
+-util_ss = util_ss.apply(config_all, strict: false)
++util_ss = util_ss.apply({})
+ libqemuutil = static_library('qemuutil',
+                              build_by_default: false,
+                              sources: util_ss.sources() + stub_ss.sources() + genh,
+@@ -3570,7 +3568,6 @@ foreach d, list : target_modules
+       foreach target : target_dirs
+         if target.endswith('-softmmu')
+           config_target = config_target_mak[target]
+-          config_target += config_targetos
+           target_inc = [include_directories('target' / config_target['TARGET_BASE_ARCH'])]
+           c_args = ['-DNEED_CPU_H',
+                     '-DCONFIG_TARGET="@0@-config-target.h"'.format(target),
+@@ -3631,7 +3628,7 @@ qemu_syms = custom_target('qemu.syms', output: 'qemu.syms',
+                              capture: true,
+                              command: [undefsym, nm, '@INPUT@'])
+ 
+-authz_ss = authz_ss.apply(config_targetos, strict: false)
++authz_ss = authz_ss.apply({})
+ libauthz = static_library('authz', authz_ss.sources() + genh,
+                           dependencies: [authz_ss.dependencies()],
+                           name_suffix: 'fa',
+@@ -3640,7 +3637,7 @@ libauthz = static_library('authz', authz_ss.sources() + genh,
+ authz = declare_dependency(link_whole: libauthz,
+                            dependencies: qom)
+ 
+-crypto_ss = crypto_ss.apply(config_targetos, strict: false)
++crypto_ss = crypto_ss.apply({})
+ libcrypto = static_library('crypto', crypto_ss.sources() + genh,
+                            dependencies: [crypto_ss.dependencies()],
+                            name_suffix: 'fa',
+@@ -3649,7 +3646,7 @@ libcrypto = static_library('crypto', crypto_ss.sources() + genh,
+ crypto = declare_dependency(link_whole: libcrypto,
+                             dependencies: [authz, qom])
+ 
+-io_ss = io_ss.apply(config_targetos, strict: false)
++io_ss = io_ss.apply({})
+ libio = static_library('io', io_ss.sources() + genh,
+                        dependencies: [io_ss.dependencies()],
+                        link_with: libqemuutil,
+@@ -3665,7 +3662,7 @@ migration = declare_dependency(link_with: libmigration,
+                                dependencies: [zlib, qom, io])
+ system_ss.add(migration)
+ 
+-block_ss = block_ss.apply(config_targetos, strict: false)
++block_ss = block_ss.apply({})
+ libblock = static_library('block', block_ss.sources() + genh,
+                           dependencies: block_ss.dependencies(),
+                           link_depends: block_syms,
+@@ -3676,7 +3673,7 @@ block = declare_dependency(link_whole: [libblock],
+                            link_args: '@block.syms',
+                            dependencies: [crypto, io])
+ 
+-blockdev_ss = blockdev_ss.apply(config_targetos, strict: false)
++blockdev_ss = blockdev_ss.apply({})
+ libblockdev = static_library('blockdev', blockdev_ss.sources() + genh,
+                              dependencies: blockdev_ss.dependencies(),
+                              name_suffix: 'fa',
+@@ -3685,7 +3682,7 @@ libblockdev = static_library('blockdev', blockdev_ss.sources() + genh,
+ blockdev = declare_dependency(link_whole: [libblockdev],
+                               dependencies: [block, event_loop_base])
+ 
+-qmp_ss = qmp_ss.apply(config_targetos, strict: false)
++qmp_ss = qmp_ss.apply({})
+ libqmp = static_library('qmp', qmp_ss.sources() + genh,
+                         dependencies: qmp_ss.dependencies(),
+                         name_suffix: 'fa',
+@@ -3700,7 +3697,7 @@ libchardev = static_library('chardev', chardev_ss.sources() + genh,
+ 
+ chardev = declare_dependency(link_whole: libchardev)
+ 
+-hwcore_ss = hwcore_ss.apply(config_targetos, strict: false)
++hwcore_ss = hwcore_ss.apply({})
+ libhwcore = static_library('hwcore', sources: hwcore_ss.sources() + genh,
+                            name_suffix: 'fa',
+                            build_by_default: false)
+@@ -3757,7 +3754,6 @@ foreach target : target_dirs
+             '-DCONFIG_DEVICES="@0@-config-devices.h"'.format(target)]
+   link_args = emulator_link_args
+ 
+-  config_target += config_targetos
+   target_inc = [include_directories('target' / config_target['TARGET_BASE_ARCH'])]
+   if targetos == 'linux'
+     target_inc += include_directories('linux-headers', is_system: true)
 diff --git a/qga/meson.build b/qga/meson.build
-index 50edaf1c3d4..1113e7c7fae 100644
+index 1113e7c7fae..66c0f1e56f8 100644
 --- a/qga/meson.build
 +++ b/qga/meson.build
-@@ -67,22 +67,25 @@ qga_ss.add(files(
-   'main.c',
-   'cutils.c',
- ))
--qga_ss.add(when: 'CONFIG_POSIX', if_true: files(
--  'channel-posix.c',
--  'commands-posix.c',
--  'commands-posix-ssh.c',
--))
--if targetos == 'linux'
--  qga_ss.add(files('commands-linux.c'))
--elif targetos in bsd_oses
--  qga_ss.add(files('commands-bsd.c'))
-+if targetos == 'windows'
-+  qga_ss.add(files(
-+    'channel-win32.c',
-+    'commands-win32.c',
-+    'service-win32.c',
-+    'vss-win32.c'
-+  ))
-+else
-+  qga_ss.add(files(
-+    'channel-posix.c',
-+    'commands-posix.c',
-+    'commands-posix-ssh.c',
-+  ))
-+  if targetos == 'linux'
-+    qga_ss.add(files('commands-linux.c'))
-+  elif targetos in bsd_oses
-+    qga_ss.add(files('commands-bsd.c'))
-+  endif
- endif
--qga_ss.add(when: 'CONFIG_WIN32', if_true: files(
--  'channel-win32.c',
--  'commands-win32.c',
--  'service-win32.c',
--  'vss-win32.c'
--))
- 
- qga_ss = qga_ss.apply(config_targetos, strict: false)
- 
-diff --git a/ui/meson.build b/ui/meson.build
-index 8379a788a1a..a370494c4ab 100644
---- a/ui/meson.build
-+++ b/ui/meson.build
-@@ -105,7 +105,9 @@ if dbus_display
+@@ -87,7 +87,7 @@ else
+   endif
  endif
  
- if gtk.found()
--  system_ss.add(when: 'CONFIG_WIN32', if_true: files('win32-kbd-hook.c'))
-+  if targetos == 'windows'
-+    system_ss.add(files('win32-kbd-hook.c'))
-+  endif
+-qga_ss = qga_ss.apply(config_targetos, strict: false)
++qga_ss = qga_ss.apply({})
  
-   gtk_ss = ss.source_set()
-   gtk_ss.add(gtk, vte, pixman, files('gtk.c'))
-@@ -119,7 +121,9 @@ if gtk.found()
+ gen_tlb = []
+ qga_libs = []
+diff --git a/storage-daemon/meson.build b/storage-daemon/meson.build
+index 5e90cd32b40..46267b63e72 100644
+--- a/storage-daemon/meson.build
++++ b/storage-daemon/meson.build
+@@ -5,7 +5,7 @@ qsd_ss.add(blockdev, chardev, qmp, qom, qemuutil, gnutls)
+ subdir('qapi')
+ 
+ if have_tools
+-  qsd_ss = qsd_ss.apply(config_targetos, strict: false)
++  qsd_ss = qsd_ss.apply({})
+   qsd = executable('qemu-storage-daemon',
+                    qsd_ss.sources(),
+                    dependencies: qsd_ss.dependencies(),
+diff --git a/tcg/meson.build b/tcg/meson.build
+index 895a11d3fa2..5afdec1e1ae 100644
+--- a/tcg/meson.build
++++ b/tcg/meson.build
+@@ -22,7 +22,7 @@ if get_option('tcg_interpreter')
+   tcg_ss.add(files('tci.c'))
  endif
  
- if sdl.found()
--  system_ss.add(when: 'CONFIG_WIN32', if_true: files('win32-kbd-hook.c'))
-+  if targetos == 'windows'
-+    system_ss.add(files('win32-kbd-hook.c'))
-+  endif
+-tcg_ss = tcg_ss.apply(config_targetos, strict: false)
++tcg_ss = tcg_ss.apply({})
  
-   sdl_ss = ss.source_set()
-   sdl_ss.add(sdl, sdl_image, pixman, glib, files(
-diff --git a/util/meson.build b/util/meson.build
-index 98dd7fa5340..4e970d2b488 100644
---- a/util/meson.build
-+++ b/util/meson.build
-@@ -3,28 +3,31 @@ util_ss.add(files('thread-context.c'), numa)
- if not config_host_data.get('CONFIG_ATOMIC64')
-   util_ss.add(files('atomic64.c'))
- endif
--util_ss.add(when: 'CONFIG_POSIX', if_true: files('aio-posix.c'))
--util_ss.add(when: 'CONFIG_POSIX', if_true: files('fdmon-poll.c'))
--if config_host_data.get('CONFIG_EPOLL_CREATE1')
--  util_ss.add(files('fdmon-epoll.c'))
-+if targetos != 'windows'
-+  util_ss.add(files('aio-posix.c'))
-+  util_ss.add(files('fdmon-poll.c'))
-+  if config_host_data.get('CONFIG_EPOLL_CREATE1')
-+    util_ss.add(files('fdmon-epoll.c'))
-+  endif
-+  util_ss.add(files('compatfd.c'))
-+  util_ss.add(files('event_notifier-posix.c'))
-+  util_ss.add(files('mmap-alloc.c'))
-+  freebsd_dep = []
-+  if targetos == 'freebsd'
-+    freebsd_dep = util
-+  endif
-+  util_ss.add(files('oslib-posix.c'), freebsd_dep)
-+  util_ss.add(files('qemu-thread-posix.c'))
-+  util_ss.add(files('memfd.c'))
-+  util_ss.add(files('drm.c'))
-+else
-+  util_ss.add(files('aio-win32.c'))
-+  util_ss.add(files('event_notifier-win32.c'))
-+  util_ss.add(files('oslib-win32.c'))
-+  util_ss.add(files('qemu-thread-win32.c'))
-+  util_ss.add(winmm, pathcch)
- endif
- util_ss.add(when: linux_io_uring, if_true: files('fdmon-io_uring.c'))
--util_ss.add(when: 'CONFIG_POSIX', if_true: files('compatfd.c'))
--util_ss.add(when: 'CONFIG_POSIX', if_true: files('event_notifier-posix.c'))
--util_ss.add(when: 'CONFIG_POSIX', if_true: files('mmap-alloc.c'))
--freebsd_dep = []
--if targetos == 'freebsd'
--  freebsd_dep = util
--endif
--util_ss.add(when: 'CONFIG_POSIX', if_true: [files('oslib-posix.c'), freebsd_dep])
--util_ss.add(when: 'CONFIG_POSIX', if_true: files('qemu-thread-posix.c'))
--util_ss.add(when: 'CONFIG_POSIX', if_true: files('memfd.c'))
--util_ss.add(when: 'CONFIG_WIN32', if_true: files('aio-win32.c'))
--util_ss.add(when: 'CONFIG_WIN32', if_true: files('event_notifier-win32.c'))
--util_ss.add(when: 'CONFIG_WIN32', if_true: files('oslib-win32.c'))
--util_ss.add(when: 'CONFIG_WIN32', if_true: files('qemu-thread-win32.c'))
--util_ss.add(when: 'CONFIG_WIN32', if_true: winmm)
--util_ss.add(when: 'CONFIG_WIN32', if_true: pathcch)
- if glib_has_gslice
-   util_ss.add(files('qtree.c'))
- endif
-@@ -56,7 +59,6 @@ util_ss.add(files('reserved-region.c'))
- util_ss.add(files('stats64.c'))
- util_ss.add(files('systemd.c'))
- util_ss.add(files('transactions.c'))
--util_ss.add(when: 'CONFIG_POSIX', if_true: files('drm.c'))
- util_ss.add(files('guest-random.c'))
- util_ss.add(files('yank.c'))
- util_ss.add(files('int128.c'))
+ libtcg_user = static_library('tcg_user',
+                              tcg_ss.sources() + genh,
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 47dabf91d04..40a8bb043e4 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -310,7 +310,7 @@ qtests = {
+   'ivshmem-test': [rt, '../../contrib/ivshmem-server/ivshmem-server.c'],
+   'migration-test': migration_files,
+   'pxe-test': files('boot-sector.c'),
+-  'qos-test': [chardev, io, qos_test_ss.apply(config_targetos, strict: false).sources()],
++  'qos-test': [chardev, io, qos_test_ss.apply({}).sources()],
+   'tpm-crb-swtpm-test': [io, tpmemu_files],
+   'tpm-crb-test': [io, tpmemu_files],
+   'tpm-tis-swtpm-test': [io, tpmemu_files, 'tpm-tis-util.c'],
 -- 
 2.43.0
 
