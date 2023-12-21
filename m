@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8D181B482
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F9D381B3F8
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:42:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGGam-0004j2-Dn; Thu, 21 Dec 2023 05:47:52 -0500
+	id 1rGGSV-0004eZ-JZ; Thu, 21 Dec 2023 05:39:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGaJ-0003yt-Hh
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:24 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1rGGS5-0004Cr-3J
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:53 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGZz-0007HN-5W
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:22 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40d2764c0f2so7624215e9.2
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:47:01 -0800 (PST)
+ id 1rGGRp-0004Ew-Qb
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:52 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40d3c4bfe45so6370425e9.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:38:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703155619; x=1703760419; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703155116; x=1703759916; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yeLMVf2eHHsXh0O15q4pkBIw3KoK3wQ6PmZ1CrbEex8=;
- b=VeHQuDbmCr07FxdfipNN5wwQkiM13BZe/nM2c6dlsWZO4rKRKKPBpezH/5GFC01aj7
- zELIjWbNQkmxrtfH2LD//SovO/6Z6/Bz56ZtS5fDUb1m5FmLflu5YoD8HBlzGOTuUi29
- ZbqTa2nIyYLjZpOha56axePn2K0Bw27DU4bAKgzExYKjHdC8HeeoCv9Gn1Om6l60Hgsj
- 7VULRlbVuXFD21FXb1h4HLSGcRbUCO4Bew7dC/qFqtefEeXRDCt3Wd49RT43D5lx7Lz2
- Y5R4lNiKleVJcAvv6/qQfxitORSavAHLhyLBkrfoSlwNgiiRgFAfUSSkH1W/WocQ38xY
- 3kRA==
+ bh=s7b3xpykHeaHl4suIRJtcydNJ+7RVLNIDOZxUbbJygc=;
+ b=G+ehFBDRblj27olzj/NwUs8DEHsY2/yLQA6gHtsOmWYL9CWlXzf9FUlGI3eHkJm4uL
+ CGPomfWqu+BccyDFVRKiaG8nhforXPm7LhvIwsJfYzDrNHWLIDAmV/rbPebq4Ndb7mSz
+ hG9BnYImz6dCL0vk4fYnsmm+aY1ojJRn3aFhcfdMRjkT2QNfT0OvfQWuag46/KGtV0nB
+ fkuHSeGxJJAmY0FZprhlbynYsy0lYAvon8o68WdT81n2fERW/GEmWYiDWdZ9dK4nxvhY
+ hv+syRnPkx0ED0VG6ngOpGUHSA/NGtZHJA/q9Ky5Adpet45qAIAcHRb5hm/50zFDoakJ
+ +PTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703155619; x=1703760419;
+ d=1e100.net; s=20230601; t=1703155116; x=1703759916;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yeLMVf2eHHsXh0O15q4pkBIw3KoK3wQ6PmZ1CrbEex8=;
- b=N++H5W/3bV3JFHYazxWqA5P1P8xQq35Mi86cd0Enm+64y8B9aBwIvh+1U1/AYoqxro
- PHtPCdx7WPZICKnknTpNlS6+q9zzp0NrL1tTOOQcHts/S5ElOWUvtZbc6IcpNfrEMTOO
- zp8gnYnZE+6C4NAgZaAkLTSQBd6oz0ngM2dvFAAgGOsPZ7TGA9ZaZNBtFBhxc3q9HeEL
- LEwyCWSlr25rjbcK/K25CD3EId/J5c+6qzlgjHv+gD7d6/Wzni5x8zDUxw1cwEK3IEJx
- nEUwq/8RTaSZJ1kZZN9lHVTUbH6NiPHQrvgvgykIWDqggWcNkoZSjUcOTnTh1S+bWMc7
- FfsQ==
-X-Gm-Message-State: AOJu0YygTO+MtrZmCW1KcXJC+6U3kZR72r11rmaz4+DqbBYjqyEj//6B
- uZgRQS7bgAV2xVkGR0a993fRJA==
-X-Google-Smtp-Source: AGHT+IEVU+rXY4D7YK709EJV0myfRmjEYWXRKslL1le8Ej+hwkCYYeVodLZcvo82uBVDTZ+8F1HpRw==
-X-Received: by 2002:a05:600c:4f0f:b0:40d:1435:5242 with SMTP id
- l15-20020a05600c4f0f00b0040d14355242mr625105wmq.112.1703155619382; 
- Thu, 21 Dec 2023 02:46:59 -0800 (PST)
+ bh=s7b3xpykHeaHl4suIRJtcydNJ+7RVLNIDOZxUbbJygc=;
+ b=WLCYjwQkEOmNkU89imyyQwdCA/tvO0sD6aVArUJwvKycl1fXisO6ffMg9ueBZsdp/P
+ vFBRZa/RRq4w8yTP8b8fXSx5waZS7hTqPyVyeIVxJAF9EUgD0R0lWbU0aRM+q4jmHxHo
+ Hj5qdYvZVS8kH7veKhp2cbI65ZbYBLbB0kRXu95T7PiVn6Qmmj62/r4SKlLmh3+Smkun
+ aEkLT+cQWH81i9kHoD1AFvJJhzCFG7DEhNNLHwOd7kQhj1N++u7BkBy8BnTqBZ8FGDJM
+ 7wzVkq/5nPhdjd5j5t4E26MpTZl6LEbgUBVn22wyx1TKXlvZT7F28DcKG3MO3IHGnNRs
+ 2XUw==
+X-Gm-Message-State: AOJu0Yx7Fhv0rHpBWGHaKRIXRoz74+gOGAX12TIel7jDrRf7DvZhzhOS
+ 5wRbVpxmKAWqzjxvJKHdz6aNPw==
+X-Google-Smtp-Source: AGHT+IEJFY0TNegQ8gBMNwMdtMslj8hcG5HCGVOLNYH0SVe7ysLZ/5iwVMZ21AIB7D29i8FeQJ3Aqg==
+X-Received: by 2002:a05:600c:a01b:b0:40d:382b:cc2b with SMTP id
+ jg27-20020a05600ca01b00b0040d382bcc2bmr281573wmb.326.1703155116107; 
+ Thu, 21 Dec 2023 02:38:36 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- iw11-20020a05600c54cb00b0040b3515cdf8sm2784929wmb.7.2023.12.21.02.46.58
+ l4-20020a05600c1d0400b0040d3276ba19sm2796728wms.25.2023.12.21.02.38.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 02:46:58 -0800 (PST)
+ Thu, 21 Dec 2023 02:38:34 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8F9E75F904;
+ by draig.lan (Postfix) with ESMTP id A72A25F909;
  Thu, 21 Dec 2023 10:38:22 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,23 +92,23 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Bin Meng <bin.meng@windriver.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 35/40] plugins: Use different helpers when reading registers
-Date: Thu, 21 Dec 2023 10:38:13 +0000
-Message-Id: <20231221103818.1633766-36-alex.bennee@linaro.org>
+Subject: [PATCH 36/40] gdbstub: expose api to find registers
+Date: Thu, 21 Dec 2023 10:38:14 +0000
+Message-Id: <20231221103818.1633766-37-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231221103818.1633766-1-alex.bennee@linaro.org>
 References: <20231221103818.1633766-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -125,188 +125,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Expose an internal API to QEMU to return all the registers for a vCPU.
+The list containing the details required to called gdb_read_register().
 
-This avoids optimizations incompatible when reading registers.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20231213-gdb-v17-12-777047380591@daynix.com>
+Based-on: <20231025093128.33116-15-akihiko.odaki@daynix.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- accel/tcg/plugin-helpers.h |  3 ++-
- include/qemu/plugin.h      |  1 +
- accel/tcg/plugin-gen.c     | 43 ++++++++++++++++++++++++++++++++++----
- plugins/api.c              | 12 +++++++++--
- 4 files changed, 52 insertions(+), 7 deletions(-)
 
-diff --git a/accel/tcg/plugin-helpers.h b/accel/tcg/plugin-helpers.h
-index 8e685e06545..11796436f35 100644
---- a/accel/tcg/plugin-helpers.h
-+++ b/accel/tcg/plugin-helpers.h
-@@ -1,4 +1,5 @@
- #ifdef CONFIG_PLUGIN
--DEF_HELPER_FLAGS_2(plugin_vcpu_udata_cb, TCG_CALL_NO_RWG | TCG_CALL_PLUGIN, void, i32, ptr)
-+DEF_HELPER_FLAGS_2(plugin_vcpu_udata_cb_no_wg, TCG_CALL_NO_WG | TCG_CALL_PLUGIN, void, i32, ptr)
-+DEF_HELPER_FLAGS_2(plugin_vcpu_udata_cb_no_rwg, TCG_CALL_NO_RWG | TCG_CALL_PLUGIN, void, i32, ptr)
- DEF_HELPER_FLAGS_4(plugin_vcpu_mem_cb, TCG_CALL_NO_RWG | TCG_CALL_PLUGIN, void, i32, i32, i64, ptr)
- #endif
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index 7fdc3a4849f..b0c5ac68293 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -73,6 +73,7 @@ enum plugin_dyn_cb_type {
- 
- enum plugin_dyn_cb_subtype {
-     PLUGIN_CB_REGULAR,
-+    PLUGIN_CB_REGULAR_R,
-     PLUGIN_CB_INLINE,
-     PLUGIN_N_CB_SUBTYPES,
- };
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 78b331b2510..b37ce7683e6 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -79,6 +79,7 @@ enum plugin_gen_from {
- 
- enum plugin_gen_cb {
-     PLUGIN_GEN_CB_UDATA,
-+    PLUGIN_GEN_CB_UDATA_R,
-     PLUGIN_GEN_CB_INLINE,
-     PLUGIN_GEN_CB_MEM,
-     PLUGIN_GEN_ENABLE_MEM_HELPER,
-@@ -90,7 +91,10 @@ enum plugin_gen_cb {
-  * These helpers are stubs that get dynamically switched out for calls
-  * direct to the plugin if they are subscribed to.
+---
+v2
+  - just make gdb_get_register_list return everything for a vCPU
+
+vAJB:
+
+This principle difference is the find registers is a single call which
+can return a) multiple registers and b) is agnostic to the gdb
+feature. This is because I haven't so far found any duplicate
+registers in the system so I thing the regname by itself should be
+enough. However I do expose the gdb feature name in case the caller
+wants to do some additional filtering.
+---
+ include/exec/gdbstub.h | 47 +++++++++++++++++++++++++++++++++++
+ gdbstub/gdbstub.c      | 56 +++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 102 insertions(+), 1 deletion(-)
+
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index da9ddfe54c5..7bddea8259e 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -111,6 +111,53 @@ void gdb_feature_builder_end(const GDBFeatureBuilder *builder);
   */
--void HELPER(plugin_vcpu_udata_cb)(uint32_t cpu_index, void *udata)
-+void HELPER(plugin_vcpu_udata_cb_no_wg)(uint32_t cpu_index, void *udata)
-+{ }
+ const GDBFeature *gdb_find_static_feature(const char *xmlname);
+ 
++/**
++ * gdb_find_feature() - Find a feature associated with a CPU.
++ * @cpu: The CPU associated with the feature.
++ * @name: The feature's name.
++ *
++ * Return: The feature's number.
++ */
++int gdb_find_feature(CPUState *cpu, const char *name);
 +
-+void HELPER(plugin_vcpu_udata_cb_no_rwg)(uint32_t cpu_index, void *udata)
- { }
++/**
++ * gdb_find_feature_register() - Find a register associated with a CPU.
++ * @cpu: The CPU associated with the register.
++ * @feature: The feature's number returned by gdb_find_feature().
++ * @name: The register's name.
++ *
++ * Return: The register's number.
++ */
++int gdb_find_feature_register(CPUState *cpu, int feature, const char *name);
++
++/**
++ * gdb_read_register() - Read a register associated with a CPU.
++ * @cpu: The CPU associated with the register.
++ * @buf: The buffer that the read register will be appended to.
++ * @reg: The register's number returned by gdb_find_feature_register().
++ *
++ * Return: The number of read bytes.
++ */
++int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
++
++/**
++ * typedef GDBRegDesc - a register description from gdbstub
++ */
++typedef struct {
++    int gdb_reg;
++    const char *name;
++    const char *feature_name;
++} GDBRegDesc;
++
++/**
++ * gdb_get_register_list() - Return list of all registers for CPU
++ * @cpu: The CPU being searched
++ *
++ * Returns a GArray of GDBRegDesc, caller frees array but not the
++ * const strings.
++ */
++GArray *gdb_get_register_list(CPUState *cpu);
++
+ void gdb_set_stop_cpu(CPUState *cpu);
  
- void HELPER(plugin_vcpu_mem_cb)(unsigned int vcpu_index,
-@@ -98,7 +102,7 @@ void HELPER(plugin_vcpu_mem_cb)(unsigned int vcpu_index,
-                                 void *userdata)
- { }
- 
--static void gen_empty_udata_cb(void)
-+static void gen_empty_udata_cb(void (*gen_helper)(TCGv_i32, TCGv_ptr))
- {
-     TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
-     TCGv_ptr udata = tcg_temp_ebb_new_ptr();
-@@ -106,12 +110,22 @@ static void gen_empty_udata_cb(void)
-     tcg_gen_movi_ptr(udata, 0);
-     tcg_gen_ld_i32(cpu_index, tcg_env,
-                    -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
--    gen_helper_plugin_vcpu_udata_cb(cpu_index, udata);
-+    gen_helper(cpu_index, udata);
- 
-     tcg_temp_free_ptr(udata);
-     tcg_temp_free_i32(cpu_index);
+ /* in gdbstub-xml.c, generated by scripts/feature_to_c.py */
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 420ab2a3766..b0230138246 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -490,7 +490,61 @@ const GDBFeature *gdb_find_static_feature(const char *xmlname)
+     g_assert_not_reached();
  }
  
-+static void gen_empty_udata_cb_no_wg(void)
+-static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
++int gdb_find_feature(CPUState *cpu, const char *name)
 +{
-+    gen_empty_udata_cb(gen_helper_plugin_vcpu_udata_cb_no_wg);
++    GDBRegisterState *r;
++
++    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
++        r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
++        if (!strcmp(name, r->feature->name)) {
++            return i;
++        }
++    }
++
++    return -1;
 +}
 +
-+static void gen_empty_udata_cb_no_rwg(void)
++int gdb_find_feature_register(CPUState *cpu, int feature, const char *name)
 +{
-+    gen_empty_udata_cb(gen_helper_plugin_vcpu_udata_cb_no_rwg);
++    GDBRegisterState *r;
++
++    r = &g_array_index(cpu->gdb_regs, GDBRegisterState, feature);
++
++    for (int i = 0; i < r->feature->num_regs; i++) {
++        if (r->feature->regs[i] && !strcmp(name, r->feature->regs[i])) {
++            return r->base_reg + i;
++        }
++    }
++
++    return -1;
 +}
 +
- /*
-  * For now we only support addi_i64.
-  * When we support more ops, we can generate one empty inline cb for each.
-@@ -192,7 +206,8 @@ static void plugin_gen_empty_callback(enum plugin_gen_from from)
-                     gen_empty_mem_helper);
-         /* fall through */
-     case PLUGIN_GEN_FROM_TB:
--        gen_wrapped(from, PLUGIN_GEN_CB_UDATA, gen_empty_udata_cb);
-+        gen_wrapped(from, PLUGIN_GEN_CB_UDATA, gen_empty_udata_cb_no_rwg);
-+        gen_wrapped(from, PLUGIN_GEN_CB_UDATA_R, gen_empty_udata_cb_no_wg);
-         gen_wrapped(from, PLUGIN_GEN_CB_INLINE, gen_empty_inline_cb);
-         break;
-     default:
-@@ -588,6 +603,12 @@ static void plugin_gen_tb_udata(const struct qemu_plugin_tb *ptb,
-     inject_udata_cb(ptb->cbs[PLUGIN_CB_REGULAR], begin_op);
- }
- 
-+static void plugin_gen_tb_udata_r(const struct qemu_plugin_tb *ptb,
-+                                  TCGOp *begin_op)
++GArray *gdb_get_register_list(CPUState *cpu)
 +{
-+    inject_udata_cb(ptb->cbs[PLUGIN_CB_REGULAR_R], begin_op);
++    GArray *results = g_array_new(true, true, sizeof(GDBRegDesc));
++
++    /* registers are only available once the CPU is initialised */
++    if (!cpu->gdb_regs) {
++        return results;
++    }
++
++    for (int f = 0; f < cpu->gdb_regs->len; f++) {
++        GDBRegisterState *r = &g_array_index(cpu->gdb_regs, GDBRegisterState, f);
++        for (int i = 0; i < r->feature->num_regs; i++) {
++            const char *name = r->feature->regs[i];
++            GDBRegDesc desc = {
++                r->base_reg + i,
++                name,
++                r->feature->name
++            };
++            g_array_append_val(results, desc);
++        }
++    }
++
++    return results;
 +}
 +
- static void plugin_gen_tb_inline(const struct qemu_plugin_tb *ptb,
-                                  TCGOp *begin_op)
++int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
  {
-@@ -602,6 +623,14 @@ static void plugin_gen_insn_udata(const struct qemu_plugin_tb *ptb,
-     inject_udata_cb(insn->cbs[PLUGIN_CB_INSN][PLUGIN_CB_REGULAR], begin_op);
- }
- 
-+static void plugin_gen_insn_udata_r(const struct qemu_plugin_tb *ptb,
-+                                    TCGOp *begin_op, int insn_idx)
-+{
-+    struct qemu_plugin_insn *insn = g_ptr_array_index(ptb->insns, insn_idx);
-+
-+    inject_udata_cb(insn->cbs[PLUGIN_CB_INSN][PLUGIN_CB_REGULAR_R], begin_op);
-+}
-+
- static void plugin_gen_insn_inline(const struct qemu_plugin_tb *ptb,
-                                    TCGOp *begin_op, int insn_idx)
- {
-@@ -721,6 +750,9 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
-                 case PLUGIN_GEN_CB_UDATA:
-                     plugin_gen_tb_udata(plugin_tb, op);
-                     break;
-+                case PLUGIN_GEN_CB_UDATA_R:
-+                    plugin_gen_tb_udata_r(plugin_tb, op);
-+                    break;
-                 case PLUGIN_GEN_CB_INLINE:
-                     plugin_gen_tb_inline(plugin_tb, op);
-                     break;
-@@ -737,6 +769,9 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
-                 case PLUGIN_GEN_CB_UDATA:
-                     plugin_gen_insn_udata(plugin_tb, op, insn_idx);
-                     break;
-+                case PLUGIN_GEN_CB_UDATA_R:
-+                    plugin_gen_insn_udata_r(plugin_tb, op, insn_idx);
-+                    break;
-                 case PLUGIN_GEN_CB_INLINE:
-                     plugin_gen_insn_inline(plugin_tb, op, insn_idx);
-                     break;
-diff --git a/plugins/api.c b/plugins/api.c
-index 5521b0ad36c..ac39cdea0b3 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -89,7 +89,11 @@ void qemu_plugin_register_vcpu_tb_exec_cb(struct qemu_plugin_tb *tb,
-                                           void *udata)
- {
-     if (!tb->mem_only) {
--        plugin_register_dyn_cb__udata(&tb->cbs[PLUGIN_CB_REGULAR],
-+        int index = flags == QEMU_PLUGIN_CB_R_REGS ||
-+                    flags == QEMU_PLUGIN_CB_RW_REGS ?
-+                    PLUGIN_CB_REGULAR_R : PLUGIN_CB_REGULAR;
-+
-+        plugin_register_dyn_cb__udata(&tb->cbs[index],
-                                       cb, flags, udata);
-     }
- }
-@@ -109,7 +113,11 @@ void qemu_plugin_register_vcpu_insn_exec_cb(struct qemu_plugin_insn *insn,
-                                             void *udata)
- {
-     if (!insn->mem_only) {
--        plugin_register_dyn_cb__udata(&insn->cbs[PLUGIN_CB_INSN][PLUGIN_CB_REGULAR],
-+        int index = flags == QEMU_PLUGIN_CB_R_REGS ||
-+                    flags == QEMU_PLUGIN_CB_RW_REGS ?
-+                    PLUGIN_CB_REGULAR_R : PLUGIN_CB_REGULAR;
-+
-+        plugin_register_dyn_cb__udata(&insn->cbs[PLUGIN_CB_INSN][index],
-                                       cb, flags, udata);
-     }
- }
+     CPUClass *cc = CPU_GET_CLASS(cpu);
+     GDBRegisterState *r;
 -- 
 2.39.2
 
