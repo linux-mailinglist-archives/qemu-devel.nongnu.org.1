@@ -2,101 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880F081B5BF
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 13:27:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DF981B5E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 13:30:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGI89-0002Ey-Cq; Thu, 21 Dec 2023 07:26:25 -0500
+	id 1rGIBS-0003LH-Pe; Thu, 21 Dec 2023 07:29:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rGI85-0002En-Oy
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 07:26:22 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rGI83-0005I9-Pk
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 07:26:21 -0500
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BLAP7cS017952; Thu, 21 Dec 2023 12:26:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=Kl3ttf8yuqZXtX2OSK2olNV7DSU+opMQw56qByuiubc=;
- b=DCj8mAIG+UKD4WvzlEakVwP0LMMQh/MmX7Ne+amhEXMIMmv4pLxNn8ZyATU8mk6QmXna
- rdwhFSosp3g1bsJVWdDeiu7+mQK2JNcOa1RvEktKYfZCKdeCseQO6aeGQkYW0T8xEaQb
- WbUkhV7dQGefvTZIiHYCVhjEvgKFU+veMF2040SejyNrAy+burZdjjNMAXagS2zv/IW6
- C8Q1X/NtHZQ7rnjmNtfPC+le5UnxtsAffu2wXf7qqlWvBuiHaWu3YZuGgxZHZaBQtKhK
- ZrZbKhfIk1Ci8iVQEuu//uFa5SAsoZxgN4qqZz187gTQTSxj/i8gf3RaZ06eVQhdlICA XQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v4h2cjcq9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Dec 2023 12:26:14 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BLC8qhB017686;
- Thu, 21 Dec 2023 12:26:14 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v4h2cjcpm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Dec 2023 12:26:14 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BL9UArr010885; Thu, 21 Dec 2023 12:26:13 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3v1q7nvts4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Dec 2023 12:26:12 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3BLCQAFS27656704
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 Dec 2023 12:26:11 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D495020040;
- Thu, 21 Dec 2023 12:26:10 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74D8720043;
- Thu, 21 Dec 2023 12:26:10 +0000 (GMT)
-Received: from heavy (unknown [9.171.70.156])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 21 Dec 2023 12:26:10 +0000 (GMT)
-Date: Thu, 21 Dec 2023 13:26:08 +0100
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, philmd@linaro.org
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH RFC] linux-user: Allow gdbstub to ignore page protection
-Message-ID: <w2uzdrhr6orfaauxtpqbg4o4z4fewkdfnze5zqoybzwdcc2z5t@fkpxdn7vmaeg>
-References: <20231215232908.1040209-1-iii@linux.ibm.com>
- <7f2c38bc-d3d8-4d22-867e-74330dcb2ab8@linaro.org>
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rGIBQ-0003L5-IZ
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 07:29:48 -0500
+Received: from mail-ej1-f52.google.com ([209.85.218.52])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rGIBO-0005w5-Bj
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 07:29:48 -0500
+Received: by mail-ej1-f52.google.com with SMTP id
+ a640c23a62f3a-a2345aaeb05so83553266b.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 04:29:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703161784; x=1703766584;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FYSrW4e2R55swzzhQ6ZzsNRAz1EEA70o2YjF96y5UjE=;
+ b=uyZTf4nctRM7pNQHGcrdcmoKXIsTSEgNYyIrzJsekqPI4ALiO7haCM3vpq6CpbZGmP
+ zm0bODg1PQ9IQCY3STeZwsLkTiNQHXrrI17NCxQR66f+TOb9cg9P7c3qIsyKJGOiS+4J
+ LCXOO0AIcnaOQjRiBhnjvjYyNacwHNLEhEIrS31ffZJ9Iznhx7g/8C6rqYsJV0/pXUFD
+ sam/ed0cGKVdLKH3MnN01XiPdacrlNvOsvHEPa5iFYYjbuqRW5/Bgbo7vAW7Mp2TFY8X
+ 3JUgI+WORRN/D9GDUFpyvF/fXSnxdct/XL38AGTLZQHteNMnevbPrtn1Ug452CtsOw3n
+ uIbA==
+X-Gm-Message-State: AOJu0YySkyC/Vn1RJsGVTbLJccaTRUyExtZUnJD6ytoq5eqnKJp7zV0Z
+ 4fInsbjcG9hMGh5jFDyYwmntYZEVukc=
+X-Google-Smtp-Source: AGHT+IHeXjajQjDHJHzpxMjX3Xt6rtHM86HRgForPSazb5NUz0IEmlZ7ZpUDIj7RsDtdNPWg8BSqYA==
+X-Received: by 2002:a17:906:2083:b0:a26:86c1:14f9 with SMTP id
+ 3-20020a170906208300b00a2686c114f9mr1602841ejq.69.1703161784355; 
+ Thu, 21 Dec 2023 04:29:44 -0800 (PST)
+Received: from fedora.. (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
+ by smtp.gmail.com with ESMTPSA id
+ w25-20020a170906481900b00a26ac253486sm276605ejq.134.2023.12.21.04.29.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 21 Dec 2023 04:29:43 -0800 (PST)
+From: Thomas Huth <huth@tuxfamily.org>
+To: qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH] hw/m68k/mcf5206: Embed m5206_timer_state in m5206_mbar_state
+Date: Thu, 21 Dec 2023 13:29:39 +0100
+Message-ID: <20231221122939.11001-1-huth@tuxfamily.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7f2c38bc-d3d8-4d22-867e-74330dcb2ab8@linaro.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: N160Z-5TnxJmh8HcyhG49hcn3WQc1AFP
-X-Proofpoint-GUID: 0_56T9G1SLJeqS5XBBDO88aGUeke2s4o
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-21_05,2023-12-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- suspectscore=0 spamscore=0 adultscore=0 malwarescore=0 phishscore=0
- mlxlogscore=999 priorityscore=1501 bulkscore=0 impostorscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312210093
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=209.85.218.52; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f52.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,59 +77,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 21, 2023 at 10:33:51AM +1100, Richard Henderson wrote:
-> On 12/16/23 10:24, Ilya Leoshkevich wrote:
-> > @@ -377,22 +379,42 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
-> >           flags = page_get_flags(page);
-> >           if (!(flags & PAGE_VALID))
-> >               return -1;
-> > +        prot = ((flags & PAGE_READ) ? PROT_READ : 0) |
-> > +               ((flags & PAGE_WRITE) ? PROT_WRITE : 0) |
-> > +               ((flags & PAGE_EXEC) ? PROT_EXEC : 0);
-> 
-> See target_to_host_prot where guest PROT_EXEC is mapped to host PROT_READ.
-> This should be
-> 
-> 	flags & (PAGE_READ | PAGE_EXEC) ? PROT_READ
+There's no need to explicitely allocate the memory here, we can
+simply embed it into the m5206_mbar_state instead.
 
-Oh, right. PROT_EXEC is rather set on code_gen_buffer.
+Signed-off-by: Thomas Huth <huth@tuxfamily.org>
+---
+ hw/m68k/mcf5206.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-> > +            if (!(prot & PROT_WRITE)) {
-> > +                if (target_mprotect(page, TARGET_PAGE_SIZE,
-> > +                                    prot | PROT_WRITE)) {
-> > +                    return -1;
-> > +                }
-> > +            }
-> >              /* XXX: this code should not depend on lock_user */
-> > -            if (!(p = lock_user(VERIFY_WRITE, addr, l, 0)))
-> > +            if (!(p = lock_user(VERIFY_NONE, addr, l, 0)))
-> >                  return -1;
-> >              memcpy(p, buf, l);
-> >              unlock_user(p, addr, l);
-> > +            if (!(prot & PROT_WRITE)) {
-> > +                if (target_mprotect(page, TARGET_PAGE_SIZE, prot)) {
-> > +                    return -1;
-> > +                }
-> > +            }
-> 
-> Is the mmap lock held here?  You're opening up a window in which a page may
-> be modified but we don't catch the modification to translation blocks.
+diff --git a/hw/m68k/mcf5206.c b/hw/m68k/mcf5206.c
+index a46a23538d..183fd3cc08 100644
+--- a/hw/m68k/mcf5206.c
++++ b/hw/m68k/mcf5206.c
+@@ -148,15 +148,11 @@ static void m5206_timer_write(m5206_timer_state *s, uint32_t addr, uint32_t val)
+     m5206_timer_update(s);
+ }
+ 
+-static m5206_timer_state *m5206_timer_init(qemu_irq irq)
++static void m5206_timer_init(m5206_timer_state *s, qemu_irq irq)
+ {
+-    m5206_timer_state *s;
+-
+-    s = g_new0(m5206_timer_state, 1);
+     s->timer = ptimer_init(m5206_timer_trigger, s, PTIMER_POLICY_LEGACY);
+     s->irq = irq;
+     m5206_timer_reset(s);
+-    return s;
+ }
+ 
+ /* System Integration Module.  */
+@@ -167,7 +163,7 @@ typedef struct {
+     M68kCPU *cpu;
+     MemoryRegion iomem;
+     qemu_irq *pic;
+-    m5206_timer_state *timer[2];
++    m5206_timer_state timer[2];
+     DeviceState *uart[2];
+     uint8_t scr;
+     uint8_t icr[14];
+@@ -293,9 +289,9 @@ static uint64_t m5206_mbar_read(m5206_mbar_state *s,
+                                 uint16_t offset, unsigned size)
+ {
+     if (offset >= 0x100 && offset < 0x120) {
+-        return m5206_timer_read(s->timer[0], offset - 0x100);
++        return m5206_timer_read(&s->timer[0], offset - 0x100);
+     } else if (offset >= 0x120 && offset < 0x140) {
+-        return m5206_timer_read(s->timer[1], offset - 0x120);
++        return m5206_timer_read(&s->timer[1], offset - 0x120);
+     } else if (offset >= 0x140 && offset < 0x160) {
+         return mcf_uart_read(s->uart[0], offset - 0x140, size);
+     } else if (offset >= 0x180 && offset < 0x1a0) {
+@@ -333,10 +329,10 @@ static void m5206_mbar_write(m5206_mbar_state *s, uint16_t offset,
+                              uint64_t value, unsigned size)
+ {
+     if (offset >= 0x100 && offset < 0x120) {
+-        m5206_timer_write(s->timer[0], offset - 0x100, value);
++        m5206_timer_write(&s->timer[0], offset - 0x100, value);
+         return;
+     } else if (offset >= 0x120 && offset < 0x140) {
+-        m5206_timer_write(s->timer[1], offset - 0x120, value);
++        m5206_timer_write(&s->timer[1], offset - 0x120, value);
+         return;
+     } else if (offset >= 0x140 && offset < 0x160) {
+         mcf_uart_write(s->uart[0], offset - 0x140, value, size);
+@@ -598,8 +594,8 @@ static void mcf5206_mbar_realize(DeviceState *dev, Error **errp)
+     sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
+ 
+     s->pic = qemu_allocate_irqs(m5206_mbar_set_irq, s, 14);
+-    s->timer[0] = m5206_timer_init(s->pic[9]);
+-    s->timer[1] = m5206_timer_init(s->pic[10]);
++    m5206_timer_init(&s->timer[0], s->pic[9]);
++    m5206_timer_init(&s->timer[1], s->pic[10]);
+     s->uart[0] = mcf_uart_create(s->pic[12], serial_hd(0));
+     s->uart[1] = mcf_uart_create(s->pic[13], serial_hd(1));
+ }
+-- 
+2.43.0
 
-I don't think so, I'll need to add it.
-
-> > +            if (!(prot & PROT_READ)) {
-> > +                if (target_mprotect(page, TARGET_PAGE_SIZE, prot | PROT_READ)) {
-> > +                    return -1;
-> > +                }
-> > +            }
-> 
-> I really really doubt you need to do this.  The page is not accessible, so
-> why expose it at all?  If you want to do this, I wonder if we should instead
-> be interacting with ptrace?
-
-Wouldn't this break when QEMU itself is being debugged? We would also
-need mounted /proc or a lot of peek calls. So I thought that if we
-could transparently remove and restore protection, it would be better.
-
-> r~
 
