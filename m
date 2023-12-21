@@ -2,94 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B3481ABC6
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 01:32:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A50581ABFF
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 02:09:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG6xs-0006iT-2Y; Wed, 20 Dec 2023 19:31:04 -0500
+	id 1rG7Xc-0003VT-93; Wed, 20 Dec 2023 20:08:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rG6xq-0006i7-2z; Wed, 20 Dec 2023 19:31:02 -0500
-Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rG6xo-0004Jm-7l; Wed, 20 Dec 2023 19:31:01 -0500
-Received: by mail-oo1-xc2d.google.com with SMTP id
- 006d021491bc7-5941f390701so145075eaf.1; 
- Wed, 20 Dec 2023 16:30:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1703118658; x=1703723458; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gsLYJg2hZc7F0qwDgzPFuWpomum0HMcuDk3P9PIyWak=;
- b=R3m/N8sHrvABiDNH7T+o4LNWgg/uVuDka9aDFocWARYhlNWb3ZosYGeWZ6Ls9pZGNz
- LJnxCQHnxO+0u1xh74a64V2AAuZGwgkRUZQRPJ0FsmKR4P06kDcs9SLKhpXzHBJr2fW+
- dB5c4ssaXn+s2q/SOEjvYHx2qmPLsuIPKsjJ4Jw/G+CIqe9elAXA/hj6ihVVb/5Z2vpv
- jI1VbG7AeB7SIYX0mwJtMVQxyDdB58o0t/xMdOj7gid8qutcC4E2hUe/aJP1ri4Nq7hO
- yCL9Kfl8rj7dQRuPLLFUhr5CatZ2lyuCrNdTUOoddQzVKWTI4YbzIZUidtk4wh2/VmYH
- qbMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703118658; x=1703723458;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gsLYJg2hZc7F0qwDgzPFuWpomum0HMcuDk3P9PIyWak=;
- b=WgIJo/QE3I3+VmYAXJu7gM+SpTB8jLFLLjR6BsA6eEdjhDjzetY5L74uxcjyrqcpQH
- RY+23EAVctesU/UpNYoYEYSliacp2gUpv/pC+xsgO/wC+eLZDHkr6MlQUpKBKSbR7x6Y
- +Y+7eSFLclfC7dgEY7l6vMwzApyPIRcNq12BMTuWietDVonz2eQN/NHLYy7lATcKFPir
- 8L82U+V+c2V+ozM8xfDATXzm4s3EAOdudfU9KmLQ++wo7VbG/uOEMeSfMP7NtcAgVud9
- /2ruepukvlG6M6sgdNpXOiU3Y7XPpap1xX6bZFy3f4gBdDsxaft9irD/oFmOVxpgVcOY
- 3AAg==
-X-Gm-Message-State: AOJu0YxjFw/Znk7r0KJKeck81OfqtVoTPgoduihvfvRBSKni1L+R8zCW
- 0PnyYi8x/7eCL4T/g8z5CUaDairKtM20E7IsNX4=
-X-Google-Smtp-Source: AGHT+IFr2kCDAuf8T/rPq/xadB+JkF67xILZSPiEQrvG9KM/GrW5v5DgiTcwvBzrMkZeS6ErYGGa4o4OCSAIOzhmuoQ=
-X-Received: by 2002:a4a:4b87:0:b0:593:ef7a:b7b2 with SMTP id
- q129-20020a4a4b87000000b00593ef7ab7b2mr2266100ooa.4.1703118658652; Wed, 20
- Dec 2023 16:30:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rG7XY-0003VD-M3
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 20:07:56 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rG7XU-00035g-NF
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 20:07:56 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Bx6ujej4NlQSwDAA--.15814S3;
+ Thu, 21 Dec 2023 09:07:43 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Dxjb7bj4Nl59YCAA--.8553S3; 
+ Thu, 21 Dec 2023 09:07:41 +0800 (CST)
+Subject: Re: [PATCH] hw/loongarch/virt: Align high memory base address with
+ super page size
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: qemu-devel@nongnu.org
+References: <20231127040231.4123715-1-maobibo@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <00615d01-3144-336f-62d6-3bce426aeef9@loongson.cn>
+Date: Thu, 21 Dec 2023 09:07:43 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <20231205182011.1976568-1-stefanha@redhat.com>
- <20231205182011.1976568-5-stefanha@redhat.com>
- <ZYG2mSe1JWnC0tq_@redhat.com> <ZYHew2poxuJJRyhC@redhat.com>
-In-Reply-To: <ZYHew2poxuJJRyhC@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 20 Dec 2023 19:30:45 -0500
-Message-ID: <CAJSP0QWkT3E+Xp_E4O9oa3iDh5wd_r3hHt0jUG6E2S3DAJafCg@mail.gmail.com>
-Subject: Re: [PATCH v2 04/14] aio: make
- aio_context_acquire()/aio_context_release() a no-op
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Cleber Rosa <crosa@redhat.com>, 
- Xie Changlong <xiechanglong.d@gmail.com>, Paul Durrant <paul@xen.org>,
- Ari Sundholm <ari@tuxera.com>, 
- Jason Wang <jasowang@redhat.com>, Eric Blake <eblake@redhat.com>,
- John Snow <jsnow@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Wen Congyang <wencongyang2@huawei.com>, 
- Alberto Garcia <berto@igalia.com>, Anthony Perard <anthony.perard@citrix.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, qemu-block@nongnu.org, 
- Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Coiby Xu <Coiby.Xu@gmail.com>, 
- Fabiano Rosas <farosas@suse.de>, Hanna Reitz <hreitz@redhat.com>,
- Zhang Chen <chen.zhang@intel.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Peter Xu <peterx@redhat.com>, 
- Emanuele Giuseppe Esposito <eesposit@redhat.com>, Fam Zheng <fam@euphon.net>,
- Leonardo Bras <leobras@redhat.com>, 
- David Hildenbrand <david@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>,
- xen-devel@lists.xenproject.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <20231127040231.4123715-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Dxjb7bj4Nl59YCAA--.8553S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Ar17Jw18WFykAFWDCw1xWFX_yoW8Gr47pa
+ s2yF4v9r48Gw1UG3W0qa45Xry7X397CF9F9ry7uryxCr909r1kuryjv3s09FyDX395WFy2
+ qFZ7trW2gayDZwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUU
+ UUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-1.41, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,89 +81,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 19 Dec 2023 at 13:20, Kevin Wolf <kwolf@redhat.com> wrote:
+ÔÚ 2023/11/27 ÏÂÎç12:02, Bibo Mao Ð´µÀ:
+> With LoongArch virt machine, there is low memory space with region
+> 0--0x10000000, and high memory space with started from 0x90000000.
+> High memory space is aligned with 256M, it will be better if it is
+> aligned with 1G, which is super page aligned for 4K page size.
 >
-> Am 19.12.2023 um 16:28 hat Kevin Wolf geschrieben:
-> > Am 05.12.2023 um 19:20 hat Stefan Hajnoczi geschrieben:
-> > > aio_context_acquire()/aio_context_release() has been replaced by
-> > > fine-grained locking to protect state shared by multiple threads. The
-> > > AioContext lock still plays the role of balancing locking in
-> > > AIO_WAIT_WHILE() and many functions in QEMU either require that the
-> > > AioContext lock is held or not held for this reason. In other words, the
-> > > AioContext lock is purely there for consistency with itself and serves
-> > > no real purpose anymore.
-> > >
-> > > Stop actually acquiring/releasing the lock in
-> > > aio_context_acquire()/aio_context_release() so that subsequent patches
-> > > can remove callers across the codebase incrementally.
-> > >
-> > > I have performed "make check" and qemu-iotests stress tests across
-> > > x86-64, ppc64le, and aarch64 to confirm that there are no failures as a
-> > > result of eliminating the lock.
-> > >
-> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > > Reviewed-by: Eric Blake <eblake@redhat.com>
-> > > Acked-by: Kevin Wolf <kwolf@redhat.com>
-> >
-> > I knew why I wasn't confident enough to give a R-b... This crashes
-> > qemu-storage-daemon in the qemu-iotests case graph-changes-while-io.
-> >
-> > qemu-storage-daemon: ../nbd/server.c:2542: nbd_co_receive_request: Assertion `client->recv_coroutine == qemu_coroutine_self()' failed.
-> >
-> > (gdb) bt
-> > #0  0x00007fdb00529884 in __pthread_kill_implementation () from /lib64/libc.so.6
-> > #1  0x00007fdb004d8afe in raise () from /lib64/libc.so.6
-> > #2  0x00007fdb004c187f in abort () from /lib64/libc.so.6
-> > #3  0x00007fdb004c179b in __assert_fail_base.cold () from /lib64/libc.so.6
-> > #4  0x00007fdb004d1187 in __assert_fail () from /lib64/libc.so.6
-> > #5  0x0000557f9f9534eb in nbd_co_receive_request (errp=0x7fdafc25eec0, request=0x7fdafc25ef10, req=0x7fdaf00159c0) at ../nbd/server.c:2542
-> > #6  nbd_trip (opaque=0x557fa0b33fa0) at ../nbd/server.c:2962
-> > #7  0x0000557f9faa416b in coroutine_trampoline (i0=<optimized out>, i1=<optimized out>) at ../util/coroutine-ucontext.c:177
-> > #8  0x00007fdb004efe90 in ?? () from /lib64/libc.so.6
-> > #9  0x00007fdafc35f680 in ?? ()
-> > #10 0x0000000000000000 in ?? ()
-> > (gdb) p *client
-> > $2 = {refcount = 4, close_fn = 0x557f9f95dc40 <nbd_blockdev_client_closed>, exp = 0x557fa0b30590, tlscreds = 0x0, tlsauthz = 0x0, sioc = 0x557fa0b33d90, ioc = 0x557fa0b33d90,
-> >   recv_coroutine = 0x7fdaf0015eb0, send_lock = {locked = 0, ctx = 0x0, from_push = {slh_first = 0x0}, to_pop = {slh_first = 0x0}, handoff = 0, sequence = 0, holder = 0x0},
-> >   send_coroutine = 0x0, read_yielding = false, quiescing = false, next = {tqe_next = 0x0, tqe_circ = {tql_next = 0x0, tql_prev = 0x557fa0b305e8}}, nb_requests = 1, closing = false,
-> >   check_align = 1, mode = NBD_MODE_EXTENDED, contexts = {exp = 0x557fa0b30590, count = 1, base_allocation = true, allocation_depth = false, bitmaps = 0x0}, opt = 7, optlen = 0}
-> > (gdb) p co_tls_current
-> > $3 = (Coroutine *) 0x7fdaf00061d0
+> Currently linux kernel and uefi bios has no limitation with high
+> memory base address, it is ok to set high memory base address
+> with 0x80000000.
 >
-> This one isn't easy to debug...
->
-> The first problem here is that two nbd_trip() coroutines are scheduled
-> in the same iothread, and creating the second one overwrites
-> client->recv_coroutine, which triggers the assertion in the first one.
->
-> This can be fixed by introducing a new mutex in NBDClient and taking it
-> in nbd_client_receive_next_request() so that there is no race between
-> checking client->recv_coroutine != NULL and setting it to a new
-> coroutine. (Not entirely sure why two different threads are doing this,
-> maybe the main thread reentering in drained_end and the iothread waiting
-> for the next request?)
->
-> However, I'm seeing new assertion failures when I do that:
-> client->quiescing isn't set in the -EAGAIN case in nbd_trip(). I haven't
-> really figured out yet where this comes from. Taking the new NBDClient
-> lock in the drain functions and in nbd_trip() doesn't seem to be enough
-> to fix it anyway. Or maybe I didn't quite find the right places to take
-> it.
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> Change-Id: Iac1af728bf6fd35c9c2f4e7dbdae6e3c0fbab623
+> ---
+>   include/hw/loongarch/virt.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+Drop Change-Id.
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-bdrv_graph_wrlock() -> bdrv_drain_all_begin_nopoll() followed by
-bdrv_drain_all_end() causes this issue.
+Thanks.
+Song Gao
+> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+> index 674f4655e0..db0831b471 100644
+> --- a/include/hw/loongarch/virt.h
+> +++ b/include/hw/loongarch/virt.h
+> @@ -25,7 +25,7 @@
+>   
+>   #define VIRT_LOWMEM_BASE        0
+>   #define VIRT_LOWMEM_SIZE        0x10000000
+> -#define VIRT_HIGHMEM_BASE       0x90000000
+> +#define VIRT_HIGHMEM_BASE       0x80000000
+>   #define VIRT_GED_EVT_ADDR       0x100e0000
+>   #define VIRT_GED_MEM_ADDR       (VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN)
+>   #define VIRT_GED_REG_ADDR       (VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN)
 
-It's a race condition where nbd_trip() in the IOThread sees
-client->quiescing == true for a moment but then the drained region
-ends before nbd_trip() re-acquires the lock and reaches
-assert(client->quiescing).
-
-The "nopoll" part of bdrv_drain_all_begin_nopoll() seems to be the
-issue. We cannot assume all requests have quiesced when .drained_end()
-is called.
-
-I'm running more tests now to be sure I have a working solution. Will
-send patches soon.
-
-Stefan
 
