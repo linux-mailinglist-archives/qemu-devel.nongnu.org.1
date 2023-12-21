@@ -2,38 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9484181B02F
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 09:20:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B934981B02A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 09:20:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGEHD-0005Tp-MT; Thu, 21 Dec 2023 03:19:31 -0500
+	id 1rGEHF-0005VY-5Q; Thu, 21 Dec 2023 03:19:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rGEGx-0005Sh-Ce
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:19:15 -0500
+ id 1rGEGy-0005Su-E8
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:19:17 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rGEGu-0007Vw-EN
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:19:15 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1rGEGv-0007W5-FL
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:19:16 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxO+n59INlG1wDAA--.17088S3;
- Thu, 21 Dec 2023 16:19:06 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxO+n79INlH1wDAA--.17090S3;
+ Thu, 21 Dec 2023 16:19:07 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxG+T49INltGsDAA--.18043S2; 
- Thu, 21 Dec 2023 16:19:04 +0800 (CST)
+ AQAAf8BxG+T49INltGsDAA--.18043S3; 
+ Thu, 21 Dec 2023 16:19:06 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, peter.maydell@linaro.org, richard.henderson@linaro.org
-Subject: [PULL 0/2] loongarch-to-apply queue
-Date: Thu, 21 Dec 2023 16:06:09 +0800
-Message-Id: <20231221080611.2960977-1-gaosong@loongson.cn>
+Cc: stefanha@redhat.com, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, Bibo Mao <maobibo@loongson.cn>
+Subject: [PULL 1/2] hw/loongarch/virt: Align high memory base address with
+ super page size
+Date: Thu, 21 Dec 2023 16:06:10 +0800
+Message-Id: <20231221080611.2960977-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20231221080611.2960977-1-gaosong@loongson.cn>
+References: <20231221080611.2960977-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxG+T49INltGsDAA--.18043S2
+X-CM-TRANSID: AQAAf8BxG+T49INltGsDAA--.18043S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -60,28 +64,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 191710c221f65b1542f6ea7fa4d30dde6e134fd7:
+From: Bibo Mao <maobibo@loongson.cn>
 
-  Merge tag 'pull-request-2023-12-20' of https://gitlab.com/thuth/qemu into staging (2023-12-20 09:40:16 -0500)
+With LoongArch virt machine, there is low memory space with region
+0--0x10000000, and high memory space with started from 0x90000000.
+High memory space is aligned with 256M, it will be better if it is
+aligned with 1G, which is super page aligned for 4K page size.
 
-are available in the Git repository at:
+Currently linux kernel and uefi bios has no limitation with high
+memory base address, it is ok to set high memory base address
+with 0x80000000.
 
-  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20231221
-
-for you to fetch changes up to be45144bee708d3b84c3c474a4d4aeb7e5c4733a:
-
-  target/loongarch: Add timer information dump support (2023-12-21 16:07:47 +0800)
-
-----------------------------------------------------------------
-pull-loongarch-20231221
-
-----------------------------------------------------------------
-Bibo Mao (2):
-      hw/loongarch/virt: Align high memory base address with super page size
-      target/loongarch: Add timer information dump support
-
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20231127040231.4123715-1-maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
  include/hw/loongarch/virt.h | 2 +-
- target/loongarch/cpu.c      | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+index 674f4655e0..db0831b471 100644
+--- a/include/hw/loongarch/virt.h
++++ b/include/hw/loongarch/virt.h
+@@ -25,7 +25,7 @@
+ 
+ #define VIRT_LOWMEM_BASE        0
+ #define VIRT_LOWMEM_SIZE        0x10000000
+-#define VIRT_HIGHMEM_BASE       0x90000000
++#define VIRT_HIGHMEM_BASE       0x80000000
+ #define VIRT_GED_EVT_ADDR       0x100e0000
+ #define VIRT_GED_MEM_ADDR       (VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN)
+ #define VIRT_GED_REG_ADDR       (VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN)
+-- 
+2.25.1
 
 
