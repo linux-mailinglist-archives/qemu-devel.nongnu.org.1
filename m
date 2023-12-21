@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC6081C002
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:25:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5716781C016
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:27:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGQWm-0007ZA-0t; Thu, 21 Dec 2023 16:24:24 -0500
+	id 1rGQWo-0007ob-Ky; Thu, 21 Dec 2023 16:24:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWh-0007A1-16
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:19 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWj-0007OC-PW
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:21 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWe-00083a-27
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:18 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWh-00084l-Te
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703193854;
+ s=mimecast20190719; t=1703193858;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tiQcPMEZbiv6KRA5qhlPTGTgq5itBharaGoH7q++Y3k=;
- b=QAAwq7fKyIEzylfhI46OlDLuXJtThIYrdqT4Li3srloo4Qtaul3an12O0zAx8drXNC7Km3
- OG8Aw7/MZWqIVWvX7oCSeUkSBDFMYuBRazIA3q2PM/3NbE2CwaJoYe403z1io8ygPzjT7T
- 02A5HpnBbUZvMfKxKijZo72sWyWOWOA=
+ bh=c/4Y7pJL537My+4xU/su6ImJFpLA6Z7wFHzrER+6DGo=;
+ b=CcKYuWejBlsYHTiaTQMtxTlA8ka+Lc45Z6d150wbuM9PkivcP98j/am7s1Q58w2WhivvZ6
+ VTh3y1tEByQE4yifVNisdLgOidgka6yr5HUzNFdEwh6OnB7p2XoPmbvBLao/kwBgk2NfCD
+ bw0uNhoCZ/lIk+c2yRaRX9vO/u0BW/0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-_2QhbEOyOgquvzaQdfBB9Q-1; Thu,
- 21 Dec 2023 16:24:12 -0500
-X-MC-Unique: _2QhbEOyOgquvzaQdfBB9Q-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-296-8TQdyH6iMd68bH018lOIuQ-1; Thu,
+ 21 Dec 2023 16:24:14 -0500
+X-MC-Unique: 8TQdyH6iMd68bH018lOIuQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D8601C05EAC;
- Thu, 21 Dec 2023 21:24:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 95FB5285F992;
+ Thu, 21 Dec 2023 21:24:14 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.128])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E821EC15A0C;
- Thu, 21 Dec 2023 21:24:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E56E2C159B0;
+ Thu, 21 Dec 2023 21:24:12 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 10/33] iotests: Basic tests for internal snapshots
-Date: Thu, 21 Dec 2023 22:23:15 +0100
-Message-ID: <20231221212339.164439-11-kwolf@redhat.com>
+Subject: [PULL 11/33] scsi: only access SCSIDevice->requests from one thread
+Date: Thu, 21 Dec 2023 22:23:16 +0100
+Message-ID: <20231221212339.164439-12-kwolf@redhat.com>
 In-Reply-To: <20231221212339.164439-1-kwolf@redhat.com>
 References: <20231221212339.164439-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -63,7 +63,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,313 +79,299 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have a few test cases that include tests for corner case aspects of
-internal snapshots, but nothing that tests that they actually function
-as snapshots or that involves deleting a snapshot. Add a test for this
-kind of basic internal snapshot functionality.
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-The error cases include a regression test for the crash we just fixed
-with snapshot operations on inactive images.
+Stop depending on the AioContext lock and instead access
+SCSIDevice->requests from only one thread at a time:
+- When the VM is running only the BlockBackend's AioContext may access
+  the requests list.
+- When the VM is stopped only the main loop may access the requests
+  list.
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20231201142520.32255-4-kwolf@redhat.com>
+These constraints protect the requests list without the need for locking
+in the I/O code path.
+
+Note that multiple IOThreads are not supported yet because the code
+assumes all SCSIRequests are executed from a single AioContext. Leave
+that as future work.
+
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Message-ID: <20231204164259.1515217-2-stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- .../tests/qcow2-internal-snapshots            | 170 ++++++++++++++++++
- .../tests/qcow2-internal-snapshots.out        | 107 +++++++++++
- 2 files changed, 277 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/qcow2-internal-snapshots
- create mode 100644 tests/qemu-iotests/tests/qcow2-internal-snapshots.out
+ include/hw/scsi/scsi.h |   7 +-
+ hw/scsi/scsi-bus.c     | 181 ++++++++++++++++++++++++++++-------------
+ 2 files changed, 131 insertions(+), 57 deletions(-)
 
-diff --git a/tests/qemu-iotests/tests/qcow2-internal-snapshots b/tests/qemu-iotests/tests/qcow2-internal-snapshots
-new file mode 100755
-index 0000000000..36523aba06
---- /dev/null
-+++ b/tests/qemu-iotests/tests/qcow2-internal-snapshots
-@@ -0,0 +1,170 @@
-+#!/usr/bin/env bash
-+# group: rw quick
-+#
-+# Test case for internal snapshots in qcow2
-+#
-+# Copyright (C) 2023 Red Hat, Inc.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
+diff --git a/include/hw/scsi/scsi.h b/include/hw/scsi/scsi.h
+index 3692ca82f3..10c4e8288d 100644
+--- a/include/hw/scsi/scsi.h
++++ b/include/hw/scsi/scsi.h
+@@ -69,14 +69,19 @@ struct SCSIDevice
+ {
+     DeviceState qdev;
+     VMChangeStateEntry *vmsentry;
+-    QEMUBH *bh;
+     uint32_t id;
+     BlockConf conf;
+     SCSISense unit_attention;
+     bool sense_is_ua;
+     uint8_t sense[SCSI_SENSE_BUF_SIZE];
+     uint32_t sense_len;
 +
-+# creator
-+owner=kwolf@redhat.com
++    /*
++     * The requests list is only accessed from the AioContext that executes
++     * requests or from the main loop when IOThread processing is stopped.
++     */
+     QTAILQ_HEAD(, SCSIRequest) requests;
 +
-+seq="$(basename $0)"
-+echo "QA output created by $seq"
-+
-+status=1	# failure is the default!
-+
-+_cleanup()
+     uint32_t channel;
+     uint32_t lun;
+     int blocksize;
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index fc4b77fdb0..b649cdf555 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -85,6 +85,89 @@ SCSIDevice *scsi_device_get(SCSIBus *bus, int channel, int id, int lun)
+     return d;
+ }
+ 
++/*
++ * Invoke @fn() for each enqueued request in device @s. Must be called from the
++ * main loop thread while the guest is stopped. This is only suitable for
++ * vmstate ->put(), use scsi_device_for_each_req_async() for other cases.
++ */
++static void scsi_device_for_each_req_sync(SCSIDevice *s,
++                                          void (*fn)(SCSIRequest *, void *),
++                                          void *opaque)
 +{
-+	_cleanup_test_img
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
++    SCSIRequest *req;
++    SCSIRequest *next_req;
 +
-+# get standard environment, filters and checks
-+. ../common.rc
-+. ../common.filter
++    assert(!runstate_is_running());
++    assert(qemu_in_main_thread());
 +
-+# This tests qcow2-specific low-level functionality
-+_supported_fmt qcow2
-+_supported_proto generic
-+# Internal snapshots are (currently) impossible with refcount_bits=1,
-+# and generally impossible with external data files
-+_unsupported_imgopts 'compat=0.10' 'refcount_bits=1[^0-9]' data_file
-+
-+IMG_SIZE=64M
-+
-+_qemu()
-+{
-+    $QEMU -no-shutdown -nographic -monitor stdio -serial none \
-+          -blockdev file,filename="$TEST_IMG",node-name=disk0-file \
-+          -blockdev "$IMGFMT",file=disk0-file,node-name=disk0 \
-+          -object iothread,id=iothread0 \
-+          -device virtio-scsi,iothread=iothread0 \
-+          -device scsi-hd,drive=disk0,share-rw=on \
-+          "$@" 2>&1 |\
-+    _filter_qemu | _filter_hmp | _filter_qemu_io
++    QTAILQ_FOREACH_SAFE(req, &s->requests, next, next_req) {
++        fn(req, opaque);
++    }
 +}
 +
-+_make_test_img $IMG_SIZE
++typedef struct {
++    SCSIDevice *s;
++    void (*fn)(SCSIRequest *, void *);
++    void *fn_opaque;
++} SCSIDeviceForEachReqAsyncData;
 +
-+echo
-+echo "=== Write some data, take a snapshot and overwrite part of it ==="
-+echo
-+
++static void scsi_device_for_each_req_async_bh(void *opaque)
 +{
-+    echo 'qemu-io disk0 "write -P0x11 0 1M"'
-+    # Give qemu some time to boot before saving the VM state
-+    sleep 0.5
-+    echo "savevm snap0"
-+    echo 'qemu-io disk0 "write -P0x22 0 512k"'
-+    echo "quit"
-+} | _qemu
++    g_autofree SCSIDeviceForEachReqAsyncData *data = opaque;
++    SCSIDevice *s = data->s;
++    AioContext *ctx;
++    SCSIRequest *req;
++    SCSIRequest *next;
 +
-+echo
-+$QEMU_IMG snapshot -l "$TEST_IMG" | _filter_date | _filter_vmstate_size
-+_check_test_img
++    /*
++     * If the AioContext changed before this BH was called then reschedule into
++     * the new AioContext before accessing ->requests. This can happen when
++     * scsi_device_for_each_req_async() is called and then the AioContext is
++     * changed before BHs are run.
++     */
++    ctx = blk_get_aio_context(s->conf.blk);
++    if (ctx != qemu_get_current_aio_context()) {
++        aio_bh_schedule_oneshot(ctx, scsi_device_for_each_req_async_bh,
++                                g_steal_pointer(&data));
++        return;
++    }
 +
-+echo
-+echo "=== Verify that loading the snapshot reverts to the old content ==="
-+echo
++    QTAILQ_FOREACH_SAFE(req, &s->requests, next, next) {
++        data->fn(req, data->fn_opaque);
++    }
 +
++    /* Drop the reference taken by scsi_device_for_each_req_async() */
++    object_unref(OBJECT(s));
++}
++
++/*
++ * Schedule @fn() to be invoked for each enqueued request in device @s. @fn()
++ * runs in the AioContext that is executing the request.
++ */
++static void scsi_device_for_each_req_async(SCSIDevice *s,
++                                           void (*fn)(SCSIRequest *, void *),
++                                           void *opaque)
 +{
-+    # -loadvm reverted the write from the previous QEMU instance
-+    echo 'qemu-io disk0 "read -P0x11 0 1M"'
++    assert(qemu_in_main_thread());
 +
-+    # Verify that it works without restarting QEMU, too
-+    echo 'qemu-io disk0 "write -P0x33 512k 512k"'
-+    echo "loadvm snap0"
-+    echo 'qemu-io disk0 "read -P0x11 0 1M"'
++    SCSIDeviceForEachReqAsyncData *data =
++        g_new(SCSIDeviceForEachReqAsyncData, 1);
 +
-+    # Verify COW by writing a partial cluster
-+    echo 'qemu-io disk0 "write -P0x33 63k 2k"'
-+    echo 'qemu-io disk0 "read -P0x11 0 63k"'
-+    echo 'qemu-io disk0 "read -P0x33 63k 2k"'
-+    echo 'qemu-io disk0 "read -P0x11 65k 63k"'
++    data->s = s;
++    data->fn = fn;
++    data->fn_opaque = opaque;
 +
-+    # Take a second snapshot
-+    echo "savevm snap1"
++    /*
++     * Hold a reference to the SCSIDevice until
++     * scsi_device_for_each_req_async_bh() finishes.
++     */
++    object_ref(OBJECT(s));
 +
-+    echo "quit"
-+} | _qemu -loadvm snap0
++    aio_bh_schedule_oneshot(blk_get_aio_context(s->conf.blk),
++                            scsi_device_for_each_req_async_bh,
++                            data);
++}
 +
-+echo
-+$QEMU_IMG snapshot -l "$TEST_IMG" | _filter_date | _filter_vmstate_size
-+_check_test_img
-+
-+echo
-+echo "=== qemu-img snapshot can revert to snapshots ==="
-+echo
-+
-+$QEMU_IMG snapshot -a snap0 "$TEST_IMG"
-+$QEMU_IO -c "read -P0x11 0 1M" "$TEST_IMG" | _filter_qemu_io
-+$QEMU_IMG snapshot -a snap1 "$TEST_IMG"
-+$QEMU_IO \
-+    -c "read -P0x11 0 63k" \
-+    -c "read -P0x33 63k 2k" \
-+    -c "read -P0x11 65k 63k" \
-+    "$TEST_IMG" | _filter_qemu_io
-+
-+echo
-+echo "=== Deleting snapshots ==="
-+echo
+ static void scsi_device_realize(SCSIDevice *s, Error **errp)
+ {
+     SCSIDeviceClass *sc = SCSI_DEVICE_GET_CLASS(s);
+@@ -144,20 +227,18 @@ void scsi_bus_init_named(SCSIBus *bus, size_t bus_size, DeviceState *host,
+     qbus_set_bus_hotplug_handler(BUS(bus));
+ }
+ 
+-static void scsi_dma_restart_bh(void *opaque)
++void scsi_req_retry(SCSIRequest *req)
+ {
+-    SCSIDevice *s = opaque;
+-    SCSIRequest *req, *next;
+-
+-    qemu_bh_delete(s->bh);
+-    s->bh = NULL;
++    req->retry = true;
++}
+ 
+-    aio_context_acquire(blk_get_aio_context(s->conf.blk));
+-    QTAILQ_FOREACH_SAFE(req, &s->requests, next, next) {
+-        scsi_req_ref(req);
+-        if (req->retry) {
+-            req->retry = false;
+-            switch (req->cmd.mode) {
++/* Called in the AioContext that is executing the request */
++static void scsi_dma_restart_req(SCSIRequest *req, void *opaque)
 +{
-+    # The active layer stays unaffected by deleting the snapshot
-+    echo "delvm snap1"
-+    echo 'qemu-io disk0 "read -P0x11 0 63k"'
-+    echo 'qemu-io disk0 "read -P0x33 63k 2k"'
-+    echo 'qemu-io disk0 "read -P0x11 65k 63k"'
++    scsi_req_ref(req);
++    if (req->retry) {
++        req->retry = false;
++        switch (req->cmd.mode) {
+             case SCSI_XFER_FROM_DEV:
+             case SCSI_XFER_TO_DEV:
+                 scsi_req_continue(req);
+@@ -166,37 +247,22 @@ static void scsi_dma_restart_bh(void *opaque)
+                 scsi_req_dequeue(req);
+                 scsi_req_enqueue(req);
+                 break;
+-            }
+         }
+-        scsi_req_unref(req);
+     }
+-    aio_context_release(blk_get_aio_context(s->conf.blk));
+-    /* Drop the reference that was acquired in scsi_dma_restart_cb */
+-    object_unref(OBJECT(s));
+-}
+-
+-void scsi_req_retry(SCSIRequest *req)
+-{
+-    /* No need to save a reference, because scsi_dma_restart_bh just
+-     * looks at the request list.  */
+-    req->retry = true;
++    scsi_req_unref(req);
+ }
+ 
+ static void scsi_dma_restart_cb(void *opaque, bool running, RunState state)
+ {
+     SCSIDevice *s = opaque;
+ 
++    assert(qemu_in_main_thread());
 +
-+    echo "quit"
-+} | _qemu
+     if (!running) {
+         return;
+     }
+-    if (!s->bh) {
+-        AioContext *ctx = blk_get_aio_context(s->conf.blk);
+-        /* The reference is dropped in scsi_dma_restart_bh.*/
+-        object_ref(OBJECT(s));
+-        s->bh = aio_bh_new_guarded(ctx, scsi_dma_restart_bh, s,
+-                                   &DEVICE(s)->mem_reentrancy_guard);
+-        qemu_bh_schedule(s->bh);
+-    }
 +
-+
-+echo
-+$QEMU_IMG snapshot -l "$TEST_IMG" | _filter_date | _filter_vmstate_size
-+_check_test_img
-+
-+echo
-+echo "=== Error cases ==="
-+echo
-+
-+# snap1 should not exist any more
-+_qemu -loadvm snap1
-+
-+echo
++    scsi_device_for_each_req_async(s, scsi_dma_restart_req, NULL);
+ }
+ 
+ static bool scsi_bus_is_address_free(SCSIBus *bus,
+@@ -1657,15 +1723,16 @@ void scsi_device_set_ua(SCSIDevice *sdev, SCSISense sense)
+     }
+ }
+ 
++static void scsi_device_purge_one_req(SCSIRequest *req, void *opaque)
 +{
-+    echo "loadvm snap1"
-+    echo "quit"
-+} | _qemu
++    scsi_req_cancel_async(req, NULL);
++}
 +
-+# Snapshot operations and inactive images are incompatible
-+echo
-+_qemu -loadvm snap0 -incoming defer
+ void scsi_device_purge_requests(SCSIDevice *sdev, SCSISense sense)
+ {
+-    SCSIRequest *req;
++    scsi_device_for_each_req_async(sdev, scsi_device_purge_one_req, NULL);
+ 
+     aio_context_acquire(blk_get_aio_context(sdev->conf.blk));
+-    while (!QTAILQ_EMPTY(&sdev->requests)) {
+-        req = QTAILQ_FIRST(&sdev->requests);
+-        scsi_req_cancel_async(req, NULL);
+-    }
+     blk_drain(sdev->conf.blk);
+     aio_context_release(blk_get_aio_context(sdev->conf.blk));
+     scsi_device_set_ua(sdev, sense);
+@@ -1737,31 +1804,33 @@ static char *scsibus_get_fw_dev_path(DeviceState *dev)
+ 
+ /* SCSI request list.  For simplicity, pv points to the whole device */
+ 
++static void put_scsi_req(SCSIRequest *req, void *opaque)
 +{
-+    echo "loadvm snap0"
-+    echo "delvm snap0"
-+    echo "savevm snap1"
-+    echo "quit"
-+} | _qemu -incoming defer
++    QEMUFile *f = opaque;
 +
-+# -loadvm and -preconfig are incompatible
-+echo
-+_qemu -loadvm snap0 -preconfig
++    assert(!req->io_canceled);
++    assert(req->status == -1 && req->host_status == -1);
++    assert(req->enqueued);
 +
-+# success, all done
-+echo "*** done"
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/tests/qcow2-internal-snapshots.out b/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
-new file mode 100644
-index 0000000000..438f535e6a
---- /dev/null
-+++ b/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
-@@ -0,0 +1,107 @@
-+QA output created by qcow2-internal-snapshots
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
++    qemu_put_sbyte(f, req->retry ? 1 : 2);
++    qemu_put_buffer(f, req->cmd.buf, sizeof(req->cmd.buf));
++    qemu_put_be32s(f, &req->tag);
++    qemu_put_be32s(f, &req->lun);
++    if (req->bus->info->save_request) {
++        req->bus->info->save_request(f, req);
++    }
++    if (req->ops->save_request) {
++        req->ops->save_request(f, req);
++    }
++}
 +
-+=== Write some data, take a snapshot and overwrite part of it ===
-+
-+QEMU X.Y.Z monitor - type 'help' for more information
-+(qemu) qemu-io disk0 "write -P0x11 0 1M"
-+wrote 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) savevm snap0
-+(qemu) qemu-io disk0 "write -P0x22 0 512k"
-+wrote 524288/524288 bytes at offset 0
-+512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) quit
-+
-+Snapshot list:
-+ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
-+1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
-+No errors were found on the image.
-+
-+=== Verify that loading the snapshot reverts to the old content ===
-+
-+QEMU X.Y.Z monitor - type 'help' for more information
-+(qemu) qemu-io disk0 "read -P0x11 0 1M"
-+read 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) qemu-io disk0 "write -P0x33 512k 512k"
-+wrote 524288/524288 bytes at offset 524288
-+512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) loadvm snap0
-+(qemu) qemu-io disk0 "read -P0x11 0 1M"
-+read 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) qemu-io disk0 "write -P0x33 63k 2k"
-+wrote 2048/2048 bytes at offset 64512
-+2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) qemu-io disk0 "read -P0x11 0 63k"
-+read 64512/64512 bytes at offset 0
-+63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) qemu-io disk0 "read -P0x33 63k 2k"
-+read 2048/2048 bytes at offset 64512
-+2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) qemu-io disk0 "read -P0x11 65k 63k"
-+read 64512/64512 bytes at offset 66560
-+63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) savevm snap1
-+(qemu) quit
-+
-+Snapshot list:
-+ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
-+1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
-+2         snap1                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
-+No errors were found on the image.
-+
-+=== qemu-img snapshot can revert to snapshots ===
-+
-+read 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 64512/64512 bytes at offset 0
-+63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 2048/2048 bytes at offset 64512
-+2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 64512/64512 bytes at offset 66560
-+63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+=== Deleting snapshots ===
-+
-+QEMU X.Y.Z monitor - type 'help' for more information
-+(qemu) delvm snap1
-+(qemu) qemu-io disk0 "read -P0x11 0 63k"
-+read 64512/64512 bytes at offset 0
-+63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) qemu-io disk0 "read -P0x33 63k 2k"
-+read 2048/2048 bytes at offset 64512
-+2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) qemu-io disk0 "read -P0x11 65k 63k"
-+read 64512/64512 bytes at offset 66560
-+63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+(qemu) quit
-+
-+Snapshot list:
-+ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
-+1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
-+No errors were found on the image.
-+
-+=== Error cases ===
-+
-+QEMU X.Y.Z monitor - type 'help' for more information
-+(qemu) QEMU_PROG: Snapshot 'snap1' does not exist in one or more devices
-+
-+QEMU X.Y.Z monitor - type 'help' for more information
-+(qemu) loadvm snap1
-+Error: Snapshot 'snap1' does not exist in one or more devices
-+(qemu) quit
-+
-+QEMU_PROG: 'incoming' and 'loadvm' options are mutually exclusive
-+QEMU X.Y.Z monitor - type 'help' for more information
-+(qemu) loadvm snap0
-+Error: Device 'disk0' is writable but does not support snapshots
-+(qemu) delvm snap0
-+Error: Device 'disk0' is writable but does not support snapshots
-+(qemu) savevm snap1
-+Error: Device 'disk0' is writable but does not support snapshots
-+(qemu) quit
-+
-+QEMU_PROG: 'preconfig' and 'loadvm' options are mutually exclusive
-+*** done
+ static int put_scsi_requests(QEMUFile *f, void *pv, size_t size,
+                              const VMStateField *field, JSONWriter *vmdesc)
+ {
+     SCSIDevice *s = pv;
+-    SCSIBus *bus = DO_UPCAST(SCSIBus, qbus, s->qdev.parent_bus);
+-    SCSIRequest *req;
+ 
+-    QTAILQ_FOREACH(req, &s->requests, next) {
+-        assert(!req->io_canceled);
+-        assert(req->status == -1 && req->host_status == -1);
+-        assert(req->enqueued);
+-
+-        qemu_put_sbyte(f, req->retry ? 1 : 2);
+-        qemu_put_buffer(f, req->cmd.buf, sizeof(req->cmd.buf));
+-        qemu_put_be32s(f, &req->tag);
+-        qemu_put_be32s(f, &req->lun);
+-        if (bus->info->save_request) {
+-            bus->info->save_request(f, req);
+-        }
+-        if (req->ops->save_request) {
+-            req->ops->save_request(f, req);
+-        }
+-    }
++    scsi_device_for_each_req_sync(s, put_scsi_req, f);
+     qemu_put_sbyte(f, 0);
+-
+     return 0;
+ }
+ 
 -- 
 2.43.0
 
