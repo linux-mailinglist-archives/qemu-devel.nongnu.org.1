@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29ED481C012
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC6081C002
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:25:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGQWl-0007TR-8Q; Thu, 21 Dec 2023 16:24:23 -0500
+	id 1rGQWm-0007ZA-0t; Thu, 21 Dec 2023 16:24:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWg-00077O-Ps
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:18 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWh-0007A1-16
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWe-00083Y-PL
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWe-00083a-27
  for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1703193854;
@@ -22,34 +22,33 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AWUG+/vsuwVMMI/WEzyBjviKScAVAqyDegAmnDDXdWk=;
- b=XrkWPFokYG29giLnmqSne0iM9F70K9+AkSmek7Kdadf0VGF6bG16c1HoIDFOR3yjBEAjYf
- b+NOIaRtzxHon+P2dLyPuAeJvLUN8ixX+UVvzEM19u/Le0CKEEsWHaJFj5eT9BC08zbjUI
- S1gVS1ARcx4dFZ4leHGb2xt2Bh+wOss=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-HCHQs6AMPN6lfcfb6Bk0zg-1; Thu, 21 Dec 2023 16:24:10 -0500
-X-MC-Unique: HCHQs6AMPN6lfcfb6Bk0zg-1
+ bh=tiQcPMEZbiv6KRA5qhlPTGTgq5itBharaGoH7q++Y3k=;
+ b=QAAwq7fKyIEzylfhI46OlDLuXJtThIYrdqT4Li3srloo4Qtaul3an12O0zAx8drXNC7Km3
+ OG8Aw7/MZWqIVWvX7oCSeUkSBDFMYuBRazIA3q2PM/3NbE2CwaJoYe403z1io8ygPzjT7T
+ 02A5HpnBbUZvMfKxKijZo72sWyWOWOA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-_2QhbEOyOgquvzaQdfBB9Q-1; Thu,
+ 21 Dec 2023 16:24:12 -0500
+X-MC-Unique: _2QhbEOyOgquvzaQdfBB9Q-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E586185A782;
- Thu, 21 Dec 2023 21:24:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D8601C05EAC;
+ Thu, 21 Dec 2023 21:24:12 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.128])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B4E3DC15968;
- Thu, 21 Dec 2023 21:24:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E821EC15A0C;
+ Thu, 21 Dec 2023 21:24:10 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 09/33] vl: Improve error message for conflicting -incoming and
- -loadvm
-Date: Thu, 21 Dec 2023 22:23:14 +0100
-Message-ID: <20231221212339.164439-10-kwolf@redhat.com>
+Subject: [PULL 10/33] iotests: Basic tests for internal snapshots
+Date: Thu, 21 Dec 2023 22:23:15 +0100
+Message-ID: <20231221212339.164439-11-kwolf@redhat.com>
 In-Reply-To: <20231221212339.164439-1-kwolf@redhat.com>
 References: <20231221212339.164439-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -64,7 +63,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,41 +79,313 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, the conflict between -incoming and -loadvm is only detected
-when loading the snapshot fails because the image is still inactive for
-the incoming migration. This results in a suboptimal error message:
+We have a few test cases that include tests for corner case aspects of
+internal snapshots, but nothing that tests that they actually function
+as snapshots or that involves deleting a snapshot. Add a test for this
+kind of basic internal snapshot functionality.
 
-$ ./qemu-system-x86_64 -hda /tmp/test.qcow2 -loadvm foo -incoming defer
-qemu-system-x86_64: Device 'ide0-hd0' is writable but does not support snapshots
-
-Catch the situation already in qemu_validate_options() to improve the
-message:
-
-$ ./qemu-system-x86_64 -hda /tmp/test.qcow2 -loadvm foo -incoming defer
-qemu-system-x86_64: 'incoming' and 'loadvm' options are mutually exclusive
+The error cases include a regression test for the crash we just fixed
+with snapshot operations on inactive images.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20231201142520.32255-3-kwolf@redhat.com>
+Message-ID: <20231201142520.32255-4-kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- system/vl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../tests/qcow2-internal-snapshots            | 170 ++++++++++++++++++
+ .../tests/qcow2-internal-snapshots.out        | 107 +++++++++++
+ 2 files changed, 277 insertions(+)
+ create mode 100755 tests/qemu-iotests/tests/qcow2-internal-snapshots
+ create mode 100644 tests/qemu-iotests/tests/qcow2-internal-snapshots.out
 
-diff --git a/system/vl.c b/system/vl.c
-index 2bcd9efb9a..6b87bfa32c 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2426,6 +2426,10 @@ static void qemu_validate_options(const QDict *machine_opts)
-           }
-     }
- 
-+    if (loadvm && incoming) {
-+        error_report("'incoming' and 'loadvm' options are mutually exclusive");
-+        exit(EXIT_FAILURE);
-+    }
-     if (loadvm && preconfig_requested) {
-         error_report("'preconfig' and 'loadvm' options are "
-                      "mutually exclusive");
+diff --git a/tests/qemu-iotests/tests/qcow2-internal-snapshots b/tests/qemu-iotests/tests/qcow2-internal-snapshots
+new file mode 100755
+index 0000000000..36523aba06
+--- /dev/null
++++ b/tests/qemu-iotests/tests/qcow2-internal-snapshots
+@@ -0,0 +1,170 @@
++#!/usr/bin/env bash
++# group: rw quick
++#
++# Test case for internal snapshots in qcow2
++#
++# Copyright (C) 2023 Red Hat, Inc.
++#
++# This program is free software; you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation; either version 2 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program.  If not, see <http://www.gnu.org/licenses/>.
++#
++
++# creator
++owner=kwolf@redhat.com
++
++seq="$(basename $0)"
++echo "QA output created by $seq"
++
++status=1	# failure is the default!
++
++_cleanup()
++{
++	_cleanup_test_img
++}
++trap "_cleanup; exit \$status" 0 1 2 3 15
++
++# get standard environment, filters and checks
++. ../common.rc
++. ../common.filter
++
++# This tests qcow2-specific low-level functionality
++_supported_fmt qcow2
++_supported_proto generic
++# Internal snapshots are (currently) impossible with refcount_bits=1,
++# and generally impossible with external data files
++_unsupported_imgopts 'compat=0.10' 'refcount_bits=1[^0-9]' data_file
++
++IMG_SIZE=64M
++
++_qemu()
++{
++    $QEMU -no-shutdown -nographic -monitor stdio -serial none \
++          -blockdev file,filename="$TEST_IMG",node-name=disk0-file \
++          -blockdev "$IMGFMT",file=disk0-file,node-name=disk0 \
++          -object iothread,id=iothread0 \
++          -device virtio-scsi,iothread=iothread0 \
++          -device scsi-hd,drive=disk0,share-rw=on \
++          "$@" 2>&1 |\
++    _filter_qemu | _filter_hmp | _filter_qemu_io
++}
++
++_make_test_img $IMG_SIZE
++
++echo
++echo "=== Write some data, take a snapshot and overwrite part of it ==="
++echo
++
++{
++    echo 'qemu-io disk0 "write -P0x11 0 1M"'
++    # Give qemu some time to boot before saving the VM state
++    sleep 0.5
++    echo "savevm snap0"
++    echo 'qemu-io disk0 "write -P0x22 0 512k"'
++    echo "quit"
++} | _qemu
++
++echo
++$QEMU_IMG snapshot -l "$TEST_IMG" | _filter_date | _filter_vmstate_size
++_check_test_img
++
++echo
++echo "=== Verify that loading the snapshot reverts to the old content ==="
++echo
++
++{
++    # -loadvm reverted the write from the previous QEMU instance
++    echo 'qemu-io disk0 "read -P0x11 0 1M"'
++
++    # Verify that it works without restarting QEMU, too
++    echo 'qemu-io disk0 "write -P0x33 512k 512k"'
++    echo "loadvm snap0"
++    echo 'qemu-io disk0 "read -P0x11 0 1M"'
++
++    # Verify COW by writing a partial cluster
++    echo 'qemu-io disk0 "write -P0x33 63k 2k"'
++    echo 'qemu-io disk0 "read -P0x11 0 63k"'
++    echo 'qemu-io disk0 "read -P0x33 63k 2k"'
++    echo 'qemu-io disk0 "read -P0x11 65k 63k"'
++
++    # Take a second snapshot
++    echo "savevm snap1"
++
++    echo "quit"
++} | _qemu -loadvm snap0
++
++echo
++$QEMU_IMG snapshot -l "$TEST_IMG" | _filter_date | _filter_vmstate_size
++_check_test_img
++
++echo
++echo "=== qemu-img snapshot can revert to snapshots ==="
++echo
++
++$QEMU_IMG snapshot -a snap0 "$TEST_IMG"
++$QEMU_IO -c "read -P0x11 0 1M" "$TEST_IMG" | _filter_qemu_io
++$QEMU_IMG snapshot -a snap1 "$TEST_IMG"
++$QEMU_IO \
++    -c "read -P0x11 0 63k" \
++    -c "read -P0x33 63k 2k" \
++    -c "read -P0x11 65k 63k" \
++    "$TEST_IMG" | _filter_qemu_io
++
++echo
++echo "=== Deleting snapshots ==="
++echo
++{
++    # The active layer stays unaffected by deleting the snapshot
++    echo "delvm snap1"
++    echo 'qemu-io disk0 "read -P0x11 0 63k"'
++    echo 'qemu-io disk0 "read -P0x33 63k 2k"'
++    echo 'qemu-io disk0 "read -P0x11 65k 63k"'
++
++    echo "quit"
++} | _qemu
++
++
++echo
++$QEMU_IMG snapshot -l "$TEST_IMG" | _filter_date | _filter_vmstate_size
++_check_test_img
++
++echo
++echo "=== Error cases ==="
++echo
++
++# snap1 should not exist any more
++_qemu -loadvm snap1
++
++echo
++{
++    echo "loadvm snap1"
++    echo "quit"
++} | _qemu
++
++# Snapshot operations and inactive images are incompatible
++echo
++_qemu -loadvm snap0 -incoming defer
++{
++    echo "loadvm snap0"
++    echo "delvm snap0"
++    echo "savevm snap1"
++    echo "quit"
++} | _qemu -incoming defer
++
++# -loadvm and -preconfig are incompatible
++echo
++_qemu -loadvm snap0 -preconfig
++
++# success, all done
++echo "*** done"
++rm -f $seq.full
++status=0
+diff --git a/tests/qemu-iotests/tests/qcow2-internal-snapshots.out b/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
+new file mode 100644
+index 0000000000..438f535e6a
+--- /dev/null
++++ b/tests/qemu-iotests/tests/qcow2-internal-snapshots.out
+@@ -0,0 +1,107 @@
++QA output created by qcow2-internal-snapshots
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
++
++=== Write some data, take a snapshot and overwrite part of it ===
++
++QEMU X.Y.Z monitor - type 'help' for more information
++(qemu) qemu-io disk0 "write -P0x11 0 1M"
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) savevm snap0
++(qemu) qemu-io disk0 "write -P0x22 0 512k"
++wrote 524288/524288 bytes at offset 0
++512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) quit
++
++Snapshot list:
++ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
++1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++No errors were found on the image.
++
++=== Verify that loading the snapshot reverts to the old content ===
++
++QEMU X.Y.Z monitor - type 'help' for more information
++(qemu) qemu-io disk0 "read -P0x11 0 1M"
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) qemu-io disk0 "write -P0x33 512k 512k"
++wrote 524288/524288 bytes at offset 524288
++512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) loadvm snap0
++(qemu) qemu-io disk0 "read -P0x11 0 1M"
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) qemu-io disk0 "write -P0x33 63k 2k"
++wrote 2048/2048 bytes at offset 64512
++2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) qemu-io disk0 "read -P0x11 0 63k"
++read 64512/64512 bytes at offset 0
++63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) qemu-io disk0 "read -P0x33 63k 2k"
++read 2048/2048 bytes at offset 64512
++2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) qemu-io disk0 "read -P0x11 65k 63k"
++read 64512/64512 bytes at offset 66560
++63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) savevm snap1
++(qemu) quit
++
++Snapshot list:
++ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
++1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++2         snap1                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++No errors were found on the image.
++
++=== qemu-img snapshot can revert to snapshots ===
++
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 64512/64512 bytes at offset 0
++63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 2048/2048 bytes at offset 64512
++2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 64512/64512 bytes at offset 66560
++63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++
++=== Deleting snapshots ===
++
++QEMU X.Y.Z monitor - type 'help' for more information
++(qemu) delvm snap1
++(qemu) qemu-io disk0 "read -P0x11 0 63k"
++read 64512/64512 bytes at offset 0
++63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) qemu-io disk0 "read -P0x33 63k 2k"
++read 2048/2048 bytes at offset 64512
++2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) qemu-io disk0 "read -P0x11 65k 63k"
++read 64512/64512 bytes at offset 66560
++63 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++(qemu) quit
++
++Snapshot list:
++ID        TAG               VM SIZE                DATE     VM CLOCK     ICOUNT
++1         snap0                SIZE yyyy-mm-dd hh:mm:ss 00:00:00.000
++No errors were found on the image.
++
++=== Error cases ===
++
++QEMU X.Y.Z monitor - type 'help' for more information
++(qemu) QEMU_PROG: Snapshot 'snap1' does not exist in one or more devices
++
++QEMU X.Y.Z monitor - type 'help' for more information
++(qemu) loadvm snap1
++Error: Snapshot 'snap1' does not exist in one or more devices
++(qemu) quit
++
++QEMU_PROG: 'incoming' and 'loadvm' options are mutually exclusive
++QEMU X.Y.Z monitor - type 'help' for more information
++(qemu) loadvm snap0
++Error: Device 'disk0' is writable but does not support snapshots
++(qemu) delvm snap0
++Error: Device 'disk0' is writable but does not support snapshots
++(qemu) savevm snap1
++Error: Device 'disk0' is writable but does not support snapshots
++(qemu) quit
++
++QEMU_PROG: 'preconfig' and 'loadvm' options are mutually exclusive
++*** done
 -- 
 2.43.0
 
