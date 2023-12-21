@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CCC81BD85
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:45:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 070AF81BD88
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:45:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGN5M-00027R-ET; Thu, 21 Dec 2023 12:43:52 -0500
+	id 1rGN5N-00027X-1d; Thu, 21 Dec 2023 12:43:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rGN5G-00024i-JY
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:43:46 -0500
+ id 1rGN5H-00025Z-Gx
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:43:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rGN5C-0004S9-PB
+ id 1rGN5E-0004Te-MQ
  for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:43:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703180620;
+ s=mimecast20190719; t=1703180623;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6+QK/N2PZdG4lv35CVCveKrlfGmbDCglKspi37Q1jgc=;
- b=Wf6P5LIMHjYCkCoQFV7IiiNB/FwI2vSBp5rhj4uS6RL9v90/2IryJil6EYAYkDei7V7pBt
- K5Q7QsuuVyMhA+qAePS7S7KHVX2raKfILHEc2a336oADIlGfX5cf4nStinCE87moid8Bid
- LxFfjUuFFY72YlglgfEiu6OJG+6ep2g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-91-lK9all-PM36QpePhmpdgOQ-1; Thu, 21 Dec 2023 12:43:37 -0500
-X-MC-Unique: lK9all-PM36QpePhmpdgOQ-1
+ bh=sKw7Lc5dbc3ZhJ80NoSM5i4XA6DsdEMiVfFfx0uDMPU=;
+ b=bHp0F+ClMtLhdwHmoWh7zT4KvGQE0qH+Cy9mJ2Li10x4enAAwcSq9se74jdsonk6TzStBC
+ FuCO5uXVCmFC7e8elkyzdsKp8T/s3bkJW61uToCTcpdQWgXAm+amX8qlvFcneUpVQDgkK6
+ LwtEQWwoLTSgW3slrleXC1H3x64ITuY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-dtJZpqO9PceXpeHENiyE3A-1; Thu,
+ 21 Dec 2023 12:43:39 -0500
+X-MC-Unique: dtJZpqO9PceXpeHENiyE3A-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D2A088828C9;
- Thu, 21 Dec 2023 17:43:36 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B5AFE38143AE;
+ Thu, 21 Dec 2023 17:43:38 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.3])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3A59F492BC6;
- Thu, 21 Dec 2023 17:43:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1D213492BC6;
+ Thu, 21 Dec 2023 17:43:36 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Dragos Tatulea <dtatulea@nvidia.com>,
@@ -51,9 +51,9 @@ Cc: Dragos Tatulea <dtatulea@nvidia.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  si-wei.liu@oracle.com, Laurent Vivier <lvivier@redhat.com>,
  Lei Yang <leiyang@redhat.com>
-Subject: [PATCH v4 05/13] vdpa: use vdpa shared for tracing
-Date: Thu, 21 Dec 2023 18:43:14 +0100
-Message-Id: <20231221174322.3130442-6-eperezma@redhat.com>
+Subject: [PATCH v4 06/13] vdpa: move file descriptor to vhost_vdpa_shared
+Date: Thu, 21 Dec 2023 18:43:15 +0100
+Message-Id: <20231221174322.3130442-7-eperezma@redhat.com>
 In-Reply-To: <20231221174322.3130442-1-eperezma@redhat.com>
 References: <20231221174322.3130442-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -85,141 +85,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By the end of this series dma_map and dma_unmap functions don't have the
-vdpa device for tracing.  Movinge trace function to shared member one.
-Print it also in the vdpa initialization so log reader can relate them.
+Next patches will register the vhost_vdpa memory listener while the VM
+is migrating at the destination, so we can map the memory to the device
+before stopping the VM at the source.  The main goal is to reduce the
+downtime.
+
+However, the destination QEMU is unaware of which vhost_vdpa device will
+register its memory_listener.  If the source guest has CVQ enabled, it
+will be the CVQ device.  Otherwise, it  will be the first one.
+
+Move the file descriptor to VhostVDPAShared so all vhost_vdpa can use
+it, rather than always in the first / last vhost_vdpa.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 26 ++++++++++++++------------
- hw/virtio/trace-events | 14 +++++++-------
- 2 files changed, 21 insertions(+), 19 deletions(-)
+ include/hw/virtio/vhost-vdpa.h |  2 +-
+ hw/virtio/vdpa-dev.c           |  2 +-
+ hw/virtio/vhost-vdpa.c         | 14 +++++++-------
+ net/vhost-vdpa.c               | 11 ++++-------
+ 4 files changed, 13 insertions(+), 16 deletions(-)
 
+diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
+index 01e0f25e27..796a180afa 100644
+--- a/include/hw/virtio/vhost-vdpa.h
++++ b/include/hw/virtio/vhost-vdpa.h
+@@ -32,6 +32,7 @@ typedef struct VhostVDPAHostNotifier {
+ 
+ /* Info shared by all vhost_vdpa device models */
+ typedef struct vhost_vdpa_shared {
++    int device_fd;
+     struct vhost_vdpa_iova_range iova_range;
+ 
+     /* IOVA mapping used by the Shadow Virtqueue */
+@@ -42,7 +43,6 @@ typedef struct vhost_vdpa_shared {
+ } VhostVDPAShared;
+ 
+ typedef struct vhost_vdpa {
+-    int device_fd;
+     int index;
+     uint32_t msg_type;
+     bool iotlb_batch_begin_sent;
+diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+index 457960d28a..8774986571 100644
+--- a/hw/virtio/vdpa-dev.c
++++ b/hw/virtio/vdpa-dev.c
+@@ -66,7 +66,6 @@ static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp)
+     if (*errp) {
+         return;
+     }
+-    v->vdpa.device_fd = v->vhostfd;
+ 
+     v->vdev_id = vhost_vdpa_device_get_u32(v->vhostfd,
+                                            VHOST_VDPA_GET_DEVICE_ID, errp);
+@@ -115,6 +114,7 @@ static void vhost_vdpa_device_realize(DeviceState *dev, Error **errp)
+         goto free_vqs;
+     }
+     v->vdpa.shared = g_new0(VhostVDPAShared, 1);
++    v->vdpa.shared->device_fd = v->vhostfd;
+     v->vdpa.shared->iova_range = iova_range;
+ 
+     ret = vhost_dev_init(&v->dev, &v->vdpa, VHOST_BACKEND_TYPE_VDPA, 0, NULL);
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index ec028e4c56..85de60b184 100644
+index 85de60b184..095543395b 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -101,7 +101,7 @@ int vhost_vdpa_dma_map(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
-     msg.iotlb.perm = readonly ? VHOST_ACCESS_RO : VHOST_ACCESS_RW;
-     msg.iotlb.type = VHOST_IOTLB_UPDATE;
- 
--    trace_vhost_vdpa_dma_map(v, fd, msg.type, msg.asid, msg.iotlb.iova,
-+    trace_vhost_vdpa_dma_map(v->shared, fd, msg.type, msg.asid, msg.iotlb.iova,
-                              msg.iotlb.size, msg.iotlb.uaddr, msg.iotlb.perm,
-                              msg.iotlb.type);
- 
-@@ -131,8 +131,8 @@ int vhost_vdpa_dma_unmap(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
-     msg.iotlb.size = size;
-     msg.iotlb.type = VHOST_IOTLB_INVALIDATE;
- 
--    trace_vhost_vdpa_dma_unmap(v, fd, msg.type, msg.asid, msg.iotlb.iova,
--                               msg.iotlb.size, msg.iotlb.type);
-+    trace_vhost_vdpa_dma_unmap(v->shared, fd, msg.type, msg.asid,
-+                               msg.iotlb.iova, msg.iotlb.size, msg.iotlb.type);
- 
-     if (write(fd, &msg, sizeof(msg)) != sizeof(msg)) {
-         error_report("failed to write, fd=%d, errno=%d (%s)",
-@@ -151,7 +151,8 @@ static void vhost_vdpa_listener_begin_batch(struct vhost_vdpa *v)
-         .iotlb.type = VHOST_IOTLB_BATCH_BEGIN,
-     };
- 
--    trace_vhost_vdpa_listener_begin_batch(v, fd, msg.type, msg.iotlb.type);
-+    trace_vhost_vdpa_listener_begin_batch(v->shared, fd, msg.type,
-+                                          msg.iotlb.type);
-     if (write(fd, &msg, sizeof(msg)) != sizeof(msg)) {
-         error_report("failed to write, fd=%d, errno=%d (%s)",
-                      fd, errno, strerror(errno));
-@@ -186,7 +187,7 @@ static void vhost_vdpa_listener_commit(MemoryListener *listener)
-     msg.type = v->msg_type;
-     msg.iotlb.type = VHOST_IOTLB_BATCH_END;
- 
--    trace_vhost_vdpa_listener_commit(v, fd, msg.type, msg.iotlb.type);
-+    trace_vhost_vdpa_listener_commit(v->shared, fd, msg.type, msg.iotlb.type);
-     if (write(fd, &msg, sizeof(msg)) != sizeof(msg)) {
-         error_report("failed to write, fd=%d, errno=%d (%s)",
-                      fd, errno, strerror(errno));
-@@ -329,7 +330,8 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
- 
-     if (unlikely((section->offset_within_address_space & ~page_mask) !=
-                  (section->offset_within_region & ~page_mask))) {
--        trace_vhost_vdpa_listener_region_add_unaligned(v, section->mr->name,
-+        trace_vhost_vdpa_listener_region_add_unaligned(v->shared,
-+                       section->mr->name,
-                        section->offset_within_address_space & ~page_mask,
-                        section->offset_within_region & ~page_mask);
-         return;
-@@ -349,7 +351,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-             section->offset_within_region +
-             (iova - section->offset_within_address_space);
- 
--    trace_vhost_vdpa_listener_region_add(v, iova, int128_get64(llend),
-+    trace_vhost_vdpa_listener_region_add(v->shared, iova, int128_get64(llend),
-                                          vaddr, section->readonly);
- 
-     llsize = int128_sub(llend, int128_make64(iova));
-@@ -417,7 +419,8 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
- 
-     if (unlikely((section->offset_within_address_space & ~page_mask) !=
-                  (section->offset_within_region & ~page_mask))) {
--        trace_vhost_vdpa_listener_region_del_unaligned(v, section->mr->name,
-+        trace_vhost_vdpa_listener_region_del_unaligned(v->shared,
-+                       section->mr->name,
-                        section->offset_within_address_space & ~page_mask,
-                        section->offset_within_region & ~page_mask);
-         return;
-@@ -426,7 +429,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
-     iova = ROUND_UP(section->offset_within_address_space, page_size);
-     llend = vhost_vdpa_section_end(section, page_mask);
- 
--    trace_vhost_vdpa_listener_region_del(v, iova,
-+    trace_vhost_vdpa_listener_region_del(v->shared, iova,
-         int128_get64(int128_sub(llend, int128_one())));
- 
-     if (int128_ge(int128_make64(iova), llend)) {
-@@ -583,12 +586,11 @@ static void vhost_vdpa_init_svq(struct vhost_dev *hdev, struct vhost_vdpa *v)
- 
- static int vhost_vdpa_init(struct vhost_dev *dev, void *opaque, Error **errp)
+@@ -90,7 +90,7 @@ int vhost_vdpa_dma_map(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
+                        hwaddr size, void *vaddr, bool readonly)
  {
--    struct vhost_vdpa *v;
-+    struct vhost_vdpa *v = opaque;
-     assert(dev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_VDPA);
--    trace_vhost_vdpa_init(dev, opaque);
-+    trace_vhost_vdpa_init(dev, v->shared, opaque);
+     struct vhost_msg_v2 msg = {};
+-    int fd = v->device_fd;
++    int fd = v->shared->device_fd;
+     int ret = 0;
+ 
+     msg.type = v->msg_type;
+@@ -122,7 +122,7 @@ int vhost_vdpa_dma_unmap(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
+                          hwaddr size)
+ {
+     struct vhost_msg_v2 msg = {};
+-    int fd = v->device_fd;
++    int fd = v->shared->device_fd;
+     int ret = 0;
+ 
+     msg.type = v->msg_type;
+@@ -145,7 +145,7 @@ int vhost_vdpa_dma_unmap(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
+ 
+ static void vhost_vdpa_listener_begin_batch(struct vhost_vdpa *v)
+ {
+-    int fd = v->device_fd;
++    int fd = v->shared->device_fd;
+     struct vhost_msg_v2 msg = {
+         .type = v->msg_type,
+         .iotlb.type = VHOST_IOTLB_BATCH_BEGIN,
+@@ -174,7 +174,7 @@ static void vhost_vdpa_listener_commit(MemoryListener *listener)
+     struct vhost_vdpa *v = container_of(listener, struct vhost_vdpa, listener);
+     struct vhost_dev *dev = v->dev;
+     struct vhost_msg_v2 msg = {};
+-    int fd = v->device_fd;
++    int fd = v->shared->device_fd;
+ 
+     if (!(dev->backend_cap & (0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH))) {
+         return;
+@@ -499,7 +499,7 @@ static int vhost_vdpa_call(struct vhost_dev *dev, unsigned long int request,
+                              void *arg)
+ {
+     struct vhost_vdpa *v = dev->opaque;
+-    int fd = v->device_fd;
++    int fd = v->shared->device_fd;
      int ret;
  
--    v = opaque;
-     v->dev = dev;
-     dev->opaque =  opaque ;
-     v->listener = vhost_vdpa_memory_listener;
-diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-index 637cac4edf..77905d1994 100644
---- a/hw/virtio/trace-events
-+++ b/hw/virtio/trace-events
-@@ -30,16 +30,16 @@ vhost_user_write(uint32_t req, uint32_t flags) "req:%d flags:0x%"PRIx32""
- vhost_user_create_notifier(int idx, void *n) "idx:%d n:%p"
+     assert(dev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_VDPA);
+@@ -657,7 +657,7 @@ static int vhost_vdpa_host_notifier_init(struct vhost_dev *dev, int queue_index)
+     struct vhost_vdpa *v = dev->opaque;
+     VirtIODevice *vdev = dev->vdev;
+     VhostVDPAHostNotifier *n;
+-    int fd = v->device_fd;
++    int fd = v->shared->device_fd;
+     void *addr;
+     char *name;
  
- # vhost-vdpa.c
--vhost_vdpa_dma_map(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint64_t uaddr, uint8_t perm, uint8_t type) "vdpa:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" uaddr: 0x%"PRIx64" perm: 0x%"PRIx8" type: %"PRIu8
--vhost_vdpa_dma_unmap(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint8_t type) "vdpa:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" type: %"PRIu8
--vhost_vdpa_listener_begin_batch(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
--vhost_vdpa_listener_commit(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
--vhost_vdpa_listener_region_add_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
-+vhost_vdpa_dma_map(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint64_t uaddr, uint8_t perm, uint8_t type) "vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" uaddr: 0x%"PRIx64" perm: 0x%"PRIx8" type: %"PRIu8
-+vhost_vdpa_dma_unmap(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint8_t type) "vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" type: %"PRIu8
-+vhost_vdpa_listener_begin_batch(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
-+vhost_vdpa_listener_commit(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
-+vhost_vdpa_listener_region_add_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa_shared: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
- vhost_vdpa_listener_region_add(void *vdpa, uint64_t iova, uint64_t llend, void *vaddr, bool readonly) "vdpa: %p iova 0x%"PRIx64" llend 0x%"PRIx64" vaddr: %p read-only: %d"
--vhost_vdpa_listener_region_del_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
-+vhost_vdpa_listener_region_del_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa_shared: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
- vhost_vdpa_listener_region_del(void *vdpa, uint64_t iova, uint64_t llend) "vdpa: %p iova 0x%"PRIx64" llend 0x%"PRIx64
- vhost_vdpa_add_status(void *dev, uint8_t status) "dev: %p status: 0x%"PRIx8
--vhost_vdpa_init(void *dev, void *vdpa) "dev: %p vdpa: %p"
-+vhost_vdpa_init(void *dev, void *s, void *vdpa) "dev: %p, common dev: %p vdpa: %p"
- vhost_vdpa_cleanup(void *dev, void *vdpa) "dev: %p vdpa: %p"
- vhost_vdpa_memslots_limit(void *dev, int ret) "dev: %p = 0x%x"
- vhost_vdpa_set_mem_table(void *dev, uint32_t nregions, uint32_t padding) "dev: %p nregions: %"PRIu32" padding: 0x%"PRIx32
+@@ -1286,7 +1286,7 @@ static void vhost_vdpa_suspend(struct vhost_dev *dev)
+ 
+     if (dev->backend_cap & BIT_ULL(VHOST_BACKEND_F_SUSPEND)) {
+         trace_vhost_vdpa_suspend(dev);
+-        r = ioctl(v->device_fd, VHOST_VDPA_SUSPEND);
++        r = ioctl(v->shared->device_fd, VHOST_VDPA_SUSPEND);
+         if (unlikely(r)) {
+             error_report("Cannot suspend: %s(%d)", g_strerror(errno), errno);
+         } else {
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index bf8e8327da..10cf0027de 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -235,14 +235,11 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+         vhost_net_cleanup(s->vhost_net);
+         g_free(s->vhost_net);
+         s->vhost_net = NULL;
+-    }
+-     if (s->vhost_vdpa.device_fd >= 0) {
+-        qemu_close(s->vhost_vdpa.device_fd);
+-        s->vhost_vdpa.device_fd = -1;
+     }
+     if (s->vhost_vdpa.index != 0) {
+         return;
+     }
++    qemu_close(s->vhost_vdpa.shared->device_fd);
+     g_free(s->vhost_vdpa.shared);
+ }
+ 
+@@ -448,7 +445,7 @@ static int vhost_vdpa_set_address_space_id(struct vhost_vdpa *v,
+     };
+     int r;
+ 
+-    r = ioctl(v->device_fd, VHOST_VDPA_SET_GROUP_ASID, &asid);
++    r = ioctl(v->shared->device_fd, VHOST_VDPA_SET_GROUP_ASID, &asid);
+     if (unlikely(r < 0)) {
+         error_report("Can't set vq group %u asid %u, errno=%d (%s)",
+                      asid.index, asid.num, errno, g_strerror(errno));
+@@ -544,7 +541,7 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
+         return 0;
+     }
+ 
+-    cvq_group = vhost_vdpa_get_vring_group(v->device_fd,
++    cvq_group = vhost_vdpa_get_vring_group(v->shared->device_fd,
+                                            v->dev->vq_index_end - 1,
+                                            &err);
+     if (unlikely(cvq_group < 0)) {
+@@ -1671,7 +1668,6 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+     qemu_set_info_str(nc, TYPE_VHOST_VDPA);
+     s = DO_UPCAST(VhostVDPAState, nc, nc);
+ 
+-    s->vhost_vdpa.device_fd = vdpa_device_fd;
+     s->vhost_vdpa.index = queue_pair_index;
+     s->always_svq = svq;
+     s->migration_state.notify = NULL;
+@@ -1680,6 +1676,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+         vhost_vdpa_net_valid_svq_features(features,
+                                           &s->vhost_vdpa.migration_blocker);
+         s->vhost_vdpa.shared = g_new0(VhostVDPAShared, 1);
++        s->vhost_vdpa.shared->device_fd = vdpa_device_fd;
+         s->vhost_vdpa.shared->iova_range = iova_range;
+         s->vhost_vdpa.shared->shadow_data = svq;
+     } else if (!is_datapath) {
 -- 
 2.39.3
 
