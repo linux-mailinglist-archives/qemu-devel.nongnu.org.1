@@ -2,86 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A394581C132
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 23:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 905AA81C19E
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 00:08:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGRrP-0007Ln-Sm; Thu, 21 Dec 2023 17:49:47 -0500
+	id 1rGS7v-0001c1-2d; Thu, 21 Dec 2023 18:06:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rGRrN-0007LA-OV
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 17:49:45 -0500
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rGRrL-00033B-P2
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 17:49:45 -0500
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6d9344f30caso951652b3a.1
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 14:49:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703198981; x=1703803781; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GMuyFOHtNaWMhJh0VuThu+TLPM7q7s1GwW52vliCXrA=;
- b=PZ7avcxjq5mtlLPkSdvZv1pmg8YWSqsx8b7QG06Q6PqnMJbJng2KeqTSqjcvAeYYex
- NmItc0qcjo6ZZG5FDys2KM2TblNBsacBX7G5yuyw8D6x90ywvVXO7XGjq2ubgwdTqNTY
- Wp9W2JXdmIciUH/yU5SNFouOl4zkem0b8PZfQc52pnBdbgqMb9g3i+imQxSTjKjKrco8
- n6ckWKpNjNDk25nNFxXwWOX+j2rBAuLVMNytspEBchpHf+igkbpyLw5ySts5ewIPgT8H
- YS4YzJoFq6baFSZrM7Afh1L6vX/oYtjfZRgJAdegcq9Bqwwf4f0sEFKNv/x4sciMcLjn
- eEZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703198981; x=1703803781;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GMuyFOHtNaWMhJh0VuThu+TLPM7q7s1GwW52vliCXrA=;
- b=d84Tdkki55MJG4GnTTg4pJ33oOeh7VXxOC1X1C+hMVsqgVPpKYjwieib3t2jUQlUVx
- 4DRSNwymV2ucU+zIT1bYewWmKq7iLmm1MOMH4gwxpChMO6fXFsMHVjHd8DhQ0NC8aInF
- eQffFhJGl0LQ0MpU7GXjsZHuFsYbdQLLiKcdVzZJDZbXxF4Yt1Cr3OLfylAo8iGf90bh
- dB6T7DZQVAkMH0lPTFg7TzDoN4j2B77E7RTbO1CPwib7uVA7J7RuqDNf7/IB4Y3HaOqs
- J/VsqJkRI3qyiW3qNaQmCE3LqERVAHbS7YdzHW5DU41+zrm5IZ52GnPQRMB9W+scfVqK
- SkXQ==
-X-Gm-Message-State: AOJu0YzYl9Gp0uwr+EOYud1Je7uzKB2sv5VbcaneX7Q+gmyjpz/PZNui
- oItXdItMtCH91ci9JOk103tYT76zAcDMFw==
-X-Google-Smtp-Source: AGHT+IGgnHL7HF01k3LOHatxpmDbA5DtviVamziCHoAYgu/Ay4UgFEfJkwSfZhw+RaGhXctJf6L88w==
-X-Received: by 2002:a05:6a00:2d24:b0:6d8:1daf:ae3a with SMTP id
- fa36-20020a056a002d2400b006d81dafae3amr1510903pfb.27.1703198980881; 
- Thu, 21 Dec 2023 14:49:40 -0800 (PST)
-Received: from ?IPV6:2001:8004:5170:1dd0:f3d2:7d7a:220f:5fe7?
- ([2001:8004:5170:1dd0:f3d2:7d7a:220f:5fe7])
- by smtp.gmail.com with ESMTPSA id
- c7-20020a62e807000000b006d9314bc0afsm2104946pfi.152.2023.12.21.14.49.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Dec 2023 14:49:40 -0800 (PST)
-Message-ID: <6da02b36-d82f-49ae-ae85-4642486dabe7@linaro.org>
-Date: Fri, 22 Dec 2023 09:49:32 +1100
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGS7r-0001ba-DQ
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 18:06:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGS7n-00015E-Ld
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 18:06:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703200003;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=K07YrMZ9L8Bb96oHzrg8bQ36zyQIMxOc33sb6BgwfEI=;
+ b=gxXmS/FRERWDCInbTrZExbA5PMJ4sU23WlpiR+4KJMQEaN2hv0vjMHQuK7J2NkPEU0uZNU
+ yQOvcr5yogD2qG6PVllaBwPy9HWOpcOQHol8M+N62dPDyuCKKvvN+/3gBG873GWVvEeZ6G
+ G0kgkMjbvGImguqs65YnA105o2bn8xc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-170-fSa3aQZVMamybvO_2VSTMg-1; Thu, 21 Dec 2023 18:06:39 -0500
+X-MC-Unique: fSa3aQZVMamybvO_2VSTMg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 72252807F6D;
+ Thu, 21 Dec 2023 23:06:39 +0000 (UTC)
+Received: from merkur.fritz.box (unknown [10.39.193.128])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 307D13C25;
+ Thu, 21 Dec 2023 23:06:37 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	stefanha@redhat.com,
+	qemu-devel@nongnu.org
+Subject: [PULL v2 00/33] Block layer patches
+Date: Fri, 22 Dec 2023 00:06:34 +0100
+Message-ID: <20231221230634.269118-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] target/riscv: Add pointer masking tb flags
-Content-Language: en-US
-To: Alexey Baturo <baturo.alexey@gmail.com>
-Cc: zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com,
- Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu,
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-References: <20231221104035.1287244-1-me@deliversmonkey.space>
- <20231221104035.1287244-4-me@deliversmonkey.space>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231221104035.1287244-4-me@deliversmonkey.space>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,117 +76,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/21/23 21:40, Alexey Baturo wrote:
-> From: Alexey Baturo <baturo.alexey@gmail.com>
-> 
-> Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
-> ---
->   target/riscv/cpu.h        | 19 +++++++++++++------
->   target/riscv/cpu_helper.c |  4 ++++
->   target/riscv/translate.c  | 10 ++++++++++
->   3 files changed, 27 insertions(+), 6 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index f49d4aa52c..2099168950 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -390,6 +390,10 @@ struct CPUArchState {
->       target_ulong senvcfg;
->       uint64_t henvcfg;
->   #endif
-> +    /* current number of masked top bits by pointer masking */
-> +    target_ulong pm_pmlen;
-> +    /* if pointer masking should do sign extension */
-> +    bool pm_signext;
->   
->       /* Fields from here on are preserved across CPU reset. */
->       QEMUTimer *stimer; /* Internal timer for S-mode interrupt */
-> @@ -538,14 +542,17 @@ FIELD(TB_FLAGS, VILL, 14, 1)
->   FIELD(TB_FLAGS, VSTART_EQ_ZERO, 15, 1)
->   /* The combination of MXL/SXL/UXL that applies to the current cpu mode. */
->   FIELD(TB_FLAGS, XL, 16, 2)
-> -FIELD(TB_FLAGS, VTA, 18, 1)
-> -FIELD(TB_FLAGS, VMA, 19, 1)
-> +/* If pointer masking should be applied and address sign extended */
-> +FIELD(TB_FLAGS, PM_ENABLED, 18, 1)
+The following changes since commit 191710c221f65b1542f6ea7fa4d30dde6e134fd7:
 
-I think it would be better add the entire two bit field here, so that the translator can 
-see the true width of the address.  You can then use tcg_gen_{s}extract_tl to perform the 
-truncation.  At which point the 'target_ulong pm_pmlen' is not required.
+  Merge tag 'pull-request-2023-12-20' of https://gitlab.com/thuth/qemu into staging (2023-12-20 09:40:16 -0500)
 
+are available in the Git repository at:
 
-r~
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
 
-> +FIELD(TB_FLAGS, PM_SIGNEXTEND, 19, 1)
-> +FIELD(TB_FLAGS, VTA, 20, 1)
-> +FIELD(TB_FLAGS, VMA, 21, 1)
->   /* Native debug itrigger */
-> -FIELD(TB_FLAGS, ITRIGGER, 20, 1)
-> +FIELD(TB_FLAGS, ITRIGGER, 22, 1)
->   /* Virtual mode enabled */
-> -FIELD(TB_FLAGS, VIRT_ENABLED, 21, 1)
-> -FIELD(TB_FLAGS, PRIV, 22, 2)
-> -FIELD(TB_FLAGS, AXL, 24, 2)
-> +FIELD(TB_FLAGS, VIRT_ENABLED, 23, 1)
-> +FIELD(TB_FLAGS, PRIV, 24, 2)
-> +FIELD(TB_FLAGS, AXL, 25, 2)
->   
->   #ifdef TARGET_RISCV32
->   #define riscv_cpu_mxl(env)  ((void)(env), MXL_RV32)
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index a3d477d226..79cddbd930 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -135,6 +135,10 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
->       flags = FIELD_DP32(flags, TB_FLAGS, VS, vs);
->       flags = FIELD_DP32(flags, TB_FLAGS, XL, env->xl);
->       flags = FIELD_DP32(flags, TB_FLAGS, AXL, cpu_address_xl(env));
-> +    if (env->pm_pmlen != 0) {
-> +        flags = FIELD_DP32(flags, TB_FLAGS, PM_ENABLED, 1);
-> +    }
-> +    flags = FIELD_DP32(flags, TB_FLAGS, PM_SIGNEXTEND, env->pm_signext);
->   
->       *pflags = flags;
->   }
-> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> index 6b4b9a671c..4c0d526b58 100644
-> --- a/target/riscv/translate.c
-> +++ b/target/riscv/translate.c
-> @@ -42,6 +42,8 @@ static TCGv cpu_gpr[32], cpu_gprh[32], cpu_pc, cpu_vl, cpu_vstart;
->   static TCGv_i64 cpu_fpr[32]; /* assume F and D extensions */
->   static TCGv load_res;
->   static TCGv load_val;
-> +/* number of top masked address bits by pointer masking extension */
-> +static TCGv pm_pmlen;
->   
->   /*
->    * If an operation is being performed on less than TARGET_LONG_BITS,
-> @@ -103,6 +105,9 @@ typedef struct DisasContext {
->       bool vl_eq_vlmax;
->       CPUState *cs;
->       TCGv zero;
-> +    /* pointer masking extension */
-> +    bool pm_enabled;
-> +    bool pm_signext;
->       /* Use icount trigger for native debug */
->       bool itrigger;
->       /* FRM is known to contain a valid value. */
-> @@ -1176,6 +1181,8 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
->       ctx->xl = FIELD_EX32(tb_flags, TB_FLAGS, XL);
->       ctx->address_xl = FIELD_EX32(tb_flags, TB_FLAGS, AXL);
->       ctx->cs = cs;
-> +    ctx->pm_enabled = FIELD_EX32(tb_flags, TB_FLAGS, PM_ENABLED);
-> +    ctx->pm_signext = FIELD_EX32(tb_flags, TB_FLAGS, PM_SIGNEXTEND);
->       ctx->itrigger = FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
->       ctx->zero = tcg_constant_tl(0);
->       ctx->virt_inst_excp = false;
-> @@ -1307,4 +1314,7 @@ void riscv_translate_init(void)
->                                "load_res");
->       load_val = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, load_val),
->                                "load_val");
-> +    /* Assign var with number of pointer masking masked bits to tcg global */
-> +    pm_pmlen = tcg_global_mem_new(tcg_env, offsetof(CPURISCVState, pm_pmlen),
-> +                                   "pmlen");
->   }
+for you to fetch changes up to b6948ab01df068bef591868c22d1f873d2d05cde:
+
+  virtio-blk: add iothread-vq-mapping parameter (2023-12-21 22:49:28 +0100)
+
+----------------------------------------------------------------
+Block layer patches
+
+- virtio-blk: Multiqueue support (configurable iothread per queue)
+- Made NBD export and hw/scsi thread-safe without AioContext lock
+- Fix crash when loading snapshot on inactive node
+
+----------------------------------------------------------------
+Kevin Wolf (3):
+      block: Fix crash when loading snapshot on inactive node
+      vl: Improve error message for conflicting -incoming and -loadvm
+      iotests: Basic tests for internal snapshots
+
+Stefan Hajnoczi (30):
+      nbd/server: avoid per-NBDRequest nbd_client_get/put()
+      nbd/server: only traverse NBDExport->clients from main loop thread
+      nbd/server: introduce NBDClient->lock to protect fields
+      block/file-posix: set up Linux AIO and io_uring in the current thread
+      virtio-blk: add lock to protect s->rq
+      virtio-blk: don't lock AioContext in the completion code path
+      virtio-blk: don't lock AioContext in the submission code path
+      scsi: only access SCSIDevice->requests from one thread
+      virtio-scsi: don't lock AioContext around virtio_queue_aio_attach_host_notifier()
+      scsi: don't lock AioContext in I/O code path
+      dma-helpers: don't lock AioContext in dma_blk_cb()
+      virtio-scsi: replace AioContext lock with tmf_bh_lock
+      scsi: assert that callbacks run in the correct AioContext
+      tests: remove aio_context_acquire() tests
+      aio: make aio_context_acquire()/aio_context_release() a no-op
+      graph-lock: remove AioContext locking
+      block: remove AioContext locking
+      block: remove bdrv_co_lock()
+      scsi: remove AioContext locking
+      aio-wait: draw equivalence between AIO_WAIT_WHILE() and AIO_WAIT_WHILE_UNLOCKED()
+      aio: remove aio_context_acquire()/aio_context_release() API
+      docs: remove AioContext lock from IOThread docs
+      scsi: remove outdated AioContext lock comment
+      job: remove outdated AioContext locking comments
+      block: remove outdated AioContext locking comments
+      block-coroutine-wrapper: use qemu_get_current_aio_context()
+      string-output-visitor: show structs as "<omitted>"
+      qdev-properties: alias all object class properties
+      qdev: add IOThreadVirtQueueMappingList property type
+      virtio-blk: add iothread-vq-mapping parameter
+
+ qapi/virtio.json                                   |  29 ++
+ docs/devel/multiple-iothreads.txt                  |  47 +--
+ hw/block/dataplane/virtio-blk.h                    |   3 +
+ include/block/aio-wait.h                           |  16 +-
+ include/block/aio.h                                |  17 -
+ include/block/block-common.h                       |   3 -
+ include/block/block-global-state.h                 |  23 +-
+ include/block/block-io.h                           |  12 +-
+ include/block/block_int-common.h                   |   2 -
+ include/block/graph-lock.h                         |  21 +-
+ include/block/snapshot.h                           |   2 -
+ include/hw/qdev-properties-system.h                |   5 +
+ include/hw/qdev-properties.h                       |   4 +-
+ include/hw/scsi/scsi.h                             |   7 +-
+ include/hw/virtio/virtio-blk.h                     |   5 +-
+ include/hw/virtio/virtio-scsi.h                    |  17 +-
+ include/qapi/string-output-visitor.h               |   6 +-
+ include/qemu/job.h                                 |  20 --
+ block.c                                            | 363 +++------------------
+ block/backup.c                                     |   4 +-
+ block/blklogwrites.c                               |   8 +-
+ block/blkverify.c                                  |   4 +-
+ block/block-backend.c                              |  33 +-
+ block/commit.c                                     |  16 +-
+ block/copy-before-write.c                          |  22 +-
+ block/export/export.c                              |  22 +-
+ block/export/vhost-user-blk-server.c               |   4 -
+ block/file-posix.c                                 | 103 +++---
+ block/graph-lock.c                                 |  44 +--
+ block/io.c                                         |  45 +--
+ block/mirror.c                                     |  41 +--
+ block/monitor/bitmap-qmp-cmds.c                    |  20 +-
+ block/monitor/block-hmp-cmds.c                     |  29 --
+ block/qapi-sysemu.c                                |  27 +-
+ block/qapi.c                                       |  18 +-
+ block/qcow2.c                                      |   4 +-
+ block/quorum.c                                     |   8 +-
+ block/raw-format.c                                 |   5 -
+ block/replication.c                                |  72 +---
+ block/snapshot.c                                   |  30 +-
+ block/stream.c                                     |  12 +-
+ block/vmdk.c                                       |  20 +-
+ block/write-threshold.c                            |   6 -
+ blockdev.c                                         | 320 ++++--------------
+ blockjob.c                                         |  30 +-
+ hw/block/dataplane/virtio-blk.c                    | 165 +++++++---
+ hw/block/dataplane/xen-block.c                     |  17 +-
+ hw/block/virtio-blk.c                              | 209 +++++++-----
+ hw/core/qdev-properties-system.c                   |  55 +++-
+ hw/core/qdev-properties.c                          |  18 +-
+ hw/scsi/scsi-bus.c                                 | 183 +++++++----
+ hw/scsi/scsi-disk.c                                |  67 +---
+ hw/scsi/scsi-generic.c                             |  20 +-
+ hw/scsi/virtio-scsi-dataplane.c                    |   8 +-
+ hw/scsi/virtio-scsi.c                              |  80 ++---
+ job.c                                              |  16 -
+ migration/block.c                                  |  34 +-
+ migration/migration-hmp-cmds.c                     |   3 -
+ migration/savevm.c                                 |  22 --
+ nbd/server.c                                       | 208 +++++++++---
+ net/colo-compare.c                                 |   2 -
+ qapi/string-output-visitor.c                       |  16 +
+ qemu-img.c                                         |   4 -
+ qemu-io.c                                          |  10 +-
+ qemu-nbd.c                                         |   2 -
+ replay/replay-debugging.c                          |   4 -
+ system/dma-helpers.c                               |  10 +-
+ system/vl.c                                        |   4 +
+ tests/unit/test-aio.c                              |  67 +---
+ tests/unit/test-bdrv-drain.c                       |  91 ++----
+ tests/unit/test-bdrv-graph-mod.c                   |  26 +-
+ tests/unit/test-block-iothread.c                   |  31 --
+ tests/unit/test-blockjob.c                         | 137 --------
+ tests/unit/test-replication.c                      |  11 -
+ util/async.c                                       |  14 -
+ util/vhost-user-server.c                           |   3 -
+ scripts/block-coroutine-wrapper.py                 |  13 +-
+ tests/qemu-iotests/202                             |   2 +-
+ tests/qemu-iotests/203                             |   3 +-
+ tests/qemu-iotests/tests/qcow2-internal-snapshots  | 170 ++++++++++
+ .../tests/qcow2-internal-snapshots.out             | 107 ++++++
+ tests/tsan/suppressions.tsan                       |   1 -
+ 82 files changed, 1341 insertions(+), 2041 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/qcow2-internal-snapshots
+ create mode 100644 tests/qemu-iotests/tests/qcow2-internal-snapshots.out
 
 
