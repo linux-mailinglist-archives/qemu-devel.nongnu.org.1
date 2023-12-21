@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A50581ABFF
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 02:09:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C063481AC57
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 02:51:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG7Xc-0003VT-93; Wed, 20 Dec 2023 20:08:00 -0500
+	id 1rG8BZ-000848-4t; Wed, 20 Dec 2023 20:49:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rG7XY-0003VD-M3
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 20:07:56 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rG7XU-00035g-NF
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 20:07:56 -0500
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Bx6ujej4NlQSwDAA--.15814S3;
- Thu, 21 Dec 2023 09:07:43 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dxjb7bj4Nl59YCAA--.8553S3; 
- Thu, 21 Dec 2023 09:07:41 +0800 (CST)
-Subject: Re: [PATCH] hw/loongarch/virt: Align high memory base address with
- super page size
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: qemu-devel@nongnu.org
-References: <20231127040231.4123715-1-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <00615d01-3144-336f-62d6-3bce426aeef9@loongson.cn>
-Date: Thu, 21 Dec 2023 09:07:43 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rG8BX-00083H-Mo
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 20:49:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rG8BV-0002fD-E3
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 20:49:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703123352;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=GPw46gXn3wcJqEE02xkUpjFVhan0KPixZFadAOoIkm8=;
+ b=VsL2lsj+8RsxEYKuZ0giwAjfPuwPxiM4cAceDXk78GgE+hyQXOaNkBMbo1Z3Krl6y2qkBV
+ Mk7F+AGN4pnk26PgsFT4x4iWrHxRvxk8zj4PItW6t4VYmvRJ/lrwkNRyWESB7VVk1r5AGC
+ 173fXl9zuix6ailf/vvPIvLA5cW4Ac8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562--fVS_IPkMFGN1a6vn0v0qQ-1; Wed,
+ 20 Dec 2023 20:49:06 -0500
+X-MC-Unique: -fVS_IPkMFGN1a6vn0v0qQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 60A5429AB3E1;
+ Thu, 21 Dec 2023 01:49:06 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.79])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0C683C15968;
+ Thu, 21 Dec 2023 01:49:04 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>,
+	qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ qemu-block@nongnu.org, Fam Zheng <fam@euphon.net>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PATCH 0/6] qemu-iotests fixes for Kevin's block tree
+Date: Wed, 20 Dec 2023 20:48:57 -0500
+Message-ID: <20231221014903.1537962-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20231127040231.4123715-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Dxjb7bj4Nl59YCAA--.8553S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Ar17Jw18WFykAFWDCw1xWFX_yoW8Gr47pa
- s2yF4v9r48Gw1UG3W0qa45Xry7X397CF9F9ry7uryxCr909r1kuryjv3s09FyDX395WFy2
- qFZ7trW2gayDZwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
- Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.41, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,38 +84,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2023/11/27 ÏÂÎç12:02, Bibo Mao Ð´µÀ:
-> With LoongArch virt machine, there is low memory space with region
-> 0--0x10000000, and high memory space with started from 0x90000000.
-> High memory space is aligned with 256M, it will be better if it is
-> aligned with 1G, which is super page aligned for 4K page size.
->
-> Currently linux kernel and uefi bios has no limitation with high
-> memory base address, it is ok to set high memory base address
-> with 0x80000000.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> Change-Id: Iac1af728bf6fd35c9c2f4e7dbdae6e3c0fbab623
-> ---
->   include/hw/loongarch/virt.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-Drop Change-Id.
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+Kevin merged several of my outstanding multi-queue block layer patch series and
+found that qemu-iotests -qcow2 was broken. This patch series fixes the block branch.
 
-Thanks.
-Song Gao
-> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-> index 674f4655e0..db0831b471 100644
-> --- a/include/hw/loongarch/virt.h
-> +++ b/include/hw/loongarch/virt.h
-> @@ -25,7 +25,7 @@
->   
->   #define VIRT_LOWMEM_BASE        0
->   #define VIRT_LOWMEM_SIZE        0x10000000
-> -#define VIRT_HIGHMEM_BASE       0x90000000
-> +#define VIRT_HIGHMEM_BASE       0x80000000
->   #define VIRT_GED_EVT_ADDR       0x100e0000
->   #define VIRT_GED_MEM_ADDR       (VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN)
->   #define VIRT_GED_REG_ADDR       (VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN)
+Most of the fixes are easy but the NBD server required deeper debugging and
+thread-safety fixes. The NBD server patches can be inserted before "aio: make
+aio_context_acquire()/aio_context_release() a no-op" to preserve bisectability.
+The other patches are fixups that can be squashed into the original patches.
+
+Stefan Hajnoczi (6):
+  fixup block-coroutine-wrapper: use qemu_get_current_aio_context()
+  fixup block: remove AioContext locking
+  fixup scsi: only access SCSIDevice->requests from one thread
+  nbd/server: avoid per-NBDRequest nbd_client_get/put()
+  nbd/server: only traverse NBDExport->clients from main loop thread
+  nbd/server: introduce NBDClient->lock to protect fields
+
+ hw/scsi/scsi-bus.c            |   3 +-
+ migration/block.c             |   7 ++
+ nbd/server.c                  | 152 +++++++++++++++++++++++++---------
+ tests/qemu-iotests/051.pc.out |   4 +-
+ 4 files changed, 124 insertions(+), 42 deletions(-)
+
+-- 
+2.43.0
 
 
