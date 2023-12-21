@@ -2,47 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1876F81B02E
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 09:20:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9106781B006
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 09:10:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGEH7-0005TD-Fq; Thu, 21 Dec 2023 03:19:25 -0500
+	id 1rGE7r-0001O2-UM; Thu, 21 Dec 2023 03:09:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rGEGx-0005Sg-6d
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:19:15 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rGEGv-0007Vz-2T
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:19:14 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Ax2uj79INlI1wDAA--.17045S3;
- Thu, 21 Dec 2023 16:19:07 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxG+T49INltGsDAA--.18043S4; 
- Thu, 21 Dec 2023 16:19:06 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <abelova@astralinux.ru>)
+ id 1rGE7p-0001IS-Bc
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:09:49 -0500
+Received: from mail.astralinux.ru ([217.74.38.119])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <abelova@astralinux.ru>)
+ id 1rGE7m-00045D-Th
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:09:49 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by mail.astralinux.ru (Postfix) with ESMTP id F31AF186440E;
+ Thu, 21 Dec 2023 11:09:35 +0300 (MSK)
+Received: from mail.astralinux.ru ([127.0.0.1])
+ by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new,
+ port 10032)
+ with ESMTP id H7N_mgzhZ9Gi; Thu, 21 Dec 2023 11:09:35 +0300 (MSK)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by mail.astralinux.ru (Postfix) with ESMTP id A4B791863365;
+ Thu, 21 Dec 2023 11:09:35 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at astralinux.ru
+Received: from mail.astralinux.ru ([127.0.0.1])
+ by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new,
+ port 10026)
+ with ESMTP id ZaRDx6vGNa5z; Thu, 21 Dec 2023 11:09:35 +0300 (MSK)
+Received: from rbta-msk-lt-106062.astralinux.ru (unknown [10.177.20.25])
+ by mail.astralinux.ru (Postfix) with ESMTPSA id 4BAC5186330D;
+ Thu, 21 Dec 2023 11:09:35 +0300 (MSK)
+From: Anastasia Belova <abelova@astralinux.ru>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 2/2] target/loongarch: Add timer information dump support
-Date: Thu, 21 Dec 2023 16:06:11 +0800
-Message-Id: <20231221080611.2960977-3-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20231221080611.2960977-1-gaosong@loongson.cn>
-References: <20231221080611.2960977-1-gaosong@loongson.cn>
+Cc: Anastasia Belova <abelova@astralinux.ru>,
+	sdl.qemu@linuxtesting.org
+Subject: [PATCH] load_elf: fix iterator type in glue
+Date: Thu, 21 Dec 2023 11:08:58 +0300
+Message-Id: <20231221080858.12876-1-abelova@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxG+T49INltGsDAA--.18043S4
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=217.74.38.119; envelope-from=abelova@astralinux.ru;
+ helo=mail.astralinux.ru
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -63,34 +68,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+file_size is uint32_t, so j < file_size should be
+uint32_t too.
 
-Timer emulation sometimes is problematic especially when vm is running in
-kvm mode. This patch adds registers dump support relative with timer
-hardware, so that it is easier to find the problems.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20231206081839.2290178-1-maobibo@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
+Fixes: 7ef295ea5b ("loader: Add data swap option to load-elf")
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
 ---
- target/loongarch/cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/hw/elf_ops.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index b26187dfde..07319d6fb9 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -764,6 +764,8 @@ void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-     qemu_fprintf(f, "TLBRENTRY=%016" PRIx64 "\n", env->CSR_TLBRENTRY);
-     qemu_fprintf(f, "TLBRBADV=%016" PRIx64 "\n", env->CSR_TLBRBADV);
-     qemu_fprintf(f, "TLBRERA=%016" PRIx64 "\n", env->CSR_TLBRERA);
-+    qemu_fprintf(f, "TCFG=%016" PRIx64 "\n", env->CSR_TCFG);
-+    qemu_fprintf(f, "TVAL=%016" PRIx64 "\n", env->CSR_TVAL);
- 
-     /* fpr */
-     if (flags & CPU_DUMP_FPU) {
--- 
-2.25.1
+diff --git a/include/hw/elf_ops.h b/include/hw/elf_ops.h
+index 0a5c258fe6..1defccaa71 100644
+--- a/include/hw/elf_ops.h
++++ b/include/hw/elf_ops.h
+@@ -500,7 +500,7 @@ static ssize_t glue(load_elf, SZ)(const char *name, i=
+nt fd,
+             }
+=20
+             if (data_swab) {
+-                int j;
++                uint32_t j;
+                 for (j =3D 0; j < file_size; j +=3D (1 << data_swab)) {
+                     uint8_t *dp =3D data + j;
+                     switch (data_swab) {
+--=20
+2.30.2
 
 
