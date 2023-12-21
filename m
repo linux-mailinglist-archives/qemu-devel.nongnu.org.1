@@ -2,92 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9276F81B989
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 15:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0955181B9DC
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 15:53:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGK3Z-0005ce-B1; Thu, 21 Dec 2023 09:29:49 -0500
+	id 1rGKOm-0004Gp-BR; Thu, 21 Dec 2023 09:51:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rGK3X-0005cC-5S; Thu, 21 Dec 2023 09:29:47 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rGK3V-0006e5-Ho; Thu, 21 Dec 2023 09:29:46 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a236456fee1so102918066b.1; 
- Thu, 21 Dec 2023 06:29:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1703168982; x=1703773782; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pdSaC/fndvMGKUjEzphpaCYLwkDVUXBTTEuv6Vyh+pc=;
- b=Nyy7tm1jwX8MLei27+4lN6cXw5RE7dxr+oxIh1kAw3nqKMnPb2Vp55Yw+G32V84pmE
- aaP2HftI+IXjCtcNXw/BYbwCeFoVa55PIESdmqRHu9lVVJl5NlbUMHktoyRg1wjgu0Wn
- S3S2IlYAMMQ4wD+2JV7KA5ib7B81FZR1D1f/Xotub0DujkE2fJeGA+7sst7dDirnUF4Q
- CF5kX1Pu2rhTf2E7A2aouNriFsECsCG8uefRW5lYtDgXHhwJTg+VTXURZovwbjehmmW0
- MnGIZNVkDaMJsqlRDYwpn4WV0aci42vQ98AiLxWSo+GF7873rNBbi+GVoMp7FYuqxGnc
- m9CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703168982; x=1703773782;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pdSaC/fndvMGKUjEzphpaCYLwkDVUXBTTEuv6Vyh+pc=;
- b=l+nwJww3pTBQhXN58LVgBeCpFk0tgLwJJUopkBN5cBZFQjduEbs9EOBS3/uLgREvHk
- yHVIQ+QCzv/7RyIUx7zo6XHqywJrehH9O27eoWSZojgchHxRZzSHy8zSfCLo4SG3X488
- cQJbF3nXiKMEssdks/twKJT6+MW14JQ1b7XBsXk3X99bCv3kOSSALd4nRrED+EfYlR8S
- +GfRJbvCxh4w4abJzMwWK6zib13yRlgi9eU2YAy1Pjbnn67of9cJ77NAEkEQ8YHXBUYf
- 6PoVf2chJDatPBYod3JdP43pm5JAxe5p6a1LChJVkF33Rurt9zvZ3vFXO712KZnuFxmG
- 2EtA==
-X-Gm-Message-State: AOJu0YxwNgvTtGhbBmuhXkTjZnxgZ9FJIrsIPKwOWYdbtwjpmOmu9p1w
- XoA94LVLD33SVW9aXxmXYXE=
-X-Google-Smtp-Source: AGHT+IGQdnxxGqxZ33HYGKZhcaTKqmko1lz4deeL7vz3CejJWKFkzWxQmqjuNq3iPyAmv+JWhV5dig==
-X-Received: by 2002:a17:906:44c:b0:a23:671c:228a with SMTP id
- e12-20020a170906044c00b00a23671c228amr3230833eja.55.1703168982159; 
- Thu, 21 Dec 2023 06:29:42 -0800 (PST)
-Received: from ?IPv6:::1?
- (p200300faaf1724005cbed9e46dc30ccf.dip0.t-ipconnect.de.
- [2003:fa:af17:2400:5cbe:d9e4:6dc3:ccf])
- by smtp.gmail.com with ESMTPSA id
- z17-20020a170906715100b00a26966683e3sm1026275ejj.144.2023.12.21.06.29.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Dec 2023 06:29:41 -0800 (PST)
-Date: Thu, 21 Dec 2023 14:29:35 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_11/12=5D_hw/ppc/pegasos2=3A_Let_p?=
- =?US-ASCII?Q?egasos2_machine_configure_SuperI/O_functions?=
-In-Reply-To: <9ccd94d1-130f-b009-cd25-f32122c78908@eik.bme.hu>
-References: <20231218185114.119736-1-shentey@gmail.com>
- <20231218185114.119736-12-shentey@gmail.com>
- <9ccd94d1-130f-b009-cd25-f32122c78908@eik.bme.hu>
-Message-ID: <30F2BEE1-8EBB-4C24-9C6F-BBE5938AAAE5@gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rGKOf-0004GT-1H
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 09:51:39 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rGKOb-0006Yx-B9
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 09:51:36 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 02C573DC7F;
+ Thu, 21 Dec 2023 17:51:45 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5842250A2D;
+ Thu, 21 Dec 2023 17:51:28 +0300 (MSK)
+Message-ID: <d5e8f88b-1d19-4e00-8dc2-b20e0cd34931@tls.msk.ru>
+Date: Thu, 21 Dec 2023 17:51:28 +0300
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: QEMU Developers <qemu-devel@nongnu.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Subject: chacha20-s390 broken in 8.2.0 in TCG on s390x
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,79 +80,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+When running current kernel on s390x in tcg mode *on s390x hw*, the following
+is generated when loading crypto selftest module (it gets loaded automatically):
 
+[   10.546690] alg: skcipher: chacha20-s390 encryption test failed (wrong result) on test vector 1, cfg="in-place (one sglist)"
+[   10.546914] alg: self-tests for chacha20 using chacha20-s390 failed (rc=-22)
+[   10.546969] ------------[ cut here ]------------
+[   10.546998] alg: self-tests for chacha20 using chacha20-s390 failed (rc=-22)
+[   10.547182] WARNING: CPU: 1 PID: 109 at crypto/testmgr.c:5936 alg_test+0x55a/0x5b8
+[   10.547510] Modules linked in: net_failover chacha_s390(+) libchacha virtio_blk(+) failover
+[   10.547854] CPU: 1 PID: 109 Comm: cryptomgr_test Not tainted 6.5.0-5-s390x #1  Debian 6.5.13-1
+[   10.548002] Hardware name: QEMU 8561 QEMU (KVM/Linux)
+[   10.548101] Krnl PSW : 0704c00180000000 00000000005df8fe (alg_test+0x55e/0x5b8)
+[   10.548207]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+[   10.548291] Krnl GPRS: 0000000000000000 0000000001286408 00000000005df8fa 0000000001286408
+[   10.548337]            000000000014bf14 00000000001c6ba8 0000000001838b3c 0000000000000005
+[   10.548475]            00000000025a4880 00000000025a4800 ffffffffffffffea 00000000ffffffea
+[   10.548521]            000000003e649200 00000000ffffffff 00000000005df8fa 000003800016bcf8
+[   10.549504] Krnl Code: 00000000005df8ee: c020003b5828	larl	%r2,0000000000d4a93e
+[   10.549504]            00000000005df8f4: c0e5ffdb62d2	brasl	%r14,000000000014be98
+[   10.549504]           #00000000005df8fa: af000000		mc	0,0
+[   10.549504]           >00000000005df8fe: a7f4fee6		brc	15,00000000005df6ca
+[   10.549504]            00000000005df902: b9040042		lgr	%r4,%r2
+[   10.549504]            00000000005df906: b9040039		lgr	%r3,%r9
+[   10.549504]            00000000005df90a: c020003b57df	larl	%r2,0000000000d4a8c8
+[   10.549504]            00000000005df910: 18bd		lr	%r11,%r13
+[   10.550004] Call Trace:
+[   10.550375]  [<00000000005df8fe>] alg_test+0x55e/0x5b8
+[   10.550467] ([<00000000005df8fa>] alg_test+0x55a/0x5b8)
+[   10.550489]  [<00000000005d9fbc>] cryptomgr_test+0x34/0x60
+[   10.550514]  [<000000000017d004>] kthread+0x124/0x130
+[   10.550539]  [<0000000000103124>] __ret_from_fork+0x3c/0x50
+[   10.550562]  [<0000000000b1dfca>] ret_from_fork+0xa/0x30
+[   10.550611] Last Breaking-Event-Address:
+[   10.550626]  [<000000000014bf20>] __warn_printk+0x88/0x110
+[   10.550723] ---[ end trace 0000000000000000 ]---
 
-Am 19=2E Dezember 2023 00:11:37 UTC schrieb BALATON Zoltan <balaton@eik=2E=
-bme=2Ehu>:
->On Mon, 18 Dec 2023, Bernhard Beschow wrote:
->> This is a preparation for implementing relocation and toggling of Super=
-I/O
->> functions in the VT8231 device model=2E Upon reset, all SuperI/O functi=
-ons will be
->> deactivated, so in case if no -bios is given, let the machine configure=
- those
->> functions the same way pegasos2=2Erom would do=2E For now the meantime =
-this will be
->
->"same way pegasos2 firmware would do"=2E
+git bisect points to this commit:
 
-Good idea=2E Will change=2E
+commit ab84dc398b3b702b0c692538b947ef65dbbdf52f
+Author: Richard Henderson <richard.henderson@linaro.org>
+Date:   Wed Aug 23 23:04:24 2023 -0700
 
-> You can drop the last sentence about no-op as it does not make much sens=
-e as it is or reword it if you want to keep it=2E
+     tcg/optimize: Optimize env memory operations
 
-Yeah, I messed up the last sentence somehow=2E I'll drop it then=2E
+So far, this seems to work on amd64 host, but fails on s390x host -
+where this has been observed so far.  Maybe it also fails in some
+other combinations too, I don't yet know.  Just finished bisecting
+it on s390x.
 
-Best regards,
-Bernhard
+FWIW,
 
->
->Regards,
->BALATON Zoltan
->
->> a no-op=2E
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->> hw/ppc/pegasos2=2Ec | 15 +++++++++++++++
->> 1 file changed, 15 insertions(+)
->>=20
->> diff --git a/hw/ppc/pegasos2=2Ec b/hw/ppc/pegasos2=2Ec
->> index 3203a4a728=2E=2E0a40ebd542 100644
->> --- a/hw/ppc/pegasos2=2Ec
->> +++ b/hw/ppc/pegasos2=2Ec
->> @@ -285,6 +285,15 @@ static void pegasos2_pci_config_write(Pegasos2Mach=
-ineState *pm, int bus,
->>     pegasos2_mv_reg_write(pm, pcicfg + 4, len, val);
->> }
->>=20
->> +static void pegasos2_superio_write(Pegasos2MachineState *pm, uint32_t =
-addr,
->> +                                   uint32_t val)
->> +{
->> +    AddressSpace *as =3D CPU(pm->cpu)->as;
->> +
->> +    stb_phys(as, PCI1_IO_BASE + 0x3f0, addr);
->> +    stb_phys(as, PCI1_IO_BASE + 0x3f1, val);
->> +}
->> +
->> static void pegasos2_machine_reset(MachineState *machine, ShutdownCause=
- reason)
->> {
->>     Pegasos2MachineState *pm =3D PEGASOS2_MACHINE(machine);
->> @@ -310,6 +319,12 @@ static void pegasos2_machine_reset(MachineState *m=
-achine, ShutdownCause reason)
->>=20
->>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
->>                               PCI_INTERRUPT_LINE, 2, 0x9);
->> +    pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
->> +                              0x50, 1, 0x6);
->> +    pegasos2_superio_write(pm, 0xf4, 0xbe);
->> +    pegasos2_superio_write(pm, 0xf6, 0xef);
->> +    pegasos2_superio_write(pm, 0xf7, 0xfc);
->> +    pegasos2_superio_write(pm, 0xf2, 0x14);
->>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
->>                               0x50, 1, 0x2);
->>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
->>=20
+/mjt
 
