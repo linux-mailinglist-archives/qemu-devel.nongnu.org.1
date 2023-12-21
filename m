@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E149081B40D
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:44:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE6281B406
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:43:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGGS1-000403-Sy; Thu, 21 Dec 2023 05:38:49 -0500
+	id 1rGGS3-00044z-97; Thu, 21 Dec 2023 05:38:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGRo-0003jm-Bx
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:37 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1rGGRs-0003nb-F9
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:41 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGRd-0003ub-Ib
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:34 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-40b5155e154so7497505e9.3
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:38:24 -0800 (PST)
+ id 1rGGRh-00044D-8n
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:39 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40d3352b525so6433605e9.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:38:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703155103; x=1703759903; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703155107; x=1703759907; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0SGlJ3OP3ZQJqIGzbf9sUE9qzVbTUWx7/uZllqYVPY0=;
- b=UO323iXmOmh5yE6j0ejVtPe5o99qF8o89J9VMfZA+ItjvxD/LRVyuhGTFVg20a0yei
- jYK8f/GIxd9NMc2EEtuaRySHAkZD3tIapH5QOjWie2JlMwD43XlasRtuJYre6f0v4/Fq
- y2FuEviB6Ra3NKprdifuzwCziROWUudQLfMBxDePzE89mSwp1CB4BTBMBP9W9P43ridL
- 6i5Knj5wNRQFVzs+iefdoT0NNsTeZp30yihZnD0OryQa2UwjpOeugd5JmxzFltSRsRY7
- ICpPQZh1MLwetFLJosB9RL1v7C0ee4m22F2Pk9irM+PAgAJvJHvYQLHmXC/ZaWE/k9St
- jXCA==
+ bh=CaH8a0Z2sktOk6HhcvLcaTrwfzviKqp7ItoU8rNpnow=;
+ b=pApkGXFRqSjMP0KpeIQWtscrjohNocGeVJhJ/b7JId/5o5lfwuihlVJKVS9WnC5QlL
+ LojyvvABjRVT/3amk3b9jPmZs9lIQwtxSWYCszmvN4wRqdSliqfwqa2TCTrbPLZsaGUo
+ O86+IlbwhFDCYMrVWE5X9k3pfdnUacM+F5HH/AdVNR+o/s/7VPk0e64Yxr67/1ODfrNf
+ jlE4jOCvJkK+UgYkMHzK3ayQ/+tQcpXB/OyGeDUw4z/gTgaQcPxxqJtBlCjIPoZ4IH3l
+ wOi/yKH/xRD8O8xPdxV1JSzWRl4VkGd64lUAqIplS+rCc5/p/7kkLrkWrPGJFAFSeQfo
+ ZWAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703155103; x=1703759903;
+ d=1e100.net; s=20230601; t=1703155107; x=1703759907;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0SGlJ3OP3ZQJqIGzbf9sUE9qzVbTUWx7/uZllqYVPY0=;
- b=OQmYjFYxnVPB6M/bwJAdAdlQzQ6VRla1zGpmecILJ0nE1yHks3qgCHaVSz012cGelO
- 30ipxlnwLWYsPXrwixE5jBlDZL5YN5ajH/0vuR4TNNOD2og/X4j8z6+HqRWJuPC5eufL
- 6fNrUs1yH9hi1OGH/nkNb+pl8UVZsmoymONWhFD3+wcwMUPesmszYAcr4qJ4DPigjKxw
- 1vf8uULw5Ree2ZLzwedargr4WxmDyNHPY1Y16mEXoCj4Uw86YoGOS3mAndavFcaqysfV
- U+B7Lrk7uu5O0wKQ2Ae3T9FQYd4H27ldowrRGpxViwno3CgVdr8drfRm6zFJ/HukwFJp
- nY5Q==
-X-Gm-Message-State: AOJu0Yz9k19BYZAy1vPBFc0tWxAKBf/KicYYuQadjZI+FY0MEYEy/NTi
- oOhWL1m6BGmH0z/UY+dKq6KDEQ==
-X-Google-Smtp-Source: AGHT+IGzJv9S1fGxxqDGAioWCTZZnAHT+eEN3Nvlx6N8WGUGOAIae5FBAMLZ8ea9qlDbj4MITf/SSw==
-X-Received: by 2002:a05:600c:22ce:b0:40c:532b:7a30 with SMTP id
- 14-20020a05600c22ce00b0040c532b7a30mr557054wmg.202.1703155103330; 
- Thu, 21 Dec 2023 02:38:23 -0800 (PST)
+ bh=CaH8a0Z2sktOk6HhcvLcaTrwfzviKqp7ItoU8rNpnow=;
+ b=NMqmyyZpVPm78iuXS6KU0nx4ZnwOUl5BrnH4XZcqCzOTf/N28mmgwukeYm1LI/PIrO
+ b1LMegu5BhFudLqKn2hqFemftXDJjB9ytt1YgALpS/CbQRAjvio9dpgwN5yu2S0n9J6x
+ p1QlV4M6JVJeQ60LkSKqL8BR47zynw6AMp8u5JYAGssvNx3nmsY93P5Fjv8GE0QZxo3P
+ Tr+88q1A9NUlwMPAAd3U2RF6YoBGaj6qMok0LmrT9BSZfFRwgEOaO8HUThTV9YINvHac
+ D5l3sfaWClxe7GTpZPus7/Bu1dPZE6lp5LX0FlvNXNIolTSgmBt2ET8nKS94N+kD0H5u
+ 3AtQ==
+X-Gm-Message-State: AOJu0Yyw8Sjqarjgr3bgXz/ngqogLd3cZllhJVkLtsT5x4O2ky9rCVsJ
+ TSjw9OYfw0ZPjHBIxsCOsrzLaQ==
+X-Google-Smtp-Source: AGHT+IH9UYY7nDpturwPwVgfN1wQh5wud+cCc1FCBGp1qeGHyRPqqOwQjcUbg93xcGLmfOziL5lR5Q==
+X-Received: by 2002:a05:600c:1911:b0:40c:30e8:fc5f with SMTP id
+ j17-20020a05600c191100b0040c30e8fc5fmr601578wmq.90.1703155107622; 
+ Thu, 21 Dec 2023 02:38:27 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- q21-20020adfb195000000b0033674734a58sm1744728wra.79.2023.12.21.02.38.20
+ a4-20020adff7c4000000b003366da509ecsm1712592wrq.85.2023.12.21.02.38.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 21 Dec 2023 02:38:22 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9B5FE5F8CE;
+ by draig.lan (Postfix) with ESMTP id B0D745F8CF;
  Thu, 21 Dec 2023 10:38:19 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,24 +92,24 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 07/40] qtest: bump qom-test timeout to 15 minutes
-Date: Thu, 21 Dec 2023 10:37:45 +0000
-Message-Id: <20231221103818.1633766-8-alex.bennee@linaro.org>
+Subject: [PATCH 08/40] qtest: bump npcm7xx_pwn-test timeout to 5 minutes
+Date: Thu, 21 Dec 2023 10:37:46 +0000
+Message-Id: <20231221103818.1633766-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231221103818.1633766-1-alex.bennee@linaro.org>
 References: <20231221103818.1633766-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,34 +127,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The qom-test is periodically hitting the 5 minute timeout when running
-on the aarch64 emulator under GitLab CI. With an --enable-debug build
-it can take over 10 minutes for arm/aarch64 targets. Setting timeout
-to 15 minutes gives enough headroom to hopefully make it reliable.
+The npcm7xx_pwn-test takes 3 & 1/2 minutes in a --enable-debug build.
+Bumping to 5 minutes will give more headroom.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20230717182859.707658-4-berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20230717182859.707658-5-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215070357.10888-4-thuth@redhat.com>
+Message-Id: <20231215070357.10888-5-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
  tests/qtest/meson.build | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index f184d051cfe..000ac54b7d6 100644
+index 000ac54b7d6..84cec0a847d 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
-@@ -2,7 +2,7 @@ slow_qtests = {
+@@ -1,7 +1,7 @@
+ slow_qtests = {
    'bios-tables-test' : 120,
    'migration-test' : 480,
-   'npcm7xx_pwm-test': 150,
--  'qom-test' : 300,
-+  'qom-test' : 900,
+-  'npcm7xx_pwm-test': 150,
++  'npcm7xx_pwm-test': 300,
+   'qom-test' : 900,
    'test-hmp' : 120,
  }
- 
 -- 
 2.39.2
 
