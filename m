@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D309F81AEAB
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6079081AEB4
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:19:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGCHJ-0008EQ-KU; Thu, 21 Dec 2023 01:11:29 -0500
+	id 1rGCO6-00017z-Au; Thu, 21 Dec 2023 01:18:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rGCHH-0008Dx-6u
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:11:27 -0500
+ id 1rGCO2-00017e-M5
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:18:27 -0500
 Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rGCHE-0000j1-MY
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:11:26 -0500
+ id 1rGCO0-0003px-Ct
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:18:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1703139084; x=1734675084;
+ t=1703139504; x=1734675504;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=2hA/xn0NG+gy8teTCJK54dPh/Y6wZ10nR1+JUI9HKeE=;
- b=HFdhMw4IjE28cUkHTjW8YhhYDzc3CYgvXL10KrFuu8Dr7gpzL6hZYdIh
- xG9pklrj34Qg9Fb9h3T/60Zp2j/XR5w7EwdYLF2nTR1lSGGS8FEp8nVv0
- 06Phkj1ci+7E/T9/tX6hs0qtwRK/v02ywv7XvzDDtC4wqdM1vBXQc2zmK
- Rw6t0jVFP4oUPsrELUKz7X3R7UB1VN6ZoMXtvU5WUBTQXvYWI+epXX1O6
- yLoUTuEFDXkfMgdoNfBCgo6NoCgvxAGXQUdnZtjoOdhoDsi66JHtEx44z
- V94peXf9gEtkqbaw/L7wPDTn85mAii/VvXvmCdIzmgOypvRfJl+7sMf3h A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="399756793"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="399756793"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ bh=BsYBvZXpNmDxnhkK3p7HJV3JL+6lmwWO8f24hANixYY=;
+ b=MPZwGvw57wJwuq8ybfZmH/TDMiIDcdctn9BoQhwiXEJ7y4fNeyXiLl65
+ iUMD1D/eFh3Xl0O+dfBc8o/fAOkYVzz2fb90Q5f5FJUXFXvJHbx5xOgp2
+ obW/nmdDtKVzGIxxv56jf56h4UrsKWc4/IeSXwIRmNxeGTVi+DH1h6obw
+ ccB4EAagTt0P58QtzCgtUbe85bTcfCPVPkAZkFilnM8guD2zG86qqJHyW
+ aDc04U6edemfeoeDnwJHWz9cWoZZ85t/gZQl+Gnmjvh6gB33V1f0iJSMe
+ HI+XXgTF3uphaZ5A5aRJrknlskNUtyuddijInhevmviGqezk4yxTldYta A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="399757492"
+X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="399757492"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2023 22:11:18 -0800
+ 20 Dec 2023 22:18:20 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="1023747379"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="1023747379"
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="810867965"
+X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="810867965"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.12.199])
  ([10.93.12.199])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2023 22:11:12 -0800
-Message-ID: <cc568b63-a129-4b23-8ac8-313193ea8126@intel.com>
-Date: Thu, 21 Dec 2023 14:11:09 +0800
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Dec 2023 22:18:14 -0800
+Message-ID: <f5f21e2d-b462-4402-b728-46ab4124efb8@intel.com>
+Date: Thu, 21 Dec 2023 14:18:11 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/70] kvm: Introduce support for memory_attributes
+Subject: Re: [PATCH v3 09/70] physmem: Introduce ram_block_convert_range() for
+ page conversion
 Content-Language: en-US
-To: "Wang, Wei W" <wei.w.wang@intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+To: David Hildenbrand <david@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
  <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- Michael Roth <michael.roth@amd.com>, Sean Christopherson
- <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
+ Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
  Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
- <isaku.yamahata@gmail.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
+ isaku.yamahata@intel.com
 References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-7-xiaoyao.li@intel.com>
- <DS0PR11MB6373D69ABBF4BDF7120438ACDC8EA@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <20231115071519.2864957-10-xiaoyao.li@intel.com>
+ <20231117210304.GC1645850@ls.amr.corp.intel.com>
+ <8f20d060-38fe-49d7-8fea-fe665c3c6c78@intel.com>
+ <0dc03b42-23c3-4e02-868e-289b3fedf6af@redhat.com>
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <DS0PR11MB6373D69ABBF4BDF7120438ACDC8EA@DS0PR11MB6373.namprd11.prod.outlook.com>
+In-Reply-To: <0dc03b42-23c3-4e02-868e-289b3fedf6af@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=134.134.136.65; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -24
@@ -96,79 +99,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/12/2023 9:56 PM, Wang, Wei W wrote:
-> On Wednesday, November 15, 2023 3:14 PM, Xiaoyao Li wrote:
->> Introduce the helper functions to set the attributes of a range of memory to
->> private or shared.
+On 12/8/2023 7:52 PM, David Hildenbrand wrote:
+> On 08.12.23 08:59, Xiaoyao Li wrote:
+>> On 11/18/2023 5:03 AM, Isaku Yamahata wrote:
+>>> On Wed, Nov 15, 2023 at 02:14:18AM -0500,
+>>> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+>>>
+>>>> It's used for discarding opposite memory after memory conversion, for
+>>>> confidential guest.
+>>>>
+>>>> When page is converted from shared to private, the original shared
+>>>> memory can be discarded via ram_block_discard_range();
+>>>>
+>>>> When page is converted from private to shared, the original private
+>>>> memory is back'ed by guest_memfd. Introduce
+>>>> ram_block_discard_guest_memfd_range() for discarding memory in
+>>>> guest_memfd.
+>>>>
+>>>> Originally-from: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>> Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>> ---
+>>>>    include/exec/cpu-common.h |  2 ++
+>>>>    system/physmem.c          | 50 
+>>>> +++++++++++++++++++++++++++++++++++++++
+>>>>    2 files changed, 52 insertions(+)
+>>>>
+>>>> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+>>>> index 41115d891940..de728a18eef2 100644
+>>>> --- a/include/exec/cpu-common.h
+>>>> +++ b/include/exec/cpu-common.h
+>>>> @@ -175,6 +175,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, 
+>>>> void *opaque);
+>>>>    int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
+>>>>    int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t 
+>>>> length);
+>>>> +int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t 
+>>>> length,
+>>>> +                            bool shared_to_private);
+>>>>    #endif
+>>>> diff --git a/system/physmem.c b/system/physmem.c
+>>>> index ddfecddefcd6..cd6008fa09ad 100644
+>>>> --- a/system/physmem.c
+>>>> +++ b/system/physmem.c
+>>>> @@ -3641,6 +3641,29 @@ err:
+>>>>        return ret;
+>>>>    }
+>>>> +static int ram_block_discard_guest_memfd_range(RAMBlock *rb, 
+>>>> uint64_t start,
+>>>> +                                               size_t length)
+>>>> +{
+>>>> +    int ret = -1;
+>>>> +
+>>>> +#ifdef CONFIG_FALLOCATE_PUNCH_HOLE
+>>>> +    ret = fallocate(rb->guest_memfd, FALLOC_FL_PUNCH_HOLE | 
+>>>> FALLOC_FL_KEEP_SIZE,
+>>>> +                    start, length);
+>>>> +
+>>>> +    if (ret) {
+>>>> +        ret = -errno;
+>>>> +        error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx 
+>>>> (%d)",
+>>>> +                     __func__, rb->idstr, start, length, ret);
+>>>> +    }
+>>>> +#else
+>>>> +    ret = -ENOSYS;
+>>>> +    error_report("%s: fallocate not available %s:%" PRIx64 " +%zx 
+>>>> (%d)",
+>>>> +                 __func__, rb->idstr, start, length, ret);
+>>>> +#endif
+>>>> +
+>>>> +    return ret;
+>>>> +}
+>>>> +
+>>>>    bool ramblock_is_pmem(RAMBlock *rb)
+>>>>    {
+>>>>        return rb->flags & RAM_PMEM;
+>>>> @@ -3828,3 +3851,30 @@ bool ram_block_discard_is_required(void)
+>>>>        return qatomic_read(&ram_block_discard_required_cnt) ||
+>>>>               
+>>>> qatomic_read(&ram_block_coordinated_discard_required_cnt);
+>>>>    }
+>>>> +
+>>>> +int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t 
+>>>> length,
+>>>> +                            bool shared_to_private)
+>>>> +{
+>>>> +    if (!rb || rb->guest_memfd < 0) {
+>>>> +        return -1;
+>>>> +    }
+>>>> +
+>>>> +    if (!QEMU_PTR_IS_ALIGNED(start, qemu_host_page_size) ||
+>>>> +        !QEMU_PTR_IS_ALIGNED(length, qemu_host_page_size)) {
+>>>> +        return -1;
+>>>> +    }
+>>>> +
+>>>> +    if (!length) {
+>>>> +        return -1;
+>>>> +    }
+>>>> +
+>>>> +    if (start + length > rb->max_length) {
+>>>> +        return -1;
+>>>> +    }
+>>>> +
+>>>> +    if (shared_to_private) {
+>>>> +        return ram_block_discard_range(rb, start, length);
+>>>> +    } else {
+>>>> +        return ram_block_discard_guest_memfd_range(rb, start, length);
+>>>> +    }
+>>>> +}
+>>>
+>>> Originally this function issued KVM_SET_MEMORY_ATTRIBUTES, the 
+>>> function name
+>>> mad sense. But now it doesn't, and it issues only punch hole. We 
+>>> should rename
+>>> it to represent what it actually does. discard_range?
 >>
->> This is necessary to notify KVM the private/shared attribute of each gpa range.
->> KVM needs the information to decide the GPA needs to be mapped at hva-
->> based shared memory or guest_memfd based private memory.
+>> ram_block_discard_range() already exists for non-guest-memfd memory 
+>> discard.
 >>
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> ---
->>   accel/kvm/kvm-all.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
->>   include/sysemu/kvm.h |  3 +++
->>   2 files changed, 45 insertions(+)
+>> I cannot come up with a proper name. e.g.,
+>> ram_block_discard_opposite_range() while *opposite* seems unclear.
 >>
->> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c index
->> 69afeb47c9c0..76e2404d54d2 100644
->> --- a/accel/kvm/kvm-all.c
->> +++ b/accel/kvm/kvm-all.c
->> @@ -102,6 +102,7 @@ bool kvm_has_guest_debug;  static int kvm_sstep_flags;
->> static bool kvm_immediate_exit;  static bool kvm_guest_memfd_supported;
->> +static uint64_t kvm_supported_memory_attributes;
->>   static hwaddr kvm_max_slot_size = ~0;
->>
->>   static const KVMCapabilityInfo kvm_required_capabilites[] = { @@ -1305,6
->> +1306,44 @@ void kvm_set_max_memslot_size(hwaddr max_slot_size)
->>       kvm_max_slot_size = max_slot_size;
->>   }
->>
->> +static int kvm_set_memory_attributes(hwaddr start, hwaddr size,
->> +uint64_t attr) {
->> +    struct kvm_memory_attributes attrs;
->> +    int r;
->> +
->> +    attrs.attributes = attr;
->> +    attrs.address = start;
->> +    attrs.size = size;
->> +    attrs.flags = 0;
->> +
->> +    r = kvm_vm_ioctl(kvm_state, KVM_SET_MEMORY_ATTRIBUTES, &attrs);
->> +    if (r) {
->> +        warn_report("%s: failed to set memory (0x%lx+%#zx) with attr 0x%lx
->> error '%s'",
->> +                     __func__, start, size, attr, strerror(errno));
->> +    }
->> +    return r;
->> +}
->> +
->> +int kvm_set_memory_attributes_private(hwaddr start, hwaddr size) {
->> +    if (!(kvm_supported_memory_attributes &
->> KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
->> +        error_report("KVM doesn't support PRIVATE memory attribute\n");
->> +        return -EINVAL;
->> +    }
->> +
->> +    return kvm_set_memory_attributes(start, size,
->> +KVM_MEMORY_ATTRIBUTE_PRIVATE); }
->> +
->> +int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size) {
->> +    if (!(kvm_supported_memory_attributes &
->> KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
->> +        error_report("KVM doesn't support PRIVATE memory attribute\n");
->> +        return -EINVAL;
->> +    }
+>> Do you have any better idea?
 > 
-> Duplicate code in kvm_set_memory_attributes_shared/private.
-> Why not move the check into kvm_set_memory_attributes?
+> Having some indication that this is about "guest_memfd" back and forth 
+> switching/conversion will make sense. But I'm also not able to come up 
+> with a better name.
+> 
+> Maybe have two functions:
+> 
+> ram_block_activate_guest_memfd_range
+> ram_block_deactivate_guest_memfd_range
+> 
 
-Because it's not easy to put the check into there.
-
-Both setting and clearing one bit require the capability check. If 
-moving the check into kvm_set_memory_attributes(), the check of 
-KVM_MEMORY_ATTRIBUTE_PRIVATE will have to become unconditionally, which 
-is not aligned to the function name because the name is not restricted 
-to shared/private attribute only.
+finally, I decide to drop this function and expose 
+ram_block_discard_guest_memfd_range() instead. So caller can call the 
+ram_block_discard_*() on its own.
 
