@@ -2,69 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBE981C017
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:27:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C653781BFFA
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:24:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGQWh-00077l-Ix; Thu, 21 Dec 2023 16:24:19 -0500
+	id 1rGQVn-0006Lm-VL; Thu, 21 Dec 2023 16:23:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWb-0006un-CF
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:13 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rGQVl-0006LV-Cb
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:23:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWY-00081Y-DS
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:13 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rGQVi-0007Az-RO
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:23:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703193847;
+ s=mimecast20190719; t=1703193797;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NsSWWyVtSV5YSYH4pxqsz3RLrng8hdq2TqSJEEQngak=;
- b=aQgX94YwNE9/aPlSY6OjW4fCOLtSbZ1SvrGeKwp9t6mK8yxGw99ViIhRQmhXSrqi0ZWhDD
- 0Hxea2xXz/i74t1+9Uj1bjPBI9CJ5WdU0Ay8XlIw5xic54nXheNElyHXlFPFKmjsBA45gb
- +sj13hYUQGJHG+LyM9ki9zTsyh11FpQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PgA8r/f47Y/noQiHaOcXsDch9yKFkuzTgcFzdHePbjQ=;
+ b=ABeq/uUIUakvm13YEnZ6Ef3DcqK00HHgkbtrFp2/iJNR9TnTZsPAInzNBpYnEHnnp3Xhtz
+ 6s/YNXUvXYmJcUwS8MOIlrepQaMttP+ABSIswZQd6pLI0kB1GC2DnlXIa4zsDYSKxMJXgx
+ zQHM51wfLcLKaNwG3qNowBircmD7P8E=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-14-bAIws7FZNLabogNLNF1oMQ-1; Thu, 21 Dec 2023 16:24:06 -0500
-X-MC-Unique: bAIws7FZNLabogNLNF1oMQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE9D5833A06;
- Thu, 21 Dec 2023 21:24:05 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.39.193.128])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C9EBDC15968;
- Thu, 21 Dec 2023 21:24:03 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	stefanha@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 07/33] virtio-blk: don't lock AioContext in the submission code
- path
+ us-mta-377-ifIs_JZ_Nd25uofv-gv0jw-1; Thu, 21 Dec 2023 16:23:15 -0500
+X-MC-Unique: ifIs_JZ_Nd25uofv-gv0jw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3366b71bcf6so879061f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 13:23:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703193794; x=1703798594;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PgA8r/f47Y/noQiHaOcXsDch9yKFkuzTgcFzdHePbjQ=;
+ b=mNJswilzuQraG19QddK+mziG2hYswnPJcLsYX0lt/rZkI2kPkGFLJzO6sOLW3diMAO
+ ssoP41omL96zvKFneT/4jsjvaRRN6LH0mncA/a4QcsafxKAOg5gIlOWZyurl9JrVd1D8
+ 5Z4uILdTy3MNOJCgeatfAFzwpkBWzpj7HGGfbooBsk8HklV5W3ZB/LR8/20h8rU5hqNT
+ hdzWecrZr18kuj7n7okWTgYYIZGfhVoO9jvDU9wflLqPwCGBEMqNVg2cvFdQkg6+8vT/
+ sw/SloT0DP254CU9m3ra5jZqUbwsQDTPa/eFp35ZSLvrFatxdoHMV+V3BXD+v+loMkQ3
+ iElQ==
+X-Gm-Message-State: AOJu0Yyuae9YUr4XuSBNyDkyBFH2dHYbBFkeSpIbu/E0iX84kHQ2LwSc
+ gllEQHSQq8NRJJ1T85lxg45Co5+gl2L+T5S6UiT0yMLvd1ZBhSZLCm/dgvQLSyivQiA3DoWehB9
+ MN0rJvGMOw6IxtaFPSiD4ojc=
+X-Received: by 2002:adf:e448:0:b0:333:4295:8f72 with SMTP id
+ t8-20020adfe448000000b0033342958f72mr223529wrm.118.1703193794299; 
+ Thu, 21 Dec 2023 13:23:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF2Jv7q97331MXx2PgcPJquCdBG2L4RTxIdkFoRfXWqbjyASXr+bBF9ViCLEUk9UMxkDc8Ylw==
+X-Received: by 2002:adf:e448:0:b0:333:4295:8f72 with SMTP id
+ t8-20020adfe448000000b0033342958f72mr223515wrm.118.1703193793972; 
+ Thu, 21 Dec 2023 13:23:13 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ i2-20020adffc02000000b003364aa5cc13sm2859760wrr.1.2023.12.21.13.23.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Dec 2023 13:23:13 -0800 (PST)
+Message-ID: <be7753c5-399a-4bd5-ad7d-2b37b9cbc080@redhat.com>
 Date: Thu, 21 Dec 2023 22:23:12 +0100
-Message-ID: <20231221212339.164439-8-kwolf@redhat.com>
-In-Reply-To: <20231221212339.164439-1-kwolf@redhat.com>
-References: <20231221212339.164439-1-kwolf@redhat.com>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 20/47] backends/iommufd: Introduce the iommufd object
+Content-Language: en-US
+To: eric.auger@redhat.com, qemu-devel@nongnu.org
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Yi Liu <yi.l.liu@intel.com>,
+ Nicolin Chen <nicolinc@nvidia.com>
+References: <20231219185643.725448-1-clg@redhat.com>
+ <20231219185643.725448-21-clg@redhat.com>
+ <c6daa302-8da3-4931-812d-88dbb156a17a@redhat.com>
+ <c9aeeb21-30cf-4f86-8ff5-0eb909830071@redhat.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <c9aeeb21-30cf-4f86-8ff5-0eb909830071@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,60 +111,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+On 12/21/23 18:14, Eric Auger wrote:
+> Hi Cédric,
+> 
+> On 12/21/23 17:00, Cédric Le Goater wrote:
+>> [ ... ]
+>>
+>>
+>>> +static void iommufd_backend_init(Object *obj)
+>>> +{
+>>> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
+>>> +
+>>> +    be->fd = -1;
+>>> +    be->users = 0;
+>>> +    be->owned = true;
+>>> +    qemu_mutex_init(&be->lock);> +}
+>>> +
+>>> +static void iommufd_backend_finalize(Object *obj)
+>>> +{
+>>> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
+>>> +
+>>> +    if (be->owned) {
+>>> +        close(be->fd);
+>>> +        be->fd = -1;
+>>> +    }
+>>> +}
+>>> +
+>>> +static void iommufd_backend_set_fd(Object *obj, const char *str,
+>>> Error **errp)
+>>> +{
+>>> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
+>>> +    int fd = -1;
+>>> +
+>>> +    fd = monitor_fd_param(monitor_cur(), str, errp);
+>>> +    if (fd == -1) {
+>>> +        error_prepend(errp, "Could not parse remote object fd %s:",
+>>> str);
+>>> +        return;
+>>> +    }
+>>> +    qemu_mutex_lock(&be->lock);
+>>> +    be->fd = fd;
+>>> +    be->owned = false;
+>>> +    qemu_mutex_unlock(&be->lock);
+>>> +    trace_iommu_backend_set_fd(be->fd);
+>>> +}
+>>> +
+>>> +static bool iommufd_backend_can_be_deleted(UserCreatable *uc)
+>>> +{
+>>> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(uc);
+>>> +
+>>> +    return !be->users;
+>>
+>> Coverity CID 1531549 reports a concurrent data access violation because
+>> be->users is being accessed without holding the mutex.
+>>
+>> I wonder how useful is this mutex anyhow, since the code paths should
+>> be protected by the BQL lock. If you agree, I will send an update to
+>> simply drop be->lock and solve this report.
+> I am not totally comfortable with the fact BQL covers the same
+> protection? Please can you elaborate.
 
-There is no need to acquire the AioContext lock around blk_aio_*() or
-blk_get_geometry() anymore. I/O plugging (defer_call()) also does not
-require the AioContext lock anymore.
+These routines are called when a device is created which is called
+from the QEMU main thread which exits holding the BQL. It should be
+fine.
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20230914140101.1065008-5-stefanha@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- hw/block/virtio-blk.c | 5 -----
- 1 file changed, 5 deletions(-)
+Thanks,
 
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index f5315df042..e110f9718b 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -1111,7 +1111,6 @@ void virtio_blk_handle_vq(VirtIOBlock *s, VirtQueue *vq)
-     MultiReqBuffer mrb = {};
-     bool suppress_notifications = virtio_queue_get_notification(vq);
- 
--    aio_context_acquire(blk_get_aio_context(s->blk));
-     defer_call_begin();
- 
-     do {
-@@ -1137,7 +1136,6 @@ void virtio_blk_handle_vq(VirtIOBlock *s, VirtQueue *vq)
-     }
- 
-     defer_call_end();
--    aio_context_release(blk_get_aio_context(s->blk));
- }
- 
- static void virtio_blk_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-@@ -1168,7 +1166,6 @@ static void virtio_blk_dma_restart_bh(void *opaque)
-         s->rq = NULL;
-     }
- 
--    aio_context_acquire(blk_get_aio_context(s->conf.conf.blk));
-     while (req) {
-         VirtIOBlockReq *next = req->next;
-         if (virtio_blk_handle_request(req, &mrb)) {
-@@ -1192,8 +1189,6 @@ static void virtio_blk_dma_restart_bh(void *opaque)
- 
-     /* Paired with inc in virtio_blk_dma_restart_cb() */
-     blk_dec_in_flight(s->conf.conf.blk);
--
--    aio_context_release(blk_get_aio_context(s->conf.conf.blk));
- }
- 
- static void virtio_blk_dma_restart_cb(void *opaque, bool running,
--- 
-2.43.0
+C.
+
 
 
