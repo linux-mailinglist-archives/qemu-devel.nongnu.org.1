@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC3981BFFC
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:24:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEA681BFFF
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:24:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGQWt-00085N-HO; Thu, 21 Dec 2023 16:24:31 -0500
+	id 1rGQWu-00089K-My; Thu, 21 Dec 2023 16:24:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWq-00080E-NT
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:28 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWr-000838-Mz
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWn-000876-PG
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:28 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQWq-00087b-36
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:24:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703193865;
+ s=mimecast20190719; t=1703193867;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dMW7XSrsfgp8nboBmYNgB/lE8SOueE180TTHvJLYef8=;
- b=EXzplAGvdMc4fdf6ZllMk4C65Cn7SaBHYZRj+pRkKfai7I23FyUsib4877ZYCKtjbSOaz4
- h9jFPsl0uMtF4/eoaq+SIxIa6HurBuQhXMHbHA9RlB/lM75QQjQZ/bXPZjtPt4o13qhjQO
- gDsf2thq5uMoMtVgWXIecIqGmVWiWFk=
+ bh=a9YCFYBe/wtK2m20SEqqnM/xkwczPqhlKI9voVD+mLY=;
+ b=WHw36vyMynh4NYGc+hyhUa72QObRxAr6WovqCTBUIZCbhaCpLfXIq8cua7s6i4CXsfcQir
+ 4CdO8g4+42veufa7wCJ8cEmg/PYsBnpZqxbpYGnnxiGLqUQDPGs1hHyGY9vkqISglYT/Tu
+ Nawr04dmqt/ICC419EvQlXn3FGoDbkQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-578-NnMFuWFxOhO800dj8PeUtg-1; Thu, 21 Dec 2023 16:24:23 -0500
-X-MC-Unique: NnMFuWFxOhO800dj8PeUtg-1
+ us-mta-670-MacXL3UjMqiVYip6G14u2g-1; Thu, 21 Dec 2023 16:24:26 -0500
+X-MC-Unique: MacXL3UjMqiVYip6G14u2g-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4BAF6101A52A;
- Thu, 21 Dec 2023 21:24:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D733A833A06;
+ Thu, 21 Dec 2023 21:24:25 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.128])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A8F71C15968;
- Thu, 21 Dec 2023 21:24:21 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E0827C15968;
+ Thu, 21 Dec 2023 21:24:23 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	stefanha@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 15/33] virtio-scsi: replace AioContext lock with tmf_bh_lock
-Date: Thu, 21 Dec 2023 22:23:20 +0100
-Message-ID: <20231221212339.164439-16-kwolf@redhat.com>
+Subject: [PULL 16/33] scsi: assert that callbacks run in the correct AioContext
+Date: Thu, 21 Dec 2023 22:23:21 +0100
+Message-ID: <20231221212339.164439-17-kwolf@redhat.com>
 In-Reply-To: <20231221212339.164439-1-kwolf@redhat.com>
 References: <20231221212339.164439-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -81,164 +81,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Protect the Task Management Function BH state with a lock. The TMF BH
-runs in the main loop thread. An IOThread might process a TMF at the
-same time as the TMF BH is running. Therefore tmf_bh_list and tmf_bh
-must be protected by a lock.
+Since the removal of AioContext locking, the correctness of the code
+relies on running requests from a single AioContext at any given time.
 
-Run TMF request completion in the IOThread using aio_wait_bh_oneshot().
-This avoids more locking to protect the virtqueue and SCSI layer state.
+Add assertions that verify that callbacks are invoked in the correct
+AioContext.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Message-ID: <20231205182011.1976568-3-stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20231205182011.1976568-2-stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/hw/virtio/virtio-scsi.h |  3 +-
- hw/scsi/virtio-scsi.c           | 62 ++++++++++++++++++++++-----------
- 2 files changed, 43 insertions(+), 22 deletions(-)
+ hw/scsi/scsi-disk.c  | 14 ++++++++++++++
+ system/dma-helpers.c |  3 +++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio-scsi.h
-index 779568ab5d..da8cb928d9 100644
---- a/include/hw/virtio/virtio-scsi.h
-+++ b/include/hw/virtio/virtio-scsi.h
-@@ -85,8 +85,9 @@ struct VirtIOSCSI {
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index 2c1bbb3530..a5048e0aaf 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -273,6 +273,10 @@ static void scsi_aio_complete(void *opaque, int ret)
+     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
+     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
  
-     /*
-      * TMFs deferred to main loop BH. These fields are protected by
--     * virtio_scsi_acquire().
-+     * tmf_bh_lock.
-      */
-+    QemuMutex tmf_bh_lock;
-     QEMUBH *tmf_bh;
-     QTAILQ_HEAD(, VirtIOSCSIReq) tmf_bh_list;
++    /* The request must only run in the BlockBackend's AioContext */
++    assert(blk_get_aio_context(s->qdev.conf.blk) ==
++           qemu_get_current_aio_context());
++
+     assert(r->req.aiocb != NULL);
+     r->req.aiocb = NULL;
  
-diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 9c751bf296..4f8d35facc 100644
---- a/hw/scsi/virtio-scsi.c
-+++ b/hw/scsi/virtio-scsi.c
-@@ -123,6 +123,30 @@ static void virtio_scsi_complete_req(VirtIOSCSIReq *req)
-     virtio_scsi_free_req(req);
- }
+@@ -370,8 +374,13 @@ static void scsi_dma_complete(void *opaque, int ret)
  
-+static void virtio_scsi_complete_req_bh(void *opaque)
-+{
-+    VirtIOSCSIReq *req = opaque;
-+
-+    virtio_scsi_complete_req(req);
-+}
-+
-+/*
-+ * Called from virtio_scsi_do_one_tmf_bh() in main loop thread. The main loop
-+ * thread cannot touch the virtqueue since that could race with an IOThread.
-+ */
-+static void virtio_scsi_complete_req_from_main_loop(VirtIOSCSIReq *req)
-+{
-+    VirtIOSCSI *s = req->dev;
-+
-+    if (!s->ctx || s->ctx == qemu_get_aio_context()) {
-+        /* No need to schedule a BH when there is no IOThread */
-+        virtio_scsi_complete_req(req);
-+    } else {
-+        /* Run request completion in the IOThread */
-+        aio_wait_bh_oneshot(s->ctx, virtio_scsi_complete_req_bh, req);
-+    }
-+}
-+
- static void virtio_scsi_bad_req(VirtIOSCSIReq *req)
+ static void scsi_read_complete_noio(SCSIDiskReq *r, int ret)
  {
-     virtio_error(VIRTIO_DEVICE(req->dev), "wrong size for virtio-scsi headers");
-@@ -338,10 +362,7 @@ static void virtio_scsi_do_one_tmf_bh(VirtIOSCSIReq *req)
++    SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+     uint32_t n;
  
- out:
-     object_unref(OBJECT(d));
--
--    virtio_scsi_acquire(s);
--    virtio_scsi_complete_req(req);
--    virtio_scsi_release(s);
-+    virtio_scsi_complete_req_from_main_loop(req);
- }
++    /* The request must only run in the BlockBackend's AioContext */
++    assert(blk_get_aio_context(s->qdev.conf.blk) ==
++           qemu_get_current_aio_context());
++
+     assert(r->req.aiocb == NULL);
+     if (scsi_disk_req_check_error(r, ret, false)) {
+         goto done;
+@@ -496,8 +505,13 @@ static void scsi_read_data(SCSIRequest *req)
  
- /* Some TMFs must be processed from the main loop thread */
-@@ -354,18 +375,16 @@ static void virtio_scsi_do_tmf_bh(void *opaque)
- 
-     GLOBAL_STATE_CODE();
- 
--    virtio_scsi_acquire(s);
-+    WITH_QEMU_LOCK_GUARD(&s->tmf_bh_lock) {
-+        QTAILQ_FOREACH_SAFE(req, &s->tmf_bh_list, next, tmp) {
-+            QTAILQ_REMOVE(&s->tmf_bh_list, req, next);
-+            QTAILQ_INSERT_TAIL(&reqs, req, next);
-+        }
- 
--    QTAILQ_FOREACH_SAFE(req, &s->tmf_bh_list, next, tmp) {
--        QTAILQ_REMOVE(&s->tmf_bh_list, req, next);
--        QTAILQ_INSERT_TAIL(&reqs, req, next);
-+        qemu_bh_delete(s->tmf_bh);
-+        s->tmf_bh = NULL;
-     }
- 
--    qemu_bh_delete(s->tmf_bh);
--    s->tmf_bh = NULL;
--
--    virtio_scsi_release(s);
--
-     QTAILQ_FOREACH_SAFE(req, &reqs, next, tmp) {
-         QTAILQ_REMOVE(&reqs, req, next);
-         virtio_scsi_do_one_tmf_bh(req);
-@@ -379,8 +398,7 @@ static void virtio_scsi_reset_tmf_bh(VirtIOSCSI *s)
- 
-     GLOBAL_STATE_CODE();
- 
--    virtio_scsi_acquire(s);
--
-+    /* Called after ioeventfd has been stopped, so tmf_bh_lock is not needed */
-     if (s->tmf_bh) {
-         qemu_bh_delete(s->tmf_bh);
-         s->tmf_bh = NULL;
-@@ -393,19 +411,19 @@ static void virtio_scsi_reset_tmf_bh(VirtIOSCSI *s)
-         req->resp.tmf.response = VIRTIO_SCSI_S_TARGET_FAILURE;
-         virtio_scsi_complete_req(req);
-     }
--
--    virtio_scsi_release(s);
- }
- 
- static void virtio_scsi_defer_tmf_to_bh(VirtIOSCSIReq *req)
+ static void scsi_write_complete_noio(SCSIDiskReq *r, int ret)
  {
-     VirtIOSCSI *s = req->dev;
++    SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+     uint32_t n;
  
--    QTAILQ_INSERT_TAIL(&s->tmf_bh_list, req, next);
-+    WITH_QEMU_LOCK_GUARD(&s->tmf_bh_lock) {
-+        QTAILQ_INSERT_TAIL(&s->tmf_bh_list, req, next);
++    /* The request must only run in the BlockBackend's AioContext */
++    assert(blk_get_aio_context(s->qdev.conf.blk) ==
++           qemu_get_current_aio_context());
++
+     assert (r->req.aiocb == NULL);
+     if (scsi_disk_req_check_error(r, ret, false)) {
+         goto done;
+diff --git a/system/dma-helpers.c b/system/dma-helpers.c
+index 528117f256..9b221cf94e 100644
+--- a/system/dma-helpers.c
++++ b/system/dma-helpers.c
+@@ -119,6 +119,9 @@ static void dma_blk_cb(void *opaque, int ret)
  
--    if (!s->tmf_bh) {
--        s->tmf_bh = qemu_bh_new(virtio_scsi_do_tmf_bh, s);
--        qemu_bh_schedule(s->tmf_bh);
-+        if (!s->tmf_bh) {
-+            s->tmf_bh = qemu_bh_new(virtio_scsi_do_tmf_bh, s);
-+            qemu_bh_schedule(s->tmf_bh);
-+        }
-     }
- }
+     trace_dma_blk_cb(dbs, ret);
  
-@@ -1235,6 +1253,7 @@ static void virtio_scsi_device_realize(DeviceState *dev, Error **errp)
-     Error *err = NULL;
++    /* DMAAIOCB is not thread-safe and must be accessed only from dbs->ctx */
++    assert(ctx == qemu_get_current_aio_context());
++
+     dbs->acb = NULL;
+     dbs->offset += dbs->iov.size;
  
-     QTAILQ_INIT(&s->tmf_bh_list);
-+    qemu_mutex_init(&s->tmf_bh_lock);
- 
-     virtio_scsi_common_realize(dev,
-                                virtio_scsi_handle_ctrl,
-@@ -1277,6 +1296,7 @@ static void virtio_scsi_device_unrealize(DeviceState *dev)
- 
-     qbus_set_hotplug_handler(BUS(&s->bus), NULL);
-     virtio_scsi_common_unrealize(dev);
-+    qemu_mutex_destroy(&s->tmf_bh_lock);
- }
- 
- static Property virtio_scsi_properties[] = {
 -- 
 2.43.0
 
