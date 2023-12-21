@@ -2,68 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6873081C04F
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:39:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F6D81C03B
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:35:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGQkr-0008PB-7L; Thu, 21 Dec 2023 16:38:57 -0500
+	id 1rGQgD-0006U2-Gq; Thu, 21 Dec 2023 16:34:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rGQko-0008Ki-Ha; Thu, 21 Dec 2023 16:38:54 -0500
-Received: from zproxy3.enst.fr ([137.194.2.222])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rGQkl-0005Ic-SD; Thu, 21 Dec 2023 16:38:54 -0500
-Received: from localhost (localhost [IPv6:::1])
- by zproxy3.enst.fr (Postfix) with ESMTP id 1426AA07D2;
- Thu, 21 Dec 2023 22:38:48 +0100 (CET)
-Received: from zproxy3.enst.fr ([IPv6:::1])
- by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id xTEOH58zOFjr; Thu, 21 Dec 2023 22:38:46 +0100 (CET)
-Received: from localhost (localhost [IPv6:::1])
- by zproxy3.enst.fr (Postfix) with ESMTP id 95A2DA074D;
- Thu, 21 Dec 2023 22:38:46 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr 95A2DA074D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1703194726;
- bh=pAq8xWSWVSU8ghFLc6oZTqHGnJ0LMVzszaH5jTSsAx4=;
- h=From:To:Date:Message-ID:MIME-Version;
- b=SGxWsss9lJMiMJ/7y6n/VqzIfwOCaVbe1bYbbodsiJJ2IMyh6eoJn2AVxKF5Clq7i
- OyTsasol0dGX0rPHSpaKiCSCMxblGb9FAyhP8tQzSXyOSGU3OnnLW/v8+rj4IljCaz
- /T4zylCOo2jCNn00aP7oqBWOb7YsGfn8MeRUrlF0=
-X-Virus-Scanned: amavis at enst.fr
-Received: from zproxy3.enst.fr ([IPv6:::1])
- by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id u4Zpz-J7hZ4I; Thu, 21 Dec 2023 22:38:46 +0100 (CET)
-Received: from localhost.localdomain (74.0.125.80.rev.sfr.net [80.125.0.74])
- by zproxy3.enst.fr (Postfix) with ESMTPSA id 5FA90A07D2;
- Thu, 21 Dec 2023 22:38:46 +0100 (CET)
-From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
- peter.maydell@linaro.org, arnaud.minier@telecom-paris.fr,
- ines.varhol@telecom-paris.fr
-Subject: [PATCH v4 2/2] hw/arm: Add minimal support for the B-L475E-IOT01A
- board
-Date: Thu, 21 Dec 2023 22:32:21 +0100
-Message-ID: <20231221213838.54944-3-ines.varhol@telecom-paris.fr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231221213838.54944-1-ines.varhol@telecom-paris.fr>
-References: <20231221213838.54944-1-ines.varhol@telecom-paris.fr>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rGQfy-00061K-J5
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:33:55 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rGQfw-0002qz-Hb
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:33:54 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1d41bb4da91so284705ad.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 13:33:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1703194429; x=1703799229; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=y9AYMIru17thpFDzRob28Epie/dzyeV92pBFqt/hmWs=;
+ b=kmGD1PSGZSDmLWUIdRY6dLIwwLe18bykbDU7zHkWqPIwegMF9ZduwVZXewRTRqgv7z
+ RGjC11EF/f239BmyfXOQ3BzlITFqtyvcfVSHSGBFi+5RWiQIGr4y+h9NbzH3QKuFbIxK
+ URyI75VpSbPl80XBeyLe8ouNNClyA8K19aJxEUr3Fg/LQaXrFmlg6doDStlhhp20mjFO
+ xAPg0CHsNwI6B+ZCMxzhGIMENJRYhQFSY282S3fjqdf/oKfNOTGfkbHtv/o5sRH98U9r
+ 32CASRgr6UQKZqFnFTEgFIYRjI9w2EZE552FFdfdTxAzLKJ1H5fhxXwPxNaAfadAr8vi
+ c3rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703194429; x=1703799229;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y9AYMIru17thpFDzRob28Epie/dzyeV92pBFqt/hmWs=;
+ b=ah6zSQAIUenZUfNLQft8/wCbONADI2N68x2Y5mcnraHfij9gGpEuTOsFeiQ8Ki2pC0
+ hsFSgv3eem5CFLLK+HRUfjU7abKC/kpzH7a1mOSgidGa2yYMJ1N0bhrBjqs0FldXDI6E
+ TqP75ztw8SfYIZ7mPavTV4PjDuxM4M1wsincjQ99ki2vaRbk8jcvkIEZBoPbna53yG6r
+ Qyhpr7jBrkSmQj4lGUp+Jtb2ikbNvRL/vvE5scpjZWpMgntWP75DG2zo9+3W/jRkjR/5
+ V3nstpzjV0vZzm2oO3vmyRkfrCNConaYDTYFioEBKW+vNWL6wI7LL4JgPeBRcNESaJVT
+ 7kaw==
+X-Gm-Message-State: AOJu0YzcSmxqEYy60G37fsYCYoH/kIL+j02c3BpJ8pfIEFfd44deCGil
+ 56qObmCkMh4Nr5fTv0RR92a1N9OIZP2mCg==
+X-Google-Smtp-Source: AGHT+IEJ9oTdYLK4Cq2vAgLnE2pWskejBMl+0YvnFgcsAPMVCol4S8qTbHUdk7dDLyEc5b34Osd7MQ==
+X-Received: by 2002:a17:902:b18d:b0:1d0:bba1:57c1 with SMTP id
+ s13-20020a170902b18d00b001d0bba157c1mr229899plr.78.1703194429308; 
+ Thu, 21 Dec 2023 13:33:49 -0800 (PST)
+Received: from ?IPV6:2001:8004:5170:1dd0:f3d2:7d7a:220f:5fe7?
+ ([2001:8004:5170:1dd0:f3d2:7d7a:220f:5fe7])
+ by smtp.gmail.com with ESMTPSA id
+ p12-20020a170902eacc00b001ce5b859a59sm2088315pld.305.2023.12.21.13.33.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Dec 2023 13:33:48 -0800 (PST)
+Message-ID: <1082dfde-644b-4887-bd0f-35b8cea6be26@linaro.org>
+Date: Fri, 22 Dec 2023 08:33:42 +1100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=137.194.2.222;
- envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy3.enst.fr
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] target/i386: Fix physical address truncation
+To: Michael Brown <mcb30@ipxe.org>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <25995a01-720e-485a-b7c2-36ec612a888b@ipxe.org>
+ <0102018c8d11471f-9a6d73eb-0c34-4f61-8d37-5a4418f9e0d7-000000@eu-west-1.amazonses.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <0102018c8d11471f-9a6d73eb-0c34-4f61-8d37-5a4418f9e0d7-000000@eu-west-1.amazonses.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,274 +96,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds a new B-L475E-IOT01A board using the STM32L475VG SoC
-as well as a dedicated documentation file.
-The implementation is derived from the Netduino Plus 2 machine.
-There are no peripherals implemented yet, only memory regions.
+On 12/22/23 02:49, Michael Brown wrote:
+> The address translation logic in get_physical_address() will currently
+> truncate physical addresses to 32 bits unless long mode is enabled.
+> This is incorrect when using physical address extensions (PAE) outside
+> of long mode, with the result that a 32-bit operating system using PAE
+> to access memory above 4G will experience undefined behaviour.
+> 
+> The truncation code was originally introduced in commit 33dfdb5 ("x86:
+> only allow real mode to access 32bit without LMA"), where it applied
+> only to translations performed while paging is disabled (and so cannot
+> affect guests using PAE).
+> 
+> Commit 9828198 ("target/i386: Add MMU_PHYS_IDX and MMU_NESTED_IDX")
+> rearranged the code such that the truncation also applied to the use
+> of MMU_PHYS_IDX and MMU_NESTED_IDX.  Commit 4a1e9d4 ("target/i386: Use
+> atomic operations for pte updates") brought this truncation into scope
+> for page table entry accesses, and is the first commit for which a
+> Windows 10 32-bit guest will reliably fail to boot if memory above 4G
+> is present.
+> 
+> The original truncation code (now ten years old) appears to be wholly
+> redundant in the current codebase.  With paging disabled, the CPU
+> cannot be in long mode and so the maximum address size for any
+> executed instruction is 32 bits.  This will already cause the linear
+> address to be truncated to 32 bits, and there is therefore no way for
+> get_physical_address() to be asked to translate an address outside of
+> the 32-bit range.
+> 
+> Fix by removing the address truncation in get_physical_address().
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2040
+> Signed-off-by: Michael Brown <mcb30@ipxe.org>
+> ---
+>   target/i386/tcg/sysemu/excp_helper.c | 6 ------
+>   1 file changed, 6 deletions(-)
+> 
+> diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+> index 5b86f439ad..707f7326d4 100644
+> --- a/target/i386/tcg/sysemu/excp_helper.c
+> +++ b/target/i386/tcg/sysemu/excp_helper.c
+> @@ -582,12 +582,6 @@ static bool get_physical_address(CPUX86State *env, vaddr addr,
+>   
+>       /* Translation disabled. */
+>       out->paddr = addr & x86_get_a20_mask(env);
+> -#ifdef TARGET_X86_64
+> -    if (!(env->hflags & HF_LMA_MASK)) {
+> -        /* Without long mode we can only address 32bits in real mode */
+> -        out->paddr = (uint32_t)out->paddr;
+> -    }
+> -#endif
 
-Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+If the extension is not needed, then the a20 mask isn't either.
 
-Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
----
- MAINTAINERS                             |  7 +++
- configs/devices/arm-softmmu/default.mak |  1 +
- docs/system/arm/b-l475e-iot01a.rst      | 46 ++++++++++++++++
- docs/system/arm/stm32.rst               |  6 ++-
- docs/system/target-arm.rst              |  1 +
- hw/arm/Kconfig                          |  6 +++
- hw/arm/b-l475e-iot01a.c                 | 70 +++++++++++++++++++++++++
- hw/arm/meson.build                      |  1 +
- 8 files changed, 136 insertions(+), 2 deletions(-)
- create mode 100644 docs/system/arm/b-l475e-iot01a.rst
- create mode 100644 hw/arm/b-l475e-iot01a.c
+But I think there are some missing masks within mmu_translate that need fixing at the same 
+time:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e5b28aee28..3f3831c92a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1131,6 +1131,13 @@ S: Maintained
- F: hw/arm/stm32l4x5_soc.c
- F: include/hw/arm/stm32l4x5_soc.h
-=20
-+B-L475E-IOT01A IoT Node
-+M: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+M: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-+L: qemu-arm@nongnu.org
-+S: Maintained
-+F: hw/arm/b-l475e-iot01a.c
-+
- SmartFusion2
- M: Subbaraya Sundeep <sundeep.lkml@gmail.com>
- M: Peter Maydell <peter.maydell@linaro.org>
-diff --git a/configs/devices/arm-softmmu/default.mak b/configs/devices/ar=
-m-softmmu/default.mak
-index 980c48a7d9..023faa2f75 100644
---- a/configs/devices/arm-softmmu/default.mak
-+++ b/configs/devices/arm-softmmu/default.mak
-@@ -19,6 +19,7 @@ CONFIG_ARM_VIRT=3Dy
- # CONFIG_NSERIES=3Dn
- # CONFIG_STELLARIS=3Dn
- # CONFIG_STM32VLDISCOVERY=3Dn
-+# CONFIG_B_L475E_IOT01A=3Dn
- # CONFIG_REALVIEW=3Dn
- # CONFIG_VERSATILE=3Dn
- # CONFIG_VEXPRESS=3Dn
-diff --git a/docs/system/arm/b-l475e-iot01a.rst b/docs/system/arm/b-l475e=
--iot01a.rst
-new file mode 100644
-index 0000000000..2b128e6b84
---- /dev/null
-+++ b/docs/system/arm/b-l475e-iot01a.rst
-@@ -0,0 +1,46 @@
-+B-L475E-IOT01A IoT Node (``b-l475e-iot01a``)
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+The B-L475E-IOT01A IoT Node uses the STM32L475VG SoC which is based on
-+ARM Cortex-M4F core. It is part of STMicroelectronics
-+:doc:`STM32 boards </system/arm/stm32>` and more specifically the STM32L=
-4
-+ultra-low power series. The STM32L4x5 chip runs at up to 80 MHz and
-+integrates 128 KiB of SRAM and up to 1MiB of Flash. The B-L475E-IOT01A b=
-oard
-+namely features 64 Mibit QSPI Flash, BT, WiFi and RF connectivity,
-+USART, I2C, SPI, CAN and USB OTG, as well as a variety of sensors.
-+
-+Supported devices
-+"""""""""""""""""
-+
-+Currently, B-L475E-IOT01A machine's implementation is minimal,
-+it only supports the following device:
-+
-+- Cortex-M4F based STM32L4x5 SoC
-+
-+Missing devices
-+"""""""""""""""
-+
-+The B-L475E-IOT01A does *not* support the following devices:
-+
-+- Extended interrupts and events controller (EXTI)
-+- Reset and clock control (RCC)
-+- Serial ports (UART)
-+- System configuration controller (SYSCFG)
-+- General-purpose I/Os (GPIO)
-+- Analog to Digital Converter (ADC)
-+- SPI controller
-+- Timer controller (TIMER)
-+
-+See the complete list of unimplemented peripheral devices
-+in the STM32L4x5 module : ``./hw/arm/stm32l4x5_soc.c``
-+
-+Boot options
-+""""""""""""
-+
-+The B-L475E-IOT01A machine can be started using the ``-kernel``
-+option to load a firmware. Example:
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-arm -M b-l475e-iot01a -kernel firmware.bin
-+
-diff --git a/docs/system/arm/stm32.rst b/docs/system/arm/stm32.rst
-index d7265b763d..3b640f3ee0 100644
---- a/docs/system/arm/stm32.rst
-+++ b/docs/system/arm/stm32.rst
-@@ -16,11 +16,13 @@ based on this chip :
-=20
- - ``netduino2``         Netduino 2 board with STM32F205RFT6 microcontrol=
-ler
-=20
--The STM32F4 series is based on ARM Cortex-M4F core. This series is pin-t=
-o-pin
--compatible with STM32F2 series. The following machines are based on this=
- chip :
-+The STM32F4 series is based on ARM Cortex-M4F core, as well as the STM32=
-L4
-+ultra-low-power series. The STM32F4 series is pin-to-pin compatible with=
- STM32F2 series.
-+The following machines are based on this ARM Cortex-M4F chip :
-=20
- - ``netduinoplus2``     Netduino Plus 2 board with STM32F405RGT6 microco=
-ntroller
- - ``olimex-stm32-h405`` Olimex STM32 H405 board with STM32F405RGT6 micro=
-controller
-+- ``b-l475e-iot01a``     :doc:`B-L475E-IOT01A IoT Node </system/arm/b-l4=
-75e-iot01a>` board with STM32L475VG microcontroller
-=20
- There are many other STM32 series that are currently not supported by QE=
-MU.
-=20
-diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
-index 790ac1b8a2..c9d7c0dda7 100644
---- a/docs/system/target-arm.rst
-+++ b/docs/system/target-arm.rst
-@@ -84,6 +84,7 @@ undocumented; you can get a complete list by running
-    arm/vexpress
-    arm/aspeed
-    arm/bananapi_m2u.rst
-+   arm/b-l475e-iot01a.rst
-    arm/sabrelite
-    arm/digic
-    arm/cubieboard
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index d2b94d9a47..7520dc5cc0 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -448,6 +448,12 @@ config STM32F405_SOC
-     select STM32F4XX_SYSCFG
-     select STM32F4XX_EXTI
-=20
-+config B_L475E_IOT01A
-+    bool
-+    default y
-+    depends on TCG && ARM
-+    select STM32L4X5_SOC
-+
- config STM32L4X5_SOC
-     bool
-     select ARM_V7M
-diff --git a/hw/arm/b-l475e-iot01a.c b/hw/arm/b-l475e-iot01a.c
-new file mode 100644
-index 0000000000..c3790e3dc8
---- /dev/null
-+++ b/hw/arm/b-l475e-iot01a.c
-@@ -0,0 +1,70 @@
-+/*
-+ * B-L475E-IOT01A Discovery Kit machine
-+ * (B-L475E-IOT01A IoT Node)
-+ *
-+ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or la=
-ter.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ * This work is heavily inspired by the netduinoplus2 by Alistair Franci=
-s.
-+ * Original code is licensed under the MIT License:
-+ *
-+ * Copyright (c) 2014 Alistair Francis <alistair@alistair23.me>
-+ */
-+
-+/*
-+ * The reference used is the STMicroElectronics UM2153 User manual
-+ * Discovery kit for IoT node, multi-channel communication with STM32L4.
-+ * https://www.st.com/en/evaluation-tools/b-l475e-iot01a.html#documentat=
-ion
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/boards.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/qdev-clock.h"
-+#include "qemu/error-report.h"
-+#include "hw/arm/stm32l4x5_soc.h"
-+#include "hw/arm/boot.h"
-+
-+/* Main SYSCLK frequency in Hz (80MHz) */
-+#define SYSCLK_FRQ 80000000ULL
-+
-+static void b_l475e_iot01a_init(MachineState *machine)
-+{
-+    const Stm32l4x5SocClass *sc;
-+    DeviceState *dev;
-+    Clock *sysclk;
-+
-+    /* This clock doesn't need migration because it is fixed-frequency *=
-/
-+    sysclk =3D clock_new(OBJECT(machine), "SYSCLK");
-+    clock_set_hz(sysclk, SYSCLK_FRQ);
-+
-+    dev =3D qdev_new(TYPE_STM32L4X5XG_SOC);
-+    sc =3D STM32L4X5_SOC_GET_CLASS(dev);
-+    qdev_connect_clock_in(dev, "sysclk", sysclk);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+    armv7m_load_kernel(ARM_CPU(first_cpu),
-+                       machine->kernel_filename,
-+                       0, sc->flash_size);
-+}
-+
-+static void b_l475e_iot01a_machine_init(MachineClass *mc)
-+{
-+    static const char *machine_valid_cpu_types[] =3D {
-+        ARM_CPU_TYPE_NAME("cortex-m4"),
-+        NULL};
-+    mc->desc =3D "B-L475E-IOT01A Discovery Kit (Cortex-M4)";
-+    mc->init =3D b_l475e_iot01a_init;
-+    mc->valid_cpu_types =3D machine_valid_cpu_types;
-+
-+    /* SRAM pre-allocated as part of the SoC instantiation */
-+    mc->default_ram_size =3D 0;
-+}
-+
-+DEFINE_MACHINE("b-l475e-iot01a", b_l475e_iot01a_machine_init)
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 9766da10c4..bb92b27db3 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -42,6 +42,7 @@ arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm283=
-6.c', 'raspi.c'))
- arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c=
-'))
- arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c=
-'))
- arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c=
-'))
-+arm_ss.add(when: 'CONFIG_B_L475E_IOT01A', if_true: files('b-l475e-iot01a=
-.c'))
- arm_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_soc.c=
-'))
- arm_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp.c=
-', 'xlnx-zcu102.c'))
- arm_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', '=
-xlnx-versal-virt.c'))
---=20
-2.43.0
+>             /*
+>              * Page table level 3
+>              */
+>             pte_addr = ((in->cr3 & ~0x1f) + ((addr >> 27) & 0x18)) & a20_mask;
 
+Bits 32-63 of cr3 must be ignored when !LMA.
+
+>         /*
+>          * Page table level 2
+>          */
+>         pte_addr = ((in->cr3 & ~0xfff) + ((addr >> 20) & 0xffc)) & a20_mask;
+>         if (!ptw_translate(&pte_trans, pte_addr)) {
+>             return false;
+>         }
+>     restart_2_nopae:
+
+Likewise.
+
+Looking again, it appears that all of the actual pte_addr calculations have both 
+PG_ADDRESS_MASK and a20_mask applied, and have verified that bits beyond MAXPHYSADDR are 
+zero via rsvd_mask.
+
+
+r~
 
