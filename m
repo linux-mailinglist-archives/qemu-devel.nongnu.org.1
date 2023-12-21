@@ -2,88 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6079081AEB4
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:19:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 156B481AEC0
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:27:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGCO6-00017z-Au; Thu, 21 Dec 2023 01:18:30 -0500
+	id 1rGCUy-0002FR-A6; Thu, 21 Dec 2023 01:25:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rGCO2-00017e-M5
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:18:27 -0500
-Received: from mgamail.intel.com ([134.134.136.65])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rGCO0-0003px-Ct
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:18:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1703139504; x=1734675504;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=BsYBvZXpNmDxnhkK3p7HJV3JL+6lmwWO8f24hANixYY=;
- b=MPZwGvw57wJwuq8ybfZmH/TDMiIDcdctn9BoQhwiXEJ7y4fNeyXiLl65
- iUMD1D/eFh3Xl0O+dfBc8o/fAOkYVzz2fb90Q5f5FJUXFXvJHbx5xOgp2
- obW/nmdDtKVzGIxxv56jf56h4UrsKWc4/IeSXwIRmNxeGTVi+DH1h6obw
- ccB4EAagTt0P58QtzCgtUbe85bTcfCPVPkAZkFilnM8guD2zG86qqJHyW
- aDc04U6edemfeoeDnwJHWz9cWoZZ85t/gZQl+Gnmjvh6gB33V1f0iJSMe
- HI+XXgTF3uphaZ5A5aRJrknlskNUtyuddijInhevmviGqezk4yxTldYta A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="399757492"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="399757492"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2023 22:18:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="810867965"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="810867965"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.12.199])
- ([10.93.12.199])
- by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Dec 2023 22:18:14 -0800
-Message-ID: <f5f21e2d-b462-4402-b728-46ab4124efb8@intel.com>
-Date: Thu, 21 Dec 2023 14:18:11 +0800
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rGCUw-0002F6-LP
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:25:34 -0500
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rGCUu-0006mL-6A
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:25:34 -0500
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3ba2e4ff6e1so321802b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 22:25:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703139920; x=1703744720;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rlXQG44kOZf5fxV0IWo0D6JubD275DwoDFlEWXxwk6A=;
+ b=gcpfKKKlLlKjAK7mrcbv8BlONbPZxrsTVBmuLDLSvZyH8OOTNXLzTghbIWnGSPBr6h
+ yCCO2NWpN6FI3LkIPO+1SKiQmgBFp7sl9he6Lw6ib2lHg9DVhzsg8F3CUE4Odvq3jdz8
+ kXu7x3TKCRn0by0DfdTnTl8GZcEdlUd0AdW4VDin6MADNdDopMjr6QR8gnYE2cbm+pqw
+ Ibi90gmIKhoIIjpfUziB6d/I2bE9q3E7a62VZY1lceNBFvHhdKIBbJJEnb7yonW4a6A/
+ 4HqnrZAoTtQa2lZ+bM4Pqmi0T/fy478q/oPxWNvWPZZA6dFpXMhGI3mI3xTC2dYXWCY8
+ TIKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703139920; x=1703744720;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rlXQG44kOZf5fxV0IWo0D6JubD275DwoDFlEWXxwk6A=;
+ b=mfbGCyR3WcKSovOW04czJWO9Y0DafT1PmVDre7G7xnnHLcS3XPOaw6dnt1KLQtj1xc
+ hvw0GRGz5kRGaO4e5pjArbBltXp4Nb5iETChisyM1zE03Inu9MvMmv/lwGSTBGNHvvAx
+ 8Vep7lGMCd9eqg1GZXA25Keq78SyTQp7uvQmMBE80fCOw8awEuOa3VfBwU9MkAg0JPiP
+ EO2a4n1F1Fqamq3eRfS+QELmCdSLn6G1DON+izr0PBPf7kSInKh5iYLvdkUDedJSUYvg
+ wDzxcBQPUmTXO23K1eTscBJG0+1lCUpeaLoNsbfeKo5OyiC9LaVRMk5cTnJe1SD8w0tJ
+ EH8g==
+X-Gm-Message-State: AOJu0YyPR877twP88QVzQUzZDAttSxpNNYeFtJjFTO4fcPKoFDOinoXU
+ bRLd5ywKd9jB2lVE/dr5Dx/4Ng==
+X-Google-Smtp-Source: AGHT+IGBOK5Z6bL4kJ96WrkRiA+TDKPx53V4PTejOTpRGBANRttKRRPr7/BlKjQTL23MCOHoE+sW2A==
+X-Received: by 2002:a05:6808:219c:b0:3b8:b1bd:b36a with SMTP id
+ be28-20020a056808219c00b003b8b1bdb36amr30330444oib.49.1703139920252; 
+ Wed, 20 Dec 2023 22:25:20 -0800 (PST)
+Received: from [157.82.205.15] ([157.82.205.15])
+ by smtp.gmail.com with ESMTPSA id
+ c7-20020a056a00008700b006cd88728572sm758504pfj.211.2023.12.20.22.25.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Dec 2023 22:25:19 -0800 (PST)
+Message-ID: <a2c0a1f1-45a2-4957-9919-0d0cb19cd285@daynix.com>
+Date: Thu, 21 Dec 2023 15:25:13 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/70] physmem: Introduce ram_block_convert_range() for
- page conversion
+Subject: Re: [PATCH v6 11/11] virtio-gpu: make blob scanout use dmabuf fd
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>,
- Isaku Yamahata <isaku.yamahata@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
- Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
- <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>,
- isaku.yamahata@intel.com
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-10-xiaoyao.li@intel.com>
- <20231117210304.GC1645850@ls.amr.corp.intel.com>
- <8f20d060-38fe-49d7-8fea-fe665c3c6c78@intel.com>
- <0dc03b42-23c3-4e02-868e-289b3fedf6af@redhat.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <0dc03b42-23c3-4e02-868e-289b3fedf6af@redhat.com>
+To: Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>
+References: <20231219075320.165227-1-ray.huang@amd.com>
+ <20231219075320.165227-12-ray.huang@amd.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20231219075320.165227-12-ray.huang@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=134.134.136.65; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::233;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x233.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,141 +114,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/8/2023 7:52 PM, David Hildenbrand wrote:
-> On 08.12.23 08:59, Xiaoyao Li wrote:
->> On 11/18/2023 5:03 AM, Isaku Yamahata wrote:
->>> On Wed, Nov 15, 2023 at 02:14:18AM -0500,
->>> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
->>>
->>>> It's used for discarding opposite memory after memory conversion, for
->>>> confidential guest.
->>>>
->>>> When page is converted from shared to private, the original shared
->>>> memory can be discarded via ram_block_discard_range();
->>>>
->>>> When page is converted from private to shared, the original private
->>>> memory is back'ed by guest_memfd. Introduce
->>>> ram_block_discard_guest_memfd_range() for discarding memory in
->>>> guest_memfd.
->>>>
->>>> Originally-from: Isaku Yamahata <isaku.yamahata@intel.com>
->>>> Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>>> ---
->>>>    include/exec/cpu-common.h |  2 ++
->>>>    system/physmem.c          | 50 
->>>> +++++++++++++++++++++++++++++++++++++++
->>>>    2 files changed, 52 insertions(+)
->>>>
->>>> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
->>>> index 41115d891940..de728a18eef2 100644
->>>> --- a/include/exec/cpu-common.h
->>>> +++ b/include/exec/cpu-common.h
->>>> @@ -175,6 +175,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, 
->>>> void *opaque);
->>>>    int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
->>>>    int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t 
->>>> length);
->>>> +int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t 
->>>> length,
->>>> +                            bool shared_to_private);
->>>>    #endif
->>>> diff --git a/system/physmem.c b/system/physmem.c
->>>> index ddfecddefcd6..cd6008fa09ad 100644
->>>> --- a/system/physmem.c
->>>> +++ b/system/physmem.c
->>>> @@ -3641,6 +3641,29 @@ err:
->>>>        return ret;
->>>>    }
->>>> +static int ram_block_discard_guest_memfd_range(RAMBlock *rb, 
->>>> uint64_t start,
->>>> +                                               size_t length)
->>>> +{
->>>> +    int ret = -1;
->>>> +
->>>> +#ifdef CONFIG_FALLOCATE_PUNCH_HOLE
->>>> +    ret = fallocate(rb->guest_memfd, FALLOC_FL_PUNCH_HOLE | 
->>>> FALLOC_FL_KEEP_SIZE,
->>>> +                    start, length);
->>>> +
->>>> +    if (ret) {
->>>> +        ret = -errno;
->>>> +        error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx 
->>>> (%d)",
->>>> +                     __func__, rb->idstr, start, length, ret);
->>>> +    }
->>>> +#else
->>>> +    ret = -ENOSYS;
->>>> +    error_report("%s: fallocate not available %s:%" PRIx64 " +%zx 
->>>> (%d)",
->>>> +                 __func__, rb->idstr, start, length, ret);
->>>> +#endif
->>>> +
->>>> +    return ret;
->>>> +}
->>>> +
->>>>    bool ramblock_is_pmem(RAMBlock *rb)
->>>>    {
->>>>        return rb->flags & RAM_PMEM;
->>>> @@ -3828,3 +3851,30 @@ bool ram_block_discard_is_required(void)
->>>>        return qatomic_read(&ram_block_discard_required_cnt) ||
->>>>               
->>>> qatomic_read(&ram_block_coordinated_discard_required_cnt);
->>>>    }
->>>> +
->>>> +int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t 
->>>> length,
->>>> +                            bool shared_to_private)
->>>> +{
->>>> +    if (!rb || rb->guest_memfd < 0) {
->>>> +        return -1;
->>>> +    }
->>>> +
->>>> +    if (!QEMU_PTR_IS_ALIGNED(start, qemu_host_page_size) ||
->>>> +        !QEMU_PTR_IS_ALIGNED(length, qemu_host_page_size)) {
->>>> +        return -1;
->>>> +    }
->>>> +
->>>> +    if (!length) {
->>>> +        return -1;
->>>> +    }
->>>> +
->>>> +    if (start + length > rb->max_length) {
->>>> +        return -1;
->>>> +    }
->>>> +
->>>> +    if (shared_to_private) {
->>>> +        return ram_block_discard_range(rb, start, length);
->>>> +    } else {
->>>> +        return ram_block_discard_guest_memfd_range(rb, start, length);
->>>> +    }
->>>> +}
->>>
->>> Originally this function issued KVM_SET_MEMORY_ATTRIBUTES, the 
->>> function name
->>> mad sense. But now it doesn't, and it issues only punch hole. We 
->>> should rename
->>> it to represent what it actually does. discard_range?
->>
->> ram_block_discard_range() already exists for non-guest-memfd memory 
->> discard.
->>
->> I cannot come up with a proper name. e.g.,
->> ram_block_discard_opposite_range() while *opposite* seems unclear.
->>
->> Do you have any better idea?
+On 2023/12/19 16:53, Huang Rui wrote:
+> From: Robert Beckett <bob.beckett@collabora.com>
 > 
-> Having some indication that this is about "guest_memfd" back and forth 
-> switching/conversion will make sense. But I'm also not able to come up 
-> with a better name.
+> This relies on a virglrenderer change to include the dmabuf fd when
+> returning resource info.
 > 
-> Maybe have two functions:
+> Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> ---
 > 
-> ram_block_activate_guest_memfd_range
-> ram_block_deactivate_guest_memfd_range
+> Changes in v6:
+> - Add scanout_blob function for virtio-gpu-virgl.
+> - Update for new virgl_gpu_resource.
 > 
+>   hw/display/virtio-gpu-virgl.c  | 104 +++++++++++++++++++++++++++++++++
+>   hw/display/virtio-gpu.c        |   4 +-
+>   include/hw/virtio/virtio-gpu.h |   6 ++
+>   3 files changed, 112 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> index c523a6717a..c384225a98 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -18,6 +18,7 @@
+>   #include "hw/virtio/virtio.h"
+>   #include "hw/virtio/virtio-gpu.h"
+>   #include "hw/virtio/virtio-gpu-bswap.h"
+> +#include "hw/virtio/virtio-gpu-pixman.h"
+>   
+>   #include "ui/egl-helpers.h"
+>   
+> @@ -726,6 +727,106 @@ static void virgl_cmd_resource_unmap_blob(VirtIOGPU *g,
+>       object_unparent(OBJECT(mr));
+>   }
+>   
+> +static void virgl_cmd_set_scanout_blob(VirtIOGPU *g,
+> +                                       struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    struct virgl_gpu_resource *vres;
+> +    struct virtio_gpu_framebuffer fb = { 0 };
+> +    struct virtio_gpu_set_scanout_blob ss;
+> +    struct virgl_renderer_resource_info info;
+> +    uint64_t fbend;
+> +
+> +    VIRTIO_GPU_FILL_CMD(ss);
+> +    virtio_gpu_scanout_blob_bswap(&ss);
+> +    trace_virtio_gpu_cmd_set_scanout_blob(ss.scanout_id, ss.resource_id,
+> +                                          ss.r.width, ss.r.height, ss.r.x,
+> +                                          ss.r.y);
+> +
+> +    if (ss.scanout_id >= g->parent_obj.conf.max_outputs) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: illegal scanout id specified %d",
+> +                      __func__, ss.scanout_id);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_SCANOUT_ID;
+> +        return;
+> +    }
+> +
+> +    if (ss.resource_id == 0) {
+> +        virtio_gpu_disable_scanout(g, ss.scanout_id);
+> +        return;
+> +    }
+> +
+> +    if (ss.width < 16 ||
+> +        ss.height < 16 ||
+> +        ss.r.x + ss.r.width > ss.width ||
+> +        ss.r.y + ss.r.height > ss.height) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: illegal scanout %d bounds for"
+> +                      " resource %d, rect (%d,%d)+%d,%d, fb %d %d\n",
+> +                      __func__, ss.scanout_id, ss.resource_id,
+> +                      ss.r.x, ss.r.y, ss.r.width, ss.r.height,
+> +                      ss.width, ss.height);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
+> +        return;
+> +    }
+> +
+> +    if (!console_has_gl(g->parent_obj.scanout[ss.scanout_id].con)) {
 
-finally, I decide to drop this function and expose 
-ram_block_discard_guest_memfd_range() instead. So caller can call the 
-ram_block_discard_*() on its own.
+Shouldn't OpenGL always be available for virgl?
+
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: unable to scanout blot without GL!\n", __func__);
+> +        return;
+> +    }
+> +
+> +    vres = virgl_gpu_find_resource(g, ss.resource_id);
+> +    if (!vres) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: illegal resource specified %d\n",
+> +                      __func__, ss.resource_id);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
+> +        return;
+> +    }
+> +    if (virgl_renderer_resource_get_info(ss.resource_id, &info)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: illegal virgl resource specified %d\n",
+> +                      __func__, ss.resource_id);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
+> +        return;
+> +    }
+> +    if (!vres->res.dmabuf_fd && info.fd)
+> +        vres->res.dmabuf_fd = info.fd;
+> +
+> +    fb.format = virtio_gpu_get_pixman_format(ss.format);
+> +    if (!fb.format) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: host couldn't handle guest format %d\n",
+> +                      __func__, ss.format);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
+> +        return;
+> +    }
+> +
+> +    fb.bytes_pp = DIV_ROUND_UP(PIXMAN_FORMAT_BPP(fb.format), 8);
+> +    fb.width = ss.width;
+> +    fb.height = ss.height;
+> +    fb.stride = ss.strides[0];
+> +    fb.offset = ss.offsets[0] + ss.r.x * fb.bytes_pp + ss.r.y * fb.stride;
+> +
+> +    fbend = fb.offset;
+> +    fbend += fb.stride * (ss.r.height - 1);
+> +    fbend += fb.bytes_pp * ss.r.width;
+> +    if (fbend > vres->res.blob_size) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: fb end out of range\n",
+> +                      __func__);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
+> +        return;
+> +    }
+> +
+> +    g->parent_obj.enable = 1;
+> +    if (virtio_gpu_update_dmabuf(g, ss.scanout_id, &vres->res,
+> +                                 &fb, &ss.r)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: failed to update dmabuf\n", __func__);
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
+> +        return;
+> +    }
+> +    virtio_gpu_update_scanout(g, ss.scanout_id, &vres->res, &ss.r);
+> +}
+> +
+>   #endif /* HAVE_VIRGL_RESOURCE_BLOB */
+>   
+>   void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
+> @@ -807,6 +908,9 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
+>       case VIRTIO_GPU_CMD_RESOURCE_UNMAP_BLOB:
+>           virgl_cmd_resource_unmap_blob(g, cmd);
+>           break;
+> +    case VIRTIO_GPU_CMD_SET_SCANOUT_BLOB:
+
+VIRTIO_GPU_CMD_SET_SCANOUT_BLOB support should be added before allowing 
+the user to enable the resource blob support.
+
+You should also check if virtio_vdev_has_feature(VIRTIO_DEVICE(g), 
+VIRTIO_GPU_F_RESOURCE_BLOB). It also applies to other resource blob 
+commands though I failed to note that for the earlier patch.
 
