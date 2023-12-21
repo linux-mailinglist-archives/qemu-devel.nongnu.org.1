@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64CA81B464
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3CA81B45A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:50:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGGaq-0004pr-5e; Thu, 21 Dec 2023 05:47:56 -0500
+	id 1rGGar-0004t2-EI; Thu, 21 Dec 2023 05:47:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGae-0004Yk-Sp
+ id 1rGGae-0004XV-7e
  for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:44 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGa8-0007NF-Ol
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:44 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-336755f1688so560125f8f.0
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:47:08 -0800 (PST)
+ id 1rGGa7-0007Om-SY
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:43 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-33664b4e038so538142f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:47:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703155627; x=1703760427; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703155629; x=1703760429; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0sLk9Y6V09YT5mxoKGySQqDe7AUl7PrL/RJQ+Y1wnbw=;
- b=l/GHXLTi5BaMXE3URvo3WSFhVISs5dabLukqHCPcjioGnzOBC3N1x87ivjLk1ovitt
- H8MKDBz8GnqOIttYAvS79cOyo1gY8ccQ52SxwyHUde7JvjG/Rf8mgdXY4KD0gV8BgC0O
- 4RIObDBZ0OztL9ecfwdk6KY9rJpf32zk866BquXZX3GIh/LIwzG3/G1fDzFGbymvv3rI
- 7DJeo43/ptSLTOn7SL8X9APgIHzgp9SIkQx+XeIq8eTwIf2G0bPtz+MIOmKAb1VHn48s
- PYa4RShlbJ0ph72XKiABAbdSfSOsAqvtaAj5un3UVL07Qn9WJFL5XvuPmgngpKSjMZqp
- mrJg==
+ bh=UUTepCaXuSvQff7RpqKHmtGuMDeLUnEdp+0FVQ8ed3M=;
+ b=aN2WHN92FcXVpT41qPo6o7oMzsb2KtSPBnOTZnzroCVfsfZNWVM8AeQrNdlmeweVqQ
+ 6X87tZphYy1T/1LF1JkHt0IGNKicRO+qbcnFW1inxrt5YHhwlis49o++7fyY/YqS7HO+
+ MHUiHy+rxTVKUl1PhT3cMxuJWI6DGuo5LCGsC/YCo8zYuLVxIaqyDkp/9JwNPRlq20Tj
+ bp54v4h8gAW80JbDCcSIuSJR9D+dIw/6wbzlNtJCIIFNNk69J35tSLoVIqTgOrKU/7q0
+ jFyiGMltlNOkT2RAp4VJm4s5jQgpsR7S870RUwI6xSnGH6PwvjZgeEyMFq+zakjh4pd2
+ 3m8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703155627; x=1703760427;
+ d=1e100.net; s=20230601; t=1703155629; x=1703760429;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0sLk9Y6V09YT5mxoKGySQqDe7AUl7PrL/RJQ+Y1wnbw=;
- b=l5pXIfuIPUptEqfYk0D7u7xJWH5e6/YWS4befl8DZXH1gDSQfRkQ0qiC9K1QtNEOVD
- wPCPWA5+9+Bi1kX6rLhWalHpAyI/KrH0bPANTgUdjaDiPvYiWZJr7Ie9uhNzW9PwVp0l
- biPEZ09+Kk4JqM2bEdSZlJZwFECOr1Wd9Ah5A8YVUozhfBb4JRxfkex5s5o7oYC1rYLW
- We2amnBzdepTh4EqC0dkyF59Vul/tdhuoxt6ttnhDfy/QvZo3pAMWkfnGBuPKfd0z0Wn
- w5AuQYogSRsHY9mi14LJ0JyN9ulXAhGFHIh20g9HofNPcjqVl709da798UT78N05xWZl
- xEbA==
-X-Gm-Message-State: AOJu0YyrQGKDRIJ9eBa7bGItP9wbHRDkpAAOti37Bq1RD3PX1N38ZvvL
- FltygkcdasnRfgMPhw2/AfFK/g==
-X-Google-Smtp-Source: AGHT+IEh4A/ofvHjjDxGae4dNp01ycAbrgSKgNLymJ1Ha3Ry/GdnF3Tf0BsMFDRp8ivuX9KZRRwyWg==
-X-Received: by 2002:a05:600c:1682:b0:40c:3984:4977 with SMTP id
- k2-20020a05600c168200b0040c39844977mr650705wmn.174.1703155627469; 
- Thu, 21 Dec 2023 02:47:07 -0800 (PST)
+ bh=UUTepCaXuSvQff7RpqKHmtGuMDeLUnEdp+0FVQ8ed3M=;
+ b=J55yP9qkcnSBoDWKyl9xGxHgSWAM4if5ZDON+n3Bf64s1FntYIIWqO9W++rGOPBTHb
+ n3i6CwrfShBstUNwuigmeE0HXyE67zE4LYp8UaGcDvb49scYufjdoaoMEgKWBLlKUTsY
+ 56BOlsJX5jaJdYahtcSGOkKk+rHtp8Br/GeEV5zYUXwbTl8rzY43dyoJHEIB3FojSD/v
+ MiZDLO0sACBtKBrzahFkra6pN2O0bxTAu/h0vcTHYeN2JXV923GZVUTh7AKbQk4TAvym
+ AxZHbbFbhzk23XTCQPbBONtRjqfc2iJYIc1uMy6gH5EypCapXoTY13w2HZ0vOcEKMpGM
+ 30bw==
+X-Gm-Message-State: AOJu0YxdvEpGhDY0m/Xl3VVJ+fDahzZ0PTzOFDEMe9O+ZdY+hwfrjNa4
+ D3cUDEJMBzJI+pnA0GlpY9EwlQ==
+X-Google-Smtp-Source: AGHT+IEE4PAyT0ppKhyWQR8C/CCDf6gD5uddgw77/sGyjUuzJA78iyT8JScfYrBXoIsKBK7do/LM6A==
+X-Received: by 2002:adf:f6d2:0:b0:336:763c:c3e5 with SMTP id
+ y18-20020adff6d2000000b00336763cc3e5mr603684wrp.93.1703155629711; 
+ Thu, 21 Dec 2023 02:47:09 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- b2-20020a05600c4e0200b0040c440f9393sm3526519wmq.42.2023.12.21.02.47.02
+ w11-20020adfcd0b000000b003367e35abd4sm1742637wrm.71.2023.12.21.02.47.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 21 Dec 2023 02:47:06 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CEF355F8E3;
+ by draig.lan (Postfix) with ESMTP id E5B975F8E5;
  Thu, 21 Dec 2023 10:38:20 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,18 +91,18 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Bin Meng <bin.meng@windriver.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 20/40] mtest2make: stop disabling meson test timeouts
-Date: Thu, 21 Dec 2023 10:37:58 +0000
-Message-Id: <20231221103818.1633766-21-alex.bennee@linaro.org>
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 21/40] hw/riscv: Use misa_mxl instead of misa_mxl_max
+Date: Thu, 21 Dec 2023 10:37:59 +0000
+Message-Id: <20231221103818.1633766-22-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231221103818.1633766-1-alex.bennee@linaro.org>
 References: <20231221103818.1633766-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,61 +125,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The mtest2make.py script passes the arg '-t 0' to 'meson test' which
-disables all test timeouts. This is a major source of pain when running
-in GitLab CI and a test gets stuck. It will stall until GitLab kills the
-CI job. This leaves us with little easily consumable information about
-the stalled test. The TAP format doesn't show the test name until it is
-completed, and TAP output from multiple tests it interleaved. So we
-have to analyse the log to figure out what tests had un-finished TAP
-output present and thus infer which test case caused the hang. This is
-very time consuming and error prone.
+The effective MXL value matters when booting.
 
-By allowing meson to kill stalled tests, we get a direct display of what
-test program got stuck, which lets us more directly focus in on what
-specific test case within the test program hung.
-
-The other issue with disabling meson test timeouts by default is that it
-makes it more likely that maintainers inadvertantly introduce slowdowns.
-For example the recent-ish change that accidentally made migrate-test
-take 15-20 minutes instead of around 1 minute.
-
-The main risk of this change is that the individual test timeouts might
-be too short to allow completion in high load scenarios. Thus, there is
-likely to be some short term pain where we have to bump the timeouts for
-certain tests to make them reliable enough. The preceeding few patches
-raised the timeouts for all failures that were immediately apparent
-in GitLab CI.
-
-Even with the possible short term instability, this should still be a
-net win for debuggability of failed CI pipelines over the long term.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230717182859.707658-13-berrange@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215070357.10888-17-thuth@redhat.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20231213-riscv-v7-1-a760156a337f@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- scripts/mtest2make.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/riscv/boot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
-index 179dd548718..eb01a05ddbd 100644
---- a/scripts/mtest2make.py
-+++ b/scripts/mtest2make.py
-@@ -27,7 +27,8 @@ def names(self, base):
- .speed.slow = $(foreach s,$(sort $(filter-out %-thorough, $1)), --suite $s)
- .speed.thorough = $(foreach s,$(sort $1), --suite $s)
+diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+index 0ffca05189f..bc67c0bd189 100644
+--- a/hw/riscv/boot.c
++++ b/hw/riscv/boot.c
+@@ -36,7 +36,7 @@
  
--.mtestargs = --no-rebuild -t 0
-+TIMEOUT_MULTIPLIER = 1
-+.mtestargs = --no-rebuild -t $(TIMEOUT_MULTIPLIER)
- ifneq ($(SPEED), quick)
- .mtestargs += --setup $(SPEED)
- endif
+ bool riscv_is_32bit(RISCVHartArrayState *harts)
+ {
+-    return harts->harts[0].env.misa_mxl_max == MXL_RV32;
++    return harts->harts[0].env.misa_mxl == MXL_RV32;
+ }
+ 
+ /*
 -- 
 2.39.2
 
