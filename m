@@ -2,82 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BC681B4A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 12:07:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF4E81B54A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 12:53:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGGsS-0008DT-Jg; Thu, 21 Dec 2023 06:06:08 -0500
+	id 1rGHat-00077B-6X; Thu, 21 Dec 2023 06:52:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rGGsQ-00086D-Bp
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 06:06:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rGHai-00076N-QI
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 06:51:53 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rGGsO-0005SB-0Q
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 06:06:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703156761;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=GhxMPf0YIpNsSN1O9mE12xQ5EPfuMhnQRlayrW4uFLI=;
- b=FoJnAE/GowQYm+75LFlaN1OqiwqBX53XswasEh7Kj78RVHpp9H2aj0YuV3N9k07Ik3Sr4l
- 35DPBqKRTD7oieRX078MkiRBYj177g1XC3nlRXlTc/nacQSXLx4Qn1zUEjOpgbmdKDHS0i
- iK9Q1kErza+YkJFZc8rDi40qkPB2K54=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-GJb7GJu5MUa3ma8jRmwO_A-1; Thu,
- 21 Dec 2023 06:05:57 -0500
-X-MC-Unique: GJb7GJu5MUa3ma8jRmwO_A-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E61B23C025C2;
- Thu, 21 Dec 2023 11:05:56 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.106])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 40FC5492BE6;
- Thu, 21 Dec 2023 11:05:54 +0000 (UTC)
-Date: Thu, 21 Dec 2023 11:05:52 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
- Sean Christopherson <seanjc@google.com>,
- Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v3 52/70] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
-Message-ID: <ZYQb_P6eHokUz9Hh@redhat.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-53-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rGHag-0006E5-SB
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 06:51:52 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id D71BE3DBA5;
+ Thu, 21 Dec 2023 14:51:54 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 77CE450538;
+ Thu, 21 Dec 2023 14:51:38 +0300 (MSK)
+Message-ID: <90d7351c-2680-4ab6-95ee-5dac4e3f21c5@tls.msk.ru>
+Date: Thu, 21 Dec 2023 14:51:38 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231115071519.2864957-53-xiaoyao.li@intel.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: QEMU Developers <qemu-devel@nongnu.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Subject: virtio-pci in qemu-system-arm is broken in 8.2
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,46 +77,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 15, 2023 at 02:15:01AM -0500, Xiaoyao Li wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
-> 
-> For GetQuote, delegate a request to Quote Generation Service.
-> Add property "quote-generation-socket" to tdx-guest, whihc is a property
-> of type SocketAddress to specify Quote Generation Service(QGS).
-> 
-> On request, connect to the QGS, read request buffer from shared guest
-> memory, send the request buffer to the server and store the response
-> into shared guest memory and notify TD guest by interrupt.
-> 
-> command line example:
->   qemu-system-x86_64 \
->     -object '{"qom-type":"tdx-guest","id":"tdx0","quote-generation-socket":{"type": "vsock", "cid":"2","port":"1234"}}' \
+It looks like virtio-pci is entirely broke in qemu-system-arm, at least in tcg
+mode running on x86.  The guest (current linux system) just does not detect
+any virtio-pci devices at all.
 
-Here you're illustrating a VSOCK address.  IIUC, both the 'qgs'
-daemon and QEMU will be running in the host. Why would they need
-to be using VSOCK, as opposed to a regular UNIX socket connection ?
+When 8.1 is booting, the following messages are displayed (debian initramfs):
 
->     -machine confidential-guest-support=tdx0
-> 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Codeveloped-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
-> Changes in v3:
-> - rename property "quote-generation-service" to "quote-generation-socket";
-> - change the type of "quote-generation-socket" from str to
->   SocketAddress;
+Loading, please wait...
+Starting systemd-udevd version 255-1
+[    6.455941] virtio-pci 0000:00:01.0: enabling device (0100 -> 0103)
+[    6.929155] virtio-pci 0000:00:02.0: enabling device (0100 -> 0103)
+[    7.764652] virtio_blk virtio1: 2/0/0 default/read/poll queues
+[    7.783216] virtio_blk virtio1: [vda] 2097026 512-byte logical blocks (1.07 GB/1024 MiB)
+[    8.636453] virtio_net virtio0 enp0s1: renamed from eth0
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+But when 8.2 is booting, it ends up at:
 
+Loading, please wait...
+Starting systemd-udevd version 255-1
+..and nothing.  here it waits for the root fs to appear, and drops into the shell
+
+git bisect points at this commit:
+
+commit b8f7959f28c4f36496bc0a694fa28bf5078152c5
+Author: Peter Maydell <peter.maydell@linaro.org>
+Date:   Mon Jul 24 18:43:33 2023 +0100
+
+     target/arm: Do all "ARM_FEATURE_X implies Y" checks in post_init
+
+Reverting this commit on top of 8.2.0 (or current qemu master)
+makes things works again.
+
+It's interesting how we missed this out entirely, as it's been applied
+at the beginning of 8.2 development cycle, it's 228th commit after
+8.1.0.
+
+It looks like we've quite a bit more regressions like this in 8.2.0.. :(
+
+/mjt
 
