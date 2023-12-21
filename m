@@ -2,59 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65A881AEDD
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:40:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740EC81AEDF
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:44:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGCih-0005u7-Ts; Thu, 21 Dec 2023 01:39:47 -0500
+	id 1rGCmV-0007Do-9g; Thu, 21 Dec 2023 01:43:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1rGCie-0005tt-UU; Thu, 21 Dec 2023 01:39:45 -0500
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
- id 1rGCib-0004xx-BK; Thu, 21 Dec 2023 01:39:44 -0500
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 3BL6cjS0092035;
- Thu, 21 Dec 2023 14:38:45 +0800 (+08)
- (envelope-from ethan84@andestech.com)
-Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
- (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Thu, 21 Dec 2023
- 14:38:43 +0800
-Date: Thu, 21 Dec 2023 14:38:27 +0800
-To: Alistair Francis <alistair23@gmail.com>
-CC: <qemu-devel@nongnu.org>, <peter.maydell@linaro.org>,
- <edgar.iglesias@gmail.com>, <richard.henderson@linaro.org>,
- <pbonzini@redhat.com>, <palmer@dabbelt.com>,
- <alistair.francis@wdc.com>, <in.meng@windriver.com>,
- <liweiwei@iscas.ac.cn>, <dbarboza@ventanamicro.com>,
- <hiwei_liu@linux.alibaba.com>, <qemu-riscv@nongnu.org>,
- <peterx@redhat.com>, <david@redhat.com>
-Subject: Re: [PATCH v4 0/4] Support RISC-V IOPMP
-Message-ID: <ZYPdY38SqIE7/eoz@ethan84-VirtualBox>
-References: <20231122053251.440723-1-ethan84@andestech.com>
- <CAKmqyKO9nGLo2b0TamakNh4qRr+Bi8NQ973bQ=ch8=CKoH-etg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rGCmL-0007DJ-Ny
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:43:33 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rGCmI-0005er-EK
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:43:33 -0500
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8DxVPCL3oNllFIDAA--.16936S3;
+ Thu, 21 Dec 2023 14:43:23 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Axnr6J3oNlGkwDAA--.10553S3; 
+ Thu, 21 Dec 2023 14:43:21 +0800 (CST)
+Subject: Re: [PATCH v2 09/71] target/loongarch: Constify VMState in machine.c
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231221031652.119827-1-richard.henderson@linaro.org>
+ <20231221031652.119827-10-richard.henderson@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <6dfca7e7-77f5-2550-f49d-55b488a51682@loongson.cn>
+Date: Thu, 21 Dec 2023 14:43:26 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+In-Reply-To: <20231221031652.119827-10-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKmqyKO9nGLo2b0TamakNh4qRr+Bi8NQ973bQ=ch8=CKoH-etg@mail.gmail.com>
-User-Agent: Mutt/2.1.4 (2021-12-11)
-X-Originating-IP: [10.0.12.51]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 3BL6cjS0092035
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
- helo=Atcsqr.andestech.com
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Axnr6J3oNlGkwDAA--.10553S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxurW3GF18Kw15KFykKw4ftFc_yoW5ur15pw
+ nxAF1DKFW09rZ3Zw4xGrWrWFs8Wr17Ga12kr4UCwn3KF1xWrsagrZ7trWxArZ3Ca40gr12
+ vF1xZryDJF4kZ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
+ 05UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
 X-Spam_score_int: -8
 X-Spam_score: -0.9
 X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-1.41, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,93 +77,102 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Ethan Chen <ethan84@andestech.com>
-From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Dec 18, 2023 at 02:18:58PM +1000, Alistair Francis wrote:
-> On Wed, Nov 22, 2023 at 3:36â€¯PM Ethan Chen via <qemu-devel@nongnu.org> wrote:
-> >
-> > This series implements IOPMP specification v1.0.0-draft4 rapid-k model.
-> > The specification url:
-> > https://github.com/riscv-non-isa/iopmp-spec/blob/main/riscv_iopmp_specification.pdf
-> >
-> > When IOPMP is enabled, a DMA device ATCDMAC300 is added to RISC-V virt
-> > platform. This DMA device is connected to the IOPMP and has the functionalities
-> 
-> I don't think we want to add an Andes DMA device to the virt machine.
-> 
-> I can't even find the spec for the ATCDMAC300, which isn't great
-> 
-> Alistair
+ÔÚ 2023/12/21 ÉÏÎç11:15, Richard Henderson Ð´µÀ:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/loongarch/machine.c | 18 +++++++++---------
+>   1 file changed, 9 insertions(+), 9 deletions(-)
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-Since the IOPMP does not take effect when there is no other device connects to
-IOPMP, I think it is necessary to have a DMA device for IOPMP demonstration.
+Thanks.
+Song Gao
+> diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+> index 1c4e01d076..c7029fb9b4 100644
+> --- a/target/loongarch/machine.c
+> +++ b/target/loongarch/machine.c
+> @@ -14,7 +14,7 @@ static const VMStateDescription vmstate_fpu_reg = {
+>       .name = "fpu_reg",
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>           VMSTATE_UINT64(UD(0), VReg),
+>           VMSTATE_END_OF_LIST()
+>       }
+> @@ -36,7 +36,7 @@ static const VMStateDescription vmstate_fpu = {
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+>       .needed = fpu_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>           VMSTATE_FPU_REGS(env.fpr, LoongArchCPU, 0),
+>           VMSTATE_UINT32(env.fcsr0, LoongArchCPU),
+>           VMSTATE_BOOL_ARRAY(env.cf, LoongArchCPU, 8),
+> @@ -48,7 +48,7 @@ static const VMStateDescription vmstate_lsxh_reg = {
+>       .name = "lsxh_reg",
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>           VMSTATE_UINT64(UD(1), VReg),
+>           VMSTATE_END_OF_LIST()
+>       }
+> @@ -70,7 +70,7 @@ static const VMStateDescription vmstate_lsx = {
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+>       .needed = lsx_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>           VMSTATE_LSXH_REGS(env.fpr, LoongArchCPU, 0),
+>           VMSTATE_END_OF_LIST()
+>       },
+> @@ -80,7 +80,7 @@ static const VMStateDescription vmstate_lasxh_reg = {
+>       .name = "lasxh_reg",
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>           VMSTATE_UINT64(UD(2), VReg),
+>           VMSTATE_UINT64(UD(3), VReg),
+>           VMSTATE_END_OF_LIST()
+> @@ -103,7 +103,7 @@ static const VMStateDescription vmstate_lasx = {
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+>       .needed = lasx_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>           VMSTATE_LASXH_REGS(env.fpr, LoongArchCPU, 0),
+>           VMSTATE_END_OF_LIST()
+>       },
+> @@ -114,7 +114,7 @@ const VMStateDescription vmstate_tlb = {
+>       .name = "cpu/tlb",
+>       .version_id = 0,
+>       .minimum_version_id = 0,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>           VMSTATE_UINT64(tlb_misc, LoongArchTLB),
+>           VMSTATE_UINT64(tlb_entry0, LoongArchTLB),
+>           VMSTATE_UINT64(tlb_entry1, LoongArchTLB),
+> @@ -127,7 +127,7 @@ const VMStateDescription vmstate_loongarch_cpu = {
+>       .name = "cpu",
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>           VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
+>           VMSTATE_UINTTL(env.pc, LoongArchCPU),
+>   
+> @@ -193,7 +193,7 @@ const VMStateDescription vmstate_loongarch_cpu = {
+>   
+>           VMSTATE_END_OF_LIST()
+>       },
+> -    .subsections = (const VMStateDescription*[]) {
+> +    .subsections = (const VMStateDescription * const []) {
+>           &vmstate_fpu,
+>           &vmstate_lsx,
+>           &vmstate_lasx,
 
-Do you have any suggestions for supporting IOPMP on RISC-V virt machine?
-
-Thanks,
-Ethan Chen
-
-> 
-> > required by IOPMP, including:
-> > - Support setup the connection to IOPMP
-> > - Support asynchronous I/O to handle stall transactions
-> > - Send transaction information
-> >
-> > IOPMP takes a transaction which partially match an entry as a partially hit
-> > error. The transaction size is depending on source device, destination device
-> > and bus.
-> >
-> > Source device can send a transaction_info to IOPMP. IOPMP will check partially
-> > hit by transaction_info. If source device does not send a transaction_info,
-> > IOPMP checks information in IOMMU and dose not check partially hit.
-> >
-> > Changes for v4:
-> >
-> >   - Add descriptions of IOPMP and ATCDMAC300
-> >   - Refine coding style and comments
-> >   - config XILINX_AXI does not include file stream.c but selects config STREAM
-> >     instead.
-> >   - ATCDMAC300: INT_STATUS is write 1 clear per bit
-> >                             Rename iopmp_address_sink to transcation_info_sink
-> >   - IOPMP: Refine error message and remove unused variable
-> >   - VIRT: Document new options
-> >                 atcdmac300 is only added when iopmp is enabled
-> >           serial setting should not be changed
-> >
-> > Ethan Chen (4):
-> >   hw/core: Add config stream
-> >   Add RISC-V IOPMP support
-> >   hw/dma: Add Andes ATCDMAC300 support
-> >   hw/riscv/virt: Add IOPMP support
-> >
-> >  docs/system/riscv/virt.rst                    |  11 +
-> >  hw/Kconfig                                    |   1 +
-> >  hw/core/Kconfig                               |   3 +
-> >  hw/core/meson.build                           |   2 +-
-> >  hw/dma/Kconfig                                |   4 +
-> >  hw/dma/atcdmac300.c                           | 566 ++++++++++
-> >  hw/dma/meson.build                            |   1 +
-> >  hw/misc/Kconfig                               |   4 +
-> >  hw/misc/meson.build                           |   1 +
-> >  hw/misc/riscv_iopmp.c                         | 966 ++++++++++++++++++
-> >  hw/riscv/Kconfig                              |   2 +
-> >  hw/riscv/virt.c                               |  65 ++
-> >  include/hw/dma/atcdmac300.h                   | 180 ++++
-> >  include/hw/misc/riscv_iopmp.h                 | 341 +++++++
-> >  .../hw/misc/riscv_iopmp_transaction_info.h    |  28 +
-> >  include/hw/riscv/virt.h                       |  10 +-
-> >  16 files changed, 2183 insertions(+), 2 deletions(-)
-> >  create mode 100644 hw/dma/atcdmac300.c
-> >  create mode 100644 hw/misc/riscv_iopmp.c
-> >  create mode 100644 include/hw/dma/atcdmac300.h
-> >  create mode 100644 include/hw/misc/riscv_iopmp.h
-> >  create mode 100644 include/hw/misc/riscv_iopmp_transaction_info.h
-> >
-> > --
-> > 2.34.1
-> >
-> >
 
