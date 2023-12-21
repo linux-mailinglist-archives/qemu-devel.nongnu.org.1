@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B571281BD16
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8E981BD18
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:22:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGMil-0007bd-K2; Thu, 21 Dec 2023 12:20:31 -0500
+	id 1rGMim-0007be-11; Thu, 21 Dec 2023 12:20:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMij-0007bI-Km
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rGMik-0007bV-I9
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMih-0004X4-Sn
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:29 -0500
+ id 1rGMii-0004XQ-W6
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703179226;
+ s=mimecast20190719; t=1703179228;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZGe578TNuximFmLhEvGbqzpnfBIm+qVcI5gcFSmVLn0=;
- b=Fbl32hMUUgYSId+Fq9aqufxAVveFzmwKqHnd0hXbop+iy8jhVNLhutcCKdqBHE3kKzenod
- JhHtnEi47+KDEH7T1j3tZ269RnvsacaTk4jaheY/TRN8c27C6hGHGrZudrK/AO+wVq7CT3
- QlPNaLCIa5OlgV+/d3gOf2gKdGaX5Xg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bXT4Dl0Kw/7UM64Z5onnUqN5IYVBTfeIAuQM9EaJTPg=;
+ b=NxBCKLcWFS3twH9X9Qd2wkRkPBQg3WpteoKxBwGp+kZ9fQ5JnKdWxa3fEebYT/GajUc68h
+ Oo8B54+Jnf2VyajdxTRC0J87QO0CTREIEMIJF9OArep2/rfefQ0QdCHx5Vm2d3OoOiZtN2
+ C9abYDC7PeQ/mlAEf8AjVLz0+PHlHc0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-191-P_WgTcplOmaC0jOPoS5TzA-1; Thu, 21 Dec 2023 12:20:24 -0500
-X-MC-Unique: P_WgTcplOmaC0jOPoS5TzA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-33667220256so703706f8f.3
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:24 -0800 (PST)
+ us-mta-690-roYk5VeqNaal9V_83knv0Q-1; Thu, 21 Dec 2023 12:20:26 -0500
+X-MC-Unique: roYk5VeqNaal9V_83knv0Q-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40c348e529fso8939135e9.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703179223; x=1703784023;
+ d=1e100.net; s=20230601; t=1703179224; x=1703784024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZGe578TNuximFmLhEvGbqzpnfBIm+qVcI5gcFSmVLn0=;
- b=gqhVOXWTe4kDujY8O1mFvr4KUGMRi8mUoOPsThgpkR5QPPBTakwyrSLEpT462XytvX
- pFuTpwm36NL4fCaBzo3seWuVxQJ9Ic1RPAQx62MpphPfTcjJ8CIM503RfrH30DUIkw6c
- DZGosZqzve+LdZgCTspg458HVxmoUqWXQb8IT0Qvt4xJaeXGk6LK0r36S9GRCWTtpgJN
- A1JkjBzC7WUB/YbAXa/8VQ2QMEi5mqrPVWVZb9TinhiipcjvIGTgTrGtAnwcb1mdkh7H
- VjmT0VB4Nllj213U12hJ+mp424yi3E0p+Rwd7mcgA9YR+UBfw2J2jTOF7U9wnHN0Yn1A
- eg2A==
-X-Gm-Message-State: AOJu0YwgrGHKXHaoDN8/jIrWn39QoeQgbRDzWLB2BRpS0JW74IlzT5EN
- afCf0HcGlVrk5tV99H5sXZCpW3oV/jSJ55+PVcQ08WCBqB2Iv3S5H07EkHH9EHNladebXznhbz0
- 4smZDT/bEtLcV5crWgvIduUgnIysfAMrXn2Yi5K67uYip6NNr37FJM3F+Z+uZHtnBZFSmu52iSk
- tuH5TuYSM=
-X-Received: by 2002:a05:600c:1553:b0:40b:5e1f:6fd8 with SMTP id
- f19-20020a05600c155300b0040b5e1f6fd8mr39202wmg.45.1703179222784; 
- Thu, 21 Dec 2023 09:20:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHxEjF51LORulsyckx6HyovBrnB0fV3hTdtNbAVMzS6BQrPyBm/fArLdIwa/vPb5+UqSwlJXg==
-X-Received: by 2002:a05:600c:1553:b0:40b:5e1f:6fd8 with SMTP id
- f19-20020a05600c155300b0040b5e1f6fd8mr39197wmg.45.1703179222367; 
- Thu, 21 Dec 2023 09:20:22 -0800 (PST)
+ bh=bXT4Dl0Kw/7UM64Z5onnUqN5IYVBTfeIAuQM9EaJTPg=;
+ b=Rd/Zk1taE3AYHgpXyFME2o39nQg86DO2B3ma1MpA90nD+x0biMhi9+c7XUe6nc9S+k
+ FwsuY7Ax+4ukMhFBYELB1m10ik2oqF8xGss0cVedP8ZR6a/tcsXz+Q5thkypvBs8x6/Q
+ /mM6CX6WdvjjZai6zv8gqCmiz03btUrdlLftI8U8SQlHnnyRqhSixGVD6YgowLjoR9Ni
+ RySjQheXD45BOHq9PHDHtAM5kEozQpt2dhJiuZ8788pdbD5UmVUpWka9Wv8iMee0X17w
+ OkYunwc+mT+T+UVPuiBj2YjgIgN+2PkrRCpfAkz0NP0003bMRJzFljo+h4oelHmiiCBZ
+ oFcw==
+X-Gm-Message-State: AOJu0YxRnhvrGyb1dGYg7LiRBevWyuydB7CdKW+VYL0ClYPMDIE4BhPB
+ U1xmk/1sUufTFRsQIlr9yfMffWEY76H+oKfoh0+IuSIbinx4p9aWa9rX9qzgnqgzKiCg4Y58YZg
+ 9+uj0CCKqkSncs7LVoQW2SmnAeBbNuBK/ZKUgaJhHSrYio8PNuUNnQuPgXszwzY5uyFWrP3fa6e
+ k+rK8jQ80=
+X-Received: by 2002:a05:600c:40c:b0:40c:3417:233 with SMTP id
+ q12-20020a05600c040c00b0040c34170233mr42208wmb.102.1703179224699; 
+ Thu, 21 Dec 2023 09:20:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEyljcVcXNeb+ld2T9i+/82DeC4yFp094jkIGHpaIIQvrjpJlWGHKt41mH9p76sgh2v+2YUfQ==
+X-Received: by 2002:a05:600c:40c:b0:40c:3417:233 with SMTP id
+ q12-20020a05600c040c00b0040c34170233mr42205wmb.102.1703179224331; 
+ Thu, 21 Dec 2023 09:20:24 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- f12-20020a05600c154c00b0040d18ffbeeasm4063274wmg.31.2023.12.21.09.20.21
+ u4-20020a05600c138400b0040c03c3289bsm4025229wmf.37.2023.12.21.09.20.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 09:20:21 -0800 (PST)
+ Thu, 21 Dec 2023 09:20:23 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 12/21] meson: rename config_all
-Date: Thu, 21 Dec 2023 18:19:49 +0100
-Message-ID: <20231221171958.59350-13-pbonzini@redhat.com>
+Subject: [PATCH 13/21] meson: add more sections to main meson.build
+Date: Thu, 21 Dec 2023 18:19:50 +0100
+Message-ID: <20231221171958.59350-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231221171958.59350-1-pbonzini@redhat.com>
 References: <20231221171958.59350-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,159 +101,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-config_all now lists only accelerators, rename it to indicate its actual
-content.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/mips/meson.build     |  2 +-
- meson.build             | 16 ++++++++--------
- target/arm/meson.build  |  2 +-
- target/mips/meson.build |  2 +-
- tests/fp/meson.build    |  2 +-
- tests/meson.build       |  2 +-
- tests/qtest/meson.build |  8 ++++----
- 7 files changed, 17 insertions(+), 17 deletions(-)
+ meson.build | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/hw/mips/meson.build b/hw/mips/meson.build
-index 900613fc087..f06d88f3430 100644
---- a/hw/mips/meson.build
-+++ b/hw/mips/meson.build
-@@ -5,7 +5,7 @@ mips_ss.add(when: 'CONFIG_LOONGSON3V', if_true: files('loongson3_bootp.c', 'loon
- mips_ss.add(when: 'CONFIG_MALTA', if_true: files('malta.c'))
- mips_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('cps.c'))
- 
--if 'CONFIG_TCG' in config_all
-+if 'CONFIG_TCG' in config_all_accel
- mips_ss.add(when: 'CONFIG_JAZZ', if_true: files('jazz.c'))
- mips_ss.add(when: 'CONFIG_MIPSSIM', if_true: files('mipssim.c'))
- mips_ss.add(when: 'CONFIG_FULOONG', if_true: files('fuloong2e.c'))
 diff --git a/meson.build b/meson.build
-index 49cc1886bb2..b5a85c4c255 100644
+index b5a85c4c255..b8c64c5ecf7 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2841,7 +2841,7 @@ endif
+@@ -9,6 +9,10 @@ add_test_setup('thorough', env: ['G_TEST_SLOW=1', 'SPEED=thorough'])
  
- minikconf = find_program('scripts/minikconf.py')
+ meson.add_postconf_script(find_program('scripts/symlink-install-tree.py'))
  
--config_all = {}
-+config_all_accel = {}
- config_all_devices = {}
- config_devices_mak_list = []
- config_devices_h = {}
-@@ -2929,7 +2929,7 @@ foreach target : target_dirs
-   foreach sym: accelerators
-     if sym == 'CONFIG_TCG' or target in accelerator_targets.get(sym, [])
-       config_target += { sym: 'y' }
--      config_all += { sym: 'y' }
-+      config_all_accel += { sym: 'y' }
-       if target in modular_tcg
-         config_target += { 'CONFIG_TCG_MODULAR': 'y' }
-       else
-@@ -4180,18 +4180,18 @@ endif
- # Targets and accelerators
- summary_info = {}
- if have_system
--  summary_info += {'KVM support':       config_all.has_key('CONFIG_KVM')}
--  summary_info += {'HVF support':       config_all.has_key('CONFIG_HVF')}
--  summary_info += {'WHPX support':      config_all.has_key('CONFIG_WHPX')}
--  summary_info += {'NVMM support':      config_all.has_key('CONFIG_NVMM')}
-+  summary_info += {'KVM support':       config_all_accel.has_key('CONFIG_KVM')}
-+  summary_info += {'HVF support':       config_all_accel.has_key('CONFIG_HVF')}
-+  summary_info += {'WHPX support':      config_all_accel.has_key('CONFIG_WHPX')}
-+  summary_info += {'NVMM support':      config_all_accel.has_key('CONFIG_NVMM')}
-   summary_info += {'Xen support':       xen.found()}
-   if xen.found()
-     summary_info += {'xen ctrl version':  xen.version()}
-   endif
-   summary_info += {'Xen emulation':     config_all_devices.has_key('CONFIG_XEN_EMU')}
- endif
--summary_info += {'TCG support':       config_all.has_key('CONFIG_TCG')}
--if config_all.has_key('CONFIG_TCG')
-+summary_info += {'TCG support':       config_all_accel.has_key('CONFIG_TCG')}
-+if config_all_accel.has_key('CONFIG_TCG')
-   if get_option('tcg_interpreter')
-     summary_info += {'TCG backend':   'TCI (TCG with bytecode interpreter, slow)'}
-   else
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index d6c3902e676..46b5a21eb31 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -28,7 +28,7 @@ arm_system_ss.add(files(
++####################
++# Global variables #
++####################
++
+ not_found = dependency('', required: false)
+ keyval = import('keyval')
+ ss = import('sourceset')
+@@ -86,8 +90,16 @@ enable_modules = get_option('modules') \
+   .allowed()
+ have_block = have_system or have_tools
  
- subdir('hvf')
++############
++# Programs #
++############
++
+ python = import('python').find_installation()
  
--if 'CONFIG_TCG' in config_all
-+if 'CONFIG_TCG' in config_all_accel
-    subdir('tcg')
- else
-     arm_ss.add(files('tcg-stubs.c'))
-diff --git a/target/mips/meson.build b/target/mips/meson.build
-index e57ef24ecf4..a26d1e1f792 100644
---- a/target/mips/meson.build
-+++ b/target/mips/meson.build
-@@ -12,7 +12,7 @@ if have_system
-   subdir('sysemu')
++#######################################
++# Variables for host and accelerators #
++#######################################
++
+ if cpu not in supported_cpus
+   host_arch = 'unknown'
+ elif cpu == 'x86'
+@@ -518,9 +530,9 @@ if sparse.found()
+                        '-Wno-non-pointer-null'])
  endif
  
--if 'CONFIG_TCG' in config_all
-+if 'CONFIG_TCG' in config_all_accel
-   subdir('tcg')
- endif
+-###########################################
+-# Target-specific checks and dependencies #
+-###########################################
++#####################
++# Option validation #
++#####################
  
-diff --git a/tests/fp/meson.build b/tests/fp/meson.build
-index cbc17392d67..9ef322afc42 100644
---- a/tests/fp/meson.build
-+++ b/tests/fp/meson.build
-@@ -1,4 +1,4 @@
--if 'CONFIG_TCG' not in config_all
-+if 'CONFIG_TCG' not in config_all_accel
-   subdir_done()
- endif
- # There are namespace pollution issues on Windows, due to osdep.h
-diff --git a/tests/meson.build b/tests/meson.build
-index 9996a293fbb..32cc15a3ef7 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -76,7 +76,7 @@ endif
+ # Fuzzing
+ if get_option('fuzzing') and get_option('fuzzing_engine') == '' and \
+@@ -3495,9 +3507,9 @@ specific_ss.add_all(when: 'CONFIG_TCG_BUILTIN', if_true: tcg_module_ss)
+ target_modules += { 'accel' : { 'qtest': qtest_module_ss,
+                                 'tcg': tcg_real_module_ss }}
  
- subdir('decode')
+-########################
+-# Library dependencies #
+-########################
++##############################################
++# Internal static_libraries and dependencies #
++##############################################
  
--if 'CONFIG_TCG' in config_all
-+if 'CONFIG_TCG' in config_all_accel
-   subdir('fp')
- endif
- 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 40a8bb043e4..565eff4c0a2 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -155,8 +155,8 @@ qtests_ppc = \
-   qtests_filter + \
-   (config_all_devices.has_key('CONFIG_ISA_TESTDEV') ? ['endianness-test'] : []) +            \
-   (config_all_devices.has_key('CONFIG_M48T59') ? ['m48t59-test'] : []) +                     \
--  (config_all.has_key('CONFIG_TCG') ? ['prom-env-test'] : []) +                              \
--  (config_all.has_key('CONFIG_TCG') ? ['boot-serial-test'] : []) +                           \
-+  (config_all_accel.has_key('CONFIG_TCG') ? ['prom-env-test'] : []) +                              \
-+  (config_all_accel.has_key('CONFIG_TCG') ? ['boot-serial-test'] : []) +                           \
-   ['boot-order-test']
- 
- qtests_ppc64 = \
-@@ -213,12 +213,12 @@ qtests_arm = \
- # TODO: once aarch64 TCG is fixed on ARM 32 bit host, make bios-tables-test unconditional
- qtests_aarch64 = \
-   (cpu != 'arm' and unpack_edk2_blobs ? ['bios-tables-test'] : []) +                            \
--  (config_all.has_key('CONFIG_TCG') and config_all_devices.has_key('CONFIG_TPM_TIS_SYSBUS') ?            \
-+  (config_all_accel.has_key('CONFIG_TCG') and config_all_devices.has_key('CONFIG_TPM_TIS_SYSBUS') ?            \
-     ['tpm-tis-device-test', 'tpm-tis-device-swtpm-test'] : []) +                                         \
-   (config_all_devices.has_key('CONFIG_XLNX_ZYNQMP_ARM') ? ['xlnx-can-test', 'fuzz-xlnx-dp-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_XLNX_VERSAL') ? ['xlnx-canfd-test', 'xlnx-versal-trng-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test'] : []) +  \
--  (config_all.has_key('CONFIG_TCG') and                                            \
-+  (config_all_accel.has_key('CONFIG_TCG') and                                            \
-    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-   ['arm-cpu-features',
-    'numa-test',
+ modinfo_collect = find_program('scripts/modinfo-collect.py')
+ modinfo_generate = find_program('scripts/modinfo-generate.py')
 -- 
 2.43.0
 
