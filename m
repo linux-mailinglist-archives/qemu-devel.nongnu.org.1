@@ -2,103 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28D881AE9B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D309F81AEAB
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:12:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGC9v-0005k2-1b; Thu, 21 Dec 2023 01:03:51 -0500
+	id 1rGCHJ-0008EQ-KU; Thu, 21 Dec 2023 01:11:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGC9r-0005jS-Sn
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:03:48 -0500
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGC9h-0007Xv-RX
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:03:47 -0500
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-593ea4c2baaso326171eaf.3
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 22:03:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703138616; x=1703743416;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fHToyja4NOHxEQaCqApSgLT7a7lMQLL0/3uq9tFGO2I=;
- b=LBB9x4Bs60ViS+XtOPe9E5eplgpxK9B8qY5rk1nUVSBfDTl13wxMM6RR/NfqF5KbUI
- j93YVDdjm3D63GwTUgVhUw5hgIwFa/K6bC16C7B3ixzPXk71ELMauZmYgbxscrcc+mdd
- Nagd1j1lDdYUnd6nzPnJ15LWiH4orrzhH2Y/oQ/nRWVmj2DklT7RPtM3oD+VJF4B++ki
- 4XM2m3OJTPvAliSH/ed6DJ0bcHt9um7leiaCzLRf5NGSUFHZDGGQWOnxu3sgXMLLgRXH
- DZDTEIW63uc6Tf8wT97wCv4db9Qj93knPfn+774xAC+qV0yeEfV1VeEwzOFoyk2nzaiW
- fFww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703138616; x=1703743416;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fHToyja4NOHxEQaCqApSgLT7a7lMQLL0/3uq9tFGO2I=;
- b=JRELKecOw1puv1Gro6RiD3e5iQXKjxvZIhl7dQk9v4ugCDaBXJpIJN/Kfp0vkU2ifG
- HpRiwuwR4wPcMSpsm1zS8E1RwC//+owhRUUcGnU5hW97jn+6LTVh681CHqX06FLaOg0s
- km5hSSGroZnkG5Zb+4obJdqmbydJZdD/jgNL1hzeShzWYfNFATZzWQooBVPcT+tS3Ra/
- NmsDHrnebhlC7MwizHRUitOmwxC0200B4APrE/c4+o+YfYtT4UVEKtKy7WaLom09+pNX
- N6W/765Ip90GsG1aShVi4QKhjR9/XUzbSkcCPilK9ycCXI+X4Cq9CeIs4i9TbKI6bCzh
- S0RQ==
-X-Gm-Message-State: AOJu0Yz/Fusa2uVkeOU28EYYN7a4TQh0pf3GzCcxhq7KQ1KK90JByLOq
- aHBKAw0tc1RchPPjp4tLQcnl2w==
-X-Google-Smtp-Source: AGHT+IEMQ5PuC83SBrlBqTQNw0uBmtZ5FakIl34HWWckWSPLVEFbAQ9LAiZ5cJX3NGm7MZHHgdpsTw==
-X-Received: by 2002:a05:6359:45a1:b0:170:2c94:31c8 with SMTP id
- no33-20020a05635945a100b001702c9431c8mr666680rwb.47.1703138616039; 
- Wed, 20 Dec 2023 22:03:36 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
- by smtp.gmail.com with ESMTPSA id
- h16-20020a635310000000b005c200d6486asm792604pgb.72.2023.12.20.22.03.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Dec 2023 22:03:35 -0800 (PST)
-Message-ID: <14c9ad8c-512d-4fd4-ae63-5a44d7565a01@daynix.com>
-Date: Thu, 21 Dec 2023 15:03:29 +0900
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rGCHH-0008Dx-6u
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:11:27 -0500
+Received: from mgamail.intel.com ([134.134.136.65])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rGCHE-0000j1-MY
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:11:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1703139084; x=1734675084;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=2hA/xn0NG+gy8teTCJK54dPh/Y6wZ10nR1+JUI9HKeE=;
+ b=HFdhMw4IjE28cUkHTjW8YhhYDzc3CYgvXL10KrFuu8Dr7gpzL6hZYdIh
+ xG9pklrj34Qg9Fb9h3T/60Zp2j/XR5w7EwdYLF2nTR1lSGGS8FEp8nVv0
+ 06Phkj1ci+7E/T9/tX6hs0qtwRK/v02ywv7XvzDDtC4wqdM1vBXQc2zmK
+ Rw6t0jVFP4oUPsrELUKz7X3R7UB1VN6ZoMXtvU5WUBTQXvYWI+epXX1O6
+ yLoUTuEFDXkfMgdoNfBCgo6NoCgvxAGXQUdnZtjoOdhoDsi66JHtEx44z
+ V94peXf9gEtkqbaw/L7wPDTn85mAii/VvXvmCdIzmgOypvRfJl+7sMf3h A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="399756793"
+X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="399756793"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Dec 2023 22:11:18 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="1023747379"
+X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="1023747379"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.12.199])
+ ([10.93.12.199])
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Dec 2023 22:11:12 -0800
+Message-ID: <cc568b63-a129-4b23-8ac8-313193ea8126@intel.com>
+Date: Thu, 21 Dec 2023 14:11:09 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/11] virtio-gpu: Resource UUID
+Subject: Re: [PATCH v3 06/70] kvm: Introduce support for memory_attributes
 Content-Language: en-US
-To: Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-9-ray.huang@amd.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20231219075320.165227-9-ray.huang@amd.com>
+To: "Wang, Wei W" <wei.w.wang@intel.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ Michael Roth <michael.roth@amd.com>, Sean Christopherson
+ <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-7-xiaoyao.li@intel.com>
+ <DS0PR11MB6373D69ABBF4BDF7120438ACDC8EA@DS0PR11MB6373.namprd11.prod.outlook.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <DS0PR11MB6373D69ABBF4BDF7120438ACDC8EA@DS0PR11MB6373.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Received-SPF: pass client-ip=134.134.136.65; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,12 +96,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/19 16:53, Huang Rui wrote:
-> From: Antonio Caggiano <antonio.caggiano@collabora.com>
+On 12/12/2023 9:56 PM, Wang, Wei W wrote:
+> On Wednesday, November 15, 2023 3:14 PM, Xiaoyao Li wrote:
+>> Introduce the helper functions to set the attributes of a range of memory to
+>> private or shared.
+>>
+>> This is necessary to notify KVM the private/shared attribute of each gpa range.
+>> KVM needs the information to decide the GPA needs to be mapped at hva-
+>> based shared memory or guest_memfd based private memory.
+>>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> ---
+>>   accel/kvm/kvm-all.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
+>>   include/sysemu/kvm.h |  3 +++
+>>   2 files changed, 45 insertions(+)
+>>
+>> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c index
+>> 69afeb47c9c0..76e2404d54d2 100644
+>> --- a/accel/kvm/kvm-all.c
+>> +++ b/accel/kvm/kvm-all.c
+>> @@ -102,6 +102,7 @@ bool kvm_has_guest_debug;  static int kvm_sstep_flags;
+>> static bool kvm_immediate_exit;  static bool kvm_guest_memfd_supported;
+>> +static uint64_t kvm_supported_memory_attributes;
+>>   static hwaddr kvm_max_slot_size = ~0;
+>>
+>>   static const KVMCapabilityInfo kvm_required_capabilites[] = { @@ -1305,6
+>> +1306,44 @@ void kvm_set_max_memslot_size(hwaddr max_slot_size)
+>>       kvm_max_slot_size = max_slot_size;
+>>   }
+>>
+>> +static int kvm_set_memory_attributes(hwaddr start, hwaddr size,
+>> +uint64_t attr) {
+>> +    struct kvm_memory_attributes attrs;
+>> +    int r;
+>> +
+>> +    attrs.attributes = attr;
+>> +    attrs.address = start;
+>> +    attrs.size = size;
+>> +    attrs.flags = 0;
+>> +
+>> +    r = kvm_vm_ioctl(kvm_state, KVM_SET_MEMORY_ATTRIBUTES, &attrs);
+>> +    if (r) {
+>> +        warn_report("%s: failed to set memory (0x%lx+%#zx) with attr 0x%lx
+>> error '%s'",
+>> +                     __func__, start, size, attr, strerror(errno));
+>> +    }
+>> +    return r;
+>> +}
+>> +
+>> +int kvm_set_memory_attributes_private(hwaddr start, hwaddr size) {
+>> +    if (!(kvm_supported_memory_attributes &
+>> KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+>> +        error_report("KVM doesn't support PRIVATE memory attribute\n");
+>> +        return -EINVAL;
+>> +    }
+>> +
+>> +    return kvm_set_memory_attributes(start, size,
+>> +KVM_MEMORY_ATTRIBUTE_PRIVATE); }
+>> +
+>> +int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size) {
+>> +    if (!(kvm_supported_memory_attributes &
+>> KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+>> +        error_report("KVM doesn't support PRIVATE memory attribute\n");
+>> +        return -EINVAL;
+>> +    }
 > 
-> Enable resource UUID feature and implement command resource assign UUID.
-> This is done by introducing a hash table to map resource IDs to their
-> UUIDs.
+> Duplicate code in kvm_set_memory_attributes_shared/private.
+> Why not move the check into kvm_set_memory_attributes?
 
-What about putting QemuUUID in struct virtio_gpu_simple_resource?
+Because it's not easy to put the check into there.
+
+Both setting and clearing one bit require the capability check. If 
+moving the check into kvm_set_memory_attributes(), the check of 
+KVM_MEMORY_ATTRIBUTE_PRIVATE will have to become unconditionally, which 
+is not aligned to the function name because the name is not restricted 
+to shared/private attribute only.
 
