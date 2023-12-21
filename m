@@ -2,74 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDEF681BF17
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 20:26:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB9781BFD6
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:04:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGOfa-0001TG-Am; Thu, 21 Dec 2023 14:25:24 -0500
+	id 1rGQBm-0001ii-A2; Thu, 21 Dec 2023 16:02:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rGOfX-0001Rq-47
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 14:25:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQBk-0001iY-Mi
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:02:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rGOfP-00023R-0t
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 14:25:18 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQBf-0001Ht-Q6
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:02:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703186709;
+ s=mimecast20190719; t=1703192554;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=wy0gnLiaJ8egKg9TrWO6YxGfb6MtQIx7kCPRsGcYHFM=;
- b=fs6K5NmBsaWYtOOV9B4S5+4mQpixTqxDisJRElARmcAeKVygH125xNjiYwap4liYjJ0xIc
- B/c2Xxhi9A0+Kkm4jfLdHaMke0XvyeoEuYPHLnXPkPj63pE5BrPl0fHAzGwCr6ozJ5ePRQ
- yIcLLVTX8a5yZcNuqNw/L2aDA0U2c4s=
+ bh=C5LUIkvZ9TeKyY/k5axAn88KBZNVgPVIG51mzst7Lgk=;
+ b=WIAexTUbZRwX+e9uSQKjlI4dN0REm10hifOgdKaMfC804qkumFJLnXqZ6K024dO4zLNMrm
+ OiUES039t0bifhcnjGvxxXtXzud9RkVUF3IshOBxdTiwHIoSV4M8nVq0U2R+q+JNfFYVz+
+ tikgGv0Gk/RwTTRxbAtd9KG1We2rwvI=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-Vs4iSQtOPXWfa5GYXvhDWg-1; Thu,
- 21 Dec 2023 14:25:08 -0500
-X-MC-Unique: Vs4iSQtOPXWfa5GYXvhDWg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-zZotT_JLPeKbOftxPjPzCQ-1; Thu,
+ 21 Dec 2023 16:02:30 -0500
+X-MC-Unique: zZotT_JLPeKbOftxPjPzCQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 11B40380008B;
- Thu, 21 Dec 2023 19:25:08 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.145])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1F25251D5;
- Thu, 21 Dec 2023 19:25:06 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org,
-	Kevin Wolf <kwolf@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>,
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26DA9380662C;
+ Thu, 21 Dec 2023 21:02:27 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.128])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DBCE22166B31;
+ Thu, 21 Dec 2023 21:02:22 +0000 (UTC)
+Date: Thu, 21 Dec 2023 22:02:20 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- pbonzini@redhat.com, Peter Xu <peterx@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PATCH v3 6/6] nbd/server: introduce NBDClient->lock to protect fields
-Date: Thu, 21 Dec 2023 14:24:52 -0500
-Message-ID: <20231221192452.1785567-7-stefanha@redhat.com>
-In-Reply-To: <20231221192452.1785567-1-stefanha@redhat.com>
+ pbonzini@redhat.com, Peter Xu <peterx@redhat.com>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: Re: [PATCH v3 0/6] qemu-iotests fixes for Kevin's block tree
+Message-ID: <ZYSn3EoLhaxKEbdB@redhat.com>
 References: <20231221192452.1785567-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231221192452.1785567-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,361 +82,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-NBDClient has a number of fields that are accessed by both the export
-AioContext and the main loop thread. When the AioContext lock is removed
-these fields will need another form of protection.
+Am 21.12.2023 um 20:24 hat Stefan Hajnoczi geschrieben:
+> v3:
+> - Add aio_wait_kick() into nbd_read_eof() to avoid race with nbd_drained_poll()
+>   [Kevin]
+> 
+> v2:
+> - Drop useless if (client->quiesing) check [Kevin]
+> - run qio_channel_read_wake() in export AioContext to avoid race [Kevin]
+> - Introduce nbd_client_put_nonzero() optimization [Paolo]
+> - Reach goto label disconnect with client->lock taken [Paolo]
+> - Add doc comment explaining nbd_co_receive_request() loop in nbd_trip() [Kevin]
+> 
+> Kevin merged several of my outstanding multi-queue block layer patch series and
+> found that qemu-iotests -qcow2 was broken. This patch series fixes the block branch.
+> 
+> Most of the fixes are easy but the NBD server required deeper debugging and
+> thread-safety fixes. The NBD server patches can be inserted before "aio: make
+> aio_context_acquire()/aio_context_release() a no-op" to preserve bisectability.
+> The other patches are fixups that can be squashed into the original patches.
 
-Add NBDClient->lock and protect fields that are accessed by both
-threads. Also add assertions where possible and otherwise add doc
-comments stating assumptions about which thread and lock holding.
+Thanks, applied to the block branch.
 
-Note this patch moves the client->recv_coroutine assertion from
-nbd_co_receive_request() to nbd_trip() where client->lock is held.
-
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- nbd/server.c | 144 +++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 111 insertions(+), 33 deletions(-)
-
-diff --git a/nbd/server.c b/nbd/server.c
-index e91e2e0903..941832f178 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -125,23 +125,25 @@ struct NBDClient {
-     int refcount; /* atomic */
-     void (*close_fn)(NBDClient *client, bool negotiated);
- 
-+    QemuMutex lock;
-+
-     NBDExport *exp;
-     QCryptoTLSCreds *tlscreds;
-     char *tlsauthz;
-     QIOChannelSocket *sioc; /* The underlying data channel */
-     QIOChannel *ioc; /* The current I/O channel which may differ (eg TLS) */
- 
--    Coroutine *recv_coroutine;
-+    Coroutine *recv_coroutine; /* protected by lock */
- 
-     CoMutex send_lock;
-     Coroutine *send_coroutine;
- 
--    bool read_yielding;
--    bool quiescing;
-+    bool read_yielding; /* protected by lock */
-+    bool quiescing; /* protected by lock */
- 
-     QTAILQ_ENTRY(NBDClient) next;
--    int nb_requests;
--    bool closing;
-+    int nb_requests; /* protected by lock */
-+    bool closing; /* protected by lock */
- 
-     uint32_t check_align; /* If non-zero, check for aligned client requests */
- 
-@@ -1415,11 +1417,18 @@ nbd_read_eof(NBDClient *client, void *buffer, size_t size, Error **errp)
- 
-         len = qio_channel_readv(client->ioc, &iov, 1, errp);
-         if (len == QIO_CHANNEL_ERR_BLOCK) {
--            client->read_yielding = true;
-+            WITH_QEMU_LOCK_GUARD(&client->lock) {
-+                client->read_yielding = true;
-+
-+                /* Prompt main loop thread to re-run nbd_drained_poll() */
-+                aio_wait_kick();
-+            }
-             qio_channel_yield(client->ioc, G_IO_IN);
--            client->read_yielding = false;
--            if (client->quiescing) {
--                return -EAGAIN;
-+            WITH_QEMU_LOCK_GUARD(&client->lock) {
-+                client->read_yielding = false;
-+                if (client->quiescing) {
-+                    return -EAGAIN;
-+                }
-             }
-             continue;
-         } else if (len < 0) {
-@@ -1528,6 +1537,7 @@ void nbd_client_put(NBDClient *client)
-             blk_exp_unref(&client->exp->common);
-         }
-         g_free(client->contexts.bitmaps);
-+        qemu_mutex_destroy(&client->lock);
-         g_free(client);
-     }
- }
-@@ -1561,11 +1571,13 @@ static void client_close(NBDClient *client, bool negotiated)
- {
-     assert(qemu_in_main_thread());
- 
--    if (client->closing) {
--        return;
--    }
-+    WITH_QEMU_LOCK_GUARD(&client->lock) {
-+        if (client->closing) {
-+            return;
-+        }
- 
--    client->closing = true;
-+        client->closing = true;
-+    }
- 
-     /* Force requests to finish.  They will drop their own references,
-      * then we'll close the socket and free the NBDClient.
-@@ -1579,6 +1591,7 @@ static void client_close(NBDClient *client, bool negotiated)
-     }
- }
- 
-+/* Runs in export AioContext with client->lock held */
- static NBDRequestData *nbd_request_get(NBDClient *client)
- {
-     NBDRequestData *req;
-@@ -1591,6 +1604,7 @@ static NBDRequestData *nbd_request_get(NBDClient *client)
-     return req;
- }
- 
-+/* Runs in export AioContext with client->lock held */
- static void nbd_request_put(NBDRequestData *req)
- {
-     NBDClient *client = req->client;
-@@ -1614,14 +1628,18 @@ static void blk_aio_attached(AioContext *ctx, void *opaque)
-     NBDExport *exp = opaque;
-     NBDClient *client;
- 
-+    assert(qemu_in_main_thread());
-+
-     trace_nbd_blk_aio_attached(exp->name, ctx);
- 
-     exp->common.ctx = ctx;
- 
-     QTAILQ_FOREACH(client, &exp->clients, next) {
--        assert(client->nb_requests == 0);
--        assert(client->recv_coroutine == NULL);
--        assert(client->send_coroutine == NULL);
-+        WITH_QEMU_LOCK_GUARD(&client->lock) {
-+            assert(client->nb_requests == 0);
-+            assert(client->recv_coroutine == NULL);
-+            assert(client->send_coroutine == NULL);
-+        }
-     }
- }
- 
-@@ -1629,6 +1647,8 @@ static void blk_aio_detach(void *opaque)
- {
-     NBDExport *exp = opaque;
- 
-+    assert(qemu_in_main_thread());
-+
-     trace_nbd_blk_aio_detach(exp->name, exp->common.ctx);
- 
-     exp->common.ctx = NULL;
-@@ -1639,8 +1659,12 @@ static void nbd_drained_begin(void *opaque)
-     NBDExport *exp = opaque;
-     NBDClient *client;
- 
-+    assert(qemu_in_main_thread());
-+
-     QTAILQ_FOREACH(client, &exp->clients, next) {
--        client->quiescing = true;
-+        WITH_QEMU_LOCK_GUARD(&client->lock) {
-+            client->quiescing = true;
-+        }
-     }
- }
- 
-@@ -1649,28 +1673,48 @@ static void nbd_drained_end(void *opaque)
-     NBDExport *exp = opaque;
-     NBDClient *client;
- 
-+    assert(qemu_in_main_thread());
-+
-     QTAILQ_FOREACH(client, &exp->clients, next) {
--        client->quiescing = false;
--        nbd_client_receive_next_request(client);
-+        WITH_QEMU_LOCK_GUARD(&client->lock) {
-+            client->quiescing = false;
-+            nbd_client_receive_next_request(client);
-+        }
-     }
- }
- 
-+/* Runs in export AioContext */
-+static void nbd_wake_read_bh(void *opaque)
-+{
-+    NBDClient *client = opaque;
-+    qio_channel_wake_read(client->ioc);
-+}
-+
- static bool nbd_drained_poll(void *opaque)
- {
-     NBDExport *exp = opaque;
-     NBDClient *client;
- 
-+    assert(qemu_in_main_thread());
-+
-     QTAILQ_FOREACH(client, &exp->clients, next) {
--        if (client->nb_requests != 0) {
--            /*
--             * If there's a coroutine waiting for a request on nbd_read_eof()
--             * enter it here so we don't depend on the client to wake it up.
--             */
--            if (client->recv_coroutine != NULL && client->read_yielding) {
--                qio_channel_wake_read(client->ioc);
-+        WITH_QEMU_LOCK_GUARD(&client->lock) {
-+            if (client->nb_requests != 0) {
-+                /*
-+                 * If there's a coroutine waiting for a request on nbd_read_eof()
-+                 * enter it here so we don't depend on the client to wake it up.
-+                 *
-+                 * Schedule a BH in the export AioContext to avoid missing the
-+                 * wake up due to the race between qio_channel_wake_read() and
-+                 * qio_channel_yield().
-+                 */
-+                if (client->recv_coroutine != NULL && client->read_yielding) {
-+                    aio_bh_schedule_oneshot(nbd_export_aio_context(client->exp),
-+                                            nbd_wake_read_bh, client);
-+                }
-+
-+                return true;
-             }
--
--            return true;
-         }
-     }
- 
-@@ -1681,6 +1725,8 @@ static void nbd_eject_notifier(Notifier *n, void *data)
- {
-     NBDExport *exp = container_of(n, NBDExport, eject_notifier);
- 
-+    assert(qemu_in_main_thread());
-+
-     blk_exp_request_shutdown(&exp->common);
- }
- 
-@@ -2566,7 +2612,6 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
-     int ret;
- 
-     g_assert(qemu_in_coroutine());
--    assert(client->recv_coroutine == qemu_coroutine_self());
-     ret = nbd_receive_request(client, request, errp);
-     if (ret < 0) {
-         return ret;
-@@ -2975,6 +3020,9 @@ static coroutine_fn void nbd_trip(void *opaque)
-      */
- 
-     trace_nbd_trip();
-+
-+    qemu_mutex_lock(&client->lock);
-+
-     if (client->closing) {
-         goto done;
-     }
-@@ -2990,7 +3038,21 @@ static coroutine_fn void nbd_trip(void *opaque)
-     }
- 
-     req = nbd_request_get(client);
--    ret = nbd_co_receive_request(req, &request, &local_err);
-+
-+    /*
-+     * nbd_co_receive_request() returns -EAGAIN when nbd_drained_begin() has
-+     * set client->quiescing but by the time we get back nbd_drained_end() may
-+     * have already cleared client->quiescing. In that case we try again
-+     * because nothing else will spawn an nbd_trip() coroutine until we set
-+     * client->recv_coroutine = NULL further down.
-+     */
-+    do {
-+        assert(client->recv_coroutine == qemu_coroutine_self());
-+        qemu_mutex_unlock(&client->lock);
-+        ret = nbd_co_receive_request(req, &request, &local_err);
-+        qemu_mutex_lock(&client->lock);
-+    } while (ret == -EAGAIN && !client->quiescing);
-+
-     client->recv_coroutine = NULL;
- 
-     if (client->closing) {
-@@ -3002,15 +3064,16 @@ static coroutine_fn void nbd_trip(void *opaque)
-     }
- 
-     if (ret == -EAGAIN) {
--        assert(client->quiescing);
-         goto done;
-     }
- 
-     nbd_client_receive_next_request(client);
-+
-     if (ret == -EIO) {
-         goto disconnect;
-     }
- 
-+    qemu_mutex_unlock(&client->lock);
-     qio_channel_set_cork(client->ioc, true);
- 
-     if (ret < 0) {
-@@ -3030,6 +3093,10 @@ static coroutine_fn void nbd_trip(void *opaque)
-         g_free(request.contexts->bitmaps);
-         g_free(request.contexts);
-     }
-+
-+    qio_channel_set_cork(client->ioc, false);
-+    qemu_mutex_lock(&client->lock);
-+
-     if (ret < 0) {
-         error_prepend(&local_err, "Failed to send reply: ");
-         goto disconnect;
-@@ -3044,11 +3111,13 @@ static coroutine_fn void nbd_trip(void *opaque)
-         goto disconnect;
-     }
- 
--    qio_channel_set_cork(client->ioc, false);
- done:
-     if (req) {
-         nbd_request_put(req);
-     }
-+
-+    qemu_mutex_unlock(&client->lock);
-+
-     if (!nbd_client_put_nonzero(client)) {
-         aio_co_reschedule_self(qemu_get_aio_context());
-         nbd_client_put(client);
-@@ -3059,13 +3128,19 @@ disconnect:
-     if (local_err) {
-         error_reportf_err(local_err, "Disconnect client, due to: ");
-     }
-+
-     nbd_request_put(req);
-+    qemu_mutex_unlock(&client->lock);
- 
-     aio_co_reschedule_self(qemu_get_aio_context());
-     client_close(client, true);
-     nbd_client_put(client);
- }
- 
-+/*
-+ * Runs in export AioContext and main loop thread. Caller must hold
-+ * client->lock.
-+ */
- static void nbd_client_receive_next_request(NBDClient *client)
- {
-     if (!client->recv_coroutine && client->nb_requests < MAX_NBD_REQUESTS &&
-@@ -3091,7 +3166,9 @@ static coroutine_fn void nbd_co_client_start(void *opaque)
-         return;
-     }
- 
--    nbd_client_receive_next_request(client);
-+    WITH_QEMU_LOCK_GUARD(&client->lock) {
-+        nbd_client_receive_next_request(client);
-+    }
- }
- 
- /*
-@@ -3108,6 +3185,7 @@ void nbd_client_new(QIOChannelSocket *sioc,
-     Coroutine *co;
- 
-     client = g_new0(NBDClient, 1);
-+    qemu_mutex_init(&client->lock);
-     client->refcount = 1;
-     client->tlscreds = tlscreds;
-     if (tlscreds) {
--- 
-2.43.0
+Kevin
 
 
