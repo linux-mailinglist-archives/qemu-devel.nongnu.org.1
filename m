@@ -2,107 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63A981AFD2
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 08:52:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C3081AFE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 09:01:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGDpL-0005yk-A7; Thu, 21 Dec 2023 02:50:43 -0500
+	id 1rGDyE-0007O8-JY; Thu, 21 Dec 2023 02:59:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGDpH-0005yF-8D
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:50:39 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGDpD-0006qG-6a
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:50:38 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1d408c2908cso457095ad.1
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 23:50:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703145033; x=1703749833;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OLUNEaNazWElk5LNvSjgKYQHnJmPtc7ll3wR32irQhE=;
- b=0VVK1fq+yluENwlCjtH7vAngBc4Ka/pLHxerYjZdH081HxQWGp8re9SFIsXNNwWcKa
- 1EvMZAZVJghnW+f9p4Z/JMuxUdyacAorOq5/G9qzXT5nbaTFFBRHoNAC3mJC4OzdotJr
- DNfVqcQUaTDQEeYstWDdX2SDs9aZPJxzmP2LqGRjW61QUuTO9vQiR6JgbkiRMemd3vV5
- yCfNSW/+Ji+L/wlWj34jYI1Fb6TDe/x9ISDwvPc8dNGgL11Fe47oHWBmavlHFvR66AEL
- 25F+PsiRC2RiO2cU/pAlmsLm+iGNH/ydjeiDUzJyVHTAj5mL8bJYFJAJXRzEMMgEJaL/
- FS3g==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rGDyC-0007Nr-Lr
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:59:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rGDy9-0008Re-V2
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:59:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703145586;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+z1hHxFrBfYvlLyV/BSXVBKjOerIvI5wDxxwtnXo1Xc=;
+ b=UZwcppm7+13yUK/T/+0neXjBdTYP13aGMX0q6lfTrylg52clME9c55o7rNPDjiv3AVvovU
+ XTLi1nPWUyulhAqIvjdVyCCz+br2PPrRqjVmxSv859ldozowHmw1dZXwN5w5SodGF/airU
+ ZnjRX0aQ8i7fKA5sCS0I+TqZah4S9O0=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-pJzpOKytMhilMHW3zTWiHg-1; Thu, 21 Dec 2023 02:59:44 -0500
+X-MC-Unique: pJzpOKytMhilMHW3zTWiHg-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-77f55466facso89085485a.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 23:59:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703145033; x=1703749833;
+ d=1e100.net; s=20230601; t=1703145584; x=1703750384;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OLUNEaNazWElk5LNvSjgKYQHnJmPtc7ll3wR32irQhE=;
- b=GMf8RQUpw4XtLr4vBRAPP+wOFAMka+1WBIK1VoBln6C5l36u3I4IKY7INhvJNF6RtH
- iRzXikUYZG3p5CxwCrCX8+B7IlKtZI6uFM3RC63acqp0Xslyp/fgmN96PK5w80H/qt1s
- KR8xIvNuRE++fonLa8Dwwk+g2kBjhiJNn00AKAxCx5DksPnSrqRWr5crn35yyEzsChp+
- 6JBqBJVtkKhdwSugh5pBmdy20ZwnirZj1aLiWFuvrwWVs4d3PzYCLH/haUf659TtSlWr
- 5JMjztjUOYgZTpS2V7hvlaBuXcI6ozhQbl3awQeKBCU7ttZgyzE9RsDyvF77gBYjbzIu
- /t9g==
-X-Gm-Message-State: AOJu0YwLMcZ99aAZrpPADRJV7rq6VQ02SppFYinc2awyfUKzGbURlFm0
- dVc2Xz5tJBVx27u/Vn6/ov+3vA==
-X-Google-Smtp-Source: AGHT+IFRkKA+vhyi+S3UFsA8cjOfaflfAeEhCaGNiKFgvhAVyfdCpal5yYhxJ1UkT7WFGCcLiHX3CA==
-X-Received: by 2002:a17:902:ea05:b0:1d3:bb5b:c51 with SMTP id
- s5-20020a170902ea0500b001d3bb5b0c51mr5088668plg.72.1703145033585; 
- Wed, 20 Dec 2023 23:50:33 -0800 (PST)
-Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
- ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ bh=+z1hHxFrBfYvlLyV/BSXVBKjOerIvI5wDxxwtnXo1Xc=;
+ b=KZdvb9nqUszCL78emAkIyZrxZpAHRDJUF24pnyE8iYg6apczS4dpv1fra7aLG5gghu
+ tf1raOeVutoX2TygVr4cLLnQQ58fy02SgyBz8lEyR93Qk6bEQIIpsoaLZFeBrQHSzbQn
+ zFu/XAYT66t9XGzfJFsyQ/lbC4lDyi1O5GpKXLmRvUORLZ275LRG+RS55d83KN+Zd6Ve
+ xJhZSOjjPqf9EQi8A+6psw0YDaO6sQU2i8X8xsQ4Gncf/nMUaE/1kXarDj+/KaG53e3W
+ Bh1MNqX3M7qoHYF9Zer+qTY6NMspdbxIx6d6wqfQZMV5wEzs/InAUvhihyVz+fRTmVia
+ VKiQ==
+X-Gm-Message-State: AOJu0Yw62FmvaIxAAT24g5w5ikvaqvWiej0RJVR7/iYacVfkoTIMRGNL
+ jGEItJgPyxVUYE06FyQm0ZStCtLG+aI9kFXFKt2c1o899/y1GjDtzeDv97ZOUkEWql/xVZ1jQ3k
+ r1oOL0We8PpRbnCw=
+X-Received: by 2002:a05:620a:10b3:b0:77e:fba3:3e6c with SMTP id
+ h19-20020a05620a10b300b0077efba33e6cmr444739qkk.53.1703145584272; 
+ Wed, 20 Dec 2023 23:59:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGq/2Lysn0HE43JsweObPw/cOcxBT9FWaNTVi/K1skbjVVUCeklvM5BXkxeUgsn3/cuJFSEWw==
+X-Received: by 2002:a05:620a:10b3:b0:77e:fba3:3e6c with SMTP id
+ h19-20020a05620a10b300b0077efba33e6cmr444729qkk.53.1703145583989; 
+ Wed, 20 Dec 2023 23:59:43 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
  by smtp.gmail.com with ESMTPSA id
- d21-20020a170902c19500b001d0c3328a63sm972461pld.66.2023.12.20.23.50.28
+ qs10-20020a05620a394a00b0077589913a8bsm471749qkn.132.2023.12.20.23.59.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Dec 2023 23:50:33 -0800 (PST)
-Message-ID: <9fb98128-eada-4a50-996e-b442ce8035cd@daynix.com>
-Date: Thu, 21 Dec 2023 16:50:27 +0900
+ Wed, 20 Dec 2023 23:59:43 -0800 (PST)
+Message-ID: <79d175d1-1acd-4558-a30a-57c3376c9504@redhat.com>
+Date: Thu, 21 Dec 2023 08:59:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/11] softmmu/memory: enable automatic deallocation of
- memory regions
-To: Xenia Ragiadakou <xenia.ragiadakou@amd.com>, Huang Rui
- <ray.huang@amd.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-7-ray.huang@amd.com>
- <a88696bc-2ffe-442a-a171-50e6120bbf97@daynix.com>
- <5dd37851-0b68-45ae-9843-9c1d6dc078f9@amd.com>
+Subject: Re: [PATCH for-9.0 v2 00/10] vfio: Introduce a VFIOIOMMUClass
+To: Eric Farman <farman@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20231219065825.613767-1-clg@redhat.com>
+ <e215169f5504649cd3b8ec5ce66c988a8b5ba439.camel@linux.ibm.com>
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <5dd37851-0b68-45ae-9843-9c1d6dc078f9@amd.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <e215169f5504649cd3b8ec5ce66c988a8b5ba439.camel@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,41 +105,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/21 16:35, Xenia Ragiadakou wrote:
-> 
-> On 21/12/23 07:45, Akihiko Odaki wrote:
->> On 2023/12/19 16:53, Huang Rui wrote:
->>> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
->>>
->>> When the memory region has a different life-cycle from that of her 
->>> parent,
->>> could be automatically released, once has been unparent and once all 
->>> of her
->>> references have gone away, via the object's free callback.
->>>
->>> However, currently, the address space subsystem keeps references to the
->>> memory region without first incrementing its object's reference count.
->>> As a result, the automatic deallocation of the object, not taking into
->>> account those references, results in use-after-free memory corruption.
->>>
->>> More specifically, reference to the memory region is kept in flatview
->>> ranges. If the reference count of the memory region is not incremented,
->>> flatview_destroy(), that is asynchronous, may be called after memory
->>> region's destruction. If the reference count of the memory region is
->>> incremented, memory region's destruction will take place after
->>> flatview_destroy() has released its references.
->>>
->>> This patch increases the reference count of an owned memory region 
->>> object
->>> on each memory_region_ref() and decreases it on each 
->>> memory_region_unref().
+On 12/20/23 21:35, Eric Farman wrote:
+> On Tue, 2023-12-19 at 07:58 +0100, Cédric Le Goater wrote:
+>> Hello,
 >>
->> Why not pass the memory region itself as the owner parameter of 
->> memory_region_init_ram_ptr()?
+>> The VFIO object hierarchy has some constraints because each VFIO type
+>> has a dual nature: a VFIO nature for passthrough support and a bus
+>> nature (PCI, AP, CCW, Platform) for its initial presentation.
 > 
-> Hmm, in that case, how will it be guaranteed that the VirtIOGPU won't 
-> disappear while the memory region is still in use?
+> The above caught my attention, so I kicked the tires on this series a
+> little bit both with an iommufd-enabled host kernel and without, so I
+> don't lose track of it over the holidays.
 
-You can object_ref() when you do memory_region_init_ram_ptr() and 
-object_unref() when the memory region is being destroyed.
+I don't plan to send a vfio PR in the current weeks. iommufd support is
+upstream and still very warm and we should let it cool down during the
+holidays.
+
+> Tested-by: Eric Farman <farman@linux.ibm.com>
+
+Thanks !
+
+C.
+
 
