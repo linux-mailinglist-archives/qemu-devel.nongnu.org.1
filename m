@@ -2,180 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57D481B886
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 14:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E4581B964
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 15:16:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGJOx-0001od-GY; Thu, 21 Dec 2023 08:47:51 -0500
+	id 1rGJot-0000kH-9A; Thu, 21 Dec 2023 09:14:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1rGJOu-0001oB-Vu
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 08:47:49 -0500
-Received: from mgamail.intel.com ([134.134.136.24])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rGJor-0000jp-JS
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 09:14:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1rGJOt-0000GD-4j
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 08:47:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1703166467; x=1734702467;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=P/yUnZ0axFKfH9G9umh5zzxdyPZ7h5lih//1cdpsRJ8=;
- b=MFQLT/q8FDYgFq9gDO8AkIRBPF904QvK3ChjGhrEKCc01IdnR547IaMx
- HSelSMICbJO0A3AW7tLPBCBzOxq9TKgZMkFrq8EhUjV3ZrdkeGqL551d+
- gvhb8q6VL7nG1XRjvAO1kQJe9G9iWj8Wgim42W8gvIinSVv0eRUteIdEp
- 0cb+dfSxg0bMvsC8FoTyndyFiNkmR+5sh76F3AuHgbRNyXCyHzeSQ1Kul
- lc8rtwpaHVWgeJKNGZ2fo9l4iYbe1FSN5Hl1wZAX3WzAnEDHVkNEjidwB
- 4rpSgVv8FSuaws2ou1JKqXr0JkON6234Sw/GO9YK/EbBEzkq2I8C23LwO g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="398760619"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="398760619"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Dec 2023 05:47:44 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="805608379"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="805608379"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by orsmga008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 21 Dec 2023 05:47:43 -0800
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 21 Dec 2023 05:47:43 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 21 Dec 2023 05:47:43 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 21 Dec 2023 05:47:43 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=akpjJeFhvUnNILHWCNqUEZPXq3sjmSOos0IDYoERpw9PURy6oaka+H4TbFwldUf0yuKlg8yhUtXfZsZmoBV7L8WaTeFZ5zzeqNATZ53IB+bW0SuD2ylNC4+APT/TwV0r74kdmA6UoiZwLRDU8qi5ajnBx0+P+7gnY760gtdHYuxagbHQHZDcm2mb5Yg+CqBgz9Qf/944Geky49BQQrLEYaLlivQJrFX8uXirQZh/6SfWbbw2fxqDWbDymssg3jMw003DYaWf1A5YcMNQ5LT63C4cHwpksJQkmDUbSwsKitibNv/j2tbuaqnE5rHgBuwEXKPw9a30Znr8rA6AyE3EJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P/yUnZ0axFKfH9G9umh5zzxdyPZ7h5lih//1cdpsRJ8=;
- b=RcaXSVHgd0/qXa28KsyCxLvjOvit0OE8sPbwZ1LhucP0U5iVbQ0vIdmoby5AFxteaZE4fXI4Oo9UYGJ3fz0JtQ7pWFoisqOHMJL7EZgyA2xhOo5sHQR/LV5b6A9iE+bOfj3jplH1+hL3dB6UuOO/SYKhKaCTENv4wQsbhG2qvXCUY/EUtoi+GxhyEnqFsDYNKDGqxlOkYTRTrFpSzoiUFUOs7QfMiJRCn7bLl5PlubtdCKt4/Tuc6GRS9Qs9b8JRmZEFiQ4IGNrsFwiav0RAxh2VU1Vgad+KN0FfUqUhthS7Uz15JKDhKBjcL4Hl7E1r7u5UiaM+hdmRrpTjcac36Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS0PR11MB6373.namprd11.prod.outlook.com (2603:10b6:8:cb::20) by
- DS0PR11MB8688.namprd11.prod.outlook.com (2603:10b6:8:1a0::19) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7113.18; Thu, 21 Dec 2023 13:47:41 +0000
-Received: from DS0PR11MB6373.namprd11.prod.outlook.com
- ([fe80::9ce6:c8d3:248e:448a]) by DS0PR11MB6373.namprd11.prod.outlook.com
- ([fe80::9ce6:c8d3:248e:448a%4]) with mapi id 15.20.7113.019; Thu, 21 Dec 2023
- 13:47:41 +0000
-From: "Wang, Wei W" <wei.w.wang@intel.com>
-To: "Li, Xiaoyao" <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Richard Henderson
- <richard.henderson@linaro.org>, Peter Xu <peterx@redhat.com>,
- =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, "Cornelia
- Huck" <cohuck@redhat.com>, =?utf-8?B?RGFuaWVsIFAgLiBCZXJyYW5nw6k=?=
- <berrange@redhat.com>, Eric Blake <eblake@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kvm@vger.kernel.org"
- <kvm@vger.kernel.org>, Michael Roth <michael.roth@amd.com>, "Sean
- Christopherson" <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>, Gerd
- Hoffmann <kraxel@redhat.com>, Isaku Yamahata <isaku.yamahata@gmail.com>,
- "Qiang, Chenyi" <chenyi.qiang@intel.com>
-Subject: RE: [PATCH v3 06/70] kvm: Introduce support for memory_attributes
-Thread-Topic: [PATCH v3 06/70] kvm: Introduce support for memory_attributes
-Thread-Index: AQHaF5O24VxNhOyFz0ifdu/xEp7Ej7Cl0dCggA2oA4CAAEbrQIAAGMwAgAAVlUA=
-Date: Thu, 21 Dec 2023 13:47:41 +0000
-Message-ID: <DS0PR11MB63730289975875A5B90D078CDC95A@DS0PR11MB6373.namprd11.prod.outlook.com>
-References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
- <20231115071519.2864957-7-xiaoyao.li@intel.com>
- <DS0PR11MB6373D69ABBF4BDF7120438ACDC8EA@DS0PR11MB6373.namprd11.prod.outlook.com>
- <cc568b63-a129-4b23-8ac8-313193ea8126@intel.com>
- <DS0PR11MB63737AFCA458FA78423C0BB7DC95A@DS0PR11MB6373.namprd11.prod.outlook.com>
- <a0289f6d-2008-48d7-95fb-492066c38461@intel.com>
-In-Reply-To: <a0289f6d-2008-48d7-95fb-492066c38461@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR11MB6373:EE_|DS0PR11MB8688:EE_
-x-ms-office365-filtering-correlation-id: 0e1b381b-55bc-4ebd-aa98-08dc022b6730
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: n9+kPkOo4leWtE52gkWIIuqnK8ojA/j7OwTPDUpUukeQjhSuu9LMUorA8AJAvu7KW57XXnqaxPUHGAqJ0WZ5u/7XyGXytMn0cMHIiEC2kLhk8oSR6xzRWrJ3sC1dI6zr9101OnO0ITNRMBblLhxA+x8LOtwH5XaC2QiGYhBSQ1MK1WhQ1HcEAbrKoxufU8nSMMqD97dovmUFXJmIMcS0G+xzwDSaP93CJBOr4ZDt4j9d/gumE69YLkDSg7N8QofBtf7ldnb97kia+STO0Ki/auOampttFIkQvAGXrkQSkS3A96AVpXikslp2albj1hEPzq5tUxB6mCbGUXq7dlf6jdzbrTDXSTFO1vTXbnmk22QeMi2HzoH1u7ItfGnVXIyw0XEd8IevZDbEhp0MW5KmyaVScAoZzZmTyjWj/9QoF4U/H+m5z/FrFyoEp4Q9LIs8eoI5ZBiOOr18PQI782FN/YuWg3jddHR4n1PS3RPZF49/tK0OERXUc/qACT2mhYlx705+IzdLXBWZwkJCkLXzLcxf5Te/WWngC1apo7UJrsqax7HsIUPDohXc3aVyhYRwNFR6A3MA64tQ+V+ogW43uVoQFwAV1qrxJ6rg2cNIwZbhDvjGtsbXHEeP9SyHXwNATL6KGXsddd75zeVbXftKhA==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB6373.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(396003)(376002)(136003)(346002)(39860400002)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(8676002)(4326008)(8936002)(26005)(2906002)(478600001)(316002)(52536014)(54906003)(110136005)(66946007)(66446008)(66476007)(64756008)(66556008)(76116006)(71200400001)(6506007)(7696005)(53546011)(55016003)(9686003)(5660300002)(86362001)(38100700002)(33656002)(122000001)(7416002)(107886003)(921008)(38070700009)(41300700001)(82960400001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RDlBcUtNczZOQ2FYZmVxcSs0RU85SFRlNUMwSTlGZUp5b01xVHZQTzRLY1dJ?=
- =?utf-8?B?enpvaWVwOG15TGN3QkJZUDFYZldaVStJc25wR1JzZk5oVDhEVUNRVWQ1ZG81?=
- =?utf-8?B?NHBrY1QzNGVsam5QcENSQytXU2hDeTJNZDc2aG16UGpZMnVWcklaeXViN2ti?=
- =?utf-8?B?QzB3clNIWkNRY3VPQlRLOXZVWEcrN1VsZnU3NEdEQkdUaEFucU9VWWQ2bGs3?=
- =?utf-8?B?RjJLZGZaYUlEOW1RUXd2VWVSdVpud3EzTU1EZ0hUU0xXS245SWxQZVc5ckZl?=
- =?utf-8?B?RjEvVGJ5TmxXcDFma0IvK1JQTG1ETUJqSmpiZ0x1ZGIyWFN6NU0xaGdrTnl2?=
- =?utf-8?B?N09YOFUxYnJibHFJRzlHNGtzSU1hNUVPNXpxSm9jeFg4OWl5aGhPMVlXcmVo?=
- =?utf-8?B?eVlsZnZKZHFIcHg4d1BFTTVtSUMzT2ZPcDJSVDl0d2lISHZSaHhaTFlramlH?=
- =?utf-8?B?NFdhbDJRQ2xxT2ErNHNmN3hIL1RZL1VDdHNOMlk5bmpmZWpDRFRaRHlGcmFs?=
- =?utf-8?B?RXg0cjJtcWRzQUhTc0poNWFxdXl4MlU0Umg4ZWpEOXNVU2NFbFJxM1RqNitr?=
- =?utf-8?B?WjYvU0tONWZpQjBZbHNmTkIrQkVpK2dhOVVGRlV1LzBNODQxNVp6c3RJYWdW?=
- =?utf-8?B?a21rUzlHUEpiTFlmNDB0QVAvOTg1bDAzRnhxMVpoTURCaDhEdzIvSjZuWWJM?=
- =?utf-8?B?RmNJTWdsNDM5YWxXSXFPWGdoVEppM0lUNkRVRWc2eWFiaE55dGxRTWhnaTQy?=
- =?utf-8?B?U2pBYmZqUHNVNnVCOG5KUVNycmNlUGEweEg2amNDaFBnajlpYjBoR0JlUFBD?=
- =?utf-8?B?Yk5KdmJRMUJTYWcrQnYxTHRtZ2VGRWZZbTlVVmwwTTA3YkEwdHhxcDJOOWQ3?=
- =?utf-8?B?V1U4TTFIcHp1cmNXbVZCOHYxMlIzMHZuYWkxZVk1N0ZjTHl0QThLUHlBYytS?=
- =?utf-8?B?RVlXSmZtN1ozakRwZ0xYMVJqUzN4MEdhYUg2cHg1M3VLK1Fncko3eS9UQWxD?=
- =?utf-8?B?SjUzQzNyOUNaQlRnSUFrYU9DWlpFb0x6Q3VGYlNXeTFUYTBpK0ZTR0JoQnZq?=
- =?utf-8?B?ZkRCdGhhQ3VWaFlBaTZ3TmlLL3BmWTNCRFM3bklQUEpWY3d4NHI0amRveTZt?=
- =?utf-8?B?dDJWcG93Y0FyVm9iYk0zU0xKWk5BTHdhbE1FeFNwT1h1SVROYWpacGdOQVFB?=
- =?utf-8?B?OU9kTDQzUzcxWU9KVTBXTmRZZ3E0MHk1MUtoVnFmalI0U0s5ODAwTWtiaTly?=
- =?utf-8?B?Z05sd0VrdDJnR1prS2VjYzM5dFhwdm85MXhsL1hQZ3hpcUUweC9RMUJCWE9M?=
- =?utf-8?B?YUNNUFNhakFUbTA5R0FoRkxwUFovWERVRTE0Vnd1S2U0KzFZbERsNEpYTnR5?=
- =?utf-8?B?bWk2T0Q2OFh4dUhiY0E0eHNabzBTNHBpNzJ1UEpIeFVnYjdLK1lTU080Z2lW?=
- =?utf-8?B?cUxyYjRmRHhjYkRkblppT1hjR3ZtZXpnRW9jWGFTYXMwaXBJd1dncHQyc2I4?=
- =?utf-8?B?cHpwZHlTRDhPWE5KVHRaQkR1NjdGaS9NUG9SaEZjS0x4dmxBb1FVVVAxR01G?=
- =?utf-8?B?VFgzTTNKK0gvYmFPTWxvUGp1aFN1QXpsSWk4ZHhZWlk4Tldnc00wdjBqRTRY?=
- =?utf-8?B?SUJHdmNYV0dUL3FXc0ZEUk1Kdzg2SFV2VThGY0xZUDB3M29zM3FzVnJhSURV?=
- =?utf-8?B?V3hKOE5lQWwvOXVQM3NEVml3bjNscnNhSHBCOEorMG53VmRzcmxJUW9heVFT?=
- =?utf-8?B?VXVkU1hZRk0wVGFLc3hVRm1sckIrc0duanlBTk9DNDZGSGNiRi9NWm45OE9n?=
- =?utf-8?B?VlRFbHRWVEhHMHM2NEcxVkdSbmFWSXF6eGh1OEQvVzY4NEpkQU9PdTRuajRL?=
- =?utf-8?B?QkM3U2FxaUxDdURBYTZnRUt6SWVzNU1xKy9LWWkwWXRBbWxqcndsRkw5Nk9I?=
- =?utf-8?B?OWg2SHUweU5sTEt1NElzYUdiMlRPWG1kcHpKdUg3VGw3WUdXT2JoYk5RRGtX?=
- =?utf-8?B?RW9ZbFM0K0Q5clB1VDR6Um9ML2tucEwrWTFra0FJSWlnZXNKbkJqSnFPQXdQ?=
- =?utf-8?B?VkEzdE1pdmtwRVhrbDFKVkxsbi9lU0NsUlFvaEVIU1Y2SXlMcjdwaGhlc2NB?=
- =?utf-8?Q?o1abI1HRiSyI5QKZGN6gXLDu+?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rGJoe-0002JC-IT
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 09:14:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703168062;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=vkRWFHNUyMKxrVqmgrfTvNvgdusQ8GRKrAhMxz/YS5Q=;
+ b=TuID9Uy9mZiEW3Ee/OgOmdxZkitDwfFpQmPJ+/IRpzMEjgLfwxYz4V6szCLDRw8XxiCGMk
+ U56dB1CeJ0YZvyFqbVzifyEWAuL4HMctXz4o+8lgICdBmrX1iOV8K50mEy4dpdEZL5PtPH
+ hwD1KsI1DUTfDC6djlb5ZXB+lvmhjoM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-Ylnn2d3ZN5-ww800868CDQ-1; Thu,
+ 21 Dec 2023 09:14:18 -0500
+X-MC-Unique: Ylnn2d3ZN5-ww800868CDQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0FE823811F49;
+ Thu, 21 Dec 2023 14:14:18 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.145])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 972DF3C25;
+ Thu, 21 Dec 2023 14:14:16 +0000 (UTC)
+Date: Thu, 21 Dec 2023 09:14:14 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>,
+ qemu-block@nongnu.org, Fam Zheng <fam@euphon.net>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH 6/6] nbd/server: introduce NBDClient->lock to protect
+ fields
+Message-ID: <20231221141414.GB1578764@fedora>
+References: <20231221014903.1537962-1-stefanha@redhat.com>
+ <20231221014903.1537962-7-stefanha@redhat.com>
+ <ZYQXUEqTVs8dEdbS@redhat.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB6373.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e1b381b-55bc-4ebd-aa98-08dc022b6730
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Dec 2023 13:47:41.7322 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xDfLPjc29rkEyxXaGaRrMdxKCSNa6Bsrt1GerriGS0gkGyo2CBk0NwkRuN4BWB0MdBVUGWWHnoRop59mTPKlBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8688
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.24; envelope-from=wei.w.wang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="6xsMLA5vzHkGg9sP"
+Content-Disposition: inline
+In-Reply-To: <ZYQXUEqTVs8dEdbS@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -191,34 +88,399 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gVGh1cnNkYXksIERlY2VtYmVyIDIxLCAyMDIzIDc6NTQgUE0sIExpLCBYaWFveWFvIHdyb3Rl
-Og0KPiBPbiAxMi8yMS8yMDIzIDY6MzYgUE0sIFdhbmcsIFdlaSBXIHdyb3RlOg0KPiA+IE5vIG5l
-ZWQgdG8gc3BlY2lmaWNhbGx5IGNoZWNrIGZvciBLVk1fTUVNT1JZX0FUVFJJQlVURV9QUklWQVRF
-IHRoZXJlLg0KPiA+IEknbSBzdWdnZXN0aW5nIGJlbG93Og0KPiA+DQo+ID4gZGlmZiAtLWdpdCBh
-L2FjY2VsL2t2bS9rdm0tYWxsLmMgYi9hY2NlbC9rdm0va3ZtLWFsbC5jIGluZGV4DQo+ID4gMmQ5
-YTI0NTVkZS4uNjNiYTc0YjIyMSAxMDA2NDQNCj4gPiAtLS0gYS9hY2NlbC9rdm0va3ZtLWFsbC5j
-DQo+ID4gKysrIGIvYWNjZWwva3ZtL2t2bS1hbGwuYw0KPiA+IEBAIC0xMzc1LDYgKzEzNzUsMTEg
-QEAgc3RhdGljIGludCBrdm1fc2V0X21lbW9yeV9hdHRyaWJ1dGVzKGh3YWRkcg0KPiBzdGFydCwg
-aHdhZGRyIHNpemUsIHVpbnQ2NF90IGF0dHIpDQo+ID4gICAgICAgc3RydWN0IGt2bV9tZW1vcnlf
-YXR0cmlidXRlcyBhdHRyczsNCj4gPiAgICAgICBpbnQgcjsNCj4gPg0KPiA+ICsgICAgaWYgKChh
-dHRyICYga3ZtX3N1cHBvcnRlZF9tZW1vcnlfYXR0cmlidXRlcykgIT0gYXR0cikgew0KPiA+ICsg
-ICAgICAgIGVycm9yX3JlcG9ydCgiS1ZNIGRvZXNuJ3Qgc3VwcG9ydCBtZW1vcnkgYXR0ciAlbHhc
-biIsIGF0dHIpOw0KPiA+ICsgICAgICAgIHJldHVybiAtRUlOVkFMOw0KPiA+ICsgICAgfQ0KPiAN
-Cj4gSW4gdGhlIGNhc2Ugb2Ygc2V0dGluZyBhIHJhbmdlIG9mIG1lbW9yeSB0byBzaGFyZWQgd2hp
-bGUgS1ZNIGRvZXNuJ3Qgc3VwcG9ydA0KPiBwcml2YXRlIG1lbW9yeS4gQWJvdmUgY2hlY2sgZG9l
-c24ndCB3b3JrLiBhbmQgZm9sbG93aW5nIElPQ1RMIGZhaWxzLg0KDQpTSEFSRUQgYXR0cmlidXRl
-IHVzZXMgdGhlIHZhbHVlIDAsIHdoaWNoIGluZGljYXRlcyBpdCdzIGFsd2F5cyBzdXBwb3J0ZWQs
-IG5vPw0KRm9yIHRoZSBpbXBsZW1lbnRhdGlvbiwgY2FuIHlvdSBmaW5kIGluIHRoZSBLVk0gc2lk
-ZSB3aGVyZSB0aGUgaW9jdGwNCndvdWxkIGdldCBmYWlsZWQgaW4gdGhhdCBjYXNlPw0KDQpzdGF0
-aWMgaW50IGt2bV92bV9pb2N0bF9zZXRfbWVtX2F0dHJpYnV0ZXMoc3RydWN0IGt2bSAqa3ZtLA0K
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cnVjdCBrdm1fbWVt
-b3J5X2F0dHJpYnV0ZXMgKmF0dHJzKQ0Kew0KICAgICAgICBnZm5fdCBzdGFydCwgZW5kOw0KDQog
-ICAgICAgIC8qIGZsYWdzIGlzIGN1cnJlbnRseSBub3QgdXNlZC4gKi8NCiAgICAgICAgaWYgKGF0
-dHJzLT5mbGFncykNCiAgICAgICAgICAgICAgICByZXR1cm4gLUVJTlZBTDsNCiAgICAgICAgaWYg
-KGF0dHJzLT5hdHRyaWJ1dGVzICYgfmt2bV9zdXBwb3J0ZWRfbWVtX2F0dHJpYnV0ZXMoa3ZtKSkg
-PT0+IDAgaGVyZQ0KICAgICAgICAgICAgICAgIHJldHVybiAtRUlOVkFMOw0KICAgICAgICBpZiAo
-YXR0cnMtPnNpemUgPT0gMCB8fCBhdHRycy0+YWRkcmVzcyArIGF0dHJzLT5zaXplIDwgYXR0cnMt
-PmFkZHJlc3MpDQogICAgICAgICAgICAgICAgcmV0dXJuIC1FSU5WQUw7DQogICAgICAgIGlmICgh
-UEFHRV9BTElHTkVEKGF0dHJzLT5hZGRyZXNzKSB8fCAhUEFHRV9BTElHTkVEKGF0dHJzLT5zaXpl
-KSkNCiAgICAgICAgICAgICAgICByZXR1cm4gLUVJTlZBTDsNCg==
+
+--6xsMLA5vzHkGg9sP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Dec 21, 2023 at 11:45:36AM +0100, Kevin Wolf wrote:
+> Am 21.12.2023 um 02:49 hat Stefan Hajnoczi geschrieben:
+> > NBDClient has a number of fields that are accessed by both the export
+> > AioContext and the main loop thread. When the AioContext lock is removed
+> > these fields will need another form of protection.
+> >=20
+> > Add NBDClient->lock and protect fields that are accessed by both
+> > threads. Also add assertions where possible and otherwise add doc
+> > comments stating assumptions about which thread and lock holding.
+> >=20
+> > Note this patch moves the client->recv_coroutine assertion from
+> > nbd_co_receive_request() to nbd_trip() where client->lock is held.
+> >=20
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > ---
+> >  nbd/server.c | 128 +++++++++++++++++++++++++++++++++++++--------------
+> >  1 file changed, 94 insertions(+), 34 deletions(-)
+> >=20
+> > diff --git a/nbd/server.c b/nbd/server.c
+> > index 527fbdab4a..4008ec7df9 100644
+> > --- a/nbd/server.c
+> > +++ b/nbd/server.c
+> > @@ -125,23 +125,25 @@ struct NBDClient {
+> >      int refcount; /* atomic */
+> >      void (*close_fn)(NBDClient *client, bool negotiated);
+> > =20
+> > +    QemuMutex lock;
+> > +
+> >      NBDExport *exp;
+> >      QCryptoTLSCreds *tlscreds;
+> >      char *tlsauthz;
+> >      QIOChannelSocket *sioc; /* The underlying data channel */
+> >      QIOChannel *ioc; /* The current I/O channel which may differ (eg T=
+LS) */
+> > =20
+> > -    Coroutine *recv_coroutine;
+> > +    Coroutine *recv_coroutine; /* protected by lock */
+> > =20
+> >      CoMutex send_lock;
+> >      Coroutine *send_coroutine;
+> > =20
+> > -    bool read_yielding;
+> > -    bool quiescing;
+> > +    bool read_yielding; /* protected by lock */
+> > +    bool quiescing; /* protected by lock */
+> > =20
+> >      QTAILQ_ENTRY(NBDClient) next;
+> > -    int nb_requests;
+> > -    bool closing;
+> > +    int nb_requests; /* protected by lock */
+> > +    bool closing; /* protected by lock */
+> > =20
+> >      uint32_t check_align; /* If non-zero, check for aligned client req=
+uests */
+> > =20
+> > @@ -1415,11 +1417,18 @@ nbd_read_eof(NBDClient *client, void *buffer, s=
+ize_t size, Error **errp)
+> > =20
+> >          len =3D qio_channel_readv(client->ioc, &iov, 1, errp);
+> >          if (len =3D=3D QIO_CHANNEL_ERR_BLOCK) {
+> > -            client->read_yielding =3D true;
+> > +            WITH_QEMU_LOCK_GUARD(&client->lock) {
+> > +                if (client->quiescing) {
+> > +                    return -EAGAIN;
+> > +                }
+>=20
+> Why did you add another client->quiescing check here?
+>=20
+> If it is to address a race, I think you only made the window a bit
+> smaller, but between releasing the lock and yielding the field could
+> still change, so drain needs to handle this case anyway.
+
+I added it for consistency/symmetry where nbd_trip() checks
+client->quiescing after acquiring client->lock but didn't have any
+specific scenario in mind. I'll drop this.
+
+I agree that it does not prevent races. .drained_begin() +
+=2Edrained_poll() can run after client->lock is released and before
+qio_channel_yield() takes effect. In that case we miss client->quiescing
+and still have the race where no wake occurs because
+qio_channel_wake_read() sees ioc->read_coroutine =3D=3D NULL.
+
+> > +                client->read_yielding =3D true;
+> > +            }
+> >              qio_channel_yield(client->ioc, G_IO_IN);
+> > -            client->read_yielding =3D false;
+> > -            if (client->quiescing) {
+> > -                return -EAGAIN;
+> > +            WITH_QEMU_LOCK_GUARD(&client->lock) {
+> > +                client->read_yielding =3D false;
+> > +                if (client->quiescing) {
+> > +                    return -EAGAIN;
+> > +                }
+> >              }
+> >              continue;
+> >          } else if (len < 0) {
+> > @@ -1528,6 +1537,7 @@ void nbd_client_put(NBDClient *client)
+> >              blk_exp_unref(&client->exp->common);
+> >          }
+> >          g_free(client->contexts.bitmaps);
+> > +        qemu_mutex_destroy(&client->lock);
+> >          g_free(client);
+> >      }
+> >  }
+> > @@ -1536,11 +1546,13 @@ static void client_close(NBDClient *client, boo=
+l negotiated)
+> >  {
+> >      assert(qemu_in_main_thread());
+> > =20
+> > -    if (client->closing) {
+> > -        return;
+> > -    }
+> > +    WITH_QEMU_LOCK_GUARD(&client->lock) {
+> > +        if (client->closing) {
+> > +            return;
+> > +        }
+> > =20
+> > -    client->closing =3D true;
+> > +        client->closing =3D true;
+> > +    }
+> > =20
+> >      /* Force requests to finish.  They will drop their own references,
+> >       * then we'll close the socket and free the NBDClient.
+> > @@ -1554,6 +1566,7 @@ static void client_close(NBDClient *client, bool =
+negotiated)
+> >      }
+> >  }
+> > =20
+> > +/* Runs in export AioContext with client->lock held */
+> >  static NBDRequestData *nbd_request_get(NBDClient *client)
+> >  {
+> >      NBDRequestData *req;
+> > @@ -1566,6 +1579,7 @@ static NBDRequestData *nbd_request_get(NBDClient =
+*client)
+> >      return req;
+> >  }
+> > =20
+> > +/* Runs in export AioContext with client->lock held */
+> >  static void nbd_request_put(NBDRequestData *req)
+> >  {
+> >      NBDClient *client =3D req->client;
+> > @@ -1589,14 +1603,18 @@ static void blk_aio_attached(AioContext *ctx, v=
+oid *opaque)
+> >      NBDExport *exp =3D opaque;
+> >      NBDClient *client;
+> > =20
+> > +    assert(qemu_in_main_thread());
+> > +
+> >      trace_nbd_blk_aio_attached(exp->name, ctx);
+> > =20
+> >      exp->common.ctx =3D ctx;
+> > =20
+> >      QTAILQ_FOREACH(client, &exp->clients, next) {
+> > -        assert(client->nb_requests =3D=3D 0);
+> > -        assert(client->recv_coroutine =3D=3D NULL);
+> > -        assert(client->send_coroutine =3D=3D NULL);
+> > +        WITH_QEMU_LOCK_GUARD(&client->lock) {
+> > +            assert(client->nb_requests =3D=3D 0);
+> > +            assert(client->recv_coroutine =3D=3D NULL);
+> > +            assert(client->send_coroutine =3D=3D NULL);
+> > +        }
+> >      }
+> >  }
+> > =20
+> > @@ -1604,6 +1622,8 @@ static void blk_aio_detach(void *opaque)
+> >  {
+> >      NBDExport *exp =3D opaque;
+> > =20
+> > +    assert(qemu_in_main_thread());
+> > +
+> >      trace_nbd_blk_aio_detach(exp->name, exp->common.ctx);
+> > =20
+> >      exp->common.ctx =3D NULL;
+> > @@ -1614,8 +1634,12 @@ static void nbd_drained_begin(void *opaque)
+> >      NBDExport *exp =3D opaque;
+> >      NBDClient *client;
+> > =20
+> > +    assert(qemu_in_main_thread());
+> > +
+> >      QTAILQ_FOREACH(client, &exp->clients, next) {
+> > -        client->quiescing =3D true;
+> > +        WITH_QEMU_LOCK_GUARD(&client->lock) {
+> > +            client->quiescing =3D true;
+> > +        }
+> >      }
+> >  }
+> > =20
+> > @@ -1624,9 +1648,13 @@ static void nbd_drained_end(void *opaque)
+> >      NBDExport *exp =3D opaque;
+> >      NBDClient *client;
+> > =20
+> > +    assert(qemu_in_main_thread());
+> > +
+> >      QTAILQ_FOREACH(client, &exp->clients, next) {
+> > -        client->quiescing =3D false;
+> > -        nbd_client_receive_next_request(client);
+> > +        WITH_QEMU_LOCK_GUARD(&client->lock) {
+> > +            client->quiescing =3D false;
+> > +            nbd_client_receive_next_request(client);
+> > +        }
+> >      }
+> >  }
+> > =20
+> > @@ -1635,17 +1663,21 @@ static bool nbd_drained_poll(void *opaque)
+> >      NBDExport *exp =3D opaque;
+> >      NBDClient *client;
+> > =20
+> > +    assert(qemu_in_main_thread());
+> > +
+> >      QTAILQ_FOREACH(client, &exp->clients, next) {
+> > -        if (client->nb_requests !=3D 0) {
+> > -            /*
+> > -             * If there's a coroutine waiting for a request on nbd_rea=
+d_eof()
+> > -             * enter it here so we don't depend on the client to wake =
+it up.
+> > -             */
+> > -            if (client->recv_coroutine !=3D NULL && client->read_yield=
+ing) {
+> > -                qio_channel_wake_read(client->ioc);
+> > +        WITH_QEMU_LOCK_GUARD(&client->lock) {
+> > +            if (client->nb_requests !=3D 0) {
+> > +                /*
+> > +                 * If there's a coroutine waiting for a request on nbd=
+_read_eof()
+> > +                 * enter it here so we don't depend on the client to w=
+ake it up.
+> > +                 */
+> > +                if (client->recv_coroutine !=3D NULL && client->read_y=
+ielding) {
+> > +                    qio_channel_wake_read(client->ioc);
+> > +                }
+>=20
+> This is where the race from above becomes relevant.
+>=20
+> Let's first look at calling qio_channel_wake_read() a tiny bit too
+> early: Without any locking in qio_channel_yield(), we could catch the
+> read coroutine between setting ioc->read_coroutine and before actually
+> yielding. In this case we would call aio_co_wake() on a coroutine that
+> is still running in a different thread. Since it's in a different
+> thread, we only schedule it instead entering it directly, and that just
+> works. The coroutine will immediately be reentered, which is exactly
+> what we want.
+>=20
+> Even earlier calls of qio_channel_wake_read() (i.e. between setting
+> client->read_yielding and setting ioc->read_coroutine) don't actively
+> hurt, they just don't do anything if no read is in flight. (This is the
+> same case as if the nbd_trip() coroutine didn't even set
+> client->read_yielding yet, just that the check you added above can't
+> catch it.)
+>=20
+> So if nbd_read_eof() didn't yield yet, we don't wake it here, but we
+> still return true, so the next drained_poll call will try again.
+>=20
+> This is good in principle, but it depends on waking up the main thread
+> when we made progress. So we have to call aio_wait_kick() between
+> setting ioc->read_coroutine and yielding to make this work. What we
+> actually may get indirectly is an aio_notify() through setting FD
+> handlers if all implementations of qio_channel_set_aio_fd_handler()
+> actually do that. I suppose this could be enough?
+
+qio_channel_set_aio_fd_handler() calls aio_notify() on the export's
+AioContext. It does not wake the main loop AioContext when an IOThread
+is being used so I don't think it helps here.
+
+The state where qio_channel_wake_read() misses that nbd_trip() is
+yielding looks like this:
+
+client->nb_requests > 0
+client->recv_coroutine =3D nbd_trip() coroutine
+client->quiescing =3D true
+client->read_yielding =3D true
+ioc->read_coroutine =3D NULL
+
+The main loop thread is waiting for activity and nbd_trip() enters
+qemu_coroutine_yield(). There is no progress until the main loop thread
+resumes (which can be triggered by the export AioContext completing NBD
+I/O too).
+
+I guess the race isn't immediately apparent because there is usually
+some event loop activity that hides the problem.
+
+> Anyway, if my result after thinking really hard about this is "I can't
+> rule out that it's correct", maybe it would be better to just run this
+> code in the export AioContext instead so that we don't have to think
+> about all the subtleties and know that the nbd_co_trip() coroutine is at
+> a yield point?
+
+Agreed.
+
+> > +
+> > +                return true;
+> >              }
+> > -
+> > -            return true;
+> >          }
+> >      }
+> > =20
+> > @@ -1656,6 +1688,8 @@ static void nbd_eject_notifier(Notifier *n, void =
+*data)
+> >  {
+> >      NBDExport *exp =3D container_of(n, NBDExport, eject_notifier);
+> > =20
+> > +    assert(qemu_in_main_thread());
+> > +
+> >      blk_exp_request_shutdown(&exp->common);
+> >  }
+> > =20
+> > @@ -2541,7 +2575,6 @@ static int coroutine_fn nbd_co_receive_request(NB=
+DRequestData *req,
+> >      int ret;
+> > =20
+> >      g_assert(qemu_in_coroutine());
+> > -    assert(client->recv_coroutine =3D=3D qemu_coroutine_self());
+> >      ret =3D nbd_receive_request(client, request, errp);
+> >      if (ret < 0) {
+> >          return ret;
+> > @@ -2950,7 +2983,11 @@ static coroutine_fn void nbd_trip(void *opaque)
+> >       */
+> > =20
+> >      trace_nbd_trip();
+> > +
+> > +    qemu_mutex_lock(&client->lock);
+> > +
+> >      if (client->closing) {
+> > +        qemu_mutex_unlock(&client->lock);
+> >          aio_co_reschedule_self(qemu_get_aio_context());
+> >          nbd_client_put(client);
+> >          return;
+> > @@ -2961,15 +2998,24 @@ static coroutine_fn void nbd_trip(void *opaque)
+> >           * We're switching between AIO contexts. Don't attempt to rece=
+ive a new
+> >           * request and kick the main context which may be waiting for =
+us.
+> >           */
+> > -        aio_co_reschedule_self(qemu_get_aio_context());
+> > -        nbd_client_put(client);
+> >          client->recv_coroutine =3D NULL;
+> > +        qemu_mutex_unlock(&client->lock);
+> >          aio_wait_kick();
+> > +
+> > +        aio_co_reschedule_self(qemu_get_aio_context());
+> > +        nbd_client_put(client);
+> >          return;
+> >      }
+> > =20
+> >      req =3D nbd_request_get(client);
+> > -    ret =3D nbd_co_receive_request(req, &request, &local_err);
+> > +
+> > +    do {
+> > +        assert(client->recv_coroutine =3D=3D qemu_coroutine_self());
+> > +        qemu_mutex_unlock(&client->lock);
+> > +        ret =3D nbd_co_receive_request(req, &request, &local_err);
+> > +        qemu_mutex_lock(&client->lock);
+> > +    } while (ret =3D=3D -EAGAIN && !client->quiescing);
+>=20
+> I think this deserves a comment to say that the loop is only about the
+> drain case without polling where drained_end has already happened before
+> we reach this point, so we may not terminate the coroutine any more
+> because nothing would restart it.
+
+Sounds good, I'll add a comment in the next revision.
+
+> >      client->recv_coroutine =3D NULL;
+>=20
+> As soon as we're past this, the nbd_client_receive_next_request() called
+> by drained_end will create a new coroutine, so we don't have to be
+> careful about the same case after this.
+>=20
+> Kevin
+>=20
+
+--6xsMLA5vzHkGg9sP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWESDYACgkQnKSrs4Gr
+c8g3+AgAwjXmhjM65KipF0nWCvcG1wv8YKWY0+0qouK5G8n2T2/+IdRUB+6RMfpZ
+8fSqzjCLR76M6W8YmT0ACezvOKWovz0mWZkDTq/BFo4lrcsjiuWlzVNSe/BxQYpJ
+0pD0P9niC4zzVuDpp7/9Y0zSRzjjn/JtLEwLcG9amJhDgzfsVlk7ZqFziyf95yX0
+lu10zyKQMmudqrjecceC3jcOD6fBk3NNewdPA9oOYd6Y8/zOzT3UawFL8hvYb0Cu
+Vnm/DIVQw15tl3aG4e9uLZigdRvNOtyiWWrXtiMBkvZclQeo3I9JMXflu/qFv9N/
+p3GROKEofb7FtsykWlBWzvU8LDj9fA==
+=hnft
+-----END PGP SIGNATURE-----
+
+--6xsMLA5vzHkGg9sP--
+
 
