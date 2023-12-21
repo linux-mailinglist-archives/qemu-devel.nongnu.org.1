@@ -2,70 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D7181AF29
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 08:10:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920A581AF51
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 08:21:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGDBg-00070d-CU; Thu, 21 Dec 2023 02:09:44 -0500
+	id 1rGDLY-0002pL-Iu; Thu, 21 Dec 2023 02:19:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1rGDBd-0006xz-F6
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:09:41 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1rGDBa-00061L-De
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:09:41 -0500
-Received: from loongson.cn (unknown [10.20.42.173])
- by gateway (Coremail) with SMTP id _____8DxVPCr5INlUVUDAA--.16995S3;
- Thu, 21 Dec 2023 15:09:31 +0800 (CST)
-Received: from [10.20.42.173] (unknown [10.20.42.173])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bxbb6o5INl9FQDAA--.10604S3; 
- Thu, 21 Dec 2023 15:09:30 +0800 (CST)
-Subject: Re: [PATCH v2 02/17] hw/loongarch: Add load initrd
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, philmd@linaro.org, peter.maydell@linaro.org
-References: <20231218090059.2678224-1-gaosong@loongson.cn>
- <20231218090059.2678224-3-gaosong@loongson.cn>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <c4cc87e1-5403-b75b-4e7c-3cb76748af17@loongson.cn>
-Date: Thu, 21 Dec 2023 15:09:17 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rGDLW-0002om-1R
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:19:54 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rGDLU-0000qP-9G
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:19:53 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6d411636a95so1186006b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 23:19:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703143190; x=1703747990;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=PyChh9b8cOsRTm+g7900ErTVdcZiUgG3XQikWrab3KA=;
+ b=17CjTKbfcbescuIgzjMu+2+zG+pAy1tCaOMETD2Zu69cSPKsmi9in1gFjEWck5C8DK
+ NQ1SoXK1i8xodWRFJIALAgh0ht4bcv4oaVfigW/l9DhL3pfSobq1eYld4Y8nqwa309Wl
+ DOeOUxVApRpUFFzIAsEh4EjnxWdowIFEzOQLpiVRC2H1urpb4n72Z8cI7j12NgHKujSg
+ lL+vgoInldcnq3SW44QS9suiRFC/oMQj4khsi2GyxN7Q32iyFvFmEwkjyCUfN4b3yVit
+ ygMDCItYxcJDkZnkF6hI7uOaJO+sBg/57RPE1ZwJ7Q8X0QqrfnaXxuVc1UTQDFp88oum
+ RRpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703143190; x=1703747990;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PyChh9b8cOsRTm+g7900ErTVdcZiUgG3XQikWrab3KA=;
+ b=cjloIs63zm5ZhDRSOC9wQcjxX0uaTd4mKHR5S12+WxorTJQMha3rfLf3ZAG4gQ/DfH
+ mO+MdHeT7uUtraSxafBPw0+C/90r97TDOZ77NeCS7OrOiTazt7Oh2uEkkTzB/y8LChSj
+ RKWpUjWid+CKWaZO5dr5vd5a519M5SDMlLh4SCSbAa2LIdyjZmEQytuVGvRpuz+a7tI+
+ 5OVOG05JLIOKCOtPrF/yks25W/9Tlz6HDPErztmI73hxPDoSFUmiu1OBwyvke2KObAQ8
+ 7ZeLQW7RcUK5LHO/3eckoqnkbVGb5UrxaTezB4IJ/QnJST88YDTzCZPczQ97ewEGZU6K
+ vN5A==
+X-Gm-Message-State: AOJu0YwxKXBE0usG8ozPI5HKqiO6QqKpXQ4zGQkhzKe1KYV4zOA+uCVE
+ nxUgN8aIJXhJ4vJqXvjGRA7y7Q==
+X-Google-Smtp-Source: AGHT+IGadR1ndrDaRSIXWGHSqYDbDBYyslmEYT3QVKzwmtojOmPjqmaDo5AWZXupEQXJS5aEvcaVGA==
+X-Received: by 2002:a05:6a20:4b12:b0:191:e96b:ed08 with SMTP id
+ fp18-20020a056a204b1200b00191e96bed08mr283410pzb.61.1703143190604; 
+ Wed, 20 Dec 2023 23:19:50 -0800 (PST)
+Received: from [157.82.205.15] ([157.82.205.15])
+ by smtp.gmail.com with ESMTPSA id
+ y22-20020a056a00191600b006cef521b151sm894612pfi.168.2023.12.20.23.19.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Dec 2023 23:19:50 -0800 (PST)
+Message-ID: <6e375f20-161f-4e11-b42e-23746faff02f@daynix.com>
+Date: Thu, 21 Dec 2023 16:19:47 +0900
 MIME-Version: 1.0
-In-Reply-To: <20231218090059.2678224-3-gaosong@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7] ui/cocoa: Use NSWindow's ability to resize
+To: Marek Glogowski <smarkusg@gmail.com>
+Cc: Rene Engel <ReneEngel80@emailn.de>, peter.maydell@linaro.org,
+ philmd@linaro.org, kraxel@redhat.com, marcandre.lureau@redhat.com,
+ qemu-devel@nongnu.org
+References: <20231217-cocoa-v7-1-6af21ef75680@daynix.com>
+ <ad45a3b3201a6c9b24138abf2174946b@mail.emailn.de>
+ <d73b8c8e-fde3-49e6-88b8-8f9bfa248509@daynix.com>
+ <71895f08af8ba9f01dd78da158005229@mail.emailn.de>
+ <2a775be4-363a-4e85-ae32-97ceb5927e11@daynix.com>
+ <DB8CB49B-092F-4620-B8AE-67ED92059544@gmail.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bxbb6o5INl9FQDAA--.10604S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Aw43Gw4fJrW3GFW3GF4fXrc_yoW8ZF43pF
- sxAF98GryfAFWxAwsrAa4UuF95Aw1rKr15WFnxKryFvrZIgr1DZFy8Zr97WrWvyws3KFn0
- qrn8Cw1j9a4UtrcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1QV
- y3UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.41,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <DB8CB49B-092F-4620-B8AE-67ED92059544@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,72 +100,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 2023/12/18 下午5:00, Song Gao wrote:
-> we load initrd ramdisk after kernel_high address
+On 2023/12/20 5:06, Marek Glogowski wrote:
+> Hi
 > 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   hw/loongarch/boot.c | 29 ++++++++++++++++++++++++++++-
->   1 file changed, 28 insertions(+), 1 deletion(-)
+> For me, the problem does not occur if you use the maximum screen 
+> resolution available.
+> For me it is 1680x1050 - everything works fine.
+> When I change the screen preference to a smaller screen resolution than 
+> my maximum (1440x900,1024x768 ...) the mouse starts to malfunction. The 
+> mouse pointer works strenuously and with a delay.
 > 
-> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-> index 9f25ea5847..2be6dfb037 100644
-> --- a/hw/loongarch/boot.c
-> +++ b/hw/loongarch/boot.c
-> @@ -21,7 +21,8 @@ static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
->   
->   static int64_t load_kernel_info(struct loongarch_boot_info *info)
->   {
-> -    uint64_t kernel_entry, kernel_low, kernel_high;
-> +    uint64_t kernel_entry, kernel_low, kernel_high, initrd_size;
-> +    ram_addr_t initrd_offset;
->       ssize_t kernel_size;
->   
->       kernel_size = load_elf(info->kernel_filename, NULL,
-> @@ -36,6 +37,32 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
->                        load_elf_strerror(kernel_size));
->           exit(1);
->       }
-> +
-> +    if (info->initrd_filename) {
-> +        initrd_size = get_image_size(info->initrd_filename);
-> +        if (initrd_size > 0) {
-> +            initrd_offset = ROUND_UP(kernel_high, 64 * KiB);
-Do you test self-compressed vmlinuz elf load?
+> Checked on the current version with git qemu-system-ppc AOS4 with V8 and 
+> V7 patch and the older version qemu-system-aarch64 Linux/Fedora
 
-I think that offset of initrd had better be 4 * kernel_size from 
-kernel_high, else uncompressed kernel may overwrite INITRD image.
-such as:
-  initrd_offset = ROUND_UP(kernel_high + 4 * kernel_size, 64 * KiB);
-
-Regards
-Bibo Mao
-> +
-> +            if (initrd_offset + initrd_size > info->ram_size) {
-> +                error_report("memory too small for initial ram disk '%s'",
-> +                             info->initrd_filename);
-> +                exit(1);
-> +            }
-> +
-> +            initrd_size = load_image_targphys(info->initrd_filename, initrd_offset,
-> +                                              info->ram_size - initrd_offset);
-> +        }
-> +
-> +        if (initrd_size == (target_ulong)-1) {
-> +            error_report("could not load initial ram disk '%s'",
-> +                         info->initrd_filename);
-> +            exit(1);
-> +        }
-> +    } else {
-> +        error_report("Need initrd!");
-> +        exit(1);
-> +    }
-> +
->       return kernel_entry;
->   }
->   
-> 
-
+Please tell me your whole command line. It is also nice if you test the 
+combination of  latest QEMU with and without the patches and Fedora.
 
