@@ -2,77 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FBD81B985
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 15:28:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9276F81B989
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 15:30:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGK1Z-0003yB-FH; Thu, 21 Dec 2023 09:27:45 -0500
+	id 1rGK3Z-0005ce-B1; Thu, 21 Dec 2023 09:29:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rGK1Q-0003vN-M8
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 09:27:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rGK1N-0006H4-Eu
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 09:27:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703168850;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SoBAHc2MX6LhjWobKvetwzcVzXLm5oAPnn+ZWU5ayYs=;
- b=KvQbzori/J0ViFiVpF+xgZqfEujIGVFKxilhmH+id+bIKfgqxNoMUmAacPBw1qe1pej/Q3
- yZwZqzeldXFN4W5nu4PdEi6MTJQ1kEUkAsr9jApnell/W9znnGnHal9Lr7l4FWg9b9Kptq
- KP6Y5Loi/ltA/JO+oJD5y1rUC3hZACQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-184-o3aOBeLUNcWFJmeQzdW5vQ-1; Thu, 21 Dec 2023 09:27:26 -0500
-X-MC-Unique: o3aOBeLUNcWFJmeQzdW5vQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E66488370E1;
- Thu, 21 Dec 2023 14:27:25 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.145])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C60431C060AF;
- Thu, 21 Dec 2023 14:27:24 +0000 (UTC)
-Date: Thu, 21 Dec 2023 09:27:23 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-devel@nongnu.org,
- Leonardo Bras <leobras@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 5/6] nbd/server: only traverse NBDExport->clients from
- main loop thread
-Message-ID: <20231221142723.GA1594147@fedora>
-References: <20231221014903.1537962-1-stefanha@redhat.com>
- <20231221014903.1537962-6-stefanha@redhat.com>
- <8ff9a950-4075-4c86-bf5d-df8b90eb450a@redhat.com>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rGK3X-0005cC-5S; Thu, 21 Dec 2023 09:29:47 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rGK3V-0006e5-Ho; Thu, 21 Dec 2023 09:29:46 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a236456fee1so102918066b.1; 
+ Thu, 21 Dec 2023 06:29:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1703168982; x=1703773782; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pdSaC/fndvMGKUjEzphpaCYLwkDVUXBTTEuv6Vyh+pc=;
+ b=Nyy7tm1jwX8MLei27+4lN6cXw5RE7dxr+oxIh1kAw3nqKMnPb2Vp55Yw+G32V84pmE
+ aaP2HftI+IXjCtcNXw/BYbwCeFoVa55PIESdmqRHu9lVVJl5NlbUMHktoyRg1wjgu0Wn
+ S3S2IlYAMMQ4wD+2JV7KA5ib7B81FZR1D1f/Xotub0DujkE2fJeGA+7sst7dDirnUF4Q
+ CF5kX1Pu2rhTf2E7A2aouNriFsECsCG8uefRW5lYtDgXHhwJTg+VTXURZovwbjehmmW0
+ MnGIZNVkDaMJsqlRDYwpn4WV0aci42vQ98AiLxWSo+GF7873rNBbi+GVoMp7FYuqxGnc
+ m9CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703168982; x=1703773782;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pdSaC/fndvMGKUjEzphpaCYLwkDVUXBTTEuv6Vyh+pc=;
+ b=l+nwJww3pTBQhXN58LVgBeCpFk0tgLwJJUopkBN5cBZFQjduEbs9EOBS3/uLgREvHk
+ yHVIQ+QCzv/7RyIUx7zo6XHqywJrehH9O27eoWSZojgchHxRZzSHy8zSfCLo4SG3X488
+ cQJbF3nXiKMEssdks/twKJT6+MW14JQ1b7XBsXk3X99bCv3kOSSALd4nRrED+EfYlR8S
+ +GfRJbvCxh4w4abJzMwWK6zib13yRlgi9eU2YAy1Pjbnn67of9cJ77NAEkEQ8YHXBUYf
+ 6PoVf2chJDatPBYod3JdP43pm5JAxe5p6a1LChJVkF33Rurt9zvZ3vFXO712KZnuFxmG
+ 2EtA==
+X-Gm-Message-State: AOJu0YxwNgvTtGhbBmuhXkTjZnxgZ9FJIrsIPKwOWYdbtwjpmOmu9p1w
+ XoA94LVLD33SVW9aXxmXYXE=
+X-Google-Smtp-Source: AGHT+IGQdnxxGqxZ33HYGKZhcaTKqmko1lz4deeL7vz3CejJWKFkzWxQmqjuNq3iPyAmv+JWhV5dig==
+X-Received: by 2002:a17:906:44c:b0:a23:671c:228a with SMTP id
+ e12-20020a170906044c00b00a23671c228amr3230833eja.55.1703168982159; 
+ Thu, 21 Dec 2023 06:29:42 -0800 (PST)
+Received: from ?IPv6:::1?
+ (p200300faaf1724005cbed9e46dc30ccf.dip0.t-ipconnect.de.
+ [2003:fa:af17:2400:5cbe:d9e4:6dc3:ccf])
+ by smtp.gmail.com with ESMTPSA id
+ z17-20020a170906715100b00a26966683e3sm1026275ejj.144.2023.12.21.06.29.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Dec 2023 06:29:41 -0800 (PST)
+Date: Thu, 21 Dec 2023 14:29:35 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+CC: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_11/12=5D_hw/ppc/pegasos2=3A_Let_p?=
+ =?US-ASCII?Q?egasos2_machine_configure_SuperI/O_functions?=
+In-Reply-To: <9ccd94d1-130f-b009-cd25-f32122c78908@eik.bme.hu>
+References: <20231218185114.119736-1-shentey@gmail.com>
+ <20231218185114.119736-12-shentey@gmail.com>
+ <9ccd94d1-130f-b009-cd25-f32122c78908@eik.bme.hu>
+Message-ID: <30F2BEE1-8EBB-4C24-9C6F-BBE5938AAAE5@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="ltBJVkg+PGj9NUax"
-Content-Disposition: inline
-In-Reply-To: <8ff9a950-4075-4c86-bf5d-df8b90eb450a@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,217 +105,78 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---ltBJVkg+PGj9NUax
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 21, 2023 at 08:23:15AM +0100, Paolo Bonzini wrote:
-> On 12/21/23 02:49, Stefan Hajnoczi wrote:
-> > The NBD clients list is currently accessed from both the export
-> > AioContext and the main loop thread. When the AioContext lock is removed
-> > there will be nothing protecting the clients list.
-> >=20
-> > Adding a lock around the clients list is tricky because NBDClient
-> > structs are refcounted and may be freed from the export AioContext or
-> > the main loop thread. nbd_export_request_shutdown() -> client_close() ->
-> > nbd_client_put() is also tricky because the list lock would be held
-> > while indirectly dropping references to NDBClients.
-> >=20
-> > A simpler approach is to only allow nbd_client_put() and client_close()
-> > calls from the main loop thread. Then the NBD clients list is only
-> > accessed from the main loop thread and no fancy locking is needed.
-> >=20
-> > nbd_trip() just needs to reschedule itself in the main loop AioContext
-> > before calling nbd_client_put() and client_close(). This costs more CPU
-> > cycles per NBD request but is needed for thread-safety when the
-> > AioContext lock is removed.
-> >=20
-> > Note that nbd_client_get() can still be called from either thread, so
-> > make NBDClient->refcount atomic.
-> >=20
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > ---
-> >   nbd/server.c | 23 ++++++++++++++++++++---
-> >   1 file changed, 20 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/nbd/server.c b/nbd/server.c
-> > index 0b09ccc8dc..527fbdab4a 100644
-> > --- a/nbd/server.c
-> > +++ b/nbd/server.c
-> > @@ -122,7 +122,7 @@ struct NBDMetaContexts {
-> >   };
-> >   struct NBDClient {
-> > -    int refcount;
-> > +    int refcount; /* atomic */
-> >       void (*close_fn)(NBDClient *client, bool negotiated);
-> >       NBDExport *exp;
-> > @@ -1501,14 +1501,17 @@ static int coroutine_fn nbd_receive_request(NBD=
-Client *client, NBDRequest *reque
-> >   #define MAX_NBD_REQUESTS 16
-> > +/* Runs in export AioContext and main loop thread */
-> >   void nbd_client_get(NBDClient *client)
-> >   {
-> > -    client->refcount++;
-> > +    qatomic_inc(&client->refcount);
-> >   }
-> >   void nbd_client_put(NBDClient *client)
-> >   {
-> > -    if (--client->refcount =3D=3D 0) {
-> > +    assert(qemu_in_main_thread());
-> > +
-> > +    if (qatomic_fetch_dec(&client->refcount) =3D=3D 1) {
-> >           /* The last reference should be dropped by client->close,
-> >            * which is called by client_close.
-> >            */
-> > @@ -1531,6 +1534,8 @@ void nbd_client_put(NBDClient *client)
-> >   static void client_close(NBDClient *client, bool negotiated)
-> >   {
-> > +    assert(qemu_in_main_thread());
-> > +
-> >       if (client->closing) {
-> >           return;
-> >       }
-> > @@ -2938,8 +2943,15 @@ static coroutine_fn void nbd_trip(void *opaque)
-> >       int ret;
-> >       Error *local_err =3D NULL;
-> > +    /*
-> > +     * Note that nbd_client_put() and client_close() must be called fr=
-om the
-> > +     * main loop thread. Use aio_co_reschedule_self() to switch AioCon=
-text
-> > +     * before calling these functions.
-> > +     */
-> > +
-> >       trace_nbd_trip();
-> >       if (client->closing) {
-> > +        aio_co_reschedule_self(qemu_get_aio_context());
-> >           nbd_client_put(client);
-> >           return;
-> >       }
-> > @@ -2949,6 +2961,7 @@ static coroutine_fn void nbd_trip(void *opaque)
-> >            * We're switching between AIO contexts. Don't attempt to rec=
-eive a new
-> >            * request and kick the main context which may be waiting for=
- us.
-> >            */
-> > +        aio_co_reschedule_self(qemu_get_aio_context());
-> >           nbd_client_put(client);
-> >           client->recv_coroutine =3D NULL;
-> >           aio_wait_kick();
-> > @@ -3013,6 +3026,8 @@ static coroutine_fn void nbd_trip(void *opaque)
-> >       qio_channel_set_cork(client->ioc, false);
-> >   done:
-> >       nbd_request_put(req);
-> > +
-> > +    aio_co_reschedule_self(qemu_get_aio_context());
-> >       nbd_client_put(client);
-> >       return;
->=20
-> This is very expensive to do on every NBD receive, considering that it re=
-ally
-> can happen only when closing (see the assertion in nbd_client_put).
->=20
-> In Linux there is a common pattern of "if refcount could go to zero, take
-> a lock before doing the decrement".  We can do something similar with "if
-> refcount could go to zero, move to main iothread before doing the decreme=
-nt":
+Am 19=2E Dezember 2023 00:11:37 UTC schrieb BALATON Zoltan <balaton@eik=2E=
+bme=2Ehu>:
+>On Mon, 18 Dec 2023, Bernhard Beschow wrote:
+>> This is a preparation for implementing relocation and toggling of Super=
+I/O
+>> functions in the VT8231 device model=2E Upon reset, all SuperI/O functi=
+ons will be
+>> deactivated, so in case if no -bios is given, let the machine configure=
+ those
+>> functions the same way pegasos2=2Erom would do=2E For now the meantime =
+this will be
+>
+>"same way pegasos2 firmware would do"=2E
 
-Nice suggestion, thanks!
+Good idea=2E Will change=2E
 
->=20
-> diff --git a/nbd/server.c b/nbd/server.c
-> index 895cf0a7525..aec306923d8 100644
-> --- a/nbd/server.c
-> +++ b/nbd/server.c
-> @@ -1529,6 +1529,21 @@ void nbd_client_put(NBDClient *client)
->      }
->  }
-> +static bool nbd_client_put_nonzero(NBDClient *client)
-> +{
-> +    int old =3D qatomic_read(&client->refcount);
-> +    do {
-> +        if (old =3D=3D 1) {
-> +            return false;
-> +        }
-> +
-> +        int expected =3D old;
-> +        old =3D qatomic_cmpxchg(&client->refcount, expected, expected - =
-1);
-> +    } while (old !=3D expected);
-> +
-> +    return true;
-> +}
-> +
->  static void client_close(NBDClient *client, bool negotiated)
->  {
->      if (client->closing) {
-> @@ -2936,15 +2951,14 @@ static coroutine_fn int nbd_handle_request(NBDCli=
-ent *client,
->  static coroutine_fn void nbd_trip(void *opaque)
->  {
->      NBDClient *client =3D opaque;
-> -    NBDRequestData *req;
-> +    NBDRequestData *req =3D NULL;
->      NBDRequest request =3D { 0 };    /* GCC thinks it can be used uninit=
-ialized */
->      int ret;
->      Error *local_err =3D NULL;
->      trace_nbd_trip();
->      if (client->closing) {
-> -        nbd_client_put(client);
-> -        return;
-> +        goto done;
->      }
->      if (client->quiescing) {
-> @@ -2952,10 +2966,9 @@ static coroutine_fn void nbd_trip(void *opaque)
->           * We're switching between AIO contexts. Don't attempt to receiv=
-e a new
->           * request and kick the main context which may be waiting for us.
->           */
-> -        nbd_client_put(client);
->          client->recv_coroutine =3D NULL;
->          aio_wait_kick();
-> -        return;
-> +        goto done;
->      }
->      req =3D nbd_request_get(client);
-> @@ -3015,8 +3028,13 @@ static coroutine_fn void nbd_trip(void *opaque)
->      qio_channel_set_cork(client->ioc, false);
->  done:
-> -    nbd_request_put(req);
-> -    nbd_client_put(client);
-> +    if (req) {
-> +        nbd_request_put(req);
-> +    }
-> +    if (!nbd_client_put_nonzero(client)) {
-> +        aio_co_reschedule_self(qemu_get_aio_context());
-> +        nbd_client_put(client);
-> +    }
->      return;
->  disconnect:
->=20
-> I think adding the "if (req)" should also simplify a little bit the addit=
-ion of the lock.
->=20
-> Paolo
->=20
+> You can drop the last sentence about no-op as it does not make much sens=
+e as it is or reword it if you want to keep it=2E
 
---ltBJVkg+PGj9NUax
-Content-Type: application/pgp-signature; name="signature.asc"
+Yeah, I messed up the last sentence somehow=2E I'll drop it then=2E
 
------BEGIN PGP SIGNATURE-----
+Best regards,
+Bernhard
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWES0sACgkQnKSrs4Gr
-c8h6MQf+I89CX+fRXh0XDMrobZC1FInRpAOz+JqUjoLEc9KeMi8PvWu8Qan0NXm2
-J6eJsN3B+qR9NLo504tkI1g/L3l3wfbx962+eyPbUvcsCtQwrgaz0l38VI8XixaU
-ujSjDzoduCsPEFWGRA8ombZO+hfbrrBm0y9aW15Xl2oLpOQbZ3Lyz1/hbYpjKcT8
-+SFhQ9l4mzXuaZiD8r8yJG+LWF1bXVrhLcLjT8AF7gcAqOzPGDPtlq3hBivjFz0m
-1B/d20ou4VNXIdBRCSI8bsmkESt18ld3mdvBBZK0WKGHEwE+skm+emtpPYnmgr8v
-pIrcKOhcW/JtQlq6V41ekOgVcRV35Q==
-=Q+ht
------END PGP SIGNATURE-----
-
---ltBJVkg+PGj9NUax--
-
+>
+>Regards,
+>BALATON Zoltan
+>
+>> a no-op=2E
+>>=20
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> ---
+>> hw/ppc/pegasos2=2Ec | 15 +++++++++++++++
+>> 1 file changed, 15 insertions(+)
+>>=20
+>> diff --git a/hw/ppc/pegasos2=2Ec b/hw/ppc/pegasos2=2Ec
+>> index 3203a4a728=2E=2E0a40ebd542 100644
+>> --- a/hw/ppc/pegasos2=2Ec
+>> +++ b/hw/ppc/pegasos2=2Ec
+>> @@ -285,6 +285,15 @@ static void pegasos2_pci_config_write(Pegasos2Mach=
+ineState *pm, int bus,
+>>     pegasos2_mv_reg_write(pm, pcicfg + 4, len, val);
+>> }
+>>=20
+>> +static void pegasos2_superio_write(Pegasos2MachineState *pm, uint32_t =
+addr,
+>> +                                   uint32_t val)
+>> +{
+>> +    AddressSpace *as =3D CPU(pm->cpu)->as;
+>> +
+>> +    stb_phys(as, PCI1_IO_BASE + 0x3f0, addr);
+>> +    stb_phys(as, PCI1_IO_BASE + 0x3f1, val);
+>> +}
+>> +
+>> static void pegasos2_machine_reset(MachineState *machine, ShutdownCause=
+ reason)
+>> {
+>>     Pegasos2MachineState *pm =3D PEGASOS2_MACHINE(machine);
+>> @@ -310,6 +319,12 @@ static void pegasos2_machine_reset(MachineState *m=
+achine, ShutdownCause reason)
+>>=20
+>>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+>>                               PCI_INTERRUPT_LINE, 2, 0x9);
+>> +    pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+>> +                              0x50, 1, 0x6);
+>> +    pegasos2_superio_write(pm, 0xf4, 0xbe);
+>> +    pegasos2_superio_write(pm, 0xf6, 0xef);
+>> +    pegasos2_superio_write(pm, 0xf7, 0xfc);
+>> +    pegasos2_superio_write(pm, 0xf2, 0x14);
+>>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+>>                               0x50, 1, 0x2);
+>>     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 0) << 8) |
+>>=20
 
