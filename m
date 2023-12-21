@@ -2,84 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D19681B795
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 14:27:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1134D81B7C6
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 14:31:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGJ3Y-0006rj-DN; Thu, 21 Dec 2023 08:25:44 -0500
+	id 1rGJ7r-0008Ch-1j; Thu, 21 Dec 2023 08:30:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rGJ3W-0006ra-FK
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 08:25:42 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rGJ7p-0008CY-9J
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 08:30:09 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rGJ3T-0008WN-Im
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 08:25:42 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6d5c4cb8a4cso370751b3a.3
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 05:25:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1703165138; x=1703769938; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dtCpxS5Y5FkbYHPyPu9ckoSAdShFhEOJjAO41TPz1fc=;
- b=OuFqvPPL/gf6XLSvU091QrezYv2n5vn8DfYSOPPEfebUXWYcxxKRTpyAPwjcJHdlZm
- 12uEGPfFjp+9JE8GlUCpYYqFSMLNwi3hdaLn2BpeVNgh87JER1ijAehQVx5FbzqPaZ+a
- xAFduEuyuxrsnPfDXg2dgtPwYcu7KdwNk23o7pR0K4J1mlvKBfzm1WWECQwcBlSaZneF
- 6P2RBsyknf7Fn3FqiMORPk575YTh//vjJWsYUf9uE0oGuyEVYKSe6VYINZa8uSwvNpzG
- K7gsnMtMn+slyJ+apvtpFoplLlQyMJ3FxAtXzE4Fytvm2JO532xPMtHszGRw2XWm6NBA
- Cpfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703165138; x=1703769938;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dtCpxS5Y5FkbYHPyPu9ckoSAdShFhEOJjAO41TPz1fc=;
- b=S5A+rJZYLUy+B+oGv/ZddiPTvXx1fXDH9SzZHn89KeMpMjV2h8j+b79oKrq5TUM+O9
- MYq5JU9A+x1Wg1FMHdYE5IG8O0sO45mRkCB5Sw2wffKcNCOUafYiX/C9aHCntnOyj9bo
- ioAvpDeuGPXIZA4pyrsERTWV4kJ2d1SQdXu3LRpciFsdHKwxIKeMaXvzQVYqUheB1lcj
- dIXPqrk0ztrEc81YQ/omY+FJ3DpkIa8Ra4NI8Opm+oTsFz8olDUYtw+fUY1K91SqmBg/
- pALoVjT00tNjCyQ3bR/i7edGLeBtOyC4/QQI+brzKhhkQifg9qD02BdGmKcD1AA767b3
- /BmQ==
-X-Gm-Message-State: AOJu0Yy123NB0wDyv1GiTrTwP2hUGm5cmmNxxOCdzlIapzeEwjcj9+uB
- 3IHwFH98cdB8ubBhURBis4D0bw==
-X-Google-Smtp-Source: AGHT+IGmQ4NVTK242CFrIh95WymHvHQRAmABQI/g7pxJl1ifoOvOKw0JhFlZD7/7t1UrpNArEKrydQ==
-X-Received: by 2002:a17:902:cec7:b0:1d3:df5f:65fd with SMTP id
- d7-20020a170902cec700b001d3df5f65fdmr3797948plg.126.1703165137953; 
- Thu, 21 Dec 2023 05:25:37 -0800 (PST)
-Received: from [192.168.68.110] ([179.93.21.205])
- by smtp.gmail.com with ESMTPSA id
- ja15-20020a170902efcf00b001d3ef57d916sm1618410plb.10.2023.12.21.05.25.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Dec 2023 05:25:37 -0800 (PST)
-Message-ID: <01b04447-ec85-448a-9b84-e73e35864412@ventanamicro.com>
-Date: Thu, 21 Dec 2023 10:25:33 -0300
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rGJ7Z-0002cO-Ri
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 08:30:08 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 3F58721DB4;
+ Thu, 21 Dec 2023 13:29:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1703165390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=92jyCrKBY09QD/qaZ2AzhBSeFLZ3qELGx5CVaqfWw/s=;
+ b=KE+zlEzmlQBpacdu+xkUubesPYEed0B214K6xDmG48f90QZS0Uvp4txAe3zocklLDtGSKk
+ 6qGZGcmig7OMsaHlFt+BmqJ4p088eaMXL4hBEAF48WjrmOCF2YiySf/SDwHdUuuzKRPQ6Z
+ +b+t6c+pXTWlXFdeJVMMb1uZVBi8GwU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1703165390;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=92jyCrKBY09QD/qaZ2AzhBSeFLZ3qELGx5CVaqfWw/s=;
+ b=vozfp+RQWLtvCchqEjMbEnJpOldbMFda46HzHi0JETY82MnW6aIga3/a2A6ZuD3VNLQ20d
+ rIRDxDrmIfTXo1Ag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1703165390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=92jyCrKBY09QD/qaZ2AzhBSeFLZ3qELGx5CVaqfWw/s=;
+ b=KE+zlEzmlQBpacdu+xkUubesPYEed0B214K6xDmG48f90QZS0Uvp4txAe3zocklLDtGSKk
+ 6qGZGcmig7OMsaHlFt+BmqJ4p088eaMXL4hBEAF48WjrmOCF2YiySf/SDwHdUuuzKRPQ6Z
+ +b+t6c+pXTWlXFdeJVMMb1uZVBi8GwU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1703165390;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=92jyCrKBY09QD/qaZ2AzhBSeFLZ3qELGx5CVaqfWw/s=;
+ b=vozfp+RQWLtvCchqEjMbEnJpOldbMFda46HzHi0JETY82MnW6aIga3/a2A6ZuD3VNLQ20d
+ rIRDxDrmIfTXo1Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 13F6E13725;
+ Thu, 21 Dec 2023 13:29:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 7XnlMsw9hGVcBgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 21 Dec 2023 13:29:48 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Warner Losh <imp@bsdimp.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Dave Blanchard <dave@killthe.net>, QEMU Developers <qemu-devel@nongnu.org>
+Subject: Re: Qemu resets terminal to crazy defaults
+In-Reply-To: <c76b134d-bab8-fea2-6df2-bd9baaa80771@eik.bme.hu>
+References: <20231219132135.c4bff4807c9d7215b179f240@killthe.net>
+ <87plz22d9r.fsf@suse.de>
+ <CAFEAcA-RJUUZo0KYujQskkAim_qXkJxtuSb9wtgxoP0XSEtKYQ@mail.gmail.com>
+ <CANCZdfqX=URh2C+upKQPF9sg9TX6oZpHfrYF6rGRNz-6SdbhLw@mail.gmail.com>
+ <87a5q4rj8j.fsf@suse.de> <c76b134d-bab8-fea2-6df2-bd9baaa80771@eik.bme.hu>
+Date: Thu, 21 Dec 2023 10:29:45 -0300
+Message-ID: <877cl7r8dy.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] target/riscv: UPDATE xATP write CSR
-Content-Language: en-US
-To: Irina Ryapolova <irina.ryapolova@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
-References: <20231212110305.45443-1-irina.ryapolova@syntacore.com>
- <20231212110305.45443-2-irina.ryapolova@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231212110305.45443-2-irina.ryapolova@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x434.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ TO_DN_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -3.10
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,107 +120,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+BALATON Zoltan <balaton@eik.bme.hu> writes:
 
+> On Wed, 20 Dec 2023, Fabiano Rosas wrote:
+>> Warner Losh <imp@bsdimp.com> writes:
+>>
+>>> On Tue, Dec 19, 2023, 1:55=E2=80=AFPM Peter Maydell <peter.maydell@lina=
+ro.org>
+>>> wrote:
+>>>
+>>>> On Tue, 19 Dec 2023 at 19:40, Fabiano Rosas <farosas@suse.de> wrote:
+>>>>>
+>>>>> Dave Blanchard <dave@killthe.net> writes:
+>>>>>
+>>>>>> Hello all, can you please help me to understand what Qemu is doing
+>>>> here?
+>>>>>>
+>>>>>> When connecting to the guest for example using a serial/tcp/telnet
+>>>> link, some kind of code is being immediately transmitted over the link
+>>>> which screws up my Xterm terminal settings, including changing the text
+>>>> cursor shape and most notably, disabling wraparound of long lines, so =
+that
+>>>> they get truncated at the edge of the window instead.
+>>>>>>
+>>>>>> Can this behavior be disabled by command line, and if not, what is t=
+he
+>>>> code doing exactly so I can know where to disable it? I tried disablin=
+g all
+>>>> calls to tcsetattr() but that had no effect.
+>>>>
+>>>>> I looked into the automatic margins issue a long time ago and I seem =
+to
+>>>>> remember it was caused by the firmware (SeaBIOS) configuring the
+>>>>> terminal and QEMU just never returning it to the original state. I
+>>>>> eventually gave up trying to fix it because I was having trouble find=
+ing
+>>>>> a reliable point in QEMU shutdown sequence to enable the capability
+>>>>> back. Nowadays I just run 'tput smam' after quitting QEMU.
+>>>>
+>>>> To check whether this is happening because of the BIOS (or other
+>>>> guest code) vs QEMU itself, you can try running QEMU in a configuration
+>>>> where it doesn't run any BIOS code. One I happen to know offhand
+>>>> is an arm one:
+>>>>
+>>>>    qemu-system-aarch64 -M virt -serial stdio
+>>>>
+>>>> This won't print anything, because we haven't loaded any guest
+>>>> code at all and there's no default BIOS on this machine type.
+>>>> (The emulated CPU is sat in effectively a tight loop taking
+>>>> exceptions.) If that messes up the terminal settings, then it's
+>>>> likely being done by something inside QEMU. If it doesn't, then
+>>>> it sounds like as you say it'll be because of the SeaBIOS
+>>>> firmware writing stuff to the terminal.
+>>>>
+>>>> (There might be a way to run the x86 PC machine without it
+>>>> running a BIOS, for a similar test, but I don't know if there
+>>>> is or how to do it off the top of my head.)
+>>>>
+>>
+>> I tried using an empty bios file. I see with 'info registers' that the
+>> vcpu is spinning. After quitting QEMU, the terminal state is unchanged:
+>>
+>> $ dd if=3D/dev/zero of=3Ddummy-bios.bin count=3D256 bs=3D1k
+>> $ qemu-system-x86_64 -nographic -bios ./dummy-bios.bin
+>> $ <line wrap preserved>
+>>
+>> With SeaBIOS, the issue manifests:
+>>
+>> $ qemu-system-x86_64 -nographic
+>> SeaBIOS (version rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org)
+>> <bunch of boot and iPXE messages>
+>> ...
+>> $ <line wrap disabled>
+>>
+>>>> I do know that QEMU doesn't clean up things the guest does
+>>>> to the terminal, because for instance if you have a serial
+>>>> terminal and the guest puts it into "emit boldface/bright",
+>>>> that doesn't go back to normal non-bold text when QEMU exits.
+>>>> (It would be nice if it did do that...)
+>>>>
+>>>
+>>> It would be nice indeed. Trouble is quarrying the state beforehand to k=
+now
+>>> what to reset by random software producing effectively random bytes..
+>>>
+>>
+>> Maybe we could focus on the more annoying/obvious state? The line wrap
+>> issue is a very salient one, specially since QEMU command lines
+>> themselves tend to take more than one line.
+>>
+>>> ESC c
+>>>
+>>> is the reset sequence as well...but that's likely too big a hammer.
+>
+> There's 'stty sane' which is supposed to reset to reasonable values, mayb=
+e=20
+> that could be used but I'm not sure it could fix all strange states. It's=
+=20
+> better than reset as reset also drops scrollback history.
+>
+> Regards,
+> BALATON Zoltan
 
-On 12/12/23 08:03, Irina Ryapolova wrote:
-> Added xATP_MODE validation for vsatp/hgatp CSRs.
-> The xATP register is an SXLEN-bit read/write WARL register, so
-> the legal value must be returned (See riscv-privileged-20211203, SATP/VSATP/HGATP CSRs).
-> 
-> Signed-off-by: Irina Ryapolova <irina.ryapolova@syntacore.com>
-> ---
+For this one issue of linewrapping being disabled, we could probe the
+state of the capability somewhere at QEMU start:
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+\033[?7$p
+7;1$y  <-- 1 means enabled, 2 means disabled
 
->   target/riscv/csr.c | 52 ++++++++++++++++++++++++++--------------------
->   1 file changed, 29 insertions(+), 23 deletions(-)
-> 
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index 735fb27be7..6d7a3dd9aa 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -1282,6 +1282,32 @@ static bool validate_vm(CPURISCVState *env, target_ulong vm)
->       return get_field(mode_supported, (1 << vm));
->   }
->   
-> +static target_ulong legalize_xatp(CPURISCVState *env, target_ulong old_xatp,
-> +                                  target_ulong val)
-> +{
-> +    target_ulong mask;
-> +    bool vm;
-> +    if (riscv_cpu_mxl(env) == MXL_RV32) {
-> +        vm = validate_vm(env, get_field(val, SATP32_MODE));
-> +        mask = (val ^ old_xatp) & (SATP32_MODE | SATP32_ASID | SATP32_PPN);
-> +    } else {
-> +        vm = validate_vm(env, get_field(val, SATP64_MODE));
-> +        mask = (val ^ old_xatp) & (SATP64_MODE | SATP64_ASID | SATP64_PPN);
-> +    }
-> +
-> +    if (vm && mask) {
-> +        /*
-> +         * The ISA defines SATP.MODE=Bare as "no translation", but we still
-> +         * pass these through QEMU's TLB emulation as it improves
-> +         * performance.  Flushing the TLB on SATP writes with paging
-> +         * enabled avoids leaking those invalid cached mappings.
-> +         */
-> +        tlb_flush(env_cpu(env));
-> +        return val;
-> +    }
-> +    return old_xatp;
-> +}
-> +
->   static target_ulong legalize_mpp(CPURISCVState *env, target_ulong old_mpp,
->                                    target_ulong val)
->   {
-> @@ -2997,31 +3023,11 @@ static RISCVException read_satp(CPURISCVState *env, int csrno,
->   static RISCVException write_satp(CPURISCVState *env, int csrno,
->                                    target_ulong val)
->   {
-> -    target_ulong mask;
-> -    bool vm;
-> -
->       if (!riscv_cpu_cfg(env)->mmu) {
->           return RISCV_EXCP_NONE;
->       }
->   
-> -    if (riscv_cpu_mxl(env) == MXL_RV32) {
-> -        vm = validate_vm(env, get_field(val, SATP32_MODE));
-> -        mask = (val ^ env->satp) & (SATP32_MODE | SATP32_ASID | SATP32_PPN);
-> -    } else {
-> -        vm = validate_vm(env, get_field(val, SATP64_MODE));
-> -        mask = (val ^ env->satp) & (SATP64_MODE | SATP64_ASID | SATP64_PPN);
-> -    }
-> -
-> -    if (vm && mask) {
-> -        /*
-> -         * The ISA defines SATP.MODE=Bare as "no translation", but we still
-> -         * pass these through QEMU's TLB emulation as it improves
-> -         * performance.  Flushing the TLB on SATP writes with paging
-> -         * enabled avoids leaking those invalid cached mappings.
-> -         */
-> -        tlb_flush(env_cpu(env));
-> -        env->satp = val;
-> -    }
-> +    env->satp = legalize_xatp(env, env->satp, val);
->       return RISCV_EXCP_NONE;
->   }
->   
-> @@ -3506,7 +3512,7 @@ static RISCVException read_hgatp(CPURISCVState *env, int csrno,
->   static RISCVException write_hgatp(CPURISCVState *env, int csrno,
->                                     target_ulong val)
->   {
-> -    env->hgatp = val;
-> +    env->hgatp = legalize_xatp(env, env->hgatp, val);
->       return RISCV_EXCP_NONE;
->   }
->   
-> @@ -3772,7 +3778,7 @@ static RISCVException read_vsatp(CPURISCVState *env, int csrno,
->   static RISCVException write_vsatp(CPURISCVState *env, int csrno,
->                                     target_ulong val)
->   {
-> -    env->vsatp = val;
-> +    env->vsatp = legalize_xatp(env, env->vsatp, val);
->       return RISCV_EXCP_NONE;
->   }
->   
+And then restore it when shutting down. I think it would be worth it
+because this issue has been present in QEMU for a long time. In fact,
+this thread from 2019 from where I took the above information already
+mentions QEMU "leaving the terminal in a weird state":
+
+https://unix.stackexchange.com/questions/558770/how-to-query-the-terminal-s=
+tate-that-is-set-by-escape-sequences-such-as-tput-sma
+
+There's a catch though with the above escape sequence which is that
+terminal multiplexers such as tmux and screen will not pass it down to
+the terminal emulator as is. They both require some wrapping of the
+sequence.
+
+Screen requires: \033P<query sequence>\033\\
+Tmux requires:   \033Ptmux;<query sequence>\033\\
+
+with the sequence used by screen also working if given directly to the
+terminal emulator (tested w/ TERM=3Dxterm-256color via xfce-terminal), so
+the only special case really is tmux.
+
+I'd say we could have a routine, probably at char.c that probes the
+state and registers an atexit handler (or similar) to restore the
+state. In time, if we find more ways in which the guest can mess up the
+terminal state, we could evaluate case-by-case and add code for the more
+annoying issues.
+
 
