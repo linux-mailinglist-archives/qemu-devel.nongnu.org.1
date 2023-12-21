@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5609C81AD65
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C25F81AD73
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:26:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG9ef-0007EZ-EE; Wed, 20 Dec 2023 22:23:25 -0500
+	id 1rG9el-0007Tc-RH; Wed, 20 Dec 2023 22:23:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9eX-00073j-J2
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:17 -0500
-Received: from mail-qv1-xf2b.google.com ([2607:f8b0:4864:20::f2b])
+ id 1rG9ed-0007MC-3M
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:24 -0500
+Received: from mail-qv1-xf2c.google.com ([2607:f8b0:4864:20::f2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9eV-0006le-Nl
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:17 -0500
-Received: by mail-qv1-xf2b.google.com with SMTP id
- 6a1803df08f44-67ef18444ecso1889916d6.0
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:23:15 -0800 (PST)
+ id 1rG9eZ-0006m1-Qv
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:22 -0500
+Received: by mail-qv1-xf2c.google.com with SMTP id
+ 6a1803df08f44-67f5132e8fcso2198296d6.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:23:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703128995; x=1703733795; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703128999; x=1703733799; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tQp9TiKTfW4pKwvJ10bzG77ZWz+yEVc510AVAe1oXAE=;
- b=uOoZLy5UnjKMQ8rx6qd5iZxiUlLWo2gIRHPZTrsdHEj7fLQ7hplHiTEf/9Xpw0bM3j
- yKJiBEOGQS0VuAWLdanCRUdRvo6WoDXA/fWdYUyXoebjbWpBikwAnBiVk2LP/p1fRXqn
- jCtkDhlW7pxDK6zOHq8aYoCN/LnsUbbBy7cLTqmhbirOEvtQLgHC7+/Pl2IngugHa6+Z
- E+vftNA4JcLFOj4eBzT3WCPI0JXc1BTT90xUDTaeXZuGJeOv+hJFP5oqJzag6uwaRsMm
- 5NUq4Gk4ubbJIF2vzmWMPYvOlE1pfmxtmMjOB1a1VN2XtYEnD5nJL7LW1b6G3MuLHbMV
- PntA==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=ST+wM9tjpfXqa3kAnw/dfiVCW5QDzvQ490UJDA5XbhQ=;
+ b=tW+fvz18NYE2tG4EeTsERmuyAC7clHpHJ9u7bOgOa+8h6zfHPoyK/i+8AahGZ9r2lR
+ 9nENrTAdLVy+v/5nUPOrnlT145Nc0nA0YHW2P7o+k3rvSDZCdnO4UOrwuv7g9RTydKw6
+ 6CsN9Y7Bsmw+NRC8xhBBM/ZHKJlp9Yg6WDFGr9ENzw+m9zbKGXzByucEs25bM0KO+wJd
+ nKqcYtzMFzWe0+gKDNrK0mAO+uBxpabvZuukQGJQxZnCwpUXs48ipqSkHDh+79Xs/xHU
+ zay8SQOUJGJlPyf2ziRKv/8VTVmROxT8xrgWUky1nl341Flg59Q0jSpdlO1H5WPYVrGJ
+ GREg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703128995; x=1703733795;
+ d=1e100.net; s=20230601; t=1703128999; x=1703733799;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tQp9TiKTfW4pKwvJ10bzG77ZWz+yEVc510AVAe1oXAE=;
- b=PY/GHIW9Qa81H+5G0mjMfvVl4V3i7v4b3cWeGxRMC7TTnKn6pxD9WZ+Cut1xqKP55s
- eKQxMhms7s0M2KOtxFdoFi2qisE1453ljvadSYTHxpTMwTe8EC38ZFtvbf6reTzLeGqF
- O0quL54pp2P2a0kuud8qwkGw50Rvnzum/n6bDO7CUJuInejuUGDMd+/8nwLU8Oyois79
- 3SvEj+MIdaASzZVPR5D3NY4bJLm54+xUO5jSMVKXBs4KS6shjh9whekXc1YmZa0V2W0E
- yvInqc+xAwZP7jkfqym9vWVQIBH1UHSe5BBNVbqsbbNO0tnR3DSfif7SJmtZ8IFTiUUY
- NISA==
-X-Gm-Message-State: AOJu0YznC9CdAPgR2c8e+2ShTqB7jQfU5QqvBFQeMGEvMf/8vDr/XL0o
- +QJIlWSMcJds29VjC4xidwrNIscz78paTO6EXQSnLwqQ
-X-Google-Smtp-Source: AGHT+IEpz/868IrBupPseqrcbL++vUuW7a6wLmf2G65DNMKHwg0IVfVEYjgN1GB808O2JGJ1Vnn6NQ==
-X-Received: by 2002:a05:6214:d0c:b0:67f:4819:30db with SMTP id
- 12-20020a0562140d0c00b0067f481930dbmr7666639qvh.92.1703128994816; 
- Wed, 20 Dec 2023 19:23:14 -0800 (PST)
+ bh=ST+wM9tjpfXqa3kAnw/dfiVCW5QDzvQ490UJDA5XbhQ=;
+ b=mLFjXE2UW5GSuxXSqSdSrA6AuF/yyGHjcHHinvrTVG4AkjhVJKoD0CrYHKK2Ly60zf
+ uMJZwmTrkI0y02fq1jdgqsU87rdKnFZw94iiYZBYSu7KkHd06g5GPb4F+u9+HJlx1XJ0
+ mXWVE/8jeyf2QYC75FXfxCRrTMhlpxEolGGspW5EPxrX/gdSMS5V8pv/RoALVHjV3z9q
+ ur6O2ah53nGuAsEzkaFyqMKAZSAKh/wmoeaYb45TYRmTlKm7+ymD6sGi6qbSoDo4cSFJ
+ xYEjp17c8es963VPrgHSNIVoGe7nMa9urdXs3ekkYHqpWbx+45oQgbdmEoyB0MHIB6XO
+ WqsQ==
+X-Gm-Message-State: AOJu0Yw2pQlOCeqxHu3sA8+EmKAqhhDSbu5r6RQTmfiqzZkNcK1hq4UD
+ CctNiih5Uw6V1Ux3iJfS/z0bx/K0rZ7kxO1YQmICXitr
+X-Google-Smtp-Source: AGHT+IHGVIDNJq37ne9Ph33WDkIWXZqMDuWb5IxPDfD5bHzHw4FtrMPbd+Zjua72QUkKddbXNeA3Ew==
+X-Received: by 2002:a05:6214:2a8b:b0:67f:49c:4b6c with SMTP id
+ jr11-20020a0562142a8b00b0067f049c4b6cmr16050390qvb.118.1703128998793; 
+ Wed, 20 Dec 2023 19:23:18 -0800 (PST)
 Received: from stoup.. ([172.58.139.164]) by smtp.gmail.com with ESMTPSA id
- l16-20020ad44d10000000b0067f7b6318b9sm347257qvl.10.2023.12.20.19.23.11
+ l16-20020ad44d10000000b0067f7b6318b9sm347257qvl.10.2023.12.20.19.23.15
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Dec 2023 19:23:14 -0800 (PST)
+ Wed, 20 Dec 2023 19:23:18 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 46/71] hw/pci-host: Constify VMState
-Date: Thu, 21 Dec 2023 14:16:27 +1100
-Message-Id: <20231221031652.119827-47-richard.henderson@linaro.org>
+Subject: [PATCH v2 47/71] hw/ppc: Constify VMState
+Date: Thu, 21 Dec 2023 14:16:28 +1100
+Message-Id: <20231221031652.119827-48-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231221031652.119827-1-richard.henderson@linaro.org>
 References: <20231221031652.119827-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2b;
- envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,229 +89,409 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/pci-host/astro.c      |  4 ++--
- hw/pci-host/bonito.c     |  2 +-
- hw/pci-host/designware.c | 10 +++++-----
- hw/pci-host/dino.c       |  2 +-
- hw/pci-host/gpex.c       |  2 +-
- hw/pci-host/gt64120.c    |  2 +-
- hw/pci-host/i440fx.c     |  2 +-
- hw/pci-host/ppce500.c    |  6 +++---
- hw/pci-host/q35.c        |  2 +-
- hw/pci-host/raven.c      |  2 +-
- hw/pci-host/versatile.c  |  2 +-
- 11 files changed, 18 insertions(+), 18 deletions(-)
+ hw/ppc/ppc.c            |  2 +-
+ hw/ppc/ppc4xx_pci.c     |  6 +++---
+ hw/ppc/prep_systemio.c  |  2 +-
+ hw/ppc/rs6000_mc.c      |  2 +-
+ hw/ppc/spapr.c          | 20 ++++++++++----------
+ hw/ppc/spapr_caps.c     |  2 +-
+ hw/ppc/spapr_cpu_core.c | 12 ++++++------
+ hw/ppc/spapr_drc.c      |  8 ++++----
+ hw/ppc/spapr_iommu.c    |  6 +++---
+ hw/ppc/spapr_nvdimm.c   |  4 ++--
+ hw/ppc/spapr_ovec.c     |  2 +-
+ hw/ppc/spapr_pci.c      |  6 +++---
+ hw/ppc/spapr_rtc.c      |  2 +-
+ hw/ppc/spapr_vio.c      |  2 +-
+ 14 files changed, 38 insertions(+), 38 deletions(-)
 
-diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index 7d68ccee7e..f4de70475c 100644
---- a/hw/pci-host/astro.c
-+++ b/hw/pci-host/astro.c
-@@ -459,7 +459,7 @@ static const VMStateDescription vmstate_elroy = {
-     .name = "Elroy",
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index be167710a3..c532d79f0e 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -1066,7 +1066,7 @@ const VMStateDescription vmstate_ppc_timebase = {
      .version_id = 1,
      .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(hpa, ElroyState),
-         VMSTATE_UINT32(pci_bus_num, ElroyState),
-         VMSTATE_UINT64(config_address, ElroyState),
-@@ -691,7 +691,7 @@ static const VMStateDescription vmstate_astro = {
-     .name = "Astro",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(ioc_ctrl, AstroState),
-         VMSTATE_UINT64(ioc_status_ctrl, AstroState),
-         VMSTATE_UINT64_ARRAY(ioc_ranges, AstroState, (0x03d8 - 0x300) / 8),
-diff --git a/hw/pci-host/bonito.c b/hw/pci-host/bonito.c
-index bab661f3ce..1f0c435348 100644
---- a/hw/pci-host/bonito.c
-+++ b/hw/pci-host/bonito.c
-@@ -619,7 +619,7 @@ static const VMStateDescription vmstate_bonito = {
-     .name = "Bonito",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(dev, PCIBonitoState),
+     .pre_save = timebase_pre_save,
+-    .fields      = (VMStateField []) {
++    .fields = (const VMStateField []) {
+         VMSTATE_UINT64(guest_timebase, PPCTimebase),
+         VMSTATE_INT64(time_of_the_day_ns, PPCTimebase),
          VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index f477f97847..dd9e389c07 100644
---- a/hw/pci-host/designware.c
-+++ b/hw/pci-host/designware.c
-@@ -529,7 +529,7 @@ static const VMStateDescription vmstate_designware_pcie_msi_bank = {
-     .name = "designware-pcie-msi-bank",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(enable, DesignwarePCIEMSIBank),
-         VMSTATE_UINT32(mask, DesignwarePCIEMSIBank),
-         VMSTATE_UINT32(status, DesignwarePCIEMSIBank),
-@@ -541,7 +541,7 @@ static const VMStateDescription vmstate_designware_pcie_msi = {
-     .name = "designware-pcie-msi",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(base, DesignwarePCIEMSI),
-         VMSTATE_STRUCT_ARRAY(intr,
-                              DesignwarePCIEMSI,
-@@ -557,7 +557,7 @@ static const VMStateDescription vmstate_designware_pcie_viewport = {
-     .name = "designware-pcie-viewport",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT64(base, DesignwarePCIEViewport),
-         VMSTATE_UINT64(target, DesignwarePCIEViewport),
-         VMSTATE_UINT32(limit, DesignwarePCIEViewport),
-@@ -570,7 +570,7 @@ static const VMStateDescription vmstate_designware_pcie_root = {
-     .name = "designware-pcie-root",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, PCIBridge),
-         VMSTATE_UINT32(atu_viewport, DesignwarePCIERoot),
-         VMSTATE_STRUCT_2DARRAY(viewports,
-@@ -718,7 +718,7 @@ static const VMStateDescription vmstate_designware_pcie_host = {
-     .name = "designware-pcie-host",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT(root,
-                        DesignwarePCIEHost,
-                        1,
-diff --git a/hw/pci-host/dino.c b/hw/pci-host/dino.c
-index 5b0947a16c..d992c4bb69 100644
---- a/hw/pci-host/dino.c
-+++ b/hw/pci-host/dino.c
-@@ -287,7 +287,7 @@ static const VMStateDescription vmstate_dino = {
-     .name = "Dino",
-     .version_id = 2,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(iar0, DinoState),
-         VMSTATE_UINT32(iar1, DinoState),
-         VMSTATE_UINT32(imr, DinoState),
-diff --git a/hw/pci-host/gpex.c b/hw/pci-host/gpex.c
-index a6752fac5e..e117e47fa7 100644
---- a/hw/pci-host/gpex.c
-+++ b/hw/pci-host/gpex.c
-@@ -195,7 +195,7 @@ static const VMStateDescription vmstate_gpex_root = {
-     .name = "gpex_root",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, GPEXRootState),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
-index 143bf053d7..e02efc9e2e 100644
---- a/hw/pci-host/gt64120.c
-+++ b/hw/pci-host/gt64120.c
-@@ -431,7 +431,7 @@ static const VMStateDescription vmstate_gt64120 = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .post_load = gt64120_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(regs, GT64120State, GT_REGS),
-         VMSTATE_END_OF_LIST()
-     }
-diff --git a/hw/pci-host/i440fx.c b/hw/pci-host/i440fx.c
-index 653cc3f149..4f0a0438d7 100644
---- a/hw/pci-host/i440fx.c
-+++ b/hw/pci-host/i440fx.c
-@@ -125,7 +125,7 @@ static const VMStateDescription vmstate_i440fx = {
-     .version_id = 3,
-     .minimum_version_id = 3,
-     .post_load = i440fx_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, PCII440FXState),
-         /* Used to be smm_enabled, which was basically always zero because
-          * SeaBIOS hardly uses SMM.  SMRAM is now handled by CPU code.
-diff --git a/hw/pci-host/ppce500.c b/hw/pci-host/ppce500.c
-index 453a4e6ed3..fa0d67b342 100644
---- a/hw/pci-host/ppce500.c
-+++ b/hw/pci-host/ppce500.c
-@@ -379,7 +379,7 @@ static const VMStateDescription vmstate_pci_outbound = {
-     .name = "pci_outbound",
+diff --git a/hw/ppc/ppc4xx_pci.c b/hw/ppc/ppc4xx_pci.c
+index 6652119008..0a07aab5d1 100644
+--- a/hw/ppc/ppc4xx_pci.c
++++ b/hw/ppc/ppc4xx_pci.c
+@@ -276,7 +276,7 @@ static const VMStateDescription vmstate_pci_master_map = {
+     .name = "pci_master_map",
      .version_id = 0,
      .minimum_version_id = 0,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(potar, struct pci_outbound),
-         VMSTATE_UINT32(potear, struct pci_outbound),
-         VMSTATE_UINT32(powbar, struct pci_outbound),
-@@ -392,7 +392,7 @@ static const VMStateDescription vmstate_pci_inbound = {
-     .name = "pci_inbound",
+         VMSTATE_UINT32(la, struct PCIMasterMap),
+         VMSTATE_UINT32(ma, struct PCIMasterMap),
+         VMSTATE_UINT32(pcila, struct PCIMasterMap),
+@@ -289,7 +289,7 @@ static const VMStateDescription vmstate_pci_target_map = {
+     .name = "pci_target_map",
      .version_id = 0,
      .minimum_version_id = 0,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32(pitar, struct pci_inbound),
-         VMSTATE_UINT32(piwbar, struct pci_inbound),
-         VMSTATE_UINT32(piwbear, struct pci_inbound),
-@@ -405,7 +405,7 @@ static const VMStateDescription vmstate_ppce500_pci = {
-     .name = "ppce500_pci",
+         VMSTATE_UINT32(ms, struct PCITargetMap),
+         VMSTATE_UINT32(la, struct PCITargetMap),
+         VMSTATE_END_OF_LIST()
+@@ -300,7 +300,7 @@ static const VMStateDescription vmstate_ppc4xx_pci = {
+     .name = "ppc4xx_pci",
      .version_id = 1,
      .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_ARRAY(pob, PPCE500PCIState, PPCE500_PCI_NR_POBS, 1,
-                              vmstate_pci_outbound, struct pci_outbound),
-         VMSTATE_STRUCT_ARRAY(pib, PPCE500PCIState, PPCE500_PCI_NR_PIBS, 1,
-diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
-index 08534bc7cc..0d7d4e3f08 100644
---- a/hw/pci-host/q35.c
-+++ b/hw/pci-host/q35.c
-@@ -520,7 +520,7 @@ static const VMStateDescription vmstate_mch = {
+         VMSTATE_STRUCT_ARRAY(pmm, PPC4xxPCIState, PPC4xx_PCI_NR_PMMS, 1,
+                              vmstate_pci_master_map,
+                              struct PCIMasterMap),
+diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
+index c96cefb13d..4d3a251ed8 100644
+--- a/hw/ppc/prep_systemio.c
++++ b/hw/ppc/prep_systemio.c
+@@ -277,7 +277,7 @@ static const VMStateDescription vmstate_prep_systemio = {
+     .name = "prep_systemio",
      .version_id = 1,
      .minimum_version_id = 1,
-     .post_load = mch_post_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, MCHPCIState),
-         /* Used to be smm_enabled, which was basically always zero because
-          * SeaBIOS hardly uses SMM.  SMRAM is now handled by CPU code.
-diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index 86c3a49087..f71d4872c8 100644
---- a/hw/pci-host/raven.c
-+++ b/hw/pci-host/raven.c
-@@ -383,7 +383,7 @@ static const VMStateDescription vmstate_raven = {
-     .name = "raven",
-     .version_id = 0,
-     .minimum_version_id = 0,
+         VMSTATE_UINT8(sreset, PrepSystemIoState),
+         VMSTATE_UINT8(system_control, PrepSystemIoState),
+         VMSTATE_UINT8(iomap_type, PrepSystemIoState),
+diff --git a/hw/ppc/rs6000_mc.c b/hw/ppc/rs6000_mc.c
+index c0bc212e92..b35f8ba112 100644
+--- a/hw/ppc/rs6000_mc.c
++++ b/hw/ppc/rs6000_mc.c
+@@ -202,7 +202,7 @@ static const VMStateDescription vmstate_rs6000mc = {
+     .name = "rs6000-mc",
+     .version_id = 1,
+     .minimum_version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(dev, RavenPCIState),
+         VMSTATE_UINT8(port0820_index, RS6000MCState),
          VMSTATE_END_OF_LIST()
      },
-diff --git a/hw/pci-host/versatile.c b/hw/pci-host/versatile.c
-index 60d4e7cd92..0e65deb3f9 100644
---- a/hw/pci-host/versatile.c
-+++ b/hw/pci-host/versatile.c
-@@ -147,7 +147,7 @@ static const VMStateDescription pci_vpb_vmstate = {
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 9b6c1c129f..4997aa4f1d 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -152,7 +152,7 @@ static const VMStateDescription pre_2_10_vmstate_dummy_icp = {
      .version_id = 1,
      .minimum_version_id = 1,
-     .post_load = pci_vpb_post_load,
+     .needed = pre_2_10_vmstate_dummy_icp_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(imap, PCIVPBState, 3),
-         VMSTATE_UINT32_ARRAY(smap, PCIVPBState, 3),
-         VMSTATE_UINT32(selfid, PCIVPBState),
+         VMSTATE_UNUSED(4), /* uint32_t xirr */
+         VMSTATE_UNUSED(1), /* uint8_t pending_priority */
+         VMSTATE_UNUSED(1), /* uint8_t mfrr */
+@@ -1919,7 +1919,7 @@ static const VMStateDescription vmstate_spapr_event_entry = {
+     .name = "spapr_event_log_entry",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(summary, SpaprEventLogEntry),
+         VMSTATE_UINT32(extended_length, SpaprEventLogEntry),
+         VMSTATE_VBUFFER_ALLOC_UINT32(extended_log, SpaprEventLogEntry, 0,
+@@ -1933,7 +1933,7 @@ static const VMStateDescription vmstate_spapr_pending_events = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = spapr_pending_events_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_QTAILQ_V(pending_events, SpaprMachineState, 1,
+                          vmstate_spapr_event_entry, SpaprEventLogEntry, next),
+         VMSTATE_END_OF_LIST()
+@@ -1989,7 +1989,7 @@ static const VMStateDescription vmstate_spapr_ov5_cas = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = spapr_ov5_cas_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_STRUCT_POINTER_V(ov5_cas, SpaprMachineState, 1,
+                                  vmstate_spapr_ovec, SpaprOptionVector),
+         VMSTATE_END_OF_LIST()
+@@ -2008,7 +2008,7 @@ static const VMStateDescription vmstate_spapr_patb_entry = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = spapr_patb_entry_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(patb_entry, SpaprMachineState),
+         VMSTATE_END_OF_LIST()
+     },
+@@ -2026,7 +2026,7 @@ static const VMStateDescription vmstate_spapr_irq_map = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = spapr_irq_map_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_BITMAP(irq_map, SpaprMachineState, 0, irq_map_nr),
+         VMSTATE_END_OF_LIST()
+     },
+@@ -2056,7 +2056,7 @@ static const VMStateDescription vmstate_spapr_dtb = {
+     .minimum_version_id = 1,
+     .needed = spapr_dtb_needed,
+     .pre_load = spapr_dtb_pre_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(fdt_initial_size, SpaprMachineState),
+         VMSTATE_UINT32(fdt_size, SpaprMachineState),
+         VMSTATE_VBUFFER_ALLOC_UINT32(fdt_blob, SpaprMachineState, 0, NULL,
+@@ -2094,7 +2094,7 @@ static const VMStateDescription vmstate_spapr_fwnmi = {
+     .minimum_version_id = 1,
+     .needed = spapr_fwnmi_needed,
+     .pre_save = spapr_fwnmi_pre_save,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(fwnmi_system_reset_addr, SpaprMachineState),
+         VMSTATE_UINT64(fwnmi_machine_check_addr, SpaprMachineState),
+         VMSTATE_INT32(fwnmi_machine_check_interlock, SpaprMachineState),
+@@ -2109,7 +2109,7 @@ static const VMStateDescription vmstate_spapr = {
+     .pre_load = spapr_pre_load,
+     .post_load = spapr_post_load,
+     .pre_save = spapr_pre_save,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         /* used to be @next_irq */
+         VMSTATE_UNUSED_BUFFER(version_before_3, 0, 4),
+ 
+@@ -2119,7 +2119,7 @@ static const VMStateDescription vmstate_spapr = {
+         VMSTATE_PPC_TIMEBASE_V(tb, SpaprMachineState, 2),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription*[]) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_spapr_ov5_cas,
+         &vmstate_spapr_patb_entry,
+         &vmstate_spapr_pending_events,
+diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+index 5a0755d34f..e889244e52 100644
+--- a/hw/ppc/spapr_caps.c
++++ b/hw/ppc/spapr_caps.c
+@@ -904,7 +904,7 @@ const VMStateDescription vmstate_spapr_cap_##sname = {  \
+     .version_id = 1,                                    \
+     .minimum_version_id = 1,                            \
+     .needed = spapr_cap_##sname##_needed,               \
+-    .fields = (VMStateField[]) {                        \
++    .fields = (const VMStateField[]) {                  \
+         VMSTATE_UINT8(mig.caps[cap],                    \
+                       SpaprMachineState),               \
+         VMSTATE_END_OF_LIST()                           \
+diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+index 91fae56573..710078e9f7 100644
+--- a/hw/ppc/spapr_cpu_core.c
++++ b/hw/ppc/spapr_cpu_core.c
+@@ -127,7 +127,7 @@ static const VMStateDescription vmstate_spapr_cpu_slb_shadow = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = slb_shadow_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(slb_shadow_addr, SpaprCpuState),
+         VMSTATE_UINT64(slb_shadow_size, SpaprCpuState),
+         VMSTATE_END_OF_LIST()
+@@ -146,7 +146,7 @@ static const VMStateDescription vmstate_spapr_cpu_dtl = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = dtl_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(dtl_addr, SpaprCpuState),
+         VMSTATE_UINT64(dtl_size, SpaprCpuState),
+         VMSTATE_END_OF_LIST()
+@@ -165,11 +165,11 @@ static const VMStateDescription vmstate_spapr_cpu_vpa = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = vpa_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(vpa_addr, SpaprCpuState),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription * []) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_spapr_cpu_slb_shadow,
+         &vmstate_spapr_cpu_dtl,
+         NULL
+@@ -180,10 +180,10 @@ static const VMStateDescription vmstate_spapr_cpu_state = {
+     .name = "spapr_cpu",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription * []) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_spapr_cpu_vpa,
+         NULL
+     }
+diff --git a/hw/ppc/spapr_drc.c b/hw/ppc/spapr_drc.c
+index 2b99d3b4b1..1484e3209d 100644
+--- a/hw/ppc/spapr_drc.c
++++ b/hw/ppc/spapr_drc.c
+@@ -471,7 +471,7 @@ static const VMStateDescription vmstate_spapr_drc_unplug_requested = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = spapr_drc_unplug_requested_needed,
+-    .fields  = (VMStateField []) {
++    .fields  = (const VMStateField []) {
+         VMSTATE_BOOL(unplug_requested, SpaprDrc),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -504,11 +504,11 @@ static const VMStateDescription vmstate_spapr_drc = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = spapr_drc_needed,
+-    .fields  = (VMStateField []) {
++    .fields  = (const VMStateField []) {
+         VMSTATE_UINT32(state, SpaprDrc),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription * []) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_spapr_drc_unplug_requested,
+         NULL
+     }
+@@ -611,7 +611,7 @@ static const VMStateDescription vmstate_spapr_drc_physical = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = drc_physical_needed,
+-    .fields  = (VMStateField []) {
++    .fields  = (const VMStateField []) {
+         VMSTATE_UINT32(dr_indicator, SpaprDrcPhysical),
+         VMSTATE_END_OF_LIST()
+     }
+diff --git a/hw/ppc/spapr_iommu.c b/hw/ppc/spapr_iommu.c
+index 5e3973fc5f..e3c01ef44f 100644
+--- a/hw/ppc/spapr_iommu.c
++++ b/hw/ppc/spapr_iommu.c
+@@ -270,7 +270,7 @@ static const VMStateDescription vmstate_spapr_tce_table_ex = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = spapr_tce_table_ex_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(bus_offset, SpaprTceTable),
+         VMSTATE_UINT32(page_shift, SpaprTceTable),
+         VMSTATE_END_OF_LIST()
+@@ -283,7 +283,7 @@ static const VMStateDescription vmstate_spapr_tce_table = {
+     .minimum_version_id = 2,
+     .pre_save = spapr_tce_table_pre_save,
+     .post_load = spapr_tce_table_post_load,
+-    .fields      = (VMStateField []) {
++    .fields = (const VMStateField []) {
+         /* Sanity check */
+         VMSTATE_UINT32_EQUAL(liobn, SpaprTceTable, NULL),
+ 
+@@ -296,7 +296,7 @@ static const VMStateDescription vmstate_spapr_tce_table = {
+ 
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription*[]) {
++    .subsections = (const VMStateDescription * const []) {
+         &vmstate_spapr_tce_table_ex,
+         NULL
+     }
+diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
+index ad7afe7544..7d2dfe5e3d 100644
+--- a/hw/ppc/spapr_nvdimm.c
++++ b/hw/ppc/spapr_nvdimm.c
+@@ -528,7 +528,7 @@ static const VMStateDescription vmstate_spapr_nvdimm_flush_state = {
+      .name = "spapr_nvdimm_flush_state",
+      .version_id = 1,
+      .minimum_version_id = 1,
+-     .fields = (VMStateField[]) {
++     .fields = (const VMStateField[]) {
+          VMSTATE_UINT64(continue_token, SpaprNVDIMMDeviceFlushState),
+          VMSTATE_INT64(hcall_ret, SpaprNVDIMMDeviceFlushState),
+          VMSTATE_UINT32(drcidx, SpaprNVDIMMDeviceFlushState),
+@@ -541,7 +541,7 @@ const VMStateDescription vmstate_spapr_nvdimm_states = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .post_load = spapr_nvdimm_flush_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_BOOL(hcall_flush_required, SpaprNVDIMMDevice),
+         VMSTATE_UINT64(nvdimm_flush_token, SpaprNVDIMMDevice),
+         VMSTATE_QLIST_V(completed_nvdimm_flush_states, SpaprNVDIMMDevice, 1,
+diff --git a/hw/ppc/spapr_ovec.c b/hw/ppc/spapr_ovec.c
+index b2567caa5c..88e29536aa 100644
+--- a/hw/ppc/spapr_ovec.c
++++ b/hw/ppc/spapr_ovec.c
+@@ -36,7 +36,7 @@ const VMStateDescription vmstate_spapr_ovec = {
+     .name = "spapr_option_vector",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_BITMAP(bitmap, SpaprOptionVector, 1, bitmap_size),
+         VMSTATE_END_OF_LIST()
+     }
+diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+index 6760823e13..25e0295d6f 100644
+--- a/hw/ppc/spapr_pci.c
++++ b/hw/ppc/spapr_pci.c
+@@ -2115,7 +2115,7 @@ static const VMStateDescription vmstate_spapr_pci_lsi = {
+     .name = "spapr_pci/lsi",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_EQUAL(irq, SpaprPciLsi, NULL),
+ 
+         VMSTATE_END_OF_LIST()
+@@ -2126,7 +2126,7 @@ static const VMStateDescription vmstate_spapr_pci_msi = {
+     .name = "spapr_pci/msi",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField []) {
++    .fields = (const VMStateField []) {
+         VMSTATE_UINT32(key, SpaprPciMsiMig),
+         VMSTATE_UINT32(value.first_irq, SpaprPciMsiMig),
+         VMSTATE_UINT32(value.num, SpaprPciMsiMig),
+@@ -2216,7 +2216,7 @@ static const VMStateDescription vmstate_spapr_pci = {
+     .pre_save = spapr_pci_pre_save,
+     .post_save = spapr_pci_post_save,
+     .post_load = spapr_pci_post_load,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT64_EQUAL(buid, SpaprPhbState, NULL),
+         VMSTATE_UINT32_TEST(mig_liobn, SpaprPhbState, pre_2_8_migration),
+         VMSTATE_UINT64_TEST(mig_mem_win_addr, SpaprPhbState, pre_2_8_migration),
+diff --git a/hw/ppc/spapr_rtc.c b/hw/ppc/spapr_rtc.c
+index d55b4b0c50..deb3ea4e49 100644
+--- a/hw/ppc/spapr_rtc.c
++++ b/hw/ppc/spapr_rtc.c
+@@ -157,7 +157,7 @@ static const VMStateDescription vmstate_spapr_rtc = {
+     .name = "spapr/rtc",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_INT64(ns_offset, SpaprRtcState),
+         VMSTATE_END_OF_LIST()
+     },
+diff --git a/hw/ppc/spapr_vio.c b/hw/ppc/spapr_vio.c
+index f8ef2b6fa8..3221874848 100644
+--- a/hw/ppc/spapr_vio.c
++++ b/hw/ppc/spapr_vio.c
+@@ -616,7 +616,7 @@ const VMStateDescription vmstate_spapr_vio = {
+     .name = "spapr_vio",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         /* Sanity check */
+         VMSTATE_UINT32_EQUAL(reg, SpaprVioDevice, NULL),
+         VMSTATE_UINT32_EQUAL(irq, SpaprVioDevice, NULL),
 -- 
 2.34.1
 
