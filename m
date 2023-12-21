@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2AF81B3D1
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D64CA81B464
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:51:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGGSC-0004QZ-Bi; Thu, 21 Dec 2023 05:39:05 -0500
+	id 1rGGaq-0004pr-5e; Thu, 21 Dec 2023 05:47:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGRy-0003t7-J3
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:48 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1rGGae-0004Yk-Sp
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:44 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGRn-0004Am-Lu
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:44 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40d41555f9dso895995e9.2
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:38:34 -0800 (PST)
+ id 1rGGa8-0007NF-Ol
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:44 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-336755f1688so560125f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:47:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703155114; x=1703759914; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703155627; x=1703760427; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oeKurO18PT1xLzL5iQamunNBev09YXep7NV+pG6wspo=;
- b=ifgyRZJL0DhDD46WjmnFjNBxBmaxwKB01VbP7WSdHRY0reGfOP64nm+/QUyzXQKqOC
- q5GSVVLHbJwXg/c0AigYft4NsYRh5rRPadn5uC/mxaAn5gh/hOWhLDY21IJ7H9rweQvn
- Gs6yxsd7mhpaPM/No3bfUEplrN/4ZKdyUy/XzYRFtEDiVSWMpirTbDNqvzRG15uGWHSL
- FAMzSR4Vg7UjZPx4gXTrB1m6BBnt4M0KuUeEJ6K6G0+sz6t/Hku6OSXJr1Bm7z51pSY9
- PXLl8FVK+5DiCkYz4l22sJM0WC5xP70qs09r+y3W8DKWNKxtZ7zvFaSrDCVUaHfIy3MX
- hoTg==
+ bh=0sLk9Y6V09YT5mxoKGySQqDe7AUl7PrL/RJQ+Y1wnbw=;
+ b=l/GHXLTi5BaMXE3URvo3WSFhVISs5dabLukqHCPcjioGnzOBC3N1x87ivjLk1ovitt
+ H8MKDBz8GnqOIttYAvS79cOyo1gY8ccQ52SxwyHUde7JvjG/Rf8mgdXY4KD0gV8BgC0O
+ 4RIObDBZ0OztL9ecfwdk6KY9rJpf32zk866BquXZX3GIh/LIwzG3/G1fDzFGbymvv3rI
+ 7DJeo43/ptSLTOn7SL8X9APgIHzgp9SIkQx+XeIq8eTwIf2G0bPtz+MIOmKAb1VHn48s
+ PYa4RShlbJ0ph72XKiABAbdSfSOsAqvtaAj5un3UVL07Qn9WJFL5XvuPmgngpKSjMZqp
+ mrJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703155114; x=1703759914;
+ d=1e100.net; s=20230601; t=1703155627; x=1703760427;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oeKurO18PT1xLzL5iQamunNBev09YXep7NV+pG6wspo=;
- b=ETpJ03dcnBnC3eq0SUzU5EwrGuBlM596oMVY0TJ/fKq1y3KLy+3Px34l5kPqHz9UoV
- RFl3ix9pUa3DnynN7ECOzlGeBZC68IA/rtjdGuZ0fmUvuytFqI92wHduOEhHMuJXX5Gf
- 26CTMxQbBTUS4vi+zvoFzBR21N2yg1JZwiBuQmEOwJoRTKKwR71wwv1afLfuPySRAwKc
- HF2I3o1GfsPcraewUPf7AsOVoLO9WGJq7dRk8jFiwDbVaZ9H6pQaqQfdhcQ+V1IB73Je
- /7EdPaGGcU1iX7T9jq7DT5RLPFkI+FbaXod8jO27hVdd5/f0gMZqiGKlxq/wehFEvQ6f
- 63CA==
-X-Gm-Message-State: AOJu0Yy0PaSKpYB/Y0d0nxt6B8YFRIpcChoF6M5TusgBvTEUR9CLXyf+
- r6RYV63pXRWvK55Qdgrf7K5GAA==
-X-Google-Smtp-Source: AGHT+IEDw9S3TarblsmJZYT54zqBYySCojx04X6aERE08kCaPWULIdSrrrthFqqDkUid6eRtO2RAUg==
-X-Received: by 2002:a1c:7209:0:b0:40d:3823:5e0e with SMTP id
- n9-20020a1c7209000000b0040d38235e0emr586756wmc.140.1703155113939; 
- Thu, 21 Dec 2023 02:38:33 -0800 (PST)
+ bh=0sLk9Y6V09YT5mxoKGySQqDe7AUl7PrL/RJQ+Y1wnbw=;
+ b=l5pXIfuIPUptEqfYk0D7u7xJWH5e6/YWS4befl8DZXH1gDSQfRkQ0qiC9K1QtNEOVD
+ wPCPWA5+9+Bi1kX6rLhWalHpAyI/KrH0bPANTgUdjaDiPvYiWZJr7Ie9uhNzW9PwVp0l
+ biPEZ09+Kk4JqM2bEdSZlJZwFECOr1Wd9Ah5A8YVUozhfBb4JRxfkex5s5o7oYC1rYLW
+ We2amnBzdepTh4EqC0dkyF59Vul/tdhuoxt6ttnhDfy/QvZo3pAMWkfnGBuPKfd0z0Wn
+ w5AuQYogSRsHY9mi14LJ0JyN9ulXAhGFHIh20g9HofNPcjqVl709da798UT78N05xWZl
+ xEbA==
+X-Gm-Message-State: AOJu0YyrQGKDRIJ9eBa7bGItP9wbHRDkpAAOti37Bq1RD3PX1N38ZvvL
+ FltygkcdasnRfgMPhw2/AfFK/g==
+X-Google-Smtp-Source: AGHT+IEh4A/ofvHjjDxGae4dNp01ycAbrgSKgNLymJ1Ha3Ry/GdnF3Tf0BsMFDRp8ivuX9KZRRwyWg==
+X-Received: by 2002:a05:600c:1682:b0:40c:3984:4977 with SMTP id
+ k2-20020a05600c168200b0040c39844977mr650705wmn.174.1703155627469; 
+ Thu, 21 Dec 2023 02:47:07 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p2-20020a05600c1d8200b0040596352951sm11263469wms.5.2023.12.21.02.38.25
+ b2-20020a05600c4e0200b0040c440f9393sm3526519wmq.42.2023.12.21.02.47.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 02:38:29 -0800 (PST)
+ Thu, 21 Dec 2023 02:47:06 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B86145F8E1;
+ by draig.lan (Postfix) with ESMTP id CEF355F8E3;
  Thu, 21 Dec 2023 10:38:20 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -90,25 +90,26 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Bin Meng <bin.meng@windriver.com>
-Subject: [PATCH 19/40] tests/fp: Bump fp-test-mulAdd test timeout to 3 minutes
-Date: Thu, 21 Dec 2023 10:37:57 +0000
-Message-Id: <20231221103818.1633766-20-alex.bennee@linaro.org>
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Bin Meng <bin.meng@windriver.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 20/40] mtest2make: stop disabling meson test timeouts
+Date: Thu, 21 Dec 2023 10:37:58 +0000
+Message-Id: <20231221103818.1633766-21-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231221103818.1633766-1-alex.bennee@linaro.org>
 References: <20231221103818.1633766-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,32 +125,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-When running the tests in slow mode with --enable-debug on a very loaded
-system, the  fp-test-mulAdd test can take longer than 2 minutes. Bump the
-timeout to three minutes to make sure it passes in such situations, too.
+The mtest2make.py script passes the arg '-t 0' to 'meson test' which
+disables all test timeouts. This is a major source of pain when running
+in GitLab CI and a test gets stuck. It will stall until GitLab kills the
+CI job. This leaves us with little easily consumable information about
+the stalled test. The TAP format doesn't show the test name until it is
+completed, and TAP output from multiple tests it interleaved. So we
+have to analyse the log to figure out what tests had un-finished TAP
+output present and thus infer which test case caused the hang. This is
+very time consuming and error prone.
 
+By allowing meson to kill stalled tests, we get a direct display of what
+test program got stuck, which lets us more directly focus in on what
+specific test case within the test program hung.
+
+The other issue with disabling meson test timeouts by default is that it
+makes it more likely that maintainers inadvertantly introduce slowdowns.
+For example the recent-ish change that accidentally made migrate-test
+take 15-20 minutes instead of around 1 minute.
+
+The main risk of this change is that the individual test timeouts might
+be too short to allow completion in high load scenarios. Thus, there is
+likely to be some short term pain where we have to bump the timeouts for
+certain tests to make them reliable enough. The preceeding few patches
+raised the timeouts for all failures that were immediately apparent
+in GitLab CI.
+
+Even with the possible short term instability, this should still be a
+net win for debuggability of failed CI pipelines over the long term.
+
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230717182859.707658-13-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215070357.10888-16-thuth@redhat.com>
+Message-Id: <20231215070357.10888-17-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/fp/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/mtest2make.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/fp/meson.build b/tests/fp/meson.build
-index cbc17392d67..3b7fc637499 100644
---- a/tests/fp/meson.build
-+++ b/tests/fp/meson.build
-@@ -124,7 +124,7 @@ test('fp-test-mulAdd', fptest,
-      # no fptest_rounding_args
-      args: fptest_args +
-            ['f16_mulAdd', 'f32_mulAdd', 'f64_mulAdd', 'f128_mulAdd'],
--     suite: ['softfloat-slow', 'softfloat-ops-slow', 'slow'], timeout: 90)
-+     suite: ['softfloat-slow', 'softfloat-ops-slow', 'slow'], timeout: 180)
+diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
+index 179dd548718..eb01a05ddbd 100644
+--- a/scripts/mtest2make.py
++++ b/scripts/mtest2make.py
+@@ -27,7 +27,8 @@ def names(self, base):
+ .speed.slow = $(foreach s,$(sort $(filter-out %-thorough, $1)), --suite $s)
+ .speed.thorough = $(foreach s,$(sort $1), --suite $s)
  
- executable(
-   'fp-bench',
+-.mtestargs = --no-rebuild -t 0
++TIMEOUT_MULTIPLIER = 1
++.mtestargs = --no-rebuild -t $(TIMEOUT_MULTIPLIER)
+ ifneq ($(SPEED), quick)
+ .mtestargs += --setup $(SPEED)
+ endif
 -- 
 2.39.2
 
