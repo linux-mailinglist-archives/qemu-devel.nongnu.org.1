@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE3981BCF6
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE3F81BCF3
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:21:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGMit-0007dZ-NK; Thu, 21 Dec 2023 12:20:39 -0500
+	id 1rGMiu-0007dm-O4; Thu, 21 Dec 2023 12:20:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMir-0007d7-0N
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:37 -0500
+ id 1rGMis-0007dI-9W
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:38 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMip-0004Yr-Ap
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:36 -0500
+ id 1rGMiq-0004Z1-KJ
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703179234;
+ s=mimecast20190719; t=1703179236;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sD8zQ2qb3Nom9XRhoC85XFShfiOQE1gFLBrQwUhPrTc=;
- b=deOFytHk+VR+CF1epwZTuSxVEfllgufWtUoTyBuLvooQcQarpxTrzjrwz3J5keOfMvzrxf
- /vyHLvxUPBva0+x4yRfRKJkBX5+tgX4hs3cQ21RAfT2LeYYTlJ4/45E/64kijIu9Q2NAyX
- ikroUGSizl25Z11+9nbPVqo6zelcg9Q=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XGKSDQRWT3Y8gs5FUjlvUHuPqorGos1W4QnqrsXKm88=;
+ b=BJmDaFtHkfpFBXVOLC4PFnqI7OA2P/1K823y2pV6uCXUpBz5z8yYSp5oyxNcvW+Pwbpa5U
+ jm2P0Omm/35kNNf2Tlm+7F4OpyrNJH5PhsMSpkFHuKfWd9kLAusqwajFTeZagV0/fVJIv9
+ 3DAPHF9PNy88r5UZgbN8Q4fykcPcDss=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-241-MLLCW4BGNt2Z9rfWW3WFag-1; Thu, 21 Dec 2023 12:20:32 -0500
-X-MC-Unique: MLLCW4BGNt2Z9rfWW3WFag-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3368abe10c5so474720f8f.0
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:32 -0800 (PST)
+ us-mta-97-sz5ScC4tPBqQhVAOkPEb8g-1; Thu, 21 Dec 2023 12:20:34 -0500
+X-MC-Unique: sz5ScC4tPBqQhVAOkPEb8g-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40c22bc1ebdso4794175e9.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703179231; x=1703784031;
+ d=1e100.net; s=20230601; t=1703179233; x=1703784033;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sD8zQ2qb3Nom9XRhoC85XFShfiOQE1gFLBrQwUhPrTc=;
- b=QYa6//vyGvhrmSDQOD+XhVSVxDmMzYyJdEXTXt+bBbvQy2BCKCJRH4HO6GJEoIsHzb
- TX4z9hzU/JKYBnEdyPtcOd6r0YaU+jYwmtW2A3U3Fq6GHfipUpmJJ9XBTbcgvZGjR2Vn
- rEAFHlXTSFA3qsTfHLDMy7SXzsiFyPWTqJiOTaWBMDeRKG0FeJpjeo1TadxJseKPYY1k
- dLl9i51voZim0I7snsu+6EjH9kX0UdKreot+8ro6JypGBEzVgmhmIMaWdPC+cfq9zY6W
- YDHN+IF4bsmtSaL+RC1FOTgI3mVTFjqzfZIqlKIEj/vsJ4yPYnB1VoGBomgc53j284lZ
- x3mw==
-X-Gm-Message-State: AOJu0YydnShmvPVXDakoiCsqVC2QmE6CyBgA6Qij4+eQpI6JDKEOceA8
- f1BDfsGqQe9z08wrdkKXpCo2lKNSVLAuUrxg9eIYxk9esKHEeikqHnOzCbjVx02Xk8D14uN8VPy
- CXx2l/CnW6pMLgg9KV8y1qNcEMz37iuXcvh/sDoYF0jtcVj2KDKabzi/4zE15p7VWWUXry+eKY+
- z1yPlQT6k=
-X-Received: by 2002:a5d:5089:0:b0:336:6e12:7c5f with SMTP id
- a9-20020a5d5089000000b003366e127c5fmr56559wrt.2.1703179230887; 
- Thu, 21 Dec 2023 09:20:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEwaQTjWh2xejvEFLV8qW4v3JJem4Pa5RUPQ/sN3+qn05rPuSiPC8rYUeGw4fOvBWV9a4P+zA==
-X-Received: by 2002:a5d:5089:0:b0:336:6e12:7c5f with SMTP id
- a9-20020a5d5089000000b003366e127c5fmr56555wrt.2.1703179230518; 
- Thu, 21 Dec 2023 09:20:30 -0800 (PST)
+ bh=XGKSDQRWT3Y8gs5FUjlvUHuPqorGos1W4QnqrsXKm88=;
+ b=hb3mqtW9dBiJYADu/fAHOx9zPBFfxnUI4G8c9THwsTAUIe9TS3EdZbiPm5lv+BSYTu
+ 4FmBIVJi2d3JC4UoBzX/bDx1uIjc+JznddsMBTPUzIOrLRoNUZuSvEvONXjyCantWehS
+ GkYCaWifVEvhl1d9dVbbeSigTf7AuLLkvu31HE6KmXT1mxKEFcu4mkCiBeYgC2D74o4Z
+ R41m38ruy9ACeUcoAMCOO4+7fjdWHUiA7a8JJUMo2pzsN4sgBtmye6xc+iGGoMkLVykt
+ WhPv/X/b5VZRg99vNf/1H0RNZ3aIwGM9KdViWkIFnSwm3DzxEewaXHHOnG+4UGsV/180
+ xVag==
+X-Gm-Message-State: AOJu0YwTwDZMxzv8NwfsxBHmDOlN/wln6MQsAmWCn+zBTulzE2eKu+lv
+ HAz5X75oB/vFvYsX2h+iIN67ZkAi/9CznJG1m8hUsYL/J05m9pcD3WVvGCnJmZDM0tk1jKFQx/w
+ 1VDCvhsHaWS/pjSsw03EWbFFROpGOdnJJSEdmDyykUbUTwzGorbRZWwnRjrhOiKtBqqPD2bvV8X
+ bINRzO3OY=
+X-Received: by 2002:a05:600c:3b19:b0:40c:415f:cc48 with SMTP id
+ m25-20020a05600c3b1900b0040c415fcc48mr16435wms.40.1703179232943; 
+ Thu, 21 Dec 2023 09:20:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEnEaYotkAQyqBg+1vK4BYOWCZrglsMyQD0BrE+8s45hKJVZruaAA8vSH/yufNtaDqphmOVoQ==
+X-Received: by 2002:a05:600c:3b19:b0:40c:415f:cc48 with SMTP id
+ m25-20020a05600c3b1900b0040c415fcc48mr16424wms.40.1703179232616; 
+ Thu, 21 Dec 2023 09:20:32 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- w11-20020adfcd0b000000b003367e35abd4sm2463078wrm.71.2023.12.21.09.20.29
+ o20-20020a05600c4fd400b004094d4292aesm4014821wmq.18.2023.12.21.09.20.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 09:20:29 -0800 (PST)
+ Thu, 21 Dec 2023 09:20:31 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 16/21] meson: separate host-specific checks from option
- validation
-Date: Thu, 21 Dec 2023 18:19:53 +0100
-Message-ID: <20231221171958.59350-17-pbonzini@redhat.com>
+Subject: [PATCH 17/21] meson: keep subprojects together
+Date: Thu, 21 Dec 2023 18:19:54 +0100
+Message-ID: <20231221171958.59350-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231221171958.59350-1-pbonzini@redhat.com>
 References: <20231221171958.59350-1-pbonzini@redhat.com>
@@ -102,126 +101,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+And move away dependencies that are not subprojects anymore.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 97 +++++++++++++++++++++++++++--------------------------
- 1 file changed, 50 insertions(+), 47 deletions(-)
+ meson.build | 72 ++++++++++++++++++++++++++---------------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index f7e7deeabdc..e777f507ce3 100644
+index e777f507ce3..f8d61a46ad1 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -602,53 +602,6 @@ have_vhost_net_vdpa = have_vhost_vdpa and get_option('vhost_net').allowed()
- have_vhost_net_kernel = have_vhost_kernel and get_option('vhost_net').allowed()
- have_vhost_net = have_vhost_net_kernel or have_vhost_net_user or have_vhost_net_vdpa
- 
--# Target-specific libraries and flags
--libm = cc.find_library('m', required: false)
--threads = dependency('threads')
--util = cc.find_library('util', required: false)
--winmm = []
--socket = []
--version_res = []
--coref = []
--iokit = []
--emulator_link_args = []
--nvmm =not_found
--hvf = not_found
--midl = not_found
--widl = not_found
--pathcch = not_found
--host_dsosuf = '.so'
--if targetos == 'windows'
--  midl = find_program('midl', required: false)
--  widl = find_program('widl', required: false)
--  pathcch = cc.find_library('pathcch')
--  socket = cc.find_library('ws2_32')
--  winmm = cc.find_library('winmm')
--
--  win = import('windows')
--  version_res = win.compile_resources('version.rc',
--                                      depend_files: files('pc-bios/qemu-nsis.ico'),
--                                      include_directories: include_directories('.'))
--  host_dsosuf = '.dll'
--elif targetos == 'darwin'
--  coref = dependency('appleframeworks', modules: 'CoreFoundation')
--  iokit = dependency('appleframeworks', modules: 'IOKit', required: false)
--  host_dsosuf = '.dylib'
--elif targetos == 'sunos'
--  socket = [cc.find_library('socket'),
--            cc.find_library('nsl'),
--            cc.find_library('resolv')]
--elif targetos == 'haiku'
--  socket = [cc.find_library('posix_error_mapper'),
--            cc.find_library('network'),
--            cc.find_library('bsd')]
--elif targetos == 'openbsd'
--  if get_option('tcg').allowed() and target_dirs.length() > 0
--    # Disable OpenBSD W^X if available
--    emulator_link_args = cc.get_supported_link_arguments('-Wl,-z,wxneeded')
--  endif
--endif
--
- # Target-specific configuration of accelerators
- accelerators = []
- if get_option('kvm').allowed() and targetos == 'linux'
-@@ -716,6 +669,56 @@ if 'CONFIG_WHPX' not in accelerators and get_option('whpx').enabled()
-   error('WHPX not available on this platform')
+@@ -1538,6 +1538,25 @@ if not gnutls_crypto.found()
+   endif
  endif
  
-+#####################################
-+# Host-specific libraries and flags #
-+#####################################
++capstone = not_found
++if not get_option('capstone').auto() or have_system or have_user
++  capstone = dependency('capstone', version: '>=3.0.5',
++                        method: 'pkg-config',
++                        required: get_option('capstone'))
 +
-+libm = cc.find_library('m', required: false)
-+threads = dependency('threads')
-+util = cc.find_library('util', required: false)
-+winmm = []
-+socket = []
-+version_res = []
-+coref = []
-+iokit = []
-+emulator_link_args = []
-+nvmm =not_found
-+hvf = not_found
-+midl = not_found
-+widl = not_found
-+pathcch = not_found
-+host_dsosuf = '.so'
-+if targetos == 'windows'
-+  midl = find_program('midl', required: false)
-+  widl = find_program('widl', required: false)
-+  pathcch = cc.find_library('pathcch')
-+  socket = cc.find_library('ws2_32')
-+  winmm = cc.find_library('winmm')
-+
-+  win = import('windows')
-+  version_res = win.compile_resources('version.rc',
-+                                      depend_files: files('pc-bios/qemu-nsis.ico'),
-+                                      include_directories: include_directories('.'))
-+  host_dsosuf = '.dll'
-+elif targetos == 'darwin'
-+  coref = dependency('appleframeworks', modules: 'CoreFoundation')
-+  iokit = dependency('appleframeworks', modules: 'IOKit', required: false)
-+  host_dsosuf = '.dylib'
-+elif targetos == 'sunos'
-+  socket = [cc.find_library('socket'),
-+            cc.find_library('nsl'),
-+            cc.find_library('resolv')]
-+elif targetos == 'haiku'
-+  socket = [cc.find_library('posix_error_mapper'),
-+            cc.find_library('network'),
-+            cc.find_library('bsd')]
-+elif targetos == 'openbsd'
-+  if get_option('tcg').allowed() and target_dirs.length() > 0
-+    # Disable OpenBSD W^X if available
-+    emulator_link_args = cc.get_supported_link_arguments('-Wl,-z,wxneeded')
++  # Some versions of capstone have broken pkg-config file
++  # that reports a wrong -I path, causing the #include to
++  # fail later. If the system has such a broken version
++  # do not use it.
++  if capstone.found() and not cc.compiles('#include <capstone.h>',
++                                          dependencies: [capstone])
++    capstone = not_found
++    if get_option('capstone').enabled()
++      error('capstone requested, but it does not appear to work')
++    endif
 +  endif
 +endif
 +
- ################
- # Dependencies #
- ################
+ gmp = dependency('gmp', required: false, method: 'pkg-config')
+ if nettle.found() and gmp.found()
+   hogweed = dependency('hogweed', version: '>=3.4',
+@@ -2123,6 +2142,7 @@ config_host_data.set('CONFIG_ATTR', libattr.found())
+ config_host_data.set('CONFIG_BDRV_WHITELIST_TOOLS', get_option('block_drv_whitelist_in_tools'))
+ config_host_data.set('CONFIG_BRLAPI', brlapi.found())
+ config_host_data.set('CONFIG_BSD', targetos in bsd_oses)
++config_host_data.set('CONFIG_CAPSTONE', capstone.found())
+ config_host_data.set('CONFIG_COCOA', cocoa.found())
+ config_host_data.set('CONFIG_DARWIN', targetos == 'darwin')
+ config_host_data.set('CONFIG_FUZZ', get_option('fuzzing'))
+@@ -2186,6 +2206,7 @@ if seccomp.found()
+   config_host_data.set('CONFIG_SECCOMP_SYSRAWRC', seccomp_has_sysrawrc)
+ endif
+ config_host_data.set('CONFIG_PIXMAN', pixman.found())
++config_host_data.set('CONFIG_SLIRP', slirp.found())
+ config_host_data.set('CONFIG_SNAPPY', snappy.found())
+ config_host_data.set('CONFIG_SOLARIS', targetos == 'sunos')
+ if get_option('tcg').allowed()
+@@ -3057,28 +3078,9 @@ genh += custom_target('config-poison.h',
+                       command: [find_program('scripts/make-config-poison.sh'),
+                                 target_configs_h])
+ 
+-##############
+-# Submodules #
+-##############
+-
+-capstone = not_found
+-if not get_option('capstone').auto() or have_system or have_user
+-  capstone = dependency('capstone', version: '>=3.0.5',
+-                        method: 'pkg-config',
+-                        required: get_option('capstone'))
+-
+-  # Some versions of capstone have broken pkg-config file
+-  # that reports a wrong -I path, causing the #include to
+-  # fail later. If the system has such a broken version
+-  # do not use it.
+-  if capstone.found() and not cc.compiles('#include <capstone.h>',
+-                                          dependencies: [capstone])
+-    capstone = not_found
+-    if get_option('capstone').enabled()
+-      error('capstone requested, but it does not appear to work')
+-    endif
+-  endif
+-endif
++###############
++# Subprojects #
++###############
+ 
+ libvfio_user_dep = not_found
+ if have_system and vfio_user_server_allowed
+@@ -3122,9 +3124,19 @@ else
+   fdt_opt = 'disabled'
+ endif
+ 
+-config_host_data.set('CONFIG_CAPSTONE', capstone.found())
+ config_host_data.set('CONFIG_FDT', fdt.found())
+-config_host_data.set('CONFIG_SLIRP', slirp.found())
++
++vhost_user = not_found
++if targetos == 'linux' and have_vhost_user
++  libvhost_user = subproject('libvhost-user')
++  vhost_user = libvhost_user.get_variable('vhost_user_dep')
++endif
++
++libvduse = not_found
++if have_libvduse
++  libvduse_proj = subproject('libvduse')
++  libvduse = libvduse_proj.get_variable('libvduse_dep')
++endif
+ 
+ #####################
+ # Generated sources #
+@@ -3355,18 +3367,6 @@ if have_system or have_user
+   ]
+ endif
+ 
+-vhost_user = not_found
+-if targetos == 'linux' and have_vhost_user
+-  libvhost_user = subproject('libvhost-user')
+-  vhost_user = libvhost_user.get_variable('vhost_user_dep')
+-endif
+-
+-libvduse = not_found
+-if have_libvduse
+-  libvduse_proj = subproject('libvduse')
+-  libvduse = libvduse_proj.get_variable('libvduse_dep')
+-endif
+-
+ # NOTE: the trace/ subdirectory needs the qapi_trace_events variable
+ # that is filled in by qapi/.
+ subdir('qapi')
 -- 
 2.43.0
 
