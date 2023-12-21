@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B6181B3ED
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B08881B3DC
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:40:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGGSS-0004bD-Co; Thu, 21 Dec 2023 05:39:16 -0500
+	id 1rGGS3-00044G-2Q; Thu, 21 Dec 2023 05:38:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGS4-00049Z-2s
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:52 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1rGGRu-0003ow-9m
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:42 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGRr-000484-0p
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:51 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-33687627ad0so431586f8f.2
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:38:30 -0800 (PST)
+ id 1rGGRh-000444-JP
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:38:40 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40d2e5e8d1dso7042405e9.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:38:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703155109; x=1703759909; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703155107; x=1703759907; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=c7IelmqBfCUiQPJ1PO4YXHkz0msSivdOvYJRQon3tbw=;
- b=JXuNSnm+iKENOAmHHkGu66L6YQN0D3rPB2A4b4+k+rQra2SwnYpbfFIajuVS5xhNpX
- r3pwqKi/zGhrEtXinj+c+Hsh1aV/T9e2sMB7jNoSo1R/ouJTW2zMp1DbkQ169bje/pgy
- CKyFFEjrEzO7Pv/Z7Oh9cEJJrD3X7FkIayD2EfFtP6sVAIjlmLNHZgMmI4kybwHpnR5q
- EDkVaOwVvVsCB/YtiSZrpy3LKOK8zwP3HzJ2scq768FFOi4PFZa5qO1rAZZ0qG+zulND
- g3RHVMzvXP4xORTW5gUPxTVuXXk93rUQasWXFG9LkQmws1rc1bEddGkENrzaZR006LE7
- bILQ==
+ bh=KQu3dEC4bAAkAiF4vI+JksTKEdmVPQCRZYwFmghpZj8=;
+ b=p1fV3QckEZhKSl6FhGGGTj1g3pOZ8NxbQpeUljUAW/SwJjJF8ROSSbRLtbBvon/+KV
+ 2Q1KxDxcss5KYGcKiAlaoi61lEVGY/Cj/ckEsEI0cgTcF0HLU1OEpK0R78PAqx00GwLM
+ jgs9yx5QMEwmEhjUqm8Vgv5qLD+vjqWN447ZtMVxIQjyPlIn50C6PnqspNffebp5JjGA
+ GN7sGS1F52KXJAwGB258ONOC238IeIPndfqAAg7UvhwPv5b+LJuGbLG9SnoXi8TzA7V4
+ Yy5DLcZWZiMXXyG7N7h5DRa1i2D2BcS8eDHni9qJacubQ0dC18wC0xDht1CTYVXOhEl0
+ GOtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703155109; x=1703759909;
+ d=1e100.net; s=20230601; t=1703155107; x=1703759907;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c7IelmqBfCUiQPJ1PO4YXHkz0msSivdOvYJRQon3tbw=;
- b=w0wc3YfECXUYxLc5jFkRaANsA5BhZvzevXzNw2HA2X9OP11dge0gV4QBQBSb31LCem
- dF3kjuneC4Tghs8wiVfP+UJ2j9ij6bLlEKuuYd3xJQykw/QYwWVZb968THKWoE2JSS6A
- +nDTdvK38NM+SsQKKjrXuJLsmXZGy/Beozyab5H2RbCr8oy/a1pbxjCX19pIOUwWF8Vj
- uSiTa36x2hGgvYmv5tzH/x4LHg0kq/V+Co/JsJ+5bLMIiFh9fPlv5nSxxAWs8tf4RQ5h
- jfl6SRQrVeFNNof9ef0lGdfP22NNaMX8xCC/gQVYe4Gb3pNnEkWyW2t7jH2acMM6dApO
- hjuw==
-X-Gm-Message-State: AOJu0Yy0X0yRi7Lzx5KIFFMRc83/BVXF2Uhml8BRZbw0Ym6sj1kylyTW
- 0iZsdeTYJhTJRe1L/omSePuYaQ==
-X-Google-Smtp-Source: AGHT+IE2SX8Gf4CKFnC2WUs5pcquLgLIHQPwc6U2p/RhTTIcQNnHMhIsqb2Kkf5Fuml6Vm8L0QiRYA==
-X-Received: by 2002:a5d:44c2:0:b0:336:6bf1:9707 with SMTP id
- z2-20020a5d44c2000000b003366bf19707mr643477wrr.124.1703155109425; 
- Thu, 21 Dec 2023 02:38:29 -0800 (PST)
+ bh=KQu3dEC4bAAkAiF4vI+JksTKEdmVPQCRZYwFmghpZj8=;
+ b=aDLgaX7WvXmo6AefdTNSG/CRFQljZ5F283QayrZk449LzMhQA0ObzZSh8cVIHviPLM
+ A+xCrOKF1/1BeZ0zSVE4CtgcSCnM0APXaZ9TV0GA1I/wWdYRtP1EVP0io8VPm4WsAPqQ
+ Ky/r4Mz56zSgfz/SK9X+IZ5dqNR1OQBxLVAalxg5JQtNmK2Weg/Ygr7PMUjuzZrTnHIH
+ hJhvmblVFC006zAHsf01+CDgBgJ35CK+4aylSyNVKpeopGcWkdCJqoqmGGwdEw+bKw+f
+ Wm+9gkEAvWo+lA09CtVj3ZyQRFlCB30wuePxyWRkkTJvm9lI1G1txrsaV8C0xWd81qbj
+ xiQg==
+X-Gm-Message-State: AOJu0YxrpTLqo/ekoR/cLMYiRhQhbyMd+5zxWgu/P89ExW+mdYjaKLJY
+ MAba9ZAS3K4NdmKoajgUICWjXA==
+X-Google-Smtp-Source: AGHT+IEbyF9eovfKrh2dj9dnvf7GLL78Pjx/5IVXUDpMh5s/NoIcigeib1Kvd7LWnnmBJdJ9FPHlCA==
+X-Received: by 2002:a05:600c:154f:b0:40c:6a86:659f with SMTP id
+ f15-20020a05600c154f00b0040c6a86659fmr457661wmg.224.1703155107396; 
+ Thu, 21 Dec 2023 02:38:27 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- i2-20020adffc02000000b003364aa5cc13sm1744942wrr.1.2023.12.21.02.38.20
+ fa18-20020a05600c519200b0040c4afa027csm2760102wmb.13.2023.12.21.02.38.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 21 Dec 2023 02:38:22 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C70F85F7D4;
+ by draig.lan (Postfix) with ESMTP id DE2DB5F8D1;
  Thu, 21 Dec 2023 10:38:19 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,17 +92,17 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 09/40] qtest: bump test-hmp timeout to 4 minutes
-Date: Thu, 21 Dec 2023 10:37:47 +0000
-Message-Id: <20231221103818.1633766-10-alex.bennee@linaro.org>
+Subject: [PATCH 10/40] qtest: bump pxe-test timeout to 10 minutes
+Date: Thu, 21 Dec 2023 10:37:48 +0000
+Message-Id: <20231221103818.1633766-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231221103818.1633766-1-alex.bennee@linaro.org>
 References: <20231221103818.1633766-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,30 +127,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The hmp test takes just under 3 minutes in a --enable-debug
-build. Bumping to 4 minutes will give more headroom.
+The pxe-test uses the boot_sector_test() function, and that already
+uses a timeout of 600 seconds. So adjust the timeout on the meson
+side accordingly.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20230717182859.707658-6-berrange@redhat.com>
-[thuth: fix copy-n-paste error in the description]
+[thuth: Bump timeout to 600s and adjust commit description]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215070357.10888-6-thuth@redhat.com>
+Message-Id: <20231215070357.10888-7-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/qtest/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 84cec0a847d..7a4160df046 100644
+index 7a4160df046..ec93d5a384f 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
-@@ -3,7 +3,7 @@ slow_qtests = {
-   'migration-test' : 480,
+@@ -4,6 +4,7 @@ slow_qtests = {
    'npcm7xx_pwm-test': 300,
    'qom-test' : 900,
--  'test-hmp' : 120,
-+  'test-hmp' : 240,
+   'test-hmp' : 240,
++  'pxe-test': 600,
  }
  
  qtests_generic = [
