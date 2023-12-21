@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3825D81BD21
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E6381BD26
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:24:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGMia-0007YA-KB; Thu, 21 Dec 2023 12:20:20 -0500
+	id 1rGMia-0007YT-UA; Thu, 21 Dec 2023 12:20:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMiW-0007WV-8k
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:16 -0500
+ id 1rGMiY-0007Xh-Ux
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMiU-0004TM-Md
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:15 -0500
+ id 1rGMiW-0004U5-TA
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703179214;
+ s=mimecast20190719; t=1703179216;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c5AFEUYZiaGJSifWk7hneOWRmCiS1T4SWFJVU19lhvA=;
- b=VP9nJvLRYqe7Skf/qmqMvj9D1f0OiXAA0hf14v/g4695CyJ+lWRZ1tV5i+rd8uALRr4+Kw
- RIWpn2uWGEOyDOmbl+wE65benQy69GAQBN3qjOoZwDL1K1T10dvRr/cWEhZQq78efeQVlf
- +34D1nt+889mfiaWUbhMK/BRX/C4EkA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UebyFwaouzTqOLbyUOTcfC30JgB1MQMFJW2XtX7hlHw=;
+ b=NA7m0oy1Z+iza1v98aniDz4JRqr5E7gYmjdR/T370B70StlyLzRHxC7I5LGgCn3JcjFtnF
+ zhFYduP+Fx3c/AFwuNhbZP0CsXaa+2ouJGw4sPRTJFfubky6W12/hTEK7Fgieu1yFJYmpp
+ rvnarlQkun7x4PqmDHrBclt59N6MYFM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-64-jY0M5jrQOoS8TctKjfggZA-1; Thu, 21 Dec 2023 12:20:11 -0500
-X-MC-Unique: jY0M5jrQOoS8TctKjfggZA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-40c3f0f88e3so7922795e9.0
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:11 -0800 (PST)
+ us-mta-434-8hAs3PC_Meq5JgnN1hcXMA-1; Thu, 21 Dec 2023 12:20:14 -0500
+X-MC-Unique: 8hAs3PC_Meq5JgnN1hcXMA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3368c5eebb4so372797f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703179210; x=1703784010;
+ d=1e100.net; s=20230601; t=1703179213; x=1703784013;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c5AFEUYZiaGJSifWk7hneOWRmCiS1T4SWFJVU19lhvA=;
- b=i95QaZzgMAtQVD8vt7KL8J4eSxLB0B0hKo2Vzb8jj79zw5k2KEJfruLcOEZ7Hhaegz
- 1L30nSgBDBHAqFXQYqTscy2pQpwWcE8Uwmdin4PMc29JEMyspXay6s7fuHX5NrP4rws1
- NT8nSQk1T//gdBP9E9F2ytz/IbsMx7FXrFrQ3LayTn6UlEWma9Qygt9Dn0qGPC83vAim
- Hh8n4JGEiBh38scseTpZUp6M5uS4TokTjb1L6Pjf3iPr6UnIhS4BI0vGs6njb4QFdFHa
- RCFJkX9ahiMAzfW7P/Ed1erEwfrrxQmIFVWxSHphDKOXoqpUOa1Nwwdbrd6YvJCa67dp
- a9+w==
-X-Gm-Message-State: AOJu0YxX/jKi6NNpBu4VtIZ6OcLRIDoit3jzc2kJu4uuhL9QYgDlBANa
- qxIgePH40I4UTQVFl9dCcig02QeHtnXH4xO5u82SoD8Ty75fr3yleRpgOy6Fxs7ht6DSza3ObIm
- alhVW/QppTO58aYL6caT+DvXaGvAalITlDLteDkW4S3e8CR3/zQctEzwZnMG7gB+MW9qO8Zqipy
- n+1i0cuFQ=
-X-Received: by 2002:a05:600c:a083:b0:40c:4ef8:a9eb with SMTP id
- jh3-20020a05600ca08300b0040c4ef8a9ebmr19829wmb.176.1703179210339; 
- Thu, 21 Dec 2023 09:20:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFfRsjT+pOYb2E78Zi5b6/1UPsa+viPSqNFC/DYXb6sbBPDTd8d7BURdDbA3DhwuqY2XXsF2Q==
-X-Received: by 2002:a05:600c:a083:b0:40c:4ef8:a9eb with SMTP id
- jh3-20020a05600ca08300b0040c4ef8a9ebmr19819wmb.176.1703179209999; 
- Thu, 21 Dec 2023 09:20:09 -0800 (PST)
+ bh=UebyFwaouzTqOLbyUOTcfC30JgB1MQMFJW2XtX7hlHw=;
+ b=A3b1+uNo/46FC5mbCcqpNFWKFChCO9zzbqQlcR74NKKiz69xHTwJe4gFMRFjAU2ptP
+ H39P2tM/DZwHa8WJuYe6SAMouGOmHVsZMVc/t+VRWg6vC6UM+PIgkegMl6z2ZMhvAxB8
+ qo7XlGeGZF4KdWLuqFu0mdK7tIEHOTdy9d19Xxc1SKijJ5zMit6Ov7fKzs2HBTiDxg4f
+ SA0IcVS2IGNM6b1OZKHJCtY/mOm4WqnQuqtojZWiexPGDbR/vPuZCBeGopWXCBAV/BI8
+ JXSLE6ICZZCBCOZjBfB4rrSNH/CKua5FrrC+ji0G1mrRtAvZGmtrNtwK8OSJfPJT3wId
+ h+Cw==
+X-Gm-Message-State: AOJu0YxqdKo78jHB83ZdoY1ucCteHzRtsJ9tzcRMWoZ/z0U8JcY7bYDF
+ WsoHSaOKgQXzUjaPkfbTge/dGUJI33dHuvFS3dhh7v8zcvxnRgeAu8hTe3Enh7v8pJ1lImwTj6I
+ ZYNn7HcJfiaUcjPbKdwPlJG9jwBwyctwWhaezkygXXPeKIty/ZDusQbIw5BjVAB4exy3aETSo7o
+ qmdjn1B9c=
+X-Received: by 2002:a5d:6052:0:b0:336:7a45:c134 with SMTP id
+ j18-20020a5d6052000000b003367a45c134mr49479wrt.86.1703179212927; 
+ Thu, 21 Dec 2023 09:20:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFxbuR5UguQSGOqNuDsHctwu45FiOcUY838FBTt00QK2tgWZUYxN6H5792VLrPuJgaBU21hCA==
+X-Received: by 2002:a5d:6052:0:b0:336:7a45:c134 with SMTP id
+ j18-20020a5d6052000000b003367a45c134mr49471wrt.86.1703179212451; 
+ Thu, 21 Dec 2023 09:20:12 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- c18-20020a5d4f12000000b00336788c812fsm2455444wru.88.2023.12.21.09.20.08
+ cx1-20020a056000092100b00336598903e9sm2452334wrb.58.2023.12.21.09.20.10
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 09:20:08 -0800 (PST)
+ Thu, 21 Dec 2023 09:20:10 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 05/21] configure: remove unnecessary subshell
-Date: Thu, 21 Dec 2023 18:19:42 +0100
-Message-ID: <20231221171958.59350-6-pbonzini@redhat.com>
+Subject: [PATCH 06/21] configure: unify again the case arms in
+ probe_target_compiler
+Date: Thu, 21 Dec 2023 18:19:43 +0100
+Message-ID: <20231221171958.59350-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231221171958.59350-1-pbonzini@redhat.com>
 References: <20231221171958.59350-1-pbonzini@redhat.com>
@@ -101,41 +102,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not use a subshell to hide the shadowing of $config_host_mak.
+Remove assignments that match the default, and group the
+targets for debian-legacy-test-cross and debian-all-test-cross
+into a single arm.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ configure | 86 +++++++++++++++++--------------------------------------
+ 1 file changed, 27 insertions(+), 59 deletions(-)
 
 diff --git a/configure b/configure
-index 6ea8f53310e..c634948051b 100755
+index c634948051b..38ca267096f 100755
 --- a/configure
 +++ b/configure
-@@ -1671,10 +1671,9 @@ if test "$targetos" = windows; then
- fi
- 
- # tests/tcg configuration
--(config_host_mak=tests/tcg/config-host.mak
- mkdir -p tests/tcg
--echo "# Automatically generated by configure - do not modify" > $config_host_mak
--echo "SRC_PATH=$source_path" >> $config_host_mak
-+echo "# Automatically generated by configure - do not modify" > tests/tcg/$config_host_mak
-+echo "SRC_PATH=$source_path" >> tests/tcg/$config_host_mak
- 
- tcg_tests_targets=
- for target in $target_list; do
-@@ -1717,9 +1716,8 @@ for target in $target_list; do
- done
- 
- if test "$tcg" = "enabled"; then
--    echo "TCG_TESTS_TARGETS=$tcg_tests_targets" >> config-host.mak
-+    echo "TCG_TESTS_TARGETS=$tcg_tests_targets" >> $config_host_mak
- fi
--)
- 
- if test "$skip_meson" = no; then
-   cross="config-meson.cross.new"
+@@ -1272,16 +1272,33 @@ probe_target_compiler() {
+     test "$container" != no || continue
+     test "$host" = "$cpu" || continue
+     case $target_arch in
++      # debian-all-test-cross architectures
++
++      hppa|m68k|mips|riscv64|sparc64)
++        container_image=debian-all-test-cross
++        ;;
++      mips64)
++        container_image=debian-all-test-cross
++        container_cross_prefix=mips64-linux-gnuabi64-
++        ;;
++      ppc|ppc64|ppc64le)
++        container_image=debian-all-test-cross
++        container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
++        ;;
++
++      # debian-legacy-test-cross architectures (need Debian 11)
++      # - libc6.1-dev-alpha-cross: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1054412
++      # - sh4-linux-user: binaries don't run with bookworm compiler
++
++      alpha|sh4)
++        container_image=debian-legacy-test-cross
++        ;;
++
++      # architectures with individual containers
++
+       aarch64)
+         # We don't have any bigendian build tools so we only use this for AArch64
+         container_image=debian-arm64-cross
+-        container_cross_prefix=aarch64-linux-gnu-
+-        container_cross_cc=${container_cross_prefix}gcc
+-        ;;
+-      alpha)
+-        container_image=debian-legacy-test-cross
+-        container_cross_prefix=alpha-linux-gnu-
+-        container_cross_cc=${container_cross_prefix}gcc
+         ;;
+       arm)
+         # We don't have any bigendian build tools so we only use this for ARM
+@@ -1290,18 +1307,11 @@ probe_target_compiler() {
+         ;;
+       cris)
+         container_image=fedora-cris-cross
+-        container_cross_prefix=cris-linux-gnu-
+         ;;
+       hexagon)
+-        container_image=debian-hexagon-cross
+         container_cross_prefix=hexagon-unknown-linux-musl-
+         container_cross_cc=${container_cross_prefix}clang
+         ;;
+-      hppa)
+-        container_image=debian-all-test-cross
+-        container_cross_prefix=hppa-linux-gnu-
+-        container_cross_cc=${container_cross_prefix}gcc
+-        ;;
+       i386)
+         container_image=debian-i686-cross
+         container_cross_prefix=i686-linux-gnu-
+@@ -1310,59 +1320,19 @@ probe_target_compiler() {
+         container_image=debian-loongarch-cross
+         container_cross_prefix=loongarch64-unknown-linux-gnu-
+         ;;
+-      m68k)
+-        container_image=debian-all-test-cross
+-        container_cross_prefix=m68k-linux-gnu-
+-        container_cross_cc=${container_cross_prefix}gcc
+-        ;;
+       microblaze)
+-        container_image=debian-microblaze-cross
+         container_cross_prefix=microblaze-linux-musl-
+         ;;
+       mips64el)
+         container_image=debian-mips64el-cross
+         container_cross_prefix=mips64el-linux-gnuabi64-
+         ;;
+-      mips64)
+-        container_image=debian-all-test-cross
+-        container_cross_prefix=mips64-linux-gnuabi64-
+-        ;;
+-      mips)
+-        container_image=debian-all-test-cross
+-        container_cross_prefix=mips-linux-gnu-
+-        ;;
+-      nios2)
+-        container_image=debian-nios2-cross
+-        container_cross_prefix=nios2-linux-gnu-
+-        ;;
+-      ppc)
+-        container_image=debian-all-test-cross
+-        container_cross_prefix=powerpc-linux-gnu-
+-        container_cross_cc=${container_cross_prefix}gcc
+-        ;;
+-      ppc64|ppc64le)
+-        container_image=debian-all-test-cross
+-        container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
+-        ;;
+-      riscv64)
+-        container_image=debian-all-test-cross
+-        container_cross_prefix=riscv64-linux-gnu-
+-        ;;
+-      sh4)
+-        container_image=debian-legacy-test-cross
+-        container_cross_prefix=sh4-linux-gnu-
+-        ;;
+-      sparc64)
+-        container_image=debian-all-test-cross
+-        container_cross_prefix=sparc64-linux-gnu-
+-        ;;
+       tricore)
+         container_image=debian-tricore-cross
+         container_cross_prefix=tricore-
+         ;;
+       x86_64)
+         container_image=debian-amd64-cross
+-        container_cross_prefix=x86_64-linux-gnu-
+         ;;
+       xtensa*)
+         container_image=debian-xtensa-cross
+@@ -1370,12 +1340,10 @@ probe_target_compiler() {
+         # default to the dc232b cpu
+         container_cross_prefix=/opt/2020.07/xtensa-dc232b-elf/bin/xtensa-dc232b-elf-
+         ;;
+-      *)
+-        # Debian and GNU architecture names usually match
+-        container_image=debian-$target_arch-cross
+-        container_cross_prefix=$target_arch-linux-gnu-
+-        ;;
+     esac
++    # Debian and GNU architecture names usually match
++    : ${container_image:=debian-$target_arch-cross}
++    : ${container_cross_prefix:=$target_arch-linux-gnu-}
+     : ${container_cross_cc:=${container_cross_prefix}gcc}
+     : ${container_cross_ar:=${container_cross_prefix}ar}
+     : ${container_cross_as:=${container_cross_prefix}as}
 -- 
 2.43.0
 
