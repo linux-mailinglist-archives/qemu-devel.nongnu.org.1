@@ -2,81 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4DE81BD24
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:24:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F1781BD6F
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:39:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGMjj-0001M0-V1; Thu, 21 Dec 2023 12:21:32 -0500
+	id 1rGN0E-0007jI-W7; Thu, 21 Dec 2023 12:38:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMje-0001C7-Rm
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:21:27 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGN0B-0007it-9U
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:38:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMjd-0004rq-51
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:21:26 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGN09-0002kI-Kx
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:38:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703179284;
+ s=mimecast20190719; t=1703180308;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=EkBm1m7mVFYtO+CM3dlvhWOWQspP7J1vV98+4FZ5d4IoyR5ZZ7LchCoz3xP3iTVinOo7Yc
- g4KbC0gTy//FO4X7iEB7MX3YkqNr3Hn2whcIwIOr86a1cv8Noc4E9GSRAoc748SBm8xPX6
- O9dvcKMK7OP9EL3ukN3nxhckgXNkKKk=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-CpMZgXXWNKezGqlNjV-twQ-1; Thu, 21 Dec 2023 12:21:23 -0500
-X-MC-Unique: CpMZgXXWNKezGqlNjV-twQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a1b06d1bea7so50253666b.0
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:21:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703179281; x=1703784081;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=NYqXq4LsmW4HCpIXXeaMbDV7Kv6G40het0DRQhfj71l/nkoWa1omJ8pyGPYfbWsClj
- mnlb9ak+saUWOoV+PfBXTP8COo/qWWNM/L7vOn40HxKWaSV5l9hjqxypU4vFQN5XaOt9
- 2fkoN4yHJyuoqzIan1q2NqJVS6JrNAj+WyEIq95aohxk4vXaZo0gQ9c/gQj2rpr41wmV
- QQN7xyqUzHUT9WJjdpAzIKm4i4hIDv3ESr4RlIIw69713nThsRTFtFA7XHDBrXfYtddj
- yqVmOr1Da6q537enJc10yqmKBQnY1E8x80oy/zK9Ey6FwJeUp5lYtgd2nQVzt/uhAntk
- mymQ==
-X-Gm-Message-State: AOJu0YzvtSIL8p13o6wJ9tjIqpDfJO6mDZYqtaRuT1I996dWpQCNbzNg
- BDmBt82maN12yr+jYWAxGhSgwq0O34Yb1nA+JuNOUAvDWKdAupXSMIXeDK63tdsBU+i8hDSp7lN
- w8A2dRl+LSC3Be6rMjdt6LiKq1I5vvog=
-X-Received: by 2002:a17:906:5a98:b0:a23:91fb:3d8 with SMTP id
- l24-20020a1709065a9800b00a2391fb03d8mr61070ejq.76.1703179281509; 
- Thu, 21 Dec 2023 09:21:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFIzBVyeIn6NHhuhNKKtFfUbYJ/8cYk5xM+HV4aG3mHx+ts3amAq6k8jVEfsx8du/1Quf5VeA==
-X-Received: by 2002:a17:906:5a98:b0:a23:91fb:3d8 with SMTP id
- l24-20020a1709065a9800b00a2391fb03d8mr61064ejq.76.1703179281254; 
- Thu, 21 Dec 2023 09:21:21 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
- by smtp.gmail.com with ESMTPSA id
- d17-20020a170906345100b00a26af0a6845sm327413ejb.9.2023.12.21.09.21.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 09:21:20 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: Michael Brown <mcb30@ipxe.org>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v2] target/i386: Fix physical address truncation
-Date: Thu, 21 Dec 2023 18:21:18 +0100
-Message-ID: <20231221172118.59724-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <0102018c8d11471f-9a6d73eb-0c34-4f61-8d37-5a4418f9e0d7-000000@eu-west-1.amazonses.com>
-References: 
+ bh=bG8puuc3jARFslQEkLEHvYUCBULCO8atthBG6xj1+HE=;
+ b=HskRZhOVITWPh2W0oQ3+zqVmTHQnQt5dXd8fZv84iNdHmCWLXQ9J+ZEejW8UyY12Aiu2OS
+ dNkeJeyH2OUaxHGSrWrNP82I8RQlJI6skNPR0W/AVzDC5FkBe2rTqo05sdPbK0ToJo7t1W
+ /SXui//37Czj4vM63IL0Dj6qJSNqffM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-xtYhoMXLPpi0O-G_TEchNQ-1; Thu,
+ 21 Dec 2023 12:38:24 -0500
+X-MC-Unique: xtYhoMXLPpi0O-G_TEchNQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 708B41C06912;
+ Thu, 21 Dec 2023 17:38:24 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.128])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 737F0492BC6;
+ Thu, 21 Dec 2023 17:38:19 +0000 (UTC)
+Date: Thu, 21 Dec 2023 18:38:16 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH v2 6/6] nbd/server: introduce NBDClient->lock to protect
+ fields
+Message-ID: <ZYR4CKeZD7EmCYuv@redhat.com>
+References: <20231221153548.1752005-1-stefanha@redhat.com>
+ <20231221153548.1752005-7-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231221153548.1752005-7-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -101,8 +85,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks.
+Am 21.12.2023 um 16:35 hat Stefan Hajnoczi geschrieben:
+> NBDClient has a number of fields that are accessed by both the export
+> AioContext and the main loop thread. When the AioContext lock is removed
+> these fields will need another form of protection.
+> 
+> Add NBDClient->lock and protect fields that are accessed by both
+> threads. Also add assertions where possible and otherwise add doc
+> comments stating assumptions about which thread and lock holding.
+> 
+> Note this patch moves the client->recv_coroutine assertion from
+> nbd_co_receive_request() to nbd_trip() where client->lock is held.
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Paolo
+> +/* Runs in export AioContext */
+> +static void nbd_wake_read_bh(void *opaque)
+> +{
+> +    NBDClient *client = opaque;
+> +    qio_channel_wake_read(client->ioc);
+> +}
+> +
+>  static bool nbd_drained_poll(void *opaque)
+>  {
+>      NBDExport *exp = opaque;
+>      NBDClient *client;
+>  
+> +    assert(qemu_in_main_thread());
+> +
+>      QTAILQ_FOREACH(client, &exp->clients, next) {
+> -        if (client->nb_requests != 0) {
+> -            /*
+> -             * If there's a coroutine waiting for a request on nbd_read_eof()
+> -             * enter it here so we don't depend on the client to wake it up.
+> -             */
+> -            if (client->recv_coroutine != NULL && client->read_yielding) {
+> -                qio_channel_wake_read(client->ioc);
+> +        WITH_QEMU_LOCK_GUARD(&client->lock) {
+> +            if (client->nb_requests != 0) {
+> +                /*
+> +                 * If there's a coroutine waiting for a request on nbd_read_eof()
+> +                 * enter it here so we don't depend on the client to wake it up.
+> +                 *
+> +                 * Schedule a BH in the export AioContext to avoid missing the
+> +                 * wake up due to the race between qio_channel_wake_read() and
+> +                 * qio_channel_yield().
+> +                 */
+> +                if (client->recv_coroutine != NULL && client->read_yielding) {
+> +                    aio_bh_schedule_oneshot(nbd_export_aio_context(client->exp),
+> +                                            nbd_wake_read_bh, client);
+> +                }
+
+Doesn't the condition have to move inside the BH to avoid the race?
+
+Checking client->recv_coroutine != NULL could work here because I don't
+think it can go from NULL to something while we're quiescing, but
+client->read_yielding can still change until the BH runs and we know
+that the nbd_co_trip() coroutine has yielded. It seems easiest to just
+move the whole condition to the BH.
+
+> +                return true;
+>              }
+> -
+> -            return true;
+>          }
+>      }
+
+The rest looks good to me.
+
+Kevin
 
 
