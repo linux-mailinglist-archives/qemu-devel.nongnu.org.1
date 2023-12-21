@@ -2,61 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABD781B2E7
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 10:53:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B563181B2E8
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 10:53:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGFhx-0006RF-MF; Thu, 21 Dec 2023 04:51:14 -0500
+	id 1rGFhn-0006PY-2f; Thu, 21 Dec 2023 04:51:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
- id 1rGFhb-0006NI-RF; Thu, 21 Dec 2023 04:50:53 -0500
-Received: from zg8tmty3ljk5ljewns4xndka.icoremail.net ([167.99.105.149])
+ id 1rGFhb-0006NH-Qt; Thu, 21 Dec 2023 04:50:53 -0500
+Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <duchao@eswincomputing.com>)
- id 1rGFhY-0002XA-SD; Thu, 21 Dec 2023 04:50:50 -0500
+ id 1rGFhY-0002Xt-15; Thu, 21 Dec 2023 04:50:50 -0500
 Received: from localhost.localdomain (unknown [10.12.130.31])
- by app1 (Coremail) with SMTP id TAJkCgAHk_0TCoRlUowCAA--.24821S7;
- Thu, 21 Dec 2023 17:49:12 +0800 (CST)
+ by app1 (Coremail) with SMTP id TAJkCgAHk_0TCoRlUowCAA--.24821S8;
+ Thu, 21 Dec 2023 17:49:14 +0800 (CST)
 From: Chao Du <duchao@eswincomputing.com>
 To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
  alistair23@gmail.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  palmer@dabbelt.com, anup@brainfault.org, atishp@atishpatra.org
-Subject: [RFC PATCH 3/4] target/riscv/kvm: handle the exit with debug reason
-Date: Thu, 21 Dec 2023 09:49:22 +0000
-Message-Id: <20231221094923.7349-4-duchao@eswincomputing.com>
+Subject: [RFC PATCH 4/4] linux-headers: enable KVM GUEST DEBUG for RISC-V
+Date: Thu, 21 Dec 2023 09:49:23 +0000
+Message-Id: <20231221094923.7349-5-duchao@eswincomputing.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20231221094923.7349-1-duchao@eswincomputing.com>
 References: <20231221094923.7349-1-duchao@eswincomputing.com>
-X-CM-TRANSID: TAJkCgAHk_0TCoRlUowCAA--.24821S7
-X-Coremail-Antispam: 1UD129KBjvJXoWrtrWUXrWxKF45Jw1UGFyrtFb_yoW8JF18pF
- 45Cay5Crs3J347Gw4SvFWkAF13Ars7urZ8J3y7KaySqw43trWrWr1vg39IyFWrJFyfWF4a
- yF47Zr13CF4Utr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUP2b7Iv0xC_Zr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
- 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
- 8067AKxVWUWwA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF
- 64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcV
- CY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv
- 6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c
- 02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE
- 4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2
- xSY4AK6svPMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8Zw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
- 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8Sf
- O7UUUUU==
+X-CM-TRANSID: TAJkCgAHk_0TCoRlUowCAA--.24821S8
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+ VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUO57k0a2IF6F4UM7kC6x804xWl14x267AK
+ xVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGw
+ A2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYIkIc2x26xkF7I0E14v26ryj6s0DM28l
+ Y4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s
+ 1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl
+ 6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv04
+ 87Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280
+ aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6x
+ kF7I0E8cxan2IY04v7MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
+ bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
+ AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI
+ 42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCw
+ CI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnI
+ WIevJa73UjIFyTuYvjxU2bAwDUUUU
 X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/
-Received-SPF: pass client-ip=167.99.105.149;
- envelope-from=duchao@eswincomputing.com;
- helo=zg8tmty3ljk5ljewns4xndka.icoremail.net
+Received-SPF: permerror client-ip=129.150.39.64;
+ envelope-from=duchao@eswincomputing.com; helo=sgoci-sdnproxy-4.icoremail.net
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,51 +70,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the breakpoint belongs to the userspace then set the ret value.
+Synchronize the kvm.h file which enables KVM GUEST DEBUG at QEMU side.
 
 Signed-off-by: Chao Du <duchao@eswincomputing.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ linux-headers/asm-riscv/kvm.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 94697b09bb..b1aed78780 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1213,6 +1213,21 @@ static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
-     return ret;
- }
+diff --git a/linux-headers/asm-riscv/kvm.h b/linux-headers/asm-riscv/kvm.h
+index 992c5e4071..72942a7aaf 100644
+--- a/linux-headers/asm-riscv/kvm.h
++++ b/linux-headers/asm-riscv/kvm.h
+@@ -17,6 +17,7 @@
  
-+static bool kvm_riscv_handle_debug(CPUState *cs)
-+{
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+    CPURISCVState *env = &cpu->env;
-+
-+    /* Ensure PC is synchronised */
-+    kvm_cpu_synchronize_state(cs);
-+
-+    if (kvm_find_sw_breakpoint(cs, env->pc)) {
-+        return true;
-+    }
-+
-+    return false;
-+}
-+
- int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
- {
-     int ret = 0;
-@@ -1220,6 +1235,11 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
-     case KVM_EXIT_RISCV_SBI:
-         ret = kvm_riscv_handle_sbi(cs, run);
-         break;
-+    case KVM_EXIT_DEBUG:
-+        if (kvm_riscv_handle_debug(cs)) {
-+            ret = EXCP_DEBUG;
-+        }
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: un-handled exit reason %d\n",
-                       __func__, run->exit_reason);
+ #define __KVM_HAVE_IRQ_LINE
+ #define __KVM_HAVE_READONLY_MEM
++#define __KVM_HAVE_GUEST_DEBUG
+ 
+ #define KVM_COALESCED_MMIO_PAGE_OFFSET 1
+ 
 -- 
 2.17.1
 
