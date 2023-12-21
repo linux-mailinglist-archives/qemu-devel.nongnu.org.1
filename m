@@ -2,107 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE0281AEF9
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:56:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D53C81AF16
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 08:06:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGCxk-00023o-N5; Thu, 21 Dec 2023 01:55:20 -0500
+	id 1rGD7W-00052y-QI; Thu, 21 Dec 2023 02:05:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGCxg-00023Y-J2
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:55:16 -0500
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGCxe-0001XV-Kh
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:55:16 -0500
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-5c66b093b86so1181343a12.0
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 22:55:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703141713; x=1703746513;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CLzY5PdrM7K/wmvGqA4vWKhQk+AYxpxkLmOBtyv7qaE=;
- b=cmSB2R7HyAPXez/SomAIktEHfeuRcoDzBHTSaPZPCdLmvnErdASdUgkaDBbvNQF46I
- QqbHg9b6fQ76NGpnxKQh3UTOnmblr6Ln2nW4xs9pfTb5miYq7oAbNekILJeFN4LYKql2
- FfesyvB9WP5q5cjP5VD/fg1xoyWRt9MRCdRDW/cyO3XDEKLrffA6uqIKFmDqlxRzFkk5
- XmjFf06xLm9PtIdl32anoFvlB/6UWu1LW+3HYpe8dWQ8e/1spClwx2k3cNqjZAMykOB6
- ItAGwSS3bJQhUNFji6smk6gEHiPQcOhozk1JNIc1JX0BHTwkoPMWip6Is+u2NkfkeNIB
- yq6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703141713; x=1703746513;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CLzY5PdrM7K/wmvGqA4vWKhQk+AYxpxkLmOBtyv7qaE=;
- b=cpEOxf5zsgm0poYh9tL9sy1PC8yKVrmmx0a64WxGy1LhJHeaEmAJiTlu485Muj9Geh
- 6NqtB4Vd5b+ZwB+ZunNVFMconsKTYK1YDUwYi1O0PGpOXWSELJZbWqG831KNhWxm19S+
- QHFJiOcTW9/wGyrqe7HirKwukIsEKz8+JXABk/MOUCJz3+9dvugiuexBXNb+8bRMggUL
- 1HyOIOxgUBVoYXCFwfZHcjjTzmJG57bD+gtkamFsa1SuuMXez4np1QPdIvXpVctgwuow
- 7tUp/QDf0a1S/9/fCH/EYlruMvFCRhYp3n/R7zQRGvkHNYw5mwliBaQtrJs/X6EMAUvg
- /BdA==
-X-Gm-Message-State: AOJu0YzLykYn0bw+KQnYWg5y1g81JzoWJ74eZ3ZELfEfgCVh3E31x5RU
- MOwX0PotUo/d1bq3OEwaOU09yA==
-X-Google-Smtp-Source: AGHT+IEbwVl9Gzb6AFc1cuiyAWrCzGB+Iuh7dB4wVutX8k4xc8tuq+dN41LEMJ8tq7KTcYtz+FhJXg==
-X-Received: by 2002:a17:90a:cb15:b0:28b:eed2:5990 with SMTP id
- z21-20020a17090acb1500b0028beed25990mr290395pjt.15.1703141712760; 
- Wed, 20 Dec 2023 22:55:12 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
- by smtp.gmail.com with ESMTPSA id
- j15-20020a17090a840f00b0028bad9b220fsm954956pjn.37.2023.12.20.22.55.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Dec 2023 22:55:12 -0800 (PST)
-Message-ID: <af89f683-2b6e-4ca1-aa37-8bedd12a781d@daynix.com>
-Date: Thu, 21 Dec 2023 15:55:06 +0900
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1rGD7T-0004z1-7T
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:05:23 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1rGD7P-0005A6-Hc
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 02:05:22 -0500
+Received: from loongson.cn (unknown [10.20.42.173])
+ by gateway (Coremail) with SMTP id _____8CxRPCl44Nlp1QDAA--.16878S3;
+ Thu, 21 Dec 2023 15:05:10 +0800 (CST)
+Received: from [10.20.42.173] (unknown [10.20.42.173])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxG+Si44NlwlMDAA--.17618S3; 
+ Thu, 21 Dec 2023 15:05:08 +0800 (CST)
+Subject: Re: [PATCH v2 01/17] hw/loongarch: Move boot fucntions to boot.c
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, philmd@linaro.org, peter.maydell@linaro.org
+References: <20231218090059.2678224-1-gaosong@loongson.cn>
+ <20231218090059.2678224-2-gaosong@loongson.cn>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <802dfb9c-bd27-ebdd-8fa0-8506ab88a2c8@loongson.cn>
+Date: Thu, 21 Dec 2023 15:04:55 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/11] linux-headers: Update to kernel headers to add
- venus capset
+In-Reply-To: <20231218090059.2678224-2-gaosong@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, Huang Rui <ray.huang@amd.com>
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Stabellini, Stefano" <stefano.stabellini@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-2-ray.huang@amd.com>
- <6adff6d2-7c58-4c78-93a5-5a4594a60d27@daynix.com> <ZYGe4GcFPt0k5PTM@amd.com>
- <CAFEAcA_=iedJw4BbNHrDALC4mL4g3ZEihsDbLkEzsy-1zAWFWw@mail.gmail.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CAFEAcA_=iedJw4BbNHrDALC4mL4g3ZEihsDbLkEzsy-1zAWFWw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::536;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x536.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8BxG+Si44NlwlMDAA--.17618S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWfGryrCr4rZF4fAF4rGrW8Xwc_yoWkZry8pF
+ W3ZFn5Grs5Jrn3uwnrX345uF98Aw4xGa1agF17Kr1SkFsFqryUur18urW2vFW8taykKF1Y
+ vrn5Kw42q3W7JrXCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1Ek
+ sDUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.41,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,50 +81,388 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/19 23:14, Peter Maydell wrote:
-> On Tue, 19 Dec 2023 at 13:49, Huang Rui <ray.huang@amd.com> wrote:
->>
->> On Tue, Dec 19, 2023 at 08:20:22PM +0800, Akihiko Odaki wrote:
->>> On 2023/12/19 16:53, Huang Rui wrote:
->>>> Sync up kernel headers to update venus macro till they are merged into
->>>> mainline.
->>>
->>> Thanks for sorting things out with the kernel and spec.
->>>
->>>>
->>>> Signed-off-by: Huang Rui <ray.huang@amd.com>
->>>> ---
->>>>
->>>> Changes in v6:
->>>> - Venus capset is applied in kernel, so update it in qemu for future use.
->>>>
->>>> https://lore.kernel.org/lkml/b79dcf75-c9e8-490e-644f-3b97d95f7397@collabora.com/
->>>> https://cgit.freedesktop.org/drm-misc/commit/?id=216d86b9a430f3280e5b631c51e6fd1a7774cfa0
->>> Please include the link to the upstream commit in the commit message.
->>
->> So far, it's in drm maintainers' branch not in kernel mainline yet. Do I
->> need to wait it to be merged into kernel mainline?
+
+
+On 2023/12/18 下午5:00, Song Gao wrote:
+> Move some boot functions to boot.c and struct
+> loongarch_boot_info into struct LoongArchMachineState.
 > 
-> For an RFC patchset, no. For patches to be merged into QEMU
-> the headers change must be in the kernel mainline, and the
-> QEMU commit that updates our copy of the headers must be a
-> full-sync done with scripts/update-linux-headers.sh, not a
-> manual edit.
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   hw/loongarch/boot.c         | 127 ++++++++++++++++++++++++++++++++++++
+>   hw/loongarch/meson.build    |   1 +
+>   hw/loongarch/virt.c         | 118 ++-------------------------------
+>   include/hw/loongarch/boot.h |  21 ++++++
+>   include/hw/loongarch/virt.h |   2 +
+>   5 files changed, 155 insertions(+), 114 deletions(-)
+>   create mode 100644 hw/loongarch/boot.c
+>   create mode 100644 include/hw/loongarch/boot.h
+> 
+> diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+> new file mode 100644
+> index 0000000000..9f25ea5847
+> --- /dev/null
+> +++ b/hw/loongarch/boot.c
+> @@ -0,0 +1,127 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * LoongArch boot helper functions.
+> + *
+> + * Copyright (c) 2023 Loongson Technology Corporation Limited
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/units.h"
+> +#include "target/loongarch/cpu.h"
+> +#include "hw/loongarch/virt.h"
+> +#include "hw/loader.h"
+> +#include "elf.h"
+> +#include "qemu/error-report.h"
+> +#include "sysemu/reset.h"
+> +
+> +static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
+> +{
+> +    return addr & MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
+> +}
+> +
+> +static int64_t load_kernel_info(struct loongarch_boot_info *info)
+> +{
+> +    uint64_t kernel_entry, kernel_low, kernel_high;
+> +    ssize_t kernel_size;
+> +
+> +    kernel_size = load_elf(info->kernel_filename, NULL,
+> +                           cpu_loongarch_virt_to_phys, NULL,
+> +                           &kernel_entry, &kernel_low,
+> +                           &kernel_high, NULL, 0,
+> +                           EM_LOONGARCH, 1, 0);
+> +
+> +    if (kernel_size < 0) {
+> +        error_report("could not load kernel '%s': %s",
+> +                     info->kernel_filename,
+> +                     load_elf_strerror(kernel_size));
+> +        exit(1);
+> +    }
+> +    return kernel_entry;
+> +}
+> +
+> +static void reset_load_elf(void *opaque)
+> +{
+> +    LoongArchCPU *cpu = opaque;
+> +    CPULoongArchState *env = &cpu->env;
+> +
+> +    cpu_reset(CPU(cpu));
+> +    if (env->load_elf) {
+> +        cpu_set_pc(CPU(cpu), env->elf_address);
+> +    }
+> +}
+> +
+> +static void fw_cfg_add_kernel_info(struct loongarch_boot_info *info,
+> +                                   FWCfgState *fw_cfg)
+> +{
+> +    /*
+> +     * Expose the kernel, the command line, and the initrd in fw_cfg.
+> +     * We don't process them here at all, it's all left to the
+> +     * firmware.
+> +     */
+> +    load_image_to_fw_cfg(fw_cfg,
+> +                         FW_CFG_KERNEL_SIZE, FW_CFG_KERNEL_DATA,
+> +                         info->kernel_filename,
+> +                         false);
+> +
+> +    if (info->initrd_filename) {
+> +        load_image_to_fw_cfg(fw_cfg,
+> +                             FW_CFG_INITRD_SIZE, FW_CFG_INITRD_DATA,
+> +                             info->initrd_filename, false);
+> +    }
+> +
+> +    if (info->kernel_cmdline) {
+> +        fw_cfg_add_i32(fw_cfg, FW_CFG_CMDLINE_SIZE,
+> +                       strlen(info->kernel_cmdline) + 1);
+> +        fw_cfg_add_string(fw_cfg, FW_CFG_CMDLINE_DATA,
+> +                          info->kernel_cmdline);
+> +    }
+> +}
+> +
+> +static void loongarch_firmware_boot(LoongArchMachineState *lams,
+> +                                    struct loongarch_boot_info *info)
+> +{
+> +    fw_cfg_add_kernel_info(info, lams->fw_cfg);
+> +}
+> +
+> +static void loongarch_direct_kernel_boot(LoongArchMachineState *lams,
+> +                                         struct loongarch_boot_info *info)
+> +{
+> +    MachineState *machine = MACHINE(lams);
+> +    int64_t kernel_addr = 0;
+> +    LoongArchCPU *lacpu;
+> +    int i;
+> +
+> +    if (info->kernel_filename) {
+> +        kernel_addr = load_kernel_info(info);
+> +    } else {
+> +        error_report("Need kernel filename\n");
+> +        exit(1);
+> +    }
+> +
+> +    for (i = 0; i < machine->smp.cpus; i++) {
+> +        lacpu = LOONGARCH_CPU(qemu_get_cpu(i));
+> +        lacpu->env.load_elf = true;
+> +        lacpu->env.elf_address = kernel_addr;
+> +    }
+> +}
+> +
+> +void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
+> +{
+> +    LoongArchMachineState *lams = LOONGARCH_MACHINE(ms);
+> +    int i;
+> +
+> +    /* register reset function */
+> +    for (i = 0; i < ms->smp.cpus; i++) {
+> +        qemu_register_reset(reset_load_elf, LOONGARCH_CPU(qemu_get_cpu(i)));
+> +    }
+> +
+> +    info->kernel_filename = ms->kernel_filename;
+> +    info->kernel_cmdline = ms->kernel_cmdline;
+> +    info->initrd_filename = ms->initrd_filename;
+> +
+> +    if (lams->bios_loaded) {
+> +        loongarch_firmware_boot(lams, info);
+> +    } else {
+> +        loongarch_direct_kernel_boot(lams, info);
+> +    }
+> +}
+> diff --git a/hw/loongarch/meson.build b/hw/loongarch/meson.build
+> index c0421502ab..d306d82c2e 100644
+> --- a/hw/loongarch/meson.build
+> +++ b/hw/loongarch/meson.build
+> @@ -1,6 +1,7 @@
+>   loongarch_ss = ss.source_set()
+>   loongarch_ss.add(files(
+>       'fw_cfg.c',
+> +    'boot.c',
+>   ))
+>   loongarch_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: [files('virt.c'), fdt])
+>   loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c'))
+> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> index 4b7dc67a2d..3e27d72f55 100644
+> --- a/hw/loongarch/virt.c
+> +++ b/hw/loongarch/virt.c
+> @@ -46,14 +46,6 @@
+>   #include "hw/block/flash.h"
+>   #include "qemu/error-report.h"
+>   
+> -
+> -struct loaderparams {
+> -    uint64_t ram_size;
+> -    const char *kernel_filename;
+> -    const char *kernel_cmdline;
+> -    const char *initrd_filename;
+> -};
+> -
+>   static void virt_flash_create(LoongArchMachineState *lams)
+>   {
+>       DeviceState *dev = qdev_new(TYPE_PFLASH_CFI01);
+> @@ -376,31 +368,6 @@ static void memmap_add_entry(uint64_t address, uint64_t length, uint32_t type)
+>       memmap_entries++;
+>   }
+>   
+> -static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
+> -{
+> -    return addr & MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
+> -}
+> -
+> -static int64_t load_kernel_info(const struct loaderparams *loaderparams)
+> -{
+> -    uint64_t kernel_entry, kernel_low, kernel_high;
+> -    ssize_t kernel_size;
+> -
+> -    kernel_size = load_elf(loaderparams->kernel_filename, NULL,
+> -                           cpu_loongarch_virt_to_phys, NULL,
+> -                           &kernel_entry, &kernel_low,
+> -                           &kernel_high, NULL, 0,
+> -                           EM_LOONGARCH, 1, 0);
+> -
+> -    if (kernel_size < 0) {
+> -        error_report("could not load kernel '%s': %s",
+> -                     loaderparams->kernel_filename,
+> -                     load_elf_strerror(kernel_size));
+> -        exit(1);
+> -    }
+> -    return kernel_entry;
+> -}
+> -
+>   static DeviceState *create_acpi_ged(DeviceState *pch_pic, LoongArchMachineState *lams)
+>   {
+>       DeviceState *dev;
+> @@ -668,69 +635,6 @@ static void loongarch_firmware_init(LoongArchMachineState *lams)
+>           memory_region_add_subregion(get_system_memory(), VIRT_BIOS_BASE, &lams->bios);
+>           lams->bios_loaded = true;
+>       }
+> -
+> -}
+> -
+> -static void reset_load_elf(void *opaque)
+> -{
+> -    LoongArchCPU *cpu = opaque;
+> -    CPULoongArchState *env = &cpu->env;
+> -
+> -    cpu_reset(CPU(cpu));
+> -    if (env->load_elf) {
+> -        cpu_set_pc(CPU(cpu), env->elf_address);
+> -    }
+> -}
+> -
+> -static void fw_cfg_add_kernel_info(const struct loaderparams *loaderparams,
+> -                                   FWCfgState *fw_cfg)
+> -{
+> -    /*
+> -     * Expose the kernel, the command line, and the initrd in fw_cfg.
+> -     * We don't process them here at all, it's all left to the
+> -     * firmware.
+> -     */
+> -    load_image_to_fw_cfg(fw_cfg,
+> -                         FW_CFG_KERNEL_SIZE, FW_CFG_KERNEL_DATA,
+> -                         loaderparams->kernel_filename,
+> -                         false);
+> -
+> -    if (loaderparams->initrd_filename) {
+> -        load_image_to_fw_cfg(fw_cfg,
+> -                             FW_CFG_INITRD_SIZE, FW_CFG_INITRD_DATA,
+> -                             loaderparams->initrd_filename, false);
+> -    }
+> -
+> -    if (loaderparams->kernel_cmdline) {
+> -        fw_cfg_add_i32(fw_cfg, FW_CFG_CMDLINE_SIZE,
+> -                       strlen(loaderparams->kernel_cmdline) + 1);
+> -        fw_cfg_add_string(fw_cfg, FW_CFG_CMDLINE_DATA,
+> -                          loaderparams->kernel_cmdline);
+> -    }
+> -}
+> -
+> -static void loongarch_firmware_boot(LoongArchMachineState *lams,
+> -                                    const struct loaderparams *loaderparams)
+> -{
+> -    fw_cfg_add_kernel_info(loaderparams, lams->fw_cfg);
+> -}
+> -
+> -static void loongarch_direct_kernel_boot(LoongArchMachineState *lams,
+> -                                         const struct loaderparams *loaderparams)
+> -{
+> -    MachineState *machine = MACHINE(lams);
+> -    int64_t kernel_addr = 0;
+> -    LoongArchCPU *lacpu;
+> -    int i;
+> -
+> -    kernel_addr = load_kernel_info(loaderparams);
+> -    if (!machine->firmware) {
+> -        for (i = 0; i < machine->smp.cpus; i++) {
+> -            lacpu = LOONGARCH_CPU(qemu_get_cpu(i));
+> -            lacpu->env.load_elf = true;
+> -            lacpu->env.elf_address = kernel_addr;
+> -        }
+> -    }
+>   }
+>   
+>   static void loongarch_init(MachineState *machine)
+> @@ -750,7 +654,6 @@ static void loongarch_init(MachineState *machine)
+>       MachineClass *mc = MACHINE_GET_CLASS(machine);
+>       CPUState *cpu;
+>       char *ramName = NULL;
+> -    struct loaderparams loaderparams = { };
+>   
+>       if (!cpu_model) {
+>           cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
+> @@ -844,24 +747,8 @@ static void loongarch_init(MachineState *machine)
+>                           sizeof(struct memmap_entry) * (memmap_entries));
+>       }
+>       fdt_add_fw_cfg_node(lams);
+> -    loaderparams.ram_size = ram_size;
+> -    loaderparams.kernel_filename = machine->kernel_filename;
+> -    loaderparams.kernel_cmdline = machine->kernel_cmdline;
+> -    loaderparams.initrd_filename = machine->initrd_filename;
+> -    /* load the kernel. */
+> -    if (loaderparams.kernel_filename) {
+> -        if (lams->bios_loaded) {
+> -            loongarch_firmware_boot(lams, &loaderparams);
+> -        } else {
+> -            loongarch_direct_kernel_boot(lams, &loaderparams);
+> -        }
+> -    }
+>       fdt_add_flash_node(lams);
+> -    /* register reset function */
+> -    for (i = 0; i < machine->smp.cpus; i++) {
+> -        lacpu = LOONGARCH_CPU(qemu_get_cpu(i));
+How about use CPU_FOREACH(cpu) here?
 
-Apparently the kernel change is unlikely to be merged to mainline before 
-QEMU 9.0 so we need to come up with some idea to deal with this.
+There is while-loop in function qemu_get_cpu, with for loop in previous 
+line there will be double loop sentences.
 
-The release of Linux 6.7 is near and the development of 6.8 will start 
-soon. So it was nice if the change made into 6.8, but unfortunately it 
-missed the *probably last* drm-misc tree pull request for 6.8:
-https://lore.kernel.org/all/aqpn5miejmkks7pbcfex7b6u63uwsruywxsnr3x5ljs45qatin@nbkkej2elk46/
+Regards
+Bibo Mao
 
-It will still get into linux-next so we may retrieve headers from 
-linux-next. Or we may add the definition to 
-hw/display/virtio-gpu-virgl.c; the duplicate definition warning will 
-tell when the definition becomes no longer necessary. I'm fine with 
-either option.
+> -        qemu_register_reset(reset_load_elf, lacpu);
+> -    }
+> +
+>       /* Initialize the IO interrupt subsystem */
+>       loongarch_irq_init(lams);
+>       fdt_add_irqchip_node(lams);
+> @@ -886,6 +773,9 @@ static void loongarch_init(MachineState *machine)
+>       fdt_base = 1 * MiB;
+>       qemu_fdt_dumpdtb(machine->fdt, lams->fdt_size);
+>       rom_add_blob_fixed("fdt", machine->fdt, lams->fdt_size, fdt_base);
+> +
+> +    lams->bootinfo.ram_size = ram_size;
+> +    loongarch_load_kernel(machine, &lams->bootinfo);
+>   }
+>   
+>   bool loongarch_is_acpi_enabled(LoongArchMachineState *lams)
+> diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
+> new file mode 100644
+> index 0000000000..3275c1e295
+> --- /dev/null
+> +++ b/include/hw/loongarch/boot.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Definitions for LoongArch boot.
+> + *
+> + * Copyright (C) 2023 Loongson Technology Corporation Limited
+> + */
+> +
+> +#ifndef HW_LOONGARCH_BOOT_H
+> +#define HW_LOONGARCH_BOOT_H
+> +
+> +struct loongarch_boot_info {
+> +    uint64_t ram_size;
+> +    const char *kernel_filename;
+> +    const char *kernel_cmdline;
+> +    const char *initrd_filename;
+> +    uint64_t a0, a1, a2;
+> +};
+> +
+> +void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info);
+> +
+> +#endif /* HW_LOONGARCH_BOOT_H */
+> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+> index 674f4655e0..e4126dd0e7 100644
+> --- a/include/hw/loongarch/virt.h
+> +++ b/include/hw/loongarch/virt.h
+> @@ -13,6 +13,7 @@
+>   #include "qemu/queue.h"
+>   #include "hw/intc/loongarch_ipi.h"
+>   #include "hw/block/flash.h"
+> +#include "hw/loongarch/boot.h"
+>   
+>   #define LOONGARCH_MAX_CPUS      256
+>   
+> @@ -50,6 +51,7 @@ struct LoongArchMachineState {
+>       DeviceState *platform_bus_dev;
+>       PCIBus       *pci_bus;
+>       PFlashCFI01  *flash;
+> +    struct loongarch_boot_info bootinfo;
+>   };
+>   
+>   #define TYPE_LOONGARCH_MACHINE  MACHINE_TYPE_NAME("virt")
+> 
 
-Regards,
-Akihiko Odaki
 
