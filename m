@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB9781BFD6
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:04:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1AF81BFE3
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:08:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGQBm-0001ii-A2; Thu, 21 Dec 2023 16:02:42 -0500
+	id 1rGQGj-00039x-B6; Thu, 21 Dec 2023 16:07:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQBk-0001iY-Mi
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:02:40 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQGZ-00039V-G6
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:07:39 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQBf-0001Ht-Q6
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:02:40 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rGQGW-0002Ev-BZ
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 16:07:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703192554;
+ s=mimecast20190719; t=1703192854;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=C5LUIkvZ9TeKyY/k5axAn88KBZNVgPVIG51mzst7Lgk=;
- b=WIAexTUbZRwX+e9uSQKjlI4dN0REm10hifOgdKaMfC804qkumFJLnXqZ6K024dO4zLNMrm
- OiUES039t0bifhcnjGvxxXtXzud9RkVUF3IshOBxdTiwHIoSV4M8nVq0U2R+q+JNfFYVz+
- tikgGv0Gk/RwTTRxbAtd9KG1We2rwvI=
+ bh=dyvq2s0akWxu95rqBe9pJMD6TZQ2Yh8FOWR79X+Ve8M=;
+ b=BhAN3jFNXsa8b1pFDohP4Hyzcua/enp+pIe1fbrW0hRfMrGV2TkmrQZziG5+yeGb5aMV7+
+ R4kchnp8j7cABfZ5rD0EJZevVzZM8inerR07w+Dl5TbBXWf4voInEP8ZfzdPMFEcW38Rmf
+ VZvxI8OYmN8gRHs78RB8vqc8tQGQsH4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-zZotT_JLPeKbOftxPjPzCQ-1; Thu,
- 21 Dec 2023 16:02:30 -0500
-X-MC-Unique: zZotT_JLPeKbOftxPjPzCQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-144-4NgmT8o9PES4JJpkJv7j4w-1; Thu,
+ 21 Dec 2023 16:07:29 -0500
+X-MC-Unique: 4NgmT8o9PES4JJpkJv7j4w-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26DA9380662C;
- Thu, 21 Dec 2023 21:02:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 18C5D3806283;
+ Thu, 21 Dec 2023 21:07:29 +0000 (UTC)
 Received: from redhat.com (unknown [10.39.193.128])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DBCE22166B31;
- Thu, 21 Dec 2023 21:02:22 +0000 (UTC)
-Date: Thu, 21 Dec 2023 22:02:20 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 533452166B31;
+ Thu, 21 Dec 2023 21:07:23 +0000 (UTC)
+Date: Thu, 21 Dec 2023 22:07:21 +0100
 From: Kevin Wolf <kwolf@redhat.com>
 To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- pbonzini@redhat.com, Peter Xu <peterx@redhat.com>,
- qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
- Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH v3 0/6] qemu-iotests fixes for Kevin's block tree
-Message-ID: <ZYSn3EoLhaxKEbdB@redhat.com>
-References: <20231221192452.1785567-1-stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Michal Privoznik <mprivozn@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 0/4] virtio-blk: add iothread-vq-mapping parameter
+Message-ID: <ZYSpCQ7kJufg9zWT@redhat.com>
+References: <20231220134755.814917-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231221192452.1785567-1-stefanha@redhat.com>
+In-Reply-To: <20231220134755.814917-1-stefanha@redhat.com>
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -65,8 +66,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,27 +83,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 21.12.2023 um 20:24 hat Stefan Hajnoczi geschrieben:
+Am 20.12.2023 um 14:47 hat Stefan Hajnoczi geschrieben:
+> v4:
+> - Use DummyVirtioForceArrays naming in QAPI schema [Markus]
 > v3:
-> - Add aio_wait_kick() into nbd_read_eof() to avoid race with nbd_drained_poll()
->   [Kevin]
+> - Rebased onto Kevin's block branch
+> - Add StringOutputVisitor "<omitted>" patch to fix "info qtree" crash
+> - Fix QAPI schema formatting [Markus]
+> - Eliminate unnecessary local variable in get_iothread_vq_mapping_list() [Markus]
 > 
-> v2:
-> - Drop useless if (client->quiesing) check [Kevin]
-> - run qio_channel_read_wake() in export AioContext to avoid race [Kevin]
-> - Introduce nbd_client_put_nonzero() optimization [Paolo]
-> - Reach goto label disconnect with client->lock taken [Paolo]
-> - Add doc comment explaining nbd_co_receive_request() loop in nbd_trip() [Kevin]
+> virtio-blk and virtio-scsi devices need a way to specify the mapping between
+> IOThreads and virtqueues. At the moment all virtqueues are assigned to a single
+> IOThread or the main loop. This single thread can be a CPU bottleneck, so it is
+> necessary to allow finer-grained assignment to spread the load. With this
+> series applied, "pidstat -t 1" shows that guests with -smp 2 or higher are able
+> to exploit multiple IOThreads.
 > 
-> Kevin merged several of my outstanding multi-queue block layer patch series and
-> found that qemu-iotests -qcow2 was broken. This patch series fixes the block branch.
+> This series introduces command-line syntax for the new iothread-vq-mapping
+> property is as follows:
 > 
-> Most of the fixes are easy but the NBD server required deeper debugging and
-> thread-safety fixes. The NBD server patches can be inserted before "aio: make
-> aio_context_acquire()/aio_context_release() a no-op" to preserve bisectability.
-> The other patches are fixups that can be squashed into the original patches.
+>   --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0","vqs":[0,1,2]},...]},...'
+> 
+> IOThreads are specified by name and virtqueues are specified by 0-based
+> index.
+> 
+> It will be common to simply assign virtqueues round-robin across a set
+> of IOThreads. A convenient syntax that does not require specifying
+> individual virtqueue indices is available:
+> 
+>   --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"},...]},...'
+> 
+> There is no way to reassign virtqueues at runtime and I expect that to be a
+> very rare requirement.
+> 
+> Note that JSON --device syntax is required for the iothread-vq-mapping
+> parameter because it's non-scalar.
+> 
+> Based-on: 81e69329d6a4018f4b37d15b6fc845fbe585a93b (https://repo.or.cz/qemu/kevin.git block)
 
-Thanks, applied to the block branch.
+Thanks, applied to the block branch. We agreed off-list that the
+remaining problems can be fixed in follow-up patches.
 
 Kevin
 
