@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B05D81B462
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:51:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7080981B45C
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 11:50:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGGan-0004km-8o; Thu, 21 Dec 2023 05:47:53 -0500
+	id 1rGGav-0004yC-DQ; Thu, 21 Dec 2023 05:48:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGaX-0004DL-Dg
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:39 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1rGGai-0004e3-JK
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:48 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGGa5-0007LC-SD
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:37 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3368b9bbeb4so222932f8f.2
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:47:05 -0800 (PST)
+ id 1rGGa7-0007Oy-U9
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 05:47:48 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40d3f2586d4so3491735e9.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 02:47:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703155624; x=1703760424; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703155630; x=1703760430; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G1gJobfuOXArDzvCmnHLIGQ5mswWRXVhuXYUXNww838=;
- b=Z1oIcE2YESsPkIZGovtIV/0iazXAaRCG/f+98DrJ+248nPbA+MUSKqth1Yv5oA6LDl
- o0g6FfVYq0LLbkrcbzR8gDIPBc7UixdEZEiOfFNFuUHGl0f6368lvldETorBzFWlUCVj
- /pZ1Wt7XmEledv6miMPBAtdOShm0IINuQD+R3dvNuUMPXZo+kQYFjqcUIxGYhtBPJsKd
- 0l9mam36s4JmkLTVlT1RSXbTbshdfVkEhktDuBgYHk2i8yef6dHZntbJZzWXQJrWrgCz
- RYwbysJXOLnA933nZTIaApGhKDyFv4HY/c2G4/vLBzel7OmSF8rpFdHocAI7sY1yQjwq
- ZyFg==
+ bh=bAHZvQIZNHRqbyqy5ojwPgGxK/S007kBQEH3xZgSzNs=;
+ b=N9lNkzTKa71MLPLU0WtuwymC81DXMwN/EEcqK7hTSyOv2b60HhiZC64OMvnxA0Dolo
+ DeC8jqdRCZB6jsrE+IzDNCmB6QuC8+PmHKU+HXa6odWUzbMps7S914sEeztgbgcW3gVL
+ 175kwUWZzIqsNOG22GGiIvKRKRkASpkbzQfBH6xj/e0VnpzHQXoZwdhtnkih6ygpB78L
+ y5VC5dlbGHA88bOQvlTZSb6VAkGCq+mW0MHexaj7TcjCY+uzlsm8yWswc2XNrpIfq5BP
+ JfAuVixGbReXC1Jn9qyAmWAyZ5Yp9dc1t33vslGBORvf5bKJcnckL/273U0yjxxSrIJr
+ G+5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703155624; x=1703760424;
+ d=1e100.net; s=20230601; t=1703155630; x=1703760430;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G1gJobfuOXArDzvCmnHLIGQ5mswWRXVhuXYUXNww838=;
- b=tmsP7egIhUTVCmQoYejRXAMoAa/wPGTtt0MRDg5QunQ6Nm/dFMDuVqiwH3lgjG2cvm
- Y2zRuzZFyPlyWNJX/v5zLXvbs0WHWBWJo0shJIV7550Hkxw/JVldvR95pZ6cOVeFCV8x
- er9QeRg9HN0bDdtBKv3GJokRoKF2wolxaNslNZI5sxh1Mk2pmQVazimSI8+0Ef60C4Jp
- ggb7gs6vj2dRqO63RiGG/B4bgGxDaC9nTe0KfelQS5jziuqIl3w9axmisZde4XkRtssS
- gtgaV2KatKYy4ZTcz62poMFLamtRVp+4Cjh5Szl3yk4Vps8pvjwNYbAFRj1qjxZwvvKV
- 9aNQ==
-X-Gm-Message-State: AOJu0Yzqv9fnqJYm9qL5hhosCltDO4dMeafF6fu5DmgdYrYq5KwyNzro
- BxE/rj+1e1uRSO+DizsIkbbGhg==
-X-Google-Smtp-Source: AGHT+IED7W/Wstnfv6IDEwnAT68FgWsu2mPNcb9+bhjBkxHllorFtuGUm+5aJw9r5ocGmDbjgEoOxQ==
-X-Received: by 2002:adf:e50e:0:b0:336:79cb:9c3e with SMTP id
- j14-20020adfe50e000000b0033679cb9c3emr319882wrm.98.1703155624292; 
- Thu, 21 Dec 2023 02:47:04 -0800 (PST)
+ bh=bAHZvQIZNHRqbyqy5ojwPgGxK/S007kBQEH3xZgSzNs=;
+ b=f9sLdck/un13G79T0vDiOgPgGLfx7lzgBKeR5hLjrEYqw6u/w7dazy4dQiiLuCPKCr
+ brmTTyPspksTAPCiOyjd95Yiix40VISH4MpUJk+pEwzUZRM/GdqW+xg2pFeCwGelkTeJ
+ wWTPV/FP57W9jUufPg6yEV5hMiCKIymLNzUSxbDGp9xx8QiDGurrQlW5GJgWtpDA5Ia2
+ tqw6KmUu0bJU2haK5hNvZ/jNsdDl75dMRy2HcwT2no5H589U1xlYRKD7ElP+fXsMQNqD
+ rUj/CvIqUHsxpBCdRtai0pxM7tQo9JYU1Kf+FfkWciZbl+e6rv2rSDz9rOnrKNOa3CZf
+ 8vtg==
+X-Gm-Message-State: AOJu0Yz5hvh1XHxA+JUrEEU2FKAV7r+21BIeQzsGdc4IoTnvC30+cMUj
+ StQ/3RwyldRE+yhxRVVwTUXQcg==
+X-Google-Smtp-Source: AGHT+IHWVKcW/3lIO1yl3PKbYQv6K0jEOTRtlo7Lrm9/XrBT9Bt11VkxGIhfLJqDHy6ViSnC7IyCOA==
+X-Received: by 2002:a05:600c:4216:b0:40d:4156:a59f with SMTP id
+ x22-20020a05600c421600b0040d4156a59fmr105180wmh.165.1703155629776; 
+ Thu, 21 Dec 2023 02:47:09 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p7-20020adfe607000000b00336843ae919sm1571022wrm.49.2023.12.21.02.46.59
+ m34-20020a05600c3b2200b004042dbb8925sm10649583wms.38.2023.12.21.02.47.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 02:47:01 -0800 (PST)
+ Thu, 21 Dec 2023 02:47:06 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 8A0115F8DC;
+ by draig.lan (Postfix) with ESMTP id A0C0E5F8DF;
  Thu, 21 Dec 2023 10:38:20 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,18 +91,18 @@ Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Bin Meng <bin.meng@windriver.com>
-Subject: [PATCH 17/40] tests/unit: Bump test-aio-multithread test timeout to 2
+Subject: [PATCH 18/40] tests/unit: Bump test-crypto-block test timeout to 5
  minutes
-Date: Thu, 21 Dec 2023 10:37:55 +0000
-Message-Id: <20231221103818.1633766-18-alex.bennee@linaro.org>
+Date: Thu, 21 Dec 2023 10:37:56 +0000
+Message-Id: <20231221103818.1633766-19-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231221103818.1633766-1-alex.bennee@linaro.org>
 References: <20231221103818.1633766-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -128,26 +128,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Thomas Huth <thuth@redhat.com>
 
 When running the tests in slow mode on a very loaded system and with
---enable-debug, the test-aio-multithread can take longer than 1 minute.
-Bump the timeout to two minutes to make sure that it also passes in
+--enable-debug, the test-crypto-block can take longer than 4 minutes.
+Bump the timeout to 5 minutes to make sure that it also passes in
 such situations.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215070357.10888-14-thuth@redhat.com>
+Message-Id: <20231215070357.10888-15-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
  tests/unit/meson.build | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index a05d4710904..0b0c7c14115 100644
+index 0b0c7c14115..a99dec43120 100644
 --- a/tests/unit/meson.build
 +++ b/tests/unit/meson.build
-@@ -172,6 +172,7 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
- test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
+@@ -173,6 +173,7 @@ test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
  
  slow_tests = {
-+  'test-aio-multithread' : 120,
+   'test-aio-multithread' : 120,
++  'test-crypto-block' : 300,
    'test-crypto-tlscredsx509': 45,
    'test-crypto-tlssession': 45
  }
