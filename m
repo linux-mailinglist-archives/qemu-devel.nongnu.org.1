@@ -2,108 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A36E81C025
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:30:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8261E81C051
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 22:39:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGQcW-0003Pq-C5; Thu, 21 Dec 2023 16:30:20 -0500
+	id 1rGQko-0008Js-8C; Thu, 21 Dec 2023 16:38:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1rGQcQ-0003Pc-22; Thu, 21 Dec 2023 16:30:14 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rGQkm-0008Jc-MC; Thu, 21 Dec 2023 16:38:52 -0500
+Received: from zproxy3.enst.fr ([137.194.2.222])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1rGQcN-0001hX-Qj; Thu, 21 Dec 2023 16:30:13 -0500
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BLK2wFr011290; Thu, 21 Dec 2023 21:29:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=+2MsgGCi5Zy4PXYmSAukD/wQUK9flxYnUNLKxfbzI3E=;
- b=AW4s3z+a67couv5YcarMjZsKAhVs6GLsvXNti/baHe9aA/XiYLWEp/0Mf42skIRGs4CV
- /iSY/I78+8ZODKCy7w6ral0HtvN8hBuloBydEpGRC75xVngmcJvsNP1OEoz+ytIPcXdn
- U4hWpzmFuaPdvRIIdRHLaIJLiEiI2n2Nh+F12WU40JOLnnaczvVsdNBIbhqowsiRuuOP
- hDGxe173KJY+cT6jMK/jUxN+kUlu7fxDdCh1xBa0JSgHYb+6ya5UGepcfUUrBUaETjAD
- lBYcRoThLR8NykfUyBs6xL2k5BJxyUxnSN7pwmJ5sMKW4l0ND/CpBQNs7QlO084QwLng 3g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v4qe9h4bm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Dec 2023 21:29:36 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BLLQVvT019328;
- Thu, 21 Dec 2023 21:29:35 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v4qe9h4ba-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Dec 2023 21:29:35 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BLJZoYl027822; Thu, 21 Dec 2023 21:29:34 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3v1rekf85e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Dec 2023 21:29:34 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3BLLTX9v26739156
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 Dec 2023 21:29:34 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AA0EC58055;
- Thu, 21 Dec 2023 21:29:33 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3ED6C5804B;
- Thu, 21 Dec 2023 21:29:32 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.129.84]) by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 21 Dec 2023 21:29:32 +0000 (GMT)
-Message-ID: <8dbcecb47de387fa95ea4e8381bcd7e135cd9912.camel@linux.ibm.com>
-Subject: Re: [PATCH 0/2] hw/s390x/ccw: Cleanup basename() and dirname()
-From: Eric Farman <farman@linux.ibm.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>, Matthew Rosato
- <mjrosato@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, Halil Pasic
- <pasic@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>, David Hildenbrand
- <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org
-Cc: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>, Zhao Liu
- <zhao1.liu@intel.com>
-Date: Thu, 21 Dec 2023 16:29:31 -0500
-In-Reply-To: <20231221171921.57784-1-zhao1.liu@linux.intel.com>
-References: <20231221171921.57784-1-zhao1.liu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: m2dI6Lrg_WJwcXqVdGtIO3675tIA7j27
-X-Proofpoint-ORIG-GUID: fjuERhrcJHvNWv6XjuRoPukLAiz9dohm
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rGQkk-0005IM-RP; Thu, 21 Dec 2023 16:38:52 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id BF899A07CB;
+ Thu, 21 Dec 2023 22:38:46 +0100 (CET)
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id EusemgAXboNC; Thu, 21 Dec 2023 22:38:46 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id 31A56A07CF;
+ Thu, 21 Dec 2023 22:38:46 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr 31A56A07CF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1703194726;
+ bh=MYnvFA7HY2sWD1PE8VVPG+sy4BknwXjFgWoc8oIrIcw=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=Pz/wCb5DZWkydfq08lKtJfyAEBScQU1z+J4+QSp2OvgwiGLzOCtDMtKMq1n9TWMgy
+ jDzcRkhlgnK8SjQWoBWnS/b+7DveiC78Xg+YvOsXwz2dmyxd+8/eewA4WpntuvL5Zf
+ 35okNQaDgzvaJcThqlWrctO4ITq2h3RVFoWTGZ0c=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id UfMSXx6BEn9F; Thu, 21 Dec 2023 22:38:46 +0100 (CET)
+Received: from localhost.localdomain (74.0.125.80.rev.sfr.net [80.125.0.74])
+ by zproxy3.enst.fr (Postfix) with ESMTPSA id DE136A074D;
+ Thu, 21 Dec 2023 22:38:45 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, alistair@alistair23.me, philmd@linaro.org,
+ peter.maydell@linaro.org, arnaud.minier@telecom-paris.fr,
+ ines.varhol@telecom-paris.fr
+Subject: [PATCH v4 0/2] Add minimal support for the B-L475E-IOT01A board
+Date: Thu, 21 Dec 2023 22:32:19 +0100
+Message-ID: <20231221213838.54944-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-21_10,2023-12-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011
- priorityscore=1501 phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
- malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312210164
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.222;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy3.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,38 +75,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-12-22 at 01:19 +0800, Zhao Liu wrote:
-> From: Zhao Liu <zhao1.liu@intel.com>
->=20
-> As commit 3e015d815b3f ("use g_path_get_basename instead of
-> basename")
-> said, g_path_get_basename() and g_path_get_dirname() should be
-> preferred
-> over basename() and dirname(), since g_path_get_basename() and
-> g_path_get_dirname() are portable utility functions that have the
-> advantage of not modifing the string argument.
->=20
-> But commit 3e015d815b3f missed a use of dirname() and basename() in
-> hw/s390x/ccw.
->=20
-> And basename() (in vfio/container) caused compile breakage with the
-> Musl
-> C library [1].
->=20
-> To avoid similar breakage and improve portability, replace basename()
-> and dirname() with g_path_get_basename() and g_path_get_dirname().
->=20
-> [1]:
-> https://lore.kernel.org/all/20231212010228.2701544-1-raj.khem@gmail.com/
->=20
-> ---
-> Zhao Liu (2):
-> =C2=A0 hw/s390x/ccw: Replace basename() with g_path_get_basename()
-> =C2=A0 hw/s390x/ccw: Replace dirname() with g_path_get_dirname()
->=20
-> =C2=A0hw/s390x/s390-ccw.c | 7 +++++--
-> =C2=A01 file changed, 5 insertions(+), 2 deletions(-)
->=20
+This patch adds a new STM32L4x5 SoC, it is necessary to add support for
+the B-L475E-IOT01A board.
+The implementation is derived from the STM32F405 SoC and NetduinoPlus2
+board.
+The implementation contains no peripherals, only memory regions are
+implemented.
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Changes from v3 to v4:
+- adding a documentation for the B-L475E-IOT01A board
+
+Changes from v1 to v3:
+- changing the MIT license to GPL.
+
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+
+In=C3=A8s Varhol (2):
+  hw/arm: Add minimal support for the STM32L4x5 SoC
+  hw/arm: Add minimal support for the B-L475E-IOT01A board
+
+ MAINTAINERS                             |  15 ++
+ configs/devices/arm-softmmu/default.mak |   1 +
+ docs/system/arm/b-l475e-iot01a.rst      |  46 ++++
+ docs/system/arm/stm32.rst               |   6 +-
+ docs/system/target-arm.rst              |   1 +
+ hw/arm/Kconfig                          |  11 +
+ hw/arm/b-l475e-iot01a.c                 |  70 +++++++
+ hw/arm/meson.build                      |   2 +
+ hw/arm/stm32l4x5_soc.c                  | 268 ++++++++++++++++++++++++
+ include/hw/arm/stm32l4x5_soc.h          |  59 ++++++
+ 10 files changed, 477 insertions(+), 2 deletions(-)
+ create mode 100644 docs/system/arm/b-l475e-iot01a.rst
+ create mode 100644 hw/arm/b-l475e-iot01a.c
+ create mode 100644 hw/arm/stm32l4x5_soc.c
+ create mode 100644 include/hw/arm/stm32l4x5_soc.h
+
+--=20
+2.43.0
+
 
