@@ -2,169 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C1081B227
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 10:24:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2BF81B292
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 10:38:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGFH2-0006Ds-MG; Thu, 21 Dec 2023 04:23:24 -0500
+	id 1rGFTu-0003iA-Vd; Thu, 21 Dec 2023 04:36:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rGFH0-0006DV-LS
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 04:23:22 -0500
-Received: from mgamail.intel.com ([198.175.65.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rGFGy-0000SX-6p
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 04:23:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1703150601; x=1734686601;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=AAY9mAHzlxeEqT+MVgvY7c7b/I4lddkaeHmoq7ZsvMA=;
- b=K+H7OC22V1bhMoHjXJO7WS6ifVhf8h5wxs+G7rCui7AOYNgrr9PKWMPV
- vLihoWnNjeqRmbW0sy3FVAy1Vun9revxPb78UAWWdf10X3HE0cFMfInxi
- gi4Fv7QXG3ITvRhOdtJqXuI7R7rXBI9hoC5v3TALSny5iBObdkWU86e/A
- yDOcmxKOYFuSyawo48KNgLfKckOGtASlsaXSep3RayU8yYFl6Z3ymP+gM
- R77okX094MQpqbTCHvNVWt7adTKWnDDk9X2wah3uGEtoLhs5DR+ViHjOp
- GY30OxTgCqjOz5c2Ts49O+kYx0mPjKWV5OLtWxAkFcjwCsiKnHlrD7Ip4 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="3187095"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; 
-   d="scan'208";a="3187095"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Dec 2023 01:23:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="810916333"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; d="scan'208";a="810916333"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by orsmga001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 21 Dec 2023 01:23:16 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 21 Dec 2023 01:23:16 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 21 Dec 2023 01:23:16 -0800
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.40) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 21 Dec 2023 01:23:16 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XyUoU450eF83bSbeeuD43pvdnSvUuAAozub9+MpCKDP9+kMj0L2/T7fCB1+xhkjzb0rykpbQifyW7syhdERqWz6D7mHosYfmKa6vCg1WP6Xd79C4sPZ/w2WCcV36Q1aQnQfwktAHjquOkaMh5FLnP6vvx2Ix1x3K1Z2G9HafzMkxc2QUYUVnHT6VHSs9+zdJFhcBMaj4987RV2KE93X1XYwyc6u77n7SZt45GalO4//lRTrJgU0lvSLhm3gz+tBZh3oaUlIKfRK7RfYNVOugoYP6ex013Ku5LoZTVh6B9pKG19kAvBqOqjlbR6eLFhsAC4+bLj4T15zCiR2AA2fKOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AAY9mAHzlxeEqT+MVgvY7c7b/I4lddkaeHmoq7ZsvMA=;
- b=IbWKoysyXNLITQle59qrv0DoUakCEdCGhI52brjY2CBEogM7vC41OjcPewwwsAKQtrqqcYcboh2P+fUjQQOGKpn8H84iUfMdPHUCktDWQBmgul2Yk7YtNJlJfRESynva9bJ9F+tJL1C6UH+Ns1jJ0uO8oa32rnv5sfKx8pQhyY73iJOsgwb8YLK61J+ayp+vEj+DePpeQWNg2BawpMF0XDvehsz5eHKOj5am7xz10/UZXteq12XiRUo3FhdcNmmwqRWZOEryz7PFaQVs+58+G3x9zejqPOqR0kMnmlTpUaTaaYDje6en/pgsb8K1CLHNC92+Y8SPGojPVmst1vYQVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by PH0PR11MB5950.namprd11.prod.outlook.com (2603:10b6:510:14f::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Thu, 21 Dec
- 2023 09:23:14 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.7091.034; Thu, 21 Dec 2023
- 09:23:13 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: Eric Auger <eric.auger@redhat.com>, Alex Williamson
- <alex.williamson@redhat.com>
-Subject: RE: [PATCH] vfio/iommufd: Remove the use of stat() to check file
- existence
-Thread-Topic: [PATCH] vfio/iommufd: Remove the use of stat() to check file
- existence
-Thread-Index: AQHaM+UqeJknvgSwEUu7ME6CfwkGM7CzblOQgAAGgYCAAAFbcA==
-Date: Thu, 21 Dec 2023 09:23:13 +0000
-Message-ID: <SJ0PR11MB674415332CEDD03287E861F49295A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231221080957.1081077-1-clg@redhat.com>
- <SJ0PR11MB6744B077E851815942C260C69295A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <51941699-5f1e-4f61-adb8-dba79af7d55d@redhat.com>
-In-Reply-To: <51941699-5f1e-4f61-adb8-dba79af7d55d@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH0PR11MB5950:EE_
-x-ms-office365-filtering-correlation-id: e9cc2f1d-bc25-4ea4-350e-08dc02067536
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Iay2hqm88aQUuPcSg8HfvibD0/oMH6G/r3WMlTqMtTed1hGHXxHNeOHy1sGzLgW17vbWlTlhbatMSPAKsfcvvi4k4x/NbAnZwVlfVvDu2nOVKkOmVfit4fc3lYpRp9S14lWm/cZegh5zCTBGNaxjk3utl/O8T8r74OXmZbdup9Yxq759Ir7l4QlPVQIZPiE6JzHuVgTWzVqadZPt8TCRuNcyIPWV3Qi1LmrQHBqIfmV0F/MoHQFEkTYXgA/AD/9/RSpXuc3xwaTxm/Nwnf4KQCP0qIgEKfYYYWqB2HU0Xdc8kGonc2aWSMDfzfcnYuDalLiqiF36N0mqJFRB5Zca+kH1/1qnkFU3fBmqTi6Yh7S5MjV8FMj5jOqECb40UBDarcjEf5jQJbNOp79iIjCIuCmx7PziJOtqEFZPXdxs+u3HHDRDWnfeFq2SFl8eqQc0q2gQjNq6u6A3bA2u5kMI29RT82dEF36OVSi9AhEX8BrKTpbzBwOA30h8zPwvBtnwbbS3vXybsXGKOdge0/zk+WKgmBEivCG0uv10axBwQ2NEqjk2IbjZndcvZtA5GAKIUsYeSvA/kBLIR7zDHu81V6sBl2Bawi81j95baRpUB461WU7gFr39l1Bu2CIhvvi6
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(136003)(396003)(376002)(346002)(366004)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(38070700009)(55016003)(66446008)(71200400001)(7696005)(26005)(53546011)(478600001)(52536014)(4326008)(8676002)(8936002)(110136005)(76116006)(66556008)(66476007)(9686003)(64756008)(316002)(66946007)(2906002)(6506007)(54906003)(5660300002)(66574015)(122000001)(41300700001)(83380400001)(33656002)(86362001)(38100700002)(82960400001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TU5EY0dYVGdUYWthY3JmWU0ySW1FSGJkZnNOYUU4Q1hBKy8zcFpQcG1pYVZH?=
- =?utf-8?B?SEpjK0FyUU1UM0lyeTZwN0hBTW5vSmNBVXJ5bzBrWHlSa2JzMEMwY0diUm1B?=
- =?utf-8?B?RXFURmdqcDJHTng3VHpWd0lzT0NYTmZDblpUOUFRTXJYeXhpMUhURW5KcVc1?=
- =?utf-8?B?MHVmZmswTlpzeXMrUktncUJ4eWFrSTRtZUdnTGZRY29wVWs0Wmtlci9DbHFp?=
- =?utf-8?B?UXFPVjEva3FRV3BqdUU2TnNON2h5L2laaFo0SXM0NGRONGsrMEdxRDRQTkJI?=
- =?utf-8?B?aForUXRSNFY5MUNlZ0lwMjFWeDRIM1JPUzVlQ05EaEhySkRsQmZabHFvUDht?=
- =?utf-8?B?VjJsbkhybGhYcTVSclR6RFQ3bjVkMkhiNDZSSjROTmtZY0pCbjRyMzlRMnBs?=
- =?utf-8?B?M1QrSE9TK1ZpalpETU9IQnlkUzE2b0J2d0d0cHhpVkhZUVlzejBMb3dLc1JD?=
- =?utf-8?B?MzBkc0cyVFRySTVkQzdRS29GbVpZZlBTSHRLMzhjQXd4TXNreUtPKzlXQTJn?=
- =?utf-8?B?Q2NKaW5scnRTU0ZMK3NtOFRuckxvU1lHUzFpc3lNVGNUZld1elN4Y0pmckdy?=
- =?utf-8?B?aXR0V0JIdm9iM0Q0QWRLYjlURFo4T3hPNk5NT2FjSG9mZTdjMzZOOUJUKzVI?=
- =?utf-8?B?NUtuLzBUWmx2VVdBRzlsZlNKSXNNb3I5T2xVaERJUG9hQ2FhWTRMTksveWg4?=
- =?utf-8?B?RTdNRWxuK1NmbFp0NW1Pa1pua0dQZEw2VHJNSi9LR1hnMWhDcmNVWXZCOHMv?=
- =?utf-8?B?SWJaZ01pNGMrU1F4MlBlekxtV1Zvd0FmVjRaNDN4c3NBUVhFUWIxQVE4Sm4z?=
- =?utf-8?B?Nnc2S1ZLSGs4MzN2Q2FCU0NIOFhaRFJ4eHBPRUVhQWRsY2p1TEs2dlhiWmQ0?=
- =?utf-8?B?dXdZSkZ4UXY1ZWUwQ2RObXAxMTkzTHZ3UGFabzI5dDZxUTVmcHN0Q2VmVU5s?=
- =?utf-8?B?bjgwZzJ6VDlsQy8vMmdPZHBQcDlUenZabGwrRDhTVGNaV2tjeDFHUDdZTnJ6?=
- =?utf-8?B?dFZpeVA1ZSswdkxoMTFzU21yZ0hzaGEzMVJyYkplUDVYcU41UldsL3VEbS96?=
- =?utf-8?B?TnUvWm9Yczl6Vjd2bDFYaGdlT2d0cVdTclFYaDdxNkVucjRiVXBsbzNCZlBW?=
- =?utf-8?B?Z0plRFRGb1ZodERMWWZ4R0d1YnhnSHJYUlZnUWhOczZLZ09rbHgreXRJYzNF?=
- =?utf-8?B?NzVlRkcyK3lNK0V5ZEM2S3dIeklwdjF4WHFzeitxNGFmd2NIQ25JVzJUQVV5?=
- =?utf-8?B?NitKUXFOcFpSYlZnN0pvSC9JY2J2U1JUdkVIM3Rwa3VMa2NwMDJiSDVkTU51?=
- =?utf-8?B?TDBIYjNDNGE0RG9XVURrSDhJbUl1M1huVzViZnR2U1RSallidzNtaUhKNVNH?=
- =?utf-8?B?WTlSdHdzeUZraFAvaExYWCtnWTBLdDExSmxDaDF3MmFoakUxSnRxeTNzaUlh?=
- =?utf-8?B?NWw2TXpTcGtxSlBwSTdIZWVTTzV1NlR2R3c2UFZKTzIwY2pPN2pCZEhqbUQw?=
- =?utf-8?B?VEE3U0dnQ203K0wweGwxQUpZT3FtSDl4OVR3RkZNd0FsdlY5MFYyOHFuN0tp?=
- =?utf-8?B?UkJHVlVqQjNKamxjZ0FJQUUwcTUzSEN4WnY4VnY3T3N3Zk51ZTRkUjE1Ui8r?=
- =?utf-8?B?UWFaRkhLc09GL2tsSkg1M2lLZ0NPb3FZc2tMZ0d5R3ExUHRkODBabTA0K1Fn?=
- =?utf-8?B?R1J5NE5CWGROcDdNdDdQVCs3bnkyYW11SnQ4d2ZYdG5iV0VUSHZ1ZDlXQU5J?=
- =?utf-8?B?b3VhY1BuUk9NbjlPMXRibEtFMXY1TWQ3Wm5hT3cxTkN2bDNaTEM5QjJBYXJs?=
- =?utf-8?B?d3BTTUxTQ3UzSzF6MTZXMUVROE1oQTZNYmNFRHphNGtvY3VUWG80emQycVRa?=
- =?utf-8?B?Zjlwc2hSaWE4ZUZVdldDZ2JodlRDdndEL3lldnAxcldKVld4Y014TTVvclBx?=
- =?utf-8?B?M2ovcTQyRldlcUc5Z0NGY0o0Nmd0N0hEMUtjY1FZbm4ybFRjSWw4R0Zic2VZ?=
- =?utf-8?B?cGdMTjN4TW4zZmJwRis0SXJlT2FCWTB3Y01BTkF4TGN5OE9qZTdRa2RiYzA4?=
- =?utf-8?B?RmlMa1lPRkRuRTlVZ3IyaWo1bVBsOU44TlFFVFcxSGw4cFk1aVIwbmZXUm1R?=
- =?utf-8?Q?A/yI8OEc5ro8vy2ZpzxMNQYKw?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rGFTs-0003hz-Do
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 04:36:40 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rGFTq-0006r4-5J
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 04:36:40 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1d3ef33e68dso4172585ad.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 01:36:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703151396; x=1703756196;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HMoVWxtkoGSxyJIot7bzuHkXzVawQW22Rt9ewhXJp3g=;
+ b=a/7YHtOFOQoFuLKDSSqO6AD1o8RMOjyFjwL6lvB6ujRPUTUxhjeVUMzZ9gEWHAfN+8
+ FTmXqrgc6eIOkr7F4p/xn3ewNgwLctesbTu88Wqt/HEC/sr9xWgjhGtdTHKuHBf0eKNr
+ rNSiQT+6HmcsJEkMDdO7j+yZ+YJZXIS/LYNY5e19OVB3q0d2d02S5qrWiSCCjOl975uY
+ XLTH5n3biPWcB/UJTr9tu5nfG/5goYYTse7iAv6FzpgmnsnXq2rstxxWHBirG60ipqmH
+ 0MtBVTY79mT/+ph7Qq7g1e0dNaEVW4WKfzuH8Zy4CDEmnsWL8AupZZr91CvYojGLGgIQ
+ XT1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703151396; x=1703756196;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HMoVWxtkoGSxyJIot7bzuHkXzVawQW22Rt9ewhXJp3g=;
+ b=wgSHcVRCGtPpGa6L3bYAT01QaHgHMH5DVv5LRyVECx+ed5oisQT7LBfAtzuVMH0azm
+ qzU+snRpKEy7D7RNCyVrih+Hduq4ERDFZ070+ji65igUXfc0hrzlUuI0+plbH2lrIi/w
+ H7v2R/rjuhgQtd6C4pR6PUZZwpTWni0eHxERbO56VVkgSkaOPdmfHD53J0964XBZOaGZ
+ Kv//W5PN7+bMTrLZBR4OoAo6UjrvWMy460gR+wfDapB7toJSqYD1qiXXY/GWfAYq9N8Z
+ NfuxvWm7f0nzemE1N9wqWRQoQjZS4l3Uhogd39OWc8l6F8iasYXVWw8l1bANOXXRKtrc
+ w31A==
+X-Gm-Message-State: AOJu0YyUB9ONnlEJ8sR2tocNVXl1/haB1CBQ5tRSwp3kBlbny+CLk4Gi
+ GgLN6iEPqOGQwBZoiOpSKmtvO8zHUA01cg==
+X-Google-Smtp-Source: AGHT+IFdtSeGV6rs8kt9J4+l7IyCmwTYqSGhVtGbvMH7m84TKAuH5VEFSOlxihjuPhY0gHP+bOASRA==
+X-Received: by 2002:a17:902:fa06:b0:1d4:56b:5d31 with SMTP id
+ la6-20020a170902fa0600b001d4056b5d31mr478844plb.8.1703151396628; 
+ Thu, 21 Dec 2023 01:36:36 -0800 (PST)
+Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
+ ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ by smtp.gmail.com with ESMTPSA id
+ 5-20020a170902ee4500b001d06b63bb98sm1189874plo.71.2023.12.21.01.36.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Dec 2023 01:36:36 -0800 (PST)
+Message-ID: <8f441c44-182f-4139-a0d1-4e3e410efb41@daynix.com>
+Date: Thu, 21 Dec 2023 18:36:33 +0900
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9cc2f1d-bc25-4ea4-350e-08dc02067536
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Dec 2023 09:23:13.8702 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: KZCSYSbq5aQ/2r7tDjTBMge3l+DM0ISSWpVowlSY1fVeGm0TxZxhSa/2HQ2OwIQysWKy4QbeLBww22QdUlEk3vJnhnoFtRIHBVTJ8Y6U6SM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5950
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.12;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] qdev: Report an error for machine without
+ HotplugHandler
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
+References: <20231210-bus-v2-1-34ebf5726fa0@daynix.com>
+ <87h6kpgrl7.fsf@pond.sub.org>
+ <cbda6265-5027-424c-be93-86073d9ad63a@daynix.com>
+ <8734vzsj6k.fsf@pond.sub.org>
+ <ff212914-32b5-442e-8f67-4f01a7208a0c@daynix.com>
+ <87y1dpgvim.fsf@pond.sub.org> <ZYMaS8v8sIWhteFm@intel.com>
+ <68c2e155-0dc1-4566-853a-059e351e9649@daynix.com>
+ <87ttoc6ius.fsf@pond.sub.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <87ttoc6ius.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::629;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -180,27 +104,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
-IDxjbGdAcmVkaGF0LmNvbT4NCj5TZW50OiBUaHVyc2RheSwgRGVjZW1iZXIgMjEsIDIwMjMgNTox
-NiBQTQ0KPlN1YmplY3Q6IFJlOiBbUEFUQ0hdIHZmaW8vaW9tbXVmZDogUmVtb3ZlIHRoZSB1c2Ug
-b2Ygc3RhdCgpIHRvIGNoZWNrIGZpbGUNCj5leGlzdGVuY2UNCj4NCj5IZWxsbyBaaGVuemhvbmcN
-Cj4NCj5PbiAxMi8yMS8yMyAwOTo1NSwgRHVhbiwgWmhlbnpob25nIHdyb3RlOg0KPj4NCj4+DQo+
-Pj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4+PiBGcm9tOiBDw6lkcmljIExlIEdvYXRl
-ciA8Y2xnQHJlZGhhdC5jb20+DQo+Pj4gU2VudDogVGh1cnNkYXksIERlY2VtYmVyIDIxLCAyMDIz
-IDQ6MTAgUE0NCj4+PiBTdWJqZWN0OiBbUEFUQ0hdIHZmaW8vaW9tbXVmZDogUmVtb3ZlIHRoZSB1
-c2Ugb2Ygc3RhdCgpIHRvIGNoZWNrIGZpbGUNCj4+PiBleGlzdGVuY2UNCj4+Pg0KPj4+IFVzaW5n
-IHN0YXQoKSBiZWZvcmUgb3BlbmluZyBhIGZpbGUgb3IgYSBkaXJlY3RvcnkgY2FuIGxlYWQgdG8g
-YQ0KPj4+IHRpbWUtb2YtY2hlY2sgdG8gdGltZS1vZi11c2UgKFRPQ1RPVSkgZmlsZXN5c3RlbSBy
-YWNlLCB3aGljaCBpcw0KPj4+IHJlcG9ydGVkIGJ5IGNvdmVyaXR5IGFzIGEgU2VjdXJpdHkgYmVz
-dCBwcmFjdGljZXMgdmlvbGF0aW9ucy4gVGhlDQo+Pj4gc2VxdWVuY2UgY291bGQgYmUgcmVwbGFj
-ZWQgYnkgb3BlbiBhbmQgZmRvcGVuZGlyIGJ1dCBpdCBkb2Vzbid0IGFkZA0KPj4+IG11Y2ggaW4g
-dGhpcyBjYXNlLiBTaW1wbHkgdXNlIG9wZW5kaXIgdG8gYXZvaWQgdGhlIHJhY2UuDQo+Pj4NCj4+
-PiBGaXhlczogQ0lEIDE1MzE1NTENCj4+PiBTaWduZWQtb2ZmLWJ5OiBDw6lkcmljIExlIEdvYXRl
-ciA8Y2xnQHJlZGhhdC5jb20+DQo+Pg0KPj4gVGhhbmtzIGZvciBmaXhpbmcsIFJldmlld2VkLWJ5
-OiBaaGVuemhvbmcgRHVhbg0KPjxaaGVuemhvbmcuZHVhbkBpbnRlbC5jb20+DQo+DQo+SXQgc2Vl
-bXMgdGhhdCB0b29scyBsaWtlIGI0IG5lZWQgdGhlIFItYiB0YWcsIGFuZCBwcm9iYWJseSBvdGhl
-cg0KPnRhZ3MsIHRvIGJlIGF0IHRoZSBiZWdpbm5pbmcgb2YgYSBuZXcgbGluZS4gU28sIGp1c3Qg
-cmVwZWF0aW5nIDoNCj4NCj5SZXZpZXdlZC1ieTogWmhlbnpob25nIER1YW4gPFpoZW56aG9uZy5k
-dWFuQGludGVsLmNvbT4NCg0KR290IGl0LCB3aWxsIGZvbGxvdyB0aGF0IHJ1bGUgaW4gdGhlIGZ1
-dHVyZS4NCg0KVGhhbmtzDQpaaGVuemhvbmcNCg==
+On 2023/12/21 17:49, Markus Armbruster wrote:
+> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+> 
+>> On 2023/12/21 1:46, Zhao Liu wrote:
+>>> Hi Markus,
+>>> On Wed, Dec 20, 2023 at 08:53:21AM +0100, Markus Armbruster wrote:
+>>>> Date: Wed, 20 Dec 2023 08:53:21 +0100
+>>>> From: Markus Armbruster <armbru@redhat.com>
+>>>> Subject: Re: [PATCH v2] qdev: Report an error for machine without
+>>>>    HotplugHandler
+>>>>
+>>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+>>>>
+>>>>> On 2023/12/18 23:02, Markus Armbruster wrote:
+>>>>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+>>>>>>
+>>>>>>> On 2023/12/11 15:51, Markus Armbruster wrote:
+>>>>>>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+>>>>>>>>
+>>>>>>>>> The HotplugHandler of the machine will be used when the parent bus does
+>>>>>>>>> not exist, but the machine may not have one. Report an error in such a
+>>>>>>>>> case instead of aborting.
+>>>>>>>>>
+>>>>>>>>> Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
+>>>>>>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>>>>>>
+>>>>>>>> Do you have a reproducer for the crash?
+>>>>>>>>
+>>>>>>>>> ---
+>>>>>>>>> Changes in v2:
+>>>>>>>>> - Fixed indention.
+>>>>>>>>> - Link to v1: https://lore.kernel.org/r/20231202-bus-v1-1-f7540e3a8d62@daynix.com
+>>>>>>>>> ---
+>>>>>>>>>      system/qdev-monitor.c | 13 ++++++++++---
+>>>>>>>>>      1 file changed, 10 insertions(+), 3 deletions(-)
+>>>>>>>>>
+>>>>>>>>> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+>>>>>>>>> index a13db763e5..5fe5d49c20 100644
+>>>>>>>>> --- a/system/qdev-monitor.c
+>>>>>>>>> +++ b/system/qdev-monitor.c
+>>>>>>>>> @@ -927,9 +927,16 @@ void qdev_unplug(DeviceState *dev, Error **errp)
+>>>>>>>>      void qdev_unplug(DeviceState *dev, Error **errp)
+>>>>>>>>      {
+>>>>>>>>          DeviceClass *dc = DEVICE_GET_CLASS(dev);
+>>>>>>>>          HotplugHandler *hotplug_ctrl;
+>>>>>>>>          HotplugHandlerClass *hdc;
+>>>>>>>>          Error *local_err = NULL;
+>>>>>>>>          if (qdev_unplug_blocked(dev, errp)) {
+>>>>>>>>              return;
+>>>>>>>>          }
+>>>>>>>>          if (dev->parent_bus && !qbus_is_hotpluggable(dev->parent_bus)) {
+>>>>>>>>              error_setg(errp, QERR_BUS_NO_HOTPLUG, dev->parent_bus->name);
+>>>>>>>>              return;
+>>>>>>>>          }
+>>>>>>>>          if (!dc->hotpluggable) {
+>>>>>>>>              error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
+>>>>>>>>                         object_get_typename(OBJECT(dev)));
+>>>>>>>>              return;
+>>>>>>>>          }
+>>>>>>>>          if (!migration_is_idle() && !dev->allow_unplug_during_migration) {
+>>>>>>>>              error_setg(errp, "device_del not allowed while migrating");
+>>>>>>>>              return;
+>>>>>>>>          }
+>>>>>>>>
+>>>>>>>>>         qdev_hot_removed = true;
+>>>>>>>>>            hotplug_ctrl = qdev_get_hotplug_handler(dev);
+>>>>>>>>> -    /* hotpluggable device MUST have HotplugHandler, if it doesn't
+>>>>>>>>> -     * then something is very wrong with it */
+>>>>>>>>> -    g_assert(hotplug_ctrl);
+>>>>>>>>> +    if (!hotplug_ctrl) {
+>>>>>>>>> +        /*
+>>>>>>>>> +         * hotpluggable bus MUST have HotplugHandler, if it doesn't
+>>>>>>>>> +         * then something is very wrong with it
+>>>>>>>>> +         */
+>>>>>>>>> +        assert(!dev->parent_bus);
+>>>>>>>>> +
+>>>>>>>>> +        error_setg(errp, "The machine does not support hotplugging for a device without parent bus");
+>>>>>>>>> +        return;
+>>>>>>>>> +    }
+>>>>>>>>
+>>>>>>>> Extended version of my question above: what are the devices where
+>>>>>>>> qdev_get_hotplug_handler(dev) returns null here?
+>>>>>>>
+>>>>>>> Start a VM: qemu-system-aarch64 -M virt -nographic
+>>>>>>> Run the following on its HMP: device_del /machine/unattached/device[0]
+>>>>>>>
+>>>>>>> It tries to unplug cortex-a15-arm-cpu and crashes.
+>>>>>>
+>>>>>> This device has no parent bus (dev->parent_bus is null), but is marked
+>>>>>> hot-pluggable (dc->hotpluggable is true).  Question for somebody
+>>>>>> familiar with the hot-plug machinery: is this sane?
+>>>>>
+>>>>> Setting hotpluggable false for each device without bus_type gives the same effect, but is error-prone.
+>>>>
+>>>> Having hotpluggable = true when the device cannot be hot-plugged is
+>>>> *wrong*.  You might be able to paper over the wrongness so the code
+>>>> works anyway, but nothing good can come out of lying to developers
+>>>> trying to understand how the code works.
+>>>>
+>>>> Three ideas to avoid the lying:
+>>>>
+>>>> 1. default hotpluggable to bus_type != NULL.
+>>
+>> I don't have an idea to achieve that. Currently bus_type is set after hotpluggable.
+>>
+>>>>
+>>>> 2. assert(dc->bus_type || !dc->hotpluggable) in a suitable spot.
+>>
+>> It results in abortion and doesn't improve the situation.
+> 
+> Oh, it does!  The abort leads us to all the places where we currently
+> lie (by having dc->hotpluggable = true when it isn't), so we can fix
+> them.
+
+I get your point. So we can put the assertion to the point that runs 
+after device realization and let such devices break. It's quite 
+disruptive but works.
 
