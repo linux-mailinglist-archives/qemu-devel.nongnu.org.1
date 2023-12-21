@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E6381BD26
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:24:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C4381BD15
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:22:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGMia-0007YT-UA; Thu, 21 Dec 2023 12:20:20 -0500
+	id 1rGMic-0007ZD-Ei; Thu, 21 Dec 2023 12:20:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMiY-0007Xh-Ux
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:18 -0500
+ id 1rGMia-0007YL-99
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGMiW-0004U5-TA
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:18 -0500
+ id 1rGMiY-0004UO-R2
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:20:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703179216;
+ s=mimecast20190719; t=1703179218;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UebyFwaouzTqOLbyUOTcfC30JgB1MQMFJW2XtX7hlHw=;
- b=NA7m0oy1Z+iza1v98aniDz4JRqr5E7gYmjdR/T370B70StlyLzRHxC7I5LGgCn3JcjFtnF
- zhFYduP+Fx3c/AFwuNhbZP0CsXaa+2ouJGw4sPRTJFfubky6W12/hTEK7Fgieu1yFJYmpp
- rvnarlQkun7x4PqmDHrBclt59N6MYFM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZU8vC0eIKV9J0hzsPh1002ojqbIAEiiqGuIlBmmkI1A=;
+ b=e9afBHTuQoxKQtB/SwzSJ+8Jnv8r2xcNEkS8NyKQBxdMk+ZrHYG+Tnnzd6K9JWnZ7Dl5q6
+ 5xR9xhknnIcP2PmMK6QpdQ+k6zDOrwGpxOOf7oPOQJkYWr2NIrendIY9WygsDK8pyNROB4
+ PwUxC4ueXMnDu7jTwZa5duJja5zwccU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-434-8hAs3PC_Meq5JgnN1hcXMA-1; Thu, 21 Dec 2023 12:20:14 -0500
-X-MC-Unique: 8hAs3PC_Meq5JgnN1hcXMA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3368c5eebb4so372797f8f.1
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:14 -0800 (PST)
+ us-mta-124-EwY2ohpDMWOM_1bostTNjA-1; Thu, 21 Dec 2023 12:20:16 -0500
+X-MC-Unique: EwY2ohpDMWOM_1bostTNjA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-33349915d3cso678990f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 09:20:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703179213; x=1703784013;
+ d=1e100.net; s=20230601; t=1703179215; x=1703784015;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UebyFwaouzTqOLbyUOTcfC30JgB1MQMFJW2XtX7hlHw=;
- b=A3b1+uNo/46FC5mbCcqpNFWKFChCO9zzbqQlcR74NKKiz69xHTwJe4gFMRFjAU2ptP
- H39P2tM/DZwHa8WJuYe6SAMouGOmHVsZMVc/t+VRWg6vC6UM+PIgkegMl6z2ZMhvAxB8
- qo7XlGeGZF4KdWLuqFu0mdK7tIEHOTdy9d19Xxc1SKijJ5zMit6Ov7fKzs2HBTiDxg4f
- SA0IcVS2IGNM6b1OZKHJCtY/mOm4WqnQuqtojZWiexPGDbR/vPuZCBeGopWXCBAV/BI8
- JXSLE6ICZZCBCOZjBfB4rrSNH/CKua5FrrC+ji0G1mrRtAvZGmtrNtwK8OSJfPJT3wId
- h+Cw==
-X-Gm-Message-State: AOJu0YxqdKo78jHB83ZdoY1ucCteHzRtsJ9tzcRMWoZ/z0U8JcY7bYDF
- WsoHSaOKgQXzUjaPkfbTge/dGUJI33dHuvFS3dhh7v8zcvxnRgeAu8hTe3Enh7v8pJ1lImwTj6I
- ZYNn7HcJfiaUcjPbKdwPlJG9jwBwyctwWhaezkygXXPeKIty/ZDusQbIw5BjVAB4exy3aETSo7o
- qmdjn1B9c=
+ bh=ZU8vC0eIKV9J0hzsPh1002ojqbIAEiiqGuIlBmmkI1A=;
+ b=Rnjg4tzUim4LKJf42FJzpNDcVJKGPVdWFTrXE/XStKDr2v5mDI1vmS9QoDrL/tBMKl
+ 87cZpw+PvIY2Giq9jtY8K4w7p+jvrphpJf+HQ0KgZPLtvcha9NSwh43koS+QkZPfHMY0
+ /FX/Mjlls6YLvCqQkPzAdDeL9H14aCFqP+kTI4H+SBSEw2PvDGKAwVEXIZ0wIfcIL6xY
+ ly3n9lNnjJa2kENPQkLJpI/hEmFKNq7wB3oJVXKMWG2Tp2qxwrrtSlG/RLfO7+SECXN2
+ EY3GyEnGbe9N4peQuYS4NluYQKMPPmEYBjkAB4P78dnkEqpZpQ1N0b18z8/KkrO3dU6W
+ fG6w==
+X-Gm-Message-State: AOJu0YwjIlUWi58gYObx/RRWHpfd6EVQq7VSQVBmBvptiO5dWmkDcbLw
+ 2LmpIq4RAFydeFnNXgMIrtEwaBcVngjZK4G9pBixy0XC8d+r+P1h2R7tTDlD+kaQ/b6pjpQRRg6
+ AHdOERWWyh+fhtvAC/U0pYTPvPNBWgccngKS1xphkVWMQy/pvl5CSE7j9GVEIkdEpojFPRaIVep
+ QR3oDu5GA=
 X-Received: by 2002:a5d:6052:0:b0:336:7a45:c134 with SMTP id
- j18-20020a5d6052000000b003367a45c134mr49479wrt.86.1703179212927; 
- Thu, 21 Dec 2023 09:20:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFxbuR5UguQSGOqNuDsHctwu45FiOcUY838FBTt00QK2tgWZUYxN6H5792VLrPuJgaBU21hCA==
+ j18-20020a5d6052000000b003367a45c134mr49498wrt.86.1703179214826; 
+ Thu, 21 Dec 2023 09:20:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEAr8sCdDSYehFmJVmwpSMyOAYE82EUdmHisRULAfklFUEwLegFKft525NXga73hw3x8WV4Qg==
 X-Received: by 2002:a5d:6052:0:b0:336:7a45:c134 with SMTP id
- j18-20020a5d6052000000b003367a45c134mr49471wrt.86.1703179212451; 
- Thu, 21 Dec 2023 09:20:12 -0800 (PST)
+ j18-20020a5d6052000000b003367a45c134mr49494wrt.86.1703179214575; 
+ Thu, 21 Dec 2023 09:20:14 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- cx1-20020a056000092100b00336598903e9sm2452334wrb.58.2023.12.21.09.20.10
+ y17-20020adff151000000b0033664ffaf5dsm2483766wro.37.2023.12.21.09.20.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Dec 2023 09:20:10 -0800 (PST)
+ Thu, 21 Dec 2023 09:20:13 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 06/21] configure: unify again the case arms in
- probe_target_compiler
-Date: Thu, 21 Dec 2023 18:19:43 +0100
-Message-ID: <20231221171958.59350-7-pbonzini@redhat.com>
+Subject: [PATCH 07/21] meson: always probe u2f and canokey if the option is
+ enabled
+Date: Thu, 21 Dec 2023 18:19:44 +0100
+Message-ID: <20231221171958.59350-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231221171958.59350-1-pbonzini@redhat.com>
 References: <20231221171958.59350-1-pbonzini@redhat.com>
@@ -102,155 +102,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove assignments that match the default, and group the
-targets for debian-legacy-test-cross and debian-all-test-cross
-into a single arm.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 86 +++++++++++++++++--------------------------------------
- 1 file changed, 27 insertions(+), 59 deletions(-)
+ meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/configure b/configure
-index c634948051b..38ca267096f 100755
---- a/configure
-+++ b/configure
-@@ -1272,16 +1272,33 @@ probe_target_compiler() {
-     test "$container" != no || continue
-     test "$host" = "$cpu" || continue
-     case $target_arch in
-+      # debian-all-test-cross architectures
-+
-+      hppa|m68k|mips|riscv64|sparc64)
-+        container_image=debian-all-test-cross
-+        ;;
-+      mips64)
-+        container_image=debian-all-test-cross
-+        container_cross_prefix=mips64-linux-gnuabi64-
-+        ;;
-+      ppc|ppc64|ppc64le)
-+        container_image=debian-all-test-cross
-+        container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
-+        ;;
-+
-+      # debian-legacy-test-cross architectures (need Debian 11)
-+      # - libc6.1-dev-alpha-cross: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1054412
-+      # - sh4-linux-user: binaries don't run with bookworm compiler
-+
-+      alpha|sh4)
-+        container_image=debian-legacy-test-cross
-+        ;;
-+
-+      # architectures with individual containers
-+
-       aarch64)
-         # We don't have any bigendian build tools so we only use this for AArch64
-         container_image=debian-arm64-cross
--        container_cross_prefix=aarch64-linux-gnu-
--        container_cross_cc=${container_cross_prefix}gcc
--        ;;
--      alpha)
--        container_image=debian-legacy-test-cross
--        container_cross_prefix=alpha-linux-gnu-
--        container_cross_cc=${container_cross_prefix}gcc
-         ;;
-       arm)
-         # We don't have any bigendian build tools so we only use this for ARM
-@@ -1290,18 +1307,11 @@ probe_target_compiler() {
-         ;;
-       cris)
-         container_image=fedora-cris-cross
--        container_cross_prefix=cris-linux-gnu-
-         ;;
-       hexagon)
--        container_image=debian-hexagon-cross
-         container_cross_prefix=hexagon-unknown-linux-musl-
-         container_cross_cc=${container_cross_prefix}clang
-         ;;
--      hppa)
--        container_image=debian-all-test-cross
--        container_cross_prefix=hppa-linux-gnu-
--        container_cross_cc=${container_cross_prefix}gcc
--        ;;
-       i386)
-         container_image=debian-i686-cross
-         container_cross_prefix=i686-linux-gnu-
-@@ -1310,59 +1320,19 @@ probe_target_compiler() {
-         container_image=debian-loongarch-cross
-         container_cross_prefix=loongarch64-unknown-linux-gnu-
-         ;;
--      m68k)
--        container_image=debian-all-test-cross
--        container_cross_prefix=m68k-linux-gnu-
--        container_cross_cc=${container_cross_prefix}gcc
--        ;;
-       microblaze)
--        container_image=debian-microblaze-cross
-         container_cross_prefix=microblaze-linux-musl-
-         ;;
-       mips64el)
-         container_image=debian-mips64el-cross
-         container_cross_prefix=mips64el-linux-gnuabi64-
-         ;;
--      mips64)
--        container_image=debian-all-test-cross
--        container_cross_prefix=mips64-linux-gnuabi64-
--        ;;
--      mips)
--        container_image=debian-all-test-cross
--        container_cross_prefix=mips-linux-gnu-
--        ;;
--      nios2)
--        container_image=debian-nios2-cross
--        container_cross_prefix=nios2-linux-gnu-
--        ;;
--      ppc)
--        container_image=debian-all-test-cross
--        container_cross_prefix=powerpc-linux-gnu-
--        container_cross_cc=${container_cross_prefix}gcc
--        ;;
--      ppc64|ppc64le)
--        container_image=debian-all-test-cross
--        container_cross_prefix=powerpc${target_arch#ppc}-linux-gnu-
--        ;;
--      riscv64)
--        container_image=debian-all-test-cross
--        container_cross_prefix=riscv64-linux-gnu-
--        ;;
--      sh4)
--        container_image=debian-legacy-test-cross
--        container_cross_prefix=sh4-linux-gnu-
--        ;;
--      sparc64)
--        container_image=debian-all-test-cross
--        container_cross_prefix=sparc64-linux-gnu-
--        ;;
-       tricore)
-         container_image=debian-tricore-cross
-         container_cross_prefix=tricore-
-         ;;
-       x86_64)
-         container_image=debian-amd64-cross
--        container_cross_prefix=x86_64-linux-gnu-
-         ;;
-       xtensa*)
-         container_image=debian-xtensa-cross
-@@ -1370,12 +1340,10 @@ probe_target_compiler() {
-         # default to the dc232b cpu
-         container_cross_prefix=/opt/2020.07/xtensa-dc232b-elf/bin/xtensa-dc232b-elf-
-         ;;
--      *)
--        # Debian and GNU architecture names usually match
--        container_image=debian-$target_arch-cross
--        container_cross_prefix=$target_arch-linux-gnu-
--        ;;
-     esac
-+    # Debian and GNU architecture names usually match
-+    : ${container_image:=debian-$target_arch-cross}
-+    : ${container_cross_prefix:=$target_arch-linux-gnu-}
-     : ${container_cross_cc:=${container_cross_prefix}gcc}
-     : ${container_cross_ar:=${container_cross_prefix}ar}
-     : ${container_cross_as:=${container_cross_prefix}as}
+diff --git a/meson.build b/meson.build
+index 6c77d9687de..de33e323d43 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1759,12 +1759,12 @@ if not get_option('smartcard').auto() or have_system
+                       version: '>=2.5.1', method: 'pkg-config')
+ endif
+ u2f = not_found
+-if have_system
++if not get_option('u2f').auto() or have_system
+   u2f = dependency('u2f-emu', required: get_option('u2f'),
+                    method: 'pkg-config')
+ endif
+ canokey = not_found
+-if have_system
++if not get_option('canokey').auto() or have_system
+   canokey = dependency('canokey-qemu', required: get_option('canokey'),
+                    method: 'pkg-config')
+ endif
 -- 
 2.43.0
 
