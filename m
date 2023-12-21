@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8404781AD64
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:25:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B4581AD54
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 04:24:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rG9et-0008D4-Ui; Wed, 20 Dec 2023 22:23:39 -0500
+	id 1rG9fF-0008LS-2c; Wed, 20 Dec 2023 22:24:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9er-0008AG-OE
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:38 -0500
-Received: from mail-qv1-xf2d.google.com ([2607:f8b0:4864:20::f2d])
+ id 1rG9ev-0008FY-V0
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:42 -0500
+Received: from mail-qv1-xf32.google.com ([2607:f8b0:4864:20::f32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rG9ep-00070W-Nr
- for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:37 -0500
-Received: by mail-qv1-xf2d.google.com with SMTP id
- 6a1803df08f44-67ad5b37147so1787556d6.2
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:23:34 -0800 (PST)
+ id 1rG9et-0007FT-Sz
+ for qemu-devel@nongnu.org; Wed, 20 Dec 2023 22:23:41 -0500
+Received: by mail-qv1-xf32.google.com with SMTP id
+ 6a1803df08f44-67f0d22e4faso1790416d6.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 19:23:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703129014; x=1703733814; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703129019; x=1703733819; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=E2Zk4l5QNKn4te4fcYT5jUoKGYUCkVWAdFMiTl7xTnU=;
- b=qRGxR9mjCXY3mxb7pNJt0eIshozgz6xQnvsRurMcZoGVIepL8Wnwe/oHxz2rpCO10B
- XP1K0Y1Bwj8beWn2CVN4lVnT1A9blUQ5cWJVPPrdjeXX9PnKXX3rpg+o7fvmiurwdvx6
- dPgr8cOXEcafcHBH2aHp7Ubq++aN75m7tUiLw5v54s0yX0kF0NLnY4j0o2R7m26Ubrol
- d2ZEHp3y8eesKyKHbYSRX7OK991gpXfE4nyF4zf5iic7+a7eeOuQnuaRZHyfCmwbErqb
- vghpxBw0ljIIFbCkzpsnTfP/amxtS1b2LZAHzx3mVWpw61p4rD9n+7NVoQ81lxhyNu8+
- u07A==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jZc28KhfyAoIUW76Jt3JYRtP4Wj+aj533ydkiZKMpKw=;
+ b=vqejYMbkVoqpCmTzQ8yGFPlBTHusJQTXGo0XnXFtDpvqQD2ss60KVRvJqrW2iRBjp5
+ WRkLtlOKIJQdw4nnxZ537huiiNUfnfKIy3r/yzU7CYD/ZDpZqvFFzSWvPkyJixikSNA5
+ ugdgU4HX1WRd3XiNCHFqwDc3BB7+zkZngR0NBbjGHzWqZqAX2yKUZYPVMDeDt8GJho1u
+ j6oXL/MdBbdH24V5bnnt1kV726NuR16J/3DXvHyvsw2Pbx3n6fhh00gIw/YDoJFaLbn6
+ Vd1utjvdQvTgNNehY1MCbexNwrw40veJkMSwH67xOc4zUPDUiwWs1anw02YEH+kDGS9f
+ YSKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703129014; x=1703733814;
+ d=1e100.net; s=20230601; t=1703129019; x=1703733819;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E2Zk4l5QNKn4te4fcYT5jUoKGYUCkVWAdFMiTl7xTnU=;
- b=BwagX5vy7HOIYdgrlFxXa17WL90XMpFSmeD/L+s924c+kqFLywBegPwH3xE/f7MR7U
- KvaqLPawQ31kG4jVCPIgNlwIi06l/fpxXGFY28lqXrbilai63SoM8Us+QlPuwe8CEl83
- 5DdpG4o5UDWAuIy65rzv8ek5bGTkifogwbnanPOXkuBzT3kGtJc0+sMlhN5Or7sT1B+D
- 8YtAEkqa4lao/dpbK+bD4tq7Vl0oWbtQSds0l7YI/3xVIOmd0KFbJx6c2n20oJN4pyqN
- IGiEu5yp/mDXYZ2PDvIOaU4UTwIUwQ9EUohHch2oI6Um2IwIZReeFzeXa2Aa7MvMmxPc
- qZCg==
-X-Gm-Message-State: AOJu0YzxOtqxzoqJz1b5Iym7D0PRnJZ6c1cCit/0Dy0LmTWlrIVUdLm4
- 1ASZzUesMedvL8L+2ROTCu4Isj42nYZaU4urhjsqF25s
-X-Google-Smtp-Source: AGHT+IF9eI565j9n5Hry7wabJIplhigvtFTNUGuP5VNmtYL0k139zkdgvkEmYz8Ua81375zQ2vcGVA==
-X-Received: by 2002:a05:6214:2509:b0:67f:2b5:b96a with SMTP id
- gf9-20020a056214250900b0067f02b5b96amr20628541qvb.51.1703129014289; 
- Wed, 20 Dec 2023 19:23:34 -0800 (PST)
+ bh=jZc28KhfyAoIUW76Jt3JYRtP4Wj+aj533ydkiZKMpKw=;
+ b=ljqPYrGO1KmldMDnHsViUxa/CB5RASoXR0z8Nct2GJpRgOILq6MjlrJCUIE7algFw6
+ JDq8T8Sz/BfO9DhRHvEposKLJDDimaNlZhy4AdB6GXl/Tx1DFCtAY+SJFU81CwU6ByIT
+ jrq7lDKyvf+i30TqbMoFMJutG8QxHWF0kZlf8AOtANZh1ATl9/Ml9FyIKu1bsQwanNxe
+ rytCiv83j1CX9vt1IXwKUteKV9Op8v0cyeO0yFH28FlQSIpmM2sNQkRgyRWd/yJAhGq4
+ eg7vpKy6q0uxCN9H5aZPtbnA2yFT+VE9he4+r0HiPb1FGWZob7KTFsT+0LKw5aFVkcsE
+ 1/VA==
+X-Gm-Message-State: AOJu0Yw7oiC+avvtfoI1UK2WlfO+U48M/cPB7VDPjVO6DqdjXVdE4x/d
+ EyKeonRkEKVPkZcpy9caqHvSoRn0JcSPo2Ag8SiVcr2u
+X-Google-Smtp-Source: AGHT+IH8nGO/wLPlZV+NaAfor99dRjrfQ/9tgzhbsSlfULeiqsU0O7cA5j6TGMiMxYJR/r4pSCMs7w==
+X-Received: by 2002:ad4:5c4b:0:b0:67f:7e15:fc86 with SMTP id
+ a11-20020ad45c4b000000b0067f7e15fc86mr1279650qva.17.1703129019042; 
+ Wed, 20 Dec 2023 19:23:39 -0800 (PST)
 Received: from stoup.. ([172.58.139.164]) by smtp.gmail.com with ESMTPSA id
- l16-20020ad44d10000000b0067f7b6318b9sm347257qvl.10.2023.12.20.19.23.32
- for <qemu-devel@nongnu.org>
+ l16-20020ad44d10000000b0067f7b6318b9sm347257qvl.10.2023.12.20.19.23.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Dec 2023 19:23:33 -0800 (PST)
+ Wed, 20 Dec 2023 19:23:38 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 51/71] hw/scsi: Constify VMState
-Date: Thu, 21 Dec 2023 14:16:32 +1100
-Message-Id: <20231221031652.119827-52-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 52/71] hw/sd: Constify VMState
+Date: Thu, 21 Dec 2023 14:16:33 +1100
+Message-Id: <20231221031652.119827-53-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231221031652.119827-1-richard.henderson@linaro.org>
 References: <20231221031652.119827-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2d;
- envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f32;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,259 +91,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/scsi/esp-pci.c         | 2 +-
- hw/scsi/esp.c             | 8 ++++----
- hw/scsi/lsi53c895a.c      | 2 +-
- hw/scsi/megasas.c         | 4 ++--
- hw/scsi/mptsas.c          | 2 +-
- hw/scsi/scsi-bus.c        | 6 +++---
- hw/scsi/scsi-disk.c       | 2 +-
- hw/scsi/spapr_vscsi.c     | 4 ++--
- hw/scsi/vhost-scsi.c      | 2 +-
- hw/scsi/vhost-user-scsi.c | 2 +-
- hw/scsi/virtio-scsi.c     | 2 +-
- hw/scsi/vmw_pvscsi.c      | 6 +++---
- 12 files changed, 21 insertions(+), 21 deletions(-)
+ hw/sd/allwinner-sdhost.c | 2 +-
+ hw/sd/aspeed_sdhci.c     | 2 +-
+ hw/sd/bcm2835_sdhost.c   | 2 +-
+ hw/sd/cadence_sdhci.c    | 2 +-
+ hw/sd/npcm7xx_sdhci.c    | 2 +-
+ hw/sd/pl181.c            | 2 +-
+ hw/sd/pxa2xx_mmci.c      | 2 +-
+ hw/sd/sd.c               | 6 +++---
+ hw/sd/sdhci.c            | 6 +++---
+ hw/sd/ssi-sd.c           | 2 +-
+ 10 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
-index 4e890db0e2..93b3429e0f 100644
---- a/hw/scsi/esp-pci.c
-+++ b/hw/scsi/esp-pci.c
-@@ -333,7 +333,7 @@ static const VMStateDescription vmstate_esp_pci_scsi = {
-     .version_id = 2,
+diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c
+index 1a576d62ae..a1b7230633 100644
+--- a/hw/sd/allwinner-sdhost.c
++++ b/hw/sd/allwinner-sdhost.c
+@@ -773,7 +773,7 @@ static const VMStateDescription vmstate_allwinner_sdhost = {
+     .name = "allwinner-sdhost",
+     .version_id = 1,
      .minimum_version_id = 1,
-     .pre_save = esp_pre_save,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, PCIESPState),
-         VMSTATE_BUFFER_UNSAFE(dma_regs, PCIESPState, 0, 8 * sizeof(uint32_t)),
-         VMSTATE_UINT8_V(esp.mig_version_id, PCIESPState, 2),
-diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 9b11d8c573..ff90572830 100644
---- a/hw/scsi/esp.c
-+++ b/hw/scsi/esp.c
-@@ -1237,7 +1237,7 @@ static const VMStateDescription vmstate_esp_pdma = {
-     .version_id = 0,
-     .minimum_version_id = 0,
-     .needed = esp_pdma_needed,
+         VMSTATE_UINT32(global_ctl, AwSdHostState),
+         VMSTATE_UINT32(clock_ctl, AwSdHostState),
+         VMSTATE_UINT32(timeout, AwSdHostState),
+diff --git a/hw/sd/aspeed_sdhci.c b/hw/sd/aspeed_sdhci.c
+index e53206d959..3b63926c3a 100644
+--- a/hw/sd/aspeed_sdhci.c
++++ b/hw/sd/aspeed_sdhci.c
+@@ -177,7 +177,7 @@ static void aspeed_sdhci_reset(DeviceState *dev)
+ static const VMStateDescription vmstate_aspeed_sdhci = {
+     .name = TYPE_ASPEED_SDHCI,
+     .version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(pdma_cb, ESPState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -1248,7 +1248,7 @@ const VMStateDescription vmstate_esp = {
-     .version_id = 6,
-     .minimum_version_id = 3,
-     .post_load = esp_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BUFFER(rregs, ESPState),
-         VMSTATE_BUFFER(wregs, ESPState),
-         VMSTATE_INT32(ti_size, ESPState),
-@@ -1277,7 +1277,7 @@ const VMStateDescription vmstate_esp = {
-         VMSTATE_UINT8_TEST(lun, ESPState, esp_is_version_6),
-         VMSTATE_END_OF_LIST()
+         VMSTATE_UINT32_ARRAY(regs, AspeedSDHCIState, ASPEED_SDHCI_NUM_REGS),
+         VMSTATE_END_OF_LIST(),
      },
--    .subsections = (const VMStateDescription * []) {
-+    .subsections = (const VMStateDescription * const []) {
-         &vmstate_esp_pdma,
-         NULL
-     }
-@@ -1448,7 +1448,7 @@ static const VMStateDescription vmstate_sysbus_esp_scsi = {
+diff --git a/hw/sd/bcm2835_sdhost.c b/hw/sd/bcm2835_sdhost.c
+index a600cf39e2..11c54dd4a7 100644
+--- a/hw/sd/bcm2835_sdhost.c
++++ b/hw/sd/bcm2835_sdhost.c
+@@ -381,7 +381,7 @@ static const VMStateDescription vmstate_bcm2835_sdhost = {
+     .name = TYPE_BCM2835_SDHOST,
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(cmd, BCM2835SDHostState),
+         VMSTATE_UINT32(cmdarg, BCM2835SDHostState),
+         VMSTATE_UINT32(status, BCM2835SDHostState),
+diff --git a/hw/sd/cadence_sdhci.c b/hw/sd/cadence_sdhci.c
+index ef4e0d74e3..7c8bc5464b 100644
+--- a/hw/sd/cadence_sdhci.c
++++ b/hw/sd/cadence_sdhci.c
+@@ -159,7 +159,7 @@ static void cadence_sdhci_realize(DeviceState *dev, Error **errp)
+ static const VMStateDescription vmstate_cadence_sdhci = {
+     .name = TYPE_CADENCE_SDHCI,
+     .version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(regs, CadenceSDHCIState, CADENCE_SDHCI_NUM_REGS),
+         VMSTATE_END_OF_LIST(),
+     },
+diff --git a/hw/sd/npcm7xx_sdhci.c b/hw/sd/npcm7xx_sdhci.c
+index 9958680090..e93dab8dbd 100644
+--- a/hw/sd/npcm7xx_sdhci.c
++++ b/hw/sd/npcm7xx_sdhci.c
+@@ -142,7 +142,7 @@ static void npcm7xx_sdhci_reset(DeviceState *dev)
+ static const VMStateDescription vmstate_npcm7xx_sdhci = {
+     .name = TYPE_NPCM7XX_SDHCI,
+     .version_id = 0,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(regs.boottoctrl, NPCM7xxSDHCIState),
+         VMSTATE_END_OF_LIST(),
+     },
+diff --git a/hw/sd/pl181.c b/hw/sd/pl181.c
+index 2b33814d83..e3633c2e6f 100644
+--- a/hw/sd/pl181.c
++++ b/hw/sd/pl181.c
+@@ -63,7 +63,7 @@ static const VMStateDescription vmstate_pl181 = {
+     .name = "pl181",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(clock, PL181State),
+         VMSTATE_UINT32(power, PL181State),
+         VMSTATE_UINT32(cmdarg, PL181State),
+diff --git a/hw/sd/pxa2xx_mmci.c b/hw/sd/pxa2xx_mmci.c
+index 5e8ea69188..82529708c8 100644
+--- a/hw/sd/pxa2xx_mmci.c
++++ b/hw/sd/pxa2xx_mmci.c
+@@ -84,7 +84,7 @@ static const VMStateDescription vmstate_pxa2xx_mmci = {
+     .name = "pxa2xx-mmci",
      .version_id = 2,
-     .minimum_version_id = 1,
-     .pre_save = esp_pre_save,
+     .minimum_version_id = 2,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8_V(esp.mig_version_id, SysBusESPState, 2),
-         VMSTATE_STRUCT(esp, SysBusESPState, 0, vmstate_esp, ESPState),
+         VMSTATE_UINT32(status, PXA2xxMMCIState),
+         VMSTATE_UINT32(clkrt, PXA2xxMMCIState),
+         VMSTATE_UINT32(spi, PXA2xxMMCIState),
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 1106ff7d78..807b5d3de3 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -681,7 +681,7 @@ static const VMStateDescription sd_ocr_vmstate = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = sd_ocr_vmstate_needed,
+-    .fields = (VMStateField[]) {
++    .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(ocr, SDState),
+         VMSTATE_TIMER_PTR(ocr_power_timer, SDState),
          VMSTATE_END_OF_LIST()
-diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-index 634ed49c2e..34e3b89287 100644
---- a/hw/scsi/lsi53c895a.c
-+++ b/hw/scsi/lsi53c895a.c
-@@ -2205,7 +2205,7 @@ static const VMStateDescription vmstate_lsi_scsi = {
-     .minimum_version_id = 0,
-     .pre_save = lsi_pre_save,
-     .post_load = lsi_post_load,
+@@ -706,7 +706,7 @@ static const VMStateDescription sd_vmstate = {
+     .version_id = 2,
+     .minimum_version_id = 2,
+     .pre_load = sd_vmstate_pre_load,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, LSIState),
- 
-         VMSTATE_INT32(carry, LSIState),
-diff --git a/hw/scsi/megasas.c b/hw/scsi/megasas.c
-index 32c70c9e99..2d0c607177 100644
---- a/hw/scsi/megasas.c
-+++ b/hw/scsi/megasas.c
-@@ -2299,7 +2299,7 @@ static const VMStateDescription vmstate_megasas_gen1 = {
-     .name = "megasas",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, MegasasState),
-         VMSTATE_MSIX(parent_obj, MegasasState),
- 
-@@ -2317,7 +2317,7 @@ static const VMStateDescription vmstate_megasas_gen2 = {
-     .name = "megasas-gen2",
-     .version_id = 0,
-     .minimum_version_id = 0,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, MegasasState),
-         VMSTATE_MSIX(parent_obj, MegasasState),
- 
-diff --git a/hw/scsi/mptsas.c b/hw/scsi/mptsas.c
-index 75d3ab8bd1..c5d3138c93 100644
---- a/hw/scsi/mptsas.c
-+++ b/hw/scsi/mptsas.c
-@@ -1366,7 +1366,7 @@ static const VMStateDescription vmstate_mptsas = {
-     .version_id = 0,
-     .minimum_version_id = 0,
-     .post_load = mptsas_post_load,
--    .fields      = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(dev, MPTSASState),
-         VMSTATE_BOOL(msi_in_use, MPTSASState),
-         VMSTATE_UINT32(state, MPTSASState),
-diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-index fc4b77fdb0..d27a4b354a 100644
---- a/hw/scsi/scsi-bus.c
-+++ b/hw/scsi/scsi-bus.c
-@@ -1826,7 +1826,7 @@ static const VMStateDescription vmstate_scsi_sense_state = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = scsi_sense_state_needed,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8_SUB_ARRAY(sense, SCSIDevice,
-                                 SCSI_SENSE_BUF_SIZE_OLD,
-                                 SCSI_SENSE_BUF_SIZE - SCSI_SENSE_BUF_SIZE_OLD),
-@@ -1838,7 +1838,7 @@ const VMStateDescription vmstate_scsi_device = {
-     .name = "SCSIDevice",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_UINT8(unit_attention.key, SCSIDevice),
-         VMSTATE_UINT8(unit_attention.asc, SCSIDevice),
-         VMSTATE_UINT8(unit_attention.ascq, SCSIDevice),
-@@ -1856,7 +1856,7 @@ const VMStateDescription vmstate_scsi_device = {
-         },
+         VMSTATE_UINT32(mode, SDState),
+         VMSTATE_INT32(state, SDState),
+         VMSTATE_UINT8_ARRAY(cid, SDState, 16),
+@@ -733,7 +733,7 @@ static const VMStateDescription sd_vmstate = {
+         VMSTATE_BOOL(enable, SDState),
          VMSTATE_END_OF_LIST()
      },
 -    .subsections = (const VMStateDescription*[]) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_scsi_sense_state,
+         &sd_ocr_vmstate,
          NULL
-     }
-diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index 6691f5edb8..45099fc5e6 100644
---- a/hw/scsi/scsi-disk.c
-+++ b/hw/scsi/scsi-disk.c
-@@ -3168,7 +3168,7 @@ static const VMStateDescription vmstate_scsi_disk_state = {
-     .name = "scsi-disk",
+     },
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 40473b0db0..c5e0bc018b 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -1457,7 +1457,7 @@ static const VMStateDescription sdhci_pending_insert_vmstate = {
      .version_id = 1,
      .minimum_version_id = 1,
+     .needed = sdhci_pending_insert_vmstate_needed,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_SCSI_DEVICE(qdev, SCSIDiskState),
-         VMSTATE_BOOL(media_changed, SCSIDiskState),
-         VMSTATE_BOOL(media_event, SCSIDiskState),
-diff --git a/hw/scsi/spapr_vscsi.c b/hw/scsi/spapr_vscsi.c
-index 5bbbef64ef..c75a6c8807 100644
---- a/hw/scsi/spapr_vscsi.c
-+++ b/hw/scsi/spapr_vscsi.c
-@@ -605,7 +605,7 @@ static const VMStateDescription vmstate_spapr_vscsi_req = {
-     .name = "spapr_vscsi_req",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_BUFFER(crq.raw, vscsi_req),
-         VMSTATE_BUFFER(viosrp_iu_buf, vscsi_req),
-         VMSTATE_UINT32(qtag, vscsi_req),
-@@ -1259,7 +1259,7 @@ static const VMStateDescription vmstate_spapr_vscsi = {
-     .name = "spapr_vscsi",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_SPAPR_VIO(vdev, VSCSIState),
-         /* VSCSI state */
-         /* ???? */
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 3126df9e1d..97a1f75ef1 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -158,7 +158,7 @@ static const VMStateDescription vmstate_virtio_vhost_scsi = {
-     .name = "virtio-vhost_scsi",
-     .minimum_version_id = 1,
-     .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_VIRTIO_DEVICE,
+         VMSTATE_BOOL(pending_insert_state, SDHCIState),
          VMSTATE_END_OF_LIST()
      },
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 780f10559d..bab7594899 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -378,7 +378,7 @@ static const VMStateDescription vmstate_vhost_scsi = {
-     .name = "virtio-scsi",
-     .minimum_version_id = 1,
+@@ -1467,7 +1467,7 @@ const VMStateDescription sdhci_vmstate = {
+     .name = "sdhci",
      .version_id = 1,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_VIRTIO_DEVICE,
-         VMSTATE_END_OF_LIST()
-     },
-diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 9c751bf296..3076cd7b1b 100644
---- a/hw/scsi/virtio-scsi.c
-+++ b/hw/scsi/virtio-scsi.c
-@@ -1303,7 +1303,7 @@ static const VMStateDescription vmstate_virtio_scsi = {
-     .name = "virtio-scsi",
      .minimum_version_id = 1,
-     .version_id = 1,
 -    .fields = (VMStateField[]) {
 +    .fields = (const VMStateField[]) {
-         VMSTATE_VIRTIO_DEVICE,
-         VMSTATE_END_OF_LIST()
-     },
-diff --git a/hw/scsi/vmw_pvscsi.c b/hw/scsi/vmw_pvscsi.c
-index 4de34536e9..cd7bf6aa01 100644
---- a/hw/scsi/vmw_pvscsi.c
-+++ b/hw/scsi/vmw_pvscsi.c
-@@ -1249,7 +1249,7 @@ static bool pvscsi_vmstate_test_pci_device(void *opaque, int version_id)
- static const VMStateDescription vmstate_pvscsi_pcie_device = {
-     .name = "pvscsi/pcie",
-     .needed = pvscsi_vmstate_need_pcie_device,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_PCI_DEVICE(parent_obj, PVSCSIState),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -1261,7 +1261,7 @@ static const VMStateDescription vmstate_pvscsi = {
-     .minimum_version_id = 0,
-     .pre_save = pvscsi_pre_save,
-     .post_load = pvscsi_post_load,
--    .fields = (VMStateField[]) {
-+    .fields = (const VMStateField[]) {
-         VMSTATE_STRUCT_TEST(parent_obj, PVSCSIState,
-                             pvscsi_vmstate_test_pci_device, 0,
-                             vmstate_pci_device, PCIDevice),
-@@ -1290,7 +1290,7 @@ static const VMStateDescription vmstate_pvscsi = {
- 
+         VMSTATE_UINT32(sdmasysad, SDHCIState),
+         VMSTATE_UINT16(blksize, SDHCIState),
+         VMSTATE_UINT16(blkcnt, SDHCIState),
+@@ -1498,7 +1498,7 @@ const VMStateDescription sdhci_vmstate = {
+         VMSTATE_TIMER_PTR(transfer_timer, SDHCIState),
          VMSTATE_END_OF_LIST()
      },
 -    .subsections = (const VMStateDescription*[]) {
 +    .subsections = (const VMStateDescription * const []) {
-         &vmstate_pvscsi_pcie_device,
+         &sdhci_pending_insert_vmstate,
          NULL
-     }
+     },
+diff --git a/hw/sd/ssi-sd.c b/hw/sd/ssi-sd.c
+index a6cc1ad6c8..2dd070f978 100644
+--- a/hw/sd/ssi-sd.c
++++ b/hw/sd/ssi-sd.c
+@@ -350,7 +350,7 @@ static const VMStateDescription vmstate_ssi_sd = {
+     .version_id = 7,
+     .minimum_version_id = 7,
+     .post_load = ssi_sd_post_load,
+-    .fields = (VMStateField []) {
++    .fields = (const VMStateField []) {
+         VMSTATE_UINT32(mode, ssi_sd_state),
+         VMSTATE_INT32(cmd, ssi_sd_state),
+         VMSTATE_UINT8_ARRAY(cmdarg, ssi_sd_state, 4),
 -- 
 2.34.1
 
