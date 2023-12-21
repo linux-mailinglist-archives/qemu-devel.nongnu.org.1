@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F48481BD84
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:45:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F2D81BD83
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 18:45:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGN5P-00028M-53; Thu, 21 Dec 2023 12:43:55 -0500
+	id 1rGN5a-0002Ar-Hp; Thu, 21 Dec 2023 12:44:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rGN5J-00025q-BD
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:43:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rGN5N-00028J-5G
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:43:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rGN5H-0004UZ-8q
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:43:48 -0500
+ id 1rGN5L-0004VP-Mn
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 12:43:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703180626;
+ s=mimecast20190719; t=1703180631;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wEqxCxIU4wEiF1ZxDcemsg37cDOuCjoWmO0/s/NRmkQ=;
- b=BJFf8i0GFYFmJBBfrtxPr8IR+PCtFWYWXzru/kcFsRRVAsQKloC4aAbVnBjEZYLEbIdIKI
- aEWmeA33mtxwMEtMC4VOUJiD4DDJOn+p572JKsrAACroiEFW8VzQHjSaDavHFgmAx2pJ4r
- dEo4oZswQywvhEHOHGr6h+RQ+qzqnvc=
+ bh=tmPzHpJ7J2BnbFMyirhJkM/dBrBacMx6b4xylXe8QsI=;
+ b=QbS0LvBKEWt4BUIU8Uo+WbVCImY04tiQBJlQAphiMDMAEF2YFzxa1uWx1SVGqrKch0DsLR
+ +yy5c50xokaGxURXYP5Wv+bZlkDlhvUGHDwxI1J/fMEIXnVcS+xnFg6gEt2K613xfcOGlr
+ QiyJuTRTCWuJmIqwRTXhJb8MNq6+clw=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-266-mr7t-Y87Mw2svoP5W9xjEw-1; Thu,
- 21 Dec 2023 12:43:44 -0500
-X-MC-Unique: mr7t-Y87Mw2svoP5W9xjEw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-177-arJIWvtOMxuOMw_KfozWNQ-1; Thu,
+ 21 Dec 2023 12:43:46 -0500
+X-MC-Unique: arJIWvtOMxuOMw_KfozWNQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61A633C2B60E;
- Thu, 21 Dec 2023 17:43:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44EBF38143B6;
+ Thu, 21 Dec 2023 17:43:46 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.3])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BC922492BC6;
- Thu, 21 Dec 2023 17:43:42 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9FB35492BC6;
+ Thu, 21 Dec 2023 17:43:44 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Dragos Tatulea <dtatulea@nvidia.com>,
@@ -51,23 +51,23 @@ Cc: Dragos Tatulea <dtatulea@nvidia.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
  si-wei.liu@oracle.com, Laurent Vivier <lvivier@redhat.com>,
  Lei Yang <leiyang@redhat.com>
-Subject: [PATCH v4 09/13] vdpa: remove msg type of vhost_vdpa
-Date: Thu, 21 Dec 2023 18:43:18 +0100
-Message-Id: <20231221174322.3130442-10-eperezma@redhat.com>
+Subject: [PATCH v4 10/13] vdpa: move iommu_list to vhost_vdpa_shared
+Date: Thu, 21 Dec 2023 18:43:19 +0100
+Message-Id: <20231221174322.3130442-11-eperezma@redhat.com>
 In-Reply-To: <20231221174322.3130442-1-eperezma@redhat.com>
 References: <20231221174322.3130442-1-eperezma@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,79 +85,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is always VHOST_IOTLB_MSG_V2. We can always make it back per
-vhost_dev if needed.
+Next patches will register the vhost_vdpa memory listener while the VM
+is migrating at the destination, so we can map the memory to the device
+before stopping the VM at the source.  The main goal is to reduce the
+downtime.
 
-This change makes easier for vhost_vdpa_map and unmap not to depend on
-vhost_vdpa but only in VhostVDPAShared.
+However, the destination QEMU is unaware of which vhost_vdpa device will
+register its memory_listener.  If the source guest has CVQ enabled, it
+will be the CVQ device.  Otherwise, it  will be the first one.
+
+Move the iommu_list member to VhostVDPAShared so all vhost_vdpa can use
+it, rather than always in the first / last vhost_vdpa.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- include/hw/virtio/vhost-vdpa.h | 1 -
- hw/virtio/vhost-vdpa.c         | 9 ++++-----
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ include/hw/virtio/vhost-vdpa.h | 2 +-
+ hw/virtio/vhost-vdpa.c         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index 11ac14085a..5bd964dac5 100644
+index 5bd964dac5..3880b9e7f2 100644
 --- a/include/hw/virtio/vhost-vdpa.h
 +++ b/include/hw/virtio/vhost-vdpa.h
-@@ -49,7 +49,6 @@ typedef struct vhost_vdpa_shared {
+@@ -34,6 +34,7 @@ typedef struct VhostVDPAHostNotifier {
+ typedef struct vhost_vdpa_shared {
+     int device_fd;
+     struct vhost_vdpa_iova_range iova_range;
++    QLIST_HEAD(, vdpa_iommu) iommu_list;
  
- typedef struct vhost_vdpa {
-     int index;
--    uint32_t msg_type;
-     uint32_t address_space_id;
-     MemoryListener listener;
-     uint64_t acked_features;
+     /* IOVA mapping used by the Shadow Virtqueue */
+     VhostIOVATree *iova_tree;
+@@ -62,7 +63,6 @@ typedef struct vhost_vdpa {
+     struct vhost_dev *dev;
+     Error *migration_blocker;
+     VhostVDPAHostNotifier notifier[VIRTIO_QUEUE_MAX];
+-    QLIST_HEAD(, vdpa_iommu) iommu_list;
+     IOMMUNotifier n;
+ } VhostVDPA;
+ 
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 458e46befd..38afcbf1c9 100644
+index 38afcbf1c9..a07cd85081 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -93,7 +93,7 @@ int vhost_vdpa_dma_map(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
-     int fd = v->shared->device_fd;
-     int ret = 0;
- 
--    msg.type = v->msg_type;
-+    msg.type = VHOST_IOTLB_MSG_V2;
-     msg.asid = asid;
-     msg.iotlb.iova = iova;
-     msg.iotlb.size = size;
-@@ -125,7 +125,7 @@ int vhost_vdpa_dma_unmap(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
-     int fd = v->shared->device_fd;
-     int ret = 0;
- 
--    msg.type = v->msg_type;
-+    msg.type = VHOST_IOTLB_MSG_V2;
-     msg.asid = asid;
-     msg.iotlb.iova = iova;
-     msg.iotlb.size = size;
-@@ -147,7 +147,7 @@ static void vhost_vdpa_listener_begin_batch(struct vhost_vdpa *v)
- {
-     int fd = v->shared->device_fd;
-     struct vhost_msg_v2 msg = {
--        .type = v->msg_type,
-+        .type = VHOST_IOTLB_MSG_V2,
-         .iotlb.type = VHOST_IOTLB_BATCH_BEGIN,
-     };
- 
-@@ -183,7 +183,7 @@ static void vhost_vdpa_listener_commit(MemoryListener *listener)
+@@ -279,7 +279,7 @@ static void vhost_vdpa_iommu_region_add(MemoryListener *listener,
          return;
      }
  
--    msg.type = v->msg_type;
-+    msg.type = VHOST_IOTLB_MSG_V2;
-     msg.iotlb.type = VHOST_IOTLB_BATCH_END;
+-    QLIST_INSERT_HEAD(&v->iommu_list, iommu, iommu_next);
++    QLIST_INSERT_HEAD(&v->shared->iommu_list, iommu, iommu_next);
+     memory_region_iommu_replay(iommu->iommu_mr, &iommu->n);
  
-     trace_vhost_vdpa_listener_commit(v->shared, fd, msg.type, msg.iotlb.type);
-@@ -593,7 +593,6 @@ static int vhost_vdpa_init(struct vhost_dev *dev, void *opaque, Error **errp)
-     v->dev = dev;
-     dev->opaque =  opaque ;
-     v->listener = vhost_vdpa_memory_listener;
--    v->msg_type = VHOST_IOTLB_MSG_V2;
-     vhost_vdpa_init_svq(dev, v);
+     return;
+@@ -292,7 +292,7 @@ static void vhost_vdpa_iommu_region_del(MemoryListener *listener,
  
-     error_propagate(&dev->migration_blocker, v->migration_blocker);
+     struct vdpa_iommu *iommu;
+ 
+-    QLIST_FOREACH(iommu, &v->iommu_list, iommu_next)
++    QLIST_FOREACH(iommu, &v->shared->iommu_list, iommu_next)
+     {
+         if (MEMORY_REGION(iommu->iommu_mr) == section->mr &&
+             iommu->n.start == section->offset_within_region) {
 -- 
 2.39.3
 
