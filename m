@@ -2,90 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FFF81AED5
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D65A881AEDD
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 07:40:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGCfm-00050q-0K; Thu, 21 Dec 2023 01:36:46 -0500
+	id 1rGCih-0005u7-Ts; Thu, 21 Dec 2023 01:39:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGCfk-00050d-GI
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:36:44 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGCfh-0002Gi-55
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 01:36:44 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1d3e05abcaeso3187865ad.1
- for <qemu-devel@nongnu.org>; Wed, 20 Dec 2023 22:36:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703140595; x=1703745395;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=k4HFyN8Qd94O7IlfdeCTXz9IW17rMmG81QliWfTgv5Q=;
- b=CQtq1L/zAkDSy1RxCQcxZvP9hOpS+Rj7nOgs1DSQTKdmzJkXyY0Zm257bx/RMCUgeW
- NiK/qz+dIYX7IhayCrPQVTKCN+Wu3EpUYOnytfG3uHlcCb30945gZjuTAaRfPH3E5AuK
- cvTIybEvBtUSavX3cFLgpRRNfiJ7ymWB7sWfVaJo0QdwzLanKtyZ5Ex+S6rRBgJ6ftyr
- 0HUiefkxmu+DCo9lbodEtx2GTn4zbN9NTmIC1q2zI5SQ1AMB78TY7LyROwS/K9dXmeDr
- CtvJfEVLXg3a/xhOsbgW0hkkmlwJ4F7/ORvR/9MTYTskXnaBmj51vGL4a/fV7FWtVfpi
- cKXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703140595; x=1703745395;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=k4HFyN8Qd94O7IlfdeCTXz9IW17rMmG81QliWfTgv5Q=;
- b=iVlh5eo3f3DO0jJFW284srK9czh72QAlEmg763OMNudHzhhorqE+aj9QLAdeR91VPO
- PoxHvUia1DSXulc7Q+DbyEtItH6Artmio7Wu+owqqN0wjT1Y4hJtYTEOKQ675W5d+etr
- q+h+vbskSXIMk8NJEp9YMxHDkkUlFMrV5noOAkjMK1fT1Bs3PZc6jZWz5nO7qCrbo525
- 93F6wbZYt8s8JatS45LSVdaX+n4dwib2iwQnHd6gRqjzNS+86Yb1c1z1GJTsoQfLx/7d
- 3dns5dawJPjsmAgoUeMjCt/Zu4EV5xBbsUkkmxgou50zYHe43DeaQVmUfz/sCodqlO34
- cpnQ==
-X-Gm-Message-State: AOJu0Yxi3xsAIrmd5Kkx4HXBFoIMg1uPzL6Vob2cJtCjVpB6wdFLkgeJ
- lvziGWyQicPuBlo4D779rydbETbAJzGh8a5Vo3hLnA==
-X-Google-Smtp-Source: AGHT+IF57ArjLD4zJN2y0iZ32TOFz3mwfD8uvuJqKTi6iV6jrw0HDKYV9OYPBHNVu+qGZwbU1MZuRg==
-X-Received: by 2002:a17:902:eb86:b0:1d3:f1ca:6a3 with SMTP id
- q6-20020a170902eb8600b001d3f1ca06a3mr1368755plg.112.1703140595362; 
- Wed, 20 Dec 2023 22:36:35 -0800 (PST)
-Received: from [157.82.205.15] ([157.82.205.15])
- by smtp.gmail.com with ESMTPSA id
- m10-20020a170902db0a00b001d3f7a5ea50sm789445plx.234.2023.12.20.22.36.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Dec 2023 22:36:34 -0800 (PST)
-Message-ID: <68c2e155-0dc1-4566-853a-059e351e9649@daynix.com>
-Date: Thu, 21 Dec 2023 15:36:32 +0900
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1rGCie-0005tt-UU; Thu, 21 Dec 2023 01:39:45 -0500
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1rGCib-0004xx-BK; Thu, 21 Dec 2023 01:39:44 -0500
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 3BL6cjS0092035;
+ Thu, 21 Dec 2023 14:38:45 +0800 (+08)
+ (envelope-from ethan84@andestech.com)
+Received: from ethan84-VirtualBox (10.0.12.51) by ATCPCS16.andestech.com
+ (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; Thu, 21 Dec 2023
+ 14:38:43 +0800
+Date: Thu, 21 Dec 2023 14:38:27 +0800
+To: Alistair Francis <alistair23@gmail.com>
+CC: <qemu-devel@nongnu.org>, <peter.maydell@linaro.org>,
+ <edgar.iglesias@gmail.com>, <richard.henderson@linaro.org>,
+ <pbonzini@redhat.com>, <palmer@dabbelt.com>,
+ <alistair.francis@wdc.com>, <in.meng@windriver.com>,
+ <liweiwei@iscas.ac.cn>, <dbarboza@ventanamicro.com>,
+ <hiwei_liu@linux.alibaba.com>, <qemu-riscv@nongnu.org>,
+ <peterx@redhat.com>, <david@redhat.com>
+Subject: Re: [PATCH v4 0/4] Support RISC-V IOPMP
+Message-ID: <ZYPdY38SqIE7/eoz@ethan84-VirtualBox>
+References: <20231122053251.440723-1-ethan84@andestech.com>
+ <CAKmqyKO9nGLo2b0TamakNh4qRr+Bi8NQ973bQ=ch8=CKoH-etg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] qdev: Report an error for machine without
- HotplugHandler
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@intel.com>, Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org
-References: <20231210-bus-v2-1-34ebf5726fa0@daynix.com>
- <87h6kpgrl7.fsf@pond.sub.org>
- <cbda6265-5027-424c-be93-86073d9ad63a@daynix.com>
- <8734vzsj6k.fsf@pond.sub.org>
- <ff212914-32b5-442e-8f67-4f01a7208a0c@daynix.com>
- <87y1dpgvim.fsf@pond.sub.org> <ZYMaS8v8sIWhteFm@intel.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <ZYMaS8v8sIWhteFm@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKmqyKO9nGLo2b0TamakNh4qRr+Bi8NQ973bQ=ch8=CKoH-etg@mail.gmail.com>
+User-Agent: Mutt/2.1.4 (2021-12-11)
+X-Originating-IP: [10.0.12.51]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 3BL6cjS0092035
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,140 +67,93 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Ethan Chen <ethan84@andestech.com>
+From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/21 1:46, Zhao Liu wrote:
-> Hi Markus,
+On Mon, Dec 18, 2023 at 02:18:58PM +1000, Alistair Francis wrote:
+> On Wed, Nov 22, 2023 at 3:36 PM Ethan Chen via <qemu-devel@nongnu.org> wrote:
+> >
+> > This series implements IOPMP specification v1.0.0-draft4 rapid-k model.
+> > The specification url:
+> > https://github.com/riscv-non-isa/iopmp-spec/blob/main/riscv_iopmp_specification.pdf
+> >
+> > When IOPMP is enabled, a DMA device ATCDMAC300 is added to RISC-V virt
+> > platform. This DMA device is connected to the IOPMP and has the functionalities
 > 
-> On Wed, Dec 20, 2023 at 08:53:21AM +0100, Markus Armbruster wrote:
->> Date: Wed, 20 Dec 2023 08:53:21 +0100
->> From: Markus Armbruster <armbru@redhat.com>
->> Subject: Re: [PATCH v2] qdev: Report an error for machine without
->>   HotplugHandler
->>
->> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
->>
->>> On 2023/12/18 23:02, Markus Armbruster wrote:
->>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
->>>>
->>>>> On 2023/12/11 15:51, Markus Armbruster wrote:
->>>>>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
->>>>>>
->>>>>>> The HotplugHandler of the machine will be used when the parent bus does
->>>>>>> not exist, but the machine may not have one. Report an error in such a
->>>>>>> case instead of aborting.
->>>>>>>
->>>>>>> Fixes: 7716b8ca74 ("qdev: HotplugHandler: Add support for unplugging BUS-less devices")
->>>>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>>>>
->>>>>> Do you have a reproducer for the crash?
->>>>>>
->>>>>>> ---
->>>>>>> Changes in v2:
->>>>>>> - Fixed indention.
->>>>>>> - Link to v1: https://lore.kernel.org/r/20231202-bus-v1-1-f7540e3a8d62@daynix.com
->>>>>>> ---
->>>>>>>     system/qdev-monitor.c | 13 ++++++++++---
->>>>>>>     1 file changed, 10 insertions(+), 3 deletions(-)
->>>>>>>
->>>>>>> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
->>>>>>> index a13db763e5..5fe5d49c20 100644
->>>>>>> --- a/system/qdev-monitor.c
->>>>>>> +++ b/system/qdev-monitor.c
->>>>>>> @@ -927,9 +927,16 @@ void qdev_unplug(DeviceState *dev, Error **errp)
->>>>>>     void qdev_unplug(DeviceState *dev, Error **errp)
->>>>>>     {
->>>>>>         DeviceClass *dc = DEVICE_GET_CLASS(dev);
->>>>>>         HotplugHandler *hotplug_ctrl;
->>>>>>         HotplugHandlerClass *hdc;
->>>>>>         Error *local_err = NULL;
->>>>>>         if (qdev_unplug_blocked(dev, errp)) {
->>>>>>             return;
->>>>>>         }
->>>>>>         if (dev->parent_bus && !qbus_is_hotpluggable(dev->parent_bus)) {
->>>>>>             error_setg(errp, QERR_BUS_NO_HOTPLUG, dev->parent_bus->name);
->>>>>>             return;
->>>>>>         }
->>>>>>         if (!dc->hotpluggable) {
->>>>>>             error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
->>>>>>                        object_get_typename(OBJECT(dev)));
->>>>>>             return;
->>>>>>         }
->>>>>>         if (!migration_is_idle() && !dev->allow_unplug_during_migration) {
->>>>>>             error_setg(errp, "device_del not allowed while migrating");
->>>>>>             return;
->>>>>>         }
->>>>>>
->>>>>>>        qdev_hot_removed = true;
->>>>>>>           hotplug_ctrl = qdev_get_hotplug_handler(dev);
->>>>>>> -    /* hotpluggable device MUST have HotplugHandler, if it doesn't
->>>>>>> -     * then something is very wrong with it */
->>>>>>> -    g_assert(hotplug_ctrl);
->>>>>>> +    if (!hotplug_ctrl) {
->>>>>>> +        /*
->>>>>>> +         * hotpluggable bus MUST have HotplugHandler, if it doesn't
->>>>>>> +         * then something is very wrong with it
->>>>>>> +         */
->>>>>>> +        assert(!dev->parent_bus);
->>>>>>> +
->>>>>>> +        error_setg(errp, "The machine does not support hotplugging for a device without parent bus");
->>>>>>> +        return;
->>>>>>> +    }
->>>>>>
->>>>>> Extended version of my question above: what are the devices where
->>>>>> qdev_get_hotplug_handler(dev) returns null here?
->>>>>
->>>>> Start a VM: qemu-system-aarch64 -M virt -nographic
->>>>> Run the following on its HMP: device_del /machine/unattached/device[0]
->>>>>
->>>>> It tries to unplug cortex-a15-arm-cpu and crashes.
->>>>
->>>> This device has no parent bus (dev->parent_bus is null), but is marked
->>>> hot-pluggable (dc->hotpluggable is true).  Question for somebody
->>>> familiar with the hot-plug machinery: is this sane?
->>>
->>> Setting hotpluggable false for each device without bus_type gives the same effect, but is error-prone.
->>
->> Having hotpluggable = true when the device cannot be hot-plugged is
->> *wrong*.  You might be able to paper over the wrongness so the code
->> works anyway, but nothing good can come out of lying to developers
->> trying to understand how the code works.
->>
->> Three ideas to avoid the lying:
->>
->> 1. default hotpluggable to bus_type != NULL.
-
-I don't have an idea to achieve that. Currently bus_type is set after 
-hotpluggable.
-
->>
->> 2. assert(dc->bus_type || !dc->hotpluggable) in a suitable spot.
-
-It results in abortion and doesn't improve the situation.
-
->>
->> 3. Change the meaning of hotpluggable, and rename it to reflect its new
->> meaning.  Requires a careful reading of its uses.  I wouldn't go there.
-
-I don't have an idea for such a naming.
-
-So I'm stuck with the current proposal. It suppresses abortion at least. 
-Any alternative idea is welcome.
-
->>
+> I don't think we want to add an Andes DMA device to the virt machine.
 > 
-> What about 4 (or maybe 3.1) - droping this hotpluggable flag and just use a
-> helper (like qbus) to check if device is hotpluggable?
+> I can't even find the spec for the ATCDMAC300, which isn't great
 > 
-> This removes the confusion of that flag and also reduces the number of
-> configuration items for DeviceState that require developer attention.
-> A simple helper is as follows:
+> Alistair
 
-Some devices simply doesn't support hotplugging even if the bus 
-supports. virtio-gpu-pci doesn't support hotplugging because the display 
-infrastructure cannot handle hotplugging, for example.
+Since the IOPMP does not take effect when there is no other device connects to
+IOPMP, I think it is necessary to have a DMA device for IOPMP demonstration.
 
-Regards,
-Akihiko Odaki
+Do you have any suggestions for supporting IOPMP on RISC-V virt machine?
+
+Thanks,
+Ethan Chen
+
+> 
+> > required by IOPMP, including:
+> > - Support setup the connection to IOPMP
+> > - Support asynchronous I/O to handle stall transactions
+> > - Send transaction information
+> >
+> > IOPMP takes a transaction which partially match an entry as a partially hit
+> > error. The transaction size is depending on source device, destination device
+> > and bus.
+> >
+> > Source device can send a transaction_info to IOPMP. IOPMP will check partially
+> > hit by transaction_info. If source device does not send a transaction_info,
+> > IOPMP checks information in IOMMU and dose not check partially hit.
+> >
+> > Changes for v4:
+> >
+> >   - Add descriptions of IOPMP and ATCDMAC300
+> >   - Refine coding style and comments
+> >   - config XILINX_AXI does not include file stream.c but selects config STREAM
+> >     instead.
+> >   - ATCDMAC300: INT_STATUS is write 1 clear per bit
+> >                             Rename iopmp_address_sink to transcation_info_sink
+> >   - IOPMP: Refine error message and remove unused variable
+> >   - VIRT: Document new options
+> >                 atcdmac300 is only added when iopmp is enabled
+> >           serial setting should not be changed
+> >
+> > Ethan Chen (4):
+> >   hw/core: Add config stream
+> >   Add RISC-V IOPMP support
+> >   hw/dma: Add Andes ATCDMAC300 support
+> >   hw/riscv/virt: Add IOPMP support
+> >
+> >  docs/system/riscv/virt.rst                    |  11 +
+> >  hw/Kconfig                                    |   1 +
+> >  hw/core/Kconfig                               |   3 +
+> >  hw/core/meson.build                           |   2 +-
+> >  hw/dma/Kconfig                                |   4 +
+> >  hw/dma/atcdmac300.c                           | 566 ++++++++++
+> >  hw/dma/meson.build                            |   1 +
+> >  hw/misc/Kconfig                               |   4 +
+> >  hw/misc/meson.build                           |   1 +
+> >  hw/misc/riscv_iopmp.c                         | 966 ++++++++++++++++++
+> >  hw/riscv/Kconfig                              |   2 +
+> >  hw/riscv/virt.c                               |  65 ++
+> >  include/hw/dma/atcdmac300.h                   | 180 ++++
+> >  include/hw/misc/riscv_iopmp.h                 | 341 +++++++
+> >  .../hw/misc/riscv_iopmp_transaction_info.h    |  28 +
+> >  include/hw/riscv/virt.h                       |  10 +-
+> >  16 files changed, 2183 insertions(+), 2 deletions(-)
+> >  create mode 100644 hw/dma/atcdmac300.c
+> >  create mode 100644 hw/misc/riscv_iopmp.c
+> >  create mode 100644 include/hw/dma/atcdmac300.h
+> >  create mode 100644 include/hw/misc/riscv_iopmp.h
+> >  create mode 100644 include/hw/misc/riscv_iopmp_transaction_info.h
+> >
+> > --
+> > 2.34.1
+> >
+> >
 
