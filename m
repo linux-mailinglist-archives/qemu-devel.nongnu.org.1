@@ -2,132 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F6881B055
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 09:34:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1716F81B056
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Dec 2023 09:34:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGEUU-0001Sa-Qm; Thu, 21 Dec 2023 03:33:14 -0500
+	id 1rGEVJ-0001pm-Ox; Thu, 21 Dec 2023 03:34:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Xenia.Ragiadakou@amd.com>)
- id 1rGEUR-0001Rl-LB
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:33:12 -0500
-Received: from mail-co1nam11on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2416::601]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Xenia.Ragiadakou@amd.com>)
- id 1rGEUO-0004ie-OV
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:33:10 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L2kqBsc6/pJrcm6fkSuBiwdht/yZb6O1VCINraGYMZWbPgTs4JkVlfOWx08n53muCCVV8rpOgtpl6A3ID10daAR5B43/YISetwFenBHl3GQgPAvg3b+Ukf3FcAQbU7pipQXKzdpeRiKI+zYj1QGyrogpPhiH6UDynu0IWYP5IWFEL+ErNk8od6Z8ymhoQ2LTbDQmHifEGgZabKNUD5cbDoDFSTIGchLBa4l+3OYyOk1knFRN3HDBlgEGGyKjGjWXZRFJviyiCyxjuMe8R6+LvJpKbtbIulThn97KDvKEvyT2TwRTmb8YDyI46dL0qBYAxN2uL89Zd59G0uVF0oX+KQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZcbzJeiJWqGCnCp0vymg2jp8IhUW6vzoPGdNpIMVjzk=;
- b=ahM8Y25zSWxVfxdtxjvh3szXphDPNhcqk78zAq6Q9aqzZh43DT+Xti+qS88tJpnl6pL4Niu80M5SDJlAHF/gFnxcP6jJsukmUMM2htRQFR58FnyDYKTVF5ZttoG0a58OREhxFvCBox0cFIKxsQW3818n/MaA4+oM5UsGIQn0kQn09ZfgkaSsG3zq7hwrUXP/9DY9qVUAi9xupprnQZR/lAfyoNqoyB3JDJ+gpFuPhZR3upO3RsYMYFeF/vPlKc1WvHlN3bu1nWUmQYh6schTyC0R/QVwm/PXv6U4jIj4gGh9eZ3CrSfF+dJv17t3ulwuaNXg7wwxFRMthmrQyedQ0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=daynix.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZcbzJeiJWqGCnCp0vymg2jp8IhUW6vzoPGdNpIMVjzk=;
- b=K1hIv1/JH+XaZBcvfgIH3X0i+kKhjvpkV2Ijwl2EKeejp7ahUL5Yod0NYVZxoeKN/3oe4wTJyNBm8qS7uW5/macUihPyVvBzmjzTDew/zmrE3FTKQIgdV9qQttAHc4NN9gobWHcMMwTd8hgau1TnVOrBboNsPrFFJZpTqbVSINw=
-Received: from PH8PR05CA0006.namprd05.prod.outlook.com (2603:10b6:510:2cc::6)
- by IA0PR12MB7652.namprd12.prod.outlook.com (2603:10b6:208:434::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.20; Thu, 21 Dec
- 2023 08:33:00 +0000
-Received: from SA2PEPF000015CA.namprd03.prod.outlook.com
- (2603:10b6:510:2cc:cafe::e6) by PH8PR05CA0006.outlook.office365.com
- (2603:10b6:510:2cc::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18 via Frontend
- Transport; Thu, 21 Dec 2023 08:33:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF000015CA.mail.protection.outlook.com (10.167.241.200) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7113.14 via Frontend Transport; Thu, 21 Dec 2023 08:33:00 +0000
-Received: from [10.0.2.15] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 21 Dec
- 2023 02:32:53 -0600
-Message-ID: <954fe5c2-d5a0-4d32-b822-ba370bc2d09a@amd.com>
-Date: Thu, 21 Dec 2023 10:32:50 +0200
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rGEVH-0001p0-Pu
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:34:03 -0500
+Received: from mail-ed1-f52.google.com ([209.85.208.52])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rGEVF-0004sM-GL
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 03:34:03 -0500
+Received: by mail-ed1-f52.google.com with SMTP id
+ 4fb4d7f45d1cf-553729ee917so585929a12.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 00:34:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703147640; x=1703752440;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=w01/PVL6WClgvyMjQ0+2pMsdDLT4bs3S9uvjoTVomo0=;
+ b=upVDV+9F18eTLQff1ZV4O0dtASpQnZKAwcd3slIPfMyc90yggbgwOTT7B2XTXTw0jm
+ Tb6ho03b+GHU6GdKVu42Lu5nMrP7BHc9L8yib0unJRi6YNWjAJDrY0O/BX5doA2kd2wU
+ CFdrtwaZ0qxdUuRoFwR4FlnNwogQybLnlc0uw5O3AAAFudxVpAAEcWBva1p3MFbwua2G
+ JB/BD1oFo1prewpBQcvLYTTj4e7X2KxPOz9aDgZG18sYYPlwEx4kz91AiMFPCNSJGcn9
+ kjcTWaFvpz4Fea/FnlKDSAGfMOEo8oGa8cWdsGE/4F136ZT4nxHqYHe65LPwseXs18tp
+ OSdQ==
+X-Gm-Message-State: AOJu0YyLY2UrKzGuojyXZk+Upv49EoS3aBFY7uFHPK3TfcXWLO3AjvvW
+ GG24jhK6tYbt00Y1GHwexZMzqS9xLK4=
+X-Google-Smtp-Source: AGHT+IEmr/qw5nW9s0tXl7t4Rb1JGsjmiSnp1R1IDGh9EB8LecpWH61NJnkxYRnab1G1ejpq42XSxQ==
+X-Received: by 2002:a50:d642:0:b0:553:de76:f563 with SMTP id
+ c2-20020a50d642000000b00553de76f563mr1419896edj.12.1703147639515; 
+ Thu, 21 Dec 2023 00:33:59 -0800 (PST)
+Received: from fedora (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
+ by smtp.gmail.com with ESMTPSA id
+ k24-20020a05640212d800b00553479c0494sm866050edx.38.2023.12.21.00.33.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 21 Dec 2023 00:33:58 -0800 (PST)
+Date: Thu, 21 Dec 2023 09:33:56 +0100
+From: Thomas Huth <huth@tuxfamily.org>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 08/11] next-cube.c: move static old_scr2 variable to
+ NeXTPC
+Message-ID: <20231221093356.2520d64d@fedora>
+In-Reply-To: <843e4a2f-ebf6-4d4f-857e-1ecfe82625ce@ilande.co.uk>
+References: <20231220131641.592826-1-mark.cave-ayland@ilande.co.uk>
+ <20231220131641.592826-9-mark.cave-ayland@ilande.co.uk>
+ <20231220202012.34ce2b0a@fedora>
+ <843e4a2f-ebf6-4d4f-857e-1ecfe82625ce@ilande.co.uk>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/11] softmmu/memory: enable automatic deallocation of
- memory regions
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Gerd Hoffmann
- <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Stefano
- Stabellini" <sstabellini@kernel.org>, Anthony PERARD
- <anthony.perard@citrix.com>, Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>, Robert Beckett
- <bob.beckett@collabora.com>, Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
- Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, <qemu-devel@nongnu.org>
-CC: <xen-devel@lists.xenproject.org>, Gurchetan Singh
- <gurchetansingh@chromium.org>, <ernunes@redhat.com>, Alyssa Ross
- <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- "Alex Deucher" <alexander.deucher@amd.com>, Stefano Stabellini
- <stefano.stabellini@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, Pierre-Eric Pelloux-Prayer
- <pierre-eric.pelloux-prayer@amd.com>, Honglei Huang <honglei1.huang@amd.com>, 
- Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-7-ray.huang@amd.com>
- <a88696bc-2ffe-442a-a171-50e6120bbf97@daynix.com>
- <5dd37851-0b68-45ae-9843-9c1d6dc078f9@amd.com>
- <9fb98128-eada-4a50-996e-b442ce8035cd@daynix.com>
-From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
-In-Reply-To: <9fb98128-eada-4a50-996e-b442ce8035cd@daynix.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015CA:EE_|IA0PR12MB7652:EE_
-X-MS-Office365-Filtering-Correlation-Id: 64f47a52-00f5-4c4e-bcb0-08dc01ff70d6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2OUlve4a5z60dhgygc0Lq94UiPVsREJUh7lB+tiAgqV/DDe2OHu30FMpFzWiBHpSb5K3YNaq6b2N+DAOB2zQNAcBnFSVq46jjly3v/7OIF1f+UsvjQXSmioGsNkbGVqDudr9B4NuKL2mH5ErWtdgnH9Zs/EN/d2Te48AP9idkF1RD9kBi70VigOIJZaiPJyJBLIiPDYpVDbQG3CYgJwZD5+ODRzBhdYy41p7q4NUI0C/i+O/Tlv72+TVFupw+abQV/u/6VExu4GWges5i+bbXL6N79Hs6DjP9N5vZ4T+Uvu1c7GrjpkZnt5WR0500yxvjBFkecVz6OmcCUG7cM+0rNhdpwbUby4j84YANAaaGcoLU9LmyKaX0NOFdUSXBnFi/D09RXF2ZR08CG4s1I0rDQwzuURieGsCR3QNIqXCXSJWriBCvWBY1+KcHhnNwCohEfgabD3D0SiDwjYZcRhgwIU+pjpdwOfOdVec/3rBigCgYqB5fIJNLdP2B0Thqv9kSc/Kp+h6vEYdJDJ8iWEhH7JNX7I8jdxSg07Sgla7vPUO2pahdExBnMKqqybwuYem4tvm5aw++/DR6Ov0jDRrN8iEJL0M7hxHZrAsX7ErFqxD75Ol8y8y6eXmVpxBNxzf3g5g2V7CY4wfOksYQVWU+RqbpzAtg3I+YK9Sn4mwiDzlOyVIZ4oO1y1vqrwU4NCvEO+qAlKI+iStPXiF94+4+OUr8yD0X53V/7s/YIYSnv05aBEtGwim3aIibG62lPW2LlP8jzcyKT1i7vHyoFK2+c06dHhA99e/Kd+1YUIIo8/wMdPbg0JCEGj7aiwvov/acCiJMxfnPVBjrThyfpFhONsN3hgdmNJaV7saSh+Fbo+QrvQA2Nd2eZJdygbl+jL8
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(396003)(376002)(136003)(346002)(39860400002)(230922051799003)(64100799003)(451199024)(1800799012)(82310400011)(186009)(46966006)(40470700004)(36840700001)(8936002)(8676002)(4326008)(316002)(16576012)(110136005)(54906003)(53546011)(40480700001)(47076005)(478600001)(2616005)(31686004)(40460700003)(44832011)(921008)(70206006)(70586007)(36756003)(86362001)(26005)(2906002)(83380400001)(66899024)(41300700001)(16526019)(5660300002)(336012)(82740400003)(356005)(7416002)(426003)(31696002)(81166007)(36860700001)(36900700001)(43740500002);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Dec 2023 08:33:00.0552 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64f47a52-00f5-4c4e-bcb0-08dc01ff70d6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF000015CA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7652
-Received-SPF: softfail client-ip=2a01:111:f403:2416::601;
- envelope-from=Xenia.Ragiadakou@amd.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.063,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=209.85.208.52; envelope-from=th.huth@gmail.com;
+ helo=mail-ed1-f52.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,47 +82,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Am Wed, 20 Dec 2023 19:36:27 +0000
+schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
 
-On 21/12/23 09:50, Akihiko Odaki wrote:
-> On 2023/12/21 16:35, Xenia Ragiadakou wrote:
->>
->> On 21/12/23 07:45, Akihiko Odaki wrote:
->>> On 2023/12/19 16:53, Huang Rui wrote:
->>>> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
->>>>
->>>> When the memory region has a different life-cycle from that of her 
->>>> parent,
->>>> could be automatically released, once has been unparent and once all 
->>>> of her
->>>> references have gone away, via the object's free callback.
->>>>
->>>> However, currently, the address space subsystem keeps references to the
->>>> memory region without first incrementing its object's reference count.
->>>> As a result, the automatic deallocation of the object, not taking into
->>>> account those references, results in use-after-free memory corruption.
->>>>
->>>> More specifically, reference to the memory region is kept in flatview
->>>> ranges. If the reference count of the memory region is not incremented,
->>>> flatview_destroy(), that is asynchronous, may be called after memory
->>>> region's destruction. If the reference count of the memory region is
->>>> incremented, memory region's destruction will take place after
->>>> flatview_destroy() has released its references.
->>>>
->>>> This patch increases the reference count of an owned memory region 
->>>> object
->>>> on each memory_region_ref() and decreases it on each 
->>>> memory_region_unref().
->>>
->>> Why not pass the memory region itself as the owner parameter of 
->>> memory_region_init_ram_ptr()?
->>
->> Hmm, in that case, how will it be guaranteed that the VirtIOGPU won't 
->> disappear while the memory region is still in use?
+> On 20/12/2023 19:20, Thomas Huth wrote:
 > 
-> You can object_ref() when you do memory_region_init_ram_ptr() and 
-> object_unref() when the memory region is being destroyed.
+> > Am Wed, 20 Dec 2023 13:16:38 +0000
+> > schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+> >   
+> >> Move the old_scr2 variable to NeXTPC so that the old SCR2 register state is
+> >> stored along with the current SCR2 state.
+> >>
+> >> Since the SCR2 register is 32-bits wide, convert old_scr2 to uint32_t and
+> >> update the SCR2 register access code to allow unaligned writes.
+> >>
+> >> Note that this is a migration break, but as nothing will currently boot then
+> >> we do not need to worry about this now.
+> >>
+> >> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> >> ---
+> >>   hw/m68k/next-cube.c | 12 +++++++++---
+> >>   1 file changed, 9 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
+> >> index f2222554fa..d53f73fb8b 100644
+> >> --- a/hw/m68k/next-cube.c
+> >> +++ b/hw/m68k/next-cube.c
+> >> @@ -91,6 +91,7 @@ struct NeXTPC {
+> >>   
+> >>       uint32_t scr1;
+> >>       uint32_t scr2;
+> >> +    uint32_t old_scr2;
+> >>       uint32_t int_mask;
+> >>       uint32_t int_status;
+> >>       uint32_t led;
+> >> @@ -125,8 +126,7 @@ static const uint8_t rtc_ram2[32] = {
+> >>   
+> >>   static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+> >>   {
+> >> -    static uint8_t old_scr2;
+> >> -    uint8_t scr2_2;
+> >> +    uint8_t old_scr2, scr2_2;
+> >>       NextRtc *rtc = &s->rtc;
+> >>   
+> >>       if (size == 4) {
+> >> @@ -144,6 +144,8 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+> >>           }
+> >>       }
+> >>   
+> >> +    old_scr2 = (s->old_scr2 >> 8) & 0xff;
+> >> +
+> >>       if (scr2_2 & 0x1) {
+> >>           /* DPRINTF("RTC %x phase %i\n", scr2_2, rtc->phase); */
+> >>           if (rtc->phase == -1) {
+> >> @@ -252,7 +254,6 @@ static void nextscr2_write(NeXTPC *s, uint32_t val, int size)
+> >>       }
+> >>       s->scr2 = val & 0xFFFF00FF;
+> >>       s->scr2 |= scr2_2 << 8;  
+> > 
+> > So s->scr2 is updated with the "val" at the end of nextscr2_write() ...
+> >   
+> >> -    old_scr2 = scr2_2;
+> >>   }
+> >>   
+> >>   static uint64_t next_mmio_read(void *opaque, hwaddr addr, unsigned size)
+> >> @@ -318,7 +319,10 @@ static void next_mmio_write(void *opaque, hwaddr addr, uint64_t val,
+> >>           break;
+> >>   
+> >>       case 0xd000 ... 0xd003:
+> >> +        s->scr2 = deposit32(s->scr2, (4 - (addr - 0xd000) - size) << 3,
+> >> +                            size << 3, val);  
+> > 
+> > ... but here it is also updated before nextscr2_write() ? Looks somewhat
+> > strange. Though I have to admit that I don't fully understand the logic
+> > here anyway... Maybe we could peek at Previous to see how this register is
+> > supposed to behave?  
+> 
+> I'm fairly sure what's supposed to happen is that bits 8-15 of SCR2 are used to 
+> bit-bang the RTC and all the other values are preserved, hence the logic at the end 
+> of nextscr2_write(). What makes it slightly more confusing is that scr2_2 and 
+> old_scr2 in the current version of nextscr2_write() represent just bits 8-15 of SCR2 
+> and not the entire register.
+> 
+> This is something I tried to improve in the following 2 commits by splitting out the 
+> LED logic into its own function, and then finally updating old_scr2 to a 32-bit value 
+> to match scr2 and using extract32()/deposit32() in next_scr2_rtc_update() to make 
+> this process clearer.
 
-It is not very intuitive but I see your point. This change is quite 
-intrusive and has little use. I think it can be worked around in the way 
-you suggest.
+Ok, thanks, it makes sense to me now. I also looked at the Previous
+handlers for these registers, and it also seems like they treat the four
+bytes of the register independently there. So with the following two
+patches, I think this is a valid clean up.
+
+Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+
 
