@@ -2,85 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4C881C71D
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 10:05:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 624A681C734
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 10:15:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGbSq-000080-5r; Fri, 22 Dec 2023 04:05:04 -0500
+	id 1rGbbk-0001jA-5w; Fri, 22 Dec 2023 04:14:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGbSn-000071-Ep
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:05:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rGbbg-0001ik-CK
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:14:12 -0500
+Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGbSl-000434-AT
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:05:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703235897;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8wplu7Sj6MbELWRbQaUKXk9DqyMTsuCbkR8MZesPb3w=;
- b=aT9tLF2U1/7uVMTxcGczAJxRADcgTp2ZACQVt8M3r1titfP9blNnT5yZUjwBDspG3A7Srf
- mm6wVEw2hsxxt97njjVhfIc9mhd7b0SXQ+4PZHdMQfgkNrBuzxU27HWKLJ1sUF6zwMocAe
- 9rX30qTE0oldS+41Bs8sLlyznCSG+6o=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-319-z7aZFepLNfGjcfkD8DViRA-1; Fri, 22 Dec 2023 04:04:55 -0500
-X-MC-Unique: z7aZFepLNfGjcfkD8DViRA-1
-Received: by mail-ua1-f69.google.com with SMTP id
- a1e0cc1a2514c-7cade8197e7so403170241.1
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 01:04:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703235895; x=1703840695;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8wplu7Sj6MbELWRbQaUKXk9DqyMTsuCbkR8MZesPb3w=;
- b=m059fBTnISPze8M2pxvkFzCWTVWHKO44posG4rjxm7CPAVFQWmHsVovlBuJN/5mjdB
- 7vJ/arAhFVGWyFn9tGZvvAjKatSqtlMRmdcw3Me9RM07+BBntoBOoHv/jRB6JzywNADl
- lzYwt30ob16l0WeFPU41Ek697oB7pa7oD2SbriwTwh4o6tkVsnwDgTAQfgjFHoBYOdoO
- N/AB+2IDqvPi6OQDYUTyLCEZ4QkMbiZ9vElfxrp4rE10FRe04GfsiIsMzce/i0VRlXi/
- 4oVnvUwR+b4P1F5qHxn3tlQ0e31sgZLQO4xhTYLqU+QYMFoYo4wL9WGOHx5vrFXSkZNb
- RiSA==
-X-Gm-Message-State: AOJu0YwnXhrWdpgHPWaIxbni+c2zBF2oh5WCdtJisdd9cPtNKiPt2UCk
- KlOl+1GtHojhB6N2rKdySAYXUVfxPsq5barzLNDkLTEypMsKdEEu/z0wTGG+tho2D3jvFtZFkh4
- /eMJLpnqIPuiigph7VQR9iVdZ+jGF8viPEq5vwYU=
-X-Received: by 2002:a05:6122:3105:b0:4b6:de44:dfd7 with SMTP id
- cg5-20020a056122310500b004b6de44dfd7mr487874vkb.20.1703235895098; 
- Fri, 22 Dec 2023 01:04:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHcGPiDnh1SE9Eh2vwTxJgSMMuo4veCPBsnF+g/iC/N9RaR3I24JXEdDs3G6xNueQhEckFhETw3SVQar9sdFT8=
-X-Received: by 2002:a05:6122:3105:b0:4b6:de44:dfd7 with SMTP id
- cg5-20020a056122310500b004b6de44dfd7mr487871vkb.20.1703235894765; Fri, 22 Dec
- 2023 01:04:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rGbbe-0006yX-0x
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:14:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1703236449; x=1734772449;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1D7KQ6om+191RblVh2tcDXW6qZjNZ5uTw46ob4sfG+M=;
+ b=CBULGKmJy8g2dddFlxw6l2G5sIl+ihdbvoH1vfqmlhpumM5muP4ZE7Pj
+ i6Jgcho8rbOxhnoRhQ6C22JuxU7GVN3BwlZO7AFzjO/3BcfLz5M8KCEYK
+ aLs+wyDnXn4nWcGzpLiO8aPDSikalbIeFMW8b5TRy42FML4N04WmixRq4
+ MB+ALXbVc/D+xZYhgk2Y3hF0Ca6c6yKQS63omL2A+5VssR8kbNUgukK0B
+ UgOXAev/BCE9kfYNmEV9CyLHYd6hDIBoHHc5Ij3aSpaLjh6wt+CU0v/P9
+ tQZwwCBIpNRnT5g0TuL65Nq64gp/DNdjyFoi7t9zum2olHWVVt6C92Apc A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10931"; a="482276113"
+X-IronPort-AV: E=Sophos;i="6.04,296,1695711600"; d="scan'208";a="482276113"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Dec 2023 01:13:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,296,1695711600"; d="scan'208";a="18651217"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa002.jf.intel.com with ESMTP; 22 Dec 2023 01:13:55 -0800
+Date: Fri, 22 Dec 2023 17:26:40 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xin Li <xin3.li@intel.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ richard.henderson@linaro.org, pbonzini@redhat.com,
+ eduardo@habkost.net, seanjc@google.com, chao.gao@intel.com,
+ hpa@zytor.com, xiaoyao.li@intel.com, weijiang.yang@intel.com
+Subject: Re: [PATCH v3 2/6] target/i386: mark CR4.FRED not reserved
+Message-ID: <ZYVWUHt6EAVN9YMp@intel.com>
+References: <20231109072012.8078-1-xin3.li@intel.com>
+ <20231109072012.8078-3-xin3.li@intel.com>
 MIME-Version: 1.0
-References: <25995a01-720e-485a-b7c2-36ec612a888b@ipxe.org>
- <0102018c8d11471f-9a6d73eb-0c34-4f61-8d37-5a4418f9e0d7-000000@eu-west-1.amazonses.com>
- <1082dfde-644b-4887-bd0f-35b8cea6be26@linaro.org>
-In-Reply-To: <1082dfde-644b-4887-bd0f-35b8cea6be26@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 22 Dec 2023 10:04:42 +0100
-Message-ID: <CABgObfY=Rd5fih1=2y17ACoeqsPOKUynwOnpL+ygvk5Xis5pNw@mail.gmail.com>
-Subject: Re: [PATCH v2] target/i386: Fix physical address truncation
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Michael Brown <mcb30@ipxe.org>, qemu-devel@nongnu.org,
- qemu-stable@nongnu.org, Eduardo Habkost <eduardo@habkost.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231109072012.8078-3-xin3.li@intel.com>
+Received-SPF: pass client-ip=192.55.52.43; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,106 +79,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 21, 2023 at 10:33=E2=80=AFPM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 12/22/23 02:49, Michael Brown wrote:
-> > The address translation logic in get_physical_address() will currently
-> > truncate physical addresses to 32 bits unless long mode is enabled.
-> > This is incorrect when using physical address extensions (PAE) outside
-> > of long mode, with the result that a 32-bit operating system using PAE
-> > to access memory above 4G will experience undefined behaviour.
-> >
-> > The truncation code was originally introduced in commit 33dfdb5 ("x86:
-> > only allow real mode to access 32bit without LMA"), where it applied
-> > only to translations performed while paging is disabled (and so cannot
-> > affect guests using PAE).
-> >
-> > Commit 9828198 ("target/i386: Add MMU_PHYS_IDX and MMU_NESTED_IDX")
-> > rearranged the code such that the truncation also applied to the use
-> > of MMU_PHYS_IDX and MMU_NESTED_IDX.  Commit 4a1e9d4 ("target/i386: Use
-> > atomic operations for pte updates") brought this truncation into scope
-> > for page table entry accesses, and is the first commit for which a
-> > Windows 10 32-bit guest will reliably fail to boot if memory above 4G
-> > is present.
-> >
-> > The original truncation code (now ten years old) appears to be wholly
-> > redundant in the current codebase.  With paging disabled, the CPU
-> > cannot be in long mode and so the maximum address size for any
-> > executed instruction is 32 bits.  This will already cause the linear
-> > address to be truncated to 32 bits, and there is therefore no way for
-> > get_physical_address() to be asked to translate an address outside of
-> > the 32-bit range.
-> >
-> > Fix by removing the address truncation in get_physical_address().
-> >
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2040
-> > Signed-off-by: Michael Brown <mcb30@ipxe.org>
-> > ---
-> >   target/i386/tcg/sysemu/excp_helper.c | 6 ------
-> >   1 file changed, 6 deletions(-)
-> >
-> > diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sys=
-emu/excp_helper.c
-> > index 5b86f439ad..707f7326d4 100644
-> > --- a/target/i386/tcg/sysemu/excp_helper.c
-> > +++ b/target/i386/tcg/sysemu/excp_helper.c
-> > @@ -582,12 +582,6 @@ static bool get_physical_address(CPUX86State *env,=
- vaddr addr,
-> >
-> >       /* Translation disabled. */
-> >       out->paddr =3D addr & x86_get_a20_mask(env);
-> > -#ifdef TARGET_X86_64
-> > -    if (!(env->hflags & HF_LMA_MASK)) {
-> > -        /* Without long mode we can only address 32bits in real mode *=
-/
-> > -        out->paddr =3D (uint32_t)out->paddr;
-> > -    }
-> > -#endif
->
-> If the extension is not needed, then the a20 mask isn't either.
+On Wed, Nov 08, 2023 at 11:20:08PM -0800, Xin Li wrote:
+> Date: Wed,  8 Nov 2023 23:20:08 -0800
+> From: Xin Li <xin3.li@intel.com>
+> Subject: [PATCH v3 2/6] target/i386: mark CR4.FRED not reserved
+> X-Mailer: git-send-email 2.42.0
+> 
+> The CR4.FRED bit, i.e., CR4[32], is no longer a reserved bit when FRED
+> is exposed to guests, otherwise it is still a reserved bit.
+> 
+> Tested-by: Shan Kang <shan.kang@intel.com>
+> Signed-off-by: Xin Li <xin3.li@intel.com>
+> ---
 
-I think it is. The extension is not needed because the masking is
-applied by either TCG (e.g. in gen_lea_v_seg_dest or gen_add_A0_im) or
-mmu_translate(); but the a20 mask is never applied elsewhere for
-either non-paging mode or page table walks.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-> But I think there are some missing masks within mmu_translate that need f=
-ixing at the same
-> time:
-
-Right.
-
-> >             /*
-> >              * Page table level 3
-> >              */
-> >             pte_addr =3D ((in->cr3 & ~0x1f) + ((addr >> 27) & 0x18)) & =
-a20_mask;
->
-> Bits 32-63 of cr3 must be ignored when !LMA.
->
-> >         /*
-> >          * Page table level 2
-> >          */
-> >         pte_addr =3D ((in->cr3 & ~0xfff) + ((addr >> 20) & 0xffc)) & a2=
-0_mask;
-> >         if (!ptw_translate(&pte_trans, pte_addr)) {
-> >             return false;
-> >         }
-> >     restart_2_nopae:
->
-> Likewise.
->
-> Looking again, it appears that all of the actual pte_addr calculations ha=
-ve both
-> PG_ADDRESS_MASK and a20_mask applied, and have verified that bits beyond =
-MAXPHYSADDR are
-> zero via rsvd_mask.
-
-In fact, applying a20_mask is incorrect when there will be an NPT
-walk.  I'll include Michael's patch in a more complete series and send
-it out after testing.
-
-Paolo
-
+>  target/i386/cpu.h | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 5faf00551d..e210957cba 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -262,6 +262,12 @@ typedef enum X86Seg {
+>  #define CR4_PKE_MASK   (1U << 22)
+>  #define CR4_PKS_MASK   (1U << 24)
+>  
+> +#ifdef TARGET_X86_64
+> +#define CR4_FRED_MASK   (1ULL << 32)
+> +#else
+> +#define CR4_FRED_MASK   0
+> +#endif
+> +
+>  #define CR4_RESERVED_MASK \
+>  (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
+>                  | CR4_DE_MASK | CR4_PSE_MASK | CR4_PAE_MASK \
+> @@ -269,7 +275,8 @@ typedef enum X86Seg {
+>                  | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | CR4_UMIP_MASK \
+>                  | CR4_LA57_MASK \
+>                  | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | CR4_OSXSAVE_MASK \
+> -                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK))
+> +                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
+> +                | CR4_FRED_MASK))
+>  
+>  #define DR6_BD          (1 << 13)
+>  #define DR6_BS          (1 << 14)
+> @@ -2520,6 +2527,9 @@ static inline uint64_t cr4_reserved_bits(CPUX86State *env)
+>      if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
+>          reserved_bits |= CR4_PKS_MASK;
+>      }
+> +    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED)) {
+> +        reserved_bits |= CR4_FRED_MASK;
+> +    }
+>      return reserved_bits;
+>  }
+>  
+> -- 
+> 2.42.0
+> 
+> 
 
