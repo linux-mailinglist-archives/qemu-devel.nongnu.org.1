@@ -2,83 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188C181C3A4
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 04:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DD881C40F
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 05:38:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGWVO-0004cu-Ax; Thu, 21 Dec 2023 22:47:22 -0500
+	id 1rGXHo-00024B-1A; Thu, 21 Dec 2023 23:37:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>) id 1rGWVK-0004cN-0l
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 22:47:18 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rGXHl-00023k-Kf; Thu, 21 Dec 2023 23:37:21 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>) id 1rGWVH-0000RR-QV
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 22:47:17 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1d3eb299e2eso10273725ad.2
- for <qemu-devel@nongnu.org>; Thu, 21 Dec 2023 19:47:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rGXHj-0005gE-Pg; Thu, 21 Dec 2023 23:37:20 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6d2350636d6so1401449b3a.2; 
+ Thu, 21 Dec 2023 20:37:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20230601.gappssmtp.com; s=20230601; t=1703216833; x=1703821633;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FKXNCaPjPdX5YP2cT4EUHkNi6hUdJgX44eDFRq/dedE=;
- b=Cv8jB1AWZrYOujBTHRodJb9VE71GvbCHahy49zcvY5CBGoW7b874S8kft+s67Q9gh7
- 9/PEvcWayICm9Mjd7loPQbyTgkh+focciE1nWrsclDBLOQSHTCzi8QMzqs0B6Uy8RhTw
- 5GREzhNC/bJpl74fTQzlqnrE3XqNnsvnczjGFkvuTEqvlVykkYtJVNw/l1yuemd0v7T/
- kocJVrI4IQIozCOiHjroc/LRR0k1hNmeKKSN/nrzBWbh2H5VXxzVV+0IEL40f40ImMxJ
- fn8kRRZ6yxnnl+SNGOwJWteKiP+eN32sAF8sERbsSFKuuuWPbTHOM13VR2du7k0QT+xU
- GZgA==
+ d=gmail.com; s=20230601; t=1703219835; x=1703824635; darn=nongnu.org;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wgbOU8upAnXjTn1k3hXjDm0JM5y/8ovK8kdYS3DuYTw=;
+ b=Ye05mDrBmLXe58F+0F3nhNU2Nzu22H72sStPxIDaOMhRv2+Ct2JY2WQgVvy3sUxEL6
+ OjQiuJCWWugEiy1x08mzfx8zXenTKxm1VsUUWKOFe2Gpo9HoY+lWJBIPs3mrSHx6z0CQ
+ +TafyazhYV7X4tNE5w5CdvocZJNxrxvCXW3ZlAyTqoz5Eij5zTFcGlUaT3KjPDg144lr
+ zagoWRGPIevRHRn6NXf9Wf98Amp9S4Z6qbqjo514d/Lxv67pe5jc9hdM23eMiawxiYg5
+ beeLYDei4NlVJLD0igvELEITPW8iBd2mV0GwZXniFNvFGfLjkUMBzbRZ4KqIjpulUWHz
+ OK+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703216833; x=1703821633;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FKXNCaPjPdX5YP2cT4EUHkNi6hUdJgX44eDFRq/dedE=;
- b=GN47+mgncD455SJC5bTQoad6EY3vZv/m8XuzWEvZ/h44FFYxyWmR2MLYaDHk3fNK4I
- WB7ovh+2tjHgD39z8wFLxVuY1GIIriPWNC1CqFyt7AFr2EW+HpTippAfeY7/pcUWXxbx
- qcWSV+Gils8NUeR1EWQXcSoVpVe93ECVVcdnUZSUD87wN8BrQl8uatLVBNEyuOxxHIoY
- HPyQOsghnx5zq/iGgf4oaSXL+6FX8skxLqoAlX1U+yT+xp5FsL5BAJxGPn2kBe5Xw+Um
- qQMmbCPuIl5mBM6UNJTpGs8PdhOjMAWM1gradZyjnANmrnNf+gNjEDxPzzwy4D60AsOQ
- PLww==
-X-Gm-Message-State: AOJu0YxnE53mI4vPK/5fkbUz9v7GU7dZrOKgUErLSK/rnjLNBditnQQP
- VE8P4ZCnCGSYwwijkf/Dy52cec8Y59Kqyw==
-X-Google-Smtp-Source: AGHT+IHrnM1dP4rVtVw5+6wy6AZCeTGgQqVkwKjfB73ZQR5NIQ7vOx+fNKkr1E3HPx9yHGq0esF+HA==
-X-Received: by 2002:a17:902:a3c8:b0:1d3:ef94:7dae with SMTP id
- q8-20020a170902a3c800b001d3ef947daemr510620plb.111.1703216832944; 
- Thu, 21 Dec 2023 19:47:12 -0800 (PST)
-Received: from [192.168.10.153] (124-148-126-166.dyn.iinet.net.au.
- [124.148.126.166]) by smtp.gmail.com with ESMTPSA id
- b14-20020a170902d50e00b001d3dacffde3sm2373934plg.226.2023.12.21.19.47.10
+ d=1e100.net; s=20230601; t=1703219835; x=1703824635;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=wgbOU8upAnXjTn1k3hXjDm0JM5y/8ovK8kdYS3DuYTw=;
+ b=tNX3nQjJHNDP4WPsiQzsbeVb5RAFhCKBgPV9zCfqrmKWEBPYYffneFtQ43gwtVRlvy
+ fp2oMCfbxcBDl18jk67COmWr8IDU5Bd2i/ykOJB7L9MvDWkJal1kXFHMe+LLKa15OXYD
+ GvQPx5CWnoV+4c/gStJbhqva2c/OAmnH98aA8lk3jHDTaFqr0gAQIaQkJGbxMlMWckv4
+ AvJ/B5PQs98a+Jfj7J02/oPozMCGScK4L4QOlm9vwi0J+gafe+YudTJ93p6iLB8LI5GX
+ PoAOrrVhvDhvsRp4wjhoGlRVMBnMxmWdc5PSbv/L+bAHzz5h3c67jhE1qCyyN7JTj3zX
+ ujdg==
+X-Gm-Message-State: AOJu0Yw2ETPmvq/tJaQNgdmnLPlnx493Re+kcFyx7c9j1bK22Hwac9pD
+ 8+LBfId1QkQuwgyvbpLruWg=
+X-Google-Smtp-Source: AGHT+IEzGYteh6ju41xh+kmV2jHDL4x/LDbTHCYXHss7B6ob7M7088K9WAbPmSzEygfU90Es9K9+tQ==
+X-Received: by 2002:a05:6a20:e11f:b0:195:306c:814a with SMTP id
+ kr31-20020a056a20e11f00b00195306c814amr646817pzb.100.1703219835178; 
+ Thu, 21 Dec 2023 20:37:15 -0800 (PST)
+Received: from localhost ([1.146.126.39]) by smtp.gmail.com with ESMTPSA id
+ o8-20020a17090ac08800b00288628acf6dsm2625274pjs.14.2023.12.21.20.37.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Dec 2023 19:47:12 -0800 (PST)
-Message-ID: <5c32ffdd-b7d8-44b7-a9d4-363f47660626@ozlabs.ru>
-Date: Fri, 22 Dec 2023 14:47:06 +1100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH] ppc/spapr: Fix ubsan warning with unaligned pointer access
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Daniel Hoffman <dhoff749@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, David Gibson <david@gibson.dropbear.id.au>,
- "open list:Virtual Open Firm..." <qemu-ppc@nongnu.org>
-References: <20231217001441.146344-1-dhoff749@gmail.com>
- <1c5f886a-821e-46ff-bcea-045b07ebf809@linaro.org>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <1c5f886a-821e-46ff-bcea-045b07ebf809@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=aik@ozlabs.ru; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ Thu, 21 Dec 2023 20:37:14 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 22 Dec 2023 14:36:57 +1000
+Message-Id: <CXUL1AHC8Y18.WHZQSSFCJNWR@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ <qemu-devel@nongnu.org>
+Cc: "Ilya Leoshkevich" <iii@linux.ibm.com>, "Peter Xu" <peterx@redhat.com>,
+ "Liu Zhiwei" <zhiwei_liu@linux.alibaba.com>, "Peter Maydell"
+ <peter.maydell@linaro.org>, "Mark Cave-Ayland"
+ <mark.cave-ayland@ilande.co.uk>, "Eduardo Habkost" <eduardo@habkost.net>,
+ <qemu-arm@nongnu.org>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ <qemu-ppc@nongnu.org>, <qemu-s390x@nongnu.org>,
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?b?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>,
+ <qemu-riscv@nongnu.org>, "David Hildenbrand" <david@redhat.com>, "Warner
+ Losh" <imp@bsdimp.com>, "Claudio Fontana" <cfontana@suse.de>, "Brian Cain"
+ <bcain@quicinc.com>, "Daniel Henrique Barboza" <danielhb413@gmail.com>,
+ "Richard Henderson" <richard.henderson@linaro.org>, "Thomas Huth"
+ <thuth@redhat.com>, "Michael Rolnik" <mrolnik@gmail.com>, "Song Gao"
+ <gaosong@loongson.cn>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ "Aurelien Jarno" <aurelien@aurel32.net>, "Jiaxun Yang"
+ <jiaxun.yang@flygoat.com>, "Aleksandar Rikalo"
+ <aleksandar.rikalo@syrmia.com>, "Stafford Horne" <shorne@gmail.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Palmer Dabbelt"
+ <palmer@dabbelt.com>, "Alistair Francis" <alistair.francis@wdc.com>, "Bin
+ Meng" <bin.meng@windriver.com>, "Weiwei Li" <liwei1518@gmail.com>, "Artyom
+ Tarasenko" <atar4qemu@gmail.com>, "Max Filippov" <jcmvbkbc@gmail.com>
+Subject: Re: [PATCH 03/24] target: Define TCG_GUEST_DEFAULT_MO in 'cpu-param.h'
+X-Mailer: aerc 0.15.2
+References: <20231211212003.21686-1-philmd@linaro.org>
+ <20231211212003.21686-4-philmd@linaro.org>
+In-Reply-To: <20231211212003.21686-4-philmd@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,43 +111,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue Dec 12, 2023 at 7:19 AM AEST, Philippe Mathieu-Daud=C3=A9 wrote:
+> accel/tcg/ files requires the following definitions:
+>
+>   - TARGET_LONG_BITS
+>   - TARGET_PAGE_BITS
+>   - TARGET_PHYS_ADDR_SPACE_BITS
+>   - TCG_GUEST_DEFAULT_MO
+>
+> The first 3 are defined in "cpu-param.h". The last one
+> in "cpu.h", with a bunch of definitions irrelevant for
+> TCG. By moving the TCG_GUEST_DEFAULT_MO definition to
+> "cpu-param.h", we can simplify various accel/tcg includes.
 
+Acked-by: Nicholas Piggin <npiggin@gmail.com> (ppc)
 
-On 20/12/2023 12:45, Richard Henderson wrote:
-> On 12/16/23 16:14, Daniel Hoffman wrote:
->> Found while running QTest with UBsan. Unaligned pointers appear to be
->> valid, so moving the read to an explicit memcpy to an intermediate.
->> ---
->>   hw/ppc/vof.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
->> index e3b430a81f4..609a51c645d 100644
->> --- a/hw/ppc/vof.c
->> +++ b/hw/ppc/vof.c
->> @@ -646,7 +646,10 @@ static void vof_dt_memory_available(void *fdt, 
->> GArray *claimed, uint64_t base)
->>       mem0_reg = fdt_getprop(fdt, offset, "reg", &proplen);
->>       g_assert(mem0_reg && proplen == sizeof(uint32_t) * (ac + sc));
->>       if (sc == 2) {
->> -        mem0_end = be64_to_cpu(*(uint64_t *)(mem0_reg + 
->> sizeof(uint32_t) * ac));
->> +        /* Pointer may be unaligned */
->> +        uint64_t mem0_end_copy;
->> +        memcpy(&mem0_end_copy, mem0_reg + sizeof(uint32_t) * ac, 
->> sizeof(mem0_end_copy));
->> +        mem0_end = be64_to_cpu(mem0_end_copy);
-> 
-> mem0_end = ldq_be_p(mem0_reg + sizeof(uint32_t) * ac);
-
-
-+1 for ldq_be_p(). Or read lo&hi 32bit chunks and combine. Thanks,
-
-> 
-> 
-> r~
-
--- 
-Alexey
-
+Thanks,
+Nick
 
