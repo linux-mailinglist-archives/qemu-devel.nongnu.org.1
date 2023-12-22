@@ -2,173 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9A681CE83
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:40:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7564C81CE91
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:48:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGkQb-000803-KB; Fri, 22 Dec 2023 13:39:21 -0500
+	id 1rGkYD-0001JS-8Z; Fri, 22 Dec 2023 13:47:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1rGkQY-0007zb-4k
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:39:18 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rGkY9-0001HI-4o
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:47:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <annie.li@oracle.com>)
- id 1rGkQU-0000U9-Qn
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:39:17 -0500
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3BMFSp2s026568; Fri, 22 Dec 2023 18:39:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=EQ6a2mdWytXHzAy6Nl0ZQlsa/GE/uotBm3Q4TxUvBY8=;
- b=Mv7u/c5vLNwLmcphhx9N1d9mHSQTLI3gs9ZOIUrASVQHefX7lE7uEMEnZhjNLhcOCira
- cU5na8LlNAapnqljKv1gOVNq/w+J1//fC9BtvDiU7Q6L8dzhGbRya4KCgFhkPNmkd+WD
- +7MpNaW4MYnkni78b/QExRWPGBdCqmytsCgzam7sDwIM2bwgy7xv92f8FystFN2wyND9
- 4hYLlQY5CvrQLQR8G0N3dGu5Qt1IvhooYIxsoPEczDTsI1ilo/kidhozXNkG9l1ebuuG
- OnmfNEuVdglLpkDYfCzRlv63E7QSotNsAOcPTH8ZBzQHjEiXDLmDS3EFUTCaBY65gJVu bw== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3v13gupa31-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 22 Dec 2023 18:39:09 +0000
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3BMGgZsP031008; Fri, 22 Dec 2023 18:39:09 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3v12bmab4s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 22 Dec 2023 18:39:09 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T1foe0gObSuysLPUFsCGoIb0u4FLMd12C4aePckRVumnC8IFdVIBS5C6JGfxPBG09fbkh4BfoCk+K6Ns+oFA90ybRY1PlMNGTfInXHXLiBPB25UjNBCqZS5cPjYecEap4bA3knGnMwawpAsz+HrtxPFCgET6xBLpm2r5NlN14UNDdD24X0UIxKwYbOVCzXigKr7oTzJ7bmaZRtwq6ExGhRRFejAsWOKl0qqtGDFeY+E1fe4CSjsSPuY6P4WT5+aSbqSB9erJw/JJpu9ebMxP1nX4iAW93Ir9AW29qwsidRk4irfr+imXqJbKScJnGb+GHgpjLn0ZZyAqkwOGqzJqcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EQ6a2mdWytXHzAy6Nl0ZQlsa/GE/uotBm3Q4TxUvBY8=;
- b=HtmfJkUXaHoq77o7GAa3f/TUM+WMcxPoS62Kn7XQYy71tlvQf0y9wq3UnLgk7gLNJw7+b59RitR8jr/F4GJpkVoNREEVxNNDnBKNKupxfEPTwPwkiZACSitKZyt7RvWGxYETHrkYMLOoKoN81DPfr0ZIR7XsASgXubzb2TQ4rYVCsuyBXB4bk87Olmh84g2HDcW4gt3ue/0S7FuM4rQ6o67fah44BkmjlWl3bDbHXWXgXYJ1eEiYD8Zbk1znObIvT3baFpdFPWJZhszi5SRiz+MM2zQgtqFcFTSBIUBsp2s8EWeM9jjWGbWbo7SvVaseRn8xcGp/tq5CvSkHW3fg6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EQ6a2mdWytXHzAy6Nl0ZQlsa/GE/uotBm3Q4TxUvBY8=;
- b=hVCxUenSVW1OTe+g3+/FIW0RmcG3jc8Nyy9FZyeGo1esCYm+vmFjWT7O5KD4qOOJfpC6GsttKD79IbOiTiFDzjaekqVuXxWUEfvtIvzagk0lUJWuhOWNuaW6jPQFJN6n4rAK3gHzJc8f47M7Flov/xHHrgE1Wa2HejCcfqzQG2Q=
-Received: from DM6PR10MB2523.namprd10.prod.outlook.com (2603:10b6:5:b2::27) by
- DS0PR10MB6846.namprd10.prod.outlook.com (2603:10b6:8:11d::20) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7113.21; Fri, 22 Dec 2023 18:39:07 +0000
-Received: from DM6PR10MB2523.namprd10.prod.outlook.com
- ([fe80::78e:ef0:dac6:d229]) by DM6PR10MB2523.namprd10.prod.outlook.com
- ([fe80::78e:ef0:dac6:d229%5]) with mapi id 15.20.7113.019; Fri, 22 Dec 2023
- 18:39:07 +0000
-Message-ID: <8c9eb284-f293-fdbd-7cc6-286ac12c8b1f@oracle.com>
-Date: Fri, 22 Dec 2023 13:39:02 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [RFC PATCH 01/11] acpi: hmp/qmp: Add hmp/qmp support for
- system_sleep
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, imammedo@redhat.com, miguel.luis@oracle.com
-References: <20231205002143.562-1-annie.li@oracle.com>
- <20231205002356.1239-1-annie.li@oracle.com> <87r0k075ij.fsf@pond.sub.org>
- <bc3d29ae-48ab-3d85-24e7-89f4f08f9c9f@oracle.com>
- <87h6kah0q7.fsf@pond.sub.org>
-From: "Annie.li" <annie.li@oracle.com>
-In-Reply-To: <87h6kah0q7.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PH8PR02CA0024.namprd02.prod.outlook.com
- (2603:10b6:510:2d0::16) To DM6PR10MB2523.namprd10.prod.outlook.com
- (2603:10b6:5:b2::27)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rGkY7-0001xG-2l
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:47:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703270825;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=t4md6q9je5FN32ht9YgftEgkI7n9dX92yTfQhNBL184=;
+ b=MQ8q/MDNIGTa6dLnnvLu+dqPMZ1RDgWptFBl7tuIMvacM+9Wy9QUwL+D/tQK1MR1ySiJnY
+ G6ml+o9TweNrN3twCgqNzEjwS2xYTrYLTQpzul7OoVBjRQPXawUzLktUPAYFSzPVf5EDBa
+ pjtV8fD8Zy7mQ/zt1dC9tLdVOiFtHKM=
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
+ [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-637-mKdufBFePdKye7xg8AHKvQ-1; Fri, 22 Dec 2023 13:47:04 -0500
+X-MC-Unique: mKdufBFePdKye7xg8AHKvQ-1
+Received: by mail-io1-f70.google.com with SMTP id
+ ca18e2360f4ac-7ba7d72a52dso297354239f.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:47:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703270823; x=1703875623;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=t4md6q9je5FN32ht9YgftEgkI7n9dX92yTfQhNBL184=;
+ b=GEsYUPMW9LqSlywmO2IhlCu9adHCjCY7RbFp1WvUhgfy1UHDig+CfXAryyC1nRm7yN
+ 6sqf5NSiYMXZZ0EyvoFBH1flSXIaDpXXwJa4NTQtrtPJUMS2z50erBgeicAhGiybUCcf
+ OHdBgnQsq3pufxW3RAgYZ171jlSySd3sAluV2v8gKqv+ivUtu84dPUqgMP62/nGPJqld
+ 7rLOnGDLVv2+roisNaPBR3KUsSMJDvfCJqeWRYzG9v+yoJDxDnMSfRUWLEiQadI2MfHg
+ 6W6neiqknQY4PNrlWEXZRCiAtSDzBd2OL8y75e7aOjU225MCwOKKczcib7YlD6NMhHcQ
+ yJjA==
+X-Gm-Message-State: AOJu0YyFWhKIMqZpnq5JT8of8xVS2xZ/ihBwyWMKLPl1RltYaRZ96OpV
+ snGxTV1lItOnj3XhwypCyFHwiE7xzQTrvaDgsontql8rZwVaNa+OmzPCOAXcvONDzNEflngste/
+ fy5GzK0DGqzUapxF5v/sFVKu5d6o3XBPZvOmUm6k=
+X-Received: by 2002:a05:6e02:b46:b0:35f:d4dc:1b2f with SMTP id
+ f6-20020a056e020b4600b0035fd4dc1b2fmr1762165ilu.116.1703270823527; 
+ Fri, 22 Dec 2023 10:47:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHKBpI1vykYWa8NM1x0/n8m3VI6bSIPiaX5zPEvOS9g3pVt5SNGSvM1XIdAS/25gG/YIvcC/l8Hgh6YxkyGuPw=
+X-Received: by 2002:a05:6e02:b46:b0:35f:d4dc:1b2f with SMTP id
+ f6-20020a056e020b4600b0035fd4dc1b2fmr1762152ilu.116.1703270823168; Fri, 22
+ Dec 2023 10:47:03 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR10MB2523:EE_|DS0PR10MB6846:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2da0240-0ad5-48d1-1170-08dc031d4769
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /09sxvquBMIQDHvMV8Tx4bi9usd7A7tMyuGMSEM2ttEndjuNCoyHa5AtsIkwzXqKad+w8nZ5mBOkAY2QIOyB21YN00zdGQzT4Jgu2ORbwFW/OsanaL5LtfNqg67Fg/eJNZ+apNTGNxhOD8O0XrzXwT11/Ks2tZfL01vShxuM6cEUW5K4zCuT+J1BEiVJACnBA8EnCKWc6+oXFBpcYL01fTWagSrb6/FkRzGACnj8pHVkCxYmRzjgd4cChbNmqoSSt61jYlExHLp2MKyMZCq3+DZ8jO05gBLCqiBLH8rhHiBMQeDeUlI5Ai/x9Um2nRYu4yEegwibZAtq/ygeWEKBCGceoNUM9qLTesMVo8Eyt+6h3ooAjZMf8lOmZja9wOi0iCznPWpI+l/YQGMW2vq/NfVTISmYT6hzevdpAgbXn9rqXXq1vrFzPUUz1Y1agcgexBQlbkALR2PG8hXTYnsYHt8uQNYJeZyjW7nV2Zxs/IxT392UL2jNWeWHv5JEnNLv6K7ibHjL/j/nXQGAa7MVKza6zRWT49EG8UJqDX/1GMz2QJ88lRwS7T1fb0pZgyTfkhzxf5UFVAPyECvBU8lQL5qeMKDmc8TkEc4yRY9mRAYg0Iey47V2HZq5BuTCsNn1j9vIsXNXdv58sIiI+UHeig==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR10MB2523.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(376002)(396003)(366004)(136003)(39860400002)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(6512007)(38100700002)(6486002)(478600001)(4326008)(53546011)(5660300002)(316002)(66556008)(66476007)(66946007)(8676002)(6916009)(8936002)(26005)(107886003)(2616005)(83380400001)(6666004)(31686004)(6506007)(41300700001)(86362001)(31696002)(36756003)(4744005)(2906002)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c1JCRWcycjF2dW12ZGNYSDdnZFRaeVVqS2JxZ09lem5QVFMwZERQa0s4M0lR?=
- =?utf-8?B?c0xDSFNMZWxwOTlESVMzT2EwWS96OEo2K2RqeVp6QWRzWmkreVFXT25QYmh4?=
- =?utf-8?B?VWt3aGpTSTBmMHMzUGQ4REE3YWJHUDBwcjcrVWh2MXkwak5UdkNxQ09DTkJ0?=
- =?utf-8?B?dTVxV29IT3dRcnhZMEw1TTVaTlczU1VsQkJYaG5CR1VQVzBIcXVEUWREWkN6?=
- =?utf-8?B?MzNUc21rc2RzTVIxa3Zrd3FiMlJJQVJ5OEJzUjRLVDIvNGc1YXZLZndJRXpC?=
- =?utf-8?B?dEVGYlNuVU1sYlQvN3JFVEIwcU1TTjQ1NDZMb2pQSnlCZ1VOd0xLUVRYUE1W?=
- =?utf-8?B?Y2NYcEkyQ3FxcmxlaGdKVVE2ZXNXS1RwU1NiMHZqKzZtQ252cXlVQ0FsQjNw?=
- =?utf-8?B?d3B6UFhpMVg2d0pnQjJUY0VXaThVZ0VCOVJDMUh4SFIzeHdPWnVOZWMyNWZU?=
- =?utf-8?B?Z0JydGZOQlE2Y2QwQXlQbHFUSGxheGtidVRiQWRxMGNuTzh6ODNpTnZtcUVj?=
- =?utf-8?B?dzNZM1dVMjhzOExLay9LNzdWK2hwWFEyb3NpNHFMa25GK2ZlWUJmMFBJalFM?=
- =?utf-8?B?WUcxNW5pY0w2SGluTXd4VWtRb3hnSzVEdlJYUittVnNicU5zMjBDTXZ0TUpH?=
- =?utf-8?B?NjNqVnpWZVQwcHV6Wmt2K1IwYmtwVW0vNmRtcEJ5V3NndTZDSzBFczFGeUZX?=
- =?utf-8?B?cjYwUmxPci9zeWJFazNnOVRSWHFMV09KR1p3dmNtRk5JUWQyZTlQQUs0M1dL?=
- =?utf-8?B?L20rUU5HNTdqY1VnaldndDRIbTFsQWJzR3ZrTXVnbWZrSyt3ZGxpa2MxM3lR?=
- =?utf-8?B?VXd0Y0dHZ2tuVjFCNVV0ZlNVOHZYdnpLMFgrRVoza0N4Y1R2NWlXM2hQVW9v?=
- =?utf-8?B?dUhodUp2WS9UMEVTWkpSWTNad1NneWYrOHJIeVRaMlVVQ2lrc3NzOGZLQmo4?=
- =?utf-8?B?Y2VMRGIrTU9GaGxpQXJhKzhubVlCK1dBSHVCL1U2SkZBeDlCRFlRR3Uxb0JB?=
- =?utf-8?B?S1RuTEFmU0ZQQWdaT3paKy9FMmtzWXp5OHFRaGFvamNGdUpST0p1S3JUeEta?=
- =?utf-8?B?MHJKb2dKZzdsR2tqMy9vRlNaUTFlM2VobjdRSkpRMkJvMDdJVlBvMElLNWJC?=
- =?utf-8?B?NFU4cHh5M09vbndYU2tSb3VzcE5nVDFscjVjMFdrMm5uaHc5R09RRHNsSEU2?=
- =?utf-8?B?MXk4OUhhSm1LZEduYzFCdU9qOFNUeFhRRklpcnNhNmdYQ25MMnhQbTJ3Tzh0?=
- =?utf-8?B?b1NMSTBnS1pKYTByNkxGUk5pZ2YrcTM4STRGOVZWT2RDRmlHZGEyN1o4YWpn?=
- =?utf-8?B?Z2lLZmtzM0hZQXBhZUZ3ZHM0MWlpdk92UkJWRVBsdUZPRXNNVHRhSWRxS2c3?=
- =?utf-8?B?bUxiRGZJd1UvcTI5dGxDVFJsY3FFNFZmNlNJbjRhMG5TL09XQmxYZkx3Nitp?=
- =?utf-8?B?eFAzcnVLaWNaZUlSVHBmRWE4SXpOeEltVVVrWkZ4cE5QdEVQaW91d3ZtNVBI?=
- =?utf-8?B?SzNmYWFMZGdIVjlnUnBTb2E4YlJHdEZwOTIvSlFLT3hsZHplcHdoREY3Y0R4?=
- =?utf-8?B?alltRE41NlJCS0lNQldsbGh3NVMvQ1hIeVJHbVZ3TU9rMjRVUlUrNDRDZXFE?=
- =?utf-8?B?ZDgzL0dOMFdndDE0U2swK1ZqcTVVbnhZMS9QR0tOaG1EMXVYd0VmVjhxTEN0?=
- =?utf-8?B?cVJtcms4aUlhSFdQYUp0bW85dTRYZGxmZ3k1VW92RXMzRzVqZTMrUEpSeDRs?=
- =?utf-8?B?UFA0YTlXblNmaFh3QURZL1Fid0IraEMxUEY4S0pkZ3A2aWEyV29NV1dlalJL?=
- =?utf-8?B?L2gzZnVXT25PbmpNZDBnaHVUU1VhZGZnZzQ5RW43OEpoSVRaZEhFMFp1WXUv?=
- =?utf-8?B?QjF3VGxpTytvNm0xRFZnREprY2NBdFpzd3RWaDc4TmxId1RrbWtWZWRkcFNH?=
- =?utf-8?B?SDRyeFJ3eStUSU0xN3RWUnlWUi91NWZaYmtzb0dUVTMvZHR5REhjU0NTbmtG?=
- =?utf-8?B?ZFZOZEhqS3hORWJmMkhLa0VLdlFES0YvTDdrOFdMZG1YVjlFc0tHZmd0ZGVm?=
- =?utf-8?B?cnRTQWF1K2h6OVdXOVFGT25KajYxczJYbHFKdldtcnFXOE85aUw1YUErY05i?=
- =?utf-8?Q?QEV4h+DNIul7tfW65W10WaSXM?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: s9ry1FSOhd6X7UosvJvDUJCI6+Q5vQLfPVxWVmoJZ4ASLBt7PY45LXT8+rWDsv4o8cEtcts15tSARgER41gTeyGJEeDG1d50ptw4mq6DYT+YKcijKp3J6xDqvz/ugTflYeDOvSM8CljoTf4hm1inqH/98CMdGCcO1Zl3ecWpmp/rTn3KN5EheB5l+ete1yPKB4kgt3z9jTvKeCLwBdgGDnesBbhL0p9wsSWZ6i0787Sr1vkmqBCFknQK89VR5GR39DVIoJBxGCRBA4pJxw0O4N4I9WYYoNT6yRXVXmlWDnon7qMnijqrBLuObt6xQbzBNrRkj9L/X5qQbSaR9Si0FdWyXI+yGyVBx7H+dLoqHTNCC9vcmfve1UV8hHCLzk/imx9QpZbiftmhzeBCZIo6NBPttZW7tsLD0GI8QzmPDVHvJDo/h6aAwLlQ/FcoEFy7B456pYBgubjqG+LZNmV5uFh93KtjSbhbAlyz02Ymnq7xi/fbD7vKOBTAH+jiwvmMFLY5N4Qc+Cy8zx8Oirsjz+VZpMoFCuc1D3XxM2tAJVe3U+F6QRFl/tWxIPN1QZ3KFv3L0uW24BZrtSLBs7nJxQAXealq1ETsnR5xMlBbyRY=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2da0240-0ad5-48d1-1170-08dc031d4769
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB2523.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Dec 2023 18:39:06.9525 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QGSP1zRaZ9zwtwWYTxxOdnnd01G0nLj5KSUjfWndQphprboZ2mHiuEOUFHiAX6IJsA4JfVag0bgaREorIpUygA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6846
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-22_12,2023-12-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- phishscore=0 mlxscore=0
- adultscore=0 suspectscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2312220136
-X-Proofpoint-ORIG-GUID: 8KqHrvk_KoPt034T6JSo_kuQmKF39vwx
-X-Proofpoint-GUID: 8KqHrvk_KoPt034T6JSo_kuQmKF39vwx
-Received-SPF: pass client-ip=205.220.177.32; envelope-from=annie.li@oracle.com;
- helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.121,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+References: <20230918044932.1433744-1-yajunw@nvidia.com>
+ <20230918044932.1433744-3-yajunw@nvidia.com>
+In-Reply-To: <20230918044932.1433744-3-yajunw@nvidia.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Fri, 22 Dec 2023 19:46:26 +0100
+Message-ID: <CAJaqyWeu-ZTc0dqYpMkqfa36F2KY12YuQ8iwcZHo-WANfcsBHw@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/5] vhost: Add support for presetup
+To: Yajun Wu <yajunw@nvidia.com>
+Cc: qemu-devel@nongnu.org, jasowang@redhat.com, mst@redhat.com, 
+ Avihai Horon <avihaih@nvidia.com>, Jiri Pirko <jiri@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.082,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -186,35 +96,320 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 12/22/2023 7:37 AM, Markus Armbruster wrote:
-> "Annie.li" <annie.li@oracle.com> writes:
+On Mon, Sep 18, 2023 at 6:56=E2=80=AFAM Yajun Wu <yajunw@nvidia.com> wrote:
 >
->> Hi Markus,
->>
->> On 12/5/2023 3:34 PM, Markus Armbruster wrote:
->>> You neglected to cc: QAPI schema maintainers.  I found it by chance.
->>> Next time :)
->> Yep, should have cc to the maintainers.
->>> Annie Li <annie.li@oracle.com> writes:
->>>
->>>> Following hmp/qmp commands are implemented for pressing virtual
->>>> sleep button,
->>>>
->>>> hmp: system_sleep
->>>> qmp: { "execute": "system_sleep" }
->>>>
->>>> These commands put the guest into suspend or other power states
->>>> depending on the power settings inside the guest.
->>> How is this related to system_wakeup?
->> Both 'system_sleep' and 'system_wakeup' trigger the event to notify the
->> guest OSPM the sleep button has been pressed. 'system_wakeup' triggers
->> wake up notification when the guest is in suspend state.
-> Thanks.  Would it make sens to work this into the QAPI schema doc
-> comments somehow?
+> Add New API vhost_dev_start_presetup to notify backend the start
+> and end of presetup.
+>
+> API vhost_dev_presetup to send out the device configurations:
+> 1. acked_features
+> 2. memory table
+> 3. vring information
+> 4. disable host/guest notifier.
+>
+> Signed-off-by: Yajun Wu <yajunw@nvidia.com>
+> Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+> Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+> ---
+>  hw/virtio/vhost.c         | 166 ++++++++++++++++++++++++++++++++------
+>  include/hw/virtio/vhost.h |  12 +++
+>  2 files changed, 152 insertions(+), 26 deletions(-)
+>
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index e2f6ffb446..5b162590fb 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -1138,24 +1138,71 @@ out:
+>      return ret;
+>  }
+>
+> -int vhost_virtqueue_start(struct vhost_dev *dev,
+> -                          struct VirtIODevice *vdev,
+> -                          struct vhost_virtqueue *vq,
+> -                          unsigned idx)
+> +static void vhost_virtqueue_memory_unmap(struct vhost_dev *dev,
+> +                                         struct VirtIODevice *vdev,
+> +                                         struct vhost_virtqueue *vq,
+> +                                         unsigned idx)
+> +{
+> +    if (vq->used) {
+> +        vhost_memory_unmap(dev, vq->used,
+> +                           virtio_queue_get_used_size(vdev, idx),
+> +                           1, virtio_queue_get_used_size(vdev, idx));
+> +        vq->used =3D NULL;
+> +    }
+> +
+> +    if (vq->avail) {
+> +        vhost_memory_unmap(dev, vq->avail,
+> +                           virtio_queue_get_avail_size(vdev, idx),
+> +                           0, virtio_queue_get_avail_size(vdev, idx));
+> +        vq->avail =3D NULL;
+> +    }
+> +
+> +    if (vq->desc) {
+> +        vhost_memory_unmap(dev, vq->desc,
+> +                           virtio_queue_get_desc_size(vdev, idx),
+> +                           0, virtio_queue_get_desc_size(vdev, idx));
+> +        vq->desc =3D NULL;
+> +    }
+> +}
 
-Sure. It totally makes sense.
+Can we split the vhost_virtqueue_memory_unmap in its own
 
-Annie
+> +
+> +static int vhost_virtqueue_disable_notify(struct vhost_dev *dev,
+> +                                          struct VirtIODevice *vdev,
+> +                                          struct vhost_virtqueue *vq,
+> +                                          unsigned idx)
+>  {
+> -    BusState *qbus =3D BUS(qdev_get_parent_bus(DEVICE(vdev)));
+> -    VirtioBusState *vbus =3D VIRTIO_BUS(qbus);
+> -    VirtioBusClass *k =3D VIRTIO_BUS_GET_CLASS(vbus);
+> -    hwaddr s, l, a;
+> -    int r;
+>      int vhost_vq_index =3D dev->vhost_ops->vhost_get_vq_index(dev, idx);
+>      struct vhost_vring_file file =3D {
+>          .index =3D vhost_vq_index
+>      };
+> +    int r;
+> +
+> +    file.fd =3D -1;
+> +    r =3D dev->vhost_ops->vhost_set_vring_kick(dev, &file);
+> +    if (r) {
+> +        VHOST_OPS_DEBUG(r, "vhost_set_vring_kick failed");
+> +        return r;
+> +    }
+> +
+> +    r =3D dev->vhost_ops->vhost_set_vring_call(dev, &file);
+> +    if (r) {
+> +        VHOST_OPS_DEBUG(r, "vhost_set_vring_call failed");
+> +        return r;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +static int vhost_virtqueue_vring_setup(struct vhost_dev *dev,
+> +                                       struct VirtIODevice *vdev,
+> +                                       struct vhost_virtqueue *vq,
+> +                                       unsigned idx)
+> +{
+> +    hwaddr s, l, a;
+> +    int vhost_vq_index =3D dev->vhost_ops->vhost_get_vq_index(dev, idx);
+>      struct vhost_vring_state state =3D {
+>          .index =3D vhost_vq_index
+>      };
+> -    struct VirtQueue *vvq =3D virtio_get_queue(vdev, idx);
+> +    int r;
+>
+>      a =3D virtio_queue_get_desc_addr(vdev, idx);
+>      if (a =3D=3D 0) {
+> @@ -1186,6 +1233,10 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+>          }
+>      }
+>
+> +    if (vq->desc) {
+> +        vhost_virtqueue_memory_unmap(dev, vdev, vq, idx);
+> +    }
+> +
+
+How is that we need to unmap from here? Actually, vq->desc should
+always be NULL here, isn't it?
+
+I guess it is because vhost_virtqueue_vring_setup is called twice in
+vhost-net: One when the first device state reaches the destination,
+and another time at vhost_virtqueue_start. Would it work to not call
+vhost_virtqueue_vring_setup at vhost_virtqueue_start if vq->desc !=3D
+NULL?
+
+>      vq->desc_size =3D s =3D l =3D virtio_queue_get_desc_size(vdev, idx);
+>      vq->desc_phys =3D a;
+>      vq->desc =3D vhost_memory_map(dev, a, &l, false);
+> @@ -1212,6 +1263,36 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+>      if (r < 0) {
+>          goto fail_alloc;
+>      }
+> +    return 0;
+> +
+> +fail_alloc:
+> +fail_alloc_used:
+> +fail_alloc_avail:
+> +    vhost_virtqueue_memory_unmap(dev, vdev, vq, idx);
+> +fail_alloc_desc:
+> +    return r;
+> +}
+> +
+> +int vhost_virtqueue_start(struct vhost_dev *dev,
+> +                          struct VirtIODevice *vdev,
+> +                          struct vhost_virtqueue *vq,
+> +                          unsigned idx)
+> +{
+> +    BusState *qbus =3D BUS(qdev_get_parent_bus(DEVICE(vdev)));
+> +    VirtioBusState *vbus =3D VIRTIO_BUS(qbus);
+> +    VirtioBusClass *k =3D VIRTIO_BUS_GET_CLASS(vbus);
+> +    int r;
+> +    int vhost_vq_index =3D dev->vhost_ops->vhost_get_vq_index(dev, idx);
+> +    struct vhost_vring_file file =3D {
+> +        .index =3D vhost_vq_index
+> +    };
+> +    struct VirtQueue *vvq =3D virtio_get_queue(vdev, idx);
+> +
+> +    r =3D vhost_virtqueue_vring_setup(dev, vdev, vq, idx);
+> +    if (r) {
+> +        VHOST_OPS_DEBUG(r, "vhost_virtqueue_vring_setup failed");
+> +        goto fail_vring_setup;
+> +    }
+>
+>      file.fd =3D event_notifier_get_fd(virtio_queue_get_host_notifier(vvq=
+));
+>      r =3D dev->vhost_ops->vhost_set_vring_kick(dev, &file);
+> @@ -1245,16 +1326,8 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+>
+>  fail_vector:
+>  fail_kick:
+> -fail_alloc:
+> -    vhost_memory_unmap(dev, vq->used, virtio_queue_get_used_size(vdev, i=
+dx),
+> -                       0, 0);
+> -fail_alloc_used:
+> -    vhost_memory_unmap(dev, vq->avail, virtio_queue_get_avail_size(vdev,=
+ idx),
+> -                       0, 0);
+> -fail_alloc_avail:
+> -    vhost_memory_unmap(dev, vq->desc, virtio_queue_get_desc_size(vdev, i=
+dx),
+> -                       0, 0);
+> -fail_alloc_desc:
+> +    vhost_virtqueue_memory_unmap(dev, vdev, vq, idx);
+> +fail_vring_setup:
+>      return r;
+>  }
+>
+> @@ -1296,12 +1369,7 @@ void vhost_virtqueue_stop(struct vhost_dev *dev,
+>                                                  vhost_vq_index);
+>      }
+>
+> -    vhost_memory_unmap(dev, vq->used, virtio_queue_get_used_size(vdev, i=
+dx),
+> -                       1, virtio_queue_get_used_size(vdev, idx));
+> -    vhost_memory_unmap(dev, vq->avail, virtio_queue_get_avail_size(vdev,=
+ idx),
+> -                       0, virtio_queue_get_avail_size(vdev, idx));
+> -    vhost_memory_unmap(dev, vq->desc, virtio_queue_get_desc_size(vdev, i=
+dx),
+> -                       0, virtio_queue_get_desc_size(vdev, idx));
+> +    vhost_virtqueue_memory_unmap(dev, vdev, vq, idx);
+>  }
+>
+>  static int vhost_virtqueue_set_busyloop_timeout(struct vhost_dev *dev,
+> @@ -1921,6 +1989,43 @@ static int vhost_dev_set_vring_enable(struct vhost=
+_dev *hdev, int enable)
+>      return hdev->vhost_ops->vhost_set_vring_enable(hdev, enable);
+>  }
+>
+> +int vhost_dev_presetup(struct vhost_dev *hdev, VirtIODevice *vdev)
+> +{
+> +    int i, r;
+> +
+> +    /* should only be called after backend is connected */
+> +    assert(hdev->vhost_ops);
+> +
+> +    r =3D vhost_dev_set_features(hdev, hdev->log_enabled);
+> +    if (r < 0) {
+> +        return r;
+> +    }
+> +
+> +    r =3D hdev->vhost_ops->vhost_set_mem_table(hdev, hdev->mem);
+> +    if (r < 0) {
+> +        VHOST_OPS_DEBUG(r, "vhost_set_mem_table failed");
+> +        return r;
+> +    }
+> +
+> +    for (i =3D 0; i < hdev->nvqs; ++i) {
+> +        r =3D vhost_virtqueue_vring_setup(hdev, vdev,
+> +                                        hdev->vqs + i,
+> +                                        hdev->vq_index + i);
+> +        if (r < 0) {
+> +            VHOST_OPS_DEBUG(r, "vhost_virtqueue_setup failed");
+> +            return r;
+> +        }
+> +        r =3D vhost_virtqueue_disable_notify(hdev, vdev,
+> +                                           hdev->vqs + i,
+> +                                           hdev->vq_index + i);
+
+Why is this call needed? The vhost backend should not have any kick or
+call fd configured at this moment, isn't it?
+
+> +        if (r < 0) {
+> +            return r;
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>  /* Host notifiers must be enabled at this point. */
+>  int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vri=
+ngs)
+>  {
+> @@ -2087,3 +2192,12 @@ int vhost_net_set_backend(struct vhost_dev *hdev,
+>
+>      return -ENOSYS;
+>  }
+> +
+> +int vhost_dev_set_presetup_state(struct vhost_dev *hdev, bool start)
+> +{
+> +    if (!hdev->vhost_ops->vhost_presetup) {
+> +        return -ENOTSUP;
+
+I'm thinking if we must return an error here.
+
+Presetup is only "warming up" the device, as all the information is
+re-sent at vhost_dev_start. If we annotate the device state somewhere
+(bool presetup_has_run), we can just call vhost_virtqueue_vring_setup
+at vhost_virtqueue_start and configure the virtqueues selectively.
+
+This way we enable migration between all the backends, either support
+presetup or not.
+
+> +    }
+> +
+> +    return hdev->vhost_ops->vhost_presetup(hdev, start);
+> +}
+> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+> index 6a173cb9fa..95a8031d12 100644
+> --- a/include/hw/virtio/vhost.h
+> +++ b/include/hw/virtio/vhost.h
+> @@ -192,6 +192,17 @@ void vhost_dev_disable_notifiers(struct vhost_dev *h=
+dev, VirtIODevice *vdev);
+>  bool vhost_config_pending(struct vhost_dev *hdev);
+>  void vhost_config_mask(struct vhost_dev *hdev, VirtIODevice *vdev, bool =
+mask);
+>
+> +/**
+> + * vhost_dev_presetup() - pre-setup the vhost device in LM
+> + * @hdev: common vhost_dev structure
+> + * @vdev: the VirtIODevice structure
+> + *
+> + * During live migration, send out device information to backend in earl=
+y
+> + * running state. Backend can have enough time to prepare HW.
+> + * Return: 0 on success, < 0 on error.
+> + */
+> +int vhost_dev_presetup(struct vhost_dev *hdev, VirtIODevice *vdev);
+> +
+>  /**
+>   * vhost_dev_is_started() - report status of vhost device
+>   * @hdev: common vhost_dev structure
+> @@ -338,4 +349,5 @@ int vhost_dev_set_inflight(struct vhost_dev *dev,
+>  int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
+>                             struct vhost_inflight *inflight);
+>  bool vhost_dev_has_iommu(struct vhost_dev *dev);
+> +int vhost_dev_set_presetup_state(struct vhost_dev *hdev, bool start);
+>  #endif
+> --
+> 2.27.0
+>
+>
 
 
