@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508F581CE9C
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 20:00:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B980781CEA9
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 20:09:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGkje-0003Ct-6B; Fri, 22 Dec 2023 13:59:03 -0500
+	id 1rGks6-00074C-1s; Fri, 22 Dec 2023 14:07:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rGkjc-0003CA-9e
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:59:00 -0500
+ id 1rGks4-00072x-PO
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 14:07:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rGkja-0005ii-DZ
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:59:00 -0500
+ id 1rGks3-0003Su-8F
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 14:07:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703271537;
+ s=mimecast20190719; t=1703272061;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Hs99becgImQZPqXUScg4NuzWe/HwUAu8ppCfknP/cNs=;
- b=ROd5IWY5kX3koliidJjfsWBnX1yLheRHtLx9qjfUeRfPB26FRyQY0Xg//V5TZg3dZA/FKd
- ia19iligstbAj6wrZ4r3Quq7oSFjbuTs37c1SziUYcKREFwp+k2QDaPR8neSyxdH9ElPHZ
- WTZilO5mG2o14ORuEhupc2+a+mVAuac=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3DQa1syTPVDtDdi5/vkHgqPw58Hc89eRISvCfQ34skA=;
+ b=Sii8sywGHGiV9RXaMEcoalavNoWIF/ZTONll6DqUMnesZObxBMXPtbsxea15CoWXPaFVJK
+ IBRfwhsG+S+RZKm4OVV8Le5Qv4r29+hvdgs96zcNUtWZ658vLcArzEJCVxpug2IYFPS0eU
+ 2qeLPxCSdfKqOVDfu5a1F0PcnbArfQQ=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44-q7BtTPFQPmOXvco5505QSw-1; Fri, 22 Dec 2023 13:58:55 -0500
-X-MC-Unique: q7BtTPFQPmOXvco5505QSw-1
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-5cf4696e202so42572137b3.2
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:58:55 -0800 (PST)
+ us-mta-104-cwRT0BDGOXuwvnVAWSYW4w-1; Fri, 22 Dec 2023 14:07:40 -0500
+X-MC-Unique: cwRT0BDGOXuwvnVAWSYW4w-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-5e9a02c6d49so28797767b3.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 11:07:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703271535; x=1703876335;
+ d=1e100.net; s=20230601; t=1703272059; x=1703876859;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hs99becgImQZPqXUScg4NuzWe/HwUAu8ppCfknP/cNs=;
- b=C+7IYEgVKdsSoEw9E6czn2ld8onNNnSTQ6ZJuk7HdnbQBDbeCcwP7veuYo7qxVl8Qo
- uydN/k7jJ41EQ93lztaegjJanM4IfJVe3P7tf9WtD4nRGfZRXXmMpWj+0aak+2cJ9Uos
- qrVJG0/x6juJQSxwaky8zjpU/aenuR/Eg0Kl/HLcnjN+pF9bMNPlYWK7LuMS2+odW4LB
- f7M9uXV1FAmNU8x29W+ZrbKNrdpKvRaU2NbzZsnNQC48EfxDeU8nIAIQcct7T8JxN8RD
- RioPftHHkJqzv5itgaJRQ32euYgGlsA8/b6SCHujsdKuGYO4a/63lxIfQLBhxCauPZrs
- /eqA==
-X-Gm-Message-State: AOJu0YwdSefuZU/hAzBFs6g3PwlE2aeE7CG97tDd4pOMzg47LwLFTaKk
- nt2ubJr6jqngGOGcGh62qp/nmEaPujXa58CwCL21VYW7cTS54Uo4uAz5Ewk/4r17eo3uS85gRNY
- HuJulwgI9B5gYt1SmpimJ9BNlWN21zCFFIRDPtqM=
-X-Received: by 2002:a81:924d:0:b0:5d7:9515:6ae3 with SMTP id
- j74-20020a81924d000000b005d795156ae3mr1780058ywg.33.1703271535450; 
- Fri, 22 Dec 2023 10:58:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFHkV1+jkPbHYwrBWo3DpAZsJum0hAIyrklprrPt2TdbAIFC9d1NQO0JhQj0nJmBUbadEQ+cwAJLzJtnKT0Uvc=
-X-Received: by 2002:a81:924d:0:b0:5d7:9515:6ae3 with SMTP id
- j74-20020a81924d000000b005d795156ae3mr1780045ywg.33.1703271535164; Fri, 22
- Dec 2023 10:58:55 -0800 (PST)
+ bh=3DQa1syTPVDtDdi5/vkHgqPw58Hc89eRISvCfQ34skA=;
+ b=KAjXgFkl0DhyxKbV1Jv0g3AtwTtaY8Iy+e33Rb+Nuu6tiN+eN4vvXKcmBsDQyBInQT
+ Gs43A6sRQL5b7ycffQ06Zr+DWkce/eL1XY39LDtTfHyeDvSdvDbeYFLwda5asx7cl05D
+ SyKEgeCIay+jL0f6ukyA6Yyua6XEsvDtTDXGOE/ZkOSAk1hpns4svQbodjNQwot4NX2r
+ OdKbVMRtkoVzGlsBZ6rH2iQyh6vvpFX1uVD9wuFDrk6bb5/yuooEOewBuuApbbR2t7wj
+ LjfO+KNDKozXKdnzwm3diFjfe+CzIKte3rW8mI6bH8HR/NsfQ9ICCiR+ECQu/QGuJB86
+ HweA==
+X-Gm-Message-State: AOJu0YwvrXuF/snnZ4vFmZNCfbpQ4rBh0bRYejlTB6lIQEZHWuJ8n4k0
+ LlmLdVFnJlNNP5/nTZtNLDskA5/f6EAZyIjLLY1LhrHfFow4OHAghqgZS0pn1W7cbyHBObgAwZq
+ hUpkuez27hBf6uIEy+hgBmXtZXcNo5goSjyu7wM4=
+X-Received: by 2002:a0d:d708:0:b0:5e9:4438:4f56 with SMTP id
+ z8-20020a0dd708000000b005e944384f56mr1700524ywd.20.1703272058919; 
+ Fri, 22 Dec 2023 11:07:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEtj6MViq1hr3QbcrI7EpB0Hlh1iHZTN4OCE6Xs3Npie0aFkzzBnFhq0l+rTGlHoJ+uph/6ER2V32ErxAnaLHY=
+X-Received: by 2002:a0d:d708:0:b0:5e9:4438:4f56 with SMTP id
+ z8-20020a0dd708000000b005e944384f56mr1700515ywd.20.1703272058663; Fri, 22 Dec
+ 2023 11:07:38 -0800 (PST)
 MIME-Version: 1.0
 References: <20230918044932.1433744-1-yajunw@nvidia.com>
- <20230918044932.1433744-6-yajunw@nvidia.com>
-In-Reply-To: <20230918044932.1433744-6-yajunw@nvidia.com>
+ <CAJaqyWfuXDY7jBSQsS=0Ws7mpZLcsed6bpQbM+eZGLU5AzCw1Q@mail.gmail.com>
+ <6d9b034f-fe16-7ed8-6156-9c404a860489@nvidia.com>
+ <CAJaqyWdLHdXpTdnxdMn6SbvKywFB7oD=m806TebUcR23u7iokg@mail.gmail.com>
+In-Reply-To: <CAJaqyWdLHdXpTdnxdMn6SbvKywFB7oD=m806TebUcR23u7iokg@mail.gmail.com>
 From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 22 Dec 2023 19:58:19 +0100
-Message-ID: <CAJaqyWcGbNGWPf67Bwh6=omMbLOYR=9RrMOGh1AoiAo=VGpaag@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/5] virtio-net: Introduce LM early load
+Date: Fri, 22 Dec 2023 20:07:02 +0100
+Message-ID: <CAJaqyWdc6cb1H4UxNw2Go04pe9NAt9F0GQ8c1Gf8xyYCQ-+cUQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/5] virtio-net: Introduce LM early load
 To: Yajun Wu <yajunw@nvidia.com>
-Cc: qemu-devel@nongnu.org, jasowang@redhat.com, mst@redhat.com, 
- Avihai Horon <avihaih@nvidia.com>, Jiri Pirko <jiri@nvidia.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, 
+ "mst@redhat.com" <mst@redhat.com>, parav@nvidia.com, jiri@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
@@ -96,228 +99,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 6:51=E2=80=AFAM Yajun Wu <yajunw@nvidia.com> wrote:
->
-> Register a new vmstate for virtio-net with an early_setup flag to send
-> the device state during migration setup.
->
-> This can reduce the migration downtime of a virtio-net device with a
-> vhost-user backend.
->
-> This feature is disabled by default and can be enabled by setting the
-> "x-early-migration" device property to on.
->
-> Signed-off-by: Yajun Wu <yajunw@nvidia.com>
-> Reviewed-by: Avihai Horon <avihaih@nvidia.com>
-> Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-> ---
->  hw/net/trace-events            |   1 +
->  hw/net/virtio-net.c            | 100 +++++++++++++++++++++++++++++++++
->  include/hw/virtio/virtio-net.h |   1 +
->  3 files changed, 102 insertions(+)
->
-> diff --git a/hw/net/trace-events b/hw/net/trace-events
-> index 6b5ba669a2..ec89229044 100644
-> --- a/hw/net/trace-events
-> +++ b/hw/net/trace-events
-> @@ -399,6 +399,7 @@ virtio_net_post_load_device(void)
->  virtio_net_rss_disable(void)
->  virtio_net_rss_error(const char *msg, uint32_t value) "%s, value 0x%08x"
->  virtio_net_rss_enable(uint32_t p1, uint16_t p2, uint8_t p3) "hashes 0x%x=
-, table of %d, key of %d"
-> +virtio_net_load_early_setup(void) ""
->
->  # tulip.c
->  tulip_reg_write(uint64_t addr, const char *name, int size, uint64_t val)=
- "addr 0x%02"PRIx64" (%s) size %d value 0x%08"PRIx64
-> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index 7102ec4817..d0b0cc2ffe 100644
-> --- a/hw/net/virtio-net.c
-> +++ b/hw/net/virtio-net.c
-> @@ -46,6 +46,7 @@
->  #include "net_rx_pkt.h"
->  #include "hw/virtio/vhost.h"
->  #include "sysemu/qtest.h"
-> +#include "sysemu/runstate.h"
->
->  #define VIRTIO_NET_VM_VERSION    11
->
-> @@ -3568,6 +3569,95 @@ static bool failover_hide_primary_device(DeviceLis=
-tener *listener,
->      return qatomic_read(&n->failover_primary_hidden);
->  }
->
-> +static int virtio_net_load_early_setup(void *opaque, int version_id)
-> +{
-> +    VirtIONet *n =3D opaque;
-> +    VirtIODevice *vdev =3D VIRTIO_DEVICE(n);
-> +    NetClientState *nc =3D qemu_get_queue(n->nic);
-> +    int queue_pairs =3D n->multiqueue ? n->max_queue_pairs : 1;
-> +    int cvq =3D virtio_vdev_has_feature(vdev, VIRTIO_NET_F_CTRL_VQ) ?
-> +        n->max_ncs - n->max_queue_pairs : 0;
-> +    VHostNetState *net;
-> +    int r;
-> +
-> +    assert(nc->peer);
-> +    assert(nc->peer->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_USER);
-> +
-> +    net =3D get_vhost_net(nc->peer);
-> +    assert(net);
-> +    assert(net->dev.vhost_ops->backend_type =3D=3D VHOST_BACKEND_TYPE_US=
-ER);
-> +
-> +    trace_virtio_net_load_early_setup();
-> +
-> +    /* backend should support presetup */
-> +    r =3D vhost_dev_set_presetup_state(&net->dev, true);
-> +    if (r < 0) {
-> +        error_report("Start presetup device fail: %d", r);
-> +        return r;
-> +    }
-> +
-> +    if (virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_MTU)) {
-> +        r =3D vhost_net_set_mtu(get_vhost_net(nc->peer), n->net_conf.mtu=
-);
-> +        if (r < 0) {
-> +            error_report("%uBytes MTU not supported by the backend",
-> +                         n->net_conf.mtu);
-> +            goto error;
-> +        }
-> +    }
-> +
-> +    r =3D vhost_net_presetup(vdev, n->nic->ncs, queue_pairs, cvq);
-> +    if (r < 0) {
-> +        error_report("Presetup device fail: %d", r);
-> +        goto error;
-> +    }
-> +
-> +    r =3D vhost_dev_set_presetup_state(&net->dev, false);
+Hi Yajun,
 
-I guess this is to signal the backend the end of the presetup
-information, isn't it?
+Sorry for the late reply.
 
-Can we do it in the vhost-user backend itself? You can check the queue
-a function is running against with dev->vq_index and
-dev->vq_index_end.
+Apart from the few nitpicks commented, I think it is valid to start
+from this series and then add the capability to re-send the
+configuration in case the source changes it by another series on top.
+That would allow us to keep both series small.
 
-You can see an example of checking if the function is running at the
-first device with at vhost_user_backend_init, that checks
-dev->vq_index =3D=3D 0.
+Not sure if all can be done before the next release, so we don't have
+to change the virtio-net migration format twice...
 
-You can see an example of vq_index_end at vhost_user_dev_start, that
-only add the status if it runs in the last device. In this case, the
-check is (dev->vq_index + dev->nvqs !=3D dev->vq_index_end).
+Please let me know what you think about the comments.
 
-> +    if (r < 0) {
-> +        error_report("Finish presetup device fail: %d", r);
-> +        return r;
-> +    }
-> +    return 0;
-> +
-> +error:
-> +    vhost_dev_set_presetup_state(&net->dev, false);
-> +    return r;
-> +}
-> +
-> +static bool virtio_net_early_setup_needed(void *opaque)
-> +{
-> +    VirtIONet *n =3D opaque;
-> +    NetClientState *nc =3D qemu_get_queue(n->nic);
-> +    VHostNetState *net =3D get_vhost_net(nc->peer);
-> +
-> +    /*
-> +     * Presetup aims to reduce live migration downtime by sync device
-> +     * status in setup stage. So only do presetup when source VM is in
-> +     * running state.
-> +     */
-> +    if (runstate_is_running() &&
-> +        nc->peer->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_USER &&
-> +        net->dev.vhost_ops->backend_type =3D=3D VHOST_BACKEND_TYPE_USER =
-&&
-> +        !vhost_dev_has_iommu(&net->dev) &&
-> +        n->vhost_started &&
-> +        n->status & VIRTIO_NET_S_LINK_UP) {
-> +        return true;
-> +    }
-> +    return false;
-> +}
+Thanks!
 
-I think it is better not to check for vhost-user here, as:
-* All backends can potentially benefit from this.
-* Source running vhost-user does not mean the destination is running
-vhost-user too.
-
-Another nitpick, you can directly "return runstate_is_running() &&
-...;". But I'm fine with this version too.
-
-> +
-> +static const VMStateDescription vmstate_virtio_net_early =3D {
-> +    .name =3D "virtio-net-early",
-> +    .minimum_version_id =3D VIRTIO_NET_VM_VERSION,
-> +    .version_id =3D VIRTIO_NET_VM_VERSION,
-> +    .fields =3D (VMStateField[]) {
-> +        VMSTATE_EARLY_VIRTIO_DEVICE,
-> +        VMSTATE_END_OF_LIST()
-> +    },
-> +    .early_setup =3D true,
-> +    .post_load =3D virtio_net_load_early_setup,
-> +    .needed =3D virtio_net_early_setup_needed,
-> +};
-> +
->  static void virtio_net_device_realize(DeviceState *dev, Error **errp)
->  {
->      VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
-> @@ -3743,6 +3833,11 @@ static void virtio_net_device_realize(DeviceState =
-*dev, Error **errp)
->      if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
->          virtio_net_load_ebpf(n);
->      }
-> +
-> +    if (n->early_migration) {
-> +        vmstate_register(NULL, VMSTATE_INSTANCE_ID_ANY,
-> +                         &vmstate_virtio_net_early, n);
-> +    }
->  }
+On Thu, Oct 19, 2023 at 5:00=E2=80=AFPM Eugenio Perez Martin
+<eperezma@redhat.com> wrote:
 >
->  static void virtio_net_device_unrealize(DeviceState *dev)
-> @@ -3787,6 +3882,10 @@ static void virtio_net_device_unrealize(DeviceStat=
-e *dev)
->      g_free(n->rss_data.indirections_table);
->      net_rx_pkt_uninit(n->rx_pkt);
->      virtio_cleanup(vdev);
-> +
-> +    if (n->early_migration) {
-> +        vmstate_unregister(NULL, &vmstate_virtio_net_early, n);
-> +    }
->  }
->
->  static void virtio_net_instance_init(Object *obj)
-> @@ -3922,6 +4021,7 @@ static Property virtio_net_properties[] =3D {
->      DEFINE_PROP_INT32("speed", VirtIONet, net_conf.speed, SPEED_UNKNOWN)=
-,
->      DEFINE_PROP_STRING("duplex", VirtIONet, net_conf.duplex_str),
->      DEFINE_PROP_BOOL("failover", VirtIONet, failover, false),
-> +    DEFINE_PROP_BOOL("x-early-migration", VirtIONet, early_migration, fa=
-lse),
->      DEFINE_PROP_END_OF_LIST(),
->  };
->
-> diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-ne=
-t.h
-> index e07a723027..9e6f90b46f 100644
-> --- a/include/hw/virtio/virtio-net.h
-> +++ b/include/hw/virtio/virtio-net.h
-> @@ -212,6 +212,7 @@ struct VirtIONet {
->      /* primary failover device is hidden*/
->      bool failover_primary_hidden;
->      bool failover;
-> +    bool early_migration;
->      DeviceListener primary_listener;
->      QDict *primary_opts;
->      bool primary_opts_from_json;
-> --
-> 2.27.0
->
->
+> On Wed, Oct 18, 2023 at 8:41=E2=80=AFAM Yajun Wu <yajunw@nvidia.com> wrot=
+e:
+> >
+> >
+> > On 10/18/2023 12:47 AM, Eugenio Perez Martin wrote:
+...
 
 
