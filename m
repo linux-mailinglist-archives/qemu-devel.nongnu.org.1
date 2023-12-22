@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1411981CE5D
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:18:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C24081CE5C
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:18:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGk4o-000167-Vq; Fri, 22 Dec 2023 13:16:51 -0500
+	id 1rGk4o-00015J-6c; Fri, 22 Dec 2023 13:16:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGk4f-00011p-U9
+ id 1rGk4f-00011o-QE
  for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGk4b-0006D5-UN
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:40 -0500
+ id 1rGk4d-0006DC-6N
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703268994;
+ s=mimecast20190719; t=1703268996;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xrtIswxIr6pTTxrk/G5OGghEcqNmtA1ORfqbcyj/2WY=;
- b=KuPwqM2L8xzjsZeirtkkjYwwv0EOa3sl/zgwCNeAG5gLNHry7BYjiZVcUqt51BNAqbFGVL
- I7QS2eYjcCqnbIfG0q1rwE62w5WW6D4yqu+f2laGNUnbxFAGX5N7FGVqqS57XAogjWkub7
- z/Z5y9HzUNha6/3E/7YfeKNmcG52PYU=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bX5EpD1s6AQveh3Ls7hMR6uubiUKHYvpM8T++Cerd1g=;
+ b=AQzJ0eZIa9JpdNfY3S69WFnsZU7z0k0NOxPgTwLqjpms6Q60/qcNOcGK8RynIjZfkCZdWE
+ z4GKRyzwcDbcciDn9IX/S/vSciiHWbhhEl+cOxspRbdLq0oIyB2Oov7XVH6hdCGL0M4XIZ
+ SV7xITy/ju16AHiPx9O0SHHG+3ZACBA=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-z6R4hkfMM2KAsVilSU4aZQ-1; Fri, 22 Dec 2023 13:16:32 -0500
-X-MC-Unique: z6R4hkfMM2KAsVilSU4aZQ-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5545aa32c47so937865a12.0
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:16:32 -0800 (PST)
+ us-mta-670-I2sE72LlMOCQG5kN7CB8wg-1; Fri, 22 Dec 2023 13:16:34 -0500
+X-MC-Unique: I2sE72LlMOCQG5kN7CB8wg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-54caf6220c2so1254669a12.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:16:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703268991; x=1703873791;
+ d=1e100.net; s=20230601; t=1703268992; x=1703873792;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xrtIswxIr6pTTxrk/G5OGghEcqNmtA1ORfqbcyj/2WY=;
- b=YPEJqPTnNFUPCVwZSuGFgl8lvwV6s0JzMOAYzY4V7w/eXHDKdvHYcA4FBc+Pe+1MNy
- ckhzYS68AxzMvts6YQxjJW4/yPRD5GdZz4PX4lRbcaudOF09AZsSLcvMhcjgZQckx45O
- TbFBhNqMh0Ye6SuVeC5llvVwnwokn0bf03tINeFsTpmkQiAruVCdbs4pYF8uWEx4E3vX
- 2wW8r/hjBMBmzNeavuge2gk86Vt6ohA+yrU5peB+XuaO4bFq2kJVkzUhDsL/kvCXun1l
- drR4J0yly537Wa6sQzh8XedDCReYaWBGsLFwiFLgcqF7bad6f8mHfM51FrsOfgip46b7
- DEug==
-X-Gm-Message-State: AOJu0YxQ673Td82PWzyLjEh41WjBx/XxT0b1/QkLSAnbu1uPYtI7TAPy
- 0zZ2ab3gHj2gTB3ECHx4p+5HqejFAWZT4kYpda0AYhxemvxJBNsI/DSv7EiCMmLmsQeUVZLb+EB
- W4/2sdmsp/AjxYdYwmbx9PIVdX6oAfdjAtCyc6dz1A+IW3sZxJSOijmPBktMj+XmWzpAD7zrlN2
- MwWYO7sIc=
-X-Received: by 2002:a50:9f28:0:b0:553:98f0:a495 with SMTP id
- b37-20020a509f28000000b0055398f0a495mr1695209edf.3.1703268991108; 
- Fri, 22 Dec 2023 10:16:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEnTumEnNbtlOjJuASqGn7Eix/X0Z9tAXK/ZlHGGIZN/SnxfH2OBMEDDzd5VOA2cfElYt/9uw==
-X-Received: by 2002:a50:9f28:0:b0:553:98f0:a495 with SMTP id
- b37-20020a509f28000000b0055398f0a495mr1695199edf.3.1703268990823; 
- Fri, 22 Dec 2023 10:16:30 -0800 (PST)
+ bh=bX5EpD1s6AQveh3Ls7hMR6uubiUKHYvpM8T++Cerd1g=;
+ b=Zp+q+YboWlSL2ps4Tk8DRg/aD/HONBs4Y7dw3XPYsvzo+06Pl1XareKb/qAZMaF/as
+ wxuladrck3mh+RtlYhc6VY1b/PtuIYWPkziCsOq74BgalQEgEirmnUI8vphsxLOXtJ3F
+ qye7xYvtxy80pPS0+JEtC+9zOfx6EX/FJLlPsHm70U3eQuSa40OgGxaQbmYSrZRUh3Kp
+ FlfdNOlUrZjevjjF3ba6VmlZnUjDnvo3cvdVA9NCmSbnsULSKgGr5jpUycpjj+TkXSc8
+ YJQ9Vzlu+xeM/s5vA35xCx9OGja+ZsmWDfDk2JrdwpadwFK9CnD2XrYFQo32ouOk0uoy
+ sbjA==
+X-Gm-Message-State: AOJu0YyTaprKWDDkDHYdn2F8g/8Ou/3/94gQqT/JM5TCwkxyuaDT4pav
+ vjEnhgVSGamaJxzYWNw04UONsUec5/8K9QPH+zt8jAAystne7rJvfpt42BMTIoH3VdCj48HWrfC
+ MYfiqgHkKKHqxe+3ifgIOLLTGTV3+TiCdmqZjnrPvZISJeT6jQB5CYC8X4piYW8odA40DB1Td1G
+ B3p66p8S8=
+X-Received: by 2002:a50:9f0f:0:b0:553:ee28:b97d with SMTP id
+ b15-20020a509f0f000000b00553ee28b97dmr1237543edf.39.1703268992552; 
+ Fri, 22 Dec 2023 10:16:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH0TsfmgJLK3nD1aep0GUC5MT2PlNm3sjh4oLoo373Z1DY+0IQMXx8LjMaIJEnhzxzGX36GFw==
+X-Received: by 2002:a50:9f0f:0:b0:553:ee28:b97d with SMTP id
+ b15-20020a509f0f000000b00553ee28b97dmr1237536edf.39.1703268992187; 
+ Fri, 22 Dec 2023 10:16:32 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- u17-20020a05640207d100b005538d504793sm2844560edy.23.2023.12.22.10.16.29
+ n13-20020a05640204cd00b00554745eca8csm404268edw.59.2023.12.22.10.16.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Dec 2023 10:16:29 -0800 (PST)
+ Fri, 22 Dec 2023 10:16:31 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 13/22] target/i386: do not clobber T0 on string operations
-Date: Fri, 22 Dec 2023 19:15:54 +0100
-Message-ID: <20231222181603.174137-14-pbonzini@redhat.com>
+Subject: [PATCH 14/22] target/i386: split eflags computation out of
+ gen_compute_eflags
+Date: Fri, 22 Dec 2023 19:15:55 +0100
+Message-ID: <20231222181603.174137-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231222181603.174137-1-pbonzini@redhat.com>
 References: <20231222181603.174137-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.082,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,132 +102,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The new decoder would rather have the operand in T0 when expanding SCAS, rather
-than use R_EAX directly as gen_scas currently does.  This makes SCAS more similar
-to CMP and SUB, in that CC_DST = T0 - T1.
+The new x86 decoder wants the gen_* functions to compute EFLAGS before
+writeback, which can be an issue for instructions with a memory
+destination such as ARPL or shifts.
+
+Extract code to compute the EFLAGS without clobbering CC_SRC, in case
+the memory write causes a fault.  The flags writeback mechanism will
+take care of copying the result to CC_SRC.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 45 ++++++++++++++++++++-----------------
- 1 file changed, 24 insertions(+), 21 deletions(-)
+ target/i386/tcg/translate.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index efef4e74d4c..00ed0cc9a31 100644
+index 00ed0cc9a31..b79c312465b 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -522,9 +522,9 @@ void gen_op_add_reg_im(DisasContext *s, MemOp size, int reg, int32_t val)
-     gen_op_mov_reg_v(s, size, reg, s->tmp0);
+@@ -862,22 +862,22 @@ static void gen_op_update_neg_cc(DisasContext *s)
+     tcg_gen_movi_tl(s->cc_srcT, 0);
  }
  
--static inline void gen_op_add_reg_T0(DisasContext *s, MemOp size, int reg)
-+static inline void gen_op_add_reg(DisasContext *s, MemOp size, int reg, TCGv val)
+-/* compute all eflags to cc_src */
+-static void gen_compute_eflags(DisasContext *s)
++/* compute all eflags to reg */
++static void gen_mov_eflags(DisasContext *s, TCGv reg)
  {
--    tcg_gen_add_tl(s->tmp0, cpu_regs[reg], s->T0);
-+    tcg_gen_add_tl(s->tmp0, cpu_regs[reg], val);
-     gen_op_mov_reg_v(s, size, reg, s->tmp0);
- }
+-    TCGv zero, dst, src1, src2;
++    TCGv dst, src1, src2;
++    TCGv_i32 cc_op;
+     int live, dead;
  
-@@ -707,10 +707,12 @@ static inline void gen_string_movl_A0_EDI(DisasContext *s)
-     gen_lea_v_seg(s, s->aflag, cpu_regs[R_EDI], R_ES, -1);
- }
+     if (s->cc_op == CC_OP_EFLAGS) {
++        tcg_gen_mov_tl(reg, cpu_cc_src);
+         return;
+     }
+     if (s->cc_op == CC_OP_CLR) {
+-        tcg_gen_movi_tl(cpu_cc_src, CC_Z | CC_P);
+-        set_cc_op(s, CC_OP_EFLAGS);
++        tcg_gen_movi_tl(reg, CC_Z | CC_P);
+         return;
+     }
  
--static inline void gen_op_movl_T0_Dshift(DisasContext *s, MemOp ot)
-+static inline TCGv gen_compute_Dshift(DisasContext *s, MemOp ot)
- {
--    tcg_gen_ld32s_tl(s->T0, tcg_env, offsetof(CPUX86State, df));
--    tcg_gen_shli_tl(s->T0, s->T0, ot);
-+    TCGv dshift = tcg_temp_new();
-+    tcg_gen_ld32s_tl(dshift, tcg_env, offsetof(CPUX86State, df));
-+    tcg_gen_shli_tl(dshift, dshift, ot);
-+    return dshift;
- };
+-    zero = NULL;
+     dst = cpu_cc_dst;
+     src1 = cpu_cc_src;
+     src2 = cpu_cc_src2;
+@@ -886,7 +886,7 @@ static void gen_compute_eflags(DisasContext *s)
+     live = cc_op_live[s->cc_op] & ~USES_CC_SRCT;
+     dead = live ^ (USES_CC_DST | USES_CC_SRC | USES_CC_SRC2);
+     if (dead) {
+-        zero = tcg_constant_tl(0);
++        TCGv zero = tcg_constant_tl(0);
+         if (dead & USES_CC_DST) {
+             dst = zero;
+         }
+@@ -898,8 +898,18 @@ static void gen_compute_eflags(DisasContext *s)
+         }
+     }
  
- static TCGv gen_ext_tl(TCGv dst, TCGv src, MemOp size, bool sign)
-@@ -818,13 +820,16 @@ static bool gen_check_io(DisasContext *s, MemOp ot, TCGv_i32 port,
- 
- static void gen_movs(DisasContext *s, MemOp ot)
- {
-+    TCGv dshift;
+-    gen_update_cc_op(s);
+-    gen_helper_cc_compute_all(cpu_cc_src, dst, src1, src2, cpu_cc_op);
++    if (s->cc_op != CC_OP_DYNAMIC) {
++        cc_op = tcg_constant_i32(s->cc_op);
++    } else {
++        cc_op = cpu_cc_op;
++    }
++    gen_helper_cc_compute_all(reg, dst, src1, src2, cc_op);
++}
 +
-     gen_string_movl_A0_ESI(s);
-     gen_op_ld_v(s, ot, s->T0, s->A0);
-     gen_string_movl_A0_EDI(s);
-     gen_op_st_v(s, ot, s->T0, s->A0);
--    gen_op_movl_T0_Dshift(s, ot);
--    gen_op_add_reg_T0(s, s->aflag, R_ESI);
--    gen_op_add_reg_T0(s, s->aflag, R_EDI);
-+
-+    dshift = gen_compute_Dshift(s, ot);
-+    gen_op_add_reg(s, s->aflag, R_ESI, dshift);
-+    gen_op_add_reg(s, s->aflag, R_EDI, dshift);
- }
- 
- static void gen_op_update1_cc(DisasContext *s)
-@@ -1249,8 +1254,7 @@ static void gen_stos(DisasContext *s, MemOp ot)
-     gen_op_mov_v_reg(s, MO_32, s->T0, R_EAX);
-     gen_string_movl_A0_EDI(s);
-     gen_op_st_v(s, ot, s->T0, s->A0);
--    gen_op_movl_T0_Dshift(s, ot);
--    gen_op_add_reg_T0(s, s->aflag, R_EDI);
-+    gen_op_add_reg(s, s->aflag, R_EDI, gen_compute_Dshift(s, ot));
- }
- 
- static void gen_lods(DisasContext *s, MemOp ot)
-@@ -1258,8 +1262,7 @@ static void gen_lods(DisasContext *s, MemOp ot)
-     gen_string_movl_A0_ESI(s);
-     gen_op_ld_v(s, ot, s->T0, s->A0);
-     gen_op_mov_reg_v(s, ot, R_EAX, s->T0);
--    gen_op_movl_T0_Dshift(s, ot);
--    gen_op_add_reg_T0(s, s->aflag, R_ESI);
-+    gen_op_add_reg(s, s->aflag, R_ESI, gen_compute_Dshift(s, ot));
- }
- 
- static void gen_scas(DisasContext *s, MemOp ot)
-@@ -1267,19 +1270,21 @@ static void gen_scas(DisasContext *s, MemOp ot)
-     gen_string_movl_A0_EDI(s);
-     gen_op_ld_v(s, ot, s->T1, s->A0);
-     gen_op(s, OP_CMPL, ot, R_EAX);
--    gen_op_movl_T0_Dshift(s, ot);
--    gen_op_add_reg_T0(s, s->aflag, R_EDI);
-+    gen_op_add_reg(s, s->aflag, R_EDI, gen_compute_Dshift(s, ot));
- }
- 
- static void gen_cmps(DisasContext *s, MemOp ot)
- {
-+    TCGv dshift;
-+
-     gen_string_movl_A0_EDI(s);
-     gen_op_ld_v(s, ot, s->T1, s->A0);
-     gen_string_movl_A0_ESI(s);
-     gen_op(s, OP_CMPL, ot, OR_TMP0);
--    gen_op_movl_T0_Dshift(s, ot);
--    gen_op_add_reg_T0(s, s->aflag, R_ESI);
--    gen_op_add_reg_T0(s, s->aflag, R_EDI);
-+
-+    dshift = gen_compute_Dshift(s, ot);
-+    gen_op_add_reg(s, s->aflag, R_ESI, dshift);
-+    gen_op_add_reg(s, s->aflag, R_EDI, dshift);
- }
- 
- static void gen_bpt_io(DisasContext *s, TCGv_i32 t_port, int ot)
-@@ -1307,8 +1312,7 @@ static void gen_ins(DisasContext *s, MemOp ot)
-     tcg_gen_andi_i32(s->tmp2_i32, s->tmp2_i32, 0xffff);
-     gen_helper_in_func(ot, s->T0, s->tmp2_i32);
-     gen_op_st_v(s, ot, s->T0, s->A0);
--    gen_op_movl_T0_Dshift(s, ot);
--    gen_op_add_reg_T0(s, s->aflag, R_EDI);
-+    gen_op_add_reg(s, s->aflag, R_EDI, gen_compute_Dshift(s, ot));
-     gen_bpt_io(s, s->tmp2_i32, ot);
- }
- 
-@@ -1321,8 +1325,7 @@ static void gen_outs(DisasContext *s, MemOp ot)
-     tcg_gen_andi_i32(s->tmp2_i32, s->tmp2_i32, 0xffff);
-     tcg_gen_trunc_tl_i32(s->tmp3_i32, s->T0);
-     gen_helper_out_func(ot, s->tmp2_i32, s->tmp3_i32);
--    gen_op_movl_T0_Dshift(s, ot);
--    gen_op_add_reg_T0(s, s->aflag, R_ESI);
-+    gen_op_add_reg(s, s->aflag, R_ESI, gen_compute_Dshift(s, ot));
-     gen_bpt_io(s, s->tmp2_i32, ot);
++/* compute all eflags to cc_src */
++static void gen_compute_eflags(DisasContext *s)
++{
++    gen_mov_eflags(s, cpu_cc_src);
+     set_cc_op(s, CC_OP_EFLAGS);
  }
  
 -- 
