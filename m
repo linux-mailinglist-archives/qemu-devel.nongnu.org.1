@@ -2,69 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BA481C57D
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 08:23:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA0F81C630
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 09:07:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGZqi-0002pG-Uq; Fri, 22 Dec 2023 02:21:36 -0500
+	id 1rGaYI-0003OU-6p; Fri, 22 Dec 2023 03:06:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rGZqe-0002ow-Jo
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 02:21:34 -0500
-Received: from mgamail.intel.com ([134.134.136.31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rGZqc-0002qT-CL
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 02:21:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1703229690; x=1734765690;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=pK3WW+nqVIcM8DBeFnUM4zM8MhK+l8HrrhOFOHvyfZc=;
- b=XIsfJr4S1XzBxyH91Qyp+ath5jQRc19o6CvzsTqoOAQPk/sVFr6LyqaJ
- 9DHfJWz92fFu2MkMzadGeSIAALqRAMJy+lq7efynKyRNMytcwpSfY8Caw
- OxhmgO9vkybA9emT02mD5prMkbWL0z/aoNuW4rSbJG9SIPy/99qAUbMlm
- +fl12eI7vBDyFBkotCoelu+jbgO2WAzCJQX8fCHhS36PuQA6ZOymviae7
- GYofPGs4yKBj+w2i+2z2rh6I3USlFd9/ya/kx3B3d51iYLll2N95sJJqu
- dxHtrcyQ2AqMTVwDn0ovlsWiqvY7D6eFxw/155z0LbMh2+JfXqxpMo8qa Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10931"; a="460417477"
-X-IronPort-AV: E=Sophos;i="6.04,294,1695711600"; d="scan'208";a="460417477"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Dec 2023 23:21:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.04,294,1695711600"; d="scan'208";a="18957608"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 21 Dec 2023 23:21:16 -0800
-Date: Fri, 22 Dec 2023 15:34:02 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xin Li <xin3.li@intel.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- richard.henderson@linaro.org, pbonzini@redhat.com,
- eduardo@habkost.net, seanjc@google.com, chao.gao@intel.com,
- hpa@zytor.com, xiaoyao.li@intel.com, weijiang.yang@intel.com,
- dan1.wu@intel.com
-Subject: Re: [PATCH v3A 1/6] target/i386: add support for FRED in CPUID
- enumeration
-Message-ID: <ZYU76ipTvj1WIBgm@intel.com>
-References: <MW4PR11MB6737DC0CCD50B5D3D00521A7A895A@MW4PR11MB6737.namprd11.prod.outlook.com>
- <20231222030336.38096-1-xin3.li@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231222030336.38096-1-xin3.li@intel.com>
-Received-SPF: pass client-ip=134.134.136.31; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rGaYG-0003OJ-Np; Fri, 22 Dec 2023 03:06:36 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rGaYD-0008Qa-F3; Fri, 22 Dec 2023 03:06:35 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1d3f8af8297so9658045ad.2; 
+ Fri, 22 Dec 2023 00:06:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1703232389; x=1703837189; darn=nongnu.org;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Dy7zv8H2NWsKZUX8wVrMymGZN33/m0uz3ciTz2vhuko=;
+ b=VRJS4iA+oeEn+0WMj+ORW+pmRBy40Z2Y7NZDDgboMAhJ2fWkXso68oaYvGXeC35FV8
+ AzljU9rCEnuNwgmY1t5P4MiC4zFL8JUjzK50iC4o5+kr2jnm5TwVqNb9W/omoQbkrA9J
+ F772sVjNMVHeD4tk4w6Zp7qW04oVjyz1bFQD0lxzYsuRzULQWTO9mjXEkZU2wxmPg0bH
+ jJ8msaADTvJKZV3qkb+iMP90RueN9Kprp/HW9MmYstcyxePSJMElH+hlDG7cRIW4O2cg
+ XOyScncDOscEf9jY29mp2pwd4xiyWEPs5U7/8xhrz/0eD03dpNFBcwc1S1ifU7YxShN2
+ RTuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703232389; x=1703837189;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Dy7zv8H2NWsKZUX8wVrMymGZN33/m0uz3ciTz2vhuko=;
+ b=nEKCBVSWd0POhQ1c5uBxvcPcBKOmN+VLbQuZRsp2Bf6K3IjaGc2ZvfWumaMO7LRD+6
+ Nfk42duS7YqmcuUTdsL8QBrWplg3Jcw2IBUawAHJ81w+0cUI2Hb+K1TL9MOboCwdwjyR
+ LWHjYYavt22zdbAvIBur7Tt99aUEtA859M0uoT64nBhcoZm8k/C1F2RptvHiWxUDaxSj
+ bI+Uw1pFxAbVy1LGisQT8Ja4yYuIlfu/1CQNFAailAfQVK17sI05ZolPJavi3TxDXvG9
+ iCBhS24Y493T6ksVm/25Pods1PYFOF9rOzfL9iqZT/HSqay6nzwx2PLPwZ3VU+pmCDl3
+ s16g==
+X-Gm-Message-State: AOJu0YyF50uaO3LzZtlzXqgCByr3d8GLrtA6WWFglOw1SwDa/fQHNcWQ
+ BMDAfH5HSVUPtHuc1P3kYa8=
+X-Google-Smtp-Source: AGHT+IGrOcGhiSZsNJ9IeSdzELFp2R9wZrFeuViIHy9jE38BlPHv5DYK+IDBq5Jj+QGCL5877wvnHw==
+X-Received: by 2002:a17:903:22cc:b0:1d0:cf22:c6ca with SMTP id
+ y12-20020a17090322cc00b001d0cf22c6camr723492plg.52.1703232388857; 
+ Fri, 22 Dec 2023 00:06:28 -0800 (PST)
+Received: from localhost ([203.220.145.68]) by smtp.gmail.com with ESMTPSA id
+ m10-20020a170902db0a00b001d3867b6424sm2849139plx.113.2023.12.22.00.06.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 22 Dec 2023 00:06:28 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 22 Dec 2023 18:06:11 +1000
+Message-Id: <CXUPHHNKAVYM.129IGW3MNKCSQ@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ <qemu-devel@nongnu.org>
+Cc: "Ilya Leoshkevich" <iii@linux.ibm.com>, "Peter Xu" <peterx@redhat.com>,
+ "Liu Zhiwei" <zhiwei_liu@linux.alibaba.com>, "Peter Maydell"
+ <peter.maydell@linaro.org>, "Mark Cave-Ayland"
+ <mark.cave-ayland@ilande.co.uk>, "Eduardo Habkost" <eduardo@habkost.net>,
+ <qemu-arm@nongnu.org>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ <qemu-ppc@nongnu.org>, <qemu-s390x@nongnu.org>,
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?b?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>,
+ <qemu-riscv@nongnu.org>, "David Hildenbrand" <david@redhat.com>, "Warner
+ Losh" <imp@bsdimp.com>, "Claudio Fontana" <cfontana@suse.de>, "Brian Cain"
+ <bcain@quicinc.com>, "Daniel Henrique Barboza" <danielhb413@gmail.com>,
+ "Richard Henderson" <richard.henderson@linaro.org>, "Thomas Huth"
+ <thuth@redhat.com>, "Riku Voipio" <riku.voipio@iki.fi>, "Kyle Evans"
+ <kevans@freebsd.org>, "BALATON Zoltan" <balaton@eik.bme.hu>, "Edgar E.
+ Iglesias" <edgar.iglesias@gmail.com>, "Laurent Vivier" <laurent@vivier.eu>,
+ "Michael Rolnik" <mrolnik@gmail.com>, "Song Gao" <gaosong@loongson.cn>,
+ "Huacai Chen" <chenhuacai@kernel.org>, "Aurelien Jarno"
+ <aurelien@aurel32.net>, "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+ "Aleksandar Rikalo" <aleksandar.rikalo@syrmia.com>, "Chris Wulff"
+ <crwulff@gmail.com>, "Marek Vasut" <marex@denx.de>, "Stafford Horne"
+ <shorne@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>, "Alistair Francis"
+ <alistair.francis@wdc.com>, "Bin Meng" <bin.meng@windriver.com>, "Weiwei
+ Li" <liwei1518@gmail.com>, "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+ "Artyom Tarasenko" <atar4qemu@gmail.com>, "Bastian Koppelmann"
+ <kbastian@mail.uni-paderborn.de>, "Max Filippov" <jcmvbkbc@gmail.com>
+Subject: Re: [PATCH 23/24] exec/cpu-all: Extract page-protection definitions
+ to page-prot-common.h
+X-Mailer: aerc 0.15.2
+References: <20231211212003.21686-1-philmd@linaro.org>
+ <20231211212003.21686-24-philmd@linaro.org>
+In-Reply-To: <20231211212003.21686-24-philmd@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,111 +117,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 21, 2023 at 07:03:36PM -0800, Xin Li wrote:
-> Date: Thu, 21 Dec 2023 19:03:36 -0800
-> From: Xin Li <xin3.li@intel.com>
-> Subject: [PATCH v3A 1/6] target/i386: add support for FRED in CPUID
->  enumeration
-> X-Mailer: git-send-email 2.43.0
-> 
-> FRED, i.e., the Intel flexible return and event delivery architecture,
-> defines simple new transitions that change privilege level (ring
-> transitions).
-> 
-> The new transitions defined by the FRED architecture are FRED event
-> delivery and, for returning from events, two FRED return instructions.
-> FRED event delivery can effect a transition from ring 3 to ring 0, but
-> it is used also to deliver events incident to ring 0.  One FRED
-> instruction (ERETU) effects a return from ring 0 to ring 3, while the
-> other (ERETS) returns while remaining in ring 0.  Collectively, FRED
-> event delivery and the FRED return instructions are FRED transitions.
-> 
-> In addition to these transitions, the FRED architecture defines a new
-> instruction (LKGS) for managing the state of the GS segment register.
-> The LKGS instruction can be used by 64-bit operating systems that do
-> not use the new FRED transitions.
-> 
-> WRMSRNS is an instruction that behaves exactly like WRMSR, with the
-> only difference being that it is not a serializing instruction by
-> default.  Under certain conditions, WRMSRNS may replace WRMSR to improve
-> performance.  FRED uses it to switch RSP0 in a faster manner.
-> 
-> Search for the latest FRED spec in most search engines with this search
-> pattern:
-> 
->   site:intel.com FRED (flexible return and event delivery) specification
-> 
-> The CPUID feature flag CPUID.(EAX=7,ECX=1):EAX[17] enumerates FRED, and
-> the CPUID feature flag CPUID.(EAX=7,ECX=1):EAX[18] enumerates LKGS, and
-> the CPUID feature flag CPUID.(EAX=7,ECX=1):EAX[19] enumerates WRMSRNS.
-> 
-> Add CPUID definitions for FRED/LKGS/WRMSRNS, and expose them to KVM guests.
-> 
-> Because FRED relies on LKGS and WRMSRNS, add that to feature dependency
-> map.
-> 
-> Tested-by: Shan Kang <shan.kang@intel.com>
-> Signed-off-by: Xin Li <xin3.li@intel.com>
-> ---
+On Tue Dec 12, 2023 at 7:20 AM AEST, Philippe Mathieu-Daud=C3=A9 wrote:
+> Extract page-protection definitions from "exec/cpu-all.h"
+> to "exec/page-prot-common.h".
+>
+> The list of files requiring the new header was generated
+> using:
+>
+> $ git grep -wE \
+>   'PAGE_(READ|WRITE|EXEC|BITS|VALID|ANON|RESERVED|TARGET_.|PASSTHROUGH)'
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Acked-by: Nicholas Piggin <npiggin@gmail.com> (ppc)
 
-> 
-> Changelog
-> v3A:
-> - Fix reversed dependency (Wu Dan1).
-> ---
->  target/i386/cpu.c | 10 +++++++++-
->  target/i386/cpu.h |  6 ++++++
->  2 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 358d9c0a65..66551c7eae 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -965,7 +965,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
->              "avx-vnni", "avx512-bf16", NULL, "cmpccxadd",
->              NULL, NULL, "fzrm", "fsrs",
->              "fsrc", NULL, NULL, NULL,
-> -            NULL, NULL, NULL, NULL,
-> +            NULL, "fred", "lkgs", "wrmsrns",
->              NULL, "amx-fp16", NULL, "avx-ifma",
->              NULL, NULL, NULL, NULL,
->              NULL, NULL, NULL, NULL,
-> @@ -1552,6 +1552,14 @@ static FeatureDep feature_dependencies[] = {
->          .from = { FEAT_VMX_SECONDARY_CTLS,  VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE },
->          .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_WAITPKG },
->      },
-> +    {
-> +        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_LKGS },
-> +        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
-> +    },
-> +    {
-> +        .from = { FEAT_7_1_EAX,             CPUID_7_1_EAX_WRMSRNS },
-> +        .to = { FEAT_7_1_EAX,               CPUID_7_1_EAX_FRED },
-> +    },
->  };
->  
->  typedef struct X86RegisterInfo32 {
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index cd2e295bd6..5faf00551d 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -934,6 +934,12 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
->  #define CPUID_7_1_EDX_AMX_COMPLEX       (1U << 8)
->  /* PREFETCHIT0/1 Instructions */
->  #define CPUID_7_1_EDX_PREFETCHITI       (1U << 14)
-> +/* Flexible return and event delivery (FRED) */
-> +#define CPUID_7_1_EAX_FRED              (1U << 17)
-> +/* Load into IA32_KERNEL_GS_BASE (LKGS) */
-> +#define CPUID_7_1_EAX_LKGS              (1U << 18)
-> +/* Non-Serializing Write to Model Specific Register (WRMSRNS) */
-> +#define CPUID_7_1_EAX_WRMSRNS           (1U << 19)
->  
->  /* Do not exhibit MXCSR Configuration Dependent Timing (MCDT) behavior */
->  #define CPUID_7_2_EDX_MCDT_NO           (1U << 5)
-> -- 
-> 2.43.0
-> 
-> 
+Looks trivial for ppc, so fine. But what's the difference between
+-common.h and -all.h suffix?
+
+Thanks,
+Nick
 
