@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7256481C9D7
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 13:23:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A03681C9E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 13:25:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGeYE-0001Vi-Tg; Fri, 22 Dec 2023 07:22:50 -0500
+	id 1rGeYG-0001We-J3; Fri, 22 Dec 2023 07:22:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rGeYC-0001Ur-SQ
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:22:48 -0500
+ id 1rGeYE-0001Vh-6q
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:22:50 -0500
 Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rGeYB-0005mt-0G
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:22:48 -0500
+ id 1rGeYC-0005nB-EB
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:22:49 -0500
 Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-5cd8667c59eso1369899a12.2
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 04:22:45 -0800 (PST)
+ 41be03b00d2f7-5cd68a0de49so1308340a12.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 04:22:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1703247763; x=1703852563; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1703247767; x=1703852567; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bNKontpfLUZyadIzXzNBnB69eWAYBQx8Z06ZfrYR8/0=;
- b=bHR973U682ixIDlPQ+i/QFa6uoEZHk26LTME1cebpk9GHdutDjWSSPjXXx5XUyEemD
- KsSNGfYmvr803AsYrx++JYaCDwUMwMoe1bVV+Ptu14RxdyilZEbKoHN40VMuJoGLyy9z
- 8/FwArjJKjClG1up3P/cTB0FaEi6J5bOyh2KnvMbgB/ripnIYHmHf6tWifxmVuV7DlNP
- yiw5SP4Rvg6gL1mMrrlWT6WPSBcQ/7sfrG6wT0VZEE3noslEADJWEu5dK17RBmdxlxc3
- f9lylD6qiqbzyksitBkA6lkWKCuedYxMK2I6y6sNzRwJbesGN6XmS3P7+OOsrPtugw3T
- pXHg==
+ bh=WHLPmiheEOnodk4jIREyWq0iPo/tsfjG5BHc9yunH9g=;
+ b=Hx5PtxsxUduIwSvTHPZZC1+WKziOVjbg8YxLL8CeOzV6Ni8FG+GakKpPKvt6dvsGF7
+ snYSQo/IMz9k7M1iBep+Bw15VeyiC05935a6gSYF4rhTHM1gMVPrJMnEak7QHbGR7T1w
+ wvUvCTpoCmMPclTxyHHxQjTYN0B1daK36JvvFeFZcoj7UF4b6zo4WLLpotdXMlveihUR
+ U8/qmqM5XkJhymKn37gctFfMLA6AeG8sB5c09EiiygfEsRSibdZ4VMLyQo6d+TkZdAg0
+ UAubV89OnXnNcfOeSK5dJuGGed1aEPfNKofRsgIVeTwXfJlJWS07R0H16zRjm9S4ZP2E
+ aAzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703247763; x=1703852563;
+ d=1e100.net; s=20230601; t=1703247767; x=1703852567;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bNKontpfLUZyadIzXzNBnB69eWAYBQx8Z06ZfrYR8/0=;
- b=IumUwFrbwb6cPvsQ2GNAfT/jBM0oQjwHOgWphLJlSsKk2LMnRzSJbsrFSAOd54kSEJ
- k1QJVmyPmKnxkt0sh5yFD3hX1HPweEI5PFPlOd92vEieCV170WeNxx9lHJ6SQmyNY8Vi
- r/V3MmeyZqkiR+FSmQcZNyqB9sT6iFyZs4xK1py+jW7V8s4gVssP6yQdmy6HKToKdDQD
- hFW4hGAnulfYCJaleCJ8ju2doUor6Cbz/f7Mu6zHxVV4F0mr3XTKnAoWI7JgKo29h9Rs
- mZb+uHg2C4fkIUgvVWPNet0NW7AARzJomXC3GUzdhlb3rtwo4dVaNgySRzjS2mIZFNG3
- sMjA==
-X-Gm-Message-State: AOJu0YyqB/MYrf8G3uj21Z3YNXY7wHETCxZHnmI66ITzVjJjycubBcQX
- l4lG10nnE5TJdDAa0n55nKfsAZTGToX/LicrnLGriev/w6m8Ww==
-X-Google-Smtp-Source: AGHT+IGVsM/Li3YD6MuFO/G8cE7Px9qU45nHLuk38M8cY1Zc+0fHGtcYFu6e3WJKguSMrsMhEDoWSA==
-X-Received: by 2002:a05:6a20:78a1:b0:194:b3af:8674 with SMTP id
- d33-20020a056a2078a100b00194b3af8674mr1122908pzg.10.1703247763704; 
- Fri, 22 Dec 2023 04:22:43 -0800 (PST)
+ bh=WHLPmiheEOnodk4jIREyWq0iPo/tsfjG5BHc9yunH9g=;
+ b=YlgON8tnrKInG+43F7PyW0i+5mIxqg2iOaasQbYlu1RzFUObDXyxvrN+h9RZDPXdOd
+ KSFktxsFzgUJzjtJ7TkR7yhq0hnlSCA0b5rs4Cok3k/NbQXPsreNBsN0N4NfLaaIt4ay
+ F+rFhFoMlzM/sx2LeHzBC5zyJpZpLhgOVMBBtlcxCjZXrKq16lIwxlBfLQAUpyh4JpkY
+ /ZwfW7N4M6cJf1gUkjnqBBpEnm8jeJ/bIwbEz/u8dSUD5RpyRJ3J2SkVc7VQi9Aah51G
+ W/YiVEqSD5kPz87Kr8W60EedVrpc7B8mBgAv8hO93dIPc20h3AnuSGg4jwIukeJGtPhA
+ zGbg==
+X-Gm-Message-State: AOJu0Yx4exiWOdgfq3WlzNB+gDynytkLYnb1Lv4GeWbNkCzStx/DxuhX
+ GGiotsa9+MlKEsH0NIwYIoMSATbGfFmhyl8kv3o/bKDUYLfx4g==
+X-Google-Smtp-Source: AGHT+IH/2maknFZ9G6JVhIXRR0d0X5WENMCJMhAuteI0XYsk+pGRXCGfkfXcLZ/8Y2XLnBrw1GETbA==
+X-Received: by 2002:a05:6a20:430e:b0:191:60f5:2a9 with SMTP id
+ h14-20020a056a20430e00b0019160f502a9mr1363508pzk.80.1703247766821; 
+ Fri, 22 Dec 2023 04:22:46 -0800 (PST)
 Received: from grind.dc1.ventanamicro.com (201-69-66-51.dial-up.telesp.net.br.
  [201.69.66.51]) by smtp.gmail.com with ESMTPSA id
- g14-20020aa7874e000000b006ce7ad8c14esm3274901pfo.164.2023.12.22.04.22.41
+ g14-20020aa7874e000000b006ce7ad8c14esm3274901pfo.164.2023.12.22.04.22.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Dec 2023 04:22:43 -0800 (PST)
+ Fri, 22 Dec 2023 04:22:46 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 01/16] target/riscv/cpu_cfg.h: remove user_spec and
- bext_spec
-Date: Fri, 22 Dec 2023 09:22:20 -0300
-Message-ID: <20231222122235.545235-2-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 02/16] target/riscv: move 'pmu-mask' and 'pmu-num' to
+ riscv_cpu_properties[]
+Date: Fri, 22 Dec 2023 09:22:21 -0300
+Message-ID: <20231222122235.545235-3-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231222122235.545235-1-dbarboza@ventanamicro.com>
 References: <20231222122235.545235-1-dbarboza@ventanamicro.com>
@@ -95,26 +95,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-They aren't being used.
+Every property in riscv_cpu_options[] will be migrated to
+riscv_cpu_properties[]. This will make their default values init
+earlier, allowing cpu_init() functions to overwrite them. We'll also
+implement common getters and setters that both accelerators will use,
+allowing them to share validations that TCG is doing.
+
+For pmu-mask and pmu-num it's just a matter of migrating the properties
+from one array to the other. While we're at it, add a 'static' modifier
+to 'prop_pmu_num' since we're not exporting it.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu_cfg.h | 2 --
- 1 file changed, 2 deletions(-)
+ target/riscv/cpu.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index f4605fb190..c67a8731d3 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -136,8 +136,6 @@ struct RISCVCPUConfig {
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 70bf10aa7c..34f7616258 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1457,16 +1457,13 @@ static void prop_pmu_num_get(Object *obj, Visitor *v, const char *name,
+     visit_type_uint8(v, name, &pmu_num, errp);
+ }
  
-     uint32_t pmu_mask;
-     char *priv_spec;
--    char *user_spec;
--    char *bext_spec;
-     char *vext_spec;
-     uint16_t vlen;
-     uint16_t elen;
+-const PropertyInfo prop_pmu_num = {
++static const PropertyInfo prop_pmu_num = {
+     .name = "pmu-num",
+     .get = prop_pmu_num_get,
+     .set = prop_pmu_num_set,
+ };
+ 
+ Property riscv_cpu_options[] = {
+-    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask, MAKE_64BIT_MASK(3, 16)),
+-    {.name = "pmu-num", .info = &prop_pmu_num}, /* Deprecated */
+-
+     DEFINE_PROP_BOOL("mmu", RISCVCPU, cfg.mmu, true),
+     DEFINE_PROP_BOOL("pmp", RISCVCPU, cfg.pmp, true),
+ 
+@@ -1485,6 +1482,10 @@ Property riscv_cpu_options[] = {
+ static Property riscv_cpu_properties[] = {
+     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
+ 
++    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask,
++                       MAKE_64BIT_MASK(3, 16)),
++    {.name = "pmu-num", .info = &prop_pmu_num}, /* Deprecated */
++
+ #ifndef CONFIG_USER_ONLY
+     DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
+ #endif
 -- 
 2.43.0
 
