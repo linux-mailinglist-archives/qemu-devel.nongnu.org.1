@@ -2,63 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88AD81CA14
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 13:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A7081CA27
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 13:45:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGemh-00076z-Lx; Fri, 22 Dec 2023 07:37:47 -0500
+	id 1rGet9-0000Zk-HV; Fri, 22 Dec 2023 07:44:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGeme-00074u-Ee
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:37:44 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGet4-0000ZH-M0
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:44:22 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGemc-0005S9-NE
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:37:44 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGet3-0006TU-6c
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:44:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703248661;
+ s=mimecast20190719; t=1703249059;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=qDpG+ehSig30Pki5bcmw/Shty1UruFD9BRhUTs7TfEo=;
- b=WcFwA6qVZQky/LtN8bx+Ept+HhxhjNTzcNNAWDefSroyJMlolx0SH32+DzNnzJHnd9UdWs
- 8mhw4DOlflZBjEtU5EWor1TEqkHNfJ+TRYk6eSlIqynEFbTfe6D0PaR9CVTRWqaovbMV51
- jJy6NU7QGi0Uia2ZEyXn9qY4cssLg54=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-De1n69VoM7iMxDfLa_KiUQ-1; Fri, 22 Dec 2023 07:37:37 -0500
-X-MC-Unique: De1n69VoM7iMxDfLa_KiUQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=KHJJs3sqQ3EUtIqNnt83isH2uaANLeLsx9dUu05eZqY=;
+ b=DwbfnvtSJL3/FdDS7Fs0AAYXnc/DvaVlCBJTvrmkHzwahShS5HI6vWmWQCeoq4WROiPmYi
+ Js7TBcDG/Y6fjLlWvDG2CXTZoIbPn1B1nmkWLl/7txoLGx8wec6EPoePBeH9KmQXqUkXY7
+ pRNsVXu60H6+eXo7JeTdBBIOByx5sf0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-Cuh8gfxuOjWfCH7okgRH1g-1; Fri,
+ 22 Dec 2023 07:44:15 -0500
+X-MC-Unique: Cuh8gfxuOjWfCH7okgRH1g-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E5F91019DF0;
- Fri, 22 Dec 2023 12:37:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2F9E280C28A;
+ Fri, 22 Dec 2023 12:44:14 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0B4B8C15A0C;
- Fri, 22 Dec 2023 12:37:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D057440C6EB9;
+ Fri, 22 Dec 2023 12:44:14 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0BEB021E6920; Fri, 22 Dec 2023 13:37:36 +0100 (CET)
+ id CD02921E6920; Fri, 22 Dec 2023 13:44:13 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
-To: "Annie.li" <annie.li@oracle.com>
-Cc: qemu-devel@nongnu.org,  imammedo@redhat.com,  miguel.luis@oracle.com
-Subject: Re: [RFC PATCH 01/11] acpi: hmp/qmp: Add hmp/qmp support for
- system_sleep
-In-Reply-To: <bc3d29ae-48ab-3d85-24e7-89f4f08f9c9f@oracle.com> (Annie li's
- message of "Tue, 5 Dec 2023 16:46:46 -0500")
-References: <20231205002143.562-1-annie.li@oracle.com>
- <20231205002356.1239-1-annie.li@oracle.com>
- <87r0k075ij.fsf@pond.sub.org>
- <bc3d29ae-48ab-3d85-24e7-89f4f08f9c9f@oracle.com>
-Date: Fri, 22 Dec 2023 13:37:36 +0100
-Message-ID: <87h6kah0q7.fsf@pond.sub.org>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: Eric Blake <eblake@redhat.com>,  Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Leonardo Bras
+ <leobras@redhat.com>,  qemu-devel@nongnu.org
+Subject: Re: [PATCH V8 02/12] cpus: stop vm in suspended runstate
+In-Reply-To: <a8f3e93f-d74e-4adf-8a71-a85a90930302@oracle.com> (Steven
+ Sistare's message of "Wed, 13 Dec 2023 10:32:30 -0500")
+References: <1702481421-375368-1-git-send-email-steven.sistare@oracle.com>
+ <1702481421-375368-3-git-send-email-steven.sistare@oracle.com>
+ <a8f3e93f-d74e-4adf-8a71-a85a90930302@oracle.com>
+Date: Fri, 22 Dec 2023 13:44:13 +0100
+Message-ID: <878r5mh0f6.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -84,35 +86,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Annie.li" <annie.li@oracle.com> writes:
+Steven Sistare <steven.sistare@oracle.com> writes:
 
-> Hi Markus,
->
-> On 12/5/2023 3:34 PM, Markus Armbruster wrote:
->> You neglected to cc: QAPI schema maintainers.  I found it by chance.
->> Next time :)
-> Yep, should have cc to the maintainers.
->>
->> Annie Li <annie.li@oracle.com> writes:
->>
->>> Following hmp/qmp commands are implemented for pressing virtual
->>> sleep button,
->>>
->>> hmp: system_sleep
->>> qmp: { "execute": "system_sleep" }
->>>
->>> These commands put the guest into suspend or other power states
->>> depending on the power settings inside the guest.
->>
->> How is this related to system_wakeup?
->
-> Both 'system_sleep' and 'system_wakeup' trigger the event to notify the
-> guest OSPM the sleep button has been pressed. 'system_wakeup' triggers
-> wake up notification when the guest is in suspend state.
+> FYI for Markus and Blake.  No change since V6 and V7.
 
-Thanks.  Would it make sens to work this into the QAPI schema doc
-comments somehow?
-
-[...]
+I accidentally replied to v6 instead of here.  Sorry for the
+inconvenience!
 
 
