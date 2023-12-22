@@ -2,88 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEE181CE57
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:18:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7127E81CE64
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:20:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGk4m-00013i-UD; Fri, 22 Dec 2023 13:16:48 -0500
+	id 1rGk4s-00018P-Co; Fri, 22 Dec 2023 13:16:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGk4U-0000yo-8r
+ id 1rGk4U-0000yp-Cl
  for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGk4R-0006Be-Jo
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:29 -0500
+ id 1rGk4S-0006Bo-8U
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703268985;
+ s=mimecast20190719; t=1703268987;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UJRyN8oLaAmplx7vhdrxTEA7wQ8C13drLYr+oj367gI=;
- b=Ak0ETECGk1Ts24SMTYfPdHlY2RgKz1fHIvFhvv19GXIKjG0DMKqqUGeut9iWiC46jrdhMF
- fXBA5YXiwOjRvFVx+I9+4VShLiqvgknhO6bGFiUD/Q7LB91hhAemUqcU0gT44zb6pcswQU
- YyDUtmN4qjczWapnQr4mS/m720eB3XI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hzKk/J2M9yyXPE2PbgbVyaLavaa9gmxtcGmrHFxYkNA=;
+ b=gmmn97HIJaCyEZ92pR132eu1Q0EOMFnm2b7bCth+r3lYOKFblrK/St56uiAD55l+Hk8vUx
+ 9NtTF9b3MKgzQ/50prS3fhiNbfnSV+T2IZuIaSmvUbky06JJyNBHhAf9d0x26aKlCAiukL
+ rAmeSJSjGZDRYtfkN9JuOO3MuAATcjc=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-265-Q0JBC-kcPQqYJSwgTShdKA-1; Fri, 22 Dec 2023 13:16:23 -0500
-X-MC-Unique: Q0JBC-kcPQqYJSwgTShdKA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40d2fa6b23eso17751675e9.2
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:16:23 -0800 (PST)
+ us-mta-674-43xoXPMlPxy68R2LKmTChQ-1; Fri, 22 Dec 2023 13:16:25 -0500
+X-MC-Unique: 43xoXPMlPxy68R2LKmTChQ-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5545ab4864aso417465a12.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:16:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703268982; x=1703873782;
+ d=1e100.net; s=20230601; t=1703268984; x=1703873784;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UJRyN8oLaAmplx7vhdrxTEA7wQ8C13drLYr+oj367gI=;
- b=Tr7G0Kzyq33oRyoimXagRKXWWvZNpwxFE/ECtP0Mulmizgh615GEPruREuJfwzUesJ
- okgOROMzDiBSxSVS3gagASwbZcVpelIAn1N/bl/PaxLn73rQQZ35Jl3ZnU40YroKddxc
- 1yp3lEncVGCf/+qsdvU66aCGTqTEeB4riYku4nDKfoOqTYZZ/9gfOmLUUNV29y4qyMmT
- j0pcMays2S+DZmU/CitINJpWv92khv3Ryvw8M3tXr01hBI+sNSPuQ4sKHKh0dGcBAZZ8
- kjFJXvuigp8XpIcFh5nnMdSl07OMn24Gor3mslE1MFh3Bb1AG9PDK7OiLpHuMTJDgIiq
- uI2g==
-X-Gm-Message-State: AOJu0YyGfJA5WQVkTFmVMiOripFGSL2WG7zXGAHfpzEurPMQEt4fMTB6
- orBk+mRvlGB9lSHlpz4dPE5/8bJCCagley09r1V708/3lmFnE4T8J5LpMz3s/gC3glb0O6LOfk8
- vs1mF4KauQK9bfeyAsbl4YFI1Ov13QfyiHc8c1LpTIPViTLdPSpmDimmTCjOQVf5YWFVmx13ocJ
- g0OO2UnbQ=
-X-Received: by 2002:a05:600c:1819:b0:40d:190c:160f with SMTP id
- n25-20020a05600c181900b0040d190c160fmr596016wmp.110.1703268981794; 
- Fri, 22 Dec 2023 10:16:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IESL//jK0ImxcUNyu5VTWwIhDqefgzktP2jtXBnhwX2W/5en9YnM2hHbk8XGnlCdrV4s13Tqg==
-X-Received: by 2002:a05:600c:1819:b0:40d:190c:160f with SMTP id
- n25-20020a05600c181900b0040d190c160fmr596013wmp.110.1703268981490; 
- Fri, 22 Dec 2023 10:16:21 -0800 (PST)
+ bh=hzKk/J2M9yyXPE2PbgbVyaLavaa9gmxtcGmrHFxYkNA=;
+ b=Gh8wbwZGo1T3spIEiofHfSKAUC067oDdfg+ZK0Cyjp9SWZYFmeDjQMeemZwAxexWJ4
+ e/4sZ1HmNxlVSyI0v9Z1vRoHk4aCgUTrckaX2m0wCuVAFvXuDQ41pp7FBuf3eleL/6+y
+ UK/W5HY1RfuRBZ4hRfjkM8KZy4Ibq7J7ufxgEY2TIAaTnLOp20kqFZluDRLDOB08uopG
+ eKmEPea5cR5kowTIPwXtKvjsLa9WMCzkxnOXQO+w0a4t62BIUQzdmDrETlfnJlFOG0HP
+ LeDV748cgcYIBy5PuooUhZGjnnbpag48163ol1lCs2+sQPlkiVdoFqkXUp+o1i77FNC3
+ /uJQ==
+X-Gm-Message-State: AOJu0Ywwx1wUcPURea0zQBNGOVf/CzOV9L193ZKknbtJlvhmVqM5Btj2
+ DA7zCEnGHHwZI4mQSkVph4+OlJh1upi9MOXsLpYUlK0NCvIDea1s2E2Dq4+SqrhXXXvnji1y5bV
+ fPHa8YclWVkLKnhh0k2d+odCSkIT2tcsM690CnHGJFktZikA8LrLwFeit7kt9yhTorW0xAnpB5l
+ N+6EUsHpY=
+X-Received: by 2002:a50:8e5d:0:b0:552:7433:23ee with SMTP id
+ 29-20020a508e5d000000b00552743323eemr919403edx.0.1703268983808; 
+ Fri, 22 Dec 2023 10:16:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHz5UMtXNWJ6NUBBIabT956j0XDN0h+gYkaV8Wd9msEmcveeZuzDehlXjT9kNlhW22s4Qn03g==
+X-Received: by 2002:a50:8e5d:0:b0:552:7433:23ee with SMTP id
+ 29-20020a508e5d000000b00552743323eemr919397edx.0.1703268983523; 
+ Fri, 22 Dec 2023 10:16:23 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- u4-20020a05600c138400b0040c03c3289bsm7727763wmf.37.2023.12.22.10.16.20
+ o6-20020a056402444600b0055473af90a6sm404752edb.0.2023.12.22.10.16.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Dec 2023 10:16:20 -0800 (PST)
+ Fri, 22 Dec 2023 10:16:22 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 08/22] target/i386: avoid trunc and ext for MULX and RORX
-Date: Fri, 22 Dec 2023 19:15:49 +0100
-Message-ID: <20231222181603.174137-9-pbonzini@redhat.com>
+Subject: [PATCH 09/22] target/i386: rename zext0/zext2 and make them closer to
+ the manual
+Date: Fri, 22 Dec 2023 19:15:50 +0100
+Message-ID: <20231222181603.174137-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231222181603.174137-1-pbonzini@redhat.com>
 References: <20231222181603.174137-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.082,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,83 +102,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use _tl operations for 32-bit operands on 32-bit targets, and only go
-through trunc and extu ops for 64-bit targets.  While the trunc/ext
-ops should be pretty much free after optimization, the optimizer also
-does not like having the same temporary used in multiple EBBs.
-Therefore it is nicer to not use tmpN* unless necessary.
+X86_SPECIAL_ZExtOp0 and X86_SPECIAL_ZExtOp2 are poorly named; they are a hack
+that is needed by scalar insertion and extraction instructions, and not really
+related to zero extension: for PEXTR the zero extension is done by the generation
+functions, for PINSR the high bits are not used at all and in fact are *not*
+filled with zeroes when loaded into s->T1.
+
+Rename the values to match the effect described in the manual, and explain
+better in the comments.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/emit.c.inc | 37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ target/i386/tcg/decode-new.c.inc | 16 ++++++++--------
+ target/i386/tcg/decode-new.h     | 17 +++++++++++++----
+ 2 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 98c4c9569ef..f5e44117eab 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -1348,7 +1348,8 @@ static void gen_MULX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 5eb2e9d0224..00fdb243857 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -153,8 +153,8 @@
+ #define xchg .special = X86_SPECIAL_Locked,
+ #define lock .special = X86_SPECIAL_HasLock,
+ #define mmx .special = X86_SPECIAL_MMX,
+-#define zext0 .special = X86_SPECIAL_ZExtOp0,
+-#define zext2 .special = X86_SPECIAL_ZExtOp2,
++#define op0_Rd .special = X86_SPECIAL_Op0_Rd,
++#define op2_Ry .special = X86_SPECIAL_Op2_Ry,
+ #define avx_movx .special = X86_SPECIAL_AVXExtMov,
  
-     /* low part of result in VEX.vvvv, high in MODRM */
-     switch (ot) {
--    default:
-+    case MO_32:
-+#ifdef TARGET_X86_64
-         tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
-         tcg_gen_trunc_tl_i32(s->tmp3_i32, s->T1);
-         tcg_gen_mulu2_i32(s->tmp2_i32, s->tmp3_i32,
-@@ -1356,13 +1357,15 @@ static void gen_MULX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-         tcg_gen_extu_i32_tl(cpu_regs[s->vex_v], s->tmp2_i32);
-         tcg_gen_extu_i32_tl(s->T0, s->tmp3_i32);
+ #define vex1 .vex_class = 1,
+@@ -632,13 +632,13 @@ static const X86OpEntry opcodes_0F3A[256] = {
+     [0x05] = X86_OP_ENTRY3(VPERMILPD_i, V,x,  W,x,  I,b,  vex6 chk(W0) cpuid(AVX) p_66),
+     [0x06] = X86_OP_ENTRY4(VPERM2x128,  V,qq, H,qq, W,qq, vex6 chk(W0) cpuid(AVX) p_66),
+ 
+-    [0x14] = X86_OP_ENTRY3(PEXTRB,     E,b,  V,dq, I,b,  vex5 cpuid(SSE41) zext0 p_66),
+-    [0x15] = X86_OP_ENTRY3(PEXTRW,     E,w,  V,dq, I,b,  vex5 cpuid(SSE41) zext0 p_66),
++    [0x14] = X86_OP_ENTRY3(PEXTRB,     E,b,  V,dq, I,b,  vex5 cpuid(SSE41) op0_Rd p_66),
++    [0x15] = X86_OP_ENTRY3(PEXTRW,     E,w,  V,dq, I,b,  vex5 cpuid(SSE41) op0_Rd p_66),
+     [0x16] = X86_OP_ENTRY3(PEXTR,      E,y,  V,dq, I,b,  vex5 cpuid(SSE41) p_66),
+     [0x17] = X86_OP_ENTRY3(VEXTRACTPS, E,d,  V,dq, I,b,  vex5 cpuid(SSE41) p_66),
+     [0x1d] = X86_OP_ENTRY3(VCVTPS2PH,  W,xh, V,x,  I,b,  vex11 chk(W0) cpuid(F16C) p_66),
+ 
+-    [0x20] = X86_OP_ENTRY4(PINSRB,     V,dq, H,dq, E,b,  vex5 cpuid(SSE41) zext2 p_66),
++    [0x20] = X86_OP_ENTRY4(PINSRB,     V,dq, H,dq, E,b,  vex5 cpuid(SSE41) op2_Ry p_66),
+     [0x21] = X86_OP_GROUP0(VINSERTPS),
+     [0x22] = X86_OP_ENTRY4(PINSR,      V,dq, H,dq, E,y,  vex5 cpuid(SSE41) p_66),
+ 
+@@ -1883,17 +1883,17 @@ static void disas_insn_new(DisasContext *s, CPUState *cpu, int b)
+     case X86_SPECIAL_HasLock:
          break;
--#ifdef TARGET_X86_64
--    case MO_64:
--        tcg_gen_mulu2_i64(cpu_regs[s->vex_v], s->T0, s->T0, s->T1);
--        break;
--#endif
--    }
  
-+    case MO_64:
-+#endif
-+        tcg_gen_mulu2_tl(cpu_regs[s->vex_v], s->T0, s->T0, s->T1);
-+        break;
+-    case X86_SPECIAL_ZExtOp0:
++    case X86_SPECIAL_Op0_Rd:
+         assert(decode.op[0].unit == X86_OP_INT);
+         if (!decode.op[0].has_ea) {
+             decode.op[0].ot = MO_32;
+         }
+         break;
+ 
+-    case X86_SPECIAL_ZExtOp2:
++    case X86_SPECIAL_Op2_Ry:
+         assert(decode.op[2].unit == X86_OP_INT);
+         if (!decode.op[2].has_ea) {
+-            decode.op[2].ot = MO_32;
++            decode.op[2].ot = s->dflag == MO_16 ? MO_32 : s->dflag;
+         }
+         break;
+ 
+diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
+index 611bfddd957..b253f7457ae 100644
+--- a/target/i386/tcg/decode-new.h
++++ b/target/i386/tcg/decode-new.h
+@@ -165,11 +165,20 @@ typedef enum X86InsnSpecial {
+     X86_SPECIAL_Locked,
+ 
+     /*
+-     * Register operand 0/2 is zero extended to 32 bits.  Rd/Mb or Rd/Mw
+-     * in the manual.
++     * Rd/Mb or Rd/Mw in the manual: register operand 0 is treated as 32 bits
++     * (and writeback zero-extends it to 64 bits if applicable).  PREFIX_DATA
++     * does not trigger 16-bit writeback and, as a side effect, high-byte
++     * registers are never used.
+      */
+-    X86_SPECIAL_ZExtOp0,
+-    X86_SPECIAL_ZExtOp2,
++    X86_SPECIAL_Op0_Rd,
 +
-+    default:
-+        g_assert_not_reached();
-+    }
- }
++    /*
++     * Ry/Mb in the manual (PINSRB).  However, the high bits are never used by
++     * the instruction in either the register or memory cases; the *real* effect
++     * of this modifier is that high-byte registers are never used, even without
++     * a REX prefix.  Therefore, PINSRW does not need it despite having Ry/Mw.
++     */
++    X86_SPECIAL_Op2_Ry,
  
- static void gen_PALIGNR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-@@ -1765,14 +1768,24 @@ static void gen_PSLLDQ_i(DisasContext *s, CPUX86State *env, X86DecodedInsn *deco
- static void gen_RORX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- {
-     MemOp ot = decode->op[0].ot;
--    int b = decode->immediate;
-+    int mask = ot == MO_64 ? 63 : 31;
-+    int b = decode->immediate & mask;
- 
--    if (ot == MO_64) {
--        tcg_gen_rotri_tl(s->T0, s->T0, b & 63);
--    } else {
-+    switch (ot) {
-+    case MO_32:
-+#ifdef TARGET_X86_64
-         tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
--        tcg_gen_rotri_i32(s->tmp2_i32, s->tmp2_i32, b & 31);
-+        tcg_gen_rotri_i32(s->tmp2_i32, s->tmp2_i32, b);
-         tcg_gen_extu_i32_tl(s->T0, s->tmp2_i32);
-+        break;
-+
-+    case MO_64:
-+#endif
-+        tcg_gen_rotri_tl(s->T0, s->T0, b);
-+        break;
-+
-+    default:
-+        g_assert_not_reached();
-     }
- }
- 
+     /*
+      * Register operand 2 is extended to full width, while a memory operand
 -- 
 2.43.0
 
