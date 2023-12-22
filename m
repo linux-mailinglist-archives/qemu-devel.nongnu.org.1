@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6324081C712
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F3E81C713
 	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 10:02:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGbP1-0005Ab-EK; Fri, 22 Dec 2023 04:01:07 -0500
+	id 1rGbP2-0005BR-Tl; Fri, 22 Dec 2023 04:01:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1rGbOx-0005AR-DL
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:01:03 -0500
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1rGbP0-0005Ai-6P
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:01:06 -0500
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1rGbOv-0002Ua-RR
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:01:03 -0500
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-5c21e185df5so1262321a12.1
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 01:01:01 -0800 (PST)
+ id 1rGbOy-0002Uw-Bl
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:01:05 -0500
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6d267461249so1000778b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 01:01:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1703235660; x=1703840460; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9yAIpgz2Vh0MKn7myhvNTnAj6CrivJQ1z40FyPTPo4A=;
- b=nNFZ7bcc2qYi9cKhEGp7BEMn2RqNSOiJY+Kdf4UWjOGfGFnbgBfvA+a5l30nBoCw0Q
- r6kvyeRvpq4PCZnJCuSlct60ZwYRkeFyA0F6/QxxG9BdyXDuagBeyyCW6ojPFWwJbrLd
- zyDXQHdWGXlA5qqq9KBScWLt1O81YGP1cCEyzfRXadoeIZZgIurUb3t/2unOfcukcFzU
- 6zy0a9/FwtcAEnVGRifJDfnZ3RkbkMVaEtcx+DOtTakJmskw7WMrAHNqEgUA3xCQoWDe
- +kZhgVFXe/uQz7Zh6/aBN0FKluFhXNis8gF+y0j5w41We4SEsHBQ2tDv6dWlKIUkpXJv
- NuMQ==
+ d=gmail.com; s=20230601; t=1703235663; x=1703840463; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hvABOATJauSvkSqTnUfEfpb2YY1wUplxC8fyiFfoJNA=;
+ b=BH1vDfg3sW66a5dscHJnKp3SlamjS7TDWRjuC2cxksXYkOHeMzQ34WHDYK7ZRj565z
+ 4kggpQo0v7z4rFFJpNZiIc5SMSNrAzhC13Kwy8H2S61jKuy5N0wiX8lxbPguRIrXsJcz
+ Cl3dx5jXChWplwUgjLq1PM2K7KL+mjO98De8YXJb7l0FulBAQ9JDmZ9h2mloCqRZOjST
+ GnMoJm8Al5c2cbY+SbS3SkoU4+cCm86T31O3gnbU5b9WFcP7DF56NyWkeF8o43guh+oH
+ PN8Y0/cdOOCMPrRez2KhvH78P+PlAnuaQ7y21fWZN5+n0yQRLVY5nHNZ/rkzJwvdUF8b
+ VxQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703235660; x=1703840460;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9yAIpgz2Vh0MKn7myhvNTnAj6CrivJQ1z40FyPTPo4A=;
- b=Rp9p/X5XJseZuJ9Zm9tqtnaXN9sT+b2OQVs/poqLvsNFYcUWiBBqNItD1y1NfQPlHn
- VWazvlZNKB3CJM1V//v6xBZXKWKX6q0UCs1bsT+cNxpx3qcm5cCiqGGeCqBm04HMf8oX
- dvLL2lJdlVXdx45hXnhWmTtt7rk7HLXYsyn86pqq5EQ3Wc9qddkJtMdtZT1EJeVSoP/D
- USho4QYJanEJOCqALVDNwwzBHKquscV2tVsrMA1W/OREhBURDE1j3QXjEjATa3berGIm
- ccPLlTDfkN8hz/i1b0uZVPYDOn7zHDN2/BATdr+tfLgk+g8CRFxCxdlLaUKqptFmvR/C
- 5PzQ==
-X-Gm-Message-State: AOJu0YwYSFJJxgBpw5nae8/EPUmLt/eOrKGmpy8+Qzu/bf0Mdn0kPt4t
- NuI+YI23kFkCIq0tiLX8Neo=
-X-Google-Smtp-Source: AGHT+IEbr3uxUm+2S8AOgDuc1pktqVBO/7dV02DFJEJgswOajy2l/V1V51Ixzvzyu72zOLD4TQpmHA==
-X-Received: by 2002:a05:6a20:8e0c:b0:18d:10d7:3313 with SMTP id
- y12-20020a056a208e0c00b0018d10d73313mr1286628pzj.20.1703235659632; 
- Fri, 22 Dec 2023 01:00:59 -0800 (PST)
+ d=1e100.net; s=20230601; t=1703235663; x=1703840463;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hvABOATJauSvkSqTnUfEfpb2YY1wUplxC8fyiFfoJNA=;
+ b=D4vajeyUbO4eTlDwePoISW/XBw5XWG9ICbFrGp9BFtugzlm7TszPsxmPaNk3I/a6Pv
+ YqMKVbZqf2BGYMUoQNzP5rXroGXLtPFMq4P0ZQ03LOF9vpYtz+UmGs6+fIn6Gixs8HD6
+ F0V/tjDwR2BuHXYU3/pQbKmwe6iq4jhcfKlohiNVhT+XUe1dKnrgWgV0X4vjNJbbW7cl
+ 6cIrtei0Bm/T+bKWMWWyVEYr43zl236/GniKcrX26oQkVY4tDT8H5FoVhRFRm+rRDEdt
+ zoF0/V5+LLeV5zv9Urw0A3P/WAFSocMkEAyfrEqe6UWWWeKMDSNDEa6apYMLeQmiJsWp
+ TJqA==
+X-Gm-Message-State: AOJu0Yw/CSO7kauiIokGVIiwjY1X6fK4E8rEmCnr5KQeeuGTDWhwblRT
+ 4tWaIYys/mMAjIt70r/KDbQ=
+X-Google-Smtp-Source: AGHT+IGhWtEpqol/n70fWOtQPCv/l5/XQatLGGrbIXg+l4DVfnjYUXFwCLt1N6LEeqYA3c5Rp0nxYA==
+X-Received: by 2002:a05:6a00:993:b0:6b2:baa0:6d4c with SMTP id
+ u19-20020a056a00099300b006b2baa06d4cmr732656pfg.33.1703235662524; 
+ Fri, 22 Dec 2023 01:01:02 -0800 (PST)
 Received: from localhost.localdomain ([1.245.180.67])
  by smtp.gmail.com with ESMTPSA id
- f23-20020a056a000b1700b006d990040342sm400560pfu.155.2023.12.22.01.00.57
+ f23-20020a056a000b1700b006d990040342sm400560pfu.155.2023.12.22.01.00.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Dec 2023 01:00:58 -0800 (PST)
+ Fri, 22 Dec 2023 01:01:01 -0800 (PST)
 From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>,
  "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>, linux-cxl@vger.kernel.org,
  qemu-devel@nongnu.org
-Subject: [PATCH v2 0/4] A Followup for "QEMU: CXL mailbox rework and features
- (Part 1)"
-Date: Fri, 22 Dec 2023 18:00:47 +0900
-Message-Id: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
+Subject: [PATCH v2 1/4] hw/cxl: fix build error in cxl_type3_stubs.c
+Date: Fri, 22 Dec 2023 18:00:48 +0900
+Message-Id: <20231222090051.3265307-2-42.hyeyoo@gmail.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
+References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=42.hyeyoo@gmail.com; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=42.hyeyoo@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: 0
 X-Spam_score: -0.1
 X-Spam_bar: /
@@ -93,57 +95,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1: https://lore.kernel.org/qemu-devel/20231127105830.2104954-1-42.hyeyoo@gmail.com
+Fix build errors in cxl_type3_stubs.c due to a the incorrect definition
+of the qmp_cxl_{add,release}_dynamic_capacity functions.
 
-Changes from v1:
-    - Added patch 1 that fixes a build failure in Jonathan's tree.
-    - Added patch 3, as (partially) suggested by Davidlohr Buseo.
-      One difference is that I dropped sanitize_running(), because
-      cxl_dev_media_diabled() is enough for checking if the media is
-      disabled (which implies sanitation is in progress)
-    - Added patch 4 that dicards all event logs during sanitation
+Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+---
+ hw/mem/cxl_type3_stubs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-    Thanks everyone for giving feedbacks!
-
-This is a fixup for the recent patch series "QEMU: CXL mailbox rework and
-features (Part 1)" [1].
-
-I don't mind if patch 1 is squashed into the problematic patch, as the
-patch is not mainlined yet. This is based on Jonathan
-Cameron's git tree (https://gitlab.com/jic23/qemu/-/tree/cxl-2023-11-02)
-
-Sequence of Patches:
-
-   1. Fix build error when CXL is not enabled, because of mismatching
-      definition in cxl_type3_stubs.c
+diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
+index 1b54ec028c..d913b11b4d 100644
+--- a/hw/mem/cxl_type3_stubs.c
++++ b/hw/mem/cxl_type3_stubs.c
+@@ -68,14 +68,14 @@ void qmp_cxl_inject_correctable_error(const char *path, CxlCorErrorType type,
+     error_setg(errp, "CXL Type 3 support is not compiled in");
+ }
  
-   2. Make mdev_reg_read() actually read registers, instead of
-      returning a dummy value. This fixes Media Status being incorrectly
-      read as "Enabled" while sanitation is in progress.
-
-   3. Introduce cxl_dev_media_disabled() and replace sanitize_running()
-      with it. Also add an assert() to check the media is correctly disabled
-      during sanitation. (Now enabling when already enabled, or vice versa
-      raises an assert failure.)
-
-   4. Drop all event records during sanitation, as per spec.
-
-[1] https://lore.kernel.org/linux-cxl/20231023160806.13206-1-Jonathan.Cameron@huawei.com
-
-Hyeonggon Yoo (4):
-  hw/cxl: fix build error in cxl_type3_stubs.c
-  hw/cxl/device: read from register values in mdev_reg_read()
-  hw/cxl/mbox: replace sanitize_running() with cxl_dev_media_disabled()
-  hw/cxl/events: discard all event records during sanitation
-
- hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
- hw/cxl/cxl-events.c         | 13 +++++++++++++
- hw/cxl/cxl-mailbox-utils.c  |  7 +++++--
- hw/mem/cxl_type3.c          |  4 ++--
- hw/mem/cxl_type3_stubs.c    |  4 ++--
- include/hw/cxl/cxl_device.h | 16 ++++++++++------
- 6 files changed, 43 insertions(+), 18 deletions(-)
-
+-void qmp_cxl_add_dynamic_capacity(const char *path,
++void qmp_cxl_add_dynamic_capacity(const char *path, uint8_t region_id,
+                                   CXLDCExtentRecordList  *records,
+                                   Error **errp)
+ {
+     error_setg(errp, "CXL Type 3 support is not compiled in");
+ }
+ 
+-void qmp_cxl_release_dynamic_capacity(const char *path,
++void qmp_cxl_release_dynamic_capacity(const char *path, uint8_t region_id,
+                                       CXLDCExtentRecordList  *records,
+                                       Error **errp)
+ {
 -- 
 2.39.3
 
