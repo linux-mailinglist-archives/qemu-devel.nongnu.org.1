@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CD981C9E9
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 13:25:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3033981C9E0
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 13:25:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGeYT-0001a7-94; Fri, 22 Dec 2023 07:23:05 -0500
+	id 1rGeYb-0001ct-7O; Fri, 22 Dec 2023 07:23:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rGeYP-0001Z7-Ci
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:23:01 -0500
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1rGeYY-0001bo-DO
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:23:10 -0500
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rGeYL-00069d-N2
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:23:01 -0500
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-5c21e185df5so1376870a12.1
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 04:22:57 -0800 (PST)
+ id 1rGeYO-00069w-Jn
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:23:10 -0500
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6d7750e2265so1141260b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 04:23:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1703247776; x=1703852576; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1703247779; x=1703852579; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jMiNukS15sXZyEFe1/DpEuyjyQKpRoVTTin9o1fOUjw=;
- b=QmMgr+VHULFWx9+3Kv6cXz7qJmGhSg127781QYqXGJythaZXsT4SX0qUOGNhJYCStH
- Nst1qlTJA3E74mBwoLHnmmZoaiFTjJRSjGGTPlrUT1HgPG4lR6H8+EJeOAICcQE35ns1
- sgrqYZOgzmSN+6XvL90/oTM3kvR+HrPp5hleB0C7ZuMjiRrCWVQp2MI/7EtI7WOYQlhr
- iGxSueVN2kxecZgoLQVlCqDsvJpCv1pX4inqMCKKY9KtzjkHV0Zm8hoc2n9Q5ZddaIJD
- luTsQAOjA6SjVGQE0XXWJ1XTHqM0JZf3TU0+noovIyP1SqugH01gR1iyxNKlgU736oO4
- ZHGA==
+ bh=8l/9hykJG5FQUK8/sY9Emc0HqMF3QSzRWQv9f85u3n8=;
+ b=U11Dda4AxJtIPzESoD/4WtlqlfyYPArW/rz05QVy6X9zdfPvzWUuWQRLNnm9mI9khr
+ /RHD4LfGeGUbbZAEqb2HwrBoUK9SXNOtrriFO7q2Owgq3VFZn0WId4RzK5r8rWArrt41
+ CKPAkgBoffMZJR5AKSIIeTAzfELvv5OyWayp4zkomIreFNda12Y0l31/CE+ZWh+cH9ge
+ mu4McojnEvHoyw75SecJx6uYfiYyaN9PowOvX7YnQ3nxJrZ97uZ9l2WtLykEfqmOku11
+ +4s/+nP6whl1OfZ6WArLbnkBTPw1oMwM8q24d7L+1rBbG17I4mkM91QC4T4OZM9lFJWa
+ 5Iow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703247776; x=1703852576;
+ d=1e100.net; s=20230601; t=1703247779; x=1703852579;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jMiNukS15sXZyEFe1/DpEuyjyQKpRoVTTin9o1fOUjw=;
- b=IVxozQsvAjdsnQUa441AlZnAQeZ2nL99ICRUOeni6Goo/EEUDIKui8F/vnph5+40JV
- 65vBp9OddVHq6Fa/zHPae/+jmZRa8j1r3tpCHxjwN9oPd175mmltSqq9BHC98NLVRn/C
- VKf32MJYfCqKvHbnq6+AtbXD5/YZzR79d4iYT8IMbz5W937NrZljp1K4QURrZXPDoEl4
- gH4iiquum/XRDlTVmoGA6NOht4Tb/DeYM3APWvUu3Ddy4heJ+J4Z/lITQc3lmI99OggC
- xqfa1W2qCyFsJZ5ZlKT6CAzu3kciEtVne0Adw1faFECF7VOhaad10e1e8M+pP8h2duh0
- Fpeg==
-X-Gm-Message-State: AOJu0YyDEunOt5Xe2rfO7sktcEJasT6YniZ2kJ9KP4my1HbSoM137+5Y
- Yy8+WolljY/ouO+R3RAbmHnrx22d0QOu7mbI4fJirOv78KuS+A==
-X-Google-Smtp-Source: AGHT+IF9U3E6k7sk8LhGa8fFxDLg15xPPDAg7iyHuMn9KB6zMu/e+4LLvs8PpHAHb3met77aFFGr0Q==
-X-Received: by 2002:a05:6a20:3d89:b0:190:351b:a2ae with SMTP id
- s9-20020a056a203d8900b00190351ba2aemr1332715pzi.62.1703247775764; 
- Fri, 22 Dec 2023 04:22:55 -0800 (PST)
+ bh=8l/9hykJG5FQUK8/sY9Emc0HqMF3QSzRWQv9f85u3n8=;
+ b=Qqj0Gq4t4DQCOFd26uh/C3aCtb5qGAyUD0+MJJBpfJ/V6EIGaZgkU98ihvzlXpb5Ha
+ qjK5tUkwpstLTg0NvcB4YdHbj+wqjt2Jgd4R9eShxBNIy/KKU/uAptclFz4moDVJ2SNC
+ Ad6RPuxb5KfWBdtThuneCbeuqClGN24AcJ0CykZbETDommXx/ZF4i1bF/jvF3wLU2uTO
+ eoiIF3BpbIZ8ibM7v725jLi4iTyyRSdHy4Iy5ykxmZUvEUaKnTl5Zaf+JgRAEuBHRVwF
+ 2kvWESRX5Z0Iym18q31TITaHXYXJyQjimhVpdTJyofRbGO7ipU0ocdSoqI23KCbEFjbu
+ s/0g==
+X-Gm-Message-State: AOJu0Yy9HuBn6suTBb8GY5BKwfS5mw1ZHemt5AKmqp41auZLXKdA9VoF
+ ufRF48bI0p9PXMCQW6dybhDk/FOX6mE9jgQjdoo5U2UsLeFJjQ==
+X-Google-Smtp-Source: AGHT+IEcJaf47J/vkrb9RM02h0Nx0IvsUc3trOfd5P+AoRaExmZ1Q7YwW+a9OzEll7pVxhgi44VjtQ==
+X-Received: by 2002:a05:6a00:1c85:b0:6d9:6b40:d2f6 with SMTP id
+ y5-20020a056a001c8500b006d96b40d2f6mr984903pfw.2.1703247778879; 
+ Fri, 22 Dec 2023 04:22:58 -0800 (PST)
 Received: from grind.dc1.ventanamicro.com (201-69-66-51.dial-up.telesp.net.br.
  [201.69.66.51]) by smtp.gmail.com with ESMTPSA id
- g14-20020aa7874e000000b006ce7ad8c14esm3274901pfo.164.2023.12.22.04.22.53
+ g14-20020aa7874e000000b006ce7ad8c14esm3274901pfo.164.2023.12.22.04.22.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Dec 2023 04:22:55 -0800 (PST)
+ Fri, 22 Dec 2023 04:22:58 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 05/16] target/riscv: move 'pmp' to riscv_cpu_properties[]
-Date: Fri, 22 Dec 2023 09:22:24 -0300
-Message-ID: <20231222122235.545235-6-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 06/16] target/riscv: rework 'priv_spec'
+Date: Fri, 22 Dec 2023 09:22:25 -0300
+Message-ID: <20231222122235.545235-7-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231222122235.545235-1-dbarboza@ventanamicro.com>
 References: <20231222122235.545235-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,102 +94,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move 'pmp' to riscv_cpu_properties[], creating a new setter() for it
-that forbids 'pmp' to be changed in vendor CPUs, like we did with the
-'mmu' option.
+'priv_spec' and 'vext_spec' are two string options used as a fancy way
+of setting integers in the CPU state (cpu->env.priv_ver and
+cpu->env.vext_ver). It requires us to deal with string parsing and to
+store them in cpu_cfg.
 
-We'll also have to manually set 'pmp = true' to generic CPUs that were
-still relying on the previous default to set it.
+We must support these string options, but we don't need to store them.
+We have a precedence for this kind of arrangement in target/ppc/compat.c,
+ppc_compat_prop_get|set, getters and setters used for the
+'max-cpu-compat' class property of the pseries ppc64 machine. We'll do
+the same with both 'priv_spec' and 'vext_spec'.
+
+For 'priv_spec', the validation from riscv_cpu_validate_priv_spec() will
+be done by the prop_priv_spec_set() setter, while also preventing it to
+be changed for vendor CPUs. Add two helpers that converts env->priv_ver
+back and forth to its string representation. These helpers allow us to
+get a string and set 'env->priv_ver' and return a string giving the
+current env->priv_ver value. In other words, make the cpu->cfg.priv_spec
+string obsolete.
+
+Last but not the least, move the reworked 'priv_spec' option to
+riscv_cpu_properties[].
+
+After all said and done, we don't need to store the 'priv_spec' string in
+the CPU state, and we're now protecting vendor CPUs from priv_ver
+changes:
+
+$ ./build/qemu-system-riscv64 -M virt -cpu sifive-e51,priv_spec="v1.12.0"
+qemu-system-riscv64: can't apply global sifive-e51-riscv-cpu.priv_spec=v1.12.0:
+    CPU 'sifive-e51' does not allow changing the value of 'priv_spec'
+Current 'priv_spec' val: v1.10.0
+$
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c | 37 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
+ target/riscv/cpu.c         | 72 +++++++++++++++++++++++++++++++++++++-
+ target/riscv/cpu.h         |  3 ++
+ target/riscv/cpu_cfg.h     |  1 -
+ target/riscv/tcg/tcg-cpu.c | 29 ---------------
+ 4 files changed, 74 insertions(+), 31 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 080713b9b5..bdb6466c84 100644
+index bdb6466c84..1302d32de3 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -411,6 +411,7 @@ static void riscv_max_cpu_init(Object *obj)
-     RISCVMXL mlx = MXL_RV64;
- 
-     cpu->cfg.mmu = true;
-+    cpu->cfg.pmp = true;
- 
- #ifdef TARGET_RISCV32
-     mlx = MXL_RV32;
-@@ -430,6 +431,7 @@ static void rv64_base_cpu_init(Object *obj)
-     CPURISCVState *env = &cpu->env;
- 
-     cpu->cfg.mmu = true;
-+    cpu->cfg.pmp = true;
- 
-     /* We set this in the realise function */
-     riscv_cpu_set_misa(env, MXL_RV64, 0);
-@@ -559,6 +561,7 @@ static void rv128_base_cpu_init(Object *obj)
-     }
- 
-     cpu->cfg.mmu = true;
-+    cpu->cfg.pmp = true;
- 
-     /* We set this in the realise function */
-     riscv_cpu_set_misa(env, MXL_RV128, 0);
-@@ -575,6 +578,7 @@ static void rv32_base_cpu_init(Object *obj)
-     CPURISCVState *env = &cpu->env;
- 
-     cpu->cfg.mmu = true;
-+    cpu->cfg.pmp = true;
- 
-     /* We set this in the realise function */
-     riscv_cpu_set_misa(env, MXL_RV32, 0);
-@@ -1526,9 +1530,37 @@ static const PropertyInfo prop_mmu = {
-     .set = prop_mmu_set,
+@@ -1560,8 +1560,76 @@ static const PropertyInfo prop_pmp = {
+     .set = prop_pmp_set,
  };
  
--Property riscv_cpu_options[] = {
--    DEFINE_PROP_BOOL("pmp", RISCVCPU, cfg.pmp, true),
-+static void prop_pmp_set(Object *obj, Visitor *v, const char *name,
-+                         void *opaque, Error **errp)
++static int priv_spec_from_str(const char *priv_spec_str)
++{
++    int priv_version = -1;
++
++    if (!g_strcmp0(priv_spec_str, PRIV_VER_1_12_0_STR)) {
++        priv_version = PRIV_VERSION_1_12_0;
++    } else if (!g_strcmp0(priv_spec_str, PRIV_VER_1_11_0_STR)) {
++        priv_version = PRIV_VERSION_1_11_0;
++    } else if (!g_strcmp0(priv_spec_str, PRIV_VER_1_10_0_STR)) {
++        priv_version = PRIV_VERSION_1_10_0;
++    }
++
++    return priv_version;
++}
++
++static const char *priv_spec_to_str(int priv_version)
++{
++    switch (priv_version) {
++    case PRIV_VERSION_1_10_0:
++        return PRIV_VER_1_10_0_STR;
++    case PRIV_VERSION_1_11_0:
++        return PRIV_VER_1_11_0_STR;
++    case PRIV_VERSION_1_12_0:
++        return PRIV_VER_1_12_0_STR;
++    default:
++        return NULL;
++    }
++}
++
++static void prop_priv_spec_set(Object *obj, Visitor *v, const char *name,
++                               void *opaque, Error **errp)
 +{
 +    RISCVCPU *cpu = RISCV_CPU(obj);
-+    bool value;
++    g_autofree char *value = NULL;
++    int priv_version = -1;
 +
-+    visit_type_bool(v, name, &value, errp);
- 
-+    if (cpu->cfg.pmp != value && riscv_cpu_is_vendor(obj)) {
-+        cpu_set_prop_err(cpu, name, errp);
++    visit_type_str(v, name, &value, errp);
++
++    priv_version = priv_spec_from_str(value);
++    if (priv_version < 0) {
++        error_setg(errp, "Unsupported privilege spec version '%s'", value);
 +        return;
 +    }
 +
-+    cpu->cfg.pmp = value;
++    if (priv_version != cpu->env.priv_ver && riscv_cpu_is_vendor(obj)) {
++        cpu_set_prop_err(cpu, name, errp);
++        error_append_hint(errp, "Current '%s' val: %s\n", name,
++                          object_property_get_str(obj, name, NULL));
++        return;
++    }
++
++    cpu->env.priv_ver = priv_version;
 +}
 +
-+static void prop_pmp_get(Object *obj, Visitor *v, const char *name,
-+                         void *opaque, Error **errp)
++static void prop_priv_spec_get(Object *obj, Visitor *v, const char *name,
++                               void *opaque, Error **errp)
 +{
-+    bool value = RISCV_CPU(obj)->cfg.pmp;
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    const char *value = priv_spec_to_str(cpu->env.priv_ver);
 +
-+    visit_type_bool(v, name, &value, errp);
++    visit_type_str(v, name, (char **)&value, errp);
 +}
 +
-+static const PropertyInfo prop_pmp = {
-+    .name = "pmp",
-+    .get = prop_pmp_get,
-+    .set = prop_pmp_set,
++static const PropertyInfo prop_priv_spec = {
++    .name = "priv_spec",
++    .get = prop_priv_spec_get,
++    .set = prop_priv_spec_set,
 +};
 +
-+Property riscv_cpu_options[] = {
-     DEFINE_PROP_STRING("priv_spec", RISCVCPU, cfg.priv_spec),
+ Property riscv_cpu_options[] = {
+-    DEFINE_PROP_STRING("priv_spec", RISCVCPU, cfg.priv_spec),
      DEFINE_PROP_STRING("vext_spec", RISCVCPU, cfg.vext_spec),
  
-@@ -1549,6 +1581,7 @@ static Property riscv_cpu_properties[] = {
-     {.name = "pmu-num", .info = &prop_pmu_num}, /* Deprecated */
- 
+     DEFINE_PROP_UINT16("vlen", RISCVCPU, cfg.vlen, 128),
+@@ -1583,6 +1651,8 @@ static Property riscv_cpu_properties[] = {
      {.name = "mmu", .info = &prop_mmu},
-+    {.name = "pmp", .info = &prop_pmp},
+     {.name = "pmp", .info = &prop_pmp},
  
++    {.name = "priv_spec", .info = &prop_priv_spec},
++
  #ifndef CONFIG_USER_ONLY
      DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
+ #endif
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index cfe965e512..e8a691ca63 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -77,6 +77,9 @@ const char *riscv_get_misa_ext_description(uint32_t bit);
+ #define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
+ 
+ /* Privileged specification version */
++#define PRIV_VER_1_10_0_STR "v1.10.0"
++#define PRIV_VER_1_11_0_STR "v1.11.0"
++#define PRIV_VER_1_12_0_STR "v1.12.0"
+ enum {
+     PRIV_VERSION_1_10_0 = 0,
+     PRIV_VERSION_1_11_0,
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index c67a8731d3..2dba1f0007 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -135,7 +135,6 @@ struct RISCVCPUConfig {
+     bool ext_XVentanaCondOps;
+ 
+     uint32_t pmu_mask;
+-    char *priv_spec;
+     char *vext_spec;
+     uint16_t vlen;
+     uint16_t elen;
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index a09300e908..4d67b72d9e 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -175,29 +175,6 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
+     }
+ }
+ 
+-static void riscv_cpu_validate_priv_spec(RISCVCPU *cpu, Error **errp)
+-{
+-    CPURISCVState *env = &cpu->env;
+-    int priv_version = -1;
+-
+-    if (cpu->cfg.priv_spec) {
+-        if (!g_strcmp0(cpu->cfg.priv_spec, "v1.12.0")) {
+-            priv_version = PRIV_VERSION_1_12_0;
+-        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.11.0")) {
+-            priv_version = PRIV_VERSION_1_11_0;
+-        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.10.0")) {
+-            priv_version = PRIV_VERSION_1_10_0;
+-        } else {
+-            error_setg(errp,
+-                       "Unsupported privilege spec version '%s'",
+-                       cpu->cfg.priv_spec);
+-            return;
+-        }
+-
+-        env->priv_ver = priv_version;
+-    }
+-}
+-
+ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
+                                  Error **errp)
+ {
+@@ -625,12 +602,6 @@ void riscv_tcg_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+     CPURISCVState *env = &cpu->env;
+     Error *local_err = NULL;
+ 
+-    riscv_cpu_validate_priv_spec(cpu, &local_err);
+-    if (local_err != NULL) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
+-
+     riscv_cpu_validate_misa_priv(env, &local_err);
+     if (local_err != NULL) {
+         error_propagate(errp, local_err);
 -- 
 2.43.0
 
