@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD73D81CE5F
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB9581CE56
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:17:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGk4p-00016B-MM; Fri, 22 Dec 2023 13:16:51 -0500
+	id 1rGk4q-00017T-Ps; Fri, 22 Dec 2023 13:16:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGk4l-00013X-Qh
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:48 -0500
+ id 1rGk4o-00015l-1V
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGk4j-0006EI-Bd
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:47 -0500
+ id 1rGk4l-0006Ee-L2
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703269004;
+ s=mimecast20190719; t=1703269007;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y5+MDI+XKw+yOLFVrtp1LkMUsL0OWC+rrUzJzVKEQtI=;
- b=QdFiqT1GnMZj4NXwbrWAU3Fpq0aI3zMRbDtpZZc8dsqQyUEW+uTC2KUvVrKZRnGWMe/liC
- po3FuSpVZqwUdLQIAd3Di68Xyz6vTsZ6+MebAQ/SfLizyDJU5TzlvGPWr1N0EHFSqo52lB
- S7zsDli3B3cmczJH6CoPd7ioHqlhXw0=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dTjIvAkPLdtVRpHX22Ws7b3AAQ+o1Z6sne5FDLaVAl0=;
+ b=jHzJoKGV4z3F2beaa1dRr6bXbs7pmsnYFQAvoBe73GA9dPDGQoV+Omcnoe8ac/9lfy7sw/
+ +0e43Nfb2BUVT806BlgvJuNaePID5Edx5kDAZITGBmeM7zYB4Fv7/GFKw6CtONlY3udcax
+ kHFnoeIpgD5rO8RF/UkTEhJDFUSlrqg=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-7lQujzHiNEWLkUfWqYUZVA-1; Fri, 22 Dec 2023 13:16:43 -0500
-X-MC-Unique: 7lQujzHiNEWLkUfWqYUZVA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a1fa0ed205fso109691166b.2
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:16:43 -0800 (PST)
+ us-mta-392-Uf5yIsvaNX-A9czPd-XCyw-1; Fri, 22 Dec 2023 13:16:45 -0500
+X-MC-Unique: Uf5yIsvaNX-A9czPd-XCyw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a2336545b23so115030866b.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:16:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703269001; x=1703873801;
+ d=1e100.net; s=20230601; t=1703269004; x=1703873804;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y5+MDI+XKw+yOLFVrtp1LkMUsL0OWC+rrUzJzVKEQtI=;
- b=ZLVLAvAvMNUQUaBM/1H+OEQn9VG/Xuf8YmyXO5I7DUnFz8x27Vaw2YRr7XvmnR7pgd
- K8vdz1f3KMPNcrxQQO70/3erHbcrnP0ybVHLldhyJjnOOe6SZ6aYqUpNCi+JiWbcfFSY
- cqRVjw8qNHuuLxEjJzr7kWOspdzsuJ663MH6O1ZHU209JEoBb3V829u4tXirFPvRhOxu
- eYRymkWtN1GVf9RxCT0NecBbgXzvxcP2xc+L3Q3RJRichLAzm7GgqKj7vcyiLyucjG1y
- /xar2CHJBDsaw6T75ktfZyC8l+ueiZcCzdQ9RN6bw6abbm2abMQn2oD3/p4z5BBqjjFi
- XkrA==
-X-Gm-Message-State: AOJu0YyYJfgyxbPIekCvWFKan9somdMb/PE6emfSCELtkpz4cl6uLrze
- 0SAWYq+GVAwyKldoL/WyqZGtFnbs7MTnxW6CeWYebyvK5EiwQV7MMG2BVj2ZQzmtdhF8KOOELqp
- xR9SeROniugw4uy5UIhlH0cz4F/cnvte4ShdrbDve46QKDqH0yqXfgI6aNCRTQMmg5HOhPkRpzf
- plUknbZuM=
-X-Received: by 2002:a17:906:134a:b0:a26:8683:bc6c with SMTP id
- x10-20020a170906134a00b00a268683bc6cmr848526ejb.36.1703269001645; 
- Fri, 22 Dec 2023 10:16:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFC4h9xa/Y2QQjtdjcEM7D8NZnor89RIpndHnqIiNPqreCBNcYvR0K0HaIvg1km2Q9V+Nx8qw==
-X-Received: by 2002:a17:906:134a:b0:a26:8683:bc6c with SMTP id
- x10-20020a170906134a00b00a268683bc6cmr848523ejb.36.1703269001336; 
- Fri, 22 Dec 2023 10:16:41 -0800 (PST)
+ bh=dTjIvAkPLdtVRpHX22Ws7b3AAQ+o1Z6sne5FDLaVAl0=;
+ b=KiPHtRXnQRSypuR9yWejL9kRyoq/Yrc1TdX6F0HnTAWUIBnNwXb8eK8H+nDXqXpsON
+ IgSxPjUvGwFz7LtpOMXh5izf1nB5gOpBgde4F3DmUDH/S4HlfK7sroNr1QVeYoJf7gze
+ pa2dZNla2Ffby74gL4HddFoeuhZGgu49+rH6+8tdoQ5yEEtvbd3wo7f04z/GzmqOnP/e
+ pESAz4bqik3f9z+kCnG420H2fXZAU81n9WdTzeYuEmNWDZqWsjhTijomGi73WaroyCg/
+ bIRlTJxwTJeLE2aNQL12kF98ZqAoD8rjQ0kFUIzhKvSi+6H55AcnXM8x18hXNCwVfIGI
+ ywfA==
+X-Gm-Message-State: AOJu0YyC56PL+352YgMFdMV07BI/1bWKcjBo7RMbR8E02lQaS0zfJ+Eb
+ si3Fyd723auScYggso4OBr0SWGMuOf3S9EGZ4rWtBpXTtOxiQhGa+CCNm395VeLMD5cbfF+an4e
+ doihfY9IyHcBrvleCtbCv/abZ9dvyn6RDVFcyjJGqF7xkbaoVr1Vq+VShZh+oC2FId/QsP9oH8e
+ g0rr+IRIs=
+X-Received: by 2002:a50:d50f:0:b0:552:e43d:cc7c with SMTP id
+ u15-20020a50d50f000000b00552e43dcc7cmr1252329edi.16.1703269003954; 
+ Fri, 22 Dec 2023 10:16:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IExM9XeS34tMLAYfJm/UwgDf5Z6oYpkKGwWVDjfYJFjnEzEyVHBKgW9xORbT9887beB1uhx7A==
+X-Received: by 2002:a50:d50f:0:b0:552:e43d:cc7c with SMTP id
+ u15-20020a50d50f000000b00552e43dcc7cmr1252322edi.16.1703269003560; 
+ Fri, 22 Dec 2023 10:16:43 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- p9-20020a1709060dc900b00a236193fe3dsm2273848eji.182.2023.12.22.10.16.40
- for <qemu-devel@nongnu.org>
+ d5-20020a50fe85000000b0054cb88a353dsm2850195edt.14.2023.12.22.10.16.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Dec 2023 10:16:40 -0800 (PST)
+ Fri, 22 Dec 2023 10:16:42 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 19/22] target/i386: move operand load and writeback out of
- gen_cmovcc1
-Date: Fri, 22 Dec 2023 19:16:00 +0100
-Message-ID: <20231222181603.174137-20-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 20/22] target/i386: adjust decoding of J operand
+Date: Fri, 22 Dec 2023 19:16:01 +0100
+Message-ID: <20231222181603.174137-21-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231222181603.174137-1-pbonzini@redhat.com>
 References: <20231222181603.174137-1-pbonzini@redhat.com>
@@ -102,63 +101,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similar to gen_setcc1, make gen_cmovcc1 receive TCGv.  This is more friendly
-to simultaneous implementation in the old and the new decoder.
+gen_jcc() has been changed to accept a relative offset since the
+new decoder was written.  Adjust the J operand, which is meant
+to be used with jump instructions such as gen_jcc(), to not
+include the program counter and to not truncate the result, as
+both operations are now performed by common code.
 
-A small wart is that s->T0 of CMOV is currently the *second* argument (which
-would ordinarily be in T1).  Therefore, the condition has to be inverted in
-order to overwrite s->T0 with cpu_regs[reg] if the MOV is not performed.
+The result is that J is now the same as the I operand.
 
-This only applies to the old decoder, and this code will go away soon.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ target/i386/tcg/decode-new.c.inc | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index c7d48088418..53b98d5e6ac 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -2500,14 +2500,10 @@ static void gen_jcc(DisasContext *s, int b, int diff)
-     gen_jmp_rel(s, s->dflag, diff, 0);
- }
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 99d18d2871e..f30889dbc0a 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -1329,19 +1329,9 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
+         }
  
--static void gen_cmovcc1(CPUX86State *env, DisasContext *s, MemOp ot, int b,
--                        int modrm, int reg)
-+static void gen_cmovcc1(DisasContext *s, int b, TCGv dest, TCGv src)
- {
--    CCPrepare cc;
-+    CCPrepare cc = gen_prepare_cc(s, b, s->T1);
- 
--    gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
+     case X86_TYPE_I:  /* Immediate */
+-        op->unit = X86_OP_IMM;
+-        decode->immediate = insn_get_signed(env, s, op->ot);
+-        break;
 -
--    cc = gen_prepare_cc(s, b, s->T1);
-     if (cc.mask != -1) {
-         TCGv t0 = tcg_temp_new();
-         tcg_gen_andi_tl(t0, cc.reg, cc.mask);
-@@ -2517,9 +2513,7 @@ static void gen_cmovcc1(CPUX86State *env, DisasContext *s, MemOp ot, int b,
-         cc.reg2 = tcg_constant_tl(cc.imm);
-     }
- 
--    tcg_gen_movcond_tl(cc.cond, s->T0, cc.reg, cc.reg2,
--                       s->T0, cpu_regs[reg]);
--    gen_op_mov_reg_v(s, ot, reg, s->T0);
-+    tcg_gen_movcond_tl(cc.cond, dest, cc.reg, cc.reg2, src, dest);
- }
- 
- static inline void gen_op_movl_T0_seg(DisasContext *s, X86Seg seg_reg)
-@@ -5238,7 +5232,9 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-         ot = dflag;
-         modrm = x86_ldub_code(env, s);
-         reg = ((modrm >> 3) & 7) | REX_R(s);
--        gen_cmovcc1(env, s, ot, b, modrm, reg);
-+        gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
-+        gen_cmovcc1(s, b ^ 1, s->T0, cpu_regs[reg]);
-+        gen_op_mov_reg_v(s, ot, reg, s->T0);
+     case X86_TYPE_J:  /* Relative offset for a jump */
+         op->unit = X86_OP_IMM;
+         decode->immediate = insn_get_signed(env, s, op->ot);
+-        decode->immediate += s->pc - s->cs_base;
+-        if (s->dflag == MO_16) {
+-            decode->immediate &= 0xffff;
+-        } else if (!CODE64(s)) {
+-            decode->immediate &= 0xffffffffu;
+-        }
          break;
  
-         /************************/
+     case X86_TYPE_L:  /* The upper 4 bits of the immediate select a 128-bit register */
 -- 
 2.43.0
 
