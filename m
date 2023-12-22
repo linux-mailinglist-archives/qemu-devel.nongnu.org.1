@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73F681C714
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 10:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB7081C715
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 10:02:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGbP4-0005Bd-I1; Fri, 22 Dec 2023 04:01:10 -0500
+	id 1rGbP7-0005CO-ME; Fri, 22 Dec 2023 04:01:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1rGbP2-0005BU-Ol
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:01:08 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1rGbP5-0005C1-SL
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:01:11 -0500
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1rGbP1-0002VB-3V
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:01:08 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6d2350636d6so1535857b3a.2
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 01:01:06 -0800 (PST)
+ id 1rGbP4-0002VN-58
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:01:11 -0500
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-5cd86e3a9afso1137891a12.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 01:01:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1703235665; x=1703840465; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1703235669; x=1703840469; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=boKgDX4Lvl1vtOxGhAvwh9bjFCyA3++fBUjABFhAblo=;
- b=e/Ekofny4Zju95KkGLTyOfC/WKHN3geqraR5mowJw/5NdiPlnYx2YrPPTRXUenQr1l
- IiryBGKoINqJcBSxLmu0fjQl4LghNAflH8DnHPT2LuEgR/Q9V00SsNBvKBRMDO2sQvwo
- r3a0fO5l0FXhexCSJ0Aa68yeEVhE5c+Yv2UGqtGGJxqukGEAjBuUPSETbQNT1cr6g59k
- EUH67g7XGRRejkx3DtLYpDURMEKAGEnLh+Bitq3KTUcWi/oA596aMZ0Vahit3vcmjY2p
- GnmW8KHuPH4yGpKUZKDMbvRgQXuTQ7nl/FHWteafbrT8pI6EW2LbuXd2ssyRhieNqAdT
- 2c1A==
+ bh=Pze2Cv/T1AorC9TH3ggyhouTOliDmqm2cL056dpXiT8=;
+ b=fCcmmmjXC3Ch8x+uAeGgSA0Jqtwc4oldQ3nAAilXa1EWBzuYreMEcieE9Ghl4lpjkE
+ d3DjHVDrH2bRjJiqQM4UrHmypwQFHDy1B2lVD9rcgb6NtEulD1LMMLgO8hxLtMsJMte/
+ +KOY1NvCsmeA6KBG2djJ/10ZI+f94Ys+Z/mXI4qSr6y7jSWkX6AFqW+Yar/+oM4RMAmd
+ BvAmQQFzZ1SkW1nmPQa1zHZHQVD4tR2aONALr0IKB6ywYIhJqeoxcc/lMasO6JX6ZUBN
+ sKePe+lDlRqs6b/vNY9lUxvh8l5NSB350oAi8wnK2CVNbkyFmlYwu45oRKmpV6Hl5YsU
+ tvXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703235665; x=1703840465;
+ d=1e100.net; s=20230601; t=1703235669; x=1703840469;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=boKgDX4Lvl1vtOxGhAvwh9bjFCyA3++fBUjABFhAblo=;
- b=XbGtCsA3f7xEq4UeedGEAwoQH6QoVAkEtmEOC5YAJDhUoG/ZrwQ+yJQJ1xpiCgJ3gq
- +5/5kkeekahDfOfVDTMq02fMU/h8Ay6qiEZnksiXiWQP2ImPAZb/EjMc3mggmFaaHFEk
- bFs5AQ2mV8p9/zPGVcrfuY3AVtHlhHlnhWjS7mk6eJTSaSriz4B8ml0fJnJVkHS8203h
- xwCPJ7RD0jsMwd+T4oi7/kLL15GTtNjNpwGawlHDegH+bw9FFYQHgRYiwzyoaiWbs4pB
- MpfQ2Z8rKHy36YRjbfNFjrchXfolxtjJLeummU+PL7uDl8rVvZbvM2DpXLmcKEUEF3mO
- Xxrw==
-X-Gm-Message-State: AOJu0YwFJG3aRp1oUFKBntZh9k6QC6udxNsAuN4o3Hoza1CZ3EjMgXU5
- JXvxdsD/U8RYvzyZfmKZii0=
-X-Google-Smtp-Source: AGHT+IETskAy68zOVeR/Q/Oxdx5/PrTDs3S/QqTI7jdFInnq4s3g5TIrI8rTadDT8T3mGuNny9GHng==
-X-Received: by 2002:aa7:84d0:0:b0:6d9:5d0f:bee8 with SMTP id
- x16-20020aa784d0000000b006d95d0fbee8mr1106915pfn.10.1703235665406; 
- Fri, 22 Dec 2023 01:01:05 -0800 (PST)
+ bh=Pze2Cv/T1AorC9TH3ggyhouTOliDmqm2cL056dpXiT8=;
+ b=aWiJkoHalXT+ZSHh7w3AZxLNPcpF2AhUc8XjrxBrlsoM2qoZUJ5OXsz7sP66E+TZNz
+ hCwHWhdjwQXrFa+fWVVlwq9UeqDiCG14pn9yGnG9cGHdySPDKqIf2dEuZ7FcrLMX4gnd
+ GbIJPOA0FmKK0AV87AVC8NFCq/7xhvijw3WwzgT5nkVuKZ2MJzqL4nZR12uat7XZ3vJJ
+ DfkV/8LG9NkvNE+K/EZhLF6emK4QS5ymTVo+qTKMlCM4ESlwVUOxo4i5qsCFrWEYoM3V
+ skeAADfg4NR7bBnWFZvPabqDbLgUuD2iZckwbZmVYnnIrDExIfE7uZEcxVFNxKDVhs9M
+ aBWQ==
+X-Gm-Message-State: AOJu0YxmEUnViir6hUqSn+tdEUGTail2pNi21uM/nPF2koYzb8VQsgmh
+ fiZwjlwDPgsekBJHyF7ceYQ=
+X-Google-Smtp-Source: AGHT+IFugj/FMKrijP+kRxUM50nlGrQTcMl7Fd4knps99Pd2Lf7vMloX5ys0XXcnF4fFb4l4YI2U5g==
+X-Received: by 2002:a05:6a20:8814:b0:194:ffaa:a2c3 with SMTP id
+ c20-20020a056a20881400b00194ffaaa2c3mr966439pzf.1.1703235668571; 
+ Fri, 22 Dec 2023 01:01:08 -0800 (PST)
 Received: from localhost.localdomain ([1.245.180.67])
  by smtp.gmail.com with ESMTPSA id
- f23-20020a056a000b1700b006d990040342sm400560pfu.155.2023.12.22.01.01.02
+ f23-20020a056a000b1700b006d990040342sm400560pfu.155.2023.12.22.01.01.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Dec 2023 01:01:04 -0800 (PST)
+ Fri, 22 Dec 2023 01:01:07 -0800 (PST)
 From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>,
  Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>,
  "Michael S . Tsirkin" <mst@redhat.com>
 Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>, linux-cxl@vger.kernel.org,
  qemu-devel@nongnu.org
-Subject: [PATCH v2 2/4] hw/cxl/device: read from register values in
- mdev_reg_read()
-Date: Fri, 22 Dec 2023 18:00:49 +0900
-Message-Id: <20231222090051.3265307-3-42.hyeyoo@gmail.com>
+Subject: [PATCH v2 3/4] hw/cxl/mbox: replace sanitize_running() with
+ cxl_dev_media_disabled()
+Date: Fri, 22 Dec 2023 18:00:50 +0900
+Message-Id: <20231222090051.3265307-4-42.hyeyoo@gmail.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
 References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=42.hyeyoo@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=42.hyeyoo@gmail.com; helo=mail-pg1-x529.google.com
 X-Spam_score_int: 0
 X-Spam_score: -0.1
 X-Spam_bar: /
@@ -96,78 +96,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the current mdev_reg_read() implementation, it consistently returns
-that the Media Status is Ready (01b). This was fine until commit
-25a52959f99d ("hw/cxl: Add support for device sanitation") because the
-media was presumed to be ready.
+The spec states that reads/writes should have no effect and a part of
+commands should be ignored when the media is disabled, not when the
+sanitize command is running.
 
-However, as per the CXL 3.0 spec "8.2.9.8.5.1 Sanitize (Opcode 4400h)",
-during sanitation, the Media State should be set to Disabled (11b). The
-mentioned commit correctly sets it to Disabled, but mdev_reg_read()
-still returns Media Status as Ready.
+Introduce cxl_dev_media_disabled() to check if the media is disabled and
+replace sanitize_running() with it.
 
-To address this, update mdev_reg_read() to read register values instead
-of returning dummy values.
+Make sure that the media has been correctly disabled during sanitation
+by adding an assert to __toggle_media(). Now, enabling when already
+enabled or vice versa results in an assert() failure.
 
-Fixes: commit 25a52959f99d ("hw/cxl: Add support for device sanitation")
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Suggested-by: Davidlohr Bueso <dave@stgolabs.net>
 Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 ---
- hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
- include/hw/cxl/cxl_device.h |  4 +++-
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ hw/cxl/cxl-mailbox-utils.c  |  6 ++++--
+ hw/mem/cxl_type3.c          |  4 ++--
+ include/hw/cxl/cxl_device.h | 11 ++++++-----
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-index 29de298117..ba3f80e6e7 100644
---- a/hw/cxl/cxl-device-utils.c
-+++ b/hw/cxl/cxl-device-utils.c
-@@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque, hwaddr offset, uint64_t value,
- 
- static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size)
- {
--    uint64_t retval = 0;
--
--    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
--    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
-+    CXLDeviceState *cxl_dstate = opaque;
- 
--    return retval;
-+    return cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
- }
- 
- static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
-@@ -371,7 +368,15 @@ static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
-     cxl_dstate->mbox_msi_n = msi_n;
- }
- 
--static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
-+static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
-+{
-+    uint64_t memdev_status_reg;
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 11ec8b648b..efeb5f8174 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -2248,6 +2248,8 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+     int ret;
+     const struct cxl_cmd *cxl_cmd;
+     opcode_handler h;
++    CXLDeviceState *cxl_dstate = &CXL_TYPE3(cci->intf)->cxl_dstate;
 +
-+    memdev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
-+    memdev_status_reg = FIELD_DP64(memdev_status_reg, CXL_MEM_DEV_STS,
-+                                   MBOX_READY, 1);
-+    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = memdev_status_reg;
-+}
  
- void cxl_device_register_init_t3(CXLType3Dev *ct3d)
- {
+     *len_out = 0;
+     cxl_cmd = &cci->cxl_cmd_set[set][cmd];
+@@ -2268,8 +2270,8 @@ int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+         return CXL_MBOX_BUSY;
+     }
+ 
+-    /* forbid any selected commands while overwriting */
+-    if (sanitize_running(cci)) {
++    /* forbid any selected commands while the media is disabled */
++    if (cxl_dev_media_disabled(cxl_dstate)) {
+         if (h == cmd_events_get_records ||
+             h == cmd_ccls_get_partition_info ||
+             h == cmd_ccls_set_lsa ||
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 85fc08f118..ecb525a608 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1286,7 +1286,7 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+         return MEMTX_ERROR;
+     }
+ 
+-    if (sanitize_running(&ct3d->cci)) {
++    if (cxl_dev_media_disabled(&ct3d->cxl_dstate)) {
+         qemu_guest_getrandom_nofail(data, size);
+         return MEMTX_OK;
+     }
+@@ -1314,7 +1314,7 @@ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+         return MEMTX_ERROR;
+     }
+ 
+-    if (sanitize_running(&ct3d->cci)) {
++    if (cxl_dev_media_disabled(&ct3d->cxl_dstate)) {
+         return MEMTX_OK;
+     }
+ 
 diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index b2cb280e16..b318d94b36 100644
+index b318d94b36..5618061ebe 100644
 --- a/include/hw/cxl/cxl_device.h
 +++ b/include/hw/cxl/cxl_device.h
-@@ -408,7 +408,9 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
- {
-     uint64_t dev_status_reg;
- 
--    dev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val);
-+    dev_status_reg = cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
-+    dev_status_reg = FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS,
-+                                val);
+@@ -411,6 +411,7 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
+     dev_status_reg = cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
+     dev_status_reg = FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS,
+                                 val);
++    assert(dev_status_reg != cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS]);
      cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = dev_status_reg;
  }
  #define cxl_dev_disable_media(cxlds)                    \
+@@ -418,14 +419,14 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
+ #define cxl_dev_enable_media(cxlds)                     \
+         do { __toggle_media((cxlds), 0x1); } while (0)
+ 
+-static inline bool scan_media_running(CXLCCI *cci)
++static inline bool cxl_dev_media_disabled(CXLDeviceState *cxl_dstate)
+ {
+-    return !!cci->bg.runtime && cci->bg.opcode == 0x4304;
++    uint64_t dev_status_reg = cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS];
++    return FIELD_EX64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS) == 0x3;
+ }
+-
+-static inline bool sanitize_running(CXLCCI *cci)
++static inline bool scan_media_running(CXLCCI *cci)
+ {
+-    return !!cci->bg.runtime && cci->bg.opcode == 0x4400;
++    return !!cci->bg.runtime && cci->bg.opcode == 0x4304;
+ }
+ 
+ typedef struct CXLError {
 -- 
 2.39.3
 
