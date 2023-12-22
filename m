@@ -2,72 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C068A81C843
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 11:38:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D5981C961
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 12:50:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGcv6-0000EP-Ka; Fri, 22 Dec 2023 05:38:20 -0500
+	id 1rGe1X-0004e6-5w; Fri, 22 Dec 2023 06:49:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGcv4-0000EC-GS
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 05:38:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGcv2-0002yL-Pu
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 05:38:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703241495;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=o0BSyKkgp4Ck20HWn4xpEfLbAblV38ipvHBs2yMK1ss=;
- b=GTYFHhAxbp1NmNARURLKZipRDqSLAoAzRRvPC1toMjH+GvYtcLx6EvpvGu2G8jCAcwrdTN
- wt51wEvCNv3ZBkHcpQgNuA7Zfxm+CwNf1+xoEC0D1pf7P8vQ2pZYIb0fGB66D8h0Wlwu1R
- Scy2SAJ5jTRe51AsxSLU4ldHJ0Ro/0Y=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-265-JeS3pqRrM8aa6HUjW_Zb3A-1; Fri,
- 22 Dec 2023 05:38:12 -0500
-X-MC-Unique: JeS3pqRrM8aa6HUjW_Zb3A-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D43433C02750;
- Fri, 22 Dec 2023 10:38:11 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B39F9492BFA;
- Fri, 22 Dec 2023 10:38:11 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AE2A821E6920; Fri, 22 Dec 2023 11:38:10 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  Juan Quintela
- <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Claudio Fontana <cfontana@suse.de>,  Eric Blake
- <eblake@redhat.com>
-Subject: Re: [RFC PATCH v3 23/30] migration: Add direct-io parameter
-In-Reply-To: <20231127202612.23012-24-farosas@suse.de> (Fabiano Rosas's
- message of "Mon, 27 Nov 2023 17:26:05 -0300")
-References: <20231127202612.23012-1-farosas@suse.de>
- <20231127202612.23012-24-farosas@suse.de>
-Date: Fri, 22 Dec 2023 11:38:10 +0100
-Message-ID: <87v88qttd9.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rGe1P-0004Wv-9W
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 06:48:56 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rGe1N-00040e-KB
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 06:48:55 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40d3352b525so17400815e9.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 03:48:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1703245731; x=1703850531; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UcNQNKUtd9L8dnm/vomapOEDlbZmNJZwoNMjNIrhxbQ=;
+ b=FO2gbRugLjRZz4SuT1pZpl+jii6BXpKk/IGjWAzokaoPe1XQ9ZQF7ElDOGKE4+R15y
+ rl5a46bDvEhRCvOA0MlSa25CI8dxVmMaLpEmDmfgAexdVcuoMFI5+7NseI9edgaT5Jgc
+ oNOOgstamFWhHYJnMR48dgbih8IjdC+QwjvQhhuGvRHuUe35so4oNw8/9sKIGP2OsYzZ
+ E2TYNkr0NKWjrW0NhCwDYqdJtO6s5niOlijLHK0VyzRGN0jHrvcta1QDF9pvcyDUFY0M
+ 18pTFfffxSxGml6JYP4DOiFwbIZjJyGK21bGdk4VPkDOSrZUzBnLZ1V6oXP7KI7Y1BSq
+ 7QGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703245731; x=1703850531;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UcNQNKUtd9L8dnm/vomapOEDlbZmNJZwoNMjNIrhxbQ=;
+ b=NCIGMRNWA5pRLlXZSsQYWvoVK8V9XuKFFo1434y2+sL2vGEV4pI/4krC1BIbuXUh2s
+ cP4aZtA7FpbcUz7STXI8Wd/XOBj21osFs66go0J3JA7Wsclpl2CpHStANWnp7Q1l8U10
+ 1B2Vu9JINH6Ci3fHLjoAHYJpLwIejT4UheFv4xS5Y45watZ9oMhtlrSFjiepvI/pgPoR
+ 36PVTMNp/0gyr9qS+pvpSJwYQpavNo8RJXgWcSsxJnPY0yVgnkGXKM9L1r/e21c1ZoG4
+ NsCK9NUPiGJN+tfK9NDrgv2dhV7P0XI0fkSFsXMNkLoQGCqQ7gjwLTdBc6+aFQssy9ba
+ lK4g==
+X-Gm-Message-State: AOJu0YxvxnSQfQw9SGBeD+FTRJ/eeXgBjrYKELXB6TPiSvV6tU2Ay1ew
+ VJbi0TPSZiXpNafytt3O5YqXiqrJKG2xog==
+X-Google-Smtp-Source: AGHT+IF2hgTqfsWJOzqa9Mam5npQ2LepoS2I8F79+wg/7MbILGYxWJTcLjDn3bBRPJyDYS79hzgFUA==
+X-Received: by 2002:a05:600c:3093:b0:40c:2b4c:e9c with SMTP id
+ g19-20020a05600c309300b0040c2b4c0e9cmr726458wmn.102.1703245731545; 
+ Fri, 22 Dec 2023 03:48:51 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ g3-20020a05600c310300b0040c6b2c8fa9sm14495936wmo.41.2023.12.22.03.48.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 22 Dec 2023 03:48:51 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id D00915F76B;
+ Fri, 22 Dec 2023 11:48:50 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH] meson.build: report graphics backends
+Date: Fri, 22 Dec 2023 11:48:46 +0000
+Message-Id: <20231222114846.2850741-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,92 +96,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+To enable accelerated VirtIO GPUs for the guest we need the rendering
+support on the host but currently it's not reported in the
+configuration summary. Add a graphics backend section and report the
+status of the VirGL and Rutabaga support libraries.
 
-> Add the direct-io migration parameter that tells the migration code to
-> use O_DIRECT when opening the migration stream file whenever possible.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ meson.build | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Why is that useful?
-
-> This is currently only used with fixed-ram migration for the multifd
-> channels that transfer the RAM pages. Those channels only transfer the
-> pages and are guaranteed to perform aligned writes.
->
-> However the parameter could be made to affect other types of
-> file-based migrations in the future.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-
-[...]
-
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 3b93e13743..1d38619842 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -878,6 +878,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @direct-io: Open migration files with O_DIRECT when possible. This
-> +#     requires that the 'fixed-ram' capability is enabled. (since 9.0)
-
-Two spaces between sentences for consistency, please.
-
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -911,7 +914,8 @@
->             'block-bitmap-mapping',
->             { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
->             'vcpu-dirty-limit',
-> -           'mode'] }
-> +           'mode',
-> +           'direct-io'] }
->  
->  ##
->  # @MigrateSetParameters:
-> @@ -1066,6 +1070,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @direct-io: Open migration files with O_DIRECT when possible. This
-> +#     requires that the 'fixed-ram' capability is enabled. (since 9.0)
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -1119,7 +1126,8 @@
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
->                                              'features': [ 'unstable' ] },
->              '*vcpu-dirty-limit': 'uint64',
-> -            '*mode': 'MigMode'} }
-> +            '*mode': 'MigMode',
-> +            '*direct-io': 'bool' } }
->  
->  ##
->  # @migrate-set-parameters:
-> @@ -1294,6 +1302,9 @@
->  # @mode: Migration mode. See description in @MigMode. Default is 'normal'.
->  #        (Since 8.2)
->  #
-> +# @direct-io: Open migration files with O_DIRECT when possible. This
-> +#     requires that the 'fixed-ram' capability is enabled. (since 9.0)
-> +#
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -1344,7 +1355,8 @@
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
->                                              'features': [ 'unstable' ] },
->              '*vcpu-dirty-limit': 'uint64',
-> -            '*mode': 'MigMode'} }
-> +            '*mode': 'MigMode',
-> +            '*direct-io': 'bool' } }
->  
->  ##
->  # @query-migrate-parameters:
-
-[...]
+diff --git a/meson.build b/meson.build
+index 6c77d9687de..93868568870 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4307,6 +4307,12 @@ summary_info += {'curses support':    curses}
+ summary_info += {'brlapi support':    brlapi}
+ summary(summary_info, bool_yn: true, section: 'User interface')
+ 
++# Graphics backends
++summary_info = {}
++summary_info += {'VirGL support':     virgl}
++summary_info += {'Rutabaga support':  rutabaga}
++summary(summary_info, bool_yn: true, section: 'Graphics backends')
++
+ # Audio backends
+ summary_info = {}
+ if targetos not in ['darwin', 'haiku', 'windows']
+-- 
+2.39.2
 
 
