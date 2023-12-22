@@ -2,170 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994EB81C329
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 03:42:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0C081C327
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 03:40:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGVUF-0002mx-Sw; Thu, 21 Dec 2023 21:42:07 -0500
+	id 1rGVRd-0001VB-Iw; Thu, 21 Dec 2023 21:39:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rGVUD-0002mS-Rw
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 21:42:05 -0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rGVRc-0001V3-6B
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 21:39:24 -0500
 Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rGVTz-0006dK-RX
- for qemu-devel@nongnu.org; Thu, 21 Dec 2023 21:42:04 -0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rGVRY-0006CD-IG
+ for qemu-devel@nongnu.org; Thu, 21 Dec 2023 21:39:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1703212911; x=1734748911;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=X6F2fT0TqHe14Yb/CfpYHcyDbu/7lTurHX9JA0pkHz4=;
- b=SueZJF5wO1pPjWhGLnJLzD+xnpxKhfGp12XVY18UhuJQ2Awc9O04OJX3
- bTQ/NyG7b9XtntGzacy4EeYbHbi17lKHdO8ZeyPx+U3W08sEu3gZXG9/e
- BC6tgbLi6eJxgordtVuumkhuIpeo4pUhtBwyukimQlMJU+nI1nbiFGroF
- GxMD4Wp34slW7a9QQF/Hp2Q5rwPelpRbjfwQWNf7DoX5R2tLncm4d7LkR
- ZrttozOXJ/gDF0QAsTS9ya15GTLrtZJLrO4/As1MdjgBmH7RE/B+JBQq4
- 335OP9DEzdpZwTXemmsVYaJrukZ+S2BQgRcUnR8MJ408M869W17CqkHzU w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10931"; a="482246930"
-X-IronPort-AV: E=Sophos;i="6.04,294,1695711600"; d="scan'208";a="482246930"
+ t=1703212760; x=1734748760;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=dLkGgMC0DfH14pIkalJZKcH9b50EH0HfcncA2kI1l1w=;
+ b=gKeen6kejs7t1CkhPfQsCGaKu0rlk6jcRd2xcdP3GXoMqb1wa6Rg0hF0
+ 06UV87SVmR0axHKxe8GKkG7ptvlXBXl+kICEj25ZI+W7/v5vxXV9tE5fS
+ s4GWMP4n/G5le60VSYW45jedBPSBeQaBgxI89GKnnmL5h/R1flet+TF4A
+ SLqDmQ/dh54q+R3gIPXlTUPF6FqXQWWJvfJSp5F244OR5eOSngh7PMcXJ
+ Tz5O2lP2Bi0LEfMxunbcXriyf6wBDzil1zSEZJxocjBChaQrwW1PNYfeR
+ 8SCMf5A5rJxmj+ilnDlGfKbJNfbWCp/QG6ETTK2rtLCn6dF47XkMC07Uk w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10931"; a="482246581"
+X-IronPort-AV: E=Sophos;i="6.04,294,1695711600"; d="scan'208";a="482246581"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Dec 2023 18:41:49 -0800
+ 21 Dec 2023 18:39:16 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10931"; a="753139218"
-X-IronPort-AV: E=Sophos;i="6.04,294,1695711600"; d="scan'208";a="753139218"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by orsmga006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 21 Dec 2023 18:41:49 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 21 Dec 2023 18:41:48 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 21 Dec 2023 18:41:48 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.101)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 21 Dec 2023 18:41:47 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Earhtzj+bnTrfFJ2H7JsDPWB/KZV/wbt2+q9DnfPoK7M5BXOE1fh2ncjwrgDwNIMDKtWOS+rn+64mE9Gp9klCRvmS+qbi4EgcZfMhfbUHTAAtu3mTEWOJ0m6Mlz86Q5PN/aXCC2DQrXUVof+qniKJ9wVXIctUiPQdB17Ay9t+l6KBlSTTb1ADqu7ANVgWewq+7PYw1L+JBF+Dr1OO1WwYCgoUDsAcqndVT8EKJ+nqJn1WPOrkwui7exxzsReSOctSkkexBuMaaggUGBg9JyM5tp6EKGDb8vUJfkO3s72pQuDIL8fx5IFlSrE/W15cogYpip5TC4z5UY4K0VaPTyFTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X6F2fT0TqHe14Yb/CfpYHcyDbu/7lTurHX9JA0pkHz4=;
- b=jZ4Uwt+OhI692t2yGZ+pogY63Cho5AAy1CY0mo32G3Y9DC50Vzo2jXBHbDGbIIL06ZyrkcaLdYwxFvl7jc/HVaiCt35MweW545gmHohL+ED/p0Uncaw/IrdFkDqlF7EPR/Pwi/Cwr0xL+Cy64hnorCfhMc9XMUvLrdI6/64qJUekH5rFPKRvXUIrKk3GfYruEAXspGuOh5J+fqJq9/Q0i9NCqXgfxTAt5Blkp5cgl7CjW/YcsJZAYtogJwBE28uxlRthsJ2gD+KSV9/px2E4d2GRDA45qqI1fSI0yGBAD93bHmq17P++mVVySvfNEfbzcdZRtDtWt58BlH5ZciTFog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by DM4PR11MB6119.namprd11.prod.outlook.com (2603:10b6:8:b0::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.20; Fri, 22 Dec
- 2023 02:41:40 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::a4bb:8de0:9dde:2fea%4]) with mapi id 15.20.7091.034; Fri, 22 Dec 2023
- 02:41:40 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: Eric Auger <eric.auger@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Richard Henderson <richard.henderson@linaro.org>, 
- Nicholas Piggin <npiggin@gmail.com>, Harsh Prateek Bora
- <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, Eric Farman
- <farman@linux.ibm.com>, Alex Williamson <alex.williamson@redhat.com>, Matthew
- Rosato <mjrosato@linux.ibm.com>, "Liu, Yi L" <yi.l.liu@intel.com>, Nicolin
- Chen <nicolinc@nvidia.com>
-Subject: RE: [PULL 20/47] backends/iommufd: Introduce the iommufd object
-Thread-Topic: [PULL 20/47] backends/iommufd: Introduce the iommufd object
-Thread-Index: AQHaMq1svHVXtv5zdUmMVUk6DEcRv7Cz6FAAgACyIAA=
-Date: Fri, 22 Dec 2023 02:41:40 +0000
-Message-ID: <SJ0PR11MB6744EC7CF793F96535C7DEDC9294A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20231219185643.725448-1-clg@redhat.com>
- <20231219185643.725448-21-clg@redhat.com>
- <c6daa302-8da3-4931-812d-88dbb156a17a@redhat.com>
-In-Reply-To: <c6daa302-8da3-4931-812d-88dbb156a17a@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|DM4PR11MB6119:EE_
-x-ms-office365-filtering-correlation-id: 5b94e0e3-d863-4d4c-7630-08dc029786fd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hJV5HPpo8IDZX/QUYD4rRS3nUrpEl14DzErFpxUkIUo0Vsit6APslekmdu3e+2OWBA+iH19VWGDXQQx+wIFVttuNLkLQDjfnTx2pfwaW1LvBS+JyRNZ/lcn9niBGdu6g6ZBWe8wwR4zYyqiCzJsW897IfxGZR/hD7oP6gt9UkxleVE7Y9EgimN1bSb/yAXkhHXLwdilsMa5/ADonWQUz5WEP0YU+oQ8xC7FIsYyraDbHloDJlo8vUgeGpOlM94TCO82a0iU9Pu3JBchVP6r2aV5ZqyUFcdWcTJQUcx5r5clHv46EOrPWcneGE0gBGLN/M+rCKCt4Yl8VKHtebfiZtjXHgYc8OJzW7b9qyln2pPWd89ZGoBtWZdL9KsVLW7kbbEVnfUImoIkEuTOTuY4fgF+gv6e8SNXj1EH734b0Slft/Y+hDMoi0BM7mf4ejPR6Bx7OKJb/5byKpyB7M90CBNP4nmO7quZlClMKNWVKoIjiHfggbT1y0fBs5mkC78YjTyHdudxcjDU08E+z2THyYjL/bxBLo52QOEgYJ3YoDdt5vPnimUHQazFXzE07YnVXlXsnbvav0WJtKHVHCB0GPylotoLoW/ZseM0p61UnmzhiF88B2jE9o7BIq/mZHAha
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(396003)(366004)(136003)(39860400002)(346002)(376002)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(66446008)(4326008)(52536014)(122000001)(8676002)(8936002)(66946007)(76116006)(66556008)(66476007)(64756008)(316002)(110136005)(54906003)(82960400001)(7416002)(33656002)(2906002)(41300700001)(86362001)(38070700009)(38100700002)(5660300002)(26005)(83380400001)(55016003)(478600001)(9686003)(6506007)(71200400001)(7696005)(66574015);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dXc5QjVvejR0dGk1NkhRRUlFSVhxNmMvZVJ2YjBHMjRrakt4SS8xT2RoQ2J0?=
- =?utf-8?B?ZGlwNSszci92eVpWME9NYnBsc3dwVkMzVm1CSmtMM2N0NWsrSW94Mm5pSm82?=
- =?utf-8?B?amp5V1JycStLT2xSUVBzNHhWYlA3RXJrL0dDaGFEMzEydlFwcHo0N3VzNUc4?=
- =?utf-8?B?VW5mVUpIVnl3dUNGSjJpbVA2MUFiWlNWbzFkY2w2NVRwcm5ydk56WWFrYjFD?=
- =?utf-8?B?eENaZkJOYTQ5OFBsTlNKV0lvNW5MV1JmYlk0R0dwRUljSzNjMnR0MmhTd1NG?=
- =?utf-8?B?NGZGL3VTVGcrK05iQ1NzcE5qZkNHd25Udnh2UldPSVZxNEM1T1RmaDV1QWF5?=
- =?utf-8?B?bTRPVHNoY3lOR0Robm9KdTRzWXFxT2lQU29MSGpodDVCYlVNYUtyWTBWVlA5?=
- =?utf-8?B?Q04xd0JpSE1sL0V2Q0kvVTY1Z2JacHhFMjhDNnI1bi9UZEg5RXZhelluYW9Y?=
- =?utf-8?B?aTdzLzVRYnBKcHl6TFNCd1VhbVZjSWxCUjg2VlZkRnAvMmZ0RGppcDZ4YVJj?=
- =?utf-8?B?UzVQOWo0bVVUS1F3OGZGcVp3Sk40YzhHMXpwTHBpRXUzY1dhQVhjQ1RzQUc5?=
- =?utf-8?B?bkN0QjBHRU1ZWGc0cmNTTHVlTmpxL01HZ2x1SUUzaUFTaGFoUUxPTGJBOEwv?=
- =?utf-8?B?c2ZzWUxLOGNDaFdvcHFWRU8rcUtXS1kvVXlSUkp3dTYxUHZ5cHVwSm1UOHNL?=
- =?utf-8?B?QndoQUR6QWdQK0FBekIxa3hjVTVSZUo4QmJtaGVMWDlwOHBBYlhSamV3d2kv?=
- =?utf-8?B?cU0xNDJVYVBYUUM3SThvY2dSWjkxOFkxV3JCbXhTK0ZqWC9Bd0hpNFgrKy9z?=
- =?utf-8?B?RG5JZThBRmd6NWtnOVM2VTkxbG1ydXF4bTY2c3c0ZGFwYkZ1U051cnRDdTJ4?=
- =?utf-8?B?LzNDdGUrNjAzZ3llU0VXTXZEb29MUGNwZkY5U2pYdy82My9vMHlGZ3grdzBG?=
- =?utf-8?B?RWRmQm5YcW93bG9PZy9hWkE5Ui9FRVVySWFieE5XcHMvaTJVZjVCZ1NEVXky?=
- =?utf-8?B?dnZmUm1raWhzdDkxaklUZisxd1V5Z1ZubXU4eDRKRHZWbXZDVUZTT21SSkRR?=
- =?utf-8?B?S2dtd05HL3dINWVHamViellIc2ROUHh5VS9PTWVpWHNvTTE1Rm84YStmTnZY?=
- =?utf-8?B?QlV5QzloWVQ5elpaVGhvTzNzRUU2K0pJNU1SS2V0eWFxWnE5cTZldVdWV0ZN?=
- =?utf-8?B?dXJMNUQ5UEtOdjlBaVhXVWU2dGtBVkQ5eDVwc2hQWERDS0dkT1JydFYvYWpJ?=
- =?utf-8?B?Q0Q0ZkR4cnZ0Q0RVVTRWTURXdEY5Smw4eS9KeGFvbVU1OHh5RnhVOTlpUkZV?=
- =?utf-8?B?USt4UW9KTWkzL3R1WmVhb1dBeTB3enA0Y0xlWnBVdHQyYUhvZ2c2eFZPa0ht?=
- =?utf-8?B?TjVzK25DZHpCSTNValVzQml3L2wvTEw4MUtEcFFTbE96YlJndGdwNnI0OG5H?=
- =?utf-8?B?a1krTWNybUZhdkJsREdJeVJWSW5yd255NFN0UGVkTkorUkp1d3E4WTkvd090?=
- =?utf-8?B?STBOekFxSGsyZEk0WUMyZEovOG5QNys3clpNMXlpZi83cDRvbnlualpBQTBH?=
- =?utf-8?B?anRNTkdHRExUY2h3RGRRQUc0SUhLbk9MdmRKZVdteWVuZlVtV2U2ZnZHYysv?=
- =?utf-8?B?ek9jaHBRbCtHeTJkbVpyZWt5dU1tTEFqNnd4cFJLU3VZaVNRblJVSDNxSmI2?=
- =?utf-8?B?ZFpPUHl6bVZ1WmRFTzU5emVYWkp2Q3M3TzJ3MXZWa1lKS1Urc3VwRmZWTWRx?=
- =?utf-8?B?QUhxMWRxWkFyVjNSQmhFNnFqbWpvcGdkb1VPaUdYM3pXdXFqMU1sV1VZNGI3?=
- =?utf-8?B?c29ORkZUWEwwdVFCOEhXenRCTGFOQ2ZneDJxTmx6WVdNbG5LMTdxZTI4QnhQ?=
- =?utf-8?B?NURhVkNRQk9yc1REZW5XSHk3OUhaeDUyYVlmaGErdEJQazNQdUdhMTJ0dGhK?=
- =?utf-8?B?K1BWQkk4UjRSeVRjaFhSeGZOV3NkWlJ3TUc2UGw0bVRBRmJpVk1WN2lBZnp4?=
- =?utf-8?B?dHRUQjhxUHJCdVlPMnRoZWRtdzJySDhGbkg1MXY1R3ZnYnhVOGpzcW5wMVo0?=
- =?utf-8?B?cnVjUDlMM1RVT21ERGgvV2NuWHR3TzZqaG1yVFRvS1JKRUo0TVAvTGNUbjRl?=
- =?utf-8?Q?VlIoLw2xhHLFJvo46wahqJMN0?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=McAfee;i="6600,9927,10931"; a="753138606"
+X-IronPort-AV: E=Sophos;i="6.04,294,1695711600"; d="scan'208";a="753138606"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga006.jf.intel.com with ESMTP; 21 Dec 2023 18:39:13 -0800
+Date: Fri, 22 Dec 2023 10:51:59 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 08/71] target/i386: Constify VMState in machine.c
+Message-ID: <ZYT5z600GuyNEEpa@intel.com>
+References: <20231221031652.119827-1-richard.henderson@linaro.org>
+ <20231221031652.119827-9-richard.henderson@linaro.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b94e0e3-d863-4d4c-7630-08dc029786fd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Dec 2023 02:41:40.7663 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vD3EgJBQIXFSkypQBM8zxMWw98vmcaY8q1Doq2a7ZKSTZrgHMnmmPokRdex5z9HC9aRpk3xd8x2/x/R+wu0rjjIwGIRKrypekUC/MlAgY6w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6119
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.43;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231221031652.119827-9-richard.henderson@linaro.org>
+Received-SPF: pass client-ip=192.55.52.43; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -182,36 +77,598 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgQ8OpZHJpYywNCg0KPi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQ8OpZHJp
-YyBMZSBHb2F0ZXIgPGNsZ0ByZWRoYXQuY29tPg0KPlNlbnQ6IEZyaWRheSwgRGVjZW1iZXIgMjIs
-IDIwMjMgMTI6MDEgQU0NCj5TdWJqZWN0OiBSZTogW1BVTEwgMjAvNDddIGJhY2tlbmRzL2lvbW11
-ZmQ6IEludHJvZHVjZSB0aGUgaW9tbXVmZCBvYmplY3QNCj4NCj5bIC4uLiBdDQo+DQo+DQo+PiAr
-c3RhdGljIHZvaWQgaW9tbXVmZF9iYWNrZW5kX2luaXQoT2JqZWN0ICpvYmopDQo+PiArew0KPj4g
-KyAgICBJT01NVUZEQmFja2VuZCAqYmUgPSBJT01NVUZEX0JBQ0tFTkQob2JqKTsNCj4+ICsNCj4+
-ICsgICAgYmUtPmZkID0gLTE7DQo+PiArICAgIGJlLT51c2VycyA9IDA7DQo+PiArICAgIGJlLT5v
-d25lZCA9IHRydWU7DQo+PiArICAgIHFlbXVfbXV0ZXhfaW5pdCgmYmUtPmxvY2spOz4gK30NCj4+
-ICsNCj4+ICtzdGF0aWMgdm9pZCBpb21tdWZkX2JhY2tlbmRfZmluYWxpemUoT2JqZWN0ICpvYmop
-DQo+PiArew0KPj4gKyAgICBJT01NVUZEQmFja2VuZCAqYmUgPSBJT01NVUZEX0JBQ0tFTkQob2Jq
-KTsNCj4+ICsNCj4+ICsgICAgaWYgKGJlLT5vd25lZCkgew0KPj4gKyAgICAgICAgY2xvc2UoYmUt
-PmZkKTsNCj4+ICsgICAgICAgIGJlLT5mZCA9IC0xOw0KPj4gKyAgICB9DQo+PiArfQ0KPj4gKw0K
-Pj4gK3N0YXRpYyB2b2lkIGlvbW11ZmRfYmFja2VuZF9zZXRfZmQoT2JqZWN0ICpvYmosIGNvbnN0
-IGNoYXIgKnN0ciwgRXJyb3INCj4qKmVycnApDQo+PiArew0KPj4gKyAgICBJT01NVUZEQmFja2Vu
-ZCAqYmUgPSBJT01NVUZEX0JBQ0tFTkQob2JqKTsNCj4+ICsgICAgaW50IGZkID0gLTE7DQo+PiAr
-DQo+PiArICAgIGZkID0gbW9uaXRvcl9mZF9wYXJhbShtb25pdG9yX2N1cigpLCBzdHIsIGVycnAp
-Ow0KPj4gKyAgICBpZiAoZmQgPT0gLTEpIHsNCj4+ICsgICAgICAgIGVycm9yX3ByZXBlbmQoZXJy
-cCwgIkNvdWxkIG5vdCBwYXJzZSByZW1vdGUgb2JqZWN0IGZkICVzOiIsIHN0cik7DQo+PiArICAg
-ICAgICByZXR1cm47DQo+PiArICAgIH0NCj4+ICsgICAgcWVtdV9tdXRleF9sb2NrKCZiZS0+bG9j
-ayk7DQo+PiArICAgIGJlLT5mZCA9IGZkOw0KPj4gKyAgICBiZS0+b3duZWQgPSBmYWxzZTsNCj4+
-ICsgICAgcWVtdV9tdXRleF91bmxvY2soJmJlLT5sb2NrKTsNCj4+ICsgICAgdHJhY2VfaW9tbXVf
-YmFja2VuZF9zZXRfZmQoYmUtPmZkKTsNCj4+ICt9DQo+PiArDQo+PiArc3RhdGljIGJvb2wgaW9t
-bXVmZF9iYWNrZW5kX2Nhbl9iZV9kZWxldGVkKFVzZXJDcmVhdGFibGUgKnVjKQ0KPj4gK3sNCj4+
-ICsgICAgSU9NTVVGREJhY2tlbmQgKmJlID0gSU9NTVVGRF9CQUNLRU5EKHVjKTsNCj4+ICsNCj4+
-ICsgICAgcmV0dXJuICFiZS0+dXNlcnM7DQo+DQo+Q292ZXJpdHkgQ0lEIDE1MzE1NDkgcmVwb3J0
-cyBhIGNvbmN1cnJlbnQgZGF0YSBhY2Nlc3MgdmlvbGF0aW9uIGJlY2F1c2UNCj5iZS0+dXNlcnMg
-aXMgYmVpbmcgYWNjZXNzZWQgd2l0aG91dCBob2xkaW5nIHRoZSBtdXRleC4NCj4NCj5JIHdvbmRl
-ciBob3cgdXNlZnVsIGlzIHRoaXMgbXV0ZXggYW55aG93LCBzaW5jZSB0aGUgY29kZSBwYXRocyBz
-aG91bGQNCj5iZSBwcm90ZWN0ZWQgYnkgdGhlIEJRTCBsb2NrLiBJZiB5b3UgYWdyZWUsIEkgd2ls
-bCBzZW5kIGFuIHVwZGF0ZSB0bw0KPnNpbXBseSBkcm9wIGJlLT5sb2NrIGFuZCBzb2x2ZSB0aGlz
-IHJlcG9ydC4NCg0KTWFrZSBzZW5zZSBvbiBteSBzaWRlLCB0aGFua3MgZm9yIGhlbHAgZml4aW5n
-Lg0KDQpCUnMuDQpaaGVuemhvbmcNCg==
+On Thu, Dec 21, 2023 at 02:15:49PM +1100, Richard Henderson wrote:
+> Date: Thu, 21 Dec 2023 14:15:49 +1100
+> From: Richard Henderson <richard.henderson@linaro.org>
+> Subject: [PATCH v2 08/71] target/i386: Constify VMState in machine.c
+> X-Mailer: git-send-email 2.34.1
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+>  target/i386/machine.c | 128 +++++++++++++++++++++---------------------
+>  1 file changed, 64 insertions(+), 64 deletions(-)
+> 
+> diff --git a/target/i386/machine.c b/target/i386/machine.c
+> index a1041ef828..c3ae320814 100644
+> --- a/target/i386/machine.c
+> +++ b/target/i386/machine.c
+> @@ -18,7 +18,7 @@ static const VMStateDescription vmstate_segment = {
+>      .name = "segment",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT32(selector, SegmentCache),
+>          VMSTATE_UINTTL(base, SegmentCache),
+>          VMSTATE_UINT32(limit, SegmentCache),
+> @@ -43,7 +43,7 @@ static const VMStateDescription vmstate_xmm_reg = {
+>      .name = "xmm_reg",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(ZMM_Q(0), ZMMReg),
+>          VMSTATE_UINT64(ZMM_Q(1), ZMMReg),
+>          VMSTATE_END_OF_LIST()
+> @@ -59,7 +59,7 @@ static const VMStateDescription vmstate_ymmh_reg = {
+>      .name = "ymmh_reg",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(ZMM_Q(2), ZMMReg),
+>          VMSTATE_UINT64(ZMM_Q(3), ZMMReg),
+>          VMSTATE_END_OF_LIST()
+> @@ -74,7 +74,7 @@ static const VMStateDescription vmstate_zmmh_reg = {
+>      .name = "zmmh_reg",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(ZMM_Q(4), ZMMReg),
+>          VMSTATE_UINT64(ZMM_Q(5), ZMMReg),
+>          VMSTATE_UINT64(ZMM_Q(6), ZMMReg),
+> @@ -92,7 +92,7 @@ static const VMStateDescription vmstate_hi16_zmm_reg = {
+>      .name = "hi16_zmm_reg",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(ZMM_Q(0), ZMMReg),
+>          VMSTATE_UINT64(ZMM_Q(1), ZMMReg),
+>          VMSTATE_UINT64(ZMM_Q(2), ZMMReg),
+> @@ -114,7 +114,7 @@ static const VMStateDescription vmstate_bnd_regs = {
+>      .name = "bnd_regs",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(lb, BNDReg),
+>          VMSTATE_UINT64(ub, BNDReg),
+>          VMSTATE_END_OF_LIST()
+> @@ -128,7 +128,7 @@ static const VMStateDescription vmstate_mtrr_var = {
+>      .name = "mtrr_var",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(base, MTRRVar),
+>          VMSTATE_UINT64(mask, MTRRVar),
+>          VMSTATE_END_OF_LIST()
+> @@ -142,7 +142,7 @@ static const VMStateDescription vmstate_lbr_records_var = {
+>      .name = "lbr_records_var",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(from, LBREntry),
+>          VMSTATE_UINT64(to, LBREntry),
+>          VMSTATE_UINT64(info, LBREntry),
+> @@ -201,7 +201,7 @@ static const VMStateDescription vmstate_fpreg_tmp = {
+>      .name = "fpreg_tmp",
+>      .post_load = fpreg_post_load,
+>      .pre_save  = fpreg_pre_save,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(tmp_mant, x86_FPReg_tmp),
+>          VMSTATE_UINT16(tmp_exp, x86_FPReg_tmp),
+>          VMSTATE_END_OF_LIST()
+> @@ -210,7 +210,7 @@ static const VMStateDescription vmstate_fpreg_tmp = {
+>  
+>  static const VMStateDescription vmstate_fpreg = {
+>      .name = "fpreg",
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_WITH_TMP(FPReg, x86_FPReg_tmp, vmstate_fpreg_tmp),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -453,7 +453,7 @@ static const VMStateDescription vmstate_exception_info = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = exception_info_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT8(env.exception_pending, X86CPU),
+>          VMSTATE_UINT8(env.exception_injected, X86CPU),
+>          VMSTATE_UINT8(env.exception_has_payload, X86CPU),
+> @@ -475,7 +475,7 @@ static const VMStateDescription vmstate_steal_time_msr = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = steal_time_msr_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.steal_time_msr, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -486,7 +486,7 @@ static const VMStateDescription vmstate_async_pf_msr = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = async_pf_msr_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.async_pf_en_msr, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -497,7 +497,7 @@ static const VMStateDescription vmstate_async_pf_int_msr = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = async_pf_int_msr_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.async_pf_int_msr, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -508,7 +508,7 @@ static const VMStateDescription vmstate_pv_eoi_msr = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = pv_eoi_msr_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.pv_eoi_en_msr, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -519,7 +519,7 @@ static const VMStateDescription vmstate_poll_control_msr = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = poll_control_msr_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.poll_control_msr, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -538,7 +538,7 @@ static const VMStateDescription vmstate_fpop_ip_dp = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = fpop_ip_dp_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT16(env.fpop, X86CPU),
+>          VMSTATE_UINT64(env.fpip, X86CPU),
+>          VMSTATE_UINT64(env.fpdp, X86CPU),
+> @@ -559,7 +559,7 @@ static const VMStateDescription vmstate_msr_tsc_adjust = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = tsc_adjust_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.tsc_adjust, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -578,7 +578,7 @@ static const VMStateDescription vmstate_msr_smi_count = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = msr_smi_count_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_smi_count, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -597,7 +597,7 @@ static const VMStateDescription vmstate_msr_tscdeadline = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = tscdeadline_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.tsc_deadline, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -624,7 +624,7 @@ static const VMStateDescription vmstate_msr_ia32_misc_enable = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = misc_enable_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_ia32_misc_enable, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -635,7 +635,7 @@ static const VMStateDescription vmstate_msr_ia32_feature_control = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = feature_control_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_ia32_feature_control, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -670,7 +670,7 @@ static const VMStateDescription vmstate_msr_architectural_pmu = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = pmu_enable_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_fixed_ctr_ctrl, X86CPU),
+>          VMSTATE_UINT64(env.msr_global_ctrl, X86CPU),
+>          VMSTATE_UINT64(env.msr_global_status, X86CPU),
+> @@ -706,7 +706,7 @@ static const VMStateDescription vmstate_mpx = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = mpx_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_BND_REGS(env.bnd_regs, X86CPU, 4),
+>          VMSTATE_UINT64(env.bndcs_regs.cfgu, X86CPU),
+>          VMSTATE_UINT64(env.bndcs_regs.sts, X86CPU),
+> @@ -728,7 +728,7 @@ static const VMStateDescription vmstate_msr_hyperv_hypercall = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = hyperv_hypercall_enable_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_hv_guest_os_id, X86CPU),
+>          VMSTATE_UINT64(env.msr_hv_hypercall, X86CPU),
+>          VMSTATE_END_OF_LIST()
+> @@ -748,7 +748,7 @@ static const VMStateDescription vmstate_msr_hyperv_vapic = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = hyperv_vapic_enable_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_hv_vapic, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -767,7 +767,7 @@ static const VMStateDescription vmstate_msr_hyperv_time = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = hyperv_time_enable_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_hv_tsc, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -792,7 +792,7 @@ static const VMStateDescription vmstate_msr_hyperv_crash = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = hyperv_crash_enable_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64_ARRAY(env.msr_hv_crash_params, X86CPU, HV_CRASH_PARAMS),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -815,7 +815,7 @@ static const VMStateDescription vmstate_msr_hyperv_runtime = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = hyperv_runtime_enable_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_hv_runtime, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -855,7 +855,7 @@ static const VMStateDescription vmstate_msr_hyperv_synic = {
+>      .minimum_version_id = 1,
+>      .needed = hyperv_synic_enable_needed,
+>      .post_load = hyperv_synic_post_load,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_hv_synic_control, X86CPU),
+>          VMSTATE_UINT64(env.msr_hv_synic_evt_page, X86CPU),
+>          VMSTATE_UINT64(env.msr_hv_synic_msg_page, X86CPU),
+> @@ -883,7 +883,7 @@ static const VMStateDescription vmstate_msr_hyperv_stimer = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = hyperv_stimer_enable_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64_ARRAY(env.msr_hv_stimer_config, X86CPU,
+>                               HV_STIMER_COUNT),
+>          VMSTATE_UINT64_ARRAY(env.msr_hv_stimer_count, X86CPU, HV_STIMER_COUNT),
+> @@ -926,7 +926,7 @@ static const VMStateDescription vmstate_msr_hyperv_reenlightenment = {
+>      .minimum_version_id = 1,
+>      .needed = hyperv_reenlightenment_enable_needed,
+>      .post_load = hyperv_reenlightenment_post_load,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_hv_reenlightenment_control, X86CPU),
+>          VMSTATE_UINT64(env.msr_hv_tsc_emulation_control, X86CPU),
+>          VMSTATE_UINT64(env.msr_hv_tsc_emulation_status, X86CPU),
+> @@ -970,7 +970,7 @@ static const VMStateDescription vmstate_avx512 = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = avx512_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64_ARRAY(env.opmask_regs, X86CPU, NB_OPMASK_REGS),
+>          VMSTATE_ZMMH_REGS_VARS(env.xmm_regs, X86CPU, 0),
+>  #ifdef TARGET_X86_64
+> @@ -993,7 +993,7 @@ static const VMStateDescription vmstate_xss = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = xss_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.xss, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1012,7 +1012,7 @@ static const VMStateDescription vmstate_umwait = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = umwait_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT32(env.umwait, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1031,7 +1031,7 @@ static const VMStateDescription vmstate_pkru = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = pkru_needed,
+> -    .fields = (VMStateField[]){
+> +    .fields = (const VMStateField[]){
+>          VMSTATE_UINT32(env.pkru, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1050,7 +1050,7 @@ static const VMStateDescription vmstate_pkrs = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = pkrs_needed,
+> -    .fields = (VMStateField[]){
+> +    .fields = (const VMStateField[]){
+>          VMSTATE_UINT32(env.pkrs, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1070,7 +1070,7 @@ static const VMStateDescription vmstate_tsc_khz = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = tsc_khz_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_INT64(env.tsc_khz, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1090,7 +1090,7 @@ static const VMStateDescription vmstate_vmx_vmcs12 = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = vmx_vmcs12_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT8_ARRAY(data.vmx[0].vmcs12,
+>                              struct kvm_nested_state,
+>                              KVM_STATE_NESTED_VMX_VMCS_SIZE),
+> @@ -1110,7 +1110,7 @@ static const VMStateDescription vmstate_vmx_shadow_vmcs12 = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = vmx_shadow_vmcs12_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT8_ARRAY(data.vmx[0].shadow_vmcs12,
+>                              struct kvm_nested_state,
+>                              KVM_STATE_NESTED_VMX_VMCS_SIZE),
+> @@ -1131,13 +1131,13 @@ static const VMStateDescription vmstate_vmx_nested_state = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = vmx_nested_state_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_U64(hdr.vmx.vmxon_pa, struct kvm_nested_state),
+>          VMSTATE_U64(hdr.vmx.vmcs12_pa, struct kvm_nested_state),
+>          VMSTATE_U16(hdr.vmx.smm.flags, struct kvm_nested_state),
+>          VMSTATE_END_OF_LIST()
+>      },
+> -    .subsections = (const VMStateDescription*[]) {
+> +    .subsections = (const VMStateDescription * const []) {
+>          &vmstate_vmx_vmcs12,
+>          &vmstate_vmx_shadow_vmcs12,
+>          NULL,
+> @@ -1162,7 +1162,7 @@ static const VMStateDescription vmstate_svm_nested_state = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = svm_nested_state_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_U64(hdr.svm.vmcb_pa, struct kvm_nested_state),
+>          VMSTATE_UINT8_ARRAY(data.svm[0].vmcb12,
+>                              struct kvm_nested_state,
+> @@ -1232,13 +1232,13 @@ static const VMStateDescription vmstate_kvm_nested_state = {
+>      .name = "cpu/kvm_nested_state",
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_U16(flags, struct kvm_nested_state),
+>          VMSTATE_U16(format, struct kvm_nested_state),
+>          VMSTATE_U32(size, struct kvm_nested_state),
+>          VMSTATE_END_OF_LIST()
+>      },
+> -    .subsections = (const VMStateDescription*[]) {
+> +    .subsections = (const VMStateDescription * const []) {
+>          &vmstate_vmx_nested_state,
+>          &vmstate_svm_nested_state,
+>          NULL
+> @@ -1251,7 +1251,7 @@ static const VMStateDescription vmstate_nested_state = {
+>      .minimum_version_id = 1,
+>      .needed = nested_state_needed,
+>      .post_load = nested_state_post_load,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_STRUCT_POINTER(env.nested_state, X86CPU,
+>                  vmstate_kvm_nested_state,
+>                  struct kvm_nested_state),
+> @@ -1269,7 +1269,7 @@ static const VMStateDescription vmstate_xen_vcpu = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = xen_vcpu_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.xen_vcpu_info_gpa, X86CPU),
+>          VMSTATE_UINT64(env.xen_vcpu_info_default_gpa, X86CPU),
+>          VMSTATE_UINT64(env.xen_vcpu_time_info_gpa, X86CPU),
+> @@ -1295,7 +1295,7 @@ static const VMStateDescription vmstate_mcg_ext_ctl = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = mcg_ext_ctl_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.mcg_ext_ctl, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1314,7 +1314,7 @@ static const VMStateDescription vmstate_spec_ctrl = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = spec_ctrl_needed,
+> -    .fields = (VMStateField[]){
+> +    .fields = (const VMStateField[]){
+>          VMSTATE_UINT64(env.spec_ctrl, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1334,7 +1334,7 @@ static const VMStateDescription amd_tsc_scale_msr_ctrl = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = amd_tsc_scale_msr_needed,
+> -    .fields = (VMStateField[]){
+> +    .fields = (const VMStateField[]){
+>          VMSTATE_UINT64(env.amd_tsc_scale_msr, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1367,7 +1367,7 @@ static const VMStateDescription vmstate_msr_intel_pt = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = intel_pt_enable_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_rtit_ctrl, X86CPU),
+>          VMSTATE_UINT64(env.msr_rtit_status, X86CPU),
+>          VMSTATE_UINT64(env.msr_rtit_output_base, X86CPU),
+> @@ -1391,7 +1391,7 @@ static const VMStateDescription vmstate_msr_virt_ssbd = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = virt_ssbd_needed,
+> -    .fields = (VMStateField[]){
+> +    .fields = (const VMStateField[]){
+>          VMSTATE_UINT64(env.virt_ssbd, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1410,7 +1410,7 @@ static const VMStateDescription vmstate_svm_npt = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = svm_npt_needed,
+> -    .fields = (VMStateField[]){
+> +    .fields = (const VMStateField[]){
+>          VMSTATE_UINT64(env.nested_cr3, X86CPU),
+>          VMSTATE_UINT32(env.nested_pg_mode, X86CPU),
+>          VMSTATE_END_OF_LIST()
+> @@ -1430,7 +1430,7 @@ static const VMStateDescription vmstate_svm_guest = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = svm_guest_needed,
+> -    .fields = (VMStateField[]){
+> +    .fields = (const VMStateField[]){
+>          VMSTATE_UINT32(env.int_ctl, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1450,7 +1450,7 @@ static const VMStateDescription vmstate_efer32 = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = intel_efer32_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.efer, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1470,7 +1470,7 @@ static const VMStateDescription vmstate_msr_tsx_ctrl = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = msr_tsx_ctrl_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT32(env.tsx_ctrl, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1489,7 +1489,7 @@ static const VMStateDescription vmstate_msr_intel_sgx = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = intel_sgx_msrs_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64_ARRAY(env.msr_ia32_sgxlepubkeyhash, X86CPU, 4),
+>                  VMSTATE_END_OF_LIST()
+>              }
+> @@ -1517,7 +1517,7 @@ static const VMStateDescription vmstate_pdptrs = {
+>      .minimum_version_id = 1,
+>      .needed = pdptrs_needed,
+>      .post_load = pdptrs_post_load,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64_ARRAY(env.pdptrs, X86CPU, 4),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1536,7 +1536,7 @@ static const VMStateDescription vmstate_msr_xfd = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = xfd_msrs_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_xfd, X86CPU),
+>          VMSTATE_UINT64(env.msr_xfd_err, X86CPU),
+>          VMSTATE_END_OF_LIST()
+> @@ -1557,7 +1557,7 @@ static const VMStateDescription vmstate_amx_xtile = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = amx_xtile_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT8_ARRAY(env.xtilecfg, X86CPU, 64),
+>          VMSTATE_UINT8_ARRAY(env.xtiledata, X86CPU, 8192),
+>          VMSTATE_END_OF_LIST()
+> @@ -1578,7 +1578,7 @@ static const VMStateDescription vmstate_arch_lbr = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = arch_lbr_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT64(env.msr_lbr_ctl, X86CPU),
+>          VMSTATE_UINT64(env.msr_lbr_depth, X86CPU),
+>          VMSTATE_LBR_VARS(env.lbr_records, X86CPU, ARCH_LBR_NR_ENTRIES, 1),
+> @@ -1599,7 +1599,7 @@ static const VMStateDescription vmstate_triple_fault = {
+>      .version_id = 1,
+>      .minimum_version_id = 1,
+>      .needed = triple_fault_needed,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINT8(env.triple_fault_pending, X86CPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+> @@ -1611,7 +1611,7 @@ const VMStateDescription vmstate_x86_cpu = {
+>      .minimum_version_id = 11,
+>      .pre_save = cpu_pre_save,
+>      .post_load = cpu_post_load,
+> -    .fields = (VMStateField[]) {
+> +    .fields = (const VMStateField[]) {
+>          VMSTATE_UINTTL_ARRAY(env.regs, X86CPU, CPU_NB_REGS),
+>          VMSTATE_UINTTL(env.eip, X86CPU),
+>          VMSTATE_UINTTL(env.eflags, X86CPU),
+> @@ -1699,7 +1699,7 @@ const VMStateDescription vmstate_x86_cpu = {
+>          VMSTATE_END_OF_LIST()
+>          /* The above list is not sorted /wrt version numbers, watch out! */
+>      },
+> -    .subsections = (const VMStateDescription*[]) {
+> +    .subsections = (const VMStateDescription * const []) {
+>          &vmstate_exception_info,
+>          &vmstate_async_pf_msr,
+>          &vmstate_async_pf_int_msr,
+> -- 
+> 2.34.1
+> 
+> 
 
