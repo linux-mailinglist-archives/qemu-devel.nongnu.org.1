@@ -2,67 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624A681C734
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 10:15:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DE981C74C
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 10:30:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGbbk-0001jA-5w; Fri, 22 Dec 2023 04:14:17 -0500
+	id 1rGbqj-0005xd-4R; Fri, 22 Dec 2023 04:29:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rGbbg-0001ik-CK
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:14:12 -0500
-Received: from mgamail.intel.com ([192.55.52.43])
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1rGbqh-0005xG-ES
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:29:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rGbbe-0006yX-0x
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:14:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1703236449; x=1734772449;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1D7KQ6om+191RblVh2tcDXW6qZjNZ5uTw46ob4sfG+M=;
- b=CBULGKmJy8g2dddFlxw6l2G5sIl+ihdbvoH1vfqmlhpumM5muP4ZE7Pj
- i6Jgcho8rbOxhnoRhQ6C22JuxU7GVN3BwlZO7AFzjO/3BcfLz5M8KCEYK
- aLs+wyDnXn4nWcGzpLiO8aPDSikalbIeFMW8b5TRy42FML4N04WmixRq4
- MB+ALXbVc/D+xZYhgk2Y3hF0Ca6c6yKQS63omL2A+5VssR8kbNUgukK0B
- UgOXAev/BCE9kfYNmEV9CyLHYd6hDIBoHHc5Ij3aSpaLjh6wt+CU0v/P9
- tQZwwCBIpNRnT5g0TuL65Nq64gp/DNdjyFoi7t9zum2olHWVVt6C92Apc A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10931"; a="482276113"
-X-IronPort-AV: E=Sophos;i="6.04,296,1695711600"; d="scan'208";a="482276113"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Dec 2023 01:13:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.04,296,1695711600"; d="scan'208";a="18651217"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 22 Dec 2023 01:13:55 -0800
-Date: Fri, 22 Dec 2023 17:26:40 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xin Li <xin3.li@intel.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- richard.henderson@linaro.org, pbonzini@redhat.com,
- eduardo@habkost.net, seanjc@google.com, chao.gao@intel.com,
- hpa@zytor.com, xiaoyao.li@intel.com, weijiang.yang@intel.com
-Subject: Re: [PATCH v3 2/6] target/i386: mark CR4.FRED not reserved
-Message-ID: <ZYVWUHt6EAVN9YMp@intel.com>
-References: <20231109072012.8078-1-xin3.li@intel.com>
- <20231109072012.8078-3-xin3.li@intel.com>
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1rGbqf-0006vU-LC
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 04:29:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703237379;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=yW3TuP94nSpQEOTtv1Wg5Ho23xhGFSOAhy5oZZOx0KI=;
+ b=aYMkNaIqACXYeBZg8vREPZOrdLwBT8xhrP0LVNRr6TDtEmjm/BBmBzZEfz0BiOMMkUU3XS
+ 3fZayhg2S0HZiWRVuXrQ4uuZAWY1nxAD2puLhRUm91tTaLtSAvP8hPDzhEkA7YzWsYak3M
+ 4INi2ldwUBB30XKBTVH0rT41vueYufU=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-228-_9iZFFhSM_6d0mGASgTZdA-1; Fri, 22 Dec 2023 04:29:37 -0500
+X-MC-Unique: _9iZFFhSM_6d0mGASgTZdA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a2336591d48so80710566b.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 01:29:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703237376; x=1703842176;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yW3TuP94nSpQEOTtv1Wg5Ho23xhGFSOAhy5oZZOx0KI=;
+ b=ZGpsd8y0xR1xk2j2I8121gBqBr3iFcUS8dV9zc7tOwjtHO+z+EhPCxPZxFzR3i7HIH
+ YrL9+gbbEJAcvorUqspi1HYafxisgP8X256uEYcqaackiGo6wN3KXaEOmEHnHXZ6xn7G
+ AKzly5z9VRnqc2/guRfgCt6RVGsFRAu3Fsqpz6WuKPSeqei9T2KghJG+XpGaVD4hLwQL
+ 9IscbE/1n/aK+Jg5gQo3q7HqyBpZEKokf2GsrjY+qNZ8hYxbHy9jhxVpdcpXfiIMv2TG
+ lyQeZyMaYbjwdDtusme1nhkrzQB0GXW92Lt+L8i17+pVo0O50pc2ExnGebzT3QPRMfEC
+ KTLg==
+X-Gm-Message-State: AOJu0YwkxqyEZ4xHykBugLSgpfgdb/DX3bLBqVhGTo/KNb2uLSw+NZsF
+ 22za7VfJOzZyqRrM1pRi8yHrWi5ZHVHQeDrEK71MqkEbg+Hd004WD6DU23wWDRFotm0R4li5c0m
+ Bu6hmVxzDDwQJI/+NCGUJtF3iCZndiZK8pqmEEYg=
+X-Received: by 2002:a17:906:3f05:b0:a19:a19a:ea9f with SMTP id
+ c5-20020a1709063f0500b00a19a19aea9fmr507894ejj.88.1703237376493; 
+ Fri, 22 Dec 2023 01:29:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFxhjkp+KMwy5Kg8kXIq2mo0Uwl+aZAIFLDXPfuwhtvN7hckjEgZSiQjEdKdMudcU5jM8yu6cQi0JAWfpEpDnI=
+X-Received: by 2002:a17:906:3f05:b0:a19:a19a:ea9f with SMTP id
+ c5-20020a1709063f0500b00a19a19aea9fmr507886ejj.88.1703237376130; Fri, 22 Dec
+ 2023 01:29:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231109072012.8078-3-xin3.li@intel.com>
-Received-SPF: pass client-ip=192.55.52.43; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
+References: <20231221174322.3130442-1-eperezma@redhat.com>
+ <20231221174322.3130442-2-eperezma@redhat.com>
+In-Reply-To: <20231221174322.3130442-2-eperezma@redhat.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Fri, 22 Dec 2023 17:28:59 +0800
+Message-ID: <CAPpAL=xZ6hsUo5KkM68cc3DKmx=e=n1iBdkkZA_Kc-MxvaS5nA@mail.gmail.com>
+Subject: Re: [PATCH v4 01/13] vdpa: add VhostVDPAShared
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Dragos Tatulea <dtatulea@nvidia.com>, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, Parav Pandit <parav@mellanox.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, 
+ si-wei.liu@oracle.com, Laurent Vivier <lvivier@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.061,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,63 +99,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Nov 08, 2023 at 11:20:08PM -0800, Xin Li wrote:
-> Date: Wed,  8 Nov 2023 23:20:08 -0800
-> From: Xin Li <xin3.li@intel.com>
-> Subject: [PATCH v3 2/6] target/i386: mark CR4.FRED not reserved
-> X-Mailer: git-send-email 2.42.0
-> 
-> The CR4.FRED bit, i.e., CR4[32], is no longer a reserved bit when FRED
-> is exposed to guests, otherwise it is still a reserved bit.
-> 
-> Tested-by: Shan Kang <shan.kang@intel.com>
-> Signed-off-by: Xin Li <xin3.li@intel.com>
+QE tested this series v4 with regression tests. It has fixed the qemu
+core issues that hit last time.And everything works fine.
+
+Tested-by: Lei Yang <leiyang@redhat.com>
+
+
+
+
+On Fri, Dec 22, 2023 at 1:43=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redhat=
+.com> wrote:
+>
+> It will hold properties shared among all vhost_vdpa instances associated
+> with of the same device.  For example, we just need one iova_tree or one
+> memory listener for the entire device.
+>
+> Next patches will register the vhost_vdpa memory listener at the
+> beginning of the VM migration at the destination. This enables QEMU to
+> map the memory to the device before stopping the VM at the source,
+> instead of doing while both source and destination are stopped, thus
+> minimizing the downtime.
+>
+> However, the destination QEMU is unaware of which vhost_vdpa struct will
+> register its memory_listener.  If the source guest has CVQ enabled, it
+> will be the one associated with the CVQ.  Otherwise, it will be the
+> first one.
+>
+> Save the memory operations related members in a common place rather than
+> always in the first / last vhost_vdpa.
+>
+> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> Acked-by: Jason Wang <jasowang@redhat.com>
 > ---
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
->  target/i386/cpu.h | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 5faf00551d..e210957cba 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -262,6 +262,12 @@ typedef enum X86Seg {
->  #define CR4_PKE_MASK   (1U << 22)
->  #define CR4_PKS_MASK   (1U << 24)
->  
-> +#ifdef TARGET_X86_64
-> +#define CR4_FRED_MASK   (1ULL << 32)
-> +#else
-> +#define CR4_FRED_MASK   0
-> +#endif
+>  include/hw/virtio/vhost-vdpa.h |  5 +++++
+>  net/vhost-vdpa.c               | 24 ++++++++++++++++++++++--
+>  2 files changed, 27 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdp=
+a.h
+> index 5407d54fd7..eb1a56d75a 100644
+> --- a/include/hw/virtio/vhost-vdpa.h
+> +++ b/include/hw/virtio/vhost-vdpa.h
+> @@ -30,6 +30,10 @@ typedef struct VhostVDPAHostNotifier {
+>      void *addr;
+>  } VhostVDPAHostNotifier;
+>
+> +/* Info shared by all vhost_vdpa device models */
+> +typedef struct vhost_vdpa_shared {
+> +} VhostVDPAShared;
 > +
->  #define CR4_RESERVED_MASK \
->  (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
->                  | CR4_DE_MASK | CR4_PSE_MASK | CR4_PAE_MASK \
-> @@ -269,7 +275,8 @@ typedef enum X86Seg {
->                  | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | CR4_UMIP_MASK \
->                  | CR4_LA57_MASK \
->                  | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | CR4_OSXSAVE_MASK \
-> -                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK))
-> +                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
-> +                | CR4_FRED_MASK))
->  
->  #define DR6_BD          (1 << 13)
->  #define DR6_BS          (1 << 14)
-> @@ -2520,6 +2527,9 @@ static inline uint64_t cr4_reserved_bits(CPUX86State *env)
->      if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
->          reserved_bits |= CR4_PKS_MASK;
+>  typedef struct vhost_vdpa {
+>      int device_fd;
+>      int index;
+> @@ -46,6 +50,7 @@ typedef struct vhost_vdpa {
+>      bool suspended;
+>      /* IOVA mapping used by the Shadow Virtqueue */
+>      VhostIOVATree *iova_tree;
+> +    VhostVDPAShared *shared;
+>      GPtrArray *shadow_vqs;
+>      const VhostShadowVirtqueueOps *shadow_vq_ops;
+>      void *shadow_vq_ops_opaque;
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index d0614d7954..8b661b9e6d 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -240,6 +240,10 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+>          qemu_close(s->vhost_vdpa.device_fd);
+>          s->vhost_vdpa.device_fd =3D -1;
 >      }
-> +    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_FRED)) {
-> +        reserved_bits |= CR4_FRED_MASK;
+> +    if (s->vhost_vdpa.index !=3D 0) {
+> +        return;
 > +    }
->      return reserved_bits;
+> +    g_free(s->vhost_vdpa.shared);
 >  }
->  
-> -- 
-> 2.42.0
-> 
-> 
+>
+>  /** Dummy SetSteeringEBPF to support RSS for vhost-vdpa backend  */
+> @@ -1661,6 +1665,7 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
+tState *peer,
+>                                         bool svq,
+>                                         struct vhost_vdpa_iova_range iova=
+_range,
+>                                         uint64_t features,
+> +                                       VhostVDPAShared *shared,
+>                                         Error **errp)
+>  {
+>      NetClientState *nc =3D NULL;
+> @@ -1696,6 +1701,7 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
+tState *peer,
+>      if (queue_pair_index =3D=3D 0) {
+>          vhost_vdpa_net_valid_svq_features(features,
+>                                            &s->vhost_vdpa.migration_block=
+er);
+> +        s->vhost_vdpa.shared =3D g_new0(VhostVDPAShared, 1);
+>      } else if (!is_datapath) {
+>          s->cvq_cmd_out_buffer =3D mmap(NULL, vhost_vdpa_net_cvq_cmd_page=
+_len(),
+>                                       PROT_READ | PROT_WRITE,
+> @@ -1708,11 +1714,16 @@ static NetClientState *net_vhost_vdpa_init(NetCli=
+entState *peer,
+>          s->vhost_vdpa.shadow_vq_ops_opaque =3D s;
+>          s->cvq_isolated =3D cvq_isolated;
+>      }
+> +    if (queue_pair_index !=3D 0) {
+> +        s->vhost_vdpa.shared =3D shared;
+> +    }
+> +
+>      ret =3D vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index,=
+ nvqs);
+>      if (ret) {
+>          qemu_del_net_client(nc);
+>          return NULL;
+>      }
+> +
+>      return nc;
+>  }
+>
+> @@ -1824,17 +1835,26 @@ int net_init_vhost_vdpa(const Netdev *netdev, con=
+st char *name,
+>      ncs =3D g_malloc0(sizeof(*ncs) * queue_pairs);
+>
+>      for (i =3D 0; i < queue_pairs; i++) {
+> +        VhostVDPAShared *shared =3D NULL;
+> +
+> +        if (i) {
+> +            shared =3D DO_UPCAST(VhostVDPAState, nc, ncs[0])->vhost_vdpa=
+.shared;
+> +        }
+>          ncs[i] =3D net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
+>                                       vdpa_device_fd, i, 2, true, opts->x=
+_svq,
+> -                                     iova_range, features, errp);
+> +                                     iova_range, features, shared, errp)=
+;
+>          if (!ncs[i])
+>              goto err;
+>      }
+>
+>      if (has_cvq) {
+> +        VhostVDPAState *s0 =3D DO_UPCAST(VhostVDPAState, nc, ncs[0]);
+> +        VhostVDPAShared *shared =3D s0->vhost_vdpa.shared;
+> +
+>          nc =3D net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
+>                                   vdpa_device_fd, i, 1, false,
+> -                                 opts->x_svq, iova_range, features, errp=
+);
+> +                                 opts->x_svq, iova_range, features, shar=
+ed,
+> +                                 errp);
+>          if (!nc)
+>              goto err;
+>      }
+> --
+> 2.39.3
+>
+
 
