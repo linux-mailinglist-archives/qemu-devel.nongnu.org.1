@@ -2,112 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6317981CAD7
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 14:46:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BD681CAE3
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 14:47:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGfq4-00073T-08; Fri, 22 Dec 2023 08:45:20 -0500
+	id 1rGfqv-0007fj-FM; Fri, 22 Dec 2023 08:46:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGfpz-00071T-0P
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 08:45:15 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rGfqV-0007Rz-W7
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 08:45:50 -0500
+Received: from mail-wm1-f47.google.com ([209.85.128.47])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rGfpv-00041r-Pz
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 08:45:14 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40d4a7f0c4dso1854485e9.1
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 05:45:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703252708; x=1703857508; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1eQLtUBmvM7qf6L4q7EV35KVsS6WxNrpt1uXoUEq+k4=;
- b=SZOwQSHlPiyjLF24fVS3ogDYy45zRsD2vb0MKqCtEkoHZcZDvTec4vNj9XZmG/lbEj
- c9T9Phmrm1E/LyXs9UoDiiAohhbEO0AcmTEp+aw2/VXYwZx5bYCClRYW5qh2UgwVs8Px
- fEEH05SUQjTiwgjFt1K0b/g13+VBRtg3mlfhP3Cf0704pvmjqaLP5RpTyrVWQ/TSfDrU
- ya42osq9eFieO9F2PmdezP3qM909XH2HosndU2T0iGm0TtMiQxmk8Zrfu4vh4GdmnSPR
- UF+WodtBRj8yRCPoO3cE0GVVlDy1P/virG20HGVO715tN95ZQUu1LB8pZyNJE4Tj6o5d
- QPUg==
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rGfqT-0004G5-3R
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 08:45:47 -0500
+Received: by mail-wm1-f47.google.com with SMTP id
+ 5b1f17b1804b1-40d4a7f0d17so1759065e9.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 05:45:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703252708; x=1703857508;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=1eQLtUBmvM7qf6L4q7EV35KVsS6WxNrpt1uXoUEq+k4=;
- b=LVOOiZ4CywTTrQYEtHvT0tVqMqkBI+I2987dyHbCLcdHk+FmpbtH351b774b/IpKSQ
- 1Bua5JtvYRrHCYCJ7Y4igULHYuyfFnx+WAiEuqv7NGqDpGo+fJBAlZPfNxa5SFGxYjf+
- c+kFmRqR6b/9GpFH4sgDoeE9zgLlLzJYLnjgTohMz6rqi9SE5Ilk67fZTYNI9oLWLXgS
- 6FwTL79dyZPya6shW6RjilJeMGTOseHLMRYY0pSZkW9opwg2jX7W0AOLOTjVOgoAO/01
- 4SjW0lkzq9QxJd9oRVS0sM9rtNz/d74fXy/Cllstf0157kaf854K4lam3udSBCRNZij5
- klEQ==
-X-Gm-Message-State: AOJu0YzA9Xi7kH1q9WUsoQs1V7EiNArVQpCOg2f39SOXe0osfYFNpUH8
- uSSdZixOV84nAFbFkEfZBKp2Pxt2VbpTdw==
-X-Google-Smtp-Source: AGHT+IFyc707r97nFb1fUFU6MymgM12uRQv1WFsoBXvbFD/R85hDyverRoAN6WkYq3pdWfalSFssHg==
-X-Received: by 2002:a05:600c:4f02:b0:40d:4d75:980 with SMTP id
- l2-20020a05600c4f0200b0040d4d750980mr8318wmq.71.1703252708181; 
- Fri, 22 Dec 2023 05:45:08 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- az3-20020a05600c600300b0040d4954ac04sm1253567wmb.43.2023.12.22.05.45.07
+ d=1e100.net; s=20230601; t=1703252739; x=1703857539;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wMj5v2gUy0SwBnfzHe5Ktn8uC+1u4B1rDW8Nfib3Kyc=;
+ b=A/bHdx4fY4FXg5N7NvTpbKokOxepiWXPYfr6hPOHjuIKiqzYVUdawm4qK/vE9h4zVh
+ JCcBXtoNe/o5JuQtsBBX2mfLNIpqecxTWmZ+18hDbJdAX1e3ilIBHnZUUSlm74X0MDxT
+ 9uPlKthz1CXi3uqRGLgC1A8ZVWMkhEW0s/HlssblTxPtbNICxXJ/8BW5m24vrmJY3JNu
+ knjPdz+o4pW22AxxOUX1rs7y4LHh2yJp1FbhxC1K3JaBAdzxxDifmPAbOJkxbLjzumBD
+ dO8Ru2T0+mWFpf0ueZYRFb0esX2rQSMRwn476+8CAXAw0WEje8Q+vmBcjZFaJ3vrxDnB
+ IYuA==
+X-Gm-Message-State: AOJu0YxwNoGmiiKMKRq0SCKClSxE3B60MQo6CdVDQor/wDFxKw4EOFIj
+ I451gxl2ayIpBc5xz/3CkVnHKxpV5dE=
+X-Google-Smtp-Source: AGHT+IFnESHcXfLGzuJIyEmgHbN8TGKjYpHZ1WDjm6A3Q9XVuE/m0AZ/dOqrEXaTSPQH4s0gh/1PCw==
+X-Received: by 2002:a1c:7209:0:b0:40c:3aae:676 with SMTP id
+ n9-20020a1c7209000000b0040c3aae0676mr657527wmc.119.1703252738848; 
+ Fri, 22 Dec 2023 05:45:38 -0800 (PST)
+Received: from fedora.. (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
+ by smtp.gmail.com with ESMTPSA id
+ j16-20020a05600c191000b0040c11fbe581sm7047333wmq.27.2023.12.22.05.45.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Dec 2023 05:45:07 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 734CF5F7DA;
- Fri, 22 Dec 2023 13:45:07 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org,  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- John Snow <jsnow@redhat.com>,  Aurelien Jarno <aurelien@aurel32.net>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Yanan Wang
- <wangyanan55@huawei.com>,  Eduardo Habkost <eduardo@habkost.net>,  Brian
- Cain <bcain@quicinc.com>,  Laurent Vivier <laurent@vivier.eu>,  Palmer
- Dabbelt <palmer@dabbelt.com>,  Cleber Rosa <crosa@redhat.com>,  David
- Hildenbrand <david@redhat.com>,  Beraldo Leal <bleal@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,  Weiwei Li
- <liwei1518@gmail.com>,  Paul Durrant <paul@xen.org>,
- qemu-s390x@nongnu.org,  David Woodhouse <dwmw2@infradead.org>,  Liu
- Zhiwei <zhiwei_liu@linux.alibaba.com>,  Ilya Leoshkevich
- <iii@linux.ibm.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Michael Rolnik <mrolnik@gmail.com>,  Alistair Francis
- <alistair.francis@wdc.com>,  Daniel Henrique Barboza
- <danielhb413@gmail.com>,  Laurent Vivier <lvivier@redhat.com>,
- kvm@vger.kernel.org,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>,  Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,  qemu-ppc@nongnu.org,  Paolo
- Bonzini <pbonzini@redhat.com>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Nicholas Piggin <npiggin@gmail.com>,
- qemu-riscv@nongnu.org,  qemu-arm@nongnu.org,  Song Gao
- <gaosong@loongson.cn>,  Yoshinori Sato <ysato@users.sourceforge.jp>,
- Richard Henderson <richard.henderson@linaro.org>,  Daniel Henrique
- Barboza <dbarboza@ventanamicro.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@kaod.org>, Mahmoud Mandour <ma.mandourr@gmail.com>,  Bin Meng
- <bin.meng@windriver.com>
-Subject: Re: [PATCH 37/40] plugins: add an API to read registers
-In-Reply-To: <a26a55b2-240c-48c3-b341-48c1d7195bd9@daynix.com> (Akihiko
- Odaki's message of "Thu, 21 Dec 2023 22:19:25 +0900")
-References: <20231221103818.1633766-1-alex.bennee@linaro.org>
- <20231221103818.1633766-38-alex.bennee@linaro.org>
- <a26a55b2-240c-48c3-b341-48c1d7195bd9@daynix.com>
-User-Agent: mu4e 1.11.26; emacs 29.1
-Date: Fri, 22 Dec 2023 13:45:07 +0000
-Message-ID: <87y1dmxsf0.fsf@draig.linaro.org>
+ Fri, 22 Dec 2023 05:45:34 -0800 (PST)
+From: Thomas Huth <huth@tuxfamily.org>
+To: qemu-devel@nongnu.org,
+	Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 00/11] m68k next-cube patches
+Date: Fri, 22 Dec 2023 14:45:16 +0100
+Message-ID: <20231222134527.15705-1-huth@tuxfamily.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=209.85.128.47; envelope-from=th.huth@gmail.com;
+ helo=mail-wm1-f47.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,149 +76,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+The following changes since commit 191710c221f65b1542f6ea7fa4d30dde6e134fd7:
 
-> On 2023/12/21 19:38, Alex Benn=C3=A9e wrote:
->> We can only request a list of registers once the vCPU has been
->> initialised so the user needs to use either call the get function on
->> vCPU initialisation or during the translation phase.
->> We don't expose the reg number to the plugin instead hiding it
->> behind
->> an opaque handle. This allows for a bit of future proofing should the
->> internals need to be changed while also being hashed against the
->> CPUClass so we can handle different register sets per-vCPU in
->> hetrogenous situations.
->> Having an internal state within the plugins also allows us to expand
->> the interface in future (for example providing callbacks on register
->> change if the translator can track changes).
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
->> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
->> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> ---
->> v2
->>    - use new get whole list api, and expose upwards
->> vAJB:
->> The main difference to Akikio's version is hiding the gdb register
->> detail from the plugin for the reasons described above.
->> ---
->>   include/qemu/qemu-plugin.h   |  53 +++++++++++++++++-
->>   plugins/api.c                | 102 +++++++++++++++++++++++++++++++++++
->>   plugins/qemu-plugins.symbols |   2 +
->>   3 files changed, 155 insertions(+), 2 deletions(-)
->> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
->> index 4daab6efd29..e3b35c6ee81 100644
->> --- a/include/qemu/qemu-plugin.h
->> +++ b/include/qemu/qemu-plugin.h
->> @@ -11,6 +11,7 @@
->>   #ifndef QEMU_QEMU_PLUGIN_H
->>   #define QEMU_QEMU_PLUGIN_H
->>   +#include <glib.h>
->>   #include <inttypes.h>
->>   #include <stdbool.h>
->>   #include <stddef.h>
->> @@ -227,8 +228,8 @@ struct qemu_plugin_insn;
->>    * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
->>    * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
->>    *
->> - * Note: currently unused, plugins cannot read or change system
->> - * register state.
->> + * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot cha=
-nge
->> + * system register state.
->>    */
->>   enum qemu_plugin_cb_flags {
->>       QEMU_PLUGIN_CB_NO_REGS,
->> @@ -708,4 +709,52 @@ uint64_t qemu_plugin_end_code(void);
->>   QEMU_PLUGIN_API
->>   uint64_t qemu_plugin_entry_code(void);
->>   +/** struct qemu_plugin_register - Opaque handle for a translated
->> instruction */
->> +struct qemu_plugin_register;
->
-> What about identifying a register with an index in an array returned
-> by qemu_plugin_get_registers(). That saves troubles having the handle
-> member in qemu_plugin_reg_descriptor.
->
->> +
->> +/**
->> + * typedef qemu_plugin_reg_descriptor - register descriptions
->> + *
->> + * @name: register name
->> + * @handle: opaque handle for retrieving value with qemu_plugin_read_re=
-gister
->> + * @feature: optional feature descriptor, can be NULL
->
-> Why can it be NULL?
->
->> + */
->> +typedef struct {
->> +    char name[32];
->
-> Why not const char *?
+  Merge tag 'pull-request-2023-12-20' of https://gitlab.com/thuth/qemu into staging (2023-12-20 09:40:16 -0500)
 
-I was trying to avoid too many free floating strings. I could intern it
-in the API though.
+are available in the Git repository at:
 
->
->> +    struct qemu_plugin_register *handle;
->> +    const char *feature;
->> +} qemu_plugin_reg_descriptor;
->> +
->> +/**
->> + * qemu_plugin_get_registers() - return register list for vCPU
->> + * @vcpu_index: vcpu to query
->> + *
->> + * Returns a GArray of qemu_plugin_reg_descriptor or NULL. Caller
->> + * frees the array (but not the const strings).
->> + *
->> + * As the register set of a given vCPU is only available once
->> + * the vCPU is initialised if you want to monitor registers from the
->> + * start you should call this from a qemu_plugin_register_vcpu_init_cb()
->> + * callback.
->
-> Is this note really necessary? You won't know vcpu_index before
-> qemu_plugin_register_vcpu_init_cb() anyway.
+  https://gitlab.com/huth/qemu.git tags/m68k-pull-2023-12-22
 
-Best to be clear I think.
+for you to fetch changes up to 0d23b1ef85eb7a5ed7363da439de632783dbb37e:
 
->
->> + */
->> +GArray * qemu_plugin_get_registers(unsigned int vcpu_index);
->
-> Spurious space after *.
->
->> +
->> +/**
->> + * qemu_plugin_read_register() - read register
->> + *
->> + * @vcpu: vcpu index
->> + * @handle: a @qemu_plugin_reg_handle handle
->> + * @buf: A GByteArray for the data owned by the plugin
->> + *
->> + * This function is only available in a context that register read acce=
-ss is
->> + * explicitly requested.
->> + *
->> + * Returns the size of the read register. The content of @buf is in tar=
-get byte
->> + * order. On failure returns -1
->> + */
->> +int qemu_plugin_read_register(unsigned int vcpu,
->> +                              struct qemu_plugin_register *handle,
->> +                              GByteArray *buf);
->
-> Indention is not correct. docs/devel/style.rst says:
->
->> In case of function, there are several variants:
->>
->> * 4 spaces indent from the beginning
->> * align the secondary lines just after the opening parenthesis of
->     the first
+  next-cube.c: move machine MemoryRegions into NeXTState (2023-12-22 14:08:26 +0100)
 
-Isn't that what it does?
+----------------------------------------------------------------
+* Add dummy next-cube ethernet register to allow diagnostic to timeout
+* Don't pulse next-cube SCSI DMA IRQ upon reception of FLUSH command
+* Rework next-cube mmio ops and system control register handling functions
+* Embed next-cube MemoryRegions into NeXTState
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+----------------------------------------------------------------
+Mark Cave-Ayland (11):
+      next-cube.c: add dummy Ethernet register to allow diagnostic to timeout
+      next-cube.c: don't pulse SCSI DMA IRQ upon reception of FLUSH command
+      next-cube.c: update mmio_ops to properly use modern memory API
+      next-cube.c: update scr_ops to properly use modern memory API
+      next-cube.c: update and improve dma_ops
+      next-cube.c: move static led variable to NeXTPC
+      next-cube.c: move static phase variable to NextRtc
+      next-cube.c: move static old_scr2 variable to NeXTPC
+      next-cube.c: move LED logic to new next_scr2_led_update() function
+      next-cube.c: remove val and size arguments from nextscr2_write()
+      next-cube.c: move machine MemoryRegions into NeXTState
+
+ hw/m68k/next-cube.c | 525 +++++++++++++++++++++++-----------------------------
+ 1 file changed, 227 insertions(+), 298 deletions(-)
 
