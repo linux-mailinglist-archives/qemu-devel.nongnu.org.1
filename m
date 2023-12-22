@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E8EC81CEBA
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 20:25:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EC081CF1E
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 21:04:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGl8E-0001yc-1W; Fri, 22 Dec 2023 14:24:26 -0500
+	id 1rGljw-0007HC-5T; Fri, 22 Dec 2023 15:03:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rGl89-0001xn-66; Fri, 22 Dec 2023 14:24:21 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rGl87-0000Nc-Ac; Fri, 22 Dec 2023 14:24:20 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1EE883E20F;
- Fri, 22 Dec 2023 22:24:34 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 064E4514CA;
- Fri, 22 Dec 2023 22:24:15 +0300 (MSK)
-Message-ID: <2b505ab7-f01e-4b02-8bbe-295631027bbf@tls.msk.ru>
-Date: Fri, 22 Dec 2023 22:24:14 +0300
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rGljt-0007Gh-5q; Fri, 22 Dec 2023 15:03:21 -0500
+Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rGljr-0004uR-Kg; Fri, 22 Dec 2023 15:03:20 -0500
+Received: by mail-qt1-x82b.google.com with SMTP id
+ d75a77b69052e-427a3887483so8941771cf.3; 
+ Fri, 22 Dec 2023 12:03:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1703275397; x=1703880197; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LfU3OhCWGUW9nJjt2MDsvecwAM8b9doej3QD7bRJIaM=;
+ b=UxnOcJbU3NkR3FJnRllFxmx7FXQQBKkaf9Z89vD79U6NNpZHpoRItvQplcipP4cuAR
+ A2tEwZ49BO0uavhspMfighdHIBxLziC+MTTauKT2Cu/4xlKvWhOEo/gJJZyoQYcKf+3C
+ FyCXWR+C/FCKopjS5ns6Y9FqRQXghLDUVcvm/9eo+9/8/BHh8MoMHez4qRuwe9PQlOEO
+ MBrTCuLP2ENUqpzMrzbYOjHusfyPw5Qu8NFIRKbuE+EAPYtQ3SmbZnqKok8phhAzZnbe
+ BEp7d+8rOJPxyJ+RDxjbyCTLolq3b4+JPLQn1h8nG6m3lbBogV+8+rM7BTu2N+16PDHU
+ rfrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703275397; x=1703880197;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LfU3OhCWGUW9nJjt2MDsvecwAM8b9doej3QD7bRJIaM=;
+ b=uK82xG6OMrnD/lRrbTeNFwzTtMvl+h2q1A5UEHpc5k8jzIc84jruvVM2fGie3T/VT7
+ Ubg2aG2ibYwjBhkqX49UBAmn6svGPxA/7bwS3Hibcn9iRsT3SsBbYSXaEpeJowRkSUB1
+ Pu5ymqTR2mDEdS3c8RDCdbsgH0hD7sluUptGGV0g/hk23/q2V+trp4WPBxlEkkqHMTxR
+ xiDn/bSSBwe3SrjQTG0NfQds2r8d04LW2WRiot8w2oYDjfduHT3rbaU/UuV1O0wY1RPB
+ rT/gB/3tKeDFnLRJdxhfjVbCF72LPR5f/fq0Y87wZiOzGqpd7C82mQZWL5/iZ2VTp9mY
+ P3Ow==
+X-Gm-Message-State: AOJu0Yxics/ooY3bjCbS/E9hFkdPFPYPxKmi2vqtxMT1HO3xdw5eqPiI
+ 6vLCtWQKjPap8Nml4MhENxC5qvL+xQKhWOltFsA=
+X-Google-Smtp-Source: AGHT+IFLcGEUyx+UMG4Al2HSZCGSW7CVTegxlKc7clszPir7AbGTJ7ISiMphv9sHUDTspdvwgMShsT9Q3HNaGJ6bhIY=
+X-Received: by 2002:ac8:5a86:0:b0:425:9936:b092 with SMTP id
+ c6-20020ac85a86000000b004259936b092mr2808234qtc.53.1703275397456; Fri, 22 Dec
+ 2023 12:03:17 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] block: Make snapshots fail gracefully on inactive
- images
-Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20231201142520.32255-1-kwolf@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231201142520.32255-1-kwolf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20231222191721.414176-1-mjt@tls.msk.ru>
+In-Reply-To: <20231222191721.414176-1-mjt@tls.msk.ru>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Sat, 23 Dec 2023 00:03:05 +0400
+Message-ID: <CAJ+F1CJ1-VWBdha4U9LpYz+uJh2JouCAs+DLW2UWHpuMSQB_2A@mail.gmail.com>
+Subject: Re: [PATCH] include/ui/rect.h: fix qemu_rect_init() mis-assignment
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Elen Avan <elen.avan@bk.ru>, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,18 +85,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-01.12.2023 17:25, Kevin Wolf :
-> Kevin Wolf (3):
->    block: Fix crash when loading snapshot on inactive node
->    vl: Improve error message for conflicting -incoming and -loadvm
->    iotests: Basic tests for internal snapshots
+On Fri, Dec 22, 2023 at 11:18=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> w=
+rote:
+>
+> From: Elen Avan <elen.avan@bk.ru>
+> Signed-off-by: Elen Avan <elen.avan@bk.ru>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2051
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2050
+> Fixes: a200d53b1fde "virtio-gpu: replace PIXMAN for region/rect test"
+> Cc: qemu-stable@nongnu.org
+> Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
-This smells like a stable-8.2 material, at least the first change
-(tho I'd pick all 3).  Maybe stable-8.1 too.
+brown paper bag face...
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-On the other hand, this is a rarely-used code path.
+thanks
 
-Thanks,
+> ---
+>  include/ui/rect.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> (Re-sending this as a more accurate patch which actually can be applied)
+> Stefan: please apply it directly as an obvious bugfix
+>
+> diff --git a/include/ui/rect.h b/include/ui/rect.h
+> index 94898f92d0..68f05d78a8 100644
+> --- a/include/ui/rect.h
+> +++ b/include/ui/rect.h
+> @@ -19,7 +19,7 @@ static inline void qemu_rect_init(QemuRect *rect,
+>                                    uint16_t width, uint16_t height)
+>  {
+>      rect->x =3D x;
+> -    rect->y =3D x;
+> +    rect->y =3D y;
+>      rect->width =3D width;
+>      rect->height =3D height;
+>  }
+> --
+> 2.39.2
+>
+>
 
-/mjt
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
