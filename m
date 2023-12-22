@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF29681CE54
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C2081CE58
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 19:18:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGk4q-00016k-6s; Fri, 22 Dec 2023 13:16:52 -0500
+	id 1rGk4t-00019H-1v; Fri, 22 Dec 2023 13:16:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGk4h-00012Q-0G
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:44 -0500
+ id 1rGk4i-000131-TK
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:45 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rGk4e-0006DS-Mo
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:42 -0500
+ id 1rGk4f-0006Di-P7
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 13:16:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703268999;
+ s=mimecast20190719; t=1703269001;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=z6I5ERZQ1yG8vEhBxW0HwPCUf3bsKl1KO3xi3tzLK34=;
- b=C/a1h3GqdGTrkxOJVT/Q7vHtpdHtxNU9gl9/rrurydHoPy/vSSjWD3JaXnkf9USN22Wb/8
- eISlrXOBQL7SuFHNI9Jkg7qtTH9SUij+2Zx4dtIBrN1nb1/ZbS82rlCWYRbxqN50o2FKMh
- Vw4IOHC2UV1CRSOClqagi4HTs2w+aek=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GrczuoSSHdg9ifBogSmmIOzEe01wTYB7FQsssBQIDFc=;
+ b=BFcVVD+d0Xt+kFsuamPjUrz6vtOpYc9o2HLh4qQAuOdJOIy91GPrZeJfjSC0yV6WhHHoDa
+ MofNeRVW68rq45KOmXhDmFVdzElHFXnMPhoq+H17hc6+D07YuzDQtygBNZWNlG/DoVsP4t
+ WJPntR8oIT7VXT/VBBdxACrJox0O5nA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-rMXa_RrPM6imbq1wS9bsog-1; Fri, 22 Dec 2023 13:16:38 -0500
-X-MC-Unique: rMXa_RrPM6imbq1wS9bsog-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-54554ea191bso1015310a12.2
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:16:37 -0800 (PST)
+ us-mta-223-fnVk5_29PNiC5YpSKVWfqQ-1; Fri, 22 Dec 2023 13:16:39 -0500
+X-MC-Unique: fnVk5_29PNiC5YpSKVWfqQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a2336591d48so101850266b.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 10:16:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703268996; x=1703873796;
+ d=1e100.net; s=20230601; t=1703268998; x=1703873798;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z6I5ERZQ1yG8vEhBxW0HwPCUf3bsKl1KO3xi3tzLK34=;
- b=iu9i7Uq7PycCZSzxPHkK7b7iSwM+5EYIEGkaEb4uXzOIVyEsp4xp8m3EsR+0yIV0Ei
- SxpFY3ObEygpeDOu5Db/yZ9dOOPz2gOUd202owVBiLFM5kXx71+0NvyUNgG2RdYjcZdI
- v/t0zi6Bt4D9hMF3pdQtKX0BG17D4T8dKtGwer6g3Pwdf+dnnR16cGSZHdWlkdbWXMpr
- pi1gfZallQyxYtmCc8+NINpvKRfMs8NPymhSJ2GypKGUxPMOQQsR2Vu6L4S0kFVXGz75
- 9iU1S8qkkxr7kZBPViSdRHbig9XDslJxU5cWF5JDXH+Zm0ypz/60QHzkPNtzHxdeiOs1
- bweA==
-X-Gm-Message-State: AOJu0Yww4AZlN7ThBUboLQgmGRK7OOUQd3sYTDeJcjeMk1JbBU2+MAVj
- aUlY8TfxPNZiKXSL4vFD4DqaeDTUHhyJWyayyzLl5zh9RHePQSDiYvoZSH2VPAZzLhnL5i3UIFe
- psq/miY4zP5OuZlA9XgLSo6jhgomRCJiZzTOB7c2EYQjP7jFKiDjORLZOKJwWvqOrZgBOZlnPs+
- 55d+gFwqs=
-X-Received: by 2002:a50:c119:0:b0:554:5cfc:766b with SMTP id
- l25-20020a50c119000000b005545cfc766bmr607114edf.0.1703268996535; 
- Fri, 22 Dec 2023 10:16:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGex9hC8E3cJ8WXY9wf5YvG3QSNSjFUYFj5gDpPEufGSM/ShuJCd227ftJfn3azApz2YbGecg==
-X-Received: by 2002:a50:c119:0:b0:554:5cfc:766b with SMTP id
- l25-20020a50c119000000b005545cfc766bmr607109edf.0.1703268996221; 
- Fri, 22 Dec 2023 10:16:36 -0800 (PST)
+ bh=GrczuoSSHdg9ifBogSmmIOzEe01wTYB7FQsssBQIDFc=;
+ b=qTAmF+BPrQXhKVnXcHqp9T/SyQMA/dSarfqKg99lveriegWQtM+L1U3dLYumWx5apz
+ CNvO/y3WRRgrUTVWO5wbe+VIYLrskIdRgM/dWxx1xOPqTSkL25l1UFuF4/yEptJE9oBd
+ GW9hMEW/XbpIOwAKY2ffpkIiTMVTKRVeTxZ8vZRagjk23fqgTkjscJ+fjlJ3faoF6qFD
+ UwBEL4493MCgqAUHgMcBh2KzbL2ktCr0BzJdhkRhtj9V2ykBJLQedGqSM1qguDagFVGw
+ oUrANTMbSqzUlIvUTjoomuQr7YwsHo5u6HNQo60goR7gCQjoLu9sq79b5GKbusWJbOB3
+ Alcw==
+X-Gm-Message-State: AOJu0Ywvpl/iOkZFArf15D8blEXwWJWetuRef1Bn9yn9XqAiv7ffP/0r
+ EAN1zKEniSTv+Jtzgrt7fwW4ESx3E8IDMFhc5z4M332o0qUSRU9Uk6LqciEydC0rCJlZnibTu3t
+ FRzIdP0hF7NkFIXME2vsthQBs2ybtjdte3lS+hi5kCODe9yixQZbcnuG1cEAAriX562eKSCg0YO
+ xHxSeXDFo=
+X-Received: by 2002:a17:907:1b1c:b0:a23:46df:f449 with SMTP id
+ mp28-20020a1709071b1c00b00a2346dff449mr1235286ejc.55.1703268997906; 
+ Fri, 22 Dec 2023 10:16:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFhcTYtbgGUF8PKf67GlNt2WAdnFfdrVytuoY4//get9r0GzcDR4IIxW93wYfddF0yN86ySSA==
+X-Received: by 2002:a17:907:1b1c:b0:a23:46df:f449 with SMTP id
+ mp28-20020a1709071b1c00b00a2346dff449mr1235282ejc.55.1703268997604; 
+ Fri, 22 Dec 2023 10:16:37 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- ij14-20020a056402158e00b00554368c9ce8sm1997662edb.1.2023.12.22.10.16.34
+ az15-20020a170907904f00b00a26aa734349sm1780713ejc.39.2023.12.22.10.16.36
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Dec 2023 10:16:34 -0800 (PST)
+ Fri, 22 Dec 2023 10:16:37 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 16/22] target/i386: do not use s->tmp0 for jumps on ECX ==/!= 0
-Date: Fri, 22 Dec 2023 19:15:57 +0100
-Message-ID: <20231222181603.174137-17-pbonzini@redhat.com>
+Subject: [PATCH 17/22] target/i386: extract gen_far_call/jmp,
+ reordering temporaries
+Date: Fri, 22 Dec 2023 19:15:58 +0100
+Message-ID: <20231222181603.174137-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231222181603.174137-1-pbonzini@redhat.com>
 References: <20231222181603.174137-1-pbonzini@redhat.com>
@@ -101,43 +102,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create a new temporary, to ease the register allocator's work.
-
-Creation of the temporary is pushed into gen_ext_tl, which
-also allows NULL as the first parameter now.
+Extract the code into new functions, and swap T0/T1 so that T0 corresponds
+to the first immediate in the instruction stream.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ target/i386/tcg/translate.c | 90 ++++++++++++++++++++-----------------
+ 1 file changed, 50 insertions(+), 40 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index afe0fa6c65f..e5f71170967 100644
+index e5f71170967..edbad0ad746 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -720,6 +720,9 @@ static TCGv gen_ext_tl(TCGv dst, TCGv src, MemOp size, bool sign)
-     if (size == MO_TL) {
-         return src;
-     }
-+    if (!dst) {
-+        dst = tcg_temp_new();
-+    }
-     tcg_gen_ext_tl(dst, src, size | (sign ? MO_SIGN : 0));
-     return dst;
+@@ -2525,12 +2525,12 @@ static inline void gen_op_movl_T0_seg(DisasContext *s, X86Seg seg_reg)
+                      offsetof(CPUX86State,segs[seg_reg].selector));
  }
-@@ -736,9 +739,9 @@ static void gen_exts(MemOp ot, TCGv reg)
  
- static void gen_op_j_ecx(DisasContext *s, TCGCond cond, TCGLabel *label1)
+-static inline void gen_op_movl_seg_T0_vm(DisasContext *s, X86Seg seg_reg)
++static inline void gen_op_movl_seg_real(DisasContext *s, X86Seg seg_reg, TCGv seg)
  {
--    tcg_gen_mov_tl(s->tmp0, cpu_regs[R_ECX]);
--    gen_extu(s->aflag, s->tmp0);
--    tcg_gen_brcondi_tl(cond, s->tmp0, 0, label1);
-+    TCGv tmp = gen_ext_tl(NULL, cpu_regs[R_ECX], s->aflag, false);
-+
-+    tcg_gen_brcondi_tl(cond, tmp, 0, label1);
+-    tcg_gen_ext16u_tl(s->T0, s->T0);
+-    tcg_gen_st32_tl(s->T0, tcg_env,
++    tcg_gen_ext16u_tl(seg, seg);
++    tcg_gen_st32_tl(seg, tcg_env,
+                     offsetof(CPUX86State,segs[seg_reg].selector));
+-    tcg_gen_shli_tl(cpu_seg_base[seg_reg], s->T0, 4);
++    tcg_gen_shli_tl(cpu_seg_base[seg_reg], seg, 4);
  }
  
- static inline void gen_op_jz_ecx(DisasContext *s, TCGLabel *label1)
+ /* move T0 to seg_reg and compute if the CPU state may change. Never
+@@ -2550,13 +2550,43 @@ static void gen_movl_seg_T0(DisasContext *s, X86Seg seg_reg)
+             s->base.is_jmp = DISAS_EOB_NEXT;
+         }
+     } else {
+-        gen_op_movl_seg_T0_vm(s, seg_reg);
++        gen_op_movl_seg_real(s, seg_reg, s->T0);
+         if (seg_reg == R_SS) {
+             s->base.is_jmp = DISAS_EOB_INHIBIT_IRQ;
+         }
+     }
+ }
+ 
++static void gen_far_call(DisasContext *s)
++{
++    if (PE(s) && !VM86(s)) {
++        tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T1);
++        gen_helper_lcall_protected(tcg_env, s->tmp2_i32, s->T0,
++                                   tcg_constant_i32(s->dflag - 1),
++                                   eip_next_tl(s));
++    } else {
++        tcg_gen_trunc_tl_i32(s->tmp3_i32, s->T1);
++        tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
++        gen_helper_lcall_real(tcg_env, s->tmp3_i32, s->tmp2_i32,
++                              tcg_constant_i32(s->dflag - 1),
++                              eip_next_i32(s));
++    }
++    s->base.is_jmp = DISAS_JUMP;
++}
++
++static void gen_far_jmp(DisasContext *s)
++{
++    if (PE(s) && !VM86(s)) {
++        tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T1);
++        gen_helper_ljmp_protected(tcg_env, s->tmp2_i32, s->T0,
++                                  eip_next_tl(s));
++    } else {
++        gen_op_movl_seg_real(s, R_CS, s->T1);
++        gen_op_jmp_v(s, s->T0);
++    }
++    s->base.is_jmp = DISAS_JUMP;
++}
++
+ static void gen_svm_check_intercept(DisasContext *s, uint32_t type)
+ {
+     /* no SVM activated; fast case */
+@@ -3637,23 +3667,10 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             if (mod == 3) {
+                 goto illegal_op;
+             }
+-            gen_op_ld_v(s, ot, s->T1, s->A0);
++            gen_op_ld_v(s, ot, s->T0, s->A0);
+             gen_add_A0_im(s, 1 << ot);
+-            gen_op_ld_v(s, MO_16, s->T0, s->A0);
+-        do_lcall:
+-            if (PE(s) && !VM86(s)) {
+-                tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
+-                gen_helper_lcall_protected(tcg_env, s->tmp2_i32, s->T1,
+-                                           tcg_constant_i32(dflag - 1),
+-                                           eip_next_tl(s));
+-            } else {
+-                tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
+-                tcg_gen_trunc_tl_i32(s->tmp3_i32, s->T1);
+-                gen_helper_lcall_real(tcg_env, s->tmp2_i32, s->tmp3_i32,
+-                                      tcg_constant_i32(dflag - 1),
+-                                      eip_next_i32(s));
+-            }
+-            s->base.is_jmp = DISAS_JUMP;
++            gen_op_ld_v(s, MO_16, s->T1, s->A0);
++            gen_far_call(s);
+             break;
+         case 4: /* jmp Ev */
+             if (dflag == MO_16) {
+@@ -3667,19 +3684,10 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             if (mod == 3) {
+                 goto illegal_op;
+             }
+-            gen_op_ld_v(s, ot, s->T1, s->A0);
++            gen_op_ld_v(s, ot, s->T0, s->A0);
+             gen_add_A0_im(s, 1 << ot);
+-            gen_op_ld_v(s, MO_16, s->T0, s->A0);
+-        do_ljmp:
+-            if (PE(s) && !VM86(s)) {
+-                tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
+-                gen_helper_ljmp_protected(tcg_env, s->tmp2_i32, s->T1,
+-                                          eip_next_tl(s));
+-            } else {
+-                gen_op_movl_seg_T0_vm(s, R_CS);
+-                gen_op_jmp_v(s, s->T1);
+-            }
+-            s->base.is_jmp = DISAS_JUMP;
++            gen_op_ld_v(s, MO_16, s->T1, s->A0);
++            gen_far_jmp(s);
+             break;
+         case 6: /* push Ev */
+             gen_push_v(s, s->T0);
+@@ -5117,7 +5125,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             /* pop selector */
+             gen_add_A0_im(s, 1 << dflag);
+             gen_op_ld_v(s, dflag, s->T0, s->A0);
+-            gen_op_movl_seg_T0_vm(s, R_CS);
++            gen_op_movl_seg_real(s, R_CS, s->T0);
+             /* add stack offset */
+             gen_stack_update(s, val + (2 << dflag));
+         }
+@@ -5161,10 +5169,11 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             offset = insn_get(env, s, ot);
+             selector = insn_get(env, s, MO_16);
+ 
+-            tcg_gen_movi_tl(s->T0, selector);
+-            tcg_gen_movi_tl(s->T1, offset);
++            tcg_gen_movi_tl(s->T0, offset);
++            tcg_gen_movi_tl(s->T1, selector);
+         }
+-        goto do_lcall;
++        gen_far_call(s);
++        break;
+     case 0xe9: /* jmp im */
+         {
+             int diff = (dflag != MO_16
+@@ -5184,10 +5193,11 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             offset = insn_get(env, s, ot);
+             selector = insn_get(env, s, MO_16);
+ 
+-            tcg_gen_movi_tl(s->T0, selector);
+-            tcg_gen_movi_tl(s->T1, offset);
++            tcg_gen_movi_tl(s->T0, offset);
++            tcg_gen_movi_tl(s->T1, selector);
+         }
+-        goto do_ljmp;
++        gen_far_jmp(s);
++        break;
+     case 0xeb: /* jmp Jb */
+         {
+             int diff = (int8_t)insn_get(env, s, MO_8);
 -- 
 2.43.0
 
