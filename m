@@ -2,68 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BEC81CB92
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 15:59:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3451481CBFF
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 16:15:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGgy4-0000bL-W0; Fri, 22 Dec 2023 09:57:41 -0500
+	id 1rGhDi-0006Vl-Rv; Fri, 22 Dec 2023 10:13:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <elen.avan@bk.ru>)
- id 1rGglg-0004FI-MJ; Fri, 22 Dec 2023 09:44:52 -0500
-Received: from f459.i.mail.ru ([45.84.128.242])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <elen.avan@bk.ru>)
- id 1rGgld-0003w3-Sc; Fri, 22 Dec 2023 09:44:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=bk.ru;
- s=mail4; 
- h=Content-Type:Message-ID:Reply-To:Date:MIME-Version:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc;
- bh=fvQCpwoJU/zCA3zRqKSe23RmrU4OwW86vz4zoKQiCPA=; 
- t=1703256289;x=1703346289; 
- b=ExRde4pv7q9qo6GcBN5h8FF7wzwT0oGACY9hZuzev0WY03jSqVfekF5cNUAlw3jj2BNg9XKmlFTxYsgBAHcUouaThBd4dUyYw74dWe73o8f1z8RpLxnWvZKuI6xX0JAteFuLfWn5m5W94QsCkeggsHa1JT9USK6DHBtMdYZQuBffxibbKYX1zTMy0VRzMmVTbPn4ukP3xmPGSkO9e5P1UYwr3qJZC57xSYSz5nvHhwbe5wfTJU3htrT9zRa/0EElczJeDeqjfiHYxAwyQm7dSPaA/82jtByesxxBUhXmGWtnf8dVuLkeP6g8MmCT6By40HIGmM+TSSYSZ0qrhisclw==;
-Received: by f459.i.mail.ru with local (envelope-from <elen.avan@bk.ru>)
- id 1rGglU-0006Xv-LH; Fri, 22 Dec 2023 17:44:41 +0300
-Received: by e.mail.ru with HTTP;
-	Fri, 22 Dec 2023 17:44:40 +0300
-From: =?UTF-8?B?QXZhbiBFbGVu?= <elen.avan@bk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: =?UTF-8?B?W1JGQ10gUmVzb2x2ZXM6IGh0dHBzOi8vZ2l0bGFiLmNvbS9xZW11LXByb2pl?=
- =?UTF-8?B?Y3QvcWVtdS8tL2lzc3Vlcy8yMDUx?=
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rGhDf-0006VW-2n
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 10:13:47 -0500
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rGhDc-0000WP-Bh
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 10:13:46 -0500
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-28bd85bda06so1173703a91.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 07:11:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1703257900; x=1703862700;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=U2/RW4oWM0QAcyR+4M9wWIRn5CoNhaVjvj4AwIv0Wy0=;
+ b=a72fFtV1qitIRDbZ7wigW/XbR2OzWiXnPAvzPmjaVxvZAepuk0Kb6CXqpZ8rayO0IY
+ zpO+PGf38bedmUWL4jJRSieBZZ5hhGp8fc8ts5Qvsoe/ZTdNHvR6K4V8mVHfN8JgVT6L
+ rBqdVLzv3EtwWOrMb6jQPUfgR8q9QbcsSo39WKcTDUf+ag/8Veqp8dU1nUB0+5XT4JkR
+ 5Nqj7a12k37ES+3KjPAmCTWIjpRUjxIBYzBSnEjWgJ6nasYhDYeXlhbI6MK5gexPBoMo
+ vVVj3RoHUHUh1kbRIAmdTMpv2KAr6dZfG4pO/zqChfrYyMgFM/kdwYzeozG05vuHBsaq
+ oGbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703257900; x=1703862700;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=U2/RW4oWM0QAcyR+4M9wWIRn5CoNhaVjvj4AwIv0Wy0=;
+ b=M8ZtUeyeDScFz2oBCouhZPm8xJJkKAzkh1DEbb3HwVGEvebHgD7oMgZDeQF6oZg232
+ aS1+K71OzqCHm/KmNA4vqzEqaNZQdebZ6Z2cdHirqplBWbCbxfTF1kQevGSDMGrgjM+U
+ 0eIv1+zTGBSFAJo6EHc4R6UETIMsWCMiUMuN8SYBo4l/dK+I1I93Cif/BbOKZ07vhgqU
+ RzD8v3DS2475aPzdg+amvraWck86Qw71qxzLoqlhSwxXONO0LQuHPr85E27OvX3aYRed
+ TUjs1hfayLT20Z1DWECMhzDGOEinzqVuANT8R8MpxbjCb9MKZToQT5EyBm9+CFM5Av/F
+ Cl2w==
+X-Gm-Message-State: AOJu0YyAB4y3/G52lq3QfhZBm+mlIfW2UJcjkArE91XDoZG/ythzEuD0
+ RPotWQXrPKIwAnZ7d7WDDbI6HIplO4z3GiSqHdNU8c529JZJdA==
+X-Google-Smtp-Source: AGHT+IGUBaJKa9SBJFGW07NyNmkAsH7puD2Coa2kP7B8K1f0Ypb9ClGRmwI9rQMUgkJkNtQIK2hmlCsIvgfoB9ZnXLI=
+X-Received: by 2002:a17:90a:15d7:b0:28c:3a7:356e with SMTP id
+ w23-20020a17090a15d700b0028c03a7356emr969222pjd.7.1703257897983; Fri, 22 Dec
+ 2023 07:11:37 -0800 (PST)
 MIME-Version: 1.0
-X-Mailer: Mail.Ru Mailer 1.0
-X-SenderField-Remind: 0
-Date: Fri, 22 Dec 2023 17:44:40 +0300
-X-Priority: 3 (Normal)
-Message-ID: <1703256280.420493447@f348.i.mail.ru>
-Content-Type: multipart/alternative;
- boundary="--ALT--fF1dEbF320A3B6f4b5DCcF19f6F56fF11703256280"
-Authentication-Results: f459.i.mail.ru; auth=pass smtp.auth=elen.avan@bk.ru
- smtp.mailfrom=elen.avan@bk.ru
-X-Mailru-Src: fe
-X-7564579A: 646B95376F6C166E
-X-77F55803: 119C1F4DF6A9251C047F89FE214EBC1511590BFAB115A94248C0B828451394FB8FD872164937FA4C46C61B24A81371C40BF9A6120A06BA26E5CB69EFA2786687C662FCC3EFF75FFF
-X-7FA49CB5: 70AAF3C13DB70168C09775C1D3CA48CF17D6AC7B04003A2BB2086D80B0504778CF19DD082D7633A0ACBFF42033827DA764CD17681C2FEB7A0E30A4C9C8E338DA5F6C26AD66D6A873C4224003CC836476ABE134FDCE4E2725BFD28B28ED4578739E625A9149C048EE33AC447995A7AD180F8483684B69468CB287FD4696A6DC2FA8DF7F3B2552694A4E2F5AFA99E116B42401471946AA11AF176DF2183F8FC7C0CC517EB18D671D938F08D7030A58E5AD1A62830130A00468AEEEE3FBA3A834EE7353EFBB55337566710A959C6BD0A554DA5A418127ECA01A4EEE3B2600F7042F1DF9E95F17B0083B26EA987F6312C9EC9ECD01F8117BC8BEA471835C12D1D9774AD6D5ED66289B5278DA827A17800CE767883B903EA3BAEA9FA2833FD35BB23D2EF20D2F80756B5F868A13BD56FB6657A471835C12D1D977725E5C173C3A84C317B107DEF921CE79117882F4460429728AD0CFFFB425014E868A13BD56FB6657E2021AF6380DFAD1A18204E546F3947CD2DCF9CF1F528DBC2E808ACE2090B5E1725E5C173C3A84C327ED053E960B195E089D37D7C0E48F6C8AA50765F7900637E9FFCA8CB0C7F05CEFF80C71ABB335746BA297DBC24807EABDAD6C7F3747799A
-X-C1DE0DAB: 0D63561A33F958A57B84C088A9F65D2958826257B800D64F0994682CCBC77B6DF87CCE6106E1FC07E67D4AC08A07B9B05DBE5CE84B47B0E4BDAD6C7F3747799A
-X-C8649E89: 1C3962B70DF3F0ADE2815F1F17DA719077DD89D51EBB77422CCB5A6D6581D03D0776B5B2C279835F17BCBE6708A5A68D02015372BE9702A2FDA73271FE55BA23E717A3456CB157C2D3DBE6A26063F5E52425BC226AAE850EE226B6A6F67C6B9E1B56794A24E1788A01973FA6D4BE198075DF6DCBB1339FDC8CD93680B12512CF4C41F94D744909CEC8E7D1A9F6F5718981F0A85E6FCD913751712CF8FD550D2C
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5+wYjsrrSY/u8Y3PrTqANeitKFiSd6Yd7yPpbiiZ/d5BsxIjK0jGQgCHUM3Ry2Lt2G3MDkMauH3h0dBdQGj+BB/iPzQYh7XS3xyn40EmMxrmzGyQ9/nTnF2q4KtT3E8kdXvnsmttD4RG
-X-Mailru-MI: 10000000000000800
-X-Mailru-Sender: E252BC732A74C87F30FF8F4DB95A9B621B2EEB67606B32702945693FB140D887BAB4DFD32FB3D98A4BA30853CC675D40A5962A4BE89313CF0F334C84DE260908073249D147468D21093DEB5EF9C56975BF6201D9D8AF31D54D7A7B73BD220F2A4B534A9F733E3E00C747CC3D510BD2996706E619398572490D4ABDE8C577C2ED
-X-Mras: Ok
-X-Spam: undefined
-Received-SPF: pass client-ip=45.84.128.242; envelope-from=elen.avan@bk.ru;
- helo=f459.i.mail.ru
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FROM_EXCESS_BASE64=0.001, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+References: <cover.1700319559.git.yong.huang@smartx.com>
+ <3c7161a47b141af04b1f8272e8e24c5faa46ddb2.1700319559.git.yong.huang@smartx.com>
+ <878r5mwoig.fsf@pond.sub.org>
+In-Reply-To: <878r5mwoig.fsf@pond.sub.org>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Fri, 22 Dec 2023 23:11:21 +0800
+Message-ID: <CAK9dgmbPJWtt774MVGHAwFbSgpVFXsdWT=NJM-Lkdizt6aLXsQ@mail.gmail.com>
+Subject: Re: [v2 1/2] qapi/virtio: Add feature and status bits for
+ x-query-virtio-status
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
+ Eric Blake <eblake@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000f87dc4060d1aa167"
+Received-SPF: none client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1035.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 22 Dec 2023 09:57:34 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,62 +88,105 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: =?UTF-8?B?QXZhbiBFbGVu?= <elen.avan@bk.ru>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--000000000000f87dc4060d1aa167
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-----ALT--fF1dEbF320A3B6f4b5DCcF19f6F56fF11703256280
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
+Sure. of course. I'll do that next week. While v3 would be a single patch
+that only contains the first commit.
 
-CkhpLCB0aGlzIHBhdGNoIGZpeGVzIGEgYnVnOiAgaHR0cHM6Ly9naXRsYWIuY29tL3FlbXUtcHJv
-amVjdC9xZW11Ly0vaXNzdWVzLzIwNTEKwqAKRnJvbTogRWxlbiBBdmFuIDxlbGVuLmF2YW5AYmsu
-cnU+CkRhdGU6IEZyaSwgMjIgRGVjIDIwMjMgMTQ6Mzk6NDggKzAwMDAKU3ViamVjdDogW1JGQ10g
-UmVzb2x2ZXM6IGh0dHBzOi8vZ2l0bGFiLmNvbS9xZW11LXByb2plY3QvcWVtdS8tL2lzc3Vlcy8y
-MDUxCsKgClNpZ25lZC1vZmYtYnk6IEVsZW4gQXZhbiA8ZWxlbi5hdmFuQGJrLnJ1PgotLS0KwqBp
-bmNsdWRlL3VpL3JlY3QuaCB8IDIgKy0KwqAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyks
-IDEgZGVsZXRpb24oLSkKwqAKZGlmZiAtLWdpdCBhL2luY2x1ZGUvdWkvcmVjdC5oIGIvaW5jbHVk
-ZS91aS9yZWN0LmgKaW5kZXggOTQ4OThmOTJkMC4uNjhmMDVkNzhhOCAxMDA2NDQKLS0tIGEvaW5j
-bHVkZS91aS9yZWN0LmgKKysrIGIvaW5jbHVkZS91aS9yZWN0LmgKQEAgLTE5LDcgKzE5LDcgQEAg
-c3RhdGljIGlubGluZSB2b2lkIHFlbXVfcmVjdF9pbml0KFFlbXVSZWN0ICpyZWN0LArCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCB1aW50MTZfdCB3aWR0aCwgdWludDE2X3QgaGVpZ2h0KQrCoHsKwqDCoMKgwqAgcmVjdC0+
-eCA9IHg7Ci3CoMKgwqAgcmVjdC0+eSA9IHg7CivCoMKgwqAgcmVjdC0+eSA9IHk7CsKgwqDCoMKg
-IHJlY3QtPndpZHRoID0gd2lkdGg7CsKgwqDCoMKgIHJlY3QtPmhlaWdodCA9IGhlaWdodDsKwqB9
-Ci0tCjIuNDEuMArCoArCoArCoA==
+Thanks,
+Yong
 
-----ALT--fF1dEbF320A3B6f4b5DCcF19f6F56fF11703256280
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: base64
+On Fri, Dec 22, 2023 at 5:54=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 
-CjxIVE1MPjxCT0RZPjxkaXY+SGksIHRoaXMgcGF0Y2ggZml4ZXMgYSBidWc6IDxhIGhyZWY9Imh0
-dHBzOi8vZ2l0bGFiLmNvbS9xZW11LXByb2plY3QvcWVtdS8tL2lzc3Vlcy8yMDUxIj5odHRwczov
-L2dpdGxhYi5jb20vcWVtdS1wcm9qZWN0L3FlbXUvLS9pc3N1ZXMvMjA1MTwvYT48L2Rpdj48ZGl2
-PiZuYnNwOzwvZGl2PjxkaXY+PGRpdj48ZGl2PkZyb206IEVsZW4gQXZhbiAmbHQ7ZWxlbi5hdmFu
-QGJrLnJ1Jmd0OzwvZGl2PjxkaXY+RGF0ZTogRnJpLCAyMiBEZWMgMjAyMyAxNDozOTo0OCArMDAw
-MDwvZGl2PjxkaXY+U3ViamVjdDogW1JGQ10gUmVzb2x2ZXM6IGh0dHBzOi8vZ2l0bGFiLmNvbS9x
-ZW11LXByb2plY3QvcWVtdS8tL2lzc3Vlcy8yMDUxPC9kaXY+PGRpdj4mbmJzcDs8L2Rpdj48ZGl2
-PlNpZ25lZC1vZmYtYnk6IEVsZW4gQXZhbiAmbHQ7ZWxlbi5hdmFuQGJrLnJ1Jmd0OzwvZGl2Pjxk
-aXY+LS0tPC9kaXY+PGRpdj4mbmJzcDtpbmNsdWRlL3VpL3JlY3QuaCB8IDIgKy08L2Rpdj48ZGl2
-PiZuYnNwOzEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKTwvZGl2
-PjxkaXY+Jm5ic3A7PC9kaXY+PGRpdj5kaWZmIC0tZ2l0IGEvaW5jbHVkZS91aS9yZWN0LmggYi9p
-bmNsdWRlL3VpL3JlY3QuaDwvZGl2PjxkaXY+aW5kZXggOTQ4OThmOTJkMC4uNjhmMDVkNzhhOCAx
-MDA2NDQ8L2Rpdj48ZGl2Pi0tLSBhL2luY2x1ZGUvdWkvcmVjdC5oPC9kaXY+PGRpdj4rKysgYi9p
-bmNsdWRlL3VpL3JlY3QuaDwvZGl2PjxkaXY+QEAgLTE5LDcgKzE5LDcgQEAgc3RhdGljIGlubGlu
-ZSB2b2lkIHFlbXVfcmVjdF9pbml0KFFlbXVSZWN0ICpyZWN0LDwvZGl2PjxkaXY+Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IHVpbnQxNl90IHdpZHRoLCB1aW50MTZfdCBoZWlnaHQp
-PC9kaXY+PGRpdj4mbmJzcDt7PC9kaXY+PGRpdj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsgcmVj
-dC0mZ3Q7eCA9IHg7PC9kaXY+PGRpdj4tJm5ic3A7Jm5ic3A7Jm5ic3A7IHJlY3QtJmd0O3kgPSB4
-OzwvZGl2PjxkaXY+KyZuYnNwOyZuYnNwOyZuYnNwOyByZWN0LSZndDt5ID0geTs8L2Rpdj48ZGl2
-PiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyByZWN0LSZndDt3aWR0aCA9IHdpZHRoOzwvZGl2Pjxk
-aXY+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IHJlY3QtJmd0O2hlaWdodCA9IGhlaWdodDs8L2Rp
-dj48ZGl2PiZuYnNwO308L2Rpdj48ZGl2Pi0tPC9kaXY+PGRpdj4yLjQxLjA8L2Rpdj48ZGl2PiZu
-YnNwOzwvZGl2PjxkaXY+Jm5ic3A7PC9kaXY+PGRpdj4mbmJzcDs8L2Rpdj48L2Rpdj48L2Rpdj48
-L0JPRFk+PC9IVE1MPgo=
+> Hyman Huang <yong.huang@smartx.com> writes:
+>
+> > This patch allows to display feature and status bits in
+> > virtio-status.
+> >
+> > Applications could find it helpful to compare status and features
+> > that are numeric encoded. For example, an upper application could
+> > use the features (encoded as a number) in the output of "ovs-vsctl
+> > list interface" and the feature bits fields in the output of QMP
+> > command "x-query-virtio-status" to compare directly when attempting
+> > to ensure the correctness of the virtio negotiation between guest,
+> > QEMU, and OVS-DPDK. Not applying any more encoding.
+> >
+> > This patch also serves as a preparation for the next one, which
+> implements
+> > a vhost-user test case about acked features of vhost-user protocol.
+> >
+> > Note that since the matching HMP command is typically used for human,
+> > leave it unchanged.
+> >
+> > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+>
+> We discussed v1 some more since you posted this.  Do you intend to do a
+> v3?
+>
+>
 
-----ALT--fF1dEbF320A3B6f4b5DCcF19f6F56fF11703256280--
+--=20
+Best regards
+
+--000000000000f87dc4060d1aa167
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif">Sure. of course. I&#39;ll do=
+ that next week. While v3 would be a single patch that only contains the fi=
+rst commit.</div><div class=3D"gmail_default" style=3D"font-family:&quot;co=
+mic sans ms&quot;,sans-serif"><br></div><div class=3D"gmail_default" style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Thanks,</div><div cla=
+ss=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-se=
+rif">Yong</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
+=3D"gmail_attr">On Fri, Dec 22, 2023 at 5:54=E2=80=AFPM Markus Armbruster &=
+lt;<a href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:<br=
+></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
+border-left-width:1px;border-left-style:solid;border-left-color:rgb(204,204=
+,204);padding-left:1ex">Hyman Huang &lt;<a href=3D"mailto:yong.huang@smartx=
+.com" target=3D"_blank">yong.huang@smartx.com</a>&gt; writes:<br>
+<br>
+&gt; This patch allows to display feature and status bits in<br>
+&gt; virtio-status.<br>
+&gt;<br>
+&gt; Applications could find it helpful to compare status and features<br>
+&gt; that are numeric encoded. For example, an upper application could<br>
+&gt; use the features (encoded as a number) in the output of &quot;ovs-vsct=
+l<br>
+&gt; list interface&quot; and the feature bits fields in the output of QMP<=
+br>
+&gt; command &quot;x-query-virtio-status&quot; to compare directly when att=
+empting<br>
+&gt; to ensure the correctness of the virtio negotiation between guest,<br>
+&gt; QEMU, and OVS-DPDK. Not applying any more encoding.<br>
+&gt;<br>
+&gt; This patch also serves as a preparation for the next one, which implem=
+ents<br>
+&gt; a vhost-user test case about acked features of vhost-user protocol.<br=
+>
+&gt;<br>
+&gt; Note that since the matching HMP command is typically used for human,<=
+br>
+&gt; leave it unchanged.<br>
+&gt;<br>
+&gt; Signed-off-by: Hyman Huang &lt;<a href=3D"mailto:yong.huang@smartx.com=
+" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+<br>
+We discussed v1 some more since you posted this.=C2=A0 Do you intend to do =
+a<br>
+v3?<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--000000000000f87dc4060d1aa167--
 
