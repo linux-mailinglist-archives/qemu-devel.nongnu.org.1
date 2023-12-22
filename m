@@ -2,65 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F8A81CA4F
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 13:52:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8774E81CA94
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Dec 2023 14:16:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGezt-0003GP-8j; Fri, 22 Dec 2023 07:51:25 -0500
+	id 1rGfM4-0008Bj-Gn; Fri, 22 Dec 2023 08:14:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGezo-0003FT-DW
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:51:21 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rGfM2-0008BT-E9
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 08:14:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGezl-0008HN-J1
- for qemu-devel@nongnu.org; Fri, 22 Dec 2023 07:51:20 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rGfM0-0004rm-BY
+ for qemu-devel@nongnu.org; Fri, 22 Dec 2023 08:14:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703249475;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1703250854;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ParxBq6NpzQ+iH0tJHnc4A6gO2AivaR6o/aLtaHUn7s=;
- b=d9ACPtS60+Oka2L/YBWc9djhpLLN2i7Xdk6N0TQAbhm3KmIfUyVsQNvewzggq+SDR53/9i
- PJRarUzKjSwqi8gw0X2FBJDMEtd+Gznn6Wwy9TFFc4uRyGXdOu8zoFkp0q7gxgWE9/6j9x
- dmVFLK5Bg96F8kk9KoACKG0A+xhkp30=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-OeRZnaXpMOCYhPpU5RPcpA-1; Fri, 22 Dec 2023 07:51:12 -0500
-X-MC-Unique: OeRZnaXpMOCYhPpU5RPcpA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=zZjb2qW2npfjBnPlgRmIf+pcDEINjvPrppaJrUN95YI=;
+ b=LXPeHUeOky7C3jmJcfddcB+mSdSimlEnuJjwvmWy9XVRlaal8rlkGcF4B7RvO//e+4/qEL
+ HOLqE9p+fRBlfTSuh3Qg+EIzGslUKwab4pV9PH86nZnJJ8MSsGsIDr2qE8hionysQUR6/+
+ Rf71do5egfMP0iJnmne/W+5bMvZSOM0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-4-ofHTMuODCd_ofaOB-S8A-1; Fri,
+ 22 Dec 2023 08:14:10 -0500
+X-MC-Unique: 4-ofHTMuODCd_ofaOB-S8A-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 36AAE185A782;
- Fri, 22 Dec 2023 12:51:12 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2475A2166B31;
- Fri, 22 Dec 2023 12:51:11 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2056E21E6920; Fri, 22 Dec 2023 13:51:10 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Maksim Davydov <davydov-max@yandex-team.ru>
-Cc: qemu-devel@nongnu.org,  eduardo@habkost.net,
- marcel.apfelbaum@gmail.com,  philmd@linaro.org,  wangyanan55@huawei.com,
- jsnow@redhat.com,  crosa@redhat.com,  bleal@redhat.com,
- eblake@redhat.com,  pbonzini@redhat.com,  berrange@redhat.com,
- alxndr@bu.edu,  bsd@redhat.com,  stefanha@redhat.com,  thuth@redhat.com,
- darren.kenny@oracle.com,  Qiuhao.Li@outlook.com,  lvivier@redhat.com
-Subject: Re: [PATCH v7 0/4] compare machine type compat_props
-In-Reply-To: <20231214155333.35643-1-davydov-max@yandex-team.ru> (Maksim
- Davydov's message of "Thu, 14 Dec 2023 18:53:29 +0300")
-References: <20231214155333.35643-1-davydov-max@yandex-team.ru>
-Date: Fri, 22 Dec 2023 13:51:10 +0100
-Message-ID: <874jgah03l.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6749D29ABA19;
+ Fri, 22 Dec 2023 13:14:09 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.76])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AFDD5C159B0;
+ Fri, 22 Dec 2023 13:14:06 +0000 (UTC)
+Date: Fri, 22 Dec 2023 13:14:04 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>
+Subject: Re: [PATCH v3 52/70] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
+Message-ID: <ZYWLnIfXac_K7EZM@redhat.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-53-xiaoyao.li@intel.com>
+ <ZYQb_P6eHokUz9Hh@redhat.com>
+ <5314df8a-4173-46cb-bc7e-984c6b543555@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5314df8a-4173-46cb-bc7e-984c6b543555@intel.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -82,27 +97,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Something odd is going on here.
+On Fri, Dec 22, 2023 at 11:14:12AM +0800, Xiaoyao Li wrote:
+> On 12/21/2023 7:05 PM, Daniel P. Berrangé wrote:
+> > On Wed, Nov 15, 2023 at 02:15:01AM -0500, Xiaoyao Li wrote:
+> > > From: Isaku Yamahata <isaku.yamahata@intel.com>
+> > > 
+> > > For GetQuote, delegate a request to Quote Generation Service.
+> > > Add property "quote-generation-socket" to tdx-guest, whihc is a property
+> > > of type SocketAddress to specify Quote Generation Service(QGS).
+> > > 
+> > > On request, connect to the QGS, read request buffer from shared guest
+> > > memory, send the request buffer to the server and store the response
+> > > into shared guest memory and notify TD guest by interrupt.
+> > > 
+> > > command line example:
+> > >    qemu-system-x86_64 \
+> > >      -object '{"qom-type":"tdx-guest","id":"tdx0","quote-generation-socket":{"type": "vsock", "cid":"2","port":"1234"}}' \
+> > 
+> > Here you're illustrating a VSOCK address.  IIUC, both the 'qgs'
+> > daemon and QEMU will be running in the host. Why would they need
+> > to be using VSOCK, as opposed to a regular UNIX socket connection ?
+> > 
+> 
+> We use vsock here because the QGS server we used for testing exposes the
+> vsock socket.
 
-Your cover letter and PATCH 4 arrived here with
+Is this is the server impl you test with:
 
-    Content-Type: text/plain; charset=UTF-8
+  https://github.com/intel/SGXDataCenterAttestationPrimitives/tree/master/QuoteGeneration/quote_wrapper/qgs
 
-Good.
+or is there another impl ?
 
-PATCH 2:
-
-    Content-Type: text/plain; charset="US-ASCII"; x-default=true
-
-PATCH 1 and 3:
-
-    Content-Type: text/plain; charset=N
-
-git-am chokes on that:
-
-    error: cannot convert from N to UTF-8
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
