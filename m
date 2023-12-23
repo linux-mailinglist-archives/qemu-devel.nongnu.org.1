@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDCE81D512
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Dec 2023 17:33:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2849581D514
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Dec 2023 17:34:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rH4uO-0005mQ-8v; Sat, 23 Dec 2023 11:31:28 -0500
+	id 1rH4we-00077D-DG; Sat, 23 Dec 2023 11:33:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rH4tv-0005m9-77; Sat, 23 Dec 2023 11:31:01 -0500
+ id 1rH4wb-000771-EM; Sat, 23 Dec 2023 11:33:45 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rH4tt-0002kK-FM; Sat, 23 Dec 2023 11:30:58 -0500
+ id 1rH4wY-00036I-Es; Sat, 23 Dec 2023 11:33:44 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 58C0C3E4AD;
- Sat, 23 Dec 2023 19:31:12 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id D312A3E4B1;
+ Sat, 23 Dec 2023 19:34:00 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3994251CF9;
- Sat, 23 Dec 2023 19:30:51 +0300 (MSK)
-Message-ID: <a8bfff1f-9b0a-487c-84bf-89e99b3ba3f6@tls.msk.ru>
-Date: Sat, 23 Dec 2023 19:30:51 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id A96E151CFA;
+ Sat, 23 Dec 2023 19:33:39 +0300 (MSK)
+Message-ID: <f1253146-f362-421b-942d-d715d73b7028@tls.msk.ru>
+Date: Sat, 23 Dec 2023 19:33:39 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv/kvm: do not use non-portable
- strerrorname_np()
+Subject: Re: [PATCH 0/2] qemu-options: Improve -display cocoa documentation
 Content-Language: en-US
-To: Natanael Copa <ncopa@alpinelinux.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, qemu-trivial@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <20231218162301.14817-1-ncopa@alpinelinux.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Carwyn Ellis <carwynellis@gmail.com>
+Cc: qemu-devel@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
+ QEMU Trivial <qemu-trivial@nongnu.org>
+References: <20231214-options-v1-0-113f347b0e3f@daynix.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -63,7 +61,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231218162301.14817-1-ncopa@alpinelinux.org>
+In-Reply-To: <20231214-options-v1-0-113f347b0e3f@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -89,12 +87,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-18.12.2023 19:22, Natanael Copa:
-> strerrorname_np is non-portable and breaks building with musl libc.
+14.12.2023 09:31, Akihiko Odaki :
+> For the context, see:
+> https://lore.kernel.org/all/e3839467-6d4c-e8e6-9247-a71fafe5505e@eik.bme.hu/
 > 
-> Use strerror(errno) instead, like we do other places.
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+> Akihiko Odaki (2):
+>        qemu-options: Unify the help entries for cocoa
+>        qemu-options: Tell more for -display cocoa
+> 
+>   qemu-options.hx | 21 ++++++++++++++++++---
+>   1 file changed, 18 insertions(+), 3 deletions(-)
 
-Applied to the trivial-patches tree, finally..
+Picked up for the trivial tree, finally.
+
+Thanks,
 
 /mjt
 
