@@ -2,77 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D42381D28B
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Dec 2023 06:43:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0545081D2DB
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Dec 2023 08:18:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGulq-0004xe-CX; Sat, 23 Dec 2023 00:41:58 -0500
+	id 1rGwGD-0003wT-Ea; Sat, 23 Dec 2023 02:17:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGuln-0004x9-PZ
- for qemu-devel@nongnu.org; Sat, 23 Dec 2023 00:41:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rGull-00083I-0b
- for qemu-devel@nongnu.org; Sat, 23 Dec 2023 00:41:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703310111;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GS96X8qOc6/Bn0+JhACnt5sIUiP+b4w6+0Hm8a9ctzs=;
- b=PpaDmkvVTDuabgRRdnXbliYsE97oiUHs88t9d1QGP2z4Z4BK7JGy8prjL902Tjn5cRBV8E
- AtKgU3VVNjmLEX6NssKNryvRotHcype2586CY3drof4tlRMoir/ktmklejdm/b91YOcQJw
- vSpmRiuKM+N3k8q39jOzEFrpGGHGqhA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-S1iFWfl3N2azg6tkHjkWSQ-1; Sat, 23 Dec 2023 00:41:47 -0500
-X-MC-Unique: S1iFWfl3N2azg6tkHjkWSQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D8998350E1;
- Sat, 23 Dec 2023 05:41:47 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.129])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 056922166B31;
- Sat, 23 Dec 2023 05:41:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DB95821E6920; Sat, 23 Dec 2023 06:41:45 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org,  Juan Quintela <quintela@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Fabiano
- Rosas <farosas@suse.de>,  Leonardo Bras <leobras@redhat.com>,  Eric Blake
- <eblake@redhat.com>
-Subject: Re: [PATCH V6 03/14] cpus: stop vm in suspended runstate
-In-Reply-To: <9d613137-24aa-4323-aee1-0d38b91339c5@oracle.com> (Steven
- Sistare's message of "Fri, 22 Dec 2023 10:53:24 -0500")
-References: <1701380247-340457-1-git-send-email-steven.sistare@oracle.com>
- <1701380247-340457-4-git-send-email-steven.sistare@oracle.com>
- <87bkaiig2s.fsf@pond.sub.org>
- <9d613137-24aa-4323-aee1-0d38b91339c5@oracle.com>
-Date: Sat, 23 Dec 2023 06:41:45 +0100
-Message-ID: <87sf3ta31i.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rGwG8-0003uy-B3
+ for qemu-devel@nongnu.org; Sat, 23 Dec 2023 02:17:20 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rGwG4-0001YN-Ow
+ for qemu-devel@nongnu.org; Sat, 23 Dec 2023 02:17:20 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d40eec5e12so15947085ad.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 23:17:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703315835; x=1703920635;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fVeSKwzmq9V2JL2neLcUCfxQ/2XOS0YKJUymFPDuUW8=;
+ b=UHTcZCyAzvSlNQngER8LJUstgqmEqF/8ZN0uIleeKRiFqgGABf55ADHKBnot6SOOxt
+ WjXPlfqwhpQflG7+Z3+PgDmWWIUCkI17WHO7fn+dA8gjyTfbvLa4GEnWSeNkyBkGnEzS
+ r/BRIWgfRvm6XHMCivqkII3Evb5Ti8uuJhCEm1dCTWEOU4Ym1reiL7TPH8T8gakQUehg
+ D2ySonjqYDqFGMN001j8dqCtT72VQm6Hrq5VEtbhWZlfWKw4KVH6nOIjHs1U1AooZc1+
+ +XaJnJBwNtZkzDM5q99R8oYrAWTN0le39guHQ92L97S8iMz16NCGjDcxY8txCd9yR7ty
+ Nq6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703315835; x=1703920635;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fVeSKwzmq9V2JL2neLcUCfxQ/2XOS0YKJUymFPDuUW8=;
+ b=N1Tb29FD6B1kNmWCaIUFvKCg4XKAqMt2TF9TD8haDRlbyJctgMZk5uc1ZfQt/ppA8S
+ PDeBqIm0eY/W6WXQ9U+C9Png9T1h0JuSAtSX+8c5aCz0eGezqSENsvFhhY2BUEiL8eZ1
+ Oi3mRFHEg53rUoIFV4oMRZy8snXDwCx9yq4FIAIyzqZms3WQl63w6VxiKUGXB/RKKt+L
+ 5RXabaD8ZKPEP7W1NltQ1fSF/ED50ZhlcMFED/3vnffeUwRcMw0Cc1ZBzOrSuDrECWL1
+ JE5O2iQkF3TQoMqpcYK5wredrrW2cXY45e7vYX4YtjOIclHTyOoSKgYYTz3eaX2zRtyC
+ PlNA==
+X-Gm-Message-State: AOJu0YxOp0iiFK6/oF+tr0uFWgTVF5WfWdNC+cTOxXEp+UFeEyTceOOf
+ zCJuXK7BGeXvvacQ0kKU29vlYY6JkdavIg==
+X-Google-Smtp-Source: AGHT+IE2qcKXnKmpB1RRi8yUtOVicdjGkr1cCF0wyIMqCYKcKNevv9IrPCgqmGcAICRnjyEm9kdEmw==
+X-Received: by 2002:a17:902:b492:b0:1d4:20f3:3dbb with SMTP id
+ y18-20020a170902b49200b001d420f33dbbmr1971647plr.73.1703315834914; 
+ Fri, 22 Dec 2023 23:17:14 -0800 (PST)
+Received: from [157.82.207.248] ([157.82.207.248])
+ by smtp.gmail.com with ESMTPSA id
+ jc14-20020a17090325ce00b001d07d83fdd0sm4524824plb.238.2023.12.22.23.17.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 22 Dec 2023 23:17:14 -0800 (PST)
+Message-ID: <3d5ed76a-42bf-4b54-9d11-c8833b410c97@daynix.com>
+Date: Sat, 23 Dec 2023 16:17:05 +0900
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.082,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 37/40] plugins: add an API to read registers
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ John Snow <jsnow@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Brian Cain <bcain@quicinc.com>, Laurent Vivier <laurent@vivier.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Cleber Rosa <crosa@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Weiwei Li <liwei1518@gmail.com>, Paul Durrant <paul@xen.org>,
+ qemu-s390x@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Michael Rolnik <mrolnik@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Bin Meng <bin.meng@windriver.com>
+References: <20231221103818.1633766-1-alex.bennee@linaro.org>
+ <20231221103818.1633766-38-alex.bennee@linaro.org>
+ <a26a55b2-240c-48c3-b341-48c1d7195bd9@daynix.com>
+ <87y1dmxsf0.fsf@draig.linaro.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <87y1dmxsf0.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,236 +125,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steven Sistare <steven.sistare@oracle.com> writes:
-
-> On 12/22/2023 7:20 AM, Markus Armbruster wrote:
->> Steve Sistare <steven.sistare@oracle.com> writes:
->> 
->>> Currently, a vm in the suspended state is not completely stopped.  The VCPUs
->>> have been paused, but the cpu clock still runs, and runstate notifiers for
->>> the transition to stopped have not been called.  This causes problems for
->>> live migration.  Stale cpu timers_state is saved to the migration stream,
->>> causing time errors in the guest when it wakes from suspend, and state that
->>> would have been modified by runstate notifiers is wrong.
->>>
->>> Modify vm_stop to completely stop the vm if the current state is suspended,
->>> transition to RUN_STATE_PAUSED, and remember that the machine was suspended.
->>> Modify vm_start to restore the suspended state.
->> 
->> Can you explain this to me in terms of the @current_run_state state
->> machine?  Like
->> 
->>     Before the patch, trigger X in state Y goes to state Z.
->>     Afterwards, it goes to ...
->
-> Old behavior:
->   RUN_STATE_SUSPENDED --> stop --> RUN_STATE_SUSPENDED
->
-> New behavior:
->   RUN_STATE_SUSPENDED --> stop --> RUN_STATE_PAUSED
->   RUN_STATE_PAUSED    --> cont --> RUN_STATE_SUSPENDED
-
-This clarifies things quite a bit for me.  Maybe work it into the commit
-message?
-
->>> This affects all callers of vm_stop and vm_start, notably, the qapi stop and
->>> cont commands.  For example:
->>>
->>>     (qemu) info status
->>>     VM status: paused (suspended)
->>>
->>>     (qemu) stop
->>>     (qemu) info status
->>>     VM status: paused
->>>
->>>     (qemu) cont
->>>     (qemu) info status
->>>     VM status: paused (suspended)
->>>
->>>     (qemu) system_wakeup
->>>     (qemu) info status
->>>     VM status: running
->>>
->>> Suggested-by: Peter Xu <peterx@redhat.com>
->>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+On 2023/12/22 22:45, Alex Bennée wrote:
+> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+> 
+>> On 2023/12/21 19:38, Alex Bennée wrote:
+>>> We can only request a list of registers once the vCPU has been
+>>> initialised so the user needs to use either call the get function on
+>>> vCPU initialisation or during the translation phase.
+>>> We don't expose the reg number to the plugin instead hiding it
+>>> behind
+>>> an opaque handle. This allows for a bit of future proofing should the
+>>> internals need to be changed while also being hashed against the
+>>> CPUClass so we can handle different register sets per-vCPU in
+>>> hetrogenous situations.
+>>> Having an internal state within the plugins also allows us to expand
+>>> the interface in future (for example providing callbacks on register
+>>> change if the translator can track changes).
+>>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
+>>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
+>>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 >>> ---
->>>  include/sysemu/runstate.h |  5 +++++
->>>  qapi/misc.json            | 10 ++++++++--
->>>  system/cpus.c             | 19 ++++++++++++++-----
->>>  system/runstate.c         |  3 +++
->>>  4 files changed, 30 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
->>> index f6a337b..1d6828f 100644
->>> --- a/include/sysemu/runstate.h
->>> +++ b/include/sysemu/runstate.h
->>> @@ -40,6 +40,11 @@ static inline bool shutdown_caused_by_guest(ShutdownCause cause)
->>>      return cause >= SHUTDOWN_CAUSE_GUEST_SHUTDOWN;
->>>  }
->>>  
->>> +static inline bool runstate_is_started(RunState state)
->>> +{
->>> +    return state == RUN_STATE_RUNNING || state == RUN_STATE_SUSPENDED;
->>> +}
+>>> v2
+>>>     - use new get whole list api, and expose upwards
+>>> vAJB:
+>>> The main difference to Akikio's version is hiding the gdb register
+>>> detail from the plugin for the reasons described above.
+>>> ---
+>>>    include/qemu/qemu-plugin.h   |  53 +++++++++++++++++-
+>>>    plugins/api.c                | 102 +++++++++++++++++++++++++++++++++++
+>>>    plugins/qemu-plugins.symbols |   2 +
+>>>    3 files changed, 155 insertions(+), 2 deletions(-)
+>>> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+>>> index 4daab6efd29..e3b35c6ee81 100644
+>>> --- a/include/qemu/qemu-plugin.h
+>>> +++ b/include/qemu/qemu-plugin.h
+>>> @@ -11,6 +11,7 @@
+>>>    #ifndef QEMU_QEMU_PLUGIN_H
+>>>    #define QEMU_QEMU_PLUGIN_H
+>>>    +#include <glib.h>
+>>>    #include <inttypes.h>
+>>>    #include <stdbool.h>
+>>>    #include <stddef.h>
+>>> @@ -227,8 +228,8 @@ struct qemu_plugin_insn;
+>>>     * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
+>>>     * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
+>>>     *
+>>> - * Note: currently unused, plugins cannot read or change system
+>>> - * register state.
+>>> + * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot change
+>>> + * system register state.
+>>>     */
+>>>    enum qemu_plugin_cb_flags {
+>>>        QEMU_PLUGIN_CB_NO_REGS,
+>>> @@ -708,4 +709,52 @@ uint64_t qemu_plugin_end_code(void);
+>>>    QEMU_PLUGIN_API
+>>>    uint64_t qemu_plugin_entry_code(void);
+>>>    +/** struct qemu_plugin_register - Opaque handle for a translated
+>>> instruction */
+>>> +struct qemu_plugin_register;
+>>
+>> What about identifying a register with an index in an array returned
+>> by qemu_plugin_get_registers(). That saves troubles having the handle
+>> member in qemu_plugin_reg_descriptor.
+>>
 >>> +
->>>  void vm_start(void);
->>>  
->>>  /**
->>> diff --git a/qapi/misc.json b/qapi/misc.json
->>> index cda2eff..efb8d44 100644
->>> --- a/qapi/misc.json
->>> +++ b/qapi/misc.json
->>> @@ -134,7 +134,7 @@
->>>  ##
->>>  # @stop:
->>>  #
->>> -# Stop all guest VCPU execution.
->>> +# Stop all guest VCPU and VM execution.
->> 
->> Doesn't "stop all VM execution" imply "stop all guest vCPU execution"?
->
-> Agreed, so we simply have:
->
-> # @stop:
-> # Stop guest VM execution.
->
-> # @cont:
-> # Resume guest VM execution.
+>>> +/**
+>>> + * typedef qemu_plugin_reg_descriptor - register descriptions
+>>> + *
+>>> + * @name: register name
+>>> + * @handle: opaque handle for retrieving value with qemu_plugin_read_register
+>>> + * @feature: optional feature descriptor, can be NULL
+>>
+>> Why can it be NULL?
+>>
+>>> + */
+>>> +typedef struct {
+>>> +    char name[32];
+>>
+>> Why not const char *?
+> 
+> I was trying to avoid too many free floating strings. I could intern it
+> in the API though.
 
-Yes, please.
+It is nice to save pointer indirections whenever possible, but it's not 
+so worth that it matches with the cost in this case. It requires extra 
+code to copy and will be real trouble if somebody comes up with a very 
+long register name for special registers.
 
->>>  #
->>>  # Since: 0.14
->>>  #
->>> @@ -143,6 +143,9 @@
->>    # Notes: This function will succeed even if the guest is already in
->>    #     the stopped state.  In "inmigrate" state, it will ensure that
->>>  #     the guest remains paused once migration finishes, as if the -S
->>>  #     option was passed on the command line.
->>>  #
->>> +#     In the "suspended" state, it will completely stop the VM and
->>> +#     cause a transition to the "paused" state. (Since 9.0)
->>> +#
->> 
->> What user-observable (with query-status) state transitions are possible
->> here?
->
-> {"status": "suspended", "singlestep": false, "running": false}
-> --> stop -->
-> {"status": "paused", "singlestep": false, "running": false}
->
->>>  # Example:
->>>  #
->>>  # -> { "execute": "stop" }
->>> @@ -153,7 +156,7 @@
->>>  ##
->>>  # @cont:
->>>  #
->>> -# Resume guest VCPU execution.
->>> +# Resume guest VCPU and VM execution.
->>>  #
->>>  # Since: 0.14
->>>  #
->>> @@ -165,6 +168,9 @@
->>    # Returns: If successful, nothing
->>    #
->>    # Notes: This command will succeed if the guest is currently running.
->>    #     It will also succeed if the guest is in the "inmigrate" state;
->>    #     in this case, the effect of the command is to make sure the
->>>  #     guest starts once migration finishes, removing the effect of the
->>>  #     -S command line option if it was passed.
->>>  #
->>> +#     If the VM was previously suspended, and not been reset or woken,
->>> +#     this command will transition back to the "suspended" state. (Since 9.0)
->> 
->> Long line.
->
-> It fits in 80 columns, but perhaps this looks nicer:
->
-> #     If the VM was previously suspended, and not been reset or woken,
-> #     this command will transition back to the "suspended" state.
-> #     (Since 9.0)
+> 
+>>
+>>> +    struct qemu_plugin_register *handle;
+>>> +    const char *feature;
+>>> +} qemu_plugin_reg_descriptor;
+>>> +
+>>> +/**
+>>> + * qemu_plugin_get_registers() - return register list for vCPU
+>>> + * @vcpu_index: vcpu to query
+>>> + *
+>>> + * Returns a GArray of qemu_plugin_reg_descriptor or NULL. Caller
+>>> + * frees the array (but not the const strings).
+>>> + *
+>>> + * As the register set of a given vCPU is only available once
+>>> + * the vCPU is initialised if you want to monitor registers from the
+>>> + * start you should call this from a qemu_plugin_register_vcpu_init_cb()
+>>> + * callback.
+>>
+>> Is this note really necessary? You won't know vcpu_index before
+>> qemu_plugin_register_vcpu_init_cb() anyway.
+> 
+> Best to be clear I think.
 
-It does :)
+Ok, but I still think it's a bit verbose. You can just say it's 
+available only after qemu_plugin_register_vcpu_init_cb().
 
-docs/devel/qapi-code-gen.rst section "Documentation markup":
+> 
+>>
+>>> + */
+>>> +GArray * qemu_plugin_get_registers(unsigned int vcpu_index);
+>>
+>> Spurious space after *.
+>>
+>>> +
+>>> +/**
+>>> + * qemu_plugin_read_register() - read register
+>>> + *
+>>> + * @vcpu: vcpu index
+>>> + * @handle: a @qemu_plugin_reg_handle handle
+>>> + * @buf: A GByteArray for the data owned by the plugin
+>>> + *
+>>> + * This function is only available in a context that register read access is
+>>> + * explicitly requested.
+>>> + *
+>>> + * Returns the size of the read register. The content of @buf is in target byte
+>>> + * order. On failure returns -1
+>>> + */
+>>> +int qemu_plugin_read_register(unsigned int vcpu,
+>>> +                              struct qemu_plugin_register *handle,
+>>> +                              GByteArray *buf);
+>>
+>> Indention is not correct. docs/devel/style.rst says:
+>>
+>>> In case of function, there are several variants:
+>>>
+>>> * 4 spaces indent from the beginning
+>>> * align the secondary lines just after the opening parenthesis of
+>>      the first
+> 
+> Isn't that what it does?
 
-    For legibility, wrap text paragraphs so every line is at most 70
-    characters long.
-
->> What user-observable state transitions are possible here?
->
-> {"status": "paused", "singlestep": false, "running": false}
-> --> cont -->
-> {"status": "suspended", "singlestep": false, "running": false}
->
->>> +#
->>>  # Example:
->>>  #
->>>  # -> { "execute": "cont" }
->> 
->> Should we update documentation of query-status, too?
->
-> IMO no. The new behavior changes the status/RunState field only, and the
-> domain of values does not change, only the transitions caused by the commands
-> described here.
-
-I see.
-
-But if we change the stop's and cont's description from "guest VCPU
-execution" to "guest VM execution", maybe we want to change
-query-status's from "Information about VCPU run state" to "Information
-about VM run state.
-
-> - Steve
->
->>    ##
->>    # @StatusInfo:
->>    #
->>    # Information about VCPU run state
->>    #
->>    # @running: true if all VCPUs are runnable, false if not runnable
->>    #
->>    # @singlestep: true if using TCG with one guest instruction per
->>    #     translation block
->>    #
->>    # @status: the virtual machine @RunState
->>    #
->>    # Features:
->>    #
->>    # @deprecated: Member 'singlestep' is deprecated (with no
->>    #     replacement).
->>    #
->>    # Since: 0.14
->>    #
->>    # Notes: @singlestep is enabled on the command line with '-accel
->>    #     tcg,one-insn-per-tb=on', or with the HMP 'one-insn-per-tb'
->>    #     command.
->>    ##
->>    { 'struct': 'StatusInfo',
->>      'data': {'running': 'bool',
->>               'singlestep': { 'type': 'bool', 'features': [ 'deprecated' ]},
->>               'status': 'RunState'} }
->> 
->>    ##
->>    # @query-status:
->>    #
->>    # Query the run status of all VCPUs
->>    #
->>    # Returns: @StatusInfo reflecting all VCPUs
->>    #
->>    # Since: 0.14
->>    #
->>    # Example:
->>    #
->>    # -> { "execute": "query-status" }
->>    # <- { "return": { "running": true,
->>    #                  "singlestep": false,
->>    #                  "status": "running" } }
->>    ##
->>    { 'command': 'query-status', 'returns': 'StatusInfo',
->>      'allow-preconfig': true }
->> 
->> [...]
-
+Sorry, it was messed up by the email client on my side.
 
