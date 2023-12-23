@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9F281D51E
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Dec 2023 17:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE5081D521
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Dec 2023 17:41:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rH4zq-0008Kb-FI; Sat, 23 Dec 2023 11:37:06 -0500
+	id 1rH537-0001UY-5I; Sat, 23 Dec 2023 11:40:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rH4zf-0008Jn-LH; Sat, 23 Dec 2023 11:36:56 -0500
+ id 1rH533-0001Q6-JI; Sat, 23 Dec 2023 11:40:25 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rH4ze-0003nH-3U; Sat, 23 Dec 2023 11:36:55 -0500
+ id 1rH531-0005fl-Rm; Sat, 23 Dec 2023 11:40:25 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 019B63E4B6;
- Sat, 23 Dec 2023 19:37:12 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3A2393E4BA;
+ Sat, 23 Dec 2023 19:40:42 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id E2C2851CFF;
- Sat, 23 Dec 2023 19:36:51 +0300 (MSK)
-Message-ID: <a9a964f6-6111-4061-a46f-a151c3494c0d@tls.msk.ru>
-Date: Sat, 23 Dec 2023 19:36:51 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0392551D06;
+ Sat, 23 Dec 2023 19:40:20 +0300 (MSK)
+Message-ID: <0e434055-7500-4c67-9b49-229da3d487fc@tls.msk.ru>
+Date: Sat, 23 Dec 2023 19:40:20 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: fix typo
+Subject: Re: [PATCH v5] accel/kvm: Turn DPRINTF macro use into tracepoints
 Content-Language: en-US
-To: Samuel Tardieu <sam@rfc1149.net>, qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, qemu-trivial@nongnu.org
-References: <20231214225318.2391800-1-sam@rfc1149.net>
+To: Jai Arora <arorajai2798@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, pbonzini@redhat.com, peter.maydell@linaro.org,
+ alex.bennee@linaro.org, philmd@linaro.org
+References: <20231202044846.258855-1-arorajai2798@gmail.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -57,7 +57,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231214225318.2391800-1-sam@rfc1149.net>
+In-Reply-To: <20231202044846.258855-1-arorajai2798@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -83,16 +83,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-15.12.2023 01:53, Samuel Tardieu wrote:
-> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
-> ---
->   docs/tools/qemu-img.rst | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+02.12.2023 07:48, Jai Arora :
+> Patch removes DPRINTF macro and adds multiple tracepoints
+> to capture different kvm events.
+> 
+> We also drop the DPRINTFs that don't add any additional
+> information than trace_kvm_run_exit already does.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1827
+..
 
-Applied to the trivial-patches tree, with a more specific subject line:
-  docs/tools/qemu-img.rst: fix typo (sumarizes)
-
-Thanks,
+Applied to the trivial-patches tree, thanks!
 
 /mjt
 
