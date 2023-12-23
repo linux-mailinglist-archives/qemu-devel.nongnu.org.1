@@ -2,114 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0545081D2DB
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Dec 2023 08:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6AD81D38C
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Dec 2023 11:36:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rGwGD-0003wT-Ea; Sat, 23 Dec 2023 02:17:25 -0500
+	id 1rGzLG-0000L4-0L; Sat, 23 Dec 2023 05:34:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGwG8-0003uy-B3
- for qemu-devel@nongnu.org; Sat, 23 Dec 2023 02:17:20 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rGwG4-0001YN-Ow
- for qemu-devel@nongnu.org; Sat, 23 Dec 2023 02:17:20 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1d40eec5e12so15947085ad.1
- for <qemu-devel@nongnu.org>; Fri, 22 Dec 2023 23:17:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1703315835; x=1703920635;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fVeSKwzmq9V2JL2neLcUCfxQ/2XOS0YKJUymFPDuUW8=;
- b=UHTcZCyAzvSlNQngER8LJUstgqmEqF/8ZN0uIleeKRiFqgGABf55ADHKBnot6SOOxt
- WjXPlfqwhpQflG7+Z3+PgDmWWIUCkI17WHO7fn+dA8gjyTfbvLa4GEnWSeNkyBkGnEzS
- r/BRIWgfRvm6XHMCivqkII3Evb5Ti8uuJhCEm1dCTWEOU4Ym1reiL7TPH8T8gakQUehg
- D2ySonjqYDqFGMN001j8dqCtT72VQm6Hrq5VEtbhWZlfWKw4KVH6nOIjHs1U1AooZc1+
- +XaJnJBwNtZkzDM5q99R8oYrAWTN0le39guHQ92L97S8iMz16NCGjDcxY8txCd9yR7ty
- Nq6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703315835; x=1703920635;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fVeSKwzmq9V2JL2neLcUCfxQ/2XOS0YKJUymFPDuUW8=;
- b=N1Tb29FD6B1kNmWCaIUFvKCg4XKAqMt2TF9TD8haDRlbyJctgMZk5uc1ZfQt/ppA8S
- PDeBqIm0eY/W6WXQ9U+C9Png9T1h0JuSAtSX+8c5aCz0eGezqSENsvFhhY2BUEiL8eZ1
- Oi3mRFHEg53rUoIFV4oMRZy8snXDwCx9yq4FIAIyzqZms3WQl63w6VxiKUGXB/RKKt+L
- 5RXabaD8ZKPEP7W1NltQ1fSF/ED50ZhlcMFED/3vnffeUwRcMw0Cc1ZBzOrSuDrECWL1
- JE5O2iQkF3TQoMqpcYK5wredrrW2cXY45e7vYX4YtjOIclHTyOoSKgYYTz3eaX2zRtyC
- PlNA==
-X-Gm-Message-State: AOJu0YxOp0iiFK6/oF+tr0uFWgTVF5WfWdNC+cTOxXEp+UFeEyTceOOf
- zCJuXK7BGeXvvacQ0kKU29vlYY6JkdavIg==
-X-Google-Smtp-Source: AGHT+IE2qcKXnKmpB1RRi8yUtOVicdjGkr1cCF0wyIMqCYKcKNevv9IrPCgqmGcAICRnjyEm9kdEmw==
-X-Received: by 2002:a17:902:b492:b0:1d4:20f3:3dbb with SMTP id
- y18-20020a170902b49200b001d420f33dbbmr1971647plr.73.1703315834914; 
- Fri, 22 Dec 2023 23:17:14 -0800 (PST)
-Received: from [157.82.207.248] ([157.82.207.248])
- by smtp.gmail.com with ESMTPSA id
- jc14-20020a17090325ce00b001d07d83fdd0sm4524824plb.238.2023.12.22.23.17.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Dec 2023 23:17:14 -0800 (PST)
-Message-ID: <3d5ed76a-42bf-4b54-9d11-c8833b410c97@daynix.com>
-Date: Sat, 23 Dec 2023 16:17:05 +0900
+ (Exim 4.90_1) (envelope-from
+ <0102018c963dbec6-062a7a68-53b9-4325-9137-8cee657053b2-000000@eu-west-1.amazonses.com>)
+ id 1rGzLB-0000KJ-7V; Sat, 23 Dec 2023 05:34:45 -0500
+Received: from a7-17.smtp-out.eu-west-1.amazonses.com ([54.240.7.17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.90_1) (envelope-from
+ <0102018c963dbec6-062a7a68-53b9-4325-9137-8cee657053b2-000000@eu-west-1.amazonses.com>)
+ id 1rGzL9-0000Yv-4Y; Sat, 23 Dec 2023 05:34:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+ s=we7ia3fxgawvchs62qr3tqnz7sf6mlor; d=ipxe.org; t=1703327678;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+ bh=Oe/w1DvXkrz8merNgyu8lfzzX/vr3u/JoEP+jPzXbak=;
+ b=nF+8STXIYul+2+Enhk9uiIXIb30H+iBhyHqhFiKg1JHK/unf/wqROmf/7hZN3140
+ lMbo7DWv5Z+phnjSdE4o8bhlyCQyH/uF7HxPcMUc6BQY+MK4VqkiTw4caL04jzsogl7
+ FanAW3KrXz5MP9ZpKgWtms1H74XKtSMHCI5RXJSxMD8dAyIZj/JI6WdQbGvkB4rAJSO
+ PIhYXoc3Zm6rHV5r7pHjPQPuL1+sOBMv3i41WehcchGhG+zFS0vqybyH6mkN5vuN+0r
+ KvkfLbsakh15AfwecWLusuBpIPs+uShF2FVJgJ6HeqxZPVSwCI1ifUFE0r8oOm3I8b0
+ u288o71Bdw==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+ s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1703327678;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+ bh=Oe/w1DvXkrz8merNgyu8lfzzX/vr3u/JoEP+jPzXbak=;
+ b=Bz97D0I2x+aD5PMZEHUajEuVDCv4pw9VaMeLJ2CH8WDO+gZ/GR2RlQJKRbpT8U1J
+ hqkqCb2uz26U2A2BOh8WRo8LapGnwMW6v0eKENn4GyuLVEViTyfbCjCqbKMsSk+7PCu
+ 9+JSE2TRntnjqEiEi+8rGIce8wByAN8yrfOnEKEA=
+Message-ID: <0102018c963dbec6-062a7a68-53b9-4325-9137-8cee657053b2-000000@eu-west-1.amazonses.com>
+Date: Sat, 23 Dec 2023 10:34:38 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 37/40] plugins: add an API to read registers
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- John Snow <jsnow@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Eduardo Habkost <eduardo@habkost.net>,
- Brian Cain <bcain@quicinc.com>, Laurent Vivier <laurent@vivier.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Cleber Rosa <crosa@redhat.com>,
- David Hildenbrand <david@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Weiwei Li <liwei1518@gmail.com>, Paul Durrant <paul@xen.org>,
- qemu-s390x@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Michael Rolnik <mrolnik@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Richard Henderson <richard.henderson@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Bin Meng <bin.meng@windriver.com>
-References: <20231221103818.1633766-1-alex.bennee@linaro.org>
- <20231221103818.1633766-38-alex.bennee@linaro.org>
- <a26a55b2-240c-48c3-b341-48c1d7195bd9@daynix.com>
- <87y1dmxsf0.fsf@draig.linaro.org>
+Subject: Re: [PATCH 3/5] target/i386: Fix physical address truncation
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87y1dmxsf0.fsf@draig.linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, qemu-stable@nongnu.org
+References: <20231222175951.172669-1-pbonzini@redhat.com>
+ <20231222175951.172669-4-pbonzini@redhat.com>
+From: Michael Brown <mcb30@ipxe.org>
+Autocrypt: addr=mcb30@ipxe.org; keydata=
+ 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
+In-Reply-To: <20231222175951.172669-4-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Feedback-ID: 1.eu-west-1.fspj4M/5bzJ9NLRzJP0PaxRwxrpZqiDQJ1IF94CF2TA=:AmazonSES
+X-SES-Outgoing: 2023.12.23-54.240.7.17
+Received-SPF: pass client-ip=54.240.7.17;
+ envelope-from=0102018c963dbec6-062a7a68-53b9-4325-9137-8cee657053b2-000000@eu-west-1.amazonses.com;
+ helo=a7-17.smtp-out.eu-west-1.amazonses.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_MUA_MOZILLA=2.309,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,154 +120,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/12/22 22:45, Alex Bennée wrote:
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+On 22/12/2023 17:59, Paolo Bonzini wrote:
+> The address translation logic in get_physical_address() will currently
+> truncate physical addresses to 32 bits unless long mode is enabled.
+> This is incorrect when using physical address extensions (PAE) outside
+> of long mode, with the result that a 32-bit operating system using PAE
+> to access memory above 4G will experience undefined behaviour.
 > 
->> On 2023/12/21 19:38, Alex Bennée wrote:
->>> We can only request a list of registers once the vCPU has been
->>> initialised so the user needs to use either call the get function on
->>> vCPU initialisation or during the translation phase.
->>> We don't expose the reg number to the plugin instead hiding it
->>> behind
->>> an opaque handle. This allows for a bit of future proofing should the
->>> internals need to be changed while also being hashed against the
->>> CPUClass so we can handle different register sets per-vCPU in
->>> hetrogenous situations.
->>> Having an internal state within the plugins also allows us to expand
->>> the interface in future (for example providing callbacks on register
->>> change if the translator can track changes).
->>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
->>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
->>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->>> ---
->>> v2
->>>     - use new get whole list api, and expose upwards
->>> vAJB:
->>> The main difference to Akikio's version is hiding the gdb register
->>> detail from the plugin for the reasons described above.
->>> ---
->>>    include/qemu/qemu-plugin.h   |  53 +++++++++++++++++-
->>>    plugins/api.c                | 102 +++++++++++++++++++++++++++++++++++
->>>    plugins/qemu-plugins.symbols |   2 +
->>>    3 files changed, 155 insertions(+), 2 deletions(-)
->>> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
->>> index 4daab6efd29..e3b35c6ee81 100644
->>> --- a/include/qemu/qemu-plugin.h
->>> +++ b/include/qemu/qemu-plugin.h
->>> @@ -11,6 +11,7 @@
->>>    #ifndef QEMU_QEMU_PLUGIN_H
->>>    #define QEMU_QEMU_PLUGIN_H
->>>    +#include <glib.h>
->>>    #include <inttypes.h>
->>>    #include <stdbool.h>
->>>    #include <stddef.h>
->>> @@ -227,8 +228,8 @@ struct qemu_plugin_insn;
->>>     * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
->>>     * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
->>>     *
->>> - * Note: currently unused, plugins cannot read or change system
->>> - * register state.
->>> + * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot change
->>> + * system register state.
->>>     */
->>>    enum qemu_plugin_cb_flags {
->>>        QEMU_PLUGIN_CB_NO_REGS,
->>> @@ -708,4 +709,52 @@ uint64_t qemu_plugin_end_code(void);
->>>    QEMU_PLUGIN_API
->>>    uint64_t qemu_plugin_entry_code(void);
->>>    +/** struct qemu_plugin_register - Opaque handle for a translated
->>> instruction */
->>> +struct qemu_plugin_register;
->>
->> What about identifying a register with an index in an array returned
->> by qemu_plugin_get_registers(). That saves troubles having the handle
->> member in qemu_plugin_reg_descriptor.
->>
->>> +
->>> +/**
->>> + * typedef qemu_plugin_reg_descriptor - register descriptions
->>> + *
->>> + * @name: register name
->>> + * @handle: opaque handle for retrieving value with qemu_plugin_read_register
->>> + * @feature: optional feature descriptor, can be NULL
->>
->> Why can it be NULL?
->>
->>> + */
->>> +typedef struct {
->>> +    char name[32];
->>
->> Why not const char *?
+> The truncation code was originally introduced in commit 33dfdb5 ("x86:
+> only allow real mode to access 32bit without LMA"), where it applied
+> only to translations performed while paging is disabled (and so cannot
+> affect guests using PAE).
 > 
-> I was trying to avoid too many free floating strings. I could intern it
-> in the API though.
+> Commit 9828198 ("target/i386: Add MMU_PHYS_IDX and MMU_NESTED_IDX")
+> rearranged the code such that the truncation also applied to the use
+> of MMU_PHYS_IDX and MMU_NESTED_IDX.  Commit 4a1e9d4 ("target/i386: Use
+> atomic operations for pte updates") brought this truncation into scope
+> for page table entry accesses, and is the first commit for which a
+> Windows 10 32-bit guest will reliably fail to boot if memory above 4G
+> is present.
+> 
+> The truncation code however is not completely redundant.  Even though the
+> maximum address size for any executed instruction is 32 bits, helpers for
+> operations such as BOUND, FSAVE or XSAVE may ask get_physical_address()
+> to translate an address outside of the 32-bit range, if invoked with an
+> argument that is close to the 4G boundary.
 
-It is nice to save pointer indirections whenever possible, but it's not 
-so worth that it matches with the cost in this case. It requires extra 
-code to copy and will be real trouble if somebody comes up with a very 
-long register name for special registers.
+Thank you for investigating and updating this patch.
 
-> 
->>
->>> +    struct qemu_plugin_register *handle;
->>> +    const char *feature;
->>> +} qemu_plugin_reg_descriptor;
->>> +
->>> +/**
->>> + * qemu_plugin_get_registers() - return register list for vCPU
->>> + * @vcpu_index: vcpu to query
->>> + *
->>> + * Returns a GArray of qemu_plugin_reg_descriptor or NULL. Caller
->>> + * frees the array (but not the const strings).
->>> + *
->>> + * As the register set of a given vCPU is only available once
->>> + * the vCPU is initialised if you want to monitor registers from the
->>> + * start you should call this from a qemu_plugin_register_vcpu_init_cb()
->>> + * callback.
->>
->> Is this note really necessary? You won't know vcpu_index before
->> qemu_plugin_register_vcpu_init_cb() anyway.
-> 
-> Best to be clear I think.
+I am confused by how BOUND can result in an access to a linear address 
+outside of the address-size range.  I don't know the internals well 
+enough, but I'm guessing it might be in the line in helper_boundl():
 
-Ok, but I still think it's a bit verbose. You can just say it's 
-available only after qemu_plugin_register_vcpu_init_cb().
+     high = cpu_ldl_data_ra(env, a0 + 4, GETPC());
 
-> 
->>
->>> + */
->>> +GArray * qemu_plugin_get_registers(unsigned int vcpu_index);
->>
->> Spurious space after *.
->>
->>> +
->>> +/**
->>> + * qemu_plugin_read_register() - read register
->>> + *
->>> + * @vcpu: vcpu index
->>> + * @handle: a @qemu_plugin_reg_handle handle
->>> + * @buf: A GByteArray for the data owned by the plugin
->>> + *
->>> + * This function is only available in a context that register read access is
->>> + * explicitly requested.
->>> + *
->>> + * Returns the size of the read register. The content of @buf is in target byte
->>> + * order. On failure returns -1
->>> + */
->>> +int qemu_plugin_read_register(unsigned int vcpu,
->>> +                              struct qemu_plugin_register *handle,
->>> +                              GByteArray *buf);
->>
->> Indention is not correct. docs/devel/style.rst says:
->>
->>> In case of function, there are several variants:
->>>
->>> * 4 spaces indent from the beginning
->>> * align the secondary lines just after the opening parenthesis of
->>      the first
-> 
-> Isn't that what it does?
+where an address is calculated as (a0+4) using a 64-bit target_ulong 
+type with no truncation to 32 bits applied.
 
-Sorry, it was messed up by the email client on my side.
+If so, then ought the truncation to be applied on this line instead (and 
+the equivalent in helper_boundw())?  My understanding (which may well be 
+incorrect) is that the linear address gets truncated to the instruction 
+address size (16 or 32 bits) before any conversion to a physical address 
+takes place.
+
+Regardless: this updated patch (in isolation) definitely fixes the issue 
+that I observed, so I'm happy for an added
+
+Tested-by: Michael Brown <mcb30@ipxe.org>
+
+Thanks,
+
+Michael
+
 
