@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE3081D765
-	for <lists+qemu-devel@lfdr.de>; Sun, 24 Dec 2023 01:27:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1FFD81D76E
+	for <lists+qemu-devel@lfdr.de>; Sun, 24 Dec 2023 01:53:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHCJQ-0003KP-Ch; Sat, 23 Dec 2023 19:25:48 -0500
+	id 1rHCis-0006dD-OU; Sat, 23 Dec 2023 19:52:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rHCJN-0003JM-20; Sat, 23 Dec 2023 19:25:45 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1rHCio-0006cl-Ph; Sat, 23 Dec 2023 19:52:02 -0500
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rHCJK-00064F-O1; Sat, 23 Dec 2023 19:25:44 -0500
+ id 1rHCim-0005qi-IK; Sat, 23 Dec 2023 19:52:02 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 280A375A4C1;
- Sun, 24 Dec 2023 01:25:37 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 79DB875A4BE;
+ Sun, 24 Dec 2023 01:51:55 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id RmsYSmNOntLB; Sun, 24 Dec 2023 01:25:35 +0100 (CET)
+ with ESMTP id KRSTYa1n5fMC; Sun, 24 Dec 2023 01:51:53 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3DAB775A4BE; Sun, 24 Dec 2023 01:25:35 +0100 (CET)
+ id 8B0CD75A4B7; Sun, 24 Dec 2023 01:51:53 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3B11A756078;
- Sun, 24 Dec 2023 01:25:35 +0100 (CET)
-Date: Sun, 24 Dec 2023 01:25:35 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 88E11756078;
+ Sun, 24 Dec 2023 01:51:53 +0100 (CET)
+Date: Sun, 24 Dec 2023 01:51:53 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Bernhard Beschow <shentey@gmail.com>
 cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
@@ -44,15 +44,15 @@ cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
 Subject: Re: [PATCH v2 12/12] hw/isa/vt82c686: Implement relocation and
  toggling of SuperI/O functions
 In-Reply-To: <B0C3E617-569E-4DD2-900A-5ACF093C3B63@gmail.com>
-Message-ID: <7b17271a-29dd-6cef-549d-e134c781324b@eik.bme.hu>
+Message-ID: <acf63b63-df0d-1223-1022-292a396d717e@eik.bme.hu>
 References: <20231218185114.119736-1-shentey@gmail.com>
  <20231218185114.119736-13-shentey@gmail.com>
  <9c472e25-506f-fbd5-6d72-00be078bb15c@eik.bme.hu>
  <B0C3E617-569E-4DD2-900A-5ACF093C3B63@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -131,32 +131,45 @@ On Tue, 19 Dec 2023, Bernhard Beschow wrote:
 >>
 >> I wonder if some code duplication could be saved by adding a shared via_superio_update() for this further up in the abstract via-superio class instead of this method and vt8231_superio_update() below. This common method in abstract class would need to handle the differences which seem to be reg addresses offset by 0x10 and VT8231 having only 1 serial port. These could either be handled by adding function parameters or fields to ViaSuperIOState for this that the subclasses can set and the method check. (Such as reg base=0xe2 for vt82c686 and 0xf2 for vt8231 and num_serial or similar for how many ports are there then can have a for loop for those that would only run once for vt8231).
 >
-> Only the enable bits and the parallel port base address line up, the serial port(s) and the floppy would need special treatment. Not worth it IMO.
->
->>
->>> +static int vmstate_vt82c686b_superio_post_load(void *opaque, int version_id)
->>> +{
->>> +    ViaSuperIOState *s = opaque;
->>> +
->>> +    vt82c686b_superio_update(s);
->>> +
->>> +    return 0;
->>
->> You could lose some blank lines here. You seem to love them, half of your cover letter is just blank lines :-)
->
-> Yes, I want people to see the light rather than a wall (of text) ;-)
+> Only the enable bits and the parallel port base address line up, the 
+> serial port(s) and the floppy would need special treatment. Not worth it 
+> IMO.
 
-Well, information is in the text and anything else just distracts from it. 
-I guess you can configure your editor to present text the way you like but 
-it's hard for me or others to get rid of hard formatting so it's better to 
-only add the needed text.
+Missed this part in previous reply. The serial ports would be taken care 
+of by a loop for number of ports so only the floppy needs an if which 
+could also use the number of serial ports for lack of better way to 
+distinguish these cips easily. Number of ports are in the superio class 
+which you could get with ISA_SUPERIO_GET_CLASS (see via_superio_realize) 
+then serial.count would be 2 for 686b and 1 for 8231.
 
->> but I'm the opposite and like more code to fit in one screen even on todays displays that are wider than tall. So this funciton would take less space without blank lines. (Even the local variable may not be necessary as you don't access any fields within and void * should just cast without a warning but for spelling out the desired type as a reminder I'm ok with leaving that but no excessive blank lines please if you don't mind that much.)
->
-> In this case I'll remove the s variable and the blank line above the return if that's so important to you.
+But now I think another way may be better that is to drop the 
+superio_update function as this updates all functions on writing any 
+register unnecessarily and put the lines from it in the 
+vt*_superio_cfg_write() functions under the separate cases. This was the 
+original intent, that's why the reset function goes through that write 
+function so it can enable/disable functions. That way you could apply mask 
+on write so via_superio_cfg_read() would return 0 bits as 0 (although the 
+data sheet is not clear about what real chip does, just says these must be 
+0 not that it's enforced but if we enforce that it's probably better to 
+return the effective value on read as well). Then when state saving is 
+added in separate patch you can have a similar function as 
+vt82c686b_superio_reset() (or rename that to update and make it use 
+regs[xx] instead of constant values and call that from reset after setting 
+regs values like you did here. But that needs more thought as the vmstate 
+added by this patch is incomplete and would not work so you could just 
+drop it for now and add it later with also adding other necessary state as 
+well. The idea was to implement the chip first then add state saving so we 
+don't need to bother with breaking it until we have a good enough 
+implementation. So far the state saving there is just left over from the 
+old model which never worked and only left there for reminder but only 
+wanted to fix once the model is complete enough.
 
-I think it's simper and more readable that way that's why it's important 
-to me.
+So I think for now you could drop vmstate stuff and distribute the 
+superio_update lines in the superio_cfg_write functions so each reg only 
+controls the function it should control. Then when vmstate saving is added 
+later it could reuse superio_reset as an update function adding a new 
+reset func setting reg values and calling the old reset/new update 
+function. Does that make sense?
 
 Regards,
 BALATON Zoltan
