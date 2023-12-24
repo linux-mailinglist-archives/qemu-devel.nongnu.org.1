@@ -2,62 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FFD81D76E
-	for <lists+qemu-devel@lfdr.de>; Sun, 24 Dec 2023 01:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE3B81D7E3
+	for <lists+qemu-devel@lfdr.de>; Sun, 24 Dec 2023 05:50:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHCis-0006dD-OU; Sat, 23 Dec 2023 19:52:06 -0500
+	id 1rHGPi-0002bf-GJ; Sat, 23 Dec 2023 23:48:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rHCio-0006cl-Ph; Sat, 23 Dec 2023 19:52:02 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rHCim-0005qi-IK; Sat, 23 Dec 2023 19:52:02 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 79DB875A4BE;
- Sun, 24 Dec 2023 01:51:55 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id KRSTYa1n5fMC; Sun, 24 Dec 2023 01:51:53 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 8B0CD75A4B7; Sun, 24 Dec 2023 01:51:53 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 88E11756078;
- Sun, 24 Dec 2023 01:51:53 +0100 (CET)
-Date: Sun, 24 Dec 2023 01:51:53 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
- qemu-ppc@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Leonardo Bras <leobras@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Juan Quintela <quintela@redhat.com>, John Snow <jsnow@redhat.com>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Hanna Reitz <hreitz@redhat.com>, 
- qemu-block@nongnu.org
-Subject: Re: [PATCH v2 12/12] hw/isa/vt82c686: Implement relocation and
- toggling of SuperI/O functions
-In-Reply-To: <B0C3E617-569E-4DD2-900A-5ACF093C3B63@gmail.com>
-Message-ID: <acf63b63-df0d-1223-1022-292a396d717e@eik.bme.hu>
-References: <20231218185114.119736-1-shentey@gmail.com>
- <20231218185114.119736-13-shentey@gmail.com>
- <9c472e25-506f-fbd5-6d72-00be078bb15c@eik.bme.hu>
- <B0C3E617-569E-4DD2-900A-5ACF093C3B63@gmail.com>
+ (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
+ id 1rHGPg-0002b9-RW; Sat, 23 Dec 2023 23:48:32 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
+ id 1rHGPf-0000gy-9h; Sat, 23 Dec 2023 23:48:32 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-33679c49fe5so2624236f8f.3; 
+ Sat, 23 Dec 2023 20:48:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1703393309; x=1703998109; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WuKdFOzY9RidB2NsXpJrryqUOdVdJ3HTr+IAZTLLavE=;
+ b=WTgjB++O4IhAY/VlLyYTiGzANHQbWNmazgokvvsJu0cMwlgt5rsCVGhHvMhFaSDZXO
+ +HW87aNJZ8Goqq5mGeOQ162brPfVgo+RWfZvbfj5a3tESvf5Qz7JDG3hTT3mcCfcf0Sv
+ x3sITZJ4h9f/PIsMcoJlOShWngia07KEt00fninqjBr3E3zy1+ISxbcPmFvFdxgKcoGG
+ ro6eJofAWiXa6ab1bwBycis3lHsLNwojEyKuFr/TaM7hETbMgz/GUiCn55RVPh1GeDdB
+ n8VoBvM965coF1VTTw46dHlCL2hpT/zNkY+hZ7YWqmGgchpOzfJO2VsGbpHnqSmpcmml
+ l4Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703393309; x=1703998109;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WuKdFOzY9RidB2NsXpJrryqUOdVdJ3HTr+IAZTLLavE=;
+ b=sJ5z0eXMw4zeAZil30YdZalxFJWCs3nDzFrHjJrLw9wpL37l5htthZEJAOjoms/4S7
+ 0Ay7z+G7DX0NDbK31IkUSPt1Tc9WDqt0DI8Jus30U3iit/AFlFovlRsj48c1MW/DQYbb
+ hmzPmVODTTnC2/jh3WUlmYVBLaT2jearMvk+acVMxIBxRKsJ9dyRS45XZnGqujoRYtCX
+ f9kl2gjDM05T7I7MuoS/9TtIvx1PIgrFz514gIIEEA289zpgg0RGShZ13FNBQovfsUp6
+ 7c8NoNQMKrIfsCNoV/f+YUOKpBrw/wmZEyAfKk6V1WAZRusEj9dNE+oH3+mzXnLEqda7
+ 6nFg==
+X-Gm-Message-State: AOJu0Yw9o5ZPQJnTAXIMSFB5JmvuSwR/8fmwE/xgVMzpBgRHBLiQ38CN
+ 2Ac3/OLcE1c4fVY8M8CaCNY=
+X-Google-Smtp-Source: AGHT+IEX622UtQkV/8LFK0sblFMYrElOse1zs9m9ZmV1SwBJ1pxaF2xQ134xXxdsKrLm1Ko15o6iXA==
+X-Received: by 2002:a05:6000:1b07:b0:336:66fe:8bbc with SMTP id
+ f7-20020a0560001b0700b0033666fe8bbcmr2390408wrz.81.1703393308594; 
+ Sat, 23 Dec 2023 20:48:28 -0800 (PST)
+Received: from freya.midgard (broadband-188-255-126-251.ip.moscow.rt.ru.
+ [188.255.126.251]) by smtp.gmail.com with ESMTPSA id
+ e14-20020a5d530e000000b0033668ac65ddsm7639513wrv.25.2023.12.23.20.48.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 23 Dec 2023 20:48:27 -0800 (PST)
+From: Alexey Baturo <baturo.alexey@gmail.com>
+X-Google-Original-From: Alexey Baturo <me@deliversmonkey.space>
+To: 
+Cc: baturo.alexey@gmail.com, richard.henderson@linaro.org,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, Alistair.Francis@wdc.com,
+ sagark@eecs.berkeley.edu, kbastian@mail.uni-paderborn.de,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ Alexey Baturo <me@deliversmonkey.space>
+Subject: [PATCH v2 0/6] Pointer Masking update for Zjpm v0.8
+Date: Sun, 24 Dec 2023 04:48:06 +0000
+Message-Id: <20231224044812.2072140-1-me@deliversmonkey.space>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=baturo.alexey@gmail.com; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,104 +91,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 19 Dec 2023, Bernhard Beschow wrote:
-> Am 19. Dezember 2023 00:26:15 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
->> On Mon, 18 Dec 2023, Bernhard Beschow wrote:
->>> The VIA south bridges are able to relocate and toggle (enable or disable) their
->>> SuperI/O functions. So far this is hardcoded such that all functions are always
->>> enabled and are located at fixed addresses.
->>>
->>> Some PC BIOSes seem to probe for I/O occupancy before activating such a function
->>> and issue an error in case of a conflict. Since the functions are enabled on
->>> reset, conflicts are always detected. Prevent that by implementing relocation
->>> and toggling of the SuperI/O functions.
->>>
->>> Note that all SuperI/O functions are now deactivated upon reset (except for
->>> VT82C686B's serial ports where Fuloong 2e's rescue-yl seems to expect them to be
->>> enabled by default). Rely on firmware -- or in case of pegasos2 on board code if
->>> no -bios is given -- to configure the functions accordingly.
->>
->> Pegasos2 emulates firmware when no -bios is given, this was explained in previos commit so maybe not needed to be explained it here again so you could drop the comment between -- -- but I don't mind.
->>
->>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
->>> ---
->>> hw/isa/vt82c686.c | 121 ++++++++++++++++++++++++++++++++++------------
->>> 1 file changed, 90 insertions(+), 31 deletions(-)
->>>
->>> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
->>> index 9c2333a277..be202d23cf 100644
->>> --- a/hw/isa/vt82c686.c
->>> +++ b/hw/isa/vt82c686.c
->>> @@ -15,6 +15,9 @@
->>>
->>> #include "qemu/osdep.h"
->>> #include "hw/isa/vt82c686.h"
->>> +#include "hw/block/fdc.h"
->>> +#include "hw/char/parallel-isa.h"
->>> +#include "hw/char/serial.h"
->>> #include "hw/pci/pci.h"
->>> #include "hw/qdev-properties.h"
->>> #include "hw/ide/pci.h"
->>> @@ -343,6 +346,35 @@ static const TypeInfo via_superio_info = {
->>>
->>> #define TYPE_VT82C686B_SUPERIO "vt82c686b-superio"
->>>
->>> +static void vt82c686b_superio_update(ViaSuperIOState *s)
->>> +{
->>> +    isa_parallel_set_enabled(s->superio.parallel[0],
->>> +                             (s->regs[0xe2] & 0x3) != 3);
->>> +    isa_serial_set_enabled(s->superio.serial[0], s->regs[0xe2] & BIT(2));
->>> +    isa_serial_set_enabled(s->superio.serial[1], s->regs[0xe2] & BIT(3));
->>> +    isa_fdc_set_enabled(s->superio.floppy, s->regs[0xe2] & BIT(4));
->>> +
->>> +    isa_fdc_set_iobase(s->superio.floppy, (s->regs[0xe3] & 0xfc) << 2);
->>> +    isa_parallel_set_iobase(s->superio.parallel[0], s->regs[0xe6] << 2);
->>> +    isa_serial_set_iobase(s->superio.serial[0], (s->regs[0xe7] & 0xfe) << 2);
->>> +    isa_serial_set_iobase(s->superio.serial[1], (s->regs[0xe8] & 0xfe) << 2);
->>> +}
->>
->> I wonder if some code duplication could be saved by adding a shared via_superio_update() for this further up in the abstract via-superio class instead of this method and vt8231_superio_update() below. This common method in abstract class would need to handle the differences which seem to be reg addresses offset by 0x10 and VT8231 having only 1 serial port. These could either be handled by adding function parameters or fields to ViaSuperIOState for this that the subclasses can set and the method check. (Such as reg base=0xe2 for vt82c686 and 0xf2 for vt8231 and num_serial or similar for how many ports are there then can have a for loop for those that would only run once for vt8231).
->
-> Only the enable bits and the parallel port base address line up, the 
-> serial port(s) and the floppy would need special treatment. Not worth it 
-> IMO.
+Hi,
 
-Missed this part in previous reply. The serial ports would be taken care 
-of by a loop for number of ports so only the floppy needs an if which 
-could also use the number of serial ports for lack of better way to 
-distinguish these cips easily. Number of ports are in the superio class 
-which you could get with ISA_SUPERIO_GET_CLASS (see via_superio_realize) 
-then serial.count would be 2 for 686b and 1 for 8231.
+As per Richard's suggestion I made pmm field part of tb_flags.
+It allowed to get rid of global variable to store pmlen.
+Also it allowed to simplify all the machinery around it.
 
-But now I think another way may be better that is to drop the 
-superio_update function as this updates all functions on writing any 
-register unnecessarily and put the lines from it in the 
-vt*_superio_cfg_write() functions under the separate cases. This was the 
-original intent, that's why the reset function goes through that write 
-function so it can enable/disable functions. That way you could apply mask 
-on write so via_superio_cfg_read() would return 0 bits as 0 (although the 
-data sheet is not clear about what real chip does, just says these must be 
-0 not that it's enforced but if we enforce that it's probably better to 
-return the effective value on read as well). Then when state saving is 
-added in separate patch you can have a similar function as 
-vt82c686b_superio_reset() (or rename that to update and make it use 
-regs[xx] instead of constant values and call that from reset after setting 
-regs values like you did here. But that needs more thought as the vmstate 
-added by this patch is incomplete and would not work so you could just 
-drop it for now and add it later with also adding other necessary state as 
-well. The idea was to implement the chip first then add state saving so we 
-don't need to bother with breaking it until we have a good enough 
-implementation. So far the state saving there is just left over from the 
-old model which never worked and only left there for reminder but only 
-wanted to fix once the model is complete enough.
+Thanks
 
-So I think for now you could drop vmstate stuff and distribute the 
-superio_update lines in the superio_cfg_write functions so each reg only 
-controls the function it should control. Then when vmstate saving is added 
-later it could reuse superio_reset as an update function adding a new 
-reset func setting reg values and calling the old reset/new update 
-function. Does that make sense?
+[v1]:
+Hi all,
 
-Regards,
-BALATON Zoltan
+It looks like Zjpm v0.8 is almost frozen and we don't expect it change drastically anymore.
+Compared to the original implementation with explicit base and mask CSRs, we now only have
+several fixed options for number of masked bits which are set using existing CSRs.
+The changes have been tested with handwritten assembly tests and LLVM HWASAN
+test suite.
+
+Thanks
+
+Alexey Baturo (6):
+  target/riscv: Remove obsolete pointer masking extension code.
+  target/riscv: Add new CSR fields for S{sn,mn,m}pm extensions as part
+    of Zjpm v0.8
+  target/riscv: Add helper functions to calculate current number of
+    masked bits for pointer masking
+  target/riscv: Add pointer masking tb flags
+  target/riscv: Update address modify functions to take into account
+    pointer masking
+  target/riscv: Enable updates for pointer masking variables and thus
+    enable pointer masking extension
+
+ target/riscv/cpu.c           |  18 +-
+ target/riscv/cpu.h           |  45 +++--
+ target/riscv/cpu_bits.h      |  90 +---------
+ target/riscv/cpu_cfg.h       |   3 +
+ target/riscv/cpu_helper.c    |  92 +++++-----
+ target/riscv/csr.c           | 337 ++---------------------------------
+ target/riscv/machine.c       |  15 +-
+ target/riscv/pmp.c           |  13 +-
+ target/riscv/pmp.h           |  11 +-
+ target/riscv/translate.c     |  47 ++---
+ target/riscv/vector_helper.c |  12 +-
+ 11 files changed, 148 insertions(+), 535 deletions(-)
+
+-- 
+2.34.1
+
 
