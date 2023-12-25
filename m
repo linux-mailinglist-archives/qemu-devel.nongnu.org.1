@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D47281DF15
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 09:17:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C87CE81DFBF
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 11:33:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHg9O-0004qV-8z; Mon, 25 Dec 2023 03:17:27 -0500
+	id 1rHiFN-0004nU-6l; Mon, 25 Dec 2023 05:31:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sw@weilnetz.de>)
- id 1rHg9L-0004qI-Sy; Mon, 25 Dec 2023 03:17:23 -0500
-Received: from mail.weilnetz.de ([37.120.169.71]
- helo=mail.v2201612906741603.powersrv.de)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rHiFK-0004l7-Hm
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 05:31:42 -0500
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sw@weilnetz.de>)
- id 1rHg9J-000144-DE; Mon, 25 Dec 2023 03:17:23 -0500
-Received: from [192.168.178.59] (pd9ec3f26.dip0.t-ipconnect.de [217.236.63.38])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.v2201612906741603.powersrv.de (Postfix) with ESMTPSA id B7D3EDA04BF;
- Mon, 25 Dec 2023 09:17:17 +0100 (CET)
-Message-ID: <5b54e4b7-ebec-4ba3-bf18-985c42773b60@weilnetz.de>
-Date: Mon, 25 Dec 2023 09:17:17 +0100
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rHiFH-0004Zn-VN
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 05:31:42 -0500
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-2046b2cd2d3so1301789fac.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Dec 2023 02:29:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1703500176; x=1704104976;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=MM4t9Y1/FJUY7Mm95C6aH2oAsAlgOIq5wysU0eDf10Y=;
+ b=xhKnFy03g2pbSVElt5jnOMWI7ryy7HVBf+Mb9/wrLdY3KWkGjJZNQyg3hELgLDYhen
+ 5qLdpcKwxEhDBcGSfrTu4LV3Cvv3Ll/fU3jvJmCvBEgBcvITQ81QIrSjLjh7EScAV+UC
+ A5dTunUrHTWnKMCUjVv2Bz7YAcqLa31Kd9ECf27870jDn6ovZCIvbPpqUoqBzEhGRKvy
+ GTPYynoCKBwQIXq7gH2KKC3WCPVbHSeRUVuo4j8Fruzdhg0g7wpJ115S68RtIYW0+mhm
+ oTUjdtrHqMrbmee/bCFZplS/ReHuvBWmaqjUmxFJXKuSBZt02xRlPjmSl/R79H/bBTUJ
+ KEMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703500176; x=1704104976;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MM4t9Y1/FJUY7Mm95C6aH2oAsAlgOIq5wysU0eDf10Y=;
+ b=ngSuKPqxffedpLumvHliSY9zjCYAfwQMQD+iz8CWznrvbo0kFV1ISa+oD9nCugdhi9
+ fXA4SExSLclEw3fhg41l9stH1aZLYTn35CjVBgvUpkDQOxcACQh1iX1Z5y/cBNdv9zCy
+ iHSnOQgP/1vp8QE1tTiKIWpRLoZucRMdk6tGgNRUyQJrObGeGaZxbnqjuaKGrtoMwpty
+ uxS5M/uPzCvgx1p+T+36ek7vtNIRyWyra5xbWr2oPxmwGgGFA1SWWseSe9zYnyrkO976
+ m3VLv7wRrBNmwww+JZ4o2Sm5hLVfTuyGycZhi4LCWEnjLbRp1KK47iRRrqlTnUmnhcAA
+ un5Q==
+X-Gm-Message-State: AOJu0YwLmcM2g5xEBvqNoxmLd/TzOe8wCRCT6ENjqvQjBysWq3GcLzBC
+ xevddmHL0K7BzsE+8aq2maPwcEYd6slb8RXNsfgKlGIQdGSpRQ==
+X-Google-Smtp-Source: AGHT+IFWrbAvC/P/5yhiC1prTuWwAuKRhgJd6v++qKUwy25mpaWrlHy0SfoNEUJeL3JEUQiIlUBG5Q==
+X-Received: by 2002:a05:6871:6111:b0:203:a1b8:b8f5 with SMTP id
+ ra17-20020a056871611100b00203a1b8b8f5mr7403531oab.71.1703500175580; 
+ Mon, 25 Dec 2023 02:29:35 -0800 (PST)
+Received: from localhost.localdomain ([118.114.58.28])
+ by smtp.gmail.com with ESMTPSA id
+ w2-20020a654102000000b005c21c23180bsm6139906pgp.76.2023.12.25.02.29.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Dec 2023 02:29:34 -0800 (PST)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: yong.huang@smartx.com
+Subject: [PULL 0/1] Dirty page rate and dirty page limit 20231225 patch
+Date: Mon, 25 Dec 2023 18:29:26 +0800
+Message-Id: <cover.1703499705.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/hexagon/idef-parser/prepare: use env to invoke bash
-To: Michael Tokarev <mjt@tls.msk.ru>, Samuel Tardieu <sam@rfc1149.net>,
- qemu-trivial@nongnu.org, QEMU Developers <qemu-devel@nongnu.org>
-References: <20231123205742.630004-1-sam@rfc1149.net>
- <521bbe69-3ed2-4416-89b4-40efe1bc3055@tls.msk.ru>
-Autocrypt: addr=sw@weilnetz.de; keydata=
- xsFNBFXCNBcBEACUbHx9FWsS1ATrhLGAS+Nc6bFQHPR3CpUQ4v++RiMg25bF6Ov1RsYEcovI
- 0DXGh6Ma+l6dRlvUXV8tMvNwqghDUr5KY7LN6tgcFKjBbXdv9VlKiWiMLKBrARcFKxx1sfLp
- 1P8RiaUdKsgy2Hq4T1PPy9ENTL1/FBG6P/Rw0rO9zOB+yNHcRJ5diDnERbi3x7qoaPUra2Ig
- lmQk/uxXKC0aNIhpNLNiQ+YpwTUN9q3eG6B9/3CG8RGtFzH9vDPlLvtUX+01a2gCifTi3iH3
- 8EEK8ACXIRs2dszlxMneKTvflXfvyCM1O+59wGcICQxltxLLhHSCJjOQyWdR2JUtn//XjVWM
- mf6bBT7Imx3DhhfFRlA+/Lw9Zah66DJrZgiV0LqoN/2f031TzD3FCBiGQEMC072MvSQ1DdJN
- OiRE1iWO0teLOxaFSbvJS9ij8CFSQQTnSVZs0YXGBal+1kMeaKo9sO4tkaAR2190IlMNanig
- CTJfeFqxzZkoki378grSHdGUTGKfwNPflTOA6Pw6xuUcxW55LB3lBsPqb0289P8o9dTR7582
- e6XTkpzqe/z/fYmfI9YXIjGY8WBMRbsuQA30JLq1/n/zwxAOr2P9y4nqTMMgFOtQS8w4G46K
- UMY/5IspZp2VnPwvazUo2zpYiUSLo1hFHx2jrePYNu2KLROXpwARAQABzRxTdGVmYW4gV2Vp
- bCA8c3dAd2VpbG5ldHouZGU+wsF6BBMBCAAkAhsDBQsJCAcDBRUKCQgLBRYCAwEAAh4BAheA
- BQJV04LlAhkBAAoJEOCMIdVndFCtP5QP/1U8yWZzHeHufRFxtMsK1PERiLuKyGRH2oE5NWVc
- 5QQHZZ2ypXu53o2ZbZxmdy8+4lXiPWWwYVqto3V7bPaMTvQhIT0I3c3ZEZsvwyEEE6QdRs52
- haZwX+TzNMQ5mOePdM2m4WqO0oU7YHU2WFf54MBmAGtj3FAQEAlZAaMiJs2aApw/4t35ICL1
- Sb0FY8d8lKBbIFOAaFfrlQTC3y8eMTk1QxOVtdXpRrOl6OE0alWn97NRqeZlBm0P+BEvdgTP
- Qt+9rxbe4ulgKME2LkbDhLqf0m2+xMXb7T4LiHbQYnnWKGZyogpFaw3PuRVd9m8uxx1F8b4U
- jNzI9x2Ez5LDv8NHpSY0LGwvVmkgELYbcbyiftbuw81gJuM7k4IW5GR85kTH6y/Sq6JNaI4p
- 909IK8X4eeoCkAqEVmDOo1D5DytgxIV/PErrin82OIDXLENzOWfPPtUTO+H7qUe80NS2HLPG
- IveYSjuYKBB6n2JhPkUD7xxMEdh5Ukqi1WIBSV4Tuk3/ubHajP5bqg4QP3Wo1AyICX09A1QQ
- DajtMkyxXhYxr826EGcRD2WUUprGNYwaks4YiPuvOAJxSYprKWT6UDHzE3S8u4uZZm9H8cyg
- Fa3pysJwTmbmrBAP1lMolwXHky60dPnKPmFyArGC0utAH7QELXzBybnE/vSNttNT1D+HzsFN
- BFXcnj0BEAC32cCu2MWeqZEcvShjkoKsXk42mHrGbeuh/viVn8JOQbTO706GZtazoww2weAz
- uVEYhwqi7u9RATz9MReHf7R5F0KIRhc/2NhNNeixT/7L+E5jffH1LD+0IQdeLPoz6unvg7U/
- 7OpdKWbHzPM3Lfd0N1dRP5sXULpjtYQKEgiOU58sc4F5rM10KoPFEMz8Ip4j9RbH/CbTPUM0
- S4PxytRciB3Fjd0ECbVsErTjX7cZc/yBgs3ip7BPVWgbflhrc+utML/MwC6ZqCOIXf/U0ICY
- fp5I7PDbUSWgMFHvorWegMYJ9EzZ2nTvytL8E75C2U3j5RZAuQH5ysfGpdaTS76CRrYDtkEc
- ViTL+hRUgrX9qvqzCdNEePbQZr6u6TNx3FBEnaTAZ5GuosfUk7ynvam2+zAzLNU+GTywTZL2
- WU+tvOePp9z1/mbLnH2LkWHgy3bPu77AFJ1yTbBXl5OEQ/PtTOJeC1urvgeNru26hDFSFyk4
- gFcqXxswu2PGU7tWYffXZXN+IFipCS718eDcT8eL66ifZ8lqJ8Vu5WJmp9mr1spP9RYbT7Rw
- pzZ3iiz7e7AZyOtpSMIVJeYZTbtiqJbyN4zukhrTdCgCFYgf0CkA5UGpYXp2sXPr+gVxKX2p
- tj/gid4n95vR7KMeWV6DJ0YS4hKGtdhkuJCpJfjKP/e8TwARAQABwsFfBBgBCAAJBQJV3J49
- AhsMAAoJEOCMIdVndFCtYRoQAJOu3RZTEvUBPoFqsnd849VmOKKg77cs+HD3xyLtp95JwQrz
- hwa/4ouDFrC86jt1vARfpVx5C8nQtNnWhg+5h5kyOIbtB1/27CCTdXAd/hL2k3GyrJXEc+i0
- 31E9bCqgf2KGY7+aXu4LeAfRIWJT9FGVzdz1f+77pJuRIRRmtSs8VAond2l+OcDdEI9Mjd9M
- qvyPJwDkDkDvsNptrcv4xeNzvX+2foxkJmYru6dJ+leritsasiAxacUowGB5E41RZEUg6bmV
- F4SMseIAEKWLy3hPGvYBOzADhq2YLgnM/wn9Y9Z7bEMy+w5e75saBbkFI7TncxDPUnIl/UTE
- KU1ORi5WWbvXYkUTtfNzZyD0/v3oojcIoZvK1OlpOtXHdlqOodjXF9nLe8eiVHyl8ZnzFxhe
- EW2QPvX8FLKqmSs9W9saQtk6bhv9LNYIYINjH3EEH/+bbmV+ln4O7a73Wm8L3tnpC3LmdGn2
- Rm8B6J2ZK6ci1TRDiMpCUWefpnIuE+TibC5VJR5zx0Yh11rxxBFob8mWktRmLZyeEoCcZoBo
- sbJxD80QxWO03zPpkcJ7d4BrVsQ/BJkBtEe4Jn4iqHqA/OcrzwuEZSv+/MdgoqfblBZhDusm
- LYfVy7wFDeVClG6eQIiK2EnmDChLRkVIQzbkV0iG+NJVVJHLGK7/OsO47+zq
-In-Reply-To: <521bbe69-3ed2-4416-89b4-40efe1bc3055@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=37.120.169.71; envelope-from=sw@weilnetz.de;
- helo=mail.v2201612906741603.powersrv.de
+Received-SPF: none client-ip=2001:4860:4864:20::2f;
+ envelope-from=yong.huang@smartx.com; helo=mail-oa1-x2f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,64 +85,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Stefan Weil <sw@weilnetz.de>
-From:  Stefan Weil via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 25.12.23 um 09:05 schrieb Michael Tokarev:
-> 23.11.2023 23:57, Samuel Tardieu :
->> This file is the only one involved in the compilation process which
->> still uses the /bin/bash path.
->>
->> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
->> ---
->>   target/hexagon/idef-parser/prepare | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/target/hexagon/idef-parser/prepare 
->> b/target/hexagon/idef-parser/prepare
->> index 72d6fcbd21..cb3622d4f8 100755
->> --- a/target/hexagon/idef-parser/prepare
->> +++ b/target/hexagon/idef-parser/prepare
->> @@ -1,4 +1,4 @@
->> -#!/bin/bash
->> +#!/usr/bin/env bash
-> 
-> What's the reason for this indirection?  bash has been /bin/bash for 
-> decades,
-> it is used this way in many other places in qemu code and in other 
-> projects.
-> Yes I know about current move /bin => /usr/bin etc, but the thing is that
-> traditional paths like this one (or like /bin/sh) is not going away any 
-> time
-> soon.  What's the matter here?
-> 
-> /mjt
-> 
+The following changes since commit 191710c221f65b1542f6ea7fa4d30dde6e134fd7:
 
-On MacOS /bin/bash is the pre-installed bash:
+  Merge tag 'pull-request-2023-12-20' of https://gitlab.com/thuth/qemu into staging (2023-12-20 09:40:16 -0500)
 
-% /bin/bash --version
-GNU bash, version 3.2.57(1)-release (arm64-apple-darwin23)
-Copyright (C) 2007 Free Software Foundation, Inc.
+are available in the Git repository at:
 
-With /usr/bin/env I get a recent one from Homebrew:
+  https://github.com/newfriday/qemu.git tags/dirtylimit-dirtyrate-pull-request-20231225
 
-% /usr/bin/env bash --version
-GNU bash, version 5.2.21(1)-release (aarch64-apple-darwin23.0.0)
-Copyright (C) 2022 Free Software Foundation, Inc.
-License GPLv3+: GNU GPL version 3 or later 
-<http://gnu.org/licenses/gpl.html>
+for you to fetch changes up to 4918712fb1c34ae43361b402642e426be85a789e:
 
-This is free software; you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
+  migration/dirtyrate: Remove an extra parameter (2023-12-25 18:05:47 +0800)
 
-So if a bash script uses bash syntax which was added after 2007, that 
-would not work with /bin/bash. That's why I had to use the indirection 
-for another open source project. I don't know whether the QEMU bash 
-scripts require a newer version of bash.
+----------------------------------------------------------------
+dirtylimit dirtyrate pull request 20231225
 
-Regards
-Stefan
+Nitpick about an unused parameter
+Please apply, thanks,
+Yong
+
+----------------------------------------------------------------
+Wafer (1):
+      migration/dirtyrate: Remove an extra parameter
+
+ migration/dirtyrate.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+-- 
+2.39.1
+
 
