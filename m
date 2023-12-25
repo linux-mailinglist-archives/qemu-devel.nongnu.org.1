@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EADE81DE62
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 06:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E3781DE60
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 06:49:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHdoV-0004jF-Af; Mon, 25 Dec 2023 00:47:43 -0500
+	id 1rHdoZ-0004jw-Em; Mon, 25 Dec 2023 00:47:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rHdoT-0004im-8t
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:47:41 -0500
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1rHdoX-0004jL-Hw
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:47:45 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rHdoR-00023v-Nk
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:47:41 -0500
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3bb53e20a43so2822086b6e.1
- for <qemu-devel@nongnu.org>; Sun, 24 Dec 2023 21:45:39 -0800 (PST)
+ id 1rHdoW-00025p-1v
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:47:45 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6d099d316a8so3432203b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 24 Dec 2023 21:45:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1703483138; x=1704087938;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1703483142; x=1704087942;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qJQlTzAWPO+/klEeEAp+k9zko8Nhs/GsMEahvb4ufUs=;
- b=RE/c/efDBqsZfdfdUWlzySFl8DcfbNimIATD1oUQB+mUb+f/oC6wZV8vk5xAyisAnp
- ocLcg3f0PN/VQadgpepIAXil65XqWrPj66x+VBxH99yprXrkFsXXw/qXPlzqH8Qf4YtK
- I2c+twEN9n9lbUm2izn5C2drVpePY32t3MQqq1xFkpYN1MWMpS8jw3b+ocXDGk8qjJRb
- jGCMuFX5G5vGb0MEjDj/PcaTq72rXxDFAWoDAYVYSD9RuRG2yBHrupdz6uh6uokodcQj
- KIbeBOuAX+KzAxOVUwbnX5rnMBHuAyuO0ADU1QWnMKfpCbsRjlUXy8rUdYjVp3ZVGM/A
- pJUg==
+ bh=IPxH7gFNnh+/q7MXVJgutLRfldlr/zL58xbkQj7lR5Y=;
+ b=FLESyh+3qQSeaa6L/ZXztT+iDFEtprc8HcKwyw8JGIAN5dkqTnvGwQZvaS++p6p3Xi
+ LCFcHiH7BEiwcoTpfW3BFYotDbaeq0Pqt6zvqumdnCAZCEht1A1Yp+vtgCemmPZgwyLH
+ XJKNkwp2VSuU3Qd5v++/gbHPwCHZ7GAnilEMeTPYOVNkfbKy6DM8kT2d8xPC0820lLKl
+ uKDIT4oR5jmkHA+1YWjWnD1TSM9SzBVzUlyDVjX9YqmAMePSEc7ehbEJEYro81g3s0aQ
+ iv6d4LY7dEOeFDmUu/RJslRCJIBqV9dI4cMzO1+VBb858Ys23atJgNW6RhkQO2V47f9n
+ tPCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703483138; x=1704087938;
+ d=1e100.net; s=20230601; t=1703483142; x=1704087942;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qJQlTzAWPO+/klEeEAp+k9zko8Nhs/GsMEahvb4ufUs=;
- b=XoEAlc70WWVR0hPhwaXpojLYWPgzEmi17FnJair4eFtqOr0ggpUjlukVgaMlHknNcG
- rBMHxiwD4jSs66uoG3l02JXjnFtNeaQNeYXlElRUAwnCj2ZtAq694zrRDw+rEGamRxtp
- ZM3a+ZFPmkXhpC+z2TNDGoNsURNQMW3SW5Qq98yxHwoulmaT3nvyfTlURKZs64YDKYdR
- OxhyufDEwuZRnGzLBwz7iulP5Hb37f6/k9UEg/NKKBI95KoOj7+DQA5U5rlXfixbRRLU
- PNh2ZsGRtDnJ5xzFKbBqqYfQL2vB+4mtevM4BbYEPRtEznUlHxJ1kI6gl48SSazuVYWG
- Y4ww==
-X-Gm-Message-State: AOJu0Yzd/ms28uShPccCewWkmGFz1P51FEARMTijkJF5VyH3+X9NtnGF
- cRK8CMugICNh5z9cVLAtuIIxbS9C5M4GCTUsR06pk3Oz38xvhQ==
-X-Google-Smtp-Source: AGHT+IGB+3Flm2chnspm2v4DeR47JMmLuUrj+8FdtPmByL6TUKwizdnoJe78EKguV0g5zeJW6ukf+w==
-X-Received: by 2002:a05:6808:148a:b0:3bb:aab0:d899 with SMTP id
- e10-20020a056808148a00b003bbaab0d899mr1195437oiw.37.1703483137943; 
- Sun, 24 Dec 2023 21:45:37 -0800 (PST)
+ bh=IPxH7gFNnh+/q7MXVJgutLRfldlr/zL58xbkQj7lR5Y=;
+ b=nJiE84MvhMAzI2yLoddp00l+57/b/puNnn4n0sNE+S3XSU1WsllCo3O/v6rNtNsIkA
+ QKwtU6QZaeuttEFy74R4uD02dEhYz526l8etgwlzkvvGuYATFWr9bAoOtPqFS4RjXVTN
+ 3W/HNqIKHsifoxxdcZ4x5X7LNgx2t5GKm2iLXEzEsD+eA+NLk01JzXOwxCZhps2ccZdr
+ mHnG1T1NCTBFxQ9U/Ouhao0uKtyxQaZakfXn0ktAyEiZcTqkpYid9e8ZicKBkMmC7shn
+ 3H4zcEf+dnIhrcGoyIL7CSZ41OxTAo3Q5JfejMFcBPvhb6bZck2deetS0vs858qadQM+
+ gRRQ==
+X-Gm-Message-State: AOJu0YxZZ1daNBNrGUKed6GEdGvo8GokZWrfgOuMlnhe1+em+Eh+44sK
+ fv/wGcPfWo3M+S9TLNMU+wh8juBbiES/YDcM6DM3JGsUzDOijg==
+X-Google-Smtp-Source: AGHT+IFdvD2jk9uSWxK/xaJVOqlgKswFU+mHLmgBZLZnMUueowRIod2KPjq1PSD2Xl2qgkFzq87qjA==
+X-Received: by 2002:a05:6a00:2147:b0:6d9:9447:5f2d with SMTP id
+ o7-20020a056a00214700b006d994475f2dmr4299503pfk.33.1703483141957; 
+ Sun, 24 Dec 2023 21:45:41 -0800 (PST)
 Received: from localhost.localdomain ([118.114.58.28])
  by smtp.gmail.com with ESMTPSA id
- y22-20020a056a00191600b006cef521b151sm7342415pfi.168.2023.12.24.21.45.34
+ y22-20020a056a00191600b006cef521b151sm7342415pfi.168.2023.12.24.21.45.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 Dec 2023 21:45:37 -0800 (PST)
+ Sun, 24 Dec 2023 21:45:41 -0800 (PST)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Hyman Huang <yong.huang@smartx.com>
-Subject: [PATCH RESEND v3 04/10] crypto: Introduce creation option and
- structure for detached LUKS header
-Date: Mon, 25 Dec 2023 13:45:06 +0800
-Message-Id: <57ccc93a05f69973d41b571615f9ef13fd9b2983.1703482349.git.yong.huang@smartx.com>
+Subject: [PATCH RESEND v3 05/10] crypto: Mark the payload_offset_sector
+ invalid for detached LUKS header
+Date: Mon, 25 Dec 2023 13:45:07 +0800
+Message-Id: <02d08ca67a4ec88cee61446d6b330c2945b5588f.1703482349.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1703482349.git.yong.huang@smartx.com>
 References: <cover.1703482349.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::22d;
- envelope-from=yong.huang@smartx.com; helo=mail-oi1-x22d.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,71 +95,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce 'header' field in BlockdevCreateOptionsLUKS to support
-detached LUKS header creation. Meanwhile, introduce header-related
-field in QCryptoBlock.
+Set the payload_offset_sector to a value that is nearly never reached
+in order to mark it as invalid and indicate that 0 should be the offset
+of the read/write operation on the 'file' protocol blockdev node.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- crypto/blockpriv.h   | 3 +++
- qapi/block-core.json | 3 +++
- qapi/crypto.json     | 5 ++++-
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ crypto/block-luks.c | 41 +++++++++++++++++++++++++++++++----------
+ 1 file changed, 31 insertions(+), 10 deletions(-)
 
-diff --git a/crypto/blockpriv.h b/crypto/blockpriv.h
-index 3c7ccea504..6289aea961 100644
---- a/crypto/blockpriv.h
-+++ b/crypto/blockpriv.h
-@@ -42,6 +42,9 @@ struct QCryptoBlock {
-     size_t niv;
-     uint64_t payload_offset; /* In bytes */
-     uint64_t sector_size; /* In bytes */
+diff --git a/crypto/block-luks.c b/crypto/block-luks.c
+index fb01ec38bb..48443ffcae 100644
+--- a/crypto/block-luks.c
++++ b/crypto/block-luks.c
+@@ -34,6 +34,8 @@
+ 
+ #include "qemu/bitmap.h"
+ 
++#define INVALID_SECTOR_OFFSET UINT32_MAX
 +
-+    bool detached_header; /* True if disk has a detached LUKS header */
-+    uint64_t detached_header_size; /* LUKS header size plus key slot size */
+ /*
+  * Reference for the LUKS format implemented here is
+  *
+@@ -136,6 +138,13 @@ struct QCryptoBlockLUKS {
  };
  
- struct QCryptoBlockDriver {
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 9ac256c489..8aec179926 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -4948,6 +4948,8 @@
- # @file: Node to create the image format on, mandatory except when
- #        'preallocation' is not requested
- #
-+# @header: Detached LUKS header node to format. (since 9.0)
-+#
- # @size: Size of the virtual disk in bytes
- #
- # @preallocation: Preallocation mode for the new image (since: 4.2)
-@@ -4958,6 +4960,7 @@
- { 'struct': 'BlockdevCreateOptionsLUKS',
-   'base': 'QCryptoBlockCreateOptionsLUKS',
-   'data': { '*file':            'BlockdevRef',
-+            '*header':          'BlockdevRef',
-             'size':             'size',
-             '*preallocation':   'PreallocMode' } }
  
-diff --git a/qapi/crypto.json b/qapi/crypto.json
-index fd3d46ebd1..6b4e86cb81 100644
---- a/qapi/crypto.json
-+++ b/qapi/crypto.json
-@@ -195,10 +195,13 @@
- #     decryption key.  Mandatory except when probing image for
- #     metadata only.
- #
-+# @detached-header: if true, disk has detached LUKS header.
-+#
- # Since: 2.6
- ##
- { 'struct': 'QCryptoBlockOptionsLUKS',
--  'data': { '*key-secret': 'str' }}
-+  'data': { '*key-secret': 'str',
-+            '*detached-header': 'bool' }}
++static inline uint32_t
++qcrypto_block_luks_payload_offset(uint32_t sector)
++{
++    return sector == INVALID_SECTOR_OFFSET ? 0 :
++        sector * QCRYPTO_BLOCK_LUKS_SECTOR_SIZE;
++}
++
+ static int qcrypto_block_luks_cipher_name_lookup(const char *name,
+                                                  QCryptoCipherMode mode,
+                                                  uint32_t key_bytes,
+@@ -1255,8 +1264,8 @@ qcrypto_block_luks_open(QCryptoBlock *block,
+     }
  
- ##
- # @QCryptoBlockCreateOptionsLUKS:
+     block->sector_size = QCRYPTO_BLOCK_LUKS_SECTOR_SIZE;
+-    block->payload_offset = luks->header.payload_offset_sector *
+-        block->sector_size;
++    block->payload_offset =
++        qcrypto_block_luks_payload_offset(luks->header.payload_offset_sector);
+ 
+     return 0;
+ 
+@@ -1529,16 +1538,28 @@ qcrypto_block_luks_create(QCryptoBlock *block,
+         slot->stripes = QCRYPTO_BLOCK_LUKS_STRIPES;
+     }
+ 
+-    /* The total size of the LUKS headers is the partition header + key
+-     * slot headers, rounded up to the nearest sector, combined with
+-     * the size of each master key material region, also rounded up
+-     * to the nearest sector */
+-    luks->header.payload_offset_sector = header_sectors +
+-            QCRYPTO_BLOCK_LUKS_NUM_KEY_SLOTS * split_key_sectors;
++    if (block->detached_header) {
++        /*
++         * Set the payload_offset_sector to a value that is nearly never
++         * reached in order to mark it as invalid and indicate that 0 should
++         * be the offset of the read/write operation on the 'file' protocol
++         * blockdev node. Here the UINT32_MAX is choosed
++         */
++        luks->header.payload_offset_sector = INVALID_SECTOR_OFFSET;
++    } else {
++        /*
++         * The total size of the LUKS headers is the partition header + key
++         * slot headers, rounded up to the nearest sector, combined with
++         * the size of each master key material region, also rounded up
++         * to the nearest sector
++         */
++        luks->header.payload_offset_sector = header_sectors +
++                QCRYPTO_BLOCK_LUKS_NUM_KEY_SLOTS * split_key_sectors;
++    }
+ 
+     block->sector_size = QCRYPTO_BLOCK_LUKS_SECTOR_SIZE;
+-    block->payload_offset = luks->header.payload_offset_sector *
+-        block->sector_size;
++    block->payload_offset =
++        qcrypto_block_luks_payload_offset(luks->header.payload_offset_sector);
+ 
+     /* Reserve header space to match payload offset */
+     initfunc(block, block->payload_offset, opaque, &local_err);
 -- 
 2.39.1
 
