@@ -2,48 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D91681DF0B
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 09:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BEA81DF31
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 09:31:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHg3B-00086t-Ce; Mon, 25 Dec 2023 03:11:01 -0500
+	id 1rHgLK-0006Xj-2D; Mon, 25 Dec 2023 03:29:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rHg2f-0007iz-69; Mon, 25 Dec 2023 03:10:29 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <samuel.tardieu@telecom-paris.fr>)
+ id 1rHgLH-0006XG-6n; Mon, 25 Dec 2023 03:29:43 -0500
+Received: from zproxy1.enst.fr ([137.194.2.220])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rHg2d-0008Lf-KS; Mon, 25 Dec 2023 03:10:28 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A4EA43E96B;
- Mon, 25 Dec 2023 11:10:32 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 652B853012;
- Mon, 25 Dec 2023 11:10:08 +0300 (MSK)
-Received: (nullmailer pid 78192 invoked by uid 1000);
- Mon, 25 Dec 2023 08:10:07 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: Stefan Weil via <qemu-trivial@nongnu.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 7/7] virtio-blk: Fix potential nullpointer read access in
- virtio_blk_data_plane_destroy
-Date: Mon, 25 Dec 2023 11:10:07 +0300
-Message-Id: <20231225081007.78141-8-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231225081007.78141-1-mjt@tls.msk.ru>
-References: <20231225081007.78141-1-mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <samuel.tardieu@telecom-paris.fr>)
+ id 1rHgLE-0002i9-ST; Mon, 25 Dec 2023 03:29:42 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id C567DC059D;
+ Mon, 25 Dec 2023 09:29:33 +0100 (CET)
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id nQVnc2XBC4_U; Mon, 25 Dec 2023 09:29:33 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id 6E5ECC0644;
+ Mon, 25 Dec 2023 09:29:33 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 6E5ECC0644
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1703492973;
+ bh=S4IdAE/gWNGpXafwJf5paQycM0wS3iNhpUrg/XTrMv4=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=zbp3EignbQZaaY/hLEwmhIm9oMpR7zTcTjxe4ZyXwzPG0/GoK2Tv+kajAfw2IqYFX
+ DnW3yaLK0c6ORv60JOCl+rh3IqTxz02g4YXPltRJ3M3+U5iwDQFc7p29khYOMFguMh
+ SA4cLI4v/QUR45wSzMObIWTnIE0YiDYK/eSiy1lg=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id OY28NMCdQPQM; Mon, 25 Dec 2023 09:29:33 +0100 (CET)
+Received: from buffy (unknown [IPv6:2a01:e0a:a0e:d230:259b:5b8e:b52b:be4e])
+ by zproxy1.enst.fr (Postfix) with ESMTPSA id 380F2C059D;
+ Mon, 25 Dec 2023 09:29:33 +0100 (CET)
+References: <20231123205742.630004-1-sam@rfc1149.net>
+ <521bbe69-3ed2-4416-89b4-40efe1bc3055@tls.msk.ru>
+User-agent: mu4e 1.10.8; emacs 29.1
+From: Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH] target/hexagon/idef-parser/prepare: use env to invoke bash
+Date: Mon, 25 Dec 2023 09:15:26 +0100
+In-reply-to: <521bbe69-3ed2-4416-89b4-40efe1bc3055@tls.msk.ru>
+Message-ID: <87il4melcj.fsf@telecom-paris.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.220;
+ envelope-from=samuel.tardieu@telecom-paris.fr; helo=zproxy1.enst.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,38 +76,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Weil via <qemu-trivial@nongnu.org>
 
-Fixes: CID 1532828
-Fixes: b6948ab01d ("virtio-blk: add iothread-vq-mapping parameter")
-Signed-off-by: Stefan Weil <sw@weilnetz.de>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- hw/block/dataplane/virtio-blk.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Michael Tokarev <mjt@tls.msk.ru> writes:
 
-diff --git a/hw/block/dataplane/virtio-blk.c b/hw/block/dataplane/virtio-blk.c
-index 6debd4401e..97a302cf49 100644
---- a/hw/block/dataplane/virtio-blk.c
-+++ b/hw/block/dataplane/virtio-blk.c
-@@ -152,7 +152,7 @@ bool virtio_blk_data_plane_create(VirtIODevice *vdev, VirtIOBlkConf *conf,
- void virtio_blk_data_plane_destroy(VirtIOBlockDataPlane *s)
- {
-     VirtIOBlock *vblk;
--    VirtIOBlkConf *conf = s->conf;
-+    VirtIOBlkConf *conf;
- 
-     if (!s) {
-         return;
-@@ -160,6 +160,7 @@ void virtio_blk_data_plane_destroy(VirtIOBlockDataPlane *s)
- 
-     vblk = VIRTIO_BLK(s->vdev);
-     assert(!vblk->dataplane_started);
-+    conf = s->conf;
- 
-     if (conf->iothread_vq_mapping_list) {
-         IOThreadVirtQueueMappingList *node;
--- 
-2.39.2
+>> -#!/bin/bash
+>> +#!/usr/bin/env bash
+>
+> What's the reason for this indirection?  bash has been /bin/bash=20
+> for decades,
+> it is used this way in many other places in qemu code and in=20
+> other projects.
+> Yes I know about current move /bin =3D> /usr/bin etc, but the=20
+> thing is that
+> traditional paths like this one (or like /bin/sh) is not going=20
+> away any time
+> soon.  What's the matter here?
 
+In addition to Stefan's answer, some modern systems use a per-user=20
+file system hierarchy where each user (or even each environment=20
+development for a user)  gets a global set of directories with=20
+only the applications they want. This is done either through=20
+adding each application directory into the user PATH or by using a=20
+set of user-specific bin/lib/... directories full of symlinks to=20
+the chosen applications.
+
+In those environments, /usr/bin might only contain "env", such as=20
+"/usr/bin/env application" works. This is the case for example on=20
+NixOS, which is more and more used in research environments for=20
+their easily reproducible build environments.
+
+  Sam
+--=20
+Samuel Tardieu
+T=C3=A9l=C3=A9com Paris - Institut Polytechnique de Paris
 
