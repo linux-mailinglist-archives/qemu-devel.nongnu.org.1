@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131A281E1A0
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 17:43:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7C181E25B
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 21:35:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHo2a-0006Uq-Hj; Mon, 25 Dec 2023 11:42:56 -0500
+	id 1rHreR-0004Rn-B1; Mon, 25 Dec 2023 15:34:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1rHo2Y-0006RK-GO
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 11:42:54 -0500
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rHreO-0004RN-7q
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 15:34:12 -0500
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1rHo2W-0001kP-IK
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 11:42:54 -0500
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-517ab9a4a13so3015615a12.1
- for <qemu-devel@nongnu.org>; Mon, 25 Dec 2023 08:42:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rHreL-0004uy-8l
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 15:34:11 -0500
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3bb85a202c2so2712132b6e.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Dec 2023 12:34:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1703522570; x=1704127370; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=S1Phwl5iEaNYDkGmeu0roJ9iyiA9Wh7jvJNiLmeHbiI=;
- b=KHUqKfzDlLLbGYAMD+f2SviQUk8d/yeG3y1Wv0rDVwfXjlcDL7kadnNPwV9ek10Axu
- 9Q700GdGybZB6gj46hRFsJrvnVAocLNOv/15HPegXHAADplE61j8MoMZnHz/sLTGwK4S
- KP6Ab8xVjwaVCpu5XGn67oouoND4ZCWQK8gZsCEddF9XngK2uQetI/mdD7zLzU0FMl3F
- Pb4rfdHotgtoF2jLGSmRreOjA8QQnZE6EkpqkzNJ79PaN28vEn/uHfQobwrb29KRYQaV
- V56+c8BP19PN0NyVFZEpbLTWIVG/trtL4vB3CDoBYzYhNj8t2TwyAEZbMag6SbdH4Qvf
- W5VQ==
+ d=linaro.org; s=google; t=1703536447; x=1704141247; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UPbL9faWqSfkweN3Yq5p9+TKnLVL9Th5khLFtR7JaPo=;
+ b=tMRhm4CBHrwm6nUrmPEZ4mF3N+SAvZgnP8f5FoPrT+03Hyy3DZgY3AZAAHnR5ke020
+ SgL49uqfn3W/KkMiax1U1On2aPkJ3qcpMg1n8gl+XY0c1PjF8U8fzcrhAUf1bvLVO5Pr
+ 0+Wid7IQ+2/nz+nX57hFVXxfiijTvbKuBL7rlwxf4GGr726KU+PZtW6GpUc0FAB4gKF5
+ YIc+XPlfGeL4Lr1NUtKlBOL+Kx2YnHoR77UZcVXX66KTbkE2/itbJw3CCU2Qp0dPkb39
+ gmkmPyUA/9p0BnNGC6mr61++p9+tiqlFIzoxfn31i6bZExigEdK13jcE7k14VCtzxthO
+ +wEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703522570; x=1704127370;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=S1Phwl5iEaNYDkGmeu0roJ9iyiA9Wh7jvJNiLmeHbiI=;
- b=iGfi/9c8TJztqfQWpg8aujG5j/JcvQ/zK3KephaRRMAnGE8Uz61Qp4YuUhJFhae5en
- HY2LBEA4flpYkR/HHgrvuwn7teVn4zgNbr7K9E3dLExZaDTk4Z1B8KehyU6O0oh3tpcW
- 1RV91aggAfABsR39lVtl57QQZxZuZobDUN1be+pOp4awCIgeK++V48aQQc8zo1Tb7y6b
- Y1WwwSH/wMHFHLMHefM5yMYCBc2aHh5mUqrd8E3pOdn74u1xL4N3o6qcwlv4AUXFPjV+
- N7trh36C/2uguGiV77KM22mFyrRPtyN+gZuBa5nH8fFj6kCd2xf0hLCDU+6DWZBSgT3M
- HMGw==
-X-Gm-Message-State: AOJu0YwVEPf+K8ebUWwEHfeqBiRmUFbPF7QMRNh5KfZIb2RF11F9tCgv
- mCTmI7MXMMPWghoLt3pJpfxGYLTT3HcU6w==
-X-Google-Smtp-Source: AGHT+IGHXHySVjp5dxFhxnb/EDLlGy6IcDSNymk81IVYgUiiEwerTr2Nk9uwit8OQNoxZZ9hTu1Rfw==
-X-Received: by 2002:a05:6a21:3288:b0:195:47f3:70a1 with SMTP id
- yt8-20020a056a21328800b0019547f370a1mr7380242pzb.19.1703522570469; 
- Mon, 25 Dec 2023 08:42:50 -0800 (PST)
-Received: from localhost.localdomain ([2001:ee0:50f4:9050:d7ef:8aab:5b58:14b2])
- by smtp.googlemail.com with ESMTPSA id
- x22-20020a63fe56000000b005b92e60cf57sm8092928pgj.56.2023.12.25.08.42.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Dec 2023 08:42:50 -0800 (PST)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Joao Martins <joao.m.martins@oracle.com>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Phil Dennis-Jordan <lists@philjordan.eu>,
- Santosh Shukla <santosh.shukla@amd.com>,
- Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH v11 7/7] test: bios-tables-test: add IVRS changed binary
-Date: Mon, 25 Dec 2023 23:41:01 +0700
-Message-Id: <20231225164101.105958-8-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231225164101.105958-1-minhquangbui99@gmail.com>
-References: <20231225164101.105958-1-minhquangbui99@gmail.com>
+ d=1e100.net; s=20230601; t=1703536447; x=1704141247;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UPbL9faWqSfkweN3Yq5p9+TKnLVL9Th5khLFtR7JaPo=;
+ b=KbYBy4AmhtQEAposor0gcoG0og9QQKcCNhQRHBhiFxwgKhVjVR9vyEyxUmWkanSzxZ
+ hsQXHZK8mVyBCVNo/gAapVP8uj6Aj5d4SsciZ1V2SC/RkAZfvCfLpF/aFTbJmFCNyU42
+ 4zJDoW0GUAeR7v0dRNP7iRVzk1VARpcdLi/YWKCj2vql/g6RF+qefwE1gIY7J7IAsXg2
+ AIwxPngy1+XjokjERwnou4JjvV3zos1wojGbEKqgLwmcJknZk+5kGTszMbrgBJhlaCa2
+ vFb0KKLsocAgSt89VyoI5AQfY6ckyNZzWTtgYSI6nbHXXkPdtz6ouXQ0GYOeysf4+GRl
+ PD5w==
+X-Gm-Message-State: AOJu0YxeuIZ9vxisN8rS+PM7Gf49ruGl4QV2RbTOyVLaMB/Xv4+YzHp4
+ OJVKlQVlg/0RGeuLMUiBl2m35eSfc12BWg==
+X-Google-Smtp-Source: AGHT+IFyAt5qfgSDuUJ3sB2hd0hOPOeTW0Zv8xopcoIrrIiz+DsjQ+uB/2ZYL04ebh+eO6NXBV2+lA==
+X-Received: by 2002:a05:6808:2120:b0:3b8:969e:88d7 with SMTP id
+ r32-20020a056808212000b003b8969e88d7mr8262265oiw.6.1703536447074; 
+ Mon, 25 Dec 2023 12:34:07 -0800 (PST)
+Received: from [192.168.110.87] (187.49.254.125.static.virtutel.net.au.
+ [125.254.49.187]) by smtp.gmail.com with ESMTPSA id
+ g8-20020a170902740800b001d0c641d220sm8473630pll.257.2023.12.25.12.34.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 25 Dec 2023 12:34:06 -0800 (PST)
+Message-ID: <28671cdd-c114-489c-a1c0-be11aacb7af9@linaro.org>
+Date: Tue, 26 Dec 2023 07:33:59 +1100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] target/i386: mask high bits of CR3 in 32-bit mode
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: mcb30@ipxe.org, qemu-stable@nongnu.org
+References: <20231222175951.172669-1-pbonzini@redhat.com>
+ <20231222175951.172669-2-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231222175951.172669-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,217 +94,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following the instructions in bios-tables-test, this adds the changed
-IVRS.ivrs binary.
+On 12/23/23 04:59, Paolo Bonzini wrote:
+> CR3 bits 63:32 are ignored in 32-bit mode (either legacy 2-level
+> paging or PAE paging).  Do this in mmu_translate() to remove
+> the last where get_physical_address() meaningfully drops the high
+> bits of the address.
+> 
+> Cc: qemu-stable@nongnu.org
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Fixes: 4a1e9d4d11c ("target/i386: Use atomic operations for pte updates", 2022-10-18)
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   target/i386/tcg/sysemu/excp_helper.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-New IVRS differs in length, checksum, it enables EFRSup in Virtualization
-Info and adds IVHD type 0x11 with the same device entries as in IVHD type
-0x10.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-ASL diff:
+r~
 
- /*
-  * Intel ACPI Component Architecture
-  * AML/ASL+ Disassembler version 20230628 (64-bit version)
-  * Copyright (c) 2000 - 2023 Intel Corporation
-  *
-- * Disassembly of tests/data/acpi/q35/IVRS.ivrs, Wed Nov  8 21:39:58 2023
-+ * Disassembly of /tmp/aml-2ODND2, Wed Nov  8 21:39:58 2023
-  *
-  * ACPI Data Table [IVRS]
-  *
-  * Format: [HexOffset DecimalOffset ByteLength]  FieldName : FieldValue (in hex)
-  */
-
- [000h 0000 004h]                   Signature : "IVRS"    [I/O Virtualization Reporting Structure]
--[004h 0004 004h]                Table Length : 00000068
-+[004h 0004 004h]                Table Length : 000000B0
- [008h 0008 001h]                    Revision : 01
--[009h 0009 001h]                    Checksum : 43
-+[009h 0009 001h]                    Checksum : 74
- [00Ah 0010 006h]                      Oem ID : "BOCHS "
- [010h 0016 008h]                Oem Table ID : "BXPC    "
- [018h 0024 004h]                Oem Revision : 00000001
- [01Ch 0028 004h]             Asl Compiler ID : "BXPC"
- [020h 0032 004h]       Asl Compiler Revision : 00000001
-
--[024h 0036 004h]         Virtualization Info : 00002800
-+[024h 0036 004h]         Virtualization Info : 00002801
- [028h 0040 008h]                    Reserved : 0000000000000000
-
- [030h 0048 001h]               Subtable Type : 10 [Hardware Definition Block (IVHD)]
- [031h 0049 001h]       Flags (decoded below) : D1
-                                      HtTunEn : 1
-                                       PassPW : 0
-                                    ResPassPW : 0
-                                 Isoc Control : 0
-                                Iotlb Support : 1
-                                     Coherent : 0
-                             Prefetch Support : 1
-                                  PPR Support : 1
- [032h 0050 002h]                      Length : 0038
- [034h 0052 002h]                    DeviceId : 0010
- [036h 0054 002h]           Capability Offset : 0040
- [038h 0056 008h]                Base Address : 00000000FED80000
-@@ -108,25 +108,129 @@
-                                   LINT1 Pass : 0
-
- [060h 0096 001h]               Subtable Type : 48 [Device Entry: Special Device]
- [061h 0097 002h]                   Device ID : 0000
- [063h 0099 001h] Data Setting (decoded below) : 00
-                                     INITPass : 0
-                                     EIntPass : 0
-                                      NMIPass : 0
-                                     Reserved : 0
-                                  System MGMT : 0
-                                   LINT0 Pass : 0
-                                   LINT1 Pass : 0
- [064h 0100 001h]                      Handle : 00
- [065h 0101 002h]       Source Used Device ID : 00A0
- [067h 0103 001h]                     Variety : 01
-
--Raw Table Data: Length 104 (0x68)
-+[068h 0104 001h]               Subtable Type : 11 [Hardware Definition Block (IVHD)]
-+[069h 0105 001h]       Flags (decoded below) : 11
-+                                     HtTunEn : 1
-+                                      PassPW : 0
-+                                   ResPassPW : 0
-+                                Isoc Control : 0
-+                               Iotlb Support : 1
-+                                    Coherent : 0
-+                            Prefetch Support : 0
-+                                 PPR Support : 0
-+[06Ah 0106 002h]                      Length : 0048
-+[06Ch 0108 002h]                    DeviceId : 0010
-+[06Eh 0110 002h]           Capability Offset : 0040
-+[070h 0112 008h]                Base Address : 00000000FED80000
-+[078h 0120 002h]           PCI Segment Group : 0000
-+[07Ah 0122 002h]         Virtualization Info : 0000
-+[07Ch 0124 004h]                  Attributes : 00000000
-+[080h 0128 008h]                   EFR Image : 00000000000029D3
-+[088h 0136 008h]                    Reserved : 0000000000000000
-+
-+[090h 0144 001h]               Subtable Type : 02 [Device Entry: Select One Device]
-+[091h 0145 002h]                   Device ID : 0000
-+[093h 0147 001h] Data Setting (decoded below) : 00
-+                                    INITPass : 0
-+                                    EIntPass : 0
-+                                     NMIPass : 0
-+                                    Reserved : 0
-+                                 System MGMT : 0
-+                                  LINT0 Pass : 0
-+                                  LINT1 Pass : 0
-+
-+[094h 0148 001h]               Subtable Type : 02 [Device Entry: Select One Device]
-+[095h 0149 002h]                   Device ID : 0008
-+[097h 0151 001h] Data Setting (decoded below) : 00
-+                                    INITPass : 0
-+                                    EIntPass : 0
-+                                     NMIPass : 0
-+                                    Reserved : 0
-+                                 System MGMT : 0
-+                                  LINT0 Pass : 0
-+                                  LINT1 Pass : 0
-+
-+[098h 0152 001h]               Subtable Type : 02 [Device Entry: Select One Device]
-+[099h 0153 002h]                   Device ID : 0010
-+[09Bh 0155 001h] Data Setting (decoded below) : 00
-+                                    INITPass : 0
-+                                    EIntPass : 0
-+                                     NMIPass : 0
-+                                    Reserved : 0
-+                                 System MGMT : 0
-+                                  LINT0 Pass : 0
-+                                  LINT1 Pass : 0
-+
-+[09Ch 0156 001h]               Subtable Type : 02 [Device Entry: Select One Device]
-+[09Dh 0157 002h]                   Device ID : 00F8
-+[09Fh 0159 001h] Data Setting (decoded below) : 00
-+                                    INITPass : 0
-+                                    EIntPass : 0
-+                                     NMIPass : 0
-+                                    Reserved : 0
-+                                 System MGMT : 0
-+                                  LINT0 Pass : 0
-+                                  LINT1 Pass : 0
-+
-+[0A0h 0160 001h]               Subtable Type : 02 [Device Entry: Select One Device]
-+[0A1h 0161 002h]                   Device ID : 00FA
-+[0A3h 0163 001h] Data Setting (decoded below) : 00
-+                                    INITPass : 0
-+                                    EIntPass : 0
-+                                     NMIPass : 0
-+                                    Reserved : 0
-+                                 System MGMT : 0
-+                                  LINT0 Pass : 0
-+                                  LINT1 Pass : 0
-+
-+[0A4h 0164 001h]               Subtable Type : 02 [Device Entry: Select One Device]
-+[0A5h 0165 002h]                   Device ID : 00FB
-+[0A7h 0167 001h] Data Setting (decoded below) : 00
-+                                    INITPass : 0
-+                                    EIntPass : 0
-+                                     NMIPass : 0
-+                                    Reserved : 0
-+                                 System MGMT : 0
-+                                  LINT0 Pass : 0
-+                                  LINT1 Pass : 0
-+
-+[0A8h 0168 001h]               Subtable Type : 48 [Device Entry: Special Device]
-+[0A9h 0169 002h]                   Device ID : 0000
-+[0ABh 0171 001h] Data Setting (decoded below) : 00
-+                                    INITPass : 0
-+                                    EIntPass : 0
-+                                     NMIPass : 0
-+                                    Reserved : 0
-+                                 System MGMT : 0
-+                                  LINT0 Pass : 0
-+                                  LINT1 Pass : 0
-+[0ACh 0172 001h]                      Handle : 00
-+[0ADh 0173 002h]       Source Used Device ID : 00A0
-+[0AFh 0175 001h]                     Variety : 01
-+
-+Raw Table Data: Length 176 (0xB0)
-
--    0000: 49 56 52 53 68 00 00 00 01 43 42 4F 43 48 53 20  // IVRSh....CBOCHS
-+    0000: 49 56 52 53 B0 00 00 00 01 74 42 4F 43 48 53 20  // IVRS.....tBOCHS
-     0010: 42 58 50 43 20 20 20 20 01 00 00 00 42 58 50 43  // BXPC    ....BXPC
--    0020: 01 00 00 00 00 28 00 00 00 00 00 00 00 00 00 00  // .....(..........
-+    0020: 01 00 00 00 01 28 00 00 00 00 00 00 00 00 00 00  // .....(..........
-     0030: 10 D1 38 00 10 00 40 00 00 00 D8 FE 00 00 00 00  // ..8...@.........
-     0040: 00 00 00 00 44 00 00 00 02 00 00 00 02 08 00 00  // ....D...........
-     0050: 02 10 00 00 02 F8 00 00 02 FA 00 00 02 FB 00 00  // ................
--    0060: 48 00 00 00 00 A0 00 01                          // H.......
-+    0060: 48 00 00 00 00 A0 00 01 11 11 48 00 10 00 40 00  // H.........H...@.
-+    0070: 00 00 D8 FE 00 00 00 00 00 00 00 00 00 00 00 00  // ................
-+    0080: D3 29 00 00 00 00 00 00 00 00 00 00 00 00 00 00  // .)..............
-+    0090: 02 00 00 00 02 08 00 00 02 10 00 00 02 F8 00 00  // ................
-+    00A0: 02 FA 00 00 02 FB 00 00 48 00 00 00 00 A0 00 01  // ........H.......
-
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
----
- tests/data/acpi/q35/IVRS.ivrs               | Bin 104 -> 176 bytes
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- 2 files changed, 1 deletion(-)
-
-diff --git a/tests/data/acpi/q35/IVRS.ivrs b/tests/data/acpi/q35/IVRS.ivrs
-index 17611202e53a32f7da8e4925d6955b384670b8b1..7f9e91aabc0b7777a7efc9f219587a4f91f0edb1 100644
-GIT binary patch
-delta 63
-zcmd1Uz{uqp78JaJfq{XsWFnUoBjZF>XH`K#4+a4S2cY1Me?S5bE^ES>3=9)pl>vea
-B3FiO+
-
-delta 22
-dcmdnMn8D>478IPpz`(%hJdsO^kzt~$GXOlo1j7IT
-
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index ac420db6b7..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/q35/IVRS.ivrs",
--- 
-2.25.1
+> 
+> diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
+> index 5b86f439add..11126c860d4 100644
+> --- a/target/i386/tcg/sysemu/excp_helper.c
+> +++ b/target/i386/tcg/sysemu/excp_helper.c
+> @@ -238,7 +238,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+>               /*
+>                * Page table level 3
+>                */
+> -            pte_addr = ((in->cr3 & ~0x1f) + ((addr >> 27) & 0x18)) & a20_mask;
+> +            pte_addr = ((in->cr3 & 0xffffffe0ULL) + ((addr >> 27) & 0x18)) & a20_mask;
+>               if (!ptw_translate(&pte_trans, pte_addr)) {
+>                   return false;
+>               }
+> @@ -306,7 +306,7 @@ static bool mmu_translate(CPUX86State *env, const TranslateParams *in,
+>           /*
+>            * Page table level 2
+>            */
+> -        pte_addr = ((in->cr3 & ~0xfff) + ((addr >> 20) & 0xffc)) & a20_mask;
+> +        pte_addr = ((in->cr3 & 0xfffff000ULL) + ((addr >> 20) & 0xffc)) & a20_mask;
+>           if (!ptw_translate(&pte_trans, pte_addr)) {
+>               return false;
+>           }
 
 
