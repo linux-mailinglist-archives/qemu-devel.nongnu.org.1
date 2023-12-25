@@ -2,38 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7648681DEFC
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 09:03:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5EF81DF00
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 09:05:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHfuz-0005IW-Fy; Mon, 25 Dec 2023 03:02:33 -0500
+	id 1rHfxd-0006cB-KL; Mon, 25 Dec 2023 03:05:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rHfut-0005IE-Dr; Mon, 25 Dec 2023 03:02:27 -0500
+ id 1rHfxa-0006bz-Lu; Mon, 25 Dec 2023 03:05:14 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rHfur-0006kk-E8; Mon, 25 Dec 2023 03:02:27 -0500
+ id 1rHfxZ-0007dS-4V; Mon, 25 Dec 2023 03:05:14 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CFF383E956;
- Mon, 25 Dec 2023 11:02:44 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 5E0B83E95B;
+ Mon, 25 Dec 2023 11:05:34 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8384152FF4;
- Mon, 25 Dec 2023 11:02:20 +0300 (MSK)
-Message-ID: <cc39595e-fdea-4365-a5ed-b1a1be27e907@tls.msk.ru>
-Date: Mon, 25 Dec 2023 11:02:20 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 19EBD52FFC;
+ Mon, 25 Dec 2023 11:05:10 +0300 (MSK)
+Message-ID: <521bbe69-3ed2-4416-89b4-40efe1bc3055@tls.msk.ru>
+Date: Mon, 25 Dec 2023 11:05:10 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] virtio-blk: Fix potential nullpointer read access in
- virtio_blk_data_plane_destroy
+Subject: Re: [PATCH] target/hexagon/idef-parser/prepare: use env to invoke bash
 Content-Language: en-US
-To: Stefan Weil <sw@weilnetz.de>, Stefan Hajnoczi <stefanha@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>
-Cc: Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-References: <20231224114314.420360-1-sw@weilnetz.de>
+To: Samuel Tardieu <sam@rfc1149.net>, qemu-trivial@nongnu.org,
+ QEMU Developers <qemu-devel@nongnu.org>
+References: <20231123205742.630004-1-sam@rfc1149.net>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -59,7 +56,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231224114314.420360-1-sw@weilnetz.de>
+In-Reply-To: <20231123205742.630004-1-sam@rfc1149.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -85,12 +82,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-24.12.2023 14:43, Stefan Weil:
-> Fixes: CID 1532828
-> Fixes: b6948ab01d ("virtio-blk: add iothread-vq-mapping parameter")
-> Signed-off-by: Stefan Weil <sw@weilnetz.de>
+23.11.2023 23:57, Samuel Tardieu :
+> This file is the only one involved in the compilation process which
+> still uses the /bin/bash path.
+> 
+> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
+> ---
+>   target/hexagon/idef-parser/prepare | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/hexagon/idef-parser/prepare b/target/hexagon/idef-parser/prepare
+> index 72d6fcbd21..cb3622d4f8 100755
+> --- a/target/hexagon/idef-parser/prepare
+> +++ b/target/hexagon/idef-parser/prepare
+> @@ -1,4 +1,4 @@
+> -#!/bin/bash
+> +#!/usr/bin/env bash
 
-Applied to the trivial-patches tree, thank you!
+What's the reason for this indirection?  bash has been /bin/bash for decades,
+it is used this way in many other places in qemu code and in other projects.
+Yes I know about current move /bin => /usr/bin etc, but the thing is that
+traditional paths like this one (or like /bin/sh) is not going away any time
+soon.  What's the matter here?
 
 /mjt
 
