@@ -2,133 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B1681E002
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 12:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D30481E076
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 13:35:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHilR-0000Uj-Qm; Mon, 25 Dec 2023 06:04:53 -0500
+	id 1rHkAD-0006zY-Es; Mon, 25 Dec 2023 07:34:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rHilP-0000UX-O3; Mon, 25 Dec 2023 06:04:51 -0500
-Received: from mail-ve1eur01on070b.outbound.protection.outlook.com
- ([2a01:111:f400:fe1f::70b]
- helo=EUR01-VE1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rHkAA-0006z1-4M
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 07:34:30 -0500
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rHilN-0001Qz-Fe; Mon, 25 Dec 2023 06:04:51 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V3f8XQ2uoeE4XF7PNNXCsnk0LDOJaEB9kzko5SkOjR6G8ZwvzsmQBqYIx2nUxrraZIyGkRjGB5up0/tcWTbw66cN4cUeuELWF+l/ZiFaZbRWy8au4nCxePspR2rKWcz+pJK+IrGA51Gtm+U9+jb2TuL8laoIWJ0gkRX2RCyOxS43wOz3ID2YaVGH/qusNKVroXQ4xP+IijKiwpfBBEZqCmHAlJCt+lLdGXqxrknGWW5ZGrQh95kLjj0wnReAK9oRQfADgy4fLdMt7OZBb+SAFFxtBnLbwOxmGuEPoNdF+wMdXuzk1EHLDSzFo/TSElA8NBjM5oldbItLRGgwXKgQzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YkB1ns6mo2qkGoC1KKg85Ae/1spEktEvmXFpORlgoS4=;
- b=HNX+orKmNC2PHdRkv75aUTvh8bkOfMvYHDq3nW78VtYU6+m7IVgzDNSDcvpDRAUJXrOy2YI//33rtRWG/nDR7VAnh1Xe0YCkxb6dn5Y8TFXuyD1ktWPZcU5tGQUXIljJY34fSG4u4uDkTaZhltYn5W3TbVQqnGYTpV+sORQX3WI+gaOqAk0Ll4yRmsL07Ynz2F2iTX3G8rDwrcbCR65YPlrXlkNuxdHvU210wGiQJvpd5NFhlq56UTndq3GJbeaNzd7K5/vu6tNwDqW/e/OCkaVo0h2Vrmvf6dGMbI67bbvkmP8pZG1EVD3vBjcOvZzv4MM896wAfRUT10HP70PFHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YkB1ns6mo2qkGoC1KKg85Ae/1spEktEvmXFpORlgoS4=;
- b=SIA7/8MrspbBt53Kw+xpoiM+zlL9m16l6dYN3YNA7cyKEeDmiS4mHV0cSm7Rz2klK77+S3tMrx4UO2ntp+P5j5TdLW70pt0A1b9Xu1q7hz4shalikW7FVtNPTWpINfrtKOuC76enUfCVNO/HJQXe+6NB91DXUEdtZrjJYIg38Tmocwx+iB24DM6sY4RiI7roMfimuF8GeBLq7DcFu/St6p0MBXLof4oIDNkklpIEs5t/otn9v1BItNctnNBqqHVsHXzP57rkbZoatz/uTQttKHu1UPHehlsr9DFhoEeAxpnyDJSRA/Ft81pAHQzx/PXmMpHwg4126oRSvX8y3m8tBg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
- (2603:10a6:800:205::19) by DB9PR08MB9441.eurprd08.prod.outlook.com
- (2603:10a6:10:457::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.26; Mon, 25 Dec
- 2023 11:04:43 +0000
-Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
- ([fe80::60f7:3267:9f9d:cdc0]) by VI0PR08MB10743.eurprd08.prod.outlook.com
- ([fe80::60f7:3267:9f9d:cdc0%5]) with mapi id 15.20.7113.026; Mon, 25 Dec 2023
- 11:04:42 +0000
-Message-ID: <e4915aa0-692a-4681-b6a0-f07a9f32842f@virtuozzo.com>
-Date: Mon, 25 Dec 2023 12:04:25 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] blockcommit: Reopen base image as RO after abort
-Content-Language: en-US
-From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, den@virtuozzo.com, andrey.drobyshev@virtuozzo.com, 
- jsnow@redhat.com, vsementsov@yandex-team.ru, kwolf@redhat.com,
- hreitz@redhat.com
-References: <20231130101104.127356-1-alexander.ivanov@virtuozzo.com>
-In-Reply-To: <20231130101104.127356-1-alexander.ivanov@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0094.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cb::11) To VI0PR08MB10743.eurprd08.prod.outlook.com
- (2603:10a6:800:205::19)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rHkA7-00027o-2b
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 07:34:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1703507667; x=1735043667;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=kBKpPgDUszsD89fUMQpcwLt3lcoERl6NfvEf9e/71sg=;
+ b=V6sRpnzSYf9bxbxIzZdyZdOGbGxdOqNblZd4ycT+5EWPgwtRy8KBKxrR
+ +MF/RS6f7jBk+mruBh4ZrHsIYVeyeJiyAbvUU5LtqqowT9ToORnsTdkjm
+ TTVO05J1Ex6hulSfkX2bVCm1e/naimI+k4WS+icv4lbqkyx+xEBT9rC1X
+ BxfiokwBoYxO2CmN7XM9htrchG5F6hCWBus+BClpKyxrHNmMQgGn7f4y2
+ a5ZfuIK9bu/45UFp4bc77KAFIgCAhUKSfCoU1k0vPONAMZrQ5ptqupMko
+ 6lB9yD9Gsjk0/jdlulVe/160OThIduMdYoz5hUvQmBbznITGGJj7gNR74 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10934"; a="3370913"
+X-IronPort-AV: E=Sophos;i="6.04,303,1695711600"; 
+   d="scan'208";a="3370913"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Dec 2023 04:34:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10934"; a="901176927"
+X-IronPort-AV: E=Sophos;i="6.04,303,1695711600"; d="scan'208";a="901176927"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.22.149])
+ ([10.93.22.149])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Dec 2023 04:34:15 -0800
+Message-ID: <9aee1487-fc1a-4db1-b2ff-e572177eb83d@intel.com>
+Date: Mon, 25 Dec 2023 20:34:13 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10743:EE_|DB9PR08MB9441:EE_
-X-MS-Office365-Filtering-Correlation-Id: d83a666c-3d02-4c7a-8650-08dc05394b78
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Umx3IP8+/qdHEbqqYwvdC9jidSEli+HAWqi+8By5h5EGpg4mALPaqBtoVB5UyH8lFlbbXFIr2sAR7eCIVjBnNbJ9fxNzlF8HmgF/VgWgo6S+xyiPlIpRBGwO/Cv94xFb+Ph5yv5KBVZdeVGU4aPRloqJELE0p5pJwpu7F0Fz2G2uaT2kjhX0CDWJM/GkJLqFWfYsAYIW96/QjR4z0d4a8d9VLOttoQWbwjARHZvDEAWohIaBDbJiiCj6sWPeq54ZHQp66yuYe9uwNR6s7ZVUHGY5yYiSmfaR28lj5YVQIsV5OnttKCNttz/IIF/TU8CNTThomCvB6NI9PBHrP+QDkEiLbLjqYLkZTzEPY8bnRr5n02x+zS/Bg2SIxHFr52LT9IRrUYcMZM8vPyygO0dgzl4BUD8xt1JntxIbbzaDCroRQvYOtVW/IOkfkJL/wsZGldIWsMddblyZt22C0PeP0svJdnAmet5Kg+nstANGeGVPtzSlfuJKxcYn/CnptrWm0lmKHt0lpT5MrKCGZ1BXBHwild9fvdneXzRa/xP+YkGKAyeCZ5xmBYb6/XWN6ezJFhfH7Z3sJsUzdS310wBjhy3FRjPk6NUFGYYlrZsozwJqfeHwgXF8/xV4y17UcTo2C85AXTqL6/ZXTy3VHCvoAg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI0PR08MB10743.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(366004)(376002)(396003)(346002)(39840400004)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(26005)(2616005)(53546011)(6512007)(6506007)(83380400001)(66556008)(66476007)(86362001)(8936002)(31696002)(6916009)(316002)(8676002)(44832011)(66946007)(4326008)(478600001)(6666004)(6486002)(38100700002)(31686004)(36756003)(41300700001)(2906002)(5660300002)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bk0yWlYwbXIvZk5xM0ZjK3ZlRVBHbVJxclpLT2svZUROQm9HVlF2THR6OXZs?=
- =?utf-8?B?clVCZGd6RkFpZWQreHBqWlYyS3c2OVFVdjVOd2JidHJxUWFZQy9odnBadDVh?=
- =?utf-8?B?ZlRRTHJMajR0TEY5aURxWVBoamVTdEhXWUx2QkNFRzZHUDdsUUpwTHE0UlRT?=
- =?utf-8?B?d0crRCtyU3JhbUpuK3BFRDFpc2dWcU5xTkVYS0FPRyt1ZWNNbWtIbUdLanZv?=
- =?utf-8?B?VEd3all2bW9vemZzd2ZjQmxCTXgzSUJvZHpFVEtjSUQyb1UxVXdnUXRkb3RM?=
- =?utf-8?B?Q2Q1cFprSVU0TTRRbjNpdDJjMHBBdG1aaHEyNml0Z1UrbWYxOHBOSk9XZGlS?=
- =?utf-8?B?a0NGQ04vRE9FKzBPTG02MXdlYUVCMkhIazBDY1ZDMXk0UTh5NGRRU1RleTJ1?=
- =?utf-8?B?UWhxUHczYW13emZtSGZYNldhTWEzYzlFak5JVDhnTHBvZE5LOFRhWHV4Zytu?=
- =?utf-8?B?VktPS3NrdmY3cW41T1NBKzI4UFNGUW5kWDNzQ0J0amdVcEc1RGcrYUIybjRS?=
- =?utf-8?B?WTF3WjJVTGk0MC83c2U0d0lheWxHZ3FoLzcrc2FVWkZQWXBETjBiak9qWXJU?=
- =?utf-8?B?YkFrcmtuWEN2ZjA1bThjWlc0SzNMaTVKTE5zZGZVc3dtL2Yrc2lFd1AydjYr?=
- =?utf-8?B?MStUNC9sL3cyYlVxTGE4eXNrMHBZamhxb2Y5TFo1c2VUcUo5QlIwRFZsR2k1?=
- =?utf-8?B?NDNDQmVub2RqaHRWSm5WNnAyZXBZc2JweVlHUW9xZ3I4dUtlRklvWm1BanRR?=
- =?utf-8?B?eXE0a0dtd1V2NVNmTTZsNG1uUTVTbmloQ2Z6N2x2b0tiNWE5R1NVYTZVS2FB?=
- =?utf-8?B?b3o3amxBM2p4bVQyK0MzemhEWEFoeWQvYkhMVS9PdUlLa1krR0xXWHk0THJo?=
- =?utf-8?B?UDR2aksyak5wZUlkZ1NDUmkvM0lnQTVvL0JNVUxYOWVReGROQVBrTVRqSW9Q?=
- =?utf-8?B?YjZJTnJCWGdsY2dMaXZoY3pZcm5vK3dKRGExT1lTb2xXZ1UvS2pSTVN3bldz?=
- =?utf-8?B?ODd5R3huMlFxWGZiZ2c2VEgvMUhsSW5xNVFWbFlEajRuTnlhRjBMNFNjeXV1?=
- =?utf-8?B?ZlFkSXRxU01ZOG9lTFJpeGZvQ1cvbmo2NzhXWlpQaTFHblBxZXhpbHI0N1gx?=
- =?utf-8?B?bTNZaWtMNXJaRlhMeW5sdEl2TGdYSWFvL0tNZnIvbndyd3FzRitGOWhpYnB0?=
- =?utf-8?B?b092WEEzaXZla0RHR04xanhIbmtFNlNoZFY2OC9hZjdMMVNhdy8wTDFZYXlq?=
- =?utf-8?B?SjhJbWJkaWdpd3BsckFEbUUvZ2ZGQ3dodE5ZSEdtakkxZUpWdjhrL1F5YmtR?=
- =?utf-8?B?R1pFV0JpcklnOUUwK0g2cTAydGFZNW9yeXV4RnUvNGk3S01QR2VVc0dRRkh1?=
- =?utf-8?B?S1dWZ0psNEtKL1NIdVF5aDhqZVBGaFQvanNRVDg3SFE4QldqMU9iZHh0Ynht?=
- =?utf-8?B?VWdmSlF1RHpFTHlLZm13Vjg3WUhGN2Z4SFhVMmFNNk9BZ0dVa0VqV2FVbHh5?=
- =?utf-8?B?ZmsvWHlKY2tiNjJSd3FlVlNCRC9paVN1aVlGUENMV0Q0cTV2TXZvYzUyVlh3?=
- =?utf-8?B?aUFNUUtuUzFDUG1qZDNQOWNaOGJraDYyeGFqWitTVWE2dlp2WFRIdjdTWFJ5?=
- =?utf-8?B?TzJVTm5sVkN6VlFDRmhhREs5TWxEU0pPVUZ5UVBONGZsQWthYkd5ZUNhd3F5?=
- =?utf-8?B?eXhwNHJXL0xjQ3JoSFpOY2NmQ2pSWHRqSjFFMDVycU9EWW5OMEZSZW5LNG0z?=
- =?utf-8?B?M1hEVDZBVVhvQlpCcXJySE5PSlhRT1RSNnc0eUlrYXZ1V21LMWVVQWh4YTlP?=
- =?utf-8?B?Q2J4cWkrU1ZpeFRnM3NHRm5oUjA5bmJVODJUdzg2Z2FhZ2V2cEk0ekRDTFMz?=
- =?utf-8?B?RXdnb2JzclRzQ1NvZVliMkhPNjVTeWVLWlc0NGZGRU9xSlN6Yjh5THM2OGFh?=
- =?utf-8?B?c1FnZlBIZGliSTJmd29QYkVxdHlQdk51dGIyYlRoWnRQYlpxWDJPK1JrODlV?=
- =?utf-8?B?RE9relhkdXJENFZUZ3NtcW84NVpVcGk3T3ZnRktnOHNPdFUxUlBxZU1FQlN0?=
- =?utf-8?B?N0Fva1R0dmpmdmd0MytnY080Mk9xSXJMdGFVMmllZi9OOU13T2VzZlIvckRv?=
- =?utf-8?B?UjF5WkJYam5MZ1dzUC9FOCs4ZW84NEZtSUkyQ1J3dDhIdnlDYVNuUWpGSVVD?=
- =?utf-8?Q?bsY/FrKkJdI8JPCRJgMnw0g=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d83a666c-3d02-4c7a-8650-08dc05394b78
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10743.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Dec 2023 11:04:41.8558 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: G9TsXa1NSBsICUmCoEyoUKLfkeTObJFWrhH54Kuj4h0UTJuLpIGJhz/12mGe/Wu+Uz7X5F8bZ6X9MD6aSz3jZeYcm9m1CBrO0AqZrUoibGc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB9441
-Received-SPF: pass client-ip=2a01:111:f400:fe1f::70b;
- envelope-from=alexander.ivanov@virtuozzo.com;
- helo=EUR01-VE1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 52/70] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
+ Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
+ <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
+References: <20231115071519.2864957-1-xiaoyao.li@intel.com>
+ <20231115071519.2864957-53-xiaoyao.li@intel.com>
+ <ZYQb_P6eHokUz9Hh@redhat.com>
+ <5314df8a-4173-46cb-bc7e-984c6b543555@intel.com>
+ <ZYWLnIfXac_K7EZM@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZYWLnIfXac_K7EZM@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.977,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -145,51 +96,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping. Could someone please review the code?
+On 12/22/2023 9:14 PM, Daniel P. Berrangé wrote:
+> On Fri, Dec 22, 2023 at 11:14:12AM +0800, Xiaoyao Li wrote:
+>> On 12/21/2023 7:05 PM, Daniel P. Berrangé wrote:
+>>> On Wed, Nov 15, 2023 at 02:15:01AM -0500, Xiaoyao Li wrote:
+>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>
+>>>> For GetQuote, delegate a request to Quote Generation Service.
+>>>> Add property "quote-generation-socket" to tdx-guest, whihc is a property
+>>>> of type SocketAddress to specify Quote Generation Service(QGS).
+>>>>
+>>>> On request, connect to the QGS, read request buffer from shared guest
+>>>> memory, send the request buffer to the server and store the response
+>>>> into shared guest memory and notify TD guest by interrupt.
+>>>>
+>>>> command line example:
+>>>>     qemu-system-x86_64 \
+>>>>       -object '{"qom-type":"tdx-guest","id":"tdx0","quote-generation-socket":{"type": "vsock", "cid":"2","port":"1234"}}' \
+>>>
+>>> Here you're illustrating a VSOCK address.  IIUC, both the 'qgs'
+>>> daemon and QEMU will be running in the host. Why would they need
+>>> to be using VSOCK, as opposed to a regular UNIX socket connection ?
+>>>
+>>
+>> We use vsock here because the QGS server we used for testing exposes the
+>> vsock socket.
+> 
+> Is this is the server impl you test with:
+> 
+>    https://github.com/intel/SGXDataCenterAttestationPrimitives/tree/master/QuoteGeneration/quote_wrapper/qgs
 
-On 11/30/23 11:11, Alexander Ivanov wrote:
-> If a blockcommit is aborted the base image remains in RW mode, that leads
-> to a fail of subsequent live migration.
->
-> How to reproduce:
->    $ virsh snapshot-create-as vm snp1 --disk-only
->
->    *** write something to the disk ***
->
->    $ virsh blockcommit vm vda --active --shallow && virsh blockjob vm vda --abort
->    $ lsof /vzt/vm.qcow2
->    COMMAND      PID USER   FD   TYPE DEVICE   SIZE/OFF NODE NAME
->    qemu-syst 433203 root   45u   REG  253,0 1724776448  133 /vzt/vm.qcow2
->    $ cat /proc/433203/fdinfo/45
->    pos:    0
->    flags:  02140002
->
-> Reopen the base image in RO mode in mirror_exit_common() if the blockjob
-> is aborted.
->
-> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-> ---
->   block/mirror.c | 4 ++++
->   1 file changed, 4 insertions(+)
->
-> diff --git a/block/mirror.c b/block/mirror.c
-> index dcd88de2e3..50a2825b1c 100644
-> --- a/block/mirror.c
-> +++ b/block/mirror.c
-> @@ -789,6 +789,10 @@ static int mirror_exit_common(Job *job)
->       block_job_remove_all_bdrv(bjob);
->       bdrv_replace_node(mirror_top_bs, mirror_top_bs->backing->bs, &error_abort);
->   
-> +    if (abort && !bdrv_is_read_only(target_bs)) {
-> +        bdrv_reopen_set_read_only(target_bs, true, NULL);
-> +    }
-> +
->       bs_opaque->job = NULL;
->   
->       bdrv_drained_end(src);
+I think it should be.
 
--- 
-Best regards,
-Alexander Ivanov
+I used applications/services bundled by internal teams.
+
+> or is there another impl ?
+> 
+> With regards,
+> Daniel
 
 
