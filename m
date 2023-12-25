@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B9081DE5C
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 06:49:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1645681DE5B
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 06:49:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHdoj-0004lK-0f; Mon, 25 Dec 2023 00:47:57 -0500
+	id 1rHdol-0004m7-Pl; Mon, 25 Dec 2023 00:47:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rHdog-0004lA-0t
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:47:54 -0500
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1rHdok-0004lz-GD
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:47:58 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rHdod-00027A-W6
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:47:53 -0500
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-3bb8f3d9f98so2295822b6e.3
- for <qemu-devel@nongnu.org>; Sun, 24 Dec 2023 21:45:51 -0800 (PST)
+ id 1rHdoi-0002AQ-BE
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:47:58 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6d9b3a967dbso612098b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 24 Dec 2023 21:45:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1703483150; x=1704087950;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1703483154; x=1704087954;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Bld8BoqgmZ1DODtactYuR62piREfvI2piUdxD5IPPLM=;
- b=bxLx4wV+hrUyJNTTVuQ+jE2uOwLl2VKMCANbqmwVj1caPFvPKJo5MQyAyyQF/tpIVq
- 7fTkwh8cj1y4eK9DEFtSzd1GkDr0lJnDeT3BfHn9l3AfWR78vlerTNcWrKGu1be8XB+4
- 4P1P5G4ivv7jKADlph0Bbu8cg2die+1LI+q1yNs7W8Ec5V33Wnn0PeClpowUj6VFGmI3
- Qv+ISWAo5u1iPOO2wT0TxZocTc4j2sfsoLti/LO1Yi2q3N4adFKS412/BJFJU2NXHzhQ
- 9kJEWyBaMOT6ZAfWsmMTLfDRtXjSPplOJnCUaQiDYItq+o2j+EPwOCIACPolU1q8SDuC
- V6Xg==
+ bh=V41DNB1pjZ9O5cZD/tszsVFWwnvqdC0t0assc5W46WI=;
+ b=YouGugFQ25dPZCBi/1ViuZU1c+FRnL/QeMrEFGdjQQ/JI1uC5ZHeZe5vuSklb26r02
+ Uuyy+f0kTKBm+FORNgWMXn3qwtEbnjovfCUql+cyuCdUxO1c6QGucPgAjFr4bNKG/2Ht
+ bmbF1c6S57jo0HmXeS9jPMWGPrkOU8vsL1zSup52n7IYmEqxvnnMRpDamhsxh8E2oUdX
+ b2//TQHKh7WnOeFK441eLwojWAKkvbzOHbx8MiaMuCVfJ/F1N9xZrGW3xBoT7Bt1VWJc
+ bfPGaXWi6GDk8z4B0RAJ2BlYJufxNTsRtR96UfiM0ghzZa3IFJ8wykQBYuLFZseTXDlA
+ UY6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703483150; x=1704087950;
+ d=1e100.net; s=20230601; t=1703483154; x=1704087954;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Bld8BoqgmZ1DODtactYuR62piREfvI2piUdxD5IPPLM=;
- b=YMmS37uVsfx6wO699yp5uxjogVJ96m+n7vt4G64CmPF2ozlKS7ptLc3R4iaxGe3Lzr
- Jh9le7k7bqdZlSqKDntkxPxyvUkd+dIM4M472K7FLx/FfIdE5EAFGs87rJo+LUhR7Z0u
- aFUloZl3yh72k/7d4snb6G6UWGKyflD78KeLszvh2OPDTRG3KXssFBkhQzmwzkeNyRbe
- HSNBuuiAhp0Sqers4MujwjtapqrxRu4naCIiBb/rd/EcMMtnyMtameqTBkkdJHrV2CrD
- 0Sxb/CGIYm3jugq0z8ST3MQxBDMdJZtepjtmVvl8N2WbfacRy5P95GCMVjDwEak4tmNm
- dc+A==
-X-Gm-Message-State: AOJu0YxiuME8hjNv+stqUcqkZ/j5vNV+BOTKQbLLL5HoWTm20yxlZf8N
- iV33jANiWLaVNW3UlSebx7t8SEut846JSfLtBulk9QY2VsR8nQ==
-X-Google-Smtp-Source: AGHT+IFcbXY3bURXyeTcMUtuYPKTGcVQM5AkR06OiHR5XLFiv3ULzd1DLMaJF1/KucajAb4yDaYQTA==
-X-Received: by 2002:a05:6808:1820:b0:3bb:73d6:f8b9 with SMTP id
- bh32-20020a056808182000b003bb73d6f8b9mr6919991oib.31.1703483150146; 
- Sun, 24 Dec 2023 21:45:50 -0800 (PST)
+ bh=V41DNB1pjZ9O5cZD/tszsVFWwnvqdC0t0assc5W46WI=;
+ b=WtyJmMKHtwqafAv+Y+KqVIpmOXC05J4E0dlNUYWwXayfjCVPn7gU9wIRSN7p0L2ptx
+ 7+FsdNYYCRjnpOvk6+Rkil0AXmWy0H8gFSGsqPc/K0MDpDuuFZUKzwSnxcZOeEeKKk56
+ 6rLSODO/rtB1XB8jbao4vZGF+F7LWK+4O6f1XaRNMJwDSnmn2h/v686WJ+bBB41Y16ay
+ +OGur9nTxlne6/WheXy+1BqE6+B7/27DfjOHyWQWi7G+qjQzSpsYPc8XrrBK3uhi7wJZ
+ aVdeMDNzh7q+TlIg78yKmcd8yNeGd28nTymijtlCpvgsXPdFsYptLEax3dfrsJvqZYUq
+ vd/g==
+X-Gm-Message-State: AOJu0YwRTGJc8FoZVb7jSCoRl6ICDsde2DJH29P8eThXWaZ4280pLPcp
+ vPIgYv0jXqiNkptI7yo+1Mj6Kq986ta9+TQ4QhFk75kQATN2Gw==
+X-Google-Smtp-Source: AGHT+IFR5ilnvhJ+yf9dbCHboxZxUphYJvmL62Y+cysV2eyWAdnfVLQevSHwruesqev+5BzZh5xdDw==
+X-Received: by 2002:aa7:8694:0:b0:6d9:ac49:4e36 with SMTP id
+ d20-20020aa78694000000b006d9ac494e36mr2458897pfo.68.1703483154041; 
+ Sun, 24 Dec 2023 21:45:54 -0800 (PST)
 Received: from localhost.localdomain ([118.114.58.28])
  by smtp.gmail.com with ESMTPSA id
- y22-20020a056a00191600b006cef521b151sm7342415pfi.168.2023.12.24.21.45.46
+ y22-20020a056a00191600b006cef521b151sm7342415pfi.168.2023.12.24.21.45.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 Dec 2023 21:45:49 -0800 (PST)
+ Sun, 24 Dec 2023 21:45:53 -0800 (PST)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Hyman Huang <yong.huang@smartx.com>
-Subject: [PATCH RESEND v3 07/10] block: Support detached LUKS header creation
- using qemu-img
-Date: Mon, 25 Dec 2023 13:45:09 +0800
-Message-Id: <3179dbd4232303c64906eeffa2912d09a0fdcbeb.1703482349.git.yong.huang@smartx.com>
+Subject: [PATCH RESEND v3 08/10] crypto: Introduce 'detached-header' field in
+ QCryptoBlockInfoLUKS
+Date: Mon, 25 Dec 2023 13:45:10 +0800
+Message-Id: <0866d2a1e7011831570a377e02cddb5db4b7d855.1703482349.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1703482349.git.yong.huang@smartx.com>
 References: <cover.1703482349.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::22c;
- envelope-from=yong.huang@smartx.com; helo=mail-oi1-x22c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::430;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,120 +95,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the 'detached-mode' option to specify the creation of
-a detached LUKS header. This is how it is used:
-$ qemu-img create --object secret,id=sec0,data=abc123 -f luks
-> -o cipher-alg=aes-256,cipher-mode=xts -o key-secret=sec0
-> -o detached-mode=true header.luks
+When querying the LUKS disk with the qemu-img tool or other APIs,
+add information about whether the LUKS header is detached.
+
+Additionally, update the test case with the appropriate
+modification.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- block.c          | 5 ++++-
- block/crypto.c   | 9 ++++++++-
- block/crypto.h   | 8 ++++++++
- qapi/crypto.json | 5 ++++-
- 4 files changed, 24 insertions(+), 3 deletions(-)
+ crypto/block-luks.c        | 2 ++
+ qapi/crypto.json           | 3 +++
+ tests/qemu-iotests/210.out | 4 ++++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/block.c b/block.c
-index bfb0861ec6..fa9ce36928 100644
---- a/block.c
-+++ b/block.c
-@@ -7517,7 +7517,10 @@ void bdrv_img_create(const char *filename, const char *fmt,
-         goto out;
-     }
+diff --git a/crypto/block-luks.c b/crypto/block-luks.c
+index 474c7aee2e..c5e53b4ee4 100644
+--- a/crypto/block-luks.c
++++ b/crypto/block-luks.c
+@@ -1266,6 +1266,7 @@ qcrypto_block_luks_open(QCryptoBlock *block,
+     block->sector_size = QCRYPTO_BLOCK_LUKS_SECTOR_SIZE;
+     block->payload_offset =
+         qcrypto_block_luks_payload_offset(luks->header.payload_offset_sector);
++    block->detached_header = (block->payload_offset == 0) ? true : false;
  
--    if (size == -1) {
-+    /* Parameter 'size' is not needed for detached LUKS header */
-+    if (size == -1 &&
-+        !(!strcmp(fmt, "luks") &&
-+          qemu_opt_get_bool(opts, "detached-mode", false))) {
-         error_setg(errp, "Image creation needs a size parameter");
-         goto out;
-     }
-diff --git a/block/crypto.c b/block/crypto.c
-index 76cc8bda49..812c3c28f5 100644
---- a/block/crypto.c
-+++ b/block/crypto.c
-@@ -229,6 +229,7 @@ static QemuOptsList block_crypto_create_opts_luks = {
-         BLOCK_CRYPTO_OPT_DEF_LUKS_IVGEN_HASH_ALG(""),
-         BLOCK_CRYPTO_OPT_DEF_LUKS_HASH_ALG(""),
-         BLOCK_CRYPTO_OPT_DEF_LUKS_ITER_TIME(""),
-+        BLOCK_CRYPTO_OPT_DEF_LUKS_DETACHED_MODE(""),
-         { /* end of list */ }
-     },
- };
-@@ -793,6 +794,8 @@ block_crypto_co_create_opts_luks(BlockDriver *drv, const char *filename,
-     PreallocMode prealloc;
-     char *buf = NULL;
-     int64_t size;
-+    bool detached_mode =
-+        qemu_opt_get_bool(opts, "detached-mode", false);
-     int ret;
-     Error *local_err = NULL;
+     return 0;
  
-@@ -832,8 +835,12 @@ block_crypto_co_create_opts_luks(BlockDriver *drv, const char *filename,
-         goto fail;
-     }
+@@ -1892,6 +1893,7 @@ static int qcrypto_block_luks_get_info(QCryptoBlock *block,
+     info->u.luks.master_key_iters = luks->header.master_key_iterations;
+     info->u.luks.uuid = g_strndup((const char *)luks->header.uuid,
+                                   sizeof(luks->header.uuid));
++    info->u.luks.detached_header = block->detached_header;
  
-+   /* The detached_header default to true if detached-mode is specified */
-+    create_opts->u.luks.detached_header = detached_mode ? true : false;
-+
-     /* Create format layer */
--    ret = block_crypto_co_create_generic(bs, size, create_opts, prealloc, errp);
-+    ret = block_crypto_co_create_generic(bs, detached_mode ? 0 : size,
-+                                         create_opts, prealloc, errp);
-     if (ret < 0) {
-         goto fail;
-     }
-diff --git a/block/crypto.h b/block/crypto.h
-index 72e792c9af..bceefd45bd 100644
---- a/block/crypto.h
-+++ b/block/crypto.h
-@@ -41,6 +41,7 @@
- #define BLOCK_CRYPTO_OPT_LUKS_IVGEN_HASH_ALG "ivgen-hash-alg"
- #define BLOCK_CRYPTO_OPT_LUKS_HASH_ALG "hash-alg"
- #define BLOCK_CRYPTO_OPT_LUKS_ITER_TIME "iter-time"
-+#define BLOCK_CRYPTO_OPT_LUKS_DETACHED_MODE "detached-mode"
- #define BLOCK_CRYPTO_OPT_LUKS_KEYSLOT "keyslot"
- #define BLOCK_CRYPTO_OPT_LUKS_STATE "state"
- #define BLOCK_CRYPTO_OPT_LUKS_OLD_SECRET "old-secret"
-@@ -100,6 +101,13 @@
-         .help = "Select new state of affected keyslots (active/inactive)",\
-     }
- 
-+#define BLOCK_CRYPTO_OPT_DEF_LUKS_DETACHED_MODE(prefix)     \
-+    {                                                         \
-+        .name = prefix BLOCK_CRYPTO_OPT_LUKS_DETACHED_MODE, \
-+        .type = QEMU_OPT_BOOL,                                \
-+        .help = "Create a detached LUKS header",              \
-+    }
-+
- #define BLOCK_CRYPTO_OPT_DEF_LUKS_KEYSLOT(prefix)              \
-     {                                                          \
-         .name = prefix BLOCK_CRYPTO_OPT_LUKS_KEYSLOT,          \
+     for (i = 0; i < QCRYPTO_BLOCK_LUKS_NUM_KEY_SLOTS; i++) {
+         slot = g_new0(QCryptoBlockInfoLUKSSlot, 1);
 diff --git a/qapi/crypto.json b/qapi/crypto.json
-index 6b4e86cb81..8e81aa8454 100644
+index 8e81aa8454..336c880b5d 100644
 --- a/qapi/crypto.json
 +++ b/qapi/crypto.json
-@@ -226,6 +226,8 @@
- # @iter-time: number of milliseconds to spend in PBKDF passphrase
- #     processing.  Currently defaults to 2000. (since 2.8)
+@@ -317,6 +317,8 @@
  #
-+# @detached-mode: create a detached LUKS header. (since 9.0)
+ # @hash-alg: the master key hash algorithm
+ #
++# @detached-header: whether the LUKS header is detached (Since 9.0)
 +#
- # Since: 2.6
- ##
- { 'struct': 'QCryptoBlockCreateOptionsLUKS',
-@@ -235,7 +237,8 @@
-             '*ivgen-alg': 'QCryptoIVGenAlgorithm',
-             '*ivgen-hash-alg': 'QCryptoHashAlgorithm',
-             '*hash-alg': 'QCryptoHashAlgorithm',
--            '*iter-time': 'int'}}
-+            '*iter-time': 'int',
-+            '*detached-mode': 'bool'}}
- 
- ##
- # @QCryptoBlockOpenOptions:
+ # @payload-offset: offset to the payload data in bytes
+ #
+ # @master-key-iters: number of PBKDF2 iterations for key material
+@@ -333,6 +335,7 @@
+            'ivgen-alg': 'QCryptoIVGenAlgorithm',
+            '*ivgen-hash-alg': 'QCryptoHashAlgorithm',
+            'hash-alg': 'QCryptoHashAlgorithm',
++           'detached-header': 'bool',
+            'payload-offset': 'int',
+            'master-key-iters': 'int',
+            'uuid': 'str',
+diff --git a/tests/qemu-iotests/210.out b/tests/qemu-iotests/210.out
+index 96d9f749dd..94b29b2120 100644
+--- a/tests/qemu-iotests/210.out
++++ b/tests/qemu-iotests/210.out
+@@ -18,6 +18,7 @@ virtual size: 128 MiB (134217728 bytes)
+ encrypted: yes
+ Format specific information:
+     ivgen alg: plain64
++    detached header: false
+     hash alg: sha256
+     cipher alg: aes-256
+     uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+@@ -70,6 +71,7 @@ virtual size: 64 MiB (67108864 bytes)
+ encrypted: yes
+ Format specific information:
+     ivgen alg: plain64
++    detached header: false
+     hash alg: sha1
+     cipher alg: aes-128
+     uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+@@ -125,6 +127,7 @@ virtual size: 0 B (0 bytes)
+ encrypted: yes
+ Format specific information:
+     ivgen alg: plain64
++    detached header: false
+     hash alg: sha256
+     cipher alg: aes-256
+     uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+@@ -195,6 +198,7 @@ virtual size: 0 B (0 bytes)
+ encrypted: yes
+ Format specific information:
+     ivgen alg: plain64
++    detached header: false
+     hash alg: sha256
+     cipher alg: aes-256
+     uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 -- 
 2.39.1
 
