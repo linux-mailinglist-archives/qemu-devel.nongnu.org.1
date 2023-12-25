@@ -2,123 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476AC81DE25
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 05:58:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5D581DE28
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 06:10:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHd1B-0007x6-O8; Sun, 24 Dec 2023 23:56:45 -0500
+	id 1rHdCT-0002Tr-I0; Mon, 25 Dec 2023 00:08:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1rHd19-0007wT-Kr; Sun, 24 Dec 2023 23:56:43 -0500
-Received: from mail-co1nam11on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2416::601]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ id 1rHdCO-0002TZ-MI; Mon, 25 Dec 2023 00:08:21 -0500
+Received: from mail-bn8nam12on20624.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5b::624]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1rHd12-0001k2-Gv; Sun, 24 Dec 2023 23:56:43 -0500
+ id 1rHdCM-0003bw-1j; Mon, 25 Dec 2023 00:08:20 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LCxt2zCPwoHl61rVho88ZIZvRg+YJhZvY2w49N/zYXibdnITo8RSfGCJhusR14dTK33X0GRwU+sfWQjqovv4k0GZs3V98dxOP0YpE9QD7oqsIGxIdJOXoyrEP0oCBSKeeWcy0mk6Imcaed83j8IyMql0KWj4mKby2kg6Lf9WzAJJwNYybVyLDYwtxR6y/10T3udkoPzEE71GKmNA8W5ifgr5ibHAt/NYdXG5K+qZGd9O0tvIxRj3ZYiBK0YpA4Kw9SDG3K7iHwz4efwBKWE30ojz1QYay5gx3TdJsuOPmu7tAmbYkCUKkLdDkDNcw2UnItZzbC0kG3oRZdaFr6tGsw==
+ b=OHbcwLfJyJLTPp7fgI+8lcDRxvbCqmZlRMeAE92nsEjEK9v3qySMaraY63qqvOpxoXma3lDM4PmHEwK7fKpB7ruChL/1s8VpvRREq7a4DDLyAfmxkdGvvGQIkFHlB0Lm8xSEjr/hIgvej6PiMGb9PBdYWlwkCN+n7ts3tPxP5jtsYSO3FJ6B9tf0ZKJTPVFzg/8Rwg/mNLCG94ARLgF5w3XY7dm6bnhhUqsFs+NZhs4zCi+to21tvPHkVDnVWcwyKOE0/HRSM3zxh4lBajEa0FH9sNodWidBUPi/ls6OXD5KlU+o4CBN3dK4eA8mHkprP8HJdxgpQxNeNfVx9+WzXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ppHRw6F1lKoe0jGXdQeGMr+pvtqCEpp0ReueG1+t/zc=;
- b=TOAke8U99S1Hn8Cx7gk8Zg8ZGeNiOQadau2CdQNtG3qf3GNsUdInVFHrC++RrpB005HaX60XXJrrGxxzmljZrxW5urHbu9DWZtE0aXct8PqtywSMEb5yA/GV0meeB9UGq8e1rZuwzKgJcqUtbBmFepFuDfrCCywbycK9i7qiv4RZ+R+2iycjHuNZ0tfRfpnr3fi6CBhQrl6y8MYJcFwnkcI1E3wecMt0WriRMdxBIyovfVmG3hu45mHCTf6ZUJI+FEMB9JwJwYkDpxj68xpXEW3n93rkXln1SLopz3c7g+VZgt+uFwskPI2onW2yvM5qUgtZCL058KJ1VZynwQAtqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
+ bh=DYciJchzkQHvacMuWhaCco+i3hX9D/kcUHr0+N+Ddrk=;
+ b=GBrVtdLa0FUkACpAt79OwAo1Hxz1xN9NHrIlS2mEiZNJ2gNsImmggE4yGmAFc/W8WsPsD5iIWb31h+XvaxLmR6ZLyfSL7UG+cFfW+cY4Ue/FVkTTfmPPgHFpM8gJGEfPQXJkswPpiUqusFR/HvFmwUOWLfx4o9bRWXeLzN6XBnhlsX1BLu2amWYd/fiMYivJNV95vXtG1RXZ5XunvEEOr8z8mQeFpHaUS7HoVVmer0sKWkvtzmhwuXsXwEwH+3mGdbv5KX1/hy1byelqI/vlgkHooVIFPRzGt0BH6lQbp4XxHtQfL7a6+ma8n1axRR6EkUxl5YNZ6SW07SIFyNexww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ppHRw6F1lKoe0jGXdQeGMr+pvtqCEpp0ReueG1+t/zc=;
- b=SWu/ZZH5feYpiBFdI9QPSK0PDA9XEp7qbM2kLxvAOUkrUWbHODt4jXdvhNlAGJaDUhtnx2H3dt5YhzHx7K3oZHqdimY7Oa7XtXLK070fjGDfzvBVmY5WmY7wgUr3vy676O/0KF/fgiyRU0EcGlVwX6BE6ACyDHJ5sxz0FFXxUZPrkSao3EQJIJ/sU+f11v9pVrxSjKte8qG4nHAXZzCvfh2lCSIwjG20BlZ+IMLutRS9fJOGCapasnrT/wpvjjOfr/9UqdyMzhz9mV4b9/I5oXDJEW6GtZ1BWEBr/cBxwDrOwMhytd9GcteHiZORIOrBOwTcX3QMprAzb5XIgc2kEg==
-Received: from BL1PR13CA0208.namprd13.prod.outlook.com (2603:10b6:208:2be::33)
- by DS7PR12MB5863.namprd12.prod.outlook.com (2603:10b6:8:7a::18) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=DYciJchzkQHvacMuWhaCco+i3hX9D/kcUHr0+N+Ddrk=;
+ b=OqmwdId2DXNULPgBIR/KA2eOErRYACgH4IzbGiTLIyIidTKUr6Ei1e70PwKvEujQJaC1EJ/V+E/XsAstxYHz3bo0DBhsbQ3B+w8rdKXqn+5r3T475GeCjHH5i3k7s0bm/DymeDI8+RRL5D4M1krfo9uXrrLuEx7ymCFoUwk5JE7GEL2XNYnz4hf7hcVtZNwBTJEPuXxMJLm6zU/VnRFG2a87xr47hta4DodgHAhkk7tbCUf2ZqK4pKmk34Wdjboeu0tL93xAsHHf2HyKiWgu46YPNS6aalXVzrVneidXo9oOyLPuzctL07zpn4dKGZfhUlMWC6ajWdK9rIqiYM3x6g==
+Received: from BY5PR12MB3763.namprd12.prod.outlook.com (2603:10b6:a03:1a8::24)
+ by PH8PR12MB8431.namprd12.prod.outlook.com (2603:10b6:510:25a::9)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.26; Mon, 25 Dec
- 2023 04:56:30 +0000
-Received: from BL02EPF0001A0FB.namprd03.prod.outlook.com
- (2603:10b6:208:2be:cafe::f5) by BL1PR13CA0208.outlook.office365.com
- (2603:10b6:208:2be::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.16 via Frontend
- Transport; Mon, 25 Dec 2023 04:56:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- BL02EPF0001A0FB.mail.protection.outlook.com (10.167.242.102) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7135.14 via Frontend Transport; Mon, 25 Dec 2023 04:56:30 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 24 Dec
- 2023 20:56:27 -0800
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Sun, 24 Dec 2023 20:56:27 -0800
-Received: from sgarnayak-dt.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Sun, 24 Dec 2023 20:56:20 -0800
-From: <ankita@nvidia.com>
-To: <ankita@nvidia.com>, <jgg@nvidia.com>, <alex.williamson@redhat.com>,
- <clg@redhat.com>, <shannon.zhaosl@gmail.com>, <peter.maydell@linaro.org>,
- <ani@anisinha.ca>, <berrange@redhat.com>, <eduardo@habkost.net>,
- <imammedo@redhat.com>, <mst@redhat.com>, <eblake@redhat.com>,
- <armbru@redhat.com>, <david@redhat.com>, <gshan@redhat.com>,
- <Jonathan.Cameron@huawei.com>
-CC: <aniketa@nvidia.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <vsethi@nvidia.com>, <acurrid@nvidia.com>,
- <dnigam@nvidia.com>, <udhoke@nvidia.com>, <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>
-Subject: [PATCH v6 2/2] hw/acpi: Implement the SRAT GI affinity structure
-Date: Mon, 25 Dec 2023 10:26:03 +0530
-Message-ID: <20231225045603.7654-3-ankita@nvidia.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20231225045603.7654-1-ankita@nvidia.com>
-References: <20231225045603.7654-1-ankita@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FB:EE_|DS7PR12MB5863:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9d8bdbe-cf18-458d-c59a-08dc0505dbf3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1c4TakaMzy9SJAINo3H13VYfMrCReYMtuTxzNcNttv1yPLZGEug5krBGHZJ0w589Moh8R9DNk7IiZUIAybCOKcIaW++LsGH6YEcfqqcqKACfsFYpeRbiX6SYlbdzEILCNtaFJsqjNbsobC2zYxFByoBHPBMPW9BjhbTSBwjkrqcm8SbvbzB16Ao6uutttqHFch9xbPzWI53+s6LPZJ9VX2fJbUY436ee2Dd/IlstGW/w5Sfi3CCEiyQ8JJbIdo88hHJkbyT6d1SpIQlHTkHOMotMW2U74W9vZj/T2SVPk8Ww8sFviohg0GoA2tXSJV4ihGHnWrQ+SwEhng2GOqRTAiFgAfNj+QjIaEc8vlF43V6qBN16ulKDAveTHyXT7F71Z2Lhkc7dR8mrTwpx/UJlFDrV5XbPJkcQ7qYg2I6d/voqzZm91oHemuGRlVzSO6HasKTVJxW0Gyf2ZLnUSXdJEZmJkvuLQZ6v/ahXNsc3X8kqdj8F6BzX9oQd5KLs+byexZZgHQ/TxMrI4JHNOO0h3sy085Gi2JfVoRXmqJUshKhjwp1SzIwtp81kRVLr4BCx/Tzm82eXpgSNlqw/dXItqZ3e8yy9bonBXMDQPE3jvJj/KRJhyxjmTF2jbT80gsbAaa/kgkrYhKlG98EfTN+dus9zEZTxybkVJJ7lUu6IAsVU8bYh/AD77iteizOs1z4Sj18thsDB8IzbnSIgucRIWc8SB13oEZRQPW1lHOuzvyuLRNFNx/zkzkyBq0mT14PGjC+UxrvDKmjK4dGpgJ7j/g==
-X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(376002)(136003)(396003)(346002)(230922051799003)(1800799012)(64100799003)(451199024)(82310400011)(186009)(40470700004)(46966006)(36840700001)(7636003)(82740400003)(356005)(36756003)(40460700003)(921011)(86362001)(40480700001)(1076003)(26005)(2616005)(7696005)(8676002)(8936002)(316002)(6666004)(478600001)(426003)(54906003)(336012)(110136005)(36860700001)(47076005)(70206006)(70586007)(41300700001)(2876002)(2906002)(4326008)(7416002)(5660300002);
+ 2023 05:08:11 +0000
+Received: from BY5PR12MB3763.namprd12.prod.outlook.com
+ ([fe80::946b:df84:1f08:737a]) by BY5PR12MB3763.namprd12.prod.outlook.com
+ ([fe80::946b:df84:1f08:737a%5]) with mapi id 15.20.7113.026; Mon, 25 Dec 2023
+ 05:08:10 +0000
+From: Ankit Agrawal <ankita@nvidia.com>
+To: Markus Armbruster <armbru@redhat.com>
+CC: Jason Gunthorpe <jgg@nvidia.com>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
+ <ani@anisinha.ca>, "berrange@redhat.com" <berrange@redhat.com>,
+ "eduardo@habkost.net" <eduardo@habkost.net>, "imammedo@redhat.com"
+ <imammedo@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "eblake@redhat.com"
+ <eblake@redhat.com>, "david@redhat.com" <david@redhat.com>,
+ "gshan@redhat.com" <gshan@redhat.com>, "Jonathan.Cameron@huawei.com"
+ <Jonathan.Cameron@huawei.com>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
+ <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
+ (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Andy
+ Currid <acurrid@nvidia.com>, Dheeraj Nigam <dnigam@nvidia.com>, Uday Dhoke
+ <udhoke@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v5 1/2] qom: new object to associate device to numa node
+Thread-Topic: [PATCH v5 1/2] qom: new object to associate device to numa node
+Thread-Index: AQHaJa5iZlrBdjt4jkCSP8Koa4pJ/bC1WpptgAQ4Ivk=
+Date: Mon, 25 Dec 2023 05:08:10 +0000
+Message-ID: <BY5PR12MB3763F9BE55E6948D8D204028B099A@BY5PR12MB3763.namprd12.prod.outlook.com>
+References: <20231203060245.31593-1-ankita@nvidia.com>
+ <20231203060245.31593-2-ankita@nvidia.com> <87msu2h0ye.fsf@pond.sub.org>
+In-Reply-To: <87msu2h0ye.fsf@pond.sub.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BY5PR12MB3763:EE_|PH8PR12MB8431:EE_
+x-ms-office365-filtering-correlation-id: 8c146d85-92d2-405a-2843-08dc05077d4d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: DYdpSD99qDkuV6G/r+VCiuKOL63a13t2gFNXugJ0C/7JUnQUPTDBVrYnGHO2mGlwC2SBlvdsbVSSbQswuztU3j/ii+fGob5NOEFC1095AlHCDy5bd1FL031YlFQyfmc9N79P1C/jwlR9ELbnLiL6pck7y9HBsNEeNo4//RzhmfsSEZimh/MwRN9U6ELLcTJ3+NlIo952Fv9LkNLGA89m8n0owgrql9MQ4XRhPdzwjtRIJ1SeUdsvapVtugFCzz6SM6iB86TRL9dzekb+sw1xFC4amboi2PiVzTszuPQF3Rt0k8/rzFolLTichePlQEYb5BuWxT4CbtI6ElYoeoMKltoHO1nJzvkhuE2EW10Kvq45Sf4roBdwAnDCV4GA2oE/yCbnV4k5BnlPW7IZQsQ7xoUKT3vom0pM8Glv9JZJgoPx/tK6Usbda1lw3OG+C303GeWugruNQMcQ+6FeHIyoi7PApqJSWvJO92O4SDq8l/U1KAdjI/Zr9hcYwZf2RQ+/HhH4dblxOkZnY7VBdiWGtKes1MlXQBxG0uBrdyvV7lEAJ9LwuCcjpGujR/9GWTk4eFWnvduktvx4+wJQ6cxfjm0YmrimxNbX5YdUIYVGw9Q=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BY5PR12MB3763.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(39860400002)(376002)(346002)(396003)(136003)(230922051799003)(64100799003)(186009)(1800799012)(451199024)(83380400001)(33656002)(86362001)(41300700001)(122000001)(38100700002)(52536014)(478600001)(5660300002)(8936002)(8676002)(4326008)(91956017)(316002)(6916009)(64756008)(66446008)(66476007)(66556008)(66946007)(76116006)(54906003)(9686003)(26005)(6506007)(7696005)(7416002)(2906002)(71200400001)(38070700009)(55016003);
  DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?ZnlvWDbLgirZkEIL4NxVuAxxcILWZEHwAMsyOGBxB8UKl5uw9ibzYvXw1r?=
+ =?iso-8859-1?Q?NV42voxza/x9o/HOBtsASCeFrxLAgxkZodQnkTB2m4UFmh7TDAc1RMx5jS?=
+ =?iso-8859-1?Q?iJe2svSYJu3Oz/WQ5mxCvNUckgx4AR4+ksK0GN2LZjd9zvCP2GfWHKuCB1?=
+ =?iso-8859-1?Q?Ked6uwNW986Fhtm9b9AMWyLiSl/fc9MVSMhAMal7IRw7RG+WskFFEnAs2M?=
+ =?iso-8859-1?Q?op2sc/olHxL9EsAAMqDbhJ5Q6lOJsvtXfPxWKeM8cqIA1bhP0QFrycBxpJ?=
+ =?iso-8859-1?Q?D1sht2HqbkOGEfx1QkBxGPk5Sxv/8ARsMG0RmSjj9/6H/SIYGkkcBwQ4zd?=
+ =?iso-8859-1?Q?35vPdN7pivVmnOnWomeznc4e0usx8Ytq2Xwk+DuE0UtSEyAO4FOV8oNQLc?=
+ =?iso-8859-1?Q?qgaFgaDeQDxWf7R37W7hy4mW+AFMUUkGxwlUwGj6WkAb9Nzx0JEaBdZneT?=
+ =?iso-8859-1?Q?2ofolGJ8uuXC4Jr/UYu9zBgRxgqNIpEHOOikuMqArut+txHyLAvBm7MSm1?=
+ =?iso-8859-1?Q?FnCutUexYOyN8ig2eG8JPB5sCtkJLY0dgcoag1EtzZqlNnIP8/0nPIlJtZ?=
+ =?iso-8859-1?Q?kAhZwsDCawaXY9p2kgVZ2WnRhK/IUW9Mpyn2OqB3R+Ba8/Mql4/1x4wV0N?=
+ =?iso-8859-1?Q?hG7tHzSAp1oC3nwEMf2NSC86TBT6H0Oc205sC4Y47yRNP/lPX/g1jxnOFQ?=
+ =?iso-8859-1?Q?d1oxxNO9EE+dGAsk/Lk3s79f1YOpAkn5I6KFOMEOwe0CdFg2UAtddtKXL8?=
+ =?iso-8859-1?Q?5/9HD46ntrnd8Gv6wkvOLXzmeo0HToKy6zowElhpUTNCF7CzkiLVsl5qFz?=
+ =?iso-8859-1?Q?WiFLkL+crKedPeY5+nVYl24FksIalRQJGRJOLnbI8DWTwgXkaReHXQTwa4?=
+ =?iso-8859-1?Q?yIlmglHN7XB/c3qIyYufwY0/S54OfgsFmG20g3Yrz2gPa5tjlvShPsUys1?=
+ =?iso-8859-1?Q?8yijx5cypwV1Q9WiHBdGi9MYjDakSJe5HSSbtvWqC/+hgdX3ixT1Fm/kEm?=
+ =?iso-8859-1?Q?Anwv7adKTfKJ91mDatc5r/dUIvoJ+Y6ETBUwqNWoszI60ZvQQhmtMtCrQY?=
+ =?iso-8859-1?Q?/AQdPzhuB2m/d2kWCTqSe5IKA7nCwErz4rrT2ZJGVVAmEHcVztxZmIVyED?=
+ =?iso-8859-1?Q?YMvMIpkTpnf8GL9sk3QjxFdb6MrqJikppUqwi4Z9P8xH/N4F0Q/qPdEGpb?=
+ =?iso-8859-1?Q?2CpMw+YTcaQksesZtQT7+5RFx2lp4P1y+jOqcs1X+A6EMLxJa9tLrot3WA?=
+ =?iso-8859-1?Q?r7DRzurdWmjZ9dlhe+xGhvRD8eBbuoXhQ6/rLiWv2e7EnPW++ibE20BnOL?=
+ =?iso-8859-1?Q?sD+lm6nGKOcjGeW0k4VOE6soeKwe5Hn5MsELAK60N+9wq0c6+n4lur4v55?=
+ =?iso-8859-1?Q?3ZMIpS6C/05oldTFxf27qIuAwDwk/oyd/9T+okySV4NWNDARgyq1n57clX?=
+ =?iso-8859-1?Q?YUCSnzUhNnvYccIDWKYM6MiP9p1OMHzU+S2sQcvXRgWFpKlpkpKmhBBwtf?=
+ =?iso-8859-1?Q?oghOJNPIdSUirJ3bA6q+E9YkrZo32mFTh4klMoRsCoPYSQ6K0SXlBXx4qq?=
+ =?iso-8859-1?Q?lhdp2rn/AgFExvsgpOBlOsjW2kbowz+RlIKCHc2UVEVR/IHmdH99xMWC8d?=
+ =?iso-8859-1?Q?If/eMogjZhKeA=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Dec 2023 04:56:30.1054 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9d8bdbe-cf18-458d-c59a-08dc0505dbf3
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A0FB.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5863
-Received-SPF: softfail client-ip=2a01:111:f403:2416::601;
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB3763.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c146d85-92d2-405a-2843-08dc05077d4d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Dec 2023 05:08:10.4521 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nky/6Z+ha+XtYZ8ZLXsG7V+7N1NBQsV6HKcy8sVumOtjHnUDQHBdvPayfkZ4CYnEFNCwXzxCWJjr1I7ern0ICw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB8431
+Received-SPF: softfail client-ip=2a01:111:f400:fe5b::624;
  envelope-from=ankita@nvidia.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
 X-Spam_bar: ----
 X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.594,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -135,198 +152,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ankit Agrawal <ankita@nvidia.com>
-
-ACPI spec provides a scheme to associate "Generic Initiators" [1]
-(e.g. heterogeneous processors and accelerators, GPUs, and I/O devices with
-integrated compute or DMA engines GPUs) with Proximity Domains. This is
-achieved using Generic Initiator Affinity Structure in SRAT. During bootup,
-Linux kernel parse the ACPI SRAT to determine the PXM ids and create a NUMA
-node for each unique PXM ID encountered. Qemu currently do not implement
-these structures while building SRAT.
-
-Add GI structures while building VM ACPI SRAT. The association between
-devices and nodes are stored using acpi-generic-initiator object. Lookup
-presence of all such objects and use them to build these structures.
-
-The structure needs a PCI device handle [2] that consists of the device BDF.
-The vfio-pci device corresponding to the acpi-generic-initiator object is
-located to determine the BDF.
-
-[1] ACPI Spec 6.3, Section 5.2.16.6
-[2] ACPI Spec 6.3, Table 5.80
-
-Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
----
- hw/acpi/acpi-generic-initiator.c         | 99 ++++++++++++++++++++++++
- hw/arm/virt-acpi-build.c                 |  3 +
- include/hw/acpi/acpi-generic-initiator.h | 26 +++++++
- 3 files changed, 128 insertions(+)
-
-diff --git a/hw/acpi/acpi-generic-initiator.c b/hw/acpi/acpi-generic-initiator.c
-index e05e28e962..fa5235f2bb 100644
---- a/hw/acpi/acpi-generic-initiator.c
-+++ b/hw/acpi/acpi-generic-initiator.c
-@@ -68,3 +68,102 @@ static void acpi_generic_initiator_class_init(ObjectClass *oc, void *data)
-     object_class_property_add(oc, "host-nodes", "int", NULL,
-         acpi_generic_initiator_set_host_nodes, NULL, NULL);
- }
-+
-+static int acpi_generic_initiator_list(Object *obj, void *opaque)
-+{
-+    GSList **list = opaque;
-+
-+    if (object_dynamic_cast(obj, TYPE_ACPI_GENERIC_INITIATOR)) {
-+        *list = g_slist_append(*list, ACPI_GENERIC_INITIATOR(obj));
-+    }
-+
-+    object_child_foreach(obj, acpi_generic_initiator_list, opaque);
-+    return 0;
-+}
-+
-+/*
-+ * Identify Generic Initiator objects and link them into the list which is
-+ * returned to the caller.
-+ *
-+ * Note: it is the caller's responsibility to free the list to avoid
-+ * memory leak.
-+ */
-+static GSList *acpi_generic_initiator_get_list(void)
-+{
-+    GSList *list = NULL;
-+
-+    object_child_foreach(object_get_root(),
-+                         acpi_generic_initiator_list, &list);
-+    return list;
-+}
-+
-+/*
-+ * ACPI 6.3:
-+ * Table 5-78 Generic Initiator Affinity Structure
-+ */
-+static void
-+build_srat_generic_pci_initiator_affinity(GArray *table_data, int node,
-+                                          PCIDeviceHandle *handle)
-+{
-+    uint8_t index;
-+
-+    build_append_int_noprefix(table_data, 5, 1);  /* Type */
-+    build_append_int_noprefix(table_data, 32, 1); /* Length */
-+    build_append_int_noprefix(table_data, 0, 1);  /* Reserved */
-+    build_append_int_noprefix(table_data, 1, 1);  /* Device Handle Type: PCI */
-+    build_append_int_noprefix(table_data, node, 4);  /* Proximity Domain */
-+
-+    /* Device Handle - PCI */
-+    build_append_int_noprefix(table_data, handle->segment, 2);
-+    build_append_int_noprefix(table_data, handle->bdf, 2);
-+    for (index = 0; index < 12; index++) {
-+        build_append_int_noprefix(table_data, 0, 1);
-+    }
-+
-+    build_append_int_noprefix(table_data, GEN_AFFINITY_ENABLED, 4); /* Flags */
-+    build_append_int_noprefix(table_data, 0, 4);     /* Reserved */
-+}
-+
-+void build_srat_generic_pci_initiator(GArray *table_data)
-+{
-+    GSList *gi_list, *list = acpi_generic_initiator_get_list();
-+    AcpiGenericInitiator *gi;
-+
-+    for (gi_list = list; gi_list; gi_list = gi_list->next) {
-+        Object *o;
-+        uint16_t node;
-+        PCIDevice *pci_dev;
-+        bool node_specified = false;
-+
-+        gi = gi_list->data;
-+
-+        o = object_resolve_path_type(gi->pci_dev, TYPE_PCI_DEVICE, NULL);
-+        if (!o) {
-+            error_printf("Specified device must be a PCI device.\n");
-+            exit(1);
-+        }
-+        pci_dev = PCI_DEVICE(o);
-+
-+        for (node = 0; (node = find_next_bit(gi->host_nodes,
-+                             MAX_NODES, node)) != MAX_NODES; node++)
-+        {
-+            PCIDeviceHandle dev_handle;
-+            dev_handle.segment = 0;
-+            dev_handle.bdf = PCI_BUILD_BDF(pci_bus_num(pci_get_bus(pci_dev)),
-+                                                       pci_dev->devfn);
-+            build_srat_generic_pci_initiator_affinity(table_data,
-+                                                      node, &dev_handle);
-+            node_specified = true;
-+        }
-+
-+        if (!node_specified) {
-+            error_report("Generic Initiator device 0:%x:%x.%x has no associated"
-+                         " NUMA node.", pci_bus_num(pci_get_bus(pci_dev)),
-+                         PCI_SLOT(pci_dev->devfn), PCI_FUNC(pci_dev->devfn));
-+            error_printf("Specify NUMA node with -host-nodes option.\n");
-+            exit(1);
-+        }
-+    }
-+
-+    g_slist_free(list);
-+}
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 8bc35a483c..00d77327e0 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -58,6 +58,7 @@
- #include "migration/vmstate.h"
- #include "hw/acpi/ghes.h"
- #include "hw/acpi/viot.h"
-+#include "hw/acpi/acpi-generic-initiator.h"
- 
- #define ARM_SPI_BASE 32
- 
-@@ -558,6 +559,8 @@ build_srat(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         }
-     }
- 
-+    build_srat_generic_pci_initiator(table_data);
-+
-     if (ms->nvdimms_state->is_enabled) {
-         nvdimm_build_srat(table_data);
-     }
-diff --git a/include/hw/acpi/acpi-generic-initiator.h b/include/hw/acpi/acpi-generic-initiator.h
-index 9643b81951..76efd5d3f0 100644
---- a/include/hw/acpi/acpi-generic-initiator.h
-+++ b/include/hw/acpi/acpi-generic-initiator.h
-@@ -24,4 +24,30 @@ typedef struct AcpiGenericInitiatorClass {
-         ObjectClass parent_class;
- } AcpiGenericInitiatorClass;
- 
-+/*
-+ * ACPI 6.3:
-+ * Table 5-81 Flags – Generic Initiator Affinity Structure
-+ */
-+typedef enum {
-+    GEN_AFFINITY_ENABLED = (1 << 0), /*
-+                                      * If clear, the OSPM ignores the contents
-+                                      * of the Generic Initiator/Port Affinity
-+                                      * Structure. This allows system firmware
-+                                      * to populate the SRAT with a static
-+                                      * number of structures, but only enable
-+                                      * them as necessary.
-+                                      */
-+} GenericAffinityFlags;
-+
-+/*
-+ * ACPI 6.3:
-+ * Table 5-80 Device Handle - PCI
-+ */
-+typedef struct PCIDeviceHandle {
-+    uint16_t segment;
-+    uint16_t bdf;
-+} PCIDeviceHandle;
-+
-+void build_srat_generic_pci_initiator(GArray *table_data);
-+
- #endif
--- 
-2.34.1
-
+Thanks Markus for the review.=0A=
+=0A=
+>> Introduce a new acpi-generic-initiator object to allow host admin provid=
+e the=0A=
+>> device and the corresponding NUMA nodes. Qemu maintain this association =
+and=0A=
+>> use this object to build the requisite GI Affinity Structure.=0A=
+>=0A=
+> Pardon my ignorance...=A0 What makes this object an "initiator", and why=
+=0A=
+> is it "generic"?=0A=
+=0A=
+In ACPI 6.3 (https://uefi.org/sites/default/files/resources/ACPI_6_3_final_=
+Jan30.pdf),=0A=
+a new table in System Resource Affinity Table called Generic initiator Affi=
+nity table=0A=
+was introduced to describe devices such as heterogeneous processors and=0A=
+accelerators, GPUs, and I/O devices with  integrated compute or DMA engines=
+=0A=
+(termed as Generic Initiator) that are present on the system. It is used to=
+ associate=0A=
+a proximity domain with those devices.=0A=
+=0A=
+You may refer 5.2.16.6 in the aforementioned link. This patch implements th=
+at=0A=
+structure (Table 5-78) for Qemu ACPI.=0A=
+=0A=
+>> An admin can provide the range of nodes through a uint16 array host-node=
+s=0A=
+>> and link it to a device by providing its id. Currently, only PCI device =
+is=0A=
+>> supported. The following sample creates 8 nodes and link them to the PCI=
+=0A=
+>> device dev0:=0A=
+>>=0A=
+>> -numa node,nodeid=3D2 \=0A=
+>> -numa node,nodeid=3D3 \=0A=
+>> -numa node,nodeid=3D4 \=0A=
+>> -numa node,nodeid=3D5 \=0A=
+>> -numa node,nodeid=3D6 \=0A=
+>> -numa node,nodeid=3D7 \=0A=
+>> -numa node,nodeid=3D8 \=0A=
+>> -numa node,nodeid=3D9 \=0A=
+>> -device vfio-pci-nohotplug,host=3D0009:01:00.0,bus=3Dpcie.0,addr=3D04.0,=
+rombar=3D0,id=3Ddev0 \=0A=
+>> -object acpi-generic-initiator,id=3Dgi0,pci-dev=3Ddev0,host-nodes=3D2-9 =
+\=0A=
+>=0A=
+> Does this link *all* NUMA nodes to dev0?=0A=
+>=0A=
+> Would an example involving two devices be more instructive?=0A=
+=0A=
+Sure, updated in v6.=0A=
+=0A=
+>> diff --git a/qapi/qom.json b/qapi/qom.json=0A=
+>> index c53ef978ff..efcc4b8dfd 100644=0A=
+>> --- a/qapi/qom.json=0A=
+>> +++ b/qapi/qom.json=0A=
+>> @@ -794,6 +794,21 @@=0A=
+>>=A0 { 'struct': 'VfioUserServerProperties',=0A=
+>>=A0=A0=A0 'data': { 'socket': 'SocketAddress', 'device': 'str' } }=0A=
+>>=0A=
+>> +##=0A=
+>> +# @AcpiGenericInitiatorProperties:=0A=
+>> +#=0A=
+>> +# Properties for acpi-generic-initiator objects.=0A=
+>> +#=0A=
+>> +# @pci-dev: PCI device ID to be associated with the node=0A=
+>> +#=0A=
+>> +# @host-nodes: numa node list=0A=
+>=0A=
+> This feels a bit terse.=A0 The commit message makes me guess this=0A=
+> specifies the NUMA nodes to be linked to @pci-dev.=A0 Correct?=0A=
+=0A=
+Right, it could be made cleared. Done in v6.=
 
