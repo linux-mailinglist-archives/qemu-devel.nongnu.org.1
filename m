@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E9381DE3D
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 06:30:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB6C81DE40
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 06:31:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHdWw-000526-UM; Mon, 25 Dec 2023 00:29:34 -0500
+	id 1rHdX1-00052j-G8; Mon, 25 Dec 2023 00:29:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rHdWv-00051h-I1
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:29:33 -0500
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1rHdX0-00052Z-6I
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:29:38 -0500
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rHdWu-0007Hr-2g
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:29:33 -0500
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6dbbef36fe0so1939064a34.2
- for <qemu-devel@nongnu.org>; Sun, 24 Dec 2023 21:27:31 -0800 (PST)
+ id 1rHdWy-0007I2-Lm
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 00:29:37 -0500
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-28beb1d946fso2878731a91.0
+ for <qemu-devel@nongnu.org>; Sun, 24 Dec 2023 21:27:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1703482050; x=1704086850;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1703482055; x=1704086855;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AdL9uW9EvZjhGBTaXUAVF2PzM+GCkP3v2dbTBdBWS6M=;
- b=HrP3ywen1hcVnhJ4VqhHAHGfvRJmjCi/o5J4U8rzDspk4xc69JPXgm9dCmU29mTMwX
- w6FrguwPplYXd5S2ZOhaRuGe9up9toGlq2l+BHqRTtAMic82kaRR1EnR3iklV2wdWZIN
- AApDJa6wCrE8p8QJI8MMQoSJldvSXvb0iJPz83VIhcmRcZqoFzTwDs5MlUnbK3iFi7oY
- 6QDSuVdHSjbI7iaJl9EfJd8/N1TG/i2WVE1X7ivUsThuxI5shypao291qHTdYtRiJ01i
- mL8Y9AYHLjXIE0cEzhP9KLeD5bW3g7ghhb9hmnrdeor0k6Idn099cvlt2WR/snoGvgTL
- h+MQ==
+ bh=qJQlTzAWPO+/klEeEAp+k9zko8Nhs/GsMEahvb4ufUs=;
+ b=dt5+r3J0j8fKD6pkedFoM8wCLjs5C7Rsd3juuK0YegK9+WZyVTq4aLMH456NZAxMAJ
+ JqdUUH96FEReACY6W+HvXPxya+voFSijbZKhqf/FDR1KThPG35pjJJaM8I3HRwwZUtmw
+ 69zxsAXD7TSwEkL4XNkWUwqw50Td2f0UIMNoOho84MTA6S1gtC9PQUp/Eemdec2K9N7x
+ aI9tft4JB+gtaAPuGK3UPJAyeR8LjRhJnHzdeMwBZZw2Fqv2OO+EeOIDrw3AgPkpZ9wh
+ z9VA0ohCOv0WVW7kpW2sRWN2KZhNkzzYBsQAGURK4AYHpVzvX3AxnIgTLffh8sV888gV
+ 2aCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703482050; x=1704086850;
+ d=1e100.net; s=20230601; t=1703482055; x=1704086855;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AdL9uW9EvZjhGBTaXUAVF2PzM+GCkP3v2dbTBdBWS6M=;
- b=mq0R6+6kCh7DQEDcM+b+1R04HqmSxf6XBXsk+zGPt6frvLNDEbyhq4bR6u8RkTl+1l
- SDRHPl4Lh4NKD2u7elIh+9c/TMu0lQTx7qPoxXVneXAyCYYPJ3oNCZ4Bl37Z3+TYxp0t
- HNnq7LtH76QmBNB46uuT+W/hCoIvDhUiY09akHzZhqou3eW2roKo62RSH/AYk0ii/dGD
- 5i05XnCpskdvM8wvJHMHq382wC6CV+O6iYLVb4KQUjsFsUeO/Jz2QRXM7BzdZhLQXYqL
- fHDJG+nKSBOSM/QuN/Xc6mXc1nhaR2ZBE4FeCabeSGr9UajsZQEYacJ6AtUrlqz8hPUX
- 6Kgg==
-X-Gm-Message-State: AOJu0Yw5S/K+kt8RYBTHAZ8vqEe0RYICc2lrNFbUxja9AGhYkvuhnQET
- /RjrQrOc1zOR6tFZTGlLAMibLpzBFq8L/9ygJPeY67P3sD79mw==
-X-Google-Smtp-Source: AGHT+IGWceJBTn9b+2C4Qcv6L783T9lDBBSJ3YpX/1c2H5jHCtxEMG24PSY2ksplNpFaVI5SzoKUjw==
-X-Received: by 2002:a9d:62d9:0:b0:6da:2edf:30de with SMTP id
- z25-20020a9d62d9000000b006da2edf30demr3670315otk.40.1703482050372; 
- Sun, 24 Dec 2023 21:27:30 -0800 (PST)
+ bh=qJQlTzAWPO+/klEeEAp+k9zko8Nhs/GsMEahvb4ufUs=;
+ b=t+qndHC0kuAFiHI/r6PeU/KSsc5QtSbFOd9j8rt0cScz11+Ffpn3JqeT20oLJaiiPV
+ Zr+0M2f7dvXWL9FvI0nHV+3Wvta3+5KNeM39ACHzSy6Y7eCYyWoWGgfXSXnRp61dyDq1
+ cNqFQ9I50UJstrmvq5mUNA1PFlLZ7qLCO9bCZd4ElBMtgGhMsx037SWuWNUZ40pnYCmY
+ HoHEcrazPnludBrQRaKQ0nd4GK5asn2nAZljH0AJSzNuMwqaBxex7RqbPjwdIWc8uCDS
+ AHp/AX43fzZXJXNlStoM6567ztwoejECQ8TtB2j58LPH6Ye9ZpsZ+hCUTtXrqFhxcos3
+ nHhQ==
+X-Gm-Message-State: AOJu0YxAh2xhxdbMyzDkt43xu/dnPwvd54PojZBpRmAixh3KxcoMKJbJ
+ KOQVpmrOb8J8T3mzThhs3tR6UrUYn+0jxKTFTlqaq0Xrq9KrNw==
+X-Google-Smtp-Source: AGHT+IFPE5GzdDtMg6A3zWm6NTcGG1EF+Kh5Z205xLGf0YWvsqtPk8A/rYGKdYB453VMjpOzqVWIwA==
+X-Received: by 2002:a05:6a20:12c9:b0:195:1df1:dd89 with SMTP id
+ v9-20020a056a2012c900b001951df1dd89mr6789081pzg.95.1703482054686; 
+ Sun, 24 Dec 2023 21:27:34 -0800 (PST)
 Received: from localhost.localdomain ([118.114.58.28])
  by smtp.gmail.com with ESMTPSA id
- f7-20020aa79d87000000b006d991505b4csm4555800pfq.76.2023.12.24.21.27.26
+ f7-20020aa79d87000000b006d991505b4csm4555800pfq.76.2023.12.24.21.27.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 Dec 2023 21:27:29 -0800 (PST)
+ Sun, 24 Dec 2023 21:27:34 -0800 (PST)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Hyman Huang <yong.huang@smartx.com>
-Subject: [v3 03/10] qapi: Make parameter 'file' optional for
- BlockdevCreateOptionsLUKS
-Date: Mon, 25 Dec 2023 13:26:53 +0800
-Message-Id: <720f901d0df6ecb2da94c48c38b0abde933c3429.1703481380.git.yong.huang@smartx.com>
+Subject: [v3 04/10] crypto: Introduce creation option and structure for
+ detached LUKS header
+Date: Mon, 25 Dec 2023 13:26:54 +0800
+Message-Id: <57ccc93a05f69973d41b571615f9ef13fd9b2983.1703481380.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1703481378.git.yong.huang@smartx.com>
 References: <cover.1703481378.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32c;
- envelope-from=yong.huang@smartx.com; helo=mail-ot1-x32c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,78 +95,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To support detached LUKS header creation, make the existing 'file'
-filed in BlockdevCreateOptionsLUKS optional, while also adding an
-extra optional 'header' field in the next commit.
+Introduce 'header' field in BlockdevCreateOptionsLUKS to support
+detached LUKS header creation. Meanwhile, introduce header-related
+field in QCryptoBlock.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- block/crypto.c       | 21 ++++++++++++++-------
- qapi/block-core.json |  5 +++--
- 2 files changed, 17 insertions(+), 9 deletions(-)
+ crypto/blockpriv.h   | 3 +++
+ qapi/block-core.json | 3 +++
+ qapi/crypto.json     | 5 ++++-
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/block/crypto.c b/block/crypto.c
-index 6063879bac..78fbe79c95 100644
---- a/block/crypto.c
-+++ b/block/crypto.c
-@@ -659,9 +659,9 @@ block_crypto_co_create_luks(BlockdevCreateOptions *create_options, Error **errp)
-     assert(create_options->driver == BLOCKDEV_DRIVER_LUKS);
-     luks_opts = &create_options->u.luks;
- 
--    bs = bdrv_co_open_blockdev_ref(luks_opts->file, errp);
--    if (bs == NULL) {
--        return -EIO;
-+    if (luks_opts->file == NULL) {
-+        error_setg(errp, "Formatting LUKS disk requires parameter 'file'");
-+        return -EINVAL;
-     }
- 
-     create_opts = (QCryptoBlockCreateOptions) {
-@@ -673,10 +673,17 @@ block_crypto_co_create_luks(BlockdevCreateOptions *create_options, Error **errp)
-         preallocation = luks_opts->preallocation;
-     }
- 
--    ret = block_crypto_co_create_generic(bs, luks_opts->size, &create_opts,
--                                         preallocation, errp);
--    if (ret < 0) {
--        goto fail;
-+    if (luks_opts->file) {
-+        bs = bdrv_co_open_blockdev_ref(luks_opts->file, errp);
-+        if (bs == NULL) {
-+            return -EIO;
-+        }
+diff --git a/crypto/blockpriv.h b/crypto/blockpriv.h
+index 3c7ccea504..6289aea961 100644
+--- a/crypto/blockpriv.h
++++ b/crypto/blockpriv.h
+@@ -42,6 +42,9 @@ struct QCryptoBlock {
+     size_t niv;
+     uint64_t payload_offset; /* In bytes */
+     uint64_t sector_size; /* In bytes */
 +
-+        ret = block_crypto_co_create_generic(bs, luks_opts->size, &create_opts,
-+                                             preallocation, errp);
-+        if (ret < 0) {
-+            goto fail;
-+        }
-     }
++    bool detached_header; /* True if disk has a detached LUKS header */
++    uint64_t detached_header_size; /* LUKS header size plus key slot size */
+ };
  
-     ret = 0;
+ struct QCryptoBlockDriver {
 diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 10be08d08f..9ac256c489 100644
+index 9ac256c489..8aec179926 100644
 --- a/qapi/block-core.json
 +++ b/qapi/block-core.json
-@@ -4945,7 +4945,8 @@
+@@ -4948,6 +4948,8 @@
+ # @file: Node to create the image format on, mandatory except when
+ #        'preallocation' is not requested
  #
- # Driver specific image creation options for LUKS.
- #
--# @file: Node to create the image format on
-+# @file: Node to create the image format on, mandatory except when
-+#        'preallocation' is not requested
- #
++# @header: Detached LUKS header node to format. (since 9.0)
++#
  # @size: Size of the virtual disk in bytes
  #
-@@ -4956,7 +4957,7 @@
- ##
+ # @preallocation: Preallocation mode for the new image (since: 4.2)
+@@ -4958,6 +4960,7 @@
  { 'struct': 'BlockdevCreateOptionsLUKS',
    'base': 'QCryptoBlockCreateOptionsLUKS',
--  'data': { 'file':             'BlockdevRef',
-+  'data': { '*file':            'BlockdevRef',
+   'data': { '*file':            'BlockdevRef',
++            '*header':          'BlockdevRef',
              'size':             'size',
              '*preallocation':   'PreallocMode' } }
  
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index fd3d46ebd1..6b4e86cb81 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -195,10 +195,13 @@
+ #     decryption key.  Mandatory except when probing image for
+ #     metadata only.
+ #
++# @detached-header: if true, disk has detached LUKS header.
++#
+ # Since: 2.6
+ ##
+ { 'struct': 'QCryptoBlockOptionsLUKS',
+-  'data': { '*key-secret': 'str' }}
++  'data': { '*key-secret': 'str',
++            '*detached-header': 'bool' }}
+ 
+ ##
+ # @QCryptoBlockCreateOptionsLUKS:
 -- 
 2.39.1
 
