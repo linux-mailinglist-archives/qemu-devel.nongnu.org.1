@@ -2,63 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5EF81DF00
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 09:05:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C30781DF0F
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 09:12:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHfxd-0006cB-KL; Mon, 25 Dec 2023 03:05:17 -0500
+	id 1rHg2l-0007ki-RG; Mon, 25 Dec 2023 03:10:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rHfxa-0006bz-Lu; Mon, 25 Dec 2023 03:05:14 -0500
+ id 1rHg2Q-0007hd-4q; Mon, 25 Dec 2023 03:10:14 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rHfxZ-0007dS-4V; Mon, 25 Dec 2023 03:05:14 -0500
+ id 1rHg2O-0008J1-Ad; Mon, 25 Dec 2023 03:10:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5E0B83E95B;
- Mon, 25 Dec 2023 11:05:34 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 19EBD52FFC;
- Mon, 25 Dec 2023 11:05:10 +0300 (MSK)
-Message-ID: <521bbe69-3ed2-4416-89b4-40efe1bc3055@tls.msk.ru>
-Date: Mon, 25 Dec 2023 11:05:10 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/hexagon/idef-parser/prepare: use env to invoke bash
-Content-Language: en-US
-To: Samuel Tardieu <sam@rfc1149.net>, qemu-trivial@nongnu.org,
- QEMU Developers <qemu-devel@nongnu.org>
-References: <20231123205742.630004-1-sam@rfc1149.net>
+ by isrv.corpit.ru (Postfix) with ESMTP id 3A0CC3E964;
+ Mon, 25 Dec 2023 11:10:32 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id E6B4A5300B;
+ Mon, 25 Dec 2023 11:10:07 +0300 (MSK)
+Received: (nullmailer pid 78169 invoked by uid 1000);
+ Mon, 25 Dec 2023 08:10:07 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231123205742.630004-1-sam@rfc1149.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
+Subject: [PULL 0/7] Trivial patches for 2023-12-25
+Date: Mon, 25 Dec 2023 11:10:00 +0300
+Message-Id: <20231225081007.78141-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -82,28 +57,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-23.11.2023 23:57, Samuel Tardieu :
-> This file is the only one involved in the compilation process which
-> still uses the /bin/bash path.
-> 
-> Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
-> ---
->   target/hexagon/idef-parser/prepare | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/hexagon/idef-parser/prepare b/target/hexagon/idef-parser/prepare
-> index 72d6fcbd21..cb3622d4f8 100755
-> --- a/target/hexagon/idef-parser/prepare
-> +++ b/target/hexagon/idef-parser/prepare
-> @@ -1,4 +1,4 @@
-> -#!/bin/bash
-> +#!/usr/bin/env bash
+The following changes since commit 80f1709aa0eb4de09b4240563463f991a5b9d855:
 
-What's the reason for this indirection?  bash has been /bin/bash for decades,
-it is used this way in many other places in qemu code and in other projects.
-Yes I know about current move /bin => /usr/bin etc, but the thing is that
-traditional paths like this one (or like /bin/sh) is not going away any time
-soon.  What's the matter here?
+  Merge tag 'pull-loongarch-20231221' of https://gitlab.com/gaosong/qemu into staging (2023-12-21 19:44:19 -0500)
 
-/mjt
+are available in the Git repository at:
+
+  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+
+for you to fetch changes up to d819fc9516a4ec71e37a6c9edfcd285b7f98c2dc:
+
+  virtio-blk: Fix potential nullpointer read access in virtio_blk_data_plane_destroy (2023-12-25 11:01:01 +0300)
+
+----------------------------------------------------------------
+trivial patches for 2023-12-25
+
+This pullreq contains cocoa help text updates, DPRINTF=>trace
+conversion in accel/kvm, a typo fix in qemu-img.rst, and
+3 imprtant (yet trivial) bugfixes:
+ - fix for virtio-vga breakage after pixman becoming optional
+ - fix for potential null pointer deref in virtio_blk_data_plane_destroy()
+ - fix for usage of non-portable strerrorname_np()
+
+----------------------------------------------------------------
+Akihiko Odaki (2):
+      qemu-options: Unify the help entries for cocoa
+      qemu-options: Tell more for -display cocoa
+
+Elen Avan (1):
+      include/ui/rect.h: fix qemu_rect_init() mis-assignment
+
+Jai Arora (1):
+      accel/kvm: Turn DPRINTF macro use into tracepoints
+
+Natanael Copa (1):
+      target/riscv/kvm: do not use non-portable strerrorname_np()
+
+Samuel Tardieu (1):
+      docs/tools/qemu-img.rst: fix typo (sumarizes)
+
+Stefan Weil via (1):
+      virtio-blk: Fix potential nullpointer read access in virtio_blk_data_plane_destroy
+
+ accel/kvm/kvm-all.c             | 28 ++++++----------------------
+ accel/kvm/trace-events          |  7 ++++++-
+ docs/tools/qemu-img.rst         |  2 +-
+ hw/block/dataplane/virtio-blk.c |  3 ++-
+ include/ui/rect.h               |  2 +-
+ qemu-options.hx                 | 21 ++++++++++++++++++---
+ target/riscv/kvm/kvm-cpu.c      | 18 ++++++++----------
+ 7 files changed, 42 insertions(+), 39 deletions(-)
 
