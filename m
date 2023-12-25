@@ -2,78 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A4481E16C
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 16:31:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2ED81E177
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Dec 2023 16:57:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rHmu4-0002Pb-58; Mon, 25 Dec 2023 10:30:04 -0500
+	id 1rHnJf-0006N8-NT; Mon, 25 Dec 2023 10:56:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rHmu1-0002Np-VA
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 10:30:02 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rHnJb-0006Md-LF
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 10:56:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rHmtz-0007YD-JD
- for qemu-devel@nongnu.org; Mon, 25 Dec 2023 10:30:01 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rHnJW-0003IN-2J
+ for qemu-devel@nongnu.org; Mon, 25 Dec 2023 10:56:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703518197;
+ s=mimecast20190719; t=1703519781;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Nmzr/BioaCJup9Ek2UcZjWqy6CMOkmVaEU63fK8MlT8=;
- b=aFfH4lg/DBUIry0PYAXeCo0kaXW5AhalwQpd3HDbcMjO5ox9o4A/GiaQGSHoXEmnp+oE38
- 9GCvoZTmXejPPg7ylcRsl1e+nzB18/kfbV5N8uCqR8b/rbo1Jw1kXN4+tUjOnsYK5KrBIW
- xPWFpsRx5FMfFNtSTCLQ9WGi4RpHV64=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pDlRnIarkql0VgOGNm29+8JAyFhigT2pkjAsB4WYzjM=;
+ b=iLjKo2KU0bA+4TAsvPBa4mZ5dZz4cbO3TAkLWK4BLlRHdfd3aaM1CEenFJKSxpP6ELZJv8
+ d1jr7IHWzXlqH4kgvqNbBunSqo78O6p1xu+sCgPuh2hKE1SBsoTWG1JPGQiXWBag7/MM/y
+ B85J93xGkJ7cum6+HnpS+vgzM5Z9VRY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-Qo7X2mtZOYCI5h2DgH52dg-1; Mon, 25 Dec 2023 10:29:55 -0500
-X-MC-Unique: Qo7X2mtZOYCI5h2DgH52dg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40d17446f11so43841325e9.0
- for <qemu-devel@nongnu.org>; Mon, 25 Dec 2023 07:29:55 -0800 (PST)
+ us-mta-573-CEd33bX9OvicwDTv0wA4FA-1; Mon, 25 Dec 2023 10:56:19 -0500
+X-MC-Unique: CEd33bX9OvicwDTv0wA4FA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3368698f0caso2604794f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Dec 2023 07:56:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703518194; x=1704122994;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Nmzr/BioaCJup9Ek2UcZjWqy6CMOkmVaEU63fK8MlT8=;
- b=sp+e9WanDfgSxg4bxtW4HfrUPx/yAfTXoRibvmaycx57+gfeq81s0HwsuztJXXAtZZ
- FV+4xpUX+hsF1W2yo3PXlmvHBuRoXlfFrIbdk/YVKsg5BwGLT9RaItjkgEmRqPjBbVu8
- R/CS83EHIAbsikqEW6dicip0+rzGrTBkavwnmP3C4ZO5M62oaX99yJl4sSAREhXu3ghQ
- anLuG4B/euJ2YcpsboNpAeY8+1qAh/WgxtOHLy829ZNLCGdhScyWGxL6I9bW/jjjsclm
- 1DCBPvwp1dDA+y4SDDdnxNwrWboYwDtg+5qgIvKnnK03vg39OYri4RDPj9VeL5GJHn7K
- C0Ng==
-X-Gm-Message-State: AOJu0YxH5Dbv3iEtr98aMDJVxjxSz8d+m7NRkYS3i/QuZe2o7R6ualAk
- 2RnKbBzhUugkAXbvvq4Yxic+ERw6t0nQ9K+91yIzSvlqqxny3uDMf+z5+quvgd6XgNZHPQcGRL0
- ZI0Ap6FSaytI5p6TU1PIKiws=
-X-Received: by 2002:a05:600c:4907:b0:40d:282d:cff with SMTP id
- f7-20020a05600c490700b0040d282d0cffmr2689606wmp.104.1703518194649; 
- Mon, 25 Dec 2023 07:29:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEYH4/BvSSDwORtqltZQBBTQQMzBWYTDjkg1Ewe0YGIIxwIs1ZjCxOwft42gJojpva/4zJ1JQ==
-X-Received: by 2002:a05:600c:4907:b0:40d:282d:cff with SMTP id
- f7-20020a05600c490700b0040d282d0cffmr2689602wmp.104.1703518194347; 
- Mon, 25 Dec 2023 07:29:54 -0800 (PST)
+ d=1e100.net; s=20230601; t=1703519778; x=1704124578;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pDlRnIarkql0VgOGNm29+8JAyFhigT2pkjAsB4WYzjM=;
+ b=XBTEuuZq5vCQXP1NPTdzremFdFv2wUxbE7cfosip22A9JsrpyS2fi34s2xUj4NT0RU
+ 2YeUn/XAQA+QSNkrxRrFL5ZDQav/NXWGVB2Pj1miVpePeU3JLxFlIOWqCVLalBOy5Hul
+ PwLXVdT3BlL8uLx1hyMO8j85qxC8ZhRN5GImoLChfptlTwm7fpPvzdSvCdVH/uim8GBz
+ dOTIk+sWJ0Ptq64oUCqe73KoJKGKpKGntIkZgGStc9JKNJ7OfFKsAINZ6SGM0p7U0u1H
+ +TtHm5Rnp6ZzWqiDBaKUDEES4cmPLm2+tFLeXu8UwmEkDQM8OzGFPhljObqAKojNiZUA
+ RQCg==
+X-Gm-Message-State: AOJu0YzAVhJc9ge4edhjClZNEY8XlgAj3i0iUqmd0dnpunugpjwG56Qh
+ 8FodfXBTVZaQIeaiMHm2Ejs7jkfw0ceaynzucSF5rVzmdvLEbnQNa17aKnhcNs5TR8DXfpbs4Yk
+ DYsY2cDVWOsMIlAbsQCv1VS8=
+X-Received: by 2002:a05:600c:45d2:b0:40d:3043:81c with SMTP id
+ s18-20020a05600c45d200b0040d3043081cmr1636208wmo.353.1703519778421; 
+ Mon, 25 Dec 2023 07:56:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFpWNeZWyG+7jSt3AKKIIFO0vPViMFaSBTuoie9+H9Oi+8uVWgrPGNlX1RoE2D+MNRtQJcFVg==
+X-Received: by 2002:a05:600c:45d2:b0:40d:3043:81c with SMTP id
+ s18-20020a05600c45d200b0040d3043081cmr1636204wmo.353.1703519778020; 
+ Mon, 25 Dec 2023 07:56:18 -0800 (PST)
 Received: from redhat.com ([2a06:c701:73ef:4100:2cf6:9475:f85:181e])
  by smtp.gmail.com with ESMTPSA id
- az42-20020a05600c602a00b0040d4a7f2778sm11483534wmb.32.2023.12.25.07.29.53
+ az42-20020a05600c602a00b0040d4a7f2778sm11554265wmb.32.2023.12.25.07.56.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Dec 2023 07:29:53 -0800 (PST)
-Date: Mon, 25 Dec 2023 10:29:51 -0500
+ Mon, 25 Dec 2023 07:56:17 -0800 (PST)
+Date: Mon, 25 Dec 2023 10:56:14 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] docs/about: Mark the old pc-i440fx-2.0 - 2.3 machine
- types as deprecated
-Message-ID: <20231225102932-mutt-send-email-mst@kernel.org>
-References: <20231006075247.403364-1-thuth@redhat.com>
- <20231018091534-mutt-send-email-mst@kernel.org>
- <eaf2569d-e9fb-45e0-a463-4055c41e0342@redhat.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Kevin Wolf <kwolf@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Leonardo Bras <leobras@redhat.com>,
+ qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH v3 0/6] migration: check required entries and sections
+ are loaded
+Message-ID: <20231225105554-mutt-send-email-mst@kernel.org>
+References: <20231106113601.2052601-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <eaf2569d-e9fb-45e0-a463-4055c41e0342@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231106113601.2052601-1-marcandre.lureau@redhat.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
@@ -99,70 +104,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 18, 2023 at 03:28:16PM +0200, Thomas Huth wrote:
-> On 18/10/2023 15.17, Michael S. Tsirkin wrote:
-> > On Fri, Oct 06, 2023 at 09:52:47AM +0200, Thomas Huth wrote:
-> > > As we've seen in the past, it's useful for deprecating old machine
-> > > types to finally be able to get of legacy code or do other clean-ups
-> > > (see e.g. commit ea985d235b868047 that was used to drop the PCI code in
-> > > the 128k bios binaries to free some precious space in those binaries).
-> > > 
-> > > So let's continue deprecating the oldest pc machine types. QEMU 2.3
-> > > has been released 8 years ago, so that's plenty of time since such
-> > > machine types have been used by default, thus deprecating pc-i440fx-2.0
-> > > up to pc-i440fx-2.3 should be fine nowadays.
-> > > 
-> > > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > > ---
-> > >   docs/about/deprecated.rst | 8 ++++++++
-> > >   hw/i386/pc_piix.c         | 1 +
-> > >   2 files changed, 9 insertions(+)
-> > > 
-> > > diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> > > index e43de9c183..c016bb9b20 100644
-> > > --- a/docs/about/deprecated.rst
-> > > +++ b/docs/about/deprecated.rst
-> > > @@ -277,6 +277,14 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
-> > >   better reflects the way this property affects all random data within
-> > >   the device tree blob, not just the ``kaslr-seed`` node.
-> > > +``pc-i440fx-2.0`` up to ``pc-i440fx-2.3`` (since 8.2)
-> > > +'''''''''''''''''''''''''''''''''''''''''''''''''''''
-> > > +
-> > > +These old machine types are quite neglected nowadays and thus might have
-> > > +various pitfalls with regards to live migration. Use a newer machine type
-> > > +instead.
-> > > +
-> > > +
-> > >   Backend options
-> > >   ---------------
-> > 
-> > Wait a sec. Which tree is this against?
+On Mon, Nov 06, 2023 at 03:35:54PM +0400, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> It should be against master. The patch still applies cleanly for me... could
-> you please double-check whether your master branch is up to date?
-
-It is ... can you rebase on latest and repost?
+> Hi,
+> 
+> Surprisingly, the migration code doesn't check that required migration entries
+> and subsections are loaded. Either optional or required sections are both
+> ignored when missing. According to the documentation a "newer QEMU that knows
+> about a subsection can (with care) load a stream from an older QEMU that didn't
+> send the subsection". I propose this behaviour to be limited to "optional"
+> sections only.
+> 
+> This series has a few preliminary fixes, add new checks that entries are
+> loaded once and required ones have been loaded, add some tests and
+> documentation update.
+> 
+> thanks
 
 
-> > I don't see this context ever since:
-> > 
-> > commit f59fb1889f480b0324a7ed0404a68ad5a0ad4f6c
-> > Author: Thomas Huth <thuth@redhat.com>
-> > Date:   Mon Jan 17 20:16:39 2022 +0100
-> > 
-> >      hw/i386/pc_piix: Mark the machine types from version 1.4 to 1.7 as deprecated
+series:
+
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+
+merge through migration tree.
+
+> v3:
+>  - rebased, drop RFC status
+>  - switch from tracepoint + returning an error to report for missing
+>    subsections, as we worry about potential regressions
+>  - add r-b tags
 > 
-> It's the context that has been left after Paolo moved the previous entries
-> from deprecated.rst to removed-features.rst:
+> v2:
+>  - add "migration: rename vmstate_save_needed->vmstate_section_needed"
+>  - add "migration: set file error on subsection loading"
+>  - add subsection tests
+>  - update the documentation
 > 
->  https://gitlab.com/thuth/qemu/-/commit/ea985d235b868047cb4d8cb5657bc
+> Marc-André Lureau (6):
+>   block/fdc: 'phase' is not needed on load
+>   virtio: make endian_needed() work during loading
+>   migration: check required subsections are loaded, once
+>   migration: check required entries are loaded, once
+>   test-vmstate: add some subsection tests
+>   docs/migration: reflect the changes about needed subsections
 > 
-> > Also, do we intentionally keep 1.8 and 1.9 as not deprecated?
+>  docs/devel/migration.rst  |  17 +++---
+>  hw/block/fdc.c            |   5 ++
+>  hw/virtio/virtio.c        |   6 +-
+>  migration/savevm.c        |  43 ++++++++++++++
+>  migration/vmstate.c       |  40 ++++++++++++-
+>  tests/unit/test-vmstate.c | 116 ++++++++++++++++++++++++++++++++++++++
+>  6 files changed, 215 insertions(+), 12 deletions(-)
 > 
-> There never was a QEMU version 1.8 or 1.9, so there were never such machine
-> types.
-> 
->  Thomas
-> 
+> -- 
+> 2.41.0
 
 
