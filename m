@@ -2,82 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F105881E739
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 13:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1C581E898
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 18:03:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI6Ew-0007qB-61; Tue, 26 Dec 2023 07:08:54 -0500
+	id 1rIAmC-0000Tv-AQ; Tue, 26 Dec 2023 11:59:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI6Et-0007po-Ii
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 07:08:51 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI6Er-0003PR-Ui
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 07:08:51 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40d22d3e751so30851395e9.1
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 04:08:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703592528; x=1704197328; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yp7V8Ra/80Vegj6Re0+Iy3f1Jpa7yFrSLqsBmK0ACgU=;
- b=qxo+ZzPdhGKTfJPBiwhQ+AtCD2dkmTt9YsP/95hR/v/sIIGrQs7hjbiSAO8zlrtFV1
- GIuSAGlGEQIbAaAuVNG3RrYE7fPDd3VC7ak14pQ+41L2KKvARljGRjEigwsaYlAfJfOV
- W5/fm4hkl20rPcmfavgFUd/uQ8Cj1a4qrnL5ybuG3qx4x6MXG5WxUsW8KlBBz21MVRWs
- f7laRWtEjft+weXr/IKkyy/nu+s5i70KUptqQCvVmNsgCySXDiXScxASnAUpsKQIN3/E
- ZzXtU+cCw6cYPFpvBtTsljnR8ZaSMODBrU/NJ0nrhXlvII0gWedQY9WGPFnvF6mP0bER
- RM8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703592528; x=1704197328;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yp7V8Ra/80Vegj6Re0+Iy3f1Jpa7yFrSLqsBmK0ACgU=;
- b=W4/79vjrWTZuI08k+rrQw6zmYsSZ7d+bOf/Sfd8FW8EHGfsXs0adxCBwlqpfkO5Bkk
- Ot0kO+e4KUQf4aLaY1UlxMLEe8NNmB+7K7s+t7mj4Lr1jfWDcJzLlmvf5imQS7LtSV7b
- gG4hNiuqoDqSO9A2Gw/xAp0aU0oS+FZOZO95p8Shl4ScBePbbTeAH/RxtlI+8iUc7Tu4
- dxjX5iMgzOfTS8GgOMW11YKX7iEWu+sV7VERKYIUag/gs4m6kMkA0CXPx4jmvdi1s4Ki
- 1edrANfc1d4FcMXDY2s+1OakOw9qjkAEBaFtdxH7++Kz2PsgMKfyJjxiGvBTTSdKIBNg
- gIPw==
-X-Gm-Message-State: AOJu0YzynONSzwfpLYlaNuUbQh8Kc7sKKTyn1scYDMruM+NrqFhrl9c3
- 7+Yo9dhxEDJJMqY+4jb50osIFz2IsB+50A==
-X-Google-Smtp-Source: AGHT+IFojBgBgh8JIajrP4kiJVE3ocHfX3RCMXt1jzWRs0f0myWTyWAUVf1U/3nZZK7g7DAZKvoZKA==
-X-Received: by 2002:a05:600c:b87:b0:40d:3869:7e41 with SMTP id
- fl7-20020a05600c0b8700b0040d38697e41mr3453935wmb.8.1703592528250; 
- Tue, 26 Dec 2023 04:08:48 -0800 (PST)
-Received: from [192.168.96.175] (137.red-95-127-43.staticip.rima-tde.net.
- [95.127.43.137]) by smtp.gmail.com with ESMTPSA id
- w5-20020a5d5445000000b0033660f75d08sm12496291wrv.116.2023.12.26.04.08.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Dec 2023 04:08:47 -0800 (PST)
-Message-ID: <e05e239f-2d1d-4d9b-86bb-a1e9d9b98550@linaro.org>
-Date: Tue, 26 Dec 2023 13:08:46 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] esp: process the result of scsi_device_find()
-Content-Language: en-US
-To: Alexandra Diupina <adiupina@astralinux.ru>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rIAm9-0000TF-VD
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 11:59:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rIAm8-0007Tp-9u
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 11:59:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1703609966;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=V951hyZl/+j1s272BoBCQf8wgzrkw5qx5wEmhc0OMXo=;
+ b=SikRUueZwRQkOd5DZYQDkfJAMe8QgyQ0pnAvSeJy30okPqsp4JPPV1WNh021XgwJrwWdWy
+ E5cj9tAX2YOUnL3gskN6lN9N1euF6IuZo/eLxyYgWHK+1tCPUZN7mj0Na8hoOaqZ7U1QhE
+ C4P1SbISQOEu0CpHQ/8qMQ9Cp5aBha4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-219-nRcAu9iNOqCEDQmR4CNxYw-1; Tue,
+ 26 Dec 2023 11:59:23 -0500
+X-MC-Unique: nRcAu9iNOqCEDQmR4CNxYw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A41CF386A0A7;
+ Tue, 26 Dec 2023 16:59:22 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.41])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1DC6E492BC6;
+ Tue, 26 Dec 2023 16:59:22 +0000 (UTC)
+Date: Tue, 26 Dec 2023 09:14:47 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Thomas Huth <huth@tuxfamily.org>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: Fam Zheng <fam@euphon.net>, qemu-devel@nongnu.org,
- sdl.qemu@linuxtesting.org
-References: <20231218150213.27253-1-adiupina@astralinux.ru>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231218150213.27253-1-adiupina@astralinux.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Subject: Re: [PULL 00/11] m68k next-cube patches
+Message-ID: <20231226141447.GA103314@fedora>
+References: <20231222134527.15705-1-huth@tuxfamily.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="7uQooOq2o1ArGlC7"
+Content-Disposition: inline
+In-Reply-To: <20231222134527.15705-1-huth@tuxfamily.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.851,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,35 +81,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc'ing Mark for the logical change (should we rather assert?).
 
-On 18/12/23 16:02, Alexandra Diupina wrote:
-> Add a 'current_lun' check for a null value
-> to avoid null pointer dereferencing
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 4eb8606560 (esp: store lun coming from the MESSAGE OUT phase)
-> Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-> ---
->   hw/scsi/esp.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-> index 9b11d8c573..3a2ec35f9b 100644
-> --- a/hw/scsi/esp.c
-> +++ b/hw/scsi/esp.c
-> @@ -292,6 +292,11 @@ static void do_command_phase(ESPState *s)
->       esp_fifo_pop_buf(&s->cmdfifo, buf, cmdlen);
->   
->       current_lun = scsi_device_find(&s->bus, 0, s->current_dev->id, s->lun);
-> +
-> +    if (!current_lun) {
-> +        return;
-> +    }
-> +
->       s->current_req = scsi_req_new(current_lun, 0, s->lun, buf, cmdlen, s);
->       datalen = scsi_req_enqueue(s->current_req);
->       s->ti_size = datalen;
+--7uQooOq2o1ArGlC7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0 for any user-visible changes.
+
+--7uQooOq2o1ArGlC7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWK39cACgkQnKSrs4Gr
+c8gKQggAq3N8gRu1MvqofvS3IdU8RTItPiWTUHlPUkGf7SkcGYoR8ieTw7CoFI/d
+sxerLncd2PxXqDgpbd1fcjVCojmJ1IwYZ2Bejyr/Mi7wpGc88L7mrobfRdKAi8Y8
+li9oNNrbfd/+KZpU7WGcJP5zmxoakIgZ5xifO0yDVHJlfJdndcJaLpeKl996q0yR
+4WoWKW9t+pfr26RCUc4ovRTHdSt7awDtOZtOdcMIGWXsp2eEtvNTvRYOMaNn1IN4
+A/+NcDm74BmMYmMYVcCbkwnicTY0iIAkQSMz0F8AZPLnUK7Nbzfs7YzccFXdYT2F
+M2CtJYhd47BeQu40UcyA9gvuGLJITQ==
+=h4+F
+-----END PGP SIGNATURE-----
+
+--7uQooOq2o1ArGlC7--
 
 
