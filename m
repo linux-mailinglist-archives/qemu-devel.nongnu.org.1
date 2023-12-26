@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E00881E657
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:25:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE8481E659
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:26:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI3g6-0001tG-L5; Tue, 26 Dec 2023 04:24:46 -0500
+	id 1rI3g7-00023i-Ti; Tue, 26 Dec 2023 04:24:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3g1-0001e4-DK
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:42 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3g4-0001hR-Ph
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fz-0008IG-Dx
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:40 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3g3-0008Ie-5G
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703582678;
+ s=mimecast20190719; t=1703582682;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N39XRBVP9UVXyghkAg87M/jQ4XVZeFGKXGSiwW/zl4g=;
- b=cGM/qUG/HErDFz6Uwl5yRoMXaNvRrbf+3ygO/kfM29qkPbQWzlXn1HsQshH8K+RQbMVT+x
- IjsOpL5emdpKx+D8yLAiSy/QYyIrQLvR5awR1/nnlZM1fMDOZD/49RsVlqx31mXf+GicSi
- draqZ+6azle79m/FjeGVxPiI43PdmTI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mLU/DtphONhg8DS+Rq3R1gZS3ALsJb4F39lfU8Eoxf0=;
+ b=eSBKNrZJYtsrGQULuZgv0XU6oh/g+iHM2um4kNb6BXVWd92SB+TluwO/5XV/enGbF47ymX
+ uHNj1IIdTPRDW47AxHJvZPs0yB0gHSASyxZ3Yp4Zv9acfirB5a2qRP7DS7atvORZkDlWUu
+ C6ANXhat14q4owwLSqq4L4HfbHkeHjI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-62-EmnAx7ofNDePlMvKK0t_cA-1; Tue, 26 Dec 2023 04:24:36 -0500
-X-MC-Unique: EmnAx7ofNDePlMvKK0t_cA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-40d5ae4cdadso2393565e9.0
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:24:36 -0800 (PST)
+ us-mta-76-xpNZ6NTcNoy2xi8z1mjQGQ-1; Tue, 26 Dec 2023 04:24:41 -0500
+X-MC-Unique: xpNZ6NTcNoy2xi8z1mjQGQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40d5aef0cfdso2082615e9.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:24:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703582674; x=1704187474;
+ d=1e100.net; s=20230601; t=1703582679; x=1704187479;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N39XRBVP9UVXyghkAg87M/jQ4XVZeFGKXGSiwW/zl4g=;
- b=Rkx5gZfccvUe3ETmGYQdDJQVCa6BFbUz7nciaqUiHgFrqjBdLjlAyIWV/kD80FMq89
- Ip/N3CX7Xsejkv9HeHMS0uJTzmlI76xYarhs2tIzw8vTmiWomtVAPRQsWzUsiJrSEO4h
- wkNHQWcd3KaAe5Lpj5ntGVHHuvJ+EHwWutF+2Sb2Lz6zE4DRV/FNBZh00xwAsyMEEctD
- ZnClC5jTbza2G6EUAd5YtYVVKjENFdQ60z7c3cNHLkQJRfbYxXPyEa653NPBnW/6AxRB
- lVJkPPYYoPzue5SKWVdVPHBKoooFZJwBTKggzKH5DFrx9jT6Q00TXB14Uuo01bmAWF6e
- 2TOA==
-X-Gm-Message-State: AOJu0YwQwk+2usNgr7IEq/dWSCKcdgNLdWF7RXDeDI7/KzvESdeVGIL7
- O3SFaRG9cCNo7TQK09gwsDlU1StDi84v428uUdce3ZWoNiCN35TtAhFUaDQ0D/WQ1B6z5J3hGcS
- DXnFv/idXevLsFhICbU5on5NCaucrMLYlxmOo86wUUNXSUqCZfpTcTFFqL7zKCFJNHiC1Ux/kWy
- gJ
-X-Received: by 2002:a05:600c:310d:b0:40d:284a:6b6e with SMTP id
- g13-20020a05600c310d00b0040d284a6b6emr2951981wmo.153.1703582674283; 
- Tue, 26 Dec 2023 01:24:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFOzbcH/TdJGGAfLy0Kq1ZxG7ykCkkmlt35AtZ5CqzanOTXi21+ZRaKB/EymKIeOC5KrIqOoQ==
-X-Received: by 2002:a05:600c:310d:b0:40d:284a:6b6e with SMTP id
- g13-20020a05600c310d00b0040d284a6b6emr2951973wmo.153.1703582673863; 
- Tue, 26 Dec 2023 01:24:33 -0800 (PST)
+ bh=mLU/DtphONhg8DS+Rq3R1gZS3ALsJb4F39lfU8Eoxf0=;
+ b=D24pOYos54NUQLGul3w4ZD5O0Rp4apCXMyoztbADWyAX64vfGuFfMMGC8WWQXkUp6b
+ +dwIfB5Vs9WahBnHH/9iqVbld3fjbbKWOtO3xtkVR5HP1T5OlSDW8QCMR7WgVQPQBT3a
+ LsEScIf9NtpSEgRwirIqUW6BgJs5LBSthUX7k7Srll/uIcNO48FH8RBPwxbTdHFi/G9/
+ pAAcGDmgTdhfVt1EJfhNZYhvKOVUA7DG9ozbdXIR9sFgVRkbBSggxPyg9QMUV85rispT
+ mtfYut5P3z8ekUgX9o3Dmbyk/HfG/C3J/+vUxfuCNaZuoKWY2K75naSJMquaiVBZ6IoV
+ /aCQ==
+X-Gm-Message-State: AOJu0Yx1T8EPJHymfEZULY94eewerAE79Vln9ga8OmWFwsmvMZv/1mwo
+ DhSic4S9Gzm1HLSDfS83SxQfNzB8ukKyvyMg8/ZtlOm6j+sSDbNwhTliYPBfSS7LqJ8PxogXydS
+ imbLy0KW62por76DzZAyC7l260/XVhuLTM845+Ym0R5kZijPahwuprrEs6WoJVm9mHch6AhZpoO
+ Kf
+X-Received: by 2002:a05:600c:1909:b0:40d:57d7:6388 with SMTP id
+ j9-20020a05600c190900b0040d57d76388mr490077wmq.302.1703582678889; 
+ Tue, 26 Dec 2023 01:24:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFtArYLj8aR5Rhh9EzMdSeMYSHy5Q7/tYNM8auyh4R2aNYKlyjP0Rha0lb1McH21cbCmxH+Vg==
+X-Received: by 2002:a05:600c:1909:b0:40d:57d7:6388 with SMTP id
+ j9-20020a05600c190900b0040d57d76388mr490071wmq.302.1703582678630; 
+ Tue, 26 Dec 2023 01:24:38 -0800 (PST)
 Received: from redhat.com ([2.55.177.189]) by smtp.gmail.com with ESMTPSA id
- c18-20020a5d4152000000b0033609b71825sm12088512wrq.35.2023.12.26.01.24.30
+ n33-20020a05600c502100b004030e8ff964sm28116356wmr.34.2023.12.26.01.24.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Dec 2023 01:24:31 -0800 (PST)
-Date: Tue, 26 Dec 2023 04:24:29 -0500
+ Tue, 26 Dec 2023 01:24:36 -0800 (PST)
+Date: Tue, 26 Dec 2023 04:24:34 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: [PULL 08/21] vdpa: do not set virtio status bits if unneeded
-Message-ID: <e6ed6d80556c66e2f76b8c6975c5abe2ace5ca90.1703582625.git.mst@redhat.com>
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>
+Subject: [PULL 09/21] vdpa: add VhostVDPAShared
+Message-ID: <53ad2fa3e61f4eb6e5ee08597c488fc7056d1210.1703582625.git.mst@redhat.com>
 References: <cover.1703582625.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -103,30 +104,135 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eugenio Pérez <eperezma@redhat.com>
 
-Next commits will set DRIVER and ACKNOWLEDGE flags repeatedly in the
-case of a migration destination.  Let's save ioctls with this.
+It will hold properties shared among all vhost_vdpa instances associated
+with of the same device.  For example, we just need one iova_tree or one
+memory listener for the entire device.
+
+Next patches will register the vhost_vdpa memory listener at the
+beginning of the VM migration at the destination. This enables QEMU to
+map the memory to the device before stopping the VM at the source,
+instead of doing while both source and destination are stopped, thus
+minimizing the downtime.
+
+However, the destination QEMU is unaware of which vhost_vdpa struct will
+register its memory_listener.  If the source guest has CVQ enabled, it
+will be the one associated with the CVQ.  Otherwise, it will be the
+first one.
+
+Save the memory operations related members in a common place rather than
+always in the first / last vhost_vdpa.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20231215172830.2540987-2-eperezma@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20231221174322.3130442-2-eperezma@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/hw/virtio/vhost-vdpa.h |  5 +++++
+ net/vhost-vdpa.c               | 24 ++++++++++++++++++++++--
+ 2 files changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 819b2d811a..401dfa96fd 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -511,6 +511,10 @@ static int vhost_vdpa_add_status(struct vhost_dev *dev, uint8_t status)
-     if (ret < 0) {
-         return ret;
+diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
+index 5407d54fd7..eb1a56d75a 100644
+--- a/include/hw/virtio/vhost-vdpa.h
++++ b/include/hw/virtio/vhost-vdpa.h
+@@ -30,6 +30,10 @@ typedef struct VhostVDPAHostNotifier {
+     void *addr;
+ } VhostVDPAHostNotifier;
+ 
++/* Info shared by all vhost_vdpa device models */
++typedef struct vhost_vdpa_shared {
++} VhostVDPAShared;
++
+ typedef struct vhost_vdpa {
+     int device_fd;
+     int index;
+@@ -46,6 +50,7 @@ typedef struct vhost_vdpa {
+     bool suspended;
+     /* IOVA mapping used by the Shadow Virtqueue */
+     VhostIOVATree *iova_tree;
++    VhostVDPAShared *shared;
+     GPtrArray *shadow_vqs;
+     const VhostShadowVirtqueueOps *shadow_vq_ops;
+     void *shadow_vq_ops_opaque;
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index d0614d7954..8b661b9e6d 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -240,6 +240,10 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+         qemu_close(s->vhost_vdpa.device_fd);
+         s->vhost_vdpa.device_fd = -1;
      }
-+    if ((s & status) == status) {
-+        /* Don't set bits already set */
-+        return 0;
++    if (s->vhost_vdpa.index != 0) {
++        return;
 +    }
++    g_free(s->vhost_vdpa.shared);
+ }
  
-     s |= status;
+ /** Dummy SetSteeringEBPF to support RSS for vhost-vdpa backend  */
+@@ -1661,6 +1665,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+                                        bool svq,
+                                        struct vhost_vdpa_iova_range iova_range,
+                                        uint64_t features,
++                                       VhostVDPAShared *shared,
+                                        Error **errp)
+ {
+     NetClientState *nc = NULL;
+@@ -1696,6 +1701,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+     if (queue_pair_index == 0) {
+         vhost_vdpa_net_valid_svq_features(features,
+                                           &s->vhost_vdpa.migration_blocker);
++        s->vhost_vdpa.shared = g_new0(VhostVDPAShared, 1);
+     } else if (!is_datapath) {
+         s->cvq_cmd_out_buffer = mmap(NULL, vhost_vdpa_net_cvq_cmd_page_len(),
+                                      PROT_READ | PROT_WRITE,
+@@ -1708,11 +1714,16 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+         s->vhost_vdpa.shadow_vq_ops_opaque = s;
+         s->cvq_isolated = cvq_isolated;
+     }
++    if (queue_pair_index != 0) {
++        s->vhost_vdpa.shared = shared;
++    }
++
+     ret = vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index, nvqs);
+     if (ret) {
+         qemu_del_net_client(nc);
+         return NULL;
+     }
++
+     return nc;
+ }
  
+@@ -1824,17 +1835,26 @@ int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
+     ncs = g_malloc0(sizeof(*ncs) * queue_pairs);
+ 
+     for (i = 0; i < queue_pairs; i++) {
++        VhostVDPAShared *shared = NULL;
++
++        if (i) {
++            shared = DO_UPCAST(VhostVDPAState, nc, ncs[0])->vhost_vdpa.shared;
++        }
+         ncs[i] = net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
+                                      vdpa_device_fd, i, 2, true, opts->x_svq,
+-                                     iova_range, features, errp);
++                                     iova_range, features, shared, errp);
+         if (!ncs[i])
+             goto err;
+     }
+ 
+     if (has_cvq) {
++        VhostVDPAState *s0 = DO_UPCAST(VhostVDPAState, nc, ncs[0]);
++        VhostVDPAShared *shared = s0->vhost_vdpa.shared;
++
+         nc = net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
+                                  vdpa_device_fd, i, 1, false,
+-                                 opts->x_svq, iova_range, features, errp);
++                                 opts->x_svq, iova_range, features, shared,
++                                 errp);
+         if (!nc)
+             goto err;
+     }
 -- 
 MST
 
