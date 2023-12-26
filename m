@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0AA81E64E
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:24:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E45281E654
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:25:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI3fk-0001EI-6s; Tue, 26 Dec 2023 04:24:24 -0500
+	id 1rI3fz-0001IJ-V4; Tue, 26 Dec 2023 04:24:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fi-0001DG-Qn
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:22 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fn-0001H1-7j
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fh-0008Fw-4y
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:22 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fl-0008G8-Fp
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703582660;
+ s=mimecast20190719; t=1703582664;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=afYN6k1oPeJkIFiSUzbyD9REIUlFHavOgE55XoawkLE=;
- b=CDXRmjt14gNi6KytgQ2wv6SNR4YUhFmdl19jsXS/5sSp+pXk/vjT4uM9/8KU3KpSacrArc
- f9uQczUXm0xmNvHT1QVBuCaJNkWOCx88n0akjQrOg4r1xTEe9SgpYYK1OjgdQTlpIpP1YX
- 4n6wyxCTwAdYrJAQB9IGoymw+iQ8ReM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xP1V8T2FgKjwD1W++v0ktUcbqsF7NLMyhF1n3TtP/Y4=;
+ b=CJ8sul1Qi8RscYNIlWAT5pGk4DQl5sb/R+fg3WKnpHf0lO7TC0QNg0iw5z7TiXbnTfCGO4
+ pz8itqiyyPyN1ee7ZkZeoC1Pe8UQcUAWol1Mjjp7yJcUlf0uJXnIjWvdl0dXQfm3dGfLzC
+ K/XVa5LQFraf3qUulOSA4ZZm1M+us7k=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-QLKKt20ENCei-bdAwu6-4w-1; Tue, 26 Dec 2023 04:24:18 -0500
-X-MC-Unique: QLKKt20ENCei-bdAwu6-4w-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33691eecbebso2686541f8f.0
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:24:18 -0800 (PST)
+ us-mta-426-9ZA3IyDWPZm4oGmStvEuVA-1; Tue, 26 Dec 2023 04:24:23 -0500
+X-MC-Unique: 9ZA3IyDWPZm4oGmStvEuVA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40d5b7be93aso1336085e9.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:24:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703582655; x=1704187455;
+ d=1e100.net; s=20230601; t=1703582660; x=1704187460;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=afYN6k1oPeJkIFiSUzbyD9REIUlFHavOgE55XoawkLE=;
- b=q6ch3q8r8HbWOxRUsRdlRT3zrGcXzXnOS7BCPyZb/sO00Oy1V/DLquJjUCmhVVgagZ
- CKRFJBYmGCWirSFIdZ2FhVtdqMJX/12XD3TdCRjWcYBSTpaAgjVO3KCKrWiM0/o9Wdod
- AKMPC0d1VKKS0azXXqzjwtQLDZN0ZekveoB/PDGm3qBE6lmD/AzA+70dUTjWkxAbNpAJ
- TKqBWZExc9kUg0cze5Tb1g1TOHwruAGnZ/ry44/TXNfKf6IqZdtJuisRHTxJ5Bh2n+xE
- i+8I5GsVc1btkNVSQQ/nBMzByD0A8D2iPNYWp9gdseVDWx8jr5KA9Vyzhg/cifTHNe1B
- sOew==
-X-Gm-Message-State: AOJu0YxU3sz5NGHC1QSDX+MoHpyDcXejW12GG4f1VGaj026ftqHUv+no
- RM3SmNjQRv5d0Sutc/rcTuwf57598kcawczFt+LuIz5kCwH5/T8HKsIYRjBLAhNSnb46Ty08jpw
- tJ7I3Z1+v7Zu3zmXa5qdDuncni7I42oEaUg1QgemOEgI2rImf2Pfl6zyAaWw57Vgs+psQeZsQzk
- qs
-X-Received: by 2002:a05:600c:2907:b0:40c:709:d924 with SMTP id
- i7-20020a05600c290700b0040c0709d924mr3624525wmd.147.1703582655451; 
- Tue, 26 Dec 2023 01:24:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFMzlsOJA9HLAoAMDwrAJIV/8ar/+5ls1yNlmuz7d2zE+dD3CVcz/m9OOqhsXh5KOsryvkC2Q==
-X-Received: by 2002:a05:600c:2907:b0:40c:709:d924 with SMTP id
- i7-20020a05600c290700b0040c0709d924mr3624517wmd.147.1703582655112; 
- Tue, 26 Dec 2023 01:24:15 -0800 (PST)
+ bh=xP1V8T2FgKjwD1W++v0ktUcbqsF7NLMyhF1n3TtP/Y4=;
+ b=Jd9Kbn+wkFfRcL0BYEskpQDkrttdplRSmKER3Qz6+YRH/fqhAnocTnZzBYMCe81dRJ
+ fSnne4vzf49Uyx6MjuyDht/0c4vX/1d8tHnDsRLIFKCGTgX5kMCNWqx9OZmSvMvaYN5v
+ ugo38xcb0cq6Mnk+F/d2tvZnuA1j2/MromKO9xIS9ZgaVZeH/E5q6XVYn7hTRRKnMlT4
+ 2HhbK5HW8sEqqj+NufSlyGQHfnZdSkWOhYk6T4XCEHX/soxjnZAnaoyQALeOtPaQg5wm
+ UJVjAFSQEKUHa6azj44yc2l2PzbkNWYZ/X4JqMyYKOL9HvPOUiOF3UdbCrfmZ9GgLiZS
+ s0ww==
+X-Gm-Message-State: AOJu0YxwLM9IaQE9SJiPmiGOYE+LViLKm5uDR82avsAyKWq0lUnJMzqx
+ 31o5auHYsvcVPgzu1oDwI2TMnaJSYkTCS4vdNKQV0/2Ire1eGyOcrDKA4hm7mNNHXXFhq0NmV+1
+ +ViPaB9AVXwaFLfFKc56z/2UpVpMe7esxYVbOd51js1Pd3Q/+bz9DLMSdZGKpGD2KCCuiEWfPt9
+ SY
+X-Received: by 2002:a05:600c:8505:b0:40c:367d:9022 with SMTP id
+ gw5-20020a05600c850500b0040c367d9022mr1959769wmb.151.1703582660199; 
+ Tue, 26 Dec 2023 01:24:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IERzDqRCleI+5hWtr+zSB7/pMLYFzKJkhFF4eTCM0xz5W7GeBu+bj2onBeEBQyABc4eu5UU3A==
+X-Received: by 2002:a05:600c:8505:b0:40c:367d:9022 with SMTP id
+ gw5-20020a05600c850500b0040c367d9022mr1959759wmb.151.1703582659792; 
+ Tue, 26 Dec 2023 01:24:19 -0800 (PST)
 Received: from redhat.com ([2.55.177.189]) by smtp.gmail.com with ESMTPSA id
- bi6-20020a05600c3d8600b0040d5868cc15sm3793902wmb.23.2023.12.26.01.24.12
+ f11-20020a05600c4e8b00b0040d5118e42esm10923472wmq.22.2023.12.26.01.24.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Dec 2023 01:24:12 -0800 (PST)
-Date: Tue, 26 Dec 2023 04:24:11 -0500
+ Tue, 26 Dec 2023 01:24:17 -0800 (PST)
+Date: Tue, 26 Dec 2023 04:24:15 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Mike Christie <michael.christie@oracle.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 03/21] vhost: Add worker backend callouts
-Message-ID: <9aad781959d770eb2479596a23e471cd82bd4e5b.1703582625.git.mst@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PULL 04/21] vhost-scsi: Add support for a worker thread per virtqueue
+Message-ID: <51396556f0927c3d202f9903db5aa5aa8d4cbd2c.1703582625.git.mst@redhat.com>
 References: <cover.1703582625.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,109 +104,131 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mike Christie <michael.christie@oracle.com>
 
-This adds the vhost backend callouts for the worker ioctls added in the
-6.4 linux kernel commit:
+This adds support for vhost-scsi to be able to create a worker thread
+per virtqueue. Right now for vhost-net we get a worker thread per
+tx/rx virtqueue pair which scales nicely as we add more virtqueues and
+CPUs, but for scsi we get the single worker thread that's shared by all
+virtqueues. When trying to send IO to more than 2 virtqueues the single
+thread becomes a bottlneck.
 
-c1ecd8e95007 ("vhost: allow userspace to create workers")
+This patch adds a new setting, worker_per_virtqueue, which can be set
+to:
+
+false: Existing behavior where we get the single worker thread.
+true: Create a worker per IO virtqueue.
 
 Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Message-Id: <20231204231618.21962-2-michael.christie@oracle.com>
+Message-Id: <20231204231618.21962-3-michael.christie@oracle.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- include/hw/virtio/vhost-backend.h | 14 ++++++++++++++
- hw/virtio/vhost-backend.c         | 28 ++++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+ include/hw/virtio/virtio-scsi.h |  1 +
+ hw/scsi/vhost-scsi.c            | 62 +++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
-index a86d103f82..70c2e8ffee 100644
---- a/include/hw/virtio/vhost-backend.h
-+++ b/include/hw/virtio/vhost-backend.h
-@@ -45,6 +45,8 @@ struct vhost_memory;
- struct vhost_vring_file;
- struct vhost_vring_state;
- struct vhost_vring_addr;
-+struct vhost_vring_worker;
-+struct vhost_worker_state;
- struct vhost_scsi_target;
- struct vhost_iotlb_msg;
- struct vhost_virtqueue;
-@@ -85,6 +87,14 @@ typedef int (*vhost_set_vring_err_op)(struct vhost_dev *dev,
-                                       struct vhost_vring_file *file);
- typedef int (*vhost_set_vring_busyloop_timeout_op)(struct vhost_dev *dev,
-                                                    struct vhost_vring_state *r);
-+typedef int (*vhost_attach_vring_worker_op)(struct vhost_dev *dev,
-+                                            struct vhost_vring_worker *worker);
-+typedef int (*vhost_get_vring_worker_op)(struct vhost_dev *dev,
-+                                         struct vhost_vring_worker *worker);
-+typedef int (*vhost_new_worker_op)(struct vhost_dev *dev,
-+                                   struct vhost_worker_state *worker);
-+typedef int (*vhost_free_worker_op)(struct vhost_dev *dev,
-+                                    struct vhost_worker_state *worker);
- typedef int (*vhost_set_features_op)(struct vhost_dev *dev,
-                                      uint64_t features);
- typedef int (*vhost_get_features_op)(struct vhost_dev *dev,
-@@ -172,6 +182,10 @@ typedef struct VhostOps {
-     vhost_set_vring_call_op vhost_set_vring_call;
-     vhost_set_vring_err_op vhost_set_vring_err;
-     vhost_set_vring_busyloop_timeout_op vhost_set_vring_busyloop_timeout;
-+    vhost_new_worker_op vhost_new_worker;
-+    vhost_free_worker_op vhost_free_worker;
-+    vhost_get_vring_worker_op vhost_get_vring_worker;
-+    vhost_attach_vring_worker_op vhost_attach_vring_worker;
-     vhost_set_features_op vhost_set_features;
-     vhost_get_features_op vhost_get_features;
-     vhost_set_backend_cap_op vhost_set_backend_cap;
-diff --git a/hw/virtio/vhost-backend.c b/hw/virtio/vhost-backend.c
-index 17f3fc6a08..833804dd40 100644
---- a/hw/virtio/vhost-backend.c
-+++ b/hw/virtio/vhost-backend.c
-@@ -158,6 +158,30 @@ static int vhost_kernel_set_vring_busyloop_timeout(struct vhost_dev *dev,
-     return vhost_kernel_call(dev, VHOST_SET_VRING_BUSYLOOP_TIMEOUT, s);
- }
+diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio-scsi.h
+index 7f0573b1bf..7be0105918 100644
+--- a/include/hw/virtio/virtio-scsi.h
++++ b/include/hw/virtio/virtio-scsi.h
+@@ -51,6 +51,7 @@ typedef struct virtio_scsi_config VirtIOSCSIConfig;
+ struct VirtIOSCSIConf {
+     uint32_t num_queues;
+     uint32_t virtqueue_size;
++    bool worker_per_virtqueue;
+     bool seg_max_adjust;
+     uint32_t max_sectors;
+     uint32_t cmd_per_lun;
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index 3126df9e1d..08aa7534df 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -165,6 +165,59 @@ static const VMStateDescription vmstate_virtio_vhost_scsi = {
+     .pre_save = vhost_scsi_pre_save,
+ };
  
-+static int vhost_kernel_new_worker(struct vhost_dev *dev,
-+                                   struct vhost_worker_state *worker)
++static int vhost_scsi_set_workers(VHostSCSICommon *vsc, bool per_virtqueue)
 +{
-+    return vhost_kernel_call(dev, VHOST_NEW_WORKER, worker);
++    struct vhost_dev *dev = &vsc->dev;
++    struct vhost_vring_worker vq_worker;
++    struct vhost_worker_state worker;
++    int i, ret;
++
++    /* Use default worker */
++    if (!per_virtqueue || dev->nvqs == VHOST_SCSI_VQ_NUM_FIXED + 1) {
++        return 0;
++    }
++
++    /*
++     * ctl/evt share the first worker since it will be rare for them
++     * to send cmds while IO is running.
++     */
++    for (i = VHOST_SCSI_VQ_NUM_FIXED + 1; i < dev->nvqs; i++) {
++        memset(&worker, 0, sizeof(worker));
++
++        ret = dev->vhost_ops->vhost_new_worker(dev, &worker);
++        if (ret == -ENOTTY) {
++            /*
++             * worker ioctls are not implemented so just ignore and
++             * and continue device setup.
++             */
++            warn_report("vhost-scsi: Backend supports a single worker. "
++                        "Ignoring worker_per_virtqueue=true setting.");
++            ret = 0;
++            break;
++        } else if (ret) {
++            break;
++        }
++
++        memset(&vq_worker, 0, sizeof(vq_worker));
++        vq_worker.worker_id = worker.worker_id;
++        vq_worker.index = i;
++
++        ret = dev->vhost_ops->vhost_attach_vring_worker(dev, &vq_worker);
++        if (ret == -ENOTTY) {
++            /*
++             * It's a bug for the kernel to have supported the worker creation
++             * ioctl but not attach.
++             */
++            dev->vhost_ops->vhost_free_worker(dev, &worker);
++            break;
++        } else if (ret) {
++            break;
++        }
++    }
++
++    return ret;
 +}
 +
-+static int vhost_kernel_free_worker(struct vhost_dev *dev,
-+                                    struct vhost_worker_state *worker)
-+{
-+    return vhost_kernel_call(dev, VHOST_FREE_WORKER, worker);
-+}
-+
-+static int vhost_kernel_attach_vring_worker(struct vhost_dev *dev,
-+                                            struct vhost_vring_worker *worker)
-+{
-+    return vhost_kernel_call(dev, VHOST_ATTACH_VRING_WORKER, worker);
-+}
-+
-+static int vhost_kernel_get_vring_worker(struct vhost_dev *dev,
-+                                         struct vhost_vring_worker *worker)
-+{
-+    return vhost_kernel_call(dev, VHOST_GET_VRING_WORKER, worker);
-+}
-+
- static int vhost_kernel_set_features(struct vhost_dev *dev,
-                                      uint64_t features)
+ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
  {
-@@ -313,6 +337,10 @@ const VhostOps kernel_ops = {
-         .vhost_set_vring_err = vhost_kernel_set_vring_err,
-         .vhost_set_vring_busyloop_timeout =
-                                 vhost_kernel_set_vring_busyloop_timeout,
-+        .vhost_get_vring_worker = vhost_kernel_get_vring_worker,
-+        .vhost_attach_vring_worker = vhost_kernel_attach_vring_worker,
-+        .vhost_new_worker = vhost_kernel_new_worker,
-+        .vhost_free_worker = vhost_kernel_free_worker,
-         .vhost_set_features = vhost_kernel_set_features,
-         .vhost_get_features = vhost_kernel_get_features,
-         .vhost_set_backend_cap = vhost_kernel_set_backend_cap,
+     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
+@@ -232,6 +285,13 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+         goto free_vqs;
+     }
+ 
++    ret = vhost_scsi_set_workers(vsc, vs->conf.worker_per_virtqueue);
++    if (ret < 0) {
++        error_setg(errp, "vhost-scsi: vhost worker setup failed: %s",
++                   strerror(-ret));
++        goto free_vqs;
++    }
++
+     /* At present, channel and lun both are 0 for bootable vhost-scsi disk */
+     vsc->channel = 0;
+     vsc->lun = 0;
+@@ -297,6 +357,8 @@ static Property vhost_scsi_properties[] = {
+                                                  VIRTIO_SCSI_F_T10_PI,
+                                                  false),
+     DEFINE_PROP_BOOL("migratable", VHostSCSICommon, migratable, false),
++    DEFINE_PROP_BOOL("worker_per_virtqueue", VirtIOSCSICommon,
++                     conf.worker_per_virtqueue, false),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
 -- 
 MST
 
