@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E45281E654
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:25:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D112981E650
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:25:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI3fz-0001IJ-V4; Tue, 26 Dec 2023 04:24:39 -0500
+	id 1rI3g5-0001an-7P; Tue, 26 Dec 2023 04:24:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fn-0001H1-7j
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fr-0001Hp-UT
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fl-0008G8-Fp
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:27 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fq-0008Hn-3Y
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703582664;
+ s=mimecast20190719; t=1703582669;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=xP1V8T2FgKjwD1W++v0ktUcbqsF7NLMyhF1n3TtP/Y4=;
- b=CJ8sul1Qi8RscYNIlWAT5pGk4DQl5sb/R+fg3WKnpHf0lO7TC0QNg0iw5z7TiXbnTfCGO4
- pz8itqiyyPyN1ee7ZkZeoC1Pe8UQcUAWol1Mjjp7yJcUlf0uJXnIjWvdl0dXQfm3dGfLzC
- K/XVa5LQFraf3qUulOSA4ZZm1M+us7k=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GbBeyS/80jftVPd7Ma4Yal4/KK1d/JdRq54dZwI1a6k=;
+ b=iQeUJrkjSvpsIcxLG9UFfsW9bWHpDk+e7d5MJbTLoMYbK34w2Cwjr+Gt4oOyOoGjUsYPE9
+ LNKn66+TQQCaqjBdXon75eEwihOCKwYwn8o8a0lPItiqtX6ATwr03RdF+AJGfaIEr2y33k
+ tLkxeV/QHePAyBhirqBpJxi5kvJYDqM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-426-9ZA3IyDWPZm4oGmStvEuVA-1; Tue, 26 Dec 2023 04:24:23 -0500
-X-MC-Unique: 9ZA3IyDWPZm4oGmStvEuVA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40d5b7be93aso1336085e9.2
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:24:23 -0800 (PST)
+ us-mta-693-ZRW6f9M0NHWf5saJnyu16w-1; Tue, 26 Dec 2023 04:24:27 -0500
+X-MC-Unique: ZRW6f9M0NHWf5saJnyu16w-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3367e2bd8b0so3195232f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:24:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703582660; x=1704187460;
+ d=1e100.net; s=20230601; t=1703582664; x=1704187464;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xP1V8T2FgKjwD1W++v0ktUcbqsF7NLMyhF1n3TtP/Y4=;
- b=Jd9Kbn+wkFfRcL0BYEskpQDkrttdplRSmKER3Qz6+YRH/fqhAnocTnZzBYMCe81dRJ
- fSnne4vzf49Uyx6MjuyDht/0c4vX/1d8tHnDsRLIFKCGTgX5kMCNWqx9OZmSvMvaYN5v
- ugo38xcb0cq6Mnk+F/d2tvZnuA1j2/MromKO9xIS9ZgaVZeH/E5q6XVYn7hTRRKnMlT4
- 2HhbK5HW8sEqqj+NufSlyGQHfnZdSkWOhYk6T4XCEHX/soxjnZAnaoyQALeOtPaQg5wm
- UJVjAFSQEKUHa6azj44yc2l2PzbkNWYZ/X4JqMyYKOL9HvPOUiOF3UdbCrfmZ9GgLiZS
- s0ww==
-X-Gm-Message-State: AOJu0YxwLM9IaQE9SJiPmiGOYE+LViLKm5uDR82avsAyKWq0lUnJMzqx
- 31o5auHYsvcVPgzu1oDwI2TMnaJSYkTCS4vdNKQV0/2Ire1eGyOcrDKA4hm7mNNHXXFhq0NmV+1
- +ViPaB9AVXwaFLfFKc56z/2UpVpMe7esxYVbOd51js1Pd3Q/+bz9DLMSdZGKpGD2KCCuiEWfPt9
- SY
-X-Received: by 2002:a05:600c:8505:b0:40c:367d:9022 with SMTP id
- gw5-20020a05600c850500b0040c367d9022mr1959769wmb.151.1703582660199; 
- Tue, 26 Dec 2023 01:24:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IERzDqRCleI+5hWtr+zSB7/pMLYFzKJkhFF4eTCM0xz5W7GeBu+bj2onBeEBQyABc4eu5UU3A==
-X-Received: by 2002:a05:600c:8505:b0:40c:367d:9022 with SMTP id
- gw5-20020a05600c850500b0040c367d9022mr1959759wmb.151.1703582659792; 
- Tue, 26 Dec 2023 01:24:19 -0800 (PST)
+ bh=GbBeyS/80jftVPd7Ma4Yal4/KK1d/JdRq54dZwI1a6k=;
+ b=docJLF/fvIhA7hwKW4QvlmpX89ZXabVh8XQpbh+WGWHmiF/cjcNXC2KKl7wGnOrbbf
+ g6eAHlGv+jiJz1LdWtVX2Bn045cwqFDs2Z2C2ZauUkyJvPxgYrSI2DWU5lx65IjxR/Ht
+ AN0pIGXS9VlLIAv3vOqIwycvLj8FrjndlVwiUzIqqf+g4yBFi9tR93dyhInUAKcXerTB
+ a2yvpV6ziTSgdmo85BNaqA9kU26tjvfjdSpZ20Ra4VAJsOcmRQc3CC24j8RO7Jh+xv3y
+ tvD8AKPQjPkYB1OT/nyxn2T4ph0Pdhzp1wCA6g4Zk+2bJvnZFyWRsKfECporDdoY2ete
+ oTxw==
+X-Gm-Message-State: AOJu0YzKX2/HZCHetVfq+BFzz24IV4dwKm/JwudLfcityfgRpY8hgsMs
+ Mli2g4/SiEStH5I0Hwh/y4/ClAkzCfHfzHvOaZGDzcUrht3lmHr5IxEuY4Ea2/wIpjQkdiNpE1w
+ rinl+CTqRCgR5whJ1p+OTe69z1mWlo5l1IUUdL+swc4p4+QZnpvyGdt81bxPtly1aWnShWUd2q+
+ dW
+X-Received: by 2002:a5d:6a4d:0:b0:336:d4b8:e3f7 with SMTP id
+ t13-20020a5d6a4d000000b00336d4b8e3f7mr779272wrw.4.1703582664605; 
+ Tue, 26 Dec 2023 01:24:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHk62Q93TprXu0PLDyr/W74FGCe2O28dhpbUFJlretpVvf/RIikEzHzEdfm0bv1FNfc9xVbxA==
+X-Received: by 2002:a5d:6a4d:0:b0:336:d4b8:e3f7 with SMTP id
+ t13-20020a5d6a4d000000b00336d4b8e3f7mr779264wrw.4.1703582664315; 
+ Tue, 26 Dec 2023 01:24:24 -0800 (PST)
 Received: from redhat.com ([2.55.177.189]) by smtp.gmail.com with ESMTPSA id
- f11-20020a05600c4e8b00b0040d5118e42esm10923472wmq.22.2023.12.26.01.24.16
+ c10-20020adffb0a000000b00336d21e40f7sm2123692wrr.103.2023.12.26.01.24.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Dec 2023 01:24:17 -0800 (PST)
-Date: Tue, 26 Dec 2023 04:24:15 -0500
+ Tue, 26 Dec 2023 01:24:22 -0800 (PST)
+Date: Tue, 26 Dec 2023 04:24:20 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Mike Christie <michael.christie@oracle.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PULL 04/21] vhost-scsi: Add support for a worker thread per virtqueue
-Message-ID: <51396556f0927c3d202f9903db5aa5aa8d4cbd2c.1703582625.git.mst@redhat.com>
+ Aaron Young <Aaron.Young@oracle.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 05/21] hw/acpi: propagate vcpu hotplug after switch to modern
+ interface
+Message-ID: <45e48809d3d0328fd2f113b878a62a27f1360664.1703582625.git.mst@redhat.com>
 References: <cover.1703582625.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -77,14 +76,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1703582625.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
 X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.977,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,132 +101,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Aaron Young <Aaron.Young@oracle.com>
 
-This adds support for vhost-scsi to be able to create a worker thread
-per virtqueue. Right now for vhost-net we get a worker thread per
-tx/rx virtqueue pair which scales nicely as we add more virtqueues and
-CPUs, but for scsi we get the single worker thread that's shared by all
-virtqueues. When trying to send IO to more than 2 virtqueues the single
-thread becomes a bottlneck.
+If a vcpu with an apic-id that is not supported by the legacy
+interface (>255) is hot-plugged, the legacy code will dynamically switch
+to the modern interface. However, the hotplug event is not forwarded to
+the new interface resulting in the vcpu not being fully/properly added
+to the machine config. This BUG is evidenced by OVMF when it
+it attempts to count the vcpus and reports an inconsistent vcpu count
+reported by the fw_cfg interface and the modern hotpug interface.
 
-This patch adds a new setting, worker_per_virtqueue, which can be set
-to:
+Fix is to propagate the hotplug event after making the switch from
+the legacy interface to the modern interface.
 
-false: Existing behavior where we get the single worker thread.
-true: Create a worker per IO virtqueue.
-
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
-Message-Id: <20231204231618.21962-3-michael.christie@oracle.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Aaron Young <aaron.young@oracle.com>
+Message-Id: <0e8a9baebbb29f2a6c87fd08e43dc2ac4019759a.1702398644.git.Aaron.Young@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- include/hw/virtio/virtio-scsi.h |  1 +
- hw/scsi/vhost-scsi.c            | 62 +++++++++++++++++++++++++++++++++
- 2 files changed, 63 insertions(+)
+ hw/acpi/cpu_hotplug.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio-scsi.h
-index 7f0573b1bf..7be0105918 100644
---- a/include/hw/virtio/virtio-scsi.h
-+++ b/include/hw/virtio/virtio-scsi.h
-@@ -51,6 +51,7 @@ typedef struct virtio_scsi_config VirtIOSCSIConfig;
- struct VirtIOSCSIConf {
-     uint32_t num_queues;
-     uint32_t virtqueue_size;
-+    bool worker_per_virtqueue;
-     bool seg_max_adjust;
-     uint32_t max_sectors;
-     uint32_t cmd_per_lun;
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 3126df9e1d..08aa7534df 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -165,6 +165,59 @@ static const VMStateDescription vmstate_virtio_vhost_scsi = {
-     .pre_save = vhost_scsi_pre_save,
+diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
+index 634bbecb31..6f78db0ccb 100644
+--- a/hw/acpi/cpu_hotplug.c
++++ b/hw/acpi/cpu_hotplug.c
+@@ -59,7 +59,8 @@ static const MemoryRegionOps AcpiCpuHotplug_ops = {
+     },
  };
  
-+static int vhost_scsi_set_workers(VHostSCSICommon *vsc, bool per_virtqueue)
-+{
-+    struct vhost_dev *dev = &vsc->dev;
-+    struct vhost_vring_worker vq_worker;
-+    struct vhost_worker_state worker;
-+    int i, ret;
-+
-+    /* Use default worker */
-+    if (!per_virtqueue || dev->nvqs == VHOST_SCSI_VQ_NUM_FIXED + 1) {
-+        return 0;
-+    }
-+
-+    /*
-+     * ctl/evt share the first worker since it will be rare for them
-+     * to send cmds while IO is running.
-+     */
-+    for (i = VHOST_SCSI_VQ_NUM_FIXED + 1; i < dev->nvqs; i++) {
-+        memset(&worker, 0, sizeof(worker));
-+
-+        ret = dev->vhost_ops->vhost_new_worker(dev, &worker);
-+        if (ret == -ENOTTY) {
-+            /*
-+             * worker ioctls are not implemented so just ignore and
-+             * and continue device setup.
-+             */
-+            warn_report("vhost-scsi: Backend supports a single worker. "
-+                        "Ignoring worker_per_virtqueue=true setting.");
-+            ret = 0;
-+            break;
-+        } else if (ret) {
-+            break;
-+        }
-+
-+        memset(&vq_worker, 0, sizeof(vq_worker));
-+        vq_worker.worker_id = worker.worker_id;
-+        vq_worker.index = i;
-+
-+        ret = dev->vhost_ops->vhost_attach_vring_worker(dev, &vq_worker);
-+        if (ret == -ENOTTY) {
-+            /*
-+             * It's a bug for the kernel to have supported the worker creation
-+             * ioctl but not attach.
-+             */
-+            dev->vhost_ops->vhost_free_worker(dev, &worker);
-+            break;
-+        } else if (ret) {
-+            break;
-+        }
-+    }
-+
-+    return ret;
-+}
-+
- static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+-static void acpi_set_cpu_present_bit(AcpiCpuHotplug *g, CPUState *cpu)
++static void acpi_set_cpu_present_bit(AcpiCpuHotplug *g, CPUState *cpu,
++                                     bool *swtchd_to_modern)
  {
-     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-@@ -232,6 +285,13 @@ static void vhost_scsi_realize(DeviceState *dev, Error **errp)
-         goto free_vqs;
+     CPUClass *k = CPU_GET_CLASS(cpu);
+     int64_t cpu_id;
+@@ -68,23 +69,34 @@ static void acpi_set_cpu_present_bit(AcpiCpuHotplug *g, CPUState *cpu)
+     if ((cpu_id / 8) >= ACPI_GPE_PROC_LEN) {
+         object_property_set_bool(g->device, "cpu-hotplug-legacy", false,
+                                  &error_abort);
++        *swtchd_to_modern = true;
+         return;
      }
  
-+    ret = vhost_scsi_set_workers(vsc, vs->conf.worker_per_virtqueue);
-+    if (ret < 0) {
-+        error_setg(errp, "vhost-scsi: vhost worker setup failed: %s",
-+                   strerror(-ret));
-+        goto free_vqs;
-+    }
++    *swtchd_to_modern = false;
+     g->sts[cpu_id / 8] |= (1 << (cpu_id % 8));
+ }
+ 
+ void legacy_acpi_cpu_plug_cb(HotplugHandler *hotplug_dev,
+                              AcpiCpuHotplug *g, DeviceState *dev, Error **errp)
+ {
+-    acpi_set_cpu_present_bit(g, CPU(dev));
+-    acpi_send_event(DEVICE(hotplug_dev), ACPI_CPU_HOTPLUG_STATUS);
++    bool swtchd_to_modern;
++    Error *local_err = NULL;
 +
-     /* At present, channel and lun both are 0 for bootable vhost-scsi disk */
-     vsc->channel = 0;
-     vsc->lun = 0;
-@@ -297,6 +357,8 @@ static Property vhost_scsi_properties[] = {
-                                                  VIRTIO_SCSI_F_T10_PI,
-                                                  false),
-     DEFINE_PROP_BOOL("migratable", VHostSCSICommon, migratable, false),
-+    DEFINE_PROP_BOOL("worker_per_virtqueue", VirtIOSCSICommon,
-+                     conf.worker_per_virtqueue, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
++    acpi_set_cpu_present_bit(g, CPU(dev), &swtchd_to_modern);
++    if (swtchd_to_modern) {
++        /* propagate the hotplug to the modern interface */
++        hotplug_handler_plug(hotplug_dev, dev, &local_err);
++    } else {
++        acpi_send_event(DEVICE(hotplug_dev), ACPI_CPU_HOTPLUG_STATUS);
++    }
+ }
+ 
+ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
+                                   AcpiCpuHotplug *gpe_cpu, uint16_t base)
+ {
+     CPUState *cpu;
++    bool swtchd_to_modern;
+ 
+     memory_region_init_io(&gpe_cpu->io, owner, &AcpiCpuHotplug_ops,
+                           gpe_cpu, "acpi-cpu-hotplug", ACPI_GPE_PROC_LEN);
+@@ -92,7 +104,7 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
+     gpe_cpu->device = owner;
+ 
+     CPU_FOREACH(cpu) {
+-        acpi_set_cpu_present_bit(gpe_cpu, cpu);
++        acpi_set_cpu_present_bit(gpe_cpu, cpu, &swtchd_to_modern);
+     }
+ }
  
 -- 
 MST
