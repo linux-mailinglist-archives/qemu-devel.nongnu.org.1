@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC19081E711
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 12:19:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A621981E735
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 12:56:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI5SO-0004WB-1g; Tue, 26 Dec 2023 06:18:44 -0500
+	id 1rI61n-0004ec-F5; Tue, 26 Dec 2023 06:55:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI5SL-0004VC-MR
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 06:18:41 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI61j-0004eQ-IZ
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 06:55:16 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI5SK-0008Sh-6m
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 06:18:41 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40d5ac76667so2290505e9.1
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 03:18:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI61g-0008Ip-EC
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 06:55:15 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40d4ee4cbbcso29820235e9.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 03:55:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703589519; x=1704194319; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703591710; x=1704196510; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=eGaxT+hIN+7zr4UgbUTDj+hMyyEeMv432BZ16B8Mgq8=;
- b=pWgawoErXtu4XJM9ZpVMYGeSxNo7wAOYOha5p3QwwIdzvUVK0Frw9sP2l347OfzCQJ
- EXA3dLLpPjswXUDhklgRVrdrAjjTWSazWOqCeiIXdxEw7ZSoVBQLwPd1Q0zs+jbQmzo3
- vic9NuOadzLGL0/xFmSCW6xB5yVNU7ou0PBOvyFJ1Lbu5OPnTI5CfuDVFf3TMxdBYq1L
- iyG2kkBu/Ic1ipFeDXDii1lRGD5PxW+y2R7ymjBA8KFuvnCUNsITsDVpVurcTRFCUVjh
- K4mBNRuDxuONxoYzTZ55BYunBF7CDOWZJEl2vNBxxzilQeDL5szxPa5d1bJjM7LHy5vc
- jjiw==
+ bh=0RLt0wWdyWg6imwNkuLscoujrh1SIp+Lkfe4BwE965E=;
+ b=pKHBG80ydFZDow+xz3ivN7TJ5eVe9dKgqhPOMCm+syXFQESh6HcFZ//No2CE/cPfy7
+ OMm+YOqmIQyYrUm++GCz72fYEz61JPox+fHvFRpCFvj3RDwLOwJ+VdrhA3d8XeQYZhh1
+ hoKaQh5g+E9rgIZ4vhsKde64DJKYLMIz3w33JpjgYwuI9BAqpr6s/+PJTIV4E4bsRKea
+ 8VhdzxeGFcE0xGWsqw9zIt07L7JFAR1SalGOFD7nAcIRYWE+M/w+/d1k2eqfd+Nso5qH
+ OsZBJ4Whrj4bRVac/Xc/iFM6y5Pwg5svC0dHrKgghwlYgJAlVSnXDfHCchMng4V2ojdT
+ +3fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703589519; x=1704194319;
+ d=1e100.net; s=20230601; t=1703591710; x=1704196510;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eGaxT+hIN+7zr4UgbUTDj+hMyyEeMv432BZ16B8Mgq8=;
- b=XYdiVzR5wgT6Xolb253GLTNVhSk5baP1VFzC5uarnWJz5d76b2txCvQ0XdaY0hf2ci
- z5ZrstUtGVin3mBg6NLfwCr7FHL/RSvbPH1UeFozpsaq8ULJ8TUfaxKOffLgt6QBaUOO
- fFDjz8I+ibFgqLaO7vZWbpGuvb8cnn3VCtwCJNFaoq4Vs57VB1/knMDB89D6QJCxg7sj
- uj/L+fT+bslQ7LJWT+hwuMhlQC6WlyjEq/8i4mOLiyY6lNOMm14dBIpWsrWMPsij1o9w
- uMSq4e98aKJxSL+F80KR0jm2KChl7iqMaRTaMFEk3WIfmN+IeZ4/Q9UO4JIfPhdp1k0q
- Pzjw==
-X-Gm-Message-State: AOJu0YwOKC+UXSSAaBOh5FKWt1aTm73c0qtiuv3/PTcfY/MkqPujz4/Q
- /p48hibn9eRrxFFvXOmC4Yf+K1+WIVWvKQ==
-X-Google-Smtp-Source: AGHT+IFMHPkQVk++az1wXlyiblkAtV0ZpnOuezHp3Apsxpq/DkW5B1DXIKsn2vs8LC0byCJYekj/XA==
-X-Received: by 2002:a05:600c:3c8f:b0:40d:2dbe:b11d with SMTP id
- bg15-20020a05600c3c8f00b0040d2dbeb11dmr4935154wmb.116.1703589518873; 
- Tue, 26 Dec 2023 03:18:38 -0800 (PST)
+ bh=0RLt0wWdyWg6imwNkuLscoujrh1SIp+Lkfe4BwE965E=;
+ b=K+QdIEkcIfuG6iObAfEgoj1SwD8MZFe0n3qsaN7BYgAL1gS/WlBT1GAlCK3FghyoFA
+ ZABYu880dyLtqxgAfzQI8tGKq6No6ioydvTLmx9UugqLxkP7vJYZ4IoXpppy8bpkvhDp
+ Ea0LVgdFsOUisV5NBv45gVrXevQIxRJn0t8AXljUQKBKTTo/I49Xl8gK0fEbbKNOeUXa
+ By2ui+YEjCgUnwFBgjRuVsECF+FvHdYYvZ6ipLCMqepUiwW5pchTr3sR0jkZKFIH6Gou
+ a7B7W9ldGLI4sGekTCgDHs7DvvFlS40I1N7OvqQJfEHge3bcSzuM+qcz7ggzRWQwEFES
+ rQcw==
+X-Gm-Message-State: AOJu0Ywvqu86gwEt0+bawwUVDev1r75zBO6LS03B8X50WB/iffkkBJDt
+ DOOIswKTBVSqHfRe5fpnwWdV1ZCim4d/jmBsSFSYe3zQ+b8=
+X-Google-Smtp-Source: AGHT+IHtoklzeZkJ/TAJOzCJCpDN8OSVdqrohhy2LBSKma9U/v5f84VwdtiYoCWzXu80CuxIN/Lxsg==
+X-Received: by 2002:a05:600c:468c:b0:40d:4d91:60a7 with SMTP id
+ p12-20020a05600c468c00b0040d4d9160a7mr3228703wmo.128.1703591709813; 
+ Tue, 26 Dec 2023 03:55:09 -0800 (PST)
 Received: from [192.168.96.175] (137.red-95-127-43.staticip.rima-tde.net.
  [95.127.43.137]) by smtp.gmail.com with ESMTPSA id
- b14-20020a05600c4e0e00b0040d5a5c26a9sm1868669wmq.43.2023.12.26.03.18.37
+ s10-20020adfdb0a000000b003367d48520dsm12509840wri.46.2023.12.26.03.55.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Dec 2023 03:18:38 -0800 (PST)
-Message-ID: <66c6a9ef-6dc7-479f-bcd3-497e8eaabbdd@linaro.org>
-Date: Tue, 26 Dec 2023 12:18:37 +0100
+ Tue, 26 Dec 2023 03:55:09 -0800 (PST)
+Message-ID: <58639d51-4530-47cb-a03d-48237a6bf16e@linaro.org>
+Date: Tue, 26 Dec 2023 12:55:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] include/ui/rect.h: fix qemu_rect_init() mis-assignment
+Subject: Re: [PATCH] hw/m68k/mcf5206: Embed m5206_timer_state in
+ m5206_mbar_state
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Elen Avan <elen.avan@bk.ru>, qemu-stable@nongnu.org
-References: <20231222191721.414176-1-mjt@tls.msk.ru>
+To: Thomas Huth <huth@tuxfamily.org>, qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Laurent Vivier <laurent@vivier.eu>
+References: <20231221122939.11001-1-huth@tuxfamily.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231222191721.414176-1-mjt@tls.msk.ru>
+In-Reply-To: <20231221122939.11001-1-huth@tuxfamily.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,17 +93,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/12/23 20:17, Michael Tokarev wrote:
-> From: Elen Avan <elen.avan@bk.ru>
-> Signed-off-by: Elen Avan <elen.avan@bk.ru>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2051
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2050
-> Fixes: a200d53b1fde "virtio-gpu: replace PIXMAN for region/rect test"
-> Cc: qemu-stable@nongnu.org
-> Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+On 21/12/23 13:29, Thomas Huth wrote:
+> There's no need to explicitely allocate the memory here, we can
+> simply embed it into the m5206_mbar_state instead.
+> 
+> Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 > ---
->   include/ui/rect.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   hw/m68k/mcf5206.c | 20 ++++++++------------
+>   1 file changed, 8 insertions(+), 12 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
