@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9EE81E6B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:52:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACC781E6B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:53:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI469-0001Bp-Gi; Tue, 26 Dec 2023 04:51:41 -0500
+	id 1rI47C-0001sT-Er; Tue, 26 Dec 2023 04:52:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI466-0001BX-O5
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:51:38 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI47A-0001rC-Ge
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:52:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI462-00044Q-7Z
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:51:36 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI478-00048R-Qs
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:52:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703584293;
+ s=mimecast20190719; t=1703584361;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ibi9cILDkS6+uCUBFarZ9oJKdZKd3xgef/MV0EFr+Q4=;
- b=Ry7kI2/vv1odjYkKQZekbVvlX6Sa8ZJr32J8ru/NALZcc7YWtwhin6/ly7TUFF9OMqa/iC
- OFRLL7VziG0XEHSLwOStb1GBcLo7i23SqKwngANsbu7sFX1K+Pt3gHujrhWdkPxs3nZuHc
- IbdFTdJpsCqSY3B77N3uvdMCkjvrHmk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VVa/TM0jX0Qz+UCFAMwmdhwFZKkLoEj6Z3aD86p0JRQ=;
+ b=RgQert8UXHIsEtc+mQ/D7FYtaYkpQCMpqosGPFXAJ7cKdzD1g3o8qL4SD9kwYnN53qy0z9
+ gAFyCLa5CQ60fABJB61cnC8zmAemFnrjp12iUiH9jKbj0+D9wE5DssHYq3YaKkdMiveRg9
+ rTEDmkZGXTOULMZ3FVMm6qgjlwEQm3I=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-219-ydAMxXNIOK-5P-BjHVZWHg-1; Tue, 26 Dec 2023 04:51:31 -0500
-X-MC-Unique: ydAMxXNIOK-5P-BjHVZWHg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40d5bc8d13bso686055e9.2
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:51:31 -0800 (PST)
+ us-mta-317-pt5y634DPcSAOMsAXhCaKQ-1; Tue, 26 Dec 2023 04:52:39 -0500
+X-MC-Unique: pt5y634DPcSAOMsAXhCaKQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3368c707b03so3065926f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:52:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703584289; x=1704189089;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ibi9cILDkS6+uCUBFarZ9oJKdZKd3xgef/MV0EFr+Q4=;
- b=iWzWpIFrn9D3NaDR25KusxcS14NW7vRkLMdw68WYfyHzxi5iuHfUX/lDZZWLSSJ+oH
- 6ZbyjduJAzcqhVr4qTUrMxpLShqyrb6PW5ckDhT5j9bILsHpP0hsidOR+r/VY5F8vDqG
- 4D4hg3ml8Oi58n04NFPX1/TxrkEbNe1ErRr4xsYl4POYCMB2b9mFJLQ0+P2jzgnpsojk
- 3ib5kw+wm/h2FjHpyaUPvx4zrP6/NTGo0fs+8VSN+Lz1BRvsh3fDbenMM+maP1MQK077
- ueJr/kU0SO8Pu7yzbdiHvtQzH7SR/OHRbQRXHqAqecch2KqIGx5rbgQ+sh83sg7lflzk
- F2FQ==
-X-Gm-Message-State: AOJu0YwBzyWKlYVDFgQN3+pGqXzMSymrtpuyYAc8W7e+uuEBXCdMaNlw
- lhUa7Ok6pNsZfJM/GF6BJ2CW13/tHXCDCKZl409YX7omz6mp7kGJyF5T1+AdnYmqvAZAuKujHki
- YN56msNVIijdmaefKlMwMXlv0Qi+KBaE0U9LUPf3luYn4/j5xmvlSqKIo0b5gmmOUO3R8KAa5pV
- er
-X-Received: by 2002:a05:600c:511a:b0:40d:3b3f:603d with SMTP id
- o26-20020a05600c511a00b0040d3b3f603dmr3380407wms.41.1703584289540; 
- Tue, 26 Dec 2023 01:51:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFXnnR7Ym5Vx48pictoS+FnHH5jctBY+Q47KusuO7dmKBvyrjSaw/ALgWcihxvrZF2x6B8SgA==
-X-Received: by 2002:a05:600c:511a:b0:40d:3b3f:603d with SMTP id
- o26-20020a05600c511a00b0040d3b3f603dmr3380398wms.41.1703584289227; 
- Tue, 26 Dec 2023 01:51:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1703584357; x=1704189157;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VVa/TM0jX0Qz+UCFAMwmdhwFZKkLoEj6Z3aD86p0JRQ=;
+ b=sa0O7FMIYPIV0+wHGJIm1t+hUbuRVveg0SUgrZLWoW/x1Y75l5Vl1v+9MvzLrCzN6O
+ hDc9v3qg34Oi4Veb8QN5dARyFuctVu1atsqB9logy4Q/3rszmxYxJ0yvvzVG/8iQ5zrQ
+ qIX7KbGSpJQkMW4cfDRpDPVR4RhQ7xxeUjISn6GlOEjZTy+cPr7cTeQDwZZi2lqtUZ/M
+ 1ry2rTgkZL/gKdBmN/Y5UJELzOK1AVKzFkp+srMowG0C9IJYjEmIGZQB/t7gR7JhZS9x
+ lqoEQC4+kP8wHD+n/LCLh6pflnpDmYcugdboUQWI46mXb9bKk87DDZr+gTuroH/5Aqa4
+ SVUw==
+X-Gm-Message-State: AOJu0Yx/yUdZ5EAR3kZElTeK0YAU9AlW1rlccdoZdQrvyTE392sgAN23
+ m1dLXdMHn/q6/Hwh6Ug4dHjHGcxzAo0cVcMJitlWXX57PH/wWEiOtoZV7E6C7um2L/6SrEQfvHB
+ 39b59dtw/oHjO6z7E4kRjomxzpne4+evD8aSyR+ZkbCTOJKYx/Nfxnnm3CbUgAolU1VwePQcLTA
+ /X
+X-Received: by 2002:a5d:6703:0:b0:336:66be:adc8 with SMTP id
+ o3-20020a5d6703000000b0033666beadc8mr3770788wru.55.1703584357133; 
+ Tue, 26 Dec 2023 01:52:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGrCxpCKai8nyQbpgfdjVE2YV6YGckgE0ALfpP631DM3GZ9n03ZYC0ZAwTl4tYgujPcZezfuA==
+X-Received: by 2002:a5d:6703:0:b0:336:66be:adc8 with SMTP id
+ o3-20020a5d6703000000b0033666beadc8mr3770784wru.55.1703584356777; 
+ Tue, 26 Dec 2023 01:52:36 -0800 (PST)
 Received: from redhat.com ([2.55.177.189]) by smtp.gmail.com with ESMTPSA id
- r20-20020a05600c459400b0040c3dcc36e6sm20016130wmo.47.2023.12.26.01.51.27
+ a3-20020a056000100300b003368d2e729bsm10529793wrx.43.2023.12.26.01.52.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Dec 2023 01:51:28 -0800 (PST)
-Date: Tue, 26 Dec 2023 04:51:25 -0500
+ Tue, 26 Dec 2023 01:52:35 -0800 (PST)
+Date: Tue, 26 Dec 2023 04:52:33 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Dongli Zhang <dongli.zhang@oracle.com>, Feng Li <fengli@smartx.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PULL 06/21] vhost-scsi: fix usage of error_reportf_err()
-Message-ID: <9a557b1b226293aed3f06bd035cf87094d69ea8d.1703582625.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PULL 00/21] virtio,pc,pci: features, cleanups, fixes
+Message-ID: <20231226045207-mutt-send-email-mst@kernel.org>
 References: <cover.1703582625.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1703582625.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -50
@@ -101,67 +98,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+On Tue, Dec 26, 2023 at 04:24:01AM -0500, Michael S. Tsirkin wrote:
+> The following changes since commit 80f1709aa0eb4de09b4240563463f991a5b9d855:
+> 
+>   Merge tag 'pull-loongarch-20231221' of https://gitlab.com/gaosong/qemu into staging (2023-12-21 19:44:19 -0500)
+> 
+> are available in the Git repository at:
+> 
+>   https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+> 
+> for you to fetch changes up to 7b67b2f0f4f7c5ec888a331af599d9daff735d60:
 
-It is required to use error_report() instead of error_reportf_err(), if the
-prior function does not take local_err as the argument. As a result, the
-local_err is always NULL and segment fault may happen.
+f6fe3e333fe0fcb8ef87c669a3a8f84fbee10cb7 now - fixed one of commit logs.
 
-vhost_scsi_start()
--> vhost_scsi_set_endpoint(s) --> does not allocate local_err
--> error_reportf_err()
-   -> error_vprepend()
-      -> g_string_append(newmsg, (*errp)->msg) --> (*errp) is NULL
 
-In addition, add ": " at the end of other error_reportf_err() logs.
-
-Fixes: 7962e432b4e4 ("vhost-user-scsi: support reconnect to backend")
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Message-Id: <20231214003117.43960-1-dongli.zhang@oracle.com>
-Reviewed-by: Feng Li <fengli@smartx.com>
-Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/scsi/vhost-scsi.c      | 4 ++--
- hw/scsi/vhost-user-scsi.c | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 08aa7534df..6159eb6fec 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -91,13 +91,13 @@ static int vhost_scsi_start(VHostSCSI *s)
- 
-     ret = vhost_scsi_common_start(vsc, &local_err);
-     if (ret < 0) {
--        error_reportf_err(local_err, "Error starting vhost-scsi");
-+        error_reportf_err(local_err, "Error starting vhost-scsi: ");
-         return ret;
-     }
- 
-     ret = vhost_scsi_set_endpoint(s);
-     if (ret < 0) {
--        error_reportf_err(local_err, "Error setting vhost-scsi endpoint");
-+        error_report("Error setting vhost-scsi endpoint");
-         vhost_scsi_common_stop(vsc);
-     }
- 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 780f10559d..af18c4f3d3 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -83,7 +83,8 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-     if (should_start) {
-         ret = vhost_user_scsi_start(s, &local_err);
-         if (ret < 0) {
--            error_reportf_err(local_err, "unable to start vhost-user-scsi: %s",
-+            error_reportf_err(local_err,
-+                              "unable to start vhost-user-scsi: %s: ",
-                               strerror(-ret));
-             qemu_chr_fe_disconnect(&vs->conf.chardev);
-         }
--- 
-MST
+>   vdpa: move memory listener to vhost_vdpa_shared (2023-12-25 11:34:55 -0500)
+> 
+> ----------------------------------------------------------------
+> virtio,pc,pci: features, cleanups, fixes
+> 
+> vhost-scsi support for worker ioctls
+> 
+> fixes, cleanups all over the place.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> 
+> ----------------------------------------------------------------
+> Aaron Young (1):
+>       hw/acpi: propagate vcpu hotplug after switch to modern interface
+> 
+> Dongli Zhang (1):
+>       vhost-scsi: fix usage of error_reportf_err()
+> 
+> Eugenio Pérez (14):
+>       vdpa: do not set virtio status bits if unneeded
+>       vdpa: add VhostVDPAShared
+>       vdpa: move iova tree to the shared struct
+>       vdpa: move iova_range to vhost_vdpa_shared
+>       vdpa: move shadow_data to vhost_vdpa_shared
+>       vdpa: use vdpa shared for tracing
+>       vdpa: move file descriptor to vhost_vdpa_shared
+>       vdpa: move iotlb_batch_begin_sent to vhost_vdpa_shared
+>       vdpa: move backend_cap to vhost_vdpa_shared
+>       vdpa: remove msg type of vhost_vdpa
+>       vdpa: move iommu_list to vhost_vdpa_shared
+>       vdpa: use VhostVDPAShared in vdpa_dma_map and unmap
+>       vdpa: use dev_shared in vdpa_iommu
+>       vdpa: move memory listener to vhost_vdpa_shared
+> 
+> Mathieu Poirier (1):
+>       virtio: rng: Check notifier helpers for VIRTIO_CONFIG_IRQ_IDX
+> 
+> Mike Christie (2):
+>       vhost: Add worker backend callouts
+>       vhost-scsi: Add support for a worker thread per virtqueue
+> 
+> Zhao Liu (1):
+>       tests: bios-tables-test: Rename smbios type 4 related test functions
+> 
+> wangmeiling (1):
+>       Fix bugs when VM shutdown with virtio-gpu unplugged
+> 
+>  include/hw/virtio/vhost-backend.h |  14 ++++
+>  include/hw/virtio/vhost-vdpa.h    |  40 ++++++----
+>  include/hw/virtio/virtio-scsi.h   |   1 +
+>  hw/acpi/cpu_hotplug.c             |  20 ++++-
+>  hw/display/virtio-gpu-base.c      |   4 +
+>  hw/scsi/vhost-scsi.c              |  66 ++++++++++++++-
+>  hw/scsi/vhost-user-scsi.c         |   3 +-
+>  hw/virtio/vdpa-dev.c              |   7 +-
+>  hw/virtio/vhost-backend.c         |  28 +++++++
+>  hw/virtio/vhost-user-rng.c        |  16 ++++
+>  hw/virtio/vhost-vdpa.c            | 164 ++++++++++++++++++++------------------
+>  net/vhost-vdpa.c                  | 116 +++++++++++++--------------
+>  tests/qtest/bios-tables-test.c    |  20 ++---
+>  hw/virtio/trace-events            |  14 ++--
+>  14 files changed, 334 insertions(+), 179 deletions(-)
+> 
 
 
