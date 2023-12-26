@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1267681E656
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:25:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E72E81E65F
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:26:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI3gP-0002nP-Ow; Tue, 26 Dec 2023 04:25:05 -0500
+	id 1rI3gT-00031b-0l; Tue, 26 Dec 2023 04:25:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3gM-0002f8-Si
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:25:03 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3gP-0002sZ-OF
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:25:05 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3gI-0008K3-Vb
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:25:00 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3gN-0008Ml-EO
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:25:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703582698;
+ s=mimecast20190719; t=1703582702;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kho8Kn81JXFBrbbnbKhrQXI3g7g8qDF5iaK2v9gtOs0=;
- b=ZR+dNu6oTG+V/eotmO7qBAtkFEY90HAa3e4a7lS4UkWFXBj8OpyiyPPUjoEAMRTjM9LNAP
- HnRjmueRTlJFcuGQdWeKVZftHttXmemhsIhr7sIHBPDatU7I7sZXK1HDJ6F730byAFo0H7
- c5JLcsiTqWO4xY9JWWOY6pP3NVEhmNI=
+ bh=f9WQMHsSDkCkbXrOH1Cth231xwoLWiHqIfjiVylGQQQ=;
+ b=hMs/tJIRODxpKB/vYEYfw42zb2Hl/YYMqMDH9ZtejFRIXrYQ8zaS3I0IP/Dh9nL26bwhwY
+ FOnKuDbghRgiZ2m2s2B1n20HjGEGQC1jhNf4y+vlTj+hjYUhBxgAaDQ6Jl7Mxm+jGCDj0I
+ HDTO6WR6ycck9riT8UCGN4keNEXzce8=
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
  [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-P0-2xfzVN7ijvjKc_3oHGw-1; Tue, 26 Dec 2023 04:24:56 -0500
-X-MC-Unique: P0-2xfzVN7ijvjKc_3oHGw-1
+ us-mta-643-qZ1BfraSOZWLAWR3QON0ZQ-1; Tue, 26 Dec 2023 04:25:01 -0500
+X-MC-Unique: qZ1BfraSOZWLAWR3QON0ZQ-1
 Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33688a38636so3151679f8f.1
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:24:56 -0800 (PST)
+ ffacd0b85a97d-33688a38636so3151698f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:25:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703582694; x=1704187494;
+ d=1e100.net; s=20230601; t=1703582698; x=1704187498;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kho8Kn81JXFBrbbnbKhrQXI3g7g8qDF5iaK2v9gtOs0=;
- b=dMOf8vxj8qrpjcZqKr/lUQfvcWeCKCSfZJ1zkoANYzA8rwMlMHKQ8bkgHynGRudxrS
- 9kT/QV5RKBotu4LgAY/hsB5uev/709t1TKCBMGjH8BmbsXrLH+Tdcvri/hYdxLJVIs8A
- 4jJWUmz3k/WRw82pw35olK3RxZNPQqSHcsCE1XXH/8uK27Ff0TCiIcOizdmzUnmc3GZk
- VuPsev1Nb1heSLufyLF5RYmyqeMu/IR52PrtOj0LxXlE/MF405VnD+7CMrgwGpuCkV4q
- REkvNVyx1SQTarUyXfdSNkEWk67Tt96d7HhPOpUtfzZt/Kqs51n5HaSgJTYIomoiHcO2
- Hh9Q==
-X-Gm-Message-State: AOJu0YyB9y1dL0yxN+W/sVt9CiNisc2ve4w+oXB9r3Xi0fToo0z/EvXv
- pveIBR4lElUd8AXMVrgxOit1244TxnktGOlH7YCIH7BByRfI9elHoNnyEdHMSms10xV8HFZq6pJ
- V9TjSucC2sZ/k56aRIP68VPD5LivDo4Gvwx/iDNOBq7aKVJeZCIWF+aJkS5iro786LmAAMluC/k
- 6O
-X-Received: by 2002:a05:600c:1987:b0:40d:5798:1797 with SMTP id
- t7-20020a05600c198700b0040d57981797mr1036205wmq.63.1703582694037; 
- Tue, 26 Dec 2023 01:24:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFAWmUvPxc4Je98bTMHxr/II4hAz93qZvI+rO3dt2AgTAIBQQ99PHYcgWzVXK8axzSKfUm5jw==
-X-Received: by 2002:a05:600c:1987:b0:40d:5798:1797 with SMTP id
- t7-20020a05600c198700b0040d57981797mr1036197wmq.63.1703582693724; 
- Tue, 26 Dec 2023 01:24:53 -0800 (PST)
+ bh=f9WQMHsSDkCkbXrOH1Cth231xwoLWiHqIfjiVylGQQQ=;
+ b=ZFcU2OBoGPc30J+sxzTmqc6jjB8yw1Yxko+Lckzl496v88atIbxfgCTv9+oEGIwAdS
+ ZOvCERsWFsSb+uFSWN/W86dlpY7fzlJIHONksIQI+sdxZIXfzcFcq7RiwRFTG83NXEMd
+ AmHFz2tZi8RfwhsUXtbBtSxcdvpNCZ3l5VJstw4iXyTcXi7ME0SzgBTwk2DGfGWBvaEe
+ KY9LMe5xj0TbAf1EZAzR938l9n3eljH91+07ZLeoaErgEUePt0170XelN/LiDQZ5lTJp
+ EV+3z7ZjWkOGbFdqvZ6/NTfwI39rAKub3lARdOWxr4IEVyry0B8cmTSD/AvAswvIBN6y
+ wmhg==
+X-Gm-Message-State: AOJu0Yw0Eu6SjYKtdj671Mf6Y/3Fo78wvW6jsgCaGwhpRDHUSNCMccKg
+ 8g1NBbJLdzphVT9/uCsrfJ/tALIyMjxBg6gxWa9tSTjvQfQVn5v9yUs86n3hLA6kAJrHunX/+Pt
+ ObGlv4ypTU/JPM9cxapSDp94ttZez8aKRh2EB7swljXJbJdoveYxurqfD5HVKnvKnhnS7DxEkcr
+ Cu
+X-Received: by 2002:a5d:4583:0:b0:336:9f70:a708 with SMTP id
+ p3-20020a5d4583000000b003369f70a708mr2444725wrq.107.1703582698086; 
+ Tue, 26 Dec 2023 01:24:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGGIufyHfF3ErGEGbwWEFE+MnXNup9TvAxtE6sP2XqflND6l7cyjEEqIT+aAwlBOM9eUqLVYA==
+X-Received: by 2002:a5d:4583:0:b0:336:9f70:a708 with SMTP id
+ p3-20020a5d4583000000b003369f70a708mr2444716wrq.107.1703582697707; 
+ Tue, 26 Dec 2023 01:24:57 -0800 (PST)
 Received: from redhat.com ([2.55.177.189]) by smtp.gmail.com with ESMTPSA id
- e25-20020adfa459000000b003365951cef9sm12261228wra.55.2023.12.26.01.24.50
+ w14-20020adfee4e000000b0033609750752sm12238175wro.8.2023.12.26.01.24.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Dec 2023 01:24:51 -0800 (PST)
-Date: Tue, 26 Dec 2023 04:24:49 -0500
+ Tue, 26 Dec 2023 01:24:55 -0800 (PST)
+Date: Tue, 26 Dec 2023 04:24:53 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>
-Subject: [PULL 12/21] vdpa: move shadow_data to vhost_vdpa_shared
-Message-ID: <787ac82bcea98139204c26ccf2a488d2f9b54003.1703582625.git.mst@redhat.com>
+Subject: [PULL 13/21] vdpa: use vdpa shared for tracing
+Message-ID: <7f203ed843f6f510c4af086532998cbae1c0a52e.1703582625.git.mst@redhat.com>
 References: <cover.1703582625.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -104,157 +104,145 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eugenio Pérez <eperezma@redhat.com>
 
-Next patches will register the vhost_vdpa memory listener while the VM
-is migrating at the destination, so we can map the memory to the device
-before stopping the VM at the source.  The main goal is to reduce the
-downtime.
-
-However, the destination QEMU is unaware of which vhost_vdpa device will
-register its memory_listener.  If the source guest has CVQ enabled, it
-will be the CVQ device.  Otherwise, it  will be the first one.
-
-Move the shadow_data member to VhostVDPAShared so all vhost_vdpa can use
-it, rather than always in the first or last vhost_vdpa.
+By the end of this series dma_map and dma_unmap functions don't have the
+vdpa device for tracing.  Movinge trace function to shared member one.
+Print it also in the vdpa initialization so log reader can relate them.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20231221174322.3130442-5-eperezma@redhat.com>
+Message-Id: <20231221174322.3130442-6-eperezma@redhat.com>
 Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/vhost-vdpa.h |  5 +++--
- hw/virtio/vhost-vdpa.c         |  6 +++---
- net/vhost-vdpa.c               | 22 +++++-----------------
- 3 files changed, 11 insertions(+), 22 deletions(-)
+ hw/virtio/vhost-vdpa.c | 26 ++++++++++++++------------
+ hw/virtio/trace-events | 14 +++++++-------
+ 2 files changed, 21 insertions(+), 19 deletions(-)
 
-diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index 8d52a7e498..01e0f25e27 100644
---- a/include/hw/virtio/vhost-vdpa.h
-+++ b/include/hw/virtio/vhost-vdpa.h
-@@ -36,6 +36,9 @@ typedef struct vhost_vdpa_shared {
- 
-     /* IOVA mapping used by the Shadow Virtqueue */
-     VhostIOVATree *iova_tree;
-+
-+    /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
-+    bool shadow_data;
- } VhostVDPAShared;
- 
- typedef struct vhost_vdpa {
-@@ -47,8 +50,6 @@ typedef struct vhost_vdpa {
-     MemoryListener listener;
-     uint64_t acked_features;
-     bool shadow_vqs_enabled;
--    /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
--    bool shadow_data;
-     /* Device suspended successfully */
-     bool suspended;
-     VhostVDPAShared *shared;
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 5ff1d43ba9..97588848fc 100644
+index 97588848fc..720cffbc08 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -353,7 +353,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+@@ -101,7 +101,7 @@ int vhost_vdpa_dma_map(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
+     msg.iotlb.perm = readonly ? VHOST_ACCESS_RO : VHOST_ACCESS_RW;
+     msg.iotlb.type = VHOST_IOTLB_UPDATE;
+ 
+-    trace_vhost_vdpa_dma_map(v, fd, msg.type, msg.asid, msg.iotlb.iova,
++    trace_vhost_vdpa_dma_map(v->shared, fd, msg.type, msg.asid, msg.iotlb.iova,
+                              msg.iotlb.size, msg.iotlb.uaddr, msg.iotlb.perm,
+                              msg.iotlb.type);
+ 
+@@ -131,8 +131,8 @@ int vhost_vdpa_dma_unmap(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
+     msg.iotlb.size = size;
+     msg.iotlb.type = VHOST_IOTLB_INVALIDATE;
+ 
+-    trace_vhost_vdpa_dma_unmap(v, fd, msg.type, msg.asid, msg.iotlb.iova,
+-                               msg.iotlb.size, msg.iotlb.type);
++    trace_vhost_vdpa_dma_unmap(v->shared, fd, msg.type, msg.asid,
++                               msg.iotlb.iova, msg.iotlb.size, msg.iotlb.type);
+ 
+     if (write(fd, &msg, sizeof(msg)) != sizeof(msg)) {
+         error_report("failed to write, fd=%d, errno=%d (%s)",
+@@ -151,7 +151,8 @@ static void vhost_vdpa_listener_begin_batch(struct vhost_vdpa *v)
+         .iotlb.type = VHOST_IOTLB_BATCH_BEGIN,
+     };
+ 
+-    trace_vhost_vdpa_listener_begin_batch(v, fd, msg.type, msg.iotlb.type);
++    trace_vhost_vdpa_listener_begin_batch(v->shared, fd, msg.type,
++                                          msg.iotlb.type);
+     if (write(fd, &msg, sizeof(msg)) != sizeof(msg)) {
+         error_report("failed to write, fd=%d, errno=%d (%s)",
+                      fd, errno, strerror(errno));
+@@ -186,7 +187,7 @@ static void vhost_vdpa_listener_commit(MemoryListener *listener)
+     msg.type = v->msg_type;
+     msg.iotlb.type = VHOST_IOTLB_BATCH_END;
+ 
+-    trace_vhost_vdpa_listener_commit(v, fd, msg.type, msg.iotlb.type);
++    trace_vhost_vdpa_listener_commit(v->shared, fd, msg.type, msg.iotlb.type);
+     if (write(fd, &msg, sizeof(msg)) != sizeof(msg)) {
+         error_report("failed to write, fd=%d, errno=%d (%s)",
+                      fd, errno, strerror(errno));
+@@ -329,7 +330,8 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+ 
+     if (unlikely((section->offset_within_address_space & ~page_mask) !=
+                  (section->offset_within_region & ~page_mask))) {
+-        trace_vhost_vdpa_listener_region_add_unaligned(v, section->mr->name,
++        trace_vhost_vdpa_listener_region_add_unaligned(v->shared,
++                       section->mr->name,
+                        section->offset_within_address_space & ~page_mask,
+                        section->offset_within_region & ~page_mask);
+         return;
+@@ -349,7 +351,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+             section->offset_within_region +
+             (iova - section->offset_within_address_space);
+ 
+-    trace_vhost_vdpa_listener_region_add(v, iova, int128_get64(llend),
++    trace_vhost_vdpa_listener_region_add(v->shared, iova, int128_get64(llend),
                                           vaddr, section->readonly);
  
      llsize = int128_sub(llend, int128_make64(iova));
--    if (v->shadow_data) {
-+    if (v->shared->shadow_data) {
-         int r;
+@@ -417,7 +419,8 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
  
-         mem_region.translated_addr = (hwaddr)(uintptr_t)vaddr,
-@@ -380,7 +380,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-     return;
+     if (unlikely((section->offset_within_address_space & ~page_mask) !=
+                  (section->offset_within_region & ~page_mask))) {
+-        trace_vhost_vdpa_listener_region_del_unaligned(v, section->mr->name,
++        trace_vhost_vdpa_listener_region_del_unaligned(v->shared,
++                       section->mr->name,
+                        section->offset_within_address_space & ~page_mask,
+                        section->offset_within_region & ~page_mask);
+         return;
+@@ -426,7 +429,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+     iova = ROUND_UP(section->offset_within_address_space, page_size);
+     llend = vhost_vdpa_section_end(section, page_mask);
  
- fail_map:
--    if (v->shadow_data) {
-+    if (v->shared->shadow_data) {
-         vhost_iova_tree_remove(v->shared->iova_tree, mem_region);
-     }
+-    trace_vhost_vdpa_listener_region_del(v, iova,
++    trace_vhost_vdpa_listener_region_del(v->shared, iova,
+         int128_get64(int128_sub(llend, int128_one())));
  
-@@ -435,7 +435,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+     if (int128_ge(int128_make64(iova), llend)) {
+@@ -587,12 +590,11 @@ static void vhost_vdpa_init_svq(struct vhost_dev *hdev, struct vhost_vdpa *v)
  
-     llsize = int128_sub(llend, int128_make64(iova));
- 
--    if (v->shadow_data) {
-+    if (v->shared->shadow_data) {
-         const DMAMap *result;
-         const void *vaddr = memory_region_get_ram_ptr(section->mr) +
-             section->offset_within_region +
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 7be2c30ad3..bf8e8327da 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -290,15 +290,6 @@ static ssize_t vhost_vdpa_receive(NetClientState *nc, const uint8_t *buf,
-     return size;
- }
- 
--/** From any vdpa net client, get the netclient of the first queue pair */
--static VhostVDPAState *vhost_vdpa_net_first_nc_vdpa(VhostVDPAState *s)
--{
--    NICState *nic = qemu_get_nic(s->nc.peer);
--    NetClientState *nc0 = qemu_get_peer(nic->ncs, 0);
--
--    return DO_UPCAST(VhostVDPAState, nc, nc0);
--}
--
- static void vhost_vdpa_net_log_global_enable(VhostVDPAState *s, bool enable)
+ static int vhost_vdpa_init(struct vhost_dev *dev, void *opaque, Error **errp)
  {
-     struct vhost_vdpa *v = &s->vhost_vdpa;
-@@ -369,13 +360,12 @@ static int vhost_vdpa_net_data_start(NetClientState *nc)
-     if (s->always_svq ||
-         migration_is_setup_or_active(migrate_get_current()->state)) {
-         v->shadow_vqs_enabled = true;
--        v->shadow_data = true;
-     } else {
-         v->shadow_vqs_enabled = false;
--        v->shadow_data = false;
-     }
+-    struct vhost_vdpa *v;
++    struct vhost_vdpa *v = opaque;
+     assert(dev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_VDPA);
+-    trace_vhost_vdpa_init(dev, opaque);
++    trace_vhost_vdpa_init(dev, v->shared, opaque);
+     int ret;
  
-     if (v->index == 0) {
-+        v->shared->shadow_data = v->shadow_vqs_enabled;
-         vhost_vdpa_net_data_start_first(s);
-         return 0;
-     }
-@@ -523,7 +513,7 @@ dma_map_err:
+-    v = opaque;
+     v->dev = dev;
+     dev->opaque =  opaque ;
+     v->listener = vhost_vdpa_memory_listener;
+diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+index 637cac4edf..77905d1994 100644
+--- a/hw/virtio/trace-events
++++ b/hw/virtio/trace-events
+@@ -30,16 +30,16 @@ vhost_user_write(uint32_t req, uint32_t flags) "req:%d flags:0x%"PRIx32""
+ vhost_user_create_notifier(int idx, void *n) "idx:%d n:%p"
  
- static int vhost_vdpa_net_cvq_start(NetClientState *nc)
- {
--    VhostVDPAState *s, *s0;
-+    VhostVDPAState *s;
-     struct vhost_vdpa *v;
-     int64_t cvq_group;
-     int r;
-@@ -534,12 +524,10 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
-     s = DO_UPCAST(VhostVDPAState, nc, nc);
-     v = &s->vhost_vdpa;
- 
--    s0 = vhost_vdpa_net_first_nc_vdpa(s);
--    v->shadow_data = s0->vhost_vdpa.shadow_vqs_enabled;
--    v->shadow_vqs_enabled = s0->vhost_vdpa.shadow_vqs_enabled;
-+    v->shadow_vqs_enabled = v->shared->shadow_data;
-     s->vhost_vdpa.address_space_id = VHOST_VDPA_GUEST_PA_ASID;
- 
--    if (s->vhost_vdpa.shadow_data) {
-+    if (v->shared->shadow_data) {
-         /* SVQ is already configured for all virtqueues */
-         goto out;
-     }
-@@ -1688,12 +1676,12 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-     s->always_svq = svq;
-     s->migration_state.notify = NULL;
-     s->vhost_vdpa.shadow_vqs_enabled = svq;
--    s->vhost_vdpa.shadow_data = svq;
-     if (queue_pair_index == 0) {
-         vhost_vdpa_net_valid_svq_features(features,
-                                           &s->vhost_vdpa.migration_blocker);
-         s->vhost_vdpa.shared = g_new0(VhostVDPAShared, 1);
-         s->vhost_vdpa.shared->iova_range = iova_range;
-+        s->vhost_vdpa.shared->shadow_data = svq;
-     } else if (!is_datapath) {
-         s->cvq_cmd_out_buffer = mmap(NULL, vhost_vdpa_net_cvq_cmd_page_len(),
-                                      PROT_READ | PROT_WRITE,
+ # vhost-vdpa.c
+-vhost_vdpa_dma_map(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint64_t uaddr, uint8_t perm, uint8_t type) "vdpa:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" uaddr: 0x%"PRIx64" perm: 0x%"PRIx8" type: %"PRIu8
+-vhost_vdpa_dma_unmap(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint8_t type) "vdpa:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" type: %"PRIu8
+-vhost_vdpa_listener_begin_batch(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
+-vhost_vdpa_listener_commit(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
+-vhost_vdpa_listener_region_add_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
++vhost_vdpa_dma_map(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint64_t uaddr, uint8_t perm, uint8_t type) "vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" uaddr: 0x%"PRIx64" perm: 0x%"PRIx8" type: %"PRIu8
++vhost_vdpa_dma_unmap(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint8_t type) "vdpa_shared:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" type: %"PRIu8
++vhost_vdpa_listener_begin_batch(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
++vhost_vdpa_listener_commit(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa_shared:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
++vhost_vdpa_listener_region_add_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa_shared: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
+ vhost_vdpa_listener_region_add(void *vdpa, uint64_t iova, uint64_t llend, void *vaddr, bool readonly) "vdpa: %p iova 0x%"PRIx64" llend 0x%"PRIx64" vaddr: %p read-only: %d"
+-vhost_vdpa_listener_region_del_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
++vhost_vdpa_listener_region_del_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa_shared: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
+ vhost_vdpa_listener_region_del(void *vdpa, uint64_t iova, uint64_t llend) "vdpa: %p iova 0x%"PRIx64" llend 0x%"PRIx64
+ vhost_vdpa_add_status(void *dev, uint8_t status) "dev: %p status: 0x%"PRIx8
+-vhost_vdpa_init(void *dev, void *vdpa) "dev: %p vdpa: %p"
++vhost_vdpa_init(void *dev, void *s, void *vdpa) "dev: %p, common dev: %p vdpa: %p"
+ vhost_vdpa_cleanup(void *dev, void *vdpa) "dev: %p vdpa: %p"
+ vhost_vdpa_memslots_limit(void *dev, int ret) "dev: %p = 0x%x"
+ vhost_vdpa_set_mem_table(void *dev, uint32_t nregions, uint32_t padding) "dev: %p nregions: %"PRIu32" padding: 0x%"PRIx32
 -- 
 MST
 
