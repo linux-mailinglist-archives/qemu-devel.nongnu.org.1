@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F7A81E653
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0AA81E64E
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:24:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI3fg-00019i-3i; Tue, 26 Dec 2023 04:24:20 -0500
+	id 1rI3fk-0001EI-6s; Tue, 26 Dec 2023 04:24:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fe-00017E-1G
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:18 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fi-0001DG-Qn
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:22 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fc-0008Fc-Fd
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:17 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI3fh-0008Fw-4y
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:24:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703582655;
+ s=mimecast20190719; t=1703582660;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mT5jS00lY7mc5PDHiaNs4tRIIbDIIgu7me/ZwVh7LTg=;
- b=grnCm7u8fGEyhxFMxZcIzGBt2qosJLW5st3x7NNURO57D74q7g6J/FLRcIHQDDTRGt1NlM
- ZYcC2Lrgeim0WM3jT13gNnam9Ao4lPJ4Vk3h3lEHbcFtGhFKHctrBHdj97SffP8XY4a7ek
- M2sGjsK6HdC5QP+WN3m8KDp45wCvqVA=
+ bh=afYN6k1oPeJkIFiSUzbyD9REIUlFHavOgE55XoawkLE=;
+ b=CDXRmjt14gNi6KytgQ2wv6SNR4YUhFmdl19jsXS/5sSp+pXk/vjT4uM9/8KU3KpSacrArc
+ f9uQczUXm0xmNvHT1QVBuCaJNkWOCx88n0akjQrOg4r1xTEe9SgpYYK1OjgdQTlpIpP1YX
+ 4n6wyxCTwAdYrJAQB9IGoymw+iQ8ReM=
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
  [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-158-sYukVv2wP-qcj5iiGWAzkQ-1; Tue, 26 Dec 2023 04:24:13 -0500
-X-MC-Unique: sYukVv2wP-qcj5iiGWAzkQ-1
+ us-mta-280-QLKKt20ENCei-bdAwu6-4w-1; Tue, 26 Dec 2023 04:24:18 -0500
+X-MC-Unique: QLKKt20ENCei-bdAwu6-4w-1
 Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3368c707b03so3057422f8f.3
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:24:13 -0800 (PST)
+ ffacd0b85a97d-33691eecbebso2686541f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:24:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703582651; x=1704187451;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mT5jS00lY7mc5PDHiaNs4tRIIbDIIgu7me/ZwVh7LTg=;
- b=Ekdvyl4Nh/clHj0NVTWlRc4XefPZylmgWWIUXh/U9OSduxmgLGhrUU+Sf9TvX9/MaI
- w+wY/DA2EKgPFqnIy5nld9llO9X8SSaU1QAQv/CG5JT7YPfYv8Bvyoe+2dLzmFhskTnh
- gSsozg0ynIaFvN+AlzPGJGoBSU1LnFZSrmcxkoenVCwkgZJJsgMyizRDSs4ulzjOcF9a
- O0Y+i4qdt2FDRs1gso1t3CPhDMnA490edGGm94VzSrrYQY7/S1AeoZ5xMl7RO5uwTKft
- 07b4CAIqfQdnMRwGvsAGN87qtiN97FLr3mAOUZWNHT0fLSnCo1AdRp5OwRIRGwGKQioJ
- mzzQ==
-X-Gm-Message-State: AOJu0YzRiPB1S3ekf95tgWt1ECA5TcvRszgERLOv9fl0oGrRsj/HyZu+
- OwgCJutvzhCJ7Uguc8ajWCMn7oWhmKocd6z2x0een4D9bdc5Oa3aEmOrCBbzKMkrQMV5LHYI9KE
- cK09X512m1t1AXkas2s2Gb0yvCsvjjoXTlcUXQsx6TuwBYHH7JnhfcV8COsGrIG0buj5eT7MZsu
- yK
-X-Received: by 2002:a05:600c:548e:b0:40c:336d:2a24 with SMTP id
- iv14-20020a05600c548e00b0040c336d2a24mr4086277wmb.30.1703582651194; 
- Tue, 26 Dec 2023 01:24:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEmfJxVq4qu3NdtgqtRdLErZ/f0RC0FMYa0p7RMNAkweJmyV2gbqk++XTcifhQRohu1Zfjvsw==
-X-Received: by 2002:a05:600c:548e:b0:40c:336d:2a24 with SMTP id
- iv14-20020a05600c548e00b0040c336d2a24mr4086265wmb.30.1703582650813; 
- Tue, 26 Dec 2023 01:24:10 -0800 (PST)
+ d=1e100.net; s=20230601; t=1703582655; x=1704187455;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=afYN6k1oPeJkIFiSUzbyD9REIUlFHavOgE55XoawkLE=;
+ b=q6ch3q8r8HbWOxRUsRdlRT3zrGcXzXnOS7BCPyZb/sO00Oy1V/DLquJjUCmhVVgagZ
+ CKRFJBYmGCWirSFIdZ2FhVtdqMJX/12XD3TdCRjWcYBSTpaAgjVO3KCKrWiM0/o9Wdod
+ AKMPC0d1VKKS0azXXqzjwtQLDZN0ZekveoB/PDGm3qBE6lmD/AzA+70dUTjWkxAbNpAJ
+ TKqBWZExc9kUg0cze5Tb1g1TOHwruAGnZ/ry44/TXNfKf6IqZdtJuisRHTxJ5Bh2n+xE
+ i+8I5GsVc1btkNVSQQ/nBMzByD0A8D2iPNYWp9gdseVDWx8jr5KA9Vyzhg/cifTHNe1B
+ sOew==
+X-Gm-Message-State: AOJu0YxU3sz5NGHC1QSDX+MoHpyDcXejW12GG4f1VGaj026ftqHUv+no
+ RM3SmNjQRv5d0Sutc/rcTuwf57598kcawczFt+LuIz5kCwH5/T8HKsIYRjBLAhNSnb46Ty08jpw
+ tJ7I3Z1+v7Zu3zmXa5qdDuncni7I42oEaUg1QgemOEgI2rImf2Pfl6zyAaWw57Vgs+psQeZsQzk
+ qs
+X-Received: by 2002:a05:600c:2907:b0:40c:709:d924 with SMTP id
+ i7-20020a05600c290700b0040c0709d924mr3624525wmd.147.1703582655451; 
+ Tue, 26 Dec 2023 01:24:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFMzlsOJA9HLAoAMDwrAJIV/8ar/+5ls1yNlmuz7d2zE+dD3CVcz/m9OOqhsXh5KOsryvkC2Q==
+X-Received: by 2002:a05:600c:2907:b0:40c:709:d924 with SMTP id
+ i7-20020a05600c290700b0040c0709d924mr3624517wmd.147.1703582655112; 
+ Tue, 26 Dec 2023 01:24:15 -0800 (PST)
 Received: from redhat.com ([2.55.177.189]) by smtp.gmail.com with ESMTPSA id
- n9-20020a05600c4f8900b0040d56075463sm6630463wmq.44.2023.12.26.01.24.07
+ bi6-20020a05600c3d8600b0040d5868cc15sm3793902wmb.23.2023.12.26.01.24.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Dec 2023 01:24:08 -0800 (PST)
-Date: Tue, 26 Dec 2023 04:24:06 -0500
+ Tue, 26 Dec 2023 01:24:12 -0800 (PST)
+Date: Tue, 26 Dec 2023 04:24:11 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 02/21] tests: bios-tables-test: Rename smbios type 4 related
- test functions
-Message-ID: <c40db4ba60af354cccaddbbae5c7125b4b97c79c.1703582625.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Mike Christie <michael.christie@oracle.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 03/21] vhost: Add worker backend callouts
+Message-ID: <9aad781959d770eb2479596a23e471cd82bd4e5b.1703582625.git.mst@redhat.com>
 References: <cover.1703582625.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1703582625.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -103,93 +101,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-In fact, type4-count, core-count, core-count2, thread-count and
-thread-count2 are tested with KVM not TCG.
+This adds the vhost backend callouts for the worker ioctls added in the
+6.4 linux kernel commit:
 
-Rename these test functions to reflect KVM base instead of TCG.
+c1ecd8e95007 ("vhost: allow userspace to create workers")
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20231127160202.1037290-1-zhao1.liu@linux.intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+Message-Id: <20231204231618.21962-2-michael.christie@oracle.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ include/hw/virtio/vhost-backend.h | 14 ++++++++++++++
+ hw/virtio/vhost-backend.c         | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index fe6a9a8563..21811a1ab5 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -1015,7 +1015,7 @@ static void test_acpi_q35_tcg(void)
-     free_test_data(&data);
+diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
+index a86d103f82..70c2e8ffee 100644
+--- a/include/hw/virtio/vhost-backend.h
++++ b/include/hw/virtio/vhost-backend.h
+@@ -45,6 +45,8 @@ struct vhost_memory;
+ struct vhost_vring_file;
+ struct vhost_vring_state;
+ struct vhost_vring_addr;
++struct vhost_vring_worker;
++struct vhost_worker_state;
+ struct vhost_scsi_target;
+ struct vhost_iotlb_msg;
+ struct vhost_virtqueue;
+@@ -85,6 +87,14 @@ typedef int (*vhost_set_vring_err_op)(struct vhost_dev *dev,
+                                       struct vhost_vring_file *file);
+ typedef int (*vhost_set_vring_busyloop_timeout_op)(struct vhost_dev *dev,
+                                                    struct vhost_vring_state *r);
++typedef int (*vhost_attach_vring_worker_op)(struct vhost_dev *dev,
++                                            struct vhost_vring_worker *worker);
++typedef int (*vhost_get_vring_worker_op)(struct vhost_dev *dev,
++                                         struct vhost_vring_worker *worker);
++typedef int (*vhost_new_worker_op)(struct vhost_dev *dev,
++                                   struct vhost_worker_state *worker);
++typedef int (*vhost_free_worker_op)(struct vhost_dev *dev,
++                                    struct vhost_worker_state *worker);
+ typedef int (*vhost_set_features_op)(struct vhost_dev *dev,
+                                      uint64_t features);
+ typedef int (*vhost_get_features_op)(struct vhost_dev *dev,
+@@ -172,6 +182,10 @@ typedef struct VhostOps {
+     vhost_set_vring_call_op vhost_set_vring_call;
+     vhost_set_vring_err_op vhost_set_vring_err;
+     vhost_set_vring_busyloop_timeout_op vhost_set_vring_busyloop_timeout;
++    vhost_new_worker_op vhost_new_worker;
++    vhost_free_worker_op vhost_free_worker;
++    vhost_get_vring_worker_op vhost_get_vring_worker;
++    vhost_attach_vring_worker_op vhost_attach_vring_worker;
+     vhost_set_features_op vhost_set_features;
+     vhost_get_features_op vhost_get_features;
+     vhost_set_backend_cap_op vhost_set_backend_cap;
+diff --git a/hw/virtio/vhost-backend.c b/hw/virtio/vhost-backend.c
+index 17f3fc6a08..833804dd40 100644
+--- a/hw/virtio/vhost-backend.c
++++ b/hw/virtio/vhost-backend.c
+@@ -158,6 +158,30 @@ static int vhost_kernel_set_vring_busyloop_timeout(struct vhost_dev *dev,
+     return vhost_kernel_call(dev, VHOST_SET_VRING_BUSYLOOP_TIMEOUT, s);
  }
  
--static void test_acpi_q35_tcg_type4_count(void)
-+static void test_acpi_q35_kvm_type4_count(void)
++static int vhost_kernel_new_worker(struct vhost_dev *dev,
++                                   struct vhost_worker_state *worker)
++{
++    return vhost_kernel_call(dev, VHOST_NEW_WORKER, worker);
++}
++
++static int vhost_kernel_free_worker(struct vhost_dev *dev,
++                                    struct vhost_worker_state *worker)
++{
++    return vhost_kernel_call(dev, VHOST_FREE_WORKER, worker);
++}
++
++static int vhost_kernel_attach_vring_worker(struct vhost_dev *dev,
++                                            struct vhost_vring_worker *worker)
++{
++    return vhost_kernel_call(dev, VHOST_ATTACH_VRING_WORKER, worker);
++}
++
++static int vhost_kernel_get_vring_worker(struct vhost_dev *dev,
++                                         struct vhost_vring_worker *worker)
++{
++    return vhost_kernel_call(dev, VHOST_GET_VRING_WORKER, worker);
++}
++
+ static int vhost_kernel_set_features(struct vhost_dev *dev,
+                                      uint64_t features)
  {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -1031,7 +1031,7 @@ static void test_acpi_q35_tcg_type4_count(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_q35_tcg_core_count(void)
-+static void test_acpi_q35_kvm_core_count(void)
- {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -1048,7 +1048,7 @@ static void test_acpi_q35_tcg_core_count(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_q35_tcg_core_count2(void)
-+static void test_acpi_q35_kvm_core_count2(void)
- {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -1065,7 +1065,7 @@ static void test_acpi_q35_tcg_core_count2(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_q35_tcg_thread_count(void)
-+static void test_acpi_q35_kvm_thread_count(void)
- {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -1082,7 +1082,7 @@ static void test_acpi_q35_tcg_thread_count(void)
-     free_test_data(&data);
- }
- 
--static void test_acpi_q35_tcg_thread_count2(void)
-+static void test_acpi_q35_kvm_thread_count2(void)
- {
-     test_data data = {
-         .machine = MACHINE_Q35,
-@@ -2262,15 +2262,15 @@ int main(int argc, char *argv[])
-                 qtest_add_func("acpi/q35/kvm/xapic", test_acpi_q35_kvm_xapic);
-                 qtest_add_func("acpi/q35/kvm/dmar", test_acpi_q35_kvm_dmar);
-                 qtest_add_func("acpi/q35/type4-count",
--                               test_acpi_q35_tcg_type4_count);
-+                               test_acpi_q35_kvm_type4_count);
-                 qtest_add_func("acpi/q35/core-count",
--                               test_acpi_q35_tcg_core_count);
-+                               test_acpi_q35_kvm_core_count);
-                 qtest_add_func("acpi/q35/core-count2",
--                               test_acpi_q35_tcg_core_count2);
-+                               test_acpi_q35_kvm_core_count2);
-                 qtest_add_func("acpi/q35/thread-count",
--                               test_acpi_q35_tcg_thread_count);
-+                               test_acpi_q35_kvm_thread_count);
-                 qtest_add_func("acpi/q35/thread-count2",
--                               test_acpi_q35_tcg_thread_count2);
-+                               test_acpi_q35_kvm_thread_count2);
-             }
-             if (qtest_has_device("virtio-iommu-pci")) {
-                 qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
+@@ -313,6 +337,10 @@ const VhostOps kernel_ops = {
+         .vhost_set_vring_err = vhost_kernel_set_vring_err,
+         .vhost_set_vring_busyloop_timeout =
+                                 vhost_kernel_set_vring_busyloop_timeout,
++        .vhost_get_vring_worker = vhost_kernel_get_vring_worker,
++        .vhost_attach_vring_worker = vhost_kernel_attach_vring_worker,
++        .vhost_new_worker = vhost_kernel_new_worker,
++        .vhost_free_worker = vhost_kernel_free_worker,
+         .vhost_set_features = vhost_kernel_set_features,
+         .vhost_get_features = vhost_kernel_get_features,
+         .vhost_set_backend_cap = vhost_kernel_set_backend_cap,
 -- 
 MST
 
