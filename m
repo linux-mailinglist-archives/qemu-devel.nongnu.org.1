@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81E381E81F
+	by mail.lfdr.de (Postfix) with ESMTPS id E16D281E820
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 16:41:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI9Wu-0002PX-RU; Tue, 26 Dec 2023 10:39:40 -0500
+	id 1rI9Xo-0002ly-D8; Tue, 26 Dec 2023 10:40:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI9Ws-0002PF-TC
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 10:39:38 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI9Xi-0002kE-Sl
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 10:40:30 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI9Wq-0001DB-Bd
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 10:39:38 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40d5aefcc2fso4229665e9.0
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 07:39:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI9Xd-0001XP-PG
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 10:40:30 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40d5b159350so3847945e9.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 07:40:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703605174; x=1704209974; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703605223; x=1704210023; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=mv3usI1oZYXHqHKRguWQGNokM6pPpcPITlS7hYttots=;
- b=Y4XhpV2jpkhIVvorvt7bNUCLhbJCJwBu9W9IMdWoFS0RxaooQF4xUyYeOhfVOQpmeM
- dWkzlhZNeiaJOAM0pYqbanExfXp8lrD7nS5V7osUEo6U9YdPqSUNLq2lRl4pgA9LoEJx
- VJGKBac+EtuBmuQtlU7e+oxm98z41ylvKg+XaJ4lKleJSM3Y/WLq6pW2StjFemPICdB/
- 8D38FUfE7V67JscccR8eCFDS8AbkXWTFFcrpRtkM6aJ1E4v7uaG0MiNhBZR/Z4J4N0/R
- 3q1lu5VQUU5DItbDUXTcpTabrCrQlw6nSjnhG1ucPVpswNgqrPwXsPz754Wg4NxCzD5A
- e0Eg==
+ bh=RHdp0uqmUB8TDEzjrSBm802IY0oobcqjgwZ8C0h+IY4=;
+ b=hcpvKtKmPZnZ1Y1xTVjhPegVCL43zVUh7RUBKSYj2dBnqVsXK36FENlWn9lPtiPEqc
+ 8+earixNGhm+WIgCtkCwMNo8zqIub4lq6u+lVqMojhfH9ycvxfVaKKtH50oMkIjcoPk1
+ KifzsEFERf276dR2YNudEg0KuDzP4p8aRC+FEOUbPIMbd4JUJNps7gcJE0takg80cRvv
+ C4GcRVd4A3+2qI6QSWvdeqTXSewpGUIf+Ubez8sosghjIHnCYfZZDsPiM0Sqqsl/wIq0
+ iqQV2mYIBTSnw3L57RPKTPeeLWAnK/KIAZVpVfxVznkgFj0TQ1zXAzi/DYixxJ90km3x
+ lW2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703605174; x=1704209974;
+ d=1e100.net; s=20230601; t=1703605223; x=1704210023;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mv3usI1oZYXHqHKRguWQGNokM6pPpcPITlS7hYttots=;
- b=k82/16OiEWB4zraOMO0SC6QYU+PIiCryj7+aS/V+8tnAHn6EuiUtjPkOv+ylcrv9Wj
- 2IERqAWYhC8h4r/UR+AEvoks/I8Bcu5ODTvmwgOqs2rAjG/fPNRJrYfjCckCdwzC0pKo
- Ks7JWPffpe7Krakw9AzrJvpvLZSrp57KP1usgI9U4Bx6YfGc08/F107++CtXK8EBnNg2
- /oxg78or3w480T1IeF0c8FrG4eVeaEifypNsYUGvguwV3lFsG7J/eNFDgMiVcZYahxnB
- fMThdSIQ0vAPMwX8TEJbLxb1w7rQ3j4ynjGO5rypsHg5E2so28eKWycac8eDS+gVTmow
- oEtQ==
-X-Gm-Message-State: AOJu0Yx7jXYdgbda72CqXlXmU1e2B2Lbm/7RcdXT37B+WDNaqfvsll9+
- X6rDxA6m90K/AKKH1fEvSRr1LNM0B8n4V2R5eGKdylV930A=
-X-Google-Smtp-Source: AGHT+IEyDDHpxjGz79sT1/+ljs1fL42QOaz3uO3Fmlsm9L14bqGE0vAnuK8GC9oUFEhXCk1Hwhzl6g==
-X-Received: by 2002:a05:600c:2195:b0:40d:30c0:dda4 with SMTP id
- e21-20020a05600c219500b0040d30c0dda4mr3947731wme.150.1703605174282; 
- Tue, 26 Dec 2023 07:39:34 -0800 (PST)
+ bh=RHdp0uqmUB8TDEzjrSBm802IY0oobcqjgwZ8C0h+IY4=;
+ b=b8/R5Aq1C2PPyMP+95I1+JMrJHzYBPLYvcc1SNL4uDnmKfAvL66r6ZA/7XZmfLkSOI
+ R7jo71VzL3LVG/ss7F+isNJcZpv1KJIK3E2LAQok6Ahy5Dvfyrk6TUvDTYO3R105D05v
+ tXLOKOJT+qfujeV1hB2raRocibgXeYOgrWSRyNJIw5yyIzE29ga1qPxv63fRc0gzOTqg
+ 8zkEnaS+GYNXOkg7BIum0uTZwcDuQjSmDZMaR76YqQWqTKeDYERbINw5bdZpFAul3sc2
+ ZHF7e9J89qvUbbmW3sBDawha6lLTRuDUNwkj8glrez/T1e/73UVOm8FIXLH7gOfTXg0q
+ BJTg==
+X-Gm-Message-State: AOJu0YymlZzPdHDkSBmpHVaq1pqDs/9Pl4Hk5AMqwGW2eUprAjoiuVic
+ Tw8BoFpJIZsh7An+DG8cpWiGHLbBrj5o4/v+qz86l3hkIt0=
+X-Google-Smtp-Source: AGHT+IGMO5NutPLgJjYdgBPeBsSGGvdf0xmb9gXNBal98pf5ddKkuETGcIw4IaKfoEWFMMNj6aRwDw==
+X-Received: by 2002:a05:600c:4e87:b0:40d:47a7:78da with SMTP id
+ f7-20020a05600c4e8700b0040d47a778damr4295578wmq.66.1703605223775; 
+ Tue, 26 Dec 2023 07:40:23 -0800 (PST)
 Received: from [192.168.111.175] (97.red-95-127-47.staticip.rima-tde.net.
  [95.127.47.97]) by smtp.gmail.com with ESMTPSA id
- j16-20020a05600c191000b0040c11fbe581sm21164634wmq.27.2023.12.26.07.39.33
+ j16-20020a05600c191000b0040c11fbe581sm21164634wmq.27.2023.12.26.07.40.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Dec 2023 07:39:33 -0800 (PST)
-Message-ID: <a349160a-0f78-4947-9473-db2c28092277@linaro.org>
-Date: Tue, 26 Dec 2023 16:39:31 +0100
+ Tue, 26 Dec 2023 07:40:23 -0800 (PST)
+Message-ID: <f1911426-2037-478e-b801-e22b933f71b0@linaro.org>
+Date: Tue, 26 Dec 2023 16:40:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/7] Trivial patches for 2023-12-25
+Subject: Re: [PATCH 0/2] system/qtest: Minor include cleanups
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org
-References: <20231225081007.78141-1-mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20231212113016.29808-1-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231225081007.78141-1-mjt@tls.msk.ru>
+In-Reply-To: <20231212113016.29808-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,35 +92,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-
-On 25/12/23 09:10, Michael Tokarev wrote:
-
-> ----------------------------------------------------------------
-> trivial patches for 2023-12-25
-
-> ----------------------------------------------------------------
-> Akihiko Odaki (2):
->        qemu-options: Unify the help entries for cocoa
->        qemu-options: Tell more for -display cocoa
+On 12/12/23 12:30, Philippe Mathieu-Daudé wrote:
+> Add missing header and restrict to sysemu.
 > 
-> Elen Avan (1):
->        include/ui/rect.h: fix qemu_rect_init() mis-assignment
-> 
-> Jai Arora (1):
->        accel/kvm: Turn DPRINTF macro use into tracepoints
-> 
-> Natanael Copa (1):
->        target/riscv/kvm: do not use non-portable strerrorname_np()
-> 
-> Samuel Tardieu (1):
->        docs/tools/qemu-img.rst: fix typo (sumarizes)
-> 
-> Stefan Weil via (1):
->        virtio-blk: Fix potential nullpointer read access in virtio_blk_data_plane_destroy
+> Philippe Mathieu-Daudé (2):
+>    system/qtest: Include missing 'hw/core/cpu.h' header
+>    system/qtest: Restrict QTest API to system emulation
 
-This last patch has as author:
-
-From: Stefan Weil via <qemu-trivial@nongnu.org>
+Thanks Thomas for merging these!
 
 
