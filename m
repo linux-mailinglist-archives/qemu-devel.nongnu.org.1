@@ -2,104 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF5C81E7F5
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 16:24:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3511B81E7F6
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 16:24:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI9Ge-0006O9-0X; Tue, 26 Dec 2023 10:22:52 -0500
+	id 1rI9Go-0006Qj-Eg; Tue, 26 Dec 2023 10:23:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI9GZ-0006M5-SG
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 10:22:48 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI9Gl-0006Pv-VL
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 10:22:59 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI9GY-0006fx-5W
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 10:22:47 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3367601a301so4481807f8f.2
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 07:22:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rI9Gk-0006iZ-GV
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 10:22:59 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-33677fb38a3so4622310f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 07:22:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703604164; x=1704208964; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703604177; x=1704208977; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=TGFyDMwWWcYIPV1sVKqkGaMC3O77Yt2NAwy/JQOu4Nw=;
- b=B/4406ZU8gSk5ywPV+8ranOaq77oYtSCR2T9j/r3bacbntsWC3sw854GwIneSIKt2f
- xsfHxT3B8d4SbQ0ndjgi5Ihj68bpPxvx+dgg0V+VH58WwvF6X4W7q2fD+vQpwsEhhrAv
- IQT19szz4sSNb7HieJlzMeaLFiE6AAgW8WLTzr/wetZmb43SoEUrKnpCyFyb0FHQa6i7
- 6mm1bzEWwlQz1USIx60iP8L98xjiYwSYxnCxF8UjWa574s1vbFKMWM9LqtKHAb8iL5eq
- HG9/Mw8/FAmuccU64XjXWl+kZg0XF563xZ47yK1c+d2prX3x4cxkjc8QdxTK50RsK31S
- pL8A==
+ bh=b0nMFW6LMdE8Xm8hxjzwF8HIN5deAzqIfkDUxKLzdtM=;
+ b=C5mmRIlgtuM+ad99TGMNS0fLS8hrbZGx9N9dQAksMCqKz0Y7Fzau5pDSPOn/4w1RUE
+ aelRntmA4rMtLuldyOfa5Yw4N4uveqolZ39tffmGk1vk4dsalYUF/+0FF6NzTxYaPCPn
+ 4mPdFeaJwe0saY4X7VDYw73aDePcWHT6PPCnw6LhjxQsebm1RXGRB2FiZx7vtydvc76B
+ xfOfTXb7eKQZgS+zKOsrQ9kIyErK7Lz7nXyKp9Gz1dtN2v80bYNE+J3uEdCc6vq6mLGi
+ m7dq4CJ6xITRKGpyRUai+E5JRc9poFralBA2mrchfxsFTK64UYZwkw+9feJPB2CdaPTS
+ dkZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703604164; x=1704208964;
+ d=1e100.net; s=20230601; t=1703604177; x=1704208977;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TGFyDMwWWcYIPV1sVKqkGaMC3O77Yt2NAwy/JQOu4Nw=;
- b=bzHYUg2xRgSLjQMtLyoCJqzzazEjNky+0ivg6Bhq3ARRRxsAvp7Y+ITybT58Lulu4f
- xizULg29vROD52D5eEN0SyB97qvI8NSMiFVbG9y6ch7jOzndrCGfKlvN5f9rAo99Yu8T
- IjbSpl/RLVlZ0V5q27lP3pLfHKXBW+583ZSM18obCsl9s2Yf+2AXn5vO08s9HitLcaPo
- bV3NAzgEJgmISCfiWo+bNhGxuHqAWrHRxdtxiyXt1vPK8oxM/IgSontZnHW75ZOR80KL
- A0DtmqmwWyn9tsMUfO2SanvfCAmGOUlqPnlFRuosApfbT4FXTi5+1FDxD01xg4exoRAx
- XO6A==
-X-Gm-Message-State: AOJu0YxNhtCaG+l8wYDI67tYRq6wVaNUgY9+9mv4PaIdfStbSN64lMlq
- EdxK3mIobGKSo8Jm8zX7gct+nBdd4X0dug==
-X-Google-Smtp-Source: AGHT+IHA1ALC9hkDL2Z+mTf5dGvup3v7SwA0w9AIfvp5EezpO7Wzhrn4dLcfSylpl3kj+ZvaQJA1GA==
-X-Received: by 2002:adf:ea85:0:b0:333:2fd2:3bdf with SMTP id
- s5-20020adfea85000000b003332fd23bdfmr2519107wrm.152.1703604164518; 
- Tue, 26 Dec 2023 07:22:44 -0800 (PST)
+ bh=b0nMFW6LMdE8Xm8hxjzwF8HIN5deAzqIfkDUxKLzdtM=;
+ b=WR2udgHwEGoLOyCusu+K6nK2kX8VohtaCgIzdAhl9PxEx0N6Mgrn7Zh63Yb1lOFVCV
+ OIW0uOwmwAmbH0j3s0CioM17ckhRFRDbUq70ow9UwVgGNpaqZhG1WPyF0VVxEzcifsju
+ OWjscMuyxk/dQS3oXucuDnot3oE1UrgfVzppty+UEyScnGX+OLGVbmz6M58eF1yKozND
+ 1gChZMsrasSOfBqNH3jQfqHSuyMQ8TCl/uJAOmsuVMZlt65SgsG3BvkS5CRL8HmvobJJ
+ FDnwBgSdksIaHIkPGOW+u313RAqeUxO+nCj78srMvp0cQtkMdy4H+3E5njgh8U0nsM1Q
+ LH5g==
+X-Gm-Message-State: AOJu0Yzj4dCxDuNPNQzF27hscIZCyqaaIh3LtOCrqa+Esj3ObNng6JxA
+ Lr/2QwdWAuF7LKjBkbRFmOGJYwbY/AIA5tT0pmME7ZKilLA=
+X-Google-Smtp-Source: AGHT+IExP0Zdvy4TtZJ8Vmtb44MBWw7RLrNTIr1Gav684fwRhmc86g2e4UaTkZUkLf5itUX37Whl+w==
+X-Received: by 2002:a5d:6511:0:b0:336:7357:acc5 with SMTP id
+ x17-20020a5d6511000000b003367357acc5mr3226778wru.73.1703604177299; 
+ Tue, 26 Dec 2023 07:22:57 -0800 (PST)
 Received: from [192.168.19.175] (131.red-88-29-190.dynamicip.rima-tde.net.
  [88.29.190.131]) by smtp.gmail.com with ESMTPSA id
- a4-20020adffb84000000b00336d24b4847sm2762191wrr.114.2023.12.26.07.22.41
+ a4-20020adffb84000000b00336d24b4847sm2762191wrr.114.2023.12.26.07.22.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Dec 2023 07:22:44 -0800 (PST)
-Message-ID: <545f08d6-d371-4fe6-a309-30ba2c8571f9@linaro.org>
-Date: Tue, 26 Dec 2023 16:22:39 +0100
+ Tue, 26 Dec 2023 07:22:56 -0800 (PST)
+Message-ID: <bbffef1f-0967-46d2-85b6-18c32f4c5e3a@linaro.org>
+Date: Tue, 26 Dec 2023 16:22:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 23/24] exec/cpu-all: Extract page-protection definitions
- to page-prot-common.h
+Subject: Re: [PATCH] virtio-blk: Fix potential nullpointer read access in
+ virtio_blk_data_plane_destroy
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, qemu-riscv@nongnu.org,
- David Hildenbrand <david@redhat.com>, Warner Losh <imp@bsdimp.com>,
- Claudio Fontana <cfontana@suse.de>, Brian Cain <bcain@quicinc.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Riku Voipio <riku.voipio@iki.fi>,
- Kyle Evans <kevans@freebsd.org>, BALATON Zoltan <balaton@eik.bme.hu>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Laurent Vivier <laurent@vivier.eu>, Michael Rolnik <mrolnik@gmail.com>,
- Song Gao <gaosong@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang
- <jiaxun.yang@flygoat.com>, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Stafford Horne <shorne@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Max Filippov <jcmvbkbc@gmail.com>
-References: <20231211212003.21686-1-philmd@linaro.org>
- <20231211212003.21686-24-philmd@linaro.org>
- <CXUPHHNKAVYM.129IGW3MNKCSQ@wheely>
+To: Stefan Weil <sw@weilnetz.de>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+Cc: Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+References: <20231224114314.420360-1-sw@weilnetz.de>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CXUPHHNKAVYM.129IGW3MNKCSQ@wheely>
+In-Reply-To: <20231224114314.420360-1-sw@weilnetz.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -122,36 +94,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Nicholas,
+On 24/12/23 12:43, Stefan Weil via wrote:
+> Fixes: CID 1532828
+> Fixes: b6948ab01d ("virtio-blk: add iothread-vq-mapping parameter")
+> Signed-off-by: Stefan Weil <sw@weilnetz.de>
+> ---
+>   hw/block/dataplane/virtio-blk.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-On 22/12/23 09:06, Nicholas Piggin wrote:
-> On Tue Dec 12, 2023 at 7:20 AM AEST, Philippe Mathieu-Daudé wrote:
->> Extract page-protection definitions from "exec/cpu-all.h"
->> to "exec/page-prot-common.h".
->>
->> The list of files requiring the new header was generated
->> using:
->>
->> $ git grep -wE \
->>    'PAGE_(READ|WRITE|EXEC|BITS|VALID|ANON|RESERVED|TARGET_.|PASSTHROUGH)'
-> 
-> Acked-by: Nicholas Piggin <npiggin@gmail.com> (ppc)
-> 
-> Looks trivial for ppc, so fine. But what's the difference between
-> -common.h and -all.h suffix?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-We believe historically '-all' was used for target-specific
-headers. However then headers got massaged and some ended
-using this suffix, although not anymore target specific.
-
-Today for clarity we prefer using '-common' for generic
-(target agnostic) headers, and '-target' for target-specific
-ones.
-
-I tried to clarify that here:
-https://lore.kernel.org/qemu-devel/20231226150441.97501-1-philmd@linaro.org/
-
-Thanks for your review,
-
-Phil.
 
