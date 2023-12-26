@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA29D81E6B5
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9EE81E6B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Dec 2023 10:52:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rI44S-0000WJ-Hb; Tue, 26 Dec 2023 04:49:56 -0500
+	id 1rI469-0001Bp-Gi; Tue, 26 Dec 2023 04:51:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI44P-0000W0-Py
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:49:54 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI466-0001BX-O5
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:51:38 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI44O-0003hW-68
- for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:49:53 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rI462-00044Q-7Z
+ for qemu-devel@nongnu.org; Tue, 26 Dec 2023 04:51:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703584191;
+ s=mimecast20190719; t=1703584293;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=GbBeyS/80jftVPd7Ma4Yal4/KK1d/JdRq54dZwI1a6k=;
- b=fV3dc6VHVuDS0E64wiqETC38yel7nBxrBVqCEzJZQV690BFcAIEF1ZktvK+mRKAMRc2dad
- 6GYD41Ib4dbNWjIpQNCYD2hvQEFayN/EE/dd2Bw57AMTQNXnnA5KH03z+3ccEB+gLtZ12T
- xQTKPVwSIF29bdGfXkwqaqyuGCQYzCQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ibi9cILDkS6+uCUBFarZ9oJKdZKd3xgef/MV0EFr+Q4=;
+ b=Ry7kI2/vv1odjYkKQZekbVvlX6Sa8ZJr32J8ru/NALZcc7YWtwhin6/ly7TUFF9OMqa/iC
+ OFRLL7VziG0XEHSLwOStb1GBcLo7i23SqKwngANsbu7sFX1K+Pt3gHujrhWdkPxs3nZuHc
+ IbdFTdJpsCqSY3B77N3uvdMCkjvrHmk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-lXz1UB3IOG-6p_E59F4jAw-1; Tue, 26 Dec 2023 04:49:49 -0500
-X-MC-Unique: lXz1UB3IOG-6p_E59F4jAw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-332ee20a40fso3203952f8f.3
- for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:49:49 -0800 (PST)
+ us-mta-219-ydAMxXNIOK-5P-BjHVZWHg-1; Tue, 26 Dec 2023 04:51:31 -0500
+X-MC-Unique: ydAMxXNIOK-5P-BjHVZWHg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40d5bc8d13bso686055e9.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Dec 2023 01:51:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703584186; x=1704188986;
+ d=1e100.net; s=20230601; t=1703584289; x=1704189089;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GbBeyS/80jftVPd7Ma4Yal4/KK1d/JdRq54dZwI1a6k=;
- b=GTAcu04hAx/vUvH2BX+Q3zd/Yb6Mzf+cea60K9S5MhsiVOiwCTJqQBULxa4ZcGLwjg
- 6Hs8xzGUNb6r81eaTKAujSBtM/nj6rz3Wi8EAPqvYLGr7HuIg0TjzkOzaAqJqskDy5Y6
- QmOiW1la4ZoStt2MF5NaV865zF5oP2F8t2vmm7ZuWzE6pnzxoLq+43Z/tgj9KIlc1+ns
- h9QnY9WSCAMkmsNs0P+9v1YI0/pqBa8LaT1HJFlEJx/BqjYGzCi6P8mpLmoqOal3uIF8
- 7PetoAtUswoOfeUIpQHYyTG6zA/C6N0Ww+mOmVzGLDcgynucMMzHukTVg4BgMxoddTaH
- pFDA==
-X-Gm-Message-State: AOJu0YzhIl+8wUFXoAG1b6wkIB1sKjvfHGGVdWGknWZ2+feyif1QbdaM
- lAjafLfZ5mmiDRMd3DYJwl4TixXdMM0mIQ8NfaBO4QObfU2KoFj2DctjRfy4x7gN9UwTNIprcIj
- J7N6k/DZKnwgiVl/vLf1wIn9yQ/Tg41wCRQuWkMfOeF8nGsmKyc19yP1FlWQ/k9+DE0xloe5PeT
- hz
-X-Received: by 2002:a5d:5605:0:b0:336:7434:193a with SMTP id
- l5-20020a5d5605000000b003367434193amr3591714wrv.124.1703584185886; 
- Tue, 26 Dec 2023 01:49:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFf6Va6rYeZk5frmJa+pemxx+Py3dhXnsR02RdlM7fPUy3DC1+NCVdwwKIhnbMQvg0WRs51yw==
-X-Received: by 2002:a5d:5605:0:b0:336:7434:193a with SMTP id
- l5-20020a5d5605000000b003367434193amr3591706wrv.124.1703584185425; 
- Tue, 26 Dec 2023 01:49:45 -0800 (PST)
+ bh=ibi9cILDkS6+uCUBFarZ9oJKdZKd3xgef/MV0EFr+Q4=;
+ b=iWzWpIFrn9D3NaDR25KusxcS14NW7vRkLMdw68WYfyHzxi5iuHfUX/lDZZWLSSJ+oH
+ 6ZbyjduJAzcqhVr4qTUrMxpLShqyrb6PW5ckDhT5j9bILsHpP0hsidOR+r/VY5F8vDqG
+ 4D4hg3ml8Oi58n04NFPX1/TxrkEbNe1ErRr4xsYl4POYCMB2b9mFJLQ0+P2jzgnpsojk
+ 3ib5kw+wm/h2FjHpyaUPvx4zrP6/NTGo0fs+8VSN+Lz1BRvsh3fDbenMM+maP1MQK077
+ ueJr/kU0SO8Pu7yzbdiHvtQzH7SR/OHRbQRXHqAqecch2KqIGx5rbgQ+sh83sg7lflzk
+ F2FQ==
+X-Gm-Message-State: AOJu0YwBzyWKlYVDFgQN3+pGqXzMSymrtpuyYAc8W7e+uuEBXCdMaNlw
+ lhUa7Ok6pNsZfJM/GF6BJ2CW13/tHXCDCKZl409YX7omz6mp7kGJyF5T1+AdnYmqvAZAuKujHki
+ YN56msNVIijdmaefKlMwMXlv0Qi+KBaE0U9LUPf3luYn4/j5xmvlSqKIo0b5gmmOUO3R8KAa5pV
+ er
+X-Received: by 2002:a05:600c:511a:b0:40d:3b3f:603d with SMTP id
+ o26-20020a05600c511a00b0040d3b3f603dmr3380407wms.41.1703584289540; 
+ Tue, 26 Dec 2023 01:51:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFXnnR7Ym5Vx48pictoS+FnHH5jctBY+Q47KusuO7dmKBvyrjSaw/ALgWcihxvrZF2x6B8SgA==
+X-Received: by 2002:a05:600c:511a:b0:40d:3b3f:603d with SMTP id
+ o26-20020a05600c511a00b0040d3b3f603dmr3380398wms.41.1703584289227; 
+ Tue, 26 Dec 2023 01:51:29 -0800 (PST)
 Received: from redhat.com ([2.55.177.189]) by smtp.gmail.com with ESMTPSA id
- l2-20020adfe582000000b003366cf8bda4sm12190788wrm.41.2023.12.26.01.49.42
+ r20-20020a05600c459400b0040c3dcc36e6sm20016130wmo.47.2023.12.26.01.51.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Dec 2023 01:49:43 -0800 (PST)
-Date: Tue, 26 Dec 2023 04:49:41 -0500
+ Tue, 26 Dec 2023 01:51:28 -0800 (PST)
+Date: Tue, 26 Dec 2023 04:51:25 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Aaron Young <Aaron.Young@oracle.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 05/21] hw/acpi: propagate vcpu hotplug after switch to modern
- interface
-Message-ID: <45e48809d3d0328fd2f113b878a62a27f1360664.1703582625.git.mst@redhat.com>
+ Dongli Zhang <dongli.zhang@oracle.com>, Feng Li <fengli@smartx.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PULL 06/21] vhost-scsi: fix usage of error_reportf_err()
+Message-ID: <9a557b1b226293aed3f06bd035cf87094d69ea8d.1703582625.git.mst@redhat.com>
 References: <cover.1703582625.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -101,89 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Aaron Young <Aaron.Young@oracle.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-If a vcpu with an apic-id that is not supported by the legacy
-interface (>255) is hot-plugged, the legacy code will dynamically switch
-to the modern interface. However, the hotplug event is not forwarded to
-the new interface resulting in the vcpu not being fully/properly added
-to the machine config. This BUG is evidenced by OVMF when it
-it attempts to count the vcpus and reports an inconsistent vcpu count
-reported by the fw_cfg interface and the modern hotpug interface.
+It is required to use error_report() instead of error_reportf_err(), if the
+prior function does not take local_err as the argument. As a result, the
+local_err is always NULL and segment fault may happen.
 
-Fix is to propagate the hotplug event after making the switch from
-the legacy interface to the modern interface.
+vhost_scsi_start()
+-> vhost_scsi_set_endpoint(s) --> does not allocate local_err
+-> error_reportf_err()
+   -> error_vprepend()
+      -> g_string_append(newmsg, (*errp)->msg) --> (*errp) is NULL
 
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>
-Signed-off-by: Aaron Young <aaron.young@oracle.com>
-Message-Id: <0e8a9baebbb29f2a6c87fd08e43dc2ac4019759a.1702398644.git.Aaron.Young@oracle.com>
+In addition, add ": " at the end of other error_reportf_err() logs.
+
+Fixes: 7962e432b4e4 ("vhost-user-scsi: support reconnect to backend")
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Message-Id: <20231214003117.43960-1-dongli.zhang@oracle.com>
+Reviewed-by: Feng Li <fengli@smartx.com>
+Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/acpi/cpu_hotplug.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ hw/scsi/vhost-scsi.c      | 4 ++--
+ hw/scsi/vhost-user-scsi.c | 3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
-index 634bbecb31..6f78db0ccb 100644
---- a/hw/acpi/cpu_hotplug.c
-+++ b/hw/acpi/cpu_hotplug.c
-@@ -59,7 +59,8 @@ static const MemoryRegionOps AcpiCpuHotplug_ops = {
-     },
- };
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index 08aa7534df..6159eb6fec 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -91,13 +91,13 @@ static int vhost_scsi_start(VHostSCSI *s)
  
--static void acpi_set_cpu_present_bit(AcpiCpuHotplug *g, CPUState *cpu)
-+static void acpi_set_cpu_present_bit(AcpiCpuHotplug *g, CPUState *cpu,
-+                                     bool *swtchd_to_modern)
- {
-     CPUClass *k = CPU_GET_CLASS(cpu);
-     int64_t cpu_id;
-@@ -68,23 +69,34 @@ static void acpi_set_cpu_present_bit(AcpiCpuHotplug *g, CPUState *cpu)
-     if ((cpu_id / 8) >= ACPI_GPE_PROC_LEN) {
-         object_property_set_bool(g->device, "cpu-hotplug-legacy", false,
-                                  &error_abort);
-+        *swtchd_to_modern = true;
-         return;
+     ret = vhost_scsi_common_start(vsc, &local_err);
+     if (ret < 0) {
+-        error_reportf_err(local_err, "Error starting vhost-scsi");
++        error_reportf_err(local_err, "Error starting vhost-scsi: ");
+         return ret;
      }
  
-+    *swtchd_to_modern = false;
-     g->sts[cpu_id / 8] |= (1 << (cpu_id % 8));
- }
- 
- void legacy_acpi_cpu_plug_cb(HotplugHandler *hotplug_dev,
-                              AcpiCpuHotplug *g, DeviceState *dev, Error **errp)
- {
--    acpi_set_cpu_present_bit(g, CPU(dev));
--    acpi_send_event(DEVICE(hotplug_dev), ACPI_CPU_HOTPLUG_STATUS);
-+    bool swtchd_to_modern;
-+    Error *local_err = NULL;
-+
-+    acpi_set_cpu_present_bit(g, CPU(dev), &swtchd_to_modern);
-+    if (swtchd_to_modern) {
-+        /* propagate the hotplug to the modern interface */
-+        hotplug_handler_plug(hotplug_dev, dev, &local_err);
-+    } else {
-+        acpi_send_event(DEVICE(hotplug_dev), ACPI_CPU_HOTPLUG_STATUS);
-+    }
- }
- 
- void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
-                                   AcpiCpuHotplug *gpe_cpu, uint16_t base)
- {
-     CPUState *cpu;
-+    bool swtchd_to_modern;
- 
-     memory_region_init_io(&gpe_cpu->io, owner, &AcpiCpuHotplug_ops,
-                           gpe_cpu, "acpi-cpu-hotplug", ACPI_GPE_PROC_LEN);
-@@ -92,7 +104,7 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
-     gpe_cpu->device = owner;
- 
-     CPU_FOREACH(cpu) {
--        acpi_set_cpu_present_bit(gpe_cpu, cpu);
-+        acpi_set_cpu_present_bit(gpe_cpu, cpu, &swtchd_to_modern);
+     ret = vhost_scsi_set_endpoint(s);
+     if (ret < 0) {
+-        error_reportf_err(local_err, "Error setting vhost-scsi endpoint");
++        error_report("Error setting vhost-scsi endpoint");
+         vhost_scsi_common_stop(vsc);
      }
- }
  
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index 780f10559d..af18c4f3d3 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -83,7 +83,8 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
+     if (should_start) {
+         ret = vhost_user_scsi_start(s, &local_err);
+         if (ret < 0) {
+-            error_reportf_err(local_err, "unable to start vhost-user-scsi: %s",
++            error_reportf_err(local_err,
++                              "unable to start vhost-user-scsi: %s: ",
+                               strerror(-ret));
+             qemu_chr_fe_disconnect(&vs->conf.chardev);
+         }
 -- 
 MST
 
