@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF43481F22D
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 22:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5930981F241
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 22:44:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIbBd-0001pP-8S; Wed, 27 Dec 2023 16:11:33 -0500
+	id 1rIbg2-00083k-Ud; Wed, 27 Dec 2023 16:42:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIbBa-0001oS-G8
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:11:30 -0500
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1rIbg1-00083Y-RC
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:42:57 -0500
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIbBY-0007VB-RK
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:11:30 -0500
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-5cd68a0de49so4011099a12.2
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 13:11:25 -0800 (PST)
+ id 1rIbg0-0003I1-5V
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:42:57 -0500
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-594c253f037so859366eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 13:42:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703711484; x=1704316284; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703713375; x=1704318175; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=kXA8OAYNk0kogjfz9fCzOHBuLqDotHgmBlZWJFA20d0=;
- b=X5aWNAEjNsu8CiMl51pb5OC4vbB6KTYZYA7blPTY+tN/eKGiY2HAhE+CqcJoUcFYZA
- DT/Px+2GxbBoIoo2YKbR47OWCyQPVfhOZ3MjZIdmD6wtv8orRMiXNJ269ZofJn3BU48o
- +N9o121D8kEG32F05fibYp+OACeHZslwU2D0QM40aTrFPwGBlr4aqz8tPAi9GW5CLSdE
- BWILIef9EGluv9EGCxtC+tX7wTghVFBcQtA9IJ6hnmBlQnQRB2qHErCYYxT2wgMWe7Sq
- Asxz1U/c+ke/q7jQ7TdimftlKEWvQPZyB7gWqtExAB1G+h5tj+SZhjt4FI/GAPWQ/sHY
- etKA==
+ bh=6VmdyWbZtc844E440P2xTgzkhKdKUHFYrBtvlgi14z0=;
+ b=um1aHK7qL9ozmCpmB6P4jgJ2eSzACGpz/b+5gunMp0GfPGxclWTkb2ZHKOupdL9jP/
+ EwzHaDc55d6RyUhitdOwAn98nd5PsFdpCVgXIMgCCcfw2FHGL2IaOK9lskEB3WJd3uE4
+ YUHwOQPkrkc6Q0TVRk/nhafGK3x4ORDsS8nnR4G7q7y9P+R4v71YqsXFMTbmr4ayteTe
+ Z0fJZIxxINPBWGg2Sds9ejC8pWc4E9hrKGe6dAD9pYwjki5WQ6uYzUS3lIxAWDdtbv10
+ QD7OH0onUZ+0enB9zeZ7BpR/JaKxx/dATSVlJFy7vBs6lYDIozBqJVdTrVoyn9doPC2F
+ siHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703711484; x=1704316284;
+ d=1e100.net; s=20230601; t=1703713375; x=1704318175;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kXA8OAYNk0kogjfz9fCzOHBuLqDotHgmBlZWJFA20d0=;
- b=p2K3ImWdL73+ykFxUOrrGSiN/0q0GzDN+secjqlJa6d6uw7kPAbVg+sUwKEgXbn5fS
- BJMm1GrkdvB3ed9bvnEIJ2V0z7aglyQWpK5BBv9KgOsZlzjfdr849sZ6ZycZrjeYnR8W
- bf8rgue3TIi9gO/MQ7RMkxd3wYGXLt4nqLE1x6xk4ihj5KfdpUbN6Z1UrDkmUSeZwjHl
- yW+rhhXBH7k//5N6Gf7UJVG8d2Rpf40U8aIkB+adWYKmnZ+MV0wbjNlp/tAvhWoGnoEa
- fiFnM6W1dNt7dO8k8ZS0fT27Qk1rgod5ejQPFiJkBiFb2/LaDfiLGuiHawAdelH+aEeW
- 6Eaw==
-X-Gm-Message-State: AOJu0Yz8QPw6IPxaSSq/vBx3ryRHX7GU+9En5rp/TcuD1Wblfj4U7m6P
- pFb7OLtWTO1YUJO0P5oUjKB3NES/MIVc/w==
-X-Google-Smtp-Source: AGHT+IGn5wdPUNQtlKWsEOF3vcmpyprRQhzDfXqlebtT9PzwanPNOXkO7Fr5mNYsQiHk6PAkV+JdDw==
-X-Received: by 2002:a05:6a20:b907:b0:196:436f:a4cc with SMTP id
- fe7-20020a056a20b90700b00196436fa4ccmr306531pzb.2.1703711484164; 
- Wed, 27 Dec 2023 13:11:24 -0800 (PST)
+ bh=6VmdyWbZtc844E440P2xTgzkhKdKUHFYrBtvlgi14z0=;
+ b=l/tiI02AzCLAtqJXugUFXeLU5MnnEBDuLhZxswM/G4DQ5zZ81pJ3yV6sP35mAQLQNK
+ Y8myUAyf4AB2HYejg3gICiRvJM0/Z9LtJBIiMj1lAkn3zm82hK8ojfFDikdFQhV8HdM3
+ duljY14tkWX+GRgv2IHOqqsPD31iYeoyM3sDaFnjR9w1kaiSnMgf9f/cvrcUzhtvmHgf
+ IkFI0HxsbsHkl9SUZVhbCMsw93pqx9f0ez6vqE3AfjBwETCLDIM3bTj5STrghyzhbdbI
+ MvOzt3Tnsle4ohdgmT29oydxFGzQ+zu2d70HrEuBZxqBA0dCNvoIdsY0LQSTJF4Tloni
+ Mkfg==
+X-Gm-Message-State: AOJu0Yyg2daQg5vg/m/1cAjnWjFNecTeA1ZNkgPXWK58t5SA43ubzxN1
+ ZqKnIWDzVTdvKR9w5bkJ6cblISI+HkYi1w==
+X-Google-Smtp-Source: AGHT+IEEXmX/q3tfCWeEqmkaH3aickI0SX5Hw5zLVwHbiEzxcMqmD4UYsjoKRoeirLdAe0+Zi9bBIA==
+X-Received: by 2002:a05:6358:63a7:b0:175:42:e60b with SMTP id
+ k39-20020a05635863a700b001750042e60bmr2571461rwh.5.1703713374681; 
+ Wed, 27 Dec 2023 13:42:54 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:12c1:9684:874a:fb3a?
  ([2001:8003:c020:6900:12c1:9684:874a:fb3a])
  by smtp.gmail.com with ESMTPSA id
- w65-20020a626244000000b006ce48a0b7c6sm12632650pfb.109.2023.12.27.13.11.22
+ g10-20020a056a000b8a00b006d9b30b33b0sm6683592pfj.196.2023.12.27.13.42.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Dec 2023 13:11:23 -0800 (PST)
-Message-ID: <d50ce2be-f1a1-4a43-856a-ea2cfbd9d2f4@linaro.org>
-Date: Thu, 28 Dec 2023 08:11:18 +1100
+ Wed, 27 Dec 2023 13:42:54 -0800 (PST)
+Message-ID: <9d289bc2-d050-4348-98ca-cf86140be5e5@linaro.org>
+Date: Thu, 28 Dec 2023 08:42:49 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/35] hw/intc/arm_gicv3_cpuif: handle LPIs in in the list
- registers
+Subject: Re: [PATCH 04/35] target/arm: Handle HCR_EL2 accesses for bits
+ introduced with FEAT_NV
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
- <20231218113305.2511480-4-peter.maydell@linaro.org>
+ <20231218113305.2511480-5-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231218113305.2511480-4-peter.maydell@linaro.org>
+In-Reply-To: <20231218113305.2511480-5-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,35 +97,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/18/23 22:32, Peter Maydell wrote:
-> The hypervisor can deliver (virtual) LPIs to a guest by setting up a
-> list register to have an intid which is an LPI.  The GIC has to treat
-> these a little differently to standard interrupt IDs, because LPIs
-> have no Active state, and so the guest will only EOI them, it will
-> not also deactivate them.  So icv_eoir_write() must do two things:
+> FEAT_NV defines three new bits in HCR_EL2: NV, NV1 and AT.  When the
+> feature is enabled, allow these bits to be written, and flush the
+> TLBs for the bits which affect page table interpretation.
 > 
->   * if the LPI ID is not in any list register, we drop the
->     priority but do not increment the EOI count
->   * if the LPI ID is in a list register, we immediately deactivate
->     it, regardless of the split-drop-and-deactivate control
-> 
-> This can be seen in the VirtualWriteEOIR0() and VirtualWriteEOIR1()
-> pseudocode in the GICv3 architecture specification.
-> 
-> Without this fix, potentially a hypervisor guest might stall because
-> LPIs get stuck in a bogus Active+Pending state.
-> 
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
-> Weirdly, I only saw this being a problem when the hypervisor guest
-> was an EL2-enabled one under my FEAT_NV/FEAT_NV2 implementation.
-> But there's nothing FEAT_NV specific about the bug.
-> ---
->   hw/intc/arm_gicv3_cpuif.c | 17 +++++++++++++----
->   1 file changed, 13 insertions(+), 4 deletions(-)
+>   target/arm/cpu-features.h | 5 +++++
+>   target/arm/helper.c       | 6 +++++-
+>   2 files changed, 10 insertions(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
