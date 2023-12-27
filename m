@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3915D81F2AE
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 00:00:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2A381F2E8
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 00:01:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIcsU-0004vr-VA; Wed, 27 Dec 2023 17:59:54 -0500
+	id 1rIcu6-0005xv-1D; Wed, 27 Dec 2023 18:01:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIcsS-0004vE-C6
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 17:59:52 -0500
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1rIcu4-0005x3-5h
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 18:01:32 -0500
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIcsI-0003zQ-OR
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 17:59:52 -0500
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1d3dee5f534so43346875ad.1
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 14:59:42 -0800 (PST)
+ id 1rIcu2-0006af-J6
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 18:01:31 -0500
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-5cd54e5fbb2so1516752a12.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 15:01:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703717981; x=1704322781; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703718089; x=1704322889; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=U7Cg0qgeJDO8hUitgUPQBXjPq3+kZodNws2iN2GZNj4=;
- b=dut30aZCH/cOCdrbAnENE68W343zyz6yvuHyjWZOZpjAO8pF8HvCjbfXFEo1lTrkKo
- G2xBSm8qfPVvgylWFbw8GKBGAsYgVb4+JE9xPJH9u/Sqqn1MMGSsDJr0sCh+KPSJR/j4
- g0mE7cZEihGUaGp0dnrhO5LQkT77sY8sNCppyBdc34yu4O0NSvAfBP/WYOxwhdgC1Ahb
- r5vLAv/VqcxlWEbkW1UaXPxDt9CcLFxuKFw+B6pzOURD2DjtjY/NekGGZmeWBEsP2sWX
- BHr0bg82H1xJPZ8y0N0nn8amIaIDoeSoULfdTOtY8//W4NaHzIgSjncxB7DHrjtmMr8h
- 3MWQ==
+ bh=9r/yEVJ+mBLJ3aom8HmY8tt/YOCxiKBpVIFqRkW5Do0=;
+ b=Bje95/4+p5I7gfVDpgN7MBXosRUZQ6ohlBSudjIv+Cq1wcNU9WKhcj8Jw/+Sw1WGiZ
+ oz2CLVh9YGrT0pBxXM6no3lFCoxIiiBPNfcORbl5afLp3fCNT2QXtrdQU/mgEae5L9Ca
+ 4B6Zpxi+McEbC2cXZV+htl4tT9v88ba7U/DvR43h1tHuIVjtygJcSE62HCE6tQy1aCKK
+ o9uyLaTJ7juUyI26bcq1o72EAFvX+LkvnUPkdGunuM9lKwolCVxJVtO/AeVg8XY9EDkH
+ CA124zbXM7SPxB9N7pMrRxVyvyndDJKTEzm4slggtdzYQRxfk5v0Df7eUe424sDiS4hJ
+ i8nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703717981; x=1704322781;
+ d=1e100.net; s=20230601; t=1703718089; x=1704322889;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=U7Cg0qgeJDO8hUitgUPQBXjPq3+kZodNws2iN2GZNj4=;
- b=OZOmHkZVbqeBv3w6fqpaQCQ/5ruhia/iKKiCYx8/ZM+dz5WIs07rq/SjxGI+9Ed+qW
- l+bXCp1LfmEFZedjIMYuh2hEV0gAOMMjwsi4Dcap3fOBthdkoukld3cUeY16nskSB2Tq
- FuK44fDmk41o3VWGbyZyi8chCS0EmFYQ/dOuFh2asMDXQkbSUqrrrt3lE2py6TLsb752
- 6DlMRW+tAMC/txAtEG/YmK3TevkrIicqrv8FgkkK0SAvdrkn+uTwhjv86hyozfZM0znR
- f5LD+6DXOMb7fhmaR/dSkGIlDevhkX8CI4zw4SNqtorgtWHP9n4o2YPeSl6myqnFQbK0
- +SFA==
-X-Gm-Message-State: AOJu0Yy+B/k+rn+4+1ZEhgomMFlIFdawn2J3HdvZu7u0M+M6FCjMJjek
- gI/1oQ0QxZskknSQql4hKF4F+Y/Zyr6Op8RT51yft7SM7JjX1Q==
-X-Google-Smtp-Source: AGHT+IGAlpDCD2I8Om6SeWwFM3TVVV9hA9zXSsnZHOdKWSTx0mAna7waLbfOg1pZE4Wyt+PiA4E1zA==
-X-Received: by 2002:a17:903:18d:b0:1d0:acd4:e711 with SMTP id
- z13-20020a170903018d00b001d0acd4e711mr9981088plg.15.1703717981527; 
- Wed, 27 Dec 2023 14:59:41 -0800 (PST)
+ bh=9r/yEVJ+mBLJ3aom8HmY8tt/YOCxiKBpVIFqRkW5Do0=;
+ b=jAWBCOlWDWsnGLXKVG/XpFP4iLp3Wtq5I+PwVOBxXiB7Bb8aMYh0uJ4tLAkGzD+gCu
+ 93q5MbI1Mq7LJMPkZUtGBjZ0htpn4hbL4jEm8NMWFGczgX2XJOd7Ff/OylMfWiI9nrh3
+ oaoZqHVN7FvRjWN0roZqU7BYuxuHtKLA1wMqnC6/BP5lkgRSVInezsAyfhqmz/+JTAAF
+ DpeYnbK22Jd+Ll7yFycfCNJPO7WTvUP5r0sGLxKf4HjUa0P++YCT5iT9ddaq7QQw4Jmd
+ XK47VMzlLsTExYYIkKiI3I7W786MOnOdmHCtdKQUUlGvJQxNsh/lWSi7On2xfsNiC5tl
+ BVyg==
+X-Gm-Message-State: AOJu0YwyC30pOYqSVPi+uNRzuRuDhOd0f/ZkDe0LIqtv8+80ZFdlK1Ap
+ jV7gTvUWt/KPA7QbyFv9pyPk5qTOogBtug==
+X-Google-Smtp-Source: AGHT+IG89dD9gPSZ2HD6FYTHhHv5tbCgUBO6TUYTwYeONKrlZj4jFoitx33pJLhIW6hmSMhwzG6Q/A==
+X-Received: by 2002:a17:903:32c5:b0:1d4:4ca8:eee3 with SMTP id
+ i5-20020a17090332c500b001d44ca8eee3mr2620306plr.68.1703718089222; 
+ Wed, 27 Dec 2023 15:01:29 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:12c1:9684:874a:fb3a?
  ([2001:8003:c020:6900:12c1:9684:874a:fb3a])
  by smtp.gmail.com with ESMTPSA id
- w12-20020a170902e88c00b001d06df5c1absm12529753plg.86.2023.12.27.14.59.39
+ s16-20020a170902ea1000b001d331bd4d4csm12493472plg.95.2023.12.27.15.01.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Dec 2023 14:59:41 -0800 (PST)
-Message-ID: <537ff3f4-2c7f-4b9f-ba15-460f74c88407@linaro.org>
-Date: Thu, 28 Dec 2023 09:59:38 +1100
+ Wed, 27 Dec 2023 15:01:28 -0800 (PST)
+Message-ID: <9ae6d5d6-51c1-4c7e-ab21-4da2a3bbd681@linaro.org>
+Date: Thu, 28 Dec 2023 10:01:23 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 22/35] target/arm: Handle HCR_EL2 accesses for FEAT_NV2
- bits
+Subject: Re: [PATCH 23/35] target/arm: Implement VNCR_EL2 register
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
- <20231218113305.2511480-23-peter.maydell@linaro.org>
+ <20231218113305.2511480-24-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231218113305.2511480-23-peter.maydell@linaro.org>
+In-Reply-To: <20231218113305.2511480-24-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,14 +96,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/18/23 22:32, Peter Maydell wrote:
-> FEAT_NV2 defines another new bit in HCR_EL2: NV2. When the
-> feature is enabled, allow this bit to be written in HCR_EL2.
+> For FEAT_NV2, a new system register VNCR_EL2 holds the base
+> address of the memory which nested-guest system register
+> accesses are redirected to. Implement this register.
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/cpu-features.h | 5 +++++
->   target/arm/helper.c       | 3 +++
->   2 files changed, 8 insertions(+)
+>   target/arm/cpu.h    |  3 +++
+>   target/arm/helper.c | 26 ++++++++++++++++++++++++++
+>   2 files changed, 29 insertions(+)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
