@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70C981F22B
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 22:09:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E25281F22C
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 22:09:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIb8B-00008W-17; Wed, 27 Dec 2023 16:07:59 -0500
+	id 1rIb9A-0000XP-AF; Wed, 27 Dec 2023 16:09:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIb85-00007s-7D
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:07:56 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rIb8z-0000TA-5e
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:08:49 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIb83-000712-OH
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:07:52 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d3f3ee00a2so20806745ad.3
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 13:07:51 -0800 (PST)
+ id 1rIb8x-00074U-0q
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:08:48 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d430bac207so20794765ad.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 13:08:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703711270; x=1704316070; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703711325; x=1704316125; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QMMNPAyfBsxRDnN0YMoSQQSLw/5d3Sry2HkjSV8AK2Y=;
- b=vm/7MlplqZkmOEkl+GB+HJ1xNO+F6tEWzSyMczkW5OXiqlLaYx8HQaNxiNz58zyGJ2
- 0lvttR8CSGWVueQQ9R31jvCsRNVvOEq7/A1Is9ZuIv+AHSbP4OS7nchAstEp0geS0Uzi
- fSCvR/oQm2DXQ8Dd0lCsdMf9ZHSjqJny9/iTZSj8AESxfI46l5TQ+e+7RoK6EC4q7duj
- UHoy39pvj0409oX1Y9AB20l4V8hXK1ee+5QYUqKA3TrVULWozggCMgFKzbsaa2KiaIww
- rkjAEvfB0Fiyiz0o+7NUoEu3kXtXQdGKvM9g9YkTdLaxJXY/9+TQUTGWNDDvqMNZaAcj
- /WxQ==
+ bh=zHKq0bqP7Qzj+Vaa7zm/ioZ4qsgAU2Yx5PlrwIWiekI=;
+ b=pIyEJJiTkn+ccKWFuD6RStriRc7S1uqvYrOFVZ1qk95jLcUnhQPRuxShN9xQ6amESE
+ pBD1/0xSe2gLqVRQTL4oB1ArrWwTme61coC5ucSLh+d3wDxTalHRnWlzYEPjC3pLelJP
+ 3lTWIhvJGM5WoY1rLNtW/BApXe462j2GQcWE0gVdKTVSHQP364f5hjcb3fxR/QXhHVFO
+ iR2vyZDI2Vpzh6eq3jv3XvnuXOIsKkzNMXZglZr80Y7RFyn8aUCF5EWmiTLKZd+dGkG+
+ Yx00GgaPOWBHG354YtJa9/tpVNTmDmbannheWFvlUHAEFQFTmve17zo7JucjhcllB/6w
+ OFRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703711270; x=1704316070;
+ d=1e100.net; s=20230601; t=1703711325; x=1704316125;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QMMNPAyfBsxRDnN0YMoSQQSLw/5d3Sry2HkjSV8AK2Y=;
- b=EuCZUp92yO3ICEO4hWP8kqzIPGmLYTzeIF6LIvbrJnfl27oOdhzdYuVO9VB8mV1i4r
- WjjamCDQIbxB+1kQzS8a1A9kbx+Ootu4MGKHUKpFOA8WhIrllxmCRRqtl2z/9WJup+kD
- eIwuYEq98ayn1Y7U5k57QDSHOWyoMB0g6LLDPbmyTRikDmOeCeeamqGxL/VbNWJ/yLJ2
- 30p6WEdH2kZI6LGYmzNMrvR5li8GhjziRO/tPYkux5xo3KQVxw5jRD2gGr/Qnk2+vfB9
- CNR/7rFRsd2f3xqOAQTL5qwkIE1IrvyzNqwXG8VBZRGIy70ThUD9i5MLr4Lo9xXrJao/
- xJqQ==
-X-Gm-Message-State: AOJu0YztCLNJsK6gwpu9ogwyZcXwv0iegF4O8WRAZXObdTJHsV5aQ9PB
- 1GkiaIKvXpniQ7silYxfV1+m4oF3dCBOeQ==
-X-Google-Smtp-Source: AGHT+IFJ2Ofb5EgnnhUNdxAXo2ram3adymeO48Kd4qyKFf/bGc/QsafjKNylG6bCorfUMEoN8lFgXw==
-X-Received: by 2002:a17:902:680c:b0:1d4:2774:3640 with SMTP id
- h12-20020a170902680c00b001d427743640mr2904082plk.119.1703711269780; 
- Wed, 27 Dec 2023 13:07:49 -0800 (PST)
+ bh=zHKq0bqP7Qzj+Vaa7zm/ioZ4qsgAU2Yx5PlrwIWiekI=;
+ b=wL91nHEnrPFIaQinNqIGlyWy2xXdrro++gE/5YsZYvfFZ8odBJvQ2MkcPbDJ1A/ObY
+ JHJ6iCb47+fl0cqUH6cx8wEE/B1oMDDBJoMIxdV1yKq81ChxW4c9YUHM9fdhfft1VH1Y
+ ehTqSJ1FfN9FPm9HyI6HZS6MhszPsPHB8aNcuH4ciXOUAqr3oYITWA+v0e38lL9OnOU1
+ 9rmcpwYv/3D9j2hLgUVoSGR3rCEQbH6iTE36JpLRJYOwvOQM2fSERSAPKYzgSkeCdmpd
+ Wt+QlUmtQznyRoVpNspfGBdy1DJ6w/L+Cts6aj6dzi9MeyoiZyyc+D1fLshVnoeW0Y7y
+ Rhhg==
+X-Gm-Message-State: AOJu0YyInd0Bd74ir39OngmKLmb0N3M/pTm6zQzwuf+6uwY9FIuOoBfn
+ G5krW2RXNzkTeR1Cm0Bz854rp+7zg3z3dWfTUX1tO4Fnn90GIQ==
+X-Google-Smtp-Source: AGHT+IFNFBP3GFsCK1ylS12P7sRtgf1vylJQin9MiEGfd2e+Zv+IC5P6Ob3XkASVdkrFXakhD4T8dA==
+X-Received: by 2002:a17:902:6846:b0:1d4:81bc:a2c2 with SMTP id
+ f6-20020a170902684600b001d481bca2c2mr1682881pln.2.1703711325385; 
+ Wed, 27 Dec 2023 13:08:45 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:12c1:9684:874a:fb3a?
  ([2001:8003:c020:6900:12c1:9684:874a:fb3a])
  by smtp.gmail.com with ESMTPSA id
- m10-20020a170902db0a00b001d0b4693539sm12436231plx.189.2023.12.27.13.07.47
+ m10-20020a170902db0a00b001d0b4693539sm12436231plx.189.2023.12.27.13.08.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Dec 2023 13:07:49 -0800 (PST)
-Message-ID: <cef2282f-9060-4f9f-bffc-296ed2e58fa9@linaro.org>
-Date: Thu, 28 Dec 2023 08:07:43 +1100
+ Wed, 27 Dec 2023 13:08:44 -0800 (PST)
+Message-ID: <3de06a76-a409-4810-8113-715bfa1a645e@linaro.org>
+Date: Thu, 28 Dec 2023 08:08:42 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs/devel: Document conventional file prefixes and
- suffixes
+Subject: Re: [PATCH 02/35] target/arm: Set CTR_EL0.{IDC, DIC} for the 'max' CPU
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
-References: <20231226150441.97501-1-philmd@linaro.org>
+References: <20231218113305.2511480-1-peter.maydell@linaro.org>
+ <20231218113305.2511480-3-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231226150441.97501-1-philmd@linaro.org>
+In-Reply-To: <20231218113305.2511480-3-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,36 +95,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/27/23 02:04, Philippe Mathieu-Daudé wrote:
-> Some header and source file names use common prefix / suffix
-> but we never really ruled a convention. Start doing so with
-> the current patterns from the tree.
+On 12/18/23 22:32, Peter Maydell wrote:
+> The CTR_EL0 register has some bits which allow the implementation to
+> tell the guest that it does not need to do cache maintenance for
+> data-to-instruction coherence and instruction-to-data coherence.
+> QEMU doesn't emulate caches and so our cache maintenance insns are
+> all NOPs.
 > 
-> Suggested-by: Alex Bennée <alex.bennee@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   docs/devel/style.rst | 49 ++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 49 insertions(+)
+> We already have some models of specific CPUs where we set these bits
+> (e.g.  the Neoverse V1), but the 'max' CPU still uses the settings it
+> inherits from Cortex-A57.  Set the bits for 'max' as well, so the
+> guest doesn't need to do unnecessary work.
 > 
-> diff --git a/docs/devel/style.rst b/docs/devel/style.rst
-> index 2f68b50079..4da50eb2ea 100644
-> --- a/docs/devel/style.rst
-> +++ b/docs/devel/style.rst
-> @@ -162,6 +162,55 @@ pre-processor. Another common suffix is ``_impl``; it is used for the
->   concrete implementation of a function that will not be called
->   directly, but rather through a macro or an inline function.
->   
-> +File Naming Conventions
-> +-----------------------
-> +
-> +Public headers
-> +~~~~~~~~~~~~~~
-> +
-> +Headers expected to be access by multiple subsystems must reside in
-> +the ``include/`` folder. Headers local to a subsystem should reside in
-> +the sysbsystem folder, if any (for example ``qobject/qobject-internal.h``
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-subsystem.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
