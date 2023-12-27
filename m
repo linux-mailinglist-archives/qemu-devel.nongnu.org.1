@@ -2,50 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C534081F1B7
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 20:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE2581F1BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 21:04:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIZzQ-0002fp-Rc; Wed, 27 Dec 2023 14:54:52 -0500
+	id 1rIa7K-00044b-Mn; Wed, 27 Dec 2023 15:03:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rIZzN-0002fP-RV
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 14:54:50 -0500
+ id 1rIa7I-00040d-BP
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 15:03:00 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rIZzM-0006SU-1P
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 14:54:49 -0500
+ id 1rIa7G-00015h-NB
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 15:03:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=OYrFunPO9EL4YbbHCA0YdLwGsmPcsv8AWqLWkj+X6vg=; b=VyBJPCLxHXRTfobTSQai9FK2IV
- uACZcNxTfN+TCxhKKPKKycrv67076dgidGl16CG8+/FV6jsazxwRar4B38c5Vl30S/uYIj0HLiggn
- FnGdTJZLajVhrN6NjE2EilWxp6D+UTJNkthRGd0jv6g+pR4eubnBfkFNuVn4bLKLM3nA7C3QGb7eD
- RtrM+0kMNz9uT4Uz2mOgZaLDkVOcAc2jp0gQezxL9T68B/it0gLmst+l7HsN4XqU0VFZ5x8wukCBo
- Qe5NjdYFubsI6l8bd6n9p+9b7HrE7II3M6kuZ4JaPNaceo2FemkoiPiNmJnVkDlI6xnIx7ulgMQZS
- eH7vWk962OoM9bqUzPJHoKGuOQyKQSuAlPkym2dKNYR2H1mOXedOdvUSefYLCjTIDF96GGDDThryX
- I6kr205NGk+5V+hN8jxSSUC/Fk/q97Fim4Y/hdNrGwCaFdqKSoH//yKqkjw8iraJpJs2sgKo0uZX0
- JuvrnUTDPBp8fXRv3m2BuWAiMKTI51TQVEpCMGZwDf1r/FeRRk20hieFjJEl6AvNP/BhlJk1nMiTA
- NpjRFfeY88migZG7yuQ0eKmTo7LcGwEsvKQmu/P/vb2YcU6DUuntDmeLotp/XfqboEJx6gbMzMo0j
- PUSJTVp5FLx8PW04JSPvgVtupUtJJZaAG3pGgd1MI=;
+ bh=z2SPXUVBOZw2vV+4t9hmVcQQQ9+NF8WftV6kjwQyzIc=; b=kfDsskehbtGcxKsHE2j/ca+FQz
+ NgSozyJChcyP8c/OT6oWEhTaLuNsp7Tnge3sZ5FjLjzJVM7xTlhj8m+6JbANQnCsptgTARz//Pel/
+ z6Tt2sfOhf89u7mYdWGkoB2lY+PwhCN3jIuREn6gVkPFmSpGU4+HRyfoliLfO9NiVzgwN2IuHIe2U
+ sYlNX/82aamyXrOBSLOZyfjDiiszXMD+qkXc+LIhW60ryurHX4jNmHC7v86r7Al7GGBOqx7AVafCd
+ yDWoy0sNVCCTDcy5xR+TAT/4wtBKJMMwYa1BkYXeFJdZdjGuVeyT6wW/1oFQ4e1YmRtixWfTXE8nr
+ +q251ro+vGxe9qc8ovSV9QESjVkmAEJxTc2zYgAwyRidunHp7q8EfhLJ7StpWG5Ay6705DRhypXrx
+ /fMJPZJ6O64suFkeToZYr43xYOBcuwp5kLH8y8q6DVfyMtDFRUwJOEN27ojXP2m2xXCGSN6Hvh1aj
+ StnjWf8zoquabLGK5HFqQWn4/GmUlS5p2hvB8NtGD6++oahnFWiAtclS2I1H+nH8glcFc+KRLxHRo
+ DONDHn1L+HVnFyMNjjOntMI622zfkFIS0tVSnAmaUy+bHj9G8qjWmIo3R8UkGJEriN/zB2t0X/0VA
+ QcIyTq2QKhkaq742opA5ZXPLOI2Jr6njawNad4gbk=;
 Received: from [2a00:23c4:8bb0:f100:68ed:6797:e32e:ab13]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rIZyn-0000Pp-Lu; Wed, 27 Dec 2023 19:54:17 +0000
-Message-ID: <acea0511-e858-4b91-abc8-d122c9ef122f@ilande.co.uk>
-Date: Wed, 27 Dec 2023 19:54:33 +0000
+ id 1rIa6Z-0000T6-Io; Wed, 27 Dec 2023 20:02:19 +0000
+Message-ID: <a5dd59b0-1b49-4a96-8c82-8383412afdc3@ilande.co.uk>
+Date: Wed, 27 Dec 2023 20:02:39 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Thomas Huth <huth@tuxfamily.org>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>
-References: <20231221122939.11001-1-huth@tuxfamily.org>
 Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alexandra Diupina <adiupina@astralinux.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Fam Zheng <fam@euphon.net>, qemu-devel@nongnu.org,
+ sdl.qemu@linuxtesting.org
+References: <20231218150213.27253-1-adiupina@astralinux.ru>
+ <e05e239f-2d1d-4d9b-86bb-a1e9d9b98550@linaro.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -71,13 +75,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <20231221122939.11001-1-huth@tuxfamily.org>
+In-Reply-To: <e05e239f-2d1d-4d9b-86bb-a1e9d9b98550@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:68ed:6797:e32e:ab13
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH] hw/m68k/mcf5206: Embed m5206_timer_state in
- m5206_mbar_state
+Subject: Re: [PATCH] esp: process the result of scsi_device_find()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -103,87 +106,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/12/2023 12:29, Thomas Huth wrote:
+On 26/12/2023 12:08, Philippe Mathieu-Daudé wrote:
 
-> There's no need to explicitely allocate the memory here, we can
-> simply embed it into the m5206_mbar_state instead.
+> Cc'ing Mark for the logical change (should we rather assert?).
 > 
-> Signed-off-by: Thomas Huth <huth@tuxfamily.org>
-> ---
->   hw/m68k/mcf5206.c | 20 ++++++++------------
->   1 file changed, 8 insertions(+), 12 deletions(-)
-> 
-> diff --git a/hw/m68k/mcf5206.c b/hw/m68k/mcf5206.c
-> index a46a23538d..183fd3cc08 100644
-> --- a/hw/m68k/mcf5206.c
-> +++ b/hw/m68k/mcf5206.c
-> @@ -148,15 +148,11 @@ static void m5206_timer_write(m5206_timer_state *s, uint32_t addr, uint32_t val)
->       m5206_timer_update(s);
->   }
->   
-> -static m5206_timer_state *m5206_timer_init(qemu_irq irq)
-> +static void m5206_timer_init(m5206_timer_state *s, qemu_irq irq)
->   {
-> -    m5206_timer_state *s;
-> -
-> -    s = g_new0(m5206_timer_state, 1);
->       s->timer = ptimer_init(m5206_timer_trigger, s, PTIMER_POLICY_LEGACY);
->       s->irq = irq;
->       m5206_timer_reset(s);
-> -    return s;
->   }
->   
->   /* System Integration Module.  */
-> @@ -167,7 +163,7 @@ typedef struct {
->       M68kCPU *cpu;
->       MemoryRegion iomem;
->       qemu_irq *pic;
-> -    m5206_timer_state *timer[2];
-> +    m5206_timer_state timer[2];
->       DeviceState *uart[2];
->       uint8_t scr;
->       uint8_t icr[14];
-> @@ -293,9 +289,9 @@ static uint64_t m5206_mbar_read(m5206_mbar_state *s,
->                                   uint16_t offset, unsigned size)
->   {
->       if (offset >= 0x100 && offset < 0x120) {
-> -        return m5206_timer_read(s->timer[0], offset - 0x100);
-> +        return m5206_timer_read(&s->timer[0], offset - 0x100);
->       } else if (offset >= 0x120 && offset < 0x140) {
-> -        return m5206_timer_read(s->timer[1], offset - 0x120);
-> +        return m5206_timer_read(&s->timer[1], offset - 0x120);
->       } else if (offset >= 0x140 && offset < 0x160) {
->           return mcf_uart_read(s->uart[0], offset - 0x140, size);
->       } else if (offset >= 0x180 && offset < 0x1a0) {
-> @@ -333,10 +329,10 @@ static void m5206_mbar_write(m5206_mbar_state *s, uint16_t offset,
->                                uint64_t value, unsigned size)
->   {
->       if (offset >= 0x100 && offset < 0x120) {
-> -        m5206_timer_write(s->timer[0], offset - 0x100, value);
-> +        m5206_timer_write(&s->timer[0], offset - 0x100, value);
->           return;
->       } else if (offset >= 0x120 && offset < 0x140) {
-> -        m5206_timer_write(s->timer[1], offset - 0x120, value);
-> +        m5206_timer_write(&s->timer[1], offset - 0x120, value);
->           return;
->       } else if (offset >= 0x140 && offset < 0x160) {
->           mcf_uart_write(s->uart[0], offset - 0x140, value, size);
-> @@ -598,8 +594,8 @@ static void mcf5206_mbar_realize(DeviceState *dev, Error **errp)
->       sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
->   
->       s->pic = qemu_allocate_irqs(m5206_mbar_set_irq, s, 14);
-> -    s->timer[0] = m5206_timer_init(s->pic[9]);
-> -    s->timer[1] = m5206_timer_init(s->pic[10]);
-> +    m5206_timer_init(&s->timer[0], s->pic[9]);
-> +    m5206_timer_init(&s->timer[1], s->pic[10]);
->       s->uart[0] = mcf_uart_create(s->pic[12], serial_hd(0));
->       s->uart[1] = mcf_uart_create(s->pic[13], serial_hd(1));
->   }
+> On 18/12/23 16:02, Alexandra Diupina wrote:
+>> Add a 'current_lun' check for a null value
+>> to avoid null pointer dereferencing
+>>
+>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>>
+>> Fixes: 4eb8606560 (esp: store lun coming from the MESSAGE OUT phase)
+>> Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+>> ---
+>>   hw/scsi/esp.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+>> index 9b11d8c573..3a2ec35f9b 100644
+>> --- a/hw/scsi/esp.c
+>> +++ b/hw/scsi/esp.c
+>> @@ -292,6 +292,11 @@ static void do_command_phase(ESPState *s)
+>>       esp_fifo_pop_buf(&s->cmdfifo, buf, cmdlen);
+>>       current_lun = scsi_device_find(&s->bus, 0, s->current_dev->id, s->lun);
+>> +
+>> +    if (!current_lun) {
+>> +        return;
+>> +    }
+>> +
+>>       s->current_req = scsi_req_new(current_lun, 0, s->lun, buf, cmdlen, s);
+>>       datalen = scsi_req_enqueue(s->current_req);
+>>       s->ti_size = datalen;
 
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-This reminds me that there is one still remaining memory region left to convert in 
-q800.c...
+Checking for the NULL return from scsi_device_find() looks correct to me, but I don't 
+think that a simple return will allow the host to recover. I suspect the right thing 
+to do here is to duplicate the scsi_device_find() logic just above i.e. set the 
+INTR_DC bit and then raise the IRQ if NULL is returned.
 
 
 ATB,
