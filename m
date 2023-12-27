@@ -2,73 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896E281F066
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 17:28:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E7281F0B3
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 18:08:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIWkC-0000g3-B7; Wed, 27 Dec 2023 11:26:56 -0500
+	id 1rIXNQ-00043b-1u; Wed, 27 Dec 2023 12:07:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ukl@pengutronix.de>)
- id 1rIWkA-0000fu-Hd
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 11:26:54 -0500
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ukl@pengutronix.de>)
- id 1rIWk8-0004fS-Tk
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 11:26:54 -0500
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.whiteo.stw.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1rIWk0-00059r-38; Wed, 27 Dec 2023 17:26:44 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
- (envelope-from <ukl@pengutronix.de>)
- id 1rIWjx-001tZZ-Qh; Wed, 27 Dec 2023 17:26:42 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
- (envelope-from <ukl@pengutronix.de>) id 1rIWjy-001Wn1-2g;
- Wed, 27 Dec 2023 17:26:42 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Gabriel Somlo <somlo@cmu.edu>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Cc: kernel@pengutronix.de, qemu-devel@nongnu.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 06/11] firmware: qemu_fw_cfg: Convert to platform remove
- callback returning void
-Date: Wed, 27 Dec 2023 17:26:30 +0100
-Message-ID: <8d7d86a24ea36985845c17b6da0933fedbf99ad8.1703693980.git.u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1703693980.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1703693980.git.u.kleine-koenig@pengutronix.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rIXNN-00043K-R1
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 12:07:25 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rIXNL-00045j-Vj
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 12:07:25 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-33678156e27so5000422f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 09:07:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1703696842; x=1704301642; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=F2k46Jala0YD5NXcnApjOoFpSTHoD3f87rQws09hLIw=;
+ b=o3BmbOkWXYsTTwlhdYfeAYxoVoyc2pjenGc/Y2IYhVUjNa3Z65R9HilKgI5W65zQZ1
+ y9wUqQTv9lGMDXzZehYtM58hLOkGWo1xKxOZ1UXcV/LJiwL49YP5XGWfNBOoEl9Bj0ev
+ n7zrKAr/8ecCT8ev2yIaoQgpoS56hy8B60OrqnhNRJmO/kTuC8xJ0JjMZnJsJjstcyPX
+ UZX2Kedbaf87BrCfiLnZBMyU85wLhr7/a01XqxlTuK/smnkwY68c34+4ZPSg/ZU4Pg24
+ Zb9CWOF+hL3J5aovV6sNpzn7oxI2X+Y+VOfIZUZ79sEAGMpKxD22h1pn5hNzgtptAf5V
+ 29fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703696842; x=1704301642;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=F2k46Jala0YD5NXcnApjOoFpSTHoD3f87rQws09hLIw=;
+ b=IIHEe0fa250J/P4rZ/KsaeeD14k4CZcbKU1n2rXiiZXOHcu4vYyJgjH3IbdW1oJwEu
+ +2NmzmXiyy5QLF1bsUL+AzO8u9HEdvtgSdtCtAlfdZBESkKCfsWi29xGR7//HHT0dDDy
+ uigkN7/u0zLMtxqbSXzbgenh3VZbK6t9Dyc08iDt8yD63yZr6t+UQBz76zG99t1foPQs
+ h+HENYyn1YdPP79mye1wBihokbQycLlThfYevqZmsE1jg9sTDE9l94BNScZ1DgsAw0W0
+ UihfcZAHOs/Y8IyTbJijNeQZ1jR3teZ7u8QwcK3x8QH9TqYIb6GqipucKNwEMDKT7N/1
+ uPsQ==
+X-Gm-Message-State: AOJu0YxvGTZQIKbeXcTSPYzxs0X4KlpndaY1lXOSKFxj2UGq8o6JVLTq
+ DyuJt5ze6DTkoOfinYok65Ce9apjTn7H7Q==
+X-Google-Smtp-Source: AGHT+IFvAsevyU4xuTWC10GqCxM3mAuzHSzSaJJOI3RedlJFny8RqTPoHWH6qQLeDHxc9AlBMUNMlw==
+X-Received: by 2002:a05:6000:104d:b0:336:70ed:4cc with SMTP id
+ c13-20020a056000104d00b0033670ed04ccmr5340760wrx.95.1703696842066; 
+ Wed, 27 Dec 2023 09:07:22 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.218.122])
+ by smtp.gmail.com with ESMTPSA id
+ z10-20020a5d4d0a000000b00336a2566aa2sm10819534wrt.61.2023.12.27.09.07.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 Dec 2023 09:07:21 -0800 (PST)
+Message-ID: <0ed8e2c6-512e-4f62-b436-2ce1b898549c@linaro.org>
+Date: Wed, 27 Dec 2023 18:07:19 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1964;
- i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id;
- bh=Nuh2zfgdzxmPQm9xjM7Qd8aGlwMSzi2SytLozr/ldNI=;
- b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBljFA4SiZA8Czr5oUw4pC3X33baRdQ2zK8UNaGd
- qJkOIfRcM+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZYxQOAAKCRCPgPtYfRL+
- TiVtB/9jFGL9M1pmYrAxhcbUa8Fjt8yPqmgn+z7SvuziuDVEWqFHjFWJ8VQZBJ5zynq/yVPl1f6
- urdnJg6eOFNj0PYq6BeEZ0EBhieCqObdsqUavigZblPpdxkoUx+3OknYd6j30HbZY3oT2XIJb7g
- z8LpDGjq3AtUsQvnbSDQnY2Yo/6iw96gEaXu2oAj6UECO8y+KSbYOOhmw320RX5KTlY0lrGlFl1
- JHVQBU5OErrYaujF0lFh2gCB3ZMzwHWgidVCDjnKmdMZShf75AeOFCD20INk02WCoNgbKOxzM6S
- iYLX9UIsbnWxPSzM3Y6UDLK4MeGi4N/dEn96Fg/SHu+Ia7E2
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp;
- fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/11] firmware: qemu_fw_cfg: Convert to platform remove
+ callback returning void
+Content-Language: en-US
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Gabriel Somlo <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: kernel@pengutronix.de, qemu-devel@nongnu.org, linux-kernel@vger.kernel.org
+References: <cover.1703693980.git.u.kleine-koenig@pengutronix.de>
+ <8d7d86a24ea36985845c17b6da0933fedbf99ad8.1703693980.git.u.kleine-koenig@pengutronix.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <8d7d86a24ea36985845c17b6da0933fedbf99ad8.1703693980.git.u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: qemu-devel@nongnu.org
-Received-SPF: pass client-ip=2a0a:edc0:2:b01:1d::104;
- envelope-from=ukl@pengutronix.de; helo=metis.whiteo.stw.pengutronix.de
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,55 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+On 27/12/23 17:26, Uwe Kleine-König wrote:
+> The .remove() callback for a platform driver returns an int which makes
+> many driver authors wrongly assume it's possible to do error handling by
+> returning an error code. However the value returned is ignored (apart
+> from emitting a warning) and this typically results in resource leaks.
+> 
+> To improve here there is a quest to make the remove callback return
+> void. In the first step of this quest all drivers are converted to
+> .remove_new(), which already returns void. Eventually after all drivers
+> are converted, .remove_new() will be renamed to .remove().
+> 
+> Trivially convert this driver from always returning zero in the remove
+> callback to the void returning variant.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
+>   drivers/firmware/qemu_fw_cfg.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
-
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/firmware/qemu_fw_cfg.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
-index 1448f61173b3..03da9a4354f8 100644
---- a/drivers/firmware/qemu_fw_cfg.c
-+++ b/drivers/firmware/qemu_fw_cfg.c
-@@ -731,7 +731,7 @@ static int fw_cfg_sysfs_probe(struct platform_device *pdev)
- 	return err;
- }
- 
--static int fw_cfg_sysfs_remove(struct platform_device *pdev)
-+static void fw_cfg_sysfs_remove(struct platform_device *pdev)
- {
- 	pr_debug("fw_cfg: unloading.\n");
- 	fw_cfg_sysfs_cache_cleanup();
-@@ -739,7 +739,6 @@ static int fw_cfg_sysfs_remove(struct platform_device *pdev)
- 	fw_cfg_io_cleanup();
- 	fw_cfg_kset_unregister_recursive(fw_cfg_fname_kset);
- 	fw_cfg_kobj_cleanup(fw_cfg_sel_ko);
--	return 0;
- }
- 
- static const struct of_device_id fw_cfg_sysfs_mmio_match[] = {
-@@ -758,7 +757,7 @@ MODULE_DEVICE_TABLE(acpi, fw_cfg_sysfs_acpi_match);
- 
- static struct platform_driver fw_cfg_sysfs_driver = {
- 	.probe = fw_cfg_sysfs_probe,
--	.remove = fw_cfg_sysfs_remove,
-+	.remove_new = fw_cfg_sysfs_remove,
- 	.driver = {
- 		.name = "fw_cfg",
- 		.of_match_table = fw_cfg_sysfs_mmio_match,
--- 
-2.43.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
