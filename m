@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFE981F26C
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 23:24:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC81881F26E
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 23:26:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIcJL-0000X2-Sp; Wed, 27 Dec 2023 17:23:35 -0500
+	id 1rIcLN-0001Jq-KN; Wed, 27 Dec 2023 17:25:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIcJK-0000WZ-Fz
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 17:23:34 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1rIcLL-0001JN-LQ
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 17:25:39 -0500
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIcJI-0008F6-U3
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 17:23:34 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6d9aef87d44so761668b3a.0
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 14:23:32 -0800 (PST)
+ id 1rIcLK-0001qQ-5G
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 17:25:39 -0500
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-28bd623c631so4650410a91.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 14:25:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703715811; x=1704320611; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703715936; x=1704320736; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1LTL4evVjSMfpAFEd57iHiBm/03GDdUJCNdVDH+Po9A=;
- b=KM/6wBtr9w5ZsGBAZ8OvDcVRUVzvIHOoxuYrXV3vrM9bpnBylJYbUi0Mw90pATc+Vm
- USM76hSF1cADTMm8Q5SeqMPO4S9wRlVDjDYu8EPxLMKdXI4vslNgnscMLCiHvnBgA65P
- TU2zetarZIMFW51SIhvg+oTjAaU7tB+19ljbXLeD/xH8PVtp6s0rUcuMdrNqxIgLMLZD
- 4o6Tt6p6DLkEucyNoxe5b3aBWqTCAYwQyrgO4Ya7U3Hu/bNxDdlJedsruq1f1Whp2moG
- z7QdP5eQmm/7Pv69oSzy4XwXwnb7hXUnYmIc1S3r3OwasUrY6pVH159l7oisq1vDpBtE
- z00w==
+ bh=AiGY0kPtwxFTxGkksWurGE880lO3T2ZhlpMNHkb3vJc=;
+ b=QWJTWYWC6YHmqgBMGYejCFwj2/unx7Zlgoq9rdMuIL+hkFgcLzfNh1CNs44mJWx4Yf
+ T+blWVNHRmQ7xzMn4Zzu/MZpdfztZoMYXtl3DDrmjBtsDqOf/YPAEfUI8LtloPCBfJvT
+ Hw67axy5BTwu31CN+eVEcUm7WFAuJwWAUcpTXSHCuUkXBawMX+dTbMzTwJw9uuJXjps2
+ 2oKvCXzKZtnVISnXo3uSH7gvfQ1imDw6AMJhE30+QY59qQOF4b3oUoubKqnaNaWv5K9y
+ CEpgUy4yrw/FHRNzbmYu1ucAqYvo5pAVDHTAAuOh473y+37om5X415eDatsmdItfuAFZ
+ KCrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703715811; x=1704320611;
+ d=1e100.net; s=20230601; t=1703715936; x=1704320736;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1LTL4evVjSMfpAFEd57iHiBm/03GDdUJCNdVDH+Po9A=;
- b=ewErFKRGiabNC2NpaTJfJOkWAeejvF370lwDqVgvsQ/+bfpq6q1N//ieI7IY02W6+v
- QBgxWcPgmPiVS6GLbncqbXosugoTIlGyu5M21Q/6NFwyHkixdB/VzxY/FMjKGUHMxYzn
- Vy9tx3GL6ynCnnHis/RcMl7hDP4OqR8cmTBlIYOrEtfOYfJQZ26t4NDZ9aT1qy5ODmGM
- 5AqlPnX3PW/yi1gFm2BXG8m3PJYHzc1qRKSGepl5Wvt8Uu94pEd87U81g8YyIkzzGH5q
- zNDvrzkxPfPSp86rWJTCg9015VRtV9O275XhZ7XPXspajq+1lZEOa5WNJ4d9u+ctosmx
- QaFQ==
-X-Gm-Message-State: AOJu0YyC0PHKzVQFoSEP+zEUw/wj6M+ZXmimL2RLvUlkkzjm2okoKDyU
- KiTQOALaqYcbf3cymtlkcm9IO4U2Qn+So84SxfTKW81J7QnCUQ==
-X-Google-Smtp-Source: AGHT+IHM9oCdwlQYs8vfFlLT+EsxISwjzV04s6PI/UEtLYeLWGQznzoJ76bBgs1VbcFtCLWZBHM0yg==
-X-Received: by 2002:a05:6a00:216a:b0:6d9:b385:26f9 with SMTP id
- r10-20020a056a00216a00b006d9b38526f9mr2429177pff.2.1703715811249; 
- Wed, 27 Dec 2023 14:23:31 -0800 (PST)
+ bh=AiGY0kPtwxFTxGkksWurGE880lO3T2ZhlpMNHkb3vJc=;
+ b=d/PT/PzrnopEHXe5a8sBDhxb4PbOSoMP4IQTtHG4zWKVh3cUphG1Lw01kQI2jM8qkN
+ 6epOBYc6+WvbBFoM++P0rHGbLJ5LEN8N2a6pAyrircX4x+XMiEa+N0O+H1StNZuG0Kfc
+ DZog4PfE1iO4dpMspI1nv6L/usYsl5RzHTID/axb4l26HZNR3waDgY4zzPH/DGDR+0IY
+ MA/4T/kpFj2KuVQQVDCn3fE0GvHSDhwM+wHcCk9jZeWegnZyFuak9vTo+xHTKFLAIDQe
+ Xq2zehstFstXjwsOMozYmQZj+hLiJrtaulBkr/wnHO/vyo0cdeD70skt5g/ji6PZw7B9
+ pK7w==
+X-Gm-Message-State: AOJu0YxhsdY9Im9y6Ztv5+aWINa4WOIwzEV3X07aW+tp3O7on/ctfOkH
+ 9t//vnc89S3NFQRa1mOhpjDBTdfrT3S9w1+mInAKX6Qd9hf37w==
+X-Google-Smtp-Source: AGHT+IHHPw+Zc8KSZTg/MRT8pd4QGvzt8mczFB68V9oUEVNqIXKX8OqZdB8I2qNLjZde9BSxu2KVEA==
+X-Received: by 2002:a17:90a:6b46:b0:28b:95f0:b6fa with SMTP id
+ x6-20020a17090a6b4600b0028b95f0b6famr5311185pjl.28.1703715936559; 
+ Wed, 27 Dec 2023 14:25:36 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:12c1:9684:874a:fb3a?
  ([2001:8003:c020:6900:12c1:9684:874a:fb3a])
  by smtp.gmail.com with ESMTPSA id
- z27-20020aa7991b000000b006da13bc46c0sm493064pff.171.2023.12.27.14.23.29
+ sm18-20020a17090b2e5200b002868abc0e6dsm17207121pjb.11.2023.12.27.14.25.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Dec 2023 14:23:30 -0800 (PST)
-Message-ID: <97e6b2b0-6e6b-43c9-950c-62b4dddcdaa4@linaro.org>
-Date: Thu, 28 Dec 2023 09:23:26 +1100
+ Wed, 27 Dec 2023 14:25:36 -0800 (PST)
+Message-ID: <994486ce-97d0-4194-94b3-2095aa4a1e11@linaro.org>
+Date: Thu, 28 Dec 2023 09:25:30 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/35] target/arm: Record correct opcode fields in cpreg
- for E2H aliases
+Subject: Re: [PATCH 10/35] target/arm: *_EL12 registers should UNDEF when
+ HCR_EL2.E2H is 0
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
- <20231218113305.2511480-10-peter.maydell@linaro.org>
+ <20231218113305.2511480-11-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231218113305.2511480-10-peter.maydell@linaro.org>
+In-Reply-To: <20231218113305.2511480-11-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,34 +97,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/18/23 22:32, Peter Maydell wrote:
-> For FEAT_VHE, we define a set of register aliases, so that for instance:
->   * the SCTLR_EL1 either accesses the real SCTLR_EL1, or (if E2H is 1)
->     SCTLR_EL2
->   * a new SCTLR_EL12 register accesses SCTLR_EL1 if E2H is 1
-> 
-> However when we create the 'new_reg' cpreg struct for the SCTLR_EL12
-> register, we duplicate the information in the SCTLR_EL1 cpreg, which
-> means the opcode fields are those of SCTLR_EL1, not SCTLR_EL12.  This
-> is a problem for code which looks at the cpreg opcode fields to
-> determine behaviour (e.g.  in access_check_cp_reg()). In practice
-> the current checks we do there don't intersect with the *_EL12
-> registers, but for FEAT_NV this will become a problem.
-> 
-> Write the correct values from the encoding into the new_reg struct.
-> This restores the invariant that the cpreg that you get back
-> from the hashtable has opcode fields that match the key you used
-> to retrieve it.
-> 
-> When we call the readfn or writefn for the target register, we
-> pass it the cpreg struct for that target register, not the one
-> for the alias, in case the readfn/writefn want to look at the
-> opcode fields to determine behaviour. This means we need to
-> interpose custom read/writefns for the e12 aliases.
+> The alias registers like SCTLR_EL12 only exist when HCR_EL2.E2H
+> is 1; they should UNDEF otherwise. We weren't implementing this.
+> Add an intercept of the accessfn for these aliases, and implement
+> the UNDEF check.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/helper.c | 35 +++++++++++++++++++++++++++++++++++
->   1 file changed, 35 insertions(+)
+>   target/arm/cpregs.h |  3 ++-
+>   target/arm/helper.c | 16 ++++++++++++++++
+>   2 files changed, 18 insertions(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
