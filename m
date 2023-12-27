@@ -2,65 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E57281F218
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 22:03:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D70C981F22B
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 22:09:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIb2r-0006bq-8R; Wed, 27 Dec 2023 16:02:29 -0500
+	id 1rIb8B-00008W-17; Wed, 27 Dec 2023 16:07:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rIb2o-0006bR-IQ
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:02:26 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rIb2m-00067L-Ss
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:02:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=cAvKlNBYzl1WaMXRJXiwT4A4rGQ91vp570UQf4hWf94=; b=Ew7ZwRNIE7ScHC8Sfjeb8ZMmkO
- nND0RJ2t4B0vQyKDMyvuwU+1Hg1KL/c03fbM955jaHOg5/CQAp2kDxny3lH/NEIM5KKfdnJK0QQ/R
- ViHaGJ9jattqKfwaNcilBe4ySt3GX1Fa8CkzCUTVBa08k9MphCLOz1o2AuISPGk12faoxpmX69dYN
- wBzPfE2acyee1OC+dWBLvd5CDIouf0dKuiUqNs54TK+MHLZQywNi98ro3RVOYGUdtjav5mMehEAJV
- z1dmNkjE+VfsuWizmsXBjF9/iNUzwi/0Jkuo3Zpl58WMSILij6SN0ZcLEPCJ14ZrZMIobyQ/yEokL
- NoSeKmqUd0SfMOxq95S2JyrpJAR7IntfdZxI19ErpKNwnZqHHl3nvKFurSu0ZLpZB8aBLHR+MDDO6
- 5ZhKf6pZSS9DkhHPf+R+xbcbxiBppH34tKQImhlMoTpcfa2quYQNy+/Lu5Roli522QQaJbopUHv0H
- 014YAShjk/Ukb1sPW1o91tl5dGCNzOOMCFbA+vSYQFaROcMibJc8ZHjuO2XsNFows7CB5XxI0v3do
- cmPN7JvwGIWNKYrnTXkfFd1OEhWbLPOyLVBv6tSCTbCY0sXu430bKkQkle8QVtPOONlkiH/OG2eFC
- e/fwPAvFA0ACjBcIx+RjUQMlZwzx5TD1WajX5aRNg=;
-Received: from [2a00:23c4:8bb0:f100:68ed:6797:e32e:ab13]
- (helo=localhost.localdomain)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rIb2F-0000nu-8W; Wed, 27 Dec 2023 21:01:55 +0000
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: laurent@vivier.eu,
-	huth@tuxfamily.org,
-	qemu-devel@nongnu.org
-Date: Wed, 27 Dec 2023 21:02:12 +0000
-Message-Id: <20231227210212.245106-1-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rIb85-00007s-7D
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:07:56 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rIb83-000712-OH
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 16:07:52 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1d3f3ee00a2so20806745ad.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 13:07:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1703711270; x=1704316070; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QMMNPAyfBsxRDnN0YMoSQQSLw/5d3Sry2HkjSV8AK2Y=;
+ b=vm/7MlplqZkmOEkl+GB+HJ1xNO+F6tEWzSyMczkW5OXiqlLaYx8HQaNxiNz58zyGJ2
+ 0lvttR8CSGWVueQQ9R31jvCsRNVvOEq7/A1Is9ZuIv+AHSbP4OS7nchAstEp0geS0Uzi
+ fSCvR/oQm2DXQ8Dd0lCsdMf9ZHSjqJny9/iTZSj8AESxfI46l5TQ+e+7RoK6EC4q7duj
+ UHoy39pvj0409oX1Y9AB20l4V8hXK1ee+5QYUqKA3TrVULWozggCMgFKzbsaa2KiaIww
+ rkjAEvfB0Fiyiz0o+7NUoEu3kXtXQdGKvM9g9YkTdLaxJXY/9+TQUTGWNDDvqMNZaAcj
+ /WxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703711270; x=1704316070;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QMMNPAyfBsxRDnN0YMoSQQSLw/5d3Sry2HkjSV8AK2Y=;
+ b=EuCZUp92yO3ICEO4hWP8kqzIPGmLYTzeIF6LIvbrJnfl27oOdhzdYuVO9VB8mV1i4r
+ WjjamCDQIbxB+1kQzS8a1A9kbx+Ootu4MGKHUKpFOA8WhIrllxmCRRqtl2z/9WJup+kD
+ eIwuYEq98ayn1Y7U5k57QDSHOWyoMB0g6LLDPbmyTRikDmOeCeeamqGxL/VbNWJ/yLJ2
+ 30p6WEdH2kZI6LGYmzNMrvR5li8GhjziRO/tPYkux5xo3KQVxw5jRD2gGr/Qnk2+vfB9
+ CNR/7rFRsd2f3xqOAQTL5qwkIE1IrvyzNqwXG8VBZRGIy70ThUD9i5MLr4Lo9xXrJao/
+ xJqQ==
+X-Gm-Message-State: AOJu0YztCLNJsK6gwpu9ogwyZcXwv0iegF4O8WRAZXObdTJHsV5aQ9PB
+ 1GkiaIKvXpniQ7silYxfV1+m4oF3dCBOeQ==
+X-Google-Smtp-Source: AGHT+IFJ2Ofb5EgnnhUNdxAXo2ram3adymeO48Kd4qyKFf/bGc/QsafjKNylG6bCorfUMEoN8lFgXw==
+X-Received: by 2002:a17:902:680c:b0:1d4:2774:3640 with SMTP id
+ h12-20020a170902680c00b001d427743640mr2904082plk.119.1703711269780; 
+ Wed, 27 Dec 2023 13:07:49 -0800 (PST)
+Received: from ?IPV6:2001:8003:c020:6900:12c1:9684:874a:fb3a?
+ ([2001:8003:c020:6900:12c1:9684:874a:fb3a])
+ by smtp.gmail.com with ESMTPSA id
+ m10-20020a170902db0a00b001d0b4693539sm12436231plx.189.2023.12.27.13.07.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 Dec 2023 13:07:49 -0800 (PST)
+Message-ID: <cef2282f-9060-4f9f-bffc-296ed2e58fa9@linaro.org>
+Date: Thu, 28 Dec 2023 08:07:43 +1100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs/devel: Document conventional file prefixes and
+ suffixes
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20231226150441.97501-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231226150441.97501-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:68ed:6797:e32e:ab13
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH] q800: move dp8393x_prom memory region to Q800MachineState
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,56 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no need to dynamically allocate the memory region from the heap.
+On 12/27/23 02:04, Philippe Mathieu-Daudé wrote:
+> Some header and source file names use common prefix / suffix
+> but we never really ruled a convention. Start doing so with
+> the current patterns from the tree.
+> 
+> Suggested-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   docs/devel/style.rst | 49 ++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 49 insertions(+)
+> 
+> diff --git a/docs/devel/style.rst b/docs/devel/style.rst
+> index 2f68b50079..4da50eb2ea 100644
+> --- a/docs/devel/style.rst
+> +++ b/docs/devel/style.rst
+> @@ -162,6 +162,55 @@ pre-processor. Another common suffix is ``_impl``; it is used for the
+>   concrete implementation of a function that will not be called
+>   directly, but rather through a macro or an inline function.
+>   
+> +File Naming Conventions
+> +-----------------------
+> +
+> +Public headers
+> +~~~~~~~~~~~~~~
+> +
+> +Headers expected to be access by multiple subsystems must reside in
+> +the ``include/`` folder. Headers local to a subsystem should reside in
+> +the sysbsystem folder, if any (for example ``qobject/qobject-internal.h``
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- hw/m68k/q800.c         | 7 +++----
- include/hw/m68k/q800.h | 1 +
- 2 files changed, 4 insertions(+), 4 deletions(-)
+subsystem.
 
-diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 83d1571d02..b80a3b6d5f 100644
---- a/hw/m68k/q800.c
-+++ b/hw/m68k/q800.c
-@@ -253,7 +253,6 @@ static void q800_machine_init(MachineState *machine)
-     int bios_size;
-     ram_addr_t initrd_base;
-     int32_t initrd_size;
--    MemoryRegion *dp8393x_prom = g_new(MemoryRegion, 1);
-     uint8_t *prom;
-     int i, checksum;
-     MacFbMode *macfb_mode;
-@@ -406,13 +405,13 @@ static void q800_machine_init(MachineState *machine)
-     sysbus_connect_irq(sysbus, 0,
-                        qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_SONIC));
- 
--    memory_region_init_rom(dp8393x_prom, NULL, "dp8393x-q800.prom",
-+    memory_region_init_rom(&m->dp8393x_prom, NULL, "dp8393x-q800.prom",
-                            SONIC_PROM_SIZE, &error_fatal);
-     memory_region_add_subregion(get_system_memory(), SONIC_PROM_BASE,
--                                dp8393x_prom);
-+                                &m->dp8393x_prom);
- 
-     /* Add MAC address with valid checksum to PROM */
--    prom = memory_region_get_ram_ptr(dp8393x_prom);
-+    prom = memory_region_get_ram_ptr(&m->dp8393x_prom);
-     checksum = 0;
-     for (i = 0; i < 6; i++) {
-         prom[i] = revbit8(nd_table[0].macaddr.a[i]);
-diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index a9661f65f6..34365c9860 100644
---- a/include/hw/m68k/q800.h
-+++ b/include/hw/m68k/q800.h
-@@ -55,6 +55,7 @@ struct Q800MachineState {
-     MOS6522Q800VIA1State via1;
-     MOS6522Q800VIA2State via2;
-     dp8393xState dp8393x;
-+    MemoryRegion dp8393x_prom;
-     ESCCState escc;
-     OrIRQState escc_orgate;
-     SysBusESPState esp;
--- 
-2.39.2
-
+r~
 
