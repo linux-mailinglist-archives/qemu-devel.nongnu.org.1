@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7162C81EE75
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 12:05:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B363B81EF25
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 14:23:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIRhf-0002gH-FP; Wed, 27 Dec 2023 06:03:59 -0500
+	id 1rITr2-00044v-UR; Wed, 27 Dec 2023 08:21:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1rIRhd-0002g5-OW
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 06:03:57 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rITr0-00044W-Q3
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 08:21:46 -0500
+Received: from mail-il1-x130.google.com ([2607:f8b0:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1rIRhb-0005U5-M6
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 06:03:57 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1d3cfb1568eso41798195ad.1
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 03:03:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rITqz-0003Qa-15
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 08:21:46 -0500
+Received: by mail-il1-x130.google.com with SMTP id
+ e9e14a558f8ab-35feb61c91fso12648465ab.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 05:21:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1703675034; x=1704279834; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=ventanamicro.com; s=google; t=1703683303; x=1704288103; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=BdDTgjjxLt9E37YCivfYfS0xjf6IyKej+Bf8MIAFJSE=;
- b=nQRxIFm/blZ6s+W1rVvuNA0uoxe14gmYFON7yL7nwG1HJBt0M9COIxRhCMeh7GFrEj
- b6Z/5FdPu5Z7EIcqcSQkBv/u8hosXl9EnGu+GhnGfM16KcnkS5eXFPet5EJ+Q+EcVwn7
- OOoSNxd06BWEprzj7OBArX9TZmcFkni1I2713n67WFKaentqIkpc6LK5WxVUz7iU5OZa
- OZZnt2tSpu9Gsa4zsNO4VoRNgew27VnmDZo9bviZEtdsmFcsXG4jTDTziVRPdk6OfWbz
- BrRVnCZJ3U7StlMEfne4JDWnTDFbbApomU0XEuSr4zwJYoaRPL3K/QtT0Na8kwfUSBxH
- 1N3Q==
+ bh=FU+IuqxJj53Pv7sYGVSxT9lZHijVCKofzsQYgJRiSGs=;
+ b=aVBwDCJaxtpwQ5lPZpf944alRGbp4nSXks8c0TytR5D69pcZ85WPNKcv7eQiiU1dW9
+ gqcvySChDA2YhoLakSz91krRfDFF0Q4mGe9Ux1ge7km3uMSwgwZm0fSulVnZpAs688sc
+ un2lls/UVR0mRo4t4rx2rF7yngvdWHOZab0S8UJHkXsQBXcQZWUUpRSrkKNpQ7U044Pk
+ exmVhe3VE5GBt2vvApRmdTQJKapLILsI050gJhV7NzUgp4ub719gk5TBtlf7AEhG7rew
+ gehOAkBRq1uPILT9+lBl82SOjSu4irRyHMs1fZmUbRCv6CuOhwStfVTuD987+5OByZHO
+ qKZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703675034; x=1704279834;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1703683303; x=1704288103;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BdDTgjjxLt9E37YCivfYfS0xjf6IyKej+Bf8MIAFJSE=;
- b=ICUBVZSXV/HpGYwAlY0sOxo+i8RGXtPcxDOOA5IxXbLEC39qDs5kSvRK/HtM0wAhES
- a0YDDNBcPSFxH5B8/P8nOFM7aI4QorAamEQgXS+3QV1Wa0/vpLl/AvgMlI8wAdIpLqw2
- XR+UnZStvw8PY3G2Y2TF3kO0JUc2eHM3c+xxxlOTEgCYSGMkLa/+PEJnI4251Fy/OZSE
- CkJR7TT/MQ7q3+l2K7g5JDzeI1LQZsEmb7WXNPgAoSVgcjl1HqHQfwYl8p34OwcaSHXg
- 6TkXHkpUH6r4ORESx7fN7786E7UWw4G1SlwCBkxjnS41/IBRMkxhNV4ORa43jgv+KiUz
- 3uwg==
-X-Gm-Message-State: AOJu0YxdCItpBiADk2Fa1xjv/qZ61GNRj1Xr8en1uWWVyOgIyJBMwmBi
- 6JmbNxiGBLi4QSbvDBgDH3k=
-X-Google-Smtp-Source: AGHT+IEIFa4AeAx1SysZ/AmzpNWK9EwklAsYFjucXZh3tsDDJ7J7ehN8Xyz65n56trvaEu8wdhlmbg==
-X-Received: by 2002:a17:902:d58b:b0:1d4:5939:523a with SMTP id
- k11-20020a170902d58b00b001d45939523amr5968655plh.33.1703675033899; 
- Wed, 27 Dec 2023 03:03:53 -0800 (PST)
-Received: from ?IPV6:2001:ee0:50f4:9050:2642:9396:4367:b8d1?
- ([2001:ee0:50f4:9050:2642:9396:4367:b8d1])
+ bh=FU+IuqxJj53Pv7sYGVSxT9lZHijVCKofzsQYgJRiSGs=;
+ b=rT/7F8ko0/BSnuo1NtVx5E6iRly+awltKPFyghQAaz5gxf0Yc7ptj29xZT0tO4tgPw
+ zh5TPH7hcsdAkCVvwgdpxIIHNGtlMC7JAFPzW5s27TidJsHhUtuh3S28r9dOQ5/Fj01e
+ Lb9MTY1j1hCPlgUe8GISmOD8hc62J/veDDu2CEYYzTdB7XCjoI1UfFyn1QS6XsfkgUKt
+ rFO8pCpQHs2YVjZZ5rBnIDQ8VJbT683fiel4tCHknrunFqZqCxvnCJxqGcQdX9aLp1/U
+ JloO9aYKKir4JNAigDRYsMuytI++DqfcmJfgqhViE8WY9Tj4UbK3q6NIt9WXL/Hnse9J
+ 0rOA==
+X-Gm-Message-State: AOJu0YxEOwHQyX/UHGyzVsa9iAP4KjIrxiVpwB27AHxua05UzIcOjgSZ
+ f0GR6USTSeIhjeJkw3HdC6L9/LZTHjpqYMJvJLqv0gaG86k/xQ==
+X-Google-Smtp-Source: AGHT+IFzteBN8jdMAYXWYVkp00fxorRsn2AG4rEm64hEJpevzgYdGYlcYFlQwtBk9+0WpAGrVsD+ZQ==
+X-Received: by 2002:a05:6e02:1583:b0:35f:d8c6:c1d4 with SMTP id
+ m3-20020a056e02158300b0035fd8c6c1d4mr9002051ilu.130.1703683302890; 
+ Wed, 27 Dec 2023 05:21:42 -0800 (PST)
+Received: from [192.168.68.110] ([189.79.21.107])
  by smtp.gmail.com with ESMTPSA id
- n7-20020a170902e54700b001d0cd351baesm11611050plf.13.2023.12.27.03.03.48
+ n24-20020a63f818000000b005c67a388836sm10992136pgh.62.2023.12.27.05.21.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Dec 2023 03:03:53 -0800 (PST)
-Message-ID: <1e2bb825-e102-4b75-898d-6ef53175a1cf@gmail.com>
-Date: Wed, 27 Dec 2023 18:03:46 +0700
+ Wed, 27 Dec 2023 05:21:42 -0800 (PST)
+Message-ID: <aa0de31c-5726-4f93-a320-d0ddde581689@ventanamicro.com>
+Date: Wed, 27 Dec 2023 10:21:38 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 0/7] Support x2APIC mode with TCG accelerator
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Joao Martins <joao.m.martins@oracle.com>,
- Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Phil Dennis-Jordan <lists@philjordan.eu>,
- Santosh Shukla <santosh.shukla@amd.com>
-References: <20231225164101.105958-1-minhquangbui99@gmail.com>
- <20231226042009-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH v2 07/16] target/riscv: rework 'vext_spec'
 Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <20231226042009-mutt-send-email-mst@kernel.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com
+References: <20231222122235.545235-1-dbarboza@ventanamicro.com>
+ <20231222122235.545235-8-dbarboza@ventanamicro.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231222122235.545235-8-dbarboza@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::130;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-il1-x130.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,111 +96,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/26/23 16:21, Michael S. Tsirkin wrote:
-> On Mon, Dec 25, 2023 at 11:40:54PM +0700, Bui Quang Minh wrote:
->> Hi everyone,
->>
->> This series implements x2APIC mode in userspace local APIC and the
->> RDMSR/WRMSR helper to access x2APIC registers in x2APIC mode. Intel iommu
->> and AMD iommu are adjusted to support x2APIC interrupt remapping. With this
->> series, we can now boot Linux kernel into x2APIC mode with TCG accelerator
->> using either Intel or AMD iommu.
->>
->> Testing to boot my own built Linux 6.3.0-rc2, the kernel successfully boot
->> with enabled x2APIC and can enumerate CPU with APIC ID 257
->>
->> Using Intel IOMMU
->>
->> qemu/build/qemu-system-x86_64 \
->>    -smp 2,maxcpus=260 \
->>    -cpu qemu64,x2apic=on \
->>    -machine q35 \
->>    -device intel-iommu,intremap=on,eim=on \
->>    -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
->>    -m 2G \
->>    -kernel $KERNEL_DIR \
->>    -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
->>    -drive file=$IMAGE_DIR,format=raw \
->>    -nographic \
->>    -s
->>
->> Using AMD IOMMU
->>
->> qemu/build/qemu-system-x86_64 \
->>    -smp 2,maxcpus=260 \
->>    -cpu qemu64,x2apic=on \
->>    -machine q35 \
->>    -device amd-iommu,intremap=on,xtsup=on \
->>    -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
->>    -m 2G \
->>    -kernel $KERNEL_DIR \
->>    -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
->>    -drive file=$IMAGE_DIR,format=raw \
->>    -nographic \
->>    -s
->>
->> Testing the emulated userspace APIC with kvm-unit-tests, disable test
->> device with this patch
+
+
+On 12/22/23 09:22, Daniel Henrique Barboza wrote:
+> The same rework did in 'priv_spec' is done for 'vext_spec'. This time is
+> simpler, since we only accept one value ("v1.0") and we'll always have
+> env->vext_ver set to VEXT_VERSION_1_00_0, thus we don't need helpers to
+> convert string to 'vext_ver' back and forth like we needed for
+> 'priv_spec'.
 > 
-> Seems to break build for windows/amd64
-> https://gitlab.com/mstredhat/qemu/-/pipelines/1118886361/failures
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>   target/riscv/cpu.c         | 42 ++++++++++++++++++++++++++++++++++----
+>   target/riscv/cpu.h         |  1 +
+>   target/riscv/cpu_cfg.h     |  1 -
+>   target/riscv/tcg/tcg-cpu.c | 15 --------------
+>   4 files changed, 39 insertions(+), 20 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 1302d32de3..d6625399a7 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1237,6 +1237,8 @@ static void riscv_cpu_post_init(Object *obj)
+>   
+>   static void riscv_cpu_init(Object *obj)
+>   {
+> +    RISCVCPU *cpu = RISCV_CPU(obj);
+> +
+>   #ifndef CONFIG_USER_ONLY
+>       qdev_init_gpio_in(DEVICE(obj), riscv_cpu_set_irq,
+>                         IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
+> @@ -1249,8 +1251,11 @@ static void riscv_cpu_init(Object *obj)
+>        * for all CPUs. Each accelerator will decide what to do when
+>        * users disable them.
+>        */
+> -    RISCV_CPU(obj)->cfg.ext_zicntr = true;
+> -    RISCV_CPU(obj)->cfg.ext_zihpm = true;
+> +    cpu->cfg.ext_zicntr = true;
+> +    cpu->cfg.ext_zihpm = true;
+> +
+> +    /* vext_spec is always 1_00_0 */
+> +    cpu->env.vext_ver = VEXT_VERSION_1_00_0;
+>   }
+>   
+>   typedef struct misa_ext_info {
+> @@ -1629,9 +1634,37 @@ static const PropertyInfo prop_priv_spec = {
+>       .set = prop_priv_spec_set,
+>   };
+>   
+> -Property riscv_cpu_options[] = {
+> -    DEFINE_PROP_STRING("vext_spec", RISCVCPU, cfg.vext_spec),
+> +static void prop_vext_spec_set(Object *obj, Visitor *v, const char *name,
+> +                               void *opaque, Error **errp)
+> +{
+> +    RISCVCPU *cpu = RISCV_CPU(obj);
+> +    g_autofree char *value = NULL;
+> +
+> +    visit_type_str(v, name, &value, errp);
+> +
+> +    if (!g_strcmp0(value, VEXT_VER_1_00_0_STR)) {
+> +        error_setg(errp, "Unsupported vector spec version '%s'", value);
+> +        return;
+> +    }
 
-The failure is because when CONFIG_AMD_IOMMU=n, amd_iommu.c is not built 
-so the linker cannot find the definition of 
-amdvi_extended_feature_register (amdvi_extended_feature_register is used 
-in acpi-build.c). I create a stub to solve this problem and it passes 
-all CI tests. I will squash the following changes into patch 6. What do 
-you think about this?
+This bit is wrong. We'll error out if vext_spec == "v1.0" instead of vext_spec != "v1.0".
 
-diff --git a/hw/i386/amd_iommu_stub.c b/hw/i386/amd_iommu_stub.c
-new file mode 100644
-index 0000000000..d62a3732e6
---- /dev/null
-+++ b/hw/i386/amd_iommu_stub.c
-@@ -0,0 +1,26 @@
-+/*
-+ * Stubs for AMD IOMMU emulation
-+ *
-+ * Copyright (C) 2023 Bui Quang Minh <minhquangbui99@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "amd_iommu.h"
-+
-+uint64_t amdvi_extended_feature_register(AMDVIState *s)
-+{
-+    return AMDVI_DEFAULT_EXT_FEATURES;
-+}
-diff --git a/hw/i386/meson.build b/hw/i386/meson.build
-index 369c6bf823..d38637b046 100644
---- a/hw/i386/meson.build
-+++ b/hw/i386/meson.build
-@@ -9,7 +9,8 @@ i386_ss.add(files(
-
-  i386_ss.add(when: 'CONFIG_X86_IOMMU', if_true: files('x86-iommu.c'),
-                                        if_false: files('x86-iommu-stub.c'))
--i386_ss.add(when: 'CONFIG_AMD_IOMMU', if_true: files('amd_iommu.c'))
-+i386_ss.add(when: 'CONFIG_AMD_IOMMU', if_true: files('amd_iommu.c'),
-+                                      if_false: files('amd_iommu_stub.c'))
-  i386_ss.add(when: 'CONFIG_I440FX', if_true: files('pc_piix.c'))
-  i386_ss.add(when: 'CONFIG_MICROVM', if_true: files('microvm.c', 
-'acpi-microvm.c', 'microvm-dt.c'))
-  i386_ss.add(when: 'CONFIG_Q35', if_true: files('pc_q35.c'))
+I fixed it for v3. I'll wait for more reviews to avoid flooding the ML during the holidays.
 
 
 Thanks,
-Quang Minh.
+
+Daniel
+
+> +
+> +    cpu->env.vext_ver = VEXT_VERSION_1_00_0;
+> +}
+> +
+> +static void prop_vext_spec_get(Object *obj, Visitor *v, const char *name,
+> +                               void *opaque, Error **errp)
+> +{
+> +    const char *value = VEXT_VER_1_00_0_STR;
+>   
+> +    visit_type_str(v, name, (char **)&value, errp);
+> +}
+> +
+> +static const PropertyInfo prop_vext_spec = {
+> +    .name = "vext_spec",
+> +    .get = prop_vext_spec_get,
+> +    .set = prop_vext_spec_set,
+> +};
+> +
+> +Property riscv_cpu_options[] = {
+>       DEFINE_PROP_UINT16("vlen", RISCVCPU, cfg.vlen, 128),
+>       DEFINE_PROP_UINT16("elen", RISCVCPU, cfg.elen, 64),
+>   
+> @@ -1652,6 +1685,7 @@ static Property riscv_cpu_properties[] = {
+>       {.name = "pmp", .info = &prop_pmp},
+>   
+>       {.name = "priv_spec", .info = &prop_priv_spec},
+> +    {.name = "vext_spec", .info = &prop_vext_spec},
+>   
+>   #ifndef CONFIG_USER_ONLY
+>       DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index e8a691ca63..53101b82c5 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -89,6 +89,7 @@ enum {
+>   };
+>   
+>   #define VEXT_VERSION_1_00_0 0x00010000
+> +#define VEXT_VER_1_00_0_STR "v1.0"
+>   
+>   enum {
+>       TRANSLATE_SUCCESS,
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index 2dba1f0007..7112af6c4c 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -135,7 +135,6 @@ struct RISCVCPUConfig {
+>       bool ext_XVentanaCondOps;
+>   
+>       uint32_t pmu_mask;
+> -    char *vext_spec;
+>       uint16_t vlen;
+>       uint16_t elen;
+>       uint16_t cbom_blocksize;
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 4d67b72d9e..6501c29d8e 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -201,21 +201,6 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
+>                      "in the range [8, 64]");
+>           return;
+>       }
+> -
+> -    if (cfg->vext_spec) {
+> -        if (!g_strcmp0(cfg->vext_spec, "v1.0")) {
+> -            env->vext_ver = VEXT_VERSION_1_00_0;
+> -        } else {
+> -            error_setg(errp, "Unsupported vector spec version '%s'",
+> -                       cfg->vext_spec);
+> -            return;
+> -        }
+> -    } else if (env->vext_ver == 0) {
+> -        qemu_log("vector version is not specified, "
+> -                 "use the default value v1.0\n");
+> -
+> -        env->vext_ver = VEXT_VERSION_1_00_0;
+> -    }
+>   }
+>   
+>   static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
 
