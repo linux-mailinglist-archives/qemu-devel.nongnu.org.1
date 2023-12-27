@@ -2,82 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848DB81F065
+	by mail.lfdr.de (Postfix) with ESMTPS id 896E281F066
 	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 17:28:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIWki-0000iI-Uf; Wed, 27 Dec 2023 11:27:28 -0500
+	id 1rIWkC-0000g3-B7; Wed, 27 Dec 2023 11:26:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ukl@pengutronix.de>)
- id 1rIWkh-0000i9-TA
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 11:27:27 -0500
+ id 1rIWkA-0000fu-Hd
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 11:26:54 -0500
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ukl@pengutronix.de>)
- id 1rIWkf-0004k4-Dd
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 11:27:27 -0500
+ id 1rIWk8-0004fS-Tk
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 11:26:54 -0500
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
  by metis.whiteo.stw.pengutronix.de with esmtps
  (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
  (envelope-from <ukl@pengutronix.de>)
- id 1rIWk9-00059l-Ry; Wed, 27 Dec 2023 17:26:53 +0100
+ id 1rIWk0-00059r-38; Wed, 27 Dec 2023 17:26:44 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
  by drehscheibe.grey.stw.pengutronix.de with esmtps (TLS1.3) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <ukl@pengutronix.de>)
- id 1rIWjw-001tZH-HS; Wed, 27 Dec 2023 17:26:41 +0100
+ id 1rIWjx-001tZZ-Qh; Wed, 27 Dec 2023 17:26:42 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
- (envelope-from <ukl@pengutronix.de>) id 1rIWjx-001Wmd-1d;
- Wed, 27 Dec 2023 17:26:41 +0100
+ (envelope-from <ukl@pengutronix.de>) id 1rIWjy-001Wn1-2g;
+ Wed, 27 Dec 2023 17:26:42 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Sudeep Holla <sudeep.holla@arm.com>, Tzung-Bi Shih <tzungbi@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Daniel Baluta <daniel.baluta@nxp.com>, Thierry Reding <treding@nvidia.com>,
- Hao Ge <gehao@kylinos.cn>, Rob Herring <robh@kernel.org>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Arnd Bergmann <arnd@arndb.de>, Gabriel Somlo <somlo@cmu.edu>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Dinh Nguyen <dinguyen@kernel.org>,
- =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Michal Simek <michal.simek@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
- Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Nava kishore Manne <nava.kishore.manne@amd.com>,
- Rajan Vaja <rajan.vaja@xilinx.com>, Dhaval Shah <dhaval.r.shah@amd.com>,
- Marek Vasut <marex@denx.de>
-Cc: kernel@pengutronix.de, Cristian Marussi <cristian.marussi@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Brian Norris <briannorris@chromium.org>,
- Julius Werner <jwerner@chromium.org>, chrome-platform@lists.linux.dev,
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
- linux-mediatek@lists.infradead.org, qemu-devel@nongnu.org,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- linux-rpi-kernel@lists.infradead.org
-Subject: [PATCH 00/11] firmware: Convert to platform remove callback returning
- void
-Date: Wed, 27 Dec 2023 17:26:24 +0100
-Message-ID: <cover.1703693980.git.u.kleine-koenig@pengutronix.de>
+To: Gabriel Somlo <somlo@cmu.edu>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Cc: kernel@pengutronix.de, qemu-devel@nongnu.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 06/11] firmware: qemu_fw_cfg: Convert to platform remove
+ callback returning void
+Date: Wed, 27 Dec 2023 17:26:30 +0100
+Message-ID: <8d7d86a24ea36985845c17b6da0933fedbf99ad8.1703693980.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1703693980.git.u.kleine-koenig@pengutronix.de>
+References: <cover.1703693980.git.u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2285;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1964;
  i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id;
- bh=tI3zkKx4Ui/NNKJl8C0bvrZtoud3+4uqGjgMG21LlTs=;
- b=owGbwMvMwMXY3/A7olbonx/jabUkhtSeAKNH8tevhnB8dlzNPIGlymlxs/6VfQ7Zsacbwi4eS
- m/jlu3vZDRmYWDkYpAVU2Sxb1yTaVUlF9m59t9lmEGsTCBTGLg4BWAiCa/Z/9cn838+oXFr/z2L
- FyUtR2cw+haX73S48WmTZ9FOuTgxrrTr8lYvFvFx7OX2yc6QnvUtSviR/N5ft82FOnsDUv9/tlj
- eskLcWs9N+PqrufauLGUqGWY6t7dqca28cfdQXvW8eTafm1bPVv/j/rpm78XrGxiCbzm0Nz68YO
- xYtWSa6gaNrIybLSzGNhHeZXLT1Xi9D6/vOe708zk3d33rrux1X9LsXZa8jhJnuhPyVLryz8MFO
- mk27O+F0mfK/qlxOduSf3JesLWJY8PtiEbdO8E/TrfNvvdeuetgsmG4TjtXXIrBqWN7Lir2hcbv
- 2R3tYjRPK7tZ8KNkyfbGmcUVh0wfbwlTWRz6K+jbg5pZAA==
+ bh=Nuh2zfgdzxmPQm9xjM7Qd8aGlwMSzi2SytLozr/ldNI=;
+ b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBljFA4SiZA8Czr5oUw4pC3X33baRdQ2zK8UNaGd
+ qJkOIfRcM+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZYxQOAAKCRCPgPtYfRL+
+ TiVtB/9jFGL9M1pmYrAxhcbUa8Fjt8yPqmgn+z7SvuziuDVEWqFHjFWJ8VQZBJ5zynq/yVPl1f6
+ urdnJg6eOFNj0PYq6BeEZ0EBhieCqObdsqUavigZblPpdxkoUx+3OknYd6j30HbZY3oT2XIJb7g
+ z8LpDGjq3AtUsQvnbSDQnY2Yo/6iw96gEaXu2oAj6UECO8y+KSbYOOhmw320RX5KTlY0lrGlFl1
+ JHVQBU5OErrYaujF0lFh2gCB3ZMzwHWgidVCDjnKmdMZShf75AeOFCD20INk02WCoNgbKOxzM6S
+ iYLX9UIsbnWxPSzM3Y6UDLK4MeGi4N/dEn96Fg/SHu+Ia7E2
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp;
  fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
@@ -109,52 +85,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-this series converts all platform drivers below drivers/firmware that
-make use of .remove() to use .remove_new() instead.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-See commit 5c5a7680e67b ("platform: Provide a remove callback that
-returns no value") for an extended explanation and the eventual goal.
-The TL;DR; is to make it harder for driver authors to leak resources
-without noticing. The drivers here get it right though and so can be
-converted trivially.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-This is merge window material. There doesn't seem to be a maintainer for
-all of drivers/firmware and I don't know how patch application works
-there usually.  All patches are pairwise independent, so they can be
-applied individually.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/firmware/qemu_fw_cfg.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Best regards
-Uwe
-
-Uwe Kleine-König (11):
-  firmware: arm_scmi: Convert to platform remove callback returning void
-  firmware: arm_scpi: Convert to platform remove callback returning void
-  firmware: coreboot_table: Convert to platform remove callback returning void
-  firmware: imx-dsp: Convert to platform remove callback returning void
-  firmware: mtk-adsp-ipc: Convert to platform remove callback returning void
-  firmware: qemu_fw_cfg: Convert to platform remove callback returning void
-  firmware: raspberrypi: Convert to platform remove callback returning void
-  firmware: stratix10-rsu: Convert to platform remove callback returning void
-  firmware: stratix10-svc: Convert to platform remove callback returning void
-  firmware: turris-mox-rwtm: Convert to platform remove callback returning void
-  firmware: zynqmp: Convert to platform remove callback returning void
-
- drivers/firmware/arm_scmi/driver.c       | 6 ++----
- drivers/firmware/arm_scpi.c              | 6 ++----
- drivers/firmware/google/coreboot_table.c | 5 ++---
- drivers/firmware/imx/imx-dsp.c           | 6 ++----
- drivers/firmware/mtk-adsp-ipc.c          | 6 ++----
- drivers/firmware/qemu_fw_cfg.c           | 5 ++---
- drivers/firmware/raspberrypi.c           | 6 ++----
- drivers/firmware/stratix10-rsu.c         | 5 ++---
- drivers/firmware/stratix10-svc.c         | 6 ++----
- drivers/firmware/turris-mox-rwtm.c       | 6 ++----
- drivers/firmware/xilinx/zynqmp.c         | 6 ++----
- 11 files changed, 22 insertions(+), 41 deletions(-)
-
-base-commit: 39676dfe52331dba909c617f213fdb21015c8d10
+diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+index 1448f61173b3..03da9a4354f8 100644
+--- a/drivers/firmware/qemu_fw_cfg.c
++++ b/drivers/firmware/qemu_fw_cfg.c
+@@ -731,7 +731,7 @@ static int fw_cfg_sysfs_probe(struct platform_device *pdev)
+ 	return err;
+ }
+ 
+-static int fw_cfg_sysfs_remove(struct platform_device *pdev)
++static void fw_cfg_sysfs_remove(struct platform_device *pdev)
+ {
+ 	pr_debug("fw_cfg: unloading.\n");
+ 	fw_cfg_sysfs_cache_cleanup();
+@@ -739,7 +739,6 @@ static int fw_cfg_sysfs_remove(struct platform_device *pdev)
+ 	fw_cfg_io_cleanup();
+ 	fw_cfg_kset_unregister_recursive(fw_cfg_fname_kset);
+ 	fw_cfg_kobj_cleanup(fw_cfg_sel_ko);
+-	return 0;
+ }
+ 
+ static const struct of_device_id fw_cfg_sysfs_mmio_match[] = {
+@@ -758,7 +757,7 @@ MODULE_DEVICE_TABLE(acpi, fw_cfg_sysfs_acpi_match);
+ 
+ static struct platform_driver fw_cfg_sysfs_driver = {
+ 	.probe = fw_cfg_sysfs_probe,
+-	.remove = fw_cfg_sysfs_remove,
++	.remove_new = fw_cfg_sysfs_remove,
+ 	.driver = {
+ 		.name = "fw_cfg",
+ 		.of_match_table = fw_cfg_sysfs_mmio_match,
 -- 
 2.43.0
 
