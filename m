@@ -2,81 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7431A81ED7A
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 10:02:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4556181EDA2
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Dec 2023 10:10:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIPo8-0006Yn-1Y; Wed, 27 Dec 2023 04:02:32 -0500
+	id 1rIPvB-00084P-9U; Wed, 27 Dec 2023 04:09:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rIPo6-0006YR-JS
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 04:02:30 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rIPo4-00054q-Ur
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 04:02:30 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40d5ae89c72so10831555e9.2
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 01:02:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703667747; x=1704272547; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aORoeZ8YpZY/mnGKGGbH+M3Gm0GJqOQ87HM4l57zbec=;
- b=Q7qJMGt2HUizogjv0p+Db77WKiSb7hCWs7NCS9iPUk/sMNzLZbSCpwmcwJQaYI5lDT
- lYtakKJBsoR2Ik1LI38ExcVJlJIl29KgPjSzoongGmDpqalzBSXcDKtK/LWjaAYjinP+
- nelqEQAo9eMw1sdBxEYojSmzaN5Rt452ijHzASfEyBwjgyJSjbRjHDb54rTNXCXWT0cA
- bmVFKFMYMcsH1Z1fK4/WMzF3le3+A8ljoyo23/TaPJJLlrKiL9p2S4gXj1Zu+PyXHa0J
- RyhNYXKQAsvK26w9bJuoIJ+AFnLlPh2fwbMMxksJBKs7BK438R5cdECDxVi8CfJfhX0j
- keKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703667747; x=1704272547;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aORoeZ8YpZY/mnGKGGbH+M3Gm0GJqOQ87HM4l57zbec=;
- b=WRNeT6LU7wv9ra0jTFCB425MsxYUE1o88Jj+obQqR5CrWC+XORz3t3uikcozYcD2id
- nkxlKk5p1ErxmW4UPlFMrOQ2DZGTBbVEUOP04Gz74g7kUI1gR2NZ66QESURV0tXcqXrG
- EL0R+HZm5Qjhd2gYo7K+B5cbNDVjI43T1U5W88M6PFoxW0V0YR/ZA5B55l2caR6ESuaQ
- cIO65HMOZTcmYW34xeym6AeVdxkfinxfwIPllgR5til87qy/ms4mFvhQiERNASM3bo6w
- z/i7BETfV5RZ0HsPrWJ679PChhN3/GMuxP9SaUjaKt/N7xxOnEHbfIVHCLJLUIs5C+S4
- IbMw==
-X-Gm-Message-State: AOJu0YxJGtXagvp8cbr+0+rktHGVpipCph1qKgIDfTFpyj/T9/40c7Uz
- OrDDVu8ui5VlOh7yRdvb+CPiLOVwreyDmQ==
-X-Google-Smtp-Source: AGHT+IFcWR5NoW5f67nUl4pOyGtgtZVr0v9DqH8LLTaVEVkw/Z3Ab85h2WlV3IX8cuVaxW2UsxBt4w==
-X-Received: by 2002:a05:600c:1d8c:b0:40d:5b97:a227 with SMTP id
- p12-20020a05600c1d8c00b0040d5b97a227mr588999wms.269.1703667747534; 
- Wed, 27 Dec 2023 01:02:27 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.218.122])
- by smtp.gmail.com with ESMTPSA id
- v17-20020a05600c471100b0040d5fcaefcesm668549wmo.19.2023.12.27.01.02.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Dec 2023 01:02:27 -0800 (PST)
-Message-ID: <dc0bc5ee-621a-462f-bb02-265105ee3c5a@linaro.org>
-Date: Wed, 27 Dec 2023 10:02:25 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rIPv7-000842-1u; Wed, 27 Dec 2023 04:09:45 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rIPv5-0006AK-GM; Wed, 27 Dec 2023 04:09:44 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 5F0F53F256;
+ Wed, 27 Dec 2023 12:10:08 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D77CC54929;
+ Wed, 27 Dec 2023 12:09:39 +0300 (MSK)
+Message-ID: <92d0751b-fa39-4fc2-8e55-3b07aa3b3ed4@tls.msk.ru>
+Date: Wed, 27 Dec 2023 12:09:39 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/17] hw/loongarch: fdt adds Extend I/O Interrupt
- Controller
+Subject: Re: [PATCH] mailmap: Fix Stefan Weil author email again
 Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, maobibo@loongson.cn
-References: <20231227080821.3216113-1-gaosong@loongson.cn>
- <20231227080821.3216113-12-gaosong@loongson.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231227080821.3216113-12-gaosong@loongson.cn>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Stefan Weil <sw@weilnetz.de>
+References: <20231227085934.18158-1-philmd@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20231227085934.18158-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,26 +83,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-
-On 27/12/23 09:08, Song Gao wrote:
-> fdt adds Extend I/O Interrupt Controller,
-> we use 'loongson,ls2k2000-eiointc'.
+27.12.2023 11:59, Philippe Mathieu-Daudé:
+> Commit 5204b499a6 ("mailmap: Fix Stefan Weil author email")
+> corrected authorship for patch received at qemu-devel@nongnu.org,
+> correct now for patch received at qemu-trivial@nongnu.org.
 > 
-> See:
->    drivers/irqchip/irq-loongson-eiointc.c
+> Fixes: d819fc9516 ("virtio-blk: Fix potential nullptr read access")
 
-Better reference a fixed commit/tag, and mention Linux project.
-Suggestion:
+Do you think a single commit warrants an entry in mailmap?
 
-'See 
-https://github.com/torvalds/linux/blob/v6.6/drivers/irqchip/irq-loongson-eiointc.c'.
-
-> 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   hw/loongarch/virt.c                | 30 +++++++++++++++++++++++++++++-
->   include/hw/intc/loongarch_extioi.h |  1 +
->   2 files changed, 30 insertions(+), 1 deletion(-)
-
+/mjt
 
