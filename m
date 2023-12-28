@@ -2,44 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E181081FAC6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 20:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C311781FB3B
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 21:46:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIw87-0001J6-2a; Thu, 28 Dec 2023 14:33:19 -0500
+	id 1rIxFl-0003It-SR; Thu, 28 Dec 2023 15:45:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rIw7v-0001Dq-Dq; Thu, 28 Dec 2023 14:33:08 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rIw7s-0005RE-Dp; Thu, 28 Dec 2023 14:33:07 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EA27D3F860;
- Thu, 28 Dec 2023 22:33:32 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6B06555B92;
- Thu, 28 Dec 2023 22:33:01 +0300 (MSK)
-Received: (nullmailer pid 271101 invoked by uid 1000);
- Thu, 28 Dec 2023 19:33:01 -0000
-Subject: [ANNOUNCE] QEMU 8.1.4 Stable released
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rIxFj-0003Ij-Qw
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 15:45:15 -0500
+Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rIxFf-0004YQ-Kc
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 15:45:15 -0500
+Received: by mail-il1-x12f.google.com with SMTP id
+ e9e14a558f8ab-35fd902c6b5so51208765ab.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 12:45:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1703796308; x=1704401108; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=UBQJzg8p67MT+cAHsjxUE3jbvJVSTss8oIknW148j+0=;
+ b=zs59Yd5X+adGF9yjuVZ8goj9je9SJrAb8pKh5h6o+s9gyOO38p5uzoJjEwu/YBWLsp
+ 6M0AbsKH8LnMUNGTpgr5+9ywAn2T4rP83obcNgjKRUhSVGtAtYtNHUpuJnt0hrOjQqp9
+ nsUSsBcTe77wpkbMbzSm8G1XQ+uRu18bR0c8NJv/pCmPdJIWVdj8ZBZStcYSQ+sQVEcN
+ YkC76gZxuPFa1aAHLg11o0dc9TwA6/YGVNJq7u6sQeyYj+hGHVF6HvHUlRjpWfAhjLbC
+ D/dAnQ+fpQEKKoyHwQk2Rl4hAbdDb0+TplEMQUfk4T+xz5nGbCi0LwiptJsr7Zn937dm
+ zT+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703796308; x=1704401108;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UBQJzg8p67MT+cAHsjxUE3jbvJVSTss8oIknW148j+0=;
+ b=ZWYzwUKCNkgdBmVihsBSOA4YJc6RPPe8Ylxwp5y6KPmJfmIiKahsTOj8O7P/P8larZ
+ JBIdCC112YpFp1c9nY0Ohl0/HrM3DdvoC/oGNigrrygRYEjtFiRODLIBmUZ7eZz8sYz3
+ /fwwpYa6ILqzR3+pkcQADa2wfTUYTajC8mrmzw3V+hycWvX3ROlBqfGrpmAv0sfqPgx2
+ NgjaD26XmwR9GuM431wIe1TTXP0t8ekdi+6gfc3HDSvJOUya58pqt0L9IwoOt8uL+XgZ
+ VXKPF0avinuwd0MC1sInEA8WLiaFMY6gNQbopLhVclhmvaRdYdfsVJ+vtsJyWRy5KnP9
+ jJGQ==
+X-Gm-Message-State: AOJu0YxzzmHQwunKoco4Jh/brYPEg//WmdkmpY5qQj91tGv2jYzj4/hs
+ t40+91M9zmXM45Ft0fNMAWORc/HBp6IOWQ==
+X-Google-Smtp-Source: AGHT+IEgal7HXdIBTU0nHxEqXF/BlUxZeGHEo/Tzyo+zAyz9iWGHs2ky+hmpTLcFY1yijHLxo3NDNg==
+X-Received: by 2002:a05:6e02:180d:b0:35d:5995:798f with SMTP id
+ a13-20020a056e02180d00b0035d5995798fmr18342382ilv.41.1703796307902; 
+ Thu, 28 Dec 2023 12:45:07 -0800 (PST)
+Received: from ?IPV6:2001:8003:c020:6900:324d:cbc2:5f8b:3a9d?
+ ([2001:8003:c020:6900:324d:cbc2:5f8b:3a9d])
+ by smtp.gmail.com with ESMTPSA id
+ w62-20020a638241000000b005cdf9c8e922sm11239680pgd.85.2023.12.28.12.45.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Dec 2023 12:45:07 -0800 (PST)
+Message-ID: <1623ee93-f676-49a3-837e-0438eeaeb0bd@linaro.org>
+Date: Fri, 29 Dec 2023 07:44:57 +1100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Date: Thu, 28 Dec 2023 22:33:01 +0300
-Message-Id: <1703791981.373038.271100.nullmailer@tls.msk.ru>
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tcg/i386: use 8-bit OR or XOR for unsigned 8-bit
+ immediates
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20231228120524.70239-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20231228120524.70239-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -56,108 +94,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On 12/28/23 23:05, Paolo Bonzini wrote:
+> In the case where OR or XOR has an 8-bit immediate between 128 and 255, we can
+> operate on a low-byte register and shorten the output by two or three bytes
+> (two if a prefix byte is needed for REX.B).
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   tcg/i386/tcg-target.c.inc | 7 +++++++
+>   1 file changed, 7 insertions(+)
 
-Hi everyone,
+At least once upon a time the partial register stall like this was quite slow.  IIRC there 
+have been improvements in the last couple of generations, but it's still slower.
 
-The QEMU v8.1.4 stable release is now available.
+Data to show this is worthwhile?
 
-You can grab the tarball from our download page here:
 
-  https://www.qemu.org/download/#source
+r~
 
-  https://download.qemu.org/qemu-8.1.4.tar.xz
-  https://download.qemu.org/qemu-8.1.4.tar.xz.sig (signature)
+> 
+> diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+> index 1791b959738..a24a23f43b1 100644
+> --- a/tcg/i386/tcg-target.c.inc
+> +++ b/tcg/i386/tcg-target.c.inc
+> @@ -244,6 +244,7 @@ static bool tcg_target_const_match(int64_t val, TCGType type, int ct, int vece)
+>   #define P_VEXL          0x80000         /* Set VEX.L = 1 */
+>   #define P_EVEX          0x100000        /* Requires EVEX encoding */
+>   
+> +#define OPC_ARITH_EbIb	(0x80)
+>   #define OPC_ARITH_EvIz	(0x81)
+>   #define OPC_ARITH_EvIb	(0x83)
+>   #define OPC_ARITH_GvEv	(0x03)		/* ... plus (ARITH_FOO << 3) */
+> @@ -1366,6 +1367,12 @@ static void tgen_arithi(TCGContext *s, int c, int r0,
+>           tcg_out8(s, val);
+>           return;
+>       }
+> +    if (val == (uint8_t)val && (c == ARITH_OR || c == ARITH_XOR) &&
+> +        (r0 < 4 || TCG_TARGET_REG_BITS == 64)) {
+> +        tcg_out_modrm(s, OPC_ARITH_EbIb + P_REXB_RM, c, r0);
+> +        tcg_out8(s, val);
+> +        return;
+> +    }
+>       if (rexw == 0 || val == (int32_t)val) {
+>           tcg_out_modrm(s, OPC_ARITH_EvIz + rexw, c, r0);
+>           tcg_out32(s, val);
 
-v8.1.4 is now tagged in the official qemu.git repository, and the
-stable-8.1 branch has been updated accordingly:
-
-  https://gitlab.com/qemu-project/qemu/-/commits/stable-8.1?ref_type=heads
-
-Thank you everyone who has been involved and helped with the stable series!
-
-/mjt
-
-Changelog (stable-8.1-hash master-hash Author Name: Commmit-Subject):
-
-c95e38d33b Michael Tokarev:
- Update version for 8.1.4 release
-c06aef082f 6980c31dec Jean-Philippe Brucker:
- target/arm/helper: Propagate MDCR_EL2.HPMN into PMCR_EL0.N
-5b2fd6cf37 b5e0d5d22f Richard Henderson:
- target/i386: Fix 32-bit wrapping of pc/eip computation
-b831182728 755ae3811f Kevin Wolf:
- block: Fix AioContext locking in qmp_block_resize()
-fab36df7bd 2b8fe81b3c Patrick Venture:
- system/memory: use ldn_he_p/stn_he_p
-25d0ca4fb0 f7767ca301 Peter Maydell:
- target/arm: Disable SME if SVE is disabled
-4b2648356f ebfbf39467 Fiona Ebner:
- ui/vnc-clipboard: fix inflate_buffer
-5133410f8b 53a939f1bf Volker Rümelin:
- ui/gtk-egl: move function calls back to regular code path
-5a92f023d9 6f189a08c1 Antonio Caggiano:
- ui/gtk-egl: Check EGLSurface before doing scanout
-701afca639 2d37fe9e5e Robert Hoo:
- msix: unset PCIDevice::msix_vector_poll_notifier in rollback
-5c9f464531 20bc50137f Philippe Mathieu-Daudé:
- hw/acpi/erst: Do not ignore Error* in realize handler
-ed7e167699 714a1415d7 Akihiko Odaki:
- pcie_sriov: Remove g_new assertion
-59de6e246f 74e8593e7e Volker Rümelin:
- hw/audio/hda-codec: fix multiplication overflow
-66f14b70fe 235948bf53 Gihun Nam:
- hw/avr/atmega: Fix wrong initial value of stack pointer
-fbca2cbbef 837053a7f4 Philippe Mathieu-Daudé:
- hw/virtio: Add VirtioPCIDeviceTypeInfo::instance_finalize field
-f5584a7d8d 4f10c66077 Philippe Mathieu-Daudé:
- hw/nvram/xlnx-efuse-ctrl: Free XlnxVersalEFuseCtrl[] "pg0-lock" array
-a3e46300c5 49b3e28b7b Philippe Mathieu-Daudé:
- hw/nvram/xlnx-efuse: Free XlnxEFuse::ro_bits[] array on finalize()
-48e0dfb837 896dd6ff7b Philippe Mathieu-Daudé:
- hw/misc/mps2-scc: Free MPS2SCC::oscclk[] array on finalize()
-502f15db55 c9a4aa06df Philippe Mathieu-Daudé:
- hw/virtio: Free VirtIOIOMMUPCI::vdev.reserved_regions[] on finalize()
-49727560c7 8d37a1425b Peter Maydell:
- target/arm: Handle overflow in calculation of next timer tick
-169c593f78 11a3c4a286 Peter Maydell:
- target/arm: Set IL bit for pauth, SVE access, BTI trap syndromes
-5cf2cf1f9f 9fb7b350ba Fam Zheng:
- vmdk: Don't corrupt desc file in vmdk_write_cid
-6f51114b0e 6bca4d7d1f Ivan Klokov:
- target/riscv/cpu_helper.c: Fix mxr bit behavior
-87ff608c6f 82d53adfbb Ivan Klokov:
- target/riscv/cpu_helper.c: Invalid exception on MMU translation stage
-837148a31a a7472560ca Román Cárdenas:
- riscv: Fix SiFive E CLINT clock frequency
-9ac76067ab 7a87ba8956 Daniel Henrique Barboza:
- hw/riscv/virt.c: do create_fdt() earlier, add finalize_fdt()
-8d0b8fead4 301c65f49f Palmer Dabbelt:
- linux-user/riscv: Add Zicboz block size to hwprobe
-8328d79621 f0a663b4ce Philippe Mathieu-Daudé:
- tests/avocado: Replace assertRegexpMatches() for Python 3.12 compatibility
-5e7f6afe98 861f724d03 Thomas Huth:
- tests/avocado: Replace assertEquals() for Python 3.12 compatibility
-983a4a828c 82d70a84c8 Richard Henderson:
- linux-user: Fix loaddr computation for some elf files
-88e79a2dfd 9050f976e4 Akihiko Odaki:
- net: Update MemReentrancyGuard for NIC
-cc5124d979 7d0fefdf81 Akihiko Odaki:
- net: Provide MemReentrancyGuard * to qemu_new_nic()
-c6c0a1888f eabb921250 Niklas Cassel:
- hw/ide/ahci: fix legacy software reset
-db8e86cc40 3efd849573 Richard Henderson:
- target/arm: Fix SME FMOPA (16-bit), BFMOPA
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEe3O61ovnosKJMUsicBtPaxppPlkFAmWF3zYACgkQcBtPaxpp
-PlkD/QgAoQBR2CHuvxOwQFfVBy76HjE7Z6BPI0SKRONu81m2PIHl6cqUXsQtnUoR
-Hh4q0j+e5G2nFnTjdv31p1tDzqGsu0aHb7Psf/dJbrPs6JzhTjNvM1LMUMWG7IO+
-LGivh+FrY+wZnGwmKhAkYpIjMg9lz+DHWHzpnCNR7U7XBHQw5nml/LN6FOZJH9oP
-amYuhCsJ3mWJr/9kwtZcgUBahrXH0EV8EhFprgi1/SEGO1KqRmTVliRaBft/WDu2
-qpJvEWzoa3yKeuhbTWSjqqOKYaiqEs0rjUyVtcKQVl1M/dWSR02BHwoUHBPZbG/F
-P8He/Mn8KoOiWv4Jn/q6rOFkouJlvw==
-=9bJU
------END PGP SIGNATURE-----
 
