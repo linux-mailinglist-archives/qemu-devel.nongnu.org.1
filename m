@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE3081F380
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 01:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7560881F381
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 01:58:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIefV-0001IJ-8B; Wed, 27 Dec 2023 19:54:37 -0500
+	id 1rIejA-0002GM-CB; Wed, 27 Dec 2023 19:58:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIefT-0001CB-2H
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:54:35 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1rIej6-0002G8-PL
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:58:20 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIefR-0000xy-CZ
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:54:34 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1d4751dcb56so6712375ad.1
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 16:54:33 -0800 (PST)
+ id 1rIej3-0001VC-T8
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:58:20 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1d3aa0321b5so46174125ad.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 16:58:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703724872; x=1704329672; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703725095; x=1704329895; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=B8XmnUfdJKj+TB2L07DLXAvKXwYIBoX9DFJDEEqoAv0=;
- b=goGOnTaLSrhCM6wB6XSypSIWO5aJCpRi0oXCxIu2iIPxrVIa+YLHcKHj/m/c8ZpxK1
- sLK8MswRDhco7wjj+pYrprR9HnTvTQzbwMHpM3TPJCzEHHZBvv0oOK25pj6K2YSoKI+l
- GlOO1er/sU0qg6cubyl1V/RdrXNkK3ORkyBI+jIiuEYqnrAggSh3XeZomSqXESW1Bn1G
- Fr4MlGcq7Ab+Iwb2LzU6LmUNQ5xp8HUHm4NxBOyLAHcoA9etd9sUcdRbOYyx6iBPuEs4
- aaW4yUDOAJLMsmWTFtqNPdyR00LCuoKAGVXaGurcFbO627qh63C0JQ5J9Kdao3oKH76Y
- a78Q==
+ bh=mnEAOwfXzrlKK0lUl3roWBrEHcVSedn2aQKv5mBA+Ro=;
+ b=UtmHPmZf83q+Yj0HmwD58nG8ziCalTchCWENl9IwkNjdyGir70OviCLbfKMQ3D6NCh
+ 5CnA/D2rpbjAzyXC2oyR3FB6OtCZ+3FziTb0br1JLddTFiQW7qei1evqxCB3K2zuNUHw
+ eqRG6op573gOJawAHqasecP5tM9HmBojLLDqToPz8LKTFPuzuRnhULVtkcfhGKsJ5tP4
+ BPqZ4ABsteDKMRLtviMS1LKunqTU0iz+wzJCQOh/qYTbuClgLfAQ4NVX2n/42uZhpH66
+ LfzLXbEFP+fe6sStYbd7BVoYyZvodcLVVIV+jUJtbmm7Xr9WtTxIGaLMdU6GUxc827El
+ 9SZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703724872; x=1704329672;
+ d=1e100.net; s=20230601; t=1703725095; x=1704329895;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=B8XmnUfdJKj+TB2L07DLXAvKXwYIBoX9DFJDEEqoAv0=;
- b=f5RR/3/5ziXk7bmY2gVa7ETZ4TX1xvZLOkNukBmpYDrGa2OuzNlWHlafQ479lGDzKC
- M4TAOTr5vCdndavCRldAHKf83ZqqmEeSF662wYZalFzPmi9JZM3Wsf6Rt2I75rd+brqJ
- Ez+FyNhByQH4gC2yeilWp8ci4cbfAaX7GP4sTKgbW7VMU354i04PLvs6oQfsy0X23ZhN
- ZkrKXBckNqaNfztQGR3S8q1KH6ww3AWREoDtzWcMZ9mrtONdabeauswrmv2CqSF9EK6/
- 17//ENRa0C0t4Hp+/4tK9UxMyCx6ZSYYlThF2UTKPRZA+LB1nhdziYaH+frSB3pSUixN
- hhbA==
-X-Gm-Message-State: AOJu0YxrMcxOWBZ4QD0EmZ159lNSoBQDi6mDdFTvPR8MvrusBt9OIljM
- RTs0Zf9BKhLr1fslD4WZl30CvCCW4ddScA==
-X-Google-Smtp-Source: AGHT+IGWTgIR+KB34wnSlB6qV5BsSet7r5nuUQCEv3TBegfjZLsoFtv39jYxHutW0XP4DtF0Sn5HEg==
-X-Received: by 2002:a17:902:c3c1:b0:1d4:1999:d9ac with SMTP id
- j1-20020a170902c3c100b001d41999d9acmr4001203plj.94.1703724872128; 
- Wed, 27 Dec 2023 16:54:32 -0800 (PST)
+ bh=mnEAOwfXzrlKK0lUl3roWBrEHcVSedn2aQKv5mBA+Ro=;
+ b=ttX1Zy6FFXIxhLl5124zmc6+PiU980B84mxexIGQ9pRy37NOnmGBnNvqNmNN9yw7Wu
+ I7AKLlj9C/i9iAQeqVpVoFohYJEBBLv8LhU0L7BtpCDl9qEoRbhwSaPJbt+hxyp90bn7
+ 18ABx3U2Q5Hjmbg9u87PlYw7Ynz2Siih9cRWh8l4mhmQ2hgryYwIxF8CnHEukorjvaoS
+ G1rJU0UannckPi13eLYIvvymWelLr7awXqhKy/OvFHND4UQZEkij/4q84+Fqqov9cKdP
+ FpwMVxycE4sUst0ToWn2Q7v0NHRDAPdltsRNUYYFtRSqzPnnCxw34I4NvOOw1MOpPug2
+ /hWA==
+X-Gm-Message-State: AOJu0Yx03+1YtnKfut06B5HvExPdvne+pcZt5iEnBoOl57oEGy3oDhQT
+ Qq4hxMtuMbQs/cBBMTs029ky1hNkHORdrg==
+X-Google-Smtp-Source: AGHT+IFr2zDhh7ccPApDvYtLSOiPChH25pmJsOP0Na3fihMULtOD/bvzEunlQEyYUdstjP9dWINhMg==
+X-Received: by 2002:a17:902:7ed0:b0:1d4:691e:817f with SMTP id
+ p16-20020a1709027ed000b001d4691e817fmr3673440plb.126.1703725095370; 
+ Wed, 27 Dec 2023 16:58:15 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:12c1:9684:874a:fb3a?
  ([2001:8003:c020:6900:12c1:9684:874a:fb3a])
  by smtp.gmail.com with ESMTPSA id
- n18-20020a170902969200b001d4872d9429sm1145847plp.156.2023.12.27.16.54.30
+ r4-20020a170902ea4400b001d3f285157dsm12580343plg.124.2023.12.27.16.58.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Dec 2023 16:54:31 -0800 (PST)
-Message-ID: <801c1e43-f2e6-415b-82c3-64c90d318c35@linaro.org>
-Date: Thu, 28 Dec 2023 11:54:28 +1100
+ Wed, 27 Dec 2023 16:58:15 -0800 (PST)
+Message-ID: <cf50d75a-6191-4946-bf08-db3a31ae64c6@linaro.org>
+Date: Thu, 28 Dec 2023 11:58:10 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 34/35] target/arm: Enhance CPU_LOG_INT to show SPSR on
- AArch64 exception-entry
+Subject: Re: [PATCH 35/35] target/arm: Add FEAT_NV2 to max, neoverse-n2,
+ neoverse-v1 CPUs
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
- <20231218113305.2511480-35-peter.maydell@linaro.org>
+ <20231218113305.2511480-36-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231218113305.2511480-35-peter.maydell@linaro.org>
+In-Reply-To: <20231218113305.2511480-36-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,16 +97,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/18/23 22:33, Peter Maydell wrote:
-> We already print various lines of information when we take an
-> exception, including the ELR and (if relevant) the FAR. Now
-> that FEAT_NV means that we might report something other than
-> the old PSTATE to the guest as the SPSR, it's worth logging
-> this as well.
+> Enable FEAT_NV2 on the 'max' CPU, and stop filtering it out for
+> the Neoverse N2 and Neoverse V1 CPUs.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/helper.c | 1 +
->   1 file changed, 1 insertion(+)
+>   docs/system/arm/emulation.rst | 1 +
+>   target/arm/cpu.c              | 5 -----
+>   target/arm/tcg/cpu64.c        | 2 +-
+>   3 files changed, 2 insertions(+), 6 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
