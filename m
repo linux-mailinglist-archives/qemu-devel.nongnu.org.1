@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2A681FB80
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 23:18:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7201581FB82
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 23:18:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIyhf-0007M4-SW; Thu, 28 Dec 2023 17:18:11 -0500
+	id 1rIyhj-0007Nt-Ca; Thu, 28 Dec 2023 17:18:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3HfSNZQMKCnAgQkUccUZS.QcaeSai-RSjSZbcbUbi.cfU@flex--scw.bounces.google.com>)
- id 1rIyhd-0007LE-QH
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:18:09 -0500
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+ <3IvSNZQMKCnUlVpZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--scw.bounces.google.com>)
+ id 1rIyhg-0007Mz-R3
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:18:12 -0500
+Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3HfSNZQMKCnAgQkUccUZS.QcaeSai-RSjSZbcbUbi.cfU@flex--scw.bounces.google.com>)
- id 1rIyhc-0007d8-8S
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:18:09 -0500
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-5e74c97832aso89966827b3.2
- for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 14:18:06 -0800 (PST)
+ <3IvSNZQMKCnUlVpZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--scw.bounces.google.com>)
+ id 1rIyhf-0007eQ-Ai
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:18:12 -0500
+Received: by mail-yw1-x1149.google.com with SMTP id
+ 00721157ae682-5e20c9c4080so106460897b3.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 14:18:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1703801886; x=1704406686; darn=nongnu.org;
- h=cc:to:from:subject:mime-version:message-id:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Z4fR8amUcwHFtPDCFuyUe4tqU2GtcN3VdRJJ9r5yMNs=;
- b=OruVa8t0wGseiijmY0GqXf05uQCEjvp27NDkNN9ZkCegqBcgHdjUq75Dwey4ncydDr
- J+NgCBl+4/leK1zvo2mjUhSZTXRpZqWCqxIpRE18uoZNCLPfYrrWd+SKp8bGBnj6rowk
- c6BNeCoW3xeXQmvyw3M3GEeBQS49O+pD2/jT7VHMwwg6xVvMkQmg9ErIuT75L0JH5QNv
- 6iJMwCssHW6/u7CQdviszsWGvzzY+K4JLrhpFiNBVsbHnhlOcQca/oeyeqhcLFGLoKG6
- rXKu4cfchQAD/dmtQFOqy+YPSAulI+BDzQsWQPwrkX1BLRAj30N/jQ4ubWWsyenoG5be
- x5bg==
+ d=google.com; s=20230601; t=1703801890; x=1704406690; darn=nongnu.org;
+ h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=G3yL+/JS3JWx1cPp71KUfWtGLWSAB5UNwfPttx6LtRs=;
+ b=ogBF+DBfWRC+ixf4IKrlnqzv7tVVTY70AhDd3vBNQUoypMWudCgKclX0X/SSomaIpT
+ XDhQh/MXOz14XRcyOlu7RCYFEG3psx4tB1InolJ3os7187+bwj0/ua3FcrjGySarMIJy
+ 6NgILLsdCMOQ+ganzsLDG6MR+GtefCS1aQe2RUZmTri0j5ZMLsmQ2IwWd5f0D7NIei+2
+ kFBSbG5FgSZAOFy7gfJY11Us/1fekTb2iwDoYzWYjTm2tGo+KqlnV84OM+wmXZjshuPJ
+ 6tqY3kyVSCpdB/ZJdc68zSlt8g+BMM9G8jurJ/XI9Wvxpv6wQ0oL1oIZdinUPFgG2ZJ3
+ Eu3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703801886; x=1704406686;
- h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Z4fR8amUcwHFtPDCFuyUe4tqU2GtcN3VdRJJ9r5yMNs=;
- b=i0K1cZOcXrAp4KsAe5LtlQWDC/e/RtPf4GZJlbOeEG4pUtsY2MrGVfXVSTKvUqT0xU
- 8EOkuFlD7DCk2qyoFWuY9SM9jl6IHJlxarUWQ5Honm5xM4aSma010UwPg/zuYz+JJt9b
- jBWGHjQODOBdRKZ3QxvJLMYFFLLqEOWFx9TMK+26NX1bzcM6Vuw83ucQL4vpx4iK+kg3
- Ggt5mEgOx8/Dsw0b/mwX/BXaMMLb4XrGZFJxQQpEePg/nCNXFRiLWcDgcBYDGXtqBzDg
- pDIjEaMyf7LoMUFjzRnRoFAgZ5P3k5ILBNuaj83SyYRej980Sn9QEV4aKoIqY18u+QSC
- Q53w==
-X-Gm-Message-State: AOJu0YwgI8/b/hyHTgNp95p4+ctK8bXEu0BWRi0KGamnx6dxTiTs56N7
- +A3CQHJ1mgKTd/4HfcTwbXHVBHbeEryRkFTA576cY8XoskrcTWgmJFMc7jXEIFONZzEZky5rxwX
- 9QUdqnlzNV7mmOoIKJAU8+9G8A4a8QXAIJXy1cddfssC3Ikk25RLUtB0GhtA=
-X-Google-Smtp-Source: AGHT+IFqTTvR6glmxH5MOuiQZPqyn4YElEofDw7P965k+59GFE34XcIRJW6m1c+fRzltW8x9tnf3sn8=
+ d=1e100.net; s=20230601; t=1703801890; x=1704406690;
+ h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=G3yL+/JS3JWx1cPp71KUfWtGLWSAB5UNwfPttx6LtRs=;
+ b=Xhj5MSdBddiLXtNSrx5g5c22UUFbByi3VdJKH15j403Tbyli/lVza4Cp9LN1IVPkgS
+ Te618rC2Gon37Zowvt5L9a5TsTLiTvETS6F+ZcQ+6qbrQW741oJo18jz19ZWDbWkys9n
+ TE8Qulblg62/cNB2uqIKH4P42MonWivdOAmU2BV1wBYZAognyqiZR7ogUvyG8PHhDDzx
+ fHWa0Fz1mCAyrZPvoqyss1pjg320b7vuKcxxekapp1nrT+TcHEy+HnuDvY9J7HYRMivK
+ KTQMX3hathsUbo/ptxIyBTmd8OXtimxb9k2OyhUj1WV0IuuEa+EFV+SZ4vN8qz/15agf
+ DD7w==
+X-Gm-Message-State: AOJu0YwY7QUEdKKlcHYPj3QfGllZ3Q9vlYzknnoo7ivx+p+GelCw9CT8
+ iFCtFkcpz5UpyfFTVYN3UGpk01fFhWN3NH1OGS9xDhUmprF/dsKyXvaVPyOzye0e3RrQdYW3efQ
+ TndaPLKCXlY/lZ5wpcsFysbk49Vc+lQ8uJL3H9ziyf0d/tLTjbUXCJB6Tu/U=
+X-Google-Smtp-Source: AGHT+IE4kfK+U8homqeMEqxsTWHO6hainghMcwR6jZdPLUBzulKR7ZhlTx+U/Rirwquwug7IOlIrXoY=
 X-Received: from scw-glinux.svl.corp.google.com
  ([2620:15c:2d3:205:ed19:b942:6cb6:d8bc])
- (user=scw job=sendgmr) by 2002:a05:690c:a85:b0:5e6:28b2:8bf2 with SMTP id
- ci5-20020a05690c0a8500b005e628b28bf2mr4502241ywb.0.1703801885818; Thu, 28 Dec
- 2023 14:18:05 -0800 (PST)
-Date: Thu, 28 Dec 2023 14:17:57 -0800
-Message-Id: <20231228221759.2839009-1-scw@google.com>
+ (user=scw job=sendgmr) by 2002:a05:690c:4493:b0:5e6:68a8:be40 with SMTP id
+ gr19-20020a05690c449300b005e668a8be40mr5426507ywb.2.1703801890160; Thu, 28
+ Dec 2023 14:18:10 -0800 (PST)
+Date: Thu, 28 Dec 2023 14:17:58 -0800
+In-Reply-To: <20231228221759.2839009-1-scw@google.com>
+Message-Id: <20231228221759.2839009-2-scw@google.com>
 Mime-Version: 1.0
+References: <20231228221759.2839009-1-scw@google.com>
 X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Subject: [PATCH v4 0/2] linux-user: openat() fixes
+Subject: [PATCH v4 1/2] linux-user: Define TARGET_O_LARGEFILE for aarch64
 From: Shu-Chun Weng <scw@google.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>,
  Richard Henderson <richard.henderson@linaro.org>, 
  Shu-Chun Weng <scw@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3HfSNZQMKCnAgQkUccUZS.QcaeSai-RSjSZbcbUbi.cfU@flex--scw.bounces.google.com;
- helo=mail-yw1-x114a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
+ envelope-from=3IvSNZQMKCnUlVpZhhZeX.VhfjXfn-WXoXeghgZgn.hkZ@flex--scw.bounces.google.com;
+ helo=mail-yw1-x1149.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -91,22 +93,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v3:
- - Fix build error: ignoring return value of 'readlink' declared with attribute
-   'warn_unused_result' [-Werror=unused-result]
+In 050a1ba, when moving the macros from preprocessor-guarding to
+file-based definition, TARGET_O_LARGEFILE appeared to have been
+accidentally left off.
 
-Since v2:
- - More robust handling of `readlink()`
+This may have correctness implication, but so far I was only confused by
+strace's output.
 
-Since v1:
- - Eliminate static buffers in do_guest_openat()
+Fixes: 050a1ba69a ("linux-user: move arm/aarch64/m68k fcntl definitions to [arm|aarch64|m68k]/target_fcntl.h")
+Signed-off-by: Shu-Chun Weng <scw@google.com>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+---
+ linux-user/aarch64/target_fcntl.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-Shu-Chun Weng (2):
-  linux-user: Define TARGET_O_LARGEFILE for aarch64
-  linux-user: Fix openat() emulation to not modify atime
-
- linux-user/aarch64/target_fcntl.h |  1 +
- linux-user/syscall.c              | 50 +++++++++++++++++++++++++------
- 2 files changed, 42 insertions(+), 9 deletions(-)
-
+diff --git a/linux-user/aarch64/target_fcntl.h b/linux-user/aarch64/target_fcntl.h
+index efdf6e5f05..55ab788a7c 100644
+--- a/linux-user/aarch64/target_fcntl.h
++++ b/linux-user/aarch64/target_fcntl.h
+@@ -11,6 +11,7 @@
+ #define TARGET_O_DIRECTORY      040000 /* must be a directory */
+ #define TARGET_O_NOFOLLOW      0100000 /* don't follow links */
+ #define TARGET_O_DIRECT        0200000 /* direct disk access hint */
++#define TARGET_O_LARGEFILE     0400000
+ 
+ #include "../generic/fcntl.h"
+ #endif
 
