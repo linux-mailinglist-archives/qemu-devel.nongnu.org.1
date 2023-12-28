@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9606481F664
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 10:44:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA3581F65F
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 10:44:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rImuL-0008Ih-At; Thu, 28 Dec 2023 04:42:29 -0500
+	id 1rImuK-0008IA-Rv; Thu, 28 Dec 2023 04:42:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rImuC-0008DZ-UV; Thu, 28 Dec 2023 04:42:21 -0500
-Received: from mail-am6eur05on20701.outbound.protection.outlook.com
- ([2a01:111:f403:2612::701]
+ id 1rImuD-0008Da-M2; Thu, 28 Dec 2023 04:42:21 -0500
+Received: from mail-am6eur05on20700.outbound.protection.outlook.com
+ ([2a01:111:f403:2612::700]
  helo=EUR05-AM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rImuB-0008Gn-Il; Thu, 28 Dec 2023 04:42:20 -0500
+ id 1rImuC-0008Jv-2v; Thu, 28 Dec 2023 04:42:21 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eMKGlacCvJk5YKKfvqHzgjEeYg8rahMK1h1SfBwZ4N/TsraiJ/6hdKkYzdj2pn+6pZBDhcsEuyhKXSVLp67OZrkTbSzwy6fw8IozWDr5J7q9Zp7IGuKJNlrguxGGb9xAsfEnQLd0PAkA4B2lLe0LRbh476eeYDka5VVX0I9qLlDEnz2kUEFXbTcpaS6nKb3+ssoPytepz/lFSttJFsf0izPQgwm/2ZUU3u8on+O0tUXazPMqMdEX8IgsS4245pqjEGc07LG8IeqRky9BPbvQih3vCmLn1GwupVCeJ3hT9sq7i4WFUNHWxd2JWQCuS3CIVo3AKv4XTYiRPlOvlyRhpA==
+ b=VJOW9C5UtFZyLour5pBA9w5EZkmIoFY2xbNji31PqEvJ8BGSkBEIrT0TKsILbCpMHsN4BJdSvYGExrf5B5jr19BaNltCEEnYei+feXKCXqm1DRV5cF7eEFbstkQDRUk51/sAAxcdIgtLTR7Hy/daWvKSE84/yKdOO75f23XXLPJYB86dz+5rBRGjzeqmAZL6baK66A+AIBuQH/o4v3qjoimTapK2UYoDON5MaIHJhQLPZI6rH6yQI38MMMihb7mZx728+L9QRcBRa1u8euICD48nsGBcsdrfYKrxH8pyhUbgE5AlnRZ4gyups7N5+6eQp8v+Xdn70JWpwXbXsoWilA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RlLc3sGjbjLxYT0I28zHA5XYRyRf4UFwkyTz7Ixlqm4=;
- b=IucbmpkpBuawmn8+faVTnEdQBB+fyFbAWhFdpTKf59LKdJ1S/8I3afICPhu61S6IPEGHBDTZaSiCKJQDmC3AE2mQiqpLMVLq9qh8BsJqEseXvZ0devXmXtcFTvY4v0zDZHo5UzJNpq0yPKs6XtxoboIKx84B73OjHdkbLYSDRQkhmrKBFtkIY/h/Ou2FpkUHiy/znGUCLln9DcrOZQ9CmZAh3n+6qX+KiVO67k/6xNpGmSp5xcoSYGgMIHMkdmDAMnRGTm+2Xc8YqHaqbfPesPfXvtK4U3LpPJBEGs2MyTLlXCw2QA0vcHoQBzwmS5Ee+vpvHf/NSJJlUQSeMEnDXg==
+ bh=z84wjcZERYFHoLxhiNvThUkhuyvf/sVU/2uyo8YF85o=;
+ b=OaXMCLQ4fLwMzxCU2qeuLVWu+NNiIG75qEhZLzB66HT0TSjJH9WcP7YPF5hhNIrEO0T8gHO8yQKVU/mYOvKB2aZQxfOGOTZ7RhEOfEU4Q4T+m6pEwblBo9kUJW+7bqEs9DdiVUDY/Od9MaSKNgIU+b0HWK4D8lfjEWnu2IryyQK/O8/i6PQA7NnrwGprbPVtvFhYygIt7792Q7EpXepdv2NnZ3DuWr+sTYfrgW87Zg5Fs36XJdqFkDeL2uyEhNoUsgep3cQqf75EsZ4d8TjW3gmWQOTihwYE5bYP4Lce+CIcbkf0sL6OyPD9mDRnlS/AlXLJwh4+GZITEnNH+eh37g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
  header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RlLc3sGjbjLxYT0I28zHA5XYRyRf4UFwkyTz7Ixlqm4=;
- b=RIJQ/rx4U10OeCJ6xzcLIgGy7k0X8Fz8j/rgAp8FcXHAC+Fy1AIz1DN5SyCZ907NZPgGXubLzSt4y0AY+SKw6xzdq/Ypd163nnm1lGTk4JLXstKg8ycz4mmKIeQYwzr/GsAmoznPkpd0bTGdQ5H47FTDw6gsdpHIM8IWBhY+eOJi/ntl6PVjsc9XY3GYZGESRxKW2NsMI2tUJ+IEL3SzxmxSJNBbwQPeFLdLdNYGOVhl5oHa//nUXEHncuYLYToDWJIoFsPC7z4xS6c6WqHt7bGFYEdI3KcArRQuUeypjLe35R2BR4kEDo7FpD+T7/z/RkD2qP8xqW9AqGFgGo+WGg==
+ bh=z84wjcZERYFHoLxhiNvThUkhuyvf/sVU/2uyo8YF85o=;
+ b=LztZaLfF+N4K3vjZwoIzQbXeqK0TCAlAWrhgE8X0JEwgmoIK1G5B4Igf26+Aqi+D3rAeeMmjIZS+u8vKJ3/J3R6+RdIsVazE42fDh36+qN9ecR3euRfR7Vj+XgMGmBCY391rQXT8UhrtcWTr9nvvT9b604XkXRTTMJIhei0wm12eZALeA0MLwsOR1rEaCkth3rNebXUvtdFLiLTXcdKondDyKcxOyLSCj10aDS/5Xfq82ojDavkqaExk/9g4Mi0rtLnIvFgAW9M3bt+Rq2CIQLFYu0YLepdKmnt0sj9Lhz1kdd9EcIj8J61ZaruJaMPcKwjkVLHoQ8ZnFg5xSnVccw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=virtuozzo.com;
 Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
@@ -48,9 +48,10 @@ From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
  vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
-Subject: [PATCH 14/21] parallels: Make a loaded dirty bitmap persistent
-Date: Thu, 28 Dec 2023 10:41:46 +0100
-Message-Id: <20231228094153.370291-14-alexander.ivanov@virtuozzo.com>
+Subject: [PATCH 15/21] parallels: Reverse a conditional in
+ parallels_check_leak() to reduce indents
+Date: Thu, 28 Dec 2023 10:41:47 +0100
+Message-Id: <20231228094153.370291-15-alexander.ivanov@virtuozzo.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231228094153.370291-1-alexander.ivanov@virtuozzo.com>
 References: <20231228094153.370291-1-alexander.ivanov@virtuozzo.com>
@@ -62,55 +63,55 @@ X-ClientProxiedBy: VE1PR08CA0003.eurprd08.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI0PR08MB10743:EE_|PA4PR08MB6064:EE_
-X-MS-Office365-Filtering-Correlation-Id: a80d8183-86ea-485a-3685-08dc0789401a
+X-MS-Office365-Filtering-Correlation-Id: af728d1b-42ea-4aa1-6f87-08dc07894053
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: z3BanPbjj3EoiQKwNYBs/naVq+oLN3TTtzXDQ2YT+NDTNtmD41j6fcUwvguzaLlF/kKXxpicFQRGpSpTgkHc429ndT05iYbYMBbD3RLv0LKHuApXWmCV2dEfm7Q0BUTHLK++LpoPVYIPD/8P067S5RvFXZlKVv3PDCsuIrXWdOsYY6SVnejkQxIV2oRcfsTbQ67Cz4GqLoH7KvKfgfjZHDP1iOg8pq4RhiRK5nDuUbBfbT4VNnP+VLeOXYidieQcmt0W/cpgP1KbUQ1NludcCtcdLd60dwkBNpjvsshf6Tnz4/2UV9PYwgEqnPXMp/FkMS4K4IWWA4/jb7bdKlePJm8YibaHJFyXWuWisfk22o3aIsfAfxnqcgMkoAuFSuGW/FIkyON3lecjWQf6LtL5O+cRom7IDydz2wWKdtXUw//CLEeOaq8EO0odigPldJdC9BX9Z4m2FJYvFEzqg+zwtm22p/qtA/+4/oGmY1HK8zcHRLc0S8iNmpNHkdC2j2UkQ/MZFc7xnNmSrkW1pPeAAISnk6nLI42rIca09uZF57pFRmcTbSEZRlqYMr4ntpHFNWmjhbPER8m3NrbswtfWSSNpIfERLw9Mlch27iqWevor+8jeZ4Fs+spI8H2rGhS3
+X-Microsoft-Antispam-Message-Info: VAomBNgdB+hEoA4YUOT9A8+pmCfKMBoXBqIennNO3syUNZQQdVlwfDXh1pVolZKjFaDmqyI403fA0X6ZSqxIiQjN/37HDnJjYy6Kv43AitPlfiEOcitcw/cbinPLecDGZfp3CGjvEFLzxmCSLd5Y+04WxtlN6qi8D5oJol31troAUuDiuFgJbd9BPkmCzOls0nnttqf8NkmiZZsfgZ1yH+DpuVhLyvkXjmr35xqo+Ju9HVnZOmKtj5gGV+GibcuG4LrKUP+7LPyogpCD+Qry/eyiw4ameJc0jEYN0hcq2PTAWd07O4YH+JnRUo8YW+gnacr/bvt9g9gspwRtkD9omCXwihhnTQ4w8gVDhfLVCyaYYCIMVbgGAiPP+4C+gRI6SeWkvoX+XEIar7L9smZRSOXTDBMQwzKTYbWocxxEv267pqvFR6JahSF09k0a/OCSe6iXPrm0ZgDGsjWIcenHkdr28pNLqd/XYDxOiOr9svfSG/QDYANKHvQfk4I5fVma5fq5ghnQzNVW68FjfxNaydT4y2hbtNAnTyZoqPczRrmd/tgCIewWUAUdvAfcsUUjB+zRKAIJdenCykk1AdrEr+nleDLKO9dxxcWIjq70NGRpV4fa4RgVbEvaCB7zetS4
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VI0PR08MB10743.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(39840400004)(396003)(346002)(136003)(366004)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(66556008)(66476007)(66946007)(6916009)(6486002)(4326008)(44832011)(316002)(36756003)(8936002)(2616005)(26005)(1076003)(83380400001)(478600001)(6512007)(6506007)(6666004)(52116002)(8676002)(4744005)(5660300002)(2906002)(41300700001)(38350700005)(38100700002)(86362001)(14143004);
+ SFS:(13230031)(376002)(39840400004)(396003)(346002)(136003)(366004)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(66556008)(66476007)(66946007)(6916009)(6486002)(4326008)(44832011)(316002)(36756003)(8936002)(2616005)(26005)(1076003)(83380400001)(478600001)(6512007)(6506007)(6666004)(52116002)(8676002)(5660300002)(2906002)(41300700001)(38350700005)(38100700002)(86362001);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1oicfisBr5ZPeUwQWQXamgR2k9WERcKitI7v5kjL7PrkaY/YtWmKBHETQEck?=
- =?us-ascii?Q?ELc2LRpDVOsYs1gpUAHOxCWqw+FWNKPwMs/aibyovb9/KKqAFYaTsn8Gt3Ea?=
- =?us-ascii?Q?vZ9Yi5y7EuYF2N4YoL5cCn3lHPWeRw2F9ScpzfLYHZhuJ8QqW+4FJLrGfh16?=
- =?us-ascii?Q?rdZFeUX+9d7mkVfgEznvWWpagEdqiMYGqp33eXyYciTPxgZFSnzE76ZTEQ1l?=
- =?us-ascii?Q?2/1nDKX5gnRmfWJGGNfsF1lliBSBOtulQI+k/5P+kIOfGJAfw6nN4YiGmpmX?=
- =?us-ascii?Q?iUDO0wePpGArHvY6rw9959J0mRWN0o2ft8z1hWSWzIr0OgkBomKJgWLgNhVw?=
- =?us-ascii?Q?SqcgKJZEFHminYWeNPNOcEEPAAqO2FAjhYW+nMOLzik/bvlXuaTJGdmDJQLy?=
- =?us-ascii?Q?uELDmaYKjzsiXIr6c8gofxDGCHDG668YkKfqQQQqMsjbg56N3uafqnKB3SEh?=
- =?us-ascii?Q?h9jxrOQD/bmNrOeiRyLK95+VWj5lED5Cf6sTaRHjsjHWmwLucwTBwx+Un+Sm?=
- =?us-ascii?Q?pOSkxkHJBkWDs1ORfSAl0uQ2FYvnU411y7aBRrfW/1T06fcR4aREqngTn5QJ?=
- =?us-ascii?Q?75DZQlLRpHZjuGRD8jqUbawgGphZ81OQoK1kUPktLMMLXULB1e8gFJwfdGrn?=
- =?us-ascii?Q?vgH/MUktbxVQ0c4w/7lY/zCrfg0Sa++mLyhrpDpYuh6FwextnTHkQcL5vHoC?=
- =?us-ascii?Q?j4n2nXkjLyHh+54yxJQkNhp0YojX/LtYWe+gQ3eC6BraqZUO63vFAWkiNtpx?=
- =?us-ascii?Q?u5G6jVnMmcPG1EPHRiZ16kSB9FSlYTveCqL58EA8TcSnnmpxnlxyO8V7yUD3?=
- =?us-ascii?Q?S23IniV05XBn6Sk7h7sfKauYsVBxJh6L5cXXVvh1xjpPOtJzBYuiwP87G1VG?=
- =?us-ascii?Q?fiSWlACScltPFNzh9OisYUMqDN2UTd8EUeKLr7T92oE41wYhcQJDQOiTNGp0?=
- =?us-ascii?Q?hcdBJy2Cxol6wPa6YvZIvmGBnc7iqQmrdeEDhzEj3WYqZ3TkP0N365S5CWac?=
- =?us-ascii?Q?LlFzV6C+2ZDCxXPpiqDbewUZpjNXoCDx2OU4uOJmMTJZ+qZxv8cfh+iFRJoT?=
- =?us-ascii?Q?Rg0P7USVtKhRJdtgGsuyIXW5Q0M5fm4dEm4MVoGICgsNKTvm8YsqA6JQpLPS?=
- =?us-ascii?Q?s2Q7b8YEqOkKYhN8opagXpyqeQhUmEF5fTlPsImsBNVZ9m04qJpmHRp/5gK7?=
- =?us-ascii?Q?ea4AEbqBLiPaJVvsFREQ9yE4Jroi5tkGxhyrU884tmKWyCBLk4tGd8+Fevdw?=
- =?us-ascii?Q?kIiXjcyHCyXOOE96ezfeRBt+NhgotkmzspQw90xpXjHG5hdS8ziMhxvU8wwp?=
- =?us-ascii?Q?DjrjRqxiIBzsSNogZReaWXqVm9H+s3bHzhSdugVq0HDyUFc3DLhOe7u8MOk/?=
- =?us-ascii?Q?RhPpMIARRjur/mGs83axC8OZdKg9Ovrjp0IToToSbNz4IOIod/uKz138mUkE?=
- =?us-ascii?Q?Zuglj5b47BoGJ7FcZJaPgOTItPp0zj3rnnrUBlgiVaRc0Nck21ae4abeMMy3?=
- =?us-ascii?Q?i/EaEsV16s1C+be08n3CgeTQfuCPSZJM4HVCY59VdWC5/O73RICVxRoMDE5N?=
- =?us-ascii?Q?7DFKIQ7ZRpWme5oLjvOfWAk5Pt3bPxsdWCRuLVcpkp25nas+U/ICDFXRkiAS?=
- =?us-ascii?Q?ekGgxrFmk71ozOwO40fhtUY=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QDHVw5/7CTUWa1ewzaurFy2zOn3hF+kRmPIKPRhdgbzJD/NixufGRLN1DYMC?=
+ =?us-ascii?Q?3CCfmBEeVGyl+vmZ7p5AUHj6TIBA37OUUS5wP7HZ5cywLKYM6sL/m1FCFQnF?=
+ =?us-ascii?Q?uEvXKA6rZwc2PfEQVukajTYWecGuqVzuE97HtJFH5aXrcxDXHOp0MRp3COdg?=
+ =?us-ascii?Q?dLzuTOPMG8vqHu4Lxvksge/yaxQzOa96tTDagFTl91q2UdoW5hoji0HEJpPM?=
+ =?us-ascii?Q?XpscMcgFjrR2DIZ1HYlQnHsNw9uW+hea7V92G4H7eKI53hxvelLbNs0IOkf8?=
+ =?us-ascii?Q?+OiklehkwhV/DZoxPAGVMBYcLONO+lRgcm8IVrx1vHtK7KWTeX1vvq32jNEs?=
+ =?us-ascii?Q?2VzWwZ67GkB5oZzvznxyEk0ebmSPN3+iCWz34o5ppQLu+EW0RljUJWfdzKtv?=
+ =?us-ascii?Q?lbFT2xSru+atxkR5mM4pO0ZYl/WHQI9TgENQ+OmKMwIAGUyUuXIdqWEeO6Cf?=
+ =?us-ascii?Q?id4lwFR/BhDTv8LFtr9suEGWDsUvitIB5L6deOT6gI187ecu0Q6onOGlfXjc?=
+ =?us-ascii?Q?aT3nl3pfVSMxfj9VTWBuN0juO0LACZBk65pkzwKoHecqL5tdDIHbraah+cux?=
+ =?us-ascii?Q?TaPvUXJKq20d4dRiLZTprr9FlcuVmgDJK9KizBnvce6WoK8HYEXKrK+6jd0W?=
+ =?us-ascii?Q?QCiGQyvmDiYO722BRErhfVeMxQeUNvrwkx8ZfcgbWQ31FKpNgPZ+izt6b+gk?=
+ =?us-ascii?Q?l4KHzO8atZoRQGjCmR/s4h1KSivHkq7wXhaCEwFbPbx6U6c0byIAVnZWdOUg?=
+ =?us-ascii?Q?93zwe9G1e4apVwjnHzfRJGxlXYu9jFyfuDAM83rblDQr1Ln0Uz2h5qiBEpYI?=
+ =?us-ascii?Q?gpJ9pVuL2iFzaLtf1a/ZRS0MOqDGoXBQc/EKoFVH5F5GtkalIs4m1wtM1lBA?=
+ =?us-ascii?Q?I+GH4UkGMg+wcGiYpskQicFctnR98vE60gRKV7durT50tTLO0MxfeKWj+Gkf?=
+ =?us-ascii?Q?nXUniPngM7yM6oXh+Fqq+f4cl6da3Hh5MaGg4GTEmLoHorJ/ktrJibWufEWW?=
+ =?us-ascii?Q?o7AKfxWazWD+Qw9fabXMxGvKiem4yOOXOyibOv2zRbCOS5Y/VwZKS+wGH9oJ?=
+ =?us-ascii?Q?UWSwJHDM2nzY02GEJUvA3nno+7j0zsxGKDZzUYaoeGAixCjLC6xqG39z8fiw?=
+ =?us-ascii?Q?4O73kPSni/DOceRMoH2F5523wf/vccZY+xT+U9DiTw64FhCshCvjmGzWZv0H?=
+ =?us-ascii?Q?KrRr4qnGIq0YhD6lKQZyL87HVi/abT3OBY32aupis8mJI4e6oXyEdb6VpXB5?=
+ =?us-ascii?Q?McycG3C+e9cr3XL0afxJZrBNeBdqc8Eggz95EVM27wrk8deu8TSlmLWrMm2Q?=
+ =?us-ascii?Q?BBL2P2Qf8XjNHGlvDlxGI8/dYTgWDah71uhluLEJFVKMiPxl7nFuMrUdMbJh?=
+ =?us-ascii?Q?/nqEpEKglp07rku+Qs0jryTF5SmduM9nL7qt3dJlYyjKA6Tx3agq7CqDwMAZ?=
+ =?us-ascii?Q?Ok9i/Yu/UCCFjWi5Rv7rJfPvtiAvm7SR25mmXN5QCDzbL8Yqo7t49Xpo207g?=
+ =?us-ascii?Q?R1e+ra/1yQd0UWbkaM6KGl41jPh977uYYNuVFRnstT/c74Xn/RfSDQW1jWsl?=
+ =?us-ascii?Q?apzwvYHDyoub2ChIDxAvjNAYvR91WxyKnBAMgO4+9ZwXGk/BXqa8Qz0orMau?=
+ =?us-ascii?Q?tyG/vBtMTWVUvSW3mO37tbo=3D?=
 X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a80d8183-86ea-485a-3685-08dc0789401a
+X-MS-Exchange-CrossTenant-Network-Message-Id: af728d1b-42ea-4aa1-6f87-08dc07894053
 X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10743.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Dec 2023 09:42:04.8638 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Dec 2023 09:42:05.1831 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pygl8KVRaA5eWHBzkAbmtFZUdtUlwk98DHd4VPJeKO9aMfJmvHrf/XDEHD8NiUEDeSXIjYr3gqtf2dK/WajCWdGKUU5gLjuz9GKMO4TOMf8=
+X-MS-Exchange-CrossTenant-UserPrincipalName: yReXaI2UADzQJf1UM1MYUT5Wtny1pMWOSDXtD9hVtyW79w/fxCPMXBzNgBMjWnbG5YQr/jSBI9BhEDhh2FYjyMl5uDPh+V8g/Facln3/gPc=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR08MB6064
-Received-SPF: pass client-ip=2a01:111:f403:2612::701;
+Received-SPF: pass client-ip=2a01:111:f403:2612::700;
  envelope-from=alexander.ivanov@virtuozzo.com;
  helo=EUR05-AM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
@@ -134,25 +135,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After bitmap loading the bitmap is not persistent and is removed on image
-saving. Set bitmap persistence to true.
+Let the function return a success code if a file size is not bigger than
+image_end_offset. Thus we can decrease indents in the next code block.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels-ext.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/parallels.c | 72 +++++++++++++++++++++++------------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/block/parallels-ext.c b/block/parallels-ext.c
-index 033ca3ec3a..2a7ff6e35b 100644
---- a/block/parallels-ext.c
-+++ b/block/parallels-ext.c
-@@ -255,6 +255,7 @@ parallels_parse_format_extension(BlockDriverState *bs, uint8_t *ext_cluster,
-             if (!bitmap) {
-                 goto fail;
-             }
-+            bdrv_dirty_bitmap_set_persistence(bitmap, true);
-             bitmaps = g_slist_append(bitmaps, bitmap);
-             break;
+diff --git a/block/parallels.c b/block/parallels.c
+index d5d87984cf..fb7bc5e555 100644
+--- a/block/parallels.c
++++ b/block/parallels.c
+@@ -773,7 +773,7 @@ parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
+                      BdrvCheckMode fix, bool explicit)
+ {
+     BDRVParallelsState *s = bs->opaque;
+-    int64_t size;
++    int64_t size, count;
+     int ret;
+ 
+     size = bdrv_co_getlength(bs->file->bs);
+@@ -781,43 +781,43 @@ parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
+         res->check_errors++;
+         return size;
+     }
++    if (size <= res->image_end_offset) {
++        return 0;
++    }
++
++    count = DIV_ROUND_UP(size - res->image_end_offset, s->cluster_size);
++    if (explicit) {
++        fprintf(stderr,
++                "%s space leaked at the end of the image %" PRId64 "\n",
++                fix & BDRV_FIX_LEAKS ? "Repairing" : "ERROR",
++                size - res->image_end_offset);
++        res->leaks += count;
++    }
++    if (fix & BDRV_FIX_LEAKS) {
++        Error *local_err = NULL;
++
++        /*
++         * In order to really repair the image, we must shrink it.
++         * That means we have to pass exact=true.
++         */
++        ret = bdrv_co_truncate(bs->file, res->image_end_offset, true,
++                               PREALLOC_MODE_OFF, 0, &local_err);
++        if (ret < 0) {
++            error_report_err(local_err);
++            res->check_errors++;
++            return ret;
++        }
++        s->data_end = res->image_end_offset >> BDRV_SECTOR_BITS;
++
++        parallels_free_used_bitmap(bs);
++        ret = parallels_fill_used_bitmap(bs);
++        if (ret == -ENOMEM) {
++            res->check_errors++;
++            return ret;
++        }
+ 
+-    if (size > res->image_end_offset) {
+-        int64_t count;
+-        count = DIV_ROUND_UP(size - res->image_end_offset, s->cluster_size);
+         if (explicit) {
+-            fprintf(stderr,
+-                    "%s space leaked at the end of the image %" PRId64 "\n",
+-                    fix & BDRV_FIX_LEAKS ? "Repairing" : "ERROR",
+-                    size - res->image_end_offset);
+-            res->leaks += count;
+-        }
+-        if (fix & BDRV_FIX_LEAKS) {
+-            Error *local_err = NULL;
+-
+-            /*
+-             * In order to really repair the image, we must shrink it.
+-             * That means we have to pass exact=true.
+-             */
+-            ret = bdrv_co_truncate(bs->file, res->image_end_offset, true,
+-                                   PREALLOC_MODE_OFF, 0, &local_err);
+-            if (ret < 0) {
+-                error_report_err(local_err);
+-                res->check_errors++;
+-                return ret;
+-            }
+-            s->data_end = res->image_end_offset >> BDRV_SECTOR_BITS;
+-
+-            parallels_free_used_bitmap(bs);
+-            ret = parallels_fill_used_bitmap(bs);
+-            if (ret == -ENOMEM) {
+-                res->check_errors++;
+-                return ret;
+-            }
+-
+-            if (explicit) {
+-                res->leaks_fixed += count;
+-            }
++            res->leaks_fixed += count;
+         }
+     }
  
 -- 
 2.40.1
