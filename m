@@ -2,122 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CA081F9C7
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 16:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3EE81F9D0
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 17:02:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIsdm-00058x-9u; Thu, 28 Dec 2023 10:49:46 -0500
+	id 1rIsnx-00071J-9S; Thu, 28 Dec 2023 11:00:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rIsdk-00058k-2p
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 10:49:44 -0500
-Received: from mout.gmx.net ([212.227.15.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rIsdg-0002Uh-K5
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 10:49:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1703778575; x=1704383375; i=deller@gmx.de;
- bh=XI0YSkV67rTi0j8Jnq5X0YKvRv8KueoLtcov7ypnI4U=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
- In-Reply-To;
- b=e8xPrDicCpb2PJdPvEC1ybn34glMDntApI9h5gkYYZ0WOFppT8IUN97lrOyl+bKX
- woshAncUfsQ3+CKuqlacO92vn2vZ8A7GlzZTRfZ3u+GCQiBiQ89za6lY1feNaTcOX
- Xeq+BmoP06El+LIg4I0VVChNHrFocYgld9RBjVR+McPyAkt3a3MWu14RTGkMDMl79
- 9Ns95XDJgKxZijSN1uBBBv2mvDn6SFHMeyRfR2C9XSwEq6i1pEIT/a/bOdor1F9KT
- 1drCcE2Ov83HwnAtM1txdLoMs07HmZQVXf3XHjk0Zqw1FlVea5n40z5MeSlbtKgz6
- 5r7f+KIvvGIoArGZdg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.144.42]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N79yQ-1rB7rf31TA-017Sus; Thu, 28
- Dec 2023 16:49:35 +0100
-Message-ID: <e7ce2432-aba7-4893-b828-7f5df6cbe9a6@gmx.de>
-Date: Thu, 28 Dec 2023 16:49:35 +0100
+ (Exim 4.90_1) (envelope-from
+ <0102018cb1278a4a-1b74ddef-8edd-46ca-a51c-5284f9df4a40-000000@eu-west-1.amazonses.com>)
+ id 1rIsnu-00070h-IP; Thu, 28 Dec 2023 11:00:14 -0500
+Received: from a7-10.smtp-out.eu-west-1.amazonses.com ([54.240.7.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.90_1) (envelope-from
+ <0102018cb1278a4a-1b74ddef-8edd-46ca-a51c-5284f9df4a40-000000@eu-west-1.amazonses.com>)
+ id 1rIsns-0005YI-OK; Thu, 28 Dec 2023 11:00:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+ s=we7ia3fxgawvchs62qr3tqnz7sf6mlor; d=ipxe.org; t=1703779207;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+ bh=dxibOQJQwxEMu1DSy3K1l2h2CrvRQrCpyo9oXA7UGUg=;
+ b=nzCxT4tJpwmcFMfl1i6/TR1MAm28UUObYV19uTlAo0wq4zN7oT3Fvzd/KkU0SP8+
+ QwIh+0Eu8SgxBkNCqjrc/mg8NrJOUgxVan55Ft6Fd2k1DVsbLDUwYYTKVJFW3GNSQaC
+ 1gx+zwQI3CWYSD5xgUI90s+imzVKO2v3bZCWKUX6XCcbxL4znTISycdz6Ac+TOV+ulK
+ WoW+kmZRZcWakbjDoEMd0EDZpNlS4ieraKmgWlvBMsidyne+Anc0hkum6PAR382lLeA
+ 1RdsUbO1bdzCG1rcQp1c/mxKAxc2tczDCutR6/2wu9kPcIWjP7Ezwg/bNo5UlhC6XEF
+ Ml4wCctXsA==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+ s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1703779207;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+ bh=dxibOQJQwxEMu1DSy3K1l2h2CrvRQrCpyo9oXA7UGUg=;
+ b=OKDacC9xGfKoacRojTuBiF9cZdPIjMUAMmdZWC5qQKhqcwt9wY+Vsk/wLljsktrh
+ O2KH1U+WlAA6HSLPovcPw6+vtuGoBnpfjevHp9HDoavMXmiSsAwTbQ7+8beje1dctUL
+ tX3nHahNU3susOsa3LAj5UkDM9akyeF5OrzE3qmM=
+Message-ID: <0102018cb1278a4a-1b74ddef-8edd-46ca-a51c-5284f9df4a40-000000@eu-west-1.amazonses.com>
+Date: Thu, 28 Dec 2023 16:00:07 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] linux-user: Fix openat() emulation to not modify
- atime
+Subject: Re: [PATCH 3/5] target/i386: Fix physical address truncation
 Content-Language: en-US
-To: Shu-Chun Weng <scw@google.com>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20231208224207.613445-1-scw@google.com>
- <20231208224207.613445-3-scw@google.com>
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20231208224207.613445-3-scw@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ qemu-stable <qemu-stable@nongnu.org>
+References: <20231222175951.172669-1-pbonzini@redhat.com>
+ <20231222175951.172669-4-pbonzini@redhat.com>
+ <0102018c963dbec6-062a7a68-53b9-4325-9137-8cee657053b2-000000@eu-west-1.amazonses.com>
+ <CABgObfbgVgQu5oYqtatVjA50FCWxvANtXAYHnV70iFOCu8DniQ@mail.gmail.com>
+From: Michael Brown <mcb30@ipxe.org>
+Autocrypt: addr=mcb30@ipxe.org; keydata=
+ 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
+In-Reply-To: <CABgObfbgVgQu5oYqtatVjA50FCWxvANtXAYHnV70iFOCu8DniQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ffKNd0VceiV9CbwOPI4InDS/1ULwb9Bp70Z0SQotDUmfD2nIj3C
- sWtf28dPh086ToGw1iUz8A9GA0q6YfnQvR42ldvjfgDKLG1sEiYJ/7dQXnSmBYLPR4jRVlA
- 5hV+i6qMKhjm0qYwY/oLBAc0Leyx0vnwWT9917oUAkJKxQk2E+T9yNFvM7rghvok6ydEzlv
- WpR9IyMPyqBVQ/hJjEvWQ==
-UI-OutboundReport: notjunk:1;M01:P0:IUNRSu3gaKo=;V8cBiL8dSXLFFmV6hUCifYpdh9P
- ZUHVywCgGZ6I8pL1v2mB0e+tcTMB0ynQ4UjTK50p1kqMdQsplyQ0eon1w6UoOfEtBT7+UXpyz
- Ihn88ntv4iGCgams/oBpgb+tFPDmEcY4c3h2bEo36FFs/jNqefcNwU51yOS/Tm7a0uoWqBkHJ
- qFftnHrZy+RVAW3mn3s/T4xVyz6EiY9wDbURQoaLSeNj8XOZRadxJrDVO2ExUqSPYOFEezaDb
- eUokAODawC+tZMw/LLjX01cCfgrPLEHHHtS0CkLi+lBnP7lJ9NiLh0Fd7Ntd5qt549P24gb8g
- WmnzkSwOz6/0Wo91VgKZTdDK6RnPJ834KPBFEa6hZz5BovnBc7gYhWE8Og4uDva2XB2HyMbwN
- l15PwT7LII5ZNXJwSrNPANh2LYlVgya+vAkCsGIlRZYcGlVIKYkOphEJEfDRHoACI4EeG+E8C
- e5/5FIYPpfENDO5GTkt4zUdNNiQWYGqD/CKnKvtwZriy6Gv5SyFdZU8UQtcITulE6HESN+Iy+
- BWK/JeedxapVctBS/I43syveg0ji4eWFatcPY1fPLnn+UJkQAYE1Qt0ItOFLbdP9cEAhTZw4Z
- 8gHCqtTOGvjuIXlka02NN0/01Gzao5FaKvezSlYxG3tmZtSuFDgJoctaFNwkoqnCik3wiGp4O
- UksoXpaIj7ZHaZYyjG03/6Mfd90cF1yP8cwZnxREBGgu87qpWzCrgc5eSwJm5Xwanz65PLBjD
- ms6KlHTwJVkfgzu7UZzlV+n48ozN6u6pSd5qZpPclF9jFIdnw6vau5qLxlboR+sZDgKcj/HZF
- FxwI7wfuEaCAX66NdhDTDPefX33kzAc7kFNHWmHpLEmOSEYzDJsqClMUR3EiQbc0UDtHrXxNU
- Ivi18Fp16lekAuMhXBulDfrMSOX1EFQlX8H4xMMFORiIfcWXwLrseBHM16SrN9UjriwPBPyfX
- ekIS0VjO5J18NdOq0BX2HOClSXU=
-Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Feedback-ID: 1.eu-west-1.fspj4M/5bzJ9NLRzJP0PaxRwxrpZqiDQJ1IF94CF2TA=:AmazonSES
+X-SES-Outgoing: 2023.12.28-54.240.7.10
+Received-SPF: pass client-ip=54.240.7.10;
+ envelope-from=0102018cb1278a4a-1b74ddef-8edd-46ca-a51c-5284f9df4a40-000000@eu-west-1.amazonses.com;
+ helo=a7-10.smtp-out.eu-west-1.amazonses.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_MUA_MOZILLA=2.309,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,134 +124,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/8/23 23:42, Shu-Chun Weng wrote:
-> Commit b8002058 strengthened openat()'s /proc detection by calling
-> realpath(3) on the given path, which allows various paths and symlinks
-> that points to the /proc file system to be intercepted correctly.
->
-> Using realpath(3), though, has a side effect that it reads the symlinks
-> along the way, and thus changes their atime. The results in the
-> following code snippet already get ~now instead of the real atime:
->
->    int fd =3D open("/path/to/a/symlink", O_PATH | O_NOFOLLOW);
->    struct stat st;
->    fstat(fd, st);
->    return st.st_atime;
->
-> This change opens a path that doesn't appear to be part of /proc
-> directly and checks the destination of /proc/self/fd/n to determine if
-> it actually refers to a file in /proc.
->
-> Neither this nor the existing code works with symlinks or indirect paths
-> (e.g.  /tmp/../proc/self/exe) that points to /proc/self/exe because it
-> is itself a symlink, and both realpath(3) and /proc/self/fd/n will
-> resolve into the location of QEMU.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2004
-> Signed-off-by: Shu-Chun Weng <scw@google.com>
-> ---
->   linux-user/syscall.c | 47 +++++++++++++++++++++++++++++++++++---------
->   1 file changed, 38 insertions(+), 9 deletions(-)
->
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index e384e14248..7c3772301f 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -8308,8 +8308,7 @@ static int open_net_route(CPUArchState *cpu_env, i=
-nt fd)
->   int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fnam=
-e,
->                       int flags, mode_t mode, bool safe)
->   {
-> -    g_autofree char *proc_name =3D NULL;
-> -    const char *pathname;
-> +    g_autofree char *pathname =3D NULL;
->       struct fake_open {
->           const char *filename;
->           int (*fill)(CPUArchState *cpu_env, int fd);
-> @@ -8334,12 +8333,42 @@ int do_guest_openat(CPUArchState *cpu_env, int d=
-irfd, const char *fname,
->           { NULL, NULL, NULL }
->       };
->
-> -    /* if this is a file from /proc/ filesystem, expand full name */
-> -    proc_name =3D realpath(fname, NULL);
-> -    if (proc_name && strncmp(proc_name, "/proc/", 6) =3D=3D 0) {
-> -        pathname =3D proc_name;
-> +    if (strncmp(fname, "/proc/", 6) =3D=3D 0) {
-> +        pathname =3D g_strdup(fname);
->       } else {
-> -        pathname =3D fname;
-> +        g_autofree char *proc_name =3D NULL;
-> +        struct stat proc_stat;
-> +        int fd;
-> +
-> +        if (safe) {
-> +            fd =3D safe_openat(dirfd, path(fname), flags, mode);
-> +        } else {
-> +            fd =3D openat(dirfd, path(fname), flags, mode);
-> +        }
-> +        if (fd < 0) {
-> +            return fd;
-> +        }
-> +
-> +        /*
-> +         * Try to get the real path of the file we just opened. We avoi=
-d calling
-> +         * `realpath(3)` because it calls `readlink(2)` on symlinks whi=
-ch
-> +         * changes their atime. Note that since `/proc/self/exe` is a s=
-ymlink,
-> +         * `pathname` will never resolve to it (neither will `realpath(=
-3)`).
-> +         * That's why we check `fname` against the "/proc/" prefix firs=
-t.
-> +         */
-> +        proc_name =3D g_strdup_printf("/proc/self/fd/%d", fd);
-> +        if (lstat(proc_name, &proc_stat) < 0 || !S_ISLNK(proc_stat.st_m=
-ode)) {
-> +            /* No procfs or something weird. Not going to dig further. =
-*/
-> +            return fd;
-> +        }
-> +        pathname =3D g_new(char, proc_stat.st_size + 1);
-> +        readlink(proc_name, pathname, proc_stat.st_size + 1);
+On 23/12/2023 11:47, Paolo Bonzini wrote:
+> The linear address is the one that has the segment base added, and it is 
+> not truncated to 16 bits (otherwise the whole A20 thing would not 
+> exist). The same should be true of e.g. an FSAVE instruction; it would 
+> allow access slightly beyond the usual 1M+64K limit that is possible in 
+> real mode with 286 and later processors.
+> 
+> In big real mode with 32-bit addresses, it should not be possible to go 
+> beyond 4G physical address by adding the segment base, it should wrap 
+> around and that's what I implemented. However you're probably right that 
+> this patch has a hole for accesses made from 32-bit code segments with 
+> paging enabled. I think LMA was the wrong bit to test all the time, and 
+> I am not even sure if the masking must be applied even before the call 
+> to mmu_translate(). I will ponder it a bit and possibly send a revised 
+> version.
 
-this gives a build error for me:
-./qemu/linux-user/syscall.c:8365:9: error: ignoring return value of =E2=80=
-=98readlink=E2=80=99 declared with attribute =E2=80=98warn_unused_result=
-=E2=80=99 [-Werror=3Dunused-result]
+You are of course correct that the linear address is not truncated to 16 
+bits when the address size is 16 bits - my mistake.
 
-Other than that, this patch indeed fixes the issue #2004
+I've been looking through the SDM for any definitive statement on the 
+topic.  The closest I can find is in volume 3 table 4-1, which states 
+that the linear address width is:
 
-Reviewed-by: Helge Deller <deller@gmx.de>
+  - 32 bits with paging disabled
 
+  - 32 bits with 32-bit paging
 
-Helge
+  - 32 bits with PAE paging
 
-> +
-> +        /* if this is not a file from /proc/ filesystem, the fd is good=
- as-is */
-> +        if (strncmp(pathname, "/proc/", 6) !=3D 0) {
-> +            return fd;
-> +        }
-> +        close(fd);
->       }
->
->       if (is_proc_myself(pathname, "exe")) {
-> @@ -8390,9 +8419,9 @@ int do_guest_openat(CPUArchState *cpu_env, int dir=
-fd, const char *fname,
->       }
->
->       if (safe) {
-> -        return safe_openat(dirfd, path(pathname), flags, mode);
-> +        return safe_openat(dirfd, pathname, flags, mode);
->       } else {
-> -        return openat(dirfd, path(pathname), flags, mode);
-> +        return openat(dirfd, pathname, flags, mode);
->       }
->   }
->
->
+  - 48 bits with 4-level paging
+
+  - 57 bits with 5-level paging
+
+My previous experiment seems to show that the linear address *does* also 
+get truncated to 32 bits for an instruction with a 32-bit address size 
+even when running in long mode with 4-level paging (on a Core i7-6600U), 
+so this table definitely isn't telling the complete story.
+
+My best guess at this point is that the linear address gets truncated to 
+32 bits when the address size is 32 bits (which will always be the case 
+when paging is disabled, or when using 32-bit paging or PAE paging).
+
+Thanks,
+
+Michael
 
 
