@@ -2,92 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F58A81FA86
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 19:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4658881FA8C
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 19:56:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIvLq-0007Xi-1Z; Thu, 28 Dec 2023 13:43:26 -0500
+	id 1rIvWv-0001hc-N6; Thu, 28 Dec 2023 13:54:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rIvLg-0007XQ-Ec
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 13:43:17 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rIvLe-00022G-36
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 13:43:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=pqbXWMuSIpP8kFL/dvwOcCHA5a23SyRraorZl8jfzt0=; b=fpwh8QPmTadn0Ml8OcOy3qcWsV
- r0XZdwqQe73rSmvZdG+BDlcdrXhTLChAryO2L97B2AkRWoNCNO+jkmSgUyS7ww5PufzvOYPx2JAPH
- ExALKMaKK30ik9y0fZhp7DoXvj72GKdp+AyZuooF0QSfhiMU19/sCWkpmPn3TCp9y/OYlef/PThan
- ivSTk2Nna2Cm38r/WqYoM63DFEmFwj79B6oh1cVsfEYoRXohIi2ww1Ckay8nIPgp2yeShy7uSEjwY
- BJeVM8qPpzcoeY+cZj3LISvo2UR9JFmy7WlEvqUrINlhzCRG1YNoRwd1PHkINPrtzgmQFV5XfqGwi
- Pgs2qbollESNlIU4KXJZ7rCdAZiWRrtjKIyV1lzwZBIkpynhSfjD8s/utTcJIjq/ZTmtajhh1t9XO
- Rc+23u8q/AhK/vLypRH9pzpF0Mjl1cHLiyXKfpgH7GGBo30eB0F9ul9XBacpvNyxFre7ZlOPdbuFM
- ZFgJy0XAm/0BtqdtJO0U/CzQHNz+V39TEPIcuQFEBFzTybeyxVATI9XLg8YDgcVG2eKdCH+/g/W6x
- oz+3nYwPQsXJsVwfs7O8N9+Dl8zPkQhOxKhZxvYLF7GXmuwdEMEOYYuxMvkZ/XuTl7bpQD52cuvOm
- mMjW8I0TV5Pn+ACH5Mk6M6PtpMLmXSqEAxH2ElFM4=;
-Received: from [2a00:23c4:8bb0:f100:50bd:52e3:a1af:1994]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rIvL7-00088k-2V; Thu, 28 Dec 2023 18:42:45 +0000
-Message-ID: <de94c822-c40d-430f-8b3a-8856031e5470@ilande.co.uk>
-Date: Thu, 28 Dec 2023 18:43:02 +0000
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rIvWs-0001hP-Fx
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 13:54:50 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rIvWq-0004c1-58
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 13:54:50 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d408d0bb87so45179885ad.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 10:52:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1703789564; x=1704394364;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ViDWw2ROo7d7sEzcN8j3URpXZwtuKLpgDRDMie7TcH4=;
+ b=V90kv2BVUe91myRLF3aufiJz+YE0nZe4Ka2MUET3gF6zeSEtBCGKRlktfWMyccKm6X
+ csZ3nKRcFqz2oAmMFmbNTPiRpHbK1SvE10mEP59KKicjtVBctrluehEVDLbwGB9MNVey
+ xmii7pyLAbC3p525VtAAsucLxL0UgYN6DBRKTi0cJpfFnj0LU2EFj3harKkir/beoELL
+ yckkCG6Z5D9L8/sOsq0v/3E5LKrdWi0+79ddbnmdsOim7C9VMsoJfe/2tCYEM113Sx95
+ U20B+dPdK4T4M6/r3QQ2RR4GN2w6vvXUyxm99S2GVyDq633ihxsyodvhbPVrNLkkdAlV
+ U6AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1703789564; x=1704394364;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ViDWw2ROo7d7sEzcN8j3URpXZwtuKLpgDRDMie7TcH4=;
+ b=FCTkWVrInpQpQyviaLLAUbROYN+Spx0gh3SunoAfqJr6UJJVDao9eXOyVsSN1QjzPs
+ U2tjaGrfR/PdeYSl39dorRs6N0+Qgx85STKUw+PgWuPrDivwuDXHLx7AF+rInok5sOWm
+ AxTipXKDSR1NEXcZXD68CcdjWk5JpKKD9ySKffnpqo3TRXFo6h80GC3uLzU6R5UEcV3B
+ VbenQpQo8t33pqPFhSEj+QtzWXYasj+YVkp/VNjHy4SuBhqRBlYmrxuQb2FFVjPRQWtg
+ 5H6XrTXnGDQ/9/JRh3j6T9j/ol9IpEnmFZVFcw6epw+14nl3/jfxxIB5Tfc8yNWA237Z
+ W3NQ==
+X-Gm-Message-State: AOJu0YyxkO6F6LPKZ8nwdqs2m0+8FtKg6+pgZYEHCuNNkjr4KQw0gCLw
+ h8hKE7SW3KLpEPS5IMEYk14ZMyGPhV/yfStFN461nuRlzx3FCR0V
+X-Google-Smtp-Source: AGHT+IGCiiotvX0UT5PfH/0XxHyo+oK+FyPeBtdaMYUhpa7VfSwrPJqfe2tDwU61S6xdlC+i+zVwxw==
+X-Received: by 2002:a17:902:d4ca:b0:1d4:6803:7fc4 with SMTP id
+ o10-20020a170902d4ca00b001d468037fc4mr5743882plg.136.1703789563223; 
+ Thu, 28 Dec 2023 10:52:43 -0800 (PST)
+Received: from localhost.localdomain ([118.114.59.180])
+ by smtp.gmail.com with ESMTPSA id
+ h24-20020a170902ac9800b001d36dbb22a9sm14312694plr.4.2023.12.28.10.52.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Dec 2023 10:52:42 -0800 (PST)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ yong.huang@smartx.com
+Subject: [PATCH 0/2] Adjust the output of x-query-virtio-status 
+Date: Fri, 29 Dec 2023 02:52:30 +0800
+Message-Id: <cover.1703787712.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- laurent@vivier.eu, huth@tuxfamily.org, qemu-devel@nongnu.org
-References: <20231227210212.245106-1-mark.cave-ayland@ilande.co.uk>
- <42274b2d-5917-4add-a610-c1973bc1697d@linaro.org>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <42274b2d-5917-4add-a610-c1973bc1697d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:50bd:52e3:a1af:1994
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH] q800: move dp8393x_prom memory region to Q800MachineState
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=yong.huang@smartx.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,51 +90,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/12/2023 09:46, Philippe Mathieu-Daudé wrote:
+This patchset is derived from the series:
+https://lore.kernel.org/qemu-devel/cover.1699793550.git.yong.huang@smartx.com/
+Please go to the link to see more background information.
 
-> On 27/12/23 22:02, Mark Cave-Ayland wrote:
->> There is no need to dynamically allocate the memory region from the heap.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   hw/m68k/q800.c         | 7 +++----
->>   include/hw/m68k/q800.h | 1 +
->>   2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> 
->> @@ -406,13 +405,13 @@ static void q800_machine_init(MachineState *machine)
->>       sysbus_connect_irq(sysbus, 0,
->>                          qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_SONIC));
->> -    memory_region_init_rom(dp8393x_prom, NULL, "dp8393x-q800.prom",
->> +    memory_region_init_rom(&m->dp8393x_prom, NULL, "dp8393x-q800.prom",
->>                              SONIC_PROM_SIZE, &error_fatal);
->>       memory_region_add_subregion(get_system_memory(), SONIC_PROM_BASE,
->> -                                dp8393x_prom);
->> +                                &m->dp8393x_prom);
->>       /* Add MAC address with valid checksum to PROM */
->> -    prom = memory_region_get_ram_ptr(dp8393x_prom);
->> +    prom = memory_region_get_ram_ptr(&m->dp8393x_prom);
->>       checksum = 0;
->>       for (i = 0; i < 6; i++) {
->>           prom[i] = revbit8(nd_table[0].macaddr.a[i]);
-> 
-> Similar pattern in mips_jazz_init(). I wonder if we can extract the
-> PROM checksums in a common helper declared in "hw/net/dp8393x.h".
+The following points are what we have done in the patchset:
+1. Take the policy of adding human-readable output just in HMP.
+2. For the HMP output, display the human-readable information and
+   drop the unknown bits in practice.
+3. For the QMP output, remove the descriptive strings and only
+   display bits encoded as numbers.
 
-That used to be the case before I added the support for the q800 machine, however the 
-encoding of the MAC address and checksum are completely different between the jazz 
-and q800 machines. The misleading part is the memory regions have been created with a 
-_prom suffix and AFAICT the SONIC doesn't have any on-board NVRAM at all, so my guess 
-is that the MAC address is stored in per-machine non-volatile memory.
+Please review, thanks,
+Yong
 
-> Anyhow for this patch:
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hyman Huang (2):
+  qapi/virtio: Keep feature and status bits in the QMP output
+  hmp: Drop unknown feature and status bits
 
-Thanks!
+ hw/virtio/virtio-hmp-cmds.c |  38 ++++---
+ hw/virtio/virtio-qmp.c      |  23 ++---
+ qapi/virtio.json            | 192 ++++--------------------------------
+ 3 files changed, 45 insertions(+), 208 deletions(-)
 
-
-ATB,
-
-Mark.
+-- 
+2.39.1
 
 
