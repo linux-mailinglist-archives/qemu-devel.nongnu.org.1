@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7322981F665
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 10:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E14981F66E
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 10:45:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rImuJ-0008HF-L7; Thu, 28 Dec 2023 04:42:27 -0500
+	id 1rImuJ-0008HB-DF; Thu, 28 Dec 2023 04:42:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rImu9-0008CH-Cq; Thu, 28 Dec 2023 04:42:17 -0500
-Received: from mail-am6eur05on20700.outbound.protection.outlook.com
- ([2a01:111:f403:2612::700]
+ id 1rImuA-0008D2-VU; Thu, 28 Dec 2023 04:42:19 -0500
+Received: from mail-am6eur05on20701.outbound.protection.outlook.com
+ ([2a01:111:f403:2612::701]
  helo=EUR05-AM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rImu7-0008HI-9x; Thu, 28 Dec 2023 04:42:16 -0500
+ id 1rImu8-0008Gn-7R; Thu, 28 Dec 2023 04:42:18 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gsuNWYmcKmT2pVXhIemT4L+P6HNdqrgvGAKJhtqAfA/CHCdBhgxhIOI4KvYkWZUkscGk03J6Z0JVrGf0PLDp1hd1BjZJuW2NCLRp7w6P3n90a+pE92DaZSdwLzza488UwBh6fNMToC9cpoO8lAFsHwWQnewuZRIdAW7lCVeObQ84GUyDQAKmMfJpBfBo94Bkul98KZ6q1SI5BU+PBDMiP9k0K+Wxpm1kIxexsHFxcqOH3MFv7TSQJOg6TcUlCh6c9RNX83y7ncY0AqfDKOXg/5AnpQe+qRHyYk5mIOrFriq9AL2VygMAF5wRlEOOZNrLVYfGTlrI9xoIQM+0TIHqgA==
+ b=FOEVbhuJLwLaQxhlC89Ed8yLIOoN567ISTdVUuQuW9eaqjRuWF3X+5SZZWCQf/6t26dup161oWUVdVSgaYrAli8cuHpaLraDWJ0UkgmJgtxw1X0ICisFeX3n7rlK3o2MzLUaIz1qJu2zf5DDr29xa5axG+qAvSUhw8BGLvPRnWL8l6Ij2e8hWe63cErm8Vqfx70eARpcbev4Dqj0TpzMMwbo3u5e3/PibdMQmKEKXOe54d40fpCfoVzQ4bCa2WUO1mgsRKxZrqBB6XWCEQjbvkyrQVxtWz3HfvxjOaaTnqkMMwQnKKOObuw5RNOvPA4kOlN8BvdJBKW4U0zHk9EvyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e3JRRZLsEPXH1NNIs6vNbF/7zbteI2Z70fhLrLAUmgc=;
- b=T9w+6+PPtflXcfXtX/PCwBD79vwb2keMP4EQD50zH3p5sQKb0w2naKRDw1IzW+V3rdVAbmyUuZ26zvGH2pm4N0NT0ZkZ+1+f2V7P909hOupet5WmsbHu4IiKiIX5mItlYD2ZTAvZsKtAH1fD7FVer1FIjpzX/b+L1Weps5bTk33Mcp4m+QlL+t/8NJA2cFPAmIUb8TJhAWu2k3t1QNCvXKYkbwyHyF9MS8IFEIJAP5czyEt9kZ6Ewh+yZjIyB7evilNqfB0TI52ht78JdJZYWsYoCAgcU6KiqUlk0hK5U1BH0tLxFAnukZUWQDRsVVqWlnBMFo+Tk6G/0RckYcVKNg==
+ bh=WpECAwRB8Lh7KQMAwUs6yNclzlBlaMN4Cp0X7tp96gY=;
+ b=KJvGj3+EZbfrYoU2yvACtl8qhmacuqQ36Lxr1yWxjjMYXTdE451g436R6xPkabq7DLjv14/iuCUsEVrRFjn4H+neVBEpF435QSLZLO8ihDWOmJDJCQwsntN/hAGEq7bPE0WjNq030RSPG8BUWU0h4iMSzJTo5hWZs9c9zraXmx2e9yZfAeVjnVoe0R6UXt7fFZbFQbGNuqQYsaVwhnphPB/ki77TjhpfgSnYNbDK7zI6mg/EpTiPwJb9N7uQH11/cD5hRtGtjmMf96V6LnabZ3KKw/7HJNMeDVGVL7UzH/rFwlOZiGHN9eCoQ6fBahnJubPKG1qyA+Intx1rE3ZI4A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
  header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e3JRRZLsEPXH1NNIs6vNbF/7zbteI2Z70fhLrLAUmgc=;
- b=jdBMzk1vXDZhzGy1jAgbUAdALgDBexx32KLg2P7UKM5H+ouPuIplff9OKKw/RJlSjcgq2WmxUcBqFW229DKR42EQCeIRCemMMfP0fFStBZiDuC76t7OKvpb52v8/FdEwR8XFIsotAW+wB2Y0PYNYR3U82OrA7Fd9Yp1rhzTXN02UdG2w3UXH4NYITQqWYuvhpJqTOEY21AK/QccKearqgNb14xvgfni17fBH7m/EXD3XXxt2s9mQEQ6rwU29jUOKpLqBP1o73wFwmiJzK1eVlTuePxNMYBVAZB/N6em1zLTiLO4IPn3AXAvD2c/yRtt115BwDpK+N3vUEAso5+yL9g==
+ bh=WpECAwRB8Lh7KQMAwUs6yNclzlBlaMN4Cp0X7tp96gY=;
+ b=shYGjrRB8R76ZiDn8Dp4/MhcfGG7xurNnQ7EZ4flI+spLsiC9Yp888KZvX7uyfr1fGlvtFtEI6kKBjJtBm5LHAlPj/qGH7sKS0FZqfol2zz5gvt0AO35vuwxG4FUmSKLDK7h57QP39qM7I/Fp8GGCFE57iCBSpE8F79tunKSW1TTpxbFnhi2zU0nELyidrW0IWuCZOYoT67G+e/sjiBTWjx9HLFWw7Ek4Su8YcOaD8TNFUjIk1gVlOL0UK3Ey2aahGCynfh1Gg47Sm6KcV+dpI42vGRTpGXy12A0YLxX7AbWc7ZGgmalhWQ27WpeGpTEy/4sQOP6+5xBrcQfUmvdbg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=virtuozzo.com;
 Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
@@ -43,14 +43,14 @@ Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
 Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
  ([fe80::60f7:3267:9f9d:cdc0]) by VI0PR08MB10743.eurprd08.prod.outlook.com
  ([fe80::60f7:3267:9f9d:cdc0%5]) with mapi id 15.20.7135.019; Thu, 28 Dec 2023
- 09:42:03 +0000
+ 09:42:04 +0000
 From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
  vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
-Subject: [PATCH 10/21] parallels: Create used bitmap even if checks needed
-Date: Thu, 28 Dec 2023 10:41:42 +0100
-Message-Id: <20231228094153.370291-10-alexander.ivanov@virtuozzo.com>
+Subject: [PATCH 11/21] parallels: Add dirty bitmaps saving
+Date: Thu, 28 Dec 2023 10:41:43 +0100
+Message-Id: <20231228094153.370291-11-alexander.ivanov@virtuozzo.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231228094153.370291-1-alexander.ivanov@virtuozzo.com>
 References: <20231228094153.370291-1-alexander.ivanov@virtuozzo.com>
@@ -62,55 +62,55 @@ X-ClientProxiedBy: VE1PR08CA0003.eurprd08.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI0PR08MB10743:EE_|PA4PR08MB6064:EE_
-X-MS-Office365-Filtering-Correlation-Id: 92795731-2f9e-431c-2a5f-08dc07893f4d
+X-MS-Office365-Filtering-Correlation-Id: 6c0a3f4c-c17d-42a8-0569-08dc07893f84
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 4VlIWEwHETvWTHLGyR3XI0kW602uBv72tgFAKDNp87Y1fHupzada14GHswD85BaMPTadI1Z9YodsNOpauAl0RaVWpUb/lX25TsfI+CMd4CrAl0fzjkzHQq6/74zZh+BdV4AhfxYCrbhkyBefZ9pblrUcwTLs4FWs1OgvVOnUxFxplclvBt/b/ejZTv3XU4Lzv0CMV0l85SlhgRSLhH/kTiOgYVN510LyK/ofdaF0KNw3x94usN8RzF1ZnFQKEUkRJpY0wzrOgOsLyfG8A0WX7EOTVd/pSRQhdNy/gFnmj2DVpVaSvRaPDl9LWiJfytuxF/IOtbC6hT9FmpCgztKBu2P13Kggbt3/BkYJ9sW9dI1C1ggWwxhQeIdZ05ljLgMyu/IMD1LjKX+M8zX8P35rVCdFRAYFw0j77lFA6U7+rdZcG42ghcKae105AGmCtLaDAIkbQP1o7G5GZfCCNSGVHA/ulgn6IKS3aiDnjvXoudBPlwQ6a5obwayz+KXsQqIN2pyLMI/h1HPMoQwzmUmZcLuOaNhXuhwiEEvZ6cYDAmc5ZCR7kVYrNRKoa4mX88620TtN3mYlddAiBfqBmdvr4oKFqL3VJ+t0v2eOUOoPUm7UEfnDgq4aXAnoxCr6EvKT
+X-Microsoft-Antispam-Message-Info: Qe6b7Wx8+Se6kzYEZtDbiPABlSy+s6cgTBGNLCL+X5sKM7qo7tIy0ZluGBRXiGf0cByr7oMdwHvU9atPObyXO9tH8tjFWztTHvVIluDx7NVrYOQQHZly3hwzIaqVQNllIJJNscrTIq0z29hheO7prY9VES5vB+sTpte0D7Nfxsp6n62vDmlA2Gc2Z1bs0eXvws8kJWGIKDjJMJ14glRsd7aMN63eVifBzbxW9kvc/h24UZwivlV1qI/Y3jTKp9i/GZtK13erDNbOuScz5BE0H3YsxexZ/eY1iQ4M6AmDoN4vPLKWJYGk02bKBC7e3sJTfzSRbLWqcymEeXoDGZO7r8ZXN9EJ06uczevsz46ebrlXgNrLMj/EiTwH5Tz/7BuKY65b9arfJUoGYY/cxz35hbQUxLX5fKH1Lb3/TAqTu0I0IfyNwYd4is8Dt5FHbKyf9+6nmqDt00Y0IWvb+uLAVyZzsQdrtjTkDv7fOH3Uqr2MC7w0BRb6JCFX2VlTf8Qgz5o5EyJ+b19L/4H0E2Bickli77wU1V5B7nNnjlxfLK91dlN2OFgOxM41E2K20y6ODU7BAAaxc0cOybg6cRW/JrELzBdO0qVZs6DK/G2ypkkDL1qr1Vnj58E/uR11/+BxsSrNscCGkgS48rAykwKb3g==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VI0PR08MB10743.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(39840400004)(396003)(346002)(136003)(366004)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(66556008)(66476007)(66946007)(6916009)(6486002)(4326008)(44832011)(316002)(36756003)(8936002)(2616005)(26005)(1076003)(83380400001)(478600001)(6512007)(6506007)(6666004)(52116002)(8676002)(4744005)(5660300002)(2906002)(41300700001)(38350700005)(38100700002)(86362001);
+ SFS:(13230031)(376002)(39840400004)(396003)(346002)(136003)(366004)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(66556008)(66476007)(66946007)(6916009)(6486002)(4326008)(44832011)(316002)(36756003)(8936002)(2616005)(26005)(1076003)(83380400001)(478600001)(6512007)(6506007)(6666004)(52116002)(8676002)(5660300002)(2906002)(41300700001)(38350700005)(38100700002)(86362001)(14143004);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aoWbd1VzvbiA0U4bTpyCjTJceTeVXsqr7dzIWmQhyjujjGA+D72fEBAJjeAA?=
- =?us-ascii?Q?ttuxwKo6O24jU/gp+7GMmRl9cP0b+qgr6UeLkjEQqO10BNOla6IUt2HfUblr?=
- =?us-ascii?Q?gA2jtaZIdHzhh7UZk0VTGsVZ3axAUO1Xt7gQDBVV97avuMI2/a3YNqQqSC6H?=
- =?us-ascii?Q?+fuSw/zUuRUyNrQZxMIgCjQW43qPDf6MrovdIwvLg8RFErD0iQZSr7orZCRT?=
- =?us-ascii?Q?DxJoM4Rz6fUzIgA71CUavWz5aFf4oud12fJyboEftF5NpGLtu1xf/jTNWpJt?=
- =?us-ascii?Q?fm2p8uze1OTex2DOL2n+ovp7dUzbfA1wM2Bte/rxVXVhLhPjv0cyn1EoP6KI?=
- =?us-ascii?Q?Gb0YFOkt/2+sFHXOZqL19hft6RheYSwdHDKYNW4CsfvAWuQIRKEaCjC3zKaM?=
- =?us-ascii?Q?0BreVm18++ZTEkRT1c1Ku05j93T4qwK5MbNFZbB1uD0AUZAM42qndrcuAXgh?=
- =?us-ascii?Q?VemzYyfh1z1LcLs92Kb7kwpGeX45dTUZ9Ew+/OyhUCGZ0bcEKIAvY9A9onDU?=
- =?us-ascii?Q?IlGBm2Inqk7+haopNYCF8A39jPrcqkMOsbewemaLUJoV5CAolEqb9D1W8IaK?=
- =?us-ascii?Q?O60wDdbscNIrMMrxhOHHlJY5VkzloWb0CSiEjWGIbhGsODWsmI5wvhGlcgYv?=
- =?us-ascii?Q?oB5pTJ72EYXC4ijrovioD7asOGGoO0VHNkq4F0OnNIe0pq3Qb6JyXCxg+6gw?=
- =?us-ascii?Q?10EjWm2qsx+tMgKen1zzm0ghJMZeWuR86MjAVo15+2hQBbn11FLAOkG+pI3g?=
- =?us-ascii?Q?oniELDsmR2fyHHvswidymdI2aZcPrUBhGp1cZTf6VKe5iU2T4PXkHTNdqZmX?=
- =?us-ascii?Q?Dvi6kdyq9phzS8rykw5tIHzJBCq6GL+9KU0oo4PJrBVyWIPZUVGDQVYY0EsK?=
- =?us-ascii?Q?o3cnuTfaGJ8RRRXGovKnkfkDhSWFWO8bKBdQCyK2PbS+Dwvt7aevBa6C/zaq?=
- =?us-ascii?Q?lGya90pvxF4in/seybGysXLk5jSrrFUeVWEPzp5oqSHdqyvZtAaqrQzwVHGm?=
- =?us-ascii?Q?Tz7ff5NdH08rPlHUPPoXAkJ4M7uKowPGJ+kLXSywNna/y21hCoVy76S4UxkG?=
- =?us-ascii?Q?wxrW89VE9vNMCgFY+AiYmr0nK1z2ckddhWdKGuG8zu89V6TqT4r7IjC8IZ+0?=
- =?us-ascii?Q?2Thk9Ne6AKTB3ziJBHATQYRI+ly6HvSNCptiHtxopHYXiwWT/z0kpwSvRth+?=
- =?us-ascii?Q?98bEzPYZYc+zGOgpmeURPEVsZmyVCeLOIdlf4jmZKS5dAOovv2Evo9ggQiHO?=
- =?us-ascii?Q?jLydS9dAY0x6qj8mfHx/9RjOVX9Cm65wVmInHSSh4oZXKEmX7mSF8E+/k7zx?=
- =?us-ascii?Q?jS+xx7b/T9ZCLAO4HhYUpshJDeOiwbO4u2BIde8TqxbqokIAMrSr6ihZZzhB?=
- =?us-ascii?Q?e8nE0ak+g0j6qc+j/IvWkH3IW4vSn3xBtK5dKN9MvMAWd76rx3DLmcPXUTeb?=
- =?us-ascii?Q?Uk4giQDlwH8Cs8G+JStRTq+zd4bWswp9BnRFIhGdT6mo0/ahAuEWrqAbWTb9?=
- =?us-ascii?Q?5QSNKr7GluGiM49XSrZkuJbTAZiImaPB2+MbSZjug4VwfMQizwSGfqOrqd79?=
- =?us-ascii?Q?8JXMiTYJzC93vYEVm962foulqxDJqCYBv5aqHU0eEf62bOPVxcb5GnfhyLFU?=
- =?us-ascii?Q?Wvcnr08po0oEpvGzIXoc4c8=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?B4p9MThU334eNN/73V7rzgJA3EptE/HH8HD84WJTt+sX8bU0cAlPoa7rTSU7?=
+ =?us-ascii?Q?BxKxn/wI/d1rkEId86HhPfbl6fAxUdEFiWWW3qva9jbquuX7FNZBG9YtryvJ?=
+ =?us-ascii?Q?Sal4Fs5RAXyZTM1gLTr+8fedFJpMo+9OYV8UMGBD156edAY2oNVAqOeb+gaC?=
+ =?us-ascii?Q?b/K31WSSjsCsq4VmC+O99AmOcXS+PNV4ABmm0H4No0N7w3nAKNNi1YenT3uS?=
+ =?us-ascii?Q?oA6ZSLonaLhrqlqhkL/KWfMocbb/INkyiMUaf4hsxgupLPnKWu8N/guz0V35?=
+ =?us-ascii?Q?55lokB0ubdtF/4q/nQQ6PBglnug81k03neuGry9pMVGpno+wg+/hnvTEMFuf?=
+ =?us-ascii?Q?Pu+ZetCet2s/ChkhLyrZ/kMqNxG2UaEfu2zhqWazEYHDkdV/mN0FossJNxsJ?=
+ =?us-ascii?Q?CUH5iV9W/1I7WUpTCXpXr29/y4LyiuloPDKeETc2QxW5pMW0doVn9L/PhsGQ?=
+ =?us-ascii?Q?Vu6wbDcnWDL8Ios99jm8Gt+yh3qT+Vx5WlMBX+ZBF4rlcEO8QlYSoHxHIUHD?=
+ =?us-ascii?Q?7ORwWNgl2i+vREy+c9g01gijj1OIMJS1g3BDe4da9Bly1L+fNMSyawjgCVgn?=
+ =?us-ascii?Q?tmY4+0lIIf/BXGsww5HL3PRCDMU41b2k5UZJSFavPZ9KjcMHI3I8lVkP3owK?=
+ =?us-ascii?Q?DJvwP7EqARaM7hy3HFEbkARlg2SXYrh4qQs19r7zx9xTsYAAMqlkP2ks0zz/?=
+ =?us-ascii?Q?7mzQPWiQjUdXYsrjwPwQYqxdYbmRUgBZcwfbNli1rzrF3Yc/+3V52YMf7rEk?=
+ =?us-ascii?Q?veND0i98cR7vEILt1k5uMYz5JwzBWPJi0lsQDdLlq6tD/tRz/TA8y49RvYV1?=
+ =?us-ascii?Q?6F97g5VUJIOX5BpbgTrOFVDQLAEuXygixBOI5vixTeT9QRNWXM+0rTNfx9aV?=
+ =?us-ascii?Q?Nfbpfo7KcvVX7zv1fbfHUbZhVKHTd20N2ttSxOuwibK10TZfm10cpeCfsKwy?=
+ =?us-ascii?Q?WGk8xsYw0F2Twe5OCw/JvF8dRmg4utIu4wcBtvQ0WwXnWVqiMJLoAHgfTyFw?=
+ =?us-ascii?Q?6HeerkU01Uk6OqGEwhogIs8gxIBiBzi0DbbFtRq6iltWhDxxwb67MFf4eGCS?=
+ =?us-ascii?Q?EwAriJ5VPNFLPXUu5zxOZJu3lQz5Wia8W/6RbxbIImxyAXhisZqSV5itZM1k?=
+ =?us-ascii?Q?MhXh6l5yLzxTJIUZm9C2R0/S/36/kolIYpIx2YbzZDe3XKM1HluvOBk2y0cv?=
+ =?us-ascii?Q?/lCkdinM/ZoN6YtJ6QmXlGAVMnZ4vnOUdyC1e+GsmtzxoomPyg4D7NilzW8a?=
+ =?us-ascii?Q?HFcpiF4xqwf9f4NRCksLck8OnxyVu12EwK+Yr8d8egXRSjr+1XQago8tORS8?=
+ =?us-ascii?Q?s9JqC6a/PD70HzoeiOlCd1FiqBsH0yLi4dUPlq/erlMaYlTsgWEOjNeX7M5R?=
+ =?us-ascii?Q?ToWWlVd9ADLlV45be6OMQhHpmUxc0pBCitxuZKGkQaI8tYBA85sg+6IurEaX?=
+ =?us-ascii?Q?f/26qX8ZwkGIdp2ZQ3gO8GfjTikwf/DX0/grU1dz7cKHzhSdMY4v8miOkAQe?=
+ =?us-ascii?Q?okdfjuXeZwOoTCF1a9GtUIFlnk85ZMbpqjeIlDiutB0u5OXaSdvYFwaerb43?=
+ =?us-ascii?Q?Xos7npOxaAUMyAnIMAjCbi0kqAVbDc2LkzP4lCbafJxJIh4GOMAbOCd1KIld?=
+ =?us-ascii?Q?KD+xpjcwQyhh849ci46vD+Y=3D?=
 X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 92795731-2f9e-431c-2a5f-08dc07893f4d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c0a3f4c-c17d-42a8-0569-08dc07893f84
 X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10743.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Dec 2023 09:42:03.4671 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Dec 2023 09:42:03.8530 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FDq4+2nPfwQ3/07dgMl7hSEOt7bmK3KwDqEaPPg+uYsw9CBFGWYaLKjyZBSLZneN/wrjMhUaYPwl6os50i+sIddRRgjf2EcsOKVbXj9/7V0=
+X-MS-Exchange-CrossTenant-UserPrincipalName: GU7yPFlJhDzEZ1OF7HPSLU+kq1SbsuiuXcvYsiqrly1plYimFuFqTdTlL/LUL1xqh+8jOe3rLXyat2BvJ8RUwgWSKNs6MU6N9ge+MBYIr4A=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR08MB6064
-Received-SPF: pass client-ip=2a01:111:f403:2612::700;
+Received-SPF: pass client-ip=2a01:111:f403:2612::701;
  envelope-from=alexander.ivanov@virtuozzo.com;
  helo=EUR05-AM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
@@ -134,36 +134,254 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All the checks were fixed to work with used bitmap. Create used bitmap in
-parallels_open() even if need_check is true.
+Now dirty bitmaps can be loaded but there is no their saving. Add code for
+dirty bitmap storage.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ block/parallels-ext.c | 168 ++++++++++++++++++++++++++++++++++++++++++
+ block/parallels.c     |  16 +++-
+ block/parallels.h     |   5 ++
+ 3 files changed, 187 insertions(+), 2 deletions(-)
 
+diff --git a/block/parallels-ext.c b/block/parallels-ext.c
+index b4e14c88f2..c83d1ea393 100644
+--- a/block/parallels-ext.c
++++ b/block/parallels-ext.c
+@@ -24,6 +24,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "block/block-io.h"
+ #include "block/block_int.h"
+@@ -300,3 +301,170 @@ out:
+ 
+     return ret;
+ }
++
++static void GRAPH_RDLOCK parallels_save_bitmap(BlockDriverState *bs,
++                                               BdrvDirtyBitmap *bitmap,
++                                               uint8_t **buf, int *buf_size)
++{
++    BDRVParallelsState *s = bs->opaque;
++    ParallelsFeatureHeader *fh;
++    ParallelsDirtyBitmapFeature *bh;
++    uint64_t *l1_table, l1_size, granularity, limit;
++    int64_t bm_size, ser_size, offset, buf_used;
++    int64_t alloc_size = 1;
++    const char *name;
++    uint8_t *bm_buf;
++    QemuUUID uuid;
++    int ret = 0;
++
++    if (!bdrv_dirty_bitmap_get_persistence(bitmap) ||
++        bdrv_dirty_bitmap_inconsistent(bitmap)) {
++        return;
++    }
++
++    bm_size = bdrv_dirty_bitmap_size(bitmap);
++    granularity = bdrv_dirty_bitmap_granularity(bitmap);
++    limit = bdrv_dirty_bitmap_serialization_coverage(s->cluster_size, bitmap);
++    ser_size = bdrv_dirty_bitmap_serialization_size(bitmap, 0, bm_size);
++    l1_size = DIV_ROUND_UP(ser_size, s->cluster_size);
++
++    buf_used = l1_size * 8 + sizeof(*fh) + sizeof(*bh);
++    /* Check if there is enough space for the final section */
++    if (*buf_size - buf_used < sizeof(*fh)) {
++        return;
++    }
++
++    name = bdrv_dirty_bitmap_name(bitmap);
++    ret = qemu_uuid_parse(name, &uuid);
++    if (ret < 0) {
++        error_report("Can't save dirty bitmap: ID parsing error: '%s'", name);
++        return;
++    }
++
++    fh = (ParallelsFeatureHeader *)*buf;
++    bh = (ParallelsDirtyBitmapFeature *)(*buf + sizeof(*fh));
++    l1_table = (uint64_t *)((uint8_t *)bh + sizeof(*bh));
++
++    fh->magic = cpu_to_le64(PARALLELS_DIRTY_BITMAP_FEATURE_MAGIC);
++    fh->data_size = cpu_to_le32(l1_size * 8 + sizeof(*bh));
++
++    bh->l1_size = cpu_to_le32(l1_size);
++    bh->size = cpu_to_le64(bm_size >> BDRV_SECTOR_BITS);
++    bh->granularity = cpu_to_le32(granularity >> BDRV_SECTOR_BITS);
++    memcpy(bh->id, &uuid, sizeof(uuid));
++
++    bm_buf = qemu_blockalign(bs, s->cluster_size);
++
++    offset = 0;
++    while ((offset = bdrv_dirty_bitmap_next_dirty(bitmap, offset, bm_size)) >= 0) {
++        uint64_t idx = offset / limit;
++        int64_t cluster_off, end, write_size;
++
++        offset = QEMU_ALIGN_DOWN(offset, limit);
++        end = MIN(bm_size, offset + limit);
++        write_size = bdrv_dirty_bitmap_serialization_size(bitmap, offset,
++                                                          end - offset);
++        assert(write_size <= s->cluster_size);
++
++        bdrv_dirty_bitmap_serialize_part(bitmap, bm_buf, offset, end - offset);
++        if (write_size < s->cluster_size) {
++            memset(bm_buf + write_size, 0, s->cluster_size - write_size);
++        }
++
++        cluster_off = parallels_allocate_host_clusters(bs, &alloc_size);
++        if (cluster_off <= 0) {
++            goto end;
++        }
++
++        ret = bdrv_pwrite(bs->file, cluster_off, s->cluster_size, bm_buf, 0);
++        if (ret < 0) {
++            memset(&fh->magic, 0, sizeof(fh->magic));
++            parallels_mark_unused(bs, s->used_bmap, s->used_bmap_size,
++                                  cluster_off, 1);
++            goto end;
++        }
++
++        l1_table[idx] = cpu_to_le64(cluster_off >> BDRV_SECTOR_BITS);
++        offset = end;
++    }
++
++    *buf_size -= buf_used;
++    *buf += buf_used;
++
++end:
++    qemu_vfree(bm_buf);
++}
++
++void GRAPH_RDLOCK
++parallels_store_persistent_dirty_bitmaps(BlockDriverState *bs, Error **errp)
++{
++    BDRVParallelsState *s = bs->opaque;
++    BdrvDirtyBitmap *bitmap;
++    ParallelsFormatExtensionHeader *eh;
++    int remaining = s->cluster_size;
++    uint8_t *buf, *pos;
++    int64_t header_off, alloc_size = 1;
++    g_autofree uint8_t *hash = NULL;
++    size_t hash_len = 0;
++    int ret;
++
++    s->header->ext_off = 0;
++
++    if (!bdrv_has_named_bitmaps(bs)) {
++        return;
++    }
++
++    buf = qemu_blockalign0(bs, s->cluster_size);
++
++    eh = (ParallelsFormatExtensionHeader *)buf;
++    pos = buf + sizeof(*eh);
++
++    eh->magic = cpu_to_le64(PARALLELS_FORMAT_EXTENSION_MAGIC);
++
++    FOR_EACH_DIRTY_BITMAP(bs, bitmap) {
++        parallels_save_bitmap(bs, bitmap, &pos, &remaining);
++    }
++
++    header_off = parallels_allocate_host_clusters(bs, &alloc_size);
++    if (header_off < 0) {
++        error_report("Can't save dirty bitmap: cluster allocation error");
++        ret = header_off;
++        goto end;
++    }
++
++    ret = qcrypto_hash_bytes(QCRYPTO_HASH_ALG_MD5,
++                             (const char *)(buf + sizeof(*eh)),
++                             s->cluster_size - sizeof(*eh),
++                             &hash, &hash_len, errp);
++    if (ret < 0 || hash_len != sizeof(eh->check_sum)) {
++        error_report("Can't save dirty bitmap: hash error");
++        ret = -EINVAL;
++        goto end;
++    }
++    memcpy(eh->check_sum, hash, hash_len);
++
++    ret = bdrv_pwrite(bs->file, header_off, s->cluster_size, buf, 0);
++    if (ret < 0) {
++        error_report("Can't save dirty bitmap: IO error");
++        parallels_mark_unused(bs, s->used_bmap, s->used_bmap_size,
++                              header_off, 1);
++        goto end;
++    }
++
++    s->header->ext_off = cpu_to_le64(header_off / BDRV_SECTOR_SIZE);
++end:
++    qemu_vfree(buf);
++}
++
++bool coroutine_fn parallels_co_can_store_new_dirty_bitmap(BlockDriverState *bs,
++                                                          const char *name,
++                                                          uint32_t granularity,
++                                                          Error **errp)
++{
++    if (bdrv_find_dirty_bitmap(bs, name)) {
++        error_setg(errp, "Bitmap already exists: %s", name);
++        return false;
++    }
++
++    return true;
++}
 diff --git a/block/parallels.c b/block/parallels.c
-index 0ae06ec0b1..f38dd2309c 100644
+index f38dd2309c..a49922c6a7 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -1421,13 +1421,11 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-     }
-     need_check = need_check || s->data_end > file_nb_sectors;
+@@ -1466,14 +1466,25 @@ fail:
+ static int GRAPH_RDLOCK parallels_inactivate(BlockDriverState *bs)
+ {
+     BDRVParallelsState *s = bs->opaque;
++    Error *err = NULL;
+     int ret;
  
--    if (!need_check) {
--        ret = parallels_fill_used_bitmap(bs);
--        if (ret == -ENOMEM) {
--            goto fail;
--        }
--        need_check = need_check || ret < 0; /* These are correctable errors */
-+    ret = parallels_fill_used_bitmap(bs);
-+    if (ret == -ENOMEM) {
-+        goto fail;
-     }
-+    need_check = need_check || ret < 0; /* These are correctable errors */
++    parallels_store_persistent_dirty_bitmaps(bs, &err);
++    if (err != NULL) {
++        error_reportf_err(err, "Lost persistent bitmaps during "
++                          "inactivation of node '%s': ",
++                          bdrv_get_device_or_node_name(bs));
++    }
++
+     s->header->inuse = 0;
+     parallels_update_header(bs);
  
-     /*
-      * We don't repair the image here if it's opened for checks. Also we don't
+     /* errors are ignored, so we might as well pass exact=true */
+-    ret = bdrv_truncate(bs->file, s->data_end << BDRV_SECTOR_BITS, true,
+-                        PREALLOC_MODE_OFF, 0, NULL);
++    ret = bdrv_truncate(bs->file, s->data_end << BDRV_SECTOR_BITS,
++                        true, PREALLOC_MODE_OFF, 0, NULL);
++    if (ret < 0) {
++        error_report("Failed to truncate image: %s", strerror(-ret));
++    }
+ 
+     return ret;
+ }
+@@ -1525,6 +1536,7 @@ static BlockDriver bdrv_parallels = {
+     .bdrv_co_pdiscard           = parallels_co_pdiscard,
+     .bdrv_co_pwrite_zeroes      = parallels_co_pwrite_zeroes,
+     .bdrv_inactivate            = parallels_inactivate,
++    .bdrv_co_can_store_new_dirty_bitmap = parallels_co_can_store_new_dirty_bitmap,
+ };
+ 
+ static void bdrv_parallels_init(void)
+diff --git a/block/parallels.h b/block/parallels.h
+index 493c89e976..9db4f5c908 100644
+--- a/block/parallels.h
++++ b/block/parallels.h
+@@ -101,5 +101,10 @@ int64_t GRAPH_RDLOCK parallels_allocate_host_clusters(BlockDriverState *bs,
+ int GRAPH_RDLOCK
+ parallels_read_format_extension(BlockDriverState *bs, int64_t ext_off,
+                                 Error **errp);
++void GRAPH_RDLOCK
++parallels_store_persistent_dirty_bitmaps(BlockDriverState *bs, Error **errp);
++bool coroutine_fn
++parallels_co_can_store_new_dirty_bitmap(BlockDriverState *bs, const char *name,
++                                        uint32_t granularity, Error **errp);
+ 
+ #endif
 -- 
 2.40.1
 
