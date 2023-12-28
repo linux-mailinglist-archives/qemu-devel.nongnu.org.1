@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD4E81FBA3
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 23:48:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0CC81FBF3
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Dec 2023 00:05:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIz9Z-0000Oo-03; Thu, 28 Dec 2023 17:47:01 -0500
+	id 1rIzQN-0003Lm-OG; Thu, 28 Dec 2023 18:04:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIz9W-0000Od-KP
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:46:58 -0500
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ id 1rIzQF-0003LW-QN
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 18:04:16 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIz9U-0006LL-Vg
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:46:58 -0500
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-3bbc648bed4so1444580b6e.3
- for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 14:46:56 -0800 (PST)
+ id 1rIzQD-0002MT-LL
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 18:04:15 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6d9af1f12d5so3178587b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 15:04:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703803615; x=1704408415; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703804652; x=1704409452; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=h5LIdoYz1HndAXTpIzdVX3DW9+9N+L/bWX4ogXaKsEM=;
- b=W0Q0+cw5GUEAg4dL6AGUyoMuHbLM7kJLRysV44bAExEagOxrjGal/9EzeqVmTWmefr
- BxEYzjoYv2w2j5pMipdCQ4OsajlrDgBJKQS/wQyBQUwvLHAK2fuF5HzuX3dFBWMTF5XC
- DGNrkXK2jBV6WXrqZDpp7MFuyNsN7JpUet9RqVkDqPeQEEjf0hDmXsMQT2wVkh+REI77
- qAYl3+PWzykbTNRph9wKCFlTBTfwzZ80NDdkDk/SN5L2DhpL1Y/YT6B62oaMhaUz02Lm
- wcD70g27w9EZ6rn3R4Ruv3bpBzaxn+qBnwBQN5yFHK0OiLz2a9YMRdPnrQEKAyJIhcQJ
- BL2w==
+ bh=Ppy/PxEem3y1iN0O/mdFmbTRo7peOiMSOmDu88x7pxA=;
+ b=waxMAdySXdBoYO0fgZY5F2O+8vgG8eC3HCxIKWnWHjF38u6mobpjtbebxvo7FKFQr6
+ rySoBe5S712icrhvFogSS18oFrrykpFTtcWei2C551TiyXaoDZnZORylZM7Xgc2P7S73
+ eiK/kpIynX1hYXsVvrhKus8PbDU47oy56+bOjVXNLRCNlJE3B5H0ZZAaMJUkx9CdL6cm
+ 3vH+epg+U+rJW+EcA5HD7rwb4wYUsEo3LC9kx+zvsBJD3BNHwAGZppevUxUG2Y4wzvTc
+ afcqEwnxe2klUc876e6/FE4NH+DVFKQEQNxxgnslQMworT5K/o//kcRaK5Bp4ic3Nznh
+ iytg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703803615; x=1704408415;
+ d=1e100.net; s=20230601; t=1703804652; x=1704409452;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=h5LIdoYz1HndAXTpIzdVX3DW9+9N+L/bWX4ogXaKsEM=;
- b=rHDCWED5iW5eqCVfErtSr/F3OYymQGnt9Ulk4us9pwyTQXkpNVN1a5cyA8dq6Sp8de
- o7UO25qFVYBsqiQ7t5UoAq69XMMuXpIYrP/cpFbUvp9sgt7xqmcXbaq0f6HyqqJTJ7FG
- pRIo2KDNNLLEtxXsAaC0sgAJRHJrkgtVFSurOu2HoQMsQAV5Z/9caqpiwbrcctzFrHfX
- BUIC3Tgw4Ft4VZJ4hBc50ASX6vG6njN6pWXru8xv34GwoSnC0bTtgkUHzKqo23r5+PbH
- v0bB0WpRwfm+fSwkmWF0CwzmjCETRgcezmt00XqOr4yen1p42U7FqGDbnoNWk7tpOBSp
- VGxw==
-X-Gm-Message-State: AOJu0Yx3yrinDscvHsp/RGfInIswZK5y2OeYAIrrcgXKpiW+5LInYMcv
- JQ5HJ7vpc6pF4gt4nRaqYOntmplAOUy2Vg==
-X-Google-Smtp-Source: AGHT+IEgY6s9RMZY2hUFT3n6uYc7OZnDPNzBTpF7SqiuSA/JgywV0vXfPsAXjvAayhr6hjMKY9cbsQ==
-X-Received: by 2002:a05:6808:180e:b0:3bb:d6f5:d224 with SMTP id
- bh14-20020a056808180e00b003bbd6f5d224mr1365799oib.6.1703803615622; 
- Thu, 28 Dec 2023 14:46:55 -0800 (PST)
+ bh=Ppy/PxEem3y1iN0O/mdFmbTRo7peOiMSOmDu88x7pxA=;
+ b=u1QnDkjRgBSPw6k/qm7gQXw+3WjNYOosI+XgjqgNI1AggFdA5ToMog8P0gW8DOm8Lg
+ vN9Vt2DDj7ZArAH+Z+lMuCQzA4tsIam8YqlQ7hHbpoMrK6PAkI+ajMApeYIZh9wR3+fC
+ CNoUKKu+73ZDnxPlnzGzTCP+izdJY4F8+4kL94cDVfYvskR8qbh3oj11OR89crs8O7om
+ RT8fg5J/GprXKU3rVU5L4GRVozpUbrG6PHqqX/BQlOCZoNA4LJJYhtqaE1ALBMlm2AqQ
+ Np0oVs9SpXVMHG4HBBed439zlU7M9Fkrxg+RVB9ErfuYCrmGS/ayjEiPOTk4fMAfEltv
+ JReA==
+X-Gm-Message-State: AOJu0Yzo591uySuXurF067jKOePnPJ3krSNOjfsDvXIB7rW/VethVpjf
+ w4lMp5efhKsqEV9ceAnkQdxyxUIDdjBSFcksd8kbAjuqFpdscl2v
+X-Google-Smtp-Source: AGHT+IGwiJwaRPK1bQA32N0CtyC6Fk2c+DESfIdkLmGxc5ak/Xvp5T9QKEIQcmeRIwNalpsQF8OM7g==
+X-Received: by 2002:a05:6a21:a5a4:b0:196:50c0:e32 with SMTP id
+ gd36-20020a056a21a5a400b0019650c00e32mr1555276pzc.50.1703804651887; 
+ Thu, 28 Dec 2023 15:04:11 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:324d:cbc2:5f8b:3a9d?
  ([2001:8003:c020:6900:324d:cbc2:5f8b:3a9d])
  by smtp.gmail.com with ESMTPSA id
- p184-20020a625bc1000000b006d8610fcb63sm14629385pfb.87.2023.12.28.14.46.53
+ q21-20020a17090aa01500b0028bc870da3fsm14845667pjp.22.2023.12.28.15.04.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Dec 2023 14:46:55 -0800 (PST)
-Message-ID: <259d44d4-1f35-408e-a1be-17c6bcb75649@linaro.org>
-Date: Fri, 29 Dec 2023 09:46:50 +1100
+ Thu, 28 Dec 2023 15:04:11 -0800 (PST)
+Message-ID: <994beaca-9a70-4594-ac97-302bf9c83211@linaro.org>
+Date: Fri, 29 Dec 2023 10:04:06 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/22] target/i386: introduce flags writeback mechanism
+Subject: Re: [PATCH 22/22] target/i386: implement CMPccXADD
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20231222181603.174137-1-pbonzini@redhat.com>
- <20231222181603.174137-22-pbonzini@redhat.com>
+ <20231222181603.174137-23-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231222181603.174137-22-pbonzini@redhat.com>
+In-Reply-To: <20231222181603.174137-23-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x231.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,35 +95,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/23/23 05:16, Paolo Bonzini wrote:
-> ALU instructions can write to both memory and flags.  If the CC_SRC*
-> and CC_DST locations have been written already when a memory access
-> causes a fault, the value in CC_SRC* and CC_DST might be interpreted
-> with the wrong CC_OP (the one that is in effect before the instruction.
-> 
-> Besides just using the wrong result for the flags, something like
-> subtracting -1 can have disastrous effects if the current CC_OP is
-> CC_OP_EFLAGS: this is because QEMU does not expect bits outside the ALU
-> flags to be set in CC_SRC, and env->eflags can end up set to all-ones.
-> In the case of the attached testcase, this sets IOPL to 3 and would
-> cause an assertion failure if SUB is moved to the new decoder.
-> 
-> This mechanism is not really needed for BMI instructions, which can
-> only write to a register, but put it to use anyway for cleanliness.
-> In the case of BZHI, the code has to be modified slightly to ensure
-> that decode->cc_src is written, otherwise the new assertions trigger.
-> 
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
-> ---
->   target/i386/cpu.h                |  1 +
->   target/i386/tcg/decode-new.c.inc | 34 +++++++++++++++++++++++++++++
->   target/i386/tcg/decode-new.h     |  4 ++++
->   target/i386/tcg/emit.c.inc       | 36 ++++++++++++++++++++-----------
->   tests/tcg/i386/Makefile.target   |  2 +-
->   tests/tcg/i386/test-flags.c      | 37 ++++++++++++++++++++++++++++++++
->   6 files changed, 101 insertions(+), 13 deletions(-)
->   create mode 100644 tests/tcg/i386/test-flags.c
+> +    case JCC_S:
+> +        cmp_lhs = s->T0, cmp_rhs = tcg_constant_tl(0);
+> +        break;
 
+I think you need an sextract here, when ot != full word size, same as JCC_O.
+
+Otherwise,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
