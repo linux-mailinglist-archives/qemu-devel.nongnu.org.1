@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7EC881FB52
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 22:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB2E81FB65
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 22:28:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIxhD-0008NZ-IN; Thu, 28 Dec 2023 16:13:39 -0500
+	id 1rIxuR-00026Y-I4; Thu, 28 Dec 2023 16:27:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIxhB-0008Mp-Ij
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 16:13:37 -0500
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1rIxuP-00026J-L9
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 16:27:17 -0500
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIxh9-0001tN-SM
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 16:13:37 -0500
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-5ca5b61f101so1932973a12.0
- for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 13:13:35 -0800 (PST)
+ id 1rIxuI-0004tJ-SQ
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 16:27:17 -0500
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-204a16df055so2413557fac.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 13:27:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703798014; x=1704402814; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703798829; x=1704403629; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=I7cTmzokPUtD0bGWQgYxBJ5rpyvHIVAXwgpWleXeGUY=;
- b=C0Hvj9c6yMc4MvqZcE6vOD+qTLZHq9mZmEWqoYWi1AnI9AfXN1yT//nA1KBuH570L+
- nmSnMUTJbXkIRjStexoBfRRZqcRvRDC1rSgqajqKkKJPDg4CjlXxjo343RA6rfLGpEAY
- EsnkWOf5WRV8ZFcWvnFD72QAVcJMBop8dMCwJ4Dm8uhuWgWYwIUq2eGtgks3XUG4MHeu
- mcZCCbZRJYhT8wcFtrPbDcwQfKcY+nHsuPUr+xdWDNL2ysGxQppvfstQlzms7De0mifq
- zuXyu+6LYWQ1odpIAgcT2sGrO+VqeSHCUe8ArZBk0NjHERHgLf5Qjr5NYNdreoxAci6l
- Qbug==
+ bh=ayJebykgat4V7VIf72E79ddED+CyvtmwEgEZLs1NcgM=;
+ b=diZJgBisvf0IYb7uXtllQMCyath0F1f2DPP5lWiGNdixVk652kiLQ+S+nxa7bdVQAQ
+ OcLGAXwLboGY+YgTvtUG0jL9ZoD8rWjy9ZlRsRVlRxf61wwg6U/S2Uyv2XuS8qFGN0k7
+ Sfz9gAZFsAUcZ3MZCYzuHqE8YpJUNAtI93WaXqdbFb+xyoiDSAbcpujz3n/UbXgcOCkb
+ 5hju9sUKbjo2nVnPe0jmbRKN4Q1yNATjr3hDKFav6Ocp+QclE8zCUdV6GUB8LjYa3bH1
+ FCVGc9oYQD5o6gaKpu+2LkNq4BzCtWvy33wqfBPjFUnLkc7zPHnVWU394iBjZS5QnRM4
+ xbyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703798014; x=1704402814;
+ d=1e100.net; s=20230601; t=1703798829; x=1704403629;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I7cTmzokPUtD0bGWQgYxBJ5rpyvHIVAXwgpWleXeGUY=;
- b=tylXKhv/Spbei+CbJHyn/bcGBc50D4K0h17cPZPBvbXTl8HbvmVATiY2eX+F3CM0wc
- 81MBAQV/a7jhdli0aj+LuOCk0lqBr4sokcFkAaD+aTHTn3cUKqGVNnzRf1ai8oyY2Guo
- 9tDxeKfFJO/ln51GeFc4cK7Bdk/CpRmUvFLUJvYa2fY1JPxQIT1Rww2xqI+CSRrf1We4
- cjzJ4dPZ25QcltoYeMwG1ke5gN+pAVppm2us9rwXV5fmMusqZvXmo/XMVBSAAMBARFqU
- pIOyXsoA3hNk7UXuGupSPbPhAsMQCMsu9V/hus7GuMibqEn1KeOqN0OiMT1ffWJgtvUU
- KO6w==
-X-Gm-Message-State: AOJu0YwulT/J/J8eh3CCKzoYhaEGTkxU9SoGtfz3RdWGn7ZmlEStsV4O
- /u+ykjjoZEg8S/z41deBpxY7VtN0igHX3ZBVRnlK2oIXUVO5Muap
-X-Google-Smtp-Source: AGHT+IGWf1j25CWsPOFxwsg0tMzK/Fun52mKJKo5j+PcJ5HVasJegmQ0Cw3iQ5D0KLF5R3RqsLWKHA==
-X-Received: by 2002:a17:902:784c:b0:1d4:53cf:fbab with SMTP id
- e12-20020a170902784c00b001d453cffbabmr3266378pln.122.1703798014082; 
- Thu, 28 Dec 2023 13:13:34 -0800 (PST)
+ bh=ayJebykgat4V7VIf72E79ddED+CyvtmwEgEZLs1NcgM=;
+ b=f8haAk5jAG7LWsTMawJplRIzfyR+q7JaWPUxSD9+j/CNiUzu75Zp9AqEYYfbDotCvG
+ 7BUX4ns5s/EU+2jGOOv8naP/e8XHVawnH7uMOEzuRYTmsOyCVWJPKmAF6lF1pReXwIaf
+ xp1IIBMWoRz1BfIfSJ1wApqmPfdHyaobNLrQvoLbBEBdJcv1qNGceioP5jz3kAvBHb/7
+ t9DiNxcL+XEwTzLOs2FhmsMq5MlGF8MTjOXj85tyL4uf6PRQslF6muEljGEEU/7qbaV/
+ eY1AMHrKM78O/FtPzDtcLBLqUoxvyII2VA5HbAQ+6IMnR2OI998sbCVrtoPi0rD4llb5
+ 66FQ==
+X-Gm-Message-State: AOJu0Yx0weT+ODozSGA+Pl+weG+Ccsf4uJ0hGsZnZqxBSz5L3s96HcV+
+ 63XlTCc4AaczHO3A5+RtqKECAEXkUH4DSA==
+X-Google-Smtp-Source: AGHT+IHTBonXLihRndU32c3aOkUlh2+PWr/7IfK41WT6ls70asa7UrcTYkTI1kl8SiceUrDD9vSlpA==
+X-Received: by 2002:a05:6870:5591:b0:203:b171:c385 with SMTP id
+ qj17-20020a056870559100b00203b171c385mr11557056oac.105.1703798829184; 
+ Thu, 28 Dec 2023 13:27:09 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:324d:cbc2:5f8b:3a9d?
  ([2001:8003:c020:6900:324d:cbc2:5f8b:3a9d])
  by smtp.gmail.com with ESMTPSA id
- a17-20020a170902ee9100b001d0c418174fsm14296786pld.117.2023.12.28.13.13.32
+ n37-20020a056a000d6500b006d996ce80a6sm10709356pfv.0.2023.12.28.13.27.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Dec 2023 13:13:33 -0800 (PST)
-Message-ID: <ae7ee2fe-a559-491f-a71c-6659707845be@linaro.org>
-Date: Fri, 29 Dec 2023 08:13:28 +1100
+ Thu, 28 Dec 2023 13:27:08 -0800 (PST)
+Message-ID: <b06f7f31-cbcb-4ba6-8ea4-ba1c48183ead@linaro.org>
+Date: Fri, 29 Dec 2023 08:27:04 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/22] target/i386: remove unnecessary truncations
+Subject: Re: [PATCH 05/22] target/i386: clean up cpu_cc_compute_all
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20231222181603.174137-1-pbonzini@redhat.com>
- <20231222181603.174137-5-pbonzini@redhat.com>
+ <20231222181603.174137-6-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231222181603.174137-5-pbonzini@redhat.com>
+In-Reply-To: <20231222181603.174137-6-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::33;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,17 +95,27 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/23/23 05:15, Paolo Bonzini wrote:
-> gen_lea_v_seg (called by gen_add_A0_ds_seg) already zeroes any
-> bits of s->A0 beyond s->aflag.  It does so before summing the
-> segment base and, if not in 64-bit mode, also after summing it.
+> cpu_cc_compute_all() has an argument that is always equal to CC_OP for historical
+> reasons (dating back to commit a7812ae4123, "TCG variable type checking.", 2008-11-17,
+> which added the argument to helper_cc_compute_all).  It does not make sense for the
+> argumnt to have any other value, so remove it and clean up some lines that are not
+
+argument
+
+> too long anymore.
 > 
 > Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
 > ---
->   target/i386/tcg/emit.c.inc  | 4 +---
->   target/i386/tcg/translate.c | 2 --
->   2 files changed, 1 insertion(+), 5 deletions(-)
+>   target/i386/cpu.h             |  4 ++--
+>   target/i386/tcg/cc_helper.c   |  6 +++---
+>   target/i386/tcg/fpu_helper.c  | 10 ++++------
+>   target/i386/tcg/int_helper.c  |  8 ++++----
+>   target/i386/tcg/misc_helper.c |  2 +-
+>   target/i386/tcg/seg_helper.c  |  8 ++++----
+>   6 files changed, 18 insertions(+), 20 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
