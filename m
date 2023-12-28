@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995A781F809
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCEE81F808
 	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 13:07:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIp8u-0007SG-7V; Thu, 28 Dec 2023 07:05:41 -0500
+	id 1rIp8t-0007Rx-3T; Thu, 28 Dec 2023 07:05:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rIp8r-0007RP-GK
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 07:05:37 -0500
+ id 1rIp8o-0007QV-ED
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 07:05:34 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rIp8p-0007AX-06
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 07:05:36 -0500
+ id 1rIp8m-0007AF-OK
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 07:05:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1703765133;
+ s=mimecast20190719; t=1703765130;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=H2DuMaeqTNy36yPJw/MhHDWnOw7tmyH2XF4C0J+27VA=;
- b=Kcni+lUTGdobq9DO3/abtCVGocb9o4meThPU9nc/jKUMsJIEzP5foD3zFCJ76PCwadPLk0
- YBlz2NwBozzdpWyERjC8LmTSBip1RhrvImv/L2KePJKDLOPfQQm2NXfVJ9aKPfJzvOckcj
- IS4fZ5h6BLC7TyTzrl5s+TwIqBG3HiU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=J90BPuxMSl79jNqcjlt+D3exX9raMG4xqYLeNSxbdVs=;
+ b=dFTSRP3EoagGvIFDVurBZfEZKCikTONV2EUqNCv4tqSpI8pn4/Kb6LV5OGoMm1rbmWewrt
+ OUNvaRpV8PgsZccptl355T9NEw1O7CS1zM4nms8XKqhui835nihQXhMQUWyJYO1hSFnzer
+ yFYA6ZQJztPVw+Uzydp1oQjyVBhZ7A4=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-QTOFtcqzNTaMZwg2kSwRWQ-1; Thu, 28 Dec 2023 07:05:27 -0500
-X-MC-Unique: QTOFtcqzNTaMZwg2kSwRWQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-40d1ffbc3b8so57617325e9.0
- for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 04:05:27 -0800 (PST)
+ us-mta-423--LJYpxiGP06fw88vjtsaow-1; Thu, 28 Dec 2023 07:05:29 -0500
+X-MC-Unique: -LJYpxiGP06fw88vjtsaow-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a018014e8e5so319440766b.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 04:05:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703765125; x=1704369925;
+ d=1e100.net; s=20230601; t=1703765127; x=1704369927;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=H2DuMaeqTNy36yPJw/MhHDWnOw7tmyH2XF4C0J+27VA=;
- b=ViP75ywrKKBeU9fuRU3p9uSM/IBtBb3KheCaZUApg35z6MOUZ6KssW7swNnD84AraS
- l6OUxoLXY5STcrXZTJQSy3RMChyb+NY/f51WHq6D9wIFR1ZeJodjVyYrLxI8aoXtcA4U
- 4NhHm3GRCGnYIC3iLvuJ9wRRuI7ekMMM8VcY6MFhQYmy5ZnUveoa0yMVm4m9fIsUphcW
- K5+pq+/xwKpiW/tAmZRdgHVJaPQjAuyJV6RwFnIgmaQXhx12E10l5Evmq5+tFspUD9zQ
- NUTM/EhM3RwOxpjNWbIYKuTGVpccbdNKqFGQ+rvzgCPVst4HJ90M3vi+rQBtN/qJhe3o
- BNQQ==
-X-Gm-Message-State: AOJu0YxJYFIWHVbvIYhGZ1v999sBC+dGZJDnuI4WyAFTrdXdOCIExUzI
- qZ9vdtNQ7BEQw92jxCBiYF+7ew71Xb7WkNgiPmUh1/3cT1Ol1laEnAck3YRWasHIS5FogvBYNhp
- j3d4YykYOU7CoFgLCzyo5YXNMJlVpnkVn5F4UAXp6OU4O+FvmUxlkXt96HDOVyNAtbuCXhf2kFp
- m+QDstPrc=
-X-Received: by 2002:a05:600c:4e11:b0:40d:6c73:b8c with SMTP id
- b17-20020a05600c4e1100b0040d6c730b8cmr180693wmq.367.1703765124447; 
- Thu, 28 Dec 2023 04:05:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IElX7lCg1r81+3uWkpG6uxjTf4djKKphGFbDX2bDHAZSeqvkQoq6AHrhkw/4e5YYTTV685L8g==
-X-Received: by 2002:a05:600c:4e11:b0:40d:6c73:b8c with SMTP id
- b17-20020a05600c4e1100b0040d6c730b8cmr180687wmq.367.1703765124030; 
- Thu, 28 Dec 2023 04:05:24 -0800 (PST)
+ bh=J90BPuxMSl79jNqcjlt+D3exX9raMG4xqYLeNSxbdVs=;
+ b=FQsz7s3IM1qxJm8OC58TkQ+iqAIdCUMcNJHNlTkaq6dywG6VOd70CSYhvxNBpxgzC2
+ sMcwJ7SOaUSri+I39TZT5/ppMJU4286SmGZ5ipxHK3KjUU8n5DbYmlfamQRt/q1gQIK8
+ Hu67nPrOB/h63l3CWcutOk6wRnGC5nHRTKMiDBzGFt4zkK11/mOLrDHPiETtEpDMrtyn
+ vzDHYngHiuOE49sZEEOnUy1pkfrJFPF8nynj+/KQt9hvtuZD0Yd7qw1+/+YKMXc8cYWB
+ xU2tSb2fHhmBU6BTQOT1dGI3riv0ERZo9T+qvlfKpxNRrdlRP00KrJ3tN6A+Pj611lv7
+ MzPw==
+X-Gm-Message-State: AOJu0YyDxn1jVGH+HnKBr9LTpGueorpbOamVyMqX/uv0crKTnpQUsx3/
+ o1XsSIWFzip1M2kc8+KvprkR77IMpAHtFp+NGCDqzVZkO/siCTkaEtw7lETFJcdm/mvsK5LUn9j
+ v0oR24q6znO+pw0iBzTb751BwCntVoxJIOVTgCZ2wQBCwldgjE8r9QGRq1Sowmu1i5fNr6tuEeA
+ kUiWPA7B4=
+X-Received: by 2002:a17:906:73c7:b0:a26:97fe:b8cc with SMTP id
+ n7-20020a17090673c700b00a2697feb8ccmr5088593ejl.66.1703765127120; 
+ Thu, 28 Dec 2023 04:05:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFmxOpbpwqKTsH1PQLZXymRQxnVp3ElT2zH/rlER06+D4CTnb3HQeQwkOAs0ls+GEa+Ml9Rqg==
+X-Received: by 2002:a17:906:73c7:b0:a26:97fe:b8cc with SMTP id
+ n7-20020a17090673c700b00a2697feb8ccmr5088586ejl.66.1703765126790; 
+ Thu, 28 Dec 2023 04:05:26 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- o20-20020a05600c4fd400b004094d4292aesm27233670wmq.18.2023.12.28.04.05.20
+ vp16-20020a17090712d000b00a26f6b420b6sm3202721ejb.88.2023.12.28.04.05.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Dec 2023 04:05:21 -0800 (PST)
+ Thu, 28 Dec 2023 04:05:26 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v2] tcg/i386: convert add/sub of 128 to sub/add of -128
-Date: Thu, 28 Dec 2023 13:05:14 +0100
-Message-ID: <20231228120514.70205-1-pbonzini@redhat.com>
+Subject: [PATCH] tcg/i386: use 8-bit OR or XOR for unsigned 8-bit immediates
+Date: Thu, 28 Dec 2023 13:05:24 +0100
+Message-ID: <20231228120524.70239-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -98,69 +98,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend the existing conditional that generates INC/DEC, to also swap an
-ADD for a SUB and vice versa when the immediate is 128.  This facilitates
-using OPC_ARITH_EvIb instead of OPC_ARITH_EvIz.
-
-Best reviewed with "git diff -b".
+In the case where OR or XOR has an 8-bit immediate between 128 and 255, we can
+operate on a low-byte register and shorten the output by two or three bytes
+(two if a prefix byte is needed for REX.B).
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tcg/i386/tcg-target.c.inc | 40 +++++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+ tcg/i386/tcg-target.c.inc | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index a83f8aab304..1791b959738 100644
+index 1791b959738..a24a23f43b1 100644
 --- a/tcg/i386/tcg-target.c.inc
 +++ b/tcg/i386/tcg-target.c.inc
-@@ -1316,23 +1316,31 @@ static void tgen_arithi(TCGContext *s, int c, int r0,
-         c &= 7;
-     }
+@@ -244,6 +244,7 @@ static bool tcg_target_const_match(int64_t val, TCGType type, int ct, int vece)
+ #define P_VEXL          0x80000         /* Set VEX.L = 1 */
+ #define P_EVEX          0x100000        /* Requires EVEX encoding */
  
--    /* ??? While INC is 2 bytes shorter than ADDL $1, they also induce
--       partial flags update stalls on Pentium4 and are not recommended
--       by current Intel optimization manuals.  */
--    if (!cf && (c == ARITH_ADD || c == ARITH_SUB) && (val == 1 || val == -1)) {
--        int is_inc = (c == ARITH_ADD) ^ (val < 0);
--        if (TCG_TARGET_REG_BITS == 64) {
--            /* The single-byte increment encodings are re-tasked as the
--               REX prefixes.  Use the MODRM encoding.  */
--            tcg_out_modrm(s, OPC_GRP5 + rexw,
--                          (is_inc ? EXT5_INC_Ev : EXT5_DEC_Ev), r0);
--        } else {
--            tcg_out8(s, (is_inc ? OPC_INC_r32 : OPC_DEC_r32) + r0);
-+    if (!cf && (c == ARITH_ADD || c == ARITH_SUB)) {
-+        /* ??? While INC is 2 bytes shorter than ADDL $1, they also induce
-+           partial flags update stalls on Pentium4 and are not recommended
-+           by current Intel optimization manuals.  */
-+        if (val == 1 || val == -1) {
-+            int is_inc = (c == ARITH_ADD) ^ (val < 0);
-+            if (TCG_TARGET_REG_BITS == 64) {
-+                /* The single-byte increment encodings are re-tasked as the
-+                   REX prefixes.  Use the MODRM encoding.  */
-+                tcg_out_modrm(s, OPC_GRP5 + rexw,
-+                              (is_inc ? EXT5_INC_Ev : EXT5_DEC_Ev), r0);
-+            } else {
-+                tcg_out8(s, (is_inc ? OPC_INC_r32 : OPC_DEC_r32) + r0);
-+            }
-+            return;
-         }
--        return;
--    }
--
--    if (c == ARITH_AND) {
-+        if (val == 128) {
-+            /*
-+             * Facilitate using an 8-bit immediate.  Carry is inverted
-+             * by this transformation, so do it only if cf == 0.
-+             */
-+            c ^= ARITH_ADD ^ ARITH_SUB;
-+            val = -128;
-+        }
-+    } else if (c == ARITH_AND) {
-         if (TCG_TARGET_REG_BITS == 64) {
-             if (val == 0xffffffffu) {
-                 tcg_out_ext32u(s, r0, r0);
++#define OPC_ARITH_EbIb	(0x80)
+ #define OPC_ARITH_EvIz	(0x81)
+ #define OPC_ARITH_EvIb	(0x83)
+ #define OPC_ARITH_GvEv	(0x03)		/* ... plus (ARITH_FOO << 3) */
+@@ -1366,6 +1367,12 @@ static void tgen_arithi(TCGContext *s, int c, int r0,
+         tcg_out8(s, val);
+         return;
+     }
++    if (val == (uint8_t)val && (c == ARITH_OR || c == ARITH_XOR) &&
++        (r0 < 4 || TCG_TARGET_REG_BITS == 64)) {
++        tcg_out_modrm(s, OPC_ARITH_EbIb + P_REXB_RM, c, r0);
++        tcg_out8(s, val);
++        return;
++    }
+     if (rexw == 0 || val == (int32_t)val) {
+         tcg_out_modrm(s, OPC_ARITH_EvIz + rexw, c, r0);
+         tcg_out32(s, val);
 -- 
 2.43.0
 
