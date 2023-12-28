@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E29181F345
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 01:04:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8CB81F372
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 01:37:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIds4-0008Uu-P2; Wed, 27 Dec 2023 19:03:32 -0500
+	id 1rIeNI-0004Us-4i; Wed, 27 Dec 2023 19:35:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIds3-0008Ub-5a
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:03:31 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1rIeN5-0004OR-4L
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:35:37 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIds1-0001sS-IY
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:03:30 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-5c65ca2e1eeso1692462a12.2
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 16:03:28 -0800 (PST)
+ id 1rIeN3-0002fa-Dy
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:35:34 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6d9a795cffbso2016602b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 16:35:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703721807; x=1704326607; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703723731; x=1704328531; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=J+nChfUKSb2m0urOd7n6/MYl+m/WZBr1+QmRZeRAisc=;
- b=y39Ali/8vokVPwxRkStwsZr3Xo1KN+VMUE8TkfOw91MHnuFtksfYu9r6Enmy5kQ3/d
- YXvQxkb40sCkxktPsCgffuF5sSHP+qGit/wm/GpsCAmBI7ax2fbnT1Gc/yje1vMr1OCj
- y1ZAafDjB6YaJQc6vg2wD61ma013r41XJ0o6V40PHiYaGPC3Xcr2F42eXZnorPhDq8Ff
- qgi6AGaj2nfVzwF6O1tbMX8FOnMQSxv3N4dTIHq4QlEopO6cbYhsIRjN52t0q8LLTEug
- M8d8hX1cD4n/lbP7hwcxKZIViC8qLlh/GJxbHxIt8hHomhfxd3h4+FncRVFOqGyhpe/B
- t8Tw==
+ bh=psuphBxHsi+8TV4IpOtqt9VCOF2n/GnOnM6qRWZGDrs=;
+ b=YeJnGV2MMK9mH1qsHJQcK755Xi8Z4te1nD3xYI9cs0PeDLdJ9ssZegiBlg8QKmhQO3
+ AtvRGEEVvFqhB/8Yr1t1rdCDHGNg+z+UBuTJbHDG4w4h4uosAvvSBG94EHce1B0EEfg7
+ cFSCmDs3/1oYNmV4yuqNlsGKVgwWHMmIZ8x4pI97zif//TjJGO9OpWZEixRFlR0DmSBe
+ AMcYqltDuvVeM8UXhVRaoCssqCrqoSzLHoDfWKBBvjAv8aTM2PE+5aWcbaybDUWHyfDa
+ L4FDddQPtZqV2HwUwGn9Zxspy+AyK63uYrRgIKXCmB3FwrVXOuSw06PMcksS31psG87n
+ rzIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703721807; x=1704326607;
+ d=1e100.net; s=20230601; t=1703723731; x=1704328531;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=J+nChfUKSb2m0urOd7n6/MYl+m/WZBr1+QmRZeRAisc=;
- b=jHdcr9oNO0iIAU9NtGk70SLO/OU1U6yY/Wb/xNKDyvKXBgIrGON5SLp4YUbHMUu2hf
- 8zJ9FbMyC/mMXIzEg1CtFBqrEjRYaMdpEX2Q3eEFMlylcwochk6Kw2se095GTOdC8Huc
- WLV+3jcgC/h2P/gJgvtrqxyW3N0uW4P2qs6HlhnwJEygFaO/bxBULYX/+3HLODb29yLb
- ZYVIFAkujfKyCAfrpde7qiL+vM0Y9KKK2JlLU39GExDftsCZ5TcLYkeaeU/SA4rVT58F
- Pwcx9oKjJ9LsHrS2Yc/kX/4o0maIU9LoTnK0RcLrP09qYaE3dNecazeNO+N2Jd/wc9kQ
- f7fg==
-X-Gm-Message-State: AOJu0Yx5s4gQ0XfWsZz9IwB9IACS9IxSwvJSG5KKWchEKjFDrYP6qg09
- WtU4cDJAvIrWVkcgbKuZHQebD5GAhfQUWQ==
-X-Google-Smtp-Source: AGHT+IF50C9fsZoPp/1E/VsB3DLjv+IFy5A05Cfx4L7Zj5/SE2xy9ZIHateEygjajG1p0Jr9hlCKKg==
-X-Received: by 2002:a05:6a20:42a5:b0:196:4a75:385d with SMTP id
- o37-20020a056a2042a500b001964a75385dmr154037pzj.58.1703721807558; 
- Wed, 27 Dec 2023 16:03:27 -0800 (PST)
+ bh=psuphBxHsi+8TV4IpOtqt9VCOF2n/GnOnM6qRWZGDrs=;
+ b=gmOUvZWj4qFHMX687YhF7fHC88LZHEuWCoG+9GJjaDKeDt1zHAi0RN1U3sr0cx+gRP
+ oG9oUl0PZcEwVsjDQg2VambjLtvBZoHTY8GWswQKekyWsM8Lrp6NBt6Ig2k4TvVfzhwc
+ nzKKfIUGvTJSnzaYOQgUPe7sb+ttaZfsULYzvoBqKJJRANH6VRxuZCizwcyeNTHJxYLQ
+ kqbPuUVrQnadgVBAUsAI0Ype1udDESOsYSt6YstB55vTRI4MpWDKCGhLCoRQCzRcdj9H
+ Mj4SAI59Pf97XW6i6hrDNYlXSAW2PtZddp0s3nKfAvKZubFgqLx528s4O2dIYQDFWluv
+ uYIg==
+X-Gm-Message-State: AOJu0YySQNCYvm2oXo4DKQ3av2o02nPXTa5E/6Rl9mIzuf0GbpaVXd4U
+ lf1adBAOq5hblBh5t69K8tbgXLEEvLc9EA==
+X-Google-Smtp-Source: AGHT+IEDx7o57cXe9wIdaoXp9PMcc6nkDQHLLRKTUu5OcHbmAmS3ROKNBUryDLBYS1eWaXIa4lQ8dQ==
+X-Received: by 2002:a05:6a00:1d0a:b0:6d9:be60:9b93 with SMTP id
+ a10-20020a056a001d0a00b006d9be609b93mr6105884pfx.12.1703723731250; 
+ Wed, 27 Dec 2023 16:35:31 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:12c1:9684:874a:fb3a?
  ([2001:8003:c020:6900:12c1:9684:874a:fb3a])
  by smtp.gmail.com with ESMTPSA id
- u17-20020a170903125100b001cfa0c04553sm12471567plh.116.2023.12.27.16.03.25
+ w22-20020a634756000000b005cd945c0399sm11861840pgk.80.2023.12.27.16.35.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Dec 2023 16:03:27 -0800 (PST)
-Message-ID: <e0d3e790-a937-4f1d-9a30-e4ff04a7af93@linaro.org>
-Date: Thu, 28 Dec 2023 11:03:22 +1100
+ Wed, 27 Dec 2023 16:35:30 -0800 (PST)
+Message-ID: <e0bcbc40-6d5d-443d-9003-6dd76f96c771@linaro.org>
+Date: Thu, 28 Dec 2023 11:35:23 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 27/35] target/arm: Report VNCR_EL2 based faults correctly
+Subject: Re: [PATCH 28/35] target/arm: Mark up VNCR offsets (offsets 0x0..0xff)
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
- <20231218113305.2511480-28-peter.maydell@linaro.org>
+ <20231218113305.2511480-29-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231218113305.2511480-28-peter.maydell@linaro.org>
+In-Reply-To: <20231218113305.2511480-29-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,32 +96,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/18/23 22:32, Peter Maydell wrote:
-> If FEAT_NV2 redirects a system register access to a memory offset
-> from VNCR_EL2, that access might fault.  In this case we need to
-> report the correct syndrome information:
->   * Data Abort, from same-EL
->   * no ISS information
->   * the VNCR bit (bit 13) is set
-> 
-> and the exception must be taken to EL2.
-> 
-> Save an appropriate syndrome template when generating code; we can
-> then use that to:
->   * select the right target EL
->   * reconstitute a correct final syndrome for the data abort
->   * report the right syndrome if we take a FEAT_RME granule protection
->     fault on the VNCR-based write
-> 
-> Note that because VNCR is bit 13, we must start keeping bit 13 in
-> template syndromes, by adjusting ARM_INSN_START_WORD2_SHIFT.
+> Mark up the cpreginfo structs to indicate offsets for system
+> registers from VNCR_EL2, as defined in table D8-66 in rule R_CSRPQ in
+> the Arm ARM. This commit covers offsets below 0x100; all of these
+> registers are redirected to memory regardless of the value of
+> HCR_EL2.NV1.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/cpu.h               |  4 ++--
->   target/arm/syndrome.h          | 20 ++++++++++++++++----
->   target/arm/tcg/tlb_helper.c    | 27 +++++++++++++++++++++++++--
->   target/arm/tcg/translate-a64.c |  4 ++++
->   4 files changed, 47 insertions(+), 8 deletions(-)
+>   target/arm/helper.c | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
