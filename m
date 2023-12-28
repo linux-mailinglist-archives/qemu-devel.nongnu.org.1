@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0680E81F37E
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 01:54:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE3081F380
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 01:54:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIef5-0000mg-74; Wed, 27 Dec 2023 19:54:11 -0500
+	id 1rIefV-0001IJ-8B; Wed, 27 Dec 2023 19:54:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIef2-0000mP-3f
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:54:08 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1rIefT-0001CB-2H
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:54:35 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIef0-0000wQ-JD
- for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:54:07 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6d9f9689195so593291b3a.3
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 16:54:06 -0800 (PST)
+ id 1rIefR-0000xy-CZ
+ for qemu-devel@nongnu.org; Wed, 27 Dec 2023 19:54:34 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d4751dcb56so6712375ad.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 16:54:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703724845; x=1704329645; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703724872; x=1704329672; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=sJ4m507ajLfx8ejtxdKj/bGKEnN+ZOxzzQuW44I3TzA=;
- b=z62uBO1zx//l2OHHKtvIlSSuKvpHe2Xbhsz20zZONcEI2pBBOTlj42vonSzvn2aDSG
- D+GyUT1cYQ/BGzR7opEwnwyZ9aIzNQkwdK+Kjy+Q1860qeN1N5+GRkupC2teIU9YQlVH
- TFt8bcchlrHIZqEVREia830thAmMmdHgpjhjaoM1Ccfeu7XP/TNihDHzrQemngFPrt5P
- 4CuIGUVEBPd2MwWHqrUAinZAGRVOKJgVO6TXq8GSPON2njlYFrExsigSbJbMbVRTbVYJ
- m/bgvmUY3hChx3WZOsNiYEisNb/eSu15/LhV5/PO1T5cHM/19Q1Nl6xT+Feu7A7z77Pk
- ljmw==
+ bh=B8XmnUfdJKj+TB2L07DLXAvKXwYIBoX9DFJDEEqoAv0=;
+ b=goGOnTaLSrhCM6wB6XSypSIWO5aJCpRi0oXCxIu2iIPxrVIa+YLHcKHj/m/c8ZpxK1
+ sLK8MswRDhco7wjj+pYrprR9HnTvTQzbwMHpM3TPJCzEHHZBvv0oOK25pj6K2YSoKI+l
+ GlOO1er/sU0qg6cubyl1V/RdrXNkK3ORkyBI+jIiuEYqnrAggSh3XeZomSqXESW1Bn1G
+ Fr4MlGcq7Ab+Iwb2LzU6LmUNQ5xp8HUHm4NxBOyLAHcoA9etd9sUcdRbOYyx6iBPuEs4
+ aaW4yUDOAJLMsmWTFtqNPdyR00LCuoKAGVXaGurcFbO627qh63C0JQ5J9Kdao3oKH76Y
+ a78Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703724845; x=1704329645;
+ d=1e100.net; s=20230601; t=1703724872; x=1704329672;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sJ4m507ajLfx8ejtxdKj/bGKEnN+ZOxzzQuW44I3TzA=;
- b=Wt2rdxb9ihDt6DUJaGUdCUn0Z8URzF7qwXkB08oy4dgqWRShnSCUAaY01/oNnktQoK
- LoFYwsnXaN5RwQF7VsapoCy/6JPwvDPqFJtfvXtAxqBg645DBj5dJa+7DWqsvbctKMUy
- E0YFutC/UPkCs3Rl4Y+wHeDeKV1D8TvSJrCE8/ako6cEfoe+7U8E6dvmSsd9iuVRaeW9
- 9V9v/IZMlzmALcjf5k4EMRIxsOqDAr6HZPT7gb2R36BX8itt0ErLjJ1B4lWiXDhwaex/
- pYjzUTnosC5gGQIb8ucPVysSDhRtZJUeQ1xDlLrAVx6q4SWHFvkHonj1AhVvqnhdm2Zp
- Insw==
-X-Gm-Message-State: AOJu0YwIjdyYcYY89Sdd9Ptr45TWH2haA0R+keLs3WkD6rf18D0zi5rK
- SF1Hc9zbb4jJBgrBtauBCugR4EOla5buCI99XcTXvgIdZMoKaw==
-X-Google-Smtp-Source: AGHT+IGdb8mKMOofFuyfQZJ38v3RQHJgf5UG8Z+pXkTRtgG4lV1xKBZmrwWFSwvFY/ysTgST0oaCHQ==
-X-Received: by 2002:a05:6a20:12c6:b0:196:4a2e:4ca1 with SMTP id
- v6-20020a056a2012c600b001964a2e4ca1mr201171pzg.22.1703724845268; 
- Wed, 27 Dec 2023 16:54:05 -0800 (PST)
+ bh=B8XmnUfdJKj+TB2L07DLXAvKXwYIBoX9DFJDEEqoAv0=;
+ b=f5RR/3/5ziXk7bmY2gVa7ETZ4TX1xvZLOkNukBmpYDrGa2OuzNlWHlafQ479lGDzKC
+ M4TAOTr5vCdndavCRldAHKf83ZqqmEeSF662wYZalFzPmi9JZM3Wsf6Rt2I75rd+brqJ
+ Ez+FyNhByQH4gC2yeilWp8ci4cbfAaX7GP4sTKgbW7VMU354i04PLvs6oQfsy0X23ZhN
+ ZkrKXBckNqaNfztQGR3S8q1KH6ww3AWREoDtzWcMZ9mrtONdabeauswrmv2CqSF9EK6/
+ 17//ENRa0C0t4Hp+/4tK9UxMyCx6ZSYYlThF2UTKPRZA+LB1nhdziYaH+frSB3pSUixN
+ hhbA==
+X-Gm-Message-State: AOJu0YxrMcxOWBZ4QD0EmZ159lNSoBQDi6mDdFTvPR8MvrusBt9OIljM
+ RTs0Zf9BKhLr1fslD4WZl30CvCCW4ddScA==
+X-Google-Smtp-Source: AGHT+IGWTgIR+KB34wnSlB6qV5BsSet7r5nuUQCEv3TBegfjZLsoFtv39jYxHutW0XP4DtF0Sn5HEg==
+X-Received: by 2002:a17:902:c3c1:b0:1d4:1999:d9ac with SMTP id
+ j1-20020a170902c3c100b001d41999d9acmr4001203plj.94.1703724872128; 
+ Wed, 27 Dec 2023 16:54:32 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:12c1:9684:874a:fb3a?
  ([2001:8003:c020:6900:12c1:9684:874a:fb3a])
  by smtp.gmail.com with ESMTPSA id
- n18-20020a170902969200b001d4872d9429sm1145847plp.156.2023.12.27.16.54.03
+ n18-20020a170902969200b001d4872d9429sm1145847plp.156.2023.12.27.16.54.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Dec 2023 16:54:04 -0800 (PST)
-Message-ID: <7ed61f21-7e70-4bdc-8b6e-2e02c65ba180@linaro.org>
-Date: Thu, 28 Dec 2023 11:54:01 +1100
+ Wed, 27 Dec 2023 16:54:31 -0800 (PST)
+Message-ID: <801c1e43-f2e6-415b-82c3-64c90d318c35@linaro.org>
+Date: Thu, 28 Dec 2023 11:54:28 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 33/35] target/arm: Report HCR_EL2.{NV,NV1,NV2} in cpu dumps
+Subject: Re: [PATCH 34/35] target/arm: Enhance CPU_LOG_INT to show SPSR on
+ AArch64 exception-entry
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20231218113305.2511480-1-peter.maydell@linaro.org>
- <20231218113305.2511480-34-peter.maydell@linaro.org>
+ <20231218113305.2511480-35-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231218113305.2511480-34-peter.maydell@linaro.org>
+In-Reply-To: <20231218113305.2511480-35-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,20 +97,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/18/23 22:33, Peter Maydell wrote:
-> When interpreting CPU dumps where FEAT_NV and FEAT_NV2 are in use,
-> it's helpful to include the values of HCR_EL2.{NV,NV1,NV2} in the CPU
-> dump format, as a way of distinguishing when we are in EL1 as part of
-> executing guest-EL2 and when we are just in normal EL1.
+> We already print various lines of information when we take an
+> exception, including the ELR and (if relevant) the FAR. Now
+> that FEAT_NV means that we might report something other than
+> the old PSTATE to the guest as the SPSR, it's worth logging
+> this as well.
 > 
-> Add the bits to the end of the log line that shows PSTATE and similar
-> information:
-> 
-> PSTATE=000003c9 ---- EL2h  BTYPE=0 NV NV2
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/cpu.c | 5 +++++
->   1 file changed, 5 insertions(+)
+>   target/arm/helper.c | 1 +
+>   1 file changed, 1 insertion(+)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
