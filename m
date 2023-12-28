@@ -2,72 +2,173 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557AF81F9E3
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 17:21:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E9281FA87
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 19:45:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIt7J-0006EJ-BA; Thu, 28 Dec 2023 11:20:17 -0500
+	id 1rIvNX-0008Dm-U7; Thu, 28 Dec 2023 13:45:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rIt7G-0006DX-Tb; Thu, 28 Dec 2023 11:20:14 -0500
-Received: from zproxy3.enst.fr ([2001:660:330f:2::de])
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rIvNU-0008Dc-DM
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 13:45:09 -0500
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rIt7C-0001zz-WF; Thu, 28 Dec 2023 11:20:14 -0500
-Received: from localhost (localhost [IPv6:::1])
- by zproxy3.enst.fr (Postfix) with ESMTP id 17B99A064D;
- Thu, 28 Dec 2023 17:20:08 +0100 (CET)
-Received: from zproxy3.enst.fr ([IPv6:::1])
- by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id 3eT6bGbqhKi7; Thu, 28 Dec 2023 17:20:07 +0100 (CET)
-Received: from localhost (localhost [IPv6:::1])
- by zproxy3.enst.fr (Postfix) with ESMTP id BA6FFA0587;
- Thu, 28 Dec 2023 17:20:07 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr BA6FFA0587
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1703780407;
- bh=XvTjD0GhPhtqUzN/jUsJejFiQl5qsoGcE2fMfXRqCzM=;
- h=From:To:Date:Message-ID:MIME-Version;
- b=6qkAjf6Xvbv6fCmrI/hxg5FRxY29W1tHvBqsXNJKCYz3mdyj2VwHd1kMBkGGdutgl
- 0YM1L5AE8GRypFFKgD0rbGBOCa39mMquNsKaFuHr2lL8grpzBzkHxcaBxxOz0gVnqY
- Z3nS8OoCuED871e8blAmua1Mp/LcHyT/rN06820E=
-X-Virus-Scanned: amavis at enst.fr
-Received: from zproxy3.enst.fr ([IPv6:::1])
- by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id TetmnZo-olaj; Thu, 28 Dec 2023 17:20:07 +0100 (CET)
-Received: from inesv-Inspiron-3501.lan (unknown
- [IPv6:2001:861:4680:b1b0:3937:c54c:5417:70d4])
- by zproxy3.enst.fr (Postfix) with ESMTPSA id 7BB5EA060A;
- Thu, 28 Dec 2023 17:20:07 +0100 (CET)
-From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-To: qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair@alistair23.me>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org
-Subject: [PATCH v5 3/3] hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC
-Date: Thu, 28 Dec 2023 17:19:21 +0100
-Message-ID: <20231228161944.303768-4-ines.varhol@telecom-paris.fr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
-References: <20231228161944.303768-1-ines.varhol@telecom-paris.fr>
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rIvNR-0002Rs-2M
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 13:45:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1703789105; x=1735325105;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=yngjOE5xJrwSOdFj0jHSWtDj/RSAklekkACWsorWF8s=;
+ b=Ye+saZ5wbou3D3xIJg2bfET9xTCh61RVfT9PKZudLI5EnWUZYkTyCy1k
+ VezAzCF/mcnmpvwiak/vclf6eRVZbhcdiBm613T2Gsb+5mZ1BkIZWlcye
+ 3lOHyiXRgIo7BiLo3MZYwoojj05Ci4I0NLz6QUpqbFhP8C2pxGBm/NFc5
+ CA8W8nktwbGNZKWtKFzDZMfDJf1COMsRxnranXuZmBZw43wPx+uyxIqlo
+ gm2PevhpoXE3+VXrO0P4aQfx448veuqZascZXLbYC4jX/XTzzxT5h70h+
+ gSea95RvEDg1jbogahAzkM8dF6AGS4L/FwcmZ+cB2Rr+eykxUGJ9XaIaF A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10937"; a="9969716"
+X-IronPort-AV: E=Sophos;i="6.04,312,1695711600"; 
+   d="scan'208";a="9969716"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Dec 2023 10:40:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10937"; a="1109973110"
+X-IronPort-AV: E=Sophos;i="6.04,312,1695711600"; d="scan'208";a="1109973110"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+ by fmsmga005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 28 Dec 2023 10:40:36 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 28 Dec 2023 10:40:36 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 28 Dec 2023 10:40:35 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 28 Dec 2023 10:40:35 -0800
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 28 Dec 2023 10:40:35 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DH5GvVKwOqcyT+TnOch1Plz5+Opy7SrhK+N7DDpZuAw4M0k5KHpyJbkuYk4G8wcdalqEpWq67rpZcHkq4Ko1TSdGNHJfbUWQz0LCYACGs3wAE3Gyytq+FPFMvLWN35FgXdYl7JvNr7/9PVfxjTDDG6dX8pkPNpM0zvCwCuW35Re4Hxa+3qivY9TnaQqJ7im+++fF+tDgw4XrKra3epSXZbqZSa0GcqUsxPbkDQ3Hl/7PIIbr1ai4irpwk916jqeed3r5Dw7/i8U2roxhJZWJxycK7W4I0ACVWgkoblmcTpWoi8r6Ikt9gnjrLQr6/8055Leek1Lc5ftL1/rCwp5D2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yngjOE5xJrwSOdFj0jHSWtDj/RSAklekkACWsorWF8s=;
+ b=HKpoopVZ7gEFBAmJJERSH9sHyWUvsJO3fPRZgA+EhtO2/+wy2iQokup6QxAxQJrij4rie4LdZofZN2tf6X+ajElL4UzzbetdKM2zIt3M+5pl8gom7kvS4G650+hCCdQBvCVis8Te6HDofi5Mxh3s0lCcrG6j6LQ4gcWyLwphlLJX6WofBPsw0AGcYEYQ9iXmxm5KZ6Y6LK11Z+N2OsJxp59G8x9g+RcaSSpJTDDRDrQluPGn9Jeyn3TXFA1F79dYartgkHPhjdZPP764iLEI+nRQ2zRyNTUHUqu216cPgkqKQ5U92Cv92u2pD5ksBSTPCUAkz78nY+sD/iwAZd7mDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH8PR11MB6879.namprd11.prod.outlook.com (2603:10b6:510:229::22)
+ by DM8PR11MB5686.namprd11.prod.outlook.com (2603:10b6:8:21::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.21; Thu, 28 Dec
+ 2023 18:40:33 +0000
+Received: from PH8PR11MB6879.namprd11.prod.outlook.com
+ ([fe80::1332:70db:38b7:437d]) by PH8PR11MB6879.namprd11.prod.outlook.com
+ ([fe80::1332:70db:38b7:437d%7]) with mapi id 15.20.7135.019; Thu, 28 Dec 2023
+ 18:40:33 +0000
+From: "Kim, Dongwon" <dongwon.kim@intel.com>
+To: =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "Kasireddy, Vivek"
+ <vivek.kasireddy@intel.com>
+Subject: RE: [PATCH 2/3] ui/gtk: unblock pipeline only if fence hasn't been
+ signaled yet
+Thread-Topic: [PATCH 2/3] ui/gtk: unblock pipeline only if fence hasn't been
+ signaled yet
+Thread-Index: AQHaLkWDisfQQn+HVUaF7uq6tGO1ObCqBxMAgBUFvMA=
+Date: Thu, 28 Dec 2023 18:40:33 +0000
+Message-ID: <PH8PR11MB6879390DA21D2D4FE9A45284FA9EA@PH8PR11MB6879.namprd11.prod.outlook.com>
+References: <20231204184051.16873-1-dongwon.kim@intel.com>
+ <20231213202419.15459-1-dongwon.kim@intel.com>
+ <20231213202419.15459-2-dongwon.kim@intel.com>
+ <CAJ+F1C+GR7gEO2SktenXpRUHtFAvF-ZrW_QGe0-nSErZESbjtQ@mail.gmail.com>
+In-Reply-To: <CAJ+F1C+GR7gEO2SktenXpRUHtFAvF-ZrW_QGe0-nSErZESbjtQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH8PR11MB6879:EE_|DM8PR11MB5686:EE_
+x-ms-office365-filtering-correlation-id: 04fb7617-27eb-4f4c-d662-08dc07d479c5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: g1mHAWRVtE3okgrsujQVXLg8pwQ4nnVystowrI37Z/+tNBSq9T90XCbNTFZAL4bB5koGPpB30MYMgA28+AVrdFIrOrOy/ScWMA68Zy0GW9YJunGTFhuejBZOIAy5KIDYtQXgaemUXqOhgsCYtnK1i8WVbOYhcUDQxPHPVBYNUwQ467u4aNH5Dpf2PLuoqNutWSPdSEev4iRBFBt3WXBFmxPZUwk7ZKkPZEVUfQqG1B1qBvgwX7nrcN8hURLuriC3KKKhMzWIpTpRuKpe+LiKvxWoNxXSJIR0hDbkYoyq6FdPQHCCajLmCOINFpc5yDFww6YfHV5mOmyyK7/KjVlGhEhMOfKFT7BBkDIBOn6kxciyyuhoa5lhNEIA6qrF/yiMQJwCbE8daWcSF0sNZZnHOyXSro8p1KL/bdEJZe9hfXcqs/odrVXhcN57rGn2nVNfWqIoEtPjvpm9khjNEcm1rQav1vBVziV5+K1OfBowfN8VdDfL9mB3LtHOsB0IuC0y/rnuIa2opwBgdpWrcFxUUfi/O/JXOk/hIIbA47As2tOaPucbsCiSu4J4/qOtk3KuwTdHQvgv0zTlo0cowKtJ0Cs9+Zt/U/A18KHTupEQhNz17yVscYv5PIOmxm0Q6qNk
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR11MB6879.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(136003)(376002)(39860400002)(396003)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(6916009)(66446008)(66556008)(66946007)(66476007)(64756008)(76116006)(316002)(8936002)(54906003)(8676002)(107886003)(4326008)(26005)(83380400001)(478600001)(6506007)(9686003)(53546011)(7696005)(52536014)(71200400001)(41300700001)(2906002)(5660300002)(33656002)(38070700009)(82960400001)(38100700002)(122000001)(86362001)(55016003);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?b3hyajEvV0FIYXpIbVNoRFFNNnNJTWxZQmt0ZlgyQ1pMYlpxNXlndTlxZHo5?=
+ =?utf-8?B?Y3VsRXhVSWRHR2tRRWY4YzV3MnMya21maVNZbnY5aXExYXROYWxiMWhoc1hw?=
+ =?utf-8?B?Y0EybHJKekpZTHA4WUt4NDl5eURLSitsbFBYVlRodW5aenVtVmxKSmFMdU9s?=
+ =?utf-8?B?UzVibzJFUlZvd0g1M2NYQ1JpTmJjdlgxYWtFNUJ4RUtVTnhTVGF2alg3V05O?=
+ =?utf-8?B?RzgrRVdndEpzdWVlbFJBVWozZlRqUnZaTDhHVU9MSWF6NXBpOWp0YnZMRUsv?=
+ =?utf-8?B?ZjM3ODRyR3Zxc3BPRmZpVlRRQVNNVnhjUW9PMVdMeVJlcVhIdkMxZ1U2TUQy?=
+ =?utf-8?B?bkhhR1VWclBPWE1sdXNsajNzZWZybytHVWVibjRaSTRGY2M2MDBYVHREai96?=
+ =?utf-8?B?L0Z0QUFZS21sanN6dHpEN3AzTCs2Q0p3Y2J5YjFGcEtBU0QxM3lzUUpPZU9H?=
+ =?utf-8?B?STVrMVNBbnoxOXltRThpZ1dRSWdSWXFGb255UnhFeTRveU9GLzdUZ015OW1T?=
+ =?utf-8?B?b1hwdlA4cHUyYkViOWx3SjZxVW8yRjN6WU0xYjRyZUxtRVJDeVJTdGhLZXhV?=
+ =?utf-8?B?eHdpSlloNG9Pa2k1QTJvMkF6NHZaWUtPc3JETTlHdmt4L1llK2J6ejhVWXVu?=
+ =?utf-8?B?UXhZdGFoUFg5ZGtKWnFGT3g1OFpiVERTNUJycnM4WURFa09iTzQ2c3R3QjJV?=
+ =?utf-8?B?R0pja2FVdWJLK2RKZXh5bzZGRkg3V3hxdGtTRTRHdUh6WlMzbWZ6ak54d1dn?=
+ =?utf-8?B?K1JlYXFmZkJENCtSc1pNUUxJNG1teDliVUdJRHRVZWtwRlJDNHMyV3RXVUU4?=
+ =?utf-8?B?RUN0UDdvUFRZVEc2dTYvQlNYOWQrVWVoNWVlV3lNVC9lNWczbHhzdUhlb3I1?=
+ =?utf-8?B?a05Rby9JbnlNN0tTS1dqdCtPU3pHdkwwSXhZMUM5RGwzVUZpSnVDaXdCLzZW?=
+ =?utf-8?B?bTdUNG9WUjVMYzBtMi9uTW9tQ3BHNS94Yko4YlVBTXRmZlI2K25peGhmWVBS?=
+ =?utf-8?B?SnJiUVhpOUh3RTkvNnk1OE5pSEtuRDY5UTlETXF1SXdBQWR3eHBzdS9UMTNO?=
+ =?utf-8?B?NElOYWwvV0Qzc0hRa1U4b056MnF3azZuQmpjbzJXeWYxdlgwSzliWTRzSHN4?=
+ =?utf-8?B?d0FzaTdJS2svQzF6VjRYK2dmNllhRFp1OFl6cHJZSEFEdmJJcEZEK3FkUUNy?=
+ =?utf-8?B?eGpvdXk5NDNPditVRlgzaWpWVTRjT05xOTBIVW4ybFpEQnpzWUlUL2lEMTlZ?=
+ =?utf-8?B?ZDV4S3BROElaUjhTNTJBdE1Da1FuejFubEhicEJjNlZZbzZvY2dPa29xUGs0?=
+ =?utf-8?B?TlRueDE3SUdNLzVqVGNadm9YY2dFSU0wdy9iNHJJaVMvMUhaL3RLRng0NW1D?=
+ =?utf-8?B?TEp3aGF2RHhlbHRVODgxQzZuYll2YlBhUCt0MTl6a256eEFRb1pIZldnVVN2?=
+ =?utf-8?B?cGFLSUFkZHNLS1dGVkZSV1dLNWE5dUp2dndublRHV1VzcHZiakF5ZWJNUU10?=
+ =?utf-8?B?SmNNM0ZEUGJRQnROS0ZlTGFhNU5sbjVmV2xpREJhcUxTY0ZnK1FrTXBxMUQv?=
+ =?utf-8?B?VnE1bGl3cktpV2hORUgzWERVNmNxSmorL3dCRlZVc1FiS3pUZGI5ZWp1dklV?=
+ =?utf-8?B?UkFYWmgyZlBGN1ZBMDh2emR6SEtrR1c1NVg0QTg4d3AyVjF4dmxyUFRnaG1Z?=
+ =?utf-8?B?UG1BTXJjRFhIZ01IU3loV2I2VTU4SlFhaTUva2ZyM3poQnd4WHZ5OFhETVBX?=
+ =?utf-8?B?b20ra00zK0c4ZkpEdEhJRXU4bG9lWVB5UC9SQU1jMVpvZUl3YjgwbWcyQXFq?=
+ =?utf-8?B?WGhWUjBtQi9NSEhBMHJibnN3blFqUDZ6R09LV2twbVJLLzdQekhKVUpWRnpQ?=
+ =?utf-8?B?R2FCY0w3YlJHZVZaK1ZkYllOVTJzQ1RhczVDenVwS1N1WkZQT0dFdE1TeFlk?=
+ =?utf-8?B?aDR4Ulh0MzRJNmRra3k3bnNHaHJYL1VOUms4aGt2R1dsMnVheG1udk5ySktR?=
+ =?utf-8?B?Y0QyMkphck5HckhzLzNaYkVuZjFTdWZRNFFPVlRzbWxaTGhIWEdkamtSN2dJ?=
+ =?utf-8?B?dTdUcTZmWTRBWkczR3lrQ2ljbXhsWkQ2SGl6eWpZRndlNEhONU1pczJKWmQz?=
+ =?utf-8?Q?UL4HLmcxZmxFpLIOgdfpRroVD?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:660:330f:2::de;
- envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy3.enst.fr
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB6879.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04fb7617-27eb-4f4c-d662-08dc07d479c5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Dec 2023 18:40:33.6911 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: aiKIB+NtZyA6LWjzw7qWs5TjPunQrfTJ0flBORLx+9REvjPSWOLIqnhLScO7vazktCxVT/wPDRGzmpcLxgnlcA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR11MB5686
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=dongwon.kim@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.981,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,148 +184,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
----
- hw/arm/Kconfig                 |  1 +
- hw/arm/stm32l4x5_soc.c         | 56 ++++++++++++++++++++++++++++++++--
- include/hw/arm/stm32l4x5_soc.h |  3 ++
- 3 files changed, 58 insertions(+), 2 deletions(-)
-
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 7520dc5cc0..9c9d5bb541 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -458,6 +458,7 @@ config STM32L4X5_SOC
-     bool
-     select ARM_V7M
-     select OR_IRQ
-+    select STM32L4X5_EXTI
-=20
- config XLNX_ZYNQMP_ARM
-     bool
-diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
-index 7513db0d6a..08b8a4c2ed 100644
---- a/hw/arm/stm32l4x5_soc.c
-+++ b/hw/arm/stm32l4x5_soc.c
-@@ -36,10 +36,51 @@
- #define SRAM2_BASE_ADDRESS 0x10000000
- #define SRAM2_SIZE (32 * KiB)
-=20
-+#define EXTI_ADDR 0x40010400
-+
-+#define NUM_EXTI_IRQ 40
-+/* Match exti line connections with their CPU IRQ number */
-+/* See Vector Table (Reference Manual p.396) */
-+static const int exti_irq[NUM_EXTI_IRQ] =3D {
-+    6,                      /* GPIO[0]                 */
-+    7,                      /* GPIO[1]                 */
-+    8,                      /* GPIO[2]                 */
-+    9,                      /* GPIO[3]                 */
-+    10,                     /* GPIO[4]                 */
-+    23, 23, 23, 23, 23,     /* GPIO[5..9]              */
-+    40, 40, 40, 40, 40, 40, /* GPIO[10..15]            */
-+    1,                      /* PVD                     */
-+    67,                     /* OTG_FS_WKUP, Direct     */
-+    41,                     /* RTC_ALARM               */
-+    2,                      /* RTC_TAMP_STAMP2/CSS_LSE */
-+    3,                      /* RTC wakeup timer        */
-+    63,                     /* COMP1                   */
-+    63,                     /* COMP2                   */
-+    31,                     /* I2C1 wakeup, Direct     */
-+    33,                     /* I2C2 wakeup, Direct     */
-+    72,                     /* I2C3 wakeup, Direct     */
-+    37,                     /* USART1 wakeup, Direct   */
-+    38,                     /* USART2 wakeup, Direct   */
-+    39,                     /* USART3 wakeup, Direct   */
-+    52,                     /* UART4 wakeup, Direct    */
-+    53,                     /* UART4 wakeup, Direct    */
-+    70,                     /* LPUART1 wakeup, Direct  */
-+    65,                     /* LPTIM1, Direct          */
-+    66,                     /* LPTIM2, Direct          */
-+    76,                     /* SWPMI1 wakeup, Direct   */
-+    1,                      /* PVM1 wakeup             */
-+    1,                      /* PVM2 wakeup             */
-+    1,                      /* PVM3 wakeup             */
-+    1,                      /* PVM4 wakeup             */
-+    78                      /* LCD wakeup, Direct      */
-+};
-+
- static void stm32l4x5_soc_initfn(Object *obj)
- {
-     Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
-=20
-+    object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
-+
-     s->sysclk =3D qdev_init_clock_in(DEVICE(s), "sysclk", NULL, NULL, 0)=
-;
-     s->refclk =3D qdev_init_clock_in(DEVICE(s), "refclk", NULL, NULL, 0)=
-;
- }
-@@ -50,7 +91,9 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc,=
- Error **errp)
-     Stm32l4x5SocState *s =3D STM32L4X5_SOC(dev_soc);
-     const Stm32l4x5SocClass *sc =3D STM32L4X5_SOC_GET_CLASS(dev_soc);
-     MemoryRegion *system_memory =3D get_system_memory();
--    DeviceState *armv7m;
-+    DeviceState *dev, *armv7m;
-+    SysBusDevice *busdev;
-+    int i;
-=20
-     /*
-      * We use s->refclk internally and only define it with qdev_init_clo=
-ck_in()
-@@ -115,6 +158,16 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
-oc, Error **errp)
-         return;
-     }
-=20
-+    dev =3D DEVICE(&s->exti);
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->exti), errp)) {
-+        return;
-+    }
-+    busdev =3D SYS_BUS_DEVICE(dev);
-+    sysbus_mmio_map(busdev, 0, EXTI_ADDR);
-+    for (i =3D 0; i < NUM_EXTI_IRQ; i++) {
-+        sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[=
-i]));
-+    }
-+
-     /* APB1 BUS */
-     create_unimplemented_device("TIM2",      0x40000000, 0x400);
-     create_unimplemented_device("TIM3",      0x40000400, 0x400);
-@@ -155,7 +208,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_so=
-c, Error **errp)
-     create_unimplemented_device("SYSCFG",    0x40010000, 0x30);
-     create_unimplemented_device("VREFBUF",   0x40010030, 0x1D0);
-     create_unimplemented_device("COMP",      0x40010200, 0x200);
--    create_unimplemented_device("EXTI",      0x40010400, 0x400);
-     /* RESERVED:    0x40010800, 0x1400 */
-     create_unimplemented_device("FIREWALL",  0x40011C00, 0x400);
-     /* RESERVED:    0x40012000, 0x800 */
-diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_so=
-c.h
-index dce13a023d..6cba566a31 100644
---- a/include/hw/arm/stm32l4x5_soc.h
-+++ b/include/hw/arm/stm32l4x5_soc.h
-@@ -28,6 +28,7 @@
- #include "qemu/units.h"
- #include "hw/qdev-core.h"
- #include "hw/arm/armv7m.h"
-+#include "hw/misc/stm32l4x5_exti.h"
- #include "qom/object.h"
-=20
- #define TYPE_STM32L4X5_SOC "stm32l4x5-soc"
-@@ -41,6 +42,8 @@ struct Stm32l4x5SocState {
-=20
-     ARMv7MState armv7m;
-=20
-+    Stm32l4x5ExtiState exti;
-+
-     MemoryRegion sram1;
-     MemoryRegion sram2;
-     MemoryRegion flash;
---=20
-2.43.0
-
+SGkgTWFyYy1BbmRyw6ksDQoNCkkgcmV2aWV3ZWQgYW5kIHJlYWxpemVkIHRoZXNlIGNvbmRpdGlv
+bnMgd29uJ3QgYmUgbWV0IGluIG5vcm1hbCBzaXR1YXRpb25zIGluIGdpdmVuIHVwc3RyZWFtIGNv
+ZGUuIEJ1dCB3ZSd2ZSBpbml0aWFsbHkgYWRkZWQgdGhvc2UgY29uZGl0aW9ucyBpbiBvdXIgaW50
+ZXJuYWwgY29kZSBiYXNlIGZvciBkZXYgYmVjYXVzZSB3ZSBvZnRlbiBoYWQgdG8gY2FsbCBnZF9o
+d19nbF9mbHVzaGVkIHRvIGZvcmNlZnVsbHkgdW5ibG9jayBmcm9tIEhQRCBjb2RlIChpLmUuICdj
+b25uZWN0b3JzJyBwYXJhbS4gTm90IFVwc3RyZWFtZWQgeWV0KSB3aGVuIFZNIGRpc3BsYXkgaXMg
+ZGlzY29ubmVjdGVkLiBJbiBzdWNoIGNhc2VzLCBpdCBpcyBuZWVkZWQgdG8gbWFrZSBzdXJlIHRo
+ZXJlIGlzIGEgZnJhbWUgaW4gdGhlIHBpcGVsaW5lIGFscmVhZHkuIEFueXdheSwgSSB0aGluayB3
+ZSBjYW4gY2hlY2sgZG1hYnVmPT1OVUxMIGFuZCBmZW5jZV9mZCA8IDAgYmVmb3JlIGNhbGxpbmcg
+Z2RfaHdfZmx1c2hlZCBpbiBIUEQgY29kZSBqdXN0IGFzIGluIGdkX2NoYW5nZV9ydW5zdGF0ZSAo
+W1BBVENIIDEvM10gdWkvZ3RrOiBmbHVzaCBkaXNwbGF5IHBpcGVsaW5lIGJlZm9yZSBzYXZpbmcg
+dm1zdGF0ZSB3aGVuIGJsb2I9dHJ1ZSkuIA0KDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMi8zXSB1
+aS9ndGs6IHVuYmxvY2sgcGlwZWxpbmUgb25seSBpZiBmZW5jZSBoYXNuJ3QgYmVlbg0KPiBzaWdu
+YWxlZCB5ZXQNCj4gDQo+IEhpDQo+IA0KPiBPbiBUaHUsIERlYyAxNCwgMjAyMyBhdCA4OjI24oCv
+QU0gRG9uZ3dvbiBLaW0gPGRvbmd3b24ua2ltQGludGVsLmNvbT4NCj4gd3JvdGU6DQo+ID4NCj4g
+PiBJdCBpcyBuZWVkZWQgdG8gdW5ibG9jayB0aGUgcGlwZWxpbmUgb25seSBpZiB0aGVyZSBpcyBh
+biBhY3RpdmUgZG1hYnVmDQo+ID4gdG8gYmUgcmVuZGVyZWQgYW5kIHRoZSBmZW5jZSBmb3IgaXQg
+aXMgbm90IHlldCBzaWduYWxlZC4NCj4gPg0KPiA+IENjOiBNYXJjLUFuZHLDqSBMdXJlYXUgPG1h
+cmNhbmRyZS5sdXJlYXVAcmVkaGF0LmNvbT4NCj4gPiBDYzogVml2ZWsgS2FzaXJlZGR5IDx2aXZl
+ay5rYXNpcmVkZHlAaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IERvbmd3b24gS2ltIDxk
+b25nd29uLmtpbUBpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gIHVpL2d0ay5jIHwgMTQgKysrKysr
+KysrKy0tLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDQgZGVsZXRp
+b25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvdWkvZ3RrLmMgYi91aS9ndGsuYw0KPiA+IGlu
+ZGV4IGVhOGQwNzgzM2UuLjA3M2M5ZWFkYjggMTAwNjQ0DQo+ID4gLS0tIGEvdWkvZ3RrLmMNCj4g
+PiArKysgYi91aS9ndGsuYw0KPiA+IEBAIC01OTcsMTAgKzU5NywxNiBAQCB2b2lkIGdkX2h3X2ds
+X2ZsdXNoZWQodm9pZCAqdmNvbikNCj4gPiAgICAgIFZpcnR1YWxDb25zb2xlICp2YyA9IHZjb247
+DQo+ID4gICAgICBRZW11RG1hQnVmICpkbWFidWYgPSB2Yy0+Z2Z4Lmd1ZXN0X2ZiLmRtYWJ1ZjsN
+Cj4gPg0KPiA+IC0gICAgcWVtdV9zZXRfZmRfaGFuZGxlcihkbWFidWYtPmZlbmNlX2ZkLCBOVUxM
+LCBOVUxMLCBOVUxMKTsNCj4gPiAtICAgIGNsb3NlKGRtYWJ1Zi0+ZmVuY2VfZmQpOw0KPiA+IC0g
+ICAgZG1hYnVmLT5mZW5jZV9mZCA9IC0xOw0KPiA+IC0gICAgZ3JhcGhpY19od19nbF9ibG9jayh2
+Yy0+Z2Z4LmRjbC5jb24sIGZhbHNlKTsNCj4gPiArICAgIGlmICghZG1hYnVmKSB7DQo+ID4gKyAg
+ICAgICAgcmV0dXJuOw0KPiA+ICsgICAgfQ0KPiANCj4gV2hlbiBpcyB0aGlzIGZ1bmN0aW9uIGNh
+bGxlZCB3aXRoIGRtYWJ1ZiA9PSBOVUxMIG9yIGZlbmNlX2ZkIDwgMD8NCj4gDQo+ID4gKw0KPiA+
+ICsgICAgaWYgKGRtYWJ1Zi0+ZmVuY2VfZmQgPiAwKSB7DQo+IA0KPiB0aGlzIHNob3VsZCBiZSA+
+PSAwDQo+IA0KPiA+ICsgICAgICAgIHFlbXVfc2V0X2ZkX2hhbmRsZXIoZG1hYnVmLT5mZW5jZV9m
+ZCwgTlVMTCwgTlVMTCwgTlVMTCk7DQo+ID4gKyAgICAgICAgY2xvc2UoZG1hYnVmLT5mZW5jZV9m
+ZCk7DQo+ID4gKyAgICAgICAgZG1hYnVmLT5mZW5jZV9mZCA9IC0xOw0KPiA+ICsgICAgICAgIGdy
+YXBoaWNfaHdfZ2xfYmxvY2sodmMtPmdmeC5kY2wuY29uLCBmYWxzZSk7DQo+ID4gKyAgICB9DQo+
+ID4gIH0NCj4gPg0KPiA+ICAvKiogRGlzcGxheVN0YXRlIENhbGxiYWNrcyAob3BlbmdsIHZlcnNp
+b24pICoqLw0KPiA+IC0tDQo+ID4gMi4zNC4xDQo+ID4NCj4gPg0KPiANCj4gDQo+IC0tDQo+IE1h
+cmMtQW5kcsOpIEx1cmVhdQ0K
 
