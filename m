@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAC981F6C3
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 11:15:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CF281F6C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 11:15:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rInNs-0005Jr-Ki; Thu, 28 Dec 2023 05:13:00 -0500
+	id 1rInNt-0005K5-3g; Thu, 28 Dec 2023 05:13:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rInNm-0005Gw-VA; Thu, 28 Dec 2023 05:12:54 -0500
-Received: from mail-he1eur04on0713.outbound.protection.outlook.com
- ([2a01:111:f400:fe0d::713]
- helo=EUR04-HE1-obe.outbound.protection.outlook.com)
+ id 1rInNo-0005HT-HY; Thu, 28 Dec 2023 05:12:56 -0500
+Received: from mail-vi1eur05on20707.outbound.protection.outlook.com
+ ([2a01:111:f400:7d00::707]
+ helo=EUR05-VI1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1rInNk-0000at-8v; Thu, 28 Dec 2023 05:12:54 -0500
+ id 1rInNm-0000Sp-Ab; Thu, 28 Dec 2023 05:12:56 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aMwXFhb4ra9fcewr2WmExdRlOis3Rqr0vx00TP8DCyDw1dGFu4VeK1+gcknToGBIAgPpcjSC1sN0lqqtUR7LF84TcRADs8Y6JbByBUqCMBGVO1Pmy392VM7V+v24fTZ5uxLv3J/LB/OGeiEiANeZ4dycRhFkdWzYibjiwRjmPgXOw83h2sSs/5cJD0cbYPpDiDAPF/uu6EmIw6n9nwymbPojtpIrZcu/ayF9LzTSf+nNXK0l0YjpDhboyoXzym0kRXqoxG9FUC1OwFkgdPUaiqh/aKaMYB6KS54a2GfYXf3QseeFGDzqRsx+kzwESinVA3avmh1w+a0LnuWt61bYLA==
+ b=XPgUaCJOfZyzDBvfQcFmoRO4cESXYgvN8F3CKQs/dXP0ABTG6Jk5x1IDeyjWF0noRWFl8jVU7mLv7Rp08CKR/hwWfAVjtGe1but6bYBXM0HFxMdykQglKkGoX0M2yfcIIfX+Ki4F+wbFFHwBh8E4VvAQwlItjMUTW+bMqZZu6fl4izotKgyES4lm2WnStA0zjlJgkO6PNztUtL7XNPl9xlQjYICgmdjH9aLZJ43fbO6N3MAari6SmKItb8I+yq2SuDC1lBIvRfi8bZgLflgtYsd6webCt5wAg5tuy3QN1o4g3bGcwZ852mSkXw7Y1pYeVT+wUFsYWsH+bC7vys/Yyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TiK8oZDz+rOtYNkEfWsCX0YcUHkmu5EZp+mPDs9p95Y=;
- b=AmG57QquwHLga+aZJ5B8DNtx/FeDLVh2/1PDy01V0uhvhgAAs0Q6xeCuI0BwOWX+tmEYlldJ5fnAShikberDmHUnOsFkwNsO7nve5Kz16YlG+dOdj4vQNheNRrwjsPV8936mmg/qtzZcjms0SLWtnSCUJ67OgivyGMBmTrrU3KldQevu2/UDjavrgPs82MMUduqdsKHaUsO7I/FXbZAsW53zW5kSnuaIcE+EszxnNRDIGDlfeqdp2n7G4PYhR026UEJr/ROCBxbaxjYUK9qf/zfTpJsqQxdbUxaisf1fbhEr6W+y6lSX8Hy2LEyutVThqWveBDcvslZM31GHypokwQ==
+ bh=MLEBTAXP1y3bSSPP0h3JqoKN2wlm3/jxIfexYA7pjcc=;
+ b=hSi1Kf1DLNvbr67hi+njQzdnK0EWL/4449eVnMzhkcP2cpqB6f+YlGos4WrQZe+vemWOBYjJjlhxDXZ8grOZ4CKxOpKhMB2bG0qegWqJx/gfcChUiTpuIakjRuRXI5NBVrHsaymYiKa4ZUbdQaQjRNS/b8vIfMJAsu20sc+0jHnzpE0TIMQr9hNH1mKz0vwMxGPOBCmNdAFeR2TsKus7UGYw19/4xelxZtyr0HklUZwtzyHyvznQYFhKbixr1YoyGAcGxJJlnA38X0TyHdgpemQprkPgAQp3Y1lOtCRcFeeKuoT9BxkXbxbqOiC6QSjDzQ5NUjJR5tqZs4T3mN59YA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
  header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TiK8oZDz+rOtYNkEfWsCX0YcUHkmu5EZp+mPDs9p95Y=;
- b=ud5ubTymXC9SzqsWoss9xJpcKlW63lxyOAp3GrmyLHfXGy3kcVZYG5eSv/iq2e1DEowxCddwajteKDuyxaONzqW8T8CbFqSD2E7jSWP/eon8Fm3DCkClqcBRCy/5k1IGov3PcoylzY+RobXR+atJCuz3k6kWOTnyYRw9IYLHS0HlnE9qSvULhUHpmcdkrjP9iwnnRm5yeRZMJk6JAqRbC0UYuce5t20U+/gsOVEH+C5I+qd7Em/x5jGR+qTdOQ0UeV9Hw4BoO73ixnmcmR6eS2JndjialxYCwh64UQ/O02O7XGp8uND518aSEkJvqKDZrTHcKmhWIPgkmqc6BktULg==
+ bh=MLEBTAXP1y3bSSPP0h3JqoKN2wlm3/jxIfexYA7pjcc=;
+ b=FvSO83IfOrJa3+1KiczI0IGOZGK9VEFgpRNk4RA5f5u5lj6iprf1TvR5bL8L5myR79YJOY7o6yYDxGM70RQm344aH3J7461E2vrdb3EwahMvnAvdMMJiZ3hw/F/5us+FQp3MKrqWm+BtUuItGW/yQcpI9iTaY1OCXuqRNi0nnUgPLmgC8R5nC6+jkuMA1sGxYSSU5A0XPA11VleVebe6x5z4ktUbOcnhr+M0wua1fR5F6t5bD7SfUMwaG13zriShEf6JrSfXLvJz1ORnDmTb7RbWuB5ZPk0CvjUX94uyWOOHzpvlg5JZ69qYxGlfrHRvvGvjtXCZ/AhF6ofoBxP1xA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=virtuozzo.com;
 Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
@@ -43,14 +43,15 @@ Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
 Received: from VI0PR08MB10743.eurprd08.prod.outlook.com
  ([fe80::60f7:3267:9f9d:cdc0]) by VI0PR08MB10743.eurprd08.prod.outlook.com
  ([fe80::60f7:3267:9f9d:cdc0%5]) with mapi id 15.20.7135.019; Thu, 28 Dec 2023
- 10:12:42 +0000
+ 10:12:43 +0000
 From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
  vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
-Subject: [PATCH v4 05/21] parallels: Add parallels_mark_unused() helper
-Date: Thu, 28 Dec 2023 11:12:16 +0100
-Message-Id: <20231228101232.372142-6-alexander.ivanov@virtuozzo.com>
+Subject: [PATCH v4 06/21] parallels: Move host clusters allocation to a
+ separate function
+Date: Thu, 28 Dec 2023 11:12:17 +0100
+Message-Id: <20231228101232.372142-7-alexander.ivanov@virtuozzo.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231228101232.372142-1-alexander.ivanov@virtuozzo.com>
 References: <20231228101232.372142-1-alexander.ivanov@virtuozzo.com>
@@ -62,63 +63,64 @@ X-ClientProxiedBy: FR4P281CA0044.DEUP281.PROD.OUTLOOK.COM
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI0PR08MB10743:EE_|PA4PR08MB7459:EE_
-X-MS-Office365-Filtering-Correlation-Id: 01b8de3f-1d67-4fe8-a5ad-08dc078d8757
+X-MS-Office365-Filtering-Correlation-Id: fe39646c-0756-4fcc-191d-08dc078d87ab
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bfBzD6fvQbCCU5MfA2MP3NlwvFC/2nBTV/2mOG7qTONSGgVBvScgOD9ZZN41zuMIaFXZpavVxVQ5kO5FC29iKOCawagwaM4ansrjgdxznABkPGzVIyHDECfi1N+Q1ANpy72jXZ+GxCwBcUJDQppQTsEKp7nfCdYBirgRWKOJSzSIb/PXU2Cmg0M01hyLjJcPjD8VU8vv1NjRjoqG4hj0ds8o+vrwL5vwred2mn0mlOnVSMXWeoRNZW1F201zUVd7RQ+5VAlBp74tqH45oP381XjRfT8ByhXnlGRMp/iaO4Dd8QTv/8Heq+MOqQSBsYdGxhM4Wx68/Ukw8e0jb40F3BCAw96TBBHZcPxQJjwDgeyIjjwDhqGmg0tHM6Av2YuqbjgyPOQo9sM8TimaNdv8Sv3q2ndYEDmZzVNlbjIAoWbWy64Ol+1CG2puSeQJx78xA5znF/ySyFQMMjIv2SZKA2VU0+6NEcObD+2+6ySrz6ubMgRV7aazjavgeq7dIqUB5p1KGTSkiNxztOkYVI6H1IJQ2MoXCF0AhP1Fj/1bl77CciI5ARTmUy3kyDl1VeUNf7L93gcWYMVYcwk7AFnzhVHMrjJGGhZDLdqc2yVvbGkCSGz5jCutgs2JcVatDOTP
+X-Microsoft-Antispam-Message-Info: 5giPrEzPScV51HrO69+Ok4BLyV1AFw8tHvBwmTJ/Sv8Pd0cLerVFx+Fcln+o7/IcCaGWxVeqTBarR8WdIBCSCxjjqQ1OUt7+hx+X6ugRCY/2pxCbvrwJ/hQ7A8fdxVZcTq/vXDi8JT7P//A+blOx4wHDvOfB4eh/n9+2GiX8flHGCDK+6Zmny2vP8hyNNUIQJqAI5sY/JVjQQqtUPnwmT6PQSU5lRfiBugglJZfoqvfICwtJWJp/JMrLOxOs6EUTqxQaaya1vfIEQ3xKE4+r8BBlgyb08s0FObn6pe0a32DAT+h2+e9xdbTB+X4mzTAlIMl6tP2AWJE8/i4k8A/No0f5j52xJb2MrzfMy4nei4+2JsAIAYqbEkg5XUZR7Ry8SanW/hzOTGhsEHXklKZA/9sw20WtE3QCzBJfe3L7F5p/QeuxV/Pg0cT1HjNTAaeNgx9bVM8KHBT7GOGvJdAUVU7tUxYKAFmXs3DVoQIcyOU32hnMYh4X05TGtwMzvbxb8z+jfQxN8TIAYPDrPlS0Jf4V75/7Qnxu4duQTRdbEMOzcuC8VJZz1pr86/YDUnttpsmu5VaVquzkOq0bsDsOMSs/q9RMpLuLiywtCg1TJRJ8qvgIbMjHHG1osXSO5vmr
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VI0PR08MB10743.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230031)(376002)(136003)(396003)(346002)(39850400004)(366004)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(2616005)(26005)(1076003)(6666004)(6512007)(52116002)(6506007)(83380400001)(6916009)(478600001)(4326008)(8936002)(8676002)(5660300002)(44832011)(6486002)(66556008)(66476007)(66946007)(316002)(38100700002)(86362001)(41300700001)(38350700005)(36756003)(2906002);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?48U7exz5DqftcotPAKV6F3ijtvUDf9tMb5CY74DkOBn09OzNUYn0xdoT41Tt?=
- =?us-ascii?Q?c4jhn/rkV73isMmtJuTlFtU1IU8gVviTcm54tVWi6mqKe9beI7UTxbGG380f?=
- =?us-ascii?Q?Q9QUdz6yfDg/9dm7+6yJJhPEBCnSWsrFWp8yawF6fbb6K0/NqIHshFeJdsqu?=
- =?us-ascii?Q?C7hhzNp7WA9AOff0gzkn1iRnQTeX63NZYo9fbhmHPUZNRw2ik7WFutmwO9CV?=
- =?us-ascii?Q?jChaCd3qEa/nxHJRNb/vXGTVZdGSU5e/60mf0n+7Ak8vZhtHGahbNwcY8ANU?=
- =?us-ascii?Q?5Dmc6Z1locNkDtsJatP7d2NNxScJ0I29kgexX2ftR26TjIexY8bUEthNR1xl?=
- =?us-ascii?Q?YjKOBZhj7Eh0x2AcAgssmZujC9ppWMRA/dtMFlXQI7geTRUmRUXgruTShsiM?=
- =?us-ascii?Q?fpmBD3UdoN4rqZWNdxLttlWi7jvuDXZ/lv2pmAyWlB9ewFVeJl6S7IrXJ4Rc?=
- =?us-ascii?Q?QFbEEUMGfXKRGFKlkzewNywgCporio4k7LOVuq+voz1mhYu4z6lfG0s5XegD?=
- =?us-ascii?Q?ru+riEHONZKi150EEYZdjtmRzIhBmviLD1muEXcyj6J3zBLMnrNk4jc+Wa2L?=
- =?us-ascii?Q?0m6Emu7IAVZ3SQt9YmFxCJXSds9rLgfgYEIOYLmjmQPusC+GNuW3SVPYU3Ei?=
- =?us-ascii?Q?VlmVqRSgXtwUjDgHUb3tNNzsFfo9KQvHvA8C642hYHwy+zmkaNVSg713Zd0j?=
- =?us-ascii?Q?JbPxpbkj4M9H7VXDg/Nygw5LWLQawP+pRk3GS82DGMfXUqEpHIGGaPCaaL4o?=
- =?us-ascii?Q?dWwEFIW0CxzVP8tTHtmJ6v+8YYNoTbaYJYSYh6yli7VyovhvCVikoZh/L2Yv?=
- =?us-ascii?Q?tPMEllHqC2ghwnVI0MYTzJ2Nii7TJKQCXrjBvEWVSOS/icfwAOP1Ho7J/kNi?=
- =?us-ascii?Q?S36HChRWMsGBWxtpW6t0FwTN0oZ6MTTwGgCkBr3asglWCgI4byPgHyA45vvm?=
- =?us-ascii?Q?sC2Fmdh7o5nvooUUKVErDjAsWoNY3Qx6EPRveOixNRzeE6KXpTS6sjSYq4Ym?=
- =?us-ascii?Q?uTj8VQlNOOWAfBVnc2OmbHT/8C1CFixbAogE20wNow5WikD/LgitYvq8F0T6?=
- =?us-ascii?Q?QrCbu1+zzR6ww6xy7pnRJmrhLBoQwSi5PI27VpO2m0zk8wCaZLveAaResj2U?=
- =?us-ascii?Q?c65sirEn1H7y/8b9C0W1v5jr5zeSvaH3JiI3wuR/LBxPjPgsUIeZZWrE18lL?=
- =?us-ascii?Q?WWHQofzURIkKpvHVEJ/9ZAWTqdabGMU/mKb5kKkRh2+I17lbXPTAK1jIQskH?=
- =?us-ascii?Q?fMLLacG7plu6uTVc5Jk8kGAGnCdsqDZSCj+hQj/4eSukpKa0iAAcWXd0FGVi?=
- =?us-ascii?Q?NUrNZ9TlGAx4HC5a4qoFLujYSgZUqgbxqbNh7PCYWM5ItJsxcPE9t0Bm9L3o?=
- =?us-ascii?Q?gaQHx+0xE6gEoBiPnC63TIvZREQNFGl+qv9evloUL/tc87mvvltTiu0nTFl/?=
- =?us-ascii?Q?j1d6nxJ8We/j7oaLj9n8tRvjo3YJxYDJ13YO6o8KZOmT0d2Q9va8jkS1oprn?=
- =?us-ascii?Q?H9Ik9U/kJMRNB1hI9tKCua+J7GNmDH2/Ihjfz43snDr64CxjmnghdpO6n/sj?=
- =?us-ascii?Q?+pV1/tHN9uUQlFUjKpNVk5s6qJdIjzyFFho1RXw9ElecuIGV0Gd/y6Et6Djq?=
- =?us-ascii?Q?6EB6LiwhdVwMc9kEgo52BCc=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?nrNaXrYspHaG8eS8J7WP4ON4TGN/99bXIRrMVH/at7tdT7eJEiDOvcWgGUXy?=
+ =?us-ascii?Q?PIrTMP0zoC9lZ+9sDHu92CX9YxmXPzUx3l28gPkuhBXARgbQy3NDWcSK7LEe?=
+ =?us-ascii?Q?W1oXzeUPBryMyWKmBdTbXHzimJKR+CCqUpBBoIabXvydfMf4ZFmb4b0xez5P?=
+ =?us-ascii?Q?unhW37/FhMw8OWKMSz82hGdXxbDE8asFe3TKhOKXYkt1vUcPEMHtYrTYetf+?=
+ =?us-ascii?Q?vOgfdST7FLu85L5fPkqOXPl163YARqMZO5HVj2H6JLm2qhrjFJainZBLQ8Bo?=
+ =?us-ascii?Q?jFcBnb6XcYLRMFAxlwSbvr5FG8SZxKCLd6WC0VKcGJiRHCy6ea0xYfks4Vts?=
+ =?us-ascii?Q?ztRX+NYebjdAlNfZZsHWsas8uiyjnotCvvUevYplsKXYFWmi+xf8gheLYwDe?=
+ =?us-ascii?Q?wpXM4oenFAqzHC3jY8ArtS6kiXHW5TTJyKbIgqV4GLQH2X0AuiQSLFUjnvHe?=
+ =?us-ascii?Q?FCJ7dCOeXF7lSerlPEz6C2ZMeVbhBP4zhsd4fLnsLYoeW4ZhligmJjjgw6zj?=
+ =?us-ascii?Q?xaeZewAPpoVCE0a35L4y5Bb0woG3OtgKTFuVzA12WssrQsM52QCgbuoKR9V1?=
+ =?us-ascii?Q?Uc8DWM9iQjC7lfeS1rNJC//YlXJbF94OXV1GiFm1uH1SOQ5gUDDPa884GViT?=
+ =?us-ascii?Q?a+He9fupOorlCLvYUi9h2FO7oS6u8bZO6KOPjecrSVB0V8cRuJhahBMKDJuZ?=
+ =?us-ascii?Q?a2vjQg/bzTF6KICRzLZFQp4aFcJ6c5KLe/gMxULW8NrXcT/ufxmP9hJzAG3C?=
+ =?us-ascii?Q?5h+SzGpaBWXSexNZeLGiXT1hru8WhRIDjITJXpxlnXTGD6XkwmTWl/f/5yII?=
+ =?us-ascii?Q?W5+1TSdQBfqxRUOizAnbGfjd+6KN0AwkeHatkhD5zOjaffPWKfswQcS7xVqR?=
+ =?us-ascii?Q?h/91wr/7YcAj3a/gabGL2jowi86nwYm4TT7U5v5b4ejQzF9uemBu1Sx8MpoT?=
+ =?us-ascii?Q?+xhTtSn3OZYHuBzzRh5B330yc1mgUJQj4LZyAjc0zGHMPo0qy+Aeyz9/+vj9?=
+ =?us-ascii?Q?d7fG5Y7YDeJ/DTsexBR2Isx0TWXT/9WW8UGRbnuwt6BoGjl4m+pcojwRqKTi?=
+ =?us-ascii?Q?h0KB+jYMHereClECKb2MIGzwlgPMCcxhY95hho0xia57+HfORJ3ndD3NRL9G?=
+ =?us-ascii?Q?bpiPknqClcq3AmKPMdxfY1AoeYyj+BIJRIWUGq298vtUeWLrRtJ47l1lz6nN?=
+ =?us-ascii?Q?NMbiKtx2XQfaN806pTk2MYRvqOKddYwLBmdcIYC93547TX1lIOwghHLQDVWO?=
+ =?us-ascii?Q?6LTcgQ7kKWaQKbKdiSE+t17L4HR2PKLLSbvVYib/7catEgWbsWC9rvyi1eER?=
+ =?us-ascii?Q?WQnWauC7NmU/epde7TwBTrALRj5KmrWFNOZbh6lpGOMcYLtEeu2x2yMh2W+J?=
+ =?us-ascii?Q?sf2pAL2VhWMXrMsS1yzDDw3BscAfTgyzTDY6gE/FImaUrcTYdMpaLx0RDFw6?=
+ =?us-ascii?Q?deai02PQE6EUexzzlsN6BhwRqwbG2Kk6Bs8RYNlFfxia+TM22/V1Rgg3GL0N?=
+ =?us-ascii?Q?JWe5d86fp3wrJwvZiZYznwBdBPyNbmFnSTSno+Gj6diQ+y7tiPuk5qs9Gcsl?=
+ =?us-ascii?Q?PxA4OWy+XdQMWOUbPq2fUKdY7yl1gCWyMayTkqtCMv7exeWdoqKfeRVp4AFc?=
+ =?us-ascii?Q?EyXZ56nqmc7QsEewFd4tn2g=3D?=
 X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01b8de3f-1d67-4fe8-a5ad-08dc078d8757
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe39646c-0756-4fcc-191d-08dc078d87ab
 X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10743.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Dec 2023 10:12:42.3276 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Dec 2023 10:12:42.8976 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yS4QDV2PZ6QItyVYx3IcjMmrN6rkNq1/yBC3S9QbB8A2wLhQHcigo6kWQozru2FstayZaTlBeASvk8U/ryaze+Dg/gz8FEdLQwzLYfnSJuU=
+X-MS-Exchange-CrossTenant-UserPrincipalName: DTrIjdE+mLC2ZoH0WVs9HSuw/riU+B1VWolHs83wjDhF5+OAHjfi+WnVVPEYJ+cyw2MKXhlds+W2jqPSuDh5pi9hmkS1gi3a1mfIRF4ryyU=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR08MB7459
-Received-SPF: pass client-ip=2a01:111:f400:fe0d::713;
+Received-SPF: pass client-ip=2a01:111:f400:7d00::707;
  envelope-from=alexander.ivanov@virtuozzo.com;
- helo=EUR04-HE1-obe.outbound.protection.outlook.com
+ helo=EUR05-VI1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -134,56 +136,229 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a helper to set unused areas in the used bitmap.
+For parallels images extensions we need to allocate host clusters
+without any connection to BAT. Move host clusters allocation code to
+parallels_allocate_host_clusters().
+
+This function can be called not only from coroutines so all the
+*_co_* functions were replaced by corresponding wrappers.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 18 ++++++++++++++++++
- block/parallels.h |  2 ++
- 2 files changed, 20 insertions(+)
+ block/parallels.c | 128 ++++++++++++++++++++++++----------------------
+ block/parallels.h |   3 ++
+ 2 files changed, 71 insertions(+), 60 deletions(-)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index 4470519656..13726fb3d5 100644
+index 13726fb3d5..658902ae51 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -196,6 +196,24 @@ int parallels_mark_used(BlockDriverState *bs, unsigned long *bitmap,
-     return 0;
+@@ -268,58 +268,31 @@ static void parallels_free_used_bitmap(BlockDriverState *bs)
+     s->used_bmap = NULL;
  }
  
-+int parallels_mark_unused(BlockDriverState *bs, unsigned long *bitmap,
-+                          uint32_t bitmap_size, int64_t off, uint32_t count)
-+{
-+    BDRVParallelsState *s = bs->opaque;
-+    uint32_t cluster_end, cluster_index = host_cluster_index(s, off);
-+    unsigned long next_unused;
-+    cluster_end = cluster_index + count;
-+    if (cluster_end > bitmap_size) {
-+        return -E2BIG;
+-static int64_t coroutine_fn GRAPH_RDLOCK
+-allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+-                  int nb_sectors, int *pnum)
++int64_t GRAPH_RDLOCK parallels_allocate_host_clusters(BlockDriverState *bs,
++                                                      int64_t *clusters)
+ {
+-    int ret = 0;
+     BDRVParallelsState *s = bs->opaque;
+-    int64_t i, pos, idx, to_allocate, first_free, host_off;
+-
+-    pos = block_status(s, sector_num, nb_sectors, pnum);
+-    if (pos > 0) {
+-        return pos;
+-    }
+-
+-    idx = sector_num / s->tracks;
+-    to_allocate = DIV_ROUND_UP(sector_num + *pnum, s->tracks) - idx;
+-
+-    /*
+-     * This function is called only by parallels_co_writev(), which will never
+-     * pass a sector_num at or beyond the end of the image (because the block
+-     * layer never passes such a sector_num to that function). Therefore, idx
+-     * is always below s->bat_size.
+-     * block_status() will limit *pnum so that sector_num + *pnum will not
+-     * exceed the image end. Therefore, idx + to_allocate cannot exceed
+-     * s->bat_size.
+-     * Note that s->bat_size is an unsigned int, therefore idx + to_allocate
+-     * will always fit into a uint32_t.
+-     */
+-    assert(idx < s->bat_size && idx + to_allocate <= s->bat_size);
++    int64_t first_free, next_used, host_off, prealloc_clusters;
++    int64_t bytes, prealloc_bytes;
++    uint32_t new_usedsize;
++    int ret = 0;
+ 
+     first_free = find_first_zero_bit(s->used_bmap, s->used_bmap_size);
+     if (first_free == s->used_bmap_size) {
+-        uint32_t new_usedsize;
+-        int64_t bytes = to_allocate * s->cluster_size;
+-        bytes += s->prealloc_size * BDRV_SECTOR_SIZE;
+-
+         host_off = s->data_end * BDRV_SECTOR_SIZE;
++        prealloc_clusters = *clusters + s->prealloc_size / s->tracks;
++        bytes = *clusters * s->cluster_size;
++        prealloc_bytes = prealloc_clusters * s->cluster_size;
+ 
+-        /*
+-         * We require the expanded size to read back as zero. If the
+-         * user permitted truncation, we try that; but if it fails, we
+-         * force the safer-but-slower fallocate.
+-         */
+         if (s->prealloc_mode == PRL_PREALLOC_MODE_TRUNCATE) {
+-            ret = bdrv_co_truncate(bs->file, host_off + bytes,
+-                                   false, PREALLOC_MODE_OFF,
+-                                   BDRV_REQ_ZERO_WRITE, NULL);
++            ret = bdrv_truncate(bs->file, host_off + prealloc_bytes, false,
++                                PREALLOC_MODE_OFF, BDRV_REQ_ZERO_WRITE, NULL);
+             if (ret == -ENOTSUP) {
+                 s->prealloc_mode = PRL_PREALLOC_MODE_FALLOCATE;
+             }
+         }
+         if (s->prealloc_mode == PRL_PREALLOC_MODE_FALLOCATE) {
+-            ret = bdrv_co_pwrite_zeroes(bs->file, host_off, bytes, 0);
++            ret = bdrv_pwrite_zeroes(bs->file, host_off, prealloc_bytes, 0);
+         }
+         if (ret < 0) {
+             return ret;
+@@ -329,15 +302,15 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+         s->used_bmap = bitmap_zero_extend(s->used_bmap, s->used_bmap_size,
+                                           new_usedsize);
+         s->used_bmap_size = new_usedsize;
++        if (host_off + bytes > s->data_end * BDRV_SECTOR_SIZE) {
++            s->data_end = (host_off + bytes) / BDRV_SECTOR_SIZE;
++        }
+     } else {
+-        int64_t next_used;
+         next_used = find_next_bit(s->used_bmap, s->used_bmap_size, first_free);
+ 
+         /* Not enough continuous clusters in the middle, adjust the size */
+-        if (next_used - first_free < to_allocate) {
+-            to_allocate = next_used - first_free;
+-            *pnum = (idx + to_allocate) * s->tracks - sector_num;
+-        }
++        *clusters = MIN(*clusters, next_used - first_free);
++        bytes = *clusters * s->cluster_size;
+ 
+         host_off = s->data_start * BDRV_SECTOR_SIZE;
+         host_off += first_free * s->cluster_size;
+@@ -349,14 +322,59 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+          */
+         if (s->prealloc_mode == PRL_PREALLOC_MODE_FALLOCATE &&
+                 host_off < s->data_end * BDRV_SECTOR_SIZE) {
+-            ret = bdrv_co_pwrite_zeroes(bs->file, host_off,
+-                                        s->cluster_size * to_allocate, 0);
++            ret = bdrv_pwrite_zeroes(bs->file, host_off, bytes, 0);
+             if (ret < 0) {
+                 return ret;
+             }
+         }
+     }
+ 
++    ret = parallels_mark_used(bs, s->used_bmap, s->used_bmap_size,
++                              host_off, *clusters);
++    if (ret < 0) {
++        /* Image consistency is broken. Alarm! */
++        return ret;
 +    }
-+    next_unused = find_next_zero_bit(bitmap, cluster_end, cluster_index);
-+    if (next_unused < cluster_end) {
-+        return -EINVAL;
-+    }
-+    bitmap_clear(bitmap, cluster_index, count);
-+    return 0;
++
++    return host_off;
 +}
 +
- /*
-  * Collect used bitmap. The image can contain errors, we should fill the
-  * bitmap anyway, as much as we can. This information will be used for
++static int64_t coroutine_fn GRAPH_RDLOCK
++allocate_clusters(BlockDriverState *bs, int64_t sector_num,
++                  int nb_sectors, int *pnum)
++{
++    int ret = 0;
++    BDRVParallelsState *s = bs->opaque;
++    int64_t i, pos, idx, to_allocate, host_off;
++
++    pos = block_status(s, sector_num, nb_sectors, pnum);
++    if (pos > 0) {
++        return pos;
++    }
++
++    idx = sector_num / s->tracks;
++    to_allocate = DIV_ROUND_UP(sector_num + *pnum, s->tracks) - idx;
++
++    /*
++     * This function is called only by parallels_co_writev(), which will never
++     * pass a sector_num at or beyond the end of the image (because the block
++     * layer never passes such a sector_num to that function). Therefore, idx
++     * is always below s->bat_size.
++     * block_status() will limit *pnum so that sector_num + *pnum will not
++     * exceed the image end. Therefore, idx + to_allocate cannot exceed
++     * s->bat_size.
++     * Note that s->bat_size is an unsigned int, therefore idx + to_allocate
++     * will always fit into a uint32_t.
++     */
++    assert(idx < s->bat_size && idx + to_allocate <= s->bat_size);
++
++    host_off = parallels_allocate_host_clusters(bs, &to_allocate);
++    if (host_off < 0) {
++        return host_off;
++    }
++
++    *pnum = MIN(*pnum, (idx + to_allocate) * s->tracks - sector_num);
++
+     /*
+      * Try to read from backing to fill empty clusters
+      * FIXME: 1. previous write_zeroes may be redundant
+@@ -373,33 +391,23 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+ 
+         ret = bdrv_co_pread(bs->backing, idx * s->tracks * BDRV_SECTOR_SIZE,
+                             nb_cow_bytes, buf, 0);
+-        if (ret < 0) {
+-            qemu_vfree(buf);
+-            return ret;
++        if (ret == 0) {
++            ret = bdrv_co_pwrite(bs->file, host_off, nb_cow_bytes, buf, 0);
+         }
+ 
+-        ret = bdrv_co_pwrite(bs->file, s->data_end * BDRV_SECTOR_SIZE,
+-                             nb_cow_bytes, buf, 0);
+         qemu_vfree(buf);
+         if (ret < 0) {
++            parallels_mark_unused(bs, s->used_bmap, s->used_bmap_size,
++                                  host_off, to_allocate);
+             return ret;
+         }
+     }
+ 
+-    ret = parallels_mark_used(bs, s->used_bmap, s->used_bmap_size,
+-                              host_off, to_allocate);
+-    if (ret < 0) {
+-        /* Image consistency is broken. Alarm! */
+-        return ret;
+-    }
+     for (i = 0; i < to_allocate; i++) {
+         parallels_set_bat_entry(s, idx + i,
+                 host_off / BDRV_SECTOR_SIZE / s->off_multiplier);
+         host_off += s->cluster_size;
+     }
+-    if (host_off > s->data_end * BDRV_SECTOR_SIZE) {
+-        s->data_end = host_off / BDRV_SECTOR_SIZE;
+-    }
+ 
+     return bat2sect(s, idx) + sector_num % s->tracks;
+ }
 diff --git a/block/parallels.h b/block/parallels.h
-index 68077416b1..02b857b4a4 100644
+index 02b857b4a4..493c89e976 100644
 --- a/block/parallels.h
 +++ b/block/parallels.h
-@@ -92,6 +92,8 @@ typedef struct BDRVParallelsState {
+@@ -95,6 +95,9 @@ int parallels_mark_used(BlockDriverState *bs, unsigned long *bitmap,
+ int parallels_mark_unused(BlockDriverState *bs, unsigned long *bitmap,
+                           uint32_t bitmap_size, int64_t off, uint32_t count);
  
- int parallels_mark_used(BlockDriverState *bs, unsigned long *bitmap,
-                         uint32_t bitmap_size, int64_t off, uint32_t count);
-+int parallels_mark_unused(BlockDriverState *bs, unsigned long *bitmap,
-+                          uint32_t bitmap_size, int64_t off, uint32_t count);
- 
++int64_t GRAPH_RDLOCK parallels_allocate_host_clusters(BlockDriverState *bs,
++                                                      int64_t *clusters);
++
  int GRAPH_RDLOCK
  parallels_read_format_extension(BlockDriverState *bs, int64_t ext_off,
+                                 Error **errp);
 -- 
 2.40.1
 
