@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA28781FB72
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 23:05:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D80E81FB77
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 23:10:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIyUE-0000Ds-US; Thu, 28 Dec 2023 17:04:18 -0500
+	id 1rIyYG-0001ap-Ex; Thu, 28 Dec 2023 17:08:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIyUD-0000Cb-DT
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:04:17 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1rIyYE-0001ZR-If
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:08:26 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rIyUB-0004HH-Me
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:04:17 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1d3ec3db764so17647365ad.2
- for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 14:04:14 -0800 (PST)
+ id 1rIyYC-0004pw-Un
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 17:08:26 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1d49ba98456so1197125ad.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Dec 2023 14:08:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1703801054; x=1704405854; darn=nongnu.org;
+ d=linaro.org; s=google; t=1703801303; x=1704406103; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=F0yZkJBfVS7uiQWHVwZ/uENOp9+Jh+s0GhtQyX4Z7P4=;
- b=YAkD8Ulo1lwzBaM4aGG538ts+iGVBz/IrHleeu4bcnpVxuPw6x7hdCyIMYVNw9v7V4
- 8TgdYNvi+bDH5PzejL4DYJnsaAQbxXxq+TWgDDYOnnjElFuQxpEVaW08la5BNZ0mPzar
- qUu4vw4Atv665AmHKkdSjM3f22qEdg5lMhJhwGE+mb0MGBuDCqFsRC6LmAMZFANk4nJy
- zo9ede46viPsstT+jX7LnNs29IMFF4YX93Y30AdcSTQ+9onGheBWUmkte9A1NyohhWnd
- TWaBV87qfoJ7bGy7PIhVPlI/ecT8p1XW0GmKM3t7HIUw7KPTXPKNuPik+Ei9LnPXnR5U
- uoYw==
+ bh=T11bKiu1ql3jcldkmOd6gD29SkPzfY/xpHlb+9JTy5s=;
+ b=J9YdQwLeGdIU4tDzrAYa269CL1jKUSiowzaiIvZBWVXQtxMBs+A6zf9jVGA9SKeKfh
+ o5mCjVAa+y77XKkj+tbY/dAb9Wp4JcwNczwZqDAQcqAAKd4B5rmTOPkNRQoN7QzmJMTF
+ xCIgRara4ame7ISsQoMT1m6HAc06N3KmW82iQ3c926DvJo3YKdwqrnUbjBYHUrCiyPzH
+ OzUj2oOrDSGtVkQ10OsjJ2gY5p84bcaUj6lhlJpaUaSfqfCIwlcdtwF9X8YQOTxv32SH
+ afpaKDg9gzSTfJYUsyJJj7dGcbqeVuih4j8JEzUiQwqFZW83coZvH8kbE8yN8lMoE7LZ
+ 4VRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703801054; x=1704405854;
+ d=1e100.net; s=20230601; t=1703801303; x=1704406103;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=F0yZkJBfVS7uiQWHVwZ/uENOp9+Jh+s0GhtQyX4Z7P4=;
- b=Dz0CJLBG0u0qTIL5HlEQfTQJN0q4CHC5WcOoJu7laUmaWsu0l4g9Y6mgZOQ2sJtpy3
- qLV3lHZo4CY8ANQXiGwTxg+OwIMN8f9s4/SRGRFXwLIDca3Z1rc6CmZ12DLjlIvXcG3a
- 76KoW/nhdIVlXFpRfM1TudxKK0tm38rI7hZlZd2G/b1Q3idw05VXgoceREtdKWh8IprQ
- 9IIqND+kKaBmYfPYSpQ7QcnPNYwcnMDfUyYBu80fQxdq40viDEzNosHQ4+nMqnrcxrSX
- ayubmb/fHNUAqSY3pjaxIrw+0K6e3s7wwcNAHKsFZvFqTpK5/XtLLpulFKuKpk/iEya7
- m6Qg==
-X-Gm-Message-State: AOJu0YzvD926c8iFCejxtNvYcnCaxwZ48tV9Gp7Mtgj3iyzooOXcFdQ8
- hFx4268PZTHxIqoWPgXO7UxP90Z4qIa+rQ==
-X-Google-Smtp-Source: AGHT+IGC0356jSvv+0V83Ja8/PWaHmRNKprYShvPEKJuZHs4XULRBXzfKkKJjqP1jJjMg8Dt+C2isg==
-X-Received: by 2002:a17:902:6805:b0:1d4:3e87:d481 with SMTP id
- h5-20020a170902680500b001d43e87d481mr3776277plk.43.1703801053691; 
- Thu, 28 Dec 2023 14:04:13 -0800 (PST)
+ bh=T11bKiu1ql3jcldkmOd6gD29SkPzfY/xpHlb+9JTy5s=;
+ b=JE0S5lUDjQHYoqnA+drXw6grLUyDSnID59IYeYhFQZMPhy/IwgQrxIkeepW9L6wgyN
+ 6eurHtmz/sZFfK5nfBhG1LzuThycrXoBaJE6x3JRgDkwAXHumBvJtAbblFmrtEEX04LY
+ iZMJWxmxCEN6wl1cPaQdcp1s9zECmqPy3OEX9iOzxD4zY4wPdfC1aaaVXGWg+XTnqVr/
+ FEbYvENqkZatSusdQF5Goe2hflNG5MK1NB0BVs0e/brY8dSyGRQTfymr00uoL4omaJDV
+ 38LyJNpu8wn81wze6wKpLPODg6epZEucpdrR71MnnehS+X/VK7dZ4GY+svjzhXUft9nZ
+ Vomg==
+X-Gm-Message-State: AOJu0YyVs7ePXL6URmUtzxF+DEg+xLQG2hZlNQZ/tC3CUciwIGM6bgt3
+ bz+p56t75e3HYTSqaeIF/kZ/htInsSl0ZA==
+X-Google-Smtp-Source: AGHT+IH5eoTa6TuhK6yCS0UQyhJqF9KLAfW6hdjyRGOcvmJowhB2ZAfVHr2YLojbq4ORVJHA2HFFEw==
+X-Received: by 2002:a17:903:25cf:b0:1d3:f203:6110 with SMTP id
+ jc15-20020a17090325cf00b001d3f2036110mr5416555plb.75.1703801303188; 
+ Thu, 28 Dec 2023 14:08:23 -0800 (PST)
 Received: from ?IPV6:2001:8003:c020:6900:324d:cbc2:5f8b:3a9d?
  ([2001:8003:c020:6900:324d:cbc2:5f8b:3a9d])
  by smtp.gmail.com with ESMTPSA id
- c1-20020a170903234100b001cc8cf4ad16sm14352214plh.246.2023.12.28.14.04.11
+ b5-20020a170902ed0500b001cfd0ddc5b9sm14375918pld.262.2023.12.28.14.08.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Dec 2023 14:04:13 -0800 (PST)
-Message-ID: <97b9df30-841b-41cc-9eb6-2625393be16a@linaro.org>
-Date: Fri, 29 Dec 2023 09:04:08 +1100
+ Thu, 28 Dec 2023 14:08:22 -0800 (PST)
+Message-ID: <c2f29852-567b-440d-9921-86478551a95d@linaro.org>
+Date: Fri, 29 Dec 2023 09:08:18 +1100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/22] target/i386: rename zext0/zext2 and make them
- closer to the manual
+Subject: Re: [PATCH 10/22] target/i386: add X86_SPECIALs for MOVSX and MOVZX
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20231222181603.174137-1-pbonzini@redhat.com>
- <20231222181603.174137-10-pbonzini@redhat.com>
+ <20231222181603.174137-11-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231222181603.174137-10-pbonzini@redhat.com>
+In-Reply-To: <20231222181603.174137-11-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,20 +95,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/23/23 05:15, Paolo Bonzini wrote:
-> X86_SPECIAL_ZExtOp0 and X86_SPECIAL_ZExtOp2 are poorly named; they are a hack
-> that is needed by scalar insertion and extraction instructions, and not really
-> related to zero extension: for PEXTR the zero extension is done by the generation
-> functions, for PINSR the high bits are not used at all and in fact are*not*
-> filled with zeroes when loaded into s->T1.
+> Usually the registers are just moved into s->T0 without much care for
+> their operand size.  However, in some cases we can get more efficient
+> code if the operand fetching logic syncs with the emission function
+> on what is nicer.
 > 
-> Rename the values to match the effect described in the manual, and explain
-> better in the comments.
+> All the current uses are mostly demonstrative and only reduce the code
+> in the emission functions, because the instructions do not support
+> memory operands.  However the logic is generic and applies to several
+> more instructions such as MOVSXD (aka movslq), one-byte shift
+> instructions, multiplications, XLAT, and indirect calls/jumps.
 > 
 > Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
 > ---
->   target/i386/tcg/decode-new.c.inc | 16 ++++++++--------
->   target/i386/tcg/decode-new.h     | 17 +++++++++++++----
->   2 files changed, 21 insertions(+), 12 deletions(-)
+>   target/i386/tcg/decode-new.c.inc | 18 ++++++++++----
+>   target/i386/tcg/decode-new.h     |  4 +++
+>   target/i386/tcg/emit.c.inc       | 42 +++++++++++++++++---------------
+>   3 files changed, 40 insertions(+), 24 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
