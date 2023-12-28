@@ -2,68 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910C881F52A
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 07:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8343181F61A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Dec 2023 09:54:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rIk9g-0008Vf-JA; Thu, 28 Dec 2023 01:46:08 -0500
+	id 1rIm9T-0002zt-G3; Thu, 28 Dec 2023 03:54:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rIk9b-0008UX-FX
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 01:46:04 -0500
-Received: from mail-ed1-f52.google.com ([209.85.208.52])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1rIk9Y-0002ok-S9
- for qemu-devel@nongnu.org; Thu, 28 Dec 2023 01:46:03 -0500
-Received: by mail-ed1-f52.google.com with SMTP id
- 4fb4d7f45d1cf-55559e26ccfso1259931a12.3
- for <qemu-devel@nongnu.org>; Wed, 27 Dec 2023 22:45:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1703745956; x=1704350756;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zH7PaALek5dCOFb7Ny2+p4rfsYDM9MnlJAkHWudp8ho=;
- b=IZF40rRWgQLcvvsDOEjK5YWsRb8YCsDNYj58R5XddEA+z71Lz+t18xtbeVlDgX0I4d
- sZjsoqa2E6zq3xH3hfxiTXx2X7BeHRoEKQc6/hcld3u4ShVKDcwkliIVOH9qvc2Ks0gY
- 8BFQYhJt4l+BftX3UM08muJ1MJCfaffofEmt+gMShDMdvQm4O9yzM5LzjG2t34eW4OuS
- HNbcBReTt/pVQzOH+JCCjVKLxGj7s1OnXve8ppE4Rn7SCzEaPUbnCLddcOHS32euYhLK
- bY1wRd/B0Fapkfeqtl3C4ziGlIXOQffvHczt2JQdX+yP0HTSCDJ9fn8QQL9oFsQ8gtwd
- y1ww==
-X-Gm-Message-State: AOJu0YxITD/1meLv1QDOTQMkU0Q5u5zltKxAFbCcwgFG4t2QBMrCQzaL
- 6ETmfE5og21GRMmngbY5fbw=
-X-Google-Smtp-Source: AGHT+IG8NnLwiiRcIVFH+/vcCRt8RKk8HOjoImaSwze632LnNLSq5tfyAa2hD2Kxk/IyUFgP11kQMw==
-X-Received: by 2002:a50:c043:0:b0:554:46fd:e4cf with SMTP id
- u3-20020a50c043000000b0055446fde4cfmr4619506edd.70.1703745956086; 
- Wed, 27 Dec 2023 22:45:56 -0800 (PST)
-Received: from fedora (ip-109-43-177-107.web.vodafone.de. [109.43.177.107])
- by smtp.gmail.com with ESMTPSA id
- en22-20020a056402529600b00553830eb2fcsm9350901edb.64.2023.12.27.22.45.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Dec 2023 22:45:55 -0800 (PST)
-Date: Thu, 28 Dec 2023 07:45:54 +0100
-From: Thomas Huth <huth@tuxfamily.org>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH] q800: move dp8393x_prom memory region to Q800MachineState
-Message-ID: <20231228074554.47a721c1@fedora>
-In-Reply-To: <20231227210212.245106-1-mark.cave-ayland@ilande.co.uk>
-References: <20231227210212.245106-1-mark.cave-ayland@ilande.co.uk>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
+ id 1rIm9N-0002yX-BJ
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 03:53:57 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <zhaotianrui@loongson.cn>) id 1rIm9K-0007A5-Fm
+ for qemu-devel@nongnu.org; Thu, 28 Dec 2023 03:53:57 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxJ_CaN41lAAIAAA--.76S3;
+ Thu, 28 Dec 2023 16:53:46 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxD+WYN41lQvENAA--.48131S2; 
+ Thu, 28 Dec 2023 16:53:44 +0800 (CST)
+From: Tianrui Zhao <zhaotianrui@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn, maobibo@loongson.cn, zhaotianrui@loongson.cn,
+ mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ philmd@linaro.org, richard.henderson@linaro.org, peter.maydell@linaro.org,
+ yangxiaojuan@loongson.cn
+Subject: [PATCH v3 0/9] Add loongarch kvm accel support
+Date: Thu, 28 Dec 2023 16:40:42 +0800
+Message-Id: <20231228084051.3235354-1-zhaotianrui@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.208.52; envelope-from=th.huth@gmail.com;
- helo=mail-ed1-f52.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8AxD+WYN41lQvENAA--.48131S2
+X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,16 +64,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am Wed, 27 Dec 2023 21:02:12 +0000
-schrieb Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>:
+The linux headers in this patch synchronized from linux kernel
+v6.7.0-rc7, and the loongarch kvm part of this patch series
+based on the header files. And the linux kernel has added the
+loongarch kvm support in master branch.
 
-> There is no need to dynamically allocate the memory region from the heap.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->  hw/m68k/q800.c         | 7 +++----
->  include/hw/m68k/q800.h | 1 +
->  2 files changed, 4 insertions(+), 4 deletions(-)
+This series add loongarch kvm support, mainly implement
+some interfaces used by kvm, such as kvm_arch_get/set_regs,
+kvm_arch_handle_exit, kvm_loongarch_set_interrupt, etc.
 
-Reviewed-by: Thomas Huth <huth@tuxfamily.org>
+Currently, we are able to boot LoongArch KVM Linux Guests.
+In loongarch VM, mmio devices and iocsr devices are emulated
+in user space such as APIC, IPI, pci devices, etc, other
+hardwares such as MMU, timer and csr are emulated in kernel.
+
+The running environment of LoongArch virt machine:
+1. Get the Linux KVM environment of LoongArch in Linux mainline.
+   make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu- loongson3_defconfig
+   make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu-
+2. Get the qemu source: https://github.com/loongson/qemu
+   git checkout kvm-loongarch
+   ./configure --target-list="loongarch64-softmmu"  --enable-kvm
+   make
+3. Get uefi bios of LoongArch virt machine:
+   Link: https://github.com/tianocore/edk2-platforms/tree/master/Platform/Loongson/LoongArchQemuPkg#readme
+4. Also you can access the binary files we have already built:
+   https://github.com/yangxiaojuan-loongson/qemu-binary
+
+The command to boot loongarch virt machine:
+   $ qemu-system-loongarch64 -machine virt -m 4G -cpu la464 \
+   -smp 1 -bios QEMU_EFI.fd -kernel vmlinuz.efi -initrd ramdisk \
+   -serial stdio   -monitor telnet:localhost:4495,server,nowait \
+   -append "root=/dev/ram rdinit=/sbin/init console=ttyS0,115200" \
+   --nographic
+
+Changes for v3:
+1. Synchronize linux headers from linux v6.7.0-rc7.
+2. Fix compiling error when config enable-kvm and disable-tcg
+at one time.
+
+Changes for v2:
+1. Synchronize linux headers from linux v6.7.0-rc6.
+2. Remove the stub function: kvm_loongarch_set_interrupt, as kvm_enabled
+has been checked before it is called.
+3. Move the kvm function such as kvm_arch_reset_vcpu from cpu.h to
+loongarch_kvm.h, and supplement "#include <cpu.h>" in loongarch_kvm.h.
+
+Changes for v1:
+1. Synchronous KVM headers about LoongArch KVM form linux kernel,
+as the LoongArch KVM patch series have been accepted by linux kernel.
+2. Remove the KVM_GET/SET_ONE_UREG64 macro in target/loongarch, and
+use the common interface kvm_get/set_one_reg to replace it.
+3. Resolve the compiling errors when LoongArch is built by other archs.
+
+Tianrui Zhao (9):
+  linux-headers: Synchronize linux headers from linux v6.7.0-rc7
+  target/loongarch: Define some kvm_arch interfaces
+  target/loongarch: Supplement vcpu env initial when vcpu reset
+  target/loongarch: Implement kvm get/set registers
+  target/loongarch: Implement kvm_arch_init function
+  target/loongarch: Implement kvm_arch_init_vcpu
+  target/loongarch: Implement kvm_arch_handle_exit
+  target/loongarch: Implement set vcpu intr for kvm
+  target/loongarch: Add loongarch kvm into meson build
+
+ include/standard-headers/drm/drm_fourcc.h     |   2 +
+ include/standard-headers/linux/fuse.h         |  10 +-
+ include/standard-headers/linux/pci_regs.h     |  24 +-
+ include/standard-headers/linux/vhost_types.h  |   7 +
+ .../standard-headers/linux/virtio_config.h    |   5 +
+ include/standard-headers/linux/virtio_pci.h   |  11 +
+ linux-headers/asm-arm64/kvm.h                 |  32 +
+ linux-headers/asm-generic/unistd.h            |  14 +-
+ linux-headers/asm-loongarch/bitsperlong.h     |   1 +
+ linux-headers/asm-loongarch/kvm.h             | 108 +++
+ linux-headers/asm-loongarch/mman.h            |   1 +
+ linux-headers/asm-loongarch/unistd.h          |   5 +
+ linux-headers/asm-mips/unistd_n32.h           |   4 +
+ linux-headers/asm-mips/unistd_n64.h           |   4 +
+ linux-headers/asm-mips/unistd_o32.h           |   4 +
+ linux-headers/asm-powerpc/unistd_32.h         |   4 +
+ linux-headers/asm-powerpc/unistd_64.h         |   4 +
+ linux-headers/asm-riscv/kvm.h                 |  12 +
+ linux-headers/asm-s390/unistd_32.h            |   4 +
+ linux-headers/asm-s390/unistd_64.h            |   4 +
+ linux-headers/asm-x86/unistd_32.h             |   4 +
+ linux-headers/asm-x86/unistd_64.h             |   3 +
+ linux-headers/asm-x86/unistd_x32.h            |   3 +
+ linux-headers/linux/iommufd.h                 | 180 +++-
+ linux-headers/linux/kvm.h                     |  11 +
+ linux-headers/linux/psp-sev.h                 |   1 +
+ linux-headers/linux/stddef.h                  |   9 +-
+ linux-headers/linux/userfaultfd.h             |   9 +-
+ linux-headers/linux/vfio.h                    |  47 +-
+ linux-headers/linux/vhost.h                   |   8 +
+ meson.build                                   |   3 +
+ target/loongarch/cpu.c                        |  37 +-
+ target/loongarch/cpu.h                        |   5 +-
+ target/loongarch/fpu_helper.c                 |   2 +
+ target/loongarch/internals.h                  |   5 +-
+ target/loongarch/kvm.c                        | 768 ++++++++++++++++++
+ target/loongarch/kvm_loongarch.h              |  16 +
+ target/loongarch/meson.build                  |   9 +-
+ target/loongarch/trace-events                 |  15 +
+ target/loongarch/trace.h                      |   1 +
+ 40 files changed, 1350 insertions(+), 46 deletions(-)
+ create mode 100644 linux-headers/asm-loongarch/bitsperlong.h
+ create mode 100644 linux-headers/asm-loongarch/kvm.h
+ create mode 100644 linux-headers/asm-loongarch/mman.h
+ create mode 100644 linux-headers/asm-loongarch/unistd.h
+ create mode 100644 target/loongarch/kvm.c
+ create mode 100644 target/loongarch/kvm_loongarch.h
+ create mode 100644 target/loongarch/trace-events
+ create mode 100644 target/loongarch/trace.h
+
+-- 
+2.39.1
+
 
